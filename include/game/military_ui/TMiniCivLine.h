@@ -18,6 +18,9 @@ public:
 
   // NOOP: verified empty in original 0x004ab6a3 (no standalone TMiniCivLine::TMiniCivLine body exists: CreateObject 0x004ab670 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TMiniCivLine() {}
+  // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
+  // then this line's civUnit10. 0x004ab700, __thiscall.
+  void IMiniCivLine(short rowArg, short colArg, int* bounds, TCivUnit* item);
 };
 
 ASSERT_SIZE(TMiniCivLine, 0x14);

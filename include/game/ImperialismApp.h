@@ -62,12 +62,20 @@ public:
   void RestoreWaitCursorIfStartupBusy(); // 0x004139f0
 
   // Developer UI commands recovered from the ImperialismApp message map.
+  afx_msg void OnDeveloperCommand8014();                        // 0x00413d00, command 0x8014
   afx_msg void OnSelectActiveNation();                          // 0x00413d20, command 0x8015
   afx_msg void OnApplyTurnCooldownOverride();                   // 0x00413f60, command 0x8016
   afx_msg void OnAdjustNationResourcesAndPopulation();          // 0x004140f0, command 0x8017
   afx_msg void OnPreviewDibResource();                          // 0x004143b0, command 0x8018
   afx_msg void OnRunAmbitDeveloperAssert();                     // 0x00414640, command 0x8019
   afx_msg void OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi); // 0x00414670
+  // Retail compiles these out to empty bodies, so the message-map command ID is the
+  // only surviving evidence of what they did; named after it rather than invented.
+  afx_msg void OnDeveloperCommand801E();                        // 0x004147b0, command 0x801e
+  afx_msg void OnUpdateDeveloperCommand801E(CCmdUI* commandUi); // 0x004147d0
+  afx_msg void OnDeveloperCommand801F();                        // 0x004147f0, command 0x801f
+  afx_msg void OnUpdateDeveloperCommand801F(CCmdUI* commandUi); // 0x00414810
+  afx_msg void OnDeveloperCommand8020();                        // 0x00414830, command 0x8020
 
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
   // While HandleStartupCommand100 runs, points at a stack local so the modal pump

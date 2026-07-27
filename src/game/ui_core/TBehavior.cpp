@@ -22,6 +22,11 @@ TBehavior::TBehavior() : TObject(), behaviorTag(kControlTagSpSpSpSp), owner(0), 
 // FUNCTION: IMPERIALISM 0x00487240
 TBehavior::~TBehavior() {}
 
+// FUNCTION: IMPERIALISM 0x00487260
+void TBehavior::SetBehaviorTag(unsigned long tag) {
+  behaviorTag = tag;
+}
+
 // FUNCTION: IMPERIALISM 0x00487280
 void TBehavior::SetOwner(TEventHandler* newOwner) {
   owner = newOwner;

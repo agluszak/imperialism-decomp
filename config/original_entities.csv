@@ -40,7 +40,7 @@ address|name|symbol|size|type|prototype|provenance
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
 413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413d00|IltTarget_00413d00||16|function|undefined IltTarget_00413d00()|
+413d00|ImperialismApp::OnDeveloperCommand8014||16|function|void __thiscall ImperialismApp::OnDeveloperCommand8014(void)|curated
 413d20|ImperialismApp::OnSelectActiveNation||328|function|void OnSelectActiveNation()|
 413ed0|TDBTemplateDialog::~TDBTemplateDialog||104|function|void __thiscall TDBTemplateDialog::~TDBTemplateDialog(void)|
 413f60|ImperialismApp::OnApplyTurnCooldownOverride||208|function|void OnApplyTurnCooldownOverride()|
@@ -56,11 +56,11 @@ address|name|symbol|size|type|prototype|provenance
 4146d0|TApplication::PostWmCloseToMainThreadWindow||55|function|void TApplication::PostWmCloseToMainThreadWindow()|windows_listing
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
 414770|TAmbitApplication::DoSetupMenus||1|function|undefined DoSetupMenus()|
-4147b0|IltTarget_004147b0||1|function|undefined IltTarget_004147b0()|
-4147d0|IltTarget_004147d0||3|function|undefined IltTarget_004147d0()|
-4147f0|IltTarget_004147f0||1|function|undefined IltTarget_004147f0()|
-414810|IltTarget_00414810||3|function|undefined IltTarget_00414810()|
-414830|IltTarget_00414830||1|function|undefined IltTarget_00414830()|
+4147b0|ImperialismApp::OnDeveloperCommand801E||1|function|void __thiscall ImperialismApp::OnDeveloperCommand801E(void)|curated
+4147d0|ImperialismApp::OnUpdateDeveloperCommand801E||3|function|void __thiscall ImperialismApp::OnUpdateDeveloperCommand801E(CCmdUI * commandUi)|curated
+4147f0|ImperialismApp::OnDeveloperCommand801F||1|function|void __thiscall ImperialismApp::OnDeveloperCommand801F(void)|curated
+414810|ImperialismApp::OnUpdateDeveloperCommand801F||3|function|void __thiscall ImperialismApp::OnUpdateDeveloperCommand801F(CCmdUI * commandUi)|curated
+414830|ImperialismApp::OnDeveloperCommand8020||1|function|void __thiscall ImperialismApp::OnDeveloperCommand8020(void)|curated
 414850|LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850||6|function|undefined LoadNewsTabTexResourcesAndBuildEntries_Impl_At00414850()|
 414870|ImperialismApp::DetectImperialismInstallDriveAndSetPathPrefix||233|function|LPCTSTR __thiscall DetectImperialismInstallDriveAndSetPathPrefix(void)|
 4149a0|LoadLanguageResourcesFromIrgFiles||1285|function|undefined LoadLanguageResourcesFromIrgFiles()|
@@ -696,7 +696,7 @@ address|name|symbol|size|type|prototype|provenance
 4871e0|TBehavior::ConstructTBehaviorBaseState||27|function|undefined ConstructTBehaviorBaseState()|
 487210|TBehavior::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 487240|DestructTBehaviorAndMaybeFree_Impl||7|function|undefined DestructTBehaviorAndMaybeFree_Impl()|
-487260|IltTarget_00487260||10|function|undefined IltTarget_00487260()|
+487260|TBehavior::SetBehaviorTag||10|function|void __thiscall TBehavior::SetBehaviorTag(unsigned long tag)|curated
 487280|TBehavior::SetOwner||10|function|void __thiscall SetOwner(TEventHandler * owner)|
 4872a0|TBehavior::IsEnabled||4|function|unsigned char __thiscall IsEnabled(void)|
 4872c0|TBehavior::SetEnabled||10|function|void __thiscall SetEnabled(unsigned char enabled)|
@@ -881,7 +881,7 @@ address|name|symbol|size|type|prototype|provenance
 489bf0|TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer||133|function|void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point, TControl* control)|
 489cb0|TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords||108|function|undefined NotifyCaptureOwnerState1AndMaybeUpdateCoords()|
 489d40|TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer||153|function|void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, int x, int y)|
-489e10|IltTarget_00489e10||18|function|undefined IltTarget_00489e10()|
+489e10|TMouseCaptureState::CopyCurrentPointTo||18|function|void __thiscall TMouseCaptureState::CopyCurrentPointTo(CPoint * out)|curated
 489e40|CopyCurrentMouseCapturePoint||21|function|void __cdecl CopyCurrentMouseCapturePoint(CPoint * outPoint)|
 489e70|CMcEditWindow::OnChar|?OnChar@CMcEditWindow@@IAEXIII@Z|67|function|protected: void __thiscall CMcEditWindow::OnChar(unsigned int,unsigned int,unsigned int)|
 489ee0|CMcEditWindow::GetMessageMap|?GetMessageMap@CMcEditWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMcEditWindow::GetMessageMap(void)const|
@@ -903,8 +903,8 @@ address|name|symbol|size|type|prototype|provenance
 48a2c0|TEventHandler::GetNextHandler||4|function|TEventHandler * __thiscall GetNextHandler(void)|
 48a2e0|TEventHandler::HandleEvent||23|function|void __thiscall HandleEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 48a310|TEventHandler::DoMenuCommand||24|function|void __thiscall DoMenuCommand(int command)|
-48a340|IltTarget_0048a340||13|function|undefined IltTarget_0048a340()|
-48a360|IltTarget_0048a360||13|function|undefined IltTarget_0048a360()|
+48a340|TEventHandler::HandleMenuCommand||13|function|void __thiscall TEventHandler::HandleMenuCommand(int command)|curated
+48a360|TEventHandler::HandleKeyEvent||13|function|void __thiscall TEventHandler::HandleKeyEvent(TToolboxEvent * event)|curated
 48a380|TEventHandler::ForwardCityDialogParamToChildSlot48||24|function|undefined ForwardCityDialogParamToChildSlot48()|
 48a3b0|TEventHandler::DispatchQueuedUiCommandAndRelease||37|function|undefined DispatchQueuedUiCommandAndRelease()|
 48a3f0|TEventHandler::DispatchUiSelectionToHandler||13|function|undefined DispatchUiSelectionToHandler()|
@@ -1693,7 +1693,7 @@ address|name|symbol|size|type|prototype|provenance
 4a8d30|TArmyUnitLine::ConstructTArmyUnitLineBaseState||18|function|undefined ConstructTArmyUnitLineBaseState()|
 4a8d60|TArmyUnitLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a8d90|DestructTArmyUnitLineAndMaybeFree_Impl||7|function|undefined DestructTArmyUnitLineAndMaybeFree_Impl()|
-4a8db0|IltTarget_004a8db0||36|function|undefined IltTarget_004a8db0()|
+4a8db0|TArmyUnitLine::IArmyUnitLine||36|function|void __thiscall TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int * bounds, TMilitaryUnit * item)|curated
 4a8df0|TArmyUnitLine::CreateLineItemView||1221|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4a9400|TArmyCheckBox::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a9450|TArmyUnitView::CreateObject|?CreateObject@TArmyUnitView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -1725,7 +1725,7 @@ address|name|symbol|size|type|prototype|provenance
 4aa870|ResetObjectToCObjectSentinelVtable_Impl||7|function|undefined ResetObjectToCObjectSentinelVtable_Impl()|
 4aa890|TMiniArmyLine::CreateObject|?CreateObject@TMiniArmyLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4aa900|TMiniArmyLine::GetRuntimeClass||6|function|undefined GetTMiniArmyLineClassNamePointer()|rtti
-4aa920|IltTarget_004aa920||36|function|undefined IltTarget_004aa920()|
+4aa920|TMiniArmyLine::IMiniArmyLine||36|function|void __thiscall TMiniArmyLine::IMiniArmyLine(short rowArg, short colArg, int * bounds, TMilitaryUnit * item)|curated
 4aa960|TMiniArmyLine::CreateLineItemView||753|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4aad20|TMiniArmyView::Hilite||1|function|void Hilite(void)|vtable_slot
 4aad40|TMiniArmyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -1742,7 +1742,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab650|DestructTSuperCivRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperCivRosterAndMaybeFree_Impl()|
 4ab670|TMiniCivLine::CreateObject|?CreateObject@TMiniCivLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4ab6e0|TMiniCivLine::GetRuntimeClass||6|function|undefined GetTMiniCivLineClassNamePointer()|rtti
-4ab700|IltTarget_004ab700||36|function|undefined IltTarget_004ab700()|
+4ab700|TMiniCivLine::IMiniCivLine||36|function|void __thiscall TMiniCivLine::IMiniCivLine(short rowArg, short colArg, int * bounds, TCivUnit * item)|curated
 4ab740|TMiniCivLine::CreateLineItemView||136|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4ab800|TMiniCivView::Hilite||1|function|void Hilite(void)|vtable_slot
 4ab820|TMiniCivView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -1837,7 +1837,7 @@ address|name|symbol|size|type|prototype|provenance
 4b10a0|TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState||32|function|undefined ConstructTDropShadowTextBehaviorBaseState()|
 4b10d0|TDropShadowTextBehavior::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1100|DestructTDropShadowTextBehaviorAndMaybeFree_Impl||7|function|undefined DestructTDropShadowTextBehaviorAndMaybeFree_Impl()|
-4b1120|IltTarget_004b1120||20|function|undefined IltTarget_004b1120()|
+4b1120|TDropShadowTextBehavior::IDropShadowTextBehavior||20|function|void __thiscall TDropShadowTextBehavior::IDropShadowTextBehavior(COLORREF shadowColor)|curated
 4b1150|TDropShadowTextBehavior::Draw||188|function|void __thiscall Draw(RECT * bounds)|
 4b1370|`dynamic initializer for 'g_scaledShortConst_6A2470''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2470''(void)|library
 4b13a0|TCheater::CreateObject|?CreateObject@TCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
@@ -1850,7 +1850,7 @@ address|name|symbol|size|type|prototype|provenance
 4b1880|TTechCheater::CreateObject|?CreateObject@TTechCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b18f0|TTechCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b1940|TTechCheater::GetRuntimeClass||6|function|undefined GetTTechCheaterClassNamePointer()|rtti
-4b1960|IltTarget_004b1960||18|function|undefined IltTarget_004b1960()|
+4b1960|TTechCheater::ConstructTTechCheaterBaseState||18|function|void __thiscall TTechCheater::ConstructTTechCheaterBaseState(TView * panel)|curated
 4b1990|TTechCheater::ApplyCheats||1|function|void ApplyCheats(void)|mac_oracle
 4b19b0|TGPCheater::CreateObject|?CreateObject@TGPCheater@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b1a20|TGPCheater::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -4666,7 +4666,7 @@ address|name|symbol|size|type|prototype|provenance
 569b90|DestructTSuperNavyRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperNavyRosterAndMaybeFree_Impl()|
 569bb0|TMiniShipLine::CreateObject|?CreateObject@TMiniShipLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 569c20|TMiniShipLine::GetRuntimeClass||6|function|undefined GetTMiniShipLineClassNamePointer()|rtti
-569c40|IltTarget_00569c40||36|function|undefined IltTarget_00569c40()|
+569c40|TMiniShipLine::IMiniShipLine||36|function|void __thiscall TMiniShipLine::IMiniShipLine(short rowArg, short colArg, int * bounds, TShip * item)|curated
 569c80|TMiniShipLine::CreateLineItemView||148|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 569d50|TMiniShipView::Hilite||1|function|void Hilite(void)|vtable_slot
 569d70|TMiniShipView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -6168,14 +6168,14 @@ address|name|symbol|size|type|prototype|provenance
 5c14c0|TCommodityLine::ConstructTCommodityLineBaseState||18|function|undefined ConstructTCommodityLineBaseState()|
 5c14f0|TCommodityLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c1520|DestructTCommodityLineAndMaybeFree_Impl||7|function|undefined DestructTCommodityLineAndMaybeFree_Impl()|
-5c1540|IltTarget_005c1540||38|function|undefined IltTarget_005c1540()|
+5c1540|TCommodityLine::ICommodityLine||38|function|void __thiscall TCommodityLine::ICommodityLine(short rowArg, short colArg, int * bounds, short value)|curated
 5c1580|TCommodityLine::CreateLineItemView||591|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1870|TTradeTotalsLine::CreateObject|?CreateObject@TTradeTotalsLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c18e0|TTradeTotalsLine::GetRuntimeClass||6|function|undefined GetTTradeTotalsLineClassNamePointer()|rtti
 5c1900|TTradeTotalsLine::ConstructTTradeTotalsLineBaseState||18|function|undefined ConstructTTradeTotalsLineBaseState()|
 5c1930|TTradeTotalsLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c1960|TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl||7|function|undefined DestructTTradeTotalsLineAndMaybeFree_Impl()|
-5c1980|IltTarget_005c1980||38|function|undefined IltTarget_005c1980()|
+5c1980|TTradeTotalsLine::ITradeTotalsLine||38|function|void __thiscall TTradeTotalsLine::ITradeTotalsLine(short rowArg, short colArg, int * bounds, short value)|curated
 5c19c0|TTradeTotalsLine::CreateLineItemView||137|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1a80|TTradeTotalsView::CreateObject|?CreateObject@TTradeTotalsView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c1af0|TTradeTotalsView::GetRuntimeClass||6|function|undefined GetTTradeTotalsViewClassNamePointer()|rtti

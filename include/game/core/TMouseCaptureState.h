@@ -23,6 +23,10 @@ public:
   void BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point, TControl* control);
   void NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned int nFlags, int x, int y);
   void EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, int x, int y);
+
+  // Member form of CopyCurrentMouseCapturePoint (0x489e40), which is just this
+  // called on the global instance. 0x00489e10, __thiscall.
+  void CopyCurrentPointTo(CPoint* out);
 };
 
 ASSERT_SIZE(TMouseCaptureState, 0x1c);
