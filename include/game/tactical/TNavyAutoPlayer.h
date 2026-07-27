@@ -8,6 +8,10 @@
 // VTABLE: IMPERIALISM 0x006697c0
 class TNavyAutoPlayer : public TNavyPlayer {
 public:
+  // Two-phase init: forwards to TNavyPlayer::INavyPlayer with the watch flag set.
+  // 0x0059f0e0, __thiscall.
+  void INavyAutoPlayer(TTaskForce* force, char isOurSide, int nationIndex);
+
   DECLARE_DYNCREATE(TNavyAutoPlayer)
   virtual ~TNavyAutoPlayer() override;              // slot 0x01 (scalar deleting destructor)
   virtual void StartBattle() override;              // slot 0x0a 0x59f110

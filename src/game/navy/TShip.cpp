@@ -1,3 +1,4 @@
+#include <mbstring.h>
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 
@@ -109,6 +110,39 @@ void TShip::Free() {
   }
   name.~CString();
   delete this;
+}
+
+// Mac oracle: IShip.
+// FUNCTION: IMPERIALISM 0x0054f7b0
+void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* nameOverride) {
+  type = shipType;
+  location = zone;
+  nation = nationArg;
+
+  if (nameOverride == 0) {
+    // The owning country names the ship; if that name collides with an existing
+    // ship's, the name is re-rolled until unique. The casts below are the CRT's
+    // signature (_mbscmp takes const unsigned char*), not a model shortcut.
+    g_apTerrainTypeDescriptorTable[nation]->GenerateEthnicName(&name);
+    for (TShip* other = g_pNavyPrimaryOrderListHead; other != 0; other = other->next) {
+      if (other != this &&
+          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(other->name)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0) {
+        RegenerateNavyPrimaryOrderDisplayNameUntilUnique(this);
+        break;
+      }
+    }
+  } else {
+    // A real named CString local, not an unnamed temp: the original carries an EH
+    // frame (push -1 / __ehhandler) for exactly this object's unwind.
+    CString suppliedName(nameOverride);
+    name = suppliedName;
+  }
+
+  strength = g_NavyOrderResourceDescriptorTable[shipType].stockCap;
+  if (location != 0) {
+    location->HandleKeyDown(nation);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054fab0

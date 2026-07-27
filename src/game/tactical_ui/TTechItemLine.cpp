@@ -14,6 +14,14 @@ TTechItemLine::~TTechItemLine() {}
 
 IMPLEMENT_DYNCREATE(TTechItemLine, TLineData)
 
+// FUNCTION: IMPERIALISM 0x005b1120
+void TTechItemLine::ITechItemLine(short rowArg, short colArg, int* bounds, int nationSlot,
+                                  int techId) {
+  SetLineDataRowAndBounds(rowArg, colArg, bounds);
+  nationSlot10 = nationSlot;
+  techId14 = techId;
+}
+
 // Virtual line factory: builds this tech line's TTechItemView, sized by the inherited
 // field08/field0c bound pair and parameterized by this line's nation slot and tech id.
 // FUNCTION: IMPERIALISM 0x005b1160

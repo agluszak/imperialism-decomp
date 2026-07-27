@@ -1610,7 +1610,7 @@ address|matching|name
 0x4a2390|0.8355555555555556|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4068767908309456|BuildArmyActionLabelFromLocalizationAndCounts
-0x4a2900|0.6073926073926074|BuildArmyContextActionRecordsAndDispatchLabel
+0x4a2900|0.6133866133866134|BuildArmyContextActionRecordsAndDispatchLabel
 0x4a3200|0.7125984251968503|TArmyMgr::TryCreateTacticalBattleViewForTileArmies
 0x4a35e0|0.6006825938566553|TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion
 0x4a37b0|1.0|TArmyMgr::RelocateStackUnitsToStackTile
@@ -1646,7 +1646,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|0.0|TArmyBattle::~TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -1904,7 +1904,7 @@ address|matching|name
 0x4b4230|1.0|TCity::GetOwnerNeedCapA6
 0x4b4260|1.0|TCity::SetOwnerNeedCapA6
 0x4b4290|0.7674418604651163|TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts
-0x4b4310|1.0|TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts
+0x4b4310|0.8842105263157894|TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts
 0x4b4390|0.5136612021857924|TCity::AllocateRandomResourceCountsWithinWeightBudget
 0x4b44d0|0.8928571428571429|TCity::GetCitySummaryRecordSlot74
 0x4b4540|0.43478260869565216|TCity::AddTransportRequest
@@ -2602,7 +2602,7 @@ address|matching|name
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.35294117647058826|TGreatPower::ComputeArmyCommitBudgetSlot8E
 0x4e0890|0.26262626262626265|TGreatPower::GetScoreFactorSlot23C
-0x4e09a0|0.5903614457831325|TGreatPower::GetScoreFactorSlot240
+0x4e09a0|0.5662650602409639|TGreatPower::GetScoreFactorSlot240
 0x4e0b20|0.43902439024390244|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.24806201550387597|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.43902439024390244|TGreatPower::ComputeNavyScoreRatioVsNation
@@ -3338,7 +3338,7 @@ address|matching|name
 0x512880|0.16666666666666666|IltTarget_00512880
 0x5128b0|0.13333333333333333|IltTarget_005128b0
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.26334519572953735|BuildHexAreaTileIndexList
+0x512930|0.25622775800711745|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
 0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
 0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
@@ -3353,7 +3353,7 @@ address|matching|name
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
 0x513610|0.896551724137931|TMapMgr::FindResourceCapabilityRequirementLevel
 0x513660|0.7142857142857143|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
-0x5136a0|0.8888888888888888|TMapMgr::SetCivilianDevelopmentClassNibble
+0x5136a0|1.0|TMapMgr::SetCivilianDevelopmentClassNibble
 0x513720|0.4155844155844156|TMapMgr::FindMaxResourceCapabilityValueForTile
 0x5137b0|0.18994413407821228|TMapMgr::CanBuildPortAtTile
 0x513980|0.556390977443609|TMapMgr::IsValidSecondaryNationHomeTileCandidate
@@ -4176,7 +4176,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.4584674822923374|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.46587250482936254|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549260|0.25|IltTarget_00549260
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
@@ -4275,7 +4275,7 @@ address|matching|name
 0x54f5f0|0.9696969696969697|TShip::~TShip
 0x54f640|0.2564102564102564|TShip::Free
 0x54f780|0.18181818181818182|IltTarget_0054f780
-0x54f7b0|0.0|IltTarget_0054f7b0
+0x54f7b0|0.5540540540540541|TShip::IShip
 0x54f8e0|0.2682926829268293|CreateNavyPrimaryOrderNodeAndAssignDisplayName
 0x54fab0|1.0|TShip::WriteTo
 0x54fb50|1.0|TShip::ReadFrom
@@ -4373,7 +4373,7 @@ address|matching|name
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.6206896551724138|TTaskForce::IsEmpty
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
 0x553b50|0.4727272727272727|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
@@ -4460,7 +4460,7 @@ address|matching|name
 0x55a5e0|0.19047619047619047|IltTarget_0055a5e0
 0x55a630|0.2857142857142857|IltTarget_0055a630
 0x55a690|0.03278688524590164|IltTarget_0055a690
-0x55a780|0.34416365824308065|TNavyMgr::ResolveStrategicBattle
+0x55a780|0.3385542168674699|TNavyMgr::ResolveStrategicBattle
 0x55b640|0.25|`dynamic initializer for 'g_scaledShortConst_6A3F60''
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|1.0|TNewsMgr::`scalar deleting destructor'
@@ -4638,7 +4638,7 @@ address|matching|name
 0x564fe0|0.5454545454545454|TNavyRoster::Close
 0x565030|1.0|TShipLine::CreateObject
 0x5650a0|1.0|TShipLine::GetRuntimeClass
-0x5650c0|0.0|IltTarget_005650c0
+0x5650c0|1.0|TShipLine::IShipLine
 0x565100|0.4641638225255973|TShipLine::InstallViews
 0x5653b0|1.0|TShipView::`scalar deleting destructor'
 0x5653e0|1.0|TShipView::~TShipView
@@ -5722,7 +5722,7 @@ address|matching|name
 0x59ebb0|1.0|TNavyPlayer::`scalar deleting destructor'
 0x59ebe0|0.0|TNavyPlayer::~TNavyPlayer
 0x59ec00|1.0|TNavyPlayer::GetRuntimeClass
-0x59ec20|0.0|IltTarget_0059ec20
+0x59ec20|0.9693251533742331|TNavyPlayer::INavyPlayer
 0x59ed60|1.0|TNavyTacUnit::GetSourceShip
 0x59ed80|1.0|TNavyTacUnit::`scalar deleting destructor'
 0x59edb0|0.0|TNavyTacUnit::~TNavyTacUnit
@@ -5733,13 +5733,13 @@ address|matching|name
 0x59ef20|1.0|TNavyHumanPlayer::`scalar deleting destructor'
 0x59ef50|0.0|TNavyHumanPlayer::~TNavyHumanPlayer
 0x59ef70|1.0|TNavyHumanPlayer::GetRuntimeClass
-0x59ef90|0.0|IltTarget_0059ef90
+0x59ef90|1.0|TNavyHumanPlayer::INavyHumanPlayer
 0x59efc0|0.6813186813186813|TNavyHumanPlayer::DeploymentClick
 0x59f040|1.0|TNavyAutoPlayer::CreateObject
 0x59f070|1.0|TNavyAutoPlayer::`scalar deleting destructor'
 0x59f0a0|0.0|TNavyAutoPlayer::~TNavyAutoPlayer
 0x59f0c0|1.0|TNavyAutoPlayer::GetRuntimeClass
-0x59f0e0|0.0|IltTarget_0059f0e0
+0x59f0e0|1.0|TNavyAutoPlayer::INavyAutoPlayer
 0x59f110|1.0|TNavyAutoPlayer::StartBattle
 0x59f160|0.38977635782747605|TNavyAutoPlayer::AdvanceTacticalTurnPulse
 0x59f5c0|0.25|`dynamic initializer for 'g_scaledShortConst_6A4748''
@@ -5825,7 +5825,7 @@ address|matching|name
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
 0x5a5540|0.06451612903225806|IltTarget_005a5540
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
-0x5a5730|0.6686046511627907|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|1.0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
 0x5a5b70|1.0|TNavyBattle::FinalizeTacticalBattleOutcome
@@ -6010,7 +6010,7 @@ address|matching|name
 0x5b1070|0.0|TTechItemLine::~TTechItemLine
 0x5b1090|1.0|TTechItemLine::CreateObject
 0x5b1100|1.0|TTechItemLine::GetRuntimeClass
-0x5b1120|0.0|IltTarget_005b1120
+0x5b1120|1.0|TTechItemLine::ITechItemLine
 0x5b1160|1.0|TTechItemLine::InstallViews
 0x5b1200|1.0|TTechItemView::`scalar deleting destructor'
 0x5b1230|1.0|TTechItemView::~TTechItemView
@@ -6235,7 +6235,7 @@ address|matching|name
 0x5bcfa0|0.0|TTradeOfferNationLine::~TTradeOfferNationLine
 0x5bcfc0|1.0|TTradeOfferNationLine::CreateObject
 0x5bd030|1.0|TTradeOfferNationLine::GetRuntimeClass
-0x5bd050|0.0|IltTarget_005bd050
+0x5bd050|1.0|TTradeOfferNationLine::ITradeOfferNationLine
 0x5bd090|0.7575757575757576|TTradeOfferNationLine::InstallViews
 0x5bd1a0|1.0|TTradeOfferNationView::`scalar deleting destructor'
 0x5bd1d0|1.0|TTradeOfferNationView::~TTradeOfferNationView
@@ -6250,7 +6250,7 @@ address|matching|name
 0x5bd930|0.0|TTradeBidNationLine::~TTradeBidNationLine
 0x5bd950|1.0|TTradeBidNationLine::CreateObject
 0x5bd9c0|1.0|TTradeBidNationLine::GetRuntimeClass
-0x5bd9e0|0.0|IltTarget_005bd9e0
+0x5bd9e0|1.0|TTradeBidNationLine::ITradeBidNationLine
 0x5bda20|0.6458333333333334|TTradeBidNationLine::InstallViews
 0x5bdaf0|1.0|TTradeBidNationView::`scalar deleting destructor'
 0x5bdb20|1.0|TTradeBidNationView::~TTradeBidNationView

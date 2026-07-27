@@ -15,6 +15,10 @@ public:
 
   // NOOP: verified empty in original 0x005b10c3 (no standalone TTechItemLine::TTechItemLine body exists: CreateObject 0x005b1090 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TTechItemLine() {}
+
+  // Two-phase init (MacApp IViewClass idiom): shared TLineData row/bounds, then this
+  // line's two forwarded ids. 0x005b1120, __thiscall.
+  void ITechItemLine(short rowArg, short colArg, int* bounds, int nationSlot, int techId);
 };
 
 ASSERT_SIZE(TTechItemLine, 0x18);

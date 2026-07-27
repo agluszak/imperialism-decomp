@@ -9,6 +9,10 @@
 // VTABLE: IMPERIALISM 0x00669760
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
+  // Two-phase init: forwards to TNavyPlayer::INavyPlayer with the watch flag set.
+  // 0x0059ef90, __thiscall.
+  void INavyHumanPlayer(TTaskForce* force, char isOurSide, int nationIndex);
+
   DECLARE_DYNCREATE(TNavyHumanPlayer)
   virtual ~TNavyHumanPlayer() override; // slot 0x01 (scalar deleting destructor)
   virtual void DeploymentClick(TacticalTileIndex tileIndex); // slot 0x12 0x59efc0
