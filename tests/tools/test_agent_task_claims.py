@@ -161,13 +161,16 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         os.environ["FAKE_JUST_LOG"] = str(self.calls_log)
         os.environ["GHIDRA_INSTALL_DIR"] = str(tmp)
         self._saved_root = agent_task.REPO_ROOT
-        self._saved_task_json = agent_task.TASK_JSON
+        self._saved_tasks_dir = agent_task.TASKS_DIR
+        self._saved_legacy = agent_task.LEGACY_TASK_JSON
         agent_task.REPO_ROOT = self.work
-        agent_task.TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
+        agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
+        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
 
     def tearDown(self):
         agent_task.REPO_ROOT = self._saved_root
-        agent_task.TASK_JSON = self._saved_task_json
+        agent_task.TASKS_DIR = self._saved_tasks_dir
+        agent_task.LEGACY_TASK_JSON = self._saved_legacy
         os.environ.clear()
         os.environ.update(self._saved_env)
         shutil.rmtree(self._tmp, ignore_errors=True)
@@ -190,7 +193,7 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn(f"ghidra portprep {self.ADDR}", self._calls())
         self.assertNotIn(f"ghidra-portprep {self.ADDR}", self._calls())
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         self.assertIn("dossier for", receipt["targets"][self.ADDR]["portprep"])
         self.assertIn(f"portprep {self.ADDR}", receipt["steps"])
 
@@ -198,13 +201,13 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         os.environ["FAKE_PORTPREP"] = "fail"
         rc = agent_task.cmd_start(self._args())
         self.assertEqual(rc, 2)
-        self.assertFalse(agent_task.TASK_JSON.is_file())
+        self.assertFalse(agent_task._receipt_path().is_file())
 
     def test_portprep_empty_dossier_fails_start(self):
         os.environ["FAKE_PORTPREP"] = "empty"
         rc = agent_task.cmd_start(self._args())
         self.assertEqual(rc, 2)
-        self.assertFalse(agent_task.TASK_JSON.is_file())
+        self.assertFalse(agent_task._receipt_path().is_file())
 
     def test_multiple_addresses_record_per_address_portprep_steps(self):
         os.environ["FAKE_PORTPREP"] = "ok"
@@ -214,7 +217,7 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         calls = self._calls()
         self.assertIn(f"ghidra portprep {self.ADDR}", calls)
         self.assertIn(f"ghidra portprep {other}", calls)
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         for addr in (self.ADDR, other):
             self.assertIn(f"portprep {addr}", receipt["steps"])
             self.assertTrue(receipt["targets"][addr]["portprep"])
@@ -253,7 +256,7 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         finally:
             agent_task._push_claim = original_push
         self.assertEqual(rc, 2)
-        self.assertFalse(agent_task.TASK_JSON.is_file())
+        self.assertFalse(agent_task._receipt_path().is_file())
 
 
 class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
@@ -278,9 +281,11 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
         os.environ["FAKE_JUST_LOG"] = str(self.calls_log)
         os.environ.pop("PRECOMMIT_BASE_REF", None)
         self._saved_root = agent_task.REPO_ROOT
-        self._saved_task_json = agent_task.TASK_JSON
+        self._saved_tasks_dir = agent_task.TASKS_DIR
+        self._saved_legacy = agent_task.LEGACY_TASK_JSON
         agent_task.REPO_ROOT = self.work
-        agent_task.TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
+        agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
+        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
         # One committed change so cmd_check has a diff to verify. No `// FUNCTION:`
         # marker: score extraction would then need a real reccmp report, which is not
         # what these tests are about.
@@ -290,7 +295,8 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
 
     def tearDown(self):
         agent_task.REPO_ROOT = self._saved_root
-        agent_task.TASK_JSON = self._saved_task_json
+        agent_task.TASKS_DIR = self._saved_tasks_dir
+        agent_task.LEGACY_TASK_JSON = self._saved_legacy
         os.environ.clear()
         os.environ.update(self._saved_env)
         shutil.rmtree(self._tmp, ignore_errors=True)
@@ -307,7 +313,7 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
         self.assertIn(
             f"generated-integrity-gate --base {expected_base}", self._calls()
         )
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         integrity = receipt["check"]["generated_integrity"]
         self.assertEqual(integrity["base_ref"], "origin/main")
         self.assertEqual(integrity["base"], expected_base)
@@ -317,7 +323,7 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
         os.environ["FAKE_INTEGRITY"] = "fail"
         rc = agent_task.cmd_check(Namespace(max_triage=1))
         self.assertEqual(rc, 1)
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         self.assertIn("generated-integrity", receipt["check"]["failures"])
         self.assertFalse(receipt["check"]["generated_integrity"]["ok"])
 
@@ -339,7 +345,7 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
             "}\n"
         )
         agent_task.cmd_check(Namespace(max_triage=1))
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         affected = receipt["check"]["affected_functions"]
         self.assertIn("0x00500000", affected)
         self.assertIn("body_edited", affected["0x00500000"]["reasons"])
@@ -347,7 +353,7 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
     def test_explicit_base_ref_is_honoured_like_precommit(self):
         os.environ["PRECOMMIT_BASE_REF"] = "main"
         agent_task.cmd_check(Namespace(max_triage=1))
-        receipt = json.loads(agent_task.TASK_JSON.read_text())
+        receipt = json.loads(agent_task._receipt_path().read_text())
         self.assertEqual(receipt["check"]["generated_integrity"]["base_ref"], "main")
 
 
@@ -392,6 +398,134 @@ class HunkToMarkerMappingTests(unittest.TestCase):
     def test_no_markers_or_no_changes_is_empty(self):
         self.assertEqual(agent_task.addresses_for_changed_lines("int main() {}\n", {1}), set())
         self.assertEqual(agent_task.addresses_for_changed_lines(self.SOURCE, set()), set())
+
+
+class AgentFinishVerificationTests(unittest.TestCase):
+    """imperialism-decomp-j201: a PR body is a claim about verification."""
+
+    def setUp(self):
+        self._tmp = tempfile.mkdtemp(prefix="agent-task-finish-")
+        tmp = Path(self._tmp)
+        self.origin, self.work = _init_repos(tmp)
+        self._saved_root = agent_task.REPO_ROOT
+        self._saved_tasks_dir = agent_task.TASKS_DIR
+        self._saved_legacy = agent_task.LEGACY_TASK_JSON
+        agent_task.REPO_ROOT = self.work
+        agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
+        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
+
+    def tearDown(self):
+        agent_task.REPO_ROOT = self._saved_root
+        agent_task.TASKS_DIR = self._saved_tasks_dir
+        agent_task.LEGACY_TASK_JSON = self._saved_legacy
+        shutil.rmtree(self._tmp, ignore_errors=True)
+
+    def _green_receipt(self) -> dict:
+        base = _git(self.work, "merge-base", "HEAD", "origin/main").stdout.strip()
+        task = {
+            "branch": "task-branch",
+            "mode": "port",
+            "base_commit": base,
+            "targets": {},
+            "claimed": [],
+            "check": {
+                "checked_utc": "2026-01-01T00:00:00Z",
+                "tree": agent_task._worktree_fingerprint(base),
+                "paths": ["src/TFoo.cpp"],
+                "scores": {},
+                "failures": [],
+                "results": {"gates": {"cmd": "just gates", "ok": True, "log": "logs/00-gates.log"}},
+            },
+        }
+        agent_task._save_task(task)
+        return task
+
+    def test_receipts_are_per_branch(self):
+        self._green_receipt()
+        expected = agent_task.TASKS_DIR / "task-branch" / "receipt.json"
+        self.assertTrue(expected.is_file())
+        self.assertEqual(agent_task._receipt_path("task-branch"), expected)
+        # A second branch gets its own directory rather than overwriting the first.
+        self.assertNotEqual(
+            agent_task._receipt_path("other/branch"), agent_task._receipt_path("task-branch")
+        )
+
+    def test_finish_renders_when_the_tree_still_matches(self):
+        self._green_receipt()
+        rc = agent_task.cmd_finish(Namespace(allow_unverified_draft=False))
+        self.assertEqual(rc, 0)
+        body = (agent_task.TASKS_DIR / "task-branch" / "pr-body.md").read_text()
+        self.assertNotIn("UNVERIFIED DRAFT", body)
+        for heading in ("## Summary", "## Verification", "## Score and stub deltas",
+                        "## Runtime tests", "## Beads", "## Unresolved risks"):
+            self.assertIn(heading, body)
+
+    def test_finish_refuses_a_changed_worktree(self):
+        self._green_receipt()
+        (self.work / "src" / "New.cpp").write_text("int f() { return 0; }\n")
+        rc = agent_task.cmd_finish(Namespace(allow_unverified_draft=False))
+        self.assertEqual(rc, 2)
+
+    def test_finish_refuses_a_moved_head(self):
+        self._green_receipt()
+        (self.work / "src" / "New.cpp").write_text("int f() { return 0; }\n")
+        _git(self.work, "add", "-A")
+        _git(self.work, "commit", "-m", "later work")
+        self.assertEqual(agent_task.cmd_finish(Namespace(allow_unverified_draft=False)), 2)
+
+    def test_finish_refuses_failed_checks(self):
+        task = self._green_receipt()
+        task["check"]["failures"] = ["gates"]
+        agent_task._save_task(task)
+        self.assertEqual(agent_task.cmd_finish(Namespace(allow_unverified_draft=False)), 2)
+
+    def test_finish_refuses_when_agent_check_never_ran(self):
+        task = self._green_receipt()
+        del task["check"]
+        agent_task._save_task(task)
+        self.assertEqual(agent_task.cmd_finish(Namespace(allow_unverified_draft=False)), 2)
+
+    def test_draft_flag_renders_a_visibly_marked_body(self):
+        task = self._green_receipt()
+        task["check"]["failures"] = ["gates"]
+        agent_task._save_task(task)
+        rc = agent_task.cmd_finish(Namespace(allow_unverified_draft=True))
+        self.assertEqual(rc, 0)
+        body = (agent_task.TASKS_DIR / "task-branch" / "pr-body.md").read_text()
+        self.assertIn("UNVERIFIED DRAFT", body)
+        self.assertIn("agent-check failed: gates", body)
+
+
+class StepLoggingTests(unittest.TestCase):
+    """imperialism-decomp-j201: keep full command output, not a 12-line tail."""
+
+    def setUp(self):
+        self._tmp = tempfile.mkdtemp(prefix="agent-task-log-")
+        tmp = Path(self._tmp)
+        self.origin, self.work = _init_repos(tmp)
+        self._saved_root = agent_task.REPO_ROOT
+        self._saved_tasks_dir = agent_task.TASKS_DIR
+        agent_task.REPO_ROOT = self.work
+        agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
+
+    def tearDown(self):
+        agent_task.REPO_ROOT = self._saved_root
+        agent_task.TASKS_DIR = self._saved_tasks_dir
+        shutil.rmtree(self._tmp, ignore_errors=True)
+
+    def test_full_output_is_kept_on_disk_with_a_structured_summary(self):
+        results: dict = {}
+        script = "for i in $(seq 1 50); do echo line-$i; done; echo 'error: boom' >&2; exit 3"
+        agent_task._step("noisy", ["bash", "-c", script], results, tolerate=True)
+        entry = results["noisy"]
+        self.assertEqual(entry["returncode"], 3)
+        self.assertFalse(entry["ok"])
+        self.assertIn("boom", entry["first_error"])
+        log = agent_task.REPO_ROOT / entry["log"]
+        self.assertTrue(log.is_file())
+        text = log.read_text()
+        self.assertIn("line-1", text)   # the tail-only receipt used to lose this
+        self.assertIn("line-50", text)
 
 
 if __name__ == "__main__":

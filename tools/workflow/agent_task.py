@@ -12,7 +12,7 @@ execute it:
 `agent-start` refuses stale bases and already-implemented targets, then runs
 tooling-check, func-status, ghidra-portprep, the initial compare, and (for
 library-shaped targets) library-identify, writing everything into
-build-msvc500/agent-task.json.
+build-msvc500/agent-tasks/<branch>/receipt.json, with full per-command logs beside it.
 
 `agent-check` inspects the actual git diff and derives the workflow from it:
 generated/config files edited without marker changes -> hard error; touched C++ ->
@@ -24,15 +24,18 @@ and the
 generated-artifact integrity gate against the same integration base `just precommit`
 uses, so a green receipt cannot be followed by a pre-commit integrity failure.
 
-`agent-finish` renders the receipt + diff into a summary suitable for a PR body.
-The receipt is guidance for the agent and reviewers — `just precommit`
-recomputes the checks and trusts only its own run.
+`agent-finish` renders the receipt + diff into a summary suitable for a PR body, and
+REFUSES to render one unless agent-check is green for this exact tree (same HEAD, same
+uncommitted diff, claims still held); --allow-unverified-draft renders a body whose first
+line says it is unverified. The receipt is guidance for the agent and reviewers —
+`just precommit` recomputes the checks and trusts only its own run.
 """
 
 from __future__ import annotations
 
 import argparse
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -42,8 +45,13 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
-PR_BODY_MD = REPO_ROOT / "build-msvc500" / "pr-body.md"
+# One receipt directory per branch (imperialism-decomp-j201). Concurrent agents share a
+# checkout, so a single build-msvc500/agent-task.json let one task overwrite another's
+# state and let agent-finish describe a tree nobody checked. The branch is the task
+# identity here: it is what claims, PRs and the integration base are all keyed by, and it
+# needs no pointer file to resolve.
+TASKS_DIR = REPO_ROOT / "build-msvc500" / "agent-tasks"
+LEGACY_TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
 
 # Claims registry: one lightweight commit ref per claimed address on the shared
 # remote. `refs/agent-claims/0x00XXXXXX` points at a parentless empty-tree commit
@@ -99,16 +107,85 @@ def _norm_addr(raw: str) -> str:
     return f"0x{int(raw, 16):08x}"
 
 
-def _load_task() -> dict:
-    if TASK_JSON.is_file():
-        return json.loads(TASK_JSON.read_text(encoding="utf-8"))
+def _task_id(branch: str | None = None) -> str:
+    """Filesystem-safe task id for a branch (the branch IS the task identity)."""
+    name = branch or _git("rev-parse", "--abbrev-ref", "HEAD") or "detached"
+    return re.sub(r"[^A-Za-z0-9._-]+", "-", name).strip("-") or "detached"
+
+
+def _task_dir(branch: str | None = None) -> Path:
+    return TASKS_DIR / _task_id(branch)
+
+
+def _receipt_path(branch: str | None = None) -> Path:
+    return _task_dir(branch) / "receipt.json"
+
+
+def _pr_body_path(branch: str | None = None) -> Path:
+    return _task_dir(branch) / "pr-body.md"
+
+
+def _worktree_fingerprint(base: str) -> dict:
+    """Bind a receipt to the exact tree it describes.
+
+    HEAD alone is not enough: the whole point of agent-check is that it verifies the
+    worktree, so the uncommitted diff has to be part of the identity too.
+    """
+    diff = _git("diff", base) + "\n" + _git("diff")
+    # The build dir holds this very receipt and every generated artifact, so it can never
+    # be part of the tree identity (it is gitignored in a real checkout; filter it anyway
+    # so a stray un-ignored build dir cannot make every finish look unverified).
+    status = "\n".join(
+        line for line in _git("status", "--porcelain").splitlines()
+        if "build-msvc500/" not in line
+    )
+    return {
+        "head": _git("rev-parse", "HEAD"),
+        "base": base,
+        "diff_sha256": hashlib.sha256(diff.encode("utf-8", "replace")).hexdigest(),
+        "status_sha256": hashlib.sha256(status.encode("utf-8", "replace")).hexdigest(),
+    }
+
+
+def _artifact_hashes() -> dict:
+    """Hash the inputs a verification result depends on, when they are present."""
+    out: dict[str, str] = {}
+    candidates = {
+        "original_binary": os.environ.get("ORIGINAL_BINARY", ""),
+        "recompiled_binary": str(REPO_ROOT / "build-msvc500" / "Imperialism.exe"),
+        "recompiled_pdb": str(REPO_ROOT / "build-msvc500" / "Imperialism.pdb"),
+    }
+    for name, raw in candidates.items():
+        if not raw:
+            continue
+        path = Path(raw)
+        if not path.is_file():
+            continue
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1 << 20), b""):
+                digest.update(chunk)
+        out[name] = digest.hexdigest()
+    return out
+
+
+def _load_task(branch: str | None = None) -> dict:
+    path = _receipt_path(branch)
+    if path.is_file():
+        return json.loads(path.read_text(encoding="utf-8"))
+    # One-time migration path: a receipt written by the pre-j201 single-file layout.
+    if LEGACY_TASK_JSON.is_file():
+        legacy = json.loads(LEGACY_TASK_JSON.read_text(encoding="utf-8"))
+        if legacy.get("branch") in (None, branch or _git("rev-parse", "--abbrev-ref", "HEAD")):
+            return legacy
     return {}
 
 
 def _save_task(task: dict) -> None:
-    TASK_JSON.parent.mkdir(parents=True, exist_ok=True)
-    TASK_JSON.write_text(json.dumps(task, indent=2) + "\n", encoding="utf-8")
-    print(f"[agent-task] receipt written: {TASK_JSON.relative_to(REPO_ROOT)}")
+    path = _receipt_path(task.get("branch"))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(task, indent=2) + "\n", encoding="utf-8")
+    print(f"[agent-task] receipt written: {path.relative_to(REPO_ROOT)}")
 
 
 def _integration_base_ref() -> str:
@@ -257,19 +334,44 @@ def _drop_claim(addr: str) -> bool:
     return False
 
 
+FIRST_ERROR_RE = re.compile(
+    r"(?im)^.*?\b(error|failed|FAILED|refused|traceback|fatal|violation)\b.*$"
+)
+
+
+def _first_error(text: str) -> str:
+    match = FIRST_ERROR_RE.search(text)
+    return match.group(0).strip()[:400] if match else ""
+
+
 def _step(name: str, cmd: list[str], results: dict, *, tolerate: bool = False) -> subprocess.CompletedProcess:
     print(f"[agent-task] {name}: {' '.join(cmd)}")
     started = time.monotonic()
     proc = _run(cmd)
     duration = time.monotonic() - started
     ok = proc.returncode == 0
+    output = proc.stdout + proc.stderr
+    # Full output goes to the task's log dir; the receipt keeps a structured summary and
+    # a pointer. The old 12-line tail discarded portprep dossiers, compiler diagnostics,
+    # gate reports and mismatch analysis exactly when they were needed
+    # (imperialism-decomp-j201).
+    log_path = _task_dir() / "logs" / f"{len(results):02d}-{re.sub(r'[^A-Za-z0-9._-]+', '-', name)}.log"
+    try:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        log_path.write_text(output, encoding="utf-8")
+        log_ref = str(log_path.relative_to(REPO_ROOT))
+    except OSError as exc:  # pragma: no cover - unwritable build dir
+        log_ref = f"<unwritable: {exc}>"
     results[name] = {
         "cmd": " ".join(cmd),
         "ok": ok,
+        "returncode": proc.returncode,
         "duration_seconds": round(duration, 3),
-        "tail": "\n".join((proc.stdout + proc.stderr).splitlines()[-12:]),
+        "log": log_ref,
+        "first_error": "" if ok else _first_error(output),
+        "tail": "\n".join(output.splitlines()[-12:]),
     }
-    print(f"[agent-task] {name}: {duration:.2f}s")
+    print(f"[agent-task] {name}: {duration:.2f}s (log: {log_ref})")
     if not ok and not tolerate:
         print(f"[agent-task] FAILED: {name} (exit {proc.returncode})")
         print(results[name]["tail"])
@@ -670,6 +772,11 @@ def cmd_check(args: argparse.Namespace) -> int:
     task.setdefault("check", {})
     task["check"] = {
         "checked_utc": _now(),
+        # The tree this verdict describes. agent-finish refuses to render a PR body for
+        # any other tree (imperialism-decomp-j201).
+        "tree": _worktree_fingerprint(base),
+        "artifacts": _artifact_hashes(),
+        "claims_held": sorted(task.get("claimed", [])),
         "paths": paths,
         "markers_changed": any(MARKER_RE.match(l2) for l2 in diff_text.splitlines()),
         "generated_integrity": {
@@ -685,6 +792,7 @@ def cmd_check(args: argparse.Namespace) -> int:
         "results": {k: {kk: vv for kk, vv in v.items() if kk != "tail"} | (
             {"tail": v["tail"]} if not v["ok"] else {})
             for k, v in results.items()},
+        "task_dir": str(_task_dir().relative_to(REPO_ROOT)),
     }
     _save_task(task)
 
@@ -721,17 +829,98 @@ def _pr_title(task: dict) -> str:
         f" +{len(parts) - 3} more" if len(parts) > 3 else "")
 
 
+def _finish_blockers(task: dict, base: str) -> list[str]:
+    """Why this receipt must not become a PR body.
+
+    A PR body is a claim about verification. Rendering one from a receipt whose checks
+    never ran, failed, or described a different tree is how a generic, unverified PR
+    ships (imperialism-decomp-j201).
+    """
+    check = task.get("check", {})
+    if not check:
+        return ["agent-check has not run for this task (no check block in the receipt)"]
+
+    blockers: list[str] = []
+    failures = check.get("failures", [])
+    if failures:
+        blockers.append(f"agent-check failed: {', '.join(failures)}")
+
+    recorded = check.get("tree")
+    if not recorded:
+        blockers.append("receipt predates tree binding — re-run `just agent-check`")
+    else:
+        current = _worktree_fingerprint(recorded.get("base") or base)
+        if current["head"] != recorded.get("head"):
+            blockers.append(
+                f"HEAD moved since the check ({recorded.get('head', '?')[:10]} -> "
+                f"{current['head'][:10]})"
+            )
+        if current["diff_sha256"] != recorded.get("diff_sha256"):
+            blockers.append("the worktree changed since the check (uncommitted diff differs)")
+        elif current["status_sha256"] != recorded.get("status_sha256"):
+            # Untracked files never show up in `git diff`, but a new source file is
+            # exactly the kind of unverified change this refusal exists for.
+            blockers.append("the worktree changed since the check (untracked files differ)")
+
+    branch = _git("rev-parse", "--abbrev-ref", "HEAD")
+    if task.get("branch") and task["branch"] != branch:
+        blockers.append(f"receipt belongs to branch {task['branch']!r}, on {branch!r} now")
+
+    lost = _claims_lost_to_other_branches(task, branch)
+    if lost:
+        blockers.append("claims no longer held by this branch: " + ", ".join(lost))
+    return blockers
+
+
+def _claims_lost_to_other_branches(task: dict, branch: str) -> list[str]:
+    claimed = sorted(set(task.get("claimed", [])))
+    if not claimed:
+        return []
+    try:
+        remote = _fetch_claims()
+    except Exception:  # pragma: no cover - offline remote is not a verification failure
+        return []
+    lost = []
+    for addr in claimed:
+        sha = remote.get(addr)
+        if not sha:
+            continue
+        holder = _read_claim(addr, sha).get("branch")
+        if holder and holder != branch:
+            lost.append(f"{addr} (held by {holder!r})")
+    return lost
+
+
 def cmd_finish(args: argparse.Namespace) -> int:
     task = _load_task()
     if not task:
-        print("[agent-finish] no receipt (build-msvc500/agent-task.json) — run "
+        print(f"[agent-finish] no receipt ({_receipt_path().relative_to(REPO_ROOT)}) — run "
               "`just agent-start` / `just agent-check` first", file=sys.stderr)
         return 2
     base = task.get("base_commit") or _merge_base()
     check = task.get("check", {})
     diffstat = _git("diff", "--stat", base)
 
-    lines = ["## Summary", ""]
+    blockers = _finish_blockers(task, base)
+    if blockers and not getattr(args, "allow_unverified_draft", False):
+        print("[agent-finish] REFUSED — this receipt does not describe a verified tree:",
+              file=sys.stderr)
+        for blocker in blockers:
+            print(f"  - {blocker}", file=sys.stderr)
+        print("Run `just agent-check` on the current tree, or pass "
+              "--allow-unverified-draft to render a visibly-marked draft.",
+              file=sys.stderr)
+        return 2
+
+    lines: list[str] = []
+    if blockers:
+        lines += [
+            "> **UNVERIFIED DRAFT — do not open a PR with this body as-is.**",
+            ">",
+            *[f"> - {blocker}" for blocker in blockers],
+            "",
+        ]
+    lines += ["## Summary", ""]
     for addr, t in task.get("targets", {}).items():
         before = t.get("baseline_score")
         after = check.get("scores", {}).get(addr)
@@ -741,15 +930,63 @@ def cmd_finish(args: argparse.Namespace) -> int:
     extra = {a: s for a, s in check.get("scores", {}).items()
              if a not in task.get("targets", {})}
     for addr, s in sorted(extra.items()):
-        lines.append(f"- `{addr}` (touched): -> {s:.2f}%")
+        reasons = check.get("affected_functions", {}).get(addr, {}).get("reasons", [])
+        why = f" [{', '.join(reasons)}]" if reasons else ""
+        lines.append(f"- `{addr}` (touched){why}: -> {s:.2f}%")
+    if not task.get("targets") and not extra:
+        lines.append("- workflow/infrastructure change (no address targets)")
+
+    lines += ["", "## Classes and files touched", ""]
+    paths = check.get("paths", [])
+    manual = [p for p in paths if p.startswith(MANUAL_CPP_PREFIXES) and p.endswith((".cpp", ".h"))]
+    for path in manual[:20] or ["(no manual C++ paths)"]:
+        lines.append(f"- `{path}`")
+    if len(manual) > 20:
+        lines.append(f"- ...and {len(manual) - 20} more")
+
     lines += ["", "## Verification", ""]
     if check:
         failures = check.get("failures", [])
-        lines.append(f"- agent-check: {'GREEN' if not failures else 'FAILED: ' + ', '.join(failures)}")
+        lines.append(f"- `just agent-check`: {'GREEN' if not failures else 'FAILED: ' + ', '.join(failures)}")
         for name, r in check.get("results", {}).items():
-            lines.append(f"- {name}: {'ok' if r.get('ok') else 'FAILED'}")
+            status = "ok" if r.get("ok") else f"FAILED (exit {r.get('returncode', '?')})"
+            log = f" — log `{r['log']}`" if r.get("log") else ""
+            lines.append(f"- `{r.get('cmd', name)}`: {status}{log}")
+        tree = check.get("tree", {})
+        if tree:
+            lines.append(
+                f"- verified tree: HEAD `{tree.get('head', '?')[:10]}` vs base "
+                f"`{str(tree.get('base', '?'))[:10]}`, worktree diff "
+                f"`{tree.get('diff_sha256', '?')[:12]}`"
+            )
+        lines.append("- `just precommit` recomputes all of this and is the authority")
     else:
         lines.append("- agent-check was NOT run — run `just agent-check` before finishing")
+
+    lines += ["", "## Score and stub deltas", ""]
+    deltas = task.get("deltas") or {}
+    if deltas:
+        for key, value in sorted(deltas.items()):
+            lines.append(f"- {key}: {value}")
+    else:
+        lines.append("- fill in from `just stats` vs `config/baselines/reccmp_progress_baseline.json` "
+                     "(exact functions, average similarity, stub count)")
+
+    lines += ["", "## Runtime tests", ""]
+    runtime = [r for name, r in check.get("results", {}).items() if "runtime" in name]
+    if runtime:
+        for r in runtime:
+            lines.append(f"- `{r.get('cmd')}`: {'ok' if r.get('ok') else 'FAILED'}")
+    else:
+        lines.append("- not run by agent-check; `just precommit` runs the `pr` suite")
+
+    lines += ["", "## Beads", ""]
+    beads = task.get("beads") or {}
+    closed = beads.get("closed") or []
+    opened = beads.get("opened") or []
+    lines.append("- closes: " + (", ".join(f"`{b}`" for b in closed) or "none recorded"))
+    lines.append("- opens: " + (", ".join(f"`{b}`" for b in opened) or "none recorded"))
+
     lines += ["", "## Unresolved risks", ""]
     below = [a for a, s in check.get("scores", {}).items() if s < 100.0]
     if below:
@@ -757,14 +994,16 @@ def cmd_finish(args: argparse.Namespace) -> int:
                      + ", ".join(f"`{a}`" for a in sorted(below)))
     else:
         lines.append("- none recorded")
+    receipt_ref = _receipt_path(task.get("branch")).relative_to(REPO_ROOT)
     lines += ["", "## Diffstat", "", "```", diffstat or "(no diff)", "```", "",
-              "_Receipt: build-msvc500/agent-task.json — guidance only; `just precommit`",
+              f"_Receipt: {receipt_ref} — guidance only; `just precommit`",
               "recomputes all checks itself._"]
     body = "\n".join(lines)
-    PR_BODY_MD.parent.mkdir(parents=True, exist_ok=True)
-    PR_BODY_MD.write_text(body + "\n", encoding="utf-8")
+    body_path = _pr_body_path(task.get("branch"))
+    body_path.parent.mkdir(parents=True, exist_ok=True)
+    body_path.write_text(body + "\n", encoding="utf-8")
     print(f"PR title: {_pr_title(task)}")
-    print(f"PR body written to {PR_BODY_MD.relative_to(REPO_ROOT)}")
+    print(f"PR body written to {body_path.relative_to(REPO_ROOT)}")
     print()
     print(body)
     if task.get("claimed"):
@@ -836,6 +1075,11 @@ def main() -> int:
     p_check.set_defaults(func=cmd_check)
 
     p_finish = sub.add_parser("finish", help="machine-derived summary / PR body")
+    p_finish.add_argument(
+        "--allow-unverified-draft",
+        action="store_true",
+        help="render the body even when the receipt is unverified; the draft says so at the top",
+    )
     p_finish.set_defaults(func=cmd_finish)
 
     p_release = sub.add_parser("release", help="delete claim refs for the receipt "
