@@ -6,6 +6,9 @@
 extern POINT g_ptTacticalAutoPlayModalMessage; // @ 0x6a4650
 
 extern "C" {
+extern int g_nUiFrameClipOriginX;
+extern int g_nUiFrameClipOriginY;
+extern CDib* g_pColorKeyCompositeDib;
 extern short g_civilianTileOrderCursorTokenTable[];
 extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];

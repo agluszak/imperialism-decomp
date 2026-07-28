@@ -121,14 +121,6 @@ extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 
 extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
 
-// Left/top of the view-frame clip bounds used by TTacticalBattleView. Reset together by
-// ResetUiFrameClipOrigin (0x005ad9e0). 0x6a5458/0x6a545c
-extern int g_nUiFrameClipOriginX;
-
-extern int g_nUiFrameClipOriginY;
-
-extern CDib* g_pColorKeyCompositeDib;
-
 // Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
 // order previews and garrison badges.
 extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
