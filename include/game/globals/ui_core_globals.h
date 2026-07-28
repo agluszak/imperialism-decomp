@@ -39,6 +39,9 @@ extern TLanguageMgr* g_pLanguageMgr;
 extern TApplication* g_pApplication;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
+extern "C" void* g_pScopedMapQuickDrawViewContext;
+extern "C" CDC* g_pScopedMapQuickDrawDcHandleObject;
+
 extern char s_szTurnHistoryPrefix_0069b71c[];
 
 extern "C" {

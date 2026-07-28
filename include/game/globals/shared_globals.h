@@ -108,13 +108,7 @@ extern char g_szPlusPrefix_00698494[];
 
 extern char g_szListConjunction_00698498[];
 
-extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
-
 extern LPCSTR g_apFontFiles[];
-
-extern void* g_pScopedMapQuickDrawViewContext;
-
-extern CDC* g_pScopedMapQuickDrawDcHandleObject;
 
 extern int g_nRandomMapSelectedNationSlot00698AB0;
 
