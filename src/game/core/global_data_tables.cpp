@@ -1513,10 +1513,10 @@ short g_awTileSpriteVariantOffsetTable3b[16][2] = {
 
 // Navy/order composite score table (0x550b60 /
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
-// in global_data_tables.h.
+// in navy_globals.h.
 TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
-    {{0, 0, 0, 0, 0, 0, -1, 0, 0}},        {{0, 0, 100, 600, 0, 0, -1, 1, 0}},
-    {{0, 0, 95, 1000, 0, 0, -1, 1, 0}},    {{300, 5, 90, 900, 4, 0, 1, 3, 1}},
+    {{0, 0, 0, 0, 0, 0, -1, 0, 0}},        {{0, 0, 100, 600, 0, 2, -1, 1, 0}},
+    {{0, 0, 95, 1000, 0, 4, -1, 1, 0}},    {{300, 5, 90, 900, 4, 0, 1, 3, 1}},
     {{600, 6, 80, 1700, 3, 0, 0, 2, 1}},   {{0, 0, 95, 900, 0, 8, -1, 1, 0}},
     {{0, 0, 100, 600, 0, 4, -1, 1, 0}},    {{300, 7, 80, 700, 7, 0, 2, 5, 2}},
     {{500, 8, 45, 1200, 5, 0, 3, 3, 2}},   {{1000, 10, 40, 1800, 6, 0, 0, 4, 3}},

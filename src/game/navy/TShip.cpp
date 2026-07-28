@@ -219,9 +219,9 @@ void RecomputeGlobalCapabilityAverages(void) {
   short type = 1;
   int i;
   for (i = 1; i < 14; ++i) {
-    // The enabled gate tests the record's first DWORD (resolveWeight together with
-    // pad02) for > 0, while the case-0 blend reads resolveWeight as a word -- the
-    // usual dual-width read (heuristic 118), kept as a one-spot wide-read cast.
+    // The enabled gate tests the record's first column as a DWORD, while the case-0
+    // blend reads its low word. The descriptor accessors preserve both widths without
+    // overlapping storage declarations.
     if (0 < g_NavyOrderResourceDescriptorTable[i].ResolveWeightDword() &&
         g_pTechMgr->resourceTypeEnabled19d[type] != 0) {
       ++enabledCount;
@@ -635,8 +635,8 @@ int TShip::GetStudliness() const {
   short quantityTerm = static_cast<short>(experience / 100);
   short navyTerm =
       static_cast<short>((quantityTerm + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
-  // resolveWeight is read as a full dword here (its pad02 is always zero) -- the usual
-  // dual-width read, kept as a one-spot wide-read cast (heuristic 118).
+  // The resolve-weight column is read as a full dword here; other callers use its low
+  // signed word. The descriptor accessors preserve both widths.
   return ((navyTerm + descriptor.CalculateWeight()) * 100 +
           static_cast<short>((quantityTerm + descriptor.ResolveWeightDword() * 10 + 5) / 10) +
           strength) /

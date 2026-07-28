@@ -268,10 +268,6 @@ public:
   // reciprocal check bails early), 1 when no elimination happens.
   bool ResolveEncounterWith(TTaskForce* other); // 0x555920
 
-  // Low word of this order's resource-type toolbar-bucket column (the node constructor
-  // tests the full dword for the -1 disabled sentinel).
-  // This order's resource-type calculateWeight column.
-
   // Marks every active shipList entry's order node (payload+0x34 -- same
   // out-of-bounds write documented on Add) with a 1-or-2
   // selection-mode code depending on `reserveExtraSlot`, then scans the global primary
