@@ -84,10 +84,6 @@ extern const char s_OutOfMemoryText_006941F0[];
 
 extern const char s_ErrorCaption_00694204[];
 
-extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
-
-extern TArmyMgr* g_pMapContextActionManager;
-
 extern char* g_pShipFractionSharedText_0065c830;
 
 extern char* g_pStatusPictureMainSharedText_00668b88;
@@ -95,12 +91,6 @@ extern char* g_pStatusPictureMainSharedText_00668b88;
 extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
 
 extern int g_lastEdgeAutoScrollTick16;
-
-extern int g_nSaveFormatVersion;
-
-extern const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
-
-extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 
 extern char g_szLiteralL_00694250[];
 

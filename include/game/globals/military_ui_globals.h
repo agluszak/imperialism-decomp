@@ -13,6 +13,7 @@ extern int g_nBattleReportMarkerBlinkTicks;           // 0x006a23b8
 extern int g_InfoBarDummyOrigin_006A2410[2];
 
 extern "C" {
+extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 // Per-unit-type strength-weighting percent (0x6953e8), read by TDefenseMinister::
 // CreateEnemyPowerMap as weightPercent * TMilitaryUnit::strength34
 // / 100.

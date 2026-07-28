@@ -30,6 +30,8 @@ extern int g_anTechItemResearchCostByTechId[29];
 extern TCountry* g_apTerrainTypeDescriptorTable[23];
 extern char* g_pszDescriptorDefaultName_00653300;
 
+extern "C" const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
+
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
 extern "C" {
