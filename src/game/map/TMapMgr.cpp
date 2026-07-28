@@ -2631,9 +2631,29 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
 
   signed char originRegionTag = terrainStateTable[nTileIndex].regionSubtypeTag05;
   for (int direction = 0; direction <= 6; ++direction) {
-    StrategicTileIndex neighborTile =
-        (direction == 6) ? nTileIndex
-                         : GetNeighborTileID(nTileIndex, static_cast<short>(direction));
+    StrategicTileIndex neighborTile;
+    if (direction == 6) {
+      neighborTile = nTileIndex;
+    } else {
+      int row = nTileIndex / 0x6c;
+      int scaledColumn =
+          (row & 1) + (nTileIndex % 0x6c) * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
+      int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+      if (scaledColumn < 0) {
+        scaledColumn += 0xd8;
+      } else if (scaledColumn >= 0xd8) {
+        scaledColumn -= 0xd9;
+      }
+      if (neighborRow < 0) {
+        neighborRow = 0;
+      } else if (neighborRow > 0x3b) {
+        neighborRow = 0x3b;
+      }
+      neighborTile = static_cast<short>(scaledColumn / 2 + neighborRow * 0x6c);
+      if (neighborTile < 0 || neighborTile >= 0x1950) {
+        neighborTile = -1;
+      }
+    }
     if (neighborTile == -1) {
       continue;
     }
@@ -2865,7 +2885,24 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
   }
 
   for (short direction = 0; direction < 6; ++direction) {
-    StrategicTileIndex neighborTile = GetNeighborTileID(targetTileIndex, direction);
+    int row = targetTileIndex / 0x6c;
+    int scaledColumn =
+        (row & 1) + (targetTileIndex % 0x6c) * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
+    int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+    if (scaledColumn < 0) {
+      scaledColumn += 0xd8;
+    } else if (scaledColumn >= 0xd8) {
+      scaledColumn -= 0xd9;
+    }
+    if (neighborRow < 0) {
+      neighborRow = 0;
+    } else if (neighborRow > 0x3b) {
+      neighborRow = 0x3b;
+    }
+    StrategicTileIndex neighborTile = static_cast<short>(scaledColumn / 2 + neighborRow * 0x6c);
+    if (neighborTile < 0 || neighborTile >= 0x1950) {
+      neighborTile = -1;
+    }
     if (neighborTile == -1) {
       continue;
     }

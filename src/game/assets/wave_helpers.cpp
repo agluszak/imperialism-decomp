@@ -367,14 +367,14 @@ int ProbeAuxOutputDeviceIndexByPidMask() {
   int deviceId = 0;
   if (static_cast<int>(deviceCount) > 0) {
     AUXCAPSA caps;
-    do {
+    while (deviceId < static_cast<int>(deviceCount)) {
       capsResult = auxGetDevCapsA(deviceId, &caps, sizeof(AUXCAPSA));
       if ((caps.wPid & 7) == 1 || (caps.wPid & 7) == 2) {
         g_nAuxOutputDeviceIndex = deviceId;
         break;
       }
       deviceId++;
-    } while (deviceId < static_cast<int>(deviceCount));
+    }
   }
   if (capsResult != 0) {
     g_nAuxOutputDeviceIndex = -1;

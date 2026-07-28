@@ -1362,8 +1362,8 @@ address|matching|name
 0x4977a0|1.0|UnionRgn
 0x497810|1.0|SetEmptyRgn
 0x497860|0.5111111111111111|QDFrameRgn
-0x497940|0.42857142857142855|FillClipRegionWithForegroundBrush
-0x497a10|0.43478260869565216|QDPaintRgn
+0x497940|0.43902439024390244|FillClipRegionWithForegroundBrush
+0x497a10|0.4444444444444444|QDPaintRgn
 0x497b00|0.9090909090909091|CBrush::`scalar deleting destructor'(unsigned int)
 0x497b30|1.0|OffsetRgn
 0x497b70|1.0|RefreshRgnBoundingBox
@@ -1606,7 +1606,7 @@ address|matching|name
 0x4a1e40|1.0|TArmyMgr::DoCombatMoves
 0x4a1eb0|0.98|TArmyMgr::EndBattlePhase
 0x4a1f80|0.5675146771037182|TArmyMgr::FormStacks
-0x4a2390|0.8355555555555556|TArmyMgr::ResolveNextMove
+0x4a2390|0.8584474885844748|TArmyMgr::ResolveNextMove
 0x4a2500|0.984375|TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits
 0x4a2610|0.4264264264264264|BuildArmyActionLabelFromLocalizationAndCounts
 0x4a2900|0.6133866133866134|BuildArmyContextActionRecordsAndDispatchLabel
@@ -1647,7 +1647,7 @@ address|matching|name
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
 0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
-0x4a6d40|0.38202247191011235|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
+0x4a6d40|0.7088607594936709|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
 0x4a6df0|1.0|TArmyMgr::CleanUpStacks
 0x4a6e80|1.0|TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields
@@ -1993,7 +1993,7 @@ address|matching|name
 0x4b7080|0.3805309734513274|TUnitOrder::MaxOrder
 0x4b7210|0.6412213740458015|TUnitOrder::SetQuantity
 0x4b7320|1.0|TUnitOrder::FillOrderSheet
-0x4b73b0|0.16292134831460675|TUnitOrder::Produce
+0x4b73b0|0.19646365422396855|TUnitOrder::Produce
 0x4b77e0|1.0|TUnitOrder::SetOrderCostProfile
 0x4b7850|1.0|TUnitOrder::WriteTo
 0x4b7920|1.0|TUnitOrder::ReadFrom
@@ -2672,7 +2672,7 @@ address|matching|name
 0x4e5be0|0.4411764705882353|TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange
 0x4e5d90|0.2376237623762376|TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects
 0x4e6040|0.5063291139240507|TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells
-0x4e6150|0.19390581717451524|TMinor::ReassignUnitOrdersForCountryTargetChange
+0x4e6150|0.2817551963048499|TMinor::ReassignUnitOrdersForCountryTargetChange
 0x4e64a0|1.0|TMinor::RemoveRegionIdFromNationOwnedRegionList
 0x4e64f0|0.7142857142857143|TMinor::AddRegionIdToNationOwnedRegionList
 0x4e6520|0.6346153846153846|TMinor::RelinkTileUnitsToCountryOrderManager
@@ -2852,7 +2852,7 @@ address|matching|name
 0x4eff40|0.29310344827586204|TDiplomacyMgr::InflictWarPenalty
 0x4f01e0|0.4595959595959596|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
 0x4f0590|1.0|TDiplomacyMgr::SetLastDiploEffort
-0x4f05c0|0.1793103448275862|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
+0x4f05c0|0.2749003984063745|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
 0x4f09c0|1.0|TDiplomacyMgr::QueueNationPairWarTransition
 0x4f0a10|0.8546637744034707|TDiplomacyMgr::ProcessQueuedWarTransitions
 0x4f0db0|1.0|TNextDiplomationCommand::DoIt
@@ -2991,7 +2991,7 @@ address|matching|name
 0x4f9300|1.0|TOffersPanelView::DoEvent
 0x4f9350|1.0|TOffersPanelView::DoKeyEvent
 0x4f9420|1.0|TOffersPanelView::HandleMouseUp
-0x4f9450|0.5701492537313433|TOffersPanelView::PoseOffer
+0x4f9450|0.8091822094691535|TOffersPanelView::PoseOffer
 0x4f9a60|0.89937106918239|TOffersPanelView::PoseWarOffer
 0x4f9f60|0.5818181818181818|TInfoPanelView::CreateObject
 0x4f9ff0|1.0|TInfoPanelView::GetRuntimeClass
@@ -3373,7 +3373,7 @@ address|matching|name
 0x5145b0|0.6075949367088608|TMapMgr::QueueDepotConstructionOrder
 0x5147d0|0.6491228070175439|TMapMgr::QueuePortConstructionOrder
 0x5149d0|0.918918918918919|TMapMgr::SetProvinceCapitalTileFlagBit08
-0x514a20|0.25296442687747034|TMapMgr::PlaceCity
+0x514a20|0.3333333333333333|TMapMgr::PlaceCity
 0x514c80|0.8163265306122449|FindReachableRecruitSpawnTileWithVisitedReset
 0x514cd0|0.6231884057971014|TMapMgr::FindReachableRecruitSpawnTileRecursive
 0x514dc0|0.6666666666666666|TMapMgr::SeedValidCitySiteCandidateTilesForNation
@@ -3381,7 +3381,7 @@ address|matching|name
 0x514e80|0.20833333333333334|TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder
 0x514ef0|0.2|TMapMgr::ResetRecruitSearchVisitedState
 0x514f20|0.375|TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory
-0x5150e0|0.38016528925619836|TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
+0x5150e0|0.48135593220338985|TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
 0x515330|0.3170731707317073|TMapMgr::DimByProspecting
 0x515460|0.3707865168539326|TMapMgr::DimByDevelopment
 0x5155c0|0.3236994219653179|TMapMgr::DimByMining
@@ -3438,7 +3438,7 @@ address|matching|name
 0x518a20|0.5974025974025974|TMapMgr::HasPortInProvince
 0x518aa0|0.8|TMapMgr::HasActiveLinkedTileWithReachableSea
 0x518b40|0.9523809523809523|TMapMgr::CalculateDeveloperTilePurchaseCost
-0x518bd0|0.6033057851239669|TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile
+0x518bd0|0.6|TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile
 0x518d90|0.4107142857142857|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
 0x519140|0.5704697986577181|TMapMgr::DumpAndResetMapScriptState
@@ -3505,7 +3505,7 @@ address|matching|name
 0x51da60|0.13114754098360656|OrphanDeadLeaf_NoRefs_0051da60
 0x51db30|1.0|TMapEditView::PlaceRail
 0x51dba0|0.5172413793103449|TMapEditView::PlaceRiver
-0x51dc90|0.7622950819672131|TMapEditView::PlaceCountySeat
+0x51dc90|0.7983870967741935|TMapEditView::PlaceCountySeat
 0x51deb0|0.8082191780821918|TMapEditView::DoKeyEvent
 0x51e0b0|1.0|InitializeMapInteractionPreviewScaleXDefault
 0x51e0e0|1.0|InitializeMapInteractionPreviewScaleYDefault
@@ -3686,14 +3686,14 @@ address|matching|name
 0x5308b0|0.4013605442176871|TForeignMinister::DeservesToBeEnemy
 0x530b30|1.0|TForeignMinister::DoSelectEnemy
 0x530bb0|0.2809917355371901|TForeignMinister::SetEmpirePolicies
-0x530fa0|0.2727272727272727|TForeignMinister::ReplyToDiplomacyOffers
+0x530fa0|0.3723404255319149|TForeignMinister::ReplyToDiplomacyOffers
 0x531110|1.0|TForeignMinister::FinishDiplomacyPhase
 0x531130|0.19607843137254902|TTedForeignMinister::CreateObject
 0x5311b0|1.0|TTedForeignMinister::GetRuntimeClass
 0x5311d0|0.06666666666666667|TTedForeignMinister::TTedForeignMinister
 0x531240|1.0|TTedForeignMinister::`scalar deleting destructor'
 0x531270|0.0|TTedForeignMinister
-0x531290|0.48314606741573035|TTedForeignMinister::SetBuyPriorities
+0x531290|0.7903225806451613|TTedForeignMinister::SetBuyPriorities
 0x531550|0.30666666666666664|TTedForeignMinister::SetTradeBids
 0x531770|0.3401015228426396|TTedForeignMinister::ReplyToTradeOffer
 0x531a10|0.48484848484848486|TTedForeignMinister::DoFirstTurnDiplomacy
@@ -4162,7 +4162,7 @@ address|matching|name
 0x544810|0.0|IltTarget_00544810
 0x544840|0.41706161137440756|IltTarget_00544840
 0x5449b0|0.44036697247706424|BuildTurnEvent2ArraySyncPacketDeltaOrFull
-0x544b30|0.3904761904761905|IltTarget_00544b30
+0x544b30|0.4|IltTarget_00544b30
 0x544cb0|0.3333333333333333|IltTarget_00544cb0
 0x544cd0|0.3422459893048128|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode
 0x544e30|1.0|TMultiplayerMgr::DoIdle
@@ -5685,7 +5685,7 @@ address|matching|name
 0x59bfe0|1.0|TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA
 0x59c140|1.0|TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority
 0x59c2a0|0.88|TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB
-0x59c3c0|0.6813186813186813|TArmyPlayer::DeploymentClick
+0x59c3c0|1.0|TArmyPlayer::DeploymentClick
 0x59c440|0.6836581709145427|TArmyPlayer::SelectAndApplyTacticalCursorModeProfile
 0x59c970|0.9904761904761905|TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode
 0x59caf0|0.5714285714285714|TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass
@@ -5736,7 +5736,7 @@ address|matching|name
 0x59ef50|0.0|TNavyHumanPlayer::~TNavyHumanPlayer
 0x59ef70|1.0|TNavyHumanPlayer::GetRuntimeClass
 0x59ef90|1.0|TNavyHumanPlayer::INavyHumanPlayer
-0x59efc0|0.6813186813186813|TNavyHumanPlayer::DeploymentClick
+0x59efc0|1.0|TNavyHumanPlayer::DeploymentClick
 0x59f040|1.0|TNavyAutoPlayer::CreateObject
 0x59f070|1.0|TNavyAutoPlayer::`scalar deleting destructor'
 0x59f0a0|0.0|TNavyAutoPlayer::~TNavyAutoPlayer
@@ -5773,11 +5773,11 @@ address|matching|name
 0x5a0e20|0.0975609756097561|IltTarget_005a0e20
 0x5a0ea0|0.6339285714285714|TTacticalBattle::AdvanceToNextTacticalUnitTurnStep
 0x5a1010|1.0|TTacticalBattle::SetCurrentTacticalUnitSelection
-0x5a10e0|0.28125|TTacticalBattle::ProcessTacticalUnitState1TurnStep
+0x5a10e0|0.3036649214659686|TTacticalBattle::ProcessTacticalUnitState1TurnStep
 0x5a1400|1.0|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
 0x5a14d0|0.0|IltTarget_005a14d0
 0x5a1520|0.5259259259259259|TTacticalBattle::MoveTacticalUnitTowardTile
-0x5a16e0|0.7192429022082019|TTacticalBattle::BuildPathToTargetByDistanceField
+0x5a16e0|0.759493670886076|TTacticalBattle::BuildPathToTargetByDistanceField
 0x5a1910|1.0|TTacticalBattle::MoveTacticalUnitBetweenTiles
 0x5a1a20|0.7931034482758621|TTacticalBattle::ResolveTacticalReactionChecksForTile
 0x5a1b50|1.0|TTacticalBattle::HasAdjacentReachableTileForSelectedUnit
@@ -6186,7 +6186,7 @@ address|matching|name
 0x5b97c0|0.9807692307692307|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags
 0x5b9890|0.9523809523809523|TTradeMgr::SetMinorsTradeBids
 0x5b98d0|0.34558823529411764|TTradeMgr::TallyTradeBids
-0x5b9b30|0.21052631578947367|TTradeMgr::TallyMinorsTradeBids
+0x5b9b30|0.21100917431192662|TTradeMgr::TallyMinorsTradeBids
 0x5b9f30|1.0|TTradeMgr::Power
 0x5b9f70|0.6666666666666666|TTradeMgr::DidBidOn
 0x5b9fa0|0.6666666666666666|TTradeMgr::DidOffer
@@ -6588,7 +6588,7 @@ address|matching|name
 0x5e0fb0|0.6428571428571429|WaveCopyUselessChunk
 0x5e10c0|0.6701570680628273|WaveLoadFile
 0x5e1220|0.72|WaveSaveFile
-0x5e1430|0.8118811881188119|ProbeAuxOutputDeviceIndexByPidMask
+0x5e1430|1.0|ProbeAuxOutputDeviceIndexByPidMask
 0x5e14c0|0.125|IltTarget_005e14c0
 0x5e1500|1.0|SetAuxOutputVolumeFromScalar
 0x5e1540|0.1|IltTarget_005e1540
@@ -6599,7 +6599,7 @@ address|matching|name
 0x5e17b0|0.6666666666666666|QueryMciStatusField8ViaCommand814
 0x5e1800|0.6666666666666666|QueryMciStatusField3ViaCommand814
 0x5e1850|0.9487179487179487|SetMciPlaybackRangeByTrackIndexAndDevice
-0x5e18f0|0.6122448979591837|OpenCdAudioAndProbeAuxOutputDevice
+0x5e18f0|0.7101449275362319|OpenCdAudioAndProbeAuxOutputDevice
 0x5e19e0|1.0|SendMciCommand804ToDevice
 0x5e1a10|1.0|SendMciStopCommandToDevice
 0x5e1a40|0.0|IltTarget_005e1a40

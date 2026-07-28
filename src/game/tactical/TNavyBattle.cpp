@@ -259,7 +259,8 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       return;
     }
   }
-  if (unit->state1c != 0 || battleOutcomeCode44 != 0) {
-    QueueTacticalEventPacket232A();
+  if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
+    return;
   }
+  QueueTacticalEventPacket232A();
 }

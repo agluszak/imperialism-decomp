@@ -114,10 +114,11 @@ void TTedForeignMinister::SetBuyPriorities() {
     preferredResourceSlots40[1] = 2;
     if (rand() < 0x3ffe) {
       preferredResourceSlots40[3] = 0;
-      TForeignMinister::SetBuyPriorities();
-      return;
+    } else {
+      preferredResourceSlots40[3] = 1;
     }
-    goto set_final_priority_to_one;
+    TForeignMinister::SetBuyPriorities();
+    return;
   }
 
   if (ownerContextAt04->GetStockpile(kResourceIron) <
@@ -126,32 +127,40 @@ void TTedForeignMinister::SetBuyPriorities() {
     if (ownerContextAt04->GetStockpile(kResourceOil) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
       preferredResourceSlots40[1] = kResourceOil;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceTimber) <
-                                            ownerContextAt04->GetStockpile(kResourceCoal)
-                                        ? kResourceTimber
-                                        : kResourceCoal;
+      if (ownerContextAt04->GetStockpile(kResourceTimber) <
+          ownerContextAt04->GetStockpile(kResourceCoal)) {
+        preferredResourceSlots40[2] = kResourceTimber;
+      } else {
+        preferredResourceSlots40[2] = kResourceCoal;
+      }
     } else {
       preferredResourceSlots40[1] = kResourceCoal;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) >
-                                            ownerContextAt04->GetStockpile(kResourceTimber)
-                                        ? kResourceTimber
-                                        : kResourceOil;
+      if (ownerContextAt04->GetStockpile(kResourceOil) >
+          ownerContextAt04->GetStockpile(kResourceTimber)) {
+        preferredResourceSlots40[2] = kResourceTimber;
+      } else {
+        preferredResourceSlots40[2] = kResourceOil;
+      }
     }
   } else {
     preferredResourceSlots40[0] = kResourceCoal;
     if (ownerContextAt04->GetStockpile(kResourceOil) <
         ownerContextAt04->GetStockpile(kResourceIron)) {
       preferredResourceSlots40[1] = kResourceOil;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceIron) >
-                                            ownerContextAt04->GetStockpile(kResourceTimber)
-                                        ? kResourceTimber
-                                        : kResourceIron;
+      if (ownerContextAt04->GetStockpile(kResourceIron) >
+          ownerContextAt04->GetStockpile(kResourceTimber)) {
+        preferredResourceSlots40[2] = kResourceTimber;
+      } else {
+        preferredResourceSlots40[2] = kResourceIron;
+      }
     } else {
       preferredResourceSlots40[1] = kResourceIron;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) >
-                                            ownerContextAt04->GetStockpile(kResourceTimber)
-                                        ? kResourceTimber
-                                        : kResourceOil;
+      if (ownerContextAt04->GetStockpile(kResourceOil) >
+          ownerContextAt04->GetStockpile(kResourceTimber)) {
+        preferredResourceSlots40[2] = kResourceTimber;
+      } else {
+        preferredResourceSlots40[2] = kResourceOil;
+      }
     }
   }
   if (rand() < 0x3ffe) {
@@ -159,7 +168,6 @@ void TTedForeignMinister::SetBuyPriorities() {
     TForeignMinister::SetBuyPriorities();
     return;
   }
-set_final_priority_to_one:
   preferredResourceSlots40[3] = 1;
   TForeignMinister::SetBuyPriorities();
 }

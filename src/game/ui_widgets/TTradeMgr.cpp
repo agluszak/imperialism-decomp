@@ -1002,9 +1002,10 @@ void TTradeMgr::TallyMinorsTradeBids() {
       double factor;
       if (metric == 1) {
         factor = 1.0;
+      } else if (metric > 0x18) {
+        factor = this->Power(base, 0x17);
       } else {
-        int exponent = (metric < 0x19) ? (metric - 1) : 0x17;
-        factor = this->Power(base, static_cast<short>(exponent));
+        factor = this->Power(base, static_cast<short>(metric - 1));
       }
       aggregateRow->adjustedNumOffers = factor + aggregateRow->adjustedNumOffers;
     }

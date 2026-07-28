@@ -1289,7 +1289,7 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
 
 namespace {
 
-void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
+static __inline void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
   short ownerNationSlot = orderNode->ownerNationSlot18;
   TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
   if (ownerNation == 0) {
@@ -1306,7 +1306,7 @@ void RetargetUnitOrderForAllowedNation(TUnit* orderNode) {
   orderNode->MoveTo(static_cast<int>(spawnTile));
 }
 
-void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
+static __inline void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
   short ownerNationSlot = orderNode->ownerNationSlot18;
   TGreatPower* ownerNation = g_apNationStates[ownerNationSlot];
   if (ownerNation == 0) {
@@ -1324,8 +1324,10 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
   orderNode->MoveTo(static_cast<int>(spawnTile));
 }
 
-void WalkTileUnitOrdersForRelationMask(TTerrainStateRecord* terrainTiles, short tileId,
-                                       const char* relationMaskByNation, char resetOrderMode) {
+static __inline void WalkTileUnitOrdersForRelationMask(TTerrainStateRecord* terrainTiles,
+                                                       short tileId,
+                                                       const char* relationMaskByNation,
+                                                       char resetOrderMode) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
     TUnit* nextNode = orderNode->nextAtLocation14;

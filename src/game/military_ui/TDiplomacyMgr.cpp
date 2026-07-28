@@ -994,9 +994,24 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
     }
 
     if (bestOfferNation != -1) {
+      int previousNation = specialRelationSourceSlots[minorSlot - 7];
+      if (!isOfferTie && previousNation != bestOfferNation && previousNation != -1 &&
+          relationStandingScores[previousNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+              static_cast<NationSlot>(previousNation))) {
+        g_apTerrainTypeDescriptorTable[previousNation]->AddNoticeFrom(minorSlot, 0x13a);
+      }
       specialRelationSourceSlots[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
     }
     if (bestRelationNation != -1) {
+      int previousNation = specialRelationTargetSlots[minorSlot - 7];
+      if (!isRelationTie && previousNation != bestRelationNation && previousNation != -1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+              static_cast<NationSlot>(previousNation)) &&
+          relationStandingScores[previousNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_apTerrainTypeDescriptorTable[previousNation] != 0) {
+        g_apTerrainTypeDescriptorTable[previousNation]->AddNoticeFrom(minorSlot, 0x13b);
+      }
       specialRelationTargetSlots[minorSlot - 7] = static_cast<NationSlot>(bestRelationNation);
     }
   }

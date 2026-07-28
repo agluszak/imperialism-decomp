@@ -833,8 +833,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
     case kDiplomacyProposalPeaceTreaty:
       valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
       if (valid == 0) {
-        gp->RejectOffer(queueIndex);
-        return;
+        break;
       }
       g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, gp->nationSlot, targetNation, 0);
       break;

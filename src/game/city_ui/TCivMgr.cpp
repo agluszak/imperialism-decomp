@@ -329,7 +329,10 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
   }
 
   if (IsMappedShortcutKeyPressed(2)) {
-    return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
+    if (this->CanAssignCivilianOrderToTile(nTileIndex)) {
+      return 3;
+    }
+    return 1;
   }
 
   TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
@@ -365,7 +368,10 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
       return orderAtTile->IsInIdleSelectionState() ? 2 : 10;
     }
   }
-  return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
+  if (this->CanAssignCivilianOrderToTile(nTileIndex)) {
+    return 3;
+  }
+  return 1;
 }
 
 // Selection helpers. The global g_pSelectedCivilianOrderState @0x6a43dc is this
