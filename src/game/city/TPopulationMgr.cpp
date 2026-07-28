@@ -5,7 +5,7 @@
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
 #include "game/core/TStream.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004b5b40
 // TPopulationMgr::CreateObject

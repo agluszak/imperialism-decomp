@@ -1,7 +1,7 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.

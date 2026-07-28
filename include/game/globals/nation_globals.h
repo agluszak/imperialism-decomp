@@ -1,7 +1,23 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+
+class TGreatPower;
+
+TGreatPower* GetNationStateBySlot(short slotId);
+short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
+
+struct AiCityActionCostProfile {
+  short primaryMetricCode;
+  short primaryMetricMultiplier;
+  short secondaryMetricCode;
+  short secondaryMetricMultiplier;
+  short baseCost;
+  short contextBiasSelector;
+  short actionId;
+};
+ASSERT_SIZE(AiCityActionCostProfile, 14);
 
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
 

@@ -2,7 +2,7 @@
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_core/TPicture.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/military/TCivUnit.h"

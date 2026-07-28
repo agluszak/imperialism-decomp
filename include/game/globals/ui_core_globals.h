@@ -1,7 +1,12 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/core/TMouseCaptureState.h"
+
+int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue);
+int ClearGlobalUiInvalidationFlagAndReturnPrevious();
+int GetMcAppUiActiveFlag();
 
 extern TView* g_pUiResourceContext;
 

@@ -19,7 +19,7 @@
 #include "game/trade_ui/TTradePageBuyView.h"
 #include "game/trade_ui/TTradePageSellView.h"
 #include "game/trade_ui/TTradeTotalsLine.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/trade_ui_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"

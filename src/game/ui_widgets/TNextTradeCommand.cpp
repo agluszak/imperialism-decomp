@@ -3,7 +3,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 
 #include "game/ui_core/TApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // The base TCommand constructor installs vtable 0x648e28; this constructor then

@@ -7,7 +7,7 @@
 #include "game/TGreatPower_internal.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/city_ui/TLongintList.h"

@@ -33,7 +33,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_flow_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"

@@ -1,6 +1,6 @@
 #include "game/military/TCancelGameOptionsCommand.h"
 #include "game/turn_event_codes.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TApplication.h"

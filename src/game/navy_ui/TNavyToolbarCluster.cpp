@@ -10,7 +10,7 @@
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x00569430
 // TNavyToolbarCluster::CreateObject

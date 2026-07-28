@@ -8,7 +8,7 @@
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/TWindow.h"
 #include "game/app/ui_resource_builder.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"

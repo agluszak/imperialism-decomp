@@ -10,7 +10,7 @@
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -282,7 +282,7 @@ private:
       return false;
     }
 
-    mapDialog->activeRegionBand72 = -1;
+    mapDialog->activeRegionBand = -1;
     mapDialog->cursorId4e = 0xffff;
     CPoint hostPoint(outPoint->x + mapDialog->absoluteX, outPoint->y + mapDialog->absoluteY);
     SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
@@ -365,7 +365,7 @@ private:
       return false;
     }
 
-    mapDialog->activeRegionBand72 = -1;
+    mapDialog->activeRegionBand = -1;
     CPoint firstHostPoint(firstPoint.x + mapDialog->absoluteX, firstPoint.y + mapDialog->absoluteY);
     CPoint secondHostPoint(secondPoint.x + mapDialog->absoluteX,
                            secondPoint.y + mapDialog->absoluteY);
@@ -384,7 +384,7 @@ private:
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin60,
+    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin,
                                                  &projectedY, &projectedX, 1);
     CRect currentHoverRect(projectedX - 1, projectedY - 1, projectedX + 0x42, projectedY + 0x42);
     bool restored = true;

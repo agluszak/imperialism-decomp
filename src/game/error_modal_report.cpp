@@ -1,7 +1,7 @@
 #include "game/mfc.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/shared_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // Builds a formatted diagnostic string
 //   ERROR (<sourceTag>,<codeA>,<codeB>)\n\nPlease record this information:\n

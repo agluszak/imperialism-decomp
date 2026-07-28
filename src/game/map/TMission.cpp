@@ -1,6 +1,6 @@
 #include "game/map/TMission.h"
 #include "game/navy/TOcean.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 #include "decomp_types.h"

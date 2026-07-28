@@ -8,7 +8,7 @@
 #include "game/ui_core/TEditText.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // FUNCTION: IMPERIALISM 0x0044fa80
 TMultiMessagePicture::TMultiMessagePicture() {}

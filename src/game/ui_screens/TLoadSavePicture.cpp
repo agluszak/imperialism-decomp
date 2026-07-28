@@ -7,7 +7,7 @@
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/gfx/TAmbitApplication.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/ui_screens/TSimMgr.h"

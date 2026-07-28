@@ -2,7 +2,7 @@
 """Migrate umbrella global_data_tables.h consumers to per-subsystem globals headers.
 
 Stage 3 of the globals split (bd imperialism-decomp-8mo.2). Each TU that includes
-the umbrella is rewritten to include game/globals/prelude.h (the stable
+the umbrella is rewritten to include game/globals/global_types.h (the stable
 type/forward-decl core, which also carries the transitive foundation includes the
 umbrella used to provide) plus exactly the subsystem globals headers whose declared
 identifiers the TU references. After migration, adding a global to one subsystem
@@ -25,7 +25,7 @@ from tools.common.repo import repo_root_from_file
 
 UMBRELLA = "game/global_data_tables.h"
 GLOBALS_DIR = "include/game/globals"
-PRELUDE = "game/globals/prelude.h"
+GLOBAL_TYPES = "game/globals/global_types.h"
 
 EXTERN_RE = re.compile(
     r'^extern\s+(?:"C"\s+)?[\w\s\*&:<>,]*?\b(\w+)\s*(?:\[[^\]]*\])*\s*;', re.M
@@ -71,7 +71,7 @@ def migrate_file(path: Path, index: dict[str, set[str]], apply: bool) -> list[st
     if not INCLUDE_UMBRELLA_RE.search(text):
         return None
     needed = needed_headers(text, index)
-    replacement = "".join(f'#include "{h}"\n' for h in [PRELUDE, *needed])
+    replacement = "".join(f'#include "{h}"\n' for h in [GLOBAL_TYPES, *needed])
     new_text = INCLUDE_UMBRELLA_RE.sub(replacement, text, count=1)
     # A second umbrella include would be a duplicate; drop any.
     new_text = INCLUDE_UMBRELLA_RE.sub("", new_text)

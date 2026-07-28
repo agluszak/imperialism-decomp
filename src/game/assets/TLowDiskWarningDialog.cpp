@@ -1,7 +1,7 @@
 #include "game/app/TModalTemplateDialog.h"
 
 #include "game/gfx/TModuleLibraryCacheTableStateB.h" // g_pModuleLibraryCacheState
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005e1bc0

@@ -1,6 +1,7 @@
 #include "game/gfx/TDialogView.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x0049d6f0
 // TDialogView::CreateObject

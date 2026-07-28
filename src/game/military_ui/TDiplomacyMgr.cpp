@@ -2,7 +2,7 @@
 #include "game/ui_tags_military.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/military/NetMessage.h"

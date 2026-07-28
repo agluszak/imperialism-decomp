@@ -1,7 +1,7 @@
 #include "game/ui_screens/TDipDlgCluster.h"
 
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_screens/TToggleButton.h"
 #include "game/resource_manifest_tags.h"

@@ -5,7 +5,7 @@
 #endif
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"

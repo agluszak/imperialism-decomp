@@ -5,7 +5,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/core/stream_byteswap.h"
 #include "game/core/TStream.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).

@@ -4,7 +4,7 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/app_init_globals.h"
 #include "game/globals/gfx_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style

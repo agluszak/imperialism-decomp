@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 extern "C" {
 

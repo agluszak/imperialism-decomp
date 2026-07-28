@@ -40,7 +40,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 namespace {

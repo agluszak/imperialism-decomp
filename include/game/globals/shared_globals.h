@@ -1,7 +1,16 @@
 #pragma once
 // Cross-subsystem and unresolved global declarations. Definitions and address markers
 // live in src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/nation_globals.h"
+#include "game/globals/tactical_ui_globals.h"
+#include "game/city_ui/TCountry.h"
+#include "game/gfx/TDisplayMgr.h"
+#include "game/nation/TMinor.h"
+#include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TView.h"
+#include <afxtempl.h>
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
 

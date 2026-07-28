@@ -1,6 +1,6 @@
 #include "game/tactical/TTacticalUnit.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005a5d40

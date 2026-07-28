@@ -4,9 +4,10 @@
 #include "screens/StrategicMapDriver.h"
 
 #include "game/gfx/TDisplayMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TStaticText.h"

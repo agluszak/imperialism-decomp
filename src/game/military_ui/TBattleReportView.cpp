@@ -30,7 +30,7 @@
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"

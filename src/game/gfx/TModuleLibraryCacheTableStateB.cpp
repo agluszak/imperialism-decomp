@@ -5,7 +5,7 @@
 // form is used (the macro would inline the __pctype test and drop the call).
 #undef isdigit
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"

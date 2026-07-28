@@ -22,7 +22,7 @@
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/globals/navy_ui_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0043d960

@@ -1,7 +1,7 @@
 #include "game/ui_screens/THelpWindow.h"
 
 #include "game/ui_core/THelpMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 

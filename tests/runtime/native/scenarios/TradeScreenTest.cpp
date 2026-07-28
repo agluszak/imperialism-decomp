@@ -8,7 +8,7 @@
 #include "game/diplomacy_domain_types.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/TList.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"

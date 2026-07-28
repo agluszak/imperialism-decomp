@@ -1,7 +1,7 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 extern POINT g_ptDiplomacyNoticeModalMessage;              // @ 0x6a2fc0
 extern "C" unsigned int g_aDiplomacyActionTopicTabTags[6]; // @ 0x696978

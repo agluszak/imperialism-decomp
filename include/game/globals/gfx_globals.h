@@ -1,7 +1,14 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/gfx/TTemplateDialogs.h"
+
+struct GlobalViewportRectDefaultsRecord {
+  int field0;
+  RECT viewportBounds;
+};
 
 extern "C" TBackdropWindow* g_pActiveBackdropWindow;
 

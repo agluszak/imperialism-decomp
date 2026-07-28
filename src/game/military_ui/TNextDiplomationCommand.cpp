@@ -4,7 +4,7 @@
 
 #include "game/ui_core/TApplication.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 IMPLEMENT_DYNCREATE(TNextDiplomationCommand, TCommand)

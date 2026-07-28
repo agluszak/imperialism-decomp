@@ -1,8 +1,13 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/tactical_ui/TechPrerequisitePair.h"
+
+struct IndustryCapabilityClassSlotEntry {
+  int classId;
+  int raw[8];
+};
 
 extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
 

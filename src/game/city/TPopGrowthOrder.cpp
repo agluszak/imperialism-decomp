@@ -1,6 +1,6 @@
 #include "game/city/TPopGrowthOrder.h"
 #include "game/city/TCity.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"

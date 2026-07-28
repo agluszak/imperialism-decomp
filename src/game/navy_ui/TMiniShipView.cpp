@@ -6,7 +6,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/navy/TTaskForce.h"
 #include "game/navy_ui/TSuperNavyRoster.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"

@@ -129,7 +129,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_widgets/TSoundPlayer.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/net_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"

@@ -32,7 +32,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TCivToolbar.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/city_ui/TCountry.h" // FormatOverlayTerrainLabelText (terrain overlay case)

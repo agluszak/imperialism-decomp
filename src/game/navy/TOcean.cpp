@@ -14,7 +14,7 @@
 #include "game/ui_screens/TZone.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/nation/TGreatPower.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapUberPicture.h"

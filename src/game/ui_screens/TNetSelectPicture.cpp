@@ -4,7 +4,7 @@
 #include "game/ui_core/TCluster.h"
 #include "game/ui_core/TControl.h"
 #include "game/net/TMultiplayerMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"

@@ -18,7 +18,7 @@
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/CString.h"
 #include "game/GameAssert.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"

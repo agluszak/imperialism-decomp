@@ -9,7 +9,7 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
