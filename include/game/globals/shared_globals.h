@@ -2,6 +2,7 @@
 // Cross-subsystem and unresolved global declarations. Definitions and address markers
 // live in src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
+#include "game/globals/city_ui_globals.h"
 #include "game/globals/ui_text_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/military_globals.h"
@@ -132,11 +133,6 @@ extern short g_creditsPlaybackActive_006a4084;
 
 // Zero origin used for the hidden dummy view installed by TInfoBarBehavior.
 extern int g_InfoBarDummyOrigin_006A2410[2];
-
-// Need-type indices (into TGreatPower::needCurrentByType/needTargetByType), in priority
-// order, that TInteriorMinister::SetCityPolicies (0x4be520) tops up each turn while the
-// nation still has need-cap headroom (transportCapacity - reservedTransportCapacity).
-extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 
 extern "C" {
 extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
