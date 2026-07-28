@@ -2195,7 +2195,12 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
 
   short commandSlot;
   if (orderShortTableDC[priorityOrder[0]] == 0 && (g_pSimMgr->GetEconomicTurn() & 1) != 0) {
-    short choice = static_cast<short>(rand() % (hasOilTechnology ? 4 : 3));
+    short choice;
+    if (hasOilTechnology) {
+      choice = static_cast<short>(rand() % 4);
+    } else {
+      choice = static_cast<short>(rand() % 3);
+    }
     if (choice == 3) {
       commandSlot = 0x3b;
     } else {

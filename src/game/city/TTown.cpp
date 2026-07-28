@@ -179,14 +179,16 @@ void TTown::CalculateResources() {
         if (temporarilyRaisedDevelopment) {
           g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, 1, 1, 0);
         }
-      }
-
-      resourceYieldByType[resource] = static_cast<short>(
-          resourceYieldByType[resource] +
-          g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
-
-      if (temporarilyRaisedDevelopment) {
-        g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, 1, 0, 0);
+        resourceYieldByType[resource] = static_cast<short>(
+            resourceYieldByType[resource] +
+            g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
+        if (temporarilyRaisedDevelopment) {
+          g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, 1, 0, 0);
+        }
+      } else {
+        resourceYieldByType[resource] = static_cast<short>(
+            resourceYieldByType[resource] +
+            g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge));
       }
     }
     AddAdjacentCityDevelopment(this, tileIndex);

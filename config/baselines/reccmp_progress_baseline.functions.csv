@@ -2187,7 +2187,7 @@ address|matching|name
 0x4c3c00|0.5959183673469388|TCityInteriorMinister::RebalanceCityOrderAllocationTargets
 0x4c3d60|0.4082687338501292|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
 0x4c40c0|0.4779874213836478|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
-0x4c4370|0.37628865979381443|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
+0x4c4370|0.3979848866498741|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
 0x4c49f0|0.8051948051948052|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
@@ -2849,7 +2849,7 @@ address|matching|name
 0x4efcb0|0.43119266055045874|TDiplomacyMgr::SetRelationship
 0x4efe30|0.36065573770491804|TDiplomacyMgr::SetRelationshipsToMatch
 0x4efeb0|1.0|TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation
-0x4eff40|0.2857142857142857|TDiplomacyMgr::InflictWarPenalty
+0x4eff40|0.29310344827586204|TDiplomacyMgr::InflictWarPenalty
 0x4f01e0|0.4595959595959596|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
 0x4f0590|1.0|TDiplomacyMgr::SetLastDiploEffort
 0x4f05c0|0.1793103448275862|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
@@ -4162,7 +4162,7 @@ address|matching|name
 0x544810|0.0|IltTarget_00544810
 0x544840|0.41706161137440756|IltTarget_00544840
 0x5449b0|0.44036697247706424|BuildTurnEvent2ArraySyncPacketDeltaOrFull
-0x544b30|0.4|IltTarget_00544b30
+0x544b30|0.3904761904761905|IltTarget_00544b30
 0x544cb0|0.3333333333333333|IltTarget_00544cb0
 0x544cd0|0.3422459893048128|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode
 0x544e30|1.0|TMultiplayerMgr::DoIdle
@@ -4476,7 +4476,7 @@ address|matching|name
 0x55ba10|1.0|TLanguageMgr::GetNewsTexPath
 0x55ba30|0.3383458646616541|TNewsMgr::LoadNewsTable
 0x55bbf0|1.0|TLanguageMgr::GetNewsTabPath
-0x55bc10|0.6735537190082644|TNewsMgr::CreateNewspaper
+0x55bc10|0.7587548638132295|TNewsMgr::CreateNewspaper
 0x55c010|0.2482638888888889|TNewsMgr::CreateEventStories
 0x55c870|0.03508771929824561|IltTarget_0055c870
 0x55c930|0.1111111111111111|IltTarget_0055c930
@@ -6148,7 +6148,7 @@ address|matching|name
 0x5b6d70|0.9717514124293786|TTown::ReadFrom
 0x5b6e60|1.0|TTown::WriteTo
 0x5b6f70|0.5132743362831859|TTown::CalculateRawResources
-0x5b7140|0.3935483870967742|TTown::CalculateResources
+0x5b7140|0.39622641509433965|TTown::CalculateResources
 0x5b73e0|0.5212765957446809|TTown::CalculateCityResources
 0x5b7570|0.7134502923976608|TTown::Grow
 0x5b77e0|1.0|TTown::SetName
@@ -6162,7 +6162,7 @@ address|matching|name
 0x5b7a90|0.7058823529411765|TTradeMgr::ITradeMgr
 0x5b7bc0|1.0|TTradeMgr::Free
 0x5b7c10|1.0|TTradeMgr::ReadFrom
-0x5b7d90|0.9711934156378601|TTradeMgr::WriteTo
+0x5b7d90|1.0|TTradeMgr::WriteTo
 0x5b7f50|1.0|IsSpecialNationInteractionResource
 0x5b7f80|0.0|IltTarget_005b7f80
 0x5b7fc0|0.5504587155963303|TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists

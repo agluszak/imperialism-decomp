@@ -129,6 +129,7 @@ void TTradeMgr::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005b7d90
 void TTradeMgr::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
   NationMetricCategoryRow* row = categoryRows;
   int rows = 0x11;
   do {

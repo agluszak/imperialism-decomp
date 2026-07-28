@@ -744,7 +744,8 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
 
   if (static_cast<char>(updateMode) == 1) {
     if (sourceTargetStanding - 0x32 < 0x31) {
-      SetRelationship(sourceNationSlot, targetNationSlot, sourceTargetStanding - 0x32);
+      short loweredStanding = static_cast<short>(sourceTargetStanding - 0x32);
+      SetRelationship(sourceNationSlot, targetNationSlot, loweredStanding);
     } else {
       SetRelationship(sourceNationSlot, targetNationSlot, 0x31);
     }
