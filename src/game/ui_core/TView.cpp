@@ -12,6 +12,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
+#include "game/CSubViewIterator.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/gfx/quickdraw_regions.h"
@@ -423,10 +424,11 @@ void TView::UpdateCoordinates() {
   absoluteY = newY;
   if (absoluteX != oldX || absoluteY != oldY) {
     if (childList44 != 0) {
-      POSITION pos = childList44->GetHeadPosition();
-      while (pos != NULL) {
-        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      CSubViewIterator iterator(this);
+      TView* child = iterator.FirstSubView();
+      while (iterator.MoreSubViews()) {
         child->UpdateCoordinates();
+        child = iterator.NextSubView();
       }
     }
   }

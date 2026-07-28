@@ -42,6 +42,9 @@ void TProductionCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
+  if (currentStockpile90 != 0 && field88 != 0 && commandId > 99 && commandId < 0x66) {
+    ownerContext->HandleEvent(commandId, this, 0);
+  }
   this->TCluster::DoEvent(commandId, sourceHandler, event);
 }
 

@@ -174,7 +174,7 @@ char TArmyMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x0053c570
 void TArmyMission::AcceptReenforcement(TMilitaryUnit* unit, unsigned char notify) {
-  unit->TObject::AssertValid();
+  unit->AssertValid();
   TMission* owner = unit->ownerMission40;
   if (owner != nullptr) {
     owner->RejectConstituent(unit, notify);

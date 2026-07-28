@@ -1344,8 +1344,7 @@ void TArmyMgr::SetActiveProvinceSelection(short cityRecordIndex) {
 // FUNCTION: IMPERIALISM 0x004a46d0
 void TArmyMgr::ClearProvinceSelectionHighlightsForNation(short nationId) {
   TSortedList* unitList = g_apNationStates[nationId]->militaryUnitList44;
-  int unitCount = unitList->GetCount();
-  for (short ordinal = 1; ordinal <= unitCount; ++ordinal) {
+  for (short ordinal = 1; ordinal <= unitList->GetCount(); ++ordinal) {
     TUnit* unit = static_cast<TUnit*>(unitList->GetEntryByOrdinal(ordinal));
     if (unit->unitOrder == 3) {
       unit->SetOrders(kUnitOrderIdle, -1);
@@ -1697,9 +1696,8 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
   // Per-unit "was this order anchored on cityRecordIndex" scratch flags -- one byte per
   // list entry, walked in lockstep with the CIterator below. Original never frees this
   // buffer (no operator_delete in the disassembly); reproduced as-is.
-  int unitCount = nationState->militaryUnitList44->GetCount();
-  unsigned char* unitOnTileFlags = new unsigned char[unitCount];
-  memset(unitOnTileFlags, 0, unitCount);
+  unsigned char* unitOnTileFlags = new unsigned char[nationState->militaryUnitList44->GetCount()];
+  memset(unitOnTileFlags, 0, nationState->militaryUnitList44->GetCount());
 
   CIterator unitIter(nationState->militaryUnitList44);
   unsigned char* flagCursor = unitOnTileFlags;

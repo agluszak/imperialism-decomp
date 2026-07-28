@@ -45,12 +45,12 @@ void TFileStream::SetBackingArchive(ArchiveStreamAdapter* backingArchive) {
 
 // FUNCTION: IMPERIALISM 0x00489180
 int TFileStream::GetPosition() {
-  return 0;
+  return static_cast<int>(BackingArchive(backingArchiveOrStream)->GetFile()->GetPosition());
 }
 
 // FUNCTION: IMPERIALISM 0x004891a0
 int TFileStream::GetLength() {
-  return 0;
+  return static_cast<int>(BackingArchive(backingArchiveOrStream)->GetFile()->GetLength());
 }
 
 // FUNCTION: IMPERIALISM 0x004891c0

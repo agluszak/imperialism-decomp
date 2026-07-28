@@ -132,7 +132,9 @@ void TCivUnit::MoveTo(short newTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c2c40
-void TCivUnit::DetachUnitOrderFromOwnerAndReset() {}
+void TCivUnit::DetachUnitOrderFromOwnerAndReset() {
+  MoveTo(-1);
+}
 
 // FUNCTION: IMPERIALISM 0x005c2c60
 void TCivUnit::ResetCivWorkOrderAndRefreshCounters() {

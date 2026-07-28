@@ -566,8 +566,24 @@ def compare_extracted_calls(
         "original_call_count": len(original.calls) + len(original.unresolved),
         "recompiled_call_count": len(recompiled.calls) + len(recompiled.unresolved),
     }
+    result["call_count_status"] = (
+        "pass"
+        if result["original_call_count"] == result["recompiled_call_count"]
+        else "mismatch"
+    )
     if result["original_call_count"] != result["recompiled_call_count"]:
-        result.update(status="mismatch", reason="call_count")
+        original_counter = Counter(canonical_json(call) for call in original.calls)
+        recompiled_counter = Counter(canonical_json(call) for call in recompiled.calls)
+        result.update(
+            status="mismatch",
+            reason="call_count",
+            missing=_counter_rows(original_counter - recompiled_counter),
+            extra=_counter_rows(recompiled_counter - original_counter),
+        )
+        if original.unresolved:
+            result["original_unresolved"] = original.unresolved
+        if recompiled.unresolved:
+            result["recompiled_unresolved"] = recompiled.unresolved
         return result
     if original.unresolved or recompiled.unresolved:
         result.update(
@@ -1002,6 +1018,9 @@ def _summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
     counts = Counter(str(row["status"]) for row in rows)
     total = len(rows)
     passed = counts.get("pass", 0)
+    call_count_passed = sum(
+        row.get("call_count_status") == "pass" for row in rows
+    )
     return {
         "required": total,
         "pass": passed,
@@ -1009,6 +1028,12 @@ def _summary(rows: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "inconclusive": counts.get("inconclusive", 0),
         "unpaired": counts.get("unpaired", 0),
         "coverage_pct": 0.0 if total == 0 else round(passed * 100.0 / total, 4),
+        "call_count_pass": call_count_passed,
+        "call_count_coverage_pct": (
+            0.0
+            if total == 0
+            else round(call_count_passed * 100.0 / total, 4)
+        ),
     }
 
 
@@ -1176,6 +1201,10 @@ def print_stats(report: dict[str, Any], path: Path) -> None:
         "inconclusive={inconclusive} unpaired={unpaired} coverage={coverage_pct:.4f}%".format(
             **summary
         )
+    )
+    print(
+        "call-count pass={call_count_pass}/{required} "
+        "coverage={call_count_coverage_pct:.4f}%".format(**summary)
     )
 
 
