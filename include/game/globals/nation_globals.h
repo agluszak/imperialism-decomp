@@ -22,6 +22,8 @@ ASSERT_SIZE(AiCityActionCostProfile, 14);
 
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
 
+extern int g_anTechItemResearchCostByTechId[29];
+
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
 extern "C" {
@@ -191,5 +193,9 @@ extern const float g_AiPressurePeerScale_006543e8;
 extern const double g_MissionScoreZeroThreshold_006545f0;
 
 extern const double g_MissionEligibilityRatioMargin_006545f8;
+
+extern short g_industryActionCostWeightResCode10[16];
+extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
+extern short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 
 } // extern "C"
