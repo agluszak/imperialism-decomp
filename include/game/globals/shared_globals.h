@@ -137,14 +137,6 @@ extern const int g_hexRowOffset_00697468[6];
 
 extern const int g_hexColOffsetOddRow_00697480[6];
 
-// Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
-// shared by the city-region seeding/template passes.
-extern unsigned int g_mapGenLcgState_006a38e8;
-
-extern int g_regionSeedGridRows_006a38ec;
-
-extern int g_regionSeedGridCols_006a38f0;
-
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
 extern char s_szGaugeCountSeparator_0069936C[];
