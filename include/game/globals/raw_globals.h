@@ -609,4 +609,11 @@ extern char s_mcflavor_0069b628[];
 extern char s_mcflavor_0069b630[];
 extern char s_mcflavor_0069b638[];
 extern char s_mcflavor_0069b640[];
+
+// Assert source-path strings not yet owned by a narrower subsystem surface.
+extern const char s_SourcePathUViewMgr_0069B6BC[];
+extern const char s_SourcePathUTradeViews_0069AA94[];
+
+// TSimMgr's opaque debug tag literal.
+extern const char s_Chunk_00698C0C[];
 } // extern "C"

@@ -8,6 +8,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
