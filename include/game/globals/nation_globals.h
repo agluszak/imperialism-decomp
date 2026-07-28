@@ -4,6 +4,7 @@
 #include "game/globals/global_types.h"
 
 class TGreatPower;
+class TMinor;
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -20,6 +21,21 @@ struct AiCityActionCostProfile {
 ASSERT_SIZE(AiCityActionCostProfile, 14);
 
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
+
+// 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
+// (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
+extern "C" {
+extern TMinor* g_apSecondaryNationStateSlots[36];
+
+// Original address 0x006a429c is g_apSecondaryNationStateSlots + 7: the 16 minor
+// rows are an interior slice, not independent storage.
+#define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
+
+extern TGreatPower* g_apNationStates[7];
+// Several retail loops compare their cursor with the immediate one-past address
+// 0x006a438c. It is not a separately allocated pointer object.
+#define g_apNationStates_End g_apNationStates[7]
+} // extern "C"
 
 extern "C" {
 
