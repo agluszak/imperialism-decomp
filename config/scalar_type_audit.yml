@@ -94,7 +94,7 @@ native_integral_reviews:
 # assembly) followed by the destination's storage width. The canonical types these
 # boundaries convert between are recorded in docs/reference/scalar-boundary-inventory.csv.
 nested_conversion_reviews:
-  8a5cc0fec966a3f8:
+  97c056bc7e96eea0:
     classification: prng_extract_then_narrow
     evidence: "the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup."
   cb4593f41b01cff8:
@@ -157,16 +157,16 @@ nested_conversion_reviews:
   eb220da528b853bc:
     classification: unsigned_char_then_signed_compare
     evidence: "the format character is widened without sign extension, then compared as a signed count."
-  caa87a07f2146dbb:
+  202b87edfb803074:
     classification: signed_grid_cell_then_word_key
     evidence: "the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses."
-  7fcc0893d2017e1f:
+  d23df993c6ad64f5:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the first neighbour."
-  b60ed63416b4f980:
+  963cc2f0cf9f7ade:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the second neighbour."
-  3f41f67892a6fd59:
+  6c9a5f05b6663c22:
     classification: signed_grid_cell_then_word_key
     evidence: "the same signed-byte grid read for the third neighbour."
   eb265394ddb5605a:

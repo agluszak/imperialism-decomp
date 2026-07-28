@@ -6,7 +6,7 @@
 // the two region contexts a link connects; then refreshes port-zone adjacency and zone status
 // codes. Own translation unit (TMapMaker map-generation split).
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/navy/TOcean.h"

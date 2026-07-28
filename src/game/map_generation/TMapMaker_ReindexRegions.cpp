@@ -8,7 +8,7 @@
 // Its own translation unit (like the other UMapper routines) so the inline neighbour accessor
 // folds into the one body.
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/map/TMapMgr.h"
