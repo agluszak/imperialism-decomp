@@ -105,6 +105,11 @@ extern short g_awTileSpriteVariantOffsetTable3b[16][2];
 extern const float g_HexHighlightScreenScale_00658640;
 
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern unsigned char g_abUniversityRequirementLevelById[24][4];
+extern unsigned char g_abResourceTypeMiniCivMentionFlag[24];
+extern short g_anResourceTypeRequiredOrderType[24];
+extern unsigned char g_abResourceTypeAlwaysQualifies[24];
+extern unsigned char g_abGateFlagQualifies[24];
 
 // Hex neighbor column/row deltas, indexed by direction 0..5 and row parity.
 extern const int g_hexColOffsetEvenRow_00697450[6];

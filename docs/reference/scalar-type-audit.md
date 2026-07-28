@@ -70,7 +70,7 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `include/game/ui_fourcc.h:32` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 2 of the tag. |
 | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 3 of the tag. |
 | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 4 of the tag. |
-| `src/game/city_ui/TUniversityView.cpp:373` | signed char -> int | `signed_table_byte_then_int` | the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width. |
+| `src/game/city_ui/TUniversityView.cpp:374` | signed char -> int | `signed_table_byte_then_int` | the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width. |
 | `src/game/map_ui/TMapMaker.cpp:1444` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup. |
 | `src/game/map_ui/TMapMaker.cpp:1456` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
 | `src/game/map_ui/TMapMaker.cpp:1463` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
@@ -258,7 +258,7 @@ is classified, and a family that stops appearing must be removed.
 | `ddbd994a05628784` | `nested_integral_cast` | `include/game/ui_fourcc.h:32` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
 | `08a127d9814aa2e3` | `nested_integral_cast` | `include/game/ui_fourcc.h:33` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
 | `239a01f6e5d42d4e` | `nested_integral_cast` | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
-| `fb4cc0429d2807ae` | `nested_integral_cast` | `src/game/city_ui/TUniversityView.cpp:373` | signed char -> int | `signed_table_byte_then_int` | `imperialism-decomp-1uj.99.2` |
+| `fb4cc0429d2807ae` | `nested_integral_cast` | `src/game/city_ui/TUniversityView.cpp:374` | signed char -> int | `signed_table_byte_then_int` | `imperialism-decomp-1uj.99.2` |
 | `8a5cc0fec966a3f8` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1444` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `caa87a07f2146dbb` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1456` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
 | `7fcc0893d2017e1f` | `nested_integral_cast` | `src/game/map_ui/TMapMaker.cpp:1463` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
@@ -320,21 +320,21 @@ is classified, and a family that stops appearing must be removed.
 | `96986ea3ead8f64d` | `raw_discriminant_literal` | `src/game/city/TTrainingOrder.cpp:133` | resourceTypeIndex == 1 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
 | `34542c653bc0cea4` | `raw_discriminant_literal` | `src/game/city_ui/TArmoryView.cpp:67` | resourceType == 0x18 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `8992db3cfef8386f` | `raw_discriminant_literal` | `src/game/city_ui/TArmoryView.cpp:70` | resourceType == 0x19 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `424070d3e1f97c37` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:233` | pendingShipType32 == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `94a4ae9c716fda3d` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:234` | orderKind == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `9bd2931c156efd88` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:512` | pendingShipType32 != 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `ecc638fa35625b65` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:770` | resourceTypeIndex != 8 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
-| `325c1c0fe24cf83c` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:857` | resourceTypeIndex == 0x0f | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
-| `9b46b395a5fd7d98` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1164` | orderType < 23 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `6fcf12e97e98245a` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1165` | orderType <= 22 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `51b739fb18fb59fe` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1165` | orderType <= 6 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `99248a8a36933934` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1165` | orderType >= 0 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `7982b2211f9dae14` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1165` | orderType >= 17 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `e2a1e0210c985ae0` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1167` | selectedOrderType < 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `a5bea1bcaed98505` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2003` | pendingShipType32 != 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `4da786de03540a53` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2568` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `67c0ae632a6bd31f` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2571` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `7cface52acd2b3a2` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2574` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
+| `424070d3e1f97c37` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:234` | pendingShipType32 == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
+| `94a4ae9c716fda3d` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:235` | orderKind == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `9bd2931c156efd88` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:513` | pendingShipType32 != 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
+| `ecc638fa35625b65` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:771` | resourceTypeIndex != 8 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
+| `325c1c0fe24cf83c` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:858` | resourceTypeIndex == 0x0f | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
+| `9b46b395a5fd7d98` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1165` | orderType < 23 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `6fcf12e97e98245a` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1166` | orderType <= 22 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `51b739fb18fb59fe` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1166` | orderType <= 6 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `99248a8a36933934` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1166` | orderType >= 0 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `7982b2211f9dae14` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1166` | orderType >= 17 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
+| `e2a1e0210c985ae0` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:1168` | selectedOrderType < 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
+| `a5bea1bcaed98505` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2004` | pendingShipType32 != 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
+| `4da786de03540a53` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2569` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
+| `67c0ae632a6bd31f` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2572` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
+| `7cface52acd2b3a2` | `raw_discriminant_literal` | `src/game/city_ui/TCityInteriorMinister.cpp:2575` | resourceType < 23 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `8f169fc0d602ec55` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:317` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `70ab295d0a911059` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:318` | nextBuildingType == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `7f92aa3fb0b92ac3` | `raw_discriminant_literal` | `src/game/city_ui/TCityProductionView.cpp:411` | nextBuildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

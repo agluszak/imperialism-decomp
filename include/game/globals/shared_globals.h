@@ -207,23 +207,6 @@ extern char g_szEmptyString[];
 extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
-// TMapMgr.cpp — per-resourceType requirement level table (0x513610).
-extern unsigned char g_abUniversityRequirementLevelById[24][4];
-
-extern unsigned char g_abResourceTypeMiniCivMentionFlag[24];
-
-// TMapMgr.cpp — per-resourceType required-order-type code (short), compared against
-// pCivilianOrderEntry->orderType by SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
-// (0x515890).
-extern short g_anResourceTypeRequiredOrderType[24];
-
-// TMapMgr.cpp — per-resourceType "always-qualifies" flag; same caller as above.
-extern unsigned char g_abResourceTypeAlwaysQualifies[24];
-
-// TMapMgr.cpp — per-gateFlag eligibility flag (only indices 0-3 meaningful, gateFlag's
-// range); same caller as above.
-extern unsigned char g_abGateFlagQualifies[24];
-
 // TMinor.cpp — ApplyIndexedResourceDeltaAndAdjustNationTotals scale constant.
 extern float g_ApplyIndexedResourceDeltaScale_00653728;
 
