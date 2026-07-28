@@ -180,7 +180,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
   }
 
   for (sourceNation = 7; sourceNation < kNationSlotCount; ++sourceNation) {
-    TMinor* sourceMinor = g_apMinorNationCapabilityObjects[sourceNation - 7];
+    TMinor* sourceMinor = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceNation]);
     for (targetNation = 7; targetNation < kNationSlotCount; ++targetNation) {
       int pairIndex = sourceNation * kNationSlotCount + targetNation;
       short standingScore = 0x5a;
@@ -1735,7 +1735,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
     }
     candidate->ApplyJoinEmpireMode2FinalizeNationNameState();
 
-    TMinor* capabilityObject = g_apMinorNationCapabilityObjects[auxIndex];
+    TCountry* capabilityObject = g_apTerrainTypeDescriptorTable[7 + auxIndex];
 
     for (int majorSlot = 0; majorSlot < 7; ++majorSlot) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(majorSlot)) {
@@ -1752,7 +1752,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
       short standingValue;
       DiplomacyRelationshipStorage propagationValue;
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(otherMinorSlot)) {
-        TMinor* otherMinorCandidate = g_apMinorNationCapabilityObjects[otherMinorSlot - 7];
+        TCountry* otherMinorCandidate = g_apTerrainTypeDescriptorTable[otherMinorSlot];
         if (otherMinorCandidate->encodedNationSlot >= 200) {
           short normalizedSlot = capabilityObject->DecodeOwnerNationSlot();
           int lookupIndex = normalizedSlot * kNationSlotCount + minorSlot;

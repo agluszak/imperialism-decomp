@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TMinorRelationshipDialog, TDialogView)
 void TMinorRelationshipDialog::Close() {
   for (short minorNation = 7; minorNation < 0x17; ++minorNation) {
     int minorIndex = minorNation - 7;
-    if (g_apMinorNationCapabilityObjects[minorIndex] == 0) {
+    if (g_apTerrainTypeDescriptorTable[minorNation] == 0) {
       continue;
     }
 

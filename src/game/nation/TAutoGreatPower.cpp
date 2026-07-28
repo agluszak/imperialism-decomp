@@ -852,14 +852,11 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
         int minorIndex;
         for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
-          if (g_apMinorNationCapabilityObjects[minorIndex]->IsEncodedNationSlotMinus200Equal(
-                  slot) != 0) {
+          TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[7 + minorIndex];
+          if (minorDescriptor->IsEncodedNationSlotMinus200Equal(slot) != 0) {
             int m;
-            for (m = 1;
-                 m <= g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->GetSize();
-                 ++m) {
-              int minorRegion =
-                  g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->At(m);
+            for (m = 1; m <= minorDescriptor->ownedRegionList->GetSize(); ++m) {
+              int minorRegion = minorDescriptor->ownedRegionList->At(m);
               if (mapNodeStateFlags[minorRegion] == 0) {
                 char markValue = 1;
                 if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(

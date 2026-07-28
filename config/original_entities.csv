@@ -10132,7 +10132,6 @@ address|name|symbol|size|type|prototype|provenance
 6a429c|g_apNationAuxRuntimeStateSlots|||global||
 6a42dc|g_bRandomMapDeveloperCheatFlag|||global||
 6a4310|g_apTerrainTypeDescriptorTable|||global||
-6a432c|g_apMinorNationCapabilityObjects|||global||
 6a4370|g_apNationStates|||global||
 6a438c|g_apNationStates_End|||global||
 6a4398|g_bScenarioScriptTerminationRequested|||global||
