@@ -111,6 +111,22 @@ extern int g_nUiInvalidationAssertFlagLine471;
 extern int g_nUiInvalidationAssertFlagLine495;
 
 extern "C" {
+// QuickDraw renderer state shared by the surface, clip, and text-drawing paths.
+extern CRgn* g_pGlobalClipRegionHandleObject;
+extern COLORREF g_QuickDrawForegroundColor;
+extern char g_szQuickDrawFontFaceSystem[];
+extern char g_szQuickDrawFontFaceBookAntiqua[];
+extern char g_szQuickDrawFontFaceSmallFonts[];
+extern int g_nQuickDrawOriginX;
+extern int g_nQuickDrawOriginY;
+extern TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
+extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
+extern CDC* g_pQuickDrawMemoryDc;
+} // extern "C"
+
+extern "C" {
 extern const int g_nAmbitSaveFileMagic;
 
 extern const int g_nCurrentAmbitSaveFormatVersion;

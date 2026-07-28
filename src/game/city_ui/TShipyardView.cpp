@@ -18,6 +18,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/nation_globals.h"

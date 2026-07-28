@@ -2,6 +2,7 @@
 
 #include "game/ui_widgets/TNumberedArrowButton.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"

@@ -6,6 +6,7 @@
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"

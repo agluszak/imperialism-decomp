@@ -4,6 +4,7 @@
 
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/core/global_data_tables.h"
+#include "game/globals/gfx_globals.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"

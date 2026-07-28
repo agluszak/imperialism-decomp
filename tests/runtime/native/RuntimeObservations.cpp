@@ -6,6 +6,7 @@
 #include "game/core/global_data_tables.h"
 #include "game/gfx/CDib.h"
 #include "game/gfx/TDisplayMgr.h"
+#include "game/globals/gfx_globals.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map/TMiniMapView.h"

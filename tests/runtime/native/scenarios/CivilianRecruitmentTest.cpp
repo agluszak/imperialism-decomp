@@ -11,6 +11,7 @@
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"

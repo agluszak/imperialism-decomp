@@ -229,36 +229,11 @@ extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
 // field4/field6 composition code.
 extern short g_awUnitCombatClassBySlot[32];
 
-// The cached QuickDraw clip region — a heap CRgn built by the CRT static-init ctor
-// at 0x494040 (ported in quickdraw_rendering.cpp as TQuickDrawClipStateInitializer).
-// GetClip seeds from it; SetClip (0x495a30) copies a RgnHandle's region into it.
-extern CRgn* g_pGlobalClipRegionHandleObject;
-
-extern COLORREF g_QuickDrawForegroundColor;
-
-extern char g_szQuickDrawFontFaceSystem[];
-
-extern char g_szQuickDrawFontFaceBookAntiqua[];
-
-extern char g_szQuickDrawFontFaceSmallFonts[];
-
-extern int g_nQuickDrawOriginX;
-
-extern int g_nQuickDrawOriginY;
-
 // Left/top of the view-frame clip bounds used by TTacticalBattleView. Reset together by
 // ResetUiFrameClipOrigin (0x005ad9e0). 0x6a5458/0x6a545c
 extern int g_nUiFrameClipOriginX;
 
 extern int g_nUiFrameClipOriginY;
-
-extern TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
-
-extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
-
-extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
-
-extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
 
 extern CDib* g_pColorKeyCompositeDib;
 
@@ -281,8 +256,6 @@ extern const unsigned char g_bTransferOceanViewportToActiveSurface;
 extern const unsigned char g_bDrawOceanZoneLabels;
 
 extern const unsigned char g_bDrawOceanNationLabels;
-
-extern CDC* g_pQuickDrawMemoryDc;
 
 extern const int g_pTradeSummarySelectionMap[23];
 
