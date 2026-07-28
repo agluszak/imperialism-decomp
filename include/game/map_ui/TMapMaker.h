@@ -34,37 +34,17 @@ public:
   // slot 12 / 0x30
   virtual int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
                                                   int retryBudget);
-  // For major nations (classIndex < 7), union-find merges classIndex's region group
-  // against each hex
-  // neighbour's already-assigned class: allocates a new group id, adopts a neighbour's
-  // group, or absorbs a neighbour into this class's group (in whichever direction has
-  // no group yet), tracking up to 3 member class-indices per group id in
-  // `groupMemberLists1a8` (+0x1a8). Returns false the moment two neighbours already
-  // belong to two DIFFERENT established groups, or a group's member list is full;
-  // otherwise merges/allocates group ids as a side effect and returns true. slot 13 / 0x34
+  // Merges major-nation region groups; false on an incompatible neighbor group. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Expands assigned city-region ids into the tile grid. slot 14 / 0x38
   virtual void ExpandRegionGridIntoTilesAndAllocateCityRecords();
   // Places terrain features according to their generation quotas. slot 15 / 0x3c
   virtual void PlaceTerrainFeatureQuotas();
-  // Same union-find neighbor merge as slot 0x34 for every class, but without the +0x1a8
-  // group-membership bookkeeping: a class with an existing group can only merge by
-  // adopting a neighbour's group (or forming a new one when neither has one yet) --
-  // if this class already has a group and the neighbour doesn't, that's treated as a
-  // conflict (returns false) rather than expanding this class's group. slot 16 / 0x40
+  // Merges region groups for every terrain class. slot 16 / 0x40
   virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
-  // Two-pass smoothing of the full-resolution generation grid's tile ownership: pass 1
-  // erodes tiles with 0-2 same-owner hex neighbors (50%/75% chance for 1/2) into a
-  // differing neighbor's full record when one exists; pass 2 replaces any tile with
-  // NO same-owner neighbor at all into a uniformly-random neighbor's record. Only
-  // processes rows 1..58 (skips the border rows). slot 17 / 0x44
+  // Smooths interior city-region tile ownership from neighboring records. slot 17 / 0x44
   virtual void SmoothCityRegionOwnershipByNeighborSampling();
-  // Recursively walks the hex grid from tileIndex in direction 0..5,
-  // cycled via
-  // random retry on collision) up to `retryBudget` steps, laying a linear terrain
-  // feature (river/road-shaped); returns the number of steps placed. Uses the same
-  // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
-  // hex-direction tables as GetNeighborTileIDArray. slot 18 / 0x48
+  // Grows a linear mountain-range terrain feature. slot 18 / 0x48
   // ORACLE: Mac TMapMaker::SeedMountainRange(long, long, long).
   virtual int SeedMountainRange(int tileIndex, int retryBudget, int direction);
   // slot 19 / 0x4c
@@ -76,18 +56,10 @@ public:
   // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
   // neighbour of each converted tile. slot 21 / 0x54
   virtual int DesertBand(int row, int percentChance);
-  // Claims tileIndex (marking it 1,
-  // plus a variant byte at +0x13 selected by `markerVariant`), refuses if any hex
-  // neighbor is already a marker (byte 6), then recursively spreads to neighbors
-  // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
-  // slot 22 / 0x58
+  // Places a city marker and probabilistically spreads it to neighbors. slot 22 / 0x58
   virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
   virtual void CreateRivers(); // slot 23 / 0x5c
-  // Recursively grows one river segment from `tileIndex` toward water, refusing tiles
-  // that already carry a river byte, mountains below the surface and hills unless the
-  // run began on hills; on reaching water at depth >= 5 it stamps the outgoing direction
-  // and unwinds, writing each tile's connection type from
-  // g_riverConnectionTypeByDirectionPair. slot 24 / 0x60
+  // Recursively grows a river segment toward water. slot 24 / 0x60
   virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
                          unsigned char startedOnHills);
   // Finalizes or compacts city-region ids and rebuilds their borders. slot 25 / 0x64
@@ -102,17 +74,11 @@ public:
   virtual int GetAdjacentRegionGridCell(int cell, int direction);
   // Runs between region-grid expansion and terrain-feature placement. slot 30 / 0x78
   virtual void RandomizeRegionTemplatesAndSmoothOwnership();
-  // Copies a 36-byte region-template bank between fine-grid cells via slot 0x21,
-  // selecting the source variant by LCG randomness. ABI: RET 0x14 = 5 stack
-  // dwords, and the body reads the trailing four as words (MOV DX,word ptr [ESP+0x10] /
-  // CMP word ptr [ESP+0x18],DX), so they are shorts, not dwords. slot 31 / 0x7c
+  // Copies a region-template bank using a random source variant. slot 31 / 0x7c
   virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, short regionClass,
                                                        short unusedClass, short northClass,
                                                        short southClass);
-  // Copies a 36-byte region-template bank to a neighbouring cell (slots 0x1d/0x21) with
-  // an LCG-gated second copy. ABI: RET 0x14; argument types beyond the dword count remain
-  // provisional.
-  // slot 32 / 0x80
+  // Copies a region-template bank to a neighboring coarse-grid cell. slot 32 / 0x80
   virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, short regionClass,
                                                     short unusedClass, short northClass,
                                                     short unusedClass2);
