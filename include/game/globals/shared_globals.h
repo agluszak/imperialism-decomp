@@ -221,29 +221,4 @@ extern unsigned char g_bRandomMapDeveloperCheatFlag;
 
 extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];
 
-// Resource ids cleared before TPopulationMgr recomputes the three derived food needs.
-extern "C" short g_cityPredictedNeedResetResourceIds[3];
-
-extern "C" const float g_PopulationGrowthRateUnder10;
-
-extern "C" const float g_PopulationGrowthRateUnder15;
-
-extern "C" const float g_PopulationGrowthRateUnder20;
-
-extern "C" const float g_PopulationGrowthRateUnder30;
-
-extern "C" const float g_PopulationGrowthRateUnder40;
-
-extern "C" const float g_PopulationGrowthRateUnder60;
-
-extern "C" const float g_PopulationGrowthRateUnder80;
-
-extern "C" const float g_PopulationGrowthRateUnder400;
-
-extern "C" const double g_PopulationGrowthPenaltyPerRetry;
-
-extern "C" const double g_PopulationGrowthMaximumRetryPenalty;
-
-extern "C" const float g_PopulationGrowthRateAtOrAbove400;
-
 } // extern "C"

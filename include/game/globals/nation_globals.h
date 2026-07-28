@@ -207,5 +207,17 @@ extern const double g_BullyWeightHigh_00654918;
 extern short g_industryActionCostWeightResCode10[16];
 extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
 extern short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
+extern short g_cityPredictedNeedResetResourceIds[3];
+extern const float g_PopulationGrowthRateUnder10;
+extern const float g_PopulationGrowthRateUnder15;
+extern const float g_PopulationGrowthRateUnder20;
+extern const float g_PopulationGrowthRateUnder30;
+extern const float g_PopulationGrowthRateUnder40;
+extern const float g_PopulationGrowthRateUnder60;
+extern const float g_PopulationGrowthRateUnder80;
+extern const float g_PopulationGrowthRateUnder400;
+extern const double g_PopulationGrowthPenaltyPerRetry;
+extern const double g_PopulationGrowthMaximumRetryPenalty;
+extern const float g_PopulationGrowthRateAtOrAbove400;
 
 } // extern "C"
