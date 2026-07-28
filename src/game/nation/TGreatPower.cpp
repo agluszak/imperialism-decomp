@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/GameAssert.h"
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"

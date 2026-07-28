@@ -323,7 +323,7 @@ bitmap_descriptor_helpers.cpp|11|McWindow.cpp|9|ui_core|10|multi_module|McWindow
 quickdraw_rendering.cpp|30|McWindow.cpp|23|ui_core|25|multi_module|McWindow.cpp:23+QuickDraw.cpp:6+Cross/UUnit.cpp:1
 ui_message_pump.cpp|1|IncludeView.cpp|1|ui_core|1||IncludeView.cpp:1
 ui_timing.cpp|2|McAppUI.cpp|1|ui_core|2|multi_module|McAppUI.cpp:1+Cross/UUnit.cpp:1
-CString.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
+CString.cpp|1|Cross/USetupScreens.cpp|1|core|1||Cross/USetupScreens.cpp:1
 T2PictureButton.cpp|2|Cross/UOptionViews.cpp|2|ui_screens|2||Cross/UOptionViews.cpp:2
 TAlwaysPictureButton.cpp|3|Cross/UOptionViews.cpp|3|ui_screens|3||Cross/UOptionViews.cpp:3
 TArrowsControl.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2

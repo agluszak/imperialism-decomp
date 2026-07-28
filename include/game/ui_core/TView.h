@@ -5,7 +5,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/ui_core/TEventHandler.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/mfc.h"
 

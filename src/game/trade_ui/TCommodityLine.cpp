@@ -1,6 +1,6 @@
 #include "game/trade_ui/TCommodityLine.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_screens/TColorKeyPicture.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_screens/TSimMgr.h"

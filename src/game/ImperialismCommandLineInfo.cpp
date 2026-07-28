@@ -1,6 +1,6 @@
 #include "game/ImperialismCommandLineInfo.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 

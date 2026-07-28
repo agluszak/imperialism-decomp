@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TMapPreviewView.h"

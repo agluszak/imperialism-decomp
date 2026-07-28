@@ -3,7 +3,7 @@
 #include "compat.h"
 
 #include "decomp_types.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/city_ui/TCountry.h"

@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TCluster.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/ui_screens/TSimMgr.h"

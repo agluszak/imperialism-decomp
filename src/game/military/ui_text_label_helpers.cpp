@@ -1,4 +1,4 @@
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_widgets/TDropShadowText.h"

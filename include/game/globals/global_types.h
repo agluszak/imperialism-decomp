@@ -8,7 +8,7 @@
 #include "game/mfc.h"
 #include "game/military_domain_types.h"
 #include "game/strategic_terrain.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 
 struct NationState;
 struct TextStyle;

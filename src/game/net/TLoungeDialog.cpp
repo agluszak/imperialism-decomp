@@ -7,7 +7,7 @@
 #include "game/net/TLoungeDialog.h"
 #include "game/ui_core/TLanguageMgr.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_core/TApplication.h"

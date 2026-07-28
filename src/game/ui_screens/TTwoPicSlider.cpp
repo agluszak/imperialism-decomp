@@ -15,7 +15,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 #include <new>
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_text_label_helpers_decls.h"
 
 // SYNTHETIC: IMPERIALISM 0x0056e120

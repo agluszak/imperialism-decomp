@@ -4,7 +4,7 @@
 
 #include "game/map_domain_types.h"
 #include "game/strategic_terrain.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 
 class TCivUnit;
 class TMilitaryUnit;

@@ -6,7 +6,7 @@
 #include "game/map/TMission.h"
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"

@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/city_ui/TCountry.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TCivUnit.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/map/TMapMgr.h"

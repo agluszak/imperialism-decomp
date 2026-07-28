@@ -1,5 +1,5 @@
 #include "game/military/TGarrisonView.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyUnitLine.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TMilitaryUnit.h"

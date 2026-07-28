@@ -1,7 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/city_ui/TLongintList.h"

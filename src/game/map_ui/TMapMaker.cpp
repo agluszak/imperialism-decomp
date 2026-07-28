@@ -5,7 +5,7 @@
 
 #include "game/map_ui/TMapMaker.h"
 #include "game/core/runtime_prng_seed.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/app/TObject.h"
 #include "game/ui_core/TControl.h"
 #include "game/map/TMapMgr.h"

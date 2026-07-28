@@ -1,6 +1,6 @@
 #include "game/trade_ui/TDealLine.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_screens/TSimMgr.h"

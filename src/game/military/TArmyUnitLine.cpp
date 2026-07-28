@@ -1,7 +1,7 @@
 #include "game/military/TArmyUnitLine.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military_ui/TArmyCheckBox.h"
 #include "game/military/TArmyUnitView.h"
 #include "game/ui_screens/TClickZone.h"

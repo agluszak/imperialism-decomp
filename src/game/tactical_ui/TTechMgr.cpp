@@ -14,7 +14,7 @@
 #include <string.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/navy/TAdmiral.h"
 #include "game/city/TCity.h"
 #include "game/city_ui/TCountry.h"

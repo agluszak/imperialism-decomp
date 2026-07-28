@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/tactical/hex_tile_distance.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TControl.h"
