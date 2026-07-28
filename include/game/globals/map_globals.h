@@ -106,4 +106,10 @@ extern const float g_HexHighlightScreenScale_00658640;
 
 extern float g_TileHeatmapNeighborDiffusionFactor;
 
+// Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
+// shared by the city-region seeding/template passes.
+extern unsigned int g_mapGenLcgState_006a38e8;
+extern int g_regionSeedGridRows_006a38ec;
+extern int g_regionSeedGridCols_006a38f0;
+
 } // extern "C"
