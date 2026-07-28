@@ -21,6 +21,7 @@
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/net_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"

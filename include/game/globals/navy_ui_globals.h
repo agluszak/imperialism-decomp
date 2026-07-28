@@ -3,6 +3,8 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
+extern "C" char* g_pShipFractionSharedText_0065c830;
+
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // Per-type index into TShipView::Draw's 8-entry order-status
 // string pool (GetString group 0x2760, one status line per naval order state);

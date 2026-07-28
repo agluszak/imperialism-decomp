@@ -6,6 +6,7 @@
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern short g_creditsPlaybackActive_006a4084;
+extern "C" int g_nRandomMapSelectedNationSlot00698AB0;
 extern "C" void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 
 extern POINT g_ptTechItemModalMessage;
