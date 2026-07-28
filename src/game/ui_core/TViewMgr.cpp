@@ -2436,7 +2436,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
   TCity* city = nation != nullptr ? nation->city : nullptr;
-  citySiteView->pendingTown364 = city->homeTownMarkerB0;
+  citySiteView->pendingTown = city->homeTownMarkerB0;
   citySiteView->SetMapViewTileIndex(
       g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(nationSlot));
 

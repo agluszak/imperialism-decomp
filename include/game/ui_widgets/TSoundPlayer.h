@@ -20,9 +20,9 @@ public:
   unsigned short activeAudioCueId;
   unsigned short pendingAudioCueId;
   unsigned char cdAudioPlaybackActive;
-  unsigned char stateByte79;
-  unsigned char stateByte7a;
-  unsigned char pad7b;
+  unsigned char unknown79;
+  unsigned char unknown7A;
+  unsigned char padding7B;
   unsigned int fadeStartTick16;
   unsigned char clearCuePoolsAfterFade;
   char pad81[0x03];
@@ -34,23 +34,27 @@ public:
   char DoIdle(int action) override; // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+).
-  virtual void ISoundPlayer(int idleFrequency);                           // 0x25 -> 0x5e4e70
-  virtual unsigned char ReturnConstantTrue_SoundPredicate();              // 0x26 -> 0x5e4f60
-  virtual unsigned char ReturnConstantFalse_SoundPredicate(int a, int b); // 0x27 -> 0x5e4fb0
-  virtual void RequestDirectSoundInitIfAllowed();                         // 0x28 -> 0x5e4f80
-  virtual void ClearDirectSoundInitPendingAndResetState();                // 0x29 -> 0x5e4fd0
-  virtual void StopAllSoundChannels();                                    // 0x2a -> 0x5e4ff0
+  virtual void ISoundPlayer(int idleFrequency);            // 0x25 -> 0x5e4e70
+  virtual unsigned char DefaultSoundCapabilityPredicate(); // 0x26 -> 0x5e4f60
+  virtual unsigned char DefaultSoundCompatibilityPredicate(int unusedArg1,
+                                                           int unusedArg2); // 0x27 -> 0x5e4fb0
+  virtual void RequestDirectSoundInitIfAllowed();                           // 0x28 -> 0x5e4f80
+  virtual void ClearDirectSoundInitPendingAndResetState();                  // 0x29 -> 0x5e4fd0
+  virtual void StopAllSoundChannels();                                      // 0x2a -> 0x5e4ff0
   // Converts a 0-100 percent into log-taper DirectSound attenuation (clamped to
   // [-9999, 0] millibels) and applies it when DirectSound init succeeded.
   virtual void SetMasterVolumeFromPercent(short percent);                        // 0x2b -> 0x5e5020
   virtual void PriorityOverride(short currentPriority, short requestedPriority); // 0x2c -> 0x5e50a0
   // sfxToken is short-typed: the body reads it via `movsx ecx, word ptr [esp+8]`
   // (0x5e50f0) and PlaySoundEffect forwards its own short token without extension.
-  virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(
-      short sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1); // 0x2d -> 0x5e50c0
+  virtual int
+  UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken, int unusedArg2 = 0,
+                                                       int unusedArg3 = 1,
+                                                       int unusedArg4 = 1); // 0x2d -> 0x5e50c0
   // sfxToken is short-typed: 0x5d6260 passes a word table load with no extension
   // (garbage upper bits), which only compiles against a short parameter.
-  virtual int PlaySoundEffect(short sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
+  virtual int PlaySoundEffect(short sfxToken, int forwardedArg2 = 0,
+                              int forwardedArg3 = 1); // 0x2e -> 0x5e5140
   virtual int PlaySoundAsynchronously(short soundId, short channel,
                                       short priority);                              // 0x2f 0x5e5170
   virtual int PlaySoundSynchronously(short soundId, short channel, short priority); // 0x30 0x5e5190
