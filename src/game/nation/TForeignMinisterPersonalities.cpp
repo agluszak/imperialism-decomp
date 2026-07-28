@@ -72,7 +72,7 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
     short amount = static_cast<short>(available / 10);
     if (amount > 2) {
       owner->SetItemPotentials(kResourceArms, amount);
-    } else if (available > 6) {
+    } else if (owner->GetStockpile(kResourceArms) > 6) {
       owner->SetItemPotentials(kResourceArms, 2);
     }
   }
@@ -112,26 +112,55 @@ void TTedForeignMinister::SetBuyPriorities() {
       preferredResourceSlots40[2] = 4;
     }
     preferredResourceSlots40[1] = 2;
-    preferredResourceSlots40[3] = rand() < 0x3ffe ? 0 : 1;
+    if (rand() < 0x3ffe) {
+      preferredResourceSlots40[3] = 0;
+      TForeignMinister::SetBuyPriorities();
+      return;
+    }
+    goto set_final_priority_to_one;
+  }
+
+  if (ownerContextAt04->GetStockpile(kResourceIron) <
+      ownerContextAt04->GetStockpile(kResourceCoal)) {
+    preferredResourceSlots40[0] = kResourceIron;
+    if (ownerContextAt04->GetStockpile(kResourceOil) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
+      preferredResourceSlots40[1] = kResourceOil;
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceTimber) <
+                                            ownerContextAt04->GetStockpile(kResourceCoal)
+                                        ? kResourceTimber
+                                        : kResourceCoal;
+    } else {
+      preferredResourceSlots40[1] = kResourceCoal;
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) >
+                                            ownerContextAt04->GetStockpile(kResourceTimber)
+                                        ? kResourceTimber
+                                        : kResourceOil;
+    }
+  } else {
+    preferredResourceSlots40[0] = kResourceCoal;
+    if (ownerContextAt04->GetStockpile(kResourceOil) <
+        ownerContextAt04->GetStockpile(kResourceIron)) {
+      preferredResourceSlots40[1] = kResourceOil;
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceIron) >
+                                            ownerContextAt04->GetStockpile(kResourceTimber)
+                                        ? kResourceTimber
+                                        : kResourceIron;
+    } else {
+      preferredResourceSlots40[1] = kResourceIron;
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) >
+                                            ownerContextAt04->GetStockpile(kResourceTimber)
+                                        ? kResourceTimber
+                                        : kResourceOil;
+    }
+  }
+  if (rand() < 0x3ffe) {
+    preferredResourceSlots40[3] = 0;
     TForeignMinister::SetBuyPriorities();
     return;
   }
-
-  short resources[4] = {2, 3, 4, 6};
-  for (int i = 0; i < 3; ++i) {
-    for (int j = i + 1; j < 4; ++j) {
-      if (ownerContextAt04->GetStockpile(resources[j]) <
-          ownerContextAt04->GetStockpile(resources[i])) {
-        short swap = resources[i];
-        resources[i] = resources[j];
-        resources[j] = swap;
-      }
-    }
-  }
-  for (int resourceIndex = 0; resourceIndex < 3; ++resourceIndex) {
-    preferredResourceSlots40[resourceIndex] = resources[resourceIndex];
-  }
-  preferredResourceSlots40[3] = rand() < 0x3ffe ? 0 : 1;
+set_final_priority_to_one:
+  preferredResourceSlots40[3] = 1;
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -181,22 +210,28 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       resourceCode == kResourceOil) {
     short available =
         static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-    short amount =
-        available >= arg2
-            ? arg2
-            : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
+    if (available >= arg2) {
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
+    } else {
+      g_pTradeMgr->SetDealResults(
+          owner->nationSlot, arg1,
+          static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+          resourceCode, 0, 0);
+    }
     return;
   }
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
     short amount = owner->merchantCapacity < 15 ? 1 : (owner->merchantCapacity >= 30 ? 3 : 2);
     amount = MinShort(amount, arg2);
-    short available =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-    if (available < amount) {
-      amount = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >=
+        amount) {
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
+    } else {
+      g_pTradeMgr->SetDealResults(
+          owner->nationSlot, arg1,
+          static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+          resourceCode, 0, 0);
     }
-    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
   }
 }
 
@@ -273,21 +308,31 @@ void TBillForeignMinister::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x00531d20
 void TBillForeignMinister::SetBuyPriorities() {
-  bool hasAdvancedResource = HasAdvancedTradeResource(this);
+  if (HasAdvancedTradeResource(this)) {
+    if (ownerContextAt04->GetStockpile(kResourceIron) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
+      preferredResourceSlots40[0] = 4;
+      preferredResourceSlots40[3] = 3;
+    } else {
+      preferredResourceSlots40[0] = 3;
+      preferredResourceSlots40[3] = 4;
+    }
+    preferredResourceSlots40[1] = 2;
+    preferredResourceSlots40[2] = 6;
+    TForeignMinister::SetBuyPriorities();
+    return;
+  }
+
   if (ownerContextAt04->GetStockpile(kResourceIron) <
       ownerContextAt04->GetStockpile(kResourceCoal)) {
     preferredResourceSlots40[0] = 4;
-    preferredResourceSlots40[hasAdvancedResource ? 3 : 2] = 3;
+    preferredResourceSlots40[2] = 3;
   } else {
     preferredResourceSlots40[0] = 3;
-    preferredResourceSlots40[hasAdvancedResource ? 3 : 2] = 4;
+    preferredResourceSlots40[2] = 4;
   }
   preferredResourceSlots40[1] = 2;
-  if (hasAdvancedResource) {
-    preferredResourceSlots40[2] = 6;
-  } else {
-    preferredResourceSlots40[3] = static_cast<short>(0xfff6);
-  }
+  preferredResourceSlots40[3] = static_cast<short>(0xfff6);
   TForeignMinister::SetBuyPriorities();
 }
 
@@ -590,8 +635,9 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short a
   }
   TGreatPower* owner = ownerContextAt04;
   short amount = owner->merchantCapacity < 12 ? 1 : (owner->merchantCapacity >= 25 ? 3 : 2);
-  amount = MinShort(
-      amount, static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)));
+  if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) < amount) {
+    amount = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+  }
   amount = MinShort(amount, arg2);
   g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
 }
@@ -624,19 +670,27 @@ void TTextileForeignMinister::SetBuyPriorities() {
   preferredResourceSlots40[1] = 1;
   TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
   priorities->recordSize14 = sizeof(ResourcePriorityEntry);
-  const short resources[4] = {3, 4, 2, 6};
-  int resourceCount = HasAdvancedTradeResource(this) ? 4 : 3;
-  for (int i = 0; i < resourceCount; ++i) {
-    ResourcePriorityEntry entry;
-    entry.resourceCode = resources[i];
-    entry.priority = ownerContextAt04->GetStockpile(resources[i]);
+  ResourcePriorityEntry entry;
+  entry.resourceCode = 3;
+  entry.priority = ownerContextAt04->GetStockpile(3);
+  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  entry.resourceCode = 4;
+  entry.priority = ownerContextAt04->GetStockpile(4);
+  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  entry.resourceCode = 2;
+  entry.priority = ownerContextAt04->GetStockpile(2);
+  priorities->InsertCopiedRecordSortedByComparator(&entry);
+  if (HasAdvancedTradeResource(this)) {
+    entry.resourceCode = 6;
+    entry.priority = ownerContextAt04->GetStockpile(6);
     priorities->InsertCopiedRecordSortedByComparator(&entry);
   }
-  for (int selectedIndex = 0; selectedIndex < 2; ++selectedIndex) {
-    ResourcePriorityEntry* entry = static_cast<ResourcePriorityEntry*>(
-        priorities->GetPtrListEntryByOneBasedIndex(selectedIndex + 1));
-    preferredResourceSlots40[selectedIndex + 2] = entry->resourceCode;
-  }
+  ResourcePriorityEntry* first =
+      static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(1));
+  preferredResourceSlots40[2] = first->resourceCode;
+  ResourcePriorityEntry* second =
+      static_cast<ResourcePriorityEntry*>(priorities->GetPtrListEntryByOneBasedIndex(2));
+  preferredResourceSlots40[3] = second->resourceCode;
   priorities->ReleasePtrList();
   TForeignMinister::SetBuyPriorities();
 }
@@ -646,10 +700,12 @@ void TTextileForeignMinister::SetTradeBids() {
   short merchantCapacity = ownerContextAt04->merchantCapacity;
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = ownerContextAt04;
-  short textileAmount = owner->GetStockpile(kResourceClothing);
-  if (owner->treasuryValue10 < 0 || textileAmount >= merchantCapacity ||
-      (textileAmount > 4 && g_pTradeMgr->GetPrice(0x0d) > 1000)) {
-    owner->SetItemPotentials(kResourceClothing, MinShort(textileAmount, merchantCapacity));
+  if (owner->treasuryValue10 < 0 || owner->GetStockpile(kResourceClothing) >= merchantCapacity ||
+      (owner->GetStockpile(kResourceClothing) > 4 && g_pTradeMgr->GetPrice(0x0d) > 1000)) {
+    short textileAmount = owner->GetStockpile(kResourceClothing) < merchantCapacity
+                              ? owner->GetStockpile(kResourceClothing)
+                              : merchantCapacity;
+    owner->SetItemPotentials(kResourceClothing, textileAmount);
   }
   if (owner->treasuryValue10 < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
     short budget = static_cast<short>(merchantCapacity / 2);
@@ -659,11 +715,14 @@ void TTextileForeignMinister::SetTradeBids() {
       firstResource = 0x0f;
       secondResource = 0x0e;
     }
-    short firstAmount = MinShort(budget, owner->GetStockpile(firstResource));
+    short firstAmount =
+        owner->GetStockpile(firstResource) <= budget ? owner->GetStockpile(firstResource) : budget;
     owner->SetItemPotentials(firstResource, firstAmount);
     short remaining = static_cast<short>(budget - firstAmount);
-    owner->SetItemPotentials(secondResource,
-                             MinShort(remaining, owner->GetStockpile(secondResource)));
+    short secondAmount = owner->GetStockpile(secondResource) < remaining
+                             ? owner->GetStockpile(secondResource)
+                             : remaining;
+    owner->SetItemPotentials(secondResource, secondAmount);
   }
   SetTedStyleAdvancedResourceBid(this, 1500);
 }
@@ -676,13 +735,22 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short available =
-      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  short amount =
-      available >= arg2
-          ? arg2
-          : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
+  if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
+    if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >= arg2) {
+      goto accept_requested_amount;
+    }
+  } else if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >=
+             arg2) {
+    goto accept_requested_amount;
+  }
+  g_pTradeMgr->SetDealResults(
+      owner->nationSlot, arg1,
+      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+      resourceCode, 0, 0);
+  return;
+
+accept_requested_amount:
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533780
@@ -723,9 +791,10 @@ void TTraderForeignMinister::SetBuyPriorities() {
   for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resourceCode;
-    entry.priority = g_pTradeMgr->GetPrice(resourceCode);
     if (resourceCode == kResourceCoal || resourceCode == kResourceIron) {
-      entry.priority = static_cast<short>(entry.priority - 15);
+      entry.priority = static_cast<short>(g_pTradeMgr->GetPrice(resourceCode) - 15);
+    } else {
+      entry.priority = g_pTradeMgr->GetPrice(resourceCode);
     }
     priorities->InsertCopiedRecordSortedByComparator(&entry);
   }
@@ -781,12 +850,14 @@ void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg
   TGreatPower* owner = ownerContextAt04;
   short available =
       static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  short amount =
-      available >= arg2
-          ? arg2
-          : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, available < arg2,
-                              0);
+  if (available >= arg2) {
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
+  } else {
+    g_pTradeMgr->SetDealResults(
+        owner->nationSlot, arg1,
+        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+        resourceCode, 1, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00533e90
@@ -848,13 +919,19 @@ void TArmsForeignMinister::SetBuyPriorities() {
     preferredResourceSlots40[1] = 2;
     preferredResourceSlots40[2] = 3;
     preferredResourceSlots40[3] = 4;
+    TForeignMinister::SetBuyPriorities();
   } else {
     preferredResourceSlots40[0] = 2;
     preferredResourceSlots40[1] = 3;
     preferredResourceSlots40[2] = 4;
-    preferredResourceSlots40[3] = rand() % 2;
+    if (rand() % 2 != 0) {
+      preferredResourceSlots40[3] = 0;
+      TForeignMinister::SetBuyPriorities();
+      return;
+    }
+    preferredResourceSlots40[3] = 1;
+    TForeignMinister::SetBuyPriorities();
   }
-  TForeignMinister::SetBuyPriorities();
 }
 
 // FUNCTION: IMPERIALISM 0x00534190
@@ -901,26 +978,33 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  bool eligibleForSplit;
-  short* splitCount;
   if (HasAdvancedTradeResource(this)) {
-    eligibleForSplit = resourceCode == kResourceTimber || resourceCode == kResourceCoal ||
-                       resourceCode == kResourceIron;
-    splitCount = &g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
-  } else {
-    eligibleForSplit = resourceCode >= kResourceCotton && resourceCode <= kResourceCoal;
-    splitCount = &g_nArmsBasicResourceOfferSplitCount_006a3a54;
-  }
-  if (eligibleForSplit) {
-    if (tradePartnerEnabled49[resourceCode] != 0) {
-      short divisor = *splitCount == 0 ? 3 : 2;
-      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / divisor);
-      ++*splitCount;
+    if (resourceCode != kResourceTimber && resourceCode != kResourceCoal &&
+        resourceCode != kResourceIron) {
+      capabilityFlag16 = owner->GetAvailableMerchantCapacity();
+    } else if (tradePartnerEnabled49[resourceCode] != 0) {
+      if (g_nArmsAdvancedResourceOfferSplitCount_006a3a58 == 0) {
+        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
+      } else {
+        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
+      }
+      ++g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
     }
-    tradePartnerEnabled49[resourceCode] = 0;
   } else {
-    capabilityFlag16 = owner->GetAvailableMerchantCapacity();
+    if (resourceCode != kResourceCotton && resourceCode != kResourceWool &&
+        resourceCode != kResourceTimber && resourceCode != kResourceCoal) {
+      capabilityFlag16 = owner->GetAvailableMerchantCapacity();
+    } else if (tradePartnerEnabled49[resourceCode] != 0) {
+      if (g_nArmsBasicResourceOfferSplitCount_006a3a54 == 0) {
+        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
+        ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
+      } else {
+        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
+        ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
+      }
+    }
   }
+  tradePartnerEnabled49[resourceCode] = 0;
   if (capabilityFlag16 >= arg2) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
     capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);

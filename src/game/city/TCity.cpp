@@ -813,13 +813,12 @@ void TCity::TransferTransportRequests(void*) {
 short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
     TGreatPower* owner = this->ownerNationAc;
-    int regionCount = owner->ownedRegionList->GetSize();
     if (owner->pendingActionStatus.roles.expansionCapacityStatus09 < 0x33) {
-      if (regionCount / 4 > 1) {
-        return static_cast<short>(regionCount / 4);
+      if (owner->ownedRegionList->GetSize() / 4 > 1) {
+        return static_cast<short>(owner->ownedRegionList->GetSize() / 4);
       }
-    } else if (regionCount / 3 > 1) {
-      return static_cast<short>(regionCount / 3);
+    } else if (owner->ownedRegionList->GetSize() / 3 > 1) {
+      return static_cast<short>(owner->ownedRegionList->GetSize() / 3);
     }
     return 1;
   }

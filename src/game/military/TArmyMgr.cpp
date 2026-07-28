@@ -10,6 +10,7 @@
 #include "game/ui_tags_map.h"
 
 #include <stdlib.h>
+#include <mbstring.h>
 #include <string.h>
 
 #include "game/TList.h"
@@ -606,7 +607,9 @@ static void BuildArmyActionLabelFromLocalizationAndCounts(CStr255* destination, 
   {
     CString currentLabel;
     currentLabel = destination->data;
-    destinationHasText = currentLabel.Compare(g_szEmptyString) != 0;
+    destinationHasText =
+        _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(currentLabel)),
+                reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0;
   }
   if (destinationHasText) {
     CString separator(g_szListSeparator_00695760);
@@ -2326,7 +2329,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 }
 
 // FUNCTION: IMPERIALISM 0x004a7370
-void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
+void __stdcall ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   int totalArms = 0;
   CIterator cursor(nation->militaryUnitList44);

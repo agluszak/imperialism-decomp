@@ -14,6 +14,7 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TOcean.h"
+#include "game/navy_ui/TOceanDialog.h"
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TViewMgr.h"
@@ -541,9 +542,22 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
     TZone* orderContext =
         g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
     // ownerContext is really a TMapUberPicture* (see the class-attribution note on
-    // TMapUberPicture::SetMapInteractionMode); SetActiveMapOrderEntry already reproduces
-    // this exact invalidate-old/set/invalidate-new/refresh sequence.
-    static_cast<TMapUberPicture*>(ownerContext)->SetActiveMapOrderEntry(orderContext);
+    // TMapUberPicture::SetMapInteractionMode).
+    TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
+    mapPicture->SetMapInteractionMode(2);
+    if (mapPicture->invalidationFlag94 == 0) {
+      mapPicture->goodGoldTagControlA4->InvalidateZone(mapPicture->orderEntryContext98);
+    }
+    mapPicture->orderEntryContext98 = orderContext;
+    if (mapPicture->invalidationFlag94 == 0) {
+      mapPicture->goodGoldTagControlA4->InvalidateZone(orderContext);
+    }
+    TTaskForce* refreshedTaskForce = 0;
+    if (orderContext != 0) {
+      refreshedTaskForce =
+          g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(orderContext);
+    }
+    mapPicture->RefreshMapOrderEntryPanel(refreshedTaskForce);
   }
 
   g_lastClickedMapTileIndex_006a4608 = tileIndex;
@@ -618,7 +632,8 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
             0 ||
         g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
                                                                                 nInputFlags) != 0) {
-      goto refresh;
+      RefreshControl();
+      goto tail;
     }
     handled = static_cast<char>(g_pNavyOrderManager->DoTileClick(nTileIndex, nInputFlags));
     goto cycle;

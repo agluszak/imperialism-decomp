@@ -283,6 +283,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* targetNeedByType = this->needTargetByType;
   short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
   char* influenceByRegion = BuildCityInfluenceLevelMap();
+  char* influenceBuffer = influenceByRegion;
   TMapMgr* globalMapState = g_pGlobalMapState;
   int regionIndex = 0;
 
@@ -333,6 +334,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
       ++influenceByRegion;
     }
   }
+
+  delete[] influenceBuffer;
 
   for (int typeIndex = 0; typeIndex < kNationSlotCount; ++typeIndex) {
     if (currentNeedByType[typeIndex] < targetNeedByType[typeIndex]) {
@@ -1599,9 +1602,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         CString alertTextRef;
         g_pSimMgr->GetString(0x2753, 0x44, &alertHeaderRef);
         g_pSimMgr->GetString(0x2753, 0x45, &alertTextRef);
-        // alertHeaderRef is fetched and released without being dispatched, as in
-        // the original (0x004de4a2..0x004de4ea).
-        g_pViewMgr->ModalMessage(alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(5, alertHeaderRef, alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
       }
     }
   }
@@ -2653,7 +2654,7 @@ float TGreatPower::GetTotalNavalForce(void) {
     productionTerm = navyPriorityInt;
   }
   float productionTermF = static_cast<float>(productionTerm);
-  int fleetPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  int fleetPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
   int priorityCap = static_cast<int>(navyPriorityF * g_Compute_City_Order_Value_0065371C);
   if (priorityCap >= fleetPower) {
     priorityCap = fleetPower;
@@ -2994,9 +2995,20 @@ bool TGreatPower::TryHandleWarTransitionRequest(int targetNation, int sourceNati
 // FUNCTION: IMPERIALISM 0x004e1e40
 int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                                         char swapRoles) {
-  this->SetEnemy(targetNation);
-  this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, swapRoles, sourceNation);
-  return 1;
+  char accepted = g_pViewMgr->PoseWarOfferIfTurnFlowReady(
+      this->nationSlot, targetNation, sourceNation, static_cast<int>(swapRoles) + 0x14);
+  if (accepted == 0) {
+    if (swapRoles == 0) {
+      sourceNation = targetNation;
+    }
+    g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+        this->nationSlot, sourceNation, swapRoles == 0);
+  } else if (swapRoles != 0) {
+    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
+  } else {
+    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 2, targetNation);
+  }
+  return accepted != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20

@@ -31,6 +31,10 @@ TDefenseMinisterView::~TDefenseMinisterView() {}
 
 // FUNCTION: IMPERIALISM 0x004f3370
 void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId != 0xa && commandId != 0x14) {
+    TEventHandler::DoEvent(commandId, sourceHandler, event);
+    return;
+  }
   unsigned int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagBack) {

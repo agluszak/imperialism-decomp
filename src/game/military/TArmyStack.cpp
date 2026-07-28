@@ -16,7 +16,7 @@
 // Duplicates TArmyMgr.cpp's own (file-static) IsUnitMeterEligible check -- ground truth
 // repeats this same inline test across every meter-related function in this family
 // rather than factoring it into a shared helper.
-static bool IsUnitMeterEligible(TUnit* unit) {
+static __inline bool IsUnitMeterEligible(TUnit* unit) {
   TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
   return milUnit->strength34 > milUnit->strengthSnapshot3C / 2 &&
          (milUnit->battleStateFlags3A & 2) == 0;
@@ -279,40 +279,56 @@ void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* o
   *outWeightedSum = 0;
   *outCount = 0;
 
-  for (TUnit* unit = this->ResetCursorAndGetHeadUnit(); unit != nullptr;
-       unit = this->AdvanceCursorAndGetUnit()) {
+  cursor18 = head14;
+  TArmyStackUnitNode* node = cursor18;
+  TUnit* unit = (node != nullptr) ? node->unit : nullptr;
+  while (unit != nullptr) {
     if (!IsUnitMeterEligible(unit)) {
-      continue;
+    } else {
+      TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
+      int weightClass = g_anWeightClassByOrderType[unit->orderType];
+      short scaledFactor = g_anScaledFactorByOrderType[unit->orderType];
+      int percentEfficiency = static_cast<int>(g_afPercentEfficiencyByOrderType[unit->orderType]);
+      *outWeightedSum += (((scaledFactor * kRoundBlendWeightSecondary[counter]) / 1000 +
+                           (kRoundBlendWeightPrimary[counter] * weightClass) / 100) *
+                          percentEfficiency * milUnit->strength34) /
+                         500;
+      *outCount += g_anCountWeightByOrderType[unit->orderType];
     }
-    TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-    int weightClass = g_anWeightClassByOrderType[unit->orderType];
-    short scaledFactor = g_anScaledFactorByOrderType[unit->orderType];
-    int percentEfficiency = static_cast<int>(g_afPercentEfficiencyByOrderType[unit->orderType]);
-    *outWeightedSum += (((scaledFactor * kRoundBlendWeightSecondary[counter]) / 1000 +
-                         (kRoundBlendWeightPrimary[counter] * weightClass) / 100) *
-                        percentEfficiency * milUnit->strength34) /
-                       500;
-    *outCount += g_anCountWeightByOrderType[unit->orderType];
+    node = cursor18;
+    if (node != nullptr) {
+      node = node->next;
+      cursor18 = node;
+      unit = (node != nullptr) ? node->unit : nullptr;
+    } else {
+      unit = nullptr;
+    }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a8040
 void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count,
                                                                   int counter) {
-  // Ground truth never reads weightedSum/count in this function (dead params kept for a
-  // call-signature match with AccumulateWeightedMeterAndCountFromEligibleLinkedEntries).
-  (void)weightedSum;
-  (void)count;
   if (counter > 3) {
     counter = 3;
   }
 
   int activityScore = 0;
-  for (TUnit* unit = this->ResetCursorAndGetHeadUnit(); unit != nullptr;
-       unit = this->AdvanceCursorAndGetUnit()) {
+  cursor18 = head14;
+  TArmyStackUnitNode* firstNode = cursor18;
+  TUnit* unit = (firstNode != nullptr) ? firstNode->unit : nullptr;
+  while (unit != nullptr) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
     if (milUnit->strength34 > 0 && (milUnit->battleStateFlags3A & 2) == 0) {
       activityScore += (milUnit->strength34 > milUnit->strengthSnapshot3C / 2) ? 2 : 1;
+    }
+    firstNode = cursor18;
+    if (firstNode != nullptr) {
+      firstNode = firstNode->next;
+      cursor18 = firstNode;
+      unit = (firstNode != nullptr) ? firstNode->unit : nullptr;
+    } else {
+      unit = nullptr;
     }
   }
   if (activityScore == 0) {
@@ -320,19 +336,42 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
   }
 
   static const int kDecayScalePercentByRound[4] = {70, 80, 90, 90};
-  for (TUnit* decayUnit = this->ResetCursorAndGetHeadUnit(); decayUnit != nullptr;
-       decayUnit = this->AdvanceCursorAndGetUnit()) {
+  int averageStrength = weightedSum / activityScore;
+  int participationPercent = count + static_cast<signed char>(fortLevelAttackerPenaltyCache9);
+  if (participationPercent > 100) {
+    participationPercent = 100;
+  }
+  int baseDecay = participationPercent * averageStrength / 100;
+
+  cursor18 = head14;
+  TArmyStackUnitNode* decayNode = cursor18;
+  TUnit* decayUnit = (decayNode != nullptr) ? decayNode->unit : nullptr;
+  while (decayUnit != nullptr) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(decayUnit);
     if (milUnit->strength34 > 0 && (milUnit->battleStateFlags3A & 2) == 0) {
-      int roll = static_cast<int>(rand());
-      if ((milUnit->battleStateFlags3A & 1) != 0) {
-        roll = (kDecayScalePercentByRound[counter] * roll) / 100;
+      int eligibilityScale = milUnit->strength34 > milUnit->strengthSnapshot3C / 2 ? 2 : 1;
+      int randomScale = (((rand() % 7) + 7) * eligibilityScale * baseDecay) / 10;
+      if (g_MapContextStaticTable_00695428[decayUnit->orderType] != 0) {
+        randomScale /= 2;
       }
-      if (roll < milUnit->strength34) {
-        milUnit->strength34 -= static_cast<short>(roll);
+      int decayAmount = static_cast<int>(g_afPercentEfficiencyByOrderType[decayUnit->orderType] *
+                                         100.0f * randomScale);
+      if ((milUnit->battleStateFlags3A & 1) != 0) {
+        decayAmount = (kDecayScalePercentByRound[counter] * decayAmount) / 100;
+      }
+      if (decayAmount < milUnit->strength34) {
+        milUnit->strength34 -= static_cast<short>(decayAmount);
       } else {
         milUnit->strength34 = 0;
       }
+    }
+    decayNode = cursor18;
+    if (decayNode != nullptr) {
+      decayNode = decayNode->next;
+      cursor18 = decayNode;
+      decayUnit = (decayNode != nullptr) ? decayNode->unit : nullptr;
+    } else {
+      decayUnit = nullptr;
     }
   }
 }
@@ -340,7 +379,9 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
 // FUNCTION: IMPERIALISM 0x004a82b0
 void TArmyStack::ApplyMeterGrowthToEligibleUnits(bool boosted) {
   short growthAmount = boosted ? 0x23 : 0x14;
-  TUnit* unit = this->ResetCursorAndGetHeadUnit();
+  cursor18 = head14;
+  TArmyStackUnitNode* node = cursor18;
+  TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
     if (milUnit->strength34 > 0) {
@@ -350,6 +391,13 @@ void TArmyStack::ApplyMeterGrowthToEligibleUnits(bool boosted) {
         milUnit->experiencePercent38 = 0x190;
       }
     }
-    unit = this->AdvanceCursorAndGetUnit();
+    node = cursor18;
+    if (node != nullptr) {
+      node = node->next;
+      cursor18 = node;
+      unit = (node != nullptr) ? node->unit : nullptr;
+    } else {
+      unit = nullptr;
+    }
   }
 }

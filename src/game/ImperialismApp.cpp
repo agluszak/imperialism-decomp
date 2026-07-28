@@ -403,11 +403,9 @@ BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
   return CWinThread::PreTranslateMessage(pMsg);
 }
 
-// The 0x8014 command tail-calls the retail no-op module-library cache hook.
+// The developer command is intentionally empty in retail.
 // FUNCTION: IMPERIALISM 0x00413d00
-void ImperialismApp::OnDeveloperCommand8014() {
-  g_pModuleLibraryCacheState->NoOpRetailCacheHook();
-}
+void ImperialismApp::OnDeveloperCommand8014() {}
 
 // Let the developer choose the active nation, rebuild the active nation's derived resource
 // state when the simulation is in setup mode, then redispatch the currently displayed turn

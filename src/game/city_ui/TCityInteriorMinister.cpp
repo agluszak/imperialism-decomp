@@ -684,7 +684,7 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
     amount = 1;
   }
 
-  short command;
+  TCityTask* task;
   if ((supportCycle == 9 && mediumSkill != 0) || lowSkill < 1) {
     if (mediumSkill < 1) {
       return;
@@ -692,7 +692,8 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
     if (amount > mediumSkill) {
       amount = mediumSkill;
     }
-    command = 0x18;
+    task = new TCityTask();
+    task->ICityTask(0x18, city, amount);
   } else {
     if (amount > lowSkill) {
       amount = lowSkill;
@@ -700,11 +701,10 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
     if (amount + supportCycle > 9 && supportCycle != 9) {
       amount = static_cast<short>(9 - supportCycle);
     }
-    command = 0x17;
+    task = new TCityTask();
+    task->ICityTask(0x17, city, amount);
   }
 
-  TCityTask* task = new TCityTask();
-  task->ICityTask(command, city, amount);
   commandQueue->Insert(task);
 }
 
@@ -1530,74 +1530,79 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
 void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
   short nationSlot = ownerContextAt04->nationSlot;
   TSortedList* towns = ownerContextAt04->townMarkerList;
-  int townCount = towns->GetCount();
-  for (int townOrdinal = 1; townOrdinal <= townCount; ++townOrdinal) {
-    TTown* town = static_cast<TTown*>(towns->GetEntryByOrdinal(townOrdinal));
-    short regionSubtype = g_pGlobalMapState->terrainStateTable[town->tileIndex].regionSubtypeTag05;
-    for (short direction = 0; direction <= 6; ++direction) {
-      short tileIndex = town->tileIndex;
-      if (direction < 6) {
-        tileIndex = TMapMgr::GetNeighborTileID(town->tileIndex, direction);
-      }
-      if (tileIndex == -1) {
-        continue;
-      }
-      TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-      if (static_cast<short>(tile->ownerNationTag04) != nationSlot ||
-          tile->regionSubtypeTag05 != regionSubtype) {
-        continue;
-      }
-
-      char currentClass = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
-      if (!g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tileIndex) ||
-          g_pGlobalMapState->HasCivilianUnitKind(tileIndex,
-                                                 EncodeCivilianUnitKind(kCivilianUnitMiner))) {
-        continue;
-      }
-      short availableClass =
-          g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 1, nationSlot);
-      if (currentClass >= availableClass) {
-        continue;
-      }
-
-      TUnit* idleProspector = 0;
-      bool hasProspector = false;
-      TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
-      int orderCount = trackedOrders->GetCount();
-      for (int orderOrdinal = 1; orderOrdinal <= orderCount && idleProspector == 0;
-           ++orderOrdinal) {
-        TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(orderOrdinal));
-        if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner)) {
-          hasProspector = true;
-          if (order->unitOrder == kUnitOrderIdle) {
-            idleProspector = order;
-          }
+  int townOrdinal = 1;
+  if (townOrdinal <= towns->GetCount()) {
+    do {
+      TTown* town = static_cast<TTown*>(towns->GetEntryByOrdinal(townOrdinal));
+      short regionSubtype =
+          g_pGlobalMapState->terrainStateTable[town->tileIndex].regionSubtypeTag05;
+      for (short direction = 0; direction <= 6; ++direction) {
+        short tileIndex = town->tileIndex;
+        if (direction < 6) {
+          tileIndex = TMapMgr::GetNeighborTileID(town->tileIndex, direction);
         }
-      }
+        if (tileIndex == -1) {
+          continue;
+        }
+        TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+        if (static_cast<short>(tile->ownerNationTag04) != nationSlot ||
+            tile->regionSubtypeTag05 != regionSubtype) {
+          continue;
+        }
 
-      if (idleProspector != 0) {
-        idleProspector->MoveTo(tileIndex);
-        idleProspector->SetOrders(kUnitOrderDevelopResource, tileIndex);
-      } else if (!hasProspector) {
-        TCity* city = ownerContextAt04->city;
-        bool shouldRequestProspector = true;
-        if (city->buildOrderSlots[9]->quantity == 0) {
-          int pendingCount = city->trackedOrderList270->GetCount();
-          for (int pendingOrdinal = 1; pendingOrdinal < pendingCount; ++pendingOrdinal) {
-            TCityTask* pendingTask = static_cast<TCityTask*>(
-                city->trackedOrderList270->GetEntryByOrdinal(pendingOrdinal));
-            if (pendingTask->citySlotIndex == kPendingProspectorRecruitmentCitySlot) {
-              shouldRequestProspector = false;
+        char currentClass =
+            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1);
+        if (!g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tileIndex) ||
+            g_pGlobalMapState->HasCivilianUnitKind(tileIndex,
+                                                   EncodeCivilianUnitKind(kCivilianUnitMiner))) {
+          continue;
+        }
+        short availableClass =
+            g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 1, nationSlot);
+        if (currentClass >= availableClass) {
+          continue;
+        }
+
+        TUnit* idleProspector = 0;
+        bool hasProspector = false;
+        TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
+        int orderCount = trackedOrders->GetCount();
+        for (int orderOrdinal = 1; orderOrdinal <= orderCount && idleProspector == 0;
+             ++orderOrdinal) {
+          TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(orderOrdinal));
+          if (order->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner)) {
+            hasProspector = true;
+            if (order->unitOrder == kUnitOrderIdle) {
+              idleProspector = order;
             }
           }
-        } else {
-          shouldRequestProspector = false;
         }
-        if (shouldRequestProspector) {
-          SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitMiner));
+
+        if (idleProspector != 0) {
+          idleProspector->MoveTo(tileIndex);
+          idleProspector->SetOrders(kUnitOrderDevelopResource, tileIndex);
+        } else if (!hasProspector) {
+          TCity* city = ownerContextAt04->city;
+          bool shouldRequestProspector = true;
+          if (city->buildOrderSlots[9]->quantity == 0) {
+            int pendingCount = city->trackedOrderList270->GetCount();
+            for (int pendingOrdinal = 1; pendingOrdinal < pendingCount; ++pendingOrdinal) {
+              TCityTask* pendingTask = static_cast<TCityTask*>(
+                  city->trackedOrderList270->GetEntryByOrdinal(pendingOrdinal));
+              if (pendingTask->citySlotIndex == kPendingProspectorRecruitmentCitySlot) {
+                shouldRequestProspector = false;
+              }
+            }
+          } else {
+            shouldRequestProspector = false;
+          }
+          if (shouldRequestProspector) {
+            SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitMiner));
+          }
         }
       }
-    }
+      ++townOrdinal;
+    } while (townOrdinal <= towns->GetCount());
   }
 }
 
@@ -1744,7 +1749,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
       short score = EvaluateResources(tileIndex);
       if (score > bestScore) {
         bestScore = score;
-        bestTile = tileIndex;
+        bestTile = static_cast<short>(candidateTiles->At(candidateOrdinal));
       }
     }
     field3c = bestTile;
@@ -1997,7 +2002,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     pendingRecruitmentCommandIndex36 = -1;
   }
 
-  if (g_pSimMgr->economicTurn == 0) {
+  if (g_pSimMgr->GetEconomicTurn() == 0) {
     pendingShipType32 = 2;
   }
   if (pendingShipType32 != 0) {
@@ -2021,39 +2026,44 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
   temporarilyReservedShipArms186 = 0;
 
   if (list190->GetSize() > 0 && g_pSimMgr->economicTurn / 4 > 3) {
-    for (int ordinal = 1; ordinal <= list190->GetSize(); ++ordinal) {
-      short requestedCapability = static_cast<short>(list190->At(ordinal));
-      short matchedOrderSlot = -1;
-      if (requestedCapability < 0x1e) {
-        if (TryApplyCityOrderCapabilitySelectionBySlot(requestedCapability)) {
-          continue;
-        }
-        if (recruitmentAllowed) {
-          for (short recruitmentSlotIndex = 0x19;
-               recruitmentSlotIndex <= 0x20 && matchedOrderSlot == -1; ++recruitmentSlotIndex) {
+    int ordinal = 1;
+    if (ordinal <= list190->GetSize()) {
+      do {
+        short requestedCapability = static_cast<short>(list190->At(ordinal));
+        short matchedOrderSlot = -1;
+        if (requestedCapability < 0x1e) {
+          if (TryApplyCityOrderCapabilitySelectionBySlot(requestedCapability)) {
+            ++ordinal;
+            continue;
+          }
+          if (recruitmentAllowed) {
+            for (short recruitmentSlotIndex = 0x19;
+                 recruitmentSlotIndex <= 0x20 && matchedOrderSlot == -1; ++recruitmentSlotIndex) {
+              TProductionOrder* order =
+                  static_cast<TProductionOrder*>(city->orderSlotsE4[recruitmentSlotIndex]);
+              if (order->resourceTypeIndex == requestedCapability) {
+                matchedOrderSlot = recruitmentSlotIndex;
+              }
+            }
+          }
+        } else {
+          requestedCapability = static_cast<short>(requestedCapability - 0x1e);
+          for (short shipRequestSlotIndex = 0x2b;
+               shipRequestSlotIndex <= 0x32 && matchedOrderSlot == -1; ++shipRequestSlotIndex) {
             TProductionOrder* order =
-                static_cast<TProductionOrder*>(city->orderSlotsE4[recruitmentSlotIndex]);
+                static_cast<TProductionOrder*>(city->orderSlotsE4[shipRequestSlotIndex]);
             if (order->resourceTypeIndex == requestedCapability) {
-              matchedOrderSlot = recruitmentSlotIndex;
+              matchedOrderSlot = shipRequestSlotIndex;
             }
           }
         }
-      } else {
-        requestedCapability = static_cast<short>(requestedCapability - 0x1e);
-        for (short shipRequestSlotIndex = 0x2b;
-             shipRequestSlotIndex <= 0x32 && matchedOrderSlot == -1; ++shipRequestSlotIndex) {
-          TProductionOrder* order =
-              static_cast<TProductionOrder*>(city->orderSlotsE4[shipRequestSlotIndex]);
-          if (order->resourceTypeIndex == requestedCapability) {
-            matchedOrderSlot = shipRequestSlotIndex;
-          }
+        if (matchedOrderSlot != -1) {
+          orderMetricTable40[matchedOrderSlot] = 1;
+          UpdateMinisterProductionMetricsForResourceIndex(matchedOrderSlot);
+          orderMetricTable40[matchedOrderSlot] = 0;
         }
-      }
-      if (matchedOrderSlot != -1) {
-        orderMetricTable40[matchedOrderSlot] = 1;
-        UpdateMinisterProductionMetricsForResourceIndex(matchedOrderSlot);
-        orderMetricTable40[matchedOrderSlot] = 0;
-      }
+        ++ordinal;
+      } while (ordinal <= list190->GetSize());
     }
     list190->RemoveAll();
   }

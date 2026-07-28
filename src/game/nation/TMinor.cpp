@@ -1027,15 +1027,26 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004e59d0
 void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
-  short decodedSlot = DecodeTerrainNationSlotFromEncoded(this->encodedNationSlot, this->nationSlot);
+  short decodedSlot;
+  if (this->encodedNationSlot < 200) {
+    if (this->encodedNationSlot < 100) {
+      decodedSlot = this->nationSlot;
+    } else {
+      decodedSlot = static_cast<short>(this->encodedNationSlot - 100);
+    }
+  } else {
+    decodedSlot = static_cast<short>(this->encodedNationSlot - 200);
+  }
   this->encodedNationSlot = -1;
   // Ground truth dispatches slot 0x33 here (CALL [ebx+0xcc] at 0x4e5a03 ->
   // 0x4e6040), i.e. ReassignTileObjectOwnerAndNotifyForSelectedCells -- not the
   // slot-0x2e display-value helper this port had been calling.
   this->ReassignTileObjectOwnerAndNotifyForSelectedCells(decodedSlot);
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+  int nationSlot = 0;
+  do {
     this->SetDiplomacyStanding(nationSlot, 100);
-  }
+    ++nationSlot;
+  } while (nationSlot < kNationSlotCount);
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40

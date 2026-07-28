@@ -2126,10 +2126,25 @@ char TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
   char result = 0;
   if (tile->GetTerrainKind() != kStrategicTerrainMountain &&
       tile->GetTerrainKind() != kStrategicTerrainHills) {
-    short neighbors[6];
-    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
+    int row = tileIndex / 0x6c;
+    int col = tileIndex % 0x6c;
     for (short direction = 0; direction < 6; ++direction) {
-      short neighbor = neighbors[direction];
+      int scaledCol = (row & 1) + col * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
+      int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+      if (scaledCol < 0) {
+        scaledCol += 0xd8;
+      } else if (scaledCol >= 0xd8) {
+        scaledCol -= 0xd9;
+      }
+      if (neighborRow < 0) {
+        neighborRow = 0;
+      } else if (neighborRow > 0x3b) {
+        neighborRow = 0x3b;
+      }
+      short neighbor = static_cast<short>(scaledCol / 2 + neighborRow * 0x6c);
+      if (neighbor < 0 || neighbor >= 0x1950) {
+        neighbor = -1;
+      }
       if (neighbor != -1 &&
           terrainStateTable[neighbor].GetTerrainKind() == kStrategicTerrainWater) {
         result = 1;

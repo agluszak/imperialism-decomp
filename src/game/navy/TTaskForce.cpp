@@ -7,6 +7,7 @@
 
 #include "game/ui_core/CIterator.h"
 #include "game/core/CString.h"
+#include "game/military/TArmyMgr.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -788,7 +789,9 @@ bool TTaskForce::IsEmpty() const {
 
 // FUNCTION: IMPERIALISM 0x00553b50
 bool TTaskForce::NoSelection() const {
-  if (this == nullptr || IsEmpty()) {
+  if (this == nullptr || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                                 shipCountsByToolbarSlot[2] + shipCountsByToolbarSlot[3] ==
+                             0) {
     return true;
   }
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
@@ -1145,7 +1148,10 @@ unsigned int TTaskForce::IsValidTarget(Province* province) {
   if (province == nullptr) {
     return 0;
   }
-  bool noneQueued = (this == nullptr) || IsEmpty();
+  bool noneQueued = (this == nullptr) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                                                 shipCountsByToolbarSlot[2] +
+                                                 shipCountsByToolbarSlot[3] ==
+                                             0;
   if (!noneQueued) {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       if (node->active != 0) {
@@ -1265,10 +1271,9 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   TZone* previousContext = location;
   Free();
 
-  // The original's beachhead-only tail also revalidates supporting land orders for
-  // cityIndex. Cancellation itself must not depend on that secondary UI warning path.
-  (void)cancelsBeachhead;
-  (void)cityIndex;
+  if (cancelsBeachhead) {
+    ValidateOrderSupportDeltaAndMarkDirectionalOverlays(g_pSimMgr->GetActiveNationId(), cityIndex);
+  }
   g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
 
@@ -1647,10 +1652,20 @@ bool TTaskForce::Encounter(TTaskForce* other) {
 // threshold (childRating average delta + child-count overflow past 10).
 // FUNCTION: IMPERIALISM 0x00555720
 bool TTaskForce::TryToSpot(const TTaskForce* other) const {
-  if (CountShips() == 0) {
+  short thisShipCount = 0;
+  for (TMapOrderChildLinkNode* countNode = shipList; countNode != nullptr;
+       countNode = countNode->next) {
+    ++thisShipCount;
+  }
+  if (thisShipCount == 0) {
     return 0;
   }
-  if (other->CountShips() == 0) {
+  short otherShipCount = 0;
+  for (TMapOrderChildLinkNode* otherCountNode = other->shipList; otherCountNode != nullptr;
+       otherCountNode = otherCountNode->next) {
+    ++otherShipCount;
+  }
+  if (otherShipCount == 0) {
     return 0;
   }
   if (shipOrders == 6 || other->shipOrders == 6 || other->shipOrders == 5) {
@@ -1667,9 +1682,29 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
     }
   }
   short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
-  short otherAverage = static_cast<short>(other->GetDeciSpeed());
+  int otherSum = 0;
+  int otherCount = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    if (otherNode->active != 0) {
+      otherSum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(otherNode->payload)->type]
+                      .DescriptorWeight();
+      ++otherCount;
+    }
+  }
+  short otherAverage = (otherCount == 0) ? 0 : static_cast<short>((otherSum * 10) / otherCount);
   short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
-  int totalChildren = other->CountShips() + CountShips();
+  thisShipCount = 0;
+  for (TMapOrderChildLinkNode* recountNode = shipList; recountNode != nullptr;
+       recountNode = recountNode->next) {
+    ++thisShipCount;
+  }
+  otherShipCount = 0;
+  for (TMapOrderChildLinkNode* otherRecountNode = other->shipList; otherRecountNode != nullptr;
+       otherRecountNode = otherRecountNode->next) {
+    ++otherShipCount;
+  }
+  int totalChildren = otherShipCount + thisShipCount;
   if (totalChildren > 10) {
     threshold = static_cast<short>(threshold + (totalChildren - 10));
   }
@@ -1755,10 +1790,21 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
 
 // FUNCTION: IMPERIALISM 0x00555d10
 bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
-  if (CountShips() == 0) {
+  short thisShipCount = 0;
+  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    ++thisShipCount;
+  }
+  if (thisShipCount == 0) {
     return 0;
   }
-  if (other->CountShips() == 0) {
+  short otherShipCount = 0;
+  if (other != nullptr) {
+    for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+         otherNode = otherNode->next) {
+      ++otherShipCount;
+    }
+  }
+  if (otherShipCount == 0) {
     return 0;
   }
   if (g_pSimMgr->preferenceValues[3] != 0) {
@@ -1774,8 +1820,38 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
 
 // FUNCTION: IMPERIALISM 0x00555de0
 bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
-  int thisSum = GetBattleStrengthRating();
-  int otherSum = other->GetBattleStrengthRating();
+  int thisSum = 0;
+  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    TShip* ship = static_cast<TShip*>(node->payload);
+    short resourceType = ship->type;
+    short strengthBucket = static_cast<short>(ship->experience / 100);
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[resourceType];
+    int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
+    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
+    short resolveBucket = static_cast<short>(resolveScore / 10);
+    thisSum += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+                ship->strength) /
+               descriptor.TaskForceWeight();
+  }
+
+  int otherSum = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->shipList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    TShip* ship = static_cast<TShip*>(otherNode->payload);
+    short resourceType = ship->type;
+    short strengthBucket = static_cast<short>(ship->experience / 100);
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[resourceType];
+    int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
+    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
+    short resolveBucket = static_cast<short>(resolveScore / 10);
+    otherSum += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+                 ship->strength) /
+                descriptor.TaskForceWeight();
+  }
   return thisSum * 100 < kOrderTypePriorityWeight[aggression] * otherSum;
 }
 

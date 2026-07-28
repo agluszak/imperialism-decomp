@@ -46,7 +46,7 @@ void TMapPreviewView::DoPostCreate(int arg) {
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
   int height = surfaceBounds.bottom - surfaceBounds.top;
   memset(pixels, 0x10, height * stride);
   --g_nDibOrientationFlag_006A1890;
@@ -65,7 +65,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
   unsigned short clickedPalette = pixels[point.y * stride + point.x];
 
   for (int nation = 0; nation < 7; ++nation) {
@@ -219,7 +219,7 @@ void TMapPreviewView::EnhancePhoto() {
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);
   unsigned char* pixels = GetPixBaseAddr(surfaceObject);
-  int stride = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
+  int stride = static_cast<unsigned short>((*GetGWorldPixMap(previewSurface60))->stride) & 0x3fff;
 
   unsigned char* rowStart = pixels + stride + 1;
   for (int row = 0; row < 0xb2; ++row) {

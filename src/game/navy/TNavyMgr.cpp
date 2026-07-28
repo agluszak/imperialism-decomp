@@ -3,6 +3,7 @@
 #include "game/ui_tags_military.h"
 #include "game/resource_domain_types.h"
 
+#include <mbstring.h>
 #include <stdlib.h>
 
 #include "game/navy/TAdmiral.h"
@@ -563,7 +564,8 @@ void TNavyMgr::ScuttleEverything() {
     ship->taskForce = 0;
   }
   if (orderQueueHead != nullptr) {
-    orderQueueHead->FreeAll();
+    orderQueueHead->nextForce->FreeAll();
+    orderQueueHead->Free();
   }
   orderQueueHead = nullptr;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
@@ -1324,7 +1326,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
               if (resourceCount == 0) {
                 continue;
               }
-              if (resourceList != g_szEmptyString) {
+              if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(resourceList)),
+                          reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0) {
                 resourceList += g_szListSeparator_00695760;
               }
               CString resourceLabel;

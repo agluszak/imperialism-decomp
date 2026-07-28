@@ -79,8 +79,11 @@ void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short d
   short newValue =
       static_cast<short>(scrollBar64->word88 - origin.y * 1024 / heightDiff * trackRange / 1024);
   if (newValue < scrollBar64->word88) {
-    newValue = scrollBar64->word88;
-  } else if (newValue > scrollBar64->word8a) {
+    scrollBar64->word8c = scrollBar64->word88;
+    scrollBar64->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+    return;
+  }
+  if (newValue > scrollBar64->word8a) {
     newValue = scrollBar64->word8a;
   }
   scrollBar64->word8c = newValue;

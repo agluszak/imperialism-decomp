@@ -502,7 +502,24 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecord& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState16);
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
-    return TZone::FindPortZoneByTile(seaTileIndex);
+    TZone* zone = g_pMapActionContextListHead;
+    while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      zone = zone->prev18;
+    }
+    for (;;) {
+      if (zone == 0) {
+        return 0;
+      }
+      if (static_cast<short>(zone->tileOrTerrainId0c) == seaTileIndex ||
+          zone->activeTileIndex20 == seaTileIndex ||
+          static_cast<TPortZone*>(zone)->portTileIndex48 == seaTileIndex) {
+        return zone;
+      }
+      zone = zone->prev18;
+      while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+        zone = zone->prev18;
+      }
+    }
   }
   signed char nationCode = terrainRecord.ownerNationTag04;
   if (nationCode < 0x17) {
