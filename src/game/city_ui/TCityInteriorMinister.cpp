@@ -35,6 +35,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/nation_stream_serialization.h"
