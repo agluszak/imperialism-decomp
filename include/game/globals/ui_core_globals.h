@@ -37,6 +37,7 @@ extern TView* g_pUiResourceHead;
 extern TInfoBarText* g_pCursorControlPanel;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TApplication* g_pApplication;
+extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
 extern char s_szTurnHistoryPrefix_0069b71c[];
 

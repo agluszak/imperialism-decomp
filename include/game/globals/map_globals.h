@@ -23,6 +23,7 @@ extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 extern int g_bOverlayScanlineFillAssertSuppressed;
 
 extern int g_bOverlayRouteRebuildAssertSuppressed;
+extern unsigned char g_applyMiniMapVerticalClipOffset_006993e8;
 
 extern char g_szScriptFileName_006972f8[];
 

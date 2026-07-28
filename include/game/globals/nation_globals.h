@@ -28,6 +28,7 @@ extern int g_anTechItemResearchCostByTechId[29];
 // Nation descriptors indexed by terrain/nation slot (0x006a4310). Its 23-entry retail
 // extent is kept here rather than importing TCountry.h solely for that local enum.
 extern TCountry* g_apTerrainTypeDescriptorTable[23];
+extern char* g_pszDescriptorDefaultName_00653300;
 
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
