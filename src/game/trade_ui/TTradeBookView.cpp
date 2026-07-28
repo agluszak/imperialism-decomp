@@ -103,10 +103,18 @@ void TTradeBookView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 
 // FUNCTION: IMPERIALISM 0x005be3e0
 void TTradeBookView::ShowPage(int page) {
-  previousPageButton->SetState(page != 1, 0);
+  if (page != 1) {
+    previousPageButton->SetState(1, 0);
+  } else {
+    previousPageButton->SetState(0, 0);
+  }
   previousPageButton->SetEnabled(page != 1, 1);
   bool hasMore = page + 2 <= pageCount;
-  nextPageButton->SetState(hasMore, 0);
+  if (hasMore) {
+    nextPageButton->SetState(1, 0);
+  } else {
+    nextPageButton->SetState(0, 0);
+  }
   nextPageButton->SetEnabled(hasMore, 1);
   buyPanel->ShowPage(static_cast<short>(page));
   sellPanel->ShowPage(static_cast<short>(page));

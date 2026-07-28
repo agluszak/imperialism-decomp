@@ -10,6 +10,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/nation_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/city/TCity.h"
 #include "game/nation/TGreatPower.h"
@@ -28,7 +29,7 @@ const int kAssertLineRatioA = 0xd1d;
 static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context, int assertLine) {
   TAmtBar* barControl = static_cast<TAmtBar*>(context->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
-    FailNilPointerInUSmallViews(assertLine);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, assertLine);
   }
 
   if (barControl->auxValueA != 0) {

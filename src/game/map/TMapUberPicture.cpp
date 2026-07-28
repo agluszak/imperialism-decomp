@@ -943,6 +943,10 @@ void TMapUberPicture::SelectNextValidMapOrderEntryFromCursor(char includeCurrent
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
       orderEntryContext98 = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
+      if (candidate == nullptr) {
+        RefreshMapOrderEntryPanel(nullptr);
+        return;
+      }
       TTaskForce* taskForce =
           g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
       RefreshMapOrderEntryPanel(taskForce);
@@ -971,6 +975,10 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
       InvalidateMapRegionForEntryIfUiPassive(orderEntryContext98);
       orderEntryContext98 = candidate;
       InvalidateMapRegionForEntryIfUiPassive(candidate);
+      if (candidate == nullptr) {
+        RefreshMapOrderEntryPanel(nullptr);
+        return true;
+      }
       TTaskForce* taskForce =
           g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(candidate);
       RefreshMapOrderEntryPanel(taskForce);

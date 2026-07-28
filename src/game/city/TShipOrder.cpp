@@ -9,6 +9,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
+#include "game/ui_core/TViewMgr.h"
 
 static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];
@@ -171,6 +173,7 @@ bool TShipOrder::SetQuantity(short quantity) {
   city->cityStockFuelCE = static_cast<short>(
       city->cityStockFuelCE - ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->VerifyStocks();
+  g_pViewMgr->RefreshCityProductionUi();
   return 1;
 }
 

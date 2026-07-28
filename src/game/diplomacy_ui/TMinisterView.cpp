@@ -54,6 +54,10 @@ char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPo
 
 // FUNCTION: IMPERIALISM 0x004f2e00
 void TMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId != 0xa) {
+    TEventHandler::DoEvent(commandId, sourceHandler, event);
+    return;
+  }
   int tag = sourceHandler->controlTag;
   if (commandId == 0xa) {
     if (tag == kControlTagOkay) {

@@ -194,7 +194,9 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
       if (existing == shipNode) {
         continue;
       }
-      if (existing->name.Compare(shipNode->name) == 0) {
+      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(shipNode->name))) ==
+          0) {
         goto retry;
       }
     }
@@ -303,7 +305,7 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
     if (strength < 1) {
       return 0;
     }
-    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(type)) * 100) / divisor;
+    return (static_cast<int>(g_industryActionCostWeightResCode10[type]) * 100) / divisor;
   default:
     return 0;
   }

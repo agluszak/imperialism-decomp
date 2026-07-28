@@ -34,6 +34,10 @@ void TBook::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0056f5e0
 void TBook::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId != 10) {
+    TPicture::DoEvent(commandId, sourceHandler, event);
+    return;
+  }
   if (commandId == 10) {
     // Tag family 'page'..'pagf': one control per page-list row. Each tag's control is
     // handled independently -- the row-count refresh below runs once per tag (up to

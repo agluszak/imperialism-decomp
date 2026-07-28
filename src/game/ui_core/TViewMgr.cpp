@@ -172,6 +172,7 @@ void TViewMgr::LoadTurnEventCursorTable() {
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId) {
   CString cursorName;
   cursorName.Format(s_TurnEventCursorNameFormat_0069B6B4, cursorResourceId);
+  (void)AfxGetModuleState();
   return LoadCursorA(AfxGetResourceHandle(), cursorName);
 }
 

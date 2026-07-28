@@ -13,10 +13,3 @@ int TemporarilyClearAndRestoreUiInvalidationFlag(...) {
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
   return 0;
 }
-
-// Nil-pointer assert helper for USmallViews
-void FailNilPointerInUSmallViews(int line) {
-  const char kUSmallViewsCppPath[] = "D:\\Ambit\\Cross\\USmallViews.cpp";
-  GAME_FAIL_NIL_POINTER();
-  TemporarilyClearAndRestoreUiInvalidationFlag(kUSmallViewsCppPath, line);
-}

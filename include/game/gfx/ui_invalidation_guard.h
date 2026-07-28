@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/GameAssert.h"
+#include "game/globals/ui_widgets_globals.h"
 
 // 0x0049d620 — __cdecl flag toggler that ignores every argument (`ret`, no arg
 // reads). Assert-style call sites push a source path + line before calling it and
@@ -10,11 +11,12 @@
 // a separate forwarder (which broke pairing at those call sites).
 int TemporarilyClearAndRestoreUiInvalidationFlag(...);
 
-// Nil-pointer assert helper for USmallViews
-void FailNilPointerInUSmallViews(int line);
-
 // Inline helper for nil-pointer asserts with source path
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   GAME_FAIL_NIL_POINTER();
   TemporarilyClearAndRestoreUiInvalidationFlag(sourcePath, line);
+}
+
+static __inline void FailNilPointerInUSmallViews(int line) {
+  FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, line);
 }
