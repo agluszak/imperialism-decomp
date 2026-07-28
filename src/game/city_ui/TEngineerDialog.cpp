@@ -143,8 +143,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Panel title.
   TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0xa, 0x2b6a);
-  TStaticText* title =
-      static_cast<TStaticText*>(this->ResolveControlByTag(IMPERIALISM_FOURCC('l', 't', 'i', 't')));
+  TStaticText* title = static_cast<TStaticText*>(this->ResolveControlByTag(kControlTagTitl));
   title->AssertValid();
   ConfigureUiControlStyleValueAndCaptionFromStringResource(title, 0, 0xe, 0x2b6a, 1, 0x1c20, 6);
 
