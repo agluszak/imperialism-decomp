@@ -4,6 +4,7 @@
 
 #include "game/globals/global_types.h"
 #include "game/globals/tactical_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy/TShip.h"
 
