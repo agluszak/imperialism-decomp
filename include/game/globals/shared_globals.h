@@ -30,8 +30,6 @@ extern "C" {
 extern char* g_pSmallViewsEmptyText_00662B90;
 }
 
-extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
-
 // Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
 // the sole scanBracketExpressions() argument for its "balance" row template (GetString
 // group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
@@ -50,11 +48,7 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern char* g_pszDescriptorDefaultName_00653300;
-
 extern char g_szUiCloseParen_006973C8[];
-
-extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
@@ -64,9 +58,6 @@ extern "C" char s_szRankDotSeparator_00698ab4
 extern char s_szTurnSummaryIndent_00696790[]; // "      " @ 0x696790
 
 extern char s_szTurnHistorySeparator_00699320[];
-
-// Enables the clipped vertical offset used by TMiniMapView's viewport marker.
-extern unsigned char g_applyMiniMapVerticalClipOffset_006993e8;
 
 extern char s_szAdmiralPrefix_0069578c[];
 
