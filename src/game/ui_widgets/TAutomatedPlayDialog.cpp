@@ -3,7 +3,7 @@
 
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"

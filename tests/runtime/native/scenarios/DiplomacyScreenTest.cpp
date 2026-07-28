@@ -5,7 +5,7 @@
 
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/diplomacy_ui/TOffersPanelView.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"

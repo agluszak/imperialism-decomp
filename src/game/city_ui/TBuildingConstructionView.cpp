@@ -8,7 +8,7 @@
 #include "game/ui_screens/TPictureButton.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TControl.h"

@@ -9,7 +9,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include <string.h>
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"

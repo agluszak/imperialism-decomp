@@ -1,8 +1,9 @@
 #include "game/gfx/ui_invalidation_guard.h"
 
 #include "game/mfc.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/ui_core_globals.h"
 
 // Variadic so assert-style call sites (which push a source path + line) call this
 // directly and clean the stack, matching the original — the body ignores all args.

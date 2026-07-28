@@ -1,7 +1,7 @@
 #include "game/navy/TMapOrderChildLinkNode.h"
 
 #include "game/navy/TShip.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"

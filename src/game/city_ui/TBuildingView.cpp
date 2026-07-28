@@ -4,7 +4,7 @@
 #include "game/city/TCity.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004c6df0
 // TBuildingView::CreateObject

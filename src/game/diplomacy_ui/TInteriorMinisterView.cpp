@@ -5,7 +5,7 @@
 #include "game/ui_core/TEventHandler.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004f35e0
 // TInteriorMinisterView::CreateObject

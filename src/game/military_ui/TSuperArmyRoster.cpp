@@ -6,7 +6,7 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/military_ui/TMiniArmyLine.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x004aa4d0

@@ -164,7 +164,7 @@ def main() -> int:
         if c_blocks:
             body += 'extern "C" {\n' + c_blocks + '} // extern "C"\n'
         (out_dir / rel).write_text(
-            "#pragma once\n" + banner + '#include "game/globals/prelude.h"\n\n' + body,
+            "#pragma once\n" + banner + '#include "game/globals/global_types.h"\n\n' + body,
             encoding="utf-8",
         )
         sub_headers.append(rel)
@@ -174,7 +174,7 @@ def main() -> int:
         "// tools/analysis/split_globals.py, bead 8mo.2). New globals go in the\n"
         "// subsystem header their users live in (shared_globals.h when unsure);\n"
         "// consumers should migrate to the specific headers over time.\n"
-        '#include "game/globals/prelude.h"\n'
+        '#include "game/globals/global_types.h"\n'
         + "".join(f'#include "game/globals/{h}"\n' for h in sub_headers)
     )
     god_path.write_text(umbrella, encoding="utf-8")

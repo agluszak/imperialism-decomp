@@ -4,7 +4,7 @@
 #include "game/military/TArmyMgr.h"
 #include "game/tactical/TTacticalBattle.h"
 #include "game/map/TTacticalPlayer.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x005a64d0

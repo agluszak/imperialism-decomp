@@ -2,7 +2,7 @@
 #include "game/mfc.h"
 
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/mapped_flavor_text.h"

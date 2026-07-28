@@ -1,7 +1,7 @@
 #include "game/assets/TCdAudioDevice.h"
 #include "game/pointer_representation.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 

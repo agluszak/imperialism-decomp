@@ -94,9 +94,9 @@ private:
     }
     TMapDialog* mapDialog = mapView->subview2A8;
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(10, 10, 0);
-    int previousX = mapDialog->viewportOrigin60.x;
+    int previousX = mapDialog->viewportOrigin.x;
     mapView->Scroll(4);
-    if (mapDialog->viewportOrigin60.x == previousX) {
+    if (mapDialog->viewportOrigin.x == previousX) {
       FailScenario("\"combined-map scrolling stopped after repeated zoom toggles\"");
       return;
     }

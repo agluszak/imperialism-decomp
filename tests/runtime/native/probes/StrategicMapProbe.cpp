@@ -19,7 +19,7 @@ bool FindVisibleTileCenters(TMapDialog* mapDialog, CPoint* first, CPoint* second
   for (short tile = 0; tile < 0x1950; ++tile) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(tile, &mapDialog->viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(tile, &mapDialog->viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CPoint center(projectedX + 0x20, projectedY + 0x20);
     if (center.x < 1 || center.y < 1 || center.x >= mapDialog->frameWidth34 - 1 ||
@@ -110,35 +110,35 @@ bool StrategicMapProbe::VerifyScrolling(TMapUberPicture* mapView, CString& failu
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
     mapView->Scroll(4);
-    if (mapDialog->viewportOrigin60.x != 0) {
+    if (mapDialog->viewportOrigin.x != 0) {
       failure = "\"combined-map right-edge scrolling did not wrap to the left edge\"";
       return false;
     }
     mapView->Scroll(8);
-    if (mapDialog->viewportOrigin60.x != 0x6b * 0x40) {
+    if (mapDialog->viewportOrigin.x != 0x6b * 0x40) {
       failure = "\"combined-map left-edge scrolling did not wrap to the right edge\"";
       return false;
     }
   } else {
     int rightColumn = 0x6e - g_wMapDialogViewportTileSpan;
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x7fff, 0, 0);
-    if (mapDialog->viewportOrigin60.x != rightColumn * 0x40) {
+    if (mapDialog->viewportOrigin.x != rightColumn * 0x40) {
       failure = "\"combined-map scrolling stopped before the full right edge\"";
       return false;
     }
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(-0x7fff, 0, 0);
-    if (mapDialog->viewportOrigin60.x != 0x40) {
+    if (mapDialog->viewportOrigin.x != 0x40) {
       failure = "\"combined-map scrolling stopped before the full left edge\"";
       return false;
     }
   }
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, 0x7fff, 0);
-  if (mapDialog->viewportOrigin60.y != 0x35 * 0x40) {
+  if (mapDialog->viewportOrigin.y != 0x35 * 0x40) {
     failure = "\"combined-map scrolling stopped before the full bottom edge\"";
     return false;
   }
   mapDialog->SetMapDialogCellCoordinatesAndRefresh(1, -0x7fff, 0);
-  if (mapDialog->viewportOrigin60.y != 0) {
+  if (mapDialog->viewportOrigin.y != 0) {
     failure = "\"combined-map scrolling stopped before the full top edge\"";
     return false;
   }

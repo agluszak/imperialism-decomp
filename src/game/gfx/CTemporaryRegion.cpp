@@ -3,7 +3,7 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 
 const char kQuickDrawCppPath[] = "D:\\Ambit\\QuickDraw.cpp";

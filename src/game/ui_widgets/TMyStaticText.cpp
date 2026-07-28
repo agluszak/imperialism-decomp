@@ -4,7 +4,7 @@
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // SYNTHETIC: IMPERIALISM 0x005b5380
 // TMyStaticText::CreateObject

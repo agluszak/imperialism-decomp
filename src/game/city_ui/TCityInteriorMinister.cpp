@@ -33,7 +33,7 @@
 #include "game/military/TUnit.h"
 #include "game/city/TUnitOrder.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"

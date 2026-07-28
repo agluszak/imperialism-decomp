@@ -3,7 +3,7 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/globals/shared_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_tags_common.h"
 #include "game/mfc.h"

@@ -6,7 +6,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"

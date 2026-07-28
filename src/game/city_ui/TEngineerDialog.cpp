@@ -1,7 +1,7 @@
 #include "game/city_ui/TEngineerDialog.h"
 
 #include "decomp_types.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"

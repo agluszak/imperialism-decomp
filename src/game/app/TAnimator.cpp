@@ -8,7 +8,7 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/TList.h"
 #include "game/core/TStream.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
 // SYNTHETIC: IMPERIALISM 0x004a09f0

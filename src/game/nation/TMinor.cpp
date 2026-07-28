@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/military/TArmyMgr.h"

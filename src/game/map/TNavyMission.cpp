@@ -11,7 +11,7 @@
 #include "game/navy_order.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/navy/TTaskForce.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
