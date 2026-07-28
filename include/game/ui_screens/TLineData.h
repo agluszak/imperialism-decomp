@@ -14,10 +14,10 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout); // slot 0x0a 0x56f460
   virtual void RemoveViews();                                 // slot 0x0b 0x56f480
 
-  short field04; // 0x04
-  short field06; // 0x06
-  int field08;   // 0x08
-  int field0c;   // 0x0c
+  short column;     // 0x04
+  short row;        // 0x06
+  int layoutWidth;  // 0x08
+  int layoutHeight; // 0x0c
 
   TLineData();
   // 0x56f420 — set the row/col shorts and the two bound dwords from a caller pair array.

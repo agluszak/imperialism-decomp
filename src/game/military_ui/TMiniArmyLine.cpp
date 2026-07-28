@@ -33,7 +33,7 @@ void TMiniArmyLine::IMiniArmyLine(short rowArg, short colArg, int* bounds, TMili
 // FUNCTION: IMPERIALISM 0x004aa960
 void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniArmyView* armyView = new TMiniArmyView;
-  armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+  armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   armyView->militaryUnit84 = militaryUnit10;
   armyView->eventNumber60 = 0x22;
   SetControlHoverHelpText(CString(g_pMiniCivSharedText_0064cb18), armyView);

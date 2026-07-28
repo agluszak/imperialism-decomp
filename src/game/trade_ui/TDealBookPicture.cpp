@@ -239,7 +239,7 @@ void TDealBookPicture::CalculatePages() {
     TextStyle headingStyle;
     BuildUiTextStyleDescriptor(&headingStyle, 0, 14, 0x2b67);
     heading->SetTextLineStyleDescriptor(&headingStyle);
-    heading->SetField1E(1);
+    heading->SetTextAlignmentCode(1);
     soldTradesView9C->AddOrderedEntry(heading);
 
     for (short targetNation = 0; targetNation < 23; ++targetNation) {

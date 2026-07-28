@@ -15,17 +15,17 @@ class TTransFocusAnimation : public TFocusAnimation {
 public:
   // Default constructor for MFC dynamic creation
   TTransFocusAnimation() : TFocusAnimation() {
-    ownerView04 = nullptr;
-    frameIndex08 = 0;
-    frameCount0A = 0;
-    field0C = 0;
-    tickCounter10 = 0;
-    ticksPerFrame14 = 0;
-    registryTag18 = 0;
-    screenRect1C.left = 0;
-    screenRect1C.top = 0;
-    screenRect1C.right = 0;
-    screenRect1C.bottom = 0;
+    ownerView = nullptr;
+    frameIndex = 0;
+    frameCount = 0;
+    frameResourceBaseId = 0;
+    ticksSinceFrameChange = 0;
+    ticksPerFrame = 0;
+    registryTag = 0;
+    screenRect.left = 0;
+    screenRect.top = 0;
+    screenRect.right = 0;
+    screenRect.bottom = 0;
     enabledFlag = 1;
     transientSurfaceContext = 0;
     insetBitmapSurface = 0;

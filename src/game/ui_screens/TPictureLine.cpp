@@ -16,5 +16,5 @@ TPictureLine::~TPictureLine() {}
 // FUNCTION: IMPERIALISM 0x00570130
 void TPictureLine::InstallViews(TView* panel, int* offsetLayout) {
   TPicture* picture = new TPicture();
-  picture->IPicture(panel, offsetLayout, &field08, 5, 5, pictureResourceId10);
+  picture->IPicture(panel, offsetLayout, &layoutWidth, 5, 5, pictureResourceId10);
 }

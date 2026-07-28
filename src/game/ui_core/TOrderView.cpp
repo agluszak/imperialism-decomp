@@ -39,7 +39,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   }
   slider->SetNumIcons(static_cast<short>(city60->GetBuildingType(order64->productionSlot)));
   slider->SetPictureResourceIdAndRefresh(static_cast<short>(orderSlot + 700), true);
-  slider->value9c = order64->quantityField04;
+  slider->value = order64->quantityField04;
   slider->SetMax(order64->MaxOrder());
 
   TIconBar* supplyPrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup1));
@@ -158,7 +158,7 @@ void TOrderView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* ev
     if (slider == nullptr) {
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x285);
     }
-    order64->SetQuantity(slider->value9c);
+    order64->SetQuantity(slider->value);
     UpdateFields();
     return;
   }

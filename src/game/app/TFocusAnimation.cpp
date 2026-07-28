@@ -19,13 +19,13 @@
 IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 // FUNCTION: IMPERIALISM 0x004a0140
 void TFocusAnimation::Tick() {
-  tickCounter10++;
-  if (tickCounter10 == ticksPerFrame14) {
+  ticksSinceFrameChange++;
+  if (ticksSinceFrameChange == ticksPerFrame) {
     IdleDraw();
-    frameIndex08++;
-    tickCounter10 = 0;
-    if (frameIndex08 == frameCount0A) {
-      frameIndex08 = 0;
+    frameIndex++;
+    ticksSinceFrameChange = 0;
+    if (frameIndex == frameCount) {
+      frameIndex = 0;
     }
   }
 }
@@ -33,16 +33,17 @@ void TFocusAnimation::Tick() {
 // FUNCTION: IMPERIALISM 0x004a0190
 void TFocusAnimation::IdleDraw() {
   if (enabledFlag != 0) {
-    ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
-    ownerView04->PrepareForDrawing();
+    ScopedMapQuickDrawContextGuard quickDrawContext(ownerView);
+    ownerView->PrepareForDrawing();
     POINT offset = {0, 0};
     DrawNextFrame(&offset);
-    ownerView04->PostRender();
+    ownerView->PostRender();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004a0250
-void TFocusAnimation::DrawNextFrame(POINT* offset) {
+void TFocusAnimation::DrawNextFrame(POINT* unusedOffset) {
+  (void)unusedOffset;
   LoadFrameIntoBuffer();
   ClipAndPaste();
 }
@@ -51,45 +52,49 @@ void TFocusAnimation::DrawNextFrame(POINT* offset) {
 void TFocusAnimation::ClipAndPaste() {
   TQuickDrawSurfaceContext* srcContext = g_pUiAnimator->renderSurfaceContext;
 
-  CPoint pt(screenRect1C.left, screenRect1C.top);
-  CPoint transformedPt = ownerView04->ViewToQDPt(&pt);
+  CPoint ownerPoint(screenRect.left, screenRect.top);
+  CPoint quickDrawPoint = ownerView->ViewToQDPt(&ownerPoint);
 
-  int width = screenRect1C.right - screenRect1C.left;
-  int height = screenRect1C.bottom - screenRect1C.top;
+  int width = screenRect.right - screenRect.left;
+  int height = screenRect.bottom - screenRect.top;
 
-  RECT local_24;
-  local_24.left = transformedPt.x;
-  local_24.top = transformedPt.y;
-  local_24.right = transformedPt.x + width;
-  local_24.bottom = transformedPt.y + height;
+  RECT destinationRect;
+  destinationRect.left = quickDrawPoint.x;
+  destinationRect.top = quickDrawPoint.y;
+  destinationRect.right = quickDrawPoint.x + width;
+  destinationRect.bottom = quickDrawPoint.y + height;
 
-  RECT tStack_14;
-  tStack_14.left = 0;
-  tStack_14.top = 0;
-  tStack_14.right = width;
-  tStack_14.bottom = height;
+  RECT sourceRect;
+  sourceRect.left = 0;
+  sourceRect.top = 0;
+  sourceRect.right = width;
+  sourceRect.bottom = height;
 
   SetQuickDrawStrokeColor(0xffffff);
 
   if (g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib != 0) {
     if (srcContext != nullptr && srcContext->blitSurface.surfaceDib != 0) {
-      int heightAnim = srcContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
-      if (heightAnim < 1)
-        heightAnim = -heightAnim;
-      OffsetRect(&tStack_14, 0, (heightAnim - tStack_14.top) - tStack_14.bottom);
+      int sourceSurfaceHeight =
+          srcContext->blitSurface.surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (sourceSurfaceHeight < 1) {
+        sourceSurfaceHeight = -sourceSurfaceHeight;
+      }
+      OffsetRect(&sourceRect, 0, (sourceSurfaceHeight - sourceRect.top) - sourceRect.bottom);
     }
 
     CDib* activeDib = g_pActiveQuickDrawSurfaceContext->blitSurface.surfaceDib;
     if (activeDib != 0) {
-      int heightActive = activeDib->m_pInfoHeader->bmiHeader.biHeight;
-      if (heightActive < 1)
-        heightActive = -heightActive;
-      OffsetRect(&local_24, 0, (heightActive - local_24.top) - local_24.bottom);
+      int destinationSurfaceHeight = activeDib->m_pInfoHeader->bmiHeader.biHeight;
+      if (destinationSurfaceHeight < 1) {
+        destinationSurfaceHeight = -destinationSurfaceHeight;
+      }
+      OffsetRect(&destinationRect, 0,
+                 (destinationSurfaceHeight - destinationRect.top) - destinationRect.bottom);
     }
   }
 
   BlitQuickDrawSurfaces(&srcContext->blitSurface, &g_pActiveQuickDrawSurfaceContext->blitSurface,
-                        &tStack_14, &local_24, 0);
+                        &sourceRect, &destinationRect, 0);
 }
 
 // SYNTHETIC: IMPERIALISM 0x004a0050

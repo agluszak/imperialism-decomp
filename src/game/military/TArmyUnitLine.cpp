@@ -38,7 +38,7 @@ void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMili
 // FUNCTION: IMPERIALISM 0x004a8df0
 void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
   TArmyUnitView* armyView = new TArmyUnitView;
-  armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+  armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5, 0);
   armyView->militaryUnit60 = militaryUnit10;
 
   int checkboxOffset[2] = {0, 0};
