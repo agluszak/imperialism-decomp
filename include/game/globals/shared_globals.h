@@ -86,9 +86,6 @@ extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 // Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
 extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
 
-// Per-tech research cost in gold, indexed by tech id. 0x66ad58.
-extern int g_anTechItemResearchCostByTechId[29];
-
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
@@ -216,10 +213,6 @@ extern _PNH g_pfnPreviousNewHandler;
 // image, so the command deliberately exercises the nil-pointer assert path.
 extern void* g_pAmbitDeveloperAssertProbe_006A1358;
 
-extern short g_industryActionCostWeightResCode10[16];
-
-extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
-
 extern char g_szListSeparator_00695760[];
 
 extern char g_szPlusPrefix_00698494[];
@@ -252,10 +245,6 @@ extern "C" short g_infoPanelLabelXByRow_006969b0[4];
 extern "C" short g_infoPanelLabelYByRow_006969c0[4];
 
 extern "C" COLORREF g_defaultDropShadowTextColor;
-
-// Per-nation ordinal used while assigning province names from string-resource groups
-// 8000 + nationSlot. GenerateProvinceNames resets all 23 entries before each pass.
-extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 
 // ImperialismApp.cpp — registry key/section literals.
 extern const char* const g_pRegistryCompanyKey_0063E038;
