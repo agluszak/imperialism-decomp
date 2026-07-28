@@ -635,12 +635,11 @@ void TGreatPower::UpdateCountryStockpile(short* needVector) {
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCode) {
   if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
-    if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(4) != 0) {
+    if (g_pNationInteractionStateManager->GetAmtOffered(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
       }
-      short resolvedCode =
-          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 4);
+      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 4);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -649,12 +648,11 @@ unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCo
     }
   }
   if (this->foreignMinister->purchasePriorityByResource1e[5] != 0) {
-    if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(5) != 0) {
+    if (g_pNationInteractionStateManager->GetAmtOffered(5) != 0) {
       if (static_cast<short>(proposalCode) == 5) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
       }
-      short resolvedCode =
-          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 5);
+      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 5);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -663,10 +661,9 @@ unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCo
     }
   }
   if (this->foreignMinister->purchasePriorityByResource1e[3] != 0 &&
-      g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(3) != 0) {
+      g_pNationInteractionStateManager->GetAmtOffered(3) != 0) {
     if (static_cast<short>(proposalCode) != 3) {
-      short resolvedCode =
-          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 3);
+      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 3);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);

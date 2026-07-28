@@ -13,7 +13,7 @@ public:
 
   // Cache of the last-built category slot; RebuildNationBidRowsForCategory no-ops if
   // asked to rebuild for the same category again.
-  short lastBuiltCategorySlot84; // 0x84
+  short lastBuiltCategorySlot; // 0x84
 
   TTradePageBuyView();
   // 0x5bd690 -- mirrors TTradePageSellView::RebuildNationOfferRowsForCategory but with

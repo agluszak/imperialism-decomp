@@ -12,7 +12,7 @@
 
 // FUNCTION: IMPERIALISM 0x00435590
 TTradePageSellView::TTradePageSellView() {
-  lastBuiltCategorySlot84 = -1;
+  lastBuiltCategorySlot = -1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004355c0
@@ -29,17 +29,16 @@ IMPLEMENT_DYNCREATE(TTradePageSellView, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005bcc30
 void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
-  if (categorySlot == lastBuiltCategorySlot84) {
+  if (categorySlot == lastBuiltCategorySlot) {
     return;
   }
-  lastBuiltCategorySlot84 = categorySlot;
+  lastBuiltCategorySlot = categorySlot;
   ResetPageLayout();
 
   bool buildGrid =
-      categorySlot != -1 && (g_pNationInteractionStateManager->IsNationMetricCellNegative(
-                                 categorySlot, g_pSimMgr->GetActiveNationId()) ||
-                             g_pNationInteractionStateManager->IsNationMetricCellPositive(
-                                 categorySlot, g_pSimMgr->GetActiveNationId()));
+      categorySlot != -1 &&
+      (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
+       g_pNationInteractionStateManager->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId()));
 
   if (buildGrid) {
     TTextLine* headerRow = new TTextLine();
@@ -53,12 +52,12 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     orderedEntries->AddTail(headerRow);
 
     for (short nationSlot = 0x16; nationSlot >= 0; --nationSlot) {
-      if (g_pNationInteractionStateManager->IsNationMetricCellPositive(nationSlot, categorySlot)) {
+      if (g_pNationInteractionStateManager->DidOffer(nationSlot, categorySlot)) {
         TTradeOfferNationLine* row = new TTradeOfferNationLine();
         int rowBounds[2];
         row->SetLineDataRowAndBounds(0, 0, rowBounds);
-        row->nationSlot12 = nationSlot;
-        row->categorySlot10 = categorySlot;
+        row->nationSlot = nationSlot;
+        row->categorySlot = categorySlot;
         orderedEntries->AddTail(row);
       }
     }

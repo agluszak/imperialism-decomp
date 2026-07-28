@@ -1337,17 +1337,17 @@ void TAutoGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(vo
 
 // FUNCTION: IMPERIALISM 0x004ea610
 float TAutoGreatPower::ComputeAiIndustryActionCostFromSlot(short industrySlot) {
-  int cost = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0b) *
+  int cost = g_pNationInteractionStateManager->GetPrice(0x0b) *
              g_industryActionCostWeightResCode0B[industrySlot];
-  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x08) *
+  cost += g_pNationInteractionStateManager->GetPrice(0x08) *
           g_industryActionCostWeightResCode08[industrySlot];
-  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x09) *
+  cost += g_pNationInteractionStateManager->GetPrice(0x09) *
           g_industryActionCostWeightResCode09[industrySlot];
-  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0c) *
+  cost += g_pNationInteractionStateManager->GetPrice(0x0c) *
           g_industryActionCostWeightResCode0C[industrySlot];
-  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) *
+  cost += g_pNationInteractionStateManager->GetPrice(0x10) *
           g_industryActionCostWeightResCode10[industrySlot];
-  cost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x03) *
+  cost += g_pNationInteractionStateManager->GetPrice(0x03) *
           g_industryActionCostWeightResCode03[industrySlot];
   return static_cast<float>(cost);
 }
@@ -1361,15 +1361,15 @@ float TAutoGreatPower::ComputeAiCityActionCostFromSlotAndMode(short actionSlot,
 
   if (profile.primaryMetricCode != -1 &&
       (profile.primaryMetricCode != 5 || capabilityLevel < profile.primaryMetricMultiplier)) {
-    cost += static_cast<float>(
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(profile.primaryMetricCode) *
-        profile.primaryMetricMultiplier);
+    cost +=
+        static_cast<float>(g_pNationInteractionStateManager->GetPrice(profile.primaryMetricCode) *
+                           profile.primaryMetricMultiplier);
   }
   if (profile.secondaryMetricCode != -1 &&
       (profile.secondaryMetricCode != 5 || capabilityLevel < profile.secondaryMetricMultiplier)) {
-    cost += static_cast<float>(
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(profile.secondaryMetricCode) *
-        profile.secondaryMetricMultiplier);
+    cost +=
+        static_cast<float>(g_pNationInteractionStateManager->GetPrice(profile.secondaryMetricCode) *
+                           profile.secondaryMetricMultiplier);
   }
   if (skipContextBias == 0) {
     cost += GetCachedAiCityActionContextBias(profile.contextBiasSelector);
@@ -1389,11 +1389,11 @@ float TAutoGreatPower::GetCachedAiCityActionContextBias(short selector) {
   }
 
   if (g_cachedAiCityActionTurnTick_006967d8 != g_pSimMgr->GetEconomicTurn()) {
-    int base = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) +
-               g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0e) +
-               g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x07);
-    int middle = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0a) + 100;
-    int tail = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0a) * 2 + 1000;
+    int base = g_pNationInteractionStateManager->GetPrice(0x0d) +
+               g_pNationInteractionStateManager->GetPrice(0x0e) +
+               g_pNationInteractionStateManager->GetPrice(0x07);
+    int middle = g_pNationInteractionStateManager->GetPrice(0x0a) + 100;
+    int tail = g_pNationInteractionStateManager->GetPrice(0x0a) * 2 + 1000;
     g_cachedAiCityActionContextBias[0] = static_cast<float>(base);
     g_cachedAiCityActionContextBias[1] = static_cast<float>(base + middle);
     g_cachedAiCityActionContextBias[2] = static_cast<float>(base + middle + tail);
@@ -1706,17 +1706,17 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
         interiorMinister->IndustryOrder(static_cast<short>(selectedSlot));
       }
 
-      int actionCost = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0b) *
+      int actionCost = g_pNationInteractionStateManager->GetPrice(0x0b) *
                        g_industryActionCostWeightResCode0B[selectedSlot];
-      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x08) *
+      actionCost += g_pNationInteractionStateManager->GetPrice(0x08) *
                     g_industryActionCostWeightResCode08[selectedSlot];
-      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x09) *
+      actionCost += g_pNationInteractionStateManager->GetPrice(0x09) *
                     g_industryActionCostWeightResCode09[selectedSlot];
-      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) *
+      actionCost += g_pNationInteractionStateManager->GetPrice(0x10) *
                     g_industryActionCostWeightResCode10[selectedSlot];
-      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0c) *
+      actionCost += g_pNationInteractionStateManager->GetPrice(0x0c) *
                     g_industryActionCostWeightResCode0C[selectedSlot];
-      actionCost += g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x03) *
+      actionCost += g_pNationInteractionStateManager->GetPrice(0x03) *
                     g_industryActionCostWeightResCode03[selectedSlot];
       developmentBudget -= static_cast<float>(actionCost);
 

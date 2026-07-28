@@ -17,9 +17,9 @@ public:
   void IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,
                  short ownerNationSlot, short entryOrdinal);
 
-  short commoditySlot10;
-  short ownerNationSlot12;
-  short entryOrdinal14;
+  short commoditySlot;
+  short ownerNationSlot;
+  short entryOrdinal;
   short padding16;
 };
 

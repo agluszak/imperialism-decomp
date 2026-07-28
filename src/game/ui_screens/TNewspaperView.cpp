@@ -82,8 +82,7 @@ void TNewspaperView::StuffValues(int pageNation) {
                              static_cast<LPCSTR>(dateText));
       break;
     case 1: {
-      int tradeDelta =
-          g_pNationInteractionStateManager->ComputeAverageProposalWeightDeltaAcrossCategoryRows();
+      int tradeDelta = g_pNationInteractionStateManager->GetMarketChange();
       dateText.Format(g_szDecimalFormat, tradeDelta);
       if (tradeDelta > 0) {
         dateText = g_szPlusPrefix_00698494 + dateText;

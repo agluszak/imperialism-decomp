@@ -10,11 +10,11 @@
 >   (TDealList*) at 0xaa8, object size **0xaf0**. `categoryRankLists` holds real `TDealList`
 >   instances (InitializeDefaults installs vtable 0x66da38 into each) — the composition edge
 >   that caused the original conflation.
-> - Moved-method deltas: `IsCapabilityCategoryActiveSlot3C` 60→**100%**,
->   `InitializeNationInteractionStateManagerDefaults` 54→**79%**,
->   `QueryProposalWeightSlot4C` 37→**64%**; ctor 20% (unchanged — installs the *correct*
+> - Moved-method deltas: `GetAmtOffered` 60→**100%**,
+>   `ITradeMgr` 54→**79%**,
+>   `GetPrice` 37→**64%**; ctor 20% (unchanged — installs the *correct*
 >   vtable now; residual is the systemic out-of-line `TObject::TObject` base-ctor call),
->   `DispatchProposalAmountSlot60`/`ResolveProposalCodeForCategorySlot84` unchanged.
+>   `DispatchProposalAmountSlot60`/`WhoTradesFirst` unchanged.
 > - Global `g_pNationInteractionStateManager` retyped `TTradeMgr*`, definition moved to
 >   `global_data_tables.cpp` with its `// GLOBAL:` marker; `typedef TDealList
 >   TNationInteractionStateManager` dropped; the `TNationInteractionStateManager.h` alias
@@ -33,7 +33,7 @@
 > event-record layout, return-register allocation). Supporting work: recovered the full
 > `0xa0` row-field layout from the accessors; added the `g_nationMetricSlotDispatchOrder`
 > global (0x66d810); widened `TSoundChannelNode::SoundChannelNodeDummy00` to its real
-> one-arg signature; claimed the non-virtual impl `ProcessPendingDiplomacyTransferEntriesUntilBlocked` (0x5b91e0). `just vtable TTradeMgr`/`TDealList` still 100%; all cross-class
+> one-arg signature; claimed the non-virtual impl `NextTradeDeal` (0x5b91e0). `just vtable TTradeMgr`/`TDealList` still 100%; all cross-class
 > receiver classes (TCountry/TGreatPower/TMinor/TDiplomacyMgr/TSortedPtrList/TSoundChannelNode)
 > unchanged at 100%.
 >
@@ -41,7 +41,7 @@
 > reattributed from `TCivToolbar` to **TMapMgr** (its `this->field0c` is
 > `TMapMgr::terrainStateTable`; heuristic 46) and ported: it sums the two edge resources of a
 > tile, weighting each real resource type via `g_pNationInteractionStateManager->
-> QueryProposalWeightSlot4C(...)` (the real slot-0x13 virtual on TTradeMgr) ×0x14, with the
+> GetPrice(...)` (the real slot-0x13 virtual on TTradeMgr) ×0x14, with the
 > fixed +10000/+4000 surcharges for types 0x15/0x16. **95.24%** (sole residual is a 1-byte
 > loop-back jump offset). This closes the dispatch that motivated the whole recovery.
 
@@ -73,13 +73,13 @@ cluster (~10 methods) and the vtable dispatch in
 >   `TObject`, size 0xaf0, ctor **0x5b7a20** (`MOV [EAX],0x66d990`). Its ctor, its
 >   `NationMetricCategoryRow categoryRows[0x11]` fields, and its metric methods (the
 >   `SlotXX` set + slots 0x0a–0x22) are currently **bolted onto `TDealList`**, so they match
->   *poorly* because the class model is wrong: ctor **20%**, `IsCapabilityCategoryActiveSlot3C`
->   60%, `QueryProposalWeightSlot4C` 37%, `DispatchProposalAmountSlot60` 33%,
->   `ResolveProposalCodeForCategorySlot84` 6%.
+>   *poorly* because the class model is wrong: ctor **20%**, `GetAmtOffered`
+>   60%, `GetPrice` 37%, `DispatchProposalAmountSlot60` 33%,
+>   `WhoTradesFirst` 6%.
 >
 > **The detangle** = pull the manager out of `TDealList` into its own `class TTradeMgr :
 > public TObject` (VTABLE 0x66d990, size 0xaf0): move the ctor 0x5b7a20,
-> `InitializeNationInteractionStateManagerDefaults`, `categoryRows`/`categoryRankLists`, and
+> `ITradeMgr`, `categoryRows`/`categoryRankLists`, and
 > the SlotXX methods out of `TDealList.{h,cpp}`; declare the metric methods **virtual** at
 > their slots (per the map below) so `CalculateDeveloperTilePurchaseCost`'s `[vtbl+0x4c]`
 > dispatch pairs; retype `g_pNationInteractionStateManager` → `TTradeMgr*` and drop the
@@ -88,8 +88,8 @@ cluster (~10 methods) and the vtable dispatch in
 >
 > **Blast radius (measured — good news):** the 19 external `g_pNationInteractionStateManager->`
 > callsites (TForeignMinister/TGreatPower/TMinor/TSimMgr) call **only** the four manager
-> methods (`QueryProposalWeightSlot4C` ×10, `IsCapabilityCategoryActiveSlot3C`/
-> `DispatchProposalAmountSlot60`/`ResolveProposalCodeForCategorySlot84` ×3 each) — all of which
+> methods (`GetPrice` ×10, `GetAmtOffered`/
+> `DispatchProposalAmountSlot60`/`WhoTradesFirst` ×3 each) — all of which
 > move to `TTradeMgr` — plus 3 type-agnostic pointer copies. **No caller uses it as a TDealList
 > list**, so retyping the global `TTradeMgr*` is clean.
 >
@@ -146,30 +146,30 @@ slots 0x00/0x01/0x05/0x06/0x07; slot 0x0a onward are introduced.
 | 0x08 | 0x020 | 0x004798d0 | TObject::ShallowClone |
 | 0x09 | 0x024 | 0x00415ce0 | TObject::ShallowFree |
 | 0x0a | 0x028 | 0x005b7fc0 | OrphanCallChain_C3_I50_005b7fc0 |
-| 0x0b | 0x02c | 0x005b8080 | TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents |
-| 0x0c | 0x030 | 0x005b8aa0 | DispatchNationMetricUpdatePassForAllSlots |
-| 0x0d | 0x034 | 0x005b8ad0 | TTradeMgr::ComputeNationMetricBaselineValueForSlot |
-| 0x0e | 0x038 | 0x005b8d40 | TTradeMgr::GetNationMetricWeightedScoreForSlot |
-| 0x0f | 0x03c | 0x005b8d70 | TTradeMgr::GetNationMetricAuxWordForSlot |
-| 0x10 | 0x040 | 0x005b8da0 | ComputeNationMetricDispatchScoreAndResolveScale |
-| 0x11 | 0x044 | 0x005b8f80 | TTradeMgr::GetNationMetricRosterWordAtOffset0E |
-| 0x12 | 0x048 | 0x005b8fb0 | TTradeMgr::GetNationMetricRosterWordAtOffset0C |
-| 0x13 | 0x04c | 0x005b8fe0 | TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A |
-| 0x14 | 0x050 | 0x005b9030 | TTradeMgr::GetNationMetricBucketValueByIndex |
-| 0x15 | 0x054 | 0x005b9060 | TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster |
-| 0x16 | 0x058 | 0x005b9190 | TTradeMgr::WrapperFor_ProcessPendingDiplomacyTransferEntriesUntilBlocked_At005b9190 |
-| 0x17 | 0x05c | 0x005b9410 | TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline |
-| 0x18 | 0x060 | 0x005b94d0 | ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C |
-| 0x19 | 0x064 | 0x005b9790 | TTradeMgr::SetNationMetricCellValueByIndex |
+| 0x0b | 0x02c | 0x005b8080 | TTradeMgr::CalculateDealOrder |
+| 0x0c | 0x030 | 0x005b8aa0 | TTradeMgr::CalculateNewWorldPrices |
+| 0x0d | 0x034 | 0x005b8ad0 | TTradeMgr::CalculateNewItemPrice |
+| 0x0e | 0x038 | 0x005b8d40 | TTradeMgr::GetAdjNumOffers |
+| 0x0f | 0x03c | 0x005b8d70 | TTradeMgr::GetAmtOffered |
+| 0x10 | 0x040 | 0x005b8da0 | TTradeMgr::GetDealPrice |
+| 0x11 | 0x044 | 0x005b8f80 | TTradeMgr::GetNumOffers |
+| 0x12 | 0x048 | 0x005b8fb0 | TTradeMgr::GetNumRequests |
+| 0x13 | 0x04c | 0x005b8fe0 | TTradeMgr::GetPrice |
+| 0x14 | 0x050 | 0x005b9030 | TTradeMgr::GetBasePrice |
+| 0x15 | 0x054 | 0x005b9060 | TTradeMgr::OfferItemDeals |
+| 0x16 | 0x058 | 0x005b9190 | TTradeMgr::StartDeals |
+| 0x17 | 0x05c | 0x005b9410 | TTradeMgr::OfferTradeDeals |
+| 0x18 | 0x060 | 0x005b94d0 | TTradeMgr::SetDealResults |
+| 0x19 | 0x064 | 0x005b9790 | TTradeMgr::UpdatePrice |
 | 0x1a | 0x068 | 0x005b97c0 | TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags |
-| 0x1b | 0x06c | 0x005b9890 | TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations |
-| 0x1c | 0x070 | 0x005b9b30 | TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores |
-| 0x1d | 0x074 | 0x005b98d0 | TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores |
-| 0x1e | 0x078 | 0x005b9f70 | TTradeMgr::IsNationMetricCellNegative |
-| 0x1f | 0x07c | 0x005b9fa0 | TTradeMgr::IsNationMetricCellPositive |
-| 0x20 | 0x080 | 0x005b9fd0 | TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter |
-| 0x21 | 0x084 | 0x005ba090 | SelectPreferredNationMetricCodeFromLookup |
-| 0x22 | 0x088 | 0x005b9f30 | ComputeNationMetricPowerScale |
+| 0x1b | 0x06c | 0x005b9890 | TTradeMgr::SetMinorsTradeBids |
+| 0x1c | 0x070 | 0x005b9b30 | TTradeMgr::TallyMinorsTradeBids |
+| 0x1d | 0x074 | 0x005b98d0 | TTradeMgr::TallyTradeBids |
+| 0x1e | 0x078 | 0x005b9f70 | TTradeMgr::DidBidOn |
+| 0x1f | 0x07c | 0x005b9fa0 | TTradeMgr::DidOffer |
+| 0x20 | 0x080 | 0x005b9fd0 | TTradeMgr::GetBidderList |
+| 0x21 | 0x084 | 0x005ba090 | TTradeMgr::WhoTradesFirst |
+| 0x22 | 0x088 | 0x005b9f30 | TTradeMgr::Power |
 
 (Slots 0x23–0x29 are NULL padding; 0x2a+ in that address region belong to *adjacent*
 vtables — TDealList @ +0xa8, TNextTradeCommand @ +0x100 — not TTradeMgr.)

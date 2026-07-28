@@ -23,8 +23,8 @@ IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 void TTradeOfferNationLine::ITradeOfferNationLine(short categorySlot, short nationSlot,
                                                   short rowArg, short colArg, int* bounds) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  nationSlot12 = nationSlot;
-  categorySlot10 = categorySlot;
+  this->nationSlot = nationSlot;
+  this->categorySlot = categorySlot;
 }
 
 // FUNCTION: IMPERIALISM 0x005bd090
@@ -32,11 +32,10 @@ void TTradeOfferNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeOfferNationView* view = new TTradeOfferNationView();
   view->InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout,
                                                 &layoutWidth, 5, 5, 0);
-  view->categorySlot60 = categorySlot10;
-  view->nationSlot62 = nationSlot12;
+  view->categorySlot = categorySlot;
+  view->nationSlot = nationSlot;
 
-  if (g_pNationInteractionStateManager->IsNationMetricCellNegative(
-          categorySlot10, g_pSimMgr->GetActiveNationId())) {
+  if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId())) {
     LoadUiStringByGroupAndIndexToControlObject(0x2740, 3, view);
   }
 }

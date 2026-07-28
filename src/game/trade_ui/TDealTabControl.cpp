@@ -24,51 +24,51 @@ void TDealTabControl::Setup(short bitmapResourceId, unsigned char useAlternatePa
   if (useAlternatePair) {
     ++bitmapResourceId;
   } else {
-    tabCount88 = 15;
+    tabCount = 15;
   }
-  filledRowStrip8c = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
-  emptyRowStrip90 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId + 4);
-  rowHeightPx86 = 25;
+  filledRowStrip = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId);
+  emptyRowStrip = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(bitmapResourceId + 4);
+  rowHeightPixels = 25;
 }
 
 // Vertical 3-segment fill bar: empty strip above the highlight band, the filled strip
 // for exactly one row's height at the selected row, empty strip below (only drawn if
-// there's room left). No selection (selectedRow84 < 0) draws the whole area empty.
+// there's room left). No selection (selectedRow < 0) draws the whole area empty.
 // FUNCTION: IMPERIALISM 0x005bc7f0
 void TDealTabControl::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  if (filledRowStrip8c == nullptr) {
+  if (filledRowStrip == nullptr) {
     return;
   }
   ResetQuickDrawStrokeState();
   SetQuickDrawStrokeColor(0xffffff);
   SetQuickDrawFillColor(0);
 
-  if (selectedRow84 < 0) {
+  if (selectedRow < 0) {
     RECT rect = {0, 0, frameWidth34, frameHeight38};
-    BlitRectWithOptionalTransparency(emptyRowStrip90->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);
     return;
   }
 
-  int bandTop = selectedRow84 * rowHeightPx86;
+  int bandTop = selectedRow * rowHeightPixels;
   if (bandTop != 0) {
     RECT rect = {0, 0, frameWidth34, bandTop};
-    BlitRectWithOptionalTransparency(emptyRowStrip90->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);
   }
 
-  int bandBottom = bandTop + rowHeightPx86;
+  int bandBottom = bandTop + rowHeightPixels;
   RECT bandRect = {0, bandTop, frameWidth34, bandBottom};
-  BlitRectWithOptionalTransparency(filledRowStrip8c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(filledRowStrip->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bandRect,
                                    &bandRect, 0, 0);
 
   if (bandBottom < frameHeight38) {
     RECT rect = {0, bandBottom, frameWidth34, frameHeight38};
-    BlitRectWithOptionalTransparency(emptyRowStrip90->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(emptyRowStrip->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &rect,
                                      &rect, 0, 0);
   }
@@ -87,13 +87,13 @@ void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& p
     BuildInsetContentRect(&contentRect);
     hoveredRow = static_cast<short>(static_cast<short>(currentPoint.y) -
                                     static_cast<short>(contentRect.top)) /
-                 rowHeightPx86;
-    if (hoveredRow < tabCount88) {
-      if (hoveredRow != selectedRow84) {
-        selectedRow84 = hoveredRow;
+                 rowHeightPixels;
+    if (hoveredRow < tabCount) {
+      if (hoveredRow != selectedRow) {
+        selectedRow = hoveredRow;
       }
     } else {
-      hoveredRow = selectedRow84;
+      hoveredRow = selectedRow;
     }
   }
 
@@ -105,22 +105,22 @@ void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& p
   }
   if (phase == kTrackPhaseEnd) {
     if (PointInBoundsAndActionable(&currentPoint) != 0) {
-      ownerContext->HandleEvent(selectedRow84 + 11000, this, 0);
+      ownerContext->HandleEvent(selectedRow + 11000, this, 0);
       PaintOrInvalidateControl(0);
       return;
     }
-    selectedRow84 = -1;
+    selectedRow = -1;
     PaintOrInvalidateControl(0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005bcb20
 void TDealTabControl::Free() {
-  if (filledRowStrip8c != 0) {
-    g_pDisplayMgr->RemoveGWorld(filledRowStrip8c);
+  if (filledRowStrip != 0) {
+    g_pDisplayMgr->RemoveGWorld(filledRowStrip);
   }
-  if (emptyRowStrip90 != 0) {
-    g_pDisplayMgr->RemoveGWorld(emptyRowStrip90);
+  if (emptyRowStrip != 0) {
+    g_pDisplayMgr->RemoveGWorld(emptyRowStrip);
   }
   TView::Free();
 }

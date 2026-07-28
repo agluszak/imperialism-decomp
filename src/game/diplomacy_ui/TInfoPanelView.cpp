@@ -265,8 +265,8 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
     short categoryIndex = 13;
     short categoryCount = 0;
     do {
-      if (g_pNationInteractionStateManager->categoryRows[categoryIndex].cells18[46 + countryId] !=
-          0) {
+      if (g_pNationInteractionStateManager->categoryRows[categoryIndex]
+              .tradeOfferCells[46 + countryId] != 0) {
         countryInfoCategoryIndices64[categoryCount++] = categoryIndex;
       }
       ++categoryIndex;

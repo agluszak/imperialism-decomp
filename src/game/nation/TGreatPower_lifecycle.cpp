@@ -1030,7 +1030,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
       TTradeMgr* nationInteractionState = g_pNationInteractionStateManager;
       if (nationInteractionState != 0) {
-        interactionScore = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(nationSlot);
+        interactionScore = g_pNationInteractionStateManager->GetPrice(nationSlot);
       }
     }
 

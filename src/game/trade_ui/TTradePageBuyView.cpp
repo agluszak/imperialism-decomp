@@ -12,7 +12,7 @@
 
 // FUNCTION: IMPERIALISM 0x00435610
 TTradePageBuyView::TTradePageBuyView() {
-  lastBuiltCategorySlot84 = -1;
+  lastBuiltCategorySlot = -1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00435640
@@ -29,17 +29,15 @@ IMPLEMENT_DYNCREATE(TTradePageBuyView, TPageView)
 
 // FUNCTION: IMPERIALISM 0x005bd690
 void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
-  if (categorySlot == lastBuiltCategorySlot84) {
+  if (categorySlot == lastBuiltCategorySlot) {
     return;
   }
-  lastBuiltCategorySlot84 = categorySlot;
+  lastBuiltCategorySlot = categorySlot;
   ResetPageLayout();
 
   if (categorySlot != -1) {
-    if (g_pNationInteractionStateManager->IsNationMetricCellNegative(
-            categorySlot, g_pSimMgr->GetActiveNationId()) ||
-        g_pNationInteractionStateManager->IsNationMetricCellPositive(
-            categorySlot, g_pSimMgr->GetActiveNationId())) {
+    if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
+        g_pNationInteractionStateManager->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
       TTextLine* headerRow = new TTextLine();
       int headerBounds[2];
       headerBounds[0] = 0x24;
@@ -51,13 +49,12 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       orderedEntries->AddTail(headerRow);
 
       for (short nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-        if (g_pNationInteractionStateManager->IsNationMetricCellNegative(nationSlot,
-                                                                         categorySlot)) {
+        if (g_pNationInteractionStateManager->DidBidOn(nationSlot, categorySlot)) {
           TTradeBidNationLine* row = new TTradeBidNationLine();
           int rowBounds[2];
           row->SetLineDataRowAndBounds(0, 0, rowBounds);
-          row->nationSlot12 = nationSlot;
-          row->categorySlot10 = categorySlot;
+          row->nationSlot = nationSlot;
+          row->categorySlot = categorySlot;
           orderedEntries->AddTail(row);
         }
       }

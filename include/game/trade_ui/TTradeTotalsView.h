@@ -18,7 +18,7 @@ public:
   // at 0x60. The low short of the trailing 4 bytes is this row's nation slot (0..6),
   // read throughout Draw to index g_apNationStates[]; the high short is
   // still unobserved.
-  short nationSlot60;
-  short field62;
+  short nationSlot;
+  short unknown62;
 };
 ASSERT_SIZE(TTradeTotalsView, 0x64);

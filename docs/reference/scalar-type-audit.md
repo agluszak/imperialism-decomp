@@ -80,7 +80,7 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `src/game/military/TArmyMgr.cpp:2016` | int -> short | `prng_extract_then_narrow` | the sibling extraction with a modulus of 100, same three-step shape. |
 | `src/game/military/TArmyMgr.cpp:2026` | unsigned int -> int | `prng_extract_then_narrow` | the same LCG extraction consumed directly as an int. |
 | `src/game/nation/TGreatPower.cpp:319` | int -> unsigned int | `signed_difference_then_unsigned_use` | the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare. |
-| `src/game/nation/TGreatPower.cpp:1833` | unsigned short -> int | `packed_word_pair` | the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed. |
+| `src/game/nation/TGreatPower.cpp:1830` | unsigned short -> int | `packed_word_pair` | the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed. |
 | `src/game/nation/TGreatPower_lifecycle.cpp:846` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | field8d6 holds a signed difficulty byte; the signed step preserves sign extension before the +0x33 bias and the unsigned step is the byte written into the flags array. |
 | `src/game/nation/TGreatPower_lifecycle.cpp:849` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | the sibling flag byte, same two-step bias. |
 | `src/game/net/TMultiplayerMgr.cpp:1468` | unsigned int -> short | `packet_word_extract` | the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field. |
@@ -117,8 +117,8 @@ decisions -- including the ones that were measured and reverted -- is
 | `src/game/military_ui/TArmyCheckBox.cpp:139` | predicate -> unsigned char | `byte_abi_argument` | TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool. |
 | `src/game/military_ui/TArmyCheckBox.cpp:145` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate). |
 | `src/game/nation/TGreatPower.cpp:205` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `(town->enabledFlag != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value. |
-| `src/game/nation/TGreatPower.cpp:1626` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
-| `src/game/nation/TGreatPower.cpp:1634` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
+| `src/game/nation/TGreatPower.cpp:1623` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
+| `src/game/nation/TGreatPower.cpp:1631` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
 | `src/game/net/TMultiplayerMgr.cpp:2340` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 overload over the visible TView::SetState(int, int)). |
 | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family. |
 | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow). |
@@ -268,7 +268,7 @@ is classified, and a family that stops appearing must be removed.
 | `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2016` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2026` | unsigned int -> int | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `762276b4ea380e3b` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:319` | int -> unsigned int | `signed_difference_then_unsigned_use` | `imperialism-decomp-1uj.99.2` |
-| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1833` | unsigned short -> int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
+| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1830` | unsigned short -> int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
 | `853f788ff413bf8c` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:846` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `f53ae4b65489ba45` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:849` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `eb265394ddb5605a` | `nested_integral_cast` | `src/game/net/TMultiplayerMgr.cpp:1468` | unsigned int -> short | `packet_word_extract` | `imperialism-decomp-1uj.99.2` |
@@ -293,8 +293,8 @@ is classified, and a family that stops appearing must be removed.
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:139` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1b59484a1b41425a` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:145` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `c1274198c896b970` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:205` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `imperialism-decomp-1uj.99.7` |
-| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1626` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
-| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1634` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
+| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1623` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
+| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1631` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
 | `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2340` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `d525f39e47be4ea5` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `65f76dbb872a689f` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
@@ -450,12 +450,12 @@ is classified, and a family that stops appearing must be removed.
 | `f50e36331741996f` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1363` | primaryMetricCode != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `cd628d669d834c04` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1369` | secondaryMetricCode != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `01a039a885041b22` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:2051` | unitType < 30 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `c8ff202faf574806` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1230` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `03d9fcef3dc75464` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1230` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3213` | proposalCode != 1 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `2de08d0b6ccca2bc` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:694` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `f2f4f8df56fd2be1` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:694` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `c6039ab51a51ede0` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:1299` | resetOrderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `c8ff202faf574806` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1227` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `03d9fcef3dc75464` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1227` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3210` | proposalCode != 1 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `2de08d0b6ccca2bc` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:693` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `f2f4f8df56fd2be1` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:693` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `c6039ab51a51ede0` | `raw_discriminant_literal` | `src/game/nation/TMinor.cpp:1298` | resetOrderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `62c20b03795433bb` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1496` | actionCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `78e8835c98c86d61` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1563` | actionCode == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `973cffb713529276` | `raw_discriminant_literal` | `src/game/navy/TOcean.cpp:508` | nationCode < 0x17 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |

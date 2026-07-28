@@ -32,7 +32,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   CString strB;
   CString strC;
 
-  TGreatPower* nation = g_apNationStates[nationSlot60];
+  TGreatPower* nation = g_apNationStates[nationSlot];
 
   g_pSimMgr->GetString(0x2740, 0x17, &strA);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xe, 0x2b6b);

@@ -54,7 +54,7 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
 static inline void AddSortedResourcePrice(TSortByPriceList* prices, short resourceCode) {
   ResourcePriorityEntry entry;
   entry.resourceCode = resourceCode;
-  entry.priority = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceCode);
+  entry.priority = g_pNationInteractionStateManager->GetPrice(resourceCode);
   prices->InsertCopiedRecordSortedByComparator(&entry);
 }
 
@@ -66,7 +66,7 @@ static inline short GetSortedResourceCode(TSortByPriceList* prices, int oneBased
 
 static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, short threshold) {
   TGreatPower* owner = minister->ownerContextAt04;
-  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > threshold &&
+  if (g_pNationInteractionStateManager->GetPrice(0x10) > threshold &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
@@ -339,8 +339,8 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   short available;
   short amount;
   if (resourceCode == kResourceTimber) {
-    if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3) >= 105 &&
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) >= 105) {
+    if (g_pNationInteractionStateManager->GetPrice(3) >= 105 &&
+        g_pNationInteractionStateManager->GetPrice(4) >= 105) {
       if (tradePartnerEnabled49[2] != 0) {
         capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
         if (capabilityFlag16 < 2) {
@@ -375,9 +375,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
       tradePartnerEnabled49[3] = 0;
     }
-    amount = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) < 105
-                 ? arg2
-                 : capabilityFlag16;
+    amount = g_pNationInteractionStateManager->GetPrice(4) < 105 ? arg2 : capabilityFlag16;
     amount = MinShort(amount, arg2);
     available = owner->GetAvailableMerchantCapacity();
     if (available >= amount) {
@@ -522,8 +520,10 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
   bool hasTradeCandidate = false;
   for (short nationSlot = 7; nationSlot <= 0x16 && !hasTradeCandidate; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
-        (g_pNationInteractionStateManager->categoryRows[3].cells18[nationSlot + 0x2e] != 0 ||
-         g_pNationInteractionStateManager->categoryRows[4].cells18[nationSlot + 0x2e] != 0)) {
+        (g_pNationInteractionStateManager->categoryRows[3].tradeOfferCells[nationSlot + 0x2e] !=
+             0 ||
+         g_pNationInteractionStateManager->categoryRows[4].tradeOfferCells[nationSlot + 0x2e] !=
+             0)) {
       hasTradeCandidate = true;
     }
   }
@@ -540,11 +540,10 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
       preferredResourceSlots40[1] = 3;
       preferredResourceSlots40[2] = 4;
     }
-    preferredResourceSlots40[3] =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0) >
-                g_pNationInteractionStateManager->QueryProposalWeightSlot4C(1)
-            ? 0
-            : 1;
+    preferredResourceSlots40[3] = g_pNationInteractionStateManager->GetPrice(0) >
+                                          g_pNationInteractionStateManager->GetPrice(1)
+                                      ? 0
+                                      : 1;
   } else {
     if (ownerContextAt04->GetStockpile(kResourceCotton) <
         ownerContextAt04->GetStockpile(kResourceWool)) {
@@ -592,7 +591,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
     ++iteration;
   }
   prices->ReleasePtrList();
-  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
+  if (g_pNationInteractionStateManager->GetPrice(0x10) > 1200 &&
       owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     owner->SetItemPotentials(kResourceArms, 2);
@@ -667,16 +666,15 @@ void TTextileForeignMinister::SetTradeBids() {
   TGreatPower* owner = ownerContextAt04;
   short textileAmount = owner->GetStockpile(kResourceClothing);
   if (owner->treasuryValue10 < 0 || textileAmount >= merchantCapacity ||
-      (textileAmount > 4 &&
-       g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) > 1000)) {
+      (textileAmount > 4 && g_pNationInteractionStateManager->GetPrice(0x0d) > 1000)) {
     owner->SetItemPotentials(kResourceClothing, MinShort(textileAmount, merchantCapacity));
   }
   if (owner->treasuryValue10 < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
     short budget = static_cast<short>(merchantCapacity / 2);
     short firstResource = 0x0e;
     short secondResource = 0x0f;
-    if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0f) >
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0e)) {
+    if (g_pNationInteractionStateManager->GetPrice(0x0f) >
+        g_pNationInteractionStateManager->GetPrice(0x0e)) {
       firstResource = 0x0f;
       secondResource = 0x0e;
     }
@@ -745,7 +743,7 @@ void TTraderForeignMinister::SetBuyPriorities() {
   for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resourceCode;
-    entry.priority = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceCode);
+    entry.priority = g_pNationInteractionStateManager->GetPrice(resourceCode);
     if (resourceCode == kResourceCoal || resourceCode == kResourceIron) {
       entry.priority = static_cast<short>(entry.priority - 15);
     }
@@ -754,8 +752,7 @@ void TTraderForeignMinister::SetBuyPriorities() {
   if (HasAdvancedTradeResource(this)) {
     ResourcePriorityEntry entry;
     entry.resourceCode = 6;
-    entry.priority =
-        static_cast<short>(g_pNationInteractionStateManager->QueryProposalWeightSlot4C(6) - 15);
+    entry.priority = static_cast<short>(g_pNationInteractionStateManager->GetPrice(6) - 15);
     priorities->InsertCopiedRecordSortedByComparator(&entry);
   }
   for (int i = 0; i < 4; ++i) {
@@ -788,7 +785,7 @@ void TTraderForeignMinister::SetTradeBids() {
     --selectedOrdinal;
   }
   prices->ReleasePtrList();
-  if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
+  if (g_pNationInteractionStateManager->GetPrice(0x10) > 1200 &&
       owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     owner->SetItemPotentials(kResourceArms, 2);

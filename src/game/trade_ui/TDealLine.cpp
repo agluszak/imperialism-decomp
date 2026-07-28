@@ -30,9 +30,9 @@ TDealLine::~TDealLine() {}
 void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,
                           short ownerNationSlot, short entryOrdinal) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  commoditySlot10 = commoditySlot;
-  ownerNationSlot12 = ownerNationSlot;
-  entryOrdinal14 = entryOrdinal;
+  this->commoditySlot = commoditySlot;
+  this->ownerNationSlot = ownerNationSlot;
+  this->entryOrdinal = entryOrdinal;
 }
 
 // FUNCTION: IMPERIALISM 0x005c0e50
@@ -57,17 +57,15 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
   short amount = 0;
   short counterpartyNationSlot = 0;
   int unitPriceOrStatus = 0;
-  g_apNationStates[ownerNationSlot12]->ReadTrackedSlotEntryFields(
-      commoditySlot10, entryOrdinal14, &dealKind, &amount, &counterpartyNationSlot,
-      &unitPriceOrStatus);
+  g_apNationStates[ownerNationSlot]->ReadTrackedSlotEntryFields(
+      commoditySlot, entryOrdinal, &dealKind, &amount, &counterpartyNationSlot, &unitPriceOrStatus);
 
   counterpartyName = g_pSimMgr->LoadNormalizedCredentialName(counterpartyNationSlot);
-  g_pSimMgr->GetStringPrelude(commoditySlot10, &commodityName);
+  g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
 
   if (amount != 0) {
     amountText.Format(g_szDecimalFormat, static_cast<int>(amount));
-    short currentMarketPrice =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(commoditySlot10);
+    short currentMarketPrice = g_pNationInteractionStateManager->GetPrice(commoditySlot);
     if (unitPriceOrStatus != currentMarketPrice) {
       g_pSimMgr->NumToCurrency(unitPriceOrStatus, &priceText);
       g_pSimMgr->GetString(0x2740, dealKind == kTrackedSlotOfferEntry ? 0x12 : 0x13, &templateText);

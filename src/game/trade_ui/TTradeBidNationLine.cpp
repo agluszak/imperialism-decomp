@@ -18,8 +18,8 @@ IMPLEMENT_DYNCREATE(TTradeBidNationLine, TLineData)
 void TTradeBidNationLine::ITradeBidNationLine(short categorySlot, short nationSlot, short rowArg,
                                               short colArg, int* bounds) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  nationSlot12 = nationSlot;
-  categorySlot10 = categorySlot;
+  this->nationSlot = nationSlot;
+  this->categorySlot = categorySlot;
 }
 
 // FUNCTION: IMPERIALISM 0x005bda20
@@ -27,6 +27,6 @@ void TTradeBidNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeBidNationView* view = new TTradeBidNationView();
   view->InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout,
                                                 &layoutWidth, 5, 5, 0);
-  view->categorySlot60 = categorySlot10;
-  view->nationSlot62 = nationSlot12;
+  view->categorySlot = categorySlot;
+  view->nationSlot = nationSlot;
 }

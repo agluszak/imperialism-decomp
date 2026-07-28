@@ -17,11 +17,9 @@ public:
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
   // at 0x60. The trailing 4 bytes split into two shorts, both read by Draw:
-  // +0x60 indexes g_pNationInteractionStateManager->categoryRows[] (a trade-category
-  // row) and is the rosterSlot arg to AllocateAndPopulateLinkedValueCollectionFromRosterFilter;
-  // +0x62 indexes categoryRows[].cells18[] (a per-nation cell) and is this row's own
-  // nation slot (passed to LoadNormalizedCredentialName / the filterValue arg).
-  short categorySlot60;
-  short nationSlot62;
+  // +0x60 indexes g_pNationInteractionStateManager->categoryRows[] and is the item arg to
+  // GetBidderList; +0x62 indexes tradeOfferCells[] and is this row's nation slot.
+  short categorySlot;
+  short nationSlot;
 };
 ASSERT_SIZE(TTradeOfferNationView, 0x64);
