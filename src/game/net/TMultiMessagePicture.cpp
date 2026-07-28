@@ -2,7 +2,7 @@
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_screens/TCzechBox.h"
 #include "game/ui_core/TEditText.h"

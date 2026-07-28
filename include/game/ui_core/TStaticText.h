@@ -3,7 +3,7 @@
 #include "compat.h"
 
 #include "game/ui_core/TControl.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 
 // Static read-only text control (vtable extent matches TControl through slot 0x110).
 // VTABLE: IMPERIALISM 0x0064ab58

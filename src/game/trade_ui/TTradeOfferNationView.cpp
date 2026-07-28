@@ -1,6 +1,6 @@
 #include "game/trade_ui/TTradeOfferNationView.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city_ui/TLongintList.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"

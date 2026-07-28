@@ -1,7 +1,7 @@
 #include "game/diplomacy_ui/TMapKey.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TSimMgr.h"

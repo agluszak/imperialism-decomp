@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city/TCity.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"

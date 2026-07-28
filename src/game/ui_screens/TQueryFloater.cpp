@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TNewsMgr.h"

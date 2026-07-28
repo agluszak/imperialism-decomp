@@ -7,7 +7,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TRadioTextCluster.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/NetMessage.h"
 #include "game/multiplayer_packets.h"
 #include "game/ui_core/TView.h"

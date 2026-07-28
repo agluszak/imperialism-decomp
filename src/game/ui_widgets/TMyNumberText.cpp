@@ -1,6 +1,6 @@
 #include "game/ui_widgets/TMyNumberText.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/mfc.h"
 
 #include <stdlib.h>

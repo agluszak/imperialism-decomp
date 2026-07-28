@@ -1,7 +1,7 @@
 #include "game/ui_screens/TTextList.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"

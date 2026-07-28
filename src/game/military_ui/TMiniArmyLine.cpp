@@ -1,7 +1,7 @@
 #include "game/military_ui/TMiniArmyLine.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_screens/TGWorldButton.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/military_ui/TMiniArmyView.h"

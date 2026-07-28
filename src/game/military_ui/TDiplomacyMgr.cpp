@@ -12,7 +12,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TSortedPtrList.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"

@@ -1,6 +1,6 @@
 #include "game/navy_ui/TShipPlacard.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TPicture.h"
 #include "game/navy_ui/TShipFractionCluster.h"
 #include "game/globals/global_types.h"

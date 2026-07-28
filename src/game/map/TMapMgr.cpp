@@ -12,7 +12,7 @@
 #include "game/military/mapped_flavor_text.h"
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyMgr.h"
 #include "game/city_ui/TCivMgr.h"
 #include "game/ui_screens/TSimMgr.h"

@@ -11,7 +11,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/globals/trade_ui_globals.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/ui_core/TApplication.h"
 #include "game/city/TCity.h"

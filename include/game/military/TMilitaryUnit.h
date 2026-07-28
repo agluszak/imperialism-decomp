@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TUnit.h"
 #include "game/military_domain_types.h"
 

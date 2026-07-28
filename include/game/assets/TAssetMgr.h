@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 #include "game/assets/timer_slots.h"

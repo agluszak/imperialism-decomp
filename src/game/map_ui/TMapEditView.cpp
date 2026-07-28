@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TCluster.h"
 #include "game/gfx/TDisplayMgr.h"

@@ -13,7 +13,7 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 
 #include <new>
 

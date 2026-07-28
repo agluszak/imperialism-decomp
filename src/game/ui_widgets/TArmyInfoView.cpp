@@ -7,7 +7,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/TStaticText.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_text_label_helpers_decls.h"

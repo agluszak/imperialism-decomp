@@ -1,7 +1,7 @@
 #include "game/navy/TMilitaryPageView.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/app/TAnimation.h"
 #include "game/ui_screens/TBook.h"
 #include "game/ui_core/TBitmapResourceLoader.h"

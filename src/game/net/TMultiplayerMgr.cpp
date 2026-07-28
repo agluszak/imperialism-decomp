@@ -14,7 +14,7 @@
 #include <time.h>
 
 #include "decomp_types.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/military/NetMessage.h"

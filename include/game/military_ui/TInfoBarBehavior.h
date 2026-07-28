@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TBehavior.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/mfc.h"

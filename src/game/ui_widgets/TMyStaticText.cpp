@@ -1,6 +1,6 @@
 #include "game/ui_widgets/TMyStaticText.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"

@@ -17,7 +17,7 @@
 #include "game/map_order_battle_snapshot.h"
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/tactical/TArmyBattle.h"
 #include "game/ui_widgets/TArmyToolbar.h"
 #include "game/military/TArmyStack.h"

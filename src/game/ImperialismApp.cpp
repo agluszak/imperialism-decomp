@@ -27,7 +27,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/mfc.h"
 #include "game/gfx/TAutoResolutionDialog.h"
 #include "game/app/TModalTemplateDialog.h"

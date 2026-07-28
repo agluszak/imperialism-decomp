@@ -1,7 +1,7 @@
 #include "game/military_ui/TMiniCivView.h"
 #include "game/military_ui/TSuperCivRoster.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TCivUnit.h"
 #include "game/city_ui/TCountry.h"
 #include "game/map/TMapMgr.h"
