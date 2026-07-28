@@ -266,7 +266,8 @@ private:
         return 0;
       }
       if (first) {
-        if (static_cast<unsigned int>(current->controlTag) != tag || occurrence != 1) {
+        if (static_cast<unsigned int>(current->controlTag) != tag ||
+            occurrence != TagOccurrenceBefore(current->ownerContext, current)) {
           return 0;
         }
         first = false;
