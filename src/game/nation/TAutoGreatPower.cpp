@@ -8,7 +8,7 @@
 
 #include "game/city_ui/TCityMinisterPersonalities.h"
 #include "game/military_ui/TDefenseMinisterPersonalities.h"
-#include "game/map/TForeignMinisterPersonalities.h"
+#include "game/nation/TForeignMinisterPersonalities.h"
 #include "game/TList.h"
 #include "game/navy/TOcean.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
@@ -21,7 +21,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/map/TMinister.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/city_ui/TCityInteriorMinister.h"
 #include "game/military_ui/TDefenseMinister.h"
 #include "game/military/TDefendProvinceMission.h"

@@ -1,7 +1,7 @@
 file|kind|reason|classes
 src/game/city_ui/TCityMinisterPersonalities.cpp|family_module|Family module: the city-minister personality subclasses are a closed sibling set sharing one vtable/dispatch pattern; per-class files would be dozens of near-empty TUs.|
 src/game/military_ui/TDefenseMinisterPersonalities.cpp|family_module|Family module: defense-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
-src/game/map/TForeignMinisterPersonalities.cpp|family_module|Family module: foreign-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
+src/game/nation/TForeignMinisterPersonalities.cpp|family_module|Family module: foreign-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
 src/game/map/sea_geometry.cpp|family_module|Family module: sea-lane/coast geometry free functions plus their small record structs form one cohesive original-module slice (no single owning class).|
 src/game/gfx/TTemplateDialogs.cpp|family_module|Family module: 19 tiny resource-template dialog classes (TC2/TD2/TDB/...TemplateDialog) that exist only as paired DoDataExchange/message-map shells; splitting into 19 files would create per-class stubs with no bodies of substance.|
 src/game/gfx/TFuzzySet_AllocateAndAppendRecord.cpp|split_exception|Documented reccmp/PDB pairing reason (see file header): adjacent to TFuzzySet::Free in one TU, reccmp crosses the two functions' PDB line/symbol resolution and mis-pairs both (~11% each); binary identical either way.|

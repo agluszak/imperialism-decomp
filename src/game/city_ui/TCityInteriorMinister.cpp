@@ -11,7 +11,7 @@
 #include "game/tactical_ui/TCityTask.h"
 #include "game/military/TCivUnit.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/gfx/TFuzzySet.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TItemOrder.h"
