@@ -161,27 +161,7 @@ extern int g_InfoBarDummyOrigin_006A2410[2];
 // nation still has need-cap headroom (transportCapacity - reservedTransportCapacity).
 extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 
-// Naval combat damage-split ratios (TNavyTacUnit::ApplyNavalDamage, 0x5a63c0):
-// the two shares a hit's damage is divided between strength4 (hull) and crewStrength38
-// depending on the attacker's ship-panel aim mode.
-extern double g_dNavyDamageSplitRatioA_00669f10; // 0.25
-
-extern double g_dNavyDamageSplitRatioB_00669f18; // 0.75
-
-// Naval gunnery hit-chance formula constants (TNavyBattle::EvaluateAndResolveTactical-
-// ActionAgainstTileOccupant, 0x5a5730): hitThreshold = quality*5 + 80/(ratio^3 + 1) where
-// ratio = hexDistance / (range * 0.5).
-extern double g_dNavyHitChanceRangeScale_00669ef8; // 0.5
-
-extern float g_fNavyHitChanceCubeOffset_00669f00; // -1.0
-
-extern float g_fNavyHitChanceNumerator_00669f04; // 80.0
-
 extern "C" {
-extern "C" float g_fMissionScoreNormalizationDivisor;
-
-extern "C" float g_fScatteredShipsMissionDefaultScore;
-
 extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
 
 extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
