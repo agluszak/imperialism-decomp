@@ -106,6 +106,11 @@ extern const float g_HexHighlightScreenScale_00658640;
 
 extern float g_TileHeatmapNeighborDiffusionFactor;
 
+// Hex neighbor column/row deltas, indexed by direction 0..5 and row parity.
+extern const int g_hexColOffsetEvenRow_00697450[6];
+extern const int g_hexRowOffset_00697468[6];
+extern const int g_hexColOffsetOddRow_00697480[6];
+
 // Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
 // shared by the city-region seeding/template passes.
 extern unsigned int g_mapGenLcgState_006a38e8;
