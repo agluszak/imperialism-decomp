@@ -24,28 +24,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
 
-// USmallViews.cpp shared empty-text pointer. The original stores a pointer to
-// g_szEmptyString at 0x00662b90 and constructs transient CString values from it in
-// TArmyInfoView and the strategic toolbar text-refresh paths.
-extern "C" {}
-
-// Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
-// the sole scanBracketExpressions() argument for its "balance" row template (GetString
-// group 0x2740 idx 0x1b). The original's raw bytes are a compile-time-constant pointer
-// to an empty string (not a deferred-construction CString), so this is modeled as a
-// plain pointer aliasing the shared g_szEmptyString buffer, matching the
-// g_pszEmptyTextRef_00669db8 idiom. Not yet pinned to a writer if one exists.
-// WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init
-// helpers 0x5e26d0/0x5e2720/0x5e2770). Vtables 0x66fa50 (CList) / 0x66fa68 (CArray)
-// are this TU's twin copies of the template vtables (recover-class once merged them
-// into TNetMgr's vtable annotation by adjacency). Element/name identification is
-// behavioral: Serialize instantiations at 0x5e4610/0x5e4830, node size 0xc,
-// ctor blockSize 10.
-// UGameWindow/dialog-factory widget build stack (IncludeView TU band). The out-of-line
-// "PushUiResourcePoolNode"/"PopUiResourcePoolNode" bodies at 0x479b00/0x479a80 are this
-// list's CList<TView*,TView*>::AddTail/RemoveTail twin copies; the "current panel" global
-// the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
-
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
 extern char s_szGaugeCountSeparator_0069936C[];
