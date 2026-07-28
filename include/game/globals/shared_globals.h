@@ -4,6 +4,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/core_globals.h"
+#include "game/globals/trade_ui_globals.h"
 #include "game/globals/ui_text_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/military_globals.h"
@@ -28,8 +29,6 @@ extern "C" {
 extern char* g_pSmallViewsEmptyText_00662B90;
 }
 
-extern TTradeMgr* g_pTradeMgr;
-
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 
 // Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
@@ -38,8 +37,6 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // to an empty string (not a deferred-construction CString), so this is modeled as a
 // plain pointer aliasing the shared g_szEmptyString buffer, matching the
 // g_pszEmptyTextRef_00669db8 idiom. Not yet pinned to a writer if one exists.
-extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
-
 // WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init
 // helpers 0x5e26d0/0x5e2720/0x5e2770). Vtables 0x66fa50 (CList) / 0x66fa68 (CArray)
 // are this TU's twin copies of the template vtables (recover-class once merged them
@@ -174,8 +171,6 @@ extern const unsigned char g_bTransferOceanViewportToActiveSurface;
 extern const unsigned char g_bDrawOceanZoneLabels;
 
 extern const unsigned char g_bDrawOceanNationLabels;
-
-extern const int g_pTradeSummarySelectionMap[23];
 
 extern TAmbitApplication* g_pAmbitApplication;
 
