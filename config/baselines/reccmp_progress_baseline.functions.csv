@@ -5450,8 +5450,8 @@ address|matching|name
 0x58bed0|1.0|TArmyPlacard::TArmyPlacard
 0x58bf00|1.0|TArmyPlacard::`scalar deleting destructor'
 0x58bf30|1.0|TArmyPlacard::~TArmyPlacard
-0x58bf50|0.7647058823529411|TArmyPlacard::SetValue
-0x58bfe0|0.6527777777777778|TArmyPlacard::Draw
+0x58bf50|0.9411764705882353|TArmyPlacard::SetValue
+0x58bfe0|1.0|TArmyPlacard::Draw
 0x58c140|1.0|TArmyPlacard::DoEvent
 0x58c1e0|0.5714285714285714|TNumberedArrowButton::CreateObject
 0x58c280|1.0|TNumberedArrowButton::GetRuntimeClass

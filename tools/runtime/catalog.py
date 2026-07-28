@@ -171,6 +171,13 @@ TESTS = (
         native_snapshots=("ui", "map"),
     ),
     RuntimeTestSpec(
+        "capital_click_opens_army_menu",
+        "ArmyMenuTest",
+        ("pr", "full"),
+        "internal_invariant",
+        required_oracles=(),
+    ),
+    RuntimeTestSpec(
         "serialization_roundtrip",
         "SerializationRoundtripTest",
         ("pr", "full"),

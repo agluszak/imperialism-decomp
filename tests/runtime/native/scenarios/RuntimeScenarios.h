@@ -14,6 +14,7 @@ RuntimeTestCase* CivilianRecruitmentTest();
 RuntimeTestCase* DiplomacyScreenTest();
 RuntimeTestCase* TradeScreenTest();
 RuntimeTestCase* MapZoomToggleTest();
+RuntimeTestCase* ArmyMenuTest();
 RuntimeTestCase* LoadSavedGameTest();
 RuntimeTestCase* SerializationRoundtripTest();
 RuntimeTestCase* SaveStreamCheckpointTest();

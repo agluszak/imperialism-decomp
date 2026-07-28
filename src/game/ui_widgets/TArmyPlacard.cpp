@@ -1,5 +1,6 @@
 #include "game/ui_widgets/TArmyPlacard.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 #include "game/military/TArmyMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
@@ -34,11 +35,12 @@ TArmyPlacard::~TArmyPlacard() {}
 // FUNCTION: IMPERIALISM 0x0058bf50
 void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
   short activeNationId = g_pSimMgr->GetActiveNationId();
-  short capValue = g_pTechMgr->nationCapRows1e8[activeNationId].slots[9 + this->controlTag];
+  short capValue = g_pTechMgr->nationCapRows1e8[activeNationId]
+                       .slots[this->controlTag - kControlTagArmyPlacardFirst];
   short pictureId = capValue + 0x4c4;
   if (value != this->glyph90) {
-    if (value < 1) {
-      pictureId = capValue + 0x4e2;
+    if (value <= 0) {
+      pictureId += 0x1e;
     }
     this->SetPictureResourceIdAndRefresh(pictureId, true);
     if (refreshNow) {
@@ -61,15 +63,13 @@ void TArmyPlacard::Draw(RECT* rectBuffer) {
     countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
 
     short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
-    short textX = static_cast<short>(frameWidth34 - textWidth);
-    short textY = static_cast<short>(frameHeight38 - 2);
-
-    SetQuickDrawTextOriginWithContextOffset(textX, textY);
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth34 - textWidth),
+                                            static_cast<short>(frameHeight38 - 2));
     DrawTextWithCachedQuickDrawStyleState(&countText);
 
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b6c);
-    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textX - 1),
-                                            static_cast<short>(textY - 1));
+    SetQuickDrawTextOriginWithContextOffset(static_cast<short>(frameWidth34 - textWidth - 1),
+                                            static_cast<short>(frameHeight38 - 3));
     DrawTextWithCachedQuickDrawStyleState(&countText);
   }
 }
