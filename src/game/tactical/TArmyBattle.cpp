@@ -25,6 +25,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/ui_widgets_globals.h"

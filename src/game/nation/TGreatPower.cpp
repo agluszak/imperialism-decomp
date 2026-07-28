@@ -16,6 +16,7 @@
 #include "game/GameAssert.h"
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/nation_stream_serialization.h"
