@@ -1,7 +1,12 @@
 #include "RuntimeScenario.h"
 #include "flows/RandomGameFlow.h"
 
-#include "game/core/global_data_tables.h"
+#include "game/globals/global_types.h"
+#include "game/globals/game_session_globals.h"
+#include "game/globals/military_globals.h"
+#include "game/globals/nation_globals.h"
+#include "game/globals/ui_core_globals.h"
+#include "game/city_ui/TCountry.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
