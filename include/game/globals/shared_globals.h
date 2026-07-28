@@ -4,6 +4,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/core_globals.h"
+#include "game/globals/ui_screens_globals.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/trade_ui_globals.h"
@@ -63,16 +64,6 @@ extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 extern TLanguageMgr* g_pLanguageMgr;
 
-extern POINT g_ptTechItemModalMessage; // @ 0x6a5820
-
-extern POINT g_ptFormattedErrorModalMessage; // @ 0x6a5ab0
-
-extern POINT g_ptLoungeNationReplacementModalMessage; // @ 0x6a3d98
-
-extern POINT g_ptQueryFloaterModalMessage; // @ 0x6a4048
-
-extern POINT g_ptGameSetupModalMessage; // @ 0x6a4218
-
 extern int g_lastClickedMapTileIndex_006a4608;
 
 extern int g_localizationAudioSlotCursor_006a60f8;
@@ -80,8 +71,6 @@ extern int g_localizationAudioSlotCursor_006a60f8;
 extern char* g_pszDescriptorDefaultName_00653300;
 
 extern char g_szUiCloseParen_006973C8[];
-
-extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 
