@@ -2366,7 +2366,7 @@ address|matching|name
 0x4d20e0|1.0|TCivMgr::ClearCivilianSelectionHighlightsForNation
 0x4d2160|0.5899280575539568|TCivMgr::SelectFirstAvailableCivilianForNation
 0x4d2270|0.8910891089108911|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
-0x4d2380|0.6798029556650246|TCivMgr::HandleCivilianTileSelectionOrReportClick
+0x4d2380|0.7272727272727273|TCivMgr::HandleCivilianTileSelectionOrReportClick
 0x4d2540|0.8041237113402062|TCivMgr::ResolveCivilianTileSelectionOrReportActionCode
 0x4d2610|0.5581395348837209|TCivMgr::GetTileAction
 0x4d26d0|0.8224852071005917|TCivMgr::HandleCivilianTileOrderAction
@@ -3834,7 +3834,7 @@ address|matching|name
 0x5358a0|1.0|TMission::ReadFrom
 0x535940|1.0|TMission::Find
 0x5359e0|0.4470588235294118|IsMapTileCompatibleWithCurrentTerrainOrActionContext
-0x535b00|0.31932773109243695|SelectBestCityDevelopmentFromResourcePools
+0x535b00|0.33499170812603646|SelectBestCityDevelopmentFromResourcePools
 0x535f80|0.4074074074074074|CompareMissionOrderEntriesByMovementClassThenEfficiency
 0x536090|0.6567164179104478|CompareMissionOrderEntriesByPriorityScore
 0x536290|0.25|`dynamic initializer for 'g_scaledShortConst_6A3C64''
@@ -4405,7 +4405,7 @@ address|matching|name
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
 0x555420|0.5638297872340425|TTaskForce::Encounter
 0x555720|0.2549019607843137|TTaskForce::TryToSpot
-0x555920|0.39628482972136225|TTaskForce::ResolveEncounterWith
+0x555920|0.6307277628032345|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
 0x555d10|0.6055045871559633|TTaskForce::BattleWith
 0x555de0|0.5267175572519084|TTaskForce::IsAfraidOf

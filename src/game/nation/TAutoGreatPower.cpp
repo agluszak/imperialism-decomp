@@ -2004,9 +2004,10 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
     if (g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[actionSlot] == 0) {
       continue;
     }
-    ArmyUnitCategoryStorage category = TMilitaryUnit::GetTypeCategory(actionSlot);
-    if (category == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
-        category == EncodeArmyUnitCategory(kArmyUnitCategoryGeneral)) {
+    if (TMilitaryUnit::GetTypeCategory(actionSlot) ==
+            EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
+        TMilitaryUnit::GetTypeCategory(actionSlot) ==
+            EncodeArmyUnitCategory(kArmyUnitCategoryGeneral)) {
       continue;
     }
 
@@ -2031,9 +2032,10 @@ bool SelectBestCityDevelopmentFromResourcePools(int nationSlot, int* resourcePoo
   }
 
   for (short unitType = 0; unitType < 30; ++unitType) {
-    ArmyUnitCategoryStorage category = TMilitaryUnit::GetTypeCategory(unitType);
-    if (category == EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
-        category == EncodeArmyUnitCategory(kArmyUnitCategoryGeneral) ||
+    if (TMilitaryUnit::GetTypeCategory(unitType) ==
+            EncodeArmyUnitCategory(kArmyUnitCategoryMilitia) ||
+        TMilitaryUnit::GetTypeCategory(unitType) ==
+            EncodeArmyUnitCategory(kArmyUnitCategoryGeneral) ||
         bestUnitByType[unitType] == 0) {
       continue;
     }

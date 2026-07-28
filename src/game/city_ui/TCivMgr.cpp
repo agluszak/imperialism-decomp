@@ -138,6 +138,8 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
   short nationId = g_pSimMgr->GetActiveNationId();
   TCivUnit* clickedEntry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
   if (clickedEntry != nullptr) {
+    clickedEntry =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
     if (clickedEntry->IsInIdleSelectionState()) {
       if (nClickMode == 2 ||
           (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c & 0x20) == 0) {
