@@ -19,4 +19,5 @@ RuntimeTestCase* LoadSavedGameTest();
 RuntimeTestCase* SerializationRoundtripTest();
 RuntimeTestCase* SaveStreamCheckpointTest();
 RuntimeTestCase* SaveLoadRoundtripTest();
+RuntimeTestCase* RandomControlExplorerTest();
 RuntimeTestCase* UnknownRuntimeTest();
