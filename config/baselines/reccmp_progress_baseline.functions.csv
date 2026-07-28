@@ -1069,9 +1069,9 @@ address|matching|name
 0x48d390|0.03225806451612903|IltTarget_0048d390
 0x48d4a0|0.2222222222222222|InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit
 0x48d4d0|0.0|DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce
-0x48d500|0.3793103448275862|TWindow::TWindow
+0x48d500|0.7169811320754716|TWindow::TWindow
 0x48d640|1.0|TWindow::`scalar deleting destructor'
-0x48d670|0.2085889570552147|TWindow::~TWindow
+0x48d670|0.5296803652968036|TWindow::~TWindow
 0x48d840|1.0|GetLiveRegistryHeadHostView
 0x48d870|0.0|IltTarget_0048d870
 0x48d8a0|1.0|TWindow::SetDialogItems
@@ -1082,7 +1082,7 @@ address|matching|name
 0x48d9f0|1.0|TWindow::GetTitle
 0x48da10|1.0|TWindow::IsModal
 0x48da40|1.0|TWindow::SetModality
-0x48da60|0.3786407766990291|TWindow::PoseModally
+0x48da60|0.3686274509803922|TWindow::PoseModally
 0x48dc60|1.0|TWindow::IsDismissed
 0x48dc90|1.0|TWindow::Dismiss
 0x48dcc0|1.0|TWindow::GetDialogBehavior
@@ -1223,10 +1223,10 @@ address|matching|name
 0x492470|1.0|CWMgrIterator::NextWindow
 0x4924a0|1.0|CWMgrIterator::More
 0x4924e0|0.0|EnsureChildResourceWindowAndNotify_Impl
-0x492510|0.0|InitializeViewModalStateNodeBlockChainRuntimeClassFields
+0x492510|0.9090909090909091|CList<TWindow *,TWindow *>::CList<TWindow *,TWindow *>
 0x492550|0.0|UnlinkNodeFromDoublyLinkedListAndRecycle
-0x4925e0|0.05714285714285714|DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-0x492670|0.0|TCluster::SerializeRecordList_0x0C_WithBlockPool_C
+0x4925e0|0.9696969696969697|CList<TWindow *,TWindow *>::~CList<TWindow *,TWindow *>
+0x492670|1.0|CList<TWindow *,TWindow *>::Serialize
 0x4927e0|1.0|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::Serialize
 0x492950|0.0|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950
 0x4929b0|0.9696969696969697|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::~CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>
@@ -3267,7 +3267,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.29419583517944176|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.30128489144882586|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition

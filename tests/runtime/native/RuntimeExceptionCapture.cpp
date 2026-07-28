@@ -12,6 +12,7 @@
 #include "game/ui_core/TViewMgr.h"
 
 #include <windows.h>
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -48,7 +49,7 @@ void RuntimeExceptionCapture::Trap(RuntimeRun& run, RuntimeScenario& scenario,
                                    RuntimeDebugReason reason, const char* failureJson,
                                    EXCEPTION_POINTERS* exception) {
   TView* activeModal =
-      g_ModalViewStack.IsEmpty() ? 0 : static_cast<TView*>(g_ModalViewStack.GetHead());
+      g_ModalViewStack.IsEmpty() ? 0 : g_ModalViewStack.GetHead();
   RuntimeDebugRecord record;
   record.reason = reason;
   record.elapsedMs = run.ElapsedMs();

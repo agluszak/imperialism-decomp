@@ -18,6 +18,7 @@
 #include "game/ui_widgets/TTransportPicture.h"
 
 #include <string.h>
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -92,7 +93,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"transport toolbar action opened an unexpected modal\"");
       return;
     }
@@ -186,7 +187,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"transport back navigation left an unexpected modal\"");
       return;
     }

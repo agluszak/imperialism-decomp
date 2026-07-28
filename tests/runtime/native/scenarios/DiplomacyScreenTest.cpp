@@ -24,6 +24,7 @@
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -144,7 +145,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"diplomacy toolbar action opened an unexpected modal\"");
       return;
     }
@@ -282,7 +283,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"diplomacy consulate action opened an unexpected modal\"");
       return;
     }
@@ -356,7 +357,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"diplomacy alliance action opened an unexpected modal\"");
       return;
     }
@@ -479,7 +480,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"diplomacy back navigation left an unexpected modal\"");
       return;
     }

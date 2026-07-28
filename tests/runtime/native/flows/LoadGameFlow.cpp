@@ -6,6 +6,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/globals/view_registries.h"
 
 LoadGameFlow::LoadGameFlow() : phase(kComplete), checkpoint(kRuntimeNoCheckpoint) {}
 

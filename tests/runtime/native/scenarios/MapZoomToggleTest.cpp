@@ -10,6 +10,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_widgets/TWorldView.h"
 #include "game/ui_tags_map.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
