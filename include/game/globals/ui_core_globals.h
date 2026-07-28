@@ -4,6 +4,11 @@
 #include "game/globals/global_types.h"
 #include "game/core/TMouseCaptureState.h"
 
+class TAnimator;
+class TMacViewMgr;
+class TView;
+class TViewMgr;
+
 int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue);
 int ClearGlobalUiInvalidationFlagAndReturnPrevious();
 int GetMcAppUiActiveFlag();
@@ -21,6 +26,14 @@ extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 
 extern CPoint g_turnEventDialogAnchorPoint;
+
+// UI runtime managers and resource-tree state.
+extern CPoint g_ptUiAnimatorSurfaceBounds;
+extern unsigned char g_bStrategicMapSelectionOverlayPhase;
+extern TMacViewMgr* g_pMacViewMgr;
+extern TViewMgr* g_pViewMgr;
+extern TAnimator* g_pUiAnimator;
+extern TView* g_pUiResourceHead;
 
 extern char s_szTurnHistoryPrefix_0069b71c[];
 

@@ -7,6 +7,7 @@
 #include "game/globals/military_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/tactical_ui_globals.h"
+#include "game/globals/ui_core_globals.h"
 #include "game/city_ui/TCountry.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/nation/TMinor.h"
@@ -63,22 +64,9 @@ extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 extern TDisplayMgr* g_pDisplayMgr;
 
-extern CPoint g_ptUiAnimatorSurfaceBounds; // 0x006a2228, initialized at 0x0049f000
-
-extern unsigned char g_bStrategicMapSelectionOverlayPhase; // 0x006a224c
-
-extern TMacViewMgr* g_pMacViewMgr;
-
-extern TViewMgr* g_pViewMgr;
-
 extern TAssetMgr* g_pAssetMgr;
 
 extern TLanguageMgr* g_pLanguageMgr;
-
-extern TAnimator* g_pUiAnimator;
-
-// Active root of the in-progress UI resource tree and the entry currently being registered.
-extern TView* g_pUiResourceHead;
 
 extern POINT g_ptTechItemModalMessage; // @ 0x6a5820
 
