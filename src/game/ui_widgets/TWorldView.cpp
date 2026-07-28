@@ -53,11 +53,11 @@ IMPLEMENT_DYNCREATE(TWorldView, TView)
 
 // FUNCTION: IMPERIALISM 0x00595000
 TWorldView::TWorldView() {
-  hoveredTileIndex6c = 0;
-  paintedHoverTileIndex6e = 0;
-  field68 = 0;
-  field6a = 0;
-  stridedCellRecord7a = 0xffff;
+  hoveredTileIndex = 0;
+  paintedHoverTileIndex = 0;
+  hoveredTileCityRecordIndex = 0;
+  paintedTileCityRecordIndex = 0;
+  stridedCellRecordIndex = 0xffff;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00595040
@@ -212,20 +212,20 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   short cursorToken = -1;
   short tileRow = 0;
   short tileColumn = 0;
-  short* hoverBand = &hoverRegionBand70;
+  short* hoverBand = &hoverRegionBand;
   ConvertPoint(*point, tileRow, tileColumn, *hoverBand);
-  hoveredTileIndex6c = static_cast<unsigned short>(
+  hoveredTileIndex = static_cast<unsigned short>(
       ComputeStridedRecordAddress6C(static_cast<int>(tileRow), static_cast<int>(tileColumn)));
 
   // Skip the cursor recompute when neither the tile cell nor the region band changed
-  // since the cursor was last rendered (activeRegionBand72 holds that last band; a click
+  // since the cursor was last rendered (activeRegionBand holds that last band; a click
   // cycles it out of range to force this dedup to miss and the cursor to refresh).
-  if (hoveredTileIndex6c == paintedHoverTileIndex6e && *hoverBand == activeRegionBand72) {
+  if (hoveredTileIndex == paintedHoverTileIndex && *hoverBand == activeRegionBand) {
     return;
   }
 
-  short tileIndex = static_cast<short>(hoveredTileIndex6c);
-  field68 =
+  short tileIndex = static_cast<short>(hoveredTileIndex);
+  hoveredTileCityRecordIndex =
       static_cast<unsigned short>(g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex);
   short interactionMode = static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96;
 
@@ -319,7 +319,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   }
   {
     ScopedMapQuickDrawContext scopedContext(this);
-    if (hoveredTileIndex6c != paintedHoverTileIndex6e) {
+    if (hoveredTileIndex != paintedHoverTileIndex) {
       RenderStrategicTileSelectionAndNeighborHighlights();
     }
   }
@@ -327,14 +327,14 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
     SetGWorld(savedHoverSurface, savedHoverSurfaceFlags);
   }
 
-  paintedHoverTileIndex6e = hoveredTileIndex6c;
-  field6a = field68;
-  activeRegionBand72 = *hoverBand;
+  paintedHoverTileIndex = hoveredTileIndex;
+  paintedTileCityRecordIndex = hoveredTileCityRecordIndex;
+  activeRegionBand = *hoverBand;
 }
 
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetMapOverlayModeAndRenderPreview(unsigned char overlayMode) {
-  overlayFlagByte74 = overlayMode;
+  alternateOverlayEnabled = overlayMode;
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 
@@ -381,15 +381,15 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   short outY = 0;
   short outX = 0;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(previewTile, &viewportOrigin60, &outX, &outY,
-                                                      projectionScale76);
+  ForwardProjectTileIndexToWrappedScreenOffsetByScale(previewTile, &viewportOrigin, &outX, &outY,
+                                                      projectionScale);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
   // Preserve the original stack order: the projection routine's first output occupies
   // RECT::left and its second output occupies RECT::top.
-  CRect previewRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
+  CRect previewRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
   CRect contentBounds;
   QueryContentBounds(&contentBounds);
   SectRect(&previewRect, &contentBounds, &previewRect);
@@ -410,10 +410,10 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     if (interactionMode == 0) {
       RenderMapOrderEntryTilePreview(selectedOrder, outX, outY, 1, previewTile);
     } else if (interactionMode == 1) {
-      badgeRect.SetRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
+      badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
       RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
-      badgeRect.SetRect(outY, outX, outY + previewSquareRadius78, outX + previewSquareRadius78);
+      badgeRect.SetRect(outY, outX, outY + previewSquareRadius, outX + previewSquareRadius);
       RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, 1);
     }
   }
@@ -551,7 +551,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
 }
 
 // Build a TEvent carrying command/dispatch code 0x78, source/target = this view,
-// stash the strided cell record in stridedCellRecord7a, and hand it to the slot-0xd dispatcher.
+// stash the strided cell record in stridedCellRecordIndex, and hand it to the slot-0xd dispatcher.
 // The field writes intentionally run even when `new` returns null (the original
 // writes through the raw allocation pointer unconditionally).
 // FUNCTION: IMPERIALISM 0x005963d0
@@ -562,7 +562,7 @@ void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int 
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecord7a = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecordIndex = static_cast<unsigned short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 
@@ -575,7 +575,7 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecord7a = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecordIndex = static_cast<unsigned short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 
@@ -635,9 +635,9 @@ cycle:
     static_cast<TMapUberPicture*>(ownerContext)->CycleMapInteractionSelectionAfterHandledClick();
   }
 tail:
-  ++activeRegionBand72;
-  if (activeRegionBand72 > 4) {
-    activeRegionBand72 = 1;
+  ++activeRegionBand;
+  if (activeRegionBand > 4) {
+    activeRegionBand = 1;
   }
 }
 

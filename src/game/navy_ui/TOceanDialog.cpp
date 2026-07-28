@@ -155,12 +155,12 @@ IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
   // Inherited TWorldView viewport fields seeded from the ocean-dialog seed globals
   // (0x6a3ff0/0x6a3ff4); their only writer is the reset helper at 0x56a3b0 which zeroes
-  // both. projectionScale76/previewSquareRadius78 are fixed layout constants for the
+  // both. projectionScale/previewSquareRadius are fixed layout constants for the
   // ocean dialog.
-  viewportOrigin60.x = g_nOceanDialogSeedViewportOffsetX;
-  viewportOrigin60.y = g_nOceanDialogSeedViewportOffsetY;
-  projectionScale76 = 4;
-  previewSquareRadius78 = 0x10;
+  viewportOrigin.x = g_nOceanDialogSeedViewportOffsetX;
+  viewportOrigin.y = g_nOceanDialogSeedViewportOffsetY;
+  projectionScale = 4;
+  previewSquareRadius = 0x10;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0
@@ -171,8 +171,8 @@ TOceanDialog::~TOceanDialog() {}
 // FUNCTION: IMPERIALISM 0x00565f50
 void TOceanDialog::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);
-  projectionScale76 = 4;
-  previewSquareRadius78 = 0x10;
+  projectionScale = 4;
+  previewSquareRadius = 0x10;
 }
 
 // Mac oracle: TOceanDialog::InvalidateZone(TZone*).
@@ -380,19 +380,19 @@ void TOceanDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 
   short projectedY;
   short projectedX;
-  ForwardProjectTileIndexToWrappedScreenOffsetByScale(paintedHoverTileIndex6e, &viewportOrigin60,
-                                                      &projectedY, &projectedX, projectionScale76);
-  CRect tileRect(projectedX, projectedY, projectedX + previewSquareRadius78,
-                 projectedY + previewSquareRadius78);
+  ForwardProjectTileIndexToWrappedScreenOffsetByScale(paintedHoverTileIndex, &viewportOrigin,
+                                                      &projectedY, &projectedX, projectionScale);
+  CRect tileRect(projectedX, projectedY, projectedX + previewSquareRadius,
+                 projectedY + previewSquareRadius);
   BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &tileRect,
                                    &tileRect, 0, 0);
 
   if (frameHoveredTile) {
-    ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-        hoveredTileIndex6c, &viewportOrigin60, &projectedY, &projectedX, projectionScale76);
-    tileRect.SetRect(projectedX, projectedY, projectedX + previewSquareRadius78,
-                     projectedY + previewSquareRadius78);
+    ForwardProjectTileIndexToWrappedScreenOffsetByScale(hoveredTileIndex, &viewportOrigin,
+                                                        &projectedY, &projectedX, projectionScale);
+    tileRect.SetRect(projectedX, projectedY, projectedX + previewSquareRadius,
+                     projectedY + previewSquareRadius);
     QDFrameRect(&tileRect);
   }
 }
@@ -628,7 +628,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 
   CRect destinationRect(projectedY, projectedX, projectedY + 0x10, projectedX + 0x10);
   short spriteStripOffset = 0xe0;
-  if (overlayFlagByte74 != 0) {
+  if (alternateOverlayEnabled != 0) {
     spriteStripOffset = 0xf0;
   } else {
     int ownerNation = static_cast<int>(
@@ -664,7 +664,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
   }
 
   short spriteStripOffset = g_pGlobalMapState->GetMapImprovementTileSpriteOffset(tileIndex);
-  if (overlayFlagByte74 != 0) {
+  if (alternateOverlayEnabled != 0) {
     spriteStripOffset = static_cast<short>(spriteStripOffset + 0x10);
   } else {
     int ownerNation =
@@ -696,7 +696,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   }
 
   short spriteX = static_cast<short>(tileActionClass * 0x10);
-  if (overlayFlagByte74 == 0) {
+  if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(dstRect);
@@ -717,7 +717,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 
   CRect leftSatelliteRect(dstRect->left - 8, dstRect->top - 0x10, dstRect->left + 8, dstRect->top);
   ClipRect(&leftSatelliteRect);
-  if (overlayFlagByte74 == 0) {
+  if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
@@ -733,7 +733,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   CRect rightSatelliteRect(dstRect->left + 8, dstRect->top - 0x10, dstRect->left + 0x18,
                            dstRect->top);
   ClipRect(&rightSatelliteRect);
-  if (overlayFlagByte74 == 0) {
+  if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);
@@ -804,8 +804,8 @@ void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
     scrollRowOffset7c = 0x20;
   }
 
-  viewportOrigin60.y = scrollRowOffset7c << 4;
-  viewportOrigin60.x = scrollColOffset7e << 4;
+  viewportOrigin.y = scrollRowOffset7c << 4;
+  viewportOrigin.x = scrollColOffset7e << 4;
   g_pGlobalMapState->field6 = static_cast<short>(scrollColOffset7e + scrollRowOffset7c * 0x6c);
 
   CRect invalidateRect(0, 0, 0x1ff, 0x1bf);

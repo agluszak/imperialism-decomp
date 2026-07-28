@@ -60,8 +60,8 @@ IMPLEMENT_DYNCREATE(TMapEditView, TMapDialog)
 void TMapEditView::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);
 
-  previewSquareRadius78 = 0x40;
-  projectionScale76 = 1;
+  previewSquareRadius = 0x40;
+  projectionScale = 1;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);

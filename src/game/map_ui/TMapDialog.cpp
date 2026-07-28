@@ -142,24 +142,24 @@ IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
 // Zero the marker/overlay state, center the view on the map's current tile (splitting
 // g_pGlobalMapState->field6 into row/col and dispatching the coordinate update virtually —
-// the vptr is already TMapDialog's), then seed the scroll/zoom words (previewSquareRadius78 = 0x40 tile
+// the vptr is already TMapDialog's), then seed the scroll/zoom words (previewSquareRadius = 0x40 tile
 // pixel size). The split writes only the low words of the two locals, so they are ints whose
 // addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() : TWorldView() {
   WordOutputInt row;
   WordOutputInt col;
-  viewportOrigin60.x = 0;
+  viewportOrigin.x = 0;
   suppressMarkerOverlay34C = false;
   overlayObject35C = 0;
-  viewportOrigin60.y = 0;
+  viewportOrigin.y = 0;
   SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, &row.word, &col.word);
   SetMapViewCellCoordinates(col.value, row.value);
   unresolvedWord354 = 0;
   selectedTileIndex356 = -1;
   unresolvedFlag358 = false;
-  projectionScale76 = 1;
-  previewSquareRadius78 = 0x40;
+  projectionScale = 1;
+  previewSquareRadius = 0x40;
   tileDebugOverlayEnabled360 = false;
 }
 
@@ -191,8 +191,8 @@ void TMapDialog::Free() {
 void TMapDialog::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);
 
-  projectionScale76 = 1;
-  previewSquareRadius78 = 0x40;
+  projectionScale = 1;
+  previewSquareRadius = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
@@ -215,7 +215,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     return;
   }
 
-  short hoveredTile = static_cast<short>(hoveredTileIndex6c);
+  short hoveredTile = static_cast<short>(hoveredTileIndex);
   if (cursorId4e == 0x3eb) {
     TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     CivilianUnitKindStorage unitKind =
@@ -241,12 +241,12 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     }
   }
 
-  short paintedTile = static_cast<short>(paintedHoverTileIndex6e);
+  short paintedTile = static_cast<short>(paintedHoverTileIndex);
   signed char paintedMarker = g_pGlobalMapState->terrainStateTable[paintedTile].markerSlotIndex10;
   if (paintedMarker != -1 && tileMarkers7c[paintedMarker].flag != 0) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(paintedTile, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(paintedTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
     CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
@@ -267,7 +267,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CRect sourceRect(projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80);
     CRect destinationRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
@@ -281,7 +281,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
       activeUnitCategory == 5) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(hoveredTile, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(hoveredTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CRect hoveredRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
     g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
@@ -305,14 +305,14 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
 // half-cell.
 // FUNCTION: IMPERIALISM 0x0051a2a0
 void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
-  const CPoint* viewportOrigin = &viewportOrigin60;
+  const CPoint* viewOrigin = &viewportOrigin;
   short outY;
   short outX;
 
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
 
   if (neighborTiles[0] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
@@ -326,7 +326,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
     }
   }
   if (neighborTiles[1] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
@@ -341,7 +341,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
     }
   }
   if (neighborTiles[2] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
@@ -355,7 +355,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
     }
   }
   if (neighborTiles[3] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x3f, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY);
@@ -369,7 +369,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
     }
   }
   if (neighborTiles[4] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
     DrawCenteredGuideLineOnMapDc(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
@@ -384,7 +384,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
     }
   }
   if (neighborTiles[5] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], viewportOrigin, &outY, &outX, 1);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], viewOrigin, &outY, &outX, 1);
     SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
     DrawCenteredGuideLineOnMapDc(outX, outY);
     DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
@@ -405,7 +405,7 @@ void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
   ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(originalTileIndex),
-                                               &viewportOrigin60, &projectedY, &tileIndex, 1);
+                                               &viewportOrigin, &projectedY, &tileIndex, 1);
 
   CRect invalidateRect(static_cast<short>(tileIndex), projectedY,
                        static_cast<short>(tileIndex) + 0x40, projectedY + 0x40);
@@ -416,28 +416,28 @@ void TMapDialog::InvalidateTile(short tileIndex) {
 // FUNCTION: IMPERIALISM 0x0051a990
 void TMapDialog::ConvertPoint(const CPoint& point, short& outRow, short& outCol, short& outBand) {
   outCol = static_cast<short>(
-      static_cast<int>((viewportOrigin60.y + point.y) * g_mapCellColumnScale_006a3388));
+      static_cast<int>((viewportOrigin.y + point.y) * g_mapCellColumnScale_006a3388));
   short rowValue;
   if ((outCol & 1) != 0) {
     rowValue = static_cast<short>(
-        static_cast<int>((point.x + viewportOrigin60.x + 0x20) * g_mapCellRowScale_006a3360));
+        static_cast<int>((point.x + viewportOrigin.x + 0x20) * g_mapCellRowScale_006a3360));
     --rowValue;
   } else {
     rowValue = static_cast<short>(
-        static_cast<int>((point.x + viewportOrigin60.x) * g_mapCellRowScale_006a3360));
+        static_cast<int>((point.x + viewportOrigin.x) * g_mapCellRowScale_006a3360));
   }
   outRow = rowValue;
   NormalizeWrappedMapCoord108x60(&outRow, &outCol);
 
-  int wrappedY = viewportOrigin60.y + point.y;
+  int wrappedY = viewportOrigin.y + point.y;
   short bandRow = static_cast<short>(wrappedY % 0x40);
 
   short bandCol = 0;
   if ((outCol & 1) != 0) {
-    int wrappedX = point.x + 0x20 + viewportOrigin60.x;
+    int wrappedX = point.x + 0x20 + viewportOrigin.x;
     bandCol = static_cast<short>(wrappedX % 0x40 - 1);
   } else {
-    int wrappedX = point.x + viewportOrigin60.x;
+    int wrappedX = point.x + viewportOrigin.x;
     bandCol = static_cast<short>(wrappedX % 0x40);
   }
 
@@ -455,8 +455,8 @@ void TMapDialog::RefreshMapTile(short tileIndex) {
 
   short projectedY;
   short projectedX;
-  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
-                                               &projectedX, 1);
+  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY, &projectedX,
+                                               1);
   if (projectedY > -0x40 && projectedX > -0x40 && projectedX < 0x200 && projectedY < 0x1c0) {
     InvalidateTile(tileIndex);
   }
@@ -466,8 +466,8 @@ void TMapDialog::RefreshMapTile(short tileIndex) {
 unsigned char TMapDialog::IsTileVisible(short tileIndex) {
   short projectedY;
   short projectedX;
-  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
-                                               &projectedX, 1);
+  ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY, &projectedX,
+                                               1);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
   CRect tileRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
@@ -500,8 +500,8 @@ void TMapDialog::CenterOn(int tileIndex) {
 int TMapDialog::GetCenterTile() const {
   WordOutputInt col;
   WordOutputInt row;
-  col.value = viewportOrigin60.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
-  row.value = viewportOrigin60.y / 0x40 + 4;
+  col.value = viewportOrigin.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  row.value = viewportOrigin.y / 0x40 + 4;
   NormalizeWrappedMapCoord108x60(&col.word, &row.word);
   return col.value + row.value * 0x6c;
 }
@@ -548,10 +548,10 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
     row = 0x35;
   }
 
-  int oldY = viewportOrigin60.y;
-  int oldX = viewportOrigin60.x;
-  viewportOrigin60.y = static_cast<short>(row) << 6;
-  viewportOrigin60.x = static_cast<short>(col) << 6;
+  int oldY = viewportOrigin.y;
+  int oldX = viewportOrigin.x;
+  viewportOrigin.y = static_cast<short>(row) << 6;
+  viewportOrigin.x = static_cast<short>(col) << 6;
 
   g_pGlobalMapState->field6 = static_cast<short>(ComputeStridedRecordAddress6C(col, row));
 
@@ -564,8 +564,8 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
     InvalidateCityDialogRectRegion(&rect, 1);
     static_cast<TMapUberPicture*>(ownerContext)->InvalidateMiniMap();
   }
-  int dx = oldX - viewportOrigin60.x;
-  int dy = oldY - viewportOrigin60.y;
+  int dx = oldX - viewportOrigin.x;
+  int dy = oldY - viewportOrigin.y;
   RECT clip;
   clip.left = -0x40;
   clip.top = -0x40;
@@ -787,8 +787,8 @@ void TMapDialog::Draw(RECT* rectBuffer) {
     LockPixels(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
     LockPixels(GetGWorldPixMap(quickDrawSurface350));
 
-    int markerFirstRow = static_cast<int>(viewportOrigin60.y * g_MapPreviewScaleX6A3410);
-    int markerFirstCol = static_cast<int>(viewportOrigin60.x * g_MapPreviewScaleY6A33D0 - 1.0);
+    int markerFirstRow = static_cast<int>(viewportOrigin.y * g_MapPreviewScaleX6A3410);
+    int markerFirstCol = static_cast<int>(viewportOrigin.x * g_MapPreviewScaleY6A33D0 - 1.0);
     int markerLastCol = markerFirstCol + g_MapPreviewVerticalOffset6A3448;
 
     int markerIndex;
@@ -798,11 +798,11 @@ void TMapDialog::Draw(RECT* rectBuffer) {
                     marker.b >= markerFirstCol && marker.b <= markerLastCol;
     }
 
-    int firstRowValue = viewportOrigin60.y + rectBuffer->top;
+    int firstRowValue = viewportOrigin.y + rectBuffer->top;
     short firstRow = static_cast<short>(DivideMapPixelOffsetBy64(firstRowValue));
     int rowSpan = rectBuffer->bottom - rectBuffer->top;
     short lastRow = static_cast<short>(firstRow + DivideMapPixelOffsetBy64(rowSpan) + 1);
-    int firstColValue = viewportOrigin60.x + rectBuffer->left + 0x20;
+    int firstColValue = viewportOrigin.x + rectBuffer->left + 0x20;
     short firstCol = static_cast<short>(DivideMapPixelOffsetBy64(firstColValue) - 1);
     int colSpan = rectBuffer->right - rectBuffer->left;
     short lastCol = static_cast<short>(firstCol + DivideMapPixelOffsetBy64(colSpan) + 1);
@@ -825,7 +825,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
             static_cast<short>(ComputeStridedRecordAddress6C(static_cast<int>(col), row));
         short projectedY;
         short projectedX;
-        ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &projectedY,
+        ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &projectedY,
                                                      &projectedX, 1);
         if (projectedX >= rectBuffer->right) {
           continue;
@@ -858,7 +858,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
               g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
             short animationY;
             short animationX;
-            ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &animationY,
+            ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
                                                          &animationX, 1);
             RECT animationRect = {animationX, animationY, animationX + 0x40, animationY + 0x40};
             TCivAnimation2* animation =
@@ -2130,13 +2130,13 @@ tail:
 void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
   g_pUiRuntimeContext->SetForeColor(0x3c);
 
-  int viewportRowPixels = viewportOrigin60.y;
+  int viewportRowPixels = viewportOrigin.y;
   if (viewportRowPixels < 0) {
     viewportRowPixels += 0x3f;
   }
   short viewportRow = viewportRowPixels >> 6;
 
-  int viewportColumnPixels = viewportOrigin60.x;
+  int viewportColumnPixels = viewportOrigin.x;
   if (viewportColumnPixels < 0) {
     viewportColumnPixels += 0x1f;
   }
@@ -2238,7 +2238,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
     if (g_pUiAnimator->FindRegisteredAnimationByTag(animationTag) == 0) {
       short animationY;
       short animationX;
-      ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin60, &animationY,
+      ProjectTileIndexToWrappedScreenOffsetByScale(tileIndex, &viewportOrigin, &animationY,
                                                    &animationX, 1);
       CRect animationRect(animationX, animationY, animationX + 0x40, animationY + 0x40);
       TCivAnimation2* animation =
@@ -2252,7 +2252,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       flag == 0 ? quickDrawSurface350 : g_pActiveQuickDrawSurfaceContext;
   CRect destinationRect(projectedY, projectedX, projectedY + 0x40, projectedX + 0x40);
 
-  if (flag != 0 && overlayFlagByte74 == 0) {
+  if (flag != 0 && alternateOverlayEnabled == 0) {
     signed char markerIndex =
         g_pGlobalMapState->terrainStateTable[orderEntry->tileIndex06].markerSlotIndex10;
     if (markerIndex != -1) {
@@ -2315,7 +2315,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
     return;
   }
 
-  if (flag != 0 && overlayFlagByte74 == 0) {
+  if (flag != 0 && alternateOverlayEnabled == 0) {
     signed char markerIndex = tile.markerSlotIndex10;
     if (markerIndex == -1) {
       return;
@@ -2402,7 +2402,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     return;
   }
 
-  if (overlayFlagByte74 == 0) {
+  if (alternateOverlayEnabled == 0) {
     signed char terrainFrameIndex =
         g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
     if (terrainFrameIndex == -1) {
