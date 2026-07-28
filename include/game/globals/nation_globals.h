@@ -193,6 +193,16 @@ extern const float g_AiPressurePeerScale_006543e8;
 extern const double g_MissionScoreZeroThreshold_006545f0;
 
 extern const double g_MissionEligibilityRatioMargin_006545f8;
+extern float g_ApplyIndexedResourceDeltaScale_00653728;
+extern const float g_MissionDefaultScore_0065a468;
+extern const double g_MissionScoreOneConstant_0065a470;
+extern const double g_MinisterWeightHalf_006548E8;
+extern const double g_MinisterWeightOne_006548F0;
+extern const double g_BismarckWeightHigh_006548F8;
+extern const double g_BismarckWeightLow_00654900;
+extern const float g_DefenderMinisterWeight_00654908;
+extern const double g_BullyWeightLow_00654910;
+extern const double g_BullyWeightHigh_00654918;
 
 extern short g_industryActionCostWeightResCode10[16];
 extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
