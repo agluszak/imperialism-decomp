@@ -4,6 +4,8 @@
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/core_globals.h"
+#include "game/globals/assets_globals.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/trade_ui_globals.h"
 #include "game/globals/ui_text_globals.h"
 #include "game/globals/game_session_globals.h"
@@ -49,8 +51,6 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern TTechMgr* g_pTechMgr;
-
 extern TSoundResourceManager g_soundResourceManager;
 
 // Counts idle/audio-state polls before another random cue selection attempt.
@@ -60,10 +60,6 @@ extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount
 
 // Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
 extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
-
-extern TDisplayMgr* g_pDisplayMgr;
-
-extern TAssetMgr* g_pAssetMgr;
 
 extern TLanguageMgr* g_pLanguageMgr;
 

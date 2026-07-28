@@ -5,6 +5,10 @@
 #include "game/gfx/quickdraw_regions.h"
 #include "game/gfx/TTemplateDialogs.h"
 
+class TDisplayMgr;
+
+extern TDisplayMgr* g_pDisplayMgr;
+
 struct GlobalViewportRectDefaultsRecord {
   int field0;
   RECT viewportBounds;
