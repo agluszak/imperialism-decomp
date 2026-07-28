@@ -3,6 +3,7 @@
 // live in src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/core_globals.h"
 #include "game/globals/ui_text_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/military_globals.h"
@@ -82,14 +83,6 @@ extern POINT g_ptGameSetupModalMessage; // @ 0x6a4218
 extern int g_lastClickedMapTileIndex_006a4608;
 
 extern int g_localizationAudioSlotCursor_006a60f8;
-
-extern char g_szImpSaveExtension_00698708[];
-
-extern char g_szMultiplayerSavePrefix_00698710[];
-
-extern char g_szSingleSlotSavePrefix_00698718[];
-
-extern char g_ScenarioSaveNameBuffer_006A2178[0x30]; // scenario name for save flow
 
 extern char* g_pszDescriptorDefaultName_00653300;
 

@@ -9,3 +9,9 @@ extern "C" int g_nStartupAutoResolutionMode;
 extern int g_streamLine304AssertGuard;
 
 extern int g_streamLine596AssertGuard;
+
+// Application save-flow names and writable scenario buffer.
+extern char g_szImpSaveExtension_00698708[];
+extern char g_szMultiplayerSavePrefix_00698710[];
+extern char g_szSingleSlotSavePrefix_00698718[];
+extern char g_ScenarioSaveNameBuffer_006A2178[0x30];
