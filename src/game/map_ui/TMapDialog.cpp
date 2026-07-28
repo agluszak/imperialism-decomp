@@ -889,7 +889,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
               g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
           if (animation != 0) {
             SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
-            RECT animationClip = animation->screenRect1C;
+            RECT animationClip = animation->screenRect;
             OffsetRect(&animationClip, 0x40, 0x40);
             ClipRect(&animationClip);
             POINT drawOffset = {0x40, 0x40};
@@ -2210,7 +2210,7 @@ void TMapDialog::DrawTile(short tileIndex, short screenX, short screenY) {
         g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(firstCivilianOrder));
     if (animation != 0) {
       SetGWorld(g_pCitySiteCachedPrimaryRenderSurfaceContext, savedSurfaceFlags);
-      RECT animationClip = animation->screenRect1C;
+      RECT animationClip = animation->screenRect;
       OffsetRect(&animationClip, 0x40, 0x40);
       ClipRect(&animationClip);
       POINT drawOffset = {0x40, 0x40};

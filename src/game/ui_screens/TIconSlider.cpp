@@ -12,11 +12,11 @@ IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
 // FUNCTION: IMPERIALISM 0x005063c0
 TIconSlider::TIconSlider()
-    : TIconBar(), value9c(0), knobBitmapA0(0), minTrackOffsetB4(0), maxTrackOffsetB6(0) {
-  knobBaseRectA4.left = 0;
-  knobBaseRectA4.top = 0;
-  knobBaseRectA4.right = 0;
-  knobBaseRectA4.bottom = 0;
+    : TIconBar(), value(0), knobBitmap(0), minTrackOffset(0), maxTrackOffset(0) {
+  knobBaseRect.left = 0;
+  knobBaseRect.top = 0;
+  knobBaseRect.right = 0;
+  knobBaseRect.bottom = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00506430
@@ -28,25 +28,25 @@ TIconSlider::~TIconSlider() {}
 void TIconSlider::DoPostCreate(int arg) {
   TIconBar::DoPostCreate(arg);
 
-  knobBitmapA0 = CreateBitmapResourceLoaderHandle(0x3eb);
+  knobBitmap = CreateBitmapResourceLoaderHandle(0x3eb);
   RECT rect;
-  CopyRect(&rect, &(*knobBitmapA0)->bitmapRect);
+  CopyRect(&rect, &(*knobBitmap)->bitmapRect);
 
   int width = rect.right - rect.left;
   int height = rect.bottom - rect.top;
-  minTrackOffsetB4 = 0;
-  knobBaseRectA4.left = 0;
-  knobBaseRectA4.top = 0;
-  knobBaseRectA4.right = width;
-  knobHeightB8 = static_cast<short>(height);
-  knobWidthBA = static_cast<short>(width);
-  maxTrackOffsetB6 = static_cast<short>(frameWidth34 - width);
-  knobBaseRectA4.bottom = height;
+  minTrackOffset = 0;
+  knobBaseRect.left = 0;
+  knobBaseRect.top = 0;
+  knobBaseRect.right = width;
+  knobHeight = static_cast<short>(height);
+  knobWidth = static_cast<short>(width);
+  maxTrackOffset = static_cast<short>(frameWidth34 - width);
+  knobBaseRect.bottom = height;
 }
 
 // FUNCTION: IMPERIALISM 0x00506560
 void TIconSlider::SetMax(short maxValue) {
-  maxTrackOffsetB6 = iconSpacing98 * maxValue;
+  maxTrackOffset = iconSpacing98 * maxValue;
 }
 
 // FUNCTION: IMPERIALISM 0x00506590
@@ -69,10 +69,10 @@ char TIconSlider::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPo
   }
 
   int nextValue = point.x;
-  if (maxTrackOffsetB6 < nextValue) {
-    nextValue = maxTrackOffsetB6;
+  if (maxTrackOffset < nextValue) {
+    nextValue = maxTrackOffset;
   }
-  value9c = static_cast<short>(nextValue) / iconSpacing98;
+  value = static_cast<short>(nextValue) / iconSpacing98;
   RefreshControl();
   ownerContext->HandleEvent(0x6c, this, 0);
   return 1;
@@ -90,14 +90,14 @@ void TIconSlider::Draw(RECT* rectBuffer) {
 void TIconSlider::DrawKnob() {
   RECT knobRect;
   GetKnobRect(knobRect);
-  QDLoadResource(knobBitmapA0);
-  BlitBitmapResourceLoaderToActiveDc(knobBitmapA0, &knobRect);
+  QDLoadResource(knobBitmap);
+  BlitBitmapResourceLoaderToActiveDc(knobBitmap, &knobRect);
 }
 
 // FUNCTION: IMPERIALISM 0x00506710
 void TIconSlider::GetKnobRect(RECT& knobRect) {
-  knobRect = knobBaseRectA4;
-  short offset = static_cast<short>(value9c * iconSpacing98 - knobWidthBA / 2 + iconSpacing98 / 2);
+  knobRect = knobBaseRect;
+  short offset = static_cast<short>(value * iconSpacing98 - knobWidth / 2 + iconSpacing98 / 2);
   OffsetRect(&knobRect, offset, 0);
 }
 
@@ -110,29 +110,29 @@ void TIconSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previ
   RECT currentKnobRect = previousKnobRect;
 
   int previousOffset = previousPoint.x - startPoint.x;
-  int minOffset = minTrackOffsetB4 - previousKnobRect.left;
+  int minOffset = minTrackOffset - previousKnobRect.left;
   if (previousOffset <= minOffset) {
     previousOffset = minOffset;
   }
-  int maxOffset = maxTrackOffsetB6 - previousKnobRect.left;
+  int maxOffset = maxTrackOffset - previousKnobRect.left;
   if (previousOffset < maxOffset) {
     maxOffset = previousOffset;
   }
   OffsetRect(&previousKnobRect, static_cast<short>(maxOffset), 0);
 
   int currentOffset = currentPoint.x - startPoint.x;
-  minOffset = minTrackOffsetB4 - currentKnobRect.left;
+  minOffset = minTrackOffset - currentKnobRect.left;
   if (currentOffset <= minOffset) {
     currentOffset = minOffset;
   }
-  maxOffset = maxTrackOffsetB6 - currentKnobRect.left;
+  maxOffset = maxTrackOffset - currentKnobRect.left;
   if (maxOffset <= currentOffset) {
     currentOffset = maxOffset;
   }
   OffsetRect(&currentKnobRect, static_cast<short>(currentOffset), 0);
 
   if (phase == kTrackPhaseEnd) {
-    value9c = static_cast<short>(knobWidthBA / 2 + currentKnobRect.left) / iconSpacing98;
+    value = static_cast<short>(knobWidth / 2 + currentKnobRect.left) / iconSpacing98;
     GetKnobRect(currentKnobRect);
   }
 
@@ -154,8 +154,8 @@ void TIconSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previ
   SetClip(savedClip);
   DisposeRgn(savedClip);
 
-  QDLoadResource(knobBitmapA0);
-  BlitBitmapResourceLoaderToActiveDc(knobBitmapA0, &currentKnobRect);
+  QDLoadResource(knobBitmap);
+  BlitBitmapResourceLoaderToActiveDc(knobBitmap, &currentKnobRect);
   if (phase == kTrackPhaseEnd) {
     ownerContext->HandleEvent(0x6c, this, 0);
   }

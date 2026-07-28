@@ -601,7 +601,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
       TAnimation* blink = g_pUiAnimator->FindRegisteredAnimationByTag(0x2711);
       RECT selectionRect = tileScreenRect;
       SetQuickDrawFillColorFromPaletteIndex(blink == 0 ? 0x13
-                                                       : selectionPalette[blink->frameIndex08]);
+                                                       : selectionPalette[blink->frameIndex]);
       DrawHexSelectionOutlineSegments(&selectionRect);
       selectionRect.left += 1;
       selectionRect.top += 1;

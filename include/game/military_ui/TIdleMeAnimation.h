@@ -17,7 +17,7 @@ public:
   TIdleMeAnimation() {}
 
   // Post-construction init (0x4ac9c0): stamps the animation with the next value of
-  // the g_nIdleMeAnimationNextRegistryTag counter (as its registryTag18), zeroes the
+  // the g_nIdleMeAnimationNextRegistryTag counter (as its registryTag), zeroes the
   // rect/frame state via the base helper, and registers itself with g_pUiAnimator.
   void IIdleMeAnimation(TView* ownerView);
 };

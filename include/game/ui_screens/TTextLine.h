@@ -16,9 +16,8 @@ public:
   CString captionText10; // 0x10
   // Font/theme preset consumed by CreateFontFromPresetAndAttachRegionHandle et al.
   TextStyle styleDescriptor14; // 0x14
-  // Sentinel-initialized (0xfffe) by SetTextLineRowBoundsAndStyle; exact semantics
-  // (e.g. a "no selection" index) not yet confirmed from a distinct evidentiary call site.
-  short field1e; // 0x1e
+  // Passed directly to TStaticText::SetTextAlignmentAndMaybeRefresh.
+  short textAlignmentCode; // 0x1e
 
   TTextLine();
   // 0x570390 -- extends TLineData::SetLineDataRowAndBounds with an optional localized
@@ -28,7 +27,7 @@ public:
   // 0x570440 -- copy-assign the 10-byte packed style descriptor.
   void SetTextLineStyleDescriptor(const TextStyle* descriptor);
   // 0x5704e0
-  void SetField1E(short value);
+  void SetTextAlignmentCode(short value);
   void SetCaptionText(CString* caption); // 0x00570420
 };
 

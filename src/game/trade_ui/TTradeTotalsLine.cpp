@@ -26,6 +26,7 @@ void TTradeTotalsLine::ITradeTotalsLine(short rowArg, short colArg, int* bounds,
 // FUNCTION: IMPERIALISM 0x005c19c0
 void TTradeTotalsLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeTotalsView* view = new TTradeTotalsView();
-  view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &field08, 5, 5, 0);
+  view->InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, &layoutWidth, 5, 5,
+                                                0);
   view->nationSlot60 = nationId10;
 }

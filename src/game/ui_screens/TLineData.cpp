@@ -17,10 +17,10 @@ TLineData::~TLineData() {}
 
 // FUNCTION: IMPERIALISM 0x0056f420
 void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds) {
-  field04 = colArg;
-  field08 = bounds[0];
-  field0c = bounds[1];
-  field06 = rowArg;
+  column = colArg;
+  layoutWidth = bounds[0];
+  layoutHeight = bounds[1];
+  row = rowArg;
 }
 
 // FUNCTION: IMPERIALISM 0x0056f460

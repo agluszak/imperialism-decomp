@@ -31,7 +31,7 @@ void TTradeOfferNationLine::ITradeOfferNationLine(short categorySlot, short nati
 void TTradeOfferNationLine::InstallViews(TView* panel, int* offsetLayout) {
   TTradeOfferNationView* view = new TTradeOfferNationView();
   view->InitializeUiResourceEntryFrameAndParent(panel->resourceContext, panel, offsetLayout,
-                                                &field08, 5, 5, 0);
+                                                &layoutWidth, 5, 5, 0);
   view->categorySlot60 = categorySlot10;
   view->nationSlot62 = nationSlot12;
 

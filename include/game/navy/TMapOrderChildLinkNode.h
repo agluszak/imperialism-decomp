@@ -38,9 +38,7 @@ public:
   TMapOrderChildLinkNode* next; // +0x04
   TMapOrderChildLinkNode* prev; // +0x08
   unsigned char active;         // +0x0c
-  unsigned char pad_0d;
-  unsigned char pad_0e;
-  unsigned char pad_0f;
+  unsigned char padding0D[3];
 
   // Trivial default ctor for the POD link cell: GetOrCreateTaskForceOrderNodeBy-
   // Template's raw `new` (0x553bc0) does no field writes before the caller's own

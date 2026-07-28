@@ -23,5 +23,5 @@ void TMiniCivLine::IMiniCivLine(short rowArg, short colArg, int* bounds, TCivUni
 // FUNCTION: IMPERIALISM 0x004ab740
 void TMiniCivLine::InstallViews(TView* panel, int* offsetLayout) {
   TMiniCivView* view = new TMiniCivView();
-  view->InitializeForCivilianUnit(panel, offsetLayout, &field08, civUnit10);
+  view->InitializeForCivilianUnit(panel, offsetLayout, &layoutWidth, civUnit10);
 }

@@ -263,7 +263,7 @@ void TBattleReportView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004ad560
 void TBattleReportView::Free() {
   if (transientRegistryObject24cc != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag18);
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(transientRegistryObject24cc->registryTag);
   }
   TDiplomacyMapView::Free();
 }
