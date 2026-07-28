@@ -5,7 +5,7 @@
 #include "game/navy/TOcean.h"
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"

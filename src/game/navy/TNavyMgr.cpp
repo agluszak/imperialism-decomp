@@ -24,7 +24,7 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/navy/TTaskForce.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/core/CString.h"
 #include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"

@@ -1732,7 +1732,7 @@ double g_dMasterVolumeExponentScale = 0.092;
 
 } // extern "C"
 
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/map/TMapMgr.h"

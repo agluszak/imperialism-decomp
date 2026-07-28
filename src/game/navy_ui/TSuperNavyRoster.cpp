@@ -5,7 +5,7 @@
 #include "game/navy_ui/TMiniShipLine.h"
 #include "game/navy/TShip.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"

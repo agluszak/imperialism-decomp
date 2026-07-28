@@ -1,6 +1,6 @@
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/core/runtime_prng_seed.h"
 #include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"

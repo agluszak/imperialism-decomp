@@ -11,7 +11,7 @@
 #include "game/GameAssert.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/city/TCity.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/nation/TGreatPower.h"
 #include "game/globals/global_types.h"

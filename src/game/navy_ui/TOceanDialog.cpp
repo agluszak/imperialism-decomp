@@ -15,7 +15,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/map_globals.h"

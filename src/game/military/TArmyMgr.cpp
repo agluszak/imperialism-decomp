@@ -37,7 +37,7 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/map_globals.h"

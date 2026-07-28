@@ -252,16 +252,16 @@ TView|96|hoverHelpEnabled5c|int|other|92|4|no|0040be633ff90a97|include/game/ui_c
 TWNetSessionManager|180|joinGamePlayerNameA8|CString|embedded|168|4|yes|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
 TWNetSessionManager|180|joinGamePlayerDataTagAC|int|other|172|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
 TWNetSessionManager|180|activeProtocolControlB0|TRadioTextCluster *|other|176|4|no|e0efb16174dcd263|include/game/net/TWNetSessionManager.h
-TZone|72|statusCode04|short|other|4|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|pad06|char[2]|other|6|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|displayName|CString|embedded|8|4|yes|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|tileOrTerrainId0c|int|other|12|4|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|nationKeyMask10|unsigned short|other|16|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|seedNationId12|short|other|18|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|contextOrdinal14|short|other|20|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|pad16|char[2]|other|22|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|prev18|TZone *|other|24|4|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|next1c|TZone *|other|28|4|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|activeTileIndex20|short|other|32|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|pad22|char[2]|other|34|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
-TZone|72|distanceLevel44|short|other|68|2|no|f0acc9c03bbe5805|include/game/ui_screens/TZone.h
+TZone|72|statusCode04|short|other|4|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|pad06|char[2]|other|6|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|displayName|CString|embedded|8|4|yes|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|tileOrTerrainId0c|int|other|12|4|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|nationKeyMask10|unsigned short|other|16|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|seedNationId12|short|other|18|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|contextOrdinal14|short|other|20|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|pad16|char[2]|other|22|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|prev18|TZone *|other|24|4|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|next1c|TZone *|other|28|4|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|activeTileIndex20|short|other|32|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|pad22|char[2]|other|34|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+TZone|72|distanceLevel44|short|other|68|2|no|f0acc9c03bbe5805|include/game/map/TZone.h

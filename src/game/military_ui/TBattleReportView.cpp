@@ -23,7 +23,7 @@
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"

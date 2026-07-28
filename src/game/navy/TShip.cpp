@@ -6,7 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/core/TStream.h"
 #include "game/GameAssert.h"
 #include "game/globals/global_types.h"

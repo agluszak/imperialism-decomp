@@ -5,7 +5,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/nation/TMinor.h"
 #include "game/navy/TShip.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/ui_core/TSortedList.h"
 
 class TGreatPower;

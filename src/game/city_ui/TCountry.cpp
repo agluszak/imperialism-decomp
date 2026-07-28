@@ -22,7 +22,7 @@
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/military/TUnit.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/nation_stream_serialization.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/military/mapped_flavor_text.h"
