@@ -1017,7 +1017,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
   short portOwnerNation = portZoneContext->GetPortZoneOwnerNationCodeFromMissionField48();
   TGreatPower* nationState = g_apNationStates[nation];
   short remainingTradeCapacity =
-      static_cast<short>(nationState->tradeCapacity - nationState->diplomacyCounterA2);
+      static_cast<short>(nationState->merchantCapacity - nationState->availableMerchantCapacity);
   short selectionChance = remainingTradeCapacity == 0
                               ? 0
                               : static_cast<short>((offerAmount * 100) / remainingTradeCapacity);
@@ -1303,7 +1303,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
             if (passMismatch) {
               if (offerNation < 7) {
-                g_apNationStates[offerNation]->AddShortDeltaToNationCounterAtOffset198(
+                g_apNationStates[offerNation]->AddPurchasedItemAmount(
                     slot, static_cast<short>(-transferredWeight));
               }
               movedTrackedCounter = 1;
@@ -1380,8 +1380,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 }
               }
               if (passMismatch) {
-                g_apNationStates[selection.offerNationCode]
-                    ->AddShortDeltaToNationCounterAtOffset198(slot, transferredWeight);
+                g_apNationStates[selection.offerNationCode]->AddPurchasedItemAmount(
+                    slot, transferredWeight);
               }
             }
           }
@@ -1458,7 +1458,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         }
 
         if (matchesOfferPass && acceptNation < 7) {
-          g_apNationStates[acceptNation]->AddShortDeltaToNationCounterAtOffset198(slot, entryValue);
+          g_apNationStates[acceptNation]->AddPurchasedItemAmount(slot, entryValue);
         }
 
         if (acceptNation < 7) {

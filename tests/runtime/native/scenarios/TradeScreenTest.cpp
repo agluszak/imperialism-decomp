@@ -29,6 +29,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_widgets/TTradeOrderPicture.h"
 #include "game/ui_widgets/TTradeScreenPicture.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -309,7 +310,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"trade toolbar action opened an unexpected modal\"");
       return;
     }
@@ -435,7 +436,7 @@ private:
       FailScenario("\"Board of Trade could not seed an adjustable sell capacity\"");
       return;
     }
-    activeNation->tradeCapacity = static_cast<short>(testCapacity);
+    activeNation->merchantCapacity = static_cast<short>(testCapacity);
     capacity->SetControlValue(testCapacity, 1);
     TAmtBar* sellBar = static_cast<TAmtBar*>(selectedSellRow->ResolveControlByTag(kControlTagBar));
     if (sellBar == 0) {
@@ -571,7 +572,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
       return;
     }

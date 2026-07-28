@@ -1194,7 +1194,7 @@ TZone::~TZone() {
 // list assigning each zone a status code and refreshing its display name/headline.
 // FUNCTION: IMPERIALISM 0x00563220
 void RegenerateAllMapActionContextStatusCodes(void) {
-  const char* tag = g_pGlobalMapState->scenarioTagText1c;
+  const char* tag = g_pGlobalMapState->scenarioTagText;
   int seed = kControlTagNada;
   while (*tag != '\0') {
     seed = (seed >> 0x10) + seed * 2 + static_cast<int>(*tag);

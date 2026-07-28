@@ -491,7 +491,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
       if (seedFound[cls] == 0) {
         int row = tileIndex / 0x6c;
         int col = tileIndex % 0x6c;
-        char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+        char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally;
         bool haveCandidate = false;
         short dir = 0;
         do {
@@ -1104,7 +1104,7 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
                                     : g_hexColOffsetOddRow_00697480[direction];
   int col = tileIndex % 0x6c + colOffset;
   int row = parity + g_hexRowOffset_00697468[direction];
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
     if (col < 0) {
       col += 0x6c;
     } else if (col > 0x6b) {

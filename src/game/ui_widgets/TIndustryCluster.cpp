@@ -78,7 +78,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
       static_cast<TItemOrder*>(selectedMetricRecord)->productionSlot));
 
   TAmtBarCluster::DoPostCreate(styleSeed);
-  this->SetMoveAmount(selectedMetricRecord->quantityField04, 1);
+  this->SetMoveAmount(selectedMetricRecord->quantity, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00588c30
@@ -89,12 +89,12 @@ void TIndustryCluster::SetMoveAmount(short amount) {
 // FUNCTION: IMPERIALISM 0x00588c60
 void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateControls) {
   TProductionOrder* selectedOrder = this->selectedMetricOrder;
-  short previousValue = selectedOrder->quantityField04;
+  short previousValue = selectedOrder->quantity;
   if (selectedOrder != 0) {
     selectedOrder->SetQuantity(dragValue);
   }
 
-  if ((updateControls == 0) && (selectedOrder->quantityField04 == previousValue)) {
+  if ((updateControls == 0) && (selectedOrder->quantity == previousValue)) {
     return;
   }
 
@@ -103,7 +103,7 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
     FailNilPointerInUSmallViews(0xb42);
   }
 
-  moveControl->SetControlValue((int)selectedOrder->quantityField04, 0);
+  moveControl->SetControlValue((int)selectedOrder->quantity, 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;
@@ -123,14 +123,13 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
         static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
   }
 
-  if (selectedOrder->quantityField04 == this->selectedMetricValue) {
+  if (selectedOrder->quantity == this->selectedMetricValue) {
     barControl->auxValueB = 0x34;
   } else {
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMoveAmount =
-      static_cast<int>(static_cast<float>(selectedOrder->quantityField04) * barScale);
+  int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
   int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
   barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
 

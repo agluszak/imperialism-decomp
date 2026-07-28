@@ -829,7 +829,7 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
           static_cast<TTradeCluster*>(control), iconIndex, currentTurnEventNationSlot06);
     }
   }
-  g_apNationStates[currentTurnEventNationSlot06]->SnapshotDiplomacyState1c6Into250();
+  g_apNationStates[currentTurnEventNationSlot06]->RememberTradeBids();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6cd0
@@ -1724,10 +1724,10 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
 
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationIndex)];
   g_pSimMgr->SetFlags(0x100);
-  nation->RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix();
+  nation->RecallTradeBids();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
-    if (nation->QueryNationMetricBySlot7C(metricSlot) == -1) {
+    if (nation->GetTradeOffersFor(metricSlot) == -1) {
       this->fieldEc = static_cast<short>(this->fieldEc + 1);
     }
   }
@@ -1788,7 +1788,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   capacity->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
   capacity->HiliteState(1, 0);
-  capacity->SetControlValue(nation->tradeCapacity, 0);
+  capacity->SetControlValue(nation->merchantCapacity, 0);
 
   TCity* city = nation->city;
   if (city == nullptr) {
@@ -1868,7 +1868,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     }
   }
 
-  if (nation->tradeCapacity == 0) {
+  if (nation->merchantCapacity == 0) {
     g_pSimMgr->GetString(0x2731, 0x12, &label);
     ModalMessage(label, g_ptCitySiteSelectionDialogPlacement);
     this->fieldEc = 5;
@@ -2436,7 +2436,7 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
   g_pGlobalMapState->SeedValidCitySiteCandidateTilesForNation(static_cast<short>(nationSlot));
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
   TCity* city = nation != nullptr ? nation->city : nullptr;
-  citySiteView->pendingTown364 = city->homeTownMarkerB0;
+  citySiteView->pendingTown = city->homeTownMarkerB0;
   citySiteView->SetMapViewTileIndex(
       g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(nationSlot));
 

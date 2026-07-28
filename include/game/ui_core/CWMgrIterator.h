@@ -2,10 +2,10 @@
 
 #include "game/mfc.h"
 
-// The McAppUI live-view registry: every TWindow/TView links itself in on construction
-// (inline AddHead) and unlinks on teardown. An MFC CPtrList, base 0x006a1a40
-// (vtable 0x0064b580). Iterated through CWMgrIterator below.
-// g_LiveViewRegistry — see game/global_data_tables.h.
+// The McAppUI live-view registry: every TWindow links itself in on construction (inline
+// AddHead) and unlinks on teardown. A CList<TWindow*, TWindow*>, base 0x006a1a40 (vtable
+// 0x0064b580), shared with the modal stack. Iterated through CWMgrIterator below.
+// g_LiveViewRegistry — see game/globals/view_registries.h.
 
 // MacApp's window-manager iterator (CIterator-derived): a 12-byte stack cursor that
 // sweeps every live UI window/view in g_LiveViewRegistry (e.g.

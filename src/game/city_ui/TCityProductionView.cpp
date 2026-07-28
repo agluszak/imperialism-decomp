@@ -204,7 +204,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
         if (slot == 0xb && city->powerPlantUpgradeQueuedFlag04 != 0) {
           shouldDraw = true;
         }
-      } else if (city->orderSlotsE4[slot + 0x35]->quantityField04 > 0) {
+      } else if (city->orderSlotsE4[slot + 0x35]->quantity > 0) {
         shouldDraw = true;
       }
     }
@@ -216,8 +216,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     if (slot == 0xb) {
       pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x1b63 : 0x1b73));
     } else if (level == 0 || slot < 0 || slot > 5 ||
-               city->orderSlotsE4[slot + 0x35]->quantityField04 < 1 ||
-               city->IsCapacityCenter(slot) == 0) {
+               city->orderSlotsE4[slot + 0x35]->quantity < 1 || city->IsCapacityCenter(slot) == 0) {
       pictureId = static_cast<short>(slot + level * 0x10 + 0x1b58);
     } else {
       pictureId = static_cast<short>(slot + level * 0x10 + 0x1c84);
@@ -415,7 +414,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                    static_cast<LPCSTR>(hoverText));
           } else {
-            firstQuantityText.Format(g_szDecimalFormat, city->orderSlotsE4[0x34]->quantityField04);
+            firstQuantityText.Format(g_szDecimalFormat, city->orderSlotsE4[0x34]->quantity);
             g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
             g_pSimMgr->GetString(0x2734, 0x1d, &templateText);
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
@@ -424,7 +423,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
           }
         } else if (nextBuildingType == 0) {
           TProductionOrder* order = city->orderSlotsE4[slot + 0x35];
-          g_pSimMgr->GetString(0x2734, order->quantityField04 > 0 ? 0x19 : 0x1a, &templateText);
+          g_pSimMgr->GetString(0x2734, order->quantity > 0 ? 0x19 : 0x1a, &templateText);
           scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                  static_cast<LPCSTR>(hoverText));
         } else {
@@ -434,7 +433,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
                                    buildingType - city->productionAccum1fc[slot]);
           secondQuantityText.Format(g_szDecimalFormat, buildingType);
           g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
-          g_pSimMgr->GetString(0x2734, order->quantityField04 > 0 ? 0x1c : 0x1b, &templateText);
+          g_pSimMgr->GetString(0x2734, order->quantity > 0 ? 0x1c : 0x1b, &templateText);
           scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                  static_cast<LPCSTR>(hoverText),
                                  static_cast<LPCSTR>(firstQuantityText),
@@ -638,9 +637,9 @@ void TCityProductionView::UpdateToolbar() {
     short buildingSlot = static_cast<short>(group < 7 ? group : 11);
     bool enabled;
     if (buildingSlot == 11) {
-      enabled = city94->powerPlantUpgradeQueuedFlag04 == 0 &&
-                city94->trailingOrderSlots[1]->quantityField04 > 0;
-    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantityField04 > 0) {
+      enabled =
+          city94->powerPlantUpgradeQueuedFlag04 == 0 && city94->trailingOrderSlots[1]->quantity > 0;
+    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
       enabled = false;
     } else {
       enabled = city94->productionAccum1fc[buildingSlot] < city94->GetBuildingType(buildingSlot);
@@ -833,7 +832,7 @@ void TCityProductionView::UpdateFields() {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x5f2);
     }
-    total = static_cast<short>(total + order->quantityField04);
+    total = static_cast<short>(total + order->quantity);
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionArmoryPrefix + numberText;
@@ -851,7 +850,7 @@ void TCityProductionView::UpdateFields() {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityDialogs_006962E8, 0x600);
     }
-    total = static_cast<short>(total + order->quantityField04);
+    total = static_cast<short>(total + order->quantity);
   }
   numberText.Format(g_szDecimalFormat, total);
   summaryText = g_szCityProductionUniversityPrefix + numberText;

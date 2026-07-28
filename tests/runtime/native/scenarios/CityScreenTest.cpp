@@ -35,6 +35,7 @@
 #include "game/ui_widgets/TPlacard.h"
 #include "game/ui_widgets/TRailCluster.h"
 #include "game/ui_widgets/TCivilianButton.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -150,7 +151,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"city toolbar action opened an unexpected modal\"");
       return;
     }
@@ -246,8 +247,8 @@ private:
       CString quantityText;
       CString expectedText;
       recruitmentQuantity->GetCurrentText(&quantityText);
-      expectedText.Format("%d", order->quantityField04);
-      if (quantityText != expectedText || recruitmentQuantity->value != order->quantityField04 ||
+      expectedText.Format("%d", order->quantity);
+      if (quantityText != expectedText || recruitmentQuantity->value != order->quantity ||
           !HasCorrectNumberTextPresentationState(recruitmentQuantity, 10, PALETTEINDEX(0xd2))) {
         FailScenario("\"university recruitment count state does not match its live order\"");
         return false;
@@ -284,7 +285,7 @@ private:
         return false;
       }
 
-      short unitType = order->resourceTypeIndex48;
+      short unitType = order->resourceTypeIndex;
       if (g_awTacticalUnitCategoryCodeBySlot[unitType] != category + 1 ||
           g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[category + 1] !=
               unitType ||
@@ -326,15 +327,15 @@ private:
       CString quantityText;
       CString expectedQuantityText;
       quantity->GetCurrentText(&quantityText);
-      expectedQuantityText.Format("%d", order->quantityField04);
-      if (quantityText != expectedQuantityText || quantity->value != order->quantityField04 ||
+      expectedQuantityText.Format("%d", order->quantity);
+      if (quantityText != expectedQuantityText || quantity->value != order->quantity ||
           !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0xd2))) {
         FailScenario("\"armory recruitment count state does not match its live order\"");
         return false;
       }
       TView* purchaseRow = buildingView->ResolveControlByTag(kControlTagClu0 + category);
       TView* plus = purchaseRow == 0 ? 0 : purchaseRow->ResolveControlByTag(kControlTagPlus);
-      if (plus != 0 && plus->IsActionable() != 0 && order->MaxOrder() > order->quantityField04) {
+      if (plus != 0 && plus->IsActionable() != 0 && order->MaxOrder() > order->quantity) {
         foundActionableOrder = true;
       }
     }
@@ -350,7 +351,7 @@ private:
       failure.Format("\"armory has no actionable unit order: plus=%d enabled=%d actionable=%d "
                      "quantity=%d max=%d primary_stock=%d treasury=%d\"",
                      firstPlus != 0, firstPlus == 0 ? -1 : firstPlus->IsEnabled(),
-                     firstPlus == 0 ? -1 : firstPlus->IsActionable(), firstOrder->quantityField04,
+                     firstPlus == 0 ? -1 : firstPlus->IsActionable(), firstOrder->quantity,
                      firstOrder->MaxOrder(),
                      buildingView->city94->CityStockByType(firstOrder->primaryInputResourceId),
                      buildingView->city94->ownerNationAc->treasuryValue10);
@@ -362,7 +363,7 @@ private:
       return false;
     }
 
-    short selectedUnitType = armory->selectedUnitOrderA8->resourceTypeIndex48;
+    short selectedUnitType = armory->selectedUnitOrderA8->resourceTypeIndex;
     TStaticText* unitName =
         static_cast<TStaticText*>(buildingView->ResolveControlByTag(kControlTagUnit));
     TNumberText* firepower =
@@ -397,7 +398,7 @@ private:
     bool foundLiveShipOrder = false;
     for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
       TShipOrder* order = buildingView->city94->shipOrderSlots[queueIndex];
-      if (order == 0 || order->resourceTypeIndex48 == 0) {
+      if (order == 0 || order->resourceTypeIndex == 0) {
         continue;
       }
       TView* queueRow = buildingView->ResolveControlByTag(kControlTagClu0 + queueIndex);
@@ -412,8 +413,8 @@ private:
       CString quantityText;
       CString expectedText;
       quantity->GetCurrentText(&quantityText);
-      expectedText.Format("%d", order->quantityField04);
-      if (quantityText != expectedText || quantity->value != order->quantityField04 ||
+      expectedText.Format("%d", order->quantity);
+      if (quantityText != expectedText || quantity->value != order->quantity ||
           !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0xd2))) {
         FailScenario("\"shipyard build-queue count does not match its live order\"");
         return false;
@@ -444,9 +445,9 @@ private:
     CString quantityText;
     CString expectedText;
     railQuantity->GetCurrentText(&quantityText);
-    expectedText.Format("%d", railCluster->selectedMetricOrder->quantityField04);
+    expectedText.Format("%d", railCluster->selectedMetricOrder->quantity);
     if (quantityText != expectedText ||
-        railQuantity->value != railCluster->selectedMetricOrder->quantityField04 ||
+        railQuantity->value != railCluster->selectedMetricOrder->quantity ||
         !HasCorrectNumberTextPresentationState(railQuantity, 10, PALETTEINDEX(0))) {
       FailScenario("\"railyard production count state does not match its live order\"");
       return false;
@@ -487,8 +488,8 @@ private:
     CString quantityText;
     CString expectedText;
     quantity->GetCurrentText(&quantityText);
-    expectedText.Format("%d", order->quantityField04);
-    if (quantityText != expectedText || quantity->value != order->quantityField04 ||
+    expectedText.Format("%d", order->quantity);
+    if (quantityText != expectedText || quantity->value != order->quantity ||
         !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0))) {
       FailScenario("\"industry production count state does not match its live item order\"");
       return false;
@@ -511,14 +512,13 @@ private:
     interactionUnitOrder = order;
     interactionItemOrder = 0;
     interactionShipOrder = 0;
-    priorQuantity = order->quantityField04;
-    priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
-    priorSecondaryStock =
-        order->secondaryInputResourceId < 0
-            ? 0
-            : order->cityField08->CityStockByType(order->secondaryInputResourceId);
-    priorTreasury = order->cityField08->ownerNationAc->treasuryValue10;
-    TPopulationMgr* population = order->summaryField0c;
+    priorQuantity = order->quantity;
+    priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
+    priorSecondaryStock = order->secondaryInputResourceId < 0
+                              ? 0
+                              : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
+    priorTreasury = order->ownerCity->ownerNationAc->treasuryValue10;
+    TPopulationMgr* population = order->productionSummary;
     priorStrength = population->strength;
     priorPopulationCount = population->populationCount08;
     priorPopulationFloat = population->populationCountFloat0c;
@@ -535,20 +535,19 @@ private:
     interactionUnitOrder = 0;
     interactionItemOrder = order;
     interactionShipOrder = 0;
-    priorQuantity = order->quantityField04;
+    priorQuantity = order->quantity;
     priorRequestedQuantity = order->requestedQuantity4c;
-    priorPrimaryStock = order->cityField08->CityStockByType(order->primaryInputResourceId);
-    priorPrimaryTracking = order->trackingSlots10[order->primaryInputResourceId];
-    priorSecondaryStock =
-        order->secondaryInputResourceId < 0
-            ? 0
-            : order->cityField08->CityStockByType(order->secondaryInputResourceId);
+    priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
+    priorPrimaryTracking = order->trackingSlots[order->primaryInputResourceId];
+    priorSecondaryStock = order->secondaryInputResourceId < 0
+                              ? 0
+                              : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
     priorSecondaryTracking = order->secondaryInputResourceId < 0
                                  ? 0
-                                 : order->trackingSlots10[order->secondaryInputResourceId];
-    priorStrength = order->summaryField0c->strength;
-    priorField3e = order->field3e;
-    priorProductionAccum = order->cityField08->productionAccum1fc[order->productionSlot];
+                                 : order->trackingSlots[order->secondaryInputResourceId];
+    priorStrength = order->productionSummary->strength;
+    priorReservedWorkforce = order->reservedWorkforce;
+    priorProductionAccum = order->ownerCity->productionAccum1fc[order->productionSlot];
   }
 
   void CaptureShipOrderState(TShipOrder* order) {
@@ -556,7 +555,7 @@ private:
     interactionUnitOrder = 0;
     interactionItemOrder = 0;
     interactionShipOrder = order;
-    priorQuantity = order->quantityField04;
+    priorQuantity = order->quantity;
   }
 
   bool BeginUniversityInteraction(TBuildingView* buildingView) {
@@ -568,7 +567,7 @@ private:
       TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
       TUnitOrder* order = buildingView->city94->buildOrderSlots[category + 9];
       if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
-          order->MaxOrder() <= order->quantityField04) {
+          order->MaxOrder() <= order->quantity) {
         continue;
       }
       CaptureUnitOrderState(order);
@@ -592,7 +591,7 @@ private:
       TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
       TUnitOrder* order = buildingView->city94->buildOrderSlots[category];
       if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
-          order->MaxOrder() <= order->quantityField04) {
+          order->MaxOrder() <= order->quantity) {
         continue;
       }
       CaptureUnitOrderState(order);
@@ -616,8 +615,8 @@ private:
       TShipOrder* order = buildingView->city94->shipOrderSlots[queueIndex];
       TView* queueRow = buildingView->ResolveControlByTag(kControlTagClu0 + queueIndex);
       TView* plus = queueRow == 0 ? 0 : queueRow->ResolveControlByTag(kControlTagPlus);
-      if (order == 0 || order->resourceTypeIndex48 == 0 || plus == 0 || plus->IsActionable() == 0 ||
-          order->MaxOrder() <= order->quantityField04) {
+      if (order == 0 || order->resourceTypeIndex == 0 || plus == 0 || plus->IsActionable() == 0 ||
+          order->MaxOrder() <= order->quantity) {
         continue;
       }
       CaptureShipOrderState(order);
@@ -640,7 +639,7 @@ private:
     TView* rightArrow = cluster == 0 ? 0 : cluster->ResolveControlByTag(kControlTagRght);
     TItemOrder* order = cluster == 0 ? 0 : static_cast<TItemOrder*>(cluster->selectedMetricOrder);
     if (rightArrow == 0 || rightArrow->IsActionable() == 0 || order == 0 ||
-        order->MaxOrder() <= order->quantityField04) {
+        order->MaxOrder() <= order->quantity) {
       FailScenario("\"industry item order has no actionable right arrow\"");
       return false;
     }
@@ -654,14 +653,14 @@ private:
 
   bool UnitOrderStateWasReserved() {
     TUnitOrder* order = interactionUnitOrder;
-    TPopulationMgr* population = order->summaryField0c;
-    if (order->quantityField04 != priorQuantity + 1 ||
-        order->cityField08->CityStockByType(order->primaryInputResourceId) !=
+    TPopulationMgr* population = order->productionSummary;
+    if (order->quantity != priorQuantity + 1 ||
+        order->ownerCity->CityStockByType(order->primaryInputResourceId) !=
             priorPrimaryStock - order->primaryInputPerUnit ||
         (order->secondaryInputResourceId >= 0 &&
-         order->cityField08->CityStockByType(order->secondaryInputResourceId) !=
+         order->ownerCity->CityStockByType(order->secondaryInputResourceId) !=
              priorSecondaryStock - order->secondaryInputPerUnit) ||
-        order->cityField08->ownerNationAc->treasuryValue10 !=
+        order->ownerCity->ownerNationAc->treasuryValue10 !=
             priorTreasury - order->cashCostPerUnit ||
         population->populationCount08 != priorPopulationCount - 1 ||
         population->populationCountFloat0c != priorPopulationFloat - 1.0f ||
@@ -674,19 +673,18 @@ private:
   bool ItemOrderStateWasReserved() {
     TItemOrder* order = interactionItemOrder;
     short primaryAmount = order->secondaryInputResourceId < 0 ? 2 : 1;
-    if (order->quantityField04 != priorQuantity + 1 ||
-        order->requestedQuantity4c != order->quantityField04 ||
-        order->cityField08->CityStockByType(order->primaryInputResourceId) !=
+    if (order->quantity != priorQuantity + 1 || order->requestedQuantity4c != order->quantity ||
+        order->ownerCity->CityStockByType(order->primaryInputResourceId) !=
             priorPrimaryStock - primaryAmount ||
-        order->trackingSlots10[order->primaryInputResourceId] !=
+        order->trackingSlots[order->primaryInputResourceId] !=
             priorPrimaryTracking + primaryAmount ||
         (order->secondaryInputResourceId >= 0 &&
-         (order->cityField08->CityStockByType(order->secondaryInputResourceId) !=
+         (order->ownerCity->CityStockByType(order->secondaryInputResourceId) !=
               priorSecondaryStock - 1 ||
-          order->trackingSlots10[order->secondaryInputResourceId] != priorSecondaryTracking + 1)) ||
-        order->summaryField0c->strength != priorStrength - 2 ||
-        order->field3e != priorField3e + 2 ||
-        order->cityField08->productionAccum1fc[order->productionSlot] != priorProductionAccum - 1) {
+          order->trackingSlots[order->secondaryInputResourceId] != priorSecondaryTracking + 1)) ||
+        order->productionSummary->strength != priorStrength - 2 ||
+        order->reservedWorkforce != priorReservedWorkforce + 2 ||
+        order->ownerCity->productionAccum1fc[order->productionSlot] != priorProductionAccum - 1) {
       return false;
     }
     return true;
@@ -694,14 +692,13 @@ private:
 
   bool UnitOrderStateWasRestored() {
     TUnitOrder* order = interactionUnitOrder;
-    TPopulationMgr* population = order->summaryField0c;
-    return order->quantityField04 == priorQuantity &&
-           order->cityField08->CityStockByType(order->primaryInputResourceId) ==
-               priorPrimaryStock &&
+    TPopulationMgr* population = order->productionSummary;
+    return order->quantity == priorQuantity &&
+           order->ownerCity->CityStockByType(order->primaryInputResourceId) == priorPrimaryStock &&
            (order->secondaryInputResourceId < 0 ||
-            order->cityField08->CityStockByType(order->secondaryInputResourceId) ==
+            order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                 priorSecondaryStock) &&
-           order->cityField08->ownerNationAc->treasuryValue10 == priorTreasury &&
+           order->ownerCity->ownerNationAc->treasuryValue10 == priorTreasury &&
            population->strength == priorStrength &&
            population->populationCount08 == priorPopulationCount &&
            population->populationCountFloat0c == priorPopulationFloat &&
@@ -715,25 +712,25 @@ private:
 
   bool ItemOrderStateWasRestored() {
     TItemOrder* order = interactionItemOrder;
-    return order->quantityField04 == priorQuantity &&
+    return order->quantity == priorQuantity &&
            order->requestedQuantity4c == priorRequestedQuantity &&
-           order->cityField08->CityStockByType(order->primaryInputResourceId) ==
-               priorPrimaryStock &&
-           order->trackingSlots10[order->primaryInputResourceId] == priorPrimaryTracking &&
+           order->ownerCity->CityStockByType(order->primaryInputResourceId) == priorPrimaryStock &&
+           order->trackingSlots[order->primaryInputResourceId] == priorPrimaryTracking &&
            (order->secondaryInputResourceId < 0 ||
-            (order->cityField08->CityStockByType(order->secondaryInputResourceId) ==
+            (order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
                  priorSecondaryStock &&
-             order->trackingSlots10[order->secondaryInputResourceId] == priorSecondaryTracking)) &&
-           order->summaryField0c->strength == priorStrength && order->field3e == priorField3e &&
-           order->cityField08->productionAccum1fc[order->productionSlot] == priorProductionAccum;
+             order->trackingSlots[order->secondaryInputResourceId] == priorSecondaryTracking)) &&
+           order->productionSummary->strength == priorStrength &&
+           order->reservedWorkforce == priorReservedWorkforce &&
+           order->ownerCity->productionAccum1fc[order->productionSlot] == priorProductionAccum;
   }
 
   bool ShipOrderStateWasReserved() {
-    return interactionShipOrder->quantityField04 == priorQuantity + 1;
+    return interactionShipOrder->quantity == priorQuantity + 1;
   }
 
   bool ShipOrderStateWasRestored() {
-    return interactionShipOrder->quantityField04 == priorQuantity;
+    return interactionShipOrder->quantity == priorQuantity;
   }
 
   void WaitForOrderIncrease() {
@@ -970,7 +967,7 @@ private:
         short unitType = IndustryUnitTypeForBuilding(buildingSlot);
         TProductionOrder* order = activeNation->city->orderSlotsE4[unitType];
         if (activeNation->city->GetBuildingType(buildingSlot) > 0 && order != 0 &&
-            order->MaxOrder() > order->quantityField04) {
+            order->MaxOrder() > order->quantity) {
           itemBuildingSlot = buildingSlot;
           break;
         }
@@ -1013,7 +1010,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"city back navigation left an unexpected modal\"");
       return;
     }
@@ -1039,7 +1036,7 @@ private:
   short priorSecondaryStock;
   short priorSecondaryTracking;
   short priorStrength;
-  short priorField3e;
+  short priorReservedWorkforce;
   short priorProductionAccum;
   int priorTreasury;
   short priorPopulationCount;

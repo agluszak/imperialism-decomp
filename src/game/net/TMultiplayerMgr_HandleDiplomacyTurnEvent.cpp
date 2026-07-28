@@ -278,7 +278,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       int homeTile = g_apTerrainTypeDescriptorTable[capitalSlot]->homeTileIndex;
       short neighborTiles[7];
       TMapMgr::GetNeighborTileIDArray(static_cast<short>(homeTile), neighborTiles,
-                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally);
       neighborTiles[6] = static_cast<short>(homeTile);
       for (int k = 0; k < 7; ++k) {
         short tileIndex = neighborTiles[k];
@@ -506,13 +506,12 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
           TTown* town = new TTown();
           town->ITown(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
           town->ReadFrom(stream);
-          TTown* existing =
-              g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->tileIndex14);
+          TTown* existing = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->tileIndex);
           if (existing != 0) {
             memcpy(existing, town, sizeof(TTown));
             town->Free();
           } else {
-            g_apNationStates[town->ownerNation1c]->townMarkerList->AddTail(town);
+            g_apNationStates[town->ownerNation]->townMarkerList->AddTail(town);
           }
         }
       } else {
@@ -538,8 +537,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
   }
   case 0x32:
     g_pNationInteractionStateManager->ReadFrom(stream);
-    g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]
-        ->ReleaseDiplomacyTrackedObjectSlots850();
+    g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]->InitializeDealBook();
     break;
   default:
     break;
@@ -639,9 +637,8 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       int policyDice6 = rand() % 6;
       int policyDice4 = rand() % 4;
       TAutoGreatPower* newNation = new TAutoGreatPower();
-      newNation->IAutoGreatPower(
-          nationSlot, 2, static_cast<short>(policyDice4), static_cast<short>(policyDice6),
-          static_cast<short>(policyDice5));
+      newNation->IAutoGreatPower(nationSlot, 2, static_cast<short>(policyDice4),
+                                 static_cast<short>(policyDice6), static_cast<short>(policyDice5));
 
       newNation->identitySharedString0 = oldNation->identitySharedString0;
       newNation->identitySharedString1 = oldNation->identitySharedString1;
@@ -661,12 +658,12 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       TLongintList* ownedRegions = newNation->ownedRegionList;
       newNation->ownedRegionList = oldNation->ownedRegionList;
       oldNation->ownedRegionList = ownedRegions;
-      newNation->diplomacyCounterA2 = oldNation->diplomacyCounterA2;
-      newNation->tradeCapacity = oldNation->tradeCapacity;
-      newNation->needCapA6 = oldNation->needCapA6;
-      newNation->needsOverCapFlag = oldNation->needsOverCapFlag;
+      newNation->availableMerchantCapacity = oldNation->availableMerchantCapacity;
+      newNation->merchantCapacity = oldNation->merchantCapacity;
+      newNation->transportCapacity = oldNation->transportCapacity;
+      newNation->reservedTransportCapacity = oldNation->reservedTransportCapacity;
       newNation->grantTotalCost = oldNation->grantTotalCost;
-      newNation->diplomacyCounterB0 = oldNation->diplomacyCounterB0;
+      newNation->unfilledTradeOfferCount = oldNation->unfilledTradeOfferCount;
       memcpy(newNation->diplomacyPolicyByNation, oldNation->diplomacyPolicyByNation,
              sizeof(newNation->diplomacyPolicyByNation));
       memcpy(newNation->diplomacyGrantByNation, oldNation->diplomacyGrantByNation,
@@ -677,16 +674,17 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
              sizeof(newNation->needTargetByType));
       memcpy(newNation->relationDeltaCurrent, oldNation->relationDeltaCurrent,
              sizeof(newNation->relationDeltaCurrent));
-      memcpy(newNation->relationDeltaSnapshot, oldNation->relationDeltaSnapshot,
-             sizeof(newNation->relationDeltaSnapshot));
-      memcpy(newNation->diplomacyState1c6, oldNation->diplomacyState1c6,
-             sizeof(newNation->diplomacyState1c6));
-      memcpy(newNation->diplomacyState1f4, oldNation->diplomacyState1f4,
-             sizeof(newNation->diplomacyState1f4));
-      memcpy(newNation->diplomacyState222, oldNation->diplomacyState222,
-             sizeof(newNation->diplomacyState222));
-      memcpy(newNation->diplomacyState250, oldNation->diplomacyState250,
-             sizeof(newNation->diplomacyState250));
+      memcpy(newNation->purchasedItemsByResource, oldNation->purchasedItemsByResource,
+             sizeof(newNation->purchasedItemsByResource));
+      memcpy(newNation->itemPotentials, oldNation->itemPotentials,
+             sizeof(newNation->itemPotentials));
+      memcpy(newNation->unfilledTradeTurnCountsByResource,
+             oldNation->unfilledTradeTurnCountsByResource,
+             sizeof(newNation->unfilledTradeTurnCountsByResource));
+      memcpy(newNation->transportedItemsByResource, oldNation->transportedItemsByResource,
+             sizeof(newNation->transportedItemsByResource));
+      memcpy(newNation->rememberedTradeOffersByResource, oldNation->rememberedTradeOffersByResource,
+             sizeof(newNation->rememberedTradeOffersByResource));
       memcpy(newNation->aidAllocationMatrix, oldNation->aidAllocationMatrix,
              sizeof(newNation->aidAllocationMatrix));
       newNation->budgetPoolBase = oldNation->budgetPoolBase;

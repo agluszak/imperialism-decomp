@@ -90,7 +90,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((this->frameWidth34 * (int)selectedMetricRecord->quantityField04) /
+    rangeOrMaxValue = (short)((this->frameWidth34 * (int)selectedMetricRecord->quantity) /
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;

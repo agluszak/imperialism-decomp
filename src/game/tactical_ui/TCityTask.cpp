@@ -39,7 +39,7 @@ void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {
 
 // Tries to satisfy requestedAmount directly from the owning city's stock
 // (TCity::DirectTransport) for slot indices 0..6, then always re-checks the order's
-// MaxOrder()/quantityField04 headroom, filling the order's OrderSheet and draining
+// MaxOrder()/quantity headroom, filling the order's OrderSheet and draining
 // per-resource DirectTransport calls when short, bumping the order's SetQuantity either
 // way. Finally dispatches to the type-specific queueing override selected by
 // citySlotIndex, then falls back to the base countdown when the request wasn't fully
@@ -54,8 +54,8 @@ bool TCityTask::Tick(TSortedList* commandQueue) {
 
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   short maxOrder = order->MaxOrder();
-  short headroom = static_cast<short>(maxOrder - order->quantityField04);
-  if (headroom < requestedAmount && order->field40 == 0) {
+  short headroom = static_cast<short>(maxOrder - order->quantity);
+  if (headroom < requestedAmount && order->limitingConstraint == kProductionOrderLimitResources) {
     OrderSheet sheet;
     order->FillOrderSheet(&sheet, requestedAmount);
     for (short i = 0; i < 0x17; ++i) {
@@ -65,7 +65,7 @@ bool TCityTask::Tick(TSortedList* commandQueue) {
       }
     }
     maxOrder = order->MaxOrder();
-    headroom = static_cast<short>(maxOrder - order->quantityField04);
+    headroom = static_cast<short>(maxOrder - order->quantity);
   }
 
   bool fullySatisfied;
@@ -87,7 +87,7 @@ bool TCityTask::Tick(TSortedList* commandQueue) {
       QueueCityOrderType10CommandIfReady(commandQueue);
     }
   } else {
-    order->SetQuantity(static_cast<short>(order->quantityField04 + requestedAmount));
+    order->SetQuantity(static_cast<short>(order->quantity + requestedAmount));
     fullySatisfied = true;
   }
 
@@ -101,7 +101,7 @@ bool TCityTask::Tick(TSortedList* commandQueue) {
 void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
-  if (order->field40 == 0) {
+  if (order->limitingConstraint == kProductionOrderLimitResources) {
     short amount = requestedAmount;
     if (citySlotIndex != 0x17) {
       amount = static_cast<short>(amount << 1);
@@ -116,7 +116,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
     commandQueue->AddTail(newTask);
     alreadyQueuedFlag = 1;
   }
-  if (order->field40 == 3) {
+  if (order->limitingConstraint == kProductionOrderLimitTreasury) {
     ownerCity->ownerNationAc->foreignMinister->PriceCheck();
   }
 }
@@ -126,7 +126,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* comman
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
   bool queuedAny = false;
-  if (order->field40 == 0 && alreadyQueuedFlag == 0) {
+  if (order->limitingConstraint == kProductionOrderLimitResources && alreadyQueuedFlag == 0) {
     short lumberDeficit = static_cast<short>(ownerCity->cityStockLumberC8 - requestedAmount);
     if (lumberDeficit < 0) {
       TCityTask* newTask = new TCityTask();
@@ -164,7 +164,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* comman
 void TCityTask::QueueCityOrderInputDeltaCommands(TSortedList* commandQueue) {
   TUnitOrder* order = static_cast<TUnitOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
-  if (order->field40 != 0 || alreadyQueuedFlag != 0) {
+  if (order->limitingConstraint != kProductionOrderLimitResources || alreadyQueuedFlag != 0) {
     return;
   }
 
@@ -236,7 +236,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots() {
 void TCityTask::QueueCityProductionOrderCommand(TSortedList* commandQueue) {
   TItemOrder* order = static_cast<TItemOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
-  if (order->field40 == 0 && alreadyQueuedFlag == 0) {
+  if (order->limitingConstraint == kProductionOrderLimitResources && alreadyQueuedFlag == 0) {
     TCityTask* newTask = new TCityTask();
     newTask->citySlotIndex = order->primaryInputResourceId;
     newTask->remainingAttempts = 4;

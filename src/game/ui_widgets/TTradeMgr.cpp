@@ -203,7 +203,7 @@ void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists() {
 namespace {
 // TDiplomacyMgr relation-standing-score matrix, row stride 0x17 shorts.
 inline short RelationStanding(TDiplomacyMgr* mgr, int source, int target) {
-  return mgr->relationStandingScoreMatrix79c[source * 0x17 + target];
+  return mgr->relationStandingScores[source * kNationSlotCount + target];
 }
 } // namespace
 
@@ -565,14 +565,15 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
   if (0 < count) {
     do {
       TradeDealEntry* entry = static_cast<TradeDealEntry*>(list->GetPtrListEntryByOneBasedIndex(i));
-      int transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]
-                         ->SumDiplomacyState1c6AndRelationDeltaSnapshot(slot);
+      int transfer =
+          g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetIndustrialNeed(slot);
       bool inPlay = g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->targetNationSlot);
       if ((inPlay != 0) &&
           (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->sourceNationSlot) == 0) &&
-          (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2() <
+          (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity() <
            transfer)) {
-        transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2();
+        transfer =
+            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity();
       }
       if (0 < transfer) {
         g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]
@@ -619,14 +620,14 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     TradeDealEntry* entry = static_cast<TradeDealEntry*>(
         list->GetPtrListEntryByOneBasedIndex(categoryRows[0].resetTransitionFlagB02));
 
-    int relationDelta = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]
-                            ->SumDiplomacyState1c6AndRelationDeltaSnapshot(dispatchIdx);
+    int relationDelta =
+        g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetIndustrialNeed(dispatchIdx);
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->targetNationSlot) != 0 &&
         g_pDiplomacyTurnStateManager->IsMajorNationSlot(entry->sourceNationSlot) == 0) {
-      if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2() <
+      if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity() <
           relationDelta) {
         relationDelta =
-            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetDiplomacyCounterA2();
+            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity();
       }
     }
 
@@ -663,7 +664,7 @@ void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
   TGreatPower** nationCursor = g_apNationStates;
   do {
     if (*nationCursor != 0) {
-      (*nationCursor)->ClearDiplomacyState1c6Block();
+      (*nationCursor)->ClearTradeOffers();
     }
     ++nationCursor;
   } while (nationCursor < &g_apNationStates_End);
@@ -715,7 +716,7 @@ void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {
   int i = 7;
   do {
     if (*np != 0) {
-      (*np)->ClearDiplomacyState1c6Block();
+      (*np)->ClearTradeOffers();
     }
     np = np + 1;
     i = i + -1;
@@ -758,8 +759,7 @@ void TTradeMgr::SetDealResults(short sourceNation, int targetNation, int amount,
   }
 
   if (shortfallFlag != 0 && g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) != 0) {
-    g_apNationStates[sourceNation]->ClearDiplomacyState1c6ForTarget(
-        static_cast<short>(commodityType));
+    g_apNationStates[sourceNation]->ClearTradeOfferForResource(static_cast<short>(commodityType));
   }
   if (static_cast<short>(amount) < 1) {
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) != 0) {
@@ -777,14 +777,13 @@ void TTradeMgr::SetDealResults(short sourceNation, int targetNation, int amount,
     if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(targetNationSlot) != 0 &&
         g_pDiplomacyTurnStateManager->IsMajorNationSlot(sourceNation) == 0) {
       static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
-          ->DecrementDiplomacyCounterA2ByValue(amount);
+          ->ConsumeMerchantCapacity(amount);
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
         sourceNation, targetNationSlot);
     if (relationBump > 0) {
-      int matrixIndex = sourceNationIndex * 0x17 + targetNation;
-      short standingScore =
-          g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[matrixIndex];
+      int matrixIndex = sourceNationIndex * kNationSlotCount + targetNation;
+      short standingScore = g_pDiplomacyTurnStateManager->relationStandingScores[matrixIndex];
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(sourceNation, targetNationSlot,
                                                            static_cast<short>(standingScore + 1));
     }
@@ -899,7 +898,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
     int slot = 0;
     do {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
-        short metric = (*np)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
+        short metric = (*np)->GetTradeOffersFor(static_cast<short>(metricRow));
         cells[metricRow * 0x50 + col] = metric;
         if (metric < 0) {
           row->field08 = row->field08 + 1;
@@ -963,12 +962,12 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
     TMinor** mp = g_apNationAuxRuntimeStateSlots;
     int remaining = 0x10;
     do {
-      short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
+      short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricRow));
       *cellCursor = metric;
       if (0 < metric) {
         int value = metric;
-        if ((*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow)) < metric) {
-          value = (*mp)->GetDiplomacyExternalStateByTarget(static_cast<short>(metricRow));
+        if ((*mp)->GetStockpile(static_cast<short>(metricRow)) < metric) {
+          value = (*mp)->GetStockpile(static_cast<short>(metricRow));
         }
         row->field0a = row->field0a + 1;
         short sv = static_cast<short>(value);
@@ -998,7 +997,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
   short* aggCursor = &aggregateRow->cells18[7];
   int count = 0x10;
   do {
-    short metric = (*mp)->QueryNationMetricBySlot7C(7);
+    short metric = (*mp)->GetTradeOffersFor(kResourceFood);
     *aggCursor = metric;
     if (0 < metric) {
       aggregateRow->field0a = aggregateRow->field0a + 1;
@@ -1026,7 +1025,7 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores() {
     int rem = 0x10;
     do {
       if (*mp != 0) {
-        short metric = (*mp)->QueryNationMetricBySlot7C(static_cast<short>(metricSlot));
+        short metric = (*mp)->GetTradeOffersFor(static_cast<short>(metricSlot));
         row->cells18[col] = metric;
         if (metric < 0) {
           row->field08 = row->field08 + 1;

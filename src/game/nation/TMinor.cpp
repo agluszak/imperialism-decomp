@@ -69,9 +69,9 @@ void TMinor::IMinor(NationSlot nationSlot) {
   diplomacyPolicyPredicateCode12e = -10;
   diplomacyPolicyGate132 = 0;
   int i;
-  for (i = 0; i < 0x17; ++i) {
-    diplomacyPolicyByNation[i] = 0;
-    diplomacyGrantByNation[i] = 0;
+  for (i = 0; i < kResourceKindCount; ++i) {
+    tradeOffersByResource[i] = 0;
+    grantAmountsByResource[i] = 0;
     needCurrentByType[i] = 0;
     diplomacySaveExt13c[i] = 0;
     recurringGrantByResource[i] = 0;
@@ -351,10 +351,10 @@ void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
   stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
   SwapShortArrayBytes(this->needCurrentByType, 0x17);
-  stream->ReadBytes(this->diplomacyPolicyByNation, sizeof(this->diplomacyPolicyByNation));
-  SwapShortArrayBytes(this->diplomacyPolicyByNation, 0x17);
-  stream->ReadBytes(this->diplomacyGrantByNation, sizeof(this->diplomacyGrantByNation));
-  SwapShortArrayBytes(this->diplomacyGrantByNation, 0x17);
+  stream->ReadBytes(this->tradeOffersByResource, sizeof(this->tradeOffersByResource));
+  SwapShortArrayBytes(this->tradeOffersByResource, 0x17);
+  stream->ReadBytes(this->grantAmountsByResource, sizeof(this->grantAmountsByResource));
+  SwapShortArrayBytes(this->grantAmountsByResource, 0x17);
   stream->ReadBytes(&this->diplomacyRandomThreshold11e, 2);
   stream->ReadBytes(&this->diplomacyRandomThreshold120, 2);
   stream->ReadBytes(&this->diplomacyRandomThreshold122, 2);
@@ -378,8 +378,8 @@ void TMinor::ReadFrom(TStream* stream) {
 void TMinor::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
   WriteShortArrayElems(stream, this->needCurrentByType, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
+  WriteShortArrayElems(stream, this->tradeOffersByResource, 0x17);
+  WriteShortArrayElems(stream, this->grantAmountsByResource, 0x17);
   stream->WriteBytes(&this->diplomacyRandomThreshold11e, 2);
   stream->WriteBytes(&this->diplomacyRandomThreshold120, 2);
   stream->WriteBytes(&this->diplomacyRandomThreshold122, 2);
@@ -395,23 +395,21 @@ void TMinor::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, diplomacySaveExt13c, 0x17);
 }
 
-// Overrides the base (which is a plain "return false"): true when `arg` matches any of
-// the four saved diplomacy nation slots at diplomacySaveFields134[0..3]. The vtable slot
-// param is a short (word compares), not the int the base decl formerly used.
+// True when `policyCode` matches one of the four saved diplomacy nation slots.
 // FUNCTION: IMPERIALISM 0x004e45f0
-char TMinor::ReturnFalseNationStateCapabilityFlag90(short arg) {
+char TMinor::IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
   char result = 0;
-  if (arg == diplomacySaveFields134[0] || arg == diplomacySaveFields134[1] ||
-      arg == diplomacySaveFields134[2] || arg == diplomacySaveFields134[3]) {
+  if (policyCode == diplomacySaveFields134[0] || policyCode == diplomacySaveFields134[1] ||
+      policyCode == diplomacySaveFields134[2] || policyCode == diplomacySaveFields134[3]) {
     result = 1;
   }
   return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4630
-short TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
-  short sum = static_cast<short>(this->needCurrentByType[nationSlot] +
-                                 this->diplomacyGrantByNation[nationSlot]);
+short TMinor::GetIndustrialNeed(short resourceKind) {
+  short sum = static_cast<short>(this->needCurrentByType[resourceKind] +
+                                 this->grantAmountsByResource[resourceKind]);
   if (sum < 0) {
     sum = 0;
   }
@@ -419,13 +417,13 @@ short TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e4660
-short TMinor::GetDiplomacyExternalStateByTarget(short nationSlot) {
-  return this->needCurrentByType[nationSlot];
+short TMinor::GetStockpile(short resourceKind) {
+  return this->needCurrentByType[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004e4680
-short TMinor::QueryNationMetricBySlot7C(short metricSlot) {
-  return this->diplomacyPolicyByNation[metricSlot];
+short TMinor::GetTradeOffersFor(short resourceKind) {
+  return this->tradeOffersByResource[resourceKind];
 }
 
 // FUNCTION: IMPERIALISM 0x004e46a0
@@ -434,9 +432,9 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
   diplomacyPolicyGate130 = 0;
   diplomacyPolicyGate132 = 0;
   int i;
-  for (i = 0; i < 0x17; ++i) {
-    diplomacyPolicyByNation[i] = 0;
-    diplomacyGrantByNation[i] = 0;
+  for (i = 0; i < kResourceKindCount; ++i) {
+    tradeOffersByResource[i] = 0;
+    grantAmountsByResource[i] = 0;
     diplomacySaveExt13c[i] = 0;
     recurringGrantByResource[i] = 0;
     needCurrentByType[i] = 0;
@@ -495,7 +493,7 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
       if (pressure16 != 0) {
         g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
             g_pDiplomacyTurnStateManager
-                    ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + power] *
+                    ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
                 pressure16 * 200 / 255,
             0x16, this->nationSlot);
       }
@@ -503,7 +501,7 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
       if (pressure15 != 0) {
         g_apNationStates[power]->AddAmountToAidAllocationMatrixCellAndTotal(
             g_pDiplomacyTurnStateManager
-                    ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + power] *
+                    ->relationStandingScores[this->nationSlot * kNationSlotCount + power] *
                 pressure15 * 500 / 255,
             0x15, this->nationSlot);
       }
@@ -532,14 +530,14 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
 
   if (resourceSlot < 0 || resourceSlot > 6) {
     if (resourceSlot == 7) {
-      this->diplomacyGrantByNation[7] =
-          static_cast<short>(this->diplomacyGrantByNation[7] + deltaShort);
+      this->grantAmountsByResource[7] =
+          static_cast<short>(this->grantAmountsByResource[7] + deltaShort);
     }
     return;
   }
 
-  this->diplomacyGrantByNation[resourceSlot] =
-      static_cast<short>(this->diplomacyGrantByNation[resourceSlot] + deltaShort);
+  this->grantAmountsByResource[resourceSlot] =
+      static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
   if (this->recurringGrantByResource[resourceSlot] == 0) {
     return;
   }
@@ -565,7 +563,7 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
 
     short standing =
         g_pDiplomacyTurnStateManager
-            ->relationStandingScoreMatrix79c[this->nationSlot * kNationSlotCount + majorNationSlot];
+            ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
     int negDelta = -static_cast<int>(deltaShort);
     int intFactor = negDelta;
     if (negDelta < linkValue) {
@@ -608,45 +606,45 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
 
     proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType);
     if (this->diplomacyRandomThreshold124 < proposalWeight) {
-      this->diplomacyPolicyByNation[resourceType] = this->needCurrentByType[resourceType];
+      this->tradeOffersByResource[resourceType] = this->needCurrentByType[resourceType];
     }
 
     for (int policySlot = 0; policySlot < 8; ++policySlot) {
       proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(policySlot);
       if (this->diplomacyRandomThreshold122 < proposalWeight) {
-        this->diplomacyPolicyByNation[policySlot] = this->needCurrentByType[policySlot];
+        this->tradeOffersByResource[policySlot] = this->needCurrentByType[policySlot];
       }
     }
 
     proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3);
     if (this->diplomacyRandomThreshold126 < proposalWeight) {
-      this->diplomacyPolicyByNation[3] = this->needCurrentByType[3];
+      this->tradeOffersByResource[3] = this->needCurrentByType[3];
     } else if (this->recurringGrantByResource[3] != 0) {
-      this->diplomacyPolicyByNation[3] = this->recurringGrantByResource[3];
+      this->tradeOffersByResource[3] = this->recurringGrantByResource[3];
     }
 
     proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4);
     if (this->diplomacyRandomThreshold128 < proposalWeight) {
-      this->diplomacyPolicyByNation[4] = this->needCurrentByType[4];
+      this->tradeOffersByResource[4] = this->needCurrentByType[4];
     } else if (this->recurringGrantByResource[4] != 0) {
-      this->diplomacyPolicyByNation[4] = this->recurringGrantByResource[4];
+      this->tradeOffersByResource[4] = this->recurringGrantByResource[4];
     }
 
     proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(6);
     if (this->diplomacyRandomThreshold12a < proposalWeight) {
-      this->diplomacyPolicyByNation[6] = this->needCurrentByType[6];
+      this->tradeOffersByResource[6] = this->needCurrentByType[6];
     } else if (this->recurringGrantByResource[6] != 0) {
-      this->diplomacyPolicyByNation[6] = this->recurringGrantByResource[6];
+      this->tradeOffersByResource[6] = this->recurringGrantByResource[6];
     }
 
-    if (this->diplomacyPolicyByNation[0] == 0) {
-      this->diplomacyPolicyByNation[0] = this->recurringGrantByResource[0];
+    if (this->tradeOffersByResource[0] == 0) {
+      this->tradeOffersByResource[0] = this->recurringGrantByResource[0];
     }
-    if (this->diplomacyPolicyByNation[1] == 0) {
-      this->diplomacyPolicyByNation[1] = this->recurringGrantByResource[1];
+    if (this->tradeOffersByResource[1] == 0) {
+      this->tradeOffersByResource[1] = this->recurringGrantByResource[1];
     }
-    if (this->diplomacyPolicyByNation[2] == 0) {
-      this->diplomacyPolicyByNation[2] = this->recurringGrantByResource[2];
+    if (this->tradeOffersByResource[2] == 0) {
+      this->tradeOffersByResource[2] = this->recurringGrantByResource[2];
     }
   }
 
@@ -684,15 +682,15 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   } while (candidatePredicate < 0x11);
 
   if (this->diplomacyPolicyPredicateCode12c != -10) {
-    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12c] = -1;
+    this->tradeOffersByResource[this->diplomacyPolicyPredicateCode12c] = -1;
   }
   if (this->diplomacyPolicyPredicateCode12e != -10) {
-    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12e] = -1;
+    this->tradeOffersByResource[this->diplomacyPolicyPredicateCode12e] = -1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ee0
-bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCode) {
+bool TMinor::HasPendingTradeOfferAndMerchantCapacity(short policyCode) {
   if (policyCode <= 0xc || policyCode >= 0x11) {
     return false;
   }
@@ -707,7 +705,7 @@ bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCod
 
 // FUNCTION: IMPERIALISM 0x004e4f50
 char TMinor::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4) {
-  if (this->ReturnFalseNationStateCapabilityFlag90(arg4) == 0) {
+  if (this->IsPolicyCodeInSpecialNationPolicySet(arg4) == 0) {
     return 0;
   }
 
@@ -729,21 +727,21 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
   }
 }
 
-void TMinor::SetDiplomacyStandingSlot48(int targetNation, int standing) {
+void TMinor::SetDiplomacyStanding(int targetNation, int standing) {
   this->SetTradePolicyTo(static_cast<NationSlot>(targetNation), standing);
 }
 
-char TMinor::HasMinorStandingLinkSlot5C(int sourceNation) {
+char TMinor::IsLinkedToMajorNation(int sourceNation) {
   return this->IsEncodedNationSlotMinus200Equal(sourceNation);
 }
 
-void TMinor::ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation,
+void TMinor::SetDiplomacyRelationshipWithMajorNation(int sourceNation,
                                                      DiplomacyRelationship relationship) {
   g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(sourceNation, this->nationSlot,
                                                                    relationship, 0);
 }
 
-char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
+char TMinor::HasResourceStatusForMajorNation(int targetNation) {
   if (targetNation < 0 || targetNation >= 7) {
     return 0;
   }
@@ -755,7 +753,7 @@ char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
   return 0;
 }
 
-void TMinor::NotifyNationAuxRuntimeFinalizeSlotC0(void) {
+void TMinor::ClearResourceStatusByMajorNation(void) {
   for (int resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {
     for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
       this->statusRows[resourceType].fields[majorNationSlot] = 0;
@@ -763,14 +761,14 @@ void TMinor::NotifyNationAuxRuntimeFinalizeSlotC0(void) {
   }
 }
 
-void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
+void TMinor::ClearRecurringResourceGrant(int grantValue) {
   if (grantValue == -1) {
     for (int resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
       this->recurringGrantByResource[resourceType] = 0;
     }
     return;
   }
-  if (grantValue >= 0 && grantValue < 0x17) {
+  if (grantValue >= 0 && grantValue < kResourceKindCount) {
     this->recurringGrantByResource[grantValue] = 0;
   }
 }
@@ -783,16 +781,15 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
   }
 
   const int source = this->nationSlot;
-  short standing =
-      g_pDiplomacyTurnStateManager
-          ->relationStandingScoreMatrix79c[source * kNationSlotCount + targetNationSlot];
+  short standing = g_pDiplomacyTurnStateManager
+                       ->relationStandingScores[source * kNationSlotCount + targetNationSlot];
   if (standing <= 0xf9) {
     return 0;
   }
 
   char canPropose = 1;
   short* peerStandingRow =
-      &g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[source * kNationSlotCount];
+      &g_pDiplomacyTurnStateManager->relationStandingScores[source * kNationSlotCount];
   for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
     if (peerSlot == targetNationSlot || g_apTerrainTypeDescriptorTable[peerSlot] == 0) {
       continue;
@@ -810,8 +807,7 @@ char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004e50d0
-void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                       NationSlot targetNationSlot) {
+void TMinor::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot) {
   NationSlot targetNation = targetNationSlot;
   if (proposalCode == kDiplomacyProposalJoinEmpire) {
     char canPropose = 0;
@@ -827,7 +823,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStor
         return;
       }
       if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->QueueDiplomacyProposalCodeForTargetNation(
+        g_apNationStates[targetNation]->AddOfferFrom(
             kDiplomacyProposalJoinEmpireWithWarEntanglements, this->nationSlot);
       }
       g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
@@ -835,8 +831,8 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStor
       return;
     }
     if (g_apNationStates[targetNation] != 0) {
-      g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot,
-                                                         -static_cast<int>(proposalCode));
+      g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot,
+                                                    -static_cast<int>(proposalCode));
     }
     g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireRejected, targetNation, this->nationSlot,
                                0);
@@ -848,7 +844,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStor
       g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
           this->nationSlot, targetNation, kDiplomacyRelationshipNonAggressionPact);
       if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot, proposalCode);
+        g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
       }
       g_pNewsMgr->AddTreatyEvent(kInterNationEventNonAggressionPactAccepted, this->nationSlot,
                                  targetNation, 0);
@@ -860,7 +856,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStor
     g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
         this->nationSlot, targetNation, kDiplomacyRelationshipPeace);
     if (g_apNationStates[targetNation] != 0) {
-      g_apNationStates[targetNation]->NotifyActionSlot94(this->nationSlot, proposalCode);
+      g_apNationStates[targetNation]->AddNoticeFrom(this->nationSlot, proposalCode);
     }
     g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceTreatyAccepted, this->nationSlot, targetNation,
                                0);
@@ -868,7 +864,7 @@ void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStor
 }
 
 // FUNCTION: IMPERIALISM 0x004e5300
-void TMinor::NotifyActionSlot94(int sourceNation, int actionCode) {
+void TMinor::AddNoticeFrom(int sourceNation, int actionCode) {
   (void)sourceNation;
   if (actionCode == kDiplomacyProposalDeclareWar) {
     this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
@@ -900,7 +896,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
           0) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation != 0 && majorNation->diplomacyEligibilityA0 == 0) {
-          majorNation->NotifyActionSlot94(this->nationSlot, kDiplomacyProposalDeclareWar);
+          majorNation->AddNoticeFrom(this->nationSlot, kDiplomacyProposalDeclareWar);
         }
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
             this->nationSlot, majorNationSlot, kDiplomacyRelationshipWar, 0);
@@ -920,7 +916,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   TGreatPower* targetMajor = g_apNationStates[decodedNationSlot];
   if (targetMajor != 0) {
-    targetMajor->NotifyActionSlot94(this->nationSlot, 0x13c);
+    targetMajor->AddNoticeFrom(this->nationSlot, 0x13c);
   }
   g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorEmpireAffiliationChanged, decodedNationSlot,
                              this->nationSlot, 0);
@@ -983,14 +979,14 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(standingNationSlot)) !=
         0) {
       if (standingNationSlot == targetNationSlot) {
-        this->SetDiplomacyStandingSlot48(standingNationSlot, 100);
+        this->SetDiplomacyStanding(standingNationSlot, 100);
         if (g_apNationStates[standingNationSlot] != 0) {
           g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 100);
           g_apNationStates[standingNationSlot]->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
               this->nationSlot, static_cast<unsigned short>(-1));
         }
       } else {
-        this->SetDiplomacyStandingSlot48(standingNationSlot, 300);
+        this->SetDiplomacyStanding(standingNationSlot, 300);
         if (g_apNationStates[standingNationSlot] != 0) {
           g_apNationStates[standingNationSlot]->SetTradePolicyTo(this->nationSlot, 300);
         }
@@ -1016,7 +1012,7 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 
   TTown* marker = new TTown();
   marker->ITown("", this->homeTileIndex, 1, static_cast<short>(nationId));
-  marker->activeFlag4f = 1;
+  marker->activeFlag = 1;
   g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
   if (targetNation != 0 && targetNation->townMarkerList != 0) {
@@ -1040,7 +1036,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   // slot-0x2e display-value helper this port had been calling.
   this->ReassignTileObjectOwnerAndNotifyForSelectedCells(decodedSlot);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    this->SetDiplomacyStandingSlot48(nationSlot, 100);
+    this->SetDiplomacyStanding(nationSlot, 100);
   }
 }
 
@@ -1167,7 +1163,7 @@ void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
 
   for (majorSlot = 0; majorSlot < 7; ++majorSlot) {
     if (g_apNationStates[majorSlot] != 0 && notifyMajorSlots[majorSlot] != 0) {
-      g_apNationStates[majorSlot]->NotifyActionSlot94(this->nationSlot, 0x137);
+      g_apNationStates[majorSlot]->AddNoticeFrom(this->nationSlot, 0x137);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventMinorTerritoryRelationshipAffected, majorSlot,
                                  this->nationSlot, 0);
     }

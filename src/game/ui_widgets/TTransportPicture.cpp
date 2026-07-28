@@ -55,7 +55,8 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     }
     bool changed = false;
     if (commandId == 100) {
-      if (targetAmount < currentAmount && nation->needCapA6 != nation->needsOverCapFlag) {
+      if (targetAmount < currentAmount &&
+          nation->transportCapacity != nation->reservedTransportCapacity) {
         splitValue94 = static_cast<short>(targetAmount + 1);
         changed = true;
       }
@@ -218,8 +219,9 @@ void TTransportPicture::Refresh() {
     if (totalPicture == 0) {
       FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x1a77);
     }
-    totalPicture->splitValue94 = static_cast<short>(nation->needsOverCapFlag - nation->needCapA6 +
-                                                    (nation != 0 ? nation->needCapA6 : 0));
+    totalPicture->splitValue94 =
+        static_cast<short>(nation->reservedTransportCapacity - nation->transportCapacity +
+                           (nation != 0 ? nation->transportCapacity : 0));
     totalPicture->RefreshControl();
     PrepareForDrawing();
   }

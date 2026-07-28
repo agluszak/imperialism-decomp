@@ -1,4 +1,5 @@
 #include "game/city_ui/TPlaceCityDialog.h"
+#include "game/resource_domain_types.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_core/TWindow.h"
@@ -37,7 +38,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
   town->CalculateCityResources();
 
   short visibleResourceCount = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
     if (town->resourceYieldByType[resource] != 0) {
       ++visibleResourceCount;
     }
@@ -79,7 +80,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
 
   short x = static_cast<short>(frameWidth34);
   short y = 0x50;
-  for (short resourceIndex = 0; resourceIndex < 0x17; ++resourceIndex) {
+  for (short resourceIndex = 0; resourceIndex < kResourceKindCount; ++resourceIndex) {
     short count = town->resourceYieldByType[resourceIndex];
     if (count == 0) {
       continue;
@@ -97,10 +98,10 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     item->InitializeNumberedResourceItem(this, position, size, resourceIndex, count);
   }
 
-  short primaryFood = town->resourceYieldByType[0x11];
-  short secondaryFood = town->resourceYieldByType[0x12];
-  short alternateFood =
-      static_cast<short>(town->resourceYieldByType[0x13] + town->resourceYieldByType[0x14]);
+  short primaryFood = town->resourceYieldByType[kResourceGrain];
+  short secondaryFood = town->resourceYieldByType[kResourceFruit];
+  short alternateFood = static_cast<short>(town->resourceYieldByType[kResourceFish] +
+                                           town->resourceYieldByType[kResourceLivestock]);
   short totalFood = static_cast<short>(primaryFood + secondaryFood + alternateFood);
   short sustainablePopulation = 0;
   for (int unit = 0; unit < totalFood; ++unit) {

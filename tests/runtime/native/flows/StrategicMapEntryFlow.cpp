@@ -18,6 +18,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -110,7 +111,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
       scenario.WaitForScenarioTick("\"capital-selection map and prompt did not become active\"");
       return kRuntimeFlowRunning;
     }
-    TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+    TWindow* modal = g_ModalViewStack.GetHead();
     TDialogBehavior* behavior = modal->GetDialogBehavior();
     TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
     if (behavior == 0 || behavior->defaultCommandCode != kControlTagOkay || okay == 0) {
@@ -175,7 +176,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
       scenario.WaitForScenarioTick("\"capital-site confirmation did not become active\"");
       return kRuntimeFlowRunning;
     }
-    TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+    TWindow* modal = g_ModalViewStack.GetHead();
     TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
     TControl* okay = static_cast<TControl*>(modal->ResolveControlByTag(kControlTagOkay));
     if (dialog == 0 || okay == 0 || modal->IsActionable() == 0 || okay->IsActionable() == 0 ||

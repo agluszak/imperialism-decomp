@@ -89,7 +89,7 @@ void TGPCheater::RefreshGPCheaterNationValues(int nationSlot) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  mercenaries->SetControlValue(nation->tradeCapacity, 1);
+  mercenaries->SetControlValue(nation->merchantCapacity, 1);
 
   TNumberText* tradeCap =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'c', 'a', 'p')));
@@ -97,7 +97,7 @@ void TGPCheater::RefreshGPCheaterNationValues(int nationSlot) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  tradeCap->SetControlValue(nation != nullptr ? nation->needCapA6 : 0, 1);
+  tradeCap->SetControlValue(nation != nullptr ? nation->transportCapacity : 0, 1);
 
   TNumberText* sale =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'a', 'l', 'e')));

@@ -16,6 +16,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -92,7 +93,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      TWindow* modal = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+      TWindow* modal = g_ModalViewStack.GetHead();
       TDialogBehavior* behavior = modal->GetDialogBehavior();
       unsigned long defaultCommand = behavior != 0 ? behavior->defaultCommandCode : 0;
       TControl* defaultControl = static_cast<TControl*>(modal->ResolveControlByTag(defaultCommand));

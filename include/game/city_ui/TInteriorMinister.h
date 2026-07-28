@@ -32,8 +32,8 @@ public:
   // population change. slot 0x14 0x4be520
   virtual void SetCityPolicies();
   // Runs DoIncreasedTransport() once per GetNumCarsToBuild() (re-read each iteration); then,
-  // once the owner's IsNationResourceNeedCurrentSumExceedingCapA6() is true, decays
-  // relation-need scores via the owner's TryDecayRelationNeedScores9AndB() once per
+  // once the owner's IsTransportCapacityExceeded() is true, decays
+  // relation-need scores via the owner's IncreaseRollingStock() once per
   // GetNumShipsToBuild(), accumulating the results; finally runs AdvanceNeedTargetRoundRobin() that
   // many times. 0x4be5b0, __thiscall, no args.
   virtual void FillOrders();
@@ -41,16 +41,16 @@ public:
   // 32 slots, 0x00-0x1f). TCityInteriorMinister inherits 0x16-0x19 and overrides
   // 0x1a-0x1f.
   // Count of merchant ships to build this pass (used as FillOrders' second loop
-  // bound): clamps/returns capabilityFlag16, cleared once needCapA6 exceeds 49.
+  // bound): clamps/returns capabilityFlag16, cleared once transportCapacity exceeds 49.
   // Mac oracle candidate GetNumShipsToBuild (the class's only other ()->count
-  // virtual besides GetNumCarsToBuild, whose tradeCapacity gate pins it to 0x17).
+  // virtual besides GetNumCarsToBuild, whose merchantCapacity gate pins it to 0x17).
   virtual short GetNumShipsToBuild(); // 0x16 0x4be480
   // Count of transport (rail) cars to build this pass (FillOrders' first loop
-  // bound): clamps/returns capabilityFlag14, cleared once tradeCapacity exceeds 49.
+  // bound): clamps/returns capabilityFlag14, cleared once merchantCapacity exceeds 49.
   // Mac oracle: GetNumCarsToBuild.
   virtual short GetNumCarsToBuild(); // 0x17 0x4be4c0
   // Per-car build step run once per GetNumCarsToBuild: no-op while
-  // GetDiplomacyCounterA2() is nonzero, otherwise TryDecayRelationNeedScores9And8().
+  // GetAvailableMerchantCapacity() is nonzero, otherwise IncreaseMerchantMarine().
   // Mac oracle candidate DoIncreasedTransport (hedged: the owner-side callee's
   // semantics are still provisional).
   virtual bool DoIncreasedTransport(); // 0x18 0x4be650

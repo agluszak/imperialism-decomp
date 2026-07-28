@@ -26,7 +26,7 @@
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   short neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
   int screenXY[2];
   ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
   int baseX = static_cast<short>(
@@ -103,7 +103,7 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
 void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short tileScale) {
   short neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(tileId, neighborTiles,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
   int screenXY[2];
   ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
 
@@ -235,7 +235,7 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
   }
   col = tileIndex % 0x6c + col;
   int row = tileIndex / 0x6c + g_hexRowOffset_00697468[direction];
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
       col = col + 0x6c;
     } else if (0x6b < col) {
@@ -257,7 +257,7 @@ int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {
 
 // FUNCTION: IMPERIALISM 0x0052a6e0
 int* WrapExtendedMapXCoordinateInPlace(int* x) {
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     int value = *x;
     if (value >= 0xd8) {
       *x = value - 0xd8;

@@ -24,19 +24,19 @@ enum {
 };
 
 bool TCapacityOrder::CanMakeFromCityStock() {
-  TCity* city = this->cityField08;
+  TCity* city = this->ownerCity;
 
-  if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex48) <=
+  if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) <=
           city->cityStockLumberC8 &&
-      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode08, this->resourceTypeIndex) <=
           city->cityStockFabricC6 &&
-      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode10, this->resourceTypeIndex) <=
           city->cityStockArmsD6 &&
-      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode0B, this->resourceTypeIndex) <=
           city->cityStockSteelCC &&
-      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode03, this->resourceTypeIndex) <=
           city->cityStockCoalBC &&
-      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) <=
+      ReadWeight(g_industryActionCostWeightResCode0C, this->resourceTypeIndex) <=
           city->cityStockFuelCE) {
     return true;
   }
@@ -44,7 +44,7 @@ bool TCapacityOrder::CanMakeFromCityStock() {
 }
 
 bool TCapacityOrder::CanFillOrderSheet(OrderSheet* orderSheet) {
-  const short weightIndex = this->resourceTypeIndex48;
+  const short weightIndex = this->resourceTypeIndex;
   const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
   const short weight08 = ReadWeight(g_industryActionCostWeightResCode08, weightIndex);
   const short weight10 = ReadWeight(g_industryActionCostWeightResCode10, weightIndex);
@@ -73,8 +73,8 @@ bool TCapacityOrder::CanFillOrderSheet(OrderSheet* orderSheet) {
 }
 
 short TCapacityOrder::ComputeCapacityOrderMaxQuantity() {
-  TCity* city = this->cityField08;
-  const short weightIndex = this->resourceTypeIndex48;
+  TCity* city = this->ownerCity;
+  const short weightIndex = this->resourceTypeIndex;
   int limit = 10000;
   int candidate;
 
@@ -120,21 +120,21 @@ short TCapacityOrder::ComputeCapacityOrderMaxQuantity() {
       limit = candidate;
     }
   }
-  return static_cast<short>(this->quantityField04 + static_cast<short>(limit));
+  return static_cast<short>(this->quantity + static_cast<short>(limit));
 }
 
 bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
-  TCity* city = this->cityField08;
-  const short priorQuantity = this->quantityField04;
+  TCity* city = this->ownerCity;
+  const short priorQuantity = this->quantity;
   const short delta = quantity - priorQuantity;
-  const short weightIndex = this->resourceTypeIndex48;
+  const short weightIndex = this->resourceTypeIndex;
   const short maxAllowed = this->ComputeCapacityOrderMaxQuantity();
   bool accepted;
 
   if (maxAllowed < quantity || quantity < 0) {
     accepted = false;
   } else {
-    this->quantityField04 = quantity;
+    this->quantity = quantity;
     accepted = true;
   }
   if (!accepted) {
@@ -169,7 +169,7 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
 }
 
 void TCapacityOrder::CommitCapacityOrderIfPending() {
-  if (this->resourceTypeIndex48 != 0 && this->quantityField04 != 0) {
+  if (this->resourceTypeIndex != 0 && this->quantity != 0) {
     this->Produce();
   }
 }
@@ -190,17 +190,17 @@ TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
 void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                                     short secondaryInputResource, short productionSlotValue) {
-  this->cityField08 = city;
-  this->summaryField0c = city->productionSummary1d8;
-  this->resourceTypeIndex48 = resourceType;
-  this->quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    this->trackingSlots10[resource] = 0;
+  this->ownerCity = city;
+  this->productionSummary = city->productionSummary1d8;
+  this->resourceTypeIndex = resourceType;
+  this->quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    this->trackingSlots[resource] = 0;
   }
   this->accumulatedValue = 0;
   this->primaryInputResourceId = primaryInputResource;
-  this->field40 = 0;
-  this->field3e = 0;
+  this->limitingConstraint = kProductionOrderLimitResources;
+  this->reservedWorkforce = 0;
   this->requestedQuantity4c = 0;
   this->secondaryInputResourceId = secondaryInputResource;
   this->productionSlot = productionSlotValue;
@@ -208,17 +208,17 @@ void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short prima
 
 // FUNCTION: IMPERIALISM 0x004b8dd0
 void TCapacityOrder::Produce() {
-  TCity* city = this->cityField08;
-  short slotIndex = this->resourceTypeIndex48;
+  TCity* city = this->ownerCity;
+  short slotIndex = this->resourceTypeIndex;
   short newValue;
   short deltaToAccum;
 
-  if (this->quantityField04 == 0) {
+  if (this->quantity == 0) {
     return;
   }
   if (slotIndex == 0xe) {
     const short currentCap = static_cast<short>(city->GetOwnerNeedCapA6());
-    city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantityField04));
+    city->SetOwnerNeedCapA6(static_cast<short>(currentCap + this->quantity));
     goto apply_done;
   }
   if (slotIndex == 0xf) {
@@ -243,15 +243,15 @@ void TCapacityOrder::Produce() {
   } else {
     newValue = city->productionOrderTable1dc[slotIndex];
   }
-  newValue = static_cast<short>(newValue + this->quantityField04);
+  newValue = static_cast<short>(newValue + this->quantity);
   deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
   city->productionAccum1fc[slotIndex] =
       static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
   city->productionOrderTable1dc[slotIndex] = newValue;
 apply_done:
   this->requestedQuantity4c = 0;
-  this->quantityField04 = 0;
-  this->trackingSlots10[this->primaryInputResourceId] = 0;
-  this->trackingSlots10[this->secondaryInputResourceId] = 0;
-  this->field3e = 0;
+  this->quantity = 0;
+  this->trackingSlots[this->primaryInputResourceId] = 0;
+  this->trackingSlots[this->secondaryInputResourceId] = 0;
+  this->reservedWorkforce = 0;
 }

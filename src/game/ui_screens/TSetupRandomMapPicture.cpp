@@ -82,8 +82,8 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
     GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
     wrapHorizontally98 = 0;
   } else {
-    planetSeed94 = g_pGlobalMapState->scenarioTagText1c;
-    wrapHorizontally98 = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+    planetSeed94 = g_pGlobalMapState->scenarioTagText;
+    wrapHorizontally98 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     selectedNationSlot9A = static_cast<short>(g_nRandomMapSelectedNationSlot00698AB0);
     if (selectedNationSlot9A == -1) {
       // LIBRARY: rand (0x005e83f0)
@@ -282,7 +282,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
         planetSeed94 = planetSeed;
         MajorTomToGroundControl(1);
       } else {
-        g_pGlobalMapState->hexNeighborWrapHorizontally20 = wrapHorizontally98;
+        g_pGlobalMapState->hexNeighborWrapHorizontally = wrapHorizontally98;
       }
     } else if (controlTag == kControlTagOkay) {
       StartGame();

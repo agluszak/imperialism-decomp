@@ -302,10 +302,10 @@ bool TMilitaryUnit::Upgrade() {
   } else {
     secondaryCost = 0;
   }
-  if (primaryCost > g_apNationStates[ownerNationSlot18]->GetDiplomacyExternalStateByTarget(0x10)) {
+  if (primaryCost > g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceArms)) {
     return false;
   }
-  if (secondaryCost > g_apNationStates[ownerNationSlot18]->GetDiplomacyExternalStateByTarget(0xc)) {
+  if (secondaryCost > g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceFuel)) {
     return false;
   }
   TGreatPower* nation = g_apNationStates[ownerNationSlot18];
@@ -314,11 +314,10 @@ bool TMilitaryUnit::Upgrade() {
     return false;
   }
   nation->SetCityStockCounterAndRefresh(
-      0x10, static_cast<short>(nation->GetDiplomacyExternalStateByTarget(0x10) - primaryCost));
+      0x10, static_cast<short>(nation->GetStockpile(kResourceArms) - primaryCost));
   g_apNationStates[ownerNationSlot18]->SetCityStockCounterAndRefresh(
-      0xc, static_cast<short>(
-               g_apNationStates[ownerNationSlot18]->GetDiplomacyExternalStateByTarget(0xc) -
-               secondaryCost));
+      0xc, static_cast<short>(g_apNationStates[ownerNationSlot18]->GetStockpile(kResourceFuel) -
+                              secondaryCost));
   g_apNationStates[ownerNationSlot18]->treasuryValue10 -= cashCost;
   orderType = candidate;
   return true;

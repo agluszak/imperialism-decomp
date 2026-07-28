@@ -79,7 +79,7 @@ void TMinorRelationshipDialog::StuffValues() {
       }
       cell->SetControlValue(
           g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[majorNation * 0x17 + (minorIndex + 7)],
+              ->relationStandingScores[majorNation * kNationSlotCount + (minorIndex + 7)],
           0);
       cell->SetState(static_cast<signed char>(g_bRandomMapDeveloperCheatFlag), 0);
     }

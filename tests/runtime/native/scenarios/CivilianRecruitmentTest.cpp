@@ -167,7 +167,7 @@ private:
     TUnitOrder recruitOrder;
     recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitProspector), 0, 0, -1,
                             0, 0, kLowSkillWorkforceMode, 0);
-    recruitOrder.quantityField04 = 1;
+    recruitOrder.quantity = 1;
     recruitOrder.Produce();
 
     if (nation->trackedObjectList->GetCount() != oldCount + 1) {

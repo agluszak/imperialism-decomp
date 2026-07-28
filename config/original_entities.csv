@@ -2425,17 +2425,17 @@ address|name|symbol|size|type|prototype|provenance
 4d7d70|TCountry::RemoveRegionIdFromNationOwnedRegionList||19|function|undefined RemoveRegionIdFromNationOwnedRegionList()|
 4d7da0|TCountry::AddRegionIdToNationOwnedRegionList||19|function|undefined AddRegionIdToNationOwnedRegionList()|
 4d7dd0|TCountry::SetNationPercentFieldByModeAndDescriptorLinks||140|function|undefined SetNationPercentFieldByModeAndDescriptorLinks()|
-4d7e90|TCountry::DecrementDiplomacyCounterA2ByValue||3|function|void TCountry::DecrementDiplomacyCounterA2ByValue(int delta)|
+4d7e90|TCountry::ConsumeMerchantCapacity||3|function|void TCountry::ConsumeMerchantCapacity(int delta)|
 4d7eb0|TCountry::GenerateEthnicName||21|function|void __thiscall GenerateEthnicName(CString * out) const|Mac oracle: TCountry::GenerateEthnicName(CStr32&) const
-4d7ee0|TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot||6|function|short TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot)|
-4d7f00|TCountry::GetDiplomacyCounterA2||4|function|short TCountry::GetDiplomacyCounterA2(void)|
-4d7f20|TCountry::GetDiplomacyExternalStateByTarget||6|function|short GetDiplomacyExternalStateByTarget(short nationSlot)|
-4d7f40|TCountry::QueryNationMetricBySlot7C||6|function|short TCountry::QueryNationMetricBySlot7C(short metricSlot)|
-4d7f60|TCountry::ReturnFalseNationStateCapabilityFlag90||5|function|undefined ReturnFalseNationStateCapabilityFlag90()|
-4d7f80|TCountry::NotifyActionSlot94||3|function|void TCountry::NotifyActionSlot94(int sourceNation, int actionCode)|
+4d7ee0|TCountry::GetIndustrialNeed||6|function|short TCountry::GetIndustrialNeed(short resourceKind)|
+4d7f00|TCountry::GetAvailableMerchantCapacity||4|function|short TCountry::GetAvailableMerchantCapacity(void)|
+4d7f20|TCountry::GetStockpile||6|function|short TCountry::GetStockpile(short resourceKind)|
+4d7f40|TCountry::GetTradeOffersFor||6|function|short TCountry::GetTradeOffersFor(short resourceKind)|
+4d7f60|TCountry::IsPolicyCodeInSpecialNationPolicySet||5|function|undefined IsPolicyCodeInSpecialNationPolicySet()|
+4d7f80|TCountry::AddNoticeFrom||3|function|void TCountry::AddNoticeFrom(int sourceNation, int actionCode)|
 4d7fa0|TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals||3|function|void TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta, int multiplier)|
-4d7fc0|TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget||5|function|bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot)|
-4d7fe0|TCountry::QueueDiplomacyProposalCodeForTargetNation||3|function|void TCountry::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot)|
+4d7fc0|TCountry::HasPendingTradeOfferAndMerchantCapacity||5|function|bool TCountry::HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot)|
+4d7fe0|TCountry::AddOfferFrom||3|function|void TCountry::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot)|
 4d8000|TCountry::PopulateSelectableEntryFlavorTextAndOrdinals||711|function|undefined PopulateSelectableEntryFlavorTextAndOrdinals()|
 4d8390|ComputeWeightedNeighborLinkScoreForNode||19|function|int __cdecl ComputeWeightedNeighborLinkScoreForNode(int nodeIndex)|
 4d83c0|SumWeightedNeighborLinkScoreForLinkedNodes||75|function|int __thiscall SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* this)|
@@ -2449,7 +2449,7 @@ address|name|symbol|size|type|prototype|provenance
 4d89f0|TGreatPower::TGreatPower||355|function|undefined TGreatPower()|
 4d8bc0|TGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 4d8be0|TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
-4d8c00|TGreatPower::GetDiplomacyCounterA2||8|function|undefined GetDiplomacyCounterA2()|
+4d8c00|TGreatPower::GetAvailableMerchantCapacity||8|function|undefined GetAvailableMerchantCapacity()|
 4d8c20|TGreatPower::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d8c50|TGreatPower::~TGreatPower||80|function|undefined ~TGreatPower()|
 4d8cc0|TGreatPower::InitializeNationStateRuntimeSubsystems||932|function|undefined InitializeNationStateRuntimeSubsystems()|
@@ -2483,74 +2483,74 @@ address|name|symbol|size|type|prototype|provenance
 4dc660|TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages||376|function|char __thiscall BuildGreatPowerMapContextTriggeredNationEventMessages(CString * outMessageText)|
 4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|char __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString * outMessageText)|
 4dc9f0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||67|function|undefined RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
-4dca60|TGreatPower::NotifyCitySlot2C||16|function|void TGreatPower::NotifyCitySlot2C(void)|
-4dca80|TGreatPower::AbsorbCityNeedVectorSlotFC||3|function|void AbsorbCityNeedVectorSlotFC(short* needVector)|
-4dcaa0|TGreatPower::GetEffectiveDiplomacyCounterA2ForCode||306|function|unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode)|
+4dca60|TGreatPower::CalculatePotentials||16|function|void TGreatPower::CalculatePotentials(void)|
+4dca80|TGreatPower::UpdateCountryStockpile||3|function|void UpdateCountryStockpile(short* needVector)|
+4dcaa0|TGreatPower::GetAvailableMerchantCapacityForProposal||306|function|unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCode)|
 4dcc30|TGreatPower::GetTEventHandlerClassNamePointer_38||1|function|undefined GetTEventHandlerClassNamePointer(void)|
-4dcc50|TGreatPower::ApplyDiplomacyState222ToCityStockAndClear||51|function|void ApplyDiplomacyState222ToCityStockAndClear()|
-4dcca0|TGreatPower::ApplyRelationDeltaToCityStockAndUpdateState1f4||77|function|void ApplyRelationDeltaToCityStockAndUpdateState1f4()|
-4dcd10|TGreatPower::ApplyNationResourceNeedTargetsToOrderState||134|function|undefined ApplyNationResourceNeedTargetsToOrderState()|
+4dcc50|TGreatPower::AddTransportedItems||51|function|void AddTransportedItems()|
+4dcca0|TGreatPower::AddPurchasedItems||77|function|void AddPurchasedItems()|
+4dcd10|TGreatPower::AddCreatedItems||134|function|void AddCreatedItems()|
 4dcdd0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_45||38|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
 4dce10|TGreatPower::SetNationResourceNeedCurrentByType||21|function|undefined SetNationResourceNeedCurrentByType()|
 4dce40|TGreatPower::IsNationResourceNeedCurrentAtTargetByType||32|function|undefined IsNationResourceNeedCurrentAtTargetByType()|
 4dce70|TGreatPower::GetNationResourceNeedTargetByType||16|function|undefined GetNationResourceNeedTargetByType()|
 4dce90|TGreatPower::TryIncrementNationResourceNeedTargetTowardCurrent||81|function|undefined TryIncrementNationResourceNeedTargetTowardCurrent()|
-4dcf10|TGreatPower::IsNationResourceNeedCurrentSumExceedingCapA6||57|function|undefined IsNationResourceNeedCurrentSumExceedingCapA6()|
-4dcf60|TGreatPower::ApplyJoinEmpireMode2FinalizeNationNameState||71|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
-4dcfd0|TGreatPower::IsDiplomacyTargetClassCode200Match_4b||72|function|undefined IsDiplomacyTargetClassCode200Match(void)|
+4dcf10|TGreatPower::IsTransportCapacityExceeded||57|function|undefined IsTransportCapacityExceeded()|
+4dcf60|TGreatPower::IncreaseRollingStock||71|function|short TGreatPower::IncreaseRollingStock(void)|
+4dcfd0|TGreatPower::IncreaseMerchantMarine||72|function|short TGreatPower::IncreaseMerchantMarine(void)|
 4dd040|TGreatPower::SetTradePolicyTo||87|function|void TGreatPower::SetTradePolicyTo(NationSlot targetNationSlot, short tradePolicy)|
 4dd0c0|TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations||86|function|undefined SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations()|
 4dd140|TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights||65|function|undefined RecomputeDiplomacyAidBudgetScoreFromResourceWeights()|
 4dd1b0|TGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix||137|function|undefined ResetDiplomacyNeedScoresAndClearAidAllocationMatrix()|
-4dd270|TGreatPower::RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix||113|function|undefined RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix()|
-4dd310|TGreatPower::ReleaseDiplomacyTrackedObjectSlots850||29|function|undefined ReleaseDiplomacyTrackedObjectSlots850()|
+4dd270|TGreatPower::RecallTradeBids||113|function|undefined RecallTradeBids()|
+4dd310|TGreatPower::InitializeDealBook||29|function|undefined InitializeDealBook()|
 4dd340|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_5d||65|function|undefined AddAmountToAidAllocationMatrixCellAndTotal()|
 4dd3b0|TGreatPower::SumAidAllocationMatrixColumnForTarget||34|function|undefined SumAidAllocationMatrixColumnForTarget()|
 4dd3f0|TGreatPower::SumAidAllocationMatrixAllCells||36|function|undefined SumAidAllocationMatrixAllCells()|
 4dd430|TGreatPower::ComputeRemainingDiplomacyAidBudget||47|function|undefined ComputeRemainingDiplomacyAidBudget()|
 4dd470|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches||75|function|undefined ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches()|
 4dd4e0|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots||467|function|undefined AssignFallbackNationsToUnfilledDiplomacyNeedSlots()|
-4dd740|TGreatPower::GetDiplomacyExternalStateByTarget||32|function|short GetDiplomacyExternalStateByTarget(short targetNationSlot)|
+4dd740|TGreatPower::GetStockpile||32|function|short TGreatPower::GetStockpile(short resourceKind)|
 4dd770|TGreatPower::SetCityStockCounterAndRefresh||35|function|void SetCityStockCounterAndRefresh(short targetSlot, short value)|
 4dd7b0|TGreatPower::AddToCityStockCounterAndRefresh||42|function|void AddToCityStockCounterAndRefresh(short targetSlot, short value)|
 4dd7f0|TGreatPower::ComputeProductionMetricForOrderKind||252|function|unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind)|
-4dda20|TGreatPower::DecrementDiplomacyCounterA2ByValue||15|function|void TGreatPower::DecrementDiplomacyCounterA2ByValue(int delta)|
+4dda20|TGreatPower::ConsumeMerchantCapacity||15|function|void TGreatPower::ConsumeMerchantCapacity(int delta)|
 4dda40|TGreatPower::ExecuteNationPendingActionStateMachine_66||15|function|undefined ExecuteNationPendingActionStateMachine(void)|
-4dda60|TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot||26|function|short TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot)|
+4dda60|TGreatPower::GetIndustrialNeed||26|function|short TGreatPower::GetIndustrialNeed(short resourceKind)|
 4dda90|TGreatPower::SetTradeOffersFor||33|function|void __thiscall SetTradeOffersFor(short resourceKind,short offerContext)|
 4ddad0|TGreatPower::GetTCountryClassNamePointer||58|function|undefined GetTCountryClassNamePointer(void)|
-4ddb20|TGreatPower::QueryNationMetricBySlot7C||16|function|short TGreatPower::QueryNationMetricBySlot7C(short targetNationSlot)|
-4ddb40|TGreatPower::VTableSlot69||45|function|undefined 'scalar_deleting_destructor'(void)|
-4ddb80|TGreatPower::DispatchNationStateEventCode10||28|function|undefined DispatchNationStateEventCode10(void)|
+4ddb20|TGreatPower::GetTradeOffersFor||16|function|short TGreatPower::GetTradeOffersFor(short resourceKind)|
+4ddb40|TGreatPower::SetItemPotentials||45|function|void TGreatPower::SetItemPotentials(short resourceKind, short value)|
+4ddb80|TGreatPower::RememberTradeBids||28|function|void RememberTradeBids()|
 4ddbb0|TGreatPower::ReturnFalseNationStateActionStub||93|function|undefined TryDispatchNationActionViaUiContextOrFallback()|
 4ddc30|TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals||143|function|void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta, int multiplier)|
-4ddcf0|AddShortDeltaToNationCounterAtOffset198||23|function|undefined AddShortDeltaToNationCounterAtOffset198()|
-4ddd20|TGreatPower::ClearDiplomacyState1c6ForTarget||18|function|void __thiscall ClearDiplomacyState1c6ForTarget(short targetSlot)|
-4ddd50|TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget||41|function|bool TGreatPower::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot)|
+4ddcf0|AddPurchasedItemAmount||23|function|undefined AddPurchasedItemAmount()|
+4ddd20|TGreatPower::ClearTradeOfferForResource||18|function|void __thiscall ClearTradeOfferForResource(short targetSlot)|
+4ddd50|TGreatPower::HasPendingTradeOfferAndMerchantCapacity||41|function|bool TGreatPower::HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot)|
 4ddd90|TGreatPower::GetTEventHandlerClassNamePointer_6c||118|function|undefined GetTEventHandlerClassNamePointer(void)|
 4dde30|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_6e||60|function|undefined DeserializeRecruitScenarioAndInstantiateOrders(void)|
 4dde80|TGreatPower::HandleCityDialogHintClusterUpdate||19|function|undefined HandleCityDialogHintClusterUpdate(void)|
 4ddeb0|TGreatPower::ApplyJoinEmpireModeForTargetNation_6f||67|function|undefined ApplyJoinEmpireModeForTargetNation(void)|
 4ddf20|TGreatPower::GetTEventHandlerClassNamePointer_70||72|function|undefined GetTEventHandlerClassNamePointer(void)|
-4ddf90|TGreatPower::ClearFieldBlock1c6||20|function|undefined ClearFieldBlock1c6()|
+4ddf90|TGreatPower::ClearTradeOffers||20|function|void TGreatPower::ClearTradeOffers(void)|
 4ddfc0|TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks||553|function|undefined ApplyDiplomacyPolicyStateForTargetWithCostChecks()|
-4de2b0|TGreatPower::BeginTurnDiplomacyPrePassSlot1c8||1|function|undefined BeginTurnDiplomacyPrePassSlot1c8()|
+4de2b0|TGreatPower::SetDiplomacyPolicies||1|function|undefined SetDiplomacyPolicies()|
 4de2d0|TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants||77|function|undefined ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants()|
 4de340|TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury||527|function|undefined SetDiplomacyGrantEntryForTargetAndUpdateTreasury()|
-4de5e0|TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8||221|function|undefined RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8()|
+4de5e0|TGreatPower::GiveGrantTo||221|function|undefined GiveGrantTo()|
 4de700|TGreatPower::CanAffordDiplomacyGrantEntryForTarget||107|function|undefined CanAffordDiplomacyGrantEntryForTarget()|
 4de790|TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments||59|function|undefined CanAffordAdditionalDiplomacyCostAfterCommitments()|
-4de7e0|TGreatPower::ApplyTurnDiplomacyStateSlot1e0||29|function|void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void)|
-4de810|TGreatPower::ReleaseAllTrackedObjectsFromList89C||57|function|undefined ReleaseAllTrackedObjectsFromList89C()|
+4de7e0|TGreatPower::FinishDiplomacyPhase||29|function|void TGreatPower::FinishDiplomacyPhase(void)|
+4de810|TGreatPower::ClearCivilianOrders||57|function|void ClearCivilianOrders()|
 4de860|TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers||864|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset()|
 4deca0|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_79||82|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
-4dedf0|TGreatPower::NotifyActionSlot94||383|function|undefined OrphanRetStub_004d7f80(void)|
-4defd0|TGreatPower::QueueDiplomacyProposalCodeForTargetNation||39|function|undefined OrphanRetStub_004d7fe0(void)|
+4dedf0|TGreatPower::AddNoticeFrom||383|function|undefined OrphanRetStub_004d7f80(void)|
+4defd0|TGreatPower::AddOfferFrom||39|function|undefined OrphanRetStub_004d7fe0(void)|
 4df010|TGreatPower::AcceptOffer||659|function|undefined ApplyAcceptedDiplomacyProposalCode()|
 4df370|TGreatPower::RejectOffer||230|function|undefined QueueInterNationEventForProposalCode12D_130()|
 4df4b0|TGreatPower::IsDiplomacyProposalAllowedForRelationship||139|function|undefined ApplyJoinEmpireMode1TargetTransition(void)|
-4df580|TGreatPower::ResetNationDiplomacyProposalQueue||11|function|undefined ResetNationDiplomacyProposalQueue()|
-4df5a0|TGreatPower::ReleaseProposalQueueSlot7F||11|function|void TGreatPower::ReleaseProposalQueueSlot7F(void)|
+4df580|TGreatPower::InitializeDiplomacyOffers||11|function|undefined InitializeDiplomacyOffers()|
+4df5a0|TGreatPower::InitializeDiplomacyNotices||11|function|void TGreatPower::InitializeDiplomacyNotices(void)|
 4df5c0|TGreatPower::DispatchTurnEvent2103WithNationFromRecord||24|function|undefined DispatchTurnEvent2103WithNationFromRecord()|
 4df5f0|TGreatPower::ReplyToDiplomacyOffers||429|function|undefined ProcessPendingDiplomacyProposalQueue()|
 4df810|TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity||403|function|void ApplyScenarioRelationPresetAndSpawnFrogCity()|
@@ -2560,28 +2560,28 @@ address|name|symbol|size|type|prototype|provenance
 4e00d0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel2()|
 4e0140|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel1()|
 4e01b0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel0()|
-4e0220|TGreatPower::IterateLinkedListCursorEntries_004e0220||74|function|undefined IterateLinkedListCursorEntries_004e0220()|
+4e0220|TGreatPower::ContinueCivilianOrders||74|function|void ContinueCivilianOrders()|
 4e0290|TGreatPower::SortTrackedOrdersByTypePriority||207|function|void TGreatPower::SortTrackedOrdersByTypePriority(void)|
 4e03a0|TGreatPower::MoveCivilians||23|function|void MoveCivilians(void)|
 4e03d0|TGreatPower::MoveArmy||30|function|void MoveArmy(void)|
 4e0400|TGreatPower::HasActiveCandidateNationSlots||3|function|undefined HasActiveCandidateNationSlots()|
-4e0420|TGreatPower::SetCandidateNationFlagAndPortZoneState||3|function|void TGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation)|
-4e0440|TGreatPower::NotifyAllianceSlot214||3|function|void TGreatPower::NotifyAllianceSlot214(int targetNation)|
+4e0420|TGreatPower::SetEnemy||3|function|void TGreatPower::SetEnemy(int targetNation)|
+4e0440|TGreatPower::StopBeingEnemiesWith||3|function|void TGreatPower::StopBeingEnemiesWith(int targetNation)|
 4e0460|SumNavyOrderPriorityForNationAndNodeType||63|function|int __cdecl SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj,int nodeType)|
 4e04b0|SumNavyOrderPriorityForNation||50|function|int __cdecl SumNavyOrderPriorityForNation(TGreatPower* nationObj)|
-4e0500|TGreatPower::ComputeNavyOrderIndustryCostWeightSumForNation||59|function|undefined ComputeNavyOrderIndustryCostWeightSumForNation()|
+4e0500|TGreatPower::GetArmsInNavy||59|function|int TGreatPower::GetArmsInNavy(void)|
 4e0550|TGreatPower::CountMapActionContextNodesWithNationBit||36|function|int TGreatPower::CountMapActionContextNodesWithNationBit(void)|
-4e0590|TGreatPower::ComputeMinisterSkillFloatSlot88||35|function|double TGreatPower::ComputeMinisterSkillFloatSlot88(void)|
-4e05d0|TGreatPower::ComputeMinisterSkillFloatSlot89||35|function|double TGreatPower::ComputeMinisterSkillFloatSlot89(void)|
-4e0610|TGreatPower::ReturnFalseNationStateActionStub_8a||35|function|undefined ReturnFalseNationStateActionStub(void)|
-4e0650|TGreatPower::ComputeMinisterSkillFloatSlot8B||35|function|double TGreatPower::ComputeMinisterSkillFloatSlot8B(void)|
-4e0690|TGreatPower::ReturnFalseNationStateCapabilityFlag90||35|function|undefined ReturnFalseNationStateCapabilityFlag90(void)|
+4e0590|TGreatPower::GetWarNumber||35|function|double TGreatPower::GetWarNumber(void)|
+4e05d0|TGreatPower::GetSeekAllianceNumber||35|function|double TGreatPower::GetSeekAllianceNumber(void)|
+4e0610|TGreatPower::GetAcceptAllianceNumber||35|function|double GetAcceptAllianceNumber()|
+4e0650|TGreatPower::GetSeekPeaceNumber||35|function|double TGreatPower::GetSeekPeaceNumber(void)|
+4e0690|TGreatPower::GetAcceptPeaceNumber||35|function|double GetAcceptPeaceNumber()|
 4e06d0|TGreatPower::SumNationRuntimeFiveBucketValue44||68|function|undefined SumNationRuntimeFiveBucketValue44()|
-4e0740|TGreatPower::GetNationRuntimeCityBuildingProductionValueBySlot||31|function|undefined GetNationRuntimeCityBuildingProductionValueBySlot()|
+4e0740|TGreatPower::GetBuildingCapacity||31|function|int TGreatPower::GetBuildingCapacity(short buildingSlot)|
 4e0770|ComputeNationRuntimeAdvisoryMetricCase6||47|function|undefined ComputeNationRuntimeAdvisoryMetricCase6()|
-4e07b0|TGreatPower::IterateLinkedListCursorEntries_004e07b0||170|function|undefined IterateLinkedListCursorEntries_004e07b0()|
-4e0890|TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890||197|function|undefined IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890()|
-4e09a0|TGreatPower::ComputeCityOrderCapabilityAggregateScore||298|function|undefined ComputeCityOrderCapabilityAggregateScore()|
+4e07b0|TGreatPower::GetReinforcementPotential||170|function|int TGreatPower::GetReinforcementPotential(void)|
+4e0890|TGreatPower::GetMilitaryPower||197|function|float TGreatPower::GetMilitaryPower(void)|
+4e09a0|TGreatPower::GetTotalNavalForce||298|function|float TGreatPower::GetTotalNavalForce(void)|
 4e0b20|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal_91||181|function|undefined AddAmountToAidAllocationMatrixCellAndTotal(void)|
 4e0c10|TGreatPower::ComputeAdvisoryHandlerCase00Metric||286|function|undefined ComputeAdvisoryHandlerCase00Metric()|
 4e0d80|TGreatPower::ComputeAdvisoryHandlerCase01Metric||181|function|undefined ComputeAdvisoryHandlerCase01Metric()|
@@ -2599,20 +2599,20 @@ address|name|symbol|size|type|prototype|provenance
 4e1d50|TGreatPower::HandleWarTransitionRequest||192|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
 4e1e40|TGreatPower::HandleWarTransitionRequestWithRoleSwap||168|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
 4e1f20|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||1|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
-4e1f40|TGreatPower::ComputeWarThresholdSlotA3||452|function|undefined ComputeWarThresholdSlotA3()|
+4e1f40|TGreatPower::GetPeaceThreat||452|function|undefined GetPeaceThreat()|
 4e2190|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||1|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
 4e21b0|TGreatPower::ApplyJoinEmpireModeForTargetNation||132|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)|
 4e2270|TGreatPower::RemoveRegionIdFromNationOwnedRegionList||36|function|undefined RemoveRegionIdAndRunTrackedObjectCleanup()|
 4e22b0|TGreatPower::AddRegionIdToNationOwnedRegionList||83|function|undefined AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet()|
 4e2330|TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks||357|function|undefined ApplyDiplomacyTargetTransitionAndClearGrantEntry()|
-4e2500|TGreatPower::NotifyRegionEventSlot298||130|function|undefined NotifyRegionEventSlot298()|
+4e2500|TGreatPower::KillUnitsIn||130|function|undefined KillUnitsIn()|
 4e25c0|TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations||72|function|undefined ResetNationDiplomacySlotsAndMarkRelatedNations()|
 4e2630|TGreatPower::DeclareWarOnTargetForAlignedMinors||187|function|void __thiscall TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot)|
 4e2720|TGreatPower::MakePeaceWithTargetForAlignedMinors||103|function|void __thiscall TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot)|
 4e27b0|TGreatPower::DispatchNationDiplomacySlotActionByMode||33|function|undefined DispatchNationDiplomacySlotActionByMode()|
 4e27f0|TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded||109|function|undefined QueueWarTransitionAndNotifyThirdPartyIfNeeded()|
 4e2880|TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution||501|function|undefined ClassifyNationProductionTotalAgainstGlobalDistribution()|
-4e2b00|TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_b0||75|function|undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)|
+4e2b00|TGreatPower::AnnounceLater||75|function|void AnnounceLater(short orderKind, short payload, short flags)|
 4e2b70|TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch||984|function|undefined BuildGreatPowerTurnMessageSummaryAndDispatch()|
 4e3060|ComputeNationNavyOrderWeightedMovementScore||339|function|undefined ComputeNationNavyOrderWeightedMovementScore()|
 4e3220|RecomputeNationComparativePowerMetrics_Impl||88|function|undefined RecomputeNationComparativePowerMetrics_Impl()|
@@ -2627,19 +2627,19 @@ address|name|symbol|size|type|prototype|provenance
 4e3830|TMinor::InitializeSecondaryNationStateAndSelectHomeTile||1888|function|void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot)|
 4e41c0|TMinor::ReadFrom||360|function|undefined DeserializeDiplomacyNationStateFromStream()|
 4e4390|TMinor::WriteTo||476|function|undefined SerializeDiplomacyNationStateToStream()|
-4e45f0|TMinor::ReturnFalseNationStateCapabilityFlag90||48|function|undefined IsPolicyCodeInSpecialNationPolicySet()|
-4e4630|TMinor::SumDiplomacyState1c6AndRelationDeltaSnapshot||31|function|short __thiscall SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot)|curated
-4e4660|TMinor::GetDiplomacyExternalStateByTarget||16|function|short GetDiplomacyExternalStateByTarget(short nationSlot)|
-4e4680|TMinor::QueryNationMetricBySlot7C||16|function|short TMinor::QueryNationMetricBySlot7C(short metricSlot)|
+4e45f0|TMinor::IsPolicyCodeInSpecialNationPolicySet||48|function|undefined IsPolicyCodeInSpecialNationPolicySet()|
+4e4630|TMinor::GetIndustrialNeed||31|function|short TMinor::GetIndustrialNeed(short resourceKind)|curated
+4e4660|TMinor::GetStockpile||16|function|short TMinor::GetStockpile(short resourceKind)|
+4e4680|TMinor::GetTradeOffersFor||16|function|short TMinor::GetTradeOffersFor(short resourceKind)|
 4e46a0|TMinor::RebuildDiplomacyEconomicPressureFromMapState||619|function|undefined RebuildDiplomacyEconomicPressureFromMapState()|
 4e49b0|TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals||422|function|void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta, int multiplier)|
 4e4bd0|TMinor::SeedRandomDiplomacyPolicyThresholds||623|function|void TMinor::SeedRandomDiplomacyPolicyThresholds(void)|
-4e4ee0|TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget||69|function|bool TMinor::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short policyCode)|
+4e4ee0|TMinor::HasPendingTradeOfferAndMerchantCapacity||69|function|bool TMinor::HasPendingTradeOfferAndMerchantCapacity(short policyCode)|
 4e4f50|TMinor::ReturnFalseNationStateActionStub||64|function|undefined ReturnFalseNationStateActionStub(void)|
 4e4fa0|TMinor::SetTradePolicyTo||55|function|void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy)|
 4e4ff0|TMinor::CanInitiateJoinEmpireProposalToTarget||169|function|undefined CanInitiateJoinEmpireProposalToTarget()|
-4e50d0|TMinor::QueueDiplomacyProposalCodeForTargetNation||435|function|void TMinor::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot)|
-4e5300|TMinor::NotifyActionSlot94||40|function|void TMinor::NotifyActionSlot94(int sourceNation, int actionCode)|
+4e50d0|TMinor::AddOfferFrom||435|function|void TMinor::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot)|
+4e5300|TMinor::AddNoticeFrom||40|function|void TMinor::AddNoticeFrom(int sourceNation, int actionCode)|
 4e5340|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers||797|function|undefined ProcessTurnEventNationStateTransitionAndDiplomacy()|
 4e5730|TMinor::HandleNetworkPortConstructionOrder||207|function|void __thiscall HandleNetworkPortConstructionOrder(int nNationId)|
 4e5840|TMinor::ApplyJoinEmpireMode1TargetTransition||310|function|undefined ApplyNationStateCode200AndQueueEvent1B()|
@@ -2686,15 +2686,15 @@ address|name|symbol|size|type|prototype|provenance
 4e7910|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||3|function|undefined OrphanRetStub_004e7910(void)|
 4e7930|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||3|function|undefined OrphanRetStub_004e7930(void)|
 4e7950|TAutoGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||3|function|undefined OrphanRetStub_004e7950(void)|
-4e7970|TAutoGreatPower::DispatchNationStateEventCode10||1|function|undefined OrphanRetStub_004e7970(void)|
+4e7970|TAutoGreatPower::RememberTradeBids||1|function|void RememberTradeBids()|
 4e7990|TAutoGreatPower::DispatchNationField94Callbacks90And94||33|function|undefined DispatchNationField94Callbacks90And94()|
 4e79d0|TAutoGreatPower::ReturnFalseNationStateActionStub||88|function|undefined OrphanCallChain_C3_I38_004e79d0(void)|
-4e7a50|TAutoGreatPower::ClearFieldBlock1c6||119|function|undefined ClearDiplomacyState1c6Block()|
-4e7af0|TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7af0(void)|
+4e7a50|TAutoGreatPower::ClearTradeOffers||119|function|void TAutoGreatPower::ClearTradeOffers(void)|
+4e7af0|TAutoGreatPower::SetDiplomacyPolicies||22|function|undefined OrphanLeaf_NoCall_Ins07_004e7af0(void)|
 4e7b20|TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks||18|function|undefined ForwardApplyDiplomacyPolicyStateForTargetWithCostChecks()|
-4e7b50|TAutoGreatPower::QueueDiplomacyProposalCodeForTargetNation||88|function|undefined QueueDiplomacyProposalCodeWithAllianceGuards()|
+4e7b50|TAutoGreatPower::AddOfferFrom||88|function|undefined QueueDiplomacyProposalCodeWithAllianceGuards()|
 4e7be0|TAutoGreatPower::ReplyToDiplomacyOffers||70|function|undefined ReplayQueuedDiplomacyProposalRowsAndProcessQueue()|
-4e7c50|TAutoGreatPower::NotifyActionSlot94||53|function|undefined ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook()|
+4e7c50|TAutoGreatPower::AddNoticeFrom||53|function|undefined ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook()|
 4e7ca0|TAutoGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined OrphanRetStub_004e7ca0(void)|
 4e7cc0|TAutoGreatPower::HandleWarTransitionRequest||397|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
 4e7ec0|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap||300|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
@@ -2714,13 +2714,13 @@ address|name|symbol|size|type|prototype|provenance
 4e9a50|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||901|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
 4e9ed0|TAutoGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded||40|function|undefined QueueWarTransitionFromAdvisoryAction()|
 4e9f10|TAutoGreatPower::HasActiveCandidateNationSlots||172|function|undefined HasActiveCandidateNationSlots()|
-4e9ff0|TAutoGreatPower::SetCandidateNationFlagAndPortZoneState||184|function|void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation)|
-4ea0e0|TAutoGreatPower::NotifyAllianceSlot214||77|function|void TAutoGreatPower::NotifyAllianceSlot214(int targetNation)|
+4e9ff0|TAutoGreatPower::SetEnemy||184|function|void TAutoGreatPower::SetEnemy(int targetNation)|
+4ea0e0|TAutoGreatPower::StopBeingEnemiesWith||77|function|void TAutoGreatPower::StopBeingEnemiesWith(int targetNation)|
 4ea150|TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches||77|function|undefined ApplyJoinEmpireResetAndClearDiplomacyCaches()|
 4ea1c0|TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList||153|function|undefined RemoveRegionIdAndRunTrackedObjectCleanup()|
 4ea290|TGreatPower::AddRegionToNationAndQueueMapActionMission||70|function|undefined AddRegionToNationAndQueueMapActionMission()|
 4ea300|TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations||233|function|undefined ResetNationDiplomacySlotsAndMarkRelatedNations()|
-4ea430|TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_b0||3|function|undefined DispatchTurnOrderActionSlotB0()|
+4ea430|TAutoGreatPower::AnnounceLater||3|function|void AnnounceLater(short orderKind, short payload, short flags)|
 4ea450|TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch||1|function|undefined VTableIndex177_Provisional()|
 4ea470|TGreatPower::RebuildNationResourceYieldsAndRollField134Into136||33|function|undefined RebuildNationResourceYieldsAndRollField134Into136()|
 4ea5e0|`dynamic initializer for 'g_scaledShortConst_6A2EE8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2EE8''(void)|library
@@ -2848,7 +2848,7 @@ address|name|symbol|size|type|prototype|provenance
 4f1f20|TControl::LookupOrderCompatibilityMatrixValue||30|function|short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)|
 4f1f50|IsPrimaryNationSlotIndex||12|function|undefined IsPrimaryNationSlotIndex()|
 4f1f70|TDiplomacyMgr::BuildRelationshipListSlot88||161|function|undefined CollectMinorNationStandingEntriesForMajorNation()|
-4f2050|TDiplomacyMgr::CountMajorAllianceRelationsSlot8c||44|function|undefined CountNationAllianceRelationsForNation()|
+4f2050|TDiplomacyMgr::GetNumAllies||44|function|int TDiplomacyMgr::GetNumAllies(int sourceNationSlot)|
 4f2090|TDiplomacyMgr::GetNthAlliedMajorNationSlot90||65|function|undefined GetNthAlliedMajorNationSlotForNation()|
 4f2100|TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98||182|function|undefined SelectNationSlotFromCollectedStandingEntries()|
 4f21f0|TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94||258|function|undefined SelectDiplomacyTargetNationFromCandidateSet()|
@@ -4016,7 +4016,7 @@ address|name|symbol|size|type|prototype|provenance
 5409e0|TProxyGreatPower::GetRuntimeClass||6|function|undefined GetTProxyGreatPowerClassNamePointer()|rtti
 540a00|TProxyGreatPower::AddToNationMetricAtField10||127|function|undefined EmitTurnEvent14ForProxyGreatPowerAction()|
 540aa0|TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord||1|function|undefined RemoveRegionIdFromNationOwnedRegionList(void)|
-540ac0|TGreatPower::QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16||139|function|undefined QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16()|
+540ac0|TGreatPower::AddOfferFromAndDispatchTurnEvent16||139|function|undefined AddOfferFromAndDispatchTurnEvent16()|
 540b80|TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||1|function|undefined DispatchNationStateEventCode10(void)|
 540ba0|TProxyGreatPower::ReturnFalseNationStateActionStub||90|function|undefined TryDispatchNationActionViaTurnEventOrFallback()|
 540c20|TProxyGreatPower::SetTradePolicyTo||61|function|void TProxyGreatPower::SetTradePolicyTo(NationSlot targetNation, short tradePolicy)|
@@ -4050,18 +4050,18 @@ address|name|symbol|size|type|prototype|provenance
 541840|TRemoteGreatPower::ReturnFalseNationStateCapabilityFlagA0||3|function|undefined ReturnTrueNationStateCapabilityFlagA0Alt()|
 541860|TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage||3|function|undefined ReturnFalseRemoteGreatPowerCapabilityStub()|
 541880|TRemoteGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||1|function|undefined DispatchNationStateEventCode10(void)|
-5418a0|TRemoteGreatPower::NotifyCitySlot2C||1|function|void TRemoteGreatPower::NotifyCitySlot2C(void)|
+5418a0|TRemoteGreatPower::CalculatePotentials||1|function|void TRemoteGreatPower::CalculatePotentials(void)|
 5418c0|TRemoteGreatPower::GetTEventHandlerClassNamePointer_38||1|function|undefined GetTEventHandlerClassNamePointer(void)|
 5418e0|TRemoteGreatPower::DoMovePhase||1|function|void DoMovePhase(void)|mac_oracle
 541900|TRemoteGreatPower::SortTrackedOrdersByTypePriority||1|function|void TRemoteGreatPower::SortTrackedOrdersByTypePriority(void)|
 541920|TRemoteGreatPower::ClearFieldBlock1c6||1|function|undefined 'scalar_deleting_destructor'(void)|
-541940|TRemoteGreatPower::ClearDiplomacyState1c6ForTarget||3|function|undefined OrphanRetStub_0059add0(void)|
-541960|TRemoteGreatPower::BeginTurnDiplomacyPrePassSlot1c8||1|function|undefined OrphanLeaf_NoCall_Ins06_004d87b0(void)|
-541980|TRemoteGreatPower::ApplyTurnDiplomacyStateSlot1e0||1|function|void TRemoteGreatPower::ApplyTurnDiplomacyStateSlot1e0(void)|
-5419a0|TRemoteGreatPower::ResetNationDiplomacyProposalQueue||1|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
+541940|TRemoteGreatPower::ClearTradeOfferForResource||3|function|undefined OrphanRetStub_0059add0(void)|
+541960|TRemoteGreatPower::SetDiplomacyPolicies||1|function|undefined OrphanLeaf_NoCall_Ins06_004d87b0(void)|
+541980|TRemoteGreatPower::FinishDiplomacyPhase||1|function|void TRemoteGreatPower::FinishDiplomacyPhase(void)|
+5419a0|TRemoteGreatPower::InitializeDiplomacyOffers||1|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
 5419c0|TRemoteGreatPower::IsDiplomacyTargetClassCode200Match||1|function|undefined IsDiplomacyTargetClassCode200Match(void)|
 5419e0|TRemoteGreatPower::ProcessPendingDiplomacyProposalQueue||8|function|undefined DispatchRemoteGreatPowerCallbackSlot1CC()|
-541a00|TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState||3|function|void TRemoteGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation)|
+541a00|TRemoteGreatPower::SetEnemy||3|function|void TRemoteGreatPower::SetEnemy(int targetNation)|
 541a20|TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors||3|function|void __thiscall TRemoteGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot)|
 541a40|TRemoteGreatPower::RecomputeAiExpansionAndMissionPressureScores||1|function|void RecomputeAiExpansionAndMissionPressureScores(void)|
 541a60|TRemoteGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||3|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|

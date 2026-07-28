@@ -27,14 +27,13 @@ int SumMilitaryUnitPowerWeights(TSortedList* unitList) {
 float SumAlliedArmyScoreFactors(int targetNation) {
   float allySum = 0.0f;
   int allyIndex = 0;
-  if (g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation) > 0) {
+  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
     do {
       int allyNation =
           g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
-      allySum = allySum + g_apNationStates[allyNation]->GetScoreFactorSlot23C();
+      allySum = allySum + g_apNationStates[allyNation]->GetMilitaryPower();
       ++allyIndex;
-    } while (allyIndex <
-             g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
+    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
   }
   return allySum;
 }
@@ -42,21 +41,19 @@ float SumAlliedArmyScoreFactors(int targetNation) {
 float SumAlliedNavyScoreFactors(int targetNation) {
   float allySum = 0.0f;
   int allyIndex = 0;
-  if (g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation) > 0) {
+  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
     do {
       int allyNation =
           g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
-      allySum = allySum + g_apNationStates[allyNation]->GetScoreFactorSlot240();
+      allySum = allySum + g_apNationStates[allyNation]->GetTotalNavalForce();
       ++allyIndex;
-    } while (allyIndex <
-             g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
+    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
   }
   return allySum;
 }
 
 short* GetRelationStandingRowForNation(short nationSlot) {
-  return &g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[nationSlot * kNationSlotCount];
+  return &g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount];
 }
 
 int GetClampedQuarterYearTerm(void) {
@@ -205,7 +202,7 @@ void RecomputeNationOrderPriorityMetrics() {
     g_afNationCombinedUnitDivergence_006a3b50[nationIdx] = combinedUnitDivergence;
 
     int militaryPower = nation->ComputeSelectedMilitaryPowerScore();
-    int navyOrderIndustrySum = nation->SumNavyOrderPriorityForNationSlot86();
+    int navyOrderIndustrySum = nation->GetArmsInNavy();
     float powerRatio = 1.0f;
     if (static_cast<float>(militaryPower) < static_cast<float>(navyOrderIndustrySum)) {
       powerRatio = static_cast<float>(militaryPower) / static_cast<float>(navyOrderIndustrySum);

@@ -470,7 +470,7 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
   if (side != '\0') {
     int cx = x0;
     short cy = y0;
-    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
       if (0xd7 < cx) {
         out[0] = cx - 0xd8;
         out[1] = cy;
@@ -486,7 +486,7 @@ void SeaSegment::ExtractWrappedEndpoint(int* out, char side) const {
   }
   int cx = x1;
   short cy = y1;
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (cx < 0xd8) {
       if (cx < 0) {
         cx = cx + 0xd8;

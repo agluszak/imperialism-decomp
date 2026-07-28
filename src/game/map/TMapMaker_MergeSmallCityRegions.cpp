@@ -154,7 +154,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
                                                    : g_hexColOffsetEvenRow_00697450[dir]);
               int row = tileIdx / kMapWidth + g_hexRowOffset_00697468[dir];
               int neighbor;
-              if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+              if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
                 if (col < 0) {
                   col += kMapWidth;
                 } else if (col >= kMapWidth) {

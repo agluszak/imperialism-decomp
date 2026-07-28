@@ -1735,7 +1735,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
 
     short neighborTiles[6];
     TMapMgr::GetNeighborTileIDArray(tileIndex, neighborTiles,
-                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally);
     for (int i = 0; i < 6; ++i) {
       short nt = neighborTiles[i];
       if (nt == -1) {

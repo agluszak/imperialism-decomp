@@ -217,7 +217,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i][0] * 3;
         break;
       case 4:
-        values94[i] = static_cast<int>(nation->tradeCapacity) << 2;
+        values94[i] = static_cast<int>(nation->merchantCapacity) << 2;
         break;
       case 5:
         values94[i] = nation->field910 << 2;
@@ -241,7 +241,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
         values94[i] = nation->aidAllocationTotal / 10;
         break;
       case 9:
-        values94[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->needCapA6) << 1;
+        values94[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->transportCapacity) << 1;
         break;
       default:
         break;

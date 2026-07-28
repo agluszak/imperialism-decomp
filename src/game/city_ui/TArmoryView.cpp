@@ -60,7 +60,7 @@ void TArmoryView::DoStartup() {
 
   for (short row = 0; row < 8; ++row) {
     TUnitOrder* order = static_cast<TUnitOrder*>(city94->orderSlotsE4[row + 0x19]);
-    short resourceType = order->resourceTypeIndex48;
+    short resourceType = order->resourceTypeIndex;
     short pictureVariant;
     if (g_awTacticalUnitCategoryCodeBySlot[resourceType] == 8) {
       if (resourceType == 0x18) {
@@ -93,7 +93,7 @@ void TArmoryView::DoStartup() {
     }
     numb->SetState(0, 0);
     numb->InstallTextStyle(style.desc, 1);
-    numb->SetControlValue(order->quantityField04, 1);
+    numb->SetControlValue(order->quantity, 1);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0x18, 0x2b6b);
@@ -178,7 +178,7 @@ void TArmoryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
         sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
       }
 
-      short newValue = selectedUnitOrderA8->quantityField04;
+      short newValue = selectedUnitOrderA8->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         newValue++;
       } else {
@@ -323,7 +323,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   TPicture* plaq =
       static_cast<TPicture*>(ResolveControlByTag(IMPERIALISM_FOURCC('p', 'l', 'a', 'q')));
   plaq->AssertValid();
-  plaq->SetPictureResourceIdAndRefresh(static_cast<short>(order->resourceTypeIndex48 + 0x1d9c), 1);
+  plaq->SetPictureResourceIdAndRefresh(static_cast<short>(order->resourceTypeIndex + 0x1d9c), 1);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b6b);
   TStaticText* unit =
@@ -332,7 +332,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xc1a);
   }
-  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex48 + 1), 0);
+  unit->SetTextFromStringResource(0x2717, static_cast<short>(order->resourceTypeIndex + 1), 0);
   CRect bounds;
   unit->QueryBounds(&bounds);
   RECT copiedBounds;
@@ -376,7 +376,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   g_pSimMgr->NumToCurrency(selectedUnitOrderA8->cashCostPerUnit, &currencyText);
   cos3->SetTextAndMaybeRefresh(&currencyText, 1);
 
-  short resourceType = order->resourceTypeIndex48;
+  short resourceType = order->resourceTypeIndex;
   TNumberText* stat0 =
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 't', 'a', '0')));
   stat0->AssertValid();

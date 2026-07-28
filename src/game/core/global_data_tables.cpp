@@ -46,6 +46,7 @@ class TInfoBarText;
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
+#include "game/globals/view_registries.h"
 
 static inline double DefaultGfxCoordinateScale() {
   return 0.015625;
@@ -877,7 +878,7 @@ TGreatPower* GetNationStateBySlot(short slotId) {
 }
 
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
-  return nationState->GetDiplomacyExternalStateByTarget(metricSlot);
+  return nationState->GetStockpile(metricSlot);
 }
 
 int GetTradeSummarySelectionTagByIndex(short index) {
@@ -1383,7 +1384,7 @@ int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
 // Resource/order-slot -> unit-category code. Also read by TArmoryView::DoStartup
-// (0x4cee20) as g[order->resourceTypeIndex48]: for the land-unit class (value 8) it
+// (0x4cee20) as g[order->resourceTypeIndex]: for the land-unit class (value 8) it
 // selects the button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18); indices
 // 0x18-0x1d map to classes 8/9, and the leading 0..7 runs mirror the commodity-slot
 // groups.
@@ -2221,8 +2222,6 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 // GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
 
-#include "game/ui_core/TApplication.h"
-
 // GLOBAL: IMPERIALISM 0x006a18e0
 TApplication* g_pApplicationUiRootController = 0;
 
@@ -2289,15 +2288,29 @@ POINT g_ptControlStringModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a1ab0
 CPoint g_turnEventDialogAnchorPoint(0, 0);
 
-// McAppUI-wide modal-window stack (an MFC CPtrList of TWindow*, base 0x006a1ac0).
-// TWindow::ExecuteViewModalStateWithPushPopChain pushes the active window on entry and
-// pops it on exit, disabling/re-enabling the window beneath it across the modal run.
-CPtrList g_ModalViewStack;
+// McAppUI-wide modal-window stack (base 0x006a1ac0). TWindow::
+// ExecuteViewModalStateWithPushPopChain pushes the active window on entry and pops it on
+// exit, disabling/re-enabling the window beneath it across the modal run. Shares the
+// CList<TWindow*, TWindow*> specialization (vtable 0x0064b580) with g_LiveViewRegistry.
+CList<TWindow*, TWindow*> g_ModalViewStack;
 
-// McAppUI live-view registry: every TWindow/TView links itself in on construction and
-// unlinks on teardown; the window-manager iterator (CWMgrIterator) sweeps it.
+// McAppUI live-view registry: every TWindow links itself in on construction and unlinks on
+// teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
-CPtrList g_LiveViewRegistry;
+CList<TWindow*, TWindow*> g_LiveViewRegistry;
+
+// Compiler-emitted members of the CList<TWindow*, TWindow*> specialization shared by the
+// two registries above (vtable 0x0064b580). The source implementation is the retail MFC
+// CList template. RemoveAt's out-of-line copy at 0x00492550 is not claimed: our build
+// inlines it into TWindow::~TWindow, so no standalone copy is emitted to pair against.
+// TEMPLATE: IMPERIALISM 0x00492510
+// ??0?$CList@PAVTWindow@@PAV1@@@QAE@H@Z
+
+// TEMPLATE: IMPERIALISM 0x004925e0
+// ??1?$CList@PAVTWindow@@PAV1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00492670
+// ?Serialize@?$CList@PAVTWindow@@PAV1@@@UAEXAAVCArchive@@@Z
 
 // GLOBAL: IMPERIALISM 0x006a1b24
 TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry = nullptr;

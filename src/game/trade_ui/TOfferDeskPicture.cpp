@@ -271,8 +271,8 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   numberOfText->SetTextAlignmentAndMaybeRefresh(-2, 0);
   numberOfText->SetTextAndMaybeRefresh(&displayText, 0);
 
-  short capacity =
-      g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetDiplomacyCounterA2();
+  short capacity = g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]
+                       ->GetAvailableMerchantCapacity();
   capacityText.Format(g_szDecimalFormat, static_cast<int>(capacity));
   TStaticText* maximumText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMCap));
   maximumText->AssertValid();
@@ -450,13 +450,14 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     }
     if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
-      relDelta = gp->relationDeltaSnapshot[commodityType96];
+      relDelta = gp->purchasedItemsByResource[commodityType96];
       // TCity models the 23 per-commodity stock shorts as named fields; index off the first.
       stock = (&city->cityStockCottonB6)[commodityType96];
       needTgt = gp->needTargetByType[commodityType96];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
-      relDelta = static_cast<short>(gp->relationDeltaSnapshot[1] + gp->relationDeltaSnapshot[0]);
+      relDelta =
+          static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
       stock = static_cast<short>(city->cityStockCottonB6 + city->cityStockWoolB8);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }
@@ -492,12 +493,13 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     CString strVerdict;
     if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
-      relDelta = gp->relationDeltaSnapshot[commodityType96];
+      relDelta = gp->purchasedItemsByResource[commodityType96];
       stock = (&city->cityStockCottonB6)[commodityType96];
       needTgt = gp->needTargetByType[commodityType96];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
-      relDelta = static_cast<short>(gp->relationDeltaSnapshot[1] + gp->relationDeltaSnapshot[0]);
+      relDelta =
+          static_cast<short>(gp->purchasedItemsByResource[1] + gp->purchasedItemsByResource[0]);
       stock = static_cast<short>(city->cityStockCottonB6 + city->cityStockWoolB8);
       needTgt = static_cast<short>(gp->needTargetByType[1] + gp->needTargetByType[0]);
     }

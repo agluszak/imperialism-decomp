@@ -395,20 +395,20 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   switch (static_cast<short>(g_pSimMgr->GetEconomicTurn() % 10)) {
   case 0: {
     TGreatPower* active = g_apNationStates[activeNation];
-    short best = (active != 0) ? active->needCapA6 : 0;
+    short best = (active != 0) ? active->transportCapacity : 0;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0) {
         TGreatPower* nation = g_apNationStates[i];
-        short value = (nation != 0) ? nation->needCapA6 : 0;
+        short value = (nation != 0) ? nation->transportCapacity : 0;
         if (value > best) {
-          best = (nation != 0) ? nation->needCapA6 : 0;
+          best = (nation != 0) ? nation->transportCapacity : 0;
           bestNation = i;
         }
       }
     }
     TGreatPower* mine = g_apNationStates[activeNation];
-    short mineValue = (mine != 0) ? mine->needCapA6 : 0;
+    short mineValue = (mine != 0) ? mine->transportCapacity : 0;
     if (best <= mineValue * 2) {
       break;
     }
@@ -423,16 +423,16 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 3: {
-    short best = g_apNationStates[activeNation]->tradeCapacity;
+    short best = g_apNationStates[activeNation]->merchantCapacity;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->tradeCapacity > best) {
-        best = g_apNationStates[i]->tradeCapacity;
+          g_apNationStates[i]->merchantCapacity > best) {
+        best = g_apNationStates[i]->merchantCapacity;
         bestNation = i;
       }
     }
-    if (best <= g_apNationStates[activeNation]->tradeCapacity * 2) {
+    if (best <= g_apNationStates[activeNation]->merchantCapacity * 2) {
       break;
     }
     g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -469,16 +469,16 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 2: {
-    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(0);
+    int best = g_apNationStates[activeNation]->GetBuildingCapacity(0);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->GetCityBuildingProductionSlot8D(0) > best) {
-        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(0);
+          g_apNationStates[i]->GetBuildingCapacity(0) > best) {
+        best = g_apNationStates[i]->GetBuildingCapacity(0);
         bestNation = i;
       }
     }
-    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(0) * 2) {
+    if (best <= g_apNationStates[activeNation]->GetBuildingCapacity(0) * 2) {
       break;
     }
     g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -492,16 +492,16 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 5: {
-    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(2);
+    int best = g_apNationStates[activeNation]->GetBuildingCapacity(2);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->GetCityBuildingProductionSlot8D(2) > best) {
-        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(2);
+          g_apNationStates[i]->GetBuildingCapacity(2) > best) {
+        best = g_apNationStates[i]->GetBuildingCapacity(2);
         bestNation = i;
       }
     }
-    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(2) * 2) {
+    if (best <= g_apNationStates[activeNation]->GetBuildingCapacity(2) * 2) {
       break;
     }
     g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -515,16 +515,16 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 7: {
-    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(4);
+    int best = g_apNationStates[activeNation]->GetBuildingCapacity(4);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->GetCityBuildingProductionSlot8D(4) > best) {
-        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(4);
+          g_apNationStates[i]->GetBuildingCapacity(4) > best) {
+        best = g_apNationStates[i]->GetBuildingCapacity(4);
         bestNation = i;
       }
     }
-    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(4) * 2) {
+    if (best <= g_apNationStates[activeNation]->GetBuildingCapacity(4) * 2) {
       break;
     }
     g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -541,13 +541,13 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       break;
     }
-    if (g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6) == 0) {
+    if (g_apNationStates[activeNation]->GetBuildingCapacity(6) == 0) {
       int best = 0;
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
         if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-            g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
-          best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
+            g_apNationStates[i]->GetBuildingCapacity(6) > best) {
+          best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
         }
       }
@@ -575,16 +575,16 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
         advisoryShown = 1;
       }
     } else {
-      int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6);
+      int best = g_apNationStates[activeNation]->GetBuildingCapacity(6);
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
         if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-            g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
-          best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
+            g_apNationStates[i]->GetBuildingCapacity(6) > best) {
+          best = g_apNationStates[i]->GetBuildingCapacity(6);
           bestNation = i;
         }
       }
-      if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6) * 2) {
+      if (best <= g_apNationStates[activeNation]->GetBuildingCapacity(6) * 2) {
         break;
       }
       g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -623,13 +623,13 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   } break;
 
   case 4: {
-    int firstValue = g_apNationStates[activeNation]->SumNavyOrderPriorityForNationSlot86();
+    int firstValue = g_apNationStates[activeNation]->GetArmsInNavy();
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
       if (i != activeNation && g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
-          g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86() > best) {
-        best = g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86();
+          g_apNationStates[i]->GetArmsInNavy() > best) {
+        best = g_apNationStates[i]->GetArmsInNavy();
         bestNation = i;
       }
     }

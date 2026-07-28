@@ -21,7 +21,7 @@ public:
   void Produce() override; // slot 0x0d 0x4b8dd0
   // MacApp-style initializer: `new TCapacityOrder()` then ICapacityOrder(...), which is
   // how TCity builds it. This is the ONLY construction path -- 0x004b8d50 does the field
-  // init (including the trackingSlots10 clear as a REP STOSD) and matches at 100%.
+  // init (including the trackingSlots clear as a REP STOSD) and matches at 100%.
   virtual void ICapacityOrder(TCity* city, short resourceType, short primaryInputResource,
                               short secondaryInputResource,
                               short productionSlot); // slot 0x12 0x4b8d50
@@ -37,8 +37,8 @@ public:
   bool CanFillOrderSheet(OrderSheet* orderSheet);
 
   // No own fields: RTTI proves TCapacityOrder is exactly TItemOrder's size (0x54).
-  // quantityField04/cityField08/summaryField0c/trackingSlots10/field3e/field40 are
-  // TProductionOrder's own fields (accumulatedValue is field44/resourceTypeIndex48 is
+  // quantity/ownerCity/productionSummary/trackingSlots/reservedWorkforce/limitingConstraint are
+  // TProductionOrder's own fields (accumulatedValue is field44/resourceTypeIndex is
   // shared too); requestedQuantity4c/primaryInputResourceId/secondaryInputResourceId/
   // productionSlot are TItemOrder's own fields -- use the inherited names directly.
 };

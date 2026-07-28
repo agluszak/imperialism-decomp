@@ -68,20 +68,21 @@ public:
   virtual void RemoveRegionIdFromNationOwnedRegionList(int regionId);
   virtual void AddRegionIdToNationOwnedRegionList(int regionId);
   virtual void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode);
-  virtual void DecrementDiplomacyCounterA2ByValue(int delta);
-  virtual short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
-  virtual short GetDiplomacyCounterA2(void);
-  virtual short GetDiplomacyExternalStateByTarget(short nationSlot);
-  virtual short QueryNationMetricBySlot7C(short metricSlot);
+  virtual void ConsumeMerchantCapacity(int delta);
+  virtual short GetIndustrialNeed(short resourceKind);
+  virtual short GetAvailableMerchantCapacity(void);
+  virtual short GetStockpile(short resourceKind);
+  virtual short GetTradeOffersFor(short resourceKind);
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                               int multiplier);
-  virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
+  virtual bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot);
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
-  virtual void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                         NationSlot targetNationSlot);
-  virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
-  virtual void NotifyActionSlot94(int sourceNation, int actionCode);
+  // ORACLE: Mac names TCountry::AddOfferFrom(short, short).
+  virtual void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot);
+  virtual char IsPolicyCodeInSpecialNationPolicySet(short policyCode);
+  // ORACLE: Mac names TCountry::AddNoticeFrom(short, short).
+  virtual void AddNoticeFrom(int sourceNation, int actionCode);
   virtual bool IsClient(void);
   virtual bool IsHost(void);
   virtual bool IsRemote(void);
