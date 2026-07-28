@@ -137,6 +137,7 @@ public:
 #ifdef IMPERIALISM_RUNTIME_TESTS
   bool RuntimeGetNationSelectionPoint(short nationSlot, CPoint* point) const;
   short RuntimeActiveNation() const;
+  short RuntimeRelationshipOverlaySourceNation() const;
   int RuntimeActionTopicIndex() const;
   short RuntimeDrawPolicyIconForNation(short nationSlot);
 #endif

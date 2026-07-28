@@ -283,6 +283,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* targetNeedByType = this->needTargetByType;
   short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
   char* influenceByRegion = BuildCityInfluenceLevelMap();
+  char* influenceBuffer = influenceByRegion;
   TMapMgr* globalMapState = g_pGlobalMapState;
   int regionIndex = 0;
 
@@ -333,6 +334,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
       ++influenceByRegion;
     }
   }
+
+  delete[] influenceBuffer;
 
   for (int typeIndex = 0; typeIndex < kNationSlotCount; ++typeIndex) {
     if (currentNeedByType[typeIndex] < targetNeedByType[typeIndex]) {
@@ -1599,9 +1602,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         CString alertTextRef;
         g_pSimMgr->GetString(0x2753, 0x44, &alertHeaderRef);
         g_pSimMgr->GetString(0x2753, 0x45, &alertTextRef);
-        // alertHeaderRef is fetched and released without being dispatched, as in
-        // the original (0x004de4a2..0x004de4ea).
-        g_pViewMgr->ModalMessage(alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(5, alertHeaderRef, alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
       }
     }
   }

@@ -933,7 +933,13 @@ finalize_action:
 
 // FUNCTION: IMPERIALISM 0x004f5e00
 eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
-  static CRect diplomacyHitBounds = CRect(0x31, 0x2d, 0x24d, 0x159);
+  static CRect diplomacyHitBounds;
+  static bool diplomacyHitBoundsInitialized = false;
+  if (!diplomacyHitBoundsInitialized) {
+    diplomacyHitBoundsInitialized = true;
+    CRect initialBounds(0x31, 0x2d, 0x24d, 0x159);
+    CopyRect(&diplomacyHitBounds, &initialBounds);
+  }
 
   if (PtInRect(&diplomacyHitBounds, *clickPoint) == 0) {
     return kDipActionNone;
@@ -1676,6 +1682,13 @@ bool TDiplomacyMapView::RuntimeGetNationSelectionPoint(short nationSlot, CPoint*
 
 short TDiplomacyMapView::RuntimeActiveNation() const {
   return activeNationC2;
+}
+
+short TDiplomacyMapView::RuntimeRelationshipOverlaySourceNation() const {
+  if (interactionModeAt94 != 1) {
+    return -1;
+  }
+  return frameRegionSelectorAt98;
 }
 
 int TDiplomacyMapView::RuntimeActionTopicIndex() const {

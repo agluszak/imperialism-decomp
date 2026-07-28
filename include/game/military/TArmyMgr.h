@@ -417,3 +417,5 @@ public:
   TArmyMgr();
 };
 ASSERT_SIZE(TArmyMgr, 0x3a8);
+
+void __stdcall ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone);

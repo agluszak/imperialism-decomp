@@ -107,14 +107,14 @@ void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
 short TMinister::MapTerrainTypeToPreferenceRank(short terrainType) {
   int entryIndex = 1;
   short result = terrainType;
-  if (this->field_8 == 0 || this->field_8->GetSize() < 1) {
+  if (this->field_8->GetSize() < 1) {
     return result;
   }
   do {
     short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry[0] == terrainType) {
       result = entry[2];
-      break;
+      entryIndex = this->field_8->GetSize() + 10;
     }
     entryIndex = entryIndex + 1;
   } while (entryIndex <= this->field_8->GetSize());
@@ -125,14 +125,14 @@ short TMinister::MapTerrainTypeToPreferenceRank(short terrainType) {
 short TMinister::MapPreferenceRankToTerrainType(short rank) {
   int entryIndex = 1;
   short result = rank;
-  if (this->field_8 == 0 || this->field_8->GetSize() < 1) {
+  if (this->field_8->GetSize() < 1) {
     return result;
   }
   do {
     short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry[2] == rank) {
       result = entry[0];
-      break;
+      entryIndex = this->field_8->GetSize() + 10;
     }
     entryIndex = entryIndex + 1;
   } while (entryIndex <= this->field_8->GetSize());

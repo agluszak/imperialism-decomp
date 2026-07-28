@@ -96,39 +96,42 @@ void TPageView::BuildPageLayout() {
   short previousTag = 0;
   short overflowCount = 1;
 
-  for (int i = 1; i <= count; i++) {
-    TSelectableTextOptionEntry* entry =
-        static_cast<TSelectableTextOptionEntry*>(this->orderedEntries->GetEntryByOrdinal(i));
-    if (entry == nullptr) {
-      continue;
-    }
-    short tag = entry->tag;
-    if (tag != 0 && tag != previousTag) {
-      previousTag = tag;
-      TSelectableTextOptionEntry* lookup =
-          static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
-      if (lookup != nullptr) {
-        y += lookup->field_0xc;
-      }
-    }
-
-    short margin = entry->field_0x4;
-    short height = entry->field_0xc;
-    int bottom = (int)y + (int)margin + (int)height;
-    if (bottom > this->pageRect.bottom) {
-      overflowCount++;
-      y = this->pageRect.top + height;
-      this->pageStartIndices->InsertLast(i);
-      if (entry->tag != 0) {
-        TSelectableTextOptionEntry* lookup = static_cast<TSelectableTextOptionEntry*>(
-            this->optionEntries->GetEntryByOrdinal(entry->tag));
-        if (lookup != nullptr) {
-          height = lookup->field_0xc;
+  int i = 1;
+  if (i <= count) {
+    do {
+      TSelectableTextOptionEntry* entry =
+          static_cast<TSelectableTextOptionEntry*>(this->orderedEntries->GetEntryByOrdinal(i));
+      if (entry != nullptr) {
+        short tag = entry->tag;
+        if (tag != 0 && tag != previousTag) {
+          previousTag = tag;
+          TSelectableTextOptionEntry* lookup =
+              static_cast<TSelectableTextOptionEntry*>(this->optionEntries->GetEntryByOrdinal(tag));
+          if (lookup != nullptr) {
+            y += lookup->field_0xc;
+          }
         }
-      }
-    }
 
-    y += height;
+        short margin = entry->field_0x4;
+        short height = entry->field_0xc;
+        int bottom = (int)y + (int)margin + (int)height;
+        if (bottom > this->pageRect.bottom) {
+          overflowCount++;
+          y = this->pageRect.top + height;
+          this->pageStartIndices->InsertLast(i);
+          if (entry->tag != 0) {
+            TSelectableTextOptionEntry* lookup = static_cast<TSelectableTextOptionEntry*>(
+                this->optionEntries->GetEntryByOrdinal(entry->tag));
+            if (lookup != nullptr) {
+              height = lookup->field_0xc;
+            }
+          }
+        }
+
+        y += height;
+      }
+      ++i;
+    } while (i <= this->orderedEntries->GetCount());
   }
 
   this->pageCount = overflowCount;

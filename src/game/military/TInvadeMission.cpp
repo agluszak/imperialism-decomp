@@ -57,7 +57,11 @@ void TInvadeMission::RejectConstituent(TShip* ship, unsigned char notify) {
 
 // FUNCTION: IMPERIALISM 0x0053f1f0
 float TInvadeMission::IndustrialCostOfNeeds() {
-  return TArmyMission::IndustrialCostOfNeeds() + beachhead34->IndustrialCostOfNeeds();
+  float armyCost = 0.0f;
+  for (int i = 0; i < 5; ++i) {
+    armyCost += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights_00697980[i];
+  }
+  return armyCost + beachhead34->IndustrialCostOfNeeds();
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240

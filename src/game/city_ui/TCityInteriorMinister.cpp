@@ -2002,7 +2002,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     pendingRecruitmentCommandIndex36 = -1;
   }
 
-  if (g_pSimMgr->economicTurn == 0) {
+  if (g_pSimMgr->GetEconomicTurn() == 0) {
     pendingShipType32 = 2;
   }
   if (pendingShipType32 != 0) {

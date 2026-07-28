@@ -613,8 +613,10 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
         char reachable =
             selectedUnit1c->selectedFlag18 == 0
                 ? 0
-                : IsTacticalTargetTileReachableForAction(selectedUnit1c->tileIndex8, tileIndex, 0,
-                                                         selectedUnit1c->GetUnitRange());
+                : IsTacticalTargetTileReachableForAction(
+                      selectedUnit1c->tileIndex8, tileIndex,
+                      static_cast<char>(g_afTacticalDirectFireFlagByCategory[unitCategoryCode]),
+                      selectedUnit1c->GetUnitRange());
         if (reachable != 0) {
           return 5;
         }
