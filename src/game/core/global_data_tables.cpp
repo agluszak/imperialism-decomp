@@ -2215,6 +2215,12 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 // TEMPLATE: IMPERIALISM 0x00480dd0
 // ??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z
 
+// SetSize is claimed here but its CArray<void*,void*> twin at 0x005e4a90 is not: retail
+// calls that one out of line from the array's Serialize, while our build inlines it there,
+// so no out-of-line copy is emitted to pair against.
+// TEMPLATE: IMPERIALISM 0x00480e00
+// ?SetSize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAEXHH@Z
+
 // Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
 // turn-event emitter dispatches TNetMgr::Send through it).
 // GLOBAL: IMPERIALISM 0x006a6014
