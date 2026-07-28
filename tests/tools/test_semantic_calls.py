@@ -5,8 +5,11 @@ import unittest
 from reccmp.types import ImageId
 
 from tools.semantic_calls import (
+    DirectCallABI,
     ExpressionNormalizer,
     ExtractedCalls,
+    _canonical_arithmetic,
+    _canonical_direct_arguments,
     check_gate,
     compare_extracted_calls,
 )
@@ -153,7 +156,60 @@ class SemanticCallTests(unittest.TestCase):
         )
         self.assertEqual(
             normalizer.normalize(copied),
-            ["entity", 3, "0x600000", None],
+            ["entity", 3, "0x600000", 4],
+        )
+
+    def test_nominal_parameter_type_is_not_part_of_provenance(self):
+        left = FakeVarnode(high=HighParam(2, FakeDataType("HMMIO", 4)))
+        right = FakeVarnode(high=HighParam(2, FakeDataType("HMMIO__ *", 4)))
+        normalizer = ExpressionNormalizer(None, ImageId.ORIG, {}, {})
+        self.assertEqual(normalizer.normalize(left), normalizer.normalize(right))
+        self.assertEqual(normalizer.normalize(left), ["parameter", 2, 4])
+
+    def test_zero_offset_pointer_wrapper_is_transparent(self):
+        parameter = FakeVarnode(high=HighParam(0))
+        zero = FakeVarnode(value=0)
+        wrapped = FakeVarnode(definition=FakeOp("PTRSUB", parameter, zero))
+        normalizer = ExpressionNormalizer(None, ImageId.ORIG, {}, {})
+        self.assertEqual(normalizer.normalize(wrapped), normalizer.normalize(parameter))
+
+    def test_optional_direct_this_input_is_removed_from_explicit_arguments(self):
+        target = {"function": "0x62246c"}
+        receiver = ["parameter", 0, 4]
+        explicit = ["constant", 4, 0]
+        abis = {0x62246C: DirectCallABI(parameter_count=2, has_this=True)}
+        self.assertEqual(
+            _canonical_direct_arguments(target, [receiver, explicit], abis),
+            [explicit],
+        )
+        self.assertEqual(
+            _canonical_direct_arguments(target, [explicit], abis),
+            [explicit],
+        )
+
+    def test_pointer_offsets_are_flattened_and_folded_at_storage_width(self):
+        parameter = ["parameter", 0, 4]
+        nested = _canonical_arithmetic(
+            "INT_ADD",
+            4,
+            [
+                _canonical_arithmetic(
+                    "INT_ADD", 4, [parameter, ["constant", 4, 28]]
+                ),
+                ["constant", 4, 4],
+            ],
+        )
+        self.assertEqual(
+            nested,
+            ["int_add", 4, ["constant", 4, 32], parameter],
+        )
+        self.assertEqual(
+            _canonical_arithmetic(
+                "INT_ADD",
+                4,
+                [["constant", 4, 0xFFFFFFFC], ["constant", 4, 4]],
+            ),
+            ["constant", 4, 0],
         )
 
     def test_address_outside_the_image_is_a_stable_literal(self):
