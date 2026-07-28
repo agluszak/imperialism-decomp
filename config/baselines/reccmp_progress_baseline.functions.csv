@@ -17,7 +17,7 @@ address|matching|name
 0x412d70|0.0|DestroyImperialismAppSingletonGlobal
 0x412d90|1.0|ShowOutOfMemoryErrorNewHandler
 0x412dc0|0.4815361890694239|ImperialismApp::InitInstance
-0x413250|0.35064935064935066|TDiplomacyMgr::SelectBestMajorNationForMinorByStandingAndNeed
+0x413250|0.35064935064935066|TDiplomacyMgr::GetFavoriteTradePartner
 0x413380|1.0|CObject::operator delete
 0x4133a0|0.2|OrphanCallChain_C1_I08_004133a0
 0x4133d0|0.19383259911894274|ImperialismCommandLineInfo::ParseParam
@@ -2846,12 +2846,12 @@ address|matching|name
 0x4ef6d0|1.0|TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot
 0x4ef700|0.6158357771260997|TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode
 0x4efc30|0.8602150537634409|TDiplomacyMgr::HasAllianceGuardForNationPair
-0x4efcb0|0.41284403669724773|TDiplomacyMgr::SetStandingScoreSlot28
-0x4efe30|0.36065573770491804|TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c
+0x4efcb0|0.41284403669724773|TDiplomacyMgr::SetRelationship
+0x4efe30|0.36065573770491804|TDiplomacyMgr::SetRelationshipsToMatch
 0x4efeb0|1.0|TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation
-0x4eff40|0.27988338192419826|TDiplomacyMgr::PropagateRelationSideEffectSlot80
+0x4eff40|0.27988338192419826|TDiplomacyMgr::InflictWarPenalty
 0x4f01e0|0.4595959595959596|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn
-0x4f0590|1.0|TDiplomacyMgr::SyncNationField790FromLocalizationStateId
+0x4f0590|1.0|TDiplomacyMgr::SetLastDiploEffort
 0x4f05c0|0.1834862385321101|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows
 0x4f09c0|1.0|TDiplomacyMgr::QueueNationPairWarTransition
 0x4f0a10|0.8546637744034707|TDiplomacyMgr::ProcessQueuedWarTransitions
@@ -2869,12 +2869,12 @@ address|matching|name
 0x4f1b40|1.0|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal
 0x4f1b70|0.24724061810154527|TDiplomacyMgr::SetNationPairDiplomacyRelationCode
 0x4f1f20|0.75|TDiplomacyMgr::LookupOrderCompatibilityMatrixValue
-0x4f1f50|1.0|TDiplomacyMgr::IsMajorNationSlot
-0x4f1f70|0.7592592592592593|TDiplomacyMgr::BuildRelationshipListSlot88
+0x4f1f50|1.0|TDiplomacyMgr::IsGreatPower
+0x4f1f70|0.7592592592592593|TDiplomacyMgr::BuildRelationshipList
 0x4f2050|1.0|TDiplomacyMgr::GetNumAllies
-0x4f2090|0.35714285714285715|TDiplomacyMgr::GetNthAlliedMajorNationSlot90
-0x4f2100|0.8760330578512396|TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98
-0x4f21f0|0.31952662721893493|TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94
+0x4f2090|0.35714285714285715|TDiplomacyMgr::GetAllyNumber
+0x4f2100|0.8760330578512396|TDiplomacyMgr::GetFavorite(int, int)
+0x4f21f0|0.31952662721893493|TDiplomacyMgr::GetFavorite(int, int, int)
 0x4f2430|0.0|IltTarget_004f2430
 0x4f24a0|0.1780821917808219|TDiplomacyMgr::RebuildMinorNationDispositionLookupTables
 0x4f2760|1.0|BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy

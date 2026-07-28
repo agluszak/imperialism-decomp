@@ -721,7 +721,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         TCity* city = pTVar5 != nullptr ? pTVar5->city : nullptr;
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(slotIndex, slotIndex, 0x100);
+      g_pDiplomacyTurnStateManager->SetRelationship(slotIndex, slotIndex, 0x100);
     }
     {
       CString nationName(g_pGameFlowState->nationDisplayNameSlots[nationIndex]);
@@ -2029,8 +2029,8 @@ void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstruct
   int nationB = static_cast<int>(nationBToken);
   short value = static_cast<short>(valueToken);
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
-  diplomacy->relationSideEffectMatrix1402[nationA * 0x17 + nationB] = value;
-  diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
+  diplomacy->relationSideEffectMatrix[nationA * 0x17 + nationB] = value;
+  diplomacy->relationSideEffectMatrix[nationB * 0x17 + nationA] = value;
 }
 
 // Reads a big-endian 32-bit owner-nation index plus two big-endian 16-bit tokens (target
@@ -2105,9 +2105,9 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
   if (relationship == kDiplomacyRelationshipJoinedEmpire) {
     TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
     short relationSideEffect = 2;
-    diplomacy->relationSideEffectMatrix1402[sourceNation * kNationSlotCount + targetNation] =
+    diplomacy->relationSideEffectMatrix[sourceNation * kNationSlotCount + targetNation] =
         relationSideEffect;
-    diplomacy->relationSideEffectMatrix1402[targetNation * kNationSlotCount + sourceNation] =
+    diplomacy->relationSideEffectMatrix[targetNation * kNationSlotCount + sourceNation] =
         relationSideEffect;
     g_apTerrainTypeDescriptorTable[targetNation]->ApplyJoinEmpireMode1TargetTransition(
         sourceNation);
@@ -2241,7 +2241,7 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(scoreToken);
 
-  g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(
+  g_pDiplomacyTurnStateManager->SetRelationship(
       static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
 }
 
