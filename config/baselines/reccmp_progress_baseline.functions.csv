@@ -524,7 +524,7 @@ address|matching|name
 0x480b50|1.0|CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>::~CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>
 0x480bd0|1.0|CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>::Serialize
 0x480dd0|1.0|CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>::`scalar deleting destructor'
-0x480e00|0.015873015873015872|ResizeDynamicPointerArrayWithGrowthStep
+0x480e00|1.0|CArray<RuntimeSelectionRecord *,RuntimeSelectionRecord *>::SetSize
 0x4810c0|0.25|`dynamic initializer for 'g_scaledShortConst_6A1680''
 0x4810f0|0.75|T102TemplateDialog::T102TemplateDialog
 0x481130|1.0|T102TemplateDialog::`scalar deleting destructor'
