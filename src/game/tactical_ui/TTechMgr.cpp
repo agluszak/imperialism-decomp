@@ -558,7 +558,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       TUnitOrder* order =
           static_cast<TUnitOrder*>(nation->city->orderSlotsE4[static_cast<short>(group + 0x18)]);
       order->AssertValid();
-      abilityActiveRows395[nationSlot].abilityActiveById[order->resourceTypeIndex48] = 0;
+      abilityActiveRows395[nationSlot].abilityActiveById[order->resourceTypeIndex] = 0;
       order->SetOrderCostProfile(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][1],
                                  g_aUnitOrderCostProfileByAbilityId[abilityId][2],
@@ -623,21 +623,21 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
   TUnitOrder* order =
       static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x2b)]);
-  if ((mapped == 6 || mapped == 7) && order->resourceTypeIndex48 != 0) {
+  if ((mapped == 6 || mapped == 7) && order->resourceTypeIndex != 0) {
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
     TUnitOrder* olderOrder =
         static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x29)]);
-    capRowsB333[nationSlot].selectedByResourceType[olderOrder->resourceTypeIndex48] = 0;
-    olderOrder->resourceTypeIndex48 = order->resourceTypeIndex48;
+    capRowsB333[nationSlot].selectedByResourceType[olderOrder->resourceTypeIndex] = 0;
+    olderOrder->resourceTypeIndex = order->resourceTypeIndex;
   } else if (resourceType == 10) {
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2b])->resourceTypeIndex48 = 5;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2b])->resourceTypeIndex = 5;
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2c])->resourceTypeIndex48 = 6;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2c])->resourceTypeIndex = 6;
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2e])->resourceTypeIndex48 = 0;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2e])->resourceTypeIndex = 0;
   }
-  order->resourceTypeIndex48 = static_cast<short>(resourceType);
+  order->resourceTypeIndex = static_cast<short>(resourceType);
 
   TShip* node = TShip::GetFirst();
   while (node != 0) {

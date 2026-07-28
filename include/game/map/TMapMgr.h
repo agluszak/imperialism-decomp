@@ -322,7 +322,7 @@ public:
   // icon variant as it goes, then rebuilds the owner-neighbour caches.
   // 0x0050f0e0, __thiscall.
   void ReadInRGBMap(const MapPixelSourceView* source);
-  // If field8 is idle: forces hexNeighborWrapHorizontally20 and (re)opens the "mapdata"
+  // If field8 is idle: forces hexNeighborWrapHorizontally and (re)opens the "mapdata"
   // session stream via BuildOrLoadGlobalMapStateForSession. If the strategic-map palette
   // preview is not ready, renders it through the strategic map view. Called from
   // DispatchTurnEvent7DDForActiveNation.
@@ -501,7 +501,7 @@ public:
   // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedTileIndices42,
   // then updates the city's own owned-region-list membership through TCountry, sets
   // g_pMapContextActionManager's per-nation slot, notifies the new owner
-  // (TGreatPower::NotifyActionSlot94) unless it's the local player's own turn, and creates a
+  // (TGreatPower::AddNoticeFrom) unless it's the local player's own turn, and creates a
   // turn-12 event when running in multiplayer-host mode.
   virtual void
   DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(ProvinceIndexStorage cityRecordIndex,
@@ -556,14 +556,14 @@ public:
                                                char resourceType); // slot 0x35 0x5135a0
   // Looks up the TTown marker for tileIndex on its owning nation's townMarkerList
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
-  // matching TTown::tileIndex14 == tileIndex.
+  // matching TTown::tileIndex == tileIndex.
   virtual class TTown*
   FindTownMarkerForTileByOwnerNation(StrategicTileIndex tileIndex); // slot 0x36 0x513170
   // Updates terrainStateTable[regionId]'s owner nation, refreshes its own and its 6
   // neighbors' border-influence counters via UpdateTileNeighborBorderInfluenceCounters, and
   // -- if the tile carries a town (activeFlags1c & 0x14) and the old owner is a great power
   // (< 7) -- moves that TTown marker from the old owner's townMarkerList to the new owner's,
-  // updating TTown::ownerNation1c.
+  // updating TTown::ownerNation.
   virtual void SetTileOwnerAndInvalidateNeighborState(short regionId,
                                                       short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
@@ -609,7 +609,7 @@ public:
   GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex,
                                                    short categoryCode); // slot 0x40 0x517540
   // Real signature has 2 stack slots (RET 8); the second is never read. Dispatches to
-  // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinkedFlag4c
+  // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinked
   // with activeFlags1c bits 2/4 to pick one of 6 fixed bitmap offsets.
   virtual short GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex tileIndex,
                                                            int unusedParam2); // slot 0x41 0x517600
@@ -679,13 +679,13 @@ public:
   // unaccounted for.
   // Set after the strategic-map palette preview surface has been rendered; cleared by
   // construction/stream load so the map-data readiness path rebuilds it once.
-  unsigned char strategicMapPalettePreviewReady04; // +0x04
-  unsigned char pad5;                              // +0x05
-  short field6;                                    // +0x06 -- 2-byte stream read
-  unsigned char field8;                            // +0x08 -- 1-byte stream read
-  unsigned char field9;                            // +0x09 -- 1-byte stream read
-  unsigned char pad0a[2];                     // +0x0a -- alignment gap before the +0x0c pointer
-  TTerrainStateRecordView* terrainStateTable; // +0x0c
+  unsigned char strategicMapPalettePreviewReady; // +0x04
+  unsigned char pad5;                            // +0x05
+  short field6;                                  // +0x06 -- 2-byte stream read
+  unsigned char field8;                          // +0x08 -- 1-byte stream read
+  unsigned char field9;                          // +0x09 -- 1-byte stream read
+  unsigned char pad0a[2];                        // +0x0a -- alignment gap before the +0x0c pointer
+  TTerrainStateRecordView* terrainStateTable;    // +0x0c
   // True when any province adjacent to `provinceIndex` (its adjacentRegionIds0A list,
   // bounded by adjacentRegionCount08) carries `ownerNationCode` in ownerNationCode00.
   // 0x00517d40, __thiscall.
@@ -698,11 +698,11 @@ public:
   // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
   // CString::~CString() call on this field (LEA ECX,[this+0x1c]; CALL 0x6058e2), the sole
   // action the base destructor performs.
-  CString scenarioTagText1c;                  // +0x1c
-  char hexNeighborWrapHorizontally20;         // +0x20
-  char pad21;                                 // +0x21
-  StrategicTileIndex pendingRiverMouthTile22; // +0x22 -- pending river-mouth tile
-  unsigned char field24;                      // +0x24 -- zeroed by the ctor; no observed reader yet
+  CString scenarioTagText;                  // +0x1c
+  char hexNeighborWrapHorizontally;         // +0x20
+  char pad21;                               // +0x21
+  StrategicTileIndex pendingRiverMouthTile; // +0x22 -- pending river-mouth tile
+  unsigned char field24;                    // +0x24 -- zeroed by the ctor; no observed reader yet
 
   static void GetNeighborTileIDArray(StrategicTileIndex tileIndex,
                                      StrategicTileIndex* neighborTiles,

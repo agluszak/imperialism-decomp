@@ -11,7 +11,6 @@ class TSortedPtrList;
 
 enum {
   kDiplomacyPairMatrixEntries = 0x180,
-  kNationSlotCount = 0x17,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
 // MFC-style diplomacy backend. The global TDiplomacyTurnStateManager (vtable
@@ -87,8 +86,9 @@ public:
   // Both scalar params are genuinely short: the body reads primaryOnlyFlag as a word
   // and callers push the raw partial register (mov dx, [this+0xc]; push edx).
   virtual void BuildRelationshipListSlot88(NationSlot sourceNation, short primaryOnlyFlag,
-                                           void* list);                              // 34 (0x88)
-  virtual int CountMajorAllianceRelationsSlot8c(int sourceNation);                   // 35 (0x8c)
+                                           void* list); // 34 (0x88)
+  // ORACLE: Mac TDiplomacyMgr::GetNumAllies(long); Windows uses int.
+  virtual int GetNumAllies(int sourceNation);                                        // 35 (0x8c)
   virtual int GetNthAlliedMajorNationSlot90(int nthAllianceIndex, int sourceNation); // 36 (0x90)
   virtual int SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceNation,
                                                                 int primaryOnlyFlag,
@@ -119,7 +119,7 @@ public:
   // by the turn-event-2 delta sync; lazily heap-allocated, size cached alongside.
   short* relationMatrixBaselineCopy794;
   int relationMatrixBaselineSize798;
-  short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
+  short relationStandingScores[kNationPairMatrixEntries];
   DiplomacyRelationshipStorage relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
   DiplomaticMissionLevelStorage relationSideEffectMatrix1402[kNationPairMatrixEntries];
@@ -156,7 +156,7 @@ public:
   // rebuilds that minor's relation-matrix row/column against every major power (default
   // standing/propagation) and every other eligible minor (looked up from the other
   // minor's own decoded disposition band when it already has one, else from the
-  // requesting nation's ReturnFalseNationStateCapabilityFlag90 capability check), and
+  // requesting nation's IsPolicyCodeInSpecialNationPolicySet capability check), and
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(int nationCode);
 };

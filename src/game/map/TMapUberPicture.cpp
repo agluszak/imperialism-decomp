@@ -187,10 +187,10 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
   CString summary;
   CString tempMsg;
 
-  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c)) != 0) {
+  if (strcmp(g_szEmptyString, static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText)) != 0) {
     g_pSimMgr->GetString(0x273f, 1, &tempMsg);
     scanBracketExpressions(g_pSimMgr, &summary, static_cast<LPCSTR>(tempMsg),
-                           static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText1c));
+                           static_cast<LPCSTR>(g_pGlobalMapState->scenarioTagText));
   }
 
   if (g_pSimMgr->multiplayerSessionRole != 0) {

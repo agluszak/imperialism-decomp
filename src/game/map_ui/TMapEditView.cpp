@@ -217,7 +217,7 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 
     short neighbors[6];
     TMapMgr::GetNeighborTileIDArray(static_cast<short>(index), neighbors,
-                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally);
     for (int direction = 0; direction < 6; ++direction) {
       TTerrainStateRecordView& neighbor =
           g_pGlobalMapState->terrainStateTable[neighbors[direction]];

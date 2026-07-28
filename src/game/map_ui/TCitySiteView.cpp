@@ -145,7 +145,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
     updateNeighborHighlights = true;
     TMapMgr::GetNeighborTileIDArray(currentTile, neighborTiles,
-                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally);
     short activeNation = g_pSimMgr->GetActiveNationId();
     for (int i = 0; i < 6; ++i) {
       short neighbor = neighborTiles[i];
@@ -242,12 +242,12 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
     return;
   }
 
-  pendingTown364->tileIndex14 = nTileIndex;
+  pendingTown364->tileIndex = nTileIndex;
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
   pendingTown364->SetName(cityName);
   if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown364)) {
-    pendingTown364->tileIndex14 = 0;
+    pendingTown364->tileIndex = 0;
     return;
   }
 

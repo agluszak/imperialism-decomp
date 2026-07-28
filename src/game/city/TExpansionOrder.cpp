@@ -23,17 +23,17 @@ TExpansionOrder::~TExpansionOrder() {}
 // FUNCTION: IMPERIALISM 0x004b9010
 void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,
                                       short secondaryInputResource, short productionSlotValue) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = resourceType;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = resourceType;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
   primaryInputResourceId = primaryInputResource;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
   requestedQuantity4c = 0;
   secondaryInputResourceId = secondaryInputResource;
   productionSlot = productionSlotValue;
@@ -42,13 +42,13 @@ void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short pri
 // FUNCTION: IMPERIALISM 0x004b9090
 void TExpansionOrder::Produce() {
   short zero = 0;
-  if (quantityField04 == zero) {
+  if (quantity == zero) {
     return;
   }
 
-  TCity* city = cityField08;
+  TCity* city = ownerCity;
   short newValue;
-  if (resourceTypeIndex48 == 0x0f) {
+  if (resourceTypeIndex == 0x0f) {
     TGreatPower* owner = city->ownerNationAc;
     signed char usesThreeRegionsPerLevel =
         owner->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
@@ -68,30 +68,29 @@ void TExpansionOrder::Produce() {
       }
     }
   } else {
-    newValue = city->productionOrderTable1dc[resourceTypeIndex48];
+    newValue = city->productionOrderTable1dc[resourceTypeIndex];
   }
 
-  newValue = static_cast<short>(newValue + quantityField04);
-  short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex48]);
-  city->productionAccum1fc[resourceTypeIndex48] =
-      static_cast<short>(city->productionAccum1fc[resourceTypeIndex48] + delta);
-  city->productionOrderTable1dc[resourceTypeIndex48] = newValue;
+  newValue = static_cast<short>(newValue + quantity);
+  short delta = static_cast<short>(newValue - city->productionOrderTable1dc[resourceTypeIndex]);
+  city->productionAccum1fc[resourceTypeIndex] =
+      static_cast<short>(city->productionAccum1fc[resourceTypeIndex] + delta);
+  city->productionOrderTable1dc[resourceTypeIndex] = newValue;
   requestedQuantity4c = zero;
-  quantityField04 = zero;
-  trackingSlots10[primaryInputResourceId] = zero;
-  trackingSlots10[secondaryInputResourceId] = zero;
+  quantity = zero;
+  trackingSlots[primaryInputResourceId] = zero;
+  trackingSlots[secondaryInputResourceId] = zero;
 }
 
 // FUNCTION: IMPERIALISM 0x004b91f0
 short TExpansionOrder::MaxOrder() {
-  short limit = static_cast<short>(trackingSlots10[primaryInputResourceId] +
-                                   cityField08->CityStockByType(primaryInputResourceId));
+  short limit = static_cast<short>(trackingSlots[primaryInputResourceId] +
+                                   ownerCity->CityStockByType(primaryInputResourceId));
   if (secondaryInputResourceId < 0) {
     limit = static_cast<short>(limit / 2);
   } else {
-    short secondaryLimit =
-        static_cast<short>(trackingSlots10[secondaryInputResourceId] +
-                           cityField08->CityStockByType(secondaryInputResourceId));
+    short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
+                                              ownerCity->CityStockByType(secondaryInputResourceId));
     if (secondaryLimit < limit) {
       limit = secondaryLimit;
     }
@@ -101,23 +100,23 @@ short TExpansionOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b9260
 bool TExpansionOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
-  requestedQuantity4c = quantityField04;
+  this->quantity = quantity;
+  requestedQuantity4c = quantity;
 
-  cityField08->CityStockByType(primaryInputResourceId) =
-      static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - delta);
-  cityField08->VerifyStocks();
-  trackingSlots10[primaryInputResourceId] =
-      static_cast<short>(trackingSlots10[primaryInputResourceId] + delta);
-  cityField08->CityStockByType(secondaryInputResourceId) =
-      static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) - delta);
-  cityField08->VerifyStocks();
-  trackingSlots10[secondaryInputResourceId] =
-      static_cast<short>(trackingSlots10[secondaryInputResourceId] + delta);
+  ownerCity->CityStockByType(primaryInputResourceId) =
+      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - delta);
+  ownerCity->VerifyStocks();
+  trackingSlots[primaryInputResourceId] =
+      static_cast<short>(trackingSlots[primaryInputResourceId] + delta);
+  ownerCity->CityStockByType(secondaryInputResourceId) =
+      static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - delta);
+  ownerCity->VerifyStocks();
+  trackingSlots[secondaryInputResourceId] =
+      static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }

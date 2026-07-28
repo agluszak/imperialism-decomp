@@ -75,7 +75,7 @@ const int kAssertLineTradeSellZeroBar = 0x896;
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
 static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
-  return nationState->tradeCapacity;
+  return nationState->merchantCapacity;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00587010

@@ -56,8 +56,7 @@ void TMinorTradeBidsDialog::StuffValues() {
         if (amountControl != 0) {
           amountControl->SetEnable(0);
           amountControl->minimumValue = -1;
-          amountControl->SetControlValue(
-              (*auxiliaryNationSlot)->QueryNationMetricBySlot7C(metricSlot), 0);
+          amountControl->SetControlValue((*auxiliaryNationSlot)->GetTradeOffersFor(metricSlot), 0);
         }
       }
     }

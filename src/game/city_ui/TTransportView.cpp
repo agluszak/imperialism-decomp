@@ -59,7 +59,7 @@ void TTransportView::StuffValues(TGreatPower* nation) {
   if (total == 0) {
     FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x797);
   }
-  total->SetControlValue(nation != 0 ? nation->needCapA6 : 0, 1);
+  total->SetControlValue(nation != 0 ? nation->transportCapacity : 0, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004bd690

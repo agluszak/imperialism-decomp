@@ -261,7 +261,7 @@ private:
       FailScenario("\"Board of Trade could not seed an adjustable sell capacity\"");
       return;
     }
-    activeNation->tradeCapacity = static_cast<short>(testCapacity);
+    activeNation->merchantCapacity = static_cast<short>(testCapacity);
     capacity->SetControlValue(testCapacity, 1);
     TAmtBar* sellBar = static_cast<TAmtBar*>(selectedSellRow->ResolveControlByTag(kControlTagBar));
     if (sellBar == 0) {

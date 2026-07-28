@@ -75,7 +75,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
   } else {
     CRect firstSource(sourceRect.left, sourceRect.top, 0xd7, sourceRect.bottom);
     CRect firstDestination(0, 0, 0xd7 - sourceRect.left, frameHeight38);
-    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 &&
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0 &&
         firstDestination.right <= frameWidth34 / 2) {
       FillRectWithQuickDrawBrushAndContextOffset(&firstDestination);
     } else {
@@ -86,7 +86,7 @@ void TMiniMapView::Draw(RECT* rectBuffer) {
 
     CRect secondSource(0, sourceRect.top, overflow, sourceRect.bottom);
     CRect secondDestination(frameWidth34 - overflow, 0, frameWidth34, frameHeight38);
-    if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 && overflow <= frameWidth34 / 2) {
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0 && overflow <= frameWidth34 / 2) {
       FillRectWithQuickDrawBrushAndContextOffset(&secondDestination);
     } else {
       BlitRectWithOptionalTransparency(miniMapAtlas->GetBlitSurface(),

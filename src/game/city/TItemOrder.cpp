@@ -22,16 +22,16 @@ TItemOrder::~TItemOrder() {}
 // FUNCTION: IMPERIALISM 0x004b5290
 void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primaryInputResource,
                             short secondaryInputResource, short productionSlotIndex) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = outputResourceType;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = outputResourceType;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
   requestedQuantity4c = 0;
   primaryInputResourceId = primaryInputResource;
   secondaryInputResourceId = secondaryInputResource;
@@ -40,32 +40,31 @@ void TItemOrder::IItemOrder(TCity* city, short outputResourceType, short primary
 
 // FUNCTION: IMPERIALISM 0x004b5310
 short TItemOrder::MaxOrder() {
-  short currentQuantity = quantityField04;
-  short workforceLimit = static_cast<short>(summaryField0c->strength / 2 + currentQuantity);
+  short currentQuantity = quantity;
+  short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
   short productionLimit =
-      static_cast<short>(cityField08->productionAccum1fc[productionSlot] + currentQuantity);
-  short resourceLimit = static_cast<short>(trackingSlots10[primaryInputResourceId] +
-                                           cityField08->CityStockByType(primaryInputResourceId));
+      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + currentQuantity);
+  short resourceLimit = static_cast<short>(trackingSlots[primaryInputResourceId] +
+                                           ownerCity->CityStockByType(primaryInputResourceId));
 
   if (secondaryInputResourceId < 0) {
     resourceLimit = static_cast<short>(resourceLimit / 2);
   } else {
-    short secondaryLimit =
-        static_cast<short>(trackingSlots10[secondaryInputResourceId] +
-                           cityField08->CityStockByType(secondaryInputResourceId));
+    short secondaryLimit = static_cast<short>(trackingSlots[secondaryInputResourceId] +
+                                              ownerCity->CityStockByType(secondaryInputResourceId));
     if (secondaryLimit < resourceLimit) {
       resourceLimit = secondaryLimit;
     }
   }
 
-  field40 = 2;
+  limitingConstraint = kProductionOrderLimitCapacity;
   short limit = productionLimit;
   if (workforceLimit < limit) {
-    field40 = 1;
+    limitingConstraint = kProductionOrderLimitWorkforce;
     limit = workforceLimit;
   }
   if (resourceLimit < limit) {
-    field40 = 0;
+    limitingConstraint = kProductionOrderLimitResources;
     limit = resourceLimit;
   }
   return limit;
@@ -73,40 +72,40 @@ short TItemOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b53d0
 bool TItemOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
-  requestedQuantity4c = quantityField04;
+  this->quantity = quantity;
+  requestedQuantity4c = quantity;
 
   short primaryChange;
   if (secondaryInputResourceId < 0) {
     primaryChange = static_cast<short>(delta * 2);
-    cityField08->CityStockByType(primaryInputResourceId) =
-        static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - primaryChange);
-    cityField08->VerifyStocks();
-    trackingSlots10[primaryInputResourceId] =
-        static_cast<short>(trackingSlots10[primaryInputResourceId] + primaryChange);
+    ownerCity->CityStockByType(primaryInputResourceId) =
+        static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - primaryChange);
+    ownerCity->VerifyStocks();
+    trackingSlots[primaryInputResourceId] =
+        static_cast<short>(trackingSlots[primaryInputResourceId] + primaryChange);
   } else {
-    cityField08->CityStockByType(primaryInputResourceId) =
-        static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - delta);
-    cityField08->VerifyStocks();
-    trackingSlots10[primaryInputResourceId] =
-        static_cast<short>(trackingSlots10[primaryInputResourceId] + delta);
+    ownerCity->CityStockByType(primaryInputResourceId) =
+        static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - delta);
+    ownerCity->VerifyStocks();
+    trackingSlots[primaryInputResourceId] =
+        static_cast<short>(trackingSlots[primaryInputResourceId] + delta);
 
-    cityField08->CityStockByType(secondaryInputResourceId) =
-        static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) - delta);
-    cityField08->VerifyStocks();
-    trackingSlots10[secondaryInputResourceId] =
-        static_cast<short>(trackingSlots10[secondaryInputResourceId] + delta);
+    ownerCity->CityStockByType(secondaryInputResourceId) =
+        static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - delta);
+    ownerCity->VerifyStocks();
+    trackingSlots[secondaryInputResourceId] =
+        static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);
   }
 
   short workforceChange = static_cast<short>(delta * 2);
-  summaryField0c->strength = static_cast<short>(summaryField0c->strength - workforceChange);
-  field3e = static_cast<short>(field3e + workforceChange);
-  cityField08->productionAccum1fc[productionSlot] =
-      static_cast<short>(cityField08->productionAccum1fc[productionSlot] - delta);
+  productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
+  reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
+  ownerCity->productionAccum1fc[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }
@@ -126,18 +125,18 @@ void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b5580
 void TItemOrder::Produce() {
-  cityField08->productionAccum1fc[productionSlot] =
-      static_cast<short>(cityField08->productionAccum1fc[productionSlot] + quantityField04);
-  cityField08->CityStockByType(resourceTypeIndex48) =
-      static_cast<short>(cityField08->CityStockByType(resourceTypeIndex48) + quantityField04);
-  cityField08->VerifyStocks();
-  cityField08->rollingItemProductionScore78 += quantityField04;
-  trackingSlots10[primaryInputResourceId] = 0;
+  ownerCity->productionAccum1fc[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + quantity);
+  ownerCity->CityStockByType(resourceTypeIndex) =
+      static_cast<short>(ownerCity->CityStockByType(resourceTypeIndex) + quantity);
+  ownerCity->VerifyStocks();
+  ownerCity->rollingItemProductionScore78 += quantity;
+  trackingSlots[primaryInputResourceId] = 0;
   if (secondaryInputResourceId >= 0) {
-    trackingSlots10[secondaryInputResourceId] = 0;
+    trackingSlots[secondaryInputResourceId] = 0;
   }
-  field3e = 0;
-  accumulatedValue += quantityField04;
+  reservedWorkforce = 0;
+  accumulatedValue += quantity;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5620
@@ -148,8 +147,8 @@ void TItemOrder::Restock() {
   // requestedQuantity4c, so the smaller-ceiling branch restores the desired value.
   short maxOrder = MaxOrder();
   short savedRequestedQuantity = requestedQuantity4c;
-  quantityField04 = 0;
-  if (maxOrder < savedRequestedQuantity && field40 == 0) {
+  quantity = 0;
+  if (maxOrder < savedRequestedQuantity && limitingConstraint == kProductionOrderLimitResources) {
     SetQuantity(maxOrder);
     requestedQuantity4c = savedRequestedQuantity;
   } else {
@@ -163,11 +162,11 @@ void TItemOrder::Restock() {
 // FUNCTION: IMPERIALISM 0x004b5670
 void TItemOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(&quantityField04, 2);
-  stream->WriteBytes(&field40, 2);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(&quantity, 2);
+  stream->WriteBytes(&limitingConstraint, 2);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
   stream->WriteBytes(&accumulatedValue, 4);
   stream->WriteBytes(&requestedQuantity4c, 2);
   stream->WriteBytes(&primaryInputResourceId, 2);
@@ -178,11 +177,11 @@ void TItemOrder::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b5710
 void TItemOrder::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(&quantityField04, 2);
-  stream->ReadBytes(&field40, 2);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(&quantity, 2);
+  stream->ReadBytes(&limitingConstraint, 2);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
   stream->ReadBytes(&accumulatedValue, 4);
   stream->ReadBytes(&requestedQuantity4c, 2);
   stream->ReadBytes(&primaryInputResourceId, 2);

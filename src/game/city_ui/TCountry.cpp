@@ -92,7 +92,7 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(NationSlot nation
   this->overlayAnchorTileCache8c = -1;
   this->encodedNationSlot = -1;
 
-  for (int nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
+  for (int nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
     this->needLevelByNation[nationIndex] = 100;
   }
 
@@ -314,7 +314,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           lateOrder->IMilitaryUnit(7, regionId, this->nationSlot);
         }
       }
-      if (*g_pGlobalMapState->scenarioTagText1c == '+') {
+      if (*g_pGlobalMapState->scenarioTagText == '+') {
         TMilitaryUnit* bonusOrder = new TMilitaryUnit();
         bonusOrder->IMilitaryUnit(2, regionId, this->nationSlot);
         bonusOrder->SetOrders(static_cast<UnitOrder>(2), -1);
@@ -507,7 +507,7 @@ void TCountry::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlo
 }
 
 // FUNCTION: IMPERIALISM 0x004d7e90
-void TCountry::DecrementDiplomacyCounterA2ByValue(int delta) {
+void TCountry::ConsumeMerchantCapacity(int delta) {
   (void)delta;
 }
 
@@ -518,37 +518,37 @@ void TCountry::GenerateEthnicName(CString* out) const {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ee0
-short TCountry::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) {
-  (void)nationSlot;
+short TCountry::GetIndustrialNeed(short resourceKind) {
+  (void)resourceKind;
   return 0;
 }
 
-// slot 0x1d — GetDiplomacyCounterA2 (real body).
+// slot 0x1d — GetAvailableMerchantCapacity (real body).
 // FUNCTION: IMPERIALISM 0x004d7f00
-short TCountry::GetDiplomacyCounterA2(void) {
+short TCountry::GetAvailableMerchantCapacity(void) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f20
-short TCountry::GetDiplomacyExternalStateByTarget(short nationSlot) {
-  (void)nationSlot;
+short TCountry::GetStockpile(short resourceKind) {
+  (void)resourceKind;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f40
-short TCountry::QueryNationMetricBySlot7C(short metricSlot) {
-  (void)metricSlot;
+short TCountry::GetTradeOffersFor(short resourceKind) {
+  (void)resourceKind;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f60
-char TCountry::ReturnFalseNationStateCapabilityFlag90(short arg) {
-  (void)arg;
+char TCountry::IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
+  (void)policyCode;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f80
-void TCountry::NotifyActionSlot94(int sourceNation, int actionCode) {
+void TCountry::AddNoticeFrom(int sourceNation, int actionCode) {
   (void)sourceNation;
   (void)actionCode;
 }
@@ -562,14 +562,14 @@ void TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fc0
-bool TCountry::IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) {
+bool TCountry::HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) {
   (void)targetNationSlot;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
-void TCountry::QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                         NationSlot targetNationSlot) {
+void TCountry::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
+                            NationSlot targetNationSlot) {
   (void)proposalCode;
   (void)targetNationSlot;
 }
@@ -731,12 +731,12 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   SwapShortArrayBytes(nation->diplomacyPolicyByNation, 0x17);
   stream->ReadBytes(nation->diplomacyGrantByNation, 0x2e);
   SwapShortArrayBytes(nation->diplomacyGrantByNation, 0x17);
-  stream->ReadBytes(&nation->diplomacyCounterA2, 2);
-  stream->ReadBytes(&nation->tradeCapacity, 2);
-  stream->ReadBytes(&nation->needCapA6, 2);
-  stream->ReadBytes(&nation->needsOverCapFlag, 2);
+  stream->ReadBytes(&nation->availableMerchantCapacity, 2);
+  stream->ReadBytes(&nation->merchantCapacity, 2);
+  stream->ReadBytes(&nation->transportCapacity, 2);
+  stream->ReadBytes(&nation->reservedTransportCapacity, 2);
   stream->ReadBytes(&nation->grantTotalCost, 2);
-  stream->ReadBytes(&nation->diplomacyCounterB0, 2);
+  stream->ReadBytes(&nation->unfilledTradeOfferCount, 2);
   stream->ReadBytes(&nation->budgetPoolBase, 2);
   stream->ReadBytes(&nation->budgetPoolDelta, 2);
   stream->ReadBytes(&nation->field8d6[0], 2);
@@ -752,12 +752,12 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   WriteShortArrayElems(stream, nation->needCurrentByType, 0x17);
   WriteShortArrayElems(stream, nation->diplomacyPolicyByNation, 0x17);
   WriteShortArrayElems(stream, nation->diplomacyGrantByNation, 0x17);
-  stream->WriteBytes(&nation->diplomacyCounterA2, 2);
-  stream->WriteBytes(&nation->tradeCapacity, 2);
-  stream->WriteBytes(&nation->needCapA6, 2);
-  stream->WriteBytes(&nation->needsOverCapFlag, 2);
+  stream->WriteBytes(&nation->availableMerchantCapacity, 2);
+  stream->WriteBytes(&nation->merchantCapacity, 2);
+  stream->WriteBytes(&nation->transportCapacity, 2);
+  stream->WriteBytes(&nation->reservedTransportCapacity, 2);
   stream->WriteBytes(&nation->grantTotalCost, 2);
-  stream->WriteBytes(&nation->diplomacyCounterB0, 2);
+  stream->WriteBytes(&nation->unfilledTradeOfferCount, 2);
   stream->WriteBytes(&nation->budgetPoolBase, 2);
   stream->WriteBytes(&nation->budgetPoolDelta, 2);
   stream->WriteBytes(&nation->field8d6[0], 2);
@@ -779,7 +779,7 @@ void TCountry::SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNati
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
       this->needLevelByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
-        this->NotifyActionSlot94(-1, 0);
+        this->AddNoticeFrom(-1, 0);
       }
     }
   }

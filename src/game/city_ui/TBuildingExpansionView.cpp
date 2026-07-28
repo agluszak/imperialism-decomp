@@ -111,7 +111,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
   }
 
   // Probe whether the full upgrade quantity is achievable, then restore the order.
-  short originalQuantity = order->quantityField04;
+  short originalQuantity = order->quantity;
   short buildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));
   short needed =
       static_cast<short>(city94->GetMaxBuildingCapacity(buildingSlotId90) - buildingType);
@@ -168,7 +168,7 @@ void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
     short previousBuildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));
     order->SetQuantity(static_cast<short>(city94->GetMaxBuildingCapacity(buildingSlotId90) -
                                           previousBuildingType));
-  } else if (order->quantityField04 > 0) {
+  } else if (order->quantity > 0) {
     order->SetQuantity(0);
   }
 

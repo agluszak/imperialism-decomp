@@ -36,10 +36,10 @@ public:
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                 NationSlot targetNationSlot) override;
+  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
+                    NationSlot targetNationSlot) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
-  void NotifyActionSlot94(int sourceNation, int actionCode) override;
+  void AddNoticeFrom(int sourceNation, int actionCode) override;
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void) override;
   // slots 0x56/0x57 — 0x004e78d0/0x004e78f0: minister callbacks when city exists.
@@ -80,15 +80,15 @@ public:
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
   void FillInteriorMinisterOrders(void) override;
   // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city stock.
-  void ClearDiplomacyState1c6Block(void) override;
+  void ClearTradeOffers(void) override;
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
-  void BeginTurnDiplomacyPrePassSlot1c8() override;
+  void SetDiplomacyPolicies() override;
   // slot 0x83 — 0x004e9f10: prune candidateNationFlags; true while any stays active.
   char HasActiveCandidateNationSlots(void) override;
   // slot 0x84 — 0x004e9ff0: mark a candidate nation (and its port zone) active.
-  void SetCandidateNationFlagAndPortZoneState(int targetNation) override;
+  void SetEnemy(int targetNation) override;
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
-  void NotifyAllianceSlot214(int targetNation) override;
+  void StopBeingEnemiesWith(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                              char swapRoles) override;
@@ -102,7 +102,7 @@ public:
   // zone of targetNation as action candidates.
   void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) override;
   // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.
-  void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) override;
+  void AnnounceLater(short orderKind, short payload, short flags) override;
   void BuildGreatPowerTurnMessageSummaryAndDispatch(void) override;
 
   // Quarterly / nation-state event stubs the AI nation leaves empty.
@@ -111,7 +111,7 @@ public:
   void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) override;
   void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) override;
   // slot 0x6a — 0x004e7970: AI leaves the base 1c6→250 snapshot empty.
-  void SnapshotDiplomacyState1c6Into250(void) override;
+  void RememberTradeBids(void) override;
   // slot 0x80 — 0x004e7ca0.
   void DispatchTurnEvent2103WithNationFromRecord() override;
   // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.

@@ -65,7 +65,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
 
   auxValueA = productionCap;
   auxValueB = 0x3a;
-  rangeOrMaxValue = (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
+  rangeOrMaxValue = (short)((selectedMetricRecord->quantity * rangeRaw) / productionCap);
 
   TView::DoPostCreate(arg);
 }

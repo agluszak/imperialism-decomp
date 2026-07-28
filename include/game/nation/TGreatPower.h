@@ -5,6 +5,7 @@
 #include "decomp_types.h"
 #include "game/ui_screens/CString.h"
 #include "game/nation_domain_types.h"
+#include "game/resource_domain_types.h"
 #include "game/city_ui/TCountry.h"
 #include "game/map/TMission.h" // eMissionType
 #include "game/ui_core/TSortedList.h"
@@ -96,28 +97,32 @@ public:
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
   void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
-  void DecrementDiplomacyCounterA2ByValue(int delta) override;
-  short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
-  short GetDiplomacyCounterA2(void) override;                                    // slot 0x1d
-  short GetDiplomacyExternalStateByTarget(short nationSlot) override;            // slot 0x1e
-  short QueryNationMetricBySlot7C(short metricSlot) override;                    // slot 0x1f
+  void ConsumeMerchantCapacity(int delta) override;
+  // ORACLE: Mac TGreatPower::GetIndustrialNeed(short).
+  short GetIndustrialNeed(short resourceKind) override; // slot 0x1c
+  short GetAvailableMerchantCapacity(void) override;    // slot 0x1d
+  // ORACLE: Mac TGreatPower::GetStockpile(short).
+  short GetStockpile(short resourceKind) override; // slot 0x1e
+  // ORACLE: Mac TGreatPower::GetTradeOffersFor(short).
+  short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
-  bool
-  IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override; // slot 0x21
+  bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) override; // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                 NationSlot targetNationSlot) override;
+  // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
+  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
+                    NationSlot targetNationSlot) override;
   // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
   // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
   // +0x8d6 inside TGreatPower's 0x964.
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
-  void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
+  // ORACLE: Mac names TGreatPower::AddNoticeFrom(short, short).
+  void AddNoticeFrom(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
   // ---- tracked orders / pending action state ----
@@ -149,7 +154,7 @@ public:
   virtual char HasDeveloper(void);
   // slot 0x34 — body 0x004db7d0: builds the 0x1950-byte transport-influence region map
   // (flood-filled from the home region via slot 0x35, extended through transport-linked
-  // town markers), updates each marker's transportLinkedFlag4c, and hands the map to the
+  // town markers), updates each marker's transportLinked, and hands the map to the
   // caller through outInfluenceMap (or frees it when outInfluenceMap is null).
   virtual void BuildTransportLinkedInfluenceMap(char** outInfluenceMap);
   // slot 0x35 — body 0x004dbac0: marks regionMap[id]=1 for every region connected to
@@ -163,7 +168,7 @@ public:
 
   // ---- turn-event message dispatch ----
   virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
-  virtual void NotifyCitySlot2C(void);
+  virtual void CalculatePotentials(void);
   virtual void FillInteriorMinisterOrders(void);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
   // into the city stock relation deltas, maxes six production-order entries to
@@ -185,28 +190,32 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
   // slot 0x3f / vtable offset 0xfc — TCity::PredictedNeeds passes its 23-entry
   // city-stock vector here. The base implementation is a bare `ret 4`.
-  virtual void AbsorbCityNeedVectorSlotFC(short* needVector);
-  // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
+  // ORACLE: Mac names TGreatPower::UpdateCountryStockpile(short*).
+  virtual void UpdateCountryStockpile(short* needVector);
+  // slot 0x40 — body 0x004dcaa0: effective availableMerchantCapacity for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
-  virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
-  virtual void ApplyDiplomacyState222ToCityStockAndClear(void);      // slot 0x41
-  virtual void ApplyRelationDeltaToCityStockAndUpdateState1f4(void); // slot 0x42
+  virtual unsigned int GetAvailableMerchantCapacityForProposal(int proposalCode);
+  // ORACLE: Mac names TGreatPower::AddTransportedItems().
+  virtual void AddTransportedItems(void); // slot 0x41
+  // ORACLE: Mac names TGreatPower::AddPurchasedItems().
+  virtual void AddPurchasedItems(void); // slot 0x42
 
   // ---- resource needs / aid allocation ----
-  virtual void ApplyNationResourceNeedTargetsToOrderState(void);
+  // ORACLE: Mac names TGreatPower::AddCreatedItems().
+  virtual void AddCreatedItems(void);
   virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
   virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
   virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
-  // Ground truth leaves the just-stored needsOverCapFlag value in AL at return (the
+  // Ground truth leaves the just-stored reservedTransportCapacity value in AL at return (the
   // ternary's SETcc result); TInteriorMinister::Call54 (0x4be5b0) reads it as bool.
-  virtual bool IsNationResourceNeedCurrentSumExceedingCapA6(void);
-  virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
-  virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
+  virtual bool IsTransportCapacityExceeded(void);
+  virtual short IncreaseRollingStock(void);   // slot 0x4a
+  virtual short IncreaseMerchantMarine(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
-  virtual void DispatchTrackedOrderSlot2CCallbacks(void); // slot 0x4c
+  virtual void ContinueCivilianOrders(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   virtual void AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void);
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
@@ -228,14 +237,15 @@ public:
   virtual void SortTrackedOrdersByTypePriority(void);
   // slot 0x56 — body 0x004e03a0: runs slot 0x4c then the slot 0x55 sort.
   virtual void MoveCivilians(void); // Mac oracle
-  // slot 0x57 — body 0x004e03d0: field900 = needCapA6 / 5.
+  // slot 0x57 — body 0x004e03d0: field900 = transportCapacity / 5.
   virtual void MoveArmy(void); // Mac oracle
   virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                             int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
   virtual void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
-  virtual void RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
-  virtual void ReleaseDiplomacyTrackedObjectSlots850(void); // slot 0x5c
+  // ORACLE: Mac names TGreatPower::RecallTradeBids().
+  virtual void RecallTradeBids(void);
+  virtual void InitializeDealBook(void); // slot 0x5c
   virtual void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
                                                           short rowIndex);
   virtual int SumAidAllocationMatrixColumnForTarget(NationSlot targetNationSlot);
@@ -249,13 +259,15 @@ public:
   // production doubled per kind; kind 7 sums the city summary record minus four
   // city stock counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
-  virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
-  virtual void SetTradeOffersFor(short resourceKind, short offerContext);             // slot 0x19c
-  virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
-  virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
-  virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
-  // slot 0x6b / 0x1ac — body 0x004ddd20: clears diplomacyState1c6[targetSlot].
-  virtual void ClearDiplomacyState1c6ForTarget(short targetSlot);
+  virtual void ConsumeMerchantCapacityForPurchase(int delta);             // slot 0x66
+  virtual void SetTradeOffersFor(short resourceKind, short offerContext); // slot 0x19c
+  virtual char AreAdvancedManufacturedTradeOffersExhausted(void);         // slot 0x68
+  // ORACLE: Mac TGreatPower::SetItemPotentials(short, short).
+  virtual void SetItemPotentials(short resourceKind, short value); // slot 0x69
+  // ORACLE: Mac names TGreatPower::RememberTradeBids().
+  virtual void RememberTradeBids(void); // slot 0x6a
+  // slot 0x6b / 0x1ac — body 0x004ddd20: clears itemPotentials[targetSlot].
+  virtual void ClearTradeOfferForResource(short targetSlot);
   // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
   // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
   // Offer entries are always eligible; accept entries are eligible for minor nations.
@@ -267,19 +279,21 @@ public:
   virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
                                           short* outValue, short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                             int payload);       // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void);                                // index 113
-  virtual void BeginTurnDiplomacyPrePassSlot1c8();                               // index 114
+                                                             int payload); // slot 0x70
+  virtual void ClearTradeOffers(void);                                     // index 113
+  // ORACLE: Mac names TGreatPower::SetDiplomacyPolicies().
+  virtual void SetDiplomacyPolicies();                                           // index 114
   virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
   virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
                                                                 short policyCode);   // index 116
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
-  virtual void
-  RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118
+  // ORACLE: Mac names TGreatPower::GiveGrantTo(short).
+  virtual void GiveGrantTo(int sourceNation); // index 118
   virtual char
   CanAffordDiplomacyGrantEntryForTarget(NationSlot targetNationSlot,
                                         unsigned short proposedGrantEntry); // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0();                      // index 120 — body 0x004de7e0
+  // ORACLE: Mac names TGreatPower::FinishDiplomacyPhase().
+  virtual void FinishDiplomacyPhase();                                // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
@@ -288,8 +302,8 @@ public:
   // current relationship (alliance through war progressively restricts treaty offers).
   virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,
                                                          int targetNation);
-  virtual void ResetNationDiplomacyProposalQueue(void);
-  virtual void ReleaseProposalQueueSlot7F(void);
+  virtual void InitializeDiplomacyOffers(void);
+  virtual void InitializeDiplomacyNotices(void);
   virtual void DispatchTurnEvent2103WithNationFromRecord(void);
   virtual void ReplyToDiplomacyOffers(void);
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
@@ -302,26 +316,29 @@ public:
   virtual char HasActiveCandidateNationSlots(void);
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
-  virtual void SetCandidateNationFlagAndPortZoneState(int targetNation); // body 0x004e0420
-  virtual void NotifyAllianceSlot214(int targetNation); // index 133 — body 0x004e0440
-  // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
-  virtual int SumNavyOrderPriorityForNationSlot86(void);
-  virtual int CountMapActionContextNodesWithNationBit(void);       // slot 0x87
-  virtual double ComputeMinisterSkillFloatSlot88(void);            // slot 0x88
-  virtual double ComputeMinisterSkillFloatSlot89(void);            // slot 0x89
-  virtual double ComputeMinisterSkillFloatSlot8A(void);            // slot 0x8a
-  virtual double ComputeMinisterSkillFloatSlot8B(void);            // slot 0x8b
-  virtual double ComputeMinisterSkillFloatSlot8C(void);            // slot 0x8c
-  virtual int GetCityBuildingProductionSlot8D(short buildingSlot); // slot 0x8d
+  // ORACLE: Mac names TGreatPower::SetEnemy(long) and StopBeingEnemiesWith(long).
+  virtual void SetEnemy(int targetNation);             // body 0x004e0420
+  virtual void StopBeingEnemiesWith(int targetNation); // index 133 — body 0x004e0440
+  // ORACLE: Mac TGreatPower::GetArmsInNavy().
+  virtual int GetArmsInNavy(void);
+  virtual int CountMapActionContextNodesWithNationBit(void); // slot 0x87
+  // ORACLE: Mac names the five war/alliance/peace threshold queries below.
+  virtual double GetWarNumber(void);            // slot 0x88
+  virtual double GetSeekAllianceNumber(void);   // slot 0x89
+  virtual double GetAcceptAllianceNumber(void); // slot 0x8a
+  virtual double GetSeekPeaceNumber(void);      // slot 0x8b
+  virtual double GetAcceptPeaceNumber(void);    // slot 0x8c
+  // ORACLE: Mac TGreatPower::GetBuildingCapacity(short).
+  virtual int GetBuildingCapacity(short buildingSlot); // slot 0x8d
 
   // ---- relative military/naval power scoring ----
   // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
-  // slot 0x8e — min(production-capped army commit budget, metric 0x10, armyPower/2).
-  virtual int ComputeArmyCommitBudgetSlot8E(void);
-  // slot 0x8f — army strength score: armyPower + commit budget + min(prod(3), power/4).
-  virtual float GetScoreFactorSlot23C(void);
-  // slot 0x90 — navy strength score from ship production, navy order priority and fleet power.
-  virtual float GetScoreFactorSlot240(void);
+  // ORACLE: Mac TGreatPower::GetReinforcementPotential().
+  virtual int GetReinforcementPotential(void);
+  // ORACLE: Mac TGreatPower::GetMilitaryPower().
+  virtual float GetMilitaryPower(void);
+  // ORACLE: Mac TGreatPower::GetTotalNavalForce().
+  virtual float GetTotalNavalForce(void);
   virtual float ComputeArmyScoreRatioVsNation(int targetNation);         // slot 0x91
   virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation); // slot 0x92
   virtual float ComputeNavyScoreRatioVsNation(int targetNation);         // slot 0x93
@@ -359,12 +376,14 @@ public:
   // (0x004e9a50) selects and queues the case-16 advisory map missions.
   virtual void SelectAndQueueAdvisoryMapMissionsCase16(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40; war-commitment threshold consumed by
-  // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
-  virtual float ComputeWarThresholdSlotA3(int targetNation);
+  // slot 0x9e (compared against GetAcceptPeaceNumber).
+  virtual float GetPeaceThreat(int targetNation);
   virtual void PruneInvalidTrackedEntriesAndNotifyOwner(); // slot 0xa4 — body 0x004e2190
-  virtual void NotifyWarResetSlotA5(void);
+  // ORACLE: Mac names TGreatPower::ClearCivilianOrders().
+  virtual void ClearCivilianOrders(void);
   // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
-  virtual void NotifyRegionEventSlot298(int regionId);
+  // ORACLE: Mac names TGreatPower::KillUnitsIn(long).
+  virtual void KillUnitsIn(int regionId);
   // slot 0x29c — body 0x004e25c0: reset diplomacy level/grants for targetNation and
   // fire slot 0x2a0 for every nation with an active policy link.
   virtual void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
@@ -385,7 +404,8 @@ public:
   // slot 0xaf — body 0x004db380 returns a char (1 on the hard-alert dispatch path,
   // 0 otherwise); the case-0xb join-empire loop tests that result.
   virtual char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
-  virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
+  // ORACLE: Mac names TGreatPower::AnnounceLater(short, short, short).
+  virtual void AnnounceLater(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
   // LoadNationDisplayNameSharedRefFromField8 moved to TCountry (its field's owner).
@@ -396,10 +416,10 @@ public:
   // 0x004e3220 — average bilateral relation-standing score vs every other live slot.
   int RecomputeNationComparativePowerMetrics_Impl();
 
-  // 0x004ddcf0. Adds `delta` to relationDeltaSnapshot[index] (the +0x198 per-nation
+  // 0x004ddcf0. Adds `delta` to purchasedItemsByResource[index] (the +0x198 per-nation
   // short counter array). Called from
   // TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes.
-  void AddShortDeltaToNationCounterAtOffset198(short index, short delta);
+  void AddPurchasedItemAmount(short index, short delta);
 
   // Clamped diplomacy budget (treasury + base/100, floored at 0). Header-inline:
   // the original inlines this exact clamp into both CanAfford* bodies (0x004de700 /
@@ -416,23 +436,23 @@ public:
   TDefenseMinister* defenseMinister;       // +0x9c
   unsigned char diplomacyEligibilityA0;
   unsigned char pad_a1;
-  short diplomacyCounterA2;
-  short tradeCapacity;
-  short needCapA6;
-  short needsOverCapFlag;
+  short availableMerchantCapacity;
+  short merchantCapacity;
+  short transportCapacity;
+  short reservedTransportCapacity;
   unsigned char pad_aa[2];
   int grantTotalCost;
-  short diplomacyCounterB0;
-  short diplomacyPolicyByNation[0x17];
-  short diplomacyGrantByNation[0x17];
-  short needCurrentByType[0x17];
-  short needTargetByType[0x17];
-  short relationDeltaCurrent[0x17];
-  short relationDeltaSnapshot[0x17];
-  short diplomacyState1c6[0x17];
-  short diplomacyState1f4[0x17];
-  short diplomacyState222[0x17];
-  short diplomacyState250[0x17];
+  short unfilledTradeOfferCount;
+  short diplomacyPolicyByNation[kNationSlotCount];
+  short diplomacyGrantByNation[kNationSlotCount];
+  short needCurrentByType[kResourceKindCount];
+  short needTargetByType[kResourceKindCount];
+  short relationDeltaCurrent[kResourceKindCount];
+  short purchasedItemsByResource[kResourceKindCount];
+  short itemPotentials[kResourceKindCount];
+  short unfilledTradeTurnCountsByResource[kResourceKindCount];
+  short transportedItemsByResource[kResourceKindCount];
+  short rememberedTradeOffersByResource[kResourceKindCount];
   int aidAllocationMatrix[0x170];
   int budgetPoolBase;
   int budgetPoolDelta;
@@ -445,7 +465,7 @@ public:
   TCity* city;
   TSortedList* townMarkerList;
   TSortedList* trackedObjectList;
-  unsigned char candidateNationFlags[0x17];
+  unsigned char candidateNationFlags[kNationSlotCount];
   unsigned char scenarioInitFlag;
   unsigned char pad_8b8[0x8c8 - 0x8b8];
   // 0x8c8..0x8d4 — complete 13-byte pending-action status record. Listings use signed
@@ -466,7 +486,7 @@ public:
   TSortedList* missionNodeQueue;
   int field910;
   int aidAllocationTotal;
-  unsigned char colonyBoycottFlags[0x17];
+  unsigned char colonyBoycottFlags[kNationSlotCount];
   unsigned char pad_92f;
   // 0x930..0x95c — the twelve rows displayed by TGameScorePicture. GenerateGameScore
   // rebuilds the block wholesale before the score screen reads it by row index.
@@ -516,7 +536,7 @@ public:
 
   // 0x4d84b0 — classifies this nation's military power (sum of
   // g_aUnitOrderCostProfileByAbilityId[unitType][2] over militaryUnitList44, plus
-  // SumNavyOrderPriorityForNationSlot86() plus 4) against the mean/stddev of the same
+  // GetArmsInNavy() plus 4) against the mean/stddev of the same
   // metric across every eligible nation: 4 (> mean+2*sd), 3 (> mean+sd), 2 (<= mean-sd,
   // or fewer than 2 eligible nations to compare against), 1 (>= mean-2*sd), else 0.
   int ClassifyNationMilitaryPowerBandAgainstGlobalMean();
@@ -526,7 +546,6 @@ public:
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool TryHandleWarTransitionRequest(int targetNation, int sourceNation);
-  void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid
   // screen's "Total" row (TGrantsView::Draw).

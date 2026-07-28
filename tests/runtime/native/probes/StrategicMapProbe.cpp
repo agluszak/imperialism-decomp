@@ -107,7 +107,7 @@ bool StrategicMapProbe::VerifyScrolling(TMapUberPicture* mapView, CString& failu
     return false;
   }
   g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
     mapView->Scroll(4);
     if (mapDialog->viewportOrigin60.x != 0) {

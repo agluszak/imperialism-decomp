@@ -233,7 +233,7 @@ int TViewMgr::ShowConstructionOptionsDialog(int dialogValue) {
 // FUNCTION: IMPERIALISM 0x005dd180
 void TViewMgr::HandleGlobalMapNationContextSelection(int nationSlot, int unused) {
   (void)unused;
-  if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile22) {
+  if (static_cast<short>(nationSlot) == g_pGlobalMapState->pendingRiverMouthTile) {
     TWindow* node = static_cast<TWindow*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainInfo));
     if (node == 0) {
@@ -462,7 +462,7 @@ void TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection() {
   node->Locate(placement, 0);
   node->SetModality(1);
   node->PoseModally();
-  short selectedIndex = roster->selectedCityRecordIndex84;
+  short selectedIndex = roster->selectedCityRecordIndex;
   node->Close();
   node->Free();
 

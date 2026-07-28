@@ -10,7 +10,7 @@
 // in TExpansionOrder/TItemOrder/TUnitOrder, as an explicit runtime multiply
 // (`this->primaryInputResourceId * 2`). That makes the sheet a flat
 // per-resource-code array of shorts, matching the sibling `TProductionOrder::
-// trackingSlots10` array (same offset range 0x10..0x3e, same resource-code indexing) --
+// trackingSlots` array (same offset range 0x10..0x3e, same resource-code indexing) --
 // i.e. the order-sheet and the order's own tracking slots share one indexing scheme.
 //
 // Total size is evidence-backed (not guessed): TProductionOrder::ResetOrderSheet

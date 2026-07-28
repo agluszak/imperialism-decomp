@@ -222,7 +222,7 @@ short TCityInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
       ranking = static_cast<short>(ranking + capital->GetBuildingType(buildingSlot));
     }
     if (g_apNationStates[nationSlot] != 0) {
-      return static_cast<short>(ranking + g_apNationStates[nationSlot]->needCapA6);
+      return static_cast<short>(ranking + g_apNationStates[nationSlot]->transportCapacity);
     }
   }
   return ranking;
@@ -441,7 +441,7 @@ void TCityInteriorMinister::FillOrders() {
     if (city->orderSlotsE4[itemSlot] != 0) {
       TItemOrder* itemOrder = static_cast<TItemOrder*>(city->orderSlotsE4[itemSlot]);
       itemOrder->AssertValid();
-      orderShortTableBA[itemOrder->productionSlot] += itemOrder->quantityField04;
+      orderShortTableBA[itemOrder->productionSlot] += itemOrder->quantity;
     }
   }
 
@@ -592,13 +592,13 @@ void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 // FUNCTION: IMPERIALISM 0x004bff80
 void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
     TCity* city, TTaskList* commandQueue) {
-  short needCap = ownerContextAt04 != 0 ? ownerContextAt04->needCapA6 : 0;
+  short needCap = ownerContextAt04 != 0 ? ownerContextAt04->transportCapacity : 0;
   if (commandQueue->ContainsTask(0x33) != 0) {
     return;
   }
 
   short totalCurrentNeed = 0;
-  for (short resource = 0; resource < 0x17; ++resource) {
+  for (short resource = 0; resource < kResourceKindCount; ++resource) {
     totalCurrentNeed =
         static_cast<short>(totalCurrentNeed + ownerContextAt04->needCurrentByType[resource]);
   }
@@ -764,10 +764,10 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
     order->AssertValid();
 
     short maxOrder = order->MaxOrder();
-    city->DirectTransport(order->resourceTypeIndex48, city->GetBuildingType(order->productionSlot));
+    city->DirectTransport(order->resourceTypeIndex, city->GetBuildingType(order->productionSlot));
 
-    if (order->field40 == 0) {
-      if (order->resourceTypeIndex48 != 8) {
+    if (order->limitingConstraint == kProductionOrderLimitResources) {
+      if (order->resourceTypeIndex != 8) {
         OrderSheet orderSheet;
         order->FillOrderSheet(&orderSheet, city->productionAccum1fc[order->productionSlot]);
 
@@ -781,14 +781,15 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
           }
         }
 
-        short needHeadroom =
-            static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+        short needHeadroom = static_cast<short>(ownerContextAt04->transportCapacity -
+                                                ownerContextAt04->reservedTransportCapacity);
         if (needHeadroom < totalRequested) {
           totalRequested = needHeadroom;
         }
         short transportShare = static_cast<short>(totalRequested / resourceCount);
 
-        for (short requestedResource = 0; requestedResource < 0x17; ++requestedResource) {
+        for (short requestedResource = 0; requestedResource < kResourceKindCount;
+             ++requestedResource) {
           short requested = orderSheet.ForResourceCode(requestedResource);
           if (requested != 0) {
             short transported = city->DirectTransport(requestedResource, transportShare);
@@ -853,15 +854,15 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
       maxOrder = order->MaxOrder();
     }
 
-    if (order->resourceTypeIndex48 == 0x0f) {
+    if (order->resourceTypeIndex == 0x0f) {
       maxOrder = static_cast<short>(resource15ProductionPercent3a * maxOrder / 100);
     }
     order->SetQuantity(maxOrder);
     ++orderOrdinal;
   }
 
-  short needHeadroom =
-      static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+  short needHeadroom = static_cast<short>(ownerContextAt04->transportCapacity -
+                                          ownerContextAt04->reservedTransportCapacity);
   if (city->cityStockHorsesC0 < 5) {
     needHeadroom = static_cast<short>(
         needHeadroom - city->DirectTransport(5, ownerContextAt04->needCurrentByType[5]));
@@ -889,7 +890,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
       order->AssertValid();
       OrderSheet orderSheet;
       order->FillOrderSheet(&orderSheet, city->GetBuildingType(order->productionSlot));
-      for (short sheetResource = 0; sheetResource < 0x17; ++sheetResource) {
+      for (short sheetResource = 0; sheetResource < kResourceKindCount; ++sheetResource) {
         needHeadroom = static_cast<short>(
             needHeadroom -
             city->DirectTransport(sheetResource, orderSheet.ForResourceCode(sheetResource)));
@@ -900,7 +901,7 @@ void TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackf
   previousHeadroom = 0;
   while (needHeadroom > 0 && previousHeadroom != needHeadroom) {
     previousHeadroom = needHeadroom;
-    for (short fallbackResource = 0; fallbackResource < 0x17; ++fallbackResource) {
+    for (short fallbackResource = 0; fallbackResource < kResourceKindCount; ++fallbackResource) {
       needHeadroom = static_cast<short>(needHeadroom - city->DirectTransport(fallbackResource, 1));
     }
   }
@@ -942,7 +943,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     TCity* city, TTaskList* commandQueue) {
   TGreatPower* owner = ownerContextAt04;
   short* citySummary = city->GetCitySummaryRecordSlot74();
-  short remainingNeedCapacity = owner != 0 ? owner->needCapA6 : 0;
+  short remainingNeedCapacity = owner != 0 ? owner->transportCapacity : 0;
 
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     owner->UpdateNeedTargetAndAccumulateOverCap(resourceType, 0);
@@ -1017,11 +1018,12 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
     }
   }
 
-  allocated = RaiseNeedTargetWithinAvailableSurplus(22, owner->needCurrentByType[22],
-                                                    remainingNeedCapacity);
+  allocated = RaiseNeedTargetWithinAvailableSurplus(
+      kResourceGold, owner->needCurrentByType[kResourceGold], remainingNeedCapacity);
   remainingNeedCapacity = static_cast<short>(remainingNeedCapacity - allocated);
-  owner->ApplyNationResourceNeedTargetsToOrderState();
-  owner->needsOverCapFlag = static_cast<short>(owner->needCapA6 - remainingNeedCapacity);
+  owner->AddCreatedItems();
+  owner->reservedTransportCapacity =
+      static_cast<short>(owner->transportCapacity - remainingNeedCapacity);
   city->TransferTransportRequests();
   return remainingNeedCapacity;
 }
@@ -1042,64 +1044,69 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
       StrategicTerrainKind terrainKind = tile->GetTerrainKind();
       if (terrainKind == kStrategicTerrainPlains || terrainKind == kStrategicTerrainFarmland ||
           terrainKind == kStrategicTerrainForest || terrainKind == kStrategicTerrainDesert) {
-        candidateTown->tileIndex14 = static_cast<short>(tileIndex);
+        candidateTown->tileIndex = static_cast<short>(tileIndex);
         candidateTown->CalculateCityResources();
 
-        short resource17 = candidateTown->resourceYieldByType[17];
-        short clamped17;
-        if (resource17 < 0) {
-          clamped17 = 0;
-        } else if (resource17 > 6) {
-          clamped17 = 6;
+        short grainYield = candidateTown->resourceYieldByType[kResourceGrain];
+        short clampedGrainYield;
+        if (grainYield < 0) {
+          clampedGrainYield = 0;
+        } else if (grainYield > 6) {
+          clampedGrainYield = 6;
         } else {
-          clamped17 = resource17;
+          clampedGrainYield = grainYield;
         }
 
-        short resource18 = candidateTown->resourceYieldByType[18];
-        short clamped18;
-        if (resource18 < 0) {
-          clamped18 = 0;
-        } else if (resource18 > 2) {
-          clamped18 = 2;
+        short fruitYield = candidateTown->resourceYieldByType[kResourceFruit];
+        short clampedFruitYield;
+        if (fruitYield < 0) {
+          clampedFruitYield = 0;
+        } else if (fruitYield > 2) {
+          clampedFruitYield = 2;
         } else {
-          clamped18 = resource18;
+          clampedFruitYield = fruitYield;
         }
 
-        short resource17Surplus = static_cast<short>(resource17 - 6);
-        if (resource17Surplus < 0) {
-          resource17Surplus = 0;
-        } else if (resource17Surplus > 3) {
-          resource17Surplus = 3;
+        short grainSurplus = static_cast<short>(grainYield - 6);
+        if (grainSurplus < 0) {
+          grainSurplus = 0;
+        } else if (grainSurplus > 3) {
+          grainSurplus = 3;
         }
 
-        short resource18Surplus = static_cast<short>(resource18 * 2 - 4);
-        if (resource18Surplus < 0) {
-          resource18Surplus = 0;
-        } else if (resource18Surplus > 4) {
-          resource18Surplus = 4;
+        short fruitSurplus = static_cast<short>(fruitYield * 2 - 4);
+        if (fruitSurplus < 0) {
+          fruitSurplus = 0;
+        } else if (fruitSurplus > 4) {
+          fruitSurplus = 4;
         }
 
-        short industrialBonus = static_cast<short>(
-            (candidateTown->resourceYieldByType[19] + candidateTown->resourceYieldByType[20]) * 2);
-        if (industrialBonus < 0) {
-          industrialBonus = 0;
-        } else if (industrialBonus > 4) {
-          industrialBonus = 4;
+        short foodYieldBonus =
+            static_cast<short>((candidateTown->resourceYieldByType[kResourceFish] +
+                                candidateTown->resourceYieldByType[kResourceLivestock]) *
+                               2);
+        if (foodYieldBonus < 0) {
+          foodYieldBonus = 0;
+        } else if (foodYieldBonus > 4) {
+          foodYieldBonus = 4;
         }
 
-        short rawMaterialBonus = static_cast<short>(candidateTown->resourceYieldByType[2] * 2);
+        short rawMaterialBonus =
+            static_cast<short>(candidateTown->resourceYieldByType[kResourceTimber] * 2);
         if (rawMaterialBonus < 0) {
           rawMaterialBonus = 0;
         } else if (rawMaterialBonus > 12) {
           rawMaterialBonus = 12;
         }
 
-        int score = (candidateTown->resourceYieldByType[0] + candidateTown->resourceYieldByType[1] +
-                     candidateTown->resourceYieldByType[22]) *
+        int score = (candidateTown->resourceYieldByType[kResourceCotton] +
+                     candidateTown->resourceYieldByType[kResourceWool] +
+                     candidateTown->resourceYieldByType[kResourceGold]) *
                         3 +
-                    candidateTown->resourceYieldByType[3] + candidateTown->resourceYieldByType[4] +
-                    rawMaterialBonus + clamped17 * 1000 + clamped18 * 1000 + resource17Surplus +
-                    resource18Surplus + industrialBonus;
+                    candidateTown->resourceYieldByType[kResourceCoal] +
+                    candidateTown->resourceYieldByType[kResourceIron] + rawMaterialBonus +
+                    clampedGrainYield * 1000 + clampedFruitYield * 1000 + grainSurplus +
+                    fruitSurplus + foodYieldBonus;
         if ((tile->activeFlags1c & 1) != 0) {
           score = 32000;
         }
@@ -1124,7 +1131,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
 // FUNCTION: IMPERIALISM 0x004c1510
 void TCityInteriorMinister::ProcessUnitOrders() {
   TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
-  ownerContextAt04->DispatchTrackedOrderSlot2CCallbacks();
+  ownerContextAt04->ContinueCivilianOrders();
 
   int ownedTileCount = 0;
   short nationSlot = ownerContextAt04->nationSlot;
@@ -1242,11 +1249,10 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
   int townCount = towns->GetCount();
   for (int ordinal = 1; ordinal <= townCount; ++ordinal) {
     TTown* town = static_cast<TTown*>(towns->GetEntryByOrdinal(ordinal));
-    candidateTiles.Add(town->tileIndex14);
-    short regionSubtype =
-        g_pGlobalMapState->terrainStateTable[town->tileIndex14].regionSubtypeTag05;
+    candidateTiles.Add(town->tileIndex);
+    short regionSubtype = g_pGlobalMapState->terrainStateTable[town->tileIndex].regionSubtypeTag05;
     for (short direction = 0; direction < 6; ++direction) {
-      short neighbor = TMapMgr::GetNeighborTileID(town->tileIndex14, direction);
+      short neighbor = TMapMgr::GetNeighborTileID(town->tileIndex, direction);
       if (neighbor != -1 &&
           g_pGlobalMapState->terrainStateTable[neighbor].regionSubtypeTag05 == regionSubtype &&
           static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
@@ -1368,17 +1374,17 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       float strongestStanding = 0.1f;
       for (short majorNation = 0; majorNation < 7; ++majorNation) {
         if (majorNation != nationSlot &&
-            g_pDiplomacyTurnStateManager
-                    ->relationStandingScoreMatrix79c[majorNation * 23 + minorNation] >
-                strongestStanding) {
+            g_pDiplomacyTurnStateManager->relationStandingScores[majorNation * kNationSlotCount +
+                                                                 minorNation] > strongestStanding) {
           strongestStanding = static_cast<float>(
               g_pDiplomacyTurnStateManager
-                  ->relationStandingScoreMatrix79c[majorNation * 23 + minorNation]);
+                  ->relationStandingScores[majorNation * kNationSlotCount + minorNation]);
         }
       }
       relationScale[minorNation] =
-          static_cast<float>(g_pDiplomacyTurnStateManager
-                                 ->relationStandingScoreMatrix79c[nationSlot * 23 + minorNation]) /
+          static_cast<float>(
+              g_pDiplomacyTurnStateManager
+                  ->relationStandingScores[nationSlot * kNationSlotCount + minorNation]) /
           strongestStanding;
     }
   }
@@ -1528,12 +1534,11 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
   int townCount = towns->GetCount();
   for (int townOrdinal = 1; townOrdinal <= townCount; ++townOrdinal) {
     TTown* town = static_cast<TTown*>(towns->GetEntryByOrdinal(townOrdinal));
-    short regionSubtype =
-        g_pGlobalMapState->terrainStateTable[town->tileIndex14].regionSubtypeTag05;
+    short regionSubtype = g_pGlobalMapState->terrainStateTable[town->tileIndex].regionSubtypeTag05;
     for (short direction = 0; direction <= 6; ++direction) {
-      short tileIndex = town->tileIndex14;
+      short tileIndex = town->tileIndex;
       if (direction < 6) {
-        tileIndex = TMapMgr::GetNeighborTileID(town->tileIndex14, direction);
+        tileIndex = TMapMgr::GetNeighborTileID(town->tileIndex, direction);
       }
       if (tileIndex == -1) {
         continue;
@@ -1577,7 +1582,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
       } else if (!hasProspector) {
         TCity* city = ownerContextAt04->city;
         bool shouldRequestProspector = true;
-        if (city->buildOrderSlots[9]->quantityField04 == 0) {
+        if (city->buildOrderSlots[9]->quantity == 0) {
           int pendingCount = city->trackedOrderList270->GetCount();
           for (int pendingOrdinal = 1; pendingOrdinal < pendingCount; ++pendingOrdinal) {
             TCityTask* pendingTask = static_cast<TCityTask*>(
@@ -1602,10 +1607,10 @@ void TCityInteriorMinister::SeekLostTowns(char* primaryDistanceMap, char* second
   CIterator townIterator(ownerContextAt04->townMarkerList);
   TTown* town = static_cast<TTown*>(townIterator.Reset());
   while (townIterator.More()) {
-    if (town->transportLinkedFlag4c == 0 && (primaryDistanceMap[town->tileIndex14] < 12 ||
-                                             (secondaryDistanceMap[town->tileIndex14] < 8 &&
-                                              secondaryDistanceMap[town->tileIndex14] > 2))) {
-      field3c = town->tileIndex14;
+    if (town->transportLinked == 0 &&
+        (primaryDistanceMap[town->tileIndex] < 12 || (secondaryDistanceMap[town->tileIndex] < 8 &&
+                                                      secondaryDistanceMap[town->tileIndex] > 2))) {
+      field3c = town->tileIndex;
       return;
     }
     town = static_cast<TTown*>(townIterator.Advance());
@@ -1715,7 +1720,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
     bool hasConnectedNeighbor = false;
     short neighbors[6];
     TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally);
     for (short direction = 0; direction < 6; ++direction) {
       if (neighbors[direction] != -1 &&
           (g_pGlobalMapState->terrainStateTable[neighbors[direction]].activeFlags1c & 0x10) != 0) {
@@ -1723,7 +1728,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
       }
     }
     if (!hasConnectedNeighbor) {
-      projectedTown->tileIndex14 = tileIndex;
+      projectedTown->tileIndex = tileIndex;
       projectedTown->CalculateCityResources();
       if (projectedTown->resourceYieldByType[resourceType] != 0) {
         candidateTiles->InsertLast(tileIndex);
@@ -1763,22 +1768,27 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
                                            orderTypeTableFC[resourceType]);
   }
 
-  short shortage = static_cast<short>(citySummary[17] - ownerContextAt04->needCurrentByType[17]);
+  short shortage = static_cast<short>(citySummary[kResourceGrain] -
+                                      ownerContextAt04->needCurrentByType[kResourceGrain]);
   if (shortage > 0) {
-    score = static_cast<short>(score + candidateTown->resourceYieldByType[17] * shortage);
+    score =
+        static_cast<short>(score + candidateTown->resourceYieldByType[kResourceGrain] * shortage);
   }
-  shortage = static_cast<short>(citySummary[18] - ownerContextAt04->needCurrentByType[18]);
+  shortage = static_cast<short>(citySummary[kResourceFruit] -
+                                ownerContextAt04->needCurrentByType[kResourceFruit]);
   if (shortage > 0) {
-    score = static_cast<short>(score + candidateTown->resourceYieldByType[18] * shortage);
+    score =
+        static_cast<short>(score + candidateTown->resourceYieldByType[kResourceFruit] * shortage);
   }
-  shortage = static_cast<short>(citySummary[20] - ownerContextAt04->needCurrentByType[20] -
-                                ownerContextAt04->needCurrentByType[19]);
+  shortage = static_cast<short>(citySummary[kResourceLivestock] -
+                                ownerContextAt04->needCurrentByType[kResourceLivestock] -
+                                ownerContextAt04->needCurrentByType[kResourceFish]);
   if (shortage > 0) {
-    score = static_cast<short>(
-        score + (candidateTown->resourceYieldByType[20] + candidateTown->resourceYieldByType[21]) *
-                    shortage);
+    score = static_cast<short>(score + (candidateTown->resourceYieldByType[kResourceLivestock] +
+                                        candidateTown->resourceYieldByType[kResourceGems]) *
+                                           shortage);
   }
-  if (candidateTown->transportLinkedFlag4c != 0) {
+  if (candidateTown->transportLinked != 0) {
     score = static_cast<short>((score * 3) / 2);
   }
   candidateTown->Free();
@@ -1831,7 +1841,7 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
         TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                        g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                        g_pGlobalMapState->hexNeighborWrapHorizontally);
         char bestNeighborDistance = 0;
         for (short direction = 0; direction < 6; ++direction) {
           char neighborDistance =
@@ -1894,7 +1904,7 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
       if (distanceMap[tileIndex] == 0 && allowedTerrain[terrainKind] != 0) {
         short neighbors[6];
         TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                        g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                        g_pGlobalMapState->hexNeighborWrapHorizontally);
         char bestNeighborDistance = 0;
         for (short direction = 0; direction < 6; ++direction) {
           char neighborDistance =
@@ -1996,7 +2006,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     for (short shipSlotIndex = 0x2b; shipSlotIndex <= 0x32 && shipOrderSlot == -1;
          ++shipSlotIndex) {
       TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlotsE4[shipSlotIndex]);
-      if (order->resourceTypeIndex48 == pendingShipType32) {
+      if (order->resourceTypeIndex == pendingShipType32) {
         shipOrderSlot = shipSlotIndex;
       }
     }
@@ -2024,7 +2034,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
                recruitmentSlotIndex <= 0x20 && matchedOrderSlot == -1; ++recruitmentSlotIndex) {
             TProductionOrder* order =
                 static_cast<TProductionOrder*>(city->orderSlotsE4[recruitmentSlotIndex]);
-            if (order->resourceTypeIndex48 == requestedCapability) {
+            if (order->resourceTypeIndex == requestedCapability) {
               matchedOrderSlot = recruitmentSlotIndex;
             }
           }
@@ -2035,7 +2045,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
              shipRequestSlotIndex <= 0x32 && matchedOrderSlot == -1; ++shipRequestSlotIndex) {
           TProductionOrder* order =
               static_cast<TProductionOrder*>(city->orderSlotsE4[shipRequestSlotIndex]);
-          if (order->resourceTypeIndex48 == requestedCapability) {
+          if (order->resourceTypeIndex == requestedCapability) {
             matchedOrderSlot = shipRequestSlotIndex;
           }
         }
@@ -2383,13 +2393,13 @@ void TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex(shor
     laborShortfall = 0;
     if (orderSlot >= 7 && orderSlot <= 16 && orderSlot != 7) {
       order->AssertValid();
-      if (order->field40 == 2) {
+      if (order->limitingConstraint == kProductionOrderLimitCapacity) {
         TItemOrder* itemOrder = static_cast<TItemOrder*>(order);
         orderShortTableDC[itemOrder->productionSlot] = static_cast<short>(
             orderShortTableDC[itemOrder->productionSlot] + requestedQuantity - maximumQuantity);
       }
     } else if (orderSlot >= 0x2b && orderSlot <= 0x32) {
-      short armsRecovered = g_industryActionCostWeightResCode10[order->resourceTypeIndex48];
+      short armsRecovered = g_industryActionCostWeightResCode10[order->resourceTypeIndex];
       if (armsRecovered > city->cityStockArmsD6) {
         armsRecovered = city->cityStockArmsD6;
       }
@@ -2423,7 +2433,7 @@ short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short target
     }
     TProductionOrder* powerPlantOrder = static_cast<TProductionOrder*>(city->orderSlotsE4[0x34]);
     short increment = static_cast<short>(((targetLabor - currentLabor) / 6 + 1) * 6);
-    short currentQuantity = powerPlantOrder->quantityField04;
+    short currentQuantity = powerPlantOrder->quantity;
     short maximumQuantity = powerPlantOrder->MaxOrder();
     if (maximumQuantity < currentQuantity + increment) {
       orderMetricTable40[12] = static_cast<short>(orderMetricTable40[12] + currentQuantity -
@@ -2446,8 +2456,8 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
     RequestResource(5, static_cast<short>(5 - city->cityStockHorsesC0), 8);
   }
 
-  short remainingNeedCapacity =
-      static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+  short remainingNeedCapacity = static_cast<short>(ownerContextAt04->transportCapacity -
+                                                   ownerContextAt04->reservedTransportCapacity);
   short previousNeedCapacity = -1;
   while (remainingNeedCapacity > 0 && previousNeedCapacity != remainingNeedCapacity) {
     previousNeedCapacity = remainingNeedCapacity;
@@ -2464,8 +2474,7 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
   short powerGroups = static_cast<short>(availablePower / 6);
   if (powerGroups > 0) {
     TProductionOrder* powerPlantOrder = static_cast<TProductionOrder*>(city->orderSlotsE4[0x34]);
-    powerPlantOrder->SetQuantity(
-        static_cast<short>(powerPlantOrder->quantityField04 - powerGroups * 6));
+    powerPlantOrder->SetQuantity(static_cast<short>(powerPlantOrder->quantity - powerGroups * 6));
   }
 }
 
@@ -2492,7 +2501,8 @@ short TCityInteriorMinister::RequestResource(short resourceType, short requested
     remaining = static_cast<short>(requestedAmount - cityStock[resourceType]);
   }
 
-  short availableCapacity = static_cast<short>(owner->needCapA6 - owner->needsOverCapFlag);
+  short availableCapacity =
+      static_cast<short>(owner->transportCapacity - owner->reservedTransportCapacity);
   short currentTarget = owner->needTargetByType[resourceType];
   short availableSupply =
       static_cast<short>(owner->needCurrentByType[resourceType] - currentTarget);
@@ -2622,9 +2632,11 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
     }
   }
 
-  for (resourceType = 0; resourceType < 23; ++resourceType) {
+  for (resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     bool tradedResource =
-        (resourceType >= 0 && resourceType < 7) || (resourceType > 0x10 && resourceType < 0x17);
+        (resourceType >= kResourceIndustrialRawFirst &&
+         resourceType < kResourceIndustrialRawCount) ||
+        (resourceType > kResourceManufacturedLast && resourceType < kResourceKindCount);
     if (tradedResource && orderMetricTable40[resourceType] != 0) {
       short demand = workOrderValueDelta[resourceType];
       civilianOrderDemandByResourceType194[resourceType] = demand;

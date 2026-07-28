@@ -21,46 +21,46 @@ TPowerPlantOrder::~TPowerPlantOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7ab0
 void TPowerPlantOrder::IPowerPlantOrder(TCity* city) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = 0;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = 0;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
   field4c = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b00
 short TPowerPlantOrder::MaxOrder() {
-  return static_cast<short>(quantityField04 + cityField08->cityStockFuelCE * 6);
+  return static_cast<short>(quantity + ownerCity->cityStockFuelCE * 6);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7b30
 bool TPowerPlantOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
+  this->quantity = quantity;
 
-  if (cityField08->productionSummary1d8->strength < -static_cast<int>(delta)) {
-    quantityField04 = static_cast<short>(quantityField04 - delta);
+  if (ownerCity->productionSummary1d8->strength < -static_cast<int>(delta)) {
+    this->quantity = static_cast<short>(this->quantity - delta);
     return false;
   }
 
-  field4c = quantityField04;
-  cityField08->cityStockFuelCE = static_cast<short>(cityField08->cityStockFuelCE - delta / 6);
-  cityField08->VerifyStocks();
+  field4c = quantity;
+  ownerCity->cityStockFuelCE = static_cast<short>(ownerCity->cityStockFuelCE - delta / 6);
+  ownerCity->VerifyStocks();
 
-  short previousPower = cityField08->productionSummary1d8->extraAt1e;
-  cityField08->powerAvailableB4 = quantityField04;
-  cityField08->productionSummary1d8->extraAt1e = quantityField04;
-  cityField08->productionSummary1d8->strength = static_cast<short>(
-      cityField08->productionSummary1d8->strength + quantityField04 - previousPower);
+  short previousPower = ownerCity->productionSummary1d8->extraAt1e;
+  ownerCity->powerAvailableB4 = quantity;
+  ownerCity->productionSummary1d8->extraAt1e = quantity;
+  ownerCity->productionSummary1d8->strength =
+      static_cast<short>(ownerCity->productionSummary1d8->strength + quantity - previousPower);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }
@@ -70,12 +70,12 @@ void TPowerPlantOrder::Produce() {}
 
 // FUNCTION: IMPERIALISM 0x004b7c40
 void TPowerPlantOrder::Restock() {
-  // Same quantity re-clamp as TItemOrder's slot 0x0e, minus the field40 guard: zero
+  // Same quantity re-clamp as TItemOrder's slot 0x0e, minus the limitingConstraint guard: zero
   // the pending quantity and re-drive SetQuantity with the smaller of the current
   // derived value (field4c) and the recomputed MaxOrder() ceiling.
   short maxOrder = MaxOrder();
   short savedDerived = field4c;
-  quantityField04 = 0;
+  quantity = 0;
   if (maxOrder < savedDerived) {
     SetQuantity(maxOrder);
     field4c = savedDerived;
@@ -93,11 +93,11 @@ void TPowerPlantOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // FUNCTION: IMPERIALISM 0x004b7cc0
 void TPowerPlantOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(&quantityField04, 2);
-  stream->WriteBytes(&field40, 2);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(&quantity, 2);
+  stream->WriteBytes(&limitingConstraint, 2);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
   stream->WriteBytes(&accumulatedValue, 4);
   stream->WriteBytes(&field4c, 2);
 }
@@ -105,11 +105,11 @@ void TPowerPlantOrder::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b7d40
 void TPowerPlantOrder::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(&quantityField04, 2);
-  stream->ReadBytes(&field40, 2);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(&quantity, 2);
+  stream->ReadBytes(&limitingConstraint, 2);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
   stream->ReadBytes(&accumulatedValue, 4);
   stream->ReadBytes(&field4c, 2);
 }

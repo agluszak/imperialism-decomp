@@ -24,6 +24,8 @@
 
 IMPLEMENT_DYNCREATE(TTown, TObject)
 
+enum { kTownHarvestTileCount = kStrategicHexDirectionCount + 1 };
+
 // Bare vptr-write constructor; all field state comes from ITown.
 // FUNCTION: IMPERIALISM 0x005b6c60
 TTown::TTown() {}
@@ -38,14 +40,14 @@ TTown::~TTown() {}
 void TTown::ITown(const char* markerName, short tileIndex, unsigned char enabledFlag,
                   short ownerNation) {
   strcpy(this->name, markerName);
-  this->ownerNation1c = ownerNation;
-  this->tileIndex14 = tileIndex;
-  this->enabledFlag4d = enabledFlag;
-  this->activeFlag4f = enabledFlag == 0;
+  this->ownerNation = ownerNation;
+  this->tileIndex = tileIndex;
+  this->enabledFlag = enabledFlag;
+  this->activeFlag = enabledFlag == 0;
   this->field16 = 0;
   this->field18 = 0;
-  this->createdTurnTick1a = g_pSimMgr->GetEconomicTurn();
-  this->transportLinkedFlag4c = 0;
+  this->createdTurnTick = g_pSimMgr->GetEconomicTurn();
+  this->transportLinked = 0;
   memset(this->resourceYieldByType, 0, sizeof(this->resourceYieldByType));
 }
 
@@ -53,22 +55,22 @@ void TTown::ITown(const char* markerName, short tileIndex, unsigned char enabled
 void TTown::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(name, sizeof(name));
-  stream->ReadBytes(&tileIndex14, 2);
+  stream->ReadBytes(&tileIndex, 2);
   stream->ReadBytes(&field16, 2);
   stream->ReadBytes(&field18, 2);
-  stream->ReadBytes(&createdTurnTick1a, 2);
-  stream->ReadBytes(&ownerNation1c, 2);
+  stream->ReadBytes(&createdTurnTick, 2);
+  stream->ReadBytes(&ownerNation, 2);
   stream->ReadBytes(resourceYieldByType, sizeof(resourceYieldByType));
-  SwapShortArrayBytes(resourceYieldByType, 0x17);
-  stream->ReadBytes(&transportLinkedFlag4c, 1);
-  stream->ReadBytes(&enabledFlag4d, 1);
-  stream->ReadBytes(&hasAdjacentCity4e, 1);
+  SwapShortArrayBytes(resourceYieldByType, kResourceKindCount);
+  stream->ReadBytes(&transportLinked, 1);
+  stream->ReadBytes(&enabledFlag, 1);
+  stream->ReadBytes(&hasAdjacentCity, 1);
   // Saves older than 0xa predate the flag and default it on; newer ones carry it as a
   // plain 1-byte read (slot 0x44), not the polymorphic object read at slot 0xb0.
   if (g_nSaveFormatVersion < 0xa) {
-    activeFlag4f = 1;
+    activeFlag = 1;
   } else {
-    activeFlag4f = stream->ReadBoolean() != 0;
+    activeFlag = stream->ReadBoolean() != 0;
   }
 }
 
@@ -76,25 +78,25 @@ void TTown::ReadFrom(TStream* stream) {
 void TTown::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytes(name, sizeof(name));
-  stream->WriteBytes(&tileIndex14, 2);
+  stream->WriteBytes(&tileIndex, 2);
   stream->WriteBytes(&field16, 2);
   stream->WriteBytes(&field18, 2);
-  stream->WriteBytes(&createdTurnTick1a, 2);
-  stream->WriteBytes(&ownerNation1c, 2);
+  stream->WriteBytes(&createdTurnTick, 2);
+  stream->WriteBytes(&ownerNation, 2);
   // Element-wise with a byte swap, mirroring ReadFrom: a raw block write here emitted
   // host-order shorts that the reader then swapped, corrupting every yield on reload.
-  WriteShortArrayElems(stream, resourceYieldByType, 0x17);
-  stream->WriteBytes(&transportLinkedFlag4c, 1);
-  stream->WriteBytes(&enabledFlag4d, 1);
-  stream->WriteBytes(&hasAdjacentCity4e, 1);
-  stream->WriteBoolean(activeFlag4f);
+  WriteShortArrayElems(stream, resourceYieldByType, kResourceKindCount);
+  stream->WriteBytes(&transportLinked, 1);
+  stream->WriteBytes(&enabledFlag, 1);
+  stream->WriteBytes(&hasAdjacentCity, 1);
+  stream->WriteBoolean(activeFlag);
 }
 
 static __inline short TownNeighborTile(TTown* town, int direction) {
-  if (direction < 6) {
-    return TMapMgr::GetNeighborTileID(town->tileIndex14, static_cast<short>(direction));
+  if (direction < kStrategicHexDirectionCount) {
+    return TMapMgr::GetNeighborTileID(town->tileIndex, static_cast<short>(direction));
   }
-  return town->tileIndex14;
+  return town->tileIndex;
 }
 
 static __inline void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
@@ -104,44 +106,42 @@ static __inline void AddAdjacentCityDevelopment(TTown* town, short tileIndex) {
     return;
   }
 
-  town->hasAdjacentCity4e = true;
-  for (int resource = 0; resource < 10; ++resource) {
-    town->resourceYieldByType[resource + 7] = static_cast<short>(
-        town->resourceYieldByType[resource + 7] +
+  town->hasAdjacentCity = true;
+  for (int resource = 0; resource < kResourceManufacturedCount; ++resource) {
+    town->resourceYieldByType[resource + kResourceManufacturedFirst] = static_cast<short>(
+        town->resourceYieldByType[resource + kResourceManufacturedFirst] +
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].resourceDevelopmentCounts82[resource]);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005b6f70
 void TTown::CalculateRawResources() {
-  hasAdjacentCity4e = false;
+  hasAdjacentCity = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass =
-      g_pGlobalMapState->terrainStateTable[tileIndex14].regionSubtypeTag05;
-  for (int direction = 0; direction < 7; ++direction) {
+  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag05;
+  for (int direction = 0; direction < kTownHarvestTileCount; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
       continue;
     }
 
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (!((tile->ownerNationTag04 == ownerNation1c &&
-           tile->regionSubtypeTag05 == townRegionClass) ||
+    if (!((tile->ownerNationTag04 == ownerNation && tile->regionSubtypeTag05 == townRegionClass) ||
           tile->GetTerrainKind() == kStrategicTerrainWater)) {
       continue;
     }
 
-    for (short resource = 0; resource < 0x17; ++resource) {
+    for (short resource = 0; resource < kResourceKindCount; ++resource) {
       short amount =
           static_cast<short>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
               tileIndex, static_cast<char>(resource)));
-      if (resource != 0x13 || enabledFlag4d) {
+      if (resource != kResourceFish || enabledFlag) {
         resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
       }
     }
-    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag4d) {
-      ++resourceYieldByType[0x13];
+    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag) {
+      ++resourceYieldByType[kResourceFish];
     }
     AddAdjacentCityDevelopment(this, tileIndex);
   }
@@ -149,19 +149,18 @@ void TTown::CalculateRawResources() {
 
 // FUNCTION: IMPERIALISM 0x005b7140
 void TTown::CalculateResources() {
-  hasAdjacentCity4e = false;
+  hasAdjacentCity = false;
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  signed char townRegionClass =
-      g_pGlobalMapState->terrainStateTable[tileIndex14].regionSubtypeTag05;
-  for (int direction = 0; direction < 7; ++direction) {
+  signed char townRegionClass = g_pGlobalMapState->terrainStateTable[tileIndex].regionSubtypeTag05;
+  for (int direction = 0; direction < kTownHarvestTileCount; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
       continue;
     }
 
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile->ownerNationTag04 != ownerNation1c ||
+    if (tile->ownerNationTag04 != ownerNation ||
         (tile->regionSubtypeTag05 != townRegionClass && tile->regionSubtypeTag05 != -1)) {
       continue;
     }
@@ -173,7 +172,8 @@ void TTown::CalculateResources() {
       }
 
       bool temporarilyRaisedDevelopment = false;
-      if (resource == 3 || resource == 4 || resource == 6 || resource == 0x15 || resource == 0x16) {
+      if (resource == kResourceCoal || resource == kResourceIron || resource == kResourceOil ||
+          resource == kResourceGems || resource == kResourceGold) {
         temporarilyRaisedDevelopment =
             g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1) == 0;
         if (temporarilyRaisedDevelopment) {
@@ -197,74 +197,75 @@ void TTown::CalculateResources() {
 void TTown::CalculateCityResources() {
   memset(resourceYieldByType, 0, sizeof(resourceYieldByType));
 
-  for (int direction = 0; direction < 7; ++direction) {
+  for (int direction = 0; direction < kTownHarvestTileCount; ++direction) {
     short tileIndex = TownNeighborTile(this, direction);
     if (tileIndex == -1) {
       continue;
     }
 
     TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (tile->ownerNationTag04 != ownerNation1c &&
-        tile->GetTerrainKind() != kStrategicTerrainWater) {
+    if (tile->ownerNationTag04 != ownerNation && tile->GetTerrainKind() != kStrategicTerrainWater) {
       continue;
     }
 
-    for (short resource = 0; resource < 0x17; ++resource) {
+    for (short resource = 0; resource < kResourceKindCount; ++resource) {
       short amount =
           static_cast<short>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
               tileIndex, static_cast<char>(resource)));
       if (amount != 0 && g_abResourceTypeUsesHighNibbleFlag[tile->gateFlag] != 0) {
-        short capability = g_pCityOrderCapabilityState
-                               ->capabilityValueByNationAndResource[ownerNation1c][resource];
+        short capability =
+            g_pCityOrderCapabilityState->capabilityValueByNationAndResource[ownerNation][resource];
         amount = static_cast<short>(g_abUniversityRequirementLevelById[resource][capability]);
       }
       resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
     }
 
-    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag4d) {
-      ++resourceYieldByType[0x13];
+    if (tile->riverSpriteCode != kRiverSpriteCodeNone && enabledFlag) {
+      ++resourceYieldByType[kResourceFish];
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005b7570
 void TTown::Grow() {
-  TGreatPower* owner = g_apNationStates[ownerNation1c];
+  TGreatPower* owner = g_apNationStates[ownerNation];
   TCity* city = owner != 0 ? owner->city : 0;
-  short age = static_cast<short>(g_pSimMgr->GetEconomicTurn() - createdTurnTick1a);
+  short age = static_cast<short>(g_pSimMgr->GetEconomicTurn() - createdTurnTick);
 
   if (age > 4 && (age & 1) == 0) {
-    short rawTextile = static_cast<short>(resourceYieldByType[0] + resourceYieldByType[1]);
+    short rawTextile = static_cast<short>(resourceYieldByType[kResourceCotton] +
+                                          resourceYieldByType[kResourceWool]);
     if (rawTextile != 0) {
-      short& fabric = resourceYieldByType[8];
+      short& fabric = resourceYieldByType[kResourceFabric];
       short capacity = static_cast<short>(city->GetBuildingType(1) / 4);
       if (fabric < capacity && fabric < rawTextile / 2) {
         ++fabric;
       }
     }
 
-    if (resourceYieldByType[2] != 0) {
-      short& lumber = resourceYieldByType[9];
+    if (resourceYieldByType[kResourceTimber] != 0) {
+      short& lumber = resourceYieldByType[kResourceLumber];
       short capacity = static_cast<short>(city->GetBuildingType(5) / 4);
-      if (lumber < capacity && lumber < resourceYieldByType[2] / 2) {
+      if (lumber < capacity && lumber < resourceYieldByType[kResourceTimber] / 2) {
         ++lumber;
       }
     }
 
-    if (resourceYieldByType[3] != 0 && resourceYieldByType[4] != 0) {
-      short input = resourceYieldByType[3] < resourceYieldByType[4] ? resourceYieldByType[3]
-                                                                    : resourceYieldByType[4];
-      short& steel = resourceYieldByType[0xb];
+    if (resourceYieldByType[kResourceCoal] != 0 && resourceYieldByType[kResourceIron] != 0) {
+      short input = resourceYieldByType[kResourceCoal] < resourceYieldByType[kResourceIron]
+                        ? resourceYieldByType[kResourceCoal]
+                        : resourceYieldByType[kResourceIron];
+      short& steel = resourceYieldByType[kResourceSteel];
       short capacity = static_cast<short>(city->GetBuildingType(3) / 4);
       if (steel < capacity && steel < input / 2) {
         ++steel;
       }
     }
 
-    if (resourceYieldByType[6] != 0 &&
-        g_pCityOrderCapabilityState->orderCapRows277[ownerNation1c].techStatusByTechId[0x14] == 2) {
-      short& fuel = resourceYieldByType[0xc];
-      if (fuel < resourceYieldByType[6] / 2) {
+    if (resourceYieldByType[kResourceOil] != 0 &&
+        g_pCityOrderCapabilityState->orderCapRows277[ownerNation].techStatusByTechId[0x14] == 2) {
+      short& fuel = resourceYieldByType[kResourceFuel];
+      if (fuel < resourceYieldByType[kResourceOil] / 2) {
         ++fuel;
       }
     }
@@ -274,8 +275,8 @@ void TTown::Grow() {
     short* citySummary = city->GetCitySummaryRecordSlot74();
     short finishedGoods =
         static_cast<short>(citySummary[0xd] + citySummary[0xe] + citySummary[0xf]);
-    const short sourceResources[3] = {8, 9, 0xb};
-    const short finishedResources[3] = {0xd, 0xe, 0xf};
+    const short sourceResources[3] = {kResourceFabric, kResourceLumber, kResourceSteel};
+    const short finishedResources[3] = {kResourceClothing, kResourceFurniture, kResourceHardware};
     for (int index = 0; index < 3; ++index) {
       short source = sourceResources[index];
       short finished = finishedResources[index];
@@ -296,9 +297,9 @@ void TTown::SetName(const char* townName) {
 
 // FUNCTION: IMPERIALISM 0x005b7830
 int TTown::IsUnblockedPort(void) const {
-  if (this->enabledFlag4d != 0) {
+  if (this->enabledFlag != 0) {
     if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(
-            this->tileIndex14) != 0) {
+            this->tileIndex) != 0) {
       return 1;
     }
   }

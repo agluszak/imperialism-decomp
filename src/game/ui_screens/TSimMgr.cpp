@@ -545,7 +545,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
     g_pGlobalMapState->IMapMgr();
 
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
+      g_pGlobalMapState->hexNeighborWrapHorizontally = static_cast<char>(arg3);
       g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(nullptr, const_cast<char*>(arg2));
     } else {
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
@@ -570,7 +570,7 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
   }
   g_pGlobalMapState = new TMapMgr();
   g_pGlobalMapState->IMapMgr();
-  g_pGlobalMapState->hexNeighborWrapHorizontally20 = 1;
+  g_pGlobalMapState->hexNeighborWrapHorizontally = 1;
   return static_cast<unsigned char>(
       g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(g_szEmptyString, g_szEmptyString));
 }
@@ -631,7 +631,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     g_pNewsMgr->AddMiscEvent(999, 1, 1);
     g_pNewsMgr->AddMiscEvent(999, 2, 1);
 
-    const char* tagText = g_pGlobalMapState->scenarioTagText1c;
+    const char* tagText = g_pGlobalMapState->scenarioTagText;
     if (tagText[0] == '.') {
       CString path;
       path.Format(s_PictWvGobPathFormat_00698BF4, tagText[1] - '0');
@@ -936,7 +936,7 @@ void TSimMgr::DoCityAndTransport() {
     bool shouldRunHandlers = !(*nation)->IsRemote();
     if (shouldRunHandlers) {
       (*nation)->FillInteriorMinisterOrders();
-      (*nation)->NotifyCitySlot2C();
+      (*nation)->CalculatePotentials();
       (*nation)->ExecuteNationPendingActionStateMachine();
       (*nation)->RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary();
       (*nation)->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
@@ -994,7 +994,7 @@ void TSimMgr::DoTrade() {
 
   for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {
-      g_apNationStates[nationSlot]->ReleaseDiplomacyTrackedObjectSlots850();
+      g_apNationStates[nationSlot]->InitializeDealBook();
     }
   }
 
@@ -1823,7 +1823,7 @@ void TSimMgr::HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void*
 }
 
 // Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
-// stored into that nation's needCapA6 field.
+// stored into that nation's transportCapacity field.
 // FUNCTION: IMPERIALISM 0x00582860
 void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw) {
   STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
@@ -1847,7 +1847,8 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
-  g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
+  g_apNationStates[static_cast<int>(nationToken)]->transportCapacity =
+      static_cast<short>(valueToken);
 }
 
 // Reads a big-endian short tile index and a development value byte, then sets that tile's

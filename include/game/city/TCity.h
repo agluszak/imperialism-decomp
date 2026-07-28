@@ -7,6 +7,7 @@
 #include "game/app/TObject.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/city/TProductionOrder.h"
+#include "game/resource_domain_types.h"
 #include "game/ui_widgets/TTown.h"
 
 class TSortedList;
@@ -64,7 +65,7 @@ public:
   // (slot 0x38).
   virtual void AddTransportRequest(short low, short high);
   // slot 0x13 — body 0x004b40e0: allocate up to `amount` of a need from the owner's
-  // current-over-target surplus (capped by needCapA6 - overCap), accumulate into
+  // current-over-target surplus (capped by transportCapacity - overCap), accumulate into
   // city stock and push the new target (TGreatPower slot 0x45).
   virtual short DirectTransport(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
@@ -83,9 +84,9 @@ public:
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
   // production shorts (+0x22c/+0x24c) for a slot.
   virtual char GetBuildingWindowState(short productionSlot, short* outCurrent, short* outAccum);
-  // slot 0x1b — body 0x004b4230: owner needCapA6 (0 when unowned).
+  // slot 0x1b — body 0x004b4230: owner transportCapacity (0 when unowned).
   virtual int GetOwnerNeedCapA6();
-  // slot 0x1c — body 0x004b4260: set owner needCapA6.
+  // slot 0x1c — body 0x004b4260: set owner transportCapacity.
   virtual void SetOwnerNeedCapA6(short value);
   // slot 0x1d — body 0x004b44d0: subtract the city's reserved amounts from the raw
   // summary array and return it (shorts at +0x22/+0x24/+0x28 summed by TGreatPower
@@ -134,7 +135,7 @@ public:
   unsigned char lowStockFlag7d;      // +0x7d — PredictedNeeds
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
   // (entry 0x13 doubles as the +0xa4 labor reserve in 0x004b44d0).
-  short reservedByType7e[0x17];
+  short reservedByType7e[kResourceKindCount];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
   // +0xb0 — the city's home TTown marker, and only ever that one type
   // (bd imperialism-decomp-i0in). The conflicting reading this slot used to carry --
@@ -212,10 +213,10 @@ public:
   class TPtrList* eventQueue274;
   // +0x278 — per-resource failed-request counters maintained by the interior
   // minister when a production sheet cannot be fully transported.
-  short unmetResourceRetryCount278[0x17];
+  short unmetResourceRetryCount278[kResourceKindCount];
   // +0x2a6 — one short per resource type. Existing consumers use entries 13..16;
   // ReadFrom/WriteTo serialize and byte-swap all 23 entries as one array.
-  short consumedProductionInputByType2a6[0x17];
+  short consumedProductionInputByType2a6[kResourceKindCount];
 
   TCity(); // 0x004b24b0 ("InitializeCityModel")
 
@@ -227,7 +228,7 @@ public:
   short HomeTownTileId() const {
     if (homeTownMarkerB0 != 0) {
       short tileId;
-      tileId = homeTownMarkerB0->tileIndex14;
+      tileId = homeTownMarkerB0->tileIndex;
       return tileId;
     }
     return 1;

@@ -244,9 +244,9 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
   TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
   short savedCategory = mapView->activeUnitCategoryIndex96;
-  short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile22;
+  short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile;
   mapView->activeUnitCategoryIndex96 = 4;
-  g_pGlobalMapState->pendingRiverMouthTile22 = -1;
+  g_pGlobalMapState->pendingRiverMouthTile = -1;
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
   GetGWorld(&savedSurface, &savedSurfaceFlags);
@@ -255,7 +255,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   CopySurfaceTile(actual, destinationSurface->pixelBits, destinationStride);
   terrain = savedTerrain;
   mapView->activeUnitCategoryIndex96 = savedCategory;
-  g_pGlobalMapState->pendingRiverMouthTile22 = savedRiverMouth;
+  g_pGlobalMapState->pendingRiverMouthTile = savedRiverMouth;
   mapDialog->DrawOneTile(coastTile, 0, 0);
   SetGWorld(savedSurface, savedSurfaceFlags);
   UnlockPixels(sourceHandle);
@@ -443,7 +443,7 @@ void CaptureRuntimeMapState(RuntimeRun& run) {
       "{\"terrain_counts\": %s, \"owned_tiles\": %s, \"wrap\": %d, "
       "\"representative_tile\": %d, \"economic_turn\": %d}",
       static_cast<LPCSTR>(terrainJson), static_cast<LPCSTR>(ownedJson),
-      g_pGlobalMapState->hexNeighborWrapHorizontally20,
+      g_pGlobalMapState->hexNeighborWrapHorizontally,
       g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(run.SelectedNationSlot()),
       g_pSimMgr != 0 ? static_cast<int>(g_pSimMgr->economicTurn) : -1);
 }

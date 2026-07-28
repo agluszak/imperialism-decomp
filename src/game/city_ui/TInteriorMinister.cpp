@@ -62,7 +62,7 @@ void TInteriorMinister::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004be3c0
 short TInteriorMinister::GetRankingCriterionForGP(short nationSlot) {
   if (g_apNationStates[nationSlot] != 0) {
-    return g_apNationStates[nationSlot]->needCapA6;
+    return g_apNationStates[nationSlot]->transportCapacity;
   }
   return 0;
 }
@@ -86,7 +86,7 @@ void TInteriorMinister::SetParameters(short firstParameter, short secondParamete
 short TInteriorMinister::GetNumShipsToBuild() {
   short needCap;
   if (ownerContextAt04 != 0) {
-    needCap = ownerContextAt04->needCapA6;
+    needCap = ownerContextAt04->transportCapacity;
   } else {
     needCap = 0;
   }
@@ -98,7 +98,7 @@ short TInteriorMinister::GetNumShipsToBuild() {
 
 // FUNCTION: IMPERIALISM 0x004be4c0
 short TInteriorMinister::GetNumCarsToBuild() {
-  if (ownerContextAt04->tradeCapacity > 0x31) {
+  if (ownerContextAt04->merchantCapacity > 0x31) {
     capabilityFlag14 = 0;
   }
   return capabilityFlag14;
@@ -112,13 +112,13 @@ void TInteriorMinister::ClearTrailingTable() {
 // Mac oracle name (on both TInteriorMinister and TCityInteriorMinister). Tops up up
 // to 10 of the nation's needs (in the fixed priority order
 // g_aInteriorMinisterNeedPriorityOrder_00696408) toward their current reading, stopping
-// as soon as the nation's need-cap headroom (needCapA6 - needsOverCapFlag) hits zero.
+// as soon as the nation's need-cap headroom (transportCapacity - reservedTransportCapacity) hits zero.
 // FUNCTION: IMPERIALISM 0x004be520
 void TInteriorMinister::SetCityPolicies() {
   short i = 0;
   do {
-    short capRemaining =
-        static_cast<short>(ownerContextAt04->needCapA6 - ownerContextAt04->needsOverCapFlag);
+    short capRemaining = static_cast<short>(ownerContextAt04->transportCapacity -
+                                            ownerContextAt04->reservedTransportCapacity);
     if (capRemaining == 0) {
       break;
     }
@@ -144,12 +144,12 @@ void TInteriorMinister::FillOrders() {
     accumulated = 0;
   }
 
-  if (ownerContextAt04->IsNationResourceNeedCurrentSumExceedingCapA6()) {
+  if (ownerContextAt04->IsTransportCapacityExceeded()) {
     short count2 = GetNumShipsToBuild();
     if (count2 > 0) {
       int remaining = count2;
       do {
-        accumulated += ownerContextAt04->TryDecayRelationNeedScores9AndB();
+        accumulated += ownerContextAt04->IncreaseRollingStock();
         --remaining;
       } while (remaining != 0);
     }
@@ -166,8 +166,8 @@ void TInteriorMinister::FillOrders() {
 // FUNCTION: IMPERIALISM 0x004be650
 bool TInteriorMinister::DoIncreasedTransport() {
   bool result = false;
-  if (ownerContextAt04->GetDiplomacyCounterA2() == 0) {
-    result = ownerContextAt04->TryDecayRelationNeedScores9And8() != 0;
+  if (ownerContextAt04->GetAvailableMerchantCapacity() == 0) {
+    result = ownerContextAt04->IncreaseMerchantMarine() != 0;
   }
   return result;
 }

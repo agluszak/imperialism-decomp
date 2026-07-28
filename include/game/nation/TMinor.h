@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/city_ui/TCountry.h"
+#include "game/resource_domain_types.h"
 
 struct TMinorRuntimeStatusEntry {
   short fields[7];
@@ -25,18 +26,18 @@ public:
   void ApplyJoinEmpireMode2FinalizeNationNameState(void) override;
   void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  short SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
-  short GetDiplomacyExternalStateByTarget(short nationSlot) override;
-  short QueryNationMetricBySlot7C(short metricSlot) override;
+  short GetIndustrialNeed(short resourceKind) override;
+  short GetStockpile(short resourceKind) override;
+  short GetTradeOffersFor(short resourceKind) override;
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
-  bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override;
+  bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) override;
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
-  void QueueDiplomacyProposalCodeForTargetNation(DiplomacyProposalCodeStorage proposalCode,
-                                                 NationSlot targetNationSlot) override;
-  char ReturnFalseNationStateCapabilityFlag90(short arg) override;
-  void NotifyActionSlot94(int sourceNation, int actionCode) override;
+  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
+                    NationSlot targetNationSlot) override;
+  char IsPolicyCodeInSpecialNationPolicySet(short policyCode) override;
+  void AddNoticeFrom(int sourceNation, int actionCode) override;
 
   // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
   // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
@@ -66,13 +67,13 @@ public:
   virtual void
   RelinkTileUnitsToCountryOrderManager(int destinationNationSlot); // slot 0x34 0x4e6520
 
-  void SetDiplomacyStandingSlot48(int targetNation, int standing);
-  char HasMinorStandingLinkSlot5C(int sourceNation);
-  void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation,
+  void SetDiplomacyStanding(int targetNation, int standing);
+  char IsLinkedToMajorNation(int sourceNation);
+  void SetDiplomacyRelationshipWithMajorNation(int sourceNation,
                                                DiplomacyRelationship relationship);
-  char HasStandingPropagationBridgeSlot90(int targetNation);
-  void NotifyNationAuxRuntimeFinalizeSlotC0(void);
-  void ClearNationAuxRuntimeGrantSlotC4(int grantValue);
+  char HasResourceStatusForMajorNation(int targetNation);
+  void ClearResourceStatusByMajorNation(void);
+  void ClearRecurringResourceGrant(int resourceKind);
   // Full (re)initialization of a minor nation's per-session state: nation identity +
   // owned-region list, diplomacy policy defaults, the five per-resource/per-nation
   // short tables and all 23 status rows cleared, need counters recounted from owned
@@ -82,9 +83,9 @@ public:
   void IMinor(NationSlot nationSlot);
 
 private:
-  short needCurrentByType[0x17];
-  short diplomacyPolicyByNation[0x17];
-  short diplomacyGrantByNation[0x17];
+  short needCurrentByType[kResourceKindCount];
+  short tradeOffersByResource[kResourceKindCount];
+  short grantAmountsByResource[kResourceKindCount];
   short diplomacyRandomThreshold11e;
   short diplomacyRandomThreshold120;
   short diplomacyRandomThreshold122;
@@ -99,13 +100,13 @@ private:
   // Serialized as a unit by ReadFrom/WriteTo (byte-order swapped via
   // SwapAdjacentBytesInShortArray on load); diplomacySaveExt13c is only present when
   // g_nSaveFormatVersion > 0x39 (a later save-format addition). Same 0x17-short size as
-  // the sibling diplomacyGrantByNation/recurringGrantByResource tables, but the indexed
+  // the sibling grantAmountsByResource/recurringGrantByResource tables, but the indexed
   // dimension (nation vs. resource) is not yet confirmed.
   short diplomacySaveFields134[4]; // 0x134
 public:
   short diplomacySaveExt13c[0x17]; // 0x13c
 private:
-  short recurringGrantByResource[0x17];
+  short recurringGrantByResource[kResourceKindCount];
   // +0x198. 23 rows of seven shorts, cleared row-by-row (as one 0x0e-byte memset per
   // row) by the same 0x17-iteration loop that clears the five short tables above
   // (0x4e3830). Rows 0..6 form the relation/grant/link matrix indexed

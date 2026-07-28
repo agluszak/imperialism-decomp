@@ -21,16 +21,16 @@ TTrainingOrder::~TTrainingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6b20
 void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = resourceType;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = resourceType;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6b90
@@ -38,24 +38,24 @@ short TTrainingOrder::MaxOrder() {
   short paperPerUnit;
   int cashPerUnit;
   short workforceLimit;
-  if (resourceTypeIndex48 == 1) {
+  if (resourceTypeIndex == 1) {
     paperPerUnit = 1;
     cashPerUnit = 100;
-    workforceLimit = summaryField0c->productionSlots14->lowSkillCount04;
-    if (summaryField0c->strength < workforceLimit) {
-      workforceLimit = summaryField0c->strength;
+    workforceLimit = productionSummary->productionSlots14->lowSkillCount04;
+    if (productionSummary->strength < workforceLimit) {
+      workforceLimit = productionSummary->strength;
     }
   } else {
     paperPerUnit = 2;
     cashPerUnit = 1000;
-    workforceLimit = summaryField0c->productionSlots14->mediumSkillCount06;
-    short strengthLimit = static_cast<short>(summaryField0c->strength / 2);
+    workforceLimit = productionSummary->productionSlots14->mediumSkillCount06;
+    short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
   }
 
-  TGreatPower* owner = cityField08->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNationAc;
   short cashLimit;
   if (owner->diplomacyEligibilityA0 == 0) {
     cashLimit = workforceLimit;
@@ -70,43 +70,43 @@ short TTrainingOrder::MaxOrder() {
     }
   }
 
-  short paperLimit = static_cast<short>(cityField08->cityStockPaperCA / paperPerUnit);
-  field40 = 1;
+  short paperLimit = static_cast<short>(ownerCity->cityStockPaperCA / paperPerUnit);
+  limitingConstraint = kProductionOrderLimitWorkforce;
   short limit = workforceLimit;
   if (cashLimit < limit) {
-    field40 = 3;
+    limitingConstraint = kProductionOrderLimitTreasury;
     limit = cashLimit;
   }
   if (paperLimit < limit) {
-    field40 = 0;
+    limitingConstraint = kProductionOrderLimitResources;
     limit = paperLimit;
   }
 
-  if (quantityField04 + limit > 99) {
-    limit = static_cast<short>(99 - quantityField04);
+  if (quantity + limit > 99) {
+    limit = static_cast<short>(99 - quantity);
   }
-  return static_cast<short>(quantityField04 + limit);
+  return static_cast<short>(quantity + limit);
 }
 
 // FUNCTION: IMPERIALISM 0x004b6cd0
 bool TTrainingOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
+  this->quantity = quantity;
 
-  TGreatPower* owner = cityField08->ownerNationAc;
-  if (resourceTypeIndex48 == 1) {
-    cityField08->cityStockPaperCA = static_cast<short>(cityField08->cityStockPaperCA - delta);
-    cityField08->VerifyStocks();
+  TGreatPower* owner = ownerCity->ownerNationAc;
+  if (resourceTypeIndex == 1) {
+    ownerCity->cityStockPaperCA = static_cast<short>(ownerCity->cityStockPaperCA - delta);
+    ownerCity->VerifyStocks();
     owner->treasuryValue10 -= static_cast<int>(delta) * 100;
   } else {
-    cityField08->cityStockPaperCA = static_cast<short>(cityField08->cityStockPaperCA - delta * 2);
-    cityField08->VerifyStocks();
+    ownerCity->cityStockPaperCA = static_cast<short>(ownerCity->cityStockPaperCA - delta * 2);
+    ownerCity->VerifyStocks();
     owner->treasuryValue10 -= static_cast<int>(delta) * 1000;
   }
-  summaryField0c->MakeUnavailable(resourceTypeIndex48, delta);
+  productionSummary->MakeUnavailable(resourceTypeIndex, delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }
@@ -114,7 +114,7 @@ bool TTrainingOrder::SetQuantity(short quantity) {
 // FUNCTION: IMPERIALISM 0x004b6de0
 void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   this->ResetOrderSheet(orderSheet);
-  if (this->resourceTypeIndex48 == 1) {
+  if (this->resourceTypeIndex == 1) {
     orderSheet->slotByResourceCode[0x0a] = quantity;
     return;
   }
@@ -124,29 +124,29 @@ void TTrainingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 
 // FUNCTION: IMPERIALISM 0x004b6e30
 void TTrainingOrder::Produce() {
-  short quantity = quantityField04;
+  short quantity = this->quantity;
   if (quantity == 0) {
     return;
   }
 
-  TLaborPool* population = summaryField0c->baselineSlots10;
-  if (resourceTypeIndex48 == 1) {
+  TLaborPool* population = productionSummary->baselineSlots10;
+  if (resourceTypeIndex == 1) {
     population->lowSkillCount04 -= quantity;
-    population->mediumSkillCount06 += quantityField04;
-    quantityField04 = 0;
+    population->mediumSkillCount06 += quantity;
+    quantity = 0;
     return;
   }
 
   int newLevel = static_cast<int>(population->highSkillCount08) + quantity;
-  TGreatPower* owner = cityField08->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNationAc;
   if (newLevel >= 10 && owner->pendingActionStatus.roles.trainingStatus07 < '2') {
     owner->SetNationPendingActionStateAndPayload(7, 2);
   } else if (newLevel >= 30 && owner->pendingActionStatus.roles.trainingStatus07 <= '3') {
     owner->SetNationPendingActionStateAndPayload(7, 3);
   }
-  population->mediumSkillCount06 -= quantityField04;
-  population->highSkillCount08 += quantityField04;
-  quantityField04 = 0;
+  population->mediumSkillCount06 -= quantity;
+  population->highSkillCount08 += quantity;
+  quantity = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6f00

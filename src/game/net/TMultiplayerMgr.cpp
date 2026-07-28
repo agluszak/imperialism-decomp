@@ -65,7 +65,7 @@ struct TurnEvent19Packet : NetMessage {
   short pendingNationSlot; // +0x18
   unsigned char pad1a[2];
   short nationSlot;                    // +0x1c
-  short needCapA6;                     // +0x1e
+  short transportCapacity;             // +0x1e
   short orderCountByType[0x0e];        // +0x20
   short externalStateByTarget[0x17];   // +0x3c
   short metricBySlot7C[0x11];          // +0x6a
@@ -82,13 +82,13 @@ struct TurnEvent15Packet : NetMessage {
   unsigned char pad15[3];
   short nationSlot; // +0x18
   unsigned char pad1a[2];
-  int treasuryValue;                 // +0x1c
-  int grantTotalCost;                // +0x20
-  short needCurrentByType[0x17];     // +0x24
-  short needTargetByType[0x17];      // +0x52
-  short relationDeltaCurrent[0x17];  // +0x80
-  short relationDeltaSnapshot[0x17]; // +0xae
-  short diplomacyState1c6[0x17];     // +0xdc
+  int treasuryValue;                    // +0x1c
+  int grantTotalCost;                   // +0x20
+  short needCurrentByType[0x17];        // +0x24
+  short needTargetByType[0x17];         // +0x52
+  short relationDeltaCurrent[0x17];     // +0x80
+  short purchasedItemsByResource[0x17]; // +0xae
+  short itemPotentials[0x17];           // +0xdc
   unsigned char pad10a[2];
   int aidAllocationMatrix[0x170]; // +0x10c
   int budgetPoolBase;             // +0x6cc
@@ -1017,7 +1017,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     break;
   }
   case 0x1a: {
-    // Clients adopt the streamed per-nation diplomacyCounterA2 words before routing
+    // Clients adopt the streamed per-nation availableMerchantCapacity words before routing
     // the decision through the UI runtime.
     TurnEvent1ANationActionPacket* nationAction =
         static_cast<TurnEvent1ANationActionPacket*>(packet);
@@ -1026,7 +1026,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       for (int counterSlot = 0; counterSlot < 7; ++counterSlot) {
         TGreatPower* counterNation = g_apNationStates[counterSlot];
         if (counterNation != 0) {
-          counterNation->diplomacyCounterA2 = nationAction->counterA2BySlot[counterSlot];
+          counterNation->availableMerchantCapacity = nationAction->counterA2BySlot[counterSlot];
         }
       }
     }
@@ -1089,8 +1089,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       nation15->needCurrentByType[needType] = needState->needCurrentByType[needType];
       nation15->needTargetByType[needType] = needState->needTargetByType[needType];
       nation15->relationDeltaCurrent[needType] = needState->relationDeltaCurrent[needType];
-      nation15->relationDeltaSnapshot[needType] = needState->relationDeltaSnapshot[needType];
-      nation15->diplomacyState1c6[needType] = needState->diplomacyState1c6[needType];
+      nation15->purchasedItemsByResource[needType] = needState->purchasedItemsByResource[needType];
+      nation15->itemPotentials[needType] = needState->itemPotentials[needType];
       for (int aidRow = 0; aidRow < 0x10; ++aidRow) {
         nation15->aidAllocationMatrix[aidRow * 0x17 + needType] =
             needState->aidAllocationMatrix[aidRow * 0x17 + needType];
@@ -1112,7 +1112,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     TGreatPower* nation19 = g_apNationStates[nationSlot19];
-    nation19->needCapA6 = stateArrays->needCapA6;
+    nation19->transportCapacity = stateArrays->transportCapacity;
     for (int orderType19 = 0; orderType19 < kIndustryActionOrderTypeCount; ++orderType19) {
       nation19->city->orderCountByType5c[orderType19] = stateArrays->orderCountByType[orderType19];
     }
@@ -1123,10 +1123,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     nation19->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
     for (int metricSlot19 = 0; metricSlot19 < 0x11; ++metricSlot19) {
-      nation19->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(metricSlot19),
-                                                       stateArrays->metricBySlot7C[metricSlot19]);
+      nation19->SetItemPotentials(static_cast<short>(metricSlot19),
+                                  stateArrays->metricBySlot7C[metricSlot19]);
     }
-    nation19->SnapshotDiplomacyState1c6Into250();
+    nation19->RememberTradeBids();
     for (int target19 = 0; target19 < 0x17; ++target19) {
       nation19->diplomacyPolicyByNation[target19] = stateArrays->diplomacyPolicyByNation[target19];
       nation19->diplomacyGrantByNation[target19] = stateArrays->diplomacyGrantByNation[target19];
@@ -1212,8 +1212,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Queue a diplomacy proposal code on the addressed nation.
     TurnEvent16DiplomacyProposalPacket* proposal =
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
-    g_apNationStates[proposal->nationSlot18]->QueueDiplomacyProposalCodeForTargetNation(
-        proposal->proposalCode1A, proposal->targetNationId1C);
+    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->proposalCode1A,
+                                                           proposal->targetNationId1C);
     break;
   }
   case 0x17: {
@@ -1841,7 +1841,7 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
       packet.nationCapabilityFlags[nationIndex] =
-          nationState->ReturnFalseNationStateCapabilityFlag90(0);
+          nationState->IsPolicyCodeInSpecialNationPolicySet(0);
     } else {
       packet.nationCapabilityFlags[nationIndex] = 0;
     }
@@ -2405,8 +2405,8 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
     packet.needCurrentByType[i] = nation->needCurrentByType[i];
     packet.needTargetByType[i] = nation->needTargetByType[i];
     packet.relationDeltaCurrent[i] = nation->relationDeltaCurrent[i];
-    packet.relationDeltaSnapshot[i] = nation->relationDeltaSnapshot[i];
-    packet.diplomacyState1c6[i] = nation->diplomacyState1c6[i];
+    packet.purchasedItemsByResource[i] = nation->purchasedItemsByResource[i];
+    packet.itemPotentials[i] = nation->itemPotentials[i];
     for (int j = 0; j < 0x10; ++j) {
       packet.aidAllocationMatrix[j * 0x17 + i] = nation->aidAllocationMatrix[j * 0x17 + i];
     }
@@ -2701,8 +2701,8 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
       sessionInit.scenarioTag60 = kControlTagLoad; // 'load'
     }
     strcpy(sessionInit.hostGameName3A, gameNameString);
-    strcpy(sessionInit.mapSeedText18, g_pGlobalMapState->scenarioTagText1c);
-    sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+    strcpy(sessionInit.mapSeedText18, g_pGlobalMapState->scenarioTagText);
+    sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally;
     sessionInit.saveSlotDword5C = queueSyncDword;
     // Round-trips through the receive side's SetDifficultyLevel,
     // which stores back into this same +0x40 field.
@@ -2884,17 +2884,15 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
   TGreatPower* nation = g_apNationStates[nationSlot];
   packet.nationSlot = nationSlot;
   EmitNationDiplomacyNeedStateSnapshotEvent15(1, nationSlot);
-  packet.needCapA6 = nation->needCapA6;
+  packet.transportCapacity = nation->transportCapacity;
   for (int orderType = 0; orderType < 0x0e; ++orderType) {
     packet.orderCountByType[orderType] = nation->city->orderCountByType5c[orderType];
   }
   for (int i = 0; i < 0x17; ++i) {
-    packet.externalStateByTarget[i] =
-        nation->GetDiplomacyExternalStateByTarget(static_cast<short>(i));
+    packet.externalStateByTarget[i] = nation->GetStockpile(static_cast<short>(i));
   }
   for (int metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
-    packet.metricBySlot7C[metricSlot] =
-        nation->QueryNationMetricBySlot7C(static_cast<short>(metricSlot));
+    packet.metricBySlot7C[metricSlot] = nation->GetTradeOffersFor(static_cast<short>(metricSlot));
   }
   for (short target = 0; target < 0x17; ++target) {
     packet.diplomacyPolicyByNation[target] = nation->diplomacyPolicyByNation[target];

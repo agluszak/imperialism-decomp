@@ -298,7 +298,7 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
   short nationId = g_pSimMgr->GetActiveNationId();
   TCivUnit* pClickedTileUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
 
-  if ((g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) &&
+  if ((g_pGlobalMapState->hexNeighborWrapHorizontally != 0) &&
       ((nTileIndex % 0x6c == 0) || (nTileIndex % 0x6c == 0x6b))) {
     return 1;
   }
@@ -933,7 +933,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
   case 2: {
     short neighborBuf[7];
     TMapMgr::GetNeighborTileIDArray(order->tileIndex06, neighborBuf,
-                                    g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                    g_pGlobalMapState->hexNeighborWrapHorizontally);
     neighborBuf[6] = order->tileIndex06;
     TTerrainStateRecordView& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
     for (int i = 0; i < 7; ++i) {
@@ -986,14 +986,14 @@ void TCivMgr::ResolveCivilianDisputes() {
     TCivUnit* winningOrder = competingOrders[0];
     short winningStanding =
         g_pDiplomacyTurnStateManager
-            ->relationStandingScoreMatrix79c[winningOrder->ownerNationSlot18 * 0x17 +
-                                             ownerNationSlot];
+            ->relationStandingScores[winningOrder->ownerNationSlot18 * kNationSlotCount +
+                                     ownerNationSlot];
     for (int candidateIndex = 1; candidateIndex < competingCount; ++candidateIndex) {
       TCivUnit* candidate = competingOrders[candidateIndex];
       short candidateStanding =
           g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[candidate->ownerNationSlot18 * 0x17 +
-                                               ownerNationSlot];
+              ->relationStandingScores[candidate->ownerNationSlot18 * kNationSlotCount +
+                                       ownerNationSlot];
       if (candidateStanding > winningStanding ||
           (candidateStanding == winningStanding && (rand() & 1) != 0)) {
         winningOrder = candidate;

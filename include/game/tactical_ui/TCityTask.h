@@ -24,7 +24,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5ae5e0
   // Tries to satisfy requestedAmount directly from the owning city's stock
   // (TCity::DirectTransport) for slot indices 0..6, then always re-checks the order's
-  // MaxOrder()/quantityField04 headroom, filling the order's OrderSheet and draining
+  // MaxOrder()/quantity headroom, filling the order's OrderSheet and draining
   // per-resource DirectTransport calls when short, bumping the order's SetQuantity
   // either way. Finally dispatches to the type-specific queueing override selected by
   // citySlotIndex (ApplyProductionDistributionToCitySlots / QueueCityProductionOrderCommand /
