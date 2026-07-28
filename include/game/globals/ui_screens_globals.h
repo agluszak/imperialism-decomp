@@ -5,6 +5,7 @@
 
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
+extern short g_creditsPlaybackActive_006a4084;
 
 extern POINT g_ptTechItemModalMessage;
 extern POINT g_ptFormattedErrorModalMessage;

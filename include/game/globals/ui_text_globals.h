@@ -3,6 +3,8 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
+extern char g_szUiCloseParen_006973C8[];
+
 extern "C" {
 extern char g_szUiPlaceholderStaticText_00694354[];
 extern char g_szUiPlaceholderTreasury_006943B0[];

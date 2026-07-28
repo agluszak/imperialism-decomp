@@ -11,6 +11,7 @@
 #include "game/globals/ui_text_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/military_ui_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/ui_core_globals.h"
@@ -48,8 +49,6 @@ extern char* g_pSmallViewsEmptyText_00662B90;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern char g_szUiCloseParen_006973C8[];
-
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
 extern char s_szGaugeCountSeparator_0069936C[];
@@ -67,18 +66,11 @@ extern char g_szLiteralWb_006976E0[];
 
 extern char g_szLowercaseX[];
 
-extern short g_creditsPlaybackActive_006a4084;
-
-// Zero origin used for the hidden dummy view installed by TInfoBarBehavior.
-extern int g_InfoBarDummyOrigin_006A2410[2];
-
 extern "C" {
 // Secret garrison-close names used by the retail easter-egg path.
 extern const char g_szGarrisonSecretNationNameFrog[];
 
 extern const char g_szGarrisonSecretUnitNameSnidely[];
-
-extern TAmbitApplication* g_pAmbitApplication;
 
 extern const char* g_pszEmptyTextRef_00669db8;
 
@@ -113,8 +105,6 @@ extern void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
 extern char g_szLiteralL_00694250[];
 
 extern char g_szCmdSwitchLangQuit_00694254[];
-
-extern ImperialismApp* g_pImperialismApp;
 
 extern _PNH g_pfnPreviousNewHandler;
 
