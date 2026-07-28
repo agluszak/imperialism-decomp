@@ -9,7 +9,7 @@
 #include "game/navy_order.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"

@@ -24,7 +24,7 @@ src/game/ui_core/TPicture.cpp|companion_record|File-private fallback-size scratc
 src/game/ui_core/TTurnEventDialogFactoryRegistry.cpp|companion_record|File-private subview iterator used only by the factory registry.|CSubViewIterator
 src/game/ui_core/TView.cpp|companion_record|View-infrastructure companion records whose only methods serve TView.|TUiStyleRef;TViewChildList
 src/game/net/TWNetSessionManager.cpp|companion_record|File-private session-selection record and the DirectPlay base whose bodies exist only for this manager.|RuntimeSelectionRecord;TDirectPlaySessionManagerBase
-src/game/ui_screens/TZone.cpp|companion_record|Zone neighbor-stretch subclasses existing only for TZone internals.|TZonePrimaryNeighborStretch;TZoneSecondaryNeighborStretch
+src/game/map/TZone.cpp|companion_record|Zone neighbor-stretch subclasses existing only for TZone internals.|TZonePrimaryNeighborStretch;TZoneSecondaryNeighborStretch
 src/game/map/map_overlay_geometry.cpp|companion_record|Edge-point record private to the overlay-geometry module.|MapEdgePoint
 src/game/gfx/quickdraw_regions.cpp|companion_record|QuickDraw Region record: the region primitives module is its natural owner.|Region
 src/game/ui_core/quickdraw_rendering.cpp|companion_record|Clip-state RAII initializer private to the QuickDraw layer.|TQuickDrawClipStateInitializer

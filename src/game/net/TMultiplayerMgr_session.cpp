@@ -36,7 +36,7 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/military/TArmyMgr.h"
 #include "game/navy/TOcean.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/military_ui/TNextDiplomationCommand.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TMapPreviewView.h"

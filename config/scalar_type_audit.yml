@@ -187,7 +187,7 @@ nested_conversion_reviews:
   fb4cc0429d2807ae:
     classification: signed_table_byte_then_int
     evidence: "the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width."
-  5683b5c15d728d03:
+  1bca097815b7e702:
     classification: signed_byte_sign_test
     evidence: "the packed map-tile action state byte is read signed so the retail SETGE test implements >= 0, then normalized to a byte for the retail byte compare."
 
@@ -234,7 +234,7 @@ predicate_storage_reviews:
   2d4eed00b9f919c8:
     classification: byte_field_storage
     evidence: "the value is stored into TRadioText::isSelectedOption98, a one-byte object field the retail code compares directly (cmp al,cl) with no `!= 0` normalization; the cast keeps the store byte-wide."
-  1f0f5b126e19f37e:
+  c5705f8f8668f444:
     classification: byte_comparison_of_packed_state
     evidence: "the second operand of the same byte compare -- the sign test on the packed map-tile action state byte."
 

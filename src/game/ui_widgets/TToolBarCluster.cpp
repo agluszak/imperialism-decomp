@@ -22,7 +22,7 @@
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"

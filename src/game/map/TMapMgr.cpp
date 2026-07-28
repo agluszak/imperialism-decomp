@@ -26,7 +26,7 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/navy/TOcean.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/city/TCity.h"

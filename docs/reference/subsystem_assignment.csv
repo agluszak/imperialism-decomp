@@ -387,7 +387,7 @@ TTwoPicSlider.cpp|4|Cross/UOptionViews.cpp|4|ui_screens|4||Cross/UOptionViews.cp
 TUberCluster.cpp|2|Cross/UOptionViews.cpp|2|ui_screens|2||Cross/UOptionViews.cpp:2
 TUpDownPictureButton.cpp|4|Cross/UOptionViews.cpp|4|ui_screens|4||Cross/UOptionViews.cpp:4
 TUpDownView.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2
-TZone.cpp|51|Cross/UNewspaper.cpp|47|ui_screens|49|multi_module|Cross/UNewspaper.cpp:47+Cross/UOcean.cpp:4
+TZone.cpp|51|Cross/UNewspaper.cpp|47|map|49|multi_module|Cross/UNewspaper.cpp:47+Cross/UOcean.cpp:4
 turn_flow_cooldown.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
 T2PictToggleButton.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3
 TAmtBar.cpp|7|Cross/USmallViews.cpp|7|ui_widgets|0||Cross/USmallViews.cpp:7

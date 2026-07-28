@@ -60,7 +60,7 @@
 #include "game/military/TUnit.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall

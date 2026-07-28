@@ -8,7 +8,7 @@
 #include "game/navy/TNavyMgr.h"
 #include "game/TList.h"
 #include "game/nation/TGreatPower.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/navy_globals.h"

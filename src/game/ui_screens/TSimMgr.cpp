@@ -44,7 +44,7 @@
 #include "game/military/TRemoteMinor.h"
 #include "game/app/TAnimator.h"
 #include "game/ui_core/TLanguageMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"

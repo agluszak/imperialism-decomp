@@ -6,7 +6,7 @@
 #include "game/core/stream_byteswap.h"
 #include "game/core/TStream.h"
 #include "game/TList.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/military_ui/TDiplomacyMgr.h"
