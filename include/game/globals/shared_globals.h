@@ -121,25 +121,10 @@ extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 
 extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
 
-// Owner-nation tag (0..23) to the QuickDraw palette index used behind ocean-map
-// order previews and garrison badges.
-extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
-
-// Per-owner outline palette used by the ocean overview's direct 16x16 neighbor-edge pass.
-extern unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
-
 // Secret garrison-close names used by the retail easter-egg path.
 extern const char g_szGarrisonSecretNationNameFrog[];
 
 extern const char g_szGarrisonSecretUnitNameSnidely[];
-
-extern const unsigned char g_bDrawOceanRouteOverlay;
-
-extern const unsigned char g_bTransferOceanViewportToActiveSurface;
-
-extern const unsigned char g_bDrawOceanZoneLabels;
-
-extern const unsigned char g_bDrawOceanNationLabels;
 
 extern TAmbitApplication* g_pAmbitApplication;
 
@@ -156,10 +141,6 @@ extern const char s_OutOfMemoryText_006941F0[];
 extern const char s_ErrorCaption_00694204[];
 
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
-
-extern TNavyMgr* g_pNavyOrderManager;
-
-extern "C" TShip* g_pNavyPrimaryOrderListHead;
 
 extern TArmyMgr* g_pMapContextActionManager;
 

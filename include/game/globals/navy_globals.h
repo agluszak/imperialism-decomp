@@ -65,6 +65,14 @@ extern float g_fNavyHitChanceCubeOffset_00669f00;
 extern float g_fNavyHitChanceNumerator_00669f04;
 
 extern "C" {
+extern TNavyMgr* g_pNavyOrderManager;
+extern unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24];
+extern unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24];
+extern const unsigned char g_bDrawOceanRouteOverlay;
+extern const unsigned char g_bTransferOceanViewportToActiveSurface;
+extern const unsigned char g_bDrawOceanZoneLabels;
+extern const unsigned char g_bDrawOceanNationLabels;
+extern TShip* g_pNavyPrimaryOrderListHead;
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
 
