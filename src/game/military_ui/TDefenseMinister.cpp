@@ -5,6 +5,7 @@
 
 #include "game/globals/global_types.h"
 #include "game/globals/military_ui_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 
 #include "game/ui_core/CIterator.h"

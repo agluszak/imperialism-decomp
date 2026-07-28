@@ -83,9 +83,6 @@ extern char g_szUiCloseParen_006973C8[];
 
 extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 
-// Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
-extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
-
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
@@ -123,19 +120,6 @@ extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
 extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 
 extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
-
-// Cursor resource id by civilian-tile-order action code (12 entries).
-extern short g_civilianTileOrderCursorTokenTable[];
-
-// Per-unit-type tactical category code (slot 0x11 garrison sweep).
-extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
-
-extern ArmyUnitCategoryStorage g_awTacticalUnitCategoryCodeBySlot[];
-
-// Per-unit-type combat/composition class (0x695380), read by
-// FormStacks when building a TArmyStack's
-// field4/field6 composition code.
-extern short g_awUnitCombatClassBySlot[32];
 
 // Left/top of the view-frame clip bounds used by TTacticalBattleView. Reset together by
 // ResetUiFrameClipOrigin (0x005ad9e0). 0x6a5458/0x6a545c
