@@ -4,6 +4,14 @@
 #include "game/globals/global_types.h"
 
 extern "C" int g_nStartupAutoResolutionMode;
+extern "C" BOOL g_cachedShowSplashFlag;
+extern "C" const char* const g_pRegistryCompanyKey_0063E038;
+extern "C" const char* const g_pRegistryAppKey_0063E03C;
+extern "C" const char* const g_pRegistryProfileAppName_0063E050;
+extern "C" const char* const g_pRegistrySettingsSection_0063E040;
+extern "C" const char* const g_pRegistrySettingsSectionAlt_0063E044;
+extern "C" const char* const g_pRegistryAutoResKey_0063E048;
+extern "C" const char* const g_pRegistryLanguageKey_0063E04C;
 
 // Private retail assert guards for TStream's McAppStream.cpp diagnostics.
 extern int g_streamLine304AssertGuard;

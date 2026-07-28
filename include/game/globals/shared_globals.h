@@ -178,9 +178,6 @@ extern char g_szListConjunction_00698498[];
 
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 
-// Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
-extern BOOL g_cachedShowSplashFlag;
-
 extern LPCSTR g_apFontFiles[];
 
 extern void* g_pScopedMapQuickDrawViewContext;
@@ -202,21 +199,6 @@ extern "C" short g_infoPanelLabelXByRow_006969b0[4];
 extern "C" short g_infoPanelLabelYByRow_006969c0[4];
 
 extern "C" COLORREF g_defaultDropShadowTextColor;
-
-// ImperialismApp.cpp — registry key/section literals.
-extern const char* const g_pRegistryCompanyKey_0063E038;
-
-extern const char* const g_pRegistryAppKey_0063E03C;
-
-extern const char* const g_pRegistryProfileAppName_0063E050;
-
-extern const char* const g_pRegistrySettingsSection_0063E040;
-
-extern const char* const g_pRegistrySettingsSectionAlt_0063E044;
-
-extern const char* const g_pRegistryAutoResKey_0063E048;
-
-extern const char* const g_pRegistryLanguageKey_0063E04C;
 
 // Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
 // TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
