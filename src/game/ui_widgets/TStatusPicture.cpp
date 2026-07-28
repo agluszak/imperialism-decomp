@@ -73,7 +73,7 @@ void TStatusPicture::DoPostCreate(int arg) {
     for (int i = 0; i < 7; ++i) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
         int sum = 0;
-        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i];
+        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
         int metricCount = 4;
         do {
           sum += *metric;
@@ -116,7 +116,7 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
           for (int i = 0; i < 7; ++i) {
             if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
               int sum = 0;
-              int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i];
+              int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
               int metricCount = 4;
               do {
                 sum += *metric;
@@ -208,13 +208,13 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
       TGreatPower* nation = g_apNationStates[i];
       switch (comparisonMode90) {
       case 1:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i][3] * 3;
+        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][3] * 3;
         break;
       case 2:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i][1] * 3;
+        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][1] * 3;
         break;
       case 3:
-        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows1824[i][0] * 3;
+        values94[i] = g_pDiplomacyTurnStateManager->comparativePowerRows[i][0] * 3;
         break;
       case 4:
         values94[i] = static_cast<int>(nation->merchantCapacity) << 2;

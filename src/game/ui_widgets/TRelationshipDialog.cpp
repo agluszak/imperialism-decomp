@@ -45,7 +45,7 @@ void TRelationshipDialog::Close() {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x1c5);
       }
       int standing = standingControl->UpdateControlCachedIntFromWindowText();
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(sourceNation, targetNation, standing);
+      g_pDiplomacyTurnStateManager->SetRelationship(sourceNation, targetNation, standing);
     }
   }
   TView::Close();

@@ -42,7 +42,7 @@ void TScoreGraph::DoPostCreate(int arg) {
 }
 
 // For each of the 7 great powers with a live terrain descriptor, draws a stacked
-// horizontal bar of its 4 comparativePowerRows1824 components (army, avg relation,
+// horizontal bar of its 4 comparativePowerRows components (army, avg relation,
 // territory+tech, commodity) in the great power's legend colors (slots 3-6), a black
 // border rect behind it, and the nation's name to the right. Row Y for the next nation
 // carries over as (this row's total bar width + 0x34) -- ported verbatim from the
@@ -60,7 +60,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
 
     int total = 0;
     for (int component = 0; component < 4; ++component) {
-      total += g_pDiplomacyTurnStateManager->comparativePowerRows1824[nationIndex][component];
+      total += g_pDiplomacyTurnStateManager->comparativePowerRows[nationIndex][component];
     }
 
     SetQuickDrawFillColor(0);
@@ -75,8 +75,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
     RECT segRect;
     for (int segComponent = 0; segComponent < 4; ++segComponent) {
       segRect.left = static_cast<short>(segX);
-      int segValue =
-          g_pDiplomacyTurnStateManager->comparativePowerRows1824[nationIndex][segComponent];
+      int segValue = g_pDiplomacyTurnStateManager->comparativePowerRows[nationIndex][segComponent];
       segRect.right = static_cast<short>(segValue) + segRect.left;
       segRect.bottom = rowY + 0x24;
       segRect.top = rowY;

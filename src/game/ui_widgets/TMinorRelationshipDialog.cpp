@@ -46,7 +46,7 @@ void TMinorRelationshipDialog::Close() {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x22f);
       }
       int standing = standingControl->UpdateControlCachedIntFromWindowText();
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(majorNation, minorNation, standing);
+      g_pDiplomacyTurnStateManager->SetRelationship(majorNation, minorNation, standing);
     }
   }
   TView::Close();

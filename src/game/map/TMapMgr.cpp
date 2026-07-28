@@ -1998,7 +1998,7 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
   g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
-  bool isPrimary = g_pDiplomacyTurnStateManager->IsMajorNationSlot(newNationTag) != 0;
+  bool isPrimary = g_pDiplomacyTurnStateManager->IsGreatPower(newNationTag) != 0;
   if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }

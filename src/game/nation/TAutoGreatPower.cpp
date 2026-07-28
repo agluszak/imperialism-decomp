@@ -620,8 +620,7 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
   int allyIndex = 0;
   if (g_pDiplomacyTurnStateManager->GetNumAllies(this->nationSlot) > 0) {
     do {
-      int allyNation =
-          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, this->nationSlot);
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, this->nationSlot);
       allyArmyAccum = g_apNationStates[allyNation]->GetMilitaryPower() + allyArmyAccum;
       allyNavyAccum = g_apNationStates[allyNation]->GetTotalNavalForce() + allyNavyAccum;
       ++allyIndex;

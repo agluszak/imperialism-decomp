@@ -32,7 +32,7 @@ Common conventions in every ratio body:
 
 - "allySum" loops re-query `g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(target)`
   at the **bottom** of each iteration (do-while with count recheck) and read allies via
-  `GetNthAlliedMajorNationSlot90(i, target)`.
+  `GetAllyNumber(i, target)`.
 - "standing" = `g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[mySlot * 0x17 + x]`
   with `movsx` short indices.
 - "yearTerm" = `min((short)(TSimMgr::economicTurn / 4), 0x3c)` —

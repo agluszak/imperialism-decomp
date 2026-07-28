@@ -29,8 +29,7 @@ float SumAlliedArmyScoreFactors(int targetNation) {
   int allyIndex = 0;
   if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
     do {
-      int allyNation =
-          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
       allySum = allySum + g_apNationStates[allyNation]->GetMilitaryPower();
       ++allyIndex;
     } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
@@ -43,8 +42,7 @@ float SumAlliedNavyScoreFactors(int targetNation) {
   int allyIndex = 0;
   if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
     do {
-      int allyNation =
-          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
       allySum = allySum + g_apNationStates[allyNation]->GetTotalNavalForce();
       ++allyIndex;
     } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));

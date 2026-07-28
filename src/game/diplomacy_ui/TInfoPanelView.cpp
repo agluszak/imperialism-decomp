@@ -211,9 +211,8 @@ void TInfoPanelView::Draw(RECT* rectBuffer) {
     }
   } else if (selectedCountry == 0 || selectedCountry->encodedNationSlot < 100 ||
              selectedCountry->encodedNationSlot >= 200) {
-    short favoredNation = static_cast<short>(
-        g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
-            selectedNation));
+    short favoredNation =
+        static_cast<short>(g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(selectedNation));
     if (favoredNation == -1) {
       g_pSimMgr->GetString(0x2733, 0x18, &text); // "None"
     } else {

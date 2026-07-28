@@ -84,7 +84,7 @@ void TCouncilView::DoPostCreate(int arg) {
     // Map-interaction mode: title shows "<terrain/country name>" expanded through the
     // localized "[0]" template, plus a self-vs-other SFX cue for the highlighted nation.
     CString terrainLabel;
-    g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e]
+    g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->lastProcessedNationSlot]
         ->FormatOverlayTerrainLabelText(&terrainLabel);
     CString titleTemplate;
     g_pSimMgr->GetString(0x275d, 3, &titleTemplate);
@@ -94,8 +94,7 @@ void TCouncilView::DoPostCreate(int arg) {
     titleControl->SetTextAndMaybeRefresh(&finalTitle, 0);
     DisplayStats();
 
-    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
-        g_pSimMgr->GetActiveNationId()) {
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == g_pSimMgr->GetActiveNationId()) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f43, 0, 1);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f44, 0, 1);
@@ -159,15 +158,14 @@ void TCouncilView::DisplayStats() {
   // Census every pending-policy map record for the selected nation pair into eight
   // relationship-category buckets: major/minor-nation × (source/target owner, in-vote /
   // out-of-vote). Buckets 0-3 are out-of-vote, 4-7 in-vote.
-  NationSlot sourceNation = g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot;
-  NationSlot targetNation =
-      g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot;
+  NationSlot sourceNation = g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot;
+  NationSlot targetNation = g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot;
   short categoryCounts[8];
   for (int i = 0; i < 8; ++i) {
     categoryCounts[i] = 0;
   }
   for (int record = 0; record < 0x180; ++record) {
-    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[record] == -1) {
+    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[record] == -1) {
       continue;
     }
     short ownerCode = g_pGlobalMapState->cityScoreTable[record].ownerNationCode00;
@@ -187,7 +185,7 @@ void TCouncilView::DisplayStats() {
         category = 2;
       }
     }
-    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[record] == targetNation) {
+    if (g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[record] == targetNation) {
       category += 4;
     }
     ++categoryCounts[category];
@@ -232,7 +230,7 @@ void TCouncilView::DisplayStats() {
       static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '0')));
   sourceScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
-                   g_pDiplomacyTurnStateManager->congressSupport788.chairmanSupportCount);
+                   g_pDiplomacyTurnStateManager->congressSupport.chairmanSupportCount);
   sourceScore->SetTextAndMaybeRefresh(&scoreText, 1);
   sourceScore->InstallTextStyle(style, 0);
   sourceScore->shadowColor94 = scoreShadowColor;
@@ -242,7 +240,7 @@ void TCouncilView::DisplayStats() {
       static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
   targetScore->AssertValid();
   scoreText.Format(g_szDecimalFormat,
-                   g_pDiplomacyTurnStateManager->congressSupport788.counterpartSupportCount);
+                   g_pDiplomacyTurnStateManager->congressSupport.counterpartSupportCount);
   targetScore->SetTextAndMaybeRefresh(&scoreText, 1);
   targetScore->InstallTextStyle(style, 0);
   targetScore->shadowColor94 = scoreShadowColor;
@@ -263,14 +261,14 @@ void TCouncilView::StartVoting() {
 
   TStaticText* can0 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan0));
   can0->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot]
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
   can0->SetTextAndMaybeRefresh(&candidateName, 1);
   can0->InstallTextStyle(councilTextStyle, 0);
 
   TStaticText* can1 = static_cast<TStaticText*>(ResolveControlByTag(kControlTagCan1));
   can1->AssertValid();
-  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot]
+  g_apNationStates[g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot]
       ->LoadNationDisplayNameSharedRefFromField8(&candidateName);
   can1->SetTextAndMaybeRefresh(&candidateName, 1);
   can1->InstallTextStyle(councilTextStyle, 0);
@@ -278,13 +276,13 @@ void TCouncilView::StartVoting() {
   TPicture* coat0 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa0));
   coat0->AssertValid();
   coat0->SetPictureResourceIdAndRefresh(
-      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership784.chairmanNationSlot +
+      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.chairmanNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
   TPicture* coat1 = static_cast<TPicture*>(ResolveControlByTag(kControlTagCoa1));
   coat1->AssertValid();
   coat1->SetPictureResourceIdAndRefresh(
-      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership784.counterpartNationSlot +
+      static_cast<short>(g_pDiplomacyTurnStateManager->congressLeadership.counterpartNationSlot +
                          kCouncilCoatOfArmsPictureBase),
       1);
 
@@ -308,7 +306,7 @@ void TCouncilView::StartVoting() {
 
   short maxPendingTier = councilNationCount24c8;
   for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
-    const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[tierIndex];
+    const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[tierIndex];
     if (tierValue != -1 && maxPendingTier < tierValue) {
       maxPendingTier = tierValue;
     }
@@ -339,7 +337,7 @@ void TCouncilView::NextTick() {
   ++visibleVoteTier528;
 
   for (int idx = 0; idx < kDiplomacyPairMatrixEntries; ++idx) {
-    short tier = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[idx];
+    short tier = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[idx];
     if (tier != -1 && (tier == visibleVoteTier528 || tier == visibleVoteTier528 - 1)) {
       RECT* tileRect = &tileMarkerRects6AC[idx];
       RECT inflated = {tileRect->left - 1, tileRect->top - 1, tileRect->right + 2,
@@ -367,12 +365,12 @@ void TCouncilView::NextTick() {
     endControlTarget->AssertValid();
     endControlTarget->SetState(1, 0);
 
-    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == -1) {
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == -1) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     } else {
       bool allowAdvance = false;
       short activeNation = g_pSimMgr->GetActiveNationId();
-      if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e == activeNation &&
+      if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == activeNation &&
           g_pSimMgr->multiplayerSessionRole == 0) {
         short tick = g_pSimMgr->GetEconomicTurn();
         unsigned char* phaseTable = g_pSimMgr->phaseStateByDecade;
@@ -390,7 +388,7 @@ void TCouncilView::NextTick() {
         // plain early return.
         return;
       }
-      g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e = -1;
+      g_pDiplomacyTurnStateManager->lastProcessedNationSlot = -1;
       g_pSimMgr->turnStateCode = 0x10;
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);
     }
