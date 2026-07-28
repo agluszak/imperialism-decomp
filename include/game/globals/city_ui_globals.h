@@ -7,6 +7,9 @@ extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
 
 extern short g_cityProductionReserveByPolicyBand_00696400[4];
 
+// Need-type indices applied by TInteriorMinister::SetCityPolicies.
+extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
+
 extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
 
 extern short g_cityActionCapabilityGroupBySlot_00650670[32];
