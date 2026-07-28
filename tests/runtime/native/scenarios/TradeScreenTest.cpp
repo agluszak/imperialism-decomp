@@ -17,14 +17,18 @@
 #include "game/nation/TGreatPower.h"
 #include "game/resource_manifest_tags.h"
 #include "game/trade_ui/TOfferDeskPicture.h"
+#include "game/trade_ui/TDealTabControl.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TNumberText.h"
+#include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_tags_city.h"
 #include "game/ui_tags_diplomacy.h"
 #include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_widgets/TTradeOrderPicture.h"
@@ -38,7 +42,9 @@ public:
   TradeScreenTestCase()
       : phase(kActivateDiplomacyScreen), warTargetNation(-1), warPolicyBeforeAction(-1),
         selectedRow(0), selectedSellRow(0), initialBidBitmap(0), initialSellValue(0),
-        initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false) {}
+        initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false),
+        verifiedOfferPresentation(false), exercisedOfferBookmark(false),
+        offerRegressionCompleted(false) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -92,6 +98,8 @@ public:
       ReturnToMap();
     } else if (phase == kWaitForMap) {
       WaitForMap();
+    } else if (phase == kWaitForOfferRegression) {
+      WaitForOfferRegression();
     } else {
       WaitForEndTurn();
     }
@@ -125,6 +133,7 @@ private:
     kVerifyIncrease,
     kReturnToMap,
     kWaitForMap,
+    kWaitForOfferRegression,
     kWaitForEndTurn
   };
 
@@ -576,6 +585,20 @@ private:
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
       return;
     }
+    if (!offerRegressionCompleted) {
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNation);
+      TView* mainView = CurrentMainView();
+      if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
+        FailScenario("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        return;
+      }
+      static_cast<TOfferDeskPicture*>(mainView)->selectionActive = true;
+      phase = kWaitForOfferRegression;
+      EnterScenarioStep("verifying_offer_sheet_bookmark", "construct_offer_sheet_for_bookmark");
+      RequestScenarioTick();
+      return;
+    }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
     handledOffers = 0;
     leftDealBook = false;
@@ -591,11 +614,67 @@ private:
     RequestScenarioTick();
   }
 
+  void WaitForOfferRegression() {
+    TView* mainView = CurrentMainView();
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
+      WaitForScenarioTick("\"deterministic offer sheet is not active\"");
+      return;
+    }
+    TDropShadowText* season =
+        static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
+    TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
+    if (season == 0 || season->textStyle78.textColor == 0) {
+      FailScenario("\"offer sheet did not present a visible season label\"");
+      return;
+    }
+    if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0 ||
+        !RuntimeUiDriver::ClickViewThroughNativeMessages(tabs)) {
+      FailScenario("\"offer-sheet bookmark control could not receive native input\"");
+      return;
+    }
+    offerRegressionCompleted = true;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap),
+                                  g_pSimMgr->GetActiveNationId());
+    phase = kWaitForMap;
+    EnterScenarioStep("returning_to_map_after_offer_bookmark", "click_offer_sheet_bookmark");
+    RequestScenarioTick();
+  }
+
   void WaitForEndTurn() {
     if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
         WaitForScenarioTick("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        return;
+      }
+      if (!verifiedOfferPresentation) {
+        TStaticText* offerText = static_cast<TStaticText*>(
+            mainView->ResolveControlByTag(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
+        TDropShadowText* season =
+            static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
+        CString displayedOffer;
+        if (offerText == 0 || season == 0) {
+          FailScenario("\"offer sheet is missing its offer or season text control\"");
+          return;
+        }
+        offerText->CopyTextTo(&displayedOffer);
+        if (displayedOffer.GetLength() == 0 || season->textStyle78.textColor == 0) {
+          FailScenario("\"offer sheet did not present offer text with a visible season label\"");
+          return;
+        }
+        verifiedOfferPresentation = true;
+      }
+      if (!exercisedOfferBookmark) {
+        TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
+        if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0 ||
+            !RuntimeUiDriver::ClickViewThroughNativeMessages(tabs)) {
+          FailScenario("\"offer-sheet bookmark control could not receive native input\"");
+          return;
+        }
+        exercisedOfferBookmark = true;
+        EnterScenarioStep("switching_offer_sheet_bookmark", "click_offer_sheet_bookmark");
+        RequestScenarioTick();
         return;
       }
       TView* reject = mainView->ResolveControlByTag(kControlTagReje);
@@ -644,6 +723,9 @@ private:
   short baselineEconomicTurn;
   int handledOffers;
   bool leftDealBook;
+  bool verifiedOfferPresentation;
+  bool exercisedOfferBookmark;
+  bool offerRegressionCompleted;
 };
 
 TradeScreenTestCase g_test;

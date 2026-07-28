@@ -80,7 +80,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->RefreshControl();
+  toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
   toolbar->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
 
   TView* miniPicture = ResolveControlByTag(kControlTagMPic);
@@ -235,7 +235,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   g_pSimMgr->GetString(0x2740, 0xc, &offerTemplate);
   scanBracketExpressions(
       g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
-      static_cast<LPCSTR>(targetNationName), static_cast<LPCSTR>(proposedAmountText),
+      static_cast<LPCSTR>(sourceNationName), static_cast<LPCSTR>(proposedAmountText),
       static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(maximumAmountText));
 
   TextStyle style;
@@ -347,8 +347,9 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
 void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
-    short selectionIndex = g_offerDeskSelectionIndexTable_00668568
-        [commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 0x11];
+    short tabIndex = static_cast<short>(commandId - 0x2af8);
+    short selectionIndex = g_tradeBookCategoryByTabAndTechState_0066DB58
+        [g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (!selectionActive) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {

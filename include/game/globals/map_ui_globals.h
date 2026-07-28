@@ -42,9 +42,10 @@ extern TQuickDrawSurfaceContext* g_pCitySiteCachedPrimaryRenderSurfaceContext;
 // Counts strategic-map tile cache misses serviced by TMapDialog::Draw.
 extern short g_MapTileCacheMissCount6A3454;
 
-// TCitySiteView's currently painted six-neighbor highlight set. Each entry is a map tile
-// index or -1; the paint pass restores the previous cells before replacing this cache.
-extern short g_aStrategicMapNeighborHighlightTiles_00697320[6];
+// The strategic map and city-site view keep separate six-neighbor highlight sets. Each
+// entry is a map tile index or -1; each paint pass restores its own previous cells.
+extern short g_aStrategicMapNeighborHighlightTiles_00697310[6];
+extern short g_aCitySiteNeighborHighlightTiles_00697320[6];
 
 // Strategic-map preview cursor and the two half-cell parity remainders maintained while
 // converting its point into a viewport cell.

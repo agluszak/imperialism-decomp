@@ -256,7 +256,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int i = 0; i < 6; ++i) {
-    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697320[i];
+    short oldNeighbor = g_aStrategicMapNeighborHighlightTiles_00697310[i];
     if (oldNeighbor == -1) {
       continue;
     }
@@ -293,7 +293,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
   }
 
   for (int cacheIndex = 0; cacheIndex < 6; ++cacheIndex) {
-    g_aStrategicMapNeighborHighlightTiles_00697320[cacheIndex] =
+    g_aStrategicMapNeighborHighlightTiles_00697310[cacheIndex] =
         updateNeighborHighlights ? neighborTiles[cacheIndex] : -1;
   }
 }
@@ -2142,17 +2142,14 @@ void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
 
   for (int i = 0; i < g_pActiveMapOrderContext->routeNodeCount; ++i) {
     const CRect& segment = g_pActiveMapOrderContext->routeSegments[i];
-    // Keep the generated sea-zone overlay attached to the reconstructed scrolling surface.
-    // Applying the viewport displacement with the opposite sign makes these routes visibly
-    // counter-scroll while the terrain moves beneath them.
-    short firstColumn = (segment.left + viewportHalfColumn) % 0xd8;
+    short firstColumn = (segment.left - viewportHalfColumn + 0xd8) % 0xd8;
     // CRect stores Win32 long coordinates; DrawWrappedMapRouteSegment intentionally consumes
     // the low word of each vertical endpoint.
     short firstRow = static_cast<short>(segment.top);
-    firstRow += viewportRow;
-    short secondColumn = (segment.right + viewportHalfColumn) % 0xd8;
+    firstRow -= viewportRow;
+    short secondColumn = (segment.right - viewportHalfColumn + 0xd8) % 0xd8;
     short secondRow = static_cast<short>(segment.bottom);
-    secondRow += viewportRow;
+    secondRow -= viewportRow;
     DrawWrappedMapRouteSegment(firstColumn, firstRow, secondColumn, secondRow);
   }
 

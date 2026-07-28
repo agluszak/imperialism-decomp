@@ -5,6 +5,7 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/core/global_data_tables.h"
 #include "game/globals/gfx_globals.h"
+#include "game/globals/map_ui_globals.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -77,6 +78,17 @@ bool StrategicMapProbe::VerifyHoverCache(TMapUberPicture* mapView, CString& fail
   int mapCacheBytes = mapCache->stride * (mapCache->clipRect.bottom - mapCache->clipRect.top);
   unsigned char* beforeHover = new unsigned char[mapCacheBytes];
   memcpy(beforeHover, mapCache->pixelBits, mapCacheBytes);
+  short savedStrategicNeighbors[6];
+  short savedCitySiteNeighbors[6];
+  memcpy(savedStrategicNeighbors, g_aStrategicMapNeighborHighlightTiles_00697310,
+         sizeof(savedStrategicNeighbors));
+  memcpy(savedCitySiteNeighbors, g_aCitySiteNeighborHighlightTiles_00697320,
+         sizeof(savedCitySiteNeighbors));
+  for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+    g_aStrategicMapNeighborHighlightTiles_00697310[neighborIndex] = -1;
+    g_aCitySiteNeighborHighlightTiles_00697320[neighborIndex] = -1;
+  }
+  g_aCitySiteNeighborHighlightTiles_00697320[0] = 0;
 
   TQuickDrawSurfaceContext* savedSurface;
   int savedSurfaceFlags;
@@ -90,11 +102,21 @@ bool StrategicMapProbe::VerifyHoverCache(TMapUberPicture* mapView, CString& fail
       memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
   bool secondHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
+  bool usedStrategicNeighborCache = g_aCitySiteNeighborHighlightTiles_00697320[0] == 0;
+  for (int checkedNeighborIndex = 0; checkedNeighborIndex < 6; ++checkedNeighborIndex) {
+    if (g_aStrategicMapNeighborHighlightTiles_00697310[checkedNeighborIndex] != -1) {
+      usedStrategicNeighborCache = false;
+    }
+  }
+  memcpy(g_aStrategicMapNeighborHighlightTiles_00697310, savedStrategicNeighbors,
+         sizeof(savedStrategicNeighbors));
+  memcpy(g_aCitySiteNeighborHighlightTiles_00697320, savedCitySiteNeighbors,
+         sizeof(savedCitySiteNeighbors));
   mapView->activeUnitCategoryIndex96 = savedInteractionMode;
   SetGWorld(savedSurface, savedSurfaceFlags);
   delete[] beforeHover;
 
-  if (!firstHoverKeptCache || !secondHoverKeptCache) {
+  if (!firstHoverKeptCache || !secondHoverKeptCache || !usedStrategicNeighborCache) {
     failure = "\"combined-map hover retained transient selection pixels in the map cache\"";
     return false;
   }

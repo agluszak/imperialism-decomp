@@ -7,7 +7,7 @@ extern "C" short g_aTradeDealCategoryOrder_0066D810[0x11];
 
 extern POINT g_ptControlStringModalMessage;
 
-extern short g_offerDeskSelectionIndexTable_00668568[8];
+extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17];
 
 extern TTradeMgr* g_pTradeMgr;
 extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
