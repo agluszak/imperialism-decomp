@@ -5,6 +5,7 @@
 
 extern "C" int g_nStartupAutoResolutionMode;
 extern "C" ImperialismApp* g_pImperialismApp;
+extern "C" int g_nSaveFormatVersion;
 extern "C" BOOL g_cachedShowSplashFlag;
 extern "C" const char* const g_pRegistryCompanyKey_0063E038;
 extern "C" const char* const g_pRegistryAppKey_0063E03C;

@@ -2,6 +2,8 @@
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
+
+extern "C" TArmyMgr* g_pMapContextActionManager;
 #include "game/globals/tactical_ui_globals.h"
 
 struct MappedFlavorTextNationVariantEntry {
