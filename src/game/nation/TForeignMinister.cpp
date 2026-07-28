@@ -685,7 +685,13 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
     if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
       int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
       int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
-      float average = static_cast<float>((scoreA + scoreB) / 2);
+      int calendarYear = g_pSimMgr->field6c;
+      int difficultyDivisors[5] = {calendarYear, calendarYear / 2, calendarYear / 3,
+                                   calendarYear / 5, 0};
+      int campaignProgress = (g_pSimMgr->economicTurn / 4 + calendarYear) /
+                             (difficultyDivisors[g_pSimMgr->difficultyLevel] + calendarYear);
+      float average = static_cast<float>(static_cast<int>(
+          static_cast<float>(campaignProgress) * static_cast<float>((scoreA + scoreB) / 2)));
       if (ownerGP->GetWarNumber() <= average) {
         return 1;
       }

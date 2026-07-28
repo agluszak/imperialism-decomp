@@ -3319,7 +3319,7 @@ address|matching|name
 0x511440|1.0|TMapMgr::CheckTileVariantCodeMembershipSetD
 0x5114b0|0.29931972789115646|ResolveRiverSpriteVariantForConnectionMask
 0x511610|0.2504970178926441|TMapMgr::UpdateStrategicMapTileIconVariantState
-0x511a70|0.23433242506811988|TMapMgr::GuaranteeResources
+0x511a70|0.2907662082514735|TMapMgr::GuaranteeResources
 0x511e80|1.0|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 0x511ed0|0.6666666666666666|TMapMgr::DispatchTurnEvent7DDForActiveNation
 0x511f10|1.0|TMapMgr::ComputeRepresentativeTileIndexForNation
@@ -3419,7 +3419,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3431372549019608|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.3194103194103194|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.5416666666666666|TMapMgr::HasAdjacentProvinceOwnedByNation
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3683,7 +3683,7 @@ address|matching|name
 0x52fdc0|0.512396694214876|TForeignMinister::GoodsMatchShipping
 0x52fe90|0.32211538461538464|TForeignMinister::DoDevelopmentGrants
 0x530200|0.4880952380952381|TForeignMinister::DoProposeTreaties
-0x5308b0|0.3125|TForeignMinister::DeservesToBeEnemy
+0x5308b0|0.4013605442176871|TForeignMinister::DeservesToBeEnemy
 0x530b30|1.0|TForeignMinister::DoSelectEnemy
 0x530bb0|0.2809917355371901|TForeignMinister::SetEmpirePolicies
 0x530fa0|0.2727272727272727|TForeignMinister::ReplyToDiplomacyOffers
@@ -5863,7 +5863,7 @@ address|matching|name
 0x5a6350|1.0|TNavyTacUnit::GetBaseAttackPower
 0x5a6370|1.0|TNavyTacUnit::GetDamageScale
 0x5a6390|0.2222222222222222|IltTarget_005a6390
-0x5a63c0|0.8309859154929577|TNavyTacUnit::ApplyNavalDamage
+0x5a63c0|0.7916666666666666|TNavyTacUnit::ApplyNavalDamage
 0x5a64d0|1.0|TNextMoveCommand::CreateObject
 0x5a6540|1.0|TNextMoveCommand::GetRuntimeClass
 0x5a6560|0.2222222222222222|TNextMoveCommand::ConstructTNextMoveCommandBaseState
