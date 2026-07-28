@@ -24,8 +24,6 @@ extern int g_bOverlayScanlineFillAssertSuppressed;
 
 extern int g_bOverlayRouteRebuildAssertSuppressed;
 
-extern char s_mcflavor_00697238[];
-
 extern char g_szScriptFileName_006972f8[];
 
 extern char g_szFmtZone_006972e8[];

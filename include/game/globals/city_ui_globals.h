@@ -5,8 +5,6 @@
 
 extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
 
-extern char s_mcflavor_00696674[];
-
 extern short g_cityProductionReserveByPolicyBand_00696400[4];
 
 extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
