@@ -46,6 +46,11 @@ class FailureSignature:
     debugger_signal: str | None
     debugger_invariant: str | None
     assertion_id: str | None
+    fault_address: str | None
+    fault_code: str | None
+    last_control_path: str | None
+    last_control_x: int | None
+    last_control_y: int | None
 
 
 def read_trace(path: Path) -> list[ExploreAction]:
@@ -95,12 +100,35 @@ def failure_signature(outcome: RunOutcome) -> FailureSignature | None:
         return None
     result = outcome.result
     assertion_id = result.get("assertion_id")
+    fault_address = None
+    fault_code = None
+    runtime = result.get("runtime")
+    if isinstance(runtime, dict):
+        faults = runtime.get("faults")
+        if isinstance(faults, list) and faults and isinstance(faults[0], dict):
+            fault = faults[0]
+            if fault.get("address") is not None:
+                fault_address = str(fault["address"])
+            if fault.get("code") is not None:
+                fault_code = str(fault["code"])
+
+    trace = read_trace(primary.run_dir / TRACE_NAME)
+    last_control = trace[-1] if trace else None
+    last_control_path = last_control.path if last_control is not None else None
+    if fault_address is None and primary.host.debugger_invariant is None and last_control_path is None:
+        return None
+
     return FailureSignature(
         classification=classification,
         inferior_signal=primary.host.inferior_signal,
         debugger_signal=primary.host.debugger_signal,
         debugger_invariant=primary.host.debugger_invariant,
         assertion_id=assertion_id if isinstance(assertion_id, str) else None,
+        fault_address=fault_address,
+        fault_code=fault_code,
+        last_control_path=last_control_path,
+        last_control_x=last_control.local_x if last_control is not None else None,
+        last_control_y=last_control.local_y if last_control is not None else None,
     )
 
 
@@ -117,6 +145,11 @@ def same_failure(expected: FailureSignature, outcome: RunOutcome) -> bool:
         "debugger_signal",
         "debugger_invariant",
         "assertion_id",
+        "fault_address",
+        "fault_code",
+        "last_control_path",
+        "last_control_x",
+        "last_control_y",
     ):
         expected_value = getattr(expected, field_name)
         if expected_value is not None and getattr(actual, field_name) != expected_value:
@@ -185,6 +218,31 @@ def _load_reproducer(
         assertion_id=(
             str(signature_data["assertion_id"])
             if signature_data.get("assertion_id") is not None
+            else None
+        ),
+        fault_address=(
+            str(signature_data["fault_address"])
+            if signature_data.get("fault_address") is not None
+            else None
+        ),
+        fault_code=(
+            str(signature_data["fault_code"])
+            if signature_data.get("fault_code") is not None
+            else None
+        ),
+        last_control_path=(
+            str(signature_data["last_control_path"])
+            if signature_data.get("last_control_path") is not None
+            else None
+        ),
+        last_control_x=(
+            int(signature_data["last_control_x"])
+            if signature_data.get("last_control_x") is not None
+            else None
+        ),
+        last_control_y=(
+            int(signature_data["last_control_y"])
+            if signature_data.get("last_control_y") is not None
             else None
         ),
     )
@@ -387,6 +445,8 @@ def run_explorer(args, *, result_dir: Path, fixture_dir: Path) -> int:
         )
         minimized = trace
         final_run = run_dir
+        if not trace:
+            raise RuntimeError("random-control failure occurred before any action was recorded")
         if not args.no_minimize and len(trace) > 1:
             attempts = 0
 
@@ -412,22 +472,22 @@ def run_explorer(args, *, result_dir: Path, fixture_dir: Path) -> int:
                 return matched
 
             minimized = ddmin(trace, reproduces)
-            # Preserve a final bundle whose trace exactly matches the minimized case.
-            final_outcome = _run_once(
-                runner,
-                executor,
-                seed=seed,
-                steps=len(minimized),
-                timeout=args.timeout,
-                phase_timeout_ms=args.phase_timeout_ms,
-                settle_ticks=args.settle_ticks,
-                replay=minimized,
-            )
-            final_run = _primary_run_dir(final_outcome)
-            if not same_failure(signature, final_outcome):
-                raise RuntimeError(
-                    "minimized sequence stopped reproducing on its final verification"
-                )
+
+        # Preserve a final bundle whose trace exactly matches the emitted reproducer,
+        # including zero-reduction and one-action failures.
+        final_outcome = _run_once(
+            runner,
+            executor,
+            seed=seed,
+            steps=len(minimized),
+            timeout=args.timeout,
+            phase_timeout_ms=args.phase_timeout_ms,
+            settle_ticks=args.settle_ticks,
+            replay=minimized,
+        )
+        final_run = _primary_run_dir(final_outcome)
+        if not same_failure(signature, final_outcome):
+            raise RuntimeError("random-control reproducer failed final verification")
 
         reproducer = final_run / REPRODUCER_NAME
         _write_reproducer(reproducer, seed, signature, minimized, run_dir)

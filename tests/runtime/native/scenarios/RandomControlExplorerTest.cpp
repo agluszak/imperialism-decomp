@@ -72,11 +72,96 @@ public:
   }
 
   void OnCombinedMapReady() override {
+    BeginExploration();
+  }
+
+  void OnMapReadyWithoutCapitalSelection() override {
+    BeginExploration();
+  }
+
+  void TickScenario() override {
+    if (cooldownTicks > 0) {
+      --cooldownTicks;
+      RequestScenarioTick();
+      return;
+    }
+
+    CString path;
+    int localX = 0;
+    int localY = 0;
+    TView* root = g_pDisplayMgr != 0 ? g_pDisplayMgr->activeDialog : 0;
+    if (root == 0) {
+      if (ScenarioPhaseElapsedMs() >= 2000) {
+        FailScenario("\"random-control explorer could not resolve the active dialog\"");
+      } else {
+        RequestScenarioTick();
+      }
+      return;
+    }
+
+    TView* view = 0;
+    if (replayMode) {
+      ReplayReadResult replay = ReadReplayAction(path, localX, localY);
+      if (replay == kReplayEnd) {
+        Pass();
+        return;
+      }
+      if (replay == kReplayInvalid) {
+        FailScenario("\"random-control replay is malformed\"");
+        return;
+      }
+      view = ResolveViewPath(root, path);
+      if (view == 0 || !view->IsActionable() || localX < 0 || localY < 0 ||
+          localX >= view->frameWidth34 || localY >= view->frameHeight38) {
+        FailScenario("\"random-control replay action is not currently actionable\"");
+        return;
+      }
+    } else {
+      if (actionCount >= maxActions) {
+        Pass();
+        return;
+      }
+      selectedView = 0;
+      selectedPath.Empty();
+      candidateCount = 0;
+      SelectRandomActionableView(root, CString());
+      view = selectedView;
+      path = selectedPath;
+      if (view == 0) {
+        if (ScenarioPhaseElapsedMs() >= 2000) {
+          FailScenario("\"random-control explorer found no actionable controls\"");
+        } else {
+          RequestScenarioTick();
+        }
+        return;
+      }
+      localX = RandomCoordinate(view->frameWidth34);
+      localY = RandomCoordinate(view->frameHeight38);
+    }
+
+    CString action;
+    action.Format("click_random_control_%d", actionCount);
+    EnterScenarioStep("exploring_random_controls", static_cast<LPCSTR>(action));
+    if (!AppendTrace(actionCount, path, view, localX, localY)) {
+      FailScenario("\"could not persist random-control trace\"");
+      return;
+    }
+    ++actionCount;
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(view, localX, localY)) {
+      FailScenario("\"could not dispatch random-control click\"");
+      return;
+    }
+    cooldownTicks = settleTicks;
+    RequestScenarioTick();
+  }
+
+private:
+  void BeginExploration() {
     randomState = EnvironmentUnsigned("IMPERIALISM_RUNTIME_TEST_SEED", 1) ^ 0x9e3779b9UL;
-    maxActions = static_cast<int>(
-        EnvironmentUnsigned("IMPERIALISM_RUNTIME_EXPLORE_MAX_ACTIONS", 500));
-    settleTicks = static_cast<int>(
-        EnvironmentUnsigned("IMPERIALISM_RUNTIME_EXPLORE_SETTLE_TICKS", 2, true));
+    maxActions =
+        static_cast<int>(EnvironmentUnsigned("IMPERIALISM_RUNTIME_EXPLORE_MAX_ACTIONS", 500));
+    settleTicks =
+        static_cast<int>(EnvironmentUnsigned("IMPERIALISM_RUNTIME_EXPLORE_SETTLE_TICKS", 2, true));
     if (settleTicks > 100) {
       settleTicks = 100;
     }
@@ -98,84 +183,6 @@ public:
                       replayMode ? "start_control_replay" : "start_random_control_exploration");
     RequestScenarioTick();
   }
-
-  void TickScenario() override {
-    if (cooldownTicks > 0) {
-      --cooldownTicks;
-      RequestScenarioTick();
-      return;
-    }
-
-    CString path;
-    int localX = 0;
-    int localY = 0;
-    TView* root = g_pDisplayMgr != 0 ? g_pDisplayMgr->activeDialog : 0;
-    if (root == 0) {
-      if (ScenarioPhaseElapsedMs() >= 2000) {
-        Pass();
-      } else {
-        RequestScenarioTick();
-      }
-      return;
-    }
-
-    TView* view = 0;
-    if (replayMode) {
-      ReplayReadResult replay = ReadReplayAction(path, localX, localY);
-      if (replay == kReplayEnd) {
-        Pass();
-        return;
-      }
-      if (replay == kReplayInvalid) {
-        Pass();
-        return;
-      }
-      view = ResolveViewPath(root, path);
-      if (view == 0 || !view->IsActionable() || localX < 0 || localY < 0 ||
-          localX >= view->frameWidth34 || localY >= view->frameHeight38) {
-        Pass();
-        return;
-      }
-    } else {
-      if (actionCount >= maxActions) {
-        Pass();
-        return;
-      }
-      selectedView = 0;
-      selectedPath.Empty();
-      candidateCount = 0;
-      SelectRandomActionableView(root, CString());
-      view = selectedView;
-      path = selectedPath;
-      if (view == 0) {
-        if (ScenarioPhaseElapsedMs() >= 2000) {
-          Pass();
-        } else {
-          RequestScenarioTick();
-        }
-        return;
-      }
-      localX = RandomCoordinate(view->frameWidth34);
-      localY = RandomCoordinate(view->frameHeight38);
-    }
-
-    CString action;
-    action.Format("click_random_control_%d", actionCount);
-    EnterScenarioStep("exploring_random_controls", static_cast<LPCSTR>(action));
-    if (!AppendTrace(actionCount, path, view, localX, localY)) {
-      FailScenario("\"could not persist random-control trace\"");
-      return;
-    }
-    ++actionCount;
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(view, localX, localY)) {
-      Pass();
-      return;
-    }
-    cooldownTicks = settleTicks;
-    RequestScenarioTick();
-  }
-
-private:
   unsigned long NextRandom() {
     randomState = randomState * 1664525UL + 1013904223UL;
     return randomState;
@@ -237,8 +244,8 @@ private:
     unsigned long parsedTag = strtoul(segment, &tagEnd, 16);
     char* occurrenceEnd = 0;
     long parsedOccurrence = strtol(hash + 1, &occurrenceEnd, 10);
-    if (tagEnd == segment || *tagEnd != 0 || occurrenceEnd == hash + 1 ||
-        *occurrenceEnd != 0 || parsedOccurrence <= 0) {
+    if (tagEnd == segment || *tagEnd != 0 || occurrenceEnd == hash + 1 || *occurrenceEnd != 0 ||
+        parsedOccurrence <= 0) {
       return false;
     }
     tag = static_cast<unsigned int>(parsedTag);
@@ -308,8 +315,7 @@ private:
     char* yEnd = 0;
     long parsedX = strtol(firstTab + 1, &xEnd, 10);
     long parsedY = strtol(secondTab + 1, &yEnd, 10);
-    if (line[0] == 0 || xEnd == firstTab + 1 || *xEnd != 0 || yEnd == secondTab + 1 ||
-        *yEnd != 0) {
+    if (line[0] == 0 || xEnd == firstTab + 1 || *xEnd != 0 || yEnd == secondTab + 1 || *yEnd != 0) {
       return kReplayInvalid;
     }
     path = line;
@@ -320,8 +326,8 @@ private:
 
   void InitializeArtifactPaths() {
     char resultPath[2048];
-    DWORD length = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_RESULT", resultPath,
-                                           sizeof(resultPath));
+    DWORD length =
+        GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_RESULT", resultPath, sizeof(resultPath));
     if (length == 0 || length >= sizeof(resultPath)) {
       tracePath = "exploration-trace.jsonl";
       replayPath = "exploration-replay.txt";
@@ -382,8 +388,8 @@ private:
     RuntimeJson::AppendString(line, static_cast<LPCSTR>(tag));
     line += ",\"class\":";
     RuntimeJson::AppendString(line, RuntimeClassName(view));
-    fields.Format(",\"event\":%d,\"local_x\":%d,\"local_y\":%d}", view->GetEventNumber(),
-                  localX, localY);
+    fields.Format(",\"event\":%d,\"local_x\":%d,\"local_y\":%d}", view->GetEventNumber(), localX,
+                  localY);
     line += fields;
     line += "\r\n";
 
