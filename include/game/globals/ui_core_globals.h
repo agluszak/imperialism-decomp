@@ -34,6 +34,9 @@ extern TMacViewMgr* g_pMacViewMgr;
 extern TViewMgr* g_pViewMgr;
 extern TAnimator* g_pUiAnimator;
 extern TView* g_pUiResourceHead;
+extern TInfoBarText* g_pCursorControlPanel;
+extern TLanguageMgr* g_pLanguageMgr;
+extern TApplication* g_pApplication;
 
 extern char s_szTurnHistoryPrefix_0069b71c[];
 

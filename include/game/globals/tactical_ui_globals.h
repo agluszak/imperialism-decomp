@@ -13,6 +13,9 @@ extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
 
 extern TTechMgr* g_pTechMgr;
 
+// Tactical unit sprite facing offsets: [unit type][orientation][side].
+extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
+
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];
 
