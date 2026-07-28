@@ -52,11 +52,6 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern TSoundResourceManager g_soundResourceManager;
-
-// Counts idle/audio-state polls before another random cue selection attempt.
-extern short g_randomAudioCuePollCounter; // 0x006a4520
-
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 
 // Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
@@ -71,8 +66,6 @@ extern int g_localizationAudioSlotCursor_006a60f8;
 extern char* g_pszDescriptorDefaultName_00653300;
 
 extern char g_szUiCloseParen_006973C8[];
-
-extern TSoundPlayer* g_pSfxPlaybackSystem;
 
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
