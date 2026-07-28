@@ -10,6 +10,7 @@ extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 // column to blit and is toggled after each blit.
 extern unsigned char g_bBattleReportMarkerBlinkPhase; // 0x006a23b4
 extern int g_nBattleReportMarkerBlinkTicks;           // 0x006a23b8
+extern int g_InfoBarDummyOrigin_006A2410[2];
 
 extern "C" {
 // Per-unit-type strength-weighting percent (0x6953e8), read by TDefenseMinister::
