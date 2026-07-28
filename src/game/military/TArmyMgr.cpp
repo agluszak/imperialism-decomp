@@ -41,6 +41,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/map_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h" // scanBracketExpressions
 #include "game/navy_order.h" // g_pNavyPrimaryOrderListHead, FindCumulativeWeightBucketIndex

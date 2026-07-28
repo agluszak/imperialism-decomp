@@ -36,6 +36,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/net_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
