@@ -563,7 +563,8 @@ void TNavyMgr::ScuttleEverything() {
     ship->taskForce = 0;
   }
   if (orderQueueHead != nullptr) {
-    orderQueueHead->FreeAll();
+    orderQueueHead->nextForce->FreeAll();
+    orderQueueHead->Free();
   }
   orderQueueHead = nullptr;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);

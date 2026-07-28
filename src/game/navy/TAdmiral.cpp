@@ -315,7 +315,18 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
   (void)unusedArg;
   int total = 0;
   for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    total += static_cast<TShip*>(node->payload)->GetBattleStrengthRating();
+    TShip* ship = static_cast<TShip*>(node->payload);
+    short resourceType = ship->type;
+    short strengthBucket = static_cast<short>(ship->experience / 100);
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[resourceType];
+    int navyPriorityScore = strengthBucket + 5 + descriptor.NavyPriorityWeightDword() * 10;
+    short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+    int resolveScore = strengthBucket + 5 + descriptor.ResolveWeight() * 10;
+    short resolveBucket = static_cast<short>(resolveScore / 10);
+    total += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+              ship->strength) /
+             descriptor.TaskForceWeight();
   }
   return total;
 }

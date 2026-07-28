@@ -788,7 +788,9 @@ bool TTaskForce::IsEmpty() const {
 
 // FUNCTION: IMPERIALISM 0x00553b50
 bool TTaskForce::NoSelection() const {
-  if (this == nullptr || IsEmpty()) {
+  if (this == nullptr || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                                 shipCountsByToolbarSlot[2] + shipCountsByToolbarSlot[3] ==
+                             0) {
     return true;
   }
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
@@ -1145,7 +1147,10 @@ unsigned int TTaskForce::IsValidTarget(Province* province) {
   if (province == nullptr) {
     return 0;
   }
-  bool noneQueued = (this == nullptr) || IsEmpty();
+  bool noneQueued = (this == nullptr) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[1] +
+                                                 shipCountsByToolbarSlot[2] +
+                                                 shipCountsByToolbarSlot[3] ==
+                                             0;
   if (!noneQueued) {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       if (node->active != 0) {

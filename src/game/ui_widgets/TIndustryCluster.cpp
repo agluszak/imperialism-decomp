@@ -29,7 +29,7 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
                                                            int assertLine) {
   TAmtBar* barControl = static_cast<TAmtBar*>(context->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
-    FailNilPointerInUSmallViews(assertLine);
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, assertLine);
   }
 
   if (barControl->auxValueA != 0) {

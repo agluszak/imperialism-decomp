@@ -1,6 +1,8 @@
 // Manual decompilation file.
 
 #include "game/ui_core/TStaticText.h"
+
+#include <mbstring.h>
 #include "game/ui_tags_common.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TViewMgr.h"
@@ -121,7 +123,8 @@ void TStaticText::IStaticText(TView* panel, int* offsetLayout, int* sizeLayout, 
 
 // FUNCTION: IMPERIALISM 0x0048fe60
 void TStaticText::SetTextAndMaybeRefresh(CString* sharedString, char refreshNow) {
-  if (sharedString->Compare(*text) != 0) {
+  if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*sharedString)),
+              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(*text))) != 0) {
     *text = *sharedString;
     if (refreshNow != 0) {
       RefreshControl();

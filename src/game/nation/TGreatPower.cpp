@@ -2653,7 +2653,7 @@ float TGreatPower::GetTotalNavalForce(void) {
     productionTerm = navyPriorityInt;
   }
   float productionTermF = static_cast<float>(productionTerm);
-  int fleetPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  int fleetPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
   int priorityCap = static_cast<int>(navyPriorityF * g_Compute_City_Order_Value_0065371C);
   if (priorityCap >= fleetPower) {
     priorityCap = fleetPower;
@@ -2994,9 +2994,20 @@ bool TGreatPower::TryHandleWarTransitionRequest(int targetNation, int sourceNati
 // FUNCTION: IMPERIALISM 0x004e1e40
 int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                                         char swapRoles) {
-  this->SetEnemy(targetNation);
-  this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, swapRoles, sourceNation);
-  return 1;
+  char accepted = g_pViewMgr->PoseWarOfferIfTurnFlowReady(
+      this->nationSlot, targetNation, sourceNation, static_cast<int>(swapRoles) + 0x14);
+  if (accepted == 0) {
+    if (swapRoles == 0) {
+      sourceNation = targetNation;
+    }
+    g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+        this->nationSlot, sourceNation, swapRoles == 0);
+  } else if (swapRoles != 0) {
+    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(targetNation, 2, sourceNation);
+  } else {
+    this->QueueWarTransitionAndNotifyThirdPartyIfNeeded(sourceNation, 2, targetNation);
+  }
+  return accepted != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20

@@ -50,7 +50,9 @@ bool TPlacard::SetValue(short value, bool refreshNow) {
       rect.left = static_cast<short>((frameWidth34 / 2) - 10);
       rect.right = rect.left + 0x14;
       rect.bottom = frameHeight38 - 1;
-      InvalidateCityDialogRectRegion(&rect, 1);
+      RECT invalidRect;
+      CopyRect(&invalidRect, &rect);
+      InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }
   return glyph90 != 0;

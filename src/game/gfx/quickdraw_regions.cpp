@@ -150,8 +150,13 @@ void GetClip(RgnHandle rgn) {
 void SetClip(RgnHandle rgn) {
   // Direct read of the static-initialized global (no null-guard on it, matching the
   // original -- the 0x494040 CRT init guarantees it is set before any SetClip call).
+  CRgn* sourceRegion = &(*rgn)->rgn;
+  if (sourceRegion == 0) {
+    ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject), 0, 0, RGN_COPY);
+    return;
+  }
   ::CombineRgn(static_cast<HRGN>(g_pGlobalClipRegionHandleObject->m_hObject),
-               static_cast<HRGN>((*rgn)->rgn), 0, RGN_COPY);
+               static_cast<HRGN>(*sourceRegion), 0, RGN_COPY);
 }
 
 // ClipRect: vestigial in the Windows port — builds a rect region and immediately

@@ -311,7 +311,8 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
     if (pOwnedCivilianEntry == nullptr) {
       return 0;
     }
-    if (!pOwnedCivilianEntry->IsInIdleSelectionState()) {
+    if (!g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId())
+             ->IsInIdleSelectionState()) {
       return 10;
     }
     if ((nInputHint != 2) &&
