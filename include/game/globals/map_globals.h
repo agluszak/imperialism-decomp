@@ -117,4 +117,9 @@ extern unsigned int g_mapGenLcgState_006a38e8;
 extern int g_regionSeedGridRows_006a38ec;
 extern int g_regionSeedGridCols_006a38f0;
 
+// Zone status-code PRNG and ocean-dialog seed viewport offsets.
+extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
+extern int g_nOceanDialogSeedViewportOffsetX;
+extern int g_nOceanDialogSeedViewportOffsetY;
+
 } // extern "C"

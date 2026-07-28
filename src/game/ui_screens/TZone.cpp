@@ -3,6 +3,7 @@
 #include "game/ui_screens/TZone.h"
 #include "game/core/runtime_prng_seed.h"
 #include "game/globals/global_types.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 
