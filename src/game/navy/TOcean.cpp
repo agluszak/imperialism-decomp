@@ -792,11 +792,12 @@ void TOcean::ForgetForce(TTaskForce* entry) {
   if (zone == 0) {
     return;
   }
+  nation = g_pSimMgr->GetActiveNationId();
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
 
-  int hasUnassignedShip = 0;
+  char hasUnassignedShip = 0;
   if ((zone->nationKeyMask10 & static_cast<unsigned char>(1 << nation)) != 0) {
     for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
       if (ship->location == zone && ship->nation == nation && ship->taskForce == 0) {
@@ -805,7 +806,11 @@ void TOcean::ForgetForce(TTaskForce* entry) {
       }
     }
   }
-  zone->SetMapOrderUiFlag(hasUnassignedShip);
+  if (hasUnassignedShip != 0) {
+    zone->SetMapOrderUiFlag(1);
+  } else {
+    zone->SetMapOrderUiFlag(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00564530

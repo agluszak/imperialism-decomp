@@ -34,7 +34,7 @@ address|matching|name
 0x413780|0.9271523178807947|ImperialismApp::ExitInstance
 0x4138b0|1.0|ImperialismApp::PostStartupCommand100
 0x4138e0|0.08333333333333333|IltTarget_004138e0
-0x413950|0.5909090909090909|ImperialismApp::HandleStartupCommand100
+0x413950|0.723404255319149|ImperialismApp::HandleStartupCommand100
 0x4139f0|1.0|ImperialismApp::RestoreWaitCursorIfStartupBusy
 0x413a20|1.0|ImperialismApp::PreTranslateMessage
 0x413a50|0.7012987012987013|ShowSelectedDibInTemplateDDDialog
@@ -2493,7 +2493,7 @@ address|matching|name
 0x4dae70|0.8433734939759037|TGreatPower::HasDeveloper
 0x4daf00|1.0|TGreatPower::SorryYouLose
 0x4daf30|0.22686567164179106|TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage
-0x4db380|0.5696465696465697|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
+0x4db380|0.6328600405679513|TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage
 0x4db7d0|0.7043010752688172|TGreatPower::BuildTransportLinkedInfluenceMap
 0x4dbac0|1.0|TGreatPower::MarkConnectedOwnedRegionsFrom
 0x4dbbb0|0.872093023255814|TGreatPower::BuildCityInfluenceLevelMap
@@ -2665,7 +2665,7 @@ address|matching|name
 0x4e5300|0.8275862068965517|TMinor::AddNoticeFrom
 0x4e5340|0.4296028880866426|TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers
 0x4e5730|0.7317073170731707|TMinor::HandleNetworkPortConstructionOrder
-0x4e5840|0.17543859649122806|TMinor::ApplyJoinEmpireMode1TargetTransition
+0x4e5840|0.6187845303867403|TMinor::ApplyJoinEmpireMode1TargetTransition
 0x4e59d0|0.6031746031746031|TMinor::ApplyJoinEmpireMode2FinalizeNationNameState
 0x4e5a40|0.810126582278481|TMinor::SetNationRowDisplayValueByDiplomacyPredicate
 0x4e5ac0|0.525|TMinor::ClearTileActivityOverlayByProvinceId
@@ -3131,7 +3131,7 @@ address|matching|name
 0x503370|0.37681159420289856|THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B
 0x5033e0|1.0|THelpMgr::NoOpDiplomacyPolicyStateChangedHook
 0x503400|1.0|THelpMgr::HandlePostPendingEventActivationNoOp
-0x503420|0.5909090909090909|THelpMgr::ActivatePendingEventAndRefreshView
+0x503420|0.61|THelpMgr::ActivatePendingEventAndRefreshView
 0x503790|0.0|IltTarget_00503790
 0x5037e0|0.0|IltTarget_005037e0
 0x503830|0.0|IltTarget_00503830
@@ -3171,7 +3171,7 @@ address|matching|name
 0x505ae0|1.0|TLonelyTileView::TLonelyTileView
 0x505b10|1.0|TLonelyTileView::`scalar deleting destructor'
 0x505b40|1.0|TLonelyTileView::~TLonelyTileView
-0x505b60|0.25471698113207547|TLonelyTileView::Draw
+0x505b60|0.47619047619047616|TLonelyTileView::Draw
 0x505dc0|0.0|IltTarget_00505dc0
 0x505f20|0.25|`dynamic initializer for 'g_scaledShortConst_6A3220''
 0x505f50|0.4897959183673469|TIconBar::CreateObject
@@ -3261,13 +3261,13 @@ address|matching|name
 0x50a820|0.4576271186440678|TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807
 0x50a9f0|0.2878138395590937|TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches
 0x50b5b0|0.9354838709677419|TMacViewMgr::ReloadBitmap244AndRefreshUiCaches
-0x50b640|0.45727482678983833|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
+0x50b640|0.5771812080536913|TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
 0x50b9e0|0.4444444444444444|TMacViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
 0x50bad0|0.6666666666666666|TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2995126273814798|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2977403633141338|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3282,7 +3282,7 @@ address|matching|name
 0x50d9e0|0.6105263157894737|TMacViewMgr::CopySpriteSurfaceToStrideBuffer
 0x50da80|0.30734966592427615|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
 0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
-0x50df40|0.2727272727272727|TMacViewMgr::DrawStrategicMapUnitIconOverlay
+0x50df40|0.2857142857142857|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.5255474452554745|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
 0x50e290|0.25|`dynamic initializer for 'g_scaledShortConst_6A3348''
 0x50e2c0|1.0|GetProvinceIndex
@@ -3522,7 +3522,7 @@ address|matching|name
 0x520d20|1.0|TMapDialog::DrawMapDialogGuidePatternSetD_00520d20
 0x520de0|1.0|TMapDialog::DrawMapDialogTileGuidePatternByVariant
 0x520fc0|1.0|TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0
-0x521090|0.40476190476190477|TMapDialog::DrawMapDialogGuidePatternSetF_00521090
+0x521090|1.0|TMapDialog::DrawMapDialogGuidePatternSetF_00521090
 0x5211c0|1.0|TMapDialog::DrawMapDialogGuidePatternSetG_005211c0
 0x521340|1.0|TMapDialog::DrawMapDialogGuidePatternSetH_00521340
 0x521540|0.6444444444444445|TMapDialog::DrawMapDialogGuidePatternSetI_00521540
@@ -3566,14 +3566,14 @@ address|matching|name
 0x526760|1.0|TMapMaker::ValidateTerrainClassAdjacencyCoverageMask
 0x5267f0|0.17982456140350878|TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass
 0x526ba0|0.782608695652174|TMapMaker::PickRandomRegionGridCell
-0x526c20|0.3181818181818182|TMapMaker::RunMapGenerationAttempt
+0x526c20|0.31767337807606266|TMapMaker::RunMapGenerationAttempt
 0x526fd0|0.0|IltTarget_00526fd0
 0x527040|0.3037974683544304|TMapMaker::AssignRegionClassToCellAndNeighbors
 0x5272c0|0.125|IltTarget_005272c0
 0x527300|0.27802690582959644|TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors
 0x5274d0|0.37593984962406013|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.3783783783783784|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
-0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
+0x527730|0.327027027027027|TMapMaker::PlaceTerrainFeatureQuotas
 0x527d00|0.43478260869565216|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
@@ -3719,7 +3719,7 @@ address|matching|name
 0x532820|0.0|TDiplomatForeignMinister
 0x532840|1.0|TDiplomatForeignMinister::DoFirstTurnDiplomacy
 0x5328d0|1.0|TDiplomatForeignMinister::DoSecondTurnDiplomacy
-0x5328f0|0.3373493975903614|TDiplomatForeignMinister::SetBuyPriorities
+0x5328f0|0.5084745762711864|TDiplomatForeignMinister::SetBuyPriorities
 0x532c60|0.32917705735660846|TDiplomatForeignMinister::SetTradeBids
 0x532f70|0.21705426356589147|TDiplomatForeignMinister::ReplyToTradeOffer
 0x533050|1.0|TDiplomatForeignMinister::MakeNewCity
@@ -4612,7 +4612,7 @@ address|matching|name
 0x563f50|0.5491183879093199|RefreshPortZoneNeighborContextLinksAndFallbacks
 0x564240|0.6136363636363636|TOcean::RemovePortZoneByTile
 0x5642e0|0.8115942028985508|TOcean::FinalizeQueuedMapOrderEntry
-0x564400|0.512396694214876|TOcean::ForgetForce
+0x564400|0.5692307692307692|TOcean::ForgetForce
 0x5644f0|0.13333333333333333|IltTarget_005644f0
 0x564530|1.0|TOcean::ComputeGlobalMapActionContextNodeValueAverage
 0x564570|1.0|TOcean::FindMapActionContextContainingNodeByIndex
@@ -4793,7 +4793,7 @@ address|matching|name
 0x56f9c0|1.0|TPageView::TPageView
 0x56fa00|1.0|TPageView::`scalar deleting destructor'
 0x56fa30|1.0|TPageView::~TPageView
-0x56fa50|0.5222929936305732|TPageView::DoPostCreate
+0x56fa50|0.9685534591194969|TPageView::DoPostCreate
 0x56fbb0|1.0|TPageView::AddOrderedEntry
 0x56fbd0|1.0|TPageView::AddOptionEntry
 0x56fbf0|1.0|TPageView::ResetSelectableOptionEntriesExceptColorAndOkay

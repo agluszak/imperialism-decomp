@@ -618,6 +618,9 @@ void TMapMaker::RunMapGenerationAttempt() {
   signed char* regionClassGridFlat = &regionClassGrid10[0][0];
 
   for (int classIndex = 0; classIndex < 7; ++classIndex) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+    }
     int assigned;
     do {
       cityRegionIds200[classIndex] = -1;
@@ -644,6 +647,9 @@ void TMapMaker::RunMapGenerationAttempt() {
   }
 
   for (int minorClassIndex = 7; minorClassIndex < 0x17; ++minorClassIndex) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+    }
     int parity = (minorClassIndex - 7) >> 2;
     int assigned;
     do {
@@ -942,6 +948,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     int direction = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
     remaining -= SeedMountainRange(tileIndex, retryBudget, direction);
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
     if (mapTileGrid08[hillsSrcTile * 0x24] != kStrategicTerrainMountain) {
@@ -958,6 +967,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       }
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   while (hillsQuota > 0) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -967,8 +979,14 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       --hillsQuota;
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   CreateDeserts();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   bool urgentFlag = false;
   while (forestQuota > 0) {
@@ -979,9 +997,15 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       urgentFlag = true;
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   for (;;) {
     if (swampQuota < 1) {
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+      }
       for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
         if (mapTileGrid08[fillTile * 0x24] == kStrategicTerrainPlains) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -989,6 +1013,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
             mapTileGrid08[fillTile * 0x24] = kStrategicTerrainFarmland;
           }
         }
+      }
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
       }
       CreateRivers();
       return;

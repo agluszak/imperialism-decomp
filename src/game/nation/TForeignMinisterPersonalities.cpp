@@ -536,19 +536,27 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
       preferredResourceSlots40[1] = 4;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) <
-                                            ownerContextAt04->GetStockpile(kResourceCoal)
-                                        ? 6
-                                        : 3;
+      if (ownerContextAt04->GetStockpile(kResourceOil) <
+          ownerContextAt04->GetStockpile(kResourceCoal)) {
+        preferredResourceSlots40[2] = 6;
+        TForeignMinister::SetBuyPriorities();
+        return;
+      }
+      preferredResourceSlots40[2] = 3;
+      TForeignMinister::SetBuyPriorities();
+      return;
     } else {
       preferredResourceSlots40[1] = 3;
-      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) <
-                                            ownerContextAt04->GetStockpile(kResourceIron)
-                                        ? 6
-                                        : 4;
+      if (ownerContextAt04->GetStockpile(kResourceOil) <
+          ownerContextAt04->GetStockpile(kResourceIron)) {
+        preferredResourceSlots40[2] = 6;
+        TForeignMinister::SetBuyPriorities();
+        return;
+      }
+      preferredResourceSlots40[2] = 4;
+      TForeignMinister::SetBuyPriorities();
+      return;
     }
-    TForeignMinister::SetBuyPriorities();
-    return;
   }
 
   bool hasTradeCandidate = false;
@@ -562,7 +570,14 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
   if (!hasTradeCandidate) {
     preferredResourceSlots40[1] = 0;
     preferredResourceSlots40[2] = 1;
-    preferredResourceSlots40[3] = rand() < 0x3ffe ? 3 : 4;
+    if (rand() < 0x3ffe) {
+      preferredResourceSlots40[3] = 3;
+      TForeignMinister::SetBuyPriorities();
+      return;
+    }
+    preferredResourceSlots40[3] = 4;
+    TForeignMinister::SetBuyPriorities();
+    return;
   } else if (((g_pSimMgr->economicTurn / 4) & 1) != 0) {
     if (ownerContextAt04->GetStockpile(kResourceIron) <
         ownerContextAt04->GetStockpile(kResourceCoal)) {
@@ -572,7 +587,14 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
       preferredResourceSlots40[1] = 3;
       preferredResourceSlots40[2] = 4;
     }
-    preferredResourceSlots40[3] = g_pTradeMgr->GetPrice(0) > g_pTradeMgr->GetPrice(1) ? 0 : 1;
+    if (g_pTradeMgr->GetPrice(0) > g_pTradeMgr->GetPrice(1)) {
+      preferredResourceSlots40[3] = 0;
+      TForeignMinister::SetBuyPriorities();
+      return;
+    }
+    preferredResourceSlots40[3] = 1;
+    TForeignMinister::SetBuyPriorities();
+    return;
   } else {
     if (ownerContextAt04->GetStockpile(kResourceCotton) <
         ownerContextAt04->GetStockpile(kResourceWool)) {
@@ -582,12 +604,16 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
       preferredResourceSlots40[1] = 1;
       preferredResourceSlots40[2] = 0;
     }
-    preferredResourceSlots40[3] = ownerContextAt04->GetStockpile(kResourceIron) <
-                                          ownerContextAt04->GetStockpile(kResourceCoal)
-                                      ? 4
-                                      : 3;
+    if (ownerContextAt04->GetStockpile(kResourceIron) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
+      preferredResourceSlots40[3] = 4;
+      TForeignMinister::SetBuyPriorities();
+      return;
+    }
+    preferredResourceSlots40[3] = 3;
+    TForeignMinister::SetBuyPriorities();
+    return;
   }
-  TForeignMinister::SetBuyPriorities();
 }
 
 // FUNCTION: IMPERIALISM 0x00532c60

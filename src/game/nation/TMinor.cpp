@@ -1020,7 +1020,31 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 
 // FUNCTION: IMPERIALISM 0x004e5840
 void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
-  TCountry::ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
+  this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
+
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+        nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
+      g_apTerrainTypeDescriptorTable[nationSlot]->SetNationPercentFieldByModeAndDescriptorLinks(
+          this->nationSlot, 200);
+    }
+  }
+
+  g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
+  g_apNationStates[targetNationSlot]->ResetNationDiplomacySlotsAndMarkRelatedNations(
+      this->nationSlot);
+  this->RelinkTileUnitsToCountryOrderManager(targetNationSlot);
+  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<NationSlot>(targetNationSlot));
+  g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
+      this->nationSlot, targetNationSlot, kDiplomacyRelationshipPeace);
+  this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
+  this->ReassignUnitOrdersForCountryTargetChange(-1, 0);
+
+  if (g_apNationStates[targetNationSlot]->pendingActionStatus.roles.territorialPressureStatus06 <
+      '3') {
+    g_apNationStates[targetNationSlot]->SetNationPendingActionStateAndPayload(10, this->nationSlot);
+  }
   g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedEmpire, this->nationSlot,
                              targetNationSlot, 0);
 }

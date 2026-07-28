@@ -377,13 +377,13 @@ void ImperialismApp::PostStartupCommand100() {
 // FUNCTION: IMPERIALISM 0x00413950
 void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
-  BeginWaitCursor();
+  AfxGetApp()->BeginWaitCursor();
   waitCursorAnchorC0 = &waitCursorAnchor;
   if (g_pSimMgr != nullptr) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
   }
   waitCursorAnchorC0 = 0;
-  EndWaitCursor();
+  AfxGetApp()->EndWaitCursor();
 }
 
 // FUNCTION: IMPERIALISM 0x004139f0

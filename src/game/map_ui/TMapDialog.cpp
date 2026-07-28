@@ -1559,21 +1559,27 @@ void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY
     x2 = originX + 0x34;
     DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
     DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x32);
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x39);
+    DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
+    return;
   } else if (variant == 2) {
     x1 = originX + 0x3a;
     SetQuickDrawTextOriginWithContextOffset(x1, originY + 0x20);
     x2 = originX + 0x38;
     DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
     DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x32);
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x39);
+    DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
+    return;
   } else {
     x1 = originX + 0x38;
     SetQuickDrawTextOriginWithContextOffset(x1, originY + 0x20);
     x2 = originX + 0x36;
     DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
     DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x32);
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x39);
+    DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
   }
-  DrawCenteredGuideLineOnMapDc(x2, originY + 0x39);
-  DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
 }
 
 // FUNCTION: IMPERIALISM 0x005211C0
