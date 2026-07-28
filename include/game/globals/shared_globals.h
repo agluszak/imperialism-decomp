@@ -2,6 +2,7 @@
 // Cross-subsystem and unresolved global declarations. Definitions and address markers
 // live in src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
+#include "game/globals/game_session_globals.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/tactical_ui_globals.h"
@@ -34,9 +35,6 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // plain pointer aliasing the shared g_szEmptyString buffer, matching the
 // g_pszEmptyTextRef_00669db8 idiom. Not yet pinned to a writer if one exists.
 extern const char* g_cstrTradeTotalsBalanceSubstitution0066DB50;
-
-// Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
-extern TNetMgr* g_pNetMgr006a6014;
 
 // WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init
 // helpers 0x5e26d0/0x5e2720/0x5e2770). Vtables 0x66fa50 (CList) / 0x66fa68 (CArray)
@@ -113,19 +111,6 @@ extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 // the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
 // GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
 extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
-
-// Game singleton pointers (markers in global_data_tables.cpp).
-extern TZone* g_pMapActionContextListHead;
-
-extern TOcean* g_pActiveMapOrderContext;
-
-// Resolved-context cache written by GetMapContextActionCode (0x559a70) for a downstream
-// dialog branch; not yet consumed by any ported reader.
-extern TTaskForce* g_pCachedMapActionContext;
-
-extern TMapMgr* g_pGlobalMapState;
-
-extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
 // Seed viewport offsets copied into TWorldView::viewportOrigin.x/Y by the TOceanDialog
 // ctor; the only known writer (0x56a3b0) zeroes both.
@@ -272,19 +257,9 @@ extern TGreatPower* g_apNationStates[7];
 // 0x006a438c. It is not a separately allocated pointer object.
 #define g_apNationStates_End g_apNationStates[7]
 
-extern TSimMgr* g_pSimMgr;
-
-extern THelpMgr* g_pHelpMgr;
-
-extern TNewsMgr* g_pNewsMgr;
-
 extern TAmbitApplication* g_pAmbitApplication;
 
 extern const char* g_pszEmptyTextRef_00669db8;
-
-// The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
-// __thiscall method on it (original callsites load ECX from here).
-extern TMultiplayerMgr* g_pGameFlowState;
 
 extern const char s_DataDirectoryPath_006942A8[];
 
@@ -645,13 +620,6 @@ extern const float g_UnreferencedConstant_006545d4;
 extern "C" char g_bMultiplayerScenarioSetupActive;
 
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
-
-// TZone.cpp — zone-graph BFS distance cache.
-extern int g_nMapActionContextCount;
-
-extern void* g_pMapActionContextDistanceCache;
-
-extern int g_nMapActionContextDistanceCacheSizedFor;
 
 // TGameSetupPicture.cpp — main-menu 'rand' button developer cheat gate: holding shift
 // while clicking only takes the instant-random-map shortcut when this flag is set
