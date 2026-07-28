@@ -19,6 +19,7 @@
 #include <new>
 
 #include "game/ui_core/TApplication.h"
+#include "game/CSubViewIterator.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
@@ -64,13 +65,23 @@ int TUnitToolbarCluster::IsTradeControlAtMinimum() {
 
 // FUNCTION: IMPERIALISM 0x00586170
 void TUnitToolbarCluster::SetSelectedChildTagAndRefresh(int childTag) {
-  selectedChildTag = childTag;
-
-  TView* resourceControl = ResolveControlByTag(kControlTagReso + childTag);
-  if (resourceControl == 0) {
-    GAME_FAIL_NIL_POINTER();
-    return;
+  CSubViewIterator iterator(this);
+  TView* selectedChild = 0;
+  TView* child = iterator.FirstSubView();
+  while (iterator.MoreSubViews()) {
+    if (child->controlTag == childTag) {
+      child->DoEvent(kControlCommandHiliteOn, this, 0);
+      selectedChild = child;
+    } else {
+      child->DoEvent(kControlCommandHiliteOff, this, 0);
+    }
+    child = iterator.NextSubView();
   }
 
-  resourceControl->DoEvent(0, 0, 0);
+  selectedChildTag = childTag;
+  if (selectedChild != 0) {
+    TView* dialog = GetWindow()->ResolveControlByTag(kControlTagDialog);
+    dialog->AssertValid();
+    dialog->DoEvent(0xc, selectedChild, 0);
+  }
 }

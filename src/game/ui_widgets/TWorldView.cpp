@@ -59,7 +59,7 @@ TWorldView::TWorldView() {
   paintedHoverTileIndex = 0;
   hoveredTileCityRecordIndex = 0;
   paintedTileCityRecordIndex = 0;
-  stridedCellRecordIndex = 0xffff;
+  stridedCellRecordIndex = -1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00595040
@@ -72,6 +72,10 @@ void TWorldView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x005950b0
 void TWorldView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x78 && stridedCellRecordIndex != -1) {
+    g_pViewMgr->HandleGlobalMapNationContextSelection(stridedCellRecordIndex,
+                                                      g_pSimMgr->GetActiveNationId());
+  }
   TEventHandler::DoEvent(commandId, sourceHandler, event);
 }
 
@@ -564,7 +568,7 @@ void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int 
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecordIndex = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecordIndex = static_cast<short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 
@@ -577,7 +581,7 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
   event->commandNumber = 0x78;
   event->sourceHandler = this;
   event->targetHandler = this;
-  stridedCellRecordIndex = static_cast<unsigned short>(stridedRecord);
+  stridedCellRecordIndex = static_cast<short>(stridedRecord);
   DispatchQueuedUiCommandAndRelease(event);
 }
 

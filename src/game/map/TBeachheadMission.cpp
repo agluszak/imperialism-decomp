@@ -162,9 +162,12 @@ TMission* TBeachheadMission::GetArmyMission() {
 char TBeachheadMission::SmokeEmIfYouGotEm() {
   // ClearBlockadePortMissionChildOrderLinksIfReady: clears each queued
   // order-child's owner-back-pointer, then frees the chain.
-  if (marker11 == 0 && taskForce20 != nullptr) {
+  if (flag10 == 0 && navyState28 != 0) {
     return 0;
   }
-  orderList24 = nullptr;
+  while (orderList24 != 0) {
+    static_cast<TShip*>(orderList24->payload)->mission = 0;
+    orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
+  }
   return 1;
 }

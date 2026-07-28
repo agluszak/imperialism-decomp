@@ -710,9 +710,7 @@ void TAutoGreatPower::SetEnemy(int nationSlot, char makeEnemy) {
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
   TLongintList* regionList = this->ownedRegionList;
-  int regionCount = regionList->GetSize();
-
-  for (int i = 1; i <= regionCount; i++) {
+  for (int i = 1; i <= regionList->GetSize(); i++) {
     int regionId = regionList->At(i);
     bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
         regionId, this->nationSlot);
@@ -1261,6 +1259,7 @@ void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targ
   for (i = 0; i < kPortZoneCount; ++i) {
     this->portZoneStateFlags[i] = 0;
   }
+  KillMissions();
 }
 
 // FUNCTION: IMPERIALISM 0x004ea1c0
@@ -1286,11 +1285,12 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 // FUNCTION: IMPERIALISM 0x004ea290
 void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
   TGreatPower::AddRegionIdToNationOwnedRegionList(regionId);
-
-  if (regionId >= 0 && regionId < kMapNodeCount) {
-    this->mapNodeStateFlags[regionId] = 1;
-    this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
-  }
+  this->mapNodeStateFlags[regionId] =
+      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId,
+                                                                              this->nationSlot)
+          ? 0
+          : 1;
+  this->CreateMission(kMissionTypeDefendProvince, regionId, 0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea300

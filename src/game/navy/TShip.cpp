@@ -108,7 +108,15 @@ void TShip::Free() {
   if (this->previous != 0) {
     this->previous->next = this->next;
   }
-  name.~CString();
+  if (mission != 0) {
+    mission->RejectConstituent(this, 1);
+  }
+  if (taskForce != 0) {
+    taskForce->Remove(this);
+  }
+  if (admiral != 0) {
+    admiral->Free();
+  }
   delete this;
 }
 

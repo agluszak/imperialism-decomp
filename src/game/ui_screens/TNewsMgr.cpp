@@ -688,17 +688,35 @@ void TNewsMgr::ConcatenateTreaty(InterNationEventKind eventKind, int nationA, in
 unsigned char TNewsMgr::EvaluateFeatureStory(const newsEntry* templateRow, newsStory* story,
                                              int nationSlot) {
   int kind = templateRow->storyId;
+  unsigned char eligible = 0;
   if (kind > 9 && kind % 10 == 0) {
     short period = static_cast<short>(g_pSimMgr->economicTurn / 4);
     if (period >= kind - 10 && period < kind) {
-      return AlwaysTrueStory(templateRow, story, nationSlot);
+      eligible = 1;
     }
+  } else if (kind == 1) {
+    eligible = 1;
+  }
+  if (!eligible) {
     return 0;
   }
-  if (kind == 1) {
-    return AlwaysTrueStory(templateRow, story, nationSlot);
-  }
-  return 0;
+
+  story->parmKind[0] = 0;
+  story->parmKind[1] = 0;
+  story->parmKind[2] = 0;
+  story->parmKind[3] = 0;
+  story->entry = *templateRow;
+  story->parmKind[0] = 1;
+  story->feature38 = 1;
+  story->parmValue[0] = 1 << nationSlot;
+
+  short otherNation;
+  do {
+    otherNation = static_cast<short>(rand() % 7);
+  } while (otherNation == nationSlot || g_apTerrainTypeDescriptorTable[otherNation] == 0);
+  story->parmKind[1] = 1;
+  story->parmValue[1] = 1 << otherNation;
+  return 1;
 }
 
 // Mac oracle: ClearStoryParms.
