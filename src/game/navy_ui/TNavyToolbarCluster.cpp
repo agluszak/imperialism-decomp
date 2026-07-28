@@ -10,7 +10,7 @@
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x00569430
 // TNavyToolbarCluster::CreateObject
@@ -49,17 +49,17 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
       if (order != nullptr) {
         order->DropShips(tag == kControlTagDone);
       }
-      g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+      g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
       break;
     }
     case kControlTagNext:
-      g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+      g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
       break;
     case kControlTagBomb:
       if ((GetAsyncKeyState(0x11) & 0x8000) == 0) {
-        g_pUiRuntimeContext->MakeNavyRosterDialog(GetActiveMapOrderEntry());
+        g_pViewMgr->MakeNavyRosterDialog(GetActiveMapOrderEntry());
       } else {
-        g_pUiRuntimeContext->ShowNavyRosterDialogAndApplySelection();
+        g_pViewMgr->ShowNavyRosterDialogAndApplySelection();
       }
       break;
     default:

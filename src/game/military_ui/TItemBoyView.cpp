@@ -3,7 +3,8 @@
 #include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -66,8 +67,7 @@ void TItemBoyView::DrawItemHeaderAndIconRows(CString* header) {
       UpdatePaletteIndexWithDefaultFallback(0x10);
       // Item icon strip is cached at a different TMacViewMgr slot (+0x674) than the
       // Army/Navy boy views' level-icon strip (+0x694).
-      TQuickDrawBlitSurface* iconStripSurface =
-          g_pStrategicMapViewSystem->atlas674->GetBlitSurface();
+      TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas674->GetBlitSurface();
       BlitRectWithOptionalTransparency(iconStripSurface,
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                        &dstRect, 0x24, 0);

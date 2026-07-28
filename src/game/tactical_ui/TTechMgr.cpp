@@ -6,14 +6,15 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 
 #include <string.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/navy/TAdmiral.h"
 #include "game/city/TCity.h"
 #include "game/city_ui/TCountry.h"
@@ -29,14 +30,13 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/military/mapped_flavor_text.h"
 
-TTechMgr* g_pCityOrderCapabilityState = 0;
+TTechMgr* g_pTechMgr = 0;
 
 // FUNCTION: IMPERIALISM 0x005572d0
 short GetEnabledIndustryCapabilitySlotByClass(short classId) {
   short slot = 13;
   const IndustryCapabilityClassSlotEntry* entry = &g_aIndustryCapabilityClassSlotTable[13];
-  while (entry->classId != classId ||
-         g_pCityOrderCapabilityState->resourceTypeEnabled19d[slot] == 0) {
+  while (entry->classId != classId || g_pTechMgr->resourceTypeEnabled19d[slot] == 0) {
     entry--;
     slot--;
     if (entry == g_aIndustryCapabilityClassSlotTable) {
@@ -421,7 +421,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   case 0xf:
     UpdateSelectionAndRecalculateScores(8, nationSlot);
     if (g_pSimMgr->GetActiveNationId() == nationSlot) {
-      g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     break;
   case 0xc:
@@ -485,7 +485,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
     UpdateSelectionAndRecalculateScores(0xb, nationSlot);
     UpdateSelectionAndRecalculateScores(0xa, nationSlot);
     if (g_pSimMgr->GetActiveNationId() == nationSlot) {
-      g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     break;
   case 0x1a:
@@ -677,7 +677,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
       scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(countString));
     }
-    g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptTechCapabilityModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(formattedMessage, g_ptTechCapabilityModalMessage, 2, 0);
   }
 
   for (node = TShip::GetFirst(); node != 0; node = node->next) {

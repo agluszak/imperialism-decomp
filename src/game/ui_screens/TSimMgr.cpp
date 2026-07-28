@@ -44,8 +44,8 @@
 #include "game/military/TRemoteMinor.h"
 #include "game/app/TAnimator.h"
 #include "game/ui_core/TLanguageMgr.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -214,9 +214,9 @@ void TSimMgr::ISimMgr() {
 // FUNCTION: IMPERIALISM 0x0057bd20
 void TSimMgr::Free() {
   int i;
-  if (g_pNationInteractionStateManager != nullptr) {
-    g_pNationInteractionStateManager->Free();
-    g_pNationInteractionStateManager = nullptr;
+  if (g_pTradeMgr != nullptr) {
+    g_pTradeMgr->Free();
+    g_pTradeMgr = nullptr;
   }
   if (g_pDiplomacyTurnStateManager != nullptr) {
     g_pDiplomacyTurnStateManager->Free();
@@ -234,9 +234,9 @@ void TSimMgr::Free() {
     g_pGlobalMapState->Free();
     g_pGlobalMapState = nullptr;
   }
-  if (g_pCityOrderCapabilityState != nullptr) {
-    g_pCityOrderCapabilityState->Free();
-    g_pCityOrderCapabilityState = nullptr;
+  if (g_pTechMgr != nullptr) {
+    g_pTechMgr->Free();
+    g_pTechMgr = nullptr;
   }
   if (g_pNewsMgr != nullptr) {
     g_pNewsMgr->Free();
@@ -339,13 +339,13 @@ void TSimMgr::ReadFrom(TStream* stream) {
     short selectedIndex;
     stream->ReadBytes(&selectedIndex, 2);
     field6a = selectedIndex;
-    g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(selectedIndex);
+    g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(selectedIndex);
   } else {
     field6a = (scenarioMapIndexPlusOne != 0) ? 1 : 0;
-    g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
+    g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(field6a);
   }
 
-  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
 
   if (g_nSaveFormatVersion >= 0x36) {
     stream->ReadBytes(&field6c, 2);
@@ -371,7 +371,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     }
   }
 
-  g_pUiViewManager->OpenFilesFor(1);
+  g_pAssetMgr->OpenFilesFor(1);
   RebuildGlobalOrderManagersAndCapabilityState(0);
   RebuildMapContextAndGlobalMapState(0, nullptr, 0);
   RebuildNationStateSlotsAndAvailability(0);
@@ -467,13 +467,13 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     diplomacyManager->InitializeTDiplomacyTurnStateManagerDefaults();
     g_pDiplomacyTurnStateManager = diplomacyManager;
 
-    if (g_pNationInteractionStateManager != nullptr) {
-      g_pNationInteractionStateManager->Free();
-      g_pNationInteractionStateManager = nullptr;
+    if (g_pTradeMgr != nullptr) {
+      g_pTradeMgr->Free();
+      g_pTradeMgr = nullptr;
     }
     TTradeMgr* tradeManager = new TTradeMgr();
     tradeManager->ITradeMgr();
-    g_pNationInteractionStateManager = tradeManager;
+    g_pTradeMgr = tradeManager;
 
     if (g_pNewsMgr != nullptr) {
       g_pNewsMgr->Free();
@@ -505,11 +505,11 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     g_pNavyOrderManager = new TNavyMgr();
     g_pNavyOrderManager->INavyMgr();
 
-    if (g_pCityOrderCapabilityState != nullptr) {
-      g_pCityOrderCapabilityState->Free();
+    if (g_pTechMgr != nullptr) {
+      g_pTechMgr->Free();
     }
-    g_pCityOrderCapabilityState = new TTechMgr();
-    g_pCityOrderCapabilityState->InitializeCityOrderCapabilityStateDefaults();
+    g_pTechMgr = new TTechMgr();
+    g_pTechMgr->InitializeCityOrderCapabilityStateDefaults();
   }
 }
 
@@ -624,8 +624,8 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
 
   if (g_bMultiplayerScenarioSetupActive == 0) {
     g_pDiplomacyTurnStateManager->RebuildCivilianOrderCompatibilityMatrices();
-    g_pUiRuntimeContext->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
-    g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
+    g_pViewMgr->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
+    g_pTechMgr->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->GenerateProvinceNames();
     RegenerateAllMapActionContextStatusCodes();
     g_pNewsMgr->AddMiscEvent(999, 1, 1);
@@ -636,7 +636,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
       CString path;
       path.Format(s_PictWvGobPathFormat_00698BF4, tagText[1] - '0');
       if (TryGetFileMetadataForPath(&path)) {
-        g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
+        g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
       }
     }
   }
@@ -673,7 +673,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     g_apTerrainTypeDescriptorTable[nationIndex] = g_apNationStates[nationIndex];
     if (g_bMultiplayerScenarioSetupActive == 0) {
       activeNationSlot = nationSlot;
-      g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+      g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
     }
     if (g_bMultiplayerScenarioSetupActive == 0) {
       unsigned char suspendPrimaryEventQueue = multiplayerSessionRole != 0;
@@ -989,8 +989,7 @@ void TSimMgr::DoMilitary() {
 
 // FUNCTION: IMPERIALISM 0x0057f3c0
 void TSimMgr::DoTrade() {
-  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet),
-                                         activeNationSlot);
+  g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNationSlot);
 
   for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
     if (g_apNationStates[nationSlot] != 0) {
@@ -998,18 +997,18 @@ void TSimMgr::DoTrade() {
     }
   }
 
-  g_pNationInteractionStateManager->ResetNationMetricRowsAndClearCategoryRankLists();
-  g_pNationInteractionStateManager->RunNationUpdatePassesAndResetTransitionFlags();
-  g_pNationInteractionStateManager->SetMinorsTradeBids();
-  g_pNationInteractionStateManager->TallyTradeBids();
-  g_pNationInteractionStateManager->CalculateNewWorldPrices();
-  g_pNationInteractionStateManager->CalculateDealOrder();
+  g_pTradeMgr->ResetNationMetricRowsAndClearCategoryRankLists();
+  g_pTradeMgr->RunNationUpdatePassesAndResetTransitionFlags();
+  g_pTradeMgr->SetMinorsTradeBids();
+  g_pTradeMgr->TallyTradeBids();
+  g_pTradeMgr->CalculateNewWorldPrices();
+  g_pTradeMgr->CalculateDealOrder();
 
   int shouldSendTradeBook = multiplayerSessionRole != 0;
   if (shouldSendTradeBook) {
     g_pGameFlowState->SendTradeBook();
   }
-  g_pNationInteractionStateManager->StartDeals();
+  g_pTradeMgr->StartDeals();
 }
 
 // FUNCTION: IMPERIALISM 0x0057f490
@@ -1433,14 +1432,14 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
     g_bRandomMapDeveloperCheatFlag = 0;
     simMgr->ReinitializeRandomSeed();
     g_pSimMgr->turnStateCode = 3;
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
   } else {
     g_pSimMgr->Free();
     g_pSimMgr = new TSimMgr();
     g_pSimMgr->ISimMgr();
     g_pSimMgr->StartNextPhase();
     if (eventCode != 0) {
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
+      g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(eventCode));
     }
   }
   g_bTurnFlowBootstrapComplete = 1;
@@ -1449,8 +1448,8 @@ void ReinitializeGameFlowAndPostTurnEventCode(TurnEventId eventCode) {
 // FUNCTION: IMPERIALISM 0x00581ae0
 void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
   field6a = index;
-  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
-  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+  g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
+  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
 }
 
 // FUNCTION: IMPERIALISM 0x00581b20
@@ -1491,8 +1490,8 @@ void TSimMgr::ProcessScenarioScript() {
   g_bScenarioScriptTerminationRequested = 0;
   g_nScenarioScriptInstructionCount = 0;
 
-  g_pUiViewManager->BuildScenarioPathForModeAndIndex(
-      static_cast<short>(scenarioMapIndexPlusOne) - 1, 2, &scenarioPath);
+  g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioMapIndexPlusOne) - 1, 2,
+                                                &scenarioPath);
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
     CString ordinalText;
@@ -1500,11 +1499,11 @@ void TSimMgr::ProcessScenarioScript() {
     zone->displayName = ordinalText;
   }
 
-  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
-  int resourceSize = g_pUiViewManager->GetResourceStreamSize(stream);
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(scenarioPath);
+  int resourceSize = g_pAssetMgr->GetResourceStreamSize(stream);
   unsigned char* buffer = new unsigned char[resourceSize];
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, buffer, &resourceSize);
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, buffer, &resourceSize);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
   STurnInstructionCursor instruction;
   instruction.byteCursor = buffer;
@@ -1534,7 +1533,7 @@ void TSimMgr::ProcessScenarioScript() {
 
   delete[] buffer;
   if (g_bScenarioScriptTerminationRequested != 0) {
-    g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+    g_pAmbitApplication->PostWmCloseToMainThreadWindow();
   }
 
   TGreatPower** nationCursor = g_apNationStates;
@@ -1957,8 +1956,8 @@ void TSimMgr::HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations(void* p
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_DWORD_TOKEN(techToken);
 
-  g_pCityOrderCapabilityState->ApplyTechUnlockAndQueueNationAbilityNotices(
-      static_cast<int>(techToken), static_cast<int>(nationToken));
+  g_pTechMgr->ApplyTechUnlockAndQueueNationAbilityNotices(static_cast<int>(techToken),
+                                                          static_cast<int>(nationToken));
 }
 
 // Reads two big-endian 16-bit tokens (metric category, then value) and applies the value
@@ -1986,8 +1985,7 @@ void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstruc
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
-  g_pNationInteractionStateManager->UpdatePrice(static_cast<short>(categoryToken),
-                                                static_cast<short>(valueToken));
+  g_pTradeMgr->UpdatePrice(static_cast<short>(categoryToken), static_cast<short>(valueToken));
 }
 
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
@@ -2310,8 +2308,8 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
   DECODE_SCENARIO_SHORT_TOKEN(token);
   short index = static_cast<short>(token);
   field6a = index;
-  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
-  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+  g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(index);
+  g_pMacViewMgr->ReloadBitmap244AndRefreshUiCaches();
 }
 
 // Reads two big-endian 32-bit tokens (priority-slot index, then value) and applies the
@@ -2336,8 +2334,8 @@ void TSimMgr::HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void* p
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_DWORD_TOKEN(valueToken);
 
-  g_pCityOrderCapabilityState->SetCityOrderCapabilityTierScaledValueByIndex(
-      static_cast<int>(indexToken), static_cast<int>(valueToken + 1));
+  g_pTechMgr->SetCityOrderCapabilityTierScaledValueByIndex(static_cast<int>(indexToken),
+                                                           static_cast<int>(valueToken + 1));
 }
 
 // Reads a big-endian 32-bit owner-nation index and two more big-endian 32-bit tokens (a
@@ -2459,7 +2457,7 @@ void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionR
 // FUNCTION: IMPERIALISM 0x005837c0
 void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot) {
   activeNationSlot = nationSlot;
-  g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+  g_pMacViewMgr->RefreshCityCapabilityUiHandlesForActiveNation();
 }
 
 // FUNCTION: IMPERIALISM 0x005d4c10

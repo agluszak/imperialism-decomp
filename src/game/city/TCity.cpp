@@ -20,13 +20,14 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/tactical_ui/TTaskList.h"
 #include "game/city/TTrainingOrder.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/city/TUnitOrder.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TPtrList.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -504,7 +505,7 @@ void TCity::EndCityPhase() {
   }
   productionAccum1fc[0x0f] = capacity;
   productionAccum1fc[0x0e] = productionOrderTable1dc[0x0e];
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
 }
 
 // FUNCTION: IMPERIALISM 0x004b3de0
@@ -939,8 +940,7 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   case 7: {
     short nationSlot = g_pSimMgr->GetActiveNationId();
     result = static_cast<short>(
-        (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) +
-        1);
+        (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x0f] == 2) + 1);
     return result;
   }
 

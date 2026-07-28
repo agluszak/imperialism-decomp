@@ -4,7 +4,7 @@
 #include "game/ui_core/TApplication.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -112,8 +112,7 @@ void THighScoresPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TE
   (void)sourceHandler;
   (void)event;
   if (commandId == 0xa) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-        EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
     g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(0xb);
     g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();

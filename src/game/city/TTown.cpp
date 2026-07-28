@@ -1,4 +1,4 @@
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -9,7 +9,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include <string.h>
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -213,8 +213,7 @@ void TTown::CalculateCityResources() {
           static_cast<short>(g_pGlobalMapState->FindResourceCapabilityRequirementLevelByType(
               tileIndex, static_cast<char>(resource)));
       if (amount != 0 && g_abResourceTypeUsesHighNibbleFlag[tile->gateFlag] != 0) {
-        short capability =
-            g_pCityOrderCapabilityState->capabilityValueByNationAndResource[ownerNation][resource];
+        short capability = g_pTechMgr->capabilityValueByNationAndResource[ownerNation][resource];
         amount = static_cast<short>(g_abUniversityRequirementLevelById[resource][capability]);
       }
       resourceYieldByType[resource] = static_cast<short>(resourceYieldByType[resource] + amount);
@@ -263,7 +262,7 @@ void TTown::Grow() {
     }
 
     if (resourceYieldByType[kResourceOil] != 0 &&
-        g_pCityOrderCapabilityState->orderCapRows277[ownerNation].techStatusByTechId[0x14] == 2) {
+        g_pTechMgr->orderCapRows277[ownerNation].techStatusByTechId[0x14] == 2) {
       short& fuel = resourceYieldByType[kResourceFuel];
       if (fuel < resourceYieldByType[kResourceOil] / 2) {
         ++fuel;

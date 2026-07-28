@@ -1,7 +1,7 @@
 #include "game/city/TFoodProcessingOrder.h"
 
 #include "game/city/TCity.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
@@ -79,7 +79,7 @@ bool TFoodProcessingOrder::SetQuantity(short quantity) {
         static_cast<short>(ownerCity->cityStockLivestockDE - halfDelta);
   }
   ownerCity->VerifyStocks();
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

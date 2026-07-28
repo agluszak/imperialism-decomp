@@ -1,11 +1,14 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
+
+// Most recently clicked strategic-map tile.
+extern int g_lastClickedMapTileIndex_006a4608;
 
 // Scratch remap from pre-existing city-region id to compact id. The load-map form of
 // TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders clears all 256 entries to -1 before populating it.

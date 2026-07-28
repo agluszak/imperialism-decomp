@@ -26,7 +26,9 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TUiEvent.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -1155,7 +1157,7 @@ void TTacticalBattleView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
-      SetCursor(g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
+      SetCursor(g_pViewMgr->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
       return;
     }
   }
@@ -1184,7 +1186,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     cursor = LoadCursorA(0, IDC_ARROW);
   } else {
     cursor =
-        g_pUiRuntimeContext
+        g_pViewMgr
             ->turnEventCursors[static_cast<short>(cursorToken) - TViewMgr::kCursorResourceIdBase];
   }
   SetCursor(cursor);

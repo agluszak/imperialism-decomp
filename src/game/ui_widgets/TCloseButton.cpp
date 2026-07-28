@@ -1,6 +1,6 @@
 #include "game/ui_widgets/TCloseButton.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
@@ -26,6 +26,6 @@ TCloseButton::~TCloseButton() {}
 // FUNCTION: IMPERIALISM 0x00584b70
 char TCloseButton::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) {
   TView::HandleMouseDown(point, event, origin);
-  g_pUiRuntimeContext->DispatchTurnEvent(kTurnEventRebuildRegisteredWindows, 0);
+  g_pViewMgr->DispatchTurnEvent(kTurnEventRebuildRegisteredWindows, 0);
   return 1;
 }

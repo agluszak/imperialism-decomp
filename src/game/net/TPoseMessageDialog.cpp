@@ -3,7 +3,7 @@
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0054aff0
@@ -25,6 +25,6 @@ IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 void __cdecl QueuePoseMessageDialogForNationSlot(int nationSlot) {
   TPoseMessageDialog* command = new TPoseMessageDialog();
   command->kickedByNationSlot18 = nationSlot;
-  command->ICommand(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0); // 'pose'
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+  command->ICommand(kSessionTagPose, g_pAmbitApplication, 0, 0, 0); // 'pose'
+  g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }

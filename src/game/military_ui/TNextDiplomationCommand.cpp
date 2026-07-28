@@ -4,7 +4,7 @@
 
 #include "game/ui_core/TApplication.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 IMPLEMENT_DYNCREATE(TNextDiplomationCommand, TCommand)
@@ -29,6 +29,6 @@ TNextDiplomationCommand::~TNextDiplomationCommand() {}
 
 // FUNCTION: IMPERIALISM 0x004f2930
 void TNextDiplomationCommand::DispatchUiPacketWithTagNEXT() {
-  ICommand(kControlTagNeXT, g_pGlobalUiRootController, 0, 0, 0);
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(this);
+  ICommand(kControlTagNeXT, g_pAmbitApplication, 0, 0, 0);
+  g_pAmbitApplication->DispatchUiSelectionToHandler(this);
 }

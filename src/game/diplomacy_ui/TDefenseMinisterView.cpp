@@ -8,7 +8,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004f3240
@@ -39,7 +39,7 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
     } else if (tag == kControlTagOkay) {
       CloseBooks();
       TWindow* owner = GetWindow();
-      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      g_pAmbitApplication->CloseAndFreeWindow(owner);
       return;
     }
   } else if (commandId == 0x14) {
@@ -48,13 +48,13 @@ void TDefenseMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
       if (g_pMapContextActionManager->ScanMapContextActionEntriesForCodeMatch(activeNationId)) {
         if (g_pSimMgr->field14 == 0) {
           TWindow* owner = GetWindow();
-          g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+          g_pAmbitApplication->CloseAndFreeWindow(owner);
           g_pSimMgr->EnterOptionalPhase(0x65);
         }
       } else {
         CString message;
         g_pSimMgr->GetString(0x273d, 0x12, &message);
-        g_pUiRuntimeContext->ModalMessage(message, g_ptDiplomacyNoticeModalMessage, 1, 0);
+        g_pViewMgr->ModalMessage(message, g_ptDiplomacyNoticeModalMessage, 1, 0);
       }
     } else if (tag == kControlTagRecc) {
       OpenBook(kTurnEventDefenseMinisterRecommendationBook);

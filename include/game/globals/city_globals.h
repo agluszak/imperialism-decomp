@@ -1,7 +1,7 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // Initial city recruitment profiles for order slots 0x22..0x2a. 0x695c50.
 extern short g_aInitialCityRecruitmentOrderProfiles[9][7];

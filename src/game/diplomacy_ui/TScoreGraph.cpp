@@ -6,7 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -79,7 +79,7 @@ void TScoreGraph::Draw(RECT* rectBuffer) {
       segRect.right = static_cast<short>(segValue) + segRect.left;
       segRect.bottom = rowY + 0x24;
       segRect.top = rowY;
-      g_pUiRuntimeContext->ApplyLegendSplitSlot34(segComponent + 3);
+      g_pViewMgr->ApplyLegendSplitSlot34(segComponent + 3);
       FillRectWithQuickDrawBrushAndContextOffset(&segRect);
       segX += segValue;
     }

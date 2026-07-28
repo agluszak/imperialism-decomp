@@ -6,7 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/quickdraw_guards.h"
@@ -63,7 +63,7 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
       if (rangeOrMaxValue > 0) {
         SetQuickDrawTextOriginWithContextOffset(0, 1);
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
+        g_pViewMgr->ApplyLegendSplitSlot34(auxValueB);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         DrawCenteredGuideLineOnMapDc((short)(rangeOrMaxValue - 1), 1);
         ResetQuickDrawStrokeState();

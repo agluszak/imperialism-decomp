@@ -11,10 +11,10 @@
 #include "game/GameAssert.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/city/TCity.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/nation/TGreatPower.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapUberPicture.h"
@@ -36,8 +36,8 @@ TOcean g_anchorTOceanInstance;
 } // namespace
 
 void NotifyMapUberPictureTileMarker(short tileIndex) {
-  if (g_pUiRuntimeContext != 0 && g_pUiRuntimeContext->mapUberPictureF0 != 0) {
-    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
+  if (g_pViewMgr != 0 && g_pViewMgr->mapUberPictureF0 != 0) {
+    g_pViewMgr->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
   }
 }
 
@@ -747,8 +747,8 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   // means "no tile". Mac CodeWarrior identifies mapUberPictureF0 slot 0x1e8 as
   // NoticeTile.
   short tileNotifyIndex = entry->ingotTileIndex;
-  if (tileNotifyIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-    g_pUiRuntimeContext->mapUberPictureF0->NoticeTile(tileNotifyIndex);
+  if (tileNotifyIndex != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
+    g_pViewMgr->mapUberPictureF0->NoticeTile(tileNotifyIndex);
   }
 
   if (selectedTaskForce14 == entry) {

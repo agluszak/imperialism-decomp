@@ -18,7 +18,8 @@
 #include "game/tactical_ui/TTacticalToolbar.h"
 #include "game/tactical/TTacticalUnit.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/quickdraw_guards.h"
@@ -379,7 +380,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
   // (0x005aab15..0x005aac1e). The centre is the tile rect's own midpoint -- not the
   // clipped paint rect -- and the outer gate is the hex row index, not its parity.
   if (tacticalBattle60->battleLive10 == 0 && hexRow > 0) {
-    g_pUiRuntimeContext->SetForeColor(0x35);
+    g_pViewMgr->SetForeColor(0x35);
     if (tacticalBattle60->ApplyGridColumnSelectionGuard(tileIndex) &&
         grid[tileIndex].occupant4 == 0) {
       const int centerY = tileScreenRect.top + tileRowHeightPx8C / 2;
@@ -392,7 +393,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
                                               static_cast<short>(centerY + 1));
       DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 1),
                                    static_cast<short>(centerY + 1));
-      g_pUiRuntimeContext->SetForeColor(0x34);
+      g_pViewMgr->SetForeColor(0x34);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(centerX - 1),
                                               static_cast<short>(centerY - 1));
       DrawCenteredGuideLineOnMapDc(static_cast<short>(centerX + 1),
@@ -671,16 +672,16 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     barRect.bottom = y - 1;
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->SetForeColor(0x33);
+    g_pViewMgr->SetForeColor(0x33);
     barRect.left -= 1;
     barRect.right -= 1;
     barRect.top -= 1;
     barRect.bottom -= 1;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->SetForeColor(6);
+    g_pViewMgr->SetForeColor(6);
     barRect.right = barRect.left + (occupant->strength4 + 0x18) / 0x19;
     FillRectWithQuickDrawBrushAndContextOffset(&barRect);
-    g_pUiRuntimeContext->SetForeColor(0x34);
+    g_pViewMgr->SetForeColor(0x34);
     // Second stat bar reads the derived unit's morale at +0x34 (army occupants are
     // TArmyTacUnit); the base TTacticalUnit's +0x30 is the attack-target pointer, not a bar.
     barRect.right = barRect.left + (static_cast<TArmyTacUnit*>(occupant)->morale34 + 0x18) / 0x19;
@@ -692,7 +693,7 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
     OffsetRectForSurfaceDibFlip(g_pActiveQuickDrawSurfaceContext, &flagDst);
     SetQuickDrawFillColor(0);
     SetQuickDrawStrokeColor(0xffffff);
-    BlitRectWithOptionalTransparency(&g_pStrategicMapViewSystem->atlas6b8->blitSurface,
+    BlitRectWithOptionalTransparency(&g_pMacViewMgr->atlas6b8->blitSurface,
                                      &g_pActiveQuickDrawSurfaceContext->blitSurface, &flagSrc,
                                      &flagDst, 0, 0);
     SetQuickDrawFillColor(occupant->selectedFlag18 != 0 ? 0xffffff : 0);
@@ -794,9 +795,9 @@ void TTacArmyView::DrawTacticalTileInClipRect(TacticalTileIndex tileIndex, RECT*
          tacticalBattle60->currentSideC == 1)) {
       SetQuickDrawFillColorFromPaletteIndex(0x13);
     } else if (tacticalBattle60->tileThreatLevelArray28[tileIndex] == 0) {
-      g_pUiRuntimeContext->SetForeColor(0x34);
+      g_pViewMgr->SetForeColor(0x34);
     } else {
-      g_pUiRuntimeContext->SetForeColor(0x33);
+      g_pViewMgr->SetForeColor(0x33);
     }
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(tickMidX - 1),
                                             static_cast<short>(tickMidY - 1));

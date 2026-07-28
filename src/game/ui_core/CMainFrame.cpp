@@ -10,7 +10,7 @@
 #include "game/city_ui/TCountry.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 #include <new>
@@ -224,7 +224,7 @@ void CMainFrame::OnCommand800C() {
 
 // FUNCTION: IMPERIALISM 0x00485590
 void CMainFrame::OnCommand800D() {
-  g_pUiRuntimeContext->ShowDealBookScreen(0);
+  g_pViewMgr->ShowDealBookScreen(0);
 }
 
 // FUNCTION: IMPERIALISM 0x004855b0
@@ -270,8 +270,7 @@ void CMainFrame::OnCommand8013() {
 // FUNCTION: IMPERIALISM 0x00485920
 LRESULT CMainFrame::HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam) {
   (void)lParam;
-  g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(wParam),
-                                         g_pSimMgr->GetActiveNationId());
+  g_pViewMgr->DispatchTurnEvent(static_cast<short>(wParam), g_pSimMgr->GetActiveNationId());
   return 0;
 }
 

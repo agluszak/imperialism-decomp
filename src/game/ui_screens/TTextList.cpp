@@ -1,7 +1,7 @@
 #include "game/ui_screens/TTextList.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -48,7 +48,7 @@ void TTextList::Draw(RECT* rectBuffer) {
       CString tempString(pItem->text);
 
       if (idx == selectedIndex) {
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(5);
+        g_pViewMgr->ApplyLegendSplitSlot34(5);
 
         CRect rect;
         rect.left = 0;

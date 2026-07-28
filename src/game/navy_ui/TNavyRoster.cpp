@@ -9,7 +9,7 @@
 #include "game/navy_ui/TShipLine.h"
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -69,7 +69,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
 void TNavyRoster::Close() {
   TView::Close();
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay34C = false;
   mapDialog->ResetAllTileMarkersToSentinel();

@@ -2,7 +2,8 @@
 
 #include "game/gfx/TDisplayMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TBitmapResourceLoader.h"

@@ -7,6 +7,7 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/military/TArmyMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_core/THelpMgr.h"
@@ -21,8 +22,9 @@
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/map_overlay_geometry.h"
@@ -294,8 +296,8 @@ TToolBarCluster::~TToolBarCluster() {}
 void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TCluster::DoEvent(commandId, sourceHandler, event);
 
-  bool eligible = g_pApplicationUiRootController->InModalState() == 0;
-  if (g_pApplicationUiRootController->screenModeAt24 > 1) {
+  bool eligible = g_pApplication->InModalState() == 0;
+  if (g_pApplication->screenModeAt24 > 1) {
     eligible = false;
   }
   if (commandId != 10 || !eligible) {
@@ -314,8 +316,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
     break;
   case kControlTagScoreCaps:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-        EncodeTurnEventCode(kTurnEventGameScore));
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
     break;
   case kControlTagCity:
     g_pSimMgr->EnterOptionalPhase(0x6a);
@@ -339,9 +340,9 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     }
     {
       short nationId = g_pSimMgr->GetActiveNationId();
-      short abilityIndex = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
+      short abilityIndex = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(nationId);
       if (abilityIndex != -1) {
-        g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
+        g_pViewMgr->ShowAbilityStatusReport(abilityIndex);
       } else {
         g_pSimMgr->StartNextPhase();
       }
@@ -349,7 +350,7 @@ void TToolBarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     break;
   case kControlTagQuer:
     if (g_pSimMgr->mode == 4 || g_pSimMgr->mode == 0x12 || g_pSimMgr->mode == 5) {
-      g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
+      g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
     } else {
       g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
     }
@@ -463,7 +464,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
   }
   if (control != 0) {
     short stringIndex = 7;
-    switch (g_pUiRuntimeContext->currentTurnEventCode) {
+    switch (g_pViewMgr->currentTurnEventCode) {
     case kTurnEventDiplomacyMap:
       stringIndex = 0xf;
       break;
@@ -603,13 +604,13 @@ void DispatchUiRuntimeMessage102CAndRefreshActiveView() {
   // `call [edi+0x1ac]` exactly, whereas the byte-coincident TControl::NoOpUiViewSlotHandler
   // takes two.
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFlagButton));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf6c);
   }
   CPoint placement;
-  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->Locate(placement, 0);
   node->PoseModally();
   node->Close();

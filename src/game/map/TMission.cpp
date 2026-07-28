@@ -1,6 +1,6 @@
 #include "game/map/TMission.h"
 #include "game/navy/TOcean.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 #include "decomp_types.h"
@@ -14,7 +14,7 @@
 #include "game/military/TInvadeMission.h"
 #include "game/map/TScatteredShipsMission.h"
 #include "game/core/TStream.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 
 // SYNTHETIC: IMPERIALISM 0x00534bc0
 // TMission::CreateObject

@@ -115,8 +115,8 @@ TBeachheadMission.cpp|9|Cross/UMapper.cpp|9|map|9||Cross/UMapper.cpp:9
 TBlockadePortMission.cpp|12|Cross/UMapper.cpp|12|map|12||Cross/UMapper.cpp:12
 TControlSeaZoneMission.cpp|10|Cross/UMapper.cpp|10|map|10||Cross/UMapper.cpp:10
 TEscortMission.cpp|10|Cross/UMapper.cpp|10|map|10||Cross/UMapper.cpp:10
-TForeignMinister.cpp|27|Cross/UMapper.cpp|27|map|27||Cross/UMapper.cpp:27
-TForeignMinisterPersonalities.cpp|39|Cross/UMapper.cpp|39|map|39||Cross/UMapper.cpp:39
+TForeignMinister.cpp|27|Cross/UMapper.cpp|27|nation|27||Cross/UMapper.cpp:27
+TForeignMinisterPersonalities.cpp|39|Cross/UMapper.cpp|39|nation|39||Cross/UMapper.cpp:39
 TIndexAndRankList.cpp|2|Cross/UMapper.cpp|2|map|2||Cross/UMapper.cpp:2
 TMapMaker_AssignRegionsScanline.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 TMapMaker_BuildCityRegionBorders.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
@@ -140,7 +140,7 @@ sea_geometry.cpp|7|Cross/UMapper.cpp|7|map|0||Cross/UMapper.cpp:7
 TCitySiteView.cpp|7|Cross/UMapDlog.cpp|7|map_ui|7||Cross/UMapDlog.cpp:7
 TMapDialog.cpp|60|Cross/UMapDlog.cpp|43|map_ui|58|multi_module|Cross/UMapDlog.cpp:43+Cross/UMap.cpp:17
 TMapEditView.cpp|13|Cross/UMapDlog.cpp|13|map_ui|13||Cross/UMapDlog.cpp:13
-TMapMaker.cpp|31|Cross/UMapDlog.cpp|26|map_ui|29|multi_module|Cross/UMapDlog.cpp:26+Cross/UMapper.cpp:5
+TMapMaker.cpp|31|Cross/UMapDlog.cpp|26|map_generation|29|multi_module|Cross/UMapDlog.cpp:26+Cross/UMapper.cpp:5
 TMapMaker_RandomizeTemplates.cpp|1|Cross/UMapDlog.cpp|1|map_ui|1||Cross/UMapDlog.cpp:1
 TTownNameDialog.cpp|3|Cross/UMapDlog.cpp|3|map_ui|1||Cross/UMapDlog.cpp:3
 CStr255.cpp|1|Cross/UArmyMgr.cpp|1|military|0||Cross/UArmyMgr.cpp:1
@@ -323,7 +323,7 @@ bitmap_descriptor_helpers.cpp|11|McWindow.cpp|9|ui_core|10|multi_module|McWindow
 quickdraw_rendering.cpp|30|McWindow.cpp|23|ui_core|25|multi_module|McWindow.cpp:23+QuickDraw.cpp:6+Cross/UUnit.cpp:1
 ui_message_pump.cpp|1|IncludeView.cpp|1|ui_core|1||IncludeView.cpp:1
 ui_timing.cpp|2|McAppUI.cpp|1|ui_core|2|multi_module|McAppUI.cpp:1+Cross/UUnit.cpp:1
-CString.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
+CString.cpp|1|Cross/USetupScreens.cpp|1|core|1||Cross/USetupScreens.cpp:1
 T2PictureButton.cpp|2|Cross/UOptionViews.cpp|2|ui_screens|2||Cross/UOptionViews.cpp:2
 TAlwaysPictureButton.cpp|3|Cross/UOptionViews.cpp|3|ui_screens|3||Cross/UOptionViews.cpp:3
 TArrowsControl.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2
@@ -387,7 +387,7 @@ TTwoPicSlider.cpp|4|Cross/UOptionViews.cpp|4|ui_screens|4||Cross/UOptionViews.cp
 TUberCluster.cpp|2|Cross/UOptionViews.cpp|2|ui_screens|2||Cross/UOptionViews.cpp:2
 TUpDownPictureButton.cpp|4|Cross/UOptionViews.cpp|4|ui_screens|4||Cross/UOptionViews.cpp:4
 TUpDownView.cpp|2|Cross/USetupScreens.cpp|2|ui_screens|2||Cross/USetupScreens.cpp:2
-TZone.cpp|51|Cross/UNewspaper.cpp|47|ui_screens|49|multi_module|Cross/UNewspaper.cpp:47+Cross/UOcean.cpp:4
+TZone.cpp|51|Cross/UNewspaper.cpp|47|map|49|multi_module|Cross/UNewspaper.cpp:47+Cross/UOcean.cpp:4
 turn_flow_cooldown.cpp|1|Cross/USetupScreens.cpp|1|ui_screens|1||Cross/USetupScreens.cpp:1
 T2PictToggleButton.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3
 TAmtBar.cpp|7|Cross/USmallViews.cpp|7|ui_widgets|0||Cross/USmallViews.cpp:7
@@ -440,7 +440,7 @@ TStatusButton.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:
 TStatusPicture.cpp|6|Cross/USmallViews.cpp|6|ui_widgets|6||Cross/USmallViews.cpp:6
 TStratReportView.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:2
 TToolBarCluster.cpp|9|Cross/USmallViews.cpp|6|ui_widgets|2|multi_module|Cross/USmallViews.cpp:6+Cross/UCity.cpp:2+Cross/UViewMgr.cpp:1
-TTown.cpp|10|Cross/UTestDialogs.cpp|10|ui_widgets|10||Cross/UTestDialogs.cpp:10
+TTown.cpp|10|Cross/UTestDialogs.cpp|10|city|10||Cross/UTestDialogs.cpp:10
 TTradeCluster.cpp|12|Cross/USmallViews.cpp|12|ui_widgets|0||Cross/USmallViews.cpp:12
 TTradeMgr.cpp|34|Cross/UTestDialogs.cpp|34|ui_widgets|34||Cross/UTestDialogs.cpp:34
 TTradeOrderPicture.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3

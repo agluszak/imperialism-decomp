@@ -15,7 +15,7 @@
 #include "game/ui_core/TPicture.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
@@ -188,7 +188,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
       if (controlTag == kControlTagGarr) {
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
-          g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
+          g_pViewMgr->ShowCivilianLedgerDialogAndSelectUnit();
           this->TCluster::DoEvent(10, sourceHandler, event);
           return;
         }

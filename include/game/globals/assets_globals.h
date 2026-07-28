@@ -1,7 +1,14 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/assets/timer_slots.h"
+
+extern TAssetMgr* g_pAssetMgr;
+extern TSoundResourceManager g_soundResourceManager;
+extern short g_randomAudioCuePollCounter;
+extern TSoundPlayer* g_pSfxPlaybackSystem;
+extern int g_localizationAudioSlotCursor_006a60f8;
 
 // CD-audio MCI device singleton (see game/TCdAudioDevice.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc

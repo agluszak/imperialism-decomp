@@ -11,7 +11,7 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/CMcWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x00487300

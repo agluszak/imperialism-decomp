@@ -8,11 +8,12 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechHistoryView.h"
 #include "game/tactical_ui/TTechMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TTextPictureButton.h"
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -73,8 +74,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     titleControl->shadowTextColor9C = shadowStyleFlags;
     titleControl->dropShadowEnabledA0 = true;
     g_pSimMgr->GetString(0x2712, static_cast<short>(techId), &techName);
-    yearText.Format(g_szDecimalFormat,
-                    0x717 + g_pCityOrderCapabilityState->prioritySlots04[techId] / 4);
+    yearText.Format(g_szDecimalFormat, 0x717 + g_pTechMgr->prioritySlots04[techId] / 4);
     labelText = techName + "\n" + yearText;
     titleControl->UpdateTextEntrySharedString(&labelText);
     titleControl->CenterVertically(0);
@@ -95,7 +95,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
   }
 
   // Status area: completion date, buy button, or missing-prerequisites line.
-  TTechMgr* techMgr = g_pCityOrderCapabilityState;
+  TTechMgr* techMgr = g_pTechMgr;
   if (techMgr->orderCapRows277[nationSlot].techStatusByTechId[techId] == 2) {
     TDeluxeText* dateControl = new TDeluxeText();
     int dateOffset[2] = {0xba, 0};
@@ -161,14 +161,14 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagPurc) {
       TTextPictureButton* purchaseButton = static_cast<TTextPictureButton*>(sourceHandler);
-      TTechMgr* techMgr = g_pCityOrderCapabilityState;
+      TTechMgr* techMgr = g_pTechMgr;
       if (techMgr->orderCapRows277[nationSlot60].techStatusByTechId[techId64] == 0) {
         short activeNationId = g_pSimMgr->GetActiveNationId();
         int availableBudget = g_apNationStates[activeNationId]->ComputeAvailableDiplomacyBudget();
         if (g_anTechItemResearchCostByTechId[techId64] > availableBudget) {
           CString msg;
           g_pSimMgr->GetString(0x2745, 3, &msg);
-          g_pUiRuntimeContext->ModalMessage(msg, g_ptTechItemModalMessage, 2, 0);
+          g_pViewMgr->ModalMessage(msg, g_ptTechItemModalMessage, 2, 0);
         } else {
           CString label;
           g_pSimMgr->GetString(0x274f, 3, &label);
@@ -192,16 +192,15 @@ void TTechItemView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       // matches the pattern already ported elsewhere this session
       // (DispatchUiRuntimeMessage102CAndRefreshActiveView, TArmyUnitView::
       // HandleCrossUArmyViewsNameCommand).
-      TWindow* node =
-          static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-              kTurnEventTechnologyHistory));
+      TWindow* node = static_cast<TWindow*>(
+          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTechnologyHistory));
       TTechHistoryView* historyView =
           static_cast<TTechHistoryView*>(node->ResolveControlByTag(kControlTagDialog));
       historyView->AssertValid();
       historyView->PopulateTechHistory(static_cast<short>(techId64));
 
       CPoint placement;
-      g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(node, &placement);
+      g_pViewMgr->ComputeTurnEventDialogPlacementByCode(node, &placement);
       historyView->Locate(placement, 0);
       node->SetModality(1);
       TDialogBehavior* behavior = node->GetDialogBehavior();

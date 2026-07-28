@@ -3,7 +3,7 @@
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/map/TMapUberPicture.h"
@@ -61,7 +61,7 @@ private:
 
   void ActivateEndTurn() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before ending the turn\"");
       return;
@@ -88,7 +88,7 @@ private:
   }
 
   void WaitForTurnProcessed() {
-    if (g_pUiRuntimeContext->currentTurnEventCode == 0x11f8) {
+    if (g_pViewMgr->currentTurnEventCode == 0x11f8) {
       FailScenario("\"end turn entered the game-over/opening-cinematic path\"");
       return;
     }
@@ -123,7 +123,7 @@ private:
       RequestScenarioTick();
       return;
     }
-    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+    if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
       RequestScenarioTick();
@@ -134,7 +134,7 @@ private:
     }
     TView* mainView = CurrentMainView();
     if (sawTurnAlert && !resubmittedEndTurn &&
-        g_pUiRuntimeContext->currentTurnEventCode == kTurnEventStrategicMap && mainView != 0 &&
+        g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap && mainView != 0 &&
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) != 0 &&
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
       resubmittedEndTurn = true;
@@ -147,7 +147,7 @@ private:
       RequestScenarioTick();
       return;
     }
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
       WaitForScenarioTick("\"ended turn did not advance back to the combined map\"");

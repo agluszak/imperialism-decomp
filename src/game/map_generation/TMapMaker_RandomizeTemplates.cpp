@@ -4,12 +4,13 @@
 // GetFineGridCellBasePointerFromCoarseIndex) and randomly mirrors 9-dword (one tile-row)
 // template banks within it using the shared map-gen LCG.
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include <string.h>
 
 #include "decomp_types.h"
-#include "game/globals/prelude.h"
+#include "game/globals/map_globals.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005293d0

@@ -3,7 +3,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 
 #include "game/ui_core/TApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // The base TCommand constructor installs vtable 0x648e28; this constructor then
@@ -30,10 +30,10 @@ IMPLEMENT_DYNCREATE(TNextTradeCommand, TCommand)
 
 // FUNCTION: IMPERIALISM 0x005ba480
 void TNextTradeCommand::INextTradeCommand() {
-  ICommand(0x232b, g_pGlobalUiRootController, 0, 0, 0);
+  ICommand(0x232b, g_pAmbitApplication, 0, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
 void TNextTradeCommand::DoIt() {
-  g_pNationInteractionStateManager->NextTradeDeal();
+  g_pTradeMgr->NextTradeDeal();
 }

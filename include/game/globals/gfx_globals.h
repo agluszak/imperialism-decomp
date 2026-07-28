@@ -1,9 +1,22 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/gfx/quickdraw_regions.h"
+#include "game/gfx/TTemplateDialogs.h"
+
+class TDisplayMgr;
+
+extern TDisplayMgr* g_pDisplayMgr;
+
+struct GlobalViewportRectDefaultsRecord {
+  int field0;
+  RECT viewportBounds;
+};
 
 extern "C" TBackdropWindow* g_pActiveBackdropWindow;
+extern "C" TAmbitApplication* g_pAmbitApplication;
+extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 
 // Heap-owned MFC wait cursor kept alive while the startup backdrop is visible.
 extern "C" CWaitCursor* g_pBackdropWaitCursor;
@@ -102,6 +115,22 @@ extern const char g_szPaletteResourceIdFormat[];
 extern int g_nUiInvalidationAssertFlagLine471;
 
 extern int g_nUiInvalidationAssertFlagLine495;
+
+extern "C" {
+// QuickDraw renderer state shared by the surface, clip, and text-drawing paths.
+extern CRgn* g_pGlobalClipRegionHandleObject;
+extern COLORREF g_QuickDrawForegroundColor;
+extern char g_szQuickDrawFontFaceSystem[];
+extern char g_szQuickDrawFontFaceBookAntiqua[];
+extern char g_szQuickDrawFontFaceSmallFonts[];
+extern int g_nQuickDrawOriginX;
+extern int g_nQuickDrawOriginY;
+extern TBitmapSurfaceContextDescriptor g_defaultQuickDrawSurfaceSentinel;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
+extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
+extern TQuickDrawSurfaceContext* g_pPrimaryRenderSurfaceContext;
+extern CDC* g_pQuickDrawMemoryDc;
+} // extern "C"
 
 extern "C" {
 extern const int g_nAmbitSaveFileMagic;

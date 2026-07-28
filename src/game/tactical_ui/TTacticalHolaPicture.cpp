@@ -2,13 +2,13 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_screens/TMapPreviewView.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 // FUNCTION: IMPERIALISM 0x0045d480

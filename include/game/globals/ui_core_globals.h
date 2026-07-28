@@ -1,7 +1,18 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/core/TMouseCaptureState.h"
+#include <afxtempl.h>
+
+class TAnimator;
+class TMacViewMgr;
+class TView;
+class TViewMgr;
+
+int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue);
+int ClearGlobalUiInvalidationFlagAndReturnPrevious();
+int GetMcAppUiActiveFlag();
 
 extern TView* g_pUiResourceContext;
 
@@ -16,6 +27,22 @@ extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
 
 extern CPoint g_turnEventDialogAnchorPoint;
+
+// UI runtime managers and resource-tree state.
+extern CPoint g_ptUiAnimatorSurfaceBounds;
+extern unsigned char g_bStrategicMapSelectionOverlayPhase;
+extern TMacViewMgr* g_pMacViewMgr;
+extern TViewMgr* g_pViewMgr;
+extern TAnimator* g_pUiAnimator;
+extern TView* g_pUiResourceHead;
+extern TInfoBarText* g_pCursorControlPanel;
+extern TLanguageMgr* g_pLanguageMgr;
+extern TApplication* g_pApplication;
+extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
+extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
+
+extern "C" void* g_pScopedMapQuickDrawViewContext;
+extern "C" CDC* g_pScopedMapQuickDrawDcHandleObject;
 
 extern char s_szTurnHistoryPrefix_0069b71c[];
 

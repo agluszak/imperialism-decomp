@@ -2,14 +2,14 @@
 
 #include <string.h>
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/city/TCity.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
@@ -131,7 +131,7 @@ bool TUnitOrder::SetQuantity(short quantity) {
   }
   ownerCity->ownerNationAc->treasuryValue10 -=
       static_cast<int>(cashCostPerUnit) * static_cast<int>(delta);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

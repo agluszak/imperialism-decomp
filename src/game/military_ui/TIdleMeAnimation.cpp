@@ -1,7 +1,7 @@
 #include "game/military_ui/TIdleMeAnimation.h"
 
 #include "game/app/TAnimator.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 

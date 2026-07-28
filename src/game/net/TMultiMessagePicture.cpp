@@ -2,13 +2,13 @@
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_screens/TCzechBox.h"
 #include "game/ui_core/TEditText.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 // FUNCTION: IMPERIALISM 0x0044fa80
 TMultiMessagePicture::TMultiMessagePicture() {}
@@ -61,5 +61,5 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
         static_cast<unsigned char>(FindActiveNationSlotIndexInGameFlowList()));
   }
 
-  g_pGlobalUiRootController->CloseAndFreeWindow(GetWindow());
+  g_pAmbitApplication->CloseAndFreeWindow(GetWindow());
 }

@@ -6,13 +6,13 @@
 #include "game/map/TMapMgr.h"
 #include "game/core/runtime_prng_seed.h"
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/military/mapped_flavor_text.h"
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyMgr.h"
 #include "game/city_ui/TCivMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -26,23 +26,25 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/ui_screens/TPortZone.h"
 #include "game/navy/TOcean.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/city/TCity.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_flow_globals.h"
 #include "game/globals/map_globals.h"
+#include "game/globals/tactical_globals.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 
 #include <cstdio>
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
@@ -91,8 +93,8 @@ TMapMgr::~TMapMgr() {}
 // FUNCTION: IMPERIALISM 0x0050e4e0
 void TMapMgr::IMapMgr() {
   field6 = 1;
-  if (g_pStrategicMapViewSystem->atlas668 == 0) {
-    g_pStrategicMapViewSystem->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
+  if (g_pMacViewMgr->atlas668 == 0) {
+    g_pMacViewMgr->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
   }
 }
 
@@ -276,7 +278,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
         AssignPictToTile(tile);
         UpdateTileNeighborBorderInfluenceCounters(tile, 0);
       }
-      g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMapEditor), 0);
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventMapEditor), 0);
     } else {
       // Scenario path: load the fixed map; bail out entirely when that fails.
       if (LoadScenarioMapStateFromTableResource(g_pSimMgr->scenarioMapIndexPlusOne - 1) == 0) {
@@ -371,7 +373,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
-  g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
@@ -423,11 +425,11 @@ void TMapMgr::ReadInRGBMap(const MapPixelSourceView* source) {
 void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   CString streamName;
   streamName = "political.map";
-  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(streamName);
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(streamName);
   unsigned char* politicalCodes = new unsigned char[0x1950];
   int byteCount = 0x1950;
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, politicalCodes, &byteCount);
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, politicalCodes, &byteCount);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
   int tileIndex = 0;
   for (int recordOffset = 0; recordOffset < 0x38f40; recordOffset += 0x24) {
@@ -454,7 +456,7 @@ void TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f3c0
 void TMapMgr::VerifyMapDataAndWriteReport() {
-  SetCursor(g_pUiRuntimeContext->turnEventCursors[0x1a]);
+  SetCursor(g_pViewMgr->turnEventCursors[0x1a]);
 
   short* provinceTileCounts = new short[0x180];
   short* pCount = provinceTileCounts;
@@ -1565,7 +1567,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
     BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
   }
   if (strategicMapPalettePreviewReady == 0) {
-    g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+    g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   }
 }
 
@@ -1573,7 +1575,7 @@ void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
 void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress();
   short nationId = g_pSimMgr->GetActiveNationId();
-  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationId);
+  g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationId);
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
@@ -2110,8 +2112,7 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileInde
     if (g_abResourceTypeCapabilityCategory[resourceType] != categoryCode) {
       continue;
     }
-    short value =
-        g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationSlot][resourceType];
+    short value = g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType];
     if (value > maxValue) {
       maxValue = value;
     }
@@ -2313,8 +2314,7 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(StrategicTileIndex nTileInd
            (cTileResourceCode == '\x15')) ||
           ((cTileResourceCode == '\x16') ||
            ((cTileResourceCode == '\x06') &&
-            (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] !=
-             '\0')))) {
+            (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != '\0')))) {
         fHasDiscoveryCandidate = 1;
       }
       nResourceSlotIndex = nResourceSlotIndex + 1;
@@ -2849,7 +2849,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
   eligibleGateFlags[9] = 1;
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2) {
     eligibleGateFlags[10] = 1;
     eligibleGateFlags[11] = 1;
     eligibleGateFlags[12] = 1;
@@ -2884,7 +2884,7 @@ void TMapMgr::DimByProspecting(TCivUnit* pCivilianOrderEntry) {
 void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   bool recruitTierFlagIsTwo =
-      (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
+      (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
   field9 = 1;
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -2966,8 +2966,7 @@ void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
       if (qualifiesByResourceType[resourceType] == 0) {
         continue;
       }
-      short value =
-          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][resourceType];
+      short value = g_pTechMgr->capabilityValueByNationAndResource[nationTag][resourceType];
       if (value > maxValue) {
         maxValue = value;
       }
@@ -3008,7 +3007,7 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
         continue;
       }
       if (neighbor->developmentClassNibbles0c <
-          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][19]) {
+          g_pTechMgr->capabilityValueByNationAndResource[nationTag][19]) {
         neighbor->recruitSearchVisited0e = 0;
       }
     }
@@ -3042,8 +3041,7 @@ void TMapMgr::DimByCompany(TCivUnit* pCivilianOrderEntry) {
           tile->ownerNationTag04 != nationTag) {
         continue;
       }
-      short value =
-          g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationTag][resourceType];
+      short value = g_pTechMgr->capabilityValueByNationAndResource[nationTag][resourceType];
       if (value > maxValue) {
         maxValue = value;
       }
@@ -3067,13 +3065,13 @@ void TMapMgr::DimByTrackLaying(TCivUnit* pCivilianOrderEntry) {
 
   // Each researched technology enables another terrain in the shared capability profile.
   // The listing writes 0x00696f0c/0a/0b: indices 4/2/3 from the table base 0x00696f08.
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainSwamp] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainHills] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
     g_abStrategicTerrainSeedGateProfileA[kStrategicTerrainMountain] = 1;
   }
 
@@ -3099,19 +3097,19 @@ void TMapMgr::DimByEngineering(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot18;
 
   unsigned char terrainKindGate[kStrategicTerrainCount] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     terrainKindGate[kStrategicTerrainSwamp] = 1;
     terrainKindGate[kStrategicTerrainWater] = 0;
     terrainKindGate[kStrategicTerrainDesert] = 1;
     terrainKindGate[kStrategicTerrainFarmland] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
     terrainKindGate[kStrategicTerrainPlains] = 1;
     terrainKindGate[kStrategicTerrainForest] = 1;
     terrainKindGate[kStrategicTerrainHills] = 1;
     terrainKindGate[kStrategicTerrainMountain] = 0;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
     terrainKindGate[kStrategicTerrainMountain] = 1;
   }
 
@@ -3166,8 +3164,8 @@ void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3) {
 void TMapMgr::SetMapTileStateByteAndNotifyObserver(StrategicTileIndex tileIndex, int stateByte) {
   terrainStateTable[tileIndex].tileActionState16 =
       static_cast<MapTileActionStateStorage>(stateByte);
-  if (g_pUiRuntimeContext->mapUberPictureF0 != 0) {
-    g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(tileIndex);
+  if (g_pViewMgr->mapUberPictureF0 != 0) {
+    g_pViewMgr->mapUberPictureF0->InvalidateTile(tileIndex);
   }
 }
 
@@ -3718,8 +3716,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   // Per-resource-type weight, pulled from the nation-interaction metric buckets.
   int resourceWeights[17];
   for (int resType = 0; resType < kResourceManufacturedEnd; ++resType) {
-    resourceWeights[resType] =
-        g_pNationInteractionStateManager->GetBasePrice(static_cast<short>(resType));
+    resourceWeights[resType] = g_pTradeMgr->GetBasePrice(static_cast<short>(resType));
   }
 
   int regionScores[0x180];
@@ -3736,8 +3733,7 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
         for (edge = 0; edge < 2; ++edge) {
           int resType = tile->resourceTypeByEdge[edge];
           if ((resType != kResourceOil ||
-               g_pCityOrderCapabilityState
-                       ->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
+               g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) &&
               resType != -1) {
             score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
                      resourceWeights[resType];
@@ -3824,17 +3820,17 @@ short TMapMgr::GetProvinceUnitOrderWeight(ProvinceIndexStorage provinceId) {
 // FUNCTION: IMPERIALISM 0x00518540
 char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   CString scenarioPath;
-  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &scenarioPath);
+  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &scenarioPath);
   if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
     return 0;
   }
 
-  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(scenarioPath);
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(scenarioPath);
 
   // Raw terrain table: 0x1950 records x 0x24 bytes.
   int byteCount = 0x38f40;
   int nameCapacity = 0x20;
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, terrainStateTable, &byteCount);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, terrainStateTable, &byteCount);
 
   // City records: the 0xa4-byte POD prefix, then a 2-byte length word and the 0x20-byte
   // name text, assigned into the CString member.
@@ -3844,16 +3840,16 @@ char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
   do {
     int nameLengthBytes;
     char nameText[0x20];
-    g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, record, &byteCount);
+    g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, record, &byteCount);
     nameLengthBytes = 2;
-    g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, nameText, &nameLengthBytes);
-    g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, nameText, &nameCapacity);
+    g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, nameText, &nameLengthBytes);
+    g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, nameText, &nameCapacity);
     CString cityName(nameText);
     record->cityNameA4 = cityName;
     ++record;
     --recordCount;
   } while (recordCount != 0);
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
   // Endian fixup of the per-tile short fields + clear the transient order chain.
   {
@@ -4002,7 +3998,7 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
       if (resourceType < kResourceManufacturedEnd) {
-        total = total + g_pNationInteractionStateManager->GetPrice(resourceType) * 0x14;
+        total = total + g_pTradeMgr->GetPrice(resourceType) * 0x14;
       } else if (resourceType == kResourceGems) {
         total = total + 10000;
       } else if (resourceType == kResourceGold) {
@@ -4058,8 +4054,8 @@ void TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int cont
       directionCode += 6;
     }
     g_pGlobalMapState->terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
-    if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-      g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(finalTileIndex);
+    if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+      g_pViewMgr->mapUberPictureF0->InvalidateTile(finalTileIndex);
     }
   }
 }
@@ -4138,8 +4134,8 @@ void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
           directionCode += 6;
         }
         terrainStateTable[finalTileIndex].perTileVisitedFlag0f = directionCode;
-        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(finalTileIndex);
+        if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+          g_pViewMgr->mapUberPictureF0->InvalidateTile(finalTileIndex);
         }
       }
     }
@@ -4322,7 +4318,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
   // same MOVSX then % 4) all agree.
   fprintf(logFile, g_szFmtYear_00697248, g_pSimMgr->economicTurn / 4);
   fclose(logFile);
-  g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+  g_pAmbitApplication->PostWmCloseToMainThreadWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x00519610

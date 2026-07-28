@@ -17,7 +17,7 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/TDisplayMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
@@ -201,7 +201,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
   HelpSetRecord* zeroIdCandidate =
       nullptr; // context match, rank>=threshold, previousHelpResourceBaseId==0
   short threshold = g_pSimMgr->GetEconomicTurn();
-  short contextId = g_pUiRuntimeContext->currentTurnEventCode;
+  short contextId = g_pViewMgr->currentTurnEventCode;
   for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
@@ -288,8 +288,8 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
         scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationNameText),
                                static_cast<LPCSTR>(minorNameText));
-        g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText,
-                                          g_ptNationComparisonModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage, 0,
+                                 0);
         ++advisoryCount;
       }
       break;
@@ -306,8 +306,8 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
         scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(minorNameText),
                                static_cast<LPCSTR>(nationNameText));
-        g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText,
-                                          g_ptNationComparisonModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage, 0,
+                                 0);
         ++advisoryCount;
       }
       break;
@@ -318,8 +318,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
       g_pSimMgr->GetString(0x2753, 0x1d, &templateText);
       scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(nationNameText));
-      g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText,
-                                        g_ptNationComparisonModalMessage, 0, 0);
+      g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage, 0, 0);
       ++advisoryCount;
       break;
     }
@@ -333,8 +332,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     g_pSimMgr->GetString(0x2753, 0x3d, &templateText);
     CString combinedText = templateText + contextMessageText;
     formattedText = combinedText;
-    g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage,
-                                      1, 0);
+    g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptNationComparisonModalMessage, 1, 0);
   }
 
   contextMessageText = CString(g_pszEmptyTextPointer_00656f60);
@@ -343,16 +341,14 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     g_pSimMgr->GetString(0x2753, 0x42, &titleText);
     g_pSimMgr->GetString(0x2753, 0x43, &templateText);
     templateText += contextMessageText;
-    g_pUiRuntimeContext->ModalMessage(3, titleText, templateText, g_ptNationComparisonModalMessage,
-                                      1, 0);
+    g_pViewMgr->ModalMessage(3, titleText, templateText, g_ptNationComparisonModalMessage, 1, 0);
   }
 
   if (activeCity != 0 && activeCity->foodSubstitutionCount06 != 0 &&
       activeCity->starvationPopulationLoss08 == 0) {
     g_pSimMgr->GetString(0x2753, 0x16, &titleText);
     g_pSimMgr->GetString(0x2753, 0x17, &templateText);
-    g_pUiRuntimeContext->ModalMessage(5, titleText, templateText, g_ptNationComparisonModalMessage,
-                                      2, 0);
+    g_pViewMgr->ModalMessage(5, titleText, templateText, g_ptNationComparisonModalMessage, 2, 0);
     ++advisoryCount;
   }
   return advisoryCount;
@@ -367,12 +363,10 @@ void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
   // Constructed and destroyed unused in the original (EH state 2).
   CString unusedText;
   if (tickMod == 0 || tickMod == 5) {
-    if (g_pCityOrderCapabilityState->orderCapRows277[activeNation]
-            .techStatusByTechId[g_pCityOrderCapabilityState->marker262] == 0) {
+    if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[g_pTechMgr->marker262] == 0) {
       g_pSimMgr->GetString(0x2753, 0x18, &titleText);
       g_pSimMgr->GetString(0x2753, 0x19, &messageText);
-      g_pUiRuntimeContext->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage,
-                                        2, 0);
+      g_pViewMgr->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage, 2, 0);
     }
   }
 }
@@ -414,8 +408,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 1, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
     advisoryShown = 1;
   } break;
 
@@ -437,8 +430,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 3, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 0,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 0, 0);
     advisoryShown = 1;
   } break;
 
@@ -460,8 +452,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 5, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
     advisoryShown = 1;
   } break;
 
@@ -483,8 +474,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 7, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
     advisoryShown = 1;
   } break;
 
@@ -506,8 +496,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 9, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
     advisoryShown = 1;
   } break;
 
@@ -529,13 +518,12 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 0xb, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
     advisoryShown = 1;
   } break;
 
   case 8: {
-    if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+    if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       break;
     }
     if (g_apNationStates[activeNation]->GetBuildingCapacity(6) == 0) {
@@ -551,15 +539,13 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       if (best <= 4) {
         break;
       }
-      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].techStatusByTechId[0x13] !=
-          0) {
+      if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[0x13] != 0) {
         g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
         g_pSimMgr->GetString(0x2753, 0xc, &formatText);
         g_pSimMgr->GetString(0x2753, 0xd, &templateText);
         scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
-        g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage,
-                                          2, 0);
+        g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
         advisoryShown = 1;
       } else {
         g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
@@ -567,8 +553,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
         g_pSimMgr->GetString(0x2753, 0xf, &templateText);
         scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
-        g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage,
-                                          2, 0);
+        g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
         advisoryShown = 1;
       }
     } else {
@@ -589,8 +574,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       g_pSimMgr->GetString(0x2753, 0x11, &templateText);
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(nationName));
-      g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2,
-                                        0);
+      g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 2, 0);
       advisoryShown = 1;
     }
   } break;
@@ -614,8 +598,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 0x13, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1, 0);
     advisoryShown = 1;
   } break;
 
@@ -638,8 +621,7 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     g_pSimMgr->GetString(0x2753, 0x15, &templateText);
     scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(nationName));
-    g_pUiRuntimeContext->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1,
-                                      0);
+    g_pViewMgr->ModalMessage(5, formatText, message, g_ptNationComparisonModalMessage, 1, 0);
     advisoryShown = 1;
   } break;
 
@@ -682,15 +664,15 @@ char ShowTurnAlertsForActiveNation() {
   if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(0) != 0) {
     g_pSimMgr->GetString(0x2753, 0x28, &titleText);
     g_pSimMgr->GetString(0x2753, 0x29, &bodyText);
-    g_pUiRuntimeContext->ModalMessage(3, CString(titleText), CString(bodyText),
-                                      g_ptNationComparisonModalMessage, 1, 0);
+    g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
+                             g_ptNationComparisonModalMessage, 1, 0);
     anyAlertShown = 1;
   }
   if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(1) != 0) {
     g_pSimMgr->GetString(0x2753, 0x2a, &titleText);
     g_pSimMgr->GetString(0x2753, 0x2b, &bodyText);
-    g_pUiRuntimeContext->ModalMessage(3, CString(titleText), CString(bodyText),
-                                      g_ptNationComparisonModalMessage, 1, 0);
+    g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
+                             g_ptNationComparisonModalMessage, 1, 0);
     anyAlertShown = 1;
   }
   if (anyAlertShown == 0) {
@@ -699,8 +681,8 @@ char ShowTurnAlertsForActiveNation() {
       if (promptCode != 0) {
         g_pSimMgr->GetString(0x2753, promptCode - 1, &titleText);
         g_pSimMgr->GetString(0x2753, promptCode, &bodyText);
-        g_pUiRuntimeContext->ModalMessage(5, CString(titleText), CString(bodyText),
-                                          g_ptNationComparisonModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                 g_ptNationComparisonModalMessage, 0, 0);
         anyAlertShown = 1;
       }
     }
@@ -708,8 +690,8 @@ char ShowTurnAlertsForActiveNation() {
       if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue() != 0) {
         g_pSimMgr->GetString(0x2753, 0x46, &titleText);
         g_pSimMgr->GetString(0x2753, 0x47, &bodyText);
-        g_pUiRuntimeContext->ModalMessage(5, CString(titleText), CString(bodyText),
-                                          g_ptNationComparisonModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                 g_ptNationComparisonModalMessage, 2, 0);
         anyAlertShown = 1;
       }
     }
@@ -717,8 +699,8 @@ char ShowTurnAlertsForActiveNation() {
       if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch() != 0) {
         g_pSimMgr->GetString(0x2753, 0x22, &titleText);
         g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
-        g_pUiRuntimeContext->ModalMessage(5, CString(titleText), CString(bodyText),
-                                          g_ptNationComparisonModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                                 g_ptNationComparisonModalMessage, 2, 0);
         anyAlertShown = 1;
       }
     }
@@ -726,8 +708,8 @@ char ShowTurnAlertsForActiveNation() {
     if (starvationCount != 0) {
       g_pSimMgr->GetString(0x2753, 0x20, &titleText);
       g_pSimMgr->GetString(0x2753, 0x21, &bodyText);
-      g_pUiRuntimeContext->ModalMessage(5, CString(titleText), CString(bodyText),
-                                        g_ptNationComparisonModalMessage, 2, 0);
+      g_pViewMgr->ModalMessage(5, CString(titleText), CString(bodyText),
+                               g_ptNationComparisonModalMessage, 2, 0);
       anyAlertShown = 1;
     }
   }
@@ -829,14 +811,14 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
 
   if (pendingDialogView8 == 0) {
     pendingDialogView8 = static_cast<TWindow*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventHelpMessage));
     if (pendingDialogView8 == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5cd);
     }
 
     CPoint placement;
-    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
+    g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogView8, &placement);
     pendingDialogView8->Locate(placement, 0);
     pendingDialogView8->Open();
   }
@@ -848,7 +830,7 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   CString emptyTitle(g_pszEmptyTextPointer_00656f60);
   pendingDialogView8->SetTitle(&emptyTitle);
 
-  int helpBookIndex = g_pUiRuntimeContext->ClassifyTurnStateForOverlayMode();
+  int helpBookIndex = g_pViewMgr->ClassifyTurnStateForOverlayMode();
   if (pendingEntry->contextId == 0x1a0b) {
     helpBookIndex = 0;
   } else if (pendingEntry->contextId == 0x1a0d) {
@@ -926,8 +908,7 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
     CString messageText;
     g_pSimMgr->GetString(0x2753, static_cast<short>(titleStringIndex), &titleText);
     g_pSimMgr->GetString(0x2753, static_cast<short>(messageStringIndex), &messageText);
-    g_pUiRuntimeContext->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage,
-                                      2, 0);
+    g_pViewMgr->ModalMessage(5, titleText, messageText, g_ptNationComparisonModalMessage, 2, 0);
   }
 }
 
@@ -935,14 +916,14 @@ void THelpMgr::TryShowCivilianCompletionMilestoneNotification(TCivUnit* civilian
 void THelpMgr::EnsureMapActionContextViewAndBuildDefaultTileMenu(int mapContextIndex) {
   if (pendingDialogViewC == 0) {
     pendingDialogViewC = static_cast<TWindow*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTerrainHelp));
     if (pendingDialogViewC == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x6c1);
     }
 
     CPoint placement;
-    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
+    g_pViewMgr->ComputeTurnEventDialogPlacementByCode(pendingDialogViewC, &placement);
     pendingDialogViewC->Locate(placement, 0);
     pendingDialogViewC->Open();
   }

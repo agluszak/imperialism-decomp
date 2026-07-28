@@ -1,9 +1,20 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 extern CString g_cstrCountryNameSettingValue006A4220;
+extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
+extern short g_creditsPlaybackActive_006a4084;
+extern "C" int g_nRandomMapSelectedNationSlot00698AB0;
+extern "C" void (TSimMgr::* g_apfnScenarioScriptInstructionHandlers[27])(void*);
+
+extern POINT g_ptTechItemModalMessage;
+extern POINT g_ptFormattedErrorModalMessage;
+extern POINT g_ptLoungeNationReplacementModalMessage;
+extern POINT g_ptQueryFloaterModalMessage;
+extern POINT g_ptGameSetupModalMessage;
+extern POINT g_ptCivilianOrderModalMessage;
 
 extern char g_szLiteralRb_00698720[];
 

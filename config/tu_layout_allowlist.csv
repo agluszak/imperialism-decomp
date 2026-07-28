@@ -1,18 +1,18 @@
 file|kind|reason|classes
 src/game/city_ui/TCityMinisterPersonalities.cpp|family_module|Family module: the city-minister personality subclasses are a closed sibling set sharing one vtable/dispatch pattern; per-class files would be dozens of near-empty TUs.|
 src/game/military_ui/TDefenseMinisterPersonalities.cpp|family_module|Family module: defense-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
-src/game/map/TForeignMinisterPersonalities.cpp|family_module|Family module: foreign-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
+src/game/nation/TForeignMinisterPersonalities.cpp|family_module|Family module: foreign-minister personality subclasses, same closed sibling-set pattern as the other personality modules.|
 src/game/map/sea_geometry.cpp|family_module|Family module: sea-lane/coast geometry free functions plus their small record structs form one cohesive original-module slice (no single owning class).|
 src/game/gfx/TTemplateDialogs.cpp|family_module|Family module: 19 tiny resource-template dialog classes (TC2/TD2/TDB/...TemplateDialog) that exist only as paired DoDataExchange/message-map shells; splitting into 19 files would create per-class stubs with no bodies of substance.|
 src/game/gfx/TFuzzySet_AllocateAndAppendRecord.cpp|split_exception|Documented reccmp/PDB pairing reason (see file header): adjacent to TFuzzySet::Free in one TU, reccmp crosses the two functions' PDB line/symbol resolution and mis-pairs both (~11% each); binary identical either way.|
-src/game/map/TMapMaker_AssignRegionsScanline.cpp|split_exception|UMapper monolith pass in its own TU (see file headers of the TMapMaker_* set): each ~multi-KB map-generation pass carries its own inline helpers/statics whose optimizer footprint perturbs neighbouring TMapMaker codegen when co-located.|
-src/game/map/TMapMaker_BuildCityRegionBorders.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map/TMapMaker_GenerateRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map/TMapMaker_MergeSmallCityRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map_ui/TMapMaker_RandomizeTemplates.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map/TMapMaker_RebuildRoute.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map/TMapMaker_ReindexRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
-src/game/map/TMapMaker_RotateMapColumns.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_AssignRegionsScanline.cpp|split_exception|UMapper monolith pass in its own TU (see file headers of the TMapMaker_* set): each ~multi-KB map-generation pass carries its own inline helpers/statics whose optimizer footprint perturbs neighbouring TMapMaker codegen when co-located.|
+src/game/map_generation/TMapMaker_BuildCityRegionBorders.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_GenerateRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_MergeSmallCityRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_RandomizeTemplates.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_RebuildRoute.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_ReindexRegions.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
+src/game/map_generation/TMapMaker_RotateMapColumns.cpp|split_exception|Same TMapMaker_* monolith-pass isolation reason.|
 src/game/ui_screens/TSimMgr_AdvanceGlobalTurnStateMachine.cpp|split_exception|Documented codegen reason (see file header): ~4KB monolithic turn state machine with /Ob1 inline predicate helpers; co-locating it perturbs neighbouring TSimMgr method codegen.|
 src/game/net/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|split_exception|Documented codegen reason (see file header): ~2.4KB packet dispatcher whose packet structs/inline tick-ack helper demonstrably re-shaped EmitNationDiplomacyNeedStateSnapshotEvent15's store scheduling when merged into TMultiplayerMgr.cpp.|
 src/game/net/TMultiplayerMgr_session.cpp|split_exception|Original-module seam: session and lobby lifecycle functions 0x5421a0-0x545730 live in Cross/UMissionSubs.cpp; the receive state machine beginning at 0x545940 remains in TMultiplayerMgr.cpp (7wb).|
@@ -24,12 +24,12 @@ src/game/ui_core/TPicture.cpp|companion_record|File-private fallback-size scratc
 src/game/ui_core/TTurnEventDialogFactoryRegistry.cpp|companion_record|File-private subview iterator used only by the factory registry.|CSubViewIterator
 src/game/ui_core/TView.cpp|companion_record|View-infrastructure companion records whose only methods serve TView.|TUiStyleRef;TViewChildList
 src/game/net/TWNetSessionManager.cpp|companion_record|File-private session-selection record and the DirectPlay base whose bodies exist only for this manager.|RuntimeSelectionRecord;TDirectPlaySessionManagerBase
-src/game/ui_screens/TZone.cpp|companion_record|Zone neighbor-stretch subclasses existing only for TZone internals.|TZonePrimaryNeighborStretch;TZoneSecondaryNeighborStretch
+src/game/map/TZone.cpp|companion_record|Zone neighbor-stretch subclasses existing only for TZone internals.|TZonePrimaryNeighborStretch;TZoneSecondaryNeighborStretch
 src/game/map/map_overlay_geometry.cpp|companion_record|Edge-point record private to the overlay-geometry module.|MapEdgePoint
 src/game/gfx/quickdraw_regions.cpp|companion_record|QuickDraw Region record: the region primitives module is its natural owner.|Region
 src/game/ui_core/quickdraw_rendering.cpp|companion_record|Clip-state RAII initializer private to the QuickDraw layer.|TQuickDrawClipStateInitializer
 src/game/app/ui_resource_builder.cpp|companion_record|Style-byte view record private to the resource builder.|TUiStyleBytes
-src/game/map/TMapMaker_BuildOverlaySpanRecords.cpp|split_exception|Documented codegen reason (see file header): isolated so its size does not perturb register allocation of the neighbouring stretch methods (was misnamed overlay_segment_builder.cpp).|
+src/game/map_generation/TMapMaker_BuildOverlaySpanRecords.cpp|split_exception|Documented codegen reason (see file header): isolated so its size does not perturb register allocation of the neighbouring stretch methods (was misnamed overlay_segment_builder.cpp).|
 src/game/ui_core/TViewMgr_dialog_dispatch.cpp|split_exception|Original-module seam: these 18 dialog-dispatch/roster/prompt functions live in Cross/UViewMgr.more.cpp per the assert-path module map (15 samples); the rest of TViewMgr is Cross/UViewMgr.cpp (8mo.15).|
 src/game/nation/TGreatPower_lifecycle.cpp|split_exception|Responsibility split (8mo.15): lifecycle/serialization/pending-action region 0x4d84b0-0x4db6xx, address-contiguous ahead of the UCountry module sample; keeps the 4.7k-line TGreatPower.cpp to diplomacy/order/advisory bodies.|
 src/game/ui_core/CIncludeView.cpp|companion_record|Private overlay-queue element struct owned by CIncludeView; its span accessor lives with the owning view TU.|IncludeViewOverlayRectRecord

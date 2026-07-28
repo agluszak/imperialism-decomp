@@ -20,9 +20,11 @@
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TTaskForce.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/map_ui_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -88,7 +90,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     CString searchText(g_szEmptyString);
     CString prompt;
     g_pSimMgr->GetString(0x2758, 0xb, &prompt);
-    g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
 
     for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
       CString cityName;
@@ -104,7 +106,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
       g_pSimMgr->GetString(0x2758, 0xd, &notFoundTemplate);
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
                              static_cast<LPCSTR>(searchText));
-      g_pUiRuntimeContext->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
+      g_pViewMgr->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
     }
     return;
   }
@@ -114,7 +116,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
     CString searchText(g_szEmptyString);
     CString prompt;
     g_pSimMgr->GetString(0x2758, 0xc, &prompt);
-    g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
+    g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(prompt), searchText, 0, 0, 0, 0);
 
     for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
       CString zoneName;
@@ -130,7 +132,7 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
       g_pSimMgr->GetString(0x2758, 0xe, &notFoundTemplate);
       scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(notFoundTemplate),
                              static_cast<LPCSTR>(searchText));
-      g_pUiRuntimeContext->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
+      g_pViewMgr->ModalMessage(message, g_ptMapModeModalMessage, 0, 0);
     }
     return;
   }
@@ -180,13 +182,13 @@ void TWorldView::DoKeyEvent(TToolboxEvent* event) {
 
   switch (static_cast<char>(commandEvent->commandCode)) {
   case 't':
-    g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
+    g_pViewMgr->ShowCivilianLedgerDialogAndSelectUnit();
     break;
   case 'u':
-    g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
+    g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
     break;
   case 'v':
-    g_pUiRuntimeContext->ShowNavyRosterDialogAndApplySelection();
+    g_pViewMgr->ShowNavyRosterDialogAndApplySelection();
     break;
   }
 }
@@ -197,7 +199,7 @@ void TWorldView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   if (cursorId != -1) {
     CPoint mappedPoint = ViewToQDPt(point);
     if (PtInRgn(&mappedPoint, hitArg) != 0) {
-      SetCursor(g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
+      SetCursor(g_pViewMgr->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase]);
       return;
     }
   }
@@ -303,7 +305,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   if (cursorToken == -1) {
     cursor = LoadCursorA(0, MAKEINTRESOURCEA(0x7f00));
   } else {
-    cursor = g_pUiRuntimeContext->turnEventCursors[cursorToken - 1000];
+    cursor = g_pViewMgr->turnEventCursors[cursorToken - 1000];
   }
   SetCursor(cursor);
 
@@ -506,7 +508,7 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
     return 1;
   }
 
-  if (g_pGlobalUiRootController->screenModeAt24 < 2) {
+  if (g_pAmbitApplication->screenModeAt24 < 2) {
     HandleMapClickByInteractionMode(static_cast<short>(stridedRecord), regionBand);
     return 1;
   }

@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TControl.h"
@@ -12,7 +12,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 // FUNCTION: IMPERIALISM 0x0043d8c0
@@ -46,7 +46,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       owner->Dismiss(kControlTagOkay, 0);
       g_pSimMgr->EnterOptionalPhase(0x71);
     } else if (tag == kControlTagNewg || tag == kControlTagQuit) {
-      if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
+      if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(tag)) {
         TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
         if (g_pSimMgr->multiplayerSessionRole == 1) {
@@ -56,14 +56,14 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
           }
           g_pGameFlowState->DispatchTaggedGameStateEvent1F20(tag, saveResult, -3);
         } else if (tag == kControlTagQuit) {
-          g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+          g_pAmbitApplication->PostWmCloseToMainThreadWindow();
         } else {
-          g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+          g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
       }
     } else if (tag == kControlTagLoad) {
       if (g_pSimMgr->multiplayerSessionRole != 0) {
-        g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
+        g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2737, 0x34, 0, 0);
       } else {
         TWindow* owner = GetWindow();
         owner->Dismiss(tag, 0);
@@ -78,7 +78,7 @@ void TFlagOptionsPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       owner->Dismiss(tag, 0);
       if (g_pSimMgr->multiplayerSessionRole == 2) {
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&text, 0x2742, 0x13);
-        g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 0, 0);
       } else {
         g_pSimMgr->EnterOptionalPhase(0x6f);
       }

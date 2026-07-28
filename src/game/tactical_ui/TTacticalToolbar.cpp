@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/tactical/TArmyTacUnit.h"
 #include "game/ui_core/THelpMgr.h"
@@ -11,7 +11,8 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/tactical/TTacticalBattle.h"
 #include "game/tactical/TTacticalUnit.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -58,8 +59,7 @@ void TTacticalToolbar::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005ac950
 void TTacticalToolbar::Draw(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other Draws
-  TQuickDrawBlitSurface* iconStripSurface =
-      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
 
   TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit8C);
   if (sideAUnit != nullptr) {
@@ -211,5 +211,5 @@ void TTacticalToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
-  g_pGlobalUiRootController->SetTarget(ownerContext);
+  g_pAmbitApplication->SetTarget(ownerContext);
 }

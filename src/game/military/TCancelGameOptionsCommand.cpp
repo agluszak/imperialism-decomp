@@ -1,6 +1,6 @@
 #include "game/military/TCancelGameOptionsCommand.h"
 #include "game/turn_event_codes.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TApplication.h"
@@ -11,7 +11,7 @@ void TCancelGameOptionsCommand::DoIt() {
   TMultiplayerMgr* flowState = g_pGameFlowState;
   flowState->lobbyDialogView40 = 0;
   flowState->ResetNationStatusArraysAndTurnEventContext();
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(kTurnEventMultiplayerGameSetup);
+  g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventMultiplayerGameSetup);
   flowState->queueSyncDword = 0;
 }
 

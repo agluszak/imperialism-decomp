@@ -2,7 +2,7 @@
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/mfc.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -228,8 +228,8 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
     this->pendingAudioCueId = static_cast<unsigned short>(chosen);
     if (this->fadeStartTick16 == 0) {
       this->fadeStartTick16 = GetTickCountDiv16();
-      g_pUiViewManager->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                              kCdAudioFadeTimerInterval, 0);
+      g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
+                                                         kCdAudioFadeTimerInterval, 0);
     }
   } else {
     this->activeAudioCueId = static_cast<unsigned short>(chosen);
@@ -263,8 +263,8 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, bool 
       return;
     }
     this->fadeStartTick16 = GetTickCountDiv16();
-    g_pUiViewManager->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                            kCdAudioFadeTimerInterval, 0);
+    g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
+                                                       kCdAudioFadeTimerInterval, 0);
     return;
   }
 
@@ -334,8 +334,8 @@ void TSoundPlayer::SetActiveAudioCueAndResetQueue(int cueId, bool flag) {
       return;
     }
     this->fadeStartTick16 = GetTickCountDiv16();
-    g_pUiViewManager->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                            kCdAudioFadeTimerInterval, 0);
+    g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
+                                                       kCdAudioFadeTimerInterval, 0);
     return;
   }
 
@@ -360,8 +360,8 @@ void TSoundPlayer::StopCdAudioPlayback(char fadeOut) {
   if (fadeOut != 0) {
     if (fadeStartTick16 == 0) {
       fadeStartTick16 = GetTickCountDiv16();
-      g_pUiViewManager->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                              kCdAudioFadeTimerInterval, 0);
+      g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
+                                                         kCdAudioFadeTimerInterval, 0);
     }
     clearCuePoolsAfterFade = 1;
     return;
@@ -381,8 +381,8 @@ void TSoundPlayer::ScaleAndApplyAuxOutputVolume(short scalar) {
 void TSoundPlayer::StartDeferredAudioFadeTimerIfIdle() {
   if (fadeStartTick16 == 0) {
     fadeStartTick16 = GetTickCountDiv16();
-    g_pUiViewManager->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
-                                                            kCdAudioFadeTimerInterval, 0);
+    g_pAssetMgr->ScheduleTimerSlotCallbackWithInterval(&UpdateDeferredCdAudioFade,
+                                                       kCdAudioFadeTimerInterval, 0);
   }
 }
 
@@ -406,7 +406,7 @@ void TSoundPlayer::ISoundPlayer(int idleFrequency) {
   g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
   this->idleFrequencyTicks = idleFrequency;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  g_pGlobalUiRootController->InstallCohandler(this, 1);
+  g_pAmbitApplication->InstallCohandler(this, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60

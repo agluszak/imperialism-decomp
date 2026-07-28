@@ -2,12 +2,12 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x0056b800
@@ -53,7 +53,7 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != 0) {
       g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
-      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
+      g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
     return;
   }
@@ -63,14 +63,14 @@ void TGameInfoPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       g_pSimMgr->EnterOptionalPhase(0x65);
     } else {
       g_pSimMgr->GetString(0x273d, 0x12, &message);
-      g_pUiRuntimeContext->ModalMessage(message, g_ptQueryFloaterModalMessage, 1, 0);
+      g_pViewMgr->ModalMessage(message, g_ptQueryFloaterModalMessage, 1, 0);
     }
     return;
   }
   if (tag == kControlTagButl) { // 'butl' — trade/deals
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &message);
-      g_pUiRuntimeContext->ModalMessage(message, g_ptQueryFloaterModalMessage, 0, 0);
+      g_pViewMgr->ModalMessage(message, g_ptQueryFloaterModalMessage, 0, 0);
     } else {
       g_pSimMgr->EnterOptionalPhase(0x64);
     }

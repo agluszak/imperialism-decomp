@@ -3,7 +3,7 @@
 #include "game/ui_screens/TBook.h"
 #include "game/tactical_ui/TTechItemLine.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -33,7 +33,7 @@ IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 // FUNCTION: IMPERIALISM 0x005b0f10
 void TTechStorePage::PopulateUnlockedTechnologyRows(int nationSlot) {
   for (int techId = 0x1c; techId > 0; --techId) {
-    if (g_pCityOrderCapabilityState->perTechUnlockFlag180[techId] != 0) {
+    if (g_pTechMgr->perTechUnlockFlag180[techId] != 0) {
       TTechItemLine* line = new TTechItemLine();
       int lineBounds[2] = {0x232, 0x3f};
       line->SetLineDataRowAndBounds(0, 0, lineBounds);

@@ -2,7 +2,7 @@
 
 #include "compat.h"
 
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 
 // VTABLE: IMPERIALISM 0x0065a188
 class TArmsForeignMinister : public TForeignMinister {

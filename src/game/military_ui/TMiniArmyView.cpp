@@ -9,7 +9,8 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -60,8 +61,7 @@ void TMiniArmyView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface =
-      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
   RECT dstRect = {0x8c, 4, sVar1 * 4 + 0x8b, 0xb};
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -90,7 +90,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);
-      g_pUiRuntimeContext->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
+      g_pViewMgr->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler == this) {
     TSuperArmyRoster* roster = static_cast<TSuperArmyRoster*>(ownerContext);

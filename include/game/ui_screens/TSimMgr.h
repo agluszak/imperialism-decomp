@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/multiplayer_session_tags.h"
 #include "game/ui_tags_screens.h"
 #include "game/nation_domain_types.h"
@@ -159,7 +159,7 @@ public:
   // 0x581ae0. Sets field6a, then reloads the picture-word-data language pack for
   // that index (EnsurePictWvDataGobLoadedBySlot) and refreshes the strategic map
   // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
-  // g_pStrategicMapViewSystem).
+  // g_pMacViewMgr).
   void SetSelectedIndex6AAndTriggerRefresh(short index);
   void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(NationSlot nationSlot); // 0x5837c0
 

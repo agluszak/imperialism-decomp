@@ -7,7 +7,8 @@
 #include "game/map_ui/TMapDialog.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x00505a50
@@ -32,7 +33,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   CRect destRect;
   QueryContentBounds(&destRect);
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   RECT srcRect;
   TQuickDrawBlitSurface* srcSurface;
   if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94 != 0) {
@@ -53,7 +54,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    srcSurface = g_pStrategicMapViewSystem->atlas668->GetBlitSurface();
+    srcSurface = g_pMacViewMgr->atlas668->GetBlitSurface();
   } else {
     short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
     srcRect.left = variant;
@@ -61,7 +62,7 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    srcSurface = g_pStrategicMapViewSystem->atlas668->GetBlitSurface();
+    srcSurface = g_pMacViewMgr->atlas668->GetBlitSurface();
   }
 
   BlitRectWithOptionalTransparency(srcSurface, g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),

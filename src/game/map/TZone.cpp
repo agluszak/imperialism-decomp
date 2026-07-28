@@ -1,8 +1,9 @@
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/core/runtime_prng_seed.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 
@@ -776,8 +777,8 @@ void TZone::SetMapOrderUiFlag(bool flag) {
       g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionState16;
   if (((static_cast<unsigned char>(flag) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
-       (g_pUiRuntimeContext != 0)) &&
-      (g_pUiRuntimeContext->mapUberPictureF0 != 0)) {
+       (g_pViewMgr != 0)) &&
+      (g_pViewMgr->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
     if (QueryPortZoneCapability() != 0) {
       SetMapTileStateByteAndNotifyObserver(

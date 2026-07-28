@@ -47,7 +47,7 @@ private:
             ? static_cast<TMapUberPicture*>(mainView)
             : 0;
     TView* zoom = mapView != 0 ? mapView->ResolveControlByTag(kControlTagZmOt) : 0;
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mapView == 0 || zoom == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mapView == 0 || zoom == 0 ||
         !g_ModalViewStack.IsEmpty()) {
       FailScenario("\"combined-map zoom-out control is missing or the map is not idle\"");
       return;
@@ -62,7 +62,7 @@ private:
   }
 
   void VerifyZoomOut() {
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmIn) == 0 ||
         mapView->invalidationFlag94 != 0 || mapView->subviewAc != mapView->goodGoldTagControlA4) {
       FailScenario("\"zoom-out release did not enter the alternate map mode\"");
@@ -79,7 +79,7 @@ private:
   }
 
   void VerifyZoomIn() {
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmOt) == 0 ||
         mapView->invalidationFlag94 == 0 || mapView->subviewAc != mapView->subview2A8) {
       FailScenario("\"zoom-in release did not restore the strategic map mode\"");
@@ -94,9 +94,9 @@ private:
     }
     TMapDialog* mapDialog = mapView->subview2A8;
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(10, 10, 0);
-    int previousX = mapDialog->viewportOrigin60.x;
+    int previousX = mapDialog->viewportOrigin.x;
     mapView->Scroll(4);
-    if (mapDialog->viewportOrigin60.x == previousX) {
+    if (mapDialog->viewportOrigin.x == previousX) {
       FailScenario("\"combined-map scrolling stopped after repeated zoom toggles\"");
       return;
     }

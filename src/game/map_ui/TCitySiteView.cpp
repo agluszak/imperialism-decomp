@@ -1,16 +1,17 @@
 #include "game/map_ui/TCitySiteView.h"
 #include "game/ui_tags_common.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -248,7 +249,7 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
   pendingTown->SetName(cityName);
-  if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown)) {
+  if (!g_pViewMgr->ShowNewCityDialog(pendingTown)) {
     pendingTown->tileIndex = 0;
     return;
   }

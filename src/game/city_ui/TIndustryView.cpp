@@ -15,8 +15,9 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -165,8 +166,8 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 
-    g_pUiRuntimeContext->ShowBuildingExpansionDialog(
-        embeddedPageIndex9E, city94, static_cast<TCityProductionView*>(mainControl));
+    g_pViewMgr->ShowBuildingExpansionDialog(embeddedPageIndex9E, city94,
+                                            static_cast<TCityProductionView*>(mainControl));
 
     TView* owner2 = GetWindow();
     static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);

@@ -4,8 +4,8 @@
 #include "game/city_ui/TCountry.h"
 
 #include "game/map/TMapMgr.h"
-#include "game/ui_screens/CString.h"
-#include "game/globals/prelude.h"
+#include "game/core/CString.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
 
@@ -22,7 +22,7 @@
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/military/TUnit.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/nation_stream_serialization.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/military/mapped_flavor_text.h"
@@ -330,7 +330,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     const TTechMgr::MilitaryCapRow& capabilityRow =
-        g_pCityOrderCapabilityState->abilityActiveRows395[this->nationSlot];
+        g_pTechMgr->abilityActiveRows395[this->nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
     } else {

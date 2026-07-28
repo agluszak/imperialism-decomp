@@ -16,9 +16,9 @@ namespace {
 
 CString SemanticFingerprint(RuntimeRun& run) {
   CString fingerprint;
-  fingerprint.Format(
-      "%d|%s|%d|%s", g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
-      RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(), run.PhaseName());
+  fingerprint.Format("%d|%s|%d|%s", g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1,
+                     RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(),
+                     run.PhaseName());
   return fingerprint;
 }
 
@@ -44,7 +44,7 @@ void WriteRuntimeHeartbeat(RuntimeRun& run) {
               "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
               "\"hold\": %s}\n",
               run.PhaseName(), run.LastAction(), run.IdleTicks(), run.ElapsedMs(),
-              g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1,
+              g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1,
               RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(),
               run.ProgressCounter(), run.LastProgressMs(), run.HoldRequested() ? "true" : "false");
   RuntimeJson::WriteFileAtomically(run.HeartbeatPath(), json);

@@ -8,7 +8,7 @@
 #include "game/diplomacy_domain_types.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/TList.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -142,7 +142,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before declaring war\"");
       return;
@@ -159,7 +159,7 @@ private:
 
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
       WaitForScenarioTick("\"diplomacy toolbar action did not activate diplomacy orders\"");
       return;
     }
@@ -258,7 +258,7 @@ private:
 
   void WaitForMapBeforeTrade() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"diplomacy back control did not restore the strategic map\"");
       return;
@@ -274,7 +274,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before opening the trade screen\"");
       return;
@@ -304,7 +304,7 @@ private:
 
   void WaitForTradeScreen() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
       WaitForScenarioTick("\"trade toolbar action did not activate the Board of Trade\"");
       return;
@@ -566,7 +566,7 @@ private:
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"Board of Trade back control did not restore the strategic map\"");
       return;
@@ -592,7 +592,7 @@ private:
   }
 
   void WaitForEndTurn() {
-    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventOfferSheet) {
+    if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
         WaitForScenarioTick("\"offer-sheet event did not construct TOfferDeskPicture\"");
@@ -610,7 +610,7 @@ private:
       RequestScenarioTick();
       return;
     }
-    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+    if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
       RequestScenarioTick();
@@ -620,7 +620,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
       WaitForScenarioTick("\"war and trade end turn did not return to the strategic map\"");

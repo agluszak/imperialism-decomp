@@ -5,7 +5,7 @@
 #include "game/ui_screens/TTextLine.h"
 #include "game/trade_ui/TTradeBidNationLine.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
@@ -36,8 +36,8 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
   ResetPageLayout();
 
   if (categorySlot != -1) {
-    if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
-        g_pNationInteractionStateManager->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
+    if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
+        g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
       TTextLine* headerRow = new TTextLine();
       int headerBounds[2];
       headerBounds[0] = 0x24;
@@ -49,7 +49,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       orderedEntries->AddTail(headerRow);
 
       for (short nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-        if (g_pNationInteractionStateManager->DidBidOn(nationSlot, categorySlot)) {
+        if (g_pTradeMgr->DidBidOn(nationSlot, categorySlot)) {
           TTradeBidNationLine* row = new TTradeBidNationLine();
           int rowBounds[2];
           row->SetLineDataRowAndBounds(0, 0, rowBounds);

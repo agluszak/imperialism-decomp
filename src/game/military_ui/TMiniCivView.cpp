@@ -1,14 +1,16 @@
 #include "game/military_ui/TMiniCivView.h"
 #include "game/military_ui/TSuperCivRoster.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TCivUnit.h"
 #include "game/city_ui/TCountry.h"
 #include "game/map/TMapMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -152,7 +154,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   // (0-indexed sprite column, each 0x40px wide) from a third icon strip cached on
   // TMacViewMgr at +0x66c (distinct from the +0x694/+0x68c strips used elsewhere).
   short iconColumn = g_pGlobalMapState->ApplyMapImprovementSelectionState(civUnit84);
-  TQuickDrawBlitSurface* iconStripSurface = g_pStrategicMapViewSystem->atlas66c->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas66c->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};
   RECT dstRect = {0, 0, 0x40, 0x40};
   UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -20,7 +20,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_map.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // Save-stream checkpoint oracle.
@@ -103,7 +103,7 @@ private:
     // Write the save first, through the same document path a real save uses, so the
     // bytes being replayed are this build's own and their provenance is beyond doubt.
     CString path("save/rt_save_stream_checkpoints.imp");
-    if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
+    if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
       FailScenario("\"the document refused to save through the real save path\"");
       return;
     }
@@ -144,12 +144,12 @@ private:
       TObject* object;
     };
     ChainEntry chain[] = {
-        {"TAmbitApplication", g_pGlobalUiRootController},
+        {"TAmbitApplication", g_pAmbitApplication},
         {"TSimMgr", g_pSimMgr},
         {"TAnimator", g_pUiAnimator},
-        {"TTradeMgr", g_pNationInteractionStateManager},
+        {"TTradeMgr", g_pTradeMgr},
         {"TDiplomacyMgr", g_pDiplomacyTurnStateManager},
-        {"TTechMgr", g_pCityOrderCapabilityState},
+        {"TTechMgr", g_pTechMgr},
         {"TMapMgr", g_pGlobalMapState},
         {"TOcean", g_pActiveMapOrderContext},
         {"TNavyMgr", g_pNavyOrderManager},
@@ -175,8 +175,8 @@ private:
     }
 
     ChainEntry tail[] = {
-        {"TViewMgr", g_pUiRuntimeContext},
-        {"TMacViewMgr", g_pStrategicMapViewSystem},
+        {"TViewMgr", g_pViewMgr},
+        {"TMacViewMgr", g_pMacViewMgr},
         {"TNewsMgr", g_pNewsMgr},
         {"THelpMgr", g_pHelpMgr},
     };

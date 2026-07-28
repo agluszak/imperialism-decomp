@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 #include "game/app/TObject.h"
 #include "game/core/TStream.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 
 class TCity;
 class TTaskForce;

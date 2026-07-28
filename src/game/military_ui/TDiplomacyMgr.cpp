@@ -2,7 +2,7 @@
 #include "game/ui_tags_military.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/military/NetMessage.h"
@@ -12,7 +12,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TSortedPtrList.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"
@@ -1093,8 +1093,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
     if (propagatedTransition == 0) {
       TNextTradeCommand* packet = new TNextTradeCommand();
-      InitializeNextTradeCommandForHandler(packet, kTurnEventTagNext, g_pGlobalUiRootController);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
+      InitializeNextTradeCommandForHandler(packet, kTurnEventTagNext, g_pAmbitApplication);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(packet);
     }
   } else {
     bool isMultiplayerHost = (g_pSimMgr->multiplayerSessionRole == 1);

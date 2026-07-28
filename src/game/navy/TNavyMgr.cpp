@@ -24,9 +24,9 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/navy/TTaskForce.h"
-#include "game/ui_screens/TZone.h"
-#include "game/ui_screens/CString.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/core/CString.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -1563,7 +1563,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
   if (actionCode == 0) {
     return false;
   }
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   switch (actionCode) {
   case 9: {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
@@ -1591,7 +1591,7 @@ bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags) {
     return true;
   }
   case 10: {
-    g_pUiRuntimeContext->MakeNavyRosterDialog(GetActiveMapOrderEntry());
+    g_pViewMgr->MakeNavyRosterDialog(GetActiveMapOrderEntry());
     return true;
   }
   default:
@@ -1636,7 +1636,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   entry = GetActiveMapOrderEntry();
   switch (commandId) {
   case 0x0a:
-    g_pUiRuntimeContext->MakeNavyRosterDialog(entry);
+    g_pViewMgr->MakeNavyRosterDialog(entry);
     break;
   case 0x0c:
     entry->shipOrders = 3;

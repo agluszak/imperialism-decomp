@@ -12,13 +12,13 @@
 //    connects (uint16 at +0x10/+0x12), which is how this pass reinterprets the segment slot;
 //  - per-region tile-count / merged-flag scratch arrays (function locals).
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include <math.h>
 
 #include "decomp_types.h"
 #include "game/map/TMapMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/sea_geometry.h"

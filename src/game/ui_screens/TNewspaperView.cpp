@@ -10,8 +10,8 @@
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -45,8 +45,7 @@ void TNewspaperView::StuffValues(int pageNation) {
   CString formatText;
   CString panelText;
   CString dateText;
-  newsTexStream94 =
-      g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
+  newsTexStream94 = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
 
   TextStyle titleStyle;   // (face 0, 12pt)
   TextStyle featureStyle; // (face 1, 14pt)
@@ -82,7 +81,7 @@ void TNewspaperView::StuffValues(int pageNation) {
                              static_cast<LPCSTR>(dateText));
       break;
     case 1: {
-      int tradeDelta = g_pNationInteractionStateManager->GetMarketChange();
+      int tradeDelta = g_pTradeMgr->GetMarketChange();
       dateText.Format(g_szDecimalFormat, tradeDelta);
       if (tradeDelta > 0) {
         dateText = g_szPlusPrefix_00698494 + dateText;
@@ -137,7 +136,7 @@ void TNewspaperView::StuffValues(int pageNation) {
                                                   tokens);
     }
   }
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(newsTexStream94);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(newsTexStream94);
 }
 
 // FUNCTION: IMPERIALISM 0x0055d910
@@ -275,9 +274,8 @@ int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, in
   }
 
   char* recordBuffer = new char[recordLength];
-  g_pUiViewManager->SeekResourceStreamFromBeginning(newsTexStream94, recordOffset);
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(newsTexStream94, recordBuffer,
-                                                           &recordLength);
+  g_pAssetMgr->SeekResourceStreamFromBeginning(newsTexStream94, recordOffset);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(newsTexStream94, recordBuffer, &recordLength);
   char* formatted = AppendInterNationEventSummaryTextEntry_Impl(
       g_pSimMgr, recordBuffer, static_cast<LPCSTR>(tokens[0]), static_cast<LPCSTR>(tokens[1]),
       static_cast<LPCSTR>(tokens[2]), static_cast<LPCSTR>(tokens[3]));

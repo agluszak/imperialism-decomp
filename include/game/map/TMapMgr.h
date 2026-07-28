@@ -127,7 +127,7 @@ public:
   // DispatchTurnEvent7DDForActiveNation.
   virtual void TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   // Ensures the map data stream is ready (slot 0x12), then dispatches turn-event 0x7dd
-  // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
+  // (a UI refresh notification) to g_pViewMgr for the active nation.
   virtual void DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
   virtual void ResetAllTileMarkerSlotIndicesToSentinel(); // slot 0x14 0x5178c0
   // Mac oracle; 0x0050f740.
@@ -209,7 +209,7 @@ public:
   // pCivilianOrderEntry->ownerNationSlot18 (nationTag) or diplomatically compatible
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2), further gated on
   // gateFlag being in {8,9} (or {10,11,12} when
-  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13]
+  // g_pTechMgr->orderCapRows277[nationTag].techStatusByTechId[0x13]
   // == 2), and finally on this nation's bit not already being set in
   // pendingDevelopmentFlag0d.
   virtual void DimByProspecting(class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
@@ -228,7 +228,7 @@ public:
   // ownerNationTag04 or secondaryOwnerNationTag18) and pendingDevelopmentFlag0d != 0, and
   // then gated on whether its high development nibble is below the max capability value
   // (over its qualifying resourceTypeByEdge entries) from
-  // g_pCityOrderCapabilityState->capabilityValueByNationAndResource. Which resourceTypes
+  // g_pTechMgr->capabilityValueByNationAndResource. Which resourceTypes
   // qualify depends on pCivilianOrderEntry->orderType (== 0 selects {3,4,21,22}, else {6}).
   virtual void DimByMining(class TCivUnit* pCivilianOrderEntry); // slot 0x25 0x5155c0
   // Seeds recruitSearchVisited0e = 1 across all tiles, then for each of the order's nation's
@@ -342,7 +342,7 @@ public:
                                                  char param4); // slot 0x33 0x5136a0
   // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
   // g_abResourceTypeCapabilityCategory matches categoryCode, reads
-  // g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationSlot][resourceType]
+  // g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType]
   // and returns the max across both edges (0 if neither qualifies).
   virtual short FindMaxResourceCapabilityValueForTile(StrategicTileIndex tileIndex,
                                                       char categoryCode,
@@ -691,7 +691,7 @@ public:
   // strategic-map tiles. 0x00515db0, __thiscall, no args.
   void DimmingOff();
 
-  // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
+  // Marks field6 ready and, on first call (g_pMacViewMgr->atlas668 still
   // null), tail-calls TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches to
   // build it. 0x0050e4e0, __thiscall.
   void IMapMgr();

@@ -1,11 +1,11 @@
 #include "game/trade_ui/TCommodityLine.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_screens/TColorKeyPicture.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 // SYNTHETIC: IMPERIALISM 0x005c1430
@@ -39,7 +39,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
 
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xe, 0x2b67);
   g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
-  short price = g_pNationInteractionStateManager->GetPrice(commoditySlot);
+  short price = g_pTradeMgr->GetPrice(commoditySlot);
   g_pSimMgr->NumToCurrency(price, &priceText);
   displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;
 

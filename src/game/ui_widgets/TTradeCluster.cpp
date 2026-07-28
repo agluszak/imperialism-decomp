@@ -9,7 +9,7 @@
 #include "game/mfc.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include <new>
@@ -204,8 +204,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   case 0x67:
-    g_pUiRuntimeContext->AddPendingTurnOverlayCode(-1);
-    if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() == 3) {
+    g_pViewMgr->AddPendingTurnOverlayCode(-1);
+    if (g_pViewMgr->GetPendingTurnOverlayCode() == 3) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
@@ -219,8 +219,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     }
     break;
   case 0x68:
-    g_pUiRuntimeContext->AddPendingTurnOverlayCode(1);
-    if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() == 4) {
+    g_pViewMgr->AddPendingTurnOverlayCode(1);
+    if (g_pViewMgr->GetPendingTurnOverlayCode() == 4) {
       for (int i = 0;
            i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
            ++i) {
@@ -291,7 +291,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
 int TTradeCluster::IsTradeControlAtMinimum() {
-  if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() > 3) {
+  if (g_pViewMgr->GetPendingTurnOverlayCode() > 3) {
     return 0;
   }
   TNumberText* sellControl = static_cast<TNumberText*>(this->ResolveControlByTag(kControlTagSell));
@@ -360,7 +360,7 @@ void TTradeCluster::DoControlAction() {
   CPoint size(0x11, 0x14);
   bidControl->Resize(size, 1);
 
-  if (g_pUiRuntimeContext->GetPendingTurnOverlayCode() < 4) {
+  if (g_pViewMgr->GetPendingTurnOverlayCode() < 4) {
     bidControl->SetEnabled(1, 1);
     if (controlTag == kTradeRowStateTag_67643020) {
       bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateB, 0);

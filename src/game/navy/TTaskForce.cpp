@@ -6,7 +6,7 @@
 #include "game/map/TMission.h"
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -17,9 +17,9 @@
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -1269,7 +1269,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   // cityIndex. Cancellation itself must not depend on that secondary UI warning path.
   (void)cancelsBeachhead;
   (void)cityIndex;
-  g_pUiRuntimeContext->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
+  g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
 
 // FUNCTION: IMPERIALISM 0x005548e0

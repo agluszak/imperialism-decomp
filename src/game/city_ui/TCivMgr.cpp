@@ -9,8 +9,9 @@
 #include "game/military/TCivUnit.h"
 #include "game/city_ui/TCountry.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
@@ -150,7 +151,7 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
 
   TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
   if (actionCode == 2) {
-    TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
     if (mapUberPicture == nullptr) {
       return false;
     }
@@ -160,10 +161,10 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
     if (tileEntry != nullptr) {
       tileEntry->MoveTo(tileEntry->tileIndex06);
-      if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(tileEntry->tileIndex06);
+      if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+        g_pViewMgr->mapUberPictureF0->InvalidateTile(tileEntry->tileIndex06);
       }
-      mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      mapUberPicture = g_pViewMgr->mapUberPictureF0;
       if (mapUberPicture != nullptr) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
@@ -230,11 +231,11 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
     if (tileEntry != nullptr) {
       tileEntry->MoveTo(tileEntry->tileIndex06);
-      TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
       if (mapUberPicture != nullptr) {
         mapUberPicture->InvalidateTile(tileEntry->tileIndex06);
       }
-      mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+      mapUberPicture = g_pViewMgr->mapUberPictureF0;
       if (mapUberPicture != nullptr) {
         static_cast<TCivToolbar*>(
             mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
@@ -378,13 +379,13 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCom
 
   entryContext->MoveTo(entryContext->tileIndex06);
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
     mapUberPicture->InvalidateTile(entryContext->tileIndex06);
   }
 
   if (refreshCommandPanel != 0) {
-    mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    mapUberPicture = g_pViewMgr->mapUberPictureF0;
     if (mapUberPicture != nullptr) {
       // categoryPages[] is a heterogeneous array of toolbar subtypes typed generically as
       // TView* (see TMapUberPicture.h's categoryPages[] comment for the evidence); the
@@ -404,7 +405,7 @@ void TCivMgr::OrderAndCycle(UnitOrder order) {
     entry->SetOrders(order, 0);
   }
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
     mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
@@ -426,8 +427,8 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   }
   g_pSimMgr->GetString(0x274d, confirmStringOffset, &confirmText);
 
-  char confirmed = g_pUiRuntimeContext->ModalMessage(4, titleText, confirmText,
-                                                     g_ptCivilianOrderModalMessage, 2, 1);
+  char confirmed =
+      g_pViewMgr->ModalMessage(4, titleText, confirmText, g_ptCivilianOrderModalMessage, 2, 1);
   if (confirmed == 0) {
     return;
   }
@@ -438,11 +439,11 @@ void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
   }
   entry->ResetCivWorkOrderAndRefreshCounters();
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
     mapUberPicture->RedrawTile(tileIndex);
   }
-  mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  mapUberPicture = g_pViewMgr->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
     mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
@@ -489,7 +490,7 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d3070
 void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
-  if (g_pUiRuntimeContext->ShowCivilianReportDialogAndReturnConfirm(pCivilianOrderEntry)) {
+  if (g_pViewMgr->ShowCivilianReportDialogAndReturnConfirm(pCivilianOrderEntry)) {
     return;
   }
 
@@ -540,23 +541,23 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
                                                        pCivilianOrderEntry);
   }
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
     mapUberPicture->SetMapInteractionMode(0);
   }
-  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 
   this->selectedEntry = pCivilianOrderEntry;
   this->DispatchSelectedUnitToGlobalMapStateHandler(pCivilianOrderEntry);
   if (pCivilianOrderEntry != nullptr) {
     pCivilianOrderEntry->MoveTo(pCivilianOrderEntry->tileIndex06);
 
-    TMapUberPicture* invalidateTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* invalidateTarget = g_pViewMgr->mapUberPictureF0;
     if (invalidateTarget != nullptr) {
       invalidateTarget->InvalidateTile(pCivilianOrderEntry->tileIndex06);
     }
 
-    TMapUberPicture* refreshTarget = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* refreshTarget = g_pViewMgr->mapUberPictureF0;
     if (refreshTarget != nullptr) {
       // Same downcast as TCivMgr::SetActiveCivilianSelection -- categoryPages[civilian] is
       // a real TCivToolbar (see TMapUberPicture.h's categoryPages[] comment).
@@ -595,7 +596,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
     CString finalMessage;
     scanBracketExpressions(g_pSimMgr, &finalMessage, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(costText));
-    g_pUiRuntimeContext->ModalMessage(finalMessage, g_ptCivilianOrderModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(finalMessage, g_ptCivilianOrderModalMessage, 2, 0);
     return false;
   }
 
@@ -624,7 +625,7 @@ bool TCivMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex) {
 
   selectedEntry->completionMarker26 = sfxCode;
   g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToTreasury(-cost);
-  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   return true;
 }
 
@@ -652,14 +653,14 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
     g_pSimMgr->GetString(0x274d, 1, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
-    if (g_pUiRuntimeContext->ModalMessage(4, titleText, formattedText,
-                                          g_ptCivilianOrderModalMessage, 0, 1) != 0) {
+    if (g_pViewMgr->ModalMessage(4, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
+                                 1) != 0) {
       selectedEntry->SetOrders(kUnitOrderPurchaseLand, selectedEntry->tileIndex06);
       this->RelinkCivilianOrderTileAndInvalidateMapTiles(
           nTileIndex, g_pSelectedCivilianOrderState->selectedEntry);
       g_pSfxPlaybackSystem->PlaySoundEffect(0x2335, 0, 1);
       g_apNationStates[g_pSimMgr->GetActiveNationId()]->AddToTreasury(-purchaseCost);
-      g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+      g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 
       unsigned int feedbackStartTick = GetTickCountDiv16();
       while (true) {
@@ -676,8 +677,7 @@ bool TCivMgr::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex) {
     g_pSimMgr->GetString(0x274d, 2, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                            static_cast<LPCSTR>(cityName), static_cast<LPCSTR>(costText));
-    g_pUiRuntimeContext->ModalMessage(3, titleText, formattedText, g_ptCivilianOrderModalMessage, 0,
-                                      0);
+    g_pViewMgr->ModalMessage(3, titleText, formattedText, g_ptCivilianOrderModalMessage, 0, 0);
   }
   return false;
 }
@@ -710,7 +710,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   bool refreshPanel = false;
 
   if (nTileIndex == pCiv->tileIndex06) {
-    int choice = g_pUiRuntimeContext->ShowConstructionOptionsDialog();
+    int choice = g_pViewMgr->ShowConstructionOptionsDialog();
     if (choice == kControlTagFort) { // 'fort'
       short cityIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
       int fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
@@ -731,7 +731,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= cost;
@@ -755,13 +755,13 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 3000;
         pCiv->SetOrders(kUnitOrderBuildPort, pCiv->tileIndex06);
-        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nTileIndex);
+        if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+          g_pViewMgr->mapUberPictureF0->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232b, 0, 1);
         actionFinalized = true;
@@ -782,13 +782,13 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
         scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                                static_cast<LPCSTR>(costString));
 
-        g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
       } else {
         short nationId = g_pSimMgr->GetActiveNationId();
         g_apNationStates[nationId]->treasuryValue10 -= 2000;
         pCiv->SetOrders(kUnitOrderBuildFort, pCiv->tileIndex06);
-        if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-          g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nTileIndex);
+        if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+          g_pViewMgr->mapUberPictureF0->InvalidateTile(nTileIndex);
         }
         g_pSfxPlaybackSystem->PlaySoundEffect(0x232a, 0, 1);
         actionFinalized = true;
@@ -814,7 +814,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
       scanBracketExpressions(g_pSimMgr, &pszFormattedText, static_cast<LPCSTR>(pszTemplateText),
                              static_cast<LPCSTR>(costString));
 
-      g_pUiRuntimeContext->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
+      g_pViewMgr->ModalMessage(pszFormattedText, g_ptCivilianOrderModalMessage, 2, 0);
     } else {
       short nationId = g_pSimMgr->GetActiveNationId();
       g_apNationStates[nationId]->treasuryValue10 -= cost;
@@ -844,7 +844,7 @@ bool TCivMgr::HandleEngineerConstructionAction(short nTileIndex) {
   }
 
   if (refreshPanel) {
-    g_pUiRuntimeContext->RefreshViewSlot48();
+    g_pViewMgr->RefreshViewSlot48();
   }
 
   return actionFinalized;
@@ -855,11 +855,11 @@ void TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex,
                                                            TCivUnit* pCivOrderEntry) {
   short previousTile = pCivOrderEntry->tileIndex06;
   pCivOrderEntry->MoveTo(nNewTileIndex);
-  if (previousTile != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-    g_pUiRuntimeContext->mapUberPictureF0->RedrawTile(previousTile);
+  if (previousTile != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
+    g_pViewMgr->mapUberPictureF0->RedrawTile(previousTile);
   }
-  if (nNewTileIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-    g_pUiRuntimeContext->mapUberPictureF0->RedrawTile(nNewTileIndex);
+  if (nNewTileIndex != -1 && g_pViewMgr->mapUberPictureF0 != nullptr) {
+    g_pViewMgr->mapUberPictureF0->RedrawTile(nNewTileIndex);
   }
 }
 // specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
@@ -1034,7 +1034,7 @@ void TCivMgr::ClearNationCivilianActionModesAndCycleSelection(int nationId) {
     civilian = static_cast<TCivUnit*>(cursor.Advance());
   }
 
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
   if (mapView != 0 && !mapView->HasActiveMapInteractionSelection()) {
     mapView->CycleMapInteractionSelectionAfterHandledClick();
   }

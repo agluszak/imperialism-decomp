@@ -9,7 +9,7 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -96,7 +96,7 @@ int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile* stream, void* buffe
   *countInOut = stream->Read(buffer, *countInOut);
   return 0;
 }
-// `this` (g_pUiViewManager at every callsite) is unused; the method just reseeks the
+// `this` (g_pAssetMgr at every callsite) is unused; the method just reseeks the
 // stream.
 // FUNCTION: IMPERIALISM 0x005df730
 void TAssetMgr::SeekResourceStreamFromBeginning(CFile* stream, int offset) {
@@ -122,16 +122,16 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
   CString prefixedPath =
       CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) + moviePath;
 
-  g_pUiRuntimeContext->activeMovieViewF4 = movieView;
+  g_pViewMgr->activeMovieViewF4 = movieView;
   if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(prefixedPath))) {
     if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(moviePath))) {
-      g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
+      g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
       return;
     }
   }
 
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
-  g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(2);
+  g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(2);
   movieView->PlayMovieIfActive();
 }
 

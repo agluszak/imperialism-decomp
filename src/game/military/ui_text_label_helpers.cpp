@@ -1,4 +1,4 @@
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_widgets/TDropShadowText.h"
@@ -8,7 +8,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 void SetControlHoverHelpText(CString sharedString, TView* control);

@@ -10,12 +10,12 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/core/TStream.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 namespace {
@@ -384,7 +384,7 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
   int i;
   for (i = 13; i > 0; --i) {
     if (g_aIndustryCapabilityClassSlotTable[i].classId == category &&
-        g_pCityOrderCapabilityState->resourceTypeEnabled19d[i] != 0) {
+        g_pTechMgr->resourceTypeEnabled19d[i] != 0) {
       resourceType = static_cast<short>(i);
       break;
     }

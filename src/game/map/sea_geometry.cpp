@@ -13,7 +13,7 @@
 #include "decomp_types.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/map_overlay_geometry.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 
@@ -137,6 +137,7 @@ void SeaSegment::RecomputeEndpointsAndAngle() {
 // five append sites below and calls the out-of-line copy at the other four; VC5's inline
 // budget is exhausted by this body's size. Suspending automatic expansion for this one
 // function reproduces the four out-of-line calls.
+IMPERIALISM_BEGIN_DISABLE_AUTOMATIC_INLINING
 #pragma inline_depth(0)
 // FUNCTION: IMPERIALISM 0x0052ac40
 void RebuildRegionBorderLinkLattice() {
@@ -286,6 +287,7 @@ void RebuildRegionBorderLinkLattice() {
   } while (edgeColumn - 8 < 0x6c);
 }
 #pragma inline_depth()
+IMPERIALISM_END_DISABLE_AUTOMATIC_INLINING
 
 // FUNCTION: IMPERIALISM 0x0052b160
 int OverlayCoordFromTileColumnRowAndSide(int column, int row, char side) {

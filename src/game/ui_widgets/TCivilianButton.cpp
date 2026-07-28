@@ -2,7 +2,8 @@
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_core/TPicture.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/military/TCivUnit.h"
@@ -60,7 +61,7 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   srcRect.bottom = 0x40;
 
   RECT dstRect = {0, 2, 0x40, 0x42};
-  TQuickDrawSurfaceContext* hintSource = g_pStrategicMapViewSystem->atlas66c;
+  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas66c;
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);

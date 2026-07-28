@@ -3,7 +3,8 @@
 #include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -51,8 +52,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
     SetQuickDrawTextOriginWithContextOffset(0x6a - trainingWidth / 2, 0x26);
     DrawTextWithCachedQuickDrawStyleState(&trainingText);
   } else {
-    TQuickDrawBlitSurface* iconStripSurface =
-        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+    TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
@@ -72,8 +72,7 @@ void TArmyBoyView::Draw(RECT* rectBuffer) {
     barWidth += 5;
   }
   if (barWidth != 0) {
-    TQuickDrawBlitSurface* iconStripSurface =
-        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+    TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
     RECT srcRect = {0, 0, barWidth, 10};
     RECT dstRect = {0x94, 0x1f, barWidth + 0x94, 0x29};
     UpdatePaletteIndexWithDefaultFallback(0x10);

@@ -20,7 +20,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/globals/gfx_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 #include <stdlib.h>
@@ -99,12 +99,12 @@ private:
 
   void RunRoundtrips() {
     RoundtripTarget targets[] = {
-        {"TAmbitApplication", g_pGlobalUiRootController, true, 0},
+        {"TAmbitApplication", g_pAmbitApplication, true, 0},
         {"TSimMgr", g_pSimMgr, false, 0},
         {"TAnimator", g_pUiAnimator, true, 0},
-        {"TTradeMgr", g_pNationInteractionStateManager, true, 0},
+        {"TTradeMgr", g_pTradeMgr, true, 0},
         {"TDiplomacyMgr", g_pDiplomacyTurnStateManager, true, 0},
-        {"TTechMgr", g_pCityOrderCapabilityState, true, 0},
+        {"TTechMgr", g_pTechMgr, true, 0},
         // WriteTo emits terrainStateTable and cityScoreTable as raw blocks, and those
         // records carry live pointers (firstCivilianOrder20 at +0x20 of a 0x24 record,
         // stationedUnitChain98 in the city record). ReadFrom deliberately nulls them
@@ -115,8 +115,8 @@ private:
         {"TOcean", g_pActiveMapOrderContext, false, 0},
         {"TNavyMgr", g_pNavyOrderManager, true, 0},
         {"TArmyMgr", g_pMapContextActionManager, true, 0},
-        {"TViewMgr", g_pUiRuntimeContext, true, 0},
-        {"TMacViewMgr", g_pStrategicMapViewSystem, true, 0},
+        {"TViewMgr", g_pViewMgr, true, 0},
+        {"TMacViewMgr", g_pMacViewMgr, true, 0},
         {"TNewsMgr", g_pNewsMgr, true, 0},
         // indexList is a TSortedPtrList and its ReadFrom re-inserts each record through
         // the sort comparator without clearing first, so re-reading into an already

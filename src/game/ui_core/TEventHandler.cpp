@@ -14,7 +14,7 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TApplication.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -62,14 +62,14 @@ void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0
 void TEventHandler::Free() {
-  if (g_pApplicationUiRootController != 0 && g_pApplicationUiRootController != this) {
-    TEventHandler* currentTarget = g_pApplicationUiRootController->GetTarget();
+  if (g_pApplication != 0 && g_pApplication != this) {
+    TEventHandler* currentTarget = g_pApplication->GetTarget();
     if (currentTarget == this) {
       TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
+        g_pApplication->SetTarget(g_pApplication);
       } else {
-        g_pApplicationUiRootController->SetTarget(replacement);
+        g_pApplication->SetTarget(replacement);
       }
     }
   }
@@ -210,7 +210,7 @@ void TEventHandler::AddBehavior(TBehavior* behavior) {
 // True iff this view is the root controller's current target.
 // FUNCTION: IMPERIALISM 0x0048a500
 char TEventHandler::IsTarget() {
-  return this == g_pApplicationUiRootController->GetTarget();
+  return this == g_pApplication->GetTarget();
 }
 
 // FUNCTION: IMPERIALISM 0x0048a530
@@ -230,12 +230,12 @@ char TEventHandler::WillingToResignTarget() {
 // otherwise the current target must agree (slot 0x20) before we take over.
 // FUNCTION: IMPERIALISM 0x0048a570
 char TEventHandler::BecomeTarget() {
-  TEventHandler* active = g_pApplicationUiRootController->GetTarget();
+  TEventHandler* active = g_pApplication->GetTarget();
   if (this == active) {
     return 1;
   }
   if (active != 0 && active->ResignTarget() != 0) {
-    g_pApplicationUiRootController->SetTarget(this);
+    g_pApplication->SetTarget(this);
     return 1;
   }
   return 0;
@@ -248,17 +248,17 @@ char TEventHandler::BecomeTarget() {
 // BecomeTarget on the incumbent before a new view takes over.
 // FUNCTION: IMPERIALISM 0x0048a5e0
 char TEventHandler::ResignTarget() {
-  if (g_pApplicationUiRootController == 0) {
+  if (g_pApplication == 0) {
     return 0;
   }
-  TEventHandler* currentTarget = g_pApplicationUiRootController->GetTarget();
+  TEventHandler* currentTarget = g_pApplication->GetTarget();
   if (currentTarget == 0) {
     return 0;
   }
   char gate = currentTarget->WillingToResignTarget();
   if (gate == 0) {
     currentTarget->ResignedTarget();
-    g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
+    g_pApplication->SetTarget(g_pApplication);
     return 1;
   }
   currentTarget->TargetValidationFailed(gate);

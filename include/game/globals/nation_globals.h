@@ -1,9 +1,51 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+
+class TGreatPower;
+class TMinor;
+class TCountry;
+
+TGreatPower* GetNationStateBySlot(short slotId);
+short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
+
+struct AiCityActionCostProfile {
+  short primaryMetricCode;
+  short primaryMetricMultiplier;
+  short secondaryMetricCode;
+  short secondaryMetricMultiplier;
+  short baseCost;
+  short contextBiasSelector;
+  short actionId;
+};
+ASSERT_SIZE(AiCityActionCostProfile, 14);
 
 extern POINT g_ptGreatPowerModalMessage; // @ 0x6a2df0
+
+extern int g_anTechItemResearchCostByTechId[29];
+
+// Nation descriptors indexed by terrain/nation slot (0x006a4310). Its 23-entry retail
+// extent is kept here rather than importing TCountry.h solely for that local enum.
+extern TCountry* g_apTerrainTypeDescriptorTable[23];
+extern char* g_pszDescriptorDefaultName_00653300;
+
+extern "C" const short g_aDiplomacyPlanningQuarterPhaseByNation[7];
+
+// 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
+// (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
+extern "C" {
+extern TMinor* g_apSecondaryNationStateSlots[36];
+
+// Original address 0x006a429c is g_apSecondaryNationStateSlots + 7: the 16 minor
+// rows are an interior slice, not independent storage.
+#define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
+
+extern TGreatPower* g_apNationStates[7];
+// Several retail loops compare their cursor with the immediate one-past address
+// 0x006a438c. It is not a separately allocated pointer object.
+#define g_apNationStates_End g_apNationStates[7]
+} // extern "C"
 
 extern "C" {
 
@@ -159,5 +201,31 @@ extern const float g_AiPressurePeerScale_006543e8;
 extern const double g_MissionScoreZeroThreshold_006545f0;
 
 extern const double g_MissionEligibilityRatioMargin_006545f8;
+extern float g_ApplyIndexedResourceDeltaScale_00653728;
+extern const float g_MissionDefaultScore_0065a468;
+extern const double g_MissionScoreOneConstant_0065a470;
+extern const double g_MinisterWeightHalf_006548E8;
+extern const double g_MinisterWeightOne_006548F0;
+extern const double g_BismarckWeightHigh_006548F8;
+extern const double g_BismarckWeightLow_00654900;
+extern const float g_DefenderMinisterWeight_00654908;
+extern const double g_BullyWeightLow_00654910;
+extern const double g_BullyWeightHigh_00654918;
+
+extern short g_industryActionCostWeightResCode10[16];
+extern AiCityActionCostProfile g_aiCityActionCostProfiles[30];
+extern short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
+extern short g_cityPredictedNeedResetResourceIds[3];
+extern const float g_PopulationGrowthRateUnder10;
+extern const float g_PopulationGrowthRateUnder15;
+extern const float g_PopulationGrowthRateUnder20;
+extern const float g_PopulationGrowthRateUnder30;
+extern const float g_PopulationGrowthRateUnder40;
+extern const float g_PopulationGrowthRateUnder60;
+extern const float g_PopulationGrowthRateUnder80;
+extern const float g_PopulationGrowthRateUnder400;
+extern const double g_PopulationGrowthPenaltyPerRetry;
+extern const double g_PopulationGrowthMaximumRetryPenalty;
+extern const float g_PopulationGrowthRateAtOrAbove400;
 
 } // extern "C"

@@ -29,7 +29,7 @@
 #include "game/ui_core/TWindow.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TNumberText.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -64,7 +64,7 @@ TMapUberPicture::~TMapUberPicture() {}
 void TMapUberPicture::DoPostCreate(int arg) {
   TOffLimitsPicture::DoPostCreate(arg);
 
-  g_pGlobalUiRootController->edgeScrollTarget48 = this;
+  g_pAmbitApplication->edgeScrollTarget48 = this;
 
   subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagDialog));
   subview2A8->AssertValid();
@@ -90,7 +90,7 @@ void TMapUberPicture::DoPostCreate(int arg) {
   ForwardCopyRgn(mapRegion);
   DisposeRgn(mapRegion);
 
-  g_pUiRuntimeContext->mapUberPictureF0 = this;
+  g_pViewMgr->mapUberPictureF0 = this;
   g_pUiAnimator->mapUberPicture2c = this;
   g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
   g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
@@ -111,14 +111,14 @@ void TMapUberPicture::DoPostCreate(int arg) {
 // TMapUberUberPicture::Free.
 // FUNCTION: IMPERIALISM 0x00596c60
 void TMapUberPicture::Free() {
-  if (g_pUiRuntimeContext != 0) {
-    g_pUiRuntimeContext->mapUberPictureF0 = 0;
+  if (g_pViewMgr != 0) {
+    g_pViewMgr->mapUberPictureF0 = 0;
   }
   if (g_pUiAnimator != 0) {
     g_pUiAnimator->mapUberPicture2c = 0;
   }
-  g_pGlobalUiRootController->edgeScrollTarget48 = 0;
-  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
+  g_pAmbitApplication->edgeScrollTarget48 = 0;
+  g_pAmbitApplication->cursorRegionInvalid = FALSE;
   TOffLimitsPicture::Free();
 }
 
@@ -201,7 +201,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
     summary += sectionMsg;
   }
 
-  CString versionText = g_pUiViewManager->FormatVersionStringFromVersionResource();
+  CString versionText = g_pAssetMgr->FormatVersionStringFromVersionResource();
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(versionText)) != 0) {
     if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
@@ -211,7 +211,7 @@ void ComposeAndDispatchTurnSummaryLocalizedMessage() {
   }
 
   if (strcmp(g_szEmptyString, static_cast<LPCSTR>(summary)) != 0) {
-    g_pUiRuntimeContext->ModalMessage(summary, g_ptMapModeModalMessage, 0, 0);
+    g_pViewMgr->ModalMessage(summary, g_ptMapModeModalMessage, 0, 0);
   }
 }
 
@@ -234,7 +234,7 @@ void TMapUberPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       if (g_pSimMgr->multiplayerSessionRole != 0) {
         CString msg;
         g_pSimMgr->GetString(0x2742, 0x25, &msg);
-        g_pUiRuntimeContext->ModalMessage(msg, g_ptMapModeModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(msg, g_ptMapModeModalMessage, 0, 0);
       } else {
         ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRandomGameSetup);
       }
@@ -510,7 +510,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
 
   // Mac resource oracle: MapView.rsrc:9474, event 0x2502, "Friendly Fleet Report".
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventFriendlyFleetReport));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x728);
@@ -700,9 +700,8 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   hiliteColor.rgbReserved = 0;
   g_pDisplayMgr->SetHiliteColor(&hiliteColor);
 
-  TWindow* dialog =
-      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          static_cast<TurnEventId>(0x24f4)));
+  TWindow* dialog = static_cast<TWindow*>(
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x24f4)));
   if (dialog == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\USuperMap.cpp", 0x846);
@@ -735,7 +734,7 @@ void TMapUberPicture::PromptAndQueueMilitaryProvincePurgeOrders(short provinceIn
   dialog->Free();
 
   CString prompt("Kill all armies in the province?");
-  g_pUiRuntimeContext->ModalMessage(prompt, g_ptMapModeModalMessage, 1, 1);
+  g_pViewMgr->ModalMessage(prompt, g_ptMapModeModalMessage, 1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00598d70
@@ -759,7 +758,7 @@ void TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults(TZone* po
   g_pDisplayMgr->SetHiliteColor(&highlightColor);
 
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNavyMaker));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x8cc);
@@ -838,7 +837,7 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
 
   // Mac resource oracle: MapView.rsrc:9475, event 0x2503, "Enemy Fleet Report".
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSuperMap_0069943C, 0x923);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 
 // Port-zone map-action node; overrides capability virtual slots 0x34/0x38/0x3c.
 // VTABLE: IMPERIALISM 0x0065c758

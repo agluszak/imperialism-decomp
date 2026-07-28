@@ -8,7 +8,7 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -209,7 +209,7 @@ void CMcWindow::OnLButtonUp(UINT nFlags, CPoint point) {
 void CMcWindow::OnMouseMove(UINT nFlags, CPoint point) {
   Default();
   g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
-  g_pGlobalUiRootController->HandleCursor(point.x, point.y, 0);
+  g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_pOwnerWindow != NULL && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
     m_pOwnerWindow->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);

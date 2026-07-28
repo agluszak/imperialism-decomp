@@ -1,12 +1,22 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+
+extern "C" TArmyMgr* g_pMapContextActionManager;
+#include "game/globals/tactical_ui_globals.h"
+
+struct MappedFlavorTextNationVariantEntry {
+  short variantIndex;
+  short pad;
+};
 
 // Per-subsystem VPoint equivalents passed to the ModalMessage overloads. The Mac
 // signatures provide the semantic type; Windows stores them as zero-initialized POINTs.
 extern POINT g_ptArmyOrderModalMessage;      // @ 0x6a2318
 extern POINT g_ptArmyValidationModalMessage; // @ 0x6a2288
+
+extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
 
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 
@@ -76,5 +86,30 @@ extern float g_ArmyMissionCandidateScoreTable_006978f8[];
 extern const float g_InvadeMissionSuppressedPriorContributionScale_0065A95C;
 
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0;
+extern short g_nArmsBasicResourceOfferSplitCount_006a3a54;
+extern short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
+extern IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
+extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0;
+extern const float g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
+extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958;
+extern const float g_NavyMissionSimilarityExcessBlend_0065A960;
+extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968[5][4];
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const float g_MissionPositiveFallback_0065A9B8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
+extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
+extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
+extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
+extern const double g_PortZoneFriendlyMissionScoreMultiplier_0065AA10;
+extern const double g_PortZoneForeignMissionScoreMultiplier_0065AA18;
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
+extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48;
+extern const float g_MissionResourceWeightScale_0065A8FC;
+extern const float g_BlockadePortMissionThreatFloor_0065A900;
+extern const float g_BlockadePortMissionThreatScale_0065A904;
+extern const float g_MissionEmptyResourceWeight_0065AA24;
+extern const double g_BeachheadMissionPriorityNormalization_0065AA30;
 
 } // extern "C"

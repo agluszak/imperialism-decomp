@@ -17,7 +17,7 @@ public:
 
   // Original object size is 0x64 (CRuntimeClass m_nObjectSize); the source class ended
   // at 0x60. The trailing 4 bytes split into two shorts, both read by Draw:
-  // +0x60 indexes g_pNationInteractionStateManager->categoryRows[] and is the item arg to
+  // +0x60 indexes g_pTradeMgr->categoryRows[] and is the item arg to
   // GetBidderList; +0x62 indexes tradeOfferCells[] and is this row's nation slot.
   short categorySlot;
   short nationSlot;

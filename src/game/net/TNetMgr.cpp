@@ -7,13 +7,13 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TRadioTextCluster.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/NetMessage.h"
 #include "game/multiplayer_packets.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/net/TWNetSessionManager.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/net_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -252,7 +252,7 @@ void TNetMgr::HandleError(int errorCode) {
     message += detailText;
   }
 
-  g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
   if (DAT_006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
@@ -430,7 +430,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
       break;
     case 0x31:
     case 0x101:
-      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
+      g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
       g_pGameFlowState->HandleActiveNationAwolTransitionOrRecovery();
       break;
     default:
@@ -470,7 +470,7 @@ unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
   }
   CString message;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
-  g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
   return 0;
 }
 

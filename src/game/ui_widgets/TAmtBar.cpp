@@ -3,7 +3,8 @@
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TWindow.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/ui_widgets/TAmtBar.h"
@@ -111,7 +112,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   if (barRange > 0) {
     SetQuickDrawTextOriginWithContextOffset(0, 1);
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(auxValueB);
+    g_pViewMgr->ApplyLegendSplitSlot34(auxValueB);
     SetQuickDrawPenSizeAndMarkDirty(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLineOnMapDc((short)(guideValue - 1), 1);

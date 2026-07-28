@@ -7,7 +7,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_tags_map.h"
@@ -72,7 +72,7 @@ private:
     savedNation = g_pSimMgr->activeNationSlot;
 
     CString path("save/rt_save_load_roundtrip.imp");
-    if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
+    if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
       FailScenario("\"the document refused to save through the real save path\"");
       return;
     }
@@ -84,7 +84,7 @@ private:
     // accounting separately, and this pins the two halves to the same file.
     ReportSavedFileShape(path);
 
-    if (g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path) == 0) {
+    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path) == 0) {
       FailScenario("\"the just-written save would not open through the real load path\"");
       return;
     }
@@ -131,7 +131,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"the reloaded game did not reach the combined strategic map\"");
       return;

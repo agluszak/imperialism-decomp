@@ -16,9 +16,9 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/GameAssert.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -33,10 +33,10 @@
 #include "game/military/TDefendProvinceMission.h"
 #include "game/military_ui/TDefenseMinister.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/map/TMapMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/map/TMinister.h"
@@ -57,11 +57,11 @@
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/ui_core/TSortedList.h"
 #include "game/core/TStream.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/military/TUnit.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 static const int kDiplomacyTrackedSlotCount = 0x11;
@@ -746,63 +746,60 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
   signed char* flags = this->pendingActionStatus.byAction;
   char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
-      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
-          2) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
+      g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
   }
   if (flags[6] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(6, this->field8d6[6]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(6, this->field8d6[6]);
   }
   if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
       cityPtr->VerifyStocks();
-      g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(7, this->field8d6[7]);
+      g_pViewMgr->QueueTurnStatusPromptSlot3C(7, this->field8d6[7]);
     } else if (this->field8d6[7] == 3) {
       TCity* cityPtr = this->city;
       cityPtr->cityStockPaperCA = cityPtr->cityStockPaperCA + 10;
       cityPtr->VerifyStocks();
-      g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(7, -1);
+      g_pViewMgr->QueueTurnStatusPromptSlot3C(7, -1);
     }
   }
   if (flags[8] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(8, this->field8d6[8]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(8, this->field8d6[8]);
   }
   if (flags[9] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(9, this->field8d6[9]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(9, this->field8d6[9]);
   }
   if (flags[10] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(10, this->field8d6[10]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(10, this->field8d6[10]);
   }
   if (flags[11] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(11, this->field8d6[11]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(11, this->field8d6[11]);
   }
   if (flags[12] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(12, this->field8d6[12]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(12, this->field8d6[12]);
   }
   if (flags[0] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(
-        0, g_pCityOrderCapabilityState->activeZoneIndex1d4);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(0, g_pTechMgr->activeZoneIndex1d4);
   }
   if (flags[1] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(1, this->field8d6[1]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(1, this->field8d6[1]);
   }
   if (flags[2] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(2, this->field8d6[2]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(2, this->field8d6[2]);
   }
   if (flags[3] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(3, this->field8d6[3]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(3, this->field8d6[3]);
   }
   if (flags[4] == 0x32) {
-    g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(4, this->field8d6[4]);
+    g_pViewMgr->QueueTurnStatusPromptSlot3C(4, this->field8d6[4]);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
-  if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
-      2) {
+  if (g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
     this->pendingActionStatus.roles.capabilityStatus05 = 0x33;
   }
 }
@@ -812,8 +809,7 @@ void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   signed char* flags = this->pendingActionStatus.byAction;
   char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
-      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
-          2) {
+      g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
@@ -896,25 +892,25 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (this->pendingActionStatus.roles.landRecruitStatus01 == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
-    short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[9];
+    short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
     this->AnnounceLater(3, capValue, 1);
   }
 
   // Navy primary/secondary order (pending status 0 == '2').
   if (this->pendingActionStatus.roles.navyOrderStatus00 == 0x32) {
-    short zoneIndex = g_pCityOrderCapabilityState->activeZoneIndex1d4;
+    short zoneIndex = g_pTechMgr->activeZoneIndex1d4;
     TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 
-    ++cityPtr->orderCountByType5c[g_pCityOrderCapabilityState->activeZoneIndex1d4];
+    ++cityPtr->orderCountByType5c[g_pTechMgr->activeZoneIndex1d4];
 
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->AssignToShip(primaryOrder);
 
     this->AnnounceLater(3, 0x2508, 1);
-    this->AnnounceLater(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);
+    this->AnnounceLater(0, g_pTechMgr->activeZoneIndex1d4, 1);
   }
 
   // Civil work order (pending status 2 < '3').
@@ -976,7 +972,7 @@ char TGreatPower::HasDeveloper(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf00
 void TGreatPower::SorryYouLose(void) {
-  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
+  g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOpeningCinematic), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004daf30
@@ -1028,9 +1024,9 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
       cityPtr->VerifyStocks();
 
-      TTradeMgr* nationInteractionState = g_pNationInteractionStateManager;
+      TTradeMgr* nationInteractionState = g_pTradeMgr;
       if (nationInteractionState != 0) {
-        interactionScore = g_pNationInteractionStateManager->GetPrice(nationSlot);
+        interactionScore = g_pTradeMgr->GetPrice(nationSlot);
       }
     }
 
@@ -1046,7 +1042,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       localizationRuntime->GetString(0x274b, 0, &scoreHeaderRef);
       localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore), &scoreTextRef);
     }
-    g_pUiRuntimeContext->ModalMessage(scoreTextRef, g_ptGreatPowerModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(scoreTextRef, g_ptGreatPowerModalMessage, 2, 0);
   }
 }
 
@@ -1111,19 +1107,19 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
       if (hardThreshold <= pressureTier) {
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
-        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         return 1;
       }
 
       if (pressureTier >= compileThreshold) {
         g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
-        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         // 0x004db5f6: the original re-runs the relationship-delta compile here.
         this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
       } else {
         int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
         g_pSimMgr->GetString(0x274b, static_cast<short>(statusId), &sharedMessageRef);
-        g_pUiRuntimeContext->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
+        g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
       }
     }
   } else {

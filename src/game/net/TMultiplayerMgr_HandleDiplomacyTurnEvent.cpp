@@ -36,11 +36,11 @@
 #include "game/navy/TOcean.h"
 #include "game/nation/TLandSaleEvent.h"
 #include "game/core/TStream.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 namespace {
@@ -536,7 +536,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
     break;
   }
   case 0x32:
-    g_pNationInteractionStateManager->ReadFrom(stream);
+    g_pTradeMgr->ReadFrom(stream);
     g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]->InitializeDealBook();
     break;
   default:

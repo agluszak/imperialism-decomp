@@ -2,7 +2,7 @@
 
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"

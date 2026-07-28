@@ -7,7 +7,7 @@
 #include "game/ui_core/TApplication.h"
 #include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/CWMgrIterator.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -363,15 +363,14 @@ void TWindow::Free() {
     ownerContext->DetachChildFromOwnerList(this);
     ownerContext = 0;
   }
-  if (g_pApplicationUiRootController != 0 &&
-      static_cast<TEventHandler*>(g_pApplicationUiRootController) !=
-          static_cast<TEventHandler*>(this)) {
-    if (g_pApplicationUiRootController->GetTarget() == this) {
+  if (g_pApplication != 0 &&
+      static_cast<TEventHandler*>(g_pApplication) != static_cast<TEventHandler*>(this)) {
+    if (g_pApplication->GetTarget() == this) {
       TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
+        g_pApplication->SetTarget(g_pApplication);
       } else {
-        g_pApplicationUiRootController->SetTarget(replacement);
+        g_pApplication->SetTarget(replacement);
       }
     }
   }

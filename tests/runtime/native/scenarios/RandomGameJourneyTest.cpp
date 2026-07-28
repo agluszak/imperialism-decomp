@@ -36,7 +36,7 @@ public:
 
   void OnCombinedMapReady() override {
     CString failure;
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     if (!StrategicMapProbe::VerifyRendering(mapView, failure) ||
         !StrategicMapProbe::VerifyHoverCache(mapView, failure) ||
         !StrategicMapProbe::VerifyScrolling(mapView, failure)) {
@@ -73,7 +73,7 @@ private:
 
   void WaitForReturnedRandomSetup() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
       WaitForScenarioTick("\"random setup did not return from capital selection\"");
       return;
@@ -89,7 +89,7 @@ private:
 
   void WaitForReturnedMainMenu() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc) {
+    if (g_pViewMgr->currentTurnEventCode != 0x5dc) {
       WaitForScenarioTick("\"main menu did not return after random setup cancellation\"");
       return;
     }
@@ -104,7 +104,7 @@ private:
 
   void WaitForReenteredRandomSetup() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
       WaitForScenarioTick("\"random setup did not reopen from the returned main menu\"");
       return;

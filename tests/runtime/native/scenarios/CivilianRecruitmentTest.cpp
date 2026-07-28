@@ -10,7 +10,8 @@
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -149,7 +150,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"combined map was not idle before civilian recruitment\"");
       return;
@@ -262,7 +263,7 @@ private:
 
   bool VerifyCursorForTile(TMapDialog* mapDialog, short targetTile, short expectedToken,
                            CPoint* outPoint) {
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     mapView->CenterOn(targetTile);
 
     CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
@@ -282,7 +283,7 @@ private:
       return false;
     }
 
-    mapDialog->activeRegionBand72 = -1;
+    mapDialog->activeRegionBand = -1;
     mapDialog->cursorId4e = 0xffff;
     CPoint hostPoint(outPoint->x + mapDialog->absoluteX, outPoint->y + mapDialog->absoluteY);
     SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
@@ -293,7 +294,7 @@ private:
     }
 
     HCURSOR expectedCursor =
-        g_pUiRuntimeContext->turnEventCursors[expectedToken - TViewMgr::kCursorResourceIdBase];
+        g_pViewMgr->turnEventCursors[expectedToken - TViewMgr::kCursorResourceIdBase];
     if (expectedCursor == 0 || GetCursor() != expectedCursor ||
         !CursorDrawsVisiblePixels(expectedCursor)) {
       FailScenario("\"classified prospector cursor is not visibly active\"");
@@ -365,7 +366,7 @@ private:
       return false;
     }
 
-    mapDialog->activeRegionBand72 = -1;
+    mapDialog->activeRegionBand = -1;
     CPoint firstHostPoint(firstPoint.x + mapDialog->absoluteX, firstPoint.y + mapDialog->absoluteY);
     CPoint secondHostPoint(secondPoint.x + mapDialog->absoluteX,
                            secondPoint.y + mapDialog->absoluteY);
@@ -384,7 +385,7 @@ private:
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin60,
+    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin,
                                                  &projectedY, &projectedX, 1);
     CRect currentHoverRect(projectedX - 1, projectedY - 1, projectedX + 0x42, projectedY + 0x42);
     bool restored = true;
@@ -419,7 +420,7 @@ private:
 
   void VerifyProspectorOrdersAndCursors() {
     for (int index = 0; index < 0x36; ++index) {
-      if (g_pUiRuntimeContext->turnEventCursors[index] == 0) {
+      if (g_pViewMgr->turnEventCursors[index] == 0) {
         char failure[96];
         wsprintfA(failure, "\"turn-event cursor resource ~C%d did not load\"", index + 1000);
         FailScenario(failure);
@@ -427,7 +428,7 @@ private:
       }
     }
 
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
     if (mapDialog == 0) {
       FailScenario("\"strategic map has no map dialog for cursor verification\"");
@@ -515,7 +516,7 @@ private:
   }
 
   void VerifyOrderedProspectorRemainsVisibleAndInspectable() {
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
     if (mapDialog == 0) {
       FailScenario("\"strategic map disappeared while the prospector order was active\"");

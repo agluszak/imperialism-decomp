@@ -4,7 +4,7 @@
 
 #include "game/ui_core/TEventHandler.h"
 #include "game/city_ui/TLongintList.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 
 struct CRuntimeClass;
 

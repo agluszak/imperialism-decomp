@@ -10,7 +10,7 @@
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TPicture.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -132,7 +132,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
         SetQuickDrawTextOriginWithContextOffset(0, 0);
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
+        g_pViewMgr->ApplyLegendSplitSlot34(styleValueAt66);
         SetQuickDrawPenSizeAndMarkDirty(1, 5);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();

@@ -1,7 +1,8 @@
 #include "game/ui_core/TNumberedItem.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -44,7 +45,7 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24, 0);
 

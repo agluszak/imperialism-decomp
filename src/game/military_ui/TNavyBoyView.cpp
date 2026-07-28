@@ -3,7 +3,9 @@
 #include "game/battle_report_records.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -78,8 +80,7 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   RECT dstRect = {0x52, 0x1e, sVar2 * 4 + 0x51, 0x25};
 
   if (level > 0) {
-    TQuickDrawBlitSurface* iconStripSurface =
-        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+    TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

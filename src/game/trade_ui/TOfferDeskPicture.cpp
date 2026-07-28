@@ -11,7 +11,7 @@
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/globals/trade_ui_globals.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_widgets/TAmtBarCluster.h"
 #include "game/ui_core/TApplication.h"
 #include "game/city/TCity.h"
@@ -35,7 +35,8 @@
 #include "game/ui_widgets/TToolBarCluster.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_core/TUiEvent.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -74,8 +75,7 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 
   TDealTabControl* tabs = static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
   tabs->AssertValid();
-  tabs->Setup(0x2264,
-              g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->Setup(0x2264, g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
   tabs->RefreshControl();
 
   TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(ResolveControlByTag(kControlTagTool));
@@ -348,9 +348,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   int tag = sourceHandler->controlTag;
   if (commandId >= 0x2af8) {
     short selectionIndex = g_offerDeskSelectionIndexTable_00668568
-        [commandId +
-         g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] *
-             0x11];
+        [commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 0x11];
     if (!selectionActive) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {
@@ -596,9 +594,8 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   }
 
   if (quantityValid) {
-    g_pNationInteractionStateManager->SetDealResults(sourceNationSlot, targetNationSlot,
-                                                     proposedAmount, maxAmount, commodityType,
-                                                     static_cast<char>(suppressEventFlag), 0);
+    g_pTradeMgr->SetDealResults(sourceNationSlot, targetNationSlot, proposedAmount, maxAmount,
+                                commodityType, static_cast<char>(suppressEventFlag), 0);
 
     TView* acceptButton = ResolveControlByTag(kControlTagAcce);
     acceptButton->AssertValid();
@@ -617,7 +614,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     if (g_pSimMgr->multiplayerSessionRole != 2) {
       TNextTradeCommand* command = new TNextTradeCommand();
       command->INextTradeCommand();
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(command);
     }
   } else {
     CString errorMessage;
@@ -674,7 +671,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     TDealTabControl* tabsControl =
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2266, g_pCityOrderCapabilityState->perTechUnlockFlag180[0x13]);
+    tabsControl->Setup(0x2266, g_pTechMgr->perTechUnlockFlag180[0x13]);
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
     TView* listControl = ResolveControlByTag(kControlTagList);
@@ -689,7 +686,7 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
     TDealTabControl* tabsControl =
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
     tabsControl->AssertValid();
-    tabsControl->Setup(0x2264, g_pCityOrderCapabilityState->perTechUnlockFlag180[0x13]);
+    tabsControl->Setup(0x2264, g_pTechMgr->perTechUnlockFlag180[0x13]);
     tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);

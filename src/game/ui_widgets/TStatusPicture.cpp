@@ -11,7 +11,8 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -183,7 +184,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
-    g_pUiRuntimeContext->SetForeColor(static_cast<short>(pictureIds_b0[i]));
+    g_pViewMgr->SetForeColor(static_cast<short>(pictureIds_b0[i]));
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }
@@ -194,7 +195,7 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
   SetQuickDrawFillColor(0);
   FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   OffsetRect(&swatch, -1, -1);
-  g_pUiRuntimeContext->SetForeColor(nationSlot);
+  g_pViewMgr->SetForeColor(nationSlot);
   FillRectWithQuickDrawBrushAndContextOffset(&swatch);
 }
 

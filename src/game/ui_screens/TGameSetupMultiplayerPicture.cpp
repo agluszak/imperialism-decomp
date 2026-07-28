@@ -14,7 +14,7 @@
 #include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -80,7 +80,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x23, kControlTagJoin);
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737, 0x24, kControlTagProt);
 
-  if (g_pUiViewManager->HasPendingClientSaveFile()) {
+  if (g_pAssetMgr->HasPendingClientSaveFile()) {
     TControl* spitControl = static_cast<TControl*>(ResolveControlByTag(kControlTagSpit));
     spitControl->AssertValid();
     spitControl->SetState(1, 0);
@@ -116,7 +116,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       if (!accepted) {
         CString errorMsg;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&errorMsg, 0x2737, 0x28);
-        g_pUiRuntimeContext->ModalMessage(errorMsg, g_ptGameSetupModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(errorMsg, g_ptGameSetupModalMessage, 0, 0);
         g_pGameFlowState->ResetGameFlowStateAndPostTurnEvent5DC();
         return;
       }
@@ -132,8 +132,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
         g_nSaveFormatVersion = -2;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-            EncodeTurnEventCode(kTurnEventLoadSave));
+        g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventLoadSave));
       }
     } else if (actionTag == kControlTagJoin) {
       g_bMultiplayerScenarioSetupActive = 0;
@@ -143,7 +142,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       g_pGameFlowState->scenarioSelectionTag = kControlTagRand;
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        g_pAmbitApplication->PostTurnEventCodeMessage2420(
             EncodeTurnEventCode(kTurnEventRandomGameSetup));
       }
     } else if (actionTag == kControlTagMult) {
@@ -152,20 +151,20 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
       g_pGameFlowState->scenarioSelectionTag = kControlTagScn0; // 'scn0'
       if (g_pGameFlowState->ValidateAndPrepareGameFlowNameForDispatch()) {
         g_pSimMgr->multiplayerSessionRole = 1;
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+        g_pAmbitApplication->PostTurnEventCodeMessage2420(
             EncodeTurnEventCode(kTurnEventScenarioGameSetup));
       }
     } else if (actionTag == kControlTagSpit) {
-      if (g_pUiViewManager->HasPendingClientSaveFile() &&
-          g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 8, 0, 1)) {
-        int deletedCount = g_pUiViewManager->DeleteLegacyCliSaveImpFiles();
+      if (g_pAssetMgr->HasPendingClientSaveFile() &&
+          g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 8, 0, 1)) {
+        int deletedCount = g_pAssetMgr->DeleteLegacyCliSaveImpFiles();
 
         CString message;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2759, 9);
         CString formattedMessage;
         scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(message),
                                deletedCount);
-        g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptGameSetupModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(formattedMessage, g_ptGameSetupModalMessage, 0, 0);
 
         TView* spitControl = ResolveControlByTag(kControlTagSpit);
         spitControl->AssertValid();

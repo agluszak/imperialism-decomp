@@ -1,13 +1,14 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 extern POINT g_ptCityInteriorMinisterModalMessage; // @ 0x6a2c18
 
-extern char s_mcflavor_00696674[];
-
 extern short g_cityProductionReserveByPolicyBand_00696400[4];
+
+// Need-type indices applied by TInteriorMinister::SetCityPolicies.
+extern short g_aInteriorMinisterNeedPriorityOrder_00696408[10];
 
 extern float g_cityProductionUpgradeRatioThreshold_00696450[4];
 

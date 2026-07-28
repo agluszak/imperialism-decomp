@@ -12,7 +12,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/globals/view_registries.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -34,11 +34,11 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
   POINT cursorPos;
   GetCursorPos(&cursorPos);
   ScreenToClient(hWnd, &cursorPos);
-  if (g_pGlobalUiRootController != 0) {
+  if (g_pAmbitApplication != 0) {
     CWnd* foreground = CWnd::FromHandle(GetForegroundWindow());
     CWnd* mainWnd = (AfxGetThread() != 0) ? AfxGetThread()->GetMainWnd() : 0;
     if (foreground == mainWnd) {
-      g_pGlobalUiRootController->HandleCursor(cursorPos.x, cursorPos.y, 0);
+      g_pAmbitApplication->HandleCursor(cursorPos.x, cursorPos.y, 0);
     }
   }
 }
@@ -508,7 +508,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
     m_capturedControl74->TrackMouse(kTrackPhaseUpdate, m_captureStartPoint78, m_captureLastPoint80,
                                     m_captureCurrentPoint88, 1);
   }
-  g_pGlobalUiRootController->HandleCursor(point.x, point.y, 0);
+  g_pAmbitApplication->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
     CPoint pt(point);
     m_activeDialogContext->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);
@@ -723,7 +723,7 @@ void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
 LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
   (void)wParam;
   if (mciMode == MCI_MODE_STOP) {
-    g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
+    g_pViewMgr->HandleTurnStateExitAndPostFollowupEventCode(0);
   }
   return 0;
 }

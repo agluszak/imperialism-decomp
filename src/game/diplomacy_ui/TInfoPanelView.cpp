@@ -12,7 +12,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -265,8 +265,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
     short categoryIndex = 13;
     short categoryCount = 0;
     do {
-      if (g_pNationInteractionStateManager->categoryRows[categoryIndex]
-              .tradeOfferCells[46 + countryId] != 0) {
+      if (g_pTradeMgr->categoryRows[categoryIndex].tradeOfferCells[46 + countryId] != 0) {
         countryInfoCategoryIndices64[categoryCount++] = categoryIndex;
       }
       ++categoryIndex;
@@ -281,7 +280,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   do {
     values[valueIndex] = secondary->diplomacySaveExt13c[valueIndex];
     if (valueIndex == 6 &&
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       values[6] = 0;
     }
     indices[valueIndex] = valueIndex;

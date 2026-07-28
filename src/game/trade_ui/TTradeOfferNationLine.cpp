@@ -3,7 +3,7 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/trade_ui/TTradeOfferNationView.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -35,7 +35,7 @@ void TTradeOfferNationLine::InstallViews(TView* panel, int* offsetLayout) {
   view->categorySlot = categorySlot;
   view->nationSlot = nationSlot;
 
-  if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId())) {
+  if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId())) {
     LoadUiStringByGroupAndIndexToControlObject(0x2740, 3, view);
   }
 }

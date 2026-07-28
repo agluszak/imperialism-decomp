@@ -1,7 +1,8 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/ui_widgets/TNumberedArrowButton.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -56,7 +57,7 @@ void TNumberedArrowButton::Draw(RECT* rectBuffer) {
   srcRect.right = srcRect.left + 0xb;
   srcRect.bottom = 0x10;
   RECT dstRect = {0, 0, 0xb, 0x10};
-  TQuickDrawSurfaceContext* hintSource = g_pStrategicMapViewSystem->atlas694[4];
+  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas694[4];
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);

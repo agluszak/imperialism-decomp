@@ -6,6 +6,7 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/military/TArmyMgr.h"
 #include "game/city_ui/TCountry.h"
+#include "game/nation/TGreatPower.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/core/TFileStream.h"
 #include "game/ui_core/THelpMgr.h"
@@ -19,7 +20,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -63,12 +64,12 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
   if (fileMagic != kControlTagAMBI) {
     CString message;
     g_pSimMgr->GetString(0x2737, 7, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
     invalidSaveFile = true;
   } else if (g_nSaveFormatVersion < 0x23) {
     CString message;
     g_pSimMgr->GetString(0x2737, 8, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
     invalidSaveFile = true;
   }
 
@@ -76,7 +77,7 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
       savedSessionSlot != g_pGameFlowState->queueSyncDword) {
     CString message;
     g_pSimMgr->GetString(0x2737, 7, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(message, g_ptSaveLoadErrorModalMessage, 2, 0);
     invalidSaveFile = true;
   }
 
@@ -90,12 +91,12 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
     stream->ReadBytes(discardedMapMetadata, 0x24);
     delete[] discardedMapMetadata;
 
-    g_pGlobalUiRootController->ReadFrom(stream);
+    g_pAmbitApplication->ReadFrom(stream);
     g_pSimMgr->ReadFrom(stream);
     g_pUiAnimator->ReadFrom(stream);
-    g_pNationInteractionStateManager->ReadFrom(stream);
+    g_pTradeMgr->ReadFrom(stream);
     g_pDiplomacyTurnStateManager->ReadFrom(stream);
-    g_pCityOrderCapabilityState->ReadFrom(stream);
+    g_pTechMgr->ReadFrom(stream);
     g_pGlobalMapState->ReadFrom(stream);
     g_pActiveMapOrderContext->ReadFrom(stream);
     g_pNavyOrderManager->ReadFrom(stream);
@@ -106,8 +107,8 @@ void TAmbitFileBasedDocument::DoRead(ArchiveStreamAdapter* file, unsigned char f
         g_apTerrainTypeDescriptorTable[descriptorIndex]->ReadFrom(stream);
       }
     }
-    g_pUiRuntimeContext->ReadFrom(stream);
-    g_pStrategicMapViewSystem->ReadFrom(stream);
+    g_pViewMgr->ReadFrom(stream);
+    g_pMacViewMgr->ReadFrom(stream);
     g_pNewsMgr->ReadFrom(stream);
     g_pHelpMgr->ReadFrom(stream);
   }
@@ -162,12 +163,12 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
   stream->WriteBytes(activeNationNameBuffer, 0x20);
   activeNationName.ReleaseBuffer(-1);
 
-  g_pGlobalUiRootController->WriteTo(stream);
+  g_pAmbitApplication->WriteTo(stream);
   g_pSimMgr->WriteTo(stream);
   g_pUiAnimator->WriteTo(stream);
-  g_pNationInteractionStateManager->WriteTo(stream);
+  g_pTradeMgr->WriteTo(stream);
   g_pDiplomacyTurnStateManager->WriteTo(stream);
-  g_pCityOrderCapabilityState->WriteTo(stream);
+  g_pTechMgr->WriteTo(stream);
   g_pGlobalMapState->WriteTo(stream);
   g_pActiveMapOrderContext->WriteTo(stream);
   g_pNavyOrderManager->WriteTo(stream);
@@ -181,8 +182,8 @@ void TAmbitFileBasedDocument::DoWrite(ArchiveStreamAdapter* file, unsigned char 
     ++terrainDescriptor;
     --descriptorsRemaining;
   }
-  g_pUiRuntimeContext->WriteTo(stream);
-  g_pStrategicMapViewSystem->WriteTo(stream);
+  g_pViewMgr->WriteTo(stream);
+  g_pMacViewMgr->WriteTo(stream);
   g_pNewsMgr->WriteTo(stream);
   g_pHelpMgr->WriteTo(stream);
 

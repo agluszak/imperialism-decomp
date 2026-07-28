@@ -1,11 +1,11 @@
 #include "game/trade_ui/TDealLine.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -65,7 +65,7 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
 
   if (amount != 0) {
     amountText.Format(g_szDecimalFormat, static_cast<int>(amount));
-    short currentMarketPrice = g_pNationInteractionStateManager->GetPrice(commoditySlot);
+    short currentMarketPrice = g_pTradeMgr->GetPrice(commoditySlot);
     if (unitPriceOrStatus != currentMarketPrice) {
       g_pSimMgr->NumToCurrency(unitPriceOrStatus, &priceText);
       g_pSimMgr->GetString(0x2740, dealKind == kTrackedSlotOfferEntry ? 0x12 : 0x13, &templateText);

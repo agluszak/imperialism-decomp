@@ -8,7 +8,7 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TStaticText.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -65,7 +65,7 @@ void TNominationView::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x004fb990
 void TNominationView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   }

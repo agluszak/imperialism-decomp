@@ -1,7 +1,7 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 extern POINT g_ptMapModeModalMessage; // @ 0x6a45c0
 
@@ -23,8 +23,7 @@ extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 extern int g_bOverlayScanlineFillAssertSuppressed;
 
 extern int g_bOverlayRouteRebuildAssertSuppressed;
-
-extern char s_mcflavor_00697238[];
+extern unsigned char g_applyMiniMapVerticalClipOffset_006993e8;
 
 extern char g_szScriptFileName_006972f8[];
 
@@ -107,5 +106,26 @@ extern short g_awTileSpriteVariantOffsetTable3b[16][2];
 extern const float g_HexHighlightScreenScale_00658640;
 
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern unsigned char g_abUniversityRequirementLevelById[24][4];
+extern unsigned char g_abResourceTypeMiniCivMentionFlag[24];
+extern short g_anResourceTypeRequiredOrderType[24];
+extern unsigned char g_abResourceTypeAlwaysQualifies[24];
+extern unsigned char g_abGateFlagQualifies[24];
+
+// Hex neighbor column/row deltas, indexed by direction 0..5 and row parity.
+extern const int g_hexColOffsetEvenRow_00697450[6];
+extern const int g_hexRowOffset_00697468[6];
+extern const int g_hexColOffsetOddRow_00697480[6];
+
+// Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
+// shared by the city-region seeding/template passes.
+extern unsigned int g_mapGenLcgState_006a38e8;
+extern int g_regionSeedGridRows_006a38ec;
+extern int g_regionSeedGridCols_006a38f0;
+
+// Zone status-code PRNG and ocean-dialog seed viewport offsets.
+extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
+extern int g_nOceanDialogSeedViewportOffsetX;
+extern int g_nOceanDialogSeedViewportOffsetY;
 
 } // extern "C"

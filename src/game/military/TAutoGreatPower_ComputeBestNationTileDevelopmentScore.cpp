@@ -5,8 +5,9 @@
 #include "game/city_ui/TLongintList.h"
 #include "game/map/TMapMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x00540440
@@ -32,7 +33,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
     short regionId = static_cast<short>(ownedRegions->At(regionOrdinal));
     Province* region = &g_pGlobalMapState->cityScoreTable[regionId];
 
-    if (region->fortLevel03 < g_pCityOrderCapabilityState->GetNationFortLevelCap(nationSlot)) {
+    if (region->fortLevel03 < g_pTechMgr->GetNationFortLevelCap(nationSlot)) {
       float developmentPressure = averageUnitDivergence;
       if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
         developmentPressure =

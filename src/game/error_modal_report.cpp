@@ -1,7 +1,7 @@
 #include "game/mfc.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/shared_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 
 // Builds a formatted diagnostic string
 //   ERROR (<sourceTag>,<codeA>,<codeB>)\n\nPlease record this information:\n
@@ -38,5 +38,5 @@ void FormatAndAssignTurnStateSharedTextFromTemplate(int codeA, int codeB, char* 
   message += " at ";
   message += compileTime;
 
-  g_pUiRuntimeContext->ModalMessage(message, g_ptFormattedErrorModalMessage);
+  g_pViewMgr->ModalMessage(message, g_ptFormattedErrorModalMessage);
 }

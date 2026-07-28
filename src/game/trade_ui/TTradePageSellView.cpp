@@ -5,7 +5,7 @@
 #include "game/ui_screens/TTextLine.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/trade_ui/TTradeOfferNationLine.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/ui_text_label_helpers_decls.h"
@@ -36,9 +36,8 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
   ResetPageLayout();
 
   bool buildGrid =
-      categorySlot != -1 &&
-      (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
-       g_pNationInteractionStateManager->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId()));
+      categorySlot != -1 && (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
+                             g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId()));
 
   if (buildGrid) {
     TTextLine* headerRow = new TTextLine();
@@ -52,7 +51,7 @@ void TTradePageSellView::RebuildNationOfferRowsForCategory(short categorySlot) {
     orderedEntries->AddTail(headerRow);
 
     for (short nationSlot = 0x16; nationSlot >= 0; --nationSlot) {
-      if (g_pNationInteractionStateManager->DidOffer(nationSlot, categorySlot)) {
+      if (g_pTradeMgr->DidOffer(nationSlot, categorySlot)) {
         TTradeOfferNationLine* row = new TTradeOfferNationLine();
         int rowBounds[2];
         row->SetLineDataRowAndBounds(0, 0, rowBounds);

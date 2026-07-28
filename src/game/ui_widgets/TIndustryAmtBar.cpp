@@ -7,7 +7,7 @@
 
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TIndustryAmtBar.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -88,7 +88,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
       short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->ApplyLegendSplitSlot34(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);

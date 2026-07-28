@@ -3,14 +3,15 @@
 #include "game/ui_tags_common.h"
 #include <time.h>
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 #include "game/core/runtime_prng_seed.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/app/TObject.h"
 #include "game/ui_core/TControl.h"
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/sea_geometry.h"

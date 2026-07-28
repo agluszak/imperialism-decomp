@@ -6,7 +6,7 @@
 #include "game/ui_widgets/TDeluxeText.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
@@ -47,7 +47,7 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
 
   TView* owner = GetWindow();
   CPoint placement;
-  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(owner, &placement);
+  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(owner, &placement);
 
   TView* owner2 = GetWindow();
   owner2->Locate(placement, 0);

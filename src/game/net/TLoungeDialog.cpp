@@ -7,7 +7,7 @@
 #include "game/net/TLoungeDialog.h"
 #include "game/ui_core/TLanguageMgr.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_core/TApplication.h"
@@ -20,7 +20,8 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/net_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
@@ -263,8 +264,7 @@ void TLoungeDialog::TryReplaceRemoteNationSlot(int nationSlot) {
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2742, 0x1b);
   scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(nationName));
-  if (g_pUiRuntimeContext->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0,
-                                        1)) {
+  if (g_pViewMgr->ModalMessage(formattedText, g_ptLoungeNationReplacementModalMessage, 0, 1)) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kSessionTagAced, nationSlot, -2); // 'deca'
     g_pGameFlowState->ReplaceNationStateForSlotAndRefreshStatus(nationSlot);
   }
@@ -290,9 +290,9 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       if (g_pGameFlowState->IsSpecialNationDialogModeActive()) {
         if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) == kSessionTagBusy) {
           g_pSimMgr->StartNextPhase(); // 'busy'
-        } else if (g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
+        } else if (g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                        kControlTagNewg)) { // 'gwen'
-          g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+          g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
       } else {
         unsigned char hasOtherSession = 0;
@@ -303,7 +303,7 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
           }
         }
         if (g_pSimMgr->multiplayerSessionRole != 1 || hasOtherSession == 0 ||
-            g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(
+            g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(
                 kControlTagCgam)) { // 'magc'
           if (g_pSimMgr->multiplayerSessionRole == 1) {
             g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagCgam, -1, -2);

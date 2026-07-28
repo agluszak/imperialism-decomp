@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/military/TArmyMgr.h"
 #include "game/tactical/TArmyPlayer.h"
@@ -24,7 +24,8 @@
 #include "game/tactical_ui/TTacArmyView.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -108,7 +109,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
     g_nTurnCooldownDeferCounter006A43C4 = 0;
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
         static_cast<int>(rand()) % 3 + 6, 0); // battle cue 6..8
-    g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventTacticalView), 0);
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
         g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
     battleView->AssertValid();
@@ -293,9 +294,9 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   tabFileName = CString(nameBuf);
 
   char* tabData = new char[byteCount];
-  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(tabFileName);
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, tabData, &byteCount);
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(tabFileName);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, tabData, &byteCount);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
 
   // Parse the character grid into the tile records. Each source row is 0x1d chars +
   // 1 terminator; the first (0x1d - battlefieldColumnCount34) chars of each row are margin (skipped

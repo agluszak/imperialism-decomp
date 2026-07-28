@@ -10,7 +10,7 @@
 #include "game/navy/TOcean.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x005757c0
@@ -71,7 +71,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     // touching any member.
     g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5();
   } else if (controlTag == kControlTagQuit) {
-    g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+    g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     // no PostTurnEventCodeMessage2420 on this path (matches the original).
   } else if (controlTag == kControlTagPref) {
     postEventCode = EncodeTurnEventCode(kTurnEventGamePreferences);
@@ -110,7 +110,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
       g_pSimMgr->SetSelectedIndex6AAndTriggerRefresh(0);
-      g_pUiViewManager->OpenFilesFor(1);
+      g_pAssetMgr->OpenFilesFor(1);
       postEventCode = EncodeTurnEventCode(kTurnEventRandomGameSetup);
     }
   } else if (controlTag == kControlTagScen) {
@@ -122,7 +122,7 @@ void TGameSetupPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
   }
 
   if (postEventCode >= 0) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(postEventCode);
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(postEventCode);
   }
   TNoHilitePicture::DoEvent(commandId, sourceHandler, event);
 }

@@ -2,11 +2,11 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_diplomacy.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/ui_core/TCluster.h"
 #include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/diplomacy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"

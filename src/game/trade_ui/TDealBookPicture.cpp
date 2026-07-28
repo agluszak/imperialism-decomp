@@ -19,7 +19,8 @@
 #include "game/trade_ui/TTradePageBuyView.h"
 #include "game/trade_ui/TTradePageSellView.h"
 #include "game/trade_ui/TTradeTotalsLine.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/trade_ui_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -292,8 +293,7 @@ void TDealBookPicture::CalculatePages() {
   TDealTabControl* tabs =
       static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
   tabs->AssertValid();
-  tabs->Setup(0x2266,
-              g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->Setup(0x2266, g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
@@ -304,8 +304,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     // pointer arithmetic still lands on the correct address either way since C++ doesn't
     // bounds-check here, matching the original's raw displacement + computed offset.
     int categoryTableIndex =
-        commandId +
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
+        commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
     short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
     if (categorySlot != -1) {
       sellPageView->RebuildNationOfferRowsForCategory(categorySlot);

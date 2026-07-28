@@ -14,7 +14,7 @@
 #include <time.h>
 
 #include "decomp_types.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/military/NetMessage.h"
@@ -119,7 +119,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/military/TArmyMgr.h"
 #include "game/navy/TOcean.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/military_ui/TNextDiplomationCommand.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TMapPreviewView.h"
@@ -129,7 +129,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_widgets/TSoundPlayer.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/net_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
@@ -677,7 +677,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
     TWindow* dialog = static_cast<TWindow*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
     }
@@ -687,7 +687,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       content->defaultCommandCode = kControlTagOkay; // 'okay'
     }
     CPoint placement;
-    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+    g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
     dialog->Locate(placement, 0);
     TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
     goldPicture->AssertValid();
@@ -732,8 +732,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (responseTag == kSessionTagRsvp) { // 'rsvp'
       TPoseMessageDialog* poseCommand = new TPoseMessageDialog();
       poseCommand->kickedByNationSlot18 = kickerNation;
-      poseCommand->ICommand(kSessionTagPose, g_pGlobalUiRootController, 0, 0, 0);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(poseCommand);
+      poseCommand->ICommand(kSessionTagPose, g_pAmbitApplication, 0, 0, 0);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(poseCommand);
     }
     g_pGameFlowState->processPrimaryEventQueue = savedProcessPrimary;
     break;
@@ -776,10 +776,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         CString messageTextE;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742,
                                                                         0x14);
-        g_pUiRuntimeContext->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(messageTextE, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-        cancelCommand->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
+        cancelCommand->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
+        g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommand);
         return 1;
       }
       g_pGameFlowState->lobbyDialogView40 = 0;
@@ -797,10 +797,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       if (rebuilt == 0) {
         CString messageTextE2;
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
-        g_pUiRuntimeContext->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(messageTextE2, g_ptNationAwolModalMessage, 0, 0);
         TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
-        cancelCommand2->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand2);
+        cancelCommand2->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
+        g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommand2);
         return 1;
       }
     } else {
@@ -838,8 +838,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     if (matchSlot == -1) {
       TCancelGameOptionsCommand* cancelCommand3 = new TCancelGameOptionsCommand();
-      cancelCommand3->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand3);
+      cancelCommand3->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommand3);
       return 1;
     }
     int tagSlot = g_pSimMgr->GetActiveNationId();
@@ -1032,16 +1032,15 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     short sourceNation = nationAction->sourceNation1C;
     if (sourceNation != g_pSimMgr->GetActiveNationId()) {
-      g_pUiRuntimeContext->DispatchNationActionToMainControl(sourceNation, nationAction->param1E, 0,
-                                                             0, 0);
+      g_pViewMgr->DispatchNationActionToMainControl(sourceNation, nationAction->param1E, 0, 0, 0);
       return 1;
     }
     unsigned char stillClientSession = g_pSimMgr->multiplayerSessionRole == 2;
     if (stillClientSession == 0) {
       return 1;
     }
-    g_pUiRuntimeContext->DispatchNationActionToMainControl(
-        sourceNation, nationAction->param1E, nationAction->param20, nationAction->param22, 0);
+    g_pViewMgr->DispatchNationActionToMainControl(sourceNation, nationAction->param1E,
+                                                  nationAction->param20, nationAction->param22, 0);
     break;
   }
   case 0x1b: {
@@ -1058,17 +1057,16 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // posts the 'NeXT' trade command.
     TurnEvent1CProposalAmountPacket* proposalAmount =
         static_cast<TurnEvent1CProposalAmountPacket*>(packet);
-    g_pNationInteractionStateManager->SetDealResults(
-        proposalAmount->ownerNation1C, proposalAmount->sourceContext1E, proposalAmount->amount24,
-        proposalAmount->maxAmount20, proposalAmount->targetNation22,
-        proposalAmount->emitEventFlag26, 1);
+    g_pTradeMgr->SetDealResults(proposalAmount->ownerNation1C, proposalAmount->sourceContext1E,
+                                proposalAmount->amount24, proposalAmount->maxAmount20,
+                                proposalAmount->targetNation22, proposalAmount->emitEventFlag26, 1);
     unsigned char hosting1C = g_pSimMgr->multiplayerSessionRole == 1;
     if (hosting1C == 0) {
       return 1;
     }
     TNextTradeCommand* tradeCommand = new TNextTradeCommand();
     tradeCommand->INextTradeCommand();
-    g_pGlobalUiRootController->DispatchUiSelectionToHandler(tradeCommand);
+    g_pAmbitApplication->DispatchUiSelectionToHandler(tradeCommand);
     break;
   }
   case 0x14: {
@@ -1282,7 +1280,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           &nationNameAbdi);
       scanBracketExpressions(g_pSimMgr, &formattedAbdi, static_cast<const char*>(templateTextAbdi),
                              static_cast<const char*>(nationNameAbdi));
-      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedAbdi, 0);
+      g_pViewMgr->CreateModalMessageCommandAndQueue(&formattedAbdi, 0);
       unsigned char hostingAbdi = g_pSimMgr->multiplayerSessionRole == 1;
       if (hostingAbdi != 0) {
         ReplaceNationStateForSlotAndRefreshStatus(gameState->value1C);
@@ -1300,9 +1298,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           &nationNameAced);
       scanBracketExpressions(g_pSimMgr, &formattedAced, static_cast<const char*>(templateTextAced),
                              static_cast<const char*>(nationNameAced));
-      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedAced, 0);
+      g_pViewMgr->CreateModalMessageCommandAndQueue(&formattedAced, 0);
       if (isLocalNationAced != 0) {
-        g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+        g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
       }
       return 1;
     }
@@ -1311,11 +1309,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     case kControlTagCgam: { // 'cgam' - cancel game
       TCancelGameOptionsCommand* cancelCommandCgam = new TCancelGameOptionsCommand();
-      cancelCommandCgam->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandCgam);
+      cancelCommandCgam->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommandCgam);
       CString messageCgam;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
-      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageCgam, 0);
+      g_pViewMgr->CreateModalMessageCommandAndQueue(&messageCgam, 0);
       return 1;
     }
     case kControlTagLose: // 'lose' - the named nation lost
@@ -1325,10 +1323,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       CString messageFoff;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742,
                                                                       gameState->value1C);
-      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageFoff, 0);
+      g_pViewMgr->CreateModalMessageCommandAndQueue(&messageFoff, 0);
       TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
-      cancelCommandFoff->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandFoff);
+      cancelCommandFoff->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommandFoff);
       return 1;
     }
     case kControlTagName: // 'name' - refresh the status board row (global manager receiver)
@@ -1349,11 +1347,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           &nationNameLost);
       scanBracketExpressions(g_pSimMgr, &formattedLost, static_cast<const char*>(templateTextLost),
                              static_cast<const char*>(nationNameLost));
-      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedLost, 0);
+      g_pViewMgr->CreateModalMessageCommandAndQueue(&formattedLost, 0);
       if (isLocalNationLost != 0) {
         unsigned char clientSessionLost = g_pSimMgr->multiplayerSessionRole == 2;
         if (clientSessionLost != 0) {
-          g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+          g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
         }
       }
       return 1;
@@ -1371,20 +1369,20 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742,
                                                                           0x1e);
         }
-        g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageQuit, 0);
+        g_pViewMgr->CreateModalMessageCommandAndQueue(&messageQuit, 0);
       }
       unsigned char stillClientSessionQuit = g_pSimMgr->multiplayerSessionRole == 2;
       if (stillClientSessionQuit == 0 && gameState->statusTag18 != kControlTagNewg) {
-        g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+        g_pAmbitApplication->PostWmCloseToMainThreadWindow();
         return 1;
       }
-      g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+      g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
       return 1;
     }
     case kControlTagRege: { // 'rege' - regenerate client map clip regions
       unsigned char clientSessionRege = g_pSimMgr->multiplayerSessionRole == 2;
       if (clientSessionRege != 0) {
-        g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
+        g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
       }
       return 1;
     }
@@ -2007,7 +2005,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     payloadValue.object->WriteTo(stream);
     return;
   case 0x32:
-    g_pNationInteractionStateManager->WriteTo(stream);
+    g_pTradeMgr->WriteTo(stream);
   }
 }
 
@@ -2310,12 +2308,12 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     CString notSeatedMessage;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&notSeatedMessage, 0x2742,
                                                                     0x16);
-    g_pUiRuntimeContext->ModalMessage(notSeatedMessage, g_ptNationAwolModalMessage, 0, 0);
+    g_pViewMgr->ModalMessage(notSeatedMessage, g_ptNationAwolModalMessage, 0, 0);
     return;
   }
 
   TView* dialog =
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage);
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventJoinSelectorMessage);
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMultiplayerMgr_00698040, 0x1061);
@@ -2509,12 +2507,12 @@ void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networ
         g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2759, 4);
         scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
                                static_cast<LPCSTR>(nationName));
-        g_pUiRuntimeContext->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(formatted, g_ptNationAwolModalMessage, 0, 0);
         if (g_pGameFlowState != this || fieldF4 == 0) {
           TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
-          cancelCommand->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0,
+          cancelCommand->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0,
                                   0); // 'pogc'
-          g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
+          g_pAmbitApplication->DispatchUiSelectionToHandler(cancelCommand);
         }
       }
     }
@@ -2656,7 +2654,7 @@ unsigned char TMultiplayerMgr::HandleActiveNationAwolTransitionOrRecovery() {
   activeNation = g_pSimMgr->GetActiveNationId();
   nationStatusTags[activeNation] = kSessionTagAwol;                                 // 'awol'
   if (sessionPhaseTag == kSessionTagGoin && g_pSimMgr->GetActiveNationId() != -1) { // 'goin'
-    g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+    g_pAmbitApplication->CreateAndQueueTurnEventPacketTagGWEN();
     return 0;
   }
   CreateAndQueueTurnEventPacketTagPOGC();
@@ -2776,8 +2774,8 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
 // FUNCTION: IMPERIALISM 0x0054cde0
 void TMultiplayerMgr::CreateAndQueueTurnEventPacketTagPOGC() {
   TCancelGameOptionsCommand* command = new TCancelGameOptionsCommand();
-  command->ICommand(kSessionTagCgop, g_pGlobalUiRootController, 0, 0, 0); // 'pogc'
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+  command->ICommand(kSessionTagCgop, g_pAmbitApplication, 0, 0, 0); // 'pogc'
+  g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }
 
 // FUNCTION: IMPERIALISM 0x0054ce80
@@ -2942,7 +2940,7 @@ unsigned char TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog(int mode, ch
   if (showFailureDialog != 0 && allReachable == 0) {
     CString message;
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x28);
-    g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&message, 0);
+    g_pViewMgr->CreateModalMessageCommandAndQueue(&message, 0);
   }
   return allReachable;
 }

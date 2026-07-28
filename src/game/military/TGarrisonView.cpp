@@ -1,12 +1,12 @@
 #include "game/military/TGarrisonView.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/military/TArmyUnitLine.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/city_ui/TCountry.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 // SYNTHETIC: IMPERIALISM 0x004a8770
@@ -74,8 +74,7 @@ void TGarrisonView::Close() {
 
     if (hasDismissibleOrder != 0) {
       if (g_pSimMgr->preferenceValues[8] != 0) {
-        hasDismissibleOrder =
-            g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2746, 9, 1, 1);
+        hasDismissibleOrder = g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2746, 9, 1, 1);
       }
       if (hasDismissibleOrder != 0) {
         tileIndex = selectedTileIndex8C;

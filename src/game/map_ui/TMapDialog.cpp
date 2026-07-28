@@ -24,7 +24,8 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
@@ -75,7 +76,7 @@ static inline void SetMapBorderColorForTileOwner(short tileIndex) {
   if (g_pDiplomacyTurnStateManager->IsGreatPower(nation) == 0) {
     nation = 0x35;
   }
-  g_pUiRuntimeContext->SetForeColor(nation);
+  g_pViewMgr->SetForeColor(nation);
 }
 
 static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atlas,
@@ -283,7 +284,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
     ProjectTileIndexToWrappedScreenOffsetByScale(hoveredTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     CRect hoveredRect(projectedX, projectedY, projectedX + 0x40, projectedY + 0x40);
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
     QDFrameRect(&hoveredRect);
     SetQuickDrawFillColor(0);
     if (updateNeighborHighlights) {
@@ -308,7 +309,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
   short outY;
   short outX;
 
-  g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
+  g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
 
   if (neighborTiles[0] != -1) {
     ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], viewOrigin, &outY, &outX, 1);
@@ -808,7 +809,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
 
     GetPixBaseAddr(GetGWorldPixMap(quickDrawSurface350));
     GetPixBaseAddr(GetGWorldPixMap(g_pCitySiteCachedPrimaryRenderSurfaceContext));
-    GetPixBaseAddr(GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668));
+    GetPixBaseAddr(GetGWorldPixMap(g_pMacViewMgr->atlas668));
 
     short cacheSearchIndex = 0;
     for (short row = firstRow; row < lastRow && row < 60; ++row) {
@@ -927,7 +928,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   short destinationStride = static_cast<short>((*destinationSurfaceObject)->stride & 0x3fff);
   destinationPixels += static_cast<int>(screenY) * destinationStride + screenX;
 
-  TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668);
+  TBitmapSurfaceNode** sourceSurfaceObject = GetGWorldPixMap(g_pMacViewMgr->atlas668);
   unsigned char* sourcePixels = GetPixBaseAddr(sourceSurfaceObject);
   short sourceStride = static_cast<short>((*sourceSurfaceObject)->stride & 0x3fff);
 
@@ -1084,8 +1085,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
         normalizedSpriteCode -= kRiverSpriteCodeFlowVariantBias;
       }
       StrategicMapCallbackRecord* terrainMask =
-          &g_pStrategicMapViewSystem
-               ->strategicTileMasks6bc[normalizedSpriteCode - kRiverSpriteCodeFlowFirst];
+          &g_pMacViewMgr->strategicTileMasks6bc[normalizedSpriteCode - kRiverSpriteCodeFlowFirst];
       terrainMask->SetDestinationHeightNoOp(0x40);
       terrainMask->ApplyBitmapMaskToPixelBuffer(destinationPixels);
     }
@@ -1123,9 +1123,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
       StrategicMapCallbackRecord* routeMask = 0;
       if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
-        routeMask = &g_pStrategicMapViewSystem->strategicTileMasks6bc[0x18 + direction];
+        routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x18 + direction];
       } else if ((terrain.railFlags17 & directionBit) != 0) {
-        routeMask = &g_pStrategicMapViewSystem->strategicTileMasks6bc[0x1e + direction];
+        routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x1e + direction];
       }
       if (routeMask != 0) {
         routeMask->SetDestinationHeightNoOp(tileRect.bottom - tileRect.top);
@@ -1141,16 +1141,16 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   if ((activeFlags & 3) != 0 && terrain.gateFlag != 0 && cityOverlayVisible) {
     int improvementOffset = g_pGlobalMapState->GetMapImprovementOffsetByActiveFlagsAndCityStage(
         tileIndex, terrain.formerOwnerNationTag03);
-    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
-                                   improvementOffset, tileRect);
+    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface350, improvementOffset,
+                                   tileRect);
   }
 
   if ((activeFlags & 0x14) != 0 && (activeFlags & 1) == 0) {
     int transportOffset = g_pGlobalMapState->GetMapImprovementOffsetByTownTransportLink(
         tileIndex, terrain.ownerNationTag04);
     if (transportOffset != 0) {
-      Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
-                                     transportOffset, tileRect);
+      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface350, transportOffset,
+                                     tileRect);
     }
   }
 
@@ -1160,8 +1160,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
       int fortLevel = g_pGlobalMapState->cityScoreTable[terrain.cityRecordIndex].fortLevel03;
       if (fortLevel != 0) {
         int fortOffset = g_pGlobalMapState->GetMapImprovementBitmapRowOffsetForIndex(fortLevel - 1);
-        Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas66c, quickDrawSurface350,
-                                       fortOffset, tileRect);
+        Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas66c, quickDrawSurface350, fortOffset,
+                                       tileRect);
       }
     }
   }
@@ -1181,7 +1181,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     if (resourceType >= 0) { /* kResourceKindNone sentinel */                                      \
       const short destinationX = static_cast<short>(screenX + (xOffset));                          \
       if (improvementClasses[edgeIndex] != 0) {                                                    \
-        g_pStrategicMapViewSystem->DrawStrategicMapUnitIconOverlay(                                \
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(                                            \
             destinationSurfaceObject, static_cast<unsigned short>(resourceType),                   \
             improvementClasses[edgeIndex], destinationX, static_cast<short>(screenY + 2));         \
       } else {                                                                                     \
@@ -1194,8 +1194,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
                         terrain.GetTerrainKind() == kStrategicTerrainDesert;                       \
         }                                                                                          \
         if (tileVisible) {                                                                         \
-          g_pStrategicMapViewSystem->DrawStrategicMapUnitIcon(                                     \
-              destinationSurfaceObject, resourceType, destinationX, screenY);                      \
+          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,          \
+                                                  destinationX, screenY);                          \
         }                                                                                          \
       }                                                                                            \
     }                                                                                              \
@@ -1207,7 +1207,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
     if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&
         terrain.secondaryOwnerNationTag18 != -1) {
-      g_pStrategicMapViewSystem->BlitStrategicMapUnitActivityOverlayFrame(
+      g_pMacViewMgr->BlitStrategicMapUnitActivityOverlayFrame(
           destinationSurfaceObject, terrain.secondaryOwnerNationTag18,
           static_cast<short>(screenX + 0x1e), static_cast<short>(screenY + 0x14));
     }
@@ -1277,10 +1277,10 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 
   if (terrain.perTileVisitedFlag0f > 0) {
     int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
-    Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
-                                   markerOffset, tileRect);
+    Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas694[6], quickDrawSurface350, markerOffset,
+                                   tileRect);
   } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile && isOcean) {
-    g_pUiRuntimeContext->SetForeColor(3);
+    g_pViewMgr->SetForeColor(3);
     CRect selectionRect(screenX + 0x20, screenY + 0x20, screenX + 0x21, screenY + 0x21);
     FillRectWithQuickDrawBrushAndContextOffset(&selectionRect);
   }
@@ -1289,8 +1289,8 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     if (terrain.tileActionState16 >= 0 &&
         terrain.tileActionState16 < kMapTileActionStateStrategicAtlasFrameCount) {
       int actionOffset = terrain.tileActionState16 << 6;
-      Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas690, quickDrawSurface350,
-                                     actionOffset, tileRect);
+      Blit64x64StrategicMapAtlasTile(g_pMacViewMgr->atlas690, quickDrawSurface350, actionOffset,
+                                     tileRect);
     }
     return;
   }
@@ -1323,9 +1323,9 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
 void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int nationA,
                             int nationB) {
   if (g_pDiplomacyTurnStateManager->IsGreatPower(nationA) == 0) {
-    g_pUiRuntimeContext->SetForeColor(0x35);
+    g_pViewMgr->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->SetForeColor(nationA);
+    g_pViewMgr->SetForeColor(nationA);
   }
   SetQuickDrawPenSizeAndMarkDirty(2, 2);
   switch (relationLevel) {
@@ -1361,9 +1361,9 @@ void TMapDialog::DrawBorder(short relationLevel, int originX, int originY, int n
     break;
   }
   if (g_pDiplomacyTurnStateManager->IsGreatPower(nationB) == 0) {
-    g_pUiRuntimeContext->SetForeColor(0x35);
+    g_pViewMgr->SetForeColor(0x35);
   } else {
-    g_pUiRuntimeContext->SetForeColor(nationB);
+    g_pViewMgr->SetForeColor(nationB);
   }
   switch (relationLevel) {
   case 0:
@@ -1860,8 +1860,7 @@ void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int sc
 // FUNCTION: IMPERIALISM 0x00522000
 void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int screenY,
                                     short tileIndex) {
-  g_pUiRuntimeContext->SetForeColor(
-      g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+  g_pViewMgr->SetForeColor(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
   if ((edgeMask & 0x20) != 0) {
     SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 8);
     DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 8);
@@ -2127,7 +2126,7 @@ tail:
 
 // FUNCTION: IMPERIALISM 0x00523060
 void TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor() {
-  g_pUiRuntimeContext->SetForeColor(0x3c);
+  g_pViewMgr->SetForeColor(0x3c);
 
   int viewportRowPixels = viewportOrigin.y;
   if (viewportRowPixels < 0) {
@@ -2276,7 +2275,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
   }
   CRect spriteSourceRect(spriteOffset, 0, spriteOffset + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas66c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas66c->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &spriteSourceRect,
                                    &destinationRect, 0x24, 0);
 
@@ -2291,7 +2290,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
       OffsetRect(&ownerDestinationRect, 0,
                  (surfaceHeight - ownerDestinationRect.top) - ownerDestinationRect.bottom);
     }
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
                                      destinationSurface->GetBlitSurface(), &ownerSourceRect,
                                      &ownerDestinationRect, 0x24, 0);
     destinationRect.InflateRect(1, 1);
@@ -2362,7 +2361,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
   }
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b4->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b4->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &countSourceRect,
                                    &countDestinationRect, 0x24, 0);
 
@@ -2376,7 +2375,7 @@ void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, 
     ownerDestinationRect.SetRect(dstRect->left + 7, dstRect->top + 2, dstRect->left + 0x10,
                                  dstRect->top + 8);
   }
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
                                    destinationSurface->GetBlitSurface(), &ownerSourceRect,
                                    &ownerDestinationRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -2394,7 +2393,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   if (altOverlay == 0) {
     CRect sourceRect(tileActionClass << 6, 0, (tileActionClass + 1) << 6, 0x40);
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas690->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas690->GetBlitSurface(),
                                      quickDrawSurface350->GetBlitSurface(), &sourceRect, dstRect,
                                      0x24, 0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -2417,7 +2416,7 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   int sourceX = (tileActionClass + 1) << 6;
   CRect sourceRect(sourceX, 0, sourceX + 0x40, 0x40);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas690->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas690->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);

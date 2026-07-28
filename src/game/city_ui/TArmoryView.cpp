@@ -14,8 +14,9 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/city/TUnitOrder.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
@@ -45,7 +46,7 @@ TArmoryView::~TArmoryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cee20
 void TArmoryView::DoStartup() {
-  productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView04;
 
   struct {
     TextStyle desc;
@@ -430,6 +431,6 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
 void TArmoryView::Free() {
   TView::Free();
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pUiViewManager->CloseFilesFor(0x23f8);
+    g_pAssetMgr->CloseFilesFor(0x23f8);
   }
 }

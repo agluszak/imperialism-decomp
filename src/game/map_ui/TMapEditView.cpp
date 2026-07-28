@@ -2,7 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_core/TCluster.h"
 #include "game/gfx/TDisplayMgr.h"
@@ -14,7 +14,8 @@
 #include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -74,7 +75,7 @@ void TMapEditView::DoPostCreate(int arg) {
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
   g_pGlobalMapState->field24 = 1;
-  g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   mapOwner->DisplayMiniMap();
 
   const short defaultResourceByProfile[15] = {-1, -1, 0,  20, 5,  17, 18, 1,
@@ -181,7 +182,7 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
       InvalidateTile(neighbor);
     }
   }
-  g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
@@ -366,7 +367,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   g_pGlobalMapState->SetRegionTileSubtypeAndRefreshNeighborFlags(provinceId, tileIndex);
 
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
   TEditText* nameControl = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);

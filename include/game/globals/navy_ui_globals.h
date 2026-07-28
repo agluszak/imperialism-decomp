@@ -1,7 +1,9 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+
+extern "C" char* g_pShipFractionSharedText_0065c830;
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // Per-type index into TShipView::Draw's 8-entry order-status

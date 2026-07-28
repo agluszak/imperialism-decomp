@@ -5,16 +5,34 @@ Physical offsets come from the real MSVC500 layout oracle. Clone ownership comes
 from the source inheritance graph and the listed Windows clone bodies. This report
 does not treat MFC internals as game source and does not implement CString itself.
 
-- Direct CString-bearing records: 1
-- TObject-derived records reviewed for clone behavior: 1
-- Proven safe raw CString boundaries: 0
+- Direct CString-bearing records: 29
+- TObject-derived records reviewed for clone behavior: 19
+- Proven safe raw CString boundaries: 2
 - Unreviewed raw spans crossing CString state: 0
 
 ## Clone ownership review
 
 | Class | CString fields (VC5 offsets) | Clone owner | Status | Binary evidence and review |
 | --- | --- | --- | --- | --- |
+| `TAdmiral` | `displayName@0xc (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited slot tail-dispatches to the polymorphic byte copy; no class-specific CString refcount fix-up exists. |
+| `TAssetMgr` | `sharedTextSlots@0x20 (embedded_array)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers the embedded CString array; no class-specific clone call is known. |
+| `TCountry` | `identitySharedString0@0x4 (embedded)`, `identitySharedString1@0x8 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers both identity strings; preserve the retail body and audit callers before any hardening. |
+| `TIncludeView` | `labelText6c@0x6c (embedded)` | `TView` | `retail_raw_copy_risk` | 0x0048bfd0,0x0048bef0: TView clone byte-copies the dynamic object then repairs view pointers, but does not refcount labelText6c or inherited hoverHelpText58. |
+| `TInfoBarBehavior` | `text@0x10 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers text; no class-specific CString fix-up exists. |
+| `TLanguageMgr` | `newsTexPath@0x28 (embedded)`, `newsTabPath@0x2c (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers both resource paths; no class-specific clone call is known. |
+| `TMapMgr` | `scenarioTagText@0x1c (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers scenarioTagText1c; no class-specific clone call is known. |
+| `TMilitaryUnit` | `name24@0x24 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers name24; no class-specific CString fix-up exists. |
+| `TMiniCivView` | `unitText88@0x88 (embedded)` | `TControl` | `clone_rejected` | 0x00435760: Nearest ShallowClone override asserts and returns null, so unitText88 is never byte-copied by the clone API. |
+| `TModalMessageCommand` | `message@0x18 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers message; no class-specific CString fix-up exists. |
+| `TMultiplayerMgr` | `gameNameString@0x74 (embedded)`, `defaultNationTextSlots@0x78 (embedded_array)`, `nationDisplayNameSlots@0x94 (embedded_array)`, `playerNameString@0xb0 (embedded)`, `playerNameMirror@0xb4 (embedded)`, `fieldb8@0xb8 (embedded)` | `TEventHandler` | `base_header_clone_only` | 0x0048a7c0: Nearest override constructs a TEventHandler header and copies four scalar fields; it does not byte-copy the dynamic TMultiplayerMgr object. |
+| `TSetupRandomMapPicture` | `planetSeed94@0x94 (embedded)` | `TPicture` | `retail_raw_copy_risk` | 0x0048f640,0x0048bef0: TPicture clone uses the polymorphic byte copy and repairs view/picture fields, but not planetSeed94 or inherited hoverHelpText58. |
+| `TShip` | `name@0x18 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers name; no class-specific CString fix-up exists. |
+| `TSimMgr` | `sharedTextSlots@0x7c (embedded_array)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers the 23 embedded shared strings; no class-specific clone call is known. |
 | `TStaticText` | `text@0x84 (pointer)` | `TStaticText` | `deep_copy_fixup` | 0x0048fc00,0x0048fb10: The class-specific clone allocates a new CString and assigns the source text after the retail byte copy. |
+| `TTextLine` | `captionText10@0x10 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers captionText10; no class-specific CString fix-up exists. |
+| `TTextPictureButton` | `buttonText@0x94 (embedded)` | `TPicture` | `retail_raw_copy_risk` | 0x0048f640,0x0048bef0: TPicture clone repairs view/picture fields but does not refcount buttonText or inherited hoverHelpText58. |
+| `TView` | `hoverHelpText58@0x58 (embedded)` | `TView` | `retail_raw_copy_risk` | 0x0048bfd0,0x0048bef0: Retail clone byte-copies hoverHelpText58 and the fix-up does not assign or reconstruct it; active generic child cloning makes this an explicit retail risk. |
+| `TZone` | `displayName@0x8 (embedded)` | `TObject` | `retail_raw_copy_risk` | 0x004798d0,0x00415ce0: Inherited polymorphic byte copy covers displayName; no class-specific CString fix-up exists. |
 
 The `retail_raw_copy_risk` rows are reviewed retail behavior, not proof of a
 currently exercised failure. They remain visible because copying a live CString
@@ -25,6 +43,8 @@ pointer without incrementing its reference count is unsafe if that clone path ru
 | Source | Operation | Record span | Verdict | Detail |
 | --- | --- | --- | --- | --- |
 | `src/game/app/TObject.cpp:18` | `memcpy` | runtime class `[0, m_nObjectSize)` | `reviewed_retail_polymorphic_copy` | Listing 0x00415ce0 uses runtime size then `REP MOVSD/MOVSB`; the source is explicitly quarantined. |
+| `src/game/map/TMapMgr.cpp:121` | `ReadBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
+| `src/game/map/TMapMgr.cpp:155` | `WriteBytes` | `Province` 0x0..0xa4 | `safe_boundary` | ends at first CString offset 0xa4 |
 
 A `crosses_cstring` row is a hard failure. The report intentionally permits the
 two `Province` spans ending exactly at `cityNameA4`; that CString is serialized

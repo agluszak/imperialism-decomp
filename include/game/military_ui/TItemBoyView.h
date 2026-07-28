@@ -17,7 +17,7 @@ public:
   TItemBoyView() {}
 
   // Draws `header` at a fixed origin, then blits a horizontal row of item-kind icons
-  // (icon strip cached at *(g_pStrategicMapViewSystem + 0x674) + 4, distinct from the
+  // (icon strip cached at *(g_pMacViewMgr + 0x674) + 4, distinct from the
   // Army/Navy boy views' +0x694 strip) using this->frameWidth34 (inherited from
   // TView) and the context's item count to lay out each icon's width. Non-virtual
   // helper called only from Draw; real name unrecovered (Ghidra's

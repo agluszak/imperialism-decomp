@@ -4,7 +4,7 @@
 #include "game/ui_screens/TRadioText.h"
 #include "game/CSubViewIterator.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -120,7 +120,7 @@ void TRadioTextCluster::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (frameThemeCode90 > -1) {
     RECT frame = {0, 0, frameWidth34, frameHeight38};
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(frameThemeCode90);
+    g_pViewMgr->ApplyLegendSplitSlot34(frameThemeCode90);
     QDFrameRect(&frame);
     SetQuickDrawFillColor(0);
   }

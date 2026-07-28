@@ -21,6 +21,7 @@ class TInfoBarText;
 #include "game/gfx/TAmbitApplication.h"
 #include "game/mfc.h"
 #include "game/core/global_data_tables.h"
+#include "game/globals/raw_globals.h"
 #include "game/map/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/ui_core/TViewMgr.h"
@@ -71,15 +72,15 @@ unsigned char g_bStrategicMapSelectionOverlayPhase = 0;
 // GLOBAL: IMPERIALISM 0x00695934
 int g_nIdleMeAnimationNextRegistryTag = kManifestTagAUT0;
 // GLOBAL: IMPERIALISM 0x006a21a8
-TMacViewMgr* g_pStrategicMapViewSystem = 0;
+TMacViewMgr* g_pMacViewMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
-TViewMgr* g_pUiRuntimeContext = 0;
+TViewMgr* g_pViewMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a2050
 TBackdropWindow* g_pActiveBackdropWindow = 0;
 // GLOBAL: IMPERIALISM 0x006a2054
 CWaitCursor* g_pBackdropWaitCursor = 0;
 // GLOBAL: IMPERIALISM 0x006a2148
-TAssetMgr* g_pUiViewManager = 0;
+TAssetMgr* g_pAssetMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a327c
 TLanguageMgr* g_pLanguageMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e0
@@ -135,7 +136,7 @@ THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
 TNewsMgr* g_pNewsMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
-TAmbitApplication* g_pGlobalUiRootController = 0;
+TAmbitApplication* g_pAmbitApplication = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
 TMultiplayerMgr* g_pGameFlowState = 0;
 // GLOBAL: IMPERIALISM 0x006a43d0
@@ -1724,7 +1725,7 @@ double g_dMasterVolumeExponentScale = 0.092;
 
 } // extern "C"
 
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/map/TMapMgr.h"
@@ -1811,7 +1812,7 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a4520
 short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
-TTradeMgr* g_pNationInteractionStateManager = 0;
+TTradeMgr* g_pTradeMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
 CString g_cstrCountryNameSettingValue006A4220;
 // GLOBAL: IMPERIALISM 0x006a4268
@@ -2216,7 +2217,7 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 TNetMgr* g_pNetMgr006a6014 = 0;
 
 // GLOBAL: IMPERIALISM 0x006a18e0
-TApplication* g_pApplicationUiRootController = 0;
+TApplication* g_pApplication = 0;
 
 // GLOBAL: IMPERIALISM 0x006a44b0
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
@@ -2247,7 +2248,7 @@ unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
     0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c,
     0xbd, 0x0a, 0x0b, 0x0d, 0x29, 0xde,
     0xdf, 0xfa, 0x2c, 0x31, 0x33, 0x41,
-    0x48, 0xd0, 0xcd, 0xce, 0xcf, static_cast<unsigned char>(g_pUiRuntimeContext->GetColor(0x32)),
+    0x48, 0xd0, 0xcd, 0xce, 0xcf, static_cast<unsigned char>(g_pViewMgr->GetColor(0x32)),
 };
 
 // The four one-reader feature bytes bracket the ocean overview's optional route,
@@ -2267,7 +2268,7 @@ unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
     0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae,
     0xca, 0x7d, 0x7d, 0x7d, 0x7d, 0xe2,
     0xe2, 0xe2, 0xe2, 0x51, 0x51, 0x51,
-    0x51, 0xf0, 0xf0, 0xf0, 0xf0, static_cast<unsigned char>(g_pUiRuntimeContext->GetColor(0x3c)),
+    0x51, 0xf0, 0xf0, 0xf0, 0xf0, static_cast<unsigned char>(g_pViewMgr->GetColor(0x3c)),
 };
 
 // GLOBAL: IMPERIALISM 0x006a590c

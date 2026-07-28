@@ -4,7 +4,7 @@
 #include "game/ui_core/TEditText.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -54,7 +54,7 @@ void TTownNameDialog::Draw(RECT* rectBuffer) {
   if (nameControl != nullptr) {
     CRect bounds;
     nameControl->QueryBounds(&bounds);
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0xf);
+    g_pViewMgr->ApplyLegendSplitSlot34(0xf);
     FillRectWithQuickDrawBrushAndContextOffset(&bounds);
   }
   UpdatePaletteIndexWithDefaultFallback(0x50);

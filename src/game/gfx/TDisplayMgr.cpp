@@ -15,7 +15,7 @@
 #include "game/ui_core/CWMgrIterator.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
@@ -118,8 +118,8 @@ void TDisplayMgr::IDisplayMgr() {
 
   SetMenuHeight(0);
 
-  TView* dialogRoot = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-      DecodeTurnEventCode(eventCode0e));
+  TView* dialogRoot =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode0e));
   if (dialogRoot == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0xb0);
@@ -192,7 +192,7 @@ void TDisplayMgr::DismissTouchyFloaters(TToolboxEvent*) {
 
 // FUNCTION: IMPERIALISM 0x004fec80
 void TDisplayMgr::ModalMessage(CString message, const POINT& messagePosition) {
-  g_pUiRuntimeContext->ModalMessage(message, messagePosition);
+  g_pViewMgr->ModalMessage(message, messagePosition);
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00

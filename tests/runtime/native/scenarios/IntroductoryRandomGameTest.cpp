@@ -2,7 +2,7 @@
 #include "flows/RandomGameFlow.h"
 
 #include "game/city_ui/TCivMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/military/TCivUnit.h"
@@ -80,7 +80,7 @@ public:
 
     TGreatPower* nation = g_apNationStates[g_pSimMgr->activeNationSlot];
     TCivUnit* civilian = static_cast<TCivUnit*>(nation->trackedObjectList->GetEntryByOrdinal(1));
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     if (mapView == 0 || mapView->categoryPages[0] == 0) {
       FailScenario("\"Introductory map has no civilian toolbar page\"");
       return;

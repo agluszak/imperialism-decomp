@@ -6,9 +6,9 @@
 #include "game/map/sea_geometry.h"
 
 #include "decomp_types.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 // FUNCTION: IMPERIALISM 0x0052b820
 void TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides() {

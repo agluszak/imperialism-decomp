@@ -5,7 +5,7 @@
 #endif
 #include "game/ImperialismCommandLineInfo.h"
 #include "game/app_init_globals.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
@@ -27,7 +27,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/mfc.h"
 #include "game/gfx/TAutoResolutionDialog.h"
 #include "game/app/TModalTemplateDialog.h"
@@ -284,8 +284,8 @@ BOOL ImperialismApp::InitInstance() {
 
     g_pImperialismApp = &theApp;
 
-    g_pGlobalUiRootController = new TAmbitApplication();
-    g_pGlobalUiRootController->IAmbitApplication();
+    g_pAmbitApplication = new TAmbitApplication();
+    g_pAmbitApplication->IAmbitApplication();
 
     g_pSfxPlaybackSystem = new TSoundPlayer();
     g_pSfxPlaybackSystem->ISoundPlayer(0xf);
@@ -337,21 +337,21 @@ int ImperialismApp::ExitInstance() {
     delete g_pModuleLibraryCacheState;
     g_pModuleLibraryCacheState = nullptr;
   }
-  if (g_pStrategicMapViewSystem != nullptr) {
-    g_pStrategicMapViewSystem->Free();
-    g_pStrategicMapViewSystem = nullptr;
+  if (g_pMacViewMgr != nullptr) {
+    g_pMacViewMgr->Free();
+    g_pMacViewMgr = nullptr;
   }
-  if (g_pUiViewManager != nullptr) {
-    g_pUiViewManager->Free();
-    g_pUiViewManager = nullptr;
+  if (g_pAssetMgr != nullptr) {
+    g_pAssetMgr->Free();
+    g_pAssetMgr = nullptr;
   }
   if (g_pSfxPlaybackSystem != nullptr) {
     g_pSfxPlaybackSystem->Free();
     g_pSfxPlaybackSystem = nullptr;
   }
-  if (g_pGlobalUiRootController != nullptr) {
-    g_pGlobalUiRootController->Free();
-    g_pGlobalUiRootController = nullptr;
+  if (g_pAmbitApplication != nullptr) {
+    g_pAmbitApplication->Free();
+    g_pAmbitApplication = nullptr;
   }
   DisposeTemporaryRegionCache();
 
@@ -426,8 +426,7 @@ void ImperialismApp::OnSelectActiveNation() {
       g_apNationStates[g_pSimMgr->GetActiveNationId()]
           ->RebuildNationResourceYieldCountersAndDevelopmentTargets();
     }
-    g_pUiRuntimeContext->DispatchTurnEvent(g_pUiRuntimeContext->currentTurnEventCode,
-                                           g_pSimMgr->GetActiveNationId());
+    g_pViewMgr->DispatchTurnEvent(g_pViewMgr->currentTurnEventCode, g_pSimMgr->GetActiveNationId());
   }
 }
 
@@ -519,9 +518,9 @@ void ImperialismApp::OnPreviewDibResource() {
 BOOL ImperialismApp::OnIdle(LONG lCount) {
   CWinApp::OnIdle(lCount);
   if (lCount == 0) {
-    g_pGlobalUiRootController->Idle(0);
+    g_pAmbitApplication->Idle(0);
   }
-  g_pGlobalUiRootController->Idle(1);
+  g_pAmbitApplication->Idle(1);
 #ifdef IMPERIALISM_RUNTIME_TESTS
   if (lCount == 0) {
     RuntimeTestDriver::OnIdle();

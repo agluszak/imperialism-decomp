@@ -59,11 +59,11 @@ private:
   }
 
   void WaitForTurnProcessed() {
-    if (g_pUiRuntimeContext->currentTurnEventCode == 0x11f8) {
+    if (g_pViewMgr->currentTurnEventCode == 0x11f8) {
       FailScenario("\"end turn entered the game-over/opening-cinematic path\"");
       return;
     }
-    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+    if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
       RequestScenarioTick();
@@ -73,7 +73,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
       WaitForScenarioTick("\"ended turn did not advance back to the combined map\"");

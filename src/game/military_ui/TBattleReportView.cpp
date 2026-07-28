@@ -23,14 +23,15 @@
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/ScopedMapQuickDrawContext.h"
 #include "game/ui_core/TSortedPtrList.h"
 #include "game/military/mapped_flavor_text.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -307,7 +308,7 @@ char TBattleReportView::DoIdle(int action) {
       spriteRect.bottom = 0x12;
 
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &spriteRect, &markerRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -334,8 +335,8 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       return;
     }
     if (tag == IMPERIALISM_FOURCC('i', 'n', 'f', 'o')) {
-      TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          kTurnEventDetailedBattleReport);
+      TWindow* dialog =
+          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventDetailedBattleReport);
       if (dialog == 0) {
         GAME_FAIL_NIL_POINTER();
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UBattleReportViews.cpp",
@@ -401,7 +402,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
                                                  book->ResolveControlByTag(kControlTagOkay));
       CPoint placement;
-      g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+      g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
       dialog->Locate(placement, 0);
       TDialogBehavior* behavior = dialog->GetDialogBehavior();
       if (behavior != 0) {
@@ -499,7 +500,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
         srcRect.bottom = 0x12;
 
         UpdatePaletteIndexWithDefaultFallback(0x10);
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &srcRect, &destRect, 0x24, 0);
         UpdatePaletteIndexWithDefaultFallback(0x13);

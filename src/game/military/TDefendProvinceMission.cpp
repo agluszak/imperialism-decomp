@@ -8,9 +8,10 @@
 #include "game/navy/TNavyMgr.h"
 #include "game/TList.h"
 #include "game/nation/TGreatPower.h"
-#include "game/ui_screens/TZone.h"
-#include "game/globals/prelude.h"
+#include "game/map/TZone.h"
+#include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/tactical_ui/TTechMgr.h"
@@ -304,12 +305,8 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   if (compat == 0) {
     unsigned char bVar8;
-    if (g_pCityOrderCapabilityState->abilityActiveRows395[nationId04].abilityActiveById[0x10] ==
-        0) {
-      bVar8 =
-          (g_pCityOrderCapabilityState->abilityActiveRows395[nationId04].abilityActiveById[8] != 0)
-              ? 8
-              : 0;
+    if (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[0x10] == 0) {
+      bVar8 = (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
       bVar8 = 0x10;
     }

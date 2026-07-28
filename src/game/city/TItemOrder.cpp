@@ -2,7 +2,7 @@
 
 #include "game/city/TCity.h"
 #include "game/core/TStream.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/TViewMgr.h"
 
@@ -106,7 +106,7 @@ bool TItemOrder::SetQuantity(short quantity) {
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
   ownerCity->productionAccum1fc[productionSlot] =
       static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

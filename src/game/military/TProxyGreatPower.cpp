@@ -1,6 +1,6 @@
 #include "game/military/TProxyGreatPower.h"
 #include "game/ui_tags_common.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/NetMessage.h"
 #include "game/net/TNetMgr.h"

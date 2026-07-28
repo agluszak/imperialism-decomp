@@ -127,6 +127,12 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(SeapointStretch, 0x10);
 ASSERT_SIZE(SeaSegmentStretch, 0x10);
+ASSERT_SIZE(Seapoint, 0x10);
+ASSERT_OFFSET(Seapoint, coord00, 0x00);
+ASSERT_OFFSET(Seapoint, f0c, 0x0c);
+ASSERT_SIZE(SeaSegment, 0x18);
+ASSERT_OFFSET(SeaSegment, coord0, 0x08);
+ASSERT_OFFSET(SeaSegment, angle14, 0x14);
 
 // Convert a tile COLUMN + ROW + edge side to a linear overlay-grid coord, the same mapping
 // EmitOverlaySegmentFromTileEdgeSorted derives from a packed tile index: the row is clamped

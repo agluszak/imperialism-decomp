@@ -57,8 +57,8 @@ private:
       return;
     }
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(2, 2, 0);
-    if (mapDialog->viewportOrigin60.x < 0 || mapDialog->viewportOrigin60.y < 0 ||
-        (mapDialog->viewportOrigin60.x & 0x3f) != 0) {
+    if (mapDialog->viewportOrigin.x < 0 || mapDialog->viewportOrigin.y < 0 ||
+        (mapDialog->viewportOrigin.x & 0x3f) != 0) {
       FailScenario("\"loaded map viewport did not land on a tile-aligned position\"");
       return;
     }

@@ -7,7 +7,7 @@
 #include "game/ui_widgets/TInfoBarText.h"
 #include "game/gfx/TAmbitApplication.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -245,7 +245,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         editControl->BecomeTarget();
         editControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(slotText.GetLength()), 0);
         editControl->controlTag = kControlTagSlot; // 'slot'
-        g_pUiRuntimeContext->SetBackColor(0x10);
+        g_pViewMgr->SetBackColor(0x10);
       }
     }
     reachedCommonTail = true;
@@ -270,7 +270,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     HandleSaveGameSlotSelectionAndPromptFlow();
   }
 
-  if (reachedCommonTail && g_pApplicationUiRootController->screenModeAt24 > 1) {
+  if (reachedCommonTail && g_pApplication->screenModeAt24 > 1) {
     TView* okayControl = ResolveControlByTag(kControlTagOkay);
     if (okayControl != nullptr) {
       QueueDeferredUiEventPacket(this, 0xa, okayControl);
@@ -288,7 +288,7 @@ void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(kTurnEventMainMenu);
+  g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventMainMenu);
 }
 
 // FUNCTION: IMPERIALISM 0x0056d1e0
@@ -333,15 +333,14 @@ static __inline unsigned char IsMultiplayerFlowActive() {
 void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   if (selectedSlot92 == -1) {
     if (loadModeFlag90 == 0) {
-      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+      g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
       return;
     }
     return;
   }
   if (loadModeFlag90 != 0) {
     if (g_pSimMgr->mode == 1 ||
-        g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) !=
-            0) {
+        g_pViewMgr->DispatchGameStateEventIfLocalizedPromptAccepted(kControlTagLoad) != 0) {
       GetWindow()->ForceRedraw();
       char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
       if (!IsMultiplayerFlowActive()) {
@@ -351,7 +350,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
       CString path;
       BuildSavePathStringForMode(&path, slot, prefix);
       if (TryGetFileMetadataForPath(&path) != 0) {
-        g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path);
+        g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
       }
     }
   } else {
@@ -502,7 +501,7 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
     savePath += g_pszImpSaveExtension_0065DDD8;
   }
 
-  if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(savePath)) {
+  if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(savePath)) {
     if (IsMultiplayerFlowHosting()) {
       g_pGameFlowState->fieldF4 = markSaved;
       g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagSave, markSaved, -2);
@@ -575,7 +574,7 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
     path += g_pszImpSaveExtension_0065DDD8;
   }
   if (TryGetFileMetadataForPath(&path) != 0) {
-    return g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path);
+    return g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
   }
   return 0;
 }

@@ -2,7 +2,7 @@
 #include "game/ArchiveStreamAdapter.h"
 #include "game/GameAssert.h"
 #include "game/mfc.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 typedef void* hwnd_t;

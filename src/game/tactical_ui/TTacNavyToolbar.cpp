@@ -5,7 +5,7 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/tactical/TNavyBattle.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x005ad0d0
@@ -71,5 +71,5 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     }
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
-  g_pGlobalUiRootController->SetTarget(ownerContext);
+  g_pAmbitApplication->SetTarget(ownerContext);
 }

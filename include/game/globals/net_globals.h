@@ -1,7 +1,12 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
+
+extern "C" char* g_pLoungeLocalPlayerNameSharedText_0065c160;
+#include "game/net/TWNetSessionManager.h"
+
+#include <afxtempl.h>
 
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/app/TObject.h"
 
 class TAdmiral;

@@ -1,7 +1,7 @@
 #include "game/military/THostGreatPower.h"
 #include "game/ui_tags_common.h"
 
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -67,7 +67,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
     ++nationSlot;
   } while (nation < &g_apNationStates_End);
 
-  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+  TViewMgr* uiRuntimeContext = g_pViewMgr;
   short ownerNationSlot = this->nationSlot;
   uiRuntimeContext->MakeDiplomacyOfferDialog(ownerNationSlot, ownerNationSlot, 0x29a);
 }

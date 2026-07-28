@@ -1,10 +1,20 @@
 #pragma once
 // Subsystem-owned global declarations. Definitions and address markers live in
 // src/game/core/global_data_tables.cpp.
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/tactical_ui/TechPrerequisitePair.h"
 
+struct IndustryCapabilityClassSlotEntry {
+  int classId;
+  int raw[8];
+};
+
 extern POINT g_ptTechCapabilityModalMessage; // @ 0x6a57c8
+
+extern TTechMgr* g_pTechMgr;
+
+// Tactical unit sprite facing offsets: [unit type][orientation][side].
+extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern TechPrerequisitePair g_aTechItemPrerequisitePairs[34];

@@ -1,7 +1,7 @@
 #include "game/city/TTrainingOrder.h"
 
 #include "game/city/TCity.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_core/TViewMgr.h"
@@ -107,7 +107,7 @@ bool TTrainingOrder::SetQuantity(short quantity) {
     owner->treasuryValue10 -= static_cast<int>(delta) * 1000;
   }
   productionSummary->MakeUnavailable(resourceTypeIndex, delta);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

@@ -1,10 +1,10 @@
 #include "game/ui_widgets/TArmyPlacard.h"
 #include "game/ui_tags_common.h"
 #include "game/military/TArmyMgr.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_core/TViewMgr.h"
@@ -34,8 +34,7 @@ TArmyPlacard::~TArmyPlacard() {}
 // FUNCTION: IMPERIALISM 0x0058bf50
 void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
   short activeNationId = g_pSimMgr->GetActiveNationId();
-  short capValue =
-      g_pCityOrderCapabilityState->nationCapRows1e8[activeNationId].slots[9 + this->controlTag];
+  short capValue = g_pTechMgr->nationCapRows1e8[activeNationId].slots[9 + this->controlTag];
   short pictureId = capValue + 0x4c4;
   if (value != this->glyph90) {
     if (value < 1) {

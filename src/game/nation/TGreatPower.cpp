@@ -12,10 +12,11 @@
 #include <stdlib.h>
 
 #include "game/ui_core/CIterator.h"
-#include "game/ui_screens/CString.h"
+#include "game/core/CString.h"
 #include "game/GameAssert.h"
-#include "game/globals/prelude.h"
+#include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/nation_stream_serialization.h"
@@ -29,10 +30,10 @@
 #include "game/military/TDefendProvinceMission.h"
 #include "game/military_ui/TDefenseMinister.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/map/TMapMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/map/TMinister.h"
@@ -55,11 +56,11 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/core/TStream.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/military/TUnit.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TZone.h"
+#include "game/map/TZone.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
@@ -390,7 +391,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
               }
             }
 
-            TTechMgr* orderCapabilityState = g_pCityOrderCapabilityState;
+            TTechMgr* orderCapabilityState = g_pTechMgr;
             int capabilityScore = this->city->GetBuildingType(7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
                 orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
@@ -637,11 +638,11 @@ void TGreatPower::UpdateCountryStockpile(short* needVector) {
 // FUNCTION: IMPERIALISM 0x004dcaa0
 unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCode) {
   if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
-    if (g_pNationInteractionStateManager->GetAmtOffered(4) != 0) {
+    if (g_pTradeMgr->GetAmtOffered(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
       }
-      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 4);
+      short resolvedCode = g_pTradeMgr->WhoTradesFirst(proposalCode, 4);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -650,11 +651,11 @@ unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCo
     }
   }
   if (this->foreignMinister->purchasePriorityByResource1e[5] != 0) {
-    if (g_pNationInteractionStateManager->GetAmtOffered(5) != 0) {
+    if (g_pTradeMgr->GetAmtOffered(5) != 0) {
       if (static_cast<short>(proposalCode) == 5) {
         return static_cast<unsigned short>(this->availableMerchantCapacity);
       }
-      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 5);
+      short resolvedCode = g_pTradeMgr->WhoTradesFirst(proposalCode, 5);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -663,9 +664,9 @@ unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCo
     }
   }
   if (this->foreignMinister->purchasePriorityByResource1e[3] != 0 &&
-      g_pNationInteractionStateManager->GetAmtOffered(3) != 0) {
+      g_pTradeMgr->GetAmtOffered(3) != 0) {
     if (static_cast<short>(proposalCode) != 3) {
-      short resolvedCode = g_pNationInteractionStateManager->WhoTradesFirst(proposalCode, 3);
+      short resolvedCode = g_pTradeMgr->WhoTradesFirst(proposalCode, 3);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->availableMerchantCapacity) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -1209,7 +1210,7 @@ void TGreatPower::RememberTradeBids(void) {
 char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                 int arg4) {
   if (this->HasPendingTradeOfferAndMerchantCapacity(static_cast<short>(arg4)) != 0) {
-    TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+    TViewMgr* uiRuntimeContext = g_pViewMgr;
     uiRuntimeContext->DispatchNationActionToMainControl(this->nationSlot, arg1, arg2, arg3, arg4);
     return 1;
   }
@@ -1552,7 +1553,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         g_pSimMgr->GetString(0x2753, 0x45, &alertTextRef);
         // alertHeaderRef is fetched and released without being dispatched, as in
         // the original (0x004de4a2..0x004de4ea).
-        g_pUiRuntimeContext->ModalMessage(alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
+        g_pViewMgr->ModalMessage(alertTextRef, g_ptGreatPowerModalMessage, 0, 0);
       }
     }
   }
@@ -2114,7 +2115,7 @@ void TGreatPower::InitializeDiplomacyNotices(void) {
 
 // FUNCTION: IMPERIALISM 0x004df5c0
 void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
-  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+  TViewMgr* uiRuntimeContext = g_pViewMgr;
   if (uiRuntimeContext == 0) {
     return;
   }
@@ -2136,7 +2137,7 @@ void TGreatPower::ReplyToDiplomacyOffers(void) {
     proposalIndex = 1;
     queueIndex = 1;
     TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-    TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+    TViewMgr* uiRuntimeContext = g_pViewMgr;
 
     do {
       short* proposalEntry = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(queueIndex));
@@ -2262,7 +2263,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       }
       message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
       message += " is missing capitol site";
-      g_pUiRuntimeContext->ModalMessage(message, g_ptGreatPowerModalMessage);
+      g_pViewMgr->ModalMessage(message, g_ptGreatPowerModalMessage);
     }
   }
   this->homeTileIndex = static_cast<short>(homeTileIndex);
@@ -2354,7 +2355,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 2, 0);
+  g_pViewMgr->ModalMessage(*message, g_ptGreatPowerModalMessage, 2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0140
@@ -2363,7 +2364,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 1, 0);
+  g_pViewMgr->ModalMessage(*message, g_ptGreatPowerModalMessage, 1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e01b0
@@ -2372,7 +2373,7 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* messag
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  g_pUiRuntimeContext->ModalMessage(*message, g_ptGreatPowerModalMessage, 0, 0);
+  g_pViewMgr->ModalMessage(*message, g_ptGreatPowerModalMessage, 0, 0);
 }
 
 // --- Slots 0x4c/0x65/0x6c/0x6f/0x78/0x7d/0x7f/0xac and trivial tail slots ---
@@ -2587,7 +2588,7 @@ float TGreatPower::GetMilitaryPower(void) {
 
 // FUNCTION: IMPERIALISM 0x004e09a0
 float TGreatPower::GetTotalNavalForce(void) {
-  TTechMgr* capabilityState = g_pCityOrderCapabilityState;
+  TTechMgr* capabilityState = g_pTechMgr;
   int shipProduction;
   if (capabilityState->resourceTypeEnabled19d[0xb] != 0) {
     shipProduction = this->GetBuildingCapacity(2);
@@ -2911,7 +2912,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 // FUNCTION: IMPERIALISM 0x004e1d50
 int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) {
   char result = 0;
-  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+  TViewMgr* uiRuntimeContext = g_pViewMgr;
 
   result = g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, sourceNation);
 
@@ -3388,7 +3389,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 
     if (anyPreviousTurnEntry != 0) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0xbcb, 0, 1);
-      g_pUiRuntimeContext->ModalMessage(messageText, g_ptGreatPowerModalMessage, 2, 0);
+      g_pViewMgr->ModalMessage(messageText, g_ptGreatPowerModalMessage, 2, 0);
     }
   }
 }
@@ -3518,7 +3519,7 @@ void TGreatPower::GenerateGameScore() {
 
 // FUNCTION: IMPERIALISM 0x004e3560
 void TGreatPower::PayForMilitary() {
-  int maintenanceMultiplier = g_pCityOrderCapabilityState->activePrerequisitePair264.packedValue;
+  int maintenanceMultiplier = g_pTechMgr->activePrerequisitePair264.packedValue;
   int militaryUnitCost = 0;
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
