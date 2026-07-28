@@ -120,6 +120,16 @@ stackcmp-triage *args:
 stats *args:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled {{args}}
 
+[doc('Compare original/recomp high-p-code call contracts for all manual functions or selected addresses/files')]
+[group('compare')]
+semantic-compare *args:
+  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" compare {{args}}
+
+[doc('Summarize the current fingerprint-matched high-p-code call-contract report')]
+[group('compare')]
+semantic-stats:
+  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" stats
+
 [group('compare')]
 inventory:
   uv run python -m tools.reccmp.library_inventory --json-out "{{build_dir}}/library_inventory.json"
