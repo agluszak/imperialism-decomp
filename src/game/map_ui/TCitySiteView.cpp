@@ -38,8 +38,8 @@ void TCitySiteView::DoPostCreate(int arg) {
   // in the disassembly.
   TWorldView::DoPostCreate(arg);
 
-  projectionScale76 = 1;
-  previewSquareRadius78 = 0x40;
+  projectionScale = 1;
+  previewSquareRadius = 0x40;
 
   RECT surfaceBounds = {0, 0, 0x1680, 0x40};
   g_pDisplayMgr->MakeNewGWorld(quickDrawSurface350, 8, surfaceBounds);
@@ -142,7 +142,7 @@ void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int 
 void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   short neighborTiles[6] = {-1, -1, -1, -1, -1, -1};
   bool updateNeighborHighlights = false;
-  short currentTile = static_cast<short>(hoveredTileIndex6c);
+  short currentTile = static_cast<short>(hoveredTileIndex);
 
   if (g_pGlobalMapState->terrainStateTable[currentTile].recruitSearchVisited0e == 0) {
     updateNeighborHighlights = true;
@@ -160,12 +160,12 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
     }
   }
 
-  short previousTile = static_cast<short>(paintedHoverTileIndex6e);
+  short previousTile = static_cast<short>(paintedHoverTileIndex);
   signed char previousMarker = g_pGlobalMapState->terrainStateTable[previousTile].markerSlotIndex10;
   if (previousMarker != -1 && tileMarkers7c[previousMarker].flag != 0) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(previousTile, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(previousTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
@@ -186,7 +186,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(oldNeighbor, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     RECT sourceRect = {projectedX + 0x40, projectedY + 0x40, projectedX + 0x80, projectedY + 0x80};
     RECT destinationRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
@@ -198,7 +198,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
   if (updateNeighborHighlights) {
     short projectedY;
     short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(currentTile, &viewportOrigin60, &projectedY,
+    ProjectTileIndexToWrappedScreenOffsetByScale(currentTile, &viewportOrigin, &projectedY,
                                                  &projectedX, 1);
     RECT currentTileRect = {projectedX, projectedY, projectedX + 0x40, projectedY + 0x40};
     QDFrameRect(&currentTileRect);

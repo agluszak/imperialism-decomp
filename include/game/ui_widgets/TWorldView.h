@@ -10,43 +10,43 @@ class TCivUnit;
 // VTABLE: IMPERIALISM 0x668cb0
 class TWorldView : public TView {
 public:
-  CPoint viewportOrigin60;
-  unsigned short field68;
-  unsigned short field6a;
+  CPoint viewportOrigin;
+  unsigned short hoveredTileCityRecordIndex;
+  unsigned short paintedTileCityRecordIndex;
   // Hovered tile under the current cursor sample and the tile whose hover decoration is
   // currently painted. TWorldView's constructor initializes both to tile zero; the hover
-  // path advances paintedHoverTileIndex6e after replacing the decoration.
-  unsigned short hoveredTileIndex6c;
-  unsigned short paintedHoverTileIndex6e;
-  short hoverRegionBand70;
+  // path advances paintedHoverTileIndex after replacing the decoration.
+  unsigned short hoveredTileIndex;
+  unsigned short paintedHoverTileIndex;
+  short hoverRegionBand;
   // +0x72 active region-band index (1..4) the map cursor is currently rendered for --
   // one coherent field with a single meaning that two handlers cooperatively maintain
   // (an earlier note wrongly read the two accesses as unrelated). The hover handler
   // (HandleCursorHoverSelectionByChildHitTestAndFallback 0x5958b0) writes the hovered
   // band here and reads it to skip a redundant cursor re-render when neither the cell
-  // (hoveredTileIndex6c/paintedHoverTileIndex6e) nor the band changed. The click handler
+  // (hoveredTileIndex/paintedHoverTileIndex) nor the band changed. The click handler
   // (HandleMapClickByInteractionMode 0x5964b0) advances it 1..4 to cycle the tile's
   // action interpretation, which also invalidates the hover dedup so the cursor
   // refreshes on the next mouse-move. Both uses read/write [this+0x72] as one word
   // (verified: same receiver, same offset), and the click's explicit 1..4 wrap fixes
   // the field's domain.
-  short activeRegionBand72;
+  short activeRegionBand;
   // Written by SetMapOverlayModeAndRenderPreview (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner (selects the overlay style:
   // 0 = terrain-frame overlay, nonzero = the alternate palette-index blit).
-  unsigned char overlayFlagByte74;
+  unsigned char alternateOverlayEnabled;
   unsigned char pad75;
-  // projectionScale76: passed as the scale arg to
+  // projectionScale: passed as the scale arg to
   // ForwardProjectTileIndexToWrappedScreenOffsetByScale when projecting a tile to screen
   // space for the map-context overlay preview.
-  unsigned short projectionScale76;
-  // previewSquareRadius78: half-extent the projected preview point is grown by on both axes
+  unsigned short projectionScale;
+  // previewSquareRadius: half-extent the projected preview point is grown by on both axes
   // to build the preview/badge square (RenderMapContextOverlayWithScopedClipAndSurface).
-  unsigned short previewSquareRadius78;
-  // stridedCellRecord7a: strided map-cell record index stashed here before dispatching
+  unsigned short previewSquareRadius;
+  // stridedCellRecordIndex: strided map-cell record index stashed here before dispatching
   // through the owning view's vtable slot 0xd (see the ComputeWrappedMapCellAndRegionBand
   // callers in TWorldView.cpp).
-  unsigned short stridedCellRecord7a;
+  unsigned short stridedCellRecordIndex;
 
   DECLARE_DYNCREATE(TWorldView)
   TWorldView();
