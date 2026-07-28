@@ -5,6 +5,13 @@
 
 extern CString g_cstrCountryNameSettingValue006A4220;
 
+extern POINT g_ptTechItemModalMessage;
+extern POINT g_ptFormattedErrorModalMessage;
+extern POINT g_ptLoungeNationReplacementModalMessage;
+extern POINT g_ptQueryFloaterModalMessage;
+extern POINT g_ptGameSetupModalMessage;
+extern POINT g_ptCivilianOrderModalMessage;
+
 extern char g_szLiteralRb_00698720[];
 
 extern char g_szSaveDirectoryPrefix_00698724[];
