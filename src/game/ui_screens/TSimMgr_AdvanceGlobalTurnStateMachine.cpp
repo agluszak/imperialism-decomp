@@ -28,6 +28,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 #include "game/globals/ui_widgets_globals.h"

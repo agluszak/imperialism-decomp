@@ -24,6 +24,7 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_screens/TZone.h"
 #include "game/globals/global_types.h"
+#include "game/globals/raw_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/map_overlay_geometry.h"

@@ -532,12 +532,6 @@ extern "C" const char g_szUiFailureMessage[];
 // 8000 + nationSlot. GenerateProvinceNames resets all 23 entries before each pass.
 extern "C" short g_anProvinceNameOrdinalByNationSlot_006a5af0[23];
 
-// Assert source-path strings for the UViewMgr TU family.
-extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
-
-// Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).
-extern "C" const char s_SourcePathUTradeViews_0069AA94[];
-
 // ImperialismApp.cpp — registry key/section literals.
 extern const char* const g_pRegistryCompanyKey_0063E038;
 
@@ -647,10 +641,6 @@ extern const double g_BullyWeightLow_00654910;
 extern const double g_BullyWeightHigh_00654918;
 
 extern const float g_UnreferencedConstant_006545d4;
-
-// TSimMgr_AdvanceGlobalTurnStateMachine.cpp — debug tag literal passed to
-// TSimMgr::RebuildMapContextAndGlobalMapState.
-extern const char s_Chunk_00698C0C[];
 
 extern "C" char g_bMultiplayerScenarioSetupActive;
 
