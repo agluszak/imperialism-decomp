@@ -108,17 +108,6 @@ extern char g_szUiCloseParen_006973C8[];
 
 extern POINT g_ptCivilianOrderModalMessage; // @ 0x6a2d40
 
-// Zone status-code PRNG seed (0x6a5aec): reseeded from the scenario tag string hash at
-// the start of RegenerateAllMapActionContextStatusCodes, then advanced by the LCG in
-// GenerateZoneStatusCodeIfUnset (x = x*0x15a4e35 + 1).
-extern unsigned int g_zoneStatusCodePrngSeed_006a5aec;
-
-// Seed viewport offsets copied into TWorldView::viewportOrigin.x/Y by the TOceanDialog
-// ctor; the only known writer (0x56a3b0) zeroes both.
-extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
-
-extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
-
 // Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
 extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
 
