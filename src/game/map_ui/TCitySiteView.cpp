@@ -8,7 +8,7 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"

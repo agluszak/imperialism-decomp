@@ -29,7 +29,7 @@
 #include "game/tactical_ui/TTask.h"
 #include "game/tactical_ui/TTaskList.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/military/TUnit.h"
 #include "game/city/TUnitOrder.h"
 #include "game/ui_core/TViewMgr.h"

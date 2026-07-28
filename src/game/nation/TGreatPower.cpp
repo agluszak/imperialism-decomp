@@ -56,7 +56,7 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/core/TStream.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/military/TUnit.h"
 #include "game/ui_screens/turn_flow_cooldown.h"
 #include "game/ui_core/TViewMgr.h"

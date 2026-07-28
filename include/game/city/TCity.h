@@ -8,7 +8,7 @@
 #include "game/city/TPopulationMgr.h"
 #include "game/city/TProductionOrder.h"
 #include "game/resource_domain_types.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 
 class TSortedList;
 class TTaskList;

@@ -44,7 +44,7 @@
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/gfx/ui_invalidation_guard.h"
 

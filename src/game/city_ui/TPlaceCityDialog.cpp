@@ -8,7 +8,7 @@
 #include "game/ui_core/TPicture.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TStaticText.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
