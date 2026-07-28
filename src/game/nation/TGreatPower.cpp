@@ -74,6 +74,54 @@ static const int kDiplomacyTrackedSlotCount = 0x11;
 
 static const float kOne = 1.0f;
 
+static __inline int SumMilitaryUnitPowerWeightsForScore(TSortedList* unitList) {
+  int powerSum = 0;
+  CIterator unitIter(unitList);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    powerSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
+  }
+  return powerSum;
+}
+
+static __inline float SumAlliedArmyScoreFactorsForScore(int targetNation) {
+  float allySum = 0.0f;
+  int allyIndex = 0;
+  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
+    do {
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
+      allySum += g_apNationStates[allyNation]->GetMilitaryPower();
+      ++allyIndex;
+    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
+  }
+  return allySum;
+}
+
+static __inline float SumAlliedNavyScoreFactorsForScore(int targetNation) {
+  float allySum = 0.0f;
+  int allyIndex = 0;
+  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
+    do {
+      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
+      allySum += g_apNationStates[allyNation]->GetTotalNavalForce();
+      ++allyIndex;
+    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
+  }
+  return allySum;
+}
+
+static __inline short* GetRelationStandingRowForScore(short nationSlot) {
+  return &g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount];
+}
+
+static __inline int GetClampedQuarterYearTermForScore() {
+  int yearTerm = static_cast<short>(g_pSimMgr->economicTurn / 4);
+  if (yearTerm >= 0x3c) {
+    yearTerm = 0x3c;
+  }
+  return yearTerm;
+}
+
 // Packed entry layout shared by the diplomacyTrackedSlots queues
 // (slots 0x6c/0x6d/0x6e/0x6f/0x70).
 struct TrackedSlotEntryPacket {
@@ -2565,7 +2613,7 @@ int TGreatPower::GetReinforcementPotential(void) {
   if (static_cast<int>(metricCap) <= budget) {
     budget = metricCap;
   }
-  int armyPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
   if (armyPower / 2 <= budget) {
     budget = armyPower / 2;
   }
@@ -2574,7 +2622,7 @@ int TGreatPower::GetReinforcementPotential(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0890
 float TGreatPower::GetMilitaryPower(void) {
-  int armyPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  int armyPower = SumMilitaryUnitPowerWeightsForScore(this->militaryUnitList44);
   float armyPowerF = static_cast<float>(armyPower);
   float commitBudgetF = static_cast<float>(this->GetReinforcementPotential());
   int production = this->GetBuildingCapacity(3);
@@ -2617,7 +2665,7 @@ float TGreatPower::GetTotalNavalForce(void) {
 float TGreatPower::ComputeArmyScoreRatioVsNation(int targetNation) {
   float selfScore = this->GetMilitaryPower();
   float targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
-  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  float allySum = SumAlliedArmyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
     return selfScore;
@@ -2629,9 +2677,9 @@ float TGreatPower::ComputeArmyScoreRatioVsNation(int targetNation) {
 float TGreatPower::ComputeArmyScoreStandingRatioVsNation(int targetNation) {
   float selfScore = this->GetMilitaryPower();
   float targetScore = g_apNationStates[targetNation]->GetMilitaryPower();
-  float allySum = SumAlliedArmyScoreFactors(targetNation);
-  int yearTerm = GetClampedQuarterYearTerm();
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedArmyScoreFactorsForScore(targetNation);
+  int yearTerm = GetClampedQuarterYearTermForScore();
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       targetScore;
@@ -2647,7 +2695,7 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNation(int targetNation) {
 float TGreatPower::ComputeNavyScoreRatioVsNation(int targetNation) {
   float selfScore = this->GetTotalNavalForce();
   float targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
-  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  float allySum = SumAlliedNavyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
     return selfScore;
@@ -2659,9 +2707,9 @@ float TGreatPower::ComputeNavyScoreRatioVsNation(int targetNation) {
 float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
   float selfScore = this->GetTotalNavalForce();
   float targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
-  float allySum = SumAlliedNavyScoreFactors(targetNation);
-  int yearTerm = GetClampedQuarterYearTerm();
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedNavyScoreFactorsForScore(targetNation);
+  int yearTerm = GetClampedQuarterYearTermForScore();
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       targetScore;
@@ -2676,8 +2724,8 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
 // FUNCTION: IMPERIALISM 0x004e0fe0
 float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetMilitaryPower();
-  int secondaryPower =
-      SumMilitaryUnitPowerWeights(g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
+  int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
@@ -2686,7 +2734,7 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
   } else {
     targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
   }
-  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  float allySum = SumAlliedArmyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
     return combinedScore;
@@ -2704,8 +2752,8 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
   } else {
     targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
   }
-  float allySum = SumAlliedArmyScoreFactors(targetNation);
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedArmyScoreFactorsForScore(targetNation);
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       targetScore;
@@ -2719,8 +2767,8 @@ float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, i
 // FUNCTION: IMPERIALISM 0x004e1300
 float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
   float selfScore = this->GetTotalNavalForce();
-  int secondaryPower =
-      SumMilitaryUnitPowerWeights(g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
+  int secondaryPower = SumMilitaryUnitPowerWeightsForScore(
+      g_apSecondaryNationStateSlots[secondarySlot]->militaryUnitList44);
   float combinedScore = static_cast<float>(secondaryPower) + selfScore;
   char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
   float targetScore;
@@ -2729,7 +2777,7 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
   } else {
     targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
   }
-  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  float allySum = SumAlliedNavyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
     return combinedScore;
@@ -2747,8 +2795,8 @@ float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, i
   } else {
     targetScore = g_apNationStates[targetNation]->GetTotalNavalForce();
   }
-  float allySum = SumAlliedNavyScoreFactors(targetNation);
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedNavyScoreFactorsForScore(targetNation);
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       targetScore;
@@ -2770,7 +2818,7 @@ float TGreatPower::ComputeArmyScoreRatioForNationPair(int nationA, int nationB, 
   float selfScore = this->GetMilitaryPower();
   float opponentScore = g_apNationStates[opponentNation]->GetMilitaryPower();
   float partnerScore = g_apNationStates[partnerNation]->GetMilitaryPower();
-  float allySum = SumAlliedArmyScoreFactors(opponentNation);
+  float allySum = SumAlliedArmyScoreFactorsForScore(opponentNation);
   float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   float numerator;
   if (swapRoles == 0) {
@@ -2796,8 +2844,8 @@ float TGreatPower::ComputeArmyScoreStandingRatioForNationPair(int nationA, int n
   float selfScore = this->GetMilitaryPower();
   float opponentScore = g_apNationStates[opponentNation]->GetMilitaryPower();
   float partnerScore = g_apNationStates[partnerNation]->GetMilitaryPower();
-  float allySum = SumAlliedArmyScoreFactors(opponentNation);
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedArmyScoreFactorsForScore(opponentNation);
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       opponentScore;
@@ -2828,7 +2876,7 @@ float TGreatPower::ComputeNavyScoreRatioForNationPair(int nationA, int nationB, 
   float selfScore = this->GetTotalNavalForce();
   float opponentScore = g_apNationStates[opponentNation]->GetTotalNavalForce();
   float partnerScore = g_apNationStates[partnerNation]->GetTotalNavalForce();
-  float allySum = SumAlliedNavyScoreFactors(opponentNation);
+  float allySum = SumAlliedNavyScoreFactorsForScore(opponentNation);
   float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   float numerator;
   if (swapRoles == 0) {
@@ -2854,8 +2902,8 @@ float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int n
   float selfScore = this->GetTotalNavalForce();
   float opponentScore = g_apNationStates[opponentNation]->GetTotalNavalForce();
   float partnerScore = g_apNationStates[partnerNation]->GetTotalNavalForce();
-  float allySum = SumAlliedNavyScoreFactors(opponentNation);
-  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float allySum = SumAlliedNavyScoreFactorsForScore(opponentNation);
+  short* standingRow = GetRelationStandingRowForScore(this->nationSlot);
   float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
                        allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
                       opponentScore;

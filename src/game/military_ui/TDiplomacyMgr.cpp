@@ -326,8 +326,9 @@ void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot na
 void TDiplomacyMgr::Free() {
   if (pendingWarTransitionQueue != 0) {
     pendingWarTransitionQueue->ReleasePtrList();
-    pendingWarTransitionQueue = 0;
   }
+  pendingWarTransitionQueue = 0;
+  delete this;
 }
 
 // Restores the diplomacy state from a save. The stream is big-endian, so every short

@@ -1333,8 +1333,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
   bool hasOrderType[9];
   memset(hasOrderType, 0, sizeof(hasOrderType));
   TSortedList* trackedOrders = ownerContextAt04->trackedObjectList;
-  int orderCount = trackedOrders->GetCount();
-  for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
+  for (int ordinal = 1; ordinal <= trackedOrders->GetCount(); ++ordinal) {
     TUnit* order = static_cast<TUnit*>(trackedOrders->GetEntryByOrdinal(ordinal));
     hasOrderType[order->orderType] = true;
   }

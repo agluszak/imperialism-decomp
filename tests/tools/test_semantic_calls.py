@@ -104,6 +104,9 @@ class SemanticCallTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "mismatch")
         self.assertEqual(result["reason"], "call_count")
+        self.assertEqual(result["call_count_status"], "mismatch")
+        self.assertEqual(result["missing"], [{"count": 1, "call": call}])
+        self.assertEqual(result["extra"], [])
 
     def test_changed_argument_provenance_is_mismatch(self):
         left = {
@@ -121,6 +124,7 @@ class SemanticCallTests(unittest.TestCase):
         )
         self.assertEqual(result["status"], "mismatch")
         self.assertEqual(result["reason"], "call_contract")
+        self.assertEqual(result["call_count_status"], "pass")
 
     def test_unresolved_call_never_passes(self):
         result = compare_extracted_calls(

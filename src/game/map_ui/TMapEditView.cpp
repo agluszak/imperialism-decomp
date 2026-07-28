@@ -139,7 +139,9 @@ void TMapEditView::InvokeDialogHooks1D8ThenE4(int tileIndex, int dispatchContext
   }
 
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2);
-  TNumberText* provinceNumber = ResolveProvinceNumberControl(ownerContext);
+  TNumberText* provinceNumber =
+      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+  provinceNumber->AssertValid();
   provinceNumber->SetControlValue(provinceId, 1);
   editorActionValue36c = provinceId;
 }
@@ -149,8 +151,10 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
   (void)dispatchContext;
   short provinceId =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].cityRecordIndex;
-  int nationTag =
-      ResolveProvinceNumberControl(ownerContext)->UpdateControlCachedIntFromWindowText();
+  TNumberText* provinceNumber =
+      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+  provinceNumber->AssertValid();
+  int nationTag = provinceNumber->UpdateControlCachedIntFromWindowText();
   if (nationTag < 0 || nationTag > 0x17) {
     PlayDefaultMessageBeep();
     return;
@@ -395,22 +399,26 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051deb0
 void TMapEditView::DoKeyEvent(TToolboxEvent* event) {
-  int delta;
   switch (event->commandCode) {
   case 0x2c:
-  case 0x3c:
-    delta = -1;
-    break;
+  case 0x3c: {
+    g_pSfxPlaybackSystem->PlaySoundEffect(7000);
+    TNumberText* provinceNumber =
+        static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+    provinceNumber->AssertValid();
+    provinceNumber->SetControlValue(provinceNumber->UpdateControlCachedIntFromWindowText() - 1, 1);
+    return;
+  }
   case 0x2e:
-  case 0x3e:
-    delta = 1;
-    break;
+  case 0x3e: {
+    g_pSfxPlaybackSystem->PlaySoundEffect(7000);
+    TNumberText* provinceNumber =
+        static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+    provinceNumber->AssertValid();
+    provinceNumber->SetControlValue(provinceNumber->UpdateControlCachedIntFromWindowText() + 1, 1);
+    return;
+  }
   default:
     return;
   }
-
-  g_pSfxPlaybackSystem->PlaySoundEffect(7000);
-  TNumberText* provinceNumber = ResolveProvinceNumberControl(ownerContext);
-  provinceNumber->SetControlValue(provinceNumber->UpdateControlCachedIntFromWindowText() + delta,
-                                  1);
 }

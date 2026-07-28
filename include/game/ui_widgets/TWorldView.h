@@ -46,7 +46,7 @@ public:
   // stridedCellRecordIndex: strided map-cell record index stashed here before dispatching
   // through the owning view's vtable slot 0xd (see the ComputeWrappedMapCellAndRegionBand
   // callers in TWorldView.cpp).
-  unsigned short stridedCellRecordIndex;
+  short stridedCellRecordIndex;
 
   DECLARE_DYNCREATE(TWorldView)
   TWorldView();

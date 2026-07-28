@@ -2985,8 +2985,7 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->ownerNationSlot18;
   TGreatPower* nation = g_apNationStates[nationTag];
   TSortedList* townMarkerList = nation->townMarkerList;
-  int townCount = townMarkerList->GetCount();
-  for (int ordinal = 1; ordinal <= townCount; ++ordinal) {
+  for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
     if (town->enabledFlag == 0) {
       continue;

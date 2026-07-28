@@ -3,11 +3,14 @@
 
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_core/TApplication.h"
+#include "game/net/TMultiplayerMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0054aff0
-void TPoseMessageDialog::DoIt() {}
+void TPoseMessageDialog::DoIt() {
+  g_pGameFlowState->RefreshPoseMessageDialogNationSelectionControls(kickedByNationSlot18);
+}
 
 // SYNTHETIC: IMPERIALISM 0x0054b010
 // TPoseMessageDialog::`scalar deleting destructor'

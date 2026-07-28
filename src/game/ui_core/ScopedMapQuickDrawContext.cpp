@@ -52,7 +52,7 @@ CDib* GetActiveQuickDrawSurfaceDib() {
 // FUNCTION: IMPERIALISM 0x004946b0
 void ReleaseScopedMapQuickDrawDcHandle(TView* view, CDC* existingDc) {
   if (existingDc == 0) {
-    HDC boundDc = g_pScopedMapQuickDrawDcHandleObject->m_hAttribDC;
+    HDC boundDc = g_pScopedMapQuickDrawDcHandleObject->m_hDC;
     ReleaseDC(view->nativeWindow50->m_hWnd, boundDc);
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;

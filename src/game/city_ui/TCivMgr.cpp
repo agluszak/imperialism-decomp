@@ -63,8 +63,7 @@ void TCivMgr::ICivMgr() {}
 // FUNCTION: IMPERIALISM 0x004d20e0
 void TCivMgr::ClearCivilianSelectionHighlightsForNation(short nationId) {
   TSortedList* civilianList = g_apNationStates[nationId]->trackedObjectList;
-  int civilianCount = civilianList->GetCount();
-  for (short ordinal = 1; ordinal <= civilianCount; ++ordinal) {
+  for (short ordinal = 1; ordinal <= civilianList->GetCount(); ++ordinal) {
     TCivUnit* civilian = static_cast<TCivUnit*>(civilianList->GetEntryByOrdinal(ordinal));
     if (civilian->unitOrder == static_cast<UnitOrder>(3)) {
       civilian->SetOrders(kUnitOrderIdle, -1);
