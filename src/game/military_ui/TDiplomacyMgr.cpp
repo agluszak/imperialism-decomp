@@ -443,25 +443,21 @@ bool TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNati
 
 // FUNCTION: IMPERIALISM 0x004ef600
 bool TDiplomacyMgr::HasAnyWarRelationForNation(int sourceNationSlot) {
-  int targetNationSlot = 0;
-  do {
+  for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
     if (IsNationPairAtWar(sourceNationSlot, targetNationSlot) != 0) {
       return true;
     }
-    targetNationSlot++;
-  } while (targetNationSlot < 0x17);
+  }
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef650
 bool TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot) {
-  int targetNationSlot = 0;
-  do {
+  for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
     if (IsNationPairRelationTurnStampOutOfDate(sourceNationSlot, targetNationSlot) != 0) {
       return true;
     }
-    targetNationSlot++;
-  } while (targetNationSlot < 0x17);
+  }
   return false;
 }
 

@@ -444,11 +444,13 @@ void TTradeMgr::CalculateNewItemPrice(short item) {
     double weighted = row->adjustedNumOffers;
     double diff = (double)(int)row->numRequests - weighted;
     int pw = (int)row->price;
-    int a = (int)((double)pw + diff);
-    int b = (int)((1.0 + diff * 0.01) * (double)pw);
     if (diff < 0.0) {
+      int a = (int)((double)pw + diff);
+      int b = (int)((1.0 + diff * 0.01) * (double)pw);
       result = (a <= b) ? a : b;
     } else {
+      int a = (int)((double)pw + diff);
+      int b = (int)((1.0 + diff * 0.01) * (double)pw);
       result = (b <= a) ? a : b;
     }
     if ((double)result < (double)(int)row->basePrice * 0.1) {

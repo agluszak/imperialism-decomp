@@ -1,5 +1,7 @@
 #include "game/ImperialismCommandLineInfo.h"
 
+#include <mbstring.h>
+
 #include "game/core/CString.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
@@ -9,10 +11,13 @@ void ImperialismCommandLineInfo::ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bL
   CString token(pszParam);
   token.MakeUpper();
   LPCSTR upper = token;
-  if (bFlag && token.Compare(g_szCmdSwitchLangQuit_00694254) == 0) {
+  if (bFlag &&
+      _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(token)),
+              reinterpret_cast<const unsigned char*>(g_szCmdSwitchLangQuit_00694254)) == 0) {
     m_bQuitAfterLanguageScan2c = 1;
     m_bShowSetupDialog30 = 1;
-  } else if (bFlag && token.Compare(g_szLiteralL_00694250) == 0) {
+  } else if (bFlag && _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(token)),
+                              reinterpret_cast<const unsigned char*>(g_szLiteralL_00694250)) == 0) {
     m_bShowSetupDialog30 = 1;
   } else if (bFlag && upper[0] == 'L') {
     *m_pLanguageName24 = pszParam + 1; // language name keeps its original case

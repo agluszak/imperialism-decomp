@@ -1,3 +1,5 @@
+#include <mbstring.h>
+
 #include "game/navy/TShip.h"
 #include "game/navy_order.h"
 
@@ -31,9 +33,12 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
   shipNode->nation = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
-    g_apTerrainTypeDescriptorTable[resourceType]->GenerateEthnicName(&shipNode->name);
+    g_apTerrainTypeDescriptorTable[nationSlot]->GenerateEthnicName(&shipNode->name);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
-      if (existing != shipNode && existing->name.Compare(shipNode->name) == 0) {
+      if (existing != shipNode &&
+          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(shipNode->name))) ==
+              0) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
         break;
       }
