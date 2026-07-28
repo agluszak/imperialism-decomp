@@ -207,28 +207,6 @@ extern char g_szEmptyString[];
 extern int g_adwEngineerRailBuildCostByTerrainType[kStrategicTerrainCount];
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
-// TMinor.cpp — ApplyIndexedResourceDeltaAndAdjustNationTotals scale constant.
-extern float g_ApplyIndexedResourceDeltaScale_00653728;
-
-// TMission.cpp — default mission score constant.
-extern const float g_MissionDefaultScore_0065a468;
-
-extern const double g_MissionScoreOneConstant_0065a470;
-
-extern const double g_MinisterWeightHalf_006548E8;
-
-extern const double g_MinisterWeightOne_006548F0;
-
-extern const double g_BismarckWeightHigh_006548F8;
-
-extern const double g_BismarckWeightLow_00654900;
-
-extern const float g_DefenderMinisterWeight_00654908;
-
-extern const double g_BullyWeightLow_00654910;
-
-extern const double g_BullyWeightHigh_00654918;
-
 extern const float g_UnreferencedConstant_006545d4;
 
 extern "C" char g_bMultiplayerScenarioSetupActive;
