@@ -188,7 +188,7 @@ private:
     const short activeNation = g_pSimMgr->GetActiveNationId();
     CPoint point;
     // A fresh major-to-major relationship cannot build a consulate: the original
-    // validation requires relationSideEffectMatrix1402 == 0, which is the initial
+    // validation requires relationSideEffectMatrix == 0, which is the initial
     // major-to-minor state. Pick a real minor nation so the primary treaty action is
     // expected to commit rather than deliberately opening the rejection notice.
     for (short nation = 7; nation < 0x17; ++nation) {

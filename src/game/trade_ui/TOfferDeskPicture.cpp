@@ -512,8 +512,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
       scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                              static_cast<LPCSTR>(strTargetNation));
     } else {
-      short dominant = g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
-          targetNationSlot92);
+      short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(targetNationSlot92);
       {
         strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }

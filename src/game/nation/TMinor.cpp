@@ -900,13 +900,12 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         }
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
             this->nationSlot, majorNationSlot, kDiplomacyRelationshipWar, 0);
-        g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, majorNationSlot,
-                                                             0x31);
+        g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, majorNationSlot, 0x31);
       }
     }
 
     for (int minorSlot = 7; minorSlot < kNationSlotCount; ++minorSlot) {
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, minorSlot, 0x6e);
+      g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, minorSlot, 0x6e);
     }
     return;
   }
@@ -926,7 +925,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
         0) {
       g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
           this->nationSlot, resetNationSlot, kDiplomacyRelationshipPeace);
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, resetNationSlot, 0x5a);
+      g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, resetNationSlot, 0x5a);
     }
   }
 

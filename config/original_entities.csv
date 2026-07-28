@@ -17,7 +17,7 @@ address|name|symbol|size|type|prototype|provenance
 412d70|DestroyImperialismAppSingletonGlobal||10|function|undefined DestroyImperialismAppSingletonGlobal()|
 412d90|ShowOutOfMemoryErrorNewHandler||23|function|int __cdecl ShowOutOfMemoryErrorNewHandler(size_t)|
 412dc0|InitializeImperialismApplicationInstance||1161|function|undefined InitializeImperialismApplicationInstance()|
-413250|TDiplomacyMgr::IsNationSlotEligibleForEventProcessing||233|function|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()|
+413250|TDiplomacyMgr::GetFavoriteTradePartner||233|function|undefined GetFavoriteTradePartner()|
 413380|CObject::operator delete|??3CObject@@SGXPAX@Z|16|function|void __stdcall operator delete(void * p)|
 4133a0|OrphanCallChain_C1_I08_004133a0||20|function|undefined OrphanCallChain_C1_I08_004133a0()|
 4133d0|ImperialismCommandLineInfo::ParseParam||299|function|void __thiscall ParseParam(char const *,int,int)|
@@ -2823,12 +2823,12 @@ address|name|symbol|size|type|prototype|provenance
 4ef6d0|IsNationSlotInPrimaryGroupB||24|function|char IsNationSlotInPrimaryGroupB(int nationSlot, int unusedArg)|
 4ef700|TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode||1000|function|undefined ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode()|
 4efc30|TDiplomacyMgr::HasAllianceGuardSlot60||90|function|undefined HasAsymmetricWarRelationForPrimaryNation()|
-4efcb0|TDiplomacyMgr::SetStandingScoreSlot28||302|function|undefined SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors()|
-4efe30|TDiplomacyMgr::CopyDiplomacyStandingMatrixRowAndColumnSlot2c||95|function|undefined CopyDiplomacyStandingMatrixRowAndColumn()|
+4efcb0|TDiplomacyMgr::SetRelationship||302|function|undefined SetNationPairDiplomacyStandingScoreClampedAndNotifyMinors()|
+4efe30|TDiplomacyMgr::SetRelationshipsToMatch||95|function|undefined CopyDiplomacyStandingMatrixRowAndColumn()|
 4efeb0|TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation||97|function|undefined ApplyRelationCode4AndQueueEvent18ForTargetNation()|
-4eff40|TDiplomacyMgr::PropagateRelationSideEffectSlot80||517|function|undefined AdjustNationPairDiplomacyStandingAndPropagate()|
+4eff40|TDiplomacyMgr::InflictWarPenalty||517|function|undefined AdjustNationPairDiplomacyStandingAndPropagate()|
 4f01e0|TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn||739|function|undefined ApplyDiplomacyInterNationStatesForTurn()|
-4f0590|SyncNationField790FromLocalizationStateId||23|function|undefined SyncNationField790FromLocalizationStateId()|
+4f0590|TDiplomacyMgr::SetLastDiploEffort||23|function|undefined SetLastDiploEffort()|
 4f05c0|TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows||963|function|undefined SelectPriorityNationIndicesForMinorCapabilityRows()|
 4f09c0|QueueNationPairWarTransition||58|function|undefined QueueNationPairWarTransition()|
 4f0a10|ProcessQueuedWarTransitions||722|function|undefined ProcessQueuedWarTransitions()|
@@ -2846,12 +2846,12 @@ address|name|symbol|size|type|prototype|provenance
 4f1b40|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal||25|function|undefined SetNationPairDiplomacyRelationWithFinalFlag()|
 4f1b70|TDiplomacyMgr::SetNationPairDiplomacyRelationCode||718|function|undefined SetNationPairDiplomacyRelationAndApplySideEffects()|
 4f1f20|TControl::LookupOrderCompatibilityMatrixValue||30|function|short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)|
-4f1f50|IsPrimaryNationSlotIndex||12|function|undefined IsPrimaryNationSlotIndex()|
-4f1f70|TDiplomacyMgr::BuildRelationshipListSlot88||161|function|undefined CollectMinorNationStandingEntriesForMajorNation()|
+4f1f50|TDiplomacyMgr::IsGreatPower||12|function|undefined IsGreatPower()|
+4f1f70|TDiplomacyMgr::BuildRelationshipList||161|function|undefined CollectMinorNationStandingEntriesForMajorNation()|
 4f2050|TDiplomacyMgr::GetNumAllies||44|function|int TDiplomacyMgr::GetNumAllies(int sourceNationSlot)|
-4f2090|TDiplomacyMgr::GetNthAlliedMajorNationSlot90||65|function|undefined GetNthAlliedMajorNationSlotForNation()|
-4f2100|TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98||182|function|undefined SelectNationSlotFromCollectedStandingEntries()|
-4f21f0|TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94||258|function|undefined SelectDiplomacyTargetNationFromCandidateSet()|
+4f2090|TDiplomacyMgr::GetAllyNumber||65|function|undefined GetNthAlliedMajorNationSlotForNation()|
+4f2100|TDiplomacyMgr::GetFavorite||182|function|undefined SelectNationSlotFromCollectedStandingEntries()|
+4f21f0|TDiplomacyMgr::GetFavorite||258|function|undefined SelectDiplomacyTargetNationFromCandidateSet()|
 4f2430|IltTarget_004f2430||74|function|undefined IltTarget_004f2430()|
 4f24a0|RebuildMinorNationDispositionLookupTables||553|function|undefined RebuildMinorNationDispositionLookupTables()|
 4f2760|BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy||109|function|undefined BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy()|

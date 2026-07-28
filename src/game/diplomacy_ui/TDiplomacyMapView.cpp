@@ -343,8 +343,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   }
 
   for (int tile = 0; tile < 0x180; ++tile) {
-    tileHasOwnerFlags52C[tile] =
-        g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[tile] != -1;
+    tileHasOwnerFlags52C[tile] = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[tile] != -1;
     short colX2;
     unsigned short row;
     SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex04,
@@ -556,7 +555,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
     }
 
     if (interactionModeAt94 == 4) {
-      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(frameRegionSelectorAt98)) {
+      if (g_pDiplomacyTurnStateManager->IsGreatPower(frameRegionSelectorAt98)) {
         short need =
             g_apNationStates[frameRegionSelectorAt98]->diplomacyPolicyByNation[terrainIndex];
         if (need == 0x133) {
@@ -590,7 +589,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
         }
       }
     } else { // interactionModeAt94 == 1
-      if (g_pDiplomacyTurnStateManager->IsMajorNationSlot(frameRegionSelectorAt98)) {
+      if (g_pDiplomacyTurnStateManager->IsGreatPower(frameRegionSelectorAt98)) {
         short need =
             g_apNationStates[frameRegionSelectorAt98]->diplomacyGrantByNation[terrainIndex];
         if (need == 1000) {
@@ -750,7 +749,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
                          ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(
                              activeNationC2, g_awDiplomacyGrantValueTable[selectedGrantRowC0]);
       if (!grantUpdated) {
-        g_pDiplomacyTurnStateManager->proposalArrayMode18d8 = 0x17;
+        g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
         ShowDiplomacyActionRejectedNotice();
         action = kDipActionNone;
         goto finish_one_time_grant;
@@ -788,7 +787,7 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
           g_apNationStates[selectedTerrainIndexAt90]
               ->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(activeNationC2, grantValue);
       if (!grantUpdated) {
-        g_pDiplomacyTurnStateManager->proposalArrayMode18d8 = 0x17;
+        g_pDiplomacyTurnStateManager->proposalArrayMode = 0x17;
         ShowDiplomacyActionRejectedNotice();
         action = kDipActionNone;
         goto finish_recurring_grant;
@@ -829,8 +828,8 @@ void TDiplomacyMapView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
     } else {
       g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(activeNationC2, 100);
       for (int policyIndex = 0; policyIndex < 6; ++policyIndex) {
-        if (g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
-                activeNationC2) == selectedTerrainIndexAt90) {
+        if (g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(activeNationC2) ==
+            selectedTerrainIndexAt90) {
           break;
         }
         g_apNationStates[selectedTerrainIndexAt90]->SetTradePolicyTo(
@@ -1560,8 +1559,8 @@ void TDiplomacyMapView::DrawVoteNuggets() {
   short selectedTier = visibleVoteTier528;
   int policyIndex = 0;
   do {
-    short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[policyIndex];
-    int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304[policyIndex];
+    short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix[policyIndex];
+    int iconCode = g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix[policyIndex];
     if (tileHasOwnerFlags52C[policyIndex] && iconCode != -1 && tierValue <= selectedTier) {
       RECT* iconRect = &tileMarkerRects6AC[policyIndex];
       short iconX = g_pGlobalMapState->GetMapImprovementTierBucketOffset(iconCode);
@@ -1616,11 +1615,11 @@ void TDiplomacyMapView::DrawVoteNuggets() {
 }
 
 // Presents the "diplomacy action rejected" modal: resolves the rejection-reason string for the
-// current proposal mode (GetString group 0x2754, index proposalArrayMode18d8 - 1) and shows it.
+// current proposal mode (GetString group 0x2754, index proposalArrayMode - 1) and shows it.
 // FUNCTION: IMPERIALISM 0x004f7400
 void ShowDiplomacyActionRejectedNotice() {
   CString message;
-  g_pSimMgr->GetString(0x2754, g_pDiplomacyTurnStateManager->proposalArrayMode18d8 - 1, &message);
+  g_pSimMgr->GetString(0x2754, g_pDiplomacyTurnStateManager->proposalArrayMode - 1, &message);
   g_pUiRuntimeContext->ModalMessage(3, CString(g_szEmptyString), message,
                                     g_ptDiplomacyNoticeModalMessage, 0, 0);
 }

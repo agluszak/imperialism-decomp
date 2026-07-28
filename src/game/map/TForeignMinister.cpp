@@ -229,8 +229,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
       relationshipList->recordSize14 = 4;
     }
     if (relationshipList != 0) {
-      g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 1,
-                                                                relationshipList);
+      g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 1, relationshipList);
       short* nationSlotPtr = static_cast<short*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
       g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource10, owner->nationSlot);
@@ -447,7 +446,7 @@ void TForeignMinister::DoDevelopmentGrants() {
 
   TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
   relationshipList->ISortedByRelationshipList();
-  g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0, relationshipList);
+  g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 0, relationshipList);
 
   short entryIndex = static_cast<short>(relationshipList->GetSize());
   while (entryIndex >= 1 && availableBudget > 1000) {
@@ -560,8 +559,8 @@ void TForeignMinister::DoProposeTreaties() {
   float alliedNavyStrength = 0.0f;
   int allianceCount = g_pDiplomacyTurnStateManager->GetNumAllies(ownerContextAt04->nationSlot);
   for (int allianceIndex = 0; allianceIndex < allianceCount; ++allianceIndex) {
-    int allyNation = g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(
-        allianceIndex, ownerContextAt04->nationSlot);
+    int allyNation =
+        g_pDiplomacyTurnStateManager->GetAllyNumber(allianceIndex, ownerContextAt04->nationSlot);
     alliedArmyStrength += g_apNationStates[allyNation]->GetMilitaryPower();
     alliedNavyStrength += g_apNationStates[allyNation]->GetTotalNavalForce();
   }
@@ -592,8 +591,8 @@ void TForeignMinister::DoProposeTreaties() {
     int selectedNation = -1;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();
-    g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(ownerContextAt04->nationSlot, 1,
-                                                              relationshipList);
+    g_pDiplomacyTurnStateManager->BuildRelationshipList(ownerContextAt04->nationSlot, 1,
+                                                        relationshipList);
     for (int entryIndex = relationshipList->GetSize(); entryIndex >= 1 && selectedNation == -1;
          --entryIndex) {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
@@ -722,15 +721,12 @@ void TForeignMinister::SetEmpirePolicies() {
     bool keepSearching = true;
     TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
     relationshipList->ISortedByRelationshipList();
-    g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0,
-                                                              relationshipList);
+    g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 0, relationshipList);
     short entryIndex = static_cast<short>(relationshipList->GetSize());
     while (entryIndex >= 1 && keepSearching) {
       RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
           relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
-      int selectedMajor =
-          g_pDiplomacyTurnStateManager->SelectBestMajorNationForMinorByStandingAndNeed(
-              entry->nationSlot);
+      int selectedMajor = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(entry->nationSlot);
       if (selectedMajor != owner->nationSlot && entry->standingScore > 0x31 &&
           owner->needLevelByNation[entry->nationSlot] != 300) {
         owner->DecrementNeedLevelByNationStep(entry->nationSlot);
@@ -754,8 +750,7 @@ void TForeignMinister::SetEmpirePolicies() {
       int selectedMinor = -1;
       TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
       relationshipList->ISortedByRelationshipList();
-      g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 0,
-                                                                relationshipList);
+      g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 0, relationshipList);
       int entryIndex = relationshipList->GetSize();
       while (entryIndex > 0 && selectedMinor == -1) {
         RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(

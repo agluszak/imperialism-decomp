@@ -95,18 +95,18 @@ void TNewspaperView::StuffValues(int pageNation) {
     }
     case 2:
       g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-      dateText.Format(g_szDecimalFormat,
-                      g_pDiplomacyTurnStateManager
-                          ->comparativePowerRows1824[g_pSimMgr->GetActiveNationId()][3]);
+      dateText.Format(
+          g_szDecimalFormat,
+          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetActiveNationId()][3]);
       g_pSimMgr->GetString(0x275e, 2, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
                              static_cast<LPCSTR>(dateText));
       break;
     case 3:
       g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
-      dateText.Format(g_szDecimalFormat,
-                      g_pDiplomacyTurnStateManager
-                          ->comparativePowerRows1824[g_pSimMgr->GetActiveNationId()][0]);
+      dateText.Format(
+          g_szDecimalFormat,
+          g_pDiplomacyTurnStateManager->comparativePowerRows[g_pSimMgr->GetActiveNationId()][0]);
       g_pSimMgr->GetString(0x275e, 3, &formatText);
       scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
                              static_cast<LPCSTR>(dateText));

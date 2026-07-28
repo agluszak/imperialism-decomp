@@ -356,8 +356,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0xe: {
     turnStateCode = 0x10;
     if (g_pDiplomacyTurnStateManager != nullptr &&
-        g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e != -1) {
-      const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e;
+        g_pDiplomacyTurnStateManager->lastProcessedNationSlot != -1) {
+      const short lastProcessed = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
       turnStateCode = static_cast<int>(lastProcessed != activeNationSlot) + 0x16;
     }
     RunQuarterGateCheckAndMaybeRequeue(this);
@@ -651,7 +651,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     g_apNationStates[activeNationSlot]->SetDiplomacyPolicies();
     g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
                                            activeNationSlot);
-    g_pDiplomacyTurnStateManager->SyncNationField790FromLocalizationStateId();
+    g_pDiplomacyTurnStateManager->SetLastDiploEffort();
     break;
 
   case 0x69:
