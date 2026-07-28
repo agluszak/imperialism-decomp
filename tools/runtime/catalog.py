@@ -210,6 +210,14 @@ TESTS = (
         required_oracles=("map",),
         native_snapshots=("map",),
     ),
+    RuntimeTestSpec(
+        "random_control_explorer",
+        "RandomControlExplorerTest",
+        (),
+        "internal_invariant",
+        required_oracles=(),
+        default_timeout=900.0,
+    ),
 )
 
 
