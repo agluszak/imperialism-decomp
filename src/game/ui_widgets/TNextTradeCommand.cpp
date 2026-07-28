@@ -1,5 +1,6 @@
 #include "game/gfx/TAmbitApplication.h"
 #include "game/ui_widgets/TNextTradeCommand.h"
+#include "game/ui_widgets/TTradeMgr.h"
 
 #include "game/ui_core/TApplication.h"
 #include "game/globals/prelude.h"
@@ -33,4 +34,6 @@ void TNextTradeCommand::INextTradeCommand() {
 }
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
-void TNextTradeCommand::DoIt() {}
+void TNextTradeCommand::DoIt() {
+  g_pNationInteractionStateManager->NextTradeDeal();
+}

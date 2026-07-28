@@ -259,7 +259,7 @@ void TDealBookPicture::CalculatePages() {
 
       for (short minorNation = 7; minorNation < 23; ++minorNation) {
         int allocation = nation->aidAllocationMatrix[(minorNation - 7) * 23 + targetNation];
-        if (g_apMinorNationCapabilityObjects[minorNation - 7] == 0 || allocation == 0) {
+        if (g_apTerrainTypeDescriptorTable[minorNation] == 0 || allocation == 0) {
           continue;
         }
 

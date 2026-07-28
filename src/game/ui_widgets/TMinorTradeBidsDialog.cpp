@@ -43,7 +43,7 @@ void TMinorTradeBidsDialog::StuffValues() {
   int remainingMinorCount = 16;
   do {
     int minorIndex = minorTableByteOffset / sizeof(TMinor*);
-    if (g_apMinorNationCapabilityObjects[minorIndex] != 0) {
+    if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0) {
       TView* minorPanel = ResolveControlByTag(g_minorTreatyPanelTags[minorIndex]);
       if (minorPanel == 0) {
         FailNilPointerWithAssert(s_SourcePathUTestDialogs_0069A7F8, 0x189);

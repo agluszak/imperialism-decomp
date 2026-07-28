@@ -1489,8 +1489,6 @@ extern TMinor* g_apSecondaryNationStateSlots[36];
 // rows are an interior slice, not independent storage.
 #define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
 
-extern TMinor* g_apMinorNationCapabilityObjects[16];
-
 extern TGreatPower* g_apNationStates[7];
 // Several retail loops compare their cursor with the immediate one-past address
 // 0x006a438c. It is not a separately allocated pointer object.

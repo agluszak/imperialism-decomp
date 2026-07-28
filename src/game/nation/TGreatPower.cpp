@@ -3144,7 +3144,7 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
   int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
-    if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
+    if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
       if (auxRuntimeState != 0 && auxRuntimeState->IsLinkedToMajorNation(this->nationSlot) != 0 &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot) == 0) {
@@ -3173,7 +3173,7 @@ void TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot) {
   int minorNationSlot = kMajorNationCount; // minors occupy slots 7..22
   int tableIndex = 0;
   while (tableIndex < 16) {
-    if (g_apMinorNationCapabilityObjects[tableIndex] != 0) {
+    if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
       if (auxRuntimeState != 0 && auxRuntimeState->IsLinkedToMajorNation(this->nationSlot) != 0) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(

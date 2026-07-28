@@ -1625,7 +1625,8 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
     if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
         minor->ownedRegionList->GetSize() >= 1) {
-      MarkOwnedRegionClasses(g_apMinorNationCapabilityObjects[i]->ownedRegionList, regionClassSeen);
+      MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
+                             regionClassSeen);
     }
   }
 
@@ -1638,7 +1639,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
     if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationB) &&
         minor->ownedRegionList->GetSize() >= 1 &&
-        AnyOwnedRegionClassSeen(g_apMinorNationCapabilityObjects[i]->ownedRegionList,
+        AnyOwnedRegionClassSeen(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
                                 regionClassSeen)) {
       return true;
     }
@@ -2763,7 +2764,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
   }
 
   for (int minorSlot = 7; minorSlot < 23; ++minorSlot) {
-    TMinor* minorObj = g_apMinorNationCapabilityObjects[minorSlot - 7];
+    TCountry* minorObj = g_apTerrainTypeDescriptorTable[minorSlot];
     if (minorObj == nullptr) {
       continue;
     }
@@ -3690,7 +3691,7 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
   if (resultCount <= 0 && allowFallback != 0 && nationTag >= 7) {
     int minorIndex;
     for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
-      if (g_apMinorNationCapabilityObjects[minorIndex] != 0 &&
+      if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0 &&
           g_apSecondaryNationStateSlots[7 + minorIndex]->IsEncodedNationSlotMinus200Equal(
               nationTag) != 0) {
         resultCount =
