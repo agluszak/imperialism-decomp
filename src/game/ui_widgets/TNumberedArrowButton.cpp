@@ -91,7 +91,6 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
       visualState = 1;
     }
   }
-
   if (phase >= kTrackPhaseBegin && phase < kTrackPhaseEnd) {
     if (value86 != visualState) {
       RefreshControl();

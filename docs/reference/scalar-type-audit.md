@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 382
+- Findings: 383
 - `native_integral_boundary`: 18
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 317
+- `raw_discriminant_literal`: 318
 
 ## clang-tidy evaluation
 
@@ -166,7 +166,7 @@ is classified, and a family that stops appearing must be removed.
 | `groupCode` | 1 | `string_group_or_resource_identifier` | TLanguageMgr's string-group selector; 0 is the no-group sentinel. |
 | `hoverState` | 1 | `byte_or_int_predicate_not_a_domain` | TTacticalBattle tests whether a tile is hovered. |
 | `interactionMode` | 6 | `closed_domain_needs_listing_evidence` | TWorldView's three world-view interaction modes 0/1/2. |
-| `interactionModeAt94` | 10 | `closed_domain_needs_listing_evidence` | TDiplomacyMapView selects five sparse interaction modes 1, 2, 4 and 5; the gap at 3 means the domain is not contiguous and needs the producer decoded. |
+| `interactionModeAt94` | 11 | `closed_domain_needs_listing_evidence` | TDiplomacyMapView selects five sparse interaction modes 1, 2, 4 and 5; the gap at 3 means the domain is not contiguous and needs the producer decoded. |
 | `keyCode` | 1 | `character_or_virtual_key_code` | TCivMgr remaps key code 2 onto virtual key 0x44 before dispatch. |
 | `lastErrorCode0c` | 12 | `external_api_or_resource_constant` | TWNetSessionManager stores a DirectPlay HRESULT; the comparisons are the standard < 0 / == 0 / >= 0 success tests, not a domain. |
 | `legendSurfaceModeAt524` | 3 | `closed_domain_needs_listing_evidence` | TDiplomacyMapView legend-surface mode tested against 0, 1 and 4; same producer as interactionModeAt94. |
@@ -374,6 +374,7 @@ is classified, and a family that stops appearing must be removed.
 | `d15d9102cc7519c9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1063` | legendSurfaceModeAt524 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `1832db5e4c07a755` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1164` | legendSurfaceModeAt524 != 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `95242545df6f913e` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1298` | legendSurfaceModeAt524 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `25896cb48d010ea8` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1688` | interactionModeAt94 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3b085b668c93d1d4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:21` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `b14cf437f2e16040` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:38` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `9dbd5367a2231b2d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:133` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
@@ -607,8 +608,8 @@ is classified, and a family that stops appearing must be removed.
 | `2ee9a167ca66d93b` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:94` | selectionState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3277a241d21f2728` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:96` | selectionState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `375f41ff08fbde66` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:102` | selectionState != 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `3aa9c9558b6528c0` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:105` | visualState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `0e5ebc14bbebe7a9` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:112` | visualState == 2 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `3aa9c9558b6528c0` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:104` | visualState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `0e5ebc14bbebe7a9` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:111` | visualState == 2 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `3f1d7dc933c6026b` | `raw_discriminant_literal` | `src/game/ui_widgets/TToolBarCluster.cpp:300` | screenModeAt24 > 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `8bee51a3dae8191c` | `raw_discriminant_literal` | `src/game/ui_widgets/TUnitToolbarCluster.cpp:46` | screenModeAt24 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `814e14be7afefa1f` | `raw_discriminant_literal` | `src/game/ui_widgets/TWorldView.cpp:365` | interactionMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

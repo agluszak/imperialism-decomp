@@ -1684,6 +1684,13 @@ short TDiplomacyMapView::RuntimeActiveNation() const {
   return activeNationC2;
 }
 
+short TDiplomacyMapView::RuntimeRelationshipOverlaySourceNation() const {
+  if (interactionModeAt94 != 1) {
+    return -1;
+  }
+  return frameRegionSelectorAt98;
+}
+
 int TDiplomacyMapView::RuntimeActionTopicIndex() const {
   return stateFlagAtB8;
 }
