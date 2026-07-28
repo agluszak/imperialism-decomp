@@ -72,7 +72,7 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
     short amount = static_cast<short>(available / 10);
     if (amount > 2) {
       owner->SetItemPotentials(kResourceArms, amount);
-    } else if (available > 6) {
+    } else if (owner->GetStockpile(kResourceArms) > 6) {
       owner->SetItemPotentials(kResourceArms, 2);
     }
   }
@@ -735,20 +735,22 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short available;
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
-    available = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  } else {
-    available = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >= arg2) {
+      goto accept_requested_amount;
+    }
+  } else if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >=
+             arg2) {
+    goto accept_requested_amount;
   }
-  if (available >= arg2) {
-    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
-  } else {
-    g_pTradeMgr->SetDealResults(
-        owner->nationSlot, arg1,
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
-        resourceCode, 0, 0);
-  }
+  g_pTradeMgr->SetDealResults(
+      owner->nationSlot, arg1,
+      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+      resourceCode, 0, 0);
+  return;
+
+accept_requested_amount:
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533780

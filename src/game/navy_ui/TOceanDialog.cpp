@@ -240,7 +240,10 @@ CRect TOceanDialog::BoundingRect(TZone* zone) {
   } while (i < 0x1950);
   CRect result;
   if (minRowMirror == 1000) {
-    result.SetRectEmpty();
+    result.left = 0;
+    result.top = 0;
+    result.right = 0;
+    result.bottom = 0;
   } else {
     OffsetRect(&bounds, scrollColOffset7e * -2, -static_cast<int>(scrollRowOffset7c));
     result.left = bounds.left * 8;

@@ -12,6 +12,7 @@
 #include "game/globals/ui_screens_globals.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
+#include <mbstring.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -358,7 +359,8 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
     TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagSlot));
     slotNameControl->AssertValid();
     slotNameControl->GetCurrentText(&enteredName);
-    if (strcmp(enteredName, g_szEmptyString) == 0) {
+    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(enteredName)),
+                reinterpret_cast<const unsigned char*>(g_szEmptyString)) == 0) {
       enteredName = BuildSharedStringFromMappedFlavorTextIndex(0xd);
       slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
       slotNameControl->ForceRedraw();

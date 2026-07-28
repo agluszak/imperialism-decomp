@@ -1,5 +1,6 @@
 #include "game/navy/TAdmiral.h"
 
+#include <mbstring.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -381,7 +382,9 @@ void TAdmiral::NameThyself() {
     if (node == this) {
       continue;
     }
-    if (node->displayName.Compare(this->displayName) == 0) {
+    if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(node->displayName)),
+                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(this->displayName))) ==
+        0) {
       this->NameThyself();
     }
   }

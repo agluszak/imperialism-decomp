@@ -212,11 +212,7 @@ void TNavyMission::AcceptReenforcement(TShip* item, unsigned char notify) {
 void TNavyMission::RejectConstituent(TShip* item, unsigned char notify) {
   (void)notify;
   if (orderList24 != nullptr) {
-    if (orderList24->payload == item) {
-      orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
-    } else {
-      orderList24->next->RemoveLinkedOrderNodeByValueRecursive(item);
-    }
+    orderList24 = orderList24->RemoveLinkedOrderNodeByValueRecursive(item);
   }
   item->mission = nullptr;
   if (selectedOrder1c == item) {
