@@ -188,7 +188,7 @@ address|matching|name
 0x430bf0|1.0|TView::Draw
 0x430c10|1.0|TView::DoMouseCommand
 0x430c30|0.3333333333333333|IltTarget_00430c30
-0x430c50|0.17454445814495137|InitializeDealBookScreenControlsAndCommandTags
+0x430c50|0.17444885663425988|InitializeDealBookScreenControlsAndCommandTags
 0x435540|1.0|TDealTabControl::`scalar deleting destructor'
 0x435570|1.0|TDealTabControl::~TDealTabControl
 0x435590|1.0|TTradePageSellView::TTradePageSellView
@@ -6272,13 +6272,13 @@ address|matching|name
 0x5be5b0|1.0|TOfferDeskPicture::`scalar deleting destructor'
 0x5be5e0|1.0|TOfferDeskPicture::~TOfferDeskPicture
 0x5be600|0.7977099236641222|TOfferDeskPicture::DoPostCreate
-0x5bea00|0.7026298044504383|TOfferDeskPicture::PoseOfferSheet
+0x5bea00|0.7053270397842212|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.64|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
 0x5bf930|0.7411083540115798|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|1.0|TOfferDeskPicture::HandleMouseUp
-0x5c09d0|0.7789473684210526|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
+0x5c09d0|0.7842105263157895|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
 0x5c0cf0|0.4897959183673469|TDealLine::CreateObject
 0x5c0d60|1.0|TDealLine::GetRuntimeClass
 0x5c0d80|1.0|TDealLine::TDealLine

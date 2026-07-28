@@ -128,20 +128,21 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005bea00
-void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount,
-                                       short maxAmount, short commodityType) {
-  bool waitingForLocalReply = targetNation == -1 || targetNation != g_pSimMgr->GetActiveNationId();
-  if (targetNation == -1) {
-    sourceNation = g_pSimMgr->GetActiveNationId();
-    targetNation = sourceNation;
+void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNation,
+                                       short proposedAmount, short maxAmount, short commodityType) {
+  bool waitingForLocalReply =
+      respondingNation == -1 || respondingNation != g_pSimMgr->GetActiveNationId();
+  if (respondingNation == -1) {
+    respondingNation = g_pSimMgr->GetActiveNationId();
+    offeringNation = respondingNation;
   }
 
   TView* sheet = ResolveControlByTag(kControlTagShee);
   TView* wait = ResolveControlByTag(kControlTagWait);
 
   CString commodityName;
-  CString targetNationName;
-  CString sourceNationName;
+  CString offeringNationName;
+  CString respondingNationName;
   CString maximumAmountText;
   CString proposedAmountText;
   CString displayText;
@@ -160,16 +161,16 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   }
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  sourceNationSlot = sourceNation;
-  targetNationSlot = targetNation;
+  respondingNationSlot = respondingNation;
+  offeringNationSlot = offeringNation;
   this->proposedAmount = proposedAmount;
   this->maxAmount = maxAmount;
   this->commodityType = commodityType;
   suppressEventFlag = 0;
 
   g_pSimMgr->GetStringPrelude(commodityType, &commodityName);
-  targetNationName = g_pSimMgr->LoadNormalizedCredentialName(targetNation);
-  sourceNationName = g_pSimMgr->LoadNormalizedCredentialName(sourceNation);
+  offeringNationName = g_pSimMgr->LoadNormalizedCredentialName(offeringNation);
+  respondingNationName = g_pSimMgr->LoadNormalizedCredentialName(respondingNation);
   g_pSimMgr->NumToCurrency(maxAmount, &maximumAmountText);
   proposedAmountText.Format(g_szDecimalFormat, static_cast<int>(proposedAmount));
 
@@ -235,7 +236,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   g_pSimMgr->GetString(0x2740, 0xc, &offerTemplate);
   scanBracketExpressions(
       g_pSimMgr, &displayText, static_cast<LPCSTR>(offerTemplate),
-      static_cast<LPCSTR>(sourceNationName), static_cast<LPCSTR>(proposedAmountText),
+      static_cast<LPCSTR>(offeringNationName), static_cast<LPCSTR>(proposedAmountText),
       static_cast<LPCSTR>(commodityName), static_cast<LPCSTR>(maximumAmountText));
 
   TextStyle style;
@@ -392,14 +393,14 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
 }
 
 // Rebuild the 'info' text control with the trade-compatibility explanation for the current
-// source nation (+0x90), target nation (+0x92) and commodity (+0x96), formatted at the
+// responding nation (+0x90), offering nation (+0x92) and commodity (+0x96), formatted at the
 // current help detail level (g_pHelpMgr->helpIndexReady: 0 minimal, 1 concise verdict,
 // >=2 detailed numbers). Text comes from string-resource groups 0x2711 (commodity names),
 // 0x2740 and 0x2764 (compatibility phrases, bracket-expanded via scanBracketExpressions).
 // Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
 // FUNCTION: IMPERIALISM 0x005bf930
 void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
-  TGreatPower* gp = g_apNationStates[sourceNationSlot];
+  TGreatPower* gp = g_apNationStates[respondingNationSlot];
   TCity* city;
   if (gp == 0) {
     city = 0;
@@ -431,20 +432,20 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
   {
-    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(targetNationSlot);
+    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(offeringNationSlot);
   }
   g_pSimMgr->GetStringPrelude(commodityType, &strCommodity);
 
   short compat = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
-      sourceNationSlot, targetNationSlot);
+      respondingNationSlot, offeringNationSlot);
 
   if (g_pHelpMgr->helpIndexReady == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
     info->SetTextAlignmentAndMaybeRefresh(1, 0);
   } else if (g_pHelpMgr->helpIndexReady == 1) {
     if (compat >= 1 &&
-        g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
-            sourceNationSlot) == 0) {
+        g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
+            respondingNationSlot) == 0) {
       notAligned = 1;
     }
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {
@@ -465,8 +466,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     }
 
     if (notAligned == 0 && hasSurplus == 0) {
-      if (g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
-              sourceNationSlot) != 0) {
+      if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
+              respondingNationSlot) != 0) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
       } else {
         g_pSimMgr->GetString(0x2764, 5, &strPrefix);
@@ -506,16 +507,16 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     strNeedTarget.Format(g_szDecimalFormat, static_cast<int>(needTgt));
     strRelDelta.Format(g_szDecimalFormat, static_cast<int>(relDelta));
     strAvail.Format(g_szDecimalFormat, static_cast<int>(avail));
-    if (targetNationSlot < 7) {
+    if (offeringNationSlot < 7) {
       g_pSimMgr->GetString(0x2764, 8, &strTemplate);
       scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                              static_cast<LPCSTR>(strTargetNation));
     } else {
-      short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(targetNationSlot);
+      short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(offeringNationSlot);
       {
         strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }
-      if (dominant == sourceNationSlot) {
+      if (dominant == respondingNationSlot) {
         g_pSimMgr->GetString(0x2764, 0xe, &strTemplate);
         scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                                static_cast<LPCSTR>(strTargetNation));
@@ -529,8 +530,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     short verdictIndex;
     if (compat == 2) {
       verdictIndex =
-          g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
-              sourceNationSlot) != 0
+          g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
+              respondingNationSlot) != 0
               ? 0xf
               : 0xa;
     } else {
@@ -595,7 +596,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   }
 
   if (quantityValid) {
-    g_pTradeMgr->SetDealResults(sourceNationSlot, targetNationSlot, proposedAmount, maxAmount,
+    g_pTradeMgr->SetDealResults(respondingNationSlot, offeringNationSlot, proposedAmount, maxAmount,
                                 commodityType, static_cast<char>(suppressEventFlag), 0);
 
     TView* acceptButton = ResolveControlByTag(kControlTagAcce);
@@ -608,7 +609,8 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     if (proposedAmount != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTool);
       if (toolbar != nullptr) {
-        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(static_cast<short>(sourceNationSlot));
+        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
+            static_cast<short>(respondingNationSlot));
       }
     }
 
@@ -660,9 +662,9 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
   if (sheetControl == 0) {
     FailNilPointerInUSmallViews(0x8a2);
   }
-  TView* crupControl = ResolveControlByTag(kControlTagCrup);
-  crupControl->AssertValid();
-  crupControl->SetEnabled(activate == 0, 0);
+  TView* purchaseControl = ResolveControlByTag(kControlTagPurc);
+  purchaseControl->AssertValid();
+  purchaseControl->SetEnabled(activate == 0, 0);
   if (activate != 0) {
     CPoint bookLayout(0x3a, 0x2d);
     bookControl->Locate(bookLayout, 0);

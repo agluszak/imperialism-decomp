@@ -6150,7 +6150,7 @@ address|name|symbol|size|type|prototype|provenance
 5be570|TOfferDeskPicture::ConstructTOfferDeskPictureBaseState||38|function|undefined ConstructTOfferDeskPictureBaseState()|
 5be5b0|TOfferDeskPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5be600|TOfferDeskPicture::DoPostCreate||816|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5bea00|TOfferDeskPicture::PoseOfferSheet||2692|function|void __thiscall PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount, short maxAmount, short commodityType)|listing+mac-symbol
+5bea00|TOfferDeskPicture::PoseOfferSheet||2692|function|void __thiscall PoseOfferSheet(short respondingNation, short offeringNation, short proposedAmount, short maxAmount, short commodityType)|listing+mac-symbol
 5bf740|TOfferDeskPicture::DoEvent||223|function|undefined HandleTradeCommandTagsAndSelectionUpdates()|
 5bf860|TOfferDeskPicture::DoKeyEvent||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()|
 5bf930|RefreshSelectedNationOrderCompatibilityInfo||2386|function|undefined RefreshSelectedNationOrderCompatibilityInfo()|

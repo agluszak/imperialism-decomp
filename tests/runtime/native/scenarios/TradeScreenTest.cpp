@@ -44,7 +44,7 @@ public:
         selectedRow(0), selectedSellRow(0), initialBidBitmap(0), initialSellValue(0),
         initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false),
         verifiedOfferPresentation(false), exercisedOfferBookmark(false),
-        offerRegressionCompleted(false) {}
+        offerRegressionPosed(false), offerBookmarkRow(0), offerRegressionCompleted(false) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -593,7 +593,6 @@ private:
         FailScenario("\"offer-sheet event did not construct TOfferDeskPicture\"");
         return;
       }
-      static_cast<TOfferDeskPicture*>(mainView)->selectionActive = true;
       phase = kWaitForOfferRegression;
       EnterScenarioStep("verifying_offer_sheet_bookmark", "construct_offer_sheet_for_bookmark");
       RequestScenarioTick();
@@ -621,16 +620,52 @@ private:
       WaitForScenarioTick("\"deterministic offer sheet is not active\"");
       return;
     }
-    TDropShadowText* season =
-        static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
-    TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
-    if (season == 0 || season->textStyle78.textColor == 0) {
-      FailScenario("\"offer sheet did not present a visible season label\"");
+    if (!offerRegressionPosed) {
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      g_pViewMgr->DispatchNationActionToMainControl(activeNation, activeNation, 1, 1,
+                                                    kResourceFood);
+      offerRegressionPosed = true;
+      EnterScenarioStep("presenting_offer_sheet_regression", "pose_retail_offer_sheet_action");
+      RequestScenarioTick();
       return;
     }
-    if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0 ||
-        !RuntimeUiDriver::ClickViewThroughNativeMessages(tabs)) {
+    TDropShadowText* season =
+        static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
+    TStaticText* offerText = static_cast<TStaticText*>(
+        mainView->ResolveControlByTag(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
+    TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
+    CString displayedOffer;
+    CString sellerName = g_pSimMgr->LoadNormalizedCredentialName(g_pSimMgr->GetActiveNationId());
+    if (offerText != 0) {
+      offerText->CopyTextTo(&displayedOffer);
+    }
+    if (offerText == 0 || displayedOffer.GetLength() == 0 ||
+        strstr(static_cast<LPCSTR>(displayedOffer), static_cast<LPCSTR>(sellerName)) == 0 ||
+        season == 0 || season->textStyle78.textColor != PALETTEINDEX(0)) {
+      FailScenario("\"offer sheet did not present its retail seller text and white season label\"");
+      return;
+    }
+    if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0) {
       FailScenario("\"offer-sheet bookmark control could not receive native input\"");
+      return;
+    }
+    TDealTabControl* tabControl = static_cast<TDealTabControl*>(tabs);
+    if (tabControl->tabCount <= 0 || tabControl->tabCount > 17) {
+      FailScenario("\"offer-sheet bookmark control has an invalid retail tab count\"");
+      return;
+    }
+    if (offerBookmarkRow < tabControl->tabCount) {
+      const short row = offerBookmarkRow;
+      if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(
+              tabControl, tabControl->frameWidth34 / 2,
+              row * tabControl->rowHeightPixels + tabControl->rowHeightPixels / 2) ||
+          tabControl->selectedRow != row) {
+        FailScenario("\"offer-sheet bookmark could not be selected through native input\"");
+        return;
+      }
+      ++offerBookmarkRow;
+      EnterScenarioStep("verifying_offer_sheet_bookmarks", "click_offer_sheet_bookmark");
+      RequestScenarioTick();
       return;
     }
     offerRegressionCompleted = true;
@@ -725,6 +760,8 @@ private:
   bool leftDealBook;
   bool verifiedOfferPresentation;
   bool exercisedOfferBookmark;
+  bool offerRegressionPosed;
+  short offerBookmarkRow;
   bool offerRegressionCompleted;
 };
 

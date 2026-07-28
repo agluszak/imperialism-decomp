@@ -51,7 +51,12 @@ functions:
     prototype: TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
       - {event: 0x2103, resource: FlagView.rsrc:8451}
-      - {event: 0x2134, resource: FlagView.rsrc:8500}
+      - event: 0x2134
+        resource: FlagView.rsrc:8500
+        windows_overrides:
+          0x0370:
+            style: {word: 0, packed_color: 0x99ccff}
+            evidence: "original builder 0x004329bd-0x00432a03 allocates purc +0x48 and stores {packedColor=0x99ccff, styleWord=0}"
       - {event: 0x2260, resource: FlagView.rsrc:8800}
 
   - address: 0x004357b0
