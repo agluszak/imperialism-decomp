@@ -1,4 +1,4 @@
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 
 #include "game/map/TMapMgr.h"
 #include "game/ui_screens/TSimMgr.h"

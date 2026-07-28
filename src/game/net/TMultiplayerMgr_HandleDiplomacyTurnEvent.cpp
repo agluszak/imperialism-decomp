@@ -36,7 +36,7 @@
 #include "game/navy/TOcean.h"
 #include "game/nation/TLandSaleEvent.h"
 #include "game/core/TStream.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/TZone.h"

@@ -440,7 +440,7 @@ TStatusButton.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:
 TStatusPicture.cpp|6|Cross/USmallViews.cpp|6|ui_widgets|6||Cross/USmallViews.cpp:6
 TStratReportView.cpp|2|Cross/USmallViews.cpp|2|ui_widgets|0||Cross/USmallViews.cpp:2
 TToolBarCluster.cpp|9|Cross/USmallViews.cpp|6|ui_widgets|2|multi_module|Cross/USmallViews.cpp:6+Cross/UCity.cpp:2+Cross/UViewMgr.cpp:1
-TTown.cpp|10|Cross/UTestDialogs.cpp|10|ui_widgets|10||Cross/UTestDialogs.cpp:10
+TTown.cpp|10|Cross/UTestDialogs.cpp|10|city|10||Cross/UTestDialogs.cpp:10
 TTradeCluster.cpp|12|Cross/USmallViews.cpp|12|ui_widgets|0||Cross/USmallViews.cpp:12
 TTradeMgr.cpp|34|Cross/UTestDialogs.cpp|34|ui_widgets|34||Cross/UTestDialogs.cpp:34
 TTradeOrderPicture.cpp|3|Cross/USmallViews.cpp|3|ui_widgets|0||Cross/USmallViews.cpp:3

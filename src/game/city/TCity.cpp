@@ -20,7 +20,7 @@
 #include "game/ui_core/TSortedList.h"
 #include "game/tactical_ui/TTaskList.h"
 #include "game/city/TTrainingOrder.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/city/TUnitOrder.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"

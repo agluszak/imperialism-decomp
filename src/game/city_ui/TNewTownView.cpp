@@ -5,7 +5,7 @@
 
 #include "game/ui_core/TEditText.h"
 #include "game/ui_screens/TIconBar.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"

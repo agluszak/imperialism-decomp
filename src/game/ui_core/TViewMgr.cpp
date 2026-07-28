@@ -12,7 +12,7 @@
 #include "game/city_ui/TBuildingExpansionView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/ui_widgets/TCivReport.h"
-#include "game/ui_widgets/TTown.h"
+#include "game/city/TTown.h"
 #include "game/ui_screens/TOffLimitsPicture.h"
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/city_ui/TPlaceCityDialog.h"
