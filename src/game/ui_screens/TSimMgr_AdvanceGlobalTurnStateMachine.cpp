@@ -17,7 +17,7 @@
 #include "game/city_ui/TCountry.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/map/TMapMgr.h"
 #include "game/nation/TMinor.h"
 #include "game/net/TMultiplayerMgr.h"

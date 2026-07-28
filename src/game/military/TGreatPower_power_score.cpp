@@ -1,4 +1,4 @@
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/navy_order.h"
 
 #include "game/ui_core/CIterator.h"
