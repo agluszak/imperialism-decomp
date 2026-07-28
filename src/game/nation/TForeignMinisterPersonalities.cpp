@@ -1,4 +1,4 @@
-#include "game/map/TForeignMinisterPersonalities.h"
+#include "game/nation/TForeignMinisterPersonalities.h"
 #include "game/resource_domain_types.h"
 
 #include "game/city/TCity.h"

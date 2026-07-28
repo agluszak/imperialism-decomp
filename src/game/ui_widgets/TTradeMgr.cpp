@@ -11,7 +11,7 @@
 #include "game/globals/trade_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/nation/TMinor.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/city_ui/TCountry.h"
 #include "game/core/TStream.h"
 #include "game/city_ui/TLongintList.h"

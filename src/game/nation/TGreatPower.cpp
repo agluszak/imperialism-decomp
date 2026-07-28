@@ -30,7 +30,7 @@
 #include "game/military/TDefendProvinceMission.h"
 #include "game/military_ui/TDefenseMinister.h"
 #include "game/military_ui/TDiplomacyMgr.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/map/TMapMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/TGreatPower_internal.h"

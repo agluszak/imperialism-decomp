@@ -1,6 +1,6 @@
 #include "game/diplomacy_domain_types.h"
 #include "game/resource_domain_types.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/nation/TGreatPower.h"

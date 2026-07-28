@@ -1,6 +1,6 @@
 #include "game/tactical_ui/TCityTask.h"
 #include "game/city/TCity.h"
-#include "game/map/TForeignMinister.h"
+#include "game/nation/TForeignMinister.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TItemOrder.h"
 #include "game/ui_core/TSortedList.h"

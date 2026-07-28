@@ -115,8 +115,8 @@ TBeachheadMission.cpp|9|Cross/UMapper.cpp|9|map|9||Cross/UMapper.cpp:9
 TBlockadePortMission.cpp|12|Cross/UMapper.cpp|12|map|12||Cross/UMapper.cpp:12
 TControlSeaZoneMission.cpp|10|Cross/UMapper.cpp|10|map|10||Cross/UMapper.cpp:10
 TEscortMission.cpp|10|Cross/UMapper.cpp|10|map|10||Cross/UMapper.cpp:10
-TForeignMinister.cpp|27|Cross/UMapper.cpp|27|map|27||Cross/UMapper.cpp:27
-TForeignMinisterPersonalities.cpp|39|Cross/UMapper.cpp|39|map|39||Cross/UMapper.cpp:39
+TForeignMinister.cpp|27|Cross/UMapper.cpp|27|nation|27||Cross/UMapper.cpp:27
+TForeignMinisterPersonalities.cpp|39|Cross/UMapper.cpp|39|nation|39||Cross/UMapper.cpp:39
 TIndexAndRankList.cpp|2|Cross/UMapper.cpp|2|map|2||Cross/UMapper.cpp:2
 TMapMaker_AssignRegionsScanline.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
 TMapMaker_BuildCityRegionBorders.cpp|1|Cross/UMapper.cpp|1|map|0||Cross/UMapper.cpp:1
