@@ -6,6 +6,7 @@
 #include "game/app/TObject.h"
 #include "game/civilian_domain_types.h"
 #include "game/map_domain_types.h"
+#include "game/map/map_records.h"
 #include "game/mfc.h"
 #include "game/strategic_terrain.h"
 #include "game/unit_domain_types.h"
@@ -15,38 +16,6 @@ class TCivUnit;
 class TStream;
 class TTown;
 class TMilitaryUnit;
-
-struct GlobalMapTileRecord {
-  char pad_00_to_1f[0x20];
-  TCivUnit* firstCivilianOrder; // 0x20
-};
-
-// Raw 0x24-byte tile record as stored in a Mac-endian scenario file. It is kept
-// separate from TTerrainStateRecordView because the three word fields remain byte
-// arrays until the load boundary swaps them, and +0x20 is serialized pointer storage
-// that must be cleared rather than interpreted as a live TCivUnit*.
-struct ScenarioTileDiskRecord {
-  unsigned char bytes00[4];
-  signed char ownerNationTag04;
-  unsigned char bytes05[0x14 - 0x05];
-  unsigned char cityRecordIndex14[2];
-  unsigned char bytes16[0x1a - 0x16];
-  unsigned char tileActionOrdinal1a[2];
-  unsigned char activeFlags1c[2];
-  unsigned char bytes1e[2];
-  int transientPointerBits20;
-};
-ASSERT_SIZE(ScenarioTileDiskRecord, 0x24);
-
-// The packed source TMapMgr::ReadInRGBMap decodes: 6480 entries of two shorts each,
-// i.e. the 108x60 tile map at four bytes per tile (0x38f40 / 0x24 records). Only the
-// +0x08 field is touched, and no call site survives to identify the owning class, so
-// just that slot is modelled rather than guessing at a type.
-struct MapPixelSourceView {
-  int unknown00;
-  int unknown04;
-  const short* packedTiles; // +0x08 two shorts per tile, in tile order
-};
 
 struct TTerrainStateRecordView {
   // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
