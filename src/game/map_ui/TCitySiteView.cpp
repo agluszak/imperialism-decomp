@@ -57,36 +57,36 @@ void TCitySiteView::DoPostCreate(int arg) {
   // knowing ownerContext's concrete type here.
   static_cast<TMapUberPicture*>(ownerContext)->SetMapInteractionMode(4);
 
-  minColBound368 = 1000;
-  maxColBound36c = -1000;
-  minRowBound370 = 1000;
-  maxRowBound374 = -1000;
+  minColumn = 1000;
+  maxColumn = -1000;
+  minRow = 1000;
+  maxRow = -1000;
 
   short activeNationId = g_pSimMgr->GetActiveNationId();
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     if (activeNationId != g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04) {
       continue;
     }
-    short row;
-    short col;
-    SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), &row, &col);
-    if (row < minRowBound370) {
-      minRowBound370 = row;
+    short tileRow;
+    short tileColumn;
+    SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), &tileRow, &tileColumn);
+    if (tileRow < minRow) {
+      minRow = tileRow;
     }
-    if (col < minColBound368) {
-      minColBound368 = col;
+    if (tileColumn < minColumn) {
+      minColumn = tileColumn;
     }
-    row = static_cast<short>(row - 5);
-    col = static_cast<short>(col + (3 - g_wMapDialogViewportTileSpan));
-    if (row > maxRowBound374) {
-      maxRowBound374 = row;
+    tileRow = static_cast<short>(tileRow - 5);
+    tileColumn = static_cast<short>(tileColumn + (3 - g_wMapDialogViewportTileSpan));
+    if (tileRow > maxRow) {
+      maxRow = tileRow;
     }
-    if (col > maxColBound36c) {
-      maxColBound36c = col;
+    if (tileColumn > maxColumn) {
+      maxColumn = tileColumn;
     }
   }
-  minColBound368 -= 1;
-  minRowBound370 -= 1;
+  minColumn -= 1;
+  minRow -= 1;
 
   g_pCursorControlPanel = static_cast<TInfoBarText*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagCurs)));
@@ -100,14 +100,16 @@ void TCitySiteView::DoPostCreate(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
-void TCitySiteView::SetMapViewTileIndex(int arg1) {
+void TCitySiteView::SetMapViewTileIndex(int tileIndex) {
   union WordOutputInt {
     int value;
     short word;
-  } col;
-  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
-                               &col.word);
-  SetMapViewCellCoordinates(col.value, arg1);
+  };
+  WordOutputInt row;
+  WordOutputInt column;
+  row.value = tileIndex;
+  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), &row.word, &column.word);
+  SetMapViewCellCoordinates(column.value, row.value);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
@@ -121,17 +123,17 @@ void TCitySiteView::SetMapViewCellCoordinates(int column, int row) {
 void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
   short c = static_cast<short>(col);
   short r = static_cast<short>(row);
-  if (c < minColBound368) {
-    c = static_cast<short>(minColBound368);
+  if (c < minColumn) {
+    c = static_cast<short>(minColumn);
   }
-  if (r < minRowBound370) {
-    r = static_cast<short>(minRowBound370);
+  if (r < minRow) {
+    r = static_cast<short>(minRow);
   }
-  if (c > maxColBound36c) {
-    c = static_cast<short>(maxColBound36c);
+  if (c > maxColumn) {
+    c = static_cast<short>(maxColumn);
   }
-  if (r > maxRowBound374) {
-    r = static_cast<short>(maxRowBound374);
+  if (r > maxRow) {
+    r = static_cast<short>(maxRow);
   }
   TMapDialog::SetMapDialogCellCoordinatesAndRefresh(c, r, mode);
 }
@@ -242,12 +244,12 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
     return;
   }
 
-  pendingTown364->tileIndex = nTileIndex;
+  pendingTown->tileIndex = nTileIndex;
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
-  pendingTown364->SetName(cityName);
-  if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown364)) {
-    pendingTown364->tileIndex = 0;
+  pendingTown->SetName(cityName);
+  if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown)) {
+    pendingTown->tileIndex = 0;
     return;
   }
 
