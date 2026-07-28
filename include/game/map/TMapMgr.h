@@ -2,178 +2,16 @@
 
 #include "compat.h"
 
-#include "game/ui_screens/CString.h"
 #include "game/app/TObject.h"
 #include "game/civilian_domain_types.h"
 #include "game/map_domain_types.h"
 #include "game/map/map_records.h"
 #include "game/mfc.h"
-#include "game/strategic_terrain.h"
 #include "game/unit_domain_types.h"
 
 // Forward declarations for types referenced by generated signatures.
-class TCivUnit;
 class TStream;
 class TTown;
-class TMilitaryUnit;
-
-struct TTerrainStateRecordView {
-  // Packed StrategicTerrainKind representation. Signed MOVSX reads are confirmed by
-  // 0x516150/0x5161a0/0x5161e0/0x516220; -1 is the unassigned sentinel. Keep this byte
-  // private by convention and use GetTerrainKind/SetTerrainKind in game-owned code.
-  StrategicTerrainKindStorage terrainKindStorage00;
-  StrategicTerrainKind GetTerrainKind() const {
-    return static_cast<StrategicTerrainKind>(terrainKindStorage00);
-  }
-  void SetTerrainKind(StrategicTerrainKind terrainKind) {
-    terrainKindStorage00 = static_cast<StrategicTerrainKindStorage>(terrainKind);
-  }
-  // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
-  // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
-  // AssignPictToTile's streak-length bookkeeping. Same
-  // evidence basis as terrainKindStorage00 above; also MOVSX-read there.
-  signed char spriteVariantIndex01;
-  // Staged river/coast connection and sprite code. The high bit marks a
-  // pre-resolved map-editor value; finalized variants occupy 0x0b..0x3a.
-  RiverSpriteCodeStorage riverSpriteCode;
-  // Previous owner-nation tag: the map context info panel (0x51b1c0) compares it with
-  // ownerNationTag04 and renders a "(formerly of <nation>)" suffix when they differ.
-  signed char formerOwnerNationTag03;
-  signed char ownerNationTag04; // 0x04
-  // Read as a signed byte and equality-compared between a town's own tile and its hex
-  // neighbors by MarkType5NeighborTilesUnavailableByNationCapability (matches a coastal
-  // water tile to "its" town) -- not padding, though the exact semantic beyond that one
-  // equality test isn't otherwise identified.
-  signed char regionSubtypeTag05; // 0x05
-  signed char adjacencyBits06;    // 0x06
-  // Per-direction (kHexDirectionBitMask) owner-nation border bitmask, accumulated by
-  // TMapMgr::UpdateTileNeighborBorderInfluenceCounters (0x50fe10): bit N set means hex
-  // neighbor N (or, for a water tile, the land tile across the water gap in that direction)
-  // has a different ownerNationTag04. Bits 0x40/0x80 are set as compound "opposite/adjacent
-  // pair differs" flags by the same function's tail checks. Not padding.
-  unsigned char ownerBorderMask07; // 0x07
-  // Per-direction cityRecordIndex border bitmask, same accumulation site as
-  // ownerBorderMask07 but comparing cityRecordIndex instead of ownerNationTag04 (only
-  // touched when UpdateTileNeighborBorderInfluenceCounters's mode param != 2). Not padding.
-  unsigned char cityBorderMask08; // 0x08
-  // Per-direction "this land tile borders open water" bitmask, same accumulation site;
-  // only ever written for a non-water tile whose neighbor has water terrain. Not padding.
-  unsigned char waterAdjacencyMask09; // 0x09
-  unsigned char adjacencyMaskA0a;     // 0x0a -- per-direction bit mask (land coastline/edges)
-  unsigned char adjacencyMaskB0b;     // 0x0b -- per-direction bit mask (region/water borders)
-  // Packed civilian/military development-class nibbles (offset 0xc): written by
-  // SetCivilianDevelopmentClassNibble (0x5136a0), read by
-  // GetTileCivilianWorkOrderCostClassNibble (high or low nibble by fUseHighNibble) and by
-  // the recruit-search-eligibility family (0x5155c0 reads the high nibble, 0x515890 the
-  // low nibble) as a per-tile development/need threshold. Not padding.
-  // Signed: GetTileCivilianWorkOrderCostClassNibble's high-nibble read is SAR (arithmetic
-  // shift), not SHR.
-  signed char developmentClassNibbles0c;
-  // Sentinel flag (0 / 0x7f) set by SetCivilianDevelopmentClassNibble alongside the high
-  // nibble; gates recruit-search eligibility in 0x5155c0. Not padding.
-  unsigned char pendingDevelopmentFlag0d;
-  unsigned char recruitSearchVisited0e; // 0x0e
-  // 0x0f -- cleared to 0 across all 0x1950 tiles by
-  // TMapMgr::DimmingOff (0x515db0); read signed (> 0) by the tile
-  // context menu (0x504e90) to gate menu item 0x2a.
-  signed char perTileVisitedFlag0f;
-  // Index (0..89, -1 = none) of the TMapDialog transient tile-marker slot this tile occupies;
-  // reset to 0xff by TMapDialog's marker-release path. Read MOVSX (signed).
-  signed char markerSlotIndex10;
-  signed char resourceTypeByEdge[2];
-  // Signed: same MOVSX-index evidence as terrainKindStorage00/spriteVariantIndex01 above.
-  signed char gateFlag;
-  ProvinceIndexStorage cityRecordIndex;
-  // Tile action state (fleet/zone marker): equality-compared against 2..6/0xe/0x10/0x11
-  // by the tile context menu (0x504e90) to pick menu items 0x2b..0x31; read signed by
-  // map_overlay_geometry; reset to -1 by the TMapMgr table init.
-  MapTileActionStateStorage tileActionState16;
-  unsigned char railFlags17; // 0x17
-  // Secondary/alternate owner nation tag (offset 0x18): the recruit-search-eligibility
-  // family (0x5155c0, 0x515890) accepts a tile as owned by a nation if EITHER
-  // ownerNationTag04 OR this byte matches -- a genuine second owner slot, not padding.
-  signed char secondaryOwnerNationTag18;
-  unsigned char pad19;
-  // Per-tile ordinal within its tile-action-class bucket (GetMapContextActionCode 0x559a70
-  // uses it to pick the Nth queued TTaskForce entry whose nation matches the tile's
-  // class). Not padding.
-  short tileActionOrdinal1a;
-  // 0x1c -- written as a full 16-bit unit by the transport-flag setters (0x518990
-  // stores 0x0001, 0x514a20 stores 0x0017), read/or'd byte-wise elsewhere (the
-  // compiler narrows &-mask tests and |= on the low byte).
-  unsigned short activeFlags1c;
-  unsigned char pad1e[0x20 - 0x1e];
-  TCivUnit* firstCivilianOrder20; // 0x20
-};
-ASSERT_SIZE(TTerrainStateRecordView, 0x24);
-
-// LAYOUT: the city-redraw packet snapshots the record field-by-field. Offsets 0x3e,
-// 0x40, and 0x94 are shorts; +0xa4 is the CString city display name.
-struct Province {
-  Province();
-  Province& operator=(const Province& source);
-
-  signed char ownerNationCode00;
-  // Previous/founding owner nation code: the tile context menu (0x504e90) renders a
-  // "formerly of <nation>" line when it differs from ownerNationCode00 (same idiom as
-  // TTerrainStateRecordView::formerOwnerNationTag03); read signed everywhere.
-  signed char formerOwnerNationCode01;
-  // Signed: 0x517540's switch on this reads it via MOVSX, not MOVZX.
-  signed char developmentStage;
-  unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)
-  // +0x04 — tile index this city record is anchored to (-1 = none); rebound by
-  // the 0x00516100-family setters and matched against TCountry::homeTileIndex.
-  StrategicTileIndex cityTileIndex04;
-  short lastTurnTick;
-  signed char adjacentRegionCount08;
-  unsigned char pad09;
-  // +0x0a adjacent city-record ids (-1-terminated, up to 12; adjacentRegionCount08 is
-  // the live count), rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
-  ProvinceIndexStorage adjacentRegionIds0A[0xc];
-  // +0x22 parallel array: for each adjacent record above, one representative linked
-  // tile of THIS record that borders it (written alongside the id insert in 0x50f860).
-  StrategicTileIndex adjacentRegionAnchorTiles22[0xc];
-  signed char linkedRegionCount;
-  unsigned char byte3B;
-  unsigned char byte3C;
-  unsigned char pad3D;
-  // Secondary/primary same-cityRecordIndex neighbor tile index, chosen by
-  // TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority (0x50fca0) via a
-  // per-terrainKindStorage00 priority table (g_anStrategicTerrainNeighborLinkPriority), with same-city
-  // neighbors preferred; also snapshotted by the city-redraw packet.
-  StrategicTileIndex secondaryNeighborTileIndex3e; // 0x3e
-  StrategicTileIndex primaryNeighborTileIndex40;   // 0x40
-  StrategicTileIndex linkedTileIndices42[0x20];
-  // 0x82..0x95 — per-resource-type development counters, indexed by resourceType - 7
-  // (resource types 7..0x10). One array everywhere: the development advance
-  // (TGreatPower 0x4dbf00) increments individual entries against building caps, the
-  // city-redraw packet (TMultiplayerMgr) snapshots/patches all ten words, and the map
-  // context info panel (0x51b1c0) renders each nonzero entry as "<count> <resource
-  // name>" via GetString(0x2711, resourceType).
-  short resourceDevelopmentCounts82[10];
-  unsigned char pad96[2];
-  TMilitaryUnit* stationedUnitChain98; // 0x98
-  int cityScoreValue;
-  // Transient navy-order reachability marker. Reset before refreshing the map-order
-  // panel, set for city records adjacent to the selected context, and consumed by
-  // TNavyMgr when deciding whether a province action can be offered.
-  unsigned char navyOrderReachableA0;
-  // Per-nation-slot bitmask (bit N = nation slot N), tested by
-  // TArmyMgr::ComputeCivilianMapCursorStateIndex to gate an enemy-city order when the
-  // pending nation has previously been adjacent/hostile here. Exact set-site not yet
-  // identified.
-  unsigned char exploredByNationMaskA1;
-  // +0xa2 bitmask of resource types (bit = resourceTypeByEdge value) present on this
-  // record's linked tiles; rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
-  // Read MOVSX (signed) by the case-16 advisory candidate scan (0x4e92b0).
-  signed char resourcePresenceMaskA2;
-  // Region-class code (0..23), read via MOVSX in
-  // TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask to index a 24-entry
-  // per-class "seen" flag array.
-  signed char regionClassA3;
-  CString cityNameA4; // 0xa4 — city display name
-};
-ASSERT_SIZE(Province, 0xa8);
 
 // Endian fixup of every city-score record's short fields after a raw scenario table
 // load (called only by TMapMgr::LoadScenarioMapStateFromTableResource). 0x518840,
@@ -202,14 +40,6 @@ short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connect
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 // 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.
 StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex);
-
-struct HexSpiralSearchState {
-  int row;
-  int col;
-  int ring;
-  int direction;
-  int stepInRing;
-};
 
 // 0x00512930. Heap-allocates (`operator new`, caller frees via `operator delete`) and fills a
 // `radius*6`-entry tile-index ring around centerTileIndex: each of the 6 hex directions gets
