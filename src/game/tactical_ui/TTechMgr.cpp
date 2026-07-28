@@ -7,6 +7,7 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 

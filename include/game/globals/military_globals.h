@@ -13,6 +13,8 @@ struct MappedFlavorTextNationVariantEntry {
 extern POINT g_ptArmyOrderModalMessage;      // @ 0x6a2318
 extern POINT g_ptArmyValidationModalMessage; // @ 0x6a2288
 
+extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
+
 extern short g_MapOrderResourceRollWeightTable_0064c5d8[6][6];
 
 extern "C" {

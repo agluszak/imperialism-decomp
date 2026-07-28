@@ -9,6 +9,7 @@
 #include "game/core/TStream.h"
 #include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 

@@ -17,6 +17,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/ui_core/quickdraw_rendering.h"

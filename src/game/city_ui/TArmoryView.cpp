@@ -16,6 +16,7 @@
 #include "game/city/TUnitOrder.h"
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/military_globals.h"
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
