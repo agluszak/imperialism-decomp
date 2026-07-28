@@ -2,6 +2,7 @@
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
+#include "game/globals/view_registries.h"
 
 // FUNCTION: IMPERIALISM 0x004923f0
 CWMgrIterator* CWMgrIterator::Reset(char fForwardArg) {

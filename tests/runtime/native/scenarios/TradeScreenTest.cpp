@@ -22,6 +22,7 @@
 #include "game/ui_widgets/TTradeCluster.h"
 #include "game/ui_widgets/TTradeOrderPicture.h"
 #include "game/ui_widgets/TTradeScreenPicture.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -134,7 +135,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"trade toolbar action opened an unexpected modal\"");
       return;
     }
@@ -396,7 +397,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
       return;
     }

@@ -11,6 +11,7 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_tags_map.h"
+#include "game/globals/view_registries.h"
 
 // Save then load, both through the real document path.
 //

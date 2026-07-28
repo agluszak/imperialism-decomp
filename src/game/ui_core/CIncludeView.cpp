@@ -11,6 +11,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
+#include "game/globals/view_registries.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
@@ -777,7 +778,7 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 // FUNCTION: IMPERIALISM 0x0048d290
 static CWnd* GetModalStackTopHostView() {
   if (g_ModalViewStack.GetHeadPosition() != NULL) {
-    TView* window = static_cast<TView*>(g_ModalViewStack.GetHead());
+    TView* window = g_ModalViewStack.GetHead();
     window->AssertValid();
     if (window->nativeWindow50 != 0) {
       return window->nativeWindow50;
@@ -790,7 +791,7 @@ static CWnd* GetModalStackTopHostView() {
 // FUNCTION: IMPERIALISM 0x0048d840
 static CWnd* GetLiveRegistryHeadHostView() {
   if (g_LiveViewRegistry.GetHeadPosition() != NULL) {
-    TView* window = static_cast<TView*>(g_LiveViewRegistry.GetHead());
+    TView* window = g_LiveViewRegistry.GetHead();
     window->AssertValid();
     if (window->nativeWindow50 != 0) {
       return window->nativeWindow50;

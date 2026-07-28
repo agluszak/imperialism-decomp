@@ -10,6 +10,7 @@
 #include "game/ui_core/TViewMgr.h"
 
 #include <windows.h>
+#include "game/globals/view_registries.h"
 
 namespace {
 

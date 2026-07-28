@@ -17,10 +17,6 @@ extern int g_lastTurnAlertTick_006a31c0;
 
 extern CPoint g_turnEventDialogAnchorPoint;
 
-extern CPtrList g_LiveViewRegistry;
-
-extern CPtrList g_ModalViewStack;
-
 extern char s_szTurnHistoryPrefix_0069b71c[];
 
 extern "C" {
