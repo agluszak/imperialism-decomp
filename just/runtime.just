@@ -50,6 +50,12 @@ runtime-test name *args:
   just runtime-test-build
   uv run python -m tools.runtime.cli run "{{name}}" {{args}}
 
+[doc('Fuzz native UI controls under GDB, save the action trace, and minimize crashes or hangs')]
+[group('runtime-test')]
+runtime-explore *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.explore_cli {{args}}
+
 [doc('Run a catalog runtime suite (pr or full); rebuilds first')]
 [group('runtime-test')]
 runtime-test-suite suite='pr' *args:
