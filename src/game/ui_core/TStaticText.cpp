@@ -5,6 +5,7 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 

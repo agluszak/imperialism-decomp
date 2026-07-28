@@ -7,6 +7,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/quickdraw_guards.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/CDib.h"
 #include "game/TQuickDrawSurfaceContext.h"

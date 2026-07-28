@@ -2,6 +2,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_widgets.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/mfc.h"

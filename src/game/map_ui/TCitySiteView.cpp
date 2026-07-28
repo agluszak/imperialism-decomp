@@ -11,6 +11,7 @@
 #include "game/ui_widgets/TTown.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"

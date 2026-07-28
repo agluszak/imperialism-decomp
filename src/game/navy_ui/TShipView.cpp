@@ -14,6 +14,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/navy_order.h"

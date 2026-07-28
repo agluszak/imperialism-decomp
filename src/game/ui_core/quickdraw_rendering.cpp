@@ -5,6 +5,7 @@
 #include "game/gfx/TScopedQuickDrawBrush.h"
 #include "game/gfx/CDibPal.h"
 #include "game/globals/global_types.h"
+#include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
