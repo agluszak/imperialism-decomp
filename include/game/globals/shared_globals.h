@@ -115,12 +115,6 @@ extern short g_creditsPlaybackActive_006a4084;
 extern int g_InfoBarDummyOrigin_006A2410[2];
 
 extern "C" {
-extern "C" short g_nArmsBasicResourceOfferSplitCount_006a3a54;
-
-extern "C" short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
-
-extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
-
 // Secret garrison-close names used by the retail easter-egg path.
 extern const char g_szGarrisonSecretNationNameFrog[];
 
