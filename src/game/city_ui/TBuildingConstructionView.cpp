@@ -222,7 +222,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x4e8);
     }
-    short originalQuantity = order->quantityField04;
+    short originalQuantity = order->quantity;
     short buildingType = static_cast<short>(city->GetBuildingType(slot));
     short needed = static_cast<short>(city->GetMaxBuildingCapacity(slot) - buildingType);
     eligible = order->SetQuantity(needed);
@@ -261,7 +261,7 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
       short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId94));
       order->SetQuantity(static_cast<short>(city90->GetMaxBuildingCapacity(buildingSlotId94) -
                                             previousBuildingType));
-    } else if (order->quantityField04 > 0) {
+    } else if (order->quantity > 0) {
       order->SetQuantity(0);
     }
   } else if (dialogActionTag == kControlTagOkay) { // 'okay'

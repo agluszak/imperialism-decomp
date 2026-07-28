@@ -18,8 +18,8 @@ public:
                               short quantity) override; // slot 0x10 0x4b8440
   // Field-initialization body for the manual-alloc construction path (mirrors
   // TCapacityOrder's ICapacityOrder at the analogous
-  // sibling slot): sets quantityField04/cityField08/summaryField0c from `city`, zeroes
-  // trackingSlots10/field3e/field40/accumulatedValue, and seeds resourceTypeIndex48 = 1.
+  // sibling slot): sets quantity/ownerCity/productionSummary from `city`, zeroes
+  // trackingSlots/reservedWorkforce/limitingConstraint/accumulatedValue, and seeds resourceTypeIndex = 1.
   // No current caller in ported code (manual or autogen); kept as a virtual at its
   // existing slot rather than eliminated, since there is no evidence either way whether
   // the original dispatches it via vtable or a direct call, and this class has a prior

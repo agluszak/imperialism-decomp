@@ -85,7 +85,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
       weightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
     }
 
-    int power = weightSum + nation->SumNavyOrderPriorityForNationSlot86() + 4;
+    int power = weightSum + nation->GetArmsInNavy() + 4;
     sumPower += static_cast<float>(power);
     sumPowerSq += static_cast<float>(power * power);
     count += 1.0f;
@@ -105,7 +105,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
        unit = static_cast<TMilitaryUnit*>(myUnitIter.Advance())) {
     myWeightSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
-  float myPower = static_cast<float>(myWeightSum + this->SumNavyOrderPriorityForNationSlot86() + 4);
+  float myPower = static_cast<float>(myWeightSum + this->GetArmsInNavy() + 4);
 
   if (myPower > mean + 2.0f * stddev) {
     return 4;
@@ -133,11 +133,12 @@ IMPLEMENT_DYNCREATE(TGreatPower, TCountry)
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
     : foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
-      diplomacyCounterA2(0), tradeCapacity(0), needCapA6(0), needsOverCapFlag(0), grantTotalCost(0),
-      diplomacyCounterB0(0), budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0),
-      proposalQueue(0), city(0), townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0),
-      diplomacyBudgetBase(0), escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0),
-      field900(0), turnSummaryQueue(0), missionNodeQueue(0), field910(0), aidAllocationTotal(0),
+      availableMerchantCapacity(0), merchantCapacity(0), transportCapacity(0),
+      reservedTransportCapacity(0), grantTotalCost(0), unfilledTradeOfferCount(0),
+      budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0), proposalQueue(0), city(0),
+      townMarkerList(0), trackedObjectList(0), scenarioInitFlag(0), diplomacyBudgetBase(0),
+      escalationCounter(0), pendingCommitmentCost(0), pressureCounter(0), field900(0),
+      turnSummaryQueue(0), missionNodeQueue(0), field910(0), aidAllocationTotal(0),
       militaryExpenses960(0) {
   // TCountry base scalars (identity strings constructed by the TCountry ctor).
   this->nationSlot = 0;
@@ -164,15 +165,15 @@ TGreatPower::TGreatPower()
     this->needCurrentByType[nationIndex] = 0;
     this->needTargetByType[nationIndex] = 0;
     this->relationDeltaCurrent[nationIndex] = 0;
-    this->relationDeltaSnapshot[nationIndex] = 0;
-    this->diplomacyState1c6[nationIndex] = 0;
-    this->diplomacyState1f4[nationIndex] = 0;
-    this->diplomacyState222[nationIndex] = 0;
-    this->diplomacyState250[nationIndex] = 0;
+    this->purchasedItemsByResource[nationIndex] = 0;
+    this->itemPotentials[nationIndex] = 0;
+    this->unfilledTradeTurnCountsByResource[nationIndex] = 0;
+    this->transportedItemsByResource[nationIndex] = 0;
+    this->rememberedTradeOffersByResource[nationIndex] = 0;
     this->colonyBoycottFlags[nationIndex] = 0;
     int matrixRow = 0;
     do {
-      this->aidAllocationMatrix[nationIndex + matrixRow * 0x17] = 0;
+      this->aidAllocationMatrix[nationIndex + matrixRow * kNationSlotCount] = 0;
       ++matrixRow;
     } while (matrixRow < 0x10);
     ++nationIndex;
@@ -201,8 +202,8 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8c00
-short TGreatPower::GetDiplomacyCounterA2(void) {
-  return this->diplomacyCounterA2;
+short TGreatPower::GetAvailableMerchantCapacity(void) {
+  return this->availableMerchantCapacity;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d8c20
@@ -231,7 +232,7 @@ void TGreatPower::IGreatPower(short nationSlotIndex, short humanControlledFlag) 
   this->townMarkerList = new TSortedList();
 
   this->grantTotalCost = 0;
-  this->needCapA6 = 0x0F;
+  this->transportCapacity = 0x0F;
   this->field900 = 0x0F;
 
   this->turnEventQueue =
@@ -369,40 +370,42 @@ void TGreatPower::Free(void) {
 void TGreatPower::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);
   stream->ReadBytes(&this->diplomacyEligibilityA0, 1);
-  stream->ReadBytes(&this->diplomacyCounterA2, 2);
-  stream->ReadBytes(&this->tradeCapacity, 2);
-  stream->ReadBytes(&this->needCapA6, 2);
-  stream->ReadBytes(&this->needsOverCapFlag, 2);
+  stream->ReadBytes(&this->availableMerchantCapacity, 2);
+  stream->ReadBytes(&this->merchantCapacity, 2);
+  stream->ReadBytes(&this->transportCapacity, 2);
+  stream->ReadBytes(&this->reservedTransportCapacity, 2);
   if (g_nSaveFormatVersion < 0x3E) {
     stream->ReadBytes(&this->grantTotalCost, 2);
   } else {
     stream->ReadBytes(&this->grantTotalCost, 4);
   }
-  stream->ReadBytes(&this->diplomacyCounterB0, 2);
+  stream->ReadBytes(&this->unfilledTradeOfferCount, 2);
   stream->ReadBytes(this->diplomacyPolicyByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyPolicyByNation, kNationSlotCount);
   stream->ReadBytes(this->diplomacyGrantByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyGrantByNation, kNationSlotCount);
-  stream->ReadBytes(this->needCurrentByType, 0x2E);
-  SwapShortArrayBytes(this->needCurrentByType, kNationSlotCount);
-  stream->ReadBytes(this->needTargetByType, 0x2E);
-  SwapShortArrayBytes(this->needTargetByType, kNationSlotCount);
-  stream->ReadBytes(this->relationDeltaCurrent, 0x2E);
-  SwapShortArrayBytes(this->relationDeltaCurrent, kNationSlotCount);
-  stream->ReadBytes(this->relationDeltaSnapshot, 0x2E);
-  SwapShortArrayBytes(this->relationDeltaSnapshot, kNationSlotCount);
-  stream->ReadBytes(this->diplomacyState1c6, 0x2E);
-  SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
+  stream->ReadBytes(this->needCurrentByType, sizeof(this->needCurrentByType));
+  SwapShortArrayBytes(this->needCurrentByType, kResourceKindCount);
+  stream->ReadBytes(this->needTargetByType, sizeof(this->needTargetByType));
+  SwapShortArrayBytes(this->needTargetByType, kResourceKindCount);
+  stream->ReadBytes(this->relationDeltaCurrent, sizeof(this->relationDeltaCurrent));
+  SwapShortArrayBytes(this->relationDeltaCurrent, kResourceKindCount);
+  stream->ReadBytes(this->purchasedItemsByResource, sizeof(this->purchasedItemsByResource));
+  SwapShortArrayBytes(this->purchasedItemsByResource, kResourceKindCount);
+  stream->ReadBytes(this->itemPotentials, sizeof(this->itemPotentials));
+  SwapShortArrayBytes(this->itemPotentials, kResourceKindCount);
 
   if (g_nSaveFormatVersion >= 0x17) {
-    stream->ReadBytes(this->diplomacyState1f4, 0x2E);
-    SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
+    stream->ReadBytes(this->unfilledTradeTurnCountsByResource,
+                      sizeof(this->unfilledTradeTurnCountsByResource));
+    SwapShortArrayBytes(this->unfilledTradeTurnCountsByResource, kResourceKindCount);
   }
 
-  stream->ReadBytes(this->diplomacyState222, 0x2E);
-  SwapShortArrayBytes(this->diplomacyState222, kNationSlotCount);
-  stream->ReadBytes(this->diplomacyState250, 0x2E);
-  SwapShortArrayBytes(this->diplomacyState250, kNationSlotCount);
+  stream->ReadBytes(this->transportedItemsByResource, sizeof(this->transportedItemsByResource));
+  SwapShortArrayBytes(this->transportedItemsByResource, kResourceKindCount);
+  stream->ReadBytes(this->rememberedTradeOffersByResource,
+                    sizeof(this->rememberedTradeOffersByResource));
+  SwapShortArrayBytes(this->rememberedTradeOffersByResource, kResourceKindCount);
 
   stream->ReadBytes(&this->budgetPoolBase, 4);
   stream->ReadBytes(&this->budgetPoolDelta, 4);
@@ -601,23 +604,23 @@ void TGreatPower::WriteTo(TStream* stream) {
   TCountry::WriteTo(stream);
 
   stream->WriteBytes(&this->diplomacyEligibilityA0, 1);
-  stream->WriteBytes(&this->diplomacyCounterA2, 2);
-  stream->WriteBytes(&this->tradeCapacity, 2);
-  stream->WriteBytes(&this->needCapA6, 2);
-  stream->WriteBytes(&this->needsOverCapFlag, 2);
+  stream->WriteBytes(&this->availableMerchantCapacity, 2);
+  stream->WriteBytes(&this->merchantCapacity, 2);
+  stream->WriteBytes(&this->transportCapacity, 2);
+  stream->WriteBytes(&this->reservedTransportCapacity, 2);
   stream->WriteBytes(&this->grantTotalCost, 4);
-  stream->WriteBytes(&this->diplomacyCounterB0, 2);
+  stream->WriteBytes(&this->unfilledTradeOfferCount, 2);
 
   WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
   WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
-  WriteShortArrayElems(stream, this->needCurrentByType, 0x17);
-  WriteShortArrayElems(stream, this->needTargetByType, 0x17);
-  WriteShortArrayElems(stream, this->relationDeltaCurrent, 0x17);
-  WriteShortArrayElems(stream, this->relationDeltaSnapshot, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyState1c6, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyState1f4, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyState222, 0x17);
-  WriteShortArrayElems(stream, this->diplomacyState250, 0x17);
+  WriteShortArrayElems(stream, this->needCurrentByType, kResourceKindCount);
+  WriteShortArrayElems(stream, this->needTargetByType, kResourceKindCount);
+  WriteShortArrayElems(stream, this->relationDeltaCurrent, kResourceKindCount);
+  WriteShortArrayElems(stream, this->purchasedItemsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, this->itemPotentials, kResourceKindCount);
+  WriteShortArrayElems(stream, this->unfilledTradeTurnCountsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, this->transportedItemsByResource, kResourceKindCount);
+  WriteShortArrayElems(stream, this->rememberedTradeOffersByResource, kResourceKindCount);
 
   stream->WriteBytes(&this->budgetPoolBase, 4);
   stream->WriteBytes(&this->budgetPoolDelta, 4);
@@ -895,7 +898,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
-    this->DispatchTurnOrderActionSlotB0(3, capValue, 1);
+    this->AnnounceLater(3, capValue, 1);
   }
 
   // Navy primary/secondary order (pending status 0 == '2').
@@ -910,8 +913,8 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->AssignToShip(primaryOrder);
 
-    this->DispatchTurnOrderActionSlotB0(3, 0x2508, 1);
-    this->DispatchTurnOrderActionSlotB0(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);
+    this->AnnounceLater(3, 0x2508, 1);
+    this->AnnounceLater(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);
   }
 
   // Civil work order (pending status 2 < '3').
@@ -921,7 +924,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     short zoneCursor = 7;
     do {
       if (g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
+              ->relationStandingScores[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
         TMinor* minor = *minorEntry;
         if (minor != 0) {
           short ownerTag = minor->encodedNationSlot;
@@ -949,7 +952,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Final pending-action flush (pending status 0x0a == '2').
   if (this->pendingActionStatus.roles.actionStatus0A == 0x32) {
     this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
-    this->DispatchTurnOrderActionSlotB0(1, 6, 2);
+    this->AnnounceLater(1, 6, 2);
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
@@ -1057,8 +1060,8 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
 
   int treasuryValue10 = this->treasuryValue10;
   int basePressure = this->SumAidAllocationMatrixAllCells();
-  basePressure += static_cast<int>(this->needTargetByType[0x16]) * 200;
-  basePressure += static_cast<int>(this->needTargetByType[0x15]) * 500;
+  basePressure += static_cast<int>(this->needTargetByType[kResourceGold]) * 200;
+  basePressure += static_cast<int>(this->needTargetByType[kResourceGems]) * 500;
   basePressure += this->budgetPoolBase;
   int pressureFloor = g_anNationBasePressureByLocale[localeIndex];
   if (basePressure < pressureFloor) {

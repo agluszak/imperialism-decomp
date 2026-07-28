@@ -17,7 +17,7 @@ inline int HexNeighborInline(int tileIndex, int direction) {
   }
   col = tileIndex % 0x6c + col;
   int row = tileIndex / 0x6c + g_hexRowOffset_00697468[direction];
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == '\0') {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally == '\0') {
     if (col < 0) {
       col = col + 0x6c;
     } else if (0x6b < col) {

@@ -59,17 +59,17 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
     short deficits[0x17];
     memset(deficits, 0, sizeof(deficits));
     deficits[8] = static_cast<short>(g_industryActionCostWeightResCode08[requestedShipType14] -
-                                     shipOrder->trackingSlots10[8]);
+                                     shipOrder->trackingSlots[8]);
     deficits[9] = static_cast<short>(g_industryActionCostWeightResCode09[requestedShipType14] -
-                                     shipOrder->trackingSlots10[9]);
+                                     shipOrder->trackingSlots[9]);
     deficits[0xb] = static_cast<short>(g_industryActionCostWeightResCode0B[requestedShipType14] -
-                                       shipOrder->trackingSlots10[0xb]);
+                                       shipOrder->trackingSlots[0xb]);
     deficits[0x10] = static_cast<short>(g_industryActionCostWeightResCode10[requestedShipType14] -
-                                        shipOrder->trackingSlots10[0x10]);
+                                        shipOrder->trackingSlots[0x10]);
     deficits[0xc] = static_cast<short>(g_industryActionCostWeightResCode0C[requestedShipType14] -
-                                       shipOrder->trackingSlots10[0xc]);
+                                       shipOrder->trackingSlots[0xc]);
     deficits[3] = static_cast<short>(g_industryActionCostWeightResCode03[requestedShipType14] -
-                                     shipOrder->trackingSlots10[3]);
+                                     shipOrder->trackingSlots[3]);
 
     for (short resource = 0; resource < 0x17; ++resource) {
       short deficit = deficits[resource];
@@ -82,8 +82,8 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
           }
           ownerCity->CityStockByType(resource) = static_cast<short>(available - consumed);
           ownerCity->VerifyStocks();
-          shipOrder->trackingSlots10[resource] =
-              static_cast<short>(shipOrder->trackingSlots10[resource] + consumed);
+          shipOrder->trackingSlots[resource] =
+              static_cast<short>(shipOrder->trackingSlots[resource] + consumed);
           deficits[resource] = static_cast<short>(deficit - consumed);
         }
       }
@@ -110,7 +110,7 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
       alreadyQueuedFlag = 1;
       return false;
     }
-  } else if (shipOrder->resourceTypeIndex48 != requestedShipType14) {
+  } else if (shipOrder->resourceTypeIndex != requestedShipType14) {
     return true;
   }
 

@@ -3,11 +3,19 @@
 #include "game/app/TObject.h"
 #include "game/mfc.h"
 #include "game/order_sheet.h"
+#include "game/resource_domain_types.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TCity;
 class TPopulationMgr;
+
+enum ProductionOrderLimitKind {
+  kProductionOrderLimitResources = 0,
+  kProductionOrderLimitWorkforce = 1,
+  kProductionOrderLimitCapacity = 2,
+  kProductionOrderLimitTreasury = 3
+};
 
 // TProductionOrder is the common base for the city order-slot family
 // (TShipOrder, TTrainingOrder, TItemOrder/TOrItemOrder, TUnitOrder,
@@ -28,24 +36,17 @@ public:
   virtual void Restock();                                              // slot 0x0e 0x4b5140
   virtual void ResetOrderSheet(OrderSheet* orderSheet);                // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0
-  // Field layout recovered from the RTTI object-size match: TProductionOrder
-  // and several direct children (TShipOrder, TTrainingOrder,
-  // TFoodProcessingOrder, TPopGrowthOrder) are ALL exactly 0x4c bytes per
-  // `config/rtti_class_oracle.csv`, so those children add zero fields of
-  // their own — every field previously modeled on TShipOrder at these same
-  // offsets is really this base's own layout. Cross-checked against
-  // TUnitOrder::Produce (0x004b73b0, a sibling with its own extra
-  // 0x10 bytes) reading the identical offsets +0x04/+0x08/+0x48 for the same
-  // roles (pending quantity, owning city, resource/entry id).
-  short quantityField04;          // 0x04 — pending order quantity
-  TCity* cityField08;             // 0x08 — owning city
-  TPopulationMgr* summaryField0c; // 0x0c — city population/production summary
-  short trackingSlots10[0x17];    // 0x10..0x3e — per-resource tracking slots
-  short field3e;                  // 0x3e
-  short field40;                  // 0x40
+  // LAYOUT: the order-slot family shares this complete 0x4c-byte prefix; several
+  // direct children add no storage, while TUnitOrder appends its own fields.
+  short quantity;                          // 0x04 — pending order quantity
+  TCity* ownerCity;                        // 0x08 — owning city
+  TPopulationMgr* productionSummary;       // 0x0c — city population/production summary
+  short trackingSlots[kResourceKindCount]; // 0x10..0x3e — per-resource tracking slots
+  short reservedWorkforce;                 // 0x3e — labor committed to this order
+  short limitingConstraint;                // 0x40 — ProductionOrderLimitKind
   int accumulatedValue; // 0x44 — summed by TGreatPower::SumCommodityRecordAccumulatedValues (0x004e06d0)
-  short resourceTypeIndex48; // 0x48 — resource/entry type index
-  short field4a;             // 0x4a
+  short resourceTypeIndex; // 0x48 — resource/entry type index
+  short unknown4a;         // 0x4a — unresolved storage; no recovered access outside layout
 
   // In-class inline. 0x004b4f00 is the out-of-line copy MSVC still emits, but derived
   // CreateObject bodies absorb it instead of calling it: TItemOrder::CreateObject

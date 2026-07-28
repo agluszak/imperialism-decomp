@@ -93,16 +93,14 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       cellRect.left = ctrl->ownerLocalX + 0x11a;
       cellRect.right = cellRect.left + 0x12;
       short diploValue =
-          g_apNationStates[g_pSimMgr->GetActiveNationId()]->GetDiplomacyExternalStateByTarget(
-              static_cast<short>(i));
+          g_apNationStates[g_pSimMgr->GetActiveNationId()]->GetStockpile(static_cast<short>(i));
       if (diploValue == 0) {
         cellText = CString("--");
       } else {
         cellText.Format(
             g_szDecimalFormat,
-            static_cast<int>(
-                g_apNationStates[g_pSimMgr->GetActiveNationId()]->GetDiplomacyExternalStateByTarget(
-                    static_cast<short>(i))));
+            static_cast<int>(g_apNationStates[g_pSimMgr->GetActiveNationId()]->GetStockpile(
+                static_cast<short>(i))));
       }
       cellRect.top -= 5;
       cellRect.bottom -= 5;

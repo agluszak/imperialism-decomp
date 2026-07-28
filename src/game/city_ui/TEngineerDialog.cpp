@@ -152,7 +152,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   char* influenceMap = g_apNationStates[activeNation]->BuildCityInfluenceLevelMap();
   StrategicTileIndex neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(nBuildingSlotId, neighborTiles,
-                                  mapState->hexNeighborWrapHorizontally20);
+                                  mapState->hexNeighborWrapHorizontally);
 
   // A neighbour carrying transport flag 0x14 disables local production.
   if (fortAllowed != 0 && railAllowed != 0) {

@@ -755,7 +755,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   UnlockPixels(GetGWorldPixMap(atlas670));
   SetGWorld(savedContext, savedFlags);
   (*GetGWorldPixMap(atlas670))->dib->FlipScanlineOrder();
-  g_pGlobalMapState->strategicMapPalettePreviewReady04 = 1;
+  g_pGlobalMapState->strategicMapPalettePreviewReady = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0050b9e0
@@ -821,11 +821,10 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent() {
 void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int orderSlot,
                                                  short nationSlot) {
   if (orderSource->IsSelectionAllowed() != 0) {
-    g_apNationStates[nationSlot]->SetDiplomacyState1c6ClampedToCounterA4(
-        static_cast<short>(orderSlot), -1);
+    g_apNationStates[nationSlot]->SetItemPotentials(static_cast<short>(orderSlot), -1);
     return;
   }
-  g_apNationStates[nationSlot]->SetDiplomacyState1c6ClampedToCounterA4(
+  g_apNationStates[nationSlot]->SetItemPotentials(
       static_cast<short>(orderSlot), static_cast<short>(orderSource->GetTradeSellControlValue()));
 }
 
@@ -841,12 +840,12 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
       (orderSlot == 6 || orderSlot == 0xc)) {
     view->SetEnabled(0, 0);
   }
-  short sellCount = g_apNationStates[nationIndex]->QueryNationMetricBySlot7C(orderSlot);
+  short sellCount = g_apNationStates[nationIndex]->GetTradeOffersFor(orderSlot);
   // The clamp branch resets the nation index used by the trailing capacity check below to
   // 0 (matches the original: it reuses the same stack slot that held nationIndex).
   short effectiveNationIndex = nationIndex;
-  if (sellCount > 0 && g_apNationStates[nationIndex]->tradeCapacity == 0) {
-    g_apNationStates[nationIndex]->SetDiplomacyState1c6ClampedToCounterA4(orderSlot, 0);
+  if (sellCount > 0 && g_apNationStates[nationIndex]->merchantCapacity == 0) {
+    g_apNationStates[nationIndex]->SetItemPotentials(orderSlot, 0);
     sellCount = 0;
     effectiveNationIndex = 0;
   }
@@ -869,7 +868,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
     sellControl->SetEnabled(1, 1);
     return;
   }
-  if (g_apNationStates[effectiveNationIndex]->tradeCapacity != 0) {
+  if (g_apNationStates[effectiveNationIndex]->merchantCapacity != 0) {
     row->NotifySellCapacityAvailable();
   }
   sellControl->ConfigureGoldValueCells(0, 0);
@@ -920,8 +919,8 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
     SetControlHoverHelpText(scratch38, textEntry);
 
-    short needCap = nation != 0 ? nation->needCapA6 : 0;
-    panel->splitValue94 = nation != 0 ? nation->needsOverCapFlag : 0;
+    short needCap = nation != 0 ? nation->transportCapacity : 0;
+    panel->splitValue94 = nation != 0 ? nation->reservedTransportCapacity : 0;
     panel->splitValue96 = needCap;
     panel->splitLimit98 = static_cast<short>(-1);
     return;

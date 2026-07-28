@@ -43,11 +43,11 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
   minister->SetBuyPriorities();
   if (minister->interiorBidResource10 != -10) {
     short resourceCode = minister->interiorBidResource10;
-    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, -1);
+    owner->SetItemPotentials(resourceCode, -1);
     minister->purchasePriorityByResource1e[resourceCode] = minister->interiorBidAmount12;
   }
   for (int index = 0; index < 4; ++index) {
-    owner->SetDiplomacyState1c6ClampedToCounterA4(minister->preferredResourceSlots40[index], -1);
+    owner->SetItemPotentials(minister->preferredResourceSlots40[index], -1);
   }
 }
 
@@ -68,12 +68,12 @@ static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, sh
   TGreatPower* owner = minister->ownerContextAt04;
   if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > threshold &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
-    short available = owner->GetDiplomacyExternalStateByTarget(0x10);
+    short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
     if (amount > 2) {
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, amount);
+      owner->SetItemPotentials(kResourceArms, amount);
     } else if (available > 6) {
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+      owner->SetItemPotentials(kResourceArms, 2);
     }
   }
 }
@@ -103,8 +103,8 @@ TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
 // FUNCTION: IMPERIALISM 0x00531290
 void TTedForeignMinister::SetBuyPriorities() {
   if (!HasAdvancedTradeResource(this)) {
-    if (ownerContextAt04->GetDiplomacyExternalStateByTarget(4) <
-        ownerContextAt04->GetDiplomacyExternalStateByTarget(3)) {
+    if (ownerContextAt04->GetStockpile(kResourceIron) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
       preferredResourceSlots40[0] = 4;
       preferredResourceSlots40[2] = 3;
     } else {
@@ -120,8 +120,8 @@ void TTedForeignMinister::SetBuyPriorities() {
   short resources[4] = {2, 3, 4, 6};
   for (int i = 0; i < 3; ++i) {
     for (int j = i + 1; j < 4; ++j) {
-      if (ownerContextAt04->GetDiplomacyExternalStateByTarget(resources[j]) <
-          ownerContextAt04->GetDiplomacyExternalStateByTarget(resources[i])) {
+      if (ownerContextAt04->GetStockpile(resources[j]) <
+          ownerContextAt04->GetStockpile(resources[i])) {
         short swap = resources[i];
         resources[i] = resources[j];
         resources[j] = swap;
@@ -139,21 +139,17 @@ void TTedForeignMinister::SetBuyPriorities() {
 void TTedForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = ownerContextAt04;
-  short tradeCapacity = owner->tradeCapacity;
-  short resourceAmount = owner->GetDiplomacyExternalStateByTarget(0x0f);
-  if (owner->treasuryValue10 >= 0 && tradeCapacity > resourceAmount && resourceAmount < 10) {
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d,
-                                                  owner->GetDiplomacyExternalStateByTarget(0x0d));
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0e,
-                                                  owner->GetDiplomacyExternalStateByTarget(0x0e));
+  short merchantCapacity = owner->merchantCapacity;
+  short resourceAmount = owner->GetStockpile(kResourceHardware);
+  if (owner->treasuryValue10 >= 0 && merchantCapacity > resourceAmount && resourceAmount < 10) {
+    owner->SetItemPotentials(kResourceClothing, owner->GetStockpile(kResourceClothing));
+    owner->SetItemPotentials(kResourceFurniture, owner->GetStockpile(kResourceFurniture));
   } else {
-    short amount = MinShort(tradeCapacity, resourceAmount);
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0f, amount);
-    if (tradeCapacity > amount * 2) {
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d,
-                                                    owner->GetDiplomacyExternalStateByTarget(0x0d));
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x0e,
-                                                    owner->GetDiplomacyExternalStateByTarget(0x0e));
+    short amount = MinShort(merchantCapacity, resourceAmount);
+    owner->SetItemPotentials(kResourceHardware, amount);
+    if (merchantCapacity > amount * 2) {
+      owner->SetItemPotentials(kResourceClothing, owner->GetStockpile(kResourceClothing));
+      owner->SetItemPotentials(kResourceFurniture, owner->GetStockpile(kResourceFurniture));
     }
   }
   SetTedStyleAdvancedResourceBid(this, 1500);
@@ -169,7 +165,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   TGreatPower* owner = ownerContextAt04;
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(3) / 2);
+      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(3) / 2);
       tradePartnerEnabled49[3] = 0;
     }
     if (capabilityFlag16 >= arg2) {
@@ -186,22 +182,22 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (resourceCode == kResourceTimber || resourceCode == kResourceIron ||
       resourceCode == kResourceOil) {
     short available =
-        static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     short amount =
         available >= arg2
             ? arg2
-            : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+            : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
                                                      resourceCode, 0, 0);
     return;
   }
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
-    short amount = owner->tradeCapacity < 15 ? 1 : (owner->tradeCapacity >= 30 ? 3 : 2);
+    short amount = owner->merchantCapacity < 15 ? 1 : (owner->merchantCapacity >= 30 ? 3 : 2);
     amount = MinShort(amount, arg2);
     short available =
-        static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     if (available < amount) {
-      amount = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+      amount = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     }
     g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
                                                      resourceCode, 0, 0);
@@ -282,8 +278,8 @@ void TBillForeignMinister::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00531d20
 void TBillForeignMinister::SetBuyPriorities() {
   bool hasAdvancedResource = HasAdvancedTradeResource(this);
-  if (ownerContextAt04->GetDiplomacyExternalStateByTarget(4) <
-      ownerContextAt04->GetDiplomacyExternalStateByTarget(3)) {
+  if (ownerContextAt04->GetStockpile(kResourceIron) <
+      ownerContextAt04->GetStockpile(kResourceCoal)) {
     preferredResourceSlots40[0] = 4;
     preferredResourceSlots40[hasAdvancedResource ? 3 : 2] = 3;
   } else {
@@ -303,8 +299,8 @@ void TBillForeignMinister::SetBuyPriorities() {
 void TBillForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = ownerContextAt04;
-  short targetAmount = owner->treasuryValue10 < 0 ? owner->tradeCapacity
-                                                  : static_cast<short>(owner->tradeCapacity / 2);
+  short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
+                                                  : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
   prices->recordSize14 = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
@@ -315,9 +311,9 @@ void TBillForeignMinister::SetTradeBids() {
   int iteration = 0;
   while (targetAmount > 0 && iteration < targetAmount * 3) {
     short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
-    if (amounts[resourceCode] < owner->GetDiplomacyExternalStateByTarget(resourceCode)) {
+    if (amounts[resourceCode] < owner->GetStockpile(resourceCode)) {
       ++amounts[resourceCode];
-      owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amounts[resourceCode]);
+      owner->SetItemPotentials(resourceCode, amounts[resourceCode]);
     }
     if (amounts[0x0d] + amounts[0x0e] + amounts[0x0f] >= targetAmount) {
       break;
@@ -346,13 +342,13 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3) >= 105 &&
         g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) >= 105) {
       if (tradePartnerEnabled49[2] != 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / 3);
+        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
         if (capabilityFlag16 < 2) {
           capabilityFlag16 = 2;
         }
         tradePartnerEnabled49[2] = 0;
       }
-      available = owner->GetDiplomacyCounterA2();
+      available = owner->GetAvailableMerchantCapacity();
       amount = MinShort(capabilityFlag16, available);
       if (amount >= arg2) {
         g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 2, 0,
@@ -367,8 +363,8 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
         capabilityFlag16 = 0;
       }
     } else {
-      available = owner->GetDiplomacyCounterA2();
-      amount = available >= arg2 ? arg2 : owner->GetDiplomacyCounterA2();
+      available = owner->GetAvailableMerchantCapacity();
+      amount = available >= arg2 ? arg2 : owner->GetAvailableMerchantCapacity();
       g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2, 0,
                                                        0);
     }
@@ -376,27 +372,27 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   }
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / 2);
+      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
       tradePartnerEnabled49[3] = 0;
     }
     amount = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4) < 105
                  ? arg2
                  : capabilityFlag16;
     amount = MinShort(amount, arg2);
-    available = owner->GetDiplomacyCounterA2();
+    available = owner->GetAvailableMerchantCapacity();
     if (available >= amount) {
       g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3, 3, 0,
                                                        0);
       capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
     } else {
       g_pNationInteractionStateManager->SetDealResults(
-          owner->nationSlot, arg1, owner->GetDiplomacyCounterA2(), arg3, 3, 1, 0);
+          owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(), arg3, 3, 1, 0);
       capabilityFlag16 = 0;
     }
     return;
   }
   if (resourceCode == kResourceIron || resourceCode == kResourceOil) {
-    available = owner->GetDiplomacyCounterA2();
+    available = owner->GetAvailableMerchantCapacity();
     if (available >= arg2) {
       g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3,
                                                        resourceCode, 0, 0);
@@ -405,7 +401,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       }
     } else {
       g_pNationInteractionStateManager->SetDealResults(
-          owner->nationSlot, arg1, owner->GetDiplomacyCounterA2(), arg3, resourceCode,
+          owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(), arg3, resourceCode,
           resourceCode == kResourceIron, 0);
       if (resourceCode == kResourceIron) {
         capabilityFlag16 = 0;
@@ -505,17 +501,17 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
   preferredResourceSlots40[0] = 2;
   if (HasAdvancedTradeResource(this)) {
     preferredResourceSlots40[3] = rand() % 2 == 0 ? 1 : 0;
-    if (ownerContextAt04->GetDiplomacyExternalStateByTarget(4) <
-        ownerContextAt04->GetDiplomacyExternalStateByTarget(3)) {
+    if (ownerContextAt04->GetStockpile(kResourceIron) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
       preferredResourceSlots40[1] = 4;
-      preferredResourceSlots40[2] = ownerContextAt04->GetDiplomacyExternalStateByTarget(6) <
-                                            ownerContextAt04->GetDiplomacyExternalStateByTarget(3)
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) <
+                                            ownerContextAt04->GetStockpile(kResourceCoal)
                                         ? 6
                                         : 3;
     } else {
       preferredResourceSlots40[1] = 3;
-      preferredResourceSlots40[2] = ownerContextAt04->GetDiplomacyExternalStateByTarget(6) <
-                                            ownerContextAt04->GetDiplomacyExternalStateByTarget(4)
+      preferredResourceSlots40[2] = ownerContextAt04->GetStockpile(kResourceOil) <
+                                            ownerContextAt04->GetStockpile(kResourceIron)
                                         ? 6
                                         : 4;
     }
@@ -536,8 +532,8 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
     preferredResourceSlots40[2] = 1;
     preferredResourceSlots40[3] = rand() < 0x3ffe ? 3 : 4;
   } else if (((g_pSimMgr->economicTurn / 4) & 1) != 0) {
-    if (ownerContextAt04->GetDiplomacyExternalStateByTarget(4) <
-        ownerContextAt04->GetDiplomacyExternalStateByTarget(3)) {
+    if (ownerContextAt04->GetStockpile(kResourceIron) <
+        ownerContextAt04->GetStockpile(kResourceCoal)) {
       preferredResourceSlots40[1] = 4;
       preferredResourceSlots40[2] = 3;
     } else {
@@ -550,16 +546,16 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
             ? 0
             : 1;
   } else {
-    if (ownerContextAt04->GetDiplomacyExternalStateByTarget(0) <
-        ownerContextAt04->GetDiplomacyExternalStateByTarget(1)) {
+    if (ownerContextAt04->GetStockpile(kResourceCotton) <
+        ownerContextAt04->GetStockpile(kResourceWool)) {
       preferredResourceSlots40[1] = 0;
       preferredResourceSlots40[2] = 1;
     } else {
       preferredResourceSlots40[1] = 1;
       preferredResourceSlots40[2] = 0;
     }
-    preferredResourceSlots40[3] = ownerContextAt04->GetDiplomacyExternalStateByTarget(4) <
-                                          ownerContextAt04->GetDiplomacyExternalStateByTarget(3)
+    preferredResourceSlots40[3] = ownerContextAt04->GetStockpile(kResourceIron) <
+                                          ownerContextAt04->GetStockpile(kResourceCoal)
                                       ? 4
                                       : 3;
   }
@@ -570,8 +566,8 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
 void TDiplomatForeignMinister::SetTradeBids() {
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = ownerContextAt04;
-  short targetAmount = owner->treasuryValue10 < 0 ? owner->tradeCapacity
-                                                  : static_cast<short>(owner->tradeCapacity / 2);
+  short targetAmount = owner->treasuryValue10 < 0 ? owner->merchantCapacity
+                                                  : static_cast<short>(owner->merchantCapacity / 2);
   TSortByPriceList* prices = new TSortByPriceList();
   prices->recordSize14 = sizeof(ResourcePriorityEntry);
   AddSortedResourcePrice(prices, 0x0d);
@@ -582,9 +578,9 @@ void TDiplomatForeignMinister::SetTradeBids() {
   int iteration = 0;
   while (targetAmount > 0 && iteration < targetAmount * 3) {
     short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
-    if (amounts[resourceCode] < owner->GetDiplomacyExternalStateByTarget(resourceCode)) {
+    if (amounts[resourceCode] < owner->GetStockpile(resourceCode)) {
       ++amounts[resourceCode];
-      owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amounts[resourceCode]);
+      owner->SetItemPotentials(resourceCode, amounts[resourceCode]);
     }
     if (amounts[0x0d] + amounts[0x0e] + amounts[0x0f] >= targetAmount) {
       break;
@@ -597,9 +593,9 @@ void TDiplomatForeignMinister::SetTradeBids() {
   }
   prices->ReleasePtrList();
   if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
-      owner->GetDiplomacyExternalStateByTarget(0x10) > 6 &&
+      owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+    owner->SetItemPotentials(kResourceArms, 2);
   }
 }
 
@@ -611,9 +607,9 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short a
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short amount = owner->tradeCapacity < 12 ? 1 : (owner->tradeCapacity >= 25 ? 3 : 2);
-  amount = MinShort(amount,
-                    static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode)));
+  short amount = owner->merchantCapacity < 12 ? 1 : (owner->merchantCapacity >= 25 ? 3 : 2);
+  amount = MinShort(
+      amount, static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)));
   amount = MinShort(amount, arg2);
   g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
                                                    resourceCode, 0, 0);
@@ -652,7 +648,7 @@ void TTextileForeignMinister::SetBuyPriorities() {
   for (int i = 0; i < resourceCount; ++i) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resources[i];
-    entry.priority = ownerContextAt04->GetDiplomacyExternalStateByTarget(resources[i]);
+    entry.priority = ownerContextAt04->GetStockpile(resources[i]);
     priorities->InsertCopiedRecordSortedByComparator(&entry);
   }
   for (int selectedIndex = 0; selectedIndex < 2; ++selectedIndex) {
@@ -666,17 +662,17 @@ void TTextileForeignMinister::SetBuyPriorities() {
 
 // FUNCTION: IMPERIALISM 0x00533380
 void TTextileForeignMinister::SetTradeBids() {
-  short tradeCapacity = ownerContextAt04->tradeCapacity;
+  short merchantCapacity = ownerContextAt04->merchantCapacity;
   PreparePersonalityTradeBids(this);
   TGreatPower* owner = ownerContextAt04;
-  short textileAmount = owner->GetDiplomacyExternalStateByTarget(0x0d);
-  if (owner->treasuryValue10 < 0 || textileAmount >= tradeCapacity ||
+  short textileAmount = owner->GetStockpile(kResourceClothing);
+  if (owner->treasuryValue10 < 0 || textileAmount >= merchantCapacity ||
       (textileAmount > 4 &&
        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0d) > 1000)) {
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x0d, MinShort(textileAmount, tradeCapacity));
+    owner->SetItemPotentials(kResourceClothing, MinShort(textileAmount, merchantCapacity));
   }
-  if (owner->treasuryValue10 < 0 || owner->QueryNationMetricBySlot7C(0x0d) == 0) {
-    short budget = static_cast<short>(tradeCapacity / 2);
+  if (owner->treasuryValue10 < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
+    short budget = static_cast<short>(merchantCapacity / 2);
     short firstResource = 0x0e;
     short secondResource = 0x0f;
     if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x0f) >
@@ -684,12 +680,11 @@ void TTextileForeignMinister::SetTradeBids() {
       firstResource = 0x0f;
       secondResource = 0x0e;
     }
-    short firstAmount = MinShort(budget, owner->GetDiplomacyExternalStateByTarget(firstResource));
-    owner->SetDiplomacyState1c6ClampedToCounterA4(firstResource, firstAmount);
+    short firstAmount = MinShort(budget, owner->GetStockpile(firstResource));
+    owner->SetItemPotentials(firstResource, firstAmount);
     short remaining = static_cast<short>(budget - firstAmount);
-    owner->SetDiplomacyState1c6ClampedToCounterA4(
-        secondResource,
-        MinShort(remaining, owner->GetDiplomacyExternalStateByTarget(secondResource)));
+    owner->SetItemPotentials(secondResource,
+                             MinShort(remaining, owner->GetStockpile(secondResource)));
   }
   SetTedStyleAdvancedResourceBid(this, 1500);
 }
@@ -702,11 +697,12 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short available = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  short available =
+      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
   short amount =
       available >= arg2
           ? arg2
-          : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+          : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
   g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
                                                    resourceCode, 0, 0);
 }
@@ -781,22 +777,21 @@ void TTraderForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
   short divisor = owner->treasuryValue10 < 0 ? 1 : 4;
-  short budget = static_cast<short>(owner->tradeCapacity / divisor);
+  short budget = static_cast<short>(owner->merchantCapacity / divisor);
   int selectedOrdinal = 3;
   short allocated = 0;
   while (budget > allocated && selectedOrdinal >= 1) {
     short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
-    short amount = owner->GetDiplomacyExternalStateByTarget(resourceCode);
-    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amount);
-    allocated =
-        static_cast<short>(allocated + owner->GetDiplomacyExternalStateByTarget(resourceCode));
+    short amount = owner->GetStockpile(resourceCode);
+    owner->SetItemPotentials(resourceCode, amount);
+    allocated = static_cast<short>(allocated + owner->GetStockpile(resourceCode));
     --selectedOrdinal;
   }
   prices->ReleasePtrList();
   if (g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0x10) > 1200 &&
-      owner->GetDiplomacyExternalStateByTarget(0x10) > 6 &&
+      owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
-    owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+    owner->SetItemPotentials(kResourceArms, 2);
   }
 }
 
@@ -808,11 +803,12 @@ void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short available = static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+  short available =
+      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
   short amount =
       available >= arg2
           ? arg2
-          : static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(resourceCode));
+          : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
   g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
                                                    resourceCode, available < arg2, 0);
 }
@@ -894,29 +890,29 @@ void TArmsForeignMinister::SetTradeBids() {
   AddSortedResourcePrice(prices, 0x0d);
   AddSortedResourcePrice(prices, 0x0e);
   AddSortedResourcePrice(prices, 0x0f);
-  short budget = static_cast<short>(owner->tradeCapacity / 2);
+  short budget = static_cast<short>(owner->merchantCapacity / 2);
   int selectedOrdinal = 3;
   short allocated = 0;
   while (allocated < budget && selectedOrdinal >= 1) {
     short resourceCode = GetSortedResourceCode(prices, selectedOrdinal);
-    short amount = MinShort(owner->GetDiplomacyExternalStateByTarget(resourceCode),
-                            static_cast<short>(budget - allocated));
-    owner->SetDiplomacyState1c6ClampedToCounterA4(resourceCode, amount);
+    short amount =
+        MinShort(owner->GetStockpile(resourceCode), static_cast<short>(budget - allocated));
+    owner->SetItemPotentials(resourceCode, amount);
     allocated = static_cast<short>(allocated + amount);
     --selectedOrdinal;
   }
   prices->ReleasePtrList();
   if (owner->treasuryValue10 < 0 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
-    short available = owner->GetDiplomacyExternalStateByTarget(0x10);
+    short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
     if (amount > 10) {
       amount = 10;
     }
     if (amount > 2) {
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, amount);
+      owner->SetItemPotentials(kResourceArms, amount);
     } else if (available > 6) {
-      owner->SetDiplomacyState1c6ClampedToCounterA4(0x10, 2);
+      owner->SetItemPotentials(kResourceArms, 2);
     }
   }
 }
@@ -942,12 +938,12 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (eligibleForSplit) {
     if (tradePartnerEnabled49[resourceCode] != 0) {
       short divisor = *splitCount == 0 ? 3 : 2;
-      capabilityFlag16 = static_cast<short>(owner->GetDiplomacyCounterA2() / divisor);
+      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / divisor);
       ++*splitCount;
     }
     tradePartnerEnabled49[resourceCode] = 0;
   } else {
-    capabilityFlag16 = owner->GetDiplomacyCounterA2();
+    capabilityFlag16 = owner->GetAvailableMerchantCapacity();
   }
   if (capabilityFlag16 >= arg2) {
     g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3,

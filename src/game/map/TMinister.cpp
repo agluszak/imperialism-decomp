@@ -65,7 +65,7 @@ void TMinister::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0052ed20
 short TMinister::GetRankingCriterionForGP(short nationSlot) {
-  return g_apNationStates[nationSlot]->GetDiplomacyExternalStateByTarget(0x10);
+  return g_apNationStates[nationSlot]->GetStockpile(kResourceArms);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ed50

@@ -31,19 +31,19 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
                             short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                             short nSecondaryInputPerUnit, short nCashCostPerUnit,
                             short nWorkforceMode, byte bSpecialistMode) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = nEntryId;
-  quantityField04 = 0;
-  memset(trackingSlots10, 0, sizeof(trackingSlots10));
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = nEntryId;
+  quantity = 0;
+  memset(trackingSlots, 0, sizeof(trackingSlots));
   primaryInputResourceId = nPrimaryInputResourceId;
   primaryInputPerUnit = nPrimaryInputPerUnit;
   secondaryInputResourceId = nSecondaryInputResourceId;
   secondaryInputPerUnit = nSecondaryInputPerUnit;
   accumulatedValue = 0;
   cashCostPerUnit = nCashCostPerUnit;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
   workforceMode = nWorkforceMode;
   specialistMode = bSpecialistMode;
 }
@@ -52,19 +52,19 @@ void TUnitOrder::IUnitOrder(TCity* city, short nEntryId, short nPrimaryInputReso
 short TUnitOrder::MaxOrder() {
   short workforceLimit;
   if (workforceMode == kLowSkillWorkforceMode) {
-    workforceLimit = summaryField0c->productionSlots14->lowSkillCount04;
-    if (summaryField0c->strength < workforceLimit) {
-      workforceLimit = summaryField0c->strength;
+    workforceLimit = productionSummary->productionSlots14->lowSkillCount04;
+    if (productionSummary->strength < workforceLimit) {
+      workforceLimit = productionSummary->strength;
     }
   } else if (workforceMode == kMediumSkillWorkforceMode) {
-    workforceLimit = summaryField0c->productionSlots14->mediumSkillCount06;
-    short strengthLimit = static_cast<short>(summaryField0c->strength / 2);
+    workforceLimit = productionSummary->productionSlots14->mediumSkillCount06;
+    short strengthLimit = static_cast<short>(productionSummary->strength / 2);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
   } else if (workforceMode == kHighSkillWorkforceMode) {
-    workforceLimit = summaryField0c->productionSlots14->highSkillCount08;
-    short strengthLimit = static_cast<short>(summaryField0c->strength / 4);
+    workforceLimit = productionSummary->productionSlots14->highSkillCount08;
+    short strengthLimit = static_cast<short>(productionSummary->strength / 4);
     if (strengthLimit < workforceLimit) {
       workforceLimit = strengthLimit;
     }
@@ -72,15 +72,15 @@ short TUnitOrder::MaxOrder() {
     workforceLimit = 9999;
   }
 
-  short primaryLimit = static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) /
-                                          primaryInputPerUnit);
+  short primaryLimit =
+      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) / primaryInputPerUnit);
   short secondaryLimit = primaryLimit;
   if (secondaryInputResourceId >= 0) {
-    secondaryLimit = static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) /
+    secondaryLimit = static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) /
                                         secondaryInputPerUnit);
   }
 
-  TGreatPower* owner = cityField08->ownerNationAc;
+  TGreatPower* owner = ownerCity->ownerNationAc;
   short cashLimit = primaryLimit;
   if (cashCostPerUnit != 0 && owner->diplomacyEligibilityA0 != 0) {
     int availableCash = owner->treasuryValue10 + owner->diplomacyBudgetBase / 100;
@@ -93,43 +93,43 @@ short TUnitOrder::MaxOrder() {
     }
   }
 
-  field40 = 1;
+  limitingConstraint = kProductionOrderLimitWorkforce;
   short limit = workforceLimit;
   if (primaryLimit < limit) {
-    field40 = 0;
+    limitingConstraint = kProductionOrderLimitResources;
     limit = primaryLimit;
   }
   if (secondaryLimit < limit) {
-    field40 = 0;
+    limitingConstraint = kProductionOrderLimitResources;
     limit = secondaryLimit;
   }
   if (cashLimit < limit) {
-    field40 = 3;
+    limitingConstraint = kProductionOrderLimitTreasury;
     limit = cashLimit;
   }
-  return static_cast<short>(quantityField04 + limit);
+  return static_cast<short>(quantity + limit);
 }
 
 // FUNCTION: IMPERIALISM 0x004b7210
 bool TUnitOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
+  this->quantity = quantity;
 
-  cityField08->CityStockByType(primaryInputResourceId) = static_cast<short>(
-      cityField08->CityStockByType(primaryInputResourceId) - primaryInputPerUnit * delta);
-  cityField08->VerifyStocks();
+  ownerCity->CityStockByType(primaryInputResourceId) = static_cast<short>(
+      ownerCity->CityStockByType(primaryInputResourceId) - primaryInputPerUnit * delta);
+  ownerCity->VerifyStocks();
   if (secondaryInputResourceId >= 0) {
-    cityField08->CityStockByType(secondaryInputResourceId) = static_cast<short>(
-        cityField08->CityStockByType(secondaryInputResourceId) - secondaryInputPerUnit * delta);
-    cityField08->VerifyStocks();
+    ownerCity->CityStockByType(secondaryInputResourceId) = static_cast<short>(
+        ownerCity->CityStockByType(secondaryInputResourceId) - secondaryInputPerUnit * delta);
+    ownerCity->VerifyStocks();
   }
   if (workforceMode) {
-    summaryField0c->RemovePopulation(workforceMode, delta);
+    productionSummary->RemovePopulation(workforceMode, delta);
   }
-  cityField08->ownerNationAc->treasuryValue10 -=
+  ownerCity->ownerNationAc->treasuryValue10 -=
       static_cast<int>(cashCostPerUnit) * static_cast<int>(delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
@@ -161,8 +161,8 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // occupies its chosen tile and changes the next search result.
 // FUNCTION: IMPERIALISM 0x004b73b0
 void TUnitOrder::Produce() {
-  short pendingDelta = quantityField04;
-  TCity* cityContext = cityField08;
+  short pendingDelta = quantity;
+  TCity* cityContext = ownerCity;
   if (pendingDelta <= 0 || cityContext == 0) {
     return;
   }
@@ -170,7 +170,7 @@ void TUnitOrder::Produce() {
   CString sharedRefA;
   CString sharedRefB;
 
-  short entryId = resourceTypeIndex48;
+  short entryId = resourceTypeIndex;
   unsigned char specialist = specialistMode;
   TSimMgr* localization = g_pSimMgr;
   if (localization != 0) {
@@ -205,7 +205,7 @@ void TUnitOrder::Produce() {
     orderObject->ICivUnit(unitKind, spawnTile, ownerNationSlot);
   }
 
-  quantityField04 = 0;
+  quantity = 0;
 }
 
 // The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's
@@ -215,7 +215,7 @@ void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInpu
                                      short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
                                      short nSecondaryInputPerUnit, short nCashCostPerUnit,
                                      short nWorkforceMode) {
-  this->resourceTypeIndex48 = resourceTypeIndex;
+  this->resourceTypeIndex = resourceTypeIndex;
   this->primaryInputResourceId = nPrimaryInputResourceId;
   this->primaryInputPerUnit = nPrimaryInputPerUnit;
   this->secondaryInputResourceId = nSecondaryInputResourceId;
@@ -227,11 +227,11 @@ void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInpu
 // FUNCTION: IMPERIALISM 0x004b7850
 void TUnitOrder::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(&quantityField04, 2);
-  stream->WriteBytes(&field40, 2);
-  stream->WriteBytes(&resourceTypeIndex48, 2);
-  stream->WriteBytes(trackingSlots10, 0x2e);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(&quantity, 2);
+  stream->WriteBytes(&limitingConstraint, 2);
+  stream->WriteBytes(&resourceTypeIndex, 2);
+  stream->WriteBytes(trackingSlots, sizeof(trackingSlots));
   stream->WriteBytes(&accumulatedValue, 4);
   stream->WriteBytes(&primaryInputResourceId, 2);
   stream->WriteBytes(&secondaryInputResourceId, 2);
@@ -245,11 +245,11 @@ void TUnitOrder::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004b7920
 void TUnitOrder::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(&quantityField04, 2);
-  stream->ReadBytes(&field40, 2);
-  stream->ReadBytes(&resourceTypeIndex48, 2);
-  stream->ReadBytes(trackingSlots10, 0x2e);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(&quantity, 2);
+  stream->ReadBytes(&limitingConstraint, 2);
+  stream->ReadBytes(&resourceTypeIndex, 2);
+  stream->ReadBytes(trackingSlots, sizeof(trackingSlots));
   stream->ReadBytes(&accumulatedValue, 4);
   stream->ReadBytes(&primaryInputResourceId, 2);
   stream->ReadBytes(&secondaryInputResourceId, 2);

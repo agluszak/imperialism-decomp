@@ -882,7 +882,7 @@ TGreatPower* GetNationStateBySlot(short slotId) {
 }
 
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
-  return nationState->GetDiplomacyExternalStateByTarget(metricSlot);
+  return nationState->GetStockpile(metricSlot);
 }
 
 int GetTradeSummarySelectionTagByIndex(short index) {
@@ -1388,7 +1388,7 @@ int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  
                                                     10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
 
 // Resource/order-slot -> unit-category code. Also read by TArmoryView::DoStartup
-// (0x4cee20) as g[order->resourceTypeIndex48]: for the land-unit class (value 8) it
+// (0x4cee20) as g[order->resourceTypeIndex]: for the land-unit class (value 8) it
 // selects the button picture-variant (types 0x18/0x19/other -> 8/0x10/0x18); indices
 // 0x18-0x1d map to classes 8/9, and the leading 0..7 runs mirror the commodity-slot
 // groups.

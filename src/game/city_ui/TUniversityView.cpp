@@ -85,7 +85,7 @@ void TUniversityView::DoStartup() {
       quantity->AssertValid();
       quantity->SetState(0, 0);
       quantity->InstallTextStyle(style.desc, 1);
-      quantity->SetControlValue(order->quantityField04, 1);
+      quantity->SetControlValue(order->quantity, 1);
     }
   }
 
@@ -237,7 +237,7 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
 
       TUnitOrder* order = city94->buildOrderSlots[index + 9];
-      short quantity = order->quantityField04;
+      short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
       } else {
@@ -249,7 +249,7 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
         TNumberText* quantityText = static_cast<TNumberText*>(
             quantityPanel->ResolveControlByTag(kControlTagNumb)); // 'numb'
         quantityText->AssertValid();
-        quantityText->SetControlValue(order->quantityField04, 0);
+        quantityText->SetControlValue(order->quantity, 0);
 
         CRect invalidRect;
         quantityText->QueryBounds(&invalidRect);

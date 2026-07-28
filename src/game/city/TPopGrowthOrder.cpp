@@ -19,27 +19,27 @@ IMPLEMENT_DYNCREATE(TPopGrowthOrder, TProductionOrder)
 
 // FUNCTION: IMPERIALISM 0x004b8160
 void TPopGrowthOrder::IPopGrowthOrder(TCity* city) {
-  cityField08 = city;
-  summaryField0c = city != nullptr ? city->productionSummary1d8 : nullptr;
-  resourceTypeIndex48 = 1;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city != nullptr ? city->productionSummary1d8 : nullptr;
+  resourceTypeIndex = 1;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b81b0
 short TPopGrowthOrder::MaxOrder() {
-  short currentQuantity = quantityField04;
-  short furnitureLimit = static_cast<short>(cityField08->cityStockFurnitureD2 + currentQuantity);
-  short clothingLimit = static_cast<short>(cityField08->cityStockClothingD0 + currentQuantity);
-  short foodLimit = static_cast<short>(cityField08->cityStockCannedFoodC4 + currentQuantity);
-  short capacityLimit = static_cast<short>(cityField08->productionAccum1fc[0x0f] + currentQuantity);
+  short currentQuantity = quantity;
+  short furnitureLimit = static_cast<short>(ownerCity->cityStockFurnitureD2 + currentQuantity);
+  short clothingLimit = static_cast<short>(ownerCity->cityStockClothingD0 + currentQuantity);
+  short foodLimit = static_cast<short>(ownerCity->cityStockCannedFoodC4 + currentQuantity);
+  short capacityLimit = static_cast<short>(ownerCity->productionAccum1fc[0x0f] + currentQuantity);
 
-  field40 = 0;
+  limitingConstraint = kProductionOrderLimitResources;
   short limit = furnitureLimit;
   if (clothingLimit < limit) {
     limit = clothingLimit;
@@ -48,7 +48,7 @@ short TPopGrowthOrder::MaxOrder() {
     limit = foodLimit;
   }
   if (capacityLimit < limit) {
-    field40 = 2;
+    limitingConstraint = kProductionOrderLimitCapacity;
     limit = capacityLimit;
   }
   return limit;
@@ -56,34 +56,33 @@ short TPopGrowthOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b8230
 bool TPopGrowthOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
+  this->quantity = quantity;
 
-  cityField08->cityStockFurnitureD2 = static_cast<short>(cityField08->cityStockFurnitureD2 - delta);
-  cityField08->VerifyStocks();
-  cityField08->cityStockClothingD0 = static_cast<short>(cityField08->cityStockClothingD0 - delta);
-  cityField08->VerifyStocks();
-  cityField08->cityStockCannedFoodC4 =
-      static_cast<short>(cityField08->cityStockCannedFoodC4 - delta);
-  cityField08->VerifyStocks();
-  cityField08->productionAccum1fc[0x0f] =
-      static_cast<short>(cityField08->productionAccum1fc[0x0f] - delta);
+  ownerCity->cityStockFurnitureD2 = static_cast<short>(ownerCity->cityStockFurnitureD2 - delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockClothingD0 = static_cast<short>(ownerCity->cityStockClothingD0 - delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockCannedFoodC4 = static_cast<short>(ownerCity->cityStockCannedFoodC4 - delta);
+  ownerCity->VerifyStocks();
+  ownerCity->productionAccum1fc[0x0f] =
+      static_cast<short>(ownerCity->productionAccum1fc[0x0f] - delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004b82f0
 void TPopGrowthOrder::Produce() {
-  short quantity = quantityField04;
-  TPopulationMgr* population = cityField08->productionSummary1d8;
+  short quantity = this->quantity;
+  TPopulationMgr* population = ownerCity->productionSummary1d8;
   population->baselineSlots10->lowSkillCount04 += quantity;
   population->productionSlots14->lowSkillCount04 += quantity;
   population->populationCount08 += quantity;
 
-  TCity* city = cityField08;
+  TCity* city = ownerCity;
   TGreatPower* owner = city->ownerNationAc;
   if (owner->pendingActionStatus.roles.expansionCapacityStatus09 >= '3') {
     int regionCount = owner->ownedRegionList->GetSize();
@@ -100,7 +99,7 @@ void TPopGrowthOrder::Produce() {
       city->productionAccum1fc[0x0f] = 1;
     }
   }
-  quantityField04 = 0;
+  quantity = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8420

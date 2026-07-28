@@ -73,13 +73,13 @@ TMilitaryUnit* TMapMgr::GetMilitaryMaster(short provinceIndex) {
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x0050e3d0
-TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText1c() {
+TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText() {
   field8 = 0;
-  strategicMapPalettePreviewReady04 = 0;
+  strategicMapPalettePreviewReady = 0;
   terrainStateTable = 0;
   field9 = 1;
   field24 = 0;
-  pendingRiverMouthTile22 = -1;
+  pendingRiverMouthTile = -1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0050e460
@@ -110,8 +110,8 @@ void TMapMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field8, 1);
   stream->ReadBytes(&field9, 1);
   stream->ReadBytes(&cityScoreTotal, 4);
-  stream->ReadSharedString(&scenarioTagText1c, 0x20);
-  hexNeighborWrapHorizontally20 = stream->ReadBoolean();
+  stream->ReadSharedString(&scenarioTagText, 0x20);
+  hexNeighborWrapHorizontally = stream->ReadBoolean();
   stream->ReadBytes(terrainStateTable, 0x38f40);
   int i;
   Province* record = cityScoreTable;
@@ -125,16 +125,16 @@ void TMapMgr::ReadFrom(TStream* stream) {
   for (i = 0; i < 0x180; ++i) {
     cityScoreTable[i].stationedUnitChain98 = nullptr;
   }
-  strategicMapPalettePreviewReady04 = 0;
+  strategicMapPalettePreviewReady = 0;
   if (g_nSaveFormatVersion < 0x32) {
     for (i = 0; i < 0x1950; ++i) {
       terrainStateTable[i].perTileVisitedFlag0f = 0;
     }
   }
   if (g_nSaveFormatVersion > 0x32) {
-    stream->ReadBytes(&pendingRiverMouthTile22, 2);
+    stream->ReadBytes(&pendingRiverMouthTile, 2);
   } else {
-    pendingRiverMouthTile22 = -1;
+    pendingRiverMouthTile = -1;
   }
 }
 
@@ -145,15 +145,15 @@ void TMapMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&field8, 1);
   stream->WriteBytes(&field9, 1);
   stream->WriteBytes(&cityScoreTotal, 4);
-  stream->WriteSharedString(&scenarioTagText1c);
-  stream->WriteBoolean(hexNeighborWrapHorizontally20);
+  stream->WriteSharedString(&scenarioTagText);
+  stream->WriteBoolean(hexNeighborWrapHorizontally);
   stream->WriteBytes(terrainStateTable, 0x38f40);
   Province* record = cityScoreTable;
   for (int i = 0; i < 0x180; ++i, ++record) {
     stream->WriteBytes(record, 0xa4);
     stream->WriteSharedString(&record->cityNameA4);
   }
-  stream->WriteBytes(&pendingRiverMouthTile22, 2);
+  stream->WriteBytes(&pendingRiverMouthTile, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0050e8b0
@@ -265,7 +265,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   } else {
     sessionActive = 0;
   }
-  mapMaker->modeByte2a1 = hexNeighborWrapHorizontally20;
+  mapMaker->modeByte2a1 = hexNeighborWrapHorizontally;
 
   if (sessionActive != 0) {
     if (g_pSimMgr->reloadPoliticalMapState != 0) {
@@ -299,13 +299,13 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
 #endif
     if (tuningOverride != 0) {
       CString overrideText(tuningOverride);
-      scenarioTagText1c = overrideText;
+      scenarioTagText = overrideText;
     } else {
-      GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText1c);
+      GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText);
     }
     mapMaker->GenerateMapFromTuningStringAndApplyScenarioOverrides(
         static_cast<char*>(static_cast<void*>(terrainStateTable)), cityScoreTable,
-        &scenarioTagText1c);
+        &scenarioTagText);
   }
 
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
@@ -545,7 +545,7 @@ void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int clas
 // FUNCTION: IMPERIALISM 0x0050f740
 void TMapMgr::GenerateProvinceNames() {
   // Hash the scenario tag string to seed the zone status-code PRNG.
-  const char* tag = scenarioTagText1c;
+  const char* tag = scenarioTagText;
   int seed = kControlTagNada; // "adan"
   while (*tag != '\0') {
     seed = (seed >> 16) + seed * 2 + static_cast<int>(*tag);
@@ -609,7 +609,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
         for (i = 0; i < record->linkedRegionCount; ++i) {
           char hasForeignNeighbor = 0;
           short neighbors[6];
-          GetNeighborTileIDArray(*linkedTile, neighbors, hexNeighborWrapHorizontally20);
+          GetNeighborTileIDArray(*linkedTile, neighbors, hexNeighborWrapHorizontally);
 
           int d;
           const short* neighborWalker = neighbors;
@@ -726,7 +726,7 @@ void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {
 void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(ProvinceIndex cityRecordIndex) {
   short neighbors[6];
   GetNeighborTileIDArray(cityScoreTable[cityRecordIndex].cityTileIndex04, neighbors,
-                         hexNeighborWrapHorizontally20);
+                         hexNeighborWrapHorizontally);
 
   bool consumed[6] = {false, false, false, false, false, false};
   int d;
@@ -782,7 +782,7 @@ static const short kNextHexDirection[6] = {1, 2, 3, 4, 5, 0};
 // FUNCTION: IMPERIALISM 0x0050fe10
 void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(StrategicTileIndex tileIndex, short mode) {
   short neighbors[6];
-  GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+  GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
 
   int remainingDirections = 6;
   for (int d = 0; remainingDirections != 0; ++d, --remainingDirections) {
@@ -883,7 +883,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
   short neighbors[6];
 
   if (terrainStateTable[tileIndex].GetTerrainKind() != kStrategicTerrainWater) {
-    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
           terrainStateTable[neighbors[d]].gateFlag == terrainStateTable[tileIndex].gateFlag) {
@@ -981,7 +981,7 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       return;
     }
   } else {
-    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
     unsigned int lcg = g_mapGenLcgState_006a38e8;
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
@@ -1027,10 +1027,10 @@ void TMapMgr::AssignPictToTile(StrategicTileIndex tileIndex) {
       g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
       terrainStateTable[tileIndex].spriteVariantIndex01 =
           (unsigned char)((g_mapGenLcgState_006a38e8 >> 0xc) & 3) + 1;
-      if (pendingRiverMouthTile22 != -1) {
+      if (pendingRiverMouthTile != -1) {
         return;
       }
-      pendingRiverMouthTile22 = tileIndex;
+      pendingRiverMouthTile = tileIndex;
       return;
     }
     g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
@@ -1081,7 +1081,7 @@ void TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex) {
   tile->gateFlag = static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(tileIndex));
 
   short neighbors[6];
-  GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+  GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
   for (int d = 0; d < 6; ++d) {
     if (neighbors[d] == -1) {
       continue;
@@ -1351,7 +1351,7 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(StrategicTileIndex tileInd
   switch (static_cast<unsigned char>(tile->GetTerrainKind())) {
   case kStrategicTerrainWater: {
     short neighbors[6];
-    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
     bool foundLandNeighbor = false;
     for (int i = 0; i < 6; ++i) {
       if (neighbors[i] != -1 &&
@@ -1561,10 +1561,10 @@ void TMapMgr::GuaranteeResources() {
 // FUNCTION: IMPERIALISM 0x00511e80
 void TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress() {
   if (field8 == 0) {
-    hexNeighborWrapHorizontally20 = 1;
+    hexNeighborWrapHorizontally = 1;
     BuildOrLoadGlobalMapStateForSession("mapdata", nullptr);
   }
-  if (strategicMapPalettePreviewReady04 == 0) {
+  if (strategicMapPalettePreviewReady == 0) {
     g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
   }
 }
@@ -1955,7 +1955,7 @@ TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(StrategicTileIndex tileIndex)
   TSortedList* townMarkerList = owner->townMarkerList;
   for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
-    if (town->tileIndex14 == tileIndex) {
+    if (town->tileIndex == tileIndex) {
       return town;
     }
   }
@@ -2000,7 +2000,7 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsMajorNationSlot(newNationTag) != 0;
   if (isPrimary && g_pSimMgr->multiplayerSessionRole != 2) {
-    g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
+    g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
   if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
@@ -2020,7 +2020,7 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNa
   UpdateTileNeighborBorderInfluenceCounters(regionId, 2);
 
   short neighbors[6];
-  GetNeighborTileIDArray(regionId, neighbors, hexNeighborWrapHorizontally20);
+  GetNeighborTileIDArray(regionId, neighbors, hexNeighborWrapHorizontally);
   for (int d = 0; d < 6; ++d) {
     if (neighbors[d] != -1) {
       terrainStateTable[neighbors[d]].ownerBorderMask07 = 0;
@@ -2036,7 +2036,7 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNa
     bool found = false;
     while (ordinal <= count) {
       matchedTown = static_cast<TTown*>(oldTownList->GetEntryByOrdinal(ordinal));
-      if (matchedTown->tileIndex14 == regionId) {
+      if (matchedTown->tileIndex == regionId) {
         found = true;
         break;
       }
@@ -2045,7 +2045,7 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNa
     }
     if (found) {
       oldTownList->RemoveAtOrdinal(ordinal);
-      matchedTown->ownerNation1c = newNationTag;
+      matchedTown->ownerNation = newNationTag;
       g_apNationStates[newNationTag]->townMarkerList->AddTail(matchedTown);
     }
   }
@@ -2125,7 +2125,7 @@ char TMapMgr::CanBuildPortAtTile(StrategicTileIndex tileIndex) {
   if (tile->GetTerrainKind() != kStrategicTerrainMountain &&
       tile->GetTerrainKind() != kStrategicTerrainHills) {
     short neighbors[6];
-    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+    GetNeighborTileIDArray(tileIndex, neighbors, hexNeighborWrapHorizontally);
     for (short direction = 0; direction < 6; ++direction) {
       short neighbor = neighbors[direction];
       if (neighbor != -1 &&
@@ -2472,7 +2472,7 @@ void TMapMgr::FloodFillTileRegionMarker(StrategicTileIndex nTileIndex, short nOw
   }
 
   short neighbors[6];
-  GetNeighborTileIDArray(nTileIndex, neighbors, hexNeighborWrapHorizontally20);
+  GetNeighborTileIDArray(nTileIndex, neighbors, hexNeighborWrapHorizontally);
   for (int d = 0; d < 6; ++d) {
     StrategicTileIndex neighborTile = neighbors[d];
     if (neighborTile == -1) {
@@ -2513,7 +2513,7 @@ int TMapMgr::QueueDepotConstructionOrder(StrategicTileIndex nTileIndex, short nN
 
   if ((terrainStateTable[nTileIndex].activeFlags1c & 4) != 0) {
     town = FindTownMarkerForTileByOwnerNation(nTileIndex);
-    town->activeFlag4f = true;
+    town->activeFlag = true;
   } else {
     town = new TTown();
     town->ITown(static_cast<LPCSTR>(emptyName), nTileIndex, 0, nNationId);
@@ -2547,7 +2547,7 @@ void TMapMgr::QueuePortConstructionOrder(StrategicTileIndex nTileIndex, short nN
 
   if ((terrainStateTable[nTileIndex].activeFlags1c & 0x10) != 0) {
     town = FindTownMarkerForTileByOwnerNation(nTileIndex);
-    town->enabledFlag4d = true;
+    town->enabledFlag = true;
   } else {
     town = new TTown();
     town->ITown(g_szEmptyString, nTileIndex, 1, nNationId);
@@ -2667,7 +2667,7 @@ StrategicTileIndex TMapMgr::FindReachableRecruitSpawnTileRecursive(StrategicTile
   }
 
   StrategicTileIndex neighborTiles[6];
-  GetNeighborTileIDArray(tileIndex, neighborTiles, hexNeighborWrapHorizontally20);
+  GetNeighborTileIDArray(tileIndex, neighborTiles, hexNeighborWrapHorizontally);
   for (short neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
     if (neighborTiles[neighborIndex] == -1) {
       continue;
@@ -2757,7 +2757,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
 
   if (refOwner == pCivilianOrderEntry->ownerNationSlot18) {
     TTown* town = FindTownMarkerForTileByOwnerNation(refTileIndex);
-    if (town->enabledFlag4d == 0) {
+    if (town->enabledFlag == 0) {
       return;
     }
   }
@@ -2778,8 +2778,8 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
   TSortedList* townMarkerList = owner->townMarkerList;
   for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
-    if (town->enabledFlag4d != 0) {
-      terrainStateTable[town->tileIndex14].recruitSearchVisited0e = 0;
+    if (town->enabledFlag != 0) {
+      terrainStateTable[town->tileIndex].recruitSearchVisited0e = 0;
     }
   }
 }
@@ -2988,13 +2988,13 @@ void TMapMgr::DimByFishing(TCivUnit* pCivilianOrderEntry) {
   int townCount = townMarkerList->GetCount();
   for (int ordinal = 1; ordinal <= townCount; ++ordinal) {
     TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
-    if (town->enabledFlag4d == 0) {
+    if (town->enabledFlag == 0) {
       continue;
     }
-    short regionId = town->tileIndex14;
+    short regionId = town->tileIndex;
     signed char townTag5 = terrainStateTable[regionId].regionSubtypeTag05;
     short neighbors[6];
-    GetNeighborTileIDArray(regionId, neighbors, hexNeighborWrapHorizontally20);
+    GetNeighborTileIDArray(regionId, neighbors, hexNeighborWrapHorizontally);
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] == -1) {
         continue;
@@ -3383,7 +3383,7 @@ short TMapMgr::GetMapImprovementOffsetByTownTransportLink(StrategicTileIndex til
   (void)unusedParam2;
   unsigned short flags = terrainStateTable[tileIndex].activeFlags1c;
   TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
-  unsigned char linked = (town != nullptr) ? town->transportLinkedFlag4c : 1;
+  unsigned char linked = (town != nullptr) ? town->transportLinked : 1;
   if (flags & 4) {
     if (flags & 0x10) {
       return linked ? 0x840 : 0xa40;
@@ -4436,7 +4436,7 @@ TMapMgr::StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
        (row & 1U) == 0U)) {
     col = col - 1;
     if (static_cast<short>(col) < 0) {
-      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
         return -1;
       }
       col = 0x6b;
@@ -4446,7 +4446,7 @@ TMapMgr::StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
               (row & 1U) != 0U)) {
     col = col + 1;
     if (col > 0x6b) {
-      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
         return -1;
       }
       col = 0;
@@ -4473,7 +4473,7 @@ bool TMapMgr::StepHexRowColByDirectionWithWrapRules(int* row, int* col, int dire
     int nextCol = *col - 1;
     *col = nextCol;
     if (nextCol < 0) {
-      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
         return false;
       }
       *col = 0x6b;
@@ -4483,7 +4483,7 @@ bool TMapMgr::StepHexRowColByDirectionWithWrapRules(int* row, int* col, int dire
     int nextCol = *col + 1;
     *col = nextCol;
     if (nextCol > 0x6b) {
-      if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+      if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
         return false;
       }
       *col = 0;

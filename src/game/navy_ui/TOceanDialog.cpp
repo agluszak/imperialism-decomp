@@ -116,7 +116,7 @@ static void PaintOceanOverviewOwnerTransitions(short tileIndex, int tileX, int t
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   int currentOwner = ClampOceanOwnerTag(tile.ownerNationTag04);
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
 
   int direction;
   for (direction = 0; direction < 6; ++direction) {
@@ -422,9 +422,9 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   (void)scratchRegionB;
 
   bool evenViewportRow = (scrollRowOffset7c & 1) == 0;
-  bool blankWrappedLeftEdge = g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 &&
+  bool blankWrappedLeftEdge = g_pGlobalMapState->hexNeighborWrapHorizontally != 0 &&
                               (scrollColOffset7e < 2 || scrollColOffset7e > 100);
-  bool blankWrappedRightEdge = g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0 &&
+  bool blankWrappedRightEdge = g_pGlobalMapState->hexNeighborWrapHorizontally != 0 &&
                                scrollColOffset7e > 70 && scrollColOffset7e <= 100;
 
   CRect viewportRect(0, 0, frameWidth34, frameHeight38);
@@ -780,7 +780,7 @@ unsigned char TOceanDialog::IsTileVisible(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005688d0
 void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     if (static_cast<short>(column) > 0x4c) {
       column = 0x4c;
     } else if (static_cast<short>(column) < 0) {

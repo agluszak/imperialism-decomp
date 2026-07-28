@@ -63,26 +63,27 @@ void TTraderAmtBar::DoPostCreate(int arg) {
     recordIndex = (short)(recordIndex + 1);
   }
 
-  short tradeCapacity = nationState != 0 ? nationState->tradeCapacity : 0;
-  if (tradeCapacity == 0) {
+  short merchantCapacity = nationState != 0 ? nationState->merchantCapacity : 0;
+  if (merchantCapacity == 0) {
     stepOrCurrentValue = 0;
   } else {
-    short currentValue = nationState->GetDiplomacyExternalStateByTarget(recordIndex);
-    stepOrCurrentValue = (short)((((int)tradeCapacity - (int)currentValue) * this->frameWidth34) /
-                                 (int)tradeCapacity);
+    short currentValue = nationState->GetStockpile(recordIndex);
+    stepOrCurrentValue =
+        (short)((((int)merchantCapacity - (int)currentValue) * this->frameWidth34) /
+                (int)merchantCapacity);
   }
 
   short gaugeValue = 0;
   if (nationState != 0) {
-    gaugeValue = nationState->QueryNationMetricBySlot7C(recordIndex);
+    gaugeValue = nationState->GetTradeOffersFor(recordIndex);
   }
-  if (tradeCapacity == 0) {
+  if (merchantCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((this->frameHeight38 * (int)gaugeValue) / (int)tradeCapacity);
+    rangeOrMaxValue = (short)((this->frameHeight38 * (int)gaugeValue) / (int)merchantCapacity);
   }
 
-  auxValueA = tradeCapacity;
+  auxValueA = merchantCapacity;
   auxValueB = 0x37;
   TView::DoPostCreate(arg);
 }
@@ -99,10 +100,10 @@ short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   if (requestedValue > 0) {
     // 0x0058b083-0x0058b091 inlines the active-nation lookup; 0x0058b09f divides
     // frameWidth34 (+0x34), not frameHeight38, and the original guards the IDIV with
-    // nothing -- there is no tradeCapacity != 0 test in the binary.
+    // nothing -- there is no merchantCapacity != 0 test in the binary.
     TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    short tradeCapacity = nationState->tradeCapacity;
-    if ((int)requestedValue < (static_cast<int>(this->frameWidth34) / (int)tradeCapacity)) {
+    short merchantCapacity = nationState->merchantCapacity;
+    if ((int)requestedValue < (static_cast<int>(this->frameWidth34) / (int)merchantCapacity)) {
       if (this->ownerContext->ResolveControlByTag(kControlTagSell) != 0) {
         result = 1;
       }

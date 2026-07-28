@@ -268,7 +268,7 @@ unsigned char* TDefenseMinister::CreatePeaceDefenseMap(TLongintList* ownedRegion
   memset(priorityMap, 0, 0x1950);
 
   short neighbors[6];
-  char wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+  char wrapHorizontally = g_pGlobalMapState->hexNeighborWrapHorizontally;
 
   // Pass 1: mark regions bordering foreign-owned territory with priority 4.
   for (int i = 1; i <= regionCount; ++i) {

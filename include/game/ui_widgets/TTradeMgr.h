@@ -74,7 +74,7 @@ public:
   void InitializeNationInteractionStateManagerDefaults();
   // Non-virtual impl invoked by the slot-0x16 wrapper.
   void ProcessPendingDiplomacyTransferEntriesUntilBlocked(); // 0x5b91e0
-  // Clears every live TGreatPower's diplomacyState1c6 block, clamps each category row's
+  // Clears every live TGreatPower's itemPotentials block, clamps each category row's
   // cells18 turn-history cells to the running max seen 23 cells earlier (the scan
   // deliberately runs past cells18's own bounds into the next row -- rows are laid out
   // contiguously in categoryRows, so this is a genuine flat-buffer traversal in the

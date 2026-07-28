@@ -117,7 +117,7 @@ void TRailCluster::DoPostCreate(int styleSeed) {
 LABEL_12:
   this->selectedMetricOrder = city->orderSlotsE4[recordIndex];
   TAmtBarCluster::DoPostCreate(styleSeed);
-  this->SetMoveAmount(this->selectedMetricOrder->quantityField04, 1);
+  this->SetMoveAmount(this->selectedMetricOrder->quantity, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005899c0
@@ -130,12 +130,12 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
   short step = this->selectedMetricStep;
   int quantizedDragValue = ((step / 2 + dragValue) / step) * step;
   TProductionOrder* selectedOrder = this->selectedMetricOrder;
-  short previousValue = selectedOrder->quantityField04;
+  short previousValue = selectedOrder->quantity;
   if (selectedOrder != 0) {
     selectedOrder->SetQuantity(static_cast<short>(quantizedDragValue));
   }
 
-  if (((char)updateFlag == 0) && (selectedOrder->quantityField04 == previousValue)) {
+  if (((char)updateFlag == 0) && (selectedOrder->quantity == previousValue)) {
     return;
   }
 
@@ -144,7 +144,7 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
     FailNilPointerInUSmallViews(0xcf2);
   }
 
-  moveControl->SetControlValue((int)selectedOrder->quantityField04, 0);
+  moveControl->SetControlValue((int)selectedOrder->quantity, 0);
 
   CRect moveBoundsRect;
   RECT moveInvalidRect;
@@ -164,14 +164,13 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
         static_cast<float>(barControl->frameWidth34) / static_cast<float>(barControl->auxValueA);
   }
 
-  if (selectedOrder->quantityField04 == selectedMetricValue) {
+  if (selectedOrder->quantity == selectedMetricValue) {
     barControl->auxValueB = 0x34;
   } else {
     barControl->auxValueB = 0x3a;
   }
 
-  int scaledMoveAmount =
-      static_cast<int>(static_cast<float>(selectedOrder->quantityField04) * barScale);
+  int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
   int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
   barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
 

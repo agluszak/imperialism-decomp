@@ -63,9 +63,9 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
-void TProxyGreatPower::QueueDiplomacyProposalCodeForTargetNation(
-    DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot) {
-  TGreatPower::QueueDiplomacyProposalCodeForTargetNation(proposalCode, targetNationSlot);
+void TProxyGreatPower::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
+                                    NationSlot targetNationSlot) {
+  TGreatPower::AddOfferFrom(proposalCode, targetNationSlot);
 
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = kControlTagTime;
@@ -88,7 +88,7 @@ void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() 
 // FUNCTION: IMPERIALISM 0x00540ba0
 char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                                      int arg4) {
-  if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
+  if (this->HasPendingTradeOfferAndMerchantCapacity(static_cast<short>(arg4)) != 0) {
     g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(
         this->nationSlot, static_cast<short>(arg1), static_cast<short>(arg2),
         static_cast<short>(arg3), static_cast<short>(arg4));

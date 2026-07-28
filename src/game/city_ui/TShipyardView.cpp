@@ -109,13 +109,13 @@ void TShipyardView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
     TShipOrder* order = city94->shipOrderSlots[queueIndex];
-    if (order->resourceTypeIndex48 != 0) {
+    if (order->resourceTypeIndex != 0) {
       TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
           ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
       slotButton->SetEnabled(1, 1);
       slotButton->SetState(1, 1);
 
-      short shipType = order->resourceTypeIndex48;
+      short shipType = order->resourceTypeIndex;
       buildQueueSlotValues[queueIndex] = shipType;
       slotButton->overlaySurfaceContext98 = iconSurfaceB8;
       short sourceLeft = shipType;
@@ -147,7 +147,7 @@ void TShipyardView::DoStartup() {
       TNumberText* quantity =
           static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->SetState(0, 0);
-      quantity->SetControlValue(order->quantityField04, 1);
+      quantity->SetControlValue(order->quantity, 1);
       quantity->InstallTextStyle(style.desc, 1);
     }
   }
@@ -223,7 +223,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       selection->SetSelectedChildTagAndRefresh(kControlTagBut0 + index); // 'but0'+index
 
       TShipOrder* order = city94->shipOrderSlots[index];
-      short quantity = order->quantityField04;
+      short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;
       } else {
@@ -235,7 +235,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
         TNumberText* quantityText =
             static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
         quantityText->AssertValid();
-        quantityText->SetControlValue(order->quantityField04, 0);
+        quantityText->SetControlValue(order->quantity, 0);
 
         CRect invalidRect;
         quantityText->QueryBounds(&invalidRect);

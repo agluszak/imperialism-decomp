@@ -140,7 +140,7 @@ void TIndustryView::DoStartup() {
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
     if (child->childList44 == 0) {
-      for (short resource = 0; resource < 0x17; ++resource) {
+      for (short resource = 0; resource < kResourceKindCount; ++resource) {
         if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
           TStaticText* resourceText = static_cast<TStaticText*>(child);
           resourceText->InstallTextStyle(valueStyle, 0);
@@ -207,7 +207,7 @@ void TIndustryView::UpdateFields() {
   CSubViewIterator iterator(this);
   TView* child = iterator.FirstSubView();
   while (iterator.MoreSubViews()) {
-    for (short resource = 0; resource < 0x17; ++resource) {
+    for (short resource = 0; resource < kResourceKindCount; ++resource) {
       if (child->controlTag == g_pTradeSummarySelectionMap[resource]) {
         if (child->childList44 == 0) {
           bool shouldEnable = (primaryMissing && primaryResource == resource) ||
@@ -222,7 +222,7 @@ void TIndustryView::UpdateFields() {
     if (child->controlTag == kControlTagFlag) { // 'flag'
       TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
           city94->orderSlotsE4[static_cast<short>(embeddedPageIndex9E + 0x35)]);
-      SetIndustryControlEnabledIfChanged(child, flagOrder->quantityField04 != 0);
+      SetIndustryControlEnabledIfChanged(child, flagOrder->quantity != 0);
     }
 
     if (child->controlTag == kControlTagLabV) { // 'Vbal'

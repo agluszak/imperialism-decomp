@@ -5,6 +5,7 @@
 #include "game/app/TObject.h"
 #include "game/debug/TLaborPool.h"
 #include "game/mfc.h"
+#include "game/resource_domain_types.h"
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
@@ -68,7 +69,7 @@ public:
 
   // +0x22..+0x4f — one predicted requirement per resource type. ReadFrom/WriteTo
   // serialize all 23 shorts as a single persistent block.
-  short predictedNeedByResource22[0x17];
+  short predictedNeedByResource22[kResourceKindCount];
 
   // NOOP: verified empty in original 0x004b5b42 (no standalone TPopulationMgr::TPopulationMgr body exists: construction is fully inlined into CreateObject 0x004b5b40; that address is its operator-new call site)
   TPopulationMgr() {}

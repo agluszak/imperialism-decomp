@@ -517,7 +517,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation != nullptr) {
-        nation->ApplyRelationDeltaToCityStockAndUpdateState1f4();
+        nation->AddPurchasedItems();
       }
     }
     const short tickA = GetEconomicTurn();
@@ -648,7 +648,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x68:
     turnStateCode = 4;
-    g_apNationStates[activeNationSlot]->BeginTurnDiplomacyPrePassSlot1c8();
+    g_apNationStates[activeNationSlot]->SetDiplomacyPolicies();
     g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap),
                                            activeNationSlot);
     g_pDiplomacyTurnStateManager->SyncNationField790FromLocalizationStateId();

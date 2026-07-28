@@ -222,9 +222,9 @@ predicate_storage_reviews:
   65f76dbb872a689f:
     classification: byte_abi_argument
     evidence: "the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow)."
-  b441b8502f10ecf2:
+  c1274198c896b970:
     classification: predicate_arithmetic_into_byte_storage
-    evidence: "`(town->enabledFlag4d != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value."
+    evidence: "`(town->enabledFlag != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value."
   f25ec5fb631b91f5:
     classification: byte_return_abi
     evidence: "the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization."
@@ -446,9 +446,9 @@ discriminant_reviews:
   resourceType:
     classification: industry_action_order_type_domain
     evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.
-  resourceTypeIndex48:
+  resourceTypeIndex:
     classification: unresolved_narrower_subdomain
-    evidence: TUnitOrder::resourceTypeIndex48 takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind.
+    evidence: TUnitOrder::resourceTypeIndex takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind.
   ringState:
     classification: closed_domain_needs_listing_evidence
     evidence: TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described.

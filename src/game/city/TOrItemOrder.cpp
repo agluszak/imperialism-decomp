@@ -20,17 +20,17 @@ TOrItemOrder::~TOrItemOrder() {}
 // FUNCTION: IMPERIALISM 0x004b5870
 void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,
                                 short secondaryInputResource, short productionSlotValue) {
-  cityField08 = city;
-  summaryField0c = city->productionSummary1d8;
-  resourceTypeIndex48 = resourceType;
-  quantityField04 = 0;
-  for (int resource = 0; resource < 0x17; ++resource) {
-    trackingSlots10[resource] = 0;
+  ownerCity = city;
+  productionSummary = city->productionSummary1d8;
+  resourceTypeIndex = resourceType;
+  quantity = 0;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    trackingSlots[resource] = 0;
   }
   accumulatedValue = 0;
   primaryInputResourceId = primaryInputResource;
-  field40 = 0;
-  field3e = 0;
+  limitingConstraint = kProductionOrderLimitResources;
+  reservedWorkforce = 0;
   requestedQuantity4c = 0;
   secondaryInputResourceId = secondaryInputResource;
   productionSlot = productionSlotValue;
@@ -38,24 +38,24 @@ void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryIn
 
 // FUNCTION: IMPERIALISM 0x004b58f0
 short TOrItemOrder::MaxOrder() {
-  short currentQuantity = quantityField04;
-  short workforceLimit = static_cast<short>(summaryField0c->strength / 2 + currentQuantity);
-  short resourceLimit = static_cast<short>((trackingSlots10[secondaryInputResourceId] +
-                                            trackingSlots10[primaryInputResourceId] +
-                                            cityField08->CityStockByType(secondaryInputResourceId) +
-                                            cityField08->CityStockByType(primaryInputResourceId)) /
+  short currentQuantity = quantity;
+  short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
+  short resourceLimit = static_cast<short>((trackingSlots[secondaryInputResourceId] +
+                                            trackingSlots[primaryInputResourceId] +
+                                            ownerCity->CityStockByType(secondaryInputResourceId) +
+                                            ownerCity->CityStockByType(primaryInputResourceId)) /
                                            2);
   short productionLimit =
-      static_cast<short>(cityField08->productionAccum1fc[productionSlot] + currentQuantity);
+      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + currentQuantity);
 
-  field40 = 2;
+  limitingConstraint = kProductionOrderLimitCapacity;
   short limit = productionLimit;
   if (workforceLimit < limit) {
-    field40 = 1;
+    limitingConstraint = kProductionOrderLimitWorkforce;
     limit = workforceLimit;
   }
   if (resourceLimit < limit) {
-    field40 = 0;
+    limitingConstraint = kProductionOrderLimitResources;
     limit = resourceLimit;
   }
   return limit;
@@ -63,25 +63,25 @@ short TOrItemOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b5990
 bool TOrItemOrder::SetQuantity(short quantity) {
-  short delta = static_cast<short>(quantity - quantityField04);
+  short delta = static_cast<short>(quantity - this->quantity);
   if (quantity > MaxOrder() || quantity < 0) {
     return false;
   }
-  quantityField04 = quantity;
-  requestedQuantity4c = quantityField04;
+  this->quantity = quantity;
+  requestedQuantity4c = quantity;
 
   short primaryAvailable;
   short secondaryAvailable;
   short primaryChange;
   short secondaryChange;
   if (delta > 0) {
-    primaryAvailable = cityField08->CityStockByType(primaryInputResourceId);
-    secondaryAvailable = cityField08->CityStockByType(secondaryInputResourceId);
+    primaryAvailable = ownerCity->CityStockByType(primaryInputResourceId);
+    secondaryAvailable = ownerCity->CityStockByType(secondaryInputResourceId);
     primaryChange = delta;
     secondaryChange = delta;
   } else {
-    primaryAvailable = trackingSlots10[primaryInputResourceId];
-    secondaryAvailable = trackingSlots10[secondaryInputResourceId];
+    primaryAvailable = trackingSlots[primaryInputResourceId];
+    secondaryAvailable = trackingSlots[secondaryInputResourceId];
     primaryChange = static_cast<short>(-delta);
     secondaryChange = primaryChange;
   }
@@ -100,22 +100,22 @@ bool TOrItemOrder::SetQuantity(short quantity) {
     secondaryChange = static_cast<short>(-secondaryChange);
   }
 
-  cityField08->CityStockByType(primaryInputResourceId) =
-      static_cast<short>(cityField08->CityStockByType(primaryInputResourceId) - primaryChange);
-  cityField08->VerifyStocks();
-  trackingSlots10[primaryInputResourceId] =
-      static_cast<short>(trackingSlots10[primaryInputResourceId] + primaryChange);
-  cityField08->CityStockByType(secondaryInputResourceId) =
-      static_cast<short>(cityField08->CityStockByType(secondaryInputResourceId) - secondaryChange);
-  cityField08->VerifyStocks();
-  trackingSlots10[secondaryInputResourceId] =
-      static_cast<short>(trackingSlots10[secondaryInputResourceId] + secondaryChange);
+  ownerCity->CityStockByType(primaryInputResourceId) =
+      static_cast<short>(ownerCity->CityStockByType(primaryInputResourceId) - primaryChange);
+  ownerCity->VerifyStocks();
+  trackingSlots[primaryInputResourceId] =
+      static_cast<short>(trackingSlots[primaryInputResourceId] + primaryChange);
+  ownerCity->CityStockByType(secondaryInputResourceId) =
+      static_cast<short>(ownerCity->CityStockByType(secondaryInputResourceId) - secondaryChange);
+  ownerCity->VerifyStocks();
+  trackingSlots[secondaryInputResourceId] =
+      static_cast<short>(trackingSlots[secondaryInputResourceId] + secondaryChange);
 
   short workforceChange = static_cast<short>(delta * 2);
-  summaryField0c->strength = static_cast<short>(summaryField0c->strength - workforceChange);
-  field3e = static_cast<short>(field3e + workforceChange);
-  cityField08->productionAccum1fc[productionSlot] =
-      static_cast<short>(cityField08->productionAccum1fc[productionSlot] - delta);
+  productionSummary->strength = static_cast<short>(productionSummary->strength - workforceChange);
+  reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
+  ownerCity->productionAccum1fc[productionSlot] =
+      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
   g_pUiRuntimeContext->RefreshCityProductionUi();
   return true;
 }

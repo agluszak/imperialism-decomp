@@ -224,7 +224,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
         g_pGlobalMapState->terrainStateTable[hoveredTile].regionSubtypeTag05 == -1) {
       updateNeighborHighlights = true;
       TMapMgr::GetNeighborTileIDArray(hoveredTile, neighborTiles,
-                                      g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                      g_pGlobalMapState->hexNeighborWrapHorizontally);
       short activeNation = g_pSimMgr->GetActiveNationId();
       for (int i = 0; i < 6; ++i) {
         short neighbor = neighborTiles[i];
@@ -529,7 +529,7 @@ void TMapDialog::SetMapViewCellCoordinates(int column, int row) {
 // FUNCTION: IMPERIALISM 0x0051adf0
 void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
   (void)mode;
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     int span = g_wMapDialogViewportTileSpan;
     if (static_cast<short>(col) > 0x6e - static_cast<short>(span)) {
       col = 0x6e - span;
@@ -935,7 +935,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.GetTerrainKind() == kStrategicTerrainWater;
   bool usedWrappedSeamTile = false;
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
     int tileColumn = tileIndex % 108;
     short centerTile = static_cast<short>(GetCenterTile());
     int centerColumn = centerTile % 108;
@@ -1280,7 +1280,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     int markerOffset = (terrain.perTileVisitedFlag0f - 1) << 6;
     Blit64x64StrategicMapAtlasTile(g_pStrategicMapViewSystem->atlas694[6], quickDrawSurface350,
                                    markerOffset, tileRect);
-  } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile22 && isOcean) {
+  } else if (tileIndex == g_pGlobalMapState->pendingRiverMouthTile && isOcean) {
     g_pUiRuntimeContext->SetForeColor(3);
     CRect selectionRect(screenX + 0x20, screenY + 0x20, screenX + 0x21, screenY + 0x21);
     FillRectWithQuickDrawBrushAndContextOffset(&selectionRect);
@@ -1883,7 +1883,7 @@ void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int scr
 void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   short neighbors[6];
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
 
   if (LandTilesHaveDifferentNationOwners(neighbors[3], neighbors[2])) {
     SetMapBorderColorForTileOwner(neighbors[3]);
@@ -2058,7 +2058,7 @@ void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int
                                                int screenY, short tileIndex) {
   short neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighborTiles,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally20);
+                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
   TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
   unsigned char northeastOcean = connectionMask & 2;
 

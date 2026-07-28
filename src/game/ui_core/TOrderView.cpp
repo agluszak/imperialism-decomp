@@ -39,7 +39,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   }
   slider->SetNumIcons(static_cast<short>(city60->GetBuildingType(order64->productionSlot)));
   slider->SetPictureResourceIdAndRefresh(static_cast<short>(orderSlot + 700), true);
-  slider->value9c = order64->quantityField04;
+  slider->value9c = order64->quantity;
   slider->SetMax(order64->MaxOrder());
 
   TIconBar* supplyPrimary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagSup1));
@@ -73,14 +73,14 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
   }
   usePrimary->SetPictureResourceIdAndRefresh(
       static_cast<short>(order64->primaryInputResourceId + 700), true);
-  usePrimary->SetNumIcons(order64->trackingSlots10[order64->primaryInputResourceId]);
+  usePrimary->SetNumIcons(order64->trackingSlots[order64->primaryInputResourceId]);
 
   TIconBar* useSecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse2));
   if (useSecondary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x233);
   }
   if (order64->secondaryInputResourceId != -1) {
-    useSecondary->SetNumIcons(order64->trackingSlots10[order64->secondaryInputResourceId]);
+    useSecondary->SetNumIcons(order64->trackingSlots[order64->secondaryInputResourceId]);
     useSecondary->SetPictureResourceIdAndRefresh(
         static_cast<short>(order64->secondaryInputResourceId + 700), true);
   }
@@ -90,7 +90,7 @@ void TOrderView::StuffValues(TGreatPower* power, short orderSlot) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x23b);
   }
   useLabor->SetPictureResourceIdAndRefresh(0x148, true);
-  useLabor->SetNumIcons(static_cast<short>(order64->quantityField04 * 2));
+  useLabor->SetNumIcons(static_cast<short>(order64->quantity * 2));
 
   TIconBar* primaryIcon = static_cast<TIconBar*>(ResolveControlByTag(kControlTagIco1));
   primaryIcon->SetPictureResourceIdAndRefresh(
@@ -131,7 +131,7 @@ void TOrderView::UpdateFields() {
   if (usePrimary == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x267);
   }
-  usePrimary->SetNumIcons(order64->trackingSlots10[order64->primaryInputResourceId]);
+  usePrimary->SetNumIcons(order64->trackingSlots[order64->primaryInputResourceId]);
   usePrimary->RefreshControl();
 
   TIconBar* useSecondary = static_cast<TIconBar*>(ResolveControlByTag(kControlTagUse2));
@@ -139,7 +139,7 @@ void TOrderView::UpdateFields() {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x26c);
   }
   if (order64->secondaryInputResourceId != -1) {
-    useSecondary->SetNumIcons(order64->trackingSlots10[order64->secondaryInputResourceId]);
+    useSecondary->SetNumIcons(order64->trackingSlots[order64->secondaryInputResourceId]);
     useSecondary->RefreshControl();
   }
 
@@ -147,7 +147,7 @@ void TOrderView::UpdateFields() {
   if (useLabor == 0) {
     FailNilPointerWithAssert("D:\\Ambit\\Cross\\UIcon.cpp", 0x274);
   }
-  useLabor->SetNumIcons(static_cast<short>(order64->quantityField04 * 2));
+  useLabor->SetNumIcons(static_cast<short>(order64->quantity * 2));
   useLabor->RefreshControl();
 }
 
