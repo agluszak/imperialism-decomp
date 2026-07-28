@@ -91,7 +91,7 @@ void TWarehouseView::DoStartup() {
     powerValueControl100->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 
-  if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
+  if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
     TWindow* window = GetWindow();
     CRect windowBounds;
     window->QueryBounds(&windowBounds);

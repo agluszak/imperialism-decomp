@@ -75,7 +75,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   if (commandEvent->handledMarker == kUiCommandHandledMarker) {
     return;
   }
-  if (g_pGlobalUiRootController->InModalState() != 0) {
+  if (g_pAmbitApplication->InModalState() != 0) {
     return;
   }
   commandEvent->handledMarker = kUiCommandHandledMarker;
@@ -85,8 +85,8 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
     if (mainControl->ResolveControlByTag(kControlTagQuer) != 0) {
       if (g_pHelpMgr != 0) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
-        if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventStrategicMap) {
-          g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
+        if (g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap) {
+          g_pViewMgr->DispatchUiRuntimeMessage101AAndRefreshActiveView();
           return;
         }
         g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
@@ -97,7 +97,7 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
 
   if (commandEvent->commandCode == kUiKeyEnter || commandEvent->commandCode == kUiKeyReturn ||
       commandEvent->commandCode == kUiKeyEscape || commandEvent->commandCode == kUiKeySpace) {
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap &&
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap &&
         mainControl->ResolveControlByTag(kControlTagEnd) != 0) { // 'end '
       g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
       if (g_pSimMgr->mode != 0x11) {
@@ -105,16 +105,16 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
         return;
       }
       short nationId = g_pSimMgr->GetActiveNationId();
-      short abilityIndex = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
+      short abilityIndex = g_pTechMgr->ConsumeFirstPendingAbilityUnlock(nationId);
       if (abilityIndex != -1) {
-        g_pUiRuntimeContext->ShowAbilityStatusReport(abilityIndex);
+        g_pViewMgr->ShowAbilityStatusReport(abilityIndex);
         return;
       }
       g_pSimMgr->StartNextPhase();
       return;
     }
-    if (g_pUiRuntimeContext->fieldF8 != 0) {
-      TMovieView* activeMovieView = g_pUiRuntimeContext->activeMovieViewF4;
+    if (g_pViewMgr->fieldF8 != 0) {
+      TMovieView* activeMovieView = g_pViewMgr->activeMovieViewF4;
       if (activeMovieView == 0) {
         return;
       }
@@ -128,35 +128,35 @@ void TGameWindow::DoKeyEvent(TToolboxEvent* event) {
   if (g_pSimMgr != 0 &&
       (g_pSimMgr->mode == 0x69 || g_pSimMgr->mode == 0x68 || g_pSimMgr->mode == 0x67 ||
        g_pSimMgr->mode == 0x6a || g_pSimMgr->mode == 0x6d ||
-       g_pUiRuntimeContext->currentTurnEventCode == kTurnEventStrategicMap)) {
+       g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap)) {
     switch (commandEvent->commandCode) {
     case 0x31:
-      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTransport) {
+      if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         g_pSimMgr->EnterOptionalPhase(0x69);
       }
       return;
     case 0x32:
-      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction) {
+      if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         g_pSimMgr->EnterOptionalPhase(0x6a);
       }
       return;
     case 0x33:
-      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTradeOverview &&
-          g_pUiRuntimeContext->currentTurnEventCode != kTurnEventIndustryOverview) {
+      if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview &&
+          g_pViewMgr->currentTurnEventCode != kTurnEventIndustryOverview) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         g_pSimMgr->EnterOptionalPhase(0x67);
       }
       return;
     case 0x34:
-      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventDiplomacyMap) {
+      if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         g_pSimMgr->EnterOptionalPhase(0x68);
       }
       return;
     case 0x35:
-      if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTechnologyStore) {
+      if (g_pViewMgr->currentTurnEventCode != kTurnEventTechnologyStore) {
         g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
         g_pSimMgr->EnterOptionalPhase(0x6d);
       }

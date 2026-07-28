@@ -36,8 +36,8 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
   ResetPageLayout();
 
   if (categorySlot != -1) {
-    if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
-        g_pNationInteractionStateManager->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
+    if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId()) ||
+        g_pTradeMgr->DidOffer(categorySlot, g_pSimMgr->GetActiveNationId())) {
       TTextLine* headerRow = new TTextLine();
       int headerBounds[2];
       headerBounds[0] = 0x24;
@@ -49,7 +49,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       orderedEntries->AddTail(headerRow);
 
       for (short nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-        if (g_pNationInteractionStateManager->DidBidOn(nationSlot, categorySlot)) {
+        if (g_pTradeMgr->DidBidOn(nationSlot, categorySlot)) {
           TTradeBidNationLine* row = new TTradeBidNationLine();
           int rowBounds[2];
           row->SetLineDataRowAndBounds(0, 0, rowBounds);

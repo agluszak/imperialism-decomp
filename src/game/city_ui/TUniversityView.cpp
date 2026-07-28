@@ -40,7 +40,7 @@ TUniversityView::~TUniversityView() {}
 
 // FUNCTION: IMPERIALISM 0x004cace0
 void TUniversityView::DoStartup() {
-  productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView04;
 
   struct {
     TextStyle desc;
@@ -58,9 +58,8 @@ void TUniversityView::DoStartup() {
       continue;
     }
 
-    int available =
-        g_pCityOrderCapabilityState->universityRecruitmentAvailabilityByNation467[activeNation]
-            .availableByCategory[category];
+    int available = g_pTechMgr->universityRecruitmentAvailabilityByNation467[activeNation]
+                        .availableByCategory[category];
     TControl* selection =
         static_cast<TControl*>(ResolveControlByTag(kControlTagCiv0 + category)); // 'civ0'+category
     selection->AssertValid();
@@ -193,8 +192,7 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
       short resourceType = static_cast<short>(
           g_anUniversityRequirementIdByRecruitRow[selectedRecruitmentCategoryA4][row]);
       if (resourceType != -1) {
-        short level = g_pCityOrderCapabilityState
-                          ->capabilityValueByNationAndResource[activeNation][resourceType];
+        short level = g_pTechMgr->capabilityValueByNationAndResource[activeNation][resourceType];
         if (highestRequirementLevel < level) {
           highestRequirementLevel = level;
         }
@@ -320,7 +318,7 @@ void TUniversityView::UpdateFields() {
 void TUniversityView::Free() {
   TView::Free();
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pUiViewManager->CloseFilesFor(0x23fa);
+    g_pAssetMgr->CloseFilesFor(0x23fa);
   }
 }
 
@@ -343,7 +341,7 @@ void TUniversityView::Draw(RECT* rectBuffer) {
   RECT scratchClip;
   if (SectRect(&panelRect, rectBuffer, &scratchClip)) {
     RECT srcRect = {baseOffset, 0, baseOffset + 0x40, 0x40};
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas66c->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas66c->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &panelRect, 0x24, 0);
   }
@@ -359,14 +357,13 @@ void TUniversityView::Draw(RECT* rectBuffer) {
       if (nCommoditySpriteId != -1) {
         RECT reqSrcRect = {nCommoditySpriteId * 0x14, 0, (nCommoditySpriteId + 1) * 0x14, 0x18};
         RECT reqDstRect = {0x19, rowBottomY - 0x1c, 0x2d, rowBottomY};
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->unitIconAtlas->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &reqSrcRect, &reqDstRect, 0x24, 0);
 
         short activeNationId = g_pSimMgr->GetActiveNationId();
         short capabilityLevel =
-            g_pCityOrderCapabilityState
-                ->capabilityValueByNationAndResource[activeNationId][nCommoditySpriteId];
+            g_pTechMgr->capabilityValueByNationAndResource[activeNationId][nCommoditySpriteId];
         if (nHighestRequirementLevel < capabilityLevel) {
           nHighestRequirementLevel = capabilityLevel;
         }

@@ -69,7 +69,7 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
   CString titlText;
   if (commandId == 10) {
     if (sourceHandler->controlTag == kControlTagQuit) {
-      g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+      g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     }
     if (sourceHandler->controlTag == kControlTagShow) {
       ResolveControlByTag(kControlTagQuit)->SetState(0, 1);

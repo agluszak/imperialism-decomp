@@ -384,7 +384,7 @@ CString GetLocalizedNavalReportShipType(short category, char plural) {
   int i;
   for (i = 13; i > 0; --i) {
     if (g_aIndustryCapabilityClassSlotTable[i].classId == category &&
-        g_pCityOrderCapabilityState->resourceTypeEnabled19d[i] != 0) {
+        g_pTechMgr->resourceTypeEnabled19d[i] != 0) {
       resourceType = static_cast<short>(i);
       break;
     }

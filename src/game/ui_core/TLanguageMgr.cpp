@@ -266,7 +266,7 @@ char TLanguageMgr::PickGender(const char* name) const {
   }
 
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventVerbFormDialog));
   g_pSimMgr->GetString(0x2737, 0x34, &questionText);
   TStaticText* question = static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagQues));
   ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);

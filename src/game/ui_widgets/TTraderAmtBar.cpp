@@ -132,7 +132,7 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
       if (styleValueAt60 > 0) {
         short styleValueAt66 = auxValueB;
         SetQuickDrawTextOriginWithContextOffset(0, 0);
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(styleValueAt66);
+        g_pViewMgr->ApplyLegendSplitSlot34(styleValueAt66);
         SetQuickDrawPenSizeAndMarkDirty(1, 5);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 0);
         ResetQuickDrawStrokeState();

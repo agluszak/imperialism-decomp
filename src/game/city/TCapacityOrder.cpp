@@ -162,8 +162,8 @@ bool TCapacityOrder::SetCapacityOrderQuantity(short quantity) {
   city->cityStockFuelCE = static_cast<short>(
       city->cityStockFuelCE - ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
   city->VerifyStocks();
-  if (g_pUiRuntimeContext != 0) {
-    g_pUiRuntimeContext->RefreshCityProductionUi();
+  if (g_pViewMgr != 0) {
+    g_pViewMgr->RefreshCityProductionUi();
   }
   return true;
 }

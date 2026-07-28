@@ -73,7 +73,7 @@ void TSetupRandomMapPicture::RecheckCountryName() {
 // FUNCTION: IMPERIALISM 0x00577030
 void TSetupRandomMapPicture::DoPostCreate(int arg) {
   TNoHilitePicture::DoPostCreate(arg);
-  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(0);
+  g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(0);
   g_pSimMgr->scenarioMapIndexPlusOne = 0;
 
   if (g_pGlobalMapState == 0) {
@@ -141,7 +141,7 @@ void TSetupRandomMapPicture::DoPostCreate(int arg) {
 
   TGWorldPartView* flagView = static_cast<TGWorldPartView*>(ResolveControlByTag(kControlTagFlag));
   flagView->AssertValid();
-  flagView->sourceSurface60 = g_pStrategicMapViewSystem->atlas680;
+  flagView->sourceSurface60 = g_pMacViewMgr->atlas680;
   flagView->sourceRect64.left = selectedNationSlot9A * flagView->frameWidth34;
   flagView->sourceRect64.top = 0;
   flagView->sourceRect64.right = (selectedNationSlot9A + 1) * flagView->frameWidth34;
@@ -274,8 +274,8 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
                                                                       10);
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&unusedCancelText, 0x2758,
                                                                       11);
-      int resultTag = g_pUiRuntimeContext->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction),
-                                                                planetSeed, 0, 0, 0, 0);
+      int resultTag = g_pViewMgr->MakePlanetSeedDialog(static_cast<LPCSTR>(instruction), planetSeed,
+                                                       0, 0, 0, 0);
       wrapHorizontally98 = resultTag == kControlTagOne1;
 
       if (planetSeed.Compare(g_szEmptyString) != 0 && planetSeed.Compare(planetSeed94) != 0) {
@@ -340,7 +340,7 @@ void TSetupRandomMapPicture::StartGame() {
 
   g_nRandomMapSelectedNationSlot00698AB0 = selectedNationSlot9A;
   if (g_pSimMgr->multiplayerSessionRole != 0) {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventNetworkGameOptions));
     g_pGameFlowState->playerNameMirror = g_cstrCountryNameSettingValue006A4220;
     g_pGameFlowState->playerNameString = g_cstrCountryNameSettingValue006A4220;
@@ -351,8 +351,7 @@ void TSetupRandomMapPicture::StartGame() {
   g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(selectedNationSlot9A);
   {
     CString countryName(g_cstrCountryNameSettingValue006A4220);
-    g_pUiViewManager->SaveSettingValueFromPointerByKey(&countryName,
-                                                       g_szCountryNameProfileKey00698AE0);
+    g_pAssetMgr->SaveSettingValueFromPointerByKey(&countryName, g_szCountryNameProfileKey00698AE0);
   }
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     g_pSimMgr->nationControlModes[nationSlot] = 2;
@@ -368,16 +367,16 @@ void TSetupRandomMapPicture::ExitScreen() {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
     return;
   }
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
+  g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
 }
 
 // FUNCTION: IMPERIALISM 0x00578230
 void TSetupRandomMapPicture::GroundControlToMajorTom(unsigned char mode) {
   TSpaceCommand* command = new TSpaceCommand();
-  command->ICommand(kControlTagNASA, g_pGlobalUiRootController, 0, 0, 0);
+  command->ICommand(kControlTagNASA, g_pAmbitApplication, 0, 0, 0);
   command->setupPicture18 = this;
   command->mode1c = mode;
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+  g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }
 
 // FUNCTION: IMPERIALISM 0x005782f0

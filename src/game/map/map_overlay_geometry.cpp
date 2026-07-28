@@ -336,8 +336,8 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   if (actionClass >= kMapTileActionStateLinkedZoneFirst &&
       actionClass <= kMapTileActionStateLinkedZoneLast) {
     TZone* activeOrderContext = 0;
-    if (g_pUiRuntimeContext->mapUberPictureF0->activeUnitCategoryIndex96 == 2) {
-      activeOrderContext = g_pUiRuntimeContext->mapUberPictureF0->orderEntryContext98;
+    if (g_pViewMgr->mapUberPictureF0->activeUnitCategoryIndex96 == 2) {
+      activeOrderContext = g_pViewMgr->mapUberPictureF0->orderEntryContext98;
     }
     TZone* resolvedZone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     return resolvedZone == activeOrderContext ? 10 : 9;

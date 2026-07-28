@@ -69,7 +69,7 @@ void TAmbitApplication::IAmbitApplication() {
 
   TAssetMgr* assetMgr = new TAssetMgr();
   assetMgr->ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
-  g_pUiViewManager = assetMgr;
+  g_pAssetMgr = assetMgr;
 
   EnsureTurnEventDialogFactoryRegistryInitialized();
 
@@ -77,7 +77,7 @@ void TAmbitApplication::IAmbitApplication() {
   if (viewMgr != nullptr) {
     viewMgr->LoadTurnEventCursorTable();
   }
-  g_pUiRuntimeContext = viewMgr;
+  g_pViewMgr = viewMgr;
 
   TDisplayMgr* displayMgr = new TDisplayMgr();
   if (displayMgr != nullptr) {
@@ -89,7 +89,7 @@ void TAmbitApplication::IAmbitApplication() {
   if (mapView != nullptr) {
     mapView->IMacViewMgr();
   }
-  g_pStrategicMapViewSystem = mapView;
+  g_pMacViewMgr = mapView;
 
   if (g_pHelpMgr == nullptr) {
     g_pHelpMgr = new THelpMgr();
@@ -115,9 +115,9 @@ void TAmbitApplication::Free() {
     g_pLanguageMgr->Free();
     g_pLanguageMgr = nullptr;
   }
-  if (g_pStrategicMapViewSystem != nullptr) {
-    g_pStrategicMapViewSystem->Free();
-    g_pStrategicMapViewSystem = nullptr;
+  if (g_pMacViewMgr != nullptr) {
+    g_pMacViewMgr->Free();
+    g_pMacViewMgr = nullptr;
   }
   if (g_pHelpMgr != nullptr) {
     g_pHelpMgr->Free();
@@ -125,13 +125,13 @@ void TAmbitApplication::Free() {
   }
   g_pSimMgr->Free();
 
-  if (g_pUiViewManager != nullptr) {
-    g_pUiViewManager->Free();
-    g_pUiViewManager = nullptr;
+  if (g_pAssetMgr != nullptr) {
+    g_pAssetMgr->Free();
+    g_pAssetMgr = nullptr;
   }
-  if (g_pUiRuntimeContext != nullptr) {
-    g_pUiRuntimeContext->Free();
-    g_pUiRuntimeContext = nullptr;
+  if (g_pViewMgr != nullptr) {
+    g_pViewMgr->Free();
+    g_pViewMgr = nullptr;
   }
   if (g_pDisplayMgr != nullptr) {
     g_pDisplayMgr->Free();
@@ -168,7 +168,7 @@ void TAmbitApplication::WriteTo(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0049e320
 void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
   if (!InModalState() && edgeScrollTarget48 != nullptr) {
-    short code = g_pUiRuntimeContext->currentTurnEventCode;
+    short code = g_pViewMgr->currentTurnEventCode;
     if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
         code == kTurnEventTacticalView || code == kTurnEventProvisional0F3C ||
         code == kTurnEventMapEditor) {

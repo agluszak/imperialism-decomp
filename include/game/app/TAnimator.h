@@ -12,7 +12,7 @@ class TStream;
 struct TQuickDrawSurfaceContext;
 
 // The UI animator: a MacApp-style idle cohandler (g_pUiAnimator, uninstalled from
-// g_pGlobalUiRootController via InstallCohandler(this, 0) in Free) that owns the
+// g_pAmbitApplication via InstallCohandler(this, 0) in Free) that owns the
 // transient-animation registry -- a TList of TAnimation-shaped objects keyed by
 // their +0x18 registry tag -- plus the shared offscreen surface the animations
 // blit into. idleFrequencyTicks (inherited from TEventHandler) is set by

@@ -74,7 +74,7 @@ void TMapEditView::DoPostCreate(int arg) {
   TMapUberPicture* mapOwner = static_cast<TMapUberPicture*>(ownerContext);
   mapOwner->SetMapInteractionMode(5);
   g_pGlobalMapState->field24 = 1;
-  g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
   mapOwner->DisplayMiniMap();
 
   const short defaultResourceByProfile[15] = {-1, -1, 0,  20, 5,  17, 18, 1,
@@ -181,7 +181,7 @@ void TMapEditView::DispatchOverlayEvent78FromStridedRecord(int tileIndex, int di
       InvalidateTile(neighbor);
     }
   }
-  g_pUiRuntimeContext->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
 }
 
 // FUNCTION: IMPERIALISM 0x0051d210
@@ -367,7 +367,7 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
   g_pGlobalMapState->SetRegionTileSubtypeAndRefreshNeighborFlags(provinceId, tileIndex);
 
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventProvinceEditor));
   TEditText* nameControl = static_cast<TEditText*>(dialog->ResolveControlByTag(kControlTagName));
   nameControl->AssertValid();
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&cityName, 0);

@@ -38,7 +38,7 @@ void TRadioText::Draw(RECT* rectBuffer) {
 
     COLORREF savedColor = g_pActiveQuickDrawSurfaceContext->blitSurface.foregroundColor;
     short colorCode = controlState64 != 0 ? cluster->word8C : cluster->word8E;
-    g_pUiRuntimeContext->SetColor(colorCode, 1);
+    g_pViewMgr->SetColor(colorCode, 1);
 
     RECT fillRect = {0, 0, frameWidth34, frameHeight38};
     FillRectWithQuickDrawBrushAndContextOffset(&fillRect);

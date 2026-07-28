@@ -84,7 +84,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
     // Entries 6 (" 6sr") and 12 (" 5am") are group terminators, skipped unless a production
     // order is active.
     if ((tagPtr != &g_tradeCommodityRowTagTable[6] && tagPtr != &g_tradeCommodityRowTagTable[12]) ||
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
+        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
       RECT cellRect;
 
       // Right cell: the active nation's diplomacy value for this commodity.
@@ -111,7 +111,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       cellRect.bottom = cellRect.top + 0xe;
       cellRect.left = ctrl->ownerLocalX + 0xc8;
       cellRect.right = cellRect.left + 0x26;
-      short weight = g_pNationInteractionStateManager->GetPrice(static_cast<short>(i));
+      short weight = g_pTradeMgr->GetPrice(static_cast<short>(i));
       g_pSimMgr->NumToCurrency(weight, &cellText);
       cellRect.top -= 5;
       cellRect.bottom -= 5;

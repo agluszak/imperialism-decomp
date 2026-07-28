@@ -146,7 +146,7 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   regionAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
-  g_pGlobalUiRootController->cursorRegionInvalid = TRUE;
+  g_pAmbitApplication->cursorRegionInvalid = TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x004f3c70
@@ -183,7 +183,7 @@ void TDiplomacyMapView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004f3e30
 void TDiplomacyMapView::Close() {
-  g_pGlobalUiRootController->cursorRegionInvalid = FALSE;
+  g_pAmbitApplication->cursorRegionInvalid = FALSE;
   TView::Close();
 }
 
@@ -211,8 +211,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
   regionAt9c = NewRgn();
   for (short terrain = 0; terrain < 0x17; ++terrain) {
     if (g_apTerrainTypeDescriptorTable[terrain] != 0) {
-      UnionRgn(regionAt9c, g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(terrain),
-               regionAt9c);
+      UnionRgn(regionAt9c, g_pMacViewMgr->GetClipRegionSlotByIndex(terrain), regionAt9c);
     }
   }
 
@@ -225,7 +224,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
 
   for (short nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
     DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
-    RgnHandle nationRgn = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex);
+    RgnHandle nationRgn = g_pMacViewMgr->GetClipRegionSlotByIndex(nationIndex);
     (*nationRgn)->RefreshBoundingBox();
     CopyRect(&run->boundsAt04, &(*nationRgn)->rgnBBox);
     run->boundsAt04.right =
@@ -255,7 +254,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     CString nationName;
     TCountry* nation = g_apTerrainTypeDescriptorTable[nationIndex];
     if (nation != 0) {
-      if (EmptyRgn(g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex)) == 0) {
+      if (EmptyRgn(g_pMacViewMgr->GetClipRegionSlotByIndex(nationIndex)) == 0) {
         short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
         int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
         int labelY = (anchorTile / 0x6c + 9) * 5;
@@ -416,8 +415,8 @@ void TDiplomacyMapView::Draw(RECT* rectBuffer) {
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
-      static_cast<short>(frameRegionSelectorAt98));
+  RgnHandle frameRegion =
+      g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(frameRegionSelectorAt98));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 
@@ -547,7 +546,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       RECT compatSrcRect = {compatIconX, 0, static_cast<int>(compatIconX + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &compatSrcRect, &nationAnchorRects3A4[terrainIndex], 0x24,
                                        0);
@@ -620,7 +619,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       RECT iconSrcRect = {iconOffset, 0, static_cast<int>(iconOffset + 0x10), 0x10};
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &iconSrcRect, hitRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -634,7 +633,7 @@ void TDiplomacyMapView::DrawIcons(RECT* presentRect) {
       }
       UpdatePaletteIndexWithDefaultFallback(0x10);
       SetQuickDrawFillColor(0);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[2]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[2]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &boycottSrcRect, &boycottDstRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -947,8 +946,8 @@ eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPo
   int terrainIndex = 0;
   do {
     if (g_apTerrainTypeDescriptorTable[terrainIndex] != 0) {
-      char hit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
-          &localPoint, static_cast<short>(terrainIndex));
+      char hit =
+          g_pMacViewMgr->IsPointInsideClipRegionSlot(&localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -1004,8 +1003,8 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   bool hit = false;
   do {
     if (g_apTerrainTypeDescriptorTable[static_cast<short>(hitIndex)] != 0) {
-      char regionHit = g_pStrategicMapViewSystem->IsPointInsideClipRegionSlot(
-          &localPoint, static_cast<short>(hitIndex));
+      char regionHit =
+          g_pMacViewMgr->IsPointInsideClipRegionSlot(&localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;
@@ -1033,11 +1032,11 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
       }
     }
     currentCursorResourceId52A = cursorId;
-    hCursor = g_pUiRuntimeContext->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pViewMgr->turnEventCursors[cursorId - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   } else if (currentCursorResourceId52A != 0x41b) {
     currentCursorResourceId52A = 0x41b;
-    hCursor = g_pUiRuntimeContext->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
+    hCursor = g_pViewMgr->turnEventCursors[0x41b - TViewMgr::kCursorResourceIdBase];
     applyCursor = true;
   }
 
@@ -1082,7 +1081,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
       terrainDescriptors = terrainDescriptors + 1;
     } while (terrainIndex < 7);
 
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x3f);
 
     terrainIndex = 7;
     terrainDescriptors = g_apTerrainTypeDescriptorTable + 7;
@@ -1117,8 +1116,8 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(RECT* presentRect
   }
 
   SetQuickDrawFillColor(0xffffff);
-  RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
-      static_cast<short>(frameRegionSelectorAt98));
+  RgnHandle frameRegion =
+      g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(frameRegionSelectorAt98));
   QDFrameRgn(frameRegion);
   SetQuickDrawFillColor(0);
 }
@@ -1132,7 +1131,7 @@ void TDiplomacyMapView::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   do {
     if (*terrainDescriptors != 0) {
       RgnHandle frameRegion =
-          g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(static_cast<short>(terrainIndex));
+          g_pMacViewMgr->GetClipRegionSlotByIndex(static_cast<short>(terrainIndex));
       UnionRgn(region, frameRegion, region);
     }
     terrainIndex = static_cast<short>(terrainIndex + 1);
@@ -1174,13 +1173,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
 
       maskOrigin.x = 0;
       maskOrigin.y = 0;
-      QuickDrawPaletteIndex paletteIndex =
-          g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
+      QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
       maskRuns[nationIndex].BlitMonochromeMaskBytePatternToSurface(
           &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
           &maskOrigin, 1);
 
-      int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
+      int packedColor = g_pViewMgr->GetColor(0x3f);
       packedColorRuns[nationIndex].AppendPackedColorDword(
           g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
 
@@ -1306,12 +1304,12 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
         maskOrigin.x = 0;
         maskOrigin.y = 0;
         QuickDrawPaletteIndex paletteIndex =
-            g_pUiRuntimeContext->GetColor(static_cast<short>(relationshipNotch + 200));
+            g_pViewMgr->GetColor(static_cast<short>(relationshipNotch + 200));
         maskRuns[terrainIndex].BlitMonochromeMaskBytePatternToSurface(
             &g_pActiveQuickDrawSurfaceContext->blitSurface, static_cast<short>(paletteIndex),
             &maskOrigin, 1);
 
-        int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
+        int packedColor = g_pViewMgr->GetColor(0x3f);
         packedColorRuns[terrainIndex].AppendPackedColorDword(
             g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits, packedColor);
       }
@@ -1336,12 +1334,12 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int e
   CPoint maskOrigin;
   maskOrigin.x = 0;
   maskOrigin.y = 0;
-  QuickDrawPaletteIndex paletteIndex = g_pUiRuntimeContext->GetColor(static_cast<short>(eventCode));
+  QuickDrawPaletteIndex paletteIndex = g_pViewMgr->GetColor(static_cast<short>(eventCode));
   DiplomacyMaskBufferRun* maskRun = &maskRuns[maskIndex];
   maskRun->BlitMonochromeMaskBytePatternToSurface(&g_pActiveQuickDrawSurfaceContext->blitSurface,
                                                   static_cast<short>(paletteIndex), &maskOrigin, 1);
 
-  int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
+  int packedColor = g_pViewMgr->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(g_pActiveQuickDrawSurfaceContext->blitSurface.pixelBits,
                                     packedColor);
@@ -1411,7 +1409,7 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
   }
 
   g_pModuleLibraryCacheState->ReleaseRecordByHandle(bmpHandle);
-  int packedColor = g_pUiRuntimeContext->GetColor(0x3f);
+  int packedColor = g_pViewMgr->GetColor(0x3f);
   StrategicMapCallbackRecord* packedRun = &packedColorRuns[maskIndex];
   packedRun->AppendPackedColorDword(surface->GetBlitSurface()->pixelBits, packedColor);
 }
@@ -1586,7 +1584,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
         OffsetRect(&destRect, 0, (surfaceHeight - destRect.top) - destRect.bottom);
       }
 
-      BlitQuickDrawSurfaces(g_pStrategicMapViewSystem->atlas6b8->GetBlitSurface(),
+      BlitQuickDrawSurfaces(g_pMacViewMgr->atlas6b8->GetBlitSurface(),
                             g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect,
                             0x24);
 
@@ -1595,7 +1593,7 @@ void TDiplomacyMapView::DrawVoteNuggets() {
       destRect.right = iconRect->right + 1;
       destRect.bottom = iconRect->bottom + 1;
       if (tierValue == selectedTier) {
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(6);
+        g_pViewMgr->ApplyLegendSplitSlot34(6);
       } else {
         SetQuickDrawFillColor(0xffffff);
       }
@@ -1620,8 +1618,8 @@ void TDiplomacyMapView::DrawVoteNuggets() {
 void ShowDiplomacyActionRejectedNotice() {
   CString message;
   g_pSimMgr->GetString(0x2754, g_pDiplomacyTurnStateManager->proposalArrayMode - 1, &message);
-  g_pUiRuntimeContext->ModalMessage(3, CString(g_szEmptyString), message,
-                                    g_ptDiplomacyNoticeModalMessage, 0, 0);
+  g_pViewMgr->ModalMessage(3, CString(g_szEmptyString), message, g_ptDiplomacyNoticeModalMessage, 0,
+                           0);
 }
 
 // FUNCTION: IMPERIALISM 0x004f74f0
@@ -1656,8 +1654,7 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
 
     templateText = formattedIntro + "\n" + entangledNations + unusedSuffix;
     g_pSimMgr->GetString(0x275d, 5, &title);
-    return g_pUiRuntimeContext->ModalMessage(3, title, templateText,
-                                             g_ptDiplomacyNoticeModalMessage, 0, 0);
+    return g_pViewMgr->ModalMessage(3, title, templateText, g_ptDiplomacyNoticeModalMessage, 0, 0);
   }
   return 1;
 }

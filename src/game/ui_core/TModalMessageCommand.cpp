@@ -7,7 +7,7 @@
 
 // FUNCTION: IMPERIALISM 0x005dcd10
 void TModalMessageCommand::DoIt() {
-  g_pUiRuntimeContext->ModalMessage(message, g_ptUiPromptModalMessage, payload, 0);
+  g_pViewMgr->ModalMessage(message, g_ptUiPromptModalMessage, payload, 0);
 }
 
 // SYNTHETIC: IMPERIALISM 0x005dcd50

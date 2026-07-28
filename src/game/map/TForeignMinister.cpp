@@ -289,14 +289,13 @@ void TForeignMinister::DoUsualSubsidyRule() {
   TGreatPower* owner = this->ownerContextAt04;
   short nationSlot = owner->nationSlot;
   static const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
-  int loopCount =
-      (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[0x13] == 2) + 5;
+  int loopCount = (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[0x13] == 2) + 5;
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {
       int roll = rand();
       short orderKind = *orderKindCursor;
-      short weightThreshold = g_pNationInteractionStateManager->GetPrice(orderKind);
+      short weightThreshold = g_pTradeMgr->GetPrice(orderKind);
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
         short metric = owner->GetStockpile(orderKind);
         if (metric == 0) {
@@ -315,7 +314,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
   }
 
   int roll = rand();
-  short tradeWeight = g_pNationInteractionStateManager->GetPrice(5);
+  short tradeWeight = g_pTradeMgr->GetPrice(5);
   if (roll % 100 + 200 < static_cast<int>(tradeWeight)) {
     short tradeMetric = owner->GetStockpile(kResourceHorses);
     if (tradeMetric != 0) {
@@ -342,7 +341,7 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     short availableAmount =
         static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
-      g_pNationInteractionStateManager->SetDealResults(
+      g_pTradeMgr->SetDealResults(
           owner->nationSlot, arg2,
           static_cast<int>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)),
           static_cast<int>(dispatchAmount), resourceCode, 0, 0);
@@ -365,8 +364,8 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
-  g_pNationInteractionStateManager->SetDealResults(
-      owner->nationSlot, arg2, static_cast<int>(dispatchAmount), arg3, resourceCode, 0, 0);
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg2, static_cast<int>(dispatchAmount), arg3,
+                              resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0052fcc0
@@ -755,8 +754,7 @@ void TForeignMinister::SetEmpirePolicies() {
         RelationshipRankEntry* entry = static_cast<RelationshipRankEntry*>(
             relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
         short minorNation = entry->nationSlot;
-        if (g_pNationInteractionStateManager->categoryRows[policyCategory]
-                    .tradeOfferCells[minorNation + 0x2e] != 0 &&
+        if (g_pTradeMgr->categoryRows[policyCategory].tradeOfferCells[minorNation + 0x2e] != 0 &&
             owner->needLevelByNation[minorNation] != 300) {
           selectedMinor = minorNation;
         }

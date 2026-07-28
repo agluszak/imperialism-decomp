@@ -23,7 +23,7 @@ extern "C" {
 extern char* g_pSmallViewsEmptyText_00662B90;
 }
 
-extern TTradeMgr* g_pNationInteractionStateManager;
+extern TTradeMgr* g_pTradeMgr;
 
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 
@@ -50,7 +50,7 @@ extern TNetMgr* g_pNetMgr006a6014;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern TTechMgr* g_pCityOrderCapabilityState;
+extern TTechMgr* g_pTechMgr;
 
 extern TSoundResourceManager g_soundResourceManager;
 
@@ -68,11 +68,11 @@ extern CPoint g_ptUiAnimatorSurfaceBounds; // 0x006a2228, initialized at 0x0049f
 
 extern unsigned char g_bStrategicMapSelectionOverlayPhase; // 0x006a224c
 
-extern TMacViewMgr* g_pStrategicMapViewSystem;
+extern TMacViewMgr* g_pMacViewMgr;
 
-extern TViewMgr* g_pUiRuntimeContext;
+extern TViewMgr* g_pViewMgr;
 
-extern TAssetMgr* g_pUiViewManager;
+extern TAssetMgr* g_pAssetMgr;
 
 extern TLanguageMgr* g_pLanguageMgr;
 
@@ -143,7 +143,7 @@ extern TSoundPlayer* g_pSfxPlaybackSystem;
 
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
-extern TApplication* g_pApplicationUiRootController;
+extern TApplication* g_pApplication;
 
 extern const int g_hexColOffsetEvenRow_00697450[6];
 
@@ -305,7 +305,7 @@ extern THelpMgr* g_pHelpMgr;
 
 extern TNewsMgr* g_pNewsMgr;
 
-extern TAmbitApplication* g_pGlobalUiRootController;
+extern TAmbitApplication* g_pAmbitApplication;
 
 extern int g_anWeightedNeighborUnitScoreByType_006955F0[32];
 

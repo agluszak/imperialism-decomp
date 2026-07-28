@@ -304,12 +304,8 @@ void TDefendProvinceMission::CalculateNeeds() {
 
   if (compat == 0) {
     unsigned char bVar8;
-    if (g_pCityOrderCapabilityState->abilityActiveRows395[nationId04].abilityActiveById[0x10] ==
-        0) {
-      bVar8 =
-          (g_pCityOrderCapabilityState->abilityActiveRows395[nationId04].abilityActiveById[8] != 0)
-              ? 8
-              : 0;
+    if (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[0x10] == 0) {
+      bVar8 = (g_pTechMgr->abilityActiveRows395[nationId04].abilityActiveById[8] != 0) ? 8 : 0;
     } else {
       bVar8 = 0x10;
     }

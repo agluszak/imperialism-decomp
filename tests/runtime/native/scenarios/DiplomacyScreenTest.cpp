@@ -123,7 +123,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before opening diplomacy\"");
       return;
@@ -140,7 +140,7 @@ private:
 
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
       WaitForScenarioTick("\"diplomacy toolbar action did not activate diplomacy orders\"");
       return;
     }
@@ -474,7 +474,7 @@ private:
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"diplomacy back control did not restore the strategic map\"");
       return;

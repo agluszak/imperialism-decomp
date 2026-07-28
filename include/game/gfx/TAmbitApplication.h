@@ -13,7 +13,7 @@ class TWindow;
 unsigned int GetTickCountDiv16();
 
 // Ambit-specific application subclass (size 0x54, base TApplication = 0x48) — the
-// game-side UI root controller (g_pGlobalUiRootController), created by
+// game-side UI root controller (g_pAmbitApplication), created by
 // ImperialismApp::InitInstance. Mirrors MacApp's TAmbitApplication: it owns the manager
 // singleton graph (IAmbitApplication) and adds cursor/window virtuals in
 // slots 0x2b-0x2d beyond the TApplication vtable.

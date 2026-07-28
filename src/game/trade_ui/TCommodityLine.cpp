@@ -39,7 +39,7 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
 
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xe, 0x2b67);
   g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
-  short price = g_pNationInteractionStateManager->GetPrice(commoditySlot);
+  short price = g_pTradeMgr->GetPrice(commoditySlot);
   g_pSimMgr->NumToCurrency(price, &priceText);
   displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;
 

@@ -38,7 +38,7 @@ void TForeignMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, 
     } else if (tag == kControlTagOkay) {
       CloseBooks();
       TWindow* owner = GetWindow();
-      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      g_pAmbitApplication->CloseAndFreeWindow(owner);
       return;
     }
   } else if (commandId == 0x14) {
@@ -74,7 +74,7 @@ void TForeignMinisterView::ShowWorldMap() {
   if (g_pSimMgr->field14 == 0) {
     TWindow* owner = GetWindow();
     CloseBooks();
-    g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+    g_pAmbitApplication->CloseAndFreeWindow(owner);
   }
 }
 

@@ -248,7 +248,7 @@ void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInput
   CString cityName;
   g_pGlobalMapState->AssignCityRecordDisplayName(tile.cityRecordIndex, &cityName);
   pendingTown->SetName(cityName);
-  if (!g_pUiRuntimeContext->ShowNewCityDialog(pendingTown)) {
+  if (!g_pViewMgr->ShowNewCityDialog(pendingTown)) {
     pendingTown->tileIndex = 0;
     return;
   }

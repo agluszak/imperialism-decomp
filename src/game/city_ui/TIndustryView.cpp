@@ -166,8 +166,8 @@ void TIndustryView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x84c);
     }
 
-    g_pUiRuntimeContext->ShowBuildingExpansionDialog(
-        embeddedPageIndex9E, city94, static_cast<TCityProductionView*>(mainControl));
+    g_pViewMgr->ShowBuildingExpansionDialog(embeddedPageIndex9E, city94,
+                                            static_cast<TCityProductionView*>(mainControl));
 
     TView* owner2 = GetWindow();
     static_cast<TWindow*>(owner2)->nativeWindow50->EnableWindow(wasDisabled);

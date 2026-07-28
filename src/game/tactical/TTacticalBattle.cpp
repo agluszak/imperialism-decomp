@@ -712,7 +712,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
       HandleTacticalCommandTag_retr();
       return;
     }
-    if (g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
+    if (g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
       player = (&tacticalPlayer14)[currentSideC];
       player->fieldF = 1;
       player->ProceedAfterBattleIntroAccepted();
@@ -733,9 +733,9 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
 void TTacticalBattle::QueueTacticalEventPacket232A() {
   pendingEndOfActionFlag48 = 0;
   TNextMoveCommand* command = new TNextMoveCommand();
-  command->ICommand(0x232a, g_pGlobalUiRootController, 0, 0, 0);
+  command->ICommand(0x232a, g_pAmbitApplication, 0, 0, 0);
   command->battle18 = this;
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+  g_pAmbitApplication->DispatchUiSelectionToHandler(command);
 }
 
 // FUNCTION: IMPERIALISM 0x005a0ea0
@@ -1583,7 +1583,7 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   TextStyle styleDescriptor;
   styleDescriptor.textColor = 0;
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalBattleResult));
 
   TPicture* headerPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagDialog));
   headerPicture->AssertValid();

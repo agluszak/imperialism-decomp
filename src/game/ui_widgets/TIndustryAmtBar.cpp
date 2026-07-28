@@ -88,7 +88,7 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
       short styleValueAt60 = control->rangeOrMaxValue;
       if (styleValueAt60 > 0) {
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->ApplyLegendSplitSlot34(0);
         SetQuickDrawPenSizeAndMarkDirty(1, 4);
         SetQuickDrawTextOriginWithContextOffset(0, 1);
         DrawCenteredGuideLineOnMapDc((short)(styleValueAt60 - 1), 1);

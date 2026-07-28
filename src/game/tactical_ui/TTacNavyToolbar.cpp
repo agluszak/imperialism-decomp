@@ -71,5 +71,5 @@ void TTacNavyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
     }
   }
   TCluster::DoEvent(commandId, sourceHandler, event);
-  g_pGlobalUiRootController->SetTarget(ownerContext);
+  g_pAmbitApplication->SetTarget(ownerContext);
 }

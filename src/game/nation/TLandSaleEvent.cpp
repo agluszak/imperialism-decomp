@@ -52,13 +52,12 @@ void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {
     sellerName = g_pSimMgr->LoadNormalizedCredentialName(seller->nationSlot);
   }
 
-  if (g_pGlobalUiRootController->edgeScrollTarget48 != 0) {
-    static_cast<TMapUberPicture*>(g_pGlobalUiRootController->edgeScrollTarget48)
-        ->CenterOn(tileIndex08);
+  if (g_pAmbitApplication->edgeScrollTarget48 != 0) {
+    static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48)->CenterOn(tileIndex08);
   }
 
   g_pSimMgr->GetString(0x274d, 6, &messageTemplate);
   scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(messageTemplate),
                          static_cast<LPCSTR>(sellerName), static_cast<LPCSTR>(buyerName));
-  g_pUiRuntimeContext->ModalMessage(message, g_ptGreatPowerModalMessage, 0, 0);
+  g_pViewMgr->ModalMessage(message, g_ptGreatPowerModalMessage, 0, 0);
 }

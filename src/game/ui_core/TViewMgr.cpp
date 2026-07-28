@@ -30,7 +30,7 @@
 #include "game/ui_widgets/TArmyToolbar.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/ui_widgets/TSoundPlayer.h" // g_pSfxPlaybackSystem
-#include "game/ui_core/TMacViewMgr.h"     // g_pStrategicMapViewSystem
+#include "game/ui_core/TMacViewMgr.h"     // g_pMacViewMgr
 #include "game/ui_core/TIncludeView.h"    // turn-event UI entry packet ('Incl')
 #include "game/ui_core/CWMgrIterator.h"   // window-registry traversal for the full (code-0) refresh
 #include "game/ui_core/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
@@ -381,7 +381,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
     return;
   }
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventConfirmEndTurn));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x223);
@@ -489,11 +489,11 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   TWindow* dialog;
   if (static_cast<short>(payloadResource) == 0) {
     dialog = static_cast<TWindow*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterMessage));
   } else {
-    g_pUiViewManager->OpenFilesFor(0xb);
+    g_pAssetMgr->OpenFilesFor(0xb);
     dialog = static_cast<TWindow*>(
-        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMinisterReward));
   }
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -679,7 +679,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     g_pSimMgr->GetString(0x273a, 1, &messageText);
     dialogContext = 1;
     short nationId = g_pSimMgr->GetActiveNationId();
-    int cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].slots[9];
+    int cap = g_pTechMgr->nationCapRows1e8[nationId].slots[9];
     if (cap == 0x1c) {
       resourceId = 0x2518;
     } else {
@@ -825,8 +825,8 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
     TView* control = mainView->ResolveControlByTag(g_strategicMapStatusIconTagTable[iconIndex]);
     if (control != nullptr) {
       control->AssertValid();
-      g_pStrategicMapViewSystem->ApplySellOrderRowToNationState(
-          static_cast<TTradeCluster*>(control), iconIndex, currentTurnEventNationSlot06);
+      g_pMacViewMgr->ApplySellOrderRowToNationState(static_cast<TTradeCluster*>(control), iconIndex,
+                                                    currentTurnEventNationSlot06);
     }
   }
   g_apNationStates[currentTurnEventNationSlot06]->RememberTradeBids();
@@ -1080,8 +1080,8 @@ void DispatchPostTurnStateUpdatesTail() {
     return;
   }
   g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
-  g_pHelpMgr->HandlePendingEventActivationByCode(g_pUiRuntimeContext->currentTurnEventCode);
-  g_pHelpMgr->HandlePostPendingEventActivationNoOp(g_pUiRuntimeContext->currentTurnEventCode);
+  g_pHelpMgr->HandlePendingEventActivationByCode(g_pViewMgr->currentTurnEventCode);
+  g_pHelpMgr->HandlePostPendingEventActivationNoOp(g_pViewMgr->currentTurnEventCode);
 }
 } // namespace
 
@@ -1145,7 +1145,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->RefreshStrategicMapStatusIconsForActiveNation();
         break;
       case kTurnEventCityProduction:
-        g_pStrategicMapViewSystem->ClearActiveCityProductionViewAndDiscardRegion();
+        g_pMacViewMgr->ClearActiveCityProductionViewAndDiscardRegion();
         break;
       case kTurnEventStrategicMap:
         this->mapUberPictureF0 = 0;
@@ -1156,7 +1156,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 
   // Code 0 = rebuild every registered UI window node.
   if (newCode == 0) {
-    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
+    g_pAmbitApplication->dispatchBusyFlag4c = 0;
     this->currentTurnEventCode = 0;
     g_pDisplayMgr->clipSnapshotEvent = 0;
     mainView->Close();
@@ -1226,7 +1226,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   }
 
   // Cross-code path: tear down the previous dialog, build the new turn-event UI packet.
-  g_pUiViewManager->OpenFilesForView(newCode);
+  g_pAssetMgr->OpenFilesForView(newCode);
   mainView->Open();
   if (this->field10 != 0) {
     ShowBlockingWaitOverlayDialog();
@@ -1275,7 +1275,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
           static_cast<TDiplomacyMapView*>(diplomacyMap)
               ->SetSelectedTerrainIndexForTurnEvent(secondary);
         }
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
       }
     } else if (newCode < kTurnEventTradeOverview) {
@@ -1294,7 +1294,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         break;
       case kTurnEventDiplomacyMap:
         this->ShowDiplomacyScreen(static_cast<short>(payload));
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
         break;
       }
@@ -1303,7 +1303,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
         this->RefreshTechnologyStorePageAndHudText(payload);
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
       } else if (newCode == kTurnEventOpeningCinematic) {
         this->HandleTurnEventDialogFactorySlotF4();
@@ -1324,22 +1324,22 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       case kTurnEventTradeOverview:
       case kTurnEventIndustryOverview:
         this->RefreshTradeAndIndustryOverviewScreen(payload);
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCityProduction:
         this->ShowCityProductionView(static_cast<short>(payload));
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventStrategicMap:
         this->ShowTerrainMap(static_cast<short>(payload));
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventTransport:
         this->ShowTransportScreen(static_cast<short>(payload));
-        g_pGlobalUiRootController->dispatchBusyFlag4c = 1;
+        g_pAmbitApplication->dispatchBusyFlag4c = 1;
         clearDispatchBusyFlag = false;
         break;
       case kTurnEventCouncilOfGovernors:
@@ -1353,7 +1353,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
     this->InitializeCitySiteSelectionScreenForNation(payload);
   }
   if (clearDispatchBusyFlag) {
-    g_pGlobalUiRootController->dispatchBusyFlag4c = 0;
+    g_pAmbitApplication->dispatchBusyFlag4c = 0;
   }
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveActivatedTurnEvent(newCode);
@@ -1366,7 +1366,7 @@ void TViewMgr::DispatchTurnEvent3B8AndWaitForCompletion(int payload, TEventHandl
   DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), payload);
   while (static_cast<short>(waitTarget->lastIdleTick) == 0) {
     if (PumpUiMessagesAndBackgroundTasks(1) == 0) {
-      g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+      g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     }
   }
 }
@@ -1417,7 +1417,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   productionView =
       static_cast<TCityProductionView*>(mainView->ResolveControlByTag(kControlTagMain));
   productionView->AssertValid();
-  g_pStrategicMapViewSystem->activeCityProductionView04 = productionView;
+  g_pMacViewMgr->activeCityProductionView04 = productionView;
 
   TGreatPower* nation = g_apNationStates[static_cast<short>(nationSlot)];
   TCity* city = nation != nullptr ? nation->city : nullptr;
@@ -1426,12 +1426,12 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005d7f70
 void TViewMgr::RefreshCityProductionUi() {
-  g_pStrategicMapViewSystem->RefreshActiveCityBuildingActionAvailabilityIndicators();
+  g_pMacViewMgr->RefreshActiveCityBuildingActionAvailabilityIndicators();
 }
 
 // FUNCTION: IMPERIALISM 0x005d7f90
 void TViewMgr::ClearActiveCityBuildingViewSlot(short param1) {
-  g_pStrategicMapViewSystem->ClearActiveCityBuildingViewSlot(param1);
+  g_pMacViewMgr->ClearActiveCityBuildingViewSlot(param1);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7fc0
@@ -1569,11 +1569,9 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   g_pSimMgr->GetString(0x2735, 6, &text);
   rightTitle->SetTextAndMaybeRefresh(&text, 0);
 
-  g_pStrategicMapViewSystem->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot,
-                                                                             hostView);
+  g_pMacViewMgr->RefreshCityProductionDetailPanelAndArrowWidgets(-1, nationSlot, hostView);
   for (short row = 0; row < 0x17; ++row) {
-    g_pStrategicMapViewSystem->RefreshCityProductionDetailPanelAndArrowWidgets(row, nationSlot,
-                                                                               hostView);
+    g_pMacViewMgr->RefreshCityProductionDetailPanelAndArrowWidgets(row, nationSlot, hostView);
   }
 }
 
@@ -1880,10 +1878,10 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     if (row == nullptr) {
       continue;
     }
-    g_pStrategicMapViewSystem->SyncSellTaggedChildControlWithNationState(
-        row, commodity, static_cast<short>(nationIndex));
+    g_pMacViewMgr->SyncSellTaggedChildControlWithNationState(row, commodity,
+                                                             static_cast<short>(nationIndex));
     if ((commodity == 6 || commodity == 0xc) &&
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       row->Free();
     } else {
       g_pSimMgr->GetStringPrelude(commodity, &label);
@@ -2271,7 +2269,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   }
 
   if (!movieName.IsEmpty()) {
-    g_pUiViewManager->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView);
+    g_pAssetMgr->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView);
   }
 }
 
@@ -2308,19 +2306,17 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
   case 1:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-        EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
     return;
   case 0xe:
   case 0x16:
   case 0x17:
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(
         EncodeTurnEventCode(kTurnEventCouncilOfGovernors));
     return;
   case 0x19:
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-          EncodeTurnEventCode(kTurnEventGameScore));
+      g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventGameScore));
       return;
     }
   default:
@@ -2403,22 +2399,22 @@ void TViewMgr::ShowHighScoreScreen() {
 
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::RefreshActiveGoldControlAndUiRuntimeState() {
-  g_pStrategicMapViewSystem->RefreshActiveGoldControlAndUiRuntimeState();
+  g_pMacViewMgr->RefreshActiveGoldControlAndUiRuntimeState();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc180
 void TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches() {
-  g_pStrategicMapViewSystem->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
+  g_pMacViewMgr->BuildStrategicMapRenderAtlasesAndTileMaskCaches();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1a0
 void TViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles() {
-  g_pStrategicMapViewSystem->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
+  g_pMacViewMgr->RebuildMapTileNeighborHighlightPolygonsForAllTiles();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1c0
 void TViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
-  g_pStrategicMapViewSystem->RenderTurnEventPalettePreviewSurfaceAndProgress();
+  g_pMacViewMgr->RenderTurnEventPalettePreviewSurfaceAndProgress();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
@@ -2469,7 +2465,7 @@ void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
 void TViewMgr::ShowBuildingExpansionDialog(short buildingSlotId, TCity* city,
                                            TCityProductionView* productionView) {
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericExpander));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
@@ -2597,7 +2593,7 @@ void TViewMgr::MakeGameSetupDialog() {
 // FUNCTION: IMPERIALISM 0x005de6c0
 void TViewMgr::MakeCheaterDialog(int which) {
   TWindow* panel =
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(15000));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(15000));
   if (panel == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UViewMgr.more.cpp", 0x303);

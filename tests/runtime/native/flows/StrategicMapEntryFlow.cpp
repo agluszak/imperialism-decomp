@@ -89,7 +89,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     if (scenario.AdvanceNewspaperIfNeeded()) {
       return kRuntimeFlowRunning;
     }
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd ||
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
       scenario.WaitForScenarioTick("\"random game did not reach the combined strategic map\"");
       return kRuntimeFlowRunning;
@@ -105,7 +105,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
   }
 
   if (phase == kWaitingForCapitalMap) {
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x3b8 ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) ||
         g_ModalViewStack.IsEmpty()) {
       scenario.WaitForScenarioTick("\"capital-selection map and prompt did not become active\"");
@@ -138,8 +138,8 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     TMapUberPicture* mapView = RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x3b8 || mapView == 0 ||
-        g_pGlobalMapState == 0 || mapView->subview2A8 == 0 || mapView->miniMapViewC0 == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x3b8 || mapView == 0 || g_pGlobalMapState == 0 ||
+        mapView->subview2A8 == 0 || mapView->miniMapViewC0 == 0 ||
         mapView->ResolveControlByTag(kControlTagCanc) == 0 ||
         mapView->ResolveControlByTag(kControlTagQuer) == 0) {
       scenario.FailScenario("\"capital-selection map is missing navigation prerequisites\"");
@@ -203,8 +203,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     TMapUberPicture* mapView = RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mapView == 0 ||
-        !g_ModalViewStack.IsEmpty()) {
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mapView == 0 || !g_ModalViewStack.IsEmpty()) {
       scenario.WaitForScenarioTick("\"accepted capital site did not reach the combined map\"");
       return kRuntimeFlowRunning;
     }

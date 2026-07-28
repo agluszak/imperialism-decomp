@@ -35,7 +35,7 @@ void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler,
     } else if (tag == kControlTagOkay) {
       CloseBooks();
       TWindow* owner = GetWindow();
-      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      g_pAmbitApplication->CloseAndFreeWindow(owner);
       return;
     }
   } else if (commandId == 0x14) {
@@ -44,7 +44,7 @@ void TInteriorMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler,
     } else if (tag == kControlTagTran) {
       if (g_pSimMgr->field14 == 0) {
         TWindow* owner = GetWindow();
-        g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+        g_pAmbitApplication->CloseAndFreeWindow(owner);
       }
     } else if (tag == kControlTagTrea) {
       OpenBook(kTurnEventTreasuriesBook);

@@ -70,7 +70,7 @@ void TIconBar::Draw(RECT* rectBuffer) {
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
   for (short i = 0; i < numIcons96; ++i) {
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &dstRect, 0x24, 0);
     dstRect.left += slotWidth;

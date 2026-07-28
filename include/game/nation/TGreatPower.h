@@ -133,7 +133,7 @@ public:
   // pending ('2') flag to its handled state.
   virtual void MarkAllPendingStatusFlagsHandled(void);
   // slot 0x2d — body 0x004da5e0: dispatches one UI turn-status prompt per pending
-  // flag via g_pUiRuntimeContext slot 0x3c.
+  // flag via g_pViewMgr slot 0x3c.
   virtual void DispatchPendingStatusPrompts(void);
   virtual void SetNationPendingActionStateAndPayload(int index, short payload); // slot 0x2e
   // slot 0x2f — Mac oracle: AddTurnStartEvent(TTurnStartEvent*); the base queues it.

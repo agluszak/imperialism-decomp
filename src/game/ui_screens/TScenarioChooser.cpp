@@ -55,8 +55,8 @@ void TScenarioChooser::DoPostCreate(int arg) {
     if (scenarioIndex > 8 && scenarioIndex < 0x10 && g_pSimMgr->multiplayerSessionRole != 0) {
       continue;
     }
-    g_pUiViewManager->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioIndex), 0,
-                                                       &scenarioPath);
+    g_pAssetMgr->BuildScenarioPathForModeAndIndex(static_cast<short>(scenarioIndex), 0,
+                                                  &scenarioPath);
     if (TryGetFileMetadataForPath(&scenarioPath) == 0) {
       continue;
     }
@@ -139,8 +139,8 @@ void TScenarioChooser::DoPostCreate(int arg) {
 void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 4) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58, 0, 1);
-    // g_pUiRuntimeContext->turnEventCursors[26]: (0x7c - 0x14) / sizeof(HCURSOR).
-    SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
+    // g_pViewMgr->turnEventCursors[26]: (0x7c - 0x14) / sizeof(HCURSOR).
+    SetCursor(g_pViewMgr->turnEventCursors[26]);
     // sourceHandler is the 'list' TTextList itself (confirmed by size: TTextList's
     // selectedIndex lands at exactly +0x1068).
     TTextList* scenarioList = static_cast<TTextList*>(sourceHandler);
@@ -188,8 +188,7 @@ void TScenarioChooser::ExitScreen() {
   if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->ResetLocalUiStateAndPostTurnEvent5E5();
   } else {
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-        EncodeTurnEventCode(kTurnEventMainMenu));
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
   }
 }
 
@@ -218,7 +217,7 @@ void TScenarioChooser::StartGame() {
           sizeof(kScenarioLanguageTagByIndex) / sizeof(kScenarioLanguageTagByIndex[0])) {
     languageTag = kScenarioLanguageTagByIndex[selectedScenarioIndex142];
   }
-  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(languageTag);
+  g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(languageTag);
 
   TMapPreviewView* mapControl =
       static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
@@ -238,8 +237,8 @@ void TScenarioChooser::StartGame() {
           g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
       CString promptText;
       g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2742, 3);
-      g_pUiRuntimeContext->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220,
-                                                0, 0, 0, 0);
+      g_pViewMgr->MakePlanetSeedDialog(promptText, g_cstrCountryNameSettingValue006A4220, 0, 0, 0,
+                                       0);
     } while (g_cstrCountryNameSettingValue006A4220.Compare(g_szEmptyString) == 0);
 
     CString qualifiedName = g_pLanguageMgr->PickGender(g_cstrCountryNameSettingValue006A4220);
@@ -250,7 +249,7 @@ void TScenarioChooser::StartGame() {
     g_pGameFlowState->activeNationTagIndex =
         static_cast<unsigned char>(mapControl->selectedNation68);
     g_pGameFlowState->scenarioSelectionTag = kControlTagScn0 + selectedScenarioIndex142;
-    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
+    g_pAmbitApplication->PostTurnEventCodeMessage2420(kTurnEventNetworkGameOptions);
   } else {
     g_pSimMgr->SetActiveNationSlotAndRefreshCityCapabilityUiHandles(mapControl->selectedNation68);
     for (int i = 0; i < 7; ++i) {
@@ -291,7 +290,7 @@ static char* ReadScenarioMetadataField(FILE* stream, char* destination) {
 void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
   CString path;
   selectedScenarioIndex142 = scenarioIndex;
-  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
+  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 0, &path);
 
   char* fieldBuffer = new char[0x1950];
   FILE* metadataStream = fopen(path, "rb");
@@ -338,7 +337,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
   // the owner tag the preview draws.
   ScenarioTileDiskRecord* tileRecords = new ScenarioTileDiskRecord[0x1950];
-  g_pUiViewManager->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &path);
+  g_pAssetMgr->BuildScenarioPathForModeAndIndex(scenarioIndex, 1, &path);
   FILE* mapStream = fopen(path, "rb");
   fread(tileRecords, sizeof(ScenarioTileDiskRecord), 0x1950, mapStream);
   ByteSwapScenarioTileRecordWords(tileRecords);

@@ -117,7 +117,7 @@ bool TExpansionOrder::SetQuantity(short quantity) {
   ownerCity->VerifyStocks();
   trackingSlots[secondaryInputResourceId] =
       static_cast<short>(trackingSlots[secondaryInputResourceId] + delta);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

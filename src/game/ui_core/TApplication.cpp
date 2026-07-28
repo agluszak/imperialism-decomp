@@ -38,7 +38,7 @@ IMPLEMENT_DYNCREATE(TApplication, TCommandHandler)
 // FUNCTION: IMPERIALISM 0x00486760
 TApplication::TApplication()
     : TCommandHandler(), currentTarget(0), screenModeAt24(0), cohandlers() {
-  g_pApplicationUiRootController = this;
+  g_pApplication = this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004867b0
@@ -46,7 +46,7 @@ TApplication::TApplication()
 
 // FUNCTION: IMPERIALISM 0x004867e0
 TApplication::~TApplication() {
-  g_pApplicationUiRootController = 0;
+  g_pApplication = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00486880
@@ -103,7 +103,7 @@ void TApplication::Idle(int idlePhase) {
 }
 
 // MacApp TApplication::InModalState(): TRUE while the main view host's +0x90
-// interactive flag is clear. Callers (always through g_pApplicationUiRootController or
+// interactive flag is clear. Callers (always through g_pApplication or
 // this) bail out of cursor auto-scroll / nav-command handling while it holds. Reads
 // nothing from `this`; the original dereferences the view host unguarded.
 
@@ -194,6 +194,6 @@ void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
   // Build a TNewGameCommand, tag it 'gwen' targeting the global UI root controller,
   // and dispatch it.
   TNewGameCommand* newGameCommand = new TNewGameCommand();
-  newGameCommand->ICommand(kControlTagNewg, g_pGlobalUiRootController, 0, 0, 0);
-  g_pGlobalUiRootController->DispatchUiSelectionToHandler(newGameCommand);
+  newGameCommand->ICommand(kControlTagNewg, g_pAmbitApplication, 0, 0, 0);
+  g_pAmbitApplication->DispatchUiSelectionToHandler(newGameCommand);
 }

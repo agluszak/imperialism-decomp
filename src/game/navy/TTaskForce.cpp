@@ -1269,7 +1269,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   // cityIndex. Cancellation itself must not depend on that secondary UI warning path.
   (void)cancelsBeachhead;
   (void)cityIndex;
-  g_pUiRuntimeContext->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
+  g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
 
 // FUNCTION: IMPERIALISM 0x005548e0

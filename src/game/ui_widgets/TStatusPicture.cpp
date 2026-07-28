@@ -183,7 +183,7 @@ void TStatusPicture::Draw(RECT* rectBuffer) {
     SetQuickDrawFillColor(0);
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
     OffsetRect(&swatch, -1, -1);
-    g_pUiRuntimeContext->SetForeColor(static_cast<short>(pictureIds_b0[i]));
+    g_pViewMgr->SetForeColor(static_cast<short>(pictureIds_b0[i]));
     FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }
@@ -194,7 +194,7 @@ void TStatusPicture::DrawBar(short rowY, short width, short nationSlot) {
   SetQuickDrawFillColor(0);
   FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   OffsetRect(&swatch, -1, -1);
-  g_pUiRuntimeContext->SetForeColor(nationSlot);
+  g_pViewMgr->SetForeColor(nationSlot);
   FillRectWithQuickDrawBrushAndContextOffset(&swatch);
 }
 

@@ -19,7 +19,7 @@ class TTradeCluster;
 struct TQuickDrawSurfaceContext;
 struct TBitmapSurfaceNode;
 
-// Strategic map view / render system (singleton g_pStrategicMapViewSystem @ 0x006a21a8).
+// Strategic map view / render system (singleton g_pMacViewMgr @ 0x006a21a8).
 // VTABLE: IMPERIALISM 0x00658660
 class TMacViewMgr : public TObject {
 public:
@@ -130,4 +130,4 @@ public:
 };
 ASSERT_SIZE(TMacViewMgr, 0xd84);
 
-// g_pStrategicMapViewSystem — see game/global_data_tables.h.
+// g_pMacViewMgr — see game/global_data_tables.h.

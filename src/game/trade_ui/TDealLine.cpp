@@ -65,7 +65,7 @@ void TDealLine::InstallViews(TView* panel, int* offsetLayout) {
 
   if (amount != 0) {
     amountText.Format(g_szDecimalFormat, static_cast<int>(amount));
-    short currentMarketPrice = g_pNationInteractionStateManager->GetPrice(commoditySlot);
+    short currentMarketPrice = g_pTradeMgr->GetPrice(commoditySlot);
     if (unitPriceOrStatus != currentMarketPrice) {
       g_pSimMgr->NumToCurrency(unitPriceOrStatus, &priceText);
       g_pSimMgr->GetString(0x2740, dealKind == kTrackedSlotOfferEntry ? 0x12 : 0x13, &templateText);

@@ -252,7 +252,7 @@ void TNetMgr::HandleError(int errorCode) {
     message += detailText;
   }
 
-  g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);
   if (DAT_006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
@@ -430,7 +430,7 @@ TurnEventQueuePacket* TNetMgr::PopNextTurnEventPacketOrProcessSpecialQueueRecord
       break;
     case 0x31:
     case 0x101:
-      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
+      g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2759, 6, 0, 0);
       g_pGameFlowState->HandleActiveNationAwolTransitionOrRecovery();
       break;
     default:
@@ -470,7 +470,7 @@ unsigned char TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady() {
   }
   CString message;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x19);
-  g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
+  g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
   return 0;
 }
 

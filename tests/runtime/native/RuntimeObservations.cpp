@@ -142,8 +142,8 @@ void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, 
 } // namespace
 
 bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
-  if (mapDialog == 0 || mapDialog->quickDrawSurface350 == 0 || g_pStrategicMapViewSystem == 0 ||
-      g_pStrategicMapViewSystem->atlas668 == 0) {
+  if (mapDialog == 0 || mapDialog->quickDrawSurface350 == 0 || g_pMacViewMgr == 0 ||
+      g_pMacViewMgr->atlas668 == 0) {
     return false;
   }
   short coastTile = -1;
@@ -170,7 +170,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   }
 
   TBitmapSurfaceNode** destinationHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
-  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pStrategicMapViewSystem->atlas668);
+  TBitmapSurfaceNode** sourceHandle = GetGWorldPixMap(g_pMacViewMgr->atlas668);
   if (destinationHandle == 0 || *destinationHandle == 0 || sourceHandle == 0 ||
       *sourceHandle == 0 || !LockPixels(destinationHandle)) {
     return false;
@@ -242,7 +242,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   terrain.secondaryOwnerNationTag18 = -1;
   terrain.perTileVisitedFlag0f = 0;
   terrain.tileActionState16 = static_cast<MapTileActionStateStorage>(-1);
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
   short savedCategory = mapView->activeUnitCategoryIndex96;
   short savedRiverMouth = g_pGlobalMapState->pendingRiverMouthTile;
   mapView->activeUnitCategoryIndex96 = 4;

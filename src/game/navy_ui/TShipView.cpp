@@ -82,8 +82,7 @@ void TShipView::Draw(RECT* rectBuffer) {
   // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
   // field isn't recovered yet, so it's read via a raw offset like the sibling
   // roster-row views (TArmyBoyView, TArmyUnitView, TMiniArmyView).
-  TQuickDrawBlitSurface* iconStripSurface =
-      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
   RECT srcRect = {0, rowBucket, levelBucket * 4 - 1, rowBucket + 7};
   RECT dstRect = {0x52, 0x1e, levelBucket * 4 + 0x51, 0x25};
   UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -110,7 +109,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       delta = -1;
     }
 
-    TMapUberPicture* mapUber = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapUber = g_pViewMgr->mapUberPictureF0;
     TView* categoryControl = mapUber->categoryPages[mapUber->activeUnitCategoryIndex96];
     if (categoryControl != nullptr) {
       short resourceType = shipNode60->GetToolbarSlot();
@@ -145,7 +144,7 @@ void TShipView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
 // FUNCTION: IMPERIALISM 0x00565a40
 void TShipView::RunEngineerOrderNameEditDialogAndApply() {
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUOceanViews_00698650, 0x203);

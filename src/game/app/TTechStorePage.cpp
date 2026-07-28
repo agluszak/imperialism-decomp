@@ -33,7 +33,7 @@ IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 // FUNCTION: IMPERIALISM 0x005b0f10
 void TTechStorePage::PopulateUnlockedTechnologyRows(int nationSlot) {
   for (int techId = 0x1c; techId > 0; --techId) {
-    if (g_pCityOrderCapabilityState->perTechUnlockFlag180[techId] != 0) {
+    if (g_pTechMgr->perTechUnlockFlag180[techId] != 0) {
       TTechItemLine* line = new TTechItemLine();
       int lineBounds[2] = {0x232, 0x3f};
       line->SetLineDataRowAndBounds(0, 0, lineBounds);

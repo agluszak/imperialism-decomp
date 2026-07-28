@@ -12,7 +12,7 @@ class TDealList;
 class TLongintList;
 
 // The nation-interaction / trade-metric manager. Its singleton instance is the global
-// g_pNationInteractionStateManager (0x6a43cc), allocated 0xaf0 bytes and constructed via
+// g_pTradeMgr (0x6a43cc), allocated 0xaf0 bytes and constructed via
 // the ctor at 0x5b7a20, which installs vtable 0x66d990. Base edge (TObject) recovered from
 // the RTTI CRuntimeClass chain (TTradeMgr -> TObject -> CObject).
 //

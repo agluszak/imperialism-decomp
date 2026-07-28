@@ -152,7 +152,7 @@ void TMiniCivView::Draw(RECT* rectBuffer) {
   // (0-indexed sprite column, each 0x40px wide) from a third icon strip cached on
   // TMacViewMgr at +0x66c (distinct from the +0x694/+0x68c strips used elsewhere).
   short iconColumn = g_pGlobalMapState->ApplyMapImprovementSelectionState(civUnit84);
-  TQuickDrawBlitSurface* iconStripSurface = g_pStrategicMapViewSystem->atlas66c->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas66c->GetBlitSurface();
   RECT srcRect = {iconColumn, 0, iconColumn + 0x40, 0x40};
   RECT dstRect = {0, 0, 0x40, 0x40};
   UpdatePaletteIndexWithDefaultFallback(0x10);

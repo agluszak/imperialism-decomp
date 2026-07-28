@@ -72,8 +72,7 @@ void TArmyUnitView::Draw(RECT* rectBuffer) {
   // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
   short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
 
-  TQuickDrawBlitSurface* iconStripSurface =
-      g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
 
   {
     RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
@@ -129,7 +128,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     RECT invalidateRect = {0x40, 0x18, 0x108, 0x24};
     InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
-    TMapUberPicture* mapPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapPicture = g_pViewMgr->mapUberPictureF0;
     TView* activeToolbar = mapPicture->categoryPages[mapPicture->activeUnitCategoryIndex96];
     if (activeToolbar != nullptr) {
       unsigned int arrowTag =
@@ -137,7 +136,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       TNumberedArrowButton* arrow =
           static_cast<TNumberedArrowButton*>(activeToolbar->ResolveControlByTag(arrowTag));
       arrow->SetValue(static_cast<short>(arrow->value84 + availableCountDelta), 1);
-      g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+      g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     }
   } else if (sourceHandler->controlTag == kControlTagUpgr) {
     if (militaryUnit60->Upgrade()) {
@@ -159,7 +158,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     } else {
       CString msg;
       g_pSimMgr->GetString(0x2745, 3, &msg);
-      g_pUiRuntimeContext->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
+      g_pViewMgr->ModalMessage(msg, g_ptArmyOrderModalMessage, 2, 0);
     }
   } else if (sourceHandler->controlTag == kControlTagName) {
     HandleCrossUArmyViewsNameCommand();
@@ -175,7 +174,7 @@ void TArmyUnitView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // FUNCTION: IMPERIALISM 0x004a9ca0
 void TArmyUnitView::HandleCrossUArmyViewsNameCommand() {
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventNameUnit));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyViews_00695858, 0x204);

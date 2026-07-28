@@ -74,8 +74,7 @@ void TGarrisonView::Close() {
 
     if (hasDismissibleOrder != 0) {
       if (g_pSimMgr->preferenceValues[8] != 0) {
-        hasDismissibleOrder =
-            g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2746, 9, 1, 1);
+        hasDismissibleOrder = g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2746, 9, 1, 1);
       }
       if (hasDismissibleOrder != 0) {
         tileIndex = selectedTileIndex8C;

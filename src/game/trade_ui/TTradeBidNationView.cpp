@@ -26,7 +26,7 @@ void TTradeBidNationView::Draw(RECT* rectBuffer) {
   short iconLeft = static_cast<short>(nationSlot << 5);
   RECT srcRect = {iconLeft, 0, iconLeft + 0x20, 0x18};
   RECT dstRect = {0, 0, 0x20, 0x18};
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas680->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas680->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24, 0);
   SetQuickDrawStrokeColor(0xffffff);

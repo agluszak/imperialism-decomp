@@ -30,8 +30,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   CString valueText;
   CString offerNationName = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
 
-  short cellValue =
-      g_pNationInteractionStateManager->categoryRows[categorySlot].tradeOfferCells[nationSlot];
+  short cellValue = g_pTradeMgr->categoryRows[categorySlot].tradeOfferCells[nationSlot];
   if (cellValue == 1) {
     g_pSimMgr->GetString(0x2740, 7, &templateText);
     scanBracketExpressions(g_pSimMgr, &finalText, static_cast<LPCSTR>(templateText),
@@ -47,8 +46,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   SetQuickDrawTextOriginWithContextOffset(0, 8);
   DrawTextWithCachedQuickDrawStyleState(&finalText);
 
-  TLongintList* nudgeList =
-      g_pNationInteractionStateManager->GetBidderList(categorySlot, nationSlot);
+  TLongintList* nudgeList = g_pTradeMgr->GetBidderList(categorySlot, nationSlot);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   for (int i = 1; i < 8; ++i) {
     if (i > nudgeList->GetSize()) {
@@ -59,7 +57,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
     RECT srcRect = {srcLeft, 0, srcLeft + 0x20, 0x18};
     short dstLeft = static_cast<short>(i * 0x20 - 0x20);
     RECT dstRect = {dstLeft, 0, dstLeft + 0x20, 0x18};
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas680->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas680->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                      &dstRect, 0x24, 0);
   }

@@ -188,7 +188,7 @@ void TCivToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
       if (controlTag == kControlTagGarr) {
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
-          g_pUiRuntimeContext->ShowCivilianLedgerDialogAndSelectUnit();
+          g_pViewMgr->ShowCivilianLedgerDialogAndSelectUnit();
           this->TCluster::DoEvent(10, sourceHandler, event);
           return;
         }

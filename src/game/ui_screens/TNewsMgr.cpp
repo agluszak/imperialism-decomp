@@ -94,7 +94,7 @@ void TNewsMgr::StartNewsPhase() {
       }
     }
   }
-  newsTexStream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
+  newsTexStream = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
   memset(stories, 0, sizeof(stories));
   short slot = 0;
   for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation, ++slot) {
@@ -104,22 +104,22 @@ void TNewsMgr::StartNewsPhase() {
     }
   }
   delete[] storyTemplateTable;
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(newsTexStream);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(newsTexStream);
   sharedEventRecordQueue->InvokePtrListResetHook();
 }
 
 // FUNCTION: IMPERIALISM 0x0055ba30
 void TNewsMgr::LoadNewsTable() {
-  CFile* stream = g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
-  int byteCount = g_pUiViewManager->GetResourceStreamSize(stream);
+  CFile* stream = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTabPath());
+  int byteCount = g_pAssetMgr->GetResourceStreamSize(stream);
   storyTemplateCount = static_cast<unsigned int>(byteCount) / sizeof(newsEntry);
   storyTemplateTable = new newsEntry[storyTemplateCount];
   if (storyTemplateTable == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNewspaper_00698470, 0x106);
   }
-  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, storyTemplateTable, &byteCount);
-  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+  g_pAssetMgr->ReadResourceStreamIntoBufferAndAdvance(stream, storyTemplateTable, &byteCount);
+  g_pAssetMgr->ReleaseResourceStreamIfNotNull(stream);
   // news.tab is big-endian Mac data: byteswap every field of every record.
   for (int i = 0; i < storyTemplateCount; i++) {
     newsEntry& entry = storyTemplateTable[i];

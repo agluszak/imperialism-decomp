@@ -20,7 +20,7 @@ void LoadGameFlow::Start(RuntimeScenario& scenario) {
 RuntimeFlowStatus LoadGameFlow::Tick(RuntimeScenario& scenario) {
   if (phase == kOpenFixture) {
     CString fixturePath(scenario.FixturePath());
-    if (g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(fixturePath) == 0) {
+    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(fixturePath) == 0) {
       scenario.FailScenario("\"saved-game fixture failed to open through the document path\"");
       return kRuntimeFlowRunning;
     }
@@ -34,7 +34,7 @@ RuntimeFlowStatus LoadGameFlow::Tick(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     TView* mainView = scenario.CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x7dd || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       scenario.WaitForScenarioTick("\"loaded game did not reach the combined strategic map\"");
       return kRuntimeFlowRunning;

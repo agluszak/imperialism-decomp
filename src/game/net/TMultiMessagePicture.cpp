@@ -61,5 +61,5 @@ void TMultiMessagePicture::DoEvent(int commandId, TEventHandler* sourceHandler, 
         static_cast<unsigned char>(FindActiveNationSlotIndexInGameFlowList()));
   }
 
-  g_pGlobalUiRootController->CloseAndFreeWindow(GetWindow());
+  g_pAmbitApplication->CloseAndFreeWindow(GetWindow());
 }

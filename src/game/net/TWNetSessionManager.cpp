@@ -474,12 +474,12 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
 BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid) {
   if (g_WNetSerializedPtrArrayB006a5f28.GetSize() < 1) {
     CString message("No games found to join.");
-    g_pUiRuntimeContext->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
+    g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8, 0, 0);
     return FALSE;
   }
 
   TWindow* dialog = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventMultiplayerPickGame));
   dialog->SetModality(1);
   TDialogBehavior* behavior = dialog->GetDialogBehavior();
   if (behavior != 0) {
@@ -487,7 +487,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   }
 
   CPoint placement;
-  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
   dialog->Resize(placement, 0);
 
   TJoinSelectorDialog* selector =

@@ -158,7 +158,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
                   ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
                 if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
                   TMapUberPicture* activeMapPicture =
-                      static_cast<TMapUberPicture*>(g_pGlobalUiRootController->edgeScrollTarget48);
+                      static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48);
                   if (activeMapPicture != 0) {
                     activeMapPicture->CenterOn(tileIndex);
                   }
@@ -322,17 +322,13 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   // legend: Depot, Port, Fort, then the terrain types that are still unavailable.
   unsigned char cannotBuildTerrain[4];
   cannotBuildTerrain[0] =
-      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
-          .techStatusByTechId[6] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[6] != 2;
   cannotBuildTerrain[1] =
-      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
-          .techStatusByTechId[12] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[2] =
-      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
-          .techStatusByTechId[12] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[12] != 2;
   cannotBuildTerrain[3] =
-      g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
-          .techStatusByTechId[23] != 2;
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[23] != 2;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b6c, 3);
 
@@ -368,7 +364,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&labelText);
 
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  TQuickDrawBlitSurface* iconAtlas = g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface();
+  TQuickDrawBlitSurface* iconAtlas = g_pMacViewMgr->atlas694[1]->GetBlitSurface();
   TQuickDrawBlitSurface* destination = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
 
   RECT sourceRect = {347, 0, 374, 20};
@@ -432,8 +428,8 @@ void TCivDescription::DrawProspector(RECT* bounds) {
   CString text;
   unsigned long themeColor = 0;
 
-  bool oilUnlocked = g_pCityOrderCapabilityState->orderCapRows277[g_pSimMgr->GetActiveNationId()]
-                         .techStatusByTechId[4] == 2;
+  bool oilUnlocked =
+      g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[4] == 2;
 
   // Per-column mineral-icon lists drawn under each terrain header
   // (coal/iron; coal/iron/gems/gold; oil; oil; oil).
@@ -461,7 +457,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
       destinationRect.bottom += 0xc;
     }
     SetQuickDrawFillColor(0);
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, &destinationRect, 0, 0);
 
@@ -499,7 +495,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
           destinationRect.right = secondRowX - 4;
           destinationRect.bottom = columnTop + 0x30;
         }
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->unitIconAtlas->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &destinationRect, 0x24, 0);
       }
@@ -560,7 +556,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         continue;
       }
       int reached =
-          g_pCityOrderCapabilityState
+          g_pTechMgr
               ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType] -
           1;
       if (level <= reached) {
@@ -573,7 +569,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
                             this->frameWidth34 / 2 + 0x1b, originY + 0x146};
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitOverlayAtlas->GetBlitSurface(),
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->unitOverlayAtlas->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, &destinationRect, 0x24, 0);
     SetQuickDrawStrokeColor(0xffffff);
@@ -608,14 +604,14 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         destinationRect.right += 0x1b;
       }
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->unitIconAtlas->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->unitIconAtlas->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &sourceRect, &destinationRect, 0x24, 0);
       SetQuickDrawStrokeColor(0xffffff);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(destinationRect.right + 4),
                                               static_cast<short>(destinationRect.bottom - 4));
       short capabilityValue =
-          g_pCityOrderCapabilityState
+          g_pTechMgr
               ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][resourceType];
       text.Format(
           g_szDecimalFormat,
@@ -627,8 +623,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
     // capability loses its last row.
     short rowLimit = maxRowsByClass[civilianClass];
     if (civilianClass == 2 &&
-        g_pCityOrderCapabilityState
-                ->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][0] == 0) {
+        g_pTechMgr->capabilityValueByNationAndResource[g_pSimMgr->GetActiveNationId()][0] == 0) {
       --rowLimit;
     }
     if (rowLimit > 0) {
@@ -650,7 +645,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         ResetQuickDrawStrokeState();
         SetQuickDrawStrokeColor(0xffffff);
         SetQuickDrawFillColor(0);
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[1]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &destinationRect, 0, 0);
         if (legendInitialized == 0) {

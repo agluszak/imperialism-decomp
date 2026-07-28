@@ -70,7 +70,7 @@ void TMapPreviewView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 
   for (int nation = 0; nation < 7; ++nation) {
     unsigned short nationPalette =
-        static_cast<unsigned short>(g_pUiRuntimeContext->GetColor(static_cast<short>(nation)));
+        static_cast<unsigned short>(g_pViewMgr->GetColor(static_cast<short>(nation)));
     if (nationPalette == clickedPalette) {
       pendingNation6C = nation;
       ownerContext->DoEvent(kControlTagPick, this, 0);
@@ -100,7 +100,7 @@ void TMapPreviewView::Draw(RECT* rectBuffer) {
     markerDest.top = (static_cast<int>(row) - 3) * 3;
     markerDest.right = markerDest.left + 0x12;
     markerDest.bottom = markerDest.top + 0x12;
-    BlitQuickDrawSurfaces(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+    BlitQuickDrawSurfaces(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
                           g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &markerSource,
                           &markerDest, 0x24);
   }
@@ -122,7 +122,7 @@ static __inline unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag)
   if (ownerTag == -2) {
     return 0;
   }
-  return static_cast<unsigned char>(g_pUiRuntimeContext->GetColor(static_cast<short>(ownerTag)));
+  return static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(ownerTag)));
 }
 
 } // namespace
@@ -213,8 +213,8 @@ void TMapPreviewView::EnhancePhoto() {
   unsigned char hasSelection = selectedNation68 != -1;
   unsigned char selectedPalette = 0;
   if (hasSelection != 0) {
-    selectedPalette = static_cast<unsigned char>(
-        g_pUiRuntimeContext->GetColor(static_cast<short>(selectedNation68)));
+    selectedPalette =
+        static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(selectedNation68)));
   }
 
   TBitmapSurfaceNode** surfaceObject = GetGWorldPixMap(previewSurface60);

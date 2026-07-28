@@ -32,7 +32,7 @@ TMiniMapView::~TMiniMapView() {}
 // FUNCTION: IMPERIALISM 0x0059a540
 void TMiniMapView::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
-  TQuickDrawSurfaceContext* miniMapAtlas = g_pStrategicMapViewSystem->atlas670;
+  TQuickDrawSurfaceContext* miniMapAtlas = g_pMacViewMgr->atlas670;
   if (miniMapAtlas == 0) {
     return;
   }

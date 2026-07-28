@@ -9951,7 +9951,7 @@ address|name|symbol|size|type|prototype|provenance
 69b89c|g_nAuxOutputDeviceIndex|||global||
 69bd58|CDocManager::bStaticInit|||global||xref_oracle
 69be08|afxDataNil|||global||xref_oracle
-6a1344|g_pGlobalUiRootController|||global||
+6a1344|g_pAmbitApplication|||global||
 6a1348|g_pImperialismApp|||global||
 6a134c|g_pModuleLibraryCacheState|||global||
 6a1350|g_nStartupAutoResolutionMode|||global||
@@ -9966,7 +9966,7 @@ address|name|symbol|size|type|prototype|provenance
 6a17b0|g_nIncludeViewAssertGate_006A17B0|||global||
 6a17c4|g_nIncludeViewPointerAssertGate_006A17C4|||global||
 6a1890|g_nDibOrientationFlag_006A1890|||global||
-6a18e0|g_pApplicationUiRootController|||global||
+6a18e0|g_pApplication|||global||
 6a1a10|g_streamLine304AssertGuard|||global||
 6a1a14|g_streamLine596AssertGuard|||global||
 6a1a40|g_LiveViewRegistry|||global||
@@ -10041,12 +10041,12 @@ address|name|symbol|size|type|prototype|provenance
 6a2054|g_pBackdropWaitCursor|||global||
 6a20f8|g_pSimMgr|||global||
 6a2128|g_ptSaveLoadErrorModalMessage|||global||
-6a2148|g_pUiViewManager|||global||
+6a2148|g_pAssetMgr|||global||
 6a2158|g_pDisplayMgr|||global||
 6a2178|g_ScenarioSaveNameBuffer_006A2178|||global||
-6a21a8|g_pStrategicMapViewSystem|||global||
+6a21a8|g_pMacViewMgr|||global||
 6a21b8|g_pHelpMgr|||global||
-6a21bc|g_pUiRuntimeContext|||global||
+6a21bc|g_pViewMgr|||global||
 6a21c0|g_lastEdgeAutoScrollTick16|||global||
 6a21c4|g_saveDocumentAssertGuard|||global||
 6a2228|g_ptUiAnimatorSurfaceBounds|||global||
@@ -10139,10 +10139,10 @@ address|name|symbol|size|type|prototype|provenance
 6a43c0|g_bTurnFlowBootstrapComplete|||global||
 6a43c4|g_nTurnCooldownDeferCounter006A43C4|||global||
 6a43c8|g_pGameFlowState|||global||
-6a43cc|g_pNationInteractionStateManager|||global||
+6a43cc|g_pTradeMgr|||global||
 6a43d0|g_pDiplomacyTurnStateManager|||global||
 6a43d4|g_pGlobalMapState|||global||
-6a43d8|g_pCityOrderCapabilityState|||global||
+6a43d8|g_pTechMgr|||global||
 6a43dc|g_pSelectedCivilianOrderState|||global||
 6a43e0|g_pUiAnimator|||global||
 6a43e4|g_pNavyOrderManager|||global||

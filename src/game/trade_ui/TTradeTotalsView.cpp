@@ -97,7 +97,7 @@ void TTradeTotalsView::Draw(RECT* rectBuffer) {
   g_pSimMgr->NumToCurrency(nation->ComputeRemainingDiplomacyAidBudget(), &strA);
   short remainingX;
   if (nation->ComputeRemainingDiplomacyAidBudget() < 0) {
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x33);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x33);
     y += 0xc;
     remainingX = 0x7c;
   } else {

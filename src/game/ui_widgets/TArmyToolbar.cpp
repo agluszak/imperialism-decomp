@@ -88,7 +88,7 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
   TPicture* upgradePicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagGarr));
   upgradePicture->AssertValid();
   upgradePicture->SetPictureResourceIdAndRefresh(upgradePictureId, true);
-  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
 }
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
@@ -110,38 +110,38 @@ void TArmyToolbar::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
               categoryId, selectedProvinceIndex);
     }
     static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, 1);
-    g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+    g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
     return;
   }
 
   if (controlTag == kControlTagGarr) {
     unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
-      g_pUiRuntimeContext->ShowArmyRosterDialogAndActivateProvinceSelection();
+      g_pViewMgr->ShowArmyRosterDialogAndActivateProvinceSelection();
       return;
     }
 
     short mapSelection = g_pMapContextActionManager->pendingMapActionIndex;
     if (mapSelection != -1) {
-      g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(mapSelection);
+      g_pViewMgr->HandleTurnEventDialogFactorySlotEC(mapSelection);
     }
     return;
   }
 
   if (controlTag == kControlTagDfnd) {
     g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(2);
-    g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagLatr) {
     g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(3);
-    g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
     return;
   }
 
   if (controlTag == kControlTagDone) {
     g_pMapContextActionManager->SetOrdersForIdleUnitsOnPendingTile(4);
-    g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
+    g_pViewMgr->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
   }
 }
