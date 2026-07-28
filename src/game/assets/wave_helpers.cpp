@@ -158,6 +158,29 @@ UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest,
   return ER_CANNOTWRITE;
 }
 
+// FUNCTION: IMPERIALISM 0x005e0d10
+UINT WaveWriteFile(HMMIO hmmioOut, UINT cbWrite, BYTE* pbSrc, MMCKINFO* pck, UINT* pcbWritten,
+                   MMIOINFO* pmmioinfo) {
+  UINT cT;
+  UINT wResult;
+
+  *pcbWritten = 0;
+  for (cT = 0; cT < cbWrite; cT++) {
+    // Hand the buffer back to mmio whenever it fills, then keep filling the fresh one.
+    if (pmmioinfo->pchNext == pmmioinfo->pchEndWrite) {
+      pmmioinfo->dwFlags |= MMIO_DIRTY;
+      wResult = mmioAdvance(hmmioOut, pmmioinfo, MMIO_WRITE);
+      if (wResult != 0) {
+        return wResult;
+      }
+    }
+    *pmmioinfo->pchNext = *((HPSTR)pbSrc + cT);
+    pmmioinfo->pchNext++;
+    (*pcbWritten)++;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005e0da0
 UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINFO* pmmioinfo,
                         DWORD cSamples) {
@@ -194,8 +217,34 @@ UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINF
   return result;
 }
 
+// Copy the chunks worth preserving from the input RIFF into the output file: 'DISP' and
+// 'plst' are copied, 'PAD ' is skipped, everything else is ignored. The parent is rewound
+// both before the walk and after it, so the caller's read position is unchanged.
+// FUNCTION: IMPERIALISM 0x005e0ec0
+UINT WaveCopyUselessChunks(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF,
+                           HMMIO* phmmioOut) {
+  UINT wResult;
+
+  if (mmioSeek(*phmmioIn, pckInRIFF->dwDataOffset + 4, SEEK_SET) == -1) {
+    wResult = ER_CANNOTREAD;
+  } else {
+    wResult = 0;
+    while (mmioDescend(*phmmioIn, pckIn, pckInRIFF, 0) == 0 &&
+           pckIn->cksize + pckIn->dwDataOffset <= pckInRIFF->cksize + pckInRIFF->dwDataOffset) {
+      FOURCC ckid = pckIn->ckid;
+      if (ckid != mmioFOURCC('P', 'A', 'D', ' ') &&
+          (ckid == mmioFOURCC('D', 'I', 'S', 'P') || ckid == mmioFOURCC('p', 'l', 's', 't'))) {
+        WaveCopyUselessChunk(*phmmioIn, *phmmioOut, pckIn);
+      }
+      mmioAscend(*phmmioIn, pckIn, 0);
+    }
+  }
+  mmioSeek(*phmmioIn, pckInRIFF->dwDataOffset + 4, SEEK_SET);
+  return wResult;
+}
+
 // FUNCTION: IMPERIALISM 0x005e0fb0
-int CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn) {
+int WaveCopyUselessChunk(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn) {
   HGLOBAL hMem;
   HPSTR pch;
   MMCKINFO ckOut;
@@ -266,6 +315,47 @@ CloseAndReturn:
     mmioClose(hmmio, 0);
   }
   return result;
+}
+
+// Write a whole PCM buffer out as a new wave file: create it, open a 'data' chunk, push the
+// samples through the mmio write buffer, then close and patch the 'fact' chunk. The write
+// loop is open-coded rather than going through WaveWriteFile.
+// FUNCTION: IMPERIALISM 0x005e1220
+UINT WaveSaveFile(char* pszFileName, DWORD cbSize, DWORD cSamples, WAVEFORMATEX* pwfxDest,
+                  HPSTR pbSrc) {
+  HMMIO hmmioOut;
+  MMCKINFO ckOut;
+  MMCKINFO ckOutRIFF;
+  MMIOINFO mmioinfoOut;
+  UINT wResult;
+  DWORD cT;
+
+  wResult = WaveCreateFile(pszFileName, &hmmioOut, pwfxDest, &ckOut, &ckOutRIFF);
+  if (wResult == 0) {
+    ckOut.ckid = mmioFOURCC('d', 'a', 't', 'a');
+    ckOut.cksize = 0;
+    wResult = mmioCreateChunk(hmmioOut, &ckOut, 0);
+    if (wResult == 0) {
+      wResult = mmioGetInfo(hmmioOut, &mmioinfoOut, 0);
+      if (wResult == 0) {
+        for (cT = 0; cT < cbSize; cT++) {
+          if (mmioinfoOut.pchNext == mmioinfoOut.pchEndWrite) {
+            mmioinfoOut.dwFlags |= MMIO_DIRTY;
+            wResult = mmioAdvance(hmmioOut, &mmioinfoOut, MMIO_WRITE);
+            if (wResult != 0) {
+              return wResult;
+            }
+          }
+          *mmioinfoOut.pchNext = *(pbSrc + cT);
+          mmioinfoOut.pchNext++;
+        }
+        if (wResult == 0) {
+          wResult = WaveCloseWriteFile(&hmmioOut, &ckOut, &ckOutRIFF, &mmioinfoOut, cSamples);
+        }
+      }
+    }
+  }
+  return wResult;
 }
 
 // Selects the aux output device whose product-id low 3 bits are 1 or 2 (the CD-audio line),
