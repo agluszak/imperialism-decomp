@@ -472,7 +472,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
       g_pNationInteractionStateManager = nullptr;
     }
     TTradeMgr* tradeManager = new TTradeMgr();
-    tradeManager->InitializeNationInteractionStateManagerDefaults();
+    tradeManager->ITradeMgr();
     g_pNationInteractionStateManager = tradeManager;
 
     if (g_pNewsMgr != nullptr) {
@@ -1000,16 +1000,16 @@ void TSimMgr::DoTrade() {
 
   g_pNationInteractionStateManager->ResetNationMetricRowsAndClearCategoryRankLists();
   g_pNationInteractionStateManager->RunNationUpdatePassesAndResetTransitionFlags();
-  g_pNationInteractionStateManager->RunNationMetricPreUpdatePassAcrossSecondaryNations();
-  g_pNationInteractionStateManager->BuildEligibleNationMetricBucketsAndWeightedTrendScores();
-  g_pNationInteractionStateManager->DispatchNationMetricUpdatePassForAllSlots();
-  g_pNationInteractionStateManager->AccumulateDiplomacyRelationChangesAndQueueEvents();
+  g_pNationInteractionStateManager->SetMinorsTradeBids();
+  g_pNationInteractionStateManager->TallyTradeBids();
+  g_pNationInteractionStateManager->CalculateNewWorldPrices();
+  g_pNationInteractionStateManager->CalculateDealOrder();
 
   int shouldSendTradeBook = multiplayerSessionRole != 0;
   if (shouldSendTradeBook) {
     g_pGameFlowState->SendTradeBook();
   }
-  g_pNationInteractionStateManager->InitializePendingDiplomacyTransferCursorAndProcess();
+  g_pNationInteractionStateManager->StartDeals();
 }
 
 // FUNCTION: IMPERIALISM 0x0057f490
@@ -1986,8 +1986,8 @@ void TSimMgr::HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void* pInstruc
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(valueToken);
 
-  g_pNationInteractionStateManager->SetNationMetricCellValueByIndex(
-      static_cast<short>(categoryToken), static_cast<short>(valueToken));
+  g_pNationInteractionStateManager->UpdatePrice(static_cast<short>(categoryToken),
+                                                static_cast<short>(valueToken));
 }
 
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then

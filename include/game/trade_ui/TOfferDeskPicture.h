@@ -26,25 +26,25 @@ public:
   // names); 0x94/0x98/0x9a/0x9d identified from CreateNextTradeCommandAndFormatPrompt
   // (0x5c04f0): all four feed TTradeMgr::SetDealResults's arguments or the
   // quantity-validation / error-detail branches there.
-  short sourceNationSlot90; // +0x90 selected/source major nation slot (indexes g_apNationStates)
-  short targetNationSlot92; // +0x92 trade-target nation slot (index into the 23-nation tables)
-  short maxAmount94;        // +0x94 upper bound passed to SetDealResults's maximumAmount arg
-  short commodityType96;    // +0x96 commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)
+  short sourceNationSlot; // +0x90 selected/source major nation slot (indexes g_apNationStates)
+  short targetNationSlot; // +0x92 trade-target nation slot (index into the 23-nation tables)
+  short maxAmount;        // +0x94 upper bound passed to SetDealResults's maximumAmount arg
+  short commodityType;    // +0x96 commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)
   // +0x98 current proposed quantity, refreshed from the 'purc' TNumberText control's window
   // text each time CreateNextTradeCommandAndFormatPrompt runs; forced to 0 on a 'reje' action.
-  short proposedAmount98;
+  short proposedAmount;
   // +0x9a the 'clus'->'nomo' child control's IsTradeControlAtMinimum() result, forwarded as
   // SetDealResults's shortfallFlag arg (skip the diplomacy event when the
   // quantity control was never moved off its floor).
-  short suppressEventFlag9a;
-  unsigned char pad9c;
+  short suppressEventFlag;
+  unsigned char padding9c;
   // +0x9d gates the out-of-range quantity error message: concise (GetString group 0x2740
   // index 0x10) when set, else a detailed bracket-expanded "max is <N>" message.
-  unsigned char detailedErrorFlag9d;
-  bool selectionActive9e;
-  unsigned char pad9f;
-  class TPictureButton* acceptButtonA0;
-  class TPictureButton* rejectButtonA4;
+  unsigned char detailedErrorFlag;
+  bool selectionActive;
+  unsigned char padding9f;
+  class TPictureButton* acceptButton;
+  class TPictureButton* rejectButton;
 
   TOfferDeskPicture();
 

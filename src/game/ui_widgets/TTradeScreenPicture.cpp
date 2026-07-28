@@ -111,8 +111,7 @@ void TTradeScreenPicture::Draw(RECT* rectBuffer) {
       cellRect.bottom = cellRect.top + 0xe;
       cellRect.left = ctrl->ownerLocalX + 0xc8;
       cellRect.right = cellRect.left + 0x26;
-      short weight =
-          g_pNationInteractionStateManager->QueryProposalWeightSlot4C(static_cast<short>(i));
+      short weight = g_pNationInteractionStateManager->GetPrice(static_cast<short>(i));
       g_pSimMgr->NumToCurrency(weight, &cellText);
       cellRect.top -= 5;
       cellRect.bottom -= 5;

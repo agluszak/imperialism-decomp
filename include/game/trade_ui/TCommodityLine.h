@@ -13,10 +13,10 @@ public:
   TCommodityLine();
 
   // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
-  // then this line's commoditySlot10. 0x005c1540, __thiscall.
+  // then this line's commoditySlot. 0x005c1540, __thiscall.
   void ICommodityLine(short rowArg, short colArg, int* bounds, short value);
 
-  short commoditySlot10;
+  short commoditySlot;
   short padding12;
 };
 

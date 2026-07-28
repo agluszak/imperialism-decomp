@@ -69,8 +69,8 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 
       short selectedMetricSlot = resourceMetricSlot92;
       if (selectedMetricSlot == 0) {
-        short firstWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(0);
-        short secondWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(1);
+        short firstWeight = g_pNationInteractionStateManager->GetPrice(0);
+        short secondWeight = g_pNationInteractionStateManager->GetPrice(1);
         int primaryNeedIndex;
         int secondaryNeedIndex;
         if (firstWeight > secondWeight) {

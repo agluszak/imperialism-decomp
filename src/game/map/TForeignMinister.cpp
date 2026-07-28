@@ -296,8 +296,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
     do {
       int roll = rand();
       short orderKind = *orderKindCursor;
-      short weightThreshold =
-          g_pNationInteractionStateManager->QueryProposalWeightSlot4C(orderKind);
+      short weightThreshold = g_pNationInteractionStateManager->GetPrice(orderKind);
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
         short metric = owner->GetStockpile(orderKind);
         if (metric == 0) {
@@ -316,7 +315,7 @@ void TForeignMinister::DoUsualSubsidyRule() {
   }
 
   int roll = rand();
-  short tradeWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(5);
+  short tradeWeight = g_pNationInteractionStateManager->GetPrice(5);
   if (roll % 100 + 200 < static_cast<int>(tradeWeight)) {
     short tradeMetric = owner->GetStockpile(kResourceHorses);
     if (tradeMetric != 0) {
@@ -757,7 +756,7 @@ void TForeignMinister::SetEmpirePolicies() {
             relationshipList->GetPtrListEntryByOneBasedIndex(entryIndex));
         short minorNation = entry->nationSlot;
         if (g_pNationInteractionStateManager->categoryRows[policyCategory]
-                    .cells18[minorNation + 0x2e] != 0 &&
+                    .tradeOfferCells[minorNation + 0x2e] != 0 &&
             owner->needLevelByNation[minorNation] != 300) {
           selectedMinor = minorNation;
         }

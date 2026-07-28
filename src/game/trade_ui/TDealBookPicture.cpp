@@ -37,7 +37,7 @@ void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005babc0
-TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationId90(8), unresolvedByteB2(0) {}
+TDealBookPicture::TDealBookPicture() : TPicture(), selectedNationSlot(8), unresolvedByteB2(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'
@@ -56,16 +56,16 @@ void TDealBookPicture::Startup(short startupValue) {
   toolControl->RefreshControl();
 
   // Re-cache the six commodity sub-controls.
-  this->boughtTradesView98 =
+  this->boughtTradesView =
       static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagBoug)); // 'boug'
-  this->soldTradesView9C =
+  this->soldTradesView =
       static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagSold)); // 'sold'
-  this->buyPageViewA0 =
+  this->buyPageView =
       static_cast<TTradePageBuyView*>(this->ResolveControlByTag(kControlTagTbou)); // 'tbou'
-  this->sellPageViewA4 =
+  this->sellPageView =
       static_cast<TTradePageSellView*>(this->ResolveControlByTag(kControlTagTsol)); // 'tsol'
-  this->buyPageViewAC = this->boughtTradesView98;
-  this->sellPageViewA8 = this->soldTradesView9C;
+  this->cachedBuyPageView = this->boughtTradesView;
+  this->cachedSellPageView = this->soldTradesView;
 
   // 'mark' toggle + label reload.
   TView* markControl = this->ResolveControlByTag(kControlTagMark); // 'mark'
@@ -79,7 +79,7 @@ void TDealBookPicture::Startup(short startupValue) {
   TView* tabsControl = this->ResolveControlByTag(kControlTagTabs);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
 
-  this->alternatePageModeB1 = false;
+  this->alternatePageMode = false;
   this->ShowPage(0, startupValue);
   g_pSfxPlaybackSystem->PlaySoundEffect(0x13ee, 0, 1);
 
@@ -115,16 +115,16 @@ void TDealBookPicture::Startup(short startupValue) {
 void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   CString label;
 
-  if (nationId != this->selectedNationId90) {
-    this->selectedNationId90 = nationId;
+  if (nationId != this->selectedNationSlot) {
+    this->selectedNationSlot = nationId;
     this->CalculatePages();
   }
 
   int idx = pageIndex;
-  this->currentPageIndex94 = static_cast<short>(idx);
+  this->currentPageIndex = static_cast<short>(idx);
   ++idx;
 
-  TTradePageBuyView* buyCopy = this->buyPageViewAC;
+  TTradePageBuyView* buyCopy = this->cachedBuyPageView;
   if (static_cast<short>(idx) > buyCopy->pageCount) {
     buyCopy->SetEnabled(0, 1);
   } else {
@@ -132,7 +132,7 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     buyCopy->SetEnabled(1, 0);
   }
 
-  TTradePageSellView* sellCopy = this->sellPageViewA8;
+  TTradePageSellView* sellCopy = this->cachedSellPageView;
   if (static_cast<short>(idx) > sellCopy->pageCount) {
     sellCopy->SetEnabled(0, 1);
   } else {
@@ -151,7 +151,7 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x170);
   }
 
-  if (this->currentPageIndex94 != 0) {
+  if (this->currentPageIndex != 0) {
     leftCtrl->SetEnabled(1, 1);
     leftCtrl->SetState(1, 1);
     g_pSimMgr->GetString(0x2730, 0xb, &label);
@@ -162,8 +162,8 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   }
   SetControlHoverHelpTextAltEntry(label, leftCtrl);
 
-  short refRow = this->lastPageIndex92;
-  if (this->currentPageIndex94 != refRow && refRow != 0) {
+  short refRow = this->lastPageIndex;
+  if (this->currentPageIndex != refRow && refRow != 0) {
     rightCtrl->SetEnabled(1, 1);
     rightCtrl->SetState(1, 1);
     g_pSimMgr->GetString(0x2730, 0xa, &label);
@@ -177,10 +177,10 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
 
 // FUNCTION: IMPERIALISM 0x005bb2e0
 void TDealBookPicture::CalculatePages() {
-  tradeListEmptyB0 = true;
-  TGreatPower* nation = g_apNationStates[selectedNationId90];
+  tradeListEmpty = true;
+  TGreatPower* nation = g_apNationStates[selectedNationSlot];
   if (nation->pressureCounter > 0 || nation->ComputeRemainingDiplomacyAidBudget() != 0) {
-    tradeListEmptyB0 = false;
+    tradeListEmpty = false;
   }
 
   int buyRow = 0;
@@ -191,7 +191,7 @@ void TDealBookPicture::CalculatePages() {
       continue;
     }
 
-    tradeListEmptyB0 = false;
+    tradeListEmpty = false;
     short kind = 0;
     short value = 0;
     short targetNation = 0;
@@ -201,10 +201,10 @@ void TDealBookPicture::CalculatePages() {
     TPageView* page;
     int* row;
     if (kind == kTrackedSlotOfferEntry) {
-      page = boughtTradesView98;
+      page = boughtTradesView;
       row = &buyRow;
     } else {
-      page = soldTradesView9C;
+      page = soldTradesView;
       row = &sellRow;
     }
     ++*row;
@@ -212,23 +212,23 @@ void TDealBookPicture::CalculatePages() {
     int headerBounds[2] = {200, 30};
     TCommodityLine* header = new TCommodityLine();
     header->SetLineDataRowAndBounds(0, 30, headerBounds);
-    header->commoditySlot10 = commoditySlot;
+    header->commoditySlot = commoditySlot;
     page->AddOptionEntry(header);
 
     for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
       int lineBounds[2] = {200, 30};
       TDealLine* line = new TDealLine();
       line->SetLineDataRowAndBounds(static_cast<short>(*row), 0, lineBounds);
-      line->commoditySlot10 = commoditySlot;
-      line->ownerNationSlot12 = selectedNationId90;
-      line->entryOrdinal14 = ordinal;
+      line->commoditySlot = commoditySlot;
+      line->ownerNationSlot = selectedNationSlot;
+      line->entryOrdinal = ordinal;
       page->AddOrderedEntry(line);
     }
   }
 
   if (nation->SumAidAllocationMatrixAllCells() != 0) {
     CString aidHeading;
-    tradeListEmptyB0 = false;
+    tradeListEmpty = false;
 
     int headingBounds[2] = {200, 30};
     TTextLine* heading = new TTextLine();
@@ -240,7 +240,7 @@ void TDealBookPicture::CalculatePages() {
     BuildUiTextStyleDescriptor(&headingStyle, 0, 14, 0x2b67);
     heading->SetTextLineStyleDescriptor(&headingStyle);
     heading->SetTextAlignmentCode(1);
-    soldTradesView9C->AddOrderedEntry(heading);
+    soldTradesView->AddOrderedEntry(heading);
 
     for (short targetNation = 0; targetNation < 23; ++targetNation) {
       if (nation->SumAidAllocationMatrixColumnForTarget(static_cast<NationSlot>(targetNation)) ==
@@ -249,13 +249,13 @@ void TDealBookPicture::CalculatePages() {
       }
 
       ++sellRow;
-      tradeListEmptyB0 = false;
+      tradeListEmpty = false;
 
       int headerBounds[2] = {200, 30};
       TCommodityLine* header = new TCommodityLine();
       header->SetLineDataRowAndBounds(0, 30, headerBounds);
-      header->commoditySlot10 = targetNation;
-      soldTradesView9C->AddOptionEntry(header);
+      header->commoditySlot = targetNation;
+      soldTradesView->AddOptionEntry(header);
 
       for (short minorNation = 7; minorNation < 23; ++minorNation) {
         int allocation = nation->aidAllocationMatrix[(minorNation - 7) * 23 + targetNation];
@@ -272,7 +272,7 @@ void TDealBookPicture::CalculatePages() {
         g_pSimMgr->NumToCurrency(allocation, &allocationText);
         nationName += s_szTurnHistorySeparator_00699320 + allocationText;
         line->SetCaptionText(&nationName);
-        soldTradesView9C->AddOrderedEntry(line);
+        soldTradesView->AddOrderedEntry(line);
       }
     }
   }
@@ -280,14 +280,14 @@ void TDealBookPicture::CalculatePages() {
   int totalsBounds[2] = {200, (nation->pressureCounter > 0 ? 5 : 4) * 30};
   TTradeTotalsLine* totals = new TTradeTotalsLine();
   totals->SetLineDataRowAndBounds(0, 0, totalsBounds);
-  totals->nationId10 = selectedNationId90;
-  soldTradesView9C->AddOrderedEntry(totals);
+  totals->nationSlot = selectedNationSlot;
+  soldTradesView->AddOrderedEntry(totals);
 
-  boughtTradesView98->BuildPageLayout();
-  soldTradesView9C->BuildPageLayout();
-  lastPageIndex92 = boughtTradesView98->pageCount > soldTradesView9C->pageCount
-                        ? boughtTradesView98->pageCount - 1
-                        : soldTradesView9C->pageCount - 1;
+  boughtTradesView->BuildPageLayout();
+  soldTradesView->BuildPageLayout();
+  lastPageIndex = boughtTradesView->pageCount > soldTradesView->pageCount
+                      ? boughtTradesView->pageCount - 1
+                      : soldTradesView->pageCount - 1;
 
   TDealTabControl* tabs =
       static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
@@ -308,9 +308,9 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
     short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
     if (categorySlot != -1) {
-      sellPageViewA4->RebuildNationOfferRowsForCategory(categorySlot);
-      buyPageViewA0->RebuildNationBidRowsForCategory(categorySlot);
-      if (!alternatePageModeB1) {
+      sellPageView->RebuildNationOfferRowsForCategory(categorySlot);
+      buyPageView->RebuildNationBidRowsForCategory(categorySlot);
+      if (!alternatePageMode) {
         SwitchPages();
       }
       TStaticText* titLControl =
@@ -328,15 +328,15 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
   } else if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;
     if (tag == kControlTagLcor) { // 'lcor'
-      if (currentPageIndex94 > 0) {
-        ShowPage(currentPageIndex94 - 1, selectedNationId90);
+      if (currentPageIndex > 0) {
+        ShowPage(currentPageIndex - 1, selectedNationSlot);
       }
     } else if (tag == kControlTagRcor) { // 'rcor'
-      if (currentPageIndex94 < lastPageIndex92) {
-        ShowPage(currentPageIndex94 + 1, selectedNationId90);
+      if (currentPageIndex < lastPageIndex) {
+        ShowPage(currentPageIndex + 1, selectedNationSlot);
       }
     } else if (tag == kControlTagMark) { // 'mark'
-      if (alternatePageModeB1) {
+      if (alternatePageMode) {
         SwitchPages();
       }
     }
@@ -346,7 +346,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::SwitchPages() {
-  if (!alternatePageModeB1) {
+  if (!alternatePageMode) {
     TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
     markControl->SetState(1, 0);
@@ -368,8 +368,8 @@ void TDealBookPicture::SwitchPages() {
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
   } else {
-    sellPageViewA4->RebuildNationOfferRowsForCategory(-1);
-    buyPageViewA0->RebuildNationBidRowsForCategory(-1);
+    sellPageView->RebuildNationOfferRowsForCategory(-1);
+    buyPageView->RebuildNationBidRowsForCategory(-1);
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
@@ -402,26 +402,26 @@ void TDealBookPicture::SwitchPages() {
   // Capture the four commodity sub-views' layouts (the original caches all four distinct
   // views -- bought/sold trades and the buy/sell pages -- not the buy page twice).
   CPoint captureBuffer1(1000, 1000);
-  boughtTradesView98->Locate(captureBuffer1, 1);
+  boughtTradesView->Locate(captureBuffer1, 1);
   CPoint captureBuffer2(1000, 1000);
-  soldTradesView9C->Locate(captureBuffer2, 1);
+  soldTradesView->Locate(captureBuffer2, 1);
   CPoint captureBuffer3(0x41, 0x59);
-  sellPageViewA4->Locate(captureBuffer3, 1);
+  sellPageView->Locate(captureBuffer3, 1);
   CPoint captureBuffer4(0x13a, 0x59);
-  buyPageViewA0->Locate(captureBuffer4, 1);
+  buyPageView->Locate(captureBuffer4, 1);
 
-  sellPageViewA8 = sellPageViewA4;
-  buyPageViewAC = buyPageViewA0;
-  if (buyPageViewAC->pageCount < sellPageViewA8->pageCount) {
-    lastPageIndex92 = buyPageViewAC->pageCount - 1;
+  cachedSellPageView = sellPageView;
+  cachedBuyPageView = buyPageView;
+  if (cachedBuyPageView->pageCount < cachedSellPageView->pageCount) {
+    lastPageIndex = cachedBuyPageView->pageCount - 1;
   } else {
-    lastPageIndex92 = sellPageViewA8->pageCount - 1;
+    lastPageIndex = cachedSellPageView->pageCount - 1;
   }
 
-  // Reapply the dialog's own picture and re-run the page selection. boughtTradesView98 is
-  // a control pointer, not the bitmap id. alternatePageModeB1 flips before the trailing
+  // Reapply the dialog's own picture and re-run the page selection. boughtTradesView is
+  // a control pointer, not the bitmap id. alternatePageMode flips before the trailing
   // ShowPage call.
-  SetPictureResourceIdAndRefresh(selectedNationId90, 1);
-  alternatePageModeB1 = !alternatePageModeB1;
-  ShowPage(0, selectedNationId90);
+  SetPictureResourceIdAndRefresh(selectedNationSlot, 1);
+  alternatePageMode = !alternatePageMode;
+  ShowPage(0, selectedNationSlot);
 }

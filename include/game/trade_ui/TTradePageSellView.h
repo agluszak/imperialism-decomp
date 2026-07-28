@@ -13,7 +13,7 @@ public:
 
   // Cache of the last-built category slot; RebuildNationOfferRowsForCategory no-ops if
   // asked to rebuild for the same category again.
-  short lastBuiltCategorySlot84; // 0x84
+  short lastBuiltCategorySlot; // 0x84
 
   TTradePageSellView();
   // 0x5bcc30 -- rebuilds orderedEntries for categorySlot: clears the existing

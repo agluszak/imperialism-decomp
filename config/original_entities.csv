@@ -6042,40 +6042,40 @@ address|name|symbol|size|type|prototype|provenance
 5b7a20|TTradeMgr::TTradeMgr|??0TTradeMgr@@QAE@XZ|9|function|TTradeMgr* __thiscall TTradeMgr(void)|
 5b7a40|TTradeMgr::`scalar deleting destructor'|??_GTTradeMgr@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 5b7a70|TTradeMgr::~TTradeMgr|??1TTradeMgr@@UAE@XZ|7|function|undefined DestructTTradeMgrAndMaybeFree_Impl()|
-5b7a90|TTradeMgr::InitializeNationInteractionStateManagerDefaults||234|function|undefined InitializeNationInteractionStateManagerDefaults()|
+5b7a90|TTradeMgr::ITradeMgr||234|function|undefined ITradeMgr()|
 5b7bc0|TTradeMgr::Free||56|function|void TTradeMgr::Free()|
 5b7c10|TTradeMgr::ReadFrom||298|function|void TTradeMgr::ReadFrom(TStream* stream)|
 5b7d90|TTradeMgr::WriteTo||346|function|void TTradeMgr::WriteTo(TStream* stream)|
 5b7f50|ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl||27|function|undefined ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl()|
 5b7f80|IltTarget_005b7f80||38|function|undefined IltTarget_005b7f80()|
 5b7fc0|TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists||137|function|void TTradeMgr::ResetNationMetricRowsAndClearCategoryRankLists()|
-5b8080|TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents||2050|function|undefined AccumulateDiplomacyRelationChangesAndQueueEvents()|
-5b8aa0|DispatchNationMetricUpdatePassForAllSlots||28|function|undefined DispatchNationMetricUpdatePassForAllSlots()|
-5b8ad0|TTradeMgr::ComputeNationMetricBaselineValueForSlot||449|function|undefined ComputeNationMetricBaselineValueForSlot()|
-5b8d40|TTradeMgr::GetNationMetricWeightedScoreForSlot||18|function|undefined GetNationMetricWeightedScoreForSlot()|
-5b8d70|TTradeMgr::GetNationMetricAuxWordForSlot||19|function|undefined GetNationMetricAuxWordForSlot()|
-5b8da0|ComputeNationMetricDispatchScoreAndResolveScale||373|function|undefined ComputeNationMetricDispatchScoreAndResolveScale()|
-5b8f80|TTradeMgr::GetNationMetricRosterWordAtOffset0E||19|function|undefined GetNationMetricRosterWordAtOffset0E()|
-5b8fb0|TTradeMgr::GetNationMetricRosterWordAtOffset0C||19|function|undefined GetNationMetricRosterWordAtOffset0C()|
-5b8fe0|TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A||50|function|undefined ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A()|
-5b9030|TTradeMgr::GetNationMetricBucketValueByIndex||19|function|undefined GetNationMetricBucketValueByIndex()|
-5b9060|TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster||225|function|undefined ApplyDiplomacyTransferEffectsAcrossNationMetricRoster()|
-5b9190|TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess||60|function|void TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess()|
-5b91e0|ProcessPendingDiplomacyTransferEntriesUntilBlocked||305|function|undefined ProcessPendingDiplomacyTransferEntriesUntilBlocked()|
-5b9370|RefreshNationStateAndEmitTurnEvent3Mode18||117|function|undefined RefreshNationStateAndEmitTurnEvent3Mode18()|
-5b9410|TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline||134|function|undefined RebuildNationMetricPassesAndClampRowsByBaseline()|
-5b94d0|SetDealResults||555|function|void SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount, int commodityType, char shortfallFlag, char remoteReplay)|
-5b9790|TTradeMgr::SetNationMetricCellValueByIndex||24|function|undefined SetNationMetricCellValueByIndex()|
+5b8080|TTradeMgr::CalculateDealOrder||2050|function|undefined CalculateDealOrder()|
+5b8aa0|TTradeMgr::CalculateNewWorldPrices||28|function|undefined CalculateNewWorldPrices()|
+5b8ad0|TTradeMgr::CalculateNewItemPrice||449|function|undefined CalculateNewItemPrice()|
+5b8d40|TTradeMgr::GetAdjNumOffers||18|function|undefined GetAdjNumOffers()|
+5b8d70|TTradeMgr::GetAmtOffered||19|function|undefined GetAmtOffered()|
+5b8da0|TTradeMgr::GetDealPrice||373|function|undefined GetDealPrice()|
+5b8f80|TTradeMgr::GetNumOffers||19|function|undefined GetNumOffers()|
+5b8fb0|TTradeMgr::GetNumRequests||19|function|undefined GetNumRequests()|
+5b8fe0|TTradeMgr::GetPrice||50|function|undefined GetPrice()|
+5b9030|TTradeMgr::GetBasePrice||19|function|undefined GetBasePrice()|
+5b9060|TTradeMgr::OfferItemDeals||225|function|undefined OfferItemDeals()|
+5b9190|TTradeMgr::StartDeals||60|function|void TTradeMgr::StartDeals()|
+5b91e0|TTradeMgr::NextTradeDeal||305|function|undefined NextTradeDeal()|
+5b9370|TTradeMgr::EndTradeOffers||117|function|undefined EndTradeOffers()|
+5b9410|TTradeMgr::OfferTradeDeals||134|function|undefined OfferTradeDeals()|
+5b94d0|TTradeMgr::SetDealResults||555|function|void SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount, int commodityType, char shortfallFlag, char remoteReplay)|
+5b9790|TTradeMgr::UpdatePrice||24|function|undefined UpdatePrice()|
 5b97c0|TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags||145|function|undefined RunNationUpdatePassesAndResetTransitionFlags()|
-5b9890|TTradeMgr::RunNationMetricPreUpdatePassAcrossSecondaryNations||46|function|undefined RunNationMetricPreUpdatePassAcrossSecondaryNations()|
-5b98d0|TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores||467|function|undefined BuildEligibleNationMetricBucketsAndWeightedTrendScores()|
-5b9b30|TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores||802|function|undefined BuildSecondaryNationMetricBucketsAndWeightedTrendScores()|
+5b9890|TTradeMgr::SetMinorsTradeBids||46|function|undefined SetMinorsTradeBids()|
+5b98d0|TTradeMgr::TallyTradeBids||467|function|undefined TallyTradeBids()|
+5b9b30|TTradeMgr::TallyMinorsTradeBids||802|function|undefined TallyMinorsTradeBids()|
 5b9f30|TTradeMgr::Power||37|function|undefined ComputeNationMetricPowerScale()|
-5b9f70|TTradeMgr::IsNationMetricCellNegative||28|function|undefined IsNationMetricCellNegative()|
-5b9fa0|TTradeMgr::IsNationMetricCellPositive||28|function|undefined IsNationMetricCellPositive()|
-5b9fd0|TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter||142|function|undefined AllocateAndPopulateLinkedValueCollectionFromRosterFilter()|
-5ba090|SelectPreferredNationMetricCodeFromLookup||51|function|undefined SelectPreferredNationMetricCodeFromLookup()|
-5ba0e0|BuildInterNationEventSummaryRowsForAdvisorDialog_Impl||53|function|undefined BuildInterNationEventSummaryRowsForAdvisorDialog_Impl()|
+5b9f70|TTradeMgr::DidBidOn||28|function|undefined DidBidOn()|
+5b9fa0|TTradeMgr::DidOffer||28|function|undefined DidOffer()|
+5b9fd0|TTradeMgr::GetBidderList||142|function|undefined GetBidderList()|
+5ba090|TTradeMgr::WhoTradesFirst||51|function|undefined WhoTradesFirst()|
+5ba0e0|TTradeMgr::GetMarketChange||53|function|undefined GetMarketChange()|
 5ba130|TDealList::CreateObject|?CreateObject@TDealList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5ba1a0|TDealList::GetRuntimeClass||6|function|undefined GetTDealListClassNamePointer()|rtti
 5ba1c0|TDealList::ConstructTDealListBaseState||18|function|undefined ConstructTDealListBaseState()|

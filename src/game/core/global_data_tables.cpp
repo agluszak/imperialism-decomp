@@ -1849,7 +1849,7 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 char g_szConanCheatFileName_00698BEC[] = "Conan";
 
 // Trade-item dispatch order consumed by
-// TTradeMgr::InitializePendingDiplomacyTransferCursorAndProcess (0x5b9190). Values
+// TTradeMgr::StartDeals (0x5b9190). Values
 // are read directly from the original rdata table.
 // GLOBAL: IMPERIALISM 0x0066d810
 short g_aTradeDealCategoryOrder_0066D810[0x11] = {13, 14, 15, 16, 7, 8, 9, 10, 11,

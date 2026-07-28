@@ -28,10 +28,10 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   CString finalText;
   CString templateText;
   CString valueText;
-  CString offerNationName = g_pSimMgr->LoadNormalizedCredentialName(nationSlot62);
+  CString offerNationName = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
 
   short cellValue =
-      g_pNationInteractionStateManager->categoryRows[categorySlot60].cells18[nationSlot62];
+      g_pNationInteractionStateManager->categoryRows[categorySlot].tradeOfferCells[nationSlot];
   if (cellValue == 1) {
     g_pSimMgr->GetString(0x2740, 7, &templateText);
     scanBracketExpressions(g_pSimMgr, &finalText, static_cast<LPCSTR>(templateText),
@@ -48,8 +48,7 @@ void TTradeOfferNationView::Draw(RECT* rectBuffer) {
   DrawTextWithCachedQuickDrawStyleState(&finalText);
 
   TLongintList* nudgeList =
-      g_pNationInteractionStateManager->AllocateAndPopulateLinkedValueCollectionFromRosterFilter(
-          categorySlot60, nationSlot62);
+      g_pNationInteractionStateManager->GetBidderList(categorySlot, nationSlot);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   for (int i = 1; i < 8; ++i) {
     if (i > nudgeList->GetSize()) {

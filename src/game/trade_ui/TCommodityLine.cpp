@@ -27,7 +27,7 @@ TCommodityLine::~TCommodityLine() {}
 // FUNCTION: IMPERIALISM 0x005c1540
 void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {
   SetLineDataRowAndBounds(rowArg, colArg, bounds);
-  commoditySlot10 = value;
+  commoditySlot = value;
 }
 
 // FUNCTION: IMPERIALISM 0x005c1580
@@ -38,8 +38,8 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
   TextStyle textStyle;
 
   BuildUiTextStyleDescriptor(&textStyle, 0, 0xe, 0x2b67);
-  g_pSimMgr->GetStringPrelude(commoditySlot10, &commodityName);
-  short price = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(commoditySlot10);
+  g_pSimMgr->GetStringPrelude(commoditySlot, &commodityName);
+  short price = g_pNationInteractionStateManager->GetPrice(commoditySlot);
   g_pSimMgr->NumToCurrency(price, &priceText);
   displayText = commodityName + s_szSpaceSeparator_00695794 + priceText;
 
@@ -52,5 +52,5 @@ void TCommodityLine::InstallViews(TView* panel, int* offsetLayout) {
 
   int iconSize[2] = {0x20, 0x18};
   TColorKeyPicture* icon = new TColorKeyPicture();
-  icon->IPicture(panel, offsetLayout, iconSize, 5, 5, static_cast<short>(commoditySlot10 + 0x2bc));
+  icon->IPicture(panel, offsetLayout, iconSize, 5, 5, static_cast<short>(commoditySlot + 0x2bc));
 }

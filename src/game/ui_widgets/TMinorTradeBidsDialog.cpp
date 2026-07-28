@@ -34,8 +34,7 @@ void TMinorTradeBidsDialog::StuffValues() {
     TNumberText* amountControl = static_cast<TNumberText*>(
         costPanel->ResolveControlByTag(g_tradeBidNationMetricControlTags[nationSlot]));
     if (amountControl != 0) {
-      amountControl->SetControlValue(
-          g_pNationInteractionStateManager->QueryProposalWeightSlot4C(nationSlot), 0);
+      amountControl->SetControlValue(g_pNationInteractionStateManager->GetPrice(nationSlot), 0);
     }
   }
 

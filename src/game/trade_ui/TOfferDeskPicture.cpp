@@ -50,7 +50,7 @@ IMPLEMENT_DYNCREATE(TOfferDeskPicture, TPicture)
 
 // FUNCTION: IMPERIALISM 0x005be570
 TOfferDeskPicture::TOfferDeskPicture()
-    : TPicture(), selectionActive9e(false), acceptButtonA0(0), rejectButtonA4(0) {}
+    : TPicture(), selectionActive(false), acceptButton(0), rejectButton(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005be5b0
 // TOfferDeskPicture::`scalar deleting destructor'
@@ -114,12 +114,12 @@ void TOfferDeskPicture::DoPostCreate(int arg) {
   waitText->InstallTextStyle(waitStyle, 0);
   waitText->SetTextAlignmentAndMaybeRefresh(1, 0);
 
-  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
-  acceptButtonA0->AssertValid();
-  acceptButtonA0->timingWord92 = 0x1388;
-  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
-  rejectButtonA4->AssertValid();
-  rejectButtonA4->timingWord92 = 0x1388;
+  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton->AssertValid();
+  acceptButton->timingWord92 = 0x1388;
+  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton->AssertValid();
+  rejectButton->timingWord92 = 0x1388;
 
   TPictureButton* formatButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagForM));
   formatButton->AssertValid();
@@ -160,12 +160,12 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   }
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
-  sourceNationSlot90 = sourceNation;
-  targetNationSlot92 = targetNation;
-  proposedAmount98 = proposedAmount;
-  maxAmount94 = maxAmount;
-  commodityType96 = commodityType;
-  suppressEventFlag9a = 0;
+  sourceNationSlot = sourceNation;
+  targetNationSlot = targetNation;
+  this->proposedAmount = proposedAmount;
+  this->maxAmount = maxAmount;
+  this->commodityType = commodityType;
+  suppressEventFlag = 0;
 
   g_pSimMgr->GetStringPrelude(commodityType, &commodityName);
   targetNationName = g_pSimMgr->LoadNormalizedCredentialName(targetNation);
@@ -200,8 +200,8 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
         wait->ownerLocalY != g_offerDeskOffscreenPosition_006a5a28.y) {
       wait->Locate(g_offerDeskOffscreenPosition_006a5a28, 1);
     }
-    if (!selectionActive9e && (sheet->ownerLocalX != g_offerDeskSheetPosition_006a5a00.x ||
-                               sheet->ownerLocalY != g_offerDeskSheetPosition_006a5a00.y)) {
+    if (!selectionActive && (sheet->ownerLocalX != g_offerDeskSheetPosition_006a5a00.x ||
+                             sheet->ownerLocalY != g_offerDeskSheetPosition_006a5a00.y)) {
       sheet->Locate(g_offerDeskSheetPosition_006a5a00, 1);
     }
 
@@ -288,11 +288,11 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   purchaseControl->AssertValid();
-  detailedErrorFlag9d = 1;
+  detailedErrorFlag = 1;
   short purchaseLimit = proposedAmount;
   if (proposedAmount > maxAmount) {
     purchaseLimit = maxAmount;
-    detailedErrorFlag9d = 0;
+    detailedErrorFlag = 0;
   }
   purchaseControl->maximumValue = purchaseLimit;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
@@ -311,12 +311,12 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   commodityIcon->AssertValid();
   commodityIcon->SetPictureResourceIdAndRefresh(static_cast<short>(commodityType + 0x2bc), 0);
 
-  acceptButtonA0 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
-  acceptButtonA0->AssertValid();
-  acceptButtonA0->SetState(1, 0);
-  rejectButtonA4 = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
-  rejectButtonA4->AssertValid();
-  rejectButtonA4->SetState(1, 0);
+  acceptButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagAcce));
+  acceptButton->AssertValid();
+  acceptButton->SetState(1, 0);
+  rejectButton = static_cast<TPictureButton*>(ResolveControlByTag(kControlTagReje));
+  rejectButton->AssertValid();
+  rejectButton->SetState(1, 0);
 
   TView* cluster = ResolveControlByTag(kControlTagClus);
   cluster->AssertValid();
@@ -338,7 +338,7 @@ void TOfferDeskPicture::PoseOfferSheet(short sourceNation, short targetNation, s
   ApplyUiTextStyleAndThemeFlags(info, 0, 0xc, 0x2b6c, 0x2b6b);
   info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
-  selectionActive9e = false;
+  selectionActive = false;
   RefreshSelectedNationOrderCompatibilityInfo();
   g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(4, true);
 }
@@ -351,7 +351,7 @@ void TOfferDeskPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         [commandId +
          g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] *
              0x11];
-    if (!selectionActive9e) {
+    if (!selectionActive) {
       UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     } else {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
@@ -400,7 +400,7 @@ void TOfferDeskPicture::DoKeyEvent(TToolboxEvent* event) {
 // Commodity types 0/1 (Cotton+Wool) are always evaluated as a combined pair.
 // FUNCTION: IMPERIALISM 0x005bf930
 void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
-  TGreatPower* gp = g_apNationStates[sourceNationSlot90];
+  TGreatPower* gp = g_apNationStates[sourceNationSlot];
   TCity* city;
   if (gp == 0) {
     city = 0;
@@ -432,28 +432,28 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   info->SetTextAlignmentAndMaybeRefresh(-2, 0);
 
   {
-    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(targetNationSlot92);
+    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(targetNationSlot);
   }
-  g_pSimMgr->GetStringPrelude(commodityType96, &strCommodity);
+  g_pSimMgr->GetStringPrelude(commodityType, &strCommodity);
 
   short compat = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
-      sourceNationSlot90, targetNationSlot92);
+      sourceNationSlot, targetNationSlot);
 
   if (g_pHelpMgr->helpIndexReady == 0) {
     g_pSimMgr->GetString(0x2740, 9, &strFinal);
     info->SetTextAlignmentAndMaybeRefresh(1, 0);
   } else if (g_pHelpMgr->helpIndexReady == 1) {
     if (compat >= 1 &&
-        g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-            sourceNationSlot90) == 0) {
+        g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
+            sourceNationSlot) == 0) {
       notAligned = 1;
     }
-    if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
-      avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
-      relDelta = gp->purchasedItemsByResource[commodityType96];
+    if (commodityType != kResourceCotton && commodityType != kResourceWool) {
+      avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
+      relDelta = gp->purchasedItemsByResource[commodityType];
       // TCity models the 23 per-commodity stock shorts as named fields; index off the first.
-      stock = (&city->cityStockCottonB6)[commodityType96];
-      needTgt = gp->needTargetByType[commodityType96];
+      stock = (&city->cityStockCottonB6)[commodityType];
+      needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
@@ -466,8 +466,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     }
 
     if (notAligned == 0 && hasSurplus == 0) {
-      if (g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-              sourceNationSlot90) != 0) {
+      if (g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
+              sourceNationSlot) != 0) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
       } else {
         g_pSimMgr->GetString(0x2764, 5, &strPrefix);
@@ -491,11 +491,11 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   } else {
     CString strStatsIntro;
     CString strVerdict;
-    if (commodityType96 != kResourceCotton && commodityType96 != kResourceWool) {
-      avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType96));
-      relDelta = gp->purchasedItemsByResource[commodityType96];
-      stock = (&city->cityStockCottonB6)[commodityType96];
-      needTgt = gp->needTargetByType[commodityType96];
+    if (commodityType != kResourceCotton && commodityType != kResourceWool) {
+      avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(commodityType));
+      relDelta = gp->purchasedItemsByResource[commodityType];
+      stock = (&city->cityStockCottonB6)[commodityType];
+      needTgt = gp->needTargetByType[commodityType];
     } else {
       avail = static_cast<short>(gp->ComputeProductionMetricForOrderKind(0));
       relDelta =
@@ -507,16 +507,16 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     strNeedTarget.Format(g_szDecimalFormat, static_cast<int>(needTgt));
     strRelDelta.Format(g_szDecimalFormat, static_cast<int>(relDelta));
     strAvail.Format(g_szDecimalFormat, static_cast<int>(avail));
-    if (targetNationSlot92 < 7) {
+    if (targetNationSlot < 7) {
       g_pSimMgr->GetString(0x2764, 8, &strTemplate);
       scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                              static_cast<LPCSTR>(strTargetNation));
     } else {
-      short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(targetNationSlot92);
+      short dominant = g_pDiplomacyTurnStateManager->GetFavoriteTradePartner(targetNationSlot);
       {
         strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }
-      if (dominant == sourceNationSlot90) {
+      if (dominant == sourceNationSlot) {
         g_pSimMgr->GetString(0x2764, 0xe, &strTemplate);
         scanBracketExpressions(g_pSimMgr, &strStatsIntro, static_cast<LPCSTR>(strTemplate),
                                static_cast<LPCSTR>(strTargetNation));
@@ -530,8 +530,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     short verdictIndex;
     if (compat == 2) {
       verdictIndex =
-          g_apTerrainTypeDescriptorTable[targetNationSlot92]->IsEncodedNationSlotMinus200Equal(
-              sourceNationSlot90) != 0
+          g_apTerrainTypeDescriptorTable[targetNationSlot]->IsEncodedNationSlotMinus200Equal(
+              sourceNationSlot) != 0
               ? 0xf
               : 0xa;
     } else {
@@ -579,26 +579,26 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83d);
   }
-  suppressEventFlag9a = noMoreControl->IsTradeControlAtMinimum();
+  suppressEventFlag = noMoreControl->IsTradeControlAtMinimum();
 
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   if (purchaseControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x842);
   }
-  proposedAmount98 = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
+  proposedAmount = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
 
   bool quantityValid = true;
   if (actionCode == kControlTagReje) {
-    proposedAmount98 = 0;
-  } else if (proposedAmount98 > purchaseControl->maximumValue || proposedAmount98 < 0) {
+    proposedAmount = 0;
+  } else if (proposedAmount > purchaseControl->maximumValue || proposedAmount < 0) {
     quantityValid = false;
   }
 
   if (quantityValid) {
-    g_pNationInteractionStateManager->SetDealResults(sourceNationSlot90, targetNationSlot92,
-                                                     proposedAmount98, maxAmount94, commodityType96,
-                                                     static_cast<char>(suppressEventFlag9a), 0);
+    g_pNationInteractionStateManager->SetDealResults(sourceNationSlot, targetNationSlot,
+                                                     proposedAmount, maxAmount, commodityType,
+                                                     static_cast<char>(suppressEventFlag), 0);
 
     TView* acceptButton = ResolveControlByTag(kControlTagAcce);
     acceptButton->AssertValid();
@@ -607,11 +607,10 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
     acceptButton->SetState(0, 0);
     rejectButton->SetState(0, 0);
 
-    if (proposedAmount98 != 0) {
+    if (proposedAmount != 0) {
       TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTool);
       if (toolbar != nullptr) {
-        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(
-            static_cast<short>(sourceNationSlot90));
+        static_cast<TAmtBarCluster*>(toolbar)->SetMoveAmount(static_cast<short>(sourceNationSlot));
       }
     }
 
@@ -623,7 +622,7 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
   } else {
     CString errorMessage;
     CString localizedMessage;
-    if (detailedErrorFlag9d != 0) {
+    if (detailedErrorFlag != 0) {
       g_pSimMgr->GetString(0x2740, 0x10, &localizedMessage);
     } else {
       CString maxValueTemplate;
@@ -643,23 +642,23 @@ void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
 // actionable, then runs the plain TView release handling.
 // FUNCTION: IMPERIALISM 0x005c0930
 char TOfferDeskPicture::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint origin) {
-  if (acceptButtonA0 != 0 && acceptButtonA0->IsActionable()) {
-    acceptButtonA0->SetEnabled(0, 1);
+  if (acceptButton != 0 && acceptButton->IsActionable()) {
+    acceptButton->SetEnabled(0, 1);
   }
-  if (rejectButtonA4 != 0 && rejectButtonA4->IsActionable()) {
-    rejectButtonA4->SetEnabled(0, 1);
+  if (rejectButton != 0 && rejectButton->IsActionable()) {
+    rejectButton->SetEnabled(0, 1);
   }
   return TView::HandleMouseUp(point, event, origin);
 }
 
 // FUNCTION: IMPERIALISM 0x005c09d0
 void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned char activate) {
-  if (activate == selectionActive9e) {
+  if (activate == selectionActive) {
     return;
   }
   TView* bookControl = ResolveControlByTag(kControlTagBook);
   bookControl->AssertValid();
-  TView* sheetControl = ResolveControlByTag(maxAmount94 == 0 ? kControlTagWait : kControlTagShee);
+  TView* sheetControl = ResolveControlByTag(maxAmount == 0 ? kControlTagWait : kControlTagShee);
   if (sheetControl == 0) {
     FailNilPointerInUSmallViews(0x8a2);
   }
@@ -691,12 +690,12 @@ void TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged(unsigned 
         static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs));
     tabsControl->AssertValid();
     tabsControl->Setup(0x2264, g_pCityOrderCapabilityState->perTechUnlockFlag180[0x13]);
-    tabsControl->selectedRow84 = -1;
+    tabsControl->selectedRow = -1;
     tabsControl->RefreshControl();
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 2, tabsControl);
     TView* listControl = ResolveControlByTag(kControlTagList);
     listControl->AssertValid();
     SetControlHoverHelpTextAltEntry(CString(g_szEmptyString), listControl);
   }
-  selectionActive9e = activate;
+  selectionActive = activate;
 }

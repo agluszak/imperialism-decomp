@@ -604,33 +604,33 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
       resourceType = ((0x4a < randomBucket) - 1 & 0xfffffffb) + 7;
     }
 
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(resourceType);
     if (this->diplomacyRandomThreshold124 < proposalWeight) {
       this->tradeOffersByResource[resourceType] = this->needCurrentByType[resourceType];
     }
 
     for (int policySlot = 0; policySlot < 8; ++policySlot) {
-      proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(policySlot);
+      proposalWeight = g_pNationInteractionStateManager->GetPrice(policySlot);
       if (this->diplomacyRandomThreshold122 < proposalWeight) {
         this->tradeOffersByResource[policySlot] = this->needCurrentByType[policySlot];
       }
     }
 
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(3);
     if (this->diplomacyRandomThreshold126 < proposalWeight) {
       this->tradeOffersByResource[3] = this->needCurrentByType[3];
     } else if (this->recurringGrantByResource[3] != 0) {
       this->tradeOffersByResource[3] = this->recurringGrantByResource[3];
     }
 
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(4);
     if (this->diplomacyRandomThreshold128 < proposalWeight) {
       this->tradeOffersByResource[4] = this->needCurrentByType[4];
     } else if (this->recurringGrantByResource[4] != 0) {
       this->tradeOffersByResource[4] = this->recurringGrantByResource[4];
     }
 
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(6);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(6);
     if (this->diplomacyRandomThreshold12a < proposalWeight) {
       this->tradeOffersByResource[6] = this->needCurrentByType[6];
     } else if (this->recurringGrantByResource[6] != 0) {
@@ -660,7 +660,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
         rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
       }
     } while (rolledPredicate == this->diplomacyPolicyPredicateCode12c);
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(rolledPredicate);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(rolledPredicate);
     if (this->diplomacyRandomThreshold11e < proposalWeight) {
       this->diplomacyPolicyPredicateCode12c = -10;
     } else {
@@ -671,8 +671,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   this->diplomacyPolicyPredicateCode12e = -10;
   int candidatePredicate = 0xd;
   do {
-    proposalWeight =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(candidatePredicate);
+    proposalWeight = g_pNationInteractionStateManager->GetPrice(candidatePredicate);
     if (proposalWeight < this->diplomacyRandomThreshold120 &&
         candidatePredicate != this->diplomacyPolicyPredicateCode12c) {
       this->diplomacyPolicyPredicateCode12e = static_cast<short>(candidatePredicate);

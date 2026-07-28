@@ -3718,8 +3718,8 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   // Per-resource-type weight, pulled from the nation-interaction metric buckets.
   int resourceWeights[17];
   for (int resType = 0; resType < kResourceManufacturedEnd; ++resType) {
-    resourceWeights[resType] = g_pNationInteractionStateManager->GetNationMetricBucketValueByIndex(
-        static_cast<short>(resType));
+    resourceWeights[resType] =
+        g_pNationInteractionStateManager->GetBasePrice(static_cast<short>(resType));
   }
 
   int regionScores[0x180];
@@ -4002,8 +4002,7 @@ int TMapMgr::CalculateDeveloperTilePurchaseCost(StrategicTileIndex nTileIndex) {
     short resourceType = terrainStateTable[nTileIndex].resourceTypeByEdge[edge];
     if (resourceType != -1) {
       if (resourceType < kResourceManufacturedEnd) {
-        total = total +
-                g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType) * 0x14;
+        total = total + g_pNationInteractionStateManager->GetPrice(resourceType) * 0x14;
       } else if (resourceType == kResourceGems) {
         total = total + 10000;
       } else if (resourceType == kResourceGold) {

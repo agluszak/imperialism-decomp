@@ -35,5 +35,5 @@ void TNextTradeCommand::INextTradeCommand() {
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
 void TNextTradeCommand::DoIt() {
-  g_pNationInteractionStateManager->ProcessPendingDiplomacyTransferEntriesUntilBlocked();
+  g_pNationInteractionStateManager->NextTradeDeal();
 }

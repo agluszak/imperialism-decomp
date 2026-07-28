@@ -16,15 +16,15 @@ public:
                           CPoint& currentPoint,
                           unsigned char commandFlag) override;                // slot 0x68 0x5bc9f0
   virtual void Setup(short bitmapResourceId, unsigned char useAlternatePair); // slot 0x71 0x5bc780
-  // Vertical fill-bar slice read by Draw: negative selectedRow84 means "no
+  // Vertical fill-bar slice read by Draw: negative selectedRow means "no
   // selection" (draw the whole strip empty); otherwise the highlight band spans
-  // [selectedRow84*rowHeightPx86, +rowHeightPx86) with the empty strip above and below.
-  short selectedRow84; // +0x84 selected row index, -1 = none
-  short rowHeightPx86; // +0x86 pixel height of one row
-  short tabCount88;    // +0x88 Setup default: 15
+  // [selectedRow*rowHeightPixels, +rowHeightPixels) with the empty strip above and below.
+  short selectedRow;     // +0x84 selected row index, -1 = none
+  short rowHeightPixels; // +0x86 pixel height of one row
+  short tabCount;        // +0x88 Setup default: 15
   short padding8A;
-  struct TQuickDrawSurfaceContext* filledRowStrip8c; // +0x8c highlighted-row strip
-  struct TQuickDrawSurfaceContext* emptyRowStrip90;  // +0x90 background strip
+  struct TQuickDrawSurfaceContext* filledRowStrip; // +0x8c highlighted-row strip
+  struct TQuickDrawSurfaceContext* emptyRowStrip;  // +0x90 background strip
 
   // NOOP: verified empty in original 0x005bc6c8 (no standalone TDealTabControl::TDealTabControl body exists: CreateObject 0x005bc690 inlines this default ctor, calling the TControl base ctor directly at that site)
   TDealTabControl() {}

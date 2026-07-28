@@ -13,10 +13,10 @@ public:
   TTradeTotalsLine();
 
   // Two-phase init (MacApp IViewClass idiom): sets the shared TLineData row/bounds
-  // then this line's nationId10. 0x005c1980, __thiscall.
+  // then this line's nationSlot. 0x005c1980, __thiscall.
   void ITradeTotalsLine(short rowArg, short colArg, int* bounds, short value);
 
-  short nationId10;
+  short nationSlot;
   short padding12;
 };
 

@@ -12,10 +12,10 @@ public:
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bda20
 
   // Set directly (not via a method) by TTradePageBuyView::RebuildNationBidRowsForCategory
-  // right after construction: categorySlot10 is the row-building category argument (constant
-  // across every row built in one rebuild pass), nationSlot12 is the per-row nation index.
-  short categorySlot10; // 0x10
-  short nationSlot12;   // 0x12
+  // right after construction: categorySlot is the row-building category argument (constant
+  // across every row built in one rebuild pass), nationSlot is the per-row nation index.
+  short categorySlot; // 0x10
+  short nationSlot;   // 0x12
 
   // NOOP: verified empty in original 0x005bd983 (no standalone TTradeBidNationLine::TTradeBidNationLine body exists: CreateObject 0x005bd950 inlines this default ctor, calling the TLineData base ctor directly at that site)
   TTradeBidNationLine() {}
