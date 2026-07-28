@@ -53,6 +53,7 @@ void TMilitaryPageView::AfterStuffValues() {
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x00564a60
 void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
+  (void)width;
   TMapDialog* mapDialog = g_pViewMgr->mapUberPictureF0->subview2A8;
   primaryUnitAtlas84 = mapDialog->quickDrawSurface350;
   mapDialog->suppressMarkerOverlay34C = true;
@@ -60,7 +61,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
 
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(bitmapResourceId));
-  RECT destination = {0, 0, width, height};
+  RECT destination = {0, 0, height, height};
 
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;

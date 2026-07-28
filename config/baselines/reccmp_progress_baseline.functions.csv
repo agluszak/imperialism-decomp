@@ -2998,7 +2998,7 @@ address|matching|name
 0x4fa010|0.45348837209302323|TInfoPanelView::DoPostCreate
 0x4fa190|0.5274900398406375|TInfoPanelView::Draw
 0x4facc0|1.0|TInfoPanelView::Setup
-0x4fad60|0.5581395348837209|TInfoPanelView::DoEvent
+0x4fad60|0.3764705882352941|TInfoPanelView::DoEvent
 0x4fae00|0.5668449197860963|TInfoPanelView::SetInfoCountry
 0x4faf80|0.5818181818181818|TCouncilPanelView::CreateObject
 0x4fb010|1.0|TCouncilPanelView::GetRuntimeClass
@@ -4627,7 +4627,7 @@ address|matching|name
 0x564980|1.0|TMilitaryPageView::~TMilitaryPageView
 0x5649a0|0.6153846153846154|TMilitaryPageView::DoPostCreate
 0x564a10|1.0|TMilitaryPageView::AfterStuffValues
-0x564a60|0.3939393939393939|TMilitaryPageView::PrepareUnitCache
+0x564a60|0.34517766497461927|TMilitaryPageView::PrepareUnitCache
 0x564bf0|1.0|TMilitaryPageView::Close
 0x564c30|0.48484848484848486|TNavyRoster::CreateObject
 0x564d00|1.0|TNavyRoster::GetRuntimeClass
@@ -5461,7 +5461,7 @@ address|matching|name
 0x58c330|1.0|TNumberedArrowButton::SetValue
 0x58c360|1.0|TNumberedArrowButton::SetState
 0x58c3d0|0.24778761061946902|TNumberedArrowButton::Draw
-0x58c640|0.14285714285714285|TNumberedArrowButton::TrackMouse
+0x58c640|0.6372549019607843|TNumberedArrowButton::TrackMouse
 0x58c7c0|1.0|TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x58c830|0.4897959183673469|TCombatReportView::CreateObject
 0x58c8b0|1.0|TCombatReportView::GetRuntimeClass

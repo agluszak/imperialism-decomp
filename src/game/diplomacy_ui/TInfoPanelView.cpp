@@ -248,7 +248,7 @@ void TInfoPanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
   if (commandId == 0xc) {
     short selectedOverlayMode = (short)sourceHandler->controlTag - 0x7230;
     diplomacyMapView60->interactionModeAt94 = selectedOverlayMode;
-    InvalidateCityDialogRectRegion(&diplomacyMapView60->mapViewportRect514, 1);
+    diplomacyMapView60->InvalidateCityDialogRectRegion(&diplomacyMapView60->mapViewportRect514, 1);
     selectedOverlayMode6C = selectedOverlayMode;
     TControl* mkey = static_cast<TControl*>(ResolveControlByTag(kControlTagMkey));
     mkey->AssertValid();

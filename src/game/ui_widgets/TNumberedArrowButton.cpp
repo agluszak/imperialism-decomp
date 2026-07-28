@@ -80,11 +80,22 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
   (void)commandFlag;
   (void)startPoint;
   (void)previousPoint;
-  (void)currentPoint;
   short visualState = 0;
+  if (PointInBoundsAndActionable(&currentPoint)) {
+    CRect contentBounds;
+    BuildInsetContentRect(&contentBounds);
+    short localY = static_cast<short>(currentPoint.y) - static_cast<short>(contentBounds.top);
+    if (localY > 0 && localY < frameHeight38 / 2) {
+      visualState = 2;
+    } else if (localY > frameHeight38 / 2 && localY < frameHeight38) {
+      visualState = 1;
+    }
+  }
   if (phase >= kTrackPhaseBegin && phase < kTrackPhaseEnd) {
     if (value86 != visualState) {
       RefreshControl();
+      CRect bounds;
+      QueryBounds(&bounds);
       value86 = visualState;
     }
     PaintOrInvalidateControl(0);
@@ -93,8 +104,11 @@ void TNumberedArrowButton::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoi
   if (phase == kTrackPhaseEnd && visualState != 0) {
     if (value86 != 0) {
       RefreshControl();
+      CRect bounds;
+      QueryBounds(&bounds);
       value86 = 0;
     }
+    ownerContext->HandleEvent(visualState == 2 ? 100 : 101, this, 0);
     PaintOrInvalidateControl(0);
   }
 }

@@ -59,6 +59,10 @@ public:
       SelectForeignNation();
     } else if (phase == kVerifyForeignNation) {
       VerifyForeignNation();
+    } else if (phase == kActivateRelationshipOverlay) {
+      ActivateRelationshipOverlay();
+    } else if (phase == kVerifyRelationshipOverlay) {
+      VerifyRelationshipOverlay();
     } else if (phase == kActivateTreatiesTopic) {
       ActivateTreatiesTopic();
     } else if (phase == kVerifyTreatiesTopic) {
@@ -96,6 +100,8 @@ private:
     kWaitForDiplomacyScreen,
     kSelectForeignNation,
     kVerifyForeignNation,
+    kActivateRelationshipOverlay,
+    kVerifyRelationshipOverlay,
     kActivateTreatiesTopic,
     kVerifyTreatiesTopic,
     kInitiatePrimaryAction,
@@ -215,6 +221,32 @@ private:
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 || diplomacy->RuntimeActiveNation() != targetNation) {
       FailScenario("\"diplomacy map click did not select and inspect the foreign nation\"");
+      return;
+    }
+    phase = kActivateRelationshipOverlay;
+    EnterScenarioStep("activating_relationship_overlay", "click_relationship_overlay");
+    RequestScenarioTick();
+  }
+
+  void ActivateRelationshipOverlay() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0) {
+      FailScenario("\"diplomacy orders disappeared before relationship selection\"");
+      return;
+    }
+    phase = kVerifyRelationshipOverlay;
+    EnterScenarioStep("verifying_relationship_overlay", "render_selected_nation_relationships");
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagOvr0 + 1)) {
+      FailScenario("\"diplomacy relationship overlay control is missing or cannot receive input\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void VerifyRelationshipOverlay() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 || diplomacy->RuntimeRelationshipOverlaySourceNation() != targetNation) {
+      FailScenario("\"selected foreign nation's relationships were not rendered\"");
       return;
     }
     phase = kActivateTreatiesTopic;
