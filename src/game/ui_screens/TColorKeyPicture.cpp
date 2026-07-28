@@ -9,6 +9,7 @@
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TWindow.h"
 #include "game/globals/global_types.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/shared_globals.h"
 // SYNTHETIC: IMPERIALISM 0x00572d20
 // TColorKeyPicture::CreateObject
