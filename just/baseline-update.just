@@ -37,6 +37,13 @@ ctor-placement-gate-update:
 noop-gate-update:
   uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/empty_body_baseline.csv" -- uv run python -m tools.workflow.check_empty_bodies --write-baseline config/baselines/empty_body_baseline.csv
 
+# MUTATES: config/baselines/semantic_call_contract_baseline.json. Pure debt
+# shrink is accepted; initialization, denominator growth, or mode changes need
+# the standard explicit policy approval.
+[group('baseline-update')]
+semantic-gate-update:
+  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/semantic_call_contract_baseline.json" -- uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" update-baseline
+
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).
 [group('baseline-update')]
 generate-ignores:

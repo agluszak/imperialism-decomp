@@ -124,6 +124,7 @@ _precommit-generated-integrity-gate:
 gates:
   just source-gates
   just stats --ui-codegen-gate
+  just semantic-gate
   just vtable
   just datacmp-gate
   just decomplint
@@ -189,6 +190,11 @@ test:
   # Off-screen: a few of these exercise the Wine harness end to end, and without this
   # they map a game window on the developer's desktop and steal focus mid-run.
   IMPERIALISM_RUNTIME_DISPLAY=virtual uv run python -m unittest discover -s tests/tools
+
+[doc('Ratchet every manual FUNCTION high-p-code call contract; regenerates stale build evidence')]
+[group('gates')]
+semantic-gate: _require-ghidra-install
+  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" gate --generate-if-stale
 
 [doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
 [group('reports')]

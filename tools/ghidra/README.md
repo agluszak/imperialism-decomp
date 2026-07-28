@@ -71,6 +71,30 @@ The daemon imports the registry tool modules at startup: after editing anything 
 `tools/ghidra/`, restart it (`just ghidra-daemon-stop && just ghidra-daemon`) or queries
 keep running the old code.
 
+## Recompiled p-code call contracts
+
+`just semantic-compare` compares every manually owned `FUNCTION` using Ghidra high
+p-code from the original and recompiled programs. It checks call multiplicity,
+canonical direct/virtual/indirect targets, receivers, and argument provenance; any
+unresolved expression remains explicitly inconclusive. The full JSON evidence is
+written to `build-msvc500/semantic/semantic_report.json`.
+
+```bash
+just semantic-compare                  # all required functions; reuse fresh report
+just semantic-compare --force          # force a new full p-code pass
+just semantic-compare 0x491cc0         # focused diagnosis
+just semantic-compare --file src/game/TMapMgr.cpp
+just semantic-stats                    # summarize the current fresh full report
+just semantic-gate                     # enforce the committed ratchet
+```
+
+The recompiled Ghidra Program is fingerprinted by the EXE/PDB, source ownership,
+mapping inputs, reccmp version, and Ghidra version and cached under
+`build-msvc500/ghidra-semantic/`. A fresh full report uses eight decompiler workers by
+default (`--jobs` overrides it). When none of those inputs changed, the normal command
+validates and reads the existing report without opening Ghidra; this is the intended
+fast path for `just gates` and `just precommit`.
+
 `scan-cdecl-thiscall` stays one-shot (no daemon routing) because its `--stdin` address list
 can't reach a separate daemon process; other occasional audit tools (`vtable-struct-check`,
 `datatype-audit`, `class-owner-probe`, `rtti-oracle`, …) are one-shot as well and evict a
