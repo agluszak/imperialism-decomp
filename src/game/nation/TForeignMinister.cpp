@@ -4,7 +4,7 @@
 
 #include "game/ui_widgets/TTradeMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/globals/global_types.h"

@@ -33,7 +33,7 @@
 #include "game/nation/TForeignMinister.h"
 #include "game/map/TMapMgr.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TGreatPower_internal.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/map/TMinister.h"
