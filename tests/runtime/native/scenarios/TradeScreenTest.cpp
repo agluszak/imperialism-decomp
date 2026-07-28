@@ -5,21 +5,28 @@
 
 #include "game/app/TAnimation.h"
 #include "game/app/TAnimator.h"
+#include "game/diplomacy_domain_types.h"
+#include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/TList.h"
 #include "game/globals/prelude.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
+#include "game/resource_manifest_tags.h"
+#include "game/trade_ui/TOfferDeskPicture.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/ui_tags_diplomacy.h"
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TTradeCluster.h"
+#include "game/ui_widgets/TTradeMgr.h"
 #include "game/ui_widgets/TTradeOrderPicture.h"
 #include "game/ui_widgets/TTradeScreenPicture.h"
 #include "game/globals/view_registries.h"
@@ -29,8 +36,9 @@ namespace {
 class TradeScreenTestCase : public RandomGameScenario {
 public:
   TradeScreenTestCase()
-      : phase(kActivateTradeScreen), selectedRow(0), selectedSellRow(0), initialBidBitmap(0),
-        initialSellValue(0), initialBarValue(0) {}
+      : phase(kActivateDiplomacyScreen), warTargetNation(-1), warPolicyBeforeAction(-1),
+        selectedRow(0), selectedSellRow(0), initialBidBitmap(0), initialSellValue(0),
+        initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -42,13 +50,29 @@ public:
   }
 
   void OnMapReadyWithoutCapitalSelection() override {
-    phase = kActivateTradeScreen;
-    EnterScenarioStep("activating_trade_screen", "easy_combined_map_ready_for_trade_screen");
+    phase = kActivateDiplomacyScreen;
+    EnterScenarioStep("activating_diplomacy_before_trade", "easy_combined_map_ready_for_diplomacy");
     RequestScenarioTick();
   }
 
   void TickScenario() override {
-    if (phase == kActivateTradeScreen) {
+    if (phase == kActivateDiplomacyScreen) {
+      ActivateDiplomacyScreen();
+    } else if (phase == kWaitForDiplomacyScreen) {
+      WaitForDiplomacyScreen();
+    } else if (phase == kActivateTreatiesTopic) {
+      ActivateTreatiesTopic();
+    } else if (phase == kSelectWarAction) {
+      SelectWarAction();
+    } else if (phase == kDeclareWar) {
+      DeclareWar();
+    } else if (phase == kVerifyWarOrder) {
+      VerifyWarOrder();
+    } else if (phase == kReturnFromDiplomacy) {
+      ReturnFromDiplomacy();
+    } else if (phase == kWaitForMapBeforeTrade) {
+      WaitForMapBeforeTrade();
+    } else if (phase == kActivateTradeScreen) {
       ActivateTradeScreen();
     } else if (phase == kWaitForTradeScreen) {
       WaitForTradeScreen();
@@ -66,8 +90,10 @@ public:
       VerifyIncrease();
     } else if (phase == kReturnToMap) {
       ReturnToMap();
-    } else {
+    } else if (phase == kWaitForMap) {
       WaitForMap();
+    } else {
+      WaitForEndTurn();
     }
   }
 
@@ -81,6 +107,14 @@ private:
   enum { kMapAnimationRegressionTag = 0x74727374 };
 
   enum Phase {
+    kActivateDiplomacyScreen,
+    kWaitForDiplomacyScreen,
+    kActivateTreatiesTopic,
+    kSelectWarAction,
+    kDeclareWar,
+    kVerifyWarOrder,
+    kReturnFromDiplomacy,
+    kWaitForMapBeforeTrade,
     kActivateTradeScreen,
     kWaitForTradeScreen,
     kActivateBid,
@@ -90,8 +124,149 @@ private:
     kVerifyDecrease,
     kVerifyIncrease,
     kReturnToMap,
-    kWaitForMap
+    kWaitForMap,
+    kWaitForEndTurn
   };
+
+  TDiplomacyMapView* DiplomacyView() const {
+    TView* mainView = CurrentMainView();
+    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TDiplomacyMapView)) == 0) {
+      return 0;
+    }
+    return static_cast<TDiplomacyMapView*>(mainView);
+  }
+
+  void ActivateDiplomacyScreen() {
+    if (ScenarioPhaseTicks() < 60) {
+      RequestScenarioTick();
+      return;
+    }
+    TView* mainView = CurrentMainView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
+      WaitForScenarioTick("\"combined map was not idle before declaring war\"");
+      return;
+    }
+    phase = kWaitForDiplomacyScreen;
+    EnterScenarioStep("waiting_for_diplomacy_before_trade", "activate_diplomacy_toolbar_control");
+    StrategicMapDriver map(mainView);
+    if (!map.ActivateDiplomacySemantically()) {
+      FailScenario("\"diplomacy toolbar control is missing or disabled\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void WaitForDiplomacyScreen() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
+      WaitForScenarioTick("\"diplomacy toolbar action did not activate diplomacy orders\"");
+      return;
+    }
+    phase = kActivateTreatiesTopic;
+    EnterScenarioStep("activating_treaties_before_trade", "click_treaties_action_topic");
+    RequestScenarioTick();
+  }
+
+  void ActivateTreatiesTopic() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 ||
+        !RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagTrtt)) {
+      FailScenario("\"diplomacy treaties action control is missing or cannot receive input\"");
+      return;
+    }
+    phase = kSelectWarAction;
+    EnterScenarioStep("selecting_war_before_trade", "click_declare_war_action");
+    RequestScenarioTick();
+  }
+
+  void SelectWarAction() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 || diplomacy->RuntimeActionTopicIndex() != 1) {
+      WaitForScenarioTick("\"diplomacy treaties action did not become active\"");
+      return;
+    }
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagScr0 + 4)) {
+      FailScenario("\"declare-war action is missing or cannot receive input\"");
+      return;
+    }
+    phase = kDeclareWar;
+    EnterScenarioStep("declaring_war_before_trade", "click_valid_war_target_nation");
+    RequestScenarioTick();
+  }
+
+  void DeclareWar() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 || diplomacy->actionCodeBC != kDipActionDeclareWar) {
+      WaitForScenarioTick("\"declare-war action did not become active\"");
+      return;
+    }
+    const short activeNation = g_pSimMgr->GetActiveNationId();
+    CPoint point;
+    for (short nation = 0; nation < 7; ++nation) {
+      if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0 &&
+          diplomacy->RuntimeGetNationSelectionPoint(nation, &point) &&
+          g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+              activeNation, nation, kDipActionDeclareWar)) {
+        warTargetNation = nation;
+        break;
+      }
+    }
+    TGreatPower* sourceNation = g_apNationStates[activeNation];
+    if (warTargetNation < 0 || sourceNation == 0 ||
+        !diplomacy->RuntimeGetNationSelectionPoint(warTargetNation, &point)) {
+      FailScenario("\"diplomacy map has no valid major-nation war target\"");
+      return;
+    }
+    warPolicyBeforeAction = sourceNation->diplomacyPolicyByNation[warTargetNation];
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
+      FailScenario("\"declare-war target could not receive native input\"");
+      return;
+    }
+    phase = kVerifyWarOrder;
+    EnterScenarioStep("verifying_war_before_trade", "verify_declare_war_policy");
+    RequestScenarioTick();
+  }
+
+  void VerifyWarOrder() {
+    TGreatPower* sourceNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    const short expectedPolicy = warPolicyBeforeAction == kDiplomacyProposalDeclareWar
+                                     ? -1
+                                     : static_cast<short>(kDiplomacyProposalDeclareWar);
+    if (DiplomacyView() == 0 || sourceNation == 0 ||
+        sourceNation->diplomacyPolicyByNation[warTargetNation] != expectedPolicy ||
+        !g_ModalViewStack.IsEmpty()) {
+      FailScenario("\"declare-war action did not update the target policy\"");
+      return;
+    }
+    phase = kReturnFromDiplomacy;
+    EnterScenarioStep("returning_from_diplomacy_before_trade", "click_diplomacy_end_control");
+    RequestScenarioTick();
+  }
+
+  void ReturnFromDiplomacy() {
+    TDiplomacyMapView* diplomacy = DiplomacyView();
+    if (diplomacy == 0 ||
+        !RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagEnd)) {
+      FailScenario("\"diplomacy back control is missing or cannot receive native input\"");
+      return;
+    }
+    phase = kWaitForMapBeforeTrade;
+    EnterScenarioStep("waiting_for_map_before_trade", "activate_diplomacy_end_control");
+    RequestScenarioTick();
+  }
+
+  void WaitForMapBeforeTrade() {
+    TView* mainView = CurrentMainView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
+      WaitForScenarioTick("\"diplomacy back control did not restore the strategic map\"");
+      return;
+    }
+    phase = kActivateTradeScreen;
+    EnterScenarioStep("activating_trade_screen", "declared_war_and_returned_to_map");
+    RequestScenarioTick();
+  }
 
   void ActivateTradeScreen() {
     if (ScenarioPhaseTicks() < 60) {
@@ -401,19 +576,74 @@ private:
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
       return;
     }
-    if (ScenarioPhaseTicks() < 20) {
+    baselineEconomicTurn = g_pSimMgr->economicTurn;
+    handledOffers = 0;
+    leftDealBook = false;
+    ResetNewspaperAdvance();
+    StrategicMapDriver map(mainView);
+    if (!map.EndTurnThroughNativeMessages()) {
+      FailScenario("\"end-turn control is missing after war and trade orders\"");
+      return;
+    }
+    phase = kWaitForEndTurn;
+    EnterScenarioStep("handling_diplomatic_offers_after_trade",
+                      "end_turn_after_war_sell_and_bid_orders");
+    RequestScenarioTick();
+  }
+
+  void WaitForEndTurn() {
+    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventOfferSheet) {
+      TView* mainView = CurrentMainView();
+      if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
+        WaitForScenarioTick("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        return;
+      }
+      TView* reject = mainView->ResolveControlByTag(kControlTagReje);
+      if (reject != 0 && reject->IsActionable() != 0) {
+        if (!RuntimeUiDriver::ClickViewThroughNativeMessages(reject)) {
+          FailScenario("\"diplomatic-offer Reject control could not receive native input\"");
+          return;
+        }
+        ++handledOffers;
+        EnterScenarioStep("advancing_after_diplomatic_offer", "reject_end_turn_diplomatic_offer");
+      }
       RequestScenarioTick();
+      return;
+    }
+    if (g_pUiRuntimeContext->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+      leftDealBook = true;
+      g_pSimMgr->StartNextPhase();
+      RequestScenarioTick();
+      return;
+    }
+    if (AdvanceNewspaperIfNeeded()) {
+      return;
+    }
+    TView* mainView = CurrentMainView();
+    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
+        g_pSimMgr->economicTurn == baselineEconomicTurn) {
+      WaitForScenarioTick("\"war and trade end turn did not return to the strategic map\"");
+      return;
+    }
+    if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {
+      FailScenario("\"war and trade end turn advanced by more than one\"");
       return;
     }
     Pass();
   }
 
   Phase phase;
+  short warTargetNation;
+  short warPolicyBeforeAction;
   TTradeCluster* selectedRow;
   TTradeCluster* selectedSellRow;
   short initialBidBitmap;
   int initialSellValue;
   short initialBarValue;
+  short baselineEconomicTurn;
+  int handledOffers;
+  bool leftDealBook;
 };
 
 TradeScreenTestCase g_test;

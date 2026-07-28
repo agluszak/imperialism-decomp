@@ -126,11 +126,6 @@ const unsigned int g_strategicMapStatusIconTagTable[18] = {
 // Diplomacy globals
 // GLOBAL: IMPERIALISM 0x006a4280
 TMinor* g_apSecondaryNationStateSlots[36] = {0};
-// GLOBAL: IMPERIALISM 0x006a432c
-// Minor-nation capability object table, iterated as a pointer array. The slot-0x32 loop
-// scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing the array to
-// 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
-TMinor* g_apMinorNationCapabilityObjects[16] = {0};
 // GLOBAL: IMPERIALISM 0x006a4370
 TGreatPower* g_apNationStates[7] = {0};
 // GLOBAL: IMPERIALISM 0x006a20f8

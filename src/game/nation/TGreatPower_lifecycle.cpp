@@ -920,12 +920,12 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Civil work order (pending status 2 < '3').
   if (this->pendingActionStatus.roles.civilWorkStatus02 < 0x33) {
     bool needsCivOrder = false;
-    TMinor** minorEntry = g_apMinorNationCapabilityObjects;
+    TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[7];
     short zoneCursor = 7;
     do {
       if (g_pDiplomacyTurnStateManager
               ->relationStandingScores[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
-        TMinor* minor = *minorEntry;
+        TCountry* minor = *minorEntry;
         if (minor != 0) {
           short ownerTag = minor->encodedNationSlot;
           if (ownerTag > 99 && ownerTag < 200 && static_cast<short>(ownerTag - 100) == nationSlot) {
@@ -937,7 +937,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     nextMinorEntry:
       ++minorEntry;
       ++zoneCursor;
-    } while (minorEntry <= &g_apMinorNationCapabilityObjects[15]);
+    } while (minorEntry < &g_apTerrainTypeDescriptorTable[kNationSlotCount]);
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();

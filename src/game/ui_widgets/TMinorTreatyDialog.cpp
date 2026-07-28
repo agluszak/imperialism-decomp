@@ -32,7 +32,7 @@ void TMinorTreatyDialog::StuffValues() {
 
   for (short minorNationSlot = 7; minorNationSlot < 0x17; ++minorNationSlot) {
     int minorIndex = minorNationSlot - 7;
-    if (g_apMinorNationCapabilityObjects[minorIndex] == 0) {
+    if (g_apTerrainTypeDescriptorTable[minorNationSlot] == 0) {
       continue;
     }
 
