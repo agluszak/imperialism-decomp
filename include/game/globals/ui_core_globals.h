@@ -3,6 +3,7 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 #include "game/core/TMouseCaptureState.h"
+#include <afxtempl.h>
 
 class TAnimator;
 class TMacViewMgr;
@@ -38,6 +39,7 @@ extern TInfoBarText* g_pCursorControlPanel;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TApplication* g_pApplication;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
+extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
 extern "C" void* g_pScopedMapQuickDrawViewContext;
 extern "C" CDC* g_pScopedMapQuickDrawDcHandleObject;

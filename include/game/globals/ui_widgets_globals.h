@@ -3,6 +3,9 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
+extern "C" char* g_pSmallViewsEmptyText_00662B90;
+extern "C" char* g_pStatusPictureMainSharedText_00668b88;
+
 int GetTradeSummarySelectionTagByIndex(short index);
 
 extern "C" double g_dMasterVolumeExponentScale;

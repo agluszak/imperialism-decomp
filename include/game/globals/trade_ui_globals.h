@@ -3,6 +3,8 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
+extern "C" short g_aTradeDealCategoryOrder_0066D810[0x11];
+
 extern POINT g_ptControlStringModalMessage;
 
 extern short g_offerDeskSelectionIndexTable_00668568[8];

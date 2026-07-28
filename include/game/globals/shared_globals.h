@@ -27,9 +27,7 @@
 // USmallViews.cpp shared empty-text pointer. The original stores a pointer to
 // g_szEmptyString at 0x00662b90 and constructs transient CString values from it in
 // TArmyInfoView and the strategic toolbar text-refresh paths.
-extern "C" {
-extern char* g_pSmallViewsEmptyText_00662B90;
-}
+extern "C" {}
 
 // Shared substitution value read by TTradeTotalsView::Draw (0x5c1bd0) as
 // the sole scanBracketExpressions() argument for its "balance" row template (GetString
@@ -47,7 +45,6 @@ extern char* g_pSmallViewsEmptyText_00662B90;
 // "PushUiResourcePoolNode"/"PopUiResourcePoolNode" bodies at 0x479b00/0x479a80 are this
 // list's CList<TView*,TView*>::AddTail/RemoveTail twin copies; the "current panel" global
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
-extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
@@ -84,12 +81,6 @@ extern const char s_OutOfMemoryText_006941F0[];
 
 extern const char s_ErrorCaption_00694204[];
 
-extern char* g_pShipFractionSharedText_0065c830;
-
-extern char* g_pStatusPictureMainSharedText_00668b88;
-
-extern char* g_pLoungeLocalPlayerNameSharedText_0065c160;
-
 extern int g_lastEdgeAutoScrollTick16;
 
 extern char g_szLiteralL_00694250[];
@@ -110,11 +101,7 @@ extern char g_szListConjunction_00698498[];
 
 extern LPCSTR g_apFontFiles[];
 
-extern int g_nRandomMapSelectedNationSlot00698AB0;
-
 extern char g_szCountryNameProfileKey00698AE0[];
-
-extern "C" short g_aTradeDealCategoryOrder_0066D810[0x11];
 
 extern "C" const double g_TradePowerIdentity_0066D8E0;
 

@@ -9,6 +9,7 @@
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/globals/global_types.h"
+#include "game/globals/navy_ui_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
