@@ -223,9 +223,9 @@ TStaticText|148|stringResourceGroupId|int|other|136|4|no|55e1202210284c44|includ
 TStaticText|148|stringResourceIndex|int|other|140|4|no|55e1202210284c44|include/game/ui_core/TStaticText.h
 TStaticText|148|textAlignmentCode|short|other|144|2|no|55e1202210284c44|include/game/ui_core/TStaticText.h
 TStaticText|148|textOptionFlags|short|other|146|2|no|55e1202210284c44|include/game/ui_core/TStaticText.h
-TTextLine|32|captionText10|CString|embedded|16|4|yes|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
-TTextLine|32|styleDescriptor14|TextStyle|other|20|10|no|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
-TTextLine|32|field1e|short|other|30|2|no|d27ce56ac2acedbf|include/game/ui_screens/TTextLine.h
+TTextLine|32|captionText10|CString|embedded|16|4|yes|c411c8609eebad92|include/game/ui_screens/TTextLine.h
+TTextLine|32|styleDescriptor14|TextStyle|other|20|10|no|c411c8609eebad92|include/game/ui_screens/TTextLine.h
+TTextLine|32|textAlignmentCode|short|other|30|2|no|c411c8609eebad92|include/game/ui_screens/TTextLine.h
 TTextPictureButton|160|buttonText|CString|embedded|148|4|yes|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
 TTextPictureButton|160|pointSize98|short|other|152|2|no|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h
 TTextPictureButton|160|themeCode9A|short|other|154|2|no|1f97ade19b81ed46|include/game/ui_screens/TTextPictureButton.h

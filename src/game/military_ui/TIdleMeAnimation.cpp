@@ -32,7 +32,7 @@ void TIdleMeAnimation::IIdleMeAnimation(TView* ownerView) {
 
 // FUNCTION: IMPERIALISM 0x004aca60
 void TIdleMeAnimation::Tick() {
-  if (ownerView04->DoIdle(1) && this != 0) {
-    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag18);
+  if (ownerView->DoIdle(1) && this != 0) {
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag);
   }
 }

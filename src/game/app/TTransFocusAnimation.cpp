@@ -32,17 +32,17 @@ TTransFocusAnimation::~TTransFocusAnimation() {}
 TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c,
                                            int tickLimit, int f18)
     : TFocusAnimation() {
-  ownerView04 = target;
-  frameIndex08 = 0;
-  frameCount0A = f0a;
-  field0C = f0c;
-  tickCounter10 = 0;
-  ticksPerFrame14 = tickLimit;
-  registryTag18 = f18;
-  screenRect1C.left = bounds->left;
-  screenRect1C.top = bounds->top;
-  screenRect1C.right = bounds->right;
-  screenRect1C.bottom = bounds->bottom;
+  ownerView = target;
+  frameIndex = 0;
+  frameCount = f0a;
+  frameResourceBaseId = f0c;
+  ticksSinceFrameChange = 0;
+  ticksPerFrame = tickLimit;
+  registryTag = f18;
+  screenRect.left = bounds->left;
+  screenRect.top = bounds->top;
+  screenRect.right = bounds->right;
+  screenRect.bottom = bounds->bottom;
   enabledFlag = 1;
   transientSurfaceContext = 0;
   insetBitmapSurface = 0;
@@ -74,11 +74,11 @@ void TTransFocusAnimation::UpdateBackground() {
   RECT sourceRect;
   destinationRect.left = 0;
   destinationRect.top = 0;
-  sourceRect.left = screenRect1C.left;
-  sourceRect.top = screenRect1C.top;
-  sourceRect.right = screenRect1C.right;
+  sourceRect.left = screenRect.left;
+  sourceRect.top = screenRect.top;
+  sourceRect.right = screenRect.right;
   destinationRect.right = sourceRect.right - sourceRect.left;
-  sourceRect.bottom = screenRect1C.bottom;
+  sourceRect.bottom = screenRect.bottom;
   destinationRect.bottom = sourceRect.bottom - sourceRect.top;
 
   ClipRect(&destinationRect);
@@ -113,16 +113,16 @@ void TTransFocusAnimation::UpdateBackground() {
 
 // FUNCTION: IMPERIALISM 0x004a0770
 void TTransFocusAnimation::IdleDraw() {
-  ScopedMapQuickDrawContext guard(ownerView04);
-  ownerView04->PrepareForDrawing();
+  ScopedMapQuickDrawContext guard(ownerView);
+  ownerView->PrepareForDrawing();
   POINT offset = {0, 0};
   DrawNextFrame(&offset);
 }
 
 // FUNCTION: IMPERIALISM 0x004a0810
 void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
-  short width = screenRect1C.right - screenRect1C.left;
-  int height = screenRect1C.bottom - screenRect1C.top;
+  short width = screenRect.right - screenRect.left;
+  int height = screenRect.bottom - screenRect.top;
 
   RECT destinationRect;
   destinationRect.left = 0;
@@ -154,7 +154,7 @@ void TTransFocusAnimation::DrawNextFrame(POINT* offset) {
 
   if (enabledFlag != 0) {
     RECT overlayRect;
-    overlayRect.left = frameIndex08 * width;
+    overlayRect.left = frameIndex * width;
     overlayRect.right = overlayRect.left + width;
     overlayRect.top = 0;
     overlayRect.bottom = height;

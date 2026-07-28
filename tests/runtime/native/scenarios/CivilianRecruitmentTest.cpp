@@ -506,8 +506,8 @@ private:
       return;
     }
 
-    initialAnimationFrame = animation->frameIndex08;
-    initialAnimationTick = animation->tickCounter10;
+    initialAnimationFrame = animation->frameIndex;
+    initialAnimationTick = animation->ticksSinceFrameChange;
     orderIssued = true;
     EnterScenarioStep("waiting_for_ordered_civilian_animation",
                       "verify_ordered_prospector_remains_visible_and_inspectable");
@@ -528,8 +528,9 @@ private:
     unsigned short reportCursor =
         g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
             targetHillTile, 0);
-    int animationAdvanced = animation != 0 && (animation->frameIndex08 != initialAnimationFrame ||
-                                               animation->tickCounter10 != initialAnimationTick);
+    int animationAdvanced =
+        animation != 0 && (animation->frameIndex != initialAnimationFrame ||
+                           animation->ticksSinceFrameChange != initialAnimationTick);
     int hasFramePixels = animation != 0 ? AnimationFrameBufferHasPixels(animation) : 0;
     if (tileCivilian != spawnedCivilian || animation == 0 || animationAdvanced == 0 ||
         reportCursor != 0x3f3 || hasFramePixels == 0) {
@@ -538,9 +539,9 @@ private:
                 "\"ordered prospector validation failed: tile=%d animation=%d advanced=%d "
                 "frame=%d/%d tick=%d/%d cursor=%d pixels=%d\"",
                 tileCivilian == spawnedCivilian, animation != 0, animationAdvanced,
-                animation == 0 ? -1 : animation->frameIndex08, initialAnimationFrame,
-                animation == 0 ? -1 : animation->tickCounter10, initialAnimationTick, reportCursor,
-                hasFramePixels);
+                animation == 0 ? -1 : animation->frameIndex, initialAnimationFrame,
+                animation == 0 ? -1 : animation->ticksSinceFrameChange, initialAnimationTick,
+                reportCursor, hasFramePixels);
       FailScenario(failure);
       return;
     }

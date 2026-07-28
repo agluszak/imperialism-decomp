@@ -35,6 +35,7 @@
 #include "game/ui_widgets/TPlacard.h"
 #include "game/ui_widgets/TRailCluster.h"
 #include "game/ui_widgets/TCivilianButton.h"
+#include "game/globals/view_registries.h"
 
 namespace {
 
@@ -150,7 +151,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"city toolbar action opened an unexpected modal\"");
       return;
     }
@@ -1009,7 +1010,7 @@ private:
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(static_cast<TView*>(g_ModalViewStack.GetHead()));
+      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"city back navigation left an unexpected modal\"");
       return;
     }

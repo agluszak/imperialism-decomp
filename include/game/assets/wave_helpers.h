@@ -39,6 +39,12 @@ UINT WaveLoadFile(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMA
 
 // 0x005e0b50 — create the output file, write the RIFF/WAVE header, the 'fmt ' chunk (from
 // pwfxDest), and a placeholder 'fact' chunk (dwFactChunk = -1).
+// Flush the write buffer, close both chunks, then reopen the 'fact' chunk to patch in the
+// real sample count WaveCreateFile could only write as a placeholder, and close the file.
+// 0x005e0da0.
+UINT WaveCloseWriteFile(HMMIO* phmmio, MMCKINFO* pck, MMCKINFO* pckRIFF, MMIOINFO* pmmioinfo,
+                        DWORD cSamples);
+
 UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
                     MMCKINFO* pckOutRIFF);
 

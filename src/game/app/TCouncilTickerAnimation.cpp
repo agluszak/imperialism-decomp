@@ -31,25 +31,25 @@ IMPLEMENT_DYNCREATE(TCouncilTickerAnimation, TAnimation)
 
 // FUNCTION: IMPERIALISM 0x0049ff90
 void TCouncilTickerAnimation::InitializeCouncilTicker(TCouncilView* hostPanel, int tickInterval) {
-  ownerView04 = hostPanel;
-  frameIndex08 = 0;
-  frameCount0A = 0;
-  field0C = 0;
-  tickCounter10 = 0;
-  ticksPerFrame14 = tickInterval;
-  registryTag18 = 0;
-  screenRect1C.left = 0;
-  screenRect1C.top = 0;
-  screenRect1C.right = 0;
-  screenRect1C.bottom = 0;
+  ownerView = hostPanel;
+  frameIndex = 0;
+  frameCount = 0;
+  frameResourceBaseId = 0;
+  ticksSinceFrameChange = 0;
+  ticksPerFrame = tickInterval;
+  registryTag = 0;
+  screenRect.left = 0;
+  screenRect.top = 0;
+  screenRect.right = 0;
+  screenRect.bottom = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049ffe0
 void TCouncilTickerAnimation::Tick() {
-  int tick = tickCounter10 + 1;
-  tickCounter10 = tick;
-  if (tick == ticksPerFrame14) {
-    static_cast<TCouncilView*>(ownerView04)->NextTick();
-    tickCounter10 = 0;
+  int tick = ticksSinceFrameChange + 1;
+  ticksSinceFrameChange = tick;
+  if (tick == ticksPerFrame) {
+    static_cast<TCouncilView*>(ownerView)->NextTick();
+    ticksSinceFrameChange = 0;
   }
 }

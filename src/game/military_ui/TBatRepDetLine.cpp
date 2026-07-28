@@ -30,7 +30,8 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   switch (battleDetail14->detailIdentity.categoryTag) {
   case kControlTagArmy: { // 'army'
     TArmyBoyView* armyView = new TArmyBoyView;
-    armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+    armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5,
+                                                      0);
     armyView->battleDetail60 = battleDetail14;
 
     int checkboxOffset[2] = {0, 0};
@@ -44,20 +45,22 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   }
   case kControlTagItem: { // 'item'
     TItemBoyView* itemView = new TItemBoyView;
-    itemView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+    itemView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5,
+                                                      0);
     itemView->battleDetail60 = battleDetail14;
     break;
   }
   case kControlTagRupt: { // 'rupt'
     TInterruptusView* interruptView = new TInterruptusView;
-    interruptView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5,
-                                                           0);
+    interruptView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5,
+                                                           5, 0);
     interruptView->battleDetail60 = battleDetail14;
     break;
   }
   case kControlTagNavy: { // 'navy'
     TNavyBoyView* navyView = new TNavyBoyView;
-    navyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5, 0);
+    navyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5,
+                                                      0);
     navyView->battleDetail60 = battleDetail14;
 
     short shipAtlasOffsets[14] = {0,     0,     0,     0, 0xa0,  0,     0,
@@ -73,8 +76,8 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   }
   case kControlTagMerc: { // 'merc'
     TMerchantBoyView* merchantView = new TMerchantBoyView;
-    merchantView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &field08, 5, 5,
-                                                          0);
+    merchantView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5,
+                                                          5, 0);
     merchantView->battleDetail60 = battleDetail14;
 
     short merchantAtlasSlots[14] = {0, 0, 1, 0, 0, 2, 3, 0, 0, 0, 4, 0, 0, 0};

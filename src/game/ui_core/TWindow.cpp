@@ -1,4 +1,5 @@
 #include "game/ui_core/TWindow.h"
+#include "game/globals/view_registries.h"
 #include "game/ui_tags_common.h"
 
 #include "game/ImperialismApp.h"
@@ -51,7 +52,7 @@ TWindow::~TWindow() {
   if (modalPos != NULL) {
     g_ModalViewStack.RemoveAt(modalPos);
     if (!g_ModalViewStack.IsEmpty()) {
-      TWindow* modalTop = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+      TWindow* modalTop = g_ModalViewStack.GetHead();
       modalTop->AssertValid();
       if (modalTop->nativeWindow50 != 0) {
         modalTop->nativeWindow50->EnableWindow(1);
@@ -129,7 +130,7 @@ int TWindow::PoseModally() {
     SetModality(1);
   }
   if (!g_ModalViewStack.IsEmpty()) {
-    TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+    TWindow* top = g_ModalViewStack.GetHead();
     top->AssertValid();
     if (top->nativeWindow50 != 0) {
       top->nativeWindow50->EnableWindow(0);
@@ -142,7 +143,7 @@ int TWindow::PoseModally() {
   if (pos != NULL) {
     g_ModalViewStack.RemoveAt(pos);
     if (!g_ModalViewStack.IsEmpty()) {
-      TWindow* top = static_cast<TWindow*>(g_ModalViewStack.GetHead());
+      TWindow* top = g_ModalViewStack.GetHead();
       top->AssertValid();
       if (top->nativeWindow50 != 0) {
         top->nativeWindow50->EnableWindow(1);

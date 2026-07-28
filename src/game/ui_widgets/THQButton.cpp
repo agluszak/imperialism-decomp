@@ -26,12 +26,12 @@ THQButton::~THQButton() {}
 void THQButton::DoPostCreate(int arg) {
   short glyph = glyphBase84;
   TView::DoPostCreate(arg);
-  glyph98 = 0;
-  glyph90 = glyph;
+  selectionState = 0;
+  normalBitmapId = glyph;
   eventNumber60 = 0xc;
-  timingWord92 = (short)(glyph + 1);
-  glyph94 = (short)(glyph + 2);
-  glyph96 = (short)(glyph + 3);
+  highlightedBitmapId = static_cast<short>(glyph + 1);
+  selectedBitmapId = static_cast<short>(glyph + 2);
+  unavailableBitmapId = static_cast<short>(glyph + 3);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b750
@@ -40,16 +40,16 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
     controlState64 = enabledState;
     short bitmapId = 0;
     if (enabledState == 0) {
-      short modeState = glyph98;
+      short modeState = selectionState;
       if (modeState == 0) {
-        bitmapId = glyph90;
+        bitmapId = normalBitmapId;
       } else if (modeState == 1) {
-        bitmapId = glyph94;
+        bitmapId = selectedBitmapId;
       } else {
-        bitmapId = glyph96;
+        bitmapId = unavailableBitmapId;
       }
     } else {
-      bitmapId = timingWord92;
+      bitmapId = highlightedBitmapId;
     }
     SetPictureResourceIdAndRefresh(bitmapId, 1);
     if (refreshNow) {
@@ -88,15 +88,15 @@ bool THQButton::IsSelected(short value, bool refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
 void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
-  glyph98 = selectionState;
+  this->selectionState = selectionState;
   controlState64 = 0;
   short bitmapId;
   if (selectionState == 0) {
-    bitmapId = glyph90;
+    bitmapId = normalBitmapId;
   } else if (selectionState == 1) {
-    bitmapId = glyph94;
+    bitmapId = selectedBitmapId;
   } else {
-    bitmapId = glyph96;
+    bitmapId = unavailableBitmapId;
   }
   SetPictureResourceIdAndRefresh(bitmapId, true);
   SetState(selectionState != 2 ? 1 : 0, false);
