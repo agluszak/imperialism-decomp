@@ -6,7 +6,7 @@
 #include "game/map/TMapMgr.h"
 #include "game/core/runtime_prng_seed.h"
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/military/mapped_flavor_text.h"

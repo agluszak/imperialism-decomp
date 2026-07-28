@@ -140,7 +140,7 @@ sea_geometry.cpp|7|Cross/UMapper.cpp|7|map|0||Cross/UMapper.cpp:7
 TCitySiteView.cpp|7|Cross/UMapDlog.cpp|7|map_ui|7||Cross/UMapDlog.cpp:7
 TMapDialog.cpp|60|Cross/UMapDlog.cpp|43|map_ui|58|multi_module|Cross/UMapDlog.cpp:43+Cross/UMap.cpp:17
 TMapEditView.cpp|13|Cross/UMapDlog.cpp|13|map_ui|13||Cross/UMapDlog.cpp:13
-TMapMaker.cpp|31|Cross/UMapDlog.cpp|26|map_ui|29|multi_module|Cross/UMapDlog.cpp:26+Cross/UMapper.cpp:5
+TMapMaker.cpp|31|Cross/UMapDlog.cpp|26|map_generation|29|multi_module|Cross/UMapDlog.cpp:26+Cross/UMapper.cpp:5
 TMapMaker_RandomizeTemplates.cpp|1|Cross/UMapDlog.cpp|1|map_ui|1||Cross/UMapDlog.cpp:1
 TTownNameDialog.cpp|3|Cross/UMapDlog.cpp|3|map_ui|1||Cross/UMapDlog.cpp:3
 CStr255.cpp|1|Cross/UArmyMgr.cpp|1|military|0||Cross/UArmyMgr.cpp:1

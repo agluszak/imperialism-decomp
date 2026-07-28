@@ -3,7 +3,7 @@
 #include "game/ui_tags_common.h"
 #include <time.h>
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 #include "game/core/runtime_prng_seed.h"
 #include "game/core/CString.h"
 #include "game/app/TObject.h"

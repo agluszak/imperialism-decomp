@@ -5,7 +5,7 @@
 // each region id to adjacent same-region city tiles until stable, and write tile[4]=id+0x17.
 // Own translation unit (like the other UMapper routines).
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/globals/map_globals.h"

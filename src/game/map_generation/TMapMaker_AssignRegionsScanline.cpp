@@ -10,7 +10,7 @@
 // shared-endpoint angle comparisons; the exact overlay-coordinate interpretation remains
 // provisional.
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include "decomp_types.h"
 #include "game/globals/global_types.h"

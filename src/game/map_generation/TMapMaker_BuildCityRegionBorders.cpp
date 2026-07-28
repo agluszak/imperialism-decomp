@@ -11,7 +11,7 @@
 // Its own translation unit (like the merge pass) so the inline accessors fold into the one
 // body without perturbing neighbouring methods.
 
-#include "game/map_ui/TMapMaker.h"
+#include "game/map_generation/TMapMaker.h"
 
 #include <stdlib.h>
 
