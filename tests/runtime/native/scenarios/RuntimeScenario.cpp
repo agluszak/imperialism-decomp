@@ -30,8 +30,8 @@
 namespace {
 
 bool RequiredManagersAreInitialized() {
-  return g_pGlobalUiRootController != 0 && g_pSimMgr != 0 && g_pUiRuntimeContext != 0 &&
-         g_pDisplayMgr != 0 && g_pUiViewManager != 0;
+  return g_pAmbitApplication != 0 && g_pSimMgr != 0 && g_pViewMgr != 0 && g_pDisplayMgr != 0 &&
+         g_pAssetMgr != 0;
 }
 
 void RequestAnotherDriverTick() {
@@ -356,7 +356,7 @@ void RuntimeScenario::SetSelectedNation(short nationSlot) {
 }
 
 bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
-  if (g_pUiRuntimeContext->currentTurnEventCode != 0x2103) {
+  if (g_pViewMgr->currentTurnEventCode != 0x2103) {
     return false;
   }
   TView* mainView = RuntimeMainView();

@@ -322,7 +322,7 @@ void TCouncilView::StartVoting() {
     }
   }
 
-  SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
+  SetCursor(g_pViewMgr->turnEventCursors[26]);
 
   TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
   if (endControl != nullptr) {
@@ -375,8 +375,7 @@ void TCouncilView::NextTick() {
         short tick = g_pSimMgr->GetEconomicTurn();
         unsigned char* phaseTable = g_pSimMgr->phaseStateByDecade;
         if (phaseTable[tick / 40] != 2) {
-          allowAdvance =
-              g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275d, 7, 0, 1) == 0;
+          allowAdvance = g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275d, 7, 0, 1) == 0;
         }
       }
       if (!allowAdvance) {
@@ -405,6 +404,6 @@ void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* p
                                                                        RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
   if ((int)visibleVoteTier528 < councilNationCount24c8 + 2) {
-    SetCursor(g_pUiRuntimeContext->turnEventCursors[26]);
+    SetCursor(g_pViewMgr->turnEventCursors[26]);
   }
 }

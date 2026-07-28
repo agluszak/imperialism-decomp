@@ -363,15 +363,14 @@ void TWindow::Free() {
     ownerContext->DetachChildFromOwnerList(this);
     ownerContext = 0;
   }
-  if (g_pApplicationUiRootController != 0 &&
-      static_cast<TEventHandler*>(g_pApplicationUiRootController) !=
-          static_cast<TEventHandler*>(this)) {
-    if (g_pApplicationUiRootController->GetTarget() == this) {
+  if (g_pApplication != 0 &&
+      static_cast<TEventHandler*>(g_pApplication) != static_cast<TEventHandler*>(this)) {
+    if (g_pApplication->GetTarget() == this) {
       TEventHandler* replacement = GetNextHandler();
       if (replacement == 0) {
-        g_pApplicationUiRootController->SetTarget(g_pApplicationUiRootController);
+        g_pApplication->SetTarget(g_pApplication);
       } else {
-        g_pApplicationUiRootController->SetTarget(replacement);
+        g_pApplication->SetTarget(replacement);
       }
     }
   }

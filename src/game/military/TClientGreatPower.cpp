@@ -79,7 +79,7 @@ void TClientGreatPower::ReplyToDiplomacyOffers(void) {
   packet.nationSlot1C = static_cast<short>(g_pSimMgr->GetActiveNationId());
   g_pNetMgr006a6014->Send(&packet, 0);
 
-  g_pUiRuntimeContext->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
+  g_pViewMgr->MakeDiplomacyOfferDialog(nationSlot, nationSlot, 0x29a);
 }
 
 // FUNCTION: IMPERIALISM 0x005415c0

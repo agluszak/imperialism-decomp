@@ -274,10 +274,8 @@ MilitaryUnitKindStorage TMilitaryUnit::UpgradeType() {
   } else {
     return -1;
   }
-  if (g_pCityOrderCapabilityState->abilityActiveRows395[ownerNationSlot18]
-              .abilityActiveById[candidate] == 0 &&
-      g_pCityOrderCapabilityState->abilityActiveRows395[ownerNationSlot18]
-              .abilityActiveById[unitType] != 0) {
+  if (g_pTechMgr->abilityActiveRows395[ownerNationSlot18].abilityActiveById[candidate] == 0 &&
+      g_pTechMgr->abilityActiveRows395[ownerNationSlot18].abilityActiveById[unitType] != 0) {
     return -1;
   }
   return candidate;

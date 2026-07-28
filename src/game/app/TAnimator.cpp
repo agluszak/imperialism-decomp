@@ -47,7 +47,7 @@ void TAnimator::IAnimator(int idleFrequency) {
 
 // FUNCTION: IMPERIALISM 0x004a0c00
 void TAnimator::Install() {
-  g_pGlobalUiRootController->InstallCohandler(this, 1);
+  g_pAmbitApplication->InstallCohandler(this, 1);
   SetIdleFreq(2);
 }
 
@@ -99,7 +99,7 @@ TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
 
 // FUNCTION: IMPERIALISM 0x004a0dc0
 void TAnimator::Free() {
-  g_pGlobalUiRootController->InstallCohandler(this, 0);
+  g_pAmbitApplication->InstallCohandler(this, 0);
   if (registryList24 != 0) {
     registryList24->FreePayloadsAndDestroy();
   }

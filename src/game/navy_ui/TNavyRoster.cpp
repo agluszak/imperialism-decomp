@@ -69,7 +69,7 @@ void TNavyRoster::StuffValues(TTaskForce* taskForce) {
 void TNavyRoster::Close() {
   TView::Close();
 
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   TMapDialog* mapDialog = mapUberPicture->subview2A8;
   mapDialog->suppressMarkerOverlay34C = false;
   mapDialog->ResetAllTileMarkersToSentinel();

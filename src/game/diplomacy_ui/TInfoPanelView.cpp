@@ -265,8 +265,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
     short categoryIndex = 13;
     short categoryCount = 0;
     do {
-      if (g_pNationInteractionStateManager->categoryRows[categoryIndex]
-              .tradeOfferCells[46 + countryId] != 0) {
+      if (g_pTradeMgr->categoryRows[categoryIndex].tradeOfferCells[46 + countryId] != 0) {
         countryInfoCategoryIndices64[categoryCount++] = categoryIndex;
       }
       ++categoryIndex;
@@ -281,7 +280,7 @@ void TInfoPanelView::SetInfoCountry(short countryId) {
   do {
     values[valueIndex] = secondary->diplomacySaveExt13c[valueIndex];
     if (valueIndex == 6 &&
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
+        g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       values[6] = 0;
     }
     indices[valueIndex] = valueIndex;

@@ -23,13 +23,13 @@ public:
   virtual void OpenFilesFor(short fileSet);     // slot 0x0c 0x5df3f0
   virtual void CloseFilesFor(short fileSet);    // slot 0x0d 0x5df410
   // Ground truth (0x5dfc10): two parameters only — the movie view pointer is the
-  // second arg (stored into g_pUiRuntimeContext->activeMovieViewF4 at 0x5dfc8e);
+  // second arg (stored into g_pViewMgr->activeMovieViewF4 at 0x5dfc8e);
   // there is no mode flag.
   virtual void
   PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
                                             TMovieView* movieView); // slot 0x0e 0x5dfc10
 
-  // Non-virtual resource-stream helpers (every call site loads ECX = g_pUiViewManager;
+  // Non-virtual resource-stream helpers (every call site loads ECX = g_pAssetMgr;
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).
   // Compose the on-disk path for a scenario table resource (mode 1 = map state) into
   // outPath. 0x5dfd70; `this` ignored (same singleton idiom as the siblings below).
@@ -65,7 +65,7 @@ public:
   // 0x5dff20 — load the picture-word-data GOB for a language slot. Real __thiscall
   // whose body ignores `this` (previously mis-modelled as a free __stdcall, which
   // dropped the ECX load at call sites). Outside callers dispatch through
-  // g_pUiViewManager; sibling TAssetMgr methods (Forward…, …ForLanguageSlot) pass
+  // g_pAssetMgr; sibling TAssetMgr methods (Forward…, …ForLanguageSlot) pass
   // their own `this` straight through.
   void EnsurePictWvDataGobLoadedBySlot(int languageTag);
   // 0x5df3a0 — thiscall passthrough forwarder: calls EnsurePict…BySlot(0), reusing the
@@ -74,35 +74,35 @@ public:
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
   // Save the MFC document to `savePath`, then restamp its path with the "__saved"
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
-  // through g_pUiViewManager. 0x005e0030.
+  // through g_pAssetMgr. 0x005e0030.
   unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
   // Open the MFC document from `loadPath` (CWinApp::OpenDocumentFile) and restamp its
   // path with the "__loaded" marker; returns whether a document was opened. `this` is
-  // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
+  // unused; callers dispatch through g_pAssetMgr. 0x005e0150.
   unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
   // Writes *value under key in the application's "Settings" profile section. `this`
-  // is unused, but all retail callsites dispatch through g_pUiViewManager. 0x5e0260.
+  // is unused, but all retail callsites dispatch through g_pAssetMgr. 0x5e0260.
   void SaveSettingValueFromPointerByKey(CString* value, const char* key);
   // CWinApp::GetProfileInt(key, defaultValue) under the "Settings" section, stored
-  // into *out. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0290.
+  // into *out. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0290.
   // Parameter order verified from the 0x5e0290 listing: the OUT pointer is the first
   // argument ([esp+4] receives the GetProfileInt result), then key, then default.
   void LoadSettingValueByKeyIntoOut(int* out, LPCSTR key, int defaultValue);
   void WriteIntegerSettingByValueAndKey(int value, LPCSTR key); // 0x005e02c0
   // Checks for a pending "save/cli_*.imp" client save file (resumable multiplayer
-  // session). `this` is unused; callers dispatch through g_pUiViewManager. 0x5e02f0.
+  // session). `this` is unused; callers dispatch through g_pAssetMgr. 0x5e02f0.
   unsigned char HasPendingClientSaveFile();
   // Deletes every "save/cli_*.imp" legacy client save file, returning the count
-  // removed. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0340.
+  // removed. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0340.
   int DeleteLegacyCliSaveImpFiles();
   // Register an audio-state callback in the shared slot table and arm its Win32 timer.
-  // Every caller loads ECX = g_pUiViewManager even though the body does not read `this`.
+  // Every caller loads ECX = g_pAssetMgr even though the body does not read `this`.
   // 0x005e0520.
   void ScheduleTimerSlotCallbackWithInterval(TimerSlotCallback callback, UINT interval, int slot);
   // Loads the module's RT_VERSION resource and formats "(v. major.minor[.build[.revision]])"
   // from its VS_FIXEDFILEINFO dwFileVersionMS/dwFileVersionLS fields in the loaded resource
   // block, matching the original's direct FindResource/LoadResource parse rather than
-  // VerQueryValue. `this` is unused; callers dispatch through g_pUiViewManager. 0x5e0590.
+  // VerQueryValue. `this` is unused; callers dispatch through g_pAssetMgr. 0x5e0590.
   CString FormatVersionStringFromVersionResource();
 };
 

@@ -71,7 +71,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       } else {
         g_pSimMgr->GetString(0x273d, 0x12, &text);
       }
-      g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
+      g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
@@ -87,7 +87,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   } else if (tag == kControlTagDeal) {
     if (g_pSimMgr->GetEconomicTurn() == 1) {
       g_pSimMgr->GetString(0x2741, 9, &text);
-      g_pUiRuntimeContext->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
+      g_pViewMgr->ModalMessage(text, g_ptQueryFloaterModalMessage, 1, 0);
     } else {
       TWindow* owner = GetWindow();
       owner->Dismiss(kControlTagOkay, 0);
@@ -99,7 +99,7 @@ void TQueryFloater::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (g_pNewsMgr->perNationStoryLastUsedTick[0] != nullptr) {
       g_pSimMgr->EnterOptionalPhase(0x66);
     } else {
-      g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
+      g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x275e, 6, 2, 0);
     }
   } else if (tag == kControlTagOref) {
     TWindow* owner = GetWindow();

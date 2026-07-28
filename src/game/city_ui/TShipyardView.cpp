@@ -58,7 +58,7 @@ void TShipyardView::Free() {
   g_pDisplayMgr->RemoveGWorld(iconSurfaceB8);
   TView::Free();
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pUiViewManager->CloseFilesFor(0x23f7);
+    g_pAssetMgr->CloseFilesFor(0x23f7);
   }
 }
 
@@ -80,7 +80,7 @@ void TShipyardView::DoStartup() {
   style.tail[2] = 0;
   style.tail[3] = 0;
 
-  productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView04;
   unresolvedZeroB4 = 0;
   iconSurfaceB8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
 
@@ -264,7 +264,7 @@ void TShipyardView::SetShip(short shipType) {
   TPicture* shipPicture = static_cast<TPicture*>(ResolveControlByTag(kControlTagSpic)); // 'spic'
   shipPicture->AssertValid();
   shipPicture->SetPictureResourceIdAndRefresh(static_cast<short>(shipType + 0x266a), 1);
-  g_pUiRuntimeContext->SetBackColor(0x38);
+  g_pViewMgr->SetBackColor(0x38);
 
   CRect invalidRect;
   TStaticText* shipName = static_cast<TStaticText*>(ResolveControlByTag(kControlTagSnam)); // 'snam'
@@ -362,12 +362,12 @@ void TShipyardView::Draw(RECT* rectBuffer) {
         drawRect.top = 0x98;
         drawRect.right = x;
         drawRect.bottom = 0xb0;
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &drawRect, 0x24, 0);
         drawRect.top = 0xcc;
         drawRect.bottom = 0xe4;
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &drawRect, 0x24, 0);
 

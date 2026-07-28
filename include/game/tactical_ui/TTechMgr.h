@@ -5,7 +5,7 @@
 #include "game/app/TObject.h"
 #include "game/tactical_ui/TechPrerequisitePair.h"
 
-// Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
+// Global city-order capability table (singleton g_pTechMgr @ 0x006A43D8).
 // VTABLE: IMPERIALISM 0x0066ad28
 class TTechMgr : public TObject {
 public:
@@ -23,7 +23,7 @@ public:
   short prioritySlots04[0x1d];
   // Per-nation/per-resourceType capability value table, index = nationTag*23 + resourceType
   // (row stride 23 shorts). Evidenced independently by three TMapMgr functions that all
-  // read this exact formula off g_pCityOrderCapabilityState+0x3e: 0x513720, 0x5155c0,
+  // read this exact formula off g_pTechMgr+0x3e: 0x513720, 0x5155c0,
   // 0x515890. Row count (7) matches g_apNationStates[7]; column count (23) matches the
   // resourceType range used throughout TMapMgr (see resourceTypeByEdge).
   short capabilityValueByNationAndResource[7][23];
@@ -160,7 +160,7 @@ public:
   void HandleAbilityUnlock(int techId, int nationSlot);
   // 0x5b0c20 -- scans this nation's orderCapRows277 row for the first tech whose status
   // is 1 (in-progress/pending), applies its unlock (HandleAbilityUnlock) and returns the
-  // tech index, or -1 when none pends. __thiscall (receiver g_pCityOrderCapabilityState).
+  // tech index, or -1 when none pends. __thiscall (receiver g_pTechMgr).
   short ConsumeFirstPendingAbilityUnlock(short nationSlot);
 
   ~TTechMgr() override;
@@ -169,6 +169,6 @@ ASSERT_SIZE(TTechMgr, 0x63c);
 
 // Resolves the first enabled industry-capability slot (1..13) for a given class index
 // by scanning g_aIndustryCapabilityClassSlotTable (descending) and testing the
-// per-slot enabled flag at g_pCityOrderCapabilityState+0x19d+slot; returns 0 if none
+// per-slot enabled flag at g_pTechMgr+0x19d+slot; returns 0 if none
 // match (slot 0 itself is never reached by the scan). 0x5572d0.
 short GetEnabledIndustryCapabilitySlotByClass(short classId);

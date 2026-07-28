@@ -60,7 +60,7 @@ void TCivilianButton::Draw(RECT* rectBuffer) {
   srcRect.bottom = 0x40;
 
   RECT dstRect = {0, 2, 0x40, 0x42};
-  TQuickDrawSurfaceContext* hintSource = g_pStrategicMapViewSystem->atlas66c;
+  TQuickDrawSurfaceContext* hintSource = g_pMacViewMgr->atlas66c;
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);

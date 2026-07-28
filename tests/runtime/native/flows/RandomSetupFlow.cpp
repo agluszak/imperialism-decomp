@@ -24,7 +24,7 @@ void RandomSetupFlow::Start(RuntimeScenario& scenario) {
 RuntimeFlowStatus RandomSetupFlow::Tick(RuntimeScenario& scenario) {
   TView* mainView = scenario.CurrentMainView();
   if (phase == kWaitingForRandomSetup) {
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dd ||
+    if (g_pViewMgr->currentTurnEventCode != 0x5dd ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
       scenario.WaitForScenarioTick("\"random-map setup did not become active\"");
       return kRuntimeFlowRunning;

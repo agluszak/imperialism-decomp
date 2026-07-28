@@ -758,7 +758,7 @@ void TF7TemplateDialog::OnCommand428() {
 // FUNCTION: IMPERIALISM 0x004824b0
 void TF7TemplateDialog::OnCommand3() {
   EndDialog(3);
-  g_pGlobalUiRootController->PostWmCloseToMainThreadWindow();
+  g_pAmbitApplication->PostWmCloseToMainThreadWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x004824e0
@@ -780,7 +780,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
   HWND hSlider = dialog.slider.m_hWnd;
   HWND hList = dialog.listbox.m_hWnd;
 
-  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pUiRuntimeContext->currentTurnEventNationSlot06);
+  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pViewMgr->currentTurnEventNationSlot06);
 
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e18);
   ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e08);
@@ -810,8 +810,7 @@ void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void) {
     LRESULT sliderPos = ::SendMessageA(hSlider, TBM_GETPOS, 0, 0);
     WPARAM selectedRow = ::SendMessageA(hList, LB_GETCURSEL, 0, 0);
     LRESULT eventCode = ::SendMessageA(hList, LB_GETITEMDATA, selectedRow, 0);
-    g_pUiRuntimeContext->DispatchTurnEvent(static_cast<short>(eventCode),
-                                           static_cast<int>(sliderPos));
+    g_pViewMgr->DispatchTurnEvent(static_cast<short>(eventCode), static_cast<int>(sliderPos));
   }
 }
 

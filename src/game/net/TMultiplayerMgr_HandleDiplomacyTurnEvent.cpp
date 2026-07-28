@@ -536,7 +536,7 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
     break;
   }
   case 0x32:
-    g_pNationInteractionStateManager->ReadFrom(stream);
+    g_pTradeMgr->ReadFrom(stream);
     g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]->InitializeDealBook();
     break;
   default:

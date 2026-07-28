@@ -170,7 +170,7 @@ public:
   // Re-attributed from a `TCivToolbar::` mis-label (symbols.csv/bd 4yz): its body reads
   // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
   // (TCivMgr::OrderAndCycle's thunk 0x408b93, and
-  // TArmyToolbar.cpp's own call) load ECX from g_pUiRuntimeContext->mapUberPictureF0
+  // TArmyToolbar.cpp's own call) load ECX from g_pViewMgr->mapUberPictureF0
   // directly -- ground-truth-confirmed via `just ghidra listing`, not a categoryPages[]
   // dispatch.
   void CycleMapInteractionSelectionAfterHandledClick();

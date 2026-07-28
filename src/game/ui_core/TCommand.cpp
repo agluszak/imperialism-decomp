@@ -33,7 +33,7 @@ void TCommand::ICommand(long itsCommandNumber, TCommandHandler* itsContext, unsi
   (void)itsChangedObject;
   TCommandHandler* resolvedContext = itsContext;
   if (resolvedContext == 0) {
-    resolvedContext = g_pApplicationUiRootController;
+    resolvedContext = g_pApplication;
   }
   sourceHandler = 0;
   dispatchMessage = itsCommandNumber;

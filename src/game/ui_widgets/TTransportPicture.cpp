@@ -69,8 +69,8 @@ void TTransportPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
 
       short selectedMetricSlot = resourceMetricSlot92;
       if (selectedMetricSlot == 0) {
-        short firstWeight = g_pNationInteractionStateManager->GetPrice(0);
-        short secondWeight = g_pNationInteractionStateManager->GetPrice(1);
+        short firstWeight = g_pTradeMgr->GetPrice(0);
+        short secondWeight = g_pTradeMgr->GetPrice(1);
         int primaryNeedIndex;
         int secondaryNeedIndex;
         if (firstWeight > secondWeight) {
@@ -154,7 +154,7 @@ void TTransportPicture::Refresh() {
   emptyRect.right = trackLeft + 0x71;
   emptyRect.bottom = 0x11;
   ClipRect(&emptyRect);
-  g_pUiRuntimeContext->SetForeColor(0x3b);
+  g_pViewMgr->SetForeColor(0x3b);
   FillRectWithQuickDrawBrushAndContextOffset(&emptyRect);
 
   RECT fillRect;
@@ -164,9 +164,9 @@ void TTransportPicture::Refresh() {
   fillRect.bottom = 0x11;
   if (controlTag == static_cast<int>(kControlTagTota)) {
     // The capacity total goes red once allocation reaches the cap.
-    g_pUiRuntimeContext->SetForeColor(splitValue96 == splitValue94 ? 0x34 : 0x33);
+    g_pViewMgr->SetForeColor(splitValue96 == splitValue94 ? 0x34 : 0x33);
   } else {
-    g_pUiRuntimeContext->SetForeColor(gaugeMetricId90);
+    g_pViewMgr->SetForeColor(gaugeMetricId90);
   }
   ClipRect(&fillRect);
   FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
@@ -179,7 +179,7 @@ void TTransportPicture::Refresh() {
     limitRect.top = 0x12;
     limitRect.right = trackLeft + 0x72;
     limitRect.bottom = 0x14;
-    g_pUiRuntimeContext->SetForeColor(splitValue94 < splitLimit98 ? 0x33 : 0x34);
+    g_pViewMgr->SetForeColor(splitValue94 < splitLimit98 ? 0x33 : 0x34);
     ClipRect(&limitRect);
     FillRectWithQuickDrawBrushAndContextOffset(&limitRect);
     SetClip(savedClip.tempRgn);

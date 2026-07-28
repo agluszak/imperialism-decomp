@@ -164,8 +164,8 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   autoResCluster->SetState(1, 0);
 
   int autoResEnabled = 0;
-  g_pUiViewManager->LoadSettingValueByKeyIntoOut(&autoResEnabled,
-                                                 g_pGamePreferencesAutoResKey_0065DDCC, 1);
+  g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey_0065DDCC,
+                                            1);
   autoResCluster->SetSelectedTextOptionByTag(
       autoResEnabled != 0 ? kControlTagYess : kControlTagNooo, false);
 }
@@ -180,8 +180,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       g_pSimMgr->preferenceValues[3] = static_cast<short>(originalSoundVolumePercent);
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-            EncodeTurnEventCode(kTurnEventMainMenu));
+        g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();
       }
@@ -220,8 +219,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
 
       g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
       if (g_pSimMgr->mode == 1 || g_pSimMgr->mode == 3) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(
-            EncodeTurnEventCode(kTurnEventMainMenu));
+        g_pAmbitApplication->PostTurnEventCodeMessage2420(EncodeTurnEventCode(kTurnEventMainMenu));
       } else {
         g_pSimMgr->StartNextPhase();
       }
@@ -231,7 +229,7 @@ void TGamePreferencesPicture::DoEvent(int commandId, TEventHandler* sourceHandle
       autoResolutionCluster->AssertValid();
       bool autoResolve = autoResolutionCluster->selectedTag88 == kControlTagYess; // 'yess'
       if (!g_pImperialismApp->ApplyAutoResolutionModeAndPersist(autoResolve)) {
-        g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
+        g_pViewMgr->ShowLocalizedUiPromptByGroupAndIndex(0x2763, 7, 2, 0);
       }
     } else {
       TControl::DoEvent(commandId, sourceHandler, event);

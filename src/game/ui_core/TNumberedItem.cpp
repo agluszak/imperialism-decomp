@@ -44,7 +44,7 @@ void TNumberedItem::Draw(RECT* rectBuffer) {
   RECT dstRect = {0, 0, 0x1f, 0x17};
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas674->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas674->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
                                    &dstRect, 0x24, 0);
 

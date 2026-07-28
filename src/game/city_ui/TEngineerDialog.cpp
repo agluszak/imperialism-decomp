@@ -228,8 +228,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Fort up/down button: only when the anchor province can still raise its fort level.
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
   Province* homeProv = &mapState->cityScoreTable[homeProvIndex];
-  short fortCap =
-      g_pCityOrderCapabilityState->GetNationFortLevelCap(g_pSimMgr->GetActiveNationId());
+  short fortCap = g_pTechMgr->GetNationFortLevelCap(g_pSimMgr->GetActiveNationId());
   if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex04 == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};

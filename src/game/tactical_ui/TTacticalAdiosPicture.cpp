@@ -47,7 +47,7 @@ void TTacticalAdiosPicture::DoPostCreate(int arg) {
 
   TView* owner = GetWindow();
   CPoint placement;
-  g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(owner, &placement);
+  g_pViewMgr->ComputeTurnEventDialogPlacementByCode(owner, &placement);
 
   TView* owner2 = GetWindow();
   owner2->Locate(placement, 0);

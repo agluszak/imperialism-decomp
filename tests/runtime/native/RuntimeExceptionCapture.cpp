@@ -48,15 +48,14 @@ void RuntimeExceptionCapture::Install(RuntimeRun& run, RuntimeScenario& scenario
 void RuntimeExceptionCapture::Trap(RuntimeRun& run, RuntimeScenario& scenario,
                                    RuntimeDebugReason reason, const char* failureJson,
                                    EXCEPTION_POINTERS* exception) {
-  TView* activeModal =
-      g_ModalViewStack.IsEmpty() ? 0 : g_ModalViewStack.GetHead();
+  TView* activeModal = g_ModalViewStack.IsEmpty() ? 0 : g_ModalViewStack.GetHead();
   RuntimeDebugRecord record;
   record.reason = reason;
   record.elapsedMs = run.ElapsedMs();
   record.testName = run.TestName();
   record.phase = run.PhaseName();
   record.lastAction = run.LastAction();
-  record.turnEvent = g_pUiRuntimeContext != 0 ? g_pUiRuntimeContext->currentTurnEventCode : -1;
+  record.turnEvent = g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1;
   record.modalDepth = g_ModalViewStack.GetCount();
   record.mainView = RuntimeMainView();
   record.activeModal = activeModal;

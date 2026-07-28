@@ -194,7 +194,7 @@ TMacViewMgr::~TMacViewMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00509f20
 void TMacViewMgr::IMacViewMgr() {
-  g_pUiViewManager->OpenFilesFor(3);
+  g_pAssetMgr->OpenFilesFor(3);
   BuildStrategicMapCommodityIconAtlasFrom700To722();
   LoadStrategicMapUnitIconAtlas750();
   LoadStrategicMapUnitOverlayAtlas751();
@@ -240,7 +240,7 @@ void TMacViewMgr::Free() {
     g_pDisplayMgr->RemoveGWorld(atlas694[index]);
     ++index;
   }
-  g_pStrategicMapViewSystem = 0;
+  g_pMacViewMgr = 0;
   delete this;
 }
 
@@ -350,7 +350,7 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
     return;
   }
-  if (this == 0 || g_pCityOrderCapabilityState == 0) {
+  if (this == 0 || g_pTechMgr == 0) {
     return;
   }
   if (atlas68c != 0) {
@@ -363,11 +363,11 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   if (nationId < 0) {
     return;
   }
-  g_pUiViewManager->OpenFilesFor(3);
+  g_pAssetMgr->OpenFilesFor(3);
   nationId = g_pSimMgr->GetActiveNationId();
-  variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
+  variant = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
   nationId = g_pSimMgr->GetActiveNationId();
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[0x18] != 0) {
+  if (g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[0x18] != 0) {
     variant = 2;
   }
   nationId = g_pSimMgr->GetActiveNationId();
@@ -616,7 +616,7 @@ void TMacViewMgr::BuildStrategicMapRenderAtlasesAndTileMaskCaches() {
 
 // FUNCTION: IMPERIALISM 0x0050b5b0
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
-  g_pUiViewManager->OpenFilesFor(3);
+  g_pAssetMgr->OpenFilesFor(3);
   if (atlas6b8 != 0) {
     g_pDisplayMgr->RemoveGWorld(atlas6b8);
   }
@@ -652,7 +652,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   pixelBase = GetPixBaseAddr(surfaceObject);
   strideBytes = static_cast<ushort>((*surfaceObject)->stride) & 0x3fff;
   SetQuickDrawStrokeColor(0xffffff);
-  g_pUiRuntimeContext->SetForeColor(0x32);
+  g_pViewMgr->SetForeColor(0x32);
   FillRectWithQuickDrawBrushAndContextOffset(&fillRect);
   colOffset = 0;
   tileIndex = 0;
@@ -662,8 +662,8 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
       if (terrainCode == 0) {
         terrainCode = 0x3e;
       }
-      paletteByte = static_cast<unsigned char>(
-          g_pUiRuntimeContext->GetColor(static_cast<short>(terrainCode)));
+      paletteByte =
+          static_cast<unsigned char>(g_pViewMgr->GetColor(static_cast<short>(terrainCode)));
       pixelBase[colOffset] = paletteByte;
       pixelBase[colOffset + 1] = paletteByte;
       pixelBase[strideBytes + colOffset] = paletteByte;
@@ -837,7 +837,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   TSellOrderRowControl* row = static_cast<TSellOrderRowControl*>(view);
   view->DoPostCreate(0);
   row->orderSlot88 = orderSlot;
-  if (g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
+  if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
     view->SetEnabled(0, 0);
   }
@@ -1253,7 +1253,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
 // FUNCTION: IMPERIALISM 0x0050d310
 void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
   TView* dialog = activeCityProductionView04;
-  g_pUiRuntimeContext->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
+  g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventCitySiteSelector), 0);
   short completionFlag = static_cast<short>(dialog->lastIdleTick);
   while (completionFlag == 0) {
     PumpUiMessagesAndBackgroundTasks(1);
@@ -1266,7 +1266,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
                                                unsigned char closeAfterOpen,
                                                unsigned char isEmbeddedPage,
                                                TCityProductionView* productionView) {
-  TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
@@ -1292,7 +1292,7 @@ TBuildingView* TMacViewMgr::OpenBuildingWindow(short buildingSlot, TCity* city,
 TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
     short buildingSlot, TCity* city, unsigned char closeAfterOpen, unsigned char isEmbeddedPage,
     TCityProductionView* productionView, short savedX, short savedY) {
-  TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
+  TWindow* dialog = g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(
       static_cast<TurnEventId>(buildingSlot + kTurnEventTextileMill));
   TBuildingView* buildingView =
       static_cast<TBuildingView*>(dialog->ResolveControlByTag(kControlTagDialog));
@@ -1320,7 +1320,7 @@ TBuildingView* TMacViewMgr::RestoreBuildingWindowAtSavedPosition(
 void TMacViewMgr::OpenConstructionWindow(short buildingSlot, TCity* city,
                                          TCityProductionView* productionView) {
   TWindow* dialog =
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator);
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGenericCreator);
   TBuildingConstructionView* constructionView =
       static_cast<TBuildingConstructionView*>(dialog->ResolveControlByTag(kControlTagDialog));
   if (constructionView == 0) {

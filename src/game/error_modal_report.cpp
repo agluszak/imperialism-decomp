@@ -38,5 +38,5 @@ void FormatAndAssignTurnStateSharedTextFromTemplate(int codeA, int codeB, char* 
   message += " at ";
   message += compileTime;
 
-  g_pUiRuntimeContext->ModalMessage(message, g_ptFormattedErrorModalMessage);
+  g_pViewMgr->ModalMessage(message, g_ptFormattedErrorModalMessage);
 }

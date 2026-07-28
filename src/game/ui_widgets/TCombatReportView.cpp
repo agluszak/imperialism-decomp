@@ -266,7 +266,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       UpdatePaletteIndexWithDefaultFallback(0x13);
       RECT dividerSrcRect = {0, 0, 0xd9, 6};
       RECT dividerDstRect = {6, y + 2, 0xdf, y + 7};
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas684->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &dividerSrcRect, &dividerDstRect, 0, 0);
 
@@ -274,19 +274,19 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       // (magic-number /7 division reproduces the original's IMUL-based division).
       SetQuickDrawTextOriginWithContextOffset(7, static_cast<short>(y + 3));
       SetQuickDrawPenSizeAndMarkDirty(1, 4);
-      g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x34);
+      g_pViewMgr->ApplyLegendSplitSlot34(0x34);
       int guideX = (record->fieldAt18 * 3) / 7 + 7;
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX), static_cast<short>(y + 3));
-      g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x33);
+      g_pViewMgr->ApplyLegendSplitSlot34(0x33);
       DrawCenteredGuideLineOnMapDc(static_cast<short>(guideX - (record->fieldAt1c * 3) / 7),
                                    static_cast<short>(y + 3));
-      g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
+      g_pViewMgr->ApplyLegendSplitSlot34(0);
 
       // Unit icon strip.
       UpdatePaletteIndexWithDefaultFallback(0x10);
       RECT iconSrcRect = {0, 6, 0xac, 0x10};
       RECT iconDstRect = {6, y + 8, 0xb2, y + 0x12};
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas684->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &iconSrcRect, &iconDstRect, 0x24, 0);
 
@@ -295,7 +295,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
         int overlayRight = overlayWidth + 0x1f;
         RECT overlaySrcRect = {0, 0x12, overlayWidth, 0x17};
         RECT overlayDstRect = {0x1f, y + 0xb, overlayRight, y + 0x13};
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas684->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &overlaySrcRect, &overlayDstRect, 0x24, 0);
       }
@@ -303,7 +303,7 @@ void TCombatReportView::Draw(RECT* rectBuffer) {
       if (record->flagAt15 != 0) {
         RECT markerSrcRect = {0, 0x12, 5, 0x17};
         RECT markerDstRect = {0x7c, y + 0xb, 0x81, y + 0x13};
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas684->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas684->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &markerSrcRect, &markerDstRect, 0x24, 0);
       }

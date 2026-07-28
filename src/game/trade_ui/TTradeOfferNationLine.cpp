@@ -35,7 +35,7 @@ void TTradeOfferNationLine::InstallViews(TView* panel, int* offsetLayout) {
   view->categorySlot = categorySlot;
   view->nationSlot = nationSlot;
 
-  if (g_pNationInteractionStateManager->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId())) {
+  if (g_pTradeMgr->DidBidOn(categorySlot, g_pSimMgr->GetActiveNationId())) {
     LoadUiStringByGroupAndIndexToControlObject(0x2740, 3, view);
   }
 }

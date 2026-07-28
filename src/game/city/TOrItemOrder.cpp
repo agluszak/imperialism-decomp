@@ -116,6 +116,6 @@ bool TOrItemOrder::SetQuantity(short quantity) {
   reservedWorkforce = static_cast<short>(reservedWorkforce + workforceChange);
   ownerCity->productionAccum1fc[productionSlot] =
       static_cast<short>(ownerCity->productionAccum1fc[productionSlot] - delta);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }

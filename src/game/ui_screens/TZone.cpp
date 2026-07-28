@@ -776,8 +776,8 @@ void TZone::SetMapOrderUiFlag(bool flag) {
       g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionState16;
   if (((static_cast<unsigned char>(flag) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) >= 0 ? 1 : 0)) &&
-       (g_pUiRuntimeContext != 0)) &&
-      (g_pUiRuntimeContext->mapUberPictureF0 != 0)) {
+       (g_pViewMgr != 0)) &&
+      (g_pViewMgr->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
     if (QueryPortZoneCapability() != 0) {
       SetMapTileStateByteAndNotifyObserver(

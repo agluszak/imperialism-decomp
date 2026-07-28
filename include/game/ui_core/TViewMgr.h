@@ -48,7 +48,7 @@ public:
                                                      POINT* outPlacement); // slot 0x11 0x5d69b0
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
 
-  // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
+  // Extended UI-runtime virtuals (same object as g_pViewMgr @ 0x006A21BC).
   virtual void DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload); // 0x4c
   virtual void SetCursorRangeAndRefreshMainPanel(int payload);                 // 0x50
   virtual short GetPendingTurnOverlayCode();                                   // 0x54
@@ -88,9 +88,9 @@ public:
   virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
   virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
-  // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
+  // Forwards to g_pMacViewMgr's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
-  // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
+  // `mov ecx,[g_pMacViewMgr]; mov eax,[ecx]; jmp [eax+0xNN]`, no
   // wrapping logic). Real orig names embed the target slot's byte offset. bd
   // imperialism-decomp-kdm.
   virtual void RefreshCityProductionUi();                     // 0xac 0x5d7f70
@@ -266,7 +266,7 @@ public:
 
   // Screen-exit backbone: stash the followup turn state in fieldF8; on state 0,
   // re-apply volume preferences and post the followup turn-event code (0x5dc menu /
-  // 0x7e0 / 0x5eb) via g_pGlobalUiRootController->PostTurnEventCodeMessage2420.
+  // 0x7e0 / 0x5eb) via g_pAmbitApplication->PostTurnEventCodeMessage2420.
   void HandleTurnStateExitAndPostFollowupEventCode(short followupState); // 0x5db620
 };
 

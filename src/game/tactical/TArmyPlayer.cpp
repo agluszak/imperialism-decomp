@@ -276,9 +276,8 @@ void TArmyPlayer::StartBattle() {
     int opposingNationIndex = opponent->nationIndex1C;
 
     // Battle-intro ("hola") dialog, id 0xf19.
-    TWindow* dialog =
-        static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-            kTurnEventTacticalDeployChoice));
+    TWindow* dialog = static_cast<TWindow*>(
+        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalDeployChoice));
     if (dialog == 0) {
       FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
     }
@@ -1906,7 +1905,7 @@ unsigned char TArmyPlayer::SwitchToAutoPlay() {
   if (notWatchedFlagE != 0) {
     CString message;
     g_pSimMgr->GetString(0x273d, 0, &message);
-    return g_pUiRuntimeContext->ModalMessage(message, g_ptTacticalAutoPlayModalMessage, 1, 1);
+    return g_pViewMgr->ModalMessage(message, g_ptTacticalAutoPlayModalMessage, 1, 1);
   }
   return 1;
 }

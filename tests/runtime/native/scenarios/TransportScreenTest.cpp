@@ -71,7 +71,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before opening transport\"");
       return;
@@ -88,7 +88,7 @@ private:
 
   void WaitForTransportScreen() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventTransport || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport || mainView == 0 ||
         mainView->ResolveControlByTag(kControlTagTitL) == 0) {
       WaitForScenarioTick("\"transport toolbar action did not activate the transport ledger\"");
       return;
@@ -182,7 +182,7 @@ private:
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"transport back control did not restore the strategic map\"");
       return;

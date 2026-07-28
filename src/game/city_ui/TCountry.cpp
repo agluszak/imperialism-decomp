@@ -330,7 +330,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     const TTechMgr::MilitaryCapRow& capabilityRow =
-        g_pCityOrderCapabilityState->abilityActiveRows395[this->nationSlot];
+        g_pTechMgr->abilityActiveRows395[this->nationSlot];
     if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
     } else {

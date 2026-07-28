@@ -32,7 +32,7 @@ int ComputeBestNationTileDevelopmentScore(NationSlot nationSlot) {
     short regionId = static_cast<short>(ownedRegions->At(regionOrdinal));
     Province* region = &g_pGlobalMapState->cityScoreTable[regionId];
 
-    if (region->fortLevel03 < g_pCityOrderCapabilityState->GetNationFortLevelCap(nationSlot)) {
+    if (region->fortLevel03 < g_pTechMgr->GetNationFortLevelCap(nationSlot)) {
       float developmentPressure = averageUnitDivergence;
       if (IsMapTileCompatibleWithCurrentTerrainOrActionContext(regionId)) {
         developmentPressure =

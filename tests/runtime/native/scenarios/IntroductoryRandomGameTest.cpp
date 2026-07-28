@@ -80,7 +80,7 @@ public:
 
     TGreatPower* nation = g_apNationStates[g_pSimMgr->activeNationSlot];
     TCivUnit* civilian = static_cast<TCivUnit*>(nation->trackedObjectList->GetEntryByOrdinal(1));
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     if (mapView == 0 || mapView->categoryPages[0] == 0) {
       FailScenario("\"Introductory map has no civilian toolbar page\"");
       return;

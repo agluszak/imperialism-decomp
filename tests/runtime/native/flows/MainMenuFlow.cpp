@@ -18,7 +18,7 @@ MainMenuFlow::MainMenuFlow() : phase(kComplete), checkpoint(kRuntimeNoCheckpoint
 void MainMenuFlow::Start(RuntimeScenario& scenario) {
   checkpoint = kRuntimeNoCheckpoint;
   phase = kWaitingForMainMenu;
-  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  g_pAmbitApplication->PostTurnEventCodeMessage2420(0x5dc);
   scenario.EnterFlowPhase("waiting_for_main_menu", "post_turn_event_0x05dc");
   scenario.RequestScenarioTick();
 }
@@ -26,7 +26,7 @@ void MainMenuFlow::Start(RuntimeScenario& scenario) {
 RuntimeFlowStatus MainMenuFlow::Tick(RuntimeScenario& scenario) {
   if (phase == kWaitingForMainMenu) {
     TView* mainView = scenario.CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != 0x5dc ||
+    if (g_pViewMgr->currentTurnEventCode != 0x5dc ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
       scenario.WaitForScenarioTick("\"main menu did not become active\"");
       return kRuntimeFlowRunning;

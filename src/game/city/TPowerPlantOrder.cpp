@@ -61,7 +61,7 @@ bool TPowerPlantOrder::SetQuantity(short quantity) {
   ownerCity->productionSummary1d8->extraAt1e = quantity;
   ownerCity->productionSummary1d8->strength =
       static_cast<short>(ownerCity->productionSummary1d8->strength + quantity - previousPower);
-  g_pUiRuntimeContext->RefreshCityProductionUi();
+  g_pViewMgr->RefreshCityProductionUi();
   return true;
 }
 

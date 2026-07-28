@@ -1093,8 +1093,8 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 
     if (propagatedTransition == 0) {
       TNextTradeCommand* packet = new TNextTradeCommand();
-      InitializeNextTradeCommandForHandler(packet, kTurnEventTagNext, g_pGlobalUiRootController);
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(packet);
+      InitializeNextTradeCommandForHandler(packet, kTurnEventTagNext, g_pAmbitApplication);
+      g_pAmbitApplication->DispatchUiSelectionToHandler(packet);
     }
   } else {
     bool isMultiplayerHost = (g_pSimMgr->multiplayerSessionRole == 1);

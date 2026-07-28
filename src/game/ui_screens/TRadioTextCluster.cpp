@@ -120,7 +120,7 @@ void TRadioTextCluster::Draw(RECT* rectBuffer) {
   (void)rectBuffer;
   if (frameThemeCode90 > -1) {
     RECT frame = {0, 0, frameWidth34, frameHeight38};
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(frameThemeCode90);
+    g_pViewMgr->ApplyLegendSplitSlot34(frameThemeCode90);
     QDFrameRect(&frame);
     SetQuickDrawFillColor(0);
   }

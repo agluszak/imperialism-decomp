@@ -70,7 +70,7 @@ void TBuildingView::Close() {
   if (isEmbeddedPage9C) {
     productionView98->buildingViewsAC[embeddedPageIndex9E] = 0;
   } else {
-    g_pUiRuntimeContext->ClearActiveCityBuildingViewSlot(embeddedPageIndex9E);
+    g_pViewMgr->ClearActiveCityBuildingViewSlot(embeddedPageIndex9E);
   }
   TView::Close();
 }

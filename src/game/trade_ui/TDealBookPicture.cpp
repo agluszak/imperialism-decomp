@@ -292,8 +292,7 @@ void TDealBookPicture::CalculatePages() {
   TDealTabControl* tabs =
       static_cast<TDealTabControl*>(ResolveControlByTag(kControlTagTabs)); // 'tabs'
   tabs->AssertValid();
-  tabs->Setup(0x2266,
-              g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
+  tabs->Setup(0x2266, g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]);
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
@@ -304,8 +303,7 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     // pointer arithmetic still lands on the correct address either way since C++ doesn't
     // bounds-check here, matching the original's raw displacement + computed offset.
     int categoryTableIndex =
-        commandId +
-        g_pCityOrderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
+        commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
     short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
     if (categorySlot != -1) {
       sellPageView->RebuildNationOfferRowsForCategory(categorySlot);

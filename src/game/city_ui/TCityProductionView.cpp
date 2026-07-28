@@ -87,7 +87,7 @@ TCityProductionView::~TCityProductionView() {}
 // FUNCTION: IMPERIALISM 0x004ba3b0
 void TCityProductionView::DoPostCreate(int arg) {
   TPicture::DoPostCreate(arg);
-  g_pGlobalUiRootController->cursorRegionInvalid = 1;
+  g_pAmbitApplication->cursorRegionInvalid = 1;
 
   // Per building slot: build a mouse clip region from the slot bitmap's outline polygon.
   for (int slot = 0; slot < 16; ++slot) {
@@ -150,7 +150,7 @@ void TCityProductionView::Free() {
   for (int i = 0; i < 16; ++i) {
     buildingClipRegionsEC[i] = DisposeRgn(buildingClipRegionsEC[i]);
   }
-  g_pGlobalUiRootController->cursorRegionInvalid = 0;
+  g_pAmbitApplication->cursorRegionInvalid = 0;
   TView::Free();
 }
 
@@ -341,7 +341,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   }
 
   ResetQuickDrawStrokeState();
-  g_pUiRuntimeContext->ApplyLegendSplitSlot34(1);
+  g_pViewMgr->ApplyLegendSplitSlot34(1);
   SetQuickDrawTextOriginWithContextOffset(originX, sVar2);
 
   short offset_x1 = g_Render_Nation_Header_Value_006961E0[currentMonthAtA8];
@@ -397,8 +397,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     bool technologyAvailable = true;
     if (restrictedSlot) {
       short activeNation = g_pSimMgr->GetActiveNationId();
-      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].techStatusByTechId[0x13] !=
-          2) {
+      if (g_pTechMgr->orderCapRows277[activeNation].techStatusByTechId[0x13] != 2) {
         technologyAvailable = false;
         available = false;
       }
@@ -497,8 +496,8 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
     short current;
     short accum;
     if (city->GetBuildingWindowState(slot, &current, &accum)) {
-      buildingViewsAC[slot] = g_pStrategicMapViewSystem->RestoreBuildingWindowAtSavedPosition(
-          slot, city, 0, 0, 0, current, accum);
+      buildingViewsAC[slot] =
+          g_pMacViewMgr->RestoreBuildingWindowAtSavedPosition(slot, city, 0, 0, 0, current, accum);
     }
   }
 
@@ -570,7 +569,7 @@ void TCityProductionView::InitializeCityProductionDialog(TCity* city, TView* dia
 
 // FUNCTION: IMPERIALISM 0x004bc0b0
 void TCityProductionView::UpdateUnits() {
-  g_pUiRuntimeContext->RefreshMainViewNationIndicatorForCurrentTurnEvent();
+  g_pViewMgr->RefreshMainViewNationIndicatorForCurrentTurnEvent();
   TPopulationMgr* population = city94->productionSummary1d8;
 
   TPlacard* placard = static_cast<TPlacard*>(ResolveControlByTag(kControlTagUntr)); // 'rtnu'
@@ -655,8 +654,7 @@ void TCityProductionView::UpdateToolbar() {
 // FUNCTION: IMPERIALISM 0x004bc610
 void TCityProductionView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 10000) {
-    g_pStrategicMapViewSystem->OpenConstructionWindow(static_cast<short>(commandId - 10000), city94,
-                                                      this);
+    g_pMacViewMgr->OpenConstructionWindow(static_cast<short>(commandId - 10000), city94, this);
     return;
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -707,7 +705,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 
   if (buildingSlot == 15 && buildingViewsAC[15] == 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0xbdb, 0, 1);
-    buildingViewsAC[15] = g_pStrategicMapViewSystem->OpenBuildingWindow(15, city94, 0, 0, 0);
+    buildingViewsAC[15] = g_pMacViewMgr->OpenBuildingWindow(15, city94, 0, 0, 0);
     UpdateToolbar();
     return;
   }
@@ -717,8 +715,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
       bool available = true;
       if (buildingSlot == 6 || buildingSlot == 11) {
         short nationId = g_pSimMgr->GetActiveNationId();
-        available =
-            g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[19] == 2;
+        available = g_pTechMgr->orderCapRows277[nationId].techStatusByTechId[19] == 2;
       }
       if (available) {
         TrackMouse(kTrackPhaseEnd, localPoint, localPoint, localPoint, 0);
@@ -730,7 +727,7 @@ void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
     g_pSfxPlaybackSystem->PlaySoundEffect(
         static_cast<short>(g_cityBuildingSoundCueOffsets[buildingSlot] + 3000), 0, 1);
     buildingViewsAC[buildingSlot] =
-        g_pStrategicMapViewSystem->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
+        g_pMacViewMgr->OpenBuildingWindow(buildingSlot, city94, 0, 0, 0);
   }
   UpdateToolbar();
 }

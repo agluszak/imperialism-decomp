@@ -123,7 +123,7 @@ private:
       return;
     }
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
       WaitForScenarioTick("\"combined map was not idle before opening the city screen\"");
       return;
@@ -145,7 +145,7 @@ private:
 
   void WaitForCityScreen() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
       WaitForScenarioTick("\"city toolbar action did not activate the city production view\"");
       return;
@@ -191,7 +191,7 @@ private:
 
   void ActivateBuilding() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
       FailScenario("\"city production view disappeared before building activation\"");
       return;
@@ -287,18 +287,14 @@ private:
 
       short unitType = order->resourceTypeIndex;
       if (g_awTacticalUnitCategoryCodeBySlot[unitType] != category + 1 ||
-          g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[category + 1] !=
-              unitType ||
-          g_pCityOrderCapabilityState->abilityActiveRows395[nationSlot]
-                  .abilityActiveById[unitType] == 0) {
+          g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1] != unitType ||
+          g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType] == 0) {
         CString failure;
-        failure.Format(
-            "\"armory row %d profile mismatch: type=%d category=%d selected=%d "
-            "active=%d\"",
-            category, unitType, g_awTacticalUnitCategoryCodeBySlot[unitType],
-            g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[category + 1],
-            g_pCityOrderCapabilityState->abilityActiveRows395[nationSlot]
-                .abilityActiveById[unitType]);
+        failure.Format("\"armory row %d profile mismatch: type=%d category=%d selected=%d "
+                       "active=%d\"",
+                       category, unitType, g_awTacticalUnitCategoryCodeBySlot[unitType],
+                       g_pTechMgr->nationCapRows1e8[nationSlot].slots[category + 1],
+                       g_pTechMgr->abilityActiveRows395[nationSlot].abilityActiveById[unitType]);
         FailScenario(failure);
         return false;
       }
@@ -499,7 +495,7 @@ private:
 
   TBuildingView* ActiveBuildingView() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
       return 0;
     }
@@ -815,7 +811,7 @@ private:
 
   void WaitForBuilding() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
       FailScenario("\"city production view disappeared after building activation\"");
       return;
@@ -921,7 +917,7 @@ private:
 
   void WaitForBuildingClose() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
       FailScenario("\"city production view disappeared while closing a building window\"");
       return;
@@ -1004,7 +1000,7 @@ private:
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
-    if (g_pUiRuntimeContext->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"city back control did not restore the strategic map\"");
       return;

@@ -59,7 +59,7 @@ void TMinisterView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     if (tag == kControlTagOkay) {
       CloseBooks();
       TWindow* owner = GetWindow();
-      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      g_pAmbitApplication->CloseAndFreeWindow(owner);
       return;
     }
     if (tag == kControlTagBack) {
@@ -78,7 +78,7 @@ void TMinisterView::CloseBooks() {
 // FUNCTION: IMPERIALISM 0x004f2ec0
 TView* TMinisterView::OpenBook(int bookId) {
   CloseBooks();
-  return g_pStrategicMapViewSystem->MakeBookDialog(bookId);
+  return g_pMacViewMgr->MakeBookDialog(bookId);
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ef0

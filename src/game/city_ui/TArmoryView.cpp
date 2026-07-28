@@ -45,7 +45,7 @@ TArmoryView::~TArmoryView() {}
 
 // FUNCTION: IMPERIALISM 0x004cee20
 void TArmoryView::DoStartup() {
-  productionView98 = g_pStrategicMapViewSystem->activeCityProductionView04;
+  productionView98 = g_pMacViewMgr->activeCityProductionView04;
 
   struct {
     TextStyle desc;
@@ -430,6 +430,6 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
 void TArmoryView::Free() {
   TView::Free();
   if (g_nSaveFormatVersion != kControlTagMoil) { // 'Moil'
-    g_pUiViewManager->CloseFilesFor(0x23f8);
+    g_pAssetMgr->CloseFilesFor(0x23f8);
   }
 }

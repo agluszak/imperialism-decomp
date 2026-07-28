@@ -79,8 +79,7 @@ void TNavyBoyView::Draw(RECT* rectBuffer) {
   RECT dstRect = {0x52, 0x1e, sVar2 * 4 + 0x51, 0x25};
 
   if (level > 0) {
-    TQuickDrawBlitSurface* iconStripSurface =
-        g_pStrategicMapViewSystem->atlas694[0]->GetBlitSurface();
+    TQuickDrawBlitSurface* iconStripSurface = g_pMacViewMgr->atlas694[0]->GetBlitSurface();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,

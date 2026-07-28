@@ -24,7 +24,7 @@ struct ResourcePriorityEntry {
 };
 
 static __inline bool HasAdvancedTradeResource(const TForeignMinister* minister) {
-  return g_pCityOrderCapabilityState->orderCapRows277[minister->ownerContextAt04->nationSlot]
+  return g_pTechMgr->orderCapRows277[minister->ownerContextAt04->nationSlot]
              .techStatusByTechId[0x13] == 2;
 }
 
@@ -54,7 +54,7 @@ static inline void PreparePersonalityTradeBids(TForeignMinister* minister) {
 static inline void AddSortedResourcePrice(TSortByPriceList* prices, short resourceCode) {
   ResourcePriorityEntry entry;
   entry.resourceCode = resourceCode;
-  entry.priority = g_pNationInteractionStateManager->GetPrice(resourceCode);
+  entry.priority = g_pTradeMgr->GetPrice(resourceCode);
   prices->InsertCopiedRecordSortedByComparator(&entry);
 }
 
@@ -66,7 +66,7 @@ static inline short GetSortedResourceCode(TSortByPriceList* prices, int oneBased
 
 static inline void SetTedStyleAdvancedResourceBid(TForeignMinister* minister, short threshold) {
   TGreatPower* owner = minister->ownerContextAt04;
-  if (g_pNationInteractionStateManager->GetPrice(0x10) > threshold &&
+  if (g_pTradeMgr->GetPrice(0x10) > threshold &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     short available = owner->GetStockpile(kResourceArms);
     short amount = static_cast<short>(available / 10);
@@ -169,12 +169,10 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       tradePartnerEnabled49[3] = 0;
     }
     if (capabilityFlag16 >= arg2) {
-      g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 3, 0,
-                                                       0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 3, 0, 0);
       capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
     } else {
-      g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, capabilityFlag16,
-                                                       arg3, 3, 1, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, capabilityFlag16, arg3, 3, 1, 0);
       capabilityFlag16 = 0;
     }
     return;
@@ -187,8 +185,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
         available >= arg2
             ? arg2
             : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-    g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
-                                                     resourceCode, 0, 0);
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
     return;
   }
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
@@ -199,8 +196,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     if (available < amount) {
       amount = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
     }
-    g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
-                                                     resourceCode, 0, 0);
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
   }
 }
 
@@ -339,8 +335,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   short available;
   short amount;
   if (resourceCode == kResourceTimber) {
-    if (g_pNationInteractionStateManager->GetPrice(3) >= 105 &&
-        g_pNationInteractionStateManager->GetPrice(4) >= 105) {
+    if (g_pTradeMgr->GetPrice(3) >= 105 && g_pTradeMgr->GetPrice(4) >= 105) {
       if (tradePartnerEnabled49[2] != 0) {
         capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
         if (capabilityFlag16 < 2) {
@@ -351,22 +346,19 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       available = owner->GetAvailableMerchantCapacity();
       amount = MinShort(capabilityFlag16, available);
       if (amount >= arg2) {
-        g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 2, 0,
-                                                         0);
+        g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 2, 0, 0);
         capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
         if (capabilityFlag16 < 0) {
           capabilityFlag16 = 0;
         }
       } else {
-        g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2,
-                                                         1, 0);
+        g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2, 1, 0);
         capabilityFlag16 = 0;
       }
     } else {
       available = owner->GetAvailableMerchantCapacity();
       amount = available >= arg2 ? arg2 : owner->GetAvailableMerchantCapacity();
-      g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2, 0,
-                                                       0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2, 0, 0);
     }
     return;
   }
@@ -375,16 +367,15 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
       tradePartnerEnabled49[3] = 0;
     }
-    amount = g_pNationInteractionStateManager->GetPrice(4) < 105 ? arg2 : capabilityFlag16;
+    amount = g_pTradeMgr->GetPrice(4) < 105 ? arg2 : capabilityFlag16;
     amount = MinShort(amount, arg2);
     available = owner->GetAvailableMerchantCapacity();
     if (available >= amount) {
-      g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3, 3, 0,
-                                                       0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 3, 0, 0);
       capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
     } else {
-      g_pNationInteractionStateManager->SetDealResults(
-          owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(), arg3, 3, 1, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(),
+                                  arg3, 3, 1, 0);
       capabilityFlag16 = 0;
     }
     return;
@@ -392,15 +383,13 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (resourceCode == kResourceIron || resourceCode == kResourceOil) {
     available = owner->GetAvailableMerchantCapacity();
     if (available >= arg2) {
-      g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3,
-                                                       resourceCode, 0, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
       if (resourceCode == kResourceIron) {
         capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
       }
     } else {
-      g_pNationInteractionStateManager->SetDealResults(
-          owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(), arg3, resourceCode,
-          resourceCode == kResourceIron, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(),
+                                  arg3, resourceCode, resourceCode == kResourceIron, 0);
       if (resourceCode == kResourceIron) {
         capabilityFlag16 = 0;
       }
@@ -520,10 +509,8 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
   bool hasTradeCandidate = false;
   for (short nationSlot = 7; nationSlot <= 0x16 && !hasTradeCandidate; ++nationSlot) {
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 &&
-        (g_pNationInteractionStateManager->categoryRows[3].tradeOfferCells[nationSlot + 0x2e] !=
-             0 ||
-         g_pNationInteractionStateManager->categoryRows[4].tradeOfferCells[nationSlot + 0x2e] !=
-             0)) {
+        (g_pTradeMgr->categoryRows[3].tradeOfferCells[nationSlot + 0x2e] != 0 ||
+         g_pTradeMgr->categoryRows[4].tradeOfferCells[nationSlot + 0x2e] != 0)) {
       hasTradeCandidate = true;
     }
   }
@@ -540,10 +527,7 @@ void TDiplomatForeignMinister::SetBuyPriorities() {
       preferredResourceSlots40[1] = 3;
       preferredResourceSlots40[2] = 4;
     }
-    preferredResourceSlots40[3] = g_pNationInteractionStateManager->GetPrice(0) >
-                                          g_pNationInteractionStateManager->GetPrice(1)
-                                      ? 0
-                                      : 1;
+    preferredResourceSlots40[3] = g_pTradeMgr->GetPrice(0) > g_pTradeMgr->GetPrice(1) ? 0 : 1;
   } else {
     if (ownerContextAt04->GetStockpile(kResourceCotton) <
         ownerContextAt04->GetStockpile(kResourceWool)) {
@@ -591,8 +575,7 @@ void TDiplomatForeignMinister::SetTradeBids() {
     ++iteration;
   }
   prices->ReleasePtrList();
-  if (g_pNationInteractionStateManager->GetPrice(0x10) > 1200 &&
-      owner->GetStockpile(kResourceArms) > 6 &&
+  if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     owner->SetItemPotentials(kResourceArms, 2);
   }
@@ -610,8 +593,7 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short a
   amount = MinShort(
       amount, static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)));
   amount = MinShort(amount, arg2);
-  g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
-                                                   resourceCode, 0, 0);
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533050
@@ -666,15 +648,14 @@ void TTextileForeignMinister::SetTradeBids() {
   TGreatPower* owner = ownerContextAt04;
   short textileAmount = owner->GetStockpile(kResourceClothing);
   if (owner->treasuryValue10 < 0 || textileAmount >= merchantCapacity ||
-      (textileAmount > 4 && g_pNationInteractionStateManager->GetPrice(0x0d) > 1000)) {
+      (textileAmount > 4 && g_pTradeMgr->GetPrice(0x0d) > 1000)) {
     owner->SetItemPotentials(kResourceClothing, MinShort(textileAmount, merchantCapacity));
   }
   if (owner->treasuryValue10 < 0 || owner->GetTradeOffersFor(kResourceClothing) == 0) {
     short budget = static_cast<short>(merchantCapacity / 2);
     short firstResource = 0x0e;
     short secondResource = 0x0f;
-    if (g_pNationInteractionStateManager->GetPrice(0x0f) >
-        g_pNationInteractionStateManager->GetPrice(0x0e)) {
+    if (g_pTradeMgr->GetPrice(0x0f) > g_pTradeMgr->GetPrice(0x0e)) {
       firstResource = 0x0f;
       secondResource = 0x0e;
     }
@@ -701,8 +682,7 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
       available >= arg2
           ? arg2
           : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
-                                                   resourceCode, 0, 0);
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533780
@@ -743,7 +723,7 @@ void TTraderForeignMinister::SetBuyPriorities() {
   for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;
     entry.resourceCode = resourceCode;
-    entry.priority = g_pNationInteractionStateManager->GetPrice(resourceCode);
+    entry.priority = g_pTradeMgr->GetPrice(resourceCode);
     if (resourceCode == kResourceCoal || resourceCode == kResourceIron) {
       entry.priority = static_cast<short>(entry.priority - 15);
     }
@@ -752,7 +732,7 @@ void TTraderForeignMinister::SetBuyPriorities() {
   if (HasAdvancedTradeResource(this)) {
     ResourcePriorityEntry entry;
     entry.resourceCode = 6;
-    entry.priority = static_cast<short>(g_pNationInteractionStateManager->GetPrice(6) - 15);
+    entry.priority = static_cast<short>(g_pTradeMgr->GetPrice(6) - 15);
     priorities->InsertCopiedRecordSortedByComparator(&entry);
   }
   for (int i = 0; i < 4; ++i) {
@@ -785,8 +765,7 @@ void TTraderForeignMinister::SetTradeBids() {
     --selectedOrdinal;
   }
   prices->ReleasePtrList();
-  if (g_pNationInteractionStateManager->GetPrice(0x10) > 1200 &&
-      owner->GetStockpile(kResourceArms) > 6 &&
+  if (g_pTradeMgr->GetPrice(0x10) > 1200 && owner->GetStockpile(kResourceArms) > 6 &&
       g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(owner->nationSlot) == 0) {
     owner->SetItemPotentials(kResourceArms, 2);
   }
@@ -806,8 +785,8 @@ void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg
       available >= arg2
           ? arg2
           : static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
-  g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, amount, arg3,
-                                                   resourceCode, available < arg2, 0);
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, available < arg2,
+                              0);
 }
 
 // FUNCTION: IMPERIALISM 0x00533e90
@@ -943,12 +922,11 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
     capabilityFlag16 = owner->GetAvailableMerchantCapacity();
   }
   if (capabilityFlag16 >= arg2) {
-    g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, arg2, arg3,
-                                                     resourceCode, 0, 0);
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
     capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
   } else {
-    g_pNationInteractionStateManager->SetDealResults(owner->nationSlot, arg1, capabilityFlag16,
-                                                     arg3, resourceCode, 1, 0);
+    g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, capabilityFlag16, arg3, resourceCode, 1,
+                                0);
     capabilityFlag16 = 0;
   }
 }

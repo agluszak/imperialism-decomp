@@ -1123,7 +1123,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
   if (static_cast<short>(bestTileIndex) == -1) {
     CString message;
     g_pSimMgr->GetString(0x2737, 0x35, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_ptCityInteriorMinisterModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(message, g_ptCityInteriorMinisterModalMessage, 2, 0);
   }
   return static_cast<short>(bestTileIndex);
 }
@@ -1343,7 +1343,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
   short nationSlot = ownerContextAt04->nationSlot;
   for (CivilianUnitKindStorage unitKindStorage = EncodeCivilianUnitKind(kCivilianUnitDriller);
        unitKindStorage >= EncodeCivilianUnitKind(kCivilianUnitMiner); --unitKindStorage) {
-    if (g_pCityOrderCapabilityState->universityRecruitmentAvailabilityByNation467[nationSlot]
+    if (g_pTechMgr->universityRecruitmentAvailabilityByNation467[nationSlot]
                 .availableByCategory[unitKindStorage] != 0 &&
         !hasOrderType[unitKindStorage]) {
       bool needed = false;
@@ -1432,8 +1432,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   resourceWeights[2] = orderTypeTable12A[2];
   resourceWeights[3] = orderTypeTable12A[3] + 5;
   resourceWeights[4] = orderTypeTable12A[4] + 5;
-  bool hasOilProspecting =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+  bool hasOilProspecting = g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
   if (hasOilProspecting) {
     resourceWeights[6] = orderTypeTable12A[6] + 10;
   }
@@ -1807,11 +1806,11 @@ char* TCityInteriorMinister::CreateSeaDistanceMap(TShortintList* ownedTiles) {
   allowedTerrain[kStrategicTerrainPlains] = 1;
   allowedTerrain[kStrategicTerrainForest] = 1;
   allowedTerrain[kStrategicTerrainHills] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[12] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[12] == 2;
   allowedTerrain[kStrategicTerrainMountain] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[23] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[23] == 2;
   allowedTerrain[kStrategicTerrainSwamp] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[6] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[6] == 2;
   allowedTerrain[kStrategicTerrainWater] = 0;
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
@@ -1872,11 +1871,11 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
   allowedTerrain[kStrategicTerrainPlains] = 1;
   allowedTerrain[kStrategicTerrainForest] = 1;
   allowedTerrain[kStrategicTerrainHills] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[11] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[11] == 2;
   allowedTerrain[kStrategicTerrainMountain] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
   allowedTerrain[kStrategicTerrainSwamp] =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[5] == 2;
+      g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[5] == 2;
   allowedTerrain[kStrategicTerrainWater] = 0;
   allowedTerrain[kStrategicTerrainDesert] = 1;
   allowedTerrain[kStrategicTerrainFarmland] = 1;
@@ -2156,8 +2155,7 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations() {
 void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
   TCity* city = ownerContextAt04->city;
   short nationSlot = ownerContextAt04->nationSlot;
-  bool hasOilTechnology =
-      g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
+  bool hasOilTechnology = g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2;
 
   if (orderMetricTable40[0x33] != 0) {
     UpdateMinisterProductionMetricsForResourceIndex(0x33);
@@ -2306,7 +2304,7 @@ void TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle(
   }
 
   short nationSlot = ownerContextAt04->nationSlot;
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] == 2) {
+  if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] == 2) {
     UpdateMinisterProductionMetricsForResourceIndex(12);
   }
   UpdateMinisterProductionMetricsForResourceIndex(7);
@@ -2428,7 +2426,7 @@ short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short target
   short currentLabor = city->productionSummary1d8->strength;
   if (currentLabor < targetLabor) {
     short nationSlot = ownerContextAt04->nationSlot;
-    if (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[19] != 2) {
+    if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] != 2) {
       return currentLabor;
     }
     TProductionOrder* powerPlantOrder = static_cast<TProductionOrder*>(city->orderSlotsE4[0x34]);

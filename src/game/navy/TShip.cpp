@@ -202,7 +202,7 @@ void TShip::SetLocation(TZone* zone) {
 
 // FUNCTION: IMPERIALISM 0x0054fd50
 void RecomputeGlobalCapabilityAverages(void) {
-  if (g_pCityOrderCapabilityState == 0) {
+  if (g_pTechMgr == 0) {
     return;
   }
   g_aCategoryMetricBaselineAverage[0] = 0;
@@ -223,7 +223,7 @@ void RecomputeGlobalCapabilityAverages(void) {
     // pad02) for > 0, while the case-0 blend reads resolveWeight as a word -- the
     // usual dual-width read (heuristic 118), kept as a one-spot wide-read cast.
     if (0 < g_NavyOrderResourceDescriptorTable[i].resolveWeightDword &&
-        g_pCityOrderCapabilityState->resourceTypeEnabled19d[type] != 0) {
+        g_pTechMgr->resourceTypeEnabled19d[type] != 0) {
       ++enabledCount;
       int category;
       for (category = 0; category < 4; ++category) {

@@ -307,7 +307,7 @@ char TBattleReportView::DoIdle(int action) {
       spriteRect.bottom = 0x12;
 
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+      BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
                                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                        &spriteRect, &markerRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -334,8 +334,8 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       return;
     }
     if (tag == IMPERIALISM_FOURCC('i', 'n', 'f', 'o')) {
-      TWindow* dialog = g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(
-          kTurnEventDetailedBattleReport);
+      TWindow* dialog =
+          g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventDetailedBattleReport);
       if (dialog == 0) {
         GAME_FAIL_NIL_POINTER();
         TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UBattleReportViews.cpp",
@@ -401,7 +401,7 @@ void TBattleReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
       LoadUiStringByGroupAndIndexToControlObject(0x2730, 0x22,
                                                  book->ResolveControlByTag(kControlTagOkay));
       CPoint placement;
-      g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+      g_pViewMgr->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
       dialog->Locate(placement, 0);
       TDialogBehavior* behavior = dialog->GetDialogBehavior();
       if (behavior != 0) {
@@ -499,7 +499,7 @@ void TBattleReportView::RenderMapContextActionMarkers(RECT* rectBuffer) {
         srcRect.bottom = 0x12;
 
         UpdatePaletteIndexWithDefaultFallback(0x10);
-        BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[3]->GetBlitSurface(),
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[3]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &srcRect, &destRect, 0x24, 0);
         UpdatePaletteIndexWithDefaultFallback(0x13);

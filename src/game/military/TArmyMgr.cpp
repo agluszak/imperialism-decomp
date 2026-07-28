@@ -326,7 +326,7 @@ void TArmyMgr::EndBattlePhase() {
   this->DoOwnershipChanges();
 
   if (this->needsTerrainRefreshFlag39a != 0) {
-    g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
+    g_pMacViewMgr->RebuildNationClipRegionsAndDispatchMapEvent();
     for (int i = 0; i < kTerrainTypeDescriptorTableCount; ++i) {
       if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
         g_apTerrainTypeDescriptorTable[i]->SetSerializedField8c(-1);
@@ -1218,7 +1218,7 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   CString formattedMessage;
   scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(currentAmountString), static_cast<LPCSTR>(costString));
-  g_pUiRuntimeContext->ModalMessage(formattedMessage, g_ptArmyOrderModalMessage, 2, 0);
+  g_pViewMgr->ModalMessage(formattedMessage, g_ptArmyOrderModalMessage, 2, 0);
   return false;
 }
 
@@ -1333,11 +1333,11 @@ void TArmyMgr::SetActiveProvinceSelection(short cityRecordIndex) {
         unit->SetOrders(kUnitOrderIdle, -1);
       }
     }
-    TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     static_cast<TArmyToolbar*>(mapView->categoryPages[mapView->activeUnitCategoryIndex96])
         ->SetProvince(cityRecordIndex);
   }
-  g_pUiRuntimeContext->mapUberPictureF0->InvalidateMap();
+  g_pViewMgr->mapUberPictureF0->InvalidateMap();
 }
 
 // FUNCTION: IMPERIALISM 0x004a46d0
@@ -1392,8 +1392,8 @@ bool TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short mode) 
   short cityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
   switch (cursorState) {
   case 2:
-    if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-      g_pUiRuntimeContext->mapUberPictureF0->SetMapInteractionMode(1);
+    if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+      g_pViewMgr->mapUberPictureF0->SetMapInteractionMode(1);
       this->SetActiveProvinceSelection(cityRecordIndex);
       handled = true;
     }
@@ -1420,7 +1420,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     return 6;
   }
   if (mode != 2) {
-    if (g_pUiRuntimeContext->mapUberPictureF0->HasActiveMapInteractionSelection() != 0) {
+    if (g_pViewMgr->mapUberPictureF0->HasActiveMapInteractionSelection() != 0) {
       return 0;
     }
     if (mode != 2 && rec->firstCivilianOrder20 != nullptr) {
@@ -1469,7 +1469,7 @@ bool TArmyMgr::HandleMapClickByCivilianCursorState(short tileIndex, short mode) 
     this->MarchSelectedArmies(tileIndex);
     return false;
   case 7:
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
+    g_pViewMgr->HandleTurnEventDialogFactorySlotEC(this->pendingMapActionIndex);
     return false;
   case 8:
     this->ShowSpyReport(cityRecordIndex);
@@ -1611,8 +1611,8 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     CString notAdjacentTitle;
     g_pSimMgr->GetString(0x2745, 4, &notAdjacentBody);
     g_pSimMgr->GetString(0x2745, 5, &notAdjacentTitle);
-    g_pUiRuntimeContext->ModalMessage(5, notAdjacentTitle, notAdjacentBody,
-                                      g_ptArmyValidationModalMessage, 1, 0);
+    g_pViewMgr->ModalMessage(5, notAdjacentTitle, notAdjacentBody, g_ptArmyValidationModalMessage,
+                             1, 0);
     return false;
   }
 
@@ -1621,8 +1621,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
     CString atWarTitle;
     g_pSimMgr->GetString(0x2745, 6, &atWarBody);
     g_pSimMgr->GetString(0x2745, 7, &atWarTitle);
-    g_pUiRuntimeContext->ModalMessage(5, atWarTitle, atWarBody, g_ptArmyValidationModalMessage, 1,
-                                      0);
+    g_pViewMgr->ModalMessage(5, atWarTitle, atWarBody, g_ptArmyValidationModalMessage, 1, 0);
     return false;
   }
 
@@ -1662,7 +1661,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
                              static_cast<LPCSTR>(reinforcementText),
                              static_cast<LPCSTR>(totalCostText));
     }
-    g_pUiRuntimeContext->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
+    g_pViewMgr->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
     return false;
   }
 
@@ -1676,9 +1675,9 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   g_pGlobalMapState->MarkAdjacentHexOrderDirectionAndSelectTile(this->pendingMapActionIndex,
                                                                 cityRecordIndex, 1);
 
-  if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+  if (g_pViewMgr->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
-    g_pUiRuntimeContext->mapUberPictureF0->NoticeTile(
+    g_pViewMgr->mapUberPictureF0->NoticeTile(
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
   }
   return true;
@@ -1712,8 +1711,7 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
     ++flagCursor;
   }
 
-  if (!g_pUiRuntimeContext->DispatchProvinceOrderOverlayConfirmDialog(cityRecordIndex,
-                                                                      categoryCounts)) {
+  if (!g_pViewMgr->DispatchProvinceOrderOverlayConfirmDialog(cityRecordIndex, categoryCounts)) {
     short activeNationId2 = g_pSimMgr->GetActiveNationId();
     bool sameOwner =
         g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00 == activeNationId2;
@@ -1749,8 +1747,8 @@ void TArmyMgr::MarchSelectedArmies(short tileIndex) {
         continue;
       }
       g_pGlobalMapState->terrainStateTable[nt].perTileVisitedFlag0f = 0;
-      if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
-        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTile(nt);
+      if (g_pViewMgr->mapUberPictureF0 != nullptr) {
+        g_pViewMgr->mapUberPictureF0->InvalidateTile(nt);
       }
     }
 
@@ -2088,12 +2086,12 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
   if (!this->GenerateSpyReport(cityRecordIndex, defenderSummary, garrisonSummary)) {
     CString noSummaryMessage;
     g_pSimMgr->GetString(0x2744, 8, &noSummaryMessage);
-    g_pUiRuntimeContext->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 1, 0);
+    g_pViewMgr->ModalMessage(noSummaryMessage, g_ptArmyValidationModalMessage, 1, 0);
     return;
   }
 
   TWindow* node = static_cast<TWindow*>(
-      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventEnemyFleetReport));
   if (node == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xa4d);
@@ -2346,7 +2344,7 @@ void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short z
   if (totalArms != capacity && totalArms - capacity > -1) {
     CString message;
     g_pSimMgr->GetString(0x2745, 10, &message);
-    g_pUiRuntimeContext->ModalMessage(message, g_ptArmyValidationModalMessage);
+    g_pViewMgr->ModalMessage(message, g_ptArmyValidationModalMessage);
     g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
   }
 }
@@ -2367,7 +2365,7 @@ void TArmyMgr::ClearNationArmyActionModesAndCycleSelection(int nationId) {
     }
   }
 
-  TMapUberPicture* mapView = g_pUiRuntimeContext->mapUberPictureF0;
+  TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
   if (mapView != 0 && !mapView->HasActiveMapInteractionSelection()) {
     mapView->CycleMapInteractionSelectionAfterHandledClick();
   }

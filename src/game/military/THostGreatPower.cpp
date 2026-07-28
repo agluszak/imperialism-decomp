@@ -67,7 +67,7 @@ void THostGreatPower::ReplyToDiplomacyOffers(void) {
     ++nationSlot;
   } while (nation < &g_apNationStates_End);
 
-  TViewMgr* uiRuntimeContext = g_pUiRuntimeContext;
+  TViewMgr* uiRuntimeContext = g_pViewMgr;
   short ownerNationSlot = this->nationSlot;
   uiRuntimeContext->MakeDiplomacyOfferDialog(ownerNationSlot, ownerNationSlot, 0x29a);
 }

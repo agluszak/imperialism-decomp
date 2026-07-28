@@ -286,7 +286,7 @@ void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerF
   int originX = (cornerFlags & 1) != 0 ? x + 0xf : x;
   int originY = (cornerFlags & 2) != 0 ? y + 0xd : y + 2;
 
-  g_pUiRuntimeContext->SetForeColor(colorCode);
+  g_pViewMgr->SetForeColor(colorCode);
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(originX), static_cast<short>(originY));
 
   int tipY = originY - stepY * 2;
@@ -438,7 +438,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   SetClip(savedClip.tempRgn);
 
-  g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
+  g_pViewMgr->ApplyLegendSplitSlot34(0x32);
   CRect clippedRect(*rectBuffer);
   FillRectWithQuickDrawBrushAndContextOffset(&clippedRect);
 
@@ -465,7 +465,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       }
 
       if (blankCell) {
-        g_pUiRuntimeContext->ApplyLegendSplitSlot34(0);
+        g_pViewMgr->ApplyLegendSplitSlot34(0);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
         continue;
       }
@@ -491,13 +491,13 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       TQuickDrawSurfaceContext* spriteAtlas;
       short spriteX;
       if (tile.tileActionState16 >= 2) {
-        spriteAtlas = g_pStrategicMapViewSystem->atlas68c;
+        spriteAtlas = g_pMacViewMgr->atlas68c;
         spriteX = static_cast<short>(tile.tileActionState16 << 4);
       } else if (tile.perTileVisitedFlag0f > 0) {
-        spriteAtlas = g_pStrategicMapViewSystem->atlas694[7];
+        spriteAtlas = g_pMacViewMgr->atlas694[7];
         spriteX = static_cast<short>((tile.perTileVisitedFlag0f - 1) << 4);
       } else {
-        spriteAtlas = g_pStrategicMapViewSystem->atlas688;
+        spriteAtlas = g_pMacViewMgr->atlas688;
         spriteX =
             g_pGlobalMapState->GetMapImprovementTileSpriteOffset(static_cast<short>(tileIndex));
       }
@@ -523,7 +523,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   }
 
   if (g_bDrawOceanRouteOverlay != 0 && g_pActiveMapOrderContext != 0) {
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3c);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x3c);
     int viewportColumnX2 = scrollColOffset7e * 2 + 1;
     for (int routeIndex = 0; routeIndex < g_pActiveMapOrderContext->routeNodeCount; ++routeIndex) {
       CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
@@ -643,7 +643,7 @@ void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int proj
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas688->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas688->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &destinationRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -679,7 +679,7 @@ void TOceanDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex
 
   CRect sourceRect(spriteStripOffset, 0, spriteStripOffset + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas688->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas688->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -698,7 +698,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   short spriteX = static_cast<short>(tileActionClass * 0x10);
   if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(dstRect);
   } else {
     spriteX = static_cast<short>(spriteX + 0x10);
@@ -706,7 +706,7 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
 
   CRect sourceRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    dstRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -719,13 +719,13 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   ClipRect(&leftSatelliteRect);
   if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&leftSatelliteRect);
   }
   spriteX = static_cast<short>(spriteX + 0x20);
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &leftSatelliteRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
@@ -735,13 +735,13 @@ void TOceanDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex
   ClipRect(&rightSatelliteRect);
   if (alternateOverlayEnabled == 0) {
     ScopedOceanMapPaletteSelection paletteSelection;
-    g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x32);
+    g_pViewMgr->ApplyLegendSplitSlot34(0x32);
     FillRectWithQuickDrawBrushAndContextOffset(&rightSatelliteRect);
   }
   spriteX = static_cast<short>(spriteX + 0x20);
   sourceRect.SetRect(spriteX, 0, spriteX + 0x10, 0x10);
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas68c->GetBlitSurface(),
+  BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas68c->GetBlitSurface(),
                                    g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &sourceRect,
                                    &rightSatelliteRect, 0x24, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
