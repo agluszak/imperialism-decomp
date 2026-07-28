@@ -33,9 +33,10 @@ from reccmp.types import ImageId
 
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
+from tools.common.template_aliases import CLASS_FOLDED_SYMBOL_GROUP, load_aliases
 from tools.source_model import Claim, build_model
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 PREP_SCHEMA_VERSION = 1
 DEFAULT_TIMEOUT_SECONDS = 30
 PROJECT_NAME = "recompiled-semantic"
@@ -130,8 +131,64 @@ class ExtractedCalls:
     unresolved: list[str]
 
 
+@dataclass(frozen=True)
+class DirectCallABI:
+    parameter_count: int
+    has_this: bool
+
+
 def canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"))
+
+
+def _canonical_arithmetic(mnemonic: str, size: int, values: list[Any]) -> Any:
+    """Flatten associative integer arithmetic and fold width-sized constants."""
+    flattened: list[Any] = []
+    tag = mnemonic.lower()
+    for value in values:
+        if (
+            isinstance(value, list)
+            and len(value) >= 2
+            and value[0] == tag
+            and value[1] == size
+        ):
+            flattened.extend(value[2:])
+        else:
+            flattened.append(value)
+
+    constants = [
+        int(value[2])
+        for value in flattened
+        if isinstance(value, list)
+        and len(value) == 3
+        and value[0] == "constant"
+    ]
+    others = [
+        value
+        for value in flattened
+        if not (
+            isinstance(value, list)
+            and len(value) == 3
+            and value[0] == "constant"
+        )
+    ]
+    modulus = 1 << (size * 8)
+    if mnemonic == "INT_ADD":
+        folded = sum(constants) % modulus
+        if folded or not others:
+            others.append(["constant", size, folded])
+    else:
+        folded = 1
+        for constant in constants:
+            folded = (folded * constant) % modulus
+        if folded == 0:
+            return ["constant", size, 0]
+        if folded != 1 or not others:
+            others.append(["constant", size, folded])
+    if len(others) == 1:
+        return others[0]
+    others.sort(key=canonical_json)
+    return [tag, size, *others]
 
 
 def sha256_file(path: Path) -> str:
@@ -258,20 +315,6 @@ def _class_name(value: Any) -> str:
         return type(value).__name__
 
 
-def _data_type(value: Any) -> dict[str, Any] | None:
-    try:
-        data_type = value.getHigh().getDataType()
-        if data_type is None:
-            return None
-        return {
-            "name": str(data_type.getName()),
-            "size": int(data_type.getLength()),
-            "class": _class_name(data_type),
-        }
-    except Exception:
-        return None
-
-
 class ExpressionNormalizer:
     """Convert a high-p-code SSA value into a cross-image structural value."""
 
@@ -307,7 +350,7 @@ class ExpressionNormalizer:
 
         key = int(varnode.hashCode())
         if key in self._active:
-            return ["recurrence", int(varnode.getSize()), _data_type(varnode)]
+            return ["recurrence", int(varnode.getSize())]
 
         if varnode.isConstant():
             return ["constant", int(varnode.getSize()), int(varnode.getOffset())]
@@ -315,7 +358,7 @@ class ExpressionNormalizer:
         high = varnode.getHigh()
         high_class = _class_name(high) if high is not None else ""
         if high_class == "HighParam":
-            return ["parameter", int(high.getSlot()), _data_type(varnode)]
+            return ["parameter", int(high.getSlot()), int(varnode.getSize())]
 
         definition = varnode.getDef()
         if definition is None:
@@ -339,7 +382,6 @@ class ExpressionNormalizer:
                     "symbol",
                     str(symbol.getName()),
                     int(varnode.getSize()),
-                    _data_type(varnode),
                 ]
             raise UnresolvedExpression(
                 f"unbound {_class_name(varnode)} value at 0x{int(varnode.getOffset()):x}"
@@ -352,6 +394,25 @@ class ExpressionNormalizer:
         if mnemonic in {"INT_ZEXT", "INT_SEXT"} and len(inputs) == 1:
             if int(inputs[0].getSize()) == int(varnode.getSize()):
                 return self.normalize(inputs[0], depth + 1)
+        if mnemonic == "PTRSUB" and len(inputs) == 2 and inputs[1].isConstant():
+            if int(inputs[1].getOffset()) == 0:
+                return self.normalize(inputs[0], depth + 1)
+        if mnemonic == "PTRADD" and len(inputs) == 3 and inputs[1].isConstant():
+            if int(inputs[1].getOffset()) == 0:
+                return self.normalize(inputs[0], depth + 1)
+        if mnemonic == "PTRSUB" and len(inputs) == 2:
+            normalized = [self.normalize(item, depth + 1) for item in inputs]
+            return _canonical_arithmetic("INT_ADD", int(varnode.getSize()), normalized)
+        if mnemonic == "PTRADD" and len(inputs) == 3:
+            base = self.normalize(inputs[0], depth + 1)
+            index = self.normalize(inputs[1], depth + 1)
+            scale = self.normalize(inputs[2], depth + 1)
+            offset = _canonical_arithmetic(
+                "INT_MULT", int(varnode.getSize()), [index, scale]
+            )
+            return _canonical_arithmetic(
+                "INT_ADD", int(varnode.getSize()), [base, offset]
+            )
         if mnemonic == "LOAD":
             if not inputs:
                 raise UnresolvedExpression("LOAD without pointer input")
@@ -383,7 +444,7 @@ class ExpressionNormalizer:
                 ]
             finally:
                 self._active.remove(key)
-            return ["call_result", target_value, arguments, _data_type(varnode)]
+            return ["call_result", target_value, arguments, int(varnode.getSize())]
         if mnemonic not in SUPPORTED_OPS:
             raise UnresolvedExpression(f"unsupported p-code operation {mnemonic}")
 
@@ -393,6 +454,8 @@ class ExpressionNormalizer:
         finally:
             self._active.remove(key)
 
+        if mnemonic in {"INT_ADD", "INT_MULT"}:
+            return _canonical_arithmetic(mnemonic, int(varnode.getSize()), normalized)
         if mnemonic in COMMUTATIVE_OPS or mnemonic == "MULTIEQUAL":
             normalized.sort(key=canonical_json)
         return [mnemonic.lower(), int(varnode.getSize()), *normalized]
@@ -400,7 +463,7 @@ class ExpressionNormalizer:
     def _address_value(self, offset: int, varnode: Any) -> Any:
         if offset in self.entities:
             entity_type, original = self.entities[offset]
-            return ["entity", entity_type, f"0x{original:x}", _data_type(varnode)]
+            return ["entity", entity_type, f"0x{original:x}", int(varnode.getSize())]
         if offset in self.functions:
             return ["function", f"0x{self.functions[offset]:x}"]
         address = varnode.getAddress()
@@ -413,11 +476,35 @@ class ExpressionNormalizer:
         if symbol is not None:
             name = str(symbol.getName())
             if not name.startswith(("DAT_", "LAB_", "FUN_")):
-                return ["named_address", name, _data_type(varnode)]
+                return ["named_address", name, int(varnode.getSize())]
         raise UnresolvedExpression(f"unmapped image address 0x{offset:x}")
 
 
+def _strip_transparent_pointer(varnode: Any) -> Any:
+    while True:
+        definition = varnode.getDef()
+        if definition is None:
+            return varnode
+        mnemonic = str(definition.getMnemonic())
+        inputs = [
+            definition.getInput(index) for index in range(definition.getNumInputs())
+        ]
+        if mnemonic in STRIP_OPS and len(inputs) == 1:
+            varnode = inputs[0]
+            continue
+        if mnemonic == "PTRSUB" and len(inputs) == 2 and inputs[1].isConstant():
+            if int(inputs[1].getOffset()) == 0:
+                varnode = inputs[0]
+                continue
+        if mnemonic == "PTRADD" and len(inputs) == 3 and inputs[1].isConstant():
+            if int(inputs[1].getOffset()) == 0:
+                varnode = inputs[0]
+                continue
+        return varnode
+
+
 def _offset_from_pointer(varnode: Any) -> tuple[Any, int] | None:
+    varnode = _strip_transparent_pointer(varnode)
     definition = varnode.getDef()
     if definition is None:
         return None
@@ -437,18 +524,24 @@ def _offset_from_pointer(varnode: Any) -> tuple[Any, int] | None:
 
 
 def _virtual_target(target: Any) -> tuple[Any, int] | None:
+    target = _strip_transparent_pointer(target)
     target_definition = target.getDef()
     if target_definition is None or str(target_definition.getMnemonic()) != "LOAD":
         return None
-    pointer = target_definition.getInput(target_definition.getNumInputs() - 1)
+    pointer = _strip_transparent_pointer(
+        target_definition.getInput(target_definition.getNumInputs() - 1)
+    )
     split = _offset_from_pointer(pointer)
     if split is None:
         return None
     vtable_value, slot = split
+    vtable_value = _strip_transparent_pointer(vtable_value)
     vtable_definition = vtable_value.getDef()
     if vtable_definition is None or str(vtable_definition.getMnemonic()) != "LOAD":
         return None
-    receiver = vtable_definition.getInput(vtable_definition.getNumInputs() - 1)
+    receiver = _strip_transparent_pointer(
+        vtable_definition.getInput(vtable_definition.getNumInputs() - 1)
+    )
     return receiver, slot
 
 
@@ -480,6 +573,9 @@ def _direct_target(
                 external = _external_identity(referenced)
                 if external is not None:
                     return {"external": external}
+                function = referenced
+                break
+    if function is None:
         symbol = program.getSymbolTable().getPrimarySymbol(address)
         block = program.getMemory().getBlock(address)
         if symbol is not None and block is not None:
@@ -505,11 +601,59 @@ def _direct_target(
     return {"function": f"0x{original:x}"}
 
 
+def _canonical_direct_arguments(
+    target: dict[str, Any],
+    arguments: list[Any],
+    direct_call_abis: dict[int, DirectCallABI],
+) -> list[Any]:
+    """Remove Ghidra's optional auto-parameter for a direct thiscall receiver.
+
+    Ghidra may expose the same ECX receiver as a leading CALL input in one
+    program and omit it in the other, depending on whether the target prototype
+    was imported before decompilation.  The original target's reviewed
+    signature tells us when that leading input is an auto ``this`` parameter.
+    Explicit arguments remain part of the contract.  Virtual receivers are
+    represented separately by ``_virtual_target`` and are never removed here.
+    """
+    raw_address = target.get("function")
+    if not isinstance(raw_address, str):
+        return arguments
+    abi = direct_call_abis.get(int(raw_address, 16))
+    if abi is None or not abi.has_this:
+        return arguments
+    if len(arguments) == abi.parameter_count:
+        return arguments[1:]
+    return arguments
+
+
+def _direct_call_abis(
+    original_program: Any, original_functions: dict[int, int]
+) -> dict[int, DirectCallABI]:
+    manager = original_program.getFunctionManager()
+    factory = original_program.getAddressFactory()
+    output: dict[int, DirectCallABI] = {}
+    for entry, original in original_functions.items():
+        function = manager.getFunctionAt(factory.getAddress(hex(entry)))
+        if function is None:
+            continue
+        parameters = list(function.getParameters())
+        has_this = any(
+            bool(parameter.isAutoParameter()) or str(parameter.getName()) == "this"
+            for parameter in parameters
+        )
+        output[original] = DirectCallABI(
+            parameter_count=len(parameters),
+            has_this=has_this,
+        )
+    return output
+
+
 def extract_calls(
     high_function: Any,
     program: Any,
     normalizer: ExpressionNormalizer,
     function_map: dict[int, int],
+    direct_call_abis: dict[int, DirectCallABI],
 ) -> ExtractedCalls:
     calls: list[dict[str, Any]] = []
     unresolved: list[str] = []
@@ -540,6 +684,10 @@ def extract_calls(
                 normalizer.normalize(operation.getInput(index))
                 for index in range(1, operation.getNumInputs())
             ]
+            if mnemonic == "CALL":
+                arguments = _canonical_direct_arguments(
+                    target_value, arguments, direct_call_abis
+                )
             calls.append(
                 {
                     "kind": kind,
@@ -628,6 +776,28 @@ def _build_maps(
         pairs[match.orig_addr] = pair
         original_functions[match.orig_addr] = match.orig_addr
         recompiled_functions[match.recomp_addr] = match.orig_addr
+
+    aliases, alias_errors = load_aliases(
+        equivalence_class=CLASS_FOLDED_SYMBOL_GROUP
+    )
+    if alias_errors:
+        raise RuntimeError("invalid template aliases: " + "; ".join(alias_errors))
+
+    def canonical_function(address: int) -> int:
+        seen: set[int] = set()
+        while address in aliases and address not in seen:
+            seen.add(address)
+            address = aliases[address]
+        return address
+
+    original_functions = {
+        address: canonical_function(original)
+        for address, original in original_functions.items()
+    }
+    recompiled_functions = {
+        address: canonical_function(original)
+        for address, original in recompiled_functions.items()
+    }
 
     original_entities: dict[int, tuple[int, int]] = {}
     recompiled_entities: dict[int, tuple[int, int]] = {}
@@ -918,6 +1088,7 @@ def compare_programs(
     timeout: int,
     jobs: int,
 ) -> list[dict[str, Any]]:
+    direct_call_abis = _direct_call_abis(original_program, original_functions)
     local = threading.local()
     context_lock = threading.Lock()
     contexts: list[tuple[Any, Any, ExpressionNormalizer, ExpressionNormalizer]] = []
@@ -983,12 +1154,14 @@ def compare_programs(
             original_program,
             original_normalizer,
             original_functions,
+            direct_call_abis,
         )
         recompiled_calls = extract_calls(
             recompiled_high,
             recompiled_program,
             recompiled_normalizer,
             recompiled_functions,
+            direct_call_abis,
         )
         row.update(compare_extracted_calls(original_calls, recompiled_calls))
         return row

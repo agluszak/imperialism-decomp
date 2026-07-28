@@ -282,8 +282,8 @@ void TTaskForce::OrderEvade() {
     TShip* child = static_cast<TShip*>(node->payload);
     child->taskForce = nullptr;
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -360,8 +360,8 @@ void TTaskForce::OrderPatrol(unsigned char useType4) {
     TShip* child = static_cast<TShip*>(node->payload);
     child->taskForce = nullptr;
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -440,8 +440,8 @@ void TTaskForce::OrderSail(TZone* orderTarget) {
     TShip* child = static_cast<TShip*>(node->payload);
     child->taskForce = nullptr;
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -511,14 +511,14 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
   // TZone::PropagateMapActionContextDistanceLevelsRecursive).
   pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
 
-  // Minimum g_NavyOrderResourceDescriptorTable[ship->type].descriptorWeight
+  // Minimum g_NavyOrderResourceDescriptorTable[ship->type].DescriptorWeight()
   // among *active* (active != 0) children, clamped to the 10000
   // sentinel (no active children).
   int minPriority = 10000;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       short priority = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                           .descriptorWeight;
+                           .DescriptorWeight();
       if (priority < minPriority) {
         minPriority = priority;
       }
@@ -563,8 +563,8 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
     TShip* child = static_cast<TShip*>(pruneNode->payload);
     child->SetTaskForce(nullptr);
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -599,8 +599,8 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
     TShip* child = static_cast<TShip*>(node->payload);
     child->taskForce = nullptr;
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -678,8 +678,8 @@ void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
     TShip* child = static_cast<TShip*>(node->payload);
     child->taskForce = nullptr;
 
-    short bucketIndex = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[child->type].enabledFlagOrBucketOffset);
+    short bucketIndex =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].ToolbarBucketIndex());
     short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
     --*bucketCounter;
 
@@ -815,17 +815,17 @@ void TTaskForce::Add(TShip* node) {
   }
 
   // Find the priority-sorted insertion point: the first sibling whose own
-  // enabledFlagOrBucketOffset priority is >= node's (table at g_NavyOrder-
+  // toolbar-bucket priority is >= node's (table at g_NavyOrder-
   // ResourceDescriptorTable + 0x18, i.e. 0x698108 + 0x18 = 0x698120).
   TMapOrderChildLinkNode* nextLink = shipList;
   TMapOrderChildLinkNode* prevLink = 0;
   if (nextLink != 0) {
-    short nodePriority = static_cast<short>(
-        g_NavyOrderResourceDescriptorTable[node->type].enabledFlagOrBucketOffset);
+    short nodePriority =
+        static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].ToolbarBucketIndex());
     do {
       if (static_cast<short>(
               g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(nextLink->payload)->type]
-                  .enabledFlagOrBucketOffset) >= nodePriority) {
+                  .ToolbarBucketIndex()) >= nodePriority) {
         break;
       }
       prevLink = nextLink;
@@ -857,7 +857,7 @@ void TTaskForce::Add(TShip* node) {
   flagship = node->Finest(flagship, 0);
 
   short bucketIndex =
-      static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].enabledFlagOrBucketOffset);
+      static_cast<short>(g_NavyOrderResourceDescriptorTable[node->type].ToolbarBucketIndex());
   ++shipCountsByToolbarSlot[bucketIndex];
 
   node->taskForce = this;
@@ -930,8 +930,8 @@ void TTaskForce::FreeAvailables() {
       TShip* entry = static_cast<TShip*>(node->payload);
       entry->taskForce = nullptr;
 
-      short bucketIndex = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[entry->type].enabledFlagOrBucketOffset);
+      short bucketIndex =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[entry->type].ToolbarBucketIndex());
       short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
       --*bucketCounter;
 
@@ -1072,8 +1072,8 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
       if (link->active == 0) {
         TShip* ship = static_cast<TShip*>(link->payload);
         ship->SetTaskForce(0);
-        short bucketIndex = static_cast<short>(
-            g_NavyOrderResourceDescriptorTable[ship->type].enabledFlagOrBucketOffset);
+        short bucketIndex =
+            static_cast<short>(g_NavyOrderResourceDescriptorTable[ship->type].ToolbarBucketIndex());
         --shipCountsByToolbarSlot[bucketIndex];
         if (link == shipList) {
           shipList = link->next;
@@ -1171,7 +1171,7 @@ void TTaskForce::CommitToOrders() {
       static_cast<TShip*>(node->payload)->taskForce = 0;
       short bucketIndex = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-              .enabledFlagOrBucketOffset);
+              .ToolbarBucketIndex());
       short* bucketCounter = &shipCountsByToolbarSlot[bucketIndex];
       --*bucketCounter;
       if (node == shipList) {
@@ -1299,7 +1299,7 @@ void TTaskForce::Select(short toolbarSlot, unsigned char activeFlag) {
   }
   while (static_cast<short>(
              g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .enabledFlagOrBucketOffset) != toolbarSlot ||
+                 .ToolbarBucketIndex()) != toolbarSlot ||
          node->active == activeFlag) {
     node = node->next;
     if (node == nullptr) {
@@ -1336,7 +1336,7 @@ int TTaskForce::GetSelected(short nationClass) const {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (static_cast<short>(
             g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                .enabledFlagOrBucketOffset) == nationClass &&
+                .ToolbarBucketIndex()) == nationClass &&
         node->active != 0) {
       ++count;
     }
@@ -1350,9 +1350,9 @@ unsigned int TTaskForce::GetWorstSpeed() const {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0 &&
         g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                .descriptorWeight < static_cast<int>(minWeight)) {
+                .DescriptorWeight() < static_cast<int>(minWeight)) {
       minWeight = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                      .descriptorWeight;
+                      .DescriptorWeight();
     }
   }
   return minWeight == 10000 ? 0 : minWeight;
@@ -1365,7 +1365,7 @@ int TTaskForce::GetDeciSpeed() const {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .descriptorWeight;
+                 .DescriptorWeight();
       ++count;
     }
   }
@@ -1587,7 +1587,7 @@ bool TTaskForce::Encounter(TTaskForce* other) {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       if (node->active != 0) {
         sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                   .descriptorWeight;
+                   .DescriptorWeight();
         ++count;
       }
     }
@@ -1662,7 +1662,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     if (node->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .descriptorWeight;
+                 .DescriptorWeight();
       ++count;
     }
   }
@@ -1724,7 +1724,7 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
     if (node->active != 0) {
       short weight = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-              .descriptorWeight);
+              .DescriptorWeight());
       if (weight < static_cast<short>(minDescriptorWeight)) {
         minDescriptorWeight = static_cast<unsigned short>(weight);
       }
@@ -1737,7 +1737,7 @@ bool TTaskForce::AttemptToEvade(const TTaskForce* other) {
        otherNode = otherNode->next) {
     if (otherNode->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(otherNode->payload)->type]
-                 .descriptorWeight;
+                 .DescriptorWeight();
       ++count;
     }
   }
@@ -1788,13 +1788,13 @@ int TTaskForce::GetBattleStrengthRating() const {
     short strengthBucket = static_cast<short>(ship->experience / 100);
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType];
-    int navyPriorityScore = strengthBucket + descriptor.navyPriorityWeight * 10 + 5;
+    int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + descriptor.resolveWeight * 10 + 5;
+    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
-    total +=
-        ((navyPriorityBucket + descriptor.calculateWeight) * 100 + resolveBucket + ship->strength) /
-        descriptor.taskForceWeight;
+    total += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+              ship->strength) /
+             descriptor.TaskForceWeight();
   }
   return total;
 }
@@ -1833,7 +1833,7 @@ void TTaskForce::CarryOutOrders() {
   case 8: {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
-      short cap = static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].stockCap);
+      short cap = static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].StockCap());
       child->strength = static_cast<s16>(child->strength + cap / 4);
       if (cap < child->strength) {
         child->strength = cap;

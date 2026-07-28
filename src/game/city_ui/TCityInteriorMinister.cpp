@@ -1039,7 +1039,7 @@ int TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore() {
   int bestTileIndex = -1;
   int tileIndex = 0;
   do {
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (static_cast<short>(tile->ownerNationTag04) == nationSlot &&
         g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(static_cast<short>(tileIndex))) {
       StrategicTerrainKind terrainKind = tile->GetTerrainKind();
@@ -1301,7 +1301,7 @@ void TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister() {
               tileIndex, order->orderType, EncodeUnitOrder(kUnitOrderDevelopResource))) {
         continue;
       }
-      TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+      TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
       if (g_abGateFlagQualifies[tile->gateFlag] == 0) {
         continue;
       }
@@ -1444,7 +1444,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
   }
 
   for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     short minorNation = static_cast<short>(tile->ownerNationTag04);
     if (minorNation <= 6 || minorNation >= 23) {
       continue;
@@ -1542,7 +1542,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
       if (tileIndex == -1) {
         continue;
       }
-      TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+      TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
       if (static_cast<short>(tile->ownerNationTag04) != nationSlot ||
           tile->regionSubtypeTag05 != regionSubtype) {
         continue;
@@ -1708,7 +1708,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
 
   for (int ownedTileOrdinal = 0; ownedTileOrdinal < ownedTiles->GetSize(); ++ownedTileOrdinal) {
     short tileIndex = ownedTiles->GetAt(ownedTileOrdinal);
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->regionSubtypeTag05 != -1 ||
         !((primaryDistanceMap[tileIndex] > 0 && primaryDistanceMap[tileIndex] < 9) ||
           g_pGlobalMapState->CanBuildPortAtTile(tileIndex) ||
@@ -1886,7 +1886,7 @@ char* TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(
   int ordinal;
   for (ordinal = 0; ordinal < ownedTiles->GetSize(); ++ordinal) {
     short tileIndex = ownedTiles->GetAt(ordinal);
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile->regionSubtypeTag05 == -1 && allowedTerrain[tile->GetTerrainKind()] != 0 &&
         g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(tileIndex)) {
       distanceMap[tileIndex] = 1;
@@ -2580,7 +2580,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
   for (short entry = 1; entry <= tileCount; ++entry) {
     StrategicTileIndex tileIndex =
         static_cast<StrategicTileIndex>(*ownedTiles->At(static_cast<unsigned int>(entry - 1)));
-    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tile.regionSubtypeTag05 != -1) {
       // Already inside a region: score how much the two resource edges would gain from
       // the high-nibble (developed) work order over the low-nibble (current) one.

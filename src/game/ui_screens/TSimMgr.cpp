@@ -1371,7 +1371,7 @@ void TSimMgr::UpdatePersistentTopTenNationScores() {
   }
 
   g_apNationStates[activeNationSlot]->GenerateGameScore();
-  int score = g_apNationStates[activeNationSlot]->gameScoreTotal95c;
+  int score = g_apNationStates[activeNationSlot]->gameScoreRows930[TGreatPower::kGameScoreTotal];
 
   int insertIndex = 0;
   while (insertIndex < 10 && score <= scoreValues[insertIndex]) {

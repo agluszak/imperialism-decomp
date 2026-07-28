@@ -69,7 +69,7 @@ enum MapScrollEdgeFlag {
 typedef short MapScrollEdgeMaskStorage;
 typedef unsigned char MapScrollEdgeMaskByteStorage;
 
-// TTerrainStateRecordView's river/coast byte is a staged sprite code. 0x80
+// TTerrainStateRecord's river/coast byte is a staged sprite code. 0x80
 // marks an unresolved connection shape during map preparation; 0x2b..0x32 and
 // 0x33..0x3a are the resolved one-direction land and water sprite families.
 // Keep byte storage because the scenario record is packed and serialized.

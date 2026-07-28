@@ -14,7 +14,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
 // FUNCTION: IMPERIALISM 0x0054f8e0
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride) {
-  if (g_NavyOrderResourceDescriptorTable[resourceType].enabledFlagOrBucketOffset < 0) {
+  if (g_NavyOrderResourceDescriptorTable[resourceType].ToolbarBucketIndexDword() < 0) {
     return 0;
   }
 
@@ -43,7 +43,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
     shipNode->name = temp;
   }
 
-  shipNode->strength = g_NavyOrderResourceDescriptorTable[resourceType].stockCap;
+  shipNode->strength = g_NavyOrderResourceDescriptorTable[resourceType].StockCap();
 
   if (portZoneContext != 0) {
     portZoneContext->HandleKeyDown(nationSlot);

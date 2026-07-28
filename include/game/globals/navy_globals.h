@@ -3,39 +3,65 @@
 // src/game/core/global_data_tables.cpp.
 #include "game/globals/global_types.h"
 
-// LAYOUT: fourteen per-resource descriptors at 0x00698108 with stride 0x24.
+// LAYOUT: fourteen per-resource navy-order descriptors at 0x00698108 with stride 0x24.
+// The shipyard indexes all nine dword columns dynamically. Gameplay readers give the low
+// signed word of each column its domain meaning; the ranking code reads columns 0, 1, and 4
+// as full dwords. Keep one physical array model rather than overlapping named and indexed views.
 struct TNavyOrderResourceDescriptor {
-  union {
-    struct {
-      union {
-        int resolveWeightDword;
-        struct {
-          short resolveWeight;
-          short resolveWeightHighWord;
-        };
-      };
-      union {
-        int calculateWeightDword;
-        struct {
-          short calculateWeight;
-          short calculateWeightHighWord;
-        };
-      };
-      short taskForceWeight;
-      short pad0a;
-      short stockCap;
-      short pad0e;
-      int navyPriorityWeight;
-      short resourceDescriptorWeightWord0;
-      short pad16;
-      int enabledFlagOrBucketOffset;
-      short descriptorWeight;
-      short pad1e;
-      short priorityTier;
-      short pad22;
-    };
-    int statColumnDwords[9];
+  enum Column {
+    kResolveWeight = 0,
+    kCalculateWeight = 1,
+    kTaskForceWeight = 2,
+    kStockCap = 3,
+    kNavyPriorityWeight = 4,
+    kResourceDescriptorWeightWord0 = 5,
+    kToolbarBucketIndex = 6,
+    kDescriptorWeight = 7,
+    kPriorityTier = 8,
+    kColumnCount = 9
   };
+
+  int valueByColumn[kColumnCount];
+
+  __inline int ResolveWeightDword() const {
+    return valueByColumn[kResolveWeight];
+  }
+  __inline short ResolveWeight() const {
+    return static_cast<short>(valueByColumn[kResolveWeight]);
+  }
+  __inline int CalculateWeightDword() const {
+    return valueByColumn[kCalculateWeight];
+  }
+  __inline short CalculateWeight() const {
+    return static_cast<short>(valueByColumn[kCalculateWeight]);
+  }
+  __inline short TaskForceWeight() const {
+    return static_cast<short>(valueByColumn[kTaskForceWeight]);
+  }
+  __inline short StockCap() const {
+    return static_cast<short>(valueByColumn[kStockCap]);
+  }
+  __inline int NavyPriorityWeightDword() const {
+    return valueByColumn[kNavyPriorityWeight];
+  }
+  __inline short NavyPriorityWeight() const {
+    return static_cast<short>(valueByColumn[kNavyPriorityWeight]);
+  }
+  __inline short ResourceDescriptorWeightWord0() const {
+    return static_cast<short>(valueByColumn[kResourceDescriptorWeightWord0]);
+  }
+  __inline int ToolbarBucketIndexDword() const {
+    return valueByColumn[kToolbarBucketIndex];
+  }
+  __inline short ToolbarBucketIndex() const {
+    return static_cast<short>(valueByColumn[kToolbarBucketIndex]);
+  }
+  __inline short DescriptorWeight() const {
+    return static_cast<short>(valueByColumn[kDescriptorWeight]);
+  }
+  __inline short PriorityTier() const {
+    return static_cast<short>(valueByColumn[kPriorityTier]);
+  }
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 

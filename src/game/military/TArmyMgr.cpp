@@ -1415,7 +1415,7 @@ unsigned short TArmyMgr::LookupMapCursorTokenByStateIndex(short tileIndex, short
 
 // FUNCTION: IMPERIALISM 0x004a4960
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
-  TTerrainStateRecordView* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
+  TTerrainStateRecord* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
   if (rec->perTileVisitedFlag0f > 0) {
     return 6;
   }
@@ -1498,7 +1498,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
     return ComputeMapCursorStateIndex(tileIndex, mode);
   }
 
-  TTerrainStateRecordView* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
+  TTerrainStateRecord* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
   if (rec->perTileVisitedFlag0f > 0) {
     return 6;
   }

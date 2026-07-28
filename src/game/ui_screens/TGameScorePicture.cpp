@@ -74,8 +74,8 @@ void TGameScorePicture::DoPostCreate(int arg) {
     value->shadowColor94 = shadowColor;
 
     if (row == 10) {
-      int difficultyPercent =
-          g_apNationStates[g_pSimMgr->GetActiveNationId()]->gameScoreDifficultyPercent958;
+      int difficultyPercent = g_apNationStates[g_pSimMgr->GetActiveNationId()]
+                                  ->gameScoreRows930[TGreatPower::kGameScoreDifficultyPercent];
       if (difficultyPercent % 10 > 0) {
         FormatNonnegativeFloatToLocalizedSharedString(static_cast<float>(difficultyPercent) * 0.1f,
                                                       &displayText);

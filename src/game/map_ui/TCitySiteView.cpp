@@ -216,7 +216,7 @@ void TCitySiteView::RenderStrategicTileSelectionAndNeighborHighlights() {
 void TCitySiteView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
   (void)nInputFlags;
 
-  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
+  TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   StrategicTerrainKind terrainKind = tile.GetTerrainKind();
   signed char ownerNation = tile.ownerNationTag04;
   short activeNation = g_pSimMgr->GetActiveNationId();

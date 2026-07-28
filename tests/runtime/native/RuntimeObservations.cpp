@@ -149,7 +149,7 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   }
   short coastTile = -1;
   for (short tile = 0; tile < 0x1950 && coastTile == -1; ++tile) {
-    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
+    const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
     if (terrain.GetTerrainKind() != kStrategicTerrainWater || terrain.adjacencyMaskB0b == 0 ||
         tile % 108 == 0 || tile % 108 == 107) {
       continue;
@@ -186,8 +186,8 @@ bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog) {
   int sourceStride = sourceSurface->stride & 0x3fff;
   unsigned char expected[0x1000];
   unsigned char actual[0x1000];
-  TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[coastTile];
-  TTerrainStateRecordView savedTerrain = terrain;
+  TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[coastTile];
+  TTerrainStateRecord savedTerrain = terrain;
   short sourceOffset = g_pGlobalMapState->LookupTileSpriteVariantOffsetByAdjacencyMaskB(coastTile);
   CopySurfaceTile(expected, sourceSurface->pixelBits + sourceOffset, sourceStride);
 
@@ -416,7 +416,7 @@ void CaptureRuntimeMapState(RuntimeRun& run) {
   memset(terrainCounts, 0, sizeof(terrainCounts));
   memset(ownedTiles, 0, sizeof(ownedTiles));
   for (short tile = 0; tile < 0x1950; ++tile) {
-    const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
+    const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
     int kind = static_cast<int>(terrain.GetTerrainKind());
     if (kind < 0 || kind >= kStrategicTerrainCount) {
       kind = kStrategicTerrainCount;

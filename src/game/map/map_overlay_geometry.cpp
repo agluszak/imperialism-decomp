@@ -20,7 +20,7 @@
 // has a different city/region (cityRecordIndex != compareValue on both sides of the edge)
 // or forms a type-5 (ocean) pairing. Neighbor tile indices [0..5] come from
 // GetNeighborTileIDArray. Called from TMacViewMgr's map-highlight pass. Reads the
-// typed TTerrainStateRecordView fields cityRecordIndex (+0x14) and GetTerrainKind() (+0x00,
+// typed TTerrainStateRecord fields cityRecordIndex (+0x14) and GetTerrainKind() (+0x00,
 // == 5 for ocean) directly, instead of the former raw `terrain + n*0x24 + off` casts.
 // FUNCTION: IMPERIALISM 0x00508f30
 void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
@@ -38,7 +38,7 @@ void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
   int rightX = baseX + 5;
   int bottomY = baseY + 5;
 
-  TTerrainStateRecordView* terrain = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrain = g_pGlobalMapState->terrainStateTable;
 
   RECT edgeTop = {baseX, baseY, rightX, bottomY};
   QDFrameRect(&edgeTop);
@@ -151,7 +151,7 @@ void DrawHexNeighborBorderGuidePathForTile(short tileId, int compareValue, short
     yUp = y0 - 2;
   }
 
-  TTerrainStateRecordView* terrain = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrain = g_pGlobalMapState->terrainStateTable;
 
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(x2), static_cast<short>(y0));
 
@@ -304,7 +304,7 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 // FUNCTION: IMPERIALISM 0x00559a70
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;
-  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
+  TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
   short actionClass = tile.tileActionState16;
   if (actionClass == kMapTileActionStateNone) {
     return 0;

@@ -228,7 +228,7 @@ private:
 
   short FindProspectorTarget(StrategicTerrainKind terrainKind, bool mustBeEligible) {
     for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
-      const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tile];
+      const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
       if (terrain.GetTerrainKind() != terrainKind || terrain.firstCivilianOrder20 != 0 ||
           tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b) {
         continue;

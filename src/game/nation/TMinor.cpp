@@ -107,7 +107,7 @@ void TMinor::IMinor(NationSlot nationSlot) {
       short tile;
       for (tile = 0; tile < 0x1950; ++tile) {
         if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04 == nationSlot) {
-          TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tile];
+          TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tile];
           if (record->activeFlags1c & 1) {
             selectedTile = tile;
           }
@@ -1067,7 +1067,7 @@ void DispatchCivilianOrderRelationMaskSlots(TUnit* orderNode) {
   orderNode->MoveTo(-1);
 }
 
-void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
+void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecord* terrainTiles, short tileId,
                                            const char* relationMaskByNation) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
@@ -1090,7 +1090,7 @@ int ResolveDiplomacyMaskOwnerNationSlot(const TMinor* minor, short provinceId) {
 
 // FUNCTION: IMPERIALISM 0x004e5ac0
 void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
-  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
     if (this->ownedRegionList == 0) {
       return;
@@ -1134,7 +1134,7 @@ void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
   }
 
   char notifyMajorSlots[7] = {0};
-  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
 
   if (this->ownedRegionList != 0) {
     int ownedCount = this->ownedRegionList->GetSize();
@@ -1181,7 +1181,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     }
   }
 
-  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
     if (this->ownedRegionList == 0) {
       return;
@@ -1289,7 +1289,7 @@ void RetargetUnitOrderForAllowedNationWithModeReset(TUnit* orderNode) {
   orderNode->MoveTo(static_cast<int>(spawnTile));
 }
 
-void WalkTileUnitOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,
+void WalkTileUnitOrdersForRelationMask(TTerrainStateRecord* terrainTiles, short tileId,
                                        const char* relationMaskByNation, char resetOrderMode) {
   TUnit* orderNode = terrainTiles[tileId].firstCivilianOrder20;
   while (orderNode != 0) {
@@ -1331,7 +1331,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
     }
   }
 
-  TTerrainStateRecordView* terrainTiles = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
     if (this->ownedRegionList == 0) {
       return;

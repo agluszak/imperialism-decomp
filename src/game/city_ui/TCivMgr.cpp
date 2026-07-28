@@ -329,7 +329,7 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
     return this->CanAssignCivilianOrderToTile(nTileIndex) ? 3 : 1;
   }
 
-  TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
+  TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
   if (tile->recruitSearchVisited0e == 0) {
     CivilianUnitKind unitKind = selectedEntry->GetCivilianUnitKind();
     if (unitKind == kCivilianUnitProspector) {
@@ -462,7 +462,7 @@ bool TCivMgr::TryQueueCivilianMoveOrderToTile(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x004d2f60
 bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
-  TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
+  TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
   short tileTerrainClass = tile->ownerNationTag04;
   TCivUnit* entry = this->selectedEntry;
   if ((entry->tileIndex06 != nTileIndex) && (tile->gateFlag != 0) &&
@@ -885,7 +885,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
         static_cast<signed char>(order->ownerNationSlot18);
     break;
   case 3: {
-    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
     tile.pendingDevelopmentFlag0d |= static_cast<unsigned char>(1 << order->ownerNationSlot18);
     if (g_apNationStates[order->ownerNationSlot18]->diplomacyEligibilityA0 != 0 &&
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(order->tileIndex06) != 0) {
@@ -934,7 +934,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
     TMapMgr::GetNeighborTileIDArray(order->tileIndex06, neighborBuf,
                                     g_pGlobalMapState->hexNeighborWrapHorizontally);
     neighborBuf[6] = order->tileIndex06;
-    TTerrainStateRecordView& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    TTerrainStateRecord& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
     for (int i = 0; i < 7; ++i) {
       short t = neighborBuf[i];
       if (t == -1) {
@@ -962,7 +962,7 @@ void TCivMgr::ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
 // FUNCTION: IMPERIALISM 0x004d4740
 void TCivMgr::ResolveCivilianDisputes() {
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     TCivUnit* order = tile.firstCivilianOrder20;
     if (order == 0 || order->nextAtLocation14 == 0) {
       continue;

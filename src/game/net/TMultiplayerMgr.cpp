@@ -218,7 +218,7 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
 };
 
 union MapPokeBufferView {
-  TTerrainStateRecordView* terrainRecords;
+  TTerrainStateRecord* terrainRecords;
   Province* cityRecords;
   unsigned char* bytes;
   short* words;
@@ -1476,7 +1476,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x23: { // patch selected fields of one map tile's terrain-state record
     TurnEvent23TileStatePacket* tileState = static_cast<TurnEvent23TileStatePacket*>(packet);
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
     tile->ownerNationTag04 = tileState->record.ownerNationTag04;
     tile->regionSubtypeTag05 = tileState->record.regionSubtypeTag05;
     tile->adjacencyBits06 = tileState->record.adjacencyBits06;
@@ -2109,7 +2109,7 @@ struct TileRedrawInvalidateTurnEventPacket : NetMessage {
   unsigned char pad15;
   short uiTurnToken;
   short tileIndex;
-  TTerrainStateRecordView tileSnapshot;
+  TTerrainStateRecord tileSnapshot;
 };
 #pragma pack(pop)
 

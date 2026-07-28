@@ -180,7 +180,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       if (influenceMap[tile] != 0) {
         continue;
       }
-      TTerrainStateRecordView* t = &mapState->terrainStateTable[tile];
+      TTerrainStateRecord* t = &mapState->terrainStateTable[tile];
       if (t->gateFlag == 0) {
         continue;
       }
@@ -215,7 +215,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
       if (influenceMap[tile] != 0) {
         continue;
       }
-      TTerrainStateRecordView* t = &mapState->terrainStateTable[tile];
+      TTerrainStateRecord* t = &mapState->terrainStateTable[tile];
       if (t->ownerNationTag04 == g_pSimMgr->GetActiveNationId() && t->riverSpriteCode != 0) {
         portAccum[19] = static_cast<short>(portAccum[19] + 1);
       } else if (t->gateFlag == 0) {
