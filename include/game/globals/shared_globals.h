@@ -131,12 +131,6 @@ extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 
 extern TApplication* g_pApplication;
 
-extern const int g_hexColOffsetEvenRow_00697450[6];
-
-extern const int g_hexRowOffset_00697468[6];
-
-extern const int g_hexColOffsetOddRow_00697480[6];
-
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
 extern char s_szGaugeCountSeparator_0069936C[];
