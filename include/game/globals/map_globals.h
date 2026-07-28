@@ -15,7 +15,7 @@ extern const unsigned short g_hexDirectionBitMasks_00696e40[6];
 
 // Second copy of the per-hex-direction adjacency bit mask table (1,2,4,8,16,32,0), indexed
 // by direction 0..6 (index 6 is an unused trailing zero); read byte-wise into
-// TTerrainStateRecordView::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
+// TTerrainStateRecord::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
 extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the

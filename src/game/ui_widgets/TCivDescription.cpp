@@ -153,7 +153,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
             provinceTileOrdinal = 0;
             while (provinceTileOrdinal < provinceTileCount) {
               tileIndex = *provinceTileIndices;
-              TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+              TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
               if ((tile->recruitSearchVisited0e == 0) &&
                   ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
                 if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
@@ -199,7 +199,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   int provinceOrdinal;
   short* provinceTileIndices;
   int provinceTileIndex;
-  TTerrainStateRecordView* tileRecord;
+  TTerrainStateRecord* tileRecord;
   short tileProfileId;
   TLongintList* ownerNationProvinceCollection;
   int provinceCount;

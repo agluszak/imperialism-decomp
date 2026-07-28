@@ -99,8 +99,10 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894, offsetof(TGreatPower, city) == 0x894);
 TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreRows930_0x930,
                  offsetof(TGreatPower, gameScoreRows930) == 0x930);
-TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreTotal95c_0x95c,
-                 offsetof(TGreatPower, gameScoreTotal95c) == 0x95c);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_gameScoreTotal_0x95c,
+                 offsetof(TGreatPower, gameScoreRows930) +
+                         TGreatPower::kGameScoreTotal * sizeof(int) ==
+                     0x95c);
 TG_LAYOUT_ASSERT(TGreatPower_Size_Exactly_0x964, sizeof(TGreatPower) == 0x964);
 #undef TG_LAYOUT_ASSERT
 
@@ -211,7 +213,7 @@ char* TGreatPower::BuildCityInfluenceLevelMap() {
       for (int direction = 0; direction < 6; ++direction) {
         short neighbor = neighbors[direction];
         if (neighbor != -1) {
-          TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[neighbor];
+          TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[neighbor];
           if ((static_cast<short>(tile.ownerNationTag04) == nationSlot || tile.gateFlag == 0) &&
               influenceByTile[neighbor] < influence) {
             influenceByTile[neighbor] = influence;
@@ -242,12 +244,12 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
   if (influenceByRegion != 0 && globalMapState != 0 && globalMapState->terrainStateTable != 0 &&
       globalMapState->cityScoreTable != 0) {
-    TTerrainStateRecordView* terrainTable = globalMapState->terrainStateTable;
+    TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
     Province* cityTable = globalMapState->cityScoreTable;
     while (static_cast<short>(regionIndex) < kMapRegionSlotCount) {
       char influence = *influenceByRegion;
       if (influence != 0) {
-        TTerrainStateRecordView* terrainRecord = &terrainTable[regionIndex];
+        TTerrainStateRecord* terrainRecord = &terrainTable[regionIndex];
         if (terrainRecord->gateFlag == 0) {
           if (influence == 2) {
             ++controlledRegionCount;
@@ -311,7 +313,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
       Province* cityTable = globalMapState->cityScoreTable;
-      TTerrainStateRecordView* terrainTable = globalMapState->terrainStateTable;
+      TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
       Province* cityRecord = cityTable + regionId;
       short homeTileIndex = static_cast<short>(this->homeTileIndex);
       if (cityRecord->cityTileIndex04 != homeTileIndex) {
@@ -2244,7 +2246,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   if (localization->scenarioMapIndexPlusOne == 0) {
     homeTileIndex = this->interiorMinister->SelectBestSecondaryHomeTileByFrogCityScore();
   } else {
-    TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+    TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
     for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
       if (static_cast<short>(terrainTable[static_cast<short>(tileIndex)].ownerNationTag04) ==
               this->nationSlot &&
@@ -3453,23 +3455,24 @@ void TGreatPower::GenerateGameScore() {
   int seasonPercentTable[5] = {10, 15, 20, 25, 30};
 
   TLaborPool* baseline = city->productionSummary1d8->baselineSlots10;
-  gameScoreLabor930 = baseline->lowSkillCount04 +
-                      (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
-  gameScoreTransport934 = transportCapacity;
+  gameScoreRows930[kGameScoreLabor] =
+      baseline->lowSkillCount04 +
+      (baseline->mediumSkillCount06 + baseline->highSkillCount08 * 2) * 2;
+  gameScoreRows930[kGameScoreTransport] = transportCapacity;
 
-  gameScoreIndustry938 = 0;
+  gameScoreRows930[kGameScoreIndustry] = 0;
   for (int buildingSlot = 0; buildingSlot < 6; ++buildingSlot) {
-    gameScoreIndustry938 += city->GetBuildingType(static_cast<short>(buildingSlot));
+    gameScoreRows930[kGameScoreIndustry] += city->GetBuildingType(static_cast<short>(buildingSlot));
   }
 
-  gameScoreProvinces93c = ownedRegionList->GetSize();
+  gameScoreRows930[kGameScoreProvinces] = ownedRegionList->GetSize();
   for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
     TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
     if (candidate->IsEncodedNationSlotMinus200Equal(nationSlot)) {
-      gameScoreProvinces93c += candidate->ownedRegionList->GetSize();
+      gameScoreRows930[kGameScoreProvinces] += candidate->ownedRegionList->GetSize();
     }
   }
-  gameScoreProvinces93c *= 10;
+  gameScoreRows930[kGameScoreProvinces] *= 10;
 
   int militaryOrderCostSum = 0;
   CIterator unitIter(militaryUnitList44);
@@ -3477,9 +3480,9 @@ void TGreatPower::GenerateGameScore() {
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     militaryOrderCostSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
-  gameScoreMilitary940 = militaryOrderCostSum;
+  gameScoreRows930[kGameScoreMilitary] = militaryOrderCostSum;
 
-  gameScoreNavy944 = GetArmsInNavy();
+  gameScoreRows930[kGameScoreNavy] = GetArmsInNavy();
 
   TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
   int relationSum = 0;
@@ -3496,20 +3499,21 @@ void TGreatPower::GenerateGameScore() {
             ->relationStandingScores[nationSlot * kNationSlotCount + static_cast<short>(otherSlot)];
     relationCount++;
   }
-  gameScoreDiplomacy948 = relationSum / relationCount;
+  gameScoreRows930[kGameScoreDiplomacy] = relationSum / relationCount;
 
-  gameScoreMerchantMarine94c = merchantCapacity;
+  gameScoreRows930[kGameScoreMerchantMarine] = merchantCapacity;
   int currentQuarter = g_pSimMgr->economicTurn / 4;
-  gameScoreYear950 = (100 - currentQuarter) * 10;
+  gameScoreRows930[kGameScoreYear] = (100 - currentQuarter) * 10;
 
-  gameScoreSubtotal954 = 0;
+  gameScoreRows930[kGameScoreSubtotal] = 0;
   int* summaryFields = gameScoreRows930;
   for (int fieldIndex = 0; fieldIndex < 9; ++fieldIndex) {
-    gameScoreSubtotal954 += summaryFields[fieldIndex];
+    gameScoreRows930[kGameScoreSubtotal] += summaryFields[fieldIndex];
   }
 
-  gameScoreDifficultyPercent958 = seasonPercentTable[g_pSimMgr->difficultyLevel];
-  gameScoreTotal95c = gameScoreSubtotal954 * gameScoreDifficultyPercent958 / 10;
+  gameScoreRows930[kGameScoreDifficultyPercent] = seasonPercentTable[g_pSimMgr->difficultyLevel];
+  gameScoreRows930[kGameScoreTotal] =
+      gameScoreRows930[kGameScoreSubtotal] * gameScoreRows930[kGameScoreDifficultyPercent] / 10;
 }
 
 // FUNCTION: IMPERIALISM 0x004e3560

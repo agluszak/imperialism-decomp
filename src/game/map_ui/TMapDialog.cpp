@@ -63,8 +63,8 @@ static inline bool LandTilesHaveDifferentNationOwners(short firstTile, short sec
   if (firstTile == -1 || secondTile == -1) {
     return false;
   }
-  const TTerrainStateRecordView& first = g_pGlobalMapState->terrainStateTable[firstTile];
-  const TTerrainStateRecordView& second = g_pGlobalMapState->terrainStateTable[secondTile];
+  const TTerrainStateRecord& first = g_pGlobalMapState->terrainStateTable[firstTile];
+  const TTerrainStateRecord& second = g_pGlobalMapState->terrainStateTable[secondTile];
   return first.GetTerrainKind() != kStrategicTerrainWater &&
          second.GetTerrainKind() != kStrategicTerrainWater &&
          first.ownerNationTag04 != second.ownerNationTag04;
@@ -229,8 +229,7 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {
       for (int i = 0; i < 6; ++i) {
         short neighbor = neighborTiles[i];
         if (neighbor != -1) {
-          const TTerrainStateRecordView& neighborState =
-              g_pGlobalMapState->terrainStateTable[neighbor];
+          const TTerrainStateRecord& neighborState = g_pGlobalMapState->terrainStateTable[neighbor];
           if ((neighborState.ownerNationTag04 != activeNation &&
                neighborState.GetTerrainKind() != kStrategicTerrainWater) ||
               neighborState.regionSubtypeTag05 != -1) {
@@ -932,7 +931,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   unsigned char* sourcePixels = GetPixBaseAddr(sourceSurfaceObject);
   short sourceStride = static_cast<short>((*sourceSurfaceObject)->stride & 0x3fff);
 
-  const TTerrainStateRecordView& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
+  const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
   const bool isOcean = terrain.GetTerrainKind() == kStrategicTerrainWater;
   bool usedWrappedSeamTile = false;
   if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
@@ -1218,7 +1217,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     short neighborTile =
         TMapMgr::GetNeighborTileID(tileIndex, static_cast<StrategicHexDirectionStorage>(5));
     if (neighborTile != -1) {
-      const TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
+      const TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
       if ((neighbor.activeFlags1c & 3) != 0 && neighbor.gateFlag != 0) {
         CString cityName;
         g_pGlobalMapState->AssignCityRecordDisplayName(neighbor.cityRecordIndex, &cityName);
@@ -1248,7 +1247,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     neighborTile =
         TMapMgr::GetNeighborTileID(tileIndex, static_cast<StrategicHexDirectionStorage>(0));
     if (neighborTile != -1) {
-      const TTerrainStateRecordView& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
+      const TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
       if ((neighbor.activeFlags1c & 3) != 0 && neighbor.gateFlag != 0) {
         CString cityName;
         g_pGlobalMapState->AssignCityRecordDisplayName(neighbor.cityRecordIndex, &cityName);
@@ -2059,7 +2058,7 @@ void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int
   short neighborTiles[6];
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighborTiles,
                                   g_pGlobalMapState->hexNeighborWrapHorizontally);
-  TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* tiles = g_pGlobalMapState->terrainStateTable;
   unsigned char northeastOcean = connectionMask & 2;
 
   if ((connectionMask & 2) != 0 &&
@@ -2305,7 +2304,7 @@ void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projec
 // FUNCTION: IMPERIALISM 0x00523b70
 void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, CRect* dstRect,
                                                                int flag) {
-  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+  TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   short cityRecordIndex = tile.cityRecordIndex;
   TMilitaryUnit* unit = 0;
   if (cityRecordIndex >= 0 && cityRecordIndex < 0x180) {

@@ -113,7 +113,7 @@ static void PaintOceanOverviewOwnerTransitions(short tileIndex, int tileX, int t
   short neighbors[6];
   short neighborOwners[6];
   short neighborCities[6];
-  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+  TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   int currentOwner = ClampOceanOwnerTag(tile.ownerNationTag04);
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
                                   g_pGlobalMapState->hexNeighborWrapHorizontally);
@@ -124,8 +124,7 @@ static void PaintOceanOverviewOwnerTransitions(short tileIndex, int tileX, int t
       neighborOwners[direction] = -1;
       neighborCities[direction] = -1;
     } else {
-      TTerrainStateRecordView& neighbor =
-          g_pGlobalMapState->terrainStateTable[neighbors[direction]];
+      TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighbors[direction]];
       neighborOwners[direction] = static_cast<short>(ClampOceanOwnerTag(neighbor.ownerNationTag04));
       neighborCities[direction] = neighbor.cityRecordIndex;
     }
@@ -265,7 +264,7 @@ void TOceanDialog::ConvertPoint(const CPoint& point, short& outColumn, short& ou
   TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
   if (mapPicture->activeUnitCategoryIndex96 == 0) {
     int tileIndex = ComputeStridedRecordAddress6C(outColumn, outRow);
-    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     if ((tile.activeFlags1c & 1) != 0) {
       short ownerNation = static_cast<short>(tile.ownerNationTag04);
       if (ownerNation == g_pSimMgr->GetActiveNationId() || ownerNation >= 7) {
@@ -470,7 +469,7 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         continue;
       }
 
-      TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+      TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
       int ownerTag = ClampOceanOwnerTag(tile.ownerNationTag04);
       if (tile.GetTerrainKind() != kStrategicTerrainWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);

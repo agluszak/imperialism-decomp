@@ -197,8 +197,8 @@ public:
   // the flag is nonzero also clears the ship's task-force selection state.
   void Select(TShip* ship, unsigned char activeFlag); // 0x5549a0
 
-  // Counts active shipList entries whose descriptor enabledFlagOrBucketOffset
-  // (low short, reused here as a nation/bucket class) equals nationClass.
+  // Counts active shipList entries whose descriptor toolbar-bucket index equals
+  // nationClass.
   int GetSelected(short nationClass) const; // 0x554a30
 
   // Average (x10) of the resource-type descriptorWeight column across active
@@ -268,8 +268,8 @@ public:
   // reciprocal check bails early), 1 when no elimination happens.
   bool ResolveEncounterWith(TTaskForce* other); // 0x555920
 
-  // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
-  // ReassignToForce reads as a bucket_offset).
+  // Low word of this order's resource-type toolbar-bucket column (the node constructor
+  // tests the full dword for the -1 disabled sentinel).
   // This order's resource-type calculateWeight column.
 
   // Marks every active shipList entry's order node (payload+0x34 -- same
@@ -282,8 +282,8 @@ public:
   void DropShips(unsigned char reserveExtraSlot); // 0x553a50
 
   // Finds the first shipList entry whose order node's resource-type bucket
-  // (g_NavyOrderResourceDescriptorTable[...].enabledFlagOrBucketOffset, low word) equals
-  // `nationClass` and whose active differs from `activeFlag`; sets that entry's
+  // descriptor toolbar-bucket index equals `nationClass` and whose active differs from
+  // `activeFlag`; sets that entry's
   // active and, when activating (activeFlag != 0), clears its order node's +0x34
   // slot (same overrun as above).
   // Mac oracle: Select(short, unsigned char).
@@ -329,8 +329,8 @@ public:
           shipList->next->RemoveLinkedOrderNodeByValueRecursive(ship);
         }
       }
-      short bucketIndex = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[ship->type].enabledFlagOrBucketOffset);
+      short bucketIndex =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[ship->type].ToolbarBucketIndex());
       --shipCountsByToolbarSlot[bucketIndex];
     }
 
@@ -379,7 +379,7 @@ public:
   // Searches shipList for an existing link to `node`; if none exists,
   // allocates (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode
   // in priority-sorted order (by g_NavyOrderResourceDescriptorTable[node->type]
-  // .enabledFlagOrBucketOffset), bumps this entry's bucket counter, sets
+  // .ToolbarBucketIndex()), bumps this entry's bucket counter, sets
   // node->taskForce = this, then calls this->AssertValid() (CObject virtual, slot
   // 0xc) and copies this entry's aggression dword and
   // ship-order-kind gate onto `node` -- the same fields/gate

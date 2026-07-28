@@ -78,47 +78,64 @@ struct GlobalViewportRectDefaultsRecord {
 };
 
 // LAYOUT: fourteen per-resource navy-order descriptors at 0x00698108 with stride 0x24.
-// Indexed users address the fields below as offsets within one struct array.
+// The shipyard indexes all nine dword columns dynamically. Gameplay readers give the low
+// signed word of each column its domain meaning; the ranking code reads columns 0, 1, and 4
+// as full dwords. Keep one physical array model rather than overlapping named and indexed views.
 struct TNavyOrderResourceDescriptor {
-  union {
-    struct {
-      union {
-        int resolveWeightDword;
-        struct {
-          short resolveWeight; // +0x00 (was g_Resolve_Map_Order_LookupTable_00698108)
-          short resolveWeightHighWord;
-        };
-      };
-      union {
-        int calculateWeightDword;
-        struct {
-          short calculateWeight; // +0x04 (was g_Calculate_Mission_Order_LookupTable_0069810C)
-          short calculateWeightHighWord;
-        };
-      };
-      short taskForceWeight; // +0x08 (was g_Task_Force_Order_LookupTable_00698110's own +0x00)
-      short pad0a;
-      short stockCap; // +0x0c (was same table's +0x04); the navy-order normalization base
-      short pad0e;
-      int navyPriorityWeight; // +0x10 (was g_Navy_Order_Priority_LookupTable_00698118, read as a dword)
-      short
-          resourceDescriptorWeightWord0; // +0x14 (was g_ResourceDescriptorWeightWord0Base0069811c)
-      short pad16;
-      int enabledFlagOrBucketOffset; // +0x18 (was same table's +0x10; low short reused elsewhere
-                                     // as a bucket offset, full dword tested for sign as an
-                                     // enabled/disabled gate)
-      short descriptorWeight;        // +0x1c (was DAT_00698124)
-      short pad1e;
-      // Per-order-type priority tier used by TNavyMgr::ResolveStrategicBattle's
-      // candidate-tier scan/scoring loop (was DAT_00698128).
-      short priorityTier; // +0x20
-      short pad22;
-    };
-    // The shipyard stat panel indexes all nine 4-byte columns dynamically and displays
-    // each column's low signed word. This explicit column view is the original record's
-    // second access mode, not a pointer-cast overlay at the call site.
-    int statColumnDwords[9];
+  enum Column {
+    kResolveWeight = 0,
+    kCalculateWeight = 1,
+    kTaskForceWeight = 2,
+    kStockCap = 3,
+    kNavyPriorityWeight = 4,
+    kResourceDescriptorWeightWord0 = 5,
+    kToolbarBucketIndex = 6,
+    kDescriptorWeight = 7,
+    kPriorityTier = 8,
+    kColumnCount = 9
   };
+
+  int valueByColumn[kColumnCount];
+
+  __inline int ResolveWeightDword() const {
+    return valueByColumn[kResolveWeight];
+  }
+  __inline short ResolveWeight() const {
+    return static_cast<short>(valueByColumn[kResolveWeight]);
+  }
+  __inline int CalculateWeightDword() const {
+    return valueByColumn[kCalculateWeight];
+  }
+  __inline short CalculateWeight() const {
+    return static_cast<short>(valueByColumn[kCalculateWeight]);
+  }
+  __inline short TaskForceWeight() const {
+    return static_cast<short>(valueByColumn[kTaskForceWeight]);
+  }
+  __inline short StockCap() const {
+    return static_cast<short>(valueByColumn[kStockCap]);
+  }
+  __inline int NavyPriorityWeightDword() const {
+    return valueByColumn[kNavyPriorityWeight];
+  }
+  __inline short NavyPriorityWeight() const {
+    return static_cast<short>(valueByColumn[kNavyPriorityWeight]);
+  }
+  __inline short ResourceDescriptorWeightWord0() const {
+    return static_cast<short>(valueByColumn[kResourceDescriptorWeightWord0]);
+  }
+  __inline int ToolbarBucketIndexDword() const {
+    return valueByColumn[kToolbarBucketIndex];
+  }
+  __inline short ToolbarBucketIndex() const {
+    return static_cast<short>(valueByColumn[kToolbarBucketIndex]);
+  }
+  __inline short DescriptorWeight() const {
+    return static_cast<short>(valueByColumn[kDescriptorWeight]);
+  }
+  __inline short PriorityTier() const {
+    return static_cast<short>(valueByColumn[kPriorityTier]);
+  }
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 // 0x54fd50: rebuilds g_aCategoryMetricBaselineAverage from the enabled resource types'

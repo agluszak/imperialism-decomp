@@ -285,7 +285,7 @@ int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
         short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
             static_cast<short>(tileIndex), static_cast<short>(direction));
         short cur = *pCost;
-        TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
+        TTerrainStateRecord* tiles = g_pGlobalMapState->terrainStateTable;
         if (cur == 0 && (neighbor == -1 ||
                          tiles[neighbor].ownerNationTag04 != tiles[tileIndex].ownerNationTag04)) {
           *pCost = -1;
@@ -321,7 +321,7 @@ int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short 
   short equalBestCount = 0;
 
   for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1878; ++tileIndex) {
-    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (static_cast<short>(tile->ownerNationTag04) != nationTag) {
       continue;
     }
@@ -499,7 +499,7 @@ TZone* TOcean::GetMapActionContextEntryByIndex(short index) {
 
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
-  TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
+  TTerrainStateRecord& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionState16);
   if (terrainClass == kMapTileActionStateAnchor || terrainClass == kMapTileActionStateDockedFleet) {
     return TZone::FindPortZoneByTile(seaTileIndex);
@@ -587,7 +587,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   if (g_pGlobalMapState == 0) {
     return;
   }
-  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  TTerrainStateRecord* terrainTable = g_pGlobalMapState->terrainStateTable;
   int tileIndex = static_cast<int>(nTileIndex);
   if ((terrainTable[tileIndex].activeFlags1c & 1) == 0) {
     return;

@@ -164,8 +164,7 @@ short TPortZone::FindNearestActiveSeaContextTileFromOffset216() {
       candidateTile = static_cast<short>(spiral.col + spiral.row * 108);
     }
     if (candidateTile >= 0 && candidateTile < 0x1950) {
-      TTerrainStateRecordView& candidateRecord =
-          g_pGlobalMapState->terrainStateTable[candidateTile];
+      TTerrainStateRecord& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
       TZone* candidateContext = 0;
       if (candidateRecord.tileActionState16 == kMapTileActionStateAnchor ||
           candidateRecord.tileActionState16 == kMapTileActionStateDockedFleet) {

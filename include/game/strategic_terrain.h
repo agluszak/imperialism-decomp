@@ -2,7 +2,7 @@
 
 // Closed strategic-map terrain vocabulary. The numeric order is confirmed by
 // TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection (0x0051b1c0), which
-// passes the signed byte at TTerrainStateRecordView+0x00 directly to string group
+// passes the signed byte at TTerrainStateRecord+0x00 directly to string group
 // 0x1cb7. The Windows resource crosswalk names entries 0..7 as below.
 //
 // Do not store StrategicTerrainKind directly in packed map records: a VC5 classic enum

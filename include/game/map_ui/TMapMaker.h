@@ -10,7 +10,7 @@ struct Province;
 
 // One full-resolution map-generator tile record. The random-template passes copy the
 // complete 0x24-byte record as nine dwords; individual gameplay fields remain owned by
-// TTerrainStateRecordView after generation.
+// TTerrainStateRecord after generation.
 struct MapGeneratorTileRecord {
   int words[9];
 };

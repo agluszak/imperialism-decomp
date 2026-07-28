@@ -566,7 +566,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   short tileIndex = static_cast<short>(tileOrTerrainId0c + 0xd8);
   short stepMagnitude = 1;
   for (;;) {
-    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState16 == kMapTileActionStateNone) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag04);
       TZone* contextZone = 0;
@@ -589,7 +589,7 @@ short TZone::GetActiveNationSlotTile() {
   short stepSign = 1;
   short stepMagnitude = 1;
   for (;;) {
-    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     if (tileRecord.tileActionState16 == kMapTileActionStateNone) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag04);
       TZone* contextZone = 0;
@@ -609,7 +609,7 @@ short TZone::GetActiveNationSlotTile() {
 // FUNCTION: IMPERIALISM 0x0055ff70
 int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* contextZone,
                                                           Province* contextProvince) {
-  TTerrainStateRecordView& tileRecord =
+  TTerrainStateRecord& tileRecord =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
   if (tileRecord.GetTerrainKind() != kStrategicTerrainWater) {
     return 0;
@@ -631,7 +631,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
     short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
-      TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
+      TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
       if (neighborRecord.GetTerrainKind() == kStrategicTerrainWater) {
         signed char neighborSubtype = static_cast<signed char>(neighborRecord.tileActionState16);
         if (neighborSubtype == kMapTileActionStateAnchor ||
@@ -665,7 +665,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
   short tileCandidate = 0;
 
   for (;;) {
-    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileCandidate];
+    TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileCandidate];
     int isWater = tileRecord.GetTerrainKind() == kStrategicTerrainWater;
     if (isWater) {
       TZone* zoneForTile;
@@ -688,7 +688,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
           short neighborTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
               tileCandidate, static_cast<short>(neighborDir));
           if (neighborTile != -1) {
-            TTerrainStateRecordView& neighborRecord =
+            TTerrainStateRecord& neighborRecord =
                 g_pGlobalMapState->terrainStateTable[neighborTile];
             int neighborIsWater = neighborRecord.GetTerrainKind() == kStrategicTerrainWater;
             if (!neighborIsWater) {
@@ -1227,7 +1227,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
   int tileIndex = 0;
   do {
     TZone* context;
-    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     short marker = tile.tileActionState16;
     if (marker == kMapTileActionStateAnchor || marker == kMapTileActionStateDockedFleet) {
       // Inlined FindPortZoneByTile(tileIndex): match a port zone by any of its tile ids.
@@ -1307,7 +1307,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
 // FUNCTION: IMPERIALISM 0x00563f50
 void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
   for (int tileIndex = 0; static_cast<short>(tileIndex) < 0x1950; ++tileIndex) {
-    TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
     TZone* zone;
     if (tileRecord.tileActionState16 == kMapTileActionStateAnchor ||
         tileRecord.tileActionState16 == kMapTileActionStateDockedFleet) {
@@ -1334,8 +1334,7 @@ void RefreshPortZoneNeighborContextLinksAndFallbacks(void) {
           continue;
         }
 
-        TTerrainStateRecordView& neighborRecord =
-            g_pGlobalMapState->terrainStateTable[neighborTile];
+        TTerrainStateRecord& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
         if (neighborRecord.cityRecordIndex != -1) {
           Province* candidate = &g_pGlobalMapState->cityScoreTable[neighborRecord.cityRecordIndex];
           if (!zone->secondaryNeighbors.ContainsEntry(candidate)) {

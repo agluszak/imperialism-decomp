@@ -32,7 +32,7 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
 
 // 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
-// TTerrainStateRecordView::riverSpriteCode. Water tiles accept only a single direction bit; land
+// TTerrainStateRecord::riverSpriteCode. Water tiles accept only a single direction bit; land
 // tiles additionally accept the 16 supported two-direction masks. Returns -1 when invalid.
 short __stdcall ResolveRiverSpriteVariantForConnectionMask(unsigned char connectionMask,
                                                            unsigned char waterTerrain);
@@ -417,7 +417,7 @@ public:
   // GetMapImprovementSpriteBaseOffset slots (also 64-byte-row arithmetic). No callers other
   // than the vtable itself, so the specific bitmap it indexes isn't identified.
   virtual int GetMapImprovementBitmapRowOffsetForIndex(int index); // slot 0x42 0x5176a0
-  // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecordView)
+  // index * 36 -- matches the terrainStateTable record stride (sizeof(TTerrainStateRecord)
   // == 0x24) used inline throughout this file; no `this` use and no other callers, so this
   // is modeled as the raw arithmetic it computes rather than presumed to index a specific array.
   virtual int ComputeTerrainRecordByteOffsetForIndex(int index); // slot 0x43 0x5176c0
@@ -484,7 +484,7 @@ public:
   unsigned char field8;                          // +0x08 -- 1-byte stream read
   unsigned char field9;                          // +0x09 -- 1-byte stream read
   unsigned char pad0a[2];                        // +0x0a -- alignment gap before the +0x0c pointer
-  TTerrainStateRecordView* terrainStateTable;    // +0x0c
+  TTerrainStateRecord* terrainStateTable;        // +0x0c
   // True when any province adjacent to `provinceIndex` (its adjacentRegionIds0A list,
   // bounded by adjacentRegionCount08) carries `ownerNationCode` in ownerNationCode00.
   // 0x00517d40, __thiscall.

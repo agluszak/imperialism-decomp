@@ -488,25 +488,23 @@ public:
   int aidAllocationTotal;
   unsigned char colonyBoycottFlags[kNationSlotCount];
   unsigned char pad_92f;
-  // 0x930..0x95c — the twelve rows displayed by TGameScorePicture. GenerateGameScore
-  // rebuilds the block wholesale before the score screen reads it by row index.
-  union {
-    struct {
-      int gameScoreLabor930;
-      int gameScoreTransport934;
-      int gameScoreIndustry938;
-      int gameScoreProvinces93c;
-      int gameScoreMilitary940;
-      int gameScoreNavy944;
-      int gameScoreDiplomacy948;
-      int gameScoreMerchantMarine94c;
-      int gameScoreYear950;
-      int gameScoreSubtotal954;
-      int gameScoreDifficultyPercent958;
-      int gameScoreTotal95c;
-    };
-    int gameScoreRows930[12];
+  // 0x930..0x95c — the twelve rows displayed and indexed by TGameScorePicture.
+  enum GameScoreRow {
+    kGameScoreLabor = 0,
+    kGameScoreTransport = 1,
+    kGameScoreIndustry = 2,
+    kGameScoreProvinces = 3,
+    kGameScoreMilitary = 4,
+    kGameScoreNavy = 5,
+    kGameScoreDiplomacy = 6,
+    kGameScoreMerchantMarine = 7,
+    kGameScoreYear = 8,
+    kGameScoreSubtotal = 9,
+    kGameScoreDifficultyPercent = 10,
+    kGameScoreTotal = 11,
+    kGameScoreRowCount = 12
   };
+  int gameScoreRows930[kGameScoreRowCount];
   // Mac PayForMilitary writes this turn's army+navy maintenance charge here before
   // deducting it from treasury. The trade totals / remaining-budget views present the
   // same charge as an expense; the old pendingAidTotal name was misleading.

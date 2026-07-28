@@ -871,8 +871,8 @@ void TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords() {
 
     int coarseRow = coarseIndex / 0x1b;
     int coarseColumn = coarseIndex % 0x1b;
-    TTerrainStateRecordView* tile =
-        static_cast<TTerrainStateRecordView*>(static_cast<void*>(mapTileGrid08)) +
+    TTerrainStateRecord* tile =
+        static_cast<TTerrainStateRecord*>(static_cast<void*>(mapTileGrid08)) +
         (coarseRow * 4 * 108 + coarseColumn * 4);
     if ((coarseRow & 1) != 0) {
       tile -= 2;

@@ -38,7 +38,7 @@ struct MapPixelSourceView {
 
 // Runtime state for one strategic-map tile. It is distinct from ScenarioTileDiskRecord:
 // the latter retains the Mac-endian bytes only at the scenario-load boundary.
-struct TTerrainStateRecordView {
+struct TTerrainStateRecord {
   // -1 is the unassigned terrain sentinel; use the typed accessors below.
   StrategicTerrainKindStorage terrainKindStorage00;
   StrategicTerrainKind GetTerrainKind() const {
@@ -81,7 +81,7 @@ struct TTerrainStateRecordView {
   unsigned char pad1e[0x20 - 0x1e];
   TCivUnit* firstCivilianOrder20; // queue head for this tile
 };
-ASSERT_SIZE(TTerrainStateRecordView, 0x24);
+ASSERT_SIZE(TTerrainStateRecord, 0x24);
 
 // Runtime city/province record. The city-redraw packet snapshots its fields directly;
 // the short link fields at 0x3e, 0x40, and 0x94 and CString at 0xa4 are ABI-significant.

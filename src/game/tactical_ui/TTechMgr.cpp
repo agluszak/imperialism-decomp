@@ -530,7 +530,7 @@ void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
   // Upgrade every owned, developed tile whose capability ceiling rose.
   short tileIndex;
   for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
-    TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    TTerrainStateRecord* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
     if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
       short maxCap = static_cast<char>(
           g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 0, nationSlot));

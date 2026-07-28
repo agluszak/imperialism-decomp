@@ -86,10 +86,10 @@ static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* h
     TShip* child = static_cast<TShip*>(node->payload);
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[child->type];
-    if (descriptor.priorityTier < minTier) {
+    if (descriptor.PriorityTier() < minTier) {
       continue;
     }
-    int power = (child->experience / 100 + descriptor.resolveWeight * 10 + 5) / 10;
+    int power = (child->experience / 100 + descriptor.ResolveWeight() * 10 + 5) / 10;
     total += static_cast<float>(power);
   }
   return total;
@@ -99,8 +99,8 @@ static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* h
 static inline int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type].priorityTier >=
-        minTier) {
+    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
+            .PriorityTier() >= minTier) {
       ++count;
     }
   }
@@ -121,7 +121,7 @@ static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildL
   for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
     if (node->active != 0) {
       sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .descriptorWeight;
+                 .DescriptorWeight();
       ++count;
     }
   }
@@ -137,12 +137,12 @@ static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
   short strengthBucket = static_cast<short>(ship->experience / 100);
   short navyPriorityBucket =
-      static_cast<short>((strengthBucket + descriptor.navyPriorityWeight * 10 + 5) / 10);
+      static_cast<short>((strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
   short resolveBucket =
-      static_cast<short>((strengthBucket + descriptor.resolveWeight * 10 + 5) / 10);
-  return ((navyPriorityBucket + descriptor.calculateWeight) * 100 + resolveBucket +
+      static_cast<short>((strengthBucket + descriptor.ResolveWeight() * 10 + 5) / 10);
+  return ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
           ship->strength) /
-         descriptor.taskForceWeight;
+         descriptor.TaskForceWeight();
 }
 
 // Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
@@ -164,7 +164,7 @@ static inline void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, 
         ++selected;
         int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
         TShip* child = static_cast<TShip*>(node->payload);
-        float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->type].taskForceWeight *
+        float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
                                  (roll * 0.005f) * favorRatio * -0.01f;
         child->strength = static_cast<short>(child->strength - static_cast<short>(delta));
       }
@@ -313,7 +313,7 @@ void TNavyMgr::INavyMgr() {
           &g_NavyOrderResourceDescriptorTable[g_NavyPriorityOrderRanking[i]];
       TNavyOrderResourceDescriptor* pj =
           &g_NavyOrderResourceDescriptorTable[g_NavyPriorityOrderRanking[j]];
-      if (pj->navyPriorityWeight > pi->navyPriorityWeight) {
+      if (pj->NavyPriorityWeightDword() > pi->NavyPriorityWeightDword()) {
         short t = g_NavyPriorityOrderRanking[i];
         g_NavyPriorityOrderRanking[i] = g_NavyPriorityOrderRanking[j];
         g_NavyPriorityOrderRanking[j] = t;
@@ -322,7 +322,7 @@ void TNavyMgr::INavyMgr() {
           &g_NavyOrderResourceDescriptorTable[g_NavyMissionOrderRanking[i]];
       TNavyOrderResourceDescriptor* mj =
           &g_NavyOrderResourceDescriptorTable[g_NavyMissionOrderRanking[j]];
-      if (mj->calculateWeightDword > mi->calculateWeightDword) {
+      if (mj->CalculateWeightDword() > mi->CalculateWeightDword()) {
         short t = g_NavyMissionOrderRanking[i];
         g_NavyMissionOrderRanking[i] = g_NavyMissionOrderRanking[j];
         g_NavyMissionOrderRanking[j] = t;
@@ -331,7 +331,7 @@ void TNavyMgr::INavyMgr() {
           &g_NavyOrderResourceDescriptorTable[g_NavyResolveOrderRanking[i]];
       TNavyOrderResourceDescriptor* rj =
           &g_NavyOrderResourceDescriptorTable[g_NavyResolveOrderRanking[j]];
-      if (rj->resolveWeightDword > ri->resolveWeightDword) {
+      if (rj->ResolveWeightDword() > ri->ResolveWeightDword()) {
         short t = g_NavyResolveOrderRanking[i];
         g_NavyResolveOrderRanking[i] = g_NavyResolveOrderRanking[j];
         g_NavyResolveOrderRanking[j] = t;
@@ -704,7 +704,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
             node->active =
                 static_cast<TShip*>(node->payload)->strength <
                 g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                    .stockCap;
+                    .StockCap();
             node = node->next;
           } while (node != 0);
         }
@@ -742,7 +742,7 @@ void TNavyMgr::MakeSureAllShipsHaveOrders() {
             static_cast<TShip*>(node->payload)->SetTaskForce(0);
             short bucketIndex = static_cast<short>(
                 g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                    .enabledFlagOrBucketOffset);
+                    .ToolbarBucketIndex());
             short* bucketCounter = &entry->shipCountsByToolbarSlot[bucketIndex];
             --*bucketCounter;
             if (node == entry->shipList) {
@@ -994,7 +994,7 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
     for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
       unsigned char active;
-      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].stockCap ||
+      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap() ||
           chancePercent <= rand() % 100) {
         active = 0;
       } else {
@@ -1036,7 +1036,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     for (TMapOrderChildLinkNode* node = nationEntry->shipList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
       unsigned char active;
-      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].stockCap ||
+      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap() ||
           selectionChance <= rand() % 100) {
         active = 0;
       } else {
@@ -1518,7 +1518,7 @@ unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags) {
         for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
           if (node->active != 0) {
             TShip* ship = static_cast<TShip*>(node->payload);
-            short weight = g_NavyOrderResourceDescriptorTable[ship->type].descriptorWeight;
+            short weight = g_NavyOrderResourceDescriptorTable[ship->type].DescriptorWeight();
             if (weight < static_cast<short>(minimumWeight)) {
               minimumWeight = static_cast<unsigned short>(weight);
             }
@@ -1739,7 +1739,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
   int maxTier = 1;
   for (TMapOrderChildLinkNode* node = leftEntry->shipList; node != nullptr; node = node->next) {
     int tier =
-        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type].priorityTier;
+        g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type].PriorityTier();
     if (tier > maxTier) {
       maxTier = tier;
     }
@@ -1747,7 +1747,7 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
   for (TMapOrderChildLinkNode* rightNode = rightEntry->shipList; rightNode != nullptr;
        rightNode = rightNode->next) {
     int tier = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(rightNode->payload)->type]
-                   .priorityTier;
+                   .PriorityTier();
     if (tier > maxTier) {
       maxTier = tier;
     }

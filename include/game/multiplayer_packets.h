@@ -20,7 +20,7 @@
 #include "game/ui_tags_widgets.h"
 #include "game/military/NetMessage.h"
 #include "game/nation_domain_types.h" // CongressLeadership / CongressSupportTally
-#include "game/map/TMapMgr.h"         // TTerrainStateRecordView (event 0x23 payload)
+#include "game/map/TMapMgr.h"         // TTerrainStateRecord (event 0x23 payload)
 #include "game/news_domain_types.h"
 
 class TObject;
@@ -167,7 +167,7 @@ struct TurnEvent23TileStatePacket : NetMessage {
   unsigned char pad1a[2];
   short tileIndex; // +0x1c
   unsigned char pad1e[2];
-  TTerrainStateRecordView record; // +0x20, total 0x44
+  TTerrainStateRecord record; // +0x20, total 0x44
 };
 
 // Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
