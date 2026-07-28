@@ -299,13 +299,9 @@ void TDealBookPicture::CalculatePages() {
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
-    // The real table is much larger than the declared 8-entry span (the original indexes
-    // it with commandId + production-order-tech-unlocked*17, which can run far past 8) -- the
-    // pointer arithmetic still lands on the correct address either way since C++ doesn't
-    // bounds-check here, matching the original's raw displacement + computed offset.
-    int categoryTableIndex =
-        commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
-    short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
+    short tabIndex = static_cast<short>(commandId - 0x2af8);
+    short categorySlot = g_tradeBookCategoryByTabAndTechState_0066DB58
+        [g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {
       sellPageView->RebuildNationOfferRowsForCategory(categorySlot);
       buyPageView->RebuildNationBidRowsForCategory(categorySlot);

@@ -101,9 +101,13 @@ Standing behavioral rules the topical skills exist to enforce:
 3. **Assume there are no gameplay bugs in the original retail game.** A bug observed
    in the recomp is a symptom of unfaithfully ported code, data, layout, ownership, or
    control flow. Diagnose it against the original listing and live retail behavior,
-   then restore the original semantics. Never fix a symptom by adding a workaround,
-   guard, special case, guessed value, or alternate behavior that is absent from the
-   original.
+   then restore the original semantics. **A disappearing symptom is not a completed bug
+   fix unless the source, data, resources, and control flow are retail-faithful.** Never
+   fix a symptom by adding a workaround, guard, special case, guessed value, alternate
+   behavior, incomplete test fixture, or test-only state bypass that is absent from the
+   original. If a semantic runtime test cannot traverse the retail path because its
+   fixture is incomplete, repair the fixture/resource model instead of bypassing the
+   transition.
 
 ## IMPORTANT
 - Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
@@ -450,6 +454,11 @@ bd close <id>         # Complete work
 - Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
 - Run `bd prime` for detailed command reference and session close protocol
 - Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+- Every bug Bead must make retail faithfulness explicit in its acceptance criteria.
+  Do not close it merely because the symptom disappears: closure requires evidence that
+  the recovered source/data/resource/control flow matches retail and a semantic test that
+  traverses the real path. Guards, guesses, alternate behavior, incomplete fixtures, and
+  test-only state bypasses are closure failures.
 
 **Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/SYNC_CONCEPTS.md for details and anti-patterns.
 

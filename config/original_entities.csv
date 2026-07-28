@@ -6150,7 +6150,7 @@ address|name|symbol|size|type|prototype|provenance
 5be570|TOfferDeskPicture::ConstructTOfferDeskPictureBaseState||38|function|undefined ConstructTOfferDeskPictureBaseState()|
 5be5b0|TOfferDeskPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5be600|TOfferDeskPicture::DoPostCreate||816|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5bea00|TOfferDeskPicture::PoseOfferSheet||2692|function|void __thiscall PoseOfferSheet(short sourceNation, short targetNation, short proposedAmount, short maxAmount, short commodityType)|listing+mac-symbol
+5bea00|TOfferDeskPicture::PoseOfferSheet||2692|function|void __thiscall PoseOfferSheet(short respondingNation, short offeringNation, short proposedAmount, short maxAmount, short commodityType)|listing+mac-symbol
 5bf740|TOfferDeskPicture::DoEvent||223|function|undefined HandleTradeCommandTagsAndSelectionUpdates()|
 5bf860|TOfferDeskPicture::DoKeyEvent||153|function|undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()|
 5bf930|RefreshSelectedNationOrderCompatibilityInfo||2386|function|undefined RefreshSelectedNationOrderCompatibilityInfo()|
@@ -8946,6 +8946,7 @@ address|name|symbol|size|type|prototype|provenance
 66d8e0|g_TradePowerIdentity_0066D8E0|||global||
 66dad0|g_tradeCommodityRowTagTable|||global||
 66db50|g_cstrTradeTotalsBalanceSubstitution0066DB50|||global||
+66db58|g_tradeBookCategoryByTabAndTechState_0066DB58|||global||listing
 66dba0|TTradeScreenPicture::classTTradeScreenPicture|||global||
 66dbb8|TDealBookPicture::classTDealBookPicture|||global||
 66dbd0|TDealTabControl::classTDealTabControl|||global||
@@ -9268,7 +9269,8 @@ address|name|symbol|size|type|prototype|provenance
 6972d0|g_szFmtShip_006972d0|||global||
 6972e8|g_szFmtZone_006972e8|||global||
 6972f8|g_szScriptFileName_006972f8|||global||
-697320|g_aStrategicMapNeighborHighlightTiles_00697320|||global||
+697310|g_aStrategicMapNeighborHighlightTiles_00697310|||global||listing
+697320|g_aCitySiteNeighborHighlightTiles_00697320|||global||listing
 6973c8|g_szUiCloseParen_006973C8|||global||
 6973d0|s_SourcePathUMapDlog_006973D0|||global||
 697498|g_coarseHexColOffsetEvenRow_00697498|||global||

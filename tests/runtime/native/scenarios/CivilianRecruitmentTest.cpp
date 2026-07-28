@@ -10,9 +10,11 @@
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
+#include "game/city_ui/TEngineerDialog.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/view_registries.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
@@ -22,6 +24,7 @@
 #include "game/strategic_terrain.h"
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
 
@@ -111,7 +114,8 @@ class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), orderIssued(false),
-        initialAnimationFrame(0), initialAnimationTick(0) {}
+        engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
+        initialAnimationTick(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -127,6 +131,10 @@ public:
   }
 
   void TickScenario() override {
+    if (engineerActionIssued) {
+      VerifyEngineerDialogAndCancel();
+      return;
+    }
     if (spawnedCivilian == 0) {
       RecruitCivilian();
       return;
@@ -550,6 +558,109 @@ private:
       FailScenario("\"ordered prospector hover left stale map pixels outside the current tile\"");
       return;
     }
+    OpenEngineerConstructionDialogThroughMap();
+  }
+
+  void OpenEngineerConstructionDialogThroughMap() {
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    int oldPersistentUnitId = g_pSimMgr->field_64;
+    TUnitOrder recruitOrder;
+    recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitEngineer), 0, 0, -1,
+                            0, 0, kLowSkillWorkforceMode, 0);
+    recruitOrder.quantity = 1;
+    recruitOrder.Produce();
+
+    TCivUnit* engineer = 0;
+    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
+      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
+      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
+        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
+        if (civilian->persistentUnitId20 == oldPersistentUnitId + 1) {
+          engineer = civilian;
+          break;
+        }
+      }
+    }
+    if (engineer == 0 || engineer->GetCivilianUnitKind() != kCivilianUnitEngineer ||
+        engineer->unitOrder != kUnitOrderIdle) {
+      FailScenario("\"engineer production did not yield an idle engineer\"");
+      return;
+    }
+
+    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
+    short engineerTile = engineer->tileIndex06;
+    int engineerAction =
+        g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(engineerTile, 0);
+    if (engineerAction != 4) {
+      for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
+        const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
+        if (terrain.ownerNationTag04 == engineer->ownerNationSlot18 &&
+            terrain.firstCivilianOrder20 == 0) {
+          engineer->MoveTo(tile);
+          g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
+          engineerTile = tile;
+          engineerAction =
+              g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(engineerTile, 0);
+          if (engineerAction == 4) {
+            break;
+          }
+        }
+      }
+    }
+    if (engineerAction != 4) {
+      FailScenario("\"selected engineer's occupied tile did not resolve to the build action\"");
+      return;
+    }
+
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    CPoint engineerPoint;
+    short band;
+    if (mapDialog == 0) {
+      FailScenario("\"strategic map disappeared before the engineer build action\"");
+      return;
+    }
+    mapView->CenterOn(engineerTile);
+    if (!FindVisiblePointForTile(mapDialog, engineerTile, &engineerPoint, &band)) {
+      FailScenario("\"selected engineer tile has no visible map hit point\"");
+      return;
+    }
+
+    engineerActionIssued = true;
+    EnterScenarioStep("opening_engineer_construction_dialog",
+                      "native_click_on_selected_engineer_tile");
+    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(mapDialog, engineerPoint.x,
+                                                              engineerPoint.y)) {
+      FailScenario("\"engineer build click could not be routed through the map host\"");
+      return;
+    }
+    RequestScenarioTick();
+  }
+
+  void VerifyEngineerDialogAndCancel() {
+    if (g_ModalViewStack.IsEmpty()) {
+      WaitForScenarioTick("\"engineer construction dialog did not open\"");
+      return;
+    }
+    TWindow* modal = g_ModalViewStack.GetHead();
+    TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
+    TView* title = dialog != 0 ? dialog->ResolveControlByTag(kControlTagTitl) : 0;
+    if (dialog == 0 || dialog->IsKindOf(RUNTIME_CLASS(TEngineerDialog)) == 0 || title == 0 ||
+        modal->ResolveControlByTag(kControlTagCncl) == 0) {
+      RecordUnexpectedModalView(modal);
+      FailScenario("\"engineer construction dialog does not match the retail resource tree\"");
+      return;
+    }
+    engineerDialogObserved = true;
+    RecordHandledModal("engineer_construction_options");
+    if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagCncl)) {
+      FailScenario("\"engineer construction dialog cancel control could not be activated\"");
+      return;
+    }
+    if (!engineerDialogObserved) {
+      FailScenario("\"engineer construction dialog was not observed\"");
+      return;
+    }
     Pass();
   }
 
@@ -557,6 +668,8 @@ private:
   short targetHillTile;
   short targetSeaTile;
   bool orderIssued;
+  bool engineerActionIssued;
+  bool engineerDialogObserved;
   short initialAnimationFrame;
   int initialAnimationTick;
 };

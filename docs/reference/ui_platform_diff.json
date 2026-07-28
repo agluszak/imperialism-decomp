@@ -24126,11 +24126,17 @@
               "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
             },
             "0x0370": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x004329bd-0x00432a03 allocates purc +0x48 and stores {packedColor=0x99ccff, styleWord=0}",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 1
+              },
               "generated_lines": [
                 184,
-                193
+                194
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0370",
               "semantic": {
@@ -24155,7 +24161,10 @@
                     "value": 0
                   },
                   "picture_id": null,
-                  "style": null,
+                  "style": {
+                    "packed_color": 10079487,
+                    "word": 0
+                  },
                   "text": {
                     "flags": 33,
                     "mode": 21,
@@ -24183,14 +24192,14 @@
                 "type_code": "nmbr"
               },
               "tag": "purc",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x004329bd-0x00432a03 allocates purc +0x48 and stores {packedColor=0x99ccff, styleWord=0}"
             },
             "0x041e": {
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                195,
-                202
+                196,
+                203
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x041e",
               "semantic": {
@@ -24235,8 +24244,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                203,
-                210
+                204,
+                211
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x048c",
               "semantic": {
@@ -24281,8 +24290,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                213,
-                220
+                214,
+                221
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x04f9",
               "semantic": {
@@ -24327,8 +24336,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                222,
-                229
+                223,
+                230
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0567",
               "semantic": {
@@ -24373,8 +24382,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                231,
-                238
+                232,
+                239
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x05d5",
               "semantic": {
@@ -24429,8 +24438,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                240,
-                247
+                241,
+                248
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0648",
               "semantic": {
@@ -24485,8 +24494,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                249,
-                256
+                250,
+                257
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x06bb",
               "semantic": {
@@ -24541,8 +24550,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                258,
-                265
+                259,
+                266
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x072e",
               "semantic": {
@@ -24597,8 +24606,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                267,
-                274
+                268,
+                275
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x07a1",
               "semantic": {
@@ -24643,8 +24652,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                276,
-                281
+                277,
+                282
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0811",
               "semantic": {
@@ -24684,8 +24693,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                283,
-                290
+                284,
+                291
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0855",
               "semantic": {
@@ -24740,8 +24749,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                293,
-                300
+                294,
+                301
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x08ca",
               "semantic": {
@@ -24786,8 +24795,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                301,
-                308
+                302,
+                309
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x092a",
               "semantic": {
@@ -24842,8 +24851,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                310,
-                317
+                311,
+                318
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x099d",
               "semantic": {
@@ -24888,8 +24897,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                320,
-                325
+                321,
+                326
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0a0d",
               "semantic": {
@@ -24929,8 +24938,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                326,
-                333
+                327,
+                334
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0a5f",
               "semantic": {
@@ -24985,8 +24994,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                335,
-                342
+                336,
+                343
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0ad4",
               "semantic": {
@@ -25041,8 +25050,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                344,
-                350
+                345,
+                351
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0b49",
               "semantic": {
@@ -25087,8 +25096,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                352,
-                359
+                353,
+                360
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0bb1",
               "semantic": {
@@ -25133,8 +25142,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                361,
-                368
+                362,
+                369
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0c21",
               "semantic": {
@@ -25179,8 +25188,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                370,
-                375
+                371,
+                376
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0c91",
               "semantic": {
@@ -25220,8 +25229,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                377,
-                382
+                378,
+                383
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0ce6",
               "semantic": {
@@ -25261,8 +25270,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                384,
-                389
+                385,
+                390
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0d3c",
               "semantic": {
@@ -25302,8 +25311,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                392,
-                397
+                393,
+                398
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0d80",
               "semantic": {
@@ -25343,8 +25352,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                399,
-                406
+                400,
+                407
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0e1e",
               "semantic": {
@@ -25389,8 +25398,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                407,
-                414
+                408,
+                415
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0e8f",
               "semantic": {
@@ -25435,8 +25444,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                417,
-                424
+                418,
+                425
               ],
               "mac_source": "FlagView.rsrc:8500 node 0x0efd",
               "semantic": {
@@ -25488,8 +25497,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                431,
-                436
+                432,
+                437
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0004",
               "semantic": {
@@ -25529,8 +25538,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                437,
-                442
+                438,
+                443
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0048",
               "semantic": {
@@ -25570,8 +25579,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                443,
-                448
+                444,
+                449
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x008c",
               "semantic": {
@@ -25611,8 +25620,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                449,
-                456
+                450,
+                457
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x00d0",
               "semantic": {
@@ -25657,8 +25666,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                457,
-                464
+                458,
+                465
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0140",
               "semantic": {
@@ -25703,8 +25712,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                465,
-                472
+                466,
+                473
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x01b1",
               "semantic": {
@@ -25749,8 +25758,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                474,
-                481
+                475,
+                482
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x021f",
               "semantic": {
@@ -25805,8 +25814,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                483,
-                490
+                484,
+                491
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0294",
               "semantic": {
@@ -25861,8 +25870,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                493,
-                500
+                494,
+                501
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0309",
               "semantic": {
@@ -25907,8 +25916,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                502,
-                509
+                503,
+                510
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0379",
               "semantic": {
@@ -25953,8 +25962,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                511,
-                516
+                512,
+                517
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x03e9",
               "semantic": {
@@ -25994,8 +26003,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                518,
-                523
+                519,
+                524
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0436",
               "semantic": {
@@ -26035,8 +26044,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                525,
-                532
+                526,
+                533
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0483",
               "semantic": {
@@ -26091,8 +26100,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                534,
-                540
+                535,
+                541
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x04f8",
               "semantic": {
@@ -26137,8 +26146,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                542,
-                547
+                543,
+                548
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0565",
               "semantic": {
@@ -26178,8 +26187,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                549,
-                554
+                550,
+                555
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x05bb",
               "semantic": {
@@ -26219,8 +26228,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                556,
-                563
+                557,
+                564
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0610",
               "semantic": {
@@ -26275,8 +26284,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                565,
-                572
+                566,
+                573
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0685",
               "semantic": {
@@ -26327,8 +26336,8 @@
                 "windows": "TToolBarCluster"
               },
               "generated_lines": [
-                574,
-                581
+                575,
+                582
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x06f3",
               "semantic": {
@@ -26373,8 +26382,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                582,
-                589
+                583,
+                590
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x0764",
               "semantic": {
@@ -26419,8 +26428,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                595,
-                600
+                596,
+                601
               ],
               "mac_source": "FlagView.rsrc:8800 node 0x07d2",
               "semantic": {
@@ -26461,7 +26470,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00430c50.cpp",
-      "generated_sha256": "b4d04f83600bd02e3a0a2ccfc1fb10bcb745e739ce46c64d07d558cbce0cac81",
+      "generated_sha256": "63196dba5065aac56f075280c1dbc101f911e8728d70c9242fe4f562492b9ef2",
       "name": "InitializeDealBookScreenControlsAndCommandTags"
     },
     "0x004357b0": {
@@ -92188,12 +92197,12 @@
   "summary": {
     "cases": 94,
     "expected_windows_class_substitution": 9,
-    "expected_windows_field_override": 2,
+    "expected_windows_field_override": 3,
     "functional_parity_cases": 12,
     "functions": 17,
     "mapped_mac_cases": 93,
     "nodes": 1853,
-    "same_semantics": 1830,
+    "same_semantics": 1829,
     "unexplained_deltas": 0,
     "windows_only_cases": 1,
     "windows_only_nodes": 12

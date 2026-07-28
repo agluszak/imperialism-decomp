@@ -188,7 +188,7 @@ address|matching|name
 0x430bf0|1.0|TView::Draw
 0x430c10|1.0|TView::DoMouseCommand
 0x430c30|0.3333333333333333|IltTarget_00430c30
-0x430c50|0.17454445814495137|InitializeDealBookScreenControlsAndCommandTags
+0x430c50|0.17444885663425988|InitializeDealBookScreenControlsAndCommandTags
 0x435540|1.0|TDealTabControl::`scalar deleting destructor'
 0x435570|1.0|TDealTabControl::~TDealTabControl
 0x435590|1.0|TTradePageSellView::TTradePageSellView
@@ -2347,7 +2347,7 @@ address|matching|name
 0x4d05c0|1.0|TEngineerDialog::~TEngineerDialog
 0x4d05e0|1.0|TEngineerDialog::Free
 0x4d0650|0.2571428571428571|TEngineerDialog::Draw
-0x4d0810|0.3090909090909091|TEngineerDialog::BuildCityViewProductionControls
+0x4d0810|0.3103896103896104|TEngineerDialog::BuildCityViewProductionControls
 0x4d1760|0.4897959183673469|TPlaceCityDialog::CreateObject
 0x4d17e0|1.0|TPlaceCityDialog::GetRuntimeClass
 0x4d1800|1.0|TPlaceCityDialog::TPlaceCityDialog
@@ -3532,7 +3532,7 @@ address|matching|name
 0x5220f0|0.4877323420074349|TMapDialog::DrawSeaZoneBorders(int, int, short)
 0x522c10|0.20168067226890757|TMapDialog::DrawWrappedMapRouteSegment
 0x522cf0|0.6458333333333334|TMapDialog::DrawHexNeighborConnectionMask
-0x523060|0.23129251700680273|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor
+0x523060|0.21476510067114093|TMapDialog::DrawGeneratedMapRouteSegmentsAndResetFillColor
 0x523170|0.2868217054263566|TMapDialog::DrawTile
 0x523640|0.2831541218637993|TMapDialog::RenderMapOrderEntryTilePreview
 0x523b70|0.21818181818181817|TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge
@@ -3594,7 +3594,7 @@ address|matching|name
 0x529910|0.08333333333333333|IltTarget_00529910
 0x529960|0.27251732101616627|TMapMaker::RotateMapColumnsByPeakCityTileDensity
 0x529c80|0.022222222222222223|IltTarget_00529c80
-0x529d90|0.625|TMapMaker::ComputeOwnedTerritoryCentroidTile
+0x529d90|0.6413793103448275|TMapMaker::ComputeOwnedTerritoryCentroidTile
 0x529f60|0.6068965517241379|TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders
 0x52a0a0|0.47058823529411764|TMapMaker::CompactCityRegionIds
 0x52a160|0.26161790017211706|TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation
@@ -6222,7 +6222,7 @@ address|matching|name
 0x5bac50|0.8432432432432433|TDealBookPicture::Startup
 0x5baf70|0.48205128205128206|TDealBookPicture::ShowPage
 0x5bb2e0|0.30985915492957744|TDealBookPicture::CalculatePages
-0x5bbc30|0.26763990267639903|TDealBookPicture::DoEvent
+0x5bbc30|0.3106796116504854|TDealBookPicture::DoEvent
 0x5bc0d0|0.5084745762711864|TDealBookPicture::SwitchPages
 0x5bc690|0.6666666666666666|TDealTabControl::CreateObject
 0x5bc760|1.0|TDealTabControl::GetRuntimeClass
@@ -6271,14 +6271,14 @@ address|matching|name
 0x5be570|1.0|TOfferDeskPicture::TOfferDeskPicture
 0x5be5b0|1.0|TOfferDeskPicture::`scalar deleting destructor'
 0x5be5e0|1.0|TOfferDeskPicture::~TOfferDeskPicture
-0x5be600|0.7938931297709924|TOfferDeskPicture::DoPostCreate
-0x5bea00|0.7012811867835469|TOfferDeskPicture::PoseOfferSheet
-0x5bf740|0.6442953020134228|TOfferDeskPicture::DoEvent
+0x5be600|0.7977099236641222|TOfferDeskPicture::DoPostCreate
+0x5bea00|0.7053270397842212|TOfferDeskPicture::PoseOfferSheet
+0x5bf740|0.64|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7543424317617866|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5bf930|0.7411083540115798|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
 0x5c04f0|0.8108108108108109|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|1.0|TOfferDeskPicture::HandleMouseUp
-0x5c09d0|0.7789473684210526|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
+0x5c09d0|0.7842105263157895|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
 0x5c0cf0|0.4897959183673469|TDealLine::CreateObject
 0x5c0d60|1.0|TDealLine::GetRuntimeClass
 0x5c0d80|1.0|TDealLine::TDealLine

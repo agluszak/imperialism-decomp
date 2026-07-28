@@ -631,8 +631,10 @@ short g_MapTileCacheMissCount6A3454;
 // GLOBAL: IMPERIALISM 0x006a4194
 CDib* g_pColorKeyCompositeDib = 0;
 
+// GLOBAL: IMPERIALISM 0x00697310
+short g_aStrategicMapNeighborHighlightTiles_00697310[6] = {-1, -1, -1, -1, -1, -1};
 // GLOBAL: IMPERIALISM 0x00697320
-short g_aStrategicMapNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
+short g_aCitySiteNeighborHighlightTiles_00697320[6] = {-1, -1, -1, -1, -1, -1};
 
 // GLOBAL: IMPERIALISM 0x006a3370
 CPoint g_MapInteractionPreviewPoint_006a3370(0, 0);
@@ -4108,13 +4110,10 @@ extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
 // GLOBAL: IMPERIALISM 0x006a4084
 short g_creditsPlaybackActive_006a4084 = 0;
 
-// GLOBAL: IMPERIALISM 0x00668568
-// Indexed directly by raw commandId (a large turn-event/menu command code, not a small
-// enum) plus perTechUnlockFlag180[kProductionOrderTechId]*0x11; the real table base sits at a
-// negative
-// C-array-index offset baked into the instruction displacement, so only the leading
-// zero run at this exact address is meaningfully checked.
-short g_offerDeskSelectionIndexTable_00668568[8] = {0};
+// GLOBAL: IMPERIALISM 0x0066DB58
+extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17] = {
+    {13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, -1, -1},
+    {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6}};
 // The two fixed slots the diplomacy popup family swaps its children between via
 // TView::Locate: the in-panel position and an off-screen park position that stands in for
 // a hide flag. Both live in .bss and are filled by dynamic initializers in the retail
