@@ -17,6 +17,7 @@
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/map/TMapUberPicture.h"

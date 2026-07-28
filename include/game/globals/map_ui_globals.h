@@ -7,6 +7,9 @@
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
 
+// Most recently clicked strategic-map tile.
+extern int g_lastClickedMapTileIndex_006a4608;
+
 // Scratch remap from pre-existing city-region id to compact id. The load-map form of
 // TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders clears all 256 entries to -1 before populating it.
 extern int g_cityRegionIdRemapTable_006a3498[0x100];

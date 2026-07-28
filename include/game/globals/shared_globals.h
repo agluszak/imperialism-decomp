@@ -23,8 +23,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_tags_common.h"
 
-extern TInfoBarText* g_pCursorControlPanel;
-
 // USmallViews.cpp shared empty-text pointer. The original stores a pointer to
 // g_szEmptyString at 0x00662b90 and constructs transient CString values from it in
 // TArmyInfoView and the strategic toolbar text-refresh paths.
@@ -52,24 +50,11 @@ extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 // the factory bodies read at 0x6a13e8 is this object's m_pNodeTail (i.e. GetTail()).
 extern CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
-extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
-
-// Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
-extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
-
-extern TLanguageMgr* g_pLanguageMgr;
-
-extern int g_lastClickedMapTileIndex_006a4608;
-
-extern int g_localizationAudioSlotCursor_006a60f8;
-
 extern char* g_pszDescriptorDefaultName_00653300;
 
 extern char g_szUiCloseParen_006973C8[];
 
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
-
-extern TApplication* g_pApplication;
 
 // Map-context flavor-text string pool (see global_data_tables.cpp).
 extern char s_szSpaceSeparator_00695794[];
