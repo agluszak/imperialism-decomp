@@ -14,10 +14,10 @@ void LoadGameFlow::Start(RuntimeScenario& scenario) {
   phase = kOpenFixture;
   checkpoint = kRuntimeNoCheckpoint;
   scenario.EnterFlowPhase("loading_saved_game", "open_saved_game_fixture");
-  scenario.RequestScenarioTick();
+  scenario.ContinueAfterAction();
 }
 
-RuntimeFlowStatus LoadGameFlow::Tick(RuntimeScenario& scenario) {
+RuntimeFlowStatus LoadGameFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kOpenFixture) {
     CString fixturePath(scenario.FixturePath());
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(fixturePath) == 0) {
@@ -26,7 +26,7 @@ RuntimeFlowStatus LoadGameFlow::Tick(RuntimeScenario& scenario) {
     }
     phase = kWaitForMap;
     scenario.EnterFlowPhase("waiting_for_loaded_map", "opened_saved_game_fixture");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
   if (phase == kWaitForMap) {
@@ -36,7 +36,7 @@ RuntimeFlowStatus LoadGameFlow::Tick(RuntimeScenario& scenario) {
     TView* mainView = scenario.CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      scenario.WaitForScenarioTick("\"loaded game did not reach the combined strategic map\"");
+      scenario.AwaitUiChange("\"loaded game did not reach the combined strategic map\"");
       return kRuntimeFlowRunning;
     }
     if (g_pGlobalMapState == 0 || g_pSimMgr->activeNationSlot < 0 ||

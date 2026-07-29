@@ -50,7 +50,7 @@ public:
     SaveAndReload();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     WaitForLoadedMap();
   }
 
@@ -91,7 +91,7 @@ private:
 
     phase = kWaitForLoadedMap;
     EnterScenarioStep("waiting_for_loaded_map", "opened_saved_game");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   // Header + length only: cheap, and enough to separate "the writer produced nonsense"
@@ -133,7 +133,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"the reloaded game did not reach the combined strategic map\"");
+      AwaitUiChange("\"the reloaded game did not reach the combined strategic map\"");
       return;
     }
     if (g_pGlobalMapState == 0) {

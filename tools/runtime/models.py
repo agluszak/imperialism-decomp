@@ -16,7 +16,6 @@ class RunConfig:
     run_dir: Path
     seed: int
     timeout_seconds: float
-    phase_timeout_ms: int
     use_gdb: bool
     winedebug: str | None = None
     wine_log_name: str = "wine.log"
@@ -53,7 +52,6 @@ class HostResult:
     run_id: str | None = None
     seed: int | None = None
     timeout_seconds: float | None = None
-    phase_timeout_ms: int | None = None
 
     def to_json(self) -> JsonObject:
         result: JsonObject = {
@@ -87,7 +85,6 @@ class HostResult:
             "run_id": self.run_id,
             "seed": self.seed,
             "timeout_seconds": self.timeout_seconds,
-            "phase_timeout_ms": self.phase_timeout_ms,
         }
         result.update({key: value for key, value in optional.items() if value is not None})
         return result
@@ -100,7 +97,6 @@ class HostResult:
                 "run_id": run_id,
                 "seed": config.seed,
                 "timeout_seconds": config.timeout_seconds,
-                "phase_timeout_ms": config.phase_timeout_ms,
             }
         )
 

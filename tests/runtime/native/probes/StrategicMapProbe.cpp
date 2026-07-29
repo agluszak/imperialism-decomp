@@ -129,7 +129,8 @@ bool StrategicMapProbe::VerifyScrolling(TMapUberPicture* mapView, CString& failu
     failure = "\"combined map has no scrollable map dialog\"";
     return false;
   }
-  g_MapInteractionPreviewPoint_006a3370 = CPoint(0, 0);
+  g_MapInteractionPreviewPoint_006a3370 =
+      CPoint(0, 0); // RUNTIME_COORDINATE_EXPLAINED: reset production preview geometry
   if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
     mapDialog->SetMapDialogCellCoordinatesAndRefresh(0x6b, 0, 0);
     mapView->Scroll(4);

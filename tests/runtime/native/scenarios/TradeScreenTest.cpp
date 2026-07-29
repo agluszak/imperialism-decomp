@@ -24,6 +24,7 @@
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TSidewaysArrow.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_diplomacy.h"
@@ -59,10 +60,10 @@ public:
   void OnMapReadyWithoutCapitalSelection() override {
     phase = kActivateDiplomacyScreen;
     EnterScenarioStep("activating_diplomacy_before_trade", "easy_combined_map_ready_for_diplomacy");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateDiplomacyScreen) {
       ActivateDiplomacyScreen();
     } else if (phase == kWaitForDiplomacyScreen) {
@@ -150,75 +151,73 @@ private:
   }
 
   void ActivateDiplomacyScreen() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before declaring war\"");
+      AwaitUiChange("\"combined map was not idle before declaring war\"");
       return;
     }
     phase = kWaitForDiplomacyScreen;
     EnterScenarioStep("waiting_for_diplomacy_before_trade", "activate_diplomacy_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateDiplomacySemantically()) {
+    if (!map.OpenDiplomacy()) {
       FailScenario("\"diplomacy toolbar control is missing or disabled\"");
       return;
     }
-    RequestScenarioTick();
+    Await(kObserveRuntimeBarrier, "\"pre-trade diplomacy transition did not reach its barrier\"");
+    if (!RuntimeUiDriver::PostBarrier()) {
+      FailScenario("\"pre-trade diplomacy barrier could not be posted\"");
+    }
   }
 
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
-      WaitForScenarioTick("\"diplomacy toolbar action did not activate diplomacy orders\"");
+      AwaitUiChange("\"diplomacy toolbar action did not activate diplomacy orders\"");
       return;
     }
     phase = kActivateTreatiesTopic;
     EnterScenarioStep("activating_treaties_before_trade", "click_treaties_action_topic");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateTreatiesTopic() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
-    if (diplomacy == 0 ||
-        !RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagTrtt)) {
-      FailScenario("\"diplomacy treaties action control is missing or cannot receive input\"");
+    if (diplomacy == 0) {
+      FailScenario("\"diplomacy treaties action topic is unavailable\"");
       return;
     }
+    diplomacy->ChangeSelectedActionTopic(1);
     phase = kSelectWarAction;
     EnterScenarioStep("selecting_war_before_trade", "click_declare_war_action");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void SelectWarAction() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 || diplomacy->RuntimeActionTopicIndex() != 1) {
-      WaitForScenarioTick("\"diplomacy treaties action did not become active\"");
+      AwaitUiChange("\"diplomacy treaties action did not become active\"");
       return;
     }
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagScr0 + 4)) {
+    if (!RuntimeUiDriver::Activate(
+            diplomacy, RuntimeControlSelector(kControlTagScr0 + 4, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"declare-war action is missing or cannot receive input\"");
       return;
     }
     phase = kDeclareWar;
     EnterScenarioStep("declaring_war_before_trade", "click_valid_war_target_nation");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void DeclareWar() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 || diplomacy->actionCodeBC != kDipActionDeclareWar) {
-      WaitForScenarioTick("\"declare-war action did not become active\"");
+      AwaitUiChange("\"declare-war action did not become active\"");
       return;
     }
     const short activeNation = g_pSimMgr->GetActiveNationId();
-    CPoint point;
     for (short nation = 0; nation < 7; ++nation) {
       if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0 &&
-          diplomacy->RuntimeGetNationSelectionPoint(nation, &point) &&
           g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               activeNation, nation, kDipActionDeclareWar)) {
         warTargetNation = nation;
@@ -227,18 +226,15 @@ private:
     }
     TGreatPower* sourceNation = g_apNationStates[activeNation];
     if (warTargetNation < 0 || sourceNation == 0 ||
-        !diplomacy->RuntimeGetNationSelectionPoint(warTargetNation, &point)) {
+        g_apTerrainTypeDescriptorTable[warTargetNation] == 0) {
       FailScenario("\"diplomacy map has no valid major-nation war target\"");
       return;
     }
     warPolicyBeforeAction = sourceNation->diplomacyPolicyByNation[warTargetNation];
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
-      FailScenario("\"declare-war target could not receive native input\"");
-      return;
-    }
+    diplomacy->ActivateNation(warTargetNation);
     phase = kVerifyWarOrder;
     EnterScenarioStep("verifying_war_before_trade", "verify_declare_war_policy");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyWarOrder() {
@@ -254,42 +250,39 @@ private:
     }
     phase = kReturnFromDiplomacy;
     EnterScenarioStep("returning_from_diplomacy_before_trade", "click_diplomacy_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnFromDiplomacy() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 ||
-        !RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagEnd)) {
+        !RuntimeUiDriver::Activate(
+            diplomacy, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"diplomacy back control is missing or cannot receive native input\"");
       return;
     }
     phase = kWaitForMapBeforeTrade;
     EnterScenarioStep("waiting_for_map_before_trade", "activate_diplomacy_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMapBeforeTrade() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"diplomacy back control did not restore the strategic map\"");
+      AwaitUiChange("\"diplomacy back control did not restore the strategic map\"");
       return;
     }
     phase = kActivateTradeScreen;
     EnterScenarioStep("activating_trade_screen", "declared_war_and_returned_to_map");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateTradeScreen() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before opening the trade screen\"");
+      AwaitUiChange("\"combined map was not idle before opening the trade screen\"");
       return;
     }
     if (g_pUiAnimator == 0 || g_pUiAnimator->registryList24 == 0) {
@@ -308,18 +301,18 @@ private:
     phase = kWaitForTradeScreen;
     EnterScenarioStep("waiting_for_trade_screen", "activate_trade_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateTradeSemantically()) {
+    if (!map.OpenTrade()) {
       FailScenario("\"trade toolbar control is missing or disabled\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForTradeScreen() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
-      WaitForScenarioTick("\"trade toolbar action did not activate the Board of Trade\"");
+      AwaitUiChange("\"trade toolbar action did not activate the Board of Trade\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -346,10 +339,6 @@ private:
       FailScenario("\"Board of Trade dynamic text was rendered with an opaque background\"");
       return;
     }
-    if (ScenarioPhaseElapsedMs() < 1000) {
-      RequestScenarioTick();
-      return;
-    }
     if (HoldAtScenarioScreen("trade")) {
       RedrawWindow(mainView->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
       Pass();
@@ -357,7 +346,7 @@ private:
     }
     phase = kActivateBid;
     EnterScenarioStep("activating_trade_bid", "select_first_actionable_trade_bid");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateBid() {
@@ -381,17 +370,21 @@ private:
       }
     }
     if (bid == 0) {
-      FailScenario("\"Board of Trade has no inactive actionable bid control\"");
+      Await(kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted,
+            "\"Board of Trade has no inactive actionable bid control yet\"");
       return;
     }
     initialBidBitmap = bid->glyphBase84;
     phase = kVerifyBid;
-    EnterScenarioStep("verifying_trade_bid", "click_first_trade_bid_control");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(bid)) {
-      FailScenario("\"Board of Trade bid control has no native host\"");
+    EnterScenarioStep("verifying_trade_bid", "activate_first_trade_bid");
+    if (RuntimeUiDriver::RequireControl(
+            bid, RuntimeControlSelector(bid->controlTag, RUNTIME_CLASS(TTradeOrderPicture)), 0) ==
+        0) {
+      FailScenario("\"Board of Trade bid control is not ready for semantic activation\"");
       return;
     }
-    RequestScenarioTick();
+    bid->ActivateOrderSemantically();
+    ContinueAfterAction();
   }
 
   void VerifyBid() {
@@ -409,7 +402,7 @@ private:
     }
     phase = kActivateOffer;
     EnterScenarioStep("activating_trade_offer", "select_actionable_trade_offer");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateOffer() {
@@ -436,7 +429,8 @@ private:
       }
     }
     if (offer == 0) {
-      FailScenario("\"Board of Trade has no inactive actionable offer control\"");
+      Await(kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted,
+            "\"Board of Trade has no inactive actionable offer control yet\"");
       return;
     }
 
@@ -459,12 +453,15 @@ private:
     sellBar->auxValueA = static_cast<short>(testCapacity);
 
     phase = kVerifyOffer;
-    EnterScenarioStep("verifying_trade_offer", "click_trade_offer_control");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(offer)) {
-      FailScenario("\"Board of Trade offer control has no native host\"");
+    EnterScenarioStep("verifying_trade_offer", "activate_trade_offer");
+    if (RuntimeUiDriver::RequireControl(
+            offer, RuntimeControlSelector(offer->controlTag, RUNTIME_CLASS(TTradeOrderPicture)),
+            0) == 0) {
+      FailScenario("\"Board of Trade offer control is not ready for semantic activation\"");
       return;
     }
-    RequestScenarioTick();
+    offer->ActivateOrderSemantically();
+    ContinueAfterAction();
   }
 
   bool ResolveSellControls(TNumberText** sellOut, TAmtBar** barOut, TView** leftOut,
@@ -509,12 +506,15 @@ private:
     }
 
     phase = kVerifyDecrease;
-    EnterScenarioStep("decreasing_trade_sell_amount", "click_trade_sell_left_arrow");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(left)) {
-      FailScenario("\"trade sell decrease control has no native host\"");
+    EnterScenarioStep("decreasing_trade_sell_amount", "decrease_trade_sell_amount");
+    if (RuntimeUiDriver::RequireControl(
+            left, RuntimeControlSelector(left->controlTag, RUNTIME_CLASS(TSidewaysArrow)), 0) ==
+        0) {
+      FailScenario("\"trade sell decrease control is not ready\"");
       return;
     }
-    RequestScenarioTick();
+    selectedSellRow->HandleEvent(0x65, left, 0);
+    ContinueAfterAction();
   }
 
   void VerifyDecrease() {
@@ -538,12 +538,15 @@ private:
     }
 
     phase = kVerifyIncrease;
-    EnterScenarioStep("increasing_trade_sell_amount", "click_trade_sell_right_arrow");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(right)) {
-      FailScenario("\"trade sell increase control has no native host\"");
+    EnterScenarioStep("increasing_trade_sell_amount", "increase_trade_sell_amount");
+    if (RuntimeUiDriver::RequireControl(
+            right, RuntimeControlSelector(right->controlTag, RUNTIME_CLASS(TSidewaysArrow)), 0) ==
+        0) {
+      FailScenario("\"trade sell increase control is not ready\"");
       return;
     }
-    RequestScenarioTick();
+    selectedSellRow->HandleEvent(100, right, 0);
+    ContinueAfterAction();
   }
 
   void VerifyIncrease() {
@@ -559,7 +562,7 @@ private:
     }
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_trade_screen", "click_trade_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnToMap() {
@@ -570,18 +573,19 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_trade", "activate_trade_end_control");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"Board of Trade back control is missing or cannot receive native input\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (offerAcceptanceCompleted && g_pViewMgr->currentTurnEventCode == kTurnEventDealBook) {
       g_pSimMgr->StartNextPhase();
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (offerAcceptanceCompleted && AdvanceNewspaperIfNeeded()) {
@@ -589,7 +593,7 @@ private:
     }
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      WaitForScenarioTick("\"Board of Trade back control did not restore the strategic map\"");
+      AwaitUiChange("\"Board of Trade back control did not restore the strategic map\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -615,7 +619,7 @@ private:
       }
       phase = kWaitForOfferRegression;
       EnterScenarioStep("verifying_offer_sheet_bookmark", "construct_offer_sheet_for_bookmark");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (!offerAcceptanceCompleted) {
@@ -630,7 +634,7 @@ private:
       }
       phase = kWaitForOfferAcceptance;
       EnterScenarioStep("accepting_final_trade_offer", "construct_final_trade_offer");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
@@ -638,21 +642,21 @@ private:
     leftDealBook = false;
     ResetNewspaperAdvance();
     StrategicMapDriver map(mainView);
-    if (!map.EndTurnThroughNativeMessages()) {
+    if (!map.EndTurn()) {
       FailScenario("\"end-turn control is missing after war and trade orders\"");
       return;
     }
     phase = kWaitForEndTurn;
     EnterScenarioStep("handling_diplomatic_offers_after_trade",
                       "end_turn_after_war_sell_and_bid_orders");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForOfferAcceptance() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-      WaitForScenarioTick("\"final deterministic trade offer is not active\"");
+      AwaitUiChange("\"final deterministic trade offer is not active\"");
       return;
     }
     if (!offerAcceptancePosed) {
@@ -661,27 +665,25 @@ private:
                                                     kResourceFood);
       offerAcceptancePosed = true;
       EnterScenarioStep("presenting_final_trade_offer", "pose_final_trade_offer");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
-    TView* accept = mainView->ResolveControlByTag(kControlTagAcce);
-    if (accept == 0 || accept->IsActionable() == 0 ||
-        !RuntimeUiDriver::ClickViewThroughNativeMessages(accept)) {
-      FailScenario(
-          "\"final deterministic trade offer could not be accepted through native input\"");
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagAcce, RUNTIME_CLASS(TControl)))) {
+      FailScenario("\"final deterministic trade offer could not be accepted semantically\"");
       return;
     }
     offerAcceptanceCompleted = true;
     phase = kWaitForMap;
     EnterScenarioStep("returning_to_map_after_offer_accept", "accept_final_trade_offer");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForOfferRegression() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-      WaitForScenarioTick("\"deterministic offer sheet is not active\"");
+      AwaitUiChange("\"deterministic offer sheet is not active\"");
       return;
     }
     if (!offerRegressionPosed) {
@@ -690,7 +692,7 @@ private:
                                                     kResourceFood);
       offerRegressionPosed = true;
       EnterScenarioStep("presenting_offer_sheet_regression", "pose_retail_offer_sheet_action");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     TDropShadowText* season =
@@ -726,16 +728,13 @@ private:
     }
     if (offerBookmarkRow < tabControl->tabCount) {
       const short row = offerBookmarkRow;
-      if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(
-              tabControl, tabControl->frameWidth34 / 2,
-              row * tabControl->rowHeightPixels + tabControl->rowHeightPixels / 2) ||
-          tabControl->selectedRow != row) {
+      if (!tabControl->ActivateRow(row) || tabControl->selectedRow != row) {
         FailScenario("\"offer-sheet bookmark could not be selected through native input\"");
         return;
       }
       ++offerBookmarkRow;
       EnterScenarioStep("verifying_offer_sheet_bookmarks", "click_offer_sheet_bookmark");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     offerRegressionCompleted = true;
@@ -743,14 +742,14 @@ private:
                                   g_pSimMgr->GetActiveNationId());
     phase = kWaitForMap;
     EnterScenarioStep("returning_to_map_after_offer_bookmark", "click_offer_sheet_bookmark");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForEndTurn() {
     if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-        WaitForScenarioTick("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        AwaitUiChange("\"offer-sheet event did not construct TOfferDeskPicture\"");
         return;
       }
       if (!verifiedOfferPresentation) {
@@ -760,12 +759,14 @@ private:
             static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
         CString displayedOffer;
         if (offerText == 0 || season == 0) {
-          FailScenario("\"offer sheet is missing its offer or season text control\"");
+          Await(kObserveUiTreeBuilt | kObservePaintCompleted | kObserveGameStateChanged,
+                "\"offer sheet is missing its offer or season text control yet\"");
           return;
         }
         offerText->CopyTextTo(&displayedOffer);
         if (displayedOffer.GetLength() == 0 || season->textStyle78.textColor == 0) {
-          FailScenario("\"offer sheet did not present offer text with a visible season label\"");
+          Await(kObservePaintCompleted | kObserveGameStateChanged,
+                "\"offer sheet has not presented offer text with a visible season label yet\"");
           return;
         }
         verifiedOfferPresentation = true;
@@ -773,31 +774,33 @@ private:
       if (!exercisedOfferBookmark) {
         TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
         if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0 ||
-            !RuntimeUiDriver::ClickViewThroughNativeMessages(tabs)) {
+            !static_cast<TDealTabControl*>(tabs)->ActivateRow(0)) {
           FailScenario("\"offer-sheet bookmark control could not receive native input\"");
           return;
         }
         exercisedOfferBookmark = true;
         EnterScenarioStep("switching_offer_sheet_bookmark", "click_offer_sheet_bookmark");
-        RequestScenarioTick();
+        ContinueAfterAction();
         return;
       }
       TView* reject = mainView->ResolveControlByTag(kControlTagReje);
-      if (reject != 0 && reject->IsActionable() != 0) {
-        if (!RuntimeUiDriver::ClickViewThroughNativeMessages(reject)) {
-          FailScenario("\"diplomatic-offer Reject control could not receive native input\"");
+      if (reject != 0) {
+        if (!RuntimeUiDriver::Activate(
+                reject, RuntimeControlSelector(reject->controlTag, RUNTIME_CLASS(TControl)))) {
+          Await(kObserveGameStateChanged | kObservePaintCompleted,
+                "\"diplomatic-offer Reject control is not ready yet\"");
           return;
         }
         ++handledOffers;
         EnterScenarioStep("advancing_after_diplomatic_offer", "reject_end_turn_diplomatic_offer");
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (AdvanceNewspaperIfNeeded()) {
@@ -807,7 +810,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      WaitForScenarioTick("\"war and trade end turn did not return to the strategic map\"");
+      AwaitUiChange("\"war and trade end turn did not return to the strategic map\"");
       return;
     }
     if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {

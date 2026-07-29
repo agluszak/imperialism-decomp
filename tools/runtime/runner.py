@@ -60,7 +60,6 @@ class RunRequest:
     name: str
     seed: int
     timeout_seconds: float
-    phase_timeout_ms: int
     rerun_seh: bool
     gdb_first: bool
     no_gdb: bool
@@ -311,7 +310,6 @@ class RuntimeRunner:
             run_dir=run_dir,
             seed=request.seed,
             timeout_seconds=request.timeout_seconds,
-            phase_timeout_ms=request.phase_timeout_ms,
             use_gdb=use_gdb,
             winedebug=winedebug,
             wine_log_name=wine_log_name,

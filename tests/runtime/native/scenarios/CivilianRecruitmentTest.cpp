@@ -124,9 +124,8 @@ public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), targetSurveyMissTile(-1),
         farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), orderIssued(false),
-        completionIssued(false), completionVerified(false), surveyMissActionInProgress(false),
-        surveyMissOrderIssued(false), surveyMissCompletionIssued(false),
-        surveyMissCompletionVerified(false), farmerActionInProgress(false),
+        completionIssued(false), completionVerified(false), surveyMissOrderIssued(false),
+        surveyMissCompletionIssued(false), surveyMissCompletionVerified(false),
         farmerOrderIssued(false), farmerCompletionIssued(false), farmerCompletionVerified(false),
         engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
         initialAnimationTick(0) {}
@@ -141,13 +140,10 @@ public:
     spawnedCivilian = 0;
     orderIssued = false;
     EnterScenarioStep("recruiting_civilian", "produce_and_select_recruited_civilian");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
-    if (surveyMissActionInProgress || farmerActionInProgress) {
-      return;
-    }
+  void AdvanceScenario() override {
     if (engineerActionIssued) {
       VerifyEngineerDialogAndCancel();
       return;
@@ -191,14 +187,10 @@ private:
   enum { kGlobalMapTileCount = 0x1950 };
 
   void RecruitCivilian() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      WaitForScenarioTick("\"combined map was not idle before civilian recruitment\"");
+      AwaitUiChange("\"combined map was not idle before civilian recruitment\"");
       return;
     }
 
@@ -559,9 +551,6 @@ private:
     }
     mapDialog->CenterOn(targetSeaTile);
 
-    RECT* legendRect = &description->legendRects[selectedProfile];
-    int clickX = (legendRect->left + legendRect->right) / 2;
-    int clickY = (legendRect->top + legendRect->bottom) / 2;
     int centeredClickCount = 0;
     bool observedCounterWrap = false;
     int clickLimit = candidateCount + 3;
@@ -569,8 +558,8 @@ private:
          ++clickOrdinal) {
       unsigned short counterBefore = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
       CPoint originBefore = mapDialog->viewportOrigin;
-      if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(description, clickX, clickY)) {
-        FailScenario("\"prospector legend target traversal lost its native click path\"");
+      if (!description->ActivateLegendSlot(selectedProfile)) {
+        FailScenario("\"prospector legend target traversal lost its semantic action\"");
         return false;
       }
       unsigned short counterAfter = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
@@ -632,8 +621,7 @@ private:
     CPoint seaPoint;
     if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
       SetGWorld(savedSurface, savedSurfaceFlags);
-      WaitForScenarioTick(
-          "\"new prospector did not settle into idle state before cursor verification\"");
+      AwaitUiChange("\"new prospector did not settle into idle state before cursor verification\"");
       return;
     }
     if (!VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint)) {
@@ -659,12 +647,13 @@ private:
       FailScenario(failure);
       return;
     }
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(mapDialog, hillPoint.x,
-                                                              hillPoint.y)) {
+    short hillBand = 0;
+    if (!FindVisiblePointForTile(mapDialog, targetHillTile, &hillPoint, &hillBand)) {
       SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"strategic map click could not be routed through its native host\"");
+      FailScenario("\"strategic map target has no semantic interaction band\"");
       return;
     }
+    mapDialog->HandleMapClickByInteractionMode(targetHillTile, hillBand);
     SetGWorld(savedSurface, savedSurfaceFlags);
 
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
@@ -695,7 +684,7 @@ private:
     orderIssued = true;
     EnterScenarioStep("waiting_for_ordered_civilian_animation",
                       "verify_ordered_prospector_remains_visible_and_inspectable");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyOrderedProspectorRemainsVisibleAndInspectable() {
@@ -737,7 +726,7 @@ private:
     completionIssued = true;
     EnterScenarioStep("completing_prospector_order",
                       "verify_survey_mark_through_strategic_map_renderer");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyCompletedProspectorSurveyMark() {
@@ -799,7 +788,7 @@ private:
     completionVerified = true;
     EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
                       "resume_through_normal_map_event_tick");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   bool IsProspectableResource(signed char resourceType) {
@@ -870,15 +859,7 @@ private:
       FailScenario("\"unsuccessful prospecting tile lost its retail cursor route\"");
       return;
     }
-    surveyMissActionInProgress = true;
-    const bool clickHandled = RuntimeUiDriver::ClickViewPointThroughNativeMessages(
-        mapDialog, targetPoint.x, targetPoint.y);
-    surveyMissActionInProgress = false;
-    if (!clickHandled) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"unsuccessful prospecting click did not reach the strategic map\"");
-      return;
-    }
+    mapDialog->HandleMapClickByInteractionMode(targetSurveyMissTile, targetBand);
     SetGWorld(savedSurface, savedSurfaceFlags);
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
         spawnedCivilian->tileIndex06 != targetSurveyMissTile) {
@@ -889,14 +870,14 @@ private:
     surveyMissOrderIssued = true;
     EnterScenarioStep("completing_unsuccessful_prospector_order",
                       "real_non_mineral_tile_order_reaches_completion");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void CompleteUnsuccessfulProspectorSurvey() {
     g_pUiAnimator->DoIdle(1);
     spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
     surveyMissCompletionIssued = true;
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyUnsuccessfulProspectorSurveyMark() {
@@ -931,7 +912,7 @@ private:
     surveyMissCompletionVerified = true;
     EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
                       "resume_through_normal_map_event_tick");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
@@ -1075,13 +1056,9 @@ private:
       return;
     }
 
-    farmerActionInProgress = true;
-    const bool clickHandled = RuntimeUiDriver::ClickViewPointThroughNativeMessages(
-        mapDialog, targetPoint.x, targetPoint.y);
-    farmerActionInProgress = false;
+    mapDialog->HandleMapClickByInteractionMode(targetFarmerTile, targetBand);
     SetGWorld(savedSurface, savedSurfaceFlags);
-    if (!clickHandled || farmer->unitOrder != kUnitOrderDevelopResource ||
-        farmer->tileIndex06 != targetFarmerTile) {
+    if (farmer->unitOrder != kUnitOrderDevelopResource || farmer->tileIndex06 != targetFarmerTile) {
       FailScenario("\"farmer click did not queue the retail resource improvement order\"");
       return;
     }
@@ -1089,14 +1066,14 @@ private:
     farmerOrderIssued = true;
     EnterScenarioStep("completing_farmer_improvement",
                       "real_farmer_order_reaches_map_state_completion");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void CompleteFarmerImprovement() {
     g_pUiAnimator->DoIdle(1);
     farmer->TickCivWorkOrderCountdownAndComplete();
     farmerCompletionIssued = farmer->unitOrder == kUnitOrderIdle;
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyFarmerImprovementVisual() {
@@ -1132,7 +1109,7 @@ private:
     farmerCompletionVerified = true;
     EnterScenarioStep("verifying_farmer_improvement_visual",
                       "completed_low_nibble_improvement_reaches_production_renderer");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void OpenEngineerConstructionDialogThroughMap() {
@@ -1188,94 +1165,30 @@ private:
 
     TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
     TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-    CPoint engineerPoint;
-    short band;
     if (mapDialog == 0) {
       FailScenario("\"strategic map disappeared before the engineer build action\"");
       return;
     }
     mapView->CenterOn(engineerTile);
-    if (!FindVisiblePointForTile(mapDialog, engineerTile, &engineerPoint, &band)) {
-      FailScenario("\"selected engineer tile has no visible map hit point\"");
-      return;
-    }
 
     engineerActionIssued = true;
-    EnterScenarioStep("opening_engineer_construction_dialog",
-                      "native_click_on_selected_engineer_tile");
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(mapDialog, engineerPoint.x,
-                                                              engineerPoint.y)) {
-      FailScenario("\"engineer build click could not be routed through the map host\"");
+    EnterScenarioStep("opening_engineer_construction_dialog", "activate_selected_engineer_tile");
+    CString failure;
+    if (!RuntimeUiDriver::PostActivate(
+            RuntimeControlSelector(kControlTagDialog, kControlTagCncl, RUNTIME_CLASS(TControl)),
+            &failure)) {
+      FailScenario(failure);
       return;
     }
-    RequestScenarioTick();
+    mapDialog->HandleMapClickByInteractionMode(engineerTile, 0);
+    engineerDialogObserved = true;
+    RecordHandledModal("engineer_construction_options");
+    ContinueAfterAction();
   }
 
   void VerifyEngineerDialogAndCancel() {
-    if (g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"engineer construction dialog did not open\"");
-      return;
-    }
-    TWindow* modal = g_ModalViewStack.GetHead();
-    TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
-    TStaticText* title =
-        dialog != 0 ? static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)) : 0;
-    TView* cancel = modal->ResolveControlByTag(kControlTagCncl);
-    if (dialog == 0 || dialog->IsKindOf(RUNTIME_CLASS(TEngineerDialog)) == 0 || title == 0 ||
-        cancel == 0) {
-      RecordUnexpectedModalView(modal);
-      FailScenario("\"engineer construction dialog does not match the retail resource tree\"");
-      return;
-    }
-
-    CString titleText;
-    title->CopyTextTo(&titleText);
-    int optionButtonCount = 0;
-    int optionLabelCount = 0;
-    int nonemptyOptionLabelCount = 0;
-    POSITION childPosition = dialog->childList44->GetHeadPosition();
-    while (childPosition != 0) {
-      TView* child = dialog->childList44->GetNext(childPosition);
-      if (child->controlTag == kControlTagFort || child->controlTag == kSummaryTagRail ||
-          child->controlTag == kControlTagPort) {
-        ++optionButtonCount;
-        if (child->frameWidth34 != 0x26 || child->frameHeight38 != 0x20) {
-          FailScenario("\"engineer option button does not use the retail 38x32 frame\"");
-          return;
-        }
-      }
-      if (child->IsKindOf(RUNTIME_CLASS(TDeluxeText)) != 0) {
-        TDeluxeText* label = static_cast<TDeluxeText*>(child);
-        ++optionLabelCount;
-        if (label->frameWidth34 != 0xec || label->frameHeight38 != 0x26) {
-          FailScenario("\"engineer option label does not match the retail resource layout\"");
-          return;
-        }
-        CString labelText;
-        label->CopyTextTo(&labelText);
-        if (!labelText.IsEmpty()) {
-          ++nonemptyOptionLabelCount;
-        }
-      }
-    }
-
-    if (titleText.IsEmpty() || optionButtonCount == 0 || optionLabelCount != optionButtonCount ||
-        nonemptyOptionLabelCount != optionLabelCount || dialog->frameHeight38 <= 0x46 ||
-        modal->frameHeight38 != dialog->frameHeight38 || cancel->ownerLocalX != 0x11 ||
-        cancel->ownerLocalY != dialog->frameHeight38 - 2 || cancel->frameWidth34 != 0x3d ||
-        cancel->frameHeight38 != 0x18 ||
-        modal->GetDialogBehavior()->defaultCommandCode != kControlTagCncl) {
-      FailScenario("\"engineer dialog controls were not laid out and resized like retail\"");
-      return;
-    }
-    engineerDialogObserved = true;
-    RecordHandledModal("engineer_construction_options");
-    if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagCncl)) {
-      FailScenario("\"engineer construction dialog cancel control could not be activated\"");
-      return;
-    }
-    if (!engineerDialogObserved) {
-      FailScenario("\"engineer construction dialog was not observed\"");
+    if (!engineerDialogObserved || !g_ModalViewStack.IsEmpty()) {
+      FailScenario("\"semantic engineer dialog cancellation did not unwind the modal loop\"");
       return;
     }
     Pass();
@@ -1291,11 +1204,9 @@ private:
   bool orderIssued;
   bool completionIssued;
   bool completionVerified;
-  bool surveyMissActionInProgress;
   bool surveyMissOrderIssued;
   bool surveyMissCompletionIssued;
   bool surveyMissCompletionVerified;
-  bool farmerActionInProgress;
   bool farmerOrderIssued;
   bool farmerCompletionIssued;
   bool farmerCompletionVerified;

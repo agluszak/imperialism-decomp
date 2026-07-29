@@ -9,37 +9,27 @@
 
 StrategicMapDriver::StrategicMapDriver(TView* view) : root(view) {}
 
-bool StrategicMapDriver::EndTurnThroughNativeMessages() {
-  TControl* done =
-      root != 0 ? static_cast<TControl*>(root->ResolveControlByTag(kControlTagDoneCaps)) : 0;
-  if (done == 0) {
-    return false;
-  }
-  return RuntimeUiDriver::ClickViewThroughNativeMessages(done);
+bool StrategicMapDriver::EndTurn() {
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagDoneCaps, RUNTIME_CLASS(TControl)));
 }
 
-bool StrategicMapDriver::ActivateCitySemantically() {
-  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagCity);
+bool StrategicMapDriver::OpenCity() {
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagTool, kControlTagCity, RUNTIME_CLASS(TControl)));
 }
 
 bool StrategicMapDriver::ActivateTransport() {
-  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  TControl* transport =
-      toolbar != 0 ? static_cast<TControl*>(toolbar->ResolveControlByTag(kControlTagTran)) : 0;
-  if (transport == 0 || transport->IsActionable() == 0) {
-    return false;
-  }
-  transport->HandleEvent(transport->GetEventNumber(), transport, 0);
-  return true;
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagTool, kControlTagTran, RUNTIME_CLASS(TControl)));
 }
 
-bool StrategicMapDriver::ActivateDiplomacySemantically() {
-  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagDipl);
+bool StrategicMapDriver::OpenDiplomacy() {
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagTool, kControlTagDipl, RUNTIME_CLASS(TControl)));
 }
 
-bool StrategicMapDriver::ActivateTradeSemantically() {
-  TView* toolbar = root != 0 ? root->ResolveControlByTag(kControlTagTool) : 0;
-  return RuntimeUiDriver::ActivateControlSemantically(toolbar, kControlTagTrad);
+bool StrategicMapDriver::OpenTrade() {
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagTool, kControlTagTrad, RUNTIME_CLASS(TControl)));
 }

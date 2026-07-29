@@ -24,10 +24,10 @@ public:
   void OnMapReadyWithoutCapitalSelection() override {
     phase = kActivateEndTurn;
     EnterScenarioStep("activating_end_turn", "reach_combined_map");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateEndTurn) {
       ActivateEndTurn();
     } else {
@@ -42,20 +42,20 @@ private:
     TView* mainView = CurrentMainView();
     if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 ||
         !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before ending the turn\"");
+      AwaitUiChange("\"combined map was not idle before ending the turn\"");
       return;
     }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
     leftDealBook = false;
     ResetNewspaperAdvance();
     StrategicMapDriver map(mainView);
-    if (!map.EndTurnThroughNativeMessages()) {
+    if (!map.EndTurn()) {
       FailScenario("\"end-turn control is missing\"");
       return;
     }
     phase = kWaitForTurnProcessed;
     EnterScenarioStep("waiting_for_turn_processed", "activate_map_done");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForTurnProcessed() {
@@ -66,7 +66,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (AdvanceNewspaperIfNeeded()) {
@@ -76,7 +76,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      WaitForScenarioTick("\"ended turn did not advance back to the combined map\"");
+      AwaitUiChange("\"ended turn did not advance back to the combined map\"");
       return;
     }
     if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {

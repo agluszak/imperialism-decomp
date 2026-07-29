@@ -37,5 +37,8 @@ public:
 
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
   void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivUnit* selectedOrder);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  bool ActivateLegendSlot(short slotIndex);
+#endif
 };
 ASSERT_SIZE(TCivDescription, 0x170);
