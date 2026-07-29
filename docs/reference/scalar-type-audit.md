@@ -112,8 +112,8 @@ decisions -- including the ones that were measured and reverted -- is
 | --- | --- | --- | --- |
 | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape. |
 | `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return. |
-| `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
-| `src/game/city_ui/TEngineerDialog.cpp:114` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
+| `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
+| `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
 | `src/game/map/TZone.cpp:779` | predicate -> unsigned char | `byte_comparison_of_packed_state` | the second operand of the same byte compare -- the sign test on the packed map-tile action state byte. |
 | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool. |
 | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate). |
@@ -288,8 +288,8 @@ is classified, and a family that stops appearing must be removed.
 | `bd0a5d6bf28d042b` | `nested_integral_cast` | `src/game/ui_screens/TSimMgr.cpp:2450` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `d144e1a86956838b` | `predicate_storage_cast` | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
 | `853e86ea99ed7cf3` | `predicate_storage_cast` | `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
-| `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
-| `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:114` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
+| `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
+| `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `c5705f8f8668f444` | `predicate_storage_cast` | `src/game/map/TZone.cpp:779` | predicate -> unsigned char | `byte_comparison_of_packed_state` | `imperialism-decomp-1uj.99.7` |
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1b59484a1b41425a` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
@@ -352,7 +352,7 @@ is classified, and a family that stops appearing must be removed.
 | `e307df1038057f34` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:490` | policyCode == 500 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `764adde68323ebe6` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:773` | policyCode < 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `37d5f48d83312bd7` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:773` | policyCode > 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `05a5c94c820b5e33` | `raw_discriminant_literal` | `src/game/city_ui/TEngineerDialog.cpp:218` | riverSpriteCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `05a5c94c820b5e33` | `raw_discriminant_literal` | `src/game/city_ui/TEngineerDialog.cpp:220` | riverSpriteCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `60c03fbcbae33de8` | `raw_discriminant_literal` | `src/game/city_ui/TIndustryView.cpp:189` | selectedIndustryUnitTypeA4 > 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
 | `8679af1ccc6ae355` | `raw_discriminant_literal` | `src/game/city_ui/TRailheadDialog.cpp:36` | serializedState0a == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `86787a377211d32e` | `raw_discriminant_literal` | `src/game/city_ui/TShipyardView.cpp:114` | resourceTypeIndex != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |

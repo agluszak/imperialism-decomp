@@ -32,8 +32,10 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_city.h"
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/ui_widgets/TCivToolbar.h"
+#include "game/ui_widgets/TDeluxeText.h"
 
 namespace {
 
@@ -971,11 +973,54 @@ private:
     }
     TWindow* modal = g_ModalViewStack.GetHead();
     TView* dialog = modal->ResolveControlByTag(kControlTagDialog);
-    TView* title = dialog != 0 ? dialog->ResolveControlByTag(kControlTagTitl) : 0;
+    TStaticText* title =
+        dialog != 0 ? static_cast<TStaticText*>(dialog->ResolveControlByTag(kControlTagTitl)) : 0;
+    TView* cancel = modal->ResolveControlByTag(kControlTagCncl);
     if (dialog == 0 || dialog->IsKindOf(RUNTIME_CLASS(TEngineerDialog)) == 0 || title == 0 ||
-        modal->ResolveControlByTag(kControlTagCncl) == 0) {
+        cancel == 0) {
       RecordUnexpectedModalView(modal);
       FailScenario("\"engineer construction dialog does not match the retail resource tree\"");
+      return;
+    }
+
+    CString titleText;
+    title->CopyTextTo(&titleText);
+    int optionButtonCount = 0;
+    int optionLabelCount = 0;
+    int nonemptyOptionLabelCount = 0;
+    POSITION childPosition = dialog->childList44->GetHeadPosition();
+    while (childPosition != 0) {
+      TView* child = dialog->childList44->GetNext(childPosition);
+      if (child->controlTag == kControlTagFort || child->controlTag == kSummaryTagRail ||
+          child->controlTag == kControlTagPort) {
+        ++optionButtonCount;
+        if (child->frameWidth34 != 0x26 || child->frameHeight38 != 0x20) {
+          FailScenario("\"engineer option button does not use the retail 38x32 frame\"");
+          return;
+        }
+      }
+      if (child->IsKindOf(RUNTIME_CLASS(TDeluxeText)) != 0) {
+        TDeluxeText* label = static_cast<TDeluxeText*>(child);
+        ++optionLabelCount;
+        if (label->frameWidth34 != 0xec || label->frameHeight38 != 0x26) {
+          FailScenario("\"engineer option label does not match the retail resource layout\"");
+          return;
+        }
+        CString labelText;
+        label->CopyTextTo(&labelText);
+        if (!labelText.IsEmpty()) {
+          ++nonemptyOptionLabelCount;
+        }
+      }
+    }
+
+    if (titleText.IsEmpty() || optionButtonCount == 0 || optionLabelCount != optionButtonCount ||
+        nonemptyOptionLabelCount != optionLabelCount || dialog->frameHeight38 <= 0x46 ||
+        modal->frameHeight38 != dialog->frameHeight38 || cancel->ownerLocalX != 0x11 ||
+        cancel->ownerLocalY != dialog->frameHeight38 - 2 || cancel->frameWidth34 != 0x3d ||
+        cancel->frameHeight38 != 0x18 ||
+        modal->GetDialogBehavior()->defaultCommandCode != kControlTagCncl) {
+      FailScenario("\"engineer dialog controls were not laid out and resized like retail\"");
       return;
     }
     engineerDialogObserved = true;

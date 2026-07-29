@@ -12,6 +12,8 @@
 #include "game/ui_screens/TSimMgr.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/TStaticText.h"
+#include "game/ui_core/TDialogBehavior.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/ui_screens/TIconBar.h"
@@ -224,6 +226,8 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   }
 
   short layoutY = 0x52;
+  int optionButtonSize[2] = {0x26, 0x20};
+  int optionLabelSize[2] = {0xec, 0x26};
 
   // Fort up/down button: only when the anchor province can still raise its fort level.
   short homeProvIndex = mapState->terrainStateTable[nBuildingSlotId].cityRecordIndex;
@@ -232,49 +236,45 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   if (homeProv->fortLevel03 < fortCap && homeProv->cityTileIndex04 == nBuildingSlotId) {
     TUpDownPictureButton* fortBtn = new TUpDownPictureButton();
     int fortOff[2] = {0x11, 0x29};
-    int fortSize[2] = {0x26, 0xec};
-    fortBtn->IPicture(this, fortOff, fortSize, 5, 5, 0x1c2a);
+    fortBtn->IPicture(this, fortOff, optionButtonSize, 5, 5, 0x1c2a);
     fortBtn->controlTag = IMPERIALISM_FOURCC('f', 'o', 'r', 't');
     fortBtn->SetState(1, 0);
     fortBtn->eventNumber60 = 0x22;
 
     TDeluxeText* fortLabel = new TDeluxeText();
     int fortLabelOff[2] = {0x54, 0x28};
-    int fortLabelSize[2] = {0, 0};
     RECT fortLabelInset = {0, 0, 0, 0};
-    TextStyle fortLabelStyle;
-    fortLabel->IDeluxeText(this, fortLabelOff, fortLabelSize, &fortLabelInset, &fortLabelStyle, -2);
-    fortLabel->BuildCityViewProductionControls_Impl(0x1c20, static_cast<short>(layoutY + 3));
+    fortLabel->IDeluxeText(this, fortLabelOff, optionLabelSize, &fortLabelInset, &titleStyle, -2);
+    fortLabel->BuildCityViewProductionControls_Impl(0x1c20,
+                                                    static_cast<short>(homeProv->fortLevel03 + 3));
     fortLabel->CenterVertically(0);
   }
 
   // Rail up/down button plus the accumulated fort-production TIconBar rows.
   if (fortAllowed != 0 && productionAllowed != 0) {
-    layoutY = static_cast<short>(layoutY + 0x2a);
     TUpDownPictureButton* railBtn = new TUpDownPictureButton();
     int railOff[2] = {0x11, layoutY + 1};
-    int railSize[2] = {0, 0};
-    railBtn->IPicture(this, railOff, railSize, 5, 5, 0x1c2c);
+    railBtn->IPicture(this, railOff, optionButtonSize, 5, 5, 0x1c2c);
     railBtn->controlTag = IMPERIALISM_FOURCC('r', 'a', 'i', 'l');
     railBtn->SetState(1, 0);
     railBtn->eventNumber60 = 0x22;
 
     TDeluxeText* railLabel = new TDeluxeText();
     int railLabelOff[2] = {0x54, layoutY};
-    int railLabelSize[2] = {0, 0};
     RECT railLabelInset = {0, 0, 0, 0};
-    TextStyle railLabelStyle;
-    railLabel->IDeluxeText(this, railLabelOff, railLabelSize, &railLabelInset, &railLabelStyle, -2);
-    railLabel->BuildCityViewProductionControls_Impl(0x1c20, layoutY);
+    railLabel->IDeluxeText(this, railLabelOff, optionLabelSize, &railLabelInset, &titleStyle, -2);
+    railLabel->BuildCityViewProductionControls_Impl(0x1c20, 1);
     railLabel->CenterVertically(0);
+
+    layoutY = static_cast<short>(layoutY + 0x2a);
 
     for (int i = 0; i < 23; i++) {
       if (fortAccum[i] == 0) {
         continue;
       }
       TIconBar* iconRow = new TIconBar();
-      int iconPos[2] = {this->frameWidth34 - 0x60, layoutY};
-      int iconSize[2] = {0x18, 0};
+      int iconPos[2] = {0x54, layoutY};
+      int iconSize[2] = {this->frameWidth34 - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), fortAccum[i]);
       layoutY = static_cast<short>(layoutY + 0x1c);
     }
@@ -283,31 +283,29 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Port up/down button plus the accumulated port-availability TIconBar rows.
   if (railAllowed != 0 && g_pGlobalMapState->CanBuildPortAtTile(nBuildingSlotId) != 0 &&
       productionAllowed != 0) {
-    layoutY = static_cast<short>(layoutY + 0x2a);
     TUpDownPictureButton* portBtn = new TUpDownPictureButton();
     int portOff[2] = {0x11, layoutY + 1};
-    int portSize[2] = {0, 0};
-    portBtn->IPicture(this, portOff, portSize, 5, 5, 0x1c2e);
+    portBtn->IPicture(this, portOff, optionButtonSize, 5, 5, 0x1c2e);
     portBtn->controlTag = IMPERIALISM_FOURCC('p', 'o', 'r', 't');
     portBtn->SetState(1, 0);
     portBtn->eventNumber60 = 0x22;
 
     TDeluxeText* portLabel = new TDeluxeText();
     int portLabelOff[2] = {0x54, layoutY};
-    int portLabelSize[2] = {0, 0};
     RECT portLabelInset = {0, 0, 0, 0};
-    TextStyle portLabelStyle;
-    portLabel->IDeluxeText(this, portLabelOff, portLabelSize, &portLabelInset, &portLabelStyle, -2);
-    portLabel->BuildCityViewProductionControls_Impl(0x1c20, layoutY);
+    portLabel->IDeluxeText(this, portLabelOff, optionLabelSize, &portLabelInset, &titleStyle, -2);
+    portLabel->BuildCityViewProductionControls_Impl(0x1c20, 2);
     portLabel->CenterVertically(0);
+
+    layoutY = static_cast<short>(layoutY + 0x2a);
 
     for (int i = 0; i < 23; i++) {
       if (portAccum[i] == 0) {
         continue;
       }
       TIconBar* iconRow = new TIconBar();
-      int iconPos[2] = {this->frameWidth34 - 0x60, layoutY};
-      int iconSize[2] = {0x18, 0};
+      int iconPos[2] = {0x54, layoutY};
+      int iconSize[2] = {this->frameWidth34 - 0x60, 0x18};
       iconRow->IIconBar(this, iconPos, iconSize, 5, 5, static_cast<short>(i + 0x2bc), portAccum[i]);
       layoutY = static_cast<short>(layoutY + 0x1c);
     }
@@ -316,10 +314,30 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   // Cancel button.
   layoutY = static_cast<short>(layoutY + 0x1e);
   TUpDownPictureButton* cancelBtn = new TUpDownPictureButton();
-  int cancelOff[2] = {0x3d, 0x18};
-  int cancelSize[2] = {0x11, layoutY - 2};
+  int cancelOff[2] = {0x11, layoutY - 2};
+  int cancelSize[2] = {0x3d, 0x18};
   cancelBtn->IPicture(this, cancelOff, cancelSize, 5, 5, 0x24c4);
   cancelBtn->controlTag = IMPERIALISM_FOURCC('c', 'n', 'c', 'l');
   cancelBtn->eventNumber60 = 0x22;
   cancelBtn->SetState(1, 0);
+
+  TWindow* window = GetWindow();
+  if (window == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xd88);
+  }
+
+  CRect bounds;
+  window->QueryBounds(&bounds);
+  bounds.bottom = bounds.top + layoutY;
+  window->ApplyBounds(&bounds, 1);
+
+  QueryBounds(&bounds);
+  bounds.bottom = bounds.top + layoutY;
+  ApplyBounds(&bounds, 1);
+
+  TDialogBehavior* behavior = window->GetDialogBehavior();
+  if (behavior != 0) {
+    behavior->defaultCommandCode = kControlTagCncl;
+  }
 }
