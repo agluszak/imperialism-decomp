@@ -1905,7 +1905,7 @@ address|matching|name
 0x4b86d0|0.6233766233766234|TShipOrder::MaxOrder
 0x4b8800|0.14285714285714285|TShipOrder::SetQuantity
 0x4b8970|1.0|TShipOrder::Produce
-0x4b89a0|0.24150943396226415|TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
+0x4b89a0|0.26217228464419473|TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
 0x4b8b80|1.0|TShipOrder::FillOrderSheet
 0x4b8c90|1.0|TCapacityOrder::CreateObject
 0x4b8cc0|1.0|TCapacityOrder::GetRuntimeClass
@@ -3465,7 +3465,7 @@ address|matching|name
 0x52f7b0|0.5026737967914439|TForeignMinister::ArrangeMaterialsOffers
 0x52f940|0.5526315789473685|TForeignMinister::SetTradeBids
 0x52f9d0|0.391304347826087|TForeignMinister::DoUsualSubsidyRule
-0x52fba0|0.19883040935672514|TForeignMinister::ReplyToTradeOffer
+0x52fba0|0.25882352941176473|TForeignMinister::ReplyToTradeOffer
 0x52fcc0|1.0|TForeignMinister::EndTradePhase
 0x52fd10|1.0|TForeignMinister::SetDiplomacyPolicies
 0x52fd80|1.0|TForeignMinister::DoFirstTurnDiplomacy
