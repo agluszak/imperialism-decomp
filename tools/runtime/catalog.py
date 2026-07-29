@@ -163,6 +163,13 @@ TESTS = (
         native_snapshots=("ui",),
     ),
     RuntimeTestSpec(
+        "player_buy_order_does_not_sell",
+        "PlayerBuyOnlyTradeTest",
+        ("pr", "full"),
+        "internal_invariant",
+        required_oracles=(),
+    ),
+    RuntimeTestSpec(
         "map_zoom_toggle_remains_responsive",
         "MapZoomToggleTest",
         ("full",),

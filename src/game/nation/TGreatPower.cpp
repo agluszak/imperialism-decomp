@@ -1030,9 +1030,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
   const int kNeedSlotFallback = 5;
 
   if (this->diplomacyEligibilityA0 == 0) {
-    if (this->foreignMinister != 0) {
-      this->foreignMinister->ArrangeMaterialsOffers();
-    }
+    this->foreignMinister->ArrangeMaterialsOffers();
     return;
   }
 
@@ -1046,14 +1044,9 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
   if (hasUnfilledNeedSlot) {
     short selectedNation = static_cast<short>(-1);
-    TSortedByRelationshipList* relationshipList =
-        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
-    if (relationshipList != 0) {
-      relationshipList->recordSize14 = 0;
-    }
-    if (diplomacyManager != 0 && relationshipList != 0) {
-      g_pDiplomacyTurnStateManager->BuildRelationshipList(this->nationSlot, 1, relationshipList);
-    }
+    TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList;
+    relationshipList->ISortedByRelationshipList();
+    diplomacyManager->BuildRelationshipList(this->nationSlot, 1, relationshipList);
 
     for (int needSlot = kNeedSlotStart; needSlot < kNeedSlotEndExclusive; ++needSlot) {
       if (this->GetTradeOffersFor(needSlot) < 0) {
@@ -1062,10 +1055,10 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
           while (listIndex >= 1) {
             short* rankedNation =
                 static_cast<short*>(relationshipList->GetPtrListEntryByOneBasedIndex(listIndex));
-            selectedNation = (rankedNation != 0) ? *rankedNation : static_cast<short>(-1);
+            selectedNation = *rankedNation;
             --listIndex;
             TGreatPower* candidateState = g_apNationStates[selectedNation];
-            if (candidateState != 0 && candidateState->diplomacyEligibilityA0 != 0) {
+            if (candidateState->diplomacyEligibilityA0 != 0) {
               selectedNation = static_cast<short>(-1);
             }
             if (selectedNation >= 0) {
@@ -1076,9 +1069,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
 
         if (selectedNation >= 0) {
           TGreatPower* selectedNationState = g_apNationStates[selectedNation];
-          if (selectedNationState != 0) {
-            selectedNationState->SetTradeOffersFor(needSlot, this->nationSlot);
-          }
+          selectedNationState->SetTradeOffersFor(needSlot, this->nationSlot);
         }
       }
     }
@@ -1102,9 +1093,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
     }
 
     TGreatPower* fallbackNationState = g_apNationStates[fallbackNationSlot];
-    if (fallbackNationState != 0) {
-      fallbackNationState->SetTradeOffersFor(kNeedSlotFallback, this->nationSlot);
-    }
+    fallbackNationState->SetTradeOffersFor(kNeedSlotFallback, this->nationSlot);
   }
 }
 

@@ -845,7 +845,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380
-void TView::ApplyBounds(CRect* newBounds, int modeFlag) {
+void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
   CRect current;
   QueryBounds(&current);
   if (EqualRect(newBounds, &current) == 0) {

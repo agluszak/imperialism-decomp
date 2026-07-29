@@ -225,7 +225,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         InvalidateCityDialogRectRegion(&newBounds, 1);
         selectedSlot92 = newSlot;
         RefreshSlotPreviewFromSaveFile(newSlot);
-      } else if (newSlot == -1) {
+      } else if (selectedSlot92 == -1) {
         // Enter "rename" mode: swap the clicked slot's static text label for a live edit
         // box seeded with its current text.
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
@@ -237,6 +237,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
         int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
         editControl->IStaticText(this, offsetLayout, sizeLayout, 5, 5, -1, 0);
+        selectedSlot92 = newSlot;
         editControl->maxCharacterCount = 0x1f;
         editControl->SetEnable(1);
 

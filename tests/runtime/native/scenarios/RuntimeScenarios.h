@@ -13,6 +13,7 @@ RuntimeTestCase* TransportScreenTest();
 RuntimeTestCase* CivilianRecruitmentTest();
 RuntimeTestCase* DiplomacyScreenTest();
 RuntimeTestCase* TradeScreenTest();
+RuntimeTestCase* PlayerBuyOnlyTradeTest();
 RuntimeTestCase* MapZoomToggleTest();
 RuntimeTestCase* ArmyMenuTest();
 RuntimeTestCase* LoadSavedGameTest();

@@ -178,9 +178,9 @@ public:
   virtual void GetDrawableQDRect(CRect* rectOut); // 0x57 0x429410
   virtual CRect* GetQDExtent(CRect* rectOut);
   virtual void UpdateCoordinates();
-  virtual void ApplyBounds(CRect* newBounds, int modeFlag);      // 0x5a 0x48c380
-  virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
-  virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
+  virtual void ApplyBounds(CRect* newBounds, unsigned char modeFlag); // 0x5a 0x48c380
+  virtual char PointInBoundsAndActionable(CPoint* point);             // 0x5b 0x48c6d0
+  virtual void AttachChildControl(class TView* child, int flag);      // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetHelpState();
   virtual short ContainsMouse(const CPoint& point);
