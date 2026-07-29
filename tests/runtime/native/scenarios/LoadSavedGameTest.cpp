@@ -6,6 +6,8 @@
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
+#include "game/nation/TGreatPower.h"
+#include "game/globals/shared_globals.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -61,6 +63,32 @@ private:
         (mapDialog->viewportOrigin.x & 0x3f) != 0) {
       FailScenario("\"loaded map viewport did not land on a tile-aligned position\"");
       return;
+    }
+    TGreatPower* player = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    for (short resource = 0; resource < 0x11; ++resource) {
+      bool sawPurchase = false;
+      bool sawSale = false;
+      short entryCount = player->GetTrackedSlotEntryCountLow(resource);
+      for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
+        short kind;
+        short value;
+        short targetNation;
+        int payload;
+        player->ReadTrackedSlotEntryFields(resource, ordinal, &kind, &value, &targetNation,
+                                           &payload);
+        sawPurchase = sawPurchase || kind == kTrackedSlotOfferEntry;
+        sawSale = sawSale || kind == kTrackedSlotAcceptEntry;
+      }
+      if (sawPurchase && sawSale) {
+        char failure[256];
+        wsprintfA(failure,
+                  "\"loaded player has mixed trade history for resource %d: current %d remembered "
+                  "%d entries %d\"",
+                  resource, player->itemPotentials[resource],
+                  player->rememberedTradeOffersByResource[resource], entryCount);
+        FailScenario(failure);
+        return;
+      }
     }
     Pass();
   }

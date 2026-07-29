@@ -51,6 +51,8 @@ public:
       FailScenario("\"active player nation was not initialized as human controlled\"");
       return;
     }
+    player->SetItemPotentials(kResourceIron, 1);
+    player->RememberTradeBids();
     EnterScenarioStep("activating_trade_for_buy_only_order", "reach_combined_map");
     ContinueAfterAction();
   }
@@ -113,8 +115,9 @@ private:
     }
     TGreatPower* player = g_apNationStates[activeNationSlot];
     for (short resource = 0; resource < kResourceKindCount; ++resource) {
-      if (player->GetTradeOffersFor(resource) > 0) {
-        FailScenario("\"fresh human nation entered trade with a positive sell order\"");
+      short expected = resource == kResourceIron ? 1 : 0;
+      if (player->GetTradeOffersFor(resource) != expected) {
+        FailScenario("\"seeded iron sell order was not preserved on entering trade\"");
         return;
       }
     }
@@ -247,6 +250,23 @@ private:
     return true;
   }
 
+  bool IronHistoryContainsOnlyPurchases() {
+    TGreatPower* player = g_apNationStates[activeNationSlot];
+    short entryCount = player->GetTrackedSlotEntryCountLow(kResourceIron);
+    for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      short kind;
+      short value;
+      short targetNation;
+      int payload;
+      player->ReadTrackedSlotEntryFields(kResourceIron, ordinal, &kind, &value, &targetNation,
+                                         &payload);
+      if (kind != kTrackedSlotOfferEntry) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   void WaitForTurnProcessed() {
     if (!g_ModalViewStack.IsEmpty()) {
       TWindow* modal = g_ModalViewStack.GetHead();
@@ -291,8 +311,8 @@ private:
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
-      if (!PlayerExecutedNoSales()) {
-        FailScenario("\"player sold goods during a turn containing only a buy order\"");
+      if (!PlayerExecutedNoSales() || !IronHistoryContainsOnlyPurchases()) {
+        FailScenario("\"switching iron from sell to buy produced a sale in the same turn\"");
         return;
       }
       leftDealBook = true;

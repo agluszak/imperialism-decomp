@@ -26,6 +26,7 @@
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
+#include "game/navy_order.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
@@ -51,7 +52,8 @@ public:
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
         interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
         interactionItemOrder(0), interactionShipOrder(0), interactionTrainingOrder(0),
-        interactionAnimation(0), interactionRowTag(0) {}
+        interactionAnimation(0), interactionRowTag(0), priorShipCount(0), priorMerchantCapacity(0) {
+  }
   int DifficultyLevel() const override {
     return 1;
   }
@@ -623,6 +625,9 @@ private:
     interactionShipOrder = order;
     interactionTrainingOrder = 0;
     priorQuantity = order->quantity;
+    priorShipCount = order->ownerCity->orderCountByType5c[order->resourceTypeIndex];
+    order->ownerCity->ownerNationAc->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+    priorMerchantCapacity = order->ownerCity->ownerNationAc->merchantCapacity;
   }
 
   void CaptureTrainingOrderState(TTrainingOrder* order) {
@@ -904,6 +909,38 @@ private:
       phase = kWaitForBuilding;
       EnterScenarioStep("verified_trade_school_bar_reset",
                         "completed_training_order_resets_live_bar_to_zero");
+      ContinueAfterAction();
+      return;
+    }
+
+    if (interactionKind == kShipyardInteraction) {
+      short completedQuantity = interactionShipOrder->quantity;
+      short resourceType = interactionShipOrder->resourceTypeIndex;
+      TCity* city = interactionShipOrder->ownerCity;
+      TGreatPower* owner = city->ownerNationAc;
+      interactionShipOrder->Produce();
+      owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+      short expectedMerchantCapacity = static_cast<short>(
+          priorMerchantCapacity +
+          GetResourceDescriptorWeightWord0ByType(resourceType) * completedQuantity);
+      if (interactionShipOrder->quantity != 0 ||
+          city->orderCountByType5c[resourceType] != priorShipCount + completedQuantity ||
+          owner->merchantCapacity != expectedMerchantCapacity) {
+        FailScenario(
+            "\"completed ship order did not update the retail ship count and merchant marine\"");
+        return;
+      }
+      interactionComplete = true;
+      TWindow* buildingWindow = buildingView->GetWindow();
+      if (buildingWindow == 0 || buildingWindow->nativeWindow50 == 0 ||
+          buildingWindow->nativeWindow50->m_hWnd == 0) {
+        FailScenario("\"completed ship order lost its shipyard window\"");
+        return;
+      }
+      phase = kWaitForBuildingClose;
+      EnterScenarioStep("verified_ship_completion_capacity",
+                        "completed_ship_order_updates_retail_capacity_state");
+      SendMessageA(buildingWindow->nativeWindow50->m_hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
       ContinueAfterAction();
       return;
     }
@@ -1248,6 +1285,8 @@ private:
   short priorBaselineLow;
   short priorBaselineMedium;
   short priorBaselineHigh;
+  short priorShipCount;
+  short priorMerchantCapacity;
   short priorProductionLow;
   short priorProductionMedium;
   short priorProductionHigh;
