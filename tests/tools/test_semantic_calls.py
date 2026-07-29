@@ -64,15 +64,19 @@ class FakeParameter:
 
 
 class FakeFunction:
-    def __init__(self, parameters, thunked=None):
+    def __init__(self, parameters, thunked=None, varargs=False):
         self.parameters = parameters
         self.thunked = thunked
+        self.varargs = varargs
 
     def getParameters(self):
         return self.parameters
 
     def getThunkedFunction(self, _recursive):
         return self.thunked
+
+    def hasVarArgs(self):
+        return self.varargs
 
 
 class FakeFunctionManager:
@@ -440,6 +444,128 @@ class SemanticCallTests(unittest.TestCase):
         errors = check_gate(report, baseline)
         self.assertTrue(any("protected functions regressed: 0x3" in item for item in errors))
         self.assertTrue(any("semantic debt resolved" in item for item in errors))
+
+    def test_varargs_arity_asymmetry_is_inconclusive_not_mismatch(self):
+        # Same call, but only one image's decompiler attached the pushed values.
+        target = {"function": "0x49d620"}
+        original = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": target,
+                    "arguments": [["constant", 4, 6898320], ["constant", 4, 950]],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        recompiled = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": target,
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        result = compare_extracted_calls(original, recompiled)
+        self.assertEqual(result["status"], "inconclusive")
+        self.assertEqual(result["reason"], "prototype_arity_asymmetry")
+
+    def test_varargs_relaxation_never_hides_a_different_target(self):
+        left = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": {"function": "0x49d620"},
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        right = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": {"function": "0x401000"},
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        result = compare_extracted_calls(left, right)
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_contract")
+
+    def test_varargs_relaxation_never_hides_a_non_varargs_argument_change(self):
+        varargs_call = {
+            "kind": "direct",
+            "target": {"function": "0x49d620"},
+            "arguments": [],
+            "varargs_target": True,
+        }
+        def plain(value):
+            return {
+                "kind": "direct",
+                "target": {"function": "0x401000"},
+                "arguments": [["constant", 4, value]],
+            }
+        left = ExtractedCalls(calls=[varargs_call, plain(1)], unresolved=[])
+        right = ExtractedCalls(calls=[varargs_call, plain(2)], unresolved=[])
+        result = compare_extracted_calls(left, right)
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_contract")
+
+    def test_varargs_relaxation_never_hides_a_call_count_change(self):
+        call = {
+            "kind": "direct",
+            "target": {"function": "0x49d620"},
+            "arguments": [],
+            "varargs_target": True,
+        }
+        result = compare_extracted_calls(
+            ExtractedCalls(calls=[call, call], unresolved=[]),
+            ExtractedCalls(calls=[call], unresolved=[]),
+        )
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_count")
+
+    def test_pointer_constant_is_mapped_to_its_entity(self):
+        class EmptyProgram:
+            def getMemory(self):
+                class Bound:
+                    def __init__(self, value):
+                        self.value = value
+
+                    def getOffset(self):
+                        return self.value
+
+                class Memory:
+                    def getMinAddress(self):
+                        return Bound(0x400000)
+
+                    def getMaxAddress(self):
+                        return Bound(0x700000)
+
+                return Memory()
+
+        normalizer = ExpressionNormalizer(
+            EmptyProgram(), ImageId.RECOMP, {0x5A0000: (3, 0x690000)}, {}
+        )
+        # A string/global pointer passed as an immediate resolves to the entity,
+        # so the two images compare equal despite different absolute addresses.
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=0x5A0000)),
+            ["entity", 3, "0x690000", 4],
+        )
+        # A plain integer argument keeps its numeric identity.
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=48)), ["constant", 4, 48]
+        )
 
     def test_report_diff_flags_status_reason_and_membership_changes(self):
         previous = {

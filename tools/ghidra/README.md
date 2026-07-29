@@ -104,6 +104,17 @@ that reuse (or a comparator change) is behavior-neutral. When no inputs changed 
 all, the report is read back directly; this is the intended fast path for
 `just gates` and `just precommit`.
 
+
+### Measuring the checker's own precision
+
+reccmp's completed machine-level proof doubles as an oracle for this comparator: a
+function reccmp calls `exact` or `effective` cannot have a different call contract, so
+any mismatch the p-code pass reports on one is a false positive of the normalization.
+`SEMANTIC_AUDIT_PRECISION=1` bypasses the short-circuit so those rows are compared
+anyway, which is the only way to see that error rate. The flag is audit-only: it is
+part of the report fingerprint, and `semantic-gate` refuses to run with it set, so an
+audit report can never be mistaken for a gate result.
+
 `scan-cdecl-thiscall` stays one-shot (no daemon routing) because its `--stdin` address list
 can't reach a separate daemon process; other occasional audit tools (`vtable-struct-check`,
 `datatype-audit`, `class-owner-probe`, `rtti-oracle`, …) are one-shot as well and evict a

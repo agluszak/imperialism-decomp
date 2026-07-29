@@ -38,6 +38,9 @@ from tools.common.template_aliases import CLASS_FOLDED_SYMBOL_GROUP, load_aliase
 from tools.source_model import Claim, build_model
 
 SCHEMA_VERSION = 3
+# The ratchet file has its own schema: the report format may evolve without
+# rewriting the baseline (a bumped number there reads as growth to baseline_guard).
+BASELINE_SCHEMA_VERSION = 2
 PREP_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 30
 PROJECT_NAME = "recompiled-semantic"
@@ -59,12 +62,32 @@ DISABLED_ANALYZERS = (
 DATA_PROBE_BYTES = 256
 DATA_PROBE_FALLBACK_BYTES = 16
 REUSE_DISABLE_ENV = "SEMANTIC_NO_REUSE"
+PRECISION_AUDIT_ENV = "SEMANTIC_AUDIT_PRECISION"
 REPORT_RELATIVE_PATH = Path("semantic") / "semantic_report.json"
 BASELINE_RELATIVE_PATH = (
     Path("config") / "baselines" / "semantic_call_contract_baseline.json"
 )
 
 STRIP_OPS = frozenset({"COPY", "CAST"})
+# Result widths that follow the decompiler's inferred operand types rather than the
+# machine encoding.  LOAD/PIECE/SUBPIECE are excluded on purpose: their widths are
+# a real access size, not a declared type.
+WIDTH_AGNOSTIC_OPS = frozenset(
+    {
+        "int_add",
+        "int_mult",
+        "int_sub",
+        "int_and",
+        "int_or",
+        "int_xor",
+        "int_left",
+        "int_right",
+        "int_sright",
+        "int_negate",
+        "int_2comp",
+        "multiequal",
+    }
+)
 COMMUTATIVE_OPS = frozenset(
     {
         "INT_ADD",
@@ -203,6 +226,7 @@ class ExtractedCalls:
 class DirectCallABI:
     parameter_count: int
     has_this: bool
+    has_varargs: bool = False
 
 
 def canonical_json(value: Any) -> str:
@@ -368,6 +392,10 @@ def report_inputs(
         "files": _fingerprint_files(paths),
         "claims": _claims_payload(claims),
         "target": target.target_id,
+        # A precision-audit run deliberately bypasses reccmp's proof, so its rows
+        # are not gate results.  Keeping the flag in the fingerprint stops such a
+        # report from ever being mistaken for a fresh gate report.
+        "precision_audit": os.environ.get(PRECISION_AUDIT_ENV) == "1",
     }
 
 
@@ -439,6 +467,14 @@ class ExpressionNormalizer:
         self.recorder: DepRecorder | None = None
         self._active: set[int] = set()
         self._nodes = 0
+        try:
+            memory = program.getMemory()
+            self._image_min = int(memory.getMinAddress().getOffset())
+            self._image_max = int(memory.getMaxAddress().getOffset())
+        except Exception:
+            # No mapped image (unit-test doubles): every constant stays numeric.
+            self._image_min = 1
+            self._image_max = 0
 
     def reset(self) -> None:
         self._active.clear()
@@ -456,7 +492,9 @@ class ExpressionNormalizer:
             return ["recurrence", int(varnode.getSize())]
 
         if varnode.isConstant():
-            return ["constant", int(varnode.getSize()), int(varnode.getOffset())]
+            return self._constant_value(
+                int(varnode.getOffset()), int(varnode.getSize())
+            )
 
         high = varnode.getHigh()
         high_class = _class_name(high) if high is not None else ""
@@ -571,6 +609,32 @@ class ExpressionNormalizer:
         if mnemonic in COMMUTATIVE_OPS or mnemonic == "MULTIEQUAL":
             normalized.sort(key=canonical_json)
         return [mnemonic.lower(), int(varnode.getSize()), *normalized]
+
+    def _constant_value(self, offset: int, size: int) -> Any:
+        """Map a pointer-valued immediate to its entity, not its raw address.
+
+        A pointer handed to a call as an immediate (a string literal, a global,
+        a function address) has a different numeric value in each image, so
+        comparing the raw constant reports a difference for byte-identical code.
+        The same entity/function maps that resolve address-typed varnodes resolve
+        these, which makes the two images comparable instead of merely equal-
+        looking.  Values outside the image keep their numeric identity, so real
+        constant-argument differences still fail.
+        """
+        if self._image_min <= offset <= self._image_max:
+            recorder = self.recorder
+            if offset in self.entities:
+                entity_type, original = self.entities[offset]
+                if recorder is not None:
+                    recorder.entity(self.image_id, offset, entity_type, original)
+                return ["entity", entity_type, f"0x{original:x}", size]
+            if offset in self.functions:
+                if recorder is not None:
+                    recorder.map_fn(self.image_id, offset, self.functions[offset])
+                return ["function", f"0x{self.functions[offset]:x}"]
+            if recorder is not None:
+                recorder.miss(self.image_id, offset)
+        return ["constant", size, offset]
 
     def _address_value(self, offset: int, varnode: Any) -> Any:
         recorder = self.recorder
@@ -780,6 +844,42 @@ def _canonical_call_value(value: Any) -> Any:
     return normalized
 
 
+def _erase_inference_widths(value: Any) -> Any:
+    """Drop node widths that come from decompiler type inference, not codegen.
+
+    The width of an immediate, of a formal parameter slot, and of an arithmetic
+    result are all propagated types: the two images import different prototypes,
+    so the same byte-identical expression is typed `short` in one and `int` in
+    the other.  Comparing those widths reports differences that no machine-level
+    difference backs.
+
+    ``load`` widths are deliberately kept: how many bytes a call argument reads
+    out of an object is a real contract difference and a live defect class in
+    this project (a field modelled at the wrong width).  Same for PIECE/SUBPIECE,
+    which encode an actual sub-register extraction rather than a declared type.
+    """
+    if isinstance(value, dict):
+        return {key: _erase_inference_widths(item) for key, item in value.items()}
+    if not isinstance(value, list) or not value:
+        return value
+    # Erase every element: a plain argument array has no leading string tag, and
+    # skipping its first element would leave one argument's widths in place.
+    normalized = [_erase_inference_widths(item) for item in value]
+    tag = value[0]
+    if not isinstance(tag, str):
+        return normalized
+    if tag == "constant" and len(normalized) == 3:
+        return ["constant", normalized[2]]
+    if tag == "parameter" and len(normalized) == 3:
+        return ["parameter", normalized[1]]
+    if tag == "entity" and len(normalized) == 4:
+        # ["entity", type, original-address, width] -- identity is type+address.
+        return normalized[:3]
+    if tag in WIDTH_AGNOSTIC_OPS and len(normalized) >= 3:
+        return [tag, *normalized[2:]]
+    return normalized
+
+
 def _external_identity(function: Any) -> dict[str, str] | None:
     try:
         if not function.isExternal():
@@ -870,6 +970,18 @@ def _canonical_direct_arguments(
     return arguments
 
 
+def _has_varargs_target(
+    target: Any, direct_call_abis: dict[int, DirectCallABI]
+) -> bool:
+    if not isinstance(target, dict):
+        return False
+    raw_address = target.get("function")
+    if not isinstance(raw_address, str):
+        return False
+    abi = direct_call_abis.get(int(raw_address, 16))
+    return abi is not None and abi.has_varargs
+
+
 def _direct_call_abis(
     original_program: Any, original_functions: dict[int, int]
 ) -> dict[int, DirectCallABI]:
@@ -892,6 +1004,7 @@ def _direct_call_abis(
         abi = DirectCallABI(
             parameter_count=len(parameters),
             has_this=has_this,
+            has_varargs=bool(function.hasVarArgs()),
         )
         priority = (entry == original, has_this, len(parameters))
         if priority > priorities.get(original, (False, False, -1)):
@@ -948,15 +1061,27 @@ def extract_calls(
                 arguments = _canonical_direct_arguments(
                     target_value, arguments, direct_call_abis
                 )
-            target_value = _canonical_call_value(target_value)
-            arguments = [_canonical_call_value(argument) for argument in arguments]
-            calls.append(
-                {
-                    "kind": kind,
-                    "target": target_value,
-                    "arguments": arguments,
-                }
+            target_value = _erase_inference_widths(
+                _canonical_call_value(target_value)
             )
+            arguments = [
+                _erase_inference_widths(_canonical_call_value(argument))
+                for argument in arguments
+            ]
+            call: dict[str, Any] = {
+                "kind": kind,
+                "target": target_value,
+                "arguments": arguments,
+            }
+            if mnemonic == "CALL" and _has_varargs_target(
+                target_value, direct_call_abis
+            ):
+                # Neither image declares formals for a variadic callee, so each
+                # decompiler decides on its own whether the pushed values belong
+                # to this call.  Flag it; the comparison downgrades a difference
+                # that only involves such calls to inconclusive.
+                call["varargs_target"] = True
+            calls.append(call)
         except UnresolvedExpression as error:
             unresolved.append(f"{callsite}: {error}")
     return ExtractedCalls(calls=calls, unresolved=unresolved)
@@ -967,6 +1092,38 @@ def _counter_rows(counter: Counter[str]) -> list[dict[str, Any]]:
         {"count": count, "call": json.loads(value)}
         for value, count in sorted(counter.items())
     ]
+
+
+def _without_varargs_arguments(call: dict[str, Any]) -> dict[str, Any]:
+    """Drop the argument list of a variadic-target call, keeping its identity."""
+    if not call.get("varargs_target"):
+        return call
+    stripped = dict(call)
+    stripped["arguments"] = "<varargs>"
+    return stripped
+
+
+def _arity_asymmetry_only(
+    original: Sequence[dict[str, Any]], recompiled: Sequence[dict[str, Any]]
+) -> bool:
+    """True when the two contracts agree once variadic argument lists are erased.
+
+    Multiplicity, kind, target, and every non-variadic call's arguments are still
+    compared exactly; only the argument lists of calls to a variadic callee are
+    treated as unknowable, because neither image's prototype declares formals for
+    them and each decompiler independently decides whether to attach the pushes.
+    """
+    if not any(call.get("varargs_target") for call in original) and not any(
+        call.get("varargs_target") for call in recompiled
+    ):
+        return False
+    left = Counter(
+        canonical_json(_without_varargs_arguments(call)) for call in original
+    )
+    right = Counter(
+        canonical_json(_without_varargs_arguments(call)) for call in recompiled
+    )
+    return left == right
 
 
 def compare_extracted_calls(
@@ -1009,6 +1166,14 @@ def compare_extracted_calls(
     if original_counter == recompiled_counter:
         result.update(status="pass", reason="call_contract_equal")
         return result
+    if _arity_asymmetry_only(original.calls, recompiled.calls):
+        result.update(
+            status="inconclusive",
+            reason="prototype_arity_asymmetry",
+            missing=_counter_rows(original_counter - recompiled_counter),
+            extra=_counter_rows(recompiled_counter - original_counter),
+        )
+        return result
     result.update(
         status="mismatch",
         reason="call_contract",
@@ -1019,7 +1184,16 @@ def compare_extracted_calls(
 
 
 def _reccmp_proves_call_contract(status: dict[str, Any] | None) -> bool:
-    """Use reccmp's completed machine-level proof before heuristic p-code."""
+    """Use reccmp's completed machine-level proof before heuristic p-code.
+
+    Set SEMANTIC_AUDIT_PRECISION=1 to run the p-code comparison on these rows
+    anyway.  reccmp has already proved their machine code semantically equal, so
+    every mismatch the comparison then reports is a false positive of this
+    module's normalization -- that is the audit's whole point, and it is why the
+    flag must never be set for a gate run.
+    """
+    if os.environ.get(PRECISION_AUDIT_ENV) == "1":
+        return False
     return status is not None and status.get("status") in {"exact", "effective"}
 
 
@@ -2097,7 +2271,7 @@ def update_baseline(report: dict[str, Any], path: Path) -> None:
         if previous.get("mode") == "hard" and debt:
             raise RuntimeError("hard semantic gate cannot be downgraded")
     baseline = {
-        "schema": SCHEMA_VERSION,
+        "schema": BASELINE_SCHEMA_VERSION,
         "mode": "hard" if not debt else "ratchet",
         "required": required,
         "debt": debt,
@@ -2200,6 +2374,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             print_stats(report, path)
             return 0
         if args.command == "gate":
+            if os.environ.get(PRECISION_AUDIT_ENV) == "1":
+                print(
+                    f"semantic-gate: refusing to gate with {PRECISION_AUDIT_ENV}=1 "
+                    "(that mode bypasses reccmp's proof and is for auditing only)",
+                    file=sys.stderr,
+                )
+                return 1
             report, path = load_fresh_report(args)
             print_stats(report, path)
             baseline_path = _baseline_path()
