@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "RuntimeUiDriver.h"
 #include "flows/RandomGameFlow.h"
 
 #include "game/assets/TAssetMgr.h"
@@ -6,12 +7,17 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TEditText.h"
+#include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/ui_tags_map.h"
 #include "game/globals/view_registries.h"
+#include "game/turn_event_codes.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_screens.h"
 
 // Save then load, both through the real document path.
 //
@@ -34,7 +40,7 @@ namespace {
 
 class SaveLoadRoundtripTestCase : public RandomGameScenario {
 public:
-  SaveLoadRoundtripTestCase() : phase(kSave), savedTurn(0), savedNation(0) {}
+  SaveLoadRoundtripTestCase() : phase(kOpenSaveDialog), savedTurn(0), savedNation(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -43,54 +49,93 @@ public:
   }
 
   void OnMapReadyWithoutCapitalSelection() override {
-    if (phase != kSave) {
+    if (phase != kOpenSaveDialog) {
       return;
     }
-    EnterScenarioStep("saving_game", "save_main_document");
-    SaveAndReload();
+    savedTurn = g_pSimMgr->economicTurn;
+    savedNation = g_pSimMgr->activeNationSlot;
+    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), savedNation);
+    TView* mainView = CurrentMainView();
+    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) == 0) {
+      FailScenario("\"load-save event did not construct TLoadSavePicture\"");
+      return;
+    }
+    phase = kSelectSaveSlot;
+    EnterScenarioStep("selecting_save_slot", "open_real_save_dialog");
+    RequestScenarioTick();
   }
 
   void TickScenario() override {
-    WaitForLoadedMap();
+    if (phase == kSelectSaveSlot) {
+      SelectSlotAndSaveThroughDialog();
+    } else if (phase == kWaitForSaveFlowTransition) {
+      WaitForSaveFlowTransition();
+    } else {
+      WaitForLoadedMap();
+    }
   }
 
 private:
-  enum Phase { kSave, kWaitForLoadedMap };
+  enum Phase { kOpenSaveDialog, kSelectSaveSlot, kWaitForSaveFlowTransition, kWaitForLoadedMap };
 
   Phase phase;
   int savedTurn;
   short savedNation;
+  CString savedPath;
 
-  void SaveAndReload() {
+  void SelectSlotAndSaveThroughDialog() {
     if (g_pSimMgr == 0 || g_pGlobalMapState == 0) {
       FailScenario("\"managers are not live at map-ready time\"");
       return;
     }
-    // Remember enough to prove the reload restored the same game rather than starting a
-    // fresh one -- a load that silently fell back to a new game would otherwise pass.
-    savedTurn = g_pSimMgr->economicTurn;
-    savedNation = g_pSimMgr->activeNationSlot;
-
-    CString path("save/rt_save_load_roundtrip.imp");
-    if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
-      FailScenario("\"the document refused to save through the real save path\"");
+    TView* mainView = CurrentMainView();
+    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) == 0) {
+      FailScenario("\"save dialog disappeared before slot selection\"");
+      return;
+    }
+    TLoadSavePicture* savePicture = static_cast<TLoadSavePicture*>(mainView);
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(savePicture, kControlTagSlt0) ||
+        savePicture->selectedSlot92 != 0) {
+      FailScenario("\"native save-slot click did not select slot zero\"");
+      return;
+    }
+    TView* slotEditor = savePicture->ResolveControlByTag(kControlTagSlot);
+    if (slotEditor == 0 || slotEditor->IsKindOf(RUNTIME_CLASS(TEditText)) == 0) {
+      FailScenario("\"selected save slot did not enter the retail name-editing state\"");
+      return;
+    }
+    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(savePicture, kControlTagOkay)) {
+      FailScenario("\"save dialog okay control did not accept the selected slot\"");
       return;
     }
 
-    // Before handing the file to the document machinery, record how many bytes the
-    // writer actually produced and whether the header is well formed. If the load below
-    // faults while these numbers are sane, the fault is in the load path's state rebuild
-    // rather than in the byte stream -- save_stream_checkpoints proves the chain's
-    // accounting separately, and this pins the two halves to the same file.
+    CString path;
+    BuildSavePathStringForMode(&path, 0, 0);
+    if (TryGetFileMetadataForPath(&path) == 0) {
+      FailScenario("\"selected save slot did not write through the retail save flow\"");
+      return;
+    }
     ReportSavedFileShape(path);
+    savedPath = path;
+    phase = kWaitForSaveFlowTransition;
+    EnterScenarioStep("waiting_for_save_flow_transition", "selected_slot_saved_through_dialog");
+    RequestScenarioTick();
+  }
 
-    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path) == 0) {
+  void WaitForSaveFlowTransition() {
+    TView* mainView = CurrentMainView();
+    if (g_pViewMgr->currentTurnEventCode == EncodeTurnEventCode(kTurnEventLoadSave) ||
+        (mainView != 0 && mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) != 0)) {
+      WaitForScenarioTick("\"the save dialog did not advance through the retail turn flow\"");
+      return;
+    }
+    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
       FailScenario("\"the just-written save would not open through the real load path\"");
       return;
     }
 
     phase = kWaitForLoadedMap;
-    EnterScenarioStep("waiting_for_loaded_map", "opened_saved_game");
+    EnterScenarioStep("waiting_for_loaded_map", "selected_slot_saved_and_reopened");
     RequestScenarioTick();
   }
 
