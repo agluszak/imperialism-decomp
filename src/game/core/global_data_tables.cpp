@@ -4217,7 +4217,7 @@ extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
 // GLOBAL: IMPERIALISM 0x006a4084
 short g_creditsPlaybackActive_006a4084 = 0;
 
-// GLOBAL: IMPERIALISM 0x0066DB58
+// GLOBAL: IMPERIALISM 0x0066db58
 extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17] = {
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, -1, -1},
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6}};

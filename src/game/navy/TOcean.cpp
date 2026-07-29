@@ -274,7 +274,7 @@ void TOcean::WriteTo(TStream* stream) {
 // otherwise pull in the cheapest positive neighbor cost as -(1+cost). A
 // final pass flips the tentative negative costs positive. Returns the number of tiles
 // changed this sweep (0 => converged).
-// FUNCTION: IMPERIALISM 0x00562AF0
+// FUNCTION: IMPERIALISM 0x00562af0
 int RelaxMapTileCostFieldByNeighborTerrain(MapTileCostField* costField) {
   int changedCount = 0;
   int tileIndex = 0;

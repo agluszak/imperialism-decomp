@@ -37,7 +37,10 @@ class UiPlatformDiffTests(unittest.TestCase):
         self.assertEqual(case["classification"], "windows_only")
         self.assertEqual(len(case["nodes"]), 12)
         self.assertTrue(
-            all(node["windows_binary_evidence"].startswith("Windows: evidence 0x") for node in case["nodes"].values())
+            all(
+                node["windows_binary_evidence"].startswith("Windows evidence at 0x")
+                for node in case["nodes"].values()
+            )
         )
 
     def test_functional_parity_extensions_are_distinct_from_platform_nodes(self) -> None:

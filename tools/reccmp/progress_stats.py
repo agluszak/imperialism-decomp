@@ -30,8 +30,8 @@ from tools.common.function_baseline import (
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
-from tools.stubgen import compute_stub_rows
 from tools.common.template_aliases import load_aliases
+from tools.stubgen import ILT_THUNK_RANGE, compute_stub_rows
 
 FUNCTION_ROW_TYPE = "fun"
 REPORT_CACHE_VERSION = 1
@@ -50,15 +50,17 @@ ROW_TYPE_LABELS = {
 
 METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("exact_fun_count", "exact functions (100%)", "int", "higher"),
-    ("paired_fun_count", "paired functions", "int", "higher"),
+    ("paired_fun_count", "address-paired functions", "int", "higher"),
+    ("compared_fun_count", "implemented paired functions", "int", "higher"),
     ("orig_only_count", "original-only functions", "int", "lower"),
     ("template_alias_recognized_count", "recognized duplicate template bodies", "int", "higher"),
     ("template_canonical_paired_count", "template canonical bodies paired", "int", "higher"),
     ("recomp_only_count", "recomp-only functions", "int", "lower"),
     ("not_exact_vs_original_count", "not exact vs original", "int", "lower"),
-    ("coverage_pct", "function coverage", "pct", "higher"),
+    ("address_pairing_coverage_pct", "address pairing coverage", "pct", "higher"),
+    ("implementation_coverage_pct", "implementation coverage", "pct", "higher"),
     ("exact_vs_original_pct", "exact/original", "pct", "higher"),
-    ("exact_vs_paired_pct", "exact/paired", "pct", "higher"),
+    ("exact_vs_implemented_pct", "exact/implemented", "pct", "higher"),
     ("size_weighted_matching_pct", "size-weighted similarity", "pct", "higher"),
     ("ui_factory_weighted_pct", "generated UI factory fidelity", "pct", "higher"),
     ("avg_matching_pct", "average similarity (unweighted)", "pct", "higher"),
@@ -85,6 +87,14 @@ def parse_args() -> argparse.Namespace:
         "--ui-codegen-gate",
         action="store_true",
         help="Fail if a generated UI factory is unpaired or below its baseline.",
+    )
+    parser.add_argument(
+        "--fail-on-regression",
+        action="store_true",
+        help=(
+            "Fail if any previously paired non-stub function becomes unpaired or "
+            "decreases beyond the score epsilon."
+        ),
     )
     parser.add_argument(
         "--baseline-file",
@@ -325,6 +335,48 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
             continue
         funcs[address] = {"m": effective_matching(row), "n": row.get("name", "")}
     return funcs
+
+
+def generated_stub_report_errors(
+    path: Path, stub_rows: Iterable[tuple[int, str, str]]
+) -> list[str]:
+    """Require every annotated generated placeholder to be reported as a stub.
+
+    ILT entries are generated linker-thunk definitions, not placeholder entities.
+    They intentionally carry no marker because annotating an ILT address prevents
+    reccmp from resolving the thunk to its target.
+    """
+    if not path.exists():
+        raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
+
+    expected = {
+        address
+        for address, _name, _prototype in stub_rows
+        if address not in ILT_THUNK_RANGE
+    }
+    reported: dict[int, bool] = {}
+    for row in json.loads(path.read_text(encoding="utf-8")).get("data", []):
+        address = row.get("address")
+        if not address:
+            continue
+        try:
+            reported[int(str(address), 16)] = bool(row.get("stub", False))
+        except ValueError:
+            continue
+
+    missing = sorted(expected - reported.keys())
+    not_stub = sorted(
+        address for address in expected if address in reported and not reported[address]
+    )
+    errors = [
+        f"0x{address:08x}: generated placeholder missing from report"
+        for address in missing
+    ]
+    errors.extend(
+        f"0x{address:08x}: generated placeholder reported without stub=true"
+        for address in not_stub
+    )
+    return errors
 
 
 def ui_codegen_regressions(
@@ -761,10 +813,25 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
     # stub set the generator would emit (symbols.csv function rows minus source-claimed
     # addresses). A rising count is the tell for accidental un-claiming; the
     # stub-count-gate ratchets it against this same field. Needs no build.
-    entry["stub_count"] = len(compute_stub_rows(repo_root_from_file(__file__)))
-    entry["coverage_pct"] = pct(entry["paired_fun_count"], entry["original_fun_count"])
+    stub_rows = compute_stub_rows(repo_root_from_file(__file__))
+    stub_errors = generated_stub_report_errors(report_json, stub_rows)
+    if stub_errors:
+        preview = "\n".join(f"  - {error}" for error in stub_errors[:50])
+        remainder = len(stub_errors) - 50
+        if remainder > 0:
+            preview += f"\n  ... +{remainder} more"
+        raise RuntimeError(f"generated placeholder report invariant failed:\n{preview}")
+    entry["stub_count"] = len(stub_rows)
+    entry["address_pairing_coverage_pct"] = pct(
+        entry["paired_fun_count"], entry["original_fun_count"]
+    )
+    entry["implementation_coverage_pct"] = pct(
+        entry["compared_fun_count"], entry["original_fun_count"]
+    )
     entry["exact_vs_original_pct"] = pct(entry["exact_fun_count"], entry["original_fun_count"])
-    entry["exact_vs_paired_pct"] = pct(entry["exact_fun_count"], entry["paired_fun_count"])
+    entry["exact_vs_implemented_pct"] = pct(
+        entry["exact_fun_count"], entry["compared_fun_count"]
+    )
     entry["global_coverage_pct"] = pct(entry["paired_global_count"], entry["original_global_count"])
     entry["non_fun_coverage_pct"] = pct(entry["paired_non_fun_count"], entry["original_non_fun_count"])
     entry["not_exact_vs_original_count"] = max(
@@ -840,7 +907,8 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print("Counts")
     print_count_line("original functions", entry, baseline, "original_fun_count")
     print_count_line("recompiled functions", entry, baseline, "recompiled_fun_count")
-    print_count_line("paired functions", entry, baseline, "paired_fun_count")
+    print_count_line("address-paired functions", entry, baseline, "paired_fun_count")
+    print_count_line("implemented paired functions", entry, baseline, "compared_fun_count")
     print_count_line("exact functions (100%)", entry, baseline, "exact_fun_count")
     print_count_line("not exact vs original", entry, baseline, "not_exact_vs_original_count")
     print_count_line("original-only functions", entry, baseline, "orig_only_count")
@@ -852,9 +920,14 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print("")
 
     print("Ratios")
-    print_pct_line("function coverage", entry, baseline, "coverage_pct")
+    print_pct_line(
+        "address pairing coverage", entry, baseline, "address_pairing_coverage_pct"
+    )
+    print_pct_line(
+        "implementation coverage", entry, baseline, "implementation_coverage_pct"
+    )
     print_pct_line("exact/original", entry, baseline, "exact_vs_original_pct")
-    print_pct_line("exact/paired", entry, baseline, "exact_vs_paired_pct")
+    print_pct_line("exact/implemented", entry, baseline, "exact_vs_implemented_pct")
     print_pct_line("size-weighted similarity", entry, baseline, "size_weighted_matching_pct")
     print_pct_line("average similarity (unweighted)", entry, baseline, "avg_matching_pct")
     if "ui_factory_weighted_pct" in entry:
@@ -926,6 +999,14 @@ def main() -> int:
 
         print_summary(entry, baseline, baseline_file)
         print_function_changes(curr_funcs, func_baseline)
+        regression_errors = False
+        if args.fail_on_regression:
+            if func_baseline is None:
+                raise FileNotFoundError(func_baseline_file)
+            regressed, unpaired_now, _improved, _newly_paired = function_changes(
+                curr_funcs, func_baseline
+            )
+            regression_errors = bool(regressed or unpaired_now)
 
         ui_errors: list[str] = []
         if args.ui_codegen_gate:
@@ -957,7 +1038,7 @@ def main() -> int:
             print(f"Committed function baseline: {func_baseline_file}")
             if stub_ratchet_notice:
                 print(stub_ratchet_notice)
-        return 1 if ui_errors else 0
+        return 1 if ui_errors or regression_errors else 0
     except Exception as exc:  # pragma: no cover - CLI error path
         print(f"ERROR: {exc}", file=__import__("sys").stderr)
         return 1

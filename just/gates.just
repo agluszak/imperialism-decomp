@@ -123,7 +123,7 @@ _precommit-generated-integrity-gate:
 [group('gates')]
 gates:
   just source-gates
-  just stats --ui-codegen-gate
+  just stats --ui-codegen-gate --fail-on-regression
   just semantic-gate
   just vtable
   just datacmp-gate
@@ -361,7 +361,7 @@ structure-audit-gate:
 [doc('reccmp annotation lint: marker syntax, duplicate addresses, stray markers')]
 [group('gates')]
 decomplint:
-  (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
+  (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}" --warnfail)
 
 # Manual audits of the legacy typedef-cast scaffolding (0 instances remain in the
 # tree; new casts are already hard-banned by antipattern-gate + boundary-gate, so
