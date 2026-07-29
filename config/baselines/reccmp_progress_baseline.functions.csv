@@ -335,11 +335,11 @@ address|matching|name
 0x47b130|0.38235294117647056|CDib::AdoptPaletteAndCopyRgbQuadTable
 0x47b1b0|0.9552238805970149|CDib::SetSystemPalette
 0x47b280|1.0|CDib::CreateDibBitmapFromStoredInfo
-0x47b2d0|0.6232394366197183|CDib::Compress
+0x47b2d0|0.6460481099656358|CDib::Compress
 0x47b6d0|0.3663663663663664|CDib::Read
 0x47b9f0|0.37777777777777777|CDib::Write
 0x47bb10|1.0|CDib::Serialize
-0x47bb60|0.37037037037037035|CDib::ComputePaletteSize
+0x47bb60|1.0|CDib::ComputePaletteSize
 0x47bc30|0.49056603773584906|CDib::ComputeMetrics
 0x47bca0|1.0|CDib::Release
 0x47bd90|1.0|CDib::ReleaseMappedFileView
@@ -610,7 +610,7 @@ address|matching|name
 0x484af0|0.5517241379310345|CMainFrame::CreateObject
 0x484bb0|1.0|CMainFrame::GetRuntimeClass
 0x484bd0|0.5|CMainFrame::GetMessageMap
-0x484bf0|0.7368421052631579|CMainFrame::CMainFrame
+0x484bf0|1.0|CMainFrame::CMainFrame
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|0.6896551724137931|CMainFrame::~CMainFrame
 0x484d00|0.0|CMainFrame::OnCreate

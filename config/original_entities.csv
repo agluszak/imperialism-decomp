@@ -322,11 +322,11 @@ address|name|symbol|size|type|prototype|provenance
 47b130|CDib::AdoptPaletteAndCopyRgbQuadTable||82|function|undefined AdoptPaletteAndCopyRgbQuadTable()|
 47b1b0|CDib::SetSystemPalette||152|function|BOOL __thiscall CDib::SetSystemPalette(CDC * dc)|windows_listing,source_lineage
 47b280|CreateDibBitmapFromStoredInfo||50|function|undefined CreateDibBitmapFromStoredInfo()|
-47b2d0|CDib::Compress||712|function|BOOL __thiscall CDib::Compress(CDC * dc, BOOL compress)|windows_listing,source_lineage
+47b2d0|CDib::Compress||746|function|BOOL __thiscall CDib::Compress(CDC * dc, BOOL compress)|windows_listing,source_lineage
 47b6d0|ReadBitmapStreamIntoSurfaceState||517|function|undefined ReadBitmapStreamIntoSurfaceState()|
 47b9f0|WriteBmpHeaderAndDataOffsetToStreamWithSehGuard||160|function|undefined WriteBmpHeaderAndDataOffsetToStreamWithSehGuard()|
 47bb10|ReadBitmapStreamStateAndWriteBmpHeaderThunk||56|function|undefined ReadBitmapStreamStateAndWriteBmpHeaderThunk()|
-47bb60|CDib::ComputePaletteSize||48|function|void __thiscall CDib::ComputePaletteSize(unsigned int bitCount)|windows_listing,source_lineage
+47bb60|CDib::ComputePaletteSize||148|function|void __thiscall CDib::ComputePaletteSize(unsigned int bitCount)|windows_listing,source_lineage
 47bc30|CDib::ComputeMetrics||67|function|void __thiscall CDib::ComputeMetrics(void)|windows_listing,source_lineage
 47bca0|ReleaseBitmapSurfaceResourcesAndResetState||177|function|undefined ReleaseBitmapSurfaceResourcesAndResetState()|
 47bd90|OrphanCallChain_C3_I20_0047bd90||49|function|undefined OrphanCallChain_C3_I20_0047bd90()|
@@ -615,8 +615,7 @@ address|name|symbol|size|type|prototype|provenance
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti
 484bb0|CMainFrame::GetRuntimeClass|?GetRuntimeClass@CMainFrame@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 484bd0|CMainFrame::GetMessageMap|?GetMessageMap@CMainFrame@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMainFrame::GetMessageMap(void)const|
-484bf0|CMainFrame::CMainFrame|??0CMainFrame@@QAE@XZ|32|function|CMainFrame* __thiscall CMainFrame::CMainFrame(void)|curated
-484c10|OrphanDeadLeaf_NoRefs_00484c10||20|function|uint OrphanDeadLeaf_NoRefs_00484c10(void)|
+484bf0|CMainFrame::CMainFrame|??0CMainFrame@@QAE@XZ|52|function|CMainFrame* __thiscall CMainFrame::CMainFrame(void)|curated
 484c40|CMainFrame::`scalar deleting destructor'|??_GCMainFrame@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 484c70|TMacViewMgr::DestroyTMacViewMgrObject||108|function|undefined DestroyTMacViewMgrObject()|
 484d00|TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_CREATE_Impl()|
@@ -3099,7 +3098,7 @@ address|name|symbol|size|type|prototype|provenance
 503420|ActivatePendingEventAndRefreshView||702|function|undefined ActivatePendingEventAndRefreshView()|
 503790|IltTarget_00503790||58|function|undefined IltTarget_00503790()|
 5037e0|IltTarget_005037e0||55|function|undefined IltTarget_005037e0()|
-503830|IltTarget_00503830||37|function|undefined IltTarget_00503830()|
+503830|IltTarget_00503830||88|function|undefined IltTarget_00503830()|
 5038b0|TryShowCivilianCompletionMilestoneNotification||414|function|void __thiscall TryShowCivilianCompletionMilestoneNotification(int * pCivilianOrderEntry)|
 503ac0|EnsureMapActionContextViewAndBuildDefaultTileMenu||157|function|undefined EnsureMapActionContextViewAndBuildDefaultTileMenu()|
 503b90|CycleTradeScreenMode0To2||36|function|undefined CycleTradeScreenMode0To2()|
@@ -4236,7 +4235,7 @@ address|name|symbol|size|type|prototype|provenance
 54fb50|TShip::ReadFrom||126|function|undefined DeserializeNavyPrimaryOrderNodeFromStream()|
 54fbf0|RegenerateNavyPrimaryOrderDisplayNameUntilUnique||72|function|undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()|
 54fc60|TShip::SetLocation||10|function|void __thiscall TShip::SetLocation(TZone * zone)|curated
-54fc80|IltTarget_0054fc80||19|function|undefined IltTarget_0054fc80()|
+54fc80|IltTarget_0054fc80||148|function|undefined IltTarget_0054fc80()|
 54fd50|RecomputeGlobalCapabilityAverages||296|function|void __cdecl RecomputeGlobalCapabilityAverages(void)|
 54fee0|GetNavyOrderCategoryBaseline||12|function|int __cdecl GetNavyOrderCategoryBaseline(int category)|listing
 54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
@@ -6953,7 +6952,7 @@ address|name|symbol|size|type|prototype|provenance
 5f2420|__ioinit|__ioinit|524|function|undefined InitializeLowIoHandleTable()|
 5f2690|__FF_MSGBANNER|__FF_MSGBANNER|61|function|undefined CheckRuntimeErrorHookGuardAndReportFcFf()|
 5f26d0|__NMSG_WRITE|__NMSG_WRITE|470|function|undefined ReportCrtRuntimeErrorByCode()|
-5f28f0|_strchr|_strchr|193|function|char * __cdecl strchr(char * _Str, int _Val)|
+5f28f0|_strchr|_strchr|188|function|char * __cdecl strchr(char * _Str, int _Val)|
 5f29b0|_strpbrk|_strpbrk|58|function|char * __cdecl strpbrk(char * _Str, char * _Control)|
 5f29f0|___crtLCMapStringW|___crtLCMapStringW|519|function|undefined LocaleMapStringWideWithAnsiFallback()|
 5f2c00|_wcsncnt|_wcsncnt|53|function|undefined CountWideCharsUpToLimitOrNul()|
@@ -8229,7 +8228,6 @@ address|name|symbol|size|type|prototype|provenance
 475f80|thunk_BuildUniversityRecruitmentRows|||global||
 475f82|UniversityRecruitRadioButtonAllocNullPath|||global||
 475f84|PushUniversityRecruitRadioButtonUiNode|||global||
-47b53b|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b|||global||
 47b544|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b544|||global||
 47b54d|thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b54d|||global||
 47b55d|WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d|||global||
