@@ -8,6 +8,7 @@
 #include "game/app/TAnimator.h"
 #include "game/app/TCivAnimation2.h"
 #include "game/city/TCity.h"
+#include "game/city/TTown.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
 #include "game/city_ui/TEngineerDialog.h"
@@ -24,6 +25,7 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
 #include "game/military/TCivUnit.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/pointer_representation.h"
 #include "game/strategic_terrain.h"
@@ -182,8 +184,8 @@ public:
         completionIssued(false), completionVerified(false), surveyMissOrderIssued(false),
         surveyMissCompletionIssued(false), surveyMissCompletionVerified(false),
         farmerOrderIssued(false), farmerCompletionIssued(false), farmerCompletionVerified(false),
-        engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
-        initialAnimationTick(0) {}
+        engineer(0), engineerActionIssued(false), engineerDialogObserved(false),
+        initialAnimationFrame(0), initialAnimationTick(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -1182,7 +1184,7 @@ private:
     recruitOrder.quantity = 1;
     recruitOrder.Produce();
 
-    TCivUnit* engineer = 0;
+    engineer = 0;
     for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
       CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
       if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
@@ -1199,28 +1201,26 @@ private:
       return;
     }
 
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
-    short engineerTile = engineer->tileIndex06;
-    int engineerAction =
-        g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(engineerTile, 0);
-    if (engineerAction != 4) {
-      for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
-        const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
-        if (terrain.ownerNationTag04 == engineer->ownerNationSlot18 &&
-            terrain.firstCivilianOrder20 == 0) {
-          engineer->MoveTo(tile);
-          g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
-          engineerTile = tile;
-          engineerAction =
-              g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(engineerTile, 0);
-          if (engineerAction == 4) {
-            break;
-          }
-        }
+    char* connectedTiles = 0;
+    nation->BuildTransportLinkedInfluenceMap(&connectedTiles);
+    short engineerTile = -1;
+    int engineerAction = 0;
+    for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
+      const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
+      if (terrain.ownerNationTag04 != engineer->ownerNationSlot18 || connectedTiles[tile] == 0) {
+        continue;
+      }
+      engineer->MoveTo(tile);
+      g_pSelectedCivilianOrderState->SetActiveCivilianSelection(engineer, 1);
+      engineerAction = g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tile, 0);
+      if (engineerAction == 4) {
+        engineerTile = tile;
+        break;
       }
     }
+    delete[] connectedTiles;
     if (engineerAction != 4) {
-      FailScenario("\"selected engineer's occupied tile did not resolve to the build action\"");
+      FailScenario("\"no transport-connected tile resolved to the engineer build action\"");
       return;
     }
 
@@ -1235,10 +1235,9 @@ private:
     engineerActionIssued = true;
     EnterScenarioStep("opening_engineer_construction_dialog", "activate_selected_engineer_tile");
     CString failure;
-    if (!RuntimeUiDriver::PostActivate(
-            RuntimeControlSelector(kControlTagDialog, kControlTagCncl,
-                                   RUNTIME_CLASS(TUpDownPictureButton)),
-            &failure)) {
+    if (!RuntimeUiDriver::PostActivate(RuntimeControlSelector(kControlTagDialog, kControlTagCncl,
+                                                              RUNTIME_CLASS(TUpDownPictureButton)),
+                                       &failure)) {
       FailScenario(failure);
       return;
     }
@@ -1251,6 +1250,74 @@ private:
   void VerifyEngineerDialogAndCancel() {
     if (!engineerDialogObserved || !g_ModalViewStack.IsEmpty()) {
       FailScenario("\"semantic engineer dialog cancellation did not unwind the modal loop\"");
+      return;
+    }
+
+    short depotTile = engineer->tileIndex06;
+    short ownerNation = engineer->ownerNationSlot18;
+    TGreatPower* nation = g_apNationStates[ownerNation];
+    int oldTownCount = nation->townMarkerList->GetCount();
+    int expectedTownCount =
+        oldTownCount + ((g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 4) == 0);
+    engineer->SetOrders(kUnitOrderBuildDepot, depotTile);
+    while (engineer->remainingTurns24 > 0) {
+      engineer->TickCivWorkOrderCountdownAndComplete();
+    }
+
+    TTown* depot = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(depotTile);
+    if (engineer->unitOrder != kUnitOrderIdle || depot == 0 || depot->activeFlag == 0 ||
+        depot->transportLinked == 0 || nation->townMarkerList->GetCount() != expectedTownCount ||
+        (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 0x10) == 0 ||
+        engineer->completionMarker26 != 0x232a) {
+      char failure[240];
+      wsprintfA(failure,
+                "\"connected depot mismatch: order=%d town=%d active=%d linked=%d count=%d/%d "
+                "flags=%d marker=%d\"",
+                engineer->unitOrder, depot != 0, depot != 0 ? depot->activeFlag : -1,
+                depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
+                expectedTownCount, g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c,
+                engineer->completionMarker26);
+      FailScenario(failure);
+      return;
+    }
+
+    short province = -1;
+    for (short candidate = 0; candidate < 0x180; ++candidate) {
+      if (g_pGlobalMapState->cityScoreTable[candidate].stationedUnitChain98 == 0) {
+        province = candidate;
+        break;
+      }
+    }
+    if (province == -1) {
+      FailScenario("\"random map has no empty province for stationed-unit chain verification\"");
+      return;
+    }
+
+    TMilitaryUnit* olderUnit = new TMilitaryUnit();
+    olderUnit->IMilitaryUnit(EncodeMilitaryUnitKind(kMilitaryUnitMinutemen), province, ownerNation,
+                             0);
+    TMilitaryUnit* newerUnit = new TMilitaryUnit();
+    newerUnit->IMilitaryUnit(EncodeMilitaryUnitKind(kMilitaryUnitMinutemen), province, ownerNation,
+                             0);
+    Province& depotProvince = g_pGlobalMapState->cityScoreTable[province];
+    if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
+        newerUnit->nextAtLocation14 != olderUnit || olderUnit->previousAtLocation10 != newerUnit) {
+      FailScenario("\"equal-priority military unit did not become the retail chain head\"");
+      return;
+    }
+
+    olderUnit->DetachUnitOrderFromOwnerAndReset();
+    olderUnit->Free();
+    if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
+        newerUnit->nextAtLocation14 != 0) {
+      FailScenario("\"detaching the former military head left a dangling province chain\"");
+      return;
+    }
+    newerUnit->DetachUnitOrderFromOwnerAndReset();
+    newerUnit->Free();
+    CaptureScenarioUiSnapshot(g_pViewMgr->currentTurnEventCode, CurrentMainView());
+    if (!HasScenarioUiSnapshot()) {
+      FailScenario("\"completed connected-depot scenario has no strategic-map snapshot\"");
       return;
     }
     Pass();
@@ -1272,6 +1339,7 @@ private:
   bool farmerOrderIssued;
   bool farmerCompletionIssued;
   bool farmerCompletionVerified;
+  TCivUnit* engineer;
   bool engineerActionIssued;
   bool engineerDialogObserved;
   short initialAnimationFrame;
