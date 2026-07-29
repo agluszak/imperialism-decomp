@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 383
+- Findings: 382
 - `native_integral_boundary`: 18
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 318
+- `raw_discriminant_literal`: 317
 
 ## clang-tidy evaluation
 
@@ -112,8 +112,8 @@ decisions -- including the ones that were measured and reverted -- is
 | --- | --- | --- | --- |
 | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | the value is not a predicate: the comparison result is an addend (`(0x0f < capacity) + 3`) producing building tier 3 or 4, narrowed once at the char return. bool would force an extra normalization and lose the arithmetic shape. |
 | `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | the sibling tier computation `(0x1f < capacity) + 3` on the next capacity band, with the same char return. |
-| `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
-| `src/game/city_ui/TEngineerDialog.cpp:114` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
+| `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
+| `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
 | `src/game/map/TZone.cpp:779` | predicate -> unsigned char | `byte_comparison_of_packed_state` | the second operand of the same byte compare -- the sign test on the packed map-tile action state byte. |
 | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool. |
 | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate). |
@@ -202,7 +202,7 @@ is classified, and a family that stops appearing must be removed.
 | `reloadPoliticalMapState` | 4 | `byte_or_int_predicate_not_a_domain` | three call sites test the political-map reload request byte for zero. |
 | `renderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TC2TemplateDialog tests non-zero to choose the alternate render path. |
 | `resetOrderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TMinor tests non-zero to decide whether to reset the order tables. |
-| `resourceType` | 7 | `industry_action_order_type_domain` | the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind. |
+| `resourceType` | 6 | `industry_action_order_type_domain` | the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind. |
 | `resourceTypeIndex` | 11 | `unresolved_narrower_subdomain` | TUnitOrder::resourceTypeIndex takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind. |
 | `ringState` | 6 | `closed_domain_needs_listing_evidence` | TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described. |
 | `riverSpriteCode` | 1 | `byte_or_int_predicate_not_a_domain` | TEngineerDialog's rail census reads TTerrainStateRecordView::riverSpriteCode only as a nonzero presence test (river/coast connection present) to decide whether a tile counts toward the port-availability tally; the value itself is not compared against any code-domain band here. |
@@ -288,8 +288,8 @@ is classified, and a family that stops appearing must be removed.
 | `bd0a5d6bf28d042b` | `nested_integral_cast` | `src/game/ui_screens/TSimMgr.cpp:2450` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `d144e1a86956838b` | `predicate_storage_cast` | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
 | `853e86ea99ed7cf3` | `predicate_storage_cast` | `src/game/city/TCity.cpp:878` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
-| `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:113` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
-| `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:114` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
+| `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
+| `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `c5705f8f8668f444` | `predicate_storage_cast` | `src/game/map/TZone.cpp:779` | predicate -> unsigned char | `byte_comparison_of_packed_state` | `imperialism-decomp-1uj.99.7` |
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1b59484a1b41425a` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
@@ -352,7 +352,7 @@ is classified, and a family that stops appearing must be removed.
 | `e307df1038057f34` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:490` | policyCode == 500 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `764adde68323ebe6` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:773` | policyCode < 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `37d5f48d83312bd7` | `raw_discriminant_literal` | `src/game/city_ui/TCountry.cpp:773` | policyCode > 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `05a5c94c820b5e33` | `raw_discriminant_literal` | `src/game/city_ui/TEngineerDialog.cpp:218` | riverSpriteCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `05a5c94c820b5e33` | `raw_discriminant_literal` | `src/game/city_ui/TEngineerDialog.cpp:220` | riverSpriteCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `60c03fbcbae33de8` | `raw_discriminant_literal` | `src/game/city_ui/TIndustryView.cpp:189` | selectedIndustryUnitTypeA4 > 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
 | `8679af1ccc6ae355` | `raw_discriminant_literal` | `src/game/city_ui/TRailheadDialog.cpp:36` | serializedState0a == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `86787a377211d32e` | `raw_discriminant_literal` | `src/game/city_ui/TShipyardView.cpp:114` | resourceTypeIndex != 0 | `unresolved_narrower_subdomain` | `imperialism-decomp-1uj.99.8` |
@@ -417,8 +417,7 @@ is classified, and a family that stops appearing must be removed.
 | `b0a9c7cfb2435934` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1310` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `fff70bd9045e0f72` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1313` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `133ad553d2b6d9b8` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1349` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `5fc75cfac3768336` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1209` | resourceType >= 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1318` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
+| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1424` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:100` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2388240767cdc1a4` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:130` | editorActionMode368 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:67` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -540,7 +539,7 @@ is classified, and a family that stops appearing must be removed.
 | `968fb4f50a276053` | `raw_discriminant_literal` | `src/game/tactical_ui/TTechMgr.cpp:632` | resourceType == 10 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
 | `23ff1f59c67f078e` | `raw_discriminant_literal` | `src/game/ui_core/CMcWindow.cpp:33` | windowStyleType != 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `6fcc78451525c7ea` | `raw_discriminant_literal` | `src/game/ui_core/CMcWindow.cpp:156` | g_nMcWindowStateMsgAssertGate_006A1C74 == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `430bc1830ce40068` | `raw_discriminant_literal` | `src/game/ui_core/TCluster.cpp:88` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `430bc1830ce40068` | `raw_discriminant_literal` | `src/game/ui_core/TCluster.cpp:94` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `d87ba0f15909a8a6` | `raw_discriminant_literal` | `src/game/ui_core/TControl.cpp:100` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `99a10e7e995d1ae1` | `raw_discriminant_literal` | `src/game/ui_core/TEditText.cpp:121` | textAlignmentCode == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `c362ca894785dddb` | `raw_discriminant_literal` | `src/game/ui_core/THelpMgr.cpp:270` | flowMode != 0xf | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

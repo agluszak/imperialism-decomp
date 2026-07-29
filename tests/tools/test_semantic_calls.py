@@ -11,6 +11,7 @@ from tools.semantic_calls import (
     _canonical_arithmetic,
     _canonical_call_value,
     _canonical_direct_arguments,
+    _direct_call_abis,
     _normalized_virtual_target,
     _reccmp_proves_call_contract,
     check_gate,
@@ -28,6 +29,56 @@ class FakeDataType:
 
     def getLength(self):
         return self.size
+
+
+class FakeAddressFactory:
+    def getAddress(self, value):
+        return value
+
+
+class FakeParameter:
+    def __init__(self, name: str, auto: bool = False):
+        self.name = name
+        self.auto = auto
+
+    def getName(self):
+        return self.name
+
+    def isAutoParameter(self):
+        return self.auto
+
+
+class FakeFunction:
+    def __init__(self, parameters, thunked=None):
+        self.parameters = parameters
+        self.thunked = thunked
+
+    def getParameters(self):
+        return self.parameters
+
+    def getThunkedFunction(self, _recursive):
+        return self.thunked
+
+
+class FakeFunctionManager:
+    def __init__(self, function):
+        self.function = function
+
+    def getFunctionAt(self, address):
+        if isinstance(self.function, dict):
+            return self.function[int(address, 0)]
+        return self.function
+
+
+class FakeProgram:
+    def __init__(self, function):
+        self.function = function
+
+    def getFunctionManager(self):
+        return FakeFunctionManager(self.function)
+
+    def getAddressFactory(self):
+        return FakeAddressFactory()
 
 
 class HighParam:
@@ -294,6 +345,28 @@ class SemanticCallTests(unittest.TestCase):
         self.assertEqual(
             _canonical_direct_arguments(target, [explicit], abis),
             [explicit],
+        )
+
+    def test_direct_call_abi_uses_thunk_target_parameters(self):
+        target = FakeFunction(
+            [FakeParameter("this", auto=True), FakeParameter("value")]
+        )
+        thunk = FakeFunction([], thunked=target)
+        self.assertEqual(
+            _direct_call_abis(FakeProgram(thunk), {0x401000: 0x401000}),
+            {0x401000: DirectCallABI(parameter_count=2, has_this=True)},
+        )
+
+    def test_direct_call_abi_prefers_canonical_entry_over_folded_alias(self):
+        canonical = FakeFunction([FakeParameter("this", auto=True)])
+        alias = FakeFunction([])
+        program = FakeProgram({0x48F250: canonical, 0x570850: alias})
+        self.assertEqual(
+            _direct_call_abis(
+                program,
+                {0x48F250: 0x48F250, 0x570850: 0x48F250},
+            ),
+            {0x48F250: DirectCallABI(parameter_count=1, has_this=True)},
         )
 
     def test_pointer_offsets_are_flattened_and_folded_at_storage_width(self):

@@ -42,7 +42,13 @@ TCluster::~TCluster() {}
 // a child happens through AttachChildControl (slot 0x5c) only when a parent exists, and
 // the resource context is cleared last.
 // FUNCTION: IMPERIALISM 0x004915d0
-void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size) {
+void TCluster::InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size,
+                                                       int layoutParam4, int layoutParam5,
+                                                       int layoutParam6, int layoutParam7) {
+  (void)layoutParam4;
+  (void)layoutParam5;
+  (void)layoutParam6;
+  (void)layoutParam7;
   if (parent != nullptr) {
     nativeWindow50 = parent->nativeWindow50;
   }

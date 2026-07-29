@@ -141,48 +141,55 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 
   do {
     if (PtInRect(legendRect, point) != 0) {
-      TLongintList* ownerNationProvinceCollection =
-          g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
-      provinceCount = ownerNationProvinceCollection->GetSize();
-      if (0 < provinceCount) {
-        provinceOrdinal = 1;
-        do {
-          provinceId = ownerNationProvinceCollection->At(provinceOrdinal);
-          Province* province = &g_pGlobalMapState->cityScoreTable[provinceId];
-          provinceTileCount = province->linkedRegionCount;
-          if (0 < provinceTileCount) {
-            short* provinceTileIndices = province->linkedTileIndices42;
-            provinceTileOrdinal = 0;
-            while (provinceTileOrdinal < provinceTileCount) {
-              tileIndex = *provinceTileIndices;
-              TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
-              if ((tile->recruitSearchVisited0e == 0) &&
-                  ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
-                if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
-                  TMapUberPicture* activeMapPicture =
-                      static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48);
-                  if (activeMapPicture != 0) {
-                    activeMapPicture->CenterOn(tileIndex);
+      do {
+        TLongintList* ownerNationProvinceCollection =
+            g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
+        provinceCount = ownerNationProvinceCollection->GetSize();
+        if (0 < provinceCount) {
+          provinceOrdinal = 1;
+          do {
+            provinceId = ownerNationProvinceCollection->At(provinceOrdinal);
+            Province* province = &g_pGlobalMapState->cityScoreTable[provinceId];
+            provinceTileCount = province->linkedRegionCount;
+            if (0 < provinceTileCount) {
+              short* provinceTileIndices = province->linkedTileIndices42;
+              provinceTileOrdinal = 0;
+              while (provinceTileOrdinal < provinceTileCount) {
+                tileIndex = *provinceTileIndices;
+                TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[tileIndex];
+                if ((tile->recruitSearchVisited0e == 0) &&
+                    ((unsigned short)(unsigned char)tile->gateFlag == (unsigned short)slotIndex)) {
+                  if ((int)(unsigned int)(*currentLegendSelectionCounter) <= candidateOrdinal) {
+                    TMapUberPicture* activeMapPicture =
+                        static_cast<TMapUberPicture*>(g_pAmbitApplication->edgeScrollTarget48);
+                    if (activeMapPicture != 0) {
+                      activeMapPicture->CenterOn(tileIndex);
+                    }
+                    *currentLegendSelectionCounter =
+                        (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);
+                    return;
                   }
-                  *currentLegendSelectionCounter =
-                      (unsigned short)((unsigned int)(*currentLegendSelectionCounter) + 1);
-                  return;
+                  candidateOrdinal = candidateOrdinal + 1;
                 }
-                candidateOrdinal = candidateOrdinal + 1;
+                provinceTileOrdinal = provinceTileOrdinal + 1;
+                provinceTileIndices = provinceTileIndices + 1;
               }
-              provinceTileOrdinal = provinceTileOrdinal + 1;
-              provinceTileIndices = provinceTileIndices + 1;
             }
-          }
-          provinceOrdinal = provinceOrdinal + 1;
-          provinceCount = ownerNationProvinceCollection->GetSize();
-        } while (provinceOrdinal <= provinceCount);
-      }
+            provinceOrdinal = provinceOrdinal + 1;
+            provinceCount = ownerNationProvinceCollection->GetSize();
+          } while (provinceOrdinal <= provinceCount);
+        }
+        if (candidateOrdinal > 0) {
+          *currentLegendSelectionCounter =
+              (unsigned short)((unsigned int)(*currentLegendSelectionCounter) % candidateOrdinal);
+        }
+      } while ((candidateOrdinal > 0) &&
+               (candidateOrdinal < (int)(unsigned int)(*currentLegendSelectionCounter)));
     }
     currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
     slotIndex = slotIndex + 1;
     legendRect = legendRect + 1;
-    if (g_pActiveCityDialogLegendSelectionOwner <= currentLegendSelectionCounter) {
+    if (g_awCivilianLegendSelectionCountsBySlot + 16 <= currentLegendSelectionCounter) {
       return;
     }
   } while (true);
@@ -275,7 +282,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
       legendRect++;
       *legendSelectionCountsBySlot = 0;
       legendSelectionCountsBySlot++;
-    } while (legendSelectionCountsBySlot < g_pActiveCityDialogLegendSelectionOwner);
+    } while (legendSelectionCountsBySlot < g_awCivilianLegendSelectionCountsBySlot + 16);
     this->enabled = 0;
   }
 

@@ -7,12 +7,14 @@
 #include "game/city/TItemOrder.h"
 #include "game/city/TProductionOrder.h"
 #include "game/city/TShipOrder.h"
+#include "game/city/TTrainingOrder.h"
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TArmoryView.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/city_ui/TCityProductionView.h"
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TShipyardView.h"
+#include "game/city_ui/TTradeSchoolView.h"
 #include "game/city_ui/TUniversityView.h"
 #include "game/app/TTransFocusAnimation.h"
 #include "game/globals/global_types.h"
@@ -34,6 +36,7 @@
 #include "game/ui_tags_city.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_widgets/TIndustryCluster.h"
+#include "game/ui_widgets/TAmtBar.h"
 #include "game/ui_widgets/TPlacard.h"
 #include "game/ui_widgets/TRailCluster.h"
 #include "game/ui_widgets/TCivilianButton.h"
@@ -46,8 +49,8 @@ public:
   CityScreenTestCase()
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
         interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
-        interactionItemOrder(0), interactionShipOrder(0), interactionAnimation(0),
-        interactionRowTag(0) {}
+        interactionItemOrder(0), interactionShipOrder(0), interactionTrainingOrder(0),
+        interactionAnimation(0), interactionRowTag(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -109,6 +112,7 @@ private:
     kShipyardBuildingSlot = kTurnEventShipyard - kTurnEventTextileMill,
     kArmoryBuildingSlot = kTurnEventArmory - kTurnEventTextileMill,
     kUniversityBuildingSlot = kTurnEventUniversity - kTurnEventTextileMill,
+    kTradeSchoolBuildingSlot = kTurnEventSchool - kTurnEventTextileMill,
     kRailyardBuildingSlot = kTurnEventRailyard - kTurnEventTextileMill
   };
 
@@ -117,6 +121,7 @@ private:
     kUniversityInteraction,
     kArmoryInteraction,
     kShipyardInteraction,
+    kTrainingInteraction,
     kItemInteraction
   };
 
@@ -454,6 +459,50 @@ private:
     return true;
   }
 
+  bool ValidateTradeSchoolState(TBuildingView* buildingView) {
+    if (buildingView->IsKindOf(RUNTIME_CLASS(TTradeSchoolView)) == 0) {
+      FailScenario("\"trade-school building control opened the wrong view class\"");
+      return false;
+    }
+    TRailCluster* trainingCluster =
+        static_cast<TRailCluster*>(buildingView->ResolveControlByTag(kSummaryTagTrai));
+    TNumberText* quantity =
+        trainingCluster == 0
+            ? 0
+            : static_cast<TNumberText*>(trainingCluster->ResolveControlByTag(kControlTagMove));
+    TAmtBar* bar =
+        trainingCluster == 0
+            ? 0
+            : static_cast<TAmtBar*>(trainingCluster->ResolveControlByTag(kControlTagBar));
+    TTrainingOrder* order = static_cast<TTrainingOrder*>(buildingView->city94->orderSlotsE4[0x17]);
+    if (trainingCluster == 0 || quantity == 0 || bar == 0 || order == 0 ||
+        trainingCluster->selectedMetricOrder != order || bar->auxValueA <= 0) {
+      FailScenario("\"trade-school trainee row is missing its live order or bar\"");
+      return false;
+    }
+
+    CString quantityText;
+    CString expectedText;
+    quantity->GetCurrentText(&quantityText);
+    expectedText.Format("%d", order->quantity);
+    const short expectedBarValue = static_cast<short>(
+        (static_cast<int>(order->quantity) * bar->frameWidth34) / bar->auxValueA);
+    if (quantityText != expectedText || quantity->value != order->quantity ||
+        bar->rangeOrMaxValue != expectedBarValue ||
+        !HasCorrectNumberTextPresentationState(quantity, 10, PALETTEINDEX(0))) {
+      CString failure;
+      failure.Format("\"trade-school state mismatch: text=%s expected=%s value=%d order=%d "
+                     "bar=%d expected_bar=%d aux=%d font=%d color=%lu enabled=%d\"",
+                     static_cast<LPCSTR>(quantityText), static_cast<LPCSTR>(expectedText),
+                     quantity->value, order->quantity, bar->rangeOrMaxValue, expectedBarValue,
+                     bar->auxValueA, quantity->textStyle78.fontSize,
+                     quantity->textStyle78.textColor, quantity->enabled);
+      FailScenario(failure);
+      return false;
+    }
+    return true;
+  }
+
   short IndustryUnitTypeForBuilding(short buildingSlot) {
     static const short kIndustryUnitTypesByPage[7] = {8, 13, 11, 15, 9, 14, 12};
     return buildingSlot >= 0 && buildingSlot < 7 ? kIndustryUnitTypesByPage[buildingSlot] : -1;
@@ -511,6 +560,7 @@ private:
     interactionUnitOrder = order;
     interactionItemOrder = 0;
     interactionShipOrder = 0;
+    interactionTrainingOrder = 0;
     priorQuantity = order->quantity;
     priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
     priorSecondaryStock = order->secondaryInputResourceId < 0
@@ -534,6 +584,7 @@ private:
     interactionUnitOrder = 0;
     interactionItemOrder = order;
     interactionShipOrder = 0;
+    interactionTrainingOrder = 0;
     priorQuantity = order->quantity;
     priorRequestedQuantity = order->requestedQuantity4c;
     priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
@@ -554,7 +605,21 @@ private:
     interactionUnitOrder = 0;
     interactionItemOrder = 0;
     interactionShipOrder = order;
+    interactionTrainingOrder = 0;
     priorQuantity = order->quantity;
+  }
+
+  void CaptureTrainingOrderState(TTrainingOrder* order) {
+    interactionKind = kTrainingInteraction;
+    interactionUnitOrder = 0;
+    interactionItemOrder = 0;
+    interactionShipOrder = 0;
+    interactionTrainingOrder = order;
+    priorQuantity = order->quantity;
+    priorPrimaryStock = order->ownerCity->cityStockPaperCA;
+    priorTreasury = order->ownerCity->ownerNationAc->treasuryValue10;
+    priorBaselineLow = order->productionSummary->baselineSlots10->lowSkillCount04;
+    priorBaselineMedium = order->productionSummary->baselineSlots10->mediumSkillCount06;
   }
 
   bool BeginUniversityInteraction(TBuildingView* buildingView) {
@@ -631,6 +696,27 @@ private:
     }
     FailScenario("\"shipyard has no actionable build-order plus arrow\"");
     return false;
+  }
+
+  bool BeginTradeSchoolInteraction(TBuildingView* buildingView) {
+    TRailCluster* trainingCluster =
+        static_cast<TRailCluster*>(buildingView->ResolveControlByTag(kSummaryTagTrai));
+    TView* rightArrow =
+        trainingCluster == 0 ? 0 : trainingCluster->ResolveControlByTag(kControlTagRght);
+    TTrainingOrder* order =
+        trainingCluster == 0 ? 0
+                             : static_cast<TTrainingOrder*>(trainingCluster->selectedMetricOrder);
+    if (rightArrow == 0 || rightArrow->IsActionable() == 0 || order == 0 ||
+        order->MaxOrder() <= order->quantity) {
+      FailScenario("\"trade-school trainee order has no actionable right arrow\"");
+      return false;
+    }
+    CaptureTrainingOrderState(order);
+    phase = kWaitForOrderIncrease;
+    EnterScenarioStep("waiting_for_training_order_increase", "activate_trade_school_right_arrow");
+    rightArrow->HandleEvent(100, rightArrow, 0);
+    RequestScenarioTick();
+    return true;
   }
 
   bool BeginItemInteraction(TBuildingView* buildingView) {
@@ -752,14 +838,46 @@ private:
         interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction
             ? UnitOrderStateWasReserved()
         : interactionKind == kShipyardInteraction ? ShipOrderStateWasReserved()
-                                                  : ItemOrderStateWasReserved();
+        : interactionKind == kTrainingInteraction
+            ? interactionTrainingOrder->quantity == priorQuantity + 1 &&
+                  interactionTrainingOrder->ownerCity->cityStockPaperCA == priorPrimaryStock - 1 &&
+                  interactionTrainingOrder->ownerCity->ownerNationAc->treasuryValue10 ==
+                      priorTreasury - 100
+            : ItemOrderStateWasReserved();
     bool uiIsCorrect =
         interactionKind == kUniversityInteraction ? ValidateUniversityQuantities(buildingView)
         : interactionKind == kArmoryInteraction   ? ValidateArmoryState(buildingView)
         : interactionKind == kShipyardInteraction ? ValidateShipyardQuantities(buildingView)
+        : interactionKind == kTrainingInteraction ? ValidateTradeSchoolState(buildingView)
                                                   : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
       FailScenario("\"city production increase did not reserve model state and refresh UI\"");
+      return;
+    }
+
+    if (interactionKind == kTrainingInteraction) {
+      interactionTrainingOrder->Produce();
+      TRailCluster* trainingCluster =
+          static_cast<TRailCluster*>(buildingView->ResolveControlByTag(kSummaryTagTrai));
+      if (trainingCluster == 0) {
+        FailScenario("\"trade-school trainee cluster disappeared during completion\"");
+        return;
+      }
+      trainingCluster->SetMoveAmount(interactionTrainingOrder->quantity, 1);
+      if (interactionTrainingOrder->quantity != 0 ||
+          interactionTrainingOrder->productionSummary->baselineSlots10->lowSkillCount04 !=
+              priorBaselineLow - 1 ||
+          interactionTrainingOrder->productionSummary->baselineSlots10->mediumSkillCount06 !=
+              priorBaselineMedium + 1 ||
+          !ValidateTradeSchoolState(buildingView)) {
+        FailScenario("\"completed training order did not reset its quantity and bar like retail\"");
+        return;
+      }
+      interactionComplete = true;
+      phase = kWaitForBuilding;
+      EnterScenarioStep("verified_trade_school_bar_reset",
+                        "completed_training_order_resets_live_bar_to_zero");
+      RequestScenarioTick();
       return;
     }
 
@@ -866,6 +984,8 @@ private:
       quantitiesAreValid = ValidateShipyardQuantities(buildingView);
     } else if (activeBuildingSlot == kRailyardBuildingSlot) {
       quantitiesAreValid = ValidateRailyardQuantity(buildingView);
+    } else if (activeBuildingSlot == kTradeSchoolBuildingSlot) {
+      quantitiesAreValid = ValidateTradeSchoolState(buildingView);
     } else {
       quantitiesAreValid = ValidateItemQuantity(buildingView);
     }
@@ -934,6 +1054,10 @@ private:
       BeginShipyardInteraction(buildingView);
       return;
     }
+    if (!interactionComplete && activeBuildingSlot == kTradeSchoolBuildingSlot) {
+      BeginTradeSchoolInteraction(buildingView);
+      return;
+    }
     if (!interactionComplete && activeBuildingSlot != kRailyardBuildingSlot) {
       BeginItemInteraction(buildingView);
       return;
@@ -982,6 +1106,31 @@ private:
       return;
     }
     if (activeBuildingSlot == kRailyardBuildingSlot) {
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      if (activeNation == 0 || activeNation->city == 0) {
+        FailScenario("\"active nation lost its city before trade-school interaction\"");
+        return;
+      }
+      TTrainingOrder* trainingOrder =
+          static_cast<TTrainingOrder*>(activeNation->city->orderSlotsE4[0x17]);
+      if (trainingOrder == 0 || trainingOrder->productionSummary->strength <= 0 ||
+          trainingOrder->productionSummary->productionSlots14->lowSkillCount04 <= 0) {
+        FailScenario("\"city has no workforce available for trade-school interaction\"");
+        return;
+      }
+      if (activeNation->city->cityStockPaperCA < 1) {
+        activeNation->city->cityStockPaperCA = 1;
+      }
+      if (activeNation->ComputeAvailableDiplomacyBudget() < 100) {
+        activeNation->treasuryValue10 += 100;
+      }
+      activeBuildingSlot = kTradeSchoolBuildingSlot;
+      phase = kActivateBuilding;
+      EnterScenarioStep("activating_trade_school_building", "activate_trade_school_slot");
+      RequestScenarioTick();
+      return;
+    }
+    if (activeBuildingSlot == kTradeSchoolBuildingSlot) {
       TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
       if (activeNation == 0 || activeNation->city == 0) {
         FailScenario("\"active nation lost its city before industry interaction\"");
@@ -1058,6 +1207,7 @@ private:
   TUnitOrder* interactionUnitOrder;
   TItemOrder* interactionItemOrder;
   TShipOrder* interactionShipOrder;
+  TTrainingOrder* interactionTrainingOrder;
   TTransFocusAnimation* interactionAnimation;
   int interactionRowTag;
   short priorQuantity;
