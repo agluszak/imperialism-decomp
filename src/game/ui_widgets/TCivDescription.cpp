@@ -195,6 +195,23 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
   } while (true);
 }
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+bool TCivDescription::ActivateLegendSlot(short slotIndex) {
+  if (slotIndex < 0 || slotIndex >= 16) {
+    return false;
+  }
+  RECT* legendRect = &legendRects[slotIndex];
+  if (legendRect->right <= legendRect->left || legendRect->bottom <= legendRect->top) {
+    return false;
+  }
+  CPoint point((legendRect->left + legendRect->right) / 2,
+               (legendRect->top + legendRect->bottom) / 2);
+  CPoint origin(0, 0);
+  DoMouseCommand(point, 0, origin);
+  return true;
+}
+#endif
+
 // FUNCTION: IMPERIALISM 0x0058f3c0
 void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit* orderState) {
   TCivDescription* context = this;

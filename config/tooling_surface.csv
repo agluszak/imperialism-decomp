@@ -168,3 +168,4 @@ module|tools.workflow.serde_audit|just:serde-audit|Save-file byte-desync audit: 
 module|tools.ghidra.body_integrity|just:body-integrity-audit|Read-only Ghidra body-integrity audit: body holes, labels at hole starts, fallthrough into unowned/foreign code, entries inside a body, curated-size disagreement; --strict fails on hard violations
 module|tools.ghidra.inventory_drop|just:inventory-drop|Drop inventory rows whose Ghidra entity is gone; verifies each address against the live DB (no function, no label) and against source markers before removing
 module|tools.semantic_calls|just:semantic-gate-update|Build and cache the recomp Ghidra Program, compare paired manual functions through high-p-code call contracts, emit structured evidence, and enforce the semantic ratchet
+module|tools.runtime.source_policy|just:runtime-source-policy-gate|Reject coordinate mouse injection, timer waits, polling APIs, and unexplained literal points in native runtime scenario sources

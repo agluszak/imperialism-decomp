@@ -26,6 +26,10 @@ public:
   struct TQuickDrawSurfaceContext* filledRowStrip; // +0x8c highlighted-row strip
   struct TQuickDrawSurfaceContext* emptyRowStrip;  // +0x90 background strip
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  bool ActivateRow(short row);
+#endif
+
   // NOOP: verified empty in original 0x005bc6c8 (no standalone TDealTabControl::TDealTabControl body exists: CreateObject 0x005bc690 inlines this default ctor, calling the TControl base ctor directly at that site)
   TDealTabControl() {}
 };

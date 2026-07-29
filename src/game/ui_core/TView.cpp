@@ -16,6 +16,10 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/gfx/quickdraw_regions.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#endif
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
@@ -478,6 +482,9 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
     InvalidateRgn(nativeWindow50->m_hWnd, destRegion, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
+#endif
   }
 
   DisposeRgn(localRegion);
@@ -498,6 +505,9 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
     InvalidateRect(nativeWindow50->m_hWnd, &localRect, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
+#endif
   }
 }
 

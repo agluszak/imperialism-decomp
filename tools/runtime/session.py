@@ -8,7 +8,7 @@ import time
 from typing import Callable
 
 from tools.runtime.artifacts import capture_failure_screenshot
-from tools.runtime.classification import classify_poll, no_progress_budget_seconds
+from tools.runtime.classification import classify_poll
 from tools.runtime.display import virtual_display
 from tools.runtime.models import HostResult, JsonObject, RunConfig
 from tools.runtime.protocol import read_json_file
@@ -82,9 +82,6 @@ def _prepare_environment(
             "IMPERIALISM_RUNTIME_TEST_HEARTBEAT": translated[1],
             "IMPERIALISM_RUNTIME_TEST_DEBUG_RECORD": translated[2],
             "IMPERIALISM_RUNTIME_TEST_SEED": str(config.seed),
-            "IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS": str(
-                config.phase_timeout_ms
-            ),
         }
     )
     if staged_fixture is not None:
@@ -149,7 +146,6 @@ def _poll_attempt(
     prefix: Path,
     started: float,
 ) -> TransportSnapshot:
-    budget_seconds = no_progress_budget_seconds(config.phase_timeout_ms)
     while not snapshot.terminal:
         snapshot = transport.poll(result_path.is_file())
         if snapshot.inferior_pid is not None and not pid_path.is_file():
@@ -166,7 +162,6 @@ def _poll_attempt(
         classification = classify_poll(
             heartbeat,
             _heartbeat_age(heartbeat_path, heartbeat, dependencies.wall_time),
-            budget_seconds,
             process_age_seconds=dependencies.monotonic() - started,
         )
         if (
@@ -256,7 +251,6 @@ def _build_host_result(
         fixture_metadata=config.fixture_metadata,
         seed=config.seed,
         timeout_seconds=config.timeout_seconds,
-        phase_timeout_ms=config.phase_timeout_ms,
     )
 
 

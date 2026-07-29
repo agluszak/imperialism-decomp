@@ -1,6 +1,7 @@
 #include "MainMenuFlow.h"
 
 #include "RuntimeObservations.h"
+#include "RuntimeJson.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 #include "screens/MainMenuDriver.h"
@@ -20,22 +21,25 @@ void MainMenuFlow::Start(RuntimeScenario& scenario) {
   phase = kWaitingForMainMenu;
   g_pAmbitApplication->PostTurnEventCodeMessage2420(0x5dc);
   scenario.EnterFlowPhase("waiting_for_main_menu", "post_turn_event_0x05dc");
-  scenario.RequestScenarioTick();
+  scenario.ContinueAfterAction();
 }
 
-RuntimeFlowStatus MainMenuFlow::Tick(RuntimeScenario& scenario) {
+RuntimeFlowStatus MainMenuFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kWaitingForMainMenu) {
     TView* mainView = scenario.CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dc ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
-      scenario.WaitForScenarioTick("\"main menu did not become active\"");
+      scenario.AwaitUiChange("\"main menu did not become active\"");
       return kRuntimeFlowRunning;
     }
     srand(scenario.RunState().Seed());
     g_zoneStatusCodePrngSeed_006a5aec = scenario.RunState().Seed();
     MainMenuDriver menu(mainView);
-    if (!menu.StartRandomGameSemantically()) {
-      scenario.FailScenario("\"main-menu random-game control is missing\"");
+    CString failure;
+    if (!menu.StartRandomGame(&failure)) {
+      CString failureJson;
+      RuntimeJson::AppendString(failureJson, failure);
+      scenario.FailScenario(failureJson);
       return kRuntimeFlowRunning;
     }
     checkpoint = kRuntimeMainMenuRandomGameRequested;

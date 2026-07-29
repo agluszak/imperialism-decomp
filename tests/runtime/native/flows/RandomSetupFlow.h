@@ -7,7 +7,7 @@ public:
   RandomSetupFlow();
 
   void Start(RuntimeScenario& scenario) override;
-  RuntimeFlowStatus Tick(RuntimeScenario& scenario) override;
+  RuntimeFlowStatus Advance(RuntimeScenario& scenario) override;
   RuntimeFlowCheckpoint Checkpoint() const override;
   void ContinueFromCheckpoint() override;
 

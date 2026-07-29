@@ -23,7 +23,7 @@ class RuntimeScenario : public RuntimeTestCase {
 public:
   RuntimeScenario();
   void Start(RuntimeContext& context) override;
-  void Tick(RuntimeContext& context) override;
+  void Observe(RuntimeContext& context, unsigned int observationKinds) override;
   void ObserveTurnEvent(RuntimeContext& context, int eventCode) override;
   void ObserveBuiltUiTree(RuntimeContext& context, int eventCode, TView* root) override;
   void Pulse(RuntimeContext& context) override;
@@ -40,7 +40,7 @@ public:
   virtual void OnManagersReady();
   virtual void OnMapReadyWithoutCapitalSelection();
   virtual void OnCombinedMapReady();
-  virtual void TickScenario();
+  virtual void AdvanceScenario();
   virtual void ObserveScenarioUiTree(int eventCode, TView* root);
 
 protected:
@@ -51,13 +51,12 @@ protected:
   bool Require(const char* assertionId, bool condition, const char* failure);
   bool Check(const char* assertionId, bool condition, const char* failure);
   bool FinishChecks();
-  bool WaitForScenarioTick(const char* failure);
-  void RequestScenarioTick();
+  void AwaitUiChange(const char* failure);
+  void Await(unsigned int observationKinds, const char* failure);
+  void ContinueAfterAction();
   void EnterScenarioStep(const char* phaseName, const char* action);
 
   TView* CurrentMainView() const;
-  unsigned long ScenarioPhaseTicks() const;
-  unsigned long ScenarioPhaseElapsedMs() const;
   const char* FixturePath() const;
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();
@@ -74,7 +73,8 @@ protected:
 private:
   enum DriverState { kWaitingForManagers, kRunningFlow, kRunningScenario };
 
-  void TickWaitingForManagers();
+  void AdvanceDriver(unsigned int observationKinds);
+  void AdvanceWaitingForManagers();
   void Finish(const char* status, const char* failure);
   void EnterFlowPhase(const char* phaseName, const char* action);
   RuntimeRun& RunState() const;
@@ -82,6 +82,8 @@ private:
   RuntimeRun* run;
   RuntimeFlow* activeFlow;
   DriverState driverState;
+  unsigned int awaitedObservations;
+  bool advancing;
 
   friend class RandomGameFlow;
   friend class MainMenuFlow;

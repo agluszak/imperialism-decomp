@@ -47,10 +47,10 @@ public:
     startEconomicTurn = 0;
     ResetCapitolDangerWarningObservationForRuntimeTest();
     EnterScenarioStep("activating_end_turn", "reach_combined_map");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateEndTurn) {
       ActivateEndTurn();
     } else {
@@ -65,7 +65,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before ending the turn\"");
+      AwaitUiChange("\"combined map was not idle before ending the turn\"");
       return;
     }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
@@ -81,12 +81,12 @@ private:
     ResetNewspaperAdvance();
     phase = kWaitForTurnProcessed;
     StrategicMapDriver map(mainView);
-    if (!map.EndTurnThroughNativeMessages()) {
+    if (!map.EndTurn()) {
       FailScenario("\"end-turn control is missing\"");
       return;
     }
     EnterScenarioStep("waiting_for_turn_processed", "activate_map_done");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForTurnProcessed() {
@@ -117,18 +117,19 @@ private:
         action = "activate_end_turn_warning";
       }
       RecordHandledModal(modalLabel);
-      if (!RuntimeUiDriver::ActivateControlSemantically(modal, defaultCommand)) {
+      if (!RuntimeUiDriver::Activate(
+              modal, RuntimeControlSelector(defaultCommand, RUNTIME_CLASS(TControl)))) {
         FailScenario("\"turn-flow modal default control could not be activated\"");
         return;
       }
       EnterScenarioStep("waiting_for_turn_processed", action);
-      RequestScenarioTick();
+      Await(kObserveModalPopped, "\"turn-flow modal did not unwind after activation\"");
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (AdvanceNewspaperIfNeeded()) {
@@ -142,17 +143,17 @@ private:
       resubmittedEndTurn = true;
       EnterScenarioStep("waiting_for_turn_processed", "reactivate_map_done_after_turn_alerts");
       StrategicMapDriver map(mainView);
-      if (!map.EndTurnThroughNativeMessages()) {
+      if (!map.EndTurn()) {
         FailScenario("\"end-turn control disappeared after turn alerts\"");
         return;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      WaitForScenarioTick("\"ended turn did not advance back to the combined map\"");
+      AwaitUiChange("\"ended turn did not advance back to the combined map\"");
       return;
     }
     if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {
@@ -164,7 +165,7 @@ private:
     if (turnsDone < kTurnsToAdvance) {
       phase = kActivateEndTurn;
       EnterScenarioStep("activating_end_turn", "reach_combined_map");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pSimMgr->economicTurn != startEconomicTurn + kTurnsToAdvance) {

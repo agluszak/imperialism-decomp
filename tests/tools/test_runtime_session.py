@@ -164,7 +164,6 @@ class RuntimeSessionTests(unittest.TestCase):
             run_dir=run_dir,
             seed=1,
             timeout_seconds=timeout,
-            phase_timeout_ms=15_000,
             use_gdb=True,
         )
 

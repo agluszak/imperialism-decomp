@@ -17,6 +17,11 @@
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/pointer_representation.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#include "RuntimeUiDriver.h"
+#endif
 
 // MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps
 // this to the MCIWnd control messages without pulling in the AVIFile COM interfaces.
@@ -151,7 +156,23 @@ ON_WM_CTLCOLOR()
 ON_WM_KEYDOWN()
 ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
+#ifdef IMPERIALISM_RUNTIME_TESTS
+ON_MESSAGE(WM_RUNTIME_ACTION, OnRuntimeAction)
+#endif
 END_MESSAGE_MAP()
+#endif
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+LRESULT CIncludeView::OnRuntimeAction(WPARAM wParam, LPARAM lParam) {
+  MSG message;
+  ZeroMemory(&message, sizeof(message));
+  message.hwnd = m_hWnd;
+  message.message = WM_RUNTIME_ACTION;
+  message.wParam = wParam;
+  message.lParam = lParam;
+  RuntimeTestDriver::HandleMessage(&message);
+  return 0;
+}
 #endif
 
 // FUNCTION: IMPERIALISM 0x00482bf0
@@ -187,6 +208,9 @@ void CIncludeView::OnDraw(CDC* pDC) {
       m_activeDialogContext->PaintVisibleChildrenIntersectingClipRect(&paintRect, pDC);
     }
   }
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTestDriver::ObserveDeferred(kObservePaintCompleted);
+#endif
 }
 
 // FUNCTION: IMPERIALISM 0x00482d00

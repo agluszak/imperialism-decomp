@@ -24,10 +24,10 @@ public:
   void OnCombinedMapReady() override {
     phase = kActivateZoomOut;
     EnterScenarioStep("activating_map_zoom_out", "combined_map_ready_for_zoom_toggle");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateZoomOut) {
       ActivateZoomOut();
     } else if (phase == kVerifyZoomOut) {
@@ -54,11 +54,12 @@ private:
     }
     phase = kVerifyZoomOut;
     EnterScenarioStep("verifying_map_zoom_out", "click_map_zoom_out");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(zoom)) {
+    if (!RuntimeUiDriver::Activate(
+            zoom, RuntimeControlSelector(zoom->controlTag, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"combined-map zoom-out control has no native host\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyZoomOut() {
@@ -70,12 +71,12 @@ private:
     }
     phase = kVerifyZoomIn;
     EnterScenarioStep("verifying_map_zoom_in", "click_map_zoom_in");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(
-            mapView->ResolveControlByTag(kControlTagZmIn))) {
+    if (!RuntimeUiDriver::Activate(
+            mapView, RuntimeControlSelector(kControlTagZmIn, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"combined-map zoom-in control has no native host\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyZoomIn() {
@@ -89,7 +90,7 @@ private:
     if (toggleCycles < 2) {
       phase = kActivateZoomOut;
       EnterScenarioStep("activating_map_zoom_out_again", "repeat_map_zoom_toggle");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     TMapDialog* mapDialog = mapView->subview2A8;
