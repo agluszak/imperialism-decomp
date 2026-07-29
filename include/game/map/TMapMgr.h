@@ -700,5 +700,9 @@ public:
 };
 ASSERT_SIZE(TMapMgr, 0x28);
 
+// 0x00563360 -- resolves a tile to its owning Province record via the terrain table's
+// cityRecordIndex (null when the tile belongs to no province). Defined in TMapMgr.cpp.
+Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
+
 // 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
 void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords);

@@ -34,10 +34,6 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/map_order_battle_snapshot.h"
 
-// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
-// reattributed DoTileClick below.
-Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
-
 // Resolves a raw Province* back into its index in
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.

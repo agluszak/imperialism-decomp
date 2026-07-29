@@ -106,6 +106,10 @@ public:
   // `location`, then moves every matching mission order into it.
   void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
 
+  // Dead sibling of AccumulateNavyOrderCategoryVectorWithScale: per-ship accumulation
+  // with a distance-decayed, sign-selected weight. 0x537b20.
+  void AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector, char positive);
+
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);
   static float ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,

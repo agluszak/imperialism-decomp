@@ -5,6 +5,43 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-29 (later): repair two more punctured game-code extents
+
+Follow-up to the `TMapMgr` repair below, driven by a full
+`check-function-extents` sweep (42 of 7080 curated functions ended mid-body).
+
+- `0x00484bf0 CMainFrame::CMainFrame` was recorded as 32 bytes with its tail
+  claimed by a phantom `OrphanDeadLeaf_NoRefs_00484c10` — the tail is the ctor's
+  own vptr write (`MOV [ESI],0x6488d8`), field init, and `return this`, using an
+  ESI it never sets. Removed the phantom function and its symbol, extended the
+  body to `0x00484c23` (52 bytes). Score 73.68% -> 100.00%: the port was already
+  exact and only the measurement window was wrong.
+- `0x0047b2d0 CDib::Compress` had a Ghidra body split into two ranges
+  (`[0047b2d0,0047b53a]` + `[0047b55d,0047b5b9]`) with a junk
+  `thunk_WrapperFor_BuildPaletteFromRgbQuadBuffer_At0047b55d_At0047b53b` *global*
+  row carved out of the hole. Those bytes are ordinary switch-case bodies
+  (`mov [ebp+0x24],N; jmp 0x47b55d`). Merged the body to one contiguous range and
+  dropped the junk row; recorded size 712 -> 746. 62.32% -> 64.60%.
+
+Inventory-only (no DB change) in the same sweep: `CDib::ComputePaletteSize`
+48 -> 148 (37.04% -> 100.00%), the unported switch stubs `0x00503830` 37 -> 88 and
+`0x0054fc80` 19 -> 148, and `_strchr` 193 -> 188 (it overlapped `_strpbrk` by five
+bytes; score unchanged, correctness only).
+
+Applied with one-off pyghidra transactions, persisted with `just export-project`.
+
+## 2026-07-29: repair punctured TMapMgr::AllocateAndResetTerrainAndCityScoreTables
+
+The DB carried a punctured body: `0x0050e8b0` was recorded as 422 bytes with a bogus
+standalone function `InitializeUMapAuxEntryDefaultsAndSharedNameFields` claiming the
+tail at `0x0050ea56` (the fragment decompiled with `unaff_ESI`/`unaff_EBP` inputs —
+the mid-function tell). Deleted the fragment function and its label, extended
+`0x0050e8b0`'s body to `0x0050ec5f` (944 bytes, up to `Province::Province`), and
+mirrored the fix in `config/original_entities.csv` (row size 422 -> 944, fragment row
+deleted). Found via `check-function-extents` (`last insn PUSH 0x1c7` mid-assert at the
+recorded boundary). Applied with a one-off pyghidra transaction, persisted with
+`just export-project`.
+
 ## 2026-07-26 (latest): QuickDraw sentinel dynamic-initializer label
 
 Renamed the Ghidra function at `0x00493f90` from the stale behavioral label

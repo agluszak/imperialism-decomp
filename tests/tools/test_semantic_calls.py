@@ -1,19 +1,34 @@
 from __future__ import annotations
 
+import os
+import tempfile
+import time
 import unittest
+from pathlib import Path
 
 from reccmp.types import ImageId
 
 from tools.semantic_calls import (
+    CACHE_KEEP_COUNT,
+    DepRecorder,
     DirectCallABI,
     ExpressionNormalizer,
     ExtractedCalls,
+    FunctionPair,
+    ReuseContext,
+    _attach_reuse_records,
     _canonical_arithmetic,
     _canonical_call_value,
     _canonical_direct_arguments,
     _direct_call_abis,
+    _dep_matches,
+    _diff_reports,
+    _encode_dep,
     _normalized_virtual_target,
+    _prune_stale_caches,
+    _prune_targeted_reports,
     _reccmp_proves_call_contract,
+    _row_reusable,
     check_gate,
     compare_extracted_calls,
 )
@@ -49,15 +64,19 @@ class FakeParameter:
 
 
 class FakeFunction:
-    def __init__(self, parameters, thunked=None):
+    def __init__(self, parameters, thunked=None, varargs=False):
         self.parameters = parameters
         self.thunked = thunked
+        self.varargs = varargs
 
     def getParameters(self):
         return self.parameters
 
     def getThunkedFunction(self, _recursive):
         return self.thunked
+
+    def hasVarArgs(self):
+        return self.varargs
 
 
 class FakeFunctionManager:
@@ -425,6 +444,331 @@ class SemanticCallTests(unittest.TestCase):
         errors = check_gate(report, baseline)
         self.assertTrue(any("protected functions regressed: 0x3" in item for item in errors))
         self.assertTrue(any("semantic debt resolved" in item for item in errors))
+
+    def test_varargs_arity_asymmetry_is_inconclusive_not_mismatch(self):
+        # Same call, but only one image's decompiler attached the pushed values.
+        target = {"function": "0x49d620"}
+        original = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": target,
+                    "arguments": [["constant", 4, 6898320], ["constant", 4, 950]],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        recompiled = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": target,
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        result = compare_extracted_calls(original, recompiled)
+        self.assertEqual(result["status"], "inconclusive")
+        self.assertEqual(result["reason"], "prototype_arity_asymmetry")
+
+    def test_varargs_relaxation_never_hides_a_different_target(self):
+        left = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": {"function": "0x49d620"},
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        right = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": {"function": "0x401000"},
+                    "arguments": [],
+                    "varargs_target": True,
+                }
+            ],
+            unresolved=[],
+        )
+        result = compare_extracted_calls(left, right)
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_contract")
+
+    def test_varargs_relaxation_never_hides_a_non_varargs_argument_change(self):
+        varargs_call = {
+            "kind": "direct",
+            "target": {"function": "0x49d620"},
+            "arguments": [],
+            "varargs_target": True,
+        }
+        def plain(value):
+            return {
+                "kind": "direct",
+                "target": {"function": "0x401000"},
+                "arguments": [["constant", 4, value]],
+            }
+        left = ExtractedCalls(calls=[varargs_call, plain(1)], unresolved=[])
+        right = ExtractedCalls(calls=[varargs_call, plain(2)], unresolved=[])
+        result = compare_extracted_calls(left, right)
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_contract")
+
+    def test_varargs_relaxation_never_hides_a_call_count_change(self):
+        call = {
+            "kind": "direct",
+            "target": {"function": "0x49d620"},
+            "arguments": [],
+            "varargs_target": True,
+        }
+        result = compare_extracted_calls(
+            ExtractedCalls(calls=[call, call], unresolved=[]),
+            ExtractedCalls(calls=[call], unresolved=[]),
+        )
+        self.assertEqual(result["status"], "mismatch")
+        self.assertEqual(result["reason"], "call_count")
+
+    def test_pointer_constant_is_mapped_to_its_entity(self):
+        class EmptyProgram:
+            def getMemory(self):
+                class Bound:
+                    def __init__(self, value):
+                        self.value = value
+
+                    def getOffset(self):
+                        return self.value
+
+                class Memory:
+                    def getMinAddress(self):
+                        return Bound(0x400000)
+
+                    def getMaxAddress(self):
+                        return Bound(0x700000)
+
+                return Memory()
+
+        normalizer = ExpressionNormalizer(
+            EmptyProgram(), ImageId.RECOMP, {0x5A0000: (3, 0x690000)}, {}
+        )
+        # A string/global pointer passed as an immediate resolves to the entity,
+        # so the two images compare equal despite different absolute addresses.
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=0x5A0000)),
+            ["entity", 3, "0x690000", 4],
+        )
+        # A plain integer argument keeps its numeric identity.
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=48)), ["constant", 4, 48]
+        )
+
+    def test_report_diff_flags_status_reason_and_membership_changes(self):
+        previous = {
+            "functions": [
+                {"original": "0x1", "status": "pass", "reason": "call_contract_equal"},
+                {"original": "0x2", "status": "mismatch", "reason": "call_count"},
+                {"original": "0x3", "status": "pass", "reason": "reccmp_proven"},
+            ]
+        }
+        current = {
+            "functions": [
+                {"original": "0x1", "status": "pass", "reason": "call_contract_equal"},
+                {"original": "0x2", "status": "pass", "reason": "call_contract_equal"},
+                {"original": "0x4", "status": "pass", "reason": "reccmp_proven"},
+            ]
+        }
+        diffs = _diff_reports(previous, current)
+        self.assertEqual(len(diffs), 3)
+        self.assertTrue(any(item.startswith("0x3: removed") for item in diffs))
+        self.assertTrue(any(item.startswith("0x4: added") for item in diffs))
+        self.assertTrue(
+            any("status: mismatch -> pass" in item for item in diffs)
+        )
+        self.assertEqual(_diff_reports(previous, previous), [])
+
+    def test_stale_cache_pruning_keeps_current_and_newest_previous(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw) / "ghidra-semantic"
+            log_dir = Path(raw) / "semantic"
+            log_dir.mkdir()
+            names = ["aaa", "bbb", "ccc", "ddd"]
+            for age, name in enumerate(reversed(names)):
+                directory = root / name
+                directory.mkdir(parents=True)
+                stamp = time.time() - age * 100
+                os.utime(directory, (stamp, stamp))
+                (log_dir / f"cache-{name}.log").write_text("log")
+            _prune_stale_caches(root, "ddd")
+            survivors = sorted(entry.name for entry in root.iterdir() if entry.is_dir())
+            self.assertEqual(len(survivors), CACHE_KEEP_COUNT)
+            self.assertIn("ddd", survivors)
+            self.assertIn("ccc", survivors)  # newest besides current
+            self.assertFalse((log_dir / "cache-aaa.log").exists())
+            self.assertTrue((log_dir / "cache-ddd.log").exists())
+
+    def test_stale_cache_pruning_protects_current_even_when_old(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw) / "ghidra-semantic"
+            (Path(raw) / "semantic").mkdir()
+            for age, name in enumerate(["new1", "new2", "current"]):
+                directory = root / name
+                directory.mkdir(parents=True)
+                stamp = time.time() - age * 100
+                os.utime(directory, (stamp, stamp))
+            _prune_stale_caches(root, "current")
+            survivors = {entry.name for entry in root.iterdir() if entry.is_dir()}
+            self.assertIn("current", survivors)
+            self.assertEqual(len(survivors), CACHE_KEEP_COUNT)
+
+    def _reuse_context(self, image: dict[int, bytes] | None = None) -> ReuseContext:
+        blobs = image if image is not None else {0x2000: b"\x55\x8b\xec" * 40}
+
+        def read(vaddr: int, size: int) -> bytes | None:
+            blob = blobs.get(vaddr)
+            if blob is None or len(blob) < size:
+                return None
+            return blob[:size]
+
+        return ReuseContext(
+            pairs={0x1000: FunctionPair(0x1000, 0x2000)},
+            original_functions={0x1000: 0x1000},
+            recompiled_functions={0x2000: 0x1000},
+            original_entities={0x9000: (3, 0x9000)},
+            recompiled_entities={0xA000: (3, 0x9000)},
+            identities={0x1000: "id-caller"},
+            sizes={0x1000: 120},
+            read=read,
+        )
+
+    def test_normalizer_records_entity_map_and_miss_deps(self):
+        class EmptyProgram:
+            pass
+
+        recorder = DepRecorder()
+        normalizer = ExpressionNormalizer(
+            EmptyProgram(), ImageId.RECOMP, {0xA000: (3, 0x9000)}, {0x2000: 0x1000}
+        )
+        normalizer.recorder = recorder
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=0xA000, address=True)),
+            ["entity", 3, "0x9000", 4],
+        )
+        self.assertEqual(
+            normalizer.normalize(FakeVarnode(value=0x2000, address=True)),
+            ["function", "0x1000"],
+        )
+        self.assertIn(("entity", "recomp", 0xA000, 3, 0x9000), recorder.events)
+        self.assertIn(("map_fn", "recomp", 0x2000, 0x1000), recorder.events)
+        self.assertFalse(recorder.fragile)
+
+    def test_dep_encode_and_match_round_trip(self):
+        ctx = self._reuse_context()
+        events = [
+            ("entity", "recomp", 0xA000, 3, 0x9000),
+            ("map_fn", "orig", 0x1000, 0x1000),
+            ("miss", "recomp", 0x7777),
+            ("fn_pair", 0x1000),
+            ("pairs_fp",),
+            ("nonmem", "recomp", 0x8888),
+        ]
+        for event in events:
+            dep = _encode_dep(event, ctx)
+            self.assertIsNotNone(dep, event)
+            self.assertTrue(_dep_matches(dep, ctx), dep)
+        stale_entity = _encode_dep(("entity", "recomp", 0xA000, 3, 0x9000), ctx)
+        ctx.recompiled_entities[0xA000] = (4, 0x9000)
+        self.assertFalse(_dep_matches(stale_entity, ctx))
+        newly_mapped = _encode_dep(("miss", "recomp", 0x7777), ctx)
+        ctx.recompiled_functions[0x7777] = 0x1234
+        self.assertFalse(_dep_matches(newly_mapped, ctx))
+
+    def test_row_reuse_requires_identical_function_bytes(self):
+        ctx = self._reuse_context()
+        rows = [
+            {
+                "original": "0x1000",
+                "status": "pass",
+                "reason": "call_contract_equal",
+                "_recorder": DepRecorder(),
+            }
+        ]
+        _attach_reuse_records(rows, ctx)
+        row = rows[0]
+        self.assertIn("reuse", row)
+        self.assertTrue(_row_reusable(row, ctx))
+        changed = self._reuse_context(image={0x2000: b"\x90" * 120})
+        self.assertFalse(_row_reusable(row, changed))
+        renamed = self._reuse_context()
+        renamed.identities[0x1000] = "id-renamed"
+        self.assertFalse(_row_reusable(row, renamed))
+
+    def test_fragile_rows_never_get_reuse_records(self):
+        ctx = self._reuse_context()
+        fragile = DepRecorder()
+        fragile.mark_fragile()
+        rows = [
+            {"original": "0x1000", "status": "pass", "_recorder": fragile},
+            {
+                "original": "0x1000",
+                "status": "inconclusive",
+                "reason": "decompilation",
+                "_recorder": DepRecorder(),
+            },
+            {"original": "0x1000", "status": "pass"},
+        ]
+        _attach_reuse_records(rows, ctx)
+        for row in rows:
+            self.assertNotIn("reuse", row)
+            self.assertNotIn("_recorder", row)
+
+    def test_unpaired_target_rows_depend_on_the_pairing_set(self):
+        ctx = self._reuse_context()
+        recorder = DepRecorder()
+        recorder.pairs_dep()
+        rows = [
+            {
+                "original": "0x1000",
+                "status": "inconclusive",
+                "reason": "unresolved_call_contract",
+                "_recorder": recorder,
+            }
+        ]
+        _attach_reuse_records(rows, ctx)
+        self.assertTrue(_row_reusable(rows[0], ctx))
+        grown = self._reuse_context()
+        grown.pairs[0x5000] = FunctionPair(0x5000, 0x6000)
+        grown.pairs_fp = ReuseContext(
+            pairs=grown.pairs,
+            original_functions={},
+            recompiled_functions={},
+            original_entities={},
+            recompiled_entities={},
+            identities=grown.identities,
+            sizes=grown.sizes,
+            read=lambda vaddr, size: None,
+        ).pairs_fp
+        self.assertFalse(_row_reusable(rows[0], grown))
+
+    def test_targeted_report_pruning_is_age_based(self):
+        with tempfile.TemporaryDirectory() as raw:
+            semantic_dir = Path(raw)
+            fresh = semantic_dir / "semantic_report.targeted-abc.json"
+            stale = semantic_dir / "semantic_report.targeted-old.json"
+            full = semantic_dir / "semantic_report.json"
+            for path in (fresh, stale, full):
+                path.write_text("{}")
+            old = time.time() - 8 * 24 * 3600
+            os.utime(stale, (old, old))
+            os.utime(full, (old, old))
+            _prune_targeted_reports(semantic_dir)
+            self.assertTrue(fresh.exists())
+            self.assertFalse(stale.exists())
+            self.assertTrue(full.exists())  # never prune the full report
 
 
 if __name__ == "__main__":

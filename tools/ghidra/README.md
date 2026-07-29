@@ -90,10 +90,30 @@ just semantic-gate                     # enforce the committed ratchet
 
 The recompiled Ghidra Program is fingerprinted by the EXE/PDB, source ownership,
 mapping inputs, reccmp version, and Ghidra version and cached under
-`build-msvc500/ghidra-semantic/`. A fresh full report uses eight decompiler workers by
-default (`--jobs` overrides it). When none of those inputs changed, the normal command
-validates and reads the existing report without opening Ghidra; this is the intended
-fast path for `just gates` and `just precommit`.
+`build-msvc500/ghidra-semantic/` (only the newest two fingerprints are kept). A full
+p-code pass uses up to 32 decompiler workers (`--jobs` or `SEMANTIC_JOBS` override it).
+
+Report generation is incremental: every computed row carries a `reuse` record (the
+recompiled function's byte hash plus the entity/pairing/data lookups its contract
+depended on). After a rebuild, rows whose record still validates against the fresh
+reccmp maps and image bytes are reused without decompiling; only stale rows re-enter
+Ghidra, and when no row is stale the report regenerates without opening Ghidra at
+all. `SEMANTIC_NO_REUSE=1` forces a full recompute, and `just semantic-verify` runs a
+forced full pass and row-diffs it against the current report — run it when auditing
+that reuse (or a comparator change) is behavior-neutral. When no inputs changed at
+all, the report is read back directly; this is the intended fast path for
+`just gates` and `just precommit`.
+
+
+### Measuring the checker's own precision
+
+reccmp's completed machine-level proof doubles as an oracle for this comparator: a
+function reccmp calls `exact` or `effective` cannot have a different call contract, so
+any mismatch the p-code pass reports on one is a false positive of the normalization.
+`SEMANTIC_AUDIT_PRECISION=1` bypasses the short-circuit so those rows are compared
+anyway, which is the only way to see that error rate. The flag is audit-only: it is
+part of the report fingerprint, and `semantic-gate` refuses to run with it set, so an
+audit report can never be mistaken for a gate result.
 
 `scan-cdecl-thiscall` stays one-shot (no daemon routing) because its `--stdin` address list
 can't reach a separate daemon process; other occasional audit tools (`vtable-struct-check`,
