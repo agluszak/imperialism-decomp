@@ -196,6 +196,11 @@ test:
 semantic-gate: _require-ghidra-install
   uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" gate --generate-if-stale
 
+[doc('Force a full semantic recompute and row-diff it against the current report (proves pipeline changes are behavior-neutral)')]
+[group('gates')]
+semantic-verify *args: _require-ghidra-install
+  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" verify {{args}}
+
 [doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
 [group('reports')]
 serde-audit *args:

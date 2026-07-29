@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -36,11 +37,28 @@ from tools.common.repo import repo_root_from_file
 from tools.common.template_aliases import CLASS_FOLDED_SYMBOL_GROUP, load_aliases
 from tools.source_model import Claim, build_model
 
-SCHEMA_VERSION = 2
-PREP_SCHEMA_VERSION = 1
+SCHEMA_VERSION = 3
+PREP_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 30
 PROJECT_NAME = "recompiled-semantic"
 PROGRAM_NAME = "Imperialism.exe"
+# Keep the current cache plus one predecessor so a quick branch switch back does
+# not pay a rebuild; anything older is dead weight (~46 MB per fingerprint).
+CACHE_KEEP_COUNT = 2
+TARGETED_REPORT_MAX_AGE_SECONDS = 7 * 24 * 3600
+# Analyzers the call-contract proof does not depend on.  Decompiler Parameter ID
+# must stay off so per-function decompilation depends only on the function's own
+# bytes plus imported prototypes, never on whole-program parameter propagation.
+DISABLED_ANALYZERS = (
+    "Decompiler Parameter ID",
+    "Embedded Media",
+)
+# Bytes of referenced data hashed into a row's reuse record; a shorter probe is
+# used near section ends.  Content drift past the probe window in a referenced
+# string is not detected by reuse (run `just semantic-verify` to audit).
+DATA_PROBE_BYTES = 256
+DATA_PROBE_FALLBACK_BYTES = 16
+REUSE_DISABLE_ENV = "SEMANTIC_NO_REUSE"
 REPORT_RELATIVE_PATH = Path("semantic") / "semantic_report.json"
 BASELINE_RELATIVE_PATH = (
     Path("config") / "baselines" / "semantic_call_contract_baseline.json"
@@ -117,6 +135,56 @@ SUPPORTED_OPS = frozenset(
 
 class UnresolvedExpression(RuntimeError):
     """Raised when a value cannot be related across the two image layouts."""
+
+
+class DepRecorder:
+    """Collect one row's cross-run dependencies during extraction.
+
+    A recorded row may be reused on a later run without Ghidra when every
+    dependency still resolves identically:
+    - ``entity``/``map_fn``/``miss`` events replay against the fresh reccmp maps;
+    - ``data``/``nonmem`` events replay against the fresh recompiled image bytes;
+    - ``fn_pair`` events replay against the fresh per-entity identity digests.
+    Recomp-side Ghidra symbol names that reach the normalized contract have no
+    cheap replay, so they mark the row fragile (never reused).
+    """
+
+    def __init__(self) -> None:
+        self.events: set[tuple[Any, ...]] = set()
+        self.fragile = False
+
+    @staticmethod
+    def _tag(image_id: ImageId) -> str:
+        return "orig" if image_id == ImageId.ORIG else "recomp"
+
+    def entity(
+        self, image_id: ImageId, offset: int, entity_type: int, original: int
+    ) -> None:
+        self.events.add(("entity", self._tag(image_id), offset, entity_type, original))
+
+    def map_fn(self, image_id: ImageId, offset: int, mapped: int) -> None:
+        self.events.add(("map_fn", self._tag(image_id), offset, mapped))
+
+    def miss(self, image_id: ImageId, offset: int) -> None:
+        self.events.add(("miss", self._tag(image_id), offset))
+
+    def fn_pair(self, original: int) -> None:
+        self.events.add(("fn_pair", original))
+
+    def pairs_dep(self) -> None:
+        """Row is valid only while the full pairing set is unchanged."""
+        self.events.add(("pairs_fp",))
+
+    def data(self, image_id: ImageId, offset: int) -> None:
+        if image_id == ImageId.RECOMP:
+            self.events.add(("data", "recomp", offset))
+
+    def nonmem(self, image_id: ImageId, offset: int) -> None:
+        if image_id == ImageId.RECOMP:
+            self.events.add(("nonmem", "recomp", offset))
+
+    def mark_fragile(self) -> None:
+        self.fragile = True
 
 
 @dataclass(frozen=True)
@@ -199,19 +267,26 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def atomic_json(path: Path, value: Any) -> None:
+def atomic_json(path: Path, value: Any, *, indent: int | None = 2) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     mode = path.stat().st_mode & 0o777 if path.exists() else 0o644
     fd, raw_temp = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
     temp = Path(raw_temp)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as stream:
-            json.dump(value, stream, indent=2, sort_keys=True)
+            json.dump(value, stream, indent=indent, sort_keys=True)
             stream.write("\n")
         temp.chmod(mode)
         os.replace(temp, path)
     finally:
         temp.unlink(missing_ok=True)
+
+
+def _default_jobs() -> int:
+    override = os.environ.get("SEMANTIC_JOBS")
+    if override:
+        return max(1, int(override))
+    return min(32, os.cpu_count() or 1)
 
 
 def _distribution_source() -> str:
@@ -271,6 +346,7 @@ def cache_inputs(
         "ghidra": {"version": version, "release": release},
         "pyghidra": importlib.metadata.version("pyghidra"),
         "reccmp": _distribution_source(),
+        "disabled_analyzers": list(DISABLED_ANALYZERS),
         "claims": _claims_payload(claims),
     }
 
@@ -291,6 +367,32 @@ def report_inputs(
         "prep_fingerprint": prep_fingerprint,
         "files": _fingerprint_files(paths),
         "claims": _claims_payload(claims),
+        "target": target.target_id,
+    }
+
+
+def row_context_inputs(repo_root: Path, target: RecCmpTarget) -> dict[str, Any]:
+    """Everything a stored row's outcome depends on besides its own reuse record.
+
+    A previous report's rows are eligible for reuse only when this fingerprint
+    is unchanged: the original program, the comparator/normalizer code, the
+    template-alias folding, and the analyzer configuration of the recomp cache.
+    """
+    paths = [
+        repo_root / "vendor" / "ghidra" / "exports" / "Imperialism.gzf",
+        repo_root / "ghidra.toml",
+        repo_root / "config" / "template_aliases.csv",
+        Path(__file__),
+    ]
+    version, release = ghidra_env.expected_versions()
+    return {
+        "schema": SCHEMA_VERSION,
+        "prep_schema": PREP_SCHEMA_VERSION,
+        "files": _fingerprint_files(paths),
+        "ghidra": {"version": version, "release": release},
+        "pyghidra": importlib.metadata.version("pyghidra"),
+        "reccmp": _distribution_source(),
+        "disabled_analyzers": list(DISABLED_ANALYZERS),
         "target": target.target_id,
     }
 
@@ -334,6 +436,7 @@ class ExpressionNormalizer:
         self.functions = functions
         self.max_depth = max_depth
         self.max_nodes = max_nodes
+        self.recorder: DepRecorder | None = None
         self._active: set[int] = set()
         self._nodes = 0
 
@@ -378,6 +481,8 @@ class ExpressionNormalizer:
                 return ["register", name, int(varnode.getSize())]
             symbol = high.getSymbol() if high is not None else None
             if symbol is not None:
+                if self.recorder is not None and self.image_id == ImageId.RECOMP:
+                    self.recorder.mark_fragile()
                 return [
                     "symbol",
                     str(symbol.getName()),
@@ -427,7 +532,7 @@ class ExpressionNormalizer:
             try:
                 if mnemonic == "CALL":
                     target_value = _direct_target(
-                        self.program, inputs[0], self.functions
+                        self.program, inputs[0], self.functions, self.recorder
                     )
                 else:
                     virtual = _virtual_target(inputs[0])
@@ -468,22 +573,40 @@ class ExpressionNormalizer:
         return [mnemonic.lower(), int(varnode.getSize()), *normalized]
 
     def _address_value(self, offset: int, varnode: Any) -> Any:
+        recorder = self.recorder
         if offset in self.entities:
             entity_type, original = self.entities[offset]
+            if recorder is not None:
+                recorder.entity(self.image_id, offset, entity_type, original)
             return ["entity", entity_type, f"0x{original:x}", int(varnode.getSize())]
         if offset in self.functions:
+            if recorder is not None:
+                recorder.map_fn(self.image_id, offset, self.functions[offset])
             return ["function", f"0x{self.functions[offset]:x}"]
         address = varnode.getAddress()
         if not self.program.getMemory().contains(address):
+            if recorder is not None:
+                recorder.miss(self.image_id, offset)
+                recorder.nonmem(self.image_id, offset)
             return ["address_literal", int(varnode.getSize()), offset]
         data = self.program.getListing().getDataAt(address)
         if data is not None and data.hasStringValue():
+            if recorder is not None:
+                recorder.miss(self.image_id, offset)
+                recorder.data(self.image_id, offset)
             return ["string", str(data.getValue())]
         symbol = self.program.getSymbolTable().getPrimarySymbol(address)
         if symbol is not None:
             name = str(symbol.getName())
             if not name.startswith(("DAT_", "LAB_", "FUN_")):
+                if recorder is not None:
+                    recorder.miss(self.image_id, offset)
+                    if self.image_id == ImageId.RECOMP:
+                        recorder.mark_fragile()
                 return ["named_address", name, int(varnode.getSize())]
+        if recorder is not None:
+            recorder.miss(self.image_id, offset)
+            recorder.data(self.image_id, offset)
         raise UnresolvedExpression(f"unmapped image address 0x{offset:x}")
 
 
@@ -671,7 +794,10 @@ def _external_identity(function: Any) -> dict[str, str] | None:
 
 
 def _direct_target(
-    program: Any, target: Any, function_map: dict[int, int]
+    program: Any,
+    target: Any,
+    function_map: dict[int, int],
+    recorder: DepRecorder | None = None,
 ) -> dict[str, Any]:
     address = target.getAddress()
     function = program.getFunctionManager().getFunctionAt(address)
@@ -699,6 +825,8 @@ def _direct_target(
                         "symbol": name.lstrip("_"),
                     }
                 }
+        if recorder is not None:
+            recorder.mark_fragile()
         raise UnresolvedExpression(f"no function/import at direct target {address}")
     thunked = function.getThunkedFunction(True)
     if thunked is not None:
@@ -709,7 +837,11 @@ def _direct_target(
     entry = int(function.getEntryPoint().getOffset())
     original = function_map.get(entry)
     if original is None:
+        if recorder is not None:
+            recorder.pairs_dep()
         raise UnresolvedExpression(f"unpaired direct target 0x{entry:x}")
+    if recorder is not None:
+        recorder.fn_pair(original)
     return {"function": f"0x{original:x}"}
 
 
@@ -766,9 +898,11 @@ def extract_calls(
     normalizer: ExpressionNormalizer,
     function_map: dict[int, int],
     direct_call_abis: dict[int, DirectCallABI],
+    recorder: DepRecorder | None = None,
 ) -> ExtractedCalls:
     calls: list[dict[str, Any]] = []
     unresolved: list[str] = []
+    normalizer.recorder = recorder
     for operation in _java_iterator(high_function.getPcodeOps()):
         mnemonic = str(operation.getMnemonic())
         if mnemonic not in {"CALL", "CALLIND"}:
@@ -779,7 +913,7 @@ def extract_calls(
             target = operation.getInput(0)
             if mnemonic == "CALL":
                 kind = "direct"
-                target_value = _direct_target(program, target, function_map)
+                target_value = _direct_target(program, target, function_map, recorder)
             else:
                 virtual = _virtual_target(target)
                 if virtual is not None:
@@ -941,6 +1075,249 @@ def _build_maps(
     )
 
 
+def _disable_unneeded_analyzers(program: Any) -> None:
+    from ghidra.program.model.listing import Program
+
+    options = program.getOptions(Program.ANALYSIS_PROPERTIES)
+    registered = {str(name) for name in options.getOptionNames()}
+    for analyzer in DISABLED_ANALYZERS:
+        if analyzer in registered:
+            options.setBoolean(analyzer, False)
+
+
+def _short_sha(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()[:16]
+
+
+class ReuseContext:
+    """Fresh cross-run state a stored row's reuse record is validated against.
+
+    ``read`` is a callable ``(vaddr, size) -> bytes | None`` over the current
+    recompiled image; lookups are memoized because rows share callees/globals.
+    """
+
+    def __init__(
+        self,
+        pairs: dict[int, FunctionPair],
+        original_functions: dict[int, int],
+        recompiled_functions: dict[int, int],
+        original_entities: dict[int, tuple[int, int]],
+        recompiled_entities: dict[int, tuple[int, int]],
+        identities: dict[int, str],
+        sizes: dict[int, int],
+        read: Any,
+    ) -> None:
+        self.pairs = pairs
+        self.original_functions = original_functions
+        self.recompiled_functions = recompiled_functions
+        self.original_entities = original_entities
+        self.recompiled_entities = recompiled_entities
+        self.identities = identities
+        self.sizes = sizes
+        self.pairs_fp = _short_sha(
+            canonical_json(sorted(f"0x{addr:x}" for addr in pairs)).encode()
+        )
+        self._read = read
+        self._probe_memo: dict[tuple[int, int], bytes | None] = {}
+        self._body_memo: dict[int, bytes | None] = {}
+
+    def probe(self, offset: int, length: int) -> bytes | None:
+        key = (offset, length)
+        if key not in self._probe_memo:
+            self._probe_memo[key] = self._read(offset, length)
+        return self._probe_memo[key]
+
+    def body(self, original: int) -> bytes | None:
+        if original not in self._body_memo:
+            pair = self.pairs.get(original)
+            size = self.sizes.get(original)
+            if pair is None or not size:
+                self._body_memo[original] = None
+            else:
+                self._body_memo[original] = self._read(pair.recompiled, size)
+        return self._body_memo[original]
+
+
+def _image_reader(image: Any) -> Any:
+    def read(vaddr: int, size: int) -> bytes | None:
+        try:
+            data = image.read(vaddr, size)
+        except Exception:
+            return None
+        if data is None or len(data) != size:
+            return None
+        return bytes(data)
+
+    return read
+
+
+def _entity_identities(compare: Compare) -> dict[int, str]:
+    """Digest of the reccmp-side identity a callee's imported prototype follows."""
+    output: dict[int, str] = {}
+    for entity in compare.get_all():
+        if not isinstance(entity, ReccmpMatch):
+            continue
+        kvstore = getattr(entity, "_kvstore", None) or {}
+        payload = canonical_json(
+            {
+                "name": entity.name,
+                "symbol": kvstore.get("symbol"),
+                "type": entity.entity_type,
+                "size": entity.size(ImageId.RECOMP),
+            }
+        )
+        output[entity.orig_addr] = _short_sha(payload.encode())
+    return output
+
+
+def _function_sizes(compare: Compare) -> dict[int, int]:
+    return {
+        match.orig_addr: int(match.size(ImageId.RECOMP) or 0)
+        for match in compare.get_functions()
+    }
+
+
+def _encode_dep(event: tuple[Any, ...], ctx: ReuseContext) -> list[Any] | None:
+    """Serialize one recorded dependency, or None when the row cannot be reused."""
+    kind = event[0]
+    if kind == "entity":
+        _, tag, offset, entity_type, original = event
+        return ["entity", tag, f"0x{offset:x}", entity_type, f"0x{original:x}"]
+    if kind == "map_fn":
+        _, tag, offset, mapped = event
+        return ["map_fn", tag, f"0x{offset:x}", f"0x{mapped:x}"]
+    if kind == "miss":
+        _, tag, offset = event
+        return ["miss", tag, f"0x{offset:x}"]
+    if kind == "data":
+        _, tag, offset = event
+        for length in (DATA_PROBE_BYTES, DATA_PROBE_FALLBACK_BYTES):
+            blob = ctx.probe(offset, length)
+            if blob is not None:
+                return ["data", tag, f"0x{offset:x}", length, _short_sha(blob)]
+        return None
+    if kind == "nonmem":
+        _, tag, offset = event
+        if ctx.probe(offset, 1) is not None:
+            return None
+        return ["nonmem", tag, f"0x{offset:x}"]
+    if kind == "fn_pair":
+        _, original = event
+        identity = ctx.identities.get(original)
+        body = ctx.body(original)
+        if identity is None or body is None:
+            return None
+        return ["fn_pair", f"0x{original:x}", identity, _short_sha(body)]
+    if kind == "pairs_fp":
+        return ["pairs_fp", ctx.pairs_fp]
+    return None
+
+
+def _dep_matches(dep: Any, ctx: ReuseContext) -> bool:
+    if not isinstance(dep, list) or not dep:
+        return False
+    kind = dep[0]
+    try:
+        if kind == "entity":
+            _, tag, offset, entity_type, original = dep
+            table = (
+                ctx.original_entities if tag == "orig" else ctx.recompiled_entities
+            )
+            return table.get(int(offset, 16)) == (entity_type, int(original, 16))
+        if kind == "map_fn":
+            _, tag, offset, mapped = dep
+            table = (
+                ctx.original_functions if tag == "orig" else ctx.recompiled_functions
+            )
+            return table.get(int(offset, 16)) == int(mapped, 16)
+        if kind == "miss":
+            _, tag, offset = dep
+            value = int(offset, 16)
+            if tag == "orig":
+                return (
+                    value not in ctx.original_entities
+                    and value not in ctx.original_functions
+                )
+            return (
+                value not in ctx.recompiled_entities
+                and value not in ctx.recompiled_functions
+            )
+        if kind == "data":
+            _, _tag, offset, length, digest = dep
+            blob = ctx.probe(int(offset, 16), int(length))
+            return blob is not None and _short_sha(blob) == digest
+        if kind == "nonmem":
+            _, _tag, offset = dep
+            return ctx.probe(int(offset, 16), 1) is None
+        if kind == "fn_pair":
+            _, original, identity, body_sha = dep
+            value = int(original, 16)
+            if ctx.identities.get(value) != identity:
+                return False
+            body = ctx.body(value)
+            return body is not None and _short_sha(body) == body_sha
+        if kind == "pairs_fp":
+            return dep[1] == ctx.pairs_fp
+    except (TypeError, ValueError):
+        return False
+    return False
+
+
+def _attach_reuse_records(
+    rows: list[dict[str, Any]], ctx: ReuseContext
+) -> None:
+    """Stamp freshly computed rows with the record a later run revalidates."""
+    for row in rows:
+        recorder = row.pop("_recorder", None)
+        if not isinstance(recorder, DepRecorder) or recorder.fragile:
+            continue
+        if row.get("status") == "inconclusive" and row.get("reason") == "decompilation":
+            continue
+        original = int(row["original"], 16)
+        identity = ctx.identities.get(original)
+        size = ctx.sizes.get(original)
+        body = ctx.body(original)
+        if identity is None or not size or body is None:
+            continue
+        deps: list[list[Any]] = []
+        encodable = True
+        for event in sorted(recorder.events):
+            dep = _encode_dep(event, ctx)
+            if dep is None:
+                encodable = False
+                break
+            deps.append(dep)
+        if not encodable:
+            continue
+        row["reuse"] = {
+            "claim_identity": identity,
+            "recomp_size": size,
+            "recomp_sha": _short_sha(body),
+            "deps": deps,
+        }
+
+
+def _row_reusable(row: dict[str, Any], ctx: ReuseContext) -> bool:
+    reuse = row.get("reuse")
+    if not isinstance(reuse, dict):
+        return False
+    try:
+        original = int(row["original"], 16)
+    except (KeyError, TypeError, ValueError):
+        return False
+    if reuse.get("claim_identity") != ctx.identities.get(original):
+        return False
+    if reuse.get("recomp_size") != ctx.sizes.get(original):
+        return False
+    body = ctx.body(original)
+    if body is None or _short_sha(body) != reuse.get("recomp_sha"):
+        return False
+    deps = reuse.get("deps")
+    if not isinstance(deps, list):
+        return False
+    return all(_dep_matches(dep, ctx) for dep in deps)
+
+
 def _analyze(program: Any) -> None:
     from ghidra.app.script import GhidraScriptUtil
     from ghidra.app.plugin.core.analysis import AutoAnalysisManager
@@ -953,6 +1330,7 @@ def _analyze(program: Any) -> None:
     try:
         manager = AutoAnalysisManager.getAnalysisManager(program)
         manager.initializeOptions()
+        _disable_unneeded_analyzers(program)
         manager.reAnalyzeAll(None)
         manager.startAnalysis(TaskMonitor.DUMMY)
         GhidraProgramUtilities.markProgramAnalyzed(program)
@@ -1032,6 +1410,15 @@ def _create_cache(
     project = wrapper.getProject()
     consumer = JavaObject()
     program = None
+    timings: dict[str, float] = {}
+    stage_started = time.monotonic()
+
+    def mark(stage: str) -> None:
+        nonlocal stage_started
+        now = time.monotonic()
+        timings[stage] = round(now - stage_started, 3)
+        stage_started = now
+
     try:
         loaded = (
             ProgramLoader.builder()
@@ -1040,12 +1427,16 @@ def _create_cache(
             .load()
         )
         program = loaded.getPrimaryDomainObject(consumer)
+        mark("load")
+        # Seed and import before the single analysis pass: the reccmp importer
+        # creates/annotates its own function objects, and analysis then runs
+        # once with every name, body, and prototype already in place.
         transaction = program.startTransaction("semantic-function-seeds")
         try:
             seed_failures = _seed_required_functions(program, claims, pairs)
         finally:
             program.endTransaction(transaction, True)
-        _analyze(program)
+        mark("seed")
 
         transaction = program.startTransaction("semantic-reccmp-import")
         try:
@@ -1054,25 +1445,60 @@ def _create_cache(
             )
         finally:
             program.endTransaction(transaction, True)
+        mark("reccmp_import")
 
         transaction = program.startTransaction("semantic-missing-function-seeds")
         try:
             seed_failures.extend(_seed_required_functions(program, claims, pairs))
         finally:
             program.endTransaction(transaction, True)
+        mark("reseed")
         _analyze(program)
+        mark("analyze")
 
         missing = _validate_recompiled_functions(program, claims, pairs)
         manifest["missing_required_functions"] = missing
         manifest["function_seed_failures"] = seed_failures
         folder = project.getProjectData().getRootFolder()
         folder.createFile(PROGRAM_NAME, program, TaskMonitor.DUMMY)
+        mark("save")
+        manifest["timings"] = timings
     finally:
         if program is not None:
             program.release(consumer)
         project.close()
 
     atomic_json(destination / "manifest.json", manifest)
+
+
+def _prune_stale_caches(cache_root: Path, keep_fingerprint: str) -> None:
+    """Drop all but the newest CACHE_KEEP_COUNT cache projects (lock held)."""
+    candidates = sorted(
+        (entry for entry in cache_root.iterdir() if entry.is_dir()),
+        key=lambda entry: entry.stat().st_mtime,
+        reverse=True,
+    )
+    keep = {keep_fingerprint}
+    for entry in candidates:
+        if len(keep) >= CACHE_KEEP_COUNT:
+            break
+        keep.add(entry.name)
+    log_dir = cache_root.parent / "semantic"
+    for entry in candidates:
+        if entry.name in keep:
+            continue
+        shutil.rmtree(entry, ignore_errors=True)
+        (log_dir / f"cache-{entry.name}.log").unlink(missing_ok=True)
+
+
+def _prune_targeted_reports(semantic_dir: Path) -> None:
+    cutoff = time.time() - TARGETED_REPORT_MAX_AGE_SECONDS
+    for entry in semantic_dir.glob("semantic_report.targeted-*.json"):
+        try:
+            if entry.stat().st_mtime < cutoff:
+                entry.unlink(missing_ok=True)
+        except OSError:
+            continue
 
 
 def ensure_cache(
@@ -1094,6 +1520,7 @@ def ensure_cache(
                 return destination, prep_fingerprint, manifest
         manifest = {"fingerprint": prep_fingerprint, "inputs": inputs}
         _create_cache(destination, target, claims, pairs, manifest)
+        _prune_stale_caches(cache_root, prep_fingerprint)
         return destination, prep_fingerprint, manifest
 
 
@@ -1281,12 +1708,14 @@ def compare_programs(
                 recompiled_error=recompiled_error,
             )
             return row
+        recorder = DepRecorder()
         original_calls = extract_calls(
             original_high,
             original_program,
             original_normalizer,
             original_functions,
             direct_call_abis,
+            recorder,
         )
         recompiled_calls = extract_calls(
             recompiled_high,
@@ -1294,8 +1723,10 @@ def compare_programs(
             recompiled_normalizer,
             recompiled_functions,
             direct_call_abis,
+            recorder,
         )
         row.update(compare_extracted_calls(original_calls, recompiled_calls))
+        row["_recorder"] = recorder
         return row
 
     try:
@@ -1383,9 +1814,7 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         ):
             return previous, full_output
 
-    cache_dir, prep_fingerprint, manifest = ensure_cache_subprocess(
-        build_dir, target.target_id, prep_inputs
-    )
+    phase_started = time.monotonic()
     compare = Compare.from_target(target)
     (
         pairs,
@@ -1394,43 +1823,141 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         original_entities,
         recompiled_entities,
     ) = _build_maps(compare)
+    reccmp_statuses = _reccmp_statuses(build_dir)
+    ctx = ReuseContext(
+        pairs,
+        original_functions,
+        recompiled_functions,
+        original_entities,
+        recompiled_entities,
+        _entity_identities(compare),
+        _function_sizes(compare),
+        _image_reader(compare.recomp_bin),
+    )
+    context_fp = fingerprint(row_context_inputs(repo_root, target))
+    maps_seconds = round(time.monotonic() - phase_started, 3)
 
-    original_project = ghidra_env.open_project()
-    original_consumer = original_program = None
-    recompiled_project = recompiled_consumer = recompiled_program = None
-    try:
-        original_consumer, original_program = ghidra_env.open_program(original_project)
-        recompiled_project, recompiled_consumer, recompiled_program = (
-            _open_cached_program(cache_dir)
-        )
-        rows = compare_programs(
-            original_program,
-            recompiled_program,
-            selected,
-            pairs,
-            original_functions,
-            recompiled_functions,
-            original_entities,
-            recompiled_entities,
-            _reccmp_statuses(build_dir),
-            args.timeout,
-            args.jobs,
-        )
-    finally:
-        if recompiled_program is not None:
-            recompiled_program.release(recompiled_consumer)
-        if recompiled_project is not None:
-            recompiled_project.close()
-        if original_program is not None:
-            original_program.release(original_consumer)
-        original_project.close()
+    previous_rows: dict[str, dict[str, Any]] = {}
+    if (
+        not args.force
+        and os.environ.get(REUSE_DISABLE_ENV) != "1"
+        and full_output.is_file()
+    ):
+        previous = json.loads(full_output.read_text(encoding="utf-8"))
+        if (
+            previous.get("schema") == SCHEMA_VERSION
+            and previous.get("scope") == "all"
+            and previous.get("row_context") == context_fp
+        ):
+            previous_rows = {
+                row["original"]: row for row in previous.get("functions", [])
+            }
 
+    resolved: dict[int, dict[str, Any]] = {}
+    stale: list[Claim] = []
+    reused = 0
+    for claim in selected:
+        row: dict[str, Any] = {
+            "original": f"0x{claim.address:x}",
+            "name": claim.name,
+            "source": f"{claim.file}:{claim.line}",
+            "reccmp": reccmp_statuses.get(claim.address),
+        }
+        pair = pairs.get(claim.address)
+        if pair is None:
+            row.update(status="unpaired", reason="missing_reccmp_pair")
+            resolved[claim.address] = row
+            continue
+        row["recompiled"] = f"0x{pair.recompiled:x}"
+        if _reccmp_proves_call_contract(row["reccmp"]):
+            row.update(
+                status="pass", reason="reccmp_proven", call_count_status="pass"
+            )
+            resolved[claim.address] = row
+            continue
+        previous_row = previous_rows.get(row["original"])
+        if previous_row is not None and _row_reusable(previous_row, ctx):
+            refreshed = dict(previous_row)
+            refreshed.update(row)
+            resolved[claim.address] = refreshed
+            reused += 1
+            continue
+        stale.append(claim)
+
+    cache_seconds = 0.0
+    compare_seconds = 0.0
+    manifest: dict[str, Any] = {}
+    prep_fingerprint = fingerprint(prep_inputs)
+    computed: dict[int, dict[str, Any]] = {}
+    if stale:
+        phase_started = time.monotonic()
+        cache_dir, prep_fingerprint, manifest = ensure_cache_subprocess(
+            build_dir, target.target_id, prep_inputs
+        )
+        cache_seconds = round(time.monotonic() - phase_started, 3)
+        original_project = ghidra_env.open_project()
+        original_consumer = original_program = None
+        recompiled_project = recompiled_consumer = recompiled_program = None
+        try:
+            original_consumer, original_program = ghidra_env.open_program(
+                original_project
+            )
+            recompiled_project, recompiled_consumer, recompiled_program = (
+                _open_cached_program(cache_dir)
+            )
+            phase_started = time.monotonic()
+            computed_rows = compare_programs(
+                original_program,
+                recompiled_program,
+                stale,
+                pairs,
+                original_functions,
+                recompiled_functions,
+                original_entities,
+                recompiled_entities,
+                reccmp_statuses,
+                args.timeout,
+                args.jobs,
+            )
+        finally:
+            if recompiled_program is not None:
+                recompiled_program.release(recompiled_consumer)
+            if recompiled_project is not None:
+                recompiled_project.close()
+            if original_program is not None:
+                original_program.release(original_consumer)
+            original_project.close()
+        compare_seconds = round(time.monotonic() - phase_started, 3)
+        _attach_reuse_records(computed_rows, ctx)
+        computed = {
+            int(item["original"], 16): item for item in computed_rows
+        }
+
+    rows = [
+        resolved[claim.address]
+        if claim.address in resolved
+        else computed[claim.address]
+        for claim in selected
+    ]
     report = {
         "schema": SCHEMA_VERSION,
         "fingerprint": fingerprint(inputs),
         "inputs": inputs,
+        "row_context": context_fp,
         "scope": "all" if full else "targeted",
         "summary": _summary(rows),
+        "reuse": {
+            "reused": reused,
+            "recomputed": len(stale),
+            "cheap": len(resolved) - reused,
+        },
+        "timings": {
+            "cache_seconds": cache_seconds,
+            "maps_seconds": maps_seconds,
+            "compare_seconds": compare_seconds,
+            "rows_compared": len(selected),
+            "cache_stages": manifest.get("timings"),
+        },
         "cache": {
             "fingerprint": prep_fingerprint,
             "missing_required_functions": manifest.get(
@@ -1455,7 +1982,8 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
             / "semantic"
             / f"semantic_report.targeted-{selection_fingerprint}.json"
         )
-    atomic_json(output, report)
+    atomic_json(output, report, indent=None)
+    _prune_targeted_reports(build_dir / "semantic")
     return report, output
 
 
@@ -1572,6 +2100,58 @@ def update_baseline(report: dict[str, Any], path: Path) -> None:
     )
 
 
+def _diff_reports(
+    previous: dict[str, Any], current: dict[str, Any]
+) -> list[str]:
+    """Row-level behavior diff used to prove a pipeline change is neutral."""
+    fields = ("status", "reason", "call_count_status")
+    previous_rows = {row["original"]: row for row in previous.get("functions", [])}
+    current_rows = {row["original"]: row for row in current.get("functions", [])}
+    diffs: list[str] = []
+    for address in sorted(previous_rows.keys() - current_rows.keys()):
+        diffs.append(f"{address}: removed from report")
+    for address in sorted(current_rows.keys() - previous_rows.keys()):
+        diffs.append(f"{address}: added to report")
+    for address in sorted(previous_rows.keys() & current_rows.keys()):
+        before = previous_rows[address]
+        after = current_rows[address]
+        changed = [
+            f"{field}: {before.get(field)} -> {after.get(field)}"
+            for field in fields
+            if before.get(field) != after.get(field)
+        ]
+        if changed:
+            diffs.append(f"{address}: " + "; ".join(changed))
+    return diffs
+
+
+def run_verify(args: argparse.Namespace) -> int:
+    build_dir = Path(args.build_dir).resolve()
+    path = build_dir / REPORT_RELATIVE_PATH
+    if not path.is_file():
+        raise RuntimeError(f"missing semantic report to verify against: {path}")
+    previous = json.loads(path.read_text(encoding="utf-8"))
+    compare_args = argparse.Namespace(
+        build_dir=str(build_dir),
+        target=args.target,
+        address=[],
+        file=[],
+        timeout=args.timeout,
+        force=True,
+        jobs=args.jobs,
+    )
+    report, report_path = run_compare(compare_args)
+    diffs = _diff_reports(previous, report)
+    print_stats(report, report_path)
+    if diffs:
+        for diff in diffs:
+            print(f"semantic-verify: {diff}", file=sys.stderr)
+        print(f"semantic-verify: {len(diffs)} row(s) changed", file=sys.stderr)
+        return 1
+    print(f"semantic-verify: {len(report['functions'])} rows identical")
+    return 0
+
+
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     repo_root = repo_root_from_file(__file__, 1)
     parser = argparse.ArgumentParser(description=__doc__)
@@ -1584,15 +2164,16 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     compare_parser.add_argument("--file", action="append", default=[])
     compare_parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS)
     compare_parser.add_argument("--force", action="store_true")
-    compare_parser.add_argument(
-        "--jobs", type=int, default=min(8, os.cpu_count() or 1)
-    )
+    compare_parser.add_argument("--jobs", type=int, default=_default_jobs())
 
     commands.add_parser("stats")
     gate_parser = commands.add_parser("gate")
     gate_parser.add_argument("--generate-if-stale", action="store_true")
     gate_parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS)
-    gate_parser.add_argument("--jobs", type=int, default=min(8, os.cpu_count() or 1))
+    gate_parser.add_argument("--jobs", type=int, default=_default_jobs())
+    verify_parser = commands.add_parser("verify")
+    verify_parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS)
+    verify_parser.add_argument("--jobs", type=int, default=_default_jobs())
     commands.add_parser("update-baseline")
     commands.add_parser("_prepare-cache")
     return parser.parse_args(argv)
@@ -1626,6 +2207,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 return 1
             print("semantic-gate: PASS")
             return 0
+        if args.command == "verify":
+            return run_verify(args)
         if args.command == "update-baseline":
             args.generate_if_stale = False
             report, _ = load_fresh_report(args)
