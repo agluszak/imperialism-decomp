@@ -169,4 +169,6 @@ ASSERT_SIZE(TMapDialog, 0x364);
 #ifdef IMPERIALISM_RUNTIME_TESTS
 void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resourceType);
 bool WasStrategicMapResourceTileObservedForRuntimeTest();
+void ObserveStrategicMapSurveyMissTileForRuntimeTest(short tileIndex);
+bool WasStrategicMapSurveyMissTileObservedForRuntimeTest();
 #endif

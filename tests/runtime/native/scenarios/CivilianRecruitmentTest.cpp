@@ -122,9 +122,12 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
 class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
-      : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), orderIssued(false),
-        completionIssued(false), completionVerified(false), engineerActionIssued(false),
-        engineerDialogObserved(false), initialAnimationFrame(0), initialAnimationTick(0) {}
+      : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), targetSurveyMissTile(-1),
+        orderIssued(false), completionIssued(false), completionVerified(false),
+        surveyMissActionInProgress(false), surveyMissOrderIssued(false),
+        surveyMissCompletionIssued(false), surveyMissCompletionVerified(false),
+        engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
+        initialAnimationTick(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -140,6 +143,9 @@ public:
   }
 
   void TickScenario() override {
+    if (surveyMissActionInProgress) {
+      return;
+    }
     if (engineerActionIssued) {
       VerifyEngineerDialogAndCancel();
       return;
@@ -157,6 +163,12 @@ public:
     if (completionIssued) {
       if (!completionVerified) {
         VerifyCompletedProspectorSurveyMark();
+      } else if (!surveyMissOrderIssued) {
+        IssueUnsuccessfulProspectorSurvey();
+      } else if (!surveyMissCompletionIssued) {
+        CompleteUnsuccessfulProspectorSurvey();
+      } else if (!surveyMissCompletionVerified) {
+        VerifyUnsuccessfulProspectorSurveyMark();
       } else {
         VerifyFarmerWorkableTileSelection();
       }
@@ -782,6 +794,138 @@ private:
     RequestScenarioTick();
   }
 
+  bool IsProspectableResource(signed char resourceType) {
+    return resourceType == kResourceCoal || resourceType == kResourceIron ||
+           resourceType == kResourceOil || resourceType == kResourceGems ||
+           resourceType == kResourceGold;
+  }
+
+  void IssueUnsuccessfulProspectorSurvey() {
+    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
+    const int activeNation = g_pSimMgr->GetActiveNationId();
+    int eligibleCount = 0;
+    int nonMineralCount = 0;
+    int undiscoveredCount = 0;
+    int orderableCount = 0;
+    for (short tile = 0; tile < kGlobalMapTileCount; ++tile) {
+      const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tile];
+      if (tile == spawnedCivilian->tileIndex06 || tile % 0x6c == 0 || tile % 0x6c == 0x6b ||
+          terrain.firstCivilianOrder20 != 0 || terrain.recruitSearchVisited0e != 0 ||
+          (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0) {
+        continue;
+      }
+      ++eligibleCount;
+      if (IsProspectableResource(terrain.resourceTypeByEdge[0])) {
+        continue;
+      }
+      ++nonMineralCount;
+      if (g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tile) != 0) {
+        continue;
+      }
+      ++undiscoveredCount;
+      if (g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tile, 0) != 8) {
+        continue;
+      }
+      ++orderableCount;
+      targetSurveyMissTile = tile;
+      break;
+    }
+    if (targetSurveyMissTile == -1) {
+      char failure[192];
+      wsprintfA(failure,
+                "\"no unsuccessful prospecting tile: eligible=%d nonmineral=%d undiscovered=%d "
+                "orderable=%d\"",
+                eligibleCount, nonMineralCount, undiscoveredCount, orderableCount);
+      FailScenario(failure);
+      return;
+    }
+
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    CPoint targetPoint;
+    if (mapDialog == 0) {
+      FailScenario("\"strategic map disappeared before unsuccessful prospecting\"");
+      return;
+    }
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    mapView->CenterOn(targetSurveyMissTile);
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+    short targetBand;
+    if (!FindVisiblePointForTile(mapDialog, targetSurveyMissTile, &targetPoint, &targetBand) ||
+        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
+            targetSurveyMissTile, targetBand) != 1001) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"unsuccessful prospecting tile lost its retail cursor route\"");
+      return;
+    }
+    surveyMissActionInProgress = true;
+    const bool clickHandled = RuntimeUiDriver::ClickViewPointThroughNativeMessages(
+        mapDialog, targetPoint.x, targetPoint.y);
+    surveyMissActionInProgress = false;
+    if (!clickHandled) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"unsuccessful prospecting click did not reach the strategic map\"");
+      return;
+    }
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
+        spawnedCivilian->tileIndex06 != targetSurveyMissTile) {
+      FailScenario("\"non-mineral tile did not receive the retail prospecting order\"");
+      return;
+    }
+
+    surveyMissOrderIssued = true;
+    EnterScenarioStep("completing_unsuccessful_prospector_order",
+                      "real_non_mineral_tile_order_reaches_completion");
+    RequestScenarioTick();
+  }
+
+  void CompleteUnsuccessfulProspectorSurvey() {
+    g_pUiAnimator->DoIdle(1);
+    spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
+    surveyMissCompletionIssued = true;
+    RequestScenarioTick();
+  }
+
+  void VerifyUnsuccessfulProspectorSurveyMark() {
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    const int activeNation = g_pSimMgr->GetActiveNationId();
+    const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetSurveyMissTile];
+    if (mapDialog == 0 || spawnedCivilian->unitOrder != kUnitOrderIdle ||
+        spawnedCivilian->remainingTurns24 > 0 ||
+        (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
+        IsProspectableResource(terrain.resourceTypeByEdge[0]) ||
+        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetSurveyMissTile) != 0) {
+      FailScenario("\"unsuccessful prospecting did not produce the retail surveyed state\"");
+      return;
+    }
+
+    ObserveStrategicMapSurveyMissTileForRuntimeTest(targetSurveyMissTile);
+    mapView->CenterOn(targetSurveyMissTile);
+    mapView->RedrawTile(targetSurveyMissTile);
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    if (!WasStrategicMapSurveyMissTileObservedForRuntimeTest()) {
+      FailScenario("\"surveyed non-mineral tile did not reach the retail miss-mark blit\"");
+      return;
+    }
+
+    surveyMissCompletionVerified = true;
+    EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
+                      "resume_through_normal_map_event_tick");
+    RequestScenarioTick();
+  }
+
   bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
                                   short orderType) {
     if (terrain.ownerNationTag04 != nationSlot && terrain.secondaryOwnerNationTag18 != nationSlot) {
@@ -864,8 +1008,8 @@ private:
       }
     }
 
-    const int occupiedAction =
-        g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(targetHillTile, 0);
+    const int occupiedAction = g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(
+        spawnedCivilian->tileIndex06, 0);
     EnterScenarioStep("checking_farmer_tile_actions", "verify_reach_occupancy_and_cursor_routes");
     if (predicateMismatches != 0 || workableTile == -1 || moveTile == -1 || prohibitedTile == -1 ||
         occupiedAction != 2) {
@@ -1039,9 +1183,14 @@ private:
   TCivUnit* spawnedCivilian;
   short targetHillTile;
   short targetSeaTile;
+  short targetSurveyMissTile;
   bool orderIssued;
   bool completionIssued;
   bool completionVerified;
+  bool surveyMissActionInProgress;
+  bool surveyMissOrderIssued;
+  bool surveyMissCompletionIssued;
+  bool surveyMissCompletionVerified;
   bool engineerActionIssued;
   bool engineerDialogObserved;
   short initialAnimationFrame;

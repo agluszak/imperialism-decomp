@@ -30,6 +30,8 @@ namespace {
 short g_runtimeObservedStrategicMapTile;
 short g_runtimeObservedStrategicMapResource;
 bool g_runtimeObservedStrategicMapResourceDraw;
+short g_runtimeObservedStrategicMapSurveyMissTile;
+bool g_runtimeObservedStrategicMapSurveyMissDraw;
 } // namespace
 
 void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resourceType) {
@@ -42,6 +44,15 @@ bool WasStrategicMapResourceTileObservedForRuntimeTest() {
   return g_runtimeObservedStrategicMapResourceDraw;
 }
 
+void ObserveStrategicMapSurveyMissTileForRuntimeTest(short tileIndex) {
+  g_runtimeObservedStrategicMapSurveyMissTile = tileIndex;
+  g_runtimeObservedStrategicMapSurveyMissDraw = false;
+}
+
+bool WasStrategicMapSurveyMissTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapSurveyMissDraw;
+}
+
 #define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType)                    \
   do {                                                                                             \
     if ((tileIndex) == g_runtimeObservedStrategicMapTile &&                                        \
@@ -49,8 +60,15 @@ bool WasStrategicMapResourceTileObservedForRuntimeTest() {
       g_runtimeObservedStrategicMapResourceDraw = true;                                            \
     }                                                                                              \
   } while (0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex)                               \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapSurveyMissTile) {                              \
+      g_runtimeObservedStrategicMapSurveyMissDraw = true;                                          \
+    }                                                                                              \
+  } while (0)
 #else
 #define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType) ((void)0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex) ((void)0)
 #endif
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
@@ -1233,6 +1251,37 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
     IMPERIALISM_MAP_TILE_RESOURCE_EDGE(0, 2)
     IMPERIALISM_MAP_TILE_RESOURCE_EDGE(1, 0x1c)
 #undef IMPERIALISM_MAP_TILE_RESOURCE_EDGE
+
+    const signed char firstResourceType = terrain.resourceTypeByEdge[0];
+    const bool firstResourceIsProspectable =
+        firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||
+        firstResourceType == kResourceOil || firstResourceType == kResourceGems ||
+        firstResourceType == kResourceGold;
+    if (!firstResourceIsProspectable) {
+      const int activeNation = g_pSimMgr->GetActiveNationId();
+      bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+      if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+        tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                      terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                      terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                      terrain.GetTerrainKind() == kStrategicTerrainDesert;
+      }
+      TCivUnit* selectedCivilian = g_pSelectedCivilianOrderState->selectedEntry;
+      if (tileVisible && selectedCivilian != 0 &&
+          (selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector) ||
+           selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
+           selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper))) {
+        UpdatePaletteIndexWithDefaultFallback(0x10);
+        SetQuickDrawFillColor(0);
+        CRect sourceRect(0x190, 0, 0x1a4, 0x14);
+        CRect destinationRect(screenX + 5, screenY + 0xc, screenX + 0x19, screenY + 0x20);
+        IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex);
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &sourceRect, &destinationRect, 0x24, 0);
+        SetQuickDrawStrokeColor(0xffffff);
+      }
+    }
 
     if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&
         terrain.secondaryOwnerNationTag18 != -1) {
