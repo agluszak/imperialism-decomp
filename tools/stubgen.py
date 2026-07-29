@@ -74,7 +74,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--annotation-kind",
-        default="FUNCTION",
+        default="STUB",
         choices=("STUB", "FUNCTION", "none"),
         help=(
             "Annotation marker to emit for generated stubs; 'none' emits no reccmp "
@@ -259,7 +259,7 @@ def write_stubs(
     repo_root: Path,
     output_dir: Path,
     target: str = "IMPERIALISM",
-    annotation_kind: str = "FUNCTION",
+    annotation_kind: str = "STUB",
     chunk_prefix: str = "stubs_part",
     max_functions_per_file: int = 500,
     use_prototypes: bool = False,

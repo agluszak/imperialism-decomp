@@ -192,7 +192,7 @@ TMapDialog::TMapDialog() : TWorldView() {
   tileDebugOverlayEnabled360 = false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00519C40
+// SYNTHETIC: IMPERIALISM 0x00519c40
 // TMapDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00519c70
 TMapDialog::~TMapDialog() {}
@@ -216,7 +216,7 @@ void TMapDialog::Free() {
   g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
 
-// FUNCTION: IMPERIALISM 0x00519D30
+// FUNCTION: IMPERIALISM 0x00519d30
 void TMapDialog::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);
 
@@ -428,7 +428,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
   SetQuickDrawFillColor(0);
 }
 
-// FUNCTION: IMPERIALISM 0x0051A900
+// FUNCTION: IMPERIALISM 0x0051a900
 void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
@@ -602,7 +602,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   g_pUiAnimator->TranslateListRectsAndDropNonIntersectingEntries(dx, dy, clip);
 }
 
-// FUNCTION: IMPERIALISM 0x0051AF60
+// FUNCTION: IMPERIALISM 0x0051af60
 void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
   short col;
   short row;
@@ -948,7 +948,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
-// FUNCTION: IMPERIALISM 0x0051EB40
+// FUNCTION: IMPERIALISM 0x0051eb40
 void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   CTemporaryRegion temporaryRegion;
   TBitmapSurfaceNode** destinationSurfaceObject = GetGWorldPixMap(quickDrawSurface350);
@@ -1457,7 +1457,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetA_00520970(int originX, int originY
   DrawCenteredGuideLineOnMapDc(originX + 0x2c, y1);
 }
 
-// FUNCTION: IMPERIALISM 0x00520A90
+// FUNCTION: IMPERIALISM 0x00520a90
 void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
@@ -1484,7 +1484,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00520C10
+// FUNCTION: IMPERIALISM 0x00520c10
 void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant) {
   int x1;
   int x2;
@@ -1513,7 +1513,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY
   DrawCenteredGuideLineOnMapDc(x1, originY + 0x20);
 }
 
-// FUNCTION: IMPERIALISM 0x00520D20
+// FUNCTION: IMPERIALISM 0x00520d20
 void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
@@ -1529,7 +1529,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY
   DrawCenteredGuideLineOnMapDc(originX + 0x38, originY);
 }
 
-// FUNCTION: IMPERIALISM 0x00520DE0
+// FUNCTION: IMPERIALISM 0x00520de0
 void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
@@ -1562,7 +1562,7 @@ void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00520FC0
+// FUNCTION: IMPERIALISM 0x00520fc0
 void TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
@@ -1605,7 +1605,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY
   DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
 }
 
-// FUNCTION: IMPERIALISM 0x005211C0
+// FUNCTION: IMPERIALISM 0x005211c0
 void TMapDialog::DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
@@ -1775,7 +1775,7 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
 
 // Draws the same directional border geometry with each segment split into the two nations'
 // colors. Neighbor directions and guide-pattern indices follow the retail 0x521a40 dispatch.
-// FUNCTION: IMPERIALISM 0x00521A40
+// FUNCTION: IMPERIALISM 0x00521a40
 void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                                 short tileIndex) {
   const unsigned char direction1 = borderMask & 2;
@@ -1906,7 +1906,7 @@ void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int scr
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005220F0
+// FUNCTION: IMPERIALISM 0x005220f0
 void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   short neighbors[6];
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
@@ -2015,7 +2015,7 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
 
 // Draws a guide line between two tiles' screen centers, wrapping the far tile across the
 // 108-column seam and culling the line when both endpoints fall off the same screen edge.
-// FUNCTION: IMPERIALISM 0x00522C10
+// FUNCTION: IMPERIALISM 0x00522c10
 void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
     if (col1 > 0x6c) {
@@ -2080,7 +2080,7 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
 
 // Draws the coastline "connection" line pattern linking this ocean tile to its ocean
 // neighbors, per the 6-bit connectionMask (which adjacent hexes are ocean and joined).
-// FUNCTION: IMPERIALISM 0x00522CF0
+// FUNCTION: IMPERIALISM 0x00522cf0
 void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
                                                int screenY, short tileIndex) {
   short neighborTiles[6];
@@ -2462,7 +2462,7 @@ static inline void CopyMapTilePixelSpan(unsigned char* src, unsigned char* dest,
 // The twelve masks below are the exact per-row byte spans written by the retail routines.
 // Their original dword-copy loops were decoded by executing the isolated routines against a
 // synthetic 64x64 destination and recording every destination byte write.
-// FUNCTION: IMPERIALISM 0x005241B0
+// FUNCTION: IMPERIALISM 0x005241b0
 void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int rowDirection2 = 0; rowDirection2 < 0x20; ++rowDirection2) {
@@ -2471,7 +2471,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005242F0
+// FUNCTION: IMPERIALISM 0x005242f0
 void TMapDialog::CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int upperRowDirection1 = 1; upperRowDirection1 < 0x20; ++upperRowDirection1) {
@@ -2502,7 +2502,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005247A0
+// FUNCTION: IMPERIALISM 0x005247a0
 void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int upperRowDirection4 = 0; upperRowDirection4 < 0x20; ++upperRowDirection4) {
@@ -2515,7 +2515,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005249F0
+// FUNCTION: IMPERIALISM 0x005249f0
 void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int rowDirection3 = 0; rowDirection3 < 0x20; ++rowDirection3) {
@@ -2524,7 +2524,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524B30
+// FUNCTION: IMPERIALISM 0x00524b30
 void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections1And2 = 0; rowDirections1And2 < 0x20; ++rowDirections1And2) {
@@ -2537,7 +2537,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524C60
+// FUNCTION: IMPERIALISM 0x00524c60
 void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections0And1 = 0x20; rowDirections0And1 < 0x40; ++rowDirections0And1) {
@@ -2547,7 +2547,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524E70
+// FUNCTION: IMPERIALISM 0x00524e70
 void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections2And3 = 0; rowDirections2And3 < 0x20; ++rowDirections2And3) {
@@ -2559,7 +2559,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005250A0
+// FUNCTION: IMPERIALISM 0x005250a0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections5And0 = 0x20; rowDirections5And0 < 0x40; ++rowDirections5And0) {
@@ -2569,7 +2569,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005252D0
+// FUNCTION: IMPERIALISM 0x005252d0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections4And5 = 0x20; rowDirections4And5 < 0x40; ++rowDirections4And5) {
@@ -2578,7 +2578,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005254A0
+// FUNCTION: IMPERIALISM 0x005254a0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections3And4 = 0; rowDirections3And4 < 0x20; ++rowDirections3And4) {

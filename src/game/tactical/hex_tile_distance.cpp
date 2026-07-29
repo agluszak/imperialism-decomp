@@ -1,6 +1,6 @@
 #include "game/tactical/hex_tile_distance.h"
 
-// FUNCTION: IMPERIALISM 0x005A39A0
+// FUNCTION: IMPERIALISM 0x005a39a0
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
   unsigned int rowA = static_cast<unsigned int>(tileIndexA / 0x1d);
   int colA = (rowA & 1U) + (tileIndexA % 0x1d) * 2;
