@@ -69,6 +69,19 @@ BASELINE_RELATIVE_PATH = (
 )
 
 STRIP_OPS = frozenset({"COPY", "CAST"})
+# Compiler frame scaffolding excluded from the source-level call contract.
+# A callee may enter this list ONLY if all three hold: (a) it has no
+# source-level operands, (b) it exists purely to establish or tear down
+# compiler-managed frame state, and (c) its emission is fully determined by
+# machine facts another gate proves (reccmp's byte-level comparison sees the
+# EH frame directly).  Named functions whose bodies exist in C++ source --
+# inlined base ctors/dtors such as CWnd::~CWnd, _chkstk-style stack probes
+# with a size operand, vector ctor/dtor iterators -- never qualify: their
+# calls are source semantics and their absence is real porting signal.
+# Matched by exact (thunk-resolved) callee name; Ghidra applies a call-fixup
+# to the recompiled image's __EH_prolog so only the original side emits the
+# CALL op at all.
+SCAFFOLDING_CALLEE_NAMES = frozenset({"EH_prolog", "_EH_prolog", "__EH_prolog"})
 # Result widths that follow the decompiler's inferred operand types rather than the
 # machine encoding.  LOAD/PIECE/SUBPIECE are excluded on purpose: their widths are
 # a real access size, not a declared type.
@@ -510,6 +523,15 @@ class ExpressionNormalizer:
                     varnode.getAddress(), int(varnode.getSize())
                 )
                 name = str(register.getName()).lower() if register is not None else "unknown"
+                if name == "ecx":
+                    # An UNDEFINED entry ecx is the thiscall receiver: MSVC5
+                    # passes nothing else in ecx across a call boundary.  One
+                    # image's decompiler binds it as parameter 0 (prototype
+                    # imported) while the other leaves the raw register, and
+                    # the same receiver then mismatches by construction.  A
+                    # genuinely different receiver still fails: parameter 0
+                    # never equals parameter 1 or a computed value.
+                    return ["parameter", 0, int(varnode.getSize())]
                 name = {
                     "esp": "stack_pointer",
                     "rsp": "stack_pointer",
@@ -686,6 +708,11 @@ def _strip_transparent_pointer(varnode: Any) -> Any:
         if mnemonic in STRIP_OPS and len(inputs) == 1:
             varnode = inputs[0]
             continue
+        if mnemonic == "INDIRECT" and len(inputs) == 2:
+            # Call-effect wrapper; the pointer value is input 0 (see the
+            # dissolution rule in _canonical_call_value).
+            varnode = inputs[0]
+            continue
         if mnemonic == "PTRSUB" and len(inputs) == 2 and inputs[1].isConstant():
             if int(inputs[1].getOffset()) == 0:
                 varnode = inputs[0]
@@ -772,6 +799,16 @@ def _canonical_call_value(value: Any) -> Any:
     if not isinstance(value, list):
         return value
 
+    # The INDIRECT-filler PIECE rule keys on the RAW child shape: INDIRECT
+    # wrappers dissolve during child canonicalization below, so testing the
+    # child after recursion would never see the ``indirect`` marker again.
+    # (The subpiece/int_right stale-upper variant is checked after recursion
+    # instead -- dissolution can EXPOSE that shape from under a wrapper.)
+    if value and value[0] == "piece" and len(value) == 4:
+        upper = value[2]
+        if isinstance(upper, list) and bool(upper) and upper[0] == "indirect":
+            return _canonical_call_value(value[3])
+
     normalized = [_canonical_call_value(item) for item in value]
     if not normalized:
         return normalized
@@ -796,7 +833,6 @@ def _canonical_call_value(value: Any) -> Any:
         return normalized[:3]
     if tag == "piece" and len(normalized) == 4:
         upper = normalized[2]
-        stale_upper = isinstance(upper, list) and upper and upper[0] == "indirect"
         if (
             isinstance(upper, list)
             and len(upper) == 4
@@ -805,9 +841,18 @@ def _canonical_call_value(value: Any) -> Any:
             and len(upper[2]) == 4
             and upper[2][0] == "int_right"
         ):
-            stale_upper = True
-        if stale_upper:
+            # Stale upper-register filler around the value actually passed.
             return normalized[3]
+    if tag == "indirect" and len(normalized) == 4:
+        # Ghidra INDIRECT ops record "this value may have been changed by that
+        # call/store".  The two images place them differently (one decompiler
+        # proves no-clobber where the other does not), and the second operand is
+        # an image-specific iop sequence pseudo-constant, so a surviving INDIRECT
+        # node mismatches by construction.  Compare the underlying dataflow value
+        # instead: a genuinely different value still differs after dissolution.
+        # The corner this cannot see -- same pre-call value, actually modified at
+        # runtime -- is machine behavior owned by reccmp's byte-level proof.
+        return normalized[2]
     if tag == "subpiece" and len(normalized) == 4:
         offset = normalized[3]
         inner = normalized[2]
@@ -880,6 +925,88 @@ def _erase_inference_widths(value: Any) -> Any:
     return normalized
 
 
+def _frame_slot_offset(node: Any) -> int | None:
+    """Signed offset of a frame-relative local address, or None.
+
+    Matches the post-erasure shape ``["int_add", ["constant", c],
+    ["register", stack_pointer|frame_pointer, w]]`` (canonical sorting puts the
+    folded constant first).  Only negative offsets qualify: they address locals,
+    whose placement is frame layout owned by ``just stackcmp``.  Positive
+    offsets address the incoming-parameter area -- which incoming slot a call
+    forwards IS contract, so those stay concrete.
+    """
+    if (
+        isinstance(node, list)
+        and len(node) == 3
+        and node[0] == "int_add"
+        and isinstance(node[1], list)
+        and len(node[1]) == 2
+        and node[1][0] == "constant"
+        and isinstance(node[1][1], int)
+        and isinstance(node[2], list)
+        and len(node[2]) == 3
+        and node[2][0] == "register"
+        and node[2][1] in {"stack_pointer", "frame_pointer"}
+    ):
+        offset = node[1][1]
+        signed = offset - (1 << 32) if offset >= (1 << 31) else offset
+        if signed < 0:
+            return signed
+    return None
+
+
+def _collect_frame_slots(value: Any, found: set[int]) -> None:
+    if isinstance(value, dict):
+        for item in value.values():
+            _collect_frame_slots(item, found)
+        return
+    if not isinstance(value, list):
+        return
+    offset = _frame_slot_offset(value)
+    if offset is not None:
+        found.add(offset)
+        return
+    for item in value:
+        _collect_frame_slots(item, found)
+
+
+def _rewrite_frame_slots(value: Any, ranks: dict[int, int]) -> Any:
+    if isinstance(value, dict):
+        return {key: _rewrite_frame_slots(item, ranks) for key, item in value.items()}
+    if not isinstance(value, list):
+        return value
+    offset = _frame_slot_offset(value)
+    if offset is not None:
+        return ["local_slot", ranks[offset]]
+    return [_rewrite_frame_slots(item, ranks) for item in value]
+
+
+def _normalize_frame_slots(calls: list[dict[str, Any]]) -> None:
+    """Replace concrete frame offsets with per-image local-slot rank ordinals.
+
+    A call argument that is the address of a local normalizes to
+    ``int_add(constant, stack/frame pointer)``; which concrete slot the
+    compiler picked is frame layout, not contract, so the same source compares
+    unequal whenever the two frames differ in size.  Rank ordinals (ascending
+    over the distinct offsets referenced by this function's calls, computed per
+    image) erase the layout while keeping distinct locals distinct: swapped or
+    merged locals still change a rank and still fail.  Accepted blind spot: a
+    function whose only frame-relative argument points at the wrong local maps
+    to rank 0 on both sides -- that class is owned by stackcmp and reccmp's
+    machine-level proof.
+    """
+    found: set[int] = set()
+    for call in calls:
+        _collect_frame_slots(call.get("target"), found)
+        _collect_frame_slots(call.get("arguments"), found)
+    if not found:
+        return
+    ranks = {offset: rank for rank, offset in enumerate(sorted(found))}
+    for call in calls:
+        call["target"] = _rewrite_frame_slots(call["target"], ranks)
+        call["arguments"] = _rewrite_frame_slots(call["arguments"], ranks)
+
+
 def _external_identity(function: Any) -> dict[str, str] | None:
     try:
         if not function.isExternal():
@@ -891,6 +1018,31 @@ def _external_identity(function: Any) -> dict[str, str] | None:
         }
     except Exception:
         return None
+
+
+def _is_scaffolding_call(program: Any, target: Any) -> bool:
+    """True when a direct CALL's callee is compiler frame scaffolding.
+
+    Resolved from the target varnode's address BEFORE ``_direct_target`` so an
+    unpaired scaffolding callee cannot leak into ``unresolved`` (which counts
+    toward the call multiplicity this exclusion removes it from).
+    """
+    try:
+        address = target.getAddress()
+        function = program.getFunctionManager().getFunctionAt(address)
+        if function is not None:
+            thunked = function.getThunkedFunction(True)
+            if thunked is not None:
+                function = thunked
+            name = str(function.getName())
+        else:
+            symbol = program.getSymbolTable().getPrimarySymbol(address)
+            if symbol is None:
+                return False
+            name = str(symbol.getName())
+    except Exception:
+        return False
+    return name in SCAFFOLDING_CALLEE_NAMES
 
 
 def _direct_target(
@@ -1032,9 +1184,18 @@ def extract_calls(
         normalizer.reset()
         try:
             target = operation.getInput(0)
+            if mnemonic == "CALL" and _is_scaffolding_call(program, target):
+                continue
             if mnemonic == "CALL":
                 kind = "direct"
                 target_value = _direct_target(program, target, function_map, recorder)
+                external = target_value.get("external")
+                if (
+                    isinstance(external, dict)
+                    and str(external.get("symbol", "")).lstrip("_")
+                    in {name.lstrip("_") for name in SCAFFOLDING_CALLEE_NAMES}
+                ):
+                    continue
             else:
                 virtual = _virtual_target(target)
                 if virtual is not None:
@@ -1084,6 +1245,7 @@ def extract_calls(
             calls.append(call)
         except UnresolvedExpression as error:
             unresolved.append(f"{callsite}: {error}")
+    _normalize_frame_slots(calls)
     return ExtractedCalls(calls=calls, unresolved=unresolved)
 
 
@@ -1094,40 +1256,250 @@ def _counter_rows(counter: Counter[str]) -> list[dict[str, Any]]:
     ]
 
 
-def _without_varargs_arguments(call: dict[str, Any]) -> dict[str, Any]:
-    """Drop the argument list of a variadic-target call, keeping its identity."""
-    if not call.get("varargs_target"):
-        return call
+def _asymmetric_arity_targets(
+    original_abis: dict[int, DirectCallABI],
+    recompiled_abis: dict[int, DirectCallABI],
+) -> frozenset[str]:
+    """Original addresses whose two imported prototypes disagree on arity.
+
+    The curated original prototype and the PDB-imported recompiled prototype
+    each tell their decompiler how many arguments to attach to a call; when the
+    declared arities differ, the argument lists disagree by construction and no
+    behavioural difference backs it.  ``this`` is subtracted first so a mere
+    auto-parameter representation difference does not flag.  Callees missing
+    from either map are NOT flagged: without both prototypes there is no proven
+    asymmetry.
+    """
+    flagged: set[str] = set()
+    for address, original in original_abis.items():
+        recompiled = recompiled_abis.get(address)
+        if recompiled is None:
+            continue
+        original_arity = original.parameter_count - int(original.has_this)
+        recompiled_arity = recompiled.parameter_count - int(recompiled.has_this)
+        if (
+            original_arity != recompiled_arity
+            or original.has_varargs != recompiled.has_varargs
+        ):
+            flagged.add(f"0x{address:x}")
+    return frozenset(flagged)
+
+
+def _erase_asymmetric_nested(value: Any, asymmetric_targets: frozenset[str]) -> Any:
+    """Erase argument lists of nested call_result nodes with asymmetric arity.
+
+    A prototype disagreement surfaces inside expressions too: the recompiled
+    decompiler attaches an extra receiver/argument to a nested call whose
+    curated original prototype declares fewer formals, and the wrapped value
+    then differs everywhere it is used (including virtual receivers).
+    """
+    if isinstance(value, dict):
+        return {
+            key: _erase_asymmetric_nested(item, asymmetric_targets)
+            for key, item in value.items()
+        }
+    if not isinstance(value, list):
+        return value
+    normalized = [
+        _erase_asymmetric_nested(item, asymmetric_targets) for item in value
+    ]
+    if (
+        normalized
+        and normalized[0] == "call_result"
+        and len(normalized) >= 3
+        and isinstance(normalized[1], dict)
+        and normalized[1].get("function") in asymmetric_targets
+    ):
+        return ["call_result", normalized[1], "<arity_asymmetry>"]
+    return normalized
+
+
+def _without_undeclared_arguments(
+    call: dict[str, Any], asymmetric_targets: frozenset[str] = frozenset()
+) -> dict[str, Any]:
+    """Drop argument lists that the two images' prototypes disagree about.
+
+    Variadic callees: neither image declares formals, so each decompiler
+    independently decides whether the pushes belong to the call.  Asymmetric
+    declared arity: the two prototypes force different argument counts.  Both
+    keep the call's kind, target, and multiplicity in the contract.
+    """
     stripped = dict(call)
-    stripped["arguments"] = "<varargs>"
+    if asymmetric_targets:
+        stripped = _erase_asymmetric_nested(stripped, asymmetric_targets)
+    if call.get("varargs_target"):
+        stripped["arguments"] = "<varargs>"
+        return stripped
+    target = stripped.get("target")
+    if (
+        isinstance(target, dict)
+        and target.get("function") in asymmetric_targets
+    ):
+        stripped["arguments"] = "<arity_asymmetry>"
     return stripped
 
 
-def _arity_asymmetry_only(
-    original: Sequence[dict[str, Any]], recompiled: Sequence[dict[str, Any]]
+def _prefix_pairs_only(
+    missing: Sequence[dict[str, Any]], extra: Sequence[dict[str, Any]]
 ) -> bool:
-    """True when the two contracts agree once variadic argument lists are erased.
+    """True when every remaining diff pairs same-target calls by argument prefix.
 
-    Multiplicity, kind, target, and every non-variadic call's arguments are still
-    compared exactly; only the argument lists of calls to a variadic callee are
-    treated as unknowable, because neither image's prototype declares formals for
-    them and each decompiler independently decides whether to attach the pushes.
+    Virtual slots and unmapped callees have no prototype pair to consult, so an
+    arity disagreement there shows up directly as one side attaching more
+    trailing arguments to the same call.  Pair each missing call with an extra
+    call of identical kind, target, and receiver whose argument list strictly
+    extends (or is extended by) its own; anything that does not pair this way
+    keeps the mismatch.  A genuinely different argument at a shared position,
+    a different target, a different receiver, or a multiplicity change never
+    pairs.
     """
-    if not any(call.get("varargs_target") for call in original) and not any(
-        call.get("varargs_target") for call in recompiled
-    ):
+    if not missing or len(missing) != len(extra):
         return False
+    used = [False] * len(extra)
+    for candidate in missing:
+        matched = False
+        for index, other in enumerate(extra):
+            if used[index]:
+                continue
+            if candidate.get("kind") != other.get("kind"):
+                continue
+            if canonical_json(candidate.get("target")) != canonical_json(
+                other.get("target")
+            ):
+                continue
+            left = candidate.get("arguments")
+            right = other.get("arguments")
+            if not isinstance(left, list) or not isinstance(right, list):
+                continue
+            if len(left) == len(right):
+                continue
+            short, long = (left, right) if len(left) < len(right) else (right, left)
+            if [canonical_json(item) for item in short] == [
+                canonical_json(item) for item in long[: len(short)]
+            ]:
+                used[index] = True
+                matched = True
+                break
+        if not matched:
+            return False
+    return True
+
+
+def _contains_stack_variable_symbol(value: Any) -> bool:
+    """True when a value tree references a decompiler-named stack local.
+
+    ``["symbol", "iStack_c", 4]`` style nodes are Ghidra's bound stack
+    variables; whether a merge value renders as such a symbol or as the
+    equivalent SSA expression is a per-image decompiler-model choice, so a
+    difference that involves one on either side is not provable in either
+    direction from the call contract alone.  ``in_stack_...`` names are the
+    unbound-input variant: one image's function lacks a declared prototype, so
+    a parameter-area read renders as a raw stack input instead of the other
+    image's ``parameter`` node.  The repair for those is curating the missing
+    prototype, which the inconclusive reason keeps visible.
+    """
+    if isinstance(value, dict):
+        return any(_contains_stack_variable_symbol(item) for item in value.values())
+    if not isinstance(value, list):
+        return False
+    if (
+        len(value) >= 2
+        and value[0] == "symbol"
+        and isinstance(value[1], str)
+        and (
+            value[1].startswith("local_")
+            or value[1].startswith("in_stack_")
+            or "Stack_" in value[1]
+        )
+    ):
+        return True
+    return any(_contains_stack_variable_symbol(item) for item in value)
+
+
+def _call_identity(call: dict[str, Any]) -> str:
+    """Callee identity with the receiver excluded (it may be the artifact)."""
+    kind = call.get("kind")
+    target = call.get("target")
+    if isinstance(target, dict):
+        if "slot" in target:
+            return canonical_json([kind, "slot", target["slot"]])
+        detail = {
+            key: target[key] for key in ("function", "external") if key in target
+        }
+        if detail:
+            return canonical_json([kind, detail])
+    return canonical_json([kind, target])
+
+
+def _local_variable_model_only(
+    missing: Sequence[dict[str, Any]], extra: Sequence[dict[str, Any]]
+) -> bool:
+    """True when every remaining diff pairs same-callee calls via a stack symbol.
+
+    Each missing entry must pair with an extra entry of identical kind and
+    callee identity, and at least one member of the pair must involve a
+    stack-variable (or unbound ``in_stack`` input) symbol -- the tell that the
+    two decompiler variable models diverged.  Downgrades to inconclusive,
+    never pass: rows stay non-passing and the reason names the cause.  A
+    different callee, a multiplicity change, or a diff with no variable-model
+    involvement anywhere in the pair still fails.
+    """
+    if not missing or len(missing) != len(extra):
+        return False
+    used = [False] * len(extra)
+    for candidate in missing:
+        matched = False
+        for index, other in enumerate(extra):
+            if used[index]:
+                continue
+            if _call_identity(candidate) != _call_identity(other):
+                continue
+            if not (
+                _contains_stack_variable_symbol(candidate)
+                or _contains_stack_variable_symbol(other)
+            ):
+                continue
+            used[index] = True
+            matched = True
+            break
+        if not matched:
+            return False
+    return True
+
+
+def _arity_asymmetry_only(
+    original: Sequence[dict[str, Any]],
+    recompiled: Sequence[dict[str, Any]],
+    asymmetric_targets: frozenset[str] = frozenset(),
+) -> bool:
+    """True when the contracts agree once undeclared argument lists are erased.
+
+    Multiplicity, kind, target, and every unflagged call's arguments are still
+    compared exactly.  This never yields a pass -- callers downgrade to
+    ``inconclusive``/``prototype_arity_asymmetry``, which stays non-passing and
+    doubles as the prototype-harmonization worklist.
+    """
     left = Counter(
-        canonical_json(_without_varargs_arguments(call)) for call in original
+        canonical_json(_without_undeclared_arguments(call, asymmetric_targets))
+        for call in original
     )
     right = Counter(
-        canonical_json(_without_varargs_arguments(call)) for call in recompiled
+        canonical_json(_without_undeclared_arguments(call, asymmetric_targets))
+        for call in recompiled
     )
-    return left == right
+    if left == right:
+        # The exact counters already disagreed, so equality here proves an
+        # erasure absorbed the whole difference.
+        return True
+    missing = [json.loads(value) for value in (left - right).elements()]
+    extra = [json.loads(value) for value in (right - left).elements()]
+    return _prefix_pairs_only(missing, extra)
 
 
 def compare_extracted_calls(
-    original: ExtractedCalls, recompiled: ExtractedCalls
+    original: ExtractedCalls,
+    recompiled: ExtractedCalls,
+    asymmetric_arity_targets: frozenset[str] = frozenset(),
 ) -> dict[str, Any]:
     result: dict[str, Any] = {
         "original_call_count": len(original.calls) + len(original.unresolved),
@@ -1166,10 +1538,28 @@ def compare_extracted_calls(
     if original_counter == recompiled_counter:
         result.update(status="pass", reason="call_contract_equal")
         return result
-    if _arity_asymmetry_only(original.calls, recompiled.calls):
+    if _arity_asymmetry_only(
+        original.calls, recompiled.calls, asymmetric_arity_targets
+    ):
         result.update(
             status="inconclusive",
             reason="prototype_arity_asymmetry",
+            missing=_counter_rows(original_counter - recompiled_counter),
+            extra=_counter_rows(recompiled_counter - original_counter),
+        )
+        return result
+    missing_calls = [
+        json.loads(value)
+        for value in (original_counter - recompiled_counter).elements()
+    ]
+    extra_calls = [
+        json.loads(value)
+        for value in (recompiled_counter - original_counter).elements()
+    ]
+    if _local_variable_model_only(missing_calls, extra_calls):
+        result.update(
+            status="inconclusive",
+            reason="local_variable_model",
             missing=_counter_rows(original_counter - recompiled_counter),
             extra=_counter_rows(recompiled_counter - original_counter),
         )
@@ -1823,6 +2213,12 @@ def compare_programs(
     jobs: int,
 ) -> list[dict[str, Any]]:
     direct_call_abis = _direct_call_abis(original_program, original_functions)
+    # The recompiled map iterates (entry -> original) pairs the same way; its
+    # ``entry == original`` priority term is simply never true there.
+    recompiled_call_abis = _direct_call_abis(recompiled_program, recompiled_functions)
+    asymmetric_arity_targets = _asymmetric_arity_targets(
+        direct_call_abis, recompiled_call_abis
+    )
     local = threading.local()
     context_lock = threading.Lock()
     contexts: list[tuple[Any, Any, ExpressionNormalizer, ExpressionNormalizer]] = []
@@ -1907,7 +2303,19 @@ def compare_programs(
             direct_call_abis,
             recorder,
         )
-        row.update(compare_extracted_calls(original_calls, recompiled_calls))
+        row.update(
+            compare_extracted_calls(
+                original_calls, recompiled_calls, asymmetric_arity_targets
+            )
+        )
+        if row.get("reason") == "prototype_arity_asymmetry":
+            # The relaxation consulted the recompiled image's imported
+            # prototypes, which no per-row dependency fingerprints; a reused
+            # row could keep the downgrade after prototypes are harmonized.
+            # (A prototype newly diverging leaves a stale ``mismatch`` reason
+            # on an untouched row until it recomputes -- both states are
+            # non-passing, so the gate outcome cannot go stale.)
+            recorder.mark_fragile()
         row["_recorder"] = recorder
         return row
 

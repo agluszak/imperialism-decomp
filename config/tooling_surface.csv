@@ -132,6 +132,7 @@ module|tools.binary.gen_builder_cpp|just:gen-builder|Compact-vocabulary C++ draf
 module|tools.binary.alloc_audit|just:alloc-audit|Audit new-vs-::new spellings against original allocator calls
 module|tools.reccmp.triage|just:triage|Asm-diff mismatch classifier (bucket + suggested action)
 module|tools.reccmp.stackcmp_triage|just:stackcmp-triage|Batch stackcmp over near-match functions
+module|tools.reccmp.semantic_sweep|just:sweep|Behavioural-divergence sweep joining reccmp verdicts with call contracts
 module|tools.ghidra.func_sig|dependency:tools.ghidra.query_registry|func-sig query command (cc/params/RET-imm)
 module|tools.ghidra.field_xrefs|dependency:tools.ghidra.query_registry|field-xrefs query command (this+offset accesses per class)
 module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|string-oracle query command (self-naming port targets)
