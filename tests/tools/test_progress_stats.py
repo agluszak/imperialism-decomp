@@ -17,11 +17,13 @@ from reccmp.types import EntityType
 from tools.reccmp.progress_stats import (
     build_progress_report,
     clamp_stub_count_ratchet,
-    ui_factory_fidelity,
+    function_changes,
+    generated_stub_report_errors,
     parse_report_counts,
     parse_report_functions,
     report_cache_is_current,
     run_progress_report,
+    ui_factory_fidelity,
     write_report_cache,
 )
 
@@ -164,6 +166,42 @@ class ProgressStatsTests(unittest.TestCase):
             set(parse_report_functions(self.report_path)),
             {"0x401000", "0x402000"},
         )
+
+    def test_every_generated_placeholder_is_reported_as_a_stub(self) -> None:
+        self.write_report(
+            [
+                make_match("stub", 0x410000, 1.0, stub=True),
+                make_match("misclassified", 0x420000, 1.0),
+            ]
+        )
+        stub_rows = [
+            (0x410000, "stub", ""),
+            (0x420000, "misclassified", ""),
+            (0x430000, "missing", ""),
+            (0x401000, "ilt_thunk", ""),
+        ]
+
+        self.assertEqual(
+            generated_stub_report_errors(self.report_path, stub_rows),
+            [
+                "0x00430000: generated placeholder missing from report",
+                "0x00420000: generated placeholder reported without stub=true",
+            ],
+        )
+
+    def test_function_changes_identifies_regressions_and_newly_unpaired(self) -> None:
+        baseline = {
+            "0x410000": {"m": 1.0, "n": "regressed"},
+            "0x420000": {"m": 0.5, "n": "unpaired"},
+        }
+        current = {"0x410000": {"m": 0.25, "n": "regressed"}}
+
+        regressed, unpaired, improved, newly_paired = function_changes(current, baseline)
+
+        self.assertEqual(regressed, [("0x410000", "regressed", 1.0, 0.25)])
+        self.assertEqual(unpaired, [("0x420000", "unpaired", 0.5)])
+        self.assertEqual(improved, 0)
+        self.assertEqual(newly_paired, 0)
 
     def test_report_cache_requires_matching_inputs_and_untampered_outputs(self) -> None:
         cache_path = Path(self.tempdir.name) / "inputs.json"

@@ -35,7 +35,10 @@ Progress reports deliberately include functions listed under
 `report.ignore_functions`. That setting only suppresses library/framework noise in
 interactive reccmp output; changing a presentation filter must not change
 exact-function counts or average similarity. Progress metrics also exclude vtables and
-stubs.
+stubs. The address-pairing percentage includes generated placeholder addresses so it
+describes symbol coverage; implementation coverage and similarity use only paired,
+non-stub functions. `just gates` fails if any such function becomes unpaired or loses
+similarity beyond the committed per-function epsilon.
 
 Bootstrap project metadata once:
 

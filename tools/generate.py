@@ -11,8 +11,9 @@ between steps:
   3. tools.generate_symbols -> <gen-dir>/symbols.csv (raw inventory + overlays)
   4. tools.stubgen       -> <gen-dir>/stubs/*.cpp (+ _manifest.json)
 
-Exit is nonzero on duplicate claims. Secondary builds (lint) pass
---annotation-kind none and a distinct --chunk-prefix, same as stubgen's own CLI.
+Exit is nonzero on duplicate claims. Secondary builds (lint) pass both
+--ui-annotation-kind none and --stub-annotation-kind none plus a distinct
+--chunk-prefix, same as stubgen's own CLI.
 Identical outputs preserve their mtimes so generation does not force a no-op build
 to recompile stub chunks and relink the executable.
 """
@@ -40,8 +41,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", default="IMPERIALISM")
     parser.add_argument("--gen-dir", default="build-msvc500/generated")
-    parser.add_argument("--annotation-kind", default="FUNCTION",
-                        choices=("STUB", "FUNCTION", "none"))
+    parser.add_argument(
+        "--ui-annotation-kind",
+        default="FUNCTION",
+        choices=("STUB", "FUNCTION", "none"),
+    )
+    parser.add_argument(
+        "--stub-annotation-kind",
+        default="STUB",
+        choices=("STUB", "FUNCTION", "none"),
+    )
     parser.add_argument("--chunk-prefix", default="stubs_part")
     args = parser.parse_args()
 
@@ -94,7 +103,7 @@ def main() -> int:
         ui_views,
         ui_text_resources,
         ui_windows_views,
-        annotation_kind=args.annotation_kind,
+        annotation_kind=args.ui_annotation_kind,
     )
     print(f"Wrote {len(ui_manifest['files'])} resource-driven UI factory TUs")
 
@@ -114,7 +123,7 @@ def main() -> int:
         repo_root,
         output_dir=gen_dir / "stubs",
         target=args.target,
-        annotation_kind=args.annotation_kind,
+        annotation_kind=args.stub_annotation_kind,
         chunk_prefix=args.chunk_prefix,
         model=model,
         overlay_rows=rows,

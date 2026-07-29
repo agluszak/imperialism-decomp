@@ -7,7 +7,7 @@
 
 struct CRuntimeClass;
 
-// VTABLE: IMPERIALISM 0x6431B0
+// VTABLE: IMPERIALISM 0x006431b0
 class TCivDescription : public TView {
 public:
   DECLARE_DYNCREATE(TCivDescription)

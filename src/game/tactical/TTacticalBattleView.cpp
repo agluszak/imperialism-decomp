@@ -981,7 +981,7 @@ void TTacticalBattleView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CP
 // Converts a screen point to a clamped hex grid (row, col) for this battle: row from the
 // point's Y over the tile row height, column from viewOriginX + point X (shifted half a
 // tile on odd rows) over the tile width, each clamped into the battle's playable range.
-// FUNCTION: IMPERIALISM 0x005A86D0
+// FUNCTION: IMPERIALISM 0x005a86d0
 void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow,
                                                                   int* outCol) {
   int row = screenPoint->y / tileRowHeightPx8C;

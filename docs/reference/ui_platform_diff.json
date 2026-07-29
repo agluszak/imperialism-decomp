@@ -52807,7 +52807,7 @@
                 "type_code": "pict"
               },
               "tag": "cncl",
-              "windows_binary_evidence": "Windows: evidence 0x0044e60b"
+              "windows_binary_evidence": "Windows evidence at 0x0044e60b"
             },
             "dialog": {
               "classification": "windows_only_node",
@@ -52853,7 +52853,7 @@
                 "type_code": "pict"
               },
               "tag": "DLOG",
-              "windows_binary_evidence": "Windows: evidence 0x0044e500"
+              "windows_binary_evidence": "Windows evidence at 0x0044e500"
             },
             "message": {
               "classification": "windows_only_node",
@@ -52912,7 +52912,7 @@
                 "type_code": "edit"
               },
               "tag": "mesg",
-              "windows_binary_evidence": "Windows: evidence 0x0044e691"
+              "windows_binary_evidence": "Windows evidence at 0x0044e691"
             },
             "nation_0": {
               "classification": "windows_only_node",
@@ -52958,7 +52958,7 @@
                 "type_code": "pict"
               },
               "tag": "box0",
-              "windows_binary_evidence": "Windows: evidence 0x0044e750"
+              "windows_binary_evidence": "Windows evidence at 0x0044e750"
             },
             "nation_1": {
               "classification": "windows_only_node",
@@ -53004,7 +53004,7 @@
                 "type_code": "pict"
               },
               "tag": "box1",
-              "windows_binary_evidence": "Windows: evidence 0x0044e7d7"
+              "windows_binary_evidence": "Windows evidence at 0x0044e7d7"
             },
             "nation_2": {
               "classification": "windows_only_node",
@@ -53050,7 +53050,7 @@
                 "type_code": "pict"
               },
               "tag": "box2",
-              "windows_binary_evidence": "Windows: evidence 0x0044e85e"
+              "windows_binary_evidence": "Windows evidence at 0x0044e85e"
             },
             "nation_3": {
               "classification": "windows_only_node",
@@ -53096,7 +53096,7 @@
                 "type_code": "pict"
               },
               "tag": "box3",
-              "windows_binary_evidence": "Windows: evidence 0x0044e8e5"
+              "windows_binary_evidence": "Windows evidence at 0x0044e8e5"
             },
             "nation_4": {
               "classification": "windows_only_node",
@@ -53142,7 +53142,7 @@
                 "type_code": "pict"
               },
               "tag": "box4",
-              "windows_binary_evidence": "Windows: evidence 0x0044e96f"
+              "windows_binary_evidence": "Windows evidence at 0x0044e96f"
             },
             "nation_5": {
               "classification": "windows_only_node",
@@ -53188,7 +53188,7 @@
                 "type_code": "pict"
               },
               "tag": "box5",
-              "windows_binary_evidence": "Windows: evidence 0x0044e9f9"
+              "windows_binary_evidence": "Windows evidence at 0x0044e9f9"
             },
             "nation_6": {
               "classification": "windows_only_node",
@@ -53234,7 +53234,7 @@
                 "type_code": "pict"
               },
               "tag": "box6",
-              "windows_binary_evidence": "Windows: evidence 0x0044ea83"
+              "windows_binary_evidence": "Windows evidence at 0x0044ea83"
             },
             "okay": {
               "classification": "windows_only_node",
@@ -53280,7 +53280,7 @@
                 "type_code": "pict"
               },
               "tag": "okay",
-              "windows_binary_evidence": "Windows: evidence 0x0044e57a"
+              "windows_binary_evidence": "Windows evidence at 0x0044e57a"
             },
             "window": {
               "classification": "windows_only_node",
@@ -53336,14 +53336,14 @@
                 "type_code": "fwnd"
               },
               "tag": "WIND",
-              "windows_binary_evidence": "Windows: evidence 0x0044e466"
+              "windows_binary_evidence": "Windows evidence at 0x0044e466"
             }
           },
           "source": "Windows evidence 0x0044e466-0x0044eb27"
         }
       },
       "generated_file": "turn_event_dialog_factory_0044af90.cpp",
-      "generated_sha256": "5b77c5fe21af30c5410b44ebd1c0024bfe59bdd96eeaf32b09fde844959fa557",
+      "generated_sha256": "f9e08788931ab5c5afc359ede19ec8b6e4b61fa88d55480db6f50b312f89c854",
       "name": "InitializeJoinSelectorDialogControlsAndNationSlots"
     },
     "0x0044fbc0": {

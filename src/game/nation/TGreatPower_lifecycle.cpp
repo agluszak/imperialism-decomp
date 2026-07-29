@@ -555,7 +555,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     civOrderObj->ReadFrom(stream);
   }
 
-  // 0x4d9954: the 0x17-byte candidate flag block, read straight after the civilian-order
+  // At 0x4d9954 the 0x17-byte candidate flag block is read straight after the civilian-order
   // loop and before the budget fields. WriteTo has always emitted it (0x4d9e9c), so
   // omitting it here left every nation record 23 bytes short and desynced the rest of
   // the stream from this point on.

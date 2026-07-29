@@ -249,7 +249,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("new TFloatWindow()", case_text)
         self.assertIn("new TMultiMessagePicture()", case_text)
         self.assertEqual(case_text.count("new TCzechBox()"), 7)
-        self.assertIn("evidence 0x0044e466", case_text)
+        self.assertIn("evidence at 0x0044e466", case_text)
 
     def test_functional_parity_cases_emit_nonempty_mac_trees_with_provenance(self) -> None:
         expected = {

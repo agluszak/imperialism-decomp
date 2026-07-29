@@ -37,7 +37,7 @@ void TStaticText::SetText(CString* text) {
   TStaticText::SetTextAndMaybeRefresh(text, 0);
 }
 
-// FUNCTION: IMPERIALISM 0x0048F890
+// FUNCTION: IMPERIALISM 0x0048f890
 TStaticText::TStaticText()
     : TControl(), text(new CString()), stringResourceGroupId(-1), stringResourceIndex(0),
       textAlignmentCode(0), textOptionFlags(0) {
