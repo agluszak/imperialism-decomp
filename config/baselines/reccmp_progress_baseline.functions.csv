@@ -3105,7 +3105,7 @@ address|matching|name
 0x50d9e0|0.6105263157894737|TMacViewMgr::CopySpriteSurfaceToStrideBuffer
 0x50da80|0.30734966592427615|TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
 0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
-0x50df40|0.2727272727272727|TMacViewMgr::DrawStrategicMapUnitIconOverlay
+0x50df40|0.2857142857142857|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.5255474452554745|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
 0x50e2c0|1.0|GetProvinceIndex
 0x50e2f0|0.47761194029850745|TMapMgr::CreateObject

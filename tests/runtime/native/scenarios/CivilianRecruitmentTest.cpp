@@ -119,6 +119,46 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
   return true;
 }
 
+bool CompletedFarmerImprovementChangesTilePixels(TMapDialog* mapDialog, short tileIndex,
+                                                 unsigned char initialClass,
+                                                 unsigned char completedClass) {
+  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
+    return false;
+  }
+
+  TBitmapSurfaceNode* surface = *surfaceHandle;
+  int stride = surface->stride & 0x3fff;
+  unsigned char before[0x1000];
+  unsigned char after[0x1000];
+  TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
+  unsigned char savedDevelopmentClasses = terrain.developmentClassNibbles0c;
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedSurfaceFlags;
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
+  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
+
+  terrain.developmentClassNibbles0c =
+      static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | initialClass);
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  for (int row = 0; row < 0x40; ++row) {
+    memcpy(before + row * 0x40, surface->pixelBits + row * stride, 0x40);
+  }
+
+  terrain.developmentClassNibbles0c =
+      static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | completedClass);
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  for (int afterRow = 0; afterRow < 0x40; ++afterRow) {
+    memcpy(after + afterRow * 0x40, surface->pixelBits + afterRow * stride, 0x40);
+  }
+
+  terrain.developmentClassNibbles0c = savedDevelopmentClasses;
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  SetGWorld(savedSurface, savedSurfaceFlags);
+  UnlockPixels(surfaceHandle);
+  return memcmp(before, after, sizeof(before)) != 0;
+}
+
 class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
@@ -1124,8 +1164,11 @@ private:
     CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
     mapDialog->Draw(&mapBounds);
     SetGWorld(savedSurface, savedSurfaceFlags);
-    if (!WasStrategicMapImprovementTileObservedForRuntimeTest()) {
-      FailScenario("\"completed farmer improvement did not reach the retail map renderer\"");
+    if (!WasStrategicMapImprovementTileObservedForRuntimeTest() ||
+        !CompletedFarmerImprovementChangesTilePixels(
+            mapDialog, targetFarmerTile, static_cast<unsigned char>(initialFarmerImprovementClass),
+            static_cast<unsigned char>(improvementClass))) {
+      FailScenario("\"completed farmer improvement did not change the rendered tile pixels\"");
       return;
     }
 
