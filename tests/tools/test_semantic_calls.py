@@ -9,7 +9,10 @@ from tools.semantic_calls import (
     ExpressionNormalizer,
     ExtractedCalls,
     _canonical_arithmetic,
+    _canonical_call_value,
     _canonical_direct_arguments,
+    _normalized_virtual_target,
+    _reccmp_proves_call_contract,
     check_gate,
     compare_extracted_calls,
 )
@@ -172,6 +175,112 @@ class SemanticCallTests(unittest.TestCase):
         wrapped = FakeVarnode(definition=FakeOp("PTRSUB", parameter, zero))
         normalizer = ExpressionNormalizer(None, ImageId.ORIG, {}, {})
         self.assertEqual(normalizer.normalize(wrapped), normalizer.normalize(parameter))
+
+    def test_normalized_vtable_slot_is_recognized_as_virtual(self):
+        receiver = ["parameter", 0, 4]
+        target = [
+            "load",
+            4,
+            [
+                "int_add",
+                4,
+                ["constant", 4, 308],
+                ["load", 4, receiver],
+            ],
+        ]
+        self.assertEqual(_normalized_virtual_target(target), (receiver, 308))
+
+    def test_normalized_function_pointer_is_not_treated_as_virtual(self):
+        target = [
+            "load",
+            4,
+            ["int_add", 4, ["constant", 4, 8], ["parameter", 0, 4]],
+        ]
+        self.assertIsNone(_normalized_virtual_target(target))
+
+    def test_completed_reccmp_proof_precedes_heuristic_pcode(self):
+        self.assertTrue(_reccmp_proves_call_contract({"status": "exact"}))
+        self.assertTrue(_reccmp_proves_call_contract({"status": "effective"}))
+        self.assertFalse(_reccmp_proves_call_contract({"status": "mismatch"}))
+        self.assertFalse(_reccmp_proves_call_contract({"status": "inconclusive"}))
+        self.assertFalse(_reccmp_proves_call_contract(None))
+
+    def test_call_result_nominal_width_is_not_part_of_contract(self):
+        target = {"receiver": ["parameter", 0, 4], "virtual_slot": 172}
+        narrow = ["call_result", target, [], 1]
+        wide = ["call_result", target, [], 4]
+        self.assertEqual(_canonical_call_value(narrow), _canonical_call_value(wide))
+
+    def test_indirect_piece_filler_around_call_result_is_transparent(self):
+        result = ["call_result", {"function": "0x401000"}, [], 1]
+        filler = [
+            "indirect",
+            3,
+            ["constant", 3, 0],
+            ["constant", 4, 20],
+        ]
+        self.assertEqual(
+            _canonical_call_value(["piece", 4, filler, result]),
+            _canonical_call_value(result),
+        )
+
+    def test_stale_upper_register_piece_is_transparent(self):
+        low = ["int_add", 2, ["constant", 2, 1], ["parameter", 1, 2]]
+        stale_upper = [
+            "subpiece",
+            2,
+            [
+                "int_right",
+                4,
+                ["register", "eax", 4],
+                ["constant", 4, 16],
+            ],
+            ["constant", 4, 0],
+        ]
+        self.assertEqual(
+            _canonical_call_value(["piece", 4, stale_upper, low]),
+            _canonical_call_value(low),
+        )
+
+    def test_arithmetic_is_resorted_after_call_result_width_is_removed(self):
+        call = ["call_result", {"function": "0x401000"}, [], 4]
+        left = ["int_add", 4, ["constant", 4, 60], call]
+        right = ["int_add", 4, call, ["constant", 4, 60]]
+        self.assertEqual(_canonical_call_value(left), _canonical_call_value(right))
+
+    def test_argument_array_is_canonicalized_without_treating_it_as_an_expression(self):
+        arguments = [["parameter", 1, 4], ["constant", 4, 0]]
+        self.assertEqual(_canonical_call_value(arguments), arguments)
+
+    def test_multiequal_width_is_derived_from_uniform_operands(self):
+        narrow = [
+            "multiequal",
+            2,
+            ["constant", 2, 1],
+            ["constant", 2, 2],
+        ]
+        nominally_wide = [
+            "multiequal",
+            4,
+            ["constant", 2, 1],
+            ["constant", 2, 2],
+        ]
+        self.assertEqual(
+            _canonical_call_value(narrow),
+            _canonical_call_value(nominally_wide),
+        )
+
+    def test_boolean_zero_extension_is_transparent(self):
+        predicate = [
+            "int_notequal",
+            1,
+            ["constant", 1, 0],
+            ["load", 1, ["parameter", 0, 4]],
+        ]
+        self.assertEqual(
+            _canonical_call_value(["int_zext", 4, predicate]),
+            _canonical_call_value(predicate),
+        )
 
     def test_optional_direct_this_input_is_removed_from_explicit_arguments(self):
         target = {"function": "0x62246c"}

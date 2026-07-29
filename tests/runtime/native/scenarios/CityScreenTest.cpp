@@ -14,6 +14,7 @@
 #include "game/city_ui/TIndustryView.h"
 #include "game/city_ui/TShipyardView.h"
 #include "game/city_ui/TUniversityView.h"
+#include "game/app/TTransFocusAnimation.h"
 #include "game/globals/global_types.h"
 #include "game/globals/city_ui_globals.h"
 #include "game/globals/shared_globals.h"
@@ -45,7 +46,8 @@ public:
   CityScreenTestCase()
       : phase(kActivateCityScreen), activeBuildingSlot(kUniversityBuildingSlot),
         interactionComplete(false), interactionKind(kNoInteraction), interactionUnitOrder(0),
-        interactionItemOrder(0), interactionShipOrder(0), interactionRowTag(0) {}
+        interactionItemOrder(0), interactionShipOrder(0), interactionAnimation(0),
+        interactionRowTag(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -641,6 +643,16 @@ private:
       return false;
     }
     CaptureItemOrderState(order);
+    TView* mainView = CurrentMainView();
+    TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
+    interactionAnimation = cityView->BuildingActionAnimationForRuntimeTest(order->productionSlot);
+    if (interactionAnimation == 0 || interactionAnimation->enabledFlag != 0 ||
+        interactionAnimation->frameCount <= 1 || interactionAnimation->insetBitmapSurface == 0) {
+      FailScenario("\"industry production animation is not dormant and resource-backed before "
+                   "the order\"");
+      return false;
+    }
+    priorAnimationFrame = interactionAnimation->frameIndex;
     phase = kWaitForOrderIncrease;
     EnterScenarioStep("waiting_for_industry_order_increase", "activate_industry_right_arrow");
     rightArrow->HandleEvent(100, rightArrow, 0);
@@ -751,6 +763,17 @@ private:
       return;
     }
 
+    if (interactionKind == kItemInteraction) {
+      if (interactionAnimation == 0 || interactionAnimation->enabledFlag == 0) {
+        FailScenario("\"industry production order did not enable its building animation\"");
+        return;
+      }
+      if (interactionAnimation->frameIndex == priorAnimationFrame) {
+        RequestScenarioTick();
+        return;
+      }
+    }
+
     TView* interactionRoot;
     int controlTag;
     int commandId;
@@ -802,6 +825,11 @@ private:
                                                   : ValidateItemQuantity(buildingView);
     if (!stateIsCorrect || !uiIsCorrect) {
       FailScenario("\"city production decrease did not restore model state and refresh UI\"");
+      return;
+    }
+    if (interactionKind == kItemInteraction &&
+        (interactionAnimation == 0 || interactionAnimation->enabledFlag != 0)) {
+      FailScenario("\"restoring the industry production order did not stop its animation\"");
       return;
     }
     interactionComplete = true;
@@ -963,8 +991,13 @@ private:
       for (short buildingSlot = 1; buildingSlot < 7; ++buildingSlot) {
         short unitType = IndustryUnitTypeForBuilding(buildingSlot);
         TProductionOrder* order = activeNation->city->orderSlotsE4[unitType];
-        if (activeNation->city->GetBuildingType(buildingSlot) > 0 && order != 0 &&
-            order->MaxOrder() > order->quantity) {
+        TView* mainView = CurrentMainView();
+        TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
+        short buildingType = activeNation->city->GetBuildingType(buildingSlot);
+        TTransFocusAnimation* animation =
+            cityView->BuildingActionAnimationForRuntimeTest(buildingSlot);
+        if (buildingType > 0 && order != 0 && order->MaxOrder() > order->quantity &&
+            animation != 0) {
           itemBuildingSlot = buildingSlot;
           break;
         }
@@ -1025,6 +1058,7 @@ private:
   TUnitOrder* interactionUnitOrder;
   TItemOrder* interactionItemOrder;
   TShipOrder* interactionShipOrder;
+  TTransFocusAnimation* interactionAnimation;
   int interactionRowTag;
   short priorQuantity;
   short priorRequestedQuantity;
@@ -1035,6 +1069,7 @@ private:
   short priorStrength;
   short priorReservedWorkforce;
   short priorProductionAccum;
+  short priorAnimationFrame;
   int priorTreasury;
   short priorPopulationCount;
   float priorPopulationFloat;

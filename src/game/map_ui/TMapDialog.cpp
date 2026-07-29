@@ -24,6 +24,34 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+namespace {
+short g_runtimeObservedStrategicMapTile;
+short g_runtimeObservedStrategicMapResource;
+bool g_runtimeObservedStrategicMapResourceDraw;
+} // namespace
+
+void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resourceType) {
+  g_runtimeObservedStrategicMapTile = tileIndex;
+  g_runtimeObservedStrategicMapResource = resourceType;
+  g_runtimeObservedStrategicMapResourceDraw = false;
+}
+
+bool WasStrategicMapResourceTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapResourceDraw;
+}
+
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType)                    \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapTile &&                                        \
+        (resourceType) == g_runtimeObservedStrategicMapResource) {                                 \
+      g_runtimeObservedStrategicMapResourceDraw = true;                                            \
+    }                                                                                              \
+  } while (0)
+#else
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType) ((void)0)
+#endif
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
@@ -1194,6 +1222,7 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
                         terrain.GetTerrainKind() == kStrategicTerrainDesert;                       \
         }                                                                                          \
         if (tileVisible) {                                                                         \
+          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType);                 \
           g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,          \
                                                   destinationX, screenY);                          \
         }                                                                                          \

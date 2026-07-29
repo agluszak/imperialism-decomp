@@ -10,6 +10,7 @@
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TControl.h"
 #include "game/ui_core/TDialogBehavior.h"
+#include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
@@ -44,6 +45,7 @@ public:
     phase = kActivateEndTurn;
     turnsDone = 0;
     startEconomicTurn = 0;
+    ResetCapitolDangerWarningObservationForRuntimeTest();
     EnterScenarioStep("activating_end_turn", "reach_combined_map");
     RequestScenarioTick();
   }
@@ -167,6 +169,19 @@ private:
     }
     if (g_pSimMgr->economicTurn != startEconomicTurn + kTurnsToAdvance) {
       FailScenario("\"economic turn total does not match the number of ended turns\"");
+      return;
+    }
+    if (CapitolDangerWarningEvaluationCountForRuntimeTest() == 0 ||
+        !WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest() ||
+        CapitolDangerThreatMaskForRuntimeTest() != CapitolDangerDisplayedMaskForRuntimeTest()) {
+      char failure[192];
+      wsprintfA(failure,
+                "\"capitol warning path mismatch: evaluations=%d peace=%d threat=%d displayed=%d\"",
+                CapitolDangerWarningEvaluationCountForRuntimeTest(),
+                WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest(),
+                CapitolDangerThreatMaskForRuntimeTest(),
+                CapitolDangerDisplayedMaskForRuntimeTest());
+      FailScenario(failure);
       return;
     }
     Pass();

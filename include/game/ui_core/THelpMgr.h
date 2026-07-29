@@ -133,3 +133,11 @@ ASSERT_SIZE(THelpMgr, 0x30);
 // TViewMgr::ModalMessage; returns nonzero when any alert
 // was dispatched.
 char ShowTurnAlertsForActiveNation();
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+void ResetCapitolDangerWarningObservationForRuntimeTest();
+int CapitolDangerWarningEvaluationCountForRuntimeTest();
+bool WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest();
+int CapitolDangerThreatMaskForRuntimeTest();
+int CapitolDangerDisplayedMaskForRuntimeTest();
+#endif

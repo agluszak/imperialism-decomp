@@ -2053,8 +2053,8 @@ address|name|symbol|size|type|prototype|provenance
 4b9360|TExpansionOrder::FillOrderSheet||78|function|undefined FillOrderSheet(void)|
 4b94a0|WriteByteSwappedShortArrayToStream||70|function|void WriteByteSwappedShortArrayToStream(TStream* stream, short* words, int count)|
 4b9570|`dynamic initializer for 'g_scaledShortConst_6A2AB8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2AB8''(void)|library
-4b95c0|InitializeCityBuildingHoverSelectionRects_004b95c0||573|function|undefined InitializeCityBuildingHoverSelectionRects_004b95c0()|
-4b98b0|InitializeCityBuildingLayoutData||1951|function|undefined InitializeCityBuildingLayoutData()|
+4b95c0|`dynamic initializer for 'g_aCityBuildingHoverSelectionRects''||573|function|void __cdecl `dynamic initializer for 'g_aCityBuildingHoverSelectionRects''(void)|
+4b98b0|`dynamic initializer for 'g_aCityBuildingLayoutRects''||1951|function|void __cdecl `dynamic initializer for 'g_aCityBuildingLayoutRects''(void)|
 4ba240|TCityProductionView::CreateObject|?CreateObject@TCityProductionView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4ba2c0|TCityProductionView::GetRuntimeClass||6|function|undefined GetTCityProductionViewClassNamePointer()|rtti
 4ba2e0|TCityProductionView::TCityProductionView||85|function|undefined TCityProductionView()|
@@ -2479,7 +2479,7 @@ address|name|symbol|size|type|prototype|provenance
 4dc3f0|TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch||58|function|char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void)|
 4dc440|TGreatPower::HasAnyCommodityRecordBelowStepValue||83|function|char TGreatPower::HasAnyCommodityRecordBelowStepValue(void)|
 4dc4c0|TGreatPower::ComputeTreasuryStatusPromptCode||82|function|short TGreatPower::ComputeTreasuryStatusPromptCode(void)|
-4dc540|TGreatPower::CompareMissionScoreVariantsByMode||218|function|undefined CompareMissionScoreVariantsByMode()|
+4dc540|TGreatPower::IsCapitolThreatened||218|function|undefined IsCapitolThreatened()|
 4dc660|TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages||376|function|char __thiscall BuildGreatPowerMapContextTriggeredNationEventMessages(CString * outMessageText)|
 4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|char __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString * outMessageText)|
 4dc9f0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||67|function|undefined RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|

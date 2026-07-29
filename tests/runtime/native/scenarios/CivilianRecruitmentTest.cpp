@@ -13,7 +13,9 @@
 #include "game/city_ui/TEngineerDialog.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/view_registries.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -22,6 +24,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/pointer_representation.h"
 #include "game/strategic_terrain.h"
+#include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/TSortedList.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
@@ -114,8 +117,8 @@ class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), orderIssued(false),
-        engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
-        initialAnimationTick(0) {}
+        completionIssued(false), completionVerified(false), engineerActionIssued(false),
+        engineerDialogObserved(false), initialAnimationFrame(0), initialAnimationTick(0) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -142,6 +145,15 @@ public:
 
     if (!orderIssued) {
       VerifyProspectorOrdersAndCursors();
+      return;
+    }
+
+    if (completionIssued) {
+      if (!completionVerified) {
+        VerifyCompletedProspectorSurveyMark();
+      } else {
+        VerifyFarmerWorkableTileSelection();
+      }
       return;
     }
 
@@ -216,7 +228,7 @@ private:
       FailScenario("\"produced civilian is not owned by the active nation\"");
       return;
     }
-    g_pGlobalMapState->DimByProspecting(spawnedCivilian);
+    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
     targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
     targetSeaTile = FindProspectorTarget(kStrategicTerrainWater, false);
     if (targetHillTile == -1 || targetSeaTile == -1) {
@@ -226,7 +238,6 @@ private:
       FailScenario(failure);
       return;
     }
-    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
     mapView->CenterOn(targetHillTile);
     EnterScenarioStep("ordering_recruited_civilian",
@@ -243,6 +254,21 @@ private:
       }
       if ((terrain.recruitSearchVisited0e == 0) != mustBeEligible) {
         continue;
+      }
+      if (mustBeEligible && g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(tile) == 0) {
+        continue;
+      }
+      if (mustBeEligible) {
+        bool hasUndevelopedResource = false;
+        for (int edge = 0; edge < 2; ++edge) {
+          if (terrain.resourceTypeByEdge[edge] >= 0 &&
+              g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tile, edge == 0) == 0) {
+            hasUndevelopedResource = true;
+          }
+        }
+        if (!hasUndevelopedResource) {
+          continue;
+        }
       }
       return tile;
     }
@@ -558,6 +584,180 @@ private:
       FailScenario("\"ordered prospector hover left stale map pixels outside the current tile\"");
       return;
     }
+    spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
+    completionIssued = true;
+    EnterScenarioStep("completing_prospector_order",
+                      "verify_survey_mark_through_strategic_map_renderer");
+    RequestScenarioTick();
+  }
+
+  void VerifyCompletedProspectorSurveyMark() {
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    if (mapDialog == 0) {
+      FailScenario("\"strategic map disappeared before prospector completion was rendered\"");
+      return;
+    }
+
+    const int activeNation = g_pSimMgr->GetActiveNationId();
+    const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetHillTile];
+    if (spawnedCivilian->unitOrder != kUnitOrderIdle || spawnedCivilian->remainingTurns24 > 0 ||
+        (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
+        spawnedCivilian->completionMarker26 != 0x232f ||
+        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile) == 0) {
+      char failure[240];
+      wsprintfA(failure,
+                "\"prospector completion mismatch: order=%d remaining=%d survey=%d marker=%d "
+                "candidate=%d\"",
+                spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns24,
+                (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0,
+                spawnedCivilian->completionMarker26,
+                g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile));
+      FailScenario(failure);
+      return;
+    }
+
+    bool observableResource = false;
+    bool resourceIconRendered = false;
+    for (int edge = 0; edge < 2; ++edge) {
+      const short resourceType = terrain.resourceTypeByEdge[edge];
+      const int improvementClass =
+          g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetHillTile, edge == 0);
+      if (resourceType < 0 || improvementClass != 0) {
+        continue;
+      }
+      observableResource = true;
+      ObserveStrategicMapResourceTileForRuntimeTest(targetHillTile, resourceType);
+      mapView->CenterOn(targetHillTile);
+      mapView->RedrawTile(targetHillTile);
+      TQuickDrawSurfaceContext* savedSurface;
+      int savedSurfaceFlags;
+      GetGWorld(&savedSurface, &savedSurfaceFlags);
+      SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+      CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+      mapDialog->Draw(&mapBounds);
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      if (WasStrategicMapResourceTileObservedForRuntimeTest()) {
+        resourceIconRendered = true;
+        break;
+      }
+    }
+    if (!observableResource || !resourceIconRendered) {
+      FailScenario("\"completed prospector survey did not reach the strategic resource renderer\"");
+      return;
+    }
+
+    completionVerified = true;
+    EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
+                      "resume_through_normal_map_event_tick");
+    RequestScenarioTick();
+  }
+
+  bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
+                                  short orderType) {
+    if (terrain.ownerNationTag04 != nationSlot && terrain.secondaryOwnerNationTag18 != nationSlot) {
+      return false;
+    }
+    if (g_abGateFlagQualifies[terrain.gateFlag] == 0) {
+      return false;
+    }
+
+    short maximumDevelopmentClass = 0;
+    for (int edge = 0; edge < 2; ++edge) {
+      const signed char resourceType = terrain.resourceTypeByEdge[edge];
+      if (resourceType == -1 || g_anResourceTypeRequiredOrderType[resourceType] != orderType ||
+          (g_abResourceTypeAlwaysQualifies[resourceType] == 0 &&
+           terrain.ownerNationTag04 != nationSlot)) {
+        continue;
+      }
+      const short capability =
+          g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resourceType];
+      if (capability > maximumDevelopmentClass) {
+        maximumDevelopmentClass = capability;
+      }
+    }
+    return static_cast<signed char>(terrain.developmentClassNibbles0c & 0xf) <
+           maximumDevelopmentClass;
+  }
+
+  void VerifyFarmerWorkableTileSelection() {
+    EnterScenarioStep("recruiting_farmer_for_selection_test", "produce_farmer_through_city_order");
+    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    const int oldPersistentUnitId = g_pSimMgr->field_64;
+    TUnitOrder recruitOrder;
+    recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitFarmer), 0, 0, -1, 0,
+                            0, kLowSkillWorkforceMode, 0);
+    recruitOrder.quantity = 1;
+    recruitOrder.Produce();
+
+    TCivUnit* farmer = 0;
+    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
+      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
+      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
+        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
+        if (civilian->persistentUnitId20 == oldPersistentUnitId + 1) {
+          farmer = civilian;
+          break;
+        }
+      }
+    }
+    if (farmer == 0 || farmer->GetCivilianUnitKind() != kCivilianUnitFarmer ||
+        farmer->unitOrder != kUnitOrderIdle) {
+      FailScenario("\"farmer production did not yield an idle farmer\"");
+      return;
+    }
+
+    EnterScenarioStep("selecting_farmer_through_civilian_manager",
+                      "dispatch_retail_farmer_workable_predicate");
+    g_pSelectedCivilianOrderState->SetActiveCivilianSelection(farmer, 0);
+    const short nationSlot = farmer->ownerNationSlot18;
+    short workableTile = -1;
+    short moveTile = -1;
+    short prohibitedTile = -1;
+    int predicateMismatches = 0;
+    for (short tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
+      const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
+      const bool expectedWorkable =
+          IsRetailFarmerWorkableTile(terrain, nationSlot, farmer->orderType);
+      if ((terrain.recruitSearchVisited0e == 0) != expectedWorkable) {
+        ++predicateMismatches;
+      }
+
+      const int action =
+          g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tileIndex, 0);
+      TCivUnit* clickedUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, nationSlot);
+      if (expectedWorkable && clickedUnit == 0 && action == 9 && workableTile == -1) {
+        workableTile = tileIndex;
+      } else if (!expectedWorkable && clickedUnit == 0 && action == 3 && moveTile == -1) {
+        moveTile = tileIndex;
+      } else if (!expectedWorkable && clickedUnit == 0 && action == 1 && prohibitedTile == -1) {
+        prohibitedTile = tileIndex;
+      }
+    }
+
+    const int occupiedAction =
+        g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(targetHillTile, 0);
+    EnterScenarioStep("checking_farmer_tile_actions", "verify_reach_occupancy_and_cursor_routes");
+    if (predicateMismatches != 0 || workableTile == -1 || moveTile == -1 || prohibitedTile == -1 ||
+        occupiedAction != 2) {
+      char failure[240];
+      wsprintfA(failure,
+                "\"farmer selection mismatch: predicates=%d workable=%d move=%d prohibited=%d "
+                "occupied=%d\"",
+                predicateMismatches, workableTile, moveTile, prohibitedTile, occupiedAction);
+      FailScenario(failure);
+      return;
+    }
+
+    if (g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(workableTile, 0) != 9 ||
+        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
+            workableTile, 0) != g_civilianTileOrderCursorTokenTable[9]) {
+      FailScenario("\"farmer workable tile did not retain the retail action and cursor route\"");
+      return;
+    }
+
+    EnterScenarioStep("verifying_farmer_workable_tiles",
+                      "retail_predicate_reach_and_occupancy_match_real_selection");
     OpenEngineerConstructionDialogThroughMap();
   }
 
@@ -668,6 +868,8 @@ private:
   short targetHillTile;
   short targetSeaTile;
   bool orderIssued;
+  bool completionIssued;
+  bool completionVerified;
   bool engineerActionIssued;
   bool engineerDialogObserved;
   short initialAnimationFrame;

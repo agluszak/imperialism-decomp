@@ -549,16 +549,16 @@ short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dc540
-char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
+char TGreatPower::IsCapitolThreatened(int mode) {
   if (mode == 0) {
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     float localScore = TDefendProvinceMission::ComputeLocalSupportVectorScore(nodeContext);
     float crossNationScore =
         TDefendProvinceMission::ComputeCrossNationSupportVectorScore(nodeContext);
     if (localScore < crossNationScore) {
-      return 0;
+      return 1;
     }
-    return 1;
+    return 0;
   } else {
     TZone* portZoneContext =
         g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
@@ -572,9 +572,9 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
         TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(this->nationSlot,
                                                                                  firstEntry);
     if (exactSourceScore < diplomacyFilteredScore) {
-      return 0;
+      return 1;
     }
-    return 1;
+    return 0;
   }
 }
 
@@ -2936,8 +2936,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, targetNation);
   char joinsWar = 0;
   TGreatPower* targetState = g_apNationStates[targetNation];
-  if (targetState->CompareMissionScoreVariantsByMode(0) == 0 &&
-      targetState->CompareMissionScoreVariantsByMode(1) == 0) {
+  if (targetState->IsCapitolThreatened(0) == 0 && targetState->IsCapitolThreatened(1) == 0) {
     float warThreshold = this->GetPeaceThreat(targetNation);
     if (this->GetAcceptPeaceNumber() < warThreshold) {
       joinsWar = 1;
