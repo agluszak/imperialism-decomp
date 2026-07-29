@@ -64,9 +64,20 @@ DATA_PROBE_FALLBACK_BYTES = 16
 REUSE_DISABLE_ENV = "SEMANTIC_NO_REUSE"
 PRECISION_AUDIT_ENV = "SEMANTIC_AUDIT_PRECISION"
 REPORT_RELATIVE_PATH = Path("semantic") / "semantic_report.json"
+# Audit runs (SEMANTIC_AUDIT_PRECISION=1) write here instead: the two modes
+# compute different row sets, and sharing one file made each mode clobber the
+# other's per-row reuse records, forcing a full recompute on every alternation.
+AUDIT_REPORT_RELATIVE_PATH = Path("semantic") / "semantic_report.audit.json"
+ORIG_CALLS_CACHE_RELATIVE_PATH = Path("semantic") / "orig_calls_cache.json"
 BASELINE_RELATIVE_PATH = (
     Path("config") / "baselines" / "semantic_call_contract_baseline.json"
 )
+
+
+def _full_report_relative_path() -> Path:
+    if os.environ.get(PRECISION_AUDIT_ENV) == "1":
+        return AUDIT_REPORT_RELATIVE_PATH
+    return REPORT_RELATIVE_PATH
 
 STRIP_OPS = frozenset({"COPY", "CAST"})
 # Compiler frame scaffolding excluded from the source-level call contract.
@@ -221,6 +232,51 @@ class DepRecorder:
 
     def mark_fragile(self) -> None:
         self.fragile = True
+
+
+def _orig_calls_entry(
+    extracted: "ExtractedCalls", recorder: DepRecorder
+) -> dict[str, Any]:
+    """JSON-stable snapshot of one function's original-side extraction.
+
+    Taken immediately after the original side extracts, while the shared
+    recorder holds only original-side events.  The original image is
+    immutable, so the snapshot stays valid as long as the cache key (the row
+    context plus the original entity/function maps and the decompile timeout)
+    is unchanged -- both sides of every recomputed row were paying the
+    decompile cost even though only the recompiled side can change.
+    """
+    return {
+        "calls": extracted.calls,
+        "unresolved": list(extracted.unresolved),
+        "events": sorted(list(event) for event in recorder.events),
+        "fragile": recorder.fragile,
+    }
+
+
+def _restore_orig_calls(
+    entry: dict[str, Any], recorder: DepRecorder
+) -> "ExtractedCalls":
+    """Rebuild a cached extraction and replay its dependency events."""
+    for event in entry.get("events", []):
+        recorder.events.add(tuple(event))
+    if entry.get("fragile"):
+        recorder.mark_fragile()
+    return ExtractedCalls(
+        calls=list(entry.get("calls", [])),
+        unresolved=list(entry.get("unresolved", [])),
+    )
+
+
+def _load_orig_calls_cache(path: Path, key: str) -> dict[str, Any]:
+    try:
+        stored = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if stored.get("key") != key:
+        return {}
+    rows = stored.get("rows")
+    return rows if isinstance(rows, dict) else {}
 
 
 @dataclass(frozen=True)
@@ -2211,6 +2267,8 @@ def compare_programs(
     reccmp_statuses: dict[int, dict[str, Any]],
     timeout: int,
     jobs: int,
+    orig_calls_cache: dict[str, Any] | None = None,
+    orig_calls_fresh: dict[str, Any] | None = None,
 ) -> list[dict[str, Any]]:
     direct_call_abis = _direct_call_abis(original_program, original_functions)
     # The recompiled map iterates (entry -> original) pairs the same way; its
@@ -2272,9 +2330,14 @@ def compare_programs(
                 call_count_status="pass",
             )
             return row
-        original_high, original_error = _decompile_function(
-            original_decompiler, original_program, claim.address, timeout
+        cached_entry = (
+            orig_calls_cache.get(row["original"]) if orig_calls_cache else None
         )
+        original_high = original_error = None
+        if cached_entry is None:
+            original_high, original_error = _decompile_function(
+                original_decompiler, original_program, claim.address, timeout
+            )
         recompiled_high, recompiled_error = _decompile_function(
             recompiled_decompiler, recompiled_program, pair.recompiled, timeout
         )
@@ -2287,14 +2350,21 @@ def compare_programs(
             )
             return row
         recorder = DepRecorder()
-        original_calls = extract_calls(
-            original_high,
-            original_program,
-            original_normalizer,
-            original_functions,
-            direct_call_abis,
-            recorder,
-        )
+        if cached_entry is not None:
+            original_calls = _restore_orig_calls(cached_entry, recorder)
+        else:
+            original_calls = extract_calls(
+                original_high,
+                original_program,
+                original_normalizer,
+                original_functions,
+                direct_call_abis,
+                recorder,
+            )
+            if orig_calls_fresh is not None:
+                orig_calls_fresh[row["original"]] = _orig_calls_entry(
+                    original_calls, recorder
+                )
         recompiled_calls = extract_calls(
             recompiled_high,
             recompiled_program,
@@ -2395,7 +2465,7 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     prep_fingerprint = fingerprint(prep_inputs)
     inputs = report_inputs(repo_root, target, claims, prep_fingerprint)
     full = len(selected) == len(claims)
-    full_output = build_dir / REPORT_RELATIVE_PATH
+    full_output = build_dir / _full_report_relative_path()
     if full and not args.force and full_output.is_file():
         previous = json.loads(full_output.read_text(encoding="utf-8"))
         if (
@@ -2425,6 +2495,24 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         _image_reader(compare.recomp_bin),
     )
     context_fp = fingerprint(row_context_inputs(repo_root, target))
+    orig_calls_path = build_dir / ORIG_CALLS_CACHE_RELATIVE_PATH
+    orig_cache_key = fingerprint(
+        {
+            "row_context": context_fp,
+            "original_functions": sorted(original_functions.items()),
+            "original_entities": sorted(
+                (offset, list(value)) for offset, value in original_entities.items()
+            ),
+            "timeout": args.timeout,
+        }
+    )
+    # --force (and the reuse kill switch) recomputes the original side too, so
+    # `just semantic-verify` remains a from-scratch ground-truth check of both
+    # this cache and the row-reuse records.  Fresh extractions are still saved.
+    orig_calls_cache: dict[str, Any] = {}
+    if not args.force and os.environ.get(REUSE_DISABLE_ENV) != "1":
+        orig_calls_cache = _load_orig_calls_cache(orig_calls_path, orig_cache_key)
+    orig_calls_fresh: dict[str, Any] = {}
     maps_seconds = round(time.monotonic() - phase_started, 3)
 
     previous_rows: dict[str, dict[str, Any]] = {}
@@ -2508,6 +2596,8 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
                 reccmp_statuses,
                 args.timeout,
                 args.jobs,
+                orig_calls_cache,
+                orig_calls_fresh,
             )
         finally:
             if recompiled_program is not None:
@@ -2522,6 +2612,14 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         computed = {
             int(item["original"], 16): item for item in computed_rows
         }
+        if orig_calls_fresh:
+            merged = _load_orig_calls_cache(orig_calls_path, orig_cache_key)
+            merged.update(orig_calls_fresh)
+            atomic_json(
+                orig_calls_path,
+                {"key": orig_cache_key, "rows": merged},
+                indent=None,
+            )
 
     rows = [
         resolved[claim.address]
@@ -2547,6 +2645,14 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
             "compare_seconds": compare_seconds,
             "rows_compared": len(selected),
             "cache_stages": manifest.get("timings"),
+            "orig_cache": {
+                "hits": sum(
+                    1
+                    for claim in stale
+                    if f"0x{claim.address:x}" in orig_calls_cache
+                ),
+                "fresh": len(orig_calls_fresh),
+            },
         },
         "cache": {
             "fingerprint": prep_fingerprint,
@@ -2580,7 +2686,7 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
 def load_fresh_report(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     repo_root = repo_root_from_file(__file__, 1)
     build_dir = Path(args.build_dir).resolve()
-    path = build_dir / REPORT_RELATIVE_PATH
+    path = build_dir / _full_report_relative_path()
     if not path.is_file() and getattr(args, "generate_if_stale", False):
         compare_args = argparse.Namespace(
             build_dir=str(build_dir),
@@ -2717,7 +2823,7 @@ def _diff_reports(
 
 def run_verify(args: argparse.Namespace) -> int:
     build_dir = Path(args.build_dir).resolve()
-    path = build_dir / REPORT_RELATIVE_PATH
+    path = build_dir / _full_report_relative_path()
     if not path.is_file():
         raise RuntimeError(f"missing semantic report to verify against: {path}")
     previous = json.loads(path.read_text(encoding="utf-8"))

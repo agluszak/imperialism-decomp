@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import os
 import tempfile
 import time
@@ -9,7 +10,9 @@ from pathlib import Path
 from reccmp.types import ImageId
 
 from tools.semantic_calls import (
+    AUDIT_REPORT_RELATIVE_PATH,
     CACHE_KEEP_COUNT,
+    REPORT_RELATIVE_PATH,
     DepRecorder,
     DirectCallABI,
     ExpressionNormalizer,
@@ -25,9 +28,13 @@ from tools.semantic_calls import (
     _dep_matches,
     _diff_reports,
     _encode_dep,
+    _full_report_relative_path,
+    _load_orig_calls_cache,
     _normalize_frame_slots,
     _normalized_virtual_target,
+    _orig_calls_entry,
     _prune_stale_caches,
+    _restore_orig_calls,
     _virtual_target,
     _prune_targeted_reports,
     _reccmp_proves_call_contract,
@@ -1269,6 +1276,61 @@ class SemanticCallTests(unittest.TestCase):
             read=lambda vaddr, size: None,
         ).pairs_fp
         self.assertFalse(_row_reusable(rows[0], grown))
+
+    def test_orig_calls_cache_round_trips_calls_and_deps(self):
+        recorder = DepRecorder()
+        recorder.entity(ImageId.ORIG, 0x500000, 3, 0x600000)
+        recorder.fn_pair(0x401000)
+        recorder.pairs_dep()
+        recorder.mark_fragile()
+        extracted = ExtractedCalls(
+            calls=[
+                {
+                    "kind": "direct",
+                    "target": {"function": "0x401000"},
+                    "arguments": [["parameter", 1]],
+                }
+            ],
+            unresolved=["0x5: oops"],
+        )
+        entry = json.loads(json.dumps(_orig_calls_entry(extracted, recorder)))
+        replay = DepRecorder()
+        restored = _restore_orig_calls(entry, replay)
+        self.assertEqual(restored.calls, extracted.calls)
+        self.assertEqual(restored.unresolved, extracted.unresolved)
+        self.assertEqual(replay.events, recorder.events)
+        self.assertTrue(replay.fragile)
+
+    def test_orig_calls_cache_rejects_wrong_key_and_corrupt_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "orig_calls_cache.json"
+            path.write_text(
+                json.dumps({"key": "k1", "rows": {"0x1": {"calls": []}}}),
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                _load_orig_calls_cache(path, "k1"), {"0x1": {"calls": []}}
+            )
+            self.assertEqual(_load_orig_calls_cache(path, "k2"), {})
+            path.write_text("not json", encoding="utf-8")
+            self.assertEqual(_load_orig_calls_cache(path, "k1"), {})
+            self.assertEqual(_load_orig_calls_cache(Path(tmp) / "gone.json", "k1"), {})
+
+    def test_audit_mode_uses_a_separate_report_file(self):
+        previous = os.environ.pop("SEMANTIC_AUDIT_PRECISION", None)
+        try:
+            self.assertEqual(
+                _full_report_relative_path(), REPORT_RELATIVE_PATH
+            )
+            os.environ["SEMANTIC_AUDIT_PRECISION"] = "1"
+            self.assertEqual(
+                _full_report_relative_path(), AUDIT_REPORT_RELATIVE_PATH
+            )
+        finally:
+            if previous is None:
+                os.environ.pop("SEMANTIC_AUDIT_PRECISION", None)
+            else:
+                os.environ["SEMANTIC_AUDIT_PRECISION"] = previous
 
     def test_targeted_report_pruning_is_age_based(self):
         with tempfile.TemporaryDirectory() as raw:
