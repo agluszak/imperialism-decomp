@@ -32,6 +32,10 @@ short g_runtimeObservedStrategicMapResource;
 bool g_runtimeObservedStrategicMapResourceDraw;
 short g_runtimeObservedStrategicMapSurveyMissTile;
 bool g_runtimeObservedStrategicMapSurveyMissDraw;
+short g_runtimeObservedStrategicMapImprovementTile;
+short g_runtimeObservedStrategicMapImprovementResource;
+short g_runtimeObservedStrategicMapImprovementClass;
+bool g_runtimeObservedStrategicMapImprovementDraw;
 } // namespace
 
 void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resourceType) {
@@ -53,6 +57,18 @@ bool WasStrategicMapSurveyMissTileObservedForRuntimeTest() {
   return g_runtimeObservedStrategicMapSurveyMissDraw;
 }
 
+void ObserveStrategicMapImprovementTileForRuntimeTest(short tileIndex, short resourceType,
+                                                      short improvementClass) {
+  g_runtimeObservedStrategicMapImprovementTile = tileIndex;
+  g_runtimeObservedStrategicMapImprovementResource = resourceType;
+  g_runtimeObservedStrategicMapImprovementClass = improvementClass;
+  g_runtimeObservedStrategicMapImprovementDraw = false;
+}
+
+bool WasStrategicMapImprovementTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapImprovementDraw;
+}
+
 #define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType)                    \
   do {                                                                                             \
     if ((tileIndex) == g_runtimeObservedStrategicMapTile &&                                        \
@@ -66,9 +82,21 @@ bool WasStrategicMapSurveyMissTileObservedForRuntimeTest() {
       g_runtimeObservedStrategicMapSurveyMissDraw = true;                                          \
     }                                                                                              \
   } while (0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, resourceType,                 \
+                                                          improvementClass)                        \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapImprovementTile &&                             \
+        (resourceType) == g_runtimeObservedStrategicMapImprovementResource &&                      \
+        (improvementClass) == g_runtimeObservedStrategicMapImprovementClass) {                     \
+      g_runtimeObservedStrategicMapImprovementDraw = true;                                         \
+    }                                                                                              \
+  } while (0)
 #else
 #define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType) ((void)0)
 #define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex) ((void)0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, resourceType,                 \
+                                                          improvementClass)                        \
+  ((void)0)
 #endif
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
@@ -1213,51 +1241,44 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
-    const char improvementClasses[2] = {
-        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1)),
-        static_cast<char>(
-            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0))};
-    // The original writes both edges out (0x51f6ab and 0x51f76a are the same block with
-    // different constants), so the visibility test and its GetActiveNationId call appear
-    // twice rather than once around a loop. IMPERIALISM_MAP_TILE_RESOURCE_EDGE keeps the
-    // two copies identical without a loop the compiler would have to unroll.
-#define IMPERIALISM_MAP_TILE_RESOURCE_EDGE(edgeIndex, xOffset)                                     \
-  {                                                                                                \
-    const signed char resourceType = terrain.resourceTypeByEdge[edgeIndex];                        \
-    if (resourceType >= 0) { /* kResourceKindNone sentinel */                                      \
-      const short destinationX = static_cast<short>(screenX + (xOffset));                          \
-      if (improvementClasses[edgeIndex] != 0) {                                                    \
-        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(                                            \
-            destinationSurfaceObject, static_cast<unsigned short>(resourceType),                   \
-            improvementClasses[edgeIndex], destinationX, static_cast<short>(screenY + 2));         \
-      } else {                                                                                     \
-        const int activeNation = g_pSimMgr->GetActiveNationId();                                   \
-        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;          \
-        if (!tileVisible && g_pGlobalMapState->field24 != 0) {                                     \
-          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||                      \
-                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||                   \
-                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||                      \
-                        terrain.GetTerrainKind() == kStrategicTerrainDesert;                       \
-        }                                                                                          \
-        if (tileVisible) {                                                                         \
-          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType);                 \
-          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,          \
-                                                  destinationX, screenY);                          \
-        }                                                                                          \
-      }                                                                                            \
-    }                                                                                              \
-  }
-
-    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(0, 2)
-    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(1, 0x1c)
-#undef IMPERIALISM_MAP_TILE_RESOURCE_EDGE
-
+    const char lowImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0));
+    const char highImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1));
     const signed char firstResourceType = terrain.resourceTypeByEdge[0];
     const bool firstResourceIsProspectable =
         firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||
         firstResourceType == kResourceOil || firstResourceType == kResourceGems ||
         firstResourceType == kResourceGold;
-    if (!firstResourceIsProspectable) {
+    if (firstResourceIsProspectable) {
+      if (highImprovementClass != 0) {
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
+            highImprovementClass, static_cast<short>(screenX + 2), static_cast<short>(screenY + 2));
+      } else {
+        const int activeNation = g_pSimMgr->GetActiveNationId();
+        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                        terrain.GetTerrainKind() == kStrategicTerrainDesert;
+        }
+        if (tileVisible) {
+          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, firstResourceType);
+          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, firstResourceType,
+                                                  screenX, screenY);
+        }
+      }
+    } else {
+      if (lowImprovementClass != 0) {
+        IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, firstResourceType,
+                                                          lowImprovementClass);
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
+            lowImprovementClass, static_cast<short>(screenX + 0x1b),
+            static_cast<short>(screenY + 2));
+      }
       const int activeNation = g_pSimMgr->GetActiveNationId();
       bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
       if (!tileVisible && g_pGlobalMapState->field24 != 0) {
@@ -1281,6 +1302,42 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
                                          &sourceRect, &destinationRect, 0x24, 0);
         SetQuickDrawStrokeColor(0xffffff);
       }
+    }
+
+    const signed char secondResourceType = terrain.resourceTypeByEdge[1];
+    const bool secondResourceIsProspectable =
+        secondResourceType == kResourceCoal || secondResourceType == kResourceIron ||
+        secondResourceType == kResourceOil || secondResourceType == kResourceGems ||
+        secondResourceType == kResourceGold;
+    if (secondResourceIsProspectable) {
+      if (highImprovementClass != 0) {
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(secondResourceType),
+            highImprovementClass, static_cast<short>(screenX + 2),
+            static_cast<short>(screenY + 0x1c));
+      } else {
+        const int activeNation = g_pSimMgr->GetActiveNationId();
+        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                        terrain.GetTerrainKind() == kStrategicTerrainDesert;
+        }
+        if (tileVisible) {
+          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, secondResourceType);
+          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, secondResourceType,
+                                                  screenX, static_cast<short>(screenY + 0x1c));
+        }
+      }
+    }
+
+    if (secondResourceType == kResourceLivestock &&
+        (firstResourceType == kResourceCoal || firstResourceType == kResourceIron) &&
+        lowImprovementClass != 0) {
+      g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+          destinationSurfaceObject, kResourceLivestock, lowImprovementClass,
+          static_cast<short>(screenX + 0x1b), static_cast<short>(screenY + 0x1c));
     }
 
     if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&

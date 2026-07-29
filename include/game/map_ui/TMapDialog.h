@@ -171,4 +171,7 @@ void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resour
 bool WasStrategicMapResourceTileObservedForRuntimeTest();
 void ObserveStrategicMapSurveyMissTileForRuntimeTest(short tileIndex);
 bool WasStrategicMapSurveyMissTileObservedForRuntimeTest();
+void ObserveStrategicMapImprovementTileForRuntimeTest(short tileIndex, short resourceType,
+                                                      short improvementClass);
+bool WasStrategicMapImprovementTileObservedForRuntimeTest();
 #endif

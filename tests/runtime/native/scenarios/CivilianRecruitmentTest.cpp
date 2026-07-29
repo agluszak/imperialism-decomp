@@ -123,9 +123,11 @@ class CivilianRecruitmentTestCase : public RandomGameScenario {
 public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), targetSurveyMissTile(-1),
-        orderIssued(false), completionIssued(false), completionVerified(false),
-        surveyMissActionInProgress(false), surveyMissOrderIssued(false),
-        surveyMissCompletionIssued(false), surveyMissCompletionVerified(false),
+        farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), orderIssued(false),
+        completionIssued(false), completionVerified(false), surveyMissActionInProgress(false),
+        surveyMissOrderIssued(false), surveyMissCompletionIssued(false),
+        surveyMissCompletionVerified(false), farmerActionInProgress(false),
+        farmerOrderIssued(false), farmerCompletionIssued(false), farmerCompletionVerified(false),
         engineerActionIssued(false), engineerDialogObserved(false), initialAnimationFrame(0),
         initialAnimationTick(0) {}
   int DifficultyLevel() const override {
@@ -143,7 +145,7 @@ public:
   }
 
   void TickScenario() override {
-    if (surveyMissActionInProgress) {
+    if (surveyMissActionInProgress || farmerActionInProgress) {
       return;
     }
     if (engineerActionIssued) {
@@ -169,8 +171,14 @@ public:
         CompleteUnsuccessfulProspectorSurvey();
       } else if (!surveyMissCompletionVerified) {
         VerifyUnsuccessfulProspectorSurveyMark();
-      } else {
+      } else if (!farmerOrderIssued) {
         VerifyFarmerWorkableTileSelection();
+      } else if (!farmerCompletionIssued) {
+        CompleteFarmerImprovement();
+      } else if (!farmerCompletionVerified) {
+        VerifyFarmerImprovementVisual();
+      } else {
+        OpenEngineerConstructionDialogThroughMap();
       }
       return;
     }
@@ -963,7 +971,7 @@ private:
     recruitOrder.quantity = 1;
     recruitOrder.Produce();
 
-    TCivUnit* farmer = 0;
+    farmer = 0;
     for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
       CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
       if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
@@ -999,7 +1007,16 @@ private:
       const int action =
           g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(tileIndex, 0);
       TCivUnit* clickedUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, nationSlot);
-      if (expectedWorkable && clickedUnit == 0 && action == 9 && workableTile == -1) {
+      const signed char firstResourceType = terrain.resourceTypeByEdge[0];
+      const bool firstResourceCanBeImproved =
+          firstResourceType >= 0 &&
+          g_anResourceTypeRequiredOrderType[firstResourceType] == farmer->orderType &&
+          (g_abResourceTypeAlwaysQualifies[firstResourceType] != 0 ||
+           terrain.ownerNationTag04 == nationSlot) &&
+          static_cast<signed char>(terrain.developmentClassNibbles0c & 0xf) <
+              g_pTechMgr->capabilityValueByNationAndResource[nationSlot][firstResourceType];
+      if (expectedWorkable && firstResourceCanBeImproved && clickedUnit == 0 && action == 9 &&
+          workableTile == -1) {
         workableTile = tileIndex;
       } else if (!expectedWorkable && clickedUnit == 0 && action == 3 && moveTile == -1) {
         moveTile = tileIndex;
@@ -1031,7 +1048,91 @@ private:
 
     EnterScenarioStep("verifying_farmer_workable_tiles",
                       "retail_predicate_reach_and_occupancy_match_real_selection");
-    OpenEngineerConstructionDialogThroughMap();
+    targetFarmerTile = workableTile;
+    initialFarmerImprovementClass = static_cast<short>(
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
+
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    CPoint targetPoint;
+    short targetBand;
+    if (mapDialog == 0) {
+      FailScenario("\"strategic map disappeared before farmer improvement order\"");
+      return;
+    }
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    mapView->CenterOn(targetFarmerTile);
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+    if (!FindVisiblePointForTile(mapDialog, targetFarmerTile, &targetPoint, &targetBand) ||
+        g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
+            targetFarmerTile, targetBand) != g_civilianTileOrderCursorTokenTable[9]) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
+      FailScenario("\"farmer improvement tile lost its retail cursor route\"");
+      return;
+    }
+
+    farmerActionInProgress = true;
+    const bool clickHandled = RuntimeUiDriver::ClickViewPointThroughNativeMessages(
+        mapDialog, targetPoint.x, targetPoint.y);
+    farmerActionInProgress = false;
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    if (!clickHandled || farmer->unitOrder != kUnitOrderDevelopResource ||
+        farmer->tileIndex06 != targetFarmerTile) {
+      FailScenario("\"farmer click did not queue the retail resource improvement order\"");
+      return;
+    }
+
+    farmerOrderIssued = true;
+    EnterScenarioStep("completing_farmer_improvement",
+                      "real_farmer_order_reaches_map_state_completion");
+    RequestScenarioTick();
+  }
+
+  void CompleteFarmerImprovement() {
+    g_pUiAnimator->DoIdle(1);
+    farmer->TickCivWorkOrderCountdownAndComplete();
+    farmerCompletionIssued = farmer->unitOrder == kUnitOrderIdle;
+    RequestScenarioTick();
+  }
+
+  void VerifyFarmerImprovementVisual() {
+    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
+    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetFarmerTile];
+    const short improvementClass = static_cast<short>(
+        g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
+    const short resourceType = terrain.resourceTypeByEdge[0];
+    if (mapDialog == 0 || farmer->unitOrder != kUnitOrderIdle || farmer->remainingTurns24 > 0 ||
+        improvementClass != initialFarmerImprovementClass + 1 || resourceType < 0 ||
+        g_anResourceTypeRequiredOrderType[resourceType] != farmer->orderType) {
+      FailScenario("\"farmer completion did not advance the retail improvement state\"");
+      return;
+    }
+
+    ObserveStrategicMapImprovementTileForRuntimeTest(targetFarmerTile, resourceType,
+                                                     improvementClass);
+    mapView->CenterOn(targetFarmerTile);
+    mapView->RedrawTile(targetFarmerTile);
+    TQuickDrawSurfaceContext* savedSurface;
+    int savedSurfaceFlags;
+    GetGWorld(&savedSurface, &savedSurfaceFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
+    SetGWorld(savedSurface, savedSurfaceFlags);
+    if (!WasStrategicMapImprovementTileObservedForRuntimeTest()) {
+      FailScenario("\"completed farmer improvement did not reach the retail map renderer\"");
+      return;
+    }
+
+    farmerCompletionVerified = true;
+    EnterScenarioStep("verifying_farmer_improvement_visual",
+                      "completed_low_nibble_improvement_reaches_production_renderer");
+    RequestScenarioTick();
   }
 
   void OpenEngineerConstructionDialogThroughMap() {
@@ -1184,6 +1285,9 @@ private:
   short targetHillTile;
   short targetSeaTile;
   short targetSurveyMissTile;
+  TCivUnit* farmer;
+  short targetFarmerTile;
+  short initialFarmerImprovementClass;
   bool orderIssued;
   bool completionIssued;
   bool completionVerified;
@@ -1191,6 +1295,10 @@ private:
   bool surveyMissOrderIssued;
   bool surveyMissCompletionIssued;
   bool surveyMissCompletionVerified;
+  bool farmerActionInProgress;
+  bool farmerOrderIssued;
+  bool farmerCompletionIssued;
+  bool farmerCompletionVerified;
   bool engineerActionIssued;
   bool engineerDialogObserved;
   short initialAnimationFrame;

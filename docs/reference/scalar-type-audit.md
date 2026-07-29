@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 383
+- Findings: 382
 - `native_integral_boundary`: 18
 - `nested_integral_cast`: 32
 - `predicate_storage_cast`: 15
-- `raw_discriminant_literal`: 318
+- `raw_discriminant_literal`: 317
 
 ## clang-tidy evaluation
 
@@ -202,7 +202,7 @@ is classified, and a family that stops appearing must be removed.
 | `reloadPoliticalMapState` | 4 | `byte_or_int_predicate_not_a_domain` | three call sites test the political-map reload request byte for zero. |
 | `renderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TC2TemplateDialog tests non-zero to choose the alternate render path. |
 | `resetOrderMode` | 1 | `byte_or_int_predicate_not_a_domain` | TMinor tests non-zero to decide whether to reset the order tables. |
-| `resourceType` | 7 | `industry_action_order_type_domain` | the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind. |
+| `resourceType` | 6 | `industry_action_order_type_domain` | the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind. |
 | `resourceTypeIndex` | 11 | `unresolved_narrower_subdomain` | TUnitOrder::resourceTypeIndex takes 0, 1, 5, 6, 8 and 0x0f across TTrainingOrder, TExpansionOrder, TShipOrder, TCapacityOrder and TTechMgr; 0x0f exceeds the 14-entry industry domain and no listing yet proves the extent, so the slot stays explicitly unresolved rather than being forced into ResourceKind. |
 | `ringState` | 6 | `closed_domain_needs_listing_evidence` | TMapMaker walks a three-state coastline ring scanner (0/1/2) against kStrategicTerrainWater; the states are a local scan phase, nameable once the ring walk is described. |
 | `riverSpriteCode` | 1 | `byte_or_int_predicate_not_a_domain` | TEngineerDialog's rail census reads TTerrainStateRecordView::riverSpriteCode only as a nonzero presence test (river/coast connection present) to decide whether a tile counts toward the port-availability tally; the value itself is not compared against any code-domain band here. |
@@ -417,8 +417,7 @@ is classified, and a family that stops appearing must be removed.
 | `b0a9c7cfb2435934` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1310` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `fff70bd9045e0f72` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1313` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `133ad553d2b6d9b8` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1349` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `5fc75cfac3768336` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1227` | resourceType >= 0 | `industry_action_order_type_domain` | `imperialism-decomp-1uj.99.8` |
-| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1367` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
+| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1424` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:100` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2388240767cdc1a4` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:130` | editorActionMode368 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:67` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
