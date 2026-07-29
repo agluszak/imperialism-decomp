@@ -52,10 +52,10 @@ public:
       return;
     }
     EnterScenarioStep("activating_trade_for_buy_only_order", "reach_combined_map");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateTrade) {
       ActivateTrade();
     } else if (phase == kWaitForTrade) {
@@ -88,31 +88,27 @@ private:
   };
 
   void ActivateTrade() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before opening trade\"");
+      AwaitUiChange("\"combined map was not idle before opening trade\"");
       return;
     }
     phase = kWaitForTrade;
     EnterScenarioStep("waiting_for_buy_only_trade_screen", "activate_trade_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateTradeSemantically()) {
+    if (!map.OpenTrade()) {
       FailScenario("\"trade toolbar control is missing or disabled\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForTrade() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
-      WaitForScenarioTick("\"trade toolbar action did not open the Board of Trade\"");
+      AwaitUiChange("\"trade toolbar action did not open the Board of Trade\"");
       return;
     }
     TGreatPower* player = g_apNationStates[activeNationSlot];
@@ -124,7 +120,7 @@ private:
     }
     phase = kActivateIronBid;
     EnterScenarioStep("activating_buy_only_iron_bid", "trade_screen_ready_without_sell_orders");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateIronBid() {
@@ -145,7 +141,7 @@ private:
         ironRow->IsSelectionAllowed() != 0) {
       phase = kReturnToMap;
       EnterScenarioStep("returning_after_buy_only_order", "preserve_existing_iron_buy_order");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (bid->glyphBase84 != 0x840 && bid->glyphBase84 != 0x84e) {
@@ -155,11 +151,14 @@ private:
     initialBidBitmap = bid->glyphBase84;
     phase = kVerifyIronBid;
     EnterScenarioStep("verifying_buy_only_iron_bid", "click_iron_buy_control");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(bid)) {
-      FailScenario("\"iron buy control has no native host\"");
+    if (RuntimeUiDriver::RequireControl(
+            bid, RuntimeControlSelector(bid->controlTag, RUNTIME_CLASS(TTradeOrderPicture)), 0) ==
+        0) {
+      FailScenario("\"iron buy control is not ready for semantic activation\"");
       return;
     }
-    RequestScenarioTick();
+    bid->ActivateOrderSemantically();
+    ContinueAfterAction();
   }
 
   void VerifyIronBid() {
@@ -178,26 +177,27 @@ private:
     }
     phase = kReturnToMap;
     EnterScenarioStep("returning_after_buy_only_order", "click_trade_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnToMap() {
     TView* mainView = CurrentMainView();
     if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0 ||
-        !RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
+        !RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"Board of Trade back control could not receive native input\"");
       return;
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_buy_only_order", "activate_trade_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"Board of Trade did not return to the combined map\"");
+      AwaitUiChange("\"Board of Trade did not return to the combined map\"");
       return;
     }
     TGreatPower* player = g_apNationStates[activeNationSlot];
@@ -217,7 +217,7 @@ private:
     }
     phase = kActivateEndTurn;
     EnterScenarioStep("activating_end_turn_after_buy_only_order", "verify_posted_trade_orders");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateEndTurn() {
@@ -229,12 +229,12 @@ private:
     ResetNewspaperAdvance();
     phase = kWaitForTurnProcessed;
     StrategicMapDriver map(mainView);
-    if (!map.EndTurnThroughNativeMessages()) {
+    if (!map.EndTurn()) {
       FailScenario("\"end-turn control is missing after the buy-only order\"");
       return;
     }
     EnterScenarioStep("waiting_for_buy_only_trade_results", "activate_map_done");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   bool PlayerExecutedNoSales() {
@@ -254,7 +254,9 @@ private:
       unsigned long command = behavior != 0 ? behavior->defaultCommandCode : 0;
       TControl* control = static_cast<TControl*>(modal->ResolveControlByTag(command));
       if (behavior == 0 || (command != kControlTagOkay && command != kControlTagPic5) ||
-          control == 0 || !RuntimeUiDriver::ActivateControlSemantically(modal, command)) {
+          control == 0 ||
+          !RuntimeUiDriver::Activate(modal,
+                                     RuntimeControlSelector(command, RUNTIME_CLASS(TControl)))) {
         RecordUnexpectedModalView(modal);
         FailScenario("\"buy-only turn opened an unrecognized modal\"");
         return;
@@ -262,13 +264,13 @@ private:
       if (command == kControlTagOkay) {
         sawTurnAlert = true;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-        WaitForScenarioTick("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        AwaitUiChange("\"offer-sheet event did not construct TOfferDeskPicture\"");
         return;
       }
       TOfferDeskPicture* offerDesk = static_cast<TOfferDeskPicture*>(mainView);
@@ -278,11 +280,14 @@ private:
         return;
       }
       TView* reject = mainView != 0 ? mainView->ResolveControlByTag(kControlTagReje) : 0;
-      if (reject == 0 || !RuntimeUiDriver::ActivateControlSemantically(mainView, kControlTagReje)) {
-        FailScenario("\"buy-only trade offer reject control could not be activated\"");
+      if (reject == 0 ||
+          !RuntimeUiDriver::Activate(
+              reject, RuntimeControlSelector(kControlTagReje, RUNTIME_CLASS(TControl)))) {
+        Await(kObserveGameStateChanged | kObservePaintCompleted,
+              "\"buy-only trade offer reject control is not ready yet\"");
         return;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
@@ -292,7 +297,7 @@ private:
       }
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (AdvanceNewspaperIfNeeded()) {
@@ -305,17 +310,17 @@ private:
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
       resubmittedEndTurn = true;
       StrategicMapDriver map(mainView);
-      if (!map.EndTurnThroughNativeMessages()) {
+      if (!map.EndTurn()) {
         FailScenario("\"end-turn control disappeared after turn alerts\"");
         return;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      WaitForScenarioTick("\"buy-only turn did not advance to the combined map\"");
+      AwaitUiChange("\"buy-only turn did not advance to the combined map\"");
       return;
     }
     if (!PlayerExecutedNoSales()) {

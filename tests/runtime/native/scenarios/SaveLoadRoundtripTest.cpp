@@ -5,6 +5,7 @@
 #include "game/assets/TAssetMgr.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
+#include "game/ui_core/TControl.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TEditText.h"
@@ -62,7 +63,7 @@ public:
     }
     phase = kSelectSaveSlot;
     EnterScenarioStep("selecting_save_slot", "open_real_save_dialog");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void AdvanceScenario() override {
@@ -94,7 +95,8 @@ private:
       return;
     }
     TLoadSavePicture* savePicture = static_cast<TLoadSavePicture*>(mainView);
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(savePicture, kControlTagSlt0) ||
+    if (!RuntimeUiDriver::Activate(
+            savePicture, RuntimeControlSelector(kControlTagSlt0, RUNTIME_CLASS(TControl))) ||
         savePicture->selectedSlot92 != 0) {
       FailScenario("\"native save-slot click did not select slot zero\"");
       return;
@@ -104,7 +106,8 @@ private:
       FailScenario("\"selected save slot did not enter the retail name-editing state\"");
       return;
     }
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(savePicture, kControlTagOkay)) {
+    if (!RuntimeUiDriver::Activate(
+            savePicture, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"save dialog okay control did not accept the selected slot\"");
       return;
     }
@@ -119,14 +122,14 @@ private:
     savedPath = path;
     phase = kWaitForSaveFlowTransition;
     EnterScenarioStep("waiting_for_save_flow_transition", "selected_slot_saved_through_dialog");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForSaveFlowTransition() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode == EncodeTurnEventCode(kTurnEventLoadSave) ||
         (mainView != 0 && mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) != 0)) {
-      WaitForScenarioTick("\"the save dialog did not advance through the retail turn flow\"");
+      AwaitUiChange("\"the save dialog did not advance through the retail turn flow\"");
       return;
     }
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {

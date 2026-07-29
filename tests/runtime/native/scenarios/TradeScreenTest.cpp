@@ -604,9 +604,7 @@ private:
       }
       TDealTabControl* tabs =
           static_cast<TDealTabControl*>(dealBook->ResolveControlByTag(kControlTagTabs));
-      bool categoryClicked =
-          tabs != 0 && RuntimeUiDriver::ClickViewPointThroughNativeMessages(
-                           tabs, tabs->frameWidth34 / 2, tabs->rowHeightPixels / 2);
+      bool categoryClicked = tabs != 0 && tabs->ActivateRow(0);
       if (!categoryClicked || !dealBook->alternatePageMode ||
           dealBook->cachedSellPageView != dealBook->sellPageView ||
           dealBook->cachedBuyPageView != dealBook->buyPageView ||
@@ -624,7 +622,8 @@ private:
         FailScenario(failure);
         return;
       }
-      if (!RuntimeUiDriver::ClickControlThroughNativeMessages(dealBook, kControlTagMark) ||
+      if (!RuntimeUiDriver::Activate(
+              dealBook, RuntimeControlSelector(kControlTagMark, RUNTIME_CLASS(TControl))) ||
           dealBook->alternatePageMode || dealBook->cachedSellPageView != dealBook->soldTradesView ||
           dealBook->cachedBuyPageView != dealBook->boughtTradesView ||
           dealBook->cachedSellPageView->ownerLocalX != 0x41 ||
