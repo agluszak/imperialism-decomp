@@ -29,9 +29,15 @@ cstring-runtime-probe:
 [doc('Compile the native runtime harness with clang-cl diagnostics')]
 [group('runtime-test')]
 runtime-harness-lint:
+  just runtime-source-policy-gate
   uv run python -m tools.runtime.generate_native_registry \
     --output "{{lint_build_dir}}/generated/runtime/RuntimeRegistry.inc"
   just lint "-DIMPERIALISM_RUNTIME_TESTS=ON"
+
+[doc('Reject coordinate input and polling synchronization in native runtime scenarios')]
+[group('gates')]
+runtime-source-policy-gate:
+  uv run python -m tools.runtime.source_policy tests/runtime/native
 
 [doc('Ask MSVC500 which array-construction shape it emits (inline / call-loop / vector-ctor iterator); --sweep varies the optimization flags')]
 [group('runtime-test')]

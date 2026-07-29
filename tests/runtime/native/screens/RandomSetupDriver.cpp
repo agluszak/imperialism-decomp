@@ -31,18 +31,17 @@ bool RandomSetupDriver::SetCountryName(const char* name) {
   return true;
 }
 
-bool RandomSetupDriver::SelectDifficultySemantically(unsigned long tag) {
+bool RandomSetupDriver::SelectDifficulty(unsigned long tag) {
   TRadioTextCluster* difficulty =
       root != 0 ? static_cast<TRadioTextCluster*>(root->ResolveControlByTag(kControlTagDiff)) : 0;
-  TControl* option =
-      difficulty != 0 ? static_cast<TControl*>(difficulty->ResolveControlByTag(tag)) : 0;
-  if (option == 0) {
-    return false;
-  }
-  option->HandleEvent(option->GetEventNumber(), option, 0);
-  return difficulty->selectedTag88 == static_cast<int>(tag);
+  return difficulty != 0 &&
+         RuntimeUiDriver::Activate(root,
+                                   RuntimeControlSelector(kControlTagDiff, static_cast<int>(tag),
+                                                          RUNTIME_CLASS(TControl))) &&
+         difficulty->selectedTag88 == static_cast<int>(tag);
 }
 
-bool RandomSetupDriver::AcceptSemantically() {
-  return RuntimeUiDriver::ActivateControlSemantically(root, kControlTagOkay);
+bool RandomSetupDriver::Accept() {
+  return RuntimeUiDriver::Activate(
+      root, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)));
 }

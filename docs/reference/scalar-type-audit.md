@@ -45,7 +45,7 @@ a stale category-level approval.
 | `ce86d676236a8915` | `src/game/gfx/CDib.cpp:627` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047b1b0 copies the low word of the Win32 device palette entry count to offset 2. |
 | `4a577257115fdf30` | `src/game/gfx/CDibPal.cpp:41` | `win32_struct_word_field` | LOGPALETTE.palNumEntries is WORD; retail 0x0047e440 stores BX to offset 2 before CreatePalette. |
 | `efb9327b8ccc01bd` | `src/game/gfx/CDibPal.cpp:270` | `win32_struct_word_field` | GetObjectA yields a UINT entry count but LOGPALETTE.palNumEntries is WORD; retail 0x0047efa0 narrows only at the structure field. |
-| `8643894c63c98a37` | `src/game/ui_core/CIncludeView.cpp:622` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
+| `8643894c63c98a37` | `src/game/ui_core/CIncludeView.cpp:646` | `mfc_bool_callback_return` | CWnd::OnSetCursor returns BOOL while Default returns LRESULT; retail 0x00483ef0 tail-returns the full Default result through the BOOL override ABI. |
 | `b442f3eac7d1c116` | `src/game/ui_core/CMcWindow.cpp:290` | `mfc_bool_callback_return` | CWnd::OnQueryNewPalette returns BOOL while Default returns LRESULT; retail 0x00493ca0 preserves the MFC callback ABI. |
 | `c2e2852e7faabcf6` | `src/game/gfx/TDisplayMgr.cpp:39` | `win32_uint_sentinel` | MessageBeep takes UINT and 0xffffffff selects the simple default sound; retail wrapper 0x004931e0 pushes -1 directly. |
 | `1c1d74f04479d145` | `src/game/net/TNetMgr.cpp:364` | `win32_allocation_size` | VC5 GlobalAlloc takes a DWORD byte count; retail 0x005e3d40 forwards the 32-bit packet length unchanged at the API boundary. |
@@ -247,7 +247,7 @@ is classified, and a family that stops appearing must be removed.
 | `efb9327b8ccc01bd` | `native_integral_boundary` | `src/game/gfx/CDibPal.cpp:270` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `c2e2852e7faabcf6` | `native_integral_boundary` | `src/game/gfx/TDisplayMgr.cpp:39` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `1c1d74f04479d145` | `native_integral_boundary` | `src/game/net/TNetMgr.cpp:364` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `8643894c63c98a37` | `native_integral_boundary` | `src/game/ui_core/CIncludeView.cpp:622` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `8643894c63c98a37` | `native_integral_boundary` | `src/game/ui_core/CIncludeView.cpp:646` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `b442f3eac7d1c116` | `native_integral_boundary` | `src/game/ui_core/CMcWindow.cpp:290` | game scalar -> BOOL | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `c35544f8b821ac5f` | `native_integral_boundary` | `src/game/ui_core/TEditText.cpp:136` | game scalar -> UINT | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `fdcb8f20e3a45adb` | `native_integral_boundary` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:570` | game scalar -> BYTE | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
@@ -361,20 +361,20 @@ is classified, and a family that stops appearing must be removed.
 | `63882066f5a88c2f` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:290` | localizationMode == 0x16 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
 | `62488fe6df1874a0` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:290` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
 | `07538b856fda0a18` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TCouncilView.cpp:302` | localizationMode == 0x17 | `string_group_or_resource_identifier` | `imperialism-decomp-1uj.99.8` |
-| `280131c81d525b8c` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:408` | interactionModeAt94 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `b24a54804c1e2df2` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:410` | interactionModeAt94 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `f6a50da9edb18fb9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:412` | interactionModeAt94 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `860b27d2f64200fd` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:424` | interactionModeAt94 == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `23cc3d3b6c4324a3` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:523` | interactionModeAt94 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `3e784a9f4fe19749` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:523` | interactionModeAt94 != 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `f0ed64bb4b6a525d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:523` | interactionModeAt94 != 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `ad21f317dc64d238` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:557` | interactionModeAt94 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `1165460338c3cb33` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:570` | interactionModeAt94 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `77b53c0ede91d5e9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:947` | interactionModeAt94 == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `d15d9102cc7519c9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1063` | legendSurfaceModeAt524 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `1832db5e4c07a755` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1164` | legendSurfaceModeAt524 != 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `95242545df6f913e` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1298` | legendSurfaceModeAt524 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `25896cb48d010ea8` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1688` | interactionModeAt94 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `280131c81d525b8c` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:409` | interactionModeAt94 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `b24a54804c1e2df2` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:411` | interactionModeAt94 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `f6a50da9edb18fb9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:413` | interactionModeAt94 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `860b27d2f64200fd` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:425` | interactionModeAt94 == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `23cc3d3b6c4324a3` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:524` | interactionModeAt94 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `3e784a9f4fe19749` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:524` | interactionModeAt94 != 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `f0ed64bb4b6a525d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:524` | interactionModeAt94 != 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ad21f317dc64d238` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:558` | interactionModeAt94 == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `1165460338c3cb33` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:571` | interactionModeAt94 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `77b53c0ede91d5e9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:958` | interactionModeAt94 == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `d15d9102cc7519c9` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1074` | legendSurfaceModeAt524 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `1832db5e4c07a755` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1175` | legendSurfaceModeAt524 != 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `95242545df6f913e` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1309` | legendSurfaceModeAt524 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `25896cb48d010ea8` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TDiplomacyMapView.cpp:1698` | interactionModeAt94 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3b085b668c93d1d4` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:21` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `b14cf437f2e16040` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TFrameRadioView.cpp:38` | controlState64 == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `9dbd5367a2231b2d` | `raw_discriminant_literal` | `src/game/diplomacy_ui/TOffersPanelView.cpp:133` | offerType == 0x29a | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |

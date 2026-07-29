@@ -20,7 +20,6 @@ public:
   void StartScenario(RuntimeScenario* scenario);
   void EnterPhase(const char* phase, const char* action);
   void Finish();
-  void CountTick();
   void ResetHeartbeat();
   void MarkProgress(const char* action);
   void MarkFallbackProgress();
@@ -41,7 +40,6 @@ public:
   bool HeartbeatDue(unsigned long now, unsigned long interval) const;
   void SetLastHeartbeatMs(unsigned long value);
   const char* LastAction() const;
-  unsigned long PhaseTimeoutMs() const;
 
   const char* ResultPath() const;
   const char* HeartbeatPath() const;
@@ -83,7 +81,6 @@ private:
   RuntimeProgressState progress;
   RuntimeResultAggregate resultAggregate;
   unsigned int seed;
-  unsigned long phaseTimeoutMs;
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;

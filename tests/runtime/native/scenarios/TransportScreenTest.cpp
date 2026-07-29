@@ -41,10 +41,10 @@ public:
     phase = kActivateTransportScreen;
     EnterScenarioStep("activating_transport_screen",
                       "easy_combined_map_ready_for_transport_screen");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateTransportScreen) {
       ActivateTransportScreen();
     } else if (phase == kWaitForTransportScreen) {
@@ -66,14 +66,10 @@ private:
   enum Phase { kActivateTransportScreen, kWaitForTransportScreen, kReturnToMap, kWaitForMap };
 
   void ActivateTransportScreen() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before opening transport\"");
+      AwaitUiChange("\"combined map was not idle before opening transport\"");
       return;
     }
     phase = kWaitForTransportScreen;
@@ -83,14 +79,15 @@ private:
       FailScenario("\"transport toolbar control is disabled\"");
       return;
     }
-    RequestScenarioTick();
+    Await(kObservePaintCompleted | kObserveGameStateChanged,
+          "\"transport screen did not complete its dynamic draw\"");
   }
 
   void WaitForTransportScreen() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport || mainView == 0 ||
         mainView->ResolveControlByTag(kControlTagTitL) == 0) {
-      WaitForScenarioTick("\"transport toolbar action did not activate the transport ledger\"");
+      AwaitUiChange("\"transport toolbar action did not activate the transport ledger\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -153,16 +150,12 @@ private:
       return;
     }
     if (!HasScenarioUiSnapshot()) {
-      WaitForScenarioTick("\"transport UI tree was not captured\"");
-      return;
-    }
-    if (ScenarioPhaseElapsedMs() < 1000) {
-      RequestScenarioTick();
+      AwaitUiChange("\"transport UI tree was not captured\"");
       return;
     }
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_transport", "activate_transport_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnToMap() {
@@ -173,27 +166,24 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_transport", "activate_transport_end_control");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"transport back control is missing or cannot receive native input\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      WaitForScenarioTick("\"transport back control did not restore the strategic map\"");
+      AwaitUiChange("\"transport back control did not restore the strategic map\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
       RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"transport back navigation left an unexpected modal\"");
-      return;
-    }
-    if (ScenarioPhaseTicks() < 20) {
-      RequestScenarioTick();
       return;
     }
     Pass();

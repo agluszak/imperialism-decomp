@@ -24,10 +24,10 @@ public:
 
   void OnCombinedMapReady() override {
     EnterScenarioStep("verifying_loaded_map", "loaded_map_ready");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     VerifyLoadedMap();
   }
 
@@ -44,11 +44,11 @@ private:
     // separately because they are built by different paths.
     TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
     if (mapView->miniMapViewC0 == 0) {
-      WaitForScenarioTick("\"loaded strategic map never built its mini-map\"");
+      AwaitUiChange("\"loaded strategic map never built its mini-map\"");
       return;
     }
     if (mapView->ResolveControlByTag(kControlTagSend) == 0) {
-      WaitForScenarioTick("\"loaded strategic map never built its end-turn control\"");
+      AwaitUiChange("\"loaded strategic map never built its end-turn control\"");
       return;
     }
     TMapDialog* mapDialog = mapView->subview2A8;

@@ -1,4 +1,5 @@
 #include "RuntimeScenario.h"
+#include "RuntimeJson.h"
 #include "flows/RandomGameFlow.h"
 #include "RuntimeUiDriver.h"
 #include "screens/StrategicMapDriver.h"
@@ -64,14 +65,16 @@ public:
   void OnMapReadyWithoutCapitalSelection() override {
     phase = kActivateCityScreen;
     EnterScenarioStep("activating_city_screen", "easy_combined_map_ready_for_city_screen");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateCityScreen) {
       ActivateCityScreen();
     } else if (phase == kWaitForCityScreen) {
       WaitForCityScreen();
+    } else if (phase == kVerifyCityPaint) {
+      VerifyCityPaint();
     } else if (phase == kActivateBuilding) {
       ActivateBuilding();
     } else if (phase == kWaitForBuilding) {
@@ -99,6 +102,7 @@ private:
   enum Phase {
     kActivateCityScreen,
     kWaitForCityScreen,
+    kVerifyCityPaint,
     kActivateBuilding,
     kWaitForBuilding,
     kWaitForOrderIncrease,
@@ -126,14 +130,10 @@ private:
   };
 
   void ActivateCityScreen() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before opening the city screen\"");
+      AwaitUiChange("\"combined map was not idle before opening the city screen\"");
       return;
     }
     TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
@@ -144,18 +144,18 @@ private:
     phase = kWaitForCityScreen;
     EnterScenarioStep("waiting_for_city_screen", "activate_city_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateCitySemantically()) {
+    if (!map.OpenCity()) {
       FailScenario("\"city toolbar control is missing or disabled\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForCityScreen() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
-      WaitForScenarioTick("\"city toolbar action did not activate the city production view\"");
+      AwaitUiChange("\"city toolbar action did not activate the city production view\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -182,19 +182,35 @@ private:
       return;
     }
     if (!HasScenarioUiSnapshot()) {
-      WaitForScenarioTick("\"city production UI tree was not captured\"");
+      AwaitUiChange("\"city production UI tree was not captured\"");
       return;
     }
-    // Keep the production view live long enough to expose repaint/invalidation loops.
-    // A tick-only wait completes in a few milliseconds because the driver posts its
-    // own messages, which previously let TPlacard::Draw self-invalidation escape.
-    if (ScenarioPhaseTicks() < 20 || ScenarioPhaseElapsedMs() < 1000) {
-      RequestScenarioTick();
+    HWND cityHost = cityView->nativeWindow50 != 0 ? cityView->nativeWindow50->m_hWnd : 0;
+    if (cityHost == 0 ||
+        RedrawWindow(cityHost, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW | RDW_ALLCHILDREN) == 0) {
+      FailScenario("\"could not force one deterministic city paint\"");
+      return;
+    }
+    phase = kVerifyCityPaint;
+    EnterScenarioStep("verifying_city_paint_barrier", "force_one_city_paint");
+    if (!RuntimeUiDriver::PostBarrier()) {
+      FailScenario("\"could not post the city paint ordering barrier\"");
+      return;
+    }
+    Await(kObserveRuntimeBarrier, "\"city paint barrier was not observed\"");
+  }
+
+  void VerifyCityPaint() {
+    TView* mainView = CurrentMainView();
+    HWND cityHost =
+        mainView != 0 && mainView->nativeWindow50 != 0 ? mainView->nativeWindow50->m_hWnd : 0;
+    if (cityHost == 0 || GetUpdateRect(cityHost, 0, FALSE) != 0) {
+      FailScenario("\"one forced city paint generated a new pending invalidation\"");
       return;
     }
     phase = kActivateBuilding;
     EnterScenarioStep("activating_city_building", "activate_university_building_slot");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateBuilding() {
@@ -213,7 +229,7 @@ private:
       FailScenario("\"city production building hit region is missing or inactive\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   bool HasCorrectNumberTextPresentationState(TNumberText* numberText, short fontSize,
@@ -630,7 +646,7 @@ private:
       TView* row = buildingView->ResolveControlByTag(kControlTagClu0 + category);
       TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
       TUnitOrder* order = buildingView->city94->buildOrderSlots[category + 9];
-      if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
+      if (plus == 0 || plus->IsActionable() == 0 || plus->IsEnabled() == 0 || order == 0 ||
           order->MaxOrder() <= order->quantity) {
         continue;
       }
@@ -638,14 +654,19 @@ private:
       interactionRowTag = kControlTagClu0 + category;
       phase = kWaitForOrderIncrease;
       EnterScenarioStep("waiting_for_university_order_increase", "activate_university_plus_arrow");
-      if (!RuntimeUiDriver::ActivateControlSemantically(row, kControlTagPlus)) {
-        FailScenario("\"university plus arrow could not be activated\"");
+      CString failure;
+      if (!RuntimeUiDriver::Activate(
+              row, RuntimeControlSelector(kControlTagPlus, RUNTIME_CLASS(TControl)), &failure)) {
+        CString failureJson;
+        RuntimeJson::AppendString(failureJson, failure);
+        FailScenario(failureJson);
         return false;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return true;
     }
-    FailScenario("\"university has no actionable production-order plus arrow\"");
+    Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
+          "\"university has no actionable production-order plus arrow yet\"");
     return false;
   }
 
@@ -654,7 +675,7 @@ private:
       TView* row = buildingView->ResolveControlByTag(kControlTagClu0 + category);
       TView* plus = row == 0 ? 0 : row->ResolveControlByTag(kControlTagPlus);
       TUnitOrder* order = buildingView->city94->buildOrderSlots[category];
-      if (plus == 0 || plus->IsActionable() == 0 || order == 0 ||
+      if (plus == 0 || plus->IsActionable() == 0 || plus->IsEnabled() == 0 || order == 0 ||
           order->MaxOrder() <= order->quantity) {
         continue;
       }
@@ -663,14 +684,16 @@ private:
       interactionRowTag = kControlTagClu0 + category;
       phase = kWaitForOrderIncrease;
       EnterScenarioStep("waiting_for_armory_order_increase", "activate_armory_plus_arrow");
-      if (!RuntimeUiDriver::ActivateControlSemantically(row, kControlTagPlus)) {
+      if (!RuntimeUiDriver::Activate(
+              row, RuntimeControlSelector(kControlTagPlus, RUNTIME_CLASS(TControl)))) {
         FailScenario("\"armory plus arrow could not be activated\"");
         return false;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return true;
     }
-    FailScenario("\"armory has no actionable production-order plus arrow\"");
+    Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
+          "\"armory has no actionable production-order plus arrow yet\"");
     return false;
   }
 
@@ -680,21 +703,23 @@ private:
       TView* queueRow = buildingView->ResolveControlByTag(kControlTagClu0 + queueIndex);
       TView* plus = queueRow == 0 ? 0 : queueRow->ResolveControlByTag(kControlTagPlus);
       if (order == 0 || order->resourceTypeIndex == 0 || plus == 0 || plus->IsActionable() == 0 ||
-          order->MaxOrder() <= order->quantity) {
+          plus->IsEnabled() == 0 || order->MaxOrder() <= order->quantity) {
         continue;
       }
       CaptureShipOrderState(order);
       interactionRowTag = kControlTagClu0 + queueIndex;
       phase = kWaitForOrderIncrease;
       EnterScenarioStep("waiting_for_ship_order_increase", "activate_shipyard_plus_arrow");
-      if (!RuntimeUiDriver::ActivateControlSemantically(queueRow, kControlTagPlus)) {
+      if (!RuntimeUiDriver::Activate(
+              queueRow, RuntimeControlSelector(kControlTagPlus, RUNTIME_CLASS(TControl)))) {
         FailScenario("\"shipyard plus arrow could not be activated\"");
         return false;
       }
-      RequestScenarioTick();
+      ContinueAfterAction();
       return true;
     }
-    FailScenario("\"shipyard has no actionable build-order plus arrow\"");
+    Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
+          "\"shipyard has no actionable build-order plus arrow yet\"");
     return false;
   }
 
@@ -715,7 +740,7 @@ private:
     phase = kWaitForOrderIncrease;
     EnterScenarioStep("waiting_for_training_order_increase", "activate_trade_school_right_arrow");
     rightArrow->HandleEvent(100, rightArrow, 0);
-    RequestScenarioTick();
+    ContinueAfterAction();
     return true;
   }
 
@@ -741,8 +766,10 @@ private:
     priorAnimationFrame = interactionAnimation->frameIndex;
     phase = kWaitForOrderIncrease;
     EnterScenarioStep("waiting_for_industry_order_increase", "activate_industry_right_arrow");
-    rightArrow->HandleEvent(100, rightArrow, 0);
-    RequestScenarioTick();
+    // TSidewaysArrow's retail TrackMouse path forwards command 100 to its owning industry
+    // cluster. Invoke that same domain handler without entering capture/timer machinery.
+    cluster->HandleEvent(100, rightArrow, 0);
+    ContinueAfterAction();
     return true;
   }
 
@@ -877,7 +904,7 @@ private:
       phase = kWaitForBuilding;
       EnterScenarioStep("verified_trade_school_bar_reset",
                         "completed_training_order_resets_live_bar_to_zero");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
 
@@ -887,7 +914,8 @@ private:
         return;
       }
       if (interactionAnimation->frameIndex == priorAnimationFrame) {
-        RequestScenarioTick();
+        Await(kObserveApplicationIdle | kObservePaintCompleted,
+              "\"industry production animation has not advanced yet\"");
         return;
       }
     }
@@ -915,14 +943,15 @@ private:
     EnterScenarioStep("waiting_for_city_order_restore", "activate_city_order_decrease");
     if (interactionKind == kUniversityInteraction || interactionKind == kArmoryInteraction ||
         interactionKind == kShipyardInteraction) {
-      if (!RuntimeUiDriver::ActivateControlSemantically(interactionRoot, controlTag)) {
+      if (!RuntimeUiDriver::Activate(interactionRoot,
+                                     RuntimeControlSelector(controlTag, RUNTIME_CLASS(TControl)))) {
         FailScenario("\"city production minus arrow could not be activated\"");
         return;
       }
     } else {
-      control->HandleEvent(commandId, control, 0);
+      static_cast<TIndustryCluster*>(interactionRoot)->HandleEvent(commandId, control, 0);
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForOrderRestore() {
@@ -953,7 +982,7 @@ private:
     interactionComplete = true;
     phase = kWaitForBuilding;
     EnterScenarioStep("verified_city_order_interaction", "close_verified_city_building");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForBuilding() {
@@ -966,7 +995,7 @@ private:
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
     TBuildingView* buildingView = cityView->BuildingViewForRuntimeTest(activeBuildingSlot);
     if (buildingView == 0) {
-      WaitForScenarioTick("\"city building control did not open its production view\"");
+      AwaitUiChange("\"city building control did not open its production view\"");
       return;
     }
     TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
@@ -1038,10 +1067,6 @@ private:
       FailScenario("\"city building native frame does not expose a movable caption\"");
       return;
     }
-    if (ScenarioPhaseTicks() < 5) {
-      RequestScenarioTick();
-      return;
-    }
     if (!interactionComplete && activeBuildingSlot == kUniversityBuildingSlot) {
       BeginUniversityInteraction(buildingView);
       return;
@@ -1065,7 +1090,7 @@ private:
     phase = kWaitForBuildingClose;
     EnterScenarioStep("closing_city_building", "activate_native_system_close");
     SendMessageA(buildingHwnd, WM_SYSCOMMAND, SC_CLOSE, 0);
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForBuildingClose() {
@@ -1077,7 +1102,7 @@ private:
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
     if (cityView->BuildingViewForRuntimeTest(activeBuildingSlot) != 0) {
-      WaitForScenarioTick("\"native system close did not close the city building window\"");
+      AwaitUiChange("\"native system close did not close the city building window\"");
       return;
     }
     if (activeBuildingSlot == kUniversityBuildingSlot) {
@@ -1088,21 +1113,21 @@ private:
       activeBuildingSlot = kArmoryBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_armory_building", "activate_armory_building_slot");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (activeBuildingSlot == kArmoryBuildingSlot) {
       activeBuildingSlot = kShipyardBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_shipyard_building", "activate_shipyard_building_slot");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (activeBuildingSlot == kShipyardBuildingSlot) {
       activeBuildingSlot = kRailyardBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_railyard_building", "activate_railyard_building_slot");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (activeBuildingSlot == kRailyardBuildingSlot) {
@@ -1127,7 +1152,7 @@ private:
       activeBuildingSlot = kTradeSchoolBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_trade_school_building", "activate_trade_school_slot");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     if (activeBuildingSlot == kTradeSchoolBuildingSlot) {
@@ -1158,12 +1183,12 @@ private:
       activeBuildingSlot = itemBuildingSlot;
       phase = kActivateBuilding;
       EnterScenarioStep("activating_item_industry_building", "activate_item_industry_slot");
-      RequestScenarioTick();
+      ContinueAfterAction();
       return;
     }
     phase = kReturnToMap;
     EnterScenarioStep("returning_to_strategic_map", "click_city_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnToMap() {
@@ -1174,27 +1199,24 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_strategic_map_return", "activate_city_end_control");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagEnd)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"city back control is missing or cannot receive native input\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      WaitForScenarioTick("\"city back control did not restore the strategic map\"");
+      AwaitUiChange("\"city back control did not restore the strategic map\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
       RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"city back navigation left an unexpected modal\"");
-      return;
-    }
-    if (ScenarioPhaseTicks() < 20) {
-      RequestScenarioTick();
       return;
     }
     Pass();

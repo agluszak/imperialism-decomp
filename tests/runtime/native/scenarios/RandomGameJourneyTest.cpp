@@ -22,7 +22,7 @@ public:
     return true;
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kReturnToRandomSetup) {
       WaitForReturnedRandomSetup();
     } else if (phase == kReturnToMainMenu) {
@@ -56,11 +56,12 @@ protected:
     phase = kReturnToRandomSetup;
     EnterScenarioStep("returning_to_random_setup", "native_click_strategic_map_cancel");
     TView* mapView = CurrentMainView();
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mapView, kControlTagCanc)) {
+    if (!RuntimeUiDriver::Activate(
+            mapView, RuntimeControlSelector(kControlTagCanc, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"strategic-map return control has no native-message path\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
 private:
@@ -75,49 +76,53 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      WaitForScenarioTick("\"random setup did not return from capital selection\"");
+      AwaitUiChange("\"random setup did not return from capital selection\"");
       return;
     }
     phase = kReturnToMainMenu;
     EnterScenarioStep("returning_to_main_menu", "native_click_random_setup_cancel");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagCncl)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagCncl, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"returned random setup has no native-message cancel path\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForReturnedMainMenu() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dc) {
-      WaitForScenarioTick("\"main menu did not return after random setup cancellation\"");
+      AwaitUiChange("\"main menu did not return after random setup cancellation\"");
       return;
     }
     phase = kReenterRandomSetup;
     EnterScenarioStep("reentering_random_setup", "native_click_main_menu_random_game");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagRand)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagRand, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"returned main menu has no native-message random-game path\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForReenteredRandomSetup() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      WaitForScenarioTick("\"random setup did not reopen from the returned main menu\"");
+      AwaitUiChange("\"random setup did not reopen from the returned main menu\"");
       return;
     }
     TSetupRandomMapPicture* setup = static_cast<TSetupRandomMapPicture*>(mainView);
     SetSelectedNation(setup->selectedNationSlot9A);
     phase = kVerifyReenteredRandomSetup;
     EnterScenarioStep("verifying_returned_random_setup", "native_click_hard_difficulty");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagDif3)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView,
+            RuntimeControlSelector(kControlTagDiff, kControlTagDif3, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"reopened random setup has no native-message difficulty path\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void VerifyReenteredRandomSetup() {
@@ -130,7 +135,8 @@ private:
       FailScenario("\"reentered random setup did not accept the native difficulty click\"");
       return;
     }
-    if (!RuntimeUiDriver::ActivateControlSemantically(mainView, kControlTagOkay)) {
+    if (!RuntimeUiDriver::Activate(
+            mainView, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"reentered random setup okay control is missing\"");
       return;
     }

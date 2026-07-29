@@ -9,6 +9,7 @@
 #include "RuntimeResultWriter.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
+#include "RuntimeUiDriver.h"
 #include "flows/RuntimeFlow.h"
 
 #include "game/ImperialismApp.h"
@@ -34,10 +35,6 @@ bool RequiredManagersAreInitialized() {
          g_pAssetMgr != 0;
 }
 
-void RequestAnotherDriverTick() {
-  PostThreadMessageA(GetCurrentThreadId(), WM_NULL, 0, 0);
-}
-
 void RequestGameClose(HWND mainWindow) {
   if (mainWindow != 0) {
     PostMessageA(mainWindow, WM_CLOSE, 0, 0);
@@ -56,12 +53,16 @@ void FourCcText(unsigned int tag, char text[5]) {
 
 } // namespace
 
-RuntimeScenario::RuntimeScenario() : run(0), activeFlow(0), driverState(kWaitingForManagers) {}
+RuntimeScenario::RuntimeScenario()
+    : run(0), activeFlow(0), driverState(kWaitingForManagers),
+      awaitedObservations(kObserveApplicationIdle), advancing(false) {}
 
 void RuntimeScenario::Start(RuntimeContext& context) {
   run = &context.Run();
   activeFlow = 0;
   driverState = kWaitingForManagers;
+  awaitedObservations = kObserveApplicationIdle;
+  advancing = false;
   run->StartScenario(this);
   RuntimeExceptionCapture::Install(*run, *this);
 
@@ -72,16 +73,14 @@ void RuntimeScenario::Start(RuntimeContext& context) {
   run->EnterPhase("waiting_for_managers", "wait_for_managers");
 }
 
-void RuntimeScenario::Tick(RuntimeContext&) {
+void RuntimeScenario::Observe(RuntimeContext&, unsigned int observationKinds) {
   if (run->IsFinished()) {
     if (run->HoldRequested()) {
       WriteRuntimeHeartbeat(*run);
-      RequestAnotherDriverTick();
     }
     return;
   }
 
-  run->CountTick();
   WriteRuntimeHeartbeat(*run);
   char forcedFailure[2];
   if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FORCE_FAILURE", forcedFailure,
@@ -90,44 +89,53 @@ void RuntimeScenario::Tick(RuntimeContext&) {
     return;
   }
   if (run->SpinRequestedForCurrentPhase()) {
-    RequestAnotherDriverTick();
+    awaitedObservations = kObserveApplicationIdle;
     return;
   }
 
-  if (driverState == kWaitingForManagers) {
-    TickWaitingForManagers();
+  if ((awaitedObservations & observationKinds) == 0) {
     return;
   }
-  if (driverState == kRunningScenario) {
-    TickScenario();
-    return;
-  }
-  if (activeFlow == 0) {
-    FailScenario("\"runtime scenario has no active navigation flow\"");
-    return;
-  }
-
-  RuntimeFlowStatus status = activeFlow->Tick(*this);
-  if (status == kRuntimeFlowCheckpoint) {
-    OnFlowCheckpoint(activeFlow->Checkpoint());
-  } else if (status == kRuntimeFlowComplete && !run->IsFinished()) {
-    FailScenario("\"navigation flow completed without handing control to the scenario\"");
-  }
+  AdvanceDriver(observationKinds);
 }
 
-void RuntimeScenario::TickWaitingForManagers() {
+void RuntimeScenario::AdvanceDriver(unsigned int observationKinds) {
+  (void)observationKinds;
+  if (advancing || run->IsFinished()) {
+    return;
+  }
+  advancing = true;
+  awaitedObservations = kObserveNone;
+  if (driverState == kWaitingForManagers) {
+    AdvanceWaitingForManagers();
+  } else if (driverState == kRunningScenario) {
+    AdvanceScenario();
+  } else if (activeFlow == 0) {
+    FailScenario("\"runtime scenario has no active navigation flow\"");
+  } else {
+    RuntimeFlowStatus status = activeFlow->Advance(*this);
+    if (status == kRuntimeFlowCheckpoint) {
+      OnFlowCheckpoint(activeFlow->Checkpoint());
+    } else if (status == kRuntimeFlowComplete && !run->IsFinished()) {
+      FailScenario("\"navigation flow completed without handing control to the scenario\"");
+    }
+  }
+  advancing = false;
+}
+
+void RuntimeScenario::AdvanceWaitingForManagers() {
   if (!RequiredManagersAreInitialized()) {
-    WaitForScenarioTick("\"manager initialization timed out\"");
+    Await(kObserveApplicationIdle, "\"manager initialization has not completed\"");
     return;
   }
   if (RequiresMainWindow()) {
     if (GetMainViewHostFromActiveThread() == 0) {
-      WaitForScenarioTick("\"main view host initialization timed out\"");
+      Await(kObserveApplicationIdle, "\"main view host initialization has not completed\"");
       return;
     }
     CWnd* mainWindow = AfxGetThread()->GetMainWnd();
     if (mainWindow == 0 || mainWindow->m_hWnd == 0) {
-      WaitForScenarioTick("\"main window initialization timed out\"");
+      Await(kObserveApplicationIdle, "\"main window initialization has not completed\"");
       return;
     }
     run->SetMainWindowHandle(mainWindow->m_hWnd);
@@ -140,14 +148,13 @@ void RuntimeScenario::Pulse(RuntimeContext&) {
 }
 
 void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
-  if (!run->CapturesSnapshot(kRuntimeSnapshotUi)) {
-    return;
-  }
-  if (eventCode == 0x5dd) {
-    run->RandomSetupUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
-  } else if (eventCode == 0x3b8 || (DifficultyLevel() <= 1 && eventCode == 0x7dd)) {
-    if (run->StrategicMapUiSnapshot().IsEmpty()) {
-      run->StrategicMapUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+  if (run->CapturesSnapshot(kRuntimeSnapshotUi)) {
+    if (eventCode == 0x5dd) {
+      run->RandomSetupUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+    } else if (eventCode == 0x3b8 || (DifficultyLevel() <= 1 && eventCode == 0x7dd)) {
+      if (run->StrategicMapUiSnapshot().IsEmpty()) {
+        run->StrategicMapUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+      }
     }
   }
   ObserveScenarioUiTree(eventCode, root);
@@ -223,7 +230,7 @@ void RuntimeScenario::OnManagersReady() {
 void RuntimeScenario::OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) {
   if (checkpoint == kRuntimeCapitalSelectionReady) {
     activeFlow->ContinueFromCheckpoint();
-    RequestScenarioTick();
+    ContinueAfterAction();
     return;
   }
   driverState = kRunningScenario;
@@ -244,7 +251,7 @@ void RuntimeScenario::OnCombinedMapReady() {
   Pass();
 }
 
-void RuntimeScenario::TickScenario() {
+void RuntimeScenario::AdvanceScenario() {
   FailScenario("\"scenario entered an unimplemented owned phase\"");
 }
 
@@ -300,17 +307,17 @@ bool RuntimeScenario::FinishChecks() {
   return true;
 }
 
-bool RuntimeScenario::WaitForScenarioTick(const char* failure) {
-  if (run->PhaseElapsedMs() >= run->PhaseTimeoutMs()) {
-    FailScenario(failure);
-    return false;
-  }
-  RequestAnotherDriverTick();
-  return true;
+void RuntimeScenario::AwaitUiChange(const char* failure) {
+  Await(kObserveUiStateChanged, failure);
 }
 
-void RuntimeScenario::RequestScenarioTick() {
-  RequestAnotherDriverTick();
+void RuntimeScenario::Await(unsigned int observationKinds, const char* failure) {
+  (void)failure;
+  awaitedObservations = observationKinds;
+}
+
+void RuntimeScenario::ContinueAfterAction() {
+  awaitedObservations = kObserveApplicationIdle;
 }
 
 void RuntimeScenario::EnterScenarioStep(const char* phaseName, const char* action) {
@@ -339,14 +346,6 @@ TView* RuntimeScenario::CurrentMainView() const {
   return RuntimeMainView();
 }
 
-unsigned long RuntimeScenario::ScenarioPhaseTicks() const {
-  return run->PhaseTicks();
-}
-
-unsigned long RuntimeScenario::ScenarioPhaseElapsedMs() const {
-  return run->PhaseElapsedMs();
-}
-
 const char* RuntimeScenario::FixturePath() const {
   return run->FixturePath();
 }
@@ -361,25 +360,32 @@ bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
   }
   TView* mainView = RuntimeMainView();
   if (!RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TNewspaperView))) {
-    FailScenario("\"event 0x2103 did not construct the newspaper view\"");
+    AwaitUiChange("\"event 0x2103 has not constructed the newspaper view yet\"");
     return true;
   }
   if (run->NewspaperAdvanced()) {
-    WaitForScenarioTick("\"newspaper end action did not advance to the combined map\"");
+    AwaitUiChange("\"newspaper end action did not advance to the combined map\"");
     return true;
   }
   if (!BeforeInitialNewspaperExit()) {
     return true;
   }
-  TControl* endControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagEnd));
-  if (endControl == 0 || endControl->IsActionable() == 0) {
-    FailScenario("\"newspaper end control is missing or disabled\"");
+  RuntimeControlSelector endSelector(kControlTagEnd, RUNTIME_CLASS(TControl));
+  if (RuntimeUiDriver::RequireControl(mainView, endSelector, 0) == 0) {
+    Await(kObservePaintCompleted | kObserveInvalidationRequested | kObserveGameStateChanged,
+          "\"newspaper controls are not actionable yet\"");
+    return true;
+  }
+  CString failure;
+  if (!RuntimeUiDriver::Activate(mainView, endSelector, &failure)) {
+    CString failureJson;
+    RuntimeJson::AppendString(failureJson, failure);
+    FailScenario(failureJson);
     return true;
   }
   run->SetNewspaperAdvanced(true);
   run->RecordAction("activate_newspaper_end");
-  endControl->HandleEvent(endControl->GetEventNumber(), endControl, 0);
-  RequestAnotherDriverTick();
+  ContinueAfterAction();
   return true;
 }
 

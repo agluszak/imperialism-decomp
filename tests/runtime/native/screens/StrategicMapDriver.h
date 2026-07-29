@@ -6,11 +6,11 @@ class StrategicMapDriver {
 public:
   explicit StrategicMapDriver(TView* root);
 
-  bool EndTurnThroughNativeMessages();
-  bool ActivateCitySemantically();
+  bool EndTurn();
+  bool OpenCity();
   bool ActivateTransport();
-  bool ActivateDiplomacySemantically();
-  bool ActivateTradeSemantically();
+  bool OpenDiplomacy();
+  bool OpenTrade();
 
 private:
   TView* root;

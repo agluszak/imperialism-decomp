@@ -9,7 +9,7 @@ import tempfile
 from pathlib import Path
 
 from tools.runtime.artifacts import prune_old_run_dirs
-from tools.runtime.classification import classify_exit, classify_poll, no_progress_budget_seconds
+from tools.runtime.classification import classify_exit, classify_poll
 from tools.runtime.oracles.map import compare_map_state
 
 
@@ -24,53 +24,47 @@ def heartbeat(elapsed_ms: int, last_progress_ms: int) -> dict:
 
 class ClassifyPollTests(unittest.TestCase):
     def test_no_heartbeat_yet_is_not_classified(self) -> None:
-        self.assertIsNone(classify_poll(None, None, 90.0))
+        self.assertIsNone(classify_poll(None, None))
 
     def test_young_process_without_heartbeat_is_healthy(self) -> None:
-        self.assertIsNone(classify_poll(None, None, 90.0, process_age_seconds=5.0))
+        self.assertIsNone(classify_poll(None, None, process_age_seconds=5.0))
 
     def test_old_process_without_heartbeat_is_hung_boot(self) -> None:
         self.assertEqual(
-            classify_poll(None, None, 90.0, process_age_seconds=60.1),
+            classify_poll(None, None, process_age_seconds=60.1),
             "heartbeat_stopped",
         )
 
     def test_fresh_heartbeat_with_recent_progress_is_healthy(self) -> None:
-        self.assertIsNone(classify_poll(heartbeat(30_000, 29_000), 0.5, 90.0))
+        self.assertIsNone(classify_poll(heartbeat(30_000, 29_000), 0.5))
 
     def test_stale_heartbeat_is_heartbeat_stopped(self) -> None:
         self.assertEqual(
-            classify_poll(heartbeat(30_000, 29_000), 5.1, 90.0),
+            classify_poll(heartbeat(30_000, 29_000), 5.1),
             "heartbeat_stopped",
         )
 
     def test_stale_check_precedes_no_progress_check(self) -> None:
         self.assertEqual(
-            classify_poll(heartbeat(500_000, 0), 5.1, 90.0),
+            classify_poll(heartbeat(500_000, 0), 5.1),
             "heartbeat_stopped",
         )
 
-    def test_fresh_heartbeat_without_progress_is_pump_alive(self) -> None:
-        self.assertEqual(
-            classify_poll(heartbeat(200_000, 1_000), 0.5, 90.0),
-            "pump_alive_no_semantic_progress",
-        )
-
-    def test_no_progress_budget_is_inclusive_at_the_boundary(self) -> None:
-        self.assertIsNone(classify_poll(heartbeat(91_000, 1_000), 0.5, 90.0))
+    def test_fresh_heartbeat_without_scenario_progress_is_healthy(self) -> None:
+        self.assertIsNone(classify_poll(heartbeat(200_000, 1_000), 0.5))
 
     def test_held_session_is_exempt_from_the_no_progress_check(self) -> None:
         held = dict(heartbeat(500_000, 0), hold=True)
-        self.assertIsNone(classify_poll(held, 0.5, 90.0))
+        self.assertIsNone(classify_poll(held, 0.5))
 
     def test_held_session_still_fails_on_stale_heartbeat(self) -> None:
         held = dict(heartbeat(500_000, 0), hold=True)
-        self.assertEqual(classify_poll(held, 5.1, 90.0), "heartbeat_stopped")
+        self.assertEqual(classify_poll(held, 5.1), "heartbeat_stopped")
 
     def test_malformed_heartbeat_fields_are_tolerated(self) -> None:
-        self.assertIsNone(classify_poll({"phase": "boot"}, 0.5, 90.0))
+        self.assertIsNone(classify_poll({"phase": "boot"}, 0.5))
         self.assertIsNone(
-            classify_poll({"elapsed_ms": "junk", "last_progress_ms": 0}, 0.5, 90.0)
+            classify_poll({"elapsed_ms": "junk", "last_progress_ms": 0}, 0.5)
         )
 
 
@@ -139,16 +133,6 @@ class PruneOldRunDirsTests(unittest.TestCase):
             self.assertIn("boot_managers-20260703T000000Z-1", kept)
             self.assertIn("random_game_enters_map-20260701T000000Z-1", kept)
             self.assertIn("boot_managers.json", kept)
-
-
-class NoProgressBudgetTests(unittest.TestCase):
-    def test_budget_exceeds_the_driver_phase_timeout(self) -> None:
-        self.assertGreater(no_progress_budget_seconds(60_000), 60.0)
-
-    def test_budget_scales_with_the_phase_timeout(self) -> None:
-        self.assertGreater(
-            no_progress_budget_seconds(120_000), no_progress_budget_seconds(60_000)
-        )
 
 
 if __name__ == "__main__":

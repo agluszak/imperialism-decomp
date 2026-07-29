@@ -47,10 +47,10 @@ public:
     phase = kActivateDiplomacyScreen;
     EnterScenarioStep("activating_diplomacy_screen",
                       "easy_combined_map_ready_for_diplomacy_screen");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
-  void TickScenario() override {
+  void AdvanceScenario() override {
     if (phase == kActivateDiplomacyScreen) {
       ActivateDiplomacyScreen();
     } else if (phase == kWaitForDiplomacyScreen) {
@@ -124,30 +124,29 @@ private:
   }
 
   void ActivateDiplomacyScreen() {
-    if (ScenarioPhaseTicks() < 60) {
-      RequestScenarioTick();
-      return;
-    }
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"combined map was not idle before opening diplomacy\"");
+      AwaitUiChange("\"combined map was not idle before opening diplomacy\"");
       return;
     }
     phase = kWaitForDiplomacyScreen;
     EnterScenarioStep("waiting_for_diplomacy_screen", "activate_diplomacy_toolbar_control");
     StrategicMapDriver map(mainView);
-    if (!map.ActivateDiplomacySemantically()) {
+    if (!map.OpenDiplomacy()) {
       FailScenario("\"diplomacy toolbar control is missing or disabled\"");
       return;
     }
-    RequestScenarioTick();
+    Await(kObserveRuntimeBarrier, "\"diplomacy screen transition did not reach its barrier\"");
+    if (!RuntimeUiDriver::PostBarrier()) {
+      FailScenario("\"diplomacy screen barrier could not be posted\"");
+    }
   }
 
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
-      WaitForScenarioTick("\"diplomacy toolbar action did not activate diplomacy orders\"");
+      AwaitUiChange("\"diplomacy toolbar action did not activate diplomacy orders\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -171,10 +170,6 @@ private:
       FailScenario("\"diplomacy toolbar control did not use its selected picture\"");
       return;
     }
-    if (ScenarioPhaseElapsedMs() < 1000) {
-      RequestScenarioTick();
-      return;
-    }
     if (HoldAtScenarioScreen("diplomacy")) {
       RedrawWindow(diplomacy->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
       Pass();
@@ -182,7 +177,7 @@ private:
     }
     phase = kSelectForeignNation;
     EnterScenarioStep("selecting_diplomacy_nation", "click_first_foreign_nation_on_map");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void SelectForeignNation() {
@@ -192,14 +187,12 @@ private:
       return;
     }
     const short activeNation = g_pSimMgr->GetActiveNationId();
-    CPoint point;
     // A fresh major-to-major relationship cannot build a consulate: the original
     // validation requires relationSideEffectMatrix == 0, which is the initial
     // major-to-minor state. Pick a real minor nation so the primary treaty action is
     // expected to commit rather than deliberately opening the rejection notice.
     for (short nation = 7; nation < 0x17; ++nation) {
-      if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0 &&
-          diplomacy->RuntimeGetNationSelectionPoint(nation, &point)) {
+      if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0) {
         targetNation = nation;
         break;
       }
@@ -210,11 +203,8 @@ private:
     }
     phase = kVerifyForeignNation;
     EnterScenarioStep("verifying_diplomacy_nation", "inspect_selected_foreign_nation");
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
-      FailScenario("\"diplomacy nation map has no native host\"");
-      return;
-    }
-    RequestScenarioTick();
+    diplomacy->ActivateNation(targetNation);
+    ContinueAfterAction();
   }
 
   void VerifyForeignNation() {
@@ -225,7 +215,7 @@ private:
     }
     phase = kActivateRelationshipOverlay;
     EnterScenarioStep("activating_relationship_overlay", "click_relationship_overlay");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateRelationshipOverlay() {
@@ -236,11 +226,15 @@ private:
     }
     phase = kVerifyRelationshipOverlay;
     EnterScenarioStep("verifying_relationship_overlay", "render_selected_nation_relationships");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagOvr0 + 1)) {
+    if (!RuntimeUiDriver::Activate(
+            diplomacy, RuntimeControlSelector(kControlTagOvr0 + 1, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"diplomacy relationship overlay control is missing or cannot receive input\"");
       return;
     }
-    RequestScenarioTick();
+    Await(kObserveRuntimeBarrier, "\"relationship overlay did not reach its barrier\"");
+    if (!RuntimeUiDriver::PostBarrier()) {
+      FailScenario("\"relationship overlay barrier could not be posted\"");
+    }
   }
 
   void VerifyRelationshipOverlay() {
@@ -251,7 +245,7 @@ private:
     }
     phase = kActivateTreatiesTopic;
     EnterScenarioStep("activating_diplomacy_treaties", "click_treaties_action_topic");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ActivateTreatiesTopic() {
@@ -262,11 +256,8 @@ private:
     }
     phase = kVerifyTreatiesTopic;
     EnterScenarioStep("verifying_diplomacy_treaties", "activate_treaties_action_topic");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagTrtt)) {
-      FailScenario("\"diplomacy treaties action control is missing or cannot receive input\"");
-      return;
-    }
-    RequestScenarioTick();
+    diplomacy->ChangeSelectedActionTopic(1);
+    ContinueAfterAction();
   }
 
   void VerifyTreatiesTopic() {
@@ -284,23 +275,19 @@ private:
     policyBeforeAction = sourceNation->diplomacyPolicyByNation[targetNation];
     phase = kInitiatePrimaryAction;
     EnterScenarioStep("initiating_diplomacy_action", "click_consulate_target_nation");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void InitiatePrimaryAction() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
-    CPoint point;
-    if (diplomacy == 0 || !diplomacy->RuntimeGetNationSelectionPoint(targetNation, &point)) {
+    if (diplomacy == 0 || g_apTerrainTypeDescriptorTable[targetNation] == 0) {
       FailScenario("\"diplomacy target disappeared before the consulate action\"");
       return;
     }
     phase = kVerifyPrimaryAction;
     EnterScenarioStep("verifying_diplomacy_action", "apply_consulate_diplomacy_policy");
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
-      FailScenario("\"diplomacy consulate action could not reach the native host\"");
-      return;
-    }
-    RequestScenarioTick();
+    diplomacy->ActivateNation(targetNation);
+    ContinueAfterAction();
   }
 
   void VerifyPrimaryAction() {
@@ -321,7 +308,7 @@ private:
     }
     phase = kSelectAllianceAction;
     EnterScenarioStep("selecting_diplomacy_alliance", "click_alliance_treaty_action");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void SelectAllianceAction() {
@@ -332,11 +319,12 @@ private:
     }
     phase = kInitiateAllianceAction;
     EnterScenarioStep("initiating_diplomacy_alliance", "click_alliance_target_nation");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagScr0 + 1)) {
+    if (!RuntimeUiDriver::Activate(
+            diplomacy, RuntimeControlSelector(kControlTagScr0 + 1, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"diplomacy alliance action is missing or cannot receive input\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void InitiateAllianceAction() {
@@ -347,10 +335,8 @@ private:
     }
 
     const short activeNation = g_pSimMgr->GetActiveNationId();
-    CPoint point;
     for (short nation = 0; nation < 7; ++nation) {
       if (nation != activeNation && g_apTerrainTypeDescriptorTable[nation] != 0 &&
-          diplomacy->RuntimeGetNationSelectionPoint(nation, &point) &&
           g_pDiplomacyTurnStateManager->ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
               activeNation, nation, kDipActionAlliance)) {
         allianceTargetNation = nation;
@@ -363,18 +349,15 @@ private:
       return;
     }
     alliancePolicyBeforeAction = sourceNation->diplomacyPolicyByNation[allianceTargetNation];
-    if (!diplomacy->RuntimeGetNationSelectionPoint(allianceTargetNation, &point)) {
+    if (g_apTerrainTypeDescriptorTable[allianceTargetNation] == 0) {
       FailScenario("\"diplomacy alliance target disappeared before selection\"");
       return;
     }
 
     phase = kVerifyAllianceAction;
     EnterScenarioStep("verifying_diplomacy_alliance", "render_alliance_policy_icon");
-    if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(diplomacy, point.x, point.y)) {
-      FailScenario("\"diplomacy alliance action could not reach the native host\"");
-      return;
-    }
-    RequestScenarioTick();
+    diplomacy->ActivateNation(allianceTargetNation);
+    ContinueAfterAction();
   }
 
   void VerifyAllianceAction() {
@@ -402,7 +385,7 @@ private:
 
     phase = kPoseAcceptedOffer;
     EnterScenarioStep("posing_diplomacy_offer", "pose_offer_for_acceptance");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   TOffersPanelView* OffersPanel() const {
@@ -418,14 +401,9 @@ private:
   }
 
   bool QueueOfferResponse(TOffersPanelView* offers, int responseTag) const {
-    TView* sheet = offers->ResolveControlByTag(kControlTagShee);
-    if (sheet == 0) {
-      return false;
-    }
-    int offsetX = g_diplomacyPopupVisiblePosition_006a2fe0.x - sheet->ownerLocalX;
-    int offsetY = g_diplomacyPopupVisiblePosition_006a2fe0.y - sheet->ownerLocalY;
-    return RuntimeUiDriver::QueueControlClickThroughNativeMessagesAtOffset(offers, responseTag,
-                                                                           offsetX, offsetY);
+    (void)offers;
+    return RuntimeUiDriver::PostActivate(RuntimeControlSelector(
+        kControlTagOffr, kControlTagShee, responseTag, RUNTIME_CLASS(TControl), 0xa));
   }
 
   bool OfferResponseUsesExpectedEvent(TOffersPanelView* offers, int responseTag) const {
@@ -458,7 +436,7 @@ private:
     }
     phase = kPoseRejectedOffer;
     EnterScenarioStep("posing_rejected_diplomacy_offer", "pose_offer_for_rejection");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void PoseRejectedOffer() {
@@ -486,7 +464,7 @@ private:
     }
     phase = kReturnToMap;
     EnterScenarioStep("returning_from_diplomacy_screen", "click_diplomacy_end_control");
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void ReturnToMap() {
@@ -497,27 +475,24 @@ private:
     }
     phase = kWaitForMap;
     EnterScenarioStep("waiting_for_map_after_diplomacy", "activate_diplomacy_end_control");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(diplomacy, kControlTagEnd)) {
+    if (!RuntimeUiDriver::Activate(
+            diplomacy, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
       FailScenario("\"diplomacy back control is missing or cannot receive native input\"");
       return;
     }
-    RequestScenarioTick();
+    ContinueAfterAction();
   }
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      WaitForScenarioTick("\"diplomacy back control did not restore the strategic map\"");
+      AwaitUiChange("\"diplomacy back control did not restore the strategic map\"");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
       RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"diplomacy back navigation left an unexpected modal\"");
-      return;
-    }
-    if (ScenarioPhaseTicks() < 20) {
-      RequestScenarioTick();
       return;
     }
     Pass();
