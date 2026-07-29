@@ -11,11 +11,13 @@
 #include "game/city/TUnitOrder.h"
 #include "game/city_ui/TCivMgr.h"
 #include "game/city_ui/TEngineerDialog.h"
+#include "game/city_ui/TLongintList.h"
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
+#include "game/globals/ui_widgets_globals.h"
 #include "game/globals/view_registries.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -30,6 +32,8 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_widgets/TCivDescription.h"
+#include "game/ui_widgets/TCivToolbar.h"
 
 namespace {
 
@@ -452,6 +456,125 @@ private:
     return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
   }
 
+  int CollectProspectorLegendTargets(short ownerNation, short profile, short* targetTiles) {
+    TLongintList* provinces = g_apTerrainTypeDescriptorTable[ownerNation]->ownedRegionList;
+    int candidateCount = 0;
+    for (int provinceOrdinal = 1; provinceOrdinal <= provinces->GetSize(); ++provinceOrdinal) {
+      Province* province = &g_pGlobalMapState->cityScoreTable[provinces->At(provinceOrdinal)];
+      for (int tileOrdinal = 0; tileOrdinal < province->linkedRegionCount; ++tileOrdinal) {
+        short tileIndex = province->linkedTileIndices42[tileOrdinal];
+        TTerrainStateRecord* terrain = &g_pGlobalMapState->terrainStateTable[tileIndex];
+        if (terrain->recruitSearchVisited0e != 0 ||
+            static_cast<unsigned char>(terrain->gateFlag) != profile) {
+          continue;
+        }
+        if (targetTiles != 0) {
+          targetTiles[candidateCount] = tileIndex;
+        }
+        ++candidateCount;
+      }
+    }
+    return candidateCount;
+  }
+
+  bool SameMapOrigin(const CPoint& left, const CPoint& right) {
+    return left.x == right.x && left.y == right.y;
+  }
+
+  bool VerifyProspectorLegendCameraCycling(TMapUberPicture* mapView, TMapDialog* mapDialog) {
+    TCivToolbar* toolbar = static_cast<TCivToolbar*>(mapView->categoryPages[0]);
+    TCivDescription* description =
+        toolbar != 0 ? static_cast<TCivDescription*>(toolbar->ResolveControlByTag(kControlTagBack))
+                     : 0;
+    if (description == 0 ||
+        description->selectedCivilianClass != EncodeCivilianUnitKind(kCivilianUnitProspector)) {
+      FailScenario("\"selected prospector has no civilian legend control\"");
+      return false;
+    }
+
+    CRect descriptionBounds(0, 0, description->frameWidth34, description->frameHeight38);
+    description->Draw(&descriptionBounds);
+
+    int selectedColumn = -1;
+    short selectedProfile = -1;
+    int candidateCount = 0;
+    int visibleColumnCount =
+        g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[4] == 2 ? 5
+                                                                                               : 2;
+    for (int column = 0; column < visibleColumnCount; ++column) {
+      short profile = g_anTargetTileProfileByCivilianClassAndSlot[5 + column];
+      RECT* legendRect = &description->legendRects[profile];
+      if (legendRect->right <= legendRect->left || legendRect->bottom <= legendRect->top) {
+        continue;
+      }
+      int count = CollectProspectorLegendTargets(description->ownerNationId, profile, 0);
+      if (count >= 2 && (selectedColumn == -1 || count < candidateCount)) {
+        selectedColumn = column;
+        selectedProfile = profile;
+        candidateCount = count;
+      }
+    }
+    if (selectedColumn == -1 ||
+        description->targetTileCountsBySlot[selectedColumn] != candidateCount) {
+      char failure[192];
+      wsprintfA(failure,
+                "\"prospector legend target mismatch: column=%d profile=%d candidates=%d "
+                "shown=%d counter=%d owner=%d\"",
+                selectedColumn, selectedProfile, candidateCount,
+                selectedColumn < 0 ? -1 : description->targetTileCountsBySlot[selectedColumn],
+                selectedProfile < 0 ? -1 : g_awCivilianLegendSelectionCountsBySlot[selectedProfile],
+                description->ownerNationId);
+      FailScenario(failure);
+      return false;
+    }
+
+    short targetTiles[kGlobalMapTileCount];
+    CPoint targetOrigins[kGlobalMapTileCount];
+    CollectProspectorLegendTargets(description->ownerNationId, selectedProfile, targetTiles);
+    for (int candidateOrdinal = 0; candidateOrdinal < candidateCount; ++candidateOrdinal) {
+      mapDialog->CenterOn(targetTiles[candidateOrdinal]);
+      targetOrigins[candidateOrdinal] = mapDialog->viewportOrigin;
+    }
+    mapDialog->CenterOn(targetSeaTile);
+
+    RECT* legendRect = &description->legendRects[selectedProfile];
+    int clickX = (legendRect->left + legendRect->right) / 2;
+    int clickY = (legendRect->top + legendRect->bottom) / 2;
+    int centeredClickCount = 0;
+    bool observedCounterWrap = false;
+    int clickLimit = candidateCount + 3;
+    for (int clickOrdinal = 0; clickOrdinal < clickLimit && centeredClickCount < candidateCount + 1;
+         ++clickOrdinal) {
+      unsigned short counterBefore = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
+      CPoint originBefore = mapDialog->viewportOrigin;
+      if (!RuntimeUiDriver::ClickViewPointThroughNativeMessages(description, clickX, clickY)) {
+        FailScenario("\"prospector legend target traversal lost its native click path\"");
+        return false;
+      }
+      unsigned short counterAfter = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
+      if (counterBefore < candidateCount) {
+        if (counterAfter != counterBefore + 1 ||
+            !SameMapOrigin(mapDialog->viewportOrigin, targetOrigins[counterBefore])) {
+          FailScenario("\"prospector legend click did not center its indexed retail target\"");
+          return false;
+        }
+        ++centeredClickCount;
+      } else {
+        if (counterAfter != counterBefore % candidateCount ||
+            !SameMapOrigin(mapDialog->viewportOrigin, originBefore)) {
+          FailScenario("\"prospector legend exhaustion did not apply the retail counter reset\"");
+          return false;
+        }
+        observedCounterWrap = true;
+      }
+    }
+    if (!observedCounterWrap || centeredClickCount != candidateCount + 1) {
+      FailScenario("\"prospector legend selection did not cycle through the first tile again\"");
+      return false;
+    }
+    return true;
+  }
+
   void VerifyProspectorOrdersAndCursors() {
     for (int index = 0; index < 0x36; ++index) {
       if (g_pViewMgr->turnEventCursors[index] == 0) {
@@ -476,6 +599,10 @@ private:
     if (mapDialog->nativeWindow50 == 0 || mapDialog->nativeWindow50->m_hWnd == 0) {
       SetGWorld(savedSurface, savedSurfaceFlags);
       FailScenario("\"strategic map has no native mouse-routing host\"");
+      return;
+    }
+    if (!VerifyProspectorLegendCameraCycling(mapView, mapDialog)) {
+      SetGWorld(savedSurface, savedSurfaceFlags);
       return;
     }
 

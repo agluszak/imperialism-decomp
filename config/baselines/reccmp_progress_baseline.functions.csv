@@ -5494,9 +5494,9 @@ address|matching|name
 0x58f050|0.5714285714285714|TCivDescription::CreateObject
 0x58f0f0|1.0|TCivDescription::GetRuntimeClass
 0x58f110|0.782608695652174|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
-0x58f1a0|0.232|TCivDescription::DoMouseCommand
+0x58f1a0|0.3471698113207547|TCivDescription::DoMouseCommand
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-0x58f550|0.5664335664335665|TCivDescription::Draw
+0x58f550|0.5684210526315789|TCivDescription::Draw
 0x58f7b0|0.6032171581769437|TCivDescription::DrawEngineer
 0x58fec0|0.4918032786885246|TCivDescription::DrawProspector
 0x5903c0|0.4519774011299435|TCivDescription::DrawDeveloper
