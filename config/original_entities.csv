@@ -3253,8 +3253,7 @@ address|name|symbol|size|type|prototype|provenance
 50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
-50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||422|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
-50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|uint InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)|
+50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||944|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
 50ec60|Province::Province||18|function|Province* __thiscall Province::Province(void)|construction+shared_city_record_layout
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f0e0|TMapMgr::ReadInRGBMap||210|function|void __thiscall TMapMgr::ReadInRGBMap(MapPixelSourceView const * source)|curated
@@ -3820,7 +3819,7 @@ address|name|symbol|size|type|prototype|provenance
 537610|TNavyMission::FitnessOf||530|function|float FitnessOf(TShip* candidate, float* targetProfile)|
 5378c0|TNavyMission::IndustrialCostOfNeeds||34|function|float IndustrialCostOfNeeds()|
 537900|BuildNavyOrderCategoryVectorForNationWithExclusion||424|function|undefined BuildNavyOrderCategoryVectorForNationWithExclusion()|
-537b20|IltTarget_00537b20||253|function|undefined IltTarget_00537b20()|
+537b20|TNavyMission::AccumulateShipCategoryVectorWithDistanceDecay||253|function|void TNavyMission::AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector, char positive)|
 537c60|AccumulateNavyOrderCategoryVectorWithScale||166|function|undefined AccumulateNavyOrderCategoryVectorWithScale()|
 537d40|BuildMissionQueuedOrderCategoryVector||283|function|undefined BuildMissionQueuedOrderCategoryVector()|
 537eb0|ComputeMissionQueuedOrderSimilarityForTargetNation||108|function|undefined ComputeMissionQueuedOrderSimilarityForTargetNation()|
@@ -4408,7 +4407,7 @@ address|name|symbol|size|type|prototype|provenance
 558860|stretch<TZone*>::operator[]||117|function|TZone ** __thiscall operator[](unsigned int index)|template
 558960|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes||3485|function|void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode)|
 559a70|GetMapContextActionCode||260|function|int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags)|
-559bd0|IltTarget_00559bd0||393|function|undefined IltTarget_00559bd0()|
+559bd0|GetActiveMapOrderEntryActionCode||393|function|int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags)|
 559dd0|TNavyMgr::ActionCursor||29|function|unsigned short TNavyMgr::ActionCursor(short nTileIndex, int nInputFlags)|
 559e00|TNavyMgr::SelectionCursor||423|function|unsigned short TNavyMgr::SelectionCursor(short nTileIndex, int nInputFlags)|
 55a020|TNavyMgr::SelectionClick||215|function|bool TNavyMgr::SelectionClick(short nTileIndex, int nInputFlags)|

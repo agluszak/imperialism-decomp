@@ -5,6 +5,18 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-29: repair punctured TMapMgr::AllocateAndResetTerrainAndCityScoreTables
+
+The DB carried a punctured body: `0x0050e8b0` was recorded as 422 bytes with a bogus
+standalone function `InitializeUMapAuxEntryDefaultsAndSharedNameFields` claiming the
+tail at `0x0050ea56` (the fragment decompiled with `unaff_ESI`/`unaff_EBP` inputs —
+the mid-function tell). Deleted the fragment function and its label, extended
+`0x0050e8b0`'s body to `0x0050ec5f` (944 bytes, up to `Province::Province`), and
+mirrored the fix in `config/original_entities.csv` (row size 422 -> 944, fragment row
+deleted). Found via `check-function-extents` (`last insn PUSH 0x1c7` mid-assert at the
+recorded boundary). Applied with a one-off pyghidra transaction, persisted with
+`just export-project`.
+
 ## 2026-07-26 (latest): QuickDraw sentinel dynamic-initializer label
 
 Renamed the Ghidra function at `0x00493f90` from the stale behavioral label
