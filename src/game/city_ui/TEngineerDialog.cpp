@@ -225,7 +225,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     }
   }
 
-  short layoutY = 0x52;
+  short layoutY = 0x28;
   int optionButtonSize[2] = {0x26, 0x20};
   int optionLabelSize[2] = {0xec, 0x26};
 
@@ -248,6 +248,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     fortLabel->BuildCityViewProductionControls_Impl(0x1c20,
                                                     static_cast<short>(homeProv->fortLevel03 + 3));
     fortLabel->CenterVertically(0);
+    layoutY = 0x52;
   }
 
   // Rail up/down button plus the accumulated fort-production TIconBar rows.
@@ -312,7 +313,6 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   }
 
   // Cancel button.
-  layoutY = static_cast<short>(layoutY + 0x1e);
   TUpDownPictureButton* cancelBtn = new TUpDownPictureButton();
   int cancelOff[2] = {0x11, layoutY - 2};
   int cancelSize[2] = {0x3d, 0x18};
@@ -320,6 +320,8 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   cancelBtn->controlTag = IMPERIALISM_FOURCC('c', 'n', 'c', 'l');
   cancelBtn->eventNumber60 = 0x22;
   cancelBtn->SetState(1, 0);
+
+  layoutY = static_cast<short>(layoutY + 0x1e);
 
   TWindow* window = GetWindow();
   if (window == 0) {

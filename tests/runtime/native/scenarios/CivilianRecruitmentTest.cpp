@@ -176,6 +176,9 @@ public:
   bool RecordsGameFlow() const override {
     return true;
   }
+  bool RequiresScenarioUiSnapshot() const override {
+    return true;
+  }
 
   void OnMapReadyWithoutCapitalSelection() override {
     spawnedCivilian = 0;
@@ -1305,13 +1308,14 @@ private:
     if (titleText.IsEmpty() || optionButtonCount == 0 || optionLabelCount != optionButtonCount ||
         nonemptyOptionLabelCount != optionLabelCount || dialog->frameHeight38 <= 0x46 ||
         modal->frameHeight38 != dialog->frameHeight38 || cancel->ownerLocalX != 0x11 ||
-        cancel->ownerLocalY != dialog->frameHeight38 - 2 || cancel->frameWidth34 != 0x3d ||
+        cancel->ownerLocalY != dialog->frameHeight38 - 0x20 || cancel->frameWidth34 != 0x3d ||
         cancel->frameHeight38 != 0x18 ||
         modal->GetDialogBehavior()->defaultCommandCode != kControlTagCncl) {
       FailScenario("\"engineer dialog controls were not laid out and resized like retail\"");
       return;
     }
     engineerDialogObserved = true;
+    CaptureScenarioUiSnapshot(g_pViewMgr->currentTurnEventCode, modal);
     RecordHandledModal("engineer_construction_options");
     if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagCncl)) {
       FailScenario("\"engineer construction dialog cancel control could not be activated\"");
