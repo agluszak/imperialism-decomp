@@ -744,19 +744,27 @@ def _direct_call_abis(
     manager = original_program.getFunctionManager()
     factory = original_program.getAddressFactory()
     output: dict[int, DirectCallABI] = {}
+    priorities: dict[int, tuple[bool, bool, int]] = {}
     for entry, original in original_functions.items():
         function = manager.getFunctionAt(factory.getAddress(hex(entry)))
         if function is None:
             continue
+        thunked = function.getThunkedFunction(True)
+        if thunked is not None:
+            function = thunked
         parameters = list(function.getParameters())
         has_this = any(
             bool(parameter.isAutoParameter()) or str(parameter.getName()) == "this"
             for parameter in parameters
         )
-        output[original] = DirectCallABI(
+        abi = DirectCallABI(
             parameter_count=len(parameters),
             has_this=has_this,
         )
+        priority = (entry == original, has_this, len(parameters))
+        if priority > priorities.get(original, (False, False, -1)):
+            output[original] = abi
+            priorities[original] = priority
     return output
 
 

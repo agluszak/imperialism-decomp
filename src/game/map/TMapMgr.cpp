@@ -2006,7 +2006,7 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
   if (g_pSimMgr->multiplayerSessionRole == 1) {
-    g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
+    g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(cityRecordIndex,
                                                          static_cast<short>(newNationTag));
   }
 }
