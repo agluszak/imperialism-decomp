@@ -19,6 +19,7 @@
 #include "game/globals/tactical_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/globals/view_registries.h"
+#include "game/gfx/CDib.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
@@ -32,6 +33,7 @@
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TUpDownPictureButton.h"
 #include "game/ui_tags_city.h"
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/ui_widgets/TCivToolbar.h"
@@ -117,6 +119,19 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
   *outWidth = view->frameWidth34;
   *outHeight = view->frameHeight38;
   return true;
+}
+
+bool BitmapHasPixelVariation(CDib* bitmap) {
+  if (bitmap == 0 || bitmap->m_dibBits == 0 || bitmap->m_pixelBytes <= 1) {
+    return false;
+  }
+  unsigned char* pixels = static_cast<unsigned char*>(bitmap->m_dibBits);
+  for (int index = 1; index < bitmap->m_pixelBytes; ++index) {
+    if (pixels[index] != pixels[0]) {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool CompletedFarmerImprovementChangesTilePixels(TMapDialog* mapDialog, short tileIndex,
@@ -1273,6 +1288,11 @@ private:
       FailScenario("\"engineer construction dialog does not match the retail resource tree\"");
       return;
     }
+    if (cancel->IsKindOf(RUNTIME_CLASS(TUpDownPictureButton)) == 0) {
+      FailScenario("\"engineer close control is not the retail picture-button class\"");
+      return;
+    }
+    TUpDownPictureButton* cancelButton = static_cast<TUpDownPictureButton*>(cancel);
 
     CString titleText;
     title->CopyTextTo(&titleText);
@@ -1309,14 +1329,23 @@ private:
         nonemptyOptionLabelCount != optionLabelCount || dialog->frameHeight38 <= 0x46 ||
         modal->frameHeight38 != dialog->frameHeight38 || cancel->ownerLocalX != 0x11 ||
         cancel->ownerLocalY != dialog->frameHeight38 - 0x20 || cancel->frameWidth34 != 0x3d ||
-        cancel->frameHeight38 != 0x18 ||
+        cancel->frameHeight38 != 0x18 || cancelButton->glyphBase84 != 0x24c4 ||
+        cancelButton->cachedBitmap == 0 || cancelButton->IsActionable() == 0 ||
         modal->GetDialogBehavior()->defaultCommandCode != kControlTagCncl) {
       FailScenario("\"engineer dialog controls were not laid out and resized like retail\"");
       return;
     }
-    engineerDialogObserved = true;
+    if (!BitmapHasPixelVariation(cancelButton->cachedBitmap)) {
+      FailScenario("\"engineer close resource does not contain the retail bitmap pixels\"");
+      return;
+    }
     CaptureScenarioUiSnapshot(g_pViewMgr->currentTurnEventCode, modal);
+    engineerDialogObserved = true;
     RecordHandledModal("engineer_construction_options");
+    if (HoldAtScenarioScreen("engineer")) {
+      RequestScenarioTick();
+      return;
+    }
     if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagCncl)) {
       FailScenario("\"engineer construction dialog cancel control could not be activated\"");
       return;
