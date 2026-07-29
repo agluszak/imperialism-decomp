@@ -341,6 +341,12 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::SwitchPages() {
+  TPageView* hiddenPage1;
+  TPageView* hiddenPage2;
+  TTradePageSellView* visibleSellPage;
+  TTradePageBuyView* visibleBuyPage;
+  short pictureResourceId;
+
   if (!alternatePageMode) {
     TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
@@ -362,9 +368,15 @@ void TDealBookPicture::SwitchPages() {
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+
+    hiddenPage1 = soldTradesView;
+    hiddenPage2 = boughtTradesView;
+    visibleSellPage = sellPageView;
+    visibleBuyPage = buyPageView;
+    pictureResourceId = 0x2263;
   } else {
-    sellPageView->RebuildNationOfferRowsForCategory(-1);
     buyPageView->RebuildNationBidRowsForCategory(-1);
+    sellPageView->RebuildNationOfferRowsForCategory(-1);
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
@@ -392,31 +404,32 @@ void TDealBookPicture::SwitchPages() {
 
     TView* tabsControl2 = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
+
+    hiddenPage1 = buyPageView;
+    hiddenPage2 = sellPageView;
+    visibleSellPage = soldTradesView;
+    visibleBuyPage = boughtTradesView;
+    pictureResourceId = 0x2260;
   }
 
-  // Capture the four commodity sub-views' layouts (the original caches all four distinct
-  // views -- bought/sold trades and the buy/sell pages -- not the buy page twice).
   CPoint captureBuffer1(1000, 1000);
-  boughtTradesView->Locate(captureBuffer1, 1);
+  hiddenPage1->Locate(captureBuffer1, 1);
   CPoint captureBuffer2(1000, 1000);
-  soldTradesView->Locate(captureBuffer2, 1);
+  hiddenPage2->Locate(captureBuffer2, 1);
   CPoint captureBuffer3(0x41, 0x59);
-  sellPageView->Locate(captureBuffer3, 1);
+  visibleSellPage->Locate(captureBuffer3, 1);
   CPoint captureBuffer4(0x13a, 0x59);
-  buyPageView->Locate(captureBuffer4, 1);
+  visibleBuyPage->Locate(captureBuffer4, 1);
 
-  cachedSellPageView = sellPageView;
-  cachedBuyPageView = buyPageView;
-  if (cachedBuyPageView->pageCount < cachedSellPageView->pageCount) {
+  cachedSellPageView = visibleSellPage;
+  cachedBuyPageView = visibleBuyPage;
+  if (cachedBuyPageView->pageCount > cachedSellPageView->pageCount) {
     lastPageIndex = cachedBuyPageView->pageCount - 1;
   } else {
     lastPageIndex = cachedSellPageView->pageCount - 1;
   }
 
-  // Reapply the dialog's own picture and re-run the page selection. boughtTradesView is
-  // a control pointer, not the bitmap id. alternatePageMode flips before the trailing
-  // ShowPage call.
-  SetPictureResourceIdAndRefresh(selectedNationSlot, 1);
+  SetPictureResourceIdAndRefresh(pictureResourceId, 1);
   alternatePageMode = !alternatePageMode;
   ShowPage(0, selectedNationSlot);
 }

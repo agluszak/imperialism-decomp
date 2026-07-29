@@ -5843,7 +5843,7 @@ address|matching|name
 0x5baf70|0.48205128205128206|TDealBookPicture::ShowPage
 0x5bb2e0|0.30985915492957744|TDealBookPicture::CalculatePages
 0x5bbc30|0.3106796116504854|TDealBookPicture::DoEvent
-0x5bc0d0|0.5084745762711864|TDealBookPicture::SwitchPages
+0x5bc0d0|0.5391014975041597|TDealBookPicture::SwitchPages
 0x5bc690|0.6666666666666666|TDealTabControl::CreateObject
 0x5bc760|1.0|TDealTabControl::GetRuntimeClass
 0x5bc780|1.0|TDealTabControl::Setup
@@ -6921,7 +6921,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|0.9787234042553191|CWnd::OnNotify
+0x6091d9|1.0|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

@@ -16,8 +16,11 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_manifest_tags.h"
+#include "game/trade_ui/TDealBookPicture.h"
 #include "game/trade_ui/TOfferDeskPicture.h"
 #include "game/trade_ui/TDealTabControl.h"
+#include "game/trade_ui/TTradePageBuyView.h"
+#include "game/trade_ui/TTradePageSellView.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TNumberText.h"
 #include "game/ui_core/TStaticText.h"
@@ -41,11 +44,12 @@ class TradeScreenTestCase : public RandomGameScenario {
 public:
   TradeScreenTestCase()
       : phase(kActivateDiplomacyScreen), warTargetNation(-1), warPolicyBeforeAction(-1),
-        selectedRow(0), selectedSellRow(0), initialBidBitmap(0), initialSellValue(0),
-        initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false),
-        verifiedOfferPresentation(false), exercisedOfferBookmark(false),
-        offerRegressionPosed(false), offerBookmarkRow(0), offerRegressionCompleted(false),
-        offerAcceptancePosed(false), offerAcceptanceCompleted(false) {}
+        selectedRow(0), selectedSellRow(0), selectedBidCommodity(-1), selectedSellCommodity(-1),
+        initialBidBitmap(0), initialSellValue(0), initialBarValue(0), baselineEconomicTurn(0),
+        handledOffers(0), leftDealBook(false), verifiedOfferPresentation(false),
+        exercisedOfferBookmark(false), offerRegressionPosed(false), offerBookmarkRow(0),
+        offerRegressionCompleted(false), offerAcceptancePosed(false),
+        offerAcceptanceCompleted(false), verifiedPostedTradeDirections(false) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -367,7 +371,7 @@ private:
       return;
     }
     TTradeOrderPicture* bid = 0;
-    for (short commodity = 0; commodity < 0x11; ++commodity) {
+    for (short commodity = kResourceIron; commodity <= kResourceIron; ++commodity) {
       TTradeCluster* row = static_cast<TTradeCluster*>(
           mainView->ResolveControlByTag(kTradeSellPropagationTags[commodity]));
       TTradeOrderPicture* candidate =
@@ -376,6 +380,7 @@ private:
       if (candidate != 0 && candidate->IsActionable() != 0 &&
           (candidate->glyphBase84 == 0x840 || candidate->glyphBase84 == 0x84e)) {
         selectedRow = row;
+        selectedBidCommodity = commodity;
         bid = candidate;
         break;
       }
@@ -427,10 +432,11 @@ private:
           row != 0 ? static_cast<TTradeOrderPicture*>(row->ResolveControlByTag(kControlTagOffr))
                    : 0;
       TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-      if (candidate != 0 && candidate->IsActionable() != 0 &&
+      if (commodity != selectedBidCommodity && candidate != 0 && candidate->IsActionable() != 0 &&
           (candidate->glyphBase84 == 0x842 || candidate->glyphBase84 == 0x850) &&
           activeNation != 0 && QueryNationMetricBySlot(activeNation, row->tradeMetricSlot) > 1) {
         selectedSellRow = row;
+        selectedSellCommodity = commodity;
         offer = candidate;
         break;
       }
@@ -580,6 +586,49 @@ private:
   void WaitForMap() {
     TView* mainView = CurrentMainView();
     if (offerAcceptanceCompleted && g_pViewMgr->currentTurnEventCode == kTurnEventDealBook) {
+      if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TDealBookPicture)) == 0) {
+        FailScenario("\"trade completion did not construct the Deal Book\"");
+        return;
+      }
+      TDealBookPicture* dealBook = static_cast<TDealBookPicture*>(mainView);
+      if (dealBook->cachedSellPageView != dealBook->soldTradesView ||
+          dealBook->cachedBuyPageView != dealBook->boughtTradesView ||
+          dealBook->cachedSellPageView->ownerLocalX != 0x41 ||
+          dealBook->cachedBuyPageView->ownerLocalX != 0x13a) {
+        FailScenario("\"Deal Book opened with bought and sold history pages conflated\"");
+        return;
+      }
+      TDealTabControl* tabs =
+          static_cast<TDealTabControl*>(dealBook->ResolveControlByTag(kControlTagTabs));
+      bool categoryClicked =
+          tabs != 0 && RuntimeUiDriver::ClickViewPointThroughNativeMessages(
+                           tabs, tabs->frameWidth34 / 2, tabs->rowHeightPixels / 2);
+      if (!categoryClicked || !dealBook->alternatePageMode ||
+          dealBook->cachedSellPageView != dealBook->sellPageView ||
+          dealBook->cachedBuyPageView != dealBook->buyPageView ||
+          dealBook->cachedSellPageView->ownerLocalX != 0x41 ||
+          dealBook->cachedBuyPageView->ownerLocalX != 0x13a || dealBook->glyphBase84 != 0x2263) {
+        char failure[220];
+        wsprintfA(failure,
+                  "\"Deal Book category pages were wrong: click %d mode %d sellcache %d "
+                  "buycache %d sellx %d buyx %d bitmap %d\"",
+                  categoryClicked, dealBook->alternatePageMode,
+                  dealBook->cachedSellPageView == dealBook->sellPageView,
+                  dealBook->cachedBuyPageView == dealBook->buyPageView,
+                  dealBook->cachedSellPageView->ownerLocalX,
+                  dealBook->cachedBuyPageView->ownerLocalX, dealBook->glyphBase84);
+        FailScenario(failure);
+        return;
+      }
+      if (!RuntimeUiDriver::ClickControlThroughNativeMessages(dealBook, kControlTagMark) ||
+          dealBook->alternatePageMode || dealBook->cachedSellPageView != dealBook->soldTradesView ||
+          dealBook->cachedBuyPageView != dealBook->boughtTradesView ||
+          dealBook->cachedSellPageView->ownerLocalX != 0x41 ||
+          dealBook->cachedBuyPageView->ownerLocalX != 0x13a || dealBook->glyphBase84 != 0x2260) {
+        FailScenario(
+            "\"Deal Book history control did not restore distinct bought and sold pages\"");
+        return;
+      }
       g_pSimMgr->StartNextPhase();
       RequestScenarioTick();
       return;
@@ -596,6 +645,17 @@ private:
       RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
       return;
+    }
+    if (!verifiedPostedTradeDirections) {
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      if (activeNation == 0 || selectedBidCommodity != kResourceIron ||
+          activeNation->GetTradeOffersFor(selectedBidCommodity) != -1 ||
+          selectedSellCommodity < 0 ||
+          activeNation->GetTradeOffersFor(selectedSellCommodity) <= 0) {
+        FailScenario("\"Board of Trade conflated the posted buy and sell directions\"");
+        return;
+      }
+      verifiedPostedTradeDirections = true;
     }
     if (offerAcceptanceCompleted) {
       if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {
@@ -795,6 +855,39 @@ private:
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
+      TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+      short bidEntryCount = activeNation->GetTrackedSlotEntryCountLow(selectedBidCommodity);
+      short sellEntryCount = activeNation->GetTrackedSlotEntryCountLow(selectedSellCommodity);
+      bool bidDirectionValid = bidEntryCount > 0;
+      bool sellDirectionValid = sellEntryCount > 0;
+      short kind;
+      short value;
+      short targetNation;
+      int payload;
+      for (short ordinal = 1; ordinal <= bidEntryCount; ++ordinal) {
+        activeNation->ReadTrackedSlotEntryFields(selectedBidCommodity, ordinal, &kind, &value,
+                                                 &targetNation, &payload);
+        if (kind != kTrackedSlotOfferEntry) {
+          bidDirectionValid = false;
+        }
+      }
+      for (short sellOrdinal = 1; sellOrdinal <= sellEntryCount; ++sellOrdinal) {
+        activeNation->ReadTrackedSlotEntryFields(selectedSellCommodity, sellOrdinal, &kind, &value,
+                                                 &targetNation, &payload);
+        if (kind != kTrackedSlotAcceptEntry) {
+          sellDirectionValid = false;
+        }
+      }
+      if (!bidDirectionValid || !sellDirectionValid) {
+        char failure[180];
+        wsprintfA(failure,
+                  "\"trade result directions were conflated: buy slot %d count %d valid %d, sell "
+                  "slot %d count %d valid %d\"",
+                  selectedBidCommodity, bidEntryCount, bidDirectionValid, selectedSellCommodity,
+                  sellEntryCount, sellDirectionValid);
+        FailScenario(failure);
+        return;
+      }
       leftDealBook = true;
       g_pSimMgr->StartNextPhase();
       RequestScenarioTick();
@@ -822,6 +915,8 @@ private:
   short warPolicyBeforeAction;
   TTradeCluster* selectedRow;
   TTradeCluster* selectedSellRow;
+  short selectedBidCommodity;
+  short selectedSellCommodity;
   short initialBidBitmap;
   int initialSellValue;
   short initialBarValue;
@@ -835,6 +930,7 @@ private:
   bool offerRegressionCompleted;
   bool offerAcceptancePosed;
   bool offerAcceptanceCompleted;
+  bool verifiedPostedTradeDirections;
 };
 
 TradeScreenTestCase g_test;

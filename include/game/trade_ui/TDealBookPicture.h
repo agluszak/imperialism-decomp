@@ -52,9 +52,9 @@ public:
   // "<season> <year>" header text for 'rtil' and loads the tab-strip's shared message.
   // On subsequent calls, resets both trade pages to their unselected state (-1), refreshes
   // 'titL'/'rtil"'s labels from the string table, resets 'mark', and reloads the tab strip.
-  // Either way, ends by capturing 4 subviews' layouts, re-caching the sell view pointer,
-  // recomputing lastPageIndex from the smaller page count, reapplying the
-  // dialog's own picture resource, and flipping the "already initialized" flag.
+  // Either way, ends by hiding the inactive pair, placing the active sell/buy pair at
+  // the left/right page positions, recomputing lastPageIndex from the larger page count,
+  // applying the mode's picture resource, and flipping the mode flag.
   void SwitchPages();
   // 0x5bac50 -- re-caches the six commodity sub-controls (guob/dlos/uobt/lost) into
   // boughtTradesView..cachedBuyPageView, resets the 'mark'/'tabs' labels and the page-mode flag, refreshes
