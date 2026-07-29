@@ -290,16 +290,15 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagPurc));
   purchaseControl->AssertValid();
   detailedErrorFlag = 1;
-  short purchaseLimit = proposedAmount;
   if (proposedAmount > maxAmount) {
-    purchaseLimit = maxAmount;
+    proposedAmount = maxAmount;
     detailedErrorFlag = 0;
   }
-  purchaseControl->maximumValue = purchaseLimit;
+  purchaseControl->maximumValue = proposedAmount;
   BuildUiTextStyleDescriptor(&style, 0, 0xe, 0x2b67);
   purchaseControl->InstallTextStyle(style, 0);
   purchaseControl->SetTextAlignmentAndMaybeRefresh(1, 0);
-  purchaseControl->SetControlValue(maxAmount, 0);
+  purchaseControl->SetControlValue(proposedAmount, 0);
   purchaseControl->BecomeTarget();
   purchaseControl->GetCurrentText(&proposedAmountText);
   purchaseControl->SetEditSelectionAndScrollCaret(

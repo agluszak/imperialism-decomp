@@ -28,6 +28,38 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_text_label_helpers_decls.h"
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+namespace {
+int g_runtimeCapitolDangerEvaluationCount;
+bool g_runtimeCapitolDangerEvaluatedAtPeace;
+int g_runtimeCapitolDangerThreatMask;
+int g_runtimeCapitolDangerDisplayedMask;
+} // namespace
+
+void ResetCapitolDangerWarningObservationForRuntimeTest() {
+  g_runtimeCapitolDangerEvaluationCount = 0;
+  g_runtimeCapitolDangerEvaluatedAtPeace = false;
+  g_runtimeCapitolDangerThreatMask = 0;
+  g_runtimeCapitolDangerDisplayedMask = 0;
+}
+
+int CapitolDangerWarningEvaluationCountForRuntimeTest() {
+  return g_runtimeCapitolDangerEvaluationCount;
+}
+
+bool WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest() {
+  return g_runtimeCapitolDangerEvaluatedAtPeace;
+}
+
+int CapitolDangerThreatMaskForRuntimeTest() {
+  return g_runtimeCapitolDangerThreatMask;
+}
+
+int CapitolDangerDisplayedMaskForRuntimeTest() {
+  return g_runtimeCapitolDangerDisplayedMask;
+}
+#endif
+
 // SYNTHETIC: IMPERIALISM 0x00500550
 // THelpMgr::CreateObject
 
@@ -661,14 +693,42 @@ char ShowTurnAlertsForActiveNation() {
     return 0;
   }
 
-  if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(0) != 0) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  bool nationAtWar = false;
+  for (int otherNation = 0; otherNation < 7; ++otherNation) {
+    if (otherNation != nationId &&
+        g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId, otherNation) != 0) {
+      nationAtWar = true;
+    }
+  }
+  const char landCapitolThreat = g_apNationStates[nationId]->IsCapitolThreatened(0);
+  ++g_runtimeCapitolDangerEvaluationCount;
+  g_runtimeCapitolDangerEvaluatedAtPeace = !nationAtWar;
+  g_runtimeCapitolDangerThreatMask = landCapitolThreat != 0 ? 1 : 0;
+  g_runtimeCapitolDangerDisplayedMask = 0;
+  if (landCapitolThreat != 0) {
+#else
+  if (g_apNationStates[nationId]->IsCapitolThreatened(0) != 0) {
+#endif
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    g_runtimeCapitolDangerDisplayedMask |= 1;
+#endif
     g_pSimMgr->GetString(0x2753, 0x28, &titleText);
     g_pSimMgr->GetString(0x2753, 0x29, &bodyText);
     g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),
                              g_ptNationComparisonModalMessage, 1, 0);
     anyAlertShown = 1;
   }
-  if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(1) != 0) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  const char navalCapitolThreat = g_apNationStates[nationId]->IsCapitolThreatened(1);
+  if (navalCapitolThreat != 0) {
+    g_runtimeCapitolDangerThreatMask |= 2;
+#else
+  if (g_apNationStates[nationId]->IsCapitolThreatened(1) != 0) {
+#endif
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    g_runtimeCapitolDangerDisplayedMask |= 2;
+#endif
     g_pSimMgr->GetString(0x2753, 0x2a, &titleText);
     g_pSimMgr->GetString(0x2753, 0x2b, &bodyText);
     g_pViewMgr->ModalMessage(3, CString(titleText), CString(bodyText),

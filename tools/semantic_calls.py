@@ -439,6 +439,13 @@ class ExpressionNormalizer:
                         }
                     else:
                         target_value = self.normalize(inputs[0], depth + 1)
+                        normalized_virtual = _normalized_virtual_target(target_value)
+                        if normalized_virtual is not None:
+                            receiver, slot = normalized_virtual
+                            target_value = {
+                                "virtual_slot": slot,
+                                "receiver": receiver,
+                            }
                 arguments = [
                     self.normalize(item, depth + 1) for item in inputs[1:]
                 ]
@@ -543,6 +550,111 @@ def _virtual_target(target: Any) -> tuple[Any, int] | None:
         vtable_definition.getInput(vtable_definition.getNumInputs() - 1)
     )
     return receiver, slot
+
+
+def _normalized_virtual_target(target: Any) -> tuple[Any, int] | None:
+    """Recognize a vtable slot after pointer arithmetic has been normalized."""
+    if not isinstance(target, list) or len(target) != 3 or target[0] != "load":
+        return None
+    pointer = target[2]
+    if not isinstance(pointer, list) or len(pointer) < 4 or pointer[0] != "int_add":
+        return None
+
+    slot = None
+    vtable = None
+    for term in pointer[2:]:
+        if isinstance(term, list) and len(term) == 3 and term[0] == "constant":
+            if slot is not None:
+                return None
+            slot = int(term[2])
+        elif isinstance(term, list) and len(term) == 3 and term[0] == "load":
+            if vtable is not None:
+                return None
+            vtable = term
+        else:
+            return None
+    if slot is None or vtable is None:
+        return None
+    return vtable[2], slot
+
+
+def _canonical_call_value(value: Any) -> Any:
+    """Remove decompiler-only width/filler wrappers from call contracts."""
+    if isinstance(value, dict):
+        return {key: _canonical_call_value(item) for key, item in value.items()}
+    if not isinstance(value, list):
+        return value
+
+    normalized = [_canonical_call_value(item) for item in value]
+    if not normalized:
+        return normalized
+    tag = normalized[0]
+    if not isinstance(tag, str):
+        return normalized
+    if tag in {"int_add", "int_mult"} and len(normalized) >= 4:
+        return _canonical_arithmetic(tag.upper(), int(normalized[1]), normalized[2:])
+    if tag == "multiequal" and len(normalized) >= 4:
+        operand_widths = {
+            int(operand[1])
+            for operand in normalized[2:]
+            if isinstance(operand, list)
+            and len(operand) >= 2
+            and isinstance(operand[1], int)
+        }
+        if len(operand_widths) == 1:
+            normalized[1] = operand_widths.pop()
+    if tag in {item.lower() for item in COMMUTATIVE_OPS} | {"multiequal"}:
+        return [*normalized[:2], *sorted(normalized[2:], key=canonical_json)]
+    if tag == "call_result" and len(normalized) == 4:
+        return normalized[:3]
+    if tag == "piece" and len(normalized) == 4:
+        upper = normalized[2]
+        stale_upper = isinstance(upper, list) and upper and upper[0] == "indirect"
+        if (
+            isinstance(upper, list)
+            and len(upper) == 4
+            and upper[0] == "subpiece"
+            and isinstance(upper[2], list)
+            and len(upper[2]) == 4
+            and upper[2][0] == "int_right"
+        ):
+            stale_upper = True
+        if stale_upper:
+            return normalized[3]
+    if tag == "subpiece" and len(normalized) == 4:
+        offset = normalized[3]
+        inner = normalized[2]
+        if (
+            isinstance(offset, list)
+            and len(offset) == 3
+            and offset[0] == "constant"
+            and offset[2] == 0
+            and isinstance(inner, list)
+            and inner
+            and inner[0] == "call_result"
+        ):
+            return inner
+    if tag == "int_zext" and len(normalized) == 3:
+        inner = normalized[2]
+        if (
+            isinstance(inner, list)
+            and inner
+            and inner[0]
+            in {
+                "bool_and",
+                "bool_negate",
+                "bool_or",
+                "bool_xor",
+                "int_equal",
+                "int_less",
+                "int_lessequal",
+                "int_notequal",
+                "int_sless",
+                "int_slessequal",
+            }
+        ):
+            return inner
+    return normalized
 
 
 def _external_identity(function: Any) -> dict[str, str] | None:
@@ -678,8 +790,14 @@ def extract_calls(
                         "receiver": normalizer.normalize(receiver),
                     }
                 else:
-                    kind = "indirect"
                     target_value = normalizer.normalize(target)
+                    normalized_virtual = _normalized_virtual_target(target_value)
+                    if normalized_virtual is not None:
+                        receiver, slot = normalized_virtual
+                        kind = "virtual"
+                        target_value = {"slot": slot, "receiver": receiver}
+                    else:
+                        kind = "indirect"
             arguments = [
                 normalizer.normalize(operation.getInput(index))
                 for index in range(1, operation.getNumInputs())
@@ -688,6 +806,8 @@ def extract_calls(
                 arguments = _canonical_direct_arguments(
                     target_value, arguments, direct_call_abis
                 )
+            target_value = _canonical_call_value(target_value)
+            arguments = [_canonical_call_value(argument) for argument in arguments]
             calls.append(
                 {
                     "kind": kind,
@@ -754,6 +874,11 @@ def compare_extracted_calls(
         extra=_counter_rows(recompiled_counter - original_counter),
     )
     return result
+
+
+def _reccmp_proves_call_contract(status: dict[str, Any] | None) -> bool:
+    """Use reccmp's completed machine-level proof before heuristic p-code."""
+    return status is not None and status.get("status") in {"exact", "effective"}
 
 
 def _build_maps(
@@ -1135,6 +1260,13 @@ def compare_programs(
             row.update(status="unpaired", reason="missing_reccmp_pair")
             return row
         row["recompiled"] = f"0x{pair.recompiled:x}"
+        if _reccmp_proves_call_contract(row["reccmp"]):
+            row.update(
+                status="pass",
+                reason="reccmp_proven",
+                call_count_status="pass",
+            )
+            return row
         original_high, original_error = _decompile_function(
             original_decompiler, original_program, claim.address, timeout
         )

@@ -622,7 +622,7 @@ private:
     }
     if (!offerRegressionPosed) {
       short activeNation = g_pSimMgr->GetActiveNationId();
-      g_pViewMgr->DispatchNationActionToMainControl(activeNation, activeNation, 1, 1,
+      g_pViewMgr->DispatchNationActionToMainControl(activeNation, activeNation, 3, 17,
                                                     kResourceFood);
       offerRegressionPosed = true;
       EnterScenarioStep("presenting_offer_sheet_regression", "pose_retail_offer_sheet_action");
@@ -633,6 +633,8 @@ private:
         static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kControlTagSeas));
     TStaticText* offerText = static_cast<TStaticText*>(
         mainView->ResolveControlByTag(IMPERIALISM_FOURCC('o', 'f', 'f', 'e')));
+    TNumberText* purchaseControl =
+        static_cast<TNumberText*>(mainView->ResolveControlByTag(kControlTagPurc));
     TView* tabs = mainView->ResolveControlByTag(kControlTagTabs);
     CString displayedOffer;
     CString sellerName = g_pSimMgr->LoadNormalizedCredentialName(g_pSimMgr->GetActiveNationId());
@@ -643,6 +645,10 @@ private:
         strstr(static_cast<LPCSTR>(displayedOffer), static_cast<LPCSTR>(sellerName)) == 0 ||
         season == 0 || season->textStyle78.textColor != PALETTEINDEX(0)) {
       FailScenario("\"offer sheet did not present its retail seller text and white season label\"");
+      return;
+    }
+    if (purchaseControl == 0 || purchaseControl->value != 3 || purchaseControl->maximumValue != 3) {
+      FailScenario("\"offer sheet did not default the purchase field to the offered amount\"");
       return;
     }
     if (tabs == 0 || tabs->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0) {

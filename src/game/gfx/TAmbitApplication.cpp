@@ -192,20 +192,13 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
                 edgeMask = kMapScrollEdgeRight;
               }
               if (pt.y <= 4) {
-                // The strategic-map backing surface is vertically reflected relative to
-                // the window coordinate system.  Feed the map's "down-row" bit at the
-                // top window edge so the visible viewport moves upward.
-                edgeMask |= kMapScrollEdgeTop;
-              } else if (pt.y >= height - 4) {
                 edgeMask |= kMapScrollEdgeBottom;
+              } else if (pt.y >= height - 4) {
+                edgeMask |= kMapScrollEdgeTop;
               }
               if (edgeMask != 0) {
                 int ticks = GetTickCountDiv16();
-                // The reconstructed software compositor needs longer than the retail three-tick
-                // cadence to finish a full strategic-map repaint. Keep one completed frame
-                // between scroll steps instead of continuously invalidating the dialog and
-                // starving the wood frame and toolbar paints.
-                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 12 < ticks) {
+                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 3 < ticks) {
                   g_lastEdgeAutoScrollTick16 = ticks;
                   edgeScrollTarget48->Scroll(edgeMask);
                   return;

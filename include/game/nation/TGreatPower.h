@@ -225,8 +225,9 @@ public:
   // slot 0x51 — body 0x004dc4c0: status prompt code 0x25 (counter 0 at tick 3) or
   // 0x27 (counter ahead of tick by >4 with treasury >= 10000), else 0.
   virtual short ComputeTreasuryStatusPromptCode(void);
-  // slot 0x52 — 0x004e1c20 dispatches it on the target nation with mode 0/1.
-  virtual char CompareMissionScoreVariantsByMode(int mode);
+  // slot 0x52 — Mac oracle: IsCapitolThreatened(long). Mode 0 compares hostile land
+  // support with local defenders; nonzero mode compares hostile naval control with defense.
+  virtual char IsCapitolThreatened(int mode);
   // slots 0x53/0x54 — both take the advisory message accumulator by pointer and
   // append "\n     <name>" lines for each qualifying zone/town, returning nonzero
   // when anything was appended (RET 4 + AL read at the 0x501270 call sites).
