@@ -38,7 +38,7 @@ protected:
     RT_AWAIT(StrategicMap().HasMiniMap(), kObserveUiStateChanged);
     RT_AWAIT(StrategicMap().HasEndTurnControl(), kObserveUiStateChanged);
 
-    RT_REQUIRE_NOT_NULL(StrategicMap().Dialog());
+    RT_REQUIRE(StrategicMap().HasDialog());
     RT_ACTION("centre the loaded viewport", StrategicMap().SetViewportCell(2, 2));
     RT_REQUIRE(ViewportIsTileAligned());
 

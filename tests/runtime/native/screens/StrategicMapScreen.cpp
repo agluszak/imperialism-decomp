@@ -274,12 +274,53 @@ RuntimeActionResult StrategicMapScreen::ClickArrowUpperHalf(TNumberedArrowButton
   return ClickArrowZone(arrow, false, "return a selected unit");
 }
 
+bool StrategicMapScreen::AllArmyPlacardsPopulated() const {
+  if (ArmyToolbar() == 0) {
+    return false;
+  }
+  for (int category = 0; category < kArmyCategoryCount; ++category) {
+    const TArmyPlacard* placard = ArmyPlacard(category);
+    if (placard == 0 || placard->glyph90 < 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+short StrategicMapScreen::FirstActionableArmyCategory() const {
+  // Category 0 is skipped: it is the aggregate placard, not a selectable garrison category.
+  for (short category = 1; category < kArmyCategoryCount; ++category) {
+    TNumberedArrowButton* arrow = ArmyRatioArrow(category);
+    if (arrow != 0 && arrow->IsActionable() != 0 && arrow->value84 > 0) {
+      return category;
+    }
+  }
+  return -1;
+}
+
+short StrategicMapScreen::ArmyIdleCount(short category) const {
+  const TNumberedArrowButton* arrow = ArmyRatioArrow(category);
+  return arrow != 0 ? arrow->value84 : -1;
+}
+
+RuntimeActionResult StrategicMapScreen::MoveOneIdleUnitOut(short category) {
+  return ClickArrowLowerHalf(ArmyRatioArrow(category));
+}
+
+RuntimeActionResult StrategicMapScreen::ReturnOneUnit(short category) {
+  return ClickArrowUpperHalf(ArmyRatioArrow(category));
+}
+
 TMapUberPicture* StrategicMapScreen::View() const {
   return mapView;
 }
 
 TMapDialog* StrategicMapScreen::Dialog() const {
   return mapView != 0 ? mapView->subview2A8 : 0;
+}
+
+bool StrategicMapScreen::HasDialog() const {
+  return Dialog() != 0;
 }
 
 bool StrategicMapScreen::HasEndTurnControl() const {
