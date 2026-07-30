@@ -1,9 +1,9 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "screens/ArmyBookScreen.h"
 #include "screens/StrategicMapScreen.h"
 
-#include "game/assets/TAssetMgr.h"
 #include "game/core/global_data_tables.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
@@ -12,11 +12,9 @@
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyPlacard.h"
 #include "game/ui_widgets/TArmyToolbar.h"
-#include "game/military/TGarrisonView.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TView.h"
-#include "game/ui_core/TWindow.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
 #include "game/ui_widgets/TNumberedArrowButton.h"
@@ -60,7 +58,12 @@ protected:
     RT_STEP("return the selected unit", StrategicMap().ClickArrowUpperHalf(RatioArrow()));
     RT_REQUIRE_EQ(initialIdleCount, RatioArrowValue());
 
-    RT_REQUIRE(ArmyBookBuildsItsGarrisonPageWithoutDisturbingOwnership());
+    CaptureOwnership();
+    RT_STEP("open the army book", armyBook.Open());
+    RT_STEP("show the capital garrison", armyBook.ShowProvince(capitalProvince));
+    RT_REQUIRE(armyBook.HasUnitSpritePage());
+    RT_STEP("close the army book", armyBook.Close());
+    RT_REQUIRE(OwnershipIsUnchanged());
 
     g_pMapContextActionManager->DoOwnershipChanges();
     RT_PASS();
@@ -116,31 +119,17 @@ private:
     return arrow != 0 ? arrow->value84 : -1;
   }
 
-  bool ArmyBookBuildsItsGarrisonPageWithoutDisturbingOwnership() {
-    short ownerBefore[kCityRecordCount];
+  void CaptureOwnership() {
     for (int index = 0; index < kCityRecordCount; ++index) {
       ownerBefore[index] = g_pGlobalMapState->cityScoreTable[index].ownerNationCode00;
     }
+  }
 
-    TWindow* book = static_cast<TWindow*>(
-        g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
-    if (book == 0) {
-      return false;
-    }
-    TGarrisonView* garrison = GarrisonPageOf(book);
-    if (garrison == 0) {
-      return false;
-    }
-    garrison->StuffValues(capitalProvince);
-    const bool populated = garrison->primaryUnitAtlas84 != 0;
-    book->Close();
-    book->Free();
-    if (!populated) {
-      return false;
-    }
-
-    // MSVC500 predates per-loop `for` scope: a second `int index` in this function would be a
-    // redefinition, so the check loop names its own counter.
+  // Opening and closing the book must not touch province ownership; it is a read-only view, and
+  // a change here would mean the book's teardown is writing through stale state.
+  bool OwnershipIsUnchanged() const {
+    // MSVC500 predates per-loop `for` scope, so a second `int index` in this function would be a
+    // redefinition; this loop names its own counter.
     for (int verified = 0; verified < kCityRecordCount; ++verified) {
       if (g_pGlobalMapState->cityScoreTable[verified].ownerNationCode00 != ownerBefore[verified]) {
         return false;
@@ -149,15 +138,8 @@ private:
     return true;
   }
 
-  // The army book is a standalone TWindow rather than the current main view, so it is resolved
-  // here rather than through a MainViewScreen.
-  TGarrisonView* GarrisonPageOf(TWindow* book) const {
-    TView* page = book->ResolveControlByTag(kControlTagPage);
-    return page != 0 && page->IsKindOf(RUNTIME_CLASS(TGarrisonView)) != 0
-               ? static_cast<TGarrisonView*>(page)
-               : 0;
-  }
-
+  ArmyBookScreen armyBook;
+  short ownerBefore[kCityRecordCount];
   short capitalProvince;
   short arrowCategory;
   short initialIdleCount;
