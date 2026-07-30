@@ -13,19 +13,26 @@ activating real controls and asserts on real game state.
 
 ```sh
 just runtime-new player_buy_order_does_not_sell easy-map   # skeleton + catalog entry
+just runtime-new replays_a_save loaded-map --fixture beginning_of_game.imp
 just runtime-dev  player_buy_order_does_not_sell           # compile what changed, run
 just runtime-test player_buy_order_does_not_sell           # canonical gated path
 ```
 
-A scenario picks a **start point** and overrides `Script()` only:
+A scenario picks a **start point** and overrides `Script()` only. Each base scaffolds its own
+skeleton, because each hands the script a different starting world:
 
-| base | starts at |
-| --- | --- |
-| `EasyMapScriptScenario` | random game, Easy, on the map (no capital selection) |
-| `IntroductoryMapScriptScenario` | Introductory, which also shows the opening newspaper |
-| `CombinedMapScriptScenario` | Normal or above, after the capital is picked |
-| `LoadedMapScriptScenario` | a saved game from a fixture |
-| `ManagersReadyScriptScenario` | managers only: no window, no navigation, no screen |
+| base | starts at | scaffolds |
+| --- | --- | --- |
+| `EasyMapScriptScenario` | random game, Easy, on the map (no capital selection) | map screen available |
+| `IntroductoryMapScriptScenario` | Introductory, which also shows the opening newspaper | map screen available |
+| `CombinedMapScriptScenario` | Normal or above, after the capital is picked | map screen available |
+| `LoadedMapScriptScenario` | a saved game from a fixture | **needs `--fixture FILE`** |
+| `ManagersReadyScriptScenario` | managers only: no window, no navigation, no screen | no screen include, no screen wait |
+
+Every base hands over *past* its own checkpoint, so a script never waits for the screen its base
+just reached — no scenario in the tree opens with `RT_AWAIT_SCREEN`, and no skeleton emits one.
+`loaded-map` without a fixture is refused rather than scaffolded: `RequiresFixture()` is enforced
+by the base, so such a test could only fail with a missing-fixture reason.
 
 Each base fixes its difficulty *and* the checkpoint hook that difficulty implies. Do not
 override `DifficultyLevel`, `OnMapReadyWithoutCapitalSelection` or `OnCombinedMapReady` in a
