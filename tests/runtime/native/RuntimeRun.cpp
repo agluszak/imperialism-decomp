@@ -70,6 +70,7 @@ void RuntimeRun::InitializeFromEnvironment() {
 void RuntimeRun::StartScenario(RuntimeScenario* value) {
   scenario = value;
   progress.Reset(GetTickCount());
+  awaitState.Clear();
   resultAggregate.Reset();
   selectedNationSlot = -1;
   mainWindowHandle = 0;
@@ -116,6 +117,14 @@ void RuntimeRun::RecordAction(const char* action) {
   entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}", ElapsedMs(), PhaseName(),
                action);
   RuntimeJson::AppendArrayItem(actionLog, entry);
+}
+
+RuntimeAwaitState& RuntimeRun::AwaitState() {
+  return awaitState;
+}
+
+const RuntimeAwaitState& RuntimeRun::AwaitState() const {
+  return awaitState;
 }
 
 void RuntimeRun::RecordAssertion(const char* assertionId, const char* failureJson, bool fatal) {

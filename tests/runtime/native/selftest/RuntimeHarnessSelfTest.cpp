@@ -1,4 +1,5 @@
 #include "RuntimeHarnessCore.h"
+#include "RuntimeObservation.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeTurnEventQueue.h"
 
@@ -58,6 +59,78 @@ void TestTransitionsAndHeartbeat() {
   Expect("transition.finish",
          progress.IsFinished() && strcmp(progress.PhaseName(), "finished") == 0,
          "finish transition was not retained");
+}
+
+void TestAwaitState() {
+  RuntimeAwaitState await;
+  Expect("await.initially_clear", !await.IsArmed() && await.Expression()[0] == 0,
+         "await state started out armed");
+
+  await.Arm(kObservePaintCompleted | kObserveGameStateChanged, "bid->glyphBase84 != initialBitmap",
+            "Z:\\imperialism\\tests\\runtime\\native\\scenarios\\TradeScreenTest.cpp", 402);
+  Expect("await.armed", await.IsArmed(), "arming did not take effect");
+  Expect("await.expression", strcmp(await.Expression(), "bid->glyphBase84 != initialBitmap") == 0,
+         "await state dropped the expression it was given");
+  // __FILE__ is an absolute Wine path; only the basename belongs in a diagnostic.
+  Expect("await.source", strcmp(await.Source(), "TradeScreenTest.cpp:402") == 0,
+         "await source was not reduced to basename:line");
+  Expect("await.mask",
+         await.ObservationKinds() == (kObservePaintCompleted | kObserveGameStateChanged),
+         "await state lost its observation mask");
+
+  await.Clear();
+  Expect("await.cleared", !await.IsArmed() && await.Source()[0] == 0,
+         "clearing left the await state armed");
+}
+
+void TestObservationMaskDescription() {
+  char text[256];
+  Expect("mask.none",
+         DescribeRuntimeObservationMask(kObserveNone, text, sizeof(text)) &&
+             strcmp(text, "none") == 0,
+         "an empty mask did not describe itself as none");
+  Expect("mask.single",
+         DescribeRuntimeObservationMask(kObserveModalPopped, text, sizeof(text)) &&
+             strcmp(text, "modal_popped") == 0,
+         "a single-bit mask did not name its observation");
+  Expect("mask.pair",
+         DescribeRuntimeObservationMask(kObservePaintCompleted | kObserveGameStateChanged, text,
+                                        sizeof(text)) &&
+             strcmp(text, "paint_completed|game_state_changed") == 0,
+         "a two-bit mask did not join its names in enum order");
+  // AwaitUiChange's composite is the most common wait; naming it keeps it readable.
+  Expect("mask.composite",
+         DescribeRuntimeObservationMask(kObserveUiStateChanged, text, sizeof(text)) &&
+             strcmp(text, "ui_state_changed") == 0,
+         "the UI-state composite did not collapse to its own name");
+  Expect("mask.composite_with_idle",
+         DescribeRuntimeObservationMask(kObserveUiStateChanged | kObserveApplicationIdle, text,
+                                        sizeof(text)) &&
+             strcmp(text, "ui_state_changed|application_idle") == 0,
+         "the UI-state composite plus idle did not collapse");
+  // A bit with no name means the enum grew without the table; say so rather than lie.
+  Expect("mask.unknown_bit",
+         DescribeRuntimeObservationMask(kObserveModalPushed | 0x80000000u, text, sizeof(text)) &&
+             strcmp(text, "modal_pushed|0x80000000") == 0,
+         "an unnamed observation bit was silently dropped");
+  char small[4];
+  Expect("mask.overflow",
+         !DescribeRuntimeObservationMask(kObserveUiStateChanged, small, sizeof(small)),
+         "a too-small buffer was reported as a successful description");
+}
+
+void TestSourceBasename() {
+  Expect("basename.windows",
+         strcmp(RuntimeSourceBasename("Z:\\imperialism\\tests\\EndTurnTest.cpp"),
+                "EndTurnTest.cpp") == 0,
+         "a Wine path was not reduced to its basename");
+  Expect("basename.posix",
+         strcmp(RuntimeSourceBasename("tests/runtime/native/EndTurnTest.cpp"), "EndTurnTest.cpp") ==
+             0,
+         "a POSIX path was not reduced to its basename");
+  Expect("basename.bare", strcmp(RuntimeSourceBasename("EndTurnTest.cpp"), "EndTurnTest.cpp") == 0,
+         "a bare file name was altered");
+  Expect("basename.null", RuntimeSourceBasename(0)[0] == 0, "a null path did not yield empty text");
 }
 
 void TestRegistryLookup() {
@@ -129,6 +202,9 @@ int main(int argc, char** argv) {
   g_results.Reset();
   TestTurnEventQueue();
   TestTransitionsAndHeartbeat();
+  TestAwaitState();
+  TestObservationMaskDescription();
+  TestSourceBasename();
   TestRegistryLookup();
   TestResultAggregation();
   TestJsonAndAtomicWriting(resultPath);

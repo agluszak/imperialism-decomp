@@ -36,7 +36,7 @@ RuntimeFlowStatus LoadGameFlow::Advance(RuntimeScenario& scenario) {
     TView* mainView = scenario.CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      scenario.AwaitUiChange("\"loaded game did not reach the combined strategic map\"");
+      scenario.AwaitUiChange("loaded game did not reach the combined strategic map");
       return kRuntimeFlowRunning;
     }
     if (g_pGlobalMapState == 0 || g_pSimMgr->activeNationSlot < 0 ||

@@ -1,5 +1,6 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
 
 #include "game/app/TAnimator.h"
 #include "game/city_ui/TCountry.h"
@@ -78,21 +79,30 @@ struct RoundtripTarget {
   const char* expectedUnstable;
 };
 
-class SerializationRoundtripTestCase : public RandomGameScenario {
-public:
-  int DifficultyLevel() const override {
-    return 1;
-  }
-
-  // Run once the map exists, so the managers hold real state rather than
-  // default-constructed emptiness -- an empty collection round-trips trivially and
-  // would prove nothing.
-  void OnMapReadyWithoutCapitalSelection() override {
-    EnterScenarioStep("serialization_roundtrip", "collect_managers");
+// Runs once the map exists, so the managers hold real state rather than default-constructed
+// emptiness -- an empty collection round-trips trivially and would prove nothing. The whole
+// check is synchronous, so the script has no waits: it is linear because it always was.
+class SerializationRoundtripTestCase : public EasyMapScriptScenario {
+protected:
+  void Script() override {
+    RT_BEGIN();
     RunRoundtrips();
+    if (failed != 0) {
+      RT_FAIL(static_cast<LPCSTR>(FailureSummary()));
+    }
+    RT_PASS();
+    RT_END();
   }
 
 private:
+  CString FailureSummary() const {
+    CString text;
+    text.Format("%d of %d serializers did not round-trip; see serialization_roundtrip in the "
+                "result",
+                failed, checked);
+    return text;
+  }
+
   CString report;
   int checked;
   int failed;
@@ -158,16 +168,6 @@ private:
     g_nSaveFormatVersion = savedFormatVersion;
     report += "\n  ]";
     RecordSerializationRoundtripReport(report);
-
-    if (failed != 0) {
-      CString failure;
-      failure.Format("\"%d of %d serializers did not round-trip; see "
-                     "serialization_roundtrip in the result\"",
-                     failed, checked);
-      FailScenario(failure);
-      return;
-    }
-    Pass();
   }
 
   void CheckOne(const char* name, TObject* object, bool readBackIsSafe,
@@ -175,7 +175,7 @@ private:
     ++checked;
     // Heartbeat per class: a hang inside one serializer would otherwise surface only as
     // "the scenario stopped responding", with no way to tell which one.
-    EnterScenarioStep("serialization_roundtrip", name);
+    MarkScriptStep(name);
     if (object == 0) {
       Record(name, "skipped", 0, 0, 0, "manager is null at map-ready time");
       return;
@@ -293,10 +293,6 @@ private:
   }
 };
 
-SerializationRoundtripTestCase g_test;
-
 } // namespace
 
-RuntimeTestCase* SerializationRoundtripTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(SerializationRoundtripTestCase, SerializationRoundtripTest)

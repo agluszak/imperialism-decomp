@@ -91,7 +91,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     }
     if (g_pViewMgr->currentTurnEventCode != 0x7dd ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-      scenario.AwaitUiChange("\"random game did not reach the combined strategic map\"");
+      scenario.AwaitUiChange("random game did not reach the combined strategic map");
       return kRuntimeFlowRunning;
     }
     if (!g_ModalViewStack.IsEmpty() || g_pGlobalMapState == 0 ||
@@ -108,7 +108,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
     if (g_pViewMgr->currentTurnEventCode != 0x3b8 ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) ||
         g_ModalViewStack.IsEmpty()) {
-      scenario.AwaitUiChange("\"capital-selection map and prompt did not become active\"");
+      scenario.AwaitUiChange("capital-selection map and prompt did not become active");
       return kRuntimeFlowRunning;
     }
     TWindow* modal = g_ModalViewStack.GetHead();
@@ -133,7 +133,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
 
   if (phase == kWaitingForCapitalPromptDismissal) {
     if (!g_ModalViewStack.IsEmpty()) {
-      scenario.AwaitUiChange("\"capital-selection prompt did not dismiss\"");
+      scenario.AwaitUiChange("capital-selection prompt did not dismiss");
       return kRuntimeFlowRunning;
     }
     TMapUberPicture* mapView = RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))
@@ -184,7 +184,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
 
   if (phase == kWaitingForCapitalConfirmation) {
     if (g_ModalViewStack.IsEmpty()) {
-      scenario.AwaitUiChange("\"capital-site confirmation did not become active\"");
+      scenario.AwaitUiChange("capital-site confirmation did not become active");
       return kRuntimeFlowRunning;
     }
     TWindow* modal = g_ModalViewStack.GetHead();
@@ -216,7 +216,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mapView == 0 || !g_ModalViewStack.IsEmpty()) {
-      scenario.AwaitUiChange("\"accepted capital site did not reach the combined map\"");
+      scenario.AwaitUiChange("accepted capital site did not reach the combined map");
       return kRuntimeFlowRunning;
     }
     if (mapView->subview2A8 == 0 ||

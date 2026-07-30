@@ -218,12 +218,23 @@ TControl* RuntimeUiDriver::RequireControl(TView* root, const RuntimeControlSelec
     return 0;
   }
   TControl* control = static_cast<TControl*>(found);
-  // ORACLE: exact base TControl instances are also used as invisible retail hit regions. The
-  // main-menu buttons built at 0x00455e12-0x004561d0 deliberately have viewEnabled == 0 but
-  // enabled == 1, and TControl's retail mouse override accepts them. Concrete controls must
-  // satisfy the normal TView::IsActionable() contract.
-  bool invisibleHitControl = control->GetRuntimeClass() == RUNTIME_CLASS(TControl);
-  if (control->IsEnabled() == 0 || (control->IsActionable() == 0 && !invisibleHitControl)) {
+  // ORACLE: what makes a control clickable is TControl's own mouse contract, not TView's.
+  // TControl::PointInBoundsAndActionable (0x0048e940) overrides TView's (0x0048c6d0) and drops
+  // its IsActionable() test, leaving a pure bounds hit; TView::HandleMouseDown/HandleMouseUp
+  // (0x0048c450/0x0048c590) call that virtual on each child and then gate delivery on
+  // PrepareForDrawing() (0x0048b770, unconditionally 1) and IsEnabled(). So for anything that IS
+  // a TControl, viewEnabled plays no part in whether a click arrives -- `enabled` does.
+  //
+  // This is why retail can use a control as an invisible hit region over artwork that already
+  // draws the button: the main-menu buttons at 0x00455e12-0x004561d0 and the Deal Book's 'mark'
+  // bookmark (built with SetEnabled(0,0) at 0x00431c98, then SetState(1,0) by
+  // TDealBookPicture::SwitchPages 0x005bc14c, whose DoEvent branch is reachable only in that
+  // state) are both built viewEnabled == 0 and are both meant to be clicked.
+  //
+  // Restricting the exemption to exact TControl instances -- as this check first did, from the
+  // main-menu evidence alone -- made every TControl *subclass* answer to a predicate the game
+  // never applies to it.
+  if (control->IsEnabled() == 0) {
     SetFailure(failure, "resolved control is not enabled for input", selector, found);
     return 0;
   }

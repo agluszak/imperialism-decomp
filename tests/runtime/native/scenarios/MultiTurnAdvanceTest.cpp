@@ -1,206 +1,67 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
-#include "RuntimeUiDriver.h"
-#include "screens/StrategicMapDriver.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "flows/EndTurnFlow.h"
 
-#include "game/globals/global_types.h"
-#include "game/globals/shared_globals.h"
+#include "game/core/global_data_tables.h"
 #include "game/globals/ui_core_globals.h"
-#include "game/map/TMapUberPicture.h"
-#include "game/turn_event_codes.h"
-#include "game/ui_core/TControl.h"
-#include "game/ui_core/TDialogBehavior.h"
 #include "game/ui_core/THelpMgr.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_core/TWindow.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_tags_common.h"
-#include "game/ui_tags_widgets.h"
-#include "game/globals/view_registries.h"
 
 namespace {
 
-// End the turn several times in a row on Easy and require the game to come back to a
-// playable combined map each time, with the economic turn advancing by exactly one and no
-// unexpected modal left behind. One end turn (easy_turns_advance) only proves the first
-// hop. Later turns exercise the alert-modals-then-DONE-again path before the state machine
-// advances, so the loop and faithful handling of those modals are the point.
+// End the turn several times in a row on Easy and require the game to come back to a playable
+// strategic map each time, with the economic turn advancing by exactly one and no unexpected
+// modal left behind. One end turn (easy_turns_advance) only proves the first hop; later turns
+// exercise the alert-modals-then-Done-again path before the state machine advances, which is
+// what this scenario is for -- and which EndTurnFlow now owns for every caller.
 const short kTurnsToAdvance = 3;
 
-class MultiTurnAdvanceTestCase : public RandomGameScenario {
+class MultiTurnAdvanceTestCase : public EasyMapScriptScenario {
 public:
-  MultiTurnAdvanceTestCase()
-      : phase(kActivateEndTurn), baselineEconomicTurn(0), startEconomicTurn(0), turnsDone(0),
-        leftDealBook(false), sawTurnAlert(false), resubmittedEndTurn(false) {}
+  MultiTurnAdvanceTestCase() : turnsDone(0), startEconomicTurn(0) {}
 
-  int DifficultyLevel() const override {
-    return 1;
-  }
   bool RecordsGameFlow() const override {
     return true;
   }
 
-  void OnMapReadyWithoutCapitalSelection() override {
-    phase = kActivateEndTurn;
-    turnsDone = 0;
-    startEconomicTurn = 0;
-    ResetCapitolDangerWarningObservationForRuntimeTest();
-    EnterScenarioStep("activating_end_turn", "reach_combined_map");
-    ContinueAfterAction();
-  }
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-  void AdvanceScenario() override {
-    if (phase == kActivateEndTurn) {
-      ActivateEndTurn();
-    } else {
-      WaitForTurnProcessed();
+    turnsDone = 0;
+    startEconomicTurn = g_pSimMgr->economicTurn;
+    ResetCapitolDangerWarningObservationForRuntimeTest();
+
+    // A loop around the shared sequence, instead of a second copy of it. turnsDone is a member
+    // because it has to survive the yields inside EndTurnFlow.
+    while (turnsDone < kTurnsToAdvance) {
+      RT_RUN(endTurn.RejectOffers().ExpectExactlyOneTurn().ToNextStrategicMap(*this));
+      RT_REQUIRE_EQ(endTurn.StartingTurn() + 1, endTurn.EndingTurn());
+      ++turnsDone;
     }
+
+    RT_REQUIRE_EQ(startEconomicTurn + kTurnsToAdvance, g_pSimMgr->economicTurn);
+
+    // The capitol-danger warning must have been evaluated on the peaceful path, and what it
+    // decided to threaten must be what it displayed. A mismatch here is the warning firing on
+    // state the player was never shown.
+    RT_REQUIRE_NE(0, CapitolDangerWarningEvaluationCountForRuntimeTest());
+    RT_REQUIRE(WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest());
+    RT_REQUIRE_EQ(CapitolDangerThreatMaskForRuntimeTest(),
+                  CapitolDangerDisplayedMaskForRuntimeTest());
+
+    RT_PASS();
+
+    RT_END();
   }
 
 private:
-  enum Phase { kActivateEndTurn, kWaitForTurnProcessed };
-
-  void ActivateEndTurn() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before ending the turn\"");
-      return;
-    }
-    baselineEconomicTurn = g_pSimMgr->economicTurn;
-    if (turnsDone == 0) {
-      startEconomicTurn = baselineEconomicTurn;
-    }
-    leftDealBook = false;
-    sawTurnAlert = false;
-    resubmittedEndTurn = false;
-    // Each ended turn may pop its own newspaper, and AdvanceNewspaperIfNeeded only acts
-    // once per armed flag (the random-game setup already consumed the first one). Without
-    // this the second newspaper is never dismissed and the run stalls on it.
-    ResetNewspaperAdvance();
-    phase = kWaitForTurnProcessed;
-    StrategicMapDriver map(mainView);
-    if (!map.EndTurn()) {
-      FailScenario("\"end-turn control is missing\"");
-      return;
-    }
-    EnterScenarioStep("waiting_for_turn_processed", "activate_map_done");
-    ContinueAfterAction();
-  }
-
-  void WaitForTurnProcessed() {
-    if (g_pViewMgr->currentTurnEventCode == 0x11f8) {
-      FailScenario("\"end turn entered the game-over/opening-cinematic path\"");
-      return;
-    }
-    if (!g_ModalViewStack.IsEmpty()) {
-      TWindow* modal = g_ModalViewStack.GetHead();
-      TDialogBehavior* behavior = modal->GetDialogBehavior();
-      unsigned long defaultCommand = behavior != 0 ? behavior->defaultCommandCode : 0;
-      TControl* defaultControl = static_cast<TControl*>(modal->ResolveControlByTag(defaultCommand));
-      if (behavior == 0 ||
-          (defaultCommand != kControlTagOkay && defaultCommand != kControlTagPic5) ||
-          defaultControl == 0) {
-        RecordUnexpectedModalView(modal);
-        FailScenario("\"ended turn opened an unrecognized modal\"");
-        return;
-      }
-      const char* modalLabel;
-      const char* action;
-      if (defaultCommand == kControlTagOkay) {
-        sawTurnAlert = true;
-        modalLabel = "turn_alert";
-        action = "activate_turn_alert_okay";
-      } else {
-        modalLabel = "end_turn_warning";
-        action = "activate_end_turn_warning";
-      }
-      RecordHandledModal(modalLabel);
-      if (!RuntimeUiDriver::Activate(
-              modal, RuntimeControlSelector(defaultCommand, RUNTIME_CLASS(TControl)))) {
-        FailScenario("\"turn-flow modal default control could not be activated\"");
-        return;
-      }
-      EnterScenarioStep("waiting_for_turn_processed", action);
-      Await(kObserveModalPopped, "\"turn-flow modal did not unwind after activation\"");
-      return;
-    }
-    if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
-      leftDealBook = true;
-      g_pSimMgr->StartNextPhase();
-      ContinueAfterAction();
-      return;
-    }
-    if (AdvanceNewspaperIfNeeded()) {
-      return;
-    }
-    TView* mainView = CurrentMainView();
-    if (sawTurnAlert && !resubmittedEndTurn &&
-        g_pViewMgr->currentTurnEventCode == kTurnEventStrategicMap && mainView != 0 &&
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) != 0 &&
-        g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      resubmittedEndTurn = true;
-      EnterScenarioStep("waiting_for_turn_processed", "reactivate_map_done_after_turn_alerts");
-      StrategicMapDriver map(mainView);
-      if (!map.EndTurn()) {
-        FailScenario("\"end-turn control disappeared after turn alerts\"");
-        return;
-      }
-      ContinueAfterAction();
-      return;
-    }
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
-        g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      AwaitUiChange("\"ended turn did not advance back to the combined map\"");
-      return;
-    }
-    if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {
-      FailScenario("\"economic turn advanced by more than one\"");
-      return;
-    }
-
-    ++turnsDone;
-    if (turnsDone < kTurnsToAdvance) {
-      phase = kActivateEndTurn;
-      EnterScenarioStep("activating_end_turn", "reach_combined_map");
-      ContinueAfterAction();
-      return;
-    }
-    if (g_pSimMgr->economicTurn != startEconomicTurn + kTurnsToAdvance) {
-      FailScenario("\"economic turn total does not match the number of ended turns\"");
-      return;
-    }
-    if (CapitolDangerWarningEvaluationCountForRuntimeTest() == 0 ||
-        !WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest() ||
-        CapitolDangerThreatMaskForRuntimeTest() != CapitolDangerDisplayedMaskForRuntimeTest()) {
-      char failure[192];
-      wsprintfA(failure,
-                "\"capitol warning path mismatch: evaluations=%d peace=%d threat=%d displayed=%d\"",
-                CapitolDangerWarningEvaluationCountForRuntimeTest(),
-                WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest(),
-                CapitolDangerThreatMaskForRuntimeTest(),
-                CapitolDangerDisplayedMaskForRuntimeTest());
-      FailScenario(failure);
-      return;
-    }
-    Pass();
-  }
-
-  Phase phase;
-  short baselineEconomicTurn;
-  short startEconomicTurn;
+  EndTurnFlow endTurn;
   short turnsDone;
-  bool leftDealBook;
-  bool sawTurnAlert;
-  bool resubmittedEndTurn;
+  short startEconomicTurn;
 };
-
-MultiTurnAdvanceTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* MultiTurnAdvanceTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(MultiTurnAdvanceTestCase, MultiTurnAdvanceTest)
