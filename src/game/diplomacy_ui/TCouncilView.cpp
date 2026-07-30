@@ -200,7 +200,7 @@ void TCouncilView::DisplayStats() {
     titleLabel->SetTextFromStringResource(0x2733, static_cast<short>(0x5a + row), 1);
     titleLabel->InstallTextStyle(style, 0);
     titleLabel->SetTextAlignmentAndMaybeRefresh(1, 0);
-    titleLabel->SetEnabled(1, 0);
+    titleLabel->Show(1, 0);
 
     TStaticText* majorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '0') + row));
@@ -209,7 +209,7 @@ void TCouncilView::DisplayStats() {
     majorField->SetTextAndMaybeRefresh(&text, 1);
     majorField->InstallTextStyle(style, 0);
     majorField->SetTextAlignmentAndMaybeRefresh(-1, 0);
-    majorField->SetEnabled(1, 1);
+    majorField->Show(1, 1);
 
     TStaticText* minorField = static_cast<TStaticText*>(
         this->ResolveControlByTag(IMPERIALISM_FOURCC('n', 'u', 'm', '4') + row));
@@ -217,7 +217,7 @@ void TCouncilView::DisplayStats() {
     text.Format(g_szDecimalFormat, categoryCounts[row + 4]);
     minorField->SetTextAndMaybeRefresh(&text, 1);
     minorField->InstallTextStyle(style, 0);
-    minorField->SetEnabled(1, 1);
+    minorField->Show(1, 1);
   }
 
   CString scoreText;
@@ -234,7 +234,7 @@ void TCouncilView::DisplayStats() {
   sourceScore->SetTextAndMaybeRefresh(&scoreText, 1);
   sourceScore->InstallTextStyle(style, 0);
   sourceScore->shadowColor94 = scoreShadowColor;
-  sourceScore->SetEnabled(1, 1);
+  sourceScore->Show(1, 1);
 
   TDropShadowText* targetScore =
       static_cast<TDropShadowText*>(ResolveControlByTag(IMPERIALISM_FOURCC('s', 'c', 'o', '1')));
@@ -244,7 +244,7 @@ void TCouncilView::DisplayStats() {
   targetScore->SetTextAndMaybeRefresh(&scoreText, 1);
   targetScore->InstallTextStyle(style, 0);
   targetScore->shadowColor94 = scoreShadowColor;
-  targetScore->SetEnabled(1, 1);
+  targetScore->Show(1, 1);
 }
 
 // Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / visibleVoteTier528 and
@@ -327,7 +327,7 @@ void TCouncilView::StartVoting() {
   TControl* endControl = static_cast<TControl*>(ResolveControlByTag(kControlTagEnd));
   if (endControl != nullptr) {
     endControl->AssertValid();
-    endControl->SetState(0, 0);
+    endControl->ViewEnable(0, 0);
   }
 }
 
@@ -363,7 +363,7 @@ void TCouncilView::NextTick() {
     SetCursor(LoadCursorA(nullptr, IDC_ARROW));
     TView* endControlTarget = ResolveControlByTag(kControlTagEnd);
     endControlTarget->AssertValid();
-    endControlTarget->SetState(1, 0);
+    endControlTarget->ViewEnable(1, 0);
 
     if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot == -1) {
       g_pSfxPlaybackSystem->PlaySoundEffect(0x1f42, 0, 1);

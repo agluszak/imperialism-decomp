@@ -15,8 +15,8 @@ public:
 
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                     int arg4) override;
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override;
   bool IsHost(void) override;
   void ReplyToDiplomacyOffers(void) override;
   void SorryYouLose(void) override;

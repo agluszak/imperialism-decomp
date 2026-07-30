@@ -18,7 +18,8 @@
 class TCivAnimation2 : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCivAnimation2)
-  virtual ~TCivAnimation2() override;                 // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x0049f660
+  virtual ~TCivAnimation2() override {}               // slot 0x01 (scalar deleting destructor)
   virtual void Tick() override;                       // slot 0x0a 0x49f7c0
   virtual void DrawNextFrame(POINT* offset) override; // slot 0x0b 0x49f8e0
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms

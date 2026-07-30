@@ -23,8 +23,6 @@ IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 
 // SYNTHETIC: IMPERIALISM 0x004a0430
 // TTransFocusAnimation::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004a0460
-TTransFocusAnimation::~TTransFocusAnimation() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a0480
 // TTransFocusAnimation::GetRuntimeClass

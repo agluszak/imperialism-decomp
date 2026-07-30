@@ -60,20 +60,7 @@ bool TBitmapSurfaceContextDescriptor::InitializeSurfaceNode(int width, int heigh
   return *GetPixMapHandle() != nullptr;
 }
 
-// FUNCTION: IMPERIALISM 0x00495fd0
-void TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode() {
-  TBitmapSurfaceNode** slot = GetPixMapHandle();
-  if (slot != nullptr) {
-    TBitmapSurfaceNode* node = *slot;
-    if (node != nullptr) {
-      delete node->dib;
-      delete node;
-    }
-    delete slot;
-  }
-  SetPixMapHandle(nullptr);
-  blitSurface.pixelBits = 0;
-  blitSurface.stride = 0;
-  blitSurface.pad06 = 0;
-  blitSurface.surfaceDib = 0;
+// FUNCTION: IMPERIALISM 0x00496420
+void DisposeGWorld(TQuickDrawSurfaceContext* surface) {
+  delete surface;
 }

@@ -30,9 +30,9 @@ void TPictureRadioButton::ViewEnable(char isEnabled, char refreshNow) {
     controlValue3c = pictureId;
     DefaultSize(true);
     viewEnabled = isEnabled;
-    SetEnabled(!isEnabled, refreshNow);
+    Show(!isEnabled, refreshNow);
   }
-  TView::SetState(isEnabled, refreshNow);
+  TView::ViewEnable(isEnabled, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x00570ea0
@@ -53,7 +53,7 @@ void TPictureRadioButton::DefaultSize(bool refreshNow) {
 // FUNCTION: IMPERIALISM 0x00570f40
 void TPictureRadioButton::Select(bool isPressed, bool notifyParent) {
   if (IsEnabled()) {
-    SetEnabled(isPressed, notifyParent);
+    Show(isPressed, notifyParent);
     if (isPressed) {
       static_cast<TCluster*>(ownerContext)->SetSelectedChildTagAndRefresh(controlTag);
     }

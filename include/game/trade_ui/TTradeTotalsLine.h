@@ -7,7 +7,8 @@
 class TTradeTotalsLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTradeTotalsLine)
-  virtual ~TTradeTotalsLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005c1960
+  virtual ~TTradeTotalsLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5c19c0
 
   TTradeTotalsLine();

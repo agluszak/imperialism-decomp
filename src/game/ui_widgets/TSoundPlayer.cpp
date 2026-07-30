@@ -72,9 +72,6 @@ TSoundPlayer::TSoundPlayer()
 // SYNTHETIC: IMPERIALISM 0x005933b0
 // TSoundPlayer::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x005933e0
-TSoundPlayer::~TSoundPlayer() {}
-
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
 
 // FUNCTION: IMPERIALISM 0x00593400
@@ -200,9 +197,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
       return;
     }
     for (int i = 1; i <= available; ++i) {
-      TLongintList* remainingCues = this->remainingRandomAudioCues;
-      int cue = this->audioCuePool->At(i);
-      remainingCues->InsertLast(cue);
+      this->remainingRandomAudioCues->InsertLast(this->audioCuePool->At(i));
     }
     this->activeAudioCueId = 0;
   }

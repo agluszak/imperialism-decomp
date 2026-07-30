@@ -37,5 +37,5 @@ void TAlwaysPictureButton::HiliteState(unsigned char enabledState, unsigned char
 
 // FUNCTION: IMPERIALISM 0x00570ae0
 void TAlwaysPictureButton::Select(bool isPressed, bool notifyParent) {
-  this->SetEnabled(isPressed, notifyParent);
+  this->Show(isPressed, notifyParent);
 }

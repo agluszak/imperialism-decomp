@@ -188,7 +188,9 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
           g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
               0) {
         standingScore =
-            sourceMinor->HasResourceStatusForMajorNation(targetNation) != 0 ? 0x96 : 0x6e;
+            sourceMinor->IsPolicyCodeInSpecialNationPolicySet(static_cast<short>(targetNation)) != 0
+                ? 0x96
+                : 0x6e;
       }
       relationStandingScores[pairIndex] = standingScore;
       relationPropagationMatrix[pairIndex] = kDiplomacyRelationshipPeace;
@@ -442,7 +444,7 @@ bool TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNati
 }
 
 // FUNCTION: IMPERIALISM 0x004ef600
-bool TDiplomacyMgr::HasAnyWarRelationForNation(int sourceNationSlot) {
+bool TDiplomacyMgr::HasAnyWarRelationForNation(NationSlot sourceNationSlot) {
   for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
     if (IsNationPairAtWar(sourceNationSlot, targetNationSlot) != 0) {
       return true;
@@ -452,7 +454,7 @@ bool TDiplomacyMgr::HasAnyWarRelationForNation(int sourceNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ef650
-bool TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNationSlot) {
+bool TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(NationSlot sourceNationSlot) {
   for (int targetNationSlot = 0; targetNationSlot < 0x17; ++targetNationSlot) {
     if (IsNationPairRelationTurnStampOutOfDate(sourceNationSlot, targetNationSlot) != 0) {
       return true;
@@ -462,30 +464,27 @@ bool TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNatio
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6a0
-bool TDiplomacyMgr::IsSpecialRelationSourceForMinorNationSlot(int nationSlot, int minorNationSlot) {
-  return specialRelationSourceSlots[static_cast<short>(minorNationSlot) - 7] ==
-         static_cast<short>(nationSlot);
+bool TDiplomacyMgr::IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
+                                                              NationSlot minorNationSlot) {
+  return specialRelationSourceSlots[minorNationSlot - 7] == nationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef6d0
-bool TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot(int nationSlot, int minorNationSlot) {
-  return specialRelationTargetSlots[static_cast<short>(minorNationSlot) - 7] ==
-         static_cast<short>(nationSlot);
+bool TDiplomacyMgr::IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
+                                                              NationSlot minorNationSlot) {
+  return specialRelationTargetSlots[minorNationSlot - 7] == nationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004ef700
-bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNationSlot,
-                                                                             int targetNationSlot,
-                                                                             eDipAction action) {
+bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
+    NationSlot sourceNationSlot, NationSlot targetNationSlot, eDipAction action) {
   bool isValid = false;
-  short source = static_cast<short>(sourceNationSlot);
-  short target = static_cast<short>(targetNationSlot);
-  if (target == source) {
+  if (targetNationSlot == sourceNationSlot) {
     ReadGlobalTDiplomacyTurnStateManager()->proposalArrayMode = 0xe;
     return isValid;
   }
 
-  TCountry* targetTerrain = g_apTerrainTypeDescriptorTable[target];
+  TCountry* targetTerrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
   short targetTerrainOwner = targetTerrain->encodedNationSlot;
   if (targetTerrainOwner != -1) {
     if (targetTerrainOwner >= 200) {
@@ -496,7 +495,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
     return isValid;
   }
 
-  int pairIndex = source * kNationSlotCount + target;
+  int pairIndex = sourceNationSlot * kNationSlotCount + targetNationSlot;
   switch (action) {
   case kDipActionJoinEmpire:
     if (relationSideEffectMatrix[pairIndex] != 2) {
@@ -507,13 +506,13 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
       proposalArrayMode = 2;
       return isValid;
     }
-    if (target < 7) {
+    if (targetNationSlot < 7) {
       proposalArrayMode = 0x12;
       return isValid;
     }
     break;
   case kDipActionAlliance:
-    if (target > 6) {
+    if (targetNationSlot > 6) {
       proposalArrayMode = 3;
       return isValid;
     }
@@ -541,7 +540,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
       proposalArrayMode = 0x10;
       return isValid;
     }
-    if (target < 7) {
+    if (targetNationSlot < 7) {
       proposalArrayMode = 0xf;
       return isValid;
     }
@@ -588,7 +587,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
       proposalArrayMode = 2;
       return isValid;
     }
-    if (g_apNationStates[source]->treasuryValue10 < 500) {
+    if (g_apNationStates[sourceNationSlot]->treasuryValue10 < 500) {
       proposalArrayMode = 0x16;
       return isValid;
     }
@@ -606,7 +605,7 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
       proposalArrayMode = 2;
       return isValid;
     }
-    if (g_apNationStates[source]->treasuryValue10 < 5000) {
+    if (g_apNationStates[sourceNationSlot]->treasuryValue10 < 5000) {
       proposalArrayMode = 0x15;
       return isValid;
     }
@@ -617,7 +616,8 @@ bool TDiplomacyMgr::ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int
 }
 
 // FUNCTION: IMPERIALISM 0x004efc30
-bool TDiplomacyMgr::HasAllianceGuardForNationPair(int nationSlot, int guardedNationSlot) {
+bool TDiplomacyMgr::HasAllianceGuardForNationPair(NationSlot nationSlot,
+                                                  NationSlot guardedNationSlot) {
   if (ReadGlobalTDiplomacyTurnStateManager()->HasAnyWarRelationForNation(nationSlot) == 0) {
     return false;
   }
@@ -634,12 +634,13 @@ bool TDiplomacyMgr::HasAllianceGuardForNationPair(int nationSlot, int guardedNat
 }
 
 // FUNCTION: IMPERIALISM 0x004efcb0
-void TDiplomacyMgr::SetRelationship(int sourceNationSlot, int targetNationSlot, int standingScore) {
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
+void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                    short standingScore) {
+  int source = sourceNationSlot;
+  int target = targetNationSlot;
   int forwardIndex = source * kNationSlotCount + target;
   short* forwardScore = &relationStandingScores[forwardIndex];
-  short requestedScore = static_cast<short>(standingScore);
+  short requestedScore = standingScore;
   if (requestedScore == *forwardScore) {
     return;
   }
@@ -648,8 +649,7 @@ void TDiplomacyMgr::SetRelationship(int sourceNationSlot, int targetNationSlot, 
   if (requestedScore < 0) {
     clampedScore = 0;
   }
-  if (requestedScore > 0xff &&
-      static_cast<short>(sourceNationSlot) != static_cast<short>(targetNationSlot)) {
+  if (requestedScore > 0xff && sourceNationSlot != targetNationSlot) {
     clampedScore = 0xff;
   }
   if (requestedScore <= 0x31) {
@@ -672,7 +672,7 @@ void TDiplomacyMgr::SetRelationship(int sourceNationSlot, int targetNationSlot, 
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsLinkedToMajorNation(sourceNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsEncodedNationSlotMinus200Equal(sourceNationSlot) != 0) {
         SetRelationshipsToMatch(minorNationSlot, sourceNationSlot);
       }
       terrainCursor++;
@@ -685,7 +685,7 @@ void TDiplomacyMgr::SetRelationship(int sourceNationSlot, int targetNationSlot, 
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsLinkedToMajorNation(targetNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsEncodedNationSlotMinus200Equal(targetNationSlot) != 0) {
         SetRelationshipsToMatch(minorNationSlot, targetNationSlot);
       }
       terrainCursor++;
@@ -695,14 +695,12 @@ void TDiplomacyMgr::SetRelationship(int sourceNationSlot, int targetNationSlot, 
 }
 
 // FUNCTION: IMPERIALISM 0x004efe30
-void TDiplomacyMgr::SetRelationshipsToMatch(int destinationNationSlot, int sourceNationSlot) {
-  short* destinationColumnCursor =
-      &relationStandingScores[static_cast<short>(destinationNationSlot)];
-  short* destinationRowCursor =
-      &relationStandingScores[static_cast<short>(destinationNationSlot) * kNationSlotCount];
-  short* sourceRowCursor =
-      &relationStandingScores[static_cast<short>(sourceNationSlot) * kNationSlotCount];
-  short* sourceColumnCursor = &relationStandingScores[static_cast<short>(sourceNationSlot)];
+void TDiplomacyMgr::SetRelationshipsToMatch(NationSlot destinationNationSlot,
+                                            NationSlot sourceNationSlot) {
+  short* destinationColumnCursor = &relationStandingScores[destinationNationSlot];
+  short* destinationRowCursor = &relationStandingScores[destinationNationSlot * kNationSlotCount];
+  short* sourceRowCursor = &relationStandingScores[sourceNationSlot * kNationSlotCount];
+  short* sourceColumnCursor = &relationStandingScores[sourceNationSlot];
 
   int remaining = kNationSlotCount;
   do {
@@ -717,32 +715,30 @@ void TDiplomacyMgr::SetRelationshipsToMatch(int destinationNationSlot, int sourc
 }
 
 // FUNCTION: IMPERIALISM 0x004efeb0
-void TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(int sourceNationSlot,
-                                                                         int targetNationSlot,
-                                                                         int updateMode) {
+void TDiplomacyMgr::ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+    NationSlot sourceNationSlot, NationSlot targetNationSlot, unsigned char updateMode) {
   SetNationPairDiplomacyRelationCodeFinal(sourceNationSlot, targetNationSlot,
                                           kDiplomacyRelationshipPeace);
-  if (static_cast<char>(updateMode) == 1) {
+  if (updateMode == 1) {
     InflictWarPenalty(sourceNationSlot, targetNationSlot, 0);
   }
 
-  TMinor* targetTerrain =
-      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)]);
+  TMinor* targetTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot]);
   if (targetTerrain != 0) {
     targetTerrain->AddNoticeFrom(sourceNationSlot, 0x139);
-    g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceRelationshipPropagated,
-                               static_cast<short>(targetNationSlot),
-                               static_cast<short>(sourceNationSlot), 0);
+    g_pNewsMgr->AddTreatyEvent(kInterNationEventPeaceRelationshipPropagated, targetNationSlot,
+                               sourceNationSlot, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004eff40
-void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot, int updateMode) {
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
+void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot targetNationSlot,
+                                      unsigned char updateMode) {
+  int source = sourceNationSlot;
+  int target = targetNationSlot;
   short sourceTargetStanding = relationStandingScores[source * kNationSlotCount + target];
 
-  if (static_cast<char>(updateMode) == 1) {
+  if (updateMode == 1) {
     if (sourceTargetStanding - 0x32 < 0x31) {
       SetRelationship(sourceNationSlot, targetNationSlot, sourceTargetStanding - 0x32);
     } else {
@@ -761,14 +757,13 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
-        static_cast<short>(candidateNationSlot) != static_cast<short>(sourceNationSlot) &&
-        static_cast<short>(candidateNationSlot) != static_cast<short>(targetNationSlot) &&
+        candidateNationSlot != sourceNationSlot && candidateNationSlot != targetNationSlot &&
         candidateTerrain->encodedNationSlot == -1) {
       int divisorTier;
       if (IsGreatPower(targetNationSlot) == 0) {
         if (IsGreatPower(candidateNationSlot) == 0) {
           divisorTier =
-              candidateTerrain->HasResourceStatusForMajorNation(sourceNationSlot) != 0 ? 2 : 4;
+              candidateTerrain->IsPolicyCodeInSpecialNationPolicySet(sourceNationSlot) != 0 ? 2 : 4;
         } else {
           divisorTier = 8;
         }
@@ -808,7 +803,7 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
 void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
   // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
-  if (g_pSimMgr->difficultyLevel != 2) {
+  if (g_pSimMgr->multiplayerSessionRole != 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -827,7 +822,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   ScratchSharedString scratch2;
   ScratchSharedString scratch3;
 
-  if (g_pSimMgr->difficultyLevel == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -880,9 +875,9 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
                   g_apNationStates[row]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(col, 4, -1);
                 }
               } else {
-                static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[col])
-                    ->SetDiplomacyRelationshipWithMajorNation(
-                        row, static_cast<DiplomacyRelationship>(relationCode));
+                g_apTerrainTypeDescriptorTable[col]->AddOfferFrom(
+                    static_cast<NationSlot>(row),
+                    static_cast<DiplomacyProposalCodeStorage>(relationCode));
               }
             }
           }
@@ -908,7 +903,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   TGreatPower** nationSlot = g_apNationStates;
   for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
     if (*nationSlot != NULL) {
-      (*nationSlot)->ApplyJoinEmpireMode2FinalizeNationNameState();
+      (*nationSlot)->InitializeDiplomacyOffers();
     }
   }
 
@@ -917,9 +912,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   // so the null check here was ours, not the retail code's.
   unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
   if (isClientSession) {
-    if (pendingWarTransitionQueue) {
-      pendingWarTransitionQueue->ClearAndFreeAllPtrListRecords();
-    }
+    pendingWarTransitionQueue->InvokePtrListResetHook();
     return;
   }
 
@@ -930,6 +923,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   bool isRelationTie = true;
 
   for (int minorSlot = 7; minorSlot < 23; minorSlot++) {
+    TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[minorSlot];
     short bestOfferScore = 0x8b;
     int bestOfferNation = -1;
 
@@ -943,38 +937,49 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
 
     for (int gpSlot = 0; gpSlot < 7; gpSlot++) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<NationSlot>(gpSlot))) {
-        short relationVal = relationStandingScores[minorSlot * kNationSlotCount + gpSlot];
-        if (bestOfferScore < relationVal) {
-          isOfferTie = false;
-          bestOfferNation = gpSlot;
-          bestOfferScore = relationVal;
-        } else if (relationVal == bestOfferScore) {
-          isOfferTie = true;
-          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
-            unsigned int rnd = (unsigned int)relationVal + 0x31 +
-                               (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
-            if (rnd == 0)
-              rnd = randSeed1;
-            randSeed1 = rnd * 0x15a4e35 + 1;
-            if ((randSeed1 >> 12) & 1) {
-              bestOfferNation = gpSlot;
-              bestOfferScore = relationVal;
-            }
-          } else {
+        int standingIndex = minorSlot * kNationSlotCount + gpSlot;
+        int sideEffectIndex = gpSlot * kNationSlotCount + minorSlot;
+        if (relationSideEffectMatrix[sideEffectIndex] != 0) {
+          short relationVal = relationStandingScores[standingIndex];
+          if (bestOfferScore < relationVal) {
+            isOfferTie = false;
             bestOfferNation = gpSlot;
             bestOfferScore = relationVal;
+          } else if (relationVal == bestOfferScore) {
+            isOfferTie = true;
+            if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+              bestOfferNation = gpSlot;
+              bestOfferScore = relationVal;
+            } else {
+              unsigned int rnd = (unsigned int)relationVal + 0x31 +
+                                 (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+              if (rnd == 0)
+                rnd = randSeed1;
+              randSeed1 = rnd * 0x15a4e35 + 1;
+              if ((randSeed1 >> 12) & 1) {
+                bestOfferNation = gpSlot;
+                bestOfferScore = relationVal;
+              }
+            }
           }
         }
 
-        int score =
-            (200 - relationSideEffectMatrix[minorSlot * kNationSlotCount + gpSlot]) * relationVal;
+        int score = 0;
+        if (relationSideEffectMatrix[sideEffectIndex] >= 1) {
+          score = (200 - relationSideEffectMatrix[sideEffectIndex]) *
+                  relationStandingScores[standingIndex];
+        }
         if (bestRelationScore < score) {
           isRelationTie = false;
           bestRelationNation = gpSlot;
           bestRelationScore = score;
         } else if (score == bestRelationScore) {
           isRelationTie = true;
-          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+          if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+            bestRelationNation = gpSlot;
+            bestRelationScore = score;
+          } else {
+            short relationVal = relationStandingScores[standingIndex];
             unsigned int rnd = (unsigned int)relationVal + 0x31 +
                                (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
             if (rnd == 0)
@@ -984,28 +989,40 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               bestRelationNation = gpSlot;
               bestRelationScore = score;
             }
-          } else {
-            bestRelationNation = gpSlot;
-            bestRelationScore = score;
           }
         }
       }
     }
 
     if (bestOfferNation != -1) {
+      int priorOfferNation = specialRelationSourceSlots[minorSlot - 7];
+      if (!isOfferTie && priorOfferNation != bestOfferNation && priorOfferNation != -1 &&
+          relationSideEffectMatrix[priorOfferNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorOfferNation) != 0) {
+        g_apTerrainTypeDescriptorTable[priorOfferNation]->AddNoticeFrom(minorSlot, 0x13a);
+      }
       specialRelationSourceSlots[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
     }
     if (bestRelationNation != -1) {
+      int priorRelationNation = specialRelationTargetSlots[minorSlot - 7];
+      if (!isRelationTie && priorRelationNation != bestRelationNation &&
+          priorRelationNation != -1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorRelationNation) != 0 &&
+          relationSideEffectMatrix[priorRelationNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_apTerrainTypeDescriptorTable[priorRelationNation] != 0) {
+        g_apTerrainTypeDescriptorTable[priorRelationNation]->AddNoticeFrom(minorSlot, 0x13b);
+      }
       specialRelationTargetSlots[minorSlot - 7] = static_cast<NationSlot>(bestRelationNation);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004f09c0
-void TDiplomacyMgr::QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot) {
+void TDiplomacyMgr::QueueNationPairWarTransition(NationSlot sourceNationSlot,
+                                                 NationSlot targetNationSlot) {
   WarTransitionPair pair;
-  pair.sourceNationSlot = static_cast<short>(sourceNationSlot);
-  pair.targetNationSlot = static_cast<short>(targetNationSlot);
+  pair.sourceNationSlot = sourceNationSlot;
+  pair.targetNationSlot = targetNationSlot;
   pendingWarTransitionQueue->InsertCopiedRecordAtFrontOfPtrList(&pair);
   SetNationPairDiplomacyRelationCode(sourceNationSlot, targetNationSlot, kDiplomacyRelationshipWar,
                                      1);
@@ -1052,40 +1069,29 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
         propagatedTransition = (transitionResult == 2);
       }
     } else {
-      int otherNationSlot = 0;
-      TGreatPower** nationStateCursor = g_apNationStates;
-      DiplomacyRelationshipStorage* targetRelationCursor =
-          &relationPropagationMatrix[targetNationSlot * kNationSlotCount];
-      do {
-        if (*targetRelationCursor == kDiplomacyRelationshipAlliance &&
+      int otherNationSlot;
+      for (otherNationSlot = 0; otherNationSlot < 7; ++otherNationSlot) {
+        if (relationPropagationMatrix[targetNationSlot * kNationSlotCount + otherNationSlot] ==
+                kDiplomacyRelationshipAlliance &&
             IsNationPairAtWar(otherNationSlot, sourceNationSlot) == 0) {
           int transitionResult =
-              (*nationStateCursor)
-                  ->HandleWarTransitionRequestWithRoleSwap(targetNationSlot, sourceNationSlot, 0);
+              g_apNationStates[otherNationSlot]->HandleWarTransitionRequestWithRoleSwap(
+                  targetNationSlot, sourceNationSlot, 0);
           propagatedTransition = (transitionResult == 2);
         }
-        ++nationStateCursor;
-        ++otherNationSlot;
-        ++targetRelationCursor;
-      } while (nationStateCursor < &g_apNationStates_End);
+      }
 
-      otherNationSlot = 0;
-      nationStateCursor = g_apNationStates;
-      DiplomacyRelationshipStorage* sourceRelationCursor =
-          &relationPropagationMatrix[sourceNationSlot * kNationSlotCount];
-      do {
-        if (*sourceRelationCursor == kDiplomacyRelationshipAlliance &&
+      for (otherNationSlot = 0; otherNationSlot < 7; ++otherNationSlot) {
+        if (relationPropagationMatrix[sourceNationSlot * kNationSlotCount + otherNationSlot] ==
+                kDiplomacyRelationshipAlliance &&
             ReadGlobalTDiplomacyTurnStateManager()->IsNationPairAtWar(otherNationSlot,
                                                                       targetNationSlot) == 0) {
           int transitionResult =
-              (*nationStateCursor)
-                  ->HandleWarTransitionRequestWithRoleSwap(targetNationSlot, sourceNationSlot, 1);
+              g_apNationStates[otherNationSlot]->HandleWarTransitionRequestWithRoleSwap(
+                  targetNationSlot, sourceNationSlot, 1);
           propagatedTransition = (transitionResult == 2);
         }
-        ++nationStateCursor;
-        ++otherNationSlot;
-        ++sourceRelationCursor;
-      } while (nationStateCursor < &g_apNationStates_End);
+      }
     }
 
     if (propagatedTransition == 0) {
@@ -1411,9 +1417,9 @@ void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1970
-bool TDiplomacyMgr::HasNationPairNeedLevel300(int sourceNation, int targetNation) {
-  int source = static_cast<short>(sourceNation);
-  int target = static_cast<short>(targetNation);
+bool TDiplomacyMgr::HasNationPairNeedLevel300(NationSlot sourceNation, NationSlot targetNation) {
+  int source = sourceNation;
+  int target = targetNation;
   TCountry* sourceCountry = g_apTerrainTypeDescriptorTable[source];
   if (sourceCountry->needLevelByNation[target] == 300) {
     return true;
@@ -1479,21 +1485,21 @@ TDiplomacyMgr::GetNationPairDiplomacyRelationCode(NationSlot sourceNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b40
-void TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal(int sourceNationSlot,
-                                                            int targetNationSlot,
-                                                            DiplomacyRelationship relationship) {
+void TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal(
+    NationSlot sourceNationSlot, NationSlot targetNationSlot,
+    DiplomacyRelationshipStorage relationship) {
   SetNationPairDiplomacyRelationCode(sourceNationSlot, targetNationSlot, relationship, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b70
-void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int targetNationSlot,
-                                                       DiplomacyRelationship relationship,
-                                                       int updateMode) {
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
+void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(NationSlot sourceNationSlot,
+                                                       NationSlot targetNationSlot,
+                                                       DiplomacyRelationshipStorage relationship,
+                                                       unsigned char updateMode) {
+  int source = sourceNationSlot;
+  int target = targetNationSlot;
   int forwardIndex = source * kNationSlotCount + target;
-  DiplomacyRelationshipStorage newRelationship =
-      static_cast<DiplomacyRelationshipStorage>(relationship);
+  DiplomacyRelationshipStorage newRelationship = relationship;
   if (newRelationship == relationPropagationMatrix[forwardIndex]) {
     return;
   }
@@ -1505,10 +1511,12 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
   relationTurnStampMatrix[reverseIndex] = g_pSimMgr->GetEconomicTurn();
 
   if (IsGreatPower(sourceNationSlot) != 0) {
-    g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationship);
+    g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(
+        target, static_cast<DiplomacyRelationship>(relationship));
   }
   if (IsGreatPower(targetNationSlot) != 0) {
-    g_apNationStates[target]->DispatchNationDiplomacySlotActionByMode(source, relationship);
+    g_apNationStates[target]->DispatchNationDiplomacySlotActionByMode(
+        source, static_cast<DiplomacyRelationship>(relationship));
   }
 
   switch (newRelationship) {
@@ -1534,10 +1542,10 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
     if ((IsGreatPower(sourceNationSlot) != 0) && (IsGreatPower(targetNationSlot) != 0)) {
       relationSideEffectMatrix[forwardIndex] = 2;
       relationSideEffectMatrix[reverseIndex] = 2;
-      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source])
-          ->SetDiplomacyStanding(targetNationSlot, 100);
-      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target])
-          ->SetDiplomacyStanding(sourceNationSlot, 100);
+      g_apTerrainTypeDescriptorTable[source]->SetTradePolicyTo(
+          static_cast<NationSlot>(targetNationSlot), 100);
+      g_apTerrainTypeDescriptorTable[target]->SetTradePolicyTo(
+          static_cast<NationSlot>(sourceNationSlot), 100);
       return;
     }
     break;
@@ -1545,13 +1553,13 @@ void TDiplomacyMgr::SetNationPairDiplomacyRelationCode(int sourceNationSlot, int
     SetRelationship(sourceNationSlot, targetNationSlot, 0xff);
     break;
   case kDiplomacyRelationshipWar: {
-    TMinor* sourceTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source]);
-    TMinor* targetTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target]);
+    TCountry* sourceTerrain = g_apTerrainTypeDescriptorTable[source];
+    TCountry* targetTerrain = g_apTerrainTypeDescriptorTable[target];
     if ((sourceTerrain->encodedNationSlot == -1) && (targetTerrain->encodedNationSlot < 200)) {
       g_pNewsMgr->AddTreatyEvent(kInterNationEventWarWithIndependentMinor, source, target, 0);
     }
-    sourceTerrain->SetDiplomacyStanding(targetNationSlot, 300);
-    targetTerrain->SetDiplomacyStanding(sourceNationSlot, 300);
+    sourceTerrain->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 300);
+    targetTerrain->SetTradePolicyTo(static_cast<NationSlot>(sourceNationSlot), 300);
     relationSideEffectMatrix[forwardIndex] = 0;
     relationSideEffectMatrix[reverseIndex] = 0;
     if (IsGreatPower(sourceNationSlot) != 0) {
@@ -1576,8 +1584,8 @@ short TDiplomacyMgr::LookupOrderCompatibilityMatrixValue(int sourceNationSlot,
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f50
-bool TDiplomacyMgr::IsGreatPower(int nationSlot) {
-  return static_cast<short>(nationSlot) < 7;
+bool TDiplomacyMgr::IsGreatPower(NationSlot nationSlot) {
+  return nationSlot < 7;
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f70
@@ -1707,7 +1715,7 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, int si
 }
 
 // FUNCTION: IMPERIALISM 0x004f24a0
-void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(int nationCode) {
+void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationCode) {
   // Ground truth walks the aux-slot table by byte offset (esi stepping 4 into
   // [esi + &g_apSecondaryNationStateSlots[7]]) rather than re-scaling an index,
   // and carries the minor slot as its own counter seeded to 7 (mov [esp+0x14], 7

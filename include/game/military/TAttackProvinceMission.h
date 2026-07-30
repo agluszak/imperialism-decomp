@@ -8,12 +8,12 @@
 class TAttackProvinceMission : public TArmyMission {
   DECLARE_SERIAL(TAttackProvinceMission)
 public:
-  short targetProvince30;   // +0x30 target province/region index (ctor = 0xffff)
-  short amassingProvince32; // +0x32 amassing province/region index (ctor = 0xffff)
+  short targetProvince30;   // +0x30 target province/region index (ctor = -1)
+  short amassingProvince32; // +0x32 amassing province/region index (ctor = -1)
 
-  TAttackProvinceMission() : TArmyMission(0xffff) {
-    targetProvince30 = static_cast<short>(0xffff);
-    amassingProvince32 = static_cast<short>(0xffff);
+  TAttackProvinceMission() : TArmyMission(-1) {
+    targetProvince30 = -1;
+    amassingProvince32 = -1;
   }
 
   TAttackProvinceMission(short targetProvince, short amassingProvince);

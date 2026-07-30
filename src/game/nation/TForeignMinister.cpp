@@ -299,13 +299,13 @@ void TForeignMinister::DoUsualSubsidyRule() {
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
         short metric = owner->GetStockpile(orderKind);
         if (metric == 0) {
-          owner->SetTradeOffersFor(orderKind, 0);
+          owner->SetItemPotentials(orderKind, 0);
         } else {
           int assignAmount = static_cast<int>(metric) / 2;
           if (assignAmount > 4) {
             assignAmount = 5;
           }
-          owner->SetTradeOffersFor(orderKind, static_cast<short>(assignAmount));
+          owner->SetItemPotentials(orderKind, static_cast<short>(assignAmount));
         }
       }
       orderKindCursor = orderKindCursor + 1;
@@ -322,10 +322,10 @@ void TForeignMinister::DoUsualSubsidyRule() {
       if (assignAmount > 4) {
         assignAmount = 5;
       }
-      owner->SetTradeOffersFor(5, static_cast<short>(assignAmount));
+      owner->SetItemPotentials(5, static_cast<short>(assignAmount));
       return;
     }
-    owner->SetTradeOffersFor(5, 0);
+    owner->SetItemPotentials(5, 0);
   }
 }
 
@@ -599,7 +599,7 @@ void TForeignMinister::DoProposeTreaties() {
               ownerContextAt04->nationSlot, static_cast<short>(candidateNation)) !=
               kDiplomacyRelationshipAlliance &&
           g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-              static_cast<short>(candidateNation), ownerContextAt04->nationSlot) == 0) {
+              candidateNation, ownerContextAt04->nationSlot) == 0) {
         selectedNation = candidateNation;
       }
     }

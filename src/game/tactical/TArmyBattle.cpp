@@ -32,8 +32,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004a5c80
-TArmyBattle::~TArmyBattle() {}
 // SYNTHETIC: IMPERIALISM 0x005a4710
 // TArmyBattle::CreateObject
 

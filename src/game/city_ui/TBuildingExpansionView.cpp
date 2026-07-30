@@ -65,7 +65,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xa78);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa78);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
   nameCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -77,7 +77,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
   if (costCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xa7f);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa7f);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
   costCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -100,14 +100,14 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
   if (warnCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xa95);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
 
   TProductionOrder* order =
       static_cast<TProductionOrder*>(city94->orderSlotsE4[buildingSlotId90 + 0x35]);
   if (order == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xa97);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
   }
 
   // Probe whether the full upgrade quantity is achievable, then restore the order.
@@ -125,19 +125,19 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->GetString(0x2738, (buildingSlotId == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
-    warnCtrl->SetEnabled(1, 0);
+    warnCtrl->Show(1, 0);
 
     TControl* okayCtrl =
         static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
     if (okayCtrl == nullptr) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xaac);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xaac);
     }
-    okayCtrl->SetEnabled(0, 0);
-    okayCtrl->SetState(0, 0);
+    okayCtrl->Show(0, 0);
+    okayCtrl->ViewEnable(0, 0);
   } else {
     // Upgrade already queued: keep the warning hidden.
-    warnCtrl->SetEnabled(0, 0);
+    warnCtrl->Show(0, 0);
   }
 
   // Route the cancel button and OK button through command tag 0x22.
@@ -145,7 +145,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'n', 'c', 'l')));
   if (cnclCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xab7);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xab7);
   }
   cnclCtrl->eventNumber60 = 0x22;
 
@@ -162,7 +162,7 @@ void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
       static_cast<TProductionOrder*>(city94->orderSlotsE4[buildingSlotId90 + 0x35]);
   if (order == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xac6);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);
   }
   if (dialogActionTag == kControlTagOkay) { // 'okay'
     short previousBuildingType = static_cast<short>(city94->GetBuildingType(buildingSlotId90));

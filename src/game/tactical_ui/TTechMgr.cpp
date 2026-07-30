@@ -309,18 +309,14 @@ void TTechMgr::CheckForAdvances() {
 // FUNCTION: IMPERIALISM 0x005afb10
 void TTechMgr::ApplyTechUnlockAndQueueNationAbilityNotices(int techId, int forcedNationSlot) {
   this->ApplyCityOrderCapabilityUnlockByTechId(techId);
-  TGreatPower** nationCursor = g_apNationStates;
-  int nationSlot = 0;
-  do {
-    TGreatPower* nation = *nationCursor;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation->diplomacyEligibilityA0 == 0 || nationSlot == forcedNationSlot) {
       this->capRowsE4a6[nationSlot].completionYearOffsetByTechId[techId] =
           static_cast<short>(g_pSimMgr->economicTurn / 4);
       this->HandleAbilityUnlock(techId, nationSlot);
     }
-    ++nationCursor;
-    ++nationSlot;
-  } while (nationCursor < &g_apNationStates_End);
+  }
 }
 
 // Applies a technology-unlock id to the city-order capability state: records the active tech

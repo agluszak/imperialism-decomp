@@ -27,7 +27,7 @@ void T2PictureButton::SetAvailability(char isAvailable, char refreshNow) {
       (isAvailable == 0 && pictureId < controlValue3c)) {
     SetPictureResourceIdAndRefresh(alternatePictureId, false);
     controlValue3c = pictureId;
-    SetState(isAvailable, false);
-    SetEnabled(!isAvailable, refreshNow);
+    ViewEnable(isAvailable, false);
+    Show(!isAvailable, refreshNow);
   }
 }

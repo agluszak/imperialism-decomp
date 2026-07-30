@@ -16,7 +16,8 @@ public:
   // NOOP: verified empty in original 0x004b8c92 (no standalone TCapacityOrder::TCapacityOrder body exists: construction is fully inlined into CreateObject 0x004b8c90; that address is its operator-new call site)
   TCapacityOrder() {}
 
-  ~TCapacityOrder() override;
+  // FUNCTION: IMPERIALISM 0x004b8d30
+  ~TCapacityOrder() override {}
 
   void Produce() override; // slot 0x0d 0x4b8dd0
   // MacApp-style initializer: `new TCapacityOrder()` then ICapacityOrder(...), which is

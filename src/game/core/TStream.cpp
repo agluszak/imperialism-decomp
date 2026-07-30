@@ -18,9 +18,6 @@
 // TStream::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStream, TObject)
-// FUNCTION: IMPERIALISM 0x00488a40
-TStream::~TStream() {}
-
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::IsAtEnd() {
   // The original calls GetPosition (slot 0x28) before GetLength (slot 0x30) at

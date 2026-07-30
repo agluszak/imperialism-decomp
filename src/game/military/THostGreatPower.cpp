@@ -42,12 +42,11 @@ void THostGreatPower::WriteTo(TStream* stream) {
 // The host runs the base dispatch first (local UI runtime context); when that accepts the
 // action it also mirrors it to the remote nations over the wire.
 // FUNCTION: IMPERIALISM 0x00541080
-char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                                    int arg4) {
-  if (TGreatPower::TryDispatchNationActionViaUiContextOrFallback(arg1, arg2, arg3, arg4) != 0) {
-    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(
-        this->nationSlot, static_cast<short>(arg1), static_cast<short>(arg2),
-        static_cast<short>(arg3), static_cast<short>(arg4));
+char THostGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                                        ResourceKindStorage resourceKind) {
+  if (TGreatPower::ReplyToTradeOffer(targetNationSlot, amount, price, resourceKind) != 0) {
+    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(this->nationSlot, targetNationSlot,
+                                                                 amount, price, resourceKind);
     return 1;
   }
   return 0;
@@ -57,15 +56,12 @@ char THostGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, in
 void THostGreatPower::ReplyToDiplomacyOffers(void) {
   TGreatPower::ReplyToDiplomacyOffers();
 
-  int nationSlot = 0;
-  TGreatPower** nation = g_apNationStates;
-  do {
-    if (*nation != 0 && (*nation)->IsRemote() == 0) {
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation != 0 && nation->IsRemote() == 0) {
       g_pGameFlowState->ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(nationSlot);
     }
-    ++nation;
-    ++nationSlot;
-  } while (nation < &g_apNationStates_End);
+  }
 
   TViewMgr* uiRuntimeContext = g_pViewMgr;
   short ownerNationSlot = this->nationSlot;
@@ -80,17 +76,14 @@ void THostGreatPower::SorryYouLose(void) {
   }
 
   short eligibleOtherNationCount = 0;
-  int nationIndex = 0;
-  TGreatPower** nation = g_apNationStates;
-  do {
+  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+    TGreatPower* nation = g_apNationStates[nationIndex];
     if (nationIndex != nationSlot &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationIndex)) != 0 &&
-        (*nation)->diplomacyEligibilityA0 != 0) {
+        nation->diplomacyEligibilityA0 != 0) {
       ++eligibleOtherNationCount;
     }
-    ++nation;
-    ++nationIndex;
-  } while (nation < &g_apNationStates_End);
+  }
 
   if (eligibleOtherNationCount == 0) {
     TGreatPower::SorryYouLose();

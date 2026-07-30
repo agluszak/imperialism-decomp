@@ -7,7 +7,8 @@
 class TTechItemLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTechItemLine)
-  virtual ~TTechItemLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005b1070
+  virtual ~TTechItemLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5b1160
 
   int nationSlot10; // +0x10 — forwarded to ITechItemView

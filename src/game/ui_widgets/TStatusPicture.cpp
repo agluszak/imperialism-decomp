@@ -107,9 +107,9 @@ void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
       if (newIndex != comparisonMode90) {
         TView* newTab = ResolveControlByTag(kControlTagTab0 + newIndex);
         newTab->AssertValid();
-        newTab->SetEnabled(0, 1);
+        newTab->Show(0, 1);
         static_cast<TView*>(sourceHandler)->AssertValid();
-        static_cast<TView*>(sourceHandler)->SetEnabled(1, 1);
+        static_cast<TView*>(sourceHandler)->Show(1, 1);
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
         comparisonMode90 = newIndex;
         if (newIndex == 0) {

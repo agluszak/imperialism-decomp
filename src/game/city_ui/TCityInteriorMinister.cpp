@@ -102,9 +102,6 @@ TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList1
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x004be8b0
-TCityInteriorMinister::~TCityInteriorMinister() {}
-
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   IMinister(owner);
@@ -1664,7 +1661,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
   TTown* projectedTown = new TTown();
   projectedTown->ITown(g_szEmptyString, field3c, primaryDistance != 1,
                        ownerContextAt04->nationSlot);
-  projectedTown->CalculateCityResources();
+  projectedTown->CalculateResources();
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     if (((resourceType >= kResourceCotton && resourceType <= kResourceOil) ||
          (resourceType >= kResourceGrain && resourceType <= kResourceGold)) &&
@@ -1733,7 +1730,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
     }
     if (!hasConnectedNeighbor) {
       projectedTown->tileIndex = tileIndex;
-      projectedTown->CalculateCityResources();
+      projectedTown->CalculateResources();
       if (projectedTown->resourceYieldByType[resourceType] != 0) {
         candidateTiles->InsertLast(tileIndex);
       }
@@ -1764,7 +1761,7 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   TTown* candidateTown = new TTown();
   candidateTown->ITown("Bleah", tileIndex, 1, ownerContextAt04->nationSlot);
   short* citySummary = city->GetCitySummaryRecordSlot74();
-  candidateTown->CalculateCityResources();
+  candidateTown->CalculateResources();
 
   short score = 0;
   for (short resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {

@@ -88,7 +88,7 @@ void TEditText::SetEnable(char enabled) {
 }
 
 // FUNCTION: IMPERIALISM 0x00490730
-void TEditText::SetEnabled(int enabledState, int refreshFlag) {
+void TEditText::Show(int enabledState, int refreshFlag) {
   if (enabledState != viewEnabled) {
     viewEnabled = enabledState;
     if (refreshFlag != 0) {

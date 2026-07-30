@@ -12,7 +12,8 @@ class TTacticalUnit;
 class TNavyBattle : public TTacticalBattle {
 public:
   DECLARE_DYNCREATE(TNavyBattle)
-  virtual ~TNavyBattle() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005a5500
+  virtual ~TNavyBattle() override {} // slot 0x01 (scalar deleting destructor)
   virtual void ComputeTacticalReachableTileCostsByUnitCategory(
       TTacticalUnit* unit) override; // slot 0x0a 0x5a59f0
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,

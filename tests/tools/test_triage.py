@@ -118,6 +118,18 @@ class TriageRenderTests(unittest.TestCase):
         self.assertIn("stack-frame location differs", output)
         self.assertIn("next: just stackcmp 0x00401000", output)
 
+    def test_implicit_store_address_uses_symbolic_value(self) -> None:
+        output = render(
+            mismatch(
+                "memory_address",
+                side(value="add:initial:sp,imm#2e8c2706"),
+                side(address=0x501020, value="add:initial:sp,imm#59be4243"),
+            )
+        )
+        self.assertIn("original:   [add:initial:sp,imm#2e8c2706]", output)
+        self.assertIn("recompiled: [add:initial:sp,imm#59be4243]", output)
+        self.assertIn("address/data-flow differs", output)
+
     def test_call_target_enriched_with_symbol_and_ownership(self) -> None:
         output = render(
             mismatch(

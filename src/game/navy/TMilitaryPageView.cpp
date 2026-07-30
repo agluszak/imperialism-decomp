@@ -21,9 +21,6 @@
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
-// FUNCTION: IMPERIALISM 0x00564920
-TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
-
 // SYNTHETIC: IMPERIALISM 0x00564950
 // TMilitaryPageView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00564980

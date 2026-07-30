@@ -6,7 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/THelpPicture.h"
 #include "game/ui_core/TPicture.h"
-#include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"
@@ -94,7 +94,7 @@ THelpMgr::~THelpMgr() {}
 // FUNCTION: IMPERIALISM 0x00500680
 void THelpMgr::IHelpMgr() {
   helpIndexReady = 1;
-  TSortedPtrList* list = new TSortedPtrList();
+  TPtrList* list = new TPtrList();
   list->recordSize14 = sizeof(HelpSetRecord);
   indexList = list;
   if (g_bMultiplayerScenarioSetupActive == 0) {
@@ -912,12 +912,12 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   if (activeNation >= 0 && activeNation < 7) {
     coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(activeNation + 0x251c), 0);
   } else {
-    coatPicture->SetEnabled(0, 0);
+    coatPicture->Show(0, 0);
   }
 
   TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
-  title->SetEnabled(1, 1);
-  title->SetState(0, 1);
+  title->Show(1, 1);
+  title->ViewEnable(0, 1);
   title->SetTextAlignmentAndMaybeRefresh(1, 0);
   title->InstallTextStyle(titleStyle, 0);
   BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 6, 0x2749,

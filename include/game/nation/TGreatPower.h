@@ -109,20 +109,20 @@ public:
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
-  bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) override; // slot 0x21
+  bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                     int arg4) override;
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override;
   // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
-  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                    NationSlot targetNationSlot) override;
+  void AddOfferFrom(NationSlot sourceNationSlot,
+                    DiplomacyProposalCodeStorage proposalCode) override;
   // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
   // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
   // +0x8d6 inside TGreatPower's 0x964.
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   // ORACLE: Mac names TGreatPower::AddNoticeFrom(short, short).
-  void AddNoticeFrom(int sourceNation, int actionCode) override; // slot 0x94
+  void AddNoticeFrom(short sourceNation, short actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
   // ---- tracked orders / pending action state ----
@@ -272,8 +272,9 @@ public:
   // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
   // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
   // Offer entries are always eligible; accept entries are eligible for minor nations.
-  virtual void AppendTrackedSlotEntry(short kind, int targetNation, short value, short slotIndex,
-                                      int payload);
+  // ORACLE: Mac names this TGreatPower::AddToDealBook(short, short, short, short, long).
+  virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
+                             int payload);
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
@@ -298,7 +299,7 @@ public:
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
-  virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
+  virtual void RejectOffer(short proposalQueueIndex);                                  // index 124
   // slot 0x7d — body 0x004df4b0: whether the proposal may target the nation given the
   // current relationship (alliance through war progressively restricts treaty offers).
   virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,

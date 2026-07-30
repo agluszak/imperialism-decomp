@@ -534,7 +534,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
     coat->SetPictureResourceIdAndRefresh(
         static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
   } else {
-    coat->SetEnabled(0, 0);
+    coat->Show(0, 0);
   }
 
   if (static_cast<short>(payloadResource) != 0) {
@@ -593,8 +593,8 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   if (showCancel != 0) {
     TView* cancel = dialog->ResolveControlByTag(kControlTagCncl); // 'cncl'
     cancel->AssertValid();
-    cancel->SetEnabled(1, 1);
-    cancel->SetState(1, 0);
+    cancel->Show(1, 1);
+    cancel->ViewEnable(1, 0);
   }
 
   unsigned char savedProcessFlag;
@@ -1035,7 +1035,7 @@ inline void RefreshTradClusterPictureAndHintText() {
   TPicture* tradPicture = static_cast<TPicture*>(tradControl);
   const short pictureId = static_cast<short>(tradPicture->glyphBase84 + 1);
   tradPicture->SetPictureResourceIdAndRefresh(pictureId, false);
-  tradControl->SetState(0, 0);
+  tradControl->ViewEnable(0, 0);
 
   CString hintText;
   g_pSimMgr->GetString(0x2730, 0, &hintText);
@@ -1388,7 +1388,7 @@ void TViewMgr::ShowCityProductionView(short nationSlot) {
   if (cityControl != nullptr) {
     TPicture* cityPicture = static_cast<TPicture*>(cityControl);
     cityPicture->SetPictureResourceIdAndRefresh(cityPicture->glyphBase84 + 1, 0);
-    cityControl->SetState(0, 0);
+    cityControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1d, &hoverText);
     SetControlHoverHelpTextAltEntry(hoverText, cityControl);
   }
@@ -1468,7 +1468,7 @@ void TViewMgr::ShowDiplomacyScreen(short nationSlot) {
     TPicture* diplPicture = static_cast<TPicture*>(diplControl);
     diplPicture->SetPictureResourceIdAndRefresh(static_cast<short>(diplPicture->glyphBase84 + 1),
                                                 0);
-    diplControl->SetState(0, 0);
+    diplControl->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1c, &text);
     SetControlHoverHelpTextAltEntry(text, diplControl);
   }
@@ -1529,7 +1529,7 @@ void TViewMgr::ShowTransportScreen(short nationSlot) {
   if (transportButton != nullptr) {
     transportButton->SetPictureResourceIdAndRefresh(
         static_cast<short>(transportButton->glyphBase84 + 1), 0);
-    transportButton->SetState(0, 0);
+    transportButton->ViewEnable(0, 0);
     g_pSimMgr->GetString(0x2730, 0x1e, &text);
     SetControlHoverHelpTextAltEntry(text, transportButton);
   }
@@ -1821,7 +1821,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   const int foodRequired =
       citySummary[kResourceLivestock] + citySummary[kResourceFruit] + citySummary[kResourceGrain];
   const bool foodShortage = foodOnHand < foodRequired;
-  food->SetEnabled(foodShortage ? 1 : 0, 0);
+  food->Show(foodShortage ? 1 : 0, 0);
   g_pSimMgr->GetString(0x2731, foodShortage ? 4 : 8, &label);
   food->SetHoverHelpText(label);
 
@@ -1832,8 +1832,8 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
                                    nation->needTargetByType[kResourceWool] <
                                city->GetBuildingType(0) * 2;
   g_pSimMgr->GetString(0x2731, 0x13, &label);
-  cotton->SetEnabled(textileShortage ? 1 : 0, 0);
-  wool->SetEnabled(textileShortage ? 1 : 0, 0);
+  cotton->Show(textileShortage ? 1 : 0, 0);
+  wool->Show(textileShortage ? 1 : 0, 0);
   cotton->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
   wool->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
 
@@ -1859,7 +1859,7 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
     const bool shortage =
         shortageControls[i].stock + nation->needTargetByType[shortageControls[i].needType] <
         city->GetBuildingType(shortageControls[i].buildingType) * shortageControls[i].multiplier;
-    shortageControl->SetEnabled(shortage ? 1 : 0, 0);
+    shortageControl->Show(shortage ? 1 : 0, 0);
     if (shortage) {
       g_pSimMgr->GetString(0x2731, shortageControls[i].stringIndex, &label);
       shortageControl->SetHoverHelpText(label);
@@ -2241,7 +2241,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   TMovieView* movieView =
       static_cast<TMovieView*>(activeDialog->ResolveControlByTag(kControlTagMovi));
   movieView->AssertValid();
-  movieView->SetState(1, 0);
+  movieView->ViewEnable(1, 0);
   movieView->ForceRedraw();
 
   CString movieName;
@@ -2249,7 +2249,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   case 1:
     movieName = CString("open");
     if (movieView->nextHandler != 0) {
-      static_cast<TView*>(movieView->nextHandler)->SetState(0, 0);
+      static_cast<TView*>(movieView->nextHandler)->ViewEnable(0, 0);
     }
     break;
   case 0xe:
@@ -2566,7 +2566,7 @@ void TViewMgr::ShowUnitHistory(short nationSlot) {
     TStaticText* textControl = static_cast<TStaticText*>(
         activeDialog->ResolveControlByTag(kControlTagTxtAt + entryOrdinal));
     if (textControl != 0) {
-      textControl->SetEnabled(1, 1);
+      textControl->Show(1, 1);
       textControl->SetTextAndMaybeRefresh(&lineText, 1);
     }
 

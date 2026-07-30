@@ -37,8 +37,7 @@ enum DiplomacyProposalKind {
   kDiplomacyProposalBuildEmbassy = 0x134
 };
 
-// The relation matrix and getter use signed 16-bit storage. Setters receive an
-// int-sized enum value and narrow it once when writing the matrix.
+// The relation matrix and diplomacy-manager setter ABI use signed 16-bit storage.
 typedef short DiplomacyRelationshipStorage;
 
 enum DiplomacyRelationship {

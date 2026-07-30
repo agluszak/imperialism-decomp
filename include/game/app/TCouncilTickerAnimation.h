@@ -11,8 +11,9 @@ class TCouncilView;
 class TCouncilTickerAnimation : public TAnimation {
 public:
   DECLARE_DYNCREATE(TCouncilTickerAnimation)
-  virtual ~TCouncilTickerAnimation() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Tick() override;                // slot 0x0a 0x49ffe0
+  // FUNCTION: IMPERIALISM 0x0049ff50
+  virtual ~TCouncilTickerAnimation() override {} // slot 0x01 (scalar deleting destructor)
+  virtual void Tick() override;                  // slot 0x0a 0x49ffe0
 
   // Initializes the inherited TAnimation fields directly (inline duplicate of
   // TAnimation::IAnimation's pattern, not a call to it): owner view,

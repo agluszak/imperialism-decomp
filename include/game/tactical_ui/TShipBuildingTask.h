@@ -12,7 +12,8 @@ class TStream;
 class TShipBuildingTask : public TCityTask {
 public:
   DECLARE_DYNCREATE(TShipBuildingTask)
-  virtual ~TShipBuildingTask() override;           // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005ae6f0
+  virtual ~TShipBuildingTask() override {}         // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae9e0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5aea70
   // Resolves the requested ship type's six resource deficits against city stock, queues

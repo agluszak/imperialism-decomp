@@ -3,7 +3,7 @@
 #include "game/ui_tags_common.h"
 #include "game/ui_screens/TSimMgr.h"
 
-#include "game/ui_widgets/TAmtBar.h"
+#include "game/ui_widgets/TIndustryAmtBar.h"
 #include "game/city_ui/TBuildingView.h"
 #include "game/ui_core/TView.h"
 #include "game/nation/TGreatPower.h"
@@ -24,20 +24,6 @@
 #include <new>
 
 const int kAssertLineRatioB = 0xb73;
-
-static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* context,
-                                                           int assertLine) {
-  TAmtBar* barControl = static_cast<TAmtBar*>(context->ResolveControlByTag(kControlTagBar));
-  if (barControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, assertLine);
-  }
-
-  if (barControl->auxValueA != 0) {
-    int ratioValue = (context->selectedMetricOrder->MaxOrder() * barControl->frameWidth34) /
-                     barControl->auxValueA;
-    barControl->SetBarMetricRatio(ratioValue);
-  }
-}
 
 // SYNTHETIC: IMPERIALISM 0x00588a30
 // TIndustryCluster::CreateObject
@@ -149,7 +135,15 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
 
 // FUNCTION: IMPERIALISM 0x00588f60
 void TIndustryCluster::UpdateMax() {
-  UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
+  TIndustryAmtBar* barControl = static_cast<TIndustryAmtBar*>(ResolveControlByTag(kControlTagBar));
+  if (barControl == 0) {
+    FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, kAssertLineRatioB);
+  }
+
+  if (barControl->auxValueA != 0) {
+    barControl->RenderQuickDrawOverlayWithHitRegion(static_cast<short>(
+        (selectedMetricOrder->MaxOrder() * barControl->frameWidth34) / barControl->auxValueA));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00588ff0

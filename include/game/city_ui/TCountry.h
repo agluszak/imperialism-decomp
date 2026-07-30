@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/core/CString.h"
 #include "game/nation_domain_types.h"
+#include "game/resource_domain_types.h"
 #include "game/app/TObject.h"
 #include "game/city_ui/TLongintList.h"
 #include "game/ui_core/TSortedList.h"
@@ -75,14 +76,14 @@ public:
   virtual short GetTradeOffersFor(short resourceKind);
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                               int multiplier);
-  virtual bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot);
-  virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                             int arg4);
+  virtual bool StillBuyingItem(ResourceKindStorage resourceKind);
+  virtual char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                                 ResourceKindStorage resourceKind);
   // ORACLE: Mac names TCountry::AddOfferFrom(short, short).
-  virtual void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode, NationSlot targetNationSlot);
+  virtual void AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStorage proposalCode);
   virtual char IsPolicyCodeInSpecialNationPolicySet(short policyCode);
   // ORACLE: Mac names TCountry::AddNoticeFrom(short, short).
-  virtual void AddNoticeFrom(int sourceNation, int actionCode);
+  virtual void AddNoticeFrom(short sourceNation, short actionCode);
   virtual bool IsClient(void);
   virtual bool IsHost(void);
   virtual bool IsRemote(void);

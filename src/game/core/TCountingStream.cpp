@@ -19,7 +19,6 @@ TCountingStream::TCountingStream() {
 
 // SYNTHETIC: IMPERIALISM 0x00489440
 // TCountingStream::`scalar deleting destructor'
-TCountingStream::~TCountingStream() {}
 
 // SYNTHETIC: IMPERIALISM 0x00489470
 // TCountingStream::~TCountingStream

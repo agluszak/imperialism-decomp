@@ -12,7 +12,8 @@ class TStream;
 class TPowerPlantOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TPowerPlantOrder)
-  virtual ~TPowerPlantOrder() override;              // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b7a90
+  virtual ~TPowerPlantOrder() override {}            // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b7cc0
   virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b7d40
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7b30

@@ -43,9 +43,6 @@ void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
 // Trivial virtual destructor: restores the vtable pointer and returns (7 bytes at
 // 0x0059ae60). Ghidra mislabeled this address as `CreateTTacticalPlayerInstance`; the
 // scalar deleting destructor above calls it.
-// FUNCTION: IMPERIALISM 0x0059ae60
-TTacticalPlayer::~TTacticalPlayer() {}
-
 // SYNTHETIC: IMPERIALISM 0x0059ae80
 // TTacticalPlayer::GetRuntimeClass
 

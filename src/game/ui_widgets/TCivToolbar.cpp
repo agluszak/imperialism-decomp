@@ -53,11 +53,11 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
   }
 
   if (selectedOrder == 0) {
-    unitControl->SetEnabled(0, 1);
+    unitControl->Show(0, 1);
   } else {
     static_cast<TPicture*>(unitControl)
         ->SetPictureResourceIdAndRefresh(static_cast<short>(this->civilianClassId + 0x438), 1);
-    unitControl->SetEnabled(1, 1);
+    unitControl->Show(1, 1);
   }
 
   TCivDescription* backControl = static_cast<TCivDescription*>(
@@ -116,7 +116,7 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
     }
     static_cast<TCivilianButton*>(stackButton)
         ->SetSelectedCivilianOrderAndEnableButton(selectedTileEntry);
-    stackButton->SetState(selectedTileEntry->IsInIdleSelectionState(), 1);
+    stackButton->ViewEnable(selectedTileEntry->IsInIdleSelectionState(), 1);
     if ((selectedCivilianState != 0) &&
         (selectedTileEntry == selectedCivilianState->selectedEntry)) {
       selectedStackButton = stackButton;
@@ -144,17 +144,17 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15eb);
   }
-  stackButton->SetState(commandEnabled, 1);
+  stackButton->ViewEnable(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagLatr));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15ed);
   }
-  stackButton->SetState(commandEnabled, 1);
+  stackButton->ViewEnable(commandEnabled, 1);
   stackButton = static_cast<TControl*>(this->ResolveControlByTag(kControlTagDone));
   if (stackButton == 0) {
     FailNilPointerWithAssert(s_SourcePathUSmallViews_006992F0, 0x15ef);
   }
-  stackButton->SetState(commandEnabled, 1);
+  stackButton->ViewEnable(commandEnabled, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0

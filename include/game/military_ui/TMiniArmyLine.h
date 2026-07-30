@@ -11,7 +11,8 @@ class TMilitaryUnit;
 class TMiniArmyLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TMiniArmyLine)
-  virtual ~TMiniArmyLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004aa870
+  virtual ~TMiniArmyLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4aa960
 
   // NOOP: verified empty in original 0x004aa8c3 (no standalone TMiniArmyLine::TMiniArmyLine body exists: CreateObject 0x004aa890 inlines this default ctor, calling the TLineData base ctor directly at that site)

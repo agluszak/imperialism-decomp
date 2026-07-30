@@ -14,9 +14,9 @@ extern const GUID g_ImperialismDirectPlayApplicationGuid0066f968;
 
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 
-extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
+extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 
-extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+extern CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 

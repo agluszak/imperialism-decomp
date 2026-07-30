@@ -26,8 +26,6 @@ TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8d60
 // TArmyUnitLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004a8d90
-TArmyUnitLine::~TArmyUnitLine() {}
 
 // FUNCTION: IMPERIALISM 0x004a8db0
 void TArmyUnitLine::IArmyUnitLine(short rowArg, short colArg, int* bounds, TMilitaryUnit* item) {
@@ -48,13 +46,13 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
       static_cast<TMilitaryPageView*>(panel)->primaryUnitAtlas84, militaryUnit10->orderType << 7);
   checkbox->controlTag = kControlTagChec; // 'chec'
   if (militaryUnit10->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-    static_cast<TView*>(checkbox)->SetState(1, 0);
+    static_cast<TView*>(checkbox)->ViewEnable(1, 0);
     checkbox->eventNumber60 = 4;
     if (militaryUnit10->unitOrder == 0) {
       checkbox->SetState(1, 0);
     }
   } else {
-    static_cast<TView*>(checkbox)->SetState(0, 0);
+    static_cast<TView*>(checkbox)->ViewEnable(0, 0);
     checkbox->SetState(0, 0);
   }
 
@@ -67,7 +65,7 @@ void TArmyUnitLine::InstallViews(TView* panel, int* offsetLayout) {
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->IGWorldButton(armyView, upgradeOffset, upgradeSize, 0xdae);
-    upgradeButton->SetState(1, 0);
+    upgradeButton->ViewEnable(1, 0);
     upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 
     CString armsText;

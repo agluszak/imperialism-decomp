@@ -14,7 +14,8 @@ class TTacticalUnit;
 class TArmyBattle : public TTacticalBattle {
 public:
   DECLARE_DYNCREATE(TArmyBattle)
-  virtual ~TArmyBattle() override;                 // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004a5c80
+  virtual ~TArmyBattle() override {}               // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5a4da0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,

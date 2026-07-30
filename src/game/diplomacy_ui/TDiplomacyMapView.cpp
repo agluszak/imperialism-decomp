@@ -1464,16 +1464,16 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   rtabControl->AssertValid();
 
   if (newTopic == 0 || newTopic == 4) {
-    ltabControl->SetEnabled(1, 1);
-    rtabControl->SetEnabled(0, 1);
+    ltabControl->Show(1, 1);
+    rtabControl->Show(0, 1);
     if (newTopic == 0) {
       ltabControl->SetPictureResourceIdAndRefresh(0x1389, 1);
     } else {
       ltabControl->SetPictureResourceIdAndRefresh(0x138a, 1);
     }
   } else {
-    ltabControl->SetEnabled(0, 1);
-    rtabControl->SetEnabled(1, 1);
+    ltabControl->Show(0, 1);
+    rtabControl->Show(1, 1);
     if (g_pSimMgr->mode == 6) {
       rtabControl->SetPictureResourceIdAndRefresh(0x20da, 1);
     } else {

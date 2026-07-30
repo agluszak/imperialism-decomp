@@ -22,7 +22,7 @@ IMPLEMENT_DYNCREATE(TMadnessButton, TCzechBox)
 void TMadnessButton::DoPostCreate(int arg) {
   TCzechBox::DoPostCreate(arg);
   initialPictureId = glyphBase84;
-  TCzechBox::SetState(1, 0);
+  SetState(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0054eb30

@@ -37,8 +37,8 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   widget->InitializeUiResourceEntryFrameAndParent(0, parent, offsetLayout, sizeLayout, 0, 0, 1);
   widget->controlTag = static_cast<int>(controlTag);
   widget->controlValue3c = field3cValue;
-  widget->SetEnabled(enabledState, 0);
-  widget->SetState(stateValue, 0);
+  widget->Show(enabledState, 0);
+  widget->ViewEnable(stateValue, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
