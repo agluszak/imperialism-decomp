@@ -14,8 +14,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004aa840
 // TMiniArmyLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004aa870
-TMiniArmyLine::~TMiniArmyLine() {}
 // SYNTHETIC: IMPERIALISM 0x004aa890
 // TMiniArmyLine::CreateObject
 
@@ -43,7 +41,7 @@ void TMiniArmyLine::InstallViews(TView* panel, int* offsetLayout) {
     int upgradeSize[2] = {0x13, 0x12};
     TGWorldButton* upgradeButton = new TGWorldButton;
     upgradeButton->IGWorldButton(armyView, upgradeOffset, upgradeSize, 0xdae);
-    upgradeButton->SetState(1, 0);
+    upgradeButton->ViewEnable(1, 0);
     upgradeButton->controlTag = kControlTagUpgr; // 'upgr'
 
     CString armsText;

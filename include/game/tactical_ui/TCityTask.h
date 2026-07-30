@@ -19,7 +19,8 @@ class TSortedList;
 class TCityTask : public TTask {
 public:
   DECLARE_DYNCREATE(TCityTask)
-  virtual ~TCityTask() override;                   // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005add70
+  virtual ~TCityTask() override {}                 // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5ae570
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5ae5e0
   // Tries to satisfy requestedAmount directly from the owning city's stock

@@ -73,7 +73,7 @@ void TToggleButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       }
     }
     if (match2) {
-      this->SetEnabled(0, 1);
+      this->Show(0, 1);
     }
   }
 }
@@ -106,7 +106,7 @@ bool TToggleButton::IsSelected() {
 
 // FUNCTION: IMPERIALISM 0x00571350
 void TToggleButton::Select(bool isPressed, bool notifyParent) {
-  this->SetEnabled(static_cast<char>(isPressed), static_cast<char>(notifyParent));
+  this->Show(static_cast<char>(isPressed), static_cast<char>(notifyParent));
   if (static_cast<char>(isPressed) != '\0') {
     // The owner panel is a TCluster; notify it which child tag is now active (slot 0x72).
     static_cast<TCluster*>(this->ownerContext)->SetSelectedChildTagAndRefresh(this->controlTag);

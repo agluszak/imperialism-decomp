@@ -82,9 +82,9 @@ void TRelationshipDialog::StuffValues() {
             g_pDiplomacyTurnStateManager
                 ->relationStandingScores[sourceNation * kNationSlotCount + targetNation],
             0);
-        cell->SetState(static_cast<signed char>(g_bRandomMapDeveloperCheatFlag), 0);
+        cell->ViewEnable(static_cast<signed char>(g_bRandomMapDeveloperCheatFlag), 0);
       } else {
-        cell->SetEnabled(0, 1);
+        cell->Show(0, 1);
       }
     }
   }

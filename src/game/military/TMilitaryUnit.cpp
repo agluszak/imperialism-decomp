@@ -195,6 +195,7 @@ void TMilitaryUnit::MoveTo(short anchorIndex) {
       nextAtLocation14->previousAtLocation10 = this;
     }
   } else {
+    g_pGlobalMapState->cityScoreTable[newTileIndex].stationedUnitChain98 = this;
     head->previousAtLocation10 = this;
     previousAtLocation10 = 0;
     nextAtLocation14 = head;

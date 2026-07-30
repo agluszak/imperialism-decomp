@@ -513,7 +513,6 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
             name=scenario.native_test,
             seed=1,
             timeout_seconds=timeout_seconds,
-            phase_timeout_ms=60_000,
             rerun_seh=False,
             gdb_first=False,
             no_gdb=True,

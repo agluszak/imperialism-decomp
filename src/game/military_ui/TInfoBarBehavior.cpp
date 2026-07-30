@@ -32,8 +32,8 @@ void TInfoBarBehavior::IInfoBarBehavior(CString newText, TView* ownerView) {
     dummy->InitializeUiResourceEntryFrameAndParent(0, ownerView, g_InfoBarDummyOrigin_006A2410,
                                                    &ownerView->frameWidth34, 0, 0, 0);
     dummy->controlTag = kControlTagDumy;
-    dummy->SetState(1, 0);
-    dummy->SetEnabled(0, 0);
+    dummy->ViewEnable(1, 0);
+    dummy->Show(0, 0);
   }
   ownerView->AddBehavior(this);
 }

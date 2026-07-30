@@ -15,9 +15,8 @@
 // Each has its own single-slot vtable placed in memory immediately after TMapMaker's vtable
 // (0x006598f8): the SeaSegment stretch at 0x0065999c, the Seapoint stretch at 0x006599a0.
 // The Ghidra extractor over-extended TMapMaker's vtable to swallow those two adjacent
-// tables, which is why 0x0052a760/0x0052c0a0 were previously mis-attributed as
-// TMapMaker::SetEnabled/SetState. They are in fact the by-value append virtual (the single
-// vtable slot, modelled here as Add to match the stretch<T> template).
+// tables. The 0x0052a760/0x0052c0a0 functions are the by-value append virtual (the
+// single vtable slot, modelled here as Add to match the stretch<T> template).
 
 // A 0x10-byte map point / edge record. The two middle dwords are kept sorted (lo <= hi) by
 // InitSorted. The append virtual copies all four dwords by value.

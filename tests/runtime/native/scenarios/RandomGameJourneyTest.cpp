@@ -1,150 +1,64 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
 #include "probes/StrategicMapProbe.h"
-#include "RuntimeUiDriver.h"
-
-#include "game/core/global_data_tables.h"
-#include "game/map/TMapUberPicture.h"
-#include "game/ui_core/TControl.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TRadioTextCluster.h"
-#include "game/ui_screens/TSetupRandomMapPicture.h"
-#include "game/ui_tags_common.h"
-#include "game/ui_tags_screens.h"
+#include "screens/CapitalSelectionScreen.h"
+#include "screens/MainMenuScreen.h"
+#include "screens/RandomSetupScreen.h"
+#include "screens/StrategicMapScreen.h"
 
 namespace {
 
-class RandomGameJourneyTestCase : public RandomGameScenario {
+// Hard, which is not the difficulty the flow started with -- so the reopened setup accepting it is
+// observable rather than a no-op.
+const int kHardDifficulty = 3;
+
+// Leaving the new-game flow and coming back into it.
+//
+// From capital selection: cancel back to setup, cancel out to the main menu, start a random game
+// again, pick a different difficulty, accept, and let the flow carry on to the map. The map is then
+// held to the same rendering, hover-cache and scrolling checks as a first-time entry, because the
+// point of the journey is that a re-entered game is not a degraded one.
+//
+// This is the only scenario that hands navigation back mid-script, which is what
+// CapitalSelectionScriptScenario exists for: the script pauses at RestartRandomGameAtStrategicMapEntry()
+// and resumes at the same statement once the flow reports the map.
+class RandomGameJourneyTestCase : public CapitalSelectionScriptScenario {
 public:
-  RandomGameJourneyTestCase() : phase(kReturnToRandomSetup), exercisedReentry(false) {}
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
-  void TickScenario() override {
-    if (phase == kReturnToRandomSetup) {
-      WaitForReturnedRandomSetup();
-    } else if (phase == kReturnToMainMenu) {
-      WaitForReturnedMainMenu();
-    } else if (phase == kReenterRandomSetup) {
-      WaitForReenteredRandomSetup();
-    } else {
-      VerifyReenteredRandomSetup();
-    }
-  }
-
-  void OnCombinedMapReady() override {
-    CString failure;
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    if (!StrategicMapProbe::VerifyRendering(mapView, failure) ||
-        !StrategicMapProbe::VerifyHoverCache(mapView, failure) ||
-        !StrategicMapProbe::VerifyScrolling(mapView, failure)) {
-      FailScenario(failure);
-      return;
-    }
-    Pass();
-  }
-
 protected:
-  void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) override {
-    if (checkpoint != kRuntimeCapitalSelectionReady || exercisedReentry) {
-      RuntimeScenario::OnFlowCheckpoint(checkpoint);
-      return;
-    }
-    exercisedReentry = true;
-    phase = kReturnToRandomSetup;
-    EnterScenarioStep("returning_to_random_setup", "native_click_strategic_map_cancel");
-    TView* mapView = CurrentMainView();
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mapView, kControlTagCanc)) {
-      FailScenario("\"strategic-map return control has no native-message path\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
+  void Script() override {
+    RT_BEGIN();
 
-private:
-  enum Phase {
-    kReturnToRandomSetup,
-    kReturnToMainMenu,
-    kReenterRandomSetup,
-    kVerifyReenteredRandomSetup
-  };
+    RT_DO("cancel back to the random setup", CapitalSelection().CancelToSetup());
+    RT_AWAIT(RandomSetupScreen::IsCurrent(), kObserveUiStateChanged);
 
-  void WaitForReturnedRandomSetup() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      WaitForScenarioTick("\"random setup did not return from capital selection\"");
-      return;
-    }
-    phase = kReturnToMainMenu;
-    EnterScenarioStep("returning_to_main_menu", "native_click_random_setup_cancel");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagCncl)) {
-      FailScenario("\"returned random setup has no native-message cancel path\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
+    RT_DO("cancel out to the main menu", RandomSetup().Cancel());
+    RT_AWAIT(MainMenuScreen::IsCurrent(), kObserveUiStateChanged);
 
-  void WaitForReturnedMainMenu() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x5dc) {
-      WaitForScenarioTick("\"main menu did not return after random setup cancellation\"");
-      return;
-    }
-    phase = kReenterRandomSetup;
-    EnterScenarioStep("reentering_random_setup", "native_click_main_menu_random_game");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagRand)) {
-      FailScenario("\"returned main menu has no native-message random-game path\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
+    RT_DO("start a random game again", MainMenu().StartRandomGame());
+    RT_AWAIT(RandomSetupScreen::IsCurrent(), kObserveUiStateChanged);
 
-  void WaitForReenteredRandomSetup() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      WaitForScenarioTick("\"random setup did not reopen from the returned main menu\"");
-      return;
-    }
-    TSetupRandomMapPicture* setup = static_cast<TSetupRandomMapPicture*>(mainView);
-    SetSelectedNation(setup->selectedNationSlot9A);
-    phase = kVerifyReenteredRandomSetup;
-    EnterScenarioStep("verifying_returned_random_setup", "native_click_hard_difficulty");
-    if (!RuntimeUiDriver::ClickControlThroughNativeMessages(mainView, kControlTagDif3)) {
-      FailScenario("\"reopened random setup has no native-message difficulty path\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
+    // The reopened screen picks its own nation; the run records which, so its artifacts name the
+    // nation the rest of the journey is about.
+    SetSelectedNation(RandomSetup().SelectedNationSlot());
+    RT_DO("select the hard difficulty", RandomSetup().SelectDifficulty(kHardDifficulty));
+    RT_REQUIRE(RandomSetup().DifficultyIsSelected(kHardDifficulty));
+    RT_DO("accept the reopened setup", RandomSetup().Accept());
 
-  void VerifyReenteredRandomSetup() {
-    TView* mainView = CurrentMainView();
-    TRadioTextCluster* difficulty =
-        mainView != 0
-            ? static_cast<TRadioTextCluster*>(mainView->ResolveControlByTag(kControlTagDiff))
-            : 0;
-    if (difficulty == 0 || difficulty->selectedTag88 != static_cast<int>(kControlTagDif3)) {
-      FailScenario("\"reentered random setup did not accept the native difficulty click\"");
-      return;
-    }
-    if (!RuntimeUiDriver::ActivateControlSemantically(mainView, kControlTagOkay)) {
-      FailScenario("\"reentered random setup okay control is missing\"");
-      return;
-    }
+    // Hand navigation back. The script continues below once the flow reports the map, which is why
+    // the wait after this is not reached until then.
     RestartRandomGameAtStrategicMapEntry();
+    RT_AWAIT(StrategicMapScreen::IsCurrent(), kObserveUiStateChanged);
+
+    RT_DO("verify the map renders", StrategicMapProbe::VerifyRendering());
+    RT_DO("verify the map's hover cache", StrategicMapProbe::VerifyHoverCache());
+    RT_DO("verify the map scrolls", StrategicMapProbe::VerifyScrolling());
+    RT_PASS();
+
+    RT_END();
   }
-
-  Phase phase;
-  bool exercisedReentry;
 };
-
-RandomGameJourneyTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* RandomGameJourneyTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(RandomGameJourneyTestCase, RandomGameJourneyTest)

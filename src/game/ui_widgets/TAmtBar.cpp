@@ -33,10 +33,6 @@ void TAmtBar::SetBarMetric(int value, int range) {
 
 IMPLEMENT_DYNCREATE(TAmtBar, TView)
 
-// FUNCTION: IMPERIALISM 0x00588580
-TAmtBar::TAmtBar()
-    : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
-
 // Destructors are compiler-generated (implicit) from real inheritance.
 
 // SYNTHETIC: IMPERIALISM 0x005885c0
@@ -170,9 +166,4 @@ void TAmtBar::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin)
   }
 
   static_cast<TAmtBarCluster*>(owner)->SetMoveAmount(appliedValue);
-}
-
-void TAmtBar::SetBarMetricRatio(int value) {
-  stepOrCurrentValue = (short)value;
-  RefreshControl();
 }

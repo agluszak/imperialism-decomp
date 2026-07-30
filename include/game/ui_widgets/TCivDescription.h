@@ -7,7 +7,7 @@
 
 struct CRuntimeClass;
 
-// VTABLE: IMPERIALISM 0x6431B0
+// VTABLE: IMPERIALISM 0x006431b0
 class TCivDescription : public TView {
 public:
   DECLARE_DYNCREATE(TCivDescription)
@@ -37,5 +37,8 @@ public:
 
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivUnit* orderState);
   void UpdateCivilianOrderTargetTileCountsForOwnerNation(class TCivUnit* selectedOrder);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  bool ActivateLegendSlot(short slotIndex);
+#endif
 };
 ASSERT_SIZE(TCivDescription, 0x170);

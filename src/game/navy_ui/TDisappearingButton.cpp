@@ -19,7 +19,7 @@ TDisappearingButton::~TDisappearingButton() {}
 void TDisappearingButton::HiliteState(unsigned char fEnabledState, unsigned char fRefreshNow) {
   if (controlState64 != fEnabledState) {
     controlState64 = fEnabledState;
-    SetEnabled(fEnabledState == 0, true);
+    Show(fEnabledState == 0, true);
     if (fRefreshNow) {
       DrawImmediate();
     }

@@ -123,7 +123,7 @@ _precommit-generated-integrity-gate:
 [group('gates')]
 gates:
   just source-gates
-  just stats --ui-codegen-gate
+  just stats --ui-codegen-gate --fail-on-regression
   just semantic-gate
   just vtable
   just datacmp-gate
@@ -195,6 +195,11 @@ test:
 [group('gates')]
 semantic-gate: _require-ghidra-install
   uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" gate --generate-if-stale
+
+[doc('Force a full semantic recompute and row-diff it against the current report (proves pipeline changes are behavior-neutral)')]
+[group('gates')]
+semantic-verify *args: _require-ghidra-install
+  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" verify {{args}}
 
 [doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
 [group('reports')]
@@ -361,7 +366,7 @@ structure-audit-gate:
 [doc('reccmp annotation lint: marker syntax, duplicate addresses, stray markers')]
 [group('gates')]
 decomplint:
-  (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
+  (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}" --warnfail)
 
 # Manual audits of the legacy typedef-cast scaffolding (0 instances remain in the
 # tree; new casts are already hard-banned by antipattern-gate + boundary-gate, so
@@ -407,7 +412,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate
+_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate runtime-source-policy-gate runtime-script-debt-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

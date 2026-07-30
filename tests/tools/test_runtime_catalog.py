@@ -287,3 +287,45 @@ class MapExpectationConsistencyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ScenarioPolicyInCatalogTests(unittest.TestCase):
+    """Harness policy belongs beside suites and evidence, not in a scenario's class body.
+
+    Every scenario used to answer RecordsGameFlow()/RequiresScenarioUiSnapshot()/
+    ObserveScenarioUiTree() with a hand-written override, which is why "a test overrides Script()
+    only" was not true.
+    """
+
+    def test_snapshot_events_are_cpp_constants(self):
+        """Names, not numbers: game/turn_event_codes.h stays the single source of the values."""
+        for test in TESTS:
+            for event in test.ui_snapshot_events:
+                with self.subTest(test=test.name, event=event):
+                    self.assertTrue(event.startswith("kTurnEvent"), event)
+
+    def test_snapshot_events_imply_a_ui_snapshot(self):
+        """Capturing a tree without declaring the ui snapshot would drop the evidence."""
+        for test in TESTS:
+            if test.ui_snapshot_events:
+                with self.subTest(test=test.name):
+                    self.assertIn("ui", test.native_snapshots)
+
+    def test_no_scenario_overrides_the_policy_hooks(self):
+        """The overrides are gone; a new one would silently outrank its catalog entry."""
+        scenarios = (REPO_ROOT / "tests" / "runtime" / "native" / "scenarios").glob("*Test.cpp")
+        offenders = []
+        for path in scenarios:
+            source = path.read_text(encoding="utf-8")
+            for hook in ("RecordsGameFlow", "RequiresScenarioUiSnapshot", "ObserveScenarioUiTree"):
+                if f"{hook}(" in source and "override" in source:
+                    if any(f"{hook}(" in line and "override" in line for line in source.splitlines()):
+                        offenders.append(f"{path.name}: {hook}")
+        self.assertEqual([], offenders)
+
+    def test_the_generated_descriptor_carries_the_policy(self):
+        rendered = render_registry()
+        self.assertIn("kCityScreenOpensSnapshotEvents[] = {kTurnEventCityProduction}", rendered)
+        # boot_managers declares neither, so it must render the empty form.
+        self.assertIn('{"boot_managers"', rendered)
+        self.assertIn("false, 0, 0}", rendered)

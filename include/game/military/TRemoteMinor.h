@@ -10,10 +10,9 @@ public:
   DECLARE_DYNCREATE(TRemoteMinor)
   TRemoteMinor() : TMinor() {}
 
-  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                      int multiplier) override;
-  bool IsRemote(void) override;
-  void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
+  void PurchaseItem(short resourceKind, short amount, short price) override;
+  bool IsRemote(void) const override;
+  void PlopDownCity(short selectedRegion, const char* mapCellLabel) override;
 
 protected:
   ~TRemoteMinor() override;

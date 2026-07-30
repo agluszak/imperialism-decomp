@@ -24,6 +24,80 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+namespace {
+short g_runtimeObservedStrategicMapTile;
+short g_runtimeObservedStrategicMapResource;
+bool g_runtimeObservedStrategicMapResourceDraw;
+short g_runtimeObservedStrategicMapSurveyMissTile;
+bool g_runtimeObservedStrategicMapSurveyMissDraw;
+short g_runtimeObservedStrategicMapImprovementTile;
+short g_runtimeObservedStrategicMapImprovementResource;
+short g_runtimeObservedStrategicMapImprovementClass;
+bool g_runtimeObservedStrategicMapImprovementDraw;
+} // namespace
+
+void ObserveStrategicMapResourceTileForRuntimeTest(short tileIndex, short resourceType) {
+  g_runtimeObservedStrategicMapTile = tileIndex;
+  g_runtimeObservedStrategicMapResource = resourceType;
+  g_runtimeObservedStrategicMapResourceDraw = false;
+}
+
+bool WasStrategicMapResourceTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapResourceDraw;
+}
+
+void ObserveStrategicMapSurveyMissTileForRuntimeTest(short tileIndex) {
+  g_runtimeObservedStrategicMapSurveyMissTile = tileIndex;
+  g_runtimeObservedStrategicMapSurveyMissDraw = false;
+}
+
+bool WasStrategicMapSurveyMissTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapSurveyMissDraw;
+}
+
+void ObserveStrategicMapImprovementTileForRuntimeTest(short tileIndex, short resourceType,
+                                                      short improvementClass) {
+  g_runtimeObservedStrategicMapImprovementTile = tileIndex;
+  g_runtimeObservedStrategicMapImprovementResource = resourceType;
+  g_runtimeObservedStrategicMapImprovementClass = improvementClass;
+  g_runtimeObservedStrategicMapImprovementDraw = false;
+}
+
+bool WasStrategicMapImprovementTileObservedForRuntimeTest() {
+  return g_runtimeObservedStrategicMapImprovementDraw;
+}
+
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType)                    \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapTile &&                                        \
+        (resourceType) == g_runtimeObservedStrategicMapResource) {                                 \
+      g_runtimeObservedStrategicMapResourceDraw = true;                                            \
+    }                                                                                              \
+  } while (0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex)                               \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapSurveyMissTile) {                              \
+      g_runtimeObservedStrategicMapSurveyMissDraw = true;                                          \
+    }                                                                                              \
+  } while (0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, resourceType,                 \
+                                                          improvementClass)                        \
+  do {                                                                                             \
+    if ((tileIndex) == g_runtimeObservedStrategicMapImprovementTile &&                             \
+        (resourceType) == g_runtimeObservedStrategicMapImprovementResource &&                      \
+        (improvementClass) == g_runtimeObservedStrategicMapImprovementClass) {                     \
+      g_runtimeObservedStrategicMapImprovementDraw = true;                                         \
+    }                                                                                              \
+  } while (0)
+#else
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, resourceType) ((void)0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex) ((void)0)
+#define IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, resourceType,                 \
+                                                          improvementClass)                        \
+  ((void)0)
+#endif
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
@@ -164,7 +238,7 @@ TMapDialog::TMapDialog() : TWorldView() {
   tileDebugOverlayEnabled360 = false;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00519C40
+// SYNTHETIC: IMPERIALISM 0x00519c40
 // TMapDialog::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x00519c70
 TMapDialog::~TMapDialog() {}
@@ -188,7 +262,7 @@ void TMapDialog::Free() {
   g_pUiAnimator->FreeUiTransientRegistryPayloads();
 }
 
-// FUNCTION: IMPERIALISM 0x00519D30
+// FUNCTION: IMPERIALISM 0x00519d30
 void TMapDialog::DoPostCreate(int arg) {
   TWorldView::DoPostCreate(arg);
 
@@ -400,7 +474,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
   SetQuickDrawFillColor(0);
 }
 
-// FUNCTION: IMPERIALISM 0x0051A900
+// FUNCTION: IMPERIALISM 0x0051a900
 void TMapDialog::InvalidateTile(short tileIndex) {
   int originalTileIndex = tileIndex;
   short projectedY;
@@ -574,7 +648,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
   g_pUiAnimator->TranslateListRectsAndDropNonIntersectingEntries(dx, dy, clip);
 }
 
-// FUNCTION: IMPERIALISM 0x0051AF60
+// FUNCTION: IMPERIALISM 0x0051af60
 void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int edgeMask) {
   short col;
   short row;
@@ -920,7 +994,7 @@ void TMapDialog::Draw(RECT* rectBuffer) {
   UnlockPixels(GetGWorldPixMap(quickDrawSurface350));
 }
 
-// FUNCTION: IMPERIALISM 0x0051EB40
+// FUNCTION: IMPERIALISM 0x0051eb40
 void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   CTemporaryRegion temporaryRegion;
   TBitmapSurfaceNode** destinationSurfaceObject = GetGWorldPixMap(quickDrawSurface350);
@@ -1167,43 +1241,104 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   }
 
   if ((activeFlags & 3) == 0 || terrain.gateFlag == 0) {
-    const char improvementClasses[2] = {
-        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1)),
-        static_cast<char>(
-            g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0))};
-    // The original writes both edges out (0x51f6ab and 0x51f76a are the same block with
-    // different constants), so the visibility test and its GetActiveNationId call appear
-    // twice rather than once around a loop. IMPERIALISM_MAP_TILE_RESOURCE_EDGE keeps the
-    // two copies identical without a loop the compiler would have to unroll.
-#define IMPERIALISM_MAP_TILE_RESOURCE_EDGE(edgeIndex, xOffset)                                     \
-  {                                                                                                \
-    const signed char resourceType = terrain.resourceTypeByEdge[edgeIndex];                        \
-    if (resourceType >= 0) { /* kResourceKindNone sentinel */                                      \
-      const short destinationX = static_cast<short>(screenX + (xOffset));                          \
-      if (improvementClasses[edgeIndex] != 0) {                                                    \
-        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(                                            \
-            destinationSurfaceObject, static_cast<unsigned short>(resourceType),                   \
-            improvementClasses[edgeIndex], destinationX, static_cast<short>(screenY + 2));         \
-      } else {                                                                                     \
-        const int activeNation = g_pSimMgr->GetActiveNationId();                                   \
-        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;          \
-        if (!tileVisible && g_pGlobalMapState->field24 != 0) {                                     \
-          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||                      \
-                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||                   \
-                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||                      \
-                        terrain.GetTerrainKind() == kStrategicTerrainDesert;                       \
-        }                                                                                          \
-        if (tileVisible) {                                                                         \
-          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, resourceType,          \
-                                                  destinationX, screenY);                          \
-        }                                                                                          \
-      }                                                                                            \
-    }                                                                                              \
-  }
+    const char lowImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0));
+    const char highImprovementClass =
+        static_cast<char>(g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 1));
+    const signed char firstResourceType = terrain.resourceTypeByEdge[0];
+    const bool firstResourceIsProspectable =
+        firstResourceType == kResourceCoal || firstResourceType == kResourceIron ||
+        firstResourceType == kResourceOil || firstResourceType == kResourceGems ||
+        firstResourceType == kResourceGold;
+    if (firstResourceIsProspectable) {
+      if (highImprovementClass != 0) {
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
+            highImprovementClass, static_cast<short>(screenX + 2), static_cast<short>(screenY + 2));
+      } else {
+        const int activeNation = g_pSimMgr->GetActiveNationId();
+        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                        terrain.GetTerrainKind() == kStrategicTerrainDesert;
+        }
+        if (tileVisible) {
+          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, firstResourceType);
+          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, firstResourceType,
+                                                  screenX, screenY);
+        }
+      }
+    } else {
+      if (lowImprovementClass != 0) {
+        IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_IMPROVEMENT(tileIndex, firstResourceType,
+                                                          lowImprovementClass);
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(firstResourceType),
+            lowImprovementClass, static_cast<short>(screenX + 0x1b),
+            static_cast<short>(screenY + 2));
+      }
+      const int activeNation = g_pSimMgr->GetActiveNationId();
+      bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+      if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+        tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                      terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                      terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                      terrain.GetTerrainKind() == kStrategicTerrainDesert;
+      }
+      TCivUnit* selectedCivilian = g_pSelectedCivilianOrderState->selectedEntry;
+      if (tileVisible && selectedCivilian != 0 &&
+          (selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitProspector) ||
+           selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner) ||
+           selectedCivilian->orderType == EncodeCivilianUnitKind(kCivilianUnitDeveloper))) {
+        UpdatePaletteIndexWithDefaultFallback(0x10);
+        SetQuickDrawFillColor(0);
+        CRect sourceRect(0x190, 0, 0x1a4, 0x14);
+        CRect destinationRect(screenX + 5, screenY + 0xc, screenX + 0x19, screenY + 0x20);
+        IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_SURVEY_MISS(tileIndex);
+        BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
+                                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                         &sourceRect, &destinationRect, 0x24, 0);
+        SetQuickDrawStrokeColor(0xffffff);
+      }
+    }
 
-    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(0, 2)
-    IMPERIALISM_MAP_TILE_RESOURCE_EDGE(1, 0x1c)
-#undef IMPERIALISM_MAP_TILE_RESOURCE_EDGE
+    const signed char secondResourceType = terrain.resourceTypeByEdge[1];
+    const bool secondResourceIsProspectable =
+        secondResourceType == kResourceCoal || secondResourceType == kResourceIron ||
+        secondResourceType == kResourceOil || secondResourceType == kResourceGems ||
+        secondResourceType == kResourceGold;
+    if (secondResourceIsProspectable) {
+      if (highImprovementClass != 0) {
+        g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+            destinationSurfaceObject, static_cast<unsigned short>(secondResourceType),
+            highImprovementClass, static_cast<short>(screenX + 2),
+            static_cast<short>(screenY + 0x1c));
+      } else {
+        const int activeNation = g_pSimMgr->GetActiveNationId();
+        bool tileVisible = (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0;
+        if (!tileVisible && g_pGlobalMapState->field24 != 0) {
+          tileVisible = terrain.GetTerrainKind() == kStrategicTerrainHills ||
+                        terrain.GetTerrainKind() == kStrategicTerrainMountain ||
+                        terrain.GetTerrainKind() == kStrategicTerrainSwamp ||
+                        terrain.GetTerrainKind() == kStrategicTerrainDesert;
+        }
+        if (tileVisible) {
+          IMPERIALISM_RUNTIME_OBSERVE_STRATEGIC_RESOURCE(tileIndex, secondResourceType);
+          g_pMacViewMgr->DrawStrategicMapUnitIcon(destinationSurfaceObject, secondResourceType,
+                                                  screenX, static_cast<short>(screenY + 0x1c));
+        }
+      }
+    }
+
+    if (secondResourceType == kResourceLivestock &&
+        (firstResourceType == kResourceCoal || firstResourceType == kResourceIron) &&
+        lowImprovementClass != 0) {
+      g_pMacViewMgr->DrawStrategicMapUnitIconOverlay(
+          destinationSurfaceObject, kResourceLivestock, lowImprovementClass,
+          static_cast<short>(screenX + 0x1b), static_cast<short>(screenY + 0x1c));
+    }
 
     if (g_pDiplomacyTurnStateManager->IsGreatPower(terrain.ownerNationTag04) == 0 &&
         terrain.secondaryOwnerNationTag18 != -1) {
@@ -1428,7 +1563,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetA_00520970(int originX, int originY
   DrawCenteredGuideLineOnMapDc(originX + 0x2c, y1);
 }
 
-// FUNCTION: IMPERIALISM 0x00520A90
+// FUNCTION: IMPERIALISM 0x00520a90
 void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
@@ -1455,7 +1590,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00520C10
+// FUNCTION: IMPERIALISM 0x00520c10
 void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant) {
   int x1;
   int x2;
@@ -1484,7 +1619,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY
   DrawCenteredGuideLineOnMapDc(x1, originY + 0x20);
 }
 
-// FUNCTION: IMPERIALISM 0x00520D20
+// FUNCTION: IMPERIALISM 0x00520d20
 void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
@@ -1500,7 +1635,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY
   DrawCenteredGuideLineOnMapDc(originX + 0x38, originY);
 }
 
-// FUNCTION: IMPERIALISM 0x00520DE0
+// FUNCTION: IMPERIALISM 0x00520de0
 void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
@@ -1533,7 +1668,7 @@ void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00520FC0
+// FUNCTION: IMPERIALISM 0x00520fc0
 void TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant) {
   if (variant == 1) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
@@ -1576,7 +1711,7 @@ void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY
   DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
 }
 
-// FUNCTION: IMPERIALISM 0x005211C0
+// FUNCTION: IMPERIALISM 0x005211c0
 void TMapDialog::DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant) {
   if (variant == 0) {
     SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
@@ -1746,7 +1881,7 @@ void TMapDialog::DrawCityBorderSegmentsByMask(unsigned char borderMask, int scre
 
 // Draws the same directional border geometry with each segment split into the two nations'
 // colors. Neighbor directions and guide-pattern indices follow the retail 0x521a40 dispatch.
-// FUNCTION: IMPERIALISM 0x00521A40
+// FUNCTION: IMPERIALISM 0x00521a40
 void TMapDialog::DrawNationBorderSegmentsByMask(unsigned char borderMask, int screenX, int screenY,
                                                 short tileIndex) {
   const unsigned char direction1 = borderMask & 2;
@@ -1877,7 +2012,7 @@ void TMapDialog::DrawSeaZoneBorders(unsigned char edgeMask, int screenX, int scr
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005220F0
+// FUNCTION: IMPERIALISM 0x005220f0
 void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
   short neighbors[6];
   TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
@@ -1986,7 +2121,7 @@ void TMapDialog::DrawSeaZoneBorders(int screenX, int screenY, short tileIndex) {
 
 // Draws a guide line between two tiles' screen centers, wrapping the far tile across the
 // 108-column seam and culling the line when both endpoints fall off the same screen edge.
-// FUNCTION: IMPERIALISM 0x00522C10
+// FUNCTION: IMPERIALISM 0x00522c10
 void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, int row2) {
   if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
     if (col1 > 0x6c) {
@@ -2051,7 +2186,7 @@ void TMapDialog::DrawWrappedMapRouteSegment(short col1, int row1, short col2, in
 
 // Draws the coastline "connection" line pattern linking this ocean tile to its ocean
 // neighbors, per the 6-bit connectionMask (which adjacent hexes are ocean and joined).
-// FUNCTION: IMPERIALISM 0x00522CF0
+// FUNCTION: IMPERIALISM 0x00522cf0
 void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
                                                int screenY, short tileIndex) {
   short neighborTiles[6];
@@ -2433,7 +2568,7 @@ static inline void CopyMapTilePixelSpan(unsigned char* src, unsigned char* dest,
 // The twelve masks below are the exact per-row byte spans written by the retail routines.
 // Their original dword-copy loops were decoded by executing the isolated routines against a
 // synthetic 64x64 destination and recording every destination byte write.
-// FUNCTION: IMPERIALISM 0x005241B0
+// FUNCTION: IMPERIALISM 0x005241b0
 void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int rowDirection2 = 0; rowDirection2 < 0x20; ++rowDirection2) {
@@ -2442,7 +2577,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection2(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005242F0
+// FUNCTION: IMPERIALISM 0x005242f0
 void TMapDialog::CopyTerrainTransitionMaskDirection1(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int upperRowDirection1 = 1; upperRowDirection1 < 0x20; ++upperRowDirection1) {
@@ -2473,7 +2608,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection5(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005247A0
+// FUNCTION: IMPERIALISM 0x005247a0
 void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int upperRowDirection4 = 0; upperRowDirection4 < 0x20; ++upperRowDirection4) {
@@ -2486,7 +2621,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection4(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005249F0
+// FUNCTION: IMPERIALISM 0x005249f0
 void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigned char* dest,
                                                      short srcStride, short destStride) {
   for (int rowDirection3 = 0; rowDirection3 < 0x20; ++rowDirection3) {
@@ -2495,7 +2630,7 @@ void TMapDialog::CopyTerrainTransitionMaskDirection3(unsigned char* src, unsigne
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524B30
+// FUNCTION: IMPERIALISM 0x00524b30
 void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections1And2 = 0; rowDirections1And2 < 0x20; ++rowDirections1And2) {
@@ -2508,7 +2643,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections1And2(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524C60
+// FUNCTION: IMPERIALISM 0x00524c60
 void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections0And1 = 0x20; rowDirections0And1 < 0x40; ++rowDirections0And1) {
@@ -2518,7 +2653,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections0And1(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00524E70
+// FUNCTION: IMPERIALISM 0x00524e70
 void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections2And3 = 0; rowDirections2And3 < 0x20; ++rowDirections2And3) {
@@ -2530,7 +2665,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections2And3(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005250A0
+// FUNCTION: IMPERIALISM 0x005250a0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections5And0 = 0x20; rowDirections5And0 < 0x40; ++rowDirections5And0) {
@@ -2540,7 +2675,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections5And0(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005252D0
+// FUNCTION: IMPERIALISM 0x005252d0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections4And5 = 0x20; rowDirections4And5 < 0x40; ++rowDirections4And5) {
@@ -2549,7 +2684,7 @@ void TMapDialog::CopyCoastCornerMaskBetweenDirections4And5(unsigned char* src, u
   }
 }
 
-// FUNCTION: IMPERIALISM 0x005254A0
+// FUNCTION: IMPERIALISM 0x005254a0
 void TMapDialog::CopyCoastCornerMaskBetweenDirections3And4(unsigned char* src, unsigned char* dest,
                                                            short srcStride, short destStride) {
   for (int rowDirections3And4 = 0; rowDirections3And4 < 0x20; ++rowDirections3And4) {

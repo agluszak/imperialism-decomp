@@ -334,7 +334,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         for (int i = 0; i < 4; i++) {
           TView* widget = ResolveControlByTag(kPageTags[i]);
           if (widget != NULL) {
-            widget->SetEnabled(1, 1);
+            widget->Show(1, 1);
           }
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
@@ -342,13 +342,13 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x145d);
         }
-        pgUp->SetEnabled(0, 1);
+        pgUp->Show(0, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1460);
         }
-        pgDown->SetEnabled(1, 1);
+        pgDown->Show(1, 1);
       } else {
         reportValue--;
       }
@@ -357,7 +357,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
         TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1460);
       }
-      pgDown->SetEnabled(1, 1);
+      pgDown->Show(1, 1);
       RECT rect = {4, 0x9f, 0xe1, 0x149};
       InvalidateCityDialogRectRegion(&rect, 1);
     } else if (controlTag == kControlTagPgdn) { // 'pgdn'
@@ -368,7 +368,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
         for (int i = 0; i < 4; i++) {
           TView* widget = ResolveControlByTag(kPageTags[i]);
           if (widget != NULL) {
-            widget->SetEnabled(1, 1);
+            widget->Show(1, 1);
           }
         }
         TView* pgUp = ResolveControlByTag(kControlTagPgup);
@@ -376,13 +376,13 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1470);
         }
-        pgUp->SetEnabled(1, 1);
+        pgUp->Show(1, 1);
         TView* pgDown = ResolveControlByTag(kControlTagPgdn);
         if (pgDown == NULL) {
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1477);
         }
-        pgDown->SetEnabled(0, 1);
+        pgDown->Show(0, 1);
       } else if (reportValue < totalPages) {
         reportValue++;
       }
@@ -392,7 +392,7 @@ void TCombatReportView::DoEvent(int commandId, TEventHandler* sourceHandler, TEv
           MessageBoxA(NULL, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
           TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUSmallViews_006992F0, 0x1477);
         }
-        pgDown->SetEnabled(0, 1);
+        pgDown->Show(0, 1);
       }
       RECT rect = {4, 0x9f, 0xe1, 0x149};
       InvalidateCityDialogRectRegion(&rect, 1);

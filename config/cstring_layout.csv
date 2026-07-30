@@ -265,3 +265,5 @@ TZone|72|next1c|TZone *|other|28|4|no|f0acc9c03bbe5805|include/game/map/TZone.h
 TZone|72|activeTileIndex20|short|other|32|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
 TZone|72|pad22|char[2]|other|34|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
 TZone|72|distanceLevel44|short|other|68|2|no|f0acc9c03bbe5805|include/game/map/TZone.h
+WNetSelectionRecord|20|providerGuid|GUID|other|0|16|no|34c3b996c61b58b7|include/game/net/TWNetSessionManager.h
+WNetSelectionRecord|20|label|CString|embedded|16|4|yes|34c3b996c61b58b7|include/game/net/TWNetSessionManager.h

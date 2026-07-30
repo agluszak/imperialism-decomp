@@ -22,8 +22,6 @@ TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ae6c0
 // TShipBuildingTask::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005ae6f0
-TShipBuildingTask::~TShipBuildingTask() {}
 
 // FUNCTION: IMPERIALISM 0x005ae710
 void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,

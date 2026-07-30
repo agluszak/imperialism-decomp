@@ -40,6 +40,7 @@ _build-msvc500-unlocked jobs:
     -v "$PWD":/imperialism \
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
+  just detect
 
 [doc('reccmp-project detect: record the recompiled binary/PDB for comparison')]
 [group('build')]
@@ -55,7 +56,8 @@ detect:
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
   uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
-    --chunk-prefix lint_stubs_part --annotation-kind none
+    --chunk-prefix lint_stubs_part --ui-annotation-kind none \
+    --stub-annotation-kind none
   docker run --rm --network none \
     -e CMAKE_FLAGS="-DIMPERIALISM_LINT_WERROR=ON -DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF {{flags}}" \
     -e LINT=1 \

@@ -44,9 +44,9 @@ void TShipFractionCluster::DoPostCreate(int arg) {
     shipControl->SetPictureResourceIdAndRefresh(static_cast<short>(slot + 0x5e6), 0);
     LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716, static_cast<short>(slot + 1),
                                                           controlTag);
-    SetEnabled(1, 1);
+    Show(1, 1);
   } else {
-    SetEnabled(0, 1);
+    Show(0, 1);
     SetControlHoverHelpText(CString(g_pShipFractionSharedText_0065c830), this);
   }
 
@@ -90,14 +90,14 @@ void TShipFractionCluster::SetAvailableAndSelectedShipCounts(int availableCount,
   if (availableCount != 0) {
     if (availableShipCount88 == 0) {
       short slot = GetEnabledIndustryCapabilitySlotByClass(static_cast<short>(controlTag - 0x7330));
-      shipControl->SetEnabled(1, 1);
-      shipCountButton90->SetEnabled(1, 1);
+      shipControl->Show(1, 1);
+      shipCountButton90->Show(1, 1);
       LoadUiStringByGroupAndIndexToGlobalControlTag(0x2716, static_cast<short>(slot + 1),
                                                     controlTag);
     }
   } else if (availableShipCount88 != 0) {
-    shipControl->SetEnabled(0, 1);
-    shipCountButton90->SetEnabled(0, 1);
+    shipControl->Show(0, 1);
+    shipCountButton90->Show(0, 1);
     SetControlHoverHelpTextAltEntry(CString(g_pShipFractionSharedText_0065c830), this);
   }
 

@@ -15,7 +15,8 @@ public:
   virtual int IsTradeControlAtMinimum() override;                    // slot 0x73 0x586150
   using TUberCluster::HandleEvent;
 
-  TUnitToolbarCluster();
+  // FUNCTION: IMPERIALISM 0x00586010
+  TUnitToolbarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)
 };
 ASSERT_SIZE(TUnitToolbarCluster, 0x88);

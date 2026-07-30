@@ -619,7 +619,7 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
                         )
                     ),
                     family=family,
-                    source=f"Windows: evidence 0x{node_evidence:08x}",
+                    source=f"Windows evidence at 0x{node_evidence:08x}",
                     confidence="high",
                 )
             )

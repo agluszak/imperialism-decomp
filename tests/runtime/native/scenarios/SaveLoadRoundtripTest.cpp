@@ -1,17 +1,19 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "probes/UnitChainProbe.h"
+#include "screens/LoadSaveScreen.h"
+#include "screens/NewspaperScreen.h"
+#include "screens/StrategicMapScreen.h"
 
 #include "game/assets/TAssetMgr.h"
-#include "game/map/TMapMgr.h"
-#include "game/map/TMapUberPicture.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TSimMgr.h"
-#include "game/globals/global_types.h"
-#include "game/globals/ui_core_globals.h"
+#include "game/core/global_data_tables.h"
 #include "game/globals/shared_globals.h"
-#include "game/ui_tags_map.h"
-#include "game/globals/view_registries.h"
+#include "game/map/TMapMgr.h"
+#include "game/ui_screens/TLoadSavePicture.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_widgets.h"
 
 // Save then load, both through the real document path.
 //
@@ -32,66 +34,72 @@
 
 namespace {
 
-class SaveLoadRoundtripTestCase : public RandomGameScenario {
+// The slot this scenario saves into, and the save mode that names its file.
+const short kSaveSlot = 0;
+const int kNormalSaveMode = 0;
+
+class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
-  SaveLoadRoundtripTestCase() : phase(kSave), savedTurn(0), savedNation(0) {}
-  int DifficultyLevel() const override {
-    return 1;
-  }
-  bool RecordsGameFlow() const override {
-    return true;
-  }
+  SaveLoadRoundtripTestCase() : savedTurn(0), savedNation(0) {}
 
-  void OnMapReadyWithoutCapitalSelection() override {
-    if (phase != kSave) {
-      return;
-    }
-    EnterScenarioStep("saving_game", "save_main_document");
-    SaveAndReload();
-  }
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-  void TickScenario() override {
-    WaitForLoadedMap();
-  }
-
-private:
-  enum Phase { kSave, kWaitForLoadedMap };
-
-  Phase phase;
-  int savedTurn;
-  short savedNation;
-
-  void SaveAndReload() {
-    if (g_pSimMgr == 0 || g_pGlobalMapState == 0) {
-      FailScenario("\"managers are not live at map-ready time\"");
-      return;
-    }
-    // Remember enough to prove the reload restored the same game rather than starting a
-    // fresh one -- a load that silently fell back to a new game would otherwise pass.
     savedTurn = g_pSimMgr->economicTurn;
     savedNation = g_pSimMgr->activeNationSlot;
 
-    CString path("save/rt_save_load_roundtrip.imp");
-    if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
-      FailScenario("\"the document refused to save through the real save path\"");
-      return;
+    RT_DO("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
+    RT_REQUIRE(LoadSaveScreen::IsCurrent());
+
+    RT_DO("select the first save slot", LoadSave().SelectSlot(kSaveSlot));
+    RT_REQUIRE_EQ(kSaveSlot, LoadSave().SelectedSlot());
+    RT_REQUIRE(LoadSave().SlotIsBeingNamed());
+
+    // Okay writes through the document path synchronously, so the file is there to inspect by the
+    // time this returns.
+    RT_DO("accept the selected slot", LoadSave().Accept());
+    BuildSavePathStringForMode(&savedPath, kNormalSaveMode, 0);
+    RT_REQUIRE(TryGetFileMetadataForPath(&savedPath) != 0);
+    ReportSavedFileShape(savedPath);
+
+    // The retail save flow leaves this screen by itself.
+    RT_AWAIT(LoadSaveScreen::IsDismissed(), kObserveUiStateChanged);
+    RT_DO("reopen the saved game through the real load path", ReopenSavedGame());
+
+    while (!StrategicMapScreen::IsCurrent()) {
+      if (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()) {
+        RT_DO("close the newspaper", Newspaper().Close());
+      } else {
+        RT_AWAIT(StrategicMapScreen::IsCurrent() ||
+                     (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()),
+                 kObserveUiStateChanged);
+      }
     }
 
-    // Before handing the file to the document machinery, record how many bytes the
-    // writer actually produced and whether the header is well formed. If the load below
-    // faults while these numbers are sane, the fault is in the load path's state rebuild
-    // rather than in the byte stream -- save_stream_checkpoints proves the chain's
-    // accounting separately, and this pins the two halves to the same file.
-    ReportSavedFileShape(path);
+    RT_REQUIRE_NOT_NULL(g_pGlobalMapState);
+    // A load rebuilds the world under the units the live game already had, and re-threads the map's
+    // unit chains as it goes. A chain left holding a non-pointer survives silently until something
+    // walks it, and then it is a page fault inside TMilitaryUnit::MoveTo with no context
+    // (imperialism-decomp-ilfs) -- so the reloaded game is held to walkable chains here, where the
+    // invariant is unambiguous.
+    RT_DO("confirm the reloaded map's unit chains",
+          UnitChainProbe::VerifyChainsAreWalkable("the reload"));
+    RT_REQUIRE_EQ(savedNation, g_pSimMgr->activeNationSlot);
+    RT_REQUIRE_EQ(savedTurn, g_pSimMgr->economicTurn);
+    SetSelectedNation(g_pSimMgr->activeNationSlot);
+    RT_PASS();
 
-    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path) == 0) {
-      FailScenario("\"the just-written save would not open through the real load path\"");
-      return;
+    RT_END();
+  }
+
+private:
+  RuntimeActionResult ReopenSavedGame() {
+    if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
+      return RuntimeActionResult::Failure(
+          "the just-written save would not open through the real load path");
     }
-
-    phase = kWaitForLoadedMap;
-    EnterScenarioStep("waiting_for_loaded_map", "opened_saved_game");
-    RequestScenarioTick();
+    return RuntimeActionResult::Success();
   }
 
   // Header + length only: cheap, and enough to separate "the writer produced nonsense"
@@ -126,37 +134,11 @@ private:
     RecordSerializationRoundtripReport(report);
   }
 
-  void WaitForLoadedMap() {
-    if (AdvanceNewspaperIfNeeded()) {
-      return;
-    }
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      WaitForScenarioTick("\"the reloaded game did not reach the combined strategic map\"");
-      return;
-    }
-    if (g_pGlobalMapState == 0) {
-      FailScenario("\"the reloaded game has no global map state\"");
-      return;
-    }
-    if (g_pSimMgr->activeNationSlot != savedNation) {
-      FailScenario("\"the reloaded game has a different active nation than the saved one\"");
-      return;
-    }
-    if (g_pSimMgr->economicTurn != savedTurn) {
-      FailScenario("\"the reloaded game is on a different economic turn than the saved one\"");
-      return;
-    }
-    SetSelectedNation(g_pSimMgr->activeNationSlot);
-    Pass();
-  }
+  int savedTurn;
+  short savedNation;
+  CString savedPath;
 };
-
-SaveLoadRoundtripTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* SaveLoadRoundtripTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(SaveLoadRoundtripTestCase, SaveLoadRoundtripTest)

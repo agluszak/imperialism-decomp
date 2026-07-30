@@ -1,9 +1,10 @@
 #include "RandomSetupFlow.h"
 
+#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
-#include "screens/RandomSetupDriver.h"
+#include "screens/RandomSetupScreen.h"
 
 #include "game/core/global_data_tables.h"
 #include "game/ui_core/TView.h"
@@ -18,54 +19,53 @@ void RandomSetupFlow::Start(RuntimeScenario& scenario) {
   checkpoint = kRuntimeNoCheckpoint;
   phase = kWaitingForRandomSetup;
   scenario.EnterFlowPhase("waiting_for_random_setup", "activate_main_menu_random_game");
-  scenario.RequestScenarioTick();
+  scenario.ContinueAfterAction();
 }
 
-RuntimeFlowStatus RandomSetupFlow::Tick(RuntimeScenario& scenario) {
-  TView* mainView = scenario.CurrentMainView();
+RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kWaitingForRandomSetup) {
-    if (g_pViewMgr->currentTurnEventCode != 0x5dd ||
-        !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-      scenario.WaitForScenarioTick("\"random-map setup did not become active\"");
+    if (!RandomSetupScreen::IsCurrent()) {
+      scenario.AwaitUiChange("random-map setup did not become active");
       return kRuntimeFlowRunning;
     }
-    RandomSetupDriver setup(mainView);
-    scenario.RunState().SetSelectedNationSlot(setup.SelectedNationSlot());
+    scenario.RunState().SetSelectedNationSlot(RandomSetup().SelectedNationSlot());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
   if (phase == kSettingCountryName) {
-    if (!RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-      scenario.FailScenario("\"random-map setup disappeared before country-name entry\"");
-      return kRuntimeFlowRunning;
-    }
-    RandomSetupDriver setup(mainView);
-    if (!setup.SetCountryName("Testland")) {
-      scenario.FailScenario("\"country-name control is missing\"");
+    RuntimeActionResult named = RandomSetup().SetCountryName("Testland");
+    if (!named.Succeeded()) {
+      CString failureJson;
+      RuntimeJson::AppendString(failureJson, named.FailureMessage());
+      scenario.FailScenario(failureJson);
       return kRuntimeFlowRunning;
     }
     phase = kSelectingDifficulty;
     scenario.EnterFlowPhase("selecting_difficulty", "set_text_coun");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
   if (phase == kSelectingDifficulty) {
-    RandomSetupDriver setup(mainView);
-    if (!setup.SelectDifficultySemantically(kControlTagDif0 + scenario.DifficultyLevel())) {
-      scenario.FailScenario("\"requested difficulty control is missing\"");
+    RuntimeActionResult selected = RandomSetup().SelectDifficulty(scenario.DifficultyLevel());
+    if (!selected.Succeeded()) {
+      CString failureJson;
+      RuntimeJson::AppendString(failureJson, selected.FailureMessage());
+      scenario.FailScenario(failureJson);
       return kRuntimeFlowRunning;
     }
     phase = kActivatingOkay;
     scenario.EnterFlowPhase("activating_okay", "select_requested_difficulty");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
   if (phase == kActivatingOkay) {
-    RandomSetupDriver setup(mainView);
-    if (!setup.AcceptSemantically()) {
-      scenario.FailScenario("\"random setup okay control is missing\"");
+    RuntimeActionResult accepted = RandomSetup().Accept();
+    if (!accepted.Succeeded()) {
+      CString failureJson;
+      RuntimeJson::AppendString(failureJson, accepted.FailureMessage());
+      scenario.FailScenario(failureJson);
       return kRuntimeFlowRunning;
     }
     checkpoint = kRuntimeRandomSetupAccepted;

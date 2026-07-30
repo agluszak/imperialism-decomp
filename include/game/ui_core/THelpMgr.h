@@ -9,11 +9,11 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
-class TSortedPtrList;
+class TPtrList;
 class TWindow;
 class TCivUnit;
 
-// Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (recordSize14 0xe).
+// Mac oracle: HelpSetRecord — 0xe bytes stored in TPtrList (recordSize14 0xe).
 struct HelpSetRecord {
   // The decoded Strings.rsrc corpus establishes one shared ID namespace: this is
   // both the STR# group containing the set/topic labels and the base of the
@@ -99,7 +99,7 @@ public:
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at
   // 0x2e (ctor 0x5005f3 writes word [this+0x2e]; read at 0x5bfae6 as the help detail level).
-  TSortedPtrList* indexList;
+  TPtrList* indexList;
   TWindow* pendingDialogView8;
   TWindow* pendingDialogViewC;
   // Five independent completion counters consumed by
@@ -133,3 +133,11 @@ ASSERT_SIZE(THelpMgr, 0x30);
 // TViewMgr::ModalMessage; returns nonzero when any alert
 // was dispatched.
 char ShowTurnAlertsForActiveNation();
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+void ResetCapitolDangerWarningObservationForRuntimeTest();
+int CapitolDangerWarningEvaluationCountForRuntimeTest();
+bool WasCapitolDangerWarningEvaluatedAtPeaceForRuntimeTest();
+int CapitolDangerThreatMaskForRuntimeTest();
+int CapitolDangerDisplayedMaskForRuntimeTest();
+#endif

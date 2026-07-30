@@ -22,8 +22,10 @@
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x00413620
-TAmbitApplication::~TAmbitApplication() {}
+//
+// No own destructor: the original's slot is an ILT thunk to ~TApplication (0x004867e0), i.e.
+// the base's. The implicit destructor the compiler gives this class is what the scalar
+// deleting destructor calls, which is the same shape.
 
 // Mac-oracle name TAmbitApplication::DoSetupMenus() — a no-op on Windows (there is no
 // menu bar to rebuild). Tentative attribution; the slot is a bare RET in the original.
@@ -192,20 +194,13 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
                 edgeMask = kMapScrollEdgeRight;
               }
               if (pt.y <= 4) {
-                // The strategic-map backing surface is vertically reflected relative to
-                // the window coordinate system.  Feed the map's "down-row" bit at the
-                // top window edge so the visible viewport moves upward.
-                edgeMask |= kMapScrollEdgeTop;
-              } else if (pt.y >= height - 4) {
                 edgeMask |= kMapScrollEdgeBottom;
+              } else if (pt.y >= height - 4) {
+                edgeMask |= kMapScrollEdgeTop;
               }
               if (edgeMask != 0) {
                 int ticks = GetTickCountDiv16();
-                // The reconstructed software compositor needs longer than the retail three-tick
-                // cadence to finish a full strategic-map repaint. Keep one completed frame
-                // between scroll steps instead of continuously invalidating the dialog and
-                // starving the wood frame and toolbar paints.
-                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 12 < ticks) {
+                if (g_lastEdgeAutoScrollTick16 > ticks || g_lastEdgeAutoScrollTick16 + 3 < ticks) {
                   g_lastEdgeAutoScrollTick16 = ticks;
                   edgeScrollTarget48->Scroll(edgeMask);
                   return;

@@ -34,7 +34,6 @@ def add_run_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("name")
     parser.add_argument("--timeout", type=float)
     parser.add_argument("--seed", type=int, default=1)
-    parser.add_argument("--phase-timeout-ms", type=int, default=60000)
     parser.add_argument("--rerun-seh", action="store_true")
     parser.add_argument(
         "--require-fixtures",
@@ -97,8 +96,6 @@ def _suite_command(test_name: str, args: argparse.Namespace) -> list[str]:
         str(args.seed),
         "--timeout",
         str(timeout),
-        "--phase-timeout-ms",
-        str(args.phase_timeout_ms),
     ]
     if args.rerun_seh:
         command.append("--rerun-seh")
@@ -226,7 +223,6 @@ def run_determinism(args: argparse.Namespace) -> int:
             run_args = argparse.Namespace(
                 seed=args.seed,
                 timeout=args.timeout,
-                phase_timeout_ms=args.phase_timeout_ms,
                 rerun_seh=False,
                 gdb=use_gdb,
                 no_gdb=not use_gdb,
@@ -279,7 +275,6 @@ def build_parser() -> argparse.ArgumentParser:
     suite.add_argument("--jobs", type=int, default=1)
     suite.add_argument("--timeout", type=float)
     suite.add_argument("--seed", type=int, default=1)
-    suite.add_argument("--phase-timeout-ms", type=int, default=60000)
     suite.add_argument("--rerun-seh", action="store_true")
     suite.add_argument("--no-gdb", action="store_true")
     suite.add_argument(
@@ -298,7 +293,6 @@ def build_parser() -> argparse.ArgumentParser:
     determinism.add_argument("suite", choices=suite_names())
     determinism.add_argument("--seed", type=int, default=1)
     determinism.add_argument("--timeout", type=float)
-    determinism.add_argument("--phase-timeout-ms", type=int, default=60000)
     determinism.add_argument("--gdb", action="store_true")
     determinism.add_argument("--require-fixtures", action="store_true")
     determinism.set_defaults(func=run_determinism)

@@ -832,17 +832,124 @@ short g_nCityBuildingDrawYOffsetIndex = 0;
 
 // GLOBAL: IMPERIALISM 0x006a2980
 CRect g_cityBuildingHoverFallbackRect_006a2980;
+// SYNTHETIC: IMPERIALISM 0x004b95c0
+// `dynamic initializer for 'g_aCityBuildingHoverSelectionRects''
 // GLOBAL: IMPERIALISM 0x006a2998
-CRect g_aCityBuildingHoverSelectionRects[16];
+CRect g_aCityBuildingHoverSelectionRects[16] = {
+    CRect(g_anCityBuildingSlotCoords[0], g_anCityBuildingSlotCoords[1],
+          g_anCityBuildingSlotCoords[0] + 10, g_anCityBuildingSlotCoords[1] + 10),
+    CRect(g_anCityBuildingSlotCoords[2], g_anCityBuildingSlotCoords[3],
+          g_anCityBuildingSlotCoords[2] + 10, g_anCityBuildingSlotCoords[3] + 10),
+    CRect(g_anCityBuildingSlotCoords[4], g_anCityBuildingSlotCoords[5],
+          g_anCityBuildingSlotCoords[4] + 10, g_anCityBuildingSlotCoords[5] + 10),
+    CRect(g_anCityBuildingSlotCoords[6], g_anCityBuildingSlotCoords[7],
+          g_anCityBuildingSlotCoords[6] + 10, g_anCityBuildingSlotCoords[7] + 10),
+    CRect(g_anCityBuildingSlotCoords[8], g_anCityBuildingSlotCoords[9],
+          g_anCityBuildingSlotCoords[8] + 10, g_anCityBuildingSlotCoords[9] + 10),
+    CRect(g_anCityBuildingSlotCoords[10], g_anCityBuildingSlotCoords[11],
+          g_anCityBuildingSlotCoords[10] + 10, g_anCityBuildingSlotCoords[11] + 10),
+    CRect(g_anCityBuildingSlotCoords[12], g_anCityBuildingSlotCoords[13],
+          g_anCityBuildingSlotCoords[12] + 10, g_anCityBuildingSlotCoords[13] + 10),
+    CRect(g_anCityBuildingSlotCoords[14], g_anCityBuildingSlotCoords[15],
+          g_anCityBuildingSlotCoords[14] + 10, g_anCityBuildingSlotCoords[15] + 10),
+    CRect(g_anCityBuildingSlotCoords[16], g_anCityBuildingSlotCoords[17],
+          g_anCityBuildingSlotCoords[16] + 10, g_anCityBuildingSlotCoords[17] + 10),
+    CRect(g_anCityBuildingSlotCoords[18], g_anCityBuildingSlotCoords[19],
+          g_anCityBuildingSlotCoords[18] + 10, g_anCityBuildingSlotCoords[19] + 10),
+    CRect(g_anCityBuildingSlotCoords[20], g_anCityBuildingSlotCoords[21],
+          g_anCityBuildingSlotCoords[22] + 10, g_anCityBuildingSlotCoords[23] + 10),
+    CRect(g_anCityBuildingSlotCoords[24], g_anCityBuildingSlotCoords[25],
+          g_anCityBuildingSlotCoords[26] + 10, g_anCityBuildingSlotCoords[27] + 10),
+    CRect(g_anCityBuildingSlotCoords[26], g_anCityBuildingSlotCoords[27],
+          g_anCityBuildingSlotCoords[26] + 10, g_anCityBuildingSlotCoords[27] + 10),
+    CRect(g_anCityBuildingSlotCoords[28], g_anCityBuildingSlotCoords[29],
+          g_anCityBuildingSlotCoords[28] + 10, g_anCityBuildingSlotCoords[29] + 10),
+    CRect(g_anCityBuildingSlotCoords[30], g_anCityBuildingSlotCoords[31],
+          g_anCityBuildingSlotCoords[30] + 10, g_anCityBuildingSlotCoords[31] + 10),
+    CRect(g_anCityBuildingSlotCoords[32], g_anCityBuildingSlotCoords[33],
+          g_anCityBuildingSlotCoords[32] + 10, g_anCityBuildingSlotCoords[33] + 10)};
 
-// City-building screen control rects, one 72-rect table (BSS) populated by
-// InitializeCityBuildingLayoutData (0x4b98b0): elements 0..40 by per-field stores,
-// elements 41..71 (starting at 0x6a2778, the former g_aCityBuildingActionRects) by
-// inlined CRect constructor calls. TCityProductionView::DoPostCreate (0x4ba3b0) reads
+// City-building screen control rects, one 72-rect table populated by the dynamic
+// initializer at 0x4b98b0: elements 0..40 by per-field stores, elements 41..71
+// (starting at 0x6a2778) by inlined CRect constructor calls.
+// TCityProductionView::DoPostCreate (0x4ba3b0) reads
 // the whole table with a row*3+action stride from base 0x6a24e8, which is why this is
 // one array and not a 41/31 split -- the split point is mid-row (41 = 13*3 + 2).
+// SYNTHETIC: IMPERIALISM 0x004b98b0
+// `dynamic initializer for 'g_aCityBuildingLayoutRects''
 // GLOBAL: IMPERIALISM 0x006a24e8
-CRect g_aCityBuildingLayoutRects[72];
+CRect g_aCityBuildingLayoutRects[72] = {CRect(0x110, 0xfc, 0x11f, 0x10a),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x110, 0xfc, 0x11f, 0x10a),
+                                        CRect(0xd3, 0xd1, 0xe4, 0xe0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0xd3, 0xd4, 0x111, 0x10f),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x1b4, 0x15a, 0x1c3, 0x169),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x1a9, 0x14c, 0x1c3, 0x169),
+                                        CRect(0x16b, 0x116, 0x187, 0x131),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x1a9, 0x14c, 0x1c3, 0x169),
+                                        CRect(0x173, 0x123, 0x199, 0x14b),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x16c, 0xb7, 0x192, 0xeb),
+                                        CRect(0x185, 0xed, 0x1ce, 0x10d),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x155, 0xb6, 0x192, 0xf7),
+                                        CRect(0x16f, 0xed, 0x1cd, 0x11b),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x158, 0xa1, 0x166, 0xbc),
+                                        CRect(0x171, 0x107, 0x179, 0x10f),
+                                        CRect(0x12e, 0xef, 0x13f, 0xfa),
+                                        CRect(0x1d8, 0x11a, 0x1f3, 0x14e),
+                                        CRect(0x1ba, 0x13d, 0x1d0, 0x146),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x1df, 0x124, 0x1f2, 0x14e),
+                                        CRect(0x1c6, 0xfa, 0x1e3, 0x115),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x1da, 0xd5, 0x21a, 0x113),
+                                        CRect(0x1bb, 0x121, 0x208, 0x14c),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0xb3, 0x144, 0xc3, 0x156),
+                                        CRect(0xb4, 0x15e, 0xd2, 0x173),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0x8d, 0x124, 0xa9, 0x141),
+                                        CRect(0xc2, 0x157, 0xda, 0x169),
+                                        CRect(121, 325, 160, 338),
+                                        CRect(185, 345, 224, 381),
+                                        CRect(94, 326, 146, 368),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(284, 374, 299, 388),
+                                        CRect(273, 402, 322, 439),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(303, 328, 327, 351),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(273, 327, 294, 348),
+                                        CRect(304, 324, 328, 347),
+                                        CRect(340, 362, 360, 381),
+                                        CRect(441, 152, 463, 170),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(464, 130, 488, 153),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0),
+                                        CRect(0, 0, 0, 0)};
 
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
@@ -1955,7 +2062,6 @@ extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
 extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
-extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696508
 short g_shipyardQueueIconLeftBySlot[8] = {4, 4, 3, 2, 4, 4, 3, 2};
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
@@ -2133,9 +2239,9 @@ CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 // GLOBAL: IMPERIALISM 0x006a5ed8
 POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5f10
-CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
-CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
@@ -4110,7 +4216,7 @@ extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
 // GLOBAL: IMPERIALISM 0x006a4084
 short g_creditsPlaybackActive_006a4084 = 0;
 
-// GLOBAL: IMPERIALISM 0x0066DB58
+// GLOBAL: IMPERIALISM 0x0066db58
 extern const short g_tradeBookCategoryByTabAndTechState_0066DB58[2][17] = {
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5, -1, -1},
     {13, 14, 15, 16, 7, 8, 9, 10, 11, 12, 0, 1, 2, 3, 4, 5, 6}};

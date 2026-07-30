@@ -7,8 +7,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004ac950
 // TIdleMeAnimation::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004ac980
-TIdleMeAnimation::~TIdleMeAnimation() {}
 // SYNTHETIC: IMPERIALISM 0x004ac920
 // TIdleMeAnimation::CreateObject
 

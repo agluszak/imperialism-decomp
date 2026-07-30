@@ -13,7 +13,8 @@ class TMilitaryUnit;
 class TArmyTacUnit : public TTacticalUnit {
 public:
   DECLARE_DYNCREATE(TArmyTacUnit)
-  virtual ~TArmyTacUnit() override;            // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x0059b3c0
+  virtual ~TArmyTacUnit() override {}          // slot 0x01 (scalar deleting destructor)
   virtual int GetBaseActionPoints() override;  // slot 0x0a 0x5a6120
   virtual int GetUnitRange() override;         // slot 0x0b 0x5a6140
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6180

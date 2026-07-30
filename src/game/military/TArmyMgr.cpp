@@ -1102,18 +1102,17 @@ void TArmyMgr::DoOwnershipChanges() {
     if (currentOwner == -1 || cachedOwner == currentOwner) {
       continue;
     }
-    if (g_apTerrainTypeDescriptorTable[currentOwner]->IsEncodedNationSlotMinus200Equal(
-            cachedOwner) != 0) {
+    if (g_apTerrainTypeDescriptorTable[currentOwner]->IsColonyOf(cachedOwner) != 0) {
       continue;
     }
 
     bool proceed = true;
     if (cachedOwner < 7 && currentOwner > 6 &&
-        g_apTerrainTypeDescriptorTable[currentOwner]->needLevelByNation[1] == -1) {
+        g_apTerrainTypeDescriptorTable[currentOwner]->encodedNationSlot == -1) {
       bool eligible = g_pSimMgr->IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
       bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
-                               g_apNationStates[cachedOwner]->needLevelByNation[1] > 99 &&
-                               g_apNationStates[cachedOwner]->needLevelByNation[1] < 200;
+                               g_apNationStates[cachedOwner]->encodedNationSlot > 99 &&
+                               g_apNationStates[cachedOwner]->encodedNationSlot < 200;
       if (!eligible || blockedByPeerBand) {
         proceed = false;
       }
@@ -1125,20 +1124,13 @@ void TArmyMgr::DoOwnershipChanges() {
     signed char primaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
     signed char secondaryOwner =
         g_pGlobalMapState->cityScoreTable[tileIndex].formerOwnerNationCode01;
-    if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
-      g_apTerrainTypeDescriptorTable[primaryOwner]->ApplyJoinEmpireModeForTargetNation(cachedOwner,
-                                                                                       0);
+    if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetCapitolProvince() == tileIndex) {
+      g_apTerrainTypeDescriptorTable[primaryOwner]->ChangeMaster(cachedOwner, 0);
     } else if (g_apTerrainTypeDescriptorTable[secondaryOwner] != nullptr &&
-               g_apTerrainTypeDescriptorTable[secondaryOwner]->GetHomeRegionCityRecordIndex() ==
-                   tileIndex) {
-      g_apTerrainTypeDescriptorTable[secondaryOwner]
-          ->SetNationTransferTargetCodeAndNotifyEligiblePeers(cachedOwner);
+               g_apTerrainTypeDescriptorTable[secondaryOwner]->GetCapitolProvince() == tileIndex) {
+      g_apTerrainTypeDescriptorTable[secondaryOwner]->BecomeProtectorateOf(cachedOwner);
     }
-    // Ground truth ORs in an extra undefined upper-16-bit register (uVar6, leftover from
-    // whichever branch above ran) into this call's second argument; that garbage upper
-    // half isn't semantically meaningful, so cachedOwner alone is passed here.
-    g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-        static_cast<short>(tileIndex), cachedOwner);
+    g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(tileIndex), cachedOwner);
     this->needsTerrainRefreshFlag39a = 1;
   }
 }
@@ -1368,9 +1360,8 @@ short TArmyMgr::FindNextSelectableProvinceForNation(short nationId) {
     short ownerNation = cityRecord.ownerNationCode00;
     bool ownerPermitsSelection = false;
     if (ownerNation > -1) {
-      ownerPermitsSelection =
-          ownerNation == nationId ||
-          g_apTerrainTypeDescriptorTable[ownerNation]->IsEncodedNationSlotMinus200Equal(nationId);
+      ownerPermitsSelection = ownerNation == nationId ||
+                              g_apTerrainTypeDescriptorTable[ownerNation]->IsColonyOf(nationId);
     }
 
     if (ownerPermitsSelection) {
@@ -1442,7 +1433,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
   if (ownerTag != activeNationId) {
     TCountry* owner = g_apTerrainTypeDescriptorTable[ownerTag];
     activeNationId = g_pSimMgr->GetActiveNationId();
-    if (owner->IsEncodedNationSlotMinus200Equal(activeNationId) == 0) {
+    if (owner->IsColonyOf(activeNationId) == 0) {
       return 8;
     }
   }
@@ -1534,7 +1525,7 @@ int TArmyMgr::ComputeCivilianMapCursorStateIndex(short tileIndex, short mode) {
   bool sameOwner = pendingSlot == citySlot;
   if (!sameOwner) {
     TCountry* cityOwnerCountry = g_apTerrainTypeDescriptorTable[citySlot];
-    sameOwner = cityOwnerCountry->IsEncodedNationSlotMinus200Equal(pendingSlot) != 0;
+    sameOwner = cityOwnerCountry->IsColonyOf(pendingSlot) != 0;
   }
 
   if (sameOwner) {
@@ -2152,7 +2143,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
   label3->AssertValid();
-  label3->SetEnabled(0, 0);
+  label3->Show(0, 0);
   label3->InstallTextStyle(styleB, 0);
 
   TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));

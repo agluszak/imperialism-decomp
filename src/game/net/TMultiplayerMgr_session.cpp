@@ -529,7 +529,7 @@ unsigned char TMultiplayerMgr::ResetNationStatusSlotsAndInitializeNameControls(T
 
   TView* okayControl = panel->ResolveControlByTag(kControlTagOkay); // 'okay'
   okayControl->AssertValid();
-  okayControl->SetEnabled(0, 0);
+  okayControl->Show(0, 0);
 
   if (g_pSimMgr->multiplayerSessionRole == 2) {
     TurnEvent3Mode18Packet packet;

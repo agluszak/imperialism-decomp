@@ -18,9 +18,6 @@
 // TStream::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TStream, TObject)
-// FUNCTION: IMPERIALISM 0x00488a40
-TStream::~TStream() {}
-
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::IsAtEnd() {
   // The original calls GetPosition (slot 0x28) before GetLength (slot 0x30) at
@@ -202,7 +199,7 @@ void TStream::WriteCharacter(short value) {
 // ---------------------------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x00488ef0
-void TStream::WriteInteger(int count) {
+void TStream::WriteInteger(short count) {
   WriteBytes(&count, 2);
 }
 

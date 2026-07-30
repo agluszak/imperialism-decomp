@@ -8,9 +8,11 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/navy/TNavyMgr.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 #include "game/navy/TOcean.h"
 #include "game/navy/TTaskForce.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/globals/military_ui_globals.h"
 #include "game/globals/global_types.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
@@ -343,6 +345,77 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
     return resolvedZone == activeOrderContext ? 10 : 9;
   }
   return 0;
+}
+
+// Dead sibling of GetMapContextActionCode (no callers in the retail binary; kept for
+// byte coverage): maps a tile to a mouse/action code for the ACTIVE map-order entry.
+// Water tile: resolve the linked sea zone and, when the entry has ship counts and an
+// active child order whose cheapest resource weight covers the cached zone distance,
+// delegate to TTaskForce::MouseCodeForTarget(TZone*); otherwise 1. Land tile: when an
+// active child order exists and the province is navy-order reachable, this is the
+// inlined body of MouseCodeForTarget(Province*) (0x10 on a stale pair-relation stamp,
+// else 1). No active entry at all: 0.
+// FUNCTION: IMPERIALISM 0x00559bd0
+int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags) {
+  (void)dwInputFlags;
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  if (entry == 0) {
+    return 0;
+  }
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainKindStorage00 ==
+      kStrategicTerrainWater) {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool reachable = false;
+    if (zone != 0 && entry->shipCountsByToolbarSlot[0] + entry->shipCountsByToolbarSlot[1] +
+                             entry->shipCountsByToolbarSlot[2] +
+                             entry->shipCountsByToolbarSlot[3] !=
+                         0) {
+      TMapOrderChildLinkNode* scan = entry->shipList;
+      while (scan != 0 && scan->active == 0) {
+        scan = scan->next;
+      }
+      if (scan != 0) {
+        short minWeight = 10000;
+        for (TMapOrderChildLinkNode* node = entry->shipList; node != 0; node = node->next) {
+          if (node->active != 0) {
+            short weight =
+                g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
+                    .ResolveWeight();
+            if (weight < minWeight) {
+              minWeight = weight;
+            }
+          }
+        }
+        short distance = entry->location->GetCachedMapActionContextDistanceOrRecompute(zone);
+        reachable = distance <= (minWeight == 10000 ? static_cast<short>(0) : minWeight);
+      }
+    }
+    if (reachable) {
+      return entry->MouseCodeForTarget(zone);
+    }
+  } else {
+    Province* province = GetProvinceByTileIndex(nTileIndex);
+    unsigned char eligible = 0;
+    if (province != 0 && entry->shipCountsByToolbarSlot[0] + entry->shipCountsByToolbarSlot[1] +
+                                 entry->shipCountsByToolbarSlot[2] +
+                                 entry->shipCountsByToolbarSlot[3] !=
+                             0) {
+      TMapOrderChildLinkNode* scan = entry->shipList;
+      while (scan != 0 && scan->active == 0) {
+        scan = scan->next;
+      }
+      if (scan != 0) {
+        eligible = province->navyOrderReachableA0;
+      }
+    }
+    if (eligible != 0) {
+      return g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                 entry->nation, province->ownerNationCode00)
+                 ? 0x10
+                 : 1;
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00565d20

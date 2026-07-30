@@ -14,8 +14,6 @@ TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c1930
 // TTradeTotalsLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005c1960
-TTradeTotalsLine::~TTradeTotalsLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c1980
 void TTradeTotalsLine::ITradeTotalsLine(short rowArg, short colArg, int* bounds, short value) {

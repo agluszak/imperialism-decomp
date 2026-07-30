@@ -9,7 +9,8 @@
 class TExpansionOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TExpansionOrder)
-  virtual ~TExpansionOrder() override;               // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b8ff0
+  virtual ~TExpansionOrder() override {}             // slot 0x01 (scalar deleting destructor)
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b9260
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b91f0
   virtual void Produce() override;                   // slot 0x0d 0x4b9090

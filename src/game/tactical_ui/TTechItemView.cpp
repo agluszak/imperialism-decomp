@@ -51,7 +51,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int picOffset[2] = {0, 0};
     int picSize[2] = {0x40, 0x3f};
     descButton->IPicture(this, picOffset, picSize, 5, 5, static_cast<short>(techId * 2 + 0x8ff));
-    descButton->SetState(1, 0);
+    descButton->ViewEnable(1, 0);
     descButton->controlTag = kControlTagDesc; // 'desc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, 8, descButton);
   }
@@ -124,7 +124,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     int buyOffset[2] = {0xba, 0x12};
     int buySize[2] = {0x53, 0x18};
     buyButton->ITextPictureButton(this, buyOffset, buySize, 0x8ff, &labelText, 0xc, 0x2b6a, 0x2b68);
-    buyButton->SetState(1, 0);
+    buyButton->ViewEnable(1, 0);
     buyButton->controlTag = kControlTagPurc; // 'purc'
     LoadUiStringByGroupAndIndexToControlObject(0x274f, labelIndex, buyButton);
   } else {

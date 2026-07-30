@@ -1,116 +1,58 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
-#include "RuntimeUiDriver.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "screens/StrategicMapScreen.h"
 
-#include "game/core/global_data_tables.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
-#include "game/navy_ui/TOceanDialog.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_widgets/TWorldView.h"
-#include "game/ui_tags_map.h"
-#include "game/globals/view_registries.h"
+#include "game/turn_event_codes.h"
 
 namespace {
 
-class MapZoomToggleTestCase : public RandomGameScenario {
+// Toggling the map zoom twice must leave the strategic map fully responsive: the alternate
+// mode entered and left cleanly both times, and scrolling still moves the viewport afterwards.
+class MapZoomToggleTestCase : public CombinedMapScriptScenario {
 public:
-  MapZoomToggleTestCase() : phase(kActivateZoomOut), toggleCycles(0) {}
-  bool RecordsGameFlow() const override {
-    return true;
-  }
+  MapZoomToggleTestCase() : toggleCycles(0), previousViewportX(0) {}
 
-  void OnCombinedMapReady() override {
-    phase = kActivateZoomOut;
-    EnterScenarioStep("activating_map_zoom_out", "combined_map_ready_for_zoom_toggle");
-    RequestScenarioTick();
-  }
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-  void TickScenario() override {
-    if (phase == kActivateZoomOut) {
-      ActivateZoomOut();
-    } else if (phase == kVerifyZoomOut) {
-      VerifyZoomOut();
-    } else {
-      VerifyZoomIn();
+    // The combined-map checkpoint is supposed to hand over an idle map, so a modal still up
+    // here is a defect to report, not something to wait out.
+    RT_REQUIRE(StrategicMapScreen::IsCurrent());
+
+    // toggleCycles is a member because it has to survive the yields inside the loop; the
+    // compiler enforces that (a local here would be C2360). See RuntimeScriptMacros.h.
+    while (toggleCycles < 2) {
+      RT_ACTIVATE_AND_AWAIT("zoom the map out", StrategicMap().ZoomOut(),
+                            StrategicMap().IsZoomedOut(), kObserveUiStateChanged);
+      RT_ACTIVATE_AND_AWAIT("zoom the map in", StrategicMap().ZoomIn(), StrategicMap().IsZoomedIn(),
+                            kObserveUiStateChanged);
+      ++toggleCycles;
     }
+
+    // Repeated toggling used to leave the map unable to scroll, which is the regression this
+    // scenario exists for: a zoom cycle that leaves the viewport pinned looks fine on screen.
+    RT_DO("centre the viewport", StrategicMap().SetViewportCell(10, 10));
+    previousViewportX = StrategicMap().ViewportOriginX();
+    RT_DO("scroll the map", StrategicMap().ScrollBy(kScrollEast));
+    RT_REQUIRE_NE(previousViewportX, StrategicMap().ViewportOriginX());
+
+    RT_PASS();
+
+    RT_END();
   }
 
 private:
-  enum Phase { kActivateZoomOut, kVerifyZoomOut, kVerifyZoomIn };
+  // TMapUberPicture::Scroll takes an edge mask; 4 is the eastward edge.
+  enum { kScrollEast = 4 };
 
-  void ActivateZoomOut() {
-    TView* mainView = CurrentMainView();
-    TMapUberPicture* mapView =
-        mainView != 0 && mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) != 0
-            ? static_cast<TMapUberPicture*>(mainView)
-            : 0;
-    TView* zoom = mapView != 0 ? mapView->ResolveControlByTag(kControlTagZmOt) : 0;
-    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mapView == 0 || zoom == 0 ||
-        !g_ModalViewStack.IsEmpty()) {
-      FailScenario("\"combined-map zoom-out control is missing or the map is not idle\"");
-      return;
-    }
-    phase = kVerifyZoomOut;
-    EnterScenarioStep("verifying_map_zoom_out", "click_map_zoom_out");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(zoom)) {
-      FailScenario("\"combined-map zoom-out control has no native host\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
-
-  void VerifyZoomOut() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmIn) == 0 ||
-        mapView->invalidationFlag94 != 0 || mapView->subviewAc != mapView->goodGoldTagControlA4) {
-      FailScenario("\"zoom-out release did not enter the alternate map mode\"");
-      return;
-    }
-    phase = kVerifyZoomIn;
-    EnterScenarioStep("verifying_map_zoom_in", "click_map_zoom_in");
-    if (!RuntimeUiDriver::ClickViewThroughNativeMessages(
-            mapView->ResolveControlByTag(kControlTagZmIn))) {
-      FailScenario("\"combined-map zoom-in control has no native host\"");
-      return;
-    }
-    RequestScenarioTick();
-  }
-
-  void VerifyZoomIn() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    if (mapView == 0 || mapView->ResolveControlByTag(kControlTagZmOt) == 0 ||
-        mapView->invalidationFlag94 == 0 || mapView->subviewAc != mapView->subview2A8) {
-      FailScenario("\"zoom-in release did not restore the strategic map mode\"");
-      return;
-    }
-    ++toggleCycles;
-    if (toggleCycles < 2) {
-      phase = kActivateZoomOut;
-      EnterScenarioStep("activating_map_zoom_out_again", "repeat_map_zoom_toggle");
-      RequestScenarioTick();
-      return;
-    }
-    TMapDialog* mapDialog = mapView->subview2A8;
-    mapDialog->SetMapDialogCellCoordinatesAndRefresh(10, 10, 0);
-    int previousX = mapDialog->viewportOrigin.x;
-    mapView->Scroll(4);
-    if (mapDialog->viewportOrigin.x == previousX) {
-      FailScenario("\"combined-map scrolling stopped after repeated zoom toggles\"");
-      return;
-    }
-    Pass();
-  }
-
-  Phase phase;
   short toggleCycles;
+  int previousViewportX;
 };
-
-MapZoomToggleTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* MapZoomToggleTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(MapZoomToggleTestCase, MapZoomToggleTest)

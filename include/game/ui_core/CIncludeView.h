@@ -101,6 +101,9 @@ protected:
   // wParam 1 = re-propagate this view as the tree's native window and re-resolve 'main';
   // wParam 0 = detach the dialog context (one-shot assert if the gate flag is clear).
   afx_msg LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam); // 0x00482bf0
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  afx_msg LRESULT OnRuntimeAction(WPARAM wParam, LPARAM lParam);
+#endif
   // WM_LBUTTONDOWN: forward the click into the dialog tree (skips a playing movie). 0x004839e0
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point); // 0x004839e0
   // WM_LBUTTONUP: complete the click — slot-0x48 mouse-up dispatch into the dialog tree,

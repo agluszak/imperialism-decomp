@@ -95,7 +95,7 @@ public:
   // nationKeyMask10 (its key mask) are currently at war with nationSlot per
   // TDiplomacyMgr::IsNationPairAtWar. Returns the highest-scoring neighbor, or null if
   // none qualify. 0x560e70.
-  TZone* SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot);
+  TZone* GetSafestNearbyZoneFor(short nationSlot) const;
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
   // (in "hops") into distanceLevel44. level == -1 means "start a fresh search": resets
   // every zone's distanceLevel44 to the 0x29a sentinel first, then reseeds at level 0.
@@ -119,7 +119,7 @@ public:
   // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with location == this, matching owner, field0c == 0 (and selection == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
-  char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
+  char CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34Check);
   // RefreshMapOrderEntryPanel's reachability expansion. A higher remaining depth wins;
   // eligible primary neighbors recurse with depth-1, while the initial call also marks
   // this context's adjacent city records as actionable for TNavyMgr.

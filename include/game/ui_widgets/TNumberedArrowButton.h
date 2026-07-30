@@ -22,7 +22,6 @@ public:
   void TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& previousPoint, CPoint& currentPoint,
                   unsigned char commandFlag) override;
 
-  using TControl::SetState;
   virtual void SetValue(short value84, unsigned char refreshFlag); // slot 0x71 0x58c330
   void SetState(short value86, unsigned char refreshFlag);
 };

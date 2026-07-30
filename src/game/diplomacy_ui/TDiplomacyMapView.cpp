@@ -44,6 +44,7 @@ const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
 short g_runtimePolicyIconOffsetByNation[kNationSlotCount];
+short g_runtimeSemanticDiplomacyNation = -1;
 #endif
 
 // The Windows port brackets minor-nation label drawing with the palette built from
@@ -933,6 +934,16 @@ finalize_action:
 
 // FUNCTION: IMPERIALISM 0x004f5e00
 eDipAction TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (g_runtimeSemanticDiplomacyNation >= 0) {
+    int terrainIndex = g_runtimeSemanticDiplomacyNation;
+    activeNationC2 = static_cast<short>(terrainIndex);
+    if (actionCodeBC != kDipActionInspectNation && terrainIndex == selectedTerrainIndexAt90) {
+      return kDipActionSelectedNation;
+    }
+    return actionCodeBC;
+  }
+#endif
   static CRect diplomacyHitBounds;
   static bool diplomacyHitBoundsInitialized = false;
   if (!diplomacyHitBoundsInitialized) {
@@ -1453,16 +1464,16 @@ void TDiplomacyMapView::ChangeSelectedActionTopic(int topicIndex) {
   rtabControl->AssertValid();
 
   if (newTopic == 0 || newTopic == 4) {
-    ltabControl->SetEnabled(1, 1);
-    rtabControl->SetEnabled(0, 1);
+    ltabControl->Show(1, 1);
+    rtabControl->Show(0, 1);
     if (newTopic == 0) {
       ltabControl->SetPictureResourceIdAndRefresh(0x1389, 1);
     } else {
       ltabControl->SetPictureResourceIdAndRefresh(0x138a, 1);
     }
   } else {
-    ltabControl->SetEnabled(0, 1);
-    rtabControl->SetEnabled(1, 1);
+    ltabControl->Show(0, 1);
+    rtabControl->Show(1, 1);
     if (g_pSimMgr->mode == 6) {
       rtabControl->SetPictureResourceIdAndRefresh(0x20da, 1);
     } else {
@@ -1667,17 +1678,16 @@ char TDiplomacyMapView::CheckEntanglements(int targetNationSlot, eDipAction acti
 }
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
-bool TDiplomacyMapView::RuntimeGetNationSelectionPoint(short nationSlot, CPoint* point) const {
-  if (point == 0 || nationSlot < 0 || nationSlot >= kNationSlotCount) {
-    return false;
+void TDiplomacyMapView::ActivateNation(short nationSlot) {
+  if (nationSlot < 0 || nationSlot >= kNationSlotCount ||
+      g_apTerrainTypeDescriptorTable[nationSlot] == 0) {
+    return;
   }
-  const CRect& hitRect = nationTextHitRectsC4[nationSlot];
-  if (hitRect.left == hitRect.right || hitRect.top == hitRect.bottom) {
-    return false;
-  }
-  point->x = (hitRect.left + hitRect.right) / 2;
-  point->y = (hitRect.top + hitRect.bottom) / 2;
-  return true;
+  g_runtimeSemanticDiplomacyNation = nationSlot;
+  CPoint ignoredPoint(0, 0);
+  CPoint ignoredOrigin(0, 0);
+  DoMouseCommand(ignoredPoint, 0, ignoredOrigin);
+  g_runtimeSemanticDiplomacyNation = -1;
 }
 
 short TDiplomacyMapView::RuntimeActiveNation() const {

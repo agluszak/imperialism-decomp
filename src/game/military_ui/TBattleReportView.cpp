@@ -623,8 +623,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringIndex = activeSideRelation + 43;
   } else {
     userStringGroup = 0x273d;
-    int activeHomeRegion = g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]
-                               ->GetHomeRegionCityRecordIndex();
+    int activeHomeRegion =
+        g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
     char activeNationOwnsBattleSite = activeHomeRegion == record->tileOrObject08.tileIndex;
     char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
     char reportParticipantIsActive =
@@ -637,7 +637,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       otherNation = static_cast<signed char>(record->nationIds[1]);
     }
     bool otherNationOwnsBattleSite =
-        g_apTerrainTypeDescriptorTable[otherNation]->GetHomeRegionCityRecordIndex() ==
+        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
         record->tileOrObject08.tileIndex;
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
@@ -702,19 +702,19 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
 
   TControl* prevCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagPrev));
   prevCtrl->AssertValid();
-  prevCtrl->SetState(hasPrevious, 0);
-  prevCtrl->SetEnabled(hasPrevious, 1);
+  prevCtrl->ViewEnable(hasPrevious, 0);
+  prevCtrl->Show(hasPrevious, 1);
 
   TControl* nextCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagNext));
   nextCtrl->AssertValid();
-  nextCtrl->SetState(hasNext, 0);
-  nextCtrl->SetEnabled(hasNext, 1);
+  nextCtrl->ViewEnable(hasNext, 0);
+  nextCtrl->Show(hasNext, 1);
 
   bool enableInfo =
       (static_cast<signed char>(record->nationIds[0]) == g_pSimMgr->GetActiveNationId() ||
        static_cast<signed char>(record->nationIds[1]) == g_pSimMgr->GetActiveNationId());
   TControl* infoCtrl = static_cast<TControl*>(ResolveControlByTag(kControlTagInfo));
   infoCtrl->AssertValid();
-  infoCtrl->SetState(enableInfo, 0);
-  infoCtrl->SetEnabled(enableInfo, 1);
+  infoCtrl->ViewEnable(enableInfo, 0);
+  infoCtrl->Show(enableInfo, 1);
 }

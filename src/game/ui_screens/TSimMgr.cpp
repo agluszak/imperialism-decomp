@@ -749,7 +749,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
       pTVar5->QueueMapActionMissionsForPortZoneCandidates();
-      pTVar5->AssignDisplayNamesToUnnamedMilitaryUnits();
+      pTVar5->NameUnits();
     }
   } else {
     g_apNationStates[nationIndex] = nullptr;
@@ -814,7 +814,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
 
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+      minor->InitialMilitia();
 
       short cityRecordIndex =
           g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeTileIndex)]
@@ -827,7 +827,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
         --remainingOrders;
       } while (remainingOrders != 0);
 
-      minor->AssignDisplayNamesToUnnamedMilitaryUnits();
+      minor->NameUnits();
     }
     return;
   } else {
@@ -965,7 +965,7 @@ void TSimMgr::DoMilitary() {
 
   for (int terrainSlot = 0; terrainSlot < kTerrainTypeDescriptorTableCount; ++terrainSlot) {
     if (IsNationEligibleForOptionalPhase(static_cast<short>(terrainSlot))) {
-      g_apTerrainTypeDescriptorTable[terrainSlot]->QueueRecruitOrdersForUndergarrisonedRegions();
+      g_apTerrainTypeDescriptorTable[terrainSlot]->GrowMilitia();
     }
   }
 
@@ -1035,8 +1035,8 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AllHumansFinished() {
-  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation) {
-    if ((*nation)->field904 == 0) {
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_apNationStates[nationSlot]->field904 == 0) {
       return 0;
     }
   }
@@ -1045,13 +1045,12 @@ int TSimMgr::AllHumansFinished() {
 
 // FUNCTION: IMPERIALISM 0x0057f530
 void TSimMgr::ResetTurnFlags() {
-  TGreatPower** nation = g_apNationStates;
-  do {
-    if ((*nation)->diplomacyEligibilityA0 != 0) {
-      (*nation)->field904 = 0;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation->diplomacyEligibilityA0 != 0) {
+      nation->field904 = 0;
     }
-    ++nation;
-  } while (nation < &g_apNationStates_End);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057f570
@@ -1280,21 +1279,17 @@ void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   // Neutralize the removed nation's diplomacy percent field on every other live slot. For
   // the seven great-power slots a nation whose terrain profile is in the reserved band
   // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
-  TGreatPower** nationCursor = g_apNationStates;
-  short i = 0;
-  do {
+  for (short i = 0; i < 7; ++i) {
     if (i != nationSlot && i != -1) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[i];
       if (terrainDescriptor != 0) {
         if (i >= 7 || terrainDescriptor->encodedNationSlot < 100 ||
             terrainDescriptor->encodedNationSlot >= 200) {
-          (*nationCursor)->SetNationPercentFieldByModeAndDescriptorLinks(nationSlot, 500);
+          g_apNationStates[i]->NewStatusFor(nationSlot, 500);
         }
       }
     }
-    ++nationCursor;
-    ++i;
-  } while (nationCursor < &g_apNationStates[7]);
+  }
 
   if (g_apNationStates[nationSlot] != 0) {
     g_apNationStates[nationSlot]->Free();
@@ -1471,7 +1466,7 @@ void TSimMgr::NameCapitals() {
       continue;
     }
 
-    const short cityRecordIndex = static_cast<short>(country->GetHomeRegionCityRecordIndex());
+    const short cityRecordIndex = static_cast<short>(country->GetCapitolProvince());
     CString capitalNameTemplate;
     CString countryName = LoadNormalizedCredentialName(nationSlot);
     CString capitalName;
@@ -1536,11 +1531,10 @@ void TSimMgr::ProcessScenarioScript() {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
   }
 
-  TGreatPower** nationCursor = g_apNationStates;
-  while (nationCursor < &g_apNationStates_End) {
-    (*nationCursor)->AssignDisplayNamesToUnnamedMilitaryUnits();
-    (*nationCursor)->MarkStatusFlag5HandledIfCapabilityActive();
-    ++nationCursor;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    nation->NameUnits();
+    nation->MarkStatusFlag5HandledIfCapabilityActive();
   }
 
   gateFlag7a = 0;
@@ -2107,8 +2101,7 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
         relationSideEffect;
     diplomacy->relationSideEffectMatrix[targetNation * kNationSlotCount + sourceNation] =
         relationSideEffect;
-    g_apTerrainTypeDescriptorTable[targetNation]->ApplyJoinEmpireMode1TargetTransition(
-        sourceNation);
+    g_apTerrainTypeDescriptorTable[targetNation]->BecomeColonyOf(sourceNation);
   }
 }
 
@@ -2153,8 +2146,8 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(nationToken);
 
-  g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-      static_cast<short>(cityToken), static_cast<int>(nationToken));
+  g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(cityToken),
+                                         static_cast<short>(nationToken));
 }
 
 // Reads a map-action-context id and a fixed 64-byte inline name, then updates the
@@ -2239,8 +2232,7 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(scoreToken);
 
-  g_pDiplomacyTurnStateManager->SetRelationship(
-      static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
+  g_pDiplomacyTurnStateManager->SetRelationship(sourceToken, targetToken, scoreToken);
 }
 
 // Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string

@@ -33,8 +33,9 @@ struct TacticalTileRecord {
 class TTacticalBattle : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalBattle)
-  virtual ~TTacticalBattle() override; // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;        // slot 0x07 0x59fb50
+  // FUNCTION: IMPERIALISM 0x0059f7d0
+  virtual ~TTacticalBattle() override {} // slot 0x01 (scalar deleting destructor)
+  virtual void Free() override;          // slot 0x07 0x59fb50
   virtual void
   ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
   virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0

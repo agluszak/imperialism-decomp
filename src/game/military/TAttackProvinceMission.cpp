@@ -37,7 +37,7 @@ bool TAttackProvinceMission::IsHospitalMission() const {
 }
 // FUNCTION: IMPERIALISM 0x0053d780
 TAttackProvinceMission::TAttackProvinceMission(short targetProvince, short amassingProvince)
-    : TArmyMission(0xffff) {
+    : TArmyMission(-1) {
   targetProvince30 = targetProvince;
   amassingProvince32 = amassingProvince;
 }
@@ -133,7 +133,7 @@ char TAttackProvinceMission::SmokeEmIfYouGotEm() {
 
 // FUNCTION: IMPERIALISM 0x0053db60
 char TAttackProvinceMission::TryResolveTargetTerrainClass() {
-  presentLocation14 = static_cast<short>(0xffff);
+  presentLocation14 = -1;
   float bestScore = 0.0f;
 
   const Province& targetRecord = g_pGlobalMapState->cityScoreTable[targetProvince30];
@@ -277,7 +277,7 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
           g_pGlobalMapState->cityScoreTable[amassingProvince32].ownerNationCode00;
       if (nationId04 == amassingOwnerNation) {
         targetProvince30 = amassingProvince32;
-        amassingProvince32 = static_cast<short>(0xffff);
+        amassingProvince32 = -1;
         retarget = true;
         TryResolveTargetTerrainClass();
       }
@@ -296,9 +296,8 @@ TMission* TAttackProvinceMission::GetReplacementSlot48() {
     return nullptr;
   }
 
-  if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(pathMarker06,
-                                                                           nationId04) &&
-      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(pathMarker06, targetOwnerNation)) {
+  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationId04) &&
+      !g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationId04, targetOwnerNation)) {
     return nullptr;
   }
   return this;

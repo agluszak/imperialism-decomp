@@ -9,7 +9,8 @@ class TEventHandler;
 // VTABLE: IMPERIALISM 0x00648d60
 class TBehavior : public TObject {
 public:
-  virtual ~TBehavior() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x00487240
+  virtual ~TBehavior() override {} // slot 0x01 (scalar deleting destructor)
   // slots 0x0a-0x0d (bytes 0x28-0x34) are the behavior-owner contract recovered
   // from the Mac symbols and the Windows field accesses.
   TBehavior();

@@ -9,7 +9,8 @@
 class TOrItemOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TOrItemOrder)
-  virtual ~TOrItemOrder() override;                  // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b5850
+  virtual ~TOrItemOrder() override {}                // slot 0x01 (scalar deleting destructor)
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b5990
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b58f0
   virtual void IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,

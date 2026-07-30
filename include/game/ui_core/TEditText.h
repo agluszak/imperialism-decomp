@@ -28,7 +28,7 @@ public:
   void SelectOwner(unsigned char select) override;
   CWnd* Open() override;
   void Close() override;
-  void SetEnabled(int enabledState, int refreshFlag) override;
+  void Show(int enabledState, int refreshFlag) override;
   void Draw(RECT* rectBuffer) override;
   char HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoint origin) override;
   void UpdateCoordinates() override;

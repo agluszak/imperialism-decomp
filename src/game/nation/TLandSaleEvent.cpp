@@ -14,8 +14,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004d49a0
 // TLandSaleEvent::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004d49d0
-TLandSaleEvent::~TLandSaleEvent() {}
 // SYNTHETIC: IMPERIALISM 0x004e66c0
 // TLandSaleEvent::CreateObject
 
@@ -32,7 +30,7 @@ void TLandSaleEvent::ILandSaleEvent(short tileIndex, short nationCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e6740
-void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {
+void TLandSaleEvent::RegainIndependence() {
   CString buyerName;
   CString sellerName;
   CString messageTemplate;

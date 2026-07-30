@@ -69,11 +69,11 @@
 | `0x0048abe0` | `void __thiscall RunNationInfoModalAndReturnNonCancel_Impl(TControl * this)` |
 | `0x0048ae60` | `void __thiscall DetachUiElementFromOwnerListAndClearBackref(TControl * this, TControl * pUiElement)` |
 | `0x0048afd0` | `void * __thiscall FindUiChildControlByWindowHandleRecursive(TControl * this, int windowHandle)` |
-| `0x0048b070` | `void __thiscall SetUiControlVisibleFlagAndMaybeRefreshWindow(TControl * this, int visibleFlag)` |
+| `0x0048b070` | `void __thiscall TView::ViewEnable(TView * this, int enabled, int refreshNow)` |
 | `0x0048b0b0` | `void __thiscall CloseCityDialogChildrenAndReleaseSelf(TControl * this)` |
 | `0x0048b180` | `int __thiscall GetCityDialogValueViaChildSlot58(TControl * this)` |
 | `0x0048b1a0` | `int __thiscall QueryChildMapViewSlot58OrZero(TControl * this)` |
-| `0x0048b1c0` | `void __thiscall SetControlActiveFlagAndRefreshIfChanged(TControl * this, int activeFlag, int refreshIfChanged)` |
+| `0x0048b1c0` | `void __thiscall TView::Show(TView * this, int show, int refreshNow)` |
 | `0x0048b200` | `bool __thiscall CanProcessMapViewSlotECUnderWindowState(TControl * this)` |
 | `0x0048b250` | `void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0048b250(TControl * this, int arg1, int arg2)` |
 | `0x0048b2d0` | `void __thiscall WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(TControl * this)` |
@@ -185,8 +185,8 @@
 | `38` | `0x0098` | `CtrlSlot38` | `<none>` | `0` |
 | `39` | `0x009c` | `CtrlSlot39` | `<none>` | `0` |
 | `40` | `0x00a0` | `CtrlSlot40` | `thunk_DispatchVfuncA0ToLinkedChildListSlot44@0x00409a8e` | `1` |
-| `41` | `0x00a4` | `SetEnabledSlotA4` | `thunk_SetControlActiveFlagAndRefreshIfChanged@0x00404e21` | `1` |
-| `42` | `0x00a8` | `SetStateSlotA8` | `thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow@0x004026cb` | `1` |
+| `41` | `0x00a4` | `Show` | `thunk_Show@0x00404e21` | `1` |
+| `42` | `0x00a8` | `ViewEnable` | `thunk_ViewEnable@0x004026cb` | `1` |
 | `43` | `0x00ac` | `CtrlSlot43` | `<none>` | `0` |
 | `44` | `0x00b0` | `CtrlSlot44` | `thunk_UpdateMapCursorFromSelectionContext@0x00401226` | `1` |
 | `45` | `0x00b4` | `CtrlSlot45` | `<none>` | `0` |

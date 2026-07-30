@@ -106,7 +106,7 @@ void TGarrisonView::Close() {
                   0;
               if (isSecretNation != 0) {
                 activeNation = g_pSimMgr->GetActiveNationId();
-                if (g_apTerrainTypeDescriptorTable[activeNation]->GetHomeRegionCityRecordIndex() ==
+                if (g_apTerrainTypeDescriptorTable[activeNation]->GetCapitolProvince() ==
                     selectedTileIndex8C) {
                   g_nationInfoGoldResourceOverride_006a5bac = 0x24d0;
                 }

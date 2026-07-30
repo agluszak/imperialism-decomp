@@ -10,7 +10,8 @@
 class TAnimation : public TObject {
 public:
   DECLARE_DYNCREATE(TAnimation)
-  virtual ~TAnimation() override;            // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x0049f080
+  virtual ~TAnimation() override {}          // slot 0x01 (scalar deleting destructor)
   virtual void Tick();                       // slot 0x0a 0x49f140
   virtual void DrawNextFrame(POINT* offset); // slot 0x0b 0x49f190
   virtual void LoadFrameIntoBuffer();        // slot 0x0c 0x49f2d0

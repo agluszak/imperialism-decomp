@@ -115,14 +115,14 @@ public:
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
   // and the corresponding Mac-oracle method signatures where available.
-  virtual class TView* ResolveControlByTag(unsigned int controlTag);       // 0x25 0x48afd0
-  virtual void SwitchActiveChildAndNotify(class TView* child);             // 0x26 0x48af80
-  virtual CWnd* Open();                                                    // 0x27 0x48c820
-  virtual void Close();                                                    // 0x28 0x48c890
-  virtual void SetEnabled(int enabledState, int refreshFlag);              // 0x29 0x48b1c0
-  virtual void SetState(int state, int refreshFlag);                       // 0x2a 0x48b070
-  virtual unsigned short GetCursorID();                                    // 0x2b 0x427200
-  virtual void DoSetCursor(CPoint* point, RgnHandle hitArg);               // 0x2c
+  virtual class TView* ResolveControlByTag(unsigned int controlTag); // 0x25 0x48afd0
+  virtual void SwitchActiveChildAndNotify(class TView* child);       // 0x26 0x48af80
+  virtual CWnd* Open();                                              // 0x27 0x48c820
+  virtual void Close();                                              // 0x28 0x48c890
+  virtual void Show(int show, int refreshNow);               // 0x29 0x48b1c0; Mac name oracle
+  virtual void ViewEnable(int enabled, int refreshNow);      // 0x2a 0x48b070; Mac name oracle
+  virtual unsigned short GetCursorID();                      // 0x2b 0x427200
+  virtual void DoSetCursor(CPoint* point, RgnHandle hitArg); // 0x2c
   virtual void HandleHelp(const CPoint* point, RgnHandle helpRegion);      // 0x2d 0x48c1c0
   virtual void GetDrawableRegion(RgnHandle region);                        // 0x2e 0x48c1e0
   virtual int GetEventNumber();                                            // 0x2f
@@ -178,9 +178,9 @@ public:
   virtual void GetDrawableQDRect(CRect* rectOut); // 0x57 0x429410
   virtual CRect* GetQDExtent(CRect* rectOut);
   virtual void UpdateCoordinates();
-  virtual void ApplyBounds(CRect* newBounds, int modeFlag);      // 0x5a 0x48c380
-  virtual char PointInBoundsAndActionable(CPoint* point);        // 0x5b 0x48c6d0
-  virtual void AttachChildControl(class TView* child, int flag); // 0x5c 0x48abe0
+  virtual void ApplyBounds(CRect* newBounds, unsigned char modeFlag); // 0x5a 0x48c380
+  virtual char PointInBoundsAndActionable(CPoint* point);             // 0x5b 0x48c6d0
+  virtual void AttachChildControl(class TView* child, int flag);      // 0x5c 0x48abe0
   virtual void DetachChildFromOwnerList(class TView* child);
   virtual unsigned short GetHelpState();
   virtual short ContainsMouse(const CPoint& point);

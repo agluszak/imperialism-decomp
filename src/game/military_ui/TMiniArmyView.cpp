@@ -81,7 +81,7 @@ void TMiniArmyView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (sourceHandler->controlTag == kControlTagUpgr) {
     if (militaryUnit84->Upgrade()) {
       TView* sourceView = static_cast<TView*>(sourceHandler);
-      sourceView->SetEnabled(0, 1);
+      sourceView->Show(0, 1);
       SetControlHoverHelpTextAltEntry(CString(g_pMiniCivSharedText_0064cb18), sourceView);
       TStaticText* tbr1 = static_cast<TStaticText*>(
           g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTbr1));

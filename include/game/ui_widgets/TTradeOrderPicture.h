@@ -15,5 +15,8 @@ public:
                               CPoint origin) override; // slot 0x47 0x584520
 
   TTradeOrderPicture();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  void ActivateOrderSemantically();
+#endif
 };
 ASSERT_SIZE(TTradeOrderPicture, 0x90);

@@ -1625,8 +1625,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   }
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
-    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
-        minor->ownedRegionList->GetSize() >= 1) {
+    if (minor != 0 && minor->IsColonyOf(nationA) && minor->ownedRegionList->GetSize() >= 1) {
       MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
                              regionClassSeen);
     }
@@ -1639,8 +1638,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   }
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
-    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationB) &&
-        minor->ownedRegionList->GetSize() >= 1 &&
+    if (minor != 0 && minor->IsColonyOf(nationB) && minor->ownedRegionList->GetSize() >= 1 &&
         AnyOwnedRegionClassSeen(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
                                 regionClassSeen)) {
       return true;
@@ -1984,20 +1982,17 @@ void TMapMgr::SetTileTransportFlags(StrategicTileIndex nTileIndex,
 const int kGlobalMapTileCount = 0x1950;
 
 // FUNCTION: IMPERIALISM 0x00513290
-void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-    ProvinceIndexStorage cityRecordIndex, int newNationTag) {
+void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short newNationTag) {
   Province* city = &cityScoreTable[cityRecordIndex];
   signed char oldNationCode = city->ownerNationCode00;
 
   for (int i = 0; i < city->linkedRegionCount; ++i) {
-    SetTileOwnerAndInvalidateNeighborState(city->linkedTileIndices42[i],
-                                           static_cast<short>(newNationTag));
+    SetOwner(city->linkedTileIndices42[i], newNationTag);
   }
 
   city->ownerNationCode00 = static_cast<signed char>(newNationTag);
-  g_apTerrainTypeDescriptorTable[oldNationCode]->RemoveRegionIdFromNationOwnedRegionList(
-      cityRecordIndex);
-  g_apTerrainTypeDescriptorTable[newNationTag]->AddRegionIdToNationOwnedRegionList(cityRecordIndex);
+  g_apTerrainTypeDescriptorTable[oldNationCode]->LoseProvince(cityRecordIndex);
+  g_apTerrainTypeDescriptorTable[newNationTag]->AddProvince(cityRecordIndex);
   g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
@@ -2006,13 +2001,12 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
   if (g_pSimMgr->multiplayerSessionRole == 1) {
-    g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
-                                                         static_cast<short>(newNationTag));
+    g_pGameFlowState->SendChangeProvinceOwner(cityRecordIndex, newNationTag);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005133f0
-void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNationTag) {
+void TMapMgr::SetOwner(short regionId, short newNationTag) {
   signed char oldOwner = terrainStateTable[regionId].ownerNationTag04;
   if (oldOwner == newNationTag) {
     return;
@@ -2438,13 +2432,13 @@ short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
     return ownerCode;
   }
   TCountry* nation = g_apTerrainTypeDescriptorTable[ownerCode];
-  if (nation->needLevelByNation[1] < 200) {
+  if (nation->encodedNationSlot < 200) {
     return ownerCode;
   }
-  short code = nation->needLevelByNation[1];
+  short code = nation->encodedNationSlot;
   if (code < 200) {
     if (code < 100) {
-      return nation->needLevelByNation[0];
+      return nation->nationSlot;
     }
     return code - 100;
   }
@@ -2731,7 +2725,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* u
     if (selectedEntry == nullptr) {
       continue;
     }
-    if (selectedEntry->tileIndex06 != 0) {
+    if (selectedEntry->tileIndex06 != tileIndex) {
       tile->recruitSearchVisited0e = 1;
     } else {
       tile->recruitSearchVisited0e = (tile->activeFlags1c >> 4) & 1;
@@ -3327,10 +3321,11 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
 }
 
 // FUNCTION: IMPERIALISM 0x00517410
-int TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
-                                                      char useAltOffset) {
-  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
-    return 0;
+short TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                        char useAltOffset) {
+  short variant = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  if (variant == 0) {
+    return variant;
   }
   if (useAltOffset == 0) {
     return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x15) << 6;
@@ -3656,7 +3651,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
 
   for (int minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
     if (g_apTerrainTypeDescriptorTable[minorSlot] != nullptr &&
-        g_apSecondaryNationStateSlots[minorSlot]->IsEncodedNationSlotMinus200Equal(nationCode)) {
+        g_apSecondaryNationStateSlots[minorSlot]->IsColonyOf(nationCode)) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
         short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
         if (cityScoreTable[neighborRegionId].ownerNationCode00 == minorSlot) {
@@ -3704,8 +3699,7 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
     int minorIndex;
     for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
       if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0 &&
-          g_apSecondaryNationStateSlots[7 + minorIndex]->IsEncodedNationSlotMinus200Equal(
-              nationTag) != 0) {
+          g_apSecondaryNationStateSlots[7 + minorIndex]->IsColonyOf(nationTag) != 0) {
         resultCount =
             CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, 7 + minorIndex, nodeBuffer);
         if (resultCount > 0) {
@@ -3770,15 +3764,13 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   // Pass 3: terrain-type descriptor bonuses (first 7 weighted higher than the next 16).
   for (i = 0; i < 7; ++i) {
     if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      short idx =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      short idx = static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetCapitolProvince());
       regionScores[idx] += 10000;
     }
   }
   for (i = 7; i < 23; ++i) {
     if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      short idx =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      short idx = static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetCapitolProvince());
       regionScores[idx] += 8000;
     }
   }
@@ -4293,18 +4285,16 @@ void TMapMgr::DumpAndResetMapScriptState() {
     tileIndex++;
   } while (tileIndex < 0x1950);
 
-  TGreatPower** nationSlot = g_apNationStates;
-  int nationIndex = 0;
   int slot;
-  do {
+  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+    TGreatPower* nation = g_apNationStates[nationIndex];
     for (slot = 0; slot < 6; ++slot) {
-      TCity* city = (*nationSlot != nullptr) ? (*nationSlot)->city : nullptr;
+      TCity* city = (nation != nullptr) ? nation->city : nullptr;
       int value = city->GetBuildingType(static_cast<short>(slot));
       if (static_cast<short>(value) > 0) {
         fprintf(logFile, g_szFmtCapa_00697280, nationIndex, slot, static_cast<short>(value));
       }
     }
-    TGreatPower* nation = *nationSlot;
     TCity* laborCity1 = (nation != nullptr) ? nation->city : nullptr;
     TCity* laborCity2 = (nation != nullptr) ? nation->city : nullptr;
     TCity* laborCity3 = (nation != nullptr) ? nation->city : nullptr;
@@ -4321,9 +4311,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
         fprintf(logFile, g_szFmtEmba_00697254, nationIndex, slot, embargo);
       }
     }
-    nationSlot++;
-    nationIndex++;
-  } while (nationSlot < g_apNationStates + 7);
+  }
 
   // Four turns per year, so economicTurn / 4 is the year. 0x005194bf reads it as a SHORT
   // (MOVSX EAX,word ptr [edx+0x2c]), which is exactly what economicTurn is: the layout

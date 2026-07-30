@@ -74,7 +74,7 @@ void TWarningView::DoPostCreate(int arg) {
     title->SetTextAndMaybeRefresh(&titleText, 0);
   }
   title->SetTextAlignmentAndMaybeRefresh(1, 0);
-  title->SetEnabled(1, 0);
+  title->Show(1, 0);
 
   TStaticText* endTurn = static_cast<TStaticText*>(panel->ResolveControlByTag(kControlTagMsg5));
   endTurn->AssertValid();
@@ -83,12 +83,12 @@ void TWarningView::DoPostCreate(int arg) {
     CString endTurnText("End Turn Now");
     endTurn->SetTextAndMaybeRefresh(&endTurnText, 0);
   }
-  endTurn->SetEnabled(1, 0);
+  endTurn->Show(1, 0);
 
   TView* endTurnPicture = panel->ResolveControlByTag(kControlTagPic5);
   endTurnPicture->AssertValid();
-  endTurnPicture->SetState(1, 0);
-  endTurnPicture->SetEnabled(1, 0);
+  endTurnPicture->ViewEnable(1, 0);
+  endTurnPicture->Show(1, 0);
 
   unsigned int pendingAlerts = g_pSimMgr->alertsPendingFlag38;
   if ((pendingAlerts & 1) != 0) {
@@ -99,11 +99,11 @@ void TWarningView::DoPostCreate(int arg) {
       CString diplomacyText("Diplomacy");
       diplomacy->SetTextAndMaybeRefresh(&diplomacyText, 0);
     }
-    diplomacy->SetEnabled(1, 0);
+    diplomacy->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1);
     picture->AssertValid();
-    picture->SetState(1, 0);
-    picture->SetEnabled(1, 0);
+    picture->ViewEnable(1, 0);
+    picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x1000) != 0) {
@@ -114,11 +114,11 @@ void TWarningView::DoPostCreate(int arg) {
       CString transportText("Transport");
       transport->SetTextAndMaybeRefresh(&transportText, 0);
     }
-    transport->SetEnabled(1, 0);
+    transport->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 3);
     picture->AssertValid();
-    picture->SetState(1, 0);
-    picture->SetEnabled(1, 0);
+    picture->ViewEnable(1, 0);
+    picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x100) != 0) {
@@ -129,11 +129,11 @@ void TWarningView::DoPostCreate(int arg) {
       CString tradeText("Trade");
       trade->SetTextAndMaybeRefresh(&tradeText, 0);
     }
-    trade->SetEnabled(1, 0);
+    trade->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 1);
     picture->AssertValid();
-    picture->SetState(1, 0);
-    picture->SetEnabled(1, 0);
+    picture->ViewEnable(1, 0);
+    picture->Show(1, 0);
   }
 
   if ((pendingAlerts & 0x10) != 0) {
@@ -144,10 +144,10 @@ void TWarningView::DoPostCreate(int arg) {
       CString industryText("Industry");
       industry->SetTextAndMaybeRefresh(&industryText, 0);
     }
-    industry->SetEnabled(1, 0);
+    industry->Show(1, 0);
     TView* picture = panel->ResolveControlByTag(kControlTagPic1 + 2);
     picture->AssertValid();
-    picture->SetState(1, 0);
-    picture->SetEnabled(1, 0);
+    picture->ViewEnable(1, 0);
+    picture->Show(1, 0);
   }
 }

@@ -37,8 +37,8 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   widget->InitializeUiResourceEntryFrameAndParent(0, parent, offsetLayout, sizeLayout, 0, 0, 1);
   widget->controlTag = static_cast<int>(controlTag);
   widget->controlValue3c = field3cValue;
-  widget->SetEnabled(enabledState, 0);
-  widget->SetState(stateValue, 0);
+  widget->Show(enabledState, 0);
+  widget->ViewEnable(stateValue, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
@@ -148,7 +148,6 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 
 // The builder TU emits two identical AddTail COMDATs. 0x426ec0 is reached by the
 // early giant dialog builders; 0x479b00 is the later copy used by the shared stack helpers.
-// TEMPLATE: IMPERIALISM 0x00426ec0
 // TEMPLATE: IMPERIALISM 0x00479b00
 // ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
 
