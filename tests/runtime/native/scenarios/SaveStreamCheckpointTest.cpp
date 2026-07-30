@@ -1,5 +1,6 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
 
 #include "game/ArchiveStreamAdapter.h"
 #include "game/assets/TAssetMgr.h"
@@ -77,27 +78,34 @@ public:
   int objectReads;
 };
 
-class SaveStreamCheckpointTestCase : public RandomGameScenario {
-public:
-  int DifficultyLevel() const override {
-    return 1;
-  }
-
-  // Replay only once a game exists. TSimMgr::ReadFrom rebuilds the nation states through
-  // TMapMgr::ChooseNationSetupProfilesForOpenSlots, which reads live map tables -- at
-  // manager-ready time there is no map and it dereferences null. The real load path has
-  // the same requirement; the document machinery satisfies it before Serialize runs.
-  void OnMapReadyWithoutCapitalSelection() override {
-    EnterScenarioStep("save_stream_checkpoints", "replay_fixture");
+// Replays only once a game exists. TSimMgr::ReadFrom rebuilds the nation states through
+// TMapMgr::ChooseNationSetupProfilesForOpenSlots, which reads live map tables -- at
+// manager-ready time there is no map and it dereferences null. The real load path has the same
+// requirement; the document machinery satisfies it before Serialize runs.
+//
+// The replay is synchronous, so the script has no waits. Failures are reported through
+// `failure`, which Replay sets, because the steps that can fail are nested helpers rather than
+// script statements.
+class SaveStreamCheckpointTestCase : public EasyMapScriptScenario {
+protected:
+  void Script() override {
+    RT_BEGIN();
     Replay();
+    if (!failure.IsEmpty()) {
+      RT_FAIL(static_cast<LPCSTR>(failure));
+    }
+    RT_PASS();
+    RT_END();
   }
 
 private:
   CString report;
+  CString failure;
   int entries;
 
   void Replay() {
     report = "[";
+    failure.Empty();
     entries = 0;
 
     // Write the save first, through the same document path a real save uses, so the
@@ -197,16 +205,12 @@ private:
     g_nSaveFormatVersion = -1;
 
     if (leftover != 0) {
-      CString failure;
-      failure.Format("\"the manager chain left bytes unread (counted %d consumed of a %d "
-                     "byte file); compare each span in save_stream_checkpoints against the "
-                     "same class in serialization_roundtrip -- the first span whose size "
-                     "disagrees names the divergent manager\"",
+      failure.Format("the manager chain left bytes unread (counted %d consumed of a %d byte "
+                     "file); compare each span in save_stream_checkpoints against the same "
+                     "class in serialization_roundtrip -- the first span whose size disagrees "
+                     "names the divergent manager",
                      stream.consumed, fileLength);
-      FailScenario(failure);
-      return;
     }
-    Pass();
   }
 
   // Reading into the live managers is what the real load does; a checkpoint replay that
@@ -214,12 +218,10 @@ private:
   // states. The game state after this test is spent, which is why nothing follows it.
   bool ReadOne(CountingFileStream& stream, const char* name, TObject* object) {
     if (object == 0) {
-      CString failure;
-      failure.Format("\"%s is null before its ReadFrom; the chain cannot be replayed\"", name);
+      failure.Format("%s is null before its ReadFrom; the chain cannot be replayed", name);
       report += "\n  ]";
       RecordSerializationRoundtripReport(report);
       g_nSaveFormatVersion = -1;
-      FailScenario(failure);
       return false;
     }
     const int before = stream.consumed;
@@ -243,10 +245,6 @@ private:
   }
 };
 
-SaveStreamCheckpointTestCase g_test;
-
 } // namespace
 
-RuntimeTestCase* SaveStreamCheckpointTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(SaveStreamCheckpointTestCase, SaveStreamCheckpointTest)
