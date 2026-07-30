@@ -82,13 +82,13 @@ runtime-run name *args:
 [doc('Recompile only what changed, then run one native runtime test (skips the vtable gate and unrelated generation)')]
 [group('runtime-test')]
 runtime-dev name *args:
-  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}"
+  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}" --docker-image "{{docker_image}}"
   uv run python -m tools.runtime.cli run "{{name}}" {{args}}
 
 [doc('Recompile only what changed in the runtime-test build, without running a test')]
 [group('runtime-test')]
 runtime-dev-build:
-  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}"
+  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}" --docker-image "{{docker_image}}"
 
 [doc('Run one named native semantic runtime test (rebuilds first)')]
 [group('runtime-test')]
