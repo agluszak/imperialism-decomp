@@ -39,6 +39,10 @@ void RuntimeScriptScenario::BeginScript(const char* phaseName) {
   scriptArmedOrFinished = true;
 }
 
+void RuntimeScriptScenario::MarkScriptStep(const char* label) {
+  EnterScenarioStep(RuntimeAssertionText::PhaseSlug(label), label);
+}
+
 int RuntimeScriptScenario::CurrentTurnEvent() const {
   return g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1;
 }

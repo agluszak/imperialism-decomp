@@ -38,6 +38,11 @@ protected:
   // and hands the first observation to Script().
   void BeginScript(const char* phaseName);
 
+  // Report progress from inside a long synchronous step, so a hang names where it happened
+  // rather than only "the scenario stopped responding". The label becomes the host-visible
+  // phase and action. Not a yield -- the game does not run in between.
+  void MarkScriptStep(const char* label);
+
   // The turn event the game is currently showing, for scripts that branch on a sequence of
   // screens. A script must not read g_pViewMgr itself.
   int CurrentTurnEvent() const;

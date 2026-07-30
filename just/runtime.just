@@ -39,6 +39,19 @@ runtime-harness-lint:
 runtime-source-policy-gate:
   uv run python -m tools.runtime.source_policy tests/runtime/native
 
+# Ratchet, not a ban, while migration to the linear-script API is incomplete: per-file counts
+# fall freely (the gate rewrites the baseline) but a rise or a newly-offending scenario fails.
+# When the baseline reaches zero this can become a hard ban.
+[doc('Ratchet the control-tree mechanics still present in runtime scenario bodies; --show lists them')]
+[group('gates')]
+runtime-script-debt-gate *args:
+  uv run python -m tools.runtime.script_debt {{args}}
+
+[doc('Create a new native runtime test: source skeleton plus its catalog entry')]
+[group('runtime-test')]
+runtime-new name base='easy-map' *args:
+  uv run python -m tools.runtime.scaffold "{{name}}" --base "{{base}}" {{args}}
+
 [doc('Ask MSVC500 whether the switch/case __LINE__ script protothread compiles and resumes correctly; --run links and executes it')]
 [group('runtime-test')]
 protothread-probe *args:

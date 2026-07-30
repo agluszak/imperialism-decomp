@@ -175,7 +175,7 @@ private:
     ++checked;
     // Heartbeat per class: a hang inside one serializer would otherwise surface only as
     // "the scenario stopped responding", with no way to tell which one.
-    EnterScenarioStep("serialization_roundtrip", name);
+    MarkScriptStep(name);
     if (object == 0) {
       Record(name, "skipped", 0, 0, 0, "manager is null at map-ready time");
       return;

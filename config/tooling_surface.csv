@@ -170,3 +170,8 @@ module|tools.ghidra.body_integrity|just:body-integrity-audit|Read-only Ghidra bo
 module|tools.ghidra.inventory_drop|just:inventory-drop|Drop inventory rows whose Ghidra entity is gone; verifies each address against the live DB (no function, no label) and against source markers before removing
 module|tools.semantic_calls|just:semantic-gate-update|Build and cache the recomp Ghidra Program, compare paired manual functions through high-p-code call contracts, emit structured evidence, and enforce the semantic ratchet
 module|tools.runtime.source_policy|just:runtime-source-policy-gate|Reject coordinate mouse injection, timer waits, polling APIs, and unexplained literal points in native runtime scenario sources
+module|tools.runtime.incremental_build|just:runtime-dev|Runtime-test inner loop: regenerate only the stale registry, then BUILD_ONLY docker build
+module|tools.runtime.tree|just:runtime-tree|Print the UI tree a runtime test last saw, with per-node event/actionable state and selector paths
+module|tools.runtime.script_debt|just:runtime-script-debt-gate|Ratchet the control-tree mechanics still present in unmigrated runtime scenario bodies
+module|tools.runtime.scaffold|just:runtime-new|Scaffold a new runtime test: source skeleton plus its catalog entry
+module|tools.workflow.protothread_probe|just:protothread-probe|Ask MSVC500 whether the linear-script switch/case __LINE__ protothread compiles and resumes
