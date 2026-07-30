@@ -337,13 +337,12 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     if (interiorBidAmount12 < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount12);
     }
-    short availableAmount =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, arg1,
-          static_cast<int>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
-          resourceCode, 0, 0);
+          static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
+          0, 0);
       return;
     }
   } else {
@@ -355,11 +354,10 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     } else if (static_cast<short>(ledgerAmount) < static_cast<short>(dispatchAmount)) {
       dispatchAmount = ledgerAmount;
     }
-    short availableAmount =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount =
-          static_cast<unsigned int>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+          static_cast<unsigned int>(owner->GetMerchantCapacityForProposal(resourceCode));
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
@@ -373,7 +371,7 @@ void TForeignMinister::EndTradePhase() {
   capabilityFlag14 = 0;
   interiorBidResource10 = kNoInteriorBidResource;
   TGreatPower* owner = this->ownerContextAt04;
-  if (owner->GetAvailableMerchantCapacity() == 0) {
+  if (owner->GetMerchantCapacity() == 0) {
     diplomacyPhaseCounter18 = static_cast<short>(diplomacyPhaseCounter18 + 1);
   }
   memset(purchasePriorityByResource1e, 0, sizeof(purchasePriorityByResource1e));
@@ -408,8 +406,7 @@ void TForeignMinister::GoodsMatchShipping() {
     if (terrainSlot >= 0x17) {
       break;
     }
-    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsEncodedNationSlotMinus200Equal(
-            owner->nationSlot) != 0) {
+    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsColonyOf(owner->nationSlot) != 0) {
       matched = true;
     }
     ++terrainSlot;
@@ -517,8 +514,7 @@ void TForeignMinister::DoProposeTreaties() {
                           ownerContextAt04->nationSlot, minorNation) != 2) {
       continue;
     }
-    if (minor->CanInitiateJoinEmpireProposalToTarget(ownerContextAt04->nationSlot,
-                                                     kDiplomacyProposalJoinEmpire) != 0) {
+    if (minor->WouldAcceptOffer(ownerContextAt04->nationSlot, kDiplomacyProposalJoinEmpire) != 0) {
       if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
               minorNation, ownerContextAt04->nationSlot) == 0) {
         ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
@@ -734,7 +730,7 @@ void TForeignMinister::SetEmpirePolicies() {
     relationshipList->ReleasePtrList();
   }
 
-  if (owner->GetAvailableMerchantCapacity() > 0) {
+  if (owner->GetMerchantCapacity() > 0) {
     int policyCategory = -1;
     for (short resourceKind = 0; resourceKind < kMajorNationCount && policyCategory == -1;
          ++resourceKind) {

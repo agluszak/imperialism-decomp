@@ -1447,7 +1447,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       continue;
     }
     TCountry* minor = g_apTerrainTypeDescriptorTable[minorNation];
-    if (minor->encodedNationSlot != -1 && !minor->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+    if (minor->encodedNationSlot != -1 && !minor->IsColonyOf(nationSlot)) {
       continue;
     }
     if (g_abGateFlagQualifies[tile->gateFlag] == 0 ||

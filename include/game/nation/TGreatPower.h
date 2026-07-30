@@ -88,27 +88,25 @@ public:
   void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
-  void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) override;
-  void
-  SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
+  void ChangeMaster(int targetNationSlot, int mode) override;
+  void BecomeProtectorateOf(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
-  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
-  void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
-  void ConsumeMerchantCapacity(int delta) override;
-  // ORACLE: Mac TGreatPower::GetIndustrialNeed(short).
-  short GetIndustrialNeed(short resourceKind) override; // slot 0x1c
-  short GetAvailableMerchantCapacity(void) override;    // slot 0x1d
+  void LoseProvince(int regionId) override;
+  void AddProvince(int regionId) override;
+  void NewStatusFor(int targetNationSlot, int policyCode) override;
+  void DeliverItem(short amount) override;
+  // ORACLE: Mac TGreatPower::GetAmtUnsold(short).
+  short GetAmtUnsold(short resourceKind) override; // slot 0x1c
+  short GetMerchantCapacity(void) override;        // slot 0x1d
   // ORACLE: Mac TGreatPower::GetStockpile(short).
   short GetStockpile(short resourceKind) override; // slot 0x1e
   // ORACLE: Mac TGreatPower::GetTradeOffersFor(short).
   short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
-  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                      int multiplier) override;
+  void PurchaseItem(short resourceKind, short amount, short price) override;
   bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
@@ -195,7 +193,7 @@ public:
   // slot 0x40 — body 0x004dcaa0: effective availableMerchantCapacity for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
-  virtual unsigned int GetAvailableMerchantCapacityForProposal(int proposalCode);
+  virtual unsigned int GetMerchantCapacityForProposal(int proposalCode);
   // ORACLE: Mac names TGreatPower::AddTransportedItems().
   virtual void AddTransportedItems(void); // slot 0x41
   // ORACLE: Mac names TGreatPower::AddPurchasedItems().

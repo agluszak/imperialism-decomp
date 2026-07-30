@@ -384,8 +384,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
       if (dirSlot != g_pSimMgr->GetActiveNationId() &&
           g_apTerrainTypeDescriptorTable[dirSlot]->IsRemote() != 0) {
-        g_apTerrainTypeDescriptorTable[dirSlot]->SetNationSelectedRegionAndMapCellLabel(
-            directory->homeTileBySlot[dirSlot], directory->cityNameBySlot[dirSlot]);
+        g_apTerrainTypeDescriptorTable[dirSlot]->PlopDownCity(directory->homeTileBySlot[dirSlot],
+                                                              directory->cityNameBySlot[dirSlot]);
         {
           CString nationName(directory->nationNameBySlot[dirSlot]);
           g_apTerrainTypeDescriptorTable[dirSlot]->SetNationDisplayNameAndLocalizationSlotRef(
@@ -1008,7 +1008,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       } else {
         TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
         if (minor1E->DecodeOwnerNationSlot() != static_cast<short>(action->nation1C)) {
-          minor1E->ApplyJoinEmpireModeForTargetNation(action->nation1C, 1);
+          minor1E->ChangeMaster(action->nation1C, 1);
         }
       }
     }
@@ -1576,7 +1576,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   }
   case 0x27: { // dispatch join-empire mode on one terrain-slot nation
     TurnEvent27JoinEmpirePacket* joinEmpire = static_cast<TurnEvent27JoinEmpirePacket*>(packet);
-    g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot18]->ApplyJoinEmpireModeForTargetNation(
+    g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot18]->ChangeMaster(
         joinEmpire->targetNationSlot1C, joinEmpire->mode20);
     break;
   }
@@ -1835,8 +1835,7 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
-      packet.availableMerchantCapacityBySlot[nationIndex] =
-          nationState->GetAvailableMerchantCapacity();
+      packet.availableMerchantCapacityBySlot[nationIndex] = nationState->GetMerchantCapacity();
     } else {
       packet.availableMerchantCapacityBySlot[nationIndex] = 0;
     }

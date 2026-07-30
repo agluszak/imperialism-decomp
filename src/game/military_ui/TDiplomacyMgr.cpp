@@ -63,8 +63,7 @@ int TDiplomacyMgr::GetFavoriteTradePartner(int minorNationSlot) {
                 relationStandingScores[minorNationSlot * kNationSlotCount + majorNation];
     bool select = score > bestScore;
     if (score == bestScore) {
-      select = g_apTerrainTypeDescriptorTable[minorNationSlot]->IsEncodedNationSlotMinus200Equal(
-                   majorNation) != 0;
+      select = g_apTerrainTypeDescriptorTable[minorNationSlot]->IsColonyOf(majorNation) != 0;
       if (!select) {
         unsigned int tieSeed =
             minorNationSlot * 7 + majorNation + g_pSimMgr->GetEconomicTurn() + score;
@@ -188,9 +187,7 @@ void TDiplomacyMgr::RebuildCivilianOrderCompatibilityMatrices() {
           g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(targetNation)) !=
               0) {
         standingScore =
-            sourceMinor->IsPolicyCodeInSpecialNationPolicySet(static_cast<short>(targetNation)) != 0
-                ? 0x96
-                : 0x6e;
+            sourceMinor->IsInConsortiumWith(static_cast<short>(targetNation)) != 0 ? 0x96 : 0x6e;
       }
       relationStandingScores[pairIndex] = standingScore;
       relationPropagationMatrix[pairIndex] = kDiplomacyRelationshipPeace;
@@ -672,7 +669,7 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsEncodedNationSlotMinus200Equal(sourceNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsColonyOf(sourceNationSlot) != 0) {
         SetRelationshipsToMatch(minorNationSlot, sourceNationSlot);
       }
       terrainCursor++;
@@ -685,7 +682,7 @@ void TDiplomacyMgr::SetRelationship(NationSlot sourceNationSlot, NationSlot targ
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
       TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
-      if (terrain != 0 && terrain->IsEncodedNationSlotMinus200Equal(targetNationSlot) != 0) {
+      if (terrain != 0 && terrain->IsColonyOf(targetNationSlot) != 0) {
         SetRelationshipsToMatch(minorNationSlot, targetNationSlot);
       }
       terrainCursor++;
@@ -762,8 +759,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
       int divisorTier;
       if (IsGreatPower(targetNationSlot) == 0) {
         if (IsGreatPower(candidateNationSlot) == 0) {
-          divisorTier =
-              candidateTerrain->IsPolicyCodeInSpecialNationPolicySet(sourceNationSlot) != 0 ? 2 : 4;
+          divisorTier = candidateTerrain->IsInConsortiumWith(sourceNationSlot) != 0 ? 2 : 4;
         } else {
           divisorTier = 8;
         }
@@ -947,7 +943,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
             bestOfferScore = relationVal;
           } else if (relationVal == bestOfferScore) {
             isOfferTie = true;
-            if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+            if (minorDescriptor->IsColonyOf(gpSlot)) {
               bestOfferNation = gpSlot;
               bestOfferScore = relationVal;
             } else {
@@ -975,7 +971,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
           bestRelationScore = score;
         } else if (score == bestRelationScore) {
           isRelationTie = true;
-          if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+          if (minorDescriptor->IsColonyOf(gpSlot)) {
             bestRelationNation = gpSlot;
             bestRelationScore = score;
           } else {
@@ -1202,15 +1198,12 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
 
     ++totalOwnedCount;
     pendingPolicyCodeMatrix[tileIndex] = -1;
-    bool topSideWins =
-        (ownerNationCode == topNationSlot) ||
-        g_apTerrainTypeDescriptorTable[ownerNationCode]->IsEncodedNationSlotMinus200Equal(
-            topNationSlot);
+    bool topSideWins = (ownerNationCode == topNationSlot) ||
+                       g_apTerrainTypeDescriptorTable[ownerNationCode]->IsColonyOf(topNationSlot);
     bool secondSideWins =
         !topSideWins &&
         ((ownerNationCode == secondNationSlot) ||
-         g_apTerrainTypeDescriptorTable[ownerNationCode]->IsEncodedNationSlotMinus200Equal(
-             secondNationSlot));
+         g_apTerrainTypeDescriptorTable[ownerNationCode]->IsColonyOf(secondNationSlot));
     if (topSideWins) {
       ++topSideCount;
       pendingPolicyCodeMatrix[tileIndex] = static_cast<signed char>(topNationSlot);
@@ -1724,10 +1717,10 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
   short minorSlot = 7;
   for (int auxIndex = 0; auxIndex < 16; ++auxIndex, ++auxSlot, ++minorSlot) {
     TMinor* candidate = *auxSlot;
-    if (!candidate->IsEncodedNationSlotMinus200Equal(nationCode)) {
+    if (!candidate->IsColonyOf(nationCode)) {
       continue;
     }
-    candidate->ApplyJoinEmpireMode2FinalizeNationNameState();
+    candidate->RegainIndependence();
 
     TCountry* capabilityObject = g_apTerrainTypeDescriptorTable[7 + auxIndex];
 
@@ -1752,8 +1745,7 @@ void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationC
           int lookupIndex = normalizedSlot * kNationSlotCount + minorSlot;
           standingValue = relationStandingScores[lookupIndex];
           propagationValue = relationPropagationMatrix[lookupIndex];
-        } else if (capabilityObject->IsPolicyCodeInSpecialNationPolicySet(
-                       static_cast<short>(otherMinorSlot))) {
+        } else if (capabilityObject->IsInConsortiumWith(static_cast<short>(otherMinorSlot))) {
           standingValue = 0x96;
           propagationValue = kDiplomacyRelationshipPeace;
         } else {

@@ -255,7 +255,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
             .ownerNationTag04;
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
       return g_pGlobalMapState
-          ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetHomeRegionCityRecordIndex()]
+          ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetCapitolProvince()]
           .cityScoreValue;
     }
   } else if (secondaryNeighbors.Count() != 0) {

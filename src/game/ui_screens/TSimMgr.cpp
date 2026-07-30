@@ -749,7 +749,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
         pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(city);
       }
       pTVar5->QueueMapActionMissionsForPortZoneCandidates();
-      pTVar5->AssignDisplayNamesToUnnamedMilitaryUnits();
+      pTVar5->NameUnits();
     }
   } else {
     g_apNationStates[nationIndex] = nullptr;
@@ -814,7 +814,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
     g_apTerrainTypeDescriptorTable[nationIndex] = minor;
 
     if (g_bMultiplayerScenarioSetupActive == 0) {
-      minor->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+      minor->InitialMilitia();
 
       short cityRecordIndex =
           g_pGlobalMapState->terrainStateTable[static_cast<short>(minor->homeTileIndex)]
@@ -827,7 +827,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
         --remainingOrders;
       } while (remainingOrders != 0);
 
-      minor->AssignDisplayNamesToUnnamedMilitaryUnits();
+      minor->NameUnits();
     }
     return;
   } else {
@@ -965,7 +965,7 @@ void TSimMgr::DoMilitary() {
 
   for (int terrainSlot = 0; terrainSlot < kTerrainTypeDescriptorTableCount; ++terrainSlot) {
     if (IsNationEligibleForOptionalPhase(static_cast<short>(terrainSlot))) {
-      g_apTerrainTypeDescriptorTable[terrainSlot]->QueueRecruitOrdersForUndergarrisonedRegions();
+      g_apTerrainTypeDescriptorTable[terrainSlot]->GrowMilitia();
     }
   }
 
@@ -1285,7 +1285,7 @@ void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
       if (terrainDescriptor != 0) {
         if (i >= 7 || terrainDescriptor->encodedNationSlot < 100 ||
             terrainDescriptor->encodedNationSlot >= 200) {
-          g_apNationStates[i]->SetNationPercentFieldByModeAndDescriptorLinks(nationSlot, 500);
+          g_apNationStates[i]->NewStatusFor(nationSlot, 500);
         }
       }
     }
@@ -1466,7 +1466,7 @@ void TSimMgr::NameCapitals() {
       continue;
     }
 
-    const short cityRecordIndex = static_cast<short>(country->GetHomeRegionCityRecordIndex());
+    const short cityRecordIndex = static_cast<short>(country->GetCapitolProvince());
     CString capitalNameTemplate;
     CString countryName = LoadNormalizedCredentialName(nationSlot);
     CString capitalName;
@@ -1533,7 +1533,7 @@ void TSimMgr::ProcessScenarioScript() {
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     TGreatPower* nation = g_apNationStates[nationSlot];
-    nation->AssignDisplayNamesToUnnamedMilitaryUnits();
+    nation->NameUnits();
     nation->MarkStatusFlag5HandledIfCapabilityActive();
   }
 
@@ -2101,8 +2101,7 @@ void TSimMgr::HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void* pInst
         relationSideEffect;
     diplomacy->relationSideEffectMatrix[targetNation * kNationSlotCount + sourceNation] =
         relationSideEffect;
-    g_apTerrainTypeDescriptorTable[targetNation]->ApplyJoinEmpireMode1TargetTransition(
-        sourceNation);
+    g_apTerrainTypeDescriptorTable[targetNation]->BecomeColonyOf(sourceNation);
   }
 }
 

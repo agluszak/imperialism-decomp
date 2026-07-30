@@ -272,8 +272,8 @@ void TOfferDeskPicture::PoseOfferSheet(short respondingNation, short offeringNat
   numberOfText->SetTextAlignmentAndMaybeRefresh(-2, 0);
   numberOfText->SetTextAndMaybeRefresh(&displayText, 0);
 
-  short capacity = g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]
-                       ->GetAvailableMerchantCapacity();
+  short capacity =
+      g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetMerchantCapacity();
   capacityText.Format(g_szDecimalFormat, static_cast<int>(capacity));
   TStaticText* maximumText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagMCap));
   maximumText->AssertValid();
@@ -443,8 +443,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     info->SetTextAlignmentAndMaybeRefresh(1, 0);
   } else if (g_pHelpMgr->helpIndexReady == 1) {
     if (compat >= 1 &&
-        g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
-            respondingNationSlot) == 0) {
+        g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) == 0) {
       notAligned = 1;
     }
     if (commodityType != kResourceCotton && commodityType != kResourceWool) {
@@ -465,8 +464,8 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     }
 
     if (notAligned == 0 && hasSurplus == 0) {
-      if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
-              respondingNationSlot) != 0) {
+      if (g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) !=
+          0) {
         g_pSimMgr->GetString(0x2764, 0x10, &strTemplate);
       } else {
         g_pSimMgr->GetString(0x2764, 5, &strPrefix);
@@ -529,8 +528,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
     short verdictIndex;
     if (compat == 2) {
       verdictIndex =
-          g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsEncodedNationSlotMinus200Equal(
-              respondingNationSlot) != 0
+          g_apTerrainTypeDescriptorTable[offeringNationSlot]->IsColonyOf(respondingNationSlot) != 0
               ? 0xf
               : 0xa;
     } else {

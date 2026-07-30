@@ -690,12 +690,10 @@ These are now documented in Ghidra with behavior-focused comments; they appear t
   - Applies `SetTileTransportFlags(tile, 0x15)` then enqueues into nation queue (`+0x898`).
   - This strongly suggests `0x15` is a combined transport state used after port-side construction sync.
 
-## Map Order UI Dispatch / Operation Tables (2026-02-15)
+## Map Improvement Operation Tables (2026-02-15)
 
 ### New Global Labels Applied in Ghidra
 
-- `g_apfnMapOrderUiDispatchHandlers @ 0x00653D00`
-- `g_apfnMapOrderUiDispatchHandlersBackup @ 0x0065BE50`
 - `g_apfnMapImprovementOperationHandlers @ 0x006588F0`
 - `g_anMapActionClassToImprovementOpIndex @ 0x00658964`
 

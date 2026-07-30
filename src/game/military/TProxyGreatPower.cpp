@@ -10,12 +10,12 @@
 #include "game/ui_core/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
-bool TProxyGreatPower::IsClient() {
+bool TProxyGreatPower::IsClient() const {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-bool TProxyGreatPower::IsRemote(void) {
+bool TProxyGreatPower::IsRemote(void) const {
   return true;
 }
 

@@ -1625,8 +1625,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   }
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
-    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
-        minor->ownedRegionList->GetSize() >= 1) {
+    if (minor != 0 && minor->IsColonyOf(nationA) && minor->ownedRegionList->GetSize() >= 1) {
       MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
                              regionClassSeen);
     }
@@ -1639,8 +1638,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   }
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
-    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationB) &&
-        minor->ownedRegionList->GetSize() >= 1 &&
+    if (minor != 0 && minor->IsColonyOf(nationB) && minor->ownedRegionList->GetSize() >= 1 &&
         AnyOwnedRegionClassSeen(g_apTerrainTypeDescriptorTable[7 + i]->ownedRegionList,
                                 regionClassSeen)) {
       return true;
@@ -1995,9 +1993,8 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
   }
 
   city->ownerNationCode00 = static_cast<signed char>(newNationTag);
-  g_apTerrainTypeDescriptorTable[oldNationCode]->RemoveRegionIdFromNationOwnedRegionList(
-      cityRecordIndex);
-  g_apTerrainTypeDescriptorTable[newNationTag]->AddRegionIdToNationOwnedRegionList(cityRecordIndex);
+  g_apTerrainTypeDescriptorTable[oldNationCode]->LoseProvince(cityRecordIndex);
+  g_apTerrainTypeDescriptorTable[newNationTag]->AddProvince(cityRecordIndex);
   g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
       static_cast<short>(newNationTag);
 
@@ -3657,7 +3654,7 @@ bool TMapMgr::HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, i
 
   for (int minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
     if (g_apTerrainTypeDescriptorTable[minorSlot] != nullptr &&
-        g_apSecondaryNationStateSlots[minorSlot]->IsEncodedNationSlotMinus200Equal(nationCode)) {
+        g_apSecondaryNationStateSlots[minorSlot]->IsColonyOf(nationCode)) {
       for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
         short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
         if (cityScoreTable[neighborRegionId].ownerNationCode00 == minorSlot) {
@@ -3705,8 +3702,7 @@ int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityR
     int minorIndex;
     for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
       if (g_apTerrainTypeDescriptorTable[7 + minorIndex] != 0 &&
-          g_apSecondaryNationStateSlots[7 + minorIndex]->IsEncodedNationSlotMinus200Equal(
-              nationTag) != 0) {
+          g_apSecondaryNationStateSlots[7 + minorIndex]->IsColonyOf(nationTag) != 0) {
         resultCount =
             CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, 7 + minorIndex, nodeBuffer);
         if (resultCount > 0) {
@@ -3771,15 +3767,13 @@ void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   // Pass 3: terrain-type descriptor bonuses (first 7 weighted higher than the next 16).
   for (i = 0; i < 7; ++i) {
     if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      short idx =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      short idx = static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetCapitolProvince());
       regionScores[idx] += 10000;
     }
   }
   for (i = 7; i < 23; ++i) {
     if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
-      short idx =
-          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      short idx = static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetCapitolProvince());
       regionScores[idx] += 8000;
     }
   }

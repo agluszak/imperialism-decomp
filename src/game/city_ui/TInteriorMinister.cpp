@@ -166,7 +166,7 @@ void TInteriorMinister::FillOrders() {
 // FUNCTION: IMPERIALISM 0x004be650
 char TInteriorMinister::DoIncreasedTransport() {
   char result = 0;
-  if (ownerContextAt04->GetAvailableMerchantCapacity() == 0) {
+  if (ownerContextAt04->GetMerchantCapacity() == 0) {
     result = ownerContextAt04->IncreaseMerchantMarine();
   }
   return result;
