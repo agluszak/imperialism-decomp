@@ -107,6 +107,17 @@ void RuntimeScriptScenario::AwaitScreenScript(CRuntimeClass* viewClass, int even
   AwaitScript(kObserveUiStateChanged, static_cast<LPCSTR>(expression), file, line);
 }
 
+bool RuntimeScriptScenario::ScreenIsCurrent(const MainViewScreenIdentity& identity) const {
+  return ScreenIsCurrent(identity.viewClass, identity.turnEvent);
+}
+
+void RuntimeScriptScenario::AwaitScreenScript(const MainViewScreenIdentity& identity,
+                                              const char* file, int line) {
+  // The screen's own name reads better than its class name in a stall report: "the Board of
+  // Trade to be the current screen" says what the author was waiting for.
+  AwaitScreenScript(identity.viewClass, identity.turnEvent, identity.screenName, file, line);
+}
+
 bool RuntimeScriptScenario::RunScriptAction(const char* label, const RuntimeActionResult& result,
                                             const char* file, int line) {
   RunState().EnterPhase(RuntimeAssertionText::PhaseSlug(label), label);

@@ -35,6 +35,10 @@ class StrategicMapScreen : public MainViewScreen {
 public:
   StrategicMapScreen();
 
+  // This screen's view class, turn event and name -- the single source of the
+  // identity. RT_OPEN_TO/RT_AWAIT_CURRENT read it, so a script never repeats either.
+  static MainViewScreenIdentity Identity();
+
   // True when the map is the current main view at its own turn event with no modal above it.
   static bool IsCurrent();
 

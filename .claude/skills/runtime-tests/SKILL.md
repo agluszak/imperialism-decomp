@@ -44,8 +44,7 @@ protected:
   void Script() override {
     RT_BEGIN();
 
-    RT_OPEN_SCREEN("open the Board of Trade", StrategicMap().OpenTrade(),
-                   TTradeScreenPicture, kTurnEventTradeOverview);
+    RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen);
     RT_ACTIVATE_AND_AWAIT("select the iron bid", Trade().SelectBid(kResourceIron),
                           Trade().BidSelected(kResourceIron), kObserveGameStateChanged);
     RT_CLOSE_TO_MAP("leave the Board of Trade", Trade().Close());
@@ -122,6 +121,10 @@ instead of comparing numbers.
 
 A screen's identity is its view class *and* its turn event: the same class on a different event is
 a different screen (`CapitalSelectionScreen` and `StrategicMapScreen` are both `TMapUberPicture`).
+The screen owns that identity and publishes it as `static MainViewScreenIdentity Identity()`, so a
+script names the *screen* and never repeats the production view class or the event code:
+`RT_OPEN_TO(label, action, TradeScreen)` and `RT_AWAIT_CURRENT(TradeScreen)`. Two sources of truth
+for one fact was also why scenarios had to include production UI headers at all.
 One screen has no class of its own -- the transport ledger's root is a plain `TPicture` -- and says
 so.
 

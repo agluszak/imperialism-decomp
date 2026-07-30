@@ -101,16 +101,6 @@
     }                                                                                              \
   } while (0)
 
-#define RT_AWAIT_SCREEN_AT(slot, ViewClass, eventCode)                                             \
-  do {                                                                                             \
-    SetScriptProgramCounter(slot);                                                                 \
-  case slot:                                                                                       \
-    if (!ScreenIsCurrent(RUNTIME_CLASS(ViewClass), (eventCode))) {                                 \
-      AwaitScreenScript(RUNTIME_CLASS(ViewClass), (eventCode), #ViewClass, __FILE__, __LINE__);    \
-      return;                                                                                      \
-    }                                                                                              \
-  } while (0)
-
 #define RT_ACTION_AT(slot, label, action)                                                          \
   do {                                                                                             \
     if (!RunScriptAction((label), (action), __FILE__, __LINE__))                                   \
@@ -162,8 +152,6 @@
 
 // Wait until `ViewClass` is the current main view at `eventCode`, with no modal covering it.
 // The idle-screen predicate 22 scenarios spell out by hand.
-#define RT_AWAIT_SCREEN(ViewClass, eventCode)                                                      \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_PRIMARY, ViewClass, eventCode)
 
 // Perform one action, then yield once so the game can process it. `action` is a
 // RuntimeActionResult, so a screen driver's diagnostic becomes the scenario's failure
@@ -271,16 +259,33 @@
 // secondary slot for its second yield so both fit on one source line.
 // --------------------------------------------------------------------------------------
 
+// Wait until a screen type reports itself current. The screen owns the identity -- view class,
+// turn event, and the name that appears in a stall report -- so a script names the screen and
+// nothing else. `ScreenType` is a driver from screens/, never a production view class.
+//
+// (A screen whose IsCurrent() is deliberately stricter than class-plus-event, as
+// TransportScreen's is, should be awaited through its own predicate with RT_AWAIT.)
+#define RT_AWAIT_CURRENT_AT(slot, ScreenType)                                                      \
+  do {                                                                                             \
+    SetScriptProgramCounter(slot);                                                                 \
+  case slot:                                                                                       \
+    if (!ScreenIsCurrent(ScreenType::Identity())) {                                                \
+      AwaitScreenScript(ScreenType::Identity(), __FILE__, __LINE__);                               \
+      return;                                                                                      \
+    }                                                                                              \
+  } while (0)
+
+#define RT_AWAIT_CURRENT(ScreenType) RT_AWAIT_CURRENT_AT(RT_SLOT_PRIMARY, ScreenType)
+
 // Activate something, then wait for a different screen to come up.
-#define RT_OPEN_SCREEN(label, action, ViewClass, eventCode)                                        \
+#define RT_OPEN_TO(label, action, ScreenType)                                                      \
   RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                                    \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_SECONDARY, ViewClass, eventCode)
+  RT_AWAIT_CURRENT_AT(RT_SLOT_SECONDARY, ScreenType)
 
 // Leave a screen back to the strategic map: the most repeated transition in the suite.
-// Requires the including TU to see TMapUberPicture and turn_event_codes.h.
 #define RT_CLOSE_TO_MAP(label, action)                                                             \
   RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                                    \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_SECONDARY, TMapUberPicture, kTurnEventStrategicMap)
+  RT_AWAIT_CURRENT_AT(RT_SLOT_SECONDARY, StrategicMapScreen)
 
 // Activate something and wait for its effect on the same screen.
 #define RT_ACTIVATE_AND_AWAIT(label, action, condition, observations)                              \

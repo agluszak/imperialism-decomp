@@ -7,10 +7,8 @@
 
 #include "game/core/global_data_tables.h"
 #include "game/diplomacy_domain_types.h"
-#include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/map/TMapUberPicture.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation_domain_types.h"
@@ -51,8 +49,7 @@ protected:
   void Script() override {
     RT_BEGIN();
 
-    RT_OPEN_SCREEN("open the diplomacy map", StrategicMap().OpenDiplomacy(), TDiplomacyMapView,
-                   kTurnEventDiplomacyMap);
+    RT_OPEN_TO("open the diplomacy map", StrategicMap().OpenDiplomacy(), DiplomacyScreen);
     RT_REQUIRE(Diplomacy().HasMinisterControls());
     RT_REQUIRE(Diplomacy().ToolbarButtonShowsSelectedArt());
     RT_HOLD_SCREEN("diplomacy");

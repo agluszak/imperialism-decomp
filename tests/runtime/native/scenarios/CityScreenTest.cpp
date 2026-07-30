@@ -13,11 +13,9 @@
 #include "game/city/TShipOrder.h"
 #include "game/city/TTrainingOrder.h"
 #include "game/city/TUnitOrder.h"
-#include "game/city_ui/TCityProductionView.h"
 #include "game/app/TTransFocusAnimation.h"
 #include "game/core/global_data_tables.h"
 #include "game/globals/shared_globals.h"
-#include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
 #include "game/navy_order.h"
 #include "game/turn_event_codes.h"
@@ -77,8 +75,7 @@ protected:
     RT_BEGIN();
 
     RT_REQUIRE_NOT_NULL(PlayerCity());
-    RT_OPEN_SCREEN("open the city production screen", StrategicMap().OpenCity(),
-                   TCityProductionView, kTurnEventCityProduction);
+    RT_OPEN_TO("open the city production screen", StrategicMap().OpenCity(), CityScreen);
     RT_REQUIRE(City().HasProductionControls());
     RT_REQUIRE(City().SicknessPlacardsAreCleared());
     RT_AWAIT(HasScenarioUiSnapshot(), kObserveUiStateChanged);

@@ -26,9 +26,12 @@
 #include "game/ui_widgets/TCivToolbar.h"
 #include "game/ui_widgets/TWorldView.h"
 
-StrategicMapScreen::StrategicMapScreen()
-    : MainViewScreen(RUNTIME_CLASS(TMapUberPicture), kTurnEventStrategicMap, "the strategic map"),
-      mapView(0) {
+MainViewScreenIdentity StrategicMapScreen::Identity() {
+  return MainViewScreenIdentity(RUNTIME_CLASS(TMapUberPicture), kTurnEventStrategicMap,
+                                "the strategic map");
+}
+
+StrategicMapScreen::StrategicMapScreen() : MainViewScreen(Identity()), mapView(0) {
   mapView = static_cast<TMapUberPicture*>(Root());
 }
 

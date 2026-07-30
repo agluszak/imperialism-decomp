@@ -12,17 +12,14 @@
 
 #include "game/core/global_data_tables.h"
 #include "game/diplomacy_domain_types.h"
-#include "game/diplomacy_ui/TDiplomacyMapView.h"
 #include "game/globals/military_ui_globals.h"
 #include "game/globals/shared_globals.h"
-#include "game/map/TMapUberPicture.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_widgets/TTradeScreenPicture.h"
 
 namespace {
 
@@ -64,8 +61,7 @@ protected:
     RT_BEGIN();
 
     // --- Declare war, so the turn's trade happens against a live conflict. ---
-    RT_OPEN_SCREEN("open the diplomacy map", StrategicMap().OpenDiplomacy(), TDiplomacyMapView,
-                   kTurnEventDiplomacyMap);
+    RT_OPEN_TO("open the diplomacy map", StrategicMap().OpenDiplomacy(), DiplomacyScreen);
     RT_ACTION("select the treaties topic", Diplomacy().ShowTreaties());
     RT_AWAIT(Diplomacy().TreatiesTopicIsSelected(), kObserveUiStateChanged);
     RT_ACTIVATE_AND_AWAIT("select the declare-war action", Diplomacy().SelectDeclareWarAction(),
@@ -85,8 +81,7 @@ protected:
             StrategicMap().SeedOwnedAnimation(kMapAnimationRegressionTag));
     RT_REQUIRE(UiAnimationRegistry::Contains(kMapAnimationRegressionTag));
 
-    RT_OPEN_SCREEN("open the Board of Trade", StrategicMap().OpenTrade(), TTradeScreenPicture,
-                   kTurnEventTradeOverview);
+    RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen);
     RT_REQUIRE_EQ(0, UiAnimationRegistry::Count());
     RT_REQUIRE(Trade().HasCapacityAndCommodityControls());
     // Its price and availability cells are drawn per frame rather than baked into the

@@ -51,10 +51,12 @@ bool IsValidResource(short resource) {
 
 } // namespace
 
-TradeScreen::TradeScreen()
-    : MainViewScreen(RUNTIME_CLASS(TTradeScreenPicture), kTurnEventTradeOverview,
-                     "the Board of Trade"),
-      tradeView(0) {
+MainViewScreenIdentity TradeScreen::Identity() {
+  return MainViewScreenIdentity(RUNTIME_CLASS(TTradeScreenPicture), kTurnEventTradeOverview,
+                                "the Board of Trade");
+}
+
+TradeScreen::TradeScreen() : MainViewScreen(Identity()), tradeView(0) {
   tradeView = static_cast<TTradeScreenPicture*>(Root());
 }
 

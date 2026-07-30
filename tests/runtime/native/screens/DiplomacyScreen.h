@@ -27,6 +27,10 @@ class DiplomacyScreen : public MainViewScreen {
 public:
   DiplomacyScreen();
 
+  // This screen's view class, turn event and name -- the single source of the
+  // identity. RT_OPEN_TO/RT_AWAIT_CURRENT read it, so a script never repeats either.
+  static MainViewScreenIdentity Identity();
+
   static bool IsCurrent();
 
   TDiplomacyMapView* View() const;

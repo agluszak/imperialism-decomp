@@ -21,6 +21,14 @@ bool MainViewScreen::MainViewIsCurrent(CRuntimeClass* expectedClass, int expecte
   return RuntimeIsViewKindOf(RuntimeMainView(), expectedClass);
 }
 
+MainViewScreen::MainViewScreen(const MainViewScreenIdentity& identity)
+    : root(0), expectedClass(identity.viewClass), expectedEvent(identity.turnEvent),
+      screenName(identity.screenName) {
+  if (MainViewIsCurrent(identity.viewClass, identity.turnEvent)) {
+    root = RuntimeMainView();
+  }
+}
+
 MainViewScreen::MainViewScreen(CRuntimeClass* viewClass, int eventCode, const char* name)
     : root(0), expectedClass(viewClass), expectedEvent(eventCode), screenName(name) {
   if (MainViewIsCurrent(viewClass, eventCode)) {

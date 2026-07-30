@@ -7,12 +7,9 @@
 
 #include "game/core/global_data_tables.h"
 #include "game/globals/shared_globals.h"
-#include "game/map/TMapUberPicture.h"
 #include "game/nation/TGreatPower.h"
 #include "game/resource_domain_types.h"
-#include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_widgets/TTradeScreenPicture.h"
 
 namespace {
 
@@ -47,8 +44,7 @@ protected:
     Player()->SetItemPotentials(kResourceIron, 1);
     Player()->RememberTradeBids();
 
-    RT_OPEN_SCREEN("open the Board of Trade", StrategicMap().OpenTrade(), TTradeScreenPicture,
-                   kTurnEventTradeOverview);
+    RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen);
 
     // The seeded order has to survive entering the screen, and nothing else may have appeared.
     RT_REQUIRE(SeededIronOrderIsIntact());
