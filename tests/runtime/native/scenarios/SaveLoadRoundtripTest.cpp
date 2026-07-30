@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "probes/UnitChainProbe.h"
 #include "screens/LoadSaveScreen.h"
 #include "screens/NewspaperScreen.h"
 #include "screens/StrategicMapScreen.h"
@@ -81,6 +82,13 @@ protected:
     }
 
     RT_REQUIRE_NOT_NULL(g_pGlobalMapState);
+    // A load rebuilds the world under the units the live game already had, and re-threads the map's
+    // unit chains as it goes. A chain left holding a non-pointer survives silently until something
+    // walks it, and then it is a page fault inside TMilitaryUnit::MoveTo with no context
+    // (imperialism-decomp-ilfs) -- so the reloaded game is held to walkable chains here, where the
+    // invariant is unambiguous.
+    RT_STEP("confirm the reloaded map's unit chains",
+            UnitChainProbe::VerifyChainsAreWalkable("the reload"));
     RT_REQUIRE_EQ(savedNation, g_pSimMgr->activeNationSlot);
     RT_REQUIRE_EQ(savedTurn, g_pSimMgr->economicTurn);
     SetSelectedNation(g_pSimMgr->activeNationSlot);
