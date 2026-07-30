@@ -348,8 +348,8 @@ char TInvadeMission::TryResolveTargetTerrainClass() {
     presentLocation14 = -1;
     return 0;
   }
-  presentLocation14 = static_cast<short>(
-      g_apTerrainTypeDescriptorTable[nationId04]->GetHomeRegionCityRecordIndex());
+  presentLocation14 =
+      static_cast<short>(g_apTerrainTypeDescriptorTable[nationId04]->GetCapitolProvince());
   return 1;
 }
 

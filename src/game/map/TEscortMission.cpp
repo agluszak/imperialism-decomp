@@ -96,7 +96,7 @@ void TEscortMission::CalculateImportance() {
 // (a) a scenario-year-derived relation-score threshold when its encodedNationSlot < 200
 // (relationStandingScores[i * kNationSlotCount + nationId04] vs. economicTurn/4 + 110), or
 // (b) a direct owner-slot match otherwise (the same test as
-// TCountry::IsEncodedNationSlotMinus200Equal). For each eligible minor, resolves its home
+// TCountry::IsColonyOf). For each eligible minor, resolves its home
 // port zone's cached-owner context (FindFirstPortZoneContextByNation +
 // primaryNeighbors[0], the same grow-on-access idiom
 // CalculateImportance above uses) and scores that context's tagged primary navy order-list

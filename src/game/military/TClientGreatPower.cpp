@@ -10,12 +10,12 @@
 #include "game/net/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
-bool TClientGreatPower::IsClient(void) {
+bool TClientGreatPower::IsClient(void) const {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005412d0
-bool TClientGreatPower::IsRemote(void) {
+bool TClientGreatPower::IsRemote(void) const {
   return false;
 }
 

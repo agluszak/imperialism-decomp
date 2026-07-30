@@ -623,8 +623,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringIndex = activeSideRelation + 43;
   } else {
     userStringGroup = 0x273d;
-    int activeHomeRegion = g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]
-                               ->GetHomeRegionCityRecordIndex();
+    int activeHomeRegion =
+        g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
     char activeNationOwnsBattleSite = activeHomeRegion == record->tileOrObject08.tileIndex;
     char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
     char reportParticipantIsActive =
@@ -637,7 +637,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       otherNation = static_cast<signed char>(record->nationIds[1]);
     }
     bool otherNationOwnsBattleSite =
-        g_apTerrainTypeDescriptorTable[otherNation]->GetHomeRegionCityRecordIndex() ==
+        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
         record->tileOrObject08.tileIndex;
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {

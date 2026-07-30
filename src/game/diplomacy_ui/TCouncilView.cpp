@@ -172,8 +172,7 @@ void TCouncilView::DisplayStats() {
     int category;
     if (ownerCode >= 7) {
       TCountry* country = g_apTerrainTypeDescriptorTable[ownerCode];
-      if (country->IsEncodedNationSlotMinus200Equal(sourceNation) ||
-          country->IsEncodedNationSlotMinus200Equal(targetNation)) {
+      if (country->IsColonyOf(sourceNation) || country->IsColonyOf(targetNation)) {
         category = 1;
       } else {
         category = 3;

@@ -202,7 +202,7 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8c00
-short TGreatPower::GetAvailableMerchantCapacity(void) {
+short TGreatPower::GetMerchantCapacity(void) {
   return this->availableMerchantCapacity;
 }
 
@@ -891,7 +891,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Land recruit order (pending status 1 == '2').
   if (this->pendingActionStatus.roles.landRecruitStatus01 == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-    int nodeContext = this->GetHomeRegionCityRecordIndex();
+    int nodeContext = this->GetCapitolProvince();
     short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
     this->AnnounceLater(3, capValue, 1);
@@ -950,7 +950,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
     this->AnnounceLater(1, 6, 2);
   }
-  this->AssignDisplayNamesToUnnamedMilitaryUnits();
+  this->NameUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004dae70

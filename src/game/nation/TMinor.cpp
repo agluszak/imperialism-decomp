@@ -387,7 +387,7 @@ void TMinor::WriteTo(TStream* stream) {
 
 // True when `policyCode` matches one of the four saved diplomacy nation slots.
 // FUNCTION: IMPERIALISM 0x004e45f0
-char TMinor::IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
+char TMinor::IsInConsortiumWith(short policyCode) {
   char result = 0;
   if (policyCode == diplomacySaveFields134[0] || policyCode == diplomacySaveFields134[1] ||
       policyCode == diplomacySaveFields134[2] || policyCode == diplomacySaveFields134[3]) {
@@ -397,7 +397,7 @@ char TMinor::IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e4630
-short TMinor::GetIndustrialNeed(short resourceKind) {
+short TMinor::GetAmtUnsold(short resourceKind) {
   short sum = static_cast<short>(this->needCurrentByType[resourceKind] +
                                  this->grantAmountsByResource[resourceKind]);
   if (sum < 0) {
@@ -417,7 +417,7 @@ short TMinor::GetTradeOffersFor(short resourceKind) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e46a0
-void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
+void TMinor::InitializeTradeStatus(void) {
   diplomacyPolicyPredicateCode12e = -10;
   diplomacyPolicyGate130 = 0;
   diplomacyPolicyGate132 = 0;
@@ -501,10 +501,9 @@ void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e49b0
-void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                            int multiplier) {
-  short resourceSlot = static_cast<short>(resourceIndex);
-  short deltaShort = static_cast<short>(delta);
+void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
+  short resourceSlot = resourceKind;
+  short deltaShort = amount;
 
   if (deltaShort >= 1 && resourceSlot >= 0xd && resourceSlot <= 0x10) {
     if (resourceSlot == this->diplomacyPolicyPredicateCode12c) {
@@ -563,24 +562,25 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
 #if defined(_MSC_VER)
     float floatAmount = static_cast<float>(linkValue) / static_cast<float>(needCurrent);
     floatAmount = floatAmount * static_cast<float>(standing);
-    floatAmount = floatAmount * static_cast<float>(multiplier);
+    floatAmount = floatAmount * static_cast<float>(price);
     floatAmount = floatAmount * static_cast<float>(deltaShort);
     floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale_00653728;
     int amountFloat = static_cast<int>(floatAmount);
-    int amountInt = SignedDivideBy100(intFactor * static_cast<int>(standing) * multiplier);
-    int amount = amountFloat;
-    if (amountInt > amount) {
-      amount = amountInt;
+    int integerAmount = SignedDivideBy100(intFactor * static_cast<int>(standing) * price);
+    int grantAmount = amountFloat;
+    if (integerAmount > grantAmount) {
+      grantAmount = integerAmount;
     }
 #else
-    int amount = SignedDivideBy100(intFactor * static_cast<int>(standing) * multiplier);
+    int grantAmount = SignedDivideBy100(intFactor * static_cast<int>(standing) * price);
 #endif
-    majorNation->AddAmountToAidAllocationMatrixCellAndTotal(amount, resourceSlot, this->nationSlot);
+    majorNation->AddAmountToAidAllocationMatrixCellAndTotal(grantAmount, resourceSlot,
+                                                            this->nationSlot);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4bd0
-void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
+void TMinor::SetTradeBids(void) {
   short savedPredicate = this->diplomacyPolicyPredicateCode12c;
   short proposalWeight = 0;
   if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
@@ -712,15 +712,15 @@ void TMinor::SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) {
     if (policyValue != this->needLevelByNation[targetNationSlot]) {
       this->needLevelByNation[targetNationSlot] = policyValue;
       if (policyValue == 300) {
-        this->ReassignUnitOrdersForCountryTargetChange(-1, 0);
+        this->DeportCiviliansIn(-1, 0);
       }
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e4ff0
-char TMinor::CanInitiateJoinEmpireProposalToTarget(NationSlot targetNationSlot,
-                                                   DiplomacyProposalCodeStorage proposalCode) {
+char TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
+                              DiplomacyProposalCodeStorage proposalCode) {
   if (proposalCode != kDiplomacyProposalJoinEmpire || this->encodedNationSlot != -1) {
     return 0;
   }
@@ -757,12 +757,12 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
   if (proposalCode == kDiplomacyProposalJoinEmpire) {
     char canPropose = 0;
     if (this->encodedNationSlot == -1) {
-      canPropose = this->CanInitiateJoinEmpireProposalToTarget(targetNation, proposalCode);
+      canPropose = this->WouldAcceptOffer(targetNation, proposalCode);
     }
     if (canPropose != 0) {
       if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(this->nationSlot,
                                                                       targetNation) == 0) {
-        this->ApplyJoinEmpireModeForTargetNation(targetNation, 1);
+        this->ChangeMaster(targetNation, 1);
         g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
                                    targetNation, 0);
         return;
@@ -812,13 +812,13 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
 void TMinor::AddNoticeFrom(short sourceNation, short actionCode) {
   (void)sourceNation;
   if (actionCode == kDiplomacyProposalDeclareWar) {
-    this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
-    this->NotifyMajorPowersAffectedByMinorTerritoryChange();
+    this->KillEnemyCiviliansIn(-1);
+    this->KillBoycottedForeignCompanies();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e5340
-void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
+void TMinor::BecomeProtectorateOf(int targetNationSlot) {
   short decodedNationSlot = this->encodedNationSlot;
   if (decodedNationSlot >= 200) {
     decodedNationSlot = static_cast<short>(decodedNationSlot - 200);
@@ -827,7 +827,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   } else {
     decodedNationSlot = this->nationSlot;
   }
-  this->HandleNetworkPortConstructionOrder(targetNationSlot);
+  this->ConvertCapitolToTown(targetNationSlot);
 
   if (this->encodedNationSlot < 200) {
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -837,7 +837,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
               static_cast<short>(eligibleNationSlot)) != 0 &&
           eligibleNationSlot != this->nationSlot && eligibleNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[eligibleNationSlot];
-        terrain->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 100);
+        terrain->NewStatusFor(this->nationSlot, 100);
       }
     }
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
@@ -906,7 +906,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
               0 &&
           linkNationSlot != this->nationSlot && linkNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[linkNationSlot];
-        terrain->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 100);
+        terrain->NewStatusFor(this->nationSlot, 100);
       }
     }
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
@@ -927,7 +927,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
     }
   }
 
-  this->ClearTileActivityOverlayByProvinceId(-1);
+  this->KillForeignCompaniesIn(-1);
   TGreatPower* previousOwner = g_apNationStates[decodedNationSlot];
   if (previousOwner->pendingActionStatus.roles.territorialPressureStatus06 < '3') {
     previousOwner->SetNationPendingActionStateAndPayload(6, this->nationSlot);
@@ -935,7 +935,7 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 }
 
 // FUNCTION: IMPERIALISM 0x004e5730
-void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
+void TMinor::ConvertCapitolToTown(int nationId) {
   unsigned char nationTileFlags = static_cast<unsigned char>(
       g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags1c);
   if ((nationTileFlags >> 2 & 1) != 0) {
@@ -953,16 +953,16 @@ void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5840
-void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
-  TCountry::ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
+void TMinor::BecomeColonyOf(int targetNationSlot) {
+  TCountry::BecomeColonyOf(targetNationSlot);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
   targetNation->ResetNationDiplomacySlotsAndMarkRelatedNations(this->nationSlot);
-  this->RelinkTileUnitsToCountryOrderManager(targetNationSlot);
-  this->SetNationRowDisplayValueByDiplomacyPredicate(static_cast<NationSlot>(targetNationSlot));
+  this->ChangeArmyOwnership(targetNationSlot);
+  this->SetBoycottPoliciesToMatch(static_cast<NationSlot>(targetNationSlot));
   g_pDiplomacyTurnStateManager->SetRelationshipsToMatch(this->nationSlot, targetNationSlot);
-  this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
-  this->ReassignUnitOrdersForCountryTargetChange(-1, 0);
+  this->KillEnemyCiviliansIn(-1);
+  this->DeportCiviliansIn(-1, 0);
 
   if (targetNation->pendingActionStatus.roles.actionStatus0A < '3') {
     targetNation->SetNationPendingActionStateAndPayload(10, this->nationSlot);
@@ -973,7 +973,7 @@ void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e59d0
-void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
+void TMinor::RegainIndependence(void) {
   short decodedSlot;
   if (this->encodedNationSlot < 200) {
     if (this->encodedNationSlot < 100) {
@@ -986,9 +986,9 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
   }
   this->encodedNationSlot = -1;
   // Ground truth dispatches slot 0x33 here (CALL [ebx+0xcc] at 0x4e5a03 ->
-  // 0x4e6040), i.e. ReassignTileObjectOwnerAndNotifyForSelectedCells -- not the
+  // 0x4e6040), i.e. AssimilateTroopsOf -- not the
   // slot-0x2e display-value helper this port had been calling.
-  this->ReassignTileObjectOwnerAndNotifyForSelectedCells(decodedSlot);
+  this->AssimilateTroopsOf(decodedSlot);
   int nationSlot = 0;
   do {
     this->SetTradePolicyTo(static_cast<NationSlot>(nationSlot), 100);
@@ -997,7 +997,7 @@ void TMinor::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40
-void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNationSlot) {
+void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(targetNationSlot, nationSlot) == 0 &&
         (nationSlot == this->nationSlot ||
@@ -1011,7 +1011,7 @@ void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(NationSlot targetNatio
 }
 
 // FUNCTION: IMPERIALISM 0x004e5ac0
-void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
+void TMinor::KillForeignCompaniesIn(int provinceId) {
   TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
     if (this->ownedRegionList == 0) {
@@ -1048,7 +1048,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5be0
-void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
+void TMinor::KillBoycottedForeignCompanies(void) {
   int majorSlot;
   char needLevel300ByMajorSlot[7];
   for (majorSlot = 0; majorSlot < 7; ++majorSlot) {
@@ -1089,8 +1089,8 @@ void TMinor::NotifyMajorPowersAffectedByMinorTerritoryChange(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5d90
-void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId) {
-  int ownerNationSlot;
+void TMinor::KillEnemyCiviliansIn(int provinceId) {
+  NationSlot ownerNationSlot;
   if (provinceId != -1) {
     ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode00;
   } else if (this->encodedNationSlot >= 200) {
@@ -1166,7 +1166,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
 }
 
 // FUNCTION: IMPERIALISM 0x004e6040
-void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNationSlot) {
+void TMinor::AssimilateTroopsOf(int priorOwnerNationSlot) {
   TSortedList* priorOwnerManager =
       g_apTerrainTypeDescriptorTable[priorOwnerNationSlot]->militaryUnitList44;
 
@@ -1199,13 +1199,12 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
 }
 
 // FUNCTION: IMPERIALISM 0x004e6150
-void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
-                                                      char includeAllPolicyTargets) {
+void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTargets) {
   if (includeAllPolicyTargets == 0) {
-    this->NotifyMajorPowersAffectedByMinorTerritoryChange();
+    this->KillBoycottedForeignCompanies();
   }
 
-  int ownerNationSlot;
+  NationSlot ownerNationSlot;
   if (provinceId == -1) {
     if (this->encodedNationSlot >= 200) {
       ownerNationSlot = this->encodedNationSlot - 200;
@@ -1294,22 +1293,22 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
 }
 
 // FUNCTION: IMPERIALISM 0x004e64a0
-void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
+void TMinor::LoseProvince(int regionId) {
   // The original dereferences the list unguarded here (mov ecx,[esi+0x90] straight
   // into mov eax,[ecx]; call [eax+0x34] at 0x4e64a9) -- the null test was ours.
   this->ownedRegionList->Delete(regionId);
-  this->ClearTileActivityOverlayByProvinceId(regionId);
-  this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(regionId);
-  this->ReassignUnitOrdersForCountryTargetChange(static_cast<short>(regionId), 1);
+  this->KillForeignCompaniesIn(regionId);
+  this->KillEnemyCiviliansIn(regionId);
+  this->DeportCiviliansIn(static_cast<short>(regionId), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0
-void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
+void TMinor::AddProvince(int regionId) {
   this->ownedRegionList->InsertLast(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e6520
-void TMinor::RelinkTileUnitsToCountryOrderManager(int destinationNationSlot) {
+void TMinor::ChangeArmyOwnership(int destinationNationSlot) {
   TSortedList* destinationManager =
       g_apTerrainTypeDescriptorTable[destinationNationSlot]->militaryUnitList44;
 

@@ -194,7 +194,7 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   TGreatPower* owner = ownerContextAt04;
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(3) / 2);
+      capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacityForProposal(3) / 2);
       tradePartnerEnabled49[3] = 0;
     }
     if (capabilityFlag16 >= arg2) {
@@ -208,14 +208,13 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   }
   if (resourceCode == kResourceTimber || resourceCode == kResourceIron ||
       resourceCode == kResourceOil) {
-    short available =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    short available = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (available >= arg2) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
     } else {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, arg1,
-          static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+          static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3,
           resourceCode, 0, 0);
     }
     return;
@@ -223,13 +222,12 @@ void TTedForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
     short amount = owner->merchantCapacity < 15 ? 1 : (owner->merchantCapacity >= 30 ? 3 : 2);
     amount = MinShort(amount, arg2);
-    if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >=
-        amount) {
+    if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= amount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
     } else {
       g_pTradeMgr->SetDealResults(
           owner->nationSlot, arg1,
-          static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
+          static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3,
           resourceCode, 0, 0);
     }
   }
@@ -382,13 +380,13 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (resourceCode == kResourceTimber) {
     if (g_pTradeMgr->GetPrice(3) >= 105 && g_pTradeMgr->GetPrice(4) >= 105) {
       if (tradePartnerEnabled49[2] != 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
+        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
         if (capabilityFlag16 < 2) {
           capabilityFlag16 = 2;
         }
         tradePartnerEnabled49[2] = 0;
       }
-      available = owner->GetAvailableMerchantCapacity();
+      available = owner->GetMerchantCapacity();
       amount = MinShort(capabilityFlag16, available);
       if (amount >= arg2) {
         g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, 2, 0, 0);
@@ -401,40 +399,40 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
         capabilityFlag16 = 0;
       }
     } else {
-      available = owner->GetAvailableMerchantCapacity();
-      amount = available >= arg2 ? arg2 : owner->GetAvailableMerchantCapacity();
+      available = owner->GetMerchantCapacity();
+      amount = available >= arg2 ? arg2 : owner->GetMerchantCapacity();
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 2, 0, 0);
     }
     return;
   }
   if (resourceCode == kResourceCoal) {
     if (tradePartnerEnabled49[3] != 0) {
-      capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
+      capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
       tradePartnerEnabled49[3] = 0;
     }
     amount = g_pTradeMgr->GetPrice(4) < 105 ? arg2 : capabilityFlag16;
     amount = MinShort(amount, arg2);
-    available = owner->GetAvailableMerchantCapacity();
+    available = owner->GetMerchantCapacity();
     if (available >= amount) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 3, 0, 0);
       capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
     } else {
-      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(),
-                                  arg3, 3, 1, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetMerchantCapacity(), arg3, 3, 1,
+                                  0);
       capabilityFlag16 = 0;
     }
     return;
   }
   if (resourceCode == kResourceIron || resourceCode == kResourceOil) {
-    available = owner->GetAvailableMerchantCapacity();
+    available = owner->GetMerchantCapacity();
     if (available >= arg2) {
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
       if (resourceCode == kResourceIron) {
         capabilityFlag16 = static_cast<short>(capabilityFlag16 - arg2);
       }
     } else {
-      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetAvailableMerchantCapacity(),
-                                  arg3, resourceCode, resourceCode == kResourceIron, 0);
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetMerchantCapacity(), arg3,
+                                  resourceCode, resourceCode == kResourceIron, 0);
       if (resourceCode == kResourceIron) {
         capabilityFlag16 = 0;
       }
@@ -635,8 +633,8 @@ void TDiplomatForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short a
   }
   TGreatPower* owner = ownerContextAt04;
   short amount = owner->merchantCapacity < 12 ? 1 : (owner->merchantCapacity >= 25 ? 3 : 2);
-  if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) < amount) {
-    amount = static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+  if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) < amount) {
+    amount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
   }
   amount = MinShort(amount, arg2);
   g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, resourceCode, 0, 0);
@@ -736,17 +734,16 @@ void TTextileForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short ar
   }
   TGreatPower* owner = ownerContextAt04;
   if (resourceCode == kResourceCotton || resourceCode == kResourceWool) {
-    if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >= arg2) {
+    if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= arg2) {
       goto accept_requested_amount;
     }
-  } else if (static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)) >=
-             arg2) {
+  } else if (static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)) >= arg2) {
     goto accept_requested_amount;
   }
   g_pTradeMgr->SetDealResults(
       owner->nationSlot, arg1,
-      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
-      resourceCode, 0, 0);
+      static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
+      0, 0);
   return;
 
 accept_requested_amount:
@@ -848,15 +845,14 @@ void TTraderForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg
     return;
   }
   TGreatPower* owner = ownerContextAt04;
-  short available =
-      static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+  short available = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
   if (available >= arg2) {
     g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, arg2, arg3, resourceCode, 0, 0);
   } else {
     g_pTradeMgr->SetDealResults(
         owner->nationSlot, arg1,
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)), arg3,
-        resourceCode, 1, 0);
+        static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
+        1, 0);
   }
 }
 
@@ -981,25 +977,25 @@ void TArmsForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
   if (HasAdvancedTradeResource(this)) {
     if (resourceCode != kResourceTimber && resourceCode != kResourceCoal &&
         resourceCode != kResourceIron) {
-      capabilityFlag16 = owner->GetAvailableMerchantCapacity();
+      capabilityFlag16 = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled49[resourceCode] != 0) {
       if (g_nArmsAdvancedResourceOfferSplitCount_006a3a58 == 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
+        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
       } else {
-        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
+        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
       }
       ++g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
     }
   } else {
     if (resourceCode != kResourceCotton && resourceCode != kResourceWool &&
         resourceCode != kResourceTimber && resourceCode != kResourceCoal) {
-      capabilityFlag16 = owner->GetAvailableMerchantCapacity();
+      capabilityFlag16 = owner->GetMerchantCapacity();
     } else if (tradePartnerEnabled49[resourceCode] != 0) {
       if (g_nArmsBasicResourceOfferSplitCount_006a3a54 == 0) {
-        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 3);
+        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 3);
         ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
       } else {
-        capabilityFlag16 = static_cast<short>(owner->GetAvailableMerchantCapacity() / 2);
+        capabilityFlag16 = static_cast<short>(owner->GetMerchantCapacity() / 2);
         ++g_nArmsBasicResourceOfferSplitCount_006a3a54;
       }
     }

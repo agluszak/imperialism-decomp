@@ -17,7 +17,7 @@ public:
   void ReadFrom(TStream* stream) override;
   char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
-  bool IsHost(void) override;
+  bool IsHost(void) const override;
   void ReplyToDiplomacyOffers(void) override;
   void SorryYouLose(void) override;
 

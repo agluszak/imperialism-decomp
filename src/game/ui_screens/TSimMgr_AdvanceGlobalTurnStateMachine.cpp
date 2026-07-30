@@ -449,7 +449,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (!IsNationTerrainEligible(nationSlot)) {
         continue;
       }
-      nation->IsEncodedNationSlotMinus200Equal(0);
+      nation->IsColonyOf(0);
       nation->DispatchMissionNodeCallbacksAndClearQueue();
     }
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
@@ -568,7 +568,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           }
           TGreatPower* nation = g_apNationStates[percentNationSlot];
           if (nation != nullptr) {
-            nation->SetNationPercentFieldByModeAndDescriptorLinks(0, 100);
+            nation->NewStatusFor(0, 100);
           }
         }
       }

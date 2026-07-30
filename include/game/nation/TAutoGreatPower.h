@@ -29,12 +29,11 @@ public:
   // slot 0x07 — 0x004e7230: drain missionQueue then run the base Free().
   void Free() override;
   // slot 0x14 — 0x004ea150: join-empire reset plus clearing map-action caches.
-  void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
+  void BecomeProtectorateOf(int targetNationSlot) override;
   // slot 0x19 — 0x004ea290: add region and queue a map-action mission.
-  void AddRegionIdToNationOwnedRegionList(int regionId) override;
+  void AddProvince(int regionId) override;
   // slot 0x20 — 0x004e7630: accumulate negative resource 7..12 deltas before base totals.
-  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                      int multiplier) override;
+  void PurchaseItem(short resourceKind, short amount, short price) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
@@ -73,7 +72,7 @@ public:
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
-  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
+  void LoseProvince(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
   char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                          ResourceKindStorage resourceKind) override;
