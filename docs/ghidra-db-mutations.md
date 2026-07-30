@@ -35,7 +35,17 @@ transaction; the tool commits only when the re-decompile shows no remaining
 Verified with a full no-reuse recompute (`just semantic-verify`, 2373 rows):
 exactly these six rows changed, all `inconclusive -> pass`, nothing else moved.
 Gate afterwards: pass 3224 -> 3230, mismatch 1272 unchanged, inconclusive
-341 -> 335. Persisted with `just export-project`.
+341 -> 335.
+
+The `.gzf` carrying this is **not** the one that export produced. #575's inventory
+refresh landed the same six prototypes concurrently (with better names — `MapPt`
+rather than `OrphanCallChain_C4_I50_004956e0`), so its export is what the tree
+carries and this branch's was dropped when the two conflicted. The entry stays
+because the mutation is still one the ledger must be able to re-run against a
+future DB, and because the *reason* the six rows needed it is not recorded
+anywhere in that refresh: a wholesale `ghidra-apply-source-full` projection and a
+targeted `apply-source-signatures` converge here, which is worth knowing the next
+time `semantic-gate` names an `in_stack` row.
 
 ## 2026-07-29 (later): repair two more punctured game-code extents
 
