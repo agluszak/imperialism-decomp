@@ -56,6 +56,27 @@ vector-ctor-probe *args:
 runtime-test-list:
   uv run python -m tools.runtime.cli list
 
+# The three build depths for running one test. `runtime-test` is canonical and gated;
+# `runtime-dev` is the authoring inner loop; `runtime-run` re-runs what is already built.
+# Only `runtime-test` belongs in precommit -- the inner loop deliberately does not pay for
+# the vtable gate or unrelated source generation.
+
+[doc('Run one native runtime test against the existing executable, with no build at all')]
+[group('runtime-test')]
+runtime-run name *args:
+  uv run python -m tools.runtime.cli run "{{name}}" {{args}}
+
+[doc('Recompile only what changed, then run one native runtime test (skips the vtable gate and unrelated generation)')]
+[group('runtime-test')]
+runtime-dev name *args:
+  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}"
+  uv run python -m tools.runtime.cli run "{{name}}" {{args}}
+
+[doc('Recompile only what changed in the runtime-test build, without running a test')]
+[group('runtime-test')]
+runtime-dev-build:
+  uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}"
+
 [doc('Run one named native semantic runtime test (rebuilds first)')]
 [group('runtime-test')]
 runtime-test name *args:
@@ -103,3 +124,11 @@ runtime-clean:
 [group('runtime-test')]
 runtime-test-show name:
   uv run python -m tools.runtime.cli show "{{name}}"
+
+# Read a screen's real tag hierarchy instead of guessing it from a UI builder or compiling a
+# selector to see whether RequireControl rejects it. The live tree is recorded on a
+# non-passing run and under --hold; --snapshots renders the recorded snapshots instead.
+[doc('Print the UI tree a runtime test last saw, with each node event/actionable state and selector path')]
+[group('runtime-test')]
+runtime-tree name *args:
+  uv run python -m tools.runtime.tree "{{name}}" {{args}}

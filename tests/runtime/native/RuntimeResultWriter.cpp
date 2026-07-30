@@ -40,6 +40,13 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   // A scenario that fails while still waiting is the common case; publishing the armed
   // wait is what turns "stalled in phase X" into "waiting for Y, written at Z".
   CString awaitState(RuntimeAwaitStateJson(run.AwaitState()));
+  // Only on a non-pass (or a deliberate hold): a passing run's tree is noise, but a failed
+  // selector is precisely when an author needs the real tag hierarchy rather than a guess
+  // read off a UI builder. `just runtime-tree` prints this.
+  CString currentUiTree("null");
+  if (lstrcmpA(status, "passed") != 0 || run.HoldRequested()) {
+    currentUiTree = CaptureRuntimeCurrentUiTree();
+  }
   CString eventSequence(run.ActivatedEventSequence());
   eventSequence += ']';
   CString handledModals(run.HandledModals());
@@ -114,6 +121,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "  \"phase\": \"%s\",\n"
               "  \"last_action\": \"%s\",\n"
               "  \"await\": %s,\n"
+              "  \"current_ui_tree\": %s,\n"
               "  \"event_sequence\": %s,\n"
               "  \"actions\": %s,\n"
               "  \"ui_snapshots\": %s,\n"
@@ -151,10 +159,11 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "}\n",
               run.TestName(), run.EvidenceKind(), status, run.Seed(), run.IdleTicks(),
               run.ElapsedMs(), run.PhaseName(), run.LastAction(), static_cast<LPCSTR>(awaitState),
-              static_cast<LPCSTR>(eventSequence), static_cast<LPCSTR>(actionLog),
-              static_cast<LPCSTR>(uiSnapshots), static_cast<LPCSTR>(capitalConfirmationSnapshot),
-              static_cast<LPCSTR>(mapState), static_cast<LPCSTR>(roundtrip),
-              static_cast<LPCSTR>(assertionId), static_cast<LPCSTR>(assertions),
+              static_cast<LPCSTR>(currentUiTree), static_cast<LPCSTR>(eventSequence),
+              static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
+              static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
+              static_cast<LPCSTR>(roundtrip), static_cast<LPCSTR>(assertionId),
+              static_cast<LPCSTR>(assertions),
               g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1, RuntimeClassName(mainView),
               g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot(),
               g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1, activeCity != 0 ? "true" : "false",
