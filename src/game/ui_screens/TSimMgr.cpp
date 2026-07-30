@@ -2146,8 +2146,8 @@ void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pIns
   instruction->tokenCursor = cursor;
   DECODE_SCENARIO_SHORT_TOKEN(nationToken);
 
-  g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-      static_cast<short>(cityToken), static_cast<int>(nationToken));
+  g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(cityToken),
+                                         static_cast<short>(nationToken));
 }
 
 // Reads a map-action-context id and a fixed 64-byte inline name, then updates the

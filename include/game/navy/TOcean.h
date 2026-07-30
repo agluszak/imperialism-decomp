@@ -117,8 +117,6 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts();   // 0x00563da0
 void RefreshPortZoneNeighborContextLinksAndFallbacks(); // 0x00563f50
 void RegenerateAllMapActionContextStatusCodes();        // 0x00563220
 
-void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
-
 // Returns the currently active map-order entry (g_pActiveMapOrderContext->
 // selectedTaskForce14). Ghidra labels this __thiscall, but the real call sites (e.g.
 // TToolBarCluster::SelectionClick's case-10 branch) pass an unrelated

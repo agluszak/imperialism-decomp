@@ -180,20 +180,9 @@ TESTS = (
     RuntimeTestSpec(
         "capital_click_opens_army_menu",
         "ArmyMenuTest",
-        # Still `repro` only, per the catalog policy that an expected failure gates nothing -- but
-        # for a different reason than before. Its original premise (idle units at the capital) was
-        # wrong on Easy and is now correct at Normal, so the ratio-arrow assertions this scenario
-        # exists for do run and do pass; what it hits now is a crash while closing the army book
-        # (imperialism-decomp-f27q), which no test could reach until this body ran at all.
-        ("repro",),
+        ("pr", "full"),
         "internal_invariant",
         required_oracles=(),
-        # A structured signature, not a blanket expected-fail bit: any other failure of this
-        # scenario still fails the suite, including a regression of the arrow assertions above it.
-        expected_failure=ExpectedFailureSpec(
-            assertion_ids=("process.unhandled_exception",),
-            classifications=("heartbeat_stopped",),
-        ),
     ),
     RuntimeTestSpec(
         "serialization_roundtrip",

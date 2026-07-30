@@ -270,9 +270,7 @@ void TControlSeaZoneMission::GiveActionOrders(TTaskForce* mapOrderEntry) {
 // (a per-nation "current port zone owner" cache slot, not a real neighbor list entry -- ground
 // truth forces the slot to exist through grow-on-access operator[] unconditionally).
 // If that cached slot still points at missionTargetZone, just re-touches the port zone lookup and
-// returns its result; otherwise returns the best-scoring neighbor via SelectBestPrimaryNeighbor-
-// ForNationDiplomacyMask. GetReplacementSlot48 (0x538900) consumes this return value (stores it
-// back into resolvedPortZone), so it is no longer discarded.
+// returns its result; otherwise returns the safest nearby zone for the mission nation.
 // FUNCTION: IMPERIALISM 0x00539780
 TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
   TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
@@ -280,5 +278,5 @@ TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
   if (*cachedOwnerSlot == missionTargetZone) {
     return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   }
-  return missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return missionTargetZone->GetSafestNearbyZoneFor(nationId04);
 }

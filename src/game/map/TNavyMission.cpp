@@ -376,7 +376,7 @@ void TNavyMission::GiveOrders() {
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
-  return missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return missionTargetZone->GetSafestNearbyZoneFor(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0

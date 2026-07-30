@@ -297,14 +297,13 @@ public:
   // stack-cleanup byte count.
   virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
   // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
-  // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedTileIndices42,
+  // SetOwner to update every one of the city's linkedTileIndices42,
   // then updates the city's own owned-region-list membership through TCountry, sets
   // g_pMapContextActionManager's per-nation slot, notifies the new owner
   // (TGreatPower::AddNoticeFrom) unless it's the local player's own turn, and creates a
   // turn-12 event when running in multiplayer-host mode.
-  virtual void
-  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(ProvinceIndexStorage cityRecordIndex,
-                                                         int newNationTag); // slot 0x2e 0x513290
+  virtual void ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex,
+                                   short newNationTag); // slot 0x2e 0x513290
   // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
@@ -363,8 +362,7 @@ public:
   // -- if the tile carries a town (activeFlags1c & 0x14) and the old owner is a great power
   // (< 7) -- moves that TTown marker from the old owner's townMarkerList to the new owner's,
   // updating TTown::ownerNation.
-  virtual void SetTileOwnerAndInvalidateNeighborState(short regionId,
-                                                      short newNationTag); // slot 0x37 0x5133f0
+  virtual void SetOwner(short regionId, short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
   // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
   // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
@@ -657,9 +655,8 @@ public:
   // InvalidateTile.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
 
-  // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of
-  // g_apTerrainTypeDescriptorTable[ownerCode]->needLevelByNation[1]'s 100/200-banded
-  // redirect encoding when it is >= 200 (annexation/transfer chain). 0x00514290,
+  // Resolves cityScoreTable[tileIndex].ownerNationCode00 through the owning country's
+  // encodedNationSlot 100/200-band redirect. 0x00514290,
   // __thiscall, one int stack arg.
   short ResolveTileOwnerNationCodeNormalized(int tileIndex);
 

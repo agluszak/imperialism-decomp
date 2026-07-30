@@ -121,9 +121,9 @@ public:
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
                                                   TurnEvent11MapOffsetBase mapOffsetBase,
                                                   const void* mapEntry, short shortA,
-                                                  short shortB);       // 0x5493c0
-  void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
-  void SendNewsEvent(int nationSlot, NewsEvent* event);                // 0x549540 (Mac oracle)
+                                                  short shortB);      // 0x5493c0
+  void SendChangeProvinceOwner(short provinceIndex, short nationTag); // 0x5494b0
+  void SendNewsEvent(int nationSlot, NewsEvent* event);               // 0x549540 (Mac oracle)
   void CreateAndSendTurnEvent1B_FiveShortsAndDword(short shortA, short shortB, short shortC,
                                                    short shortD, short shortE,
                                                    int trailingValue); // 0x5498d0
