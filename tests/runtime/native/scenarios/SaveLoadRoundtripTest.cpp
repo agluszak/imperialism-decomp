@@ -129,7 +129,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode == EncodeTurnEventCode(kTurnEventLoadSave) ||
         (mainView != 0 && mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) != 0)) {
-      AwaitUiChange("\"the save dialog did not advance through the retail turn flow\"");
+      AwaitUiChange("the save dialog did not advance through the retail turn flow");
       return;
     }
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
@@ -181,7 +181,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"the reloaded game did not reach the combined strategic map\"");
+      AwaitUiChange("the reloaded game did not reach the combined strategic map");
       return;
     }
     if (g_pGlobalMapState == 0) {

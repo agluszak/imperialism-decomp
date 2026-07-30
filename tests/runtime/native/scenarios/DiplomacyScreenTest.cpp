@@ -127,7 +127,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening diplomacy\"");
+      AwaitUiChange("combined map was not idle before opening diplomacy");
       return;
     }
     phase = kWaitForDiplomacyScreen;
@@ -137,7 +137,7 @@ private:
       FailScenario("\"diplomacy toolbar control is missing or disabled\"");
       return;
     }
-    Await(kObserveRuntimeBarrier, "\"diplomacy screen transition did not reach its barrier\"");
+    Await(kObserveRuntimeBarrier, "diplomacy screen transition did not reach its barrier");
     if (!RuntimeUiDriver::PostBarrier()) {
       FailScenario("\"diplomacy screen barrier could not be posted\"");
     }
@@ -146,7 +146,7 @@ private:
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
-      AwaitUiChange("\"diplomacy toolbar action did not activate diplomacy orders\"");
+      AwaitUiChange("diplomacy toolbar action did not activate diplomacy orders");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -231,7 +231,7 @@ private:
       FailScenario("\"diplomacy relationship overlay control is missing or cannot receive input\"");
       return;
     }
-    Await(kObserveRuntimeBarrier, "\"relationship overlay did not reach its barrier\"");
+    Await(kObserveRuntimeBarrier, "relationship overlay did not reach its barrier");
     if (!RuntimeUiDriver::PostBarrier()) {
       FailScenario("\"relationship overlay barrier could not be posted\"");
     }
@@ -487,7 +487,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"diplomacy back control did not restore the strategic map\"");
+      AwaitUiChange("diplomacy back control did not restore the strategic map");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {

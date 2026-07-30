@@ -29,7 +29,7 @@ RuntimeFlowStatus MainMenuFlow::Advance(RuntimeScenario& scenario) {
     TView* mainView = scenario.CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dc ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
-      scenario.AwaitUiChange("\"main menu did not become active\"");
+      scenario.AwaitUiChange("main menu did not become active");
       return kRuntimeFlowRunning;
     }
     srand(scenario.RunState().Seed());

@@ -76,7 +76,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      AwaitUiChange("\"random setup did not return from capital selection\"");
+      AwaitUiChange("random setup did not return from capital selection");
       return;
     }
     phase = kReturnToMainMenu;
@@ -92,7 +92,7 @@ private:
   void WaitForReturnedMainMenu() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dc) {
-      AwaitUiChange("\"main menu did not return after random setup cancellation\"");
+      AwaitUiChange("main menu did not return after random setup cancellation");
       return;
     }
     phase = kReenterRandomSetup;
@@ -109,7 +109,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != 0x5dd || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TSetupRandomMapPicture)) == 0) {
-      AwaitUiChange("\"random setup did not reopen from the returned main menu\"");
+      AwaitUiChange("random setup did not reopen from the returned main menu");
       return;
     }
     TSetupRandomMapPicture* setup = static_cast<TSetupRandomMapPicture*>(mainView);

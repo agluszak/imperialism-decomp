@@ -25,6 +25,8 @@ public:
   void MarkFallbackProgress();
   void RecordAction(const char* action);
   void RecordAssertion(const char* assertionId, const char* failureJson, bool fatal);
+  RuntimeAwaitState& AwaitState();
+  const RuntimeAwaitState& AwaitState() const;
 
   RuntimeScenario* Scenario() const;
   bool IsFinished() const;
@@ -79,6 +81,7 @@ public:
 private:
   RuntimeScenario* scenario;
   RuntimeProgressState progress;
+  RuntimeAwaitState awaitState;
   RuntimeResultAggregate resultAggregate;
   unsigned int seed;
   short selectedNationSlot;

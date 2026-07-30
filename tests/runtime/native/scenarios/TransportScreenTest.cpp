@@ -69,7 +69,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening transport\"");
+      AwaitUiChange("combined map was not idle before opening transport");
       return;
     }
     phase = kWaitForTransportScreen;
@@ -80,14 +80,14 @@ private:
       return;
     }
     Await(kObservePaintCompleted | kObserveGameStateChanged,
-          "\"transport screen did not complete its dynamic draw\"");
+          "transport screen did not complete its dynamic draw");
   }
 
   void WaitForTransportScreen() {
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport || mainView == 0 ||
         mainView->ResolveControlByTag(kControlTagTitL) == 0) {
-      AwaitUiChange("\"transport toolbar action did not activate the transport ledger\"");
+      AwaitUiChange("transport toolbar action did not activate the transport ledger");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -150,7 +150,7 @@ private:
       return;
     }
     if (!HasScenarioUiSnapshot()) {
-      AwaitUiChange("\"transport UI tree was not captured\"");
+      AwaitUiChange("transport UI tree was not captured");
       return;
     }
     phase = kReturnToMap;
@@ -178,7 +178,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"transport back control did not restore the strategic map\"");
+      AwaitUiChange("transport back control did not restore the strategic map");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {

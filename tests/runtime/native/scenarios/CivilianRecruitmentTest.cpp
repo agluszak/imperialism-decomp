@@ -250,7 +250,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"combined map was not idle before civilian recruitment\"");
+      AwaitUiChange("combined map was not idle before civilian recruitment");
       return;
     }
 
@@ -681,7 +681,7 @@ private:
     CPoint seaPoint;
     if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
       SetGWorld(savedSurface, savedSurfaceFlags);
-      AwaitUiChange("\"new prospector did not settle into idle state before cursor verification\"");
+      AwaitUiChange("new prospector did not settle into idle state before cursor verification");
       return;
     }
     if (!VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint)) {

@@ -65,7 +65,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before ending the turn\"");
+      AwaitUiChange("combined map was not idle before ending the turn");
       return;
     }
     baselineEconomicTurn = g_pSimMgr->economicTurn;
@@ -123,7 +123,7 @@ private:
         return;
       }
       EnterScenarioStep("waiting_for_turn_processed", action);
-      Await(kObserveModalPopped, "\"turn-flow modal did not unwind after activation\"");
+      Await(kObserveModalPopped, "turn-flow modal did not unwind after activation");
       return;
     }
     if (g_pViewMgr->currentTurnEventCode == kTurnEventDealBook && !leftDealBook) {
@@ -153,7 +153,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      AwaitUiChange("\"ended turn did not advance back to the combined map\"");
+      AwaitUiChange("ended turn did not advance back to the combined map");
       return;
     }
     if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {

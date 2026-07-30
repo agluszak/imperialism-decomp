@@ -26,7 +26,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kWaitingForRandomSetup) {
     if (g_pViewMgr->currentTurnEventCode != 0x5dd ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TSetupRandomMapPicture))) {
-      scenario.AwaitUiChange("\"random-map setup did not become active\"");
+      scenario.AwaitUiChange("random-map setup did not become active");
       return kRuntimeFlowRunning;
     }
     RandomSetupDriver setup(mainView);

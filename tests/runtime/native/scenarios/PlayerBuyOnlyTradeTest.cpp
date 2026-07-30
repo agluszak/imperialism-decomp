@@ -93,7 +93,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening trade\"");
+      AwaitUiChange("combined map was not idle before opening trade");
       return;
     }
     phase = kWaitForTrade;
@@ -110,7 +110,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
-      AwaitUiChange("\"trade toolbar action did not open the Board of Trade\"");
+      AwaitUiChange("trade toolbar action did not open the Board of Trade");
       return;
     }
     TGreatPower* player = g_apNationStates[activeNationSlot];
@@ -200,7 +200,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"Board of Trade did not return to the combined map\"");
+      AwaitUiChange("Board of Trade did not return to the combined map");
       return;
     }
     TGreatPower* player = g_apNationStates[activeNationSlot];
@@ -290,7 +290,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-        AwaitUiChange("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        AwaitUiChange("offer-sheet event did not construct TOfferDeskPicture");
         return;
       }
       TOfferDeskPicture* offerDesk = static_cast<TOfferDeskPicture*>(mainView);
@@ -304,7 +304,7 @@ private:
           !RuntimeUiDriver::Activate(
               reject, RuntimeControlSelector(kControlTagReje, RUNTIME_CLASS(TControl)))) {
         Await(kObserveGameStateChanged | kObservePaintCompleted,
-              "\"buy-only trade offer reject control is not ready yet\"");
+              "buy-only trade offer reject control is not ready yet");
         return;
       }
       ContinueAfterAction();
@@ -340,7 +340,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      AwaitUiChange("\"buy-only turn did not advance to the combined map\"");
+      AwaitUiChange("buy-only turn did not advance to the combined map");
       return;
     }
     if (!PlayerExecutedNoSales()) {

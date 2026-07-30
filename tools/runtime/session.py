@@ -196,6 +196,10 @@ def _close_attempt(
         display_context.__exit__(None, None, None)
 
 
+def _optional_str(value: object) -> str | None:
+    return value if isinstance(value, str) and value != "" else None
+
+
 def _build_host_result(
     config: RunConfig,
     dependencies: SessionDependencies,
@@ -217,6 +221,9 @@ def _build_host_result(
     )
     phase = heartbeat.get("phase")
     action = heartbeat.get("last_action")
+    await_state = heartbeat.get("await")
+    if not isinstance(await_state, dict):
+        await_state = {}
     return HostResult(
         classification=snapshot.classification,
         display=display_name or "host",
@@ -228,6 +235,9 @@ def _build_host_result(
         },
         phase=phase if isinstance(phase, str) else None,
         action=action if isinstance(action, str) else None,
+        awaiting=_optional_str(await_state.get("expression")),
+        awaiting_source=_optional_str(await_state.get("source")),
+        awaiting_observations=_optional_str(await_state.get("observations")),
         wine_exit=snapshot.inferior_exit_code,
         proxy_pid=snapshot.proxy_pid,
         proxy_exit_code=snapshot.proxy_exit_code,

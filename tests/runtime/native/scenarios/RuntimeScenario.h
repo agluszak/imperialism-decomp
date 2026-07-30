@@ -47,12 +47,20 @@ protected:
   virtual RuntimeFlow* NavigationFlow();
   virtual void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint);
   void Pass();
+  // `failure` is a pre-escaped JSON fragment (call sites write "\"text\""). Prefer
+  // FailScenarioText for anything new: it takes plain text and escapes it once here
+  // instead of at every call site.
   void FailScenario(const char* failure);
+  void FailScenarioText(const char* failure);
   bool Require(const char* assertionId, bool condition, const char* failure);
   bool Check(const char* assertionId, bool condition, const char* failure);
   bool FinishChecks();
-  void AwaitUiChange(const char* failure);
-  void Await(unsigned int observationKinds, const char* failure);
+  // `description` is plain text naming what the scenario is waiting for; it is published
+  // in the heartbeat and the result file, so a stalled run says what it expected.
+  void AwaitUiChange(const char* description);
+  void Await(unsigned int observationKinds, const char* description);
+  // The script layer's form: carries the awaited expression and its source location.
+  void AwaitAt(unsigned int observationKinds, const char* expression, const char* file, int line);
   void ContinueAfterAction();
   void EnterScenarioStep(const char* phaseName, const char* action);
 

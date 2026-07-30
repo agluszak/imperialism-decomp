@@ -158,7 +158,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before declaring war\"");
+      AwaitUiChange("combined map was not idle before declaring war");
       return;
     }
     phase = kWaitForDiplomacyScreen;
@@ -168,7 +168,7 @@ private:
       FailScenario("\"diplomacy toolbar control is missing or disabled\"");
       return;
     }
-    Await(kObserveRuntimeBarrier, "\"pre-trade diplomacy transition did not reach its barrier\"");
+    Await(kObserveRuntimeBarrier, "pre-trade diplomacy transition did not reach its barrier");
     if (!RuntimeUiDriver::PostBarrier()) {
       FailScenario("\"pre-trade diplomacy barrier could not be posted\"");
     }
@@ -177,7 +177,7 @@ private:
   void WaitForDiplomacyScreen() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventDiplomacyMap || diplomacy == 0) {
-      AwaitUiChange("\"diplomacy toolbar action did not activate diplomacy orders\"");
+      AwaitUiChange("diplomacy toolbar action did not activate diplomacy orders");
       return;
     }
     phase = kActivateTreatiesTopic;
@@ -200,7 +200,7 @@ private:
   void SelectWarAction() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 || diplomacy->RuntimeActionTopicIndex() != 1) {
-      AwaitUiChange("\"diplomacy treaties action did not become active\"");
+      AwaitUiChange("diplomacy treaties action did not become active");
       return;
     }
     if (!RuntimeUiDriver::Activate(
@@ -216,7 +216,7 @@ private:
   void DeclareWar() {
     TDiplomacyMapView* diplomacy = DiplomacyView();
     if (diplomacy == 0 || diplomacy->actionCodeBC != kDipActionDeclareWar) {
-      AwaitUiChange("\"declare-war action did not become active\"");
+      AwaitUiChange("declare-war action did not become active");
       return;
     }
     const short activeNation = g_pSimMgr->GetActiveNationId();
@@ -274,7 +274,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"diplomacy back control did not restore the strategic map\"");
+      AwaitUiChange("diplomacy back control did not restore the strategic map");
       return;
     }
     phase = kActivateTradeScreen;
@@ -286,7 +286,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening the trade screen\"");
+      AwaitUiChange("combined map was not idle before opening the trade screen");
       return;
     }
     if (g_pUiAnimator == 0 || g_pUiAnimator->registryList24 == 0) {
@@ -316,7 +316,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventTradeOverview || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TTradeScreenPicture)) == 0) {
-      AwaitUiChange("\"trade toolbar action did not activate the Board of Trade\"");
+      AwaitUiChange("trade toolbar action did not activate the Board of Trade");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -376,7 +376,7 @@ private:
     }
     if (bid == 0) {
       Await(kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted,
-            "\"Board of Trade has no inactive actionable bid control yet\"");
+            "Board of Trade has no inactive actionable bid control yet");
       return;
     }
     initialBidBitmap = bid->glyphBase84;
@@ -436,7 +436,7 @@ private:
     }
     if (offer == 0) {
       Await(kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted,
-            "\"Board of Trade has no inactive actionable offer control yet\"");
+            "Board of Trade has no inactive actionable offer control yet");
       return;
     }
 
@@ -641,7 +641,7 @@ private:
     }
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"Board of Trade back control did not restore the strategic map\"");
+      AwaitUiChange("Board of Trade back control did not restore the strategic map");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -715,7 +715,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-      AwaitUiChange("\"final deterministic trade offer is not active\"");
+      AwaitUiChange("final deterministic trade offer is not active");
       return;
     }
     if (!offerAcceptancePosed) {
@@ -742,7 +742,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-      AwaitUiChange("\"deterministic offer sheet is not active\"");
+      AwaitUiChange("deterministic offer sheet is not active");
       return;
     }
     if (!offerRegressionPosed) {
@@ -808,7 +808,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode == kTurnEventOfferSheet) {
       TView* mainView = CurrentMainView();
       if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
-        AwaitUiChange("\"offer-sheet event did not construct TOfferDeskPicture\"");
+        AwaitUiChange("offer-sheet event did not construct TOfferDeskPicture");
         return;
       }
       if (!verifiedOfferPresentation) {
@@ -819,13 +819,13 @@ private:
         CString displayedOffer;
         if (offerText == 0 || season == 0) {
           Await(kObserveUiTreeBuilt | kObservePaintCompleted | kObserveGameStateChanged,
-                "\"offer sheet is missing its offer or season text control yet\"");
+                "offer sheet is missing its offer or season text control yet");
           return;
         }
         offerText->CopyTextTo(&displayedOffer);
         if (displayedOffer.GetLength() == 0 || season->textStyle78.textColor == 0) {
           Await(kObservePaintCompleted | kObserveGameStateChanged,
-                "\"offer sheet has not presented offer text with a visible season label yet\"");
+                "offer sheet has not presented offer text with a visible season label yet");
           return;
         }
         verifiedOfferPresentation = true;
@@ -847,7 +847,7 @@ private:
         if (!RuntimeUiDriver::Activate(
                 reject, RuntimeControlSelector(reject->controlTag, RUNTIME_CLASS(TControl)))) {
           Await(kObserveGameStateChanged | kObservePaintCompleted,
-                "\"diplomatic-offer Reject control is not ready yet\"");
+                "diplomatic-offer Reject control is not ready yet");
           return;
         }
         ++handledOffers;
@@ -902,7 +902,7 @@ private:
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty() ||
         g_pSimMgr->economicTurn == baselineEconomicTurn) {
-      AwaitUiChange("\"war and trade end turn did not return to the strategic map\"");
+      AwaitUiChange("war and trade end turn did not return to the strategic map");
       return;
     }
     if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {

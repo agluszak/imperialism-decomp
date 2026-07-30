@@ -135,7 +135,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening the city screen\"");
+      AwaitUiChange("combined map was not idle before opening the city screen");
       return;
     }
     TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
@@ -157,7 +157,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventCityProduction || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TCityProductionView)) == 0) {
-      AwaitUiChange("\"city toolbar action did not activate the city production view\"");
+      AwaitUiChange("city toolbar action did not activate the city production view");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
@@ -184,7 +184,7 @@ private:
       return;
     }
     if (!HasScenarioUiSnapshot()) {
-      AwaitUiChange("\"city production UI tree was not captured\"");
+      AwaitUiChange("city production UI tree was not captured");
       return;
     }
     HWND cityHost = cityView->nativeWindow50 != 0 ? cityView->nativeWindow50->m_hWnd : 0;
@@ -199,7 +199,7 @@ private:
       FailScenario("\"could not post the city paint ordering barrier\"");
       return;
     }
-    Await(kObserveRuntimeBarrier, "\"city paint barrier was not observed\"");
+    Await(kObserveRuntimeBarrier, "city paint barrier was not observed");
   }
 
   void VerifyCityPaint() {
@@ -671,7 +671,7 @@ private:
       return true;
     }
     Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
-          "\"university has no actionable production-order plus arrow yet\"");
+          "university has no actionable production-order plus arrow yet");
     return false;
   }
 
@@ -698,7 +698,7 @@ private:
       return true;
     }
     Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
-          "\"armory has no actionable production-order plus arrow yet\"");
+          "armory has no actionable production-order plus arrow yet");
     return false;
   }
 
@@ -724,7 +724,7 @@ private:
       return true;
     }
     Await(kObservePaintCompleted | kObserveAnimationRemoved | kObserveGameStateChanged,
-          "\"shipyard has no actionable build-order plus arrow yet\"");
+          "shipyard has no actionable build-order plus arrow yet");
     return false;
   }
 
@@ -952,7 +952,7 @@ private:
       }
       if (interactionAnimation->frameIndex == priorAnimationFrame) {
         Await(kObserveApplicationIdle | kObservePaintCompleted,
-              "\"industry production animation has not advanced yet\"");
+              "industry production animation has not advanced yet");
         return;
       }
     }
@@ -1032,7 +1032,7 @@ private:
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
     TBuildingView* buildingView = cityView->BuildingViewForRuntimeTest(activeBuildingSlot);
     if (buildingView == 0) {
-      AwaitUiChange("\"city building control did not open its production view\"");
+      AwaitUiChange("city building control did not open its production view");
       return;
     }
     TGreatPower* activeNation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
@@ -1139,7 +1139,7 @@ private:
     }
     TCityProductionView* cityView = static_cast<TCityProductionView*>(mainView);
     if (cityView->BuildingViewForRuntimeTest(activeBuildingSlot) != 0) {
-      AwaitUiChange("\"native system close did not close the city building window\"");
+      AwaitUiChange("native system close did not close the city building window");
       return;
     }
     if (activeBuildingSlot == kUniversityBuildingSlot) {
@@ -1248,7 +1248,7 @@ private:
     TView* mainView = CurrentMainView();
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"city back control did not restore the strategic map\"");
+      AwaitUiChange("city back control did not restore the strategic map");
       return;
     }
     if (!g_ModalViewStack.IsEmpty()) {
