@@ -9,9 +9,23 @@ control tree is walked. A scenario touches none of these:
     ContinueAfterAction                       EnterScenarioStep
     AdvanceScenario    enum Phase
 
+It also touches no Win32 rendering or input API, and includes no UI widget implementation
+header:
+
+    CreateDIBSection   BitBlt        DrawIconEx    PatBlt      GetDC/ReleaseDC
+    CreateCompatibleDC SelectObject  GdiFlush      RedrawWindow
+    SendMessage        PostMessage   SetCursor     GetGWorld/SetGWorld/LockPixels
+
 All of them are legitimate *below* the boundary -- in `screens/`, `flows/`, `probes/` and the
 scenario base -- and none of them belong in a `*Test.cpp`. The point is the boundary, not the
 identifiers.
+
+The second group is what the first group's ban could not see. A scenario that never writes
+`ResolveControlByTag` but does `CreateDIBSection`/`BitBlt` on a view, or synthesises a
+`WM_MOUSEMOVE`, or includes `TArmyPlacard.h` to read a widget field, is reaching through the
+boundary just as directly -- it was simply reaching past a different part of it. Domain model
+headers (`game/city/`, `game/military/`, `game/map/`, ...) stay available: assertions are the
+point of a scenario, and they are about the model.
 
 This was a ratchet while the suite was being migrated: a per-file baseline of how many such
 references each unmigrated scenario still had, which could fall but never rise. Every scenario is
@@ -51,6 +65,14 @@ MECHANICS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("raw phase entry", re.compile(r"\bEnterScenarioStep\s*\(")),
     ("phase dispatcher", re.compile(r"\bAdvanceScenario\s*\(")),
     ("phase enum", re.compile(r"\benum\s+Phase\b")),
+    # Rendering and input the game itself should be doing, or a probe should be observing.
+    ("gdi surface", re.compile(r"\b(?:CreateDIBSection|CreateCompatibleDC|SelectObject|"
+                               r"DeleteDC|GdiFlush|PatBlt|BitBlt|DrawIconEx)\s*\(")),
+    ("device context", re.compile(r"\b(?:GetDC|ReleaseDC|RedrawWindow)\s*\(")),
+    ("quickdraw surface", re.compile(r"\b(?:GetGWorld|SetGWorld|GetGWorldPixMap|LockPixels|"
+                                     r"UnlockPixels)\s*\(")),
+    ("synthesised input", re.compile(r"\b(?:SendMessageA?|PostMessageA?)\s*\(")),
+    ("cursor state", re.compile(r"\b(?:SetCursor|GetCursor)\s*\(")),
 )
 
 # Files exempt from the ban, with the reason. Empty, and meant to stay that way.
