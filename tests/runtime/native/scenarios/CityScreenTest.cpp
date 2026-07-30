@@ -82,7 +82,7 @@ protected:
 
     // One forced repaint has to settle the screen: anything still invalidated afterwards is a
     // paint that invalidates itself, which would spin the message loop forever.
-    RT_ACTION("force one deterministic city paint", City().ForceOnePaint());
+    RT_DO("force one deterministic city paint", City().ForceOnePaint());
     RT_REQUIRE(!City().HasPendingPaint());
 
     // --- The university: recruiting one graduate reserves population and inputs. ---
@@ -90,12 +90,12 @@ protected:
     RT_REQUIRE_NE(-1, Building().FirstRaisableRow());
     raisedRow = Building().FirstRaisableRow();
     CaptureUnitOrder(Building().UnitOrder(raisedRow));
-    RT_ACTION("recruit one graduate", Building().RaiseRow(raisedRow));
+    RT_DO("recruit one graduate", Building().RaiseRow(raisedRow));
     RT_REQUIRE(UnitOrderWasReserved());
-    RT_STEP("confirm the university's counts", Building().VerifyLiveOrderState());
-    RT_ACTION("cancel the recruitment", Building().LowerRow(raisedRow));
+    RT_DO("confirm the university's counts", Building().VerifyLiveOrderState());
+    RT_DO("cancel the recruitment", Building().LowerRow(raisedRow));
     RT_REQUIRE(UnitOrderWasRestored());
-    RT_STEP("confirm the restored university counts", Building().VerifyLiveOrderState());
+    RT_DO("confirm the restored university counts", Building().VerifyLiveOrderState());
     RT_RUN(CloseBuilding(*this));
 
     // --- The armory: same shape, and its unit rows must each describe their own unit. ---
@@ -104,12 +104,12 @@ protected:
     RT_REQUIRE_NE(-1, Building().FirstRaisableRow());
     raisedRow = Building().FirstRaisableRow();
     CaptureUnitOrder(Building().UnitOrder(raisedRow));
-    RT_ACTION("order one unit", Building().RaiseRow(raisedRow));
+    RT_DO("order one unit", Building().RaiseRow(raisedRow));
     RT_REQUIRE(UnitOrderWasReserved());
-    RT_STEP("confirm the armory's state", Building().VerifyLiveOrderState());
-    RT_ACTION("cancel the unit order", Building().LowerRow(raisedRow));
+    RT_DO("confirm the armory's state", Building().VerifyLiveOrderState());
+    RT_DO("cancel the unit order", Building().LowerRow(raisedRow));
     RT_REQUIRE(UnitOrderWasRestored());
-    RT_STEP("confirm the restored armory state", Building().VerifyLiveOrderState());
+    RT_DO("confirm the restored armory state", Building().VerifyLiveOrderState());
     RT_RUN(CloseBuilding(*this));
 
     // --- The shipyard: a completed ship reaches the fleet and the merchant marine. ---
@@ -117,9 +117,9 @@ protected:
     RT_REQUIRE_NE(-1, Building().FirstRaisableRow());
     raisedRow = Building().FirstRaisableRow();
     CaptureShipOrder(Building().ShipOrder(raisedRow));
-    RT_ACTION("order one ship", Building().RaiseRow(raisedRow));
+    RT_DO("order one ship", Building().RaiseRow(raisedRow));
     RT_REQUIRE_EQ(priorQuantity + 1, Building().ShipOrder(raisedRow)->quantity);
-    RT_STEP("confirm the shipyard's counts", Building().VerifyLiveOrderState());
+    RT_DO("confirm the shipyard's counts", Building().VerifyLiveOrderState());
     RT_REQUIRE(CompletedShipOrderUpdatedTheFleet());
     RT_RUN(CloseBuilding(*this));
 
@@ -132,11 +132,11 @@ protected:
     SeedTradeSchoolInputs();
     RT_RUN(OpenBuilding(kTradeSchoolSlot, kCityBuildingTradeSchool, *this));
     CaptureTrainingOrder(Building().TrainingOrder());
-    RT_ACTION("enrol one trainee", Building().RaiseClusterOrder());
+    RT_DO("enrol one trainee", Building().RaiseClusterOrder());
     RT_REQUIRE(TrainingOrderWasReserved());
-    RT_STEP("confirm the trade school's state", Building().VerifyLiveOrderState());
+    RT_DO("confirm the trade school's state", Building().VerifyLiveOrderState());
     RT_REQUIRE(CompletedTrainingResetTheRow());
-    RT_STEP("confirm the reset trade school row", Building().VerifyLiveOrderState());
+    RT_DO("confirm the reset trade school row", Building().VerifyLiveOrderState());
     RT_RUN(CloseBuilding(*this));
 
     // --- An industry: its order animates the building while it is outstanding. ---
@@ -145,16 +145,16 @@ protected:
     RT_RUN(OpenBuilding(industrySlot, kCityBuildingIndustry, *this));
     CaptureItemOrder(Building().ItemOrder());
     RT_REQUIRE(ProductionAnimationIsDormant());
-    RT_ACTION("order one item", Building().RaiseClusterOrder());
+    RT_DO("order one item", Building().RaiseClusterOrder());
     RT_REQUIRE(ItemOrderWasReserved());
-    RT_STEP("confirm the industry's count", Building().VerifyLiveOrderState());
+    RT_DO("confirm the industry's count", Building().VerifyLiveOrderState());
     RT_REQUIRE_NOT_NULL(Building().ProductionAnimation());
     RT_REQUIRE(Building().ProductionAnimation()->enabledFlag != 0);
     RT_AWAIT(Building().ProductionAnimation()->frameIndex != priorAnimationFrame,
              kObserveApplicationIdle | kObservePaintCompleted);
-    RT_ACTION("cancel the item order", Building().LowerClusterOrder());
+    RT_DO("cancel the item order", Building().LowerClusterOrder());
     RT_REQUIRE(ItemOrderWasRestored());
-    RT_STEP("confirm the restored industry count", Building().VerifyLiveOrderState());
+    RT_DO("confirm the restored industry count", Building().VerifyLiveOrderState());
     // Cancelling the last outstanding order stops the building working again.
     RT_REQUIRE(Building().ProductionAnimation()->enabledFlag == 0);
     RT_RUN(CloseBuilding(*this));

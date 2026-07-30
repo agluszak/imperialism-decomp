@@ -53,27 +53,27 @@ protected:
     savedTurn = g_pSimMgr->economicTurn;
     savedNation = g_pSimMgr->activeNationSlot;
 
-    RT_STEP("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
+    RT_DO("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
     RT_REQUIRE(LoadSaveScreen::IsCurrent());
 
-    RT_STEP("select the first save slot", LoadSave().SelectSlot(kSaveSlot));
+    RT_DO("select the first save slot", LoadSave().SelectSlot(kSaveSlot));
     RT_REQUIRE_EQ(kSaveSlot, LoadSave().SelectedSlot());
     RT_REQUIRE(LoadSave().SlotIsBeingNamed());
 
     // Okay writes through the document path synchronously, so the file is there to inspect by the
     // time this returns.
-    RT_STEP("accept the selected slot", LoadSave().Accept());
+    RT_DO("accept the selected slot", LoadSave().Accept());
     BuildSavePathStringForMode(&savedPath, kNormalSaveMode, 0);
     RT_REQUIRE(TryGetFileMetadataForPath(&savedPath) != 0);
     ReportSavedFileShape(savedPath);
 
     // The retail save flow leaves this screen by itself.
     RT_AWAIT(LoadSaveScreen::IsDismissed(), kObserveUiStateChanged);
-    RT_STEP("reopen the saved game through the real load path", ReopenSavedGame());
+    RT_DO("reopen the saved game through the real load path", ReopenSavedGame());
 
     while (!StrategicMapScreen::IsCurrent()) {
       if (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()) {
-        RT_ACTION("close the newspaper", Newspaper().Close());
+        RT_DO("close the newspaper", Newspaper().Close());
       } else {
         RT_AWAIT(StrategicMapScreen::IsCurrent() ||
                      (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()),
@@ -87,8 +87,8 @@ protected:
     // walks it, and then it is a page fault inside TMilitaryUnit::MoveTo with no context
     // (imperialism-decomp-ilfs) -- so the reloaded game is held to walkable chains here, where the
     // invariant is unambiguous.
-    RT_STEP("confirm the reloaded map's unit chains",
-            UnitChainProbe::VerifyChainsAreWalkable("the reload"));
+    RT_DO("confirm the reloaded map's unit chains",
+          UnitChainProbe::VerifyChainsAreWalkable("the reload"));
     RT_REQUIRE_EQ(savedNation, g_pSimMgr->activeNationSlot);
     RT_REQUIRE_EQ(savedTurn, g_pSimMgr->economicTurn);
     SetSelectedNation(g_pSimMgr->activeNationSlot);

@@ -47,7 +47,7 @@
 // Loops around yields are fine as long as the counter is a field:
 //
 //     while (toggleCycles < 2) {
-//       RT_ACTION("zoom out", StrategicMap().ZoomOut());
+//       RT_DO("zoom out", StrategicMap().ZoomOut());
 //       ++toggleCycles;
 //     }
 //
@@ -111,21 +111,30 @@
   case slot:;                                                                                      \
   } while (0)
 
-// Perform one action and carry on *without* yielding. For a step whose effect is synchronous --
-// a model call the game does not need a turn to process. RT_ACTION is for anything that has to
-// reach the game through its message loop.
+// Perform one action and let the *action* decide whether the script must yield.
 //
-// Choosing wrong in this direction stalls: a scenario that pokes the model and then waits for
-// the application to go idle can wait forever, because a map left invalidating never reports an
-// idle with lCount == 0. Choosing wrong in the other direction reads a control's state before
-// the game has updated it.
+// This replaces the RT_ACTION/RT_STEP choice, which asked the author to know something only the
+// action knew: whether the effect reaches the game through its message loop. Choosing wrong
+// stalled forever in one direction and read stale state in the other, and nothing caught either.
+// A screen's control activations report kActionAfterMessageBarrier; a model call reports
+// kActionImmediate; RT_DO does what the result says.
 //
-// No program-counter slot, so this is not a yield point and several may share a line.
-#define RT_STEP(label, action)                                                                     \
+// Still a yield point, so it takes a slot and obeys the one-macro-per-line rule.
+#define RT_DO_AT(slot, label, action)                                                              \
   do {                                                                                             \
-    if (!RunScriptAction((label), (action), __FILE__, __LINE__))                                   \
-      return;                                                                                      \
+    if (!RunScriptActionNeedsBarrier((label), (action), __FILE__, __LINE__)) {                     \
+      if (ScriptFailed()) {                                                                        \
+        return;                                                                                    \
+      }                                                                                            \
+      break;                                                                                       \
+    }                                                                                              \
+    SetScriptProgramCounter(slot);                                                                 \
+    ContinueAfterAction();                                                                         \
+    return;                                                                                        \
+  case slot:;                                                                                      \
   } while (0)
+
+#define RT_DO(label, action) RT_DO_AT(RT_SLOT_PRIMARY, label, action)
 
 #define RT_YIELD_AT(slot)                                                                          \
   do {                                                                                             \
@@ -137,7 +146,7 @@
 
 // Hand control back to the game once, then carry on. For a step that changes state through a
 // direct model call rather than a control activation, where there is no RuntimeActionResult to
-// report. Prefer RT_ACTION when there is one.
+// report. Prefer RT_DO when there is one.
 //
 // A loop that handles a step and then re-tests its condition MUST yield on every path, or it
 // spins: "some expected screen is showing" is not the same predicate as "progress was made",
@@ -156,7 +165,6 @@
 // Perform one action, then yield once so the game can process it. `action` is a
 // RuntimeActionResult, so a screen driver's diagnostic becomes the scenario's failure
 // instead of being replaced by hand-written prose at the call site.
-#define RT_ACTION(label, action) RT_ACTION_AT(RT_SLOT_PRIMARY, label, action)
 
 // Drive a reusable RuntimeScriptFragment to completion, re-entering it on each observation.
 // The fragment arms its own waits, so this yields without arming anything itself.

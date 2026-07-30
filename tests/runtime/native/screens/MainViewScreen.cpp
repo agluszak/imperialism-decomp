@@ -74,7 +74,10 @@ RuntimeActionResult MainViewScreen::ActivateSelected(const RuntimeControlSelecto
     message.Format("cannot %s: %s", what, static_cast<LPCSTR>(failure));
     return RuntimeActionResult::Failure(message);
   }
-  return RuntimeActionResult::Success();
+  // A control activation is delivered through the game's message loop, so its effect is not
+  // observable until the game runs. Every screen action that activates a control inherits this,
+  // which is what lets a script stop deciding it per call site.
+  return RuntimeActionResult::SuccessAfterMessageBarrier();
 }
 
 RuntimeActionResult MainViewScreen::Activate(int tag, const char* what) {

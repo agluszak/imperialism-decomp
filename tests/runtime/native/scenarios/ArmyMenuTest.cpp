@@ -44,7 +44,7 @@ protected:
     capitalProvince = CapitalProvince();
     RT_REQUIRE_NE(-1, capitalProvince);
 
-    RT_STEP("select the capital province", StrategicMap().SelectArmyProvince(capitalProvince));
+    RT_DO("select the capital province", StrategicMap().SelectArmyProvince(capitalProvince));
     RT_REQUIRE(StrategicMap().ArmyMenuIsActiveForProvince(capitalProvince));
 
     RT_REQUIRE(StrategicMap().AllArmyPlacardsPopulated());
@@ -56,17 +56,17 @@ protected:
     RT_REQUIRE_NE(-1, arrowCategory);
     initialIdleCount = StrategicMap().ArmyIdleCount(arrowCategory);
 
-    RT_STEP("select an idle unit", StrategicMap().MoveOneIdleUnitOut(arrowCategory));
+    RT_DO("select an idle unit", StrategicMap().MoveOneIdleUnitOut(arrowCategory));
     RT_REQUIRE_EQ(initialIdleCount - 1, StrategicMap().ArmyIdleCount(arrowCategory));
 
-    RT_STEP("return the selected unit", StrategicMap().ReturnOneUnit(arrowCategory));
+    RT_DO("return the selected unit", StrategicMap().ReturnOneUnit(arrowCategory));
     RT_REQUIRE_EQ(initialIdleCount, StrategicMap().ArmyIdleCount(arrowCategory));
 
     CaptureOwnership();
-    RT_STEP("open the army book", armyBook.Open());
-    RT_STEP("show the capital garrison", armyBook.ShowProvince(capitalProvince));
+    RT_DO("open the army book", armyBook.Open());
+    RT_DO("show the capital garrison", armyBook.ShowProvince(capitalProvince));
     RT_REQUIRE(armyBook.HasUnitSpritePage());
-    RT_STEP("close the army book", armyBook.Close());
+    RT_DO("close the army book", armyBook.Close());
     RT_REQUIRE(OwnershipIsUnchanged());
 
     g_pMapContextActionManager->DoOwnershipChanges();

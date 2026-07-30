@@ -75,37 +75,36 @@ protected:
     RT_AWAIT(StrategicMapScreen::IsCurrent(), kObserveUiStateChanged);
 
     // --- A prospector, and the cursors that say where it may work. ---
-    RT_ACTION("recruit a prospector", RecruitProspector());
+    RT_DO("recruit a prospector", RecruitProspector());
     RT_AWAIT(spawnedCivilian->unitOrder == kUnitOrderIdle, kObserveUiStateChanged);
-    RT_ACTION("cycle the civilian legend's targets", VerifyLegendCameraCycling());
-    RT_ACTION("verify the prospector's cursors and order click", VerifyCursorsAndOrderClick());
+    RT_DO("cycle the civilian legend's targets", VerifyLegendCameraCycling());
+    RT_DO("verify the prospector's cursors and order click", VerifyCursorsAndOrderClick());
 
-    RT_ACTION("let the animator run", PulseAnimator());
-    RT_ACTION("verify the ordered prospector stays visible",
-              VerifyOrderedProspectorIsInspectable());
-    RT_ACTION("complete the survey", CompleteProspectorOrder());
-    RT_ACTION("verify the survey mark reached the renderer", VerifyCompletedSurveyMark());
+    RT_DO("let the animator run", PulseAnimator());
+    RT_DO("verify the ordered prospector stays visible", VerifyOrderedProspectorIsInspectable());
+    RT_DO("complete the survey", CompleteProspectorOrder());
+    RT_DO("verify the survey mark reached the renderer", VerifyCompletedSurveyMark());
 
     // --- The same prospector on a tile with nothing to find. ---
-    RT_ACTION("order a survey that will find nothing", IssueUnsuccessfulSurvey());
-    RT_ACTION("complete the unsuccessful survey", CompleteUnsuccessfulSurvey());
-    RT_ACTION("verify the miss mark reached the renderer", VerifyUnsuccessfulSurveyMark());
+    RT_DO("order a survey that will find nothing", IssueUnsuccessfulSurvey());
+    RT_DO("complete the unsuccessful survey", CompleteUnsuccessfulSurvey());
+    RT_DO("verify the miss mark reached the renderer", VerifyUnsuccessfulSurveyMark());
 
     // --- A farmer, whose finished improvement must change the tile. ---
-    RT_ACTION("recruit a farmer and order an improvement", OrderFarmerImprovement());
+    RT_DO("recruit a farmer and order an improvement", OrderFarmerImprovement());
     // An improvement takes as many turns as the order says; the original scenario re-entered its
     // completion phase until the farmer went idle, and the loop is that, said out loud.
     while (farmer->unitOrder != kUnitOrderIdle) {
-      RT_ACTION("advance the farmer's improvement", AdvanceFarmerImprovement());
+      RT_DO("advance the farmer's improvement", AdvanceFarmerImprovement());
     }
-    RT_ACTION("verify the improvement changed the tile", VerifyFarmerImprovementVisual());
+    RT_DO("verify the improvement changed the tile", VerifyFarmerImprovementVisual());
 
     // --- An engineer, through the construction dialog and on to a depot. ---
-    RT_ACTION("open the engineer's construction dialog", OpenEngineerConstructionDialog());
+    RT_DO("open the engineer's construction dialog", OpenEngineerConstructionDialog());
     // The dialog ran its own modal loop and the pre-armed cancel closed it; a modal still up means
     // that loop never unwound.
     RT_REQUIRE(!ModalScreen::AnyPresent());
-    RT_ACTION("build the depot and check the province chain", VerifyDepotAndMilitaryChain());
+    RT_DO("build the depot and check the province chain", VerifyDepotAndMilitaryChain());
 
     CaptureCurrentScreenSnapshot();
     RT_REQUIRE(HasScenarioUiSnapshot());

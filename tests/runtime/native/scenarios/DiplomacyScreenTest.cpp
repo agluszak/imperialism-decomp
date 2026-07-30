@@ -56,31 +56,31 @@ protected:
 
     targetNation = FirstSelectableMinorNation();
     RT_REQUIRE_NE(-1, targetNation);
-    RT_ACTION("inspect a foreign nation", Diplomacy().SelectNation(targetNation));
+    RT_DO("inspect a foreign nation", Diplomacy().SelectNation(targetNation));
     RT_REQUIRE_EQ(targetNation, Diplomacy().SelectedNation());
 
     RT_ACTIVATE_AND_AWAIT(
         "render that nation's relationships", Diplomacy().ShowRelationshipOverlay(),
         Diplomacy().RelationshipOverlaySourceNation() == targetNation, kObserveUiStateChanged);
 
-    RT_ACTION("select the treaties topic", Diplomacy().ShowTreaties());
+    RT_DO("select the treaties topic", Diplomacy().ShowTreaties());
     RT_REQUIRE(Diplomacy().TreatiesTopicIsActive());
 
     policyBeforeAction = PolicyTowards(targetNation);
-    RT_ACTION("build a consulate in that nation", Diplomacy().SelectNation(targetNation));
+    RT_DO("build a consulate in that nation", Diplomacy().SelectNation(targetNation));
     RT_REQUIRE_EQ(TogglePolicy(policyBeforeAction, kDiplomacyProposalBuildConsulate),
                   PolicyTowards(targetNation));
     // A consulate with a minor nation is a valid request, so it commits silently; a modal here
     // would be the rejection notice, which means the target was chosen wrongly.
     RT_REQUIRE(!ModalScreen::AnyPresent());
 
-    RT_ACTION("select the alliance treaty action", Diplomacy().SelectAllianceAction());
+    RT_DO("select the alliance treaty action", Diplomacy().SelectAllianceAction());
     RT_REQUIRE_EQ(static_cast<int>(kDipActionAlliance), Diplomacy().ActionCode());
 
     allianceTargetNation = FirstValidAllianceTarget();
     RT_REQUIRE_NE(-1, allianceTargetNation);
     alliancePolicyBeforeAction = PolicyTowards(allianceTargetNation);
-    RT_ACTION("offer that power an alliance", Diplomacy().SelectNation(allianceTargetNation));
+    RT_DO("offer that power an alliance", Diplomacy().SelectNation(allianceTargetNation));
     RT_REQUIRE_EQ(ExpectedAlliancePolicy(), PolicyTowards(allianceTargetNation));
     RT_REQUIRE(!ModalScreen::AnyPresent());
     // Retracting a policy leaves nothing to draw, so only a posted alliance has an icon.
@@ -91,15 +91,15 @@ protected:
     // Posing an offer enters the game's own modal loop, so the answer is armed first. Without
     // that the sheet would never be answered and the run would stop inside PoseOffer.
     RT_REQUIRE(Diplomacy().AcceptPublishesOfferEvent());
-    RT_STEP("arm the offer sheet's accept", Diplomacy().ArmAcceptResponse());
-    RT_ACTION("pose an offer for acceptance",
-              Diplomacy().PoseNonAggressionOffer(ActiveNation(), allianceTargetNation));
+    RT_DO("arm the offer sheet's accept", Diplomacy().ArmAcceptResponse());
+    RT_DO("pose an offer for acceptance",
+          Diplomacy().PoseNonAggressionOffer(ActiveNation(), allianceTargetNation));
     RT_REQUIRE(Diplomacy().LastResponseWasAccept());
 
     RT_REQUIRE(Diplomacy().RejectPublishesOfferEvent());
-    RT_STEP("arm the offer sheet's reject", Diplomacy().ArmRejectResponse());
-    RT_ACTION("pose an offer for rejection",
-              Diplomacy().PoseNonAggressionOffer(ActiveNation(), allianceTargetNation));
+    RT_DO("arm the offer sheet's reject", Diplomacy().ArmRejectResponse());
+    RT_DO("pose an offer for rejection",
+          Diplomacy().PoseNonAggressionOffer(ActiveNation(), allianceTargetNation));
     RT_REQUIRE(Diplomacy().LastResponseWasReject());
 
     RT_CLOSE_TO_MAP("leave the diplomacy map", Diplomacy().Close());

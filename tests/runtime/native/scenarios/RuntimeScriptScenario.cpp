@@ -132,6 +132,23 @@ bool RuntimeScriptScenario::RunScriptAction(const char* label, const RuntimeActi
   return false;
 }
 
+// Run the action, then say whether the caller has to yield. Three outcomes, not two: the action
+// failed (the script is finished, and ScriptFailed() reports it), it succeeded immediately, or it
+// succeeded and needs the game to run.
+bool RuntimeScriptScenario::RunScriptActionNeedsBarrier(const char* label,
+                                                        const RuntimeActionResult& result,
+                                                        const char* file, int line) {
+  if (!RunScriptAction(label, result, file, line)) {
+    return false;
+  }
+  return result.NeedsMessageBarrier();
+}
+
+bool RuntimeScriptScenario::ScriptFailed() const {
+  // FailScript finishes the run, so "the script is over" is the observable fact here.
+  return RunState().IsFinished();
+}
+
 void RuntimeScriptScenario::PassScript() {
   scriptArmedOrFinished = true;
   if (checkFailures != 0) {

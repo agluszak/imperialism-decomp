@@ -68,6 +68,16 @@ The vocabulary is in `tests/runtime/native/scenarios/RuntimeScriptMacros.h`; rea
 writing a script. Assertions build their own text — expression, both values, source location,
 phase, current turn event, current view class, modal depth — so never hand-format a failure.
 
+**One action macro: `RT_DO`.** Whether the script must yield is the *action's* answer, not the
+author's — a control activation reaches the game through its message loop
+(`kActionAfterMessageBarrier`), a model call does not (`kActionImmediate`), and `RT_DO` does what
+the result says. The old `RT_ACTION`/`RT_STEP` pair asked authors to know this per call site and
+punished a wrong guess with a permanent stall in one direction (waiting for an application idle
+that a still-invalidating map never reports) or a stale read in the other. A screen action that
+activates a control inherits the barrier from `MainViewScreen::Activate`; one that returns
+`RuntimeActionResult::Success()` from a model call is immediate. Say so in the *action* if you
+write a new one.
+
 ## The MSVC500 rules the protothread imposes
 
 `Script()` is a protothread: a saved program counter plus `case __LINE__` labels. All of this

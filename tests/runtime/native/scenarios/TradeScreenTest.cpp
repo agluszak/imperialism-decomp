@@ -62,7 +62,7 @@ protected:
 
     // --- Declare war, so the turn's trade happens against a live conflict. ---
     RT_OPEN_TO("open the diplomacy map", StrategicMap().OpenDiplomacy(), DiplomacyScreen);
-    RT_ACTION("select the treaties topic", Diplomacy().ShowTreaties());
+    RT_DO("select the treaties topic", Diplomacy().ShowTreaties());
     RT_AWAIT(Diplomacy().TreatiesTopicIsSelected(), kObserveUiStateChanged);
     RT_ACTIVATE_AND_AWAIT("select the declare-war action", Diplomacy().SelectDeclareWarAction(),
                           Diplomacy().ActionCode() == kDipActionDeclareWar, kObserveUiStateChanged);
@@ -70,15 +70,15 @@ protected:
     warTargetNation = FirstValidWarTarget();
     RT_REQUIRE_NE(-1, warTargetNation);
     warPolicyBeforeAction = PolicyTowards(warTargetNation);
-    RT_ACTION("declare war on that power", Diplomacy().SelectNation(warTargetNation));
+    RT_DO("declare war on that power", Diplomacy().SelectNation(warTargetNation));
     RT_REQUIRE_EQ(TogglePolicy(warPolicyBeforeAction, kDiplomacyProposalDeclareWar),
                   PolicyTowards(warTargetNation));
     RT_REQUIRE(!ModalScreen::AnyPresent());
     RT_CLOSE_TO_MAP("leave the diplomacy map", Diplomacy().Close());
 
     // --- Opening the Board of Trade must discard what the map was animating. ---
-    RT_STEP("give the map an animation to own",
-            StrategicMap().SeedOwnedAnimation(kMapAnimationRegressionTag));
+    RT_DO("give the map an animation to own",
+          StrategicMap().SeedOwnedAnimation(kMapAnimationRegressionTag));
     RT_REQUIRE(UiAnimationRegistry::Contains(kMapAnimationRegressionTag));
 
     RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen);
@@ -93,15 +93,15 @@ protected:
     // --- Post a bid for iron. ---
     RT_AWAIT(Trade().BuyCardIsActionable(kResourceIron) && Trade().BuyCardIsInactive(kResourceIron),
              kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted);
-    RT_ACTION("select the iron bid", Trade().SelectBid(kResourceIron));
+    RT_DO("select the iron bid", Trade().SelectBid(kResourceIron));
     RT_REQUIRE(Trade().BidSelected(kResourceIron));
 
     // --- Post a sell order for something else, and adjust its quantity. ---
     RT_AWAIT(Trade().FirstSellableCommodityOtherThan(kResourceIron) >= 0,
              kObserveGameStateChanged | kObserveAnimationRemoved | kObservePaintCompleted);
     sellCommodity = Trade().FirstSellableCommodityOtherThan(kResourceIron);
-    RT_STEP("seed an adjustable merchant capacity", Trade().SeedAdjustableCapacity(sellCommodity));
-    RT_ACTION("select that commodity's offer", Trade().SelectOffer(sellCommodity));
+    RT_DO("seed an adjustable merchant capacity", Trade().SeedAdjustableCapacity(sellCommodity));
+    RT_DO("select that commodity's offer", Trade().SelectOffer(sellCommodity));
 
     RT_REQUIRE(Trade().SellRowIsAdjustable(sellCommodity));
     RT_REQUIRE(Trade().SellLabelHasOwnLayout(sellCommodity));
@@ -109,12 +109,12 @@ protected:
     initialSellBar = Trade().SellBarValue(sellCommodity);
     RT_REQUIRE(initialSellQuantity > 1);
 
-    RT_ACTION("decrease the sell quantity", Trade().DecreaseSell(sellCommodity));
+    RT_DO("decrease the sell quantity", Trade().DecreaseSell(sellCommodity));
     RT_REQUIRE_EQ(initialSellQuantity - 1, Trade().SellQuantity(sellCommodity));
     RT_REQUIRE(Trade().SellBarValue(sellCommodity) < initialSellBar);
     RT_REQUIRE(Trade().SellLabelHasOwnLayout(sellCommodity));
 
-    RT_ACTION("increase the sell quantity again", Trade().IncreaseSell(sellCommodity));
+    RT_DO("increase the sell quantity again", Trade().IncreaseSell(sellCommodity));
     RT_REQUIRE_EQ(initialSellQuantity, Trade().SellQuantity(sellCommodity));
     RT_REQUIRE_EQ(initialSellBar, Trade().SellBarValue(sellCommodity));
     RT_REQUIRE(Trade().SellLabelHasOwnLayout(sellCommodity));
@@ -127,9 +127,9 @@ protected:
     RT_REQUIRE(Player()->GetTradeOffersFor(sellCommodity) > 0);
 
     // --- The offer sheet's bookmarks. ---
-    RT_ACTION("open the offer desk", OfferScreen::OpenForNation(ActiveNation()));
+    RT_DO("open the offer desk", OfferScreen::OpenForNation(ActiveNation()));
     RT_AWAIT(OfferScreen::IsCurrent(), kObserveUiStateChanged);
-    RT_ACTION("pose a deterministic offer", PoseFoodOffer());
+    RT_DO("pose a deterministic offer", PoseFoodOffer());
     RT_AWAIT(OfferScreen::IsCurrent(), kObserveUiStateChanged);
     RT_REQUIRE(OfferDesk().OfferTextNamesNation(ActiveNation()));
     RT_REQUIRE(OfferDesk().SeasonLabelIsWhite());
@@ -137,34 +137,34 @@ protected:
     RT_REQUIRE(OfferDesk().HasRetailBookmarkCount());
 
     while (bookmarkRow < OfferDesk().BookmarkCount()) {
-      RT_ACTION("select an offer-sheet bookmark", OfferDesk().SelectBookmark(bookmarkRow));
+      RT_DO("select an offer-sheet bookmark", OfferDesk().SelectBookmark(bookmarkRow));
       RT_REQUIRE_EQ(bookmarkRow, OfferDesk().SelectedBookmark());
       ++bookmarkRow;
     }
 
-    RT_ACTION("return to the map", StrategicMap().ReopenByTurnEvent(ActiveNation()));
+    RT_DO("return to the map", StrategicMap().ReopenByTurnEvent(ActiveNation()));
     RT_AWAIT(StrategicMapScreen::IsCurrent(), kObserveUiStateChanged);
 
     // --- Accept one deterministic offer, which executes the turn's trade. ---
     baselineEconomicTurn = EconomicTurn();
-    RT_ACTION("open the offer desk again", OfferScreen::OpenForNation(ActiveNation()));
+    RT_DO("open the offer desk again", OfferScreen::OpenForNation(ActiveNation()));
     RT_AWAIT(OfferScreen::IsCurrent(), kObserveUiStateChanged);
-    RT_ACTION("pose the offer to accept", PoseFoodOffer());
+    RT_DO("pose the offer to accept", PoseFoodOffer());
     RT_AWAIT(OfferScreen::IsCurrent(), kObserveUiStateChanged);
-    RT_ACTION("accept the offer", OfferDesk().Accept());
+    RT_DO("accept the offer", OfferDesk().Accept());
 
     // --- The Deal Book reports it, with the two directions still on their own pages. ---
     RT_AWAIT(DealBookScreen::IsCurrent(), kObserveUiStateChanged);
     RT_REQUIRE(DealBook().IsShowingHistoryPages());
-    RT_ACTION("show the Deal Book's category pages", DealBook().ShowCategoryPages());
+    RT_DO("show the Deal Book's category pages", DealBook().ShowCategoryPages());
     RT_REQUIRE(DealBook().IsShowingCategoryPages());
-    RT_ACTION("restore the Deal Book's history pages", DealBook().ShowHistoryPages());
+    RT_DO("restore the Deal Book's history pages", DealBook().ShowHistoryPages());
     RT_REQUIRE(DealBook().IsShowingHistoryPages());
-    RT_ACTION("leave the Deal Book", DealBook().Leave());
+    RT_DO("leave the Deal Book", DealBook().Leave());
 
     while (!StrategicMapScreen::IsCurrent()) {
       if (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()) {
-        RT_ACTION("close the newspaper", Newspaper().Close());
+        RT_DO("close the newspaper", Newspaper().Close());
       } else {
         RT_AWAIT(StrategicMapScreen::IsCurrent() ||
                      (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()),

@@ -63,9 +63,8 @@ protected:
   void Script() override {
     RT_BEGIN();
 
-    RT_STEP("verify the starting civilians",
-            StartingCiviliansProbe::VerifyForNation(ActiveNation()));
-    RT_STEP("show the civilian toolbar", StrategicMap().ShowCivilianToolbar());
+    RT_DO("verify the starting civilians", StartingCiviliansProbe::VerifyForNation(ActiveNation()));
+    RT_DO("show the civilian toolbar", StrategicMap().ShowCivilianToolbar());
     RT_REQUIRE(StrategicMap().CivilianToolbarIsPlaced());
 
     RT_REQUIRE_NOT_NULL(FirstCivilian());

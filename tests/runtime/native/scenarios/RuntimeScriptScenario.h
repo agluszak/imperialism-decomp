@@ -73,6 +73,10 @@ protected:
   void AwaitScreenScript(const MainViewScreenIdentity& identity, const char* file, int line);
   bool RunScriptAction(const char* label, const RuntimeActionResult& result, const char* file,
                        int line);
+  // True when the action succeeded *and* the script must yield before observing its effect.
+  bool RunScriptActionNeedsBarrier(const char* label, const RuntimeActionResult& result,
+                                   const char* file, int line);
+  bool ScriptFailed() const;
   void PassScript();
   void FailScript(const char* text, const char* file, int line);
   void FailRequirement(const char* expression, const char* file, int line);

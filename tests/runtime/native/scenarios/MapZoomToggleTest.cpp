@@ -39,9 +39,9 @@ protected:
 
     // Repeated toggling used to leave the map unable to scroll, which is the regression this
     // scenario exists for: a zoom cycle that leaves the viewport pinned looks fine on screen.
-    RT_ACTION("centre the viewport", StrategicMap().SetViewportCell(10, 10));
+    RT_DO("centre the viewport", StrategicMap().SetViewportCell(10, 10));
     previousViewportX = StrategicMap().ViewportOriginX();
-    RT_ACTION("scroll the map", StrategicMap().ScrollBy(kScrollEast));
+    RT_DO("scroll the map", StrategicMap().ScrollBy(kScrollEast));
     RT_REQUIRE_NE(previousViewportX, StrategicMap().ViewportOriginX());
 
     RT_PASS();
