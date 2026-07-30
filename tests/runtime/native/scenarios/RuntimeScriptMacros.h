@@ -215,22 +215,26 @@
     }                                                                                              \
   } while (0)
 
+// Each operand appears exactly once below. Writing it twice -- once compared, once formatted
+// -- meant a stateful accessor reported values other than the ones that failed.
 #define RT_REQUIRE_EQ(expected, actual)                                                            \
   do {                                                                                             \
-    if (!((expected) == (actual))) {                                                               \
-      FailRequirementRelation(#actual " == " #expected,                                            \
-                              "==", RuntimeAssertionText::Value(expected),                         \
-                              RuntimeAssertionText::Value(actual), __FILE__, __LINE__);            \
+    CString rtExpectedText;                                                                        \
+    CString rtActualText;                                                                          \
+    if (!RuntimeCompareEqual((expected), (actual), &rtExpectedText, &rtActualText)) {              \
+      FailRequirementRelation(#actual " == " #expected, "==", rtExpectedText, rtActualText,        \
+                              __FILE__, __LINE__);                                                 \
       return;                                                                                      \
     }                                                                                              \
   } while (0)
 
 #define RT_REQUIRE_NE(expected, actual)                                                            \
   do {                                                                                             \
-    if (!((expected) != (actual))) {                                                               \
-      FailRequirementRelation(#actual " != " #expected,                                            \
-                              "!=", RuntimeAssertionText::Value(expected),                         \
-                              RuntimeAssertionText::Value(actual), __FILE__, __LINE__);            \
+    CString rtExpectedText;                                                                        \
+    CString rtActualText;                                                                          \
+    if (!RuntimeCompareUnequal((expected), (actual), &rtExpectedText, &rtActualText)) {            \
+      FailRequirementRelation(#actual " != " #expected, "!=", rtExpectedText, rtActualText,        \
+                              __FILE__, __LINE__);                                                 \
       return;                                                                                      \
     }                                                                                              \
   } while (0)
@@ -245,8 +249,9 @@
 
 #define RT_REQUIRE_KIND_OF(view, Type)                                                             \
   do {                                                                                             \
-    if (!RuntimeIsViewKindOf((view), RUNTIME_CLASS(Type))) {                                       \
-      FailRequirementKindOf(#view, #Type, (view), __FILE__, __LINE__);                             \
+    TView* rtView = (view);                                                                        \
+    if (!RuntimeIsViewKindOf(rtView, RUNTIME_CLASS(Type))) {                                       \
+      FailRequirementKindOf(#view, #Type, rtView, __FILE__, __LINE__);                             \
       return;                                                                                      \
     }                                                                                              \
   } while (0)

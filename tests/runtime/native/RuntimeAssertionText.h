@@ -71,3 +71,38 @@ CString Value(const char* value);
 CString Value(const CString& value);
 
 } // namespace RuntimeAssertionText
+
+// Single-evaluation comparison for the assertion macros.
+//
+// The macros used to write each operand twice -- once in the comparison, once in
+// `Value(...)` while formatting the failure. Passing assertions were unaffected (the second
+// evaluation sits in the failure branch), which made the defect easy to miss and nasty when
+// it bit: an operand that advances a cursor, consumes a queue or re-reads live UI state got
+// evaluated a second time *after* failing, so the reported values were not the values that
+// failed the comparison. The diagnosis lied exactly when someone needed it.
+//
+// These take both operands by reference, so the macro mentions each exactly once and the
+// failure text is built from the very objects that were compared. Templates rather than the
+// Value() overload set above: the point here is to avoid naming the operand type at all, and
+// the bodies only ever call an overload that already exists.
+template <class Left, class Right>
+bool RuntimeCompareEqual(const Left& left, const Right& right, CString* leftText,
+                         CString* rightText) {
+  if (left == right) {
+    return true;
+  }
+  *leftText = RuntimeAssertionText::Value(left);
+  *rightText = RuntimeAssertionText::Value(right);
+  return false;
+}
+
+template <class Left, class Right>
+bool RuntimeCompareUnequal(const Left& left, const Right& right, CString* leftText,
+                           CString* rightText) {
+  if (left != right) {
+    return true;
+  }
+  *leftText = RuntimeAssertionText::Value(left);
+  *rightText = RuntimeAssertionText::Value(right);
+  return false;
+}
