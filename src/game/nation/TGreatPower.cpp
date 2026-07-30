@@ -2491,8 +2491,11 @@ int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
   int count = 0;
   TZone* node = g_pMapActionContextListHead;
   if (node != 0) {
+    int nationSlot = this->nationSlot;
+    unsigned char nationBit = 1;
+    nationBit <<= nationSlot;
     do {
-      if ((node->nationKeyMask10 & (1 << (this->nationSlot & 0x1f))) != 0) {
+      if ((static_cast<unsigned char>(node->nationKeyMask10) & nationBit) != 0) {
         ++count;
       }
       node = node->prev18;

@@ -9,7 +9,6 @@
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
-#include "game/military/TArmyMgr.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TView.h"
@@ -69,7 +68,6 @@ protected:
     RT_DO("close the army book", armyBook.Close());
     RT_REQUIRE(OwnershipIsUnchanged());
 
-    g_pMapContextActionManager->DoOwnershipChanges();
     RT_PASS();
 
     RT_END();

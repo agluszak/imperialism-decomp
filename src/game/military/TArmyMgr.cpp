@@ -1108,11 +1108,11 @@ void TArmyMgr::DoOwnershipChanges() {
 
     bool proceed = true;
     if (cachedOwner < 7 && currentOwner > 6 &&
-        g_apTerrainTypeDescriptorTable[currentOwner]->needLevelByNation[1] == -1) {
+        g_apTerrainTypeDescriptorTable[currentOwner]->encodedNationSlot == -1) {
       bool eligible = g_pSimMgr->IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
       bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
-                               g_apNationStates[cachedOwner]->needLevelByNation[1] > 99 &&
-                               g_apNationStates[cachedOwner]->needLevelByNation[1] < 200;
+                               g_apNationStates[cachedOwner]->encodedNationSlot > 99 &&
+                               g_apNationStates[cachedOwner]->encodedNationSlot < 200;
       if (!eligible || blockedByPeerBand) {
         proceed = false;
       }
@@ -1130,11 +1130,7 @@ void TArmyMgr::DoOwnershipChanges() {
                g_apTerrainTypeDescriptorTable[secondaryOwner]->GetCapitolProvince() == tileIndex) {
       g_apTerrainTypeDescriptorTable[secondaryOwner]->BecomeProtectorateOf(cachedOwner);
     }
-    // Ground truth ORs in an extra undefined upper-16-bit register (uVar6, leftover from
-    // whichever branch above ran) into this call's second argument; that garbage upper
-    // half isn't semantically meaningful, so cachedOwner alone is passed here.
-    g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-        static_cast<short>(tileIndex), cachedOwner);
+    g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(tileIndex), cachedOwner);
     this->needsTerrainRefreshFlag39a = 1;
   }
 }

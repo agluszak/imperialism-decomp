@@ -89,11 +89,8 @@ public:
   // task-force/map-order entry passed by GiveOrders (taskForce20).
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
   // Returns the best neighbor port zone for the current nation (delegates to
-  // missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
-  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
-  // TControlSeaZoneMission::GetReplacementSlot48 consumes the caller's result, so this
-  // could not stay void (confirmed by 0x538900's disassembly storing EAX back into
-  // resolvedPortZone).
+  // missionTargetZone->GetSafestNearbyZoneFor); every override
+  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*.
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0

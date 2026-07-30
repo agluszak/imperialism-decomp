@@ -11,7 +11,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/city_ui/TLongintList.h"
-#include "game/TMinisterBaseOrderArray.h"
+#include "game/map/TIndexAndRankList.h"
 #include "game/nation/TMinor.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
@@ -162,7 +162,8 @@ void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
 
 // FUNCTION: IMPERIALISM 0x0052f570
 void TForeignMinister::SetBuyPriorities() {
-  TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
+  TIndexAndRankList* priorities = new TIndexAndRankList();
+  priorities->recordSize14 = sizeof(MinisterPriorityEntry);
 
   for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
     if (purchasePriorityByResource1e[resourceCode] != 0) {

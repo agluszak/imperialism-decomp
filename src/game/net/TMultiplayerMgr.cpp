@@ -936,8 +936,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   case 0x12: {
     // City ownership change via the map manager virtual.
     TurnEvent12Packet* cityOwner = static_cast<TurnEvent12Packet*>(packet);
-    g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(cityOwner->shortA,
-                                                                              cityOwner->shortB);
+    g_pGlobalMapState->ChangeProvinceOwner(cityOwner->shortA, cityOwner->shortB);
     break;
   }
   case 0x13: {
@@ -1700,7 +1699,7 @@ void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(
 }
 
 // FUNCTION: IMPERIALISM 0x005494b0
-void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB) {
+void TMultiplayerMgr::SendChangeProvinceOwner(short provinceIndex, short nationTag) {
   TurnEvent12Packet packet;
   packet.eventCode = 0x12;
   packet.fromNetworkId = 0;
@@ -1708,8 +1707,8 @@ void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short sho
   packet.messageLength = 0x1c;
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  packet.shortA = shortA;
-  packet.shortB = shortB;
+  packet.shortA = provinceIndex;
+  packet.shortB = nationTag;
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
