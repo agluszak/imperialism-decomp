@@ -102,6 +102,7 @@ module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by addr
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
 module|tools.ghidra.fix_function_bounds|just:fix-function-bounds|Re-bound existing degenerate 1-byte Ghidra functions in place
+module|tools.ghidra.fix_packed_storage|just:fix-packed-storage|Clear custom PACKED parameter storage a function's own stack purge contradicts
 module|tools.ghidra.create_switch_table|just:create-switch-table|Define a computed-jump switch table and references in the Ghidra DB
 module|tools.ghidra.demote_functions|just:demote-functions|Demote case-body pseudo-functions to labels so dispatchers can reabsorb them
 module|tools.ghidra.delete_labels|just:delete-labels|Delete stale user labels that poison reccmp operand rendering

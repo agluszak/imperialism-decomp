@@ -5,6 +5,26 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-30 (later): clear wrong PACKED parameter storage on GetMapContextActionCode
+
+`0x00559a70 GetMapContextActionCode` carried CUSTOM_STORAGE with its two parameters packed into
+one dword -- `a0 short` at `Stack[0x4]:2` and `a1 int` at `Stack[0x6]:4` -- which the function's
+own `RET 0x8` contradicts: an 8-byte purge over two stack parameters means each had its own dword
+slot (`+4` and `+8`). The packing is a stale artifact of a `project-packed-signatures` pass over a
+frame that is not packed.
+
+The damage was quiet and entirely downstream. The prototype still printed plausibly, but the
+decompiler rendered the function's dword read of its first slot as `piece(a1, a0)` -- splicing two
+parameters together -- so `just semantic-gate` reported a `call_contract` mismatch: the original
+appeared to pass a spliced value to `TOcean::GetLinkedZoneForSeaTile` that the recompiled side
+could not produce.
+
+Cleared the custom storage and re-applied `DYNAMIC_STORAGE_FORMAL_PARAMS`, which places `a0` at
+`+4` and `a1` at `+8`. The row now passes at 100%. Applied with the new
+`just fix-packed-storage --addrs 0x559a70 --apply`, whose check is arithmetic (purge vs
+`4 * stack parameters`) and needs no listing; the other four open semantic-gate rows were checked
+with it and are consistent. Persisted with `just export-project`.
+
 ## 2026-07-30: curate six missing original-side prototypes (semantic gate)
 
 `just semantic-gate` was red on six protected rows because the *original* side of

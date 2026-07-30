@@ -8,7 +8,6 @@
 class TRearFloatWindow : public TFloatWindow {
 public:
   DECLARE_DYNCREATE(TRearFloatWindow)
-  virtual ~TRearFloatWindow() override; // slot 0x01 (scalar deleting destructor)
   virtual char HandleMouseDown(const CPoint& point, TToolboxEvent* event,
                                CPoint origin) override; // slot 0x46 0x4f3960
 

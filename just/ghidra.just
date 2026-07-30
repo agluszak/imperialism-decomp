@@ -394,6 +394,17 @@ project-divergent-signatures *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   uv run python -m tools.ghidra.apply_source_signatures --project-divergent {{args}}
 
+# MUTATES: Ghidra DB (with --apply). The inverse of project-packed-signatures: clears custom
+# PACKED parameter storage on a frame whose own stack purge says the parameters each had a dword
+# slot. Wrong packing is quiet -- the prototype still prints plausibly, but the decompiler splices
+# two parameters into one `piece(a1, a0)` read, which surfaces as a semantic-gate call_contract
+# mismatch on the CALLER. Dry-run by default.
+[private]
+[group('ghidra-db')]
+fix-packed-storage *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.fix_packed_storage {{args}}
+
 # MUTATES: Ghidra DB (with --apply). Recovers PACKED sub-dword parameter frames (two
 # shorts in one dword, byte+short, ...) via CUSTOM_STORAGE: MSVC500 packs adjacent
 # sub-dword args, which DYNAMIC_STORAGE dword-aligns and leaves an unbound in_stack
