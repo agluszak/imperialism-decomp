@@ -1,201 +1,60 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
-#include "RuntimeUiDriver.h"
-#include "screens/StrategicMapDriver.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "screens/StrategicMapScreen.h"
+#include "screens/TransportScreen.h"
 
-#include "game/gfx/TDisplayMgr.h"
-#include "game/globals/global_types.h"
-#include "game/globals/shared_globals.h"
-#include "game/globals/ui_core_globals.h"
-#include "game/globals/ui_widgets_globals.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/turn_event_codes.h"
-#include "game/ui_core/TStaticText.h"
-#include "game/ui_core/TPicture.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TSimMgr.h"
-#include "game/ui_tags_common.h"
-#include "game/ui_widgets/TTransportPicture.h"
-
-#include <string.h>
-#include "game/globals/view_registries.h"
 
 namespace {
 
-class TransportScreenTestCase : public RandomGameScenario {
-public:
-  TransportScreenTestCase() : phase(kActivateTransportScreen) {}
+// The commodity row this scenario reads the hover help of. Which one does not matter -- the help
+// text is built the same way for every row -- so the first is enough.
+const short kFirstCommodityRow = 0;
 
-  int DifficultyLevel() const override {
-    return 1;
-  }
+// The transport ledger: open it from the map, check it presented itself, and leave.
+//
+// Everything asserted here is presentation the ledger builds once and never revisits: its column
+// headings, the toolbar button's selected state, a commodity row's substituted hover help, and the
+// capacity readout's value and placement. Each of those has been a regression at some point.
+class TransportScreenTestCase : public EasyMapScriptScenario {
+public:
   bool RecordsGameFlow() const override {
     return true;
   }
   bool RequiresScenarioUiSnapshot() const override {
     return true;
   }
-
-  void OnMapReadyWithoutCapitalSelection() override {
-    phase = kActivateTransportScreen;
-    EnterScenarioStep("activating_transport_screen",
-                      "easy_combined_map_ready_for_transport_screen");
-    ContinueAfterAction();
-  }
-
-  void AdvanceScenario() override {
-    if (phase == kActivateTransportScreen) {
-      ActivateTransportScreen();
-    } else if (phase == kWaitForTransportScreen) {
-      WaitForTransportScreen();
-    } else if (phase == kReturnToMap) {
-      ReturnToMap();
-    } else {
-      WaitForMap();
-    }
-  }
-
   void ObserveScenarioUiTree(int eventCode, TView* root) override {
     if (eventCode == kTurnEventTransport) {
       CaptureScenarioUiSnapshot(eventCode, root);
     }
   }
 
-private:
-  enum Phase { kActivateTransportScreen, kWaitForTransportScreen, kReturnToMap, kWaitForMap };
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-  void ActivateTransportScreen() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("\"combined map was not idle before opening transport\"");
-      return;
-    }
-    phase = kWaitForTransportScreen;
-    EnterScenarioStep("waiting_for_transport_screen", "activate_transport_toolbar_control");
-    StrategicMapDriver map(mainView);
-    if (!map.ActivateTransport()) {
-      FailScenario("\"transport toolbar control is disabled\"");
-      return;
-    }
-    Await(kObservePaintCompleted | kObserveGameStateChanged,
-          "\"transport screen did not complete its dynamic draw\"");
+    // The ledger's root is a plain TPicture, so its identity comes from the turn event and its own
+    // headings rather than from a view class -- which is what TransportScreen::IsCurrent checks.
+    RT_ACTIVATE_AND_AWAIT("open the transport ledger", StrategicMap().OpenTransport(),
+                          TransportScreen::IsCurrent(), kObserveUiStateChanged);
+
+    RT_REQUIRE(Transport().HasLedgerHeadings());
+    RT_REQUIRE(Transport().ToolbarIconIsSelected());
+    RT_REQUIRE(Transport().CommodityHelpIsSubstituted(kFirstCommodityRow));
+    RT_REQUIRE(Transport().CapacityLabelMatchesSplit());
+    RT_REQUIRE(Transport().CapacityLabelHasRetailGeometry());
+    RT_AWAIT(HasScenarioUiSnapshot(), kObserveUiStateChanged);
+
+    RT_CLOSE_TO_MAP("leave the transport ledger", Transport().Close());
+    RT_PASS();
+
+    RT_END();
   }
-
-  void WaitForTransportScreen() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventTransport || mainView == 0 ||
-        mainView->ResolveControlByTag(kControlTagTitL) == 0) {
-      AwaitUiChange("\"transport toolbar action did not activate the transport ledger\"");
-      return;
-    }
-    if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
-      FailScenario("\"transport toolbar action opened an unexpected modal\"");
-      return;
-    }
-
-    TPicture* transport =
-        static_cast<TPicture*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagTran));
-    if (transport == 0 || transport->glyphBase84 != 0x24f0 || transport->controlState64 != 0) {
-      FailScenario("\"transport toolbar icon did not enter its selected presentation state\"");
-      return;
-    }
-
-    TStaticText* leftTitle =
-        static_cast<TStaticText*>(mainView->ResolveControlByTag(kControlTagTitL));
-    TStaticText* rightTitle =
-        static_cast<TStaticText*>(mainView->ResolveControlByTag(kControlTagTitR));
-    CString expectedLeft;
-    CString expectedRight;
-    g_pSimMgr->GetString(0x2735, 5, &expectedLeft);
-    g_pSimMgr->GetString(0x2735, 6, &expectedRight);
-    if (leftTitle == 0 || rightTitle == 0 || leftTitle->text == 0 || rightTitle->text == 0 ||
-        *leftTitle->text != expectedLeft || *rightTitle->text != expectedRight) {
-      FailScenario("\"transport and ledger headings were not populated\"");
-      return;
-    }
-    TView* commodity = mainView->ResolveControlByTag(GetTradeSummarySelectionTagByIndex(0));
-    const char* commodityHelp =
-        commodity == 0 ? 0 : static_cast<LPCSTR>(commodity->hoverHelpText58);
-    if (commodityHelp == 0 || strstr(commodityHelp, "Warehouse:") == 0 ||
-        strstr(commodityHelp, "Needed:") == 0 || strchr(commodityHelp, '[') != 0) {
-      FailScenario("\"transport commodity help has corrupt Warehouse or Needed text\"");
-      return;
-    }
-    TTransportPicture* total =
-        static_cast<TTransportPicture*>(mainView->ResolveControlByTag(kControlTagTota));
-    TStaticText* amount =
-        total == 0 ? 0 : static_cast<TStaticText*>(total->ResolveControlByTag(kControlTagText));
-    CString currentAmount;
-    CString capacityAmount;
-    CString expectedAmount;
-    if (total != 0) {
-      currentAmount.Format("%d", static_cast<int>(total->splitValue94));
-      capacityAmount.Format("%d", static_cast<int>(total->splitValue96));
-      expectedAmount = currentAmount + "  /  " + capacityAmount;
-    }
-    if (amount == 0 || amount->text == 0) {
-      FailScenario("\"transport capacity amount label is missing\"");
-      return;
-    }
-    if (*amount->text != expectedAmount) {
-      FailScenario("\"transport capacity amount label has the wrong value\"");
-      return;
-    }
-    if (amount->ownerLocalX != 0xa2 || amount->ownerLocalY != 0x14 ||
-        amount->frameWidth34 != 0x3c || amount->frameHeight38 != 0xb) {
-      FailScenario("\"transport capacity amount label has the wrong geometry\"");
-      return;
-    }
-    if (!HasScenarioUiSnapshot()) {
-      AwaitUiChange("\"transport UI tree was not captured\"");
-      return;
-    }
-    phase = kReturnToMap;
-    EnterScenarioStep("returning_from_transport", "activate_transport_end_control");
-    ContinueAfterAction();
-  }
-
-  void ReturnToMap() {
-    TView* mainView = CurrentMainView();
-    if (mainView == 0 || mainView->ResolveControlByTag(kControlTagTitL) == 0) {
-      FailScenario("\"transport ledger disappeared before back navigation\"");
-      return;
-    }
-    phase = kWaitForMap;
-    EnterScenarioStep("waiting_for_map_after_transport", "activate_transport_end_control");
-    if (!RuntimeUiDriver::Activate(
-            mainView, RuntimeControlSelector(kControlTagEnd, RUNTIME_CLASS(TControl)))) {
-      FailScenario("\"transport back control is missing or cannot receive native input\"");
-      return;
-    }
-    ContinueAfterAction();
-  }
-
-  void WaitForMap() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"transport back control did not restore the strategic map\"");
-      return;
-    }
-    if (!g_ModalViewStack.IsEmpty()) {
-      RecordUnexpectedModalView(g_ModalViewStack.GetHead());
-      FailScenario("\"transport back navigation left an unexpected modal\"");
-      return;
-    }
-    Pass();
-  }
-
-  Phase phase;
 };
-
-TransportScreenTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* TransportScreenTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(TransportScreenTestCase, TransportScreenTest)

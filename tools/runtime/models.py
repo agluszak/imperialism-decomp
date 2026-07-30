@@ -52,6 +52,12 @@ class HostResult:
     run_id: str | None = None
     seed: int | None = None
     timeout_seconds: float | None = None
+    # What the scenario was waiting for when the run ended, from the heartbeat's `await`
+    # object. A stall used to report only phase and action, which says that nothing
+    # happened but not what the scenario expected to happen.
+    awaiting: str | None = None
+    awaiting_source: str | None = None
+    awaiting_observations: str | None = None
 
     def to_json(self) -> JsonObject:
         result: JsonObject = {
@@ -63,6 +69,9 @@ class HostResult:
             "phase_seconds": dict(self.phase_seconds),
             "phase": self.phase,
             "action": self.action,
+            "awaiting": self.awaiting,
+            "awaiting_source": self.awaiting_source,
+            "awaiting_observations": self.awaiting_observations,
             "wine_exit": self.wine_exit,
             "proxy_pid": self.proxy_pid,
             "proxy_exit_code": self.proxy_exit_code,

@@ -71,6 +71,7 @@ void RuntimeScenario::Start(RuntimeContext& context) {
     return;
   }
   run->EnterPhase("waiting_for_managers", "wait_for_managers");
+  AwaitAt(kObserveApplicationIdle, "the game to finish initializing its managers", 0, 0);
 }
 
 void RuntimeScenario::Observe(RuntimeContext&, unsigned int observationKinds) {
@@ -89,7 +90,7 @@ void RuntimeScenario::Observe(RuntimeContext&, unsigned int observationKinds) {
     return;
   }
   if (run->SpinRequestedForCurrentPhase()) {
-    awaitedObservations = kObserveApplicationIdle;
+    AwaitAt(kObserveApplicationIdle, "IMPERIALISM_RUNTIME_TEST_SPIN to release this phase", 0, 0);
     return;
   }
 
@@ -105,7 +106,9 @@ void RuntimeScenario::AdvanceDriver(unsigned int observationKinds) {
     return;
   }
   advancing = true;
+  // The previous wait has been satisfied; whatever runs below re-arms, or terminates.
   awaitedObservations = kObserveNone;
+  run->AwaitState().Clear();
   if (driverState == kWaitingForManagers) {
     AdvanceWaitingForManagers();
   } else if (driverState == kRunningScenario) {
@@ -125,17 +128,17 @@ void RuntimeScenario::AdvanceDriver(unsigned int observationKinds) {
 
 void RuntimeScenario::AdvanceWaitingForManagers() {
   if (!RequiredManagersAreInitialized()) {
-    Await(kObserveApplicationIdle, "\"manager initialization has not completed\"");
+    Await(kObserveApplicationIdle, "manager initialization has not completed");
     return;
   }
   if (RequiresMainWindow()) {
     if (GetMainViewHostFromActiveThread() == 0) {
-      Await(kObserveApplicationIdle, "\"main view host initialization has not completed\"");
+      Await(kObserveApplicationIdle, "main view host initialization has not completed");
       return;
     }
     CWnd* mainWindow = AfxGetThread()->GetMainWnd();
     if (mainWindow == 0 || mainWindow->m_hWnd == 0) {
-      Await(kObserveApplicationIdle, "\"main window initialization has not completed\"");
+      Await(kObserveApplicationIdle, "main window initialization has not completed");
       return;
     }
     run->SetMainWindowHandle(mainWindow->m_hWnd);
@@ -280,6 +283,21 @@ void RuntimeScenario::FailScenario(const char* failure) {
   Finish("failed", failure);
 }
 
+void RuntimeScenario::FailScenarioText(const char* failure) {
+  CString failureJson;
+  RuntimeJson::AppendString(failureJson, failure != 0 ? failure : "");
+  FailScenario(static_cast<LPCSTR>(failureJson));
+}
+
+void RuntimeScenario::FailScenarioTextAs(const char* assertionId, const char* failure) {
+  CString failureJson;
+  RuntimeJson::AppendString(failureJson, failure != 0 ? failure : "");
+  run->RecordAssertion(assertionId, static_cast<LPCSTR>(failureJson), true);
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure,
+                                static_cast<LPCSTR>(failureJson), 0);
+  Finish("failed", static_cast<LPCSTR>(failureJson));
+}
+
 bool RuntimeScenario::Require(const char* assertionId, bool condition, const char* failure) {
   if (condition) {
     return true;
@@ -307,17 +325,24 @@ bool RuntimeScenario::FinishChecks() {
   return true;
 }
 
-void RuntimeScenario::AwaitUiChange(const char* failure) {
-  Await(kObserveUiStateChanged, failure);
+void RuntimeScenario::AwaitUiChange(const char* description) {
+  Await(kObserveUiStateChanged, description);
 }
 
-void RuntimeScenario::Await(unsigned int observationKinds, const char* failure) {
-  (void)failure;
+void RuntimeScenario::Await(unsigned int observationKinds, const char* description) {
+  AwaitAt(observationKinds, description, 0, 0);
+}
+
+void RuntimeScenario::AwaitAt(unsigned int observationKinds, const char* expression,
+                              const char* file, int line) {
   awaitedObservations = observationKinds;
+  run->AwaitState().Arm(observationKinds, expression, file, line);
 }
 
 void RuntimeScenario::ContinueAfterAction() {
-  awaitedObservations = kObserveApplicationIdle;
+  // Named so a stall immediately after an action reports the action rather than an empty
+  // wait; run->LastAction() says which action it was.
+  AwaitAt(kObserveApplicationIdle, "the application to go idle after the last action", 0, 0);
 }
 
 void RuntimeScenario::EnterScenarioStep(const char* phaseName, const char* action) {
@@ -360,11 +385,11 @@ bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
   }
   TView* mainView = RuntimeMainView();
   if (!RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TNewspaperView))) {
-    AwaitUiChange("\"event 0x2103 has not constructed the newspaper view yet\"");
+    AwaitUiChange("event 0x2103 has not constructed the newspaper view yet");
     return true;
   }
   if (run->NewspaperAdvanced()) {
-    AwaitUiChange("\"newspaper end action did not advance to the combined map\"");
+    AwaitUiChange("newspaper end action did not advance to the combined map");
     return true;
   }
   if (!BeforeInitialNewspaperExit()) {
@@ -373,7 +398,7 @@ bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
   RuntimeControlSelector endSelector(kControlTagEnd, RUNTIME_CLASS(TControl));
   if (RuntimeUiDriver::RequireControl(mainView, endSelector, 0) == 0) {
     Await(kObservePaintCompleted | kObserveInvalidationRequested | kObserveGameStateChanged,
-          "\"newspaper controls are not actionable yet\"");
+          "newspaper controls are not actionable yet");
     return true;
   }
   CString failure;
@@ -408,6 +433,11 @@ bool RuntimeScenario::HasScenarioUiSnapshot() const {
 
 void RuntimeScenario::CaptureScenarioUiSnapshot(int eventCode, TView* root) {
   run->ScenarioUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+}
+
+void RuntimeScenario::CaptureCurrentScreenSnapshot() {
+  CaptureScenarioUiSnapshot(g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1,
+                            RuntimeMainView());
 }
 
 bool RuntimeScenario::HoldAtScenarioScreen(const char* screenName) const {

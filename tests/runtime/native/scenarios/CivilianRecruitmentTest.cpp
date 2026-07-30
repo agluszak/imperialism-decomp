@@ -1,6 +1,10 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
-#include "RuntimeUiDriver.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "probes/CivilianProbe.h"
+#include "screens/EngineerDialogScreen.h"
+#include "screens/ModalScreen.h"
+#include "screens/StrategicMapScreen.h"
 
 #include "decomp_types.h"
 
@@ -19,7 +23,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 #include "game/globals/ui_widgets_globals.h"
-#include "game/globals/view_registries.h"
 #include "game/gfx/CDib.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -30,18 +33,33 @@
 #include "game/pointer_representation.h"
 #include "game/strategic_terrain.h"
 #include "game/tactical_ui/TTechMgr.h"
-#include "game/ui_core/TSortedList.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_screens/TUpDownPictureButton.h"
-#include "game/ui_tags_city.h"
 #include "game/ui_widgets/TCivDescription.h"
 #include "game/ui_widgets/TCivToolbar.h"
-#include "game/ui_widgets/TDeluxeText.h"
 
 namespace {
+
+// Every draw this scenario forces has to land on the primary render surface: the map's own Draw
+// paths assume a GWorld is set, and drawing outside one reaches a null device context. The original
+// scenario restored the previous surface by hand at each early return, which is exactly the
+// bookkeeping a guard removes.
+class PrimarySurfaceGuard {
+public:
+  PrimarySurfaceGuard() : savedSurface(0), savedFlags(0) {
+    GetGWorld(&savedSurface, &savedFlags);
+    SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
+  }
+  ~PrimarySurfaceGuard() {
+    SetGWorld(savedSurface, savedFlags);
+  }
+
+private:
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedFlags;
+};
 
 bool CursorDrawsVisiblePixels(HCURSOR cursor) {
   BITMAPINFO bitmapInfo;
@@ -123,19 +141,6 @@ bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHe
   return true;
 }
 
-bool BitmapHasPixelVariation(CDib* bitmap) {
-  if (bitmap == 0 || bitmap->m_dibBits == 0 || bitmap->m_pixelBytes <= 1) {
-    return false;
-  }
-  unsigned char* pixels = static_cast<unsigned char*>(bitmap->m_dibBits);
-  for (int index = 1; index < bitmap->m_pixelBytes; ++index) {
-    if (pixels[index] != pixels[0]) {
-      return true;
-    }
-  }
-  return false;
-}
-
 bool CompletedFarmerImprovementChangesTilePixels(TMapDialog* mapDialog, short tileIndex,
                                                  unsigned char initialClass,
                                                  unsigned char completedClass) {
@@ -176,19 +181,23 @@ bool CompletedFarmerImprovementChangesTilePixels(TMapDialog* mapDialog, short ti
   return memcmp(before, after, sizeof(before)) != 0;
 }
 
-class CivilianRecruitmentTestCase : public RandomGameScenario {
+// Civilian work, from the city order that produces a unit to the map pixels its finished work
+// changes.
+//
+// Three civilians in sequence: a prospector (a successful survey, then an unsuccessful one), a
+// farmer (a resource improvement whose completion has to change the tile's pixels), and an engineer
+// (a depot, reached through the construction dialog that runs its own modal loop).
+//
+// Most of this file is deliberately not screen work: it reads terrain records, drives real model
+// completion, and compares captured pixels. Those are the assertions -- the script is the order
+// they happen in.
+class CivilianRecruitmentTestCase : public EasyMapScriptScenario {
 public:
   CivilianRecruitmentTestCase()
       : spawnedCivilian(0), targetHillTile(-1), targetSeaTile(-1), targetSurveyMissTile(-1),
-        farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), orderIssued(false),
-        completionIssued(false), completionVerified(false), surveyMissOrderIssued(false),
-        surveyMissCompletionIssued(false), surveyMissCompletionVerified(false),
-        farmerOrderIssued(false), farmerCompletionIssued(false), farmerCompletionVerified(false),
-        engineer(0), engineerActionIssued(false), engineerDialogObserved(false),
+        farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), engineer(0),
         initialAnimationFrame(0), initialAnimationTick(0) {}
-  int DifficultyLevel() const override {
-    return 1;
-  }
+
   bool RecordsGameFlow() const override {
     return true;
   }
@@ -196,131 +205,149 @@ public:
     return true;
   }
 
-  void OnMapReadyWithoutCapitalSelection() override {
-    spawnedCivilian = 0;
-    orderIssued = false;
-    EnterScenarioStep("recruiting_civilian", "produce_and_select_recruited_civilian");
-    ContinueAfterAction();
-  }
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-  void AdvanceScenario() override {
-    if (engineerActionIssued) {
-      VerifyEngineerDialogAndCancel();
-      return;
-    }
-    if (spawnedCivilian == 0) {
-      RecruitCivilian();
-      return;
-    }
+    RT_AWAIT(StrategicMapScreen::IsCurrent(), kObserveUiStateChanged);
 
-    if (!orderIssued) {
-      VerifyProspectorOrdersAndCursors();
-      return;
-    }
+    // --- A prospector, and the cursors that say where it may work. ---
+    RT_ACTION("recruit a prospector", RecruitProspector());
+    RT_AWAIT(spawnedCivilian->unitOrder == kUnitOrderIdle, kObserveUiStateChanged);
+    RT_ACTION("cycle the civilian legend's targets", VerifyLegendCameraCycling());
+    RT_ACTION("verify the prospector's cursors and order click", VerifyCursorsAndOrderClick());
 
-    if (completionIssued) {
-      if (!completionVerified) {
-        VerifyCompletedProspectorSurveyMark();
-      } else if (!surveyMissOrderIssued) {
-        IssueUnsuccessfulProspectorSurvey();
-      } else if (!surveyMissCompletionIssued) {
-        CompleteUnsuccessfulProspectorSurvey();
-      } else if (!surveyMissCompletionVerified) {
-        VerifyUnsuccessfulProspectorSurveyMark();
-      } else if (!farmerOrderIssued) {
-        VerifyFarmerWorkableTileSelection();
-      } else if (!farmerCompletionIssued) {
-        CompleteFarmerImprovement();
-      } else if (!farmerCompletionVerified) {
-        VerifyFarmerImprovementVisual();
-      } else {
-        OpenEngineerConstructionDialogThroughMap();
-      }
-      return;
-    }
+    RT_ACTION("let the animator run", PulseAnimator());
+    RT_ACTION("verify the ordered prospector stays visible",
+              VerifyOrderedProspectorIsInspectable());
+    RT_ACTION("complete the survey", CompleteProspectorOrder());
+    RT_ACTION("verify the survey mark reached the renderer", VerifyCompletedSurveyMark());
 
-    g_pUiAnimator->DoIdle(1);
-    VerifyOrderedProspectorRemainsVisibleAndInspectable();
+    // --- The same prospector on a tile with nothing to find. ---
+    RT_ACTION("order a survey that will find nothing", IssueUnsuccessfulSurvey());
+    RT_ACTION("complete the unsuccessful survey", CompleteUnsuccessfulSurvey());
+    RT_ACTION("verify the miss mark reached the renderer", VerifyUnsuccessfulSurveyMark());
+
+    // --- A farmer, whose finished improvement must change the tile. ---
+    RT_ACTION("recruit a farmer and order an improvement", OrderFarmerImprovement());
+    // An improvement takes as many turns as the order says; the original scenario re-entered its
+    // completion phase until the farmer went idle, and the loop is that, said out loud.
+    while (farmer->unitOrder != kUnitOrderIdle) {
+      RT_ACTION("advance the farmer's improvement", AdvanceFarmerImprovement());
+    }
+    RT_ACTION("verify the improvement changed the tile", VerifyFarmerImprovementVisual());
+
+    // --- An engineer, through the construction dialog and on to a depot. ---
+    RT_ACTION("open the engineer's construction dialog", OpenEngineerConstructionDialog());
+    // The dialog ran its own modal loop and the pre-armed cancel closed it; a modal still up means
+    // that loop never unwound.
+    RT_REQUIRE(!ModalScreen::AnyPresent());
+    RT_ACTION("build the depot and check the province chain", VerifyDepotAndMilitaryChain());
+
+    CaptureCurrentScreenSnapshot();
+    RT_REQUIRE(HasScenarioUiSnapshot());
+    RT_PASS();
+
+    RT_END();
   }
 
 private:
   enum { kGlobalMapTileCount = 0x1950 };
+  enum { kProvinceRecordCount = 0x180 };
+  // Every turn-event cursor resource, which the classifier indexes into.
+  enum { kTurnEventCursorCount = 0x36 };
+  // The cursors this scenario expects the classifier to choose: prospectable land, and water.
+  enum { kProspectableCursor = 1001, kProhibitedWaterCursor = 1008 };
+  // What the map reports for a tile the selected civilian is already working.
+  enum { kOrderedTileReportCursor = 0x3f3 };
 
-  void RecruitCivilian() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
-      AwaitUiChange("\"combined map was not idle before civilian recruitment\"");
-      return;
+  short ActiveNation() const {
+    return g_pSimMgr->GetActiveNationId();
+  }
+
+  TGreatPower* Player() const {
+    return g_apNationStates[ActiveNation()];
+  }
+
+  TMapUberPicture* MapView() const {
+    return StrategicMap().View();
+  }
+
+  TMapDialog* MapDialog() const {
+    return StrategicMap().Dialog();
+  }
+
+  RuntimeActionResult PulseAnimator() {
+    // The ordered civilian's sprite only advances while the animator gets idle time.
+    g_pUiAnimator->DoIdle(1);
+    return RuntimeActionResult::Success();
+  }
+
+  // --- Producing a civilian through a real city order. ---
+
+  RuntimeActionResult ProduceCivilian(short civilianKind, TCivUnit** outCivilian) {
+    TGreatPower* nation = Player();
+    if (nation == 0 || nation->city == 0) {
+      return RuntimeActionResult::Failure("the active nation has no city to recruit from");
     }
-
-    short nationSlot = g_pSimMgr->GetActiveNationId();
-    TGreatPower* nation = g_apNationStates[nationSlot];
-    if (nation == 0 || nation->city == 0 || nation->trackedObjectList == 0) {
-      FailScenario("\"active nation has no civilian recruitment state\"");
-      return;
-    }
-
-    int oldCount = nation->trackedObjectList->GetCount();
-    int oldPersistentUnitId = g_pSimMgr->field_64;
+    const int previousCount = CivilianProbe::CivilianCount(ActiveNation());
+    const int previousUnitId = g_pSimMgr->field_64;
     TUnitOrder recruitOrder;
-    recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitProspector), 0, 0, -1,
-                            0, 0, kLowSkillWorkforceMode, 0);
+    recruitOrder.IUnitOrder(nation->city, civilianKind, 0, 0, -1, 0, 0, kLowSkillWorkforceMode, 0);
     recruitOrder.quantity = 1;
     recruitOrder.Produce();
 
-    if (nation->trackedObjectList->GetCount() != oldCount + 1) {
-      FailScenario("\"civilian production did not register exactly one recruit\"");
-      return;
+    if (CivilianProbe::CivilianCount(ActiveNation()) != previousCount + 1) {
+      return RuntimeActionResult::Failure(
+          "civilian production did not register exactly one recruit");
     }
-    if (g_pSimMgr->field_64 != oldPersistentUnitId + 1) {
-      FailScenario("\"civilian production did not allocate exactly one persistent unit ID\"");
-      return;
+    if (g_pSimMgr->field_64 != previousUnitId + 1) {
+      return RuntimeActionResult::Failure(
+          "civilian production did not allocate exactly one persistent unit id");
     }
-    spawnedCivilian = 0;
-    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
-      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
-      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
-        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
-        if (civilian->persistentUnitId20 == g_pSimMgr->field_64) {
-          spawnedCivilian = civilian;
-          break;
-        }
-      }
+    *outCivilian = CivilianProbe::CivilianWithPersistentId(ActiveNation(), g_pSimMgr->field_64);
+    if (*outCivilian == 0) {
+      return RuntimeActionResult::Failure("the produced civilian is not in the nation's roster");
     }
-    if (spawnedCivilian == 0 || spawnedCivilian->tileIndex06 < 0 ||
-        spawnedCivilian->tileIndex06 >= kGlobalMapTileCount) {
-      FailScenario("\"newly allocated civilian has an invalid strategic-map tile\"");
-      return;
-    }
+    return RuntimeActionResult::Success();
+  }
 
-    signed char ownerTag =
+  RuntimeActionResult RecruitProspector() {
+    RuntimeActionResult produced =
+        ProduceCivilian(EncodeCivilianUnitKind(kCivilianUnitProspector), &spawnedCivilian);
+    if (!produced.Succeeded()) {
+      return produced;
+    }
+    if (spawnedCivilian->tileIndex06 < 0 || spawnedCivilian->tileIndex06 >= kGlobalMapTileCount) {
+      return RuntimeActionResult::Failure(
+          "the newly allocated civilian has an invalid strategic-map tile");
+    }
+    const signed char ownerTag =
         g_pGlobalMapState->terrainStateTable[spawnedCivilian->tileIndex06].ownerNationTag04;
     if (ownerTag < 0 || ownerTag >= kTerrainTypeDescriptorTableCount ||
         g_apTerrainTypeDescriptorTable[ownerTag] == 0) {
-      FailScenario("\"recruited civilian tile has no terrain-owner descriptor\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the recruited civilian's tile has no terrain-owner descriptor");
     }
-
-    if (spawnedCivilian->ownerNationSlot18 != nationSlot) {
-      FailScenario("\"produced civilian is not owned by the active nation\"");
-      return;
+    if (spawnedCivilian->ownerNationSlot18 != ActiveNation()) {
+      return RuntimeActionResult::Failure(
+          "the produced civilian is not owned by the active nation");
     }
     g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
+
     targetHillTile = FindProspectorTarget(kStrategicTerrainHills, true);
     targetSeaTile = FindProspectorTarget(kStrategicTerrainWater, false);
     if (targetHillTile == -1 || targetSeaTile == -1) {
-      char failure[160];
-      wsprintfA(failure, "\"prospector samples missing: eligible hill=%d prohibited sea=%d\"",
-                targetHillTile, targetSeaTile);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("prospector samples missing: eligible hill=%d prohibited sea=%d",
+                    targetHillTile, targetSeaTile);
+      return RuntimeActionResult::Failure(detail);
     }
-    TMapUberPicture* mapView = static_cast<TMapUberPicture*>(mainView);
-    mapView->CenterOn(targetHillTile);
-    EnterScenarioStep("ordering_recruited_civilian",
-                      "selected_prospector_with_real_terrain_eligibility");
-    VerifyProspectorOrdersAndCursors();
+    if (MapView() == 0) {
+      return RuntimeActionResult::Failure("the strategic map is not showing");
+    }
+    MapView()->CenterOn(targetHillTile);
+    return RuntimeActionResult::Success();
   }
 
   short FindProspectorTarget(StrategicTerrainKind terrainKind, bool mustBeEligible) {
@@ -353,6 +380,8 @@ private:
     return -1;
   }
 
+  // --- Cursors and the order click. ---
+
   bool FindVisiblePointForTile(TMapDialog* mapDialog, short targetTile, CPoint* outPoint,
                                short* outBand) {
     for (int y = 1; y < mapDialog->frameHeight38; y += 2) {
@@ -373,26 +402,28 @@ private:
     return false;
   }
 
-  bool VerifyCursorForTile(TMapDialog* mapDialog, short targetTile, short expectedToken,
-                           CPoint* outPoint) {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    mapView->CenterOn(targetTile);
+  RuntimeActionResult VerifyCursorForTile(TMapDialog* mapDialog, short targetTile,
+                                          short expectedToken, CPoint* outPoint) {
+    MapView()->CenterOn(targetTile);
 
     CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
     mapDialog->Draw(&mapBounds);
 
     short band = 0;
     if (!FindVisiblePointForTile(mapDialog, targetTile, outPoint, &band)) {
-      FailScenario("\"centered prospector target has no visible map hit point\"");
-      return false;
+      return RuntimeActionResult::Failure(
+          "the centred prospector target has no visible map hit point");
     }
 
-    unsigned short classifiedToken =
+    const unsigned short classifiedToken =
         g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(targetTile,
                                                                                        band);
     if (classifiedToken != expectedToken) {
-      FailScenario("\"prospector cursor classifier disagrees with terrain eligibility\"");
-      return false;
+      CString detail;
+      detail.Format("the cursor classifier chose %d for tile %d, not the expected %d",
+                    static_cast<int>(classifiedToken), static_cast<int>(targetTile),
+                    static_cast<int>(expectedToken));
+      return RuntimeActionResult::Failure(detail);
     }
 
     mapDialog->activeRegionBand = -1;
@@ -401,18 +432,16 @@ private:
     SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
                  MAKELPARAM(hostPoint.x, hostPoint.y));
     if (mapDialog->cursorId4e != expectedToken) {
-      FailScenario("\"native prospector hover did not apply the classified cursor\"");
-      return false;
+      return RuntimeActionResult::Failure("a native hover did not apply the classified cursor");
     }
 
     HCURSOR expectedCursor =
         g_pViewMgr->turnEventCursors[expectedToken - TViewMgr::kCursorResourceIdBase];
     if (expectedCursor == 0 || GetCursor() != expectedCursor ||
         !CursorDrawsVisiblePixels(expectedCursor)) {
-      FailScenario("\"classified prospector cursor is not visibly active\"");
-      return false;
+      return RuntimeActionResult::Failure("the classified cursor is not visibly active");
     }
-    return true;
+    return RuntimeActionResult::Success();
   }
 
   bool AnimationFrameBufferHasPixels(TAnimation* animation) {
@@ -517,16 +546,14 @@ private:
     return restored;
   }
 
-  TAnimation* RenderAndResolveOrderedProspectorAnimation(TMapUberPicture* mapView,
-                                                         TMapDialog* mapDialog) {
-    mapView->CenterOn(targetHillTile);
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-    mapDialog->Draw(&mapBounds);
-    SetGWorld(savedSurface, savedSurfaceFlags);
+  TAnimation* RenderAndResolveOrderedProspectorAnimation() {
+    TMapDialog* mapDialog = MapDialog();
+    MapView()->CenterOn(targetHillTile);
+    {
+      PrimarySurfaceGuard primarySurface;
+      CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+      mapDialog->Draw(&mapBounds);
+    }
     return g_pUiAnimator->FindRegisteredAnimationByTag(PointerAddressLong32(spawnedCivilian));
   }
 
@@ -555,26 +582,28 @@ private:
     return left.x == right.x && left.y == right.y;
   }
 
-  bool VerifyProspectorLegendCameraCycling(TMapUberPicture* mapView, TMapDialog* mapDialog) {
-    TCivToolbar* toolbar = static_cast<TCivToolbar*>(mapView->categoryPages[0]);
-    TCivDescription* description =
-        toolbar != 0 ? static_cast<TCivDescription*>(toolbar->ResolveControlByTag(kControlTagBack))
-                     : 0;
+  // Clicking a legend slot walks the camera through that profile's target tiles in order and wraps
+  // back to the first once they are exhausted.
+  RuntimeActionResult VerifyLegendCameraCycling() {
+    TMapDialog* mapDialog = MapDialog();
+    TCivDescription* description = StrategicMap().CivilianLegend();
+    if (mapDialog == 0) {
+      return RuntimeActionResult::Failure("the strategic map has no map dialog");
+    }
     if (description == 0 ||
         description->selectedCivilianClass != EncodeCivilianUnitKind(kCivilianUnitProspector)) {
-      FailScenario("\"selected prospector has no civilian legend control\"");
-      return false;
+      return RuntimeActionResult::Failure("the selected prospector has no civilian legend control");
     }
 
+    PrimarySurfaceGuard primarySurface;
     CRect descriptionBounds(0, 0, description->frameWidth34, description->frameHeight38);
     description->Draw(&descriptionBounds);
 
     int selectedColumn = -1;
     short selectedProfile = -1;
     int candidateCount = 0;
-    int visibleColumnCount =
-        g_pTechMgr->orderCapRows277[g_pSimMgr->GetActiveNationId()].techStatusByTechId[4] == 2 ? 5
-                                                                                               : 2;
+    const int visibleColumnCount =
+        g_pTechMgr->orderCapRows277[ActiveNation()].techStatusByTechId[4] == 2 ? 5 : 2;
     for (int column = 0; column < visibleColumnCount; ++column) {
       short profile = g_anTargetTileProfileByCivilianClassAndSlot[5 + column];
       RECT* legendRect = &description->legendRects[profile];
@@ -590,16 +619,15 @@ private:
     }
     if (selectedColumn == -1 ||
         description->targetTileCountsBySlot[selectedColumn] != candidateCount) {
-      char failure[192];
-      wsprintfA(failure,
-                "\"prospector legend target mismatch: column=%d profile=%d candidates=%d "
-                "shown=%d counter=%d owner=%d\"",
-                selectedColumn, selectedProfile, candidateCount,
-                selectedColumn < 0 ? -1 : description->targetTileCountsBySlot[selectedColumn],
-                selectedProfile < 0 ? -1 : g_awCivilianLegendSelectionCountsBySlot[selectedProfile],
-                description->ownerNationId);
-      FailScenario(failure);
-      return false;
+      CString detail;
+      detail.Format("legend target mismatch: column=%d profile=%d candidates=%d shown=%d "
+                    "counter=%d owner=%d",
+                    selectedColumn, selectedProfile, candidateCount,
+                    selectedColumn < 0 ? -1 : description->targetTileCountsBySlot[selectedColumn],
+                    selectedProfile < 0 ? -1
+                                        : g_awCivilianLegendSelectionCountsBySlot[selectedProfile],
+                    description->ownerNationId);
+      return RuntimeActionResult::Failure(detail);
     }
 
     short targetTiles[kGlobalMapTileCount];
@@ -613,206 +641,177 @@ private:
 
     int centeredClickCount = 0;
     bool observedCounterWrap = false;
-    int clickLimit = candidateCount + 3;
+    const int clickLimit = candidateCount + 3;
     for (int clickOrdinal = 0; clickOrdinal < clickLimit && centeredClickCount < candidateCount + 1;
          ++clickOrdinal) {
       unsigned short counterBefore = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
       CPoint originBefore = mapDialog->viewportOrigin;
       if (!description->ActivateLegendSlot(selectedProfile)) {
-        FailScenario("\"prospector legend target traversal lost its semantic action\"");
-        return false;
+        return RuntimeActionResult::Failure("a legend slot lost its semantic action");
       }
       unsigned short counterAfter = g_awCivilianLegendSelectionCountsBySlot[selectedProfile];
       if (counterBefore < candidateCount) {
         if (counterAfter != counterBefore + 1 ||
             !SameMapOrigin(mapDialog->viewportOrigin, targetOrigins[counterBefore])) {
-          FailScenario("\"prospector legend click did not center its indexed retail target\"");
-          return false;
+          return RuntimeActionResult::Failure(
+              "a legend click did not centre its indexed retail target");
         }
         ++centeredClickCount;
       } else {
         if (counterAfter != counterBefore % candidateCount ||
             !SameMapOrigin(mapDialog->viewportOrigin, originBefore)) {
-          FailScenario("\"prospector legend exhaustion did not apply the retail counter reset\"");
-          return false;
+          return RuntimeActionResult::Failure(
+              "legend exhaustion did not apply the retail counter reset");
         }
         observedCounterWrap = true;
       }
     }
     if (!observedCounterWrap || centeredClickCount != candidateCount + 1) {
-      FailScenario("\"prospector legend selection did not cycle through the first tile again\"");
-      return false;
+      return RuntimeActionResult::Failure(
+          "legend selection did not cycle through the first tile again");
     }
-    return true;
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyProspectorOrdersAndCursors() {
-    for (int index = 0; index < 0x36; ++index) {
+  RuntimeActionResult VerifyCursorsAndOrderClick() {
+    for (int index = 0; index < kTurnEventCursorCount; ++index) {
       if (g_pViewMgr->turnEventCursors[index] == 0) {
-        char failure[96];
-        wsprintfA(failure, "\"turn-event cursor resource ~C%d did not load\"", index + 1000);
-        FailScenario(failure);
-        return;
+        CString detail;
+        detail.Format("turn-event cursor resource ~C%d did not load", index + 1000);
+        return RuntimeActionResult::Failure(detail);
       }
     }
 
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map has no map dialog for cursor verification\"");
-      return;
+      return RuntimeActionResult::Failure("the strategic map has no map dialog");
+    }
+    if (mapDialog->nativeWindow50 == 0 || mapDialog->nativeWindow50->m_hWnd == 0) {
+      return RuntimeActionResult::Failure("the strategic map has no native mouse-routing host");
     }
 
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    if (mapDialog->nativeWindow50 == 0 || mapDialog->nativeWindow50->m_hWnd == 0) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"strategic map has no native mouse-routing host\"");
-      return;
-    }
-    if (!VerifyProspectorLegendCameraCycling(mapView, mapDialog)) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      return;
-    }
+    PrimarySurfaceGuard primarySurface;
 
     CPoint hillPoint;
     CPoint seaPoint;
-    if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      AwaitUiChange("\"new prospector did not settle into idle state before cursor verification\"");
-      return;
-    }
-    if (!VerifyCursorForTile(mapDialog, targetSeaTile, 1008, &seaPoint)) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      return;
+    // Water first: classifying a prohibited tile must not disturb the selection.
+    RuntimeActionResult seaCursor =
+        VerifyCursorForTile(mapDialog, targetSeaTile, kProhibitedWaterCursor, &seaPoint);
+    if (!seaCursor.Succeeded()) {
+      return seaCursor;
     }
     if (spawnedCivilian->unitOrder != kUnitOrderIdle) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"sea cursor verification changed the selected prospector order\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "verifying the water cursor changed the selected prospector's order");
     }
-    if (!VerifyCursorForTile(mapDialog, targetHillTile, 1001, &hillPoint)) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      return;
+    RuntimeActionResult hillCursor =
+        VerifyCursorForTile(mapDialog, targetHillTile, kProspectableCursor, &hillPoint);
+    if (!hillCursor.Succeeded()) {
+      return hillCursor;
     }
 
     if (spawnedCivilian->unitOrder != kUnitOrderIdle ||
         spawnedCivilian->tileIndex06 == targetHillTile) {
-      char failure[144];
-      wsprintfA(failure, "\"prospector was not idle before click: order=%d tile=%d target=%d\"",
-                spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("the prospector was not idle before the click: order=%d tile=%d target=%d",
+                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+      return RuntimeActionResult::Failure(detail);
     }
     short hillBand = 0;
     if (!FindVisiblePointForTile(mapDialog, targetHillTile, &hillPoint, &hillBand)) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"strategic map target has no semantic interaction band\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic-map target has no semantic interaction band");
     }
     mapDialog->HandleMapClickByInteractionMode(targetHillTile, hillBand);
-    SetGWorld(savedSurface, savedSurfaceFlags);
 
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
         spawnedCivilian->tileIndex06 != targetHillTile) {
-      char failure[144];
-      wsprintfA(failure, "\"prospector click mismatch: order=%d tile=%d target=%d\"",
-                spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("the prospector click did not order the survey: order=%d tile=%d target=%d",
+                    spawnedCivilian->unitOrder, spawnedCivilian->tileIndex06, targetHillTile);
+      return RuntimeActionResult::Failure(detail);
     }
 
     TCivUnit* tileCivilian =
-        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, g_pSimMgr->GetActiveNationId());
-    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation(mapView, mapDialog);
-    int animationKind = animation != 0 ? animation->IsKindOf(RUNTIME_CLASS(TCivAnimation2)) : 0;
-    int hasFramePixels = animation != 0 ? AnimationFrameBufferHasPixels(animation) : 0;
-    if (tileCivilian != spawnedCivilian || animation == 0 || animationKind == 0 ||
-        hasFramePixels == 0) {
-      char failure[176];
-      wsprintfA(failure, "\"prospector animation invalid: tile=%d animation=%d kind=%d pixels=%d\"",
-                tileCivilian == spawnedCivilian, animation != 0, animationKind, hasFramePixels);
-      FailScenario(failure);
-      return;
+        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, ActiveNation());
+    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation();
+    const bool isCivilianSprite = CivilianProbe::IsCivilianSpriteAnimation(animation);
+    const bool hasFramePixels = animation != 0 && AnimationFrameBufferHasPixels(animation);
+    if (tileCivilian != spawnedCivilian || !isCivilianSprite || !hasFramePixels) {
+      CString detail;
+      detail.Format("the ordered prospector's animation is invalid: tile=%d animation=%d sprite=%d "
+                    "pixels=%d",
+                    tileCivilian == spawnedCivilian, animation != 0, isCivilianSprite,
+                    hasFramePixels);
+      return RuntimeActionResult::Failure(detail);
     }
 
     initialAnimationFrame = animation->frameIndex;
     initialAnimationTick = animation->ticksSinceFrameChange;
-    orderIssued = true;
-    EnterScenarioStep("waiting_for_ordered_civilian_animation",
-                      "verify_ordered_prospector_remains_visible_and_inspectable");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyOrderedProspectorRemainsVisibleAndInspectable() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  RuntimeActionResult VerifyOrderedProspectorIsInspectable() {
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map disappeared while the prospector order was active\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic map disappeared while the order was active");
     }
 
-    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation(mapView, mapDialog);
+    TAnimation* animation = RenderAndResolveOrderedProspectorAnimation();
     TCivUnit* tileCivilian =
-        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, g_pSimMgr->GetActiveNationId());
-    unsigned short reportCursor =
+        g_pGlobalMapState->GetTileUnitEntryByOwner(targetHillTile, ActiveNation());
+    const unsigned short reportCursor =
         g_pSelectedCivilianOrderState->ResolveCivilianTileSelectionOrReportActionCode(
             targetHillTile, 0);
-    int animationAdvanced =
+    const bool animationAdvanced =
         animation != 0 && (animation->frameIndex != initialAnimationFrame ||
                            animation->ticksSinceFrameChange != initialAnimationTick);
-    int hasFramePixels = animation != 0 ? AnimationFrameBufferHasPixels(animation) : 0;
-    if (tileCivilian != spawnedCivilian || animation == 0 || animationAdvanced == 0 ||
-        reportCursor != 0x3f3 || hasFramePixels == 0) {
-      char failure[240];
-      wsprintfA(failure,
-                "\"ordered prospector validation failed: tile=%d animation=%d advanced=%d "
-                "frame=%d/%d tick=%d/%d cursor=%d pixels=%d\"",
-                tileCivilian == spawnedCivilian, animation != 0, animationAdvanced,
-                animation == 0 ? -1 : animation->frameIndex, initialAnimationFrame,
-                animation == 0 ? -1 : animation->ticksSinceFrameChange, initialAnimationTick,
-                reportCursor, hasFramePixels);
-      FailScenario(failure);
-      return;
+    const bool hasFramePixels = animation != 0 && AnimationFrameBufferHasPixels(animation);
+    if (tileCivilian != spawnedCivilian || animation == 0 || !animationAdvanced ||
+        reportCursor != kOrderedTileReportCursor || !hasFramePixels) {
+      CString detail;
+      detail.Format("ordered-prospector validation failed: tile=%d animation=%d advanced=%d "
+                    "frame=%d/%d tick=%d/%d cursor=%d pixels=%d",
+                    tileCivilian == spawnedCivilian, animation != 0, animationAdvanced,
+                    animation == 0 ? -1 : animation->frameIndex, initialAnimationFrame,
+                    animation == 0 ? -1 : animation->ticksSinceFrameChange, initialAnimationTick,
+                    static_cast<int>(reportCursor), hasFramePixels);
+      return RuntimeActionResult::Failure(detail);
     }
     if (!HoverMovementRestoresPreviousTiles(mapDialog)) {
-      FailScenario("\"ordered prospector hover left stale map pixels outside the current tile\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "hovering left stale map pixels outside the current tile");
     }
-    spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
-    completionIssued = true;
-    EnterScenarioStep("completing_prospector_order",
-                      "verify_survey_mark_through_strategic_map_renderer");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyCompletedProspectorSurveyMark() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  RuntimeActionResult CompleteProspectorOrder() {
+    spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
+    return RuntimeActionResult::Success();
+  }
+
+  RuntimeActionResult VerifyCompletedSurveyMark() {
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map disappeared before prospector completion was rendered\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic map disappeared before the completion was rendered");
     }
 
-    const int activeNation = g_pSimMgr->GetActiveNationId();
+    const int activeNation = ActiveNation();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetHillTile];
     if (spawnedCivilian->unitOrder != kUnitOrderIdle || spawnedCivilian->remainingTurns24 > 0 ||
         (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
         spawnedCivilian->completionMarker26 != 0x232f ||
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile) == 0) {
-      char failure[240];
-      wsprintfA(failure,
-                "\"prospector completion mismatch: order=%d remaining=%d survey=%d marker=%d "
-                "candidate=%d\"",
-                spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns24,
-                (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0,
-                spawnedCivilian->completionMarker26,
-                g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile));
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("prospector completion mismatch: order=%d remaining=%d survey=%d marker=%d "
+                    "candidate=%d",
+                    spawnedCivilian->unitOrder, spawnedCivilian->remainingTurns24,
+                    (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) != 0,
+                    spawnedCivilian->completionMarker26,
+                    g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetHillTile));
+      return RuntimeActionResult::Failure(detail);
     }
 
     bool observableResource = false;
@@ -826,29 +825,28 @@ private:
       }
       observableResource = true;
       ObserveStrategicMapResourceTileForRuntimeTest(targetHillTile, resourceType);
-      mapView->CenterOn(targetHillTile);
-      mapView->RedrawTile(targetHillTile);
-      TQuickDrawSurfaceContext* savedSurface;
-      int savedSurfaceFlags;
-      GetGWorld(&savedSurface, &savedSurfaceFlags);
-      SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-      CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-      mapDialog->Draw(&mapBounds);
-      SetGWorld(savedSurface, savedSurfaceFlags);
+      RedrawTileThroughRenderer(targetHillTile);
       if (WasStrategicMapResourceTileObservedForRuntimeTest()) {
         resourceIconRendered = true;
         break;
       }
     }
     if (!observableResource || !resourceIconRendered) {
-      FailScenario("\"completed prospector survey did not reach the strategic resource renderer\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the completed survey did not reach the strategic resource renderer");
     }
+    return RuntimeActionResult::Success();
+  }
 
-    completionVerified = true;
-    EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
-                      "resume_through_normal_map_event_tick");
-    ContinueAfterAction();
+  // Centre, invalidate and draw one tile through the map's own renderer, which is what the
+  // observation hooks above watch for.
+  void RedrawTileThroughRenderer(short tile) {
+    TMapDialog* mapDialog = MapDialog();
+    MapView()->CenterOn(tile);
+    MapView()->RedrawTile(tile);
+    PrimarySurfaceGuard primarySurface;
+    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
+    mapDialog->Draw(&mapBounds);
   }
 
   bool IsProspectableResource(signed char resourceType) {
@@ -857,9 +855,9 @@ private:
            resourceType == kResourceGold;
   }
 
-  void IssueUnsuccessfulProspectorSurvey() {
+  RuntimeActionResult IssueUnsuccessfulSurvey() {
     g_pSelectedCivilianOrderState->SetActiveCivilianSelection(spawnedCivilian, 1);
-    const int activeNation = g_pSimMgr->GetActiveNationId();
+    const int activeNation = ActiveNation();
     int eligibleCount = 0;
     int nonMineralCount = 0;
     int undiscoveredCount = 0;
@@ -888,92 +886,67 @@ private:
       break;
     }
     if (targetSurveyMissTile == -1) {
-      char failure[192];
-      wsprintfA(failure,
-                "\"no unsuccessful prospecting tile: eligible=%d nonmineral=%d undiscovered=%d "
-                "orderable=%d\"",
-                eligibleCount, nonMineralCount, undiscoveredCount, orderableCount);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("no unsuccessful prospecting tile: eligible=%d nonmineral=%d undiscovered=%d "
+                    "orderable=%d",
+                    eligibleCount, nonMineralCount, undiscoveredCount, orderableCount);
+      return RuntimeActionResult::Failure(detail);
     }
 
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-    CPoint targetPoint;
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map disappeared before unsuccessful prospecting\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic map disappeared before the unsuccessful survey");
     }
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    mapView->CenterOn(targetSurveyMissTile);
+    PrimarySurfaceGuard primarySurface;
+    MapView()->CenterOn(targetSurveyMissTile);
     CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
     mapDialog->Draw(&mapBounds);
+    CPoint targetPoint;
     short targetBand;
     if (!FindVisiblePointForTile(mapDialog, targetSurveyMissTile, &targetPoint, &targetBand) ||
         g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
-            targetSurveyMissTile, targetBand) != 1001) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"unsuccessful prospecting tile lost its retail cursor route\"");
-      return;
+            targetSurveyMissTile, targetBand) != kProspectableCursor) {
+      return RuntimeActionResult::Failure(
+          "the unsuccessful prospecting tile lost its retail cursor route");
     }
     mapDialog->HandleMapClickByInteractionMode(targetSurveyMissTile, targetBand);
-    SetGWorld(savedSurface, savedSurfaceFlags);
     if (spawnedCivilian->unitOrder != kUnitOrderProspect ||
         spawnedCivilian->tileIndex06 != targetSurveyMissTile) {
-      FailScenario("\"non-mineral tile did not receive the retail prospecting order\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the non-mineral tile did not receive the retail prospecting order");
     }
-
-    surveyMissOrderIssued = true;
-    EnterScenarioStep("completing_unsuccessful_prospector_order",
-                      "real_non_mineral_tile_order_reaches_completion");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void CompleteUnsuccessfulProspectorSurvey() {
+  RuntimeActionResult CompleteUnsuccessfulSurvey() {
     g_pUiAnimator->DoIdle(1);
     spawnedCivilian->TickCivWorkOrderCountdownAndComplete();
-    surveyMissCompletionIssued = true;
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyUnsuccessfulProspectorSurveyMark() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-    const int activeNation = g_pSimMgr->GetActiveNationId();
+  RuntimeActionResult VerifyUnsuccessfulSurveyMark() {
+    const int activeNation = ActiveNation();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetSurveyMissTile];
-    if (mapDialog == 0 || spawnedCivilian->unitOrder != kUnitOrderIdle ||
+    if (MapDialog() == 0 || spawnedCivilian->unitOrder != kUnitOrderIdle ||
         spawnedCivilian->remainingTurns24 > 0 ||
         (terrain.pendingDevelopmentFlag0d & (1 << activeNation)) == 0 ||
         IsProspectableResource(terrain.resourceTypeByEdge[0]) ||
         g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(targetSurveyMissTile) != 0) {
-      FailScenario("\"unsuccessful prospecting did not produce the retail surveyed state\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the unsuccessful survey did not produce the retail surveyed state");
     }
 
     ObserveStrategicMapSurveyMissTileForRuntimeTest(targetSurveyMissTile);
-    mapView->CenterOn(targetSurveyMissTile);
-    mapView->RedrawTile(targetSurveyMissTile);
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-    mapDialog->Draw(&mapBounds);
-    SetGWorld(savedSurface, savedSurfaceFlags);
+    RedrawTileThroughRenderer(targetSurveyMissTile);
     if (!WasStrategicMapSurveyMissTileObservedForRuntimeTest()) {
-      FailScenario("\"surveyed non-mineral tile did not reach the retail miss-mark blit\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the surveyed non-mineral tile did not reach the retail miss-mark blit");
     }
-
-    surveyMissCompletionVerified = true;
-    EnterScenarioStep("selecting_farmer_for_workable_tile_verification",
-                      "resume_through_normal_map_event_tick");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
+
+  // --- The farmer. ---
 
   bool IsRetailFarmerWorkableTile(const TTerrainStateRecord& terrain, short nationSlot,
                                   short orderType) {
@@ -1002,41 +975,25 @@ private:
            maximumDevelopmentClass;
   }
 
-  void VerifyFarmerWorkableTileSelection() {
-    EnterScenarioStep("recruiting_farmer_for_selection_test", "produce_farmer_through_city_order");
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    const int oldPersistentUnitId = g_pSimMgr->field_64;
-    TUnitOrder recruitOrder;
-    recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitFarmer), 0, 0, -1, 0,
-                            0, kLowSkillWorkforceMode, 0);
-    recruitOrder.quantity = 1;
-    recruitOrder.Produce();
-
-    farmer = 0;
-    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
-      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
-      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
-        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
-        if (civilian->persistentUnitId20 == oldPersistentUnitId + 1) {
-          farmer = civilian;
-          break;
-        }
-      }
+  RuntimeActionResult OrderFarmerImprovement() {
+    RuntimeActionResult produced =
+        ProduceCivilian(EncodeCivilianUnitKind(kCivilianUnitFarmer), &farmer);
+    if (!produced.Succeeded()) {
+      return produced;
     }
-    if (farmer == 0 || farmer->GetCivilianUnitKind() != kCivilianUnitFarmer ||
+    if (farmer->GetCivilianUnitKind() != kCivilianUnitFarmer ||
         farmer->unitOrder != kUnitOrderIdle) {
-      FailScenario("\"farmer production did not yield an idle farmer\"");
-      return;
+      return RuntimeActionResult::Failure("farmer production did not yield an idle farmer");
     }
 
-    EnterScenarioStep("selecting_farmer_through_civilian_manager",
-                      "dispatch_retail_farmer_workable_predicate");
     g_pSelectedCivilianOrderState->SetActiveCivilianSelection(farmer, 0);
     const short nationSlot = farmer->ownerNationSlot18;
     short workableTile = -1;
     short moveTile = -1;
     short prohibitedTile = -1;
     int predicateMismatches = 0;
+    // Sweep the whole map: the retail predicate and the map's own reach marking have to agree
+    // everywhere, not just on the tile this scenario goes on to use.
     for (short tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
       const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
       const bool expectedWorkable =
@@ -1068,77 +1025,60 @@ private:
 
     const int occupiedAction = g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(
         spawnedCivilian->tileIndex06, 0);
-    EnterScenarioStep("checking_farmer_tile_actions", "verify_reach_occupancy_and_cursor_routes");
     if (predicateMismatches != 0 || workableTile == -1 || moveTile == -1 || prohibitedTile == -1 ||
         occupiedAction != 2) {
-      char failure[240];
-      wsprintfA(failure,
-                "\"farmer selection mismatch: predicates=%d workable=%d move=%d prohibited=%d "
-                "occupied=%d\"",
-                predicateMismatches, workableTile, moveTile, prohibitedTile, occupiedAction);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("farmer selection mismatch: predicates=%d workable=%d move=%d prohibited=%d "
+                    "occupied=%d",
+                    predicateMismatches, workableTile, moveTile, prohibitedTile, occupiedAction);
+      return RuntimeActionResult::Failure(detail);
     }
 
     if (g_pSelectedCivilianOrderState->ResolveCivilianTileOrderActionCode(workableTile, 0) != 9 ||
         g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
             workableTile, 0) != g_civilianTileOrderCursorTokenTable[9]) {
-      FailScenario("\"farmer workable tile did not retain the retail action and cursor route\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the workable tile did not retain the retail action and cursor route");
     }
 
-    EnterScenarioStep("verifying_farmer_workable_tiles",
-                      "retail_predicate_reach_and_occupancy_match_real_selection");
     targetFarmerTile = workableTile;
     initialFarmerImprovementClass = static_cast<short>(
         g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
 
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
-    CPoint targetPoint;
-    short targetBand;
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map disappeared before farmer improvement order\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic map disappeared before the improvement order");
     }
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    mapView->CenterOn(targetFarmerTile);
+    PrimarySurfaceGuard primarySurface;
+    MapView()->CenterOn(targetFarmerTile);
     CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
     mapDialog->Draw(&mapBounds);
+    CPoint targetPoint;
+    short targetBand;
     if (!FindVisiblePointForTile(mapDialog, targetFarmerTile, &targetPoint, &targetBand) ||
         g_pSelectedCivilianOrderState->LookupCivilianTileOrderCursorTokenByActionIndex(
             targetFarmerTile, targetBand) != g_civilianTileOrderCursorTokenTable[9]) {
-      SetGWorld(savedSurface, savedSurfaceFlags);
-      FailScenario("\"farmer improvement tile lost its retail cursor route\"");
-      return;
+      return RuntimeActionResult::Failure("the improvement tile lost its retail cursor route");
     }
-
     mapDialog->HandleMapClickByInteractionMode(targetFarmerTile, targetBand);
-    SetGWorld(savedSurface, savedSurfaceFlags);
     if (farmer->unitOrder != kUnitOrderDevelopResource || farmer->tileIndex06 != targetFarmerTile) {
-      FailScenario("\"farmer click did not queue the retail resource improvement order\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the farmer click did not queue the retail resource improvement order");
     }
-
-    farmerOrderIssued = true;
-    EnterScenarioStep("completing_farmer_improvement",
-                      "real_farmer_order_reaches_map_state_completion");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void CompleteFarmerImprovement() {
+  // One turn of the farmer's order. The animator gets its idle tick too, so the map keeps animating
+  // the working civilian while the order runs down.
+  RuntimeActionResult AdvanceFarmerImprovement() {
     g_pUiAnimator->DoIdle(1);
     farmer->TickCivWorkOrderCountdownAndComplete();
-    farmerCompletionIssued = farmer->unitOrder == kUnitOrderIdle;
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyFarmerImprovementVisual() {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+  RuntimeActionResult VerifyFarmerImprovementVisual() {
+    TMapDialog* mapDialog = MapDialog();
     const TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[targetFarmerTile];
     const short improvementClass = static_cast<short>(
         g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(targetFarmerTile, 0));
@@ -1146,61 +1086,37 @@ private:
     if (mapDialog == 0 || farmer->unitOrder != kUnitOrderIdle || farmer->remainingTurns24 > 0 ||
         improvementClass != initialFarmerImprovementClass + 1 || resourceType < 0 ||
         g_anResourceTypeRequiredOrderType[resourceType] != farmer->orderType) {
-      FailScenario("\"farmer completion did not advance the retail improvement state\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the farmer's completion did not advance the retail improvement state");
     }
 
     ObserveStrategicMapImprovementTileForRuntimeTest(targetFarmerTile, resourceType,
                                                      improvementClass);
-    mapView->CenterOn(targetFarmerTile);
-    mapView->RedrawTile(targetFarmerTile);
-    TQuickDrawSurfaceContext* savedSurface;
-    int savedSurfaceFlags;
-    GetGWorld(&savedSurface, &savedSurfaceFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
-    CRect mapBounds(0, 0, mapDialog->frameWidth34, mapDialog->frameHeight38);
-    mapDialog->Draw(&mapBounds);
-    SetGWorld(savedSurface, savedSurfaceFlags);
+    RedrawTileThroughRenderer(targetFarmerTile);
     if (!WasStrategicMapImprovementTileObservedForRuntimeTest() ||
         !CompletedFarmerImprovementChangesTilePixels(
             mapDialog, targetFarmerTile, static_cast<unsigned char>(initialFarmerImprovementClass),
             static_cast<unsigned char>(improvementClass))) {
-      FailScenario("\"completed farmer improvement did not change the rendered tile pixels\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the completed improvement did not change the rendered tile pixels");
     }
-
-    farmerCompletionVerified = true;
-    EnterScenarioStep("verifying_farmer_improvement_visual",
-                      "completed_low_nibble_improvement_reaches_production_renderer");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void OpenEngineerConstructionDialogThroughMap() {
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    int oldPersistentUnitId = g_pSimMgr->field_64;
-    TUnitOrder recruitOrder;
-    recruitOrder.IUnitOrder(nation->city, EncodeCivilianUnitKind(kCivilianUnitEngineer), 0, 0, -1,
-                            0, 0, kLowSkillWorkforceMode, 0);
-    recruitOrder.quantity = 1;
-    recruitOrder.Produce();
+  // --- The engineer. ---
 
-    engineer = 0;
-    for (int ordinal = 1; ordinal <= nation->trackedObjectList->GetCount(); ++ordinal) {
-      CObject* entry = static_cast<CObject*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
-      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TCivUnit)) != 0) {
-        TCivUnit* civilian = static_cast<TCivUnit*>(entry);
-        if (civilian->persistentUnitId20 == oldPersistentUnitId + 1) {
-          engineer = civilian;
-          break;
-        }
-      }
+  RuntimeActionResult OpenEngineerConstructionDialog() {
+    RuntimeActionResult produced =
+        ProduceCivilian(EncodeCivilianUnitKind(kCivilianUnitEngineer), &engineer);
+    if (!produced.Succeeded()) {
+      return produced;
     }
-    if (engineer == 0 || engineer->GetCivilianUnitKind() != kCivilianUnitEngineer ||
+    if (engineer->GetCivilianUnitKind() != kCivilianUnitEngineer ||
         engineer->unitOrder != kUnitOrderIdle) {
-      FailScenario("\"engineer production did not yield an idle engineer\"");
-      return;
+      return RuntimeActionResult::Failure("engineer production did not yield an idle engineer");
     }
 
+    TGreatPower* nation = Player();
     char* connectedTiles = 0;
     nation->BuildTransportLinkedInfluenceMap(&connectedTiles);
     short engineerTile = -1;
@@ -1220,44 +1136,34 @@ private:
     }
     delete[] connectedTiles;
     if (engineerAction != 4) {
-      FailScenario("\"no transport-connected tile resolved to the engineer build action\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "no transport-connected tile resolved to the engineer build action");
     }
 
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    TMapDialog* mapDialog = mapView != 0 ? mapView->subview2A8 : 0;
+    TMapDialog* mapDialog = MapDialog();
     if (mapDialog == 0) {
-      FailScenario("\"strategic map disappeared before the engineer build action\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the strategic map disappeared before the engineer build action");
     }
-    mapView->CenterOn(engineerTile);
+    MapView()->CenterOn(engineerTile);
 
-    engineerActionIssued = true;
-    EnterScenarioStep("opening_engineer_construction_dialog", "activate_selected_engineer_tile");
-    CString failure;
-    if (!RuntimeUiDriver::PostActivate(RuntimeControlSelector(kControlTagDialog, kControlTagCncl,
-                                                              RUNTIME_CLASS(TUpDownPictureButton)),
-                                       &failure)) {
-      FailScenario(failure);
-      return;
+    // The click below does not return until the dialog it opens is answered, so the answer is
+    // queued first.
+    RuntimeActionResult armed = EngineerDialogScreen::ArmCancel();
+    if (!armed.Succeeded()) {
+      return armed;
     }
     mapDialog->HandleMapClickByInteractionMode(engineerTile, 0);
-    engineerDialogObserved = true;
     RecordHandledModal("engineer_construction_options");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
-  void VerifyEngineerDialogAndCancel() {
-    if (!engineerDialogObserved || !g_ModalViewStack.IsEmpty()) {
-      FailScenario("\"semantic engineer dialog cancellation did not unwind the modal loop\"");
-      return;
-    }
-
-    short depotTile = engineer->tileIndex06;
-    short ownerNation = engineer->ownerNationSlot18;
+  RuntimeActionResult VerifyDepotAndMilitaryChain() {
+    const short depotTile = engineer->tileIndex06;
+    const short ownerNation = engineer->ownerNationSlot18;
     TGreatPower* nation = g_apNationStates[ownerNation];
-    int oldTownCount = nation->townMarkerList->GetCount();
-    int expectedTownCount =
+    const int oldTownCount = nation->townMarkerList->GetCount();
+    const int expectedTownCount =
         oldTownCount + ((g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 4) == 0);
     engineer->SetOrders(kUnitOrderBuildDepot, depotTile);
     while (engineer->remainingTurns24 > 0) {
@@ -1269,28 +1175,29 @@ private:
         depot->transportLinked == 0 || nation->townMarkerList->GetCount() != expectedTownCount ||
         (g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c & 0x10) == 0 ||
         engineer->completionMarker26 != 0x232a) {
-      char failure[240];
-      wsprintfA(failure,
-                "\"connected depot mismatch: order=%d town=%d active=%d linked=%d count=%d/%d "
-                "flags=%d marker=%d\"",
-                engineer->unitOrder, depot != 0, depot != 0 ? depot->activeFlag : -1,
-                depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
-                expectedTownCount, g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c,
-                engineer->completionMarker26);
-      FailScenario(failure);
-      return;
+      CString detail;
+      detail.Format("connected depot mismatch: order=%d town=%d active=%d linked=%d count=%d/%d "
+                    "flags=%d marker=%d",
+                    engineer->unitOrder, depot != 0, depot != 0 ? depot->activeFlag : -1,
+                    depot != 0 ? depot->transportLinked : -1, nation->townMarkerList->GetCount(),
+                    expectedTownCount,
+                    g_pGlobalMapState->terrainStateTable[depotTile].activeFlags1c,
+                    engineer->completionMarker26);
+      return RuntimeActionResult::Failure(detail);
     }
 
+    // Two equal-priority units in one province: the newer one takes the chain head, and detaching
+    // it must not leave the province pointing at freed memory.
     short province = -1;
-    for (short candidate = 0; candidate < 0x180; ++candidate) {
+    for (short candidate = 0; candidate < kProvinceRecordCount; ++candidate) {
       if (g_pGlobalMapState->cityScoreTable[candidate].stationedUnitChain98 == 0) {
         province = candidate;
         break;
       }
     }
     if (province == -1) {
-      FailScenario("\"random map has no empty province for stationed-unit chain verification\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the random map has no empty province for the stationed-unit chain check");
     }
 
     TMilitaryUnit* olderUnit = new TMilitaryUnit();
@@ -1302,25 +1209,20 @@ private:
     Province& depotProvince = g_pGlobalMapState->cityScoreTable[province];
     if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
         newerUnit->nextAtLocation14 != olderUnit || olderUnit->previousAtLocation10 != newerUnit) {
-      FailScenario("\"equal-priority military unit did not become the retail chain head\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "an equal-priority military unit did not become the retail chain head");
     }
 
     olderUnit->DetachUnitOrderFromOwnerAndReset();
     olderUnit->Free();
     if (depotProvince.stationedUnitChain98 != newerUnit || newerUnit->previousAtLocation10 != 0 ||
         newerUnit->nextAtLocation14 != 0) {
-      FailScenario("\"detaching the former military head left a dangling province chain\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "detaching the former military head left a dangling province chain");
     }
     newerUnit->DetachUnitOrderFromOwnerAndReset();
     newerUnit->Free();
-    CaptureScenarioUiSnapshot(g_pViewMgr->currentTurnEventCode, CurrentMainView());
-    if (!HasScenarioUiSnapshot()) {
-      FailScenario("\"completed connected-depot scenario has no strategic-map snapshot\"");
-      return;
-    }
-    Pass();
+    return RuntimeActionResult::Success();
   }
 
   TCivUnit* spawnedCivilian;
@@ -1330,26 +1232,11 @@ private:
   TCivUnit* farmer;
   short targetFarmerTile;
   short initialFarmerImprovementClass;
-  bool orderIssued;
-  bool completionIssued;
-  bool completionVerified;
-  bool surveyMissOrderIssued;
-  bool surveyMissCompletionIssued;
-  bool surveyMissCompletionVerified;
-  bool farmerOrderIssued;
-  bool farmerCompletionIssued;
-  bool farmerCompletionVerified;
   TCivUnit* engineer;
-  bool engineerActionIssued;
-  bool engineerDialogObserved;
   short initialAnimationFrame;
   int initialAnimationTick;
 };
 
-CivilianRecruitmentTestCase g_test;
-
 } // namespace
 
-RuntimeTestCase* CivilianRecruitmentTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(CivilianRecruitmentTestCase, CivilianRecruitmentTest)

@@ -7,7 +7,9 @@
 #include "RuntimeTurnEventQueue.h"
 #include "RuntimeUiDriver.h"
 #include "RuntimeJson.h"
-#include "scenarios/RuntimeScenarios.h"
+// Generated from tools/runtime/catalog.py; supplies UnknownRuntimeTest for an unrecognised
+// IMPERIALISM_RUNTIME_TEST name.
+#include "RuntimeScenarioFactories.inc"
 
 namespace {
 

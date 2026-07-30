@@ -29,3 +29,21 @@ bool WriteFileAtomically(const char* path, const CString& json) {
 }
 
 } // namespace RuntimeJson
+
+CString RuntimeAwaitStateJson(const RuntimeAwaitState& state) {
+  if (!state.IsArmed()) {
+    return CString("null");
+  }
+  char observations[256];
+  DescribeRuntimeObservationMask(state.ObservationKinds(), observations, sizeof(observations));
+  CString json("{\"expression\": ");
+  RuntimeJson::AppendString(json, state.Expression());
+  json += ", \"source\": ";
+  RuntimeJson::AppendString(json, state.Source());
+  json += ", \"observations\": ";
+  RuntimeJson::AppendString(json, observations);
+  CString mask;
+  mask.Format(", \"observation_mask\": %u}", state.ObservationKinds());
+  json += mask;
+  return json;
+}
