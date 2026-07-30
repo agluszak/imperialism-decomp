@@ -3,12 +3,11 @@
   "debt": {
     "tests/runtime/native/scenarios/CityScreenTest.cpp": 140,
     "tests/runtime/native/scenarios/CivilianRecruitmentTest.cpp": 41,
-    "tests/runtime/native/scenarios/DiplomacyScreenTest.cpp": 77,
     "tests/runtime/native/scenarios/IntroductoryRandomGameTest.cpp": 5,
     "tests/runtime/native/scenarios/RandomGameJourneyTest.cpp": 34,
     "tests/runtime/native/scenarios/SaveLoadRoundtripTest.cpp": 27,
     "tests/runtime/native/scenarios/TradeScreenTest.cpp": 176,
     "tests/runtime/native/scenarios/TransportScreenTest.cpp": 38
   },
-  "total": 538
+  "total": 461
 }

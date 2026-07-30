@@ -47,6 +47,20 @@ int RuntimeScriptScenario::CurrentTurnEvent() const {
   return g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1;
 }
 
+bool RuntimeScriptScenario::HoldScriptAtScreen(const char* screenName) {
+  if (!HoldAtScenarioScreen(screenName)) {
+    return false;
+  }
+  // The run is about to end with the screen still up, so it has to be painted: a scenario that
+  // only ever activated controls may never have let one frame reach the window.
+  TView* view = CurrentMainView();
+  if (view != 0 && view->nativeWindow50 != 0 && view->nativeWindow50->m_hWnd != 0) {
+    RedrawWindow(view->nativeWindow50->m_hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+  }
+  PassScript();
+  return true;
+}
+
 int RuntimeScriptScenario::ScriptProgramCounter() const {
   return scriptProgramCounter;
 }

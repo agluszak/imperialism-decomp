@@ -182,6 +182,16 @@
   }                                                                                                \
   } while (0)
 
+// End the run here, with this screen painted, when the host asked to be held at it for
+// inspection (`--hold NAME`). A no-op on a normal run. Not a yield point: it either finishes the
+// script or does nothing at all.
+#define RT_HOLD_SCREEN(screenName)                                                                 \
+  do {                                                                                             \
+    if (HoldScriptAtScreen(screenName)) {                                                          \
+      return;                                                                                      \
+    }                                                                                              \
+  } while (0)
+
 #define RT_PASS()                                                                                  \
   do {                                                                                             \
     PassScript();                                                                                  \

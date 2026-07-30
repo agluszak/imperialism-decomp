@@ -47,6 +47,11 @@ protected:
   // screens. A script must not read g_pViewMgr itself.
   int CurrentTurnEvent() const;
 
+  // Stop here when the run asked to be held at this screen for inspection (`--hold NAME`):
+  // force one paint so what the author wanted to look at is actually on screen, finish the run,
+  // and report true so the script returns. False on a normal run, and the script carries on.
+  bool HoldScriptAtScreen(const char* screenName);
+
   // --- Support surface the RT_ macros call. Not for direct use in a Script(). ---
   int ScriptProgramCounter() const;
   void SetScriptProgramCounter(int slot);
