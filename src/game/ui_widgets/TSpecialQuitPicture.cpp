@@ -72,15 +72,15 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       g_pAmbitApplication->PostWmCloseToMainThreadWindow();
     }
     if (sourceHandler->controlTag == kControlTagShow) {
-      ResolveControlByTag(kControlTagQuit)->SetState(0, 1);
-      ResolveControlByTag(kControlTagShow)->SetState(0, 1);
-      ResolveControlByTag(kControlTagSale)->SetEnabled(0, 1);
-      ResolveControlByTag(kControlTagRequ)->SetEnabled(0, 1);
-      ResolveControlByTag(kControlTagTsho)->SetEnabled(0, 1);
-      ResolveControlByTag(kControlTagTqui)->SetEnabled(0, 1);
+      ResolveControlByTag(kControlTagQuit)->ViewEnable(0, 1);
+      ResolveControlByTag(kControlTagShow)->ViewEnable(0, 1);
+      ResolveControlByTag(kControlTagSale)->Show(0, 1);
+      ResolveControlByTag(kControlTagRequ)->Show(0, 1);
+      ResolveControlByTag(kControlTagTsho)->Show(0, 1);
+      ResolveControlByTag(kControlTagTqui)->Show(0, 1);
       TDeluxeText* titlControl = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTitl));
       titlControl->AssertValid();
-      titlControl->SetEnabled(1, 1);
+      titlControl->Show(1, 1);
       quitAnimationFrame90 = 1;
       SetPictureResourceIdAndRefresh(0x3e9, 1);
       g_pSimMgr->GetString(0x1770, 0, &titlText);
@@ -96,13 +96,13 @@ void TSpecialQuitPicture::DoEvent(int commandId, TEventHandler* sourceHandler, T
       } else {
         quitAnimationFrame90 = 0;
         SetPictureResourceIdAndRefresh(0x4e20, 1);
-        ResolveControlByTag(kControlTagQuit)->SetState(1, 1);
-        ResolveControlByTag(kControlTagShow)->SetState(1, 1);
-        ResolveControlByTag(kControlTagSale)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagRequ)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagTsho)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagTqui)->SetEnabled(1, 1);
-        ResolveControlByTag(kControlTagTitl)->SetEnabled(0, 1);
+        ResolveControlByTag(kControlTagQuit)->ViewEnable(1, 1);
+        ResolveControlByTag(kControlTagShow)->ViewEnable(1, 1);
+        ResolveControlByTag(kControlTagSale)->Show(1, 1);
+        ResolveControlByTag(kControlTagRequ)->Show(1, 1);
+        ResolveControlByTag(kControlTagTsho)->Show(1, 1);
+        ResolveControlByTag(kControlTagTqui)->Show(1, 1);
+        ResolveControlByTag(kControlTagTitl)->Show(0, 1);
       }
     }
   }

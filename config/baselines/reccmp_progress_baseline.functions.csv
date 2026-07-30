@@ -921,11 +921,11 @@ address|matching|name
 0x48ae60|0.519774011299435|TView::DetachChildFromOwnerList
 0x48af80|1.0|TView::SwitchActiveChildAndNotify
 0x48afd0|0.4666666666666667|TView::ResolveControlByTag
-0x48b070|1.0|TView::SetState
+0x48b070|1.0|TView::ViewEnable
 0x48b0b0|1.0|TView::Free
 0x48b180|1.0|TView::GetWindow
 0x48b1a0|1.0|TView::GetRootView
-0x48b1c0|1.0|TView::SetEnabled
+0x48b1c0|1.0|TView::Show
 0x48b200|1.0|TView::IsActionable
 0x48b250|1.0|TView::Locate
 0x48b2d0|0.24615384615384617|TView::UpdateCoordinates
@@ -1082,7 +1082,7 @@ address|matching|name
 0x4906a0|1.0|TEditText::Draw
 0x4906d0|1.0|TEditText::IsEnabled
 0x4906f0|1.0|TEditText::SetEnable
-0x490730|1.0|TEditText::SetEnabled
+0x490730|1.0|TEditText::Show
 0x4907a0|0.7958477508650519|TEditText::Open
 0x490a00|1.0|CMcEditWindow::`scalar deleting destructor'
 0x490a30|1.0|CMcEditWindow::~CMcEditWindow
@@ -1578,7 +1578,7 @@ address|matching|name
 0x4a8d60|1.0|TArmyUnitLine::`scalar deleting destructor'
 0x4a8d90|0.0|TArmyUnitLine::~TArmyUnitLine
 0x4a8db0|1.0|TArmyUnitLine::IArmyUnitLine
-0x4a8df0|0.551622418879056|TArmyUnitLine::InstallViews
+0x4a8df0|0.56973293768546|TArmyUnitLine::InstallViews
 0x4a9400|1.0|TArmyCheckBox::`scalar deleting destructor'
 0x4a9430|1.0|TArmyCheckBox::~TArmyCheckBox
 0x4a9450|0.4897959183673469|TArmyUnitView::CreateObject
@@ -1700,7 +1700,7 @@ address|matching|name
 0x4affd0|1.0|TBatRepDetLine::`scalar deleting destructor'
 0x4b0000|0.0|TBatRepDetLine::~TBatRepDetLine
 0x4b0020|1.0|TBatRepDetLine::GetRuntimeClass
-0x4b0040|0.334913112164297|TBatRepDetLine::InstallViews
+0x4b0040|0.37083993660855785|TBatRepDetLine::InstallViews
 0x4b0630|0.5818181818181818|TBattleUnitsView::CreateObject
 0x4b06d0|1.0|TBattleUnitsView::GetRuntimeClass
 0x4b06f0|0.6355140186915887|TBattleUnitsView::StuffValues
@@ -1982,7 +1982,7 @@ address|matching|name
 0x4be4f0|0.14285714285714285|TInteriorMinister::ClearTrailingTable
 0x4be520|0.4444444444444444|TInteriorMinister::SetCityPolicies
 0x4be5b0|0.6306306306306306|TInteriorMinister::FillOrders
-0x4be650|0.8108108108108109|TInteriorMinister::DoIncreasedTransport
+0x4be650|1.0|TInteriorMinister::DoIncreasedTransport
 0x4be690|0.8461538461538461|TInteriorMinister::AdvanceNeedTargetRoundRobin
 0x4be6d0|1.0|TInteriorMinister::MakeNewCity
 0x4be6f0|1.0|TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale
@@ -3215,7 +3215,7 @@ address|matching|name
 0x5161e0|1.0|TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariant
 0x516220|1.0|TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariantAlt
 0x516260|1.0|TMapMgr::LookupAdjacencyBitmaskVariantByDirection
-0x517410|0.9176470588235294|TMapMgr::MapImprovementOffsetFromAdjacencyVariant
+0x517410|1.0|TMapMgr::MapImprovementOffsetFromAdjacencyVariant
 0x517480|0.7628865979381443|TMapMgr::MapImprovementOffsetFromAdjacencyVariantTriple
 0x517520|1.0|TMapMgr::GetFixedConstant0xc80
 0x517540|0.24489795918367346|TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage
@@ -3228,7 +3228,7 @@ address|matching|name
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3431372549019608|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.3194103194103194|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.5416666666666666|TMapMgr::HasAdjacentProvinceOwnedByNation
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3374,7 +3374,7 @@ address|matching|name
 0x5274d0|0.37593984962406013|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.3783783783783784|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.29577464788732394|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.43478260869565216|TMapMaker::CreateRivers
+0x527d00|0.4268774703557312|TMapMaker::CreateRivers
 0x527ed0|0.3742690058479532|TMapMaker::GrowRiver
 0x528140|0.32954545454545453|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.296875|TMapMaker::SeedMountainRange
@@ -5096,8 +5096,8 @@ address|matching|name
 0x58b6e0|0.6111111111111112|THQButton::DoPostCreate
 0x58b750|0.625|THQButton::HiliteState
 0x58b7f0|0.46938775510204084|THQButton::DoEvent
-0x58b890|0.7368421052631579|THQButton::IsSelected
-0x58b8d0|0.5507246376811594|THQButton::SetSelectionStateAndRefreshBitmap
+0x58b890|1.0|THQButton::SetState
+0x58b8d0|1.0|THQButton::SetSelectionStateAndRefreshBitmap
 0x58b960|0.5818181818181818|TPlacard::CreateObject
 0x58b9f0|1.0|TPlacard::GetRuntimeClass
 0x58ba10|1.0|TPlacard::TPlacard
@@ -6923,7 +6923,7 @@ address|matching|name
 0x608ba8|0.9441964285714286|CWnd::OnWndMsg
 0x60911a|0.875|CTestCmdUI::CTestCmdUI
 0x60914d|1.0|CWnd::OnCommand
-0x6091d9|1.0|CWnd::OnNotify
+0x6091d9|0.9787234042553191|CWnd::OnNotify
 0x609253|1.0|CWnd::GetParentFrame
 0x609297|1.0|AfxGetParentOwner
 0x6092dc|1.0|CWnd::GetTopLevelParent

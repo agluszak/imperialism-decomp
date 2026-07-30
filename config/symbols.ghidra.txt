@@ -1612,11 +1612,11 @@ TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_A
 TView::DetachChildFromOwnerList 48AE60 f
 TView::SwitchActiveChildAndNotify 48AF80 f
 TView::ResolveControlByTag 48AFD0 f
-TView::SetState 48B070 f
+TView::ViewEnable 48B070 f
 TView::Free 48B0B0 f
 TView::GetWindow 48B180 f
 TView::GetRootView 48B1A0 f
-TView::SetEnabled 48B1C0 f
+TView::Show 48B1C0 f
 TView::IsActionable 48B200 f
 TView::CaptureLayoutF0 48B250 f
 TView::UpdateCoordinates 48B2D0 f
@@ -1784,7 +1784,7 @@ TEditText::Close 490650 f
 TEditText::Draw 4906A0 f
 TEditText::IsEnabled 4906D0 f
 TEditText::SetEnable 4906F0 f
-TEditText::SetEnabled 490730 f
+TEditText::Show 490730 f
 TEditText::Open 4907A0 f
 IltTarget_00490a00 490A00 f
 TEditText::SetEditSelectionAndScrollCaret 490A50 f

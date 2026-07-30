@@ -32,7 +32,7 @@ TTradeSchoolView::~TTradeSchoolView() {}
 
 // FUNCTION: IMPERIALISM 0x004cd8d0
 void TTradeSchoolView::DoStartup() {
-  SetState(0, 0);
+  ViewEnable(0, 0);
 
   TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0x18, 0x2b67);
@@ -110,11 +110,11 @@ void TTradeSchoolView::UpdateFields() {
   }                                                                                                \
   if (enableCondition) {                                                                           \
     if (control->IsActionable() == 0) {                                                            \
-      control->SetEnabled(1, 1);                                                                   \
+      control->Show(1, 1);                                                                         \
     }                                                                                              \
   } else {                                                                                         \
     if (control->IsActionable() != 0) {                                                            \
-      control->SetEnabled(0, 1);                                                                   \
+      control->Show(0, 1);                                                                         \
     }                                                                                              \
   }
 

@@ -83,7 +83,7 @@ void TGameSetupMultiplayerPicture::DoPostCreate(int arg) {
   if (g_pAssetMgr->HasPendingClientSaveFile()) {
     TControl* spitControl = static_cast<TControl*>(ResolveControlByTag(kControlTagSpit));
     spitControl->AssertValid();
-    spitControl->SetState(1, 0);
+    spitControl->ViewEnable(1, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2759, 7, spitControl);
   }
 }
@@ -168,7 +168,7 @@ void TGameSetupMultiplayerPicture::DoEvent(int commandId, TEventHandler* sourceH
 
         TView* spitControl = ResolveControlByTag(kControlTagSpit);
         spitControl->AssertValid();
-        spitControl->SetState(0, 0);
+        spitControl->ViewEnable(0, 0);
         SetControlHoverHelpText(CString(g_szEmptyString), spitControl);
       }
     }

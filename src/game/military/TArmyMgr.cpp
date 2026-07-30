@@ -2152,7 +2152,7 @@ void TArmyMgr::ShowSpyReport(int cityRecordIndex) {
 
   TStaticText* label3 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab3));
   label3->AssertValid();
-  label3->SetEnabled(0, 0);
+  label3->Show(0, 0);
   label3->InstallTextStyle(styleB, 0);
 
   TStaticText* label4 = static_cast<TStaticText*>(node->ResolveControlByTag(kControlTagLab4));

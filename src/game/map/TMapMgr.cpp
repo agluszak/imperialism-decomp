@@ -3327,10 +3327,11 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
 }
 
 // FUNCTION: IMPERIALISM 0x00517410
-int TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
-                                                      char useAltOffset) {
-  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
-    return 0;
+short TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                        char useAltOffset) {
+  short variant = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  if (variant == 0) {
+    return variant;
   }
   if (useAltOffset == 0) {
     return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x15) << 6;

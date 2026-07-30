@@ -391,8 +391,8 @@ public:
   // Real signature has 3 stack args (RET 0xc), not 1 -- bitmaskIndex/direction forward
   // unchanged into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c); returns 0 if that
   // lookup is 0, else (lookup+0x15)<<6 or (lookup+0x20)<<6 depending on useAltOffset.
-  virtual int MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
-                                                       char useAltOffset); // slot 0x3d 0x517410
+  virtual short MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                         char useAltOffset); // slot 0x3d 0x517410
   // Real signature has 3 stack args (RET 0xc), not 0 -- see body for the exact combination
   // of 3 calls into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c).
   virtual short MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,

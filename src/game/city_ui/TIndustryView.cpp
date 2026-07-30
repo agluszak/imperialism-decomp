@@ -25,7 +25,7 @@
 
 static __inline void SetIndustryControlEnabledIfChanged(TView* control, bool enabled) {
   if ((control->IsActionable() != 0) != enabled) {
-    control->SetEnabled(enabled, 1);
+    control->Show(enabled, 1);
   }
 }
 // SYNTHETIC: IMPERIALISM 0x004cc6b0

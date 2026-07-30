@@ -53,7 +53,7 @@ public:
   // GetAvailableMerchantCapacity() is nonzero, otherwise IncreaseMerchantMarine().
   // Mac oracle candidate DoIncreasedTransport (hedged: the owner-side callee's
   // semantics are still provisional).
-  virtual bool DoIncreasedTransport(); // 0x18 0x4be650
+  virtual char DoIncreasedTransport(); // 0x18 0x4be650
   // Behaviour-derived name (no confident Mac match): notifies the owner nation of
   // round-robin need slot field10 (TGreatPower slot 0x48,
   // TryIncrementNationResourceNeedTargetTowardCurrent), then advances field10

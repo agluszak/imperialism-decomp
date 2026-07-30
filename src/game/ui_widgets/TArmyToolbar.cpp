@@ -78,9 +78,9 @@ void TArmyToolbar::SetProvince(short provinceIndex) {
         ResolveControlByTag(kControlTagArmyRatioFirst + category));
     if (totalUnitCounts[category] != 0 && category != 0) {
       arrow->SetValue(static_cast<short>(availableUnitCounts[category]), 1);
-      arrow->SetEnabled(1, 1);
+      arrow->Show(1, 1);
     } else {
-      arrow->SetEnabled(0, 1);
+      arrow->Show(0, 1);
     }
   }
 

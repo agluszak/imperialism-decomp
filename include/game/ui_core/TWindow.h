@@ -9,6 +9,12 @@
 // Forward declarations for types referenced by generated signatures.
 class TObject;
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+// Windows retains TView::Show(int, int) at slot 0x29 and adds this byte overload at 0x73.
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 // VTABLE: IMPERIALISM 0x00649e58
 class TWindow : public TView {
 public:
@@ -89,3 +95,7 @@ public:
   TWindow();
 };
 ASSERT_SIZE(TWindow, 0xa0);
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif

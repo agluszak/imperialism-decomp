@@ -125,7 +125,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->GetString(0x2738, (buildingSlotId == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
-    warnCtrl->SetEnabled(1, 0);
+    warnCtrl->Show(1, 0);
 
     TControl* okayCtrl =
         static_cast<TControl*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'k', 'a', 'y')));
@@ -133,11 +133,11 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xaac);
     }
-    okayCtrl->SetEnabled(0, 0);
-    okayCtrl->SetState(0, 0);
+    okayCtrl->Show(0, 0);
+    okayCtrl->ViewEnable(0, 0);
   } else {
     // Upgrade already queued: keep the warning hidden.
-    warnCtrl->SetEnabled(0, 0);
+    warnCtrl->Show(0, 0);
   }
 
   // Route the cancel button and OK button through command tag 0x22.

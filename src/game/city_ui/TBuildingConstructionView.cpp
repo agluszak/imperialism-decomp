@@ -163,7 +163,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x4b7);
   }
   if (slot != 0 && slot != 4 && slot != 3) {
-    orCtrl->SetEnabled(0, 0);
+    orCtrl->Show(0, 0);
   } else {
     g_pSimMgr->GetString(0x2738, 0x11, &textBuffer);
     orCtrl->InstallTextStyle(style.desc, 0);
@@ -186,7 +186,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orBounds.right = offset + width;
     orBounds.bottom = orBounds.top + height;
     orCtrl->ApplyBounds(&orBounds, 0);
-    orCtrl->SetEnabled(1, 0);
+    orCtrl->Show(1, 0);
   }
 
   // 'warn' — warning text, filled in by the eligibility branch below.
@@ -210,7 +210,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TStaticText* buckCtrl =
         static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('b', 'u', 'c', 'k')));
     buckCtrl->AssertValid();
-    buckCtrl->SetEnabled(1, 0);
+    buckCtrl->Show(1, 0);
     buckCtrl->InstallTextStyle(style.desc, 0);
     buckCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->NumToCurrency(0x1388, &buckCost);
@@ -239,11 +239,11 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->GetString(0x2738, (slot == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
-    warnCtrl->SetEnabled(1, 0);
-    okButton->SetEnabled(0, 0);
-    okButton->SetState(0, 0);
+    warnCtrl->Show(1, 0);
+    okButton->Show(0, 0);
+    okButton->ViewEnable(0, 0);
   } else {
-    warnCtrl->SetEnabled(0, 0);
+    warnCtrl->Show(0, 0);
     okButton->timingWord92 = 0xbc7;
   }
 }

@@ -77,8 +77,8 @@ void TLoadSavePicture::DoPostCreate(int arg) {
     if (TryGetFileMetadataForPath(&slotPath) == 0) {
       // Empty slot: the save picture offers it, the load picture greys it out.
       if (loadModeFlag90 != 0) {
-        slotControl->SetEnabled(0, 1);
-        slotControl->SetState(0, 0);
+        slotControl->Show(0, 1);
+        slotControl->ViewEnable(0, 0);
       } else {
         slotControl->SetTextFromStringResource(0x2737, 0xd, 1);
       }
@@ -96,7 +96,7 @@ void TLoadSavePicture::DoPostCreate(int arg) {
   } else {
     TView* plateControl = ResolveControlByTag(0x706c6174); // 'plat'
     plateControl->AssertValid();
-    plateControl->SetEnabled(1, 1);
+    plateControl->Show(1, 1);
     TMapPreviewView* preview =
         static_cast<TMapPreviewView*>(plateControl->ResolveControlByTag(kControlTagMapP));
     preview->AssertValid();
@@ -164,7 +164,7 @@ void TLoadSavePicture::RefreshSlotPreviewFromSaveFile(short slotMode) {
 
   TMapPreviewView* mapControl = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapControl->AssertValid();
-  mapControl->SetEnabled(1, 1);
+  mapControl->Show(1, 1);
   mapControl->TakeSatellitePhoto(tileOwnerTagTable);
   mapControl->selectedNation68 = pendingNationByte;
   mapControl->EnhancePhoto();
@@ -229,7 +229,7 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         // Enter "rename" mode: swap the clicked slot's static text label for a live edit
         // box seeded with its current text.
         TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
-        slotControl->SetEnabled(0, 1);
+        slotControl->Show(0, 1);
         CString slotText;
         slotControl->CopyTextTo(&slotText);
 

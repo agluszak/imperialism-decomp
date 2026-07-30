@@ -238,7 +238,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int fortOff[2] = {0x11, 0x29};
     fortBtn->IPicture(this, fortOff, optionButtonSize, 5, 5, 0x1c2a);
     fortBtn->controlTag = IMPERIALISM_FOURCC('f', 'o', 'r', 't');
-    fortBtn->SetState(1, 0);
+    fortBtn->ViewEnable(1, 0);
     fortBtn->eventNumber60 = 0x22;
 
     TDeluxeText* fortLabel = new TDeluxeText();
@@ -257,7 +257,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int railOff[2] = {0x11, layoutY + 1};
     railBtn->IPicture(this, railOff, optionButtonSize, 5, 5, 0x1c2c);
     railBtn->controlTag = IMPERIALISM_FOURCC('r', 'a', 'i', 'l');
-    railBtn->SetState(1, 0);
+    railBtn->ViewEnable(1, 0);
     railBtn->eventNumber60 = 0x22;
 
     TDeluxeText* railLabel = new TDeluxeText();
@@ -288,7 +288,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
     int portOff[2] = {0x11, layoutY + 1};
     portBtn->IPicture(this, portOff, optionButtonSize, 5, 5, 0x1c2e);
     portBtn->controlTag = IMPERIALISM_FOURCC('p', 'o', 'r', 't');
-    portBtn->SetState(1, 0);
+    portBtn->ViewEnable(1, 0);
     portBtn->eventNumber60 = 0x22;
 
     TDeluxeText* portLabel = new TDeluxeText();
@@ -319,7 +319,7 @@ void TEngineerDialog::BuildCityViewProductionControls(short nBuildingSlotId) {
   cancelBtn->IPicture(this, cancelOff, cancelSize, 5, 5, 0x24c4);
   cancelBtn->controlTag = IMPERIALISM_FOURCC('c', 'n', 'c', 'l');
   cancelBtn->eventNumber60 = 0x22;
-  cancelBtn->SetState(1, 0);
+  cancelBtn->ViewEnable(1, 0);
 
   layoutY = static_cast<short>(layoutY + 0x1e);
 

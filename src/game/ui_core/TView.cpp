@@ -335,9 +335,9 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b070
-void TView::SetState(int state, int refreshFlag) {
-  SetEnable(state);
-  if (refreshFlag != 0) {
+void TView::ViewEnable(int enabled, int refreshNow) {
+  SetEnable(enabled);
+  if (refreshNow != 0) {
     RefreshControl();
   }
 }
@@ -387,10 +387,10 @@ TView* TView::GetRootView() {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1c0
-void TView::SetEnabled(int enabledState, int refreshFlag) {
-  if (enabledState != viewEnabled) {
-    viewEnabled = enabledState;
-    if (refreshFlag != 0) {
+void TView::Show(int show, int refreshNow) {
+  if (show != viewEnabled) {
+    viewEnabled = show;
+    if (refreshNow != 0) {
       RefreshControl();
     }
   }

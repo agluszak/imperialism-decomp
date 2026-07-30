@@ -26,7 +26,7 @@ struct TToolboxEvent;
 class TEventHandler : public TObject {
 public:
   int enabled;
-  int viewEnabled; // +0x08 -- TView::SetEnabled state; TWindow::Show mirrors visibility here
+  int viewEnabled; // +0x08 -- TView::Show state; TWindow::Show mirrors visibility here
   TEventHandler* nextHandler;
   int idleFrequencyTicks;
   int lastIdleTick;

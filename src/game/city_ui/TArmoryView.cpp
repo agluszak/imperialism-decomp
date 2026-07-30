@@ -92,7 +92,7 @@ void TArmoryView::DoStartup() {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0xb1d);
     }
-    numb->SetState(0, 0);
+    numb->ViewEnable(0, 0);
     numb->InstallTextStyle(style.desc, 1);
     numb->SetControlValue(order->quantity, 1);
   }
@@ -363,12 +363,12 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
       static_cast<TNumberText*>(ResolveControlByTag(IMPERIALISM_FOURCC('a', 'v', 'a', '2')));
   ava2->AssertValid();
   if (order->secondaryInputResourceId != -1) {
-    cos2->SetEnabled(1, 1);
-    ava2->SetEnabled(1, 1);
+    cos2->Show(1, 1);
+    ava2->Show(1, 1);
     cos2->SetControlValue(order->secondaryInputPerUnit, 1);
   } else {
-    cos2->SetEnabled(0, 0);
-    ava2->SetEnabled(0, 1);
+    cos2->Show(0, 0);
+    ava2->Show(0, 1);
   }
 
   TStaticText* cos3 =

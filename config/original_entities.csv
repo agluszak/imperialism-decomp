@@ -897,7 +897,7 @@ address|name|symbol|size|type|prototype|provenance
 48a180|InitializePacketHeaderFields_Tag20202020||28|function|undefined InitializePacketHeaderFields_Tag20202020()|
 48a1b0|TEventHandler::Free||107|function|void __thiscall Free()|
 48a240|TEventHandler::IsEnabled||4|function|char __thiscall IsEnabled(void)|
-48a260|TEventHandler::SetEnable||11|function|void __thiscall SetEnable(uchar enabled)|
+48a260|TEventHandler::SetEnable||11|function|void __thiscall SetEnable(uchar enabled)|listing+mac-symbol
 48a280|TEventHandler::DoEvent||34|function|void __thiscall DoEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
 48a2c0|TEventHandler::GetNextHandler||4|function|TEventHandler * __thiscall GetNextHandler(void)|
 48a2e0|TEventHandler::HandleEvent||23|function|void __thiscall HandleEvent(int commandId, TEventHandler * sourceHandler, TEvent * event)|
@@ -943,11 +943,11 @@ address|name|symbol|size|type|prototype|provenance
 48ae60|TView::DetachUiElementFromOwnerListAndClearBackref_e1||215|function|undefined DetachUiElementFromOwnerListAndClearBackref()|
 48af80|TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa||62|function|undefined CtrlSlot38_SwitchActiveChildAndNotify_Impl()|
 48afd0|TView::FindUiChildControlByWindowHandleRecursive_a9||117|function|undefined FindUiChildControlByWindowHandleRecursive()|
-48b070|TView::SetUiControlVisibleFlagAndMaybeRefreshWindow_ae||35|function|undefined SetUiControlVisibleFlagAndMaybeRefreshWindow()|
+48b070|TView::ViewEnable||35|function|void __thiscall ViewEnable(int enabled, int refreshNow)|listing+mac-symbol
 48b0b0|TView::CloseCityDialogChildrenAndReleaseSelf||147|function|undefined CloseCityDialogChildrenAndReleaseSelf()|
 48b180|TView::GetWindow||15|function|TWindow * __thiscall GetWindow(void)|
 48b1a0|TView::GetRootView||15|function|TView * __thiscall GetRootView(void)|
-48b1c0|TView::SetControlActiveFlagAndRefreshIfChanged_ad||33|function|undefined SetControlActiveFlagAndRefreshIfChanged()|
+48b1c0|TView::Show||33|function|void __thiscall Show(int show, int refreshNow)|listing+mac-symbol
 48b200|TView::IsActionable||51|function|bool __thiscall IsActionable()|listing
 48b250|TView::GetTEventHandlerClassNamePointer_c0||94|function|undefined GetTEventHandlerClassNamePointer(void)|
 48b2d0|TView::UpdateCoordinates||219|function|void UpdateCoordinates()|
@@ -1027,7 +1027,7 @@ address|name|symbol|size|type|prototype|provenance
 48d870|IltTarget_0048d870||21|function|undefined IltTarget_0048d870()|
 48d8a0|TWindow::SetDialogItems||23|function|void __thiscall SetDialogItems(unsigned long defaultCommandCode, unsigned long cancelCommandCode)|
 48d8d0|TWindow::Activate||30|function|void Activate(unsigned char active)|
-48d900|TWindow::Show||95|function|void __thiscall Show(uchar show, uchar refresh)|
+48d900|TWindow::Show||95|function|void __thiscall Show(uchar show, uchar refresh)|listing+mac-symbol
 48d980|TWindow::IsActionable||42|function|bool __thiscall IsActionable()|listing
 48d9c0|TWindow::SetTitle||18|function|void __thiscall SetTitle(CString const * title)|
 48d9f0|TWindow::GetTitle||16|function|void __thiscall GetTitle(CString * title)|
@@ -1113,7 +1113,7 @@ address|name|symbol|size|type|prototype|provenance
 4906a0|TEditText::Draw||28|function|undefined InitializeDialogWindowAndRefreshSelectedNationHeaderStatus()|
 4906d0|TEditText::IsEnabled||4|function|char __thiscall IsEnabled(void)|
 4906f0|TEditText::SetEnable||37|function|void __thiscall SetEnable(uchar enabled)|
-490730|TEditText::SetEnabled||74|function|undefined SetUiControlActiveFlagAndMaybeRefreshWindow()|
+490730|TEditText::Show||74|function|void __thiscall Show(int show, int refreshNow)|windows_listing
 4907a0|TEditText::Open||479|function|CMcWindow* Open()|macos-name-oracle:Open()
 490a00|CMcEditWindow::`scalar deleting destructor'|??_GCMcEditWindow@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 490a50|TEditText::SetEditSelectionAndScrollCaret||61|function|undefined SetEditSelectionAndScrollCaret()|
@@ -2113,7 +2113,7 @@ address|name|symbol|size|type|prototype|provenance
 4be4f0|TInteriorMinister::ClearTrailingTable||18|function|void __thiscall TInteriorMinister::ClearTrailingTable(void)|
 4be520|TInteriorMinister::SetCityPolicies||102|function|void __thiscall TInteriorMinister::SetCityPolicies(void)|
 4be5b0|TInteriorMinister::FillOrders||126|function|void TInteriorMinister::FillOrders()|
-4be650|TInteriorMinister::DoIncreasedTransport||37|function|bool __thiscall TInteriorMinister::DoIncreasedTransport(void)|
+4be650|TInteriorMinister::DoIncreasedTransport||37|function|char __thiscall TInteriorMinister::DoIncreasedTransport(void)|
 4be690|TInteriorMinister::AdvanceNeedTargetRoundRobin||38|function|void __thiscall TInteriorMinister::AdvanceNeedTargetRoundRobin(void)|
 4be6d0|TInteriorMinister::NoOpForeignMinisterUtilityStub||3|function|undefined OrphanRetStub_004be6d0(void)|
 4be6f0|TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale||9|function|float GetAiDevelopmentResourceBudgetScale(int* resourcePools)|
@@ -3360,7 +3360,7 @@ address|name|symbol|size|type|prototype|provenance
 5161e0|TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariant||38|function|short TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariant(StrategicTileIndex nTileIndex)|
 516220|TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariantAlt||36|function|short TMapMgr::LookupTileSpriteVariantOffsetByGateAndVariantAlt(StrategicTileIndex nTileIndex)|
 516260|TMapMgr::LookupAdjacencyBitmaskVariantByDirection||3583|function|short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char direction)|
-517410|TMapMgr::MapImprovementOffsetFromAdjacencyVariant||80|function|int TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction, char useAltOffset)|
+517410|TMapMgr::MapImprovementOffsetFromAdjacencyVariant||80|function|short TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction, char useAltOffset)|
 517480|TMapMgr::MapImprovementOffsetFromAdjacencyVariantTriple||114|function|short TMapMgr::MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction, short param3)|
 517520|TMapMgr::OrphanVtableAssignStub_00517520||5|function|undefined OrphanVtableAssignStub_00517520(void)|
 517540|TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage||144|function|int TMapMgr::GetMapImprovementOffsetByActiveFlagsAndCityStage(StrategicTileIndex tileIndex, short categoryCode)|
@@ -4788,7 +4788,7 @@ address|name|symbol|size|type|prototype|provenance
 570d40|TPictureRadioButton::GetRuntimeClass||6|function|undefined GetTPictureRadioButtonClassNamePointer()|rtti
 570d60|TPictureRadioButton::ConstructTPictureRadioButtonBaseState||25|function|undefined ConstructTPictureRadioButtonBaseState()|
 570d90|TPictureRadioButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-570de0|TPictureRadioButton::PictureRadioButtonSlot75||135|function|undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1)|
+570de0|TPictureRadioButton::ViewEnable||135|function|void __thiscall ViewEnable(char enabled, char refreshNow)|listing+mac-symbol
 570ea0|TPictureRadioButton::PictureRadioButtonSlot76||124|function|undefined WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)|
 570f40|TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh||79|function|undefined HandleToggleButtonStateChangeAndRefresh(char param_1, char param_2)|
 570fb0|TPictureRadioButton::HandleMouseDown||125|function|char __thiscall HandleMouseDown(const CPoint &point, TToolboxEvent *event, CPoint origin)|macos-name-oracle:HandleMouseDown(const VPoint&, TToolboxEvent*, CPoint)
@@ -5346,7 +5346,7 @@ address|name|symbol|size|type|prototype|provenance
 58b6e0|THQButton::DoPostCreate||77|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 58b750|THQButton::HiliteState||123|function|void __thiscall HiliteState(unsigned char enabledState, unsigned char refreshNow)|mac-symbol
 58b7f0|THQButton::DoEvent||124|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)|
-58b890|THQButton::IsSelected||36|function|bool __thiscall IsSelected(short value, bool refreshNow)|
+58b890|THQButton::SetState||36|function|void __thiscall SetState(unsigned char value, unsigned char refreshNow)|mac-symbol
 58b8d0|THQButton::SetSelectionStateAndRefreshBitmap||105|function|undefined SetSelectionStateAndRefreshBitmap()|
 58b960|TPlacard::CreateObject|?CreateObject@TPlacard@@SGPAVCObject@@XZ|112|function|undefined CreateObject()|rtti
 58b9f0|TPlacard::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti

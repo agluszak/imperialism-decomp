@@ -578,7 +578,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           if (mySlot >= 0) {
             coatControl->SetPictureResourceIdAndRefresh((short)(mySlot + 0x120a), 1);
           }
-          coatControl->SetEnabled(mySlot >= 0, 1);
+          coatControl->Show(mySlot >= 0, 1);
         }
         if (g_pSimMgr->multiplayerSessionRole == 1) {
           unsigned char localPresent = 0;
@@ -606,14 +606,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             okayButton->buttonText = startText;
             okayButton->RefreshControl();
           }
-          okayButton->SetState(canStart, 0);
-          okayButton->SetEnabled(canStart, 1);
+          okayButton->ViewEnable(canStart, 0);
+          okayButton->Show(canStart, 1);
           okayButton->themeCode9A = 0x2b6c;
           okayButton->themeCode9C = 0x2b6b;
           okayButton->pointSize98 = 0xc;
           TView* messControl = lounge->ResolveControlByTag(kSessionTagMess);
           messControl->AssertValid();
-          messControl->SetEnabled(canStart == 0, 1);
+          messControl->Show(canStart == 0, 1);
           LoadUiStringAndDispatchSharedMessageCommand(0x2742, canStart != 0 ? 0xa : 0xc,
                                                       messControl);
           lounge->AssertValid();
@@ -722,8 +722,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCncl));
       cancelButton->AssertValid();
       cancelButton->controlTag = kSessionTagRsvp; // 'rsvp'
-      cancelButton->SetEnabled(1, 0);
-      cancelButton->SetState(1, 0);
+      cancelButton->Show(1, 0);
+      cancelButton->ViewEnable(1, 0);
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
     }
     int responseTag = dialog->PoseModally();
@@ -2330,10 +2330,9 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     bool isMine =
         g_pNetMgr006a6014->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
     bool occupiedByOther = occupied && !isMine;
-    // First call dispatches TView::SetState (slot 0x2a, hidden by the TCzechBox
-    // overload — the original calls [vtbl+0xa8]); second is the TCzechBox
-    // SetState (slot 0x75), virtual in the original, not a qualified direct call.
-    static_cast<TView*>(boxControl)->SetState(static_cast<int>(occupiedByOther), 0);
+    // First call dispatches TView::ViewEnable (slot 0x2a; the original calls
+    // [vtbl+0xa8]); second is TCzechBox::SetState at slot 0x75.
+    static_cast<TView*>(boxControl)->ViewEnable(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
       boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
                            static_cast<unsigned char>(0));

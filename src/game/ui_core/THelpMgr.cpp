@@ -912,12 +912,12 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   if (activeNation >= 0 && activeNation < 7) {
     coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(activeNation + 0x251c), 0);
   } else {
-    coatPicture->SetEnabled(0, 0);
+    coatPicture->Show(0, 0);
   }
 
   TStaticText* title = static_cast<TStaticText*>(helpPicture->ResolveControlByTag(kControlTagTitl));
-  title->SetEnabled(1, 1);
-  title->SetState(0, 1);
+  title->Show(1, 1);
+  title->ViewEnable(0, 1);
   title->SetTextAlignmentAndMaybeRefresh(1, 0);
   title->InstallTextStyle(titleStyle, 0);
   BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 6, 0x2749,

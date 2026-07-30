@@ -99,8 +99,8 @@ void TMapUberPicture::DoPostCreate(int arg) {
   if (multiplayerSessionActive != 0) {
     TView* sendControl = ResolveControlByTag(kControlTagSend); // 'send'
     sendControl->AssertValid();
-    sendControl->SetState(1, 0);
-    sendControl->SetEnabled(1, 0);
+    sendControl->ViewEnable(1, 0);
+    sendControl->Show(1, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2742, 0xe, sendControl);
   }
 }
@@ -1080,7 +1080,7 @@ void TMapUberPicture::DisplayMiniMap() {
   miniMap->ownerPicture84 = this;
   miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c;
   miniMap->RefreshControl();
-  miniMap->SetState(1, 0);
+  miniMap->ViewEnable(1, 0);
   this->miniMapViewC0 = miniMap;
 
   RECT toolRect;
@@ -1163,18 +1163,18 @@ void TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState
 
   TView* seasControl = toolControl->ResolveControlByTag(kControlTagSeas); // "seas"
   if (seasControl != nullptr) {
-    seasControl->SetEnabled(enabledState, 1);
+    seasControl->Show(enabledState, 1);
   }
   TView* yearControl = toolControl->ResolveControlByTag(kControlTagYear); // "year"
   if (yearControl != nullptr) {
-    yearControl->SetEnabled(enabledState, 1);
+    yearControl->Show(enabledState, 1);
   }
   TView* treaControl = toolControl->ResolveControlByTag(kControlTagTrea); // "trea"
   if (treaControl != nullptr) {
-    treaControl->SetEnabled(enabledState, 1);
+    treaControl->Show(enabledState, 1);
   }
   TView* treeControl = toolControl->ResolveControlByTag(kControlTagTree); // "tree"
   if (treeControl != nullptr) {
-    treeControl->SetEnabled(enabledState, 1);
+    treeControl->Show(enabledState, 1);
   }
 }

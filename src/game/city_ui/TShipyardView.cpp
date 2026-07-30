@@ -88,24 +88,24 @@ void TShipyardView::DoStartup() {
   for (int slotIndex = 0; slotIndex < 8; ++slotIndex) {
     TControl* slotButton =
         static_cast<TControl*>(ResolveControlByTag(kControlTagBut0 + slotIndex)); // 'but0'-'but7'
-    slotButton->SetEnabled(0, 1);
-    slotButton->SetState(0, 1);
+    slotButton->Show(0, 1);
+    slotButton->ViewEnable(0, 1);
     buildQueueSlotValues[slotIndex] = 0;
 
     TControl* queueSlot =
         static_cast<TControl*>(ResolveControlByTag(kControlTagClu0 + slotIndex)); // 'clu0'-'clu7'
-    queueSlot->SetEnabled(0, 1);
-    queueSlot->SetState(0, 1);
+    queueSlot->Show(0, 1);
+    queueSlot->ViewEnable(0, 1);
 
     TControl* plusButton =
         static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagPlus)); // 'plus'
     plusButton->AssertValid();
-    plusButton->SetState(0, 0);
+    plusButton->ViewEnable(0, 0);
 
     TControl* minusButton =
         static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagMinu)); // 'minu'
     minusButton->AssertValid();
-    minusButton->SetState(0, 0);
+    minusButton->ViewEnable(0, 0);
   }
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
@@ -114,8 +114,8 @@ void TShipyardView::DoStartup() {
     if (order->resourceTypeIndex != 0) {
       TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
           ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
-      slotButton->SetEnabled(1, 1);
-      slotButton->SetState(1, 1);
+      slotButton->Show(1, 1);
+      slotButton->ViewEnable(1, 1);
 
       short shipType = order->resourceTypeIndex;
       buildQueueSlotValues[queueIndex] = shipType;
@@ -134,21 +134,21 @@ void TShipyardView::DoStartup() {
 
       TControl* queueSlot = static_cast<TControl*>(
           ResolveControlByTag(kControlTagClu0 + queueIndex)); // 'clu0'-'clu7'
-      queueSlot->SetEnabled(1, 1);
+      queueSlot->Show(1, 1);
 
       TControl* plusButton =
           static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagPlus)); // 'plus'
       plusButton->AssertValid();
-      plusButton->SetState(1, 0);
+      plusButton->ViewEnable(1, 0);
 
       TControl* minusButton =
           static_cast<TControl*>(queueSlot->ResolveControlByTag(kControlTagMinu)); // 'minu'
       minusButton->AssertValid();
-      minusButton->SetState(1, 0);
+      minusButton->ViewEnable(1, 0);
 
       TNumberText* quantity =
           static_cast<TNumberText*>(queueSlot->ResolveControlByTag(kControlTagNumb)); // 'numb'
-      quantity->SetState(0, 0);
+      quantity->ViewEnable(0, 0);
       quantity->SetControlValue(order->quantity, 1);
       quantity->InstallTextStyle(style.desc, 1);
     }

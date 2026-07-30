@@ -108,9 +108,9 @@ void TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalU
   if (unit != 0) {
     currControl->SetPictureResourceIdAndRefresh(
         static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
-    currControl->SetEnabled(1, 1);
+    currControl->Show(1, 1);
   } else {
-    currControl->SetEnabled(0, 1);
+    currControl->Show(0, 1);
   }
   RECT labelRect;
   labelRect.left = 2;
@@ -137,9 +137,9 @@ void TTacticalToolbar::UpdateTacticalOtherSideUnitControl(TArmyTacUnit* unit) {
   if (unit != 0) {
     tpicControl->SetPictureResourceIdAndRefresh(
         static_cast<short>(unit->unitTypeC * 2 + 0xf1e + unit->side20), 1);
-    tpicControl->SetEnabled(1, 1);
+    tpicControl->Show(1, 1);
   } else {
-    tpicControl->SetEnabled(0, 1);
+    tpicControl->Show(0, 1);
   }
   RECT portraitRect;
   portraitRect.left = 2;
@@ -156,8 +156,8 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     // and the setup label strings (group 0x273d, indexes 0x2e/0x2f).
     TView* targControl = ResolveControlByTag(kControlTagTarg);
     targControl->AssertValid();
-    targControl->SetEnabled(0, 1);
-    targControl->SetState(0, 1);
+    targControl->Show(0, 1);
+    targControl->ViewEnable(0, 1);
     TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureResourceIdAndRefresh(0xed4, 1);
@@ -166,8 +166,8 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     retrControl->SetPictureResourceIdAndRefresh(0xed2, 1);
     TView* autoControl = ResolveControlByTag(kControlTagAuto);
     autoControl->AssertValid();
-    autoControl->SetEnabled(0, 1);
-    autoControl->SetState(0, 1);
+    autoControl->Show(0, 1);
+    autoControl->ViewEnable(0, 1);
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2e, ResolveControlByTag(kControlTagDone));
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x2f, ResolveControlByTag(kControlTagRetr));
   } else {
@@ -175,8 +175,8 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     // battle label strings (indexes 0x22/0x23).
     TView* targControl = ResolveControlByTag(kControlTagTarg);
     targControl->AssertValid();
-    targControl->SetEnabled(1, 1);
-    targControl->SetState(1, 1);
+    targControl->Show(1, 1);
+    targControl->ViewEnable(1, 1);
     TPicture* doneControl = static_cast<TPicture*>(ResolveControlByTag(kControlTagDone));
     doneControl->AssertValid();
     doneControl->SetPictureResourceIdAndRefresh(0xece, 1);
@@ -185,8 +185,8 @@ void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) 
     retrControl->SetPictureResourceIdAndRefresh(0xed0, 1);
     TView* autoControl = ResolveControlByTag(kControlTagAuto);
     autoControl->AssertValid();
-    autoControl->SetEnabled(1, 1);
-    autoControl->SetState(1, 1);
+    autoControl->Show(1, 1);
+    autoControl->ViewEnable(1, 1);
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x22, ResolveControlByTag(kControlTagDone));
     LoadUiStringAndDispatchSharedMessageCommand(0x273d, 0x23, ResolveControlByTag(kControlTagRetr));
   }

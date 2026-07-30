@@ -102,7 +102,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
   moreLabel->SetTextAndMaybeRefresh(&headingText, 0);
   moreLabel->InstallTextStyle(headingStyle, 1);
   moreLabel->shadowColor94 = shadowColor;
-  moreLabel->SetState(1, 0);
+  moreLabel->ViewEnable(1, 0);
 
   TextStyle bodyStyle;
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b6a);
@@ -307,7 +307,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   scenarioDescription->AssertValid();
   scenarioDescription->SetTextEntryFromChars(
       fieldBuffer, static_cast<short>(scenarioDescriptionEnd - fieldBuffer));
-  scenarioDescription->SetEnabled(1, 0);
+  scenarioDescription->Show(1, 0);
   scenarioDescription->RefreshControl();
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
@@ -331,7 +331,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   nationDescription->SetTextEntryFromChars(
       nationDescriptionTextByMapSelection118[previewNationSlot],
       nationDescriptionLengthByMapSelection134[previewNationSlot]);
-  nationDescription->SetEnabled(1, 0);
+  nationDescription->Show(1, 0);
   nationDescription->RefreshControl();
 
   // The map file is the Mac-endian tile record array; byte 4 of each 0x24-byte record is
@@ -352,14 +352,14 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   mapPreview->TakeSatellitePhoto(fieldBuffer);
   mapPreview->selectedNation68 = previewNationSlot;
   mapPreview->EnhancePhoto();
-  mapPreview->SetEnabled(1, 0);
-  mapPreview->SetState(1, 0);
+  mapPreview->Show(1, 0);
+  mapPreview->ViewEnable(1, 0);
   mapPreview->RefreshControl();
 
   TView* startButton = ResolveControlByTag(kControlTagStar); // 'star'
   startButton->AssertValid();
-  startButton->SetState(1, 1);
-  startButton->SetEnabled(1, 0);
+  startButton->ViewEnable(1, 1);
+  startButton->Show(1, 0);
 
   delete[] fieldBuffer;
   delete[] tileRecords;

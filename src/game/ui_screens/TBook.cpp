@@ -68,18 +68,18 @@ void TBook::ShowPage(int currentPage) {
   pageControl->AssertValid();
 
   if (currentPage == 1) {
-    previousPageButton->SetState(0, 0);
-    previousPageButton->SetEnabled(0, 1);
+    previousPageButton->ViewEnable(0, 0);
+    previousPageButton->Show(0, 1);
   } else {
-    previousPageButton->SetState(1, 0);
-    previousPageButton->SetEnabled(1, 1);
+    previousPageButton->ViewEnable(1, 0);
+    previousPageButton->Show(1, 1);
   }
 
   if (pageControl->visibleColumnCount + currentPage <= pageControl->pageCount) {
-    nextPageButton->SetState(0, 0);
-    nextPageButton->SetEnabled(0, 1);
+    nextPageButton->ViewEnable(0, 0);
+    nextPageButton->Show(0, 1);
   } else {
-    nextPageButton->SetState(1, 0);
-    nextPageButton->SetEnabled(1, 1);
+    nextPageButton->ViewEnable(1, 0);
+    nextPageButton->Show(1, 1);
   }
 }
