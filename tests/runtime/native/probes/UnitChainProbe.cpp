@@ -1,11 +1,13 @@
 #include "UnitChainProbe.h"
 
+#include "game/city_ui/TCountry.h"
 #include "game/core/global_data_tables.h"
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/pointer_representation.h"
+#include "game/ui_core/TSortedList.h"
 
 namespace {
 
@@ -76,4 +78,21 @@ RuntimeActionResult UnitChainProbe::VerifyChainsAreWalkable(const char* stage) {
     }
   }
   return RuntimeActionResult::Success();
+}
+
+void UnitChainProbe::DetachLiveMilitaryUnitsFromMap() {
+  for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    TSortedList* units = country != 0 ? country->militaryUnitList44 : 0;
+    if (units == 0) {
+      continue;
+    }
+    // Walk by ordinal and detach in place: the list keeps its payloads, only the map chains let go.
+    for (int ordinal = 1; ordinal <= units->GetCount(); ++ordinal) {
+      CObject* entry = static_cast<CObject*>(units->GetEntryByOrdinal(ordinal));
+      if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TMilitaryUnit)) != 0) {
+        static_cast<TMilitaryUnit*>(entry)->DetachUnitOrderFromOwnerAndReset();
+      }
+    }
+  }
 }

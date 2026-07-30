@@ -28,6 +28,15 @@ public:
   // Both chain families are walkable and terminate. `stage` names what just ran, so the failure
   // says which step left them broken.
   static RuntimeActionResult VerifyChainsAreWalkable(const char* stage);
+
+  // Unlink every nation's live military units from the map chains, through each unit's own
+  // DetachUnitOrderFromOwnerAndReset. This is the state a load reached from the menu starts
+  // from: no units are linked into the map. A replay that runs on top of a played game needs
+  // it because TSimMgr::ReadFrom's rebuild frees each nation's units without unlinking them
+  // from Province::stationedUnitChain98 (TUnit::Free at 0x5c2680 does not unlink, nor does
+  // TCountry::Free at 0x4d6ba0), and the freshly seeded units are then linked in front of the
+  // freed ones -- walking that tail is what crashes.
+  static void DetachLiveMilitaryUnitsFromMap();
 };
 
 #endif
