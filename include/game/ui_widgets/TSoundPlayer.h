@@ -28,7 +28,8 @@ public:
   char pad81[0x03];
 
   TSoundPlayer();
-  ~TSoundPlayer() override; // 0x5933e0 (slot 0x01 scalar deleting dtor 0x5933b0)
+  // FUNCTION: IMPERIALISM 0x005933e0
+  ~TSoundPlayer() override {} // 0x5933e0 (slot 0x01 scalar deleting dtor 0x5933b0)
   DECLARE_DYNCREATE(TSoundPlayer)
   void Free() override;             // 0x07 -> 0x5e51d0
   char DoIdle(int action) override; // 0x13 -> 0x593400

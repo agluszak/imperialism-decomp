@@ -21,7 +21,6 @@ THandleStream::THandleStream() {
 
 // SYNTHETIC: IMPERIALISM 0x00489610
 // THandleStream::`scalar deleting destructor'
-THandleStream::~THandleStream() {}
 
 // SYNTHETIC: IMPERIALISM 0x00489640
 // THandleStream::~THandleStream

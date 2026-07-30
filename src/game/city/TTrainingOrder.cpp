@@ -16,8 +16,6 @@ IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b6ad0
 // TTrainingOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b6b00
-TTrainingOrder::~TTrainingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6b20
 void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {

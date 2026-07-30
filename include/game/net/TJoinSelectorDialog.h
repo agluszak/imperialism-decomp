@@ -5,7 +5,7 @@
 #include "game/ui_screens/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-struct RuntimeSelectionRecord;
+struct WNetSelectionRecord;
 
 // VTABLE: IMPERIALISM 0x006435e8
 class TJoinSelectorDialog : public TNoHilitePicture {
@@ -19,7 +19,7 @@ public:
   // NOOP: verified empty in original 0x0054e6c6 (no standalone TJoinSelectorDialog::TJoinSelectorDialog body exists: CreateObject 0x0054e690 inlines this default ctor, calling the TNoHilitePicture base ctor directly at that site)
   TJoinSelectorDialog() {}
 
-  void AddJoinableGameOptionEntry(const char* label, RuntimeSelectionRecord* record);
-  RuntimeSelectionRecord* GetSelectedJoinableGame();
+  void AddJoinableGameOptionEntry(const char* label, WNetSelectionRecord* record);
+  WNetSelectionRecord* GetSelectedJoinableGame();
 };
 ASSERT_SIZE(TJoinSelectorDialog, 0x94);

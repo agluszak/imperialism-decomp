@@ -12,7 +12,8 @@ struct TToolboxEvent;
 class TDialogBehavior : public TBehavior {
 public:
   DECLARE_DYNCREATE(TDialogBehavior)
-  virtual ~TDialogBehavior() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004873e0
+  virtual ~TDialogBehavior() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Dismiss(unsigned long commandCode, unsigned char accepted); // slot 0x0e 0x487430
   virtual void DoEvent(long commandId, TEventHandler* sourceHandler,
                        TEvent* event);                  // slot 0x0f 0x487470

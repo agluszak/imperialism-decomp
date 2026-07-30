@@ -10,7 +10,8 @@ class TView;
 class TLineData : public TObject {
 public:
   DECLARE_DYNCREATE(TLineData)
-  virtual ~TLineData() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x0056f400
+  virtual ~TLineData() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout); // slot 0x0a 0x56f460
   virtual void RemoveViews();                                 // slot 0x0b 0x56f480
 

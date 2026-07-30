@@ -9,7 +9,8 @@
 class TPictureLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TPictureLine)
-  virtual ~TPictureLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005700d0
+  virtual ~TPictureLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x570130
 
   // NOOP: verified empty in original 0x00570032 (no standalone TPictureLine::TPictureLine body exists: construction is fully inlined into CreateObject 0x00570030; that address is its operator-new call site)

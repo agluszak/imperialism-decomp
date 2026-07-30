@@ -9,7 +9,8 @@
 class TFoodProcessingOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TFoodProcessingOrder)
-  virtual ~TFoodProcessingOrder() override;          // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b7e60
+  virtual ~TFoodProcessingOrder() override {}        // slot 0x01 (scalar deleting destructor)
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7f50
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b7ed0
   virtual void Produce() override;                   // slot 0x0d 0x4b8060

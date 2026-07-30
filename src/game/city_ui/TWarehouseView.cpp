@@ -96,9 +96,9 @@ void TWarehouseView::DoStartup() {
     CRect windowBounds;
     window->QueryBounds(&windowBounds);
 
-    commodityValueControlsA0[6]->SetEnabled(1, 1);
-    commodityValueControlsA0[12]->SetEnabled(1, 1);
-    powerValueControl100->SetEnabled(1, 1);
+    commodityValueControlsA0[6]->Show(1, 1);
+    commodityValueControlsA0[12]->Show(1, 1);
+    powerValueControl100->Show(1, 1);
     SetPictureResourceIdAndRefresh(0x23ff, 1);
 
     CPoint bitmapSize;

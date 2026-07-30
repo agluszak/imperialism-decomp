@@ -32,7 +32,7 @@ TTradeSchoolView::~TTradeSchoolView() {}
 
 // FUNCTION: IMPERIALISM 0x004cd8d0
 void TTradeSchoolView::DoStartup() {
-  SetState(0, 0);
+  ViewEnable(0, 0);
 
   TextStyle titleStyle;
   BuildUiTextStyleDescriptor(&titleStyle, 0, 0x18, 0x2b67);
@@ -72,7 +72,7 @@ void TTradeSchoolView::DoStartup() {
   for (int valueIndex = 0; valueIndex < 6; ++valueIndex) {
     TStaticText* valueText = static_cast<TStaticText*>(ResolveControlByTag(valueTags[valueIndex]));
     if (valueText == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityViews_00696650,
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp",
                                static_cast<int>(0x99e + valueIndex * 5));
       continue;
     }
@@ -87,7 +87,7 @@ void TTradeSchoolView::DoStartup() {
   for (int costIndex = 0; costIndex < 2; ++costIndex) {
     TStaticText* costText = static_cast<TStaticText*>(ResolveControlByTag(costTags[costIndex]));
     if (costText == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, costIndex == 0 ? 0x9c0 : 0x9c7);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", costIndex == 0 ? 0x9c0 : 0x9c7);
       continue;
     }
     g_pSimMgr->NumToCurrency(costs[costIndex], &text);
@@ -106,15 +106,15 @@ void TTradeSchoolView::UpdateFields() {
 #define UPDATE_TRADE_SCHOOL_CONTROL(controlTag, assertLine, enableCondition)                       \
   control = ResolveControlByTag(controlTag);                                                       \
   if (control == 0) {                                                                              \
-    FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, assertLine);                         \
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", assertLine);                      \
   }                                                                                                \
   if (enableCondition) {                                                                           \
     if (control->IsActionable() == 0) {                                                            \
-      control->SetEnabled(1, 1);                                                                   \
+      control->Show(1, 1);                                                                         \
     }                                                                                              \
   } else {                                                                                         \
     if (control->IsActionable() != 0) {                                                            \
-      control->SetEnabled(0, 1);                                                                   \
+      control->Show(0, 1);                                                                         \
     }                                                                                              \
   }
 

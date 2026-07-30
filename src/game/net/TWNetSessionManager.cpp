@@ -403,7 +403,7 @@ TWNetSessionManager::~TWNetSessionManager() {
   }
   g_WNetSerializedPtrArrayB006a5f28.RemoveAll();
   for (int j = 0; j < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++j) {
-    delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[j]);
+    delete g_WNetSerializedPtrArrayA006a5f10[j];
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
 }
@@ -438,7 +438,7 @@ BOOL TWNetSessionManager::OnEnumerateJoinableSession(const DPSESSIONDESC2* sessi
                                                      DWORD* timeout, DWORD flags) {
   (void)timeout;
   (void)flags;
-  RuntimeSelectionRecord* record = new RuntimeSelectionRecord;
+  WNetSelectionRecord* record = new WNetSelectionRecord;
   record->providerGuid = sessionDescription->guidInstance;
   record->label = sessionDescription->lpszSessionNameA;
   int index = g_WNetSerializedPtrArrayB006a5f28.GetSize();
@@ -455,7 +455,7 @@ BOOL TWNetSessionManager::OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR 
 
   if (memcmp(providerGuid, &DPSPGUID_MODEM, sizeof(GUID)) != 0 &&
       memcmp(providerGuid, &DPSPGUID_SERIAL, sizeof(GUID)) != 0) {
-    RuntimeSelectionRecord* record = new RuntimeSelectionRecord;
+    WNetSelectionRecord* record = new WNetSelectionRecord;
     record->providerGuid = *providerGuid;
     record->label = providerName;
 
@@ -494,7 +494,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
       static_cast<TJoinSelectorDialog*>(dialog->ResolveControlByTag(kControlTagDialog)); // 'GOLD'
   selector->AssertValid();
   for (int index = 0; index < g_WNetSerializedPtrArrayB006a5f28.GetSize(); ++index) {
-    RuntimeSelectionRecord* record = g_WNetSerializedPtrArrayB006a5f28[index];
+    WNetSelectionRecord* record = g_WNetSerializedPtrArrayB006a5f28[index];
     selector->AddJoinableGameOptionEntry(record->label, record);
   }
 
@@ -504,7 +504,7 @@ BOOL TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice(GUID* sele
   nameControl->InitDialogWindowAndSyncTitleIfChanged(&joinGamePlayerNameA8, 0);
 
   int command = dialog->PoseModally();
-  RuntimeSelectionRecord* selected = selector->GetSelectedJoinableGame();
+  WNetSelectionRecord* selected = selector->GetSelectedJoinableGame();
   if (command == kControlTagOkay) {
     *selectedSessionGuid = selected->providerGuid;
     nameControl->GetCurrentText(&joinGamePlayerNameA8);

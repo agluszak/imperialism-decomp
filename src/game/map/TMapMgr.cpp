@@ -2731,7 +2731,7 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* u
     if (selectedEntry == nullptr) {
       continue;
     }
-    if (selectedEntry->tileIndex06 != 0) {
+    if (selectedEntry->tileIndex06 != tileIndex) {
       tile->recruitSearchVisited0e = 1;
     } else {
       tile->recruitSearchVisited0e = (tile->activeFlags1c >> 4) & 1;
@@ -3327,10 +3327,11 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
 }
 
 // FUNCTION: IMPERIALISM 0x00517410
-int TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
-                                                      char useAltOffset) {
-  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
-    return 0;
+short TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                        char useAltOffset) {
+  short variant = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  if (variant == 0) {
+    return variant;
   }
   if (useAltOffset == 0) {
     return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x15) << 6;
@@ -4293,18 +4294,16 @@ void TMapMgr::DumpAndResetMapScriptState() {
     tileIndex++;
   } while (tileIndex < 0x1950);
 
-  TGreatPower** nationSlot = g_apNationStates;
-  int nationIndex = 0;
   int slot;
-  do {
+  for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
+    TGreatPower* nation = g_apNationStates[nationIndex];
     for (slot = 0; slot < 6; ++slot) {
-      TCity* city = (*nationSlot != nullptr) ? (*nationSlot)->city : nullptr;
+      TCity* city = (nation != nullptr) ? nation->city : nullptr;
       int value = city->GetBuildingType(static_cast<short>(slot));
       if (static_cast<short>(value) > 0) {
         fprintf(logFile, g_szFmtCapa_00697280, nationIndex, slot, static_cast<short>(value));
       }
     }
-    TGreatPower* nation = *nationSlot;
     TCity* laborCity1 = (nation != nullptr) ? nation->city : nullptr;
     TCity* laborCity2 = (nation != nullptr) ? nation->city : nullptr;
     TCity* laborCity3 = (nation != nullptr) ? nation->city : nullptr;
@@ -4321,9 +4320,7 @@ void TMapMgr::DumpAndResetMapScriptState() {
         fprintf(logFile, g_szFmtEmba_00697254, nationIndex, slot, embargo);
       }
     }
-    nationSlot++;
-    nationIndex++;
-  } while (nationSlot < g_apNationStates + 7);
+  }
 
   // Four turns per year, so economicTurn / 4 is the year. 0x005194bf reads it as a SHORT
   // (MOVSX EAX,word ptr [edx+0x2c]), which is exactly what economicTurn is: the layout

@@ -15,7 +15,8 @@ class TView;
 class TOneTimeAnimation : public TAnimation {
 public:
   DECLARE_DYNCREATE(TOneTimeAnimation)
-  virtual ~TOneTimeAnimation() override; // slot 0x01 (scalar deleting destructor); dtor 0x49fd20
+  // FUNCTION: IMPERIALISM 0x0049fd20
+  virtual ~TOneTimeAnimation() override {} // slot 0x01 (scalar deleting destructor); dtor 0x49fd20
 
   // Override of TAnimation::Tick (slot 0x0a): tick the
   // one-shot animation, invalidate + repaint the target rect on each frame flip, and latch

@@ -164,10 +164,10 @@ void TInteriorMinister::FillOrders() {
 }
 
 // FUNCTION: IMPERIALISM 0x004be650
-bool TInteriorMinister::DoIncreasedTransport() {
-  bool result = false;
+char TInteriorMinister::DoIncreasedTransport() {
+  char result = 0;
   if (ownerContextAt04->GetAvailableMerchantCapacity() == 0) {
-    result = ownerContextAt04->IncreaseMerchantMarine() != 0;
+    result = ownerContextAt04->IncreaseMerchantMarine();
   }
   return result;
 }

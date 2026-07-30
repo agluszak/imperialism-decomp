@@ -578,7 +578,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           if (mySlot >= 0) {
             coatControl->SetPictureResourceIdAndRefresh((short)(mySlot + 0x120a), 1);
           }
-          coatControl->SetEnabled(mySlot >= 0, 1);
+          coatControl->Show(mySlot >= 0, 1);
         }
         if (g_pSimMgr->multiplayerSessionRole == 1) {
           unsigned char localPresent = 0;
@@ -606,14 +606,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
             okayButton->buttonText = startText;
             okayButton->RefreshControl();
           }
-          okayButton->SetState(canStart, 0);
-          okayButton->SetEnabled(canStart, 1);
+          okayButton->ViewEnable(canStart, 0);
+          okayButton->Show(canStart, 1);
           okayButton->themeCode9A = 0x2b6c;
           okayButton->themeCode9C = 0x2b6b;
           okayButton->pointSize98 = 0xc;
           TView* messControl = lounge->ResolveControlByTag(kSessionTagMess);
           messControl->AssertValid();
-          messControl->SetEnabled(canStart == 0, 1);
+          messControl->Show(canStart == 0, 1);
           LoadUiStringAndDispatchSharedMessageCommand(0x2742, canStart != 0 ? 0xa : 0xc,
                                                       messControl);
           lounge->AssertValid();
@@ -722,8 +722,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(kControlTagCncl));
       cancelButton->AssertValid();
       cancelButton->controlTag = kSessionTagRsvp; // 'rsvp'
-      cancelButton->SetEnabled(1, 0);
-      cancelButton->SetState(1, 0);
+      cancelButton->Show(1, 0);
+      cancelButton->ViewEnable(1, 0);
       cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
     }
     int responseTag = dialog->PoseModally();
@@ -1047,7 +1047,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Append one tracked-slot entry to the nation.
     TurnEvent1BTrackedEntryPacket* trackedEntry =
         static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
-    g_apNationStates[trackedEntry->nationSlot1C]->AppendTrackedSlotEntry(
+    g_apNationStates[trackedEntry->nationSlot1C]->AddToDealBook(
         trackedEntry->trackedKind1E, trackedEntry->targetNation20, trackedEntry->trackedValue22,
         trackedEntry->trackedSlotIndex24, trackedEntry->trackedPayload28);
     break;
@@ -1210,8 +1210,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Queue a diplomacy proposal code on the addressed nation.
     TurnEvent16DiplomacyProposalPacket* proposal =
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
-    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->proposalCode1A,
-                                                           proposal->targetNationId1C);
+    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->sourceNationSlot1A,
+                                                           proposal->proposalCode1C);
     break;
   }
   case 0x17: {
@@ -1804,15 +1804,15 @@ void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVa
 struct TurnEvent1APacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
-  unsigned char pad15;
+  unsigned char pad15[3];
   short uiTurnToken;
-  short field18;
-  short field1a;
-  short field1c;
-  short field1e;
-  short field20;
-  short field22;
-  short nationCapabilityFlags[7];
+  unsigned char pad1a[2];
+  short sourceNation1C;
+  short param1E;
+  short param20;
+  short param22;
+  short param24;
+  short availableMerchantCapacityBySlot[7];
 };
 
 // FUNCTION: IMPERIALISM 0x005497b0
@@ -1827,19 +1827,18 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-  packet.field18 = param0;
-  packet.field1a = 0;
-  packet.field1c = param1;
-  packet.field1e = param2;
-  packet.field20 = param3;
-  packet.field22 = param4;
+  packet.sourceNation1C = param0;
+  packet.param1E = param1;
+  packet.param20 = param2;
+  packet.param22 = param3;
+  packet.param24 = param4;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
-      packet.nationCapabilityFlags[nationIndex] =
-          nationState->IsPolicyCodeInSpecialNationPolicySet(0);
+      packet.availableMerchantCapacityBySlot[nationIndex] =
+          nationState->GetAvailableMerchantCapacity();
     } else {
-      packet.nationCapabilityFlags[nationIndex] = 0;
+      packet.availableMerchantCapacityBySlot[nationIndex] = 0;
     }
   }
   g_pNetMgr006a6014->Send(&packet, 1);
@@ -2134,15 +2133,14 @@ void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* s
 // FUNCTION: IMPERIALISM 0x0054a5e0
 void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* stream,
                                                                      int nationFilter) {
-  int slot = 0;
-  for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
+  for (int slot = 0; slot < 7; ++slot) {
     bool matches;
     if (nationFilter == -1 || nationFilter == slot) {
       matches = true;
     } else {
       matches = false;
     }
-    TGreatPower* nation = *cell;
+    TGreatPower* nation = g_apNationStates[slot];
     if (nation == 0 || !matches) {
       stream->WriteInteger(0);
     } else {
@@ -2330,10 +2328,9 @@ void TMultiplayerMgr::RefreshPoseMessageDialogNationSelectionControls(int unused
     bool isMine =
         g_pNetMgr006a6014->GetSessionActiveNationId() == g_pGameFlowState->nationSessionIds[i];
     bool occupiedByOther = occupied && !isMine;
-    // First call dispatches TView::SetState (slot 0x2a, hidden by the TCzechBox
-    // overload — the original calls [vtbl+0xa8]); second is the TCzechBox
-    // SetState (slot 0x75), virtual in the original, not a qualified direct call.
-    static_cast<TView*>(boxControl)->SetState(static_cast<int>(occupiedByOther), 0);
+    // First call dispatches TView::ViewEnable (slot 0x2a; the original calls
+    // [vtbl+0xa8]); second is TCzechBox::SetState at slot 0x75.
+    static_cast<TView*>(boxControl)->ViewEnable(static_cast<int>(occupiedByOther), 0);
     if (mySlotIndex != -1) {
       boxControl->SetState(static_cast<unsigned char>(i == mySlotIndex),
                            static_cast<unsigned char>(0));

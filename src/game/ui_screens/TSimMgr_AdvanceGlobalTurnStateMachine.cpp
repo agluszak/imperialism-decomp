@@ -220,10 +220,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
     }
     if (multiplayerSessionRole == 0) {
-      TGreatPower** nationCursor = g_apNationStates;
-      TGreatPower** nationEnd = &g_apNationStates_End;
-      while (nationCursor < nationEnd) {
-        TGreatPower* nation = *nationCursor;
+      for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+        TGreatPower* nation = g_apNationStates[nationSlot];
         if (nation != nullptr && nation->diplomacyEligibilityA0 != 0 &&
             GetNationTrackedOrderCount(nation) > 0) {
           g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
@@ -231,7 +229,6 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
                                         activeNationSlot);
           break;
         }
-        ++nationCursor;
       }
     } else if (IsNationTerrainEligible(activeNationSlot)) {
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventDiplomacyMap), activeNationSlot);

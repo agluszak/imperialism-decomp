@@ -387,18 +387,18 @@ void TCountry::AddToTreasury(int amount) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7b00
-char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                             int arg4) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
+char TCountry::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                                 ResourceKindStorage resourceKind) {
+  (void)targetNationSlot;
+  (void)amount;
+  (void)price;
+  (void)resourceKind;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7b20
 void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
-  if (g_pSimMgr != 0 && g_pSimMgr->difficultyLevel == 1) {
+  if (g_pSimMgr->multiplayerSessionRole == 1) {
     g_pGameFlowState->DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot,
                                                              mode);
   }
@@ -432,9 +432,7 @@ void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNatio
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
-      if (terrain != 0) {
-        terrain->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 100);
-      }
+      terrain->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 100);
     }
   }
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
@@ -450,9 +448,7 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
-      if (terrainDescriptor != 0) {
-        terrainDescriptor->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 200);
-      }
+      terrainDescriptor->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 200);
     }
     ++nationSlot;
   } while (nationSlot < kNationSlotCount);
@@ -548,7 +544,7 @@ char TCountry::IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f80
-void TCountry::AddNoticeFrom(int sourceNation, int actionCode) {
+void TCountry::AddNoticeFrom(short sourceNation, short actionCode) {
   (void)sourceNation;
   (void)actionCode;
 }
@@ -562,16 +558,16 @@ void TCountry::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex,
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fc0
-bool TCountry::HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) {
-  (void)targetNationSlot;
+bool TCountry::StillBuyingItem(ResourceKindStorage resourceKind) {
+  (void)resourceKind;
   return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
-void TCountry::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                            NationSlot targetNationSlot) {
+void TCountry::AddOfferFrom(NationSlot sourceNationSlot,
+                            DiplomacyProposalCodeStorage proposalCode) {
+  (void)sourceNationSlot;
   (void)proposalCode;
-  (void)targetNationSlot;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8000

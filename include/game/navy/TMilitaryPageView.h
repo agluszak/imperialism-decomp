@@ -15,7 +15,8 @@ public:
   virtual void Close() override;               // slot 0x28 0x564bf0
   virtual void DoPostCreate(int arg) override; // slot 0x37 0x5649a0
 
-  TMilitaryPageView();
+  // FUNCTION: IMPERIALISM 0x00564920
+  TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
   void AfterStuffValues();
   void PrepareUnitCache(int bitmapResourceId, int maskResourceId, int depth);
 

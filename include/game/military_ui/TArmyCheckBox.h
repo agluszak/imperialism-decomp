@@ -5,11 +5,6 @@
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
 
-#if defined(__clang__)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Woverloaded-virtual"
-#endif
-
 // VTABLE: IMPERIALISM 0x0064cec0
 class TArmyCheckBox : public TControl {
 public:
@@ -20,9 +15,8 @@ public:
   virtual void DoPostCreate(int arg) override;  // slot 0x37 0x4aa2f0
   virtual void Draw(RECT* rectBuffer) override; // slot 0x44 0x4aa100
   virtual void HiliteState(unsigned char hilited,
-                           unsigned char drawImmediate) override; // slot 0x70 0x4aa310
-  virtual unsigned char IsOn();                                   // slot 0x71 0x4aa340
-  using TControl::SetState;
+                           unsigned char drawImmediate) override;       // slot 0x70 0x4aa310
+  virtual unsigned char IsOn();                                         // slot 0x71 0x4aa340
   virtual void SetState(unsigned char on, unsigned char drawImmediate); // slot 0x72 0x4aa360
   virtual void CheckTheLook(unsigned char drawImmediate);               // slot 0x73 0x4aa030
   virtual void Toggle(unsigned char drawImmediate);                     // slot 0x74 0x4aa3a0
@@ -63,7 +57,3 @@ public:
 };
 
 ASSERT_SIZE(TArmyCheckBox, 0x94);
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#endif

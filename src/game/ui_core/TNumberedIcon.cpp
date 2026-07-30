@@ -69,7 +69,7 @@ void TNumberedIcon::InstallNumberText() {
   style.fontStyleFlags = 0;
   style.fontSize = 9;
   numberText->InstallTextStyle(style, 0);
-  numberText->SetEnabled(1, 0);
+  numberText->Show(1, 0);
   numberTextAc = numberText;
 }
 

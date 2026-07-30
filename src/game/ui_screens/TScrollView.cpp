@@ -104,11 +104,11 @@ void TScrollView::SyncBoundedValueAndToggleControlStates() {
   }
 
   if (contentView60->frameHeight38 - frameHeight38 > 0) {
-    scrollBar64->SetEnabled(1, 1);
-    scrollBar64->SetState(1, 1);
+    scrollBar64->Show(1, 1);
+    scrollBar64->ViewEnable(1, 1);
   } else {
-    scrollBar64->SetEnabled(0, 1);
-    scrollBar64->SetState(0, 1);
+    scrollBar64->Show(0, 1);
+    scrollBar64->ViewEnable(0, 1);
   }
 }
 

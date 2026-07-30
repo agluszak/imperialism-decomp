@@ -71,7 +71,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
 
 // FUNCTION: IMPERIALISM 0x005696d0
 int TNavyToolbarCluster::IsTradeControlAtMinimum() {
-  return 0;
+  return 1;
 }
 
 // All three dispatches here go through byte 0x3c = slot 0x0f = DoEvent

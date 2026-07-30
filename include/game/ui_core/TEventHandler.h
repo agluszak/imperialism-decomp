@@ -26,7 +26,7 @@ struct TToolboxEvent;
 class TEventHandler : public TObject {
 public:
   int enabled;
-  int viewEnabled; // +0x08 -- TView::SetEnabled state; TWindow::Show mirrors visibility here
+  int viewEnabled; // +0x08 -- TView::Show state; TWindow::Show mirrors visibility here
   TEventHandler* nextHandler;
   int idleFrequencyTicks;
   int lastIdleTick;
@@ -65,7 +65,8 @@ public:
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   DECLARE_DYNCREATE(TEventHandler)
-  virtual ~TEventHandler() override;       // 0x01
+  // FUNCTION: IMPERIALISM 0x0048a160
+  virtual ~TEventHandler() override {}     // 0x01
   void Free() override;                    // 0x07 0x48a1b0
   TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
   virtual char IsEnabled();                // 0x0a 0x48a240

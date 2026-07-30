@@ -24,7 +24,6 @@
 
 namespace {
 
-const char* kSourceFileUDisplayMgr = "D:\\Ambit\\Cross\\UDisplayMgr.cpp";
 const int kClass99WindowId = 99;
 
 static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* literal) {
@@ -122,7 +121,7 @@ void TDisplayMgr::IDisplayMgr() {
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(DecodeTurnEventCode(eventCode0e));
   if (dialogRoot == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0xb0);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0xb0);
   }
   activeDialog = dialogRoot;
   field18 = InitializeTurnOrderNavigationDialogByViewportSize_Impl(0x80);
@@ -131,7 +130,7 @@ void TDisplayMgr::IDisplayMgr() {
 
 // FUNCTION: IMPERIALISM 0x004fea60
 void TDisplayMgr::Free() {
-  delete g_pPrimaryRenderSurfaceContext;
+  DisposeGWorld(g_pPrimaryRenderSurfaceContext);
   g_pPrimaryRenderSurfaceContext = 0;
   turnOrderList->SelfDelete();
   delete this;
@@ -151,7 +150,7 @@ void TDisplayMgr::MakeNewGWorld(TQuickDrawSurfaceContext*& outContext, short bit
 // `this` is unused, but the callsites all dispatch through g_pDisplayMgr.
 // FUNCTION: IMPERIALISM 0x004feb50
 void TDisplayMgr::RemoveGWorld(TQuickDrawSurfaceContext*& surface) {
-  delete surface;
+  DisposeGWorld(surface);
   surface = 0;
 }
 
@@ -179,14 +178,14 @@ void TDisplayMgr::AboutToLoseControl(unsigned char) {
 // FUNCTION: IMPERIALISM 0x004fec20
 void TDisplayMgr::CloseBooks() {
   if (g_nUiInvalidationAssertFlagLine471 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1d7);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1d7);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004fec50
 void TDisplayMgr::DismissTouchyFloaters(TToolboxEvent*) {
   if (g_nUiInvalidationAssertFlagLine495 == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x1ef);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x1ef);
   }
 }
 
@@ -215,9 +214,9 @@ void TDisplayMgr::SetMenuHeight(unsigned char) {}
 void TDisplayMgr::SetBitDepth(unsigned char bitDepth) {
   if (dialogActiveFlag != 0) {
     if (bitDepth != 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x266);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x266);
     } else {
-      TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x268);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x268);
     }
   }
 }
@@ -239,7 +238,7 @@ void TDisplayMgr::UpdateTheGWorld(short eventCode) {
   TView* mainControl = activeDialog->ResolveControlByTag(kControlTagMain);
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(kSourceFileUDisplayMgr, 0x28a);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UDisplayMgr.cpp", 0x28a);
     return;
   }
 

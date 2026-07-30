@@ -2062,7 +2062,6 @@ extern "C" const char g_szCityProductionShipyardPrefix[] = "Shipyard: ";
 extern "C" const char g_szDoubleQuote[] = "\"";
 // GLOBAL: IMPERIALISM 0x0069a7f8
 extern "C" const char s_SourcePathUTestDialogs_0069A7F8[] = "D:\\Ambit\\Cross\\UTestDialogs.cpp";
-extern "C" const char s_SourcePathUCityViews_00696650[] = "D:\\Ambit\\Cross\\UCityViews.cpp";
 // GLOBAL: IMPERIALISM 0x00696508
 short g_shipyardQueueIconLeftBySlot[8] = {4, 4, 3, 2, 4, 4, 3, 2};
 extern "C" const char s_SourcePathUArmyViews_00695858[] = "D:\\Ambit\\Cross\\UArmyViews.cpp";
@@ -2240,9 +2239,9 @@ CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 // GLOBAL: IMPERIALISM 0x006a5ed8
 POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a5f10
-CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
-CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 

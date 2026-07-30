@@ -25,8 +25,6 @@ extern float g_AiDevelopmentResourceBudgetScale_00650758;
 
 extern "C" const char s_SourcePathUCityDialogs_006962E8[];
 
-extern "C" const char s_SourcePathUCityViews_00696650[];
-
 // Assert source-path string for the UCityMinister TU.
 extern "C" const char s_SourcePathUCityMinister_006964B0[];
 

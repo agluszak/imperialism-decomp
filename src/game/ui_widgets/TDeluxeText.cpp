@@ -41,7 +41,7 @@ void TDeluxeText::DoPostCreate(int arg) {
 // FUNCTION: IMPERIALISM 0x005b60a0
 void TDeluxeText::SetSelectedFlagAndState(char param_1) {
   field94 = param_1;
-  SetState(param_1, 0);
+  ViewEnable(param_1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b60d0

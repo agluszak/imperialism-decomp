@@ -14,7 +14,8 @@ class TUnit : public TObject {
 public:
   // --- TObject overrides ---
   DECLARE_DYNCREATE(TUnit)
-  ~TUnit() override; // slot 0x04
+  // FUNCTION: IMPERIALISM 0x005c2510
+  ~TUnit() override {} // slot 0x04
 
   // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
 

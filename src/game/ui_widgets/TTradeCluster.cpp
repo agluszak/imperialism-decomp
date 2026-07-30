@@ -117,7 +117,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitBar);
   }
-  barControl->SetState(0, 0);
+  barControl->ViewEnable(0, 0);
 
   TView* leftControl = this->ResolveControlByTag(kControlTagLeft);
   if (leftControl == 0) {
@@ -127,21 +127,21 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
   if (rightControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineInitRight);
   }
-  leftControl->SetState(0, 0);
-  rightControl->SetState(0, 0);
+  leftControl->ViewEnable(0, 0);
+  rightControl->ViewEnable(0, 0);
 
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
   if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
-    leftControl->SetEnabled(0, 0);
-    rightControl->SetEnabled(0, 0);
-    barControl->SetEnabled(0, 0);
+    leftControl->Show(0, 0);
+    rightControl->Show(0, 0);
+    barControl->Show(0, 0);
     TView* greenControl = this->ResolveControlByTag(kControlTagGree);
     if (greenControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineInitGree);
     }
     if (greenControl != 0) {
-      greenControl->SetEnabled(0, 0);
+      greenControl->Show(0, 0);
     }
   }
 
@@ -178,7 +178,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       if (sellValue < (int)maxByNationMetric) {
         int capacityValue = capacityControl->UpdateControlCachedIntFromWindowText();
         if (sellValue < capacityValue) {
-          sellControl->SetEnabled(sellValue + 1 != 0, 1);
+          sellControl->Show(sellValue + 1 != 0, 1);
           this->SetMoveAmount(static_cast<short>(sellValue + 1));
           return;
         }
@@ -253,25 +253,25 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     }
 
     TControl* sellControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagSell));
-    sellControl->SetEnabled(1, 1);
+    sellControl->Show(1, 1);
 
     TControl* barControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
     }
-    barControl->SetState(1, 0);
+    barControl->ViewEnable(1, 0);
     this->SetMoveAmount(static_cast<short>(applyValue));
     return;
   }
   case 0x6a: {
     TControl* sellControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagSell));
-    sellControl->SetEnabled(0, 1);
+    sellControl->Show(0, 1);
 
     TControl* barControl = static_cast<TControl*>(this->ResolveControlByTag(kControlTagBar));
     if (barControl == 0) {
       FailNilPointerInUSmallViews(kAssertLineTradeSellZeroBar);
     }
-    barControl->SetState(0, 1);
+    barControl->ViewEnable(0, 1);
     this->SetMoveAmount(0);
     return;
   }
@@ -361,7 +361,7 @@ void TTradeCluster::DoControlAction() {
   bidControl->Resize(size, 1);
 
   if (g_pViewMgr->GetPendingTurnOverlayCode() < 4) {
-    bidControl->SetEnabled(1, 1);
+    bidControl->Show(1, 1);
     if (controlTag == kTradeRowStateTag_67643020) {
       bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidSecondaryStateB, 0);
     } else {
@@ -372,7 +372,7 @@ void TTradeCluster::DoControlAction() {
     return;
   }
 
-  bidControl->SetEnabled(0, 1);
+  bidControl->Show(0, 1);
 }
 
 // Bid-state updater: assigns the 'card' bitmap (row-state dependent) and clears
@@ -384,7 +384,7 @@ void TTradeCluster::SetTradeBidControlBitmap() {
     FailNilPointerInUSmallViews(kAssertLineBidControl);
   }
 
-  bidControl->SetEnabled(1, 0);
+  bidControl->Show(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
     bidControl->SetPictureResourceIdAndRefresh(kTradeBitmapBidStateB, 0);
   } else {
@@ -407,12 +407,12 @@ void TTradeCluster::SetTradeBidControlBitmap() {
     FailNilPointerInUSmallViews(kAssertLineBidRight);
   }
 
-  greenControl->SetEnabled(0, 1);
-  leftControl->SetEnabled(0, 1);
-  rightControl->SetEnabled(0, 1);
-  greenControl->SetState(0, 1);
-  leftControl->SetState(0, 1);
-  rightControl->SetState(0, 1);
+  greenControl->Show(0, 1);
+  leftControl->Show(0, 1);
+  rightControl->Show(0, 1);
+  greenControl->ViewEnable(0, 1);
+  leftControl->ViewEnable(0, 1);
+  rightControl->ViewEnable(0, 1);
 
   bidControl->PrepareForDrawing();
   bidControl->PaintOrInvalidateControl();
@@ -427,7 +427,7 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
     FailNilPointerInUSmallViews(kAssertLineOfferControl);
   }
 
-  offerControl->SetEnabled(1, 0);
+  offerControl->Show(1, 0);
   if (controlTag == kTradeRowStateTag_67643020) {
     offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferStateB, 0);
   } else {
@@ -452,12 +452,12 @@ void TTradeCluster::SetTradeOfferControlBitmap() {
     FailNilPointerInUSmallViews(kAssertLineOfferRight);
   }
 
-  greenControl->SetEnabled(1, 1);
-  leftControl->SetEnabled(1, 1);
-  rightControl->SetEnabled(1, 1);
-  greenControl->SetState(1, 1);
-  leftControl->SetState(1, 1);
-  rightControl->SetState(1, 1);
+  greenControl->Show(1, 1);
+  leftControl->Show(1, 1);
+  rightControl->Show(1, 1);
+  greenControl->ViewEnable(1, 1);
+  leftControl->ViewEnable(1, 1);
+  rightControl->ViewEnable(1, 1);
 
   offerControl->PrepareForDrawing();
   offerControl->PaintOrInvalidateControl();
@@ -483,7 +483,7 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     short activeNationSlotAgain = g_pSimMgr->GetActiveNationId();
     TGreatPower* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
-      offerControl->SetEnabled(1, 0);
+      offerControl->Show(1, 0);
       if (controlTag == kTradeRowStateTag_67643020) {
         offerControl->SetPictureResourceIdAndRefresh(kTradeBitmapOfferSecondaryStateB, 0);
       } else {
@@ -492,10 +492,10 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
       CPoint layoutCaptureF0(0xa3, 0);
       offerControl->Locate(layoutCaptureF0, 1);
     } else {
-      offerControl->SetEnabled(0, 1);
+      offerControl->Show(0, 1);
     }
   } else {
-    offerControl->SetEnabled(0, 1);
+    offerControl->Show(0, 1);
   }
 
   TView* greenControl = this->ResolveControlByTag(kControlTagGree);
@@ -511,12 +511,12 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
     FailNilPointerInUSmallViews(kAssertLineOfferSecondaryRight);
   }
 
-  greenControl->SetEnabled(0, 1);
-  leftControl->SetEnabled(0, 1);
-  rightControl->SetEnabled(0, 1);
-  greenControl->SetState(0, 1);
-  leftControl->SetState(0, 1);
-  rightControl->SetState(0, 1);
+  greenControl->Show(0, 1);
+  leftControl->Show(0, 1);
+  rightControl->Show(0, 1);
+  greenControl->ViewEnable(0, 1);
+  leftControl->ViewEnable(0, 1);
+  rightControl->ViewEnable(0, 1);
 
   offerControl->PrepareForDrawing();
   offerControl->PaintOrInvalidateControl();
@@ -567,6 +567,6 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
   }
 
   if (greenControl != 0) {
-    greenControl->SetEnabled(0, 1);
+    greenControl->Show(0, 1);
   }
 }
