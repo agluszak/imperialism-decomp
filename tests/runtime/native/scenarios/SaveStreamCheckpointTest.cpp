@@ -6,6 +6,8 @@
 #include "game/assets/TAssetMgr.h"
 #include "game/app/TAnimator.h"
 #include "game/city_ui/TCountry.h"
+#include "game/military/TMilitaryUnit.h"
+#include "game/ui_core/TSortedList.h"
 #include "game/core/TFileStream.h"
 #include "game/gfx/TAmbitApplication.h"
 #include "game/map/TMapMgr.h"
@@ -107,6 +109,16 @@ private:
     report = "[";
     failure.Empty();
     entries = 0;
+
+    // Enter the replay from the state a real load is entered from. A load reached from the menu has
+    // no units linked into the map; this replay runs on top of a played game, and
+    // TSimMgr::ReadFrom's rebuild frees every nation's units without unlinking them from
+    // cityScoreTable[P].stationedUnitChain98 (TUnit::Free, verified faithful at 0x5c2680, does not
+    // unlink; nor does TCountry::Free at 0x4d6ba0). The freshly seeded units are then linked in
+    // front of those freed ones, and walking that tail is imperialism-decomp-srql. Detaching first,
+    // through each unit's own DetachUnitOrderFromOwnerAndReset, removes the difference between this
+    // replay and a menu load rather than papering over what the rebuild does.
+    DetachLiveMilitaryUnitsFromMap();
 
     // Write the save first, through the same document path a real save uses, so the
     // bytes being replayed are this build's own and their provenance is beyond doubt.
@@ -216,6 +228,23 @@ private:
   // Reading into the live managers is what the real load does; a checkpoint replay that
   // read into throwaway objects would not exercise the same version gates or collection
   // states. The game state after this test is spent, which is why nothing follows it.
+  void DetachLiveMilitaryUnitsFromMap() {
+    for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
+      TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+      TSortedList* units = country != 0 ? country->militaryUnitList44 : 0;
+      if (units == 0) {
+        continue;
+      }
+      // Walk by ordinal and detach in place: the list keeps its payloads, only the map chains let go.
+      for (int ordinal = 1; ordinal <= units->GetCount(); ++ordinal) {
+        CObject* entry = static_cast<CObject*>(units->GetEntryByOrdinal(ordinal));
+        if (entry != 0 && entry->IsKindOf(RUNTIME_CLASS(TMilitaryUnit)) != 0) {
+          static_cast<TMilitaryUnit*>(entry)->DetachUnitOrderFromOwnerAndReset();
+        }
+      }
+    }
+  }
+
   bool ReadOne(CountingFileStream& stream, const char* name, TObject* object) {
     if (object == 0) {
       failure.Format("%s is null before its ReadFrom; the chain cannot be replayed", name);
