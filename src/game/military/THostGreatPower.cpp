@@ -9,7 +9,7 @@
 #include "game/ui_core/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00540f20
-bool THostGreatPower::IsHost(void) {
+bool THostGreatPower::IsHost(void) const {
   return true;
 }
 

@@ -291,16 +291,15 @@ void TAutoGreatPower::RaiseNeedPlanningMetrics(int needSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7630
-void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                                     int multiplier) {
-  short resourceSlot = static_cast<short>(resourceIndex);
-  short resourceDelta = static_cast<short>(delta);
+void TAutoGreatPower::PurchaseItem(short resourceKind, short amount, short price) {
+  short resourceSlot = resourceKind;
+  short resourceDelta = amount;
   if (resourceDelta < 0 && resourceSlot >= 7 && resourceSlot <= 0x0C) {
     this->actionMetricByQuarter[resourceSlot - 7] =
         static_cast<short>(this->actionMetricByQuarter[resourceSlot - 7] + resourceDelta);
   }
 
-  TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(resourceIndex, delta, multiplier);
+  TGreatPower::PurchaseItem(resourceKind, amount, price);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7680
@@ -552,7 +551,7 @@ int TAutoGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNati
       ownerSlot = minor->nationSlot;
     }
     if (ownerSlot != this->nationSlot) {
-      minor->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
+      minor->ChangeMaster(this->nationSlot, 1);
     }
   }
   return 1;
@@ -844,7 +843,7 @@ void TAutoGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         int minorIndex;
         for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
           TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[7 + minorIndex];
-          if (minorDescriptor->IsEncodedNationSlotMinus200Equal(slot) != 0) {
+          if (minorDescriptor->IsColonyOf(slot) != 0) {
             int m;
             for (m = 1; m <= minorDescriptor->ownedRegionList->GetSize(); ++m) {
               int minorRegion = minorDescriptor->ownedRegionList->At(m);
@@ -1239,8 +1238,8 @@ void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ea150
-void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
-  TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(targetNationSlot);
+void TAutoGreatPower::BecomeProtectorateOf(int targetNationSlot) {
+  TGreatPower::BecomeProtectorateOf(targetNationSlot);
 
   int i = 0;
   for (i = 0; i < 6; ++i) {
@@ -1256,7 +1255,7 @@ void TAutoGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targ
 }
 
 // FUNCTION: IMPERIALISM 0x004ea1c0
-void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
+void TAutoGreatPower::LoseProvince(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TMission* mission = static_cast<TMission*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
@@ -1272,12 +1271,12 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
     mission = static_cast<TMission*>(missionCursor.Advance());
   }
   this->mapNodeStateFlags[regionId] = 0;
-  TGreatPower::RemoveRegionIdFromNationOwnedRegionList(regionId);
+  TGreatPower::LoseProvince(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea290
-void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  TGreatPower::AddRegionIdToNationOwnedRegionList(regionId);
+void TAutoGreatPower::AddProvince(int regionId) {
+  TGreatPower::AddProvince(regionId);
   this->mapNodeStateFlags[regionId] =
       g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(regionId,
                                                                               this->nationSlot)
@@ -1422,7 +1421,7 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
 
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
-    if (*minorCursor != 0 && (*minorCursor)->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+    if (*minorCursor != 0 && (*minorCursor)->IsColonyOf(nationSlot)) {
       for (regionOrdinal = 1; regionOrdinal <= (*minorCursor)->ownedRegionList->GetSize();
            ++regionOrdinal) {
         int regionId = (*minorCursor)->ownedRegionList->At(regionOrdinal);

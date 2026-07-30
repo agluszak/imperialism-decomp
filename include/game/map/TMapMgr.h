@@ -134,7 +134,7 @@ public:
   void GenerateProvinceNames();
   // Builds the set of region classes (Province::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
-  // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then
+  // IsColonyOf, i.e. encodedNationSlot - 200 == nationA), then
   // returns true if nationB (plus its tied minors) owns any region sharing one of those
   // classes.
   virtual bool
@@ -535,7 +535,7 @@ public:
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
   // When allowFallback is set and nationCode is a great power (<=6), also tries each minor
   // nation slot 7..22: if that minor's TCountry entry exists and
-  // IsEncodedNationSlotMinus200Equal(nationCode) holds for it, checks whether the minor's own
+  // IsColonyOf(nationCode) holds for it, checks whether the minor's own
   // slot number is among cityRecordIndex's adjacent owners too.
   bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
                                          char allowFallback);

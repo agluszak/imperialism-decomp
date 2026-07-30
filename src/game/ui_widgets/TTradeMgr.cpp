@@ -561,15 +561,13 @@ void TTradeMgr::OfferItemDeals(short item) {
   if (0 < count) {
     do {
       TradeDealEntry* entry = static_cast<TradeDealEntry*>(list->GetPtrListEntryByOneBasedIndex(i));
-      int transfer =
-          g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetIndustrialNeed(item);
+      int transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAmtUnsold(item);
       bool inPlay = g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot);
       if ((inPlay != 0) &&
           (g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot) == 0) &&
-          (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity() <
+          (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity() <
            transfer)) {
-        transfer =
-            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity();
+        transfer = g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity();
       }
       if (0 < transfer) {
         g_apTerrainTypeDescriptorTable[entry->sourceNationSlot]->ReplyToTradeOffer(
@@ -615,13 +613,13 @@ void TTradeMgr::NextTradeDeal() {
         list->GetPtrListEntryByOneBasedIndex(categoryRows[0].dealEntryOrdinal));
 
     int relationDelta =
-        g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetIndustrialNeed(dispatchIdx);
+        g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAmtUnsold(dispatchIdx);
     if (g_pDiplomacyTurnStateManager->IsGreatPower(entry->targetNationSlot) != 0 &&
         g_pDiplomacyTurnStateManager->IsGreatPower(entry->sourceNationSlot) == 0) {
-      if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity() <
+      if (g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity() <
           relationDelta) {
         relationDelta =
-            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetAvailableMerchantCapacity();
+            g_apTerrainTypeDescriptorTable[entry->targetNationSlot]->GetMerchantCapacity();
       }
     }
 
@@ -760,13 +758,12 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
   } else {
     int sourceNationIndex = static_cast<int>(sourceNation);
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceNationIndex])
-        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, amount, maximumAmount);
+        ->PurchaseItem(commodityType, amount, maximumAmount);
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNation])
-        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, -amount, sourceNation);
+        ->PurchaseItem(commodityType, -amount, sourceNation);
     if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) != 0 &&
         g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) == 0) {
-      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNation])
-          ->ConsumeMerchantCapacity(amount);
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNation])->DeliverItem(amount);
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(
         sourceNation, targetNation);
@@ -808,7 +805,7 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   int i = 0x10;
   do {
     if (*mp != 0) {
-      (*mp)->RebuildDiplomacyEconomicPressureFromMapState();
+      (*mp)->InitializeTradeStatus();
     }
     mp = mp + 1;
     i = i + -1;
@@ -835,7 +832,7 @@ void TTradeMgr::SetMinorsTradeBids() {
   int i = 0x10;
   do {
     if (*p != 0) {
-      (*p)->SeedRandomDiplomacyPolicyThresholds();
+      (*p)->SetTradeBids();
     }
     p = p + 1;
     i = i + -1;

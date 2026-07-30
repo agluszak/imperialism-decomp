@@ -50,7 +50,7 @@ public:
   // Mac oracle: GetNumCarsToBuild.
   virtual short GetNumCarsToBuild(); // 0x17 0x4be4c0
   // Per-car build step run once per GetNumCarsToBuild: no-op while
-  // GetAvailableMerchantCapacity() is nonzero, otherwise IncreaseMerchantMarine().
+  // GetMerchantCapacity() is nonzero, otherwise IncreaseMerchantMarine().
   // Mac oracle candidate DoIncreasedTransport (hedged: the owner-side callee's
   // semantics are still provisional).
   virtual char DoIncreasedTransport(); // 0x18 0x4be650

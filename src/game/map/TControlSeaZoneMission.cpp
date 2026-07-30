@@ -83,7 +83,7 @@ TMission* TControlSeaZoneMission::GetReplacementSlot48() {
     if (nation == nullptr) {
       continue;
     }
-    if (terrainIndex != nationId04 && !nation->IsEncodedNationSlotMinus200Equal(nationId04)) {
+    if (terrainIndex != nationId04 && !nation->IsColonyOf(nationId04)) {
       continue;
     }
     if (missionTargetZone->HasSecondaryNeighborWithNationTag(static_cast<short>(terrainIndex))) {

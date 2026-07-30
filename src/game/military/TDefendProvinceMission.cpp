@@ -53,7 +53,7 @@ TDefendProvinceMission::~TDefendProvinceMission() {}
 bool IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
   Province& record = g_pGlobalMapState->cityScoreTable[tileIndex];
   signed char primaryOwner = record.ownerNationCode00;
-  if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
+  if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetCapitolProvince() == tileIndex) {
     return true;
   }
 
@@ -251,7 +251,7 @@ void TDefendProvinceMission::Free() {
 // FUNCTION: IMPERIALISM 0x0053ecc0
 void TDefendProvinceMission::SetStateByte8To2() {
   TGreatPower* nation = g_apNationStates[nationId04];
-  short val = nation->GetHomeRegionCityRecordIndex();
+  short val = nation->GetCapitolProvince();
   if (val == presentLocation14) {
     state08 = 0;
   } else {

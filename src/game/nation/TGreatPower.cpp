@@ -455,7 +455,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
           }
 
           if (turnDelta > 9 && (turnDelta & 1U) != 0) {
-            this->GetAvailableMerchantCapacity();
+            this->GetMerchantCapacity();
 
             if (*stage1CounterA != 0 &&
                 static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
@@ -551,7 +551,7 @@ short TGreatPower::ComputeTreasuryStatusPromptCode(void) {
 // FUNCTION: IMPERIALISM 0x004dc540
 char TGreatPower::IsCapitolThreatened(int mode) {
   if (mode == 0) {
-    int nodeContext = this->GetHomeRegionCityRecordIndex();
+    int nodeContext = this->GetCapitolProvince();
     float localScore = TDefendProvinceMission::ComputeLocalSupportVectorScore(nodeContext);
     float crossNationScore =
         TDefendProvinceMission::ComputeCrossNationSupportVectorScore(nodeContext);
@@ -687,7 +687,7 @@ void TGreatPower::UpdateCountryStockpile(short* needVector) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dcaa0
-unsigned int TGreatPower::GetAvailableMerchantCapacityForProposal(int proposalCode) {
+unsigned int TGreatPower::GetMerchantCapacityForProposal(int proposalCode) {
   if (this->foreignMinister->purchasePriorityByResource1e[4] != 0) {
     if (g_pTradeMgr->GetAmtOffered(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
@@ -887,7 +887,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 
   for (int secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
     TMinor* secondaryState = g_apSecondaryNationStateSlots[secondarySlot];
-    char hasNationFlag = secondaryState->IsEncodedNationSlotMinus200Equal(this->nationSlot);
+    char hasNationFlag = secondaryState->IsColonyOf(this->nationSlot);
     if (hasNationFlag != 0) {
       secondaryState->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot),
                                        static_cast<short>(policyValue));
@@ -1183,9 +1183,8 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dda20
-void TGreatPower::ConsumeMerchantCapacity(int delta) {
-  this->availableMerchantCapacity =
-      static_cast<short>(this->availableMerchantCapacity - static_cast<short>(delta));
+void TGreatPower::DeliverItem(short amount) {
+  this->availableMerchantCapacity = static_cast<short>(this->availableMerchantCapacity - amount);
 }
 
 // FUNCTION: IMPERIALISM 0x004dda40
@@ -1195,7 +1194,7 @@ void TGreatPower::ConsumeMerchantCapacityForPurchase(int delta) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dda60
-short TGreatPower::GetIndustrialNeed(short resourceKind) {
+short TGreatPower::GetAmtUnsold(short resourceKind) {
   return static_cast<short>(this->itemPotentials[resourceKind] +
                             this->purchasedItemsByResource[resourceKind]);
 }
@@ -1282,20 +1281,19 @@ char TGreatPower::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
 }
 
 // FUNCTION: IMPERIALISM 0x004ddc30
-void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                                 int multiplier) {
-  short index = static_cast<short>(resourceIndex);
-  short deltaWord = static_cast<short>(delta);
+void TGreatPower::PurchaseItem(short resourceKind, short amount, short price) {
+  short index = resourceKind;
+  short deltaWord = amount;
   this->purchasedItemsByResource[index] =
       static_cast<short>(this->purchasedItemsByResource[index] + deltaWord);
 
   int deltaInt = static_cast<int>(deltaWord);
-  short multiplierWord = static_cast<short>(multiplier);
+  short multiplierWord = price;
   int scaledDelta = static_cast<int>(multiplierWord) * deltaInt;
   this->AddToTreasury(-scaledDelta);
 
   if (deltaWord > 0) {
-    this->ConsumeMerchantCapacityForPurchase(delta);
+    this->ConsumeMerchantCapacityForPurchase(amount);
     this->budgetPoolDelta -= scaledDelta;
     return;
   }
@@ -1320,7 +1318,7 @@ void TGreatPower::ClearTradeOfferForResource(short targetSlot) {
 // FUNCTION: IMPERIALISM 0x004ddd50
 bool TGreatPower::StillBuyingItem(ResourceKindStorage resourceKind) {
   bool result = true;
-  if (this->GetAvailableMerchantCapacity() <= 0 || this->itemPotentials[resourceKind] >= 0) {
+  if (this->GetMerchantCapacity() <= 0 || this->itemPotentials[resourceKind] >= 0) {
     result = false;
   }
   return result;
@@ -1699,7 +1697,7 @@ void TGreatPower::ClearCivilianOrders(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004de860
-void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
+void TGreatPower::BecomeProtectorateOf(int arg1) {
   const int kResetDiplomacyLevel = 100;
   const int kResetPolicyCode = -1;
   const DiplomacyRelationship kResetRelationship = kDiplomacyRelationshipWar;
@@ -1714,8 +1712,8 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int arg1) {
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
         nationSlot != this->nationSlot && nationSlot != arg1) {
-      g_apTerrainTypeDescriptorTable[nationSlot]->SetNationPercentFieldByModeAndDescriptorLinks(
-          this->nationSlot, kResetDiplomacyLevel);
+      g_apTerrainTypeDescriptorTable[nationSlot]->NewStatusFor(this->nationSlot,
+                                                               kResetDiplomacyLevel);
     }
   }
 
@@ -1965,7 +1963,7 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
 
   switch (proposal->proposalCode) {
   case kDiplomacyProposalJoinEmpire:
-    this->ApplyJoinEmpireModeForTargetNation(static_cast<int>(proposal->sourceNationSlot), 1);
+    this->ChangeMaster(static_cast<int>(proposal->sourceNationSlot), 1);
     if (g_pNewsMgr != 0) {
       g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
                                  static_cast<int>(proposal->sourceNationSlot), 0);
@@ -2023,8 +2021,8 @@ void TGreatPower::AcceptOffer(short proposalIndex) {
   }
 
   case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
-    g_apTerrainTypeDescriptorTable[static_cast<int>(proposal->sourceNationSlot)]
-        ->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
+    g_apTerrainTypeDescriptorTable[static_cast<int>(proposal->sourceNationSlot)]->ChangeMaster(
+        this->nationSlot, 1);
     if (g_pNewsMgr != 0) {
       g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted,
                                  static_cast<int>(proposal->sourceNationSlot), this->nationSlot, 0);
@@ -2366,7 +2364,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeTileIndex, char* cityN
 
   g_pDiplomacyTurnStateManager->SetRelationship(this->nationSlot, this->nationSlot, 0x100);
 
-  this->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+  this->InitialMilitia();
 }
 IMPERIALISM_END_RETAIL_NULL_THIS_CHECK
 
@@ -2951,7 +2949,7 @@ int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) 
       if (secondaryNationState != 0) {
         short stateValue = secondaryNationState->DecodeOwnerNationSlot();
         if (stateValue != this->nationSlot) {
-          secondaryNationState->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
+          secondaryNationState->ChangeMaster(this->nationSlot, 1);
         }
       }
     }
@@ -3049,10 +3047,10 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
 void TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e21b0
-void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
+void TGreatPower::ChangeMaster(int targetNationSlot, int mode) {
   CString sharedStringScope;
 
-  TCountry::ApplyJoinEmpireModeForTargetNation(targetNationSlot, mode);
+  TCountry::ChangeMaster(targetNationSlot, mode);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
   if (targetNation->pendingActionStatus.roles.expansionCapacityStatus09 < '3') {
@@ -3061,13 +3059,13 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 }
 
 // FUNCTION: IMPERIALISM 0x004e2270
-void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
+void TGreatPower::LoseProvince(int regionId) {
   this->ownedRegionList->Delete(regionId);
   this->KillUnitsIn(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
-void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
+void TGreatPower::AddProvince(int regionId) {
   this->ownedRegionList->InsertLast(regionId);
   if (this->ownedRegionList->GetSize() >= 9) {
     signed char pressureHigh = this->pendingActionStatus.roles.territorialPressureStatus06;
@@ -3083,8 +3081,7 @@ void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e2330
-void TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot,
-                                                                int policyCode) {
+void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
   const int kPolicyDefensivePact = 500;
   const int kPolicyTradeAgreement = 200;
 
@@ -3177,7 +3174,7 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
   while (tableIndex < 16) {
     if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
-      if (auxRuntimeState->IsEncodedNationSlotMinus200Equal(this->nationSlot) != 0 &&
+      if (auxRuntimeState->IsColonyOf(this->nationSlot) != 0 &&
           g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorNationSlot, targetNationSlot) == 0) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCode(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipWar, 0);
@@ -3188,8 +3185,8 @@ void TGreatPower::DeclareWarOnTargetForAlignedMinors(int targetNationSlot) {
             targetState->AddNoticeFrom(minorNationSlot, kDiplomacyProposalDeclareWar);
           }
         }
-        auxRuntimeState->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(-1);
-        auxRuntimeState->NotifyMajorPowersAffectedByMinorTerritoryChange();
+        auxRuntimeState->KillEnemyCiviliansIn(-1);
+        auxRuntimeState->KillBoycottedForeignCompanies();
       }
     }
     ++tableIndex;
@@ -3206,7 +3203,7 @@ void TGreatPower::MakePeaceWithTargetForAlignedMinors(int targetNationSlot) {
   while (tableIndex < 16) {
     if (g_apTerrainTypeDescriptorTable[7 + tableIndex] != 0) {
       TMinor* auxRuntimeState = g_apNationAuxRuntimeStateSlots[tableIndex];
-      if (auxRuntimeState->IsEncodedNationSlotMinus200Equal(this->nationSlot) != 0) {
+      if (auxRuntimeState->IsColonyOf(this->nationSlot) != 0) {
         g_pDiplomacyTurnStateManager->SetNationPairDiplomacyRelationCodeFinal(
             minorNationSlot, targetNationSlot, kDiplomacyRelationshipPeace);
         if (this->colonyBoycottFlags[targetNationSlot] == 0) {
@@ -3252,7 +3249,7 @@ void TGreatPower::QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNation
     return;
   }
 
-  secondaryNationState->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
+  secondaryNationState->ChangeMaster(this->nationSlot, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e2880
@@ -3496,7 +3493,7 @@ void TGreatPower::GenerateGameScore() {
   gameScoreRows930[kGameScoreProvinces] = ownedRegionList->GetSize();
   for (int minorSlot = 0; minorSlot < 16; ++minorSlot) {
     TMinor* candidate = g_apNationAuxRuntimeStateSlots[minorSlot];
-    if (candidate->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+    if (candidate->IsColonyOf(nationSlot)) {
       gameScoreRows930[kGameScoreProvinces] += candidate->ownedRegionList->GetSize();
     }
   }
@@ -3797,7 +3794,7 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
   return compositeScore;
 }
 
-// Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";
+// Ghidra mislabels this 0x005b7f50 leaf "PurchaseItem_Impl";
 // the body is a pure range predicate (no resource delta, no nation totals), renamed by
 // behavior per Hard Rule 6. Genuinely __stdcall (RET 0x4, single stacked short, no ecx);
 // FPO leaf (no ebp frame) so it is wrapped in the frame-pointer-omission pragma.

@@ -167,11 +167,11 @@ public:
   void SetLastDiploEffort(); // 0x4f0590
 
   // 0x4f24a0. Finds the minor nation (among g_apNationAuxRuntimeStateSlots) whose
-  // encodedNationSlot decodes to nationCode via IsEncodedNationSlotMinus200Equal, then
+  // encodedNationSlot decodes to nationCode via IsColonyOf, then
   // rebuilds that minor's relation-matrix row/column against every major power (default
   // standing/propagation) and every other eligible minor (looked up from the other
   // minor's own decoded disposition band when it already has one, else from the
-  // requesting nation's IsPolicyCodeInSpecialNationPolicySet capability check), and
+  // requesting nation's IsInConsortiumWith capability check), and
   // finally notifies every eligible major power via SetTradePolicyTo.
   void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
 };

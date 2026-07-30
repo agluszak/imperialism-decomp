@@ -12,9 +12,9 @@ public:
   ~TClientGreatPower() override;
 
   // slot 0x26 — 0x005412b0
-  bool IsClient(void) override;
+  bool IsClient(void) const override;
   // slot 0x28 — 0x005412d0
-  bool IsRemote(void) override;
+  bool IsRemote(void) const override;
   // slot 0x7b — 0x005413b0
   void AcceptOffer(short proposalIndex) override;
   // slot 0x7c — 0x00541450

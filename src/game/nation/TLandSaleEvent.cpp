@@ -30,7 +30,7 @@ void TLandSaleEvent::ILandSaleEvent(short tileIndex, short nationCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e6740
-void TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {
+void TLandSaleEvent::RegainIndependence() {
   CString buyerName;
   CString sellerName;
   CString messageTemplate;

@@ -11,8 +11,8 @@ public:
   DECLARE_DYNCREATE(TRemoteGreatPower)
   ~TRemoteGreatPower() override;
 
-  bool IsRemote(void) override;
-  void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel) override;
+  bool IsRemote(void) const override;
+  void PlopDownCity(short selectedRegion, const char* mapCellLabel) override;
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   void CalculatePotentials(void) override;
   void FillInteriorMinisterOrders(void) override;

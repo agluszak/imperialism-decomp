@@ -36,18 +36,18 @@ public:
   // original base table and remain undeclared; pure virtuals would emit _purecall.
   virtual void WriteCoreFieldsToStream(TStream* stream);
   virtual void ReadCoreFieldsFromStream(TStream* stream, int unusedArg);
-  virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
-  virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
+  virtual void InitialMilitia(void);
+  virtual void AddMilitia(int nodeContext);
   virtual void AddToTreasury(int amount);
-  virtual void AssignDisplayNamesToUnnamedMilitaryUnits(void);
-  virtual int GetHomeRegionCityRecordIndex(void);
-  virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
+  virtual void NameUnits(void);
+  virtual int GetCapitolProvince(void);
+  virtual void GrowMilitia(void);
   virtual void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy);
-  virtual void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
-  virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot);
-  virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
-  virtual void ApplyJoinEmpireMode2FinalizeNationNameState(void);
-  virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
+  virtual void ChangeMaster(int targetNationSlot, int mode);
+  virtual void BecomeProtectorateOf(int targetNationSlot);
+  virtual void BecomeColonyOf(int targetNationSlot);
+  virtual void RegainIndependence(void);
+  virtual char IsColonyOf(int nationCode);
 
   // Decode the owning great-power slot from encodedNationSlot: >= 200 -> tag - 200,
   // 100..199 -> tag - 100, else this nation's own slot. Header-inline: the original
@@ -66,28 +66,27 @@ public:
     }
     return ownerNationSlot;
   }
-  virtual void RemoveRegionIdFromNationOwnedRegionList(int regionId);
-  virtual void AddRegionIdToNationOwnedRegionList(int regionId);
-  virtual void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode);
-  virtual void ConsumeMerchantCapacity(int delta);
-  virtual short GetIndustrialNeed(short resourceKind);
-  virtual short GetAvailableMerchantCapacity(void);
+  virtual void LoseProvince(int regionId);
+  virtual void AddProvince(int regionId);
+  virtual void NewStatusFor(int targetNationSlot, int policyCode);
+  virtual void DeliverItem(short amount);
+  virtual short GetAmtUnsold(short resourceKind);
+  virtual short GetMerchantCapacity(void);
   virtual short GetStockpile(short resourceKind);
   virtual short GetTradeOffersFor(short resourceKind);
-  virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                              int multiplier);
+  virtual void PurchaseItem(short resourceKind, short amount, short price);
   virtual bool StillBuyingItem(ResourceKindStorage resourceKind);
   virtual char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
                                  ResourceKindStorage resourceKind);
   // ORACLE: Mac names TCountry::AddOfferFrom(short, short).
   virtual void AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStorage proposalCode);
-  virtual char IsPolicyCodeInSpecialNationPolicySet(short policyCode);
+  virtual char IsInConsortiumWith(short policyCode);
   // ORACLE: Mac names TCountry::AddNoticeFrom(short, short).
   virtual void AddNoticeFrom(short sourceNation, short actionCode);
-  virtual bool IsClient(void);
-  virtual bool IsHost(void);
-  virtual bool IsRemote(void);
-  virtual void SetNationSelectedRegionAndMapCellLabel(short selectedRegion, char* mapCellLabel);
+  virtual bool IsClient(void) const;
+  virtual bool IsHost(void) const;
+  virtual bool IsRemote(void) const;
+  virtual void PlopDownCity(short selectedRegion, const char* mapCellLabel);
 
   int SumWeightedNeighborLinkScoreForLinkedNodes(void);
   // 0x004d8390 — forwards to g_pMapContextActionManager's per-node weighted stationed-
