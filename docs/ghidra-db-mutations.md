@@ -5,6 +5,38 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-30: curate six missing original-side prototypes (semantic gate)
+
+`just semantic-gate` was red on six protected rows because the *original* side of
+the p-code call-contract comparison had no usable prototype for them: the
+parameter-area reads rendered as unbound `in_stack_0000000N` inputs instead of
+`parameter` nodes, so the comparator could only report
+`inconclusive`/`local_variable_model` (five rows) and
+`inconclusive`/`prototype_arity_asymmetry` (one).
+
+Projected each function's own source prototype into the DB with
+`just apply-source-signatures --addrs <addr> --apply --strict` (per-function
+transaction; the tool commits only when the re-decompile shows no remaining
+`in_stack` and a structural signature match, and rolls back otherwise):
+
+- `0x004956e0 MapPt`, `0x00495780 MapPtSecondCopy`,
+  `0x00497540 CombineClipRegionsWithEmptyHandling`,
+  `0x004eb5d0 CompareMissionsByWeightedShortfall` — `__cdecl`, 3/3/3/2 formals.
+- `0x00518aa0 TMapMgr::HasActiveLinkedTileWithReachableSea` — `__thiscall`,
+  `this` + 1 formal (`RET 0x4`).
+- `0x004a4fc0 TArmyMgr::DispatchMapActionForRegionByAdjacency` — `__thiscall`
+  `void(TArmyMgr *, int)`; the listing loads `this` from ECX
+  (`MOVSX EDX,[ECX + 0x31c]`), reads one stack argument at `+4`, and ends
+  `RET 0x4`. This entry also resolved the arity row: once `this` is typed, the
+  two tail dispatches decompile as `(*this->vfptr[0x14])(a0)` /
+  `(*this->vfptr[0x15])(a0)` instead of `(**(code **)(*in_ECX + 0x50))()`, so the
+  pushed argument is attributed to the call and matches our virtual call.
+
+Verified with a full no-reuse recompute (`just semantic-verify`, 2373 rows):
+exactly these six rows changed, all `inconclusive -> pass`, nothing else moved.
+Gate afterwards: pass 3224 -> 3230, mismatch 1272 unchanged, inconclusive
+341 -> 335. Persisted with `just export-project`.
+
 ## 2026-07-29 (later): repair two more punctured game-code extents
 
 Follow-up to the `TMapMgr` repair below, driven by a full
