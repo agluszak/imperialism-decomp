@@ -40,9 +40,12 @@ const int kTreatiesTopicIndex = 1;
 
 } // namespace
 
-DiplomacyScreen::DiplomacyScreen()
-    : MainViewScreen(RUNTIME_CLASS(TDiplomacyMapView), kTurnEventDiplomacyMap, "the diplomacy map"),
-      diplomacyView(0) {
+MainViewScreenIdentity DiplomacyScreen::Identity() {
+  return MainViewScreenIdentity(RUNTIME_CLASS(TDiplomacyMapView), kTurnEventDiplomacyMap,
+                                "the diplomacy map");
+}
+
+DiplomacyScreen::DiplomacyScreen() : MainViewScreen(Identity()), diplomacyView(0) {
   diplomacyView = static_cast<TDiplomacyMapView*>(Root());
 }
 

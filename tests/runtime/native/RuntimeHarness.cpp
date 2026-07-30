@@ -43,6 +43,8 @@ void RuntimeHarness::EnsureSelected() {
   g_testCase = descriptor != 0 ? descriptor->testCase : UnknownRuntimeTest();
   if (descriptor != 0) {
     g_run.SetDescriptor(descriptor->snapshotFlags, descriptor->evidenceKind);
+    g_run.SetScenarioPolicy(descriptor->recordsGameFlow, descriptor->uiSnapshotEvents,
+                            descriptor->uiSnapshotEventCount);
   }
   g_testCase->Start(g_context);
 }

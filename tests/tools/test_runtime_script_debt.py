@@ -12,6 +12,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from tools.runtime import script_debt
+from tools.runtime.script_debt import scan_file
 
 
 class ScriptDebtTest(unittest.TestCase):
@@ -98,3 +99,48 @@ class ScriptDebtTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Win32MechanicsTests(unittest.TestCase):
+    """The GDI/input half of the ban: a scenario that renders or synthesises input itself.
+
+    The identifier ban could not see these. A scenario that never writes ResolveControlByTag but
+    does CreateDIBSection/BitBlt on a view, or posts its own WM_MOUSEMOVE, is reaching through the
+    boundary just as directly -- past a different part of it.
+    """
+
+    def _scan(self, source: str):
+        with TemporaryDirectory() as raw:
+            root = Path(raw)
+            scenarios = root / "tests" / "runtime" / "native" / "scenarios"
+            scenarios.mkdir(parents=True)
+            path = scenarios / "ProbeTest.cpp"
+            path.write_text(source, encoding="utf-8")
+            return scan_file(path, root)
+
+    def test_gdi_capture_is_rejected(self):
+        findings = self._scan('HBITMAP b = CreateDIBSection(dc, &info, 0, &bits, 0, 0);\n')
+        self.assertEqual(["gdi surface"], [f.rule for f in findings])
+
+    def test_blit_is_rejected(self):
+        self.assertTrue(self._scan("BitBlt(dst, 0, 0, w, h, src, 0, 0, SRCCOPY);\n"))
+
+    def test_synthesised_input_is_rejected(self):
+        findings = self._scan("SendMessageA(host, WM_MOUSEMOVE, 0, MAKELPARAM(x, y));\n")
+        self.assertEqual(["synthesised input"], [f.rule for f in findings])
+
+    def test_quickdraw_surface_switching_is_rejected(self):
+        findings = self._scan("SetGWorld(surface, flags);\n")
+        self.assertEqual(["quickdraw surface"], [f.rule for f in findings])
+
+    def test_cursor_state_is_rejected(self):
+        self.assertTrue(self._scan("if (GetCursor() != expected) { return false; }\n"))
+
+    def test_model_assertions_are_untouched(self):
+        """The gate must not push scenarios away from asserting on the game's own state."""
+        self.assertEqual([], self._scan(
+            'RT_REQUIRE_EQ(3, g_pSimMgr->GetActiveNationId());\n'
+            'RT_REQUIRE(Player()->GetTradeOffersFor(kResourceIron) == -1);\n'))
+
+    def test_a_comment_naming_a_mechanic_is_documentation(self):
+        self.assertEqual([], self._scan("// BitBlt lives in MapRenderingProbe, not here.\n"))

@@ -29,15 +29,30 @@ struct CRuntimeClass;
 //   3. Activation that propagates RuntimeUiDriver::RequireControl's diagnosis instead of
 //      discarding it, which is what the old bool-returning drivers did.
 //
-// A concrete screen derives from this, passes its class/event/name, and adds actions and
+// What makes a screen that screen. A concrete screen publishes this as a static, so a script
+// can say `RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen)` and
+// never repeat the production view class or the turn-event code. Before this existed the
+// script and the screen each named both, which is two sources of truth for one fact and the
+// reason scenarios had to include production UI headers at all.
+struct MainViewScreenIdentity {
+  MainViewScreenIdentity(CRuntimeClass* viewClass_, int turnEvent_, const char* screenName_)
+      : viewClass(viewClass_), turnEvent(turnEvent_), screenName(screenName_) {}
+
+  CRuntimeClass* viewClass;
+  int turnEvent;
+  const char* screenName;
+};
+
+// A concrete screen derives from this, publishes its Identity(), and adds actions and
 // predicates. Control-tree mechanics stay on this side of the boundary; scripts see actions.
 class MainViewScreen {
 public:
   bool IsValid() const;
 
 protected:
-  // `screenName` appears in diagnostics, so give it the name an author would use ("the Board
-  // of Trade"), not the class name -- the class name is reported separately.
+  // The identity's `screenName` appears in diagnostics, so give it the name an author would
+  // use ("the Board of Trade"), not the class name -- the class name is reported separately.
+  MainViewScreen(const MainViewScreenIdentity& identity);
   MainViewScreen(CRuntimeClass* expectedClass, int expectedEvent, const char* screenName);
 
   // Identity test usable before constructing anything, for a script's IsCurrent().

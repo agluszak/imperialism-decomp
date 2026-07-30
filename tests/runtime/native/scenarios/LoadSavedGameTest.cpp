@@ -21,10 +21,6 @@ namespace {
 // misread trade record rather than of a real game state.
 class LoadSavedGameTestCase : public LoadedMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();
@@ -38,8 +34,8 @@ protected:
     RT_AWAIT(StrategicMap().HasMiniMap(), kObserveUiStateChanged);
     RT_AWAIT(StrategicMap().HasEndTurnControl(), kObserveUiStateChanged);
 
-    RT_REQUIRE_NOT_NULL(StrategicMap().Dialog());
-    RT_ACTION("centre the loaded viewport", StrategicMap().SetViewportCell(2, 2));
+    RT_REQUIRE(StrategicMap().HasDialog());
+    RT_DO("centre the loaded viewport", StrategicMap().SetViewportCell(2, 2));
     RT_REQUIRE(ViewportIsTileAligned());
 
     RT_REQUIRE_EQ(-1, FirstResourceWithMixedTradeHistory());

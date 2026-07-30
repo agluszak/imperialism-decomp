@@ -107,6 +107,17 @@ void RuntimeScriptScenario::AwaitScreenScript(CRuntimeClass* viewClass, int even
   AwaitScript(kObserveUiStateChanged, static_cast<LPCSTR>(expression), file, line);
 }
 
+bool RuntimeScriptScenario::ScreenIsCurrent(const MainViewScreenIdentity& identity) const {
+  return ScreenIsCurrent(identity.viewClass, identity.turnEvent);
+}
+
+void RuntimeScriptScenario::AwaitScreenScript(const MainViewScreenIdentity& identity,
+                                              const char* file, int line) {
+  // The screen's own name reads better than its class name in a stall report: "the Board of
+  // Trade to be the current screen" says what the author was waiting for.
+  AwaitScreenScript(identity.viewClass, identity.turnEvent, identity.screenName, file, line);
+}
+
 bool RuntimeScriptScenario::RunScriptAction(const char* label, const RuntimeActionResult& result,
                                             const char* file, int line) {
   RunState().EnterPhase(RuntimeAssertionText::PhaseSlug(label), label);
@@ -119,6 +130,27 @@ bool RuntimeScriptScenario::RunScriptAction(const char* label, const RuntimeActi
   text.Format("action \"%s\" failed: %s", label, static_cast<LPCSTR>(result.FailureMessage()));
   FailScript(static_cast<LPCSTR>(text), file, line);
   return false;
+}
+
+// Run the action, then say whether the caller has to yield. Three outcomes, not two: the action
+// failed (the script is finished, and ScriptFailed() reports it), it succeeded immediately, or it
+// succeeded and needs the game to run.
+bool RuntimeScriptScenario::RunScriptActionNeedsBarrier(const char* label,
+                                                        const RuntimeActionResult& result,
+                                                        const char* file, int line) {
+  if (!RunScriptAction(label, result, file, line)) {
+    return false;
+  }
+  return result.NeedsMessageBarrier();
+}
+
+void RuntimeScriptScenario::ContinueAfterAction() {
+  RuntimeScenario::ContinueAfterAction();
+}
+
+bool RuntimeScriptScenario::ScriptFailed() const {
+  // FailScript finishes the run, so "the script is over" is the observable fact here.
+  return RunState().IsFinished();
 }
 
 void RuntimeScriptScenario::PassScript() {

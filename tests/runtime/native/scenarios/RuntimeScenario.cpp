@@ -205,11 +205,13 @@ int RuntimeScenario::DifficultyLevel() const {
 }
 
 bool RuntimeScenario::RecordsGameFlow() const {
-  return false;
+  // Catalog policy (RuntimeTestSpec.record_game_flow), not a per-scenario override.
+  return run != 0 && run->RecordsGameFlow();
 }
 
 bool RuntimeScenario::RequiresScenarioUiSnapshot() const {
-  return false;
+  // Declaring any snapshot event in the catalog is what asks for the capture.
+  return run != 0 && run->CapturesAnyUiTree();
 }
 
 bool RuntimeScenario::BeforeInitialNewspaperExit() {
@@ -258,7 +260,13 @@ void RuntimeScenario::AdvanceScenario() {
   FailScenario("\"scenario entered an unimplemented owned phase\"");
 }
 
-void RuntimeScenario::ObserveScenarioUiTree(int, TView*) {}
+void RuntimeScenario::ObserveScenarioUiTree(int eventCode, TView* root) {
+  // The catalog names the events worth capturing; every scenario that overrode this was
+  // writing the same `if (eventCode == kTurnEventX) CaptureScenarioUiSnapshot(...)` by hand.
+  if (run != 0 && run->CapturesUiTreeAt(eventCode)) {
+    CaptureScenarioUiSnapshot(eventCode, root);
+  }
+}
 
 void RuntimeScenario::Finish(const char* status, const char* failure) {
   run->Finish();

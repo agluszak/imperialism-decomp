@@ -17,6 +17,10 @@ struct RuntimeTestDescriptor {
   RuntimeTestCase* testCase;
   unsigned int snapshotFlags;
   const char* evidenceKind;
+  // Harness policy, from the catalog rather than from a virtual override in the scenario.
+  bool recordsGameFlow;
+  const int* uiSnapshotEvents;
+  int uiSnapshotEventCount;
 };
 
 class RuntimeRegistry {

@@ -33,17 +33,17 @@ public:
   virtual bool RequiresMainWindow() const;
   virtual bool RequiresFixture() const;
   virtual int DifficultyLevel() const;
-  virtual bool RecordsGameFlow() const;
-  virtual bool RequiresScenarioUiSnapshot() const;
   virtual bool BeforeInitialNewspaperExit();
 
   virtual void OnManagersReady();
   virtual void OnMapReadyWithoutCapitalSelection();
   virtual void OnCombinedMapReady();
-  virtual void AdvanceScenario();
-  virtual void ObserveScenarioUiTree(int eventCode, TView* root);
 
 protected:
+  // Overridden by RuntimeScriptScenario, which turns re-entry into a linear script. A scenario
+  // itself never implements this: writing a phase machine is the shape the script API replaced.
+  virtual void AdvanceScenario();
+
   virtual RuntimeFlow* NavigationFlow();
   virtual void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint);
   void Pass();
@@ -59,16 +59,6 @@ protected:
   bool Require(const char* assertionId, bool condition, const char* failure);
   bool Check(const char* assertionId, bool condition, const char* failure);
   bool FinishChecks();
-  // `description` is plain text naming what the scenario is waiting for; it is published
-  // in the heartbeat and the result file, so a stalled run says what it expected.
-  void AwaitUiChange(const char* description);
-  void Await(unsigned int observationKinds, const char* description);
-  // The script layer's form: carries the awaited expression and its source location.
-  void AwaitAt(unsigned int observationKinds, const char* expression, const char* file, int line);
-  void ContinueAfterAction();
-  void EnterScenarioStep(const char* phaseName, const char* action);
-
-  TView* CurrentMainView() const;
   const char* FixturePath() const;
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();
@@ -89,6 +79,27 @@ protected:
   void RecordSerializationRoundtripReport(const CString& reportJson);
 
 private:
+  // The phase-machine surface. Private with friendship rather than protected, so a scenario
+  // that reaches for it fails to compile instead of failing a regex. The script layer and the
+  // navigation flows are the legitimate callers; `just runtime-script-debt-gate` still bans the
+  // names, but the type system is what enforces it now.
+  //
+  // `description` is plain text naming what the scenario is waiting for; it is published in the
+  // heartbeat and the result file, so a stalled run says what it expected.
+  void AwaitUiChange(const char* description);
+  void Await(unsigned int observationKinds, const char* description);
+  // The script layer's form: carries the awaited expression and its source location.
+  void AwaitAt(unsigned int observationKinds, const char* expression, const char* file, int line);
+  void ContinueAfterAction();
+  void EnterScenarioStep(const char* phaseName, const char* action);
+  TView* CurrentMainView() const;
+
+  // Catalog-declared policy (RuntimeTestSpec.record_game_flow / .ui_snapshot_events), read from
+  // the descriptor rather than answered by an override.
+  bool RecordsGameFlow() const;
+  bool RequiresScenarioUiSnapshot() const;
+  void ObserveScenarioUiTree(int eventCode, TView* root);
+
   enum DriverState { kWaitingForManagers, kRunningFlow, kRunningScenario };
 
   void AdvanceDriver(unsigned int observationKinds);
@@ -102,6 +113,8 @@ private:
   unsigned int awaitedObservations;
   bool advancing;
 
+  // The script layer drives the same protothread surface from its own subclass.
+  friend class RuntimeScriptScenario;
   friend class RandomGameFlow;
   friend class MainMenuFlow;
   friend class RandomSetupFlow;

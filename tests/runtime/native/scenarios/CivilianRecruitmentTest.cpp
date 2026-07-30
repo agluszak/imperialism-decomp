@@ -2,6 +2,8 @@
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
 #include "probes/CivilianProbe.h"
+#include "probes/MapInteractionProbe.h"
+#include "probes/MapRenderingProbe.h"
 #include "screens/EngineerDialogScreen.h"
 #include "screens/ModalScreen.h"
 #include "screens/StrategicMapScreen.h"
@@ -42,145 +44,6 @@
 
 namespace {
 
-// Every draw this scenario forces has to land on the primary render surface: the map's own Draw
-// paths assume a GWorld is set, and drawing outside one reaches a null device context. The original
-// scenario restored the previous surface by hand at each early return, which is exactly the
-// bookkeeping a guard removes.
-class PrimarySurfaceGuard {
-public:
-  PrimarySurfaceGuard() : savedSurface(0), savedFlags(0) {
-    GetGWorld(&savedSurface, &savedFlags);
-    SetGWorld(g_pPrimaryRenderSurfaceContext, savedFlags);
-  }
-  ~PrimarySurfaceGuard() {
-    SetGWorld(savedSurface, savedFlags);
-  }
-
-private:
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedFlags;
-};
-
-bool CursorDrawsVisiblePixels(HCURSOR cursor) {
-  BITMAPINFO bitmapInfo;
-  ZeroMemory(&bitmapInfo, sizeof(bitmapInfo));
-  bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  bitmapInfo.bmiHeader.biWidth = 32;
-  bitmapInfo.bmiHeader.biHeight = -32;
-  bitmapInfo.bmiHeader.biPlanes = 1;
-  bitmapInfo.bmiHeader.biBitCount = 32;
-  bitmapInfo.bmiHeader.biCompression = BI_RGB;
-
-  void* pixelStorage = 0;
-  HDC screenDc = GetDC(0);
-  HBITMAP bitmap = CreateDIBSection(screenDc, &bitmapInfo, DIB_RGB_COLORS, &pixelStorage, 0, 0);
-  DWORD* pixels = static_cast<DWORD*>(pixelStorage);
-  HDC memoryDc = CreateCompatibleDC(screenDc);
-  HGDIOBJ previousBitmap = SelectObject(memoryDc, bitmap);
-  PatBlt(memoryDc, 0, 0, 32, 32, WHITENESS);
-  BOOL drewCursor = DrawIconEx(memoryDc, 0, 0, cursor, 32, 32, 0, 0, DI_NORMAL);
-
-  bool changedPixel = false;
-  if (drewCursor != 0) {
-    for (int index = 0; index < 32 * 32; ++index) {
-      if ((pixels[index] & 0x00ffffff) != 0x00ffffff) {
-        changedPixel = true;
-        break;
-      }
-    }
-  }
-
-  SelectObject(memoryDc, previousBitmap);
-  DeleteDC(memoryDc);
-  DeleteObject(bitmap);
-  ReleaseDC(0, screenDc);
-  return changedPixel;
-}
-
-bool CaptureViewPixels(TView* view, DWORD** outPixels, int* outWidth, int* outHeight) {
-  if (view == 0 || view->nativeWindow50 == 0 || view->nativeWindow50->m_hWnd == 0 ||
-      view->frameWidth34 <= 0 || view->frameHeight38 <= 0) {
-    return false;
-  }
-
-  BITMAPINFO bitmapInfo;
-  ZeroMemory(&bitmapInfo, sizeof(bitmapInfo));
-  bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-  bitmapInfo.bmiHeader.biWidth = view->frameWidth34;
-  bitmapInfo.bmiHeader.biHeight = -view->frameHeight38;
-  bitmapInfo.bmiHeader.biPlanes = 1;
-  bitmapInfo.bmiHeader.biBitCount = 32;
-  bitmapInfo.bmiHeader.biCompression = BI_RGB;
-
-  HDC windowDc = GetDC(view->nativeWindow50->m_hWnd);
-  void* capturedStorage = 0;
-  HBITMAP bitmap = CreateDIBSection(windowDc, &bitmapInfo, DIB_RGB_COLORS, &capturedStorage, 0, 0);
-  HDC memoryDc = CreateCompatibleDC(windowDc);
-  HGDIOBJ previousBitmap = SelectObject(memoryDc, bitmap);
-  BOOL copied = BitBlt(memoryDc, 0, 0, view->frameWidth34, view->frameHeight38, windowDc,
-                       view->absoluteX, view->absoluteY, SRCCOPY);
-  GdiFlush();
-
-  int pixelCount = view->frameWidth34 * view->frameHeight38;
-  DWORD* pixels = 0;
-  if (copied != 0 && capturedStorage != 0) {
-    pixels = new DWORD[pixelCount];
-    memcpy(pixels, capturedStorage, pixelCount * sizeof(DWORD));
-  }
-
-  SelectObject(memoryDc, previousBitmap);
-  DeleteDC(memoryDc);
-  DeleteObject(bitmap);
-  ReleaseDC(view->nativeWindow50->m_hWnd, windowDc);
-  if (pixels == 0) {
-    return false;
-  }
-  *outPixels = pixels;
-  *outWidth = view->frameWidth34;
-  *outHeight = view->frameHeight38;
-  return true;
-}
-
-bool CompletedFarmerImprovementChangesTilePixels(TMapDialog* mapDialog, short tileIndex,
-                                                 unsigned char initialClass,
-                                                 unsigned char completedClass) {
-  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
-  if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
-    return false;
-  }
-
-  TBitmapSurfaceNode* surface = *surfaceHandle;
-  int stride = surface->stride & 0x3fff;
-  unsigned char before[0x1000];
-  unsigned char after[0x1000];
-  TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
-  unsigned char savedDevelopmentClasses = terrain.developmentClassNibbles0c;
-  TQuickDrawSurfaceContext* savedSurface;
-  int savedSurfaceFlags;
-  GetGWorld(&savedSurface, &savedSurfaceFlags);
-  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
-
-  terrain.developmentClassNibbles0c =
-      static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | initialClass);
-  mapDialog->DrawOneTile(tileIndex, 0, 0);
-  for (int row = 0; row < 0x40; ++row) {
-    memcpy(before + row * 0x40, surface->pixelBits + row * stride, 0x40);
-  }
-
-  terrain.developmentClassNibbles0c =
-      static_cast<unsigned char>((savedDevelopmentClasses & 0xf0) | completedClass);
-  mapDialog->DrawOneTile(tileIndex, 0, 0);
-  for (int afterRow = 0; afterRow < 0x40; ++afterRow) {
-    memcpy(after + afterRow * 0x40, surface->pixelBits + afterRow * stride, 0x40);
-  }
-
-  terrain.developmentClassNibbles0c = savedDevelopmentClasses;
-  mapDialog->DrawOneTile(tileIndex, 0, 0);
-  SetGWorld(savedSurface, savedSurfaceFlags);
-  UnlockPixels(surfaceHandle);
-  return memcmp(before, after, sizeof(before)) != 0;
-}
-
 // Civilian work, from the city order that produces a unit to the map pixels its finished work
 // changes.
 //
@@ -198,13 +61,6 @@ public:
         farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), engineer(0),
         initialAnimationFrame(0), initialAnimationTick(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-  bool RequiresScenarioUiSnapshot() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();
@@ -212,37 +68,36 @@ protected:
     RT_AWAIT(StrategicMapScreen::IsCurrent(), kObserveUiStateChanged);
 
     // --- A prospector, and the cursors that say where it may work. ---
-    RT_ACTION("recruit a prospector", RecruitProspector());
+    RT_DO("recruit a prospector", RecruitProspector());
     RT_AWAIT(spawnedCivilian->unitOrder == kUnitOrderIdle, kObserveUiStateChanged);
-    RT_ACTION("cycle the civilian legend's targets", VerifyLegendCameraCycling());
-    RT_ACTION("verify the prospector's cursors and order click", VerifyCursorsAndOrderClick());
+    RT_DO("cycle the civilian legend's targets", VerifyLegendCameraCycling());
+    RT_DO("verify the prospector's cursors and order click", VerifyCursorsAndOrderClick());
 
-    RT_ACTION("let the animator run", PulseAnimator());
-    RT_ACTION("verify the ordered prospector stays visible",
-              VerifyOrderedProspectorIsInspectable());
-    RT_ACTION("complete the survey", CompleteProspectorOrder());
-    RT_ACTION("verify the survey mark reached the renderer", VerifyCompletedSurveyMark());
+    RT_DO("let the animator run", PulseAnimator());
+    RT_DO("verify the ordered prospector stays visible", VerifyOrderedProspectorIsInspectable());
+    RT_DO("complete the survey", CompleteProspectorOrder());
+    RT_DO("verify the survey mark reached the renderer", VerifyCompletedSurveyMark());
 
     // --- The same prospector on a tile with nothing to find. ---
-    RT_ACTION("order a survey that will find nothing", IssueUnsuccessfulSurvey());
-    RT_ACTION("complete the unsuccessful survey", CompleteUnsuccessfulSurvey());
-    RT_ACTION("verify the miss mark reached the renderer", VerifyUnsuccessfulSurveyMark());
+    RT_DO("order a survey that will find nothing", IssueUnsuccessfulSurvey());
+    RT_DO("complete the unsuccessful survey", CompleteUnsuccessfulSurvey());
+    RT_DO("verify the miss mark reached the renderer", VerifyUnsuccessfulSurveyMark());
 
     // --- A farmer, whose finished improvement must change the tile. ---
-    RT_ACTION("recruit a farmer and order an improvement", OrderFarmerImprovement());
+    RT_DO("recruit a farmer and order an improvement", OrderFarmerImprovement());
     // An improvement takes as many turns as the order says; the original scenario re-entered its
     // completion phase until the farmer went idle, and the loop is that, said out loud.
     while (farmer->unitOrder != kUnitOrderIdle) {
-      RT_ACTION("advance the farmer's improvement", AdvanceFarmerImprovement());
+      RT_DO("advance the farmer's improvement", AdvanceFarmerImprovement());
     }
-    RT_ACTION("verify the improvement changed the tile", VerifyFarmerImprovementVisual());
+    RT_DO("verify the improvement changed the tile", VerifyFarmerImprovementVisual());
 
     // --- An engineer, through the construction dialog and on to a depot. ---
-    RT_ACTION("open the engineer's construction dialog", OpenEngineerConstructionDialog());
+    RT_DO("open the engineer's construction dialog", OpenEngineerConstructionDialog());
     // The dialog ran its own modal loop and the pre-armed cancel closed it; a modal still up means
     // that loop never unwound.
     RT_REQUIRE(!ModalScreen::AnyPresent());
-    RT_ACTION("build the depot and check the province chain", VerifyDepotAndMilitaryChain());
+    RT_DO("build the depot and check the province chain", VerifyDepotAndMilitaryChain());
 
     CaptureCurrentScreenSnapshot();
     RT_REQUIRE(HasScenarioUiSnapshot());
@@ -426,19 +281,17 @@ private:
       return RuntimeActionResult::Failure(detail);
     }
 
-    mapDialog->activeRegionBand = -1;
     mapDialog->cursorId4e = 0xffff;
-    CPoint hostPoint(outPoint->x + mapDialog->absoluteX, outPoint->y + mapDialog->absoluteY);
-    SendMessageA(mapDialog->nativeWindow50->m_hWnd, WM_MOUSEMOVE, 0,
-                 MAKELPARAM(hostPoint.x, hostPoint.y));
+    if (!MapInteractionProbe::HoverAtLocalPoint(mapDialog, *outPoint)) {
+      return RuntimeActionResult::Failure("the map dialog has no host window to hover over");
+    }
     if (mapDialog->cursorId4e != expectedToken) {
       return RuntimeActionResult::Failure("a native hover did not apply the classified cursor");
     }
 
     HCURSOR expectedCursor =
         g_pViewMgr->turnEventCursors[expectedToken - TViewMgr::kCursorResourceIdBase];
-    if (expectedCursor == 0 || GetCursor() != expectedCursor ||
-        !CursorDrawsVisiblePixels(expectedCursor)) {
+    if (!MapRenderingProbe::CursorIsActiveAndVisible(expectedCursor)) {
       return RuntimeActionResult::Failure("the classified cursor is not visibly active");
     }
     return RuntimeActionResult::Success();
@@ -464,86 +317,6 @@ private:
       }
     }
     return false;
-  }
-
-  bool HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog) {
-    HWND mapHost = mapDialog->nativeWindow50->m_hWnd;
-    RedrawWindow(mapHost, 0, 0, RDW_INVALIDATE | RDW_UPDATENOW);
-
-    DWORD* baseline = 0;
-    int width = 0;
-    int height = 0;
-    if (!CaptureViewPixels(mapDialog, &baseline, &width, &height)) {
-      return false;
-    }
-
-    CPoint firstPoint;
-    CPoint secondPoint;
-    short firstTile = -1;
-    short secondTile = -1;
-    for (int y = 32; y < mapDialog->frameHeight38 && secondTile == -1; y += 32) {
-      for (int x = 32; x < mapDialog->frameWidth34; x += 32) {
-        short column;
-        short row;
-        short band;
-        CPoint point(x, y);
-        mapDialog->ConvertPoint(point, column, row, band);
-        short tile = static_cast<short>(ComputeStridedRecordAddress6C(column, row));
-        if (tile == targetHillTile) {
-          continue;
-        }
-        if (firstTile == -1) {
-          firstPoint = point;
-          firstTile = tile;
-        } else if (tile != firstTile) {
-          secondPoint = point;
-          secondTile = tile;
-          break;
-        }
-      }
-    }
-    if (secondTile == -1) {
-      delete[] baseline;
-      return false;
-    }
-
-    mapDialog->activeRegionBand = -1;
-    CPoint firstHostPoint(firstPoint.x + mapDialog->absoluteX, firstPoint.y + mapDialog->absoluteY);
-    CPoint secondHostPoint(secondPoint.x + mapDialog->absoluteX,
-                           secondPoint.y + mapDialog->absoluteY);
-    SendMessageA(mapHost, WM_MOUSEMOVE, 0, MAKELPARAM(firstHostPoint.x, firstHostPoint.y));
-    SendMessageA(mapHost, WM_MOUSEMOVE, 0, MAKELPARAM(secondHostPoint.x, secondHostPoint.y));
-
-    DWORD* afterMovement = 0;
-    int afterWidth = 0;
-    int afterHeight = 0;
-    if (!CaptureViewPixels(mapDialog, &afterMovement, &afterWidth, &afterHeight) ||
-        afterWidth != width || afterHeight != height) {
-      delete[] afterMovement;
-      delete[] baseline;
-      return false;
-    }
-
-    short projectedY;
-    short projectedX;
-    ProjectTileIndexToWrappedScreenOffsetByScale(secondTile, &mapDialog->viewportOrigin,
-                                                 &projectedY, &projectedX, 1);
-    CRect currentHoverRect(projectedX - 1, projectedY - 1, projectedX + 0x42, projectedY + 0x42);
-    bool restored = true;
-    for (int pixelY = 0; pixelY < height && restored; ++pixelY) {
-      for (int pixelX = 0; pixelX < width; ++pixelX) {
-        CPoint pixelPoint(pixelX, pixelY);
-        if (!currentHoverRect.PtInRect(pixelPoint) &&
-            baseline[pixelY * width + pixelX] != afterMovement[pixelY * width + pixelX]) {
-          restored = false;
-          break;
-        }
-      }
-    }
-
-    delete[] afterMovement;
-    delete[] baseline;
-    return restored;
   }
 
   TAnimation* RenderAndResolveOrderedProspectorAnimation() {
@@ -779,7 +552,7 @@ private:
                     static_cast<int>(reportCursor), hasFramePixels);
       return RuntimeActionResult::Failure(detail);
     }
-    if (!HoverMovementRestoresPreviousTiles(mapDialog)) {
+    if (!MapRenderingProbe::HoverMovementRestoresPreviousTiles(mapDialog, targetHillTile)) {
       return RuntimeActionResult::Failure(
           "hovering left stale map pixels outside the current tile");
     }
@@ -1094,7 +867,7 @@ private:
                                                      improvementClass);
     RedrawTileThroughRenderer(targetFarmerTile);
     if (!WasStrategicMapImprovementTileObservedForRuntimeTest() ||
-        !CompletedFarmerImprovementChangesTilePixels(
+        !MapRenderingProbe::DevelopmentClassChangesTilePixels(
             mapDialog, targetFarmerTile, static_cast<unsigned char>(initialFarmerImprovementClass),
             static_cast<unsigned char>(improvementClass))) {
       return RuntimeActionResult::Failure(

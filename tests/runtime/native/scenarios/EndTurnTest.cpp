@@ -11,10 +11,6 @@ namespace {
 // back to a playable strategic map, rather than into the game-over/opening-cinematic path.
 class EndTurnTestCase : public EasyMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

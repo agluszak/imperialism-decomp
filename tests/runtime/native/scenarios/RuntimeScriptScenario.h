@@ -10,6 +10,7 @@
 #include "RuntimeAssertionText.h"
 #include "RuntimeScenario.h"
 #include "RuntimeScriptStatus.h"
+#include "screens/MainViewScreen.h"
 #include "screens/RuntimeActionResult.h"
 
 struct CRuntimeClass;
@@ -66,8 +67,21 @@ protected:
   bool ScreenIsCurrent(CRuntimeClass* viewClass, int eventCode) const;
   void AwaitScreenScript(CRuntimeClass* viewClass, int eventCode, const char* className,
                          const char* file, int line);
+  // The same two, asking the screen type for its identity instead of making the script repeat
+  // it. RT_OPEN_TO and RT_AWAIT_CURRENT call these.
+  bool ScreenIsCurrent(const MainViewScreenIdentity& identity) const;
+  void AwaitScreenScript(const MainViewScreenIdentity& identity, const char* file, int line);
   bool RunScriptAction(const char* label, const RuntimeActionResult& result, const char* file,
                        int line);
+  // True when the action succeeded *and* the script must yield before observing its effect.
+  bool RunScriptActionNeedsBarrier(const char* label, const RuntimeActionResult& result,
+                                   const char* file, int line);
+  bool ScriptFailed() const;
+  // Forwarder, not a re-export: RuntimeScenario::ContinueAfterAction is private and this class
+  // is its friend, but friendship is not inherited -- the RT_ macros expand inside the concrete
+  // scenario, which is not. So the script layer hands its own subclasses exactly this one entry
+  // point and nothing else from the phase-machine surface.
+  void ContinueAfterAction();
   void PassScript();
   void FailScript(const char* text, const char* file, int line);
   void FailRequirement(const char* expression, const char* file, int line);

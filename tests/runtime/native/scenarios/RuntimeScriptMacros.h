@@ -47,7 +47,7 @@
 // Loops around yields are fine as long as the counter is a field:
 //
 //     while (toggleCycles < 2) {
-//       RT_ACTION("zoom out", StrategicMap().ZoomOut());
+//       RT_DO("zoom out", StrategicMap().ZoomOut());
 //       ++toggleCycles;
 //     }
 //
@@ -101,16 +101,6 @@
     }                                                                                              \
   } while (0)
 
-#define RT_AWAIT_SCREEN_AT(slot, ViewClass, eventCode)                                             \
-  do {                                                                                             \
-    SetScriptProgramCounter(slot);                                                                 \
-  case slot:                                                                                       \
-    if (!ScreenIsCurrent(RUNTIME_CLASS(ViewClass), (eventCode))) {                                 \
-      AwaitScreenScript(RUNTIME_CLASS(ViewClass), (eventCode), #ViewClass, __FILE__, __LINE__);    \
-      return;                                                                                      \
-    }                                                                                              \
-  } while (0)
-
 #define RT_ACTION_AT(slot, label, action)                                                          \
   do {                                                                                             \
     if (!RunScriptAction((label), (action), __FILE__, __LINE__))                                   \
@@ -121,21 +111,30 @@
   case slot:;                                                                                      \
   } while (0)
 
-// Perform one action and carry on *without* yielding. For a step whose effect is synchronous --
-// a model call the game does not need a turn to process. RT_ACTION is for anything that has to
-// reach the game through its message loop.
+// Perform one action and let the *action* decide whether the script must yield.
 //
-// Choosing wrong in this direction stalls: a scenario that pokes the model and then waits for
-// the application to go idle can wait forever, because a map left invalidating never reports an
-// idle with lCount == 0. Choosing wrong in the other direction reads a control's state before
-// the game has updated it.
+// This replaces the RT_ACTION/RT_STEP choice, which asked the author to know something only the
+// action knew: whether the effect reaches the game through its message loop. Choosing wrong
+// stalled forever in one direction and read stale state in the other, and nothing caught either.
+// A screen's control activations report kActionAfterMessageBarrier; a model call reports
+// kActionImmediate; RT_DO does what the result says.
 //
-// No program-counter slot, so this is not a yield point and several may share a line.
-#define RT_STEP(label, action)                                                                     \
+// Still a yield point, so it takes a slot and obeys the one-macro-per-line rule.
+#define RT_DO_AT(slot, label, action)                                                              \
   do {                                                                                             \
-    if (!RunScriptAction((label), (action), __FILE__, __LINE__))                                   \
-      return;                                                                                      \
+    if (!RunScriptActionNeedsBarrier((label), (action), __FILE__, __LINE__)) {                     \
+      if (ScriptFailed()) {                                                                        \
+        return;                                                                                    \
+      }                                                                                            \
+      break;                                                                                       \
+    }                                                                                              \
+    SetScriptProgramCounter(slot);                                                                 \
+    ContinueAfterAction();                                                                         \
+    return;                                                                                        \
+  case slot:;                                                                                      \
   } while (0)
+
+#define RT_DO(label, action) RT_DO_AT(RT_SLOT_PRIMARY, label, action)
 
 #define RT_YIELD_AT(slot)                                                                          \
   do {                                                                                             \
@@ -147,7 +146,7 @@
 
 // Hand control back to the game once, then carry on. For a step that changes state through a
 // direct model call rather than a control activation, where there is no RuntimeActionResult to
-// report. Prefer RT_ACTION when there is one.
+// report. Prefer RT_DO when there is one.
 //
 // A loop that handles a step and then re-tests its condition MUST yield on every path, or it
 // spins: "some expected screen is showing" is not the same predicate as "progress was made",
@@ -162,13 +161,10 @@
 
 // Wait until `ViewClass` is the current main view at `eventCode`, with no modal covering it.
 // The idle-screen predicate 22 scenarios spell out by hand.
-#define RT_AWAIT_SCREEN(ViewClass, eventCode)                                                      \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_PRIMARY, ViewClass, eventCode)
 
 // Perform one action, then yield once so the game can process it. `action` is a
 // RuntimeActionResult, so a screen driver's diagnostic becomes the scenario's failure
 // instead of being replaced by hand-written prose at the call site.
-#define RT_ACTION(label, action) RT_ACTION_AT(RT_SLOT_PRIMARY, label, action)
 
 // Drive a reusable RuntimeScriptFragment to completion, re-entering it on each observation.
 // The fragment arms its own waits, so this yields without arming anything itself.
@@ -215,22 +211,26 @@
     }                                                                                              \
   } while (0)
 
+// Each operand appears exactly once below. Writing it twice -- once compared, once formatted
+// -- meant a stateful accessor reported values other than the ones that failed.
 #define RT_REQUIRE_EQ(expected, actual)                                                            \
   do {                                                                                             \
-    if (!((expected) == (actual))) {                                                               \
-      FailRequirementRelation(#actual " == " #expected,                                            \
-                              "==", RuntimeAssertionText::Value(expected),                         \
-                              RuntimeAssertionText::Value(actual), __FILE__, __LINE__);            \
+    CString rtExpectedText;                                                                        \
+    CString rtActualText;                                                                          \
+    if (!RuntimeCompareEqual((expected), (actual), &rtExpectedText, &rtActualText)) {              \
+      FailRequirementRelation(#actual " == " #expected, "==", rtExpectedText, rtActualText,        \
+                              __FILE__, __LINE__);                                                 \
       return;                                                                                      \
     }                                                                                              \
   } while (0)
 
 #define RT_REQUIRE_NE(expected, actual)                                                            \
   do {                                                                                             \
-    if (!((expected) != (actual))) {                                                               \
-      FailRequirementRelation(#actual " != " #expected,                                            \
-                              "!=", RuntimeAssertionText::Value(expected),                         \
-                              RuntimeAssertionText::Value(actual), __FILE__, __LINE__);            \
+    CString rtExpectedText;                                                                        \
+    CString rtActualText;                                                                          \
+    if (!RuntimeCompareUnequal((expected), (actual), &rtExpectedText, &rtActualText)) {            \
+      FailRequirementRelation(#actual " != " #expected, "!=", rtExpectedText, rtActualText,        \
+                              __FILE__, __LINE__);                                                 \
       return;                                                                                      \
     }                                                                                              \
   } while (0)
@@ -245,8 +245,9 @@
 
 #define RT_REQUIRE_KIND_OF(view, Type)                                                             \
   do {                                                                                             \
-    if (!RuntimeIsViewKindOf((view), RUNTIME_CLASS(Type))) {                                       \
-      FailRequirementKindOf(#view, #Type, (view), __FILE__, __LINE__);                             \
+    TView* rtView = (view);                                                                        \
+    if (!RuntimeIsViewKindOf(rtView, RUNTIME_CLASS(Type))) {                                       \
+      FailRequirementKindOf(#view, #Type, rtView, __FILE__, __LINE__);                             \
       return;                                                                                      \
     }                                                                                              \
   } while (0)
@@ -266,16 +267,33 @@
 // secondary slot for its second yield so both fit on one source line.
 // --------------------------------------------------------------------------------------
 
+// Wait until a screen type reports itself current. The screen owns the identity -- view class,
+// turn event, and the name that appears in a stall report -- so a script names the screen and
+// nothing else. `ScreenType` is a driver from screens/, never a production view class.
+//
+// (A screen whose IsCurrent() is deliberately stricter than class-plus-event, as
+// TransportScreen's is, should be awaited through its own predicate with RT_AWAIT.)
+#define RT_AWAIT_CURRENT_AT(slot, ScreenType)                                                      \
+  do {                                                                                             \
+    SetScriptProgramCounter(slot);                                                                 \
+  case slot:                                                                                       \
+    if (!ScreenIsCurrent(ScreenType::Identity())) {                                                \
+      AwaitScreenScript(ScreenType::Identity(), __FILE__, __LINE__);                               \
+      return;                                                                                      \
+    }                                                                                              \
+  } while (0)
+
+#define RT_AWAIT_CURRENT(ScreenType) RT_AWAIT_CURRENT_AT(RT_SLOT_PRIMARY, ScreenType)
+
 // Activate something, then wait for a different screen to come up.
-#define RT_OPEN_SCREEN(label, action, ViewClass, eventCode)                                        \
+#define RT_OPEN_TO(label, action, ScreenType)                                                      \
   RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                                    \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_SECONDARY, ViewClass, eventCode)
+  RT_AWAIT_CURRENT_AT(RT_SLOT_SECONDARY, ScreenType)
 
 // Leave a screen back to the strategic map: the most repeated transition in the suite.
-// Requires the including TU to see TMapUberPicture and turn_event_codes.h.
 #define RT_CLOSE_TO_MAP(label, action)                                                             \
   RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                                    \
-  RT_AWAIT_SCREEN_AT(RT_SLOT_SECONDARY, TMapUberPicture, kTurnEventStrategicMap)
+  RT_AWAIT_CURRENT_AT(RT_SLOT_SECONDARY, StrategicMapScreen)
 
 // Activate something and wait for its effect on the same screen.
 #define RT_ACTIVATE_AND_AWAIT(label, action, condition, observations)                              \

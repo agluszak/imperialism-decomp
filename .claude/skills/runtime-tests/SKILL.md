@@ -13,19 +13,26 @@ activating real controls and asserts on real game state.
 
 ```sh
 just runtime-new player_buy_order_does_not_sell easy-map   # skeleton + catalog entry
+just runtime-new replays_a_save loaded-map --fixture beginning_of_game.imp
 just runtime-dev  player_buy_order_does_not_sell           # compile what changed, run
 just runtime-test player_buy_order_does_not_sell           # canonical gated path
 ```
 
-A scenario picks a **start point** and overrides `Script()` only:
+A scenario picks a **start point** and overrides `Script()` only. Each base scaffolds its own
+skeleton, because each hands the script a different starting world:
 
-| base | starts at |
-| --- | --- |
-| `EasyMapScriptScenario` | random game, Easy, on the map (no capital selection) |
-| `IntroductoryMapScriptScenario` | Introductory, which also shows the opening newspaper |
-| `CombinedMapScriptScenario` | Normal or above, after the capital is picked |
-| `LoadedMapScriptScenario` | a saved game from a fixture |
-| `ManagersReadyScriptScenario` | managers only: no window, no navigation, no screen |
+| base | starts at | scaffolds |
+| --- | --- | --- |
+| `EasyMapScriptScenario` | random game, Easy, on the map (no capital selection) | map screen available |
+| `IntroductoryMapScriptScenario` | Introductory, which also shows the opening newspaper | map screen available |
+| `CombinedMapScriptScenario` | Normal or above, after the capital is picked | map screen available |
+| `LoadedMapScriptScenario` | a saved game from a fixture | **needs `--fixture FILE`** |
+| `ManagersReadyScriptScenario` | managers only: no window, no navigation, no screen | no screen include, no screen wait |
+
+Every base hands over *past* its own checkpoint, so a script never waits for the screen its base
+just reached — no scenario in the tree opens with `RT_AWAIT_SCREEN`, and no skeleton emits one.
+`loaded-map` without a fixture is refused rather than scaffolded: `RequiresFixture()` is enforced
+by the base, so such a test could only fail with a missing-fixture reason.
 
 Each base fixes its difficulty *and* the checkpoint hook that difficulty implies. Do not
 override `DifficultyLevel`, `OnMapReadyWithoutCapitalSelection` or `OnCombinedMapReady` in a
@@ -37,8 +44,7 @@ protected:
   void Script() override {
     RT_BEGIN();
 
-    RT_OPEN_SCREEN("open the Board of Trade", StrategicMap().OpenTrade(),
-                   TTradeScreenPicture, kTurnEventTradeOverview);
+    RT_OPEN_TO("open the Board of Trade", StrategicMap().OpenTrade(), TradeScreen);
     RT_ACTIVATE_AND_AWAIT("select the iron bid", Trade().SelectBid(kResourceIron),
                           Trade().BidSelected(kResourceIron), kObserveGameStateChanged);
     RT_CLOSE_TO_MAP("leave the Board of Trade", Trade().Close());
@@ -61,6 +67,16 @@ RUNTIME_TEST_FACTORY(PlayerBuyOnlyTradeTestCase, PlayerBuyOnlyTradeTest)
 The vocabulary is in `tests/runtime/native/scenarios/RuntimeScriptMacros.h`; read it before
 writing a script. Assertions build their own text — expression, both values, source location,
 phase, current turn event, current view class, modal depth — so never hand-format a failure.
+
+**One action macro: `RT_DO`.** Whether the script must yield is the *action's* answer, not the
+author's — a control activation reaches the game through its message loop
+(`kActionAfterMessageBarrier`), a model call does not (`kActionImmediate`), and `RT_DO` does what
+the result says. The old `RT_ACTION`/`RT_STEP` pair asked authors to know this per call site and
+punished a wrong guess with a permanent stall in one direction (waiting for an application idle
+that a still-invalidating map never reports) or a stale read in the other. A screen action that
+activates a control inherits the barrier from `MainViewScreen::Activate`; one that returns
+`RuntimeActionResult::Success()` from a model call is immediate. Say so in the *action* if you
+write a new one.
 
 ## The MSVC500 rules the protothread imposes
 
@@ -115,6 +131,10 @@ instead of comparing numbers.
 
 A screen's identity is its view class *and* its turn event: the same class on a different event is
 a different screen (`CapitalSelectionScreen` and `StrategicMapScreen` are both `TMapUberPicture`).
+The screen owns that identity and publishes it as `static MainViewScreenIdentity Identity()`, so a
+script names the *screen* and never repeats the production view class or the event code:
+`RT_OPEN_TO(label, action, TradeScreen)` and `RT_AWAIT_CURRENT(TradeScreen)`. Two sources of truth
+for one fact was also why scenarios had to include production UI headers at all.
 One screen has no class of its own -- the transport ledger's root is a plain `TPicture` -- and says
 so.
 

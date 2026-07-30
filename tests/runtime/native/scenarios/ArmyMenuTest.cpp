@@ -9,14 +9,11 @@
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
-#include "game/ui_widgets/TArmyPlacard.h"
-#include "game/ui_widgets/TArmyToolbar.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_military.h"
-#include "game/ui_widgets/TNumberedArrowButton.h"
 
 namespace {
 
@@ -41,34 +38,34 @@ protected:
     RT_BEGIN();
 
     RT_REQUIRE(StrategicMapScreen::IsCurrent());
-    RT_REQUIRE_NOT_NULL(StrategicMap().Dialog());
+    RT_REQUIRE(StrategicMap().HasDialog());
 
     capitalProvince = CapitalProvince();
     RT_REQUIRE_NE(-1, capitalProvince);
 
-    RT_STEP("select the capital province", StrategicMap().SelectArmyProvince(capitalProvince));
+    RT_DO("select the capital province", StrategicMap().SelectArmyProvince(capitalProvince));
     RT_REQUIRE(StrategicMap().ArmyMenuIsActiveForProvince(capitalProvince));
 
-    RT_REQUIRE(EveryPlacardIsPopulated());
+    RT_REQUIRE(StrategicMap().AllArmyPlacardsPopulated());
 
-    // The arrow's lower half moves an idle unit into the selection and its upper half returns
-    // it, so the pair must be exactly reversible. Asserted as two RT_REQUIRE_EQs rather than one
-    // predicate so a failure reports the counts, not just that they disagreed.
-    arrowCategory = FirstActionableRatioArrowCategory();
+    // Moving a unit out of the idle pool and returning it must be exactly reversible. Asserted
+    // as two RT_REQUIRE_EQs rather than one predicate so a failure reports the counts, not just
+    // that they disagreed.
+    arrowCategory = StrategicMap().FirstActionableArmyCategory();
     RT_REQUIRE_NE(-1, arrowCategory);
-    initialIdleCount = RatioArrowValue();
+    initialIdleCount = StrategicMap().ArmyIdleCount(arrowCategory);
 
-    RT_STEP("select an idle unit", StrategicMap().ClickArrowLowerHalf(RatioArrow()));
-    RT_REQUIRE_EQ(initialIdleCount - 1, RatioArrowValue());
+    RT_DO("select an idle unit", StrategicMap().MoveOneIdleUnitOut(arrowCategory));
+    RT_REQUIRE_EQ(initialIdleCount - 1, StrategicMap().ArmyIdleCount(arrowCategory));
 
-    RT_STEP("return the selected unit", StrategicMap().ClickArrowUpperHalf(RatioArrow()));
-    RT_REQUIRE_EQ(initialIdleCount, RatioArrowValue());
+    RT_DO("return the selected unit", StrategicMap().ReturnOneUnit(arrowCategory));
+    RT_REQUIRE_EQ(initialIdleCount, StrategicMap().ArmyIdleCount(arrowCategory));
 
     CaptureOwnership();
-    RT_STEP("open the army book", armyBook.Open());
-    RT_STEP("show the capital garrison", armyBook.ShowProvince(capitalProvince));
+    RT_DO("open the army book", armyBook.Open());
+    RT_DO("show the capital garrison", armyBook.ShowProvince(capitalProvince));
     RT_REQUIRE(armyBook.HasUnitSpritePage());
-    RT_STEP("close the army book", armyBook.Close());
+    RT_DO("close the army book", armyBook.Close());
     RT_REQUIRE(OwnershipIsUnchanged());
 
     RT_PASS();
@@ -77,7 +74,7 @@ protected:
   }
 
 private:
-  enum { kUnitCategoryCount = 10, kCityRecordCount = 0x180 };
+  enum { kCityRecordCount = 0x180 };
 
   short CapitalProvince() const {
     const short activeNation = g_pSimMgr->GetActiveNationId();
@@ -87,41 +84,6 @@ private:
     const short capitalTile =
         static_cast<short>(g_apTerrainTypeDescriptorTable[activeNation]->homeTileIndex);
     return g_pGlobalMapState->terrainStateTable[capitalTile].cityRecordIndex;
-  }
-
-  bool EveryPlacardIsPopulated() const {
-    TArmyToolbar* toolbar = StrategicMap().ArmyToolbar();
-    if (toolbar == 0) {
-      return false;
-    }
-    for (int category = 0; category < kUnitCategoryCount; ++category) {
-      TArmyPlacard* placard = StrategicMap().ArmyPlacard(category);
-      if (placard == 0 || placard->glyph90 < 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  // Only the first actionable arrow is exercised: which categories a random capital garrisons is
-  // not this scenario's subject. -1 when the capital's menu offers no selectable unit at all.
-  short FirstActionableRatioArrowCategory() const {
-    for (short category = 1; category < kUnitCategoryCount; ++category) {
-      TNumberedArrowButton* arrow = StrategicMap().ArmyRatioArrow(category);
-      if (arrow != 0 && arrow->IsActionable() != 0 && arrow->value84 > 0) {
-        return category;
-      }
-    }
-    return -1;
-  }
-
-  TNumberedArrowButton* RatioArrow() const {
-    return StrategicMap().ArmyRatioArrow(arrowCategory);
-  }
-
-  short RatioArrowValue() const {
-    TNumberedArrowButton* arrow = RatioArrow();
-    return arrow != 0 ? arrow->value84 : -1;
   }
 
   void CaptureOwnership() {

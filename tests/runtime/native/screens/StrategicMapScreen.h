@@ -35,6 +35,10 @@ class StrategicMapScreen : public MainViewScreen {
 public:
   StrategicMapScreen();
 
+  // This screen's view class, turn event and name -- the single source of the
+  // identity. RT_OPEN_TO/RT_AWAIT_CURRENT read it, so a script never repeats either.
+  static MainViewScreenIdentity Identity();
+
   // True when the map is the current main view at its own turn event with no modal above it.
   static bool IsCurrent();
 
@@ -76,22 +80,36 @@ public:
   // the camera through them.
   TCivDescription* CivilianLegend() const;
 
-  // The army category page of the map toolbar, and its per-category widgets. The toolbar is a
-  // child page of the map view rather than a screen of its own, so it lives here.
+  // The army category page of the map toolbar. The toolbar is a child page of the map view
+  // rather than a screen of its own, so it lives here -- and so do its magic tags, its category
+  // count, and the fact that an idle count is a numbered arrow's value. A script asks these
+  // questions; it does not resolve placards or read widget fields.
+  enum { kArmyCategoryCount = 10 };
+
   RuntimeActionResult SelectArmyProvince(short province);
   bool ArmyMenuIsActiveForProvince(short province) const;
-  TArmyToolbar* ArmyToolbar() const;
-  TArmyPlacard* ArmyPlacard(int category) const;
-  TNumberedArrowButton* ArmyRatioArrow(int category) const;
-  // A numbered arrow is a two-zone widget: its lower half moves a unit out of the idle pool and
-  // its upper half returns one. Driven through TrackMouse at a bounds-derived point because the
-  // zone *is* the semantics -- there is no separate control per direction.
-  RuntimeActionResult ClickArrowLowerHalf(TNumberedArrowButton* arrow);
-  RuntimeActionResult ClickArrowUpperHalf(TNumberedArrowButton* arrow);
+  // Every category placard exists and has chosen its artwork. A placard with no glyph is the
+  // "the army menu came up half-built" regression.
+  bool AllArmyPlacardsPopulated() const;
+  // The first category whose ratio arrow is actionable and holds at least one idle unit, or -1
+  // when the province garrisons nothing selectable. Which categories a random capital holds is
+  // not a scenario's subject, so scripts take the first rather than naming one.
+  short FirstActionableArmyCategory() const;
+  // How many units of a category are idle -- the number the ratio arrow displays. -1 when the
+  // category has no arrow, which a caller should treat as "no answer", not as zero.
+  short ArmyIdleCount(short category) const;
+  // The two halves of a numbered arrow: the lower moves one idle unit into the selection, the
+  // upper returns it. Two operations rather than one widget plus a zone, because the zone *is*
+  // the semantics -- there is no separate control per direction.
+  RuntimeActionResult MoveOneIdleUnitOut(short category);
+  RuntimeActionResult ReturnOneUnit(short category);
 
   // Queries.
   TMapUberPicture* View() const;
   TMapDialog* Dialog() const;
+  // The map's own dialog is built with the map view; a script that only needs to know it exists
+  // should ask this rather than null-checking the pointer.
+  bool HasDialog() const;
   // Zoomed out shows the alternate map mode; the zoom-in control is present in that state and
   // the zoom-out control in the other, which is how the toggle is observable.
   // The load path builds the end-turn control separately from the map view, so a loaded map can
@@ -104,6 +122,15 @@ public:
   int ViewportOriginY() const;
 
 private:
+  // Widget resolution stays on this side of the boundary. These were public until the semantic
+  // operations above existed; a script that reads TNumberedArrowButton::value84 for itself is
+  // the thing the screens exist to prevent.
+  TArmyToolbar* ArmyToolbar() const;
+  TArmyPlacard* ArmyPlacard(int category) const;
+  TNumberedArrowButton* ArmyRatioArrow(int category) const;
+  RuntimeActionResult ClickArrowLowerHalf(TNumberedArrowButton* arrow);
+  RuntimeActionResult ClickArrowUpperHalf(TNumberedArrowButton* arrow);
+
   TMapUberPicture* mapView;
 };
 

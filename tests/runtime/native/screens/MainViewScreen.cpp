@@ -21,6 +21,14 @@ bool MainViewScreen::MainViewIsCurrent(CRuntimeClass* expectedClass, int expecte
   return RuntimeIsViewKindOf(RuntimeMainView(), expectedClass);
 }
 
+MainViewScreen::MainViewScreen(const MainViewScreenIdentity& identity)
+    : root(0), expectedClass(identity.viewClass), expectedEvent(identity.turnEvent),
+      screenName(identity.screenName) {
+  if (MainViewIsCurrent(identity.viewClass, identity.turnEvent)) {
+    root = RuntimeMainView();
+  }
+}
+
 MainViewScreen::MainViewScreen(CRuntimeClass* viewClass, int eventCode, const char* name)
     : root(0), expectedClass(viewClass), expectedEvent(eventCode), screenName(name) {
   if (MainViewIsCurrent(viewClass, eventCode)) {
@@ -66,7 +74,10 @@ RuntimeActionResult MainViewScreen::ActivateSelected(const RuntimeControlSelecto
     message.Format("cannot %s: %s", what, static_cast<LPCSTR>(failure));
     return RuntimeActionResult::Failure(message);
   }
-  return RuntimeActionResult::Success();
+  // A control activation is delivered through the game's message loop, so its effect is not
+  // observable until the game runs. Every screen action that activates a control inherits this,
+  // which is what lets a script stop deciding it per call site.
+  return RuntimeActionResult::SuccessAfterMessageBarrier();
 }
 
 RuntimeActionResult MainViewScreen::Activate(int tag, const char* what) {

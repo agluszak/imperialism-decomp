@@ -22,10 +22,12 @@ TPlacard* PlacardAt(TView* root, int tag) {
 
 } // namespace
 
-CityScreen::CityScreen()
-    : MainViewScreen(RUNTIME_CLASS(TCityProductionView), kTurnEventCityProduction,
-                     "the city production screen"),
-      cityView(0) {
+MainViewScreenIdentity CityScreen::Identity() {
+  return MainViewScreenIdentity(RUNTIME_CLASS(TCityProductionView), kTurnEventCityProduction,
+                                "the city production screen");
+}
+
+CityScreen::CityScreen() : MainViewScreen(Identity()), cityView(0) {
   cityView = static_cast<TCityProductionView*>(Root());
 }
 
