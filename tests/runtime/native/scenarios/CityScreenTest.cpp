@@ -230,8 +230,8 @@ private:
   }
 
   // Completing the order is a model call, not a click: no control finishes a ship early. What is
-  // asserted is what completion does -- the hulls reach the city and the merchant marine grows by
-  // the ships' own weight.
+  // asserted is what completion does -- the hulls reach the city, the navy's arms grow by their
+  // industry weight, and the merchant marine grows by their cargo weight.
   bool CompletedShipOrderUpdatedTheFleet() {
     const short completedQuantity = shipOrder->quantity;
     const short resourceType = shipOrder->resourceTypeIndex;
@@ -241,10 +241,13 @@ private:
     const short expectedCapacity = static_cast<short>(
         shipBefore.merchantCapacity +
         GetResourceDescriptorWeightWord0ByType(resourceType) * completedQuantity);
+    const int expectedArms =
+        shipBefore.armsInNavy +
+        GetIndustryActionCostWeightByResourceType(resourceType) * completedQuantity;
     return shipOrder->quantity == 0 &&
            shipOrder->ownerCity->orderCountByType5c[resourceType] ==
                shipBefore.shipCount + completedQuantity &&
-           owner->merchantCapacity == expectedCapacity;
+           owner->merchantCapacity == expectedCapacity && owner->GetArmsInNavy() == expectedArms;
   }
 
   void CaptureTrainingOrder(TTrainingOrder* order) {
