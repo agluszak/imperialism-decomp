@@ -9,6 +9,7 @@
 
 #include "MainViewScreen.h"
 
+class TDealTabControl;
 class TOfferDeskPicture;
 
 // The offer desk, shown when another nation puts a trade offer to the player during turn
@@ -37,7 +38,31 @@ public:
   RuntimeActionResult Accept();
   RuntimeActionResult Reject();
 
+  // Raise the desk for a nation directly, through the game's own turn-event dispatch. Turn
+  // processing normally raises it; a scenario that wants to inspect the desk outside a turn has
+  // no control to click, and this is the entry point the game itself uses.
+  static RuntimeActionResult OpenForNation(short nationSlot);
+  // Put a fixed offer of `quantity` units of `resource` at `price` to the nation itself, which
+  // is what makes the desk's contents deterministic across runs.
+  static RuntimeActionResult PoseOfferToSelf(short nationSlot, short resource, short quantity,
+                                             short price);
+
+  // Presentation. The desk names the selling nation in its offer text and draws the season
+  // label in white over the artwork; both were regressions once.
+  bool OfferTextNamesNation(short nationSlot) const;
+  bool SeasonLabelIsWhite() const;
+  // The purchase field opens at the amount offered, bounded by it.
+  bool PurchaseDefaultsTo(int amount) const;
+
+  // The bookmark strip down the side of the sheet.
+  bool HasRetailBookmarkCount() const;
+  short BookmarkCount() const;
+  short SelectedBookmark() const;
+  RuntimeActionResult SelectBookmark(short row);
+
 private:
+  TDealTabControl* Bookmarks() const;
+
   TOfferDeskPicture* offerDesk;
 };
 

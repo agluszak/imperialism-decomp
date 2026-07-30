@@ -29,6 +29,7 @@ const short kDiplomacyToolbarSelectedPicture = 0x24ea;
 // resolves them too: 'ovr0' + n is the nth map overlay, 'scr0' + n the nth treaty action.
 const int kRelationshipOverlayIndex = 1;
 const int kAllianceActionIndex = 1;
+const int kDeclareWarActionIndex = 4;
 
 // Every offer-sheet response control publishes the same command; the sheet distinguishes them
 // by tag. A control that does not publish it would be a different widget wearing the tag.
@@ -99,6 +100,10 @@ RuntimeActionResult DiplomacyScreen::SelectAllianceAction() {
   return Activate(kControlTagScr0 + kAllianceActionIndex, "select the alliance treaty action");
 }
 
+RuntimeActionResult DiplomacyScreen::SelectDeclareWarAction() {
+  return Activate(kControlTagScr0 + kDeclareWarActionIndex, "select the declare-war action");
+}
+
 RuntimeActionResult DiplomacyScreen::Close() {
   return Activate(kControlTagEnd, "leave the diplomacy map");
 }
@@ -111,9 +116,12 @@ short DiplomacyScreen::RelationshipOverlaySourceNation() const {
   return diplomacyView != 0 ? diplomacyView->RuntimeRelationshipOverlaySourceNation() : -1;
 }
 
+bool DiplomacyScreen::TreatiesTopicIsSelected() const {
+  return diplomacyView != 0 && diplomacyView->RuntimeActionTopicIndex() == kTreatiesTopicIndex;
+}
+
 bool DiplomacyScreen::TreatiesTopicIsActive() const {
-  return diplomacyView != 0 && diplomacyView->RuntimeActionTopicIndex() == kTreatiesTopicIndex &&
-         diplomacyView->actionCodeBC == kDipActionBuildConsulate;
+  return TreatiesTopicIsSelected() && diplomacyView->actionCodeBC == kDipActionBuildConsulate;
 }
 
 int DiplomacyScreen::ActionCode() const {

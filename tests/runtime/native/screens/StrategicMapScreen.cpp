@@ -1,6 +1,12 @@
 #include "StrategicMapScreen.h"
 
+#include "UiAnimationRegistry.h"
+
+#include "game/app/TAnimation.h"
+#include "game/app/TAnimator.h"
 #include "game/core/global_data_tables.h"
+#include "game/globals/ui_core_globals.h"
+#include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/military/TArmyMgr.h"
 #include "game/ui_widgets/TArmyPlacard.h"
@@ -57,6 +63,44 @@ RuntimeActionResult StrategicMapScreen::ZoomIn() {
 
 RuntimeActionResult StrategicMapScreen::CancelToSetup() {
   return Activate(kControlTagCanc, "cancel back to random setup");
+}
+
+RuntimeActionResult StrategicMapScreen::ReopenByTurnEvent(short nationSlot) {
+  if (g_pViewMgr == 0) {
+    return RuntimeActionResult::Failure("cannot reopen the strategic map: no view manager");
+  }
+  g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventStrategicMap), nationSlot);
+  return RuntimeActionResult::Success();
+}
+
+namespace {
+
+// A one-pixel, two-frame animation whose tick interval never elapses: it exists to be found in
+// the registry, not to draw anything.
+const short kSeededFrameCount = 2;
+const short kSeededFrameResourceBase = 0;
+const int kSeededTicksPerFrame = 0x7fffffff;
+
+} // namespace
+
+RuntimeActionResult StrategicMapScreen::SeedOwnedAnimation(int tag) {
+  if (mapView == 0) {
+    return InvalidScreen("give the map an animation to own");
+  }
+  if (!UiAnimationRegistry::IsReady()) {
+    return ScreenFailure("give the map an animation to own",
+                         CString("the UI animator has no registry"));
+  }
+  RECT bounds = {0, 0, 1, 1};
+  TAnimation* animation = new TAnimation();
+  animation->IAnimation(mapView, &bounds, kSeededFrameCount, kSeededFrameResourceBase,
+                        kSeededTicksPerFrame, tag);
+  g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
+  if (!UiAnimationRegistry::Contains(tag)) {
+    return ScreenFailure("give the map an animation to own",
+                         CString("the animation did not reach the registry"));
+  }
+  return RuntimeActionResult::Success();
 }
 
 RuntimeActionResult StrategicMapScreen::ScrollBy(int direction) {

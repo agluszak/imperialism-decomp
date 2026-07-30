@@ -46,13 +46,17 @@ public:
   RuntimeActionResult ShowRelationshipOverlay();
   RuntimeActionResult ShowTreaties();
   RuntimeActionResult SelectAllianceAction();
+  RuntimeActionResult SelectDeclareWarAction();
   RuntimeActionResult Close();
 
   // Queries.
   short SelectedNation() const;
   short RelationshipOverlaySourceNation() const;
-  // The treaties topic is active *and* its default action is the consulate, which is the state
-  // the following nation click depends on.
+  // The treaties topic is the selected one. Selecting it is asynchronous, so a script that goes
+  // on to pick one of its actions waits for this first.
+  bool TreatiesTopicIsSelected() const;
+  // As above, and its default action is the consulate -- the state a nation click depends on
+  // when no other treaty action has been chosen.
   bool TreatiesTopicIsActive() const;
   int ActionCode() const;
   // The icon the map draws over a nation for the policy currently posted towards it.

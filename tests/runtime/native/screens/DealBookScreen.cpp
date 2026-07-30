@@ -2,6 +2,7 @@
 
 #include "game/core/global_data_tables.h"
 #include "game/trade_ui/TDealBookPicture.h"
+#include "game/trade_ui/TDealTabControl.h"
 // The page-mode predicates read ownerLocalX off the cached page views, so their layouts have to
 // be complete here rather than just declared.
 #include "game/trade_ui/TTradePageBuyView.h"
@@ -53,11 +54,28 @@ RuntimeActionResult DealBookScreen::ShowHistoryPages() {
 }
 
 RuntimeActionResult DealBookScreen::ShowCategoryPages() {
-  return Activate(kControlTagTabs, "show the Deal Book category pages");
+  TView* strip = Find(kControlTagTabs);
+  if (strip == 0 || strip->IsKindOf(RUNTIME_CLASS(TDealTabControl)) == 0) {
+    if (!IsValid()) {
+      return InvalidScreen("show the Deal Book category pages");
+    }
+    return ScreenFailure("show the Deal Book category pages",
+                         CString("the book has no category strip"));
+  }
+  // A category page is chosen by clicking a row of the strip, not by activating the strip
+  // itself: the strip's own command carries no row, so it would not select anything.
+  if (!static_cast<TDealTabControl*>(strip)->ActivateRow(0)) {
+    return ScreenFailure("show the Deal Book category pages",
+                         CString("the first category row did not accept the click"));
+  }
+  return RuntimeActionResult::Success();
 }
 
 bool DealBookScreen::IsShowingHistoryPages() const {
-  return dealBook != 0 && dealBook->cachedSellPageView == dealBook->soldTradesView &&
+  // History mode is also the mode flag being clear; the page identities below say which views
+  // are parked, the flag says which mode the book thinks it is in.
+  return dealBook != 0 && !dealBook->alternatePageMode &&
+         dealBook->cachedSellPageView == dealBook->soldTradesView &&
          dealBook->cachedBuyPageView == dealBook->boughtTradesView &&
          dealBook->cachedSellPageView != 0 &&
          dealBook->cachedSellPageView->ownerLocalX == kHistorySellPageX &&

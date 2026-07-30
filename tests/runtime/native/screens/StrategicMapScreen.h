@@ -45,6 +45,13 @@ public:
   RuntimeActionResult ZoomOut();
   RuntimeActionResult ZoomIn();
   RuntimeActionResult CancelToSetup();
+  // Re-enter the map through the game's own turn-event dispatch, for a script that left it by
+  // dispatching some other screen and so has no control to click its way back with.
+  RuntimeActionResult ReopenByTurnEvent(short nationSlot);
+
+  // Register an animation owned by the map view, so a scenario can check that leaving the map
+  // takes it away again. Tagged, because that is how the animator addresses its registry.
+  RuntimeActionResult SeedOwnedAnimation(int tag);
 
   // Non-input map manipulation. These are model/view calls rather than control activations,
   // so they are actions only in the sense that a script sequences them.

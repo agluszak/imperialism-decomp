@@ -6,8 +6,7 @@
     "tests/runtime/native/scenarios/IntroductoryRandomGameTest.cpp": 5,
     "tests/runtime/native/scenarios/RandomGameJourneyTest.cpp": 34,
     "tests/runtime/native/scenarios/SaveLoadRoundtripTest.cpp": 27,
-    "tests/runtime/native/scenarios/TradeScreenTest.cpp": 176,
     "tests/runtime/native/scenarios/TransportScreenTest.cpp": 38
   },
-  "total": 461
+  "total": 285
 }
