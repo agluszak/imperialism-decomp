@@ -9,7 +9,10 @@
 
 #include "MainViewScreen.h"
 
+class TArmyPlacard;
+class TArmyToolbar;
 class TMapUberPicture;
+class TNumberedArrowButton;
 class TMapDialog;
 class TView;
 
@@ -48,11 +51,28 @@ public:
   RuntimeActionResult ScrollBy(int direction);
   RuntimeActionResult SetViewportCell(short cellX, short cellY);
 
+  // The army category page of the map toolbar, and its per-category widgets. The toolbar is a
+  // child page of the map view rather than a screen of its own, so it lives here.
+  RuntimeActionResult SelectArmyProvince(short province);
+  bool ArmyMenuIsActiveForProvince(short province) const;
+  TArmyToolbar* ArmyToolbar() const;
+  TArmyPlacard* ArmyPlacard(int category) const;
+  TNumberedArrowButton* ArmyRatioArrow(int category) const;
+  // A numbered arrow is a two-zone widget: its lower half moves a unit out of the idle pool and
+  // its upper half returns one. Driven through TrackMouse at a bounds-derived point because the
+  // zone *is* the semantics -- there is no separate control per direction.
+  RuntimeActionResult ClickArrowLowerHalf(TNumberedArrowButton* arrow);
+  RuntimeActionResult ClickArrowUpperHalf(TNumberedArrowButton* arrow);
+
   // Queries.
   TMapUberPicture* View() const;
   TMapDialog* Dialog() const;
   // Zoomed out shows the alternate map mode; the zoom-in control is present in that state and
   // the zoom-out control in the other, which is how the toggle is observable.
+  // The load path builds the end-turn control separately from the map view, so a loaded map can
+  // legitimately be missing it for a tick. Its own predicate, so a test can wait for it.
+  bool HasEndTurnControl() const;
+  bool HasMiniMap() const;
   bool IsZoomedOut() const;
   bool IsZoomedIn() const;
   int ViewportOriginX() const;

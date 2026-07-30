@@ -121,6 +121,22 @@
   case slot:;                                                                                      \
   } while (0)
 
+// Perform one action and carry on *without* yielding. For a step whose effect is synchronous --
+// a model call the game does not need a turn to process. RT_ACTION is for anything that has to
+// reach the game through its message loop.
+//
+// Choosing wrong in this direction stalls: a scenario that pokes the model and then waits for
+// the application to go idle can wait forever, because a map left invalidating never reports an
+// idle with lCount == 0. Choosing wrong in the other direction reads a control's state before
+// the game has updated it.
+//
+// No program-counter slot, so this is not a yield point and several may share a line.
+#define RT_STEP(label, action)                                                                     \
+  do {                                                                                             \
+    if (!RunScriptAction((label), (action), __FILE__, __LINE__))                                   \
+      return;                                                                                      \
+  } while (0)
+
 #define RT_YIELD_AT(slot)                                                                          \
   do {                                                                                             \
     SetScriptProgramCounter(slot);                                                                 \
@@ -321,6 +337,12 @@
     ContinueFragmentAfterAction();                                                                 \
     return kRuntimeScriptRunning;                                                                  \
   case RT_SLOT_PRIMARY:;                                                                           \
+  } while (0)
+
+#define RT_FRAGMENT_STEP(label, action)                                                            \
+  do {                                                                                             \
+    if (!RunFragmentAction((label), (action), __FILE__, __LINE__))                                 \
+      return kRuntimeScriptFailed;                                                                 \
   } while (0)
 
 #define RT_FRAGMENT_REQUIRE(expr)                                                                  \

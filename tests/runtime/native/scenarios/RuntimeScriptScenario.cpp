@@ -128,16 +128,19 @@ void RuntimeScriptScenario::FailRequirementRelation(const char* expression, cons
                                                     const CString& expected, const CString& actual,
                                                     const char* file, int line) {
   scriptArmedOrFinished = true;
-  FailScenarioText(static_cast<LPCSTR>(RuntimeAssertionText::RequirementValues(
-      RunState(), expression, relation, expected, actual, file, line)));
+  FailScenarioTextAs(RuntimeAssertionText::PhaseSlug(expression),
+                     static_cast<LPCSTR>(RuntimeAssertionText::RequirementValues(
+                         RunState(), expression, relation, expected, actual, file, line)));
 }
 
 void RuntimeScriptScenario::FailRequirementKindOf(const char* expression, const char* typeName,
                                                   TView* view, const char* file, int line) {
   scriptArmedOrFinished = true;
-  FailScenarioText(static_cast<LPCSTR>(RuntimeAssertionText::RequirementValues(
-      RunState(), expression, "is a", RuntimeAssertionText::Value(typeName),
-      RuntimeAssertionText::Value(view != 0 ? RuntimeClassName(view) : "null"), file, line)));
+  FailScenarioTextAs(
+      RuntimeAssertionText::PhaseSlug(expression),
+      static_cast<LPCSTR>(RuntimeAssertionText::RequirementValues(
+          RunState(), expression, "is a", RuntimeAssertionText::Value(typeName),
+          RuntimeAssertionText::Value(view != 0 ? RuntimeClassName(view) : "null"), file, line)));
 }
 
 void RuntimeScriptScenario::RecordCheckFailure(const char* expression, const char* file, int line) {

@@ -1,16 +1,15 @@
 {
   "comment": "Control-tree mechanics still present in unmigrated runtime scenario bodies. A ratchet: counts fall freely (the gate rewrites this file), a rise or a new entry fails. Zero entries means every scenario is a linear script and the ratchet can become a hard ban.",
   "debt": {
-    "tests/runtime/native/scenarios/ArmyMenuTest.cpp": 4,
+    "tests/runtime/native/scenarios/ArmyMenuTest.cpp": 2,
     "tests/runtime/native/scenarios/CityScreenTest.cpp": 140,
     "tests/runtime/native/scenarios/CivilianRecruitmentTest.cpp": 41,
     "tests/runtime/native/scenarios/DiplomacyScreenTest.cpp": 77,
     "tests/runtime/native/scenarios/IntroductoryRandomGameTest.cpp": 5,
-    "tests/runtime/native/scenarios/LoadSavedGameTest.cpp": 7,
     "tests/runtime/native/scenarios/RandomGameJourneyTest.cpp": 34,
     "tests/runtime/native/scenarios/SaveLoadRoundtripTest.cpp": 27,
     "tests/runtime/native/scenarios/TradeScreenTest.cpp": 176,
     "tests/runtime/native/scenarios/TransportScreenTest.cpp": 38
   },
-  "total": 549
+  "total": 540
 }

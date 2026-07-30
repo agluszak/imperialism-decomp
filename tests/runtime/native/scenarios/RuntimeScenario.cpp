@@ -289,6 +289,15 @@ void RuntimeScenario::FailScenarioText(const char* failure) {
   FailScenario(static_cast<LPCSTR>(failureJson));
 }
 
+void RuntimeScenario::FailScenarioTextAs(const char* assertionId, const char* failure) {
+  CString failureJson;
+  RuntimeJson::AppendString(failureJson, failure != 0 ? failure : "");
+  run->RecordAssertion(assertionId, static_cast<LPCSTR>(failureJson), true);
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure,
+                                static_cast<LPCSTR>(failureJson), 0);
+  Finish("failed", static_cast<LPCSTR>(failureJson));
+}
+
 bool RuntimeScenario::Require(const char* assertionId, bool condition, const char* failure) {
   if (condition) {
     return true;

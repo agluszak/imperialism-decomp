@@ -1,140 +1,168 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "screens/StrategicMapScreen.h"
 
-#include "game/globals/global_types.h"
-#include "game/globals/assets_globals.h"
-#include "game/globals/game_session_globals.h"
-#include "game/globals/military_globals.h"
-#include "game/globals/nation_globals.h"
-#include "game/globals/ui_core_globals.h"
 #include "game/assets/TAssetMgr.h"
-#include "game/city_ui/TCountry.h"
+#include "game/core/global_data_tables.h"
+#include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/map_ui/TMapDialog.h"
 #include "game/military/TArmyMgr.h"
-#include "game/military/TGarrisonView.h"
-#include "game/ui_core/TWindow.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_screens/TSimMgr.h"
-#include "game/turn_event_codes.h"
-#include "game/ui_tags_common.h"
-#include "game/ui_tags_widgets.h"
 #include "game/ui_widgets/TArmyPlacard.h"
 #include "game/ui_widgets/TArmyToolbar.h"
+#include "game/military/TGarrisonView.h"
+#include "game/turn_event_codes.h"
+#include "game/ui_screens/TSimMgr.h"
+#include "game/ui_core/TView.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_tags_common.h"
+#include "game/ui_tags_military.h"
 #include "game/ui_widgets/TNumberedArrowButton.h"
-#include "game/globals/view_registries.h"
 
 namespace {
 
-class ArmyMenuTestCase : public RandomGameScenario {
+// Selecting the player's capital province arms the army menu: every unit-category placard is
+// populated, the ratio arrows move an idle unit out and back, and opening the army book neither
+// leaves the garrison page empty nor disturbs map ownership.
+//
+// The whole sequence is synchronous, so the script has no waits.
+class ArmyMenuTestCase : public EasyMapScriptScenario {
 public:
-  int DifficultyLevel() const override {
-    return 1;
-  }
+  ArmyMenuTestCase() : capitalProvince(-1), arrowCategory(-1), initialIdleCount(0) {}
 
-  void OnCombinedMapReady() override {
-    TMapUberPicture* mapView = g_pViewMgr->mapUberPictureF0;
-    short activeNation = g_pSimMgr->GetActiveNationId();
-    short capitalTile =
-        static_cast<short>(g_apTerrainTypeDescriptorTable[activeNation]->homeTileIndex);
-    short capitalProvince = g_pGlobalMapState->terrainStateTable[capitalTile].cityRecordIndex;
-    if (mapView == 0 || mapView->subview2A8 == 0 || capitalProvince == -1) {
-      FailScenario("\"combined map has no selectable capital province\"");
-      return;
-    }
+protected:
+  void Script() override {
+    RT_BEGIN();
 
-    mapView->SetMapInteractionMode(1);
-    g_pMapContextActionManager->SetActiveProvinceSelection(capitalProvince);
-    if (mapView->activeUnitCategoryIndex96 != 1 ||
-        g_pMapContextActionManager->pendingMapActionIndex != capitalProvince) {
-      FailScenario("\"capital click did not activate the army menu\"");
-      return;
-    }
+    RT_REQUIRE(StrategicMapScreen::IsCurrent());
+    RT_REQUIRE_NOT_NULL(StrategicMap().Dialog());
 
-    TArmyToolbar* toolbar = static_cast<TArmyToolbar*>(mapView->categoryPages[1]);
-    for (int category = 0; category < 10; ++category) {
-      TArmyPlacard* placard = static_cast<TArmyPlacard*>(
-          toolbar->ResolveControlByTag(kControlTagArmyPlacardFirst + category));
-      if (placard == 0 || placard->glyph90 < 0) {
-        FailScenario("\"army menu placards were not populated after the capital click\"");
-        return;
-      }
-    }
+    capitalProvince = CapitalProvince();
+    RT_REQUIRE_NE(-1, capitalProvince);
 
-    for (int arrowCategory = 1; arrowCategory < 10; ++arrowCategory) {
-      TNumberedArrowButton* arrow = static_cast<TNumberedArrowButton*>(
-          toolbar->ResolveControlByTag(kControlTagArmyRatioFirst + arrowCategory));
-      if (arrow == 0 || arrow->IsActionable() == 0 || arrow->value84 <= 0) {
-        continue;
-      }
+    RT_STEP("select the capital province", StrategicMap().SelectArmyProvince(capitalProvince));
+    RT_REQUIRE(StrategicMap().ArmyMenuIsActiveForProvince(capitalProvince));
 
-      short initialIdleCount = arrow->value84;
-      CRect bounds;
-      arrow->QueryContentBounds(&bounds);
-      CPoint lowerHalf(bounds.left + 1, bounds.top + arrow->frameHeight38 * 3 / 4);
-      arrow->TrackMouse(kTrackPhaseBegin, lowerHalf, lowerHalf, lowerHalf, 1);
-      arrow->TrackMouse(kTrackPhaseEnd, lowerHalf, lowerHalf, lowerHalf, 1);
-      if (arrow->value84 != initialIdleCount - 1) {
-        FailScenario("\"army menu lower arrow did not select an idle unit\"");
-        return;
-      }
+    RT_REQUIRE(EveryPlacardIsPopulated());
 
-      CPoint upperHalf(bounds.left + 1, bounds.top + arrow->frameHeight38 / 4);
-      arrow->TrackMouse(kTrackPhaseBegin, upperHalf, upperHalf, upperHalf, 1);
-      arrow->TrackMouse(kTrackPhaseEnd, upperHalf, upperHalf, upperHalf, 1);
-      if (arrow->value84 != initialIdleCount) {
-        FailScenario("\"army menu upper arrow did not return the selected unit\"");
-        return;
-      }
-      VerifyArmyBookAndOwnership(capitalProvince);
-      return;
-    }
-    FailScenario("\"capital army menu has no actionable unit-selection arrow\"");
-    return;
+    // The arrow's lower half moves an idle unit into the selection and its upper half returns
+    // it, so the pair must be exactly reversible. Asserted as two RT_REQUIRE_EQs rather than one
+    // predicate so a failure reports the counts, not just that they disagreed.
+    arrowCategory = FirstActionableRatioArrowCategory();
+    RT_REQUIRE_NE(-1, arrowCategory);
+    initialIdleCount = RatioArrowValue();
+
+    RT_STEP("select an idle unit", StrategicMap().ClickArrowLowerHalf(RatioArrow()));
+    RT_REQUIRE_EQ(initialIdleCount - 1, RatioArrowValue());
+
+    RT_STEP("return the selected unit", StrategicMap().ClickArrowUpperHalf(RatioArrow()));
+    RT_REQUIRE_EQ(initialIdleCount, RatioArrowValue());
+
+    RT_REQUIRE(ArmyBookBuildsItsGarrisonPageWithoutDisturbingOwnership());
+
+    g_pMapContextActionManager->DoOwnershipChanges();
+    RT_PASS();
+
+    RT_END();
   }
 
 private:
-  void VerifyArmyBookAndOwnership(short capitalProvince) {
-    short ownerBefore[0x180];
-    for (int cityRecordIndex = 0; cityRecordIndex < 0x180; ++cityRecordIndex) {
-      ownerBefore[cityRecordIndex] =
-          g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+  enum { kUnitCategoryCount = 10, kCityRecordCount = 0x180 };
+
+  short CapitalProvince() const {
+    const short activeNation = g_pSimMgr->GetActiveNationId();
+    if (g_apTerrainTypeDescriptorTable[activeNation] == 0) {
+      return -1;
+    }
+    const short capitalTile =
+        static_cast<short>(g_apTerrainTypeDescriptorTable[activeNation]->homeTileIndex);
+    return g_pGlobalMapState->terrainStateTable[capitalTile].cityRecordIndex;
+  }
+
+  bool EveryPlacardIsPopulated() const {
+    TArmyToolbar* toolbar = StrategicMap().ArmyToolbar();
+    if (toolbar == 0) {
+      return false;
+    }
+    for (int category = 0; category < kUnitCategoryCount; ++category) {
+      TArmyPlacard* placard = StrategicMap().ArmyPlacard(category);
+      if (placard == 0 || placard->glyph90 < 0) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Only the first actionable arrow is exercised: which categories a random capital garrisons is
+  // not this scenario's subject. -1 when the capital's menu offers no selectable unit at all.
+  short FirstActionableRatioArrowCategory() const {
+    for (short category = 1; category < kUnitCategoryCount; ++category) {
+      TNumberedArrowButton* arrow = StrategicMap().ArmyRatioArrow(category);
+      if (arrow != 0 && arrow->IsActionable() != 0 && arrow->value84 > 0) {
+        return category;
+      }
+    }
+    return -1;
+  }
+
+  TNumberedArrowButton* RatioArrow() const {
+    return StrategicMap().ArmyRatioArrow(arrowCategory);
+  }
+
+  short RatioArrowValue() const {
+    TNumberedArrowButton* arrow = RatioArrow();
+    return arrow != 0 ? arrow->value84 : -1;
+  }
+
+  bool ArmyBookBuildsItsGarrisonPageWithoutDisturbingOwnership() {
+    short ownerBefore[kCityRecordCount];
+    for (int index = 0; index < kCityRecordCount; ++index) {
+      ownerBefore[index] = g_pGlobalMapState->cityScoreTable[index].ownerNationCode00;
     }
 
     TWindow* book = static_cast<TWindow*>(
         g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventGarrison));
-    TView* page = book == 0 ? 0 : book->ResolveControlByTag(kControlTagPage);
-    if (page == 0 || page->IsKindOf(RUNTIME_CLASS(TGarrisonView)) == 0) {
-      FailScenario("\"capital army book did not construct its garrison page\"");
-      return;
+    if (book == 0) {
+      return false;
     }
-    TGarrisonView* garrison = static_cast<TGarrisonView*>(page);
+    TGarrisonView* garrison = GarrisonPageOf(book);
+    if (garrison == 0) {
+      return false;
+    }
     garrison->StuffValues(capitalProvince);
-    if (garrison->primaryUnitAtlas84 == 0) {
-      FailScenario("\"capital army book did not populate its unit sprite page\"");
-      return;
-    }
+    const bool populated = garrison->primaryUnitAtlas84 != 0;
     book->Close();
     book->Free();
+    if (!populated) {
+      return false;
+    }
 
-    for (int verifiedCityRecordIndex = 0; verifiedCityRecordIndex < 0x180;
-         ++verifiedCityRecordIndex) {
-      short owner = g_pGlobalMapState->cityScoreTable[verifiedCityRecordIndex].ownerNationCode00;
-      if (owner != ownerBefore[verifiedCityRecordIndex]) {
-        FailScenario("\"capital army book corrupted map ownership state\"");
-        return;
+    // MSVC500 predates per-loop `for` scope: a second `int index` in this function would be a
+    // redefinition, so the check loop names its own counter.
+    for (int verified = 0; verified < kCityRecordCount; ++verified) {
+      if (g_pGlobalMapState->cityScoreTable[verified].ownerNationCode00 != ownerBefore[verified]) {
+        return false;
       }
     }
-    g_pMapContextActionManager->DoOwnershipChanges();
-    Pass();
+    return true;
   }
-};
 
-ArmyMenuTestCase g_test;
+  // The army book is a standalone TWindow rather than the current main view, so it is resolved
+  // here rather than through a MainViewScreen.
+  TGarrisonView* GarrisonPageOf(TWindow* book) const {
+    TView* page = book->ResolveControlByTag(kControlTagPage);
+    return page != 0 && page->IsKindOf(RUNTIME_CLASS(TGarrisonView)) != 0
+               ? static_cast<TGarrisonView*>(page)
+               : 0;
+  }
+
+  short capitalProvince;
+  short arrowCategory;
+  short initialIdleCount;
+};
 
 } // namespace
 
-RuntimeTestCase* ArmyMenuTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(ArmyMenuTestCase, ArmyMenuTest)

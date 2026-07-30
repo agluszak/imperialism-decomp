@@ -25,12 +25,14 @@
 // The scenario is a file-static singleton, matching every existing test: the harness resolves
 // one test case per process and never reconstructs it, so a scenario's mutable state is reset
 // by its start-point hook rather than by a constructor.
+// The instance name is pasted from the class name so a translation unit can declare more than
+// one factory -- LoadSavedGameTest.cpp also owns the harness's unknown-test fallback.
 #define RUNTIME_TEST_FACTORY(CaseClass, FactoryName)                                               \
   namespace {                                                                                      \
-  CaseClass g_runtimeTestCaseInstance;                                                             \
+  CaseClass g_runtimeInstance##CaseClass;                                                          \
   }                                                                                                \
   RuntimeTestCase* FactoryName() {                                                                 \
-    return &g_runtimeTestCaseInstance;                                                             \
+    return &g_runtimeInstance##CaseClass;                                                          \
   }
 
 #endif

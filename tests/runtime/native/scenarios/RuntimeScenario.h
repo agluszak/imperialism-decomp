@@ -52,6 +52,10 @@ protected:
   // instead of at every call site.
   void FailScenario(const char* failure);
   void FailScenarioText(const char* failure);
+  // As above, but naming the assertion rather than letting it default to the phase name. A
+  // failure's identity should be the requirement that failed -- that is what an expected-failure
+  // signature and a triage search key off.
+  void FailScenarioTextAs(const char* assertionId, const char* failure);
   bool Require(const char* assertionId, bool condition, const char* failure);
   bool Check(const char* assertionId, bool condition, const char* failure);
   bool FinishChecks();
