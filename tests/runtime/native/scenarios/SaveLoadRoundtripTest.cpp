@@ -42,10 +42,6 @@ class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
   SaveLoadRoundtripTestCase() : savedTurn(0), savedNation(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

@@ -27,10 +27,6 @@ public:
     }
   }
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

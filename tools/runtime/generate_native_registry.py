@@ -38,12 +38,34 @@ def render_registry() -> str:
             flags.append("kRuntimeSnapshotMap")
         return " | ".join(flags) or "kRuntimeSnapshotNone"
 
+    # One array per test that captures UI trees, named after the test so the generated file
+    # stays readable. Emitted as the C++ constant names from the catalog: the numbers live in
+    # game/turn_event_codes.h and are not duplicated here.
+    event_arrays = "\n".join(
+        f"static const int k{_identifier(test.name)}SnapshotEvents[] = {{"
+        + ", ".join(test.ui_snapshot_events)
+        + "};"
+        for test in _game_tests()
+        if test.ui_snapshot_events
+    )
+
+    def snapshot_events(test) -> str:
+        if not test.ui_snapshot_events:
+            return "0, 0"
+        return f"k{_identifier(test.name)}SnapshotEvents, {len(test.ui_snapshot_events)}"
+
     rows = "\n".join(
         f'    {{"{test.name}", {test.native_factory}(), '
-        f'{snapshot_flags(test.native_snapshots)}, "{test.evidence_kind}"}},'
+        f'{snapshot_flags(test.native_snapshots)}, "{test.evidence_kind}", '
+        f'{"true" if test.record_game_flow else "false"}, {snapshot_events(test)}}},'
         for test in _game_tests()
     )
-    return BANNER + "RuntimeTestDescriptor g_descriptors[] = {\n" + rows + "\n};\n"
+    prologue = (event_arrays + "\n\n") if event_arrays else ""
+    return BANNER + prologue + "RuntimeTestDescriptor g_descriptors[] = {\n" + rows + "\n};\n"
+
+
+def _identifier(name: str) -> str:
+    return "".join(part.capitalize() for part in name.split("_"))
 
 
 def render_factories() -> str:

@@ -61,13 +61,6 @@ public:
         farmer(0), targetFarmerTile(-1), initialFarmerImprovementClass(0), engineer(0),
         initialAnimationFrame(0), initialAnimationTick(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-  bool RequiresScenarioUiSnapshot() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

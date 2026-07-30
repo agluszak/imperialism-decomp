@@ -25,10 +25,6 @@ const int kHardDifficulty = 3;
 // and resumes at the same statement once the flow reports the map.
 class RandomGameJourneyTestCase : public CapitalSelectionScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

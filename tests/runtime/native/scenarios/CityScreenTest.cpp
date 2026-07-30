@@ -58,18 +58,6 @@ public:
         priorProductionMedium(0), priorProductionHigh(0), priorShipCount(0),
         priorMerchantCapacity(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-  bool RequiresScenarioUiSnapshot() const override {
-    return true;
-  }
-  void ObserveScenarioUiTree(int eventCode, TView* root) override {
-    if (eventCode == kTurnEventCityProduction) {
-      CaptureScenarioUiSnapshot(eventCode, root);
-    }
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

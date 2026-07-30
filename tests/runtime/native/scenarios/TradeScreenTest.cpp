@@ -44,18 +44,6 @@ public:
       : warTargetNation(-1), warPolicyBeforeAction(-1), sellCommodity(-1), initialSellQuantity(0),
         initialSellBar(0), baselineEconomicTurn(0), bookmarkRow(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-  bool RequiresScenarioUiSnapshot() const override {
-    return true;
-  }
-  void ObserveScenarioUiTree(int eventCode, TView* root) override {
-    if (eventCode == kTurnEventTradeOverview) {
-      CaptureScenarioUiSnapshot(eventCode, root);
-    }
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

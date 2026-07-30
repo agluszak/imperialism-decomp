@@ -15,10 +15,6 @@ class MapZoomToggleTestCase : public CombinedMapScriptScenario {
 public:
   MapZoomToggleTestCase() : toggleCycles(0), previousViewportX(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

@@ -17,6 +17,12 @@ public:
 
   void InitializeFromEnvironment();
   void SetDescriptor(unsigned int snapshotFlags, const char* evidenceKind);
+  // Catalog-declared scenario policy (see RuntimeTestDescriptor).
+  void SetScenarioPolicy(bool recordsGameFlow, const int* uiSnapshotEvents,
+                         int uiSnapshotEventCount);
+  bool RecordsGameFlow() const;
+  bool CapturesUiTreeAt(int eventCode) const;
+  bool CapturesAnyUiTree() const;
   void StartScenario(RuntimeScenario* scenario);
   void EnterPhase(const char* phase, const char* action);
   void Finish();
@@ -88,6 +94,9 @@ private:
   HWND mainWindowHandle;
   bool newspaperAdvanced;
   unsigned int snapshotFlags;
+  bool recordsGameFlow;
+  const int* uiSnapshotEvents;
+  int uiSnapshotEventCount;
   char testName[64];
   char resultPath[MAX_PATH];
   char heartbeatPath[MAX_PATH];

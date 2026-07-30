@@ -33,10 +33,6 @@ const int kMinimumPopulatedTextEntries = 2;
 // from the script, which does not begin until the map is ready.
 class IntroductoryRandomGameTestCase : public IntroductoryMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
   bool BeforeInitialNewspaperExit() override {
     RuntimeActionResult civilians = StartingCiviliansProbe::VerifyForNation(ActiveNation());
     if (!civilians.Succeeded()) {

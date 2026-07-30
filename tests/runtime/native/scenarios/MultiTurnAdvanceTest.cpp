@@ -21,10 +21,6 @@ class MultiTurnAdvanceTestCase : public EasyMapScriptScenario {
 public:
   MultiTurnAdvanceTestCase() : turnsDone(0), startEconomicTurn(0) {}
 
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

@@ -20,18 +20,6 @@ const short kFirstCommodityRow = 0;
 // capacity readout's value and placement. Each of those has been a regression at some point.
 class TransportScreenTestCase : public EasyMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-  bool RequiresScenarioUiSnapshot() const override {
-    return true;
-  }
-  void ObserveScenarioUiTree(int eventCode, TView* root) override {
-    if (eventCode == kTurnEventTransport) {
-      CaptureScenarioUiSnapshot(eventCode, root);
-    }
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

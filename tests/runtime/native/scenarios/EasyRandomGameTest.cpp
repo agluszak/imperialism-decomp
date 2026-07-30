@@ -10,10 +10,6 @@ namespace {
 // capital-site selector) fires at this difficulty at all.
 class EasyRandomGameTestCase : public EasyMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();

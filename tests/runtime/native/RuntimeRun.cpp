@@ -7,8 +7,9 @@
 
 RuntimeRun::RuntimeRun()
     : scenario(0), seed(1), selectedNationSlot(-1), mainWindowHandle(0), newspaperAdvanced(false),
-      snapshotFlags(0), activatedEventSequence("["), handledModals("["), unexpectedModals("["),
-      faults("["), actionLog("["), assertionFailures("[") {
+      snapshotFlags(0), recordsGameFlow(false), uiSnapshotEvents(0), uiSnapshotEventCount(0),
+      activatedEventSequence("["), handledModals("["), unexpectedModals("["), faults("["),
+      actionLog("["), assertionFailures("[") {
   testName[0] = 0;
   resultPath[0] = 0;
   heartbeatPath[0] = 0;
@@ -22,6 +23,29 @@ RuntimeRun::RuntimeRun()
 void RuntimeRun::SetDescriptor(unsigned int flags, const char* kind) {
   snapshotFlags = flags;
   lstrcpynA(evidenceKind, kind, sizeof(evidenceKind));
+}
+
+void RuntimeRun::SetScenarioPolicy(bool records, const int* events, int eventCount) {
+  recordsGameFlow = records;
+  uiSnapshotEvents = events;
+  uiSnapshotEventCount = eventCount;
+}
+
+bool RuntimeRun::RecordsGameFlow() const {
+  return recordsGameFlow;
+}
+
+bool RuntimeRun::CapturesUiTreeAt(int eventCode) const {
+  for (int index = 0; index < uiSnapshotEventCount; ++index) {
+    if (uiSnapshotEvents[index] == eventCode) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RuntimeRun::CapturesAnyUiTree() const {
+  return uiSnapshotEventCount > 0;
 }
 
 void RuntimeRun::InitializeFromEnvironment() {

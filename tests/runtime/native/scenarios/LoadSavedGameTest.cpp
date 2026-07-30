@@ -21,10 +21,6 @@ namespace {
 // misread trade record rather than of a real game state.
 class LoadSavedGameTestCase : public LoadedMapScriptScenario {
 public:
-  bool RecordsGameFlow() const override {
-    return true;
-  }
-
 protected:
   void Script() override {
     RT_BEGIN();
