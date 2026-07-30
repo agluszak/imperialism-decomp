@@ -77,6 +77,9 @@ protected:
   void RecordUnexpectedModalView(TView* modal);
   bool HasScenarioUiSnapshot() const;
   void CaptureScenarioUiSnapshot(int eventCode, TView* root);
+  // Snapshot whatever screen is up, for a scenario whose interesting screen is the one it is
+  // standing on rather than one it observed being built.
+  void CaptureCurrentScreenSnapshot();
   bool HoldAtScenarioScreen(const char* screenName) const;
   // The run being executed. Subclasses need it to read the phase name and the armed wait
   // when building a failure diagnostic; flows already reach it through friendship.

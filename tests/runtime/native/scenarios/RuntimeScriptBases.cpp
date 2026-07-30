@@ -32,6 +32,27 @@ void CombinedMapScriptScenario::OnCombinedMapReady() {
   BeginScript("running_script");
 }
 
+CapitalSelectionScriptScenario::CapitalSelectionScriptScenario() : scriptBegun(false) {}
+
+int CapitalSelectionScriptScenario::DifficultyLevel() const {
+  return 2;
+}
+
+void CapitalSelectionScriptScenario::OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) {
+  if (checkpoint == kRuntimeCapitalSelectionReady && !scriptBegun) {
+    scriptBegun = true;
+    // BeginScript takes the driver off the flow (EnterScenarioStep does that), so the flow stays
+    // parked at its checkpoint until the script hands navigation back.
+    BeginScript("running_script");
+    return;
+  }
+  RandomGameScriptScenario::OnFlowCheckpoint(checkpoint);
+}
+
+void CapitalSelectionScriptScenario::OnCombinedMapReady() {
+  ResumeScript("running_script");
+}
+
 bool LoadedMapScriptScenario::RequiresFixture() const {
   return true;
 }

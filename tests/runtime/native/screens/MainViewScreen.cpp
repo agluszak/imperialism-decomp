@@ -81,6 +81,14 @@ RuntimeActionResult MainViewScreen::Activate(int tag, CRuntimeClass* controlClas
   return ActivateSelected(RuntimeControlSelector(tag, controlClass), what);
 }
 
+RuntimeActionResult MainViewScreen::Activate(int tag, CRuntimeClass* controlClass, int eventNumber,
+                                             const char* what) {
+  if (root == 0) {
+    return InvalidScreen(what);
+  }
+  return ActivateSelected(RuntimeControlSelector(tag, controlClass, eventNumber), what);
+}
+
 RuntimeActionResult MainViewScreen::Activate(int tag0, int tag1, const char* what) {
   return Activate(tag0, tag1, RUNTIME_CLASS(TControl), what);
 }

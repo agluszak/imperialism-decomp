@@ -11,6 +11,8 @@
 
 class TArmyPlacard;
 class TArmyToolbar;
+class TCivDescription;
+class TCivToolbar;
 class TMapUberPicture;
 class TNumberedArrowButton;
 class TMapDialog;
@@ -57,6 +59,22 @@ public:
   // so they are actions only in the sense that a script sequences them.
   RuntimeActionResult ScrollBy(int direction);
   RuntimeActionResult SetViewportCell(short cellX, short cellY);
+
+  // The civilian category page of the map toolbar. Showing it is a mode change on the map, not a
+  // control activation: the page is already built and the mode decides which one is placed.
+  RuntimeActionResult ShowCivilianToolbar();
+  TCivToolbar* CivilianToolbar() const;
+  // The page has moved to the position the map shows it at. Its off-screen parking spot is what
+  // it holds while another category is selected, so this is how "the toolbar appeared" is
+  // observable at all.
+  bool CivilianToolbarIsPlaced() const;
+  // The portrait of the selected civilian: which artwork it chose, and whether that artwork
+  // actually loaded rather than leaving an empty frame.
+  short CivilianPortraitGlyph() const;
+  bool CivilianPortraitIsLoaded() const;
+  // The legend beside the portrait: the per-profile target counters and the control that cycles
+  // the camera through them.
+  TCivDescription* CivilianLegend() const;
 
   // The army category page of the map toolbar, and its per-category widgets. The toolbar is a
   // child page of the map view rather than a screen of its own, so it lives here.

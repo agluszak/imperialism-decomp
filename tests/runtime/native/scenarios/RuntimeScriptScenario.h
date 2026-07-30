@@ -38,6 +38,12 @@ protected:
   // and hands the first observation to Script().
   void BeginScript(const char* phaseName);
 
+  // Hand control back to a script that is already part-way through, after the navigation flow
+  // took the driver back. Unlike BeginScript this keeps the program counter, so the script
+  // continues at the point it reached rather than restarting -- which is what a script that
+  // re-enters the flow mid-run needs.
+  void ResumeScript(const char* phaseName);
+
   // Report progress from inside a long synchronous step, so a hang names where it happened
   // rather than only "the scenario stopped responding". The label becomes the host-visible
   // phase and action. Not a yield -- the game does not run in between.

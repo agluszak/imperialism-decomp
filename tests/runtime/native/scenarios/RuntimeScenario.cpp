@@ -435,6 +435,11 @@ void RuntimeScenario::CaptureScenarioUiSnapshot(int eventCode, TView* root) {
   run->ScenarioUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
 }
 
+void RuntimeScenario::CaptureCurrentScreenSnapshot() {
+  CaptureScenarioUiSnapshot(g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1,
+                            RuntimeMainView());
+}
+
 bool RuntimeScenario::HoldAtScenarioScreen(const char* screenName) const {
   return run->HoldAt(screenName);
 }

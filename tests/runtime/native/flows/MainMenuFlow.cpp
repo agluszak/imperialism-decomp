@@ -4,7 +4,7 @@
 #include "RuntimeJson.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
-#include "screens/MainMenuDriver.h"
+#include "screens/MainMenuScreen.h"
 
 #include "game/core/global_data_tables.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -26,19 +26,16 @@ void MainMenuFlow::Start(RuntimeScenario& scenario) {
 
 RuntimeFlowStatus MainMenuFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kWaitingForMainMenu) {
-    TView* mainView = scenario.CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x5dc ||
-        !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TGameSetupPicture))) {
+    if (!MainMenuScreen::IsCurrent()) {
       scenario.AwaitUiChange("main menu did not become active");
       return kRuntimeFlowRunning;
     }
     srand(scenario.RunState().Seed());
     g_zoneStatusCodePrngSeed_006a5aec = scenario.RunState().Seed();
-    MainMenuDriver menu(mainView);
-    CString failure;
-    if (!menu.StartRandomGame(&failure)) {
+    RuntimeActionResult started = MainMenu().StartRandomGame();
+    if (!started.Succeeded()) {
       CString failureJson;
-      RuntimeJson::AppendString(failureJson, failure);
+      RuntimeJson::AppendString(failureJson, started.FailureMessage());
       scenario.FailScenario(failureJson);
       return kRuntimeFlowRunning;
     }

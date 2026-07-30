@@ -39,10 +39,10 @@ runtime-harness-lint:
 runtime-source-policy-gate:
   uv run python -m tools.runtime.source_policy tests/runtime/native
 
-# Ratchet, not a ban, while migration to the linear-script API is incomplete: per-file counts
-# fall freely (the gate rewrites the baseline) but a rise or a newly-offending scenario fails.
-# When the baseline reaches zero this can become a hard ban.
-[doc('Ratchet the control-tree mechanics still present in runtime scenario bodies; --show lists them')]
+# A hard ban: every scenario is a linear script, so there is no baseline and no count to bless.
+# A hit means a scenario reached through the boundary instead of extending it -- put the mechanic
+# in a screen, a flow or a probe.
+[doc('Ban control-tree mechanics in runtime scenario bodies; --show lists any found')]
 [group('gates')]
 runtime-script-debt-gate *args:
   uv run python -m tools.runtime.script_debt {{args}}

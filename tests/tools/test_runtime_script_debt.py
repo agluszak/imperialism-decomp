@@ -1,14 +1,12 @@
-"""Tests for the runtime script-debt ratchet.
+"""Tests for the runtime script-debt ban.
 
-The behaviour that matters is asymmetry: a falling count is recorded without ceremony, while a
-rising count or a newly-offending scenario fails. A symmetric gate would let a half-migrated
-file look like progress, and a hard ban would be unlandable while ten scenarios still use the
-old shape.
+This was a ratchet with a per-file baseline while the suite was being migrated. Every scenario is
+now a linear script, so what matters is the opposite of asymmetry: any reference at all fails,
+there is no count to bless, and the gate is green on a clean checkout.
 """
 
 from __future__ import annotations
 
-import json
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -23,7 +21,7 @@ class ScriptDebtTest(unittest.TestCase):
         for name, body in files.items():
             (scenarios / name).write_text(body, encoding="utf-8")
 
-    def test_counts_each_mechanic_reference(self):
+    def test_reports_each_mechanic_reference(self):
         with TemporaryDirectory() as raw:
             root = Path(raw)
             self._repo(
@@ -38,8 +36,9 @@ class ScriptDebtTest(unittest.TestCase):
                     )
                 },
             )
-            counts, _ = script_debt.counts_by_file(root)
-            self.assertEqual(counts, {"tests/runtime/native/scenarios/AlphaTest.cpp": 3})
+            detail = script_debt.findings_by_file(root)
+            self.assertEqual(list(detail), ["tests/runtime/native/scenarios/AlphaTest.cpp"])
+            self.assertEqual(len(detail["tests/runtime/native/scenarios/AlphaTest.cpp"]), 3)
 
     def test_a_comment_naming_a_mechanic_is_not_a_use(self):
         """The skill and the migrated tests discuss these identifiers in prose."""
@@ -54,10 +53,9 @@ class ScriptDebtTest(unittest.TestCase):
                     )
                 },
             )
-            counts, _ = script_debt.counts_by_file(root)
-            self.assertEqual(counts, {})
+            self.assertEqual(script_debt.findings_by_file(root), {})
 
-    def test_a_migrated_scenario_has_no_entry(self):
+    def test_a_linear_script_is_clean(self):
         with TemporaryDirectory() as raw:
             root = Path(raw)
             self._repo(
@@ -66,15 +64,14 @@ class ScriptDebtTest(unittest.TestCase):
                     "AlphaTest.cpp": (
                         "void Script() {\n"
                         "  RT_BEGIN();\n"
-                        "  RT_ACTION(\"go\", StrategicMap().EndTurn());\n"
+                        '  RT_ACTION("go", StrategicMap().EndTurn());\n'
                         "  RT_PASS();\n"
                         "  RT_END();\n"
                         "}\n"
                     )
                 },
             )
-            counts, _ = script_debt.counts_by_file(root)
-            self.assertEqual(counts, {})
+            self.assertEqual(script_debt.findings_by_file(root), {})
 
     def test_only_test_files_are_scanned(self):
         """The scenario base and its helpers legitimately use every one of these."""
@@ -87,34 +84,14 @@ class ScriptDebtTest(unittest.TestCase):
                     "AlphaTest.cpp": "void Script() {}\n",
                 },
             )
-            counts, _ = script_debt.counts_by_file(root)
-            self.assertEqual(counts, {})
+            self.assertEqual(script_debt.findings_by_file(root), {})
 
-    def _write_baseline(self, root: Path, debt: dict[str, int]) -> None:
-        path = root / script_debt.BASELINE_PATH
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"debt": debt}), encoding="utf-8")
+    def test_the_ban_has_no_baseline_to_bless_a_count(self):
+        """A baseline is what let a half-migrated file look like progress; there is none now."""
+        self.assertFalse(hasattr(script_debt, "BASELINE_PATH"))
+        self.assertFalse(hasattr(script_debt, "write_baseline"))
 
-    def test_baseline_roundtrips(self):
-        with TemporaryDirectory() as raw:
-            root = Path(raw)
-            script_debt.write_baseline(root, {"a": 2, "b": 1})
-            self.assertEqual(script_debt.load_baseline(root), {"a": 2, "b": 1})
-
-    def test_missing_baseline_reads_as_empty(self):
-        with TemporaryDirectory() as raw:
-            self.assertEqual(script_debt.load_baseline(Path(raw)), {})
-
-    def test_written_baseline_records_the_total(self):
-        with TemporaryDirectory() as raw:
-            root = Path(raw)
-            script_debt.write_baseline(root, {"a": 2, "b": 3})
-            data = json.loads((root / script_debt.BASELINE_PATH).read_text(encoding="utf-8"))
-            self.assertEqual(data["total"], 5)
-            # Sorted so a diff of the baseline is reviewable.
-            self.assertEqual(list(data["debt"]), ["a", "b"])
-
-    def test_committed_baseline_matches_the_tree(self):
+    def test_the_tree_is_clean(self):
         """The gate must be green on a clean checkout, or it is noise."""
         self.assertEqual(script_debt.main([]), 0)
 

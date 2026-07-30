@@ -39,6 +39,14 @@ void RuntimeScriptScenario::BeginScript(const char* phaseName) {
   scriptArmedOrFinished = true;
 }
 
+void RuntimeScriptScenario::ResumeScript(const char* phaseName) {
+  // Deliberately no program-counter reset and no check-failure reset: this is the same run of the
+  // same script, picking up where the flow interrupted it.
+  EnterScenarioStep(phaseName, "resume_script");
+  ContinueAfterAction();
+  scriptArmedOrFinished = true;
+}
+
 void RuntimeScriptScenario::MarkScriptStep(const char* label) {
   EnterScenarioStep(RuntimeAssertionText::PhaseSlug(label), label);
 }

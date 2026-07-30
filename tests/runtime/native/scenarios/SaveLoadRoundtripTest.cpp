@@ -1,24 +1,18 @@
-#include "RuntimeScenario.h"
-#include "RuntimeUiDriver.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
+#include "screens/LoadSaveScreen.h"
+#include "screens/NewspaperScreen.h"
+#include "screens/StrategicMapScreen.h"
 
 #include "game/assets/TAssetMgr.h"
+#include "game/core/global_data_tables.h"
+#include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
-#include "game/map/TMapUberPicture.h"
-#include "game/ui_core/TControl.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
-#include "game/ui_core/TEditText.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/globals/global_types.h"
-#include "game/globals/ui_core_globals.h"
-#include "game/globals/shared_globals.h"
-#include "game/ui_tags_map.h"
-#include "game/globals/view_registries.h"
-#include "game/turn_event_codes.h"
 #include "game/ui_tags_common.h"
-#include "game/ui_tags_screens.h"
+#include "game/ui_tags_widgets.h"
 
 // Save then load, both through the real document path.
 //
@@ -39,107 +33,69 @@
 
 namespace {
 
-class SaveLoadRoundtripTestCase : public RandomGameScenario {
+// The slot this scenario saves into, and the save mode that names its file.
+const short kSaveSlot = 0;
+const int kNormalSaveMode = 0;
+
+class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
-  SaveLoadRoundtripTestCase() : phase(kOpenSaveDialog), savedTurn(0), savedNation(0) {}
-  int DifficultyLevel() const override {
-    return 1;
-  }
+  SaveLoadRoundtripTestCase() : savedTurn(0), savedNation(0) {}
+
   bool RecordsGameFlow() const override {
     return true;
   }
 
-  void OnMapReadyWithoutCapitalSelection() override {
-    if (phase != kOpenSaveDialog) {
-      return;
-    }
+protected:
+  void Script() override {
+    RT_BEGIN();
+
     savedTurn = g_pSimMgr->economicTurn;
     savedNation = g_pSimMgr->activeNationSlot;
-    g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventLoadSave), savedNation);
-    TView* mainView = CurrentMainView();
-    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) == 0) {
-      FailScenario("\"load-save event did not construct TLoadSavePicture\"");
-      return;
-    }
-    phase = kSelectSaveSlot;
-    EnterScenarioStep("selecting_save_slot", "open_real_save_dialog");
-    ContinueAfterAction();
-  }
 
-  void AdvanceScenario() override {
-    if (phase == kSelectSaveSlot) {
-      SelectSlotAndSaveThroughDialog();
-    } else if (phase == kWaitForSaveFlowTransition) {
-      WaitForSaveFlowTransition();
-    } else {
-      WaitForLoadedMap();
+    RT_STEP("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
+    RT_REQUIRE(LoadSaveScreen::IsCurrent());
+
+    RT_STEP("select the first save slot", LoadSave().SelectSlot(kSaveSlot));
+    RT_REQUIRE_EQ(kSaveSlot, LoadSave().SelectedSlot());
+    RT_REQUIRE(LoadSave().SlotIsBeingNamed());
+
+    // Okay writes through the document path synchronously, so the file is there to inspect by the
+    // time this returns.
+    RT_STEP("accept the selected slot", LoadSave().Accept());
+    BuildSavePathStringForMode(&savedPath, kNormalSaveMode, 0);
+    RT_REQUIRE(TryGetFileMetadataForPath(&savedPath) != 0);
+    ReportSavedFileShape(savedPath);
+
+    // The retail save flow leaves this screen by itself.
+    RT_AWAIT(LoadSaveScreen::IsDismissed(), kObserveUiStateChanged);
+    RT_STEP("reopen the saved game through the real load path", ReopenSavedGame());
+
+    while (!StrategicMapScreen::IsCurrent()) {
+      if (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()) {
+        RT_ACTION("close the newspaper", Newspaper().Close());
+      } else {
+        RT_AWAIT(StrategicMapScreen::IsCurrent() ||
+                     (NewspaperScreen::IsCurrent() && Newspaper().EndControlIsReady()),
+                 kObserveUiStateChanged);
+      }
     }
+
+    RT_REQUIRE_NOT_NULL(g_pGlobalMapState);
+    RT_REQUIRE_EQ(savedNation, g_pSimMgr->activeNationSlot);
+    RT_REQUIRE_EQ(savedTurn, g_pSimMgr->economicTurn);
+    SetSelectedNation(g_pSimMgr->activeNationSlot);
+    RT_PASS();
+
+    RT_END();
   }
 
 private:
-  enum Phase { kOpenSaveDialog, kSelectSaveSlot, kWaitForSaveFlowTransition, kWaitForLoadedMap };
-
-  Phase phase;
-  int savedTurn;
-  short savedNation;
-  CString savedPath;
-
-  void SelectSlotAndSaveThroughDialog() {
-    if (g_pSimMgr == 0 || g_pGlobalMapState == 0) {
-      FailScenario("\"managers are not live at map-ready time\"");
-      return;
-    }
-    TView* mainView = CurrentMainView();
-    if (mainView == 0 || mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) == 0) {
-      FailScenario("\"save dialog disappeared before slot selection\"");
-      return;
-    }
-    TLoadSavePicture* savePicture = static_cast<TLoadSavePicture*>(mainView);
-    if (!RuntimeUiDriver::Activate(
-            savePicture, RuntimeControlSelector(kControlTagSlt0, RUNTIME_CLASS(TControl))) ||
-        savePicture->selectedSlot92 != 0) {
-      FailScenario("\"native save-slot click did not select slot zero\"");
-      return;
-    }
-    TView* slotEditor = savePicture->ResolveControlByTag(kControlTagSlot);
-    if (slotEditor == 0 || slotEditor->IsKindOf(RUNTIME_CLASS(TEditText)) == 0) {
-      FailScenario("\"selected save slot did not enter the retail name-editing state\"");
-      return;
-    }
-    if (!RuntimeUiDriver::Activate(
-            savePicture, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)))) {
-      FailScenario("\"save dialog okay control did not accept the selected slot\"");
-      return;
-    }
-
-    CString path;
-    BuildSavePathStringForMode(&path, 0, 0);
-    if (TryGetFileMetadataForPath(&path) == 0) {
-      FailScenario("\"selected save slot did not write through the retail save flow\"");
-      return;
-    }
-    ReportSavedFileShape(path);
-    savedPath = path;
-    phase = kWaitForSaveFlowTransition;
-    EnterScenarioStep("waiting_for_save_flow_transition", "selected_slot_saved_through_dialog");
-    ContinueAfterAction();
-  }
-
-  void WaitForSaveFlowTransition() {
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode == EncodeTurnEventCode(kTurnEventLoadSave) ||
-        (mainView != 0 && mainView->IsKindOf(RUNTIME_CLASS(TLoadSavePicture)) != 0)) {
-      AwaitUiChange("the save dialog did not advance through the retail turn flow");
-      return;
-    }
+  RuntimeActionResult ReopenSavedGame() {
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
-      FailScenario("\"the just-written save would not open through the real load path\"");
-      return;
+      return RuntimeActionResult::Failure(
+          "the just-written save would not open through the real load path");
     }
-
-    phase = kWaitForLoadedMap;
-    EnterScenarioStep("waiting_for_loaded_map", "selected_slot_saved_and_reopened");
-    ContinueAfterAction();
+    return RuntimeActionResult::Success();
   }
 
   // Header + length only: cheap, and enough to separate "the writer produced nonsense"
@@ -174,37 +130,11 @@ private:
     RecordSerializationRoundtripReport(report);
   }
 
-  void WaitForLoadedMap() {
-    if (AdvanceNewspaperIfNeeded()) {
-      return;
-    }
-    TView* mainView = CurrentMainView();
-    if (g_pViewMgr->currentTurnEventCode != 0x7dd || mainView == 0 ||
-        mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0 || !g_ModalViewStack.IsEmpty()) {
-      AwaitUiChange("the reloaded game did not reach the combined strategic map");
-      return;
-    }
-    if (g_pGlobalMapState == 0) {
-      FailScenario("\"the reloaded game has no global map state\"");
-      return;
-    }
-    if (g_pSimMgr->activeNationSlot != savedNation) {
-      FailScenario("\"the reloaded game has a different active nation than the saved one\"");
-      return;
-    }
-    if (g_pSimMgr->economicTurn != savedTurn) {
-      FailScenario("\"the reloaded game is on a different economic turn than the saved one\"");
-      return;
-    }
-    SetSelectedNation(g_pSimMgr->activeNationSlot);
-    Pass();
-  }
+  int savedTurn;
+  short savedNation;
+  CString savedPath;
 };
-
-SaveLoadRoundtripTestCase g_test;
 
 } // namespace
 
-RuntimeTestCase* SaveLoadRoundtripTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(SaveLoadRoundtripTestCase, SaveLoadRoundtripTest)

@@ -92,24 +92,43 @@ changing a macro.
 
 A script must not touch `g_ModalViewStack`, `g_pViewMgr->currentTurnEventCode`,
 `CurrentMainView`, `ResolveControlByTag`, `RUNTIME_CLASS`, `RuntimeUiDriver`, `Await`,
-`ContinueAfterAction` or `EnterScenarioStep`. `just runtime-script-debt-gate` ratchets what is
-left in unmigrated scenarios: counts may fall, never rise.
+`ContinueAfterAction` or `EnterScenarioStep`. `just runtime-script-debt-gate` is a hard ban on all
+of them in `scenarios/*Test.cpp` -- every scenario is a linear script, so there is no baseline and
+no count to bless. A hit means extending the boundary is the work, not reaching through it.
 
-Those mechanics live in `tests/runtime/native/screens/` and `flows/`. A screen derives from
-`MainViewScreen`, which gives it identity (class + turn event + **no modal above it**), a
-failure that names what *is* current, and activation that propagates
+Those mechanics live in `tests/runtime/native/screens/`, `flows/` and `probes/`. Screens are
+`MainMenuScreen`, `RandomSetupScreen`, `CapitalSelectionScreen`, `StrategicMapScreen`,
+`TradeScreen`, `DealBookScreen`, `OfferScreen`, `TransportScreen`, `DiplomacyScreen`, `CityScreen`,
+`CityBuildingScreen`, `LoadSaveScreen`, `NewspaperScreen`, `ArmyBookScreen`, `EngineerDialogScreen`,
+`ModalScreen` and `UiAnimationRegistry`; probes are `StrategicMapProbe`, `CivilianProbe` and
+`StartingCiviliansProbe`. A probe is for what a screen cannot express: pixel captures,
+render-surface comparisons and model-collection identity.
+
+A screen derives from `MainViewScreen`, which gives it identity (class + turn event + **no modal
+above it**), a failure that names what *is* current, and activation that propagates
 `RuntimeUiDriver::RequireControl`'s diagnosis. Actions return `RuntimeActionResult`, never
 `bool` — the bool drivers discarded the only useful part of a failure.
 
-Existing: `StrategicMapScreen`, `TradeScreen`, `DealBookScreen`, `NewspaperScreen`,
-`OfferScreen`, `ModalScreen`. Adding a screen is the normal way to migrate a test; put the
-domain's magic constants (a card's bitmap ids, a page cache's layout) in the screen so the
-script asks a question instead of comparing numbers.
+Adding a screen is the normal way to give a script new vocabulary; put the domain's magic
+constants (a card's bitmap ids, a page cache's layout) in the screen so the script asks a question
+instead of comparing numbers.
 
-`EndTurnFlow` is a `RuntimeScriptFragment`: a reusable sub-script with its own program counter,
-driven by `RT_RUN`, written with the `RT_FRAGMENT_*` macros. Write fragments with those macros
-— hand-rolled, the counter store and its `case` label land on different lines and never match.
-Add a flow only where duplication already exists.
+A screen's identity is its view class *and* its turn event: the same class on a different event is
+a different screen (`CapitalSelectionScreen` and `StrategicMapScreen` are both `TMapUberPicture`).
+One screen has no class of its own -- the transport ledger's root is a plain `TPicture` -- and says
+so.
+
+`EndTurnFlow` and `OpenCityBuildingFlow`/`CloseCityBuildingFlow` are `RuntimeScriptFragment`s:
+reusable sub-scripts with their own program counter, driven by `RT_RUN`, written with the
+`RT_FRAGMENT_*` macros. Write fragments with those macros — hand-rolled, the counter store and its
+`case` label land on different lines and never match. Add a flow only where duplication already
+exists; a fragment that runs twice in one scenario must rewind itself (`BeginFragment`).
+
+A script normally starts at its base's checkpoint and runs to `RT_PASS`. One scenario instead hands
+navigation *back* mid-run: `CapitalSelectionScriptScenario` begins the script at capital selection,
+and `RestartRandomGameAtStrategicMapEntry()` returns control to the flow, which resumes the same
+script (`ResumeScript`, which keeps the program counter) once the map is ready. Use it only for that
+shape — every other scenario wants a plain start point.
 
 ## Debugging a failure or a stall
 

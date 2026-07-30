@@ -18,9 +18,12 @@
 #include "game/navy_ui/TOceanDialog.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
+#include "game/ui_core/TPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 #include "game/ui_tags_widgets.h"
+#include "game/ui_widgets/TCivDescription.h"
+#include "game/ui_widgets/TCivToolbar.h"
 #include "game/ui_widgets/TWorldView.h"
 
 StrategicMapScreen::StrategicMapScreen()
@@ -123,11 +126,74 @@ RuntimeActionResult StrategicMapScreen::SetViewportCell(short cellX, short cellY
 namespace {
 
 // TMapUberPicture::categoryPages index for the army page. 0 is civilian, 1 army, 2 navy.
+const int kCivilianCategoryPage = 0;
 const int kArmyCategoryPage = 1;
 // SetMapInteractionMode argument that puts the map into army-selection mode.
+const int kCivilianInteractionMode = 0;
 const int kArmyInteractionMode = 1;
 
+// Where the map places the civilian toolbar page once its category is selected.
+const int kCivilianToolbarX = 0;
+const int kCivilianToolbarY = 0x8f;
+
 } // namespace
+
+RuntimeActionResult StrategicMapScreen::ShowCivilianToolbar() {
+  if (mapView == 0) {
+    return InvalidScreen("show the civilian toolbar");
+  }
+  if (mapView->categoryPages[kCivilianCategoryPage] == 0) {
+    return ScreenFailure("show the civilian toolbar",
+                         CString("the map has no civilian toolbar page"));
+  }
+  mapView->SetMapInteractionMode(kCivilianInteractionMode);
+  return RuntimeActionResult::Success();
+}
+
+TCivToolbar* StrategicMapScreen::CivilianToolbar() const {
+  if (mapView == 0) {
+    return 0;
+  }
+  TView* page = mapView->categoryPages[kCivilianCategoryPage];
+  return page != 0 && page->IsKindOf(RUNTIME_CLASS(TCivToolbar)) != 0
+             ? static_cast<TCivToolbar*>(page)
+             : 0;
+}
+
+bool StrategicMapScreen::CivilianToolbarIsPlaced() const {
+  TCivToolbar* toolbar = CivilianToolbar();
+  return toolbar != 0 && toolbar->ownerLocalX == kCivilianToolbarX &&
+         toolbar->ownerLocalY == kCivilianToolbarY;
+}
+
+namespace {
+
+TPicture* CivilianPortrait(TCivToolbar* toolbar) {
+  TView* portrait = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagUnit) : 0;
+  return portrait != 0 && portrait->IsKindOf(RUNTIME_CLASS(TPicture)) != 0
+             ? static_cast<TPicture*>(portrait)
+             : 0;
+}
+
+} // namespace
+
+short StrategicMapScreen::CivilianPortraitGlyph() const {
+  TPicture* portrait = CivilianPortrait(CivilianToolbar());
+  return portrait != 0 ? portrait->glyphBase84 : -1;
+}
+
+bool StrategicMapScreen::CivilianPortraitIsLoaded() const {
+  TPicture* portrait = CivilianPortrait(CivilianToolbar());
+  return portrait != 0 && portrait->cachedBitmap != 0;
+}
+
+TCivDescription* StrategicMapScreen::CivilianLegend() const {
+  TCivToolbar* toolbar = CivilianToolbar();
+  TView* legend = toolbar != 0 ? toolbar->ResolveControlByTag(kControlTagBack) : 0;
+  return legend != 0 && legend->IsKindOf(RUNTIME_CLASS(TCivDescription)) != 0
+             ? static_cast<TCivDescription*>(legend)
+             : 0;
+}
 
 RuntimeActionResult StrategicMapScreen::SelectArmyProvince(short province) {
   if (mapView == 0) {

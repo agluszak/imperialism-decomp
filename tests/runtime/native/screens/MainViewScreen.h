@@ -49,6 +49,10 @@ protected:
   // actually uses (the deepest real selector is three, and that case passes `expectedClass`).
   RuntimeActionResult Activate(int tag, const char* what);
   RuntimeActionResult Activate(int tag, CRuntimeClass* expectedClass, const char* what);
+  // For a control that publishes a command other than the usual control event: the selector has
+  // to name it, or the driver resolves the right control and then refuses it for the wrong event.
+  RuntimeActionResult Activate(int tag, CRuntimeClass* expectedClass, int eventNumber,
+                               const char* what);
   RuntimeActionResult Activate(int tag0, int tag1, const char* what);
   RuntimeActionResult Activate(int tag0, int tag1, CRuntimeClass* expectedClass, const char* what);
 

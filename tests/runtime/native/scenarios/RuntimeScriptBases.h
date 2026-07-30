@@ -60,6 +60,28 @@ public:
   void OnCombinedMapReady() override;
 };
 
+// Normal and above, handed over at capital selection instead of after it.
+//
+// For the one scenario that leaves the navigation flow and comes back into it: its script runs
+// while the flow is parked at the capital-selection checkpoint, calls
+// RestartRandomGameAtStrategicMapEntry() to hand navigation back, and is *resumed* -- not
+// restarted -- once the map is ready. Everything before and after the hand-back is therefore one
+// linear script.
+class CapitalSelectionScriptScenario : public RandomGameScriptScenario {
+public:
+  int DifficultyLevel() const override;
+  void OnCombinedMapReady() override;
+
+protected:
+  CapitalSelectionScriptScenario();
+  void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) override;
+
+private:
+  // One-shot: the flow reports its checkpoint on every re-entry, and the script must be begun
+  // once and re-entered thereafter.
+  bool scriptBegun;
+};
+
 // A saved game loaded from a fixture. RequiresFixture() is enforced by the base against
 // IMPERIALISM_RUNTIME_TEST_FIXTURE, so a missing fixture fails with that reason rather than
 // stalling.
