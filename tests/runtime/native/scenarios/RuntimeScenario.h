@@ -74,6 +74,9 @@ protected:
   bool HasScenarioUiSnapshot() const;
   void CaptureScenarioUiSnapshot(int eventCode, TView* root);
   bool HoldAtScenarioScreen(const char* screenName) const;
+  // The run being executed. Subclasses need it to read the phase name and the armed wait
+  // when building a failure diagnostic; flows already reach it through friendship.
+  RuntimeRun& RunState() const;
   // Per-class serialization round-trip findings, emitted verbatim into the result file
   // under "serialization_roundtrip" (null when no scenario recorded any).
   void RecordSerializationRoundtripReport(const CString& reportJson);
@@ -85,7 +88,6 @@ private:
   void AdvanceWaitingForManagers();
   void Finish(const char* status, const char* failure);
   void EnterFlowPhase(const char* phaseName, const char* action);
-  RuntimeRun& RunState() const;
 
   RuntimeRun* run;
   RuntimeFlow* activeFlow;

@@ -48,6 +48,15 @@ CString RequirementValues(const RuntimeRun& run, const char* expression, const c
 // Free-form failure text with the same context block appended.
 CString Failure(const RuntimeRun& run, const char* text, const char* file, int line);
 
+// A requirement rendered as a JSON string, for RecordAssertion's pre-escaped-fragment
+// contract. Only RT_CHECK needs this; fatal failures go through FailScenarioText.
+CString RequirementJson(const RuntimeRun& run, const char* expression, const char* file, int line);
+
+// A short snake_case identifier derived from free text, for the host-visible phase name and
+// the assertion id (both fixed char buffers: 64 and 96 bytes). "open trade" -> "open_trade".
+// Truncates rather than overflowing, and returns "step" for text with nothing usable in it.
+const char* PhaseSlug(const char* text);
+
 // Renderers for the value pair. Overloads, not a template: MSVC500's template support is
 // not worth spending here, and the set of things a scenario compares is small and known.
 CString Value(int value);

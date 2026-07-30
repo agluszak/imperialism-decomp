@@ -103,6 +103,36 @@ MACROS = r"""
     default: break; }                                                                      \
     FailScript("script returned without RT_PASS()", __FILE__, __LINE__)
 
+// Combinators expand to two yield points on one source line, so they cannot both use
+// __LINE__. Each macro takes an explicit slot and a combinator negates the line for its
+// second yield; program counters are only compared for equality and 0 is the start
+// sentinel, so the negative half of the range cannot collide with a positive slot.
+#define RT_SLOT_PRIMARY __LINE__
+#define RT_SLOT_SECONDARY (-(__LINE__))
+
+#define RT_AWAIT_AT(slot, condition, observations)                                          \
+  do {                                                                                   \
+    SetScriptProgramCounter(slot);                                                          \
+    case slot:                                                                             \
+    if (!(condition)) {                                                                    \
+      AwaitScript((observations), #condition, __FILE__, __LINE__);                           \
+      return;                                                                              \
+    }                                                                                      \
+  } while (0)
+
+#define RT_ACTION_AT(slot, label, action)                                                   \
+  do {                                                                                   \
+    if (!RunScriptAction((label), (action), __FILE__, __LINE__)) return;                   \
+    SetScriptProgramCounter(slot);                                                          \
+    ContinueAfterAction();                                                                 \
+    return;                                                                                \
+    case slot:;                                                                            \
+  } while (0)
+
+#define RT_ACTIVATE_AND_AWAIT(label, action, condition, observations)                       \
+  RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                            \
+  RT_AWAIT_AT(RT_SLOT_SECONDARY, condition, observations)
+
 // Fragment vocabulary.  A fragment yields a status instead of void, so it needs its own
 // macros -- and it MUST use them: hand-rolling the pattern puts the program-counter store
 // and the `case` label on two different source lines, which silently never match.  Inside
@@ -411,6 +441,42 @@ def _cases() -> tuple[Case, ...]:
     RT_END();
 """,
             members="  ProbeFragment fragment;\n",
+        ),
+        Case(
+            "negative_case_slot",
+            "compiles",
+            "a negated __LINE__ as a case label -- the mechanism that lets a combinator put"
+            " two yield points on one source line",
+            """
+    RT_BEGIN();
+    RT_AWAIT_AT(RT_SLOT_SECONDARY, ProbeSource() != 0, 1);
+    RT_PASS();
+    RT_END();
+""",
+        ),
+        Case(
+            "combinator_two_yields_one_line",
+            "compiles",
+            "RT_ACTIVATE_AND_AWAIT: an action and a wait on a single source line, which"
+            " would be a duplicate case label if both used __LINE__",
+            """
+    RT_BEGIN();
+    RT_ACTIVATE_AND_AWAIT("select", ProbeSource() != 0, ProbeSource() != 0, 1);
+    RT_PASS();
+    RT_END();
+""",
+        ),
+        Case(
+            "two_combinators_adjacent_lines",
+            "compiles",
+            "consecutive combinators: four yield points across two lines, all distinct",
+            """
+    RT_BEGIN();
+    RT_ACTIVATE_AND_AWAIT("first", ProbeSource() != 0, ProbeSource() != 0, 1);
+    RT_ACTIVATE_AND_AWAIT("second", ProbeSource() != 0, ProbeSource() != 0, 1);
+    RT_PASS();
+    RT_END();
+""",
         ),
         Case(
             "deep_nesting_and_switch_inside_script",

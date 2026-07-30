@@ -1,6 +1,7 @@
 #include "RuntimeAssertionText.h"
 
 #include "RuntimeHarnessCore.h"
+#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeRun.h"
 
@@ -66,6 +67,45 @@ CString Failure(const RuntimeRun& run, const char* failureText, const char* file
   text.Format("%s\n%s", failureText != 0 ? failureText : "",
               static_cast<LPCSTR>(ContextBlock(run, file, line)));
   return text;
+}
+
+CString RequirementJson(const RuntimeRun& run, const char* expression, const char* file, int line) {
+  CString json;
+  RuntimeJson::AppendString(json, static_cast<LPCSTR>(Requirement(run, expression, file, line)));
+  return json;
+}
+
+const char* PhaseSlug(const char* text) {
+  // Static because the callers hand the result straight to EnterPhase/RecordAssertion, which
+  // copy into their own fixed buffers before anything else can call this again.
+  static char slug[64];
+  unsigned long length = 0;
+  bool pendingSeparator = false;
+  for (const char* cursor = text != 0 ? text : ""; *cursor != 0; ++cursor) {
+    char character = *cursor;
+    bool isDigit = character >= '0' && character <= '9';
+    bool isLower = character >= 'a' && character <= 'z';
+    bool isUpper = character >= 'A' && character <= 'Z';
+    if (!isDigit && !isLower && !isUpper) {
+      // Collapse every run of punctuation or space into a single underscore, and never lead
+      // with one.
+      pendingSeparator = length != 0;
+      continue;
+    }
+    if (length + (pendingSeparator ? 1u : 0u) + 1 >= sizeof(slug)) {
+      break;
+    }
+    if (pendingSeparator) {
+      slug[length++] = '_';
+      pendingSeparator = false;
+    }
+    slug[length++] = isUpper ? static_cast<char>(character - 'A' + 'a') : character;
+  }
+  slug[length] = 0;
+  if (length == 0) {
+    lstrcpyA(slug, "step");
+  }
+  return slug;
 }
 
 CString Value(int value) {

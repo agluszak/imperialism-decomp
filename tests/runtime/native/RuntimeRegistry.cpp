@@ -1,7 +1,10 @@
 #include "RuntimeRegistry.h"
 
 #include "RuntimeHarnessCore.h"
-#include "scenarios/RuntimeScenarios.h"
+
+// Both generated from tools/runtime/catalog.py by generate_native_registry.py, so a test's
+// registered name and its factory declaration cannot drift apart.
+#include "RuntimeScenarioFactories.inc"
 
 namespace {
 
