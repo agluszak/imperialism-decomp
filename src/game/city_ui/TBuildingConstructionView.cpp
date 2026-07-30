@@ -29,8 +29,9 @@ TBuildingConstructionView::TBuildingConstructionView()
 
 // SYNTHETIC: IMPERIALISM 0x004c9e60
 // TBuildingConstructionView::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004c9e90
-TBuildingConstructionView::~TBuildingConstructionView() {}
+// No own destructor: the original's 0x004c9e90 is an ILT thunk to the base's
+// ~TPicture (0x0048f250), so this class inherits it. The scalar deleting destructor above is what
+// the vtable slot holds.
 
 // FUNCTION: IMPERIALISM 0x004c9eb0
 void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,

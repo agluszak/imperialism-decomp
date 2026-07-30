@@ -11,7 +11,6 @@ public:
   DECLARE_DYNCREATE(TMyNumberText)
 
   TMyNumberText();
-  virtual ~TMyNumberText() override; // slot 0x01 (scalar deleting destructor 0x5b5000)
 
   int UpdateControlCachedIntFromWindowText() override; // slot 0x7a 0x5b5050
 };

@@ -26,8 +26,6 @@ public:
     languagePackId50 = 0;
   }
 
-  virtual ~TAmbitApplication() override;
-
   DECLARE_DYNCREATE(TAmbitApplication)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05, 0x0049e2f0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06, 0x0049e280
