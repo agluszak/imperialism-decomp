@@ -159,9 +159,16 @@ void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
 // occupies its chosen tile and changes the next search result.
 // FUNCTION: IMPERIALISM 0x004b73b0
 void TUnitOrder::Produce() {
+  // Ground truth tests the count for EQUALITY with zero and bails first
+  // (cmp word ptr [esi+4], bp / je at 0x4b73ca, with bp just zeroed), then loads
+  // and checks the city separately -- not a combined signed `<= 0 ||` test, which
+  // would also swallow a negative count that retail lets through.
   short pendingDelta = quantity;
+  if (pendingDelta == 0) {
+    return;
+  }
   TCity* cityContext = ownerCity;
-  if (pendingDelta <= 0 || cityContext == 0) {
+  if (cityContext == 0) {
     return;
   }
 

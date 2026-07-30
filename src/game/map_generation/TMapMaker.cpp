@@ -1105,21 +1105,29 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
                                     : g_hexColOffsetOddRow_00697480[direction];
   int col = tileIndex % 0x6c + colOffset;
   int row = parity + g_hexRowOffset_00697468[direction];
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
-    if (col < 0) {
-      col += 0x6c;
-    } else if (col > 0x6b) {
-      col -= 0x6c;
-    }
-    if (row < 0 || row > 0x3b) {
+  // 0x528c62..0x528c9f. The flag byte (g_pGlobalMapState+0x20) selects only how the
+  // COLUMN is handled: zero wraps it, nonzero rejects it outright -- so the name reads
+  // backwards, since zero is the wrapping topology. Both paths then converge on the
+  // same row validation at 0x528c86, which is the join target of the bounded path's
+  // `cmp ecx,0x6c / jl 0x528c86` as well as the wrap path's fallthrough. Our port
+  // duplicated the row check into the wrapping branch only, so a bounded map returned
+  // col + row*108 for row -1 or row 60 -- an out-of-grid index handed to callers that
+  // index, recurse on, memcpy from, and form pointers into mapTileGrid08.
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
+    if (col < 0 || col >= 0x6c) {
       return -1;
     }
-    return col + row * 0x6c;
+  } else {
+    if (col < 0) {
+      col += 0x6c;
+    } else if (col >= 0x6c) {
+      col -= 0x6c;
+    }
   }
-  if (col >= 0 && col < 0x6c) {
-    return col + row * 0x6c;
+  if (row < 0 || row >= 0x3c) {
+    return -1;
   }
-  return -1;
+  return col + row * 0x6c;
 }
 
 // Recursively claims `tileIndex` as forest, plus a variant byte at +0x13 chosen by
