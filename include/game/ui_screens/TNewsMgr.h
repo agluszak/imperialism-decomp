@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/app/TObject.h"
-#include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/mfc.h"
 #include "game/news_domain_types.h"
 
@@ -62,8 +62,8 @@ public:
   CFile* newsTexStream; // +0xed0
   // Per-nation event buckets (recordSize14 = 0x24) and the shared event record queue
   // (recordSize14 = 0x10; records are {int code, int nation, int mask, int extra}).
-  TSortedPtrList* perNationEventBuckets[7]; // +0xed4
-  TSortedPtrList* sharedEventRecordQueue;   // +0xef0
+  TPtrList* perNationEventBuckets[7]; // +0xed4
+  TPtrList* sharedEventRecordQueue;   // +0xef0
   // Per-nation last-used turn tick per story template (lazily new short[count] in
   // StartNewsPhase); drives the least-recently-used filler-story pick.
   short* perNationStoryLastUsedTick[7]; // +0xef4

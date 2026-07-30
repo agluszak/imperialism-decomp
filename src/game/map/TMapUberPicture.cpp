@@ -1017,8 +1017,7 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(TView* controlOverride) {
   }
   this->invalidationFlag94 = 1;
 
-  int selectedTile = goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E();
-  subview2A8->CenterOn(selectedTile);
+  subview2A8->CenterOn(goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E());
 
   this->goodGoldTagControlA4->Locate(g_MapUberModeLayoutScratch_006a45e8, 0);
   this->subview2A8->Locate(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);

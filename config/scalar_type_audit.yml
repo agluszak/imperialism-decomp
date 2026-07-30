@@ -440,9 +440,6 @@ discriminant_reviews:
   renderMode:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TC2TemplateDialog tests non-zero to choose the alternate render path.
-  resetOrderMode:
-    classification: byte_or_int_predicate_not_a_domain
-    evidence: TMinor tests non-zero to decide whether to reset the order tables.
   resourceType:
     classification: industry_action_order_type_domain
     evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.
@@ -518,6 +515,9 @@ discriminant_reviews:
   unitTypeCode:
     classification: military_unit_kind_domain
     evidence: TArmyUnitView compares a MilitaryUnitKind value (0xe) read from the unit record.
+  updateMode:
+    classification: byte_or_int_predicate_not_a_domain
+    evidence: TDiplomacyMgr's retail SetTreatyStatus, TerminateAlliance, and InflictWarPenalty entries read this argument as a byte and only test whether it equals 1 to enable relationship side effects.
   useType4:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TTaskForce selects between two ship-order counts from a zero/non-zero flag.

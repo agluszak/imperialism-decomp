@@ -9,7 +9,8 @@
 class TPopGrowthOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TPopGrowthOrder)
-  virtual ~TPopGrowthOrder() override;               // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b3080
+  virtual ~TPopGrowthOrder() override {}             // slot 0x01 (scalar deleting destructor)
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b8230
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b81b0
   virtual void Produce() override;                   // slot 0x0d 0x4b82f0

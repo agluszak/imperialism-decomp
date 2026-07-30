@@ -27,9 +27,6 @@ const int kAssertLineMoveAdjustMoveMinus = 0x759;
 
 IMPLEMENT_DYNCREATE(TAmtBarCluster, TUberCluster)
 
-// FUNCTION: IMPERIALISM 0x00586ce0
-TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
-
 // SYNTHETIC: IMPERIALISM 0x00586d10
 // TAmtBarCluster::`scalar deleting destructor'
 

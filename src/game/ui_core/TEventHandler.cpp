@@ -49,9 +49,6 @@ TEventHandler::TEventHandler()
 // SYNTHETIC: IMPERIALISM 0x0048a130
 // TEventHandler::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x0048a160
-TEventHandler::~TEventHandler() {}
-
 // FUNCTION: IMPERIALISM 0x0048a180
 void TEventHandler::IEventHandler(TEventHandler* nextHandler) {
   enabled = 1;

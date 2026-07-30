@@ -8,7 +8,8 @@
 class TTradeBidNationLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTradeBidNationLine)
-  virtual ~TTradeBidNationLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005bd930
+  virtual ~TTradeBidNationLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bda20
 
   // Set directly (not via a method) by TTradePageBuyView::RebuildNationBidRowsForCategory

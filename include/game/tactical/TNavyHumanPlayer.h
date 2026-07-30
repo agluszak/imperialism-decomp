@@ -14,7 +14,8 @@ public:
   void INavyHumanPlayer(TTaskForce* force, char isOurSide, int nationIndex);
 
   DECLARE_DYNCREATE(TNavyHumanPlayer)
-  virtual ~TNavyHumanPlayer() override; // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x0059ef50
+  virtual ~TNavyHumanPlayer() override {} // slot 0x01 (scalar deleting destructor)
   virtual void DeploymentClick(TacticalTileIndex tileIndex); // slot 0x12 0x59efc0
 
   // NOOP: verified empty in original 0x0059eef2 (no standalone TNavyHumanPlayer::TNavyHumanPlayer body exists: construction is fully inlined into CreateObject 0x0059eef0; that address is its operator-new call site)

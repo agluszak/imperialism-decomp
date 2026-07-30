@@ -8,7 +8,8 @@
 class TCountingStream : public TStream {
 public:
   // clang-format off
-  virtual ~TCountingStream() override; // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x00489470
+  virtual ~TCountingStream() override {} // slot 0x01 (scalar deleting destructor)
   // slots 0x0a..0x0d: position/length accessors below
   // slot 0x1e WriteBytes owned by the hand declaration below (0x489550)
   // clang-format on

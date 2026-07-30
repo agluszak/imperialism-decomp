@@ -32,8 +32,6 @@ TAnimator::TAnimator()
 
 // SYNTHETIC: IMPERIALISM 0x004a0ad0
 // TAnimator::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004a0b00
-TAnimator::~TAnimator() {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {

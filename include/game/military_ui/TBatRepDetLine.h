@@ -10,7 +10,8 @@
 class TBatRepDetLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TBatRepDetLine)
-  virtual ~TBatRepDetLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b0000
+  virtual ~TBatRepDetLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4b0040
 
   // NOOP: verified empty in original 0x004aff93 (no standalone TBatRepDetLine::TBatRepDetLine body exists: CreateObject 0x004aff60 inlines this default ctor, calling the TLineData base ctor directly at that site)

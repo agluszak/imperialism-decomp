@@ -25,6 +25,16 @@ struct RuntimeSelectionRecord {
   ~RuntimeSelectionRecord();
 };
 
+// WNetMgr.cpp owns a second, layout-identical selection record. Retail emits its
+// CString-releasing destructor at 0x005e2850 rather than folding it with the
+// DirectPlay.cpp record destructor at 0x0047f7f0.
+struct WNetSelectionRecord {
+  GUID providerGuid;
+  CString label;
+
+  ~WNetSelectionRecord();
+};
+
 // DirectPlay.cpp base state. The retail WNetMgr constructor first installs the base
 // vtable at 0x0066f9c0, initializes +0x04/+0x08, constructs the derived CString at
 // +0xa8, and finally installs the derived vtable at 0x0066f9f0.

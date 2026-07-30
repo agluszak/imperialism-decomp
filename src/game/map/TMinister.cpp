@@ -33,9 +33,6 @@ TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {
 // SYNTHETIC: IMPERIALISM 0x0052eba0
 // TMinister::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x0052ebd0
-TMinister::~TMinister() {}
-
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {
   this->ownerContextAt04 = ownerContext;

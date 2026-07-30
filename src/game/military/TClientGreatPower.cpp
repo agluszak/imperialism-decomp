@@ -47,7 +47,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541450
-void TClientGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
+void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   TurnEvent17ProposalResolutionPacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());

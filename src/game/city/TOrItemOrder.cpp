@@ -14,8 +14,6 @@ IMPLEMENT_DYNCREATE(TOrItemOrder, TItemOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b5820
 // TOrItemOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b5850
-TOrItemOrder::~TOrItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5870
 void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryInputResource,

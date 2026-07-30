@@ -9,8 +9,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x005bcf70
 // TTradeOfferNationLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005bcfa0
-TTradeOfferNationLine::~TTradeOfferNationLine() {}
 // SYNTHETIC: IMPERIALISM 0x005bcfc0
 // TTradeOfferNationLine::CreateObject
 

@@ -58,7 +58,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x781);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x781);
   }
   valueControl->SetControlValue(nValue, 0);
   if (redrawFlag == 0) {
@@ -87,7 +87,7 @@ void TPurchaseCluster::SetCityViewValueControlAmount(short nValue, char redrawFl
 int TPurchaseCluster::UpdateCityViewValueControl() {
   TNumberText* valueControl = static_cast<TNumberText*>(ResolveControlByTag(kControlTagValu));
   if (valueControl == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, 0x793);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0x793);
   }
   return valueControl->UpdateControlCachedIntFromWindowText();
 }

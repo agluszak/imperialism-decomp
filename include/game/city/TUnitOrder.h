@@ -19,7 +19,8 @@ enum eUnitOrderWorkforceMode {
 class TUnitOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TUnitOrder)
-  virtual ~TUnitOrder() override;                    // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b6fc0
+  virtual ~TUnitOrder() override {}                  // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;    // slot 0x05 0x4b7850
   virtual void ReadFrom(TStream* stream) override;   // slot 0x06 0x4b7920
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b7210

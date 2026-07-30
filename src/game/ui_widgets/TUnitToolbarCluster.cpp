@@ -30,9 +30,6 @@
 
 IMPLEMENT_DYNCREATE(TUnitToolbarCluster, TUberCluster)
 
-// FUNCTION: IMPERIALISM 0x00586010
-TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
-
 // SYNTHETIC: IMPERIALISM 0x00586040
 // TUnitToolbarCluster::`scalar deleting destructor'
 

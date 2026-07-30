@@ -23,7 +23,8 @@ struct TQuickDrawSurfaceContext;
 class TAnimator : public TEventHandler {
 public:
   DECLARE_DYNCREATE(TAnimator)
-  virtual ~TAnimator() override;                   // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004a0b00
+  virtual ~TAnimator() override {}                 // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4a0e50
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4a0e10
   virtual void Free() override;                    // slot 0x07 0x4a0dc0

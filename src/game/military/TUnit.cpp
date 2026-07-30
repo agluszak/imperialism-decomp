@@ -27,9 +27,6 @@ IMPLEMENT_DYNCREATE(TUnit, TObject)
 // SYNTHETIC: IMPERIALISM 0x005c24e0
 // TUnit::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x005c2510
-TUnit::~TUnit() {}
-
 // FUNCTION: IMPERIALISM 0x005c2530
 void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int anchorIndex,
                                               short nOrderOwnerNationId, short arg3) {

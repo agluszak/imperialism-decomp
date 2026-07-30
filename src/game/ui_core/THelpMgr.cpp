@@ -6,7 +6,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/THelpPicture.h"
 #include "game/ui_core/TPicture.h"
-#include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"
@@ -94,7 +94,7 @@ THelpMgr::~THelpMgr() {}
 // FUNCTION: IMPERIALISM 0x00500680
 void THelpMgr::IHelpMgr() {
   helpIndexReady = 1;
-  TSortedPtrList* list = new TSortedPtrList();
+  TPtrList* list = new TPtrList();
   list->recordSize14 = sizeof(HelpSetRecord);
   indexList = list;
   if (g_bMultiplayerScenarioSetupActive == 0) {

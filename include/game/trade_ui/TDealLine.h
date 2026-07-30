@@ -7,7 +7,8 @@
 class TDealLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TDealLine)
-  virtual ~TDealLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005c0de0
+  virtual ~TDealLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5c0e50
 
   TDealLine();

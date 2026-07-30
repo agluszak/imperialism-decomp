@@ -31,13 +31,13 @@ public:
   short GetTradeOffersFor(short resourceKind) override;
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
-  bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) override;
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                     int arg4) override;
-  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                    NationSlot targetNationSlot) override;
+  bool StillBuyingItem(ResourceKindStorage resourceKind) override;
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override;
+  void AddOfferFrom(NationSlot sourceNationSlot,
+                    DiplomacyProposalCodeStorage proposalCode) override;
   char IsPolicyCodeInSpecialNationPolicySet(short policyCode) override;
-  void AddNoticeFrom(int sourceNation, int actionCode) override;
+  void AddNoticeFrom(short sourceNation, short actionCode) override;
 
   // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
   // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
@@ -67,13 +67,6 @@ public:
   virtual void
   RelinkTileUnitsToCountryOrderManager(int destinationNationSlot); // slot 0x34 0x4e6520
 
-  void SetDiplomacyStanding(int targetNation, int standing);
-  char IsLinkedToMajorNation(int sourceNation);
-  void SetDiplomacyRelationshipWithMajorNation(int sourceNation,
-                                               DiplomacyRelationship relationship);
-  char HasResourceStatusForMajorNation(int targetNation);
-  void ClearResourceStatusByMajorNation(void);
-  void ClearRecurringResourceGrant(int resourceKind);
   // Full (re)initialization of a minor nation's per-session state: nation identity +
   // owned-region list, diplomacy policy defaults, the five per-resource/per-nation
   // short tables and all 23 status rows cleared, need counters recounted from owned

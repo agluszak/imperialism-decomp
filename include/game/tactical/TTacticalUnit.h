@@ -12,8 +12,9 @@
 class TTacticalUnit : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalUnit)
-  virtual ~TTacticalUnit() override; // slot 0x01 (scalar deleting destructor)
-  virtual int GetBaseActionPoints(); // slot 0x0a 0x5a5d40
+  // FUNCTION: IMPERIALISM 0x005a5df0
+  virtual ~TTacticalUnit() override {} // slot 0x01 (scalar deleting destructor)
+  virtual int GetBaseActionPoints();   // slot 0x0a 0x5a5d40
   // Fire/attack range in hex tiles -- the max distance at which this unit can engage a
   // target (NOT movement range; that derives from action points, slot 0x0a). Consumed by
   // IsTacticalTargetTileReachableForAction (gates on hexDistance <= range) and by the

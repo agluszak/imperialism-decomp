@@ -19,7 +19,8 @@ class TMinister : public TObject {
 public:
   TMinister();
   void IMinister(TGreatPower* ownerContext);
-  virtual ~TMinister() override; // slot 1 — body @ 0x0052ebd0 (DestructTMinister)
+  // FUNCTION: IMPERIALISM 0x0052ebd0
+  virtual ~TMinister() override {} // slot 1
 
   DECLARE_DYNCREATE(TMinister)
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)

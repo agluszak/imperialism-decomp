@@ -29,19 +29,19 @@ TPlacard::~TPlacard() {}
 void TPlacard::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
   if (glyph90 == 0) {
-    ViewEnable(0, 1);
+    Show(0, 1);
     return;
   }
-  ViewEnable(1, 1);
+  Show(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058bb50
 bool TPlacard::SetValue(short value, bool refreshNow) {
   if (value != glyph90) {
     if (value == 0) {
-      ViewEnable(0, refreshNow);
+      Show(0, refreshNow);
     } else if (glyph90 == 0) {
-      ViewEnable(1, refreshNow);
+      Show(1, refreshNow);
     }
     glyph90 = value;
     if (refreshNow) {

@@ -1035,8 +1035,8 @@ unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
 
 // FUNCTION: IMPERIALISM 0x0057f4f0
 int TSimMgr::AllHumansFinished() {
-  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation) {
-    if ((*nation)->field904 == 0) {
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (g_apNationStates[nationSlot]->field904 == 0) {
       return 0;
     }
   }
@@ -1045,13 +1045,12 @@ int TSimMgr::AllHumansFinished() {
 
 // FUNCTION: IMPERIALISM 0x0057f530
 void TSimMgr::ResetTurnFlags() {
-  TGreatPower** nation = g_apNationStates;
-  do {
-    if ((*nation)->diplomacyEligibilityA0 != 0) {
-      (*nation)->field904 = 0;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation->diplomacyEligibilityA0 != 0) {
+      nation->field904 = 0;
     }
-    ++nation;
-  } while (nation < &g_apNationStates_End);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057f570
@@ -1280,21 +1279,17 @@ void TSimMgr::RemoveNationSlotAndNotifyPeers(NationSlot nationSlot) {
   // Neutralize the removed nation's diplomacy percent field on every other live slot. For
   // the seven great-power slots a nation whose terrain profile is in the reserved band
   // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
-  TGreatPower** nationCursor = g_apNationStates;
-  short i = 0;
-  do {
+  for (short i = 0; i < 7; ++i) {
     if (i != nationSlot && i != -1) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[i];
       if (terrainDescriptor != 0) {
         if (i >= 7 || terrainDescriptor->encodedNationSlot < 100 ||
             terrainDescriptor->encodedNationSlot >= 200) {
-          (*nationCursor)->SetNationPercentFieldByModeAndDescriptorLinks(nationSlot, 500);
+          g_apNationStates[i]->SetNationPercentFieldByModeAndDescriptorLinks(nationSlot, 500);
         }
       }
     }
-    ++nationCursor;
-    ++i;
-  } while (nationCursor < &g_apNationStates[7]);
+  }
 
   if (g_apNationStates[nationSlot] != 0) {
     g_apNationStates[nationSlot]->Free();
@@ -1536,11 +1531,10 @@ void TSimMgr::ProcessScenarioScript() {
     g_pAmbitApplication->PostWmCloseToMainThreadWindow();
   }
 
-  TGreatPower** nationCursor = g_apNationStates;
-  while (nationCursor < &g_apNationStates_End) {
-    (*nationCursor)->AssignDisplayNamesToUnnamedMilitaryUnits();
-    (*nationCursor)->MarkStatusFlag5HandledIfCapabilityActive();
-    ++nationCursor;
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    nation->AssignDisplayNamesToUnnamedMilitaryUnits();
+    nation->MarkStatusFlag5HandledIfCapabilityActive();
   }
 
   gateFlag7a = 0;
@@ -2239,8 +2233,7 @@ void TSimMgr::HandleTurnInstruction_Rela_SetNationRelationValue(void* pInstructi
   instruction->tokenCursor = instruction->tokenCursor + 1;
   DECODE_SCENARIO_SHORT_TOKEN(scoreToken);
 
-  g_pDiplomacyTurnStateManager->SetRelationship(
-      static_cast<int>(sourceToken), static_cast<int>(targetToken), static_cast<int>(scoreToken));
+  g_pDiplomacyTurnStateManager->SetRelationship(sourceToken, targetToken, scoreToken);
 }
 
 // Reads a big-endian 32-bit tile-index token followed by a fixed 64-byte inline C-string

@@ -12,7 +12,8 @@ class TShip;
 class TNavyTacUnit : public TTacticalUnit {
 public:
   DECLARE_DYNCREATE(TNavyTacUnit)
-  virtual ~TNavyTacUnit() override;            // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x0059edb0
+  virtual ~TNavyTacUnit() override {}          // slot 0x01 (scalar deleting destructor)
   virtual int GetBaseActionPoints() override;  // slot 0x0a 0x5a6310
   virtual int GetUnitRange() override;         // slot 0x0b 0x5a6330
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6350

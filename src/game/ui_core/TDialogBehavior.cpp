@@ -34,8 +34,6 @@ TDialogBehavior::TDialogBehavior()
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004873e0
-TDialogBehavior::~TDialogBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {

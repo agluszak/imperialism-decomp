@@ -1047,7 +1047,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Append one tracked-slot entry to the nation.
     TurnEvent1BTrackedEntryPacket* trackedEntry =
         static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
-    g_apNationStates[trackedEntry->nationSlot1C]->AppendTrackedSlotEntry(
+    g_apNationStates[trackedEntry->nationSlot1C]->AddToDealBook(
         trackedEntry->trackedKind1E, trackedEntry->targetNation20, trackedEntry->trackedValue22,
         trackedEntry->trackedSlotIndex24, trackedEntry->trackedPayload28);
     break;
@@ -1210,8 +1210,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // Queue a diplomacy proposal code on the addressed nation.
     TurnEvent16DiplomacyProposalPacket* proposal =
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
-    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->proposalCode1A,
-                                                           proposal->targetNationId1C);
+    g_apNationStates[proposal->nationSlot18]->AddOfferFrom(proposal->sourceNationSlot1A,
+                                                           proposal->proposalCode1C);
     break;
   }
   case 0x17: {
@@ -1804,15 +1804,15 @@ void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVa
 struct TurnEvent1APacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
-  unsigned char pad15;
+  unsigned char pad15[3];
   short uiTurnToken;
-  short field18;
-  short field1a;
-  short field1c;
-  short field1e;
-  short field20;
-  short field22;
-  short nationCapabilityFlags[7];
+  unsigned char pad1a[2];
+  short sourceNation1C;
+  short param1E;
+  short param20;
+  short param22;
+  short param24;
+  short availableMerchantCapacityBySlot[7];
 };
 
 // FUNCTION: IMPERIALISM 0x005497b0
@@ -1827,19 +1827,18 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   packet.packetTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
-  packet.field18 = param0;
-  packet.field1a = 0;
-  packet.field1c = param1;
-  packet.field1e = param2;
-  packet.field20 = param3;
-  packet.field22 = param4;
+  packet.sourceNation1C = param0;
+  packet.param1E = param1;
+  packet.param20 = param2;
+  packet.param22 = param3;
+  packet.param24 = param4;
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
-      packet.nationCapabilityFlags[nationIndex] =
-          nationState->IsPolicyCodeInSpecialNationPolicySet(0);
+      packet.availableMerchantCapacityBySlot[nationIndex] =
+          nationState->GetAvailableMerchantCapacity();
     } else {
-      packet.nationCapabilityFlags[nationIndex] = 0;
+      packet.availableMerchantCapacityBySlot[nationIndex] = 0;
     }
   }
   g_pNetMgr006a6014->Send(&packet, 1);
@@ -2134,15 +2133,14 @@ void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* s
 // FUNCTION: IMPERIALISM 0x0054a5e0
 void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* stream,
                                                                      int nationFilter) {
-  int slot = 0;
-  for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
+  for (int slot = 0; slot < 7; ++slot) {
     bool matches;
     if (nationFilter == -1 || nationFilter == slot) {
       matches = true;
     } else {
       matches = false;
     }
-    TGreatPower* nation = *cell;
+    TGreatPower* nation = g_apNationStates[slot];
     if (nation == 0 || !matches) {
       stream->WriteInteger(0);
     } else {

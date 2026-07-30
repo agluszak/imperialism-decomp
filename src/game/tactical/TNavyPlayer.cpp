@@ -13,7 +13,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x0059ebe0
 // TNavyPlayer::~TNavyPlayer
-TNavyPlayer::~TNavyPlayer() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059ec00
 // TNavyPlayer::GetRuntimeClass

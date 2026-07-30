@@ -12,8 +12,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004affd0
 // TBatRepDetLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b0000
-TBatRepDetLine::~TBatRepDetLine() {}
 // SYNTHETIC: IMPERIALISM 0x004aff60
 // TBatRepDetLine::CreateObject
 

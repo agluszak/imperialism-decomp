@@ -13,7 +13,8 @@ public:
   short auxValueA;             // 0x64
   short auxValueB;             // 0x66
 
-  TAmtBar();
+  // FUNCTION: IMPERIALISM 0x00588580
+  TAmtBar() : TView(), rangeOrMaxValue(0), stepOrCurrentValue(0), auxValueA(0), auxValueB(0) {}
   DECLARE_DYNCREATE(TAmtBar)
 
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).
@@ -30,7 +31,6 @@ public:
   virtual void RenderPrimarySurfaceOverlayPanelWithClipCache();
 
   void SetBarMetric(int value, int range);
-  void SetBarMetricRatio(int value);
 };
 
 ASSERT_SIZE(TAmtBar, 0x68);

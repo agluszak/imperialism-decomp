@@ -109,7 +109,7 @@ address|name|symbol|size|type|prototype|provenance
 41b6d0|InitializeIndustryViewTradeMoveControlsAndCommodityRows||37576|function|undefined InitializeIndustryViewTradeMoveControlsAndCommodityRows()|
 426ec0|CList<TView *,TView *>::AddTail|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|125|function|POSITION __thiscall AddTail(TView *)|template
 426f60|GetUiLinkedListNodePayload||7|function|undefined GetUiLinkedListNodePayload()|
-426f80|NoOpRuntimeCallback_00426f80||1|function|undefined NoOpRuntimeCallback_00426f80()|
+426f80|NoOpRuntimeCallback_00426f80||1|function|void NoOpRuntimeCallback_00426f80(void)|curated
 426fa0|SetUiResourceContextFlagsAndMetrics||69|function|undefined SetUiResourceContextFlagsAndMetrics()|
 427010|ApplyUiResourceColorTripletFromContext||61|function|undefined ApplyUiResourceColorTripletFromContext()|
 427060|ReplaceUiResourceContextPairBuffer||83|function|undefined ReplaceUiResourceContextPairBuffer()|
@@ -788,7 +788,7 @@ address|name|symbol|size|type|prototype|provenance
 4889f0|IltTarget_004889f0||9|function|undefined IltTarget_004889f0()|
 488a10|TStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488a40|TStream::DestructTStreamAndMaybeFree||7|function|undefined DestructTStreamAndMaybeFree()|
-488a60|IltTarget_00488a60||1|function|undefined IltTarget_00488a60()|
+488a60|IltTarget_00488a60||1|function|void IltTarget_00488a60(void)|curated
 488a80|TStream::IsAtEnd||26|function|char __thiscall IsAtEnd()|
 488ab0|TStream::Free||12|function|void __thiscall streamSlot1c()|
 488ad0|TStream::GetPosition||3|function|int __thiscall GetPosition()|
@@ -1300,14 +1300,14 @@ address|name|symbol|size|type|prototype|provenance
 495d00|TBitmapSurfaceNode::TBitmapSurfaceNode|??0TBitmapSurfaceNode@@QAE@HHH@Z|212|function|TBitmapSurfaceNode * __thiscall TBitmapSurfaceNode(int width, int height, int bitDepth)|windows_ctor_listing
 495e20|TBitmapSurfaceContextDescriptor::TBitmapSurfaceContextDescriptor|??0TBitmapSurfaceContextDescriptor@@QAE@XZ|103|function|TBitmapSurfaceContextDescriptor * __thiscall TBitmapSurfaceContextDescriptor(void)|windows_ctor_listing
 495eb0|TBitmapSurfaceContextDescriptor::InitializeSurfaceNode||220|function|bool InitializeSurfaceNode(int width, int height, int bitDepth)|
-495fd0|TBitmapSurfaceContextDescriptor::ReleaseSurfaceNode||134|function|void ReleaseSurfaceNode()|
+495fd0|TQuickDrawSurfaceContext::~TQuickDrawSurfaceContext|??1TQuickDrawSurfaceContext@@QAE@XZ|134|function|void __thiscall TQuickDrawSurfaceContext::~TQuickDrawSurfaceContext(void)|curated
 496090|BindGWorldSurfaceToMemoryDC||146|function|void __cdecl BindGWorldSurfaceToMemoryDC(CDib * dibSurface, HDC referenceDc)|windows_listing
 496160|DisposeQuickDrawMemoryDC||64|function|void DisposeQuickDrawMemoryDC(void)|
 4961b0|SetGWorld||138|function|void __cdecl SetGWorld(TQuickDrawSurfaceContext * context, int flags)|quickdraw_toolbox_identity
 496270|GetGWorld||24|function|void __cdecl GetGWorld(TQuickDrawSurfaceContext ** outContext, int * outFlags)|quickdraw_toolbox_identity
 4962a0|GetGWorldPixMap||8|function|TBitmapSurfaceNode ** __cdecl GetGWorldPixMap(TQuickDrawSurfaceContext * context)|quickdraw_toolbox_identity
 4962c0|NewGWorld||264|function|short __cdecl NewGWorld(TQuickDrawSurfaceContext ** outContext, short bitDepth, RECT const * bounds, int unusedHint, int unusedArg4, int unusedArg5)|quickdraw_toolbox_identity
-496420|WrapperFor_FreeHeapBufferIfNotNull_At00496420||27|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00496420()|
+496420|DisposeGWorld||27|function|void __cdecl DisposeGWorld(TQuickDrawSurfaceContext *)|curated
 496450|TransparentBlitBitmapUsingMaskedRasterOps||719|function|void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX, short destY, COLORREF colorKey)|
 4967e0|TransparentBlitBitmapRegionUsingMaskedRasterOps||729|function|void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX, short destY, COLORREF colorKey, short srcX, short srcY, short width, short height)|
 496b80|BlitBitmapResourceToTemporaryCompatibleDcAndPresent||344|function|undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()|
@@ -1678,7 +1678,7 @@ address|name|symbol|size|type|prototype|provenance
 4a8450|TArmyStackList::ConstructTArmyStackListBaseState||77|function|undefined ConstructTArmyStackListBaseState()|
 4a84c0|TArmyStackList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a84f0|TArmyStackList::~TArmyStackList||62|function|TArmyStackList::~TArmyStackList()|
-4a8540|IltTarget_004a8540||1|function|undefined IltTarget_004a8540()|
+4a8540|IltTarget_004a8540||1|function|void IltTarget_004a8540(void)|curated
 4a8560|TArmyStackList::Compare||43|function|short Compare(void* a, void* b)|
 4a8640|TSortedList::TSortedList|??0TSortedList@@QAE@XZ|77|function|TSortedList* __thiscall TSortedList::TSortedList(void)|curated
 4a8740|`dynamic initializer for 'g_scaledShortConst_6A2350''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A2350''(void)|library
@@ -2657,7 +2657,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6630|TTurnStartEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e6660|TTurnStartEvent::CreateTTurnStartEventInstance||7|function|undefined CreateTTurnStartEventInstance()|
 4e6680|TTurnStartEvent::GetRuntimeClass||6|function|undefined GetTTurnStartEventClassNamePointer()|rtti
-4e66a0|IltTarget_004e66a0||1|function|undefined IltTarget_004e66a0()|
+4e66a0|IltTarget_004e66a0||1|function|void IltTarget_004e66a0(void)|curated
 4e66c0|TLandSaleEvent::CreateObject|?CreateObject@TLandSaleEvent@@SGPAVCObject@@XZ|31|function|undefined CreateObject()|rtti
 4e66f0|TLandSaleEvent::GetRuntimeClass||6|function|undefined GetTLandSaleEventClassNamePointer()|rtti
 4e6710|TLandSaleEvent::ILandSaleEvent||28|function|void ILandSaleEvent(short tileIndex, short nationCode)|
@@ -2731,7 +2731,7 @@ address|name|symbol|size|type|prototype|provenance
 4eae70|TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment||239|function|void RefreshTrackedEntriesAndReplanAiDevelopment(int unused)|
 4eafa0|SeedTrackedEntryAssignmentsFromEligibleUnits||124|function|undefined SeedTrackedEntryAssignmentsFromEligibleUnits()|
 4eb040|IterateLinkedListCursorEntries_004eb040||74|function|undefined IterateLinkedListCursorEntries_004eb040()|
-4eb0b0|IltTarget_004eb0b0||1|function|undefined IltTarget_004eb0b0()|
+4eb0b0|IltTarget_004eb0b0||1|function|void IltTarget_004eb0b0(void)|curated
 4eb0d0|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||131|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
 4eb190|TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools||853|function|void PlanAiDevelopmentActionsFromResourcePools(int unused)|
 4eb5d0|CompareMissionsByWeightedShortfall||172|function|undefined CompareMissionsByWeightedShortfall()|
@@ -3016,7 +3016,7 @@ address|name|symbol|size|type|prototype|provenance
 4fe840|TDisplayMgr::InitializeWindowAndMBarSize||432|function|void InitializeWindowAndMBarSize(void)|
 4fea60|TDisplayMgr::Free||50|function|undefined ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()|
 4feab0|TDisplayMgr::MakeNewGWorld||87|function|void MakeNewGWorld(TQuickDrawSurfaceContext *&outContext, short bitDepth, const RECT &bounds)|
-4feb30|IltTarget_004feb30||1|function|undefined IltTarget_004feb30()|
+4feb30|IltTarget_004feb30||1|function|void IltTarget_004feb30(void)|curated
 4feb50|TDisplayMgr::RemoveGWorld||26|function|void RemoveGWorld(TQuickDrawSurfaceContext *&surface)|
 4feb80|TDisplayMgr::ExamineGWorld||62|function|void ExamineGWorld(void)|
 4febd0|TDisplayMgr::AboutToLoseControl||50|function|void AboutToLoseControl(unsigned char saveState)|
@@ -3344,7 +3344,7 @@ address|name|symbol|size|type|prototype|provenance
 5159b0|TMapMgr::DimByTrackLaying||272|function|void __thiscall TMapMgr::DimByTrackLaying(TCivUnit * pCivilianOrderEntry)|
 515b10|TMapMgr::DimByEngineering||331|function|void __thiscall TMapMgr::DimByEngineering(TCivUnit * pCivilianOrderEntry)|
 515d60|TMapMgr::ApplyUnitMovementClassForTileIfValid||24|function|undefined ApplyUnitMovementClassForTileIfValid(int param_1)|
-515d90|IltTarget_00515d90||1|function|undefined IltTarget_00515d90()|
+515d90|IltTarget_00515d90||1|function|void IltTarget_00515d90(void)|curated
 515db0|TMapMgr::DimmingOff||27|function|void __thiscall DimmingOff(void)|mac_oracle
 515de0|TMapMgr::NoOpVirtualSlot2D||3|function|void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3)|
 515e00|TMapMgr::SetMapTileStateByteAndNotifyObserver||50|function|void __thiscall SetMapTileStateByteAndNotifyObserver(short tileIndex, int stateByte)|
@@ -3382,8 +3382,8 @@ address|name|symbol|size|type|prototype|provenance
 518130|RecomputeTileStrategicScoreHeatmap||643|function|undefined RecomputeTileStrategicScoreHeatmap()|
 518470|ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl||66|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl()|
 5184e0|GetProvinceUnitOrderWeight||7|function|undefined GetProvinceUnitOrderWeight()|
-518500|IltTarget_00518500||1|function|undefined IltTarget_00518500()|
-518520|IltTarget_00518520||1|function|undefined IltTarget_00518520()|
+518500|IltTarget_00518500||1|function|void IltTarget_00518500(void)|curated
+518520|IltTarget_00518520||1|function|void IltTarget_00518520(void)|curated
 518540|TMapMgr::LoadScenarioMapStateFromTableResource||536|function|char __thiscall LoadScenarioMapStateFromTableResource(int scenarioIndex)|
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl||62|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|
 518840|ByteSwapCityScoreTableShortFields||219|function|void __cdecl ByteSwapCityScoreTableShortFields(Province * table)|
@@ -3508,7 +3508,7 @@ address|name|symbol|size|type|prototype|provenance
 5259c0|TMapMaker::DestructTMapMaker||7|function|undefined DestructTMapMaker()|
 5259e0|IltTarget_005259e0||51|function|undefined IltTarget_005259e0()|
 525a30|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(char * tileGrid, Province * cityTable, CString * tuningString)|
-526600|IltTarget_00526600||1|function|undefined IltTarget_00526600()|
+526600|IltTarget_00526600||1|function|void IltTarget_00526600(void)|curated
 526620|IltTarget_00526620||179|function|undefined IltTarget_00526620()|
 526710|ValidateAllColumnsHaveAssignedRegionClass||53|function|undefined ValidateAllColumnsHaveAssignedRegionClass()|
 526760|TMapMaker::ValidateTerrainClassAdjacencyCoverageMask||106|function|char __thiscall ValidateTerrainClassAdjacencyCoverageMask(void)|
@@ -4079,7 +4079,7 @@ address|name|symbol|size|type|prototype|provenance
 5420a0|SetEventPayloadNationIdFromSlotIndex||20|function|undefined SetEventPayloadNationIdFromSlotIndex()|
 5420d0|SetEventPayloadNationIdFromSlotIndexWithSentinelHandling||51|function|undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()|
 542120|SetTimeEmitPacketGameFlowTurnId||17|function|undefined SetTimeEmitPacketGameFlowTurnId()|
-542150|IltTarget_00542150||1|function|undefined IltTarget_00542150()|
+542150|IltTarget_00542150||1|function|void IltTarget_00542150(void)|curated
 542170|IltTarget_00542170||32|function|undefined IltTarget_00542170()|
 5421a0|FindActiveNationSlotIndexInGameFlowList||42|function|undefined FindActiveNationSlotIndexInGameFlowList()|
 5421e0|IltTarget_005421e0||35|function|undefined IltTarget_005421e0()|
@@ -4472,7 +4472,7 @@ address|name|symbol|size|type|prototype|provenance
 55ead0|stretch<TZone*>::Add|?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z|124|function|TZone ** __thiscall Add(TZone * zone)|template
 55eb70|IltTarget_0055eb70||23|function|undefined IltTarget_0055eb70()|
 55eba0|stretch<Province*>::Add|?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z|124|function|Province ** __thiscall Add(Province * entry)|template
-55ec40|IltTarget_0055ec40||1|function|undefined IltTarget_0055ec40()|
+55ec40|IltTarget_0055ec40||1|function|void IltTarget_0055ec40(void)|curated
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
 55ecd0|IltTarget_0055ecd0||54|function|undefined IltTarget_0055ecd0()|
 55ed20|TZone::ReadFrom||564|function|undefined DeserializeZoneFromBinaryStream()|
@@ -4527,7 +4527,7 @@ address|name|symbol|size|type|prototype|provenance
 561820|TZone::SerializeTPortZoneToBinaryStream||98|function|undefined SerializeTPortZoneToBinaryStream()|
 5618b0|TZone::RefreshTPortZoneDisplayNameFromLocalization||233|function|undefined RefreshTPortZoneDisplayNameFromLocalization()|
 5619e0|ResolvePortZoneOwnerContextAndDispatch||72|function|undefined ResolvePortZoneOwnerContextAndDispatch()|
-561a50|IltTarget_00561a50||1|function|undefined IltTarget_00561a50()|
+561a50|IltTarget_00561a50||1|function|void IltTarget_00561a50(void)|curated
 561a70|TZone::DestroyTPortZoneAndClearOverlayMarkers||127|function|undefined DestroyTPortZoneAndClearOverlayMarkers()|
 561b10|TZone::IsPortZoneOwnerNationEqual||37|function|undefined IsPortZoneOwnerNationEqual()|
 561b50|TZone::NotifyDiplomacyManagerForPortZoneOwnerNation||46|function|undefined NotifyDiplomacyManagerForPortZoneOwnerNation()|
@@ -5465,7 +5465,7 @@ address|name|symbol|size|type|prototype|provenance
 594fe0|TWorldView::GetRuntimeClass||6|function|undefined GetTWorldViewClassNamePointer()|rtti
 595000|TWorldView::ConstructTWorldViewBaseState||42|function|undefined ConstructTWorldViewBaseState()|
 595040|TWorldView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-595070|IltTarget_00595070||1|function|undefined IltTarget_00595070()|
+595070|IltTarget_00595070||1|function|void IltTarget_00595070(void)|curated
 595090|TWorldView::DoPostCreate||13|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5950b0|TWorldView::DoEvent||81|function|undefined HandleNationStateCommandX78AndForwardToChild()|
 595130|TWorldView::DoKeyEvent||1232|function|void __thiscall HandleMapScreenHotkeyDispatch(int * pKeyEvent)|
@@ -6237,7 +6237,7 @@ address|name|symbol|size|type|prototype|provenance
 5c38e0|TMilitaryUnit::FindUnitByUID||133|function|TMilitaryUnit* __cdecl FindUnitByUID(int unitId)|mac_oracle
 5c3ad0|`dynamic initializer for 'g_scaledShortConst_6A5AE8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5AE8''(void)|library
 5c3b00|`dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''||15|function|void __cdecl `dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''(void)|
-5c3b20|IltTarget_005c3b20||1|function|undefined IltTarget_005c3b20()|
+5c3b20|IltTarget_005c3b20||1|function|void IltTarget_005c3b20(void)|curated
 5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|
 5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|TQuickDrawSurfaceContext * __cdecl LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId)|windows_listing
 5c3d20|ResolveUiThemeColor||201|function|undefined ResolveUiThemeColor()|
@@ -6562,8 +6562,8 @@ address|name|symbol|size|type|prototype|provenance
 5e4d80|`dynamic initializer for 'g_soundResourceManager''||40|function|void __cdecl `dynamic initializer for 'g_soundResourceManager''(void)|
 5e4dc0|TSoundResourceManager::`dynamic atexit destructor'||10|function|undefined DynamicAtexitDestructor()|
 5e4de0|`dynamic initializer for 'g_cdAudioDevice''||24|function|void __cdecl `dynamic initializer for 'g_cdAudioDevice''(void)|
-5e4e30|IltTarget_005e4e30||1|function|undefined IltTarget_005e4e30()|
-5e4e50|IltTarget_005e4e50||1|function|undefined IltTarget_005e4e50()|
+5e4e30|IltTarget_005e4e30||1|function|void IltTarget_005e4e30(void)|curated
+5e4e50|IltTarget_005e4e50||1|function|void IltTarget_005e4e50(void)|curated
 5e4e70|TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists||192|function|void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int handlerTag)|
 5e4f60|TSoundPlayer::ReturnConstantTrue_SoundPredicate||3|function|undefined ReturnConstantTrue_SoundPredicate()|
 5e4f80|TSoundPlayer::RequestDirectSoundInitIfAllowed||22|function|undefined RequestDirectSoundInitIfAllowed()|
@@ -6728,7 +6728,7 @@ address|name|symbol|size|type|prototype|provenance
 5e72f1|CFileException::`scalar deleting dtor'|??_GCFileException@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CFileException::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
 5e730d|CFileException::~CArchiveException|CFileException::~CArchiveException|52|function|undefined ??1CFileException@@UAE@XZ@005e730d()|
 5e7350|_fpmath|__fpmath|23|function|void __cdecl fpmath(int param_1)|msvc500_library_oracle
-5e7370|NoOpCrtThreadLifecycleHook||1|function|undefined NoOpCrtThreadLifecycleHook()|
+5e7370|NoOpCrtThreadLifecycleHook||1|function|void NoOpCrtThreadLifecycleHook(void)|curated
 5e7380|_cfltcvt_init|__cfltcvt_init|56|function|undefined InitializeFpmathAmsgExitHandlerTable()|msvc500_library_oracle
 5e73d0|_ftol|__ftol|39|function|long __cdecl _ftol(void)|msvc500_library_override
 5e7400|_JumpToContinuation|?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z|45|function|undefined RestoreSehFrameAndJumpIndirect()|
@@ -6776,7 +6776,7 @@ address|name|symbol|size|type|prototype|provenance
 5e89d0|_isspace|_isspace|42|function|undefined HasTileAttributeMask08()|
 5e8bb0|_vsprintf|_vsprintf|104|function|undefined ProcessFormattedInputAndNullTerminateBuffer()|
 5e8c20|ProbeStackPagesForLargeFrameAllocation||47|function|undefined ProbeStackPagesForLargeFrameAllocation()|
-5e8c50|CallCallbackRepeatedly||111|function|void __stdcall CallCallbackRepeatedly(undefined4 param_1, undefined4 param_2, int iteration_count, undefined * callback)|
+5e8c50|`eh vector ctor iterator'|??_L@YGXPAXIHP6EX0@Z1@Z|111|function|void __stdcall `eh vector ctor iterator'(void * base, unsigned int elementSize, int count, void (__thiscall * ctor)(void *), void (__thiscall * dtor)(void *))|msvc500_library_oracle
 5e8cc8|SehCleanup_CallCallbackRepeatedly||20|function|undefined SehCleanup_CallCallbackRepeatedly()|
 5e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust|_localtime|486|function|undefined ConvertEpochSecondsToLocalTmWithDstAdjust()|msvc500_library_oracle
 5e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache|_time|300|function|undefined GetCurrentLocalEpochSecondsWithTimezoneCache()|msvc500_library_oracle
@@ -8042,7 +8042,7 @@ address|name|symbol|size|type|prototype|provenance
 61eb67|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61eb67()|
 61ebc0|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61ebc0()|
 61ebf8|WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8||5|function|undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()|
-61ec02|NoOpVirtualStub_0061ec02||1|function|undefined NoOpVirtualStub_0061ec02()|
+61ec02|NoOpVirtualStub_0061ec02||1|function|void NoOpVirtualStub_0061ec02(void)|curated
 61ec03|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()|
 61ec0f|WrapperFor_AfxDeleteObject_At0061ec0f||11|function|undefined WrapperFor_AfxDeleteObject_At0061ec0f()|
 61ec1a|CDC::DPtoHIMETRIC|?DPtoHIMETRIC@CDC@@QBEXPAUtagSIZE@@@Z|145|function|public: void __thiscall CDC::DPtoHIMETRIC(struct tagSIZE *) const|msvc500_library_oracle
@@ -8093,7 +8093,7 @@ address|name|symbol|size|type|prototype|provenance
 622a4f|CWinApp::ExitInstance|?ExitInstance@CWinApp@@UAEHXZ|54|function|public: virtual int __thiscall CWinApp::ExitInstance(void)|msvc500_library_override
 622a85|CWinApp::GetRuntimeClass|?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ|6|function|public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const|msvc500_library_override
 622a8b|WrapperFor_NoOpThreadInitializationStub_At00622a8b||5|function|undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()|
-622a95|NoOpThreadInitializationStub||1|function|undefined NoOpThreadInitializationStub()|
+622a95|NoOpThreadInitializationStub||1|function|void NoOpThreadInitializationStub(void)|curated
 622a96|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96()|
 622aa2|thunk_thunk_CProcessLocalObject_At00622aa2||10|function|undefined thunk_thunk_CProcessLocalObject_At00622aa2()|
 622b3c|CWinThread::`scalar deleting dtor'|??_GCWinThread@@UAEPAXI@Z|28|function|void * __thiscall ??_GCWinThread@@UAEPAXI@Z(uint param_1)|
@@ -8171,11 +8171,11 @@ address|name|symbol|size|type|prototype|provenance
 6242de|_AFX_CTL3D_STATE::~_AFX_CTL3D_STATE|??1_AFX_CTL3D_STATE@@UAE@XZ|71|function|public: virtual __thiscall _AFX_CTL3D_STATE::~_AFX_CTL3D_STATE(void)|msvc500_library_oracle
 624325|_AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD|??1_AFX_CTL3D_THREAD@@UAE@XZ|64|function|public: virtual __thiscall _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD(void)|msvc500_library_oracle
 624487|WrapperFor_NoOpPaddingStub_00624491_At00624487||5|function|undefined WrapperFor_NoOpPaddingStub_00624491_At00624487()|
-624491|NoOpPaddingStub_00624491||1|function|undefined NoOpPaddingStub_00624491()|
+624491|NoOpPaddingStub_00624491||1|function|void NoOpPaddingStub_00624491(void)|curated
 624492|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492()|
 62449e|Dtor_CThreadLocalObject_Global_006A7D70||5|function|undefined Dtor_CThreadLocalObject_Global_006A7D70()|
 6244a3|CThreadLocalObject||5|function|undefined CThreadLocalObject()|
-6244b7|NoOpPaddingStub_006244b7||1|function|undefined NoOpPaddingStub_006244b7()|
+6244b7|NoOpPaddingStub_006244b7||1|function|void NoOpPaddingStub_006244b7(void)|curated
 6244b8|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8()|
 6244c4|thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4||10|function|undefined thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4()|
 6244d3|AfxCriticalInit|?AfxCriticalInit@@YGHXZ|78|function|int __stdcall AfxCriticalInit(void)|msvc500_library_oracle

@@ -7,7 +7,7 @@
 #include "game/gfx/TDisplayMgr.h"
 #include "game/ui_screens/TScrollView.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TWindow.h"
@@ -18,7 +18,7 @@
 namespace {
 
 HelpSetRecord* FindHelpSetById(short helpSetId) {
-  TSortedPtrList* list = g_pHelpMgr->indexList;
+  TPtrList* list = g_pHelpMgr->indexList;
   for (int index = 1; index <= list->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));

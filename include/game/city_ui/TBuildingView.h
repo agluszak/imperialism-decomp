@@ -37,7 +37,10 @@ public:
   unsigned char padding9D;
   short embeddedPageIndex9E;
 
-  TBuildingView();
+  // FUNCTION: IMPERIALISM 0x004c6eb0
+  TBuildingView() : TNoHilitePicture() {
+    city94 = 0;
+  }
 };
 
 ASSERT_SIZE(TBuildingView, 0xa0);
