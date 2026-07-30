@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "probes/CityOrderSnapshots.h"
 #include "flows/CityBuildingFlow.h"
 #include "screens/CityBuildingScreen.h"
 #include "screens/CityScreen.h"
@@ -50,13 +51,7 @@ class CityScreenTestCase : public EasyMapScriptScenario {
 public:
   CityScreenTestCase()
       : buildingSlot(kUniversitySlot), buildingKind(kCityBuildingUniversity), raisedRow(-1),
-        industrySlot(-1), priorQuantity(0), priorRequestedQuantity(0), priorPrimaryStock(0),
-        priorPrimaryTracking(0), priorSecondaryStock(0), priorSecondaryTracking(0),
-        priorStrength(0), priorReservedWorkforce(0), priorProductionAccum(0),
-        priorAnimationFrame(0), priorTreasury(0), priorPopulationCount(0), priorPopulationFloat(0),
-        priorBaselineLow(0), priorBaselineMedium(0), priorBaselineHigh(0), priorProductionLow(0),
-        priorProductionMedium(0), priorProductionHigh(0), priorShipCount(0),
-        priorMerchantCapacity(0) {}
+        industrySlot(-1), priorAnimationFrame(0) {}
 
 protected:
   void Script() override {
@@ -106,7 +101,7 @@ protected:
     raisedRow = Building().FirstRaisableRow();
     CaptureShipOrder(Building().ShipOrder(raisedRow));
     RT_DO("order one ship", Building().RaiseRow(raisedRow));
-    RT_REQUIRE_EQ(priorQuantity + 1, Building().ShipOrder(raisedRow)->quantity);
+    RT_REQUIRE_EQ(shipBefore.quantity + 1, Building().ShipOrder(raisedRow)->quantity);
     RT_DO("confirm the shipyard's counts", Building().VerifyLiveOrderState());
     RT_REQUIRE(CompletedShipOrderUpdatedTheFleet());
     RT_RUN(CloseBuilding(*this));
@@ -188,67 +183,50 @@ private:
 
   void CaptureUnitOrder(TUnitOrder* order) {
     unitOrder = order;
-    priorQuantity = order->quantity;
-    priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
-    priorSecondaryStock = order->secondaryInputResourceId < 0
-                              ? 0
-                              : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
-    priorTreasury = order->ownerCity->ownerNationAc->treasuryValue10;
-    TPopulationMgr* population = order->productionSummary;
-    priorStrength = population->strength;
-    priorPopulationCount = population->populationCount08;
-    priorPopulationFloat = population->populationCountFloat0c;
-    priorBaselineLow = population->baselineSlots10->lowSkillCount04;
-    priorBaselineMedium = population->baselineSlots10->mediumSkillCount06;
-    priorBaselineHigh = population->baselineSlots10->highSkillCount08;
-    priorProductionLow = population->productionSlots14->lowSkillCount04;
-    priorProductionMedium = population->productionSlots14->mediumSkillCount06;
-    priorProductionHigh = population->productionSlots14->highSkillCount08;
+    unitBefore.CaptureFrom(order);
   }
 
   bool UnitOrderWasReserved() const {
     TUnitOrder* order = unitOrder;
     TPopulationMgr* population = order->productionSummary;
     // One more ordered, its inputs and its cash taken, and one person moved out of the pool.
-    return order->quantity == priorQuantity + 1 &&
+    return order->quantity == unitBefore.quantity + 1 &&
            order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
-               priorPrimaryStock - order->primaryInputPerUnit &&
+               unitBefore.primaryStock - order->primaryInputPerUnit &&
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
-                priorSecondaryStock - order->secondaryInputPerUnit) &&
+                unitBefore.secondaryStock - order->secondaryInputPerUnit) &&
            order->ownerCity->ownerNationAc->treasuryValue10 ==
-               priorTreasury - order->cashCostPerUnit &&
-           population->populationCount08 == priorPopulationCount - 1 &&
-           population->populationCountFloat0c == priorPopulationFloat - 1.0f &&
-           population->strength < priorStrength;
+               unitBefore.treasury - order->cashCostPerUnit &&
+           population->populationCount08 == unitBefore.populationCount - 1 &&
+           population->populationCountFloat0c == unitBefore.populationFloat - 1.0f &&
+           population->strength < unitBefore.strength;
   }
 
   bool UnitOrderWasRestored() const {
     TUnitOrder* order = unitOrder;
     TPopulationMgr* population = order->productionSummary;
-    return order->quantity == priorQuantity &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) == priorPrimaryStock &&
+    return order->quantity == unitBefore.quantity &&
+           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+               unitBefore.primaryStock &&
            (order->secondaryInputResourceId < 0 ||
             order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
-                priorSecondaryStock) &&
-           order->ownerCity->ownerNationAc->treasuryValue10 == priorTreasury &&
-           population->strength == priorStrength &&
-           population->populationCount08 == priorPopulationCount &&
-           population->populationCountFloat0c == priorPopulationFloat &&
-           population->baselineSlots10->lowSkillCount04 == priorBaselineLow &&
-           population->baselineSlots10->mediumSkillCount06 == priorBaselineMedium &&
-           population->baselineSlots10->highSkillCount08 == priorBaselineHigh &&
-           population->productionSlots14->lowSkillCount04 == priorProductionLow &&
-           population->productionSlots14->mediumSkillCount06 == priorProductionMedium &&
-           population->productionSlots14->highSkillCount08 == priorProductionHigh;
+                unitBefore.secondaryStock) &&
+           order->ownerCity->ownerNationAc->treasuryValue10 == unitBefore.treasury &&
+           population->strength == unitBefore.strength &&
+           population->populationCount08 == unitBefore.populationCount &&
+           population->populationCountFloat0c == unitBefore.populationFloat &&
+           population->baselineSlots10->lowSkillCount04 == unitBefore.baselineLow &&
+           population->baselineSlots10->mediumSkillCount06 == unitBefore.baselineMedium &&
+           population->baselineSlots10->highSkillCount08 == unitBefore.baselineHigh &&
+           population->productionSlots14->lowSkillCount04 == unitBefore.productionLow &&
+           population->productionSlots14->mediumSkillCount06 == unitBefore.productionMedium &&
+           population->productionSlots14->highSkillCount08 == unitBefore.productionHigh;
   }
 
   void CaptureShipOrder(TShipOrder* order) {
     shipOrder = order;
-    priorQuantity = order->quantity;
-    priorShipCount = order->ownerCity->orderCountByType5c[order->resourceTypeIndex];
-    order->ownerCity->ownerNationAc->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-    priorMerchantCapacity = order->ownerCity->ownerNationAc->merchantCapacity;
+    shipBefore.CaptureFrom(order);
   }
 
   // Completing the order is a model call, not a click: no control finishes a ship early. What is
@@ -261,28 +239,24 @@ private:
     shipOrder->Produce();
     owner->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     const short expectedCapacity = static_cast<short>(
-        priorMerchantCapacity +
+        shipBefore.merchantCapacity +
         GetResourceDescriptorWeightWord0ByType(resourceType) * completedQuantity);
     return shipOrder->quantity == 0 &&
            shipOrder->ownerCity->orderCountByType5c[resourceType] ==
-               priorShipCount + completedQuantity &&
+               shipBefore.shipCount + completedQuantity &&
            owner->merchantCapacity == expectedCapacity;
   }
 
   void CaptureTrainingOrder(TTrainingOrder* order) {
     trainingOrder = order;
-    priorQuantity = order->quantity;
-    priorPrimaryStock = order->ownerCity->cityStockPaperCA;
-    priorTreasury = order->ownerCity->ownerNationAc->treasuryValue10;
-    priorBaselineLow = order->productionSummary->baselineSlots10->lowSkillCount04;
-    priorBaselineMedium = order->productionSummary->baselineSlots10->mediumSkillCount06;
+    trainingBefore.CaptureFrom(order);
   }
 
   bool TrainingOrderWasReserved() const {
-    return trainingOrder->quantity == priorQuantity + 1 &&
-           trainingOrder->ownerCity->cityStockPaperCA == priorPrimaryStock - 1 &&
+    return trainingOrder->quantity == trainingBefore.quantity + 1 &&
+           trainingOrder->ownerCity->cityStockPaperCA == trainingBefore.paperStock - 1 &&
            trainingOrder->ownerCity->ownerNationAc->treasuryValue10 ==
-               priorTreasury - kTrainingCashCost;
+               trainingBefore.treasury - kTrainingCashCost;
   }
 
   // A finished training empties the row -- the bar has to follow the order back to zero, which is
@@ -294,27 +268,16 @@ private:
     }
     return trainingOrder->quantity == 0 &&
            trainingOrder->productionSummary->baselineSlots10->lowSkillCount04 ==
-               priorBaselineLow - 1 &&
+               trainingBefore.baselineLow - 1 &&
            trainingOrder->productionSummary->baselineSlots10->mediumSkillCount06 ==
-               priorBaselineMedium + 1;
+               trainingBefore.baselineMedium + 1;
   }
 
   void CaptureItemOrder(TItemOrder* order) {
     itemOrder = order;
-    priorQuantity = order->quantity;
-    priorRequestedQuantity = order->requestedQuantity4c;
-    priorPrimaryStock = order->ownerCity->CityStockByType(order->primaryInputResourceId);
-    priorPrimaryTracking = order->trackingSlots[order->primaryInputResourceId];
-    priorSecondaryStock = order->secondaryInputResourceId < 0
-                              ? 0
-                              : order->ownerCity->CityStockByType(order->secondaryInputResourceId);
-    priorSecondaryTracking = order->secondaryInputResourceId < 0
-                                 ? 0
-                                 : order->trackingSlots[order->secondaryInputResourceId];
-    priorStrength = order->productionSummary->strength;
-    priorReservedWorkforce = order->reservedWorkforce;
-    priorProductionAccum = order->ownerCity->productionAccum1fc[order->productionSlot];
+    itemBefore.CaptureFrom(order);
     TTransFocusAnimation* animation = Building().ProductionAnimation();
+    // A view reading, not a model one, so it stays here rather than in the snapshot.
     priorAnimationFrame = animation != 0 ? animation->frameIndex : -1;
   }
 
@@ -330,34 +293,39 @@ private:
     TItemOrder* order = itemOrder;
     // A single-input item consumes two of it; a two-input item takes one of each.
     const short primaryAmount = order->secondaryInputResourceId < 0 ? 2 : 1;
-    return order->quantity == priorQuantity + 1 && order->requestedQuantity4c == order->quantity &&
+    return order->quantity == itemBefore.quantity + 1 &&
+           order->requestedQuantity4c == order->quantity &&
            order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
-               priorPrimaryStock - primaryAmount &&
+               itemBefore.primaryStock - primaryAmount &&
            order->trackingSlots[order->primaryInputResourceId] ==
-               priorPrimaryTracking + primaryAmount &&
+               itemBefore.primaryTracking + primaryAmount &&
            (order->secondaryInputResourceId < 0 ||
             (order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
-                 priorSecondaryStock - 1 &&
+                 itemBefore.secondaryStock - 1 &&
              order->trackingSlots[order->secondaryInputResourceId] ==
-                 priorSecondaryTracking + 1)) &&
-           order->productionSummary->strength == priorStrength - 2 &&
-           order->reservedWorkforce == priorReservedWorkforce + 2 &&
-           order->ownerCity->productionAccum1fc[order->productionSlot] == priorProductionAccum - 1;
+                 itemBefore.secondaryTracking + 1)) &&
+           order->productionSummary->strength == itemBefore.strength - 2 &&
+           order->reservedWorkforce == itemBefore.reservedWorkforce + 2 &&
+           order->ownerCity->productionAccum1fc[order->productionSlot] ==
+               itemBefore.productionAccum - 1;
   }
 
   bool ItemOrderWasRestored() const {
     TItemOrder* order = itemOrder;
-    return order->quantity == priorQuantity &&
-           order->requestedQuantity4c == priorRequestedQuantity &&
-           order->ownerCity->CityStockByType(order->primaryInputResourceId) == priorPrimaryStock &&
-           order->trackingSlots[order->primaryInputResourceId] == priorPrimaryTracking &&
+    return order->quantity == itemBefore.quantity &&
+           order->requestedQuantity4c == itemBefore.requestedQuantity &&
+           order->ownerCity->CityStockByType(order->primaryInputResourceId) ==
+               itemBefore.primaryStock &&
+           order->trackingSlots[order->primaryInputResourceId] == itemBefore.primaryTracking &&
            (order->secondaryInputResourceId < 0 ||
             (order->ownerCity->CityStockByType(order->secondaryInputResourceId) ==
-                 priorSecondaryStock &&
-             order->trackingSlots[order->secondaryInputResourceId] == priorSecondaryTracking)) &&
-           order->productionSummary->strength == priorStrength &&
-           order->reservedWorkforce == priorReservedWorkforce &&
-           order->ownerCity->productionAccum1fc[order->productionSlot] == priorProductionAccum;
+                 itemBefore.secondaryStock &&
+             order->trackingSlots[order->secondaryInputResourceId] ==
+                 itemBefore.secondaryTracking)) &&
+           order->productionSummary->strength == itemBefore.strength &&
+           order->reservedWorkforce == itemBefore.reservedWorkforce &&
+           order->ownerCity->productionAccum1fc[order->productionSlot] ==
+               itemBefore.productionAccum;
   }
 
   // --- Seeding. A fresh Easy game does not always start with enough of everything to place one
@@ -421,27 +389,13 @@ private:
   short raisedRow;
   short industrySlot;
 
-  short priorQuantity;
-  short priorRequestedQuantity;
-  short priorPrimaryStock;
-  short priorPrimaryTracking;
-  short priorSecondaryStock;
-  short priorSecondaryTracking;
-  short priorStrength;
-  short priorReservedWorkforce;
-  short priorProductionAccum;
+  // One snapshot per order family, so a field cannot be read as another family's (see
+  // probes/CityOrderSnapshots.h). priorAnimationFrame is a *view* reading and stays here.
+  UnitOrderSnapshot unitBefore;
+  ShipOrderSnapshot shipBefore;
+  TrainingOrderSnapshot trainingBefore;
+  ItemOrderSnapshot itemBefore;
   short priorAnimationFrame;
-  int priorTreasury;
-  short priorPopulationCount;
-  float priorPopulationFloat;
-  short priorBaselineLow;
-  short priorBaselineMedium;
-  short priorBaselineHigh;
-  short priorProductionLow;
-  short priorProductionMedium;
-  short priorProductionHigh;
-  short priorShipCount;
-  short priorMerchantCapacity;
 };
 
 } // namespace
