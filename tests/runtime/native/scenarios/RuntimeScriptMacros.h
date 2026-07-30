@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef IMPERIALISM_RUNTIME_SCRIPT_MACROS_H
+#define IMPERIALISM_RUNTIME_SCRIPT_MACROS_H
+
 #ifndef IMPERIALISM_RUNTIME_TESTS
 #error RuntimeScriptMacros is test-only and must not be included in the production build
 #endif
@@ -252,3 +255,92 @@
 #define RT_ACTIVATE_AND_AWAIT(label, action, condition, observations)                              \
   RT_ACTION_AT(RT_SLOT_PRIMARY, label, action);                                                    \
   RT_AWAIT_AT(RT_SLOT_SECONDARY, condition, observations)
+
+// --------------------------------------------------------------------------------------
+// Fragment vocabulary. Same protothread, but a fragment yields a RuntimeScriptStatus so its
+// caller knows whether to yield too. Use these inside a RuntimeScriptFragment method; use the
+// RT_ forms above inside a Script().
+// --------------------------------------------------------------------------------------
+
+#define RT_FRAGMENT_BEGIN()                                                                        \
+  switch (FragmentProgramCounter()) {                                                              \
+  case 0:
+
+// Reaching the end without RT_FRAGMENT_DONE means the sequence has no terminating path, which
+// would otherwise stall the caller with no explanation.
+#define RT_FRAGMENT_END()                                                                          \
+  default:                                                                                         \
+    break;                                                                                         \
+    }                                                                                              \
+    FailFragment("script fragment returned without completing", __FILE__, __LINE__);               \
+    return kRuntimeScriptFailed
+
+#define RT_FRAGMENT_AWAIT_AT(slot, condition, observations)                                        \
+  do {                                                                                             \
+    SetFragmentProgramCounter(slot);                                                               \
+  case slot:                                                                                       \
+    if (!(condition)) {                                                                            \
+      AwaitFragment((observations), #condition, __FILE__, __LINE__);                               \
+      return kRuntimeScriptRunning;                                                                \
+    }                                                                                              \
+  } while (0)
+
+#define RT_FRAGMENT_AWAIT(condition, observations)                                                 \
+  RT_FRAGMENT_AWAIT_AT(RT_SLOT_PRIMARY, condition, observations)
+
+#define RT_FRAGMENT_AWAIT_SCREEN_AT(slot, ViewClass, eventCode)                                    \
+  do {                                                                                             \
+    SetFragmentProgramCounter(slot);                                                               \
+  case slot:                                                                                       \
+    if (!ScreenIsCurrentForFragment(RUNTIME_CLASS(ViewClass), (eventCode))) {                      \
+      AwaitScreenFragment(RUNTIME_CLASS(ViewClass), (eventCode), #ViewClass, __FILE__, __LINE__);  \
+      return kRuntimeScriptRunning;                                                                \
+    }                                                                                              \
+  } while (0)
+
+#define RT_FRAGMENT_AWAIT_SCREEN(ViewClass, eventCode)                                             \
+  RT_FRAGMENT_AWAIT_SCREEN_AT(RT_SLOT_PRIMARY, ViewClass, eventCode)
+
+#define RT_FRAGMENT_ACTION_AT(slot, label, action)                                                 \
+  do {                                                                                             \
+    if (!RunFragmentAction((label), (action), __FILE__, __LINE__))                                 \
+      return kRuntimeScriptFailed;                                                                 \
+    SetFragmentProgramCounter(slot);                                                               \
+    ContinueFragmentAfterAction();                                                                 \
+    return kRuntimeScriptRunning;                                                                  \
+  case slot:;                                                                                      \
+  } while (0)
+
+#define RT_FRAGMENT_ACTION(label, action) RT_FRAGMENT_ACTION_AT(RT_SLOT_PRIMARY, label, action)
+
+// Hand control back once. Same rule as RT_YIELD: a loop that handles a step must yield on
+// every path, or it spins while the game never gets to act on what was just done.
+#define RT_FRAGMENT_YIELD()                                                                        \
+  do {                                                                                             \
+    SetFragmentProgramCounter(RT_SLOT_PRIMARY);                                                    \
+    ContinueFragmentAfterAction();                                                                 \
+    return kRuntimeScriptRunning;                                                                  \
+  case RT_SLOT_PRIMARY:;                                                                           \
+  } while (0)
+
+#define RT_FRAGMENT_REQUIRE(expr)                                                                  \
+  do {                                                                                             \
+    if (!(expr)) {                                                                                 \
+      FailFragmentRequirement(#expr, __FILE__, __LINE__);                                          \
+      return kRuntimeScriptFailed;                                                                 \
+    }                                                                                              \
+  } while (0)
+
+#define RT_FRAGMENT_FAIL(text)                                                                     \
+  do {                                                                                             \
+    FailFragment((text), __FILE__, __LINE__);                                                      \
+    return kRuntimeScriptFailed;                                                                   \
+  } while (0)
+
+// The sequence finished; the calling script continues with its next statement.
+#define RT_FRAGMENT_DONE()                                                                         \
+  do {                                                                                             \
+    return kRuntimeScriptComplete;                                                                 \
+  } while (0)
+
+#endif

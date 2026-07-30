@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef IMPERIALISM_RUNTIME_TEST_FACTORY_H
+#define IMPERIALISM_RUNTIME_TEST_FACTORY_H
+
 #ifndef IMPERIALISM_RUNTIME_TESTS
 #error RuntimeTestFactory is test-only and must not be included in the production build
 #endif
@@ -29,3 +32,5 @@
   RuntimeTestCase* FactoryName() {                                                                 \
     return &g_runtimeTestCaseInstance;                                                             \
   }
+
+#endif

@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef IMPERIALISM_RUNTIME_SCRIPT_STATUS_H
+#define IMPERIALISM_RUNTIME_SCRIPT_STATUS_H
+
 #ifndef IMPERIALISM_RUNTIME_TESTS
 #error RuntimeScriptStatus is test-only and must not be included in the production build
 #endif
@@ -19,3 +22,5 @@ enum RuntimeScriptStatus {
   // The fragment failed the scenario. The caller must return; the run is already finished.
   kRuntimeScriptFailed
 };
+
+#endif

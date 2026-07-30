@@ -70,6 +70,9 @@ private:
   // yielded properly from one that fell through without arming anything.
   bool scriptArmedOrFinished;
   int checkFailures;
+
+  // A fragment drives the same protothread surface from outside the class hierarchy.
+  friend class RuntimeScriptFragment;
 };
 
 #endif

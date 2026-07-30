@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef IMPERIALISM_RUNTIME_ACTION_RESULT_H
+#define IMPERIALISM_RUNTIME_ACTION_RESULT_H
+
 #ifndef IMPERIALISM_RUNTIME_TESTS
 #error RuntimeActionResult is test-only and must not be included in the production build
 #endif
@@ -53,3 +56,5 @@ private:
   bool succeeded;
   CString failureMessage;
 };
+
+#endif

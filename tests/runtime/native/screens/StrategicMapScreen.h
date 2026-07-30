@@ -1,10 +1,13 @@
 #pragma once
 
+#ifndef IMPERIALISM_STRATEGIC_MAP_SCREEN_H
+#define IMPERIALISM_STRATEGIC_MAP_SCREEN_H
+
 #ifndef IMPERIALISM_RUNTIME_TESTS
 #error StrategicMapScreen is test-only and must not be included in the production build
 #endif
 
-#include "RuntimeActionResult.h"
+#include "MainViewScreen.h"
 
 class TMapUberPicture;
 class TMapDialog;
@@ -23,14 +26,12 @@ class TView;
 // what was current instead -- so a script never needs a screen check before an action, and a
 // mis-sequenced script says "expected TMapUberPicture at 0x07dd, found TTradeScreenPicture at
 // 0x07d9" rather than "control is missing".
-class StrategicMapScreen {
+class StrategicMapScreen : public MainViewScreen {
 public:
   StrategicMapScreen();
 
   // True when the map is the current main view at its own turn event with no modal above it.
   static bool IsCurrent();
-
-  bool IsValid() const;
 
   // Toolbar and command actions.
   RuntimeActionResult EndTurn();
@@ -58,10 +59,6 @@ public:
   int ViewportOriginY() const;
 
 private:
-  RuntimeActionResult Activate(int tag, const char* what);
-  RuntimeActionResult ActivateInToolbar(int toolTag, const char* what);
-  RuntimeActionResult InvalidScreen(const char* what) const;
-
   TMapUberPicture* mapView;
 };
 
@@ -70,3 +67,5 @@ private:
 inline StrategicMapScreen StrategicMap() {
   return StrategicMapScreen();
 }
+
+#endif
