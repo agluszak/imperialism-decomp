@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 #include "game/city_ui/TCountry.h"
 #include "game/nation/TGreatPower.h"
-#include "game/TMinisterBaseOrderArray.h"
 #include "game/navy/TShip.h"
 #include "game/core/TStream.h"
 
@@ -36,7 +35,8 @@ TMinister::TMinister() : ownerContextAt04(nullptr), field_8(0), skillIndexC(0) {
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::IMinister(TGreatPower* ownerContext) {
   this->ownerContextAt04 = ownerContext;
-  this->field_8 = new TMinisterBaseOrderArray();
+  this->field_8 = new TIndexAndRankList();
+  this->field_8->recordSize14 = 6;
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80

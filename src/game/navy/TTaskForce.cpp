@@ -1962,7 +1962,7 @@ void TTaskForce::CreateIngot() {
   // Clear the tile this entry previously marked (same body as DestroyIngot,
   // inlined by the original rather than called).
   if (ingotTileIndex != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
     ingotTileIndex = -1;
   }
   // `shipOrders` (+0x08) is the order kind; each kind marks a different tile with a
@@ -1992,14 +1992,14 @@ void TTaskForce::CreateIngot() {
     break;
   }
   if (markerType != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, markerType);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, markerType);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005564f0
 void TTaskForce::DestroyIngot() {
   if (ingotTileIndex != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
     ingotTileIndex = -1;
   }
 }

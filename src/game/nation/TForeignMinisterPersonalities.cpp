@@ -6,7 +6,6 @@
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
 #include "game/map/TMapMgr.h"
-#include "game/TMinisterBaseOrderArray.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/map/TSortByPriceList.h"
 #include "game/core/TStream.h"
@@ -666,7 +665,7 @@ TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {}
 void TTextileForeignMinister::SetBuyPriorities() {
   preferredResourceSlots40[0] = 0;
   preferredResourceSlots40[1] = 1;
-  TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
+  TSortByPriceList* priorities = new TSortByPriceList();
   priorities->recordSize14 = sizeof(ResourcePriorityEntry);
   ResourcePriorityEntry entry;
   entry.resourceCode = 3;
@@ -783,7 +782,7 @@ TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {}
 
 // FUNCTION: IMPERIALISM 0x00533960
 void TTraderForeignMinister::SetBuyPriorities() {
-  TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
+  TSortByPriceList* priorities = new TSortByPriceList();
   priorities->recordSize14 = sizeof(ResourcePriorityEntry);
   for (short resourceCode = 0; resourceCode <= kResourceIron; ++resourceCode) {
     ResourcePriorityEntry entry;

@@ -357,10 +357,6 @@ int SelectBestSeedTileForNationFromCostField(MapTileCostField* costField, short 
   return bestTile;
 }
 
-void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(tileIndex, stateByte);
-}
-
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   TZone* contextBase;
@@ -417,12 +413,12 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     unsigned char isNationOverlay = (overlayState >= kMapTileActionStateNationOrderFirst &&
                                      overlayState <= kMapTileActionStateNationOrderLast);
     if (isNationOverlay != 0) {
-      SetMapTileStateByteAndNotifyObserver(overlayTile, kMapTileActionStateNone);
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(overlayTile, kMapTileActionStateNone);
     } else {
       unsigned char isLinkedZoneOverlay = (overlayState >= kMapTileActionStateLinkedZoneFirst &&
                                            overlayState <= kMapTileActionStateLinkedZoneLast);
       if (isLinkedZoneOverlay != 0) {
-        SetMapTileStateByteAndNotifyObserver(overlayTile, -overlayState);
+        g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(overlayTile, -overlayState);
       }
     }
   }
@@ -445,8 +441,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
           int slotWrapped = slotCursor % 7;
           if ((ctxZone->nationKeyMask10 & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
             short slotTile = ctxZone->GetActiveNationSlotTile();
-            SetMapTileStateByteAndNotifyObserver(slotTile,
-                                                 slotWrapped + kMapTileActionStateNationOrderFirst);
+            g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+                slotTile, slotWrapped + kMapTileActionStateNationOrderFirst);
             g_pGlobalMapState->terrainStateTable[slotTile].tileActionOrdinal1a = -1;
           }
           ++slotCursor;
@@ -480,8 +476,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (coastalTile == -1) {
       continue;
     }
-    SetMapTileStateByteAndNotifyObserver(coastalTile,
-                                         rankEntry->nation + kMapTileActionStateNationOrderFirst);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+        coastalTile, rankEntry->nation + kMapTileActionStateNationOrderFirst);
     g_pGlobalMapState->terrainStateTable[coastalTile].tileActionOrdinal1a =
         static_cast<short>(rankEntry->GetNationalIndex());
   }
@@ -703,7 +699,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     }
   }
 
-  SetMapTileStateByteAndNotifyObserver(static_cast<int>(bestSeaTile), kMapTileActionStateAnchor);
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(bestSeaTile, kMapTileActionStateAnchor);
   portZone->tileOrTerrainId0c = static_cast<int>(bestSeaTile);
   portZone->activeTileIndex20 = portZone->FindNearestActiveSeaContextTileFromOffset216();
 }

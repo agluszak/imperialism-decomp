@@ -199,7 +199,7 @@ void TStream::WriteCharacter(short value) {
 // ---------------------------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x00488ef0
-void TStream::WriteInteger(int count) {
+void TStream::WriteInteger(short count) {
   WriteBytes(&count, 2);
 }
 

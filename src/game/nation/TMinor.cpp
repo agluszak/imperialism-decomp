@@ -895,8 +895,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
       }
       short regionOwner = g_pMapContextActionManager->perTileOwnerNationCodeCache1c[regionId];
       if (regionOwner == this->nationSlot || regionOwner == decodedNationSlot) {
-        g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-            static_cast<short>(regionId), decodedNationSlot);
+        g_pGlobalMapState->ChangeProvinceOwner(static_cast<short>(regionId), decodedNationSlot);
       }
     }
 
@@ -1299,7 +1298,7 @@ void TMinor::LoseProvince(int regionId) {
   this->ownedRegionList->Delete(regionId);
   this->KillForeignCompaniesIn(regionId);
   this->KillEnemyCiviliansIn(regionId);
-  this->DeportCiviliansIn(static_cast<short>(regionId), 1);
+  this->DeportCiviliansIn(regionId, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e64f0

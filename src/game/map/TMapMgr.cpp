@@ -1982,14 +1982,12 @@ void TMapMgr::SetTileTransportFlags(StrategicTileIndex nTileIndex,
 const int kGlobalMapTileCount = 0x1950;
 
 // FUNCTION: IMPERIALISM 0x00513290
-void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-    ProvinceIndexStorage cityRecordIndex, int newNationTag) {
+void TMapMgr::ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex, short newNationTag) {
   Province* city = &cityScoreTable[cityRecordIndex];
   signed char oldNationCode = city->ownerNationCode00;
 
   for (int i = 0; i < city->linkedRegionCount; ++i) {
-    SetTileOwnerAndInvalidateNeighborState(city->linkedTileIndices42[i],
-                                           static_cast<short>(newNationTag));
+    SetOwner(city->linkedTileIndices42[i], newNationTag);
   }
 
   city->ownerNationCode00 = static_cast<signed char>(newNationTag);
@@ -2003,13 +2001,12 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
     g_apNationStates[newNationTag]->AddNoticeFrom(oldNationCode, 0x135);
   }
   if (g_pSimMgr->multiplayerSessionRole == 1) {
-    g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(cityRecordIndex,
-                                                         static_cast<short>(newNationTag));
+    g_pGameFlowState->SendChangeProvinceOwner(cityRecordIndex, newNationTag);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005133f0
-void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNationTag) {
+void TMapMgr::SetOwner(short regionId, short newNationTag) {
   signed char oldOwner = terrainStateTable[regionId].ownerNationTag04;
   if (oldOwner == newNationTag) {
     return;
@@ -2435,13 +2432,13 @@ short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
     return ownerCode;
   }
   TCountry* nation = g_apTerrainTypeDescriptorTable[ownerCode];
-  if (nation->needLevelByNation[1] < 200) {
+  if (nation->encodedNationSlot < 200) {
     return ownerCode;
   }
-  short code = nation->needLevelByNation[1];
+  short code = nation->encodedNationSlot;
   if (code < 200) {
     if (code < 100) {
-      return nation->needLevelByNation[0];
+      return nation->nationSlot;
     }
     return code - 100;
   }

@@ -760,7 +760,7 @@ void TTradeMgr::SetDealResults(NationSlot sourceNation, NationSlot targetNation,
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceNationIndex])
         ->PurchaseItem(commodityType, amount, maximumAmount);
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNation])
-        ->PurchaseItem(commodityType, -amount, sourceNation);
+        ->PurchaseItem(commodityType, -amount, maximumAmount);
     if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNation) != 0 &&
         g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) == 0) {
       static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNation])->DeliverItem(amount);
