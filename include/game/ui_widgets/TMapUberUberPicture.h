@@ -15,7 +15,6 @@ public:
   virtual void DoPostCreate(int arg) override;            // slot 0x37 0x596810
   virtual void Scroll(MapScrollEdgeMaskStorage edgeMask); // slot 0x74 0x45d2a0
 
-  // FUNCTION: IMPERIALISM 0x0045d270
-  TMapUberUberPicture() : TOffLimitsPicture() {}
+  TMapUberUberPicture();
 };
 ASSERT_SIZE(TMapUberUberPicture, 0x94);
