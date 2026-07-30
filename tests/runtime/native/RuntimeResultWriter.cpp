@@ -63,7 +63,8 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
     failureJson = "\"generated UI factory snapshot is missing\"";
     run.RecordAssertion("result.random_ui_snapshot.present", failureJson, true);
   }
-  if (scenario.RequiresScenarioUiSnapshot() && run.ScenarioUiSnapshot().IsEmpty()) {
+  // The catalog declares which events are captured, so the run is the thing to ask.
+  if (run.CapturesAnyUiTree() && run.ScenarioUiSnapshot().IsEmpty()) {
     status = "failed";
     failureJson = "\"scenario UI snapshot is missing\"";
     run.RecordAssertion("result.scenario_ui_snapshot.present", failureJson, true);

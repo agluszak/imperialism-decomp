@@ -144,6 +144,10 @@ bool RuntimeScriptScenario::RunScriptActionNeedsBarrier(const char* label,
   return result.NeedsMessageBarrier();
 }
 
+void RuntimeScriptScenario::ContinueAfterAction() {
+  RuntimeScenario::ContinueAfterAction();
+}
+
 bool RuntimeScriptScenario::ScriptFailed() const {
   // FailScript finishes the run, so "the script is over" is the observable fact here.
   return RunState().IsFinished();
