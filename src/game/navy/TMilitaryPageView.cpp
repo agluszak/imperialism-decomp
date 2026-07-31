@@ -13,6 +13,12 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
+
+// Out of line, not in the header: the original's derived constructors
+// (TBattleUnitsView 0x00430b53, TGarrisonView 0x004a8813) CALL this rather than
+// inlining it, which is only possible if the definition is not visible to them.
+// FUNCTION: IMPERIALISM 0x00564920
+TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
 // SYNTHETIC: IMPERIALISM 0x00564860
 // TMilitaryPageView::CreateObject
 
@@ -20,9 +26,6 @@
 // TMilitaryPageView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
-
-// FUNCTION: IMPERIALISM 0x00564920
-TMilitaryPageView::TMilitaryPageView() : TPageView(), primaryUnitAtlas84(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00564950
 // TMilitaryPageView::`scalar deleting destructor'
@@ -53,6 +56,7 @@ void TMilitaryPageView::AfterStuffValues() {
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
 // FUNCTION: IMPERIALISM 0x00564a60
 void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int height) {
+  (void)width;
   TMapDialog* mapDialog = g_pViewMgr->mapUberPictureF0->subview2A8;
   primaryUnitAtlas84 = mapDialog->quickDrawSurface350;
   mapDialog->suppressMarkerOverlay34C = true;
@@ -60,7 +64,7 @@ void TMilitaryPageView::PrepareUnitCache(int bitmapResourceId, int width, int he
 
   TBitmapResourceLoader** loaderHandle =
       CreateBitmapResourceLoaderHandle(static_cast<unsigned short>(bitmapResourceId));
-  RECT destination = {0, 0, width, height};
+  RECT destination = {0, 0, height, height};
 
   TQuickDrawSurfaceContext* savedContext;
   int savedFlags;

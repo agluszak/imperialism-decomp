@@ -72,7 +72,7 @@ void StrategicMapEntryFlow::Start(RuntimeScenario& scenario) {
     Enter(scenario, kWaitingForCapitalMap, "waiting_for_strategic_map",
           "activate_random_setup_okay");
   }
-  scenario.RequestScenarioTick();
+  scenario.ContinueAfterAction();
 }
 
 RuntimeFlowStatus StrategicMapEntryFlow::ReachCheckpoint(RuntimeFlowCheckpoint value) {
@@ -81,7 +81,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::ReachCheckpoint(RuntimeFlowCheckpoint v
   return kRuntimeFlowCheckpoint;
 }
 
-RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
+RuntimeFlowStatus StrategicMapEntryFlow::Advance(RuntimeScenario& scenario) {
   RuntimeRun& run = scenario.RunState();
   TView* mainView = scenario.CurrentMainView();
 
@@ -91,7 +91,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     }
     if (g_pViewMgr->currentTurnEventCode != 0x7dd ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))) {
-      scenario.WaitForScenarioTick("\"random game did not reach the combined strategic map\"");
+      scenario.AwaitUiChange("random game did not reach the combined strategic map");
       return kRuntimeFlowRunning;
     }
     if (!g_ModalViewStack.IsEmpty() || g_pGlobalMapState == 0 ||
@@ -108,7 +108,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     if (g_pViewMgr->currentTurnEventCode != 0x3b8 ||
         !RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture)) ||
         g_ModalViewStack.IsEmpty()) {
-      scenario.WaitForScenarioTick("\"capital-selection map and prompt did not become active\"");
+      scenario.AwaitUiChange("capital-selection map and prompt did not become active");
       return kRuntimeFlowRunning;
     }
     TWindow* modal = g_ModalViewStack.GetHead();
@@ -120,19 +120,20 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     RecordHandledModal(run, "city_site_prompt");
-    if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagOkay)) {
+    if (!RuntimeUiDriver::Activate(
+            modal, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)))) {
       scenario.FailScenario("\"capital-selection prompt okay control is missing\"");
       return kRuntimeFlowRunning;
     }
     Enter(scenario, kWaitingForCapitalPromptDismissal, "waiting_for_modal_dismissal",
           "activate_city_site_prompt_okay");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
 
   if (phase == kWaitingForCapitalPromptDismissal) {
     if (!g_ModalViewStack.IsEmpty()) {
-      scenario.WaitForScenarioTick("\"capital-selection prompt did not dismiss\"");
+      scenario.AwaitUiChange("capital-selection prompt did not dismiss");
       return kRuntimeFlowRunning;
     }
     TMapUberPicture* mapView = RuntimeIsViewKindOf(mainView, RUNTIME_CLASS(TMapUberPicture))
@@ -166,14 +167,24 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     }
     Enter(scenario, kWaitingForCapitalConfirmation, "waiting_for_city_site_confirmation",
           "submit_semantic_city_site");
+    CString failure;
+    if (!RuntimeUiDriver::PostActivate(
+            RuntimeControlSelector(kControlTagDialog, kControlTagOkay, RUNTIME_CLASS(TControl)),
+            &failure)) {
+      scenario.FailScenario(failure);
+      return kRuntimeFlowRunning;
+    }
     static_cast<TCitySiteView*>(mapDialog)->HandleMapClickByInteractionMode(citySite, 0);
-    scenario.RequestScenarioTick();
+    RecordHandledModal(run, "city_site_confirmation");
+    Enter(scenario, kWaitingForCombinedMap, "waiting_for_combined_map",
+          "accept_city_site_confirmation");
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
 
   if (phase == kWaitingForCapitalConfirmation) {
     if (g_ModalViewStack.IsEmpty()) {
-      scenario.WaitForScenarioTick("\"capital-site confirmation did not become active\"");
+      scenario.AwaitUiChange("capital-site confirmation did not become active");
       return kRuntimeFlowRunning;
     }
     TWindow* modal = g_ModalViewStack.GetHead();
@@ -186,13 +197,14 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
     }
     run.CapitalConfirmationUiSnapshot() = CaptureRuntimeUiSnapshot(0x3b9, modal);
     RecordHandledModal(run, "city_site_confirmation");
-    if (!RuntimeUiDriver::ActivateControlSemantically(modal, kControlTagOkay)) {
+    if (!RuntimeUiDriver::Activate(
+            modal, RuntimeControlSelector(kControlTagOkay, RUNTIME_CLASS(TControl)))) {
       scenario.FailScenario("\"capital-site confirmation okay control is missing\"");
       return kRuntimeFlowRunning;
     }
     Enter(scenario, kWaitingForCombinedMap, "waiting_for_combined_map",
           "accept_city_site_confirmation");
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
 
@@ -204,7 +216,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
                                    ? static_cast<TMapUberPicture*>(mainView)
                                    : 0;
     if (g_pViewMgr->currentTurnEventCode != 0x7dd || mapView == 0 || !g_ModalViewStack.IsEmpty()) {
-      scenario.WaitForScenarioTick("\"accepted capital site did not reach the combined map\"");
+      scenario.AwaitUiChange("accepted capital site did not reach the combined map");
       return kRuntimeFlowRunning;
     }
     if (mapView->subview2A8 == 0 ||
@@ -224,7 +236,7 @@ RuntimeFlowStatus StrategicMapEntryFlow::Tick(RuntimeScenario& scenario) {
 
 void StrategicMapEntryFlow::ObserveTurnEvent(RuntimeScenario& scenario, int eventCode) {
   if (phase == kWaitingForCombinedMap && eventCode == 0x7dd) {
-    scenario.RequestScenarioTick();
+    scenario.ContinueAfterAction();
   }
 }
 

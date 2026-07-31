@@ -60,7 +60,6 @@ class RunRequest:
     name: str
     seed: int
     timeout_seconds: float
-    phase_timeout_ms: int
     rerun_seh: bool
     gdb_first: bool
     no_gdb: bool
@@ -194,6 +193,33 @@ def _diagnostic_summary(attempt: AttemptResult) -> JsonObject:
     }
 
 
+def _awaiting_summary(result: JsonObject, host) -> str | None:
+    """One line naming the wait the run ended on, or None if it was not waiting.
+
+    Prefers the result file (written at Finish) over the heartbeat, since a scenario that
+    failed while a wait was armed records the same object there. Reads as
+    `expression @ source [observations]` so a stall report is actionable without opening
+    the run bundle.
+    """
+    await_state = result.get("await")
+    if isinstance(await_state, dict):
+        expression = await_state.get("expression")
+        source = await_state.get("source")
+        observations = await_state.get("observations")
+    else:
+        expression = host.awaiting
+        source = host.awaiting_source
+        observations = host.awaiting_observations
+    if not expression:
+        return None
+    text = str(expression)
+    if source:
+        text += f" @ {source}"
+    if observations:
+        text += f" [{observations}]"
+    return text
+
+
 def _result_summary(result: JsonObject, attempts: list[AttemptResult]) -> JsonObject:
     primary = attempts[0]
     return {
@@ -201,6 +227,7 @@ def _result_summary(result: JsonObject, attempts: list[AttemptResult]) -> JsonOb
         "phase": result.get("phase") or primary.host.phase,
         "classification": primary.host.classification,
         "action": result.get("last_action") or primary.host.action,
+        "awaiting": _awaiting_summary(result, primary.host),
         "artifact_path": str(primary.run_dir),
         "primary_failure": result.get("failure"),
         "assertion_id": result.get("assertion_id"),
@@ -223,6 +250,7 @@ def format_console_summary(result: JsonObject) -> str:
         f"phase={summary.get('phase') or 'unknown'} "
         f"classification={summary.get('classification') or 'none'} "
         f"action={summary.get('action') or 'none'} "
+        f"awaiting={summary.get('awaiting') or 'none'} "
         f"assertion={summary.get('assertion_id') or 'none'} "
         f"expectation={summary.get('expectation_outcome') or 'none'} "
         f"artifacts={summary.get('artifact_path') or 'none'} "
@@ -250,6 +278,7 @@ class RuntimeRunner:
             "phase": None,
             "classification": None,
             "action": None,
+            "awaiting": None,
             "artifact_path": str(self.result_dir / f"{result['name']}.json"),
             "primary_failure": result.get("failure"),
             "assertion_id": result.get("assertion_id"),
@@ -311,7 +340,6 @@ class RuntimeRunner:
             run_dir=run_dir,
             seed=request.seed,
             timeout_seconds=request.timeout_seconds,
-            phase_timeout_ms=request.phase_timeout_ms,
             use_gdb=use_gdb,
             winedebug=winedebug,
             wine_log_name=wine_log_name,

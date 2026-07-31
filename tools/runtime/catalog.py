@@ -60,6 +60,16 @@ class RuntimeTestSpec:
     fixture: RuntimeFixtureSpec | None = None
     required_oracles: tuple[str, ...] = ("ui",)
     native_snapshots: tuple[str, ...] = ()
+    # Harness policy that used to be a virtual override in every scenario class. The catalog
+    # already owns suites, evidence and oracles; a test's *shape* belongs beside them, not in
+    # the body that is supposed to be nothing but Script().
+    #
+    # record_game_flow: keep the activated turn-event sequence, and fail a single-player run
+    # that enters the multiplayer sync event.
+    # ui_snapshot_events: turn events whose UI tree is captured. C++ constant names, not
+    # numbers -- game/turn_event_codes.h stays the single source of the values.
+    record_game_flow: bool = False
+    ui_snapshot_events: tuple[str, ...] = ()
     expected_failure: ExpectedFailureSpec | None = None
     promotion_suites: tuple[str, ...] = ()
     promotion_order: int | None = None
@@ -89,6 +99,7 @@ TESTS = (
         "self_consistency",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "random_game_introductory_exits_newspaper",
@@ -97,6 +108,7 @@ TESTS = (
         "self_consistency",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "random_game_enters_map",
@@ -105,6 +117,7 @@ TESTS = (
         "self_consistency",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "easy_turns_advance",
@@ -113,6 +126,7 @@ TESTS = (
         "internal_invariant",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "easy_turns_advance_three_times",
@@ -121,6 +135,7 @@ TESTS = (
         "internal_invariant",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "city_screen_opens",
@@ -129,6 +144,8 @@ TESTS = (
         "mac_resource_oracle",
         required_oracles=("ui",),
         native_snapshots=("ui",),
+        record_game_flow=True,
+        ui_snapshot_events=("kTurnEventCityProduction",),
     ),
     RuntimeTestSpec(
         "transport_screen_operates",
@@ -137,6 +154,8 @@ TESTS = (
         "mac_resource_oracle",
         required_oracles=("ui",),
         native_snapshots=("ui",),
+        record_game_flow=True,
+        ui_snapshot_events=("kTurnEventTransport",),
     ),
     RuntimeTestSpec(
         "civilian_recruitment_selection",
@@ -145,6 +164,7 @@ TESTS = (
         "internal_invariant",
         required_oracles=("map",),
         native_snapshots=("map",),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "diplomacy_screen_operates",
@@ -153,6 +173,8 @@ TESTS = (
         "mac_resource_oracle",
         required_oracles=("ui",),
         native_snapshots=("ui",),
+        record_game_flow=True,
+        ui_snapshot_events=("kTurnEventDiplomacyMap",),
     ),
     RuntimeTestSpec(
         "trade_screen_operates",
@@ -161,6 +183,16 @@ TESTS = (
         "mac_resource_oracle",
         required_oracles=("ui",),
         native_snapshots=("ui",),
+        record_game_flow=True,
+        ui_snapshot_events=("kTurnEventTradeOverview",),
+    ),
+    RuntimeTestSpec(
+        "player_buy_order_does_not_sell",
+        "PlayerBuyOnlyTradeTest",
+        ("pr", "full"),
+        "internal_invariant",
+        required_oracles=(),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "map_zoom_toggle_remains_responsive",
@@ -169,6 +201,7 @@ TESTS = (
         "internal_invariant",
         required_oracles=("ui", "map"),
         native_snapshots=("ui", "map"),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "capital_click_opens_army_menu",
@@ -191,6 +224,7 @@ TESTS = (
         "self_consistency",
         required_oracles=("map",),
         native_snapshots=("map",),
+        record_game_flow=True,
     ),
     RuntimeTestSpec(
         "save_stream_checkpoints",
@@ -209,6 +243,7 @@ TESTS = (
         ),
         required_oracles=("map",),
         native_snapshots=("map",),
+        record_game_flow=True,
     ),
 )
 

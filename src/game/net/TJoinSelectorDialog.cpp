@@ -60,7 +60,7 @@ void TJoinSelectorDialog::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0054e8e0
 void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
-                                                     RuntimeSelectionRecord* record) {
+                                                     WNetSelectionRecord* record) {
   TRadioTextCluster* gameControl =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
   gameControl->AssertValid();
@@ -72,11 +72,11 @@ void TJoinSelectorDialog::AddJoinableGameOptionEntry(const char* label,
 }
 
 // FUNCTION: IMPERIALISM 0x0054e970
-RuntimeSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
+WNetSelectionRecord* TJoinSelectorDialog::GetSelectedJoinableGame() {
   TRadioTextCluster* gameControl =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagGame));
   gameControl->AssertValid();
-  return (RuntimeSelectionRecord*)gameControl->selectedTag88;
+  return (WNetSelectionRecord*)gameControl->selectedTag88;
 }
 
 // FUNCTION: IMPERIALISM 0x0054e9a0

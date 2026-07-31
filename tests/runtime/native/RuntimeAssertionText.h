@@ -1,0 +1,108 @@
+#pragma once
+
+#ifndef IMPERIALISM_RUNTIME_TESTS
+#error RuntimeAssertionText is test-only and must not be included in the production build
+#endif
+
+#include "game/mfc.h"
+
+// Failure text for a runtime assertion, with the run context appended automatically.
+//
+// Scenarios used to hand-write both halves of every failure: the prose, and a wsprintfA
+// call formatting the actual values into a fixed char buffer (27 such formats across the
+// suite, with buffers hand-sized from 96 to 256 bytes). Worse, the prose had to be
+// pre-escaped as a JSON fragment because that is what FailScenario consumes, so every
+// call site carried "\"...\"" quoting.
+//
+// These builders replace both. The caller supplies the stringised expression and the two
+// values; the context block -- source location, phase, current turn event, current view
+// class, modal depth -- is filled in from the run, because that is exactly what a reader
+// needs and exactly what nobody remembers to include:
+//
+//   requirement: player->GetTradeOffersFor(kResourceIron) == -1
+//   expected: -1
+//   actual: 0
+//   source: PlayerBuyOnlyTradeTest.cpp:42
+//   phase: close_trade
+//   current event: 0x07dd
+//   current view: TMapUberPicture
+//   modal depth: 0
+//
+// The result is plain text for RuntimeScenario::FailScenarioText, which escapes it once.
+// MSVC500 has no variadic templates and no variadic macros, so value formatting is a
+// fixed overload set; add an overload rather than reaching for a template.
+
+class RuntimeRun;
+
+namespace RuntimeAssertionText {
+
+// A bare requirement with no value pair, e.g. RT_REQUIRE(expr).
+CString Requirement(const RuntimeRun& run, const char* expression, const char* file, int line);
+
+// A requirement over two values. `relation` names the comparison as written ("==", "!=")
+// so the text reads the same way the source does.
+CString RequirementValues(const RuntimeRun& run, const char* expression, const char* relation,
+                          const CString& expected, const CString& actual, const char* file,
+                          int line);
+
+// Free-form failure text with the same context block appended.
+CString Failure(const RuntimeRun& run, const char* text, const char* file, int line);
+
+// A requirement rendered as a JSON string, for RecordAssertion's pre-escaped-fragment
+// contract. Only RT_CHECK needs this; fatal failures go through FailScenarioText.
+CString RequirementJson(const RuntimeRun& run, const char* expression, const char* file, int line);
+
+// A short snake_case identifier derived from free text, for the host-visible phase name and
+// the assertion id (both fixed char buffers: 64 and 96 bytes). "open trade" -> "open_trade".
+// Truncates rather than overflowing, and returns "step" for text with nothing usable in it.
+const char* PhaseSlug(const char* text);
+
+// Renderers for the value pair. Overloads, not a template: MSVC500's template support is
+// not worth spending here, and the set of things a scenario compares is small and known.
+CString Value(int value);
+CString Value(unsigned int value);
+CString Value(short value);
+CString Value(unsigned short value);
+CString Value(long value);
+CString Value(unsigned long value);
+CString Value(bool value);
+CString Value(const void* value);
+CString Value(const char* value);
+CString Value(const CString& value);
+
+} // namespace RuntimeAssertionText
+
+// Single-evaluation comparison for the assertion macros.
+//
+// The macros used to write each operand twice -- once in the comparison, once in
+// `Value(...)` while formatting the failure. Passing assertions were unaffected (the second
+// evaluation sits in the failure branch), which made the defect easy to miss and nasty when
+// it bit: an operand that advances a cursor, consumes a queue or re-reads live UI state got
+// evaluated a second time *after* failing, so the reported values were not the values that
+// failed the comparison. The diagnosis lied exactly when someone needed it.
+//
+// These take both operands by reference, so the macro mentions each exactly once and the
+// failure text is built from the very objects that were compared. Templates rather than the
+// Value() overload set above: the point here is to avoid naming the operand type at all, and
+// the bodies only ever call an overload that already exists.
+template <class Left, class Right>
+bool RuntimeCompareEqual(const Left& left, const Right& right, CString* leftText,
+                         CString* rightText) {
+  if (left == right) {
+    return true;
+  }
+  *leftText = RuntimeAssertionText::Value(left);
+  *rightText = RuntimeAssertionText::Value(right);
+  return false;
+}
+
+template <class Left, class Right>
+bool RuntimeCompareUnequal(const Left& left, const Right& right, CString* leftText,
+                           CString* rightText) {
+  if (left != right) {
+    return true;
+  }
+  *leftText = RuntimeAssertionText::Value(left);
+  *rightText = RuntimeAssertionText::Value(right);
+  return false;
+}

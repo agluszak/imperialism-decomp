@@ -74,9 +74,9 @@ void TDealBookPicture::Startup(short startupValue) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x129);
   }
-  markControl->SetState(1, 0);
+  markControl->ViewEnable(1, 0);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 6, this->ResolveControlByTag(kControlTagMark));
-  markControl->SetState(0, 0);
+  markControl->ViewEnable(0, 0);
   TView* tabsControl = this->ResolveControlByTag(kControlTagTabs);
   LoadUiStringByGroupAndIndexToControlObject(0x2741, 7, tabsControl);
 
@@ -104,7 +104,7 @@ void TDealBookPicture::Startup(short startupValue) {
   RECT rtilInval;
   CopyRect(&rtilInval, &rtilBounds);
   this->InvalidateCityDialogRectRegion(&rtilInval, 1);
-  rtilControl->SetEnabled(1, 1);
+  rtilControl->Show(1, 1);
   ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
 
   // 'rocl'/'rocr' resource buttons.
@@ -127,18 +127,18 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
 
   TTradePageBuyView* buyCopy = this->cachedBuyPageView;
   if (static_cast<short>(idx) > buyCopy->pageCount) {
-    buyCopy->SetEnabled(0, 1);
+    buyCopy->Show(0, 1);
   } else {
     buyCopy->ShowPage(static_cast<short>(idx));
-    buyCopy->SetEnabled(1, 0);
+    buyCopy->Show(1, 0);
   }
 
   TTradePageSellView* sellCopy = this->cachedSellPageView;
   if (static_cast<short>(idx) > sellCopy->pageCount) {
-    sellCopy->SetEnabled(0, 1);
+    sellCopy->Show(0, 1);
   } else {
     sellCopy->ShowPage(static_cast<short>(idx));
-    sellCopy->SetEnabled(1, 0);
+    sellCopy->Show(1, 0);
   }
 
   TView* leftCtrl = this->ResolveControlByTag(kControlTagLcor);
@@ -153,24 +153,24 @@ void TDealBookPicture::ShowPage(int pageIndex, short nationId) {
   }
 
   if (this->currentPageIndex != 0) {
-    leftCtrl->SetEnabled(1, 1);
-    leftCtrl->SetState(1, 1);
+    leftCtrl->Show(1, 1);
+    leftCtrl->ViewEnable(1, 1);
     g_pSimMgr->GetString(0x2730, 0xb, &label);
   } else {
-    leftCtrl->SetEnabled(0, 1);
-    leftCtrl->SetState(0, 1);
+    leftCtrl->Show(0, 1);
+    leftCtrl->ViewEnable(0, 1);
     label = g_szEmptyString;
   }
   SetControlHoverHelpTextAltEntry(label, leftCtrl);
 
   short refRow = this->lastPageIndex;
   if (this->currentPageIndex != refRow && refRow != 0) {
-    rightCtrl->SetEnabled(1, 1);
-    rightCtrl->SetState(1, 1);
+    rightCtrl->Show(1, 1);
+    rightCtrl->ViewEnable(1, 1);
     g_pSimMgr->GetString(0x2730, 0xa, &label);
   } else {
-    rightCtrl->SetEnabled(0, 1);
-    rightCtrl->SetState(0, 1);
+    rightCtrl->Show(0, 1);
+    rightCtrl->ViewEnable(0, 1);
     label = g_szEmptyString;
   }
   SetControlHoverHelpTextAltEntry(label, rightCtrl);
@@ -299,13 +299,9 @@ void TDealBookPicture::CalculatePages() {
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId >= 0x2af8) {
-    // The real table is much larger than the declared 8-entry span (the original indexes
-    // it with commandId + production-order-tech-unlocked*17, which can run far past 8) -- the
-    // pointer arithmetic still lands on the correct address either way since C++ doesn't
-    // bounds-check here, matching the original's raw displacement + computed offset.
-    int categoryTableIndex =
-        commandId + g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] * 17;
-    short categorySlot = g_offerDeskSelectionIndexTable_00668568[categoryTableIndex];
+    short tabIndex = static_cast<short>(commandId - 0x2af8);
+    short categorySlot = g_tradeBookCategoryByTabAndTechState_0066DB58
+        [g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId]][tabIndex];
     if (categorySlot != -1) {
       sellPageView->RebuildNationOfferRowsForCategory(categorySlot);
       buyPageView->RebuildNationBidRowsForCategory(categorySlot);
@@ -345,10 +341,16 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
 
 // FUNCTION: IMPERIALISM 0x005bc0d0
 void TDealBookPicture::SwitchPages() {
+  TPageView* hiddenPage1;
+  TPageView* hiddenPage2;
+  TTradePageSellView* visibleSellPage;
+  TTradePageBuyView* visibleBuyPage;
+  short pictureResourceId;
+
   if (!alternatePageMode) {
     TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
-    markControl->SetState(1, 0);
+    markControl->ViewEnable(1, 0);
 
     TStaticText* rtilControl = static_cast<TStaticText*>(ResolveControlByTag(kControlTagRtil));
     rtilControl->AssertValid();
@@ -366,9 +368,15 @@ void TDealBookPicture::SwitchPages() {
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+
+    hiddenPage1 = soldTradesView;
+    hiddenPage2 = boughtTradesView;
+    visibleSellPage = sellPageView;
+    visibleBuyPage = buyPageView;
+    pictureResourceId = 0x2263;
   } else {
-    sellPageView->RebuildNationOfferRowsForCategory(-1);
     buyPageView->RebuildNationBidRowsForCategory(-1);
+    sellPageView->RebuildNationOfferRowsForCategory(-1);
 
     TView* tabsControl = ResolveControlByTag(kControlTagTabs);
     if (tabsControl == nullptr) {
@@ -392,35 +400,36 @@ void TDealBookPicture::SwitchPages() {
 
     TView* markControl = ResolveControlByTag(kControlTagMark);
     markControl->AssertValid();
-    markControl->SetState(0, 0);
+    markControl->ViewEnable(0, 0);
 
     TView* tabsControl2 = ResolveControlByTag(kControlTagTabs);
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
+
+    hiddenPage1 = buyPageView;
+    hiddenPage2 = sellPageView;
+    visibleSellPage = soldTradesView;
+    visibleBuyPage = boughtTradesView;
+    pictureResourceId = 0x2260;
   }
 
-  // Capture the four commodity sub-views' layouts (the original caches all four distinct
-  // views -- bought/sold trades and the buy/sell pages -- not the buy page twice).
   CPoint captureBuffer1(1000, 1000);
-  boughtTradesView->Locate(captureBuffer1, 1);
+  hiddenPage1->Locate(captureBuffer1, 1);
   CPoint captureBuffer2(1000, 1000);
-  soldTradesView->Locate(captureBuffer2, 1);
+  hiddenPage2->Locate(captureBuffer2, 1);
   CPoint captureBuffer3(0x41, 0x59);
-  sellPageView->Locate(captureBuffer3, 1);
+  visibleSellPage->Locate(captureBuffer3, 1);
   CPoint captureBuffer4(0x13a, 0x59);
-  buyPageView->Locate(captureBuffer4, 1);
+  visibleBuyPage->Locate(captureBuffer4, 1);
 
-  cachedSellPageView = sellPageView;
-  cachedBuyPageView = buyPageView;
-  if (cachedBuyPageView->pageCount < cachedSellPageView->pageCount) {
+  cachedSellPageView = visibleSellPage;
+  cachedBuyPageView = visibleBuyPage;
+  if (cachedBuyPageView->pageCount > cachedSellPageView->pageCount) {
     lastPageIndex = cachedBuyPageView->pageCount - 1;
   } else {
     lastPageIndex = cachedSellPageView->pageCount - 1;
   }
 
-  // Reapply the dialog's own picture and re-run the page selection. boughtTradesView is
-  // a control pointer, not the bitmap id. alternatePageMode flips before the trailing
-  // ShowPage call.
-  SetPictureResourceIdAndRefresh(selectedNationSlot, 1);
+  SetPictureResourceIdAndRefresh(pictureResourceId, 1);
   alternatePageMode = !alternatePageMode;
   ShowPage(0, selectedNationSlot);
 }

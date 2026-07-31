@@ -408,7 +408,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
 
   TEditText* countryControl = static_cast<TEditText*>(ResolveControlByTag(kControlTagCoun));
   countryControl->AssertValid();
-  countryControl->SetEnabled(0, 0);
+  countryControl->Show(0, 0);
 
   TView* settingsPanel = ResolveControlByTag(kControlTagStuf);
   settingsPanel->AssertValid();
@@ -439,7 +439,7 @@ void TSetupRandomMapPicture::MajorTomToGroundControl(unsigned char mode) {
   mapPreview->TakeSatellitePhoto(0);
   mapPreview->EnhancePhoto();
 
-  countryControl->SetEnabled(1, 0);
+  countryControl->Show(1, 0);
   settingsPanel->Locate(visibleSettingsPanelPosition, 0);
   SetPictureResourceIdAndRefresh(0x11bc, true);
   coatView->SetPictureResourceIdAndRefresh(static_cast<short>(selectedNationSlot9A + 0x11c6), true);

@@ -115,6 +115,18 @@ void TDealTabControl::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& p
   }
 }
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+bool TDealTabControl::ActivateRow(short row) {
+  if (row < 0 || row >= tabCount || IsActionable() == 0 || ownerContext == 0) {
+    return false;
+  }
+  selectedRow = row;
+  ownerContext->HandleEvent(selectedRow + 11000, this, 0);
+  PaintOrInvalidateControl(0);
+  return true;
+}
+#endif
+
 // FUNCTION: IMPERIALISM 0x005bcb20
 void TDealTabControl::Free() {
   if (filledRowStrip != 0) {

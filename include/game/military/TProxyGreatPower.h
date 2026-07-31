@@ -13,13 +13,13 @@ public:
   virtual void AddToTreasury(int amount) override; // slot 0x0e 0x540a00
   void SetTradePolicyTo(NationSlot nationSlot,
                         short tradePolicy) override; // slot 0x12 0x540c20
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                     int arg4) override; // slot 0x22 0x540ba0
-  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                    NationSlot targetNationSlot) override; // slot 0x23 0x540ac0
-  virtual bool IsClient() override;                        // slot 0x26 0x5408c0
-  bool IsRemote(void) override;                            // slot 0x28 0x5408e0
-  void AddTurnStartEvent(TTurnStartEvent* event) override; // slot 0x2f 0x540c70
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override; // slot 0x22 0x540ba0
+  void AddOfferFrom(NationSlot sourceNationSlot,
+                    DiplomacyProposalCodeStorage proposalCode) override; // slot 0x23 0x540ac0
+  virtual bool IsClient() const override;                                // slot 0x26 0x5408c0
+  bool IsRemote(void) const override;                                    // slot 0x28 0x5408e0
+  void AddTurnStartEvent(TTurnStartEvent* event) override;               // slot 0x2f 0x540c70
   virtual void
   RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() override;           // slot 0x36 0x540b80
   virtual void DispatchTurnEvent2103WithNationFromRecord() override;           // slot 0x80 0x540aa0

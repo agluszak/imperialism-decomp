@@ -42,9 +42,6 @@ extern TMinor* g_apSecondaryNationStateSlots[36];
 #define g_apNationAuxRuntimeStateSlots (g_apSecondaryNationStateSlots + 7)
 
 extern TGreatPower* g_apNationStates[7];
-// Several retail loops compare their cursor with the immediate one-past address
-// 0x006a438c. It is not a separately allocated pointer object.
-#define g_apNationStates_End g_apNationStates[7]
 } // extern "C"
 
 extern "C" {

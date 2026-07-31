@@ -10,7 +10,6 @@ FIRST_HEARTBEAT_SECONDS = 60.0
 def classify_poll(
     heartbeat: dict | None,
     heartbeat_age_seconds: float | None,
-    no_progress_budget_seconds: float,
     stale_budget_seconds: float = HEARTBEAT_STALE_SECONDS,
     process_age_seconds: float | None = None,
     first_heartbeat_budget_seconds: float = FIRST_HEARTBEAT_SECONDS,
@@ -21,16 +20,6 @@ def classify_poll(
         return None
     if heartbeat_age_seconds > stale_budget_seconds:
         return "heartbeat_stopped"
-    if heartbeat.get("hold"):
-        return None
-    elapsed_ms = heartbeat.get("elapsed_ms")
-    last_progress_ms = heartbeat.get("last_progress_ms")
-    if (
-        isinstance(elapsed_ms, int)
-        and isinstance(last_progress_ms, int)
-        and elapsed_ms - last_progress_ms > no_progress_budget_seconds * 1000.0
-    ):
-        return "pump_alive_no_semantic_progress"
     return None
 
 
@@ -72,7 +61,3 @@ def classify_inferior_exit(
     if exit_code not in {None, 0}:
         return "crash"
     return "exited_without_result"
-
-
-def no_progress_budget_seconds(phase_timeout_ms: int) -> float:
-    return phase_timeout_ms / 1000.0 * 1.5 + HEARTBEAT_STALE_SECONDS

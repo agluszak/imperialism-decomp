@@ -91,6 +91,14 @@ class UiCodegenTests(unittest.TestCase):
             oil_case,
         )
 
+    def test_offer_purchase_control_keeps_windows_style_payload(self) -> None:
+        offer_factory = self.rendered[0x00430C50]
+        offer_case = offer_factory[offer_factory.index("case kTurnEventOfferSheet:") :]
+        purc_start = offer_case.index("TNumberText* node_purc")
+        purc_end = offer_case.index("PopUiResourcePoolNode(0x70757263u", purc_start)
+        purc = offer_case[purc_start:purc_end]
+        self.assertIn("ReplaceUiResourceContextPairBuffer(0, 0x99ccff);", purc)
+
     def test_all_factories_use_the_canonical_semantic_emitter(self) -> None:
         manifest_text = (REPO_ROOT / "config/ui_factory_codegen.yml").read_text()
         self.assertNotIn("emission:", manifest_text)
@@ -241,7 +249,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertIn("new TFloatWindow()", case_text)
         self.assertIn("new TMultiMessagePicture()", case_text)
         self.assertEqual(case_text.count("new TCzechBox()"), 7)
-        self.assertIn("evidence 0x0044e466", case_text)
+        self.assertIn("evidence at 0x0044e466", case_text)
 
     def test_functional_parity_cases_emit_nonempty_mac_trees_with_provenance(self) -> None:
         expected = {

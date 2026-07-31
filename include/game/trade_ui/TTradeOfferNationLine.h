@@ -8,7 +8,8 @@
 class TTradeOfferNationLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TTradeOfferNationLine)
-  virtual ~TTradeOfferNationLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005bcfa0
+  virtual ~TTradeOfferNationLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5bd090
 
   // Set directly (not via a method) by TTradePageSellView::RebuildNationOfferRowsForCategory

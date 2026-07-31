@@ -1,5 +1,6 @@
 #include "RuntimeHarnessCore.h"
 
+#include "RuntimeObservation.h"
 #include "RuntimeRegistry.h"
 
 #include <string.h>
@@ -102,6 +103,44 @@ unsigned long RuntimeProgressState::LastHeartbeatMs() const {
   return lastHeartbeatMs;
 }
 
+RuntimeAwaitState::RuntimeAwaitState() {
+  Clear();
+}
+
+void RuntimeAwaitState::Clear() {
+  observationKinds = kObserveNone;
+  armed = false;
+  expression[0] = 0;
+  source[0] = 0;
+}
+
+void RuntimeAwaitState::Arm(unsigned int kinds, const char* text, const char* file, int line) {
+  observationKinds = kinds;
+  armed = true;
+  lstrcpynA(expression, text != 0 ? text : "", sizeof(expression));
+  if (file != 0) {
+    wsprintfA(source, "%s:%d", RuntimeSourceBasename(file), line);
+  } else {
+    source[0] = 0;
+  }
+}
+
+bool RuntimeAwaitState::IsArmed() const {
+  return armed;
+}
+
+unsigned int RuntimeAwaitState::ObservationKinds() const {
+  return observationKinds;
+}
+
+const char* RuntimeAwaitState::Expression() const {
+  return expression;
+}
+
+const char* RuntimeAwaitState::Source() const {
+  return source;
+}
+
 RuntimeResultAggregate::RuntimeResultAggregate() {
   Reset();
 }
@@ -134,6 +173,105 @@ const char* RuntimeResultAggregate::FirstAssertionId() const {
 
 const char* RuntimeResultAggregate::FirstFailure() const {
   return firstFailure;
+}
+
+const char* RuntimeSourceBasename(const char* path) {
+  if (path == 0) {
+    return "";
+  }
+  const char* name = path;
+  for (const char* cursor = path; *cursor != 0; ++cursor) {
+    // __FILE__ arrives as a Wine path, so both separators have to be honoured.
+    if (*cursor == '\\' || *cursor == '/') {
+      name = cursor + 1;
+    }
+  }
+  return name;
+}
+
+bool DescribeRuntimeObservationMask(unsigned int observationKinds, char* text,
+                                    unsigned long capacity) {
+  struct NamedKind {
+    unsigned int kind;
+    const char* name;
+  };
+  // Order is stable so heartbeat diffs stay readable across runs.
+  static const NamedKind kNames[] = {
+      {kObserveApplicationIdle, "application_idle"},
+      {kObserveMainViewChanged, "main_view_changed"},
+      {kObserveModalPushed, "modal_pushed"},
+      {kObserveModalPopped, "modal_popped"},
+      {kObserveAnimationAdded, "animation_added"},
+      {kObserveAnimationRemoved, "animation_removed"},
+      {kObservePaintCompleted, "paint_completed"},
+      {kObserveInvalidationRequested, "invalidation_requested"},
+      {kObserveTurnEventActivated, "turn_event_activated"},
+      {kObserveUiTreeBuilt, "ui_tree_built"},
+      {kObserveGameStateChanged, "game_state_changed"},
+      {kObserveRuntimeBarrier, "runtime_barrier"},
+  };
+  const int kNameCount = sizeof(kNames) / sizeof(kNames[0]);
+
+  if (capacity < 2) {
+    return false;
+  }
+  text[0] = 0;
+
+  // AwaitUiChange's composite is by far the most common wait; naming it beats listing
+  // eleven flags every time. lstrcpynA would truncate silently, so these fixed names go
+  // through the same capacity check as the assembled list below -- a description that does
+  // not fit must report failure, not a shortened half-truth.
+  const char* fixedName = 0;
+  if (observationKinds == kObserveNone) {
+    fixedName = "none";
+  } else if (observationKinds == kObserveUiStateChanged) {
+    fixedName = "ui_state_changed";
+  } else if (observationKinds == (kObserveUiStateChanged | kObserveApplicationIdle)) {
+    fixedName = "ui_state_changed|application_idle";
+  }
+  if (fixedName != 0) {
+    if (static_cast<unsigned long>(strlen(fixedName)) + 1 > capacity) {
+      lstrcpynA(text, "?", capacity);
+      return false;
+    }
+    lstrcpyA(text, fixedName);
+    return true;
+  }
+
+  unsigned long length = 0;
+  unsigned int remaining = observationKinds;
+  for (int index = 0; index < kNameCount; ++index) {
+    if ((observationKinds & kNames[index].kind) == 0) {
+      continue;
+    }
+    remaining &= ~kNames[index].kind;
+    unsigned long nameLength = static_cast<unsigned long>(strlen(kNames[index].name));
+    unsigned long needed = length + nameLength + (length != 0 ? 1 : 0) + 1;
+    if (needed > capacity) {
+      lstrcpynA(text, "?", capacity);
+      return false;
+    }
+    if (length != 0) {
+      text[length++] = '|';
+    }
+    memcpy(text + length, kNames[index].name, nameLength);
+    length += nameLength;
+    text[length] = 0;
+  }
+  if (remaining != 0) {
+    // An unnamed bit means the enum grew without this table; say so rather than lie.
+    char unknown[24];
+    wsprintfA(unknown, "%s0x%x", length != 0 ? "|" : "", remaining);
+    unsigned long unknownLength = static_cast<unsigned long>(strlen(unknown));
+    if (length + unknownLength + 1 > capacity) {
+      lstrcpynA(text, "?", capacity);
+      return false;
+    }
+    memcpy(text + length, unknown, unknownLength);
+    length += unknownLength;
+    text[length] = 0;
+  }
+  return true;
 }
 
 int FindRuntimeDescriptorIndex(const char* name, const RuntimeTestDescriptor* descriptors,

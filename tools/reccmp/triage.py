@@ -52,6 +52,9 @@ def _side_location(side: dict[str, Any], label: str) -> str:
 
 
 def _format_memory(facts: dict[str, Any]) -> str:
+    value = facts.get("value")
+    if isinstance(value, str) and value:
+        return f"[{value}]"
     symbol = facts.get("symbol")
     base = facts.get("base_register")
     index = facts.get("index_register")

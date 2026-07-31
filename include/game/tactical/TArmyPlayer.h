@@ -11,7 +11,8 @@ class TTacticalUnit;
 class TArmyPlayer : public TTacticalPlayer {
 public:
   DECLARE_DYNCREATE(TArmyPlayer)
-  virtual ~TArmyPlayer() override;                  // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x0059b170
+  virtual ~TArmyPlayer() override {}                // slot 0x01 (scalar deleting destructor)
   virtual void StartBattle() override;              // slot 0x0a 0x59b830
   virtual void AdvanceTacticalTurnPulse() override; // slot 0x0b 0x59e3e0
   virtual void CommitTacticalResultsToSourceUnits(int unused) override;      // slot 0x0d 0x59b3e0
@@ -97,7 +98,7 @@ public:
   // properties into the bit mask consumed by the tactical action selector.
   unsigned int BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenceTileIndex,
                                                         TTacticalUnit* unit); // 0x59e8a0
-  // Minimum GetUnitRange among active units in AI states 2 or 4; 1000 if none.
+  // Minimum GetBaseActionPoints among active units in AI states 2 or 4; 1000 if none.
   int GetMinimumActiveUnitRangeForStates2Or4(); // 0x59e9c0
 
   // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-

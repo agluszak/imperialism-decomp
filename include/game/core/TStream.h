@@ -55,7 +55,8 @@ public:
   TStream() {}
 
 public:
-  virtual ~TStream() override;
+  // FUNCTION: IMPERIALISM 0x00488a40
+  virtual ~TStream() override {}
   // Slots 0x14/0x18 (WriteTo/ReadFrom) and 0x20/0x24 (ShallowClone/ShallowFree)
   // are inherited from TObject unchanged; 0x1c (Free) is overridden below.
   void Free() override;                                // 7 (0x1c)  0x00488ab0
@@ -85,7 +86,7 @@ public:
   virtual void WriteByte(unsigned char value);              // 31 (0x7c) 1 byte
   virtual void WriteBoolean(unsigned char value);           // 32 (0x80) 1 byte
   virtual void WriteCharacter(short value);                 // 33 (0x84) 1 byte (the high one)
-  virtual void WriteInteger(int value);                     // 34 (0x88) 2 bytes (MacApp Integer)
+  virtual void WriteInteger(short value);                   // 34 (0x88) 2 bytes (MacApp Integer)
   virtual void WriteLong(int value);                        // 35 (0x8c) 4 bytes
   virtual void WriteVPoint(double value);                   // 36 (0x90) 8 bytes
   virtual void WriteRect(void* data);                       // 37 (0x94) 8 bytes

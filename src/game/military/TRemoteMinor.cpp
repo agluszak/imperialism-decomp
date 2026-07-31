@@ -17,16 +17,15 @@
 IMPLEMENT_DYNCREATE(TRemoteMinor, TRemoteMinor)
 
 // FUNCTION: IMPERIALISM 0x00541c90
-bool TRemoteMinor::IsRemote(void) {
+bool TRemoteMinor::IsRemote(void) const {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x00541cb0
-void TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                                  int multiplier) {
-  (void)resourceIndex;
-  (void)delta;
-  (void)multiplier;
+void TRemoteMinor::PurchaseItem(short resourceKind, short amount, short price) {
+  (void)resourceKind;
+  (void)amount;
+  (void)price;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00541cd0
@@ -35,8 +34,7 @@ void TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIn
 TRemoteMinor::~TRemoteMinor() {}
 
 // FUNCTION: IMPERIALISM 0x00541d90
-void TRemoteMinor::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
-                                                          char* mapCellLabel) {
+void TRemoteMinor::PlopDownCity(short selectedRegion, const char* mapCellLabel) {
   homeTileIndex = selectedRegion;
   CString label(mapCellLabel);
   short cityRecordIndex =

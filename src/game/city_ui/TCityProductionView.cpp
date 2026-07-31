@@ -686,6 +686,20 @@ TBuildingView* TCityProductionView::BuildingViewForRuntimeTest(short buildingSlo
   }
   return buildingViewsAC[buildingSlot];
 }
+
+TTransFocusAnimation*
+TCityProductionView::BuildingActionAnimationForRuntimeTest(short buildingSlot) {
+  short group = buildingSlot == 11 ? 7 : buildingSlot;
+  if (group < 0 || group >= 8) {
+    return 0;
+  }
+  for (short action = 0; action < 3; ++action) {
+    if (buildingActionAnimations12C[group][action] != 0) {
+      return buildingActionAnimations12C[group][action];
+    }
+  }
+  return 0;
+}
 #endif
 
 void TCityProductionView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {

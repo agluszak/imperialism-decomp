@@ -6,7 +6,7 @@
 #include "game/ui_screens/TSimMgr.h"
 
 // FUNCTION: IMPERIALISM 0x00541840
-bool TRemoteGreatPower::IsRemote(void) {
+bool TRemoteGreatPower::IsRemote(void) const {
   return true;
 }
 
@@ -86,8 +86,7 @@ TRemoteGreatPower::~TRemoteGreatPower() {}
 IMPLEMENT_DYNCREATE(TRemoteGreatPower, TGreatPower)
 
 // FUNCTION: IMPERIALISM 0x00541b40
-void TRemoteGreatPower::SetNationSelectedRegionAndMapCellLabel(short selectedRegion,
-                                                               char* mapCellLabel) {
+void TRemoteGreatPower::PlopDownCity(short selectedRegion, const char* mapCellLabel) {
   homeTileIndex = selectedRegion;
   CString label(mapCellLabel);
   short cityRecordIndex =

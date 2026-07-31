@@ -62,7 +62,7 @@ void THQButton::HiliteState(unsigned char enabledState, unsigned char refreshNow
 void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
     if (controlState64 == 0) {
-      IsSelected(1, 1);
+      SetState(1, 1);
     }
     TControl::DoEvent(commandId, sourceHandler, event);
     return;
@@ -72,32 +72,30 @@ void THQButton::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* eve
       TControl::DoEvent(commandId, sourceHandler, event);
       return;
     }
-    IsSelected(0, 1);
+    SetState(0, 1);
     return;
   }
-  IsSelected(1, 1);
+  SetState(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b890
-bool THQButton::IsSelected(short value, bool refreshNow) {
+void THQButton::SetState(unsigned char value, unsigned char refreshNow) {
   if (IsEnabled()) {
-    HiliteState(value != 0, refreshNow);
+    HiliteState(value, refreshNow);
   }
-  return controlState64 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
 void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
+  char enabledState = selectionState != 2;
   this->selectionState = selectionState;
   controlState64 = 0;
-  short bitmapId;
   if (selectionState == 0) {
-    bitmapId = normalBitmapId;
+    SetPictureResourceIdAndRefresh(normalBitmapId, true);
   } else if (selectionState == 1) {
-    bitmapId = selectedBitmapId;
+    SetPictureResourceIdAndRefresh(selectedBitmapId, true);
   } else {
-    bitmapId = unavailableBitmapId;
+    SetPictureResourceIdAndRefresh(unavailableBitmapId, true);
   }
-  SetPictureResourceIdAndRefresh(bitmapId, true);
-  SetState(selectionState != 2 ? 1 : 0, false);
+  ViewEnable(enabledState, false);
 }

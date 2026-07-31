@@ -102,6 +102,7 @@ module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by addr
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
 module|tools.ghidra.fix_function_bounds|just:fix-function-bounds|Re-bound existing degenerate 1-byte Ghidra functions in place
+module|tools.ghidra.fix_packed_storage|just:fix-packed-storage|Clear custom PACKED parameter storage a function's own stack purge contradicts
 module|tools.ghidra.create_switch_table|just:create-switch-table|Define a computed-jump switch table and references in the Ghidra DB
 module|tools.ghidra.demote_functions|just:demote-functions|Demote case-body pseudo-functions to labels so dispatchers can reabsorb them
 module|tools.ghidra.delete_labels|just:delete-labels|Delete stale user labels that poison reccmp operand rendering
@@ -132,6 +133,7 @@ module|tools.binary.gen_builder_cpp|just:gen-builder|Compact-vocabulary C++ draf
 module|tools.binary.alloc_audit|just:alloc-audit|Audit new-vs-::new spellings against original allocator calls
 module|tools.reccmp.triage|just:triage|Asm-diff mismatch classifier (bucket + suggested action)
 module|tools.reccmp.stackcmp_triage|just:stackcmp-triage|Batch stackcmp over near-match functions
+module|tools.reccmp.semantic_sweep|just:sweep|Behavioural-divergence sweep joining reccmp verdicts with call contracts
 module|tools.ghidra.func_sig|dependency:tools.ghidra.query_registry|func-sig query command (cc/params/RET-imm)
 module|tools.ghidra.field_xrefs|dependency:tools.ghidra.query_registry|field-xrefs query command (this+offset accesses per class)
 module|tools.ghidra.string_refs_oracle|dependency:tools.ghidra.query_registry|string-oracle query command (self-naming port targets)
@@ -168,3 +170,9 @@ module|tools.workflow.serde_audit|just:serde-audit|Save-file byte-desync audit: 
 module|tools.ghidra.body_integrity|just:body-integrity-audit|Read-only Ghidra body-integrity audit: body holes, labels at hole starts, fallthrough into unowned/foreign code, entries inside a body, curated-size disagreement; --strict fails on hard violations
 module|tools.ghidra.inventory_drop|just:inventory-drop|Drop inventory rows whose Ghidra entity is gone; verifies each address against the live DB (no function, no label) and against source markers before removing
 module|tools.semantic_calls|just:semantic-gate-update|Build and cache the recomp Ghidra Program, compare paired manual functions through high-p-code call contracts, emit structured evidence, and enforce the semantic ratchet
+module|tools.runtime.source_policy|just:runtime-source-policy-gate|Reject coordinate mouse injection, timer waits, polling APIs, and unexplained literal points in native runtime scenario sources
+module|tools.runtime.incremental_build|just:runtime-dev|Runtime-test inner loop: regenerate only the stale registry, then BUILD_ONLY docker build
+module|tools.runtime.tree|just:runtime-tree|Print the UI tree a runtime test last saw, with per-node event/actionable state and selector paths
+module|tools.runtime.script_debt|just:runtime-script-debt-gate|Ban control-tree mechanics in native runtime scenario bodies; every scenario is a linear script
+module|tools.runtime.scaffold|just:runtime-new|Scaffold a new runtime test: source skeleton plus its catalog entry
+module|tools.workflow.protothread_probe|just:protothread-probe|Ask MSVC500 whether the linear-script switch/case __LINE__ protothread compiles and resumes

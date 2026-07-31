@@ -116,6 +116,11 @@ triage *args:
 stackcmp-triage *args:
   uv run python -m tools.reccmp.stackcmp_triage --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
 
+[doc('Mass behavioural-divergence sweep: join reccmp verdicts with call-contract verdicts, rank by defect class')]
+[group('compare')]
+sweep *args:
+  uv run python -m tools.reccmp.semantic_sweep --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
+
 [group('compare')]
 stats *args:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled {{args}}

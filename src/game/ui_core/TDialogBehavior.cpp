@@ -13,6 +13,10 @@
 #include "game/ui_core/CMcWindow.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#endif
 
 // SYNTHETIC: IMPERIALISM 0x00487300
 // TDialogBehavior::CreateObject
@@ -30,8 +34,6 @@ TDialogBehavior::TDialogBehavior()
 
 // SYNTHETIC: IMPERIALISM 0x004873b0
 // TDialogBehavior::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004873e0
-TDialogBehavior::~TDialogBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x00487400
 void TDialogBehavior::SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB) {
@@ -118,6 +120,12 @@ void TDialogBehavior::PoseModally() {
   dismissPending = 0;
   armedCommandCode = kControlTagSpSpSpSp;
   nativeWindow->EnableWindow(1);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  // The modal is actionable only after its dismissal state has been reset. Posting the
+  // observation here guarantees that a semantic activation runs inside RunModalLoop,
+  // never during dialog construction before the loop is armed.
+  RuntimeTestDriver::ObserveDeferred(kObserveModalPushed);
+#endif
   nativeWindow->RunModalLoop(0);
 
   if (wasInteractive != 0) {

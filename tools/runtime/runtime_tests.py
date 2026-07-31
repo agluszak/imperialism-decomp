@@ -33,7 +33,6 @@ def run_test(
         name=args.name,
         seed=getattr(args, "seed", 1),
         timeout_seconds=getattr(args, "timeout", 300.0),
-        phase_timeout_ms=getattr(args, "phase_timeout_ms", 60_000),
         rerun_seh=getattr(args, "rerun_seh", False),
         gdb_first=getattr(args, "gdb", False),
         no_gdb=getattr(args, "no_gdb", False),

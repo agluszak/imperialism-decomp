@@ -578,7 +578,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
       static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(kControlTag1or2));
   choiceCluster->AssertValid();
   if (firstChoice != 0) {
-    choiceCluster->SetEnabled(1, 0);
+    choiceCluster->Show(1, 0);
     choiceCluster->frameThemeCode90 = 0x2b6b;
     choiceCluster->itemInset92 = 2;
 
@@ -605,8 +605,8 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   if (showCancel != 0) {
     TControl* cancel = static_cast<TControl*>(dialog->ResolveControlByTag(kControlTagCanc));
     cancel->AssertValid();
-    cancel->SetEnabled(1, 0);
-    cancel->SetState(1, 0);
+    cancel->Show(1, 0);
+    cancel->ViewEnable(1, 0);
   }
 
   int resultTag = dialog->PoseModally();

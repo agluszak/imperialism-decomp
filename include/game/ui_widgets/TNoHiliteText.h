@@ -9,7 +9,6 @@
 class TNoHiliteText : public TStaticText {
 public:
   DECLARE_DYNCREATE(TNoHiliteText)
-  virtual ~TNoHiliteText() override; // slot 0x01 (scalar deleting destructor)
 
   TNoHiliteText();
 };

@@ -89,11 +89,8 @@ public:
   // task-force/map-order entry passed by GiveOrders (taskForce20).
   virtual void GiveActionOrders(TTaskForce* mapOrderEntry); // slot 0x27 0x5354c0
   // Returns the best neighbor port zone for the current nation (delegates to
-  // missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
-  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
-  // TControlSeaZoneMission::GetReplacementSlot48 consumes the caller's result, so this
-  // could not stay void (confirmed by 0x538900's disassembly storing EAX back into
-  // resolvedPortZone).
+  // missionTargetZone->GetSafestNearbyZoneFor); every override
+  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*.
   virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(TZone* location); // slot 0x29 0x5371d0
@@ -105,6 +102,10 @@ public:
   // Mac: CombineForce(TZone*, TTaskForce*&). Reuses or creates the task force for
   // `location`, then moves every matching mission order into it.
   void CombineForce(TZone* location, TTaskForce*& taskForce); // 0x536d60
+
+  // Dead sibling of AccumulateNavyOrderCategoryVectorWithScale: per-ship accumulation
+  // with a distance-decayed, sign-selected weight. 0x537b20.
+  void AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector, char positive);
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);

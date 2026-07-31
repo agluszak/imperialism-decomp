@@ -24,7 +24,7 @@ class RuntimeFlow {
 public:
   virtual ~RuntimeFlow() {}
   virtual void Start(RuntimeScenario& scenario) = 0;
-  virtual RuntimeFlowStatus Tick(RuntimeScenario& scenario) = 0;
+  virtual RuntimeFlowStatus Advance(RuntimeScenario& scenario) = 0;
   virtual void ObserveTurnEvent(RuntimeScenario&, int) {}
   virtual RuntimeFlowCheckpoint Checkpoint() const = 0;
   virtual void ContinueFromCheckpoint() = 0;

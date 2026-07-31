@@ -101,9 +101,6 @@ TTacticalBattle::TTacticalBattle() {
 
 // SYNTHETIC: IMPERIALISM 0x0059f7a0
 // TTacticalBattle::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x0059f7d0
-TTacticalBattle::~TTacticalBattle() {}
-
 // Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the
 // battle, tags each side's units (side20 = 0/1) with a random field24 seed and collects
 // them into recordList20, seeds the selection from the +0x18 side, sizes battlefieldColumnCount34 from

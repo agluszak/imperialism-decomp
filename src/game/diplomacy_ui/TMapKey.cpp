@@ -76,7 +76,7 @@ void TMapKey::DoPostCreate(int arg) {
     int offsetXY[2] = {legendX[i] - baseX, static_cast<short>(legendY[i] - baseY - 0xf)};
     legendText->IDeluxeText(this, offsetXY, sizeXY, &zeroRect, &style, -2);
     legendText->UpdateTextEntrySharedStringAndMaybeNotify(&label, 0);
-    legendText->SetEnabled(0, 0);
+    legendText->Show(0, 0);
     legendText->controlTag = kControlTagNam0 + i; // 'nam0'-'nam6'
     legendText->CenterVertically(0);
     legendText->shadowTextColor9C = shadowStyleFlags;

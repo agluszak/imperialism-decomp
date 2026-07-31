@@ -21,8 +21,6 @@ TCityTask::TCityTask() {}
 
 // SYNTHETIC: IMPERIALISM 0x005add40
 // TCityTask::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005add70
-TCityTask::~TCityTask() {}
 
 // FUNCTION: IMPERIALISM 0x005add90
 void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {

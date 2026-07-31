@@ -10,9 +10,6 @@ IMPLEMENT_DYNCREATE(TTask, TObject)
 
 // SYNTHETIC: IMPERIALISM 0x005adbb0
 // TTask::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005adbe0
-TTask::~TTask() {}
-
 // FUNCTION: IMPERIALISM 0x005adc30
 bool TTask::Tick(TSortedList*) {
   return --remainingAttempts == 0;

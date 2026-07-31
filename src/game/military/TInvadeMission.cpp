@@ -154,7 +154,7 @@ void TInvadeMission::CalculateNeeds() {
 
 // FUNCTION: IMPERIALISM 0x0053f640
 void TInvadeMission::WriteTo(TStream* stream) {
-  TAttackProvinceMission::WriteTo(stream);
+  TArmyMission::WriteTo(stream);
   stream->WriteBytes(&targetProvince30, 2);
   stream->WriteBytes(&amassingProvince32, 2);
   // The original dereferences beachhead34 unguarded (0x53f668); ReadFrom always
@@ -343,18 +343,18 @@ int TInvadeMission::AccumulateLack(int* accumulatedLack, unsigned char includeEx
 
 // FUNCTION: IMPERIALISM 0x0053fdc0
 char TInvadeMission::TryResolveTargetTerrainClass() {
-  presentLocation14 = static_cast<short>(0xffff);
+  presentLocation14 = -1;
   if (TAttackProvinceMission::TryResolveTargetTerrainClass() != 0) {
-    presentLocation14 = static_cast<short>(0xffff);
+    presentLocation14 = -1;
     return 0;
   }
-  presentLocation14 = static_cast<short>(
-      g_apTerrainTypeDescriptorTable[nationId04]->GetHomeRegionCityRecordIndex());
+  presentLocation14 =
+      static_cast<short>(g_apTerrainTypeDescriptorTable[nationId04]->GetCapitolProvince());
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fe10
 TMission* TInvadeMission::GetReplacementSlot48() {
-  presentLocation14 = static_cast<short>(0xffff);
+  presentLocation14 = -1;
   return TAttackProvinceMission::GetReplacementSlot48();
 }

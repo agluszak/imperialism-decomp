@@ -47,8 +47,6 @@ TDefenseMinister::TDefenseMinister() : TMinister() {}
 
 // SYNTHETIC: IMPERIALISM 0x004ec110
 // TDefenseMinister::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004ec140
-TDefenseMinister::~TDefenseMinister() {}
 
 // FUNCTION: IMPERIALISM 0x004ec160
 void TDefenseMinister::InitializeBaseOrderArrayMetrics(TGreatPower* owner) {

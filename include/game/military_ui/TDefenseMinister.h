@@ -7,7 +7,8 @@ class TLongintList;
 // VTABLE: IMPERIALISM 0x006549b0
 class TDefenseMinister : public TMinister {
 public:
-  virtual ~TDefenseMinister() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004ec140
+  virtual ~TDefenseMinister() override {} // slot 0x01 (scalar deleting destructor)
   // slot 0x0a (byte 0x28) GetRankingCriterionForGP overridden below (body 0x4ec3d0)
   // slots 0x0b-0x11 inherited from TMinister unchanged
   TDefenseMinister();

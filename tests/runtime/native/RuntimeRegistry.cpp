@@ -1,7 +1,14 @@
 #include "RuntimeRegistry.h"
 
 #include "RuntimeHarnessCore.h"
-#include "scenarios/RuntimeScenarios.h"
+
+// The generated descriptor names turn events by their C++ constant, so the numbers
+// stay in one place rather than being duplicated into the catalog.
+#include "game/turn_event_codes.h"
+
+// Both generated from tools/runtime/catalog.py by generate_native_registry.py, so a test's
+// registered name and its factory declaration cannot drift apart.
+#include "RuntimeScenarioFactories.inc"
 
 namespace {
 

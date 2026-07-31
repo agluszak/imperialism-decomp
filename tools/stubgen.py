@@ -74,7 +74,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--annotation-kind",
-        default="FUNCTION",
+        default="STUB",
         choices=("STUB", "FUNCTION", "none"),
         help=(
             "Annotation marker to emit for generated stubs; 'none' emits no reccmp "
@@ -123,7 +123,16 @@ def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
         "BuildUiTextStyleDescriptor",
     }
     force_prototype = ident in whitelist or function_name_from_prototype(prototype) in whitelist
-    if (use_prototypes or force_prototype) and prototype and prototype_usable(prototype):
+    simple_void_prototype = re.fullmatch(
+        r"void(?:\s+__(?:cdecl|stdcall|fastcall))?\s+"
+        r"[A-Za-z_][A-Za-z0-9_]*\s*\(\s*(?:void)?\s*\)",
+        prototype,
+    )
+    if (
+        (use_prototypes or force_prototype or simple_void_prototype)
+        and prototype
+        and prototype_usable(prototype)
+    ):
         candidate = prototype.rstrip().rstrip(";")
         # Replace trailing function-name token if present.
         candidate = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\s*\(", "{}(".format(ident), candidate, count=1)
@@ -259,7 +268,7 @@ def write_stubs(
     repo_root: Path,
     output_dir: Path,
     target: str = "IMPERIALISM",
-    annotation_kind: str = "FUNCTION",
+    annotation_kind: str = "STUB",
     chunk_prefix: str = "stubs_part",
     max_functions_per_file: int = 500,
     use_prototypes: bool = False,

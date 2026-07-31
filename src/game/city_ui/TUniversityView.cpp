@@ -65,26 +65,26 @@ void TUniversityView::DoStartup() {
     TControl* selection =
         static_cast<TControl*>(ResolveControlByTag(kControlTagCiv0 + category)); // 'civ0'+category
     selection->AssertValid();
-    selection->SetEnabled(available, 1);
-    selection->SetState(available, 0);
+    selection->Show(available, 1);
+    selection->ViewEnable(available, 0);
 
     TControl* row =
         static_cast<TControl*>(ResolveControlByTag(kControlTagClu0 + category)); // 'clu0'+category
     row->AssertValid();
-    row->SetEnabled(available, 1);
+    row->Show(available, 1);
     if (!available) {
       TControl* plus = static_cast<TControl*>(row->ResolveControlByTag(kControlTagPlus)); // 'plus'
       plus->AssertValid();
-      plus->SetState(0, 0);
+      plus->ViewEnable(0, 0);
       TControl* minus = static_cast<TControl*>(row->ResolveControlByTag(kControlTagMinu)); // 'minu'
       minus->AssertValid();
-      minus->SetState(0, 0);
+      minus->ViewEnable(0, 0);
     } else {
       TUnitOrder* order = city94->buildOrderSlots[category + 9];
       TNumberText* quantity =
           static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
-      quantity->SetState(0, 0);
+      quantity->ViewEnable(0, 0);
       quantity->InstallTextStyle(style.desc, 1);
       quantity->SetControlValue(order->quantity, 1);
     }
@@ -121,7 +121,7 @@ void TUniversityView::DoStartup() {
     label->AssertValid();
     label->InstallTextStyle(style.desc, 1);
     label->SetTextFromStringResource(0x2723, static_cast<short>(0xe + requirementLabelIndex), 1);
-    label->SetEnabled(0, 1);
+    label->Show(0, 1);
     label->SetTextAlignmentAndMaybeRefresh(1, 0);
   }
 
@@ -205,12 +205,12 @@ void TUniversityView::SetUnit(short recruitmentCategory) {
     for (level = 0; level < highestRequirementLevel; ++level) {
       TView* label = ResolveControlByTag(kControlTagFix2 + level); // 'fix2'+level
       label->AssertValid();
-      label->SetEnabled(1, 1);
+      label->Show(1, 1);
     }
     for (; level < 3; ++level) {
       TView* label = ResolveControlByTag(kControlTagFix2 + level); // 'fix2'+level
       label->AssertValid();
-      label->SetEnabled(0, 1);
+      label->Show(0, 1);
     }
   }
 }

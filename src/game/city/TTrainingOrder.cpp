@@ -16,8 +16,6 @@ IMPLEMENT_DYNCREATE(TTrainingOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b6ad0
 // TTrainingOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b6b00
-TTrainingOrder::~TTrainingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b6b20
 void TTrainingOrder::ITrainingOrder(TCity* city, short resourceType) {
@@ -133,7 +131,7 @@ void TTrainingOrder::Produce() {
   if (resourceTypeIndex == 1) {
     population->lowSkillCount04 -= quantity;
     population->mediumSkillCount06 += quantity;
-    quantity = 0;
+    this->quantity = 0;
     return;
   }
 
@@ -146,7 +144,7 @@ void TTrainingOrder::Produce() {
   }
   population->mediumSkillCount06 -= quantity;
   population->highSkillCount08 += quantity;
-  quantity = 0;
+  this->quantity = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b6f00

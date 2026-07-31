@@ -6,9 +6,10 @@
 #include <windows.h>
 
 RuntimeRun::RuntimeRun()
-    : scenario(0), seed(1), phaseTimeoutMs(60000), selectedNationSlot(-1), mainWindowHandle(0),
-      newspaperAdvanced(false), snapshotFlags(0), activatedEventSequence("["), handledModals("["),
-      unexpectedModals("["), faults("["), actionLog("["), assertionFailures("[") {
+    : scenario(0), seed(1), selectedNationSlot(-1), mainWindowHandle(0), newspaperAdvanced(false),
+      snapshotFlags(0), recordsGameFlow(false), uiSnapshotEvents(0), uiSnapshotEventCount(0),
+      activatedEventSequence("["), handledModals("["), unexpectedModals("["), faults("["),
+      actionLog("["), assertionFailures("[") {
   testName[0] = 0;
   resultPath[0] = 0;
   heartbeatPath[0] = 0;
@@ -22,6 +23,29 @@ RuntimeRun::RuntimeRun()
 void RuntimeRun::SetDescriptor(unsigned int flags, const char* kind) {
   snapshotFlags = flags;
   lstrcpynA(evidenceKind, kind, sizeof(evidenceKind));
+}
+
+void RuntimeRun::SetScenarioPolicy(bool records, const int* events, int eventCount) {
+  recordsGameFlow = records;
+  uiSnapshotEvents = events;
+  uiSnapshotEventCount = eventCount;
+}
+
+bool RuntimeRun::RecordsGameFlow() const {
+  return recordsGameFlow;
+}
+
+bool RuntimeRun::CapturesUiTreeAt(int eventCode) const {
+  for (int index = 0; index < uiSnapshotEventCount; ++index) {
+    if (uiSnapshotEvents[index] == eventCode) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool RuntimeRun::CapturesAnyUiTree() const {
+  return uiSnapshotEventCount > 0;
 }
 
 void RuntimeRun::InitializeFromEnvironment() {
@@ -65,20 +89,12 @@ void RuntimeRun::InitializeFromEnvironment() {
   if (length >= sizeof(spinPhase)) {
     spinPhase[0] = 0;
   }
-  char timeoutText[16];
-  length = GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_PHASE_TIMEOUT_MS", timeoutText,
-                                   sizeof(timeoutText));
-  if (length != 0 && length < sizeof(timeoutText)) {
-    unsigned long parsed = strtoul(timeoutText, 0, 10);
-    if (parsed != 0) {
-      phaseTimeoutMs = parsed;
-    }
-  }
 }
 
 void RuntimeRun::StartScenario(RuntimeScenario* value) {
   scenario = value;
   progress.Reset(GetTickCount());
+  awaitState.Clear();
   resultAggregate.Reset();
   selectedNationSlot = -1;
   mainWindowHandle = 0;
@@ -108,10 +124,6 @@ void RuntimeRun::Finish() {
   progress.Finish();
 }
 
-void RuntimeRun::CountTick() {
-  progress.CountTick();
-}
-
 void RuntimeRun::ResetHeartbeat() {
   progress.ResetHeartbeat();
 }
@@ -129,6 +141,14 @@ void RuntimeRun::RecordAction(const char* action) {
   entry.Format("{\"t_ms\": %lu, \"phase\": \"%s\", \"action\": \"%s\"}", ElapsedMs(), PhaseName(),
                action);
   RuntimeJson::AppendArrayItem(actionLog, entry);
+}
+
+RuntimeAwaitState& RuntimeRun::AwaitState() {
+  return awaitState;
+}
+
+const RuntimeAwaitState& RuntimeRun::AwaitState() const {
+  return awaitState;
 }
 
 void RuntimeRun::RecordAssertion(const char* assertionId, const char* failureJson, bool fatal) {
@@ -200,10 +220,6 @@ void RuntimeRun::SetLastHeartbeatMs(unsigned long value) {
 
 const char* RuntimeRun::LastAction() const {
   return progress.LastAction();
-}
-
-unsigned long RuntimeRun::PhaseTimeoutMs() const {
-  return phaseTimeoutMs;
 }
 
 const char* RuntimeRun::ResultPath() const {

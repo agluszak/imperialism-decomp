@@ -3,11 +3,6 @@
 #include "game/mfc.h"
 #include <stdlib.h>
 
-// FUNCTION: IMPERIALISM 0x00429500
-TNumberText::TNumberText() : TEditText() {
-  this->value = 0;
-}
-
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00429530
 // TNumberText::`scalar deleting destructor'

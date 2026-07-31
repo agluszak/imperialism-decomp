@@ -15,8 +15,6 @@ IMPLEMENT_DYNCREATE(TFoodProcessingOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b7e30
 // TFoodProcessingOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b7e60
-TFoodProcessingOrder::~TFoodProcessingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7e80
 void TFoodProcessingOrder::IFoodProcessingOrder(TCity* city) {

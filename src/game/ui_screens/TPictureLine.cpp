@@ -10,8 +10,6 @@ IMPLEMENT_DYNCREATE(TPictureLine, TLineData)
 
 // SYNTHETIC: IMPERIALISM 0x005700a0
 // TPictureLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005700d0
-TPictureLine::~TPictureLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570130
 void TPictureLine::InstallViews(TView* panel, int* offsetLayout) {

@@ -26,7 +26,8 @@ enum ProductionOrderLimitKind {
 class TProductionOrder : public TObject {
 public:
   DECLARE_DYNCREATE(TProductionOrder)
-  virtual ~TProductionOrder() override;            // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b4f50
+  virtual ~TProductionOrder() override {}          // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4b4fe0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4b5060
   virtual void IProductionOrder(TCity* city, short resourceType);      // slot 0x0a 0x4b4f70

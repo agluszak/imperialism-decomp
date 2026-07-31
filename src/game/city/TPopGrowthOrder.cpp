@@ -7,8 +7,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b3080
-TPopGrowthOrder::~TPopGrowthOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b8110
 // TPopGrowthOrder::CreateObject
 

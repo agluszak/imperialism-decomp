@@ -134,7 +134,7 @@ public:
   void GenerateProvinceNames();
   // Builds the set of region classes (Province::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
-  // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then
+  // IsColonyOf, i.e. encodedNationSlot - 200 == nationA), then
   // returns true if nationB (plus its tied minors) owns any region sharing one of those
   // classes.
   virtual bool
@@ -297,14 +297,13 @@ public:
   // stack-cleanup byte count.
   virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
   // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
-  // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedTileIndices42,
+  // SetOwner to update every one of the city's linkedTileIndices42,
   // then updates the city's own owned-region-list membership through TCountry, sets
   // g_pMapContextActionManager's per-nation slot, notifies the new owner
   // (TGreatPower::AddNoticeFrom) unless it's the local player's own turn, and creates a
   // turn-12 event when running in multiplayer-host mode.
-  virtual void
-  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(ProvinceIndexStorage cityRecordIndex,
-                                                         int newNationTag); // slot 0x2e 0x513290
+  virtual void ChangeProvinceOwner(ProvinceIndexStorage cityRecordIndex,
+                                   short newNationTag); // slot 0x2e 0x513290
   // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
@@ -363,8 +362,7 @@ public:
   // -- if the tile carries a town (activeFlags1c & 0x14) and the old owner is a great power
   // (< 7) -- moves that TTown marker from the old owner's townMarkerList to the new owner's,
   // updating TTown::ownerNation.
-  virtual void SetTileOwnerAndInvalidateNeighborState(short regionId,
-                                                      short newNationTag); // slot 0x37 0x5133f0
+  virtual void SetOwner(short regionId, short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
   // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
   // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
@@ -391,8 +389,8 @@ public:
   // Real signature has 3 stack args (RET 0xc), not 1 -- bitmaskIndex/direction forward
   // unchanged into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c); returns 0 if that
   // lookup is 0, else (lookup+0x15)<<6 or (lookup+0x20)<<6 depending on useAltOffset.
-  virtual int MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
-                                                       char useAltOffset); // slot 0x3d 0x517410
+  virtual short MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                         char useAltOffset); // slot 0x3d 0x517410
   // Real signature has 3 stack args (RET 0xc), not 0 -- see body for the exact combination
   // of 3 calls into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c).
   virtual short MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,
@@ -535,7 +533,7 @@ public:
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
   // When allowFallback is set and nationCode is a great power (<=6), also tries each minor
   // nation slot 7..22: if that minor's TCountry entry exists and
-  // IsEncodedNationSlotMinus200Equal(nationCode) holds for it, checks whether the minor's own
+  // IsColonyOf(nationCode) holds for it, checks whether the minor's own
   // slot number is among cityRecordIndex's adjacent owners too.
   bool HasDirectOrFallbackLinkedNodeType(ProvinceIndex cityRecordIndex, int nationCode,
                                          char allowFallback);
@@ -657,9 +655,8 @@ public:
   // InvalidateTile.
   void MarkAdjacentHexOrderDirectionAndSelectTile(int tileIndex, int contextArg, char flag);
 
-  // Resolves cityScoreTable[tileIndex].ownerNationCode00, following one level of
-  // g_apTerrainTypeDescriptorTable[ownerCode]->needLevelByNation[1]'s 100/200-banded
-  // redirect encoding when it is >= 200 (annexation/transfer chain). 0x00514290,
+  // Resolves cityScoreTable[tileIndex].ownerNationCode00 through the owning country's
+  // encodedNationSlot 100/200-band redirect. 0x00514290,
   // __thiscall, one int stack arg.
   short ResolveTileOwnerNationCodeNormalized(int tileIndex);
 
@@ -699,6 +696,10 @@ public:
   TMapMgr();
 };
 ASSERT_SIZE(TMapMgr, 0x28);
+
+// 0x00563360 -- resolves a tile to its owning Province record via the terrain table's
+// cityRecordIndex (null when the tile belongs to no province). Defined in TMapMgr.cpp.
+Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
 // 0x005187f0 -- endian fix-up over the scenario tile-record array read from disk.
 void ByteSwapScenarioTileRecordWords(ScenarioTileDiskRecord* tileRecords);

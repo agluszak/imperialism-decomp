@@ -11,7 +11,8 @@
 class TTacticalPlayer : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalPlayer)
-  virtual ~TTacticalPlayer() override;               // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x0059ae60
+  virtual ~TTacticalPlayer() override {}             // slot 0x01 (scalar deleting destructor)
   virtual void Free() override;                      // slot 0x07 0x59aee0
   virtual void StartBattle();                        // slot 0x0a 0x59ad70
   virtual void AdvanceTacticalTurnPulse();           // slot 0x0b 0x59ad90

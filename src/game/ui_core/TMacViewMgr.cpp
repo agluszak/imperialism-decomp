@@ -843,7 +843,7 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   row->orderSlot88 = orderSlot;
   if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
-    view->SetEnabled(0, 0);
+    view->Show(0, 0);
   }
   short sellCount = g_apNationStates[nationIndex]->GetTradeOffersFor(orderSlot);
   // The clamp branch resets the nation index used by the trailing capacity check below to
@@ -863,21 +863,21 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
   if (sellCount < 0) {
     row->NotifySellValueUnavailable();
     sellControl->ConfigureGoldValueCells(0, 0);
-    sellControl->SetEnabled(0, 1);
+    sellControl->Show(0, 1);
   } else {
     row->NotifySellValueValid();
   }
   if (sellCount > 0) {
     row->NotifySellValueActive();
     sellControl->ConfigureGoldValueCells(sellCount, 0);
-    sellControl->SetEnabled(1, 1);
+    sellControl->Show(1, 1);
     return;
   }
   if (g_apNationStates[effectiveNationIndex]->merchantCapacity != 0) {
     row->NotifySellCapacityAvailable();
   }
   sellControl->ConfigureGoldValueCells(0, 0);
-  sellControl->SetEnabled(0, 1);
+  sellControl->Show(0, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0050be30
@@ -1193,7 +1193,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   // BecameWindowTarget at vtable offset 0x70. Confusing the slot index with the byte
   // offset left every placeholder arrow sprite alive on screen.
   if (needCurrent == 0) {
-    panel->SetEnabled(0, 0);
+    panel->Show(0, 0);
     TControl* leftArrow = ResolveTaggedChildOrFail(panel, kControlTagLeft);
     leftArrow->Free();
     TControl* rightArrow = ResolveTaggedChildOrFail(panel, kControlTagRght);
@@ -1624,7 +1624,7 @@ void TMacViewMgr::DrawStrategicMapUnitIconOverlay(TBitmapSurfaceNode** pDstSurfa
   int dstStrideBytes = static_cast<short>(static_cast<ushort>((*pDstSurface)->stride) & 0x3fff);
   unsigned char* srcRow =
       srcPixels + static_cast<short>(overlaySourceOffset - 0x26 + nVariantRow * 0x26);
-  unsigned char* dstRow = dstPixels + (0x28 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
+  unsigned char* dstRow = dstPixels + (0x26 - nYShift) * dstStrideBytes + static_cast<int>(nDstX);
   int rowsRemaining = 0x1a;
   do {
     int colsRemaining = 0x26;

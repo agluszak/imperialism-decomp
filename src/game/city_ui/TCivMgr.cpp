@@ -487,7 +487,7 @@ bool TCivMgr::CanAssignCivilianOrderToTile(short nTileIndex) {
           (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
         return 1;
       }
-    } else if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->IsEncodedNationSlotMinus200Equal(
+    } else if (g_apTerrainTypeDescriptorTable[tileTerrainClass]->IsColonyOf(
                    entry->ownerNationSlot18) &&
                (entry->orderType != EncodeCivilianUnitKind(kCivilianUnitEngineer))) {
       return 1;

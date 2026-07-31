@@ -20,7 +20,6 @@ TShip* TNavyTacUnit::GetSourceShip() {
 
 // SYNTHETIC: IMPERIALISM 0x0059edb0
 // TNavyTacUnit::~TNavyTacUnit
-TNavyTacUnit::~TNavyTacUnit() {}
 // SYNTHETIC: IMPERIALISM 0x005a6240
 // TNavyTacUnit::CreateObject
 

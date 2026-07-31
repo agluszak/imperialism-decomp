@@ -135,8 +135,9 @@ public:
   void ChangeSelectedActionTopic(int topicIndex);
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
-  bool RuntimeGetNationSelectionPoint(short nationSlot, CPoint* point) const;
+  void ActivateNation(short nationSlot);
   short RuntimeActiveNation() const;
+  short RuntimeRelationshipOverlaySourceNation() const;
   int RuntimeActionTopicIndex() const;
   short RuntimeDrawPolicyIconForNation(short nationSlot);
 #endif

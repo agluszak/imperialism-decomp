@@ -107,7 +107,9 @@ class UiCaseRecipe:
 @dataclass(frozen=True)
 class UiNodeOverride:
     node_id: str
-    enabled: int
+    enabled: int | None
+    style_word: int | None
+    packed_color: int | None
     evidence: str
 
 
@@ -314,18 +316,38 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x}/{raw_node_id}"
                 )
                 override = _mapping(raw_override, override_context)
-                if set(override) != {"enabled", "evidence"}:
+                allowed_override_fields = {"enabled", "style", "evidence"}
+                if set(override) - allowed_override_fields or "evidence" not in override:
                     raise ValueError(
-                        f"{override_context}: expected enabled and evidence"
+                        f"{override_context}: expected enabled and/or style plus evidence"
                     )
                 override_evidence = str(override["evidence"])
-                enabled = int(override["enabled"])
+                enabled = int(override["enabled"]) if "enabled" in override else None
+                style = override.get("style")
+                style_word = None
+                packed_color = None
+                if style is not None:
+                    style_mapping = _mapping(style, f"{override_context}/style")
+                    if set(style_mapping) != {"word", "packed_color"}:
+                        raise ValueError(
+                            f"{override_context}/style: expected word and packed_color"
+                        )
+                    style_word = int(style_mapping["word"])
+                    packed_color = int(style_mapping["packed_color"])
+                if enabled is None and style is None:
+                    raise ValueError(f"{override_context}: expected enabled and/or style")
                 if not override_evidence:
                     raise ValueError(f"{override_context}: evidence is required")
-                if enabled not in (0, 1):
+                if enabled is not None and enabled not in (0, 1):
                     raise ValueError(f"{override_context}: enabled must be 0 or 1")
                 overrides.append(
-                    UiNodeOverride(f"0x{int(raw_node_id):04x}", enabled, override_evidence)
+                    UiNodeOverride(
+                        f"0x{int(raw_node_id):04x}",
+                        enabled,
+                        style_word,
+                        packed_color,
+                        override_evidence,
+                    )
                 )
             if sum((resource is not None, windows_view is not None, bool(rejected))) != 1:
                 raise ValueError(
@@ -597,7 +619,7 @@ def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
                         )
                     ),
                     family=family,
-                    source=f"Windows: evidence 0x{node_evidence:08x}",
+                    source=f"Windows evidence at 0x{node_evidence:08x}",
                     confidence="high",
                 )
             )
@@ -833,7 +855,23 @@ def apply_case_windows_overrides(
         nodes=tuple(
             replace(
                 node,
-                enabled=overrides[node.node_id].enabled,
+                enabled=(
+                    overrides[node.node_id].enabled
+                    if overrides[node.node_id].enabled is not None
+                    else node.enabled
+                ),
+                family=(
+                    replace(
+                        node.family,
+                        style=UiStylePayload(
+                            overrides[node.node_id].style_word,
+                            overrides[node.node_id].packed_color,
+                        ),
+                    )
+                    if overrides[node.node_id].style_word is not None
+                    and overrides[node.node_id].packed_color is not None
+                    else node.family
+                ),
                 source=f"{node.source}; Windows: {overrides[node.node_id].evidence}",
             )
             if node.node_id in overrides

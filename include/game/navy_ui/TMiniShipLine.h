@@ -11,7 +11,8 @@ class TShip;
 class TMiniShipLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TMiniShipLine)
-  virtual ~TMiniShipLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x00569b90
+  virtual ~TMiniShipLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x569c80
 
   // NOOP: verified empty in original 0x00569be3 (no standalone TMiniShipLine::TMiniShipLine body exists: CreateObject 0x00569bb0 inlines this default ctor, calling the TLineData base ctor directly at that site)

@@ -1,22 +1,23 @@
-#include "RuntimeScenario.h"
-#include "flows/RandomGameFlow.h"
+#include "RuntimeScriptBases.h"
+#include "RuntimeScriptMacros.h"
+#include "RuntimeTestFactory.h"
 
 namespace {
 
-class EasyRandomGameTestCase : public RandomGameScenario {
+// A random game on Easy reaches the map without a capital-selection step. The assertion is the
+// arrival itself: EasyMapScriptScenario only starts the script once the flow has reported
+// kRuntimeMapReadyWithoutCapitalSelection, and the base fails the run if event 0x3b8 (the
+// capital-site selector) fires at this difficulty at all.
+class EasyRandomGameTestCase : public EasyMapScriptScenario {
 public:
-  int DifficultyLevel() const override {
-    return 1;
-  }
-  bool RecordsGameFlow() const override {
-    return true;
+protected:
+  void Script() override {
+    RT_BEGIN();
+    RT_PASS();
+    RT_END();
   }
 };
 
-EasyRandomGameTestCase g_test;
-
 } // namespace
 
-RuntimeTestCase* EasyRandomGameTest() {
-  return &g_test;
-}
+RUNTIME_TEST_FACTORY(EasyRandomGameTestCase, EasyRandomGameTest)

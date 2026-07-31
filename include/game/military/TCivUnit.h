@@ -12,7 +12,8 @@
 class TCivUnit : public TUnit {
 public:
   DECLARE_DYNCREATE(TCivUnit)
-  virtual ~TCivUnit() override;                    // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005c2920
+  virtual ~TCivUnit() override {}                  // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5c2b40
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5c2b10
   virtual void MoveTo(short nTileIndex) override;  // slot 0x0a 0x5c2b70

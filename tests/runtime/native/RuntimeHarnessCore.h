@@ -44,6 +44,31 @@ private:
   char lastAction[64];
 };
 
+// What a scenario is currently waiting for. Before this existed, `Await` took a failure
+// description and dropped it, so a stalled run reported only its phase and last action --
+// the reader could see that nothing was happening but not what the scenario expected to
+// happen. Armed on every wait, cleared when the wait is satisfied, and published in both
+// the heartbeat and the result file.
+class RuntimeAwaitState {
+public:
+  RuntimeAwaitState();
+
+  void Clear();
+  void Arm(unsigned int observationKinds, const char* expression, const char* file, int line);
+
+  bool IsArmed() const;
+  unsigned int ObservationKinds() const;
+  const char* Expression() const;
+  // "EndTurnTest.cpp:76" -- basename only, because __FILE__ is an absolute Wine path.
+  const char* Source() const;
+
+private:
+  unsigned int observationKinds;
+  bool armed;
+  char expression[192];
+  char source[96];
+};
+
 class RuntimeResultAggregate {
 public:
   RuntimeResultAggregate();
@@ -65,3 +90,12 @@ int FindRuntimeDescriptorIndex(const char* name, const RuntimeTestDescriptor* de
                                int count);
 bool EscapeRuntimeJsonString(const char* value, char* escaped, unsigned long capacity);
 bool WriteRuntimeBytesAtomically(const char* path, const char* bytes, unsigned long size);
+
+// Render an observation mask as a stable pipe-separated name list, e.g.
+// "paint_completed|game_state_changed". The full composite collapses to
+// "ui_state_changed" so the common case stays readable. Needs 256 bytes for the widest
+// mask; returns false (and writes "?") when the buffer is too small.
+bool DescribeRuntimeObservationMask(unsigned int observationKinds, char* text,
+                                    unsigned long capacity);
+// The file-name component of a path, for turning __FILE__ into a short source location.
+const char* RuntimeSourceBasename(const char* path);

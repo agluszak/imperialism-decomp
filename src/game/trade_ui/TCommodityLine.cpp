@@ -21,8 +21,6 @@ TCommodityLine::TCommodityLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c14f0
 // TCommodityLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005c1520
-TCommodityLine::~TCommodityLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c1540
 void TCommodityLine::ICommodityLine(short rowArg, short colArg, int* bounds, short value) {

@@ -20,8 +20,6 @@
 // destructor chain is trivial, so MSVC collapses the per-level vtable resets to the single
 // base-most write (`mov [ecx], 0x0066fec4; ret` at 0x49fd20). Ghidra mislabeled this address
 // as CreateTOneTimeAnimationInstance; the scalar deleting destructor above calls it.
-// FUNCTION: IMPERIALISM 0x0049fd20
-TOneTimeAnimation::~TOneTimeAnimation() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049fd40
 // TOneTimeAnimation::GetRuntimeClass

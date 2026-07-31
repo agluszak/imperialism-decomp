@@ -399,6 +399,11 @@ void ImperialismApp::RestoreWaitCursorIfStartupBusy() {
 // the vtable slot and the CWinThread base call both prove it is the CWinApp-level override.)
 // FUNCTION: IMPERIALISM 0x00413a20
 BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (RuntimeTestDriver::HandleMessage(pMsg)) {
+    return TRUE;
+  }
+#endif
   RefreshBackdropOnInputMessages(pMsg);
   return CWinThread::PreTranslateMessage(pMsg);
 }

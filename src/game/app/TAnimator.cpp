@@ -11,6 +11,10 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#endif
 // SYNTHETIC: IMPERIALISM 0x004a09f0
 // TAnimator::CreateObject
 
@@ -28,8 +32,6 @@ TAnimator::TAnimator()
 
 // SYNTHETIC: IMPERIALISM 0x004a0ad0
 // TAnimator::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004a0b00
-TAnimator::~TAnimator() {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
 void TAnimator::IAnimator(int idleFrequency) {
@@ -78,6 +80,9 @@ char TAnimator::DoIdle(int action) {
 // FUNCTION: IMPERIALISM 0x004a0d10
 void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
   registryList24->AddTail(animationObject);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTestDriver::ObserveDeferred(kObserveAnimationAdded);
+#endif
 }
 
 // FUNCTION: IMPERIALISM 0x004a0d30
@@ -151,6 +156,9 @@ void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, 
 void TAnimator::FreeUiTransientRegistryPayloads() {
   if (this != 0) {
     registryList24->FreePayloads();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveAnimationRemoved);
+#endif
   }
 }
 
@@ -165,5 +173,8 @@ void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
       registryList24->listState.RemoveAt(pos);
     }
     animation->Free();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveAnimationRemoved);
+#endif
   }
 }
