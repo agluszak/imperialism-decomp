@@ -29,8 +29,9 @@ TBuildingConstructionView::TBuildingConstructionView()
 
 // SYNTHETIC: IMPERIALISM 0x004c9e60
 // TBuildingConstructionView::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004c9e90
-TBuildingConstructionView::~TBuildingConstructionView() {}
+// No own destructor: the original's 0x004c9e90 is an ILT thunk to the base's
+// ~TPicture (0x0048f250), so this class inherits it. The scalar deleting destructor above is what
+// the vtable slot holds.
 
 // FUNCTION: IMPERIALISM 0x004c9eb0
 void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
@@ -87,7 +88,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '1')));
   if (tex1 == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x47b);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x47b);
   }
   tex1->InstallTextStyle(style.desc, 0);
   tex1->SetTextAlignmentAndMaybeRefresh(-2, 0);
@@ -98,7 +99,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '2')));
   if (tex2 == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x481);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x481);
   }
   tex2->InstallTextStyle(style.desc, 0);
   tex2->SetTextAlignmentAndMaybeRefresh(-2, 0);
@@ -117,7 +118,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('n', 'a', 'm', 'e')));
   if (nameCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x493);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x493);
   }
   nameCtrl->InstallTextStyle(style.desc, 0);
   nameCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -129,7 +130,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('c', 'o', 's', 't')));
   if (costCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x49a);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x49a);
   }
   costCtrl->InstallTextStyle(style.desc, 0);
   costCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -160,10 +161,10 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('o', 'r', ' ', ' ')));
   if (orCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x4b7);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4b7);
   }
   if (slot != 0 && slot != 4 && slot != 3) {
-    orCtrl->SetEnabled(0, 0);
+    orCtrl->Show(0, 0);
   } else {
     g_pSimMgr->GetString(0x2738, 0x11, &textBuffer);
     orCtrl->InstallTextStyle(style.desc, 0);
@@ -186,7 +187,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     orBounds.right = offset + width;
     orBounds.bottom = orBounds.top + height;
     orCtrl->ApplyBounds(&orBounds, 0);
-    orCtrl->SetEnabled(1, 0);
+    orCtrl->Show(1, 0);
   }
 
   // 'warn' — warning text, filled in by the eligibility branch below.
@@ -194,7 +195,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('w', 'a', 'r', 'n')));
   if (warnCtrl == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x4d6);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4d6);
   }
 
   bool eligible;
@@ -210,7 +211,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TStaticText* buckCtrl =
         static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('b', 'u', 'c', 'k')));
     buckCtrl->AssertValid();
-    buckCtrl->SetEnabled(1, 0);
+    buckCtrl->Show(1, 0);
     buckCtrl->InstallTextStyle(style.desc, 0);
     buckCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->NumToCurrency(0x1388, &buckCost);
@@ -220,7 +221,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlotsE4[slot + 0x35]);
     if (order == nullptr) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x4e8);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4e8);
     }
     short originalQuantity = order->quantity;
     short buildingType = static_cast<short>(city->GetBuildingType(slot));
@@ -239,11 +240,11 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     warnCtrl->SetTextAlignmentAndMaybeRefresh(1, 0);
     g_pSimMgr->GetString(0x2738, (slot == 0xb) ? 0x16 : 0x17, &textBuffer);
     warnCtrl->SetTextAndMaybeRefresh(&textBuffer, 0);
-    warnCtrl->SetEnabled(1, 0);
-    okButton->SetEnabled(0, 0);
-    okButton->SetState(0, 0);
+    warnCtrl->Show(1, 0);
+    okButton->Show(0, 0);
+    okButton->ViewEnable(0, 0);
   } else {
-    warnCtrl->SetEnabled(0, 0);
+    warnCtrl->Show(0, 0);
     okButton->timingWord92 = 0xbc7;
   }
 }
@@ -255,7 +256,7 @@ void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
         static_cast<TProductionOrder*>(city90->orderSlotsE4[buildingSlotId94 + 0x35]);
     if (order == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUCityViews_00696650, 0x519);
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);
     }
     if (dialogActionTag == kControlTagOkay) { // 'okay'
       short previousBuildingType = static_cast<short>(city90->GetBuildingType(buildingSlotId94));

@@ -1,9 +1,8 @@
 // SeapointStretch / SeaSegmentStretch -- two concrete instantiations of the project-local
 // stretch<T> growable-array family used by the UMapper coastline/region builder.
 //
-// The single vtable slot of each (Add) is the by-value append; it was
-// previously mis-attributed to TMapMaker (SetEnabled/SetState) because Ghidra merged the
-// two adjacent single-slot vtables into TMapMaker's. See sea_geometry.h.
+// The single vtable slot of each (Add) is the by-value append. The two adjacent
+// single-slot vtables are distinct from TMapMaker's. See sea_geometry.h.
 
 #include "game/map/sea_geometry.h"
 

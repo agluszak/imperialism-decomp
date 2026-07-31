@@ -26,11 +26,13 @@ public:
   void Free() override;                    // 7 (0x1c) 0x004ef040
 
   // ORACLE: Mac names TDiplomacyMgr::SetRelationship(short, short, short).
-  virtual void SetRelationship(int sourceNation, int targetNation, int score); // 10 (0x28)
+  virtual void SetRelationship(NationSlot sourceNation, NationSlot targetNation,
+                               short score); // 10 (0x28)
   // ORACLE: Mac names TDiplomacyMgr::SetRelationshipsToMatch(short, short).
-  virtual void SetRelationshipsToMatch(int destinationNation, int sourceNation); // 11 (0x2c)
-  virtual void ApplyDiplomacyInterNationStatesForTurn();                         // 12 (0x30)
-  virtual void SelectPriorityNationIndicesForMinorCapabilityRows();              // 13 (0x34)
+  virtual void SetRelationshipsToMatch(NationSlot destinationNation,
+                                       NationSlot sourceNation);    // 11 (0x2c)
+  virtual void ApplyDiplomacyInterNationStatesForTurn();            // 12 (0x30)
+  virtual void SelectPriorityNationIndicesForMinorCapabilityRows(); // 13 (0x34)
   // Verified RET 4 (one stack byte arg): forceOrMode==2 means "do a full clear" of
   // relationCodeMatrix before rebuilding. Recomputes the two top-ranked nations' scoring
   // arrays against every terrain-descriptor slot, then walks every nation-pair-matrix tile
@@ -49,19 +51,21 @@ public:
   // deliberately garbage (MOVSX AX from a byte, then PUSH EAX) -- only a 16-bit parameter
   // makes that callsite correct.
   virtual bool IsNationPairRelationTurnStampOutOfDate(NationSlot sourceNation,
-                                                      NationSlot targetNation); // 18 (0x48)
-  virtual bool HasAnyWarRelationForNation(int sourceNation);                    // 19 (0x4c)
-  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation);  // 20 (0x50)
-  virtual bool IsSpecialRelationSourceForMinorNationSlot(int nationSlot,
-                                                         int minorNationSlot); // 21 (0x54)
-  virtual bool IsSpecialRelationTargetForMinorNationSlot(int nationSlot,
-                                                         int minorNationSlot); // 22 (0x58)
+                                                      NationSlot targetNation);       // 18 (0x48)
+  virtual bool HasAnyWarRelationForNation(NationSlot sourceNation);                   // 19 (0x4c)
+  virtual bool HasAnyWarRelationTurnStampOutOfDateForNation(NationSlot sourceNation); // 20 (0x50)
+  virtual bool IsSpecialRelationSourceForMinorNationSlot(NationSlot nationSlot,
+                                                         NationSlot minorNationSlot); // 21 (0x54)
+  virtual bool IsSpecialRelationTargetForMinorNationSlot(NationSlot nationSlot,
+                                                         NationSlot minorNationSlot); // 22 (0x58)
   virtual bool
-  ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNation, int targetNation,
+  ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(NationSlot sourceNation,
+                                                           NationSlot targetNation,
                                                            eDipAction action); // 23 (0x5c)
-  virtual bool HasAllianceGuardForNationPair(int sourceNation,
-                                             int targetNation);               // 24 (0x60)
-  virtual bool HasNationPairNeedLevel300(int sourceNation, int targetNation); // 25 (0x64)
+  virtual bool HasAllianceGuardForNationPair(NationSlot sourceNation,
+                                             NationSlot targetNation); // 24 (0x60)
+  virtual bool HasNationPairNeedLevel300(NationSlot sourceNation,
+                                         NationSlot targetNation); // 25 (0x64)
   virtual DiplomacyRelationshipNotch GetRelationshipNotch(NationSlot sourceNation,
                                                           NationSlot targetNation); // 26 (0x68)
   // Load the relation's display name from string group 0x2714 for alliance,
@@ -72,20 +76,22 @@ public:
   virtual DiplomacyRelationshipStorage
   GetNationPairDiplomacyRelationCode(NationSlot sourceNation,
                                      NationSlot targetNation); // 28 (0x70)
-  virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
-                                                  DiplomacyRelationship relationship,
-                                                  int updateMode); // 29 (0x74)
-  virtual void SetNationPairDiplomacyRelationCodeFinal(int sourceNation, int targetNation,
-                                                       DiplomacyRelationship relationship); // 30
+  virtual void SetNationPairDiplomacyRelationCode(NationSlot sourceNation, NationSlot targetNation,
+                                                  DiplomacyRelationshipStorage relationship,
+                                                  unsigned char updateMode); // 29 (0x74)
+  virtual void
+  SetNationPairDiplomacyRelationCodeFinal(NationSlot sourceNation, NationSlot targetNation,
+                                          DiplomacyRelationshipStorage relationship); // 30
   // (0x78)
-  virtual void ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(int sourceNation,
-                                                                    int targetNation,
-                                                                    int updateMode); // 31 (0x7c)
+  virtual void
+  ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(NationSlot sourceNation,
+                                                       NationSlot targetNation,
+                                                       unsigned char updateMode); // 31 (0x7c)
   // ORACLE: Mac names TDiplomacyMgr::InflictWarPenalty(short, short, unsigned char).
-  virtual void InflictWarPenalty(int sourceNation, int targetNation,
-                                 int updateMode); // 32 (0x80)
+  virtual void InflictWarPenalty(NationSlot sourceNation, NationSlot targetNation,
+                                 unsigned char updateMode); // 32 (0x80)
   // ORACLE: Mac names TDiplomacyMgr::IsGreatPower(short).
-  virtual bool IsGreatPower(int nationSlot); // 33 (0x84)
+  virtual bool IsGreatPower(NationSlot nationSlot); // 33 (0x84)
   // Both scalar params are genuinely short: the body reads primaryOnlyFlag as a word
   // and callers push the raw partial register (mov dx, [this+0xc]; push edx).
   // ORACLE: Mac names TDiplomacyMgr::BuildRelationshipList(short, short,
@@ -148,7 +154,7 @@ public:
   TDiplomacyMgr();
   void InitializeTDiplomacyTurnStateManagerDefaults();
   void RebuildCivilianOrderCompatibilityMatrices();
-  void QueueNationPairWarTransition(int sourceNationSlot, int targetNationSlot);
+  void QueueNationPairWarTransition(NationSlot sourceNationSlot, NationSlot targetNationSlot);
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(NationSlot nationSlot);
@@ -161,12 +167,12 @@ public:
   void SetLastDiploEffort(); // 0x4f0590
 
   // 0x4f24a0. Finds the minor nation (among g_apNationAuxRuntimeStateSlots) whose
-  // encodedNationSlot decodes to nationCode via IsEncodedNationSlotMinus200Equal, then
+  // encodedNationSlot decodes to nationCode via IsColonyOf, then
   // rebuilds that minor's relation-matrix row/column against every major power (default
   // standing/propagation) and every other eligible minor (looked up from the other
   // minor's own decoded disposition band when it already has one, else from the
-  // requesting nation's IsPolicyCodeInSpecialNationPolicySet capability check), and
+  // requesting nation's IsInConsortiumWith capability check), and
   // finally notifies every eligible major power via SetTradePolicyTo.
-  void RebuildMinorNationDispositionLookupTables(int nationCode);
+  void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
 };
 ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

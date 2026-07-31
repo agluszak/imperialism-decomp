@@ -25,9 +25,6 @@ TCivUnit::TCivUnit() {
 // SYNTHETIC: IMPERIALISM 0x005c28f0
 // TCivUnit::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x005c2920
-TCivUnit::~TCivUnit() {}
-
 // FUNCTION: IMPERIALISM 0x005c2940
 void TCivUnit::ICivUnit(CivilianUnitKind unitKind, int anchorIndex, int nOrderOwnerNationId) {
   this->RegisterUnitOrderWithOwnerManager(EncodeCivilianUnitKind(unitKind), anchorIndex,

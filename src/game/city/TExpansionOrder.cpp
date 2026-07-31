@@ -17,8 +17,6 @@ IMPLEMENT_DYNCREATE(TExpansionOrder, TItemOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b8fc0
 // TExpansionOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b8ff0
-TExpansionOrder::~TExpansionOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b9010
 void TExpansionOrder::IExpansionOrder(TCity* city, short resourceType, short primaryInputResource,

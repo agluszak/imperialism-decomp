@@ -55,7 +55,7 @@ void TMinorTreatyDialog::StuffValues() {
           g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(majorNationSlot,
                                                                            minorNationSlot),
           0);
-      relationControl->SetState(0, 0);
+      relationControl->ViewEnable(0, 0);
     }
   }
 

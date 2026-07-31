@@ -215,6 +215,45 @@ intermediate flags are consumed. If triage proves such a reduction effective, re
 the natural typed source expression; do not permute operands or split statements to
 chase VC5's chosen load order.
 
+### The semantic call-contract gate reads the ORIGINAL side from the Ghidra DB
+
+`just semantic-gate` compares each manual `FUNCTION`'s high-p-code call contract in the
+two images. The recomp side comes from the PDB; the **original side comes from the
+vendored Ghidra database**, so a row can fail for a defect in the *DB's* prototype rather
+than anything in our source. Two reasons name exactly that:
+
+- `inconclusive`/`local_variable_model` with `in_stack_0000000N` in the diff — the
+  original function has no usable prototype, so its parameter-area reads are unbound
+  stack inputs instead of `parameter` nodes.
+- `inconclusive`/`prototype_arity_asymmetry` — the two sides disagree on a callee's
+  argument count. For a *virtual* callee this is usually the same root cause one level
+  down: with the receiver untyped, the dispatch decompiles as
+  `(**(code **)(*in_ECX + 0x50))()` and the pushed argument is attached to nothing.
+
+The repair is curation, not a source change: `just apply-source-signatures --addrs 0xA
+0xB --apply --strict` projects each function's own source prototype into the DB and
+commits per function only when the re-decompile converges (no remaining `in_stack` +
+structural signature match), rolling back and queueing everything else. Verify the
+receiver against `just ghidra listing` first — ECX use and the `RET n` purge — because
+the projection trusts the source declaration.
+
+**The gate will not notice until you `just export-project`.** `report_inputs()` and
+`row_context_inputs()` fingerprint `vendor/ghidra/exports/Imperialism.gzf`, while the
+comparison opens the *live working project*. A DB edit therefore changes no fingerprint,
+and `just semantic-gate` returns the previous report verbatim — byte-identical output
+that looks like "the fix did nothing". Deleting `orig_calls_cache.json` does not help;
+the full-report short-circuit runs before it. To see a live-DB curation:
+
+```sh
+just semantic-compare 0xA 0xB --force   # targeted, seconds
+just semantic-verify                    # full no-reuse recompute + row diff
+just export-project                     # then, to make it reproducible from committed state
+```
+
+`just semantic-verify` is also how you prove a DB edit was surgical: it row-diffs a
+from-scratch recompute against the stored report, so *only* the rows you intended should
+change. Anything else that moved is a stray edit in the shared working project.
+
 ## Known reccmp failure modes
 
 1. **`Failed to find a match at address 0x...`**

@@ -59,7 +59,7 @@ int TCdAudioDevice::ApplyAuxOutputVolumeFromScalar(int scalar) {
 }
 
 // FUNCTION: IMPERIALISM 0x0047cdf0
-bool TCdAudioDevice::IsPlaybackActive() {
+BOOL TCdAudioDevice::IsPlaybackActive() {
   return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
 }
 
@@ -136,12 +136,12 @@ int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolum
 }
 
 // FUNCTION: IMPERIALISM 0x005e16f0
-bool __stdcall SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID device) {
+BOOL __stdcall SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
   parms.dwItem = 4;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
   if (err != 0) {
-    return false;
+    return FALSE;
   }
   return parms.dwReturn != 0x20d;
 }
@@ -151,7 +151,7 @@ unsigned int QueryMciStatusField5ViaCommand814(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
   parms.dwItem = 5;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
-  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
+  return err == 0 ? parms.dwReturn : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e17b0
@@ -159,7 +159,7 @@ unsigned int QueryMciStatusField8ViaCommand814(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
   parms.dwItem = 8;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
-  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
+  return err == 0 ? parms.dwReturn : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1800
@@ -167,7 +167,7 @@ unsigned int QueryMciStatusField3ViaCommand814(MCIDEVICEID device) {
   MCI_STATUS_PARMS parms;
   parms.dwItem = 3;
   MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
-  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
+  return err == 0 ? parms.dwReturn : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1850
@@ -205,7 +205,7 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
   int deviceId = 0;
   if (deviceCount > 0) {
     AUXCAPSA caps;
-    do {
+    while (deviceId < deviceCount) {
       auxResult = auxGetDevCapsA(deviceId, &caps, sizeof(caps));
       WORD deviceKind = caps.wPid & 7;
       if (deviceKind == 1 || deviceKind == 2) {
@@ -213,7 +213,7 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
         break;
       }
       ++deviceId;
-    } while (deviceId < deviceCount);
+    }
   }
 
   if (auxResult != MMSYSERR_NOERROR) {

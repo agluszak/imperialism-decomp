@@ -70,7 +70,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
       // the "on" caption.
       TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
       label->AssertValid();
-      label->SetEnabled(1, 0);
+      label->Show(1, 0);
       g_pSimMgr->GetString(0x2743, static_cast<short>(row * 2 + 0x10), &text);
       label->SetTextStyle(0, 0xc, 0x38);
       label->SetTextAlignmentAndMaybeRefresh(1, 0);
@@ -85,13 +85,13 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
     }
     TDeluxeText* label = static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagTxta + row));
     label->AssertValid();
-    label->SetEnabled(enabled, 0);
+    label->Show(enabled, 0);
     checkbox = static_cast<TCzechBox*>(ResolveControlByTag(kControlTagOpta + row));
     checkbox->AssertValid();
-    checkbox->SetEnabled(enabled, 0);
+    checkbox->Show(enabled, 0);
     // The TView-level state, dispatched through slot 0x2a (TCzechBox's own two-byte
     // SetState overload at slot 0x75 hides it on the derived type).
-    static_cast<TView*>(checkbox)->SetState(enabled, 0);
+    static_cast<TView*>(checkbox)->ViewEnable(enabled, 0);
     LoadUiStringByGroupAndIndexToControlObject(0x2743, static_cast<short>(row + 0x26), checkbox);
     if (enabled != 0) {
       checkbox->SetState(static_cast<unsigned char>(g_pSimMgr->preferenceValues[prefIndex]),
@@ -136,7 +136,7 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
   TRadioTextCluster* autoResCluster =
       static_cast<TRadioTextCluster*>(ResolveControlByTag(kControlTagOpca));
   autoResCluster->AssertValid();
-  autoResPrompt->SetEnabled(1, 0);
+  autoResPrompt->Show(1, 0);
 
   CString promptText;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&promptText, 0x2763, 0x18);
@@ -160,8 +160,8 @@ void TGamePreferencesPicture::DoPostCreate(int arg) {
 
   autoResCluster->frameThemeCode90 = 0x2b6c;
   autoResCluster->itemInset92 = 2;
-  autoResCluster->SetEnabled(1, 0);
-  autoResCluster->SetState(1, 0);
+  autoResCluster->Show(1, 0);
+  autoResCluster->ViewEnable(1, 0);
 
   int autoResEnabled = 0;
   g_pAssetMgr->LoadSettingValueByKeyIntoOut(&autoResEnabled, g_pGamePreferencesAutoResKey_0065DDCC,

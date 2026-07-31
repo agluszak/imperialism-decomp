@@ -18,7 +18,8 @@ class TFuzzySet;
 // VTABLE: IMPERIALISM 0x006508a8
 class TCityInteriorMinister : public TInteriorMinister {
 public:
-  virtual ~TCityInteriorMinister() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004be8b0
+  virtual ~TCityInteriorMinister() override {} // slot 0x01 (scalar deleting destructor)
   short GetRankingCriterionForGP(short nationSlot) override; // slot 0x0a 0x4bee20
   virtual void MakeNewCity(TCity* city) override;            // slot 0x11 0x4c0d90
   virtual void FillOrders() override;                        // slot 0x15 0x4bf770

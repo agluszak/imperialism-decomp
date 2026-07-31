@@ -23,8 +23,6 @@ TDealLine::TDealLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c0db0
 // TDealLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005c0de0
-TDealLine::~TDealLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c0e00
 void TDealLine::IDealLine(short rowArg, short colArg, int* bounds, short commoditySlot,

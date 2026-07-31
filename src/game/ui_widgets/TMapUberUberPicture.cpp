@@ -4,8 +4,10 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 
+// Out of line: the original's InitializeTacticalBattleViewToolbarAndDialogControls
+// (0x0045bec1) CALLs this rather than inlining it.
 // FUNCTION: IMPERIALISM 0x0045d270
-TMapUberUberPicture::TMapUberUberPicture() {}
+TMapUberUberPicture::TMapUberUberPicture() : TOffLimitsPicture() {}
 
 // FUNCTION: IMPERIALISM 0x0045d2a0
 void TMapUberUberPicture::Scroll(MapScrollEdgeMaskStorage edgeMask) {

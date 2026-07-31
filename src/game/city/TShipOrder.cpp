@@ -35,8 +35,6 @@ IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b84e0
 // TShipOrder::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004b8510
-TShipOrder::~TShipOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b85a0
 bool TShipOrder::CanMakeFromCityStock() {
@@ -186,11 +184,12 @@ void TShipOrder::Produce() {
 
 // FUNCTION: IMPERIALISM 0x004b89a0
 void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
-  short quantity = this->quantity;
+  short resourceTypeIndex = this->resourceTypeIndex;
   TCity* city = this->ownerCity;
 
-  city->productionOrderTable1dc[this->resourceTypeIndex] =
-      static_cast<short>(city->productionOrderTable1dc[this->resourceTypeIndex] + quantity);
+  city->orderCountByType5c[resourceTypeIndex] =
+      static_cast<short>(city->orderCountByType5c[resourceTypeIndex] + this->quantity);
+  short quantity = this->quantity;
   this->quantity = static_cast<short>(quantity - 1);
 
   while (quantity != 0) {

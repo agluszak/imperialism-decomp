@@ -11,7 +11,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x0059ef50
 // TNavyHumanPlayer::~TNavyHumanPlayer
-TNavyHumanPlayer::~TNavyHumanPlayer() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059ef70
 // TNavyHumanPlayer::GetRuntimeClass
@@ -27,13 +26,16 @@ void TNavyHumanPlayer::INavyHumanPlayer(TTaskForce* force, char isOurSide, int n
 void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
-  do {
+  while (true) {
     unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
     ++ordinal;
     if (unit->tileIndex8 == -2) {
       break;
     }
-  } while (ordinal <= unitList4->GetCount());
+    if (ordinal > unitList4->GetCount()) {
+      break;
+    }
+  }
 
   if (ordinal > unitList4->GetCount()) {
     sideReadyFlag10 = 1;

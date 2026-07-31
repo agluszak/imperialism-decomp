@@ -54,7 +54,7 @@ void TTradeBookView::DoPostCreate(int arg) {
   CString combined;
   combined = quarterText + s_szSpaceSeparator_00695794 + formattedText;
   rtilControl->SetTextAndMaybeRefresh(&combined, 0);
-  rtilControl->SetEnabled(1, 1);
+  rtilControl->Show(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005be150
@@ -104,18 +104,18 @@ void TTradeBookView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent
 // FUNCTION: IMPERIALISM 0x005be3e0
 void TTradeBookView::ShowPage(int page) {
   if (page != 1) {
-    previousPageButton->SetState(1, 0);
+    previousPageButton->ViewEnable(1, 0);
   } else {
-    previousPageButton->SetState(0, 0);
+    previousPageButton->ViewEnable(0, 0);
   }
-  previousPageButton->SetEnabled(page != 1, 1);
+  previousPageButton->Show(page != 1, 1);
   bool hasMore = page + 2 <= pageCount;
   if (hasMore) {
-    nextPageButton->SetState(1, 0);
+    nextPageButton->ViewEnable(1, 0);
   } else {
-    nextPageButton->SetState(0, 0);
+    nextPageButton->ViewEnable(0, 0);
   }
-  nextPageButton->SetEnabled(hasMore, 1);
+  nextPageButton->Show(hasMore, 1);
   buyPanel->ShowPage(static_cast<short>(page));
   sellPanel->ShowPage(static_cast<short>(page));
 }

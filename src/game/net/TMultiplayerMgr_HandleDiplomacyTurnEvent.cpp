@@ -127,8 +127,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       int nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
       packet.nationId1C = nationId;
       packet.homeTile1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeTileIndex;
-      int cityRecordIndex =
-          g_apTerrainTypeDescriptorTable[nationId]->GetHomeRegionCityRecordIndex();
+      int cityRecordIndex = g_apTerrainTypeDescriptorTable[nationId]->GetCapitolProvince();
       g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
       strncpy(packet.cityName20, cityName, 0x21);
       g_pNetMgr006a6014->Send(&packet, 0);
@@ -141,7 +140,7 @@ void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
       for (int slot = 0; slot < 0x17; ++slot) {
         TMinor* minor = g_apSecondaryNationStateSlots[slot];
         if (minor != 0) {
-          minor->RebuildDiplomacyEconomicPressureFromMapState();
+          minor->InitializeTradeStatus();
         }
       }
       g_apNationStates[g_pSimMgr->GetActiveNationId()]
@@ -259,7 +258,7 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
       packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
       for (int slot = 0; slot < 0x17; ++slot) {
         packet.homeTileBySlot[slot] = (short)g_apTerrainTypeDescriptorTable[slot]->homeTileIndex;
-        int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetHomeRegionCityRecordIndex();
+        int cityRecordIndex = g_apTerrainTypeDescriptorTable[slot]->GetCapitolProvince();
         CString cityName;
         g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
         strncpy(packet.cityNameBySlot[slot], cityName, 0x21);
@@ -299,8 +298,8 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
           g_pNetMgr006a6014->Send(&packet, 0);
         }
       }
-      short cityRecordIndex = static_cast<short>(
-          g_apTerrainTypeDescriptorTable[capitalSlot]->GetHomeRegionCityRecordIndex());
+      short cityRecordIndex =
+          static_cast<short>(g_apTerrainTypeDescriptorTable[capitalSlot]->GetCapitolProvince());
       TurnEvent24CityRecordHeader packetHeader;
       packetHeader.InitializeEmitEventHeaderWithActiveNation();
       Province cityRecord;

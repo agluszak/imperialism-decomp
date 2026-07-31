@@ -22,8 +22,10 @@
 
 // SYNTHETIC: IMPERIALISM 0x004135f0
 // TAmbitApplication::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x00413620
-TAmbitApplication::~TAmbitApplication() {}
+//
+// No own destructor: the original's slot is an ILT thunk to ~TApplication (0x004867e0), i.e.
+// the base's. The implicit destructor the compiler gives this class is what the scalar
+// deleting destructor calls, which is the same shape.
 
 // Mac-oracle name TAmbitApplication::DoSetupMenus() — a no-op on Windows (there is no
 // menu bar to rebuild). Tentative attribution; the slot is a bare RET in the original.

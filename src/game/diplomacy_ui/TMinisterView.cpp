@@ -47,7 +47,7 @@ char TMinisterView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPo
   }
 
   if (okayControl->IsActionable() != 0) {
-    okayControl->SetEnabled(0, 1);
+    okayControl->Show(0, 1);
   }
   return TView::HandleMouseUp(point, event, origin);
 }

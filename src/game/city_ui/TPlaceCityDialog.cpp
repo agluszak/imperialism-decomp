@@ -49,7 +49,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
 
   TView* owner = GetWindow();
   if (owner == 0) {
-    FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, 0xdd6);
+    FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", 0xdd6);
   } else {
     CRect ownerBounds;
     owner->QueryBounds(&ownerBounds);
@@ -69,7 +69,7 @@ void TPlaceCityDialog::StuffValues(TTown* town) {
     TUpDownPictureButton* button =
         static_cast<TUpDownPictureButton*>(ResolveControlByTag(buttonTags[buttonIndex]));
     if (button == 0) {
-      FailNilPointerWithAssert(s_SourcePathUCityViews_00696650, buttonAssertLines[buttonIndex]);
+      FailNilPointerWithAssert("D:\\Ambit\\Cross\\UCityViews.cpp", buttonAssertLines[buttonIndex]);
       continue;
     }
     CRect buttonBounds;

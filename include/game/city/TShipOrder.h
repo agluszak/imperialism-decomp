@@ -9,7 +9,8 @@ class TCity;
 class TShipOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TShipOrder)
-  ~TShipOrder() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b8510
+  ~TShipOrder() override {} // slot 0x01 (scalar deleting destructor)
 
   bool SetQuantity(short quantity) override;                            // slot 0x0b 0x4b8800
   short MaxOrder() override;                                            // slot 0x0c 0x4b86d0

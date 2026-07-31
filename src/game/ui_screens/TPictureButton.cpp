@@ -27,7 +27,7 @@ TPictureButton::~TPictureButton() {}
 void TPictureButton::HiliteState(unsigned char enabledState, unsigned char refreshNow) {
   if (static_cast<unsigned char>(enabledState) != this->controlState64) {
     this->controlState64 = enabledState;
-    this->SetEnabled(enabledState, true);
+    this->Show(enabledState, true);
     if (refreshNow) {
       this->DrawImmediate();
     }

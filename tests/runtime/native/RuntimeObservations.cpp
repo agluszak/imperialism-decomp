@@ -13,12 +13,15 @@
 #include "game/map/TMapMgr.h"
 #include "game/map_ui/TMapDialog.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
+#include "game/ui_core/TControl.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_core/TWindow.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
+#include "game/globals/view_registries.h"
 
 #include <string.h>
 
@@ -118,6 +121,16 @@ void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, 
                 view->absoluteX, view->absoluteY, view->enabled, view->viewEnabled,
                 view->controlValue3c);
   json += fields;
+  // The two facts a test author needs and cannot get from bounds or class alone: whether
+  // the node will accept a semantic activation, and which event it raises when it does.
+  // RuntimeUiDriver::RequireControl checks both, so a selector that omits them is guessing.
+  fields.Format(", \"actionable\": %d", view->IsActionable() ? 1 : 0);
+  json += fields;
+  if (view->IsKindOf(RUNTIME_CLASS(TControl)) != 0) {
+    TControl* control = static_cast<TControl*>(view);
+    fields.Format(", \"event_number\": %d", control->GetEventNumber());
+    json += fields;
+  }
   if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
     TPicture* picture = static_cast<TPicture*>(view);
     fields.Format(", \"picture_id\": %d", static_cast<int>(picture->glyphBase84));
@@ -404,6 +417,51 @@ CString CaptureRuntimeUiSnapshot(int eventCode, TView* root) {
   bool firstNode = true;
   AppendViewTreeNodes(json, root, CString(), firstNode);
   json += "\n    ]}";
+  return json;
+}
+
+CString CaptureRuntimeCurrentUiTree() {
+  CString json("[");
+  bool firstTree = true;
+  int currentEvent = g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1;
+
+  TView* mainView = RuntimeMainView();
+  if (mainView != 0) {
+    CString header;
+    header.Format("\n    {\"role\": \"main_view\", \"event\": %d, \"class\": \"%s\", "
+                  "\"nodes\": [\n",
+                  currentEvent, RuntimeClassName(mainView));
+    json += header;
+    bool firstNode = true;
+    AppendViewTreeNodes(json, mainView, CString(), firstNode);
+    json += "\n    ]}";
+    firstTree = false;
+  }
+
+  // Modals are separate roots, and RuntimeUiDriver resolves against the modal head first,
+  // so a tree that omits them would point an author at the wrong parent.
+  int depth = 0;
+  POSITION position = g_ModalViewStack.GetHeadPosition();
+  while (position != 0) {
+    TWindow* modal = g_ModalViewStack.GetNext(position);
+    ++depth;
+    if (modal == 0) {
+      continue;
+    }
+    if (!firstTree) {
+      json += ",";
+    }
+    CString header;
+    header.Format("\n    {\"role\": \"modal\", \"depth\": %d, \"event\": %d, "
+                  "\"class\": \"%s\", \"nodes\": [\n",
+                  depth, currentEvent, RuntimeClassName(modal));
+    json += header;
+    bool firstNode = true;
+    AppendViewTreeNodes(json, modal, CString(), firstNode);
+    json += "\n    ]}";
+    firstTree = false;
+  }
+  json += "\n  ]";
   return json;
 }
 

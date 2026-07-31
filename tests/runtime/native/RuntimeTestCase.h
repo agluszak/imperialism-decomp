@@ -5,6 +5,7 @@
 #endif
 
 #include "compat.h"
+#include "RuntimeObservation.h"
 
 class RuntimeContext;
 class TView;
@@ -13,7 +14,7 @@ class RuntimeTestCase {
 public:
   virtual ~RuntimeTestCase() {}
   virtual void Start(RuntimeContext& context) = 0;
-  virtual void Tick(RuntimeContext& context) = 0;
+  virtual void Observe(RuntimeContext& context, unsigned int observationKinds) = 0;
   virtual void ObserveTurnEvent(RuntimeContext&, int) {}
   virtual void ObserveBuiltUiTree(RuntimeContext&, int, TView*) {}
   virtual void Pulse(RuntimeContext&) {}

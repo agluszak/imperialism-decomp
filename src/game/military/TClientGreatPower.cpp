@@ -10,12 +10,12 @@
 #include "game/net/TMultiplayerMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005412b0
-bool TClientGreatPower::IsClient(void) {
+bool TClientGreatPower::IsClient(void) const {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005412d0
-bool TClientGreatPower::IsRemote(void) {
+bool TClientGreatPower::IsRemote(void) const {
   return false;
 }
 
@@ -47,7 +47,7 @@ void TClientGreatPower::AcceptOffer(short proposalIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541450
-void TClientGreatPower::RejectOffer(unsigned short proposalQueueIndex) {
+void TClientGreatPower::RejectOffer(short proposalQueueIndex) {
   TurnEvent17ProposalResolutionPacket packet;
   packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());

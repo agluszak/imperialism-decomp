@@ -64,8 +64,8 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     upButton->IPicture(this, buttonOffset, buttonSize, 5, 5, 0xbbb);
   }
   upButton->controlTag = kControlTagScup; // 'scup'
-  upButton->SetEnabled(0, 1);
-  upButton->SetState(1, 0);
+  upButton->Show(0, 1);
+  upButton->ViewEnable(1, 0);
 
   TPictureButton* downButton = new TPictureButton();
   {
@@ -78,8 +78,8 @@ void TScrollBarView::InitializeScrollBar(TScrollView* panel, int* offsetLayout, 
     downButton->IPicture(this, buttonOffset, buttonSize, 5, 5, 0xbbc);
   }
   downButton->controlTag = kControlTagScdn; // 'scdn'
-  downButton->SetEnabled(0, 1);
-  downButton->SetState(1, 0);
+  downButton->Show(0, 1);
+  downButton->ViewEnable(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005746e0

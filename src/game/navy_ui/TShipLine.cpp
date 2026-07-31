@@ -16,8 +16,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x00564f90
 // TShipLine::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x00564fc0
-TShipLine::~TShipLine() {}
 // SYNTHETIC: IMPERIALISM 0x00565030
 // TShipLine::CreateObject
 

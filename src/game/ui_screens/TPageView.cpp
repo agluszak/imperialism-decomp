@@ -43,7 +43,7 @@ TPageView::~TPageView() {}
 
 // FUNCTION: IMPERIALISM 0x0056fa50
 void TPageView::DoPostCreate(int arg) {
-  (void)arg;
+  TView::DoPostCreate(arg);
   this->orderedEntries = new TList();
   this->optionEntries = new TList();
   this->pageStartIndices = new TLongintList();

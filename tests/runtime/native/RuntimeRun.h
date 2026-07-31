@@ -17,15 +17,22 @@ public:
 
   void InitializeFromEnvironment();
   void SetDescriptor(unsigned int snapshotFlags, const char* evidenceKind);
+  // Catalog-declared scenario policy (see RuntimeTestDescriptor).
+  void SetScenarioPolicy(bool recordsGameFlow, const int* uiSnapshotEvents,
+                         int uiSnapshotEventCount);
+  bool RecordsGameFlow() const;
+  bool CapturesUiTreeAt(int eventCode) const;
+  bool CapturesAnyUiTree() const;
   void StartScenario(RuntimeScenario* scenario);
   void EnterPhase(const char* phase, const char* action);
   void Finish();
-  void CountTick();
   void ResetHeartbeat();
   void MarkProgress(const char* action);
   void MarkFallbackProgress();
   void RecordAction(const char* action);
   void RecordAssertion(const char* assertionId, const char* failureJson, bool fatal);
+  RuntimeAwaitState& AwaitState();
+  const RuntimeAwaitState& AwaitState() const;
 
   RuntimeScenario* Scenario() const;
   bool IsFinished() const;
@@ -41,7 +48,6 @@ public:
   bool HeartbeatDue(unsigned long now, unsigned long interval) const;
   void SetLastHeartbeatMs(unsigned long value);
   const char* LastAction() const;
-  unsigned long PhaseTimeoutMs() const;
 
   const char* ResultPath() const;
   const char* HeartbeatPath() const;
@@ -81,13 +87,16 @@ public:
 private:
   RuntimeScenario* scenario;
   RuntimeProgressState progress;
+  RuntimeAwaitState awaitState;
   RuntimeResultAggregate resultAggregate;
   unsigned int seed;
-  unsigned long phaseTimeoutMs;
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
   unsigned int snapshotFlags;
+  bool recordsGameFlow;
+  const int* uiSnapshotEvents;
+  int uiSnapshotEventCount;
   char testName[64];
   char resultPath[MAX_PATH];
   char heartbeatPath[MAX_PATH];

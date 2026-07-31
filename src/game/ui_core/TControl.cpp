@@ -220,7 +220,7 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
   for (int i = 0; i < 7; i++) {
     TView* child = mapKey.ResolveControlByTag(kControlTagNam0 + i);
     child->AssertValid();
-    child->SetEnabled(enabled, 0);
+    child->Show(enabled, 0);
   }
 }
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).

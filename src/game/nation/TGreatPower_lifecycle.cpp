@@ -202,7 +202,7 @@ void TGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8c00
-short TGreatPower::GetAvailableMerchantCapacity(void) {
+short TGreatPower::GetMerchantCapacity(void) {
   return this->availableMerchantCapacity;
 }
 
@@ -891,7 +891,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Land recruit order (pending status 1 == '2').
   if (this->pendingActionStatus.roles.landRecruitStatus01 == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
-    int nodeContext = this->GetHomeRegionCityRecordIndex();
+    int nodeContext = this->GetCapitolProvince();
     short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->IMilitaryUnit(capValue, nodeContext, nationSlot);
     this->AnnounceLater(3, capValue, 1);
@@ -950,7 +950,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
     this->AnnounceLater(1, 6, 2);
   }
-  this->AssignDisplayNamesToUnnamedMilitaryUnits();
+  this->NameUnits();
 }
 
 // FUNCTION: IMPERIALISM 0x004dae70
@@ -1118,9 +1118,11 @@ char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
         // 0x004db5f6: the original re-runs the relationship-delta compile here.
         this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
+      } else if (pressureTier == (compileThreshold - 1)) {
+        g_pSimMgr->GetString(0x274b, 3, &sharedMessageRef);
+        g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
       } else {
-        int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
-        g_pSimMgr->GetString(0x274b, static_cast<short>(statusId), &sharedMessageRef);
+        g_pSimMgr->GetString(0x274b, 2, &sharedMessageRef);
         g_pViewMgr->ModalMessage(sharedMessageRef, g_ptGreatPowerModalMessage, 2, 0);
       }
     }

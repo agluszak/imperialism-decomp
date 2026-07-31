@@ -24,6 +24,8 @@ public:
   // tag, mark it enabled/visible, record the parent link, copy the offset and size point
   // pairs into the frame fields, register as a child of the parent, and clear the
   // resource context. 0x004915d0, __thiscall.
-  void InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size);
+  void InitializeClusterFrameAndAttachToParent(TView* parent, POINT* offset, POINT* size,
+                                               int layoutParam4, int layoutParam5, int layoutParam6,
+                                               int layoutParam7);
 };
 ASSERT_SIZE(TCluster, 0x88);

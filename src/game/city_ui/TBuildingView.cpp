@@ -14,11 +14,6 @@
 
 IMPLEMENT_DYNCREATE(TBuildingView, TNoHilitePicture)
 
-// FUNCTION: IMPERIALISM 0x004c6eb0
-TBuildingView::TBuildingView() : TNoHilitePicture() {
-  city94 = 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004c6ee0
 // TBuildingView::`scalar deleting destructor'
 // FUNCTION: IMPERIALISM 0x004c6f10

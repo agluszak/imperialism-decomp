@@ -24,8 +24,9 @@ TMyNumberText::TMyNumberText() : TNumberText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5000
 // TMyNumberText::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005b5030
-TMyNumberText::~TMyNumberText() {}
+// No own destructor: the original's 0x005b5030 is an ILT thunk to the base's
+// ~TEditText (0x004904d0), so this class inherits it. The scalar deleting destructor above is what
+// the vtable slot holds.
 
 // slot 0x7a — TNumberText::UpdateControlCachedIntFromWindowText override. Unlike the
 // base, an empty control reads as 0 rather than being parsed.

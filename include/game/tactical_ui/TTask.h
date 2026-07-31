@@ -13,7 +13,8 @@ class TSortedList;
 class TTask : public TObject {
 public:
   DECLARE_DYNCREATE(TTask)
-  virtual ~TTask() override;                       // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x005adbe0
+  virtual ~TTask() override {}                     // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x5adc50
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5adc90
   // Base behavior: decrement remainingAttempts and report whether it just hit zero.

@@ -1725,13 +1725,33 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
   }
 
   if (thisTotal * 100 < kOrderTypePriorityWeight[aggression] * otherTotal) {
+    int refreshedOtherTotal = 0;
+    for (TMapOrderChildLinkNode* refreshedOtherNodeA = other->shipList;
+         refreshedOtherNodeA != nullptr; refreshedOtherNodeA = refreshedOtherNodeA->next) {
+      refreshedOtherTotal +=
+          static_cast<TShip*>(refreshedOtherNodeA->payload)->GetBattleStrengthRating();
+    }
     int thisAggregateScore = GetBattleStrengthRating();
-    if (otherTotal * 100 < kOrderTypePriorityWeight[other->aggression] * thisAggregateScore ||
+    if (refreshedOtherTotal * 100 <
+            kOrderTypePriorityWeight[other->aggression] * thisAggregateScore ||
         other->defeated != 0) {
       return 0;
     }
 
-    unsigned int minWeight = GetWorstSpeed();
+    unsigned int minWeight = 10000;
+    for (TMapOrderChildLinkNode* speedNode = shipList; speedNode != nullptr;
+         speedNode = speedNode->next) {
+      if (speedNode->active != 0 &&
+          g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(speedNode->payload)->type]
+                  .DescriptorWeight() < static_cast<int>(minWeight)) {
+        minWeight =
+            g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(speedNode->payload)->type]
+                .DescriptorWeight();
+      }
+    }
+    if (minWeight == 10000) {
+      minWeight = 0;
+    }
     int threshold = static_cast<int>(minWeight + 5) * 10 - other->GetDeciSpeed();
     if (rand() % 100 < threshold) {
       defeated = 1;
@@ -1740,7 +1760,20 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     return 1;
   }
 
-  if (otherTotal * 100 < kOrderTypePriorityWeight[other->aggression] * thisTotal) {
+  int refreshedOtherTotal = 0;
+  for (TMapOrderChildLinkNode* refreshedOtherNodeB = other->shipList;
+       refreshedOtherNodeB != nullptr; refreshedOtherNodeB = refreshedOtherNodeB->next) {
+    refreshedOtherTotal +=
+        static_cast<TShip*>(refreshedOtherNodeB->payload)->GetBattleStrengthRating();
+  }
+  int refreshedThisTotal = 0;
+  for (TMapOrderChildLinkNode* refreshedThisNode = shipList; refreshedThisNode != nullptr;
+       refreshedThisNode = refreshedThisNode->next) {
+    refreshedThisTotal +=
+        static_cast<TShip*>(refreshedThisNode->payload)->GetBattleStrengthRating();
+  }
+  if (refreshedOtherTotal * 100 <
+      kOrderTypePriorityWeight[other->aggression] * refreshedThisTotal) {
     unsigned int minWeight = other->GetWorstSpeed();
     int threshold = static_cast<int>(minWeight + 5) * 10 - GetDeciSpeed();
     if (rand() % 100 < threshold) {
@@ -1962,7 +1995,7 @@ void TTaskForce::CreateIngot() {
   // Clear the tile this entry previously marked (same body as DestroyIngot,
   // inlined by the original rather than called).
   if (ingotTileIndex != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
     ingotTileIndex = -1;
   }
   // `shipOrders` (+0x08) is the order kind; each kind marks a different tile with a
@@ -1992,14 +2025,14 @@ void TTaskForce::CreateIngot() {
     break;
   }
   if (markerType != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, markerType);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, markerType);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005564f0
 void TTaskForce::DestroyIngot() {
   if (ingotTileIndex != -1) {
-    SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(ingotTileIndex, -1);
     ingotTileIndex = -1;
   }
 }

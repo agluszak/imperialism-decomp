@@ -113,7 +113,7 @@ void TLoungeDialog::DoPostCreate(int arg) {
     coatControl->AssertValid();
     coatControl->SetPictureResourceIdAndRefresh(
         static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x120a), 0);
-    coatControl->SetEnabled(1, 0);
+    coatControl->Show(1, 0);
     if (g_pGameFlowState->GetNationStatusCodeForSlotOrActiveNation(-1) != kSessionTagBusy) {
       SetPictureResourceIdAndRefresh(0x11f9, 0);
     }
@@ -275,8 +275,8 @@ void TLoungeDialog::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   if (commandId == 0x29a) {
     TView* okayControl = ResolveControlByTag(kControlTagOkay);
     okayControl->AssertValid();
-    okayControl->SetState(0, 0);
-    okayControl->SetEnabled(0, 0);
+    okayControl->ViewEnable(0, 0);
+    okayControl->Show(0, 0);
   }
 
   if (commandId == kControlTagPick) { // 'pick'

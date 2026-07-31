@@ -42,10 +42,11 @@ void WriteRuntimeHeartbeat(RuntimeRun& run) {
   json.Format("{\"phase\": \"%s\", \"last_action\": \"%s\", \"idle_ticks\": %lu, "
               "\"elapsed_ms\": %lu, \"turn_event\": %d, \"root_class\": \"%s\", "
               "\"modal_depth\": %d, \"progress_counter\": %lu, \"last_progress_ms\": %lu, "
-              "\"hold\": %s}\n",
+              "\"hold\": %s, \"await\": %s}\n",
               run.PhaseName(), run.LastAction(), run.IdleTicks(), run.ElapsedMs(),
               g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1,
               RuntimeClassName(RuntimeMainView()), g_ModalViewStack.GetCount(),
-              run.ProgressCounter(), run.LastProgressMs(), run.HoldRequested() ? "true" : "false");
+              run.ProgressCounter(), run.LastProgressMs(), run.HoldRequested() ? "true" : "false",
+              static_cast<LPCSTR>(RuntimeAwaitStateJson(run.AwaitState())));
   RuntimeJson::WriteFileAtomically(run.HeartbeatPath(), json);
 }

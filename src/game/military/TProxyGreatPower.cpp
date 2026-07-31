@@ -10,12 +10,12 @@
 #include "game/ui_core/TViewMgr.h"
 
 // FUNCTION: IMPERIALISM 0x005408c0
-bool TProxyGreatPower::IsClient() {
+bool TProxyGreatPower::IsClient() const {
   return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005408e0
-bool TProxyGreatPower::IsRemote(void) {
+bool TProxyGreatPower::IsRemote(void) const {
   return true;
 }
 
@@ -63,9 +63,9 @@ void TProxyGreatPower::AddToTreasury(int amount) {
 void TProxyGreatPower::DispatchTurnEvent2103WithNationFromRecord() {}
 
 // FUNCTION: IMPERIALISM 0x00540ac0
-void TProxyGreatPower::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                                    NationSlot targetNationSlot) {
-  TGreatPower::AddOfferFrom(proposalCode, targetNationSlot);
+void TProxyGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
+                                    DiplomacyProposalCodeStorage proposalCode) {
+  TGreatPower::AddOfferFrom(sourceNationSlot, proposalCode);
 
   TurnEvent16DiplomacyProposalPacket packetPayload;
   packetPayload.messageTag = kControlTagTime;
@@ -73,8 +73,8 @@ void TProxyGreatPower::AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
   packetPayload.nationSlot18 = this->nationSlot;
   packetPayload.eventCode = 0x16;
   packetPayload.messageLength = 0x20;
-  packetPayload.proposalCode1A = proposalCode;
-  packetPayload.targetNationId1C = targetNationSlot;
+  packetPayload.sourceNationSlot1A = sourceNationSlot;
+  packetPayload.proposalCode1C = proposalCode;
 
   packetPayload.DestinateToGP(static_cast<int>(this->nationSlot));
   g_pNetMgr006a6014->Send(&packetPayload, 0);
@@ -86,16 +86,15 @@ void TProxyGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary() 
 // Same split as the TGreatPower base (0x4ddbb0), but a proxy nation routes the accepted
 // action to the host over the wire instead of into the local UI runtime context.
 // FUNCTION: IMPERIALISM 0x00540ba0
-char TProxyGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                                     int arg4) {
-  if (this->HasPendingTradeOfferAndMerchantCapacity(static_cast<short>(arg4)) != 0) {
-    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(
-        this->nationSlot, static_cast<short>(arg1), static_cast<short>(arg2),
-        static_cast<short>(arg3), static_cast<short>(arg4));
+char TProxyGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                                         ResourceKindStorage resourceKind) {
+  if (this->StillBuyingItem(resourceKind) != 0) {
+    g_pGameFlowState->DispatchTurnEvent1AWithNationActionPayload(this->nationSlot, targetNationSlot,
+                                                                 amount, price, resourceKind);
     return 1;
   }
 
-  this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
+  this->AddToDealBook(1, targetNationSlot, 0, resourceKind, 0);
   return 0;
 }
 

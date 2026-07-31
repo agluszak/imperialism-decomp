@@ -32,10 +32,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-struct Province;
-// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
-Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
-
 // Resolves the turn-event dialog node for message context 0x102c (the "capabilities" dialog),
 // computes its placement, and refreshes it. Standalone helper (no `this`) -- matches the
 // original's own free-function shape. Defined below at its real address (0x5dc560), after

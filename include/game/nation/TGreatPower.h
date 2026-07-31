@@ -88,41 +88,39 @@ public:
   void SetTradePolicyTo(NationSlot nationSlot, short tradePolicy) override;
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
-  void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) override;
-  void
-  SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
+  void ChangeMaster(int targetNationSlot, int mode) override;
+  void BecomeProtectorateOf(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
-  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
-  void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode) override;
-  void ConsumeMerchantCapacity(int delta) override;
-  // ORACLE: Mac TGreatPower::GetIndustrialNeed(short).
-  short GetIndustrialNeed(short resourceKind) override; // slot 0x1c
-  short GetAvailableMerchantCapacity(void) override;    // slot 0x1d
+  void LoseProvince(int regionId) override;
+  void AddProvince(int regionId) override;
+  void NewStatusFor(int targetNationSlot, int policyCode) override;
+  void DeliverItem(short amount) override;
+  // ORACLE: Mac TGreatPower::GetAmtUnsold(short).
+  short GetAmtUnsold(short resourceKind) override; // slot 0x1c
+  short GetMerchantCapacity(void) override;        // slot 0x1d
   // ORACLE: Mac TGreatPower::GetStockpile(short).
   short GetStockpile(short resourceKind) override; // slot 0x1e
   // ORACLE: Mac TGreatPower::GetTradeOffersFor(short).
   short GetTradeOffersFor(short resourceKind) override; // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
-  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                      int multiplier) override;
-  bool HasPendingTradeOfferAndMerchantCapacity(short targetNationSlot) override; // slot 0x21
+  void PurchaseItem(short resourceKind, short amount, short price) override;
+  bool StillBuyingItem(ResourceKindStorage resourceKind) override; // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                     int arg4) override;
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override;
   // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
-  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                    NationSlot targetNationSlot) override;
+  void AddOfferFrom(NationSlot sourceNationSlot,
+                    DiplomacyProposalCodeStorage proposalCode) override;
   // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
   // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
   // +0x8d6 inside TGreatPower's 0x964.
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   // ORACLE: Mac names TGreatPower::AddNoticeFrom(short, short).
-  void AddNoticeFrom(int sourceNation, int actionCode) override; // slot 0x94
+  void AddNoticeFrom(short sourceNation, short actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
   // ---- tracked orders / pending action state ----
@@ -195,7 +193,7 @@ public:
   // slot 0x40 — body 0x004dcaa0: effective availableMerchantCapacity for a proposal code,
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
-  virtual unsigned int GetAvailableMerchantCapacityForProposal(int proposalCode);
+  virtual unsigned int GetMerchantCapacityForProposal(int proposalCode);
   // ORACLE: Mac names TGreatPower::AddTransportedItems().
   virtual void AddTransportedItems(void); // slot 0x41
   // ORACLE: Mac names TGreatPower::AddPurchasedItems().
@@ -272,8 +270,9 @@ public:
   // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
   // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
   // Offer entries are always eligible; accept entries are eligible for minor nations.
-  virtual void AppendTrackedSlotEntry(short kind, int targetNation, short value, short slotIndex,
-                                      int payload);
+  // ORACLE: Mac names this TGreatPower::AddToDealBook(short, short, short, short, long).
+  virtual void AddToDealBook(short kind, NationSlot targetNation, short value, short slotIndex,
+                             int payload);
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
@@ -298,7 +297,7 @@ public:
   virtual void DecrementNeedLevelByNationStep(NationSlot nationSlot); // index 121
   virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void AcceptOffer(short proposalIndex);                                       // index 123
-  virtual void RejectOffer(unsigned short proposalQueueIndex);                         // index 124
+  virtual void RejectOffer(short proposalQueueIndex);                                  // index 124
   // slot 0x7d — body 0x004df4b0: whether the proposal may target the nation given the
   // current relationship (alliance through war progressively restricts treaty offers).
   virtual char IsDiplomacyProposalAllowedForRelationship(DiplomacyProposalCodeStorage proposalCode,

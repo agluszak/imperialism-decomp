@@ -36,14 +36,14 @@ void TCivilianButton::SetSelectedCivilianOrderAndEnableButton(TCivUnit* selected
   this->eventNumber60 = 0xc;
   this->selectedCivilianOrder9c = selectedOrder;
   if (selectedOrder != 0) {
-    SetEnabled(1, 0);
-    SetState(1, 0);
+    Show(1, 0);
+    ViewEnable(1, 0);
 
     short mappedValue = g_pGlobalMapState->ApplyMapImprovementSelectionState(selectedOrder);
     this->mappedSelection98 = mappedValue;
     return;
   }
-  SetEnabled(0, 1);
+  Show(0, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b4f0

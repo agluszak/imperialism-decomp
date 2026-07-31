@@ -38,28 +38,28 @@ void TRailheadDialog::StuffValues(TCity* city) {
     if (coal == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x73a);
     }
-    coal->SetState(0, 1);
+    coal->ViewEnable(0, 1);
     coal->AssertCityProductionGlobalStateInitialized(1, 1);
 
     TControl* iron = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[4]));
     if (iron == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x73f);
     }
-    iron->SetState(0, 1);
+    iron->ViewEnable(0, 1);
     iron->AssertCityProductionGlobalStateInitialized(1, 1);
 
     TControl* gold = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[22]));
     if (gold == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x744);
     }
-    gold->SetState(0, 1);
+    gold->ViewEnable(0, 1);
     gold->AssertCityProductionGlobalStateInitialized(1, 1);
 
     TControl* oil = static_cast<TControl*>(ResolveControlByTag(g_pTradeSummarySelectionMap[6]));
     if (oil == 0) {
       FailNilPointerWithAssert(s_SourcePathUCityDialogs_006962E8, 0x749);
     }
-    oil->SetState(0, 1);
+    oil->ViewEnable(0, 1);
     oil->AssertCityProductionGlobalStateInitialized(1, 1);
   }
 }

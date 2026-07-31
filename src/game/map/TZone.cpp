@@ -255,7 +255,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
             .ownerNationTag04;
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
       return g_pGlobalMapState
-          ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetHomeRegionCityRecordIndex()]
+          ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetCapitolProvince()]
           .cityScoreValue;
     }
   } else if (secondaryNeighbors.Count() != 0) {
@@ -462,20 +462,20 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
   tileOrTerrainId0c = static_cast<short>(resolvedTile);
   activeTileIndex20 = static_cast<short>(tileOrTerrainId0c);
   if (QueryPortZoneCapability() != 0) {
-    SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
-                                         -kMapTileActionStatePortZoneMarkerFrame);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+        activeTileIndex20, -kMapTileActionStatePortZoneMarkerFrame);
     return;
   }
-  SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
-                                       -kMapTileActionStateZoneCenterMarkerFrame);
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+      activeTileIndex20, -kMapTileActionStateZoneCenterMarkerFrame);
   activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
       activeTileIndex20, kStrategicHexDirectionNorthWest);
-  SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
-                                       -kMapTileActionStateZoneNorthWestMarkerFrame);
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+      activeTileIndex20, -kMapTileActionStateZoneNorthWestMarkerFrame);
   activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
       activeTileIndex20, kStrategicHexDirectionNorthEast);
-  SetMapTileStateByteAndNotifyObserver(activeTileIndex20,
-                                       -kMapTileActionStateZoneNorthEastMarkerFrame);
+  g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+      activeTileIndex20, -kMapTileActionStateZoneNorthEastMarkerFrame);
 }
 
 // 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
@@ -529,8 +529,8 @@ void TZone::HandleKeyDown(int key_id) {
         do {
           if ((nationKeyMask10 & (1U << ((unsigned char)(key_id % 7) & 0x1f))) != 0) {
             sVarSlotId = GetActiveNationSlotTile();
-            SetMapTileStateByteAndNotifyObserver(sVarSlotId,
-                                                 key_id % 7 + kMapTileActionStateNationOrderFirst);
+            g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+                sVarSlotId, key_id % 7 + kMapTileActionStateNationOrderFirst);
             g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
           }
           key_id = key_id + 1;
@@ -538,7 +538,8 @@ void TZone::HandleKeyDown(int key_id) {
         } while (nSlotsRemaining != 0);
       } else {
         sVarSlotId = GetActiveNationSlotTile();
-        SetMapTileStateByteAndNotifyObserver(sVarSlotId, kMapTileActionStateNationOrderFirst);
+        g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+            sVarSlotId, kMapTileActionStateNationOrderFirst);
         g_pGlobalMapState->terrainStateTable[sVarSlotId].tileActionOrdinal1a = -1;
       }
     }
@@ -781,25 +782,25 @@ void TZone::SetMapOrderUiFlag(bool flag) {
       (g_pViewMgr->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag)) & 2) - 1);
     if (QueryPortZoneCapability() != 0) {
-      SetMapTileStateByteAndNotifyObserver(
+      g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
           activeTileIndex20, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);
       NotifyMapUberPictureTileMarker(activeTileIndex20);
       return;
     }
     int magnitude = static_cast<int>(sign);
     short centerTile = activeTileIndex20;
-    SetMapTileStateByteAndNotifyObserver(centerTile,
-                                         magnitude * kMapTileActionStateZoneCenterMarkerFrame);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+        centerTile, magnitude * kMapTileActionStateZoneCenterMarkerFrame);
     NotifyMapUberPictureTileMarker(centerTile);
     short northWestTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthWest);
-    SetMapTileStateByteAndNotifyObserver(northWestTile,
-                                         magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+        northWestTile, magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
     NotifyMapUberPictureTileMarker(northWestTile);
     short northEastTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthEast);
-    SetMapTileStateByteAndNotifyObserver(northEastTile,
-                                         magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);
+    g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
+        northEastTile, magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);
     NotifyMapUberPictureTileMarker(northEastTile);
   }
 }
@@ -875,7 +876,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 }
 
 // FUNCTION: IMPERIALISM 0x00560b00
-char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check) {
+char TZone::CanDisplayMapOrderEntryInCurrentContext(int nation, char skipField34Check) {
   if (nation == -1) {
     nation = g_pSimMgr->GetActiveNationId();
   }
@@ -939,7 +940,7 @@ void ResetMapActionContextActivityAndNationFlags() {
 }
 
 // FUNCTION: IMPERIALISM 0x00560e70
-TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
+TZone* TZone::GetSafestNearbyZoneFor(short nationSlot) const {
   TZone* bestNeighbor = 0;
   int bestWarCount = -1;
   for (int neighborIndex = 0; neighborIndex < primaryNeighbors.GetSize(); ++neighborIndex) {

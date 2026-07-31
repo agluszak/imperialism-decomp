@@ -149,11 +149,11 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     short itemId = menuItemIds94[i];
     if (itemId != 0) {
       itemPane->SetTextFromStringResource(0x2755, itemId, 1);
-      itemPane->SetEnabled(1, 0);
-      itemPane->SetState(1, 0);
+      itemPane->Show(1, 0);
+      itemPane->ViewEnable(1, 0);
     } else {
-      itemPane->SetEnabled(0, 1);
-      itemPane->SetState(0, 0);
+      itemPane->Show(0, 1);
+      itemPane->ViewEnable(0, 0);
     }
     itemPane->SetTextAlignmentAndMaybeRefresh(i > 6 ? -1 : -2, 0);
   }
@@ -182,8 +182,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   CString strInfoText;
   InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xc, 0x2b67, 1);
   TStaticText* titlePane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagTitl));
-  titlePane->SetEnabled(1, 1);
-  titlePane->SetState(0, 1);
+  titlePane->Show(1, 1);
+  titlePane->ViewEnable(0, 1);
   titlePane->SetTextAlignmentAndMaybeRefresh(1, 0);
   titlePane->InstallTextStyle(titleStyle, 0);
 
@@ -229,8 +229,8 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
 
   TStaticText* captionPane = static_cast<TStaticText*>(ResolveControlByTag(kControlTagItem));
   captionPane->SetTextFromStringResource(0x2755, menuItemIds94[selectedIndex], 1);
-  captionPane->SetEnabled(1, 1);
-  captionPane->SetState(0, 1);
+  captionPane->Show(1, 1);
+  captionPane->ViewEnable(0, 1);
   captionPane->SetTextAlignmentAndMaybeRefresh(1, 0);
   captionPane->InstallTextStyle(captionStyle, 0);
 
@@ -242,7 +242,7 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   CString detailText;
   g_pSimMgr->GetString(0x2756, static_cast<short>(menuItemIds94[selectedIndex] - 1), &detailText);
   infoTextPane90->UpdateTextEntrySharedStringAndMaybeNotify(&detailText, 1);
-  infoTextPane90->SetEnabled(1, 1);
+  infoTextPane90->Show(1, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005059d0

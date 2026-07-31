@@ -29,18 +29,16 @@ public:
   // slot 0x07 — 0x004e7230: drain missionQueue then run the base Free().
   void Free() override;
   // slot 0x14 — 0x004ea150: join-empire reset plus clearing map-action caches.
-  void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
+  void BecomeProtectorateOf(int targetNationSlot) override;
   // slot 0x19 — 0x004ea290: add region and queue a map-action mission.
-  void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  // slot 0x20 — 0x004e7630: negative resource deltas reduce the matching AI action
-  // metric (slots 7..12) before the base applies the nation-total update.
-  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                      int multiplier) override;
+  void AddProvince(int regionId) override;
+  // slot 0x20 — 0x004e7630: accumulate negative resource 7..12 deltas before base totals.
+  void PurchaseItem(short resourceKind, short amount, short price) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.
-  void AddOfferFrom(DiplomacyProposalCodeStorage proposalCode,
-                    NationSlot targetNationSlot) override;
+  void AddOfferFrom(NationSlot sourceNationSlot,
+                    DiplomacyProposalCodeStorage proposalCode) override;
   // slot 0x25 — 0x004e7c50: policy side effects before slot 0x94 dispatch.
-  void AddNoticeFrom(int sourceNation, int actionCode) override;
+  void AddNoticeFrom(short sourceNation, short actionCode) override;
   // slot 0x4d — 0x004ea470: rebuild yields and roll field 0x134 into 0x136.
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void) override;
   // slots 0x56/0x57 — 0x004e78d0/0x004e78f0: minister callbacks when city exists.
@@ -74,10 +72,10 @@ public:
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void SorryYouLose(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
-  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
+  void LoseProvince(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
-  char TryDispatchNationActionViaUiContextOrFallback(int targetNation, int arg2, int arg3,
-                                                     int slotIndex) override;
+  char ReplyToTradeOffer(NationSlot targetNationSlot, short amount, short price,
+                         ResourceKindStorage resourceKind) override;
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
   void FillInteriorMinisterOrders(void) override;
   // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city stock.

@@ -16,6 +16,10 @@
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/gfx/quickdraw_regions.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#endif
 
 // Shared thunks/hooks whose callers interpret the arguments differently are kept in
 // generic repo form (rule 9) with a typed cast at the callsite.
@@ -331,9 +335,9 @@ class TView* TView::ResolveControlByTag(unsigned int controlTag) {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b070
-void TView::SetState(int state, int refreshFlag) {
-  SetEnable(state);
-  if (refreshFlag != 0) {
+void TView::ViewEnable(int enabled, int refreshNow) {
+  SetEnable(enabled);
+  if (refreshNow != 0) {
     RefreshControl();
   }
 }
@@ -383,10 +387,10 @@ TView* TView::GetRootView() {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b1c0
-void TView::SetEnabled(int enabledState, int refreshFlag) {
-  if (enabledState != viewEnabled) {
-    viewEnabled = enabledState;
-    if (refreshFlag != 0) {
+void TView::Show(int show, int refreshNow) {
+  if (show != viewEnabled) {
+    viewEnabled = show;
+    if (refreshNow != 0) {
       RefreshControl();
     }
   }
@@ -478,6 +482,9 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(RgnHandle region) {
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
     InvalidateRgn(nativeWindow50->m_hWnd, destRegion, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
+#endif
   }
 
   DisposeRgn(localRegion);
@@ -498,6 +505,9 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
     InvalidateRect(nativeWindow50->m_hWnd, &localRect, 0);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveInvalidationRequested);
+#endif
   }
 }
 
@@ -835,7 +845,7 @@ void TView::DoSetCursor(CPoint* point, RgnHandle hitArg) {
   SetCursor(hCursor);
 }
 // FUNCTION: IMPERIALISM 0x0048c380
-void TView::ApplyBounds(CRect* newBounds, int modeFlag) {
+void TView::ApplyBounds(CRect* newBounds, unsigned char modeFlag) {
   CRect current;
   QueryBounds(&current);
   if (EqualRect(newBounds, &current) == 0) {

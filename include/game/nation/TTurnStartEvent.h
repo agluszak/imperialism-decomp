@@ -9,8 +9,9 @@
 class TTurnStartEvent : public TObject {
 public:
   DECLARE_DYNCREATE(TTurnStartEvent)
-  virtual ~TTurnStartEvent() override; // slot 0x01 (scalar deleting destructor)
-  virtual void ApplyJoinEmpireMode2FinalizeNationNameState(); // slot 0x0a 0x4e6610
+  // FUNCTION: IMPERIALISM 0x004e6660
+  virtual ~TTurnStartEvent() override {} // slot 0x01 (scalar deleting destructor)
+  virtual void RegainIndependence();     // slot 0x0a 0x4e6610
 
   // Event-kind four-cc. Every construction site (TTurnStartEvent::CreateObject 0x4e65e0,
   // TLandSaleEvent::CreateObject 0x4e66c0, the network receive path 0x54a169) stamps the

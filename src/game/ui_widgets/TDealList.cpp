@@ -51,5 +51,5 @@ short TDealList::Compare(void* a, void* b) {
               recB->dispatchScore08 + recB->targetNationSlot * recB->relationStanding06) %
              7;
   }
-  return static_cast<short>(scoreA <= scoreB ? 1 : -1);
+  return static_cast<short>(scoreA <= scoreB ? -1 : 1);
 }

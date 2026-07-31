@@ -30,6 +30,10 @@ int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052
 // .cpp for the per-class breakdown. 0x00559a70.
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
 
+// Dead sibling of GetMapContextActionCode for the active map-order entry (no retail
+// callers). 0x00559bd0.
+int __stdcall GetActiveMapOrderEntryActionCode(short nTileIndex, int dwInputFlags);
+
 // Converts a hex tile index (row*0x6c + col) to its isometric screen-space {x,y} offset in
 // outScreenXY, relative to a scrolled origin (originCol, originRow) and scaled by tileScale.
 // The column wraps horizontally: `tileIndex - originCol` is taken mod 0x6c directly (the

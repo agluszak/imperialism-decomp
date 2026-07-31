@@ -102,9 +102,6 @@ TCityInteriorMinister::TCityInteriorMinister() : TInteriorMinister(), orderList1
 // SYNTHETIC: IMPERIALISM 0x004be880
 // TCityInteriorMinister::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x004be8b0
-TCityInteriorMinister::~TCityInteriorMinister() {}
-
 // FUNCTION: IMPERIALISM 0x004be8d0
 void TCityInteriorMinister::InitializeCityInteriorState(TGreatPower* owner) {
   IMinister(owner);
@@ -1450,7 +1447,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
       continue;
     }
     TCountry* minor = g_apTerrainTypeDescriptorTable[minorNation];
-    if (minor->encodedNationSlot != -1 && !minor->IsEncodedNationSlotMinus200Equal(nationSlot)) {
+    if (minor->encodedNationSlot != -1 && !minor->IsColonyOf(nationSlot)) {
       continue;
     }
     if (g_abGateFlagQualifies[tile->gateFlag] == 0 ||
@@ -1664,7 +1661,7 @@ void TCityInteriorMinister::ContinueRailheadProject(TUnit* builderOrder, char* p
   TTown* projectedTown = new TTown();
   projectedTown->ITown(g_szEmptyString, field3c, primaryDistance != 1,
                        ownerContextAt04->nationSlot);
-  projectedTown->CalculateCityResources();
+  projectedTown->CalculateResources();
   for (short resourceType = 0; resourceType < kResourceKindCount; ++resourceType) {
     if (((resourceType >= kResourceCotton && resourceType <= kResourceOil) ||
          (resourceType >= kResourceGrain && resourceType <= kResourceGold)) &&
@@ -1733,7 +1730,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
     }
     if (!hasConnectedNeighbor) {
       projectedTown->tileIndex = tileIndex;
-      projectedTown->CalculateCityResources();
+      projectedTown->CalculateResources();
       if (projectedTown->resourceYieldByType[resourceType] != 0) {
         candidateTiles->InsertLast(tileIndex);
       }
@@ -1764,7 +1761,7 @@ short TCityInteriorMinister::EvaluateResources(short tileIndex) {
   TTown* candidateTown = new TTown();
   candidateTown->ITown("Bleah", tileIndex, 1, ownerContextAt04->nationSlot);
   short* citySummary = city->GetCitySummaryRecordSlot74();
-  candidateTown->CalculateCityResources();
+  candidateTown->CalculateResources();
 
   short score = 0;
   for (short resourceType = 0; resourceType < kResourceIndustrialRawCount; ++resourceType) {
@@ -2195,7 +2192,12 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand() {
 
   short commandSlot;
   if (orderShortTableDC[priorityOrder[0]] == 0 && (g_pSimMgr->GetEconomicTurn() & 1) != 0) {
-    short choice = static_cast<short>(rand() % (hasOilTechnology ? 4 : 3));
+    short choice;
+    if (hasOilTechnology) {
+      choice = static_cast<short>(rand() % 4);
+    } else {
+      choice = static_cast<short>(rand() % 3);
+    }
     if (choice == 3) {
       commandSlot = 0x3b;
     } else {

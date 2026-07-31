@@ -11,7 +11,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/city_ui/TLongintList.h"
-#include "game/TMinisterBaseOrderArray.h"
+#include "game/map/TIndexAndRankList.h"
 #include "game/nation/TMinor.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_screens/TNewsMgr.h"
@@ -162,7 +162,8 @@ void TForeignMinister::SetInteriorMinisterBid(short primary, short secondary) {
 
 // FUNCTION: IMPERIALISM 0x0052f570
 void TForeignMinister::SetBuyPriorities() {
-  TMinisterBaseOrderArray* priorities = new TMinisterBaseOrderArray();
+  TIndexAndRankList* priorities = new TIndexAndRankList();
+  priorities->recordSize14 = sizeof(MinisterPriorityEntry);
 
   for (short resourceCode = 0; resourceCode < kResourceManufacturedEnd; ++resourceCode) {
     if (purchasePriorityByResource1e[resourceCode] != 0) {
@@ -327,20 +328,18 @@ void TForeignMinister::DoUsualSubsidyRule() {
 
 // FUNCTION: IMPERIALISM 0x0052fba0
 void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, short resourceCode) {
-  (void)arg1;
   TGreatPower* owner = this->ownerContextAt04;
-  unsigned int dispatchAmount = static_cast<unsigned int>(arg3);
+  unsigned int dispatchAmount = static_cast<unsigned int>(arg2);
   if (resourceCode == interiorBidResource10) {
     if (interiorBidAmount12 < static_cast<short>(dispatchAmount)) {
       dispatchAmount = static_cast<unsigned short>(interiorBidAmount12);
     }
-    short availableAmount =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       g_pTradeMgr->SetDealResults(
-          owner->nationSlot, arg2,
-          static_cast<int>(owner->GetAvailableMerchantCapacityForProposal(resourceCode)),
-          static_cast<int>(dispatchAmount), resourceCode, 0, 0);
+          owner->nationSlot, arg1,
+          static_cast<int>(owner->GetMerchantCapacityForProposal(resourceCode)), arg3, resourceCode,
+          0, 0);
       return;
     }
   } else {
@@ -352,15 +351,14 @@ void TForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3, sho
     } else if (static_cast<short>(ledgerAmount) < static_cast<short>(dispatchAmount)) {
       dispatchAmount = ledgerAmount;
     }
-    short availableAmount =
-        static_cast<short>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+    short availableAmount = static_cast<short>(owner->GetMerchantCapacityForProposal(resourceCode));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
       dispatchAmount =
-          static_cast<unsigned int>(owner->GetAvailableMerchantCapacityForProposal(resourceCode));
+          static_cast<unsigned int>(owner->GetMerchantCapacityForProposal(resourceCode));
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
-  g_pTradeMgr->SetDealResults(owner->nationSlot, arg2, static_cast<int>(dispatchAmount), arg3,
+  g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, static_cast<int>(dispatchAmount), arg3,
                               resourceCode, 0, 0);
 }
 
@@ -370,7 +368,7 @@ void TForeignMinister::EndTradePhase() {
   capabilityFlag14 = 0;
   interiorBidResource10 = kNoInteriorBidResource;
   TGreatPower* owner = this->ownerContextAt04;
-  if (owner->GetAvailableMerchantCapacity() == 0) {
+  if (owner->GetMerchantCapacity() == 0) {
     diplomacyPhaseCounter18 = static_cast<short>(diplomacyPhaseCounter18 + 1);
   }
   memset(purchasePriorityByResource1e, 0, sizeof(purchasePriorityByResource1e));
@@ -405,8 +403,7 @@ void TForeignMinister::GoodsMatchShipping() {
     if (terrainSlot >= 0x17) {
       break;
     }
-    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsEncodedNationSlotMinus200Equal(
-            owner->nationSlot) != 0) {
+    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsColonyOf(owner->nationSlot) != 0) {
       matched = true;
     }
     ++terrainSlot;
@@ -514,8 +511,7 @@ void TForeignMinister::DoProposeTreaties() {
                           ownerContextAt04->nationSlot, minorNation) != 2) {
       continue;
     }
-    if (minor->CanInitiateJoinEmpireProposalToTarget(ownerContextAt04->nationSlot,
-                                                     kDiplomacyProposalJoinEmpire) != 0) {
+    if (minor->WouldAcceptOffer(ownerContextAt04->nationSlot, kDiplomacyProposalJoinEmpire) != 0) {
       if (g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
               minorNation, ownerContextAt04->nationSlot) == 0) {
         ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(
@@ -596,7 +592,7 @@ void TForeignMinister::DoProposeTreaties() {
               ownerContextAt04->nationSlot, static_cast<short>(candidateNation)) !=
               kDiplomacyRelationshipAlliance &&
           g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-              static_cast<short>(candidateNation), ownerContextAt04->nationSlot) == 0) {
+              candidateNation, ownerContextAt04->nationSlot) == 0) {
         selectedNation = candidateNation;
       }
     }
@@ -681,7 +677,13 @@ char TForeignMinister::DeservesToBeEnemy(int nationCode) {
     if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
       int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
       int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
-      float average = static_cast<float>((scoreA + scoreB) / 2);
+      int calendarYear = g_pSimMgr->field6c;
+      int difficultyDivisors[5] = {calendarYear, calendarYear / 2, calendarYear / 3,
+                                   calendarYear / 5, 0};
+      int campaignProgress = (g_pSimMgr->economicTurn / 4 + calendarYear) /
+                             (difficultyDivisors[g_pSimMgr->difficultyLevel] + calendarYear);
+      float average = static_cast<float>(static_cast<int>(
+          static_cast<float>(campaignProgress) * static_cast<float>((scoreA + scoreB) / 2)));
       if (ownerGP->GetWarNumber() <= average) {
         return 1;
       }
@@ -731,7 +733,7 @@ void TForeignMinister::SetEmpirePolicies() {
     relationshipList->ReleasePtrList();
   }
 
-  if (owner->GetAvailableMerchantCapacity() > 0) {
+  if (owner->GetMerchantCapacity() > 0) {
     int policyCategory = -1;
     for (short resourceKind = 0; resourceKind < kMajorNationCount && policyCategory == -1;
          ++resourceKind) {
@@ -823,8 +825,7 @@ void TForeignMinister::ReplyToDiplomacyOffers(short queueIndex) {
     case kDiplomacyProposalPeaceTreaty:
       valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
       if (valid == 0) {
-        gp->RejectOffer(queueIndex);
-        return;
+        break;
       }
       g_pNewsMgr->AddTreatyEvent(kInterNationEventNationJoinedWar, gp->nationSlot, targetNation, 0);
       break;

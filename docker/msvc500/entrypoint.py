@@ -88,6 +88,15 @@ def main() -> int:
             )
             return exc.returncode
 
+    # BUILD_ONLY skips the Wine `cmake` configure and goes straight to `cmake --build`.
+    # The configure is several seconds of Wine startup plus a full compiler re-probe, which
+    # dominates the edit-compile-run loop for a one-file change. It is only safe when the
+    # build tree is already configured and the file set has not changed: CMake's
+    # CONFIGURE_DEPENDS globs are re-evaluated by a configure, not by a build, so a new or
+    # deleted source needs the full path. `just runtime-dev` decides that and only sets
+    # this when the source set is unchanged.
+    build_only = os.getenv("BUILD_ONLY") == "1"
+
     try:
         configure_wine_env()
 
@@ -111,19 +120,29 @@ def main() -> int:
         if generator == "NMake Makefiles JOM":
             cmake_flags.append(r"-DCMAKE_MAKE_PROGRAM=C:\jom\jom.exe")
 
-        configure_cmd = [
-            "wine",
-            cmake_exe,
-            "-S",
-            source_dir,
-            "-B",
-            build_dir,
-            "-G",
-            generator,
-            *cmake_flags,
-        ]
-        print("Configure command:", " ".join(configure_cmd))
-        run(configure_cmd)
+        if build_only and not os.path.exists(cache_path):
+            print(
+                "BUILD_ONLY was requested but /build has no CMakeCache.txt; configuring once.",
+                file=sys.stderr,
+            )
+            build_only = False
+
+        if build_only:
+            print("Configure command: skipped (BUILD_ONLY=1)")
+        else:
+            configure_cmd = [
+                "wine",
+                cmake_exe,
+                "-S",
+                source_dir,
+                "-B",
+                build_dir,
+                "-G",
+                generator,
+                *cmake_flags,
+            ]
+            print("Configure command:", " ".join(configure_cmd))
+            run(configure_cmd)
 
         build_cmd = ["wine", cmake_exe, "--build", build_dir]
         if build_jobs:

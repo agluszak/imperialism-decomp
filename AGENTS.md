@@ -68,6 +68,10 @@ ossification, boundary, vtable-abi) are baseline-free **hard bans** with no
   reconstructs an unknown layout/inheritance in the first place.
 - **`run-debug`** — run the recomp under Wine, scripted winedbg sessions, and the
   capture-by-window-ID screenshot recipe for visual verification.
+- **`runtime-tests`** — write and debug native semantic runtime tests: the linear-script
+  API (`RT_` macros, script scenarios, screens, flows), the fast authoring loop
+  (`runtime-dev`/`runtime-run`), control discovery (`runtime-tree`), and the MSVC500 rules
+  the protothread imposes. Load before adding or migrating a runtime scenario.
 
 ## Topical skills (load by what the target function contains)
 

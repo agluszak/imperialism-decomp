@@ -25,7 +25,7 @@ TTradeOrderPicture::~TTradeOrderPicture() {}
 // FUNCTION: IMPERIALISM 0x00584500
 void TTradeOrderPicture::DoPostCreate(int arg) {
   (void)arg;
-  SetState(1, 0);
+  ViewEnable(1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00584520
@@ -70,3 +70,39 @@ void TTradeOrderPicture::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPo
     }
   }
 }
+
+#ifdef IMPERIALISM_RUNTIME_TESTS
+void TTradeOrderPicture::ActivateOrderSemantically() {
+  TTradeCluster* tradeRow = static_cast<TTradeCluster*>(ownerContext);
+  if (controlTag == kControlTagCard) {
+    if (glyphBase84 == 0x83f || glyphBase84 == 0x84d) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+      tradeRow->HandleEvent(0x67, this, 0);
+      tradeRow->DoControlAction();
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+    tradeRow->HandleEvent(0x68, this, 0);
+    tradeRow->SetTradeBidControlBitmap();
+    tradeRow->SetTradeOfferSecondaryBitmap();
+    tradeRow->HandleEvent(0x6a, this, 0);
+    return;
+  }
+
+  if (controlTag == kControlTagOffr) {
+    if (glyphBase84 == 0x841 || glyphBase84 == 0x84f) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+      tradeRow->HandleEvent(0x6a, this, 0);
+      tradeRow->SetTradeOfferSecondaryBitmap();
+      return;
+    }
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x4269, 0, 1);
+    tradeRow->HandleEvent(0x69, this, 0);
+    tradeRow->SetTradeOfferControlBitmap();
+    if (tradeRow->IsSelectionAllowed() != 0) {
+      tradeRow->DoControlAction();
+      tradeRow->HandleEvent(0x67, this, 0);
+    }
+  }
+}
+#endif

@@ -101,9 +101,6 @@ TTacticalBattle::TTacticalBattle() {
 
 // SYNTHETIC: IMPERIALISM 0x0059f7a0
 // TTacticalBattle::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x0059f7d0
-TTacticalBattle::~TTacticalBattle() {}
-
 // Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the
 // battle, tags each side's units (side20 = 0/1) with a random field24 seed and collects
 // them into recordList20, seeds the selection from the +0x18 side, sizes battlefieldColumnCount34 from
@@ -890,7 +887,6 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
       if (battleView8 != 0) {
         battleView8->InvalidateTacticalUnitTileRect(unit);
       }
-      EvaluateTacticalSideStateAndShowBattleSummaryDialog();
     }
   }
   QueueTacticalEventPacket232A();
@@ -1070,7 +1066,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
   if (candidateCount > 0) {
     int candidateSlot = 0;
     int* walkCursor = candidateTiles;
-    do {
+    while (candidateSlot < candidateCount) {
       int foundDepth =
           BuildPathToTargetByDistanceField(*walkCursor, pathDepth + 1, goalTileIndex, outPathTiles);
       if (foundDepth != -1) {
@@ -1079,7 +1075,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
       }
       ++candidateSlot;
       ++walkCursor;
-    } while (candidateSlot < candidateCount);
+    }
   }
   return -1;
 }

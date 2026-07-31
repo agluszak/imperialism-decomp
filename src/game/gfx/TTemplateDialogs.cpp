@@ -515,7 +515,7 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x00481770
 TA7TemplateDialog::TA7TemplateDialog(void* initParam)
     : CDialog(0xa7, static_cast<CWnd*>(initParam)), text5c() {
-  text5c = "";
+  text5c = g_szEmptyString;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00481800
@@ -593,8 +593,8 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x00481b30
 TABTemplateDialog::TABTemplateDialog(void* initParam)
     : CDialog(0xab, static_cast<CWnd*>(initParam)), text5c(), text60() {
-  text5c = "";
-  text60 = "";
+  text5c = g_szEmptyString;
+  text60 = g_szEmptyString;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00481bf0
@@ -635,8 +635,8 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x00481dc0
 TAETemplateDialog::TAETemplateDialog(void* initParam)
     : CDialog(0xae, static_cast<CWnd*>(initParam)), text5c(), text60() {
-  text5c = "";
-  text60 = "";
+  text5c = g_szEmptyString;
+  text60 = g_szEmptyString;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00481e80
@@ -677,7 +677,7 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x00482050
 TB1TemplateDialog::TB1TemplateDialog(void* initParam)
     : CDialog(0xb1, static_cast<CWnd*>(initParam)), text5c() {
-  text5c = "";
+  text5c = g_szEmptyString;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004820e0

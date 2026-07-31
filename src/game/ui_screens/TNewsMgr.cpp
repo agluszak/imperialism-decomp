@@ -10,7 +10,7 @@
 #include "game/ui_core/TLanguageMgr.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
-#include "game/ui_core/TSortedPtrList.h"
+#include "game/ui_core/TPtrList.h"
 #include "game/map/TZone.h"
 #include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
@@ -44,12 +44,12 @@ IMPLEMENT_DYNCREATE(TNewsMgr, TObject)
 // FUNCTION: IMPERIALISM 0x0055b710
 void TNewsMgr::InitializeNewsManager() {
   for (int i = 0; i < 7; i++) {
-    perNationEventBuckets[i] = new TSortedPtrList();
+    perNationEventBuckets[i] = new TPtrList();
     perNationEventBuckets[i]->recordSize14 = 0x24;
     perNationStoryLastUsedTick[i] = 0;
   }
   storyTemplateCount = 0;
-  sharedEventRecordQueue = new TSortedPtrList();
+  sharedEventRecordQueue = new TPtrList();
   sharedEventRecordQueue->recordSize14 = 0x10;
 }
 
@@ -96,9 +96,9 @@ void TNewsMgr::StartNewsPhase() {
   }
   newsTexStream = g_pAssetMgr->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
   memset(stories, 0, sizeof(stories));
-  short slot = 0;
-  for (TGreatPower** nation = g_apNationStates; nation < &g_apNationStates_End; ++nation, ++slot) {
-    if ((*nation != 0 && (*nation)->diplomacyEligibilityA0 != 0) ||
+  for (short slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    if ((nation != 0 && nation->diplomacyEligibilityA0 != 0) ||
         g_pSimMgr->GetActiveNationId() == slot) {
       CreateNewspaper(slot);
     }
@@ -191,23 +191,38 @@ void TNewsMgr::CreateNewspaper(int nation) {
       if (year < id - 10 || year >= id) {
         continue;
       }
+      story->parmKind[0] = 0;
+      story->parmKind[1] = 0;
+      story->parmKind[2] = 0;
+      story->parmKind[3] = 0;
+      story->entry = *tmpl;
+      story->parmKind[0] = 1;
+      story->feature38 = 1;
+      story->parmValue[0] = 1 << nation;
+      short other;
+      do {
+        other = static_cast<short>(rand() % 7);
+      } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
+      story->parmKind[1] = 1;
+      story->parmValue[1] = 1 << other;
     } else if (id != 1) {
       continue;
+    } else {
+      story->parmKind[0] = 0;
+      story->parmKind[1] = 0;
+      story->parmKind[2] = 0;
+      story->parmKind[3] = 0;
+      story->entry = *tmpl;
+      story->parmKind[0] = 1;
+      story->feature38 = 1;
+      story->parmValue[0] = 1 << nation;
+      short other;
+      do {
+        other = static_cast<short>(rand() % 7);
+      } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
+      story->parmKind[1] = 1;
+      story->parmValue[1] = 1 << other;
     }
-    story->parmKind[0] = 0;
-    story->parmKind[1] = 0;
-    story->parmKind[2] = 0;
-    story->parmKind[3] = 0;
-    story->entry = *tmpl;
-    story->parmKind[0] = 1;
-    story->feature38 = 1;
-    story->parmValue[0] = 1 << nation;
-    short other;
-    do {
-      other = static_cast<short>(rand() % 7);
-    } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
-    story->parmKind[1] = 1;
-    story->parmValue[1] = 1 << other;
     ticks[pick] = static_cast<short>(curTick);
     minor++;
     if (minor == 3) {
@@ -522,7 +537,7 @@ void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplay
   if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->SendNewsEvent(nationSlot, event);
     return;
   }
@@ -535,8 +550,8 @@ void TNewsMgr::AddTreatyEvent(InterNationEventKind eventKind, int nationA, int n
   if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
-    if (g_pSimMgr->difficultyLevel == 1) {
+  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
+    if (g_pSimMgr->multiplayerSessionRole == 1) {
       g_pGameFlowState->CreateAndSendTurnEvent20_ShortAndTwoBytes(
           static_cast<short>(eventKind), static_cast<unsigned char>(nationA),
           static_cast<unsigned char>(nationB));
@@ -589,7 +604,7 @@ void TNewsMgr::AddShortageEvent(int subjectNation, int affectedNation, int relat
   if (g_pSimMgr->gateFlag7a != 0) {
     return;
   }
-  if (isReplayBypass == 0 && g_pSimMgr->difficultyLevel != 0) {
+  if (isReplayBypass == 0 && g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->CreateAndSendTurnEvent21_ThreeBytes(
         static_cast<unsigned char>(subjectNation), static_cast<unsigned char>(affectedNation),
         static_cast<unsigned char>(relatedNation));

@@ -32,6 +32,8 @@ struct TQuickDrawSurfaceContext {
   int field00;
   TQuickDrawBlitSurface blitSurface; // +0x4
 
+  ~TQuickDrawSurfaceContext();
+
   TQuickDrawBlitSurface* GetBlitSurface() {
     return &blitSurface;
   }
@@ -40,6 +42,8 @@ struct TQuickDrawSurfaceContext {
   }
 };
 ASSERT_SIZE(TQuickDrawSurfaceContext, 0x30);
+
+void DisposeGWorld(TQuickDrawSurfaceContext* surface);
 
 struct TBitmapSurfaceNode {
   unsigned char* pixelBits;
@@ -68,11 +72,7 @@ struct TBitmapSurfaceContextDescriptor : public TQuickDrawSurfaceContext {
   const char* debugSourcePath; // +0x30
 
   TBitmapSurfaceContextDescriptor();
-  ~TBitmapSurfaceContextDescriptor() {
-    ReleaseSurfaceNode();
-  }
   bool InitializeSurfaceNode(int width, int height, int bitDepth);
-  void ReleaseSurfaceNode();
 
   TBitmapSurfaceNode** GetPixMapHandle() const {
     return static_cast<TBitmapSurfaceNode**>(blitSurface.surfaceObject);

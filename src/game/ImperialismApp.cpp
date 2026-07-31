@@ -377,13 +377,13 @@ void ImperialismApp::PostStartupCommand100() {
 // FUNCTION: IMPERIALISM 0x00413950
 void ImperialismApp::HandleStartupCommand100() {
   int waitCursorAnchor;
-  BeginWaitCursor();
+  AfxGetApp()->BeginWaitCursor();
   waitCursorAnchorC0 = &waitCursorAnchor;
   if (g_pSimMgr != nullptr) {
     g_pSimMgr->AdvanceGlobalTurnStateMachine();
   }
   waitCursorAnchorC0 = 0;
-  EndWaitCursor();
+  AfxGetApp()->EndWaitCursor();
 }
 
 // FUNCTION: IMPERIALISM 0x004139f0
@@ -399,6 +399,11 @@ void ImperialismApp::RestoreWaitCursorIfStartupBusy() {
 // the vtable slot and the CWinThread base call both prove it is the CWinApp-level override.)
 // FUNCTION: IMPERIALISM 0x00413a20
 BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  if (RuntimeTestDriver::HandleMessage(pMsg)) {
+    return TRUE;
+  }
+#endif
   RefreshBackdropOnInputMessages(pMsg);
   return CWinThread::PreTranslateMessage(pMsg);
 }

@@ -11,6 +11,10 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeObservation.h"
+#include "RuntimeTestDriver.h"
+#endif
 
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
@@ -51,6 +55,9 @@ TWindow::~TWindow() {
   POSITION modalPos = g_ModalViewStack.Find(this);
   if (modalPos != NULL) {
     g_ModalViewStack.RemoveAt(modalPos);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveModalPopped);
+#endif
     if (!g_ModalViewStack.IsEmpty()) {
       TWindow* modalTop = g_ModalViewStack.GetHead();
       modalTop->AssertValid();
@@ -142,6 +149,9 @@ int TWindow::PoseModally() {
   POSITION pos = g_ModalViewStack.Find(this);
   if (pos != NULL) {
     g_ModalViewStack.RemoveAt(pos);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTestDriver::ObserveDeferred(kObserveModalPopped);
+#endif
     if (!g_ModalViewStack.IsEmpty()) {
       TWindow* top = g_ModalViewStack.GetHead();
       top->AssertValid();

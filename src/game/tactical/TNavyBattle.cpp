@@ -18,8 +18,6 @@
 
 // SYNTHETIC: IMPERIALISM 0x005a54d0
 // TNavyBattle::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005a5500
-TNavyBattle::~TNavyBattle() {}
 
 // SYNTHETIC: IMPERIALISM 0x005a5520
 // TNavyBattle::GetRuntimeClass
@@ -259,7 +257,8 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       return;
     }
   }
-  if (unit->state1c != 0 || battleOutcomeCode44 != 0) {
-    QueueTacticalEventPacket232A();
+  if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
+    return;
   }
+  QueueTacticalEventPacket232A();
 }

@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/app/TObject.h"
 #include "game/mfc.h"
+#include "game/resource_domain_types.h"
 #include "game/ui_widgets/TradeDealEntry.h"
 
 class TStream;
@@ -49,12 +50,11 @@ public:
   virtual void OfferItemDeals(short item);  // 0x15 0x5b9060
   virtual void StartDeals();                // 0x16 0x5b9190
   virtual void OfferTradeDeals();           // 0x17 0x5b9410
-  // Mac names this SetDealResults and declares five shorts plus two unsigned chars.
-  // The Windows body consumes argument slots 2..5 as dwords and narrows only at the
-  // nation/resource APIs, so preserve those Windows widths here.
-  virtual void SetDealResults(short sourceNation, int targetNation, int amount, int maximumAmount,
-                              int commodityType, char shortfallFlag,
-                              char remoteReplay);                   // 0x18 0x5b94d0
+  // ORACLE: Mac names this SetDealResults and declares five shorts plus two unsigned chars.
+  virtual void SetDealResults(NationSlot sourceNation, NationSlot targetNation, short amount,
+                              short maximumAmount, ResourceKindStorage commodityType,
+                              unsigned char shortfallFlag,
+                              unsigned char remoteReplay);          // 0x18 0x5b94d0
   virtual void UpdatePrice(short item, short value);                // 0x19 0x5b9790
   virtual void RunNationUpdatePassesAndResetTransitionFlags();      // 0x1a 0x5b97c0
   virtual void SetMinorsTradeBids();                                // 0x1b 0x5b9890

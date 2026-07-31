@@ -13,7 +13,8 @@ public:
   void INavyAutoPlayer(TTaskForce* force, char isOurSide, int nationIndex);
 
   DECLARE_DYNCREATE(TNavyAutoPlayer)
-  virtual ~TNavyAutoPlayer() override;              // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x0059f0a0
+  virtual ~TNavyAutoPlayer() override {}            // slot 0x01 (scalar deleting destructor)
   virtual void StartBattle() override;              // slot 0x0a 0x59f110
   virtual void AdvanceTacticalTurnPulse() override; // slot 0x0b 0x59f160
 

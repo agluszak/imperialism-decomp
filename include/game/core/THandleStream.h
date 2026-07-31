@@ -8,7 +8,8 @@
 class THandleStream : public TStream {
 public:
   // clang-format off
-  virtual ~THandleStream() override; // slot 0x01 (scalar deleting destructor)
+  // NOOP: verified empty in original 0x00489640
+  virtual ~THandleStream() override {} // slot 0x01 (scalar deleting destructor)
   virtual void Free() override; // slot 0x07 0x4896a0
   // slots 0x0a..0x0d: position/length accessors below
   // slot 0x1e WriteBytes owned by the hand declaration below (0x489810)

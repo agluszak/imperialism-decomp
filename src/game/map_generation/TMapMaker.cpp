@@ -618,6 +618,9 @@ void TMapMaker::RunMapGenerationAttempt() {
   signed char* regionClassGridFlat = &regionClassGrid10[0][0];
 
   for (int classIndex = 0; classIndex < 7; ++classIndex) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+    }
     int assigned;
     do {
       cityRegionIds200[classIndex] = -1;
@@ -644,6 +647,9 @@ void TMapMaker::RunMapGenerationAttempt() {
   }
 
   for (int minorClassIndex = 7; minorClassIndex < 0x17; ++minorClassIndex) {
+    if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+      g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+    }
     int parity = (minorClassIndex - 7) >> 2;
     int assigned;
     do {
@@ -942,6 +948,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
     int direction = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
     remaining -= SeedMountainRange(tileIndex, retryBudget, direction);
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
     if (mapTileGrid08[hillsSrcTile * 0x24] != kStrategicTerrainMountain) {
@@ -958,6 +967,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       }
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   while (hillsQuota > 0) {
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -967,8 +979,14 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       --hillsQuota;
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   CreateDeserts();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   bool urgentFlag = false;
   while (forestQuota > 0) {
@@ -979,9 +997,15 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
       urgentFlag = true;
     }
   }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
 
   for (;;) {
     if (swampQuota < 1) {
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+      }
       for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
         if (mapTileGrid08[fillTile * 0x24] == kStrategicTerrainPlains) {
           g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
@@ -989,6 +1013,9 @@ void TMapMaker::PlaceTerrainFeatureQuotas() {
             mapTileGrid08[fillTile * 0x24] = kStrategicTerrainFarmland;
           }
         }
+      }
+      if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+        g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
       }
       CreateRivers();
       return;
@@ -1105,21 +1132,29 @@ static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direc
                                     : g_hexColOffsetOddRow_00697480[direction];
   int col = tileIndex % 0x6c + colOffset;
   int row = parity + g_hexRowOffset_00697468[direction];
-  if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0) {
-    if (col < 0) {
-      col += 0x6c;
-    } else if (col > 0x6b) {
-      col -= 0x6c;
-    }
-    if (row < 0 || row > 0x3b) {
+  // 0x528c62..0x528c9f. The flag byte (g_pGlobalMapState+0x20) selects only how the
+  // COLUMN is handled: zero wraps it, nonzero rejects it outright -- so the name reads
+  // backwards, since zero is the wrapping topology. Both paths then converge on the
+  // same row validation at 0x528c86, which is the join target of the bounded path's
+  // `cmp ecx,0x6c / jl 0x528c86` as well as the wrap path's fallthrough. Our port
+  // duplicated the row check into the wrapping branch only, so a bounded map returned
+  // col + row*108 for row -1 or row 60 -- an out-of-grid index handed to callers that
+  // index, recurse on, memcpy from, and form pointers into mapTileGrid08.
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally != 0) {
+    if (col < 0 || col >= 0x6c) {
       return -1;
     }
-    return col + row * 0x6c;
+  } else {
+    if (col < 0) {
+      col += 0x6c;
+    } else if (col >= 0x6c) {
+      col -= 0x6c;
+    }
   }
-  if (col >= 0 && col < 0x6c) {
-    return col + row * 0x6c;
+  if (row < 0 || row >= 0x3c) {
+    return -1;
   }
-  return -1;
+  return col + row * 0x6c;
 }
 
 // Recursively claims `tileIndex` as forest, plus a variant byte at +0x13 chosen by

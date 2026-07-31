@@ -9,7 +9,8 @@
 class TTrainingOrder : public TProductionOrder {
 public:
   DECLARE_DYNCREATE(TTrainingOrder)
-  virtual ~TTrainingOrder() override;                // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004b6b00
+  virtual ~TTrainingOrder() override {}              // slot 0x01 (scalar deleting destructor)
   virtual bool SetQuantity(short quantity) override; // slot 0x0b 0x4b6cd0
   virtual short MaxOrder() override;                 // slot 0x0c 0x4b6b90
   virtual void Produce() override;                   // slot 0x0d 0x4b6e30

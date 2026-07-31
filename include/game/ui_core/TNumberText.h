@@ -23,7 +23,10 @@ public:
   virtual void SetControlValue(int val, int refresh); // slot 0x79 (0x4910e0)
   virtual int UpdateControlCachedIntFromWindowText(); // slot 0x7a (0x4911c0)
 
-  TNumberText(); // constructor (0x429500)
+  // FUNCTION: IMPERIALISM 0x00429500
+  TNumberText() : TEditText() {
+    value = 0;
+  }
   void INumberText(TView* panel, int* offsetLayout, int* sizeLayout, int value, int minimumValue,
                    int maximumValue);
 };

@@ -78,7 +78,6 @@ short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b
 
 // SYNTHETIC: IMPERIALISM 0x0059b170
 // TArmyPlayer::~TArmyPlayer
-TArmyPlayer::~TArmyPlayer() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059b190
 // TArmyPlayer::GetRuntimeClass
@@ -613,13 +612,16 @@ int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
 void TArmyPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
-  do {
+  while (true) {
     unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
     ++ordinal;
     if (unit->tileIndex8 == -2) {
       break;
     }
-  } while (ordinal <= unitList4->GetCount());
+    if (ordinal > unitList4->GetCount()) {
+      break;
+    }
+  }
 
   if (ordinal > unitList4->GetCount()) {
     sideReadyFlag10 = 1;
@@ -1886,16 +1888,16 @@ TArmyPlayer::BuildTacticalActionClassAndPositionFlags(TacticalTileIndex referenc
 
 // FUNCTION: IMPERIALISM 0x0059e9c0
 int TArmyPlayer::GetMinimumActiveUnitRangeForStates2Or4() {
-  int minimumRange = 1000;
+  int minimumActionPoints = 1000;
   CIterator iter(unitList4);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
        unit = static_cast<TTacticalUnit*>(iter.Advance())) {
     if (unit->state1c == 0 && (unit->aiStateCode2c == 4 || unit->aiStateCode2c == 2) &&
-        unit->GetUnitRange() < minimumRange) {
-      minimumRange = unit->GetUnitRange();
+        unit->GetBaseActionPoints() < minimumActionPoints) {
+      minimumActionPoints = unit->GetBaseActionPoints();
     }
   }
-  return minimumRange;
+  return minimumActionPoints;
 }
 
 // Mac oracle: TArmyPlayer::SwitchToAutoPlay(). The side's +0x0e confirmation flag

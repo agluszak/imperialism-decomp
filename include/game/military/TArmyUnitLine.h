@@ -9,7 +9,8 @@ class TMilitaryUnit;
 class TArmyUnitLine : public TLineData {
 public:
   DECLARE_DYNCREATE(TArmyUnitLine)
-  virtual ~TArmyUnitLine() override; // slot 0x01 (scalar deleting destructor)
+  // FUNCTION: IMPERIALISM 0x004a8d90
+  virtual ~TArmyUnitLine() override {} // slot 0x01 (scalar deleting destructor)
   virtual void InstallViews(TView* panel, int* offsetLayout) override; // slot 0x0a 0x4a8df0
 
   TArmyUnitLine();

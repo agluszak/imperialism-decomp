@@ -268,7 +268,7 @@ unsigned char TNetMgr::ResetRuntimeProtocolOptionsAndRebuildSelectionSource(TVie
   g_NetworkSessionManager006a5f60.activeProtocolControlB0->AssertValid();
 
   for (int index = 0; index < g_WNetSerializedPtrArrayA006a5f10.GetSize(); ++index) {
-    delete static_cast<RuntimeSelectionRecord*>(g_WNetSerializedPtrArrayA006a5f10[index]);
+    delete g_WNetSerializedPtrArrayA006a5f10[index];
   }
   g_WNetSerializedPtrArrayA006a5f10.RemoveAll();
   unsigned char result = g_NetworkSessionManager006a5f60.RebuildRuntimeSelectionSource();
@@ -281,7 +281,7 @@ unsigned char TNetMgr::OpenRuntimeSelectionSourceByIndexAndCopyPath(int index, i
                                                                     const char* seed) {
   (void)flag;
   strncpy(g_NetworkSessionManager006a5f60.runtimeSelectionSeed88, seed, 0x20);
-  const GUID* sessionGuid = static_cast<const GUID*>(g_WNetSerializedPtrArrayA006a5f10[index]);
+  const GUID* sessionGuid = &g_WNetSerializedPtrArrayA006a5f10[index]->providerGuid;
   unsigned char result =
       g_NetworkSessionManager006a5f60.InitializeDirectPlayForProviderGuidOrEnumerate(sessionGuid);
   if (result == 0) {
@@ -488,9 +488,8 @@ int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   probe.messageLength = 0x1c;
   probe.replyRequestFlag18 = 0;
   probe.nationMask19 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
-  int slot = 0;
-  for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
-    TGreatPower* nation = *cell;
+  for (int slot = 0; slot < 7; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
     if (nation != 0 && nation->diplomacyEligibilityA0 != 0 && nation->IsRemote() != 0) {
       if (g_pGameFlowState->nationSessionIds[slot] == -2) {
         awolBitmask += 1 << slot;

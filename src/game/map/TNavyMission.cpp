@@ -376,7 +376,7 @@ void TNavyMission::GiveOrders() {
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
-  return missionTargetZone->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return missionTargetZone->GetSafestNearbyZoneFor(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0
@@ -743,6 +743,41 @@ float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) 
   }
   return numerator / denominator;
 }
+// Out-of-line member sibling of AccumulateNavyOrderCategoryVectorWithScale below (no
+// retail callers survive; kept for byte coverage): the per-ship weight is derived here
+// from the ship's hop distance to the mission's active target zone (clamped to 5,
+// indexed into the decay table) and signed by `positive` (+1.0/-1.0 double constants),
+// then categories 0-2 accumulate scaled by (strength/normalization)*weight and
+// category 3 by the signed weight alone.
+// FUNCTION: IMPERIALISM 0x00537b20
+void TNavyMission::AccumulateShipCategoryVectorWithDistanceDecay(TShip* ship, float* vector,
+                                                                 char positive) {
+  short distanceIndex = 0;
+  if (GetActiveTargetZoneByState28() != 0) {
+    distanceIndex = ship->GetTurnDistanceTo(GetActiveTargetZoneByState28());
+  }
+  if (distanceIndex > 5) {
+    distanceIndex = 5;
+  }
+  float weight =
+      static_cast<float>((positive != 0 ? g_Recompute_Nation_Order_LookupTable_0065AA08
+                                        : g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                         g_MissionOrderDistanceDecayWeightTable_006978c8[distanceIndex]);
+  float ratio = static_cast<float>(ship->strength / ship->GetMaxStrength()) * weight;
+  vector[0] =
+      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * ratio +
+      vector[0];
+  vector[1] =
+      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * ratio +
+      vector[1];
+  vector[2] =
+      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * ratio +
+      vector[2];
+  vector[3] =
+      static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * weight +
+      vector[3];
+}
+
 // 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.
 // FUNCTION: IMPERIALISM 0x00537c60
 void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,

@@ -1,12 +1,10 @@
 #include "game/nation/TTurnStartEvent.h"
 
 // FUNCTION: IMPERIALISM 0x004e6610
-void TTurnStartEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {}
+void TTurnStartEvent::RegainIndependence() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e6630
 // TTurnStartEvent::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x004e6660
-TTurnStartEvent::~TTurnStartEvent() {}
 // SYNTHETIC: IMPERIALISM 0x004e65e0
 // TTurnStartEvent::CreateObject
 

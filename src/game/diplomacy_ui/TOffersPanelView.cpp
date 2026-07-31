@@ -149,7 +149,11 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
           hasEntanglements = true;
         }
       }
-      g_pSimMgr->GetString(0x274a, hasEntanglements ? 8 : 1, &templateText);
+      if (hasEntanglements) {
+        g_pSimMgr->GetString(0x274a, 8, &templateText);
+      } else {
+        g_pSimMgr->GetString(0x274a, 1, &templateText);
+      }
       scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(targetNationName));
       break;
@@ -170,7 +174,11 @@ char TOffersPanelView::PoseOffer(short sourceNation, short targetNation, short o
           hasEntanglements = true;
         }
       }
-      g_pSimMgr->GetString(0x274a, hasEntanglements ? 9 : 3, &templateText);
+      if (hasEntanglements) {
+        g_pSimMgr->GetString(0x274a, 9, &templateText);
+      } else {
+        g_pSimMgr->GetString(0x274a, 3, &templateText);
+      }
       scanBracketExpressions(g_pSimMgr, &proposalText, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(targetNationName));
       break;

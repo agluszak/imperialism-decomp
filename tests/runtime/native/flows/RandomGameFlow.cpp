@@ -7,9 +7,9 @@ void RandomGameFlow::Start(RuntimeScenario& scenario) {
   mainMenuFlow.Start(scenario);
 }
 
-RuntimeFlowStatus RandomGameFlow::Tick(RuntimeScenario& scenario) {
+RuntimeFlowStatus RandomGameFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kMainMenu) {
-    RuntimeFlowStatus status = mainMenuFlow.Tick(scenario);
+    RuntimeFlowStatus status = mainMenuFlow.Advance(scenario);
     if (status != kRuntimeFlowCheckpoint) {
       return status;
     }
@@ -19,7 +19,7 @@ RuntimeFlowStatus RandomGameFlow::Tick(RuntimeScenario& scenario) {
     return kRuntimeFlowRunning;
   }
   if (phase == kRandomSetup) {
-    RuntimeFlowStatus status = randomSetupFlow.Tick(scenario);
+    RuntimeFlowStatus status = randomSetupFlow.Advance(scenario);
     if (status != kRuntimeFlowCheckpoint) {
       return status;
     }
@@ -29,7 +29,7 @@ RuntimeFlowStatus RandomGameFlow::Tick(RuntimeScenario& scenario) {
     return kRuntimeFlowRunning;
   }
   if (phase == kStrategicMapEntry) {
-    return strategicMapEntryFlow.Tick(scenario);
+    return strategicMapEntryFlow.Advance(scenario);
   }
   return kRuntimeFlowComplete;
 }

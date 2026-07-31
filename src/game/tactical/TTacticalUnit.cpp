@@ -26,8 +26,6 @@ float TTacticalUnit::GetDamageScale() {
 
 // SYNTHETIC: IMPERIALISM 0x005a5dc0
 // TTacticalUnit::`scalar deleting destructor'
-// FUNCTION: IMPERIALISM 0x005a5df0
-TTacticalUnit::~TTacticalUnit() {}
 // SYNTHETIC: IMPERIALISM 0x005a5d10
 // TTacticalUnit::CreateObject
 
