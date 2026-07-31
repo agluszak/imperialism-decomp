@@ -5,9 +5,16 @@ Joins reccmp's structured machine-level verdicts with the p-code call-contract
 report and partitions the population by what actually matters: functions where
 the recompiled game plausibly BEHAVES differently from retail (wrong callee,
 wrong arguments, missing calls, wrong data or control flow).  Compiler-shape
-noise -- inline-collapsed base ctors/dtors, provenance wobble -- is positively
-identified, labeled, and suppressed from the actionable tiers, never emitted
-as work.
+noise -- inline-collapsed base ctors/dtors, provenance wobble, library value
+construction -- is positively identified, labeled, and suppressed from the
+actionable tiers, never emitted as work.
+
+Correspondence is never invented.  A `different_callee` claim means the same
+values reached a different target, or that exactly one candidate remained on
+each side; leftovers with no such evidence are reported as the one-sided work
+they are.  (Pairing them positionally, as this once did, manufactured 23 wrong
+callees for TViewMgr::ShowTerrainMap whose only real one-sided differences were
+CString temporaries.)
 
 Tiers:
   1  proven divergence   reccmp ``mismatch`` (the trusted machine-level proof),
@@ -69,7 +76,9 @@ CONTRACT_BUCKET_RANK = {
     "same_callee_arity": 2,
     "kind_flip": 3,
 }
-SUPPRESSED_BUCKETS = frozenset({"inline_collapse_ctor_dtor", "provenance_noise"})
+SUPPRESSED_BUCKETS = frozenset(
+    {"inline_collapse_ctor_dtor", "provenance_noise", "library_value_churn"}
+)
 
 CTOR_DTOR_MARKERS = ("`scalar deleting destructor'", "`vector deleting destructor'")
 
@@ -247,12 +256,60 @@ def _arg_count(call: dict[str, Any]) -> int:
     return len(arguments) if isinstance(arguments, list) else -1
 
 
+def _callee_address(call: dict[str, Any]) -> int | None:
+    kind, identity = callee_identity(call)
+    if kind != "direct" or not isinstance(identity, str) or not identity.startswith("0x"):
+        return None
+    return int(identity, 16)
+
+
+def _is_library_construction(
+    call: dict[str, Any], names: dict[int, str], ownership: dict[int, str]
+) -> bool:
+    """A one-sided call that only builds or tears down a library value.
+
+    A CString temporary constructed in one image and assigned in the other is
+    construction shape, not behaviour: the game state it produces is identical.
+    Attribution is positive on BOTH counts -- the callee must be library-owned
+    *and* parse as a constructor, destructor or assignment -- so a genuinely
+    dropped game call can never reach this bucket.
+    """
+    address = _callee_address(call)
+    if address is None or ownership.get(address) != "library":
+        return False
+    name = _target_name(call, names)
+    if not name:
+        return False
+    if parse_ctor_dtor(name) is not None:
+        return True
+    return name.rsplit("::", 1)[-1].startswith("operator=")
+
+
+def _corresponds(call: dict[str, Any], other: dict[str, Any]) -> int | None:
+    """Whether two leftover calls can be said to occupy the same slot.
+
+    Identical argument lists are the only evidence that survives scrutiny: the
+    same values flowing to a different target is a wrong callee. Matching kind
+    and arity is NOT evidence -- nearly every one-argument direct call matches
+    every other, which is positional zipping with extra steps.
+
+    `None` means no correspondence, and claiming a wrong-callee pair anyway
+    would be an invention.
+    """
+    arguments = call.get("arguments")
+    if isinstance(arguments, list) and arguments == other.get("arguments"):
+        return 0
+    return None
+
+
 def classify_contract_row(
     row: dict[str, Any],
     names: dict[int, str],
     ctor_index: CtorDtorIndex,
+    ownership: dict[int, str] | None = None,
 ) -> dict[str, Any]:
     """Bucket a contract-mismatch row's missing/extra multisets."""
+    ownership = ownership or {}
     missing = _expand(row.get("missing"))
     extra = _expand(row.get("extra"))
     buckets: Counter[str] = Counter()
@@ -363,14 +420,61 @@ def classify_contract_row(
             continue
         leftovers.append(call)
 
-    # Phase 5: leftovers pair as wrong callee; one-sided rows are missing or
-    # extra real work.
-    for call, other in zip(leftovers, remaining_extra):
-        note("different_callee", call, other)
-    for call in leftovers[len(remaining_extra) :]:
-        note("missing_call", call, None)
-    for other in remaining_extra[len(leftovers) :]:
-        note("extra_call", None, other)
+    # Phase 5: a wrong-callee claim needs evidence that the two calls occupy the
+    # same slot -- identical arguments, or at least the same kind and arity.
+    # Pairing the leftovers positionally (what this used to do) manufactured
+    # `different_callee` out of two calls that had nothing to do with each
+    # other: TViewMgr::ShowTerrainMap reported 23 wrong callees when its only
+    # one-sided differences were CString temporaries.  Strongest matches first,
+    # so an exact-argument pair is never consumed by a weaker one.
+    paired: list[tuple[int, int, int]] = sorted(
+        (strength, call_index, extra_index)
+        for call_index, call in enumerate(leftovers)
+        for extra_index, other in enumerate(remaining_extra)
+        for strength in (_corresponds(call, other),)
+        if strength is not None
+    )
+    used_calls: set[int] = set()
+    used_extras: set[int] = set()
+    for _, call_index, extra_index in paired:
+        if call_index in used_calls or extra_index in used_extras:
+            continue
+        used_calls.add(call_index)
+        used_extras.add(extra_index)
+        note("different_callee", leftovers[call_index], remaining_extra[extra_index])
+
+    # An unambiguous 1:1 leftover is still a wrong-callee pair: with exactly one
+    # candidate on each side the pairing is forced, not chosen.  Ambiguity is
+    # what made positional zipping wrong, so this only applies when no choice
+    # exists.
+    unpaired_calls = [i for i in range(len(leftovers)) if i not in used_calls]
+    unpaired_extras = [i for i in range(len(remaining_extra)) if i not in used_extras]
+    if len(unpaired_calls) == 1 and len(unpaired_extras) == 1:
+        used_calls.add(unpaired_calls[0])
+        used_extras.add(unpaired_extras[0])
+        note(
+            "different_callee",
+            leftovers[unpaired_calls[0]],
+            remaining_extra[unpaired_extras[0]],
+        )
+
+    # Whatever is left is genuinely one-sided.  Library construction and
+    # teardown is shape, not behaviour, and is labelled as such rather than
+    # inflating the missing/extra work counts.
+    for index, call in enumerate(leftovers):
+        if index in used_calls:
+            continue
+        if _is_library_construction(call, names, ownership):
+            note("library_value_churn", call, None)
+        else:
+            note("missing_call", call, None)
+    for index, other in enumerate(remaining_extra):
+        if index in used_extras:
+            continue
+        if _is_library_construction(other, names, ownership):
+            note("library_value_churn", None, other)
+        else:
+            note("extra_call", None, other)
 
     actionable = {
         bucket: count
@@ -458,7 +562,7 @@ def sweep(
 
         contract_status = (contract or {}).get("status")
         if contract is not None and contract_status == "mismatch":
-            diagnosis = classify_contract_row(contract, names, ctor_index)
+            diagnosis = classify_contract_row(contract, names, ctor_index, ownership)
             if diagnosis["divergent"]:
                 worst = min(
                     (
