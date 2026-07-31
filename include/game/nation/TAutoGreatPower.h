@@ -32,7 +32,8 @@ public:
   void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
   // slot 0x19 — 0x004ea290: add region and queue a map-action mission.
   void AddRegionIdToNationOwnedRegionList(int regionId) override;
-  // slot 0x20 — 0x004e7630: resource delta with need clamp before base totals.
+  // slot 0x20 — 0x004e7630: negative resource deltas reduce the matching AI action
+  // metric (slots 7..12) before the base applies the nation-total update.
   void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                       int multiplier) override;
   // slot 0x23 — 0x004e7b50: proposal queue with alliance guards.

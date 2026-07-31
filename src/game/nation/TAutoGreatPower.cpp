@@ -263,7 +263,7 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x004e7510
 void TAutoGreatPower::SorryYouLose(void) {
-  if (g_pSimMgr->difficultyLevel != 0) {
+  if (g_pSimMgr->multiplayerSessionRole != 0) {
     g_pGameFlowState->DispatchTaggedGameStateEvent1F20(kControlTagLost, this->nationSlot, -3);
   }
 }
@@ -293,9 +293,11 @@ void TAutoGreatPower::RaiseNeedPlanningMetrics(int needSlot) {
 // FUNCTION: IMPERIALISM 0x004e7630
 void TAutoGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                                      int multiplier) {
-  if (delta < 0 && resourceIndex > 6 && resourceIndex < 0x0D) {
-    this->needCurrentByType[resourceIndex] =
-        static_cast<short>(this->needCurrentByType[resourceIndex] + delta);
+  short resourceSlot = static_cast<short>(resourceIndex);
+  short resourceDelta = static_cast<short>(delta);
+  if (resourceDelta < 0 && resourceSlot > 6 && resourceSlot < 0x0D) {
+    this->actionMetricByQuarter[resourceSlot - 7] =
+        static_cast<short>(this->actionMetricByQuarter[resourceSlot - 7] + resourceDelta);
   }
 
   TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(resourceIndex, delta, multiplier);
@@ -1224,9 +1226,9 @@ void TAutoGreatPower::SetEnemy(int targetNation) {
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
            ownerTag < 100) ||
           199 < ownerTag) {
-        g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
-            static_cast<short>(targetNation));
-        short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+        short portZoneId = g_pActiveMapOrderContext
+                               ->FindFirstPortZoneContextByNation(static_cast<short>(targetNation))
+                               ->GetContextOrdinalOrInvalid();
         this->portZoneStateFlags[portZoneId] = 1;
       }
     }
@@ -1238,8 +1240,9 @@ void TAutoGreatPower::StopBeingEnemiesWith(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
-      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
-      short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+      short portZoneId = g_pActiveMapOrderContext
+                             ->FindFirstPortZoneContextByNation(static_cast<short>(targetNation))
+                             ->GetContextOrdinalOrInvalid();
       this->portZoneStateFlags[portZoneId] = 0;
     }
   }
@@ -1309,7 +1312,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   TZone* portZone =
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   TZone* firstOrder = portZone->primaryNeighbors[0];
-  short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
+  short portZoneId = firstOrder->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[portZoneId] = 1;
   this->CreateMission(kMissionTypeDefendProvince, -1, firstOrder, -1);
 }
@@ -1564,7 +1567,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
     mission->Reassess();
   }
 
-  PruneInvalidTrackedEntriesAndNotifyOwner();
+  TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner();
   UpdateTrackedEntryEligibilityByClassMaskAndRatio(0);
   AssignTrackedEntryActionsByProfileToOrdersOrUnits(0);
   PlanAiDevelopmentActionsFromResourcePools(0);

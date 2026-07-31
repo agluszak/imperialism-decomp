@@ -1,7 +1,13 @@
 #include "game/map/TMapMgr.h"
+#include "game/globals/game_session_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0050ec60
 Province::Province() {}
+
+// FUNCTION: IMPERIALISM 0x0050e2c0
+ProvinceIndex Province::GetIndex() const {
+  return static_cast<ProvinceIndex>(this - g_pGlobalMapState->cityScoreTable);
+}
 
 // FUNCTION: IMPERIALISM 0x0054ae90
 Province& Province::operator=(const Province& source) {

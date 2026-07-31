@@ -141,6 +141,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
 
   do {
     if (PtInRect(legendRect, point) != 0) {
+      candidateOrdinal = 0;
       TLongintList* ownerNationProvinceCollection =
           g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
       provinceCount = ownerNationProvinceCollection->GetSize();
@@ -178,11 +179,15 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
           provinceCount = ownerNationProvinceCollection->GetSize();
         } while (provinceOrdinal <= provinceCount);
       }
+      if (candidateOrdinal > 0) {
+        *currentLegendSelectionCounter =
+            static_cast<unsigned short>(*currentLegendSelectionCounter % candidateOrdinal);
+      }
     }
     currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
     slotIndex = slotIndex + 1;
     legendRect = legendRect + 1;
-    if (g_pActiveCityDialogLegendSelectionOwner <= currentLegendSelectionCounter) {
+    if (currentLegendSelectionCounter >= g_awCivilianLegendSelectionCountsBySlot + 16) {
       return;
     }
   } while (true);

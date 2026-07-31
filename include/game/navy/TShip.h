@@ -34,6 +34,9 @@ public:
   // collides with an existing ship's. Seeds strength from the type's stock cap and
   // notifies the zone. 0x0054f7b0, __thiscall.
   void IShip(short shipType, TZone* zone, short nationArg, const char* nameOverride);
+  // Mac oracle: NameThyself(). Generates a nation-specific display name and retries
+  // while another ship owns the same name. 0x0054fbf0.
+  void NameThyself();
   // Parent map-order entry this node is queued under (cleared by ReassignToForce /
   // the entry-side prune paths).
   TTaskForce* taskForce;

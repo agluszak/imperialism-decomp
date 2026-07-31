@@ -223,16 +223,13 @@ void TForeignMinister::ArrangeMaterialsOffers() {
   TGreatPower* owner = this->ownerContextAt04;
 
   if (interiorBidResource10 != kNoInteriorBidResource) {
-    TSortedByRelationshipList* relationshipList =
-        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
+    TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
+    relationshipList->ISortedByRelationshipList();
+    g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 1, relationshipList);
+    short* nationSlotPtr = static_cast<short*>(
+        relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
+    g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource10, owner->nationSlot);
     if (relationshipList != 0) {
-      relationshipList->recordSize14 = 4;
-    }
-    if (relationshipList != 0) {
-      g_pDiplomacyTurnStateManager->BuildRelationshipList(owner->nationSlot, 1, relationshipList);
-      short* nationSlotPtr = static_cast<short*>(
-          relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
-      g_apNationStates[*nationSlotPtr]->SetTradeOffersFor(interiorBidResource10, owner->nationSlot);
       relationshipList->ReleasePtrList();
     }
   }
@@ -254,8 +251,7 @@ void TForeignMinister::ArrangeMaterialsOffers() {
           foundFallbackNation = true;
         }
       }
-      trialIndex = trialIndex + 1;
-    } while (trialIndex < 0x14);
+    } while (trialIndex++ < 0x14);
     if (foundFallbackNation) {
       g_apNationStates[fallbackNationSlot]->SetTradeOffersFor(5, owner->nationSlot);
     }
@@ -299,13 +295,13 @@ void TForeignMinister::DoUsualSubsidyRule() {
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
         short metric = owner->GetStockpile(orderKind);
         if (metric == 0) {
-          owner->SetTradeOffersFor(orderKind, 0);
+          owner->SetItemPotentials(orderKind, 0);
         } else {
           int assignAmount = static_cast<int>(metric) / 2;
           if (assignAmount > 4) {
             assignAmount = 5;
           }
-          owner->SetTradeOffersFor(orderKind, static_cast<short>(assignAmount));
+          owner->SetItemPotentials(orderKind, static_cast<short>(assignAmount));
         }
       }
       orderKindCursor = orderKindCursor + 1;
@@ -322,10 +318,10 @@ void TForeignMinister::DoUsualSubsidyRule() {
       if (assignAmount > 4) {
         assignAmount = 5;
       }
-      owner->SetTradeOffersFor(5, static_cast<short>(assignAmount));
+      owner->SetItemPotentials(5, static_cast<short>(assignAmount));
       return;
     }
-    owner->SetTradeOffersFor(5, 0);
+    owner->SetItemPotentials(5, 0);
   }
 }
 

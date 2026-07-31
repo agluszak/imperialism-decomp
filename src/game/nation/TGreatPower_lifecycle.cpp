@@ -977,19 +977,14 @@ void TGreatPower::SorryYouLose(void) {
 
 // FUNCTION: IMPERIALISM 0x004daf30
 void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void) {
-  static const short kNationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
-                                               0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
+  int nationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
+                               0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
 
   if (this->IsRemote() != 0) {
     return;
   }
 
-  TSimMgr* localizationRuntime = g_pSimMgr;
-  int localeIndex = 0;
-  if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->difficultyLevel;
-  }
-  int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
+  int compileThreshold = g_anGreatPowerCompileThresholdByLocale[g_pSimMgr->difficultyLevel];
   if (compileThreshold > static_cast<int>(this->pressureCounter)) {
     return;
   }
@@ -1003,19 +998,14 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
   int interactionScore = 0;
 
-  const short* nationCursor = kNationPriorityOrder;
+  int* nationCursor = nationPriorityOrder;
   while (*nationCursor != -1) {
     if (interactionScore + this->treasuryValue10 >= 0) {
       break;
     }
 
-    short nationSlot = *nationCursor;
+    short nationSlot = static_cast<short>(*nationCursor);
     TCity* cityPtr = this->city;
-    if (cityPtr == 0) {
-      ++nationCursor;
-      continue;
-    }
-
     short* relationDeltaPtr = (&cityPtr->cityStockCottonB6) + nationSlot;
     short relationDelta = *relationDeltaPtr;
     if (relationDelta > 0) {
@@ -1024,25 +1014,37 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
       cityPtr->VerifyStocks();
 
-      TTradeMgr* nationInteractionState = g_pTradeMgr;
-      if (nationInteractionState != 0) {
-        interactionScore = g_pTradeMgr->GetPrice(nationSlot);
+      int price = g_pTradeMgr->GetPrice(nationSlot);
+      interactionScore = static_cast<int>(static_cast<float>(interactionScore) -
+                                          static_cast<float>(price * relationDelta) *
+                                              g_Compute_Advisory_Handler_LookupTable_00653714);
+
+      if (summaryMessageRef != "") {
+        summaryMessageRef += g_szListSeparator_00695760;
       }
+
+      CString amountText;
+      amountText.Format(g_szDecimalFormat, static_cast<int>(relationDelta));
+      summaryMessageRef += amountText + s_szSpaceSeparator_00695794;
+
+      CString commodityName;
+      g_pSimMgr->GetStringPrelude(nationSlot, &commodityName);
+      summaryMessageRef += commodityName;
     }
 
     ++nationCursor;
   }
 
-  this->AddToTreasury(0);
+  this->AddToTreasury(interactionScore);
 
   if (interactionScore > 0) {
-    CString scoreHeaderRef;
-    CString scoreTextRef;
-    if (localizationRuntime != 0) {
-      localizationRuntime->GetString(0x274b, 0, &scoreHeaderRef);
-      localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore), &scoreTextRef);
-    }
-    g_pViewMgr->ModalMessage(scoreTextRef, g_ptGreatPowerModalMessage, 2, 0);
+    CString headerText;
+    CString currencyText;
+    g_pSimMgr->GetString(0x274b, 0, &headerText);
+    g_pSimMgr->NumToCurrency(interactionScore, &currencyText);
+    headerText += currencyText + ": \n";
+    summaryMessageRef += headerText;
+    g_pViewMgr->ModalMessage(summaryMessageRef, g_ptGreatPowerModalMessage, 2, 0);
   }
 }
 

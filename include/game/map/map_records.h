@@ -88,6 +88,9 @@ ASSERT_SIZE(TTerrainStateRecord, 0x24);
 struct Province {
   Province();
   Province& operator=(const Province& source);
+  // Mac oracle: Province::GetIndex() const. Returns this record's index in the
+  // active map's cityScoreTable. 0x0050e2c0.
+  ProvinceIndex GetIndex() const;
 
   signed char ownerNationCode00;
   // Founding owner for the context panel's "formerly of" label.

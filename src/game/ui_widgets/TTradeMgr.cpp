@@ -769,7 +769,7 @@ void TTradeMgr::SetDealResults(short sourceNation, int targetNation, int amount,
         ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, amount, maximumAmount);
     short targetNationSlot = static_cast<short>(targetNation);
     static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
-        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, -amount, sourceNation);
+        ->ApplyIndexedResourceDeltaAndAdjustNationTotals(commodityType, -amount, maximumAmount);
     if (g_pDiplomacyTurnStateManager->IsGreatPower(targetNationSlot) != 0 &&
         g_pDiplomacyTurnStateManager->IsGreatPower(sourceNation) == 0) {
       static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])

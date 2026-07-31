@@ -11,8 +11,6 @@
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/core/CString.h"
 
-void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);
-
 // FUNCTION: IMPERIALISM 0x0054f8e0
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride) {
@@ -39,7 +37,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
           _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(shipNode->name))) ==
               0) {
-        RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
+        shipNode->NameThyself();
         break;
       }
     }

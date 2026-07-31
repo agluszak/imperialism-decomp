@@ -756,7 +756,6 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
   }
 
   int candidateNationSlot = 0;
-  int candidateOrdinal = 0;
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
@@ -781,7 +780,7 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
       short targetCandidateStanding =
           relationStandingScores[target * kNationSlotCount + candidateNationSlot];
       int candidateAdjustment =
-          ((0x5a - targetCandidateStanding) * candidateOrdinal) / (divisorTier * 0x32);
+          ((0x5a - targetCandidateStanding) * sourceTargetStanding) / (divisorTier * 0x32);
       if (static_cast<char>(sourceNationSlot) == 0) {
         candidateAdjustment = static_cast<short>(candidateAdjustment) / 2;
       }
@@ -799,7 +798,6 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
     }
 
     candidateNationSlot++;
-    candidateOrdinal++;
     terrainCursor++;
   } while (static_cast<short>(candidateNationSlot) <= 0x16);
 }
@@ -808,7 +806,7 @@ void TDiplomacyMgr::InflictWarPenalty(int sourceNationSlot, int targetNationSlot
 void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   // Pre-pass (unless localization phase 2): run the per-nation begin-turn slot 0x1c8
   // over the seven majors descending, gated on the nation's eligibility byte at +0xa0.
-  if (g_pSimMgr->difficultyLevel != 2) {
+  if (g_pSimMgr->multiplayerSessionRole != 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -827,7 +825,7 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   ScratchSharedString scratch2;
   ScratchSharedString scratch3;
 
-  if (g_pSimMgr->difficultyLevel == 2) {
+  if (g_pSimMgr->multiplayerSessionRole == 2) {
     TGreatPower** nationCursor = &g_apNationStates[6];
     int remaining = 7;
     do {
@@ -880,9 +878,9 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
                   g_apNationStates[row]->QueueWarTransitionAndNotifyThirdPartyIfNeeded(col, 4, -1);
                 }
               } else {
-                static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[col])
-                    ->SetDiplomacyRelationshipWithMajorNation(
-                        row, static_cast<DiplomacyRelationship>(relationCode));
+                g_apTerrainTypeDescriptorTable[col]->AddOfferFrom(
+                    static_cast<NationSlot>(row),
+                    static_cast<DiplomacyProposalCodeStorage>(relationCode));
               }
             }
           }
@@ -908,7 +906,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   TGreatPower** nationSlot = g_apNationStates;
   for (int remaining = 7; remaining != 0; --remaining, ++nationSlot) {
     if (*nationSlot != NULL) {
-      (*nationSlot)->ApplyJoinEmpireMode2FinalizeNationNameState();
+      (*nationSlot)->InitializeDiplomacyOffers();
     }
   }
 
@@ -917,9 +915,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   // so the null check here was ours, not the retail code's.
   unsigned char isClientSession = g_pSimMgr->multiplayerSessionRole == 2;
   if (isClientSession) {
-    if (pendingWarTransitionQueue) {
-      pendingWarTransitionQueue->ClearAndFreeAllPtrListRecords();
-    }
+    pendingWarTransitionQueue->InvokePtrListResetHook();
     return;
   }
 
@@ -930,6 +926,7 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
   bool isRelationTie = true;
 
   for (int minorSlot = 7; minorSlot < 23; minorSlot++) {
+    TCountry* minorDescriptor = g_apTerrainTypeDescriptorTable[minorSlot];
     short bestOfferScore = 0x8b;
     int bestOfferNation = -1;
 
@@ -943,38 +940,49 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
 
     for (int gpSlot = 0; gpSlot < 7; gpSlot++) {
       if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<NationSlot>(gpSlot))) {
-        short relationVal = relationStandingScores[minorSlot * kNationSlotCount + gpSlot];
-        if (bestOfferScore < relationVal) {
-          isOfferTie = false;
-          bestOfferNation = gpSlot;
-          bestOfferScore = relationVal;
-        } else if (relationVal == bestOfferScore) {
-          isOfferTie = true;
-          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
-            unsigned int rnd = (unsigned int)relationVal + 0x31 +
-                               (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
-            if (rnd == 0)
-              rnd = randSeed1;
-            randSeed1 = rnd * 0x15a4e35 + 1;
-            if ((randSeed1 >> 12) & 1) {
-              bestOfferNation = gpSlot;
-              bestOfferScore = relationVal;
-            }
-          } else {
+        int standingIndex = minorSlot * kNationSlotCount + gpSlot;
+        int sideEffectIndex = gpSlot * kNationSlotCount + minorSlot;
+        if (relationSideEffectMatrix[sideEffectIndex] != 0) {
+          short relationVal = relationStandingScores[standingIndex];
+          if (bestOfferScore < relationVal) {
+            isOfferTie = false;
             bestOfferNation = gpSlot;
             bestOfferScore = relationVal;
+          } else if (relationVal == bestOfferScore) {
+            isOfferTie = true;
+            if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+              bestOfferNation = gpSlot;
+              bestOfferScore = relationVal;
+            } else {
+              unsigned int rnd = (unsigned int)relationVal + 0x31 +
+                                 (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
+              if (rnd == 0)
+                rnd = randSeed1;
+              randSeed1 = rnd * 0x15a4e35 + 1;
+              if ((randSeed1 >> 12) & 1) {
+                bestOfferNation = gpSlot;
+                bestOfferScore = relationVal;
+              }
+            }
           }
         }
 
-        int score =
-            (200 - relationSideEffectMatrix[minorSlot * kNationSlotCount + gpSlot]) * relationVal;
+        int score = 0;
+        if (relationSideEffectMatrix[sideEffectIndex] >= 1) {
+          score = (200 - relationSideEffectMatrix[sideEffectIndex]) *
+                  relationStandingScores[standingIndex];
+        }
         if (bestRelationScore < score) {
           isRelationTie = false;
           bestRelationNation = gpSlot;
           bestRelationScore = score;
         } else if (score == bestRelationScore) {
           isRelationTie = true;
-          if (!g_apTerrainTypeDescriptorTable[gpSlot]->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+          if (minorDescriptor->IsEncodedNationSlotMinus200Equal(gpSlot)) {
+            bestRelationNation = gpSlot;
+            bestRelationScore = score;
+          } else {
+            short relationVal = relationStandingScores[standingIndex];
             unsigned int rnd = (unsigned int)relationVal + 0x31 +
                                (unsigned int)g_pSimMgr->GetEconomicTurn() + gpSlot;
             if (rnd == 0)
@@ -984,18 +992,29 @@ void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {
               bestRelationNation = gpSlot;
               bestRelationScore = score;
             }
-          } else {
-            bestRelationNation = gpSlot;
-            bestRelationScore = score;
           }
         }
       }
     }
 
     if (bestOfferNation != -1) {
+      int priorOfferNation = specialRelationSourceSlots[minorSlot - 7];
+      if (!isOfferTie && priorOfferNation != bestOfferNation && priorOfferNation != -1 &&
+          relationSideEffectMatrix[priorOfferNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorOfferNation) != 0) {
+        g_apTerrainTypeDescriptorTable[priorOfferNation]->AddNoticeFrom(minorSlot, 0x13a);
+      }
       specialRelationSourceSlots[minorSlot - 7] = static_cast<NationSlot>(bestOfferNation);
     }
     if (bestRelationNation != -1) {
+      int priorRelationNation = specialRelationTargetSlots[minorSlot - 7];
+      if (!isRelationTie && priorRelationNation != bestRelationNation &&
+          priorRelationNation != -1 &&
+          g_pSimMgr->IsNationSlotEligibleForEventProcessing(priorRelationNation) != 0 &&
+          relationSideEffectMatrix[priorRelationNation * kNationSlotCount + minorSlot] >= 1 &&
+          g_apTerrainTypeDescriptorTable[priorRelationNation] != 0) {
+        g_apTerrainTypeDescriptorTable[priorRelationNation]->AddNoticeFrom(minorSlot, 0x13b);
+      }
       specialRelationTargetSlots[minorSlot - 7] = static_cast<NationSlot>(bestRelationNation);
     }
   }

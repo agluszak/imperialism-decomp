@@ -44,7 +44,8 @@ public:
         selectedRow(0), selectedSellRow(0), initialBidBitmap(0), initialSellValue(0),
         initialBarValue(0), baselineEconomicTurn(0), handledOffers(0), leftDealBook(false),
         verifiedOfferPresentation(false), exercisedOfferBookmark(false),
-        offerRegressionPosed(false), offerBookmarkRow(0), offerRegressionCompleted(false) {}
+        offerRegressionPosed(false), offerBookmarkRow(0), offerRegressionCompleted(false),
+        offerAcceptancePosed(false), offerAcceptanceCompleted(false) {}
   int DifficultyLevel() const override {
     return 1;
   }
@@ -100,6 +101,8 @@ public:
       WaitForMap();
     } else if (phase == kWaitForOfferRegression) {
       WaitForOfferRegression();
+    } else if (phase == kWaitForOfferAcceptance) {
+      WaitForOfferAcceptance();
     } else {
       WaitForEndTurn();
     }
@@ -134,6 +137,7 @@ private:
     kReturnToMap,
     kWaitForMap,
     kWaitForOfferRegression,
+    kWaitForOfferAcceptance,
     kWaitForEndTurn
   };
 
@@ -575,6 +579,14 @@ private:
 
   void WaitForMap() {
     TView* mainView = CurrentMainView();
+    if (offerAcceptanceCompleted && g_pViewMgr->currentTurnEventCode == kTurnEventDealBook) {
+      g_pSimMgr->StartNextPhase();
+      RequestScenarioTick();
+      return;
+    }
+    if (offerAcceptanceCompleted && AdvanceNewspaperIfNeeded()) {
+      return;
+    }
     if (g_pViewMgr->currentTurnEventCode != kTurnEventStrategicMap || mainView == 0 ||
         mainView->IsKindOf(RUNTIME_CLASS(TMapUberPicture)) == 0) {
       WaitForScenarioTick("\"Board of Trade back control did not restore the strategic map\"");
@@ -583,6 +595,14 @@ private:
     if (!g_ModalViewStack.IsEmpty()) {
       RecordUnexpectedModalView(g_ModalViewStack.GetHead());
       FailScenario("\"Board of Trade back navigation left an unexpected modal\"");
+      return;
+    }
+    if (offerAcceptanceCompleted) {
+      if (g_pSimMgr->economicTurn != baselineEconomicTurn + 1) {
+        FailScenario("\"accepting the final trade offer did not advance exactly one turn\"");
+        return;
+      }
+      Pass();
       return;
     }
     if (!offerRegressionCompleted) {
@@ -595,6 +615,21 @@ private:
       }
       phase = kWaitForOfferRegression;
       EnterScenarioStep("verifying_offer_sheet_bookmark", "construct_offer_sheet_for_bookmark");
+      RequestScenarioTick();
+      return;
+    }
+    if (!offerAcceptanceCompleted) {
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      baselineEconomicTurn = g_pSimMgr->economicTurn;
+      ResetNewspaperAdvance();
+      g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNation);
+      TView* offerView = CurrentMainView();
+      if (offerView == 0 || offerView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
+        FailScenario("\"offer-sheet event did not construct the final acceptance control\"");
+        return;
+      }
+      phase = kWaitForOfferAcceptance;
+      EnterScenarioStep("accepting_final_trade_offer", "construct_final_trade_offer");
       RequestScenarioTick();
       return;
     }
@@ -679,6 +714,35 @@ private:
                                   g_pSimMgr->GetActiveNationId());
     phase = kWaitForMap;
     EnterScenarioStep("returning_to_map_after_offer_bookmark", "click_offer_sheet_bookmark");
+    RequestScenarioTick();
+  }
+
+  void WaitForOfferAcceptance() {
+    TView* mainView = CurrentMainView();
+    if (g_pViewMgr->currentTurnEventCode != kTurnEventOfferSheet || mainView == 0 ||
+        mainView->IsKindOf(RUNTIME_CLASS(TOfferDeskPicture)) == 0) {
+      WaitForScenarioTick("\"final deterministic trade offer is not active\"");
+      return;
+    }
+    if (!offerAcceptancePosed) {
+      short activeNation = g_pSimMgr->GetActiveNationId();
+      g_pViewMgr->DispatchNationActionToMainControl(activeNation, activeNation, 3, 17,
+                                                    kResourceFood);
+      offerAcceptancePosed = true;
+      EnterScenarioStep("presenting_final_trade_offer", "pose_final_trade_offer");
+      RequestScenarioTick();
+      return;
+    }
+    TView* accept = mainView->ResolveControlByTag(kControlTagAcce);
+    if (accept == 0 || accept->IsActionable() == 0 ||
+        !RuntimeUiDriver::ClickViewThroughNativeMessages(accept)) {
+      FailScenario(
+          "\"final deterministic trade offer could not be accepted through native input\"");
+      return;
+    }
+    offerAcceptanceCompleted = true;
+    phase = kWaitForMap;
+    EnterScenarioStep("returning_to_map_after_offer_accept", "accept_final_trade_offer");
     RequestScenarioTick();
   }
 
@@ -769,6 +833,8 @@ private:
   bool offerRegressionPosed;
   short offerBookmarkRow;
   bool offerRegressionCompleted;
+  bool offerAcceptancePosed;
+  bool offerAcceptanceCompleted;
 };
 
 TradeScreenTestCase g_test;

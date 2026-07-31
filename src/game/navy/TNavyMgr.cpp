@@ -38,14 +38,6 @@
 // reattributed DoTileClick below.
 Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
-// Resolves a raw Province* back into its index in
-// g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
-// and no original callsite pushes anything.
-// FUNCTION: IMPERIALISM 0x0050e2c0
-ProvinceIndex __fastcall GetProvinceIndex(Province* province) {
-  return static_cast<int>(province - g_pGlobalMapState->cityScoreTable);
-}
-
 namespace {
 
 // Shared by BuildMapOrderBattleSideSnapshot's two fixed-size name/label copies and its
@@ -257,7 +249,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   }
 
   if (entry != nullptr && entry->shipOrders == 5) {
-    int cityIndex = GetProvinceIndex(entry->target.asProvince);
+    int cityIndex = entry->target.asProvince->GetIndex();
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->nationIds[side], cityIndex, snapshot);
   }

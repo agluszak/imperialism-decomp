@@ -1249,8 +1249,8 @@ void TTaskForce::CommitToOrders() {
 void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   (void)cancellationMode;
   bool cancelsBeachhead = shipOrders == 5;
-  short cityIndex = cancelsBeachhead ? static_cast<short>(GetProvinceIndex(target.asProvince))
-                                     : static_cast<short>(-1);
+  short cityIndex =
+      cancelsBeachhead ? static_cast<short>(target.asProvince->GetIndex()) : static_cast<short>(-1);
 
   if (g_pNavyOrderManager != 0 && g_pNavyOrderManager->orderQueueHead == this) {
     g_pNavyOrderManager->orderQueueHead = nextForce;
@@ -1522,7 +1522,7 @@ TTaskForce* TTaskForce::RemoveStragglers() {
     return result;
   }
   case 5: {
-    int cityIndex = GetProvinceIndex(target.asProvince);
+    int cityIndex = target.asProvince->GetIndex();
     char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00;
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, ownerNation) ==
         0) {
@@ -1901,7 +1901,7 @@ void TTaskForce::CarryOutOrders() {
     Province* cityRecord = target.asProvince;
     cityRecord->exploredByNationMaskA1 |= static_cast<unsigned char>(1 << nation);
     if (g_pSimMgr->multiplayerSessionRole == 1) {
-      int cityIndex = GetProvinceIndex(cityRecord);
+      int cityIndex = cityRecord->GetIndex();
       g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));
     }
     break;

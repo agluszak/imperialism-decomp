@@ -136,7 +136,7 @@ void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* name
       if (other != this &&
           _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(other->name)),
                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0) {
-        RegenerateNavyPrimaryOrderDisplayNameUntilUnique(this);
+        NameThyself();
         break;
       }
     }
@@ -187,16 +187,17 @@ void TShip::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054fbf0
-void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
+void TShip::NameThyself() {
   do {
-    g_apTerrainTypeDescriptorTable[shipNode->type]->GenerateEthnicName(&shipNode->name);
+    g_apTerrainTypeDescriptorTable[nation]->GenerateEthnicName(&name);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0; existing = existing->next) {
-      if (existing == shipNode) {
+      if (existing == this) {
         continue;
       }
-      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
-                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(shipNode->name))) ==
-          0) {
+      unsigned char duplicate =
+          (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(existing->name)),
+                   reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(name))) == 0);
+      if (duplicate != 0) {
         goto retry;
       }
     }

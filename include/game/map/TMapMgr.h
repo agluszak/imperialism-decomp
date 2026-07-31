@@ -18,11 +18,6 @@ class TTown;
 // __cdecl, defined in TMapMgr.cpp.
 void ByteSwapCityScoreTableShortFields(Province* table);
 
-// Resolve a raw Province* back into its cityScoreTable index.
-// Real __fastcall (single ecx arg, no stack cleanup: every original callsite loads
-// ecx and pushes nothing). 0x0050e2c0, defined in TNavyMgr.cpp.
-ProvinceIndex __fastcall GetProvinceIndex(Province* province);
-
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
 // Genuine __cdecl free function (pure arithmetic).
 void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short* outColX2,
@@ -151,7 +146,7 @@ public:
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
-  virtual int ComputeRepresentativeTileIndexForNation(int nationSlot);   // slot 0x19 0x511f10
+  virtual short ComputeRepresentativeTileIndexForNation(int nationSlot); // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
@@ -171,10 +166,8 @@ public:
   virtual void
   SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
   // Seeds recruitSearchVisited0e from g_pSelectedCivilianOrderState->selectedEntry instead
-  // of an explicit nation tag: if there's no selected order, or its tileIndex06 (a TUnit field,
-  // sentinel-inited to 0xffff) is nonzero, every tile is marked 1 (blocked); only when
-  // tileIndex06 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
-  // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
+  // of an explicit nation tag. With a selected order, every tile except its tileIndex06 is
+  // marked 1 (blocked); that tile is seeded from activeFlags1c bit 4.
   virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(
       class TCivUnit* unusedOrder); // slot 0x1e 0x514e80
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
@@ -529,7 +522,7 @@ public:
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
   static StrategicTileIndex TileIndexFromRowCol(int row, int col);
 
-  int ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
+  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
