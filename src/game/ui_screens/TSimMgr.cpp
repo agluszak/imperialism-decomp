@@ -326,7 +326,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
   int dummy;
   stream->ReadBytes(&dummy, 4);
 
-  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  unsigned char hasGameFlowState = turnFlowStatusFlags != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->ReadFrom(stream);
   }

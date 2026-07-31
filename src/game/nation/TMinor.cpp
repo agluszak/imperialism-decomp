@@ -555,7 +555,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
             ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
     int negDelta = -static_cast<int>(deltaShort);
     int intFactor = negDelta;
-    if (negDelta < linkValue) {
+    if (linkValue < negDelta) {
       intFactor = linkValue;
     }
 

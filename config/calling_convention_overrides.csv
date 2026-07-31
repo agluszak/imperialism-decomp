@@ -1,7 +1,7 @@
 address|calling_convention|note
 0x00479480|__thiscall|ecx_this: MOV ESI,ECX (InitializeTurnEventDialogFactoryRegistry)
 0x004ee8c0|__thiscall|ecx_this: MOV EDI,ECX (RebuildCivilianOrderCompatibilityMatrices)
-0x0050e2c0|__thiscall|ecx_this: SUB ECX,EDX; ECX is this (GetCityIndexFromCityStatePointer)
+0x0050e2c0|__thiscall|ecx_this: SUB ECX,EDX; ECX is the Province receiver (GetIndex)
 0x0050e4e0|__thiscall|ecx_this: MOV word ptr [ECX+0x6],0x1 (InitializeGlobalMapState)
 0x0050f3c0|__thiscall|ecx_this: ECX stored to stack (VerifyMapDataAndWriteReport)
 0x0053a800|__thiscall|ecx_this: MOV ESI,ECX (TryQueueProvinceOrderFromContextMessage)

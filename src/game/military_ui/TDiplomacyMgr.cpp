@@ -749,7 +749,6 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
   }
 
   int candidateNationSlot = 0;
-  int candidateOrdinal = 0;
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
@@ -772,7 +771,7 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
       short targetCandidateStanding =
           relationStandingScores[target * kNationSlotCount + candidateNationSlot];
       int candidateAdjustment =
-          ((0x5a - targetCandidateStanding) * candidateOrdinal) / (divisorTier * 0x32);
+          ((0x5a - targetCandidateStanding) * sourceTargetStanding) / (divisorTier * 0x32);
       if (static_cast<char>(sourceNationSlot) == 0) {
         candidateAdjustment = static_cast<short>(candidateAdjustment) / 2;
       }
@@ -790,7 +789,6 @@ void TDiplomacyMgr::InflictWarPenalty(NationSlot sourceNationSlot, NationSlot ta
     }
 
     candidateNationSlot++;
-    candidateOrdinal++;
     terrainCursor++;
   } while (static_cast<short>(candidateNationSlot) <= 0x16);
 }

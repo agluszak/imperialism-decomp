@@ -464,7 +464,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (isTaskForceEntry == 0) {
       continue;
     }
-    int cityIndex = GetProvinceIndex(rankEntry->target.asProvince);
+    int cityIndex = rankEntry->target.asProvince->GetIndex();
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
         g_pSimMgr->GetActiveNationId()) {
       continue;

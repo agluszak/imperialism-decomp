@@ -36,4 +36,3 @@ int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourc
 
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride);
-void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

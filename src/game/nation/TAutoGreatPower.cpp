@@ -1561,7 +1561,7 @@ void TAutoGreatPower::RefreshTrackedEntriesAndReplanAiDevelopment(int unused) {
     mission->Reassess();
   }
 
-  PruneInvalidTrackedEntriesAndNotifyOwner();
+  TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner();
   UpdateTrackedEntryEligibilityByClassMaskAndRatio(0);
   AssignTrackedEntryActionsByProfileToOrdersOrUnits(0);
   PlanAiDevelopmentActionsFromResourcePools(0);

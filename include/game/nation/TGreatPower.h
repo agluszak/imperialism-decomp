@@ -210,8 +210,8 @@ public:
   // Ground truth leaves the just-stored reservedTransportCapacity value in AL at return (the
   // ternary's SETcc result); TInteriorMinister::Call54 (0x4be5b0) reads it as bool.
   virtual bool IsTransportCapacityExceeded(void);
-  virtual short IncreaseRollingStock(void);   // slot 0x4a
-  virtual short IncreaseMerchantMarine(void); // slot 0x4b
+  virtual char IncreaseRollingStock(void);   // slot 0x4a
+  virtual char IncreaseMerchantMarine(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
   virtual void ContinueCivilianOrders(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);

@@ -1601,7 +1601,7 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-int TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
+short TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
   return ComputeRepresentativeTileIndexForNationWithWrapBias(static_cast<short>(nationSlot), 1);
 }
 
@@ -2762,15 +2762,15 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(TCivUnit* u
   (void)unusedOrder;
   TTerrainStateRecord* tile = terrainStateTable;
   this->field9 = 1;
-  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {
+  for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex, ++tile) {
     TCivUnit* selectedEntry = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedEntry == nullptr) {
       continue;
     }
-    if (selectedEntry->tileIndex06 != tileIndex) {
-      tile->recruitSearchVisited0e = 1;
+    if (selectedEntry->tileIndex06 == tileIndex) {
+      tile->recruitSearchVisited0e = (terrainStateTable[tileIndex].activeFlags1c >> 4) & 1;
     } else {
-      tile->recruitSearchVisited0e = (tile->activeFlags1c >> 4) & 1;
+      tile->recruitSearchVisited0e = 1;
     }
   }
 }
@@ -3543,7 +3543,8 @@ void TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel() {
 }
 
 // FUNCTION: IMPERIALISM 0x005178f0
-int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias) {
+short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot,
+                                                                   char wrapBias) {
   TTerrainStateRecord* tileTable = terrainStateTable;
   Province* cityTable = cityScoreTable;
   unsigned int colSum = 0;

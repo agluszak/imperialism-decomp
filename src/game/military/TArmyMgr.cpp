@@ -1601,62 +1601,64 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   }
 
   if (!g_pGlobalMapState->TileHasMovementClassId(this->pendingMapActionIndex, cityRecordIndex)) {
-    CString notAdjacentBody;
-    CString notAdjacentTitle;
-    g_pSimMgr->GetString(0x2745, 4, &notAdjacentBody);
-    g_pSimMgr->GetString(0x2745, 5, &notAdjacentTitle);
-    g_pViewMgr->ModalMessage(5, notAdjacentTitle, notAdjacentBody, g_ptArmyValidationModalMessage,
-                             1, 0);
-    return false;
-  }
-
-  if (!g_pGlobalMapState->HasPortInProvince(this->pendingMapActionIndex)) {
-    CString atWarBody;
-    CString atWarTitle;
-    g_pSimMgr->GetString(0x2745, 6, &atWarBody);
-    g_pSimMgr->GetString(0x2745, 7, &atWarTitle);
-    g_pViewMgr->ModalMessage(5, atWarTitle, atWarBody, g_ptArmyValidationModalMessage, 1, 0);
-    return false;
-  }
-
-  short activeNationId = g_pSimMgr->GetActiveNationId();
-  TCountry* activeCountry = g_apTerrainTypeDescriptorTable[activeNationId];
-  int reinforcementCost = 0;
-  CIterator orderIter(activeCountry->militaryUnitList44);
-  for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
-       order = static_cast<TUnit*>(orderIter.Advance())) {
-    if (order->unitOrder == 1 && order->orderTargetIndex0C == cityRecordIndex &&
-        !g_pGlobalMapState->TileHasMovementClassId(order->tileIndex06, cityRecordIndex)) {
-      reinforcementCost += static_cast<TMilitaryUnit*>(order)->GetArmsCarried();
+    CString validationBody;
+    CString validationTitle;
+    if (!g_pGlobalMapState->HasPortInProvince(this->pendingMapActionIndex)) {
+      g_pSimMgr->GetString(0x2745, 4, &validationBody);
+      g_pSimMgr->GetString(0x2745, 5, &validationTitle);
+      g_pViewMgr->ModalMessage(5, validationTitle, validationBody, g_ptArmyValidationModalMessage,
+                               1, 0);
+      return false;
     }
-  }
 
-  int seaValue = g_pNavyOrderManager->GetInvasionCapacity(
-      activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
-  if (totalCost + reinforcementCost > seaValue) {
-    CString capacityMessage;
-    CString capacityTemplate;
-    CString seaValueText;
-    CString totalCostText;
-    CString reinforcementText;
-    if (reinforcementCost == 0) {
-      g_pSimMgr->GetString(0x2745, 1, &capacityTemplate);
-      seaValueText.Format(g_szDecimalFormat, seaValue);
-      totalCostText.Format(g_szDecimalFormat, totalCost);
-      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
-                             static_cast<LPCSTR>(seaValueText), static_cast<LPCSTR>(totalCostText));
-    } else {
-      g_pSimMgr->GetString(0x2745, 2, &capacityTemplate);
-      seaValueText.Format(g_szDecimalFormat, seaValue);
-      reinforcementText.Format(g_szDecimalFormat, reinforcementCost);
-      totalCostText.Format(g_szDecimalFormat, totalCost);
-      scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
-                             static_cast<LPCSTR>(seaValueText),
-                             static_cast<LPCSTR>(reinforcementText),
-                             static_cast<LPCSTR>(totalCostText));
+    if (!g_pGlobalMapState->HasActiveLinkedTileWithReachableSea(this->pendingMapActionIndex)) {
+      g_pSimMgr->GetString(0x2745, 6, &validationBody);
+      g_pSimMgr->GetString(0x2745, 7, &validationTitle);
+      g_pViewMgr->ModalMessage(5, validationTitle, validationBody, g_ptArmyValidationModalMessage,
+                               1, 0);
+      return false;
     }
-    g_pViewMgr->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
-    return false;
+
+    short activeNationId = g_pSimMgr->GetActiveNationId();
+    TCountry* activeCountry = g_apTerrainTypeDescriptorTable[activeNationId];
+    int reinforcementCost = 0;
+    CIterator orderIter(activeCountry->militaryUnitList44);
+    for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
+         order = static_cast<TUnit*>(orderIter.Advance())) {
+      if (order->unitOrder == 1 && order->orderTargetIndex0C == cityRecordIndex &&
+          !g_pGlobalMapState->TileHasMovementClassId(order->tileIndex06, cityRecordIndex)) {
+        reinforcementCost += static_cast<TMilitaryUnit*>(order)->GetArmsCarried();
+      }
+    }
+
+    int seaValue = g_pNavyOrderManager->GetInvasionCapacity(
+        activeNationId, &g_pGlobalMapState->cityScoreTable[cityRecordIndex], 0);
+    if (totalCost + reinforcementCost > seaValue) {
+      CString capacityMessage;
+      CString capacityTemplate;
+      CString seaValueText;
+      CString totalCostText;
+      CString reinforcementText;
+      if (reinforcementCost == 0) {
+        g_pSimMgr->GetString(0x2745, 1, &capacityTemplate);
+        seaValueText.Format(g_szDecimalFormat, seaValue);
+        totalCostText.Format(g_szDecimalFormat, totalCost);
+        scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                               static_cast<LPCSTR>(seaValueText),
+                               static_cast<LPCSTR>(totalCostText));
+      } else {
+        g_pSimMgr->GetString(0x2745, 2, &capacityTemplate);
+        seaValueText.Format(g_szDecimalFormat, seaValue);
+        reinforcementText.Format(g_szDecimalFormat, reinforcementCost);
+        totalCostText.Format(g_szDecimalFormat, totalCost);
+        scanBracketExpressions(g_pSimMgr, &capacityMessage, static_cast<LPCSTR>(capacityTemplate),
+                               static_cast<LPCSTR>(seaValueText),
+                               static_cast<LPCSTR>(reinforcementText),
+                               static_cast<LPCSTR>(totalCostText));
+      }
+      g_pViewMgr->ModalMessage(capacityMessage, g_ptArmyValidationModalMessage, 2, 0);
+      return false;
+    }
   }
 
   for (unit = g_pGlobalMapState->GetMilitaryMaster(this->pendingMapActionIndex); unit != nullptr;

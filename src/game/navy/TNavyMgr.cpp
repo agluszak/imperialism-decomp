@@ -34,13 +34,9 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/map_order_battle_snapshot.h"
 
-// Resolves a raw Province* back into its index in
-// g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
-// and no original callsite pushes anything.
-// FUNCTION: IMPERIALISM 0x0050e2c0
-ProvinceIndex __fastcall GetProvinceIndex(Province* province) {
-  return static_cast<int>(province - g_pGlobalMapState->cityScoreTable);
-}
+// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp); used by the
+// reattributed DoTileClick below.
+Province* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
 namespace {
 
@@ -253,7 +249,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   }
 
   if (entry != nullptr && entry->shipOrders == 5) {
-    int cityIndex = GetProvinceIndex(entry->target.asProvince);
+    int cityIndex = entry->target.asProvince->GetIndex();
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->nationIds[side], cityIndex, snapshot);
   }

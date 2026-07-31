@@ -1800,30 +1800,16 @@ void TMultiplayerMgr::CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVa
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 
-struct TurnEvent1APacket : NetMessage {
-  int packetTag;
-  unsigned char activeNationId;
-  unsigned char pad15[3];
-  short uiTurnToken;
-  unsigned char pad1a[2];
-  short sourceNation1C;
-  short param1E;
-  short param20;
-  short param22;
-  short param24;
-  short availableMerchantCapacityBySlot[7];
-};
-
 // FUNCTION: IMPERIALISM 0x005497b0
 void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, short param1,
                                                                  short param2, short param3,
                                                                  short param4) {
-  TurnEvent1APacket packet;
+  TurnEvent1ANationActionPacket packet;
   packet.eventCode = 0x1a;
   packet.fromNetworkId = 0;
   packet.toNetworkId = 0;
   packet.messageLength = 0x34;
-  packet.packetTag = kControlTagTime;
+  packet.messageTag = kControlTagTime;
   packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
   packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
   packet.sourceNation1C = param0;
@@ -1834,9 +1820,9 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
-      packet.availableMerchantCapacityBySlot[nationIndex] = nationState->GetMerchantCapacity();
+      packet.counterA2BySlot[nationIndex] = nationState->availableMerchantCapacity;
     } else {
-      packet.availableMerchantCapacityBySlot[nationIndex] = 0;
+      packet.counterA2BySlot[nationIndex] = 0;
     }
   }
   g_pNetMgr006a6014->Send(&packet, 1);

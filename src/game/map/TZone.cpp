@@ -261,9 +261,9 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
   } else if (secondaryNeighbors.Count() != 0) {
     unsigned int sum = 0;
     for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
-      sum += g_pGlobalMapState
-                 ->cityScoreTable[static_cast<short>(GetProvinceIndex(secondaryNeighbors[i]))]
-                 .cityScoreValue;
+      sum +=
+          g_pGlobalMapState->cityScoreTable[static_cast<short>(secondaryNeighbors[i]->GetIndex())]
+              .cityScoreValue;
     }
     return sum / secondaryNeighbors.Count();
   }

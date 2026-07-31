@@ -142,6 +142,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
   do {
     if (PtInRect(legendRect, point) != 0) {
       do {
+        candidateOrdinal = 0;
         TLongintList* ownerNationProvinceCollection =
             g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
         provinceCount = ownerNationProvinceCollection->GetSize();
@@ -183,7 +184,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
           *currentLegendSelectionCounter =
               (unsigned short)((unsigned int)(*currentLegendSelectionCounter) % candidateOrdinal);
         }
-      } while ((candidateOrdinal > 0) &&
+    } while ((candidateOrdinal > 0) &&
                (candidateOrdinal < (int)(unsigned int)(*currentLegendSelectionCounter)));
     }
     currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
