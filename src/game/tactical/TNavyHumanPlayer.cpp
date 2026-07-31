@@ -26,13 +26,16 @@ void TNavyHumanPlayer::INavyHumanPlayer(TTaskForce* force, char isOurSide, int n
 void TNavyHumanPlayer::DeploymentClick(TacticalTileIndex tileIndex) {
   int ordinal = 1;
   TTacticalUnit* unit;
-  do {
+  while (true) {
     unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
     ++ordinal;
     if (unit->tileIndex8 == -2) {
       break;
     }
-  } while (ordinal <= unitList4->GetCount());
+    if (ordinal > unitList4->GetCount()) {
+      break;
+    }
+  }
 
   if (ordinal > unitList4->GetCount()) {
     sideReadyFlag10 = 1;

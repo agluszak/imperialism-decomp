@@ -6,6 +6,7 @@
 #include "game/city/TCity.h"
 #include "game/map/TMapMgr.h"
 #include "game/military/TCivUnit.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
@@ -179,8 +180,11 @@ void TUnitOrder::Produce() {
   unsigned char specialist = specialistMode;
   TSimMgr* localization = g_pSimMgr;
   if (localization != 0) {
-    localization->GetString(static_cast<short>((specialist == 0) ? 0x2718 : 0x2717), entryId,
-                            &sharedRefB);
+    if (specialist == 0) {
+      localization->GetString(0x2718, entryId, &sharedRefB);
+    } else {
+      localization->GetString(0x2717, entryId, &sharedRefB);
+    }
   }
 
   cityContext->cityMetricsBlock4A[entryId] =
@@ -192,25 +196,67 @@ void TUnitOrder::Produce() {
     ownerNationSlot = ownerNation->nationSlot;
   }
 
-  const short recruitSearchOrigin = cityContext->HomeTownTileId();
-  const bool allowActiveFlag2 = entryId == 4;
-  for (short i = 0; i < pendingDelta; ++i) {
-    short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-        recruitSearchOrigin, allowActiveFlag2);
-    if (spawnTile == -1) {
-      continue;
-    }
+  if (specialist == 0) {
+    const short recruitSearchOrigin = cityContext->HomeTownTileId();
+    const bool allowActiveFlag2 = entryId == 4;
+    for (short i = 0; i < pendingDelta; ++i) {
+      short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          recruitSearchOrigin, allowActiveFlag2);
+      if (spawnTile == -1) {
+        continue;
+      }
 
-    TCivUnit* orderObject = new TCivUnit();
-    if (orderObject == nullptr) {
-      continue;
-    }
+      TCivUnit* orderObject = new TCivUnit();
+      if (orderObject == nullptr) {
+        continue;
+      }
 
-    CivilianUnitKind unitKind = DecodeCivilianUnitKind(entryId);
-    orderObject->ICivUnit(unitKind, spawnTile, ownerNationSlot);
+      CivilianUnitKind unitKind = DecodeCivilianUnitKind(entryId);
+      orderObject->ICivUnit(unitKind, spawnTile, ownerNationSlot);
+    }
+  } else {
+    for (short i = 0; i < pendingDelta; ++i) {
+      short homeTile = cityContext->HomeTownTileId();
+      short homeProvince = g_pGlobalMapState->terrainStateTable[homeTile].cityRecordIndex;
+      TMilitaryUnit* orderObject = new TMilitaryUnit();
+      if (orderObject == 0) {
+        continue;
+      }
+      orderObject->IMilitaryUnit(static_cast<MilitaryUnitKindStorage>(entryId), homeProvince,
+                                 ownerNationSlot, 0);
+      if (ownerNation->pendingActionStatus.roles.territorialPressureStatus06 >= 0x33) {
+        orderObject->experiencePercent38 = 100;
+      }
+
+      ownerNation->ComputeSelectedMilitaryPowerScore();
+      if (ownerNation->pendingActionStatus.roles.landRecruitStatus01 != 0x32) {
+        int currentLevel = ownerNation->pendingActionStatus.roles.landRecruitStatus01;
+        if (currentLevel != 0) {
+          currentLevel -= 0x33;
+        }
+        int militaryPower = ownerNation->ComputeSelectedMilitaryPowerScore();
+        if (militaryPower >= 0xf && militaryPower < 0x28 && currentLevel == 0) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 1);
+        } else if (militaryPower >= 0x28 && militaryPower < 0x46 && currentLevel < 2) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 2);
+        } else if (militaryPower >= 0x46 && militaryPower < 0x78 && currentLevel < 3) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 3);
+        } else if (militaryPower >= 0x78 && militaryPower < 0xaa && currentLevel < 4) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 4);
+        } else if (militaryPower >= 0xdc && militaryPower < 0x10e && currentLevel < 5) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 5);
+        } else if (militaryPower >= 0x10e && militaryPower < 0x140 && currentLevel < 6) {
+          ownerNation->SetNationPendingActionStateAndPayload(1, 6);
+        }
+      }
+    }
   }
 
+  ownerNation->AnnounceLater(specialist == 0 ? 2 : 3, entryId, pendingDelta);
   quantity = 0;
+  if (entryId == 0) {
+    cityContext->serializedState0a = static_cast<short>(cityContext->serializedState0a + 1);
+  }
 }
 
 // The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's

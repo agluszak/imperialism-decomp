@@ -887,7 +887,6 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
       if (battleView8 != 0) {
         battleView8->InvalidateTacticalUnitTileRect(unit);
       }
-      EvaluateTacticalSideStateAndShowBattleSummaryDialog();
     }
   }
   QueueTacticalEventPacket232A();
@@ -1067,7 +1066,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
   if (candidateCount > 0) {
     int candidateSlot = 0;
     int* walkCursor = candidateTiles;
-    do {
+    while (candidateSlot < candidateCount) {
       int foundDepth =
           BuildPathToTargetByDistanceField(*walkCursor, pathDepth + 1, goalTileIndex, outPathTiles);
       if (foundDepth != -1) {
@@ -1076,7 +1075,7 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(TacticalTileIndex walkTile
       }
       ++candidateSlot;
       ++walkCursor;
-    } while (candidateSlot < candidateCount);
+    }
   }
   return -1;
 }

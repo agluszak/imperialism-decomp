@@ -908,9 +908,9 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUHelpMgr_00696C58, 0x5f0);
   }
 
-  short activeNation = g_pSimMgr->GetActiveNationId();
-  if (activeNation >= 0 && activeNation < 7) {
-    coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(activeNation + 0x251c), 0);
+  if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
+    coatPicture->SetPictureResourceIdAndRefresh(
+        static_cast<short>(g_pSimMgr->GetActiveNationId() + 0x251c), 0);
   } else {
     coatPicture->Show(0, 0);
   }

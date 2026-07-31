@@ -35,7 +35,6 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
 
   TMapUberPicture* mapUberPicture = g_pViewMgr->mapUberPictureF0;
   RECT srcRect;
-  TQuickDrawBlitSurface* srcSurface;
   if (controlTag == kControlTagTile && mapUberPicture->invalidationFlag94 != 0) {
     TQuickDrawSurfaceContext* tileAtlasCtx = mapUberPicture->subview2A8->quickDrawSurface350;
     // The tile's transient marker-slot index selects a 64-pixel atlas column.
@@ -46,7 +45,9 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = spriteX + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    srcSurface = tileAtlasCtx->GetBlitSurface();
+    BlitRectWithOptionalTransparency(tileAtlasCtx->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                     &destRect, 0, 0);
   } else if (controlTag == kControlTagTil2 && mapUberPicture->invalidationFlag94 != 0) {
     short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
     srcRect.left = variant;
@@ -54,7 +55,9 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    srcSurface = g_pMacViewMgr->atlas668->GetBlitSurface();
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas668->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                     &destRect, 0, 0);
   } else {
     short variant = g_pGlobalMapState->LookupTileSpriteVariantOffsetByTerrainAndGate(tileIndex60);
     srcRect.left = variant;
@@ -62,10 +65,9 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
     srcRect.right = variant + 0x40;
     srcRect.bottom = 0x40;
     SetQuickDrawFillColor(0);
-    srcSurface = g_pMacViewMgr->atlas668->GetBlitSurface();
+    BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas668->GetBlitSurface(),
+                                     g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                     &destRect, 0, 0);
   }
-
-  BlitRectWithOptionalTransparency(srcSurface, g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                   &srcRect, &destRect, 0, 0);
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }

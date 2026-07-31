@@ -1471,51 +1471,6 @@ short TMapMgr::UpdateStrategicMapTileIconVariantState(StrategicTileIndex tileInd
   return code;
 }
 
-namespace {
-
-// Shared body for GuaranteeResources' resourceType-3 and resourceType-4 passes: both are
-// behaviorally identical (the original's
-// resourceType-4 pass has an extra early-exit goto around the tail cleanup, but every branch
-// still performs that exact same cleanup before reaching it, so unifying the two produces
-// identical observable state).
-void EnsureRegionHasResourceTypeAssignment(TMapMgr* mapMgr, StrategicTileIndex* linkedTileIndices,
-                                           int linkedRegionTotal, signed char resourceType) {
-  int foundIndex = -1;
-  for (int i = 0; i < linkedRegionTotal; ++i) {
-    signed char gateFlag = mapMgr->terrainStateTable[linkedTileIndices[i]].gateFlag;
-    if ((gateFlag == 9 || gateFlag == 8) &&
-        mapMgr->terrainStateTable[linkedTileIndices[i]].resourceTypeByEdge[0] == -1) {
-      foundIndex = i;
-      break;
-    }
-  }
-
-  int targetIndex;
-  if (foundIndex != -1) {
-    targetIndex = foundIndex;
-    mapMgr->terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = resourceType;
-  } else {
-    signed char gateFlag;
-    do {
-      do {
-        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
-        targetIndex =
-            static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % linkedRegionTotal);
-        gateFlag = mapMgr->terrainStateTable[linkedTileIndices[targetIndex]].gateFlag;
-      } while (gateFlag == 8);
-    } while (gateFlag == 9);
-    mapMgr->terrainStateTable[linkedTileIndices[targetIndex]].gateFlag = 8;
-    mapMgr->terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = resourceType;
-  }
-
-  short targetRegion = linkedTileIndices[targetIndex];
-  mapMgr->terrainStateTable[targetRegion].resourceTypeByEdge[1] = -1;
-  mapMgr->terrainStateTable[targetRegion].gateFlag =
-      static_cast<signed char>(mapMgr->ResolveRegionTileSubtypeCodeForTileIndex(targetRegion));
-}
-
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x00511a70
 void TMapMgr::GuaranteeResources() {
   for (int nationTag = 0; nationTag <= 6; ++nationTag) {
@@ -1550,10 +1505,77 @@ void TMapMgr::GuaranteeResources() {
     }
 
     if (resourceTally[3] == 0) {
-      EnsureRegionHasResourceTypeAssignment(this, linkedTileIndices, linkedRegionTotal, 3);
+      int targetIndex = -1;
+      bool found = false;
+      do {
+        ++targetIndex;
+        signed char gateFlag = terrainStateTable[linkedTileIndices[targetIndex]].gateFlag;
+        if ((gateFlag == 9 || gateFlag == 8) &&
+            terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] == -1) {
+          found = true;
+        }
+      } while (targetIndex < linkedRegionTotal - 1 && !found);
+
+      if (found) {
+        terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = 3;
+      } else {
+        signed char gateFlag;
+        do {
+          do {
+            g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+            targetIndex =
+                static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % linkedRegionTotal);
+            gateFlag = terrainStateTable[linkedTileIndices[targetIndex]].gateFlag;
+          } while (gateFlag == 8);
+        } while (gateFlag == 9);
+        terrainStateTable[linkedTileIndices[targetIndex]].gateFlag = 8;
+        terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = 3;
+      }
+      short targetRegion = linkedTileIndices[targetIndex];
+      terrainStateTable[targetRegion].resourceTypeByEdge[1] = -1;
+      terrainStateTable[targetRegion].gateFlag =
+          static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(targetRegion));
     }
     if (resourceTally[4] == 0) {
-      EnsureRegionHasResourceTypeAssignment(this, linkedTileIndices, linkedRegionTotal, 4);
+      int targetIndex = -1;
+      bool found = false;
+      signed char gateFlag = 0;
+      do {
+        ++targetIndex;
+        gateFlag = terrainStateTable[linkedTileIndices[targetIndex]].gateFlag;
+        if ((gateFlag == 9 || gateFlag == 8) &&
+            terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] == -1) {
+          found = true;
+        }
+      } while (targetIndex < linkedRegionTotal - 1 && !found);
+
+      if (found) {
+        terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = 4;
+        if (gateFlag == 9) {
+          terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[1] = -1;
+          int resolvedSubtype =
+              ResolveRegionTileSubtypeCodeForTileIndex(linkedTileIndices[targetIndex]);
+          terrainStateTable[linkedTileIndices[targetIndex]].gateFlag =
+              static_cast<signed char>(resolvedSubtype);
+          delete[] linkedTileIndices;
+          continue;
+        }
+      } else {
+        do {
+          do {
+            g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+            targetIndex =
+                static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % linkedRegionTotal);
+            gateFlag = terrainStateTable[linkedTileIndices[targetIndex]].gateFlag;
+          } while (gateFlag == 8);
+        } while (gateFlag == 9);
+        terrainStateTable[linkedTileIndices[targetIndex]].gateFlag = 8;
+        terrainStateTable[linkedTileIndices[targetIndex]].resourceTypeByEdge[0] = 4;
+      }
+      short targetRegion = linkedTileIndices[targetIndex];
+      terrainStateTable[targetRegion].resourceTypeByEdge[1] = -1;
+      terrainStateTable[targetRegion].gateFlag =
+          static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(targetRegion));
     }
 
     delete[] linkedTileIndices;
@@ -2603,9 +2625,29 @@ void TMapMgr::PlaceCity(StrategicTileIndex nTileIndex, short nOwnerNationId) {
 
   signed char originRegionTag = terrainStateTable[nTileIndex].regionSubtypeTag05;
   for (int direction = 0; direction <= 6; ++direction) {
-    StrategicTileIndex neighborTile =
-        (direction == 6) ? nTileIndex
-                         : GetNeighborTileID(nTileIndex, static_cast<short>(direction));
+    StrategicTileIndex neighborTile;
+    if (direction == 6) {
+      neighborTile = nTileIndex;
+    } else {
+      int row = nTileIndex / 0x6c;
+      int scaledColumn =
+          (row & 1) + (nTileIndex % 0x6c) * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
+      int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+      if (scaledColumn < 0) {
+        scaledColumn += 0xd8;
+      } else if (scaledColumn >= 0xd8) {
+        scaledColumn -= 0xd9;
+      }
+      if (neighborRow < 0) {
+        neighborRow = 0;
+      } else if (neighborRow > 0x3b) {
+        neighborRow = 0x3b;
+      }
+      neighborTile = static_cast<short>(scaledColumn / 2 + neighborRow * 0x6c);
+      if (neighborTile < 0 || neighborTile >= 0x1950) {
+        neighborTile = -1;
+      }
+    }
     if (neighborTile == -1) {
       continue;
     }
@@ -2837,7 +2879,24 @@ void TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates(
   }
 
   for (short direction = 0; direction < 6; ++direction) {
-    StrategicTileIndex neighborTile = GetNeighborTileID(targetTileIndex, direction);
+    int row = targetTileIndex / 0x6c;
+    int scaledColumn =
+        (row & 1) + (targetTileIndex % 0x6c) * 2 + g_Build_Hex_Area_LookupTable_00696E70[direction];
+    int neighborRow = row + g_Build_Hex_Area_LookupTable_00696E80[direction];
+    if (scaledColumn < 0) {
+      scaledColumn += 0xd8;
+    } else if (scaledColumn >= 0xd8) {
+      scaledColumn -= 0xd9;
+    }
+    if (neighborRow < 0) {
+      neighborRow = 0;
+    } else if (neighborRow > 0x3b) {
+      neighborRow = 0x3b;
+    }
+    StrategicTileIndex neighborTile = static_cast<short>(scaledColumn / 2 + neighborRow * 0x6c);
+    if (neighborTile < 0 || neighborTile >= 0x1950) {
+      neighborTile = -1;
+    }
     if (neighborTile == -1) {
       continue;
     }

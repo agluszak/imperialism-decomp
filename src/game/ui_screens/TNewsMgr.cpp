@@ -191,23 +191,38 @@ void TNewsMgr::CreateNewspaper(int nation) {
       if (year < id - 10 || year >= id) {
         continue;
       }
+      story->parmKind[0] = 0;
+      story->parmKind[1] = 0;
+      story->parmKind[2] = 0;
+      story->parmKind[3] = 0;
+      story->entry = *tmpl;
+      story->parmKind[0] = 1;
+      story->feature38 = 1;
+      story->parmValue[0] = 1 << nation;
+      short other;
+      do {
+        other = static_cast<short>(rand() % 7);
+      } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
+      story->parmKind[1] = 1;
+      story->parmValue[1] = 1 << other;
     } else if (id != 1) {
       continue;
+    } else {
+      story->parmKind[0] = 0;
+      story->parmKind[1] = 0;
+      story->parmKind[2] = 0;
+      story->parmKind[3] = 0;
+      story->entry = *tmpl;
+      story->parmKind[0] = 1;
+      story->feature38 = 1;
+      story->parmValue[0] = 1 << nation;
+      short other;
+      do {
+        other = static_cast<short>(rand() % 7);
+      } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
+      story->parmKind[1] = 1;
+      story->parmValue[1] = 1 << other;
     }
-    story->parmKind[0] = 0;
-    story->parmKind[1] = 0;
-    story->parmKind[2] = 0;
-    story->parmKind[3] = 0;
-    story->entry = *tmpl;
-    story->parmKind[0] = 1;
-    story->feature38 = 1;
-    story->parmValue[0] = 1 << nation;
-    short other;
-    do {
-      other = static_cast<short>(rand() % 7);
-    } while (other == static_cast<short>(nation) || g_apTerrainTypeDescriptorTable[other] == 0);
-    story->parmKind[1] = 1;
-    story->parmValue[1] = 1 << other;
     ticks[pick] = static_cast<short>(curTick);
     minor++;
     if (minor == 3) {

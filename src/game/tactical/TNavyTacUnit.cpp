@@ -76,8 +76,8 @@ void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting)
     crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     break;
   case kNavyTargetingCrew:
-    hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB_00669f18);
+    hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     break;
   case kNavyTargetingSail:
     hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);

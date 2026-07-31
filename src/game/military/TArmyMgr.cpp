@@ -475,7 +475,7 @@ void TArmyMgr::ResolveNextMove() {
 
   int stackCount = this->pendingUnitPool0c->GetCount();
   if (this->nextStackOrdinal10 <= stackCount) {
-    do {
+    while (!battleViewCreated) {
       int cursor = this->nextStackOrdinal10;
       stackCount = this->pendingUnitPool0c->GetCount();
       if (stackCount < cursor) {
@@ -506,7 +506,7 @@ void TArmyMgr::ResolveNextMove() {
         battleViewCreated =
             this->TryCreateTacticalBattleViewForTileArmies(stack, stack->ownerNationCodeE) != 0;
       }
-    } while (!battleViewCreated);
+    }
     stackCount = this->pendingUnitPool0c->GetCount();
     if (this->nextStackOrdinal10 <= stackCount) {
       return;
@@ -2166,7 +2166,7 @@ bool TArmyMgr::ScanMapContextActionEntriesForCodeMatch(short activeNationId) {
   if (remaining <= 0) {
     return false;
   }
-  do {
+  while (remaining > 0) {
     MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
         g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
             remaining));
@@ -2178,7 +2178,7 @@ bool TArmyMgr::ScanMapContextActionEntriesForCodeMatch(short activeNationId) {
       return true;
     }
     --remaining;
-  } while (remaining > 0);
+  }
   return false;
 }
 

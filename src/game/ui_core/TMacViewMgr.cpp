@@ -29,6 +29,7 @@
 #include "game/ui_widgets/TTransportPicture.h"
 #include "game/ui_screens/TRightLeftView.h"
 #include "game/ui_screens/TSimMgr.h"
+#include "game/ui_screens/TSetupRandomMapPicture.h"
 #include "game/ui_core/TStaticText.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
@@ -691,7 +692,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* srcCursor = surfaceBase + copyRow * strideBytes;
+      unsigned char* srcCursor = GetPixBaseAddr(surfaceObject) + copyRow * strideBytes;
       int copyCol = 0;
       while (copyCol < 0xd8) {
         *scratchCursor = srcCursor[copyCol];
@@ -741,7 +742,7 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     int copyRow = 0;
     unsigned char* scratchCursor = scratchBuffer;
     while (copyRow < 0x78) {
-      unsigned char* dstCursor = surfaceBase + copyRow * strideBytes;
+      unsigned char* dstCursor = GetPixBaseAddr(surfaceObject) + copyRow * strideBytes;
       int copyCol = 0;
       while (copyCol < 0xd8) {
         dstCursor[copyCol] = scratchCursor[0];
@@ -755,6 +756,9 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
   SetQuickDrawFillColor(0);
   UnlockPixels(GetGWorldPixMap(atlas670));
   SetGWorld(savedContext, savedFlags);
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
   (*GetGWorldPixMap(atlas670))->dib->FlipScanlineOrder();
   g_pGlobalMapState->strategicMapPalettePreviewReady = 1;
 }

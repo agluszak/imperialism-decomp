@@ -273,7 +273,6 @@ void FillClipRegionWithForegroundBrush(RgnHandle rgn) {
     ::FillRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject),
               static_cast<HBRUSH>(fillBrush.m_hObject));
   }
-  fillBrush.DeleteObject();
 }
 
 // FUNCTION: IMPERIALISM 0x00497a10
@@ -286,7 +285,6 @@ void QDPaintRgn(RgnHandle rgn) {
     ::FillRgn(dc->m_hDC, static_cast<HRGN>((*rgn)->rgn.m_hObject),
               static_cast<HBRUSH>(fillBrush.m_hObject));
   }
-  fillBrush.DeleteObject();
 }
 
 // FUNCTION: IMPERIALISM 0x00497b30

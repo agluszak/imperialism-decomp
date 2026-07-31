@@ -205,7 +205,7 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
   int deviceId = 0;
   if (deviceCount > 0) {
     AUXCAPSA caps;
-    do {
+    while (deviceId < deviceCount) {
       auxResult = auxGetDevCapsA(deviceId, &caps, sizeof(caps));
       WORD deviceKind = caps.wPid & 7;
       if (deviceKind == 1 || deviceKind == 2) {
@@ -213,7 +213,7 @@ WORD OpenCdAudioAndProbeAuxOutputDevice(void) {
         break;
       }
       ++deviceId;
-    } while (deviceId < deviceCount);
+    }
   }
 
   if (auxResult != MMSYSERR_NOERROR) {

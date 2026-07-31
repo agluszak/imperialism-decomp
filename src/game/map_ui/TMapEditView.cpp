@@ -391,9 +391,8 @@ void TMapEditView::PlaceCountySeat(short tileIndex) {
     InvalidateTile(previousCountySeat);
   }
   InvalidateTile(tileIndex);
-  short neighbor = TMapMgr::GetNeighborTileID(tileIndex, 2);
-  if (neighbor != -1) {
-    InvalidateTile(neighbor);
+  if (TMapMgr::GetNeighborTileID(tileIndex, 2) != -1) {
+    InvalidateTile(TMapMgr::GetNeighborTileID(tileIndex, 2));
   }
 }
 
