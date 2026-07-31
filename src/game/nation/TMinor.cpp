@@ -953,7 +953,19 @@ void TMinor::ConvertCapitolToTown(int nationId) {
 
 // FUNCTION: IMPERIALISM 0x004e5840
 void TMinor::BecomeColonyOf(int targetNationSlot) {
-  TCountry::BecomeColonyOf(targetNationSlot);
+  // MATCH: the original inlines the whole TCountry::BecomeColonyOf (0x4d7c90) body here
+  // rather than calling it, so the base work is transcribed instead of delegated.
+  this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
+  this->SetTradePolicyTo(static_cast<NationSlot>(targetNationSlot), 100);
+
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+        nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
+      g_apTerrainTypeDescriptorTable[nationSlot]->NewStatusFor(this->nationSlot, 200);
+    }
+  }
+
+  g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
   targetNation->ResetNationDiplomacySlotsAndMarkRelatedNations(this->nationSlot);

@@ -488,6 +488,11 @@ void TAutoGreatPower::ReplyToDiplomacyOffers(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TAutoGreatPower::AddNoticeFrom(short sourceNation, short actionCode) {
+  // MATCH: the original guards the whole body with a null-this test (TEST ESI,ESI at
+  // 0x4e7c53) before touching either parameter.
+  if (this == 0) {
+    return;
+  }
   if (actionCode == kDiplomacyProposalDeclareWar) {
     this->SetEnemy(static_cast<short>(sourceNation));
   }
