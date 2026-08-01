@@ -49,9 +49,9 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// reservedByte03/actionType04/tileOrObject08 read up front; nationIds[1] is read later,
+// reservedByte03/actionType04/location08 read up front; nationIds[1] is read later,
 // interleaved into the per-side loop below alongside nationIds[0]), resolving
-// tileOrObject08 either as a raw tile/record index (actionType04 in {0,3,4}) or, via
+// location08 either as a raw tile/record index (actionType04 in {0,3,4}) or, via
 // FindMapActionContextByNodeId, a live TZone* -- mirrors the port-zone/context-array
 // two-way match idiom used throughout TZone.cpp. Then for each side (0/1), reads the
 // nation-id byte, the fixed name/overlay buffers (a version-gated legacy string read
@@ -65,9 +65,9 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
   short nodeId;
   stream->ReadBytes(&nodeId, 2);
   if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
-    tileOrObject08.tileIndex = nodeId;
+    location08 = reinterpret_cast<void*>(static_cast<int>(nodeId));
   } else {
-    tileOrObject08.object = FindMapActionContextByNodeId(nodeId);
+    location08 = FindMapActionContextByNodeId(nodeId);
   }
 
   for (int side = 0; side < 2; ++side) {
@@ -96,7 +96,7 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
         stream->ReadBytes(&elem.nameBuffer, 0x20);
       }
       stream->ReadBytes(&elem.strengthBucket, 2);
-      stream->ReadBytes(&elem.detailIdentity, 4);
+      stream->ReadBytes(&elem.detailIdentity28, 4);
     }
   }
 }
@@ -109,9 +109,9 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
 
   short nodeId;
   if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
-    nodeId = static_cast<short>(tileOrObject08.tileIndex);
+    nodeId = static_cast<short>(reinterpret_cast<int>(location08));
   } else {
-    nodeId = static_cast<TZone*>(tileOrObject08.object)->GetContextOrdinalOrInvalid();
+    nodeId = static_cast<TZone*>(location08)->GetContextOrdinalOrInvalid();
   }
   stream->WriteBytes(&nodeId, 2);
 
@@ -126,7 +126,7 @@ void MapContextActionRecord::WriteTo(TStream* stream) {
       stream->WriteBytes(&child.stockOrRequired, 2);
       stream->WriteBytes(child.nameBuffer, 0x20);
       stream->WriteBytes(&child.strengthBucket, 2);
-      stream->WriteBytes(&child.detailIdentity, 4);
+      stream->WriteBytes(&child.detailIdentity28, 4);
     }
   }
 }
@@ -634,7 +634,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.sideChildRecords250[0] = 0;
   record.nationIds[1] = enemyStack->categoryFlag8;
   record.nationIds[0] = ourStack->categoryFlag8;
-  record.tileOrObject08.raw = ownerNationCodeInt;
+  record.location08 = reinterpret_cast<void*>(ownerNationCodeInt);
   record.actionType04 = 0;
   record.reservedByte03 = 0;
 
@@ -700,7 +700,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
     CString unitName;
     unitName = militaryUnit->name24;
     CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
-    child.detailIdentity.categoryTag = kControlTagArmy;
+    child.detailIdentity28 = kControlTagArmy;
     child.strengthBucket = static_cast<short>(militaryUnit->experiencePercent38 / 100);
     ++childIndex;
   }
@@ -718,7 +718,7 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
     CString unitName;
     unitName = militaryUnit->name24;
     CopyTextIntoFixedBuffer(child.nameBuffer, 0x20, static_cast<LPCSTR>(unitName));
-    child.detailIdentity.categoryTag = kControlTagArmy;
+    child.detailIdentity28 = kControlTagArmy;
     child.strengthBucket = static_cast<short>(militaryUnit->experiencePercent38 / 100);
     ++childIndex;
   }
@@ -2307,7 +2307,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
             }
             // Final battle-report row category; the working unit pointer is no longer
             // needed once the evicted unit has been copied into the record.
-            rec.detailIdentity.categoryTag = kControlTagArmy; // 'army'
+            rec.detailIdentity28 = kControlTagArmy; // 'army'
             rec.strengthBucket = static_cast<short>(unit->experiencePercent38 / 100);
             unit->DetachUnitOrderFromOwnerAndReset();
             unit->Free();

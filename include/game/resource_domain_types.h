@@ -53,7 +53,7 @@ enum ResourceKind {
 //    band with per-province development counters (TMapMgr's
 //    resourceDevelopmentCounts82[10], indexed by kind - 7).
 //  * Harvested food and precious metals 17..22 also come off the map, which is
-//    why tile-yield loops test the union of the first and last bands
+//    why tile-yield loops test the combined first and last bands
 //    (TCityInteriorMinister 0x004c2e50 walks `(0..6) || (17..22)`).
 enum ResourceKindBand {
   kResourceIndustrialRawFirst = kResourceCotton, // 0

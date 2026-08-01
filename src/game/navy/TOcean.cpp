@@ -464,15 +464,15 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
     if (isTaskForceEntry == 0) {
       continue;
     }
-    int cityIndex = rankEntry->target.asProvince->GetIndex();
+    int cityIndex = static_cast<Province*>(rankEntry->target)->GetIndex();
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
         g_pSimMgr->GetActiveNationId()) {
       continue;
     }
-    // location is the anchoring map-action context TZone*; target.asProvince is the
+    // location is the anchoring map-action context TZone*; target is the
     // kind-5 city record used by the coastal-tile heuristic.
     short coastalTile = rankEntry->location->FindBestCoastalTileForContextAndCityStateByHeuristic(
-        rankEntry->target.asProvince);
+        static_cast<Province*>(rankEntry->target));
     if (coastalTile == -1) {
       continue;
     }

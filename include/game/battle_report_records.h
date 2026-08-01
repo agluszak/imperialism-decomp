@@ -6,7 +6,7 @@
 #include "game/ui_tags_military.h"
 
 // BattleRecord's per-participant UI rows are the same serialized 0x2c records that
-// TArmyMgr/TNavyMgr build and finalize. The discriminator is detailIdentity.categoryTag;
+// TArmyMgr/TNavyMgr build and finalize. The category tag is detailIdentity28;
 // resourceType, stockOrRequired, nameBuffer, and strengthBucket supply the category-specific
 // UI values. Keep one physical type instead of an overlapping UI-only payload model.
 typedef MapOrderBattleSideChildRecord BattleReportDetailRecord;

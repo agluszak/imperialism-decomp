@@ -42,7 +42,7 @@ void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
 
 // FUNCTION: IMPERIALISM 0x005ae780
 bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
-  TShipOrder* shipOrder = ownerCity->shipOrderSlots[0];
+  TShipOrder* shipOrder = ownerCity->shipOrderSlots190[0];
 
   if (waitingForShipOrderAdvance16 == 0) {
     if (shipOrder->CanFillOrderSheet()) {

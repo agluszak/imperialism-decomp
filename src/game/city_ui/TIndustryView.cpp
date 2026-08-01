@@ -222,7 +222,7 @@ void TIndustryView::UpdateFields() {
 
     if (child->controlTag == kControlTagFlag) { // 'flag'
       TProductionOrder* flagOrder = static_cast<TProductionOrder*>(
-          city94->orderSlotsE4[static_cast<short>(embeddedPageIndex9E + 0x35)]);
+          city94->trailingOrderSlots1b0[static_cast<short>(embeddedPageIndex9E + 2)]);
       SetIndustryControlEnabledIfChanged(child, flagOrder->quantity != 0);
     }
 

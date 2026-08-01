@@ -82,7 +82,7 @@ void TCivToolbar::RefreshCivilianCommandPanelForSelection(TCivUnit* selectedOrde
     case 5:
     case 7:
     case 8:
-      backControl->legendInitialized = 0;
+      backControl->targetTileCountsBySlot[4] = 0;
       backControl->UpdateCivilianOrderTargetTileCountsForOwnerNation(selectedOrder);
       break;
     }

@@ -41,31 +41,12 @@ struct NewsEvent {
   int reserved10[5];
 };
 
-// The shared TNewsMgr queue stores several 0x10-byte payload variants selected by
-// eventKind. Treaty events use subject + counterpart mask; shortage events add a
-// related nation; miscellaneous events use a nation-or-999 selector and story code.
-struct TreatyNewsPayload {
-  int subjectNation;
-  int counterpartNationMask;
-  int reserved;
-};
-
-struct ShortageNewsPayload {
-  int subjectNation;
-  int affectedNationMask;
-  int relatedNation;
-};
-
-struct MiscNewsPayload {
+// The shared TNewsMgr queue stores one three-dword payload. eventKind determines whether
+// the second dword is a nation mask or story code and whether the third dword is used.
+struct InterNationNewsPayload {
   int subjectNationOrAll;
-  int storyCode;
-  int reserved;
-};
-
-union InterNationNewsPayload {
-  TreatyNewsPayload treaty;
-  ShortageNewsPayload shortage;
-  MiscNewsPayload misc;
+  int nationMaskOrStoryCode;
+  int relatedNation;
 };
 
 struct InterNationNewsRecord {

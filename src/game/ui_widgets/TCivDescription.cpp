@@ -49,7 +49,7 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // FUNCTION: IMPERIALISM 0x0044a770
 TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
-  legendInitialized = 0;
+  targetTileCountsBySlot[4] = 0;
 }
 
 // The ordinary destructor and the scalar deleting destructor below are both
@@ -93,7 +93,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(TCivUnit* o
     case kCivilianUnitRancher:
     case kCivilianUnitDeveloper:
     case kCivilianUnitDriller:
-      context->legendInitialized = 0;
+      context->targetTileCountsBySlot[4] = 0;
       context->UpdateCivilianOrderTargetTileCountsForOwnerNation(orderState);
       break;
     }
@@ -184,7 +184,7 @@ void TCivDescription::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint
           *currentLegendSelectionCounter =
               (unsigned short)((unsigned int)(*currentLegendSelectionCounter) % candidateOrdinal);
         }
-    } while ((candidateOrdinal > 0) &&
+      } while ((candidateOrdinal > 0) &&
                (candidateOrdinal < (int)(unsigned int)(*currentLegendSelectionCounter)));
     }
     currentLegendSelectionCounter = currentLegendSelectionCounter + 1;
@@ -291,7 +291,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
   short textWidth;
   short textOriginX;
 
-  if (this->legendInitialized == 0) {
+  if (this->targetTileCountsBySlot[4] == 0) {
     legendSelectionCountsBySlot = g_awCivilianLegendSelectionCountsBySlot;
     RECT* legendRect = &this->legendRects[0];
     RECT zeroRect = {0, 0, 0, 0};
@@ -313,7 +313,7 @@ void TCivDescription::Draw(RECT* rectBuffer) {
     this->DrawDeveloper(rectBuffer);
   }
 
-  this->legendInitialized = 1;
+  this->targetTileCountsBySlot[4] = 1;
   if (selectedClass != (short)-1) {
     stylePrimary = 0;
     styleSecondary = 0;
@@ -447,7 +447,7 @@ void TCivDescription::DrawEngineer(RECT* boundsBuffer) {
 // (hills, mountains, then the three oil terrains once tech 4 is researched), each with
 // the terrain header icon, the per-column target-tile count, and the mineral icons that
 // terrain can yield. Registers each header icon rect into legendRects for hit testing
-// until legendInitialized is set by Draw().
+// until targetTileCountsBySlot[4] is set by Draw().
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DrawProspector(RECT* bounds) {
   (void)bounds;
@@ -488,7 +488,7 @@ void TCivDescription::DrawProspector(RECT* bounds) {
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                      &sourceRect, &destinationRect, 0, 0);
 
-    if (legendInitialized == 0) {
+    if (targetTileCountsBySlot[4] == 0) {
       legendRects[terrainIcon] = destinationRect;
       enabled = 1;
     }
@@ -675,7 +675,7 @@ void TCivDescription::DrawDeveloper(RECT* bounds) {
         BlitRectWithOptionalTransparency(g_pMacViewMgr->atlas694[1]->GetBlitSurface(),
                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
                                          &sourceRect, &destinationRect, 0, 0);
-        if (legendInitialized == 0) {
+        if (targetTileCountsBySlot[4] == 0) {
           legendRects[terrainIcon] = destinationRect;
           enabled = 1;
         }

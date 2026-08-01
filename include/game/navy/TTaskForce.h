@@ -36,23 +36,11 @@ public:
   // "task force" queue entries; OrderEvade (0x552f80) sets it to
   // 9 for the map-order-9 kind.
   int shipOrders;
-  // +0x0c order-context payload: a discriminated variant keyed by `shipOrders` (+0x08).
-  // The order-entry machinery reuses this one 4-byte slot for the order's context object,
-  // whose concrete type depends on the order kind:
-  //   shipOrders 1/2/3/4/6 -> asZone       (map/port-zone context; walked through the zone
-  //                           neighbor graph in OrderSailTowards, dispatched via
-  //                           TZone vtable slot 0x4c in CreateIngot)
-  //   shipOrders 5         -> asProvince   (record in the 384-entry province table; its
-  //                           +0xa1 owner-nation flag is read by ApplyMapOrderTypeExecution-
-  //                           Effects, and GetProvinceIndex resolves it)
-  //   shipOrders 9 / 0     -> null (OrderEvade never writes it; ctor nulls it)
-  // LAYOUT: WriteTo/ReadFrom (0x552b90/0x552d10) serialize this slot two ways:
-  // shipOrders==5 uses a city-table index; other values use a CObject reference. Every
-  // reader and writer treats +0x0c as one 4-byte slot.
-  union TMapOrderContext {
-    TZone* asZone;
-    Province* asProvince;
-  } target;
+  // +0x0c order-context payload. Mac names SubmitOrders(eShipOrders, void*), and every
+  // Windows reader/writer uses this same pointer slot with shipOrders selecting whether
+  // the pointee is a TZone (orders 1/2/3/4/6) or Province (order 5). Orders 0/9 leave it
+  // null. WriteTo/ReadFrom serialize the corresponding context ordinal or province index.
+  void* target;
   // Head of this entry's child order-node chain. A child's taskForce backlink makes
   // this the head of that child's sibling list.
   TMapOrderChildLinkNode* shipList; // +0x10
@@ -61,7 +49,7 @@ public:
   // Finest over shipList -- the
   // same role this plays for TAdmiral's primary-order force and for a child's force.
   TShip* flagship; // +0x14
-  // +0x18 map-action context zone. Unlike `target`, this is NOT a tagged variant: every
+  // +0x18 map-action context zone. Every
   // writer stores a zone/context and every reader treats it as TZone* -- equality vs a
   // primary order node's own +0x08 (TShip::location, a TZone*), and vtable dispatch through
   // TZone slots 0x2c (AssignZoneDisplayName), 0x38, 0x4c (tile search) and 0x54 (coastal
@@ -87,7 +75,7 @@ public:
   char pad_32[0x02];
 
   TTaskForce()
-      : aggression(1), shipOrders(0), target(), shipList(nullptr), flagship(nullptr),
+      : aggression(1), shipOrders(0), target(nullptr), shipList(nullptr), flagship(nullptr),
         location(nullptr), nation(-1), previousForce(nullptr), nextForce(nullptr),
         ingotTileIndex(-1) {
     memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
@@ -212,7 +200,7 @@ public:
 
   // Immediate/deferred execution effects for a resolved queue entry
   // (TNavyMgr::CarryOutOrders' tail passes): no-op once already eliminated.
-  // Type 1 propagates target.asZone into every active child's location. Type 5
+  // Type 1 propagates the target TZone into every active child's location. Type 5
   // sets the target city's owner-flag bit
   // for this entry's nation and, in single-player mode, invalidates that city's redraw.
   // Type 8 advances every active child's strength by a quarter-step toward its
@@ -348,14 +336,14 @@ public:
   void OrderEvade(); // 0x552f80
 
   // Re-seeds zone-graph BFS distance levels from pContextAnchor, then walks
-  // target.asZone->primaryNeighbors,
+  // the target TZone's primaryNeighbors,
   // promoting the first neighbor closer to the destination; finally the
   // same free-shipList / recompute / self-Free-or-queue tail as
   // OrderEvade.
   void OrderSailTowards(TZone* pContextAnchor); // 0x5533f0
 
   // OrderSail uses map-order kind 1. OrderBlockade stores the port-zone context in
-  // target.asZone, sets shipOrders=6, then follows the OrderEvade cleanup/queue tail.
+  // target, sets shipOrders=6, then follows the OrderEvade cleanup/queue tail.
   // ORACLE: OrderSail.
   void OrderSail(TZone* orderTarget);     // 0x553270
   void OrderBlockade(TZone* orderTarget); // 0x5536c0

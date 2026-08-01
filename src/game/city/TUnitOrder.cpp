@@ -224,13 +224,13 @@ void TUnitOrder::Produce() {
       }
       orderObject->IMilitaryUnit(static_cast<MilitaryUnitKindStorage>(entryId), homeProvince,
                                  ownerNationSlot, 0);
-      if (ownerNation->pendingActionStatus.roles.territorialPressureStatus06 >= 0x33) {
+      if (ownerNation->pendingActionStatus.byAction[6] >= 0x33) {
         orderObject->experiencePercent38 = 100;
       }
 
       ownerNation->ComputeSelectedMilitaryPowerScore();
-      if (ownerNation->pendingActionStatus.roles.landRecruitStatus01 != 0x32) {
-        int currentLevel = ownerNation->pendingActionStatus.roles.landRecruitStatus01;
+      if (ownerNation->pendingActionStatus.byAction[1] != 0x32) {
+        int currentLevel = ownerNation->pendingActionStatus.byAction[1];
         if (currentLevel != 0) {
           currentLevel -= 0x33;
         }

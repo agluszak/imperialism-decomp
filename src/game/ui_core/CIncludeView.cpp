@@ -550,7 +550,8 @@ void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
     TToolboxEvent event;
     event.mouseX = point.x;
     event.mouseY = point.y;
-    event.mouseMetadata1c = 0;
+    event.commandCode = 0;
+    event.keyFlags = 0;
     event.mouseButton24 = 0;
     m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
   }
@@ -656,7 +657,8 @@ void CIncludeView::OnRButtonDown(UINT nFlags, CPoint point) {
     TToolboxEvent event;
     event.mouseX = point.x;
     event.mouseY = point.y;
-    event.mouseMetadata1c = 0;
+    event.commandCode = 0;
+    event.keyFlags = 0;
     event.mouseButton24 = 1;
     m_activeDialogContext->HandleMouseDown(point, &event, CPoint(0, 0));
   }

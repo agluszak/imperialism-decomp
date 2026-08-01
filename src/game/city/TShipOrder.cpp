@@ -207,17 +207,16 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
   this->quantity = 0;
 
   TGreatPower* owner = city->ownerNationAc;
-  if (owner->pendingActionStatus.roles.navyOrderStatus00 == '2') {
+  if (owner->pendingActionStatus.byAction[0] == '2') {
     return;
   }
 
   short currentCapability = owner->GetBuildingCapacity(2);
   short desiredCapability;
-  if (owner->pendingActionStatus.roles.navyOrderStatus00 == '\0') {
+  if (owner->pendingActionStatus.byAction[0] == '\0') {
     desiredCapability = 0;
   } else {
-    desiredCapability =
-        static_cast<short>(owner->pendingActionStatus.roles.navyOrderStatus00 - 0x33);
+    desiredCapability = static_cast<short>(owner->pendingActionStatus.byAction[0] - 0x33);
   }
 
   if (currentCapability < 0x19) {

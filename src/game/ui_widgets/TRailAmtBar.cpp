@@ -66,7 +66,7 @@ void TRailAmtBar::DoPostCreate(int arg) {
     recordIndex = 0x17;
   }
 
-  selectedMetricRecord = province->tradeCommodityRecordPtrs[recordIndex];
+  selectedMetricRecord = province->orderSlotsE4[recordIndex];
 
   short productionOrCapValue = 0;
   if (recordIndex == 0x33 || recordIndex == 7) {

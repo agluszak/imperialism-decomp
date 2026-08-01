@@ -80,7 +80,7 @@ void TUniversityView::DoStartup() {
       minus->AssertValid();
       minus->ViewEnable(0, 0);
     } else {
-      TUnitOrder* order = city94->buildOrderSlots[category + 9];
+      TUnitOrder* order = city94->buildOrderSlots148[9 + category];
       TNumberText* quantity =
           static_cast<TNumberText*>(row->ResolveControlByTag(kControlTagNumb)); // 'numb'
       quantity->AssertValid();
@@ -147,7 +147,7 @@ void TUniversityView::DoStartup() {
 void TUniversityView::SetUnit(short recruitmentCategory) {
   CString currencyText;
   CString unusedText;
-  TUnitOrder* order = city94->buildOrderSlots[recruitmentCategory + 9];
+  TUnitOrder* order = city94->buildOrderSlots148[9 + recruitmentCategory];
   if (order == selectedRecruitmentOrderA8) {
     return;
   }
@@ -236,7 +236,7 @@ void TUniversityView::DoEvent(int commandId, TEventHandler* sourceHandler, TEven
       sele->AssertValid();
       sele->SetSelectedChildTagAndRefresh(kControlTagCiv0 + index); // 'civ0'+index
 
-      TUnitOrder* order = city94->buildOrderSlots[index + 9];
+      TUnitOrder* order = city94->buildOrderSlots148[9 + index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;

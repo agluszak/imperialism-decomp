@@ -44,7 +44,7 @@ void TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode(void* buffer) 
     memcpy(buffer, payload.raw, messageLength - 0x24);
     break;
   case 1: {
-    TurnEvent2ByteDeltaEntry* cursor = payload.byteEntries;
+    TurnEvent2ByteDeltaEntry* cursor = reinterpret_cast<TurnEvent2ByteDeltaEntry*>(payload.raw);
     for (int count = (messageLength - 0x24) / 3; count != 0; --count) {
       static_cast<unsigned char*>(buffer)[cursor->index] = cursor->value;
       ++cursor;
@@ -52,7 +52,7 @@ void TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode(void* buffer) 
     break;
   }
   case 2: {
-    TurnEvent2ShortDeltaEntry* cursor = payload.shortEntries;
+    TurnEvent2ShortDeltaEntry* cursor = reinterpret_cast<TurnEvent2ShortDeltaEntry*>(payload.raw);
     for (int count = (messageLength - 0x24) / 4; count != 0; --count) {
       static_cast<short*>(buffer)[cursor->index] = cursor->value;
       ++cursor;
@@ -60,7 +60,7 @@ void TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode(void* buffer) 
     break;
   }
   case 3: {
-    TurnEvent2IntDeltaEntry* cursor = payload.intEntries;
+    TurnEvent2IntDeltaEntry* cursor = reinterpret_cast<TurnEvent2IntDeltaEntry*>(payload.raw);
     for (int count = (messageLength - 0x24) / 6; count != 0; --count) {
       static_cast<int*>(buffer)[cursor->index] = cursor->value;
       ++cursor;

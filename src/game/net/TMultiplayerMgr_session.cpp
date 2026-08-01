@@ -206,7 +206,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   TurnEvent1FStatusPacket reportPacket;
   reportPacket.messageTag = kControlTagTime;
   reportPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  reportPacket.eventCode = 0;
+  reportPacket.eventCode = 0x1f;
   reportPacket.fromNetworkId = 0;
   reportPacket.toNetworkId = 0;
   reportPacket.messageLength = 0;
@@ -231,7 +231,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   NationStatusEvent25Packet statusPacket;
   statusPacket.messageTag = kControlTagTime;
   statusPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  statusPacket.eventCode = 0;
+  statusPacket.eventCode = 0x25;
   statusPacket.fromNetworkId = 0;
   statusPacket.toNetworkId = 0;
   statusPacket.messageLength = 0;
@@ -248,7 +248,7 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   TurnEvent1FStatusPacket namePacket;
   namePacket.messageTag = kControlTagTime;
   namePacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
-  namePacket.eventCode = 0;
+  namePacket.eventCode = 0x1f;
   namePacket.fromNetworkId = 0;
   namePacket.toNetworkId = 0;
   namePacket.messageLength = 0;

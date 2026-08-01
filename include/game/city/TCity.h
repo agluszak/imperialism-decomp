@@ -175,28 +175,18 @@ public:
   short cityStockLivestockDE;
   short cityStockGemsE0;
   short cityStockGoldE2;
-  // +0xe4..+0x1d8 — mixed city payload table (0x3d pointer slots).
+  // +0xe4..+0x1d8 — city production-order fields (0x3d pointer slots).
   // Band boundaries traced from ICity (0x004b2570):
   //   0x00..0x18 heterogeneous TItemOrder/TOrItemOrder (idx 0x08) plus
   //              TTrainingOrder (idx 0x07/0x17/0x18); all TProductionOrder-derived.
   //   0x19..0x2a TUnitOrder (build orders)
   //   0x2b..0x32 TShipOrder (navy orders, LEA [ESI+0x190] loop of 8)
-  //   0x33..0x3c trailing band incl. TPowerPlantOrder (idx 0x34) and other
-  //              TProductionOrder-derived slots; TRailAmtBar (0x0058a020)
-  //              indexes across this band via tradeCommodityRecordPtrs
-  //              (idx 0x33/0x34/0x3c), relying on same-type contiguity with
-  //              trailingOrderSlots — kept flat-typed as TProductionOrder* so
-  //              that cross-band indexing stays type-consistent.
-  union {
-    TProductionOrder* orderSlotsE4[0x3D];
-    TObject* objectOrderSlots[0x3D];
-    struct {
-      TProductionOrder* tradeCommodityRecordPtrs[0x19]; // 0x00..0x18
-      TUnitOrder* buildOrderSlots[0x12];                // 0x19..0x2a
-      TShipOrder* shipOrderSlots[8];                    // 0x2b..0x32
-      TProductionOrder* trailingOrderSlots[0x0a];       // 0x33..0x3c
-    };
-  };
+  //   0x33..0x3c trailing TProductionOrder-derived slots, including the power plant
+  //              order at 0x34.
+  TProductionOrder* orderSlotsE4[0x19];          // +0xe4..+0x147
+  TUnitOrder* buildOrderSlots148[0x12];          // +0x148..+0x18f
+  TShipOrder* shipOrderSlots190[8];              // +0x190..+0x1af
+  TProductionOrder* trailingOrderSlots1b0[0x0a]; // +0x1b0..+0x1d7
   TPopulationMgr*
       productionSummary1d8; // 0x1D8 — city population / summary (TPopulationMgr vtbl 0x64f9b0)
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).

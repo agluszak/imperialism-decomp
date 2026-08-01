@@ -18,14 +18,12 @@ struct TextStyle;
 // TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
 // small nation-id array indexed by participantIndex02; actionType04 selects how
-// tileOrObject08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
+// location08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
 // table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
 // the report-marker placement state stamped by that hook.
-// +0x08 tagged payload of MapContextActionRecord, discriminated by actionType04: a
+// +0x08 location context, discriminated by actionType04: a
 // tile/record index for actionType04 in {0,3,4} (index into g_pGlobalMapState's stride-0xa8
-// table), otherwise a map-object pointer (its short at +0xc is the map cell / a TZone*).
-// All members alias the same 4 bytes, so accessing the right one is codegen-identical to the
-// old raw int while making the discriminated intent explicit.
+// table), otherwise a map-object pointer encoded in the same 32-bit field.
 struct MapContextActionRecord {
   unsigned char nationIds[2];       // +0x00
   unsigned char participantIndex02; // +0x02
@@ -34,7 +32,7 @@ struct MapContextActionRecord {
   // found for it yet.
   unsigned char reservedByte03;
   int actionType04; // +0x04 (0..4; 2 widens the marker sprite code)
-  MapOrderBattleSnapshot::TargetContext tileOrObject08; // +0x08 (tagged by actionType04)
+  void* location08; // +0x08
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
@@ -64,7 +62,7 @@ struct MapContextActionRecord {
   }
 
   // 0x4a13c0 -- reads one record from `stream`: the fixed header fields, resolving
-  // tileOrObject08 either as a raw tile/record index or (via FindMapActionContextByNodeId)
+  // location08 either as a raw tile/record index or (via FindMapActionContextByNodeId)
   // a live TZone* depending on actionType04, then for each side allocates and reads its
   // MapOrderBattleSideChildRecord array.
   void ReadFrom(TStream* stream);

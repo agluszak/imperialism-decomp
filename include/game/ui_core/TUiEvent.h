@@ -24,16 +24,11 @@ ASSERT_SIZE(TUiEvent, 0x14);
 // (0x4ffd70). The not-yet-ported CMcWindow WM_CHAR handler (0x493ce0) shares the same
 // global object and should use this type when it's ported.
 struct TToolboxEvent {
-  TUiEvent event; // 0x00 TEvent-derived header (installs vtable 0x648590)
-  int mouseX;     // 0x14 mouse-event client X
-  int mouseY;     // 0x18 mouse-event client Y
-  union {
-    int mouseMetadata1c; // 0x1c zeroed as one dword by the mouse-down producer
-    struct {
-      short commandCode; // 0x1c virtual key code (0x68 for VK_F1)
-      short keyFlags;    // 0x1e nFlags & 0xf
-    };
-  };
+  TUiEvent event;             // 0x00 TEvent-derived header (installs vtable 0x648590)
+  int mouseX;                 // 0x14 mouse-event client X
+  int mouseY;                 // 0x18 mouse-event client Y
+  short commandCode;          // 0x1c virtual key code (0x68 for VK_F1)
+  short keyFlags;             // 0x1e nFlags & 0xf
   short handledMarker;        // 0x20 repeat count / "already handled" marker
   unsigned short reserved22;  // 0x22
   int mouseButton24;          // 0x24 mouse button selector read by TWorldView

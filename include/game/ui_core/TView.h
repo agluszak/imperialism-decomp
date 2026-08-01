@@ -32,23 +32,12 @@ public:
   // ReplaceUiResourceContextPairBuffer (0x427060); the factory-builder TUs call the
   // out-of-line Reset body (0x41b420) instead.
   TUiStyleBytes() {
-    styleBytes[0] = 0;
-    styleBytes[1] = 0;
-    styleBytes[2] = 0;
-    styleBytes[3] = 0;
-    styleBytes[4] = 0;
-    styleBytes[5] = 0;
-    styleBytes[6] = 0;
-    styleBytes[7] = 0;
+    packedColor = 0;
+    styleWord = 0;
   }
   TUiStyleBytes* Reset(); // 0x41b420 — same zeroing, out-of-line (thiscall, returns this)
-  union {
-    unsigned char styleBytes[8];
-    struct {
-      int packedColor; // +0
-      int styleWord;   // +4
-    };
-  };
+  int packedColor;        // +0
+  int styleWord;          // +4
 };
 
 // Typed MFC child list used by TView::childList44. The two non-virtual helpers are

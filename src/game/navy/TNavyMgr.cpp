@@ -223,7 +223,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     rec.resourceType = child->type;
     rec.stockOrRequired = child->strength;
     CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->name));
-    rec.detailIdentity.sourceObject = child;
+    rec.detailIdentity28 = reinterpret_cast<unsigned int>(child);
     rec.strengthBucket = static_cast<short>(child->experience / 100);
     ++idx;
   }
@@ -235,7 +235,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   short count = snapshot->childCount[side];
   for (int i = 0; i < count; ++i) {
     MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
-    TShip* child = static_cast<TShip*>(rec.detailIdentity.sourceObject);
+    TShip* child = reinterpret_cast<TShip*>(rec.detailIdentity28);
     bool stillPresent = entry != nullptr && entry->shipList->FindNodeMatching(child) != nullptr;
     if (stillPresent) {
       rec.stockOrRequired = child->strength;
@@ -245,11 +245,11 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
     }
     // Finalize the working pointer slot into the report-row category consumed by
     // TBatRepDetLine::InstallViews.
-    rec.detailIdentity.categoryTag = kControlTagNavy; // 'navy'
+    rec.detailIdentity28 = kControlTagNavy; // 'navy'
   }
 
   if (entry != nullptr && entry->shipOrders == 5) {
-    int cityIndex = entry->target.asProvince->GetIndex();
+    int cityIndex = static_cast<Province*>(entry->target)->GetIndex();
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->nationIds[side], cityIndex, snapshot);
   }
@@ -629,8 +629,7 @@ short TNavyMgr::GetInvasionCapacity(short nationSlot, Province* provinceTarget,
                                     TZone* contextFilter) {
   int total = 0;
   for (TTaskForce* order = orderQueueHead; order != nullptr; order = order->nextForce) {
-    if (order->nation == nationSlot && order->shipOrders == 5 &&
-        order->target.asProvince == provinceTarget &&
+    if (order->nation == nationSlot && order->shipOrders == 5 && order->target == provinceTarget &&
         (contextFilter == nullptr || order->location == contextFilter)) {
       int sum = 0;
       for (TMapOrderChildLinkNode* item = order->shipList; item != nullptr; item = item->next) {
@@ -846,8 +845,8 @@ void TNavyMgr::CarryOutOrders() {
           continue;
         }
         bool ownerMatch =
-            (other->shipOrders == 1) && (other->location == entry->target.asZone ||
-                                         other->target.asZone == entry->target.asZone);
+            (other->shipOrders == 1) && (other->location == static_cast<TZone*>(entry->target) ||
+                                         other->target == entry->target);
         if (!ownerMatch)
           continue;
         char result = 0;
@@ -1049,7 +1048,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     }
 
     short shipOrders = static_cast<short>(entry->shipOrders);
-    bool contextMatch = shipOrders == 6 && entry->target.asZone == portZoneContext;
+    bool contextMatch = shipOrders == 6 && entry->target == portZoneContext;
     bool activeContextMatch = false;
     if (shipOrders == 3) {
       TZone** slot = &portZoneContext->primaryNeighbors[0];
@@ -1132,7 +1131,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         snapshot.childRecords[0] = nullptr;
         snapshot.childRecords[1] = nullptr;
         snapshot.actionType04 = 1;
-        snapshot.targetContext08.object = entry->location;
+        snapshot.targetObject08 = entry->location;
         snapshot.reservedByte03 = 0;
         snapshot.participantIndex02 = 1;
         BuildMapOrderBattleSideSnapshot(&snapshot, 0, entry);
@@ -1243,7 +1242,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.participantIndex02 = 0;
         snapshot.reservedByte03 = 0;
         snapshot.actionType04 = 2;
-        snapshot.targetContext08.object = selection.selectedEntry->location;
+        snapshot.targetObject08 = selection.selectedEntry->location;
 
         CString labelScratch;
         g_apTerrainTypeDescriptorTable[selection.offerNationCode]->FormatOverlayTerrainLabelText(
@@ -1331,7 +1330,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& detail = snapshot.childRecords[1][reportIndex];
                 detail.resourceType = static_cast<short>(resourceType);
                 detail.stockOrRequired = static_cast<short>((directionFlags >> 1) & 1);
-                detail.detailIdentity.categoryTag = kControlTagMerc; // 'merc'
+                detail.detailIdentity28 = kControlTagMerc; // 'merc'
                 ++reportIndex;
               }
             }
@@ -1361,7 +1360,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 MapOrderBattleSideChildRecord& item = snapshot.childRecords[1][reportIndex];
                 item.resourceType = slot;
                 item.stockOrRequired = transferredWeight;
-                item.detailIdentity.categoryTag = kControlTagItem; // 'item'
+                item.detailIdentity28 = kControlTagItem; // 'item'
               }
 
               for (int resourceType2 = 0; resourceType2 < kIndustryActionOrderTypeCount;
@@ -1391,7 +1390,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         interaction.resourceType = slot;
         interaction.stockOrRequired = entryValue;
         interaction.strengthBucket = entryTargetNation;
-        interaction.detailIdentity.categoryTag = kControlTagRupt; // 'rupt'
+        interaction.detailIdentity28 = kControlTagRupt; // 'rupt'
 
         int selectedChildCount = CountMapOrderChildren(selection.selectedEntry->shipList);
         if (selection.selectedEntry->flagship != nullptr &&
@@ -1434,7 +1433,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           CopyCStringIntoFixedBuffer(detail.nameBuffer, 0x20,
                                      static_cast<LPCSTR>(selectedShip->name));
           detail.strengthBucket = static_cast<short>(selectedShip->experience / 100);
-          detail.detailIdentity.categoryTag = kControlTagNavy; // 'navy'
+          detail.detailIdentity28 = kControlTagNavy; // 'navy'
           ++selectedChildIndex;
         }
 
@@ -1644,7 +1643,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   case 0x0d: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->shipOrders = 1;
-    entry->target.asZone = ctx;
+    entry->target = ctx;
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
@@ -1655,7 +1654,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   case 0x0e: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->shipOrders = 6;
-    entry->target.asZone = ctx;
+    entry->target = ctx;
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
@@ -1666,7 +1665,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   case 0x0f: {
     TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
     entry->shipOrders = 1;
-    entry->target.asZone = ctx;
+    entry->target = ctx;
     entry->FreeAvailables();
     bool alreadyQueued = false;
     for (TTaskForce* node = g_pNavyOrderManager->orderQueueHead; node != nullptr;
@@ -1695,7 +1694,7 @@ int TNavyMgr::DoTileClick(short nTileIndex, int nInputFlags) {
   }
   case 0x10:
     entry->shipOrders = 5;
-    entry->target.asProvince = GetProvinceByTileIndex(nTileIndex);
+    entry->target = GetProvinceByTileIndex(nTileIndex);
     entry->FreeAvailables();
     if (g_pNavyOrderManager->CommitForce(entry)) {
       g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);

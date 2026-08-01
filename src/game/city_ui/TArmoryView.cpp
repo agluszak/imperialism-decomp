@@ -60,7 +60,7 @@ void TArmoryView::DoStartup() {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
 
   for (short row = 0; row < 8; ++row) {
-    TUnitOrder* order = static_cast<TUnitOrder*>(city94->orderSlotsE4[row + 0x19]);
+    TUnitOrder* order = city94->buildOrderSlots148[row];
     short resourceType = order->resourceTypeIndex;
     short pictureVariant;
     if (g_awTacticalUnitCategoryCodeBySlot[resourceType] == 8) {
@@ -306,7 +306,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId) {
   CString currencyText;
   CString resourceName;
 
-  TUnitOrder* order = static_cast<TUnitOrder*>(city94->orderSlotsE4[nBuildingSlotId + 0x19]);
+  TUnitOrder* order = city94->buildOrderSlots148[nBuildingSlotId];
   if (selectedUnitOrderA8 == order) {
     return;
   }

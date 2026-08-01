@@ -483,7 +483,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
               this->SetNationPendingActionStateAndPayload(4, regionId);
             } else {
               this->SetNationPendingActionStateAndPayload(3, regionId);
-              if (this->pendingActionStatus.roles.expansionAlertStatus08 < 0x33) {
+              if (this->pendingActionStatus.byAction[8] < 0x33) {
                 this->SetNationPendingActionStateAndPayload(8, -1);
               }
             }
@@ -523,8 +523,7 @@ char TGreatPower::HasAnyCommodityRecordBelowStepValue(void) {
     return 0;
   }
   for (int recordIndex = 8; recordIndex < 0xd; ++recordIndex) {
-    TProductionOrder* record =
-        this->city->tradeCommodityRecordPtrs[static_cast<short>(recordIndex)];
+    TProductionOrder* record = this->city->orderSlotsE4[static_cast<short>(recordIndex)];
     short controlValue = record->quantity;
     if (record->MaxOrder() > controlValue) {
       return 1;
@@ -2509,11 +2508,10 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
   TCity* province = this->city;
   int total = 0;
   if (province != 0) {
-    total = province->tradeCommodityRecordPtrs[12]->accumulatedValue +
-            province->tradeCommodityRecordPtrs[11]->accumulatedValue +
-            province->tradeCommodityRecordPtrs[9]->accumulatedValue +
-            province->tradeCommodityRecordPtrs[10]->accumulatedValue +
-            province->tradeCommodityRecordPtrs[8]->accumulatedValue;
+    total =
+        province->orderSlotsE4[12]->accumulatedValue +
+        province->orderSlotsE4[11]->accumulatedValue + province->orderSlotsE4[9]->accumulatedValue +
+        province->orderSlotsE4[10]->accumulatedValue + province->orderSlotsE4[8]->accumulatedValue;
   }
   return total;
 }
@@ -3023,7 +3021,7 @@ void TGreatPower::ChangeMaster(int targetNationSlot, int mode) {
   TCountry::ChangeMaster(targetNationSlot, mode);
 
   TGreatPower* targetNation = g_apNationStates[targetNationSlot];
-  if (targetNation->pendingActionStatus.roles.expansionCapacityStatus09 < '3') {
+  if (targetNation->pendingActionStatus.byAction[9] < '3') {
     targetNation->SetNationPendingActionStateAndPayload(9, this->nationSlot);
   }
 }
@@ -3038,10 +3036,10 @@ void TGreatPower::LoseProvince(int regionId) {
 void TGreatPower::AddProvince(int regionId) {
   this->ownedRegionList->InsertLast(regionId);
   if (this->ownedRegionList->GetSize() >= 9) {
-    signed char pressureHigh = this->pendingActionStatus.roles.territorialPressureStatus06;
+    signed char pressureHigh = this->pendingActionStatus.byAction[6];
     pressureHigh = pressureHigh >= 0x33;
     if (pressureHigh != 0) {
-      signed char gateHigh = this->pendingActionStatus.roles.expansionEventStatus0C;
+      signed char gateHigh = this->pendingActionStatus.byAction[12];
       gateHigh = gateHigh >= 0x33;
       if (gateHigh == 0) {
         this->SetNationPendingActionStateAndPayload(0x0C, -1);
@@ -3513,7 +3511,11 @@ void TGreatPower::GenerateGameScore() {
 
 // FUNCTION: IMPERIALISM 0x004e3560
 void TGreatPower::PayForMilitary() {
-  int maintenanceMultiplier = g_pTechMgr->activePrerequisitePair264.packedValue;
+  int maintenanceMultiplier =
+      static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair264.primaryTechId) |
+      (static_cast<unsigned int>(
+           static_cast<unsigned short>(g_pTechMgr->activePrerequisitePair264.secondaryTechId))
+       << 16);
   int militaryUnitCost = 0;
   CIterator unitIter(militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();

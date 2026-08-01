@@ -29,7 +29,7 @@ public:
   short selectedRowIndexA4;
   char pad_a6[2];
   // Selected city production order. RefreshCityViewProductionDetails indexes
-  // city94->orderSlotsE4 at selectedRowIndexA4 + 0x19, the TUnitOrder band.
+  // city94->buildOrderSlots148 at selectedRowIndexA4.
   TUnitOrder* selectedUnitOrderA8;
 };
 ASSERT_SIZE(TArmoryView, 0xac);

@@ -13,7 +13,7 @@ public:
   // FUNCTION: IMPERIALISM 0x00589240
   ~TIndustryAmtBar() override {}
   // The city commodity/production-order slot currently driving this bar's
-  // display (see TCity::tradeCommodityRecordPtrs / trailingOrderSlots).
+  // display (see TCity::orderSlotsE4).
   TProductionOrder* selectedMetricRecord;
 
   TIndustryAmtBar();

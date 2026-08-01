@@ -23,14 +23,7 @@ public:
   virtual void DrawDeveloper(RECT* bounds); // slot 0x6a 0x5903c0
   CivilianUnitKindStorage selectedCivilianClass;
   NationSlot ownerNationId;
-  union {
-    short targetTileCountsBySlot[5];
-    struct {
-      short pad_64[4];
-      unsigned char legendInitialized;
-      unsigned char pad_6d;
-    };
-  };
+  short targetTileCountsBySlot[5];
   RECT legendRects[16];
 
   TCivDescription();

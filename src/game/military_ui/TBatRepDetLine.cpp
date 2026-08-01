@@ -25,7 +25,7 @@ void TBatRepDetLine::InstallViews(TView* panel, int* offsetLayout) {
   panel->AssertValid();
   TBattleUnitsView* battleUnitsView = static_cast<TBattleUnitsView*>(panel);
 
-  switch (battleDetail14->detailIdentity.categoryTag) {
+  switch (battleDetail14->detailIdentity28) {
   case kControlTagArmy: { // 'army'
     TArmyBoyView* armyView = new TArmyBoyView;
     armyView->InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, &layoutWidth, 5, 5,

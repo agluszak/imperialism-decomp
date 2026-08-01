@@ -102,15 +102,11 @@ void TCitySiteView::DoPostCreate(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
 void TCitySiteView::SetMapViewTileIndex(int tileIndex) {
-  union WordOutputInt {
-    int value;
-    short word;
-  };
-  WordOutputInt row;
-  WordOutputInt column;
-  row.value = tileIndex;
-  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), &row.word, &column.word);
-  SetMapViewCellCoordinates(column.value, row.value);
+  int row = tileIndex;
+  int column;
+  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&row),
+                               reinterpret_cast<short*>(&column));
+  SetMapViewCellCoordinates(column, row);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
