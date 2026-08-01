@@ -110,13 +110,6 @@ bool WasStrategicMapImprovementTileObservedForRuntimeTest() {
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
-namespace {
-union WordOutputInt {
-  int value;
-  short word;
-};
-} // namespace
-
 static inline double DefaultMapCellScale() {
   return 0.015625;
 }
@@ -222,14 +215,15 @@ IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 // addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() : TWorldView() {
-  WordOutputInt row;
-  WordOutputInt col;
+  int row;
+  int col;
   viewportOrigin.x = 0;
   suppressMarkerOverlay34C = false;
   overlayObject35C = 0;
   viewportOrigin.y = 0;
-  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, &row.word, &col.word);
-  SetMapViewCellCoordinates(col.value, row.value);
+  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
+                               reinterpret_cast<short*>(&col));
+  SetMapViewCellCoordinates(col, row);
   unresolvedWord354 = 0;
   selectedTileIndex356 = -1;
   unresolvedFlag358 = false;
@@ -572,20 +566,18 @@ void TMapDialog::CenterOn(StrategicTileIndex tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x0051ace0
 int TMapDialog::GetCenterTile() const {
-  WordOutputInt col;
-  WordOutputInt row;
-  col.value = viewportOrigin.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
-  row.value = viewportOrigin.y / 0x40 + 4;
-  NormalizeWrappedMapCoord108x60(&col.word, &row.word);
-  return col.value + row.value * 0x6c;
+  int col = viewportOrigin.x / 0x40 + static_cast<short>(g_wMapDialogViewportTileSpan) / 2;
+  int row = viewportOrigin.y / 0x40 + 4;
+  NormalizeWrappedMapCoord108x60(reinterpret_cast<short*>(&col), reinterpret_cast<short*>(&row));
+  return col + row * 0x6c;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
 void TMapDialog::SetMapViewTileIndex(int arg1) {
-  WordOutputInt tileCol;
+  int tileCol;
   SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
-                               &tileCol.word);
-  SetMapViewCellCoordinates(tileCol.value, arg1);
+                               reinterpret_cast<short*>(&tileCol));
+  SetMapViewCellCoordinates(tileCol, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0

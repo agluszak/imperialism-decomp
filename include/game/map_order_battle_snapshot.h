@@ -34,19 +34,15 @@ struct CStr255 {
 ASSERT_SIZE(CStr255, 0xff);
 
 // One detail row in a map-order action report. Conflict resolution initially retains a
-// live unit pointer while refreshing ship state, then finalizes that same slot to the
-// four-byte category tag consumed by the battle-report UI. Interaction outcomes create
-// already-finalized resource and diplomacy rows directly.
+// live unit pointer while refreshing ship state, then finalizes that four-byte slot to
+// the category tag consumed by the battle-report UI.
 struct MapOrderBattleSideChildRecord {
   short resourceType;    // +0x00 -- child TShip::type
   short stockOrRequired; // +0x02 -- child TShip::strength
   char nameBuffer[0x20]; // +0x04 -- copy of child TShip::name
   short strengthBucket;  // +0x24 -- child TShip::experience / 100
   char pad26[2];
-  union DetailIdentity {
-    void* sourceObject;       // while the resolver is still updating a live unit
-    unsigned int categoryTag; // once finalized: 'army', 'navy', 'merc', 'item', or 'rupt'
-  } detailIdentity;           // +0x28
+  unsigned int detailIdentity28; // +0x28
 
   MapOrderBattleSideChildRecord() {
     nameBuffer[0] = 0;
@@ -62,14 +58,10 @@ struct MapOrderBattleSnapshot {
   unsigned char participantIndex02; // +0x02
   unsigned char reservedByte03;     // +0x03
   int actionType04;                 // +0x04
-  union TargetContext {
-    int tileIndex;
-    void* object;
-    int raw;
-  } targetContext08;       // +0x08, discriminated by actionType04
-  CStr32 nameBuffer[2];    // +0x0c..+0x4b -- per-side terrain/nation label text
-  CStr255 overlayLabel[2]; // +0x4c..+0x249 -- per-side selection overlay label text
-  short childCount[2];     // +0x24a/+0x24c
+  void* targetObject08;             // +0x08
+  CStr32 nameBuffer[2];             // +0x0c..+0x4b -- per-side terrain/nation label text
+  CStr255 overlayLabel[2];          // +0x4c..+0x249 -- per-side selection overlay label text
+  short childCount[2];              // +0x24a/+0x24c
   MapOrderBattleSideChildRecord* childRecords[2]; // +0x250/+0x254
 
   ~MapOrderBattleSnapshot() {

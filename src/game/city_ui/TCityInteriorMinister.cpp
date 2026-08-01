@@ -15,6 +15,7 @@
 #include "game/gfx/TFuzzySet.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TItemOrder.h"
+#include "game/city/TShipOrder.h"
 #include "game/debug/TLaborPool.h"
 #include "game/TList.h"
 #include "game/city_ui/TLongintList.h"
@@ -1581,7 +1582,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
         } else if (!hasProspector) {
           TCity* city = ownerContextAt04->city;
           bool shouldRequestProspector = true;
-          if (city->buildOrderSlots[9]->quantity == 0) {
+          if (city->buildOrderSlots148[9]->quantity == 0) {
             int pendingCount = city->trackedOrderList270->GetCount();
             for (int pendingOrdinal = 1; pendingOrdinal < pendingCount; ++pendingOrdinal) {
               TCityTask* pendingTask = static_cast<TCityTask*>(
@@ -2006,7 +2007,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     short shipOrderSlot = -1;
     for (short shipSlotIndex = 0x2b; shipSlotIndex <= 0x32 && shipOrderSlot == -1;
          ++shipSlotIndex) {
-      TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlotsE4[shipSlotIndex]);
+      TShipOrder* order = city->shipOrderSlots190[shipSlotIndex - 0x2b];
       if (order->resourceTypeIndex == pendingShipType32) {
         shipOrderSlot = shipSlotIndex;
       }
@@ -2036,8 +2037,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
           if (recruitmentAllowed) {
             for (short recruitmentSlotIndex = 0x19;
                  recruitmentSlotIndex <= 0x20 && matchedOrderSlot == -1; ++recruitmentSlotIndex) {
-              TProductionOrder* order =
-                  static_cast<TProductionOrder*>(city->orderSlotsE4[recruitmentSlotIndex]);
+              TUnitOrder* order = city->buildOrderSlots148[recruitmentSlotIndex - 0x19];
               if (order->resourceTypeIndex == requestedCapability) {
                 matchedOrderSlot = recruitmentSlotIndex;
               }
@@ -2047,8 +2047,7 @@ void TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
           requestedCapability = static_cast<short>(requestedCapability - 0x1e);
           for (short shipRequestSlotIndex = 0x2b;
                shipRequestSlotIndex <= 0x32 && matchedOrderSlot == -1; ++shipRequestSlotIndex) {
-            TProductionOrder* order =
-                static_cast<TProductionOrder*>(city->orderSlotsE4[shipRequestSlotIndex]);
+            TShipOrder* order = city->shipOrderSlots190[shipRequestSlotIndex - 0x2b];
             if (order->resourceTypeIndex == requestedCapability) {
               matchedOrderSlot = shipRequestSlotIndex;
             }
@@ -2441,7 +2440,7 @@ short TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget(short target
     if (g_pTechMgr->orderCapRows277[nationSlot].techStatusByTechId[19] != 2) {
       return currentLabor;
     }
-    TProductionOrder* powerPlantOrder = static_cast<TProductionOrder*>(city->orderSlotsE4[0x34]);
+    TProductionOrder* powerPlantOrder = city->trailingOrderSlots1b0[1];
     short increment = static_cast<short>(((targetLabor - currentLabor) / 6 + 1) * 6);
     short currentQuantity = powerPlantOrder->quantity;
     short maximumQuantity = powerPlantOrder->MaxOrder();
@@ -2483,7 +2482,7 @@ void TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder() 
   }
   short powerGroups = static_cast<short>(availablePower / 6);
   if (powerGroups > 0) {
-    TProductionOrder* powerPlantOrder = static_cast<TProductionOrder*>(city->orderSlotsE4[0x34]);
+    TProductionOrder* powerPlantOrder = city->trailingOrderSlots1b0[1];
     powerPlantOrder->SetQuantity(static_cast<short>(powerPlantOrder->quantity - powerGroups * 6));
   }
 }

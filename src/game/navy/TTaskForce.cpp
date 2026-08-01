@@ -42,7 +42,7 @@
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 // FUNCTION: IMPERIALISM 0x00552800
 TTaskForce::TTaskForce(TZone* locationArg, short nationArg)
-    : aggression(1), shipOrders(0), target(), shipList(nullptr), flagship(nullptr),
+    : aggression(1), shipOrders(0), target(nullptr), shipList(nullptr), flagship(nullptr),
       location(locationArg), nation(nationArg), previousForce(nullptr), nextForce(nullptr),
       ingotTileIndex(-1) {
   memset(shipCountsByToolbarSlot, 0, sizeof(shipCountsByToolbarSlot));
@@ -143,12 +143,13 @@ void TTaskForce::WriteTo(TStream* stream) {
   short ownerOrdinal;
   if (shipOrders == 5) {
     short index = 0;
-    while (&g_pGlobalMapState->cityScoreTable[index] != target.asProvince && index < 0x180) {
+    while (&g_pGlobalMapState->cityScoreTable[index] != static_cast<Province*>(target) &&
+           index < 0x180) {
       ++index;
     }
     ownerOrdinal = index;
   } else {
-    ownerOrdinal = target.asZone->GetContextOrdinalOrInvalid();
+    ownerOrdinal = static_cast<TZone*>(target)->GetContextOrdinalOrInvalid();
   }
   stream->WriteBytes(&ownerOrdinal, 2);
 
@@ -202,9 +203,9 @@ void TTaskForce::ReadFrom(TStream* stream) {
   short ordinal;
   stream->ReadBytes(&ordinal, 2);
   if (shipOrders == 5) {
-    target.asProvince = &g_pGlobalMapState->cityScoreTable[ordinal];
+    target = &g_pGlobalMapState->cityScoreTable[ordinal];
   } else {
-    target.asZone = FindMapActionContextByNodeId(ordinal);
+    target = FindMapActionContextByNodeId(ordinal);
   }
 
   stream->ReadBytes(&ordinal, 2);
@@ -428,7 +429,7 @@ void TTaskForce::OrderPatrol(unsigned char useType4) {
 // kind 1; identical shape, differing only in the order kind it submits.
 // FUNCTION: IMPERIALISM 0x00553270
 void TTaskForce::OrderSail(TZone* orderTarget) {
-  target.asZone = orderTarget;
+  target = orderTarget;
   shipOrders = 1;
   flagship = nullptr;
 
@@ -528,18 +529,18 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
 
   // This order kind (shipOrders 1) uses the zone member: seed it from the context zone,
   // then walk the zone neighbor graph one hop at a time toward pContextAnchor.
-  target.asZone = location;
+  target = location;
 
   int iterationBudget = (minPriority < 10000) ? minPriority : 0;
   for (int step = 0; step < iterationBudget; ++step) {
-    // Re-read target.asZone each time it is dereferenced, matching the original's member
+    // Re-read target each time it is dereferenced, matching the original's member
     // reload after each ensure-slot call.
-    TZone* current = target.asZone;
+    TZone* current = static_cast<TZone*>(target);
     unsigned int index = 0;
     if (current->primaryNeighbors.Count() > 0) {
       do {
         TZone* candidate = current->primaryNeighbors[index];
-        current = target.asZone;
+        current = static_cast<TZone*>(target);
         if (candidate->distanceLevel44 < current->distanceLevel44) {
           // Walk one hop closer to pContextAnchor: promote this neighbor to
           // be the new owner (re-fetches the slot, matching the original's
@@ -547,7 +548,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
           TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
                               ? current->primaryNeighbors[index]
                               : nullptr;
-          target.asZone = better;
+          target = better;
           break;
         }
         ++index;
@@ -587,7 +588,7 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
 // Sibling of OrderEvade for map-order kind 6 (see the header comment).
 // FUNCTION: IMPERIALISM 0x005536c0
 void TTaskForce::OrderBlockade(TZone* orderTarget) {
-  target.asZone = orderTarget;
+  target = orderTarget;
   shipOrders = 6;
   flagship = nullptr;
 
@@ -666,7 +667,7 @@ void TTaskForce::OrderBlockade(TZone* orderTarget) {
 // Sibling of OrderBlockade for map-order kind 5 (see the header comment).
 // FUNCTION: IMPERIALISM 0x00553840
 void TTaskForce::OrderSendInTheMarines(Province* orderTarget) {
-  target.asProvince = orderTarget;
+  target = orderTarget;
   shipOrders = 5;
   flagship = nullptr;
 
@@ -1003,13 +1004,13 @@ char TTaskForce::SinkOrSwimShips() {
 }
 
 // Mac oracle: TTaskForce::SubmitOrders(eShipOrders, void*). The second argument is
-// stored in the shipOrders-keyed target union for order kinds that carry a context.
+// stored in the shipOrders-keyed target slot for order kinds that carry a context.
 // FUNCTION: IMPERIALISM 0x005540b0
 void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
   switch (orderType) {
   case 1:
     shipOrders = 1;
-    target.asZone = static_cast<TZone*>(orderContext);
+    target = orderContext;
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
@@ -1028,7 +1029,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
 
   case 5: {
     shipOrders = 5;
-    target.asProvince = static_cast<Province*>(orderContext);
+    target = orderContext;
     FreeAvailables();
     AssertValid();
 
@@ -1058,7 +1059,7 @@ void TTaskForce::SubmitOrders(int orderType, void* orderContext) {
 
   case 6:
     shipOrders = 6;
-    target.asZone = static_cast<TZone*>(orderContext);
+    target = orderContext;
     FreeAvailables();
     AssertValid();
     if (g_pNavyOrderManager->CommitForce(this)) {
@@ -1249,8 +1250,9 @@ void TTaskForce::CommitToOrders() {
 void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   (void)cancellationMode;
   bool cancelsBeachhead = shipOrders == 5;
-  short cityIndex =
-      cancelsBeachhead ? static_cast<short>(target.asProvince->GetIndex()) : static_cast<short>(-1);
+  short cityIndex = cancelsBeachhead
+                        ? static_cast<short>(static_cast<Province*>(target)->GetIndex())
+                        : static_cast<short>(-1);
 
   if (g_pNavyOrderManager != 0 && g_pNavyOrderManager->orderQueueHead == this) {
     g_pNavyOrderManager->orderQueueHead = nextForce;
@@ -1465,14 +1467,14 @@ void TTaskForce::GetGeneralDescription(CString* out) const {
   switch (static_cast<short>(shipOrders)) {
   case 1:
     *out += "sailing to ";
-    target.asZone->AssignZoneDisplayNameToOutputRef(&contextText);
+    static_cast<TZone*>(target)->AssignZoneDisplayNameToOutputRef(&contextText);
     break;
   case 3:
     *out += "patrolling";
     break;
   case 5:
     *out += "invading ";
-    contextText = target.asProvince->cityNameA4;
+    contextText = static_cast<Province*>(target)->cityNameA4;
     break;
   case 6:
     *out += "blockading";
@@ -1523,7 +1525,7 @@ TTaskForce* TTaskForce::RemoveStragglers() {
     return result;
   }
   case 5: {
-    int cityIndex = target.asProvince->GetIndex();
+    int cityIndex = static_cast<Province*>(target)->GetIndex();
     char ownerNation = g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00;
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, ownerNation) ==
         0) {
@@ -1911,8 +1913,8 @@ int TTaskForce::GetBattleStrengthRating() const {
 
 // Immediate/deferred execution effects for a resolved queue entry (ResolveMapOrderChains-
 // ForTurnPhase's tail passes): no-op once already eliminated. Type 1 (target-assignment)
-// propagates target.asZone (the context TZone*) into every active child's own location. Type 5
-// (province-target) reads target.asProvince and sets the target city's owner-flag bit for its nation
+// propagates target (the context TZone*) into every active child's own location. Type 5
+// (province-target) reads target as Province* and sets the target city's owner-flag bit for its nation
 // (nation) and, in single-player mode, invalidates that city's redraw. Type 8
 // (progression) advances every active child's strength by a quarter-step toward
 // its resource-type's stockCap, clamping at the cap. Any other type asserts (once) that
@@ -1927,12 +1929,12 @@ void TTaskForce::CarryOutOrders() {
   switch (shipOrders) {
   case 1: {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
-      static_cast<TShip*>(node->payload)->location = target.asZone;
+      static_cast<TShip*>(node->payload)->location = static_cast<TZone*>(target);
     }
     return;
   }
   case 5: {
-    Province* cityRecord = target.asProvince;
+    Province* cityRecord = static_cast<Province*>(target);
     cityRecord->exploredByNationMaskA1 |= static_cast<unsigned char>(1 << nation);
     if (g_pSimMgr->multiplayerSessionRole == 1) {
       int cityIndex = cityRecord->GetIndex();
@@ -2007,7 +2009,7 @@ void TTaskForce::CreateIngot() {
   switch (shipOrders) {
   case 1:
     markerType = 4;
-    ingotTileIndex = target.asZone->FindNearestActiveSeaContextTileFromOffset216();
+    ingotTileIndex = static_cast<TZone*>(target)->FindNearestActiveSeaContextTileFromOffset216();
     break;
   case 3:
     markerType = 5;
@@ -2015,12 +2017,13 @@ void TTaskForce::CreateIngot() {
     break;
   case 5:
     markerType = 6;
-    ingotTileIndex = static_cast<short>(
-        location->FindBestCoastalTileForContextAndCityStateByHeuristic(target.asProvince));
+    ingotTileIndex =
+        static_cast<short>(location->FindBestCoastalTileForContextAndCityStateByHeuristic(
+            static_cast<Province*>(target)));
     break;
   case 6:
     markerType = 2;
-    ingotTileIndex = target.asZone->FindNearestActiveSeaContextTileFromOffset216();
+    ingotTileIndex = static_cast<TZone*>(target)->FindNearestActiveSeaContextTileFromOffset216();
     break;
   default:
     break;

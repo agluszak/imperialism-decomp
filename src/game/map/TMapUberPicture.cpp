@@ -546,7 +546,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
   control->AssertValid();
   switch (taskForce->shipOrders) {
   case 1:
-    taskForce->target.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    static_cast<TZone*>(taskForce->target)->AssignZoneDisplayNameToOutputRef(&value);
     g_pSimMgr->GetString(0x2762, 0xb, &reportTemplate);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
@@ -561,7 +561,7 @@ void TMapUberPicture::InspectTaskForceDialog(TTaskForce* taskForce) {
     g_pSimMgr->GetString(0x2762, 2, &text);
     break;
   case 6:
-    taskForce->target.asZone->AssignZoneDisplayNameToOutputRef(&value);
+    static_cast<TZone*>(taskForce->target)->AssignZoneDisplayNameToOutputRef(&value);
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x39);
     scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
                            static_cast<LPCSTR>(value));
@@ -863,8 +863,9 @@ void TMapUberPicture::NavalIntelligenceDialog(TZone* zone, short nation,
   control->AssertValid();
   if (cachedTaskForce != 0) {
     g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&reportTemplate, 0x2762, 0x34);
-    scanBracketExpressions(g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
-                           static_cast<LPCSTR>(cachedTaskForce->target.asProvince->cityNameA4));
+    scanBracketExpressions(
+        g_pSimMgr, &text, static_cast<LPCSTR>(reportTemplate),
+        static_cast<LPCSTR>(static_cast<Province*>(cachedTaskForce->target)->cityNameA4));
   } else {
     zone->BuildNavalIntelligenceSourceDescription(&text, g_pSimMgr->GetActiveNationId());
   }

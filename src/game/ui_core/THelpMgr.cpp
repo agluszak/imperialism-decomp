@@ -79,8 +79,10 @@ THelpMgr::THelpMgr() : TObject() {
   field26 = 0;
   field2a = 0;
   field2c = 0;
-  civilianCompletionCounters10.packed = 0;
-  civilianCompletionCounters14.packed = 0;
+  civilianCompletionCounters10.values[0] = 0;
+  civilianCompletionCounters10.values[1] = 0;
+  civilianCompletionCounters14.values[0] = 0;
+  civilianCompletionCounters14.values[1] = 0;
   civilianCompletionCounter18 = 0;
   indexList = nullptr;
 }

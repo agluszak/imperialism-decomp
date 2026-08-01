@@ -348,7 +348,7 @@ short* TPopulationMgr::PredictedNeeds() {
   }
 
   short supportedPopulation =
-      static_cast<short>(populationCount08 + city04->trailingOrderSlots[9]->quantity);
+      static_cast<short>(populationCount08 + city04->trailingOrderSlots1b0[9]->quantity);
   predictedNeedByResource22[17] = static_cast<short>((supportedPopulation + 1) / 2);
   predictedNeedByResource22[18] = static_cast<short>((supportedPopulation + 2) / 4);
   predictedNeedByResource22[20] = static_cast<short>(supportedPopulation / 4);

@@ -43,10 +43,8 @@ struct TaggedSerializablePayload {
 //   event 0x30: scalarValue as signed int (nation filter)
 //   event 0x31: taggedObject
 //   event 0x32: no payload; scalarValue is ignored
-union StreamMessagePayload32 {
+struct StreamMessagePayload32 {
   long scalarValue;
-  TObject* object;
-  TaggedSerializablePayload* taggedObject;
 };
 
 // Event-8 lobby name/status announce: the selected/source nation followed by two

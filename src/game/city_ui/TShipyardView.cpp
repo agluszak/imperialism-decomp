@@ -110,7 +110,7 @@ void TShipyardView::DoStartup() {
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b6b);
   for (short queueIndex = 0; queueIndex < 8; ++queueIndex) {
-    TShipOrder* order = city94->shipOrderSlots[queueIndex];
+    TShipOrder* order = city94->shipOrderSlots190[queueIndex];
     if (order->resourceTypeIndex != 0) {
       TOverlayRadioButton* slotButton = static_cast<TOverlayRadioButton*>(
           ResolveControlByTag(kControlTagBut0 + queueIndex)); // 'but0'-'but7'
@@ -224,7 +224,7 @@ void TShipyardView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       selection->AssertValid();
       selection->SetSelectedChildTagAndRefresh(kControlTagBut0 + index); // 'but0'+index
 
-      TShipOrder* order = city94->shipOrderSlots[index];
+      TShipOrder* order = city94->shipOrderSlots190[index];
       short quantity = order->quantity;
       if (sourceHandler->controlTag == kControlTagPlus) { // 'plus'
         ++quantity;

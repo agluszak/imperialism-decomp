@@ -56,7 +56,7 @@ void TIndustryCluster::DoPostCreate(int styleSeed) {
     mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
   }
 
-  TProductionOrder* selectedMetricRecord = province->tradeCommodityRecordPtrs[tagIndex];
+  TProductionOrder* selectedMetricRecord = province->orderSlotsE4[tagIndex];
   this->selectedMetricOrder = selectedMetricRecord;
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects; safe
   // here because tagIndex is bounded to the 23-entry g_pTradeSummarySelectionMap

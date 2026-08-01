@@ -1255,7 +1255,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = topNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(topNationSlot)) &&
-               g_apNationStates[topNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
+               g_apNationStates[topNationSlot]->pendingActionStatus.byAction[11] < '3') {
       g_apNationStates[topNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (topSideCount < secondSideCount) {
@@ -1263,7 +1263,7 @@ void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMod
       winnerNationSlot = secondNationSlot;
     } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
                    static_cast<short>(secondNationSlot)) &&
-               g_apNationStates[secondNationSlot]->pendingActionStatus.roles.actionStatus0B < '3') {
+               g_apNationStates[secondNationSlot]->pendingActionStatus.byAction[11] < '3') {
       g_apNationStates[secondNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
     }
   } else if (forceFullClear) {
@@ -1864,7 +1864,7 @@ BuildTurnEvent2ByteArraySyncPacketDeltaOrFull(unsigned int byteCount, unsigned c
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 1;
-  TurnEvent2ByteDeltaEntry* out = packet->payload.byteEntries;
+  TurnEvent2ByteDeltaEntry* out = reinterpret_cast<TurnEvent2ByteDeltaEntry*>(packet->payload.raw);
   unsigned char* cur = current;
   for (int i = 0; i < static_cast<int>(byteCount); ++i) {
     if (*cur != cur[baseline - current]) {
@@ -1930,7 +1930,8 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 2;
-  TurnEvent2ShortDeltaEntry* out = packet->payload.shortEntries;
+  TurnEvent2ShortDeltaEntry* out =
+      reinterpret_cast<TurnEvent2ShortDeltaEntry*>(packet->payload.raw);
   short* cur = current;
   for (int i = 0; i < static_cast<int>(shortCount); ++i) {
     if (*cur != cur[baseline - current]) {
@@ -1998,7 +1999,7 @@ BuildTurnEvent2IntArraySyncPacketDeltaOrFull(int intCount, int* current, int* ba
   packet->eventCode = 2;
   packet->toNetworkId = 0;
   packet->deltaKind21 = 3;
-  TurnEvent2IntDeltaEntry* out = packet->payload.intEntries;
+  TurnEvent2IntDeltaEntry* out = reinterpret_cast<TurnEvent2IntDeltaEntry*>(packet->payload.raw);
   int* cur = current;
   for (int i = 0; i < intCount; ++i) {
     if (*cur != cur[baseline - current]) {

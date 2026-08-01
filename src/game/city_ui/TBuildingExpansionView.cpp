@@ -103,8 +103,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa95);
   }
 
-  TProductionOrder* order =
-      static_cast<TProductionOrder*>(city94->orderSlotsE4[buildingSlotId90 + 0x35]);
+  TProductionOrder* order = city94->trailingOrderSlots1b0[buildingSlotId90 + 2];
   if (order == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xa97);
@@ -158,8 +157,7 @@ void TBuildingExpansionView::StuffValues(short buildingSlotId, TCity* city,
 
 // FUNCTION: IMPERIALISM 0x004cebb0
 void TBuildingExpansionView::DoClosingAction(unsigned long dialogActionTag) {
-  TProductionOrder* order =
-      static_cast<TProductionOrder*>(city94->orderSlotsE4[buildingSlotId90 + 0x35]);
+  TProductionOrder* order = city94->trailingOrderSlots1b0[buildingSlotId90 + 2];
   if (order == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0xac6);

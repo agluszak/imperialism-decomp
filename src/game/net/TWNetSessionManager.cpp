@@ -161,12 +161,8 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
   }
 
   if (lastErrorCode0c >= 0 && createdInterface != 0) {
-    union DirectPlay2OutParameter {
-      IDirectPlay2** typed;
-      void** opaque;
-    } directPlay2Out;
-    directPlay2Out.typed = &directPlayInterface04;
-    lastErrorCode0c = createdInterface->QueryInterface(IID_IDirectPlay2, directPlay2Out.opaque);
+    lastErrorCode0c = createdInterface->QueryInterface(
+        IID_IDirectPlay2, reinterpret_cast<void**>(&directPlayInterface04));
   }
   if (createdInterface != 0) {
     createdInterface->Release();

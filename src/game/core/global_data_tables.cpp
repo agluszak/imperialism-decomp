@@ -668,7 +668,7 @@ int g_nOverlayClipCacheParamX = 0;
 int g_nOverlayClipCacheParamY = 0;
 
 // Trade summary selection map — 23 read-only packed-FourCC commodity tags, one
-// per TCity commodity slot (Cotton..Gold, i.e. tradeCommodityRecordPtrs[0..0x16]
+// per TCity commodity slot (Cotton..Gold, i.e. orderSlotsE4[0..0x16]
 // / cityStockCottonB6..cityStockGoldE2). Verified via `just ghidra read-data
 // 0x696108 dword 23`: the previous model (a zeroed BSS int[32] at 0x6960e0) had
 // the wrong address, wrong size, and wrong storage class — 0x6960e0 actually
@@ -1910,11 +1910,10 @@ short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
     {27, -1, 0, -1, 0, 0, 4},     {28, -1, 0, -1, 0, 0, 4},    {29, -1, 0, -1, 0, 0, 4}};
 // GLOBAL: IMPERIALISM 0x0066ac10
 TechPrerequisitePair g_aTechItemPrerequisitePairs[34] = {
-    {{0, 0}},  {{0, 0}},  {{0, 0}},  {{0, 0}},  {{0, 0}},  {{1, 0}},  {{1, 0}},
-    {{0, 0}},  {{7, 3}},  {{0, 0}},  {{2, 0}},  {{0, 0}},  {{6, 0}},  {{0, 0}},
-    {{11, 0}}, {{0, 0}},  {{8, 0}},  {{10, 0}}, {{10, 0}}, {{0, 0}},  {{7, 0}},
-    {{15, 0}}, {{13, 0}}, {{5, 12}}, {{9, 10}}, {{14, 0}}, {{19, 0}}, {{24, 0}},
-    {{26, 0}}, {{0, 0}},  {{25, 0}}, {{25, 0}}, {{25, 0}}, {{0, 0}}};
+    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
+    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
+    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
+    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;

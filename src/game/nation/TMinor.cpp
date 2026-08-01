@@ -905,7 +905,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
 
   this->KillForeignCompaniesIn(-1);
   TGreatPower* previousOwner = g_apNationStates[decodedNationSlot];
-  if (previousOwner->pendingActionStatus.roles.territorialPressureStatus06 < '3') {
+  if (previousOwner->pendingActionStatus.byAction[6] < '3') {
     previousOwner->SetNationPendingActionStateAndPayload(6, this->nationSlot);
   }
 }
@@ -952,7 +952,7 @@ void TMinor::BecomeColonyOf(int targetNationSlot) {
   this->KillEnemyCiviliansIn(-1);
   this->DeportCiviliansIn(-1, 0);
 
-  if (targetNation->pendingActionStatus.roles.actionStatus0A < '3') {
+  if (targetNation->pendingActionStatus.byAction[10] < '3') {
     targetNation->SetNationPendingActionStateAndPayload(10, this->nationSlot);
   }
 

@@ -137,9 +137,9 @@ void TTrainingOrder::Produce() {
 
   int newLevel = static_cast<int>(population->highSkillCount08) + quantity;
   TGreatPower* owner = ownerCity->ownerNationAc;
-  if (newLevel >= 10 && owner->pendingActionStatus.roles.trainingStatus07 < '2') {
+  if (newLevel >= 10 && owner->pendingActionStatus.byAction[7] < '2') {
     owner->SetNationPendingActionStateAndPayload(7, 2);
-  } else if (newLevel >= 30 && owner->pendingActionStatus.roles.trainingStatus07 <= '3') {
+  } else if (newLevel >= 30 && owner->pendingActionStatus.byAction[7] <= '3') {
     owner->SetNationPendingActionStateAndPayload(7, 3);
   }
   population->mediumSkillCount06 -= quantity;

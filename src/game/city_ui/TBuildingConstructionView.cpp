@@ -94,7 +94,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   tex1->SetTextAlignmentAndMaybeRefresh(-2, 0);
   tex1->SetTextFromStringResource(static_cast<short>(buildingSlotId + 0x2422), 1, 1);
 
-  // 'tex2' — sub text; string group taken from the 3rd-argument bits (see header union).
+  // 'tex2' — sub text. Retail passes the low word of the third argument as the group.
   TStaticText* tex2 =
       static_cast<TStaticText*>(ResolveControlByTag(IMPERIALISM_FOURCC('t', 'e', 'x', '2')));
   if (tex2 == nullptr) {
@@ -103,7 +103,8 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
   }
   tex2->InstallTextStyle(style.desc, 0);
   tex2->SetTextAlignmentAndMaybeRefresh(-2, 0);
-  tex2->SetTextFromStringResource(static_cast<short>(this->dialogContextFlags98), 2, 1);
+  tex2->SetTextFromStringResource(static_cast<short>(reinterpret_cast<int>(productionView98)), 2,
+                                  1);
   if (buildingSlotId == 0xb) {
     CRect tex2Bounds;
     tex2->QueryBounds(&tex2Bounds);
@@ -218,7 +219,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
     buckCtrl->SetTextAndMaybeRefresh(&buckCost, 1);
   } else {
     // Other slots: eligible if the pending order can be raised to the missing capacity.
-    TProductionOrder* order = static_cast<TProductionOrder*>(city->orderSlotsE4[slot + 0x35]);
+    TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
     if (order == nullptr) {
       MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x4e8);
@@ -252,8 +253,7 @@ void TBuildingConstructionView::StuffValues(short buildingSlotId, TCity* city,
 // FUNCTION: IMPERIALISM 0x004ca8f0
 void TBuildingConstructionView::DoClosingAction(unsigned long dialogActionTag) {
   if (buildingSlotId94 != 0xb) {
-    TProductionOrder* order =
-        static_cast<TProductionOrder*>(city90->orderSlotsE4[buildingSlotId94 + 0x35]);
+    TProductionOrder* order = city90->trailingOrderSlots1b0[buildingSlotId94 + 2];
     if (order == 0) {
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCityViews.cpp", 0x519);

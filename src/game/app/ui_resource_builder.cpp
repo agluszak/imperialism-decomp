@@ -61,14 +61,8 @@ void __cdecl SetUiResourceContextStringCode(int nCode) {
 
 // FUNCTION: IMPERIALISM 0x0041b420
 TUiStyleBytes* TUiStyleBytes::Reset() {
-  styleBytes[0] = 0;
-  styleBytes[1] = 0;
-  styleBytes[2] = 0;
-  styleBytes[3] = 0;
-  styleBytes[4] = 0;
-  styleBytes[5] = 0;
-  styleBytes[6] = 0;
-  styleBytes[7] = 0;
+  packedColor = 0;
+  styleWord = 0;
   return this;
 }
 

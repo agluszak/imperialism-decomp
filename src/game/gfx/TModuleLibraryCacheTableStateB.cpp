@@ -19,14 +19,6 @@ struct LockedPaletteResourceHeader {
   void* lockedEntries;
 };
 
-// The retail ResourceMgr code deliberately stores LockResource's pointer in the first
-// PALETTEENTRY-sized slot of an eight-byte LOGPALETTE allocation. The union expresses that
-// exact representation at the Win32 API boundary without a pointer cast.
-union PaletteResourceDescriptor {
-  LockedPaletteResourceHeader resource;
-  LOGPALETTE logicalPalette;
-};
-
 // Both embedded CMap members default-construct (hash size 17, block size 10); the leading
 // m_dibPalette is zeroed first (declaration order), matching the original's [obj]=0 then map A,
 // map B init sequence.
@@ -413,13 +405,13 @@ BOOL TModuleLibraryCacheTableStateB::LoadPaletteResourceByName(CPalette* palette
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szResourceMgrSourcePath, 0x22f);
   }
 
-  PaletteResourceDescriptor* descriptor = new PaletteResourceDescriptor;
+  LockedPaletteResourceHeader* descriptor = new LockedPaletteResourceHeader;
   if (descriptor == NULL) {
     return FALSE;
   }
 
-  descriptor->resource.version = 0x300;
-  descriptor->resource.entryCount = 0x100;
+  descriptor->version = 0x300;
+  descriptor->entryCount = 0x100;
   HRSRC resource = FindResourceA(NULL, resourceName, g_szPaletteResourceType);
   if (resource == NULL) {
     delete descriptor;
@@ -432,13 +424,13 @@ BOOL TModuleLibraryCacheTableStateB::LoadPaletteResourceByName(CPalette* palette
     return FALSE;
   }
 
-  descriptor->resource.lockedEntries = LockResource(loadedResource);
-  if (descriptor->resource.lockedEntries == NULL) {
+  descriptor->lockedEntries = LockResource(loadedResource);
+  if (descriptor->lockedEntries == NULL) {
     delete descriptor;
     return FALSE;
   }
 
-  HPALETTE paletteHandle = CreatePalette(&descriptor->logicalPalette);
+  HPALETTE paletteHandle = CreatePalette(reinterpret_cast<LOGPALETTE*>(descriptor));
   if (!palette->Attach(paletteHandle)) {
     delete descriptor;
     return FALSE;

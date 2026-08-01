@@ -27,6 +27,7 @@
 #include "game/nation_stream_serialization.h"
 #include "game/navy/TTaskForce.h"
 #include "game/city/TUnitOrder.h"
+#include "game/city/TShipOrder.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/military/mapped_flavor_text.h"
 
@@ -551,8 +552,7 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
   if (group > 0 && group < 9) {
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation != 0 && nation->city != 0) {
-      TUnitOrder* order =
-          static_cast<TUnitOrder*>(nation->city->orderSlotsE4[static_cast<short>(group + 0x18)]);
+      TUnitOrder* order = nation->city->buildOrderSlots148[static_cast<short>(group - 1)];
       order->AssertValid();
       abilityActiveRows395[nationSlot].abilityActiveById[order->resourceTypeIndex] = 0;
       order->SetOrderCostProfile(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
@@ -617,21 +617,19 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
   }
 
   TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-  TUnitOrder* order =
-      static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x2b)]);
+  TShipOrder* order = city->shipOrderSlots190[static_cast<short>(mapped)];
   if ((mapped == 6 || mapped == 7) && order->resourceTypeIndex != 0) {
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    TUnitOrder* olderOrder =
-        static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x29)]);
+    TUnitOrder* olderOrder = city->buildOrderSlots148[static_cast<short>(mapped + 0x10)];
     capRowsB333[nationSlot].selectedByResourceType[olderOrder->resourceTypeIndex] = 0;
     olderOrder->resourceTypeIndex = order->resourceTypeIndex;
   } else if (resourceType == 10) {
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2b])->resourceTypeIndex = 5;
+    city->shipOrderSlots190[0]->resourceTypeIndex = 5;
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2c])->resourceTypeIndex = 6;
+    city->shipOrderSlots190[1]->resourceTypeIndex = 6;
     city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
-    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2e])->resourceTypeIndex = 0;
+    city->shipOrderSlots190[3]->resourceTypeIndex = 0;
   }
   order->resourceTypeIndex = static_cast<short>(resourceType);
 
@@ -687,11 +685,11 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 
 // FUNCTION: IMPERIALISM 0x005b0a20
 bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) {
-  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.primaryTechId;
+  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
   unsigned char* primaryStatusByNation =
       &orderCapRows277[0].techStatusByTechId[primaryPrerequisiteTechId];
   if (primaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
-    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     unsigned char* secondaryStatusByNation =
         &orderCapRows277[0].techStatusByTechId[secondaryPrerequisiteTechId];
     if (secondaryStatusByNation[nationSlot * sizeof(OrderCapRow)] == 2) {
@@ -705,13 +703,13 @@ bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) 
 void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot,
                                                           int* missingPrimaryTechId,
                                                           int* missingSecondaryTechId) {
-  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.primaryTechId;
+  short primaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].primaryTechId;
   if (orderCapRows277[nationSlot].techStatusByTechId[primaryPrerequisiteTechId] == 2) {
-    *missingPrimaryTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    *missingPrimaryTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     *missingSecondaryTechId = 0;
   } else {
     *missingPrimaryTechId = primaryPrerequisiteTechId;
-    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].ids.secondaryTechId;
+    short secondaryPrerequisiteTechId = g_aTechItemPrerequisitePairs[techId].secondaryTechId;
     *missingSecondaryTechId =
         (orderCapRows277[nationSlot].techStatusByTechId[secondaryPrerequisiteTechId] != 2)
             ? secondaryPrerequisiteTechId

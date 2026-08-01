@@ -217,14 +217,6 @@ struct TurnEvent11MapPokePacket : TimelyMessageHeader {
   short maskWord26;     // +0x26, total 0x28
 };
 
-union MapPokeBufferView {
-  TTerrainStateRecord* terrainRecords;
-  Province* cityRecords;
-  unsigned char* bytes;
-  short* words;
-  int* dwords;
-};
-
 // Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
 // their payload at different offsets; the receive side reads +0x18..).
 struct TurnEvent20PacketM : TimelyMessageHeader {
@@ -872,47 +864,41 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent11MapPokePacket* poke = static_cast<TurnEvent11MapPokePacket*>(packet);
     switch (poke->pokeWidthCode18) {
     case 1: {
-      MapPokeBufferView bufferBase1;
-      bufferBase1.bytes = 0;
+      unsigned char* bufferBase1 = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase1.terrainRecords = g_pGlobalMapState->terrainStateTable;
+        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase1.cityRecords = g_pGlobalMapState->cityScoreTable;
+        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
-      MapPokeBufferView target1;
-      target1.bytes = bufferBase1.bytes + poke->byteOffset20;
-      *target1.bytes =
-          static_cast<unsigned char>((*target1.bytes & static_cast<unsigned char>(~maskByte)) |
+      unsigned char* target1 = bufferBase1 + poke->byteOffset20;
+      *target1 =
+          static_cast<unsigned char>((*target1 & static_cast<unsigned char>(~maskByte)) |
                                      (static_cast<unsigned char>(poke->valueWord24) & maskByte));
       break;
     }
     case 2: {
-      MapPokeBufferView bufferBase2;
-      bufferBase2.bytes = 0;
+      unsigned char* bufferBase2 = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase2.terrainRecords = g_pGlobalMapState->terrainStateTable;
+        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase2.cityRecords = g_pGlobalMapState->cityScoreTable;
+        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
-      MapPokeBufferView target2;
-      target2.bytes = bufferBase2.bytes + poke->byteOffset20;
-      *target2.words = static_cast<short>((*target2.words & ~poke->maskWord26) |
-                                          (poke->valueWord24 & poke->maskWord26));
+      short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset20);
+      *target2 = static_cast<short>((*target2 & ~poke->maskWord26) |
+                                    (poke->valueWord24 & poke->maskWord26));
       break;
     }
     case 4: {
-      MapPokeBufferView bufferBase4;
-      bufferBase4.bytes = 0;
+      unsigned char* bufferBase4 = 0;
       if (poke->bufferSelector1C == 0) {
-        bufferBase4.terrainRecords = g_pGlobalMapState->terrainStateTable;
+        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
       } else if (poke->bufferSelector1C == 1) {
-        bufferBase4.cityRecords = g_pGlobalMapState->cityScoreTable;
+        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
       int maskBits = poke->maskWord26;
-      MapPokeBufferView target4;
-      target4.bytes = bufferBase4.bytes + poke->byteOffset20;
-      *target4.dwords = (poke->valueWord24 & maskBits) | (*target4.dwords & ~maskBits);
+      int* target4 = reinterpret_cast<int*>(bufferBase4 + poke->byteOffset20);
+      *target4 = (poke->valueWord24 & maskBits) | (*target4 & ~maskBits);
       break;
     }
     default:
@@ -1174,7 +1160,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       stock2C[stockType2] = composite->cityStock[stockType2];
     }
     for (int record2C = 0; record2C < 0x17; ++record2C) {
-      TProductionOrder* order2C = city2C->tradeCommodityRecordPtrs[record2C];
+      TProductionOrder* order2C = city2C->orderSlotsE4[record2C];
       if (order2C != 0) {
         order2C->accumulatedValue = composite->orderAccumulatedValues[record2C];
       }
@@ -1910,9 +1896,7 @@ void TMultiplayerMgr::SendStreamObject(unsigned long payloadTag, TObject* payloa
   TaggedSerializablePayload payload;
   payload.tag = payloadTag;
   payload.object = payloadObject;
-  StreamMessagePayload32 payloadBits;
-  payloadBits.taggedObject = &payload;
-  SendStreamMessage(0x31, static_cast<short>(destinationSlot), payloadBits.scalarValue);
+  SendStreamMessage(0x31, static_cast<short>(destinationSlot), reinterpret_cast<long>(&payload));
 }
 
 // FUNCTION: IMPERIALISM 0x00549ad0
@@ -1967,7 +1951,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     PublishNationDescriptorAndNotifyOrderListeners(stream, payloadValue.scalarValue);
     return;
   case 0x31: {
-    TaggedSerializablePayload* record = payloadValue.taggedObject;
+    TaggedSerializablePayload* record = reinterpret_cast<TaggedSerializablePayload*>(payload);
     stream->WriteLong(record->tag);
     if (record->tag != kControlTagStar) { // 'star'
       record->object->WriteTo(stream);
@@ -1985,7 +1969,7 @@ void TMultiplayerMgr::WriteMessageTo(TStream* stream, short eventTag, short dest
     }
   } break;
   case 0x28:
-    payloadValue.object->WriteTo(stream);
+    reinterpret_cast<TObject*>(payload)->WriteTo(stream);
     return;
   case 0x32:
     g_pTradeMgr->WriteTo(stream);
@@ -2810,7 +2794,7 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     }
     packet.populationGrowthPenaltyTicks = city->populationGrowthPenaltyTicks26c;
     for (int record = 0; record < 0x17; ++record) {
-      TProductionOrder* order = city->tradeCommodityRecordPtrs[record];
+      TProductionOrder* order = city->orderSlotsE4[record];
       if (order == 0) {
         packet.orderAccumulatedValues[record] = 0;
       } else {

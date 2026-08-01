@@ -76,18 +76,15 @@ static __inline void ReverseDwordArrayBytes(void* base, int count) {
 
 // 32-bit swap through a float, for the float-valued fields (mission equipage weights).
 static __inline float SwapFloat(float value) {
-  union {
-    float f;
-    unsigned char b[4];
-  } swapped;
-  swapped.f = value;
-  unsigned char byte0 = swapped.b[0];
-  unsigned char byte1 = swapped.b[1];
-  swapped.b[0] = swapped.b[3];
-  swapped.b[1] = swapped.b[2];
-  swapped.b[2] = byte1;
-  swapped.b[3] = byte0;
-  return swapped.f;
+  float swapped = value;
+  unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&swapped));
+  unsigned char byte0 = bytes[0];
+  unsigned char byte1 = bytes[1];
+  bytes[0] = bytes[3];
+  bytes[1] = bytes[2];
+  bytes[2] = byte1;
+  bytes[3] = byte0;
+  return swapped;
 }
 
 // Write-side: copy each element into a stack temp, swap it to the stream's byte order and
@@ -122,21 +119,19 @@ static __inline void WriteShortArrayElemsRev(TStream* stream, const short* value
 // Float variant. The temp is declared once outside the loop and the swap reads b0, b3, b2
 // before touching b1 -- the order TArmyMission::WriteTo shows at 0x53c2e5.
 static __inline void WriteFloatArrayElems(TStream* stream, const float* values, int count) {
-  union {
-    float value;
-    unsigned char bytes[4];
-  } element;
+  float element;
+  unsigned char* bytes = static_cast<unsigned char*>(static_cast<void*>(&element));
   for (int remaining = count; remaining != 0; --remaining) {
-    element.value = *values;
-    unsigned char byte0 = element.bytes[0];
-    unsigned char byte3 = element.bytes[3];
-    unsigned char byte2 = element.bytes[2];
-    element.bytes[0] = byte3;
-    element.bytes[3] = byte0;
-    unsigned char byte1 = element.bytes[1];
-    element.bytes[1] = byte2;
-    element.bytes[2] = byte1;
-    stream->WriteBytes(&element.value, 4);
+    element = *values;
+    unsigned char byte0 = bytes[0];
+    unsigned char byte3 = bytes[3];
+    unsigned char byte2 = bytes[2];
+    bytes[0] = byte3;
+    bytes[3] = byte0;
+    unsigned char byte1 = bytes[1];
+    bytes[1] = byte2;
+    bytes[2] = byte1;
+    stream->WriteBytes(&element, 4);
     ++values;
   }
 }

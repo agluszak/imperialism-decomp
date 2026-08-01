@@ -800,7 +800,7 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
   if (g_pTechMgr->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] == 2) {
-    this->pendingActionStatus.roles.capabilityStatus05 = 0x33;
+    this->pendingActionStatus.byAction[5] = 0x33;
   }
 }
 
@@ -889,7 +889,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   short nationSlot = this->nationSlot;
 
   // Land recruit order (pending status 1 == '2').
-  if (this->pendingActionStatus.roles.landRecruitStatus01 == 0x32) {
+  if (this->pendingActionStatus.byAction[1] == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetCapitolProvince();
     short capValue = g_pTechMgr->nationCapRows1e8[nationSlot].slots[9];
@@ -898,7 +898,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   }
 
   // Navy primary/secondary order (pending status 0 == '2').
-  if (this->pendingActionStatus.roles.navyOrderStatus00 == 0x32) {
+  if (this->pendingActionStatus.byAction[0] == 0x32) {
     short zoneIndex = g_pTechMgr->activeZoneIndex1d4;
     TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
@@ -914,7 +914,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   }
 
   // Civil work order (pending status 2 < '3').
-  if (this->pendingActionStatus.roles.civilWorkStatus02 < 0x33) {
+  if (this->pendingActionStatus.byAction[2] < 0x33) {
     bool needsCivOrder = false;
     TCountry** minorEntry = &g_apTerrainTypeDescriptorTable[7];
     short zoneCursor = 7;
@@ -946,7 +946,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   }
 
   // Final pending-action flush (pending status 0x0a == '2').
-  if (this->pendingActionStatus.roles.actionStatus0A == 0x32) {
+  if (this->pendingActionStatus.byAction[10] == 0x32) {
     this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
     this->AnnounceLater(1, 6, 2);
   }

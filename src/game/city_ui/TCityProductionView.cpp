@@ -205,7 +205,7 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
         if (slot == 0xb && city->powerPlantUpgradeQueuedFlag04 != 0) {
           shouldDraw = true;
         }
-      } else if (city->orderSlotsE4[slot + 0x35]->quantity > 0) {
+      } else if (city->trailingOrderSlots1b0[slot + 2]->quantity > 0) {
         shouldDraw = true;
       }
     }
@@ -217,7 +217,8 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     if (slot == 0xb) {
       pictureId = static_cast<short>((city->powerPlantUpgradeQueuedFlag04 != 0 ? 0x1b63 : 0x1b73));
     } else if (level == 0 || slot < 0 || slot > 5 ||
-               city->orderSlotsE4[slot + 0x35]->quantity < 1 || city->IsCapacityCenter(slot) == 0) {
+               city->trailingOrderSlots1b0[slot + 2]->quantity < 1 ||
+               city->IsCapacityCenter(slot) == 0) {
       pictureId = static_cast<short>(slot + level * 0x10 + 0x1b58);
     } else {
       pictureId = static_cast<short>(slot + level * 0x10 + 0x1c84);
@@ -234,12 +235,11 @@ void TCityProductionView::Draw(RECT* rectBuffer) {
     RuntimeTestDriver::Pulse();
 #endif
 
-    if (slot == 0xf && city->ownerNationAc->pendingActionStatus.roles.actionStatus0A > '2') {
+    if (slot == 0xf && city->ownerNationAc->pendingActionStatus.byAction[10] > '2') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0xa6, 0x3c,
                                                        0x1b9e, savedContext, savedFlags);
-    } else if (slot == 0xe &&
-               city->ownerNationAc->pendingActionStatus.roles.actionStatus0B >= '3') {
+    } else if (slot == 0xe && city->ownerNationAc->pendingActionStatus.byAction[11] >= '3') {
       SetGWorld(scratchContext, savedFlags);
       BlitBitmapResourceRectWithScreenOffsetAndPalette(&scratchBounds, scratchContext, 0x6d, 0x143,
                                                        0x1b9f, savedContext, savedFlags);
@@ -414,7 +414,7 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                    static_cast<LPCSTR>(hoverText));
           } else {
-            firstQuantityText.Format(g_szDecimalFormat, city->orderSlotsE4[0x34]->quantity);
+            firstQuantityText.Format(g_szDecimalFormat, city->trailingOrderSlots1b0[1]->quantity);
             g_pSimMgr->GetString(0x2734, 0x18, &qualifierText);
             g_pSimMgr->GetString(0x2734, 0x1d, &templateText);
             scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
@@ -422,12 +422,12 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
                                    static_cast<LPCSTR>(firstQuantityText));
           }
         } else if (nextBuildingType == 0) {
-          TProductionOrder* order = city->orderSlotsE4[slot + 0x35];
+          TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
           g_pSimMgr->GetString(0x2734, order->quantity > 0 ? 0x19 : 0x1a, &templateText);
           scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
                                  static_cast<LPCSTR>(hoverText));
         } else {
-          TProductionOrder* order = city->orderSlotsE4[slot + 0x35];
+          TProductionOrder* order = city->trailingOrderSlots1b0[slot + 2];
           short buildingType = static_cast<short>(city->GetBuildingType(slot));
           firstQuantityText.Format(g_szDecimalFormat,
                                    buildingType - city->productionAccum1fc[slot]);
@@ -637,9 +637,9 @@ void TCityProductionView::UpdateToolbar() {
     short buildingSlot = static_cast<short>(group < 7 ? group : 11);
     bool enabled;
     if (buildingSlot == 11) {
-      enabled =
-          city94->powerPlantUpgradeQueuedFlag04 == 0 && city94->trailingOrderSlots[1]->quantity > 0;
-    } else if (city94->trailingOrderSlots[buildingSlot + 2]->quantity > 0) {
+      enabled = city94->powerPlantUpgradeQueuedFlag04 == 0 &&
+                city94->trailingOrderSlots1b0[1]->quantity > 0;
+    } else if (city94->trailingOrderSlots1b0[buildingSlot + 2]->quantity > 0) {
       enabled = false;
     } else {
       enabled = city94->productionAccum1fc[buildingSlot] < city94->GetBuildingType(buildingSlot);

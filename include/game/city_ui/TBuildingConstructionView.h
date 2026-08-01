@@ -20,13 +20,7 @@ public:
   short buildingSlotId94; // +0x94
   // +0x96 — cost/description format mode (1 or 2) selected by StuffValues per slot.
   short formatMode96;
-  // +0x98 — StuffValues stores its 3rd argument here as a TCityProductionView* (read back
-  // by DoClosingAction), but also reuses the same 4 bytes as the 'tex2' string-resource
-  // group. Modeled as an explicit union so both accesses use the same storage without a cast.
-  union {
-    TCityProductionView* productionView98;
-    int dialogContextFlags98;
-  };
+  TCityProductionView* productionView98; // +0x98
 
   TBuildingConstructionView();
 };

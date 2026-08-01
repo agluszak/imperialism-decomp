@@ -196,17 +196,8 @@ protected:
   CRect nationTextHitRectsC4[23]; // 0x0c4..0x234
   CRect nationLabelRects234[23];  // 0x234..0x3a4
   CRect nationAnchorRects3A4[23]; // 0x3a4..0x514
-  // +0x514..+0x520 -- map origin/extents. Rendering reads the named components, while
-  // TInfoPanelView::DoEvent passes the same four dwords as an invalidation RECT.
-  union {
-    struct {
-      int mapOriginPixelX514;
-      int mapOriginPixelY518;
-      int mapExtentPixelX51C;
-      int mapExtentPixelY520;
-    };
-    RECT mapViewportRect514;
-  };
+  // +0x514..+0x520 -- map origin/extents.
+  CRect mapViewportRect514;
   int legendSurfaceModeAt524;
   // 0x528 — highest pending-policy tier currently visible in the council vote animation.
   // DrawVoteNuggets draws entries at or below it; TCouncilView advances/resets it.

@@ -48,7 +48,7 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
     mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   }
 
-  selectedMetricRecord = province->tradeCommodityRecordPtrs[summaryTagIndex];
+  selectedMetricRecord = province->orderSlotsE4[summaryTagIndex];
   // `productionSlot` only exists on TItemOrder-sized (0x54-byte) objects. This
   // downcast is safe here: the summary-tag scan above bounds summaryTagIndex
   // to the 23-entry g_pTradeSummarySelectionMap table (0x696108), so tagIndex

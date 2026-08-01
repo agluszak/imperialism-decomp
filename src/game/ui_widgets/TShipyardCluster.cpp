@@ -6,6 +6,7 @@
 
 #include "game/ui_widgets/TAmtBar.h"
 #include "game/city_ui/TBuildingView.h"
+#include "game/city/TShipOrder.h"
 #include "game/ui_core/TView.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TCity.h"
@@ -42,7 +43,7 @@ TShipyardCluster::~TShipyardCluster() {}
 void TShipyardCluster::DoPostCreate(int styleSeed) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState == 0 ? 0 : nationState->GetCityState();
-  selectedMetricOrder = province->shipOrderSlots[0];
+  selectedMetricOrder = province->shipOrderSlots190[0];
   selectedMetricValue = 999;
   TAmtBarCluster::DoPostCreate(styleSeed);
   this->SetMoveAmount(0);

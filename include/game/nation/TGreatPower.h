@@ -25,31 +25,9 @@ class TTurnStartEvent;
 // 16-bit discriminator stored in each diplomacy tracked-slot record.
 enum eTrackedSlotEntryKind { kTrackedSlotAcceptEntry = 0, kTrackedSlotOfferEntry = 1 };
 
-// The 13 pending-action status bytes at TGreatPower+0x8c8 are consumed both by action
-// index and by several stable gameplay roles. The complete array and the named record are
-// two views of the same bytes; unlike the former eight-byte declaration, neither view
-// reaches into adjacent fields.
-struct PendingActionStatusRoles {
-  signed char navyOrderStatus00;
-  signed char landRecruitStatus01;
-  signed char civilWorkStatus02;
-  signed char actionStatus03;
-  signed char actionStatus04;
-  signed char capabilityStatus05;
-  signed char territorialPressureStatus06;
-  signed char trainingStatus07;
-  signed char expansionAlertStatus08;
-  signed char expansionCapacityStatus09;
-  signed char actionStatus0A;
-  signed char actionStatus0B;
-  signed char expansionEventStatus0C;
-};
-
-ASSERT_SIZE(PendingActionStatusRoles, 0x0d);
-
-union PendingActionStatusBlock {
+// The 13 pending-action status bytes at TGreatPower+0x8c8 are one indexed table.
+struct PendingActionStatusBlock {
   signed char byAction[0x0d];
-  PendingActionStatusRoles roles;
 
   short GetSerializedPrefixWord(int wordIndex) const {
     int byteIndex = wordIndex * 2;

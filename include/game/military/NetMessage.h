@@ -120,11 +120,8 @@ ASSERT_SIZE(TurnEvent2ByteDeltaEntry, 3);
 ASSERT_SIZE(TurnEvent2ShortDeltaEntry, 4);
 ASSERT_SIZE(TurnEvent2IntDeltaEntry, 6);
 
-union TurnEvent2DeltaPayload {
+struct TurnEvent2DeltaPayload {
   unsigned char raw[1];
-  TurnEvent2ByteDeltaEntry byteEntries[1];
-  TurnEvent2ShortDeltaEntry shortEntries[1];
-  TurnEvent2IntDeltaEntry intEntries[1];
 };
 
 // 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.

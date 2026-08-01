@@ -86,8 +86,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
   }
 
   int regionCount = ownerNation->ownedRegionList->GetSize();
-  int regionsPerCapacity =
-      ownerNation->pendingActionStatus.roles.expansionCapacityStatus09 >= '3' ? 3 : 4;
+  int regionsPerCapacity = ownerNation->pendingActionStatus.byAction[9] >= '3' ? 3 : 4;
   short capacity = static_cast<short>(regionCount / regionsPerCapacity);
   productionAccum1fc[0x0f] = capacity > 1 ? capacity : 1;
 
@@ -109,7 +108,7 @@ void TCity::ICity(TGreatPower* ownerNation) {
 
   productionSummary1d8 = new TPopulationMgr();
   productionSummary1d8->IPopulationMgr(this);
-  memset(orderSlotsE4, 0, sizeof(orderSlotsE4));
+  memset(orderSlotsE4, 0, 0xf4);
 
   TItemOrder* itemOrder = new TItemOrder();
   itemOrder->IItemOrder(this, 0x0b, 4, 3, 2);
@@ -153,24 +152,24 @@ void TCity::ICity(TGreatPower* ownerNation) {
     TUnitOrder* unitOrder = new TUnitOrder();
     unitOrder->IUnitOrder(this, profile[0], profile[1], profile[2], profile[3], profile[4],
                           profile[5], profile[6], 0);
-    orderSlotsE4[0x22 + profileIndex] = unitOrder;
+    buildOrderSlots148[9 + profileIndex] = unitOrder;
   }
 
   TUnitOrder* unitOrder = new TUnitOrder();
   unitOrder->IUnitOrder(this, 0x18, 0x10, 2, -1, 0, 5000, 4, 1);
-  orderSlotsE4[0x20] = unitOrder;
+  buildOrderSlots148[7] = unitOrder;
 
   for (profileIndex = 1; profileIndex <= 7; ++profileIndex) {
     short* profile = g_aUnitOrderCostProfileByAbilityId[profileIndex];
     unitOrder = new TUnitOrder();
     unitOrder->IUnitOrder(this, profile[0], profile[1], profile[2], profile[3], profile[4],
                           profile[5], profile[6], 1);
-    orderSlotsE4[0x18 + profileIndex] = unitOrder;
+    buildOrderSlots148[profileIndex - 1] = unitOrder;
   }
 
   TPowerPlantOrder* powerPlantOrder = new TPowerPlantOrder();
   powerPlantOrder->IPowerPlantOrder(this);
-  orderSlotsE4[0x34] = powerPlantOrder;
+  trailingOrderSlots1b0[1] = powerPlantOrder;
 
   TFoodProcessingOrder* foodOrder = new TFoodProcessingOrder();
   foodOrder->IFoodProcessingOrder(this);
@@ -187,26 +186,26 @@ void TCity::ICity(TGreatPower* ownerNation) {
   for (int shipSlot = 0; shipSlot < 8; ++shipSlot) {
     TShipOrder* shipOrder = new TShipOrder();
     shipOrder->IProductionOrder(this, 0);
-    orderSlotsE4[0x2b + shipSlot] = shipOrder;
+    shipOrderSlots190[shipSlot] = shipOrder;
   }
-  shipOrderSlots[0]->resourceTypeIndex = 1;
-  shipOrderSlots[1]->resourceTypeIndex = 2;
-  shipOrderSlots[4]->resourceTypeIndex = 3;
-  shipOrderSlots[5]->resourceTypeIndex = 4;
+  shipOrderSlots190[0]->resourceTypeIndex = 1;
+  shipOrderSlots190[1]->resourceTypeIndex = 2;
+  shipOrderSlots190[4]->resourceTypeIndex = 3;
+  shipOrderSlots190[5]->resourceTypeIndex = 4;
 
   for (int expansionSlot = 0; expansionSlot < 7; ++expansionSlot) {
     TExpansionOrder* expansionOrder = new TExpansionOrder();
     expansionOrder->IExpansionOrder(this, static_cast<short>(expansionSlot), 9, 0x0b, 0x0e);
-    orderSlotsE4[0x35 + expansionSlot] = expansionOrder;
+    trailingOrderSlots1b0[2 + expansionSlot] = expansionOrder;
   }
 
   TCapacityOrder* capacityOrder = new TCapacityOrder();
   capacityOrder->ICapacityOrder(this, 0x0e, 9, 0x0b, 0x0e);
-  orderSlotsE4[0x33] = capacityOrder;
+  trailingOrderSlots1b0[0] = capacityOrder;
 
   TPopGrowthOrder* populationGrowthOrder = new TPopGrowthOrder();
   populationGrowthOrder->IPopGrowthOrder(this);
-  orderSlotsE4[0x3c] = populationGrowthOrder;
+  trailingOrderSlots1b0[9] = populationGrowthOrder;
 
   trackedOrderList270 = new TTaskList();
   trackedOrderList270->ITaskList();
@@ -269,11 +268,12 @@ void TCity::ReadFrom(TStream* stream) {
   }
 
   productionSummary1d8->ReadFrom(stream);
+  TProductionOrder** orderCursor = orderSlotsE4;
   for (int orderSlot = 0; orderSlot < orderSlotCount; ++orderSlot) {
-    TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
-    if (order != 0) {
-      order->ReadFrom(stream);
+    if (*orderCursor != 0) {
+      (*orderCursor)->ReadFrom(stream);
     }
+    ++orderCursor;
   }
 
   int oldTaskCount = trackedOrderList270->GetCount();
@@ -343,11 +343,12 @@ void TCity::WriteTo(TStream* stream) {
 
   stream->WriteBytes(&rollingItemProductionScore78, 4);
   productionSummary1d8->WriteTo(stream);
+  TProductionOrder** orderCursor = orderSlotsE4;
   for (int orderSlot = 0; orderSlot < 0x3d; ++orderSlot) {
-    TObject* order = static_cast<TObject*>(orderSlotsE4[orderSlot]);
-    if (order != 0) {
-      order->WriteTo(stream);
+    if (*orderCursor != 0) {
+      (*orderCursor)->WriteTo(stream);
     }
+    ++orderCursor;
   }
 
   trackedOrderList270->WriteTo(stream);
@@ -366,14 +367,7 @@ void TCity::Free() {
     this->productionSummary1d8->Free();
   }
   this->productionSummary1d8 = 0;
-  // Real disassembly (0x004b3a60) walks the whole 0x3d-slot payload table as a
-  // single flat loop, not four per-band loops: every slot's runtime object
-  // (TProductionOrder-family orders, TShipOrder, TUnitOrder) derives from
-  // TObject and shares Free() at the same vtable slot (0x07), so the original
-  // dispatches polymorphically through one uniform TObject* loop rather than
-  // one loop per typed band. The union retains the real per-band types for
-  // specialized callers and exposes this proven common-base view directly.
-  TObject** orderSlot = this->objectOrderSlots;
+  TProductionOrder** orderSlot = this->orderSlotsE4;
   int remaining = 0x3d;
   do {
     if (*orderSlot != 0) {
@@ -438,17 +432,17 @@ void TCity::EndCityPhase() {
   rollingItemProductionScore78 =
       (previousProductionScore * 9) / 10 + rollingItemProductionScore78 * 10;
 
-  order = orderSlotsE4 + 0x22;
+  TUnitOrder** buildOrder = buildOrderSlots148 + 9;
   remaining = 9;
   do {
-    if (*order != 0) {
-      (*order)->Produce();
+    if (*buildOrder != 0) {
+      (*buildOrder)->Produce();
     }
-    ++order;
+    ++buildOrder;
     --remaining;
   } while (remaining != 0);
 
-  order = orderSlotsE4 + 0x33;
+  order = trailingOrderSlots1b0;
   remaining = 10;
   do {
     if (*order != 0) {
@@ -477,7 +471,7 @@ void TCity::EndCityPhase() {
 
   powerAvailableB4 = 0;
   productionSummary1d8->StartProductionPhase();
-  orderSlotsE4[0x34]->Restock();
+  trailingOrderSlots1b0[1]->Restock();
 
   order = orderSlotsE4 + 8;
   remaining = 9;
@@ -488,7 +482,7 @@ void TCity::EndCityPhase() {
   } while (remaining != 0);
 
   short capacity;
-  if (ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3') {
+  if (ownerNationAc->pendingActionStatus.byAction[9] >= '3') {
     int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
     if (regionCapacity > 1) {
       capacity = static_cast<short>(ownerNationAc->ownedRegionList->GetSize() / 3);
@@ -535,19 +529,17 @@ void TCity::PredictedNeeds() {
 
 // FUNCTION: IMPERIALISM 0x004b3e70
 void TCity::ProduceUnits() {
-  TShipOrder** shipCursor = this->shipOrderSlots;
+  TShipOrder** shipCursor = this->shipOrderSlots190;
   int remaining = 8;
   do {
-    TShipOrder* shipOrder = *shipCursor;
-    if (shipOrder != 0) {
+    if (*shipCursor != 0) {
       // The original constructs a scratch CString here that it never reads; it exists
       // only to bracket the loop body in an EH frame (ctor + dtor each iteration).
       CString scratch;
-      short pendingCount = shipOrder->quantity;
-      short tileId = shipOrder->resourceTypeIndex;
+      short pendingCount = (*shipCursor)->quantity;
+      short tileId = (*shipCursor)->resourceTypeIndex;
       if (pendingCount != 0) {
-        short blockFlag = GetResourceTypeRandomDrawBlockFlag(tileId);
-        if (blockFlag == 0) {
+        if (!static_cast<bool>(GetResourceTypeRandomDrawBlockFlag(tileId))) {
           this->ownerNationAc->AnnounceLater(1, tileId, pendingCount);
         } else {
           this->ownerNationAc->AnnounceLater(0, tileId, pendingCount);
@@ -558,7 +550,7 @@ void TCity::ProduceUnits() {
     --remaining;
   } while (remaining != 0);
 
-  TUnitOrder** buildCursor = this->buildOrderSlots;
+  TUnitOrder** buildCursor = this->buildOrderSlots148;
   int buildRemaining = 0x12;
   do {
     if (*buildCursor != 0) {
@@ -568,7 +560,7 @@ void TCity::ProduceUnits() {
     --buildRemaining;
   } while (buildRemaining != 0);
 
-  shipCursor = this->shipOrderSlots;
+  shipCursor = this->shipOrderSlots190;
   remaining = 8;
   do {
     if (*shipCursor != 0) {
@@ -813,7 +805,7 @@ void TCity::TransferTransportRequests(void*) {
 short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
     TGreatPower* owner = this->ownerNationAc;
-    if (owner->pendingActionStatus.roles.expansionCapacityStatus09 < 0x33) {
+    if (owner->pendingActionStatus.byAction[9] < 0x33) {
       if (owner->ownedRegionList->GetSize() / 4 > 1) {
         return static_cast<short>(owner->ownedRegionList->GetSize() / 4);
       }
@@ -883,8 +875,7 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   short result = 0;
   short buildingType;
   if (buildingSlot == 0x0f) {
-    unsigned char usesThreeRegionsPerLevel =
-        ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
+    unsigned char usesThreeRegionsPerLevel = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
     if (usesThreeRegionsPerLevel != 0) {
       int regionCapacity = ownerNationAc->ownedRegionList->GetSize() / 3;
       if (regionCapacity > 1) {
@@ -944,16 +935,15 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 8:
-    if (ownerNationAc->pendingActionStatus.roles.expansionEventStatus0C == '3') {
+    if (ownerNationAc->pendingActionStatus.byAction[12] == '3') {
       result = 3;
       return result;
     }
-    result = static_cast<short>(
-        (ownerNationAc->pendingActionStatus.roles.territorialPressureStatus06 == '3') + 1);
+    result = static_cast<short>((ownerNationAc->pendingActionStatus.byAction[6] == '3') + 1);
     return result;
 
   case 10: {
-    signed char status = ownerNationAc->pendingActionStatus.roles.trainingStatus07;
+    signed char status = ownerNationAc->pendingActionStatus.byAction[7];
     if (status < '3') {
       result = 1;
       return result;
@@ -963,15 +953,13 @@ short TCity::GetNextBuildingType(short buildingSlot) {
   }
 
   case 0x0e: {
-    unsigned char thresholdReached =
-        ownerNationAc->pendingActionStatus.roles.expansionAlertStatus08 >= '3';
+    unsigned char thresholdReached = ownerNationAc->pendingActionStatus.byAction[8] >= '3';
     result = static_cast<short>((thresholdReached != 0) + 1);
     return result;
   }
 
   case 0x0f: {
-    unsigned char thresholdReached =
-        ownerNationAc->pendingActionStatus.roles.expansionCapacityStatus09 >= '3';
+    unsigned char thresholdReached = ownerNationAc->pendingActionStatus.byAction[9] >= '3';
     result = static_cast<short>((thresholdReached != 0) + 1);
     return result;
   }
@@ -1024,7 +1012,7 @@ int TCity::GetBuildingType(short buildingSlot) {
     return this->productionOrderTable1dc[buildingSlot];
   }
   TGreatPower* owner = this->ownerNationAc;
-  if (owner->pendingActionStatus.roles.expansionCapacityStatus09 < 0x33) {
+  if (owner->pendingActionStatus.byAction[9] < 0x33) {
     if (owner->ownedRegionList->GetSize() / 4 > 1) {
       return this->ownerNationAc->ownedRegionList->GetSize() / 4;
     }

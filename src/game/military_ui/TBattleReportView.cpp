@@ -112,10 +112,10 @@ void TBattleReportView::DoPostCreate(int arg) {
 
     short cell;
     if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
-      cell = g_pGlobalMapState->cityScoreTable[record->tileOrObject08.tileIndex].cityTileIndex04;
+      cell = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
+                 .cityTileIndex04;
     } else {
-      cell =
-          static_cast<short>(static_cast<TZone*>(record->tileOrObject08.object)->tileOrTerrainId0c);
+      cell = static_cast<short>(static_cast<TZone*>(record->location08)->tileOrTerrainId0c);
     }
 
     // Spiral outward from the record's cell until a free crowding-grid cell is found.
@@ -192,8 +192,8 @@ void TBattleReportView::DoPostCreate(int arg) {
     short markerColX2;
     unsigned short markerRow;
     SplitTileIndexToHexRasterColumnX2AndRow(foundCell, &markerColX2, &markerRow);
-    record->markerPixelX258 = mapOriginPixelX514 + (markerColX2 * 5) / 2 - 9;
-    record->markerPixelY25c = mapOriginPixelY518 + markerRow * 5 - 9;
+    record->markerPixelX258 = mapViewportRect514.left + (markerColX2 * 5) / 2 - 9;
+    record->markerPixelY25c = mapViewportRect514.top + markerRow * 5 - 9;
 
     short spriteBase;
     if (record->nationIds[record->participantIndex02] == g_pSimMgr->GetActiveNationId()) {
@@ -568,9 +568,9 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
-    g_pGlobalMapState->AssignCityRecordDisplayName(record->tileOrObject08.tileIndex, &strLocation);
-    int ownerNation =
-        g_pGlobalMapState->cityScoreTable[record->tileOrObject08.tileIndex].ownerNationCode00;
+    int cityRecordIndex = reinterpret_cast<int>(record->location08);
+    g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &strLocation);
+    int ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
     CString locationTemplate;
     g_pSimMgr->GetString(0x273d, 7, &locationTemplate);
@@ -586,7 +586,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
     locaText->AssertValid();
     CString nameStr;
-    static_cast<TZone*>(record->tileOrObject08.object)->AssignZoneDisplayNameToOutputRef(&nameStr);
+    static_cast<TZone*>(record->location08)->AssignZoneDisplayNameToOutputRef(&nameStr);
     locaText->SetTextAndMaybeRefresh(&nameStr, 1);
     break;
   }
@@ -625,7 +625,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringGroup = 0x273d;
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
-    char activeNationOwnsBattleSite = activeHomeRegion == record->tileOrObject08.tileIndex;
+    int cityRecordIndex = reinterpret_cast<int>(record->location08);
+    char activeNationOwnsBattleSite = activeHomeRegion == cityRecordIndex;
     char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
     char reportParticipantIsActive =
         static_cast<signed char>(
@@ -637,8 +638,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       otherNation = static_cast<signed char>(record->nationIds[1]);
     }
     bool otherNationOwnsBattleSite =
-        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
-        record->tileOrObject08.tileIndex;
+        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() == cityRecordIndex;
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
       userStringIndex = 48;

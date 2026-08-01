@@ -217,10 +217,10 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     }
   }
 
-  mapOriginPixelX514 = 0x31;
-  mapOriginPixelY518 = 0x2d;
-  mapExtentPixelX51C = 0x24d;
-  mapExtentPixelY520 = 0x159;
+  mapViewportRect514.left = 0x31;
+  mapViewportRect514.top = 0x2d;
+  mapViewportRect514.right = 0x24d;
+  mapViewportRect514.bottom = 0x159;
 
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b68);
 
@@ -350,8 +350,8 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
     SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex04,
                                             &colX2, &row);
     RECT* tileRect = &tileMarkerRects6AC[tile];
-    tileRect->left = (colX2 * 5) / 2 - 4 + mapOriginPixelX514;
-    tileRect->top = static_cast<short>(row) * 5 - 3 + mapOriginPixelY518;
+    tileRect->left = (colX2 * 5) / 2 - 4 + mapViewportRect514.left;
+    tileRect->top = static_cast<short>(row) * 5 - 3 + mapViewportRect514.top;
     tileRect->right = tileRect->left + 9;
     tileRect->bottom = tileRect->top + 6;
   }

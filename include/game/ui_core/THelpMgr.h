@@ -32,9 +32,8 @@ ASSERT_SIZE(HelpSetRecord, 0xe);
 
 // Two adjacent short counters are cleared as one dword by THelpMgr's constructor, then
 // incremented independently by the civilian-completion advisor path.
-union THelpCompletionCounterPair {
+struct THelpCompletionCounterPair {
   short values[2];
-  int packed;
 };
 
 ASSERT_SIZE(THelpCompletionCounterPair, 4);
