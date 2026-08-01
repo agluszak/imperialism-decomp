@@ -2322,7 +2322,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 }
 
 // FUNCTION: IMPERIALISM 0x004a7370
-void __stdcall ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
+void TArmyMgr::ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   int totalArms = 0;
   CIterator cursor(nation->militaryUnitList44);

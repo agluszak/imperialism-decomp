@@ -26,14 +26,6 @@
 
 #include <new>
 
-namespace {
-
-int SignedDivideBy100(int value) {
-  return value / 100;
-}
-
-} // namespace
-
 // SYNTHETIC: IMPERIALISM 0x004e3660
 // TMinor::CreateObject
 // SYNTHETIC: IMPERIALISM 0x004e36f0
@@ -531,11 +523,6 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
     return;
   }
 
-  short needCurrent = this->needCurrentByType[resourceSlot];
-  if (needCurrent == 0) {
-    return;
-  }
-
   for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
     if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
       continue;
@@ -545,11 +532,7 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
       continue;
     }
 
-    TGreatPower* majorNation = g_apNationStates[majorNationSlot];
-    if (majorNation == 0) {
-      continue;
-    }
-
+    short needCurrent = this->needCurrentByType[resourceSlot];
     short standing =
         g_pDiplomacyTurnStateManager
             ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
@@ -559,23 +542,19 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
       intFactor = linkValue;
     }
 
-#if defined(_MSC_VER)
     float floatAmount = static_cast<float>(linkValue) / static_cast<float>(needCurrent);
     floatAmount = floatAmount * static_cast<float>(standing);
     floatAmount = floatAmount * static_cast<float>(price);
     floatAmount = floatAmount * static_cast<float>(deltaShort);
     floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale_00653728;
     int amountFloat = static_cast<int>(floatAmount);
-    int integerAmount = SignedDivideBy100(intFactor * static_cast<int>(standing) * price);
+    int integerAmount = intFactor * static_cast<int>(standing) * price / 255;
     int grantAmount = amountFloat;
     if (integerAmount > grantAmount) {
       grantAmount = integerAmount;
     }
-#else
-    int grantAmount = SignedDivideBy100(intFactor * static_cast<int>(standing) * price);
-#endif
-    majorNation->AddAmountToAidAllocationMatrixCellAndTotal(grantAmount, resourceSlot,
-                                                            this->nationSlot);
+    g_apNationStates[majorNationSlot]->AddAmountToAidAllocationMatrixCellAndTotal(
+        grantAmount, resourceSlot, this->nationSlot);
   }
 }
 
@@ -767,10 +746,8 @@ void TMinor::AddOfferFrom(NationSlot sourceNationSlot, DiplomacyProposalCodeStor
                                    targetNation, 0);
         return;
       }
-      if (g_apNationStates[targetNation] != 0) {
-        g_apNationStates[targetNation]->AddOfferFrom(
-            this->nationSlot, kDiplomacyProposalJoinEmpireWithWarEntanglements);
-      }
+      g_apNationStates[targetNation]->AddOfferFrom(
+          this->nationSlot, kDiplomacyProposalJoinEmpireWithWarEntanglements);
       g_pNewsMgr->AddTreatyEvent(kInterNationEventJoinEmpireAccepted, this->nationSlot,
                                  targetNation, 0);
       return;

@@ -1326,8 +1326,12 @@ void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
   for (int i = 0; i < 6; ++i) {
     for (int j = i + 1; j < 7; ++j) {
       bool swap = false;
-      if (powerScore[j] > powerScore[i] || (powerScore[j] == powerScore[i] && (rand() & 1) != 0)) {
+      if (powerScore[j] > powerScore[i]) {
         swap = true;
+      } else if (powerScore[j] == powerScore[i]) {
+        if ((rand() & 1) != 0) {
+          swap = true;
+        }
       }
       if (swap) {
         int scoreTmp = powerScore[i];

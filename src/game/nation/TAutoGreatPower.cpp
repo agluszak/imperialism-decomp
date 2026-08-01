@@ -413,17 +413,15 @@ void TAutoGreatPower::ClearTradeOffers(void) {
   if (this->city != 0) {
     this->foreignMinister->EndTradePhase();
     short* pendingMetric = this->actionMetricByQuarter;
-    for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
+    for (short needSlot = 7; needSlot <= 0x0c; ++needSlot) {
       short pending = *pendingMetric;
       if (pending > 0) {
         short current = this->GetStockpile(needSlot);
-        short remaining;
-        if (current < pending) {
-          remaining = 0;
+        if (current >= pending) {
+          this->SetCityStockCounterAndRefresh(needSlot, static_cast<short>(current - pending));
         } else {
-          remaining = static_cast<short>(current - pending);
+          this->SetCityStockCounterAndRefresh(needSlot, 0);
         }
-        this->SetCityStockCounterAndRefresh(needSlot, remaining);
       }
       *pendingMetric = 0;
       ++pendingMetric;
@@ -454,12 +452,10 @@ void TAutoGreatPower::AddOfferFrom(NationSlot sourceNationSlot,
     return;
   case kDiplomacyProposalAlliance:
   case kDiplomacyProposalJoinEmpireWithWarEntanglements: {
-    if (g_pDiplomacyTurnStateManager != 0) {
-      bool hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
-          sourceNationSlot, this->nationSlot);
-      if (hasAllianceGuard == 0) {
-        TGreatPower::AddOfferFrom(sourceNationSlot, proposalCode);
-      }
+    bool hasAllianceGuard = g_pDiplomacyTurnStateManager->HasAllianceGuardForNationPair(
+        sourceNationSlot, this->nationSlot);
+    if (hasAllianceGuard == 0) {
+      TGreatPower::AddOfferFrom(sourceNationSlot, proposalCode);
     }
     return;
   }
@@ -675,9 +671,8 @@ char TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget(int targetNation
   return 0;
 }
 
-// Mac oracle: SetEnemy.
 // FUNCTION: IMPERIALISM 0x004e8300
-void TAutoGreatPower::SetEnemy(int nationSlot, char makeEnemy) {
+void TAutoGreatPower::SetPortZoneStateForNation(int nationSlot, char makeEnemy) {
   if (g_apTerrainTypeDescriptorTable[nationSlot] == 0 ||
       g_apTerrainTypeDescriptorTable[nationSlot]->ownedRegionList->GetSize() <= 0) {
     return;

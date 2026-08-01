@@ -123,19 +123,19 @@ void TTradePanelView::Setup() {
 // FUNCTION: IMPERIALISM 0x004f8dd0
 void TTradePanelView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc) {
-    if (sourceHandler->controlTag == kControlTagLink) { // 'link'
-      diplomacyMapView60->actionCodeBC = kDipActionLinkTradePolicy;
-    } else {
+    if (sourceHandler->controlTag != kControlTagLink) { // 'link'
       int tradeRow = sourceHandler->controlTag - kControlTagTraa; // 'traa'
       diplomacyMapView60->selectedGrantRowC0 = static_cast<short>(tradeRow);
       short threshold = g_awDiplomacyTradePolicyIconValueTable[tradeRow];
       if (threshold == 300) {
         diplomacyMapView60->actionCodeBC = kDipActionBoycott;
-      } else if (threshold < 0x60) {
+      } else if (threshold <= 0x5f) {
         diplomacyMapView60->actionCodeBC = kDipActionTradeSubsidy;
       } else {
         diplomacyMapView60->actionCodeBC = kDipActionTradePolicy;
       }
+    } else {
+      diplomacyMapView60->actionCodeBC = kDipActionLinkTradePolicy;
     }
   }
   TEventHandler::DoEvent(commandId, sourceHandler, event);

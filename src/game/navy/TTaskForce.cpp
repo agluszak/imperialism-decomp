@@ -1272,7 +1272,8 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   Free();
 
   if (cancelsBeachhead) {
-    ValidateOrderSupportDeltaAndMarkDirectionalOverlays(g_pSimMgr->GetActiveNationId(), cityIndex);
+    g_pMapContextActionManager->ValidateOrderSupportDeltaAndMarkDirectionalOverlays(
+        g_pSimMgr->GetActiveNationId(), cityIndex);
   }
   g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
