@@ -208,7 +208,6 @@ struct SaveFileHeader {
 void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   // The original never calls a base-class DoEvent in any path, so none is modeled here
   // either.
-  bool reachedCommonTail = false;
   if (commandId == 0xd) {
     short newSlot = static_cast<short>(sourceHandler->controlTag - kControlTagSlt0);
     if (newSlot != selectedSlot92) {
@@ -233,18 +232,14 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       } else if (selectedSlot92 == -1) {
         // Enter "rename" mode: swap the clicked slot's static text label for a live edit
         // box seeded with its current text.
-        TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
-        slotControl->Show(0, 1);
         CString slotText;
-        slotControl->CopyTextTo(&slotText);
-
+        TStaticText* slotControl = static_cast<TStaticText*>(sourceHandler);
+        slotControl->AssertValid();
         TEditText* editControl = new TEditText();
-        int offsetLayout[2] = {slotControl->ownerLocalX, slotControl->ownerLocalY};
-        int sizeLayout[2] = {slotControl->frameWidth34, slotControl->frameHeight38};
-        editControl->IStaticText(this, offsetLayout, sizeLayout, 5, 5, -1, 0);
+        editControl->IEditText(this, &slotControl->ownerLocalX, &slotControl->frameWidth34, 0x1f);
         selectedSlot92 = newSlot;
-        editControl->maxCharacterCount = 0x1f;
-        editControl->SetEnable(1);
+        slotControl->Show(0, 1);
+        slotControl->CopyTextTo(&slotText);
 
         editControl->InstallTextStyle(styleAt9e, 0);
         editControl->InitDialogWindowAndSyncTitleIfChanged(&slotText, 0);
@@ -255,8 +250,16 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
         g_pViewMgr->SetBackColor(0x10);
       }
     }
-    reachedCommonTail = true;
-  } else if (commandId == 0x14) {
+    if (g_pApplication->screenModeAt24 > 1) {
+      TView* okayControl = ResolveControlByTag(kControlTagOkay);
+      if (okayControl != nullptr) {
+        QueueDeferredUiEventPacket(this, 0xa, okayControl);
+      }
+    }
+    return;
+  }
+
+  if (commandId == 0x14) {
     if (sourceHandler->controlTag == kControlTagCncl) { // 'clnc'
       HandleTurnFlowStateTickOrPostTurnEvent5DC();
     }
@@ -275,13 +278,6 @@ void TLoadSavePicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
     }
   } else if (commandId == 0xa && sourceHandler->controlTag == kControlTagOkay) {
     HandleSaveGameSlotSelectionAndPromptFlow();
-  }
-
-  if (reachedCommonTail && g_pApplication->screenModeAt24 > 1) {
-    TView* okayControl = ResolveControlByTag(kControlTagOkay);
-    if (okayControl != nullptr) {
-      QueueDeferredUiEventPacket(this, 0xa, okayControl);
-    }
   }
 }
 
@@ -581,8 +577,8 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
     path += slotText;
     path += g_pszImpSaveExtension_0065DDD8;
   }
-  if (TryGetFileMetadataForPath(&path) != 0) {
-    return g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
+  if (TryGetFileMetadataForPath(&path) == 0) {
+    return 0;
   }
-  return 0;
+  return g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(path);
 }

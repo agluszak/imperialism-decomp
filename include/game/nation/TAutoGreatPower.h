@@ -162,11 +162,10 @@ public:
   // TControlSeaZoneMission::GetReplacementSlot48's terrain-coverage-not-found path
   // (0x5389a9) to clear this nation's flag for the target port zone's context ordinal.
   void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
-  // Mac oracle: SetEnemy. Marks (or clears) the given nation's first port-zone context
-  // in portZoneStateFlags. Only nations that actually hold regions are considered, and
-  // a minor nation (encoded slot 100..199) is never marked as an enemy -- only cleared.
-  // 0x004e8300, __thiscall.
-  void SetEnemy(int nationSlot, char makeEnemy);
+  // Non-virtual helper that marks (or clears) the given nation's first port-zone
+  // context in portZoneStateFlags. Only nations that hold regions are considered, and
+  // a minor nation (encoded slot 100..199) is never marked -- only cleared.
+  void SetPortZoneStateForNation(int nationSlot, char makeEnemy); // 0x004e8300
   // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
   // province's map-action-context link is unavailable (no active context for this
   // nation), in which case it's forced to 0 instead. Same gate/array

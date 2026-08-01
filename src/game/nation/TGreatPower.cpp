@@ -1195,9 +1195,7 @@ short TGreatPower::GetAmtUnsold(short resourceKind) {
 
 // FUNCTION: IMPERIALISM 0x004dda90
 void TGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) {
-  if (g_pNewsMgr != 0) {
-    g_pNewsMgr->AddShortageEvent(this->nationSlot, offerContext, resourceKind, 0);
-  }
+  g_pNewsMgr->AddShortageEvent(this->nationSlot, offerContext, resourceKind, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004ddad0
@@ -2994,11 +2992,8 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
     ++nationIndex;
   }
 
-  char borderLinked = 0;
-  if (g_pGlobalMapState != 0) {
-    borderLinked =
-        g_pGlobalMapState->AreNationsBorderLinked(targetNation, static_cast<int>(this->nationSlot));
-  }
+  char borderLinked =
+      g_pGlobalMapState->AreNationsBorderLinked(targetNation, static_cast<int>(this->nationSlot));
 
   TGreatPower* targetState = g_apNationStates[targetNation];
   if (borderLinked != 0) {

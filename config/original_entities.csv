@@ -2797,7 +2797,7 @@ address|name|symbol|size|type|prototype|provenance
 4e7cc0|TAutoGreatPower::HandleWarTransitionRequest||397|function|int HandleWarTransitionRequest(int targetNation, int sourceNation)|
 4e7ec0|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap||300|function|int HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation, char swapRoles)|
 4e8040|TAutoGreatPower::VTableSlot9D||554|function|undefined ReturnZeroSlot9D(void)|
-4e8300|TAutoGreatPower::SetEnemy||157|function|void __thiscall TAutoGreatPower::SetEnemy(int nationSlot, char makeEnemy)|curated
+4e8300|TAutoGreatPower::SetPortZoneStateForNation||157|function|void TAutoGreatPower::SetPortZoneStateForNation(int nationSlot, char makeEnemy)|curated
 4e83d0|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates||287|function|void __thiscall QueueMapActionMissionsForPortZoneCandidates(void)|
 4e8540|TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState||248|function|void __thiscall QueueMapActionMissionFromCandidateAndMarkState(eMissionType missionType,int mapNodeIndex,TZone* zoneContext,int relatedMapNodeIndex)|
 4e8680|TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove||157|function|undefined DispatchToFirstMatchingListNodeAndRemove()|

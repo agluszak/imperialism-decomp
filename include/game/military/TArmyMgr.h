@@ -414,8 +414,11 @@ public:
   // TDefenseMinisterView::DoEvent's 'cann' branch. 0x4a6d40.
   bool ScanMapContextActionEntriesForCodeMatch(short activeNationId);
 
+  // Validates troop support for one beachhead and rebuilds the directional map overlays
+  // after rejecting excess units. The body uses only global state, but the retail caller
+  // supplies the map-context action manager in ECX. 0x004a7370.
+  void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone);
+
   TArmyMgr();
 };
 ASSERT_SIZE(TArmyMgr, 0x3a8);
-
-void __stdcall ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone);

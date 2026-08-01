@@ -196,41 +196,71 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&queueSyncDword, 4);
   stream->ReadBytes(&sessionReadyFlag, 1);
 
-  if (g_pNetMgr006a6014 != nullptr) {
-    g_pNetMgr006a6014->ReadFrom(stream);
-  }
+  g_pNetMgr006a6014->ReadFrom(stream);
 
-  int activeId = g_pNetMgr006a6014->GetSessionActiveNationId();
-  short netSlot = g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
-  nationSessionIds[netSlot] = activeId;
-  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
-  g_pSimMgr->DiplomacyNoticeString(nullptr);
-  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  int sessionActiveNationId = g_pNetMgr006a6014->GetSessionActiveNationId();
+  nationSessionIds[g_pSimMgr->GetActiveNationId()] = sessionActiveNationId;
+
+  int reportingNationSlot = g_pSimMgr->GetActiveNationId();
+  reportingNationSlot += g_pSimMgr->GetEconomicTurn() * 8;
+  TurnEvent1FStatusPacket reportPacket;
+  reportPacket.messageTag = kControlTagTime;
+  reportPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  reportPacket.eventCode = 0;
+  reportPacket.fromNetworkId = 0;
+  reportPacket.toNetworkId = 0;
+  reportPacket.messageLength = 0;
+  reportPacket.messageLength = 0x20;
+  reportPacket.DestinateTo(-1);
+  reportPacket.statusTag18 = kControlTagRepo;
+  reportPacket.value1C = reportingNationSlot;
+  g_pNetMgr006a6014->Send(&reportPacket, 0);
 
   if (g_pSimMgr->multiplayerSessionRole == 1) {
     sessionPhaseTag = IMPERIALISM_FOURCC('i', 'n', 'i', 't');
     g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(1);
   }
 
-  short activeIdx = g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  int activeIdx = g_pSimMgr->GetActiveNationId();
   int currentIdx = activeIdx;
   if (currentIdx == -1) {
-    currentIdx = activeNationTagIndex;
+    currentIdx = static_cast<signed char>(activeNationTagIndex);
   }
   nationStatusTags[currentIdx] = IMPERIALISM_FOURCC('b', 'u', 's', 'y');
 
-  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
-
-  int targetStatus[7];
+  NationStatusEvent25Packet statusPacket;
+  statusPacket.messageTag = kControlTagTime;
+  statusPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  statusPacket.eventCode = 0;
+  statusPacket.fromNetworkId = 0;
+  statusPacket.toNetworkId = 0;
+  statusPacket.messageLength = 0;
+  statusPacket.messageLength = 0x34;
   for (int k = 0; k < 7; ++k) {
-    targetStatus[k] = IMPERIALISM_FOURCC('u', 'n', 'k', 'n');
+    statusPacket.statusTags[k] = kSessionTagUnkn;
   }
-  targetStatus[currentIdx] = IMPERIALISM_FOURCC('b', 'u', 's', 'y');
+  statusPacket.statusTags[currentIdx] = kSessionTagBusy;
+  g_pNetMgr006a6014->Send(&statusPacket, 0);
 
   sessionPhaseTag = IMPERIALISM_FOURCC('g', 'o', 'i', 'n');
 
-  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
-  g_pNetMgr006a6014->CheckConnectivityOrShowLocalizedWarningAndReturnReady();
+  int destinationNationSlot = g_pSimMgr->GetActiveNationId();
+  TurnEvent1FStatusPacket namePacket;
+  namePacket.messageTag = kControlTagTime;
+  namePacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  namePacket.eventCode = 0;
+  namePacket.fromNetworkId = 0;
+  namePacket.toNetworkId = 0;
+  namePacket.messageLength = 0;
+  namePacket.messageLength = 0x20;
+  if (destinationNationSlot == -1) {
+    namePacket.toNetworkId = -1;
+  } else if (destinationNationSlot != -2 && destinationNationSlot != -3) {
+    namePacket.toNetworkId = g_pGameFlowState->nationSessionIds[destinationNationSlot];
+  }
+  namePacket.statusTag18 = kControlTagName;
+  namePacket.value1C = -1;
+  g_pNetMgr006a6014->Send(&namePacket, destinationNationSlot == -3);
 }
 
 // FUNCTION: IMPERIALISM 0x00542ff0
