@@ -27,6 +27,7 @@
 #include "game/ui_core/CWMgrIterator.h"   // window-registry traversal for the full (code-0) refresh
 #include "game/ui_core/quickdraw_rendering.h" // SetQuickDrawFillColor / SetQuickDrawStrokeColor
 #include "game/ui_widgets/TToolBarCluster.h" // pulls TView/TControl/TCluster chain for main-view dispatch
+#include "game/ui_widgets/TWorldView.h"
 #include "game/assets/TMovieView.h"
 
 #include "game/ui_screens/TSimMgr.h"
@@ -97,11 +98,6 @@
 
 #include "game/ui_core/CIncludeView.h"
 #include "game/GameAssert.h"
-
-namespace {
-using turn_event_dialog::GoldCommitControl;
-using turn_event_dialog::GoldDialogControl;
-} // namespace
 
 // Rebuild the "peace conference" turn-state screen's styled text: apply a bracketed
 // text style + centred alignment to the 'labl' caption, then push localized strings
@@ -177,13 +173,13 @@ char TViewMgr::ShowNewCityDialog(TTown* town) {
 
 // FUNCTION: IMPERIALISM 0x005dcf20
 void TViewMgr::ShowCombatReportDialog(TCombatReportContext* reportContext) {
-  GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
+  TWorldView* activeMapDialog = static_cast<TWorldView*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog)));
-  if (rootGold == nullptr) {
+  if (activeMapDialog == nullptr) {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe2);
   }
-  rootGold->NotifyGoldControlOfTurnEventCode(currentTurnEventCode);
+  activeMapDialog->CenterOn(reportContext->mapTileIndex04);
 
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventCombatReport));
@@ -361,15 +357,14 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
   };
   TurnEventMapSelection* mapSelection = static_cast<TurnEventMapSelection*>(selection);
 
-  GoldCommitControl* activeGold = static_cast<GoldCommitControl*>(
-      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
-  if (activeGold == 0) {
+  TWorldView* activeMapDialog =
+      static_cast<TWorldView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
+  if (activeMapDialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c5);
   }
   short cityRecordIndex = mapSelection->cityRecordIndex2;
-  activeGold->NotifyGoldControlOfTurnEventCode(
-      g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
+  activeMapDialog->CenterOn(g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
 
   TWindow* node = static_cast<TWindow*>(
       g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(kTurnEventTacticalMapPictureBase));

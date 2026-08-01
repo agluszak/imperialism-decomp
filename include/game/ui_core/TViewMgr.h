@@ -65,18 +65,19 @@ public:
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
   virtual void ShowDiplomacyScreen(short nationSlot);    // 0x6c; Mac oracle
-  // Resolve the factory dialog for eventCode, commit its 'GOLD' child, then push the
-  // slot-0x9c refresh down the dialog's linked children (0x5d6cd0).
-  virtual void HandleTurnEventDialogFactorySlot70(int eventCode); // 0x70 0x5d6cd0
-  // Slots 0x74/0x78/0x7C/0x80 share the same body: resolve the factory dialog for
-  // eventCode, commit its 'GOLD' child, then show/refresh/free the dialog node.
-  virtual void HandleTurnEventDialogFactorySlot74(int eventCode); // 0x74 0x5d6d70
-  virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78 0x5d6e50
-  virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
-  virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
-  virtual void ShowTransportScreen(short nationSlot);             // 0x84; Mac oracle
-  virtual void ShowAbilityStatusReport(short abilityIndex);       // 0x88 0x5d8980 (ret 4)
-  virtual void NoOpTurnEventStateVtableSlot8C(int arg);           // 0x8c
+  // Mac oracle: MakeRelationshipDialog(short). The Windows listing preserves a
+  // 32-bit factory context; this resolves its relationship-table DLOG child, fills
+  // it, and leaves the table window open (0x5d6cd0).
+  virtual void MakeRelationshipDialog(int dialogContext); // 0x70 0x5d6cd0
+  // The remaining diplomacy-table dialogs are modal and release their factory nodes
+  // after StuffValues() returns.
+  virtual void MakeMinorsTradeBidsDialog(int dialogContext);   // 0x74 0x5d6d70
+  virtual void MakeMinorRelationshipDialog(int dialogContext); // 0x78 0x5d6e50
+  virtual void MakeGPTreatyDialog(int dialogContext);          // 0x7c 0x5d6f10
+  virtual void MakeMinorTreatyDialog(int dialogContext);       // 0x80 0x5d6fd0
+  virtual void ShowTransportScreen(short nationSlot);          // 0x84; Mac oracle
+  virtual void ShowAbilityStatusReport(short abilityIndex);    // 0x88 0x5d8980 (ret 4)
+  virtual void NoOpTurnEventStateVtableSlot8C(int arg);        // 0x8c
   virtual char MakeDiplomacyOfferDialog(short sourceNation, short targetNation,
                                         short proposalCode); // 0x90
   virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
@@ -141,8 +142,8 @@ public:
   // the main view's 'main' panel (0x5dbdd0).
   virtual void ShowScenarioScreen();  // 0x104; Mac oracle
   virtual void ShowHighScoreScreen(); // 0x108; Mac oracle
-  // Resolves the active dialog's 'GOLD' control and configures its value-cell grid
-  // (0x14 x 0x14) via the control's slot-0x79 virtual (0x5dc3f0).
+  // Resolves the active map dialog's 'DLOG' view and sets its cell coordinates to
+  // (0x14, 0x14) through TWorldView's slot-0x79 virtual (0x5dc3f0).
   virtual void ConfigureActiveDialogGoldValueGridForTurnEvent3C0(); // 0x10c 0x5dc3f0
   virtual void ShowUnitHistory(short nationSlot);                   // 0x110 0x5dc690
 

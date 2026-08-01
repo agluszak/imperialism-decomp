@@ -84,6 +84,11 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/ui_widgets/TDropShadowText.h"
 #include "game/ui_widgets/TDropShadowNumberText.h"
+#include "game/ui_widgets/TGPTreatyDialog.h"
+#include "game/ui_widgets/TMinorRelationshipDialog.h"
+#include "game/ui_widgets/TMinorTradeBidsDialog.h"
+#include "game/ui_widgets/TMinorTreatyDialog.h"
+#include "game/ui_widgets/TRelationshipDialog.h"
 #include "game/app/TTechStorePage.h"
 #include "game/military/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
 #include "game/ui_core/TEditText.h"
@@ -94,6 +99,7 @@
 #include "game/military/TCivUnit.h"
 #include "game/city/TCity.h"
 #include "game/map_ui/TCitySiteView.h"
+#include "game/ui_widgets/TWorldView.h"
 #include "game/map/TMapUberPicture.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -113,16 +119,6 @@
 // method now, and the two "NoOp" callbacks were mis-named out-of-line COMDAT copies of
 // CString::GetLength / CString::GetPchData that the tail call sites use via the real
 // CString API.
-
-// Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
-// its 'GOLD' child control now live in one shared header so the TViewMgr and
-// TMacViewMgr copies can't drift apart (bd imperialism-decomp-hpd.7). The lower slots
-// (ResolveControlByTag, Locate, Close, Free, AssertValid) are real
-// inherited TView/TObject virtuals dispatched directly.
-namespace {
-using turn_event_dialog::GoldCommitControl;
-using turn_event_dialog::GoldDialogControl;
-} // namespace
 
 namespace {
 const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
@@ -835,37 +831,37 @@ void TViewMgr::RefreshStrategicMapStatusIconsForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6cd0
-void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
+void TViewMgr::MakeRelationshipDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
-          static_cast<TurnEventId>(eventCode), 0));
+          static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
   }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
+  TRelationshipDialog* dialog = static_cast<TRelationshipDialog*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  dialog->AssertValid();
+  if (dialog != nullptr) {
+    dialog->StuffValues();
   }
   node->Open();
 }
 
 // FUNCTION: IMPERIALISM 0x005d6d70
-void TViewMgr::HandleTurnEventDialogFactorySlot74(int eventCode) {
+void TViewMgr::MakeMinorsTradeBidsDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
-          static_cast<TurnEventId>(eventCode), 0));
+          static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x514);
   }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
+  TMinorTradeBidsDialog* dialog = static_cast<TMinorTradeBidsDialog*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  dialog->AssertValid();
+  if (dialog != nullptr) {
+    dialog->StuffValues();
   }
   node->SetModality(1);
   node->PoseModally();
@@ -879,19 +875,19 @@ void TViewMgr::NoOpTurnEventStateVtableSlot8C(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6e50
-void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
+void TViewMgr::MakeMinorRelationshipDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
-          static_cast<TurnEventId>(eventCode), 0));
+          static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x535);
   }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
+  TMinorRelationshipDialog* dialog = static_cast<TMinorRelationshipDialog*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  dialog->AssertValid();
+  if (dialog != nullptr) {
+    dialog->StuffValues();
   }
   node->SetModality(1);
   node->PoseModally();
@@ -900,19 +896,19 @@ void TViewMgr::HandleTurnEventDialogFactorySlot78(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6f10
-void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
+void TViewMgr::MakeGPTreatyDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
-          static_cast<TurnEventId>(eventCode), 0));
+          static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x54e);
   }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
+  TGPTreatyDialog* dialog = static_cast<TGPTreatyDialog*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  dialog->AssertValid();
+  if (dialog != nullptr) {
+    dialog->StuffValues();
   }
   node->SetModality(1);
   node->PoseModally();
@@ -921,19 +917,19 @@ void TViewMgr::HandleTurnEventDialogFactorySlot7C(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d6fd0
-void TViewMgr::HandleTurnEventDialogFactorySlot80(int eventCode) {
+void TViewMgr::MakeMinorTreatyDialog(int dialogContext) {
   TWindow* node =
       static_cast<TWindow*>(g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(
-          static_cast<TurnEventId>(eventCode), 0));
+          static_cast<TurnEventId>(dialogContext), 0));
   if (node == nullptr) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x566);
   }
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
-      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  if (gold != nullptr) {
-    gold->CommitGoldDialogContent();
+  TMinorTreatyDialog* dialog = static_cast<TMinorTreatyDialog*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  dialog->AssertValid();
+  if (dialog != nullptr) {
+    dialog->StuffValues();
   }
   node->SetModality(1);
   node->PoseModally();
@@ -2457,10 +2453,10 @@ void TViewMgr::InitializeCitySiteSelectionScreenForNation(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
 void TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0() {
-  GoldCommitControl* gold = static_cast<GoldCommitControl*>(static_cast<TView*>(
-      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog))); // 'GOLD'
-  gold->AssertValid();
-  gold->ConfigureGoldValueCells(0x14, 0x14);
+  TWorldView* mapDialog = static_cast<TWorldView*>(static_cast<TView*>(
+      g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog))); // 'DLOG'
+  mapDialog->AssertValid();
+  mapDialog->SetMapViewCellCoordinates(0x14, 0x14);
 }
 
 // FUNCTION: IMPERIALISM 0x005dc430

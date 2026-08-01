@@ -17,11 +17,6 @@ public:
   CAmbitDocument();                   // 0x479480
   virtual ~CAmbitDocument() override; // 0x479710
 
-  // Re-expose the protected CDocument save entry point: the save flow
-  // (TAssetMgr::SaveMainDocumentToPathAndMarkSaved, 0x5e0030) drives DoSave directly on
-  // the active document instead of going through DoFileSave.
-  using CDocument::DoSave;
-
   // CDocument virtual overrides (vtable slots verified against 0x645eb8). IsModified /
   // SetModifiedFlag re-expose the base m_bModified; OnNewDocument/OnOpenDocument toggle the
   // multiplayer-scenario-setup flag; OnSaveDocument creates the parent directory first;

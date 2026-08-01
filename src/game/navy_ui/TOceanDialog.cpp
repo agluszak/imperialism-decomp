@@ -819,10 +819,9 @@ void TOceanDialog::SetMapViewCellCoordinates(int column, int row) {
 }
 
 // FUNCTION: IMPERIALISM 0x005689f0
-void TOceanDialog::CenterOn(int tileIndex) {
-  short promotedTileIndex = static_cast<short>(tileIndex);
-  int row = promotedTileIndex / 0x6c;
-  int col = promotedTileIndex % 0x6c;
+void TOceanDialog::CenterOn(StrategicTileIndex tileIndex) {
+  int row = tileIndex / 0x6c;
+  int col = tileIndex % 0x6c;
   SetMapViewCellCoordinates(col - 0x10, row - 0xe);
 }
 

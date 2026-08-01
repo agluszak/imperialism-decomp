@@ -26,6 +26,7 @@
 #include "game/nation/TGreatPower.h"
 #include "game/ui_widgets/TMyStaticText.h"
 #include "game/ui_widgets/TTradeCluster.h"
+#include "game/ui_core/TNumberText.h"
 #include "game/ui_widgets/TTransportPicture.h"
 #include "game/ui_screens/TRightLeftView.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -136,8 +137,6 @@ static __inline void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, R
 
 // Provisional turn-event dialog / GOLD control interfaces are shared with TViewMgr.cpp
 // via one header so the two copies can't drift (bd imperialism-decomp-hpd.7).
-using turn_event_dialog::GoldDialogControl;
-
 } // namespace
 
 // SYNTHETIC: IMPERIALISM 0x00509c00
@@ -836,11 +835,9 @@ void TMacViewMgr::ApplySellOrderRowToNationState(TTradeCluster* orderSource, int
 // FUNCTION: IMPERIALISM 0x0050bc50
 void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                                             short nationIndex) {
-  using turn_event_dialog::GoldCommitControl;
-  using turn_event_dialog::TSellOrderRowControl;
-  TSellOrderRowControl* row = static_cast<TSellOrderRowControl*>(view);
+  TTradeCluster* row = static_cast<TTradeCluster*>(view);
   view->DoPostCreate(0);
-  row->orderSlot88 = orderSlot;
+  row->tradeMetricSlot = orderSlot;
   if (g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0 &&
       (orderSlot == 6 || orderSlot == 0xc)) {
     view->Show(0, 0);
@@ -854,29 +851,28 @@ void TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short o
     sellCount = 0;
     effectiveNationIndex = 0;
   }
-  GoldCommitControl* sellControl =
-      static_cast<GoldCommitControl*>(view->ResolveControlByTag(kControlTagSell));
+  TNumberText* sellControl = static_cast<TNumberText*>(view->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   if (sellCount < 0) {
-    row->NotifySellValueUnavailable();
-    sellControl->ConfigureGoldValueCells(0, 0);
+    row->SetTradeBidControlBitmap();
+    sellControl->SetControlValue(0, 0);
     sellControl->Show(0, 1);
   } else {
-    row->NotifySellValueValid();
+    row->DoControlAction();
   }
   if (sellCount > 0) {
-    row->NotifySellValueActive();
-    sellControl->ConfigureGoldValueCells(sellCount, 0);
+    row->SetTradeOfferControlBitmap();
+    sellControl->SetControlValue(sellCount, 0);
     sellControl->Show(1, 1);
     return;
   }
   if (g_apNationStates[effectiveNationIndex]->merchantCapacity != 0) {
-    row->NotifySellCapacityAvailable();
+    row->SetTradeOfferSecondaryBitmap();
   }
-  sellControl->ConfigureGoldValueCells(0, 0);
+  sellControl->SetControlValue(0, 0);
   sellControl->Show(0, 1);
 }
 

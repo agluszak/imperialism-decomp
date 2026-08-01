@@ -365,7 +365,7 @@ void TTradeMgr::CalculateDealOrder() {
     midRow = midRow + 1;
   } while (midRow < 0xd);
 
-  // Rows 0xd..0x10: only the primary target range (0..6), no row-7-style special case.
+  // Rows 0xd..0x10 pair each primary target with both primary and secondary sources.
   int lastRow = 0xd;
   do {
     int target = 0;
@@ -395,6 +395,28 @@ void TTradeMgr::CalculateDealOrder() {
             }
             source = source + 1;
           } while (source < 7);
+
+          int secondarySource = 7;
+          do {
+            if ((g_apTerrainTypeDescriptorTable[secondarySource] != 0) &&
+                (cells[lastRow * 0x50 + secondarySource] < 0) &&
+                (g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(secondarySource, target) ==
+                 0) &&
+                (g_pDiplomacyTurnStateManager->IsNationPairAtWar(secondarySource, target) == 0)) {
+              TradeDealEntry event;
+              event.sourceNationSlot = static_cast<short>(secondarySource);
+              event.targetNationSlot = static_cast<short>(target);
+              event.relationDelta04 = cell;
+              event.relationStanding06 =
+                  RelationStanding(g_pDiplomacyTurnStateManager, secondarySource, target);
+              event.dispatchScore08 = this->GetDealPrice(
+                  static_cast<short>(secondarySource), static_cast<short>(target),
+                  categoryRows[lastRow].price, categoryRows[lastRow].basePrice);
+              event.category0c = static_cast<short>(lastRow);
+              this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
+            }
+            secondarySource = secondarySource + 1;
+          } while (secondarySource < 0x17);
         }
       }
       target = target + 1;

@@ -553,15 +553,15 @@ unsigned char TMapDialog::IsTileVisible(short tileIndex) {
 }
 
 // Centers the map view on the given tile (column offset by half the viewport tile span,
-// row offset by 3) and invalidates the whole 0x200x0x1c0 dialog surface. The split writes
-// only the low words of the arg slot / col local (same short*-into-int idiom as the ctor).
+// row offset by 3) and invalidates the whole 0x200x0x1c0 dialog surface.
 // FUNCTION: IMPERIALISM 0x0051ac40
-void TMapDialog::CenterOn(int tileIndex) {
-  WordOutputInt col;
-  SplitTileIndexToRowAndColumn(static_cast<short>(tileIndex), reinterpret_cast<short*>(&tileIndex),
-                               &col.word);
-  SetMapViewCellCoordinates(col.value - static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
-                            tileIndex - 3);
+void TMapDialog::CenterOn(StrategicTileIndex tileIndex) {
+  StrategicTileIndex row;
+  StrategicTileIndex col;
+  SplitTileIndexToRowAndColumn(tileIndex, &row, &col);
+  SetMapViewCellCoordinates(static_cast<int>(col) -
+                                static_cast<short>(g_wMapDialogViewportTileSpan) / 2,
+                            static_cast<int>(row) - 3);
   RECT invalidateRect;
   invalidateRect.left = 0;
   invalidateRect.top = 0;

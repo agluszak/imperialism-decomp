@@ -38,6 +38,6 @@ void TInfoBarPictureText::ClearTextAndLayoutRect(int) {
   ownerContext->InvalidateCityDialogRectRegion(&clipRect, 1);
 
   CString empty;
-  SetText(&empty);
+  TStaticText::SetText(&empty);
   RefreshControl();
 }

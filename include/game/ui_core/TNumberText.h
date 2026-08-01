@@ -17,8 +17,6 @@ public:
   ~TNumberText() override;          // slot 0x01 (0x429530)
   TObject* ShallowClone() override; // slot 0x08 (0x4912b0)
 
-  using TEditText::SetEnable;
-
   // New virtual methods
   virtual void SetControlValue(int val, int refresh); // slot 0x79 (0x4910e0)
   virtual int UpdateControlCachedIntFromWindowText(); // slot 0x7a (0x4911c0)
