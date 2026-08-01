@@ -11,7 +11,6 @@ class TDocument;
 class TTEView : public TStaticText {
 public:
   TTEView();
-  using TStaticText::SetText;
   // Mac oracle: TTEView::SetText(const CStr255&). CString is the Windows counterpart.
   void SetText(const CString& text); // 0x004861f0
   DECLARE_DYNCREATE(TTEView)

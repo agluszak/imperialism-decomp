@@ -119,10 +119,11 @@ char TInvadeMission::SmokeEmIfYouGotEm() {
     return 0;
   }
   CIterator iter(orderListAt18);
+  TArmyMission* armyMission = this;
   for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
     if (unit->GetCategory() != EncodeArmyUnitCategory(kArmyUnitCategoryMilitia)) {
-      RejectConstituent(unit, 1);
+      armyMission->RejectConstituent(unit, 1);
     }
   }
   return 1;

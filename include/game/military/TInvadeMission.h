@@ -11,9 +11,6 @@ class TBeachheadMission;
 class TInvadeMission : public TAttackProvinceMission {
   DECLARE_SERIAL(TInvadeMission)
 public:
-  using TAttackProvinceMission::AcceptReenforcement;
-  using TAttackProvinceMission::RejectConstituent;
-
   TBeachheadMission* beachhead34; // +0x34 owned amphibious-landing child mission
 
   TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}

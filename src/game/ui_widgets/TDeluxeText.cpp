@@ -114,12 +114,12 @@ short TDeluxeText::CenterVertically(unsigned char refreshNow) {
 
 // FUNCTION: IMPERIALISM 0x005b6480
 void TDeluxeText::UpdateTextEntrySharedString(CString* text) {
-  SetText(text);
+  TStaticText::SetText(text);
 }
 
 // FUNCTION: IMPERIALISM 0x005b64a0
 void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag) {
-  SetText(text);
+  TStaticText::SetText(text);
   if (notifyFlag != 0) {
     RefreshControl();
   }
@@ -129,6 +129,6 @@ void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char 
 void TDeluxeText::BuildCityViewProductionControls_Impl(short codeGroup, short stringIndex) {
   CString text;
   g_pSimMgr->GetString(codeGroup, stringIndex - 1, &text);
-  SetText(&text);
+  TStaticText::SetText(&text);
   RefreshControl();
 }

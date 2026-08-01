@@ -42,7 +42,8 @@ int TTEView::MeasureCurrentTextHeightInLayoutRect() {
   CRect bounds;
   GetQDExtent(&bounds);
   bounds.DeflateRect(&contentInsets68);
-  dc.DrawText(*text, text->GetLength(), &bounds, 0xd10);
+  CDC* measureDc = &dc;
+  measureDc->DrawText((LPCSTR)*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);
   return bounds.bottom - bounds.top;
 }

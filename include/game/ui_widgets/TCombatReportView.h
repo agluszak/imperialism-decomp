@@ -24,7 +24,9 @@ ASSERT_SIZE(CombatReportUnitRecord, 0x20);
 struct TCombatReportContext {
   signed char nationIdA; // +0x00 index into g_apTerrainTypeDescriptorTable
   signed char nationIdB; // +0x01 index into g_apTerrainTypeDescriptorTable
-  unsigned char pad02[6];
+  unsigned char pad02[2];
+  short mapTileIndex04; // +0x04 passed to the active strategic-map view's CenterOn()
+  unsigned char pad06[2];
   CombatReportUnitRecord* unitsA; // +0x08
   CombatReportUnitRecord* unitsB; // +0x0c
 };

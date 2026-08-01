@@ -2,6 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
+#include "game/map_domain_types.h"
 #include "game/ui_core/TView.h"
 #include "game/mfc.h"
 
@@ -90,10 +91,8 @@ public:
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                int dispatchContext);
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
-  // Mac CodeWarrior identity: TWorldView::CenterOn(short). Windows consumes the promoted
-  // stack dword at this virtual boundary (TMapDialog::CenterOn reads its own argument
-  // slot back as a dword after using its low word as a short* out-param).
-  virtual void CenterOn(int tileIndex);
+  // Mac CodeWarrior identity: TWorldView::CenterOn(short).
+  virtual void CenterOn(StrategicTileIndex tileIndex);
   virtual short QueryMinusOneWordSlot77();
   virtual void SetMapViewTileIndex(int arg1);
   virtual void SetMapViewCellCoordinates(int column, int row);

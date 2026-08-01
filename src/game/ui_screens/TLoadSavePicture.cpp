@@ -83,6 +83,11 @@ void TLoadSavePicture::DoPostCreate(int arg) {
         slotControl->SetTextFromStringResource(0x2737, 0xd, 1);
       }
     } else {
+      char saveHeader[0x2c];
+      FILE* slotFile = fopen(slotPath, g_szLiteralRb_00698720);
+      fread(saveHeader, 1, sizeof(saveHeader), slotFile);
+      fclose(slotFile);
+      slotCaption = saveHeader + 0xc;
       slotControl->SetTextAndMaybeRefresh(&slotCaption, 1);
     }
     slotControl->InstallTextStyle(styleAt9e, 0);
