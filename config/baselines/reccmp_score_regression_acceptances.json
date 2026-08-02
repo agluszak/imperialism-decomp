@@ -1,0 +1,205 @@
+{
+  "acceptances": [
+    {
+      "address": "0x52d030",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x52d030 reports a first data-flow mismatch while the semantic call contract remains pass after the TMapMgr return-ABI rebuild.",
+      "new_score": 0.6923,
+      "previous_score": 0.7767,
+      "reason": "The reviewed TMapMgr return-width correction rebuilt this translation unit and changed VC5 allocation in this untouched helper; no source or semantic-call contract changed here.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x5a8ac0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x5a8ac0 reports a first data-flow mismatch while the semantic call contract remains pass after the TWorldView virtual-ABI rebuild.",
+      "new_score": 0.6087,
+      "previous_score": 0.6867,
+      "reason": "The reviewed TWorldView virtual argument correction rebuilt derived UI translation units and changed VC5 allocation in this untouched body; its semantic-call contract is unchanged and passing.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x559bd0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x559bd0 is unsupported-control-flow inconclusive after the packed-storage Ghidra model refresh.",
+      "new_score": 0.4291,
+      "previous_score": 0.4509,
+      "reason": "The packed-storage model refresh changed analysis/recomp pairing around an untouched function; the existing semantic debt remains visible and was not reclassified as passing.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x5dcf20",
+      "code_regression": "exact_to_nonexact",
+      "evidence_class": "retail_listing_and_virtual_argument_abi",
+      "evidence_reference": "Semantic accepted equivalence for 0x5dcf20; retail 0x005dcf6e-0x005dcf7b and low-word CenterOn consumers 0x0051ac40/0x005689f0.",
+      "new_score": 0.9785,
+      "previous_score": 1.0,
+      "reason": "The corrected int virtual ABI makes VC5 sign-extend a short tile before forwarding it; every concrete retail CenterOn body consumes only the low word, so the instruction change is unobservable.",
+      "semantic_status": "accepted_equivalence"
+    },
+    {
+      "address": "0x496d40",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x496d40 is unsupported-control-flow inconclusive.",
+      "new_score": 0.7224,
+      "previous_score": 0.7392,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit rather than being blessed as passing.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x4fd000",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x4fd000 is alignment-failure inconclusive.",
+      "new_score": 0.816,
+      "previous_score": 0.832,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit rather than being blessed as passing.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x5a9240",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x5a9240 is unsupported-control-flow inconclusive and its semantic call contract remains pass.",
+      "new_score": 0.5463,
+      "previous_score": 0.5602,
+      "reason": "The TWorldView hierarchy ABI rebuild changed VC5 allocation in this untouched body without changing its passing semantic-call contract.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x591f10",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x591f10 is unsupported-control-flow inconclusive.",
+      "new_score": 0.6456,
+      "previous_score": 0.6582,
+      "reason": "The TWorldView hierarchy ABI rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x4e8540",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x4e8540 is unsupported-control-flow inconclusive.",
+      "new_score": 0.6164,
+      "previous_score": 0.6289,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x4dd7f0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x4dd7f0 is unsupported-control-flow inconclusive and its semantic call contract remains pass.",
+      "new_score": 0.6867,
+      "previous_score": 0.6988,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body without changing its passing semantic-call contract.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x54ff00",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x54ff00 is unsupported-control-flow inconclusive and its semantic call contract remains pass.",
+      "new_score": 0.62,
+      "previous_score": 0.63,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body without changing its passing semantic-call contract.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x5dd770",
+      "code_regression": "exact_to_nonexact",
+      "evidence_class": "retail_listing_and_virtual_argument_abi",
+      "evidence_reference": "Semantic accepted equivalence for 0x5dd770; retail 0x005dd7be-0x005dd7e2 and low-word CenterOn consumers 0x0051ac40/0x005689f0.",
+      "new_score": 0.99,
+      "previous_score": 1.0,
+      "reason": "The corrected int virtual ABI makes VC5 sign-extend a short tile before forwarding it; every concrete retail CenterOn body consumes only the low word, so the instruction change is unobservable.",
+      "semantic_status": "accepted_equivalence"
+    },
+    {
+      "address": "0x544b30",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x544b30 is alignment-failure inconclusive and its semantic call contract remains pass.",
+      "new_score": 0.3905,
+      "previous_score": 0.4,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched packet builder without changing its passing semantic-call contract.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x527d00",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x527d00 is alignment-failure inconclusive and its semantic call contract remains pass.",
+      "new_score": 0.49,
+      "previous_score": 0.498,
+      "reason": "The TMapMgr header ABI rebuild changed VC5 allocation in this untouched map-generation body without changing its passing semantic-call contract.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x4c02c0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x4c02c0 is unsupported-control-flow inconclusive.",
+      "new_score": 0.529,
+      "previous_score": 0.5362,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x5178f0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "retail_listing_and_caller_return_abi",
+      "evidence_reference": "Retail 0x00511f10 wrapper returns EAX from 0x005178f0 unchanged; corrected int ABI makes 0x00511f10 and caller 0x005dc1e0 exact, while just triage 0x5178f0 remains unsupported-control-flow inconclusive with semantic pass.",
+      "new_score": 0.3431,
+      "previous_score": 0.3489,
+      "reason": "The small local score loss is the reviewed consequence of restoring the helper's full return contract, which fixes the exact wrapper and its caller.",
+      "semantic_status": "pass"
+    },
+    {
+      "address": "0x595130",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x595130 is unsupported-control-flow inconclusive after the TWorldView CenterOn virtual signature correction.",
+      "new_score": 0.3962,
+      "previous_score": 0.3986,
+      "reason": "The TWorldView vtable ABI correction rebuilt this untouched method and changed VC5 allocation; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x50bea0",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x50bea0 is unsupported-control-flow inconclusive.",
+      "new_score": 0.296,
+      "previous_score": 0.2977,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x53d200",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x53d200 is alignment-failure inconclusive.",
+      "new_score": 0.4314,
+      "previous_score": 0.4331,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched body; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    },
+    {
+      "address": "0x545940",
+      "code_regression": "similarity_drop",
+      "evidence_class": "unchanged_source_codegen_wobble",
+      "evidence_reference": "Source body unchanged; 2026-08-02 just triage 0x545940 is unsupported-control-flow inconclusive.",
+      "new_score": 0.4684,
+      "previous_score": 0.4697,
+      "reason": "A dependency rebuild changed VC5 allocation in this untouched state machine; its pre-existing semantic debt remains explicit.",
+      "semantic_status": "existing_debt"
+    }
+  ],
+  "schema": 1
+}

@@ -40,7 +40,7 @@ from tools.source_model import Claim, build_model
 SCHEMA_VERSION = 3
 # The ratchet file has its own schema: the report format may evolve without
 # rewriting the baseline (a bumped number there reads as growth to baseline_guard).
-BASELINE_SCHEMA_VERSION = 2
+BASELINE_SCHEMA_VERSION = 3
 PREP_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 30
 PROJECT_NAME = "recompiled-semantic"
@@ -453,6 +453,7 @@ def report_inputs(
     paths = [
         repo_root / "vendor" / "ghidra" / "exports" / "Imperialism.gzf",
         repo_root / "ghidra.toml",
+        target.recompiled_path.parent / "reccmp_report.json",
         Path(__file__),
     ]
     return {
@@ -2242,11 +2243,23 @@ def _decompile_function(
     return high, None
 
 
-def _reccmp_statuses(build_dir: Path) -> dict[int, dict[str, Any]]:
+def _reccmp_statuses(
+    build_dir: Path, evidence_inputs: Sequence[Path] = ()
+) -> dict[int, dict[str, Any]]:
     path = build_dir / "reccmp_report.json"
     if not path.is_file():
         return {}
-    rows = json.loads(path.read_text(encoding="utf-8")).get("data", [])
+    report = json.loads(path.read_text(encoding="utf-8"))
+    timestamp = report.get("timestamp")
+    existing_inputs = [item for item in evidence_inputs if item.is_file()]
+    if existing_inputs and (
+        not isinstance(timestamp, (int, float))
+        or float(timestamp) < max(item.stat().st_mtime for item in existing_inputs)
+    ):
+        raise RuntimeError(
+            "stale reccmp_report.json predates the recompiled EXE/PDB; run `just stats`"
+        )
+    rows = report.get("data", [])
     output: dict[int, dict[str, Any]] = {}
     for row in rows:
         comparison = row.get("comparison")
@@ -2483,7 +2496,9 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         original_entities,
         recompiled_entities,
     ) = _build_maps(compare)
-    reccmp_statuses = _reccmp_statuses(build_dir)
+    reccmp_statuses = _reccmp_statuses(
+        build_dir, (target.recompiled_path, target.recompiled_pdb)
+    )
     ctx = ReuseContext(
         pairs,
         original_functions,
@@ -2741,6 +2756,82 @@ def _baseline_path() -> Path:
     return repo_root_from_file(__file__, 1) / BASELINE_RELATIVE_PATH
 
 
+def contract_fingerprint(row: dict[str, Any]) -> str:
+    """Bind an accepted equivalence to one exact observed contract difference."""
+    payload = {
+        key: row.get(key)
+        for key in (
+            "status",
+            "reason",
+            "call_count_status",
+            "missing",
+            "extra",
+            "original_unresolved",
+            "recompiled_unresolved",
+            "reccmp",
+        )
+    }
+    return hashlib.sha256(canonical_json(payload).encode()).hexdigest()
+
+
+def accepted_equivalence_errors(
+    report: dict[str, Any], baseline: dict[str, Any]
+) -> tuple[set[str], list[str]]:
+    """Validate narrow reviewed equivalences and return the addresses they cover."""
+    rows = {row["original"]: row for row in report["functions"]}
+    accepted: set[str] = set()
+    errors: list[str] = []
+    seen: set[str] = set()
+    for entry in baseline.get("accepted_equivalences", []):
+        if not isinstance(entry, dict):
+            errors.append("accepted equivalence entry is not an object")
+            continue
+        address = entry.get("address")
+        if not isinstance(address, str) or address in seen:
+            errors.append(f"invalid or duplicate accepted equivalence address: {address}")
+            continue
+        seen.add(address)
+        missing_metadata = [
+            key
+            for key in (
+                "reason",
+                "evidence_class",
+                "evidence_reference",
+                "machine_status",
+            )
+            if not isinstance(entry.get(key), str) or not entry[key].strip()
+        ]
+        if missing_metadata:
+            errors.append(
+                f"accepted equivalence {address} lacks metadata: "
+                + ", ".join(missing_metadata)
+            )
+            continue
+        row = rows.get(address)
+        if row is None:
+            errors.append(f"accepted equivalence address is not required: {address}")
+            continue
+        if row.get("status") == "pass":
+            errors.append(f"accepted equivalence resolved; remove it: {address}")
+            continue
+        machine_status = (row.get("reccmp") or {}).get("status")
+        if entry.get("machine_status") != machine_status:
+            errors.append(
+                f"accepted equivalence machine status drifted: {address} "
+                f"expected={entry.get('machine_status')} actual={machine_status}"
+            )
+            continue
+        actual = contract_fingerprint(row)
+        if entry.get("contract_fingerprint") != actual:
+            errors.append(
+                f"accepted equivalence drifted: {address} "
+                f"expected={entry.get('contract_fingerprint')} actual={actual}"
+            )
+            continue
+        accepted.add(address)
+    return accepted, errors
+
+
 def check_gate(report: dict[str, Any], baseline: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     rows = {row["original"]: row for row in report["functions"]}
@@ -2751,7 +2842,13 @@ def check_gate(report: dict[str, Any], baseline: dict[str, Any]) -> list[str]:
         added = sorted(required - baseline_required)
         removed = sorted(baseline_required - required)
         errors.append(f"denominator changed: added={added} removed={removed}")
-    nonpassing = {address for address, row in rows.items() if row["status"] != "pass"}
+    accepted, acceptance_errors = accepted_equivalence_errors(report, baseline)
+    errors.extend(acceptance_errors)
+    nonpassing = {
+        address
+        for address, row in rows.items()
+        if row["status"] != "pass" and address not in accepted
+    }
     protected_regressions = sorted(nonpassing - debt)
     if protected_regressions:
         errors.append("protected functions regressed: " + ", ".join(protected_regressions))
@@ -2768,13 +2865,18 @@ def check_gate(report: dict[str, Any], baseline: dict[str, Any]) -> list[str]:
 
 def update_baseline(report: dict[str, Any], path: Path) -> None:
     required = sorted(row["original"] for row in report["functions"])
+    previous: dict[str, Any] = {}
+    if path.is_file():
+        previous = json.loads(path.read_text(encoding="utf-8"))
+    accepted, acceptance_errors = accepted_equivalence_errors(report, previous)
+    if acceptance_errors:
+        raise RuntimeError("; ".join(acceptance_errors))
     debt = sorted(
         row["original"]
         for row in report["functions"]
-        if row["status"] != "pass"
+        if row["status"] != "pass" and row["original"] not in accepted
     )
     if path.is_file():
-        previous = json.loads(path.read_text(encoding="utf-8"))
         previous_debt = set(previous.get("debt", []))
         regressions = set(debt) - previous_debt
         if regressions:
@@ -2789,6 +2891,7 @@ def update_baseline(report: dict[str, Any], path: Path) -> None:
         "mode": "hard" if not debt else "ratchet",
         "required": required,
         "debt": debt,
+        "accepted_equivalences": previous.get("accepted_equivalences", []),
     }
     atomic_json(path, baseline)
     print(

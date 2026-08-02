@@ -1,4 +1,54 @@
 {
+  "accepted_equivalences": [
+    {
+      "address": "0x4b4310",
+      "contract_fingerprint": "823c6f65ed16141101c569c6c4fbde5b21012e9133835f1dcb5f0406d252122d",
+      "evidence_class": "retail_listing_and_callee_abi",
+      "evidence_reference": "0x004b431d-0x004b4329 and GetResourceDescriptorWeightWord0ByType(short) at 0x00550e70",
+      "machine_status": "mismatch",
+      "reason": "The retail loop passes the bounded 0..13 induction value in a dword while the recompiled decompiler exposes the callee-observable low-word subpiece."
+    },
+    {
+      "address": "0x4dcd10",
+      "contract_fingerprint": "6b93c57f833c66ea07b19b9b553c3e2d381740912ac751a03c00e3f46c089254",
+      "evidence_class": "retail_listing_and_vtable",
+      "evidence_reference": "0x004dcd1d-0x004dcd6c and 100% TGreatPower vtable comparison",
+      "machine_status": "inconclusive",
+      "reason": "The original caches virtual targets in registers; Ghidra renders one cached target as an indirect frame-pointer call while the recompiled side retains the equivalent virtual identity."
+    },
+    {
+      "address": "0x5a05a0",
+      "contract_fingerprint": "1729d1e7c443c2ddc5b30eb401ad0d2383c7b6b53ca7d78c6aa0b763dcb71f79",
+      "evidence_class": "retail_listing_and_virtual_return_abi",
+      "evidence_reference": "0x005a0814-0x005a083a, 0x005a08ef-0x005a0910, and int GetUnitRange vtable bodies 0x005a5d60/0x005a6140/0x005a6330",
+      "machine_status": "inconclusive",
+      "reason": "The original decompiler inserts a zero-extension around the int-valued GetUnitRange virtual result although retail pushes EAX unchanged; the recompiled decompiler omits that redundant inferred-width node."
+    },
+    {
+      "address": "0x5a0a90",
+      "contract_fingerprint": "6a9251ee0d15a51946f86cdc7c9dfdd818d4594db93609ff80fc19e717d9e510",
+      "evidence_class": "retail_listing_and_virtual_return_abi",
+      "evidence_reference": "0x005a0ba0-0x005a0bc2 and int GetUnitRange vtable bodies 0x005a5d60/0x005a6140/0x005a6330",
+      "machine_status": "inconclusive",
+      "reason": "The original decompiler inserts a zero-extension around the int-valued GetUnitRange virtual result although retail pushes EAX unchanged; the recompiled decompiler omits that redundant inferred-width node."
+    },
+    {
+      "address": "0x5dcf20",
+      "contract_fingerprint": "2f756f09c37c1d6d37b46164424c19803668040117212f40b4e5bf743689afd3",
+      "evidence_class": "retail_listing_and_virtual_argument_abi",
+      "evidence_reference": "0x005dcf6e-0x005dcf7b and CenterOn low-word consumers 0x0051ac40/0x005689f0",
+      "machine_status": "inconclusive",
+      "reason": "Retail forwards the low word of the combat-report tile field through a promoted dword virtual argument; every concrete CenterOn body explicitly consumes that low word, so VC5 sign-extension versus a partial-register load is unobservable."
+    },
+    {
+      "address": "0x5dd770",
+      "contract_fingerprint": "0579833c4dc9a4ebcb121b445534f803afc4e3bd77fb5b67c437e5e836d7650c",
+      "evidence_class": "retail_listing_and_virtual_argument_abi",
+      "evidence_reference": "0x005dd7be-0x005dd7e2 and CenterOn low-word consumers 0x0051ac40/0x005689f0",
+      "machine_status": "mismatch",
+      "reason": "Retail forwards the low word of the city-record tile field through a promoted dword virtual argument; every concrete CenterOn body explicitly consumes that low word, so VC5 sign-extension versus a partial-register load is unobservable."
+    }
+  ],
   "debt": [
     "0x412640",
     "0x412720",
@@ -7,7 +57,6 @@
     "0x413250",
     "0x4133d0",
     "0x413780",
-    "0x413950",
     "0x413a50",
     "0x413c30",
     "0x413d20",
@@ -215,7 +264,6 @@
     "0x498310",
     "0x498610",
     "0x4986d0",
-    "0x498980",
     "0x498cc0",
     "0x498fe0",
     "0x499380",
@@ -251,7 +299,6 @@
     "0x4a0fa0",
     "0x4a1eb0",
     "0x4a1f80",
-    "0x4a2390",
     "0x4a2500",
     "0x4a2610",
     "0x4a2900",
@@ -669,7 +716,6 @@
     "0x504e90",
     "0x5057a0",
     "0x5059d0",
-    "0x505b60",
     "0x505ff0",
     "0x506150",
     "0x5063c0",
@@ -781,7 +827,6 @@
     "0x520670",
     "0x520970",
     "0x520c10",
-    "0x521090",
     "0x521540",
     "0x521680",
     "0x521a40",
@@ -840,7 +885,6 @@
     "0x532190",
     "0x532520",
     "0x532780",
-    "0x5328f0",
     "0x532c60",
     "0x532f70",
     "0x533110",
@@ -997,7 +1041,6 @@
     "0x55a780",
     "0x55b8e0",
     "0x55ba30",
-    "0x55bc10",
     "0x55c010",
     "0x55c9f0",
     "0x55cbd0",
@@ -1073,7 +1116,6 @@
     "0x56d2a0",
     "0x56d840",
     "0x56da50",
-    "0x56df40",
     "0x56e200",
     "0x56e370",
     "0x56e640",
@@ -1153,11 +1195,6 @@
     "0x581870",
     "0x581c00",
     "0x581e60",
-    "0x5824c0",
-    "0x582ad0",
-    "0x582fa0",
-    "0x583070",
-    "0x583270",
     "0x583b50",
     "0x584160",
     "0x584800",
@@ -1361,10 +1398,8 @@
     "0x5b7140",
     "0x5b73e0",
     "0x5b7a90",
-    "0x5b7d90",
     "0x5b8080",
     "0x5b8da0",
-    "0x5b9060",
     "0x5b91e0",
     "0x5b94d0",
     "0x5b97c0",
@@ -1461,7 +1496,6 @@
     "0x5dbe50",
     "0x5dc690",
     "0x5dcaa0",
-    "0x5dcf20",
     "0x5dd450",
     "0x5dda30",
     "0x5ddd20",
@@ -6347,5 +6381,5 @@
     "0x5e51b0",
     "0x5e51d0"
   ],
-  "schema": 2
+  "schema": 3
 }

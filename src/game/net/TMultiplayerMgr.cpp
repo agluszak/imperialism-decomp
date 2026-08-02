@@ -1806,7 +1806,7 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     TGreatPower* nationState = g_apNationStates[nationIndex];
     if (nationState != 0) {
-      packet.counterA2BySlot[nationIndex] = nationState->availableMerchantCapacity;
+      packet.counterA2BySlot[nationIndex] = nationState->GetMerchantCapacity();
     } else {
       packet.counterA2BySlot[nationIndex] = 0;
     }

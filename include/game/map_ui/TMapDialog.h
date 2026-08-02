@@ -65,7 +65,7 @@ public:
                                                                    int projectionScale) override;
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand) override;
-  virtual void CenterOn(StrategicTileIndex tileIndex) override;
+  virtual void CenterOn(int tileIndex) override;
 
   // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
   // selected tile (terrain title, city resource counters + edge-resource requirement

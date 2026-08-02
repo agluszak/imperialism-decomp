@@ -335,7 +335,7 @@ private:
 
   void SeedArmoryInputs() {
     TCity* city = PlayerCity();
-    TUnitOrder* firstOrder = city != 0 ? city->buildOrderSlots[0] : 0;
+    TUnitOrder* firstOrder = city != 0 ? city->buildOrderSlots148[0] : 0;
     if (firstOrder != 0) {
       city->CityStockByType(firstOrder->primaryInputResourceId) =
           static_cast<short>(firstOrder->primaryInputPerUnit * 2);

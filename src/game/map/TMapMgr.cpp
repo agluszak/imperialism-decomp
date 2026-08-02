@@ -1601,7 +1601,7 @@ void TMapMgr::DispatchTurnEvent7DDForActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00511f10
-short TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
+int TMapMgr::ComputeRepresentativeTileIndexForNation(int nationSlot) {
   return ComputeRepresentativeTileIndexForNationWithWrapBias(static_cast<short>(nationSlot), 1);
 }
 
@@ -3543,8 +3543,7 @@ void TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel() {
 }
 
 // FUNCTION: IMPERIALISM 0x005178f0
-short TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot,
-                                                                   char wrapBias) {
+int TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias) {
   TTerrainStateRecord* tileTable = terrainStateTable;
   Province* cityTable = cityScoreTable;
   unsigned int colSum = 0;

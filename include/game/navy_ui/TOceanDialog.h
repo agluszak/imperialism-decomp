@@ -37,7 +37,7 @@ public:
                                                                    int projectionScale) override;
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand) override;
-  virtual void CenterOn(StrategicTileIndex tileIndex) override;
+  virtual void CenterOn(int tileIndex) override;
   virtual void SetMapViewCellCoordinates(int column, int row) override;
   virtual void RefreshMapTile(short tileIndex) override;
   virtual unsigned char IsTileVisible(short tileIndex) override;

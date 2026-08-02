@@ -245,15 +245,15 @@ TUnitOrder* CityBuildingScreen::UnitOrder(short row) const {
     return 0;
   }
   if (kind == kCityBuildingUniversity) {
-    return city->buildOrderSlots[row + kUniversityOrderBase];
+    return city->buildOrderSlots148[row + kUniversityOrderBase];
   }
-  return kind == kCityBuildingArmory ? city->buildOrderSlots[row] : 0;
+  return kind == kCityBuildingArmory ? city->buildOrderSlots148[row] : 0;
 }
 
 TShipOrder* CityBuildingScreen::ShipOrder(short row) const {
   TCity* city = City();
   return city != 0 && kind == kCityBuildingShipyard && row >= 0 && row < kShipyardQueueLength
-             ? city->shipOrderSlots[row]
+             ? city->shipOrderSlots190[row]
              : 0;
 }
 
