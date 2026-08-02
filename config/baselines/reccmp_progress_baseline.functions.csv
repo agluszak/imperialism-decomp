@@ -5071,7 +5071,6 @@ address|matching|name
 0x58af30|1.0|TTraderAmtBar::`scalar deleting destructor'
 0x58af60|1.0|TTraderAmtBar
 0x58af80|0.5581395348837209|TTraderAmtBar::DoPostCreate
-0x58b040|0.0|TTraderAmtBar::UpdateFromScaleOrRatio
 0x58b070|1.0|TTraderAmtBar::ApplyMoveClamp
 0x58b0f0|0.3930131004366812|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58b340|0.52|TCivilianButton::CreateObject

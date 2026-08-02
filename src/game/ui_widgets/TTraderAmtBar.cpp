@@ -88,12 +88,6 @@ void TTraderAmtBar::DoPostCreate(int arg) {
   TView::DoPostCreate(arg);
 }
 
-// FUNCTION: IMPERIALISM 0x0058b040
-void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
-  this->frameWidth34 = scaleValue;
-  this->frameHeight38 = ratioValue;
-}
-
 // FUNCTION: IMPERIALISM 0x0058b070
 short TTraderAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   short result = static_cast<short>(baseValue);

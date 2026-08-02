@@ -5498,7 +5498,6 @@ address|name|symbol|size|type|prototype|provenance
 58af30|TTraderAmtBar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 58af60|thunk_DestructTViewBaseState_0058AF60||5|function|undefined thunk_DestructTViewBaseState_0058AF60()|
 58af80|TTraderAmtBar::DoPostCreate||182|function|undefined DoPostCreate()|
-58b040|TTraderAmtBar::UpdateFromScaleOrRatio||1|function|undefined UpdateFromScaleOrRatio()|
 58b070|TTraderAmtBar::ApplyMoveClamp||94|function|undefined AdjustForZero()|
 58b0f0|TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache||453|function|undefined DrawAmt()|
 58b340|TCivilianButton::CreateObject|?CreateObject@TCivilianButton@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
