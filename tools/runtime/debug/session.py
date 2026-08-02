@@ -304,6 +304,50 @@ class GdbSession:
     def assign(self, expression: str, value: int | str) -> None:
         self.evaluate(f"({expression})=({value})")
 
+    def read_memory(self, address: int, length: int, timeout: float = 30.0) -> bytes:
+        """Read one contiguous inferior-memory range through GDB/MI."""
+        if length < 0:
+            raise ValueError("memory read length must be non-negative")
+        if length == 0:
+            return b""
+        mi = self._require_mi()
+        result = self._call(
+            mi.command(f"-data-read-memory-bytes 0x{address:08x} {length}", timeout),
+            timeout + 2,
+        )
+        payload = result.result.payload
+        memory = payload.get("memory") if isinstance(payload, dict) else None
+        if not isinstance(memory, list) or len(memory) != 1:
+            raise DebuggerTransportError(
+                f"GDB returned no contiguous memory block at 0x{address:08x}: "
+                f"{result.result.raw}"
+            )
+        block = memory[0]
+        contents = block.get("contents") if isinstance(block, dict) else None
+        if not isinstance(contents, str):
+            raise DebuggerTransportError(
+                f"GDB returned no memory contents at 0x{address:08x}: {result.result.raw}"
+            )
+        try:
+            data = bytes.fromhex(contents)
+        except ValueError as error:
+            raise DebuggerTransportError(
+                f"GDB returned invalid memory contents at 0x{address:08x}: {contents!r}"
+            ) from error
+        if len(data) != length:
+            raise DebuggerTransportError(
+                f"GDB returned {len(data)} bytes at 0x{address:08x}, expected {length}"
+            )
+        return data
+
+    def write_memory(self, address: int, data: bytes, timeout: float = 30.0) -> None:
+        """Write one contiguous inferior-memory range through GDB/MI."""
+        if not data:
+            return
+        self._command(
+            f"-data-write-memory-bytes 0x{address:08x} {data.hex()}", timeout=timeout
+        )
+
     def consume_runtime_invariant(self) -> str | None:
         value = self.evaluate("$imperialism_runtime_invariant")
         try:

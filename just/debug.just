@@ -66,6 +66,14 @@ diff-run scenario *args:
   just runtime-test-build
   uv run python -m tools.runtime.differential "{{scenario}}" {{args}}
 
+# Invoke the retail and recomp map-region scanline fill against the same isolated,
+# fixed SeaSegment tables and compare every resulting tile-region byte.
+[doc('Differentially verify the map-region scanline fill with fixed segment tables')]
+[group('debug')]
+diff-map-scanline *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.map_scanline_differential {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
