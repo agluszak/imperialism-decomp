@@ -74,6 +74,14 @@ diff-map-scanline *args:
   just runtime-test-build
   uv run python -m tools.runtime.map_scanline_differential {{args}}
 
+# Invoke the retail and recomp population-consumption methods against the same
+# isolated object graphs and compare their full state transitions.
+[doc('Differentially verify population eating and its non-mutating predictor')]
+[group('debug')]
+diff-population-eating *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.population_eating_differential {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
