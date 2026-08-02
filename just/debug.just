@@ -82,6 +82,13 @@ diff-population-eating *args:
   just runtime-test-build
   uv run python -m tools.runtime.population_eating_differential {{args}}
 
+# Build and apply byte/short/int TurnEvent2 full and delta packets in both binaries.
+[doc('Differentially verify TurnEvent2 array packet builders and decoder')]
+[group('debug')]
+diff-turn-event2-codec *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.turn_event2_codec_differential {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
