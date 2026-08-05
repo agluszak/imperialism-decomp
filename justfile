@@ -54,3 +54,6 @@ import 'just/rewrite.just'
 import 'just/recovery.just'
 import 'just/analysis.just'
 import 'just/setup.just'
+# Compare callee-cleaned stack bytes across all paired original/recompiled functions.
+ret-cleanup-audit *args:
+    uv run python -m tools.workflow.ret_cleanup_audit {{args}}

@@ -4,6 +4,115 @@ format_version: 1
 # config/ui_factory_codegen.yml. The coverage checker rejects omissions, stale
 # names, and overlap with generated resources.
 resources:
+  Linger.rsrc:2021:
+    status: windows_alternate_path
+    name: Really End Turn?
+    reason: Windows resolves this confirmation dialog directly through the asset manager, outside builder 0x004357b0.
+    evidence:
+      - Request site 0x005d57ce posts event 0x07e5
+      - TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog 0x005d57b0 calls TAssetMgr resolver slot 0x28 directly, then configures and opens the returned dialog
+      - Retail builder 0x004357b0 omits event 0x07e5; its former generated case duplicated that alternate path
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8930:
+    status: excluded_mac_only_or_obsolete
+    name: FM Recco Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f314e posts event 0x22e2
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8940:
+    status: excluded_mac_only_or_obsolete
+    name: MerMar Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f312c posts event 0x22ec
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8950:
+    status: excluded_mac_only_or_obsolete
+    name: Mini Deal Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f30e5 posts event 0x22f6
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8960:
+    status: excluded_mac_only_or_obsolete
+    name: Exports Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f30f9 posts event 0x2300
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8990:
+    status: excluded_mac_only_or_obsolete
+    name: Price History Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f3162 posts event 0x231e
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9610:
+    status: excluded_mac_only_or_obsolete
+    name: DM Recco Book
+    reason: Request survives only in the unreachable defense-minister shelf controller.
+    evidence:
+      - Request site 0x004f345d posts event 0x258a
+      - TDefenseMinisterView constructor 0x004f32f0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9710:
+    status: excluded_mac_only_or_obsolete
+    name: IM Recco book
+    reason: Request survives only in the unreachable interior-minister shelf controller.
+    evidence:
+      - Request site 0x004f37e8 posts event 0x25ee
+      - TInteriorMinisterView constructor 0x004f3690 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9720:
+    status: excluded_mac_only_or_obsolete
+    name: Treasuries Book
+    reason: Request survives only in the unreachable interior-minister shelf controller.
+    evidence:
+      - Request site 0x004f37ac posts event 0x25f8
+      - TInteriorMinisterView constructor 0x004f3690 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Startup.rsrc:960:
+    status: windows_alternate_path
+    name: Map editor
+    reason: The map setup is activated by the central turn-event path and its dedicated post-build initializer, not builder 0x004538a0.
+    evidence:
+      - Request site 0x0050ed78 posts event 0x03c0
+      - TViewMgr::DispatchTurnEvent 0x005d7240 handles 0x03c0 explicitly with ConfigureActiveDialogGoldValueGridForTurnEvent3C0
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Startup.rsrc:965:
+    status: windows_alternate_path
+    name: Province editor
+    reason: The province editor is resolved directly by TMapEditView through the asset-manager message-context path.
+    evidence:
+      - Request site 0x0051dd0b posts event 0x03c5
+      - TMapEditView::PlaceCountySeat 0x0051dc90 calls TAssetMgr::ResolveTurnEventDialogNodeByMessageContext and operates on the returned dialog
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Transport.rsrc:3901:
+    status: windows_alternate_path
+    name: kShowUnitHistoryView
+    reason: Unit history is initialized by the central turn-event dispatcher after packet construction, outside builder 0x0046fd10.
+    evidence:
+      - Request site 0x0057e984 posts event 0x0f3d
+      - TViewMgr::DispatchTurnEvent 0x005d7240 handles 0x0f3d explicitly with ShowUnitHistory
+    bead: imperialism-decomp-1uj.106.15.82
+
   FlagView.rsrc:8450:
     status: excluded_mac_only_or_obsolete
     name: Diplo Offer Desk
@@ -190,12 +299,14 @@ resources:
     bead: imperialism-decomp-1uj.58.7.2
 
   Linger.rsrc:15001:
-    status: windows_runtime_gap
+    status: excluded_mac_test_debug_or_framework
     name: Cheaty Mission Snooper
-    reason: Windows requests event 0x3a99, but its dynamic Mac class has no recovered Windows model.
+    reason: The Windows executable retains a debug opener, but no live retail path references it.
     evidence:
-      - 0x005de83d pushes event 0x3a99 before TAssetMgr factory dispatch slot 0x28
-      - TMissionSnooperView owns dynamic population and event behavior
+      - 0x005de83d pushes event 0x3a99 before TAssetMgr factory dispatch slot 0x28.
+      - The only direct reference to opener 0x005de830 is ILT thunk 0x0040901b via incremental-link island 0x00414790.
+      - Original-PE scans find no caller or stored pointer to 0x00414790, 0x0040901b, or 0x005de830, and the executable has no export that can reach it.
+      - The Mac resource name is explicitly "Cheaty Mission Snooper"; Windows retains no TMissionSnooperView RTTI, constructor, vtable, or factory model.
     bead: imperialism-decomp-1uj.58.7.1.1
 
   MapView.rsrc:9470:

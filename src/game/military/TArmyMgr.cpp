@@ -5,7 +5,6 @@
 #include "game/assets/TAssetMgr.h"
 #include "game/TEvent.h"
 #include "game/ui_core/TStaticText.h"
-#include "game/turn_event_dialog_provisional.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
 

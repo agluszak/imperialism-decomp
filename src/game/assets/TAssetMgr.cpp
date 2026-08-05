@@ -114,8 +114,9 @@ void TAssetMgr::OpenFilesForView(short fileSet) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dfc10
-void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                                          TMovieView* movieView) {
+void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieName,
+                                                          TMovieView* movieView, int unused) {
+  (void)unused;
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 

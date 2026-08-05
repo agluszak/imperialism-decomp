@@ -2,7 +2,7 @@
 
 #include "game/mfc.h"
 
-// Provisional owner for the dead out-of-line destructor at 0x00498f10. The listing proves
+// ABI model for the dead out-of-line destructor at 0x00498f10. The listing proves
 // one nullable polymorphic CObject owner at +0x1c; no constructor, callers, or additional
 // fields survive in the retail image, so the unknown prefix remains explicitly opaque.
 class TQuickDrawOwnedObjectRecord {

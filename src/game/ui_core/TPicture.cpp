@@ -69,10 +69,8 @@ void TPicture::CopyPictureStateFromSource(TPicture* source) {
 // SYNTHETIC: IMPERIALISM 0x0048f050
 // TPicture::`scalar deleting destructor'
 
-// Real destructor body (listing at 0x48f250, symbols.csv name
-// "DestructCityDialogSharedBaseState" — a provisional Ghidra label, not a real class;
-// hundreds of scalar deleting destructors across every TPicture-derived class call this
-// one shared address). Releases the glyph/animation slot cached in glyphBase84 and
+// Real destructor body at 0x48f250, shared by the scalar deleting destructors of
+// TPicture-derived classes. Releases the glyph/animation slot cached in glyphBase84 and
 // resets the bitmap fields; cachedBitmap is only zeroed here, not deleted —
 // its lifetime is owned by the picture-resource cache, not per-instance.
 // FUNCTION: IMPERIALISM 0x0048f250

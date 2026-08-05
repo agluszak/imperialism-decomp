@@ -33,6 +33,62 @@ gap_owners: {}
 # a factory case alone is NOT evidence (many working screens, e.g. the Minister
 # books 0x22e2..0x25f8, are built through other dispatch paths entirely).
 non_factory_dispositions:
+  0x22e2:
+    status: excluded_unreachable_controller
+    summary: foreign-minister recommendation book survives only in dead shelf code
+    evidence: >-
+      The sole sender is TForeignMinisterView::HandleEvent 0x004f3050;
+      TForeignMinisterView constructor 0x004f2fd0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x22ec:
+    status: excluded_unreachable_controller
+    summary: merchant-marine book survives only in dead foreign-minister shelf code
+    evidence: >-
+      The sole sender is TForeignMinisterView::HandleEvent 0x004f3050;
+      TForeignMinisterView constructor 0x004f2fd0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x22f6:
+    status: excluded_unreachable_controller
+    summary: mini-deal book survives only in dead foreign-minister shelf code
+    evidence: >-
+      The sole sender is TForeignMinisterView::HandleEvent 0x004f3050;
+      TForeignMinisterView constructor 0x004f2fd0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x2300:
+    status: excluded_unreachable_controller
+    summary: exports book survives only in dead foreign-minister shelf code
+    evidence: >-
+      The sole sender is TForeignMinisterView::HandleEvent 0x004f3050;
+      TForeignMinisterView constructor 0x004f2fd0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x231e:
+    status: excluded_unreachable_controller
+    summary: price-history book survives only in dead foreign-minister shelf code
+    evidence: >-
+      The sole sender is TForeignMinisterView::HandleEvent 0x004f3050;
+      TForeignMinisterView constructor 0x004f2fd0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x258a:
+    status: excluded_unreachable_controller
+    summary: defense recommendation book survives only in dead shelf code
+    evidence: >-
+      The sole sender is TDefenseMinisterView::HandleEvent 0x004f3370;
+      TDefenseMinisterView constructor 0x004f32f0 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x25ee:
+    status: excluded_unreachable_controller
+    summary: interior recommendation book survives only in dead shelf code
+    evidence: >-
+      The sole sender is TInteriorMinisterView::HandleEvent 0x004f3710;
+      TInteriorMinisterView constructor 0x004f3690 has no callers and its vtable is
+      written only by the constructor and CreateObject.
+  0x25f8:
+    status: excluded_unreachable_controller
+    summary: treasuries book survives only in dead interior-minister shelf code
+    evidence: >-
+      The sole sender is TInteriorMinisterView::HandleEvent 0x004f3710;
+      TInteriorMinisterView constructor 0x004f3690 has no callers and its vtable is
+      written only by the constructor and CreateObject.
   0x0f0a:
     status: foreign_resource_domain
     summary: tactical-map PICT base id handed to the view resolver by a dead slot

@@ -4,8 +4,6 @@
 #include "game/ui_tags_widgets.h"
 #include "game/map/map_overlay_geometry.h"
 
-#include "game/turn_event_dialog_provisional.h"
-
 #include <new>
 
 #include "game/ui_core/bitmap_descriptor_helpers.h"
@@ -135,8 +133,6 @@ static __inline void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, R
   ReleaseBitmapLoaderHandle(loaderHandle);
 }
 
-// Provisional turn-event dialog / GOLD control interfaces are shared with TViewMgr.cpp
-// via one header so the two copies can't drift (bd imperialism-decomp-hpd.7).
 } // namespace
 
 // SYNTHETIC: IMPERIALISM 0x00509c00

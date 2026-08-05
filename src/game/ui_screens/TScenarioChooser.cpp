@@ -24,6 +24,28 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 
+// FUNCTION: IMPERIALISM 0x005d4ba0
+void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream) {
+  int count = 0;
+  if (maxLength <= 0) {
+    return;
+  }
+
+  while ((stream->_flag & _IOEOF) == 0) {
+    char value = static_cast<char>(fgetc(stream));
+    *destination = value;
+    if (value == '\n' || value == '\r' || value == '\0') {
+      *destination = '\0';
+      return;
+    }
+    ++destination;
+    ++count;
+    if (count >= maxLength) {
+      return;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
 
@@ -62,7 +84,7 @@ void TScenarioChooser::DoPostCreate(int arg) {
     }
     FILE* metadataStream = fopen(scenarioPath, "r");
     char titleLine[0x40];
-    fgets(titleLine, 0x40, metadataStream);
+    ReadLineFromBufferedStreamUntilTerminator(titleLine, 0x40, metadataStream);
     fclose(metadataStream);
 
     if (scenarioList->totalItems < 0x40) {
@@ -107,11 +129,11 @@ void TScenarioChooser::DoPostCreate(int arg) {
   TextStyle bodyStyle;
   BuildUiTextStyleDescriptor(&bodyStyle, 0, 0xc, 0x2b6a);
   TDeluxeText* scenarioDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(0x73646573)); // 'sdes'
+      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
   scenarioDescription->SetTextStyle(bodyStyle, 0);
   TDeluxeText* nationDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(0x63646573)); // 'cdes'
+      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
   nationDescription->AssertValid();
   nationDescription->SetTextStyle(bodyStyle, 0);
 
@@ -158,10 +180,13 @@ void TScenarioChooser::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       mapPreview->EnhancePhoto();
       mapPreview->RefreshControl();
       TDeluxeText* descControl =
-          static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagDesc)); // 'desc'
+          static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
+      descControl->AssertValid();
       descControl->SetTextEntryFromChars(
           nationDescriptionTextByMapSelection118[mapPreview->pendingNation6C],
           nationDescriptionLengthByMapSelection134[mapPreview->pendingNation6C]);
+      descControl->Show(1, 0);
+      descControl->RefreshControl();
     }
   } else if (commandId == 0xa) {
     if (sourceHandler->controlTag == kControlTagStar) { // 'star'
@@ -299,7 +324,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
 
   char* scenarioDescriptionEnd = ReadScenarioMetadataField(metadataStream, fieldBuffer);
   TDeluxeText* scenarioDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(0x73646573)); // 'sdes'
+      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
   scenarioDescription->SetTextEntryFromChars(
       fieldBuffer, static_cast<short>(scenarioDescriptionEnd - fieldBuffer));
@@ -322,7 +347,7 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
   fclose(metadataStream);
 
   TDeluxeText* nationDescription =
-      static_cast<TDeluxeText*>(ResolveControlByTag(0x63646573)); // 'cdes'
+      static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagCountryDescription));
   nationDescription->AssertValid();
   nationDescription->SetTextEntryFromChars(
       nationDescriptionTextByMapSelection118[previewNationSlot],

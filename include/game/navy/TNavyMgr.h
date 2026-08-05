@@ -135,8 +135,8 @@ public:
   // deltas, localized report rows, map-context action enqueueing, and tracked-slot
   // consumption. The tracked entry's payload is a treasury multiplier/value; the
   // selected TTaskForce comes from SelectEligibleMapOrderInteractionForNationAndContext.
-  // The "g_pLocalizationTable" provisional Ghidra label in this body is g_pSimMgr itself
-  // (vtable 0x662a58; calls are TSimMgr::GetStringPrelude/GetString).
+  // The text receiver is g_pSimMgr (vtable 0x662a58; calls are
+  // TSimMgr::GetStringPrelude/GetString).
   // 0x557f10 (1901 bytes). Scans orderQueueHead for the first queued order entry
   // whose interaction is eligible to fire this turn for `nation`: gates the nation's
   // own type-7 entry children by a priority-vs-descriptor roll, then for each

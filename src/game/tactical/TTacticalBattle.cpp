@@ -19,7 +19,6 @@
 #include "game/ui_core/TStaticText.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/turn_event_dialog_provisional.h"
 #include "game/tactical/TArmyTacUnit.h"
 #include "game/TList.h"
 #include "game/military/TMilitaryUnit.h"

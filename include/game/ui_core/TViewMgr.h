@@ -82,10 +82,10 @@ public:
                                         short proposalCode); // 0x90
   virtual char PoseWarOfferIfTurnFlowReady(int sourceNation, int arg1, int arg2,
                                            int promptCode); // 0x94
-  virtual void DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,
-                                                 int targetNation); // 0x98
-  virtual void ShowNewspaper(int pageIndex = 0);                    // 0x9c; Mac oracle uses long
-  virtual void SyncTacticalStatusPanelRegion();                     // 0xa0
+  virtual void ShowOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
+                              short maxAmount, short commodityType); // 0x98; Mac oracle
+  virtual void ShowNewspaper(int pageIndex = 0);                     // 0x9c; Mac oracle uses long
+  virtual void SyncTacticalStatusPanelRegion();                      // 0xa0
   virtual void DispatchTurnEvent3B8AndWaitForCompletion(int payload,
                                                         TEventHandler* waitTarget); // 0xa4
   virtual void ShowCityProductionView(short nationSlot); // 0xa8; Mac oracle
@@ -242,8 +242,8 @@ public:
                            unsigned char showCancel) const;
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
-  // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are
-  // provisional. Total size 0xfc, base TObject = 0x4.
+  // LoadTurnEventCursorTable 0x5d5100. Field names describe their observed readers and
+  // writers. Total size 0xfc, base TObject = 0x4.
   void RefreshTechnologyStorePageAndHudText(int nationSlot); // 0x005d8750
 
   TurnEventCodeStorage currentTurnEventCode; // +0x04 (turn-event dispatch code)

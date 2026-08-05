@@ -65,7 +65,6 @@
 #include "game/tactical/TTacticalBattle.h"
 #include "game/ui_screens/TTextPictureButton.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/turn_event_dialog_provisional.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>

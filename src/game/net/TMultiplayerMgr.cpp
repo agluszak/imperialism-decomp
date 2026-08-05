@@ -148,7 +148,6 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/tactical/TTacticalBattle.h"
 #include "game/ui_screens/TTextPictureButton.h"
 #include "game/ui_core/quickdraw_rendering.h"
-#include "game/turn_event_dialog_provisional.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
@@ -1017,15 +1016,15 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     short sourceNation = nationAction->sourceNation1C;
     if (sourceNation != g_pSimMgr->GetActiveNationId()) {
-      g_pViewMgr->DispatchNationActionToMainControl(sourceNation, nationAction->param1E, 0, 0, 0);
+      g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->param1E, 0, 0, 0);
       return 1;
     }
     unsigned char stillClientSession = g_pSimMgr->multiplayerSessionRole == 2;
     if (stillClientSession == 0) {
       return 1;
     }
-    g_pViewMgr->DispatchNationActionToMainControl(sourceNation, nationAction->param1E,
-                                                  nationAction->param20, nationAction->param22, 0);
+    g_pViewMgr->ShowOfferSheet(sourceNation, nationAction->param1E, nationAction->param20,
+                               nationAction->param22, 0);
     break;
   }
   case 0x1b: {

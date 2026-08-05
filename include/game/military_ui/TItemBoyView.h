@@ -20,10 +20,7 @@ public:
   // (icon strip cached at *(g_pMacViewMgr + 0x674) + 4, distinct from the
   // Army/Navy boy views' +0x694 strip) using this->frameWidth34 (inherited from
   // TView) and the context's item count to lay out each icon's width. Non-virtual
-  // helper called only from Draw; real name unrecovered (Ghidra's
-  // provisional name for 0x4afb60 follows its usual scalar-deleting-destructor
-  // template, but this is a plain paint helper, not a destructor -- verified from
-  // the raw listing).
+  // paint helper called only from Draw; the raw listing confirms it is not a destructor.
   void DrawItemHeaderAndIconRows(CString* header);
 
   BattleReportDetailRecord* battleDetail60; // +0x60

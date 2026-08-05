@@ -172,7 +172,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
   if (!InModalState() && edgeScrollTarget48 != nullptr) {
     short code = g_pViewMgr->currentTurnEventCode;
     if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
-        code == kTurnEventTacticalView || code == kTurnEventProvisional0F3C ||
+        code == kTurnEventTacticalView || code == kTurnEventTacticalStatusRefresh ||
         code == kTurnEventMapEditor) {
       if (!InModalState()) {
         CPoint pt;

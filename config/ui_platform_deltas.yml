@@ -45,30 +45,4 @@ class_substitutions:
     reason: Mac utility resources use a local window subclass absent from the Windows source model.
     evidence: Linger.rsrc:1000 root WIND; Windows RTTI has TWindow and no TMyWindow
 
-# Cases intentionally registered for functional reachability even though the
-# recovered original builder lacks the corresponding switch arm.
-functional_parity_cases:
-  "0x004357b0/0x07e5":
-    evidence: Windows request 0x005d57ce
-  "0x0044a810/0x22e2":
-    evidence: Windows request 0x004f314e
-  "0x0044a810/0x22ec":
-    evidence: Windows request 0x004f312c
-  "0x0044a810/0x22f6":
-    evidence: Windows request 0x004f30e5
-  "0x0044a810/0x2300":
-    evidence: Windows request 0x004f30f9
-  "0x0044a810/0x231e":
-    evidence: Windows request 0x004f3162
-  "0x0044a810/0x258a":
-    evidence: Windows request 0x004f345d
-  "0x0044a810/0x25ee":
-    evidence: Windows request 0x004f37e8
-  "0x0044a810/0x25f8":
-    evidence: Windows request 0x004f37ac
-  "0x004538a0/0x03c0":
-    evidence: Windows request 0x0050ed78
-  "0x004538a0/0x03c5":
-    evidence: Windows request 0x0051dd0b
-  "0x0046fd10/0x0f3d":
-    evidence: Windows request 0x0057e984
+functional_parity_cases: {}

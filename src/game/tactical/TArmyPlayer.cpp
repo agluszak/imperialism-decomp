@@ -20,7 +20,6 @@
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
-#include "game/turn_event_dialog_provisional.h"
 #include "game/gfx/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x005362c0
