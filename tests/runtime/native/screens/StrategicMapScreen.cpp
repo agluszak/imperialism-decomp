@@ -5,6 +5,7 @@
 #include "game/app/TAnimation.h"
 #include "game/app/TAnimator.h"
 #include "game/core/global_data_tables.h"
+#include "game/core/TMouseCaptureState.h"
 #include "game/globals/ui_core_globals.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/map/TMapUberPicture.h"
@@ -18,6 +19,8 @@
 #include "game/navy_ui/TOceanDialog.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TView.h"
+#include "game/ui_core/TWindow.h"
+#include "game/ui_core/TUiEvent.h"
 #include "game/ui_core/TPicture.h"
 #include "game/ui_tags_common.h"
 #include "game/ui_tags_map.h"
@@ -258,8 +261,24 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
   arrow->QueryContentBounds(&bounds);
   const int offsetY = lowerHalf ? arrow->frameHeight38 * 3 / 4 : arrow->frameHeight38 / 4;
   CPoint zone(bounds.left + 1, bounds.top + offsetY); // RUNTIME_COORDINATE_EXPLAINED
-  arrow->TrackMouse(kTrackPhaseBegin, zone, zone, zone, 1);
-  arrow->TrackMouse(kTrackPhaseEnd, zone, zone, zone, 1);
+  CPoint windowPoint(zone);
+  arrow->TranslatePointToParentChain4D(&windowPoint);
+
+  TWindow* window = arrow->GetWindow();
+  if (window == 0) {
+    return RuntimeActionResult::Failure("numbered arrow has no owning window");
+  }
+  TToolboxEvent event;
+  event.mouseX = windowPoint.x;
+  event.mouseY = windowPoint.y;
+  event.commandCode = 0;
+  event.keyFlags = 0;
+  event.mouseButton24 = 0;
+  if (window->HandleMouseDown(windowPoint, &event, CPoint(0, 0)) == 0 ||
+      g_McAppMouseCaptureState.capturedControl != arrow) {
+    return RuntimeActionResult::Failure("numbered arrow did not receive the view-tree mouse down");
+  }
+  g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(0, windowPoint.x, windowPoint.y);
   (void)what;
   return RuntimeActionResult::Success();
 }

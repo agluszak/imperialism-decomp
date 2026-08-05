@@ -116,8 +116,8 @@ void StrategicMapCallbackRecord::ApplyPackedColorToPixelBuffer(unsigned char* de
 
 // FUNCTION: IMPERIALISM 0x004d4ff0
 void StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels) {
-  unsigned char* instruction = opcodeBytes00.Data();
-  unsigned char* end = instruction + opcodeBytes00.Count();
+  unsigned char* instruction = opcodeBytes00.Data() + opcodeAlignmentOffset14;
+  unsigned char* end = opcodeBytes00.Data() + opcodeBytes00.Count();
   unsigned char* destinationBase = destinationPixels;
 
   while (instruction < end) {

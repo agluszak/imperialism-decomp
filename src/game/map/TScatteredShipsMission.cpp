@@ -95,6 +95,38 @@ bool TScatteredShipsMission::Matches(eMissionType missionType, int key, TZone* z
   return missionType == kMissionTypeScatteredShips && zoneContext == nullptr && key == -1;
 }
 
+// Selects the nearest inactive ship-list entry to *targetZone, marks the selected link
+// active, and returns its ship. The pointer-to-pointer contract makes each distance probe
+// observe the caller's current zone variable.
+// FUNCTION: IMPERIALISM 0x0053bd30
+TShip* SelectNearestInactiveShipToZone(TZone** targetZone, TMapOrderChildLinkNode* head) {
+  TMapOrderChildLinkNode* best = head;
+  while (best != nullptr && best->active != 0) {
+    best = best->next;
+  }
+  if (best == nullptr) {
+    return nullptr;
+  }
+
+  for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
+       candidate = candidate->next) {
+    if (candidate->active == 0) {
+      TShip* bestShip = static_cast<TShip*>(best->payload);
+      TShip* candidateShip = static_cast<TShip*>(candidate->payload);
+      short bestDistance =
+          bestShip->location->GetCachedMapActionContextDistanceOrRecompute(*targetZone);
+      short candidateDistance =
+          candidateShip->location->GetCachedMapActionContextDistanceOrRecompute(*targetZone);
+      if (candidateDistance < bestDistance) {
+        best = candidate;
+      }
+    }
+  }
+
+  best->active = 1;
+  return static_cast<TShip*>(best->payload);
+}
+
 // Deactivates the whole existing shipList chain, then hunts for a port-zone context
 // eligible for this mission's nation (!QueryPortZoneCapability() &&
 // HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole

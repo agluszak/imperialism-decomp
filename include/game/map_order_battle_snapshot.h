@@ -54,14 +54,14 @@ ASSERT_SIZE(MapOrderBattleSideChildRecord, 0x2c);
 // map-order interaction processing. Its 0x0c..0x257 tail is also embedded unchanged in
 // MapContextActionRecord, which takes ownership of the finalized per-side detail rows.
 struct MapOrderBattleSnapshot {
-  unsigned char nationIds[2];       // +0x00/+0x01, indexed by participant side
-  unsigned char participantIndex02; // +0x02
-  unsigned char reservedByte03;     // +0x03
-  int actionType04;                 // +0x04
-  void* targetObject08;             // +0x08
-  CStr32 nameBuffer[2];             // +0x0c..+0x4b -- per-side terrain/nation label text
-  CStr255 overlayLabel[2];          // +0x4c..+0x249 -- per-side selection overlay label text
-  short childCount[2];              // +0x24a/+0x24c
+  unsigned char nationIds[2];                // +0x00/+0x01, indexed by participant side
+  unsigned char reportParticipantIndex02;    // +0x02
+  unsigned char displayedParticipantIndex03; // +0x03
+  int actionType04;                          // +0x04
+  void* targetObject08;                      // +0x08
+  CStr32 nameBuffer[2];                      // +0x0c..+0x4b -- per-side terrain/nation label text
+  CStr255 overlayLabel[2]; // +0x4c..+0x249 -- per-side selection overlay label text
+  short childCount[2];     // +0x24a/+0x24c
   MapOrderBattleSideChildRecord* childRecords[2]; // +0x250/+0x254
 
   ~MapOrderBattleSnapshot() {

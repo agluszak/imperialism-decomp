@@ -29,7 +29,7 @@ public:
   // (word8c = min(word88, word8a)).
   // 0x84 — cached ownerContext (both builders store it + AssertValid). Always the
   // owning TScrollView (0x573d37/0x5744b0's `panel` argument is that TScrollView's
-  // `this`) -- confirmed via AdjustCityDialogScrollRangeByDeltaAndClamp (0x573f60),
+  // `this`) -- confirmed via TScrollView::ScrollRelative (0x573f60),
   // which reads TScrollView::contentView60/scrollBar64 at +0x60/+0x64 off this pointer.
   class TScrollView* ownerView84;
   short word88; // 0x88 — bounded-value component A (button span, seeded 0x12)

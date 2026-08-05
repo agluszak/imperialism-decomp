@@ -46,3 +46,20 @@ public:
 };
 
 ASSERT_SIZE(TLongintList, 0x1c);
+
+// Mac oracle: CLongintIterator::FirstLong/NextLong. The Windows implementation is a
+// three-word cursor over the CList<long, long> node chain owned by TLongintList.
+class CLongintIterator {
+public:
+  CLongintIterator(TLongintList* list) : ownerList(list) {}
+
+  long FirstLong();
+  int More();
+  long NextLong();
+
+  POSITION nextPosition;   // +0x00
+  TLongintList* ownerList; // +0x04
+  long current;            // +0x08
+};
+
+ASSERT_SIZE(CLongintIterator, 0x0c);

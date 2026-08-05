@@ -433,7 +433,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
       unsigned char nationFlagged = (ctxZone->nationKeyMask10 & activeNationBit) != 0 ||
                                     ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
       if (nationFlagged != 0) {
-        ctxZone->SetMapOrderUiFlag(
+        ctxZone->ShowFocusIngot(
             ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetActiveNationId(), 1));
         int slotCursor = activeNationId + 1;
         int slotsRemaining = 6;
@@ -739,7 +739,7 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   entry->CreateIngot();
 
   // location (+0x18) is the entry's owning map-order zone (see the TZone casts in
-  // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::SetMapOrderUiFlag.
+  // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::ShowFocusIngot.
   TZone* zone = entry->location;
   int nation = g_pSimMgr->GetActiveNationId();
   if (nation == -1) {
@@ -754,7 +754,7 @@ void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
       }
     }
   }
-  zone->SetMapOrderUiFlag(hasPendingNode);
+  zone->ShowFocusIngot(hasPendingNode);
 
   // ingotTileIndex (+0x30) doubles as the entry's active map-tile notify index; 0xffff
   // means "no tile". Mac CodeWarrior identifies mapUberPictureF0 slot 0x1e8 as
@@ -803,9 +803,9 @@ void TOcean::ForgetForce(TTaskForce* entry) {
     }
   }
   if (hasUnassignedShip != 0) {
-    zone->SetMapOrderUiFlag(1);
+    zone->ShowFocusIngot(1);
   } else {
-    zone->SetMapOrderUiFlag(0);
+    zone->ShowFocusIngot(0);
   }
 }
 

@@ -1472,8 +1472,8 @@ void TAutoGreatPower::RecomputeAiExpansionAndMissionPressureScores(void) {
     }
 
     float militaryScore;
-    if (g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
-            nationSlot, static_cast<short>(peerNation))) {
+    if (g_pGlobalMapState->DoNationTerritoriesShareRegionClass(nationSlot,
+                                                               static_cast<short>(peerNation))) {
       militaryScore = g_afNationMobileUnitScore_006a3b88[peerNation];
     } else {
       militaryScore = g_afNationWeightedMilitaryOrderScore_006a3b20[peerNation];
@@ -1783,11 +1783,15 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
     }
     if (eligible && classMask != 0) {
       TMission* nextMission = nextByClass[classMask];
-      if (nextMission != nullptr &&
-          mission->importanceScore0c / mission->IndustrialCostOfNeeds() <
-              (nextMission->importanceScore0c / nextMission->IndustrialCostOfNeeds()) *
-                  g_MissionEligibilityRatioMargin_006545f8) {
-        eligible = 0;
+      if (nextMission != nullptr) {
+        float nextMissionRatio =
+            nextMission->importanceScore0c / nextMission->IndustrialCostOfNeeds();
+        float missionRatio = mission->importanceScore0c / mission->IndustrialCostOfNeeds();
+        if (missionRatio < nextMissionRatio * g_MissionEligibilityRatioMargin_006545f8) {
+          eligible = 0;
+        } else {
+          availableClassMask &= ~classMask;
+        }
       } else {
         availableClassMask &= ~classMask;
       }

@@ -73,9 +73,10 @@ static inline void AppendCStringIntoFixedBuffer(char* dest, int destSize, const 
 // Sum, over shipList entries whose resource-type priorityTier is >= minTier, of
 // (child experience/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
 // term ResolveStrategicBattle's tier-scoring loop accumulates as a float.
-static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+// FUNCTION: IMPERIALISM 0x0055a520
+static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier) {
   float total = 0.0f;
-  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     TShip* child = static_cast<TShip*>(node->payload);
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[child->type];
@@ -89,11 +90,23 @@ static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* h
 }
 
 // Count of shipList entries whose resource-type priorityTier is >= minTier.
-static inline int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+// FUNCTION: IMPERIALISM 0x0055a5e0
+static int CountTaskForceChildrenAtOrAboveTier(TTaskForce* force, int minTier) {
   int count = 0;
-  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
     if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
             .PriorityTier() >= minTier) {
+      ++count;
+    }
+  }
+  return count;
+}
+
+// FUNCTION: IMPERIALISM 0x0055a630
+static int CountTaskForceChildren(TTaskForce* force) {
+  int count = 0;
+  if (force != nullptr) {
+    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
       ++count;
     }
   }
@@ -141,25 +154,27 @@ static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
 // Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
 // `target` of `head`'s children: for each candidate node, rolls
 // rand()%currentCount < target to select it, restarting at the head until exactly
-// `target` children have been selected, then reduces its nation by
-// 0.5 + taskForceWeight[child->type] * ((rand()%100+rand()%100+100) * 0.005) *
-// favorRatio * 0.01 (the confirmed real float constants at 0x65c3a8/0x65c3b0/0x65c3b8).
-static inline void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCount,
-                                                  int target, float favorRatio) {
+// `target` children have been selected, then reduces each selected ship's strength by
+// 0.5 - taskForceWeight[child->type] * ((rand()%100+rand()%100+100) * 0.005) *
+// favorRatio * -0.01.
+// FUNCTION: IMPERIALISM 0x0055a690
+static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio, int target,
+                                            int currentCount) {
   if (target <= 0) {
     return;
   }
   int selected = 0;
   do {
-    for (TMapOrderChildLinkNode* node = head; node != nullptr && selected < target;
+    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr && selected < target;
          node = node->next) {
       if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
         ++selected;
         int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
         TShip* child = static_cast<TShip*>(node->payload);
-        float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
-                                 (roll * 0.005f) * favorRatio * -0.01f;
-        child->strength = static_cast<short>(child->strength - static_cast<short>(delta));
+        short damage = static_cast<short>(
+            0.5 - g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
+                      (roll * 0.005) * favorRatio * -0.01);
+        child->strength = static_cast<short>(child->strength - damage);
       }
     }
   } while (selected < target);
@@ -764,8 +779,8 @@ void TNavyMgr::PrepareToCarryOutAllOrders(short phaseId) {
     Province* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
     if (record->exploredByNationMaskA1 != 0) {
       record->exploredByNationMaskA1 = 0;
-      unsigned char shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
-      if (shouldInvalidateCity) {
+      char shouldInvalidateCity = g_pSimMgr->multiplayerSessionRole == 1;
+      if (shouldInvalidateCity != 0) {
         g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
       }
     }
@@ -977,8 +992,11 @@ void TNavyMgr::CarryOutOrders() {
 TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
   TTaskForce* entry = orderQueueHead;
   while (entry != nullptr) {
-    if (entry->nation == requiredCount && entry->shipOrders == 7) {
-      break;
+    if (entry->nation == requiredCount) {
+      char isEscortOrder = entry->shipOrders == 7;
+      if (isEscortOrder != 0) {
+        break;
+      }
     }
     entry = entry->nextForce;
   }
@@ -987,8 +1005,9 @@ TTaskForce* TNavyMgr::AssignEscorts(short requiredCount, short chancePercent) {
     for (TMapOrderChildLinkNode* node = entry->shipList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
       unsigned char active;
-      if (child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap() ||
-          chancePercent <= rand() % 100) {
+      char isUnderStrength =
+          child->strength < g_NavyOrderResourceDescriptorTable[child->type].StockCap();
+      if (isUnderStrength != 0 || chancePercent <= rand() % 100) {
         active = 0;
       } else {
         active = 1;
@@ -1132,8 +1151,8 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         snapshot.childRecords[1] = nullptr;
         snapshot.actionType04 = 1;
         snapshot.targetObject08 = entry->location;
-        snapshot.reservedByte03 = 0;
-        snapshot.participantIndex02 = 1;
+        snapshot.displayedParticipantIndex03 = 0;
+        snapshot.reportParticipantIndex02 = 1;
         BuildMapOrderBattleSideSnapshot(&snapshot, 0, entry);
         BuildMapOrderBattleSideSnapshot(&snapshot, 1, nationEntry);
         RefreshMapOrderBattleSideSnapshot(&snapshot, 0, entry);
@@ -1239,8 +1258,8 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.childRecords[1] = nullptr;
         snapshot.nationIds[0] = static_cast<unsigned char>(selection.offerNationCode);
         snapshot.nationIds[1] = static_cast<unsigned char>(nation);
-        snapshot.participantIndex02 = 0;
-        snapshot.reservedByte03 = 0;
+        snapshot.reportParticipantIndex02 = 0;
+        snapshot.displayedParticipantIndex03 = 0;
         snapshot.actionType04 = 2;
         snapshot.targetObject08 = selection.selectedEntry->location;
 
@@ -1770,10 +1789,10 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
     int bestRightFavorTier = 0;
     float bestRightFavorRatio = 0.0f;
     for (int tier = 1; tier <= maxTier; ++tier) {
-      float leftPower = SumMapOrderChildPowerAtOrAboveTier(leftEntry->shipList, tier) *
-                        (1.0f + leftBucket * 0.1f);
-      float rightPower = SumMapOrderChildPowerAtOrAboveTier(rightEntry->shipList, tier) *
-                         (1.0f + rightBucket * 0.1f);
+      float leftPower =
+          SumTaskForceChildPowerAtOrAboveTier(leftEntry, tier) * (1.0f + leftBucket * 0.1f);
+      float rightPower =
+          SumTaskForceChildPowerAtOrAboveTier(rightEntry, tier) * (1.0f + rightBucket * 0.1f);
       float leftFavorRatio = leftPower / rightPower;
       if (leftFavorRatio > bestLeftFavorRatio) {
         bestLeftFavorTier = tier;
@@ -1835,17 +1854,17 @@ void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEn
       break;
     }
 
-    int leftEligible = CountMapOrderChildrenAtOrAboveTier(leftEntry->shipList, candidateTier);
-    int rightEligible = CountMapOrderChildrenAtOrAboveTier(rightEntry->shipList, candidateTier);
-    int leftCurrentCount = CountMapOrderChildren(leftEntry->shipList);
-    int rightCurrentCount = CountMapOrderChildren(rightEntry->shipList);
+    int leftEligible = CountTaskForceChildrenAtOrAboveTier(leftEntry, candidateTier);
+    int rightEligible = CountTaskForceChildrenAtOrAboveTier(rightEntry, candidateTier);
+    int leftCurrentCount = CountTaskForceChildren(leftEntry);
+    int rightCurrentCount = CountTaskForceChildren(rightEntry);
 
     int leftAttritionTarget = rightEligible < leftCurrentCount ? rightEligible : leftCurrentCount;
-    ApplyMapOrderConflictAttrition(leftEntry->shipList, leftCurrentCount, leftAttritionTarget,
-                                   bestLeftFavorRatio);
+    ApplyTaskForceConflictAttrition(leftEntry, bestLeftFavorRatio, leftAttritionTarget,
+                                    leftCurrentCount);
     int rightAttritionTarget = leftEligible < rightCurrentCount ? leftEligible : rightCurrentCount;
-    ApplyMapOrderConflictAttrition(rightEntry->shipList, rightCurrentCount, rightAttritionTarget,
-                                   bestRightFavorRatio);
+    ApplyTaskForceConflictAttrition(rightEntry, bestRightFavorRatio, rightAttritionTarget,
+                                    rightCurrentCount);
 
     leftEntry->shipList = PruneMapOrderConflictHeadAndTail(leftEntry->shipList);
     leftEntry->ElectFlagship();

@@ -1521,18 +1521,36 @@ short g_anUnitStrengthWeightPercentBySlot[32] = {
 // Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
 short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
 
-// Per-fort-level attacker penalty percent (int table at 0x695568); indexed by
-// Province::fortLevel03.
-int g_anFortLevelAttackerPenaltyPercentByLevel[8] = {0};
+// Per-fort-level attacker penalty percent; indexed by Province::fortLevel03.
+// GLOBAL: IMPERIALISM 0x00695568
+int g_anFortLevelAttackerPenaltyPercentByLevel[4] = {100, 85, 75, 65};
 // Per-unit-type blink/boost eligibility flag (byte table at 0x64c808); indexed by
 // TUnit::orderType.
-unsigned char g_abUnitTypeBlinkEligibilityFlag[32] = {0};
+// GLOBAL: IMPERIALISM 0x0064c808
+unsigned char g_abUnitTypeBlinkEligibilityFlag[30] = {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                                                      1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0};
 
 // Four per-unit-type meter-scoring tables, indexed by TUnit::orderType.
-int g_anWeightClassByOrderType[32] = {0};         // int table at 0x64c790
-short g_anScaledFactorByOrderType[32] = {0};      // short table at 0x64c660
-float g_afPercentEfficiencyByOrderType[32] = {0}; // float table at 0x64c6a0
-int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
+// GLOBAL: IMPERIALISM 0x0064c790
+int g_anWeightClassByOrderType[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8, 8, 8,  5, 5, 12,
+                                      14, 10, 10, 10, 10, 10, 12, 15, 17, 5, 8, 10, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x0064c660
+short g_anScaledFactorByOrderType[30] = {40,  60, 40,  40, 110, 90, 50, 30, 40, 60,
+                                         40,  40, 110, 90, 60,  30, 50, 70, 50, 40,
+                                         110, 90, 80,  30, 40,  40, 50, 90, 90, 90};
+// GLOBAL: IMPERIALISM 0x0064c6a0
+float g_afPercentEfficiencyByOrderType[30] = {
+    50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
+    150.0f, 175.0f, 100.0f, 200.0f, 175.0f, 300.0f, 100.0f, 150.0f, 225.0f, 250.0f,
+    225.0f, 450.0f, 250.0f, 500.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,   0.0f};
+// GLOBAL: IMPERIALISM 0x0064c718
+float g_afRandomizedMeterDecayByOrderType[30] = {
+    0.0025f, 0.0015f, 0.0020f, 0.0020f, 0.0015f, 0.0020f, 0.0040f, 0.0050f, 0.0025f, 0.0015f,
+    0.0015f, 0.0015f, 0.0015f, 0.0020f, 0.0030f, 0.0035f, 0.0010f, 0.0005f, 0.0005f, 0.0005f,
+    0.0010f, 0.0005f, 0.0005f, 0.0005f, 0.0030f, 0.0025f, 0.0010f, 0.0020f, 0.0015f, 0.0005f};
+// GLOBAL: IMPERIALISM 0x00695578
+int g_anCountWeightByOrderType[30] = {0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2,
+                                      2, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0};
 
 // Per-resourceType requirement table (4 columns per resourceType, 0-23). Read by
 // TMapMgr::FindResourceCapabilityRequirementLevel (0x513610).
@@ -1569,8 +1587,8 @@ unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 6, 0, 
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
 // (0x513720).
-unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
-                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                               0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Third binary copy of the same per-resourceType flag pattern (the linker kept three);
 // this one gates whether the mini-civ row (0x4ab970) and civ report name a tile edge's
 // resource type in their "improvable resources" text.
@@ -1694,7 +1712,14 @@ short g_aNavalIntelligenceAccuracyProfiles[6][6] = {
 // GLOBAL: IMPERIALISM 0x006a43f4
 unsigned char g_bPerfectNavalIntelligenceCheat = 0;
 
-MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
+// Nation-slot-to-generator mapping used for country, province, player, and random-map
+// names. The 23 records end at 0x0066ef8c; the following qword constant is unrelated.
+// GLOBAL: IMPERIALISM 0x0066ef30
+MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23] = {
+    {0, 0},  {9, 0},  {16, 0}, {14, 0}, {17, 0}, {8, 0},  {2, 0},  {5, 0},
+    {12, 0}, {11, 0}, {13, 0}, {6, 0},  {6, 0},  {6, 0},  {6, 0},  {4, 0},
+    {7, 0},  {1, 0},  {1, 0},  {10, 0}, {15, 0}, {10, 0}, {10, 0},
+};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
 // GLOBAL: IMPERIALISM 0x0065a8f0
@@ -1765,11 +1790,13 @@ extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6] = {1.0f,  
                                                                          0.512f, 0.4096f, 0.32768f};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
-// 0x53d4a0 family). Sizes are the minimum proven by observed index use;
-// g_ArmyMissionCandidateScoreTable_006978f8's row count (state08 range) is
-// not yet fully catalogued.
-float g_ArmyMissionDotProductWeights_00697980[5] = {0};
-float g_ArmyMissionCandidateScoreTable_006978f8[48] = {0};
+// 0x53d4a0 family).
+// GLOBAL: IMPERIALISM 0x00697980
+float g_ArmyMissionDotProductWeights_00697980[5] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f};
+// GLOBAL: IMPERIALISM 0x006978f8
+float g_ArmyMissionCandidateScoreTable_006978f8[24] = {
+    0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f,
+    0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.0f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f};
 
 // GLOBAL: IMPERIALISM 0x0065aa30
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30 = 100.0;
@@ -2535,16 +2562,17 @@ TTacticalBattle* g_pActiveTacticalBattle;
 // GLOBAL: IMPERIALISM 0x006a3d64
 int g_nTurnEvent2BNationMaskAccumulator;
 
-// Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
-// classes, 4 support; indexed by TUnit::orderType.
-// GLOBAL: IMPERIALISM 0x00669858
 // Per-unit-type weight table summed by TArmyMgr::ComputeWeightedNeighborLinkScore-
 // ForNodeIndex (0x004a5aa0) over a tile's stationed military units.
+// GLOBAL: IMPERIALISM 0x006955f0
 int g_anWeightedNeighborUnitScoreByType_006955F0[32] = {
     70,  137, 135, 164, 165, 211,  193, 300, 95,  243, 230, 265, 230, 275, 323, 549,
     170, 450, 471, 495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0,   1000,
 };
 
+// Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
+// classes, 4 support; indexed by TUnit::orderType.
+// GLOBAL: IMPERIALISM 0x00669858
 short g_anUnitTypeCombatCategoryByType00669858[32] = {
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 
@@ -2693,6 +2721,11 @@ float g_afTacticalNavyDamageScaleByUnitType[8] = {0.045f, 0.04f,  0.04f,  0.022f
 // GLOBAL: IMPERIALISM 0x00669d48
 float g_afTacticalNavyBaseAttackPowerByUnitType[8] = {3.0f, 3.5f, 4.0f,  4.0f,
                                                       8.0f, 8.0f, 15.0f, 15.0f};
+
+// Directional naval movement costs, rotated by TNavyBattle::InitTacticalBattle from a
+// random starting direction.
+// GLOBAL: IMPERIALISM 0x00669d68
+int g_anNavyTacticalMoveCostsByDirection[6] = {15, 10, 20, 40, 20, 10};
 
 // Strategic ship type -> tactical navy unit type; -1 means the strategic type has no
 // tactical representation.
@@ -2876,6 +2909,10 @@ const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
 
 // GLOBAL: IMPERIALISM 0x00696ea8
 const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7] = {1, 2, 4, 8, 16, 32, 0};
+// GLOBAL: IMPERIALISM 0x00696eb8
+const short g_railDirectionAddMasks_00696eb8[6] = {1, 2, 4, 8, 16, 32};
+// GLOBAL: IMPERIALISM 0x00696ec8
+const short g_railDirectionSubtractMasks_00696ec8[6] = {1, 2, 4, 8, 16, 32};
 
 // Map-generation PRNG state + region-seed grid dimensions, runtime-initialized to 0.
 // GLOBAL: IMPERIALISM 0x006a38e8

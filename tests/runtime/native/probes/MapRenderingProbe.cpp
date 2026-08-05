@@ -210,6 +210,72 @@ bool MapRenderingProbe::DevelopmentClassChangesTilePixels(TMapDialog* mapDialog,
   return memcmp(before, after, sizeof(before)) != 0;
 }
 
+bool MapRenderingProbe::TransportConnectivityChangesTilePixels(TMapDialog* mapDialog) {
+  if (mapDialog == 0 || g_pGlobalMapState == 0) {
+    return false;
+  }
+
+  short tileIndex = -1;
+  for (short candidate = 0; candidate < 0x1950; ++candidate) {
+    TTerrainStateRecord& candidateTerrain = g_pGlobalMapState->terrainStateTable[candidate];
+    if (candidateTerrain.GetTerrainKind() != kStrategicTerrainWater &&
+        candidateTerrain.riverSpriteCode == kRiverSpriteCodeNone) {
+      tileIndex = candidate;
+      break;
+    }
+  }
+  if (tileIndex == -1) {
+    return false;
+  }
+
+  TBitmapSurfaceNode** surfaceHandle = GetGWorldPixMap(mapDialog->quickDrawSurface350);
+  if (surfaceHandle == 0 || *surfaceHandle == 0 || !LockPixels(surfaceHandle)) {
+    return false;
+  }
+
+  TBitmapSurfaceNode* surface = *surfaceHandle;
+  const int stride = surface->stride & 0x3fff;
+  unsigned char baseline[kTileExtent * kTileExtent];
+  unsigned char road[kTileExtent * kTileExtent];
+  unsigned char rail[kTileExtent * kTileExtent];
+  TTerrainStateRecord& terrain = g_pGlobalMapState->terrainStateTable[tileIndex];
+  const signed char savedRoadFlags = terrain.adjacencyBits06;
+  const unsigned char savedRailFlags = terrain.railFlags17;
+  TQuickDrawSurfaceContext* savedSurface;
+  int savedSurfaceFlags;
+  GetGWorld(&savedSurface, &savedSurfaceFlags);
+  SetGWorld(mapDialog->quickDrawSurface350, savedSurfaceFlags);
+
+  terrain.adjacencyBits06 = 0;
+  terrain.railFlags17 = 0;
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  for (int row = 0; row < kTileExtent; ++row) {
+    memcpy(baseline + row * kTileExtent, surface->pixelBits + row * stride, kTileExtent);
+  }
+
+  terrain.adjacencyBits06 = 1;
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  for (int roadRow = 0; roadRow < kTileExtent; ++roadRow) {
+    memcpy(road + roadRow * kTileExtent, surface->pixelBits + roadRow * stride, kTileExtent);
+  }
+
+  terrain.adjacencyBits06 = 0;
+  terrain.railFlags17 = 1;
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  for (int railRow = 0; railRow < kTileExtent; ++railRow) {
+    memcpy(rail + railRow * kTileExtent, surface->pixelBits + railRow * stride, kTileExtent);
+  }
+
+  terrain.adjacencyBits06 = savedRoadFlags;
+  terrain.railFlags17 = savedRailFlags;
+  mapDialog->DrawOneTile(tileIndex, 0, 0);
+  SetGWorld(savedSurface, savedSurfaceFlags);
+  UnlockPixels(surfaceHandle);
+
+  return memcmp(baseline, road, sizeof(baseline)) != 0 &&
+         memcmp(baseline, rail, sizeof(baseline)) != 0;
+}
+
 bool MapRenderingProbe::HoverMovementRestoresPreviousTiles(TMapDialog* mapDialog,
                                                            short excludedTile) {
   if (mapDialog == 0 || mapDialog->nativeWindow50 == 0) {

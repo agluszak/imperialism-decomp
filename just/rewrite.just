@@ -58,3 +58,21 @@ cursor-resources mode="--check":
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run python -m tools.workflow.pe_resources turn-event-cursors \
     "$ORIGINAL_BINARY" resources/cursors {{mode}}
+
+# MUTATES: resources/bitmaps/backdrop_0119.bmp with --write. Reconstruct the
+# executable backdrop bitmap from retail RT_BITMAP 281 without changing its DIB.
+[doc('MUTATES (--write): retail executable backdrop bitmap 281')]
+[group('rewrite')]
+backdrop-resource mode="--check":
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env to your retail Imperialism.exe}"
+  uv run python -m tools.workflow.pe_resources bitmap \
+    "$ORIGINAL_BINARY" resources/bitmaps/backdrop_0119.bmp --id 281 {{mode}}
+
+# MUTATES: resources/chrome with --write. Reconstruct the app icon and version
+# blobs read directly from the retail executable by recovered production source.
+[doc('MUTATES (--write): direct retail executable icon and version resources')]
+[group('rewrite')]
+executable-chrome-resources mode="--check":
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env to your retail Imperialism.exe}"
+  uv run python -m tools.workflow.pe_resources executable-chrome \
+    "$ORIGINAL_BINARY" resources/chrome {{mode}}

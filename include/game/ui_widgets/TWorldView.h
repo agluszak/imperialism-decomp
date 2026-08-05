@@ -85,7 +85,7 @@ public:
   virtual short QueryMinusOneWordSlot1BC(int unusedArg);
   virtual void ConvertPoint(const CPoint& point, short& outColumn, short& outRow,
                             short& outRegionBand);
-  virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext);
+  virtual void CenterOnTileAndRefresh(int tileIndex, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2);
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,

@@ -51,8 +51,8 @@ void TNavyPlayer::INavyPlayer(TTaskForce* force, char isOurSide, char watchFlag,
 // to the unit's remaining strength), then marks this side's fleet order node
 // eliminated and prunes its order head.
 // FUNCTION: IMPERIALISM 0x0059edd0
-void TNavyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
-  (void)unused;
+void TNavyPlayer::ApplyChanges(unsigned char sideWonFlag) {
+  (void)sideWonFlag;
   CIterator unitIter(unitList4);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {

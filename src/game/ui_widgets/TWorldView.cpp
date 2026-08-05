@@ -314,24 +314,11 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   }
   SetCursor(cursor);
 
-  TQuickDrawSurfaceContext* savedHoverSurface;
-  int savedHoverSurfaceFlags;
-  GetGWorld(&savedHoverSurface, &savedHoverSurfaceFlags);
-  bool restoreHoverSurface = savedHoverSurface != &g_defaultQuickDrawSurfaceSentinel;
-  if (restoreHoverSurface) {
-    // Hover frames are transient window decorations. If an animation tick leaves an
-    // offscreen GWorld active, QDFrameRect would burn the frame into the map cache and the
-    // next restoration blit would faithfully copy that stale black rectangle back onscreen.
-    SetGWorld(&g_defaultQuickDrawSurfaceSentinel, savedHoverSurfaceFlags);
-  }
   {
     ScopedMapQuickDrawContext scopedContext(this);
     if (hoveredTileIndex != paintedHoverTileIndex) {
       RenderStrategicTileSelectionAndNeighborHighlights();
     }
-  }
-  if (restoreHoverSurface) {
-    SetGWorld(savedHoverSurface, savedHoverSurfaceFlags);
   }
 
   paintedHoverTileIndex = hoveredTileIndex;
@@ -504,7 +491,7 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
   }
 
   if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
-    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
+    CenterOnTileAndRefresh(stridedRecord, regionBand);
     return 1;
   }
 
@@ -523,11 +510,10 @@ char TWorldView::HandleMouseDown(const CPoint& point, TToolboxEvent* event, CPoi
 }
 
 // FUNCTION: IMPERIALISM 0x00596270
-void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) {
-  (void)stridedRecord;
+void TWorldView::CenterOnTileAndRefresh(int tileIndex, int dispatchContext) {
   (void)dispatchContext;
-  CenterOn(0);
-  TView::RefreshControl();
+  CenterOn(tileIndex);
+  RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0
@@ -537,12 +523,8 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
 
   int tileIndex = static_cast<short>(arg1);
   if (g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() == kStrategicTerrainWater) {
-    // ILT thunk 0x40318e resolves to TOcean::GetLinkedZoneForSeaTile on the
-    // g_pActiveMapOrderContext singleton (same call TToolBarCluster uses).
     TZone* orderContext =
         g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
-    // ownerContext is really a TMapUberPicture* (see the class-attribution note on
-    // TMapUberPicture::SetMapInteractionMode).
     TMapUberPicture* mapPicture = static_cast<TMapUberPicture*>(ownerContext);
     mapPicture->SetMapInteractionMode(2);
     if (mapPicture->invalidationFlag94 == 0) {
@@ -561,8 +543,6 @@ void TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int
   }
 
   g_lastClickedMapTileIndex_006a4608 = tileIndex;
-  // No null guard in the original: the field writes run through the raw allocation
-  // pointer whether or not `new` succeeded.
   event->dispatchMessage = 0x79;
   event->commandNumber = 0x79;
   event->sourceHandler = this;

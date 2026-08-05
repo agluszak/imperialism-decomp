@@ -55,6 +55,11 @@ public:
   // (field4 << 8) | (rand() & 0xff). 0x004a7c60, __thiscall.
   void ComputeStackCompositionClassCode();
 
+  // Mac oracle: TArmyStack::InitializeStrategicBattle(unsigned char).
+  // Snapshots unit strength, initializes battle-state bits, and caches the originating
+  // province's fort penalty for the strategic-combat pass.
+  void InitializeStrategicBattle(unsigned char boosted);
+
   // Resets cursor18 to head14 and returns its unit (nullptr if the chain is empty).
   // 0x004a3b70, __thiscall, no args.
   TUnit* ResetCursorAndGetHeadUnit();

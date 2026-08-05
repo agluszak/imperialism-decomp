@@ -30,7 +30,7 @@ public:
   CivilianUnitKind GetCivilianUnitKind() const {
     return DecodeCivilianUnitKind(this->orderType);
   }
-  int IsInIdleSelectionState();
+  char IsInIdleSelectionState();
   void TickCivWorkOrderCountdownAndComplete(); // 0x005c29b0
 };
 

@@ -203,7 +203,7 @@ void TScenarioChooser::DoKeyEvent(TToolboxEvent* event) {
 }
 
 // Per-scenario-index language/campaign tag consumed by TAssetMgr::EnsurePictWvDataGobLoadedBySlot.
-static const int kScenarioLanguageTagByIndex[15] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+static const int kScenarioLanguageTagByIndex[16] = {1, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 
 // FUNCTION: IMPERIALISM 0x0057a350
 void TScenarioChooser::StartGame() {
@@ -212,9 +212,7 @@ void TScenarioChooser::StartGame() {
   }
 
   int languageTag = 1;
-  if (selectedScenarioIndex142 < 16 &&
-      static_cast<unsigned int>(selectedScenarioIndex142) <
-          sizeof(kScenarioLanguageTagByIndex) / sizeof(kScenarioLanguageTagByIndex[0])) {
+  if (selectedScenarioIndex142 < 16) {
     languageTag = kScenarioLanguageTagByIndex[selectedScenarioIndex142];
   }
   g_pAssetMgr->EnsurePictWvDataGobLoadedBySlot(languageTag);
@@ -231,8 +229,6 @@ void TScenarioChooser::StartGame() {
     // then normalise it and hand it to the game-flow state with the chosen nation and
     // the scenario's 'scn0'+index tag before posting event 0x5e4.
     do {
-      CString proposedName;
-      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
       g_cstrCountryNameSettingValue006A4220 =
           g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
       CString promptText;

@@ -11,6 +11,7 @@
 #include "game/military/TMilitaryUnit.h"
 #include "game/globals/global_types.h"
 #include "game/globals/military_globals.h"
+#include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_core/CIterator.h"
@@ -258,6 +259,37 @@ float TArmyMission::ComputeProvinceImportance(short provinceIndex) {
         importance;
   }
   return importance / 5000.0f;
+}
+
+// Nation-parameterized province score used by army mission selection. The Windows body is
+// a genuine two-argument free function; unlike TArmyMission::ComputeProvinceImportance it
+// does not read a mission receiver.
+// FUNCTION: IMPERIALISM 0x0053c880
+float ComputeProvinceImportanceForNation(short provinceIndex, short nation) {
+  Province& province = g_pGlobalMapState->cityScoreTable[provinceIndex];
+  float importance = static_cast<float>(province.cityScoreValue);
+  int targetNation = nation;
+
+  int ownedNeighbors = 0;
+  if (province.adjacentRegionCount08 > 0) {
+    int index = 0;
+    do {
+      int neighborOwner = g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(
+          province.adjacentRegionIds0A[index]);
+      if (targetNation == neighborOwner) {
+        ++ownedNeighbors;
+      }
+      ++index;
+    } while (index < province.adjacentRegionCount08);
+  }
+
+  if (province.adjacentRegionCount08 > 0) {
+    importance =
+        (static_cast<float>(ownedNeighbors) / static_cast<float>(province.adjacentRegionCount08) -
+         -1.0) *
+        importance;
+  }
+  return importance / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c9d0

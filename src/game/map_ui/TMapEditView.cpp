@@ -126,9 +126,9 @@ void TMapEditView::HandleMapClickByInteractionMode(short tileIndex, int inputFla
 }
 
 // FUNCTION: IMPERIALISM 0x0051cfa0
-void TMapEditView::InvokeDialogHooks1D8ThenE4(int tileIndex, int dispatchContext) {
+void TMapEditView::CenterOnTileAndRefresh(int tileIndex, int dispatchContext) {
   if (editorActionMode368 != 1) {
-    TWorldView::InvokeDialogHooks1D8ThenE4(tileIndex, dispatchContext);
+    TWorldView::CenterOnTileAndRefresh(tileIndex, dispatchContext);
     return;
   }
 

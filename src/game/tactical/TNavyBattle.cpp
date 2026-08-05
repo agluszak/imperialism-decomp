@@ -24,6 +24,22 @@
 
 IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 
+// FUNCTION: IMPERIALISM 0x005a5540
+void TNavyBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer) {
+  tacticalTileCount3c = 0xb4;
+  tacticalTileStride40 = 6;
+  TTacticalBattle::InitTacticalBattle(ourPlayer, enemyPlayer);
+
+  int direction = rand() % 6;
+  moveCostRotationStart78 = direction;
+  int costIndex = 0;
+  do {
+    neighborMoveCostByDirection7c[direction] = g_anNavyTacticalMoveCostsByDirection[costIndex];
+    ++costIndex;
+    direction = (direction == 5) ? 0 : direction + 1;
+  } while (direction != moveCostRotationStart78);
+}
+
 // FUNCTION: IMPERIALISM 0x005a55c0
 void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileIndex tileIndex) {
   // A ship may only deploy on its side's two deploy rows (side 0: rows
@@ -205,7 +221,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
-void TNavyBattle::FinalizeTacticalBattleOutcome(int) {
+void TNavyBattle::EndBattle(unsigned char) {
   g_pNavyOrderManager->CarryOutOrders();
 }
 
@@ -232,7 +248,7 @@ void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
       }
     }
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // FUNCTION: IMPERIALISM 0x005a5c50
@@ -253,12 +269,12 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       }
     }
     if (direction == 6) {
-      QueueTacticalEventPacket232A();
+      FinishTacticalActionAndPostNextMoveCommand();
       return;
     }
   }
   if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
     return;
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }

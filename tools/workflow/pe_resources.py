@@ -48,6 +48,18 @@ class GroupCursorImage:
     resource_id: int
 
 
+@dataclass(frozen=True)
+class GroupIconImage:
+    width: int
+    height: int
+    color_count: int
+    reserved: int
+    planes: int
+    bit_count: int
+    resource_size: int
+    resource_id: int
+
+
 def _read_u16(data: bytes, off: int) -> int:
     return struct.unpack_from("<H", data, off)[0]
 
@@ -322,6 +334,199 @@ def build_cursor_file(
     return bytes(directory) + b"".join(image_payloads)
 
 
+def parse_group_icon(blob: bytes) -> list[GroupIconImage]:
+    """Parse one RT_GROUP_ICON directory."""
+    if len(blob) < 6:
+        raise ValueError("truncated GROUP_ICON header")
+    reserved, resource_type, count = struct.unpack_from("<HHH", blob, 0)
+    if reserved != 0 or resource_type != 1:
+        raise ValueError("invalid GROUP_ICON header")
+    expected_size = 6 + count * 14
+    if len(blob) != expected_size:
+        raise ValueError(f"GROUP_ICON size is {len(blob)}, expected {expected_size}")
+    images: list[GroupIconImage] = []
+    for index in range(count):
+        values = struct.unpack_from("<BBBBHHIH", blob, 6 + index * 14)
+        images.append(GroupIconImage(*values))
+    return images
+
+
+def build_icon_file(group_blob: bytes, icon_blobs: dict[int, bytes]) -> bytes:
+    """Reconstruct an ordinary .ico file from GROUP_ICON + ICON resources."""
+    group_images = parse_group_icon(group_blob)
+    directory_size = 6 + len(group_images) * 16
+    directory = bytearray(struct.pack("<HHH", 0, 1, len(group_images)))
+    image_payloads: list[bytes] = []
+    image_offset = directory_size
+    for group_image in group_images:
+        image = icon_blobs.get(group_image.resource_id)
+        if image is None:
+            raise ValueError(
+                f"GROUP_ICON references missing ICON id {group_image.resource_id}"
+            )
+        directory.extend(
+            struct.pack(
+                "<BBBBHHII",
+                group_image.width,
+                group_image.height,
+                group_image.color_count,
+                group_image.reserved,
+                group_image.planes,
+                group_image.bit_count,
+                len(image),
+                image_offset,
+            )
+        )
+        image_payloads.append(image)
+        image_offset += len(image)
+    return bytes(directory) + b"".join(image_payloads)
+
+
+def build_bitmap_file(resource_dib: bytes) -> bytes:
+    """Wrap an RT_BITMAP DIB payload in an ordinary BMP file header."""
+    if len(resource_dib) < 12:
+        raise ValueError("truncated bitmap resource header")
+    header_size = _read_u32(resource_dib, 0)
+    if header_size == 12:
+        bit_count = _read_u16(resource_dib, 10)
+        palette_entry_size = 3
+        color_count = (1 << bit_count) if bit_count <= 8 else 0
+        extra_mask_size = 0
+    elif header_size >= 40 and len(resource_dib) >= header_size:
+        bit_count = _read_u16(resource_dib, 14)
+        compression = _read_u32(resource_dib, 16)
+        color_count = _read_u32(resource_dib, 32)
+        if color_count == 0 and bit_count <= 8:
+            color_count = 1 << bit_count
+        palette_entry_size = 4
+        # BITMAPINFOHEADER stores BI_BITFIELDS masks immediately after its
+        # 40-byte header. Later V4/V5 headers include the masks themselves.
+        extra_mask_size = 12 if header_size == 40 and compression == 3 else 0
+    else:
+        raise ValueError(f"unsupported bitmap resource header size {header_size}")
+
+    pixel_offset = (
+        14 + header_size + extra_mask_size + color_count * palette_entry_size
+    )
+    file_size = 14 + len(resource_dib)
+    file_header = struct.pack("<2sIHHI", b"BM", file_size, 0, 0, pixel_offset)
+    return file_header + resource_dib
+
+
+def retail_bitmap_file(pe_path: Path, resource_id: int) -> bytes:
+    data, entries = load_pe_resources(pe_path)
+    matches = [
+        entry
+        for entry in entries
+        if entry.type_id == 2
+        and entry.name_id == resource_id
+        and entry.lang_id in (0, 1033, 0x409)
+    ]
+    if not matches:
+        raise ValueError(f"retail PE has no BITMAP id {resource_id}")
+    entry = sorted(matches, key=lambda item: item.lang_id)[0]
+    dib = data[entry.data_offset : entry.data_offset + entry.size]
+    return build_bitmap_file(dib)
+
+
+def sync_retail_bitmap_file(
+    pe_path: Path, resource_id: int, output_path: Path, write: bool
+) -> bool:
+    expected = retail_bitmap_file(pe_path, resource_id)
+    matches = output_path.is_file() and output_path.read_bytes() == expected
+    if not matches and write:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_bytes(expected)
+    return matches
+
+
+def _retail_resource_blob(
+    data: bytes,
+    entries: list[ResourceEntry],
+    resource_type: int,
+    resource_id: int,
+    language: int = 1033,
+) -> bytes:
+    matches = [
+        entry
+        for entry in entries
+        if entry.type_id == resource_type
+        and entry.name_id == resource_id
+        and entry.lang_id == language
+    ]
+    if not matches:
+        raise ValueError(
+            f"retail PE has no {type_name(resource_type)} id {resource_id} lang {language}"
+        )
+    entry = matches[0]
+    return data[entry.data_offset : entry.data_offset + entry.size]
+
+
+def retail_executable_chrome_files(pe_path: Path) -> dict[str, bytes]:
+    """Return direct self-PE resources referenced by recovered production source."""
+    data, entries = load_pe_resources(pe_path)
+    group_icon = _retail_resource_blob(data, entries, 14, 31234)
+    icon_images = {
+        entry.name_id: data[entry.data_offset : entry.data_offset + entry.size]
+        for entry in entries
+        if entry.type_id == 3
+        and isinstance(entry.name_id, int)
+        and entry.lang_id == 1033
+    }
+    return {
+        "app_7a02.ico": build_icon_file(group_icon, icon_images),
+        "version_1.bin": _retail_resource_blob(data, entries, 16, 1),
+    }
+
+
+def sync_retail_executable_chrome_files(
+    pe_path: Path, out_dir: Path, write: bool
+) -> list[str]:
+    expected = retail_executable_chrome_files(pe_path)
+    mismatches: list[str] = []
+    for filename, content in expected.items():
+        path = out_dir / filename
+        if not path.is_file() or path.read_bytes() != content:
+            mismatches.append(filename)
+            if write:
+                out_dir.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(content)
+    return mismatches
+
+
+def _pe_group_icon_file(pe_path: Path, group_id: int) -> bytes:
+    data, entries = load_pe_resources(pe_path)
+    group_blob = _retail_resource_blob(data, entries, 14, group_id)
+    icon_images = {
+        entry.name_id: data[entry.data_offset : entry.data_offset + entry.size]
+        for entry in entries
+        if entry.type_id == 3
+        and isinstance(entry.name_id, int)
+        and entry.lang_id == 1033
+    }
+    return build_icon_file(group_blob, icon_images)
+
+
+def direct_resource_parity_mismatches(
+    retail_pe: Path, rebuilt_pe: Path
+) -> list[str]:
+    retail_data, retail_entries = load_pe_resources(retail_pe)
+    rebuilt_data, rebuilt_entries = load_pe_resources(rebuilt_pe)
+    mismatches: list[str] = []
+    for resource_type, resource_id in ((2, 281), (16, 1)):
+        retail_blob = _retail_resource_blob(
+            retail_data, retail_entries, resource_type, resource_id
+        )
+        rebuilt_blob = _retail_resource_blob(
+            rebuilt_data, rebuilt_entries, resource_type, resource_id
+        )
+        if rebuilt_blob != retail_blob:
+            mismatches.append(f"{type_name(resource_type)} {resource_id}")
+    if _pe_group_icon_file(rebuilt_pe, 31234) != _pe_group_icon_file(retail_pe, 31234):
+        mismatches.append("GROUP_ICON 31234")
+    return mismatches
+
+
 def build_turn_event_cursor_rc(filenames: list[str]) -> bytes:
     rc_lines = [
         "// Generated from the retail PE by tools.workflow.pe_resources.",
@@ -422,6 +627,33 @@ def check_menu_exists(path: Path, menu_id: int) -> bool:
     )
 
 
+def check_bitmap_exists(path: Path, bitmap_id: int) -> bool:
+    _, entries = load_pe_resources(path)
+    return any(e.type_id == 2 and e.name_id == bitmap_id for e in entries)
+
+
+def parse_required_resource(value: str) -> tuple[int, int, int]:
+    parts = value.split(":")
+    if len(parts) != 3:
+        raise argparse.ArgumentTypeError("resource must be TYPE:ID:LANG")
+    try:
+        return int(parts[0], 0), int(parts[1], 0), int(parts[2], 0)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("resource fields must be integers") from exc
+
+
+def missing_required_resources(
+    path: Path, required: list[tuple[int, int, int]]
+) -> list[tuple[int, int, int]]:
+    _, entries = load_pe_resources(path)
+    available = {
+        (entry.type_id, entry.name_id, entry.lang_id)
+        for entry in entries
+        if isinstance(entry.type_id, int) and isinstance(entry.name_id, int)
+    }
+    return [item for item in required if item not in available]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -438,6 +670,14 @@ def main(argv: list[str] | None = None) -> int:
     chk = sub.add_parser("check", help="Assert .rsrc present and MENU id exists")
     chk.add_argument("pe")
     chk.add_argument("--menu-id", type=int, default=128)
+    chk.add_argument("--bitmap-id", type=int)
+    chk.add_argument(
+        "--require",
+        type=parse_required_resource,
+        action="append",
+        default=[],
+        metavar="TYPE:ID:LANG",
+    )
 
     cursors = sub.add_parser(
         "turn-event-cursors",
@@ -449,8 +689,35 @@ def main(argv: list[str] | None = None) -> int:
     cursor_mode.add_argument("--check", action="store_true")
     cursor_mode.add_argument("--write", action="store_true")
 
+    bitmap = sub.add_parser(
+        "bitmap", help="Check or regenerate one retail RT_BITMAP as a BMP file"
+    )
+    bitmap.add_argument("pe")
+    bitmap.add_argument("output")
+    bitmap.add_argument("--id", type=int, required=True)
+    bitmap_mode = bitmap.add_mutually_exclusive_group(required=True)
+    bitmap_mode.add_argument("--check", action="store_true")
+    bitmap_mode.add_argument("--write", action="store_true")
+
+    chrome = sub.add_parser(
+        "executable-chrome",
+        help="Check or regenerate direct retail self-PE icon and version resources",
+    )
+    chrome.add_argument("pe")
+    chrome.add_argument("out_dir")
+    chrome_mode = chrome.add_mutually_exclusive_group(required=True)
+    chrome_mode.add_argument("--check", action="store_true")
+    chrome_mode.add_argument("--write", action="store_true")
+
+    parity = sub.add_parser(
+        "direct-resource-parity",
+        help="Compare rebuilt direct self-PE resources against retail payloads",
+    )
+    parity.add_argument("retail_pe")
+    parity.add_argument("rebuilt_pe")
+
     args = parser.parse_args(argv)
-    pe = Path(args.pe)
+    pe = Path(args.pe) if hasattr(args, "pe") else Path(args.retail_pe)
     if args.cmd == "inventory":
         ids = set(args.ids) if args.ids else None
         for entry in inventory(pe, ids):
@@ -467,7 +734,24 @@ def main(argv: list[str] | None = None) -> int:
         if not check_menu_exists(pe, args.menu_id):
             print(f"FAIL: {pe} has no MENU id {args.menu_id}", file=sys.stderr)
             return 1
-        print(f"OK: {pe} has .rsrc and MENU {args.menu_id}")
+        if args.bitmap_id is not None and not check_bitmap_exists(pe, args.bitmap_id):
+            print(
+                f"FAIL: {pe} has no BITMAP id {args.bitmap_id}", file=sys.stderr
+            )
+            return 1
+        missing = missing_required_resources(pe, args.require)
+        if missing:
+            for resource_type, resource_id, language in missing:
+                print(
+                    f"FAIL: {pe} has no {type_name(resource_type)} id {resource_id} "
+                    f"lang {language}",
+                    file=sys.stderr,
+                )
+            return 1
+        checked = [f"MENU {args.menu_id}"]
+        if args.bitmap_id is not None:
+            checked.append(f"BITMAP {args.bitmap_id}")
+        print(f"OK: {pe} has .rsrc and " + ", ".join(checked))
         return 0
     if args.cmd == "turn-event-cursors":
         mismatches = sync_retail_turn_event_cursor_files(
@@ -486,6 +770,50 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 1
         print(f"Turn-event cursor resources match {pe}")
+        return 0
+    if args.cmd == "bitmap":
+        matches = sync_retail_bitmap_file(
+            pe, args.id, Path(args.output), write=args.write
+        )
+        if args.write:
+            print(f"Wrote retail BITMAP {args.id} to {args.output}")
+            return 0
+        if not matches:
+            print(
+                f"Retail BITMAP {args.id} is stale or missing: {args.output}",
+                file=sys.stderr,
+            )
+            return 1
+        print(f"Retail BITMAP {args.id} matches {args.output}")
+        return 0
+    if args.cmd == "executable-chrome":
+        mismatches = sync_retail_executable_chrome_files(
+            pe, Path(args.out_dir), write=args.write
+        )
+        if args.write:
+            print(f"Wrote retail executable chrome resources to {args.out_dir}")
+            return 0
+        if mismatches:
+            print(
+                "Retail executable chrome resources are stale or missing: "
+                + ", ".join(mismatches),
+                file=sys.stderr,
+            )
+            return 1
+        print(f"Retail executable chrome resources match {pe}")
+        return 0
+    if args.cmd == "direct-resource-parity":
+        mismatches = direct_resource_parity_mismatches(
+            Path(args.retail_pe), Path(args.rebuilt_pe)
+        )
+        if mismatches:
+            print(
+                "Direct executable resources differ from retail: "
+                + ", ".join(mismatches),
+                file=sys.stderr,
+            )
+            return 1
+        print("Direct executable resources match retail")
         return 0
     return 1
 

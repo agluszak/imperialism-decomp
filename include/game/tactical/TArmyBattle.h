@@ -24,7 +24,7 @@ public:
   // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
   // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each
   // side's armyStack28 to relocate/reset the losing side and grow unit quality.
-  virtual void FinalizeTacticalBattleOutcome(int sideWonFlag) override; // slot 0x12 0x5a5320
+  virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5320, Mac oracle
 
   // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
   // BattleSetup 0x4a5b60 and the network receive path 0x54a1df) inline this ctor as just

@@ -90,6 +90,11 @@ bool CursorIsActiveAndVisible(HCURSOR expected);
 bool DevelopmentClassChangesTilePixels(TMapDialog* mapDialog, short tileIndex,
                                        unsigned char initialClass, unsigned char completedClass);
 
+// Draw a controlled land tile with neither transport flag, one road direction, and one rail
+// direction. Both transport states must change the 64x64 result. This pins the retail
+// +0x06/+0x17 inputs independently of the terrain-transition masks at +0x0a/+0x0b.
+bool TransportConnectivityChangesTilePixels(TMapDialog* mapDialog);
+
 // Hovering from one tile to another must leave every pixel outside the newly hovered tile
 // exactly as it was: the map is expected to repaint what the pointer left behind. Compares a
 // full-frame capture before and after, masking the tile now under the pointer.

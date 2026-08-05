@@ -17,6 +17,8 @@ extern const unsigned short g_hexDirectionBitMasks_00696e40[6];
 // by direction 0..6 (index 6 is an unused trailing zero); read byte-wise into
 // TTerrainStateRecord::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
 extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
+extern const short g_railDirectionAddMasks_00696eb8[6];
+extern const short g_railDirectionSubtractMasks_00696ec8[6];
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the
 // scanline fill, 0x006a3914 for the route rebuild).
@@ -69,7 +71,7 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
-extern unsigned char g_abResourceTypeCapabilityCategory[24];
+extern char g_abResourceTypeCapabilityCategory[24];
 
 // TMapMgr.cpp — hex-area neighbor lookup tables.
 extern short g_Build_Hex_Area_LookupTable_00696E70[];

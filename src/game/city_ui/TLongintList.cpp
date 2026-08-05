@@ -4,6 +4,32 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
+// FUNCTION: IMPERIALISM 0x00487fb0
+long CLongintIterator::FirstLong() {
+  nextPosition = ownerList->GetHeadPosition();
+  if (nextPosition != NULL) {
+    current = ownerList->GetNext(nextPosition);
+    return current;
+  }
+  current = 0;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00487fe0
+int CLongintIterator::More() {
+  return current != 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00488000
+long CLongintIterator::NextLong() {
+  if (nextPosition != NULL) {
+    current = ownerList->GetNext(nextPosition);
+    return current;
+  }
+  current = 0;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00487f70
 void TLongintList::NoOpWriteTo(TStream* stream) {
   (void)stream;

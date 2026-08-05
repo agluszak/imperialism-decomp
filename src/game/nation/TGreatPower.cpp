@@ -282,57 +282,53 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   short* developmentByType = &this->needCurrentByType[7]; // +0x11c overlays this runtime array.
   short* targetNeedByType = this->needTargetByType;
   short& controlledRegionCount = this->needCurrentByType[0x13]; // +0x134
-  char* influenceByRegion = BuildCityInfluenceLevelMap();
-  char* influenceBuffer = influenceByRegion;
-  TMapMgr* globalMapState = g_pGlobalMapState;
-  int regionIndex = 0;
 
   for (int i = 0; i < kNationSlotCount; ++i) {
     currentNeedByType[i] = 0;
   }
-  controlledRegionCount = 0;
 
-  if (influenceByRegion != 0 && globalMapState != 0 && globalMapState->terrainStateTable != 0 &&
-      globalMapState->cityScoreTable != 0) {
-    TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
-    Province* cityTable = globalMapState->cityScoreTable;
-    while (static_cast<short>(regionIndex) < kMapRegionSlotCount) {
-      char influence = *influenceByRegion;
-      if (influence != 0) {
-        TTerrainStateRecord* terrainRecord = &terrainTable[regionIndex];
-        if (terrainRecord->gateFlag == 0) {
-          if (influence == 2) {
-            ++controlledRegionCount;
+  char* influenceByRegion = BuildCityInfluenceLevelMap();
+  char* influenceBuffer = influenceByRegion;
+  TMapMgr* globalMapState = g_pGlobalMapState;
+  TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
+  Province* cityTable = globalMapState->cityScoreTable;
+  int regionIndex = 0;
+  while (static_cast<short>(regionIndex) < kMapRegionSlotCount) {
+    char influence = *influenceByRegion;
+    if (influence != 0) {
+      TTerrainStateRecord* terrainRecord = &terrainTable[regionIndex];
+      if (terrainRecord->gateFlag == 0) {
+        if (influence == 2) {
+          ++controlledRegionCount;
+        }
+      } else {
+        for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
+          short resourceType = static_cast<short>(terrainRecord->resourceTypeByEdge[edgeIndex]);
+          if (resourceType != -1) {
+            char contribution =
+                globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
+            currentNeedByType[resourceType] = static_cast<short>(currentNeedByType[resourceType] +
+                                                                 static_cast<short>(contribution));
           }
-        } else {
-          for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
-            short resourceType = static_cast<short>(terrainRecord->resourceTypeByEdge[edgeIndex]);
-            if (resourceType != -1) {
-              char contribution =
-                  globalMapState->FindResourceCapabilityRequirementLevel(regionIndex, edgeIndex);
-              currentNeedByType[resourceType] = static_cast<short>(
-                  currentNeedByType[resourceType] + static_cast<short>(contribution));
-            }
-          }
+        }
 
-          if (terrainRecord->riverSpriteCode != kRiverSpriteCodeNone && influence == 2) {
-            ++controlledRegionCount;
-          }
+        if (terrainRecord->riverSpriteCode != kRiverSpriteCodeNone && influence == 2) {
+          ++controlledRegionCount;
+        }
 
-          int cityIndex = static_cast<int>(terrainRecord->cityRecordIndex);
-          Province* cityRecord = &cityTable[cityIndex];
-          if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
-            for (int devIdx = 0; devIdx < 10; ++devIdx) {
-              developmentByType[devIdx] = static_cast<short>(
-                  developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts82[devIdx]);
-            }
+        int cityIndex = static_cast<int>(terrainRecord->cityRecordIndex);
+        Province* cityRecord = &cityTable[cityIndex];
+        if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
+          for (int devIdx = 0; devIdx < 10; ++devIdx) {
+            developmentByType[devIdx] = static_cast<short>(
+                developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts82[devIdx]);
           }
         }
       }
-
-      ++regionIndex;
-      ++influenceByRegion;
     }
+
+    ++regionIndex;
+    ++influenceByRegion;
   }
 
   delete[] influenceBuffer;
@@ -349,10 +345,6 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 // FUNCTION: IMPERIALISM 0x004dbf00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
   TLongintList* regionList = this->ownedRegionList;
-  if (regionList == 0) {
-    return;
-  }
-
   int totalRegions = regionList->GetSize();
   int regionOrdinal = 1;
   while (regionOrdinal <= totalRegions) {
@@ -362,137 +354,132 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents(void) {
 
     TMapMgr* globalMapState = g_pGlobalMapState;
     TSimMgr* localizationRuntime = g_pSimMgr;
-    if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
-        globalMapState->terrainStateTable != 0) {
-      Province* cityTable = globalMapState->cityScoreTable;
-      TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
-      Province* cityRecord = cityTable + regionId;
-      short homeTileIndex = static_cast<short>(this->homeTileIndex);
-      if (cityRecord->cityTileIndex04 != homeTileIndex) {
-        unsigned int turnDelta =
-            static_cast<unsigned int>(static_cast<int>(localizationRuntime->GetEconomicTurn()) -
-                                      static_cast<int>(cityRecord->lastTurnTick));
+    Province* cityTable = globalMapState->cityScoreTable;
+    TTerrainStateRecord* terrainTable = globalMapState->terrainStateTable;
+    Province* cityRecord = cityTable + regionId;
+    short homeTileIndex = static_cast<short>(this->homeTileIndex);
+    if (cityRecord->cityTileIndex04 != homeTileIndex) {
+      unsigned int turnDelta =
+          static_cast<unsigned int>(static_cast<int>(localizationRuntime->GetEconomicTurn()) -
+                                    static_cast<int>(cityRecord->lastTurnTick));
 
-        if (turnDelta > 4) {
-          int resourceSums[kNationSlotCount];
-          int i = 0;
-          while (i < kNationSlotCount) {
-            resourceSums[i] = 0;
-            ++i;
+      if (turnDelta > 4) {
+        int resourceSums[kNationSlotCount];
+        int i = 0;
+        while (i < kNationSlotCount) {
+          resourceSums[i] = 0;
+          ++i;
+        }
+
+        int linkedCount = cityRecord->linkedRegionCount;
+        int linkedIndex = 0;
+        while (linkedIndex < linkedCount) {
+          short linkedRegion = cityRecord->linkedTileIndices42[linkedIndex];
+          int edge = 0;
+          while (edge < 2) {
+            signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
+            if (resourceType != -1) {
+              resourceSums[resourceType] += static_cast<int>(
+                  globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
+            }
+            ++edge;
           }
+          ++linkedIndex;
+        }
 
-          int linkedCount = cityRecord->linkedRegionCount;
-          int linkedIndex = 0;
-          while (linkedIndex < linkedCount) {
-            short linkedRegion = cityRecord->linkedTileIndices42[linkedIndex];
-            int edge = 0;
-            while (edge < 2) {
-              signed char resourceType = terrainTable[linkedRegion].resourceTypeByEdge[edge];
-              if (resourceType != -1) {
-                resourceSums[resourceType] += static_cast<int>(
-                    globalMapState->FindResourceCapabilityRequirementLevel(linkedRegion, edge));
-              }
-              ++edge;
-            }
-            ++linkedIndex;
-          }
+        short* stage1CounterA = &cityRecord->resourceDevelopmentCounts82[1];
+        short* stage1CounterB = &cityRecord->resourceDevelopmentCounts82[2];
+        short* stage1CounterC = &cityRecord->resourceDevelopmentCounts82[4];
+        short* stage1CounterD = &cityRecord->resourceDevelopmentCounts82[5];
+        short* stage2CounterA = &cityRecord->resourceDevelopmentCounts82[6];
+        short* stage2CounterB = &cityRecord->resourceDevelopmentCounts82[7];
+        short* stage2CounterC = &cityRecord->resourceDevelopmentCounts82[8];
 
-          short* stage1CounterA = &cityRecord->resourceDevelopmentCounts82[1];
-          short* stage1CounterB = &cityRecord->resourceDevelopmentCounts82[2];
-          short* stage1CounterC = &cityRecord->resourceDevelopmentCounts82[4];
-          short* stage1CounterD = &cityRecord->resourceDevelopmentCounts82[5];
-          short* stage2CounterA = &cityRecord->resourceDevelopmentCounts82[6];
-          short* stage2CounterB = &cityRecord->resourceDevelopmentCounts82[7];
-          short* stage2CounterC = &cityRecord->resourceDevelopmentCounts82[8];
-
-          if ((turnDelta & 1U) == 0) {
-            int sum01 = resourceSums[0] + resourceSums[1];
-            if (sum01 != 0) {
-              int prod = this->city->GetBuildingType(1);
-              int limit = (static_cast<int>(*stage1CounterA) +
-                           ((static_cast<int>(*stage1CounterA) >> 0x1f) & 3U)) >>
-                          2;
-              int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-              if (limit < prodLimit && static_cast<int>(*stage1CounterA) < sum01 / 2) {
-                pendingStage = 1;
-                *stage1CounterA = static_cast<short>(*stage1CounterA + 1);
-                needsRedraw = 1;
-              }
-            }
-
-            if (resourceSums[2] != 0) {
-              int prod = this->city->GetBuildingType(5);
-              int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-              if (static_cast<int>(*stage1CounterB) < prodLimit &&
-                  static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
-                pendingStage = 1;
-                *stage1CounterB = static_cast<short>(*stage1CounterB + 1);
-                needsRedraw = 1;
-              }
-            }
-
-            if (resourceSums[3] != 0) {
-              int prod = this->city->GetBuildingType(3);
-              int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
-              if (static_cast<int>(*stage1CounterC) < prodLimit &&
-                  static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
-                pendingStage = 1;
-                *stage1CounterC = static_cast<short>(*stage1CounterC + 1);
-                needsRedraw = 1;
-              }
-            }
-
-            TTechMgr* orderCapabilityState = g_pTechMgr;
-            int capabilityScore = this->city->GetBuildingType(7);
-            if (capabilityScore != 0 &&
-                orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
-              if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
-                pendingStage = 1;
-                *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
-                needsRedraw = 1;
-              }
-            }
-          }
-
-          if (turnDelta > 9 && (turnDelta & 1U) != 0) {
-            this->GetMerchantCapacity();
-
-            if (*stage1CounterA != 0 &&
-                static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
-              pendingStage = 2;
-              *stage2CounterA = static_cast<short>(*stage2CounterA + 1);
-              needsRedraw = 1;
-            }
-            if (*stage1CounterB != 0 &&
-                static_cast<int>(*stage2CounterB) < static_cast<int>(*stage1CounterB) / 2) {
-              pendingStage = 2;
-              *stage2CounterB = static_cast<short>(*stage2CounterB + 1);
-              needsRedraw = 1;
-            }
-            if (*stage1CounterC != 0 &&
-                static_cast<int>(*stage2CounterC) < static_cast<int>(*stage1CounterC) / 2) {
-              pendingStage = 2;
-              *stage2CounterC = static_cast<short>(*stage2CounterC + 1);
+        if ((turnDelta & 1U) == 0) {
+          int sum01 = resourceSums[0] + resourceSums[1];
+          if (sum01 != 0) {
+            int prod = this->city->GetBuildingType(1);
+            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            if (static_cast<int>(*stage1CounterA) < prodLimit &&
+                static_cast<int>(*stage1CounterA) < sum01 / 2) {
+              pendingStage = 1;
+              *stage1CounterA = static_cast<short>(*stage1CounterA + 1);
               needsRedraw = 1;
             }
           }
 
-          if (cityRecord->developmentStage < pendingStage) {
-            g_pGlobalMapState->SetRegionDevelopmentStageByte(regionId, pendingStage);
-            if (pendingStage == 2) {
-              this->SetNationPendingActionStateAndPayload(4, regionId);
-            } else {
-              this->SetNationPendingActionStateAndPayload(3, regionId);
-              if (this->pendingActionStatus.byAction[8] < 0x33) {
-                this->SetNationPendingActionStateAndPayload(8, -1);
-              }
+          if (resourceSums[2] != 0) {
+            int prod = this->city->GetBuildingType(5);
+            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            if (static_cast<int>(*stage1CounterB) < prodLimit &&
+                static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
+              pendingStage = 1;
+              *stage1CounterB = static_cast<short>(*stage1CounterB + 1);
+              needsRedraw = 1;
+            }
+          }
+
+          if (resourceSums[3] != 0) {
+            int prod = this->city->GetBuildingType(3);
+            int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
+            if (static_cast<int>(*stage1CounterC) < prodLimit &&
+                static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
+              pendingStage = 1;
+              *stage1CounterC = static_cast<short>(*stage1CounterC + 1);
+              needsRedraw = 1;
+            }
+          }
+
+          TTechMgr* orderCapabilityState = g_pTechMgr;
+          int capabilityScore = resourceSums[6];
+          if (capabilityScore != 0 &&
+              orderCapabilityState->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] != 0) {
+            if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
+              pendingStage = 1;
+              *stage1CounterD = static_cast<short>(*stage1CounterD + 1);
+              needsRedraw = 1;
             }
           }
         }
 
-        if (localizationRuntime->multiplayerSessionRole != 0 && needsRedraw != 0) {
-          g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
+        if (turnDelta > 9 && (turnDelta & 1U) != 0) {
+          this->GetMerchantCapacity();
+
+          if (*stage1CounterA != 0 &&
+              static_cast<int>(*stage2CounterA) < static_cast<int>(*stage1CounterA) / 2) {
+            pendingStage = 2;
+            *stage2CounterA = static_cast<short>(*stage2CounterA + 1);
+            needsRedraw = 1;
+          }
+          if (*stage1CounterB != 0 &&
+              static_cast<int>(*stage2CounterB) < static_cast<int>(*stage1CounterB) / 2) {
+            pendingStage = 2;
+            *stage2CounterB = static_cast<short>(*stage2CounterB + 1);
+            needsRedraw = 1;
+          }
+          if (*stage1CounterC != 0 &&
+              static_cast<int>(*stage2CounterC) < static_cast<int>(*stage1CounterC) / 2) {
+            pendingStage = 2;
+            *stage2CounterC = static_cast<short>(*stage2CounterC + 1);
+            needsRedraw = 1;
+          }
         }
+
+        if (cityRecord->developmentStage < pendingStage) {
+          g_pGlobalMapState->SetRegionDevelopmentStageByte(regionId, pendingStage);
+          if (pendingStage == 2) {
+            this->SetNationPendingActionStateAndPayload(4, regionId);
+          } else {
+            this->SetNationPendingActionStateAndPayload(3, regionId);
+            if (this->pendingActionStatus.byAction[8] < 0x33) {
+              this->SetNationPendingActionStateAndPayload(8, -1);
+            }
+          }
+        }
+      }
+
+      if (localizationRuntime->multiplayerSessionRole != 0 && needsRedraw != 0) {
+        g_pGameFlowState->DispatchCityRedrawInvalidateEvent(regionId);
       }
     }
 
@@ -2677,9 +2664,9 @@ float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, 
   float allySum = SumAlliedArmyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
-    return combinedScore;
+    return selfScore;
   }
-  return combinedScore / denominator;
+  return selfScore / denominator;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1170
@@ -2720,9 +2707,9 @@ float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, 
   float allySum = SumAlliedNavyScoreFactorsForScore(targetNation);
   float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
   if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
-    return combinedScore;
+    return selfScore;
   }
-  return combinedScore / denominator;
+  return selfScore / denominator;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1490

@@ -1,5 +1,5 @@
-// TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections (0x0052b9b0) -- the UMapper.cpp
-// scanline fill that paints city-region ids across the tile grid from the region-border
+// TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections (0x0052b9b0) -- the UMapper.cpp
+// scanline fill that paints water-region ids across the tile grid from the region-border
 // SeaSegment table (g_regionBorderLinkTable_006a3900). Walking the overlay grid cell by cell,
 // it finds the SeaSegment whose edge crosses the current scanline within the cell's x-span
 // (interpolating the crossing x, with a horizontal-wrap branch), breaking ties between two
@@ -25,7 +25,7 @@ const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";
 }
 
 // FUNCTION: IMPERIALISM 0x0052b9b0
-void TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections() {
+void TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections() {
   SeaSegmentStretch& segments = g_regionBorderLinkTable_006a3900;
 
   int cellX = 0;

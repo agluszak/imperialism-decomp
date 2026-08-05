@@ -110,6 +110,6 @@ extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 // switch in the retail binary). 0x6a42dc.
 extern unsigned char g_bRandomMapDeveloperCheatFlag;
 
-extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32];
+extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[23];
 
 } // extern "C"

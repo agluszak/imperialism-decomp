@@ -75,11 +75,10 @@ unsigned short TView::GetCursorID() {
 void TView::PostRender() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
-char TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {
+void TView::HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event, CPoint origin) {
   (void)point;
   (void)event;
   (void)origin;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00427260
@@ -906,7 +905,8 @@ char TView::HandleMouseUp(const CPoint& point, TToolboxEvent* event, CPoint orig
   if (PrepareForDrawing() != 0) {
     CPoint localPoint = point;
     if (IsEnabled() != 0) {
-      return HandleMouseCommandToSelf(localPoint, event, origin) != 0;
+      HandleMouseCommandToSelf(localPoint, event, origin);
+      return 1;
     }
   }
   return 0;

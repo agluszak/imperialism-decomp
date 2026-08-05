@@ -1,4 +1,5 @@
 #include "game/military/TArmyStack.h"
+#include "game/map/TMapMgr.h"
 
 #include <stdlib.h>
 
@@ -265,14 +266,45 @@ void TArmyStack::ReseatChainUnitsAndClearOrders() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004a7d90
+void TArmyStack::InitializeStrategicBattle(unsigned char boosted) {
+  cursor18 = head14;
+  TUnit* unit = cursor18 != 0 ? cursor18->unit : 0;
+  if (unit == 0) {
+    return;
+  }
+
+  fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
+      g_anFortLevelAttackerPenaltyPercentByLevel
+          [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
+
+  while (unit != 0) {
+    TMilitaryUnit* militaryUnit = static_cast<TMilitaryUnit*>(unit);
+    militaryUnit->strengthSnapshot3C = militaryUnit->strength34;
+    if (boosted != 0 && g_abUnitTypeBlinkEligibilityFlag[unit->orderType] != 0) {
+      militaryUnit->battleStateFlags3A |= 1;
+    } else {
+      militaryUnit->battleStateFlags3A &= ~1;
+    }
+    militaryUnit->battleStateFlags3A &= ~2;
+
+    if (cursor18 != 0) {
+      cursor18 = cursor18->next;
+      unit = cursor18 != 0 ? cursor18->unit : 0;
+    } else {
+      unit = 0;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004a7e70
 void TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum,
                                                                           int* outCount,
                                                                           int counter) {
   // Blend-ratio pair, indexed by counter (0-3): primary weight favors the "weight class"
   // score early, secondary weight favors the "scaled factor" score in later rounds.
-  static const int kRoundBlendWeightPrimary[4] = {100, 75, 50, 25};
-  static const int kRoundBlendWeightSecondary[4] = {0, 25, 50, 75};
+  const int kRoundBlendWeightPrimary[4] = {100, 75, 50, 25};
+  const int kRoundBlendWeightSecondary[4] = {0, 25, 50, 75};
   if (counter > 3) {
     counter = 3;
   }
@@ -335,7 +367,7 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
     return;
   }
 
-  static const int kDecayScalePercentByRound[4] = {70, 80, 90, 90};
+  const int kDecayScalePercentByRound[4] = {70, 80, 90, 90};
   int averageStrength = weightedSum / activityScore;
   int participationPercent = count + static_cast<signed char>(fortLevelAttackerPenaltyCache9);
   if (participationPercent > 100) {
@@ -354,7 +386,7 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
       if (g_MapContextStaticTable_00695428[decayUnit->orderType] != 0) {
         randomScale /= 2;
       }
-      int decayAmount = static_cast<int>(g_afPercentEfficiencyByOrderType[decayUnit->orderType] *
+      int decayAmount = static_cast<int>(g_afRandomizedMeterDecayByOrderType[decayUnit->orderType] *
                                          100.0f * randomScale);
       if ((milUnit->battleStateFlags3A & 1) != 0) {
         decayAmount = (kDecayScalePercentByRound[counter] * decayAmount) / 100;

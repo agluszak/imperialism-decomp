@@ -158,7 +158,7 @@ public:
                               CPoint origin); // 0x47
   virtual char HandleMouseUp(const CPoint& point, TToolboxEvent* event,
                              CPoint origin); // 0x48 0x48c590
-  virtual char HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event,
+  virtual void HandleMouseCommandToSelf(CPoint& point, TToolboxEvent* event,
                                         CPoint origin);          // 0x49
   virtual void QueryContentBounds(CRect* boundsOut);             // 0x4a 0x427260
   virtual void QueryBounds(CRect* boundsOut);                    // 0x4b 0x427290

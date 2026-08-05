@@ -92,6 +92,11 @@ public:
   // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
+  // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
+  // virtual ErrorCheck, empty-column scan, then full terrain-class frontier coverage.
+  // 0x00526620.
+  char CheckProvs();
+
   // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).
   // 0x00526710.
   char ValidateAllColumnsHaveAssignedRegionClass();
@@ -126,10 +131,10 @@ public:
 
   // Seeds city regions on a lattice with LCG jitter then floods ids to adjacent city tiles.
   // 0x0052a160.
-  void GenerateCityRegionIdsBySeedAndNeighborPropagation();
+  void GenerateWaterRegionIdsBySeedAndNeighborPropagation();
 
   // Rotates the map columns so the peak city-tile-density band is recentred. 0x00529960.
-  void RotateMapColumnsByPeakCityTileDensity();
+  void RotateMapColumnsByPeakWaterTileDensity();
 
   // Randomly mirrors template banks within a fine-grid cell for each neighbour class that
   // differs from the base class. 0x005293d0.
@@ -141,7 +146,7 @@ public:
 
   // Scanline-fills city-region ids across the overlay grid from the region-border SeaSegment
   // table: for each cell, find the nearest crossing segment and write its region. 0x0052b9b0.
-  void AssignCityRegionIdsFromOverlayScanlineIntersections();
+  void AssignWaterRegionIdsFromOverlayScanlineIntersections();
 
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.
@@ -174,6 +179,11 @@ public:
   // placeholder (-2, -3, ...) and hand it the next sequential value from *nextValue.
   // Returns how many entries were assigned. 0x0052d6b0, __thiscall.
   int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
+
+  // ORACLE: Mac TMapMaker::ZoneCorner(long). Selects the row containing the longest
+  // contiguous run of nationCode, then returns the wrap-aware average owned column in
+  // that row. Returns -1 when the selected row contains no matching tile. 0x00529c80.
+  int ZoneCorner(long nationCode);
 
   // Centroid tile of every grid record owned by `nationCode` (record[4]). Tiles hugging
   // both the left (col < 0x19) and right (col > 0x53) edges mean the territory wraps: with

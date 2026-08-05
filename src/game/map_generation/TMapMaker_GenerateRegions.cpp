@@ -1,8 +1,8 @@
-// TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation (0x0052a160) -- the UMapper.cpp
-// pass that lays out city regions: seed a label per tile (-1 city / -2 non-city), scatter
+// TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation (0x0052a160) -- the UMapper.cpp
+// pass that lays out water regions: seed a label per tile (-1 water / -2 non-water), scatter
 // region-centre seeds across a g_regionSeedGridRows x g_regionSeedGridCols lattice with LCG
-// jitter (spiral-searching outward for an empty city tile at each lattice point), then flood
-// each region id to adjacent same-region city tiles until stable, and write tile[4]=id+0x17.
+// jitter (spiral-searching outward for an empty water tile at each lattice point), then flood
+// each region id to adjacent same-region water tiles until stable, and write tile[4]=id+0x17.
 // Own translation unit (like the other UMapper routines).
 
 #include "game/map_generation/TMapMaker.h"
@@ -46,7 +46,7 @@ inline int HexNeighbor(int tileIndex, int direction) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0052a160
-void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
+void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
   short* labels = new short[0x1950];
 
   // Phase 1: seed a label per tile: -1 for water tiles, -2 otherwise.
@@ -62,7 +62,7 @@ void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
   cityRegionCount2a4 = 0;
 
   // Phase 2: scatter region-centre seeds across the lattice, spiralling out to the nearest
-  // still-empty city tile.
+  // still-empty water tile.
   if (0 < g_regionSeedGridRows_006a38ec) {
     int rowBase = 0;
     int cols = g_regionSeedGridCols_006a38f0;
@@ -123,7 +123,7 @@ void TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation() {
     } while (rowIdx < rows);
   }
 
-  // Phase 3: flood region ids to adjacent same-region city tiles; the +0x400 bias marks tiles
+  // Phase 3: flood region ids to adjacent same-region water tiles; the +0x400 bias marks tiles
   // claimed this round so a single pass can't cascade. Repeat until nothing changes, then write
   // the ids back to the tiles.
   do {

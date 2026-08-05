@@ -4,13 +4,41 @@ import struct
 import unittest
 
 from tools.workflow.pe_resources import (
+    build_bitmap_file,
     build_cursor_file,
+    build_icon_file,
     build_turn_event_cursor_rc,
     parse_group_cursor,
 )
 
 
 class PeCursorResourceTests(unittest.TestCase):
+    def test_reconstructs_icon_file_from_group_and_image_resources(self) -> None:
+        image = struct.pack("<IiiHH", 40, 32, 64, 1, 4) + bytes(64)
+        group = struct.pack("<HHHBBBBHHIH", 0, 1, 1, 32, 32, 16, 0, 1, 4, len(image), 7)
+
+        icon = build_icon_file(group, {7: image})
+
+        self.assertEqual(struct.unpack_from("<HHH", icon, 0), (0, 1, 1))
+        self.assertEqual(struct.unpack_from("<BBBBHHII", icon, 6),
+                         (32, 32, 16, 0, 1, 4, len(image), 22))
+        self.assertEqual(icon[22:], image)
+
+    def test_wraps_indexed_bitmap_resource_without_changing_dib(self) -> None:
+        dib_header = struct.pack(
+            "<IiiHHIIiiII", 40, 2, 2, 1, 8, 0, 8, 0, 0, 2, 0
+        )
+        palette = bytes((0, 0, 0, 0, 0, 0, 255, 0))
+        pixels = bytes((0, 1, 0, 0, 1, 0, 0, 0))
+        dib = dib_header + palette + pixels
+
+        bitmap = build_bitmap_file(dib)
+
+        self.assertEqual(bitmap[:2], b"BM")
+        self.assertEqual(struct.unpack_from("<I", bitmap, 2)[0], len(bitmap))
+        self.assertEqual(struct.unpack_from("<I", bitmap, 10)[0], 14 + 40 + 8)
+        self.assertEqual(bitmap[14:], dib)
+
     def test_reconstructs_cursor_file_with_resource_hotspot(self) -> None:
         image = struct.pack("<IiiHH", 40, 32, 64, 1, 4) + bytes(64)
         resource_blob = struct.pack("<HH", 2, 7) + image

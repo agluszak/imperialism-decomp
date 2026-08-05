@@ -15,4 +15,41 @@ END
 BEGIN
 END
 
+// Retail RT_BITMAP 281: the indexed 128x128 brown surround tiled by
+// CMainFrame::OnEraseBkgnd when the backdrop sentinel is active.
+281 BITMAP "bitmaps/backdrop_0119.bmp"
+
+// Direct self-PE resources consumed by CIncludeView::PreCreateWindow and
+// TAssetMgr::FormatVersionStringFromVersionResource.
+31234 ICON "chrome/app_7a02.ico"
+
+1 VERSIONINFO
+FILEVERSION 1,1,0,5
+PRODUCTVERSION 1,1,0,0
+FILEFLAGSMASK 0x3fL
+FILEFLAGS 0x0L
+FILEOS 0x4L
+FILETYPE 0x1L
+FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Frog City\0"
+            VALUE "FileDescription", "Imperialism\0"
+            VALUE "FileVersion", "1.1.0.6\0"
+            VALUE "InternalName", "Ambit\0"
+            VALUE "LegalCopyright", "Copyright \251 1996-7\0"
+            VALUE "OriginalFilename", "Imperialism.exe\0"
+            VALUE "ProductName", "Imperialism\0"
+            VALUE "ProductVersion", "1.1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END
+
 #include "cursors/cursors.rc"

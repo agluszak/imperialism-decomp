@@ -217,62 +217,43 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
   }
 
   if (currentCapability < 0x19) {
-    if (0x31 < currentCapability) {
-      goto tier_two;
-    }
-    if (99 < currentCapability) {
-      goto tier_three;
-    }
-    if (199 < currentCapability) {
-      goto tier_four;
-    }
-    if (currentCapability < 300) {
-      if (currentCapability < 400) {
-        return;
-      }
-      goto tier_six;
-    }
-  } else {
-    if (currentCapability < 0x32) {
-      if (desiredCapability != 0) {
-        return;
-      }
-      owner->SetNationPendingActionStateAndPayload(0, 1);
+    return;
+  }
+  if (currentCapability < 0x32) {
+    if (desiredCapability != 0) {
       return;
     }
-  tier_two:
-    if (currentCapability < 100) {
-      if (1 < desiredCapability) {
-        return;
-      }
-      owner->SetNationPendingActionStateAndPayload(0, 2);
+    owner->SetNationPendingActionStateAndPayload(0, 1);
+    return;
+  }
+  if (currentCapability < 100) {
+    if (desiredCapability >= 2) {
       return;
     }
-  tier_three:
-    if (currentCapability < 200) {
-      if (2 < desiredCapability) {
-        return;
-      }
-      owner->SetNationPendingActionStateAndPayload(0, 3);
+    owner->SetNationPendingActionStateAndPayload(0, 2);
+    return;
+  }
+  if (currentCapability < 200) {
+    if (desiredCapability >= 3) {
       return;
     }
-  tier_four:
-    if (currentCapability < 300) {
-      if (3 < desiredCapability) {
-        return;
-      }
-      owner->SetNationPendingActionStateAndPayload(0, 4);
+    owner->SetNationPendingActionStateAndPayload(0, 3);
+    return;
+  }
+  if (currentCapability < 300) {
+    if (desiredCapability >= 4) {
       return;
     }
+    owner->SetNationPendingActionStateAndPayload(0, 4);
+    return;
   }
   if (currentCapability < 400) {
-    if (4 < desiredCapability) {
+    if (desiredCapability >= 5) {
       return;
     }
     owner->SetNationPendingActionStateAndPayload(0, 5);
     return;
   }
-tier_six:
   if (currentCapability < 500 && desiredCapability < 6) {
     owner->SetNationPendingActionStateAndPayload(0, 6);
   }

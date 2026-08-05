@@ -126,6 +126,10 @@ public:
   // 0x00554590 -- returns the province's +0xa0 eligibility byte when this entry has an
   // active queued child, else 0.
   unsigned int IsValidTarget(Province* province);
+  // ORACLE: Mac TTaskForce::IsValidTarget(TZone*). A selected force can target a zone
+  // when its cached graph distance does not exceed the slowest selected ship's movement
+  // weight. 0x005544a0.
+  bool IsValidTarget(TZone* candidate);
   // 0x00554300 -- action-context command resolver (0x0C/0x0D/0x0E/0x0F, fallback 1) from
   // this entry's location zone and a candidate context zone's capability slots.
   int MouseCodeForTarget(TZone* candidate) const;
