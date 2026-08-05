@@ -121,8 +121,8 @@ public:
   // win), 2 = side-1 win (see the round-cutoff check near roundCounter74 below).
   int battleOutcomeCode44; // +0x44 serialized; 0x5a5320 sets it to 1
   // pendingEndOfActionFlag48: cleared when the 0x232a end-of-action turn event is queued
-  // (news a TCommand); TArmyPlayer's move/target-selection loops (via the battle14
-  // back-pointer) gate on it being nonzero. No observed set site in ported code yet.
+  // (news a TCommand) and re-armed by TNextMoveCommand::DoIt before advancing the turn.
+  // TArmyPlayer's move/target-selection loops gate on it being nonzero.
   char pendingEndOfActionFlag48; // +0x48
   char fortLevel49;              // +0x49 serialized; nonzero suppresses depl trench-marking
   unsigned char pad4a[2];        // +0x4a

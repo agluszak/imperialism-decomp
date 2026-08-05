@@ -356,7 +356,7 @@ void TAttackProvinceMission::CalculateNeeds() {
     }
   }
 
-  unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[targetProvince30].fortLevel03;
+  signed char fortLevel = g_pGlobalMapState->cityScoreTable[targetProvince30].fortLevel03;
   float total = 0.0f;
   for (int i = 0; i < 5; ++i) {
     total += vector[i];
@@ -407,7 +407,7 @@ float TAttackProvinceMission::FitnessOf(TMilitaryUnit* candidateUnit, float* ref
 
 // FUNCTION: IMPERIALISM 0x0053e570
 void TAttackProvinceMission::Initialize() {
-  flag10 = 1;
+  marker11 = 1;
   if (targetProvince30 != -1) {
     pathMarker06 =
         static_cast<short>(g_pGlobalMapState->cityScoreTable[targetProvince30].ownerNationCode00);

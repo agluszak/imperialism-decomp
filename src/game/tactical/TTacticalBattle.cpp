@@ -575,7 +575,9 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
         state = 9;
       } else if (selectedUnit1c->actionPoints28 >=
                      g_awUnitTypeBaseActionPointTable[selectedUnit1c->unitTypeC] / 2 &&
-                 (tile->trenchMask10 & 0xc0) == 0 && tile->occupant4 == 0 &&
+                 (tile->trenchMask10 & 0x40) == 0 &&
+                 (tileGrid4[selectedUnit1c->tileIndex8].trenchMask10 & 0x40) == 0 &&
+                 (tile->trenchMask10 & 0x80) == 0 && tile->occupant4 == 0 &&
                  tile->terrainType0 != 4) {
         state = 7;
       }

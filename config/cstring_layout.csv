@@ -17,32 +17,32 @@ ImperialismCommandLineInfo|68|m_bClearRegistrySettings34|int|other|52|4|no|96bb2
 ImperialismCommandLineInfo|68|m_strMainWindowTitle38|CString|embedded|56|4|yes|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
 ImperialismCommandLineInfo|68|m_bForceAutoResOn3c|int|other|60|4|no|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
 ImperialismCommandLineInfo|68|m_bForceAutoResOff40|int|other|64|4|no|96bb27e5ea7e84dc|include/game/ImperialismCommandLineInfo.h
-Province|168|ownerNationCode00|signed char|other|0|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|formerOwnerNationCode01|signed char|other|1|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|developmentStage|signed char|other|2|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|fortLevel03|unsigned char|other|3|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|cityTileIndex04|StrategicTileIndex|other|4|2|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|lastTurnTick|short|other|6|2|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|adjacentRegionCount08|signed char|other|8|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|pad09|unsigned char|other|9|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|adjacentRegionIds0A|ProvinceIndexStorage[12]|other|10|24|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|adjacentRegionAnchorTiles22|StrategicTileIndex[12]|other|34|24|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|linkedRegionCount|signed char|other|58|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|byte3B|unsigned char|other|59|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|byte3C|unsigned char|other|60|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|pad3D|unsigned char|other|61|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|secondaryNeighborTileIndex3e|StrategicTileIndex|other|62|2|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|primaryNeighborTileIndex40|StrategicTileIndex|other|64|2|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|linkedTileIndices42|StrategicTileIndex[32]|other|66|64|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|resourceDevelopmentCounts82|short[10]|other|130|20|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|pad96|unsigned char[2]|other|150|2|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|stationedUnitChain98|TMilitaryUnit *|other|152|4|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|cityScoreValue|int|other|156|4|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|navyOrderReachableA0|unsigned char|other|160|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|exploredByNationMaskA1|unsigned char|other|161|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|resourcePresenceMaskA2|signed char|other|162|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|regionClassA3|signed char|other|163|1|no|052a95d7098ec4a7|include/game/map/map_records.h
-Province|168|cityNameA4|CString|embedded|164|4|yes|052a95d7098ec4a7|include/game/map/map_records.h
+Province|168|ownerNationCode00|signed char|other|0|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|formerOwnerNationCode01|signed char|other|1|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|developmentStage|signed char|other|2|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|fortLevel03|signed char|other|3|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|cityTileIndex04|StrategicTileIndex|other|4|2|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|lastTurnTick|short|other|6|2|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|adjacentRegionCount08|signed char|other|8|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|pad09|unsigned char|other|9|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|adjacentRegionIds0A|ProvinceIndexStorage[12]|other|10|24|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|adjacentRegionAnchorTiles22|StrategicTileIndex[12]|other|34|24|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|linkedRegionCount|signed char|other|58|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|byte3B|unsigned char|other|59|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|byte3C|unsigned char|other|60|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|pad3D|unsigned char|other|61|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|secondaryNeighborTileIndex3e|StrategicTileIndex|other|62|2|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|primaryNeighborTileIndex40|StrategicTileIndex|other|64|2|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|linkedTileIndices42|StrategicTileIndex[32]|other|66|64|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|resourceDevelopmentCounts82|short[10]|other|130|20|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|pad96|unsigned char[2]|other|150|2|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|stationedUnitChain98|TMilitaryUnit *|other|152|4|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|cityScoreValue|int|other|156|4|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|navyOrderReachableA0|unsigned char|other|160|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|exploredByNationMaskA1|unsigned char|other|161|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|resourcePresenceMaskA2|signed char|other|162|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|regionClassA3|signed char|other|163|1|no|69c884a42c373466|include/game/map/map_records.h
+Province|168|cityNameA4|CString|embedded|164|4|yes|69c884a42c373466|include/game/map/map_records.h
 RuntimeSelectionRecord|20|providerGuid|GUID|other|0|16|no|e082f9fbc1f43203|include/game/net/TWNetSessionManager.h
 RuntimeSelectionRecord|20|label|CString|embedded|16|4|yes|e082f9fbc1f43203|include/game/net/TWNetSessionManager.h
 TA7TemplateDialog|96|text5c|CString|embedded|92|4|yes|b85fdf96184d431d|include/game/gfx/TTemplateDialogs.h

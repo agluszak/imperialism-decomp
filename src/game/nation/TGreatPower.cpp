@@ -892,9 +892,8 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
   for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount; ++resourceType) {
-    short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
-    short orderCount = this->city->orderCountByType5c[resourceType];
-    total += static_cast<short>(resourceWeight * orderCount);
+    total += GetResourceDescriptorWeightWord0ByType(resourceType) *
+             this->city->orderCountByType5c[resourceType];
   }
 
   this->merchantCapacity = static_cast<short>(total);
@@ -960,9 +959,8 @@ void TGreatPower::InitializeDealBook(void) {
 void TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
                                                              short rowIndex) {
   this->AddToTreasury(amount);
-  int index =
-      static_cast<int>(rowIndex) * kAidAllocationColumnCount + static_cast<int>(columnIndex);
-  this->aidAllocationMatrix[index] += amount;
+  this->aidAllocationMatrix[rowIndex * kAidAllocationColumnCount + columnIndex -
+                            7 * kAidAllocationColumnCount] += amount;
   this->aidAllocationTotal += amount;
 }
 

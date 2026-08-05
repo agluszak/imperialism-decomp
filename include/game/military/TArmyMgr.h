@@ -210,11 +210,9 @@ public:
   // EndBattlePhase (0x4a1eb0).
   unsigned char needsTerrainRefreshFlag39a;
   unsigned char pad39b;
-  // +0x39c/+0x3a0/+0x3a4 -- three cached objects released (TObject::Free) and cleared by
-  // EndBattlePhase. Typed from
-  // CreateTacticalBattleViewAndInitializeBattleSetup's own construction evidence (best-
-  // effort argument order derived from calling-convention analysis, not yet confirmed by
-  // a passing `just compare` on that function).
+  // +0x39c/+0x3a0/+0x3a4 -- the friendly stack, opposing stack, and active battle object
+  // cached by CreateTacticalBattleViewAndInitializeBattleSetup and released by
+  // EndBattlePhase.
   class TArmyStack* ourStackBattle39c;
   class TArmyStack* enemyStackBattle3a0;
   class TArmyBattle* activeBattleView3a4;
@@ -415,7 +413,7 @@ public:
   // Validates troop support for one beachhead and rebuilds the directional map overlays
   // after rejecting excess units. The body uses only global state, but the retail caller
   // supplies the map-context action manager in ECX. 0x004a7370.
-  void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone);
+  void ReassessLanding(int nationSlot, int zone);
 
   TArmyMgr();
 };

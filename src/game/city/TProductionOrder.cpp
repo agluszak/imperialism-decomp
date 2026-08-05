@@ -54,15 +54,6 @@ short TProductionOrder::MaxOrder() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004b5100
-bool TProductionOrder::SetQuantity(short quantity) {
-  if (quantity > MaxOrder() || quantity < 0) {
-    return false;
-  }
-  this->quantity = quantity;
-  return true;
-}
-
 // NOOP: verified empty in original 0x004b5140
 // FUNCTION: IMPERIALISM 0x004b5140
 void TProductionOrder::Restock() {}

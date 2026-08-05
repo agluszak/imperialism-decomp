@@ -1707,6 +1707,8 @@ extern const float g_MissionResourceWeightScale_0065A8FC = 1.1f;
 extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
 // GLOBAL: IMPERIALISM 0x0065a904
 extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
+// GLOBAL: IMPERIALISM 0x0065a910
+extern const float g_NavyMissionIndustrialCostWeights_0065A910[4] = {1.0f, 1.0f, 1.0f, 1.0f};
 // GLOBAL: IMPERIALISM 0x0065a958
 extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a95c

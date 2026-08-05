@@ -531,7 +531,7 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
   }
   case kUnitOrderBuildFort: {
     short cityIndex = g_pGlobalMapState->terrainStateTable[targetTileIndex].cityRecordIndex;
-    unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
+    signed char fortLevel = g_pGlobalMapState->cityScoreTable[cityIndex].fortLevel03;
     refundAmount = g_awEngineerFortBuildCostByLevel[fortLevel];
     break;
   }

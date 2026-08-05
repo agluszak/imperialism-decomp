@@ -11,6 +11,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/map/TMapMgr.h"
 #include "game/city_ui/TLongintList.h"
+#include "game/city_ui/TCityInteriorMinister.h"
 #include "game/map/TIndexAndRankList.h"
 #include "game/nation/TMinor.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -270,7 +271,7 @@ void TForeignMinister::SetTradeBids() {
     }
   }
   if (skipMissionSlot1A == 0) {
-    owner->foreignMinister->GoodsMatchShipping();
+    owner->interiorMinister->PleaseBuildShip(interiorOrderKind1c);
     diplomacyPhaseCounter18 = 0;
   }
   this->SetBuyPriorities();

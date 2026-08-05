@@ -22,17 +22,18 @@ TNextMoveCommand::~TNextMoveCommand() {}
 
 // FUNCTION: IMPERIALISM 0x005a6620
 void TNextMoveCommand::DoIt() {
-  if (battle18 != g_pMapContextActionManager->activeBattleView3a4) {
+  TTacticalBattle* battle = battle18;
+  if (battle != g_pMapContextActionManager->activeBattleView3a4) {
     return;
   }
 
-  if (battle18->battleOutcomeCode44 != 0) {
-    bool sideWonFlag = (battle18->battleOutcomeCode44 == 1);
-    battle18->tacticalPlayer14->CommitTacticalResultsToSourceUnits(sideWonFlag);
-    battle18->tacticalPlayer18->CommitTacticalResultsToSourceUnits(!sideWonFlag);
-    battle18->FinalizeTacticalBattleOutcome(sideWonFlag);
+  if (battle->battleOutcomeCode44 != 0) {
+    int sideWonFlag = (battle->battleOutcomeCode44 == 1);
+    battle->tacticalPlayer14->CommitTacticalResultsToSourceUnits(sideWonFlag);
+    battle->tacticalPlayer18->CommitTacticalResultsToSourceUnits(!sideWonFlag);
+    battle->FinalizeTacticalBattleOutcome(sideWonFlag);
   } else {
-    battle18->pendingEndOfActionFlag48 = 1;
-    battle18->AdvanceToNextTacticalUnitTurnStep();
+    battle->pendingEndOfActionFlag48 = 1;
+    battle->AdvanceToNextTacticalUnitTurnStep();
   }
 }

@@ -82,7 +82,7 @@ static inline float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* h
     if (descriptor.PriorityTier() < minTier) {
       continue;
     }
-    int power = (child->experience / 100 + descriptor.ResolveWeight() * 10 + 5) / 10;
+    int power = (child->experience / 100 + descriptor.ResolveWeightDword() * 10 + 5) / 10;
     total += static_cast<float>(power);
   }
   return total;
@@ -132,7 +132,7 @@ static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
   short navyPriorityBucket =
       static_cast<short>((strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
   short resolveBucket =
-      static_cast<short>((strengthBucket + descriptor.ResolveWeight() * 10 + 5) / 10);
+      static_cast<short>((strengthBucket + descriptor.ResolveWeightDword() * 10 + 5) / 10);
   return ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
           ship->strength) /
          descriptor.TaskForceWeight();

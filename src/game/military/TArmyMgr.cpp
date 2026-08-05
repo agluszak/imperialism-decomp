@@ -1776,7 +1776,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
                                                                 TArmyStack* enemyStack,
                                                                 int ownerNationCodeInt) {
   int compositionClass = g_pGlobalMapState->ClassifyCityGateTerrainComposition(ownerNationCodeInt);
-  int fortLevel = g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].fortLevel03;
+  short provinceIndex = static_cast<short>(ownerNationCodeInt);
+  int fortLevel = g_pGlobalMapState->cityScoreTable[provinceIndex].fortLevel03;
   if (fortLevel > 0) {
     fortLevel++;
   }
@@ -1790,7 +1791,9 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  if (g_pSimMgr->multiplayerSessionRole == 1) {
+  unsigned char isMultiplayerHost =
+      static_cast<unsigned char>(g_pSimMgr->multiplayerSessionRole == 1);
+  if (isMultiplayerHost != 0) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
   newBattle->StartBattle();
@@ -2322,7 +2325,7 @@ void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(char nationId, in
 }
 
 // FUNCTION: IMPERIALISM 0x004a7370
-void TArmyMgr::ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlot, short zone) {
+void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
   TGreatPower* nation = g_apNationStates[nationSlot];
   int totalArms = 0;
   CIterator cursor(nation->militaryUnitList44);
@@ -2340,6 +2343,15 @@ void TArmyMgr::ValidateOrderSupportDeltaAndMarkDirectionalOverlays(int nationSlo
     CString message;
     g_pSimMgr->GetString(0x2745, 10, &message);
     g_pViewMgr->ModalMessage(message, g_ptArmyValidationModalMessage);
+
+    CIterator reassessCursor(nation->militaryUnitList44);
+    for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(reassessCursor.Reset());
+         reassessCursor.More(); unit = static_cast<TMilitaryUnit*>(reassessCursor.Advance())) {
+      if (unit->orderTargetIndex0C == zone &&
+          g_pGlobalMapState->TileHasMovementClassId(unit->tileIndex06, zone) == 0) {
+        unit->SetOrders(kUnitOrderIdle, -1);
+      }
+    }
     g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
   }
 }

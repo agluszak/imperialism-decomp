@@ -13,7 +13,7 @@
 #include "game/ui_core/TViewMgr.h"
 
 static __inline short ReadWeight(const short* tableBase, short index) {
-  return tableBase[static_cast<unsigned int>(index)];
+  return tableBase[index];
 }
 
 enum {
@@ -138,39 +138,36 @@ short TShipOrder::MaxOrder() {
 
 // FUNCTION: IMPERIALISM 0x004b8800
 bool TShipOrder::SetQuantity(short quantity) {
-  TCity* city = this->ownerCity;
-  const short priorQuantity = this->quantity;
-  const short delta = quantity - priorQuantity;
-  const short weightIndex = this->resourceTypeIndex;
-  const short maxAllowed = static_cast<short>(this->MaxOrder());
+  const short delta = static_cast<short>(quantity - this->quantity);
 
-  if (maxAllowed < quantity || quantity < 0) {
+  if (!TProductionOrder::SetQuantity(quantity)) {
     return 0;
   }
 
-  this->quantity = quantity;
-
-  city->cityStockLumberC8 =
-      static_cast<short>(city->cityStockLumberC8 -
-                         ReadWeight(g_industryActionCostWeightResCode09, weightIndex) * delta);
-  city->VerifyStocks();
-  city->cityStockFabricC6 =
-      static_cast<short>(city->cityStockFabricC6 -
-                         ReadWeight(g_industryActionCostWeightResCode08, weightIndex) * delta);
-  city->VerifyStocks();
-  city->cityStockArmsD6 = static_cast<short>(
-      city->cityStockArmsD6 - ReadWeight(g_industryActionCostWeightResCode10, weightIndex) * delta);
-  city->VerifyStocks();
-  city->cityStockSteelCC =
-      static_cast<short>(city->cityStockSteelCC -
-                         ReadWeight(g_industryActionCostWeightResCode0B, weightIndex) * delta);
-  city->VerifyStocks();
-  city->cityStockCoalBC = static_cast<short>(
-      city->cityStockCoalBC - ReadWeight(g_industryActionCostWeightResCode03, weightIndex) * delta);
-  city->VerifyStocks();
-  city->cityStockFuelCE = static_cast<short>(
-      city->cityStockFuelCE - ReadWeight(g_industryActionCostWeightResCode0C, weightIndex) * delta);
-  city->VerifyStocks();
+  ownerCity->cityStockLumberC8 = static_cast<short>(
+      ownerCity->cityStockLumberC8 -
+      ReadWeight(g_industryActionCostWeightResCode09, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockFabricC6 = static_cast<short>(
+      ownerCity->cityStockFabricC6 -
+      ReadWeight(g_industryActionCostWeightResCode08, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockArmsD6 = static_cast<short>(
+      ownerCity->cityStockArmsD6 -
+      ReadWeight(g_industryActionCostWeightResCode10, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockSteelCC = static_cast<short>(
+      ownerCity->cityStockSteelCC -
+      ReadWeight(g_industryActionCostWeightResCode0B, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockCoalBC = static_cast<short>(
+      ownerCity->cityStockCoalBC -
+      ReadWeight(g_industryActionCostWeightResCode03, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
+  ownerCity->cityStockFuelCE = static_cast<short>(
+      ownerCity->cityStockFuelCE -
+      ReadWeight(g_industryActionCostWeightResCode0C, resourceTypeIndex) * delta);
+  ownerCity->VerifyStocks();
   g_pViewMgr->RefreshCityProductionUi();
   return 1;
 }
@@ -211,7 +208,7 @@ void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
     return;
   }
 
-  short currentCapability = owner->GetBuildingCapacity(2);
+  short currentCapability = static_cast<short>(owner->GetArmsInNavy());
   short desiredCapability;
   if (owner->pendingActionStatus.byAction[0] == '\0') {
     desiredCapability = 0;

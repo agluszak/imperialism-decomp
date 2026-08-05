@@ -169,9 +169,6 @@ void TUnitOrder::Produce() {
     return;
   }
   TCity* cityContext = ownerCity;
-  if (cityContext == 0) {
-    return;
-  }
 
   CString sharedRefA;
   CString sharedRefB;
@@ -179,16 +176,11 @@ void TUnitOrder::Produce() {
   short entryId = resourceTypeIndex;
   unsigned char specialist = specialistMode;
   TSimMgr* localization = g_pSimMgr;
-  if (localization != 0) {
-    if (specialist == 0) {
-      localization->GetString(0x2718, entryId, &sharedRefB);
-    } else {
-      localization->GetString(0x2717, entryId, &sharedRefB);
-    }
+  if (specialist == 0) {
+    localization->GetString(0x2718, entryId, &sharedRefB);
+  } else {
+    localization->GetString(0x2717, entryId, &sharedRefB);
   }
-
-  cityContext->cityMetricsBlock4A[entryId] =
-      static_cast<short>(cityContext->cityMetricsBlock4A[entryId] + pendingDelta);
 
   TGreatPower* ownerNation = cityContext->ownerNationAc;
   short ownerNationSlot = 0;
@@ -197,6 +189,8 @@ void TUnitOrder::Produce() {
   }
 
   if (specialist == 0) {
+    cityContext->cityMetricsBlock4A[entryId] =
+        static_cast<short>(cityContext->cityMetricsBlock4A[entryId] + pendingDelta);
     const short recruitSearchOrigin = cityContext->HomeTownTileId();
     const bool allowActiveFlag2 = entryId == 4;
     for (short i = 0; i < pendingDelta; ++i) {

@@ -813,7 +813,7 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
-      selected = ship->Finest(selected, 0);
+      selected = selected->Finest(ship, 0);
     }
   }
 
@@ -842,11 +842,11 @@ void TZone::BuildNavalIntelligenceSourceDescription(CString* out, short nation) 
 }
 
 // FUNCTION: IMPERIALISM 0x00560970
-TAdmiral* TZone::FindReportingAdmiralForNation(short nation) {
+TAdmiral* TZone::FindReportingAdmiralForNation(int nation) {
   TShip* selected = 0;
   for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
     if (ship->location == this && ship->nation == nation) {
-      selected = ship->Finest(selected, 0);
+      selected = selected->Finest(ship, 0);
     }
   }
   return selected != 0 ? selected->admiral : 0;
@@ -1039,9 +1039,12 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
 int TZone::CountDiplomaticallyRelatedNationsInKeyMask(int nation) {
   int count = 0;
   for (int slot = 0; slot < 7; ++slot) {
-    if (g_apTerrainTypeDescriptorTable[slot] != 0 && (nationKeyMask10 & (1 << slot)) != 0 &&
-        g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(nation, slot)) {
-      ++count;
+    if (g_apTerrainTypeDescriptorTable[slot] != 0) {
+      unsigned char nationBit = static_cast<unsigned char>(1 << static_cast<short>(slot));
+      if ((static_cast<unsigned char>(nationKeyMask10) & nationBit) != 0 &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nation, slot)) {
+        ++count;
+      }
     }
   }
   return count;

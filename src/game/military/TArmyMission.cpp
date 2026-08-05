@@ -420,12 +420,11 @@ float TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(
 
 // FUNCTION: IMPERIALISM 0x0053d3e0
 float TArmyMission::IndustrialCostOfNeeds() {
-  double total = 0.0;
+  float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int i = 0; i < 5; ++i) {
-    total += static_cast<double>(requiredEquipageByClass[i]) *
-             static_cast<double>(g_ArmyMissionDotProductWeights_00697980[i]);
+    total += requiredEquipageByClass[i] * g_ArmyMissionDotProductWeights_00697980[i];
   }
-  return static_cast<float>(total);
+  return total;
 }
 
 // FUNCTION: IMPERIALISM 0x0053d420

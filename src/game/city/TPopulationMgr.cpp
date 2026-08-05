@@ -394,51 +394,51 @@ void TPopulationMgr::RemovePopulation(short startingSkillBand, short amount) {
 
   if (startingSkillBand == 1) {
     short available = baselineSlots10->lowSkillCount04;
-    if (available < remaining) {
-      remaining = static_cast<short>(remaining - available);
-      baselineSlots10->lowSkillCount04 = 0;
-      productionSlots14->lowSkillCount04 = 0;
-      startingSkillBand = 2;
-      strength = static_cast<short>(strength - remaining);
-    } else {
+    if (remaining <= available) {
       baselineSlots10->lowSkillCount04 = static_cast<short>(available - remaining);
       productionSlots14->lowSkillCount04 =
           static_cast<short>(productionSlots14->lowSkillCount04 - remaining);
       strength = static_cast<short>(strength - remaining);
       remaining = 0;
+    } else {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->lowSkillCount04 = 0;
+      productionSlots14->lowSkillCount04 = 0;
+      startingSkillBand = 2;
+      strength = static_cast<short>(strength - remaining);
     }
   }
 
   if (startingSkillBand == 2) {
     short available = baselineSlots10->mediumSkillCount06;
-    if (available < remaining) {
-      remaining = static_cast<short>(remaining - available);
-      baselineSlots10->mediumSkillCount06 = 0;
-      productionSlots14->mediumSkillCount06 = 0;
-      startingSkillBand = 4;
-      strength = static_cast<short>(strength - remaining * 2);
-    } else {
+    if (remaining <= available) {
       baselineSlots10->mediumSkillCount06 = static_cast<short>(available - remaining);
       productionSlots14->mediumSkillCount06 =
           static_cast<short>(productionSlots14->mediumSkillCount06 - remaining);
       strength = static_cast<short>(strength - remaining * 2);
       remaining = 0;
+    } else {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->mediumSkillCount06 = 0;
+      productionSlots14->mediumSkillCount06 = 0;
+      startingSkillBand = 4;
+      strength = static_cast<short>(strength - remaining * 2);
     }
   }
 
   if (startingSkillBand == 4) {
     short available = baselineSlots10->highSkillCount08;
-    if (available < remaining) {
-      remaining = static_cast<short>(remaining - available);
-      baselineSlots10->highSkillCount08 = 0;
-      productionSlots14->highSkillCount08 = 0;
-      strength = static_cast<short>(strength - remaining * 4);
-    } else {
+    if (remaining <= available) {
       baselineSlots10->highSkillCount08 = static_cast<short>(available - remaining);
       productionSlots14->highSkillCount08 =
           static_cast<short>(productionSlots14->highSkillCount08 - remaining);
       strength = static_cast<short>(strength - remaining * 4);
       remaining = 0;
+    } else {
+      remaining = static_cast<short>(remaining - available);
+      baselineSlots10->highSkillCount08 = 0;
+      productionSlots14->highSkillCount08 = 0;
+      strength = static_cast<short>(strength - remaining * 4);
     }
   }
 

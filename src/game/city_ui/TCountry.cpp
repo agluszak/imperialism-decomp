@@ -232,8 +232,8 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
-void TCountry::SetSerializedField8c(short value) {
-  this->overlayAnchorTileCache8c = value;
+void TCountry::SetSerializedField8c(int value) {
+  this->overlayAnchorTileCache8c = static_cast<short>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170

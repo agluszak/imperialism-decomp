@@ -159,11 +159,7 @@ char TMission::SmokeEmIfYouGotEm() {
 // TMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x00535020
-TMission::TMission() {
-  state08 = 2;
-  importanceScore0c = 0.0f;
-  marker11 = 0xff;
-}
+TMission::TMission() : state08(2), importanceScore0c(0.0f), marker11(0xff) {}
 
 // SYNTHETIC: IMPERIALISM 0x00535050
 // TMission::`scalar deleting destructor'
