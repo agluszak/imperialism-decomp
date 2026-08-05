@@ -12,6 +12,7 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TTown;
+class TLongintList;
 
 // Endian fixup of every city-score record's short fields after a raw scenario table
 // load (called only by TMapMgr::LoadScenarioMapStateFromTableResource). 0x518840,
@@ -25,6 +26,9 @@ void SplitTileIndexToHexRasterColumnX2AndRow(StrategicTileIndex tileIndex, short
 // 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c).
 // ABI: genuine __cdecl free function.
 void SplitTileIndexToRowAndColumn(StrategicTileIndex tileIndex, short* outRow, short* outCol);
+// 0x5122f0: shortest distance between two strategic-map tiles on the odd-row hex grid.
+// Genuine __cdecl free function; returns zero for the same tile.
+int ComputeStrategicHexTileDistance(StrategicTileIndex tileA, StrategicTileIndex tileB);
 
 // 0x005114b0. Maps an editor river connection mask to the tile-sprite variant stored in
 // TTerrainStateRecord::riverSpriteCode. Water tiles accept only a single direction bit; land
@@ -135,6 +139,10 @@ public:
   virtual bool
   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nationA,
                                                               short nationB); // slot 0x15 0x511f30
+  // Inlined passes used by slot 0x15. Both read Province::regionClassA3 through this
+  // manager's cityScoreTable.
+  void MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen);
+  bool AnyOwnedRegionClassSeen(TLongintList* regionList, const bool* regionClassSeen);
   // False if any of cityRecordIndex's adjacent regions already has ownerNationCode00 ==
   // nationTag; otherwise true only if there's also no second-degree link
   // (CollectSecondDegreeLinksMatchingNodeType returns 0 into a scratch buffer) AND no
@@ -146,7 +154,7 @@ public:
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
-  virtual int ComputeRepresentativeTileIndexForNation(int nationSlot);   // slot 0x19 0x511f10
+  virtual short ComputeRepresentativeTileIndexForNation(int nationSlot); // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
@@ -324,7 +332,7 @@ public:
   // (unmasked) byte].
   virtual byte FindResourceCapabilityRequirementLevel(StrategicTileIndex tileIndex,
                                                       short edgeIndex); // slot 0x31 0x513610
-  virtual byte GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
+  virtual char GetTileCivilianWorkOrderCostClassNibble(StrategicTileIndex nTileIndex,
                                                        char fUseHighNibble); // slot 0x32 0x513660
   // Packs value into developmentClassNibbles0c's low or high nibble (selectHighNibble
   // picks which); when writing the high nibble with a positive value and param4 != 0,
@@ -520,7 +528,7 @@ public:
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
   static StrategicTileIndex TileIndexFromRowCol(int row, int col);
 
-  int ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
+  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
@@ -535,9 +543,9 @@ public:
   // whose capability object exists and whose nation row decodes to nationTag.
   int CollectSecondDegreeLinksWithMinorNationFallback(ProvinceIndex cityRecordIndex, int nationTag,
                                                       int* nodeBuffer, char allowFallback);
-  // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
-  // adjacent-region list -- see the .cpp body comment.
-  char TileHasMovementClassId(int nodeContext, int regionIndex);
+  // Returns whether candidateProvinceIndex occurs in sourceProvinceIndex's
+  // adjacent-province list. 0x515e50.
+  char IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinceIndex);
   // ORACLE: Mac TMapMgr::HasPortInProvince(int). Returns true on the first linked tile
   // whose terrainStateTable activeFlags1c has the port bit (0x04) set.
   char HasPortInProvince(int provinceIndex);

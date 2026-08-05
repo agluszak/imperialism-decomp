@@ -85,8 +85,7 @@ Scope: code/memory locations used to load and apply cursor handles for mapped cu
 
 ### Tactical packet helper used by hover-state dispatch
 
-- `0x005A0D60` -> `QueueTacticalEventPacket232A`
-- `0x0040400C` -> `thunk_QueueTacticalEventPacket232A`
+- `0x005A0D60` -> `TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand`
 
 ### Cursor-state dependency helpers (map/tactical)
 
@@ -96,8 +95,8 @@ Scope: code/memory locations used to load and apply cursor handles for mapped cu
 - `0x004032EC` -> `thunk_ComputeHexNeighborTileIndices`
 - `0x00514290` -> `GetTileNormalizedMovementClassId`
 - `0x00402B1C` -> `thunk_GetTileNormalizedMovementClassId`
-- `0x00515E50` -> `TileHasMovementClassId`
-- `0x00403D78` -> `thunk_TileHasMovementClassId`
+- `0x00515E50` -> `TMapMgr::IsProvinceAdjacentTo`
+- `0x00403D78` -> `thunk_IsProvinceAdjacentTo`
 - `0x005C3490` -> `TMilitaryUnit::GetCategory`
 - `0x00407E64` -> import lookup thunk for `TMilitaryUnit::GetCategory`
 - `0x005D5710` -> `UpdateTurnEventPaletteByCode`

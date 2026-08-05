@@ -14,7 +14,7 @@ public:
   DECLARE_DYNCREATE(TNavyPlayer)
   // NOOP: verified empty in original 0x0059ebe0
   virtual ~TNavyPlayer() override {} // slot 0x01 (scalar deleting destructor)
-  virtual void CommitTacticalResultsToSourceUnits(int unused) override;      // slot 0x0d 0x59edd0
+  virtual void ApplyChanges(unsigned char sideWonFlag) override;             // slot 0x0d 0x59edd0
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59ee60
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59eea0
   // Navy slice (base TTacticalPlayer ends at +0x28).

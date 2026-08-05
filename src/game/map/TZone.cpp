@@ -523,7 +523,7 @@ void TZone::HandleKeyDown(int key_id) {
 
     if (bSlotIsActive) {
       if (sVarSlotId == static_cast<short>(key_id)) {
-        SetMapOrderUiFlag(1);
+        ShowFocusIngot(1);
         key_id = sVarSlotId + 1;
         nSlotsRemaining = 6;
         do {
@@ -554,12 +554,30 @@ void TZone::HandleKeyDown(int key_id) {
     for (pvNode = TShip::GetFirst(); pvNode != 0; pvNode = pvNode->next) {
       if (((pvNode->location == this) && (pvNode->nation == sVarActiveSlot)) &&
           (pvNode->taskForce == 0)) {
-        SetMapOrderUiFlag(1);
+        ShowFocusIngot(1);
         return;
       }
     }
   }
-  SetMapOrderUiFlag(0);
+  ShowFocusIngot(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005604e0
+void TZone::ReconsiderFocusIngot() {
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  if (activeNation == -1) {
+    activeNation = g_pSimMgr->GetActiveNationId();
+  }
+
+  if ((nationKeyMask10 & (1U << (static_cast<unsigned char>(activeNation) & 0x1f))) != 0) {
+    for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+      if (ship->location == this && ship->nation == activeNation && ship->taskForce == 0) {
+        ShowFocusIngot(1);
+        return;
+      }
+    }
+  }
+  ShowFocusIngot(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fe60
@@ -773,7 +791,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
 }
 
 // FUNCTION: IMPERIALISM 0x00560580
-void TZone::SetMapOrderUiFlag(bool flag) {
+void TZone::ShowFocusIngot(unsigned char flag) {
   unsigned char tileStateByte =
       g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionState16;
   if (((static_cast<unsigned char>(flag) !=
@@ -1029,7 +1047,7 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
     cachedDistance = cache[thisOrd * g_nMapActionContextCount + otherOrd];
   }
 
-  return static_cast<unsigned char>(cachedDistance);
+  return cachedDistance;
 }
 
 // TEMPLATE: IMPERIALISM 0x00561300

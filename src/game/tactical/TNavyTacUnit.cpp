@@ -38,7 +38,7 @@ void TNavyTacUnit::InitializeFromSourceShip(TShip* sourceShip) {
   aiStateCode2c = 0;
   attackTarget30 = 0;
   strength4 = sourceShip->strength;
-  crewStrength38 = sourceShip->strength;
+  secondaryCombatStrength38 = sourceShip->strength;
   int speed = sourceShip->GetSpeed();
   sourceShip34 = sourceShip;
   baseActionPoints3c = speed * 10;
@@ -66,39 +66,41 @@ float TNavyTacUnit::GetDamageScale() {
 
 // FUNCTION: IMPERIALISM 0x005a63c0
 void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting) {
-  int hullDelta;
-  int crewDelta;
+  int strengthDelta;
+  int secondaryCombatStrengthDelta;
   int actionPointDelta = 0;
 
   switch (targeting) {
   case kNavyTargetingHull:
-    hullDelta = static_cast<int>(damageAmount);
-    crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    secondaryCombatStrengthDelta = static_cast<int>(damageAmount);
+    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
     break;
   case kNavyTargetingCrew:
-    crewDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB_00669f18);
-    hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    secondaryCombatStrengthDelta =
+        static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    strengthDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioB_00669f18);
     break;
   case kNavyTargetingSail:
-    hullDelta = static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
-    crewDelta = 0;
+    secondaryCombatStrengthDelta =
+        static_cast<int>(damageAmount * g_dNavyDamageSplitRatioA_00669f10);
+    strengthDelta = 0;
     if (static_cast<float>(rand() % 10) < damageAmount) {
       actionPointDelta = 10;
     }
     break;
   default:
     // Unreached in practice; preserve the original default branch's raw float bits.
-    memcpy(&hullDelta, &damageAmount, sizeof(hullDelta));
-    crewDelta = hullDelta;
+    memcpy(&secondaryCombatStrengthDelta, &damageAmount, sizeof(secondaryCombatStrengthDelta));
+    strengthDelta = secondaryCombatStrengthDelta;
     break;
   }
 
-  strength4 -= hullDelta;
-  crewStrength38 -= crewDelta;
+  strength4 -= strengthDelta;
+  secondaryCombatStrength38 -= secondaryCombatStrengthDelta;
   baseActionPoints3c -= actionPointDelta;
-  if (strength4 <= 0 || crewStrength38 <= 0) {
+  if (strength4 <= 0 || secondaryCombatStrength38 <= 0) {
     strength4 = 0;
-    crewStrength38 = 0;
+    secondaryCombatStrength38 = 0;
     state1c = 3;
   }
 }

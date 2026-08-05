@@ -11,7 +11,7 @@ public:
 
   virtual void DoKeyEvent(TToolboxEvent* event) override;
   virtual void DoPostCreate(int arg) override;
-  virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext) override;
+  virtual void CenterOnTileAndRefresh(int tileIndex, int dispatchContext) override;
   virtual void HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, int arg2) override;
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord,
                                                        int dispatchContext) override;

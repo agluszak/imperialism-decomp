@@ -89,6 +89,7 @@ extern double g_dNavyDamageSplitRatioB_00669f18;
 extern double g_dNavyHitChanceRangeScale_00669ef8;
 extern float g_fNavyHitChanceCubeOffset_00669f00;
 extern float g_fNavyHitChanceNumerator_00669f04;
+extern int g_anNavyTacticalMoveCostsByDirection[6];
 
 extern "C" {
 extern TNavyMgr* g_pNavyOrderManager;

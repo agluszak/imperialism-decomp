@@ -420,6 +420,60 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00526620
+char TMapMaker::CheckProvs() {
+  if (ErrorCheck() != 0) {
+    return 1;
+  }
+
+  bool foundEmptyColumn = false;
+  int column = 0;
+  signed char* columnBase = &regionClassGrid10[0][0];
+  do {
+    if (foundEmptyColumn) {
+      break;
+    }
+    int row = 0;
+    signed char* cell = columnBase;
+    do {
+      if (*cell != -1) {
+        break;
+      }
+      ++row;
+      cell += 0x1b;
+    } while (row < 0xf);
+    if (row == 0xf) {
+      foundEmptyColumn = true;
+    }
+    ++column;
+    ++columnBase;
+  } while (column < 0x1b);
+
+  if (!foundEmptyColumn) {
+    return 1;
+  }
+
+  int classMask = 0;
+  int cellIndex = 0x1b;
+  do {
+    signed char regionClass = regionClassGrid10[0][cellIndex];
+    if (regionClass != -1) {
+      int direction = 0;
+      do {
+        int neighbor = GetAdjacentRegionGridCell(cellIndex, direction);
+        if (regionClassGrid10[0][neighbor] == -1) {
+          classMask |= 1 << regionClass;
+          break;
+        }
+        ++direction;
+      } while (direction < 6);
+    }
+    ++cellIndex;
+  } while (cellIndex < 0x17a);
+
+  return classMask != 0x7fffff;
+}
+
 // FUNCTION: IMPERIALISM 0x00526710
 char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
   bool foundEmptyColumn = false;

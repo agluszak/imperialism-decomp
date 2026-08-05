@@ -25,14 +25,15 @@ public:
   virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
       TTacticalUnit* attackerUnit,
       TacticalTileIndex targetTileIndex) override; // slot 0x10 0x5a5730
-  // Simply re-resolves the navy order manager's map-order chains; the int param is
-  // unused (RET 0x4 cleans the stack without reading it).
-  virtual void FinalizeTacticalBattleOutcome(int) override; // slot 0x12 0x5a5b70
+  // Simply re-resolves the navy order manager's map-order chains; sideWonFlag is unused.
+  virtual void EndBattle(unsigned char sideWonFlag) override; // slot 0x12 0x5a5b70, Mac oracle
 
   // NOOP: verified empty in original 0x005a5485 (no standalone TNavyBattle::TNavyBattle body exists: construction is fully inlined into CreateObject 0x005a5480; that address is its operator-new call site)
   TNavyBattle() {}
 
-  void SetTargeting(NavyTargeting targeting); // 0x5a5b90
+  void InitTacticalBattle(TTacticalPlayer* ourPlayer,
+                          TTacticalPlayer* enemyPlayer); // 0x5a5540, Mac oracle
+  void SetTargeting(NavyTargeting targeting);            // 0x5a5b90
 
   // The navy battle initializer rotates the six base movement costs into this
   // direction-indexed table from a random starting direction.

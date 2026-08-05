@@ -38,6 +38,8 @@ public:
   // 0x00573f60 — shift the content view's origin by (mode, delta), clamp to the
   // scrollable range, re-layout the content, and re-derive scrollBar64's word8c
   // track position from the new offset.
-  void AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short delta);
+  void ScrollOnce(int direction);
+  void ScrollPage(int direction);
+  void ScrollRelative(short horizontalDelta, short verticalDelta);
 };
 ASSERT_SIZE(TScrollView, 0x68);

@@ -113,9 +113,9 @@ void TScrollBarView::DoPostCreate(int arg) {
 void TScrollBarView::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xa) {
     if (sourceHandler->controlTag == kControlTagScup) { // 'scup'
-      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc);
+      ownerView84->ScrollRelative(0, 0xc);
     } else if (sourceHandler->controlTag == kControlTagScdn) { // 'scdn'
-      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc);
+      ownerView84->ScrollRelative(0, -0xc);
     }
   }
   TControl::DoEvent(commandId, sourceHandler, event);
@@ -132,8 +132,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
   int y = point.y;
   if (y >= word88 && y < word8c) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-    ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
-        0, static_cast<short>(ownerView84->frameHeight38));
+    ownerView84->ScrollRelative(0, static_cast<short>(ownerView84->frameHeight38));
     return;
   }
 
@@ -141,8 +140,7 @@ void TScrollBarView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint 
     return;
   }
   g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
-  ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
-      0, -static_cast<short>(ownerView84->frameHeight38));
+  ownerView84->ScrollRelative(0, -static_cast<short>(ownerView84->frameHeight38));
 }
 
 // FUNCTION: IMPERIALISM 0x00574970

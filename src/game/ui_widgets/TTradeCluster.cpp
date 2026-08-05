@@ -164,10 +164,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
       int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
       short activeNationSlot = g_pSimMgr->GetActiveNationId();
       TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-      short maxByNationMetric = 0;
-      if (activeNationState != 0) {
-        maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
-      }
+      short maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
 
       TNumberText* capacityControl =
           static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
@@ -203,6 +200,10 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     // row has no such child, so it dereferenced null and crashed on the 1 -> 0 click.
     return;
   }
+  case 0x66:
+    // Retail's in-range jump-table hole targets the common epilogue directly. It must
+    // not share the out-of-range default, which delegates to TAmtBarCluster::DoEvent.
+    return;
   case 0x67:
     g_pViewMgr->AddPendingTurnOverlayCode(-1);
     if (g_pViewMgr->GetPendingTurnOverlayCode() == 3) {
@@ -236,10 +237,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
   case 0x69: {
     short activeNationSlot = g_pSimMgr->GetActiveNationId();
     TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-    short maxByNationMetric = 0;
-    if (activeNationState != 0) {
-      maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
-    }
+    short maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
 
     TNumberText* capacityControl =
         static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
@@ -290,7 +288,7 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 // Returns early if UI mode is outside trade range (>3); otherwise reports
 // whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
-int TTradeCluster::IsTradeControlAtMinimum() {
+char TTradeCluster::IsTradeControlAtMinimum() {
   if (g_pViewMgr->GetPendingTurnOverlayCode() > 3) {
     return 0;
   }
@@ -537,9 +535,7 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
   if (sellControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineUpdateSell);
   }
-  if (sellControl != 0) {
-    sellControl->SetControlValue(tradeMetricValue, 1);
-  }
+  sellControl->SetControlValue(tradeMetricValue, 1);
 
   TAmtBar* barControl = static_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagBar));
   if (barControl == 0) {
@@ -550,23 +546,18 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
     FailNilPointerInUSmallViews(kAssertLineUpdateGree);
   }
 
-  if (barControl != 0) {
-    int barRange = barControl->frameWidth34;
-    if (tradeMetricValue != 0) {
-      int barSteps = barControl->auxValueA;
-      float barScale = 9999.0f;
-      if (barSteps != 0) {
-        barScale = (float)barRange / (float)barSteps;
-      }
-      int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
-      barControl->SetBarMetric(scaledMetricValue, barRange);
-      return;
+  int barRange = barControl->frameWidth34;
+  if (tradeMetricValue != 0) {
+    int barSteps = barControl->auxValueA;
+    float barScale = 9999.0f;
+    if (barSteps != 0) {
+      barScale = (float)barRange / (float)barSteps;
     }
-
-    barControl->SetBarMetric(0, barRange);
+    int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
+    barControl->SetBarMetric(scaledMetricValue, barRange);
+    return;
   }
 
-  if (greenControl != 0) {
-    greenControl->Show(0, 1);
-  }
+  barControl->SetBarMetric(0, barRange);
+  greenControl->Show(0, 1);
 }

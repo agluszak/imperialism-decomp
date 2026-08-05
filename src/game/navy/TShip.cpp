@@ -112,7 +112,35 @@ void TShip::Free() {
     mission->RejectConstituent(this, 1);
   }
   if (taskForce != 0) {
-    taskForce->Remove(this);
+    TTaskForce* owner = taskForce;
+    TMapOrderChildLinkNode* matchingLink = owner->shipList;
+    if (matchingLink != 0 && matchingLink->payload != this) {
+      matchingLink = matchingLink->next->FindNodeMatching(this);
+    }
+    if (matchingLink != 0) {
+      TMapOrderChildLinkNode* head = owner->shipList;
+      if (head == 0) {
+        head = 0;
+      } else if (head->payload == this) {
+        head = head->DeleteMapOrderChildLinkAndReturnNext();
+      } else {
+        head->next->RemoveLinkedOrderNodeByValueRecursive(this);
+      }
+      owner->shipList = head;
+
+      short bucketIndex =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
+      --owner->shipCountsByToolbarSlot[bucketIndex];
+    }
+    if (owner->flagship == this) {
+      TMapOrderChildLinkNode* node = owner->shipList;
+      owner->flagship = 0;
+      while (node != 0) {
+        owner->flagship = static_cast<TShip*>(node->payload)->Finest(owner->flagship, 0);
+        node = node->next;
+      }
+    }
+    taskForce = 0;
   }
   if (admiral != 0) {
     admiral->Free();
@@ -684,7 +712,15 @@ void TShip::ReassignToForce(TTaskForce* newOwnerEntry) {
       list_head = owner_ctx->shipList;
       if (list_head != 0) {
         if (this == list_head->payload) {
-          list_head = list_head->DeleteMapOrderChildLinkAndReturnNext();
+          TMapOrderChildLinkNode* next = list_head->next;
+          if (next != 0) {
+            next->prev = list_head->prev;
+          }
+          if (list_head->prev != 0) {
+            list_head->prev->next = list_head->next;
+          }
+          delete list_head;
+          list_head = next;
         } else {
           list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }

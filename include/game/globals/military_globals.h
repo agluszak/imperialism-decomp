@@ -45,22 +45,23 @@ extern unsigned char g_abStackCompositionClassTable[16];
 // Province::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
 // 0-7 (only the low byte of each int is ever read). Used by
 // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState to gate the per-unit meter snapshot.
-extern int g_anFortLevelAttackerPenaltyPercentByLevel[8];
+extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 
 // Per-unit-type blink/boost eligibility flag (0x64c808), indexed by TUnit::orderType; true
 // bound unconfirmed beyond the observed ~28 nonzero/zero entries.
-extern unsigned char g_abUnitTypeBlinkEligibilityFlag[32];
+extern unsigned char g_abUnitTypeBlinkEligibilityFlag[30];
 
 // Four per-unit-type meter-scoring tables read by
 // TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries, all indexed by
 // TUnit::orderType; true bounds unconfirmed beyond the observed sampled entries.
-extern int g_anWeightClassByOrderType[32]; // 0x64c790
+extern int g_anWeightClassByOrderType[30]; // 0x64c790
 
-extern short g_anScaledFactorByOrderType[32]; // 0x64c660
+extern short g_anScaledFactorByOrderType[30]; // 0x64c660
 
-extern float g_afPercentEfficiencyByOrderType[32]; // 0x64c6a0
+extern float g_afPercentEfficiencyByOrderType[30];    // 0x64c6a0
+extern float g_afRandomizedMeterDecayByOrderType[30]; // 0x64c718
 
-extern int g_anCountWeightByOrderType[32]; // 0x695578
+extern int g_anCountWeightByOrderType[30]; // 0x695578
 
 // Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
 // IArmyMgr (0x4a18f0); 8 rows x 4 flag bytes.
@@ -81,7 +82,7 @@ extern const float g_MissionOrderDistanceDecayWeightTable_006978c8[6];
 
 extern float g_ArmyMissionDotProductWeights_00697980[5];
 
-extern float g_ArmyMissionCandidateScoreTable_006978f8[];
+extern float g_ArmyMissionCandidateScoreTable_006978f8[24];
 
 extern const float g_InvadeMissionSuppressedPriorContributionScale_0065A95C;
 

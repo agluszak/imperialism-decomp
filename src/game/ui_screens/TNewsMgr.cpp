@@ -437,7 +437,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
       if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
         story->parmKind[0] = 3;
         story->parmValue[0] = reinterpret_cast<int>(record->location08);
-        wantId = (record->participantIndex02 != 0) - 0x1a;
+        wantId = (record->reportParticipantIndex02 != 0) - 0x1a;
       } else {
         short ordinalValue = static_cast<TZone*>(record->location08)->GetContextOrdinalOrInvalid();
         story->parmValue[0] = ordinalValue;

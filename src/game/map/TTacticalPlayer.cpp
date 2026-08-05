@@ -22,8 +22,8 @@ void TTacticalPlayer::NoOpTacticalPlayerHook0C(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x0059add0
-void TTacticalPlayer::CommitTacticalResultsToSourceUnits(int unused) {
-  (void)unused;
+void TTacticalPlayer::ApplyChanges(unsigned char sideWonFlag) {
+  (void)sideWonFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x0059adf0
@@ -110,7 +110,7 @@ bool TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
 void TTacticalPlayer::HandleTacticalCommandTag_skip() {
   if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
     field20 = 1;
-    battle14->QueueTacticalEventPacket232A();
+    battle14->FinishTacticalActionAndPostNextMoveCommand();
   }
 }
 

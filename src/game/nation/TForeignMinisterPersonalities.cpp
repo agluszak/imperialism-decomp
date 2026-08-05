@@ -424,7 +424,7 @@ void TBillForeignMinister::ReplyToTradeOffer(short arg1, short arg2, short arg3,
       g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, amount, arg3, 3, 0, 0);
       capabilityFlag16 = static_cast<short>(capabilityFlag16 - amount);
     } else {
-      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetMerchantCapacity(), arg3, 3, 1,
+      g_pTradeMgr->SetDealResults(owner->nationSlot, arg1, owner->GetMerchantCapacity(), arg3, 3, 0,
                                   0);
       capabilityFlag16 = 0;
     }
@@ -507,7 +507,9 @@ void TBillForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00532780
-TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {}
+TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {
+  skillIndexC = 3;
+}
 
 // SYNTHETIC: IMPERIALISM 0x005327f0
 // TDiplomatForeignMinister::`scalar deleting destructor'
@@ -690,7 +692,10 @@ void TDiplomatForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00533110
-TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {}
+TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {
+  skillIndexC = 2;
+  field48 = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00533180
 // TTextileForeignMinister::`scalar deleting destructor'
@@ -809,7 +814,9 @@ void TTextileForeignMinister::MakeNewCity(TCity* city) {
 IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005338a0
-TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {}
+TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {
+  skillIndexC = 1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00533910
 // TTraderForeignMinister::`scalar deleting destructor'

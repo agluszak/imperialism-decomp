@@ -94,7 +94,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   ourPlayer->IArmyPlayer(ourStack, 1, ourSideWatchFlag, ourStack->categoryFlag8);
   TArmyPlayer* enemyPlayer = new TArmyPlayer();
   enemyPlayer->IArmyPlayer(enemyStack, 0, enemySideWatchFlag, enemyStack->categoryFlag8);
-  BuildTacticalBattleStateFromBothSides(ourPlayer, enemyPlayer);
+  InitTacticalBattle(ourPlayer, enemyPlayer);
 
   battleSiteIndex38 = battleSiteIndex;
   LoadBattleSetupTabDataByIndex(compositionClass, fortLevel);
@@ -394,7 +394,7 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320
-void TArmyBattle::FinalizeTacticalBattleOutcome(int sideWonFlag) {
+void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
   battleOutcomeCode44 = 1;
   tacticalPlayer14->AssertValid();
   tacticalPlayer18->AssertValid();

@@ -196,9 +196,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     record->markerPixelY25c = mapViewportRect514.top + markerRow * 5 - 9;
 
     short spriteBase;
-    if (record->nationIds[record->participantIndex02] == g_pSimMgr->GetActiveNationId()) {
+    if (record->nationIds[record->reportParticipantIndex02] == g_pSimMgr->GetActiveNationId()) {
       spriteBase = 0;
-    } else if (record->nationIds[1 - record->participantIndex02] ==
+    } else if (record->nationIds[1 - record->reportParticipantIndex02] ==
                g_pSimMgr->GetActiveNationId()) {
       spriteBase = 4;
     } else {
@@ -542,15 +542,16 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     InvalidateCityDialogRectRegion(&newRect, 1);
   }
 
-  short participantIndex = static_cast<signed char>(record->reservedByte03);
+  short participantIndex = static_cast<signed char>(record->displayedParticipantIndex03);
   short otherParticipantIndex = static_cast<short>(1 - participantIndex);
   int activeSideRelation;
   if (static_cast<signed char>(
-          record->nationIds[static_cast<signed char>(record->participantIndex02)]) ==
+          record->nationIds[static_cast<signed char>(record->reportParticipantIndex02)]) ==
       g_pSimMgr->GetActiveNationId()) {
     activeSideRelation = 1;
   } else if (static_cast<signed char>(
-                 record->nationIds[1 - static_cast<signed char>(record->participantIndex02)]) ==
+                 record
+                     ->nationIds[1 - static_cast<signed char>(record->reportParticipantIndex02)]) ==
              g_pSimMgr->GetActiveNationId()) {
     activeSideRelation = -1;
   } else {
@@ -627,10 +628,11 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
     char activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
-    char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
+    char reportSidesAreSame =
+        record->displayedParticipantIndex03 == record->reportParticipantIndex02;
     char reportParticipantIsActive =
         static_cast<signed char>(
-            record->nationIds[static_cast<signed char>(record->participantIndex02)]) ==
+            record->nationIds[static_cast<signed char>(record->reportParticipantIndex02)]) ==
         g_pSimMgr->GetActiveNationId();
     char activeNationIsOtherReportSide = activeSideRelation != 0 && !reportParticipantIsActive;
     int otherNation = static_cast<signed char>(record->nationIds[0]);
