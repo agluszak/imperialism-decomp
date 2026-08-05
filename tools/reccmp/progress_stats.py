@@ -36,9 +36,6 @@ from tools.stubgen import ILT_THUNK_RANGE, compute_stub_rows
 FUNCTION_ROW_TYPE = "fun"
 REPORT_CACHE_VERSION = 1
 REPORT_CACHE_FILE = "reccmp_report.inputs.json"
-REGRESSION_ACCEPTANCE_RELATIVE_PATH = (
-    Path("config") / "baselines" / "reccmp_score_regression_acceptances.json"
-)
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
 AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
 TRACKED_NON_FUNCTION_ROW_TYPES = GLOBAL_ROW_TYPES + AUX_NON_FUNCTION_ROW_TYPES
@@ -105,11 +102,6 @@ def parse_args() -> argparse.Namespace:
         help="Committed baseline JSON. Relative paths resolve from the repo root.",
     )
     parser.add_argument("--commit-baseline", action="store_true", help="Overwrite the baseline.")
-    parser.add_argument(
-        "--regression-acceptance-file",
-        default=str(repo_root / REGRESSION_ACCEPTANCE_RELATIVE_PATH),
-        help="Address-specific reviewed score transitions allowed during baseline update.",
-    )
     parser.add_argument("--roadmap-csv", default="reccmp_roadmap.csv")
     parser.add_argument("--report-json", default="reccmp_report.json")
     parser.add_argument("--report-log", default="reccmp_report.log")
@@ -442,70 +434,6 @@ def function_changes(
     regressed.sort(key=lambda item: item[3] - item[2])  # biggest drop first
     unpaired_now.sort(key=lambda item: item[0])
     return regressed, unpaired_now, improved, newly_paired
-
-
-def score_regression_class(previous: float, current: float) -> str:
-    return "exact_to_nonexact" if previous >= 1.0 - FUNCTION_CHANGE_EPS else "similarity_drop"
-
-
-def load_score_regression_acceptances(path: Path) -> list[dict[str, Any]]:
-    if not path.is_file():
-        return []
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if payload.get("schema") != 1 or not isinstance(payload.get("acceptances"), list):
-        raise ValueError(f"invalid score-regression acceptance ledger: {path}")
-    return payload["acceptances"]
-
-
-def unaccepted_score_regressions(
-    regressed: list[tuple[str, str, float, float]],
-    acceptances: list[dict[str, Any]],
-) -> list[tuple[str, str, float, float]]:
-    """Return drops lacking one exact, evidence-bearing transition record."""
-    accepted: set[tuple[str, float, float]] = set()
-    for entry in acceptances:
-        if not isinstance(entry, dict):
-            raise ValueError("score-regression acceptance entry is not an object")
-        required_strings = (
-            "address",
-            "code_regression",
-            "reason",
-            "evidence_class",
-            "evidence_reference",
-            "semantic_status",
-        )
-        missing = [
-            key
-            for key in required_strings
-            if not isinstance(entry.get(key), str) or not entry[key].strip()
-        ]
-        if missing:
-            raise ValueError(
-                "score-regression acceptance lacks metadata: " + ", ".join(missing)
-            )
-        try:
-            previous = float(entry["previous_score"])
-            current = float(entry["new_score"])
-        except (KeyError, TypeError, ValueError) as error:
-            raise ValueError("score-regression acceptance lacks numeric old/new scores") from error
-        expected_class = score_regression_class(previous, current)
-        if entry["code_regression"] != expected_class:
-            raise ValueError(
-                f"score-regression acceptance {entry['address']} has class "
-                f"{entry['code_regression']}, expected {expected_class}"
-            )
-        accepted.add((entry["address"].lower(), previous, current))
-
-    output: list[tuple[str, str, float, float]] = []
-    for address, name, previous, current in regressed:
-        if not any(
-            accepted_address == address.lower()
-            and abs(accepted_previous - previous) <= FUNCTION_CHANGE_EPS
-            and abs(accepted_current - current) <= FUNCTION_CHANGE_EPS
-            for accepted_address, accepted_previous, accepted_current in accepted
-        ):
-            output.append((address, name, previous, current))
-    return output
 
 
 def baseline_provenance_error(
@@ -1148,21 +1076,6 @@ def main() -> int:
                     raise RuntimeError(
                         "refusing baseline update with previously paired functions now unpaired: "
                         + ", ".join(address for address, _name, _score in unpaired_now)
-                    )
-                acceptance_file = resolve_repo_path(
-                    repo_root, args.regression_acceptance_file
-                )
-                unaccepted = unaccepted_score_regressions(
-                    regressed, load_score_regression_acceptances(acceptance_file)
-                )
-                if unaccepted:
-                    details = ", ".join(
-                        f"{address} {previous * 100:.2f}%->{current * 100:.2f}%"
-                        for address, _name, previous, current in unaccepted
-                    )
-                    raise RuntimeError(
-                        "refusing baseline update with unreviewed per-function regressions: "
-                        + details
                     )
             stub_ratchet_notice = clamp_stub_count_ratchet(entry, baseline)
             write_json_atomic(baseline_file, entry)

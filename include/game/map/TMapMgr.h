@@ -136,9 +136,8 @@ public:
   // IsColonyOf, i.e. encodedNationSlot - 200 == nationA), then
   // returns true if nationB (plus its tied minors) owns any region sharing one of those
   // classes.
-  virtual bool
-  TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nationA,
-                                                              short nationB); // slot 0x15 0x511f30
+  virtual bool DoNationTerritoriesShareRegionClass(short nationA,
+                                                   short nationB); // slot 0x15 0x511f30
   // Inlined passes used by slot 0x15. Both read Province::regionClassA3 through this
   // manager's cityScoreTable.
   void MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen);

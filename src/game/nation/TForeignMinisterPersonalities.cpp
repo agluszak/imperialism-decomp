@@ -258,8 +258,8 @@ void TTedForeignMinister::DoFirstTurnDiplomacy() {
       }
     }
     if (!duplicate &&
-        !g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
-            ownerContextAt04->nationSlot, candidate) &&
+        !g_pGlobalMapState->DoNationTerritoriesShareRegionClass(ownerContextAt04->nationSlot,
+                                                                candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
       ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);
@@ -459,8 +459,8 @@ void TBillForeignMinister::DoFirstTurnDiplomacy() {
     ++attempts;
     short candidate = static_cast<short>(abs(rand()) % 0x10 + 7);
     if ((selectedCount == 0 || selectedNations[0] != candidate) &&
-        !g_pGlobalMapState->TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(
-            ownerContextAt04->nationSlot, candidate) &&
+        !g_pGlobalMapState->DoNationTerritoriesShareRegionClass(ownerContextAt04->nationSlot,
+                                                                candidate) &&
         g_apTerrainTypeDescriptorTable[candidate] != 0) {
       selectedNations[selectedCount] = candidate;
       ownerContextAt04->ApplyDiplomacyPolicyStateForTargetWithCostChecks(candidate, 0x133);

@@ -314,24 +314,11 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* poi
   }
   SetCursor(cursor);
 
-  TQuickDrawSurfaceContext* savedHoverSurface;
-  int savedHoverSurfaceFlags;
-  GetGWorld(&savedHoverSurface, &savedHoverSurfaceFlags);
-  bool restoreHoverSurface = savedHoverSurface != &g_defaultQuickDrawSurfaceSentinel;
-  if (restoreHoverSurface) {
-    // Hover frames are transient window decorations. If an animation tick leaves an
-    // offscreen GWorld active, QDFrameRect would burn the frame into the map cache and the
-    // next restoration blit would faithfully copy that stale black rectangle back onscreen.
-    SetGWorld(&g_defaultQuickDrawSurfaceSentinel, savedHoverSurfaceFlags);
-  }
   {
     ScopedMapQuickDrawContext scopedContext(this);
     if (hoveredTileIndex != paintedHoverTileIndex) {
       RenderStrategicTileSelectionAndNeighborHighlights();
     }
-  }
-  if (restoreHoverSurface) {
-    SetGWorld(savedHoverSurface, savedHoverSurfaceFlags);
   }
 
   paintedHoverTileIndex = hoveredTileIndex;

@@ -1630,8 +1630,7 @@ inline bool TMapMgr::AnyOwnedRegionClassSeen(TLongintList* regionList,
 }
 
 // FUNCTION: IMPERIALISM 0x00511f30
-bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nationA,
-                                                                          short nationB) {
+bool TMapMgr::DoNationTerritoriesShareRegionClass(short nationA, short nationB) {
   bool regionClassSeen[24] = {false};
 
   int i;

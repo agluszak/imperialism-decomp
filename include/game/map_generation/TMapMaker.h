@@ -131,10 +131,10 @@ public:
 
   // Seeds city regions on a lattice with LCG jitter then floods ids to adjacent city tiles.
   // 0x0052a160.
-  void GenerateCityRegionIdsBySeedAndNeighborPropagation();
+  void GenerateWaterRegionIdsBySeedAndNeighborPropagation();
 
   // Rotates the map columns so the peak city-tile-density band is recentred. 0x00529960.
-  void RotateMapColumnsByPeakCityTileDensity();
+  void RotateMapColumnsByPeakWaterTileDensity();
 
   // Randomly mirrors template banks within a fine-grid cell for each neighbour class that
   // differs from the base class. 0x005293d0.
@@ -146,7 +146,7 @@ public:
 
   // Scanline-fills city-region ids across the overlay grid from the region-border SeaSegment
   // table: for each cell, find the nearest crossing segment and write its region. 0x0052b9b0.
-  void AssignCityRegionIdsFromOverlayScanlineIntersections();
+  void AssignWaterRegionIdsFromOverlayScanlineIntersections();
 
   // Merges undersized city regions into a neighbour and compacts region ids.
   // Non-virtual (paired by address marker). 0x0052d750.

@@ -99,7 +99,7 @@ address|matching|name
 0x4270e0|1.0|TUiStyleRef::TUiStyleRef
 0x427200|1.0|TView::GetCursorID
 0x427220|1.0|TView::PostRender
-0x427240|0.6666666666666666|TView::HandleMouseCommandToSelf
+0x427240|1.0|TView::HandleMouseCommandToSelf
 0x427260|0.18181818181818182|TView::QueryContentBounds
 0x427290|1.0|TView::QueryBounds
 0x4272d0|1.0|TView::TranslateRectToWindow
@@ -727,6 +727,9 @@ address|matching|name
 0x487f40|1.0|CIterator::Advance
 0x487f70|1.0|TLongintList::NoOpWriteTo
 0x487f90|1.0|TLongintList::NoOpReadFrom
+0x487fb0|1.0|CLongintIterator::FirstLong
+0x487fe0|1.0|CLongintIterator::More
+0x488000|1.0|CLongintIterator::NextLong
 0x488030|1.0|TSortedPtrList::CreateObject
 0x4880a0|1.0|TSortedPtrList::ClearAndFreeAllPtrListRecords
 0x4880f0|1.0|TSortedPtrList::InvokePtrListResetHook
@@ -926,7 +929,7 @@ address|matching|name
 0x48b1c0|1.0|TView::Show
 0x48b200|1.0|TView::IsActionable
 0x48b250|1.0|TView::Locate
-0x48b2d0|0.23622047244094488|TView::UpdateCoordinates
+0x48b2d0|0.24615384615384617|TView::UpdateCoordinates
 0x48b3f0|1.0|TView::Resize
 0x48b4b0|0.2814814814814815|TView::InvalidateOffsetRegionUsingChildClipRect
 0x48b5f0|0.4819277108433735|TView::InvalidateCityDialogRectRegion
@@ -961,7 +964,7 @@ address|matching|name
 0x48c250|0.8292682926829268|TView::DoSetCursor
 0x48c380|0.8|TView::ApplyBounds
 0x48c450|0.6918918918918919|TView::HandleMouseDown
-0x48c590|0.6185567010309279|TView::HandleMouseUp
+0x48c590|0.6918918918918919|TView::HandleMouseUp
 0x48c6d0|0.875|TView::PointInBoundsAndActionable
 0x48c750|1.0|TView::DrawRectangleInCurrentUiContext
 0x48c7a0|1.0|TView::AssertMcAppUiLine1914
@@ -1513,6 +1516,7 @@ address|matching|name
 0x4a4190|1.0|TMapMgr::GetMilitaryMaster
 0x4a41d0|0.88|TArmyMgr::ComputeSelectedTileCityActionGateSum
 0x4a4260|0.8656716417910447|TArmyMgr::SetOrdersForIdleUnitsOnPendingTile
+0x4a42e0|1.0|TArmyMgr::DoTacticalCombat
 0x4a43f0|0.8387096774193549|TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile
 0x4a4490|0.912621359223301|TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile
 0x4a4550|0.8831168831168831|TArmyMgr::HasEligibleStationedUnitInRegion
@@ -1533,7 +1537,7 @@ address|matching|name
 0x4a5c50|1.0|TArmyBattle::`scalar deleting destructor'
 0x4a5c80|1.0|TArmyBattle
 0x4a5ca0|0.5432098765432098|TArmyMgr::ApplyPostBattleStackOutcomeAndGrowUnitMeters
-0x4a5ec0|0.5328947368421053|TArmyMgr::GenerateSpyReport
+0x4a5ec0|0.5307017543859649|TArmyMgr::GenerateSpyReport
 0x4a6680|0.7107652399481194|TArmyMgr::ShowSpyReport
 0x4a6d40|0.7088607594936709|TArmyMgr::ScanMapContextActionEntriesForCodeMatch
 0x4a6dd0|1.0|TArmyMgr::GetByteFlagAtOffset8
@@ -1541,7 +1545,7 @@ address|matching|name
 0x4a6e80|1.0|TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields
 0x4a6ef0|0.4335154826958106|TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer
 0x4a7370|0.6640316205533597|TArmyMgr::ReassessLanding
-0x4a7590|0.5128205128205128|TArmyMgr::ClearNationArmyActionModesAndCycleSelection
+0x4a7590|0.8387096774193549|TArmyMgr::ClearNationArmyActionModesAndCycleSelection
 0x4a76a0|0.3333333333333333|TArmyStack::CreateObject
 0x4a76d0|1.0|TArmyStack::GetRuntimeClass
 0x4a76f0|1.0|TArmyStack::TArmyStack
@@ -1556,8 +1560,9 @@ address|matching|name
 0x4a7c20|1.0|TArmyStack::Free
 0x4a7c60|0.9333333333333333|TArmyStack::ComputeStackCompositionClassCode
 0x4a7d20|1.0|TArmyStack::ReseatChainUnitsAndClearOrders
-0x4a7e70|0.4195121951219512|TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
-0x4a8040|0.4520123839009288|TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries
+0x4a7d90|0.717948717948718|TArmyStack::InitializeStrategicBattle
+0x4a7e70|0.543778801843318|TArmyStack::AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
+0x4a8040|0.43636363636363634|TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries
 0x4a82b0|1.0|TArmyStack::ApplyMeterGrowthToEligibleUnits
 0x4a83b0|1.0|TArmyStackList::CreateObject
 0x4a8430|1.0|TArmyStackList::GetRuntimeClass
@@ -1831,7 +1836,7 @@ address|matching|name
 0x4b5d50|1.0|TPopulationMgr::SetPopulation(short)
 0x4b5dc0|0.9361702127659575|TPopulationMgr::SetPopulation(short, short, short)
 0x4b5e80|1.0|TPopulationMgr::StartProductionPhase
-0x4b5ed0|0.31315240083507306|TPopulationMgr::Eat
+0x4b5ed0|0.32150313152400833|TPopulationMgr::Eat
 0x4b6260|0.25|TPopulationMgr::PretendToEat
 0x4b63e0|1.0|TPopulationMgr::GrowthRate
 0x4b64c0|0.7716535433070866|TPopulationMgr::PredictedNeeds
@@ -1848,7 +1853,7 @@ address|matching|name
 0x4b6ad0|1.0|TTrainingOrder::`scalar deleting destructor'
 0x4b6b00|1.0|TTrainingOrder
 0x4b6b20|1.0|TTrainingOrder::ITrainingOrder
-0x4b6b90|0.5|TTrainingOrder::MaxOrder
+0x4b6b90|0.48520710059171596|TTrainingOrder::MaxOrder
 0x4b6cd0|0.48951048951048953|TTrainingOrder::SetQuantity
 0x4b6de0|1.0|TTrainingOrder::FillOrderSheet
 0x4b6e30|0.39215686274509803|TTrainingOrder::Produce
@@ -1861,7 +1866,7 @@ address|matching|name
 0x4b7080|0.3805309734513274|TUnitOrder::MaxOrder
 0x4b7210|0.6412213740458015|TUnitOrder::SetQuantity
 0x4b7320|1.0|TUnitOrder::FillOrderSheet
-0x4b73b0|0.308300395256917|TUnitOrder::Produce
+0x4b73b0|0.328|TUnitOrder::Produce
 0x4b77e0|1.0|TUnitOrder::SetOrderCostProfile
 0x4b7850|1.0|TUnitOrder::WriteTo
 0x4b7920|1.0|TUnitOrder::ReadFrom
@@ -1904,7 +1909,7 @@ address|matching|name
 0x4b86d0|0.6233766233766234|TShipOrder::MaxOrder
 0x4b8800|0.5394736842105263|TShipOrder::SetQuantity
 0x4b8970|1.0|TShipOrder::Produce
-0x4b89a0|0.2631578947368421|TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
+0x4b89a0|0.484375|TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability
 0x4b8b80|1.0|TShipOrder::FillOrderSheet
 0x4b8c90|1.0|TCapacityOrder::CreateObject
 0x4b8cc0|1.0|TCapacityOrder::GetRuntimeClass
@@ -2008,20 +2013,20 @@ address|matching|name
 0x4bf770|0.7017543859649122|TCityInteriorMinister::FillOrders
 0x4bf8a0|0.43781094527363185|TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister
 0x4bfa50|1.0|TCityInteriorMinister::QueueCityProductionPolicyCommands
-0x4bfb20|0.7736185383244206|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
+0x4bfb20|0.7269503546099291|TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
 0x4bff60|1.0|TCityInteriorMinister::NoOpProductionCommandHook24
-0x4bff80|0.5|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
+0x4bff80|0.5138888888888888|TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit
 0x4c0090|0.38848920863309355|TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
-0x4c02c0|0.5362318840579711|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
+0x4c02c0|0.5289855072463768|TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio
 0x4c04e0|1.0|TCityInteriorMinister::QueueRandomCityProductionCommand19To1C
 0x4c05a0|0.6363636363636364|TCityInteriorMinister::QueueShipProductionCommandIfMissing
 0x4c0690|1.0|TCityInteriorMinister::QueuePendingRecruitmentProductionCommand
 0x4c0730|1.0|TCityInteriorMinister::QueuePendingUnitProductionCommand
-0x4c07d0|0.33012379642365886|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits
+0x4c07d0|0.3356258596973865|TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits
 0x4c0d90|1.0|TCityInteriorMinister::MakeNewCity
 0x4c0de0|1.0|TCityInteriorMinister::RaiseNeedTargetWithinAvailableSurplus
 0x4c0e50|0.27616926503340755|TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls
-0x4c11c0|0.3058252427184466|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
+0x4c11c0|0.28640776699029125|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
 0x4c1510|0.6192468619246861|TCityInteriorMinister::ProcessUnitOrders
 0x4c18a0|0.6060606060606061|stretch<short>::Add
 0x4c1990|0.5679012345679012|TCityInteriorMinister::DispatchBuilders
@@ -2039,16 +2044,16 @@ address|matching|name
 0x4c3910|0.3431952662721893|TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates
 0x4c3c00|0.5959183673469388|TCityInteriorMinister::RebalanceCityOrderAllocationTargets
 0x4c3d60|0.4082687338501292|TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
-0x4c40c0|0.4779874213836478|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
+0x4c40c0|0.4716981132075472|TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations
 0x4c4370|0.3979848866498741|TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand
 0x4c4690|0.5872340425531914|TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
 0x4c4840|0.8477366255144033|TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
 0x4c49f0|0.8155844155844156|TCityInteriorMinister::UpdateMinisterProductionMetricsForResourceIndex
-0x4c4d40|0.5507246376811594|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
+0x4c4d40|0.463768115942029|TCityInteriorMinister::RaisePowerPlantOrderToReachLaborTarget
 0x4c4e60|0.7973856209150327|TCityInteriorMinister::FillRemainingNeedCapacityAndReducePowerPlantOrder
 0x4c4f90|1.0|TCityInteriorMinister::GetAverageDevelopmentOrderAllocation
 0x4c4fe0|0.10344827586206896|TCityInteriorMinister::RequestResource
-0x4c5240|0.4359464627151052|TCityInteriorMinister::SeekResources
+0x4c5240|0.4321223709369025|TCityInteriorMinister::SeekResources
 0x4c56e0|0.5496688741721855|TCityInteriorMinister::TryApplyCityOrderCapabilitySelectionBySlot
 0x4c5900|0.5423728813559322|TSteelCityMinister::CreateObject
 0x4c59c0|1.0|TSteelCityMinister::GetRuntimeClass
@@ -2214,12 +2219,12 @@ address|matching|name
 0x4d20e0|1.0|TCivMgr::ClearCivilianSelectionHighlightsForNation
 0x4d2160|0.5899280575539568|TCivMgr::SelectFirstAvailableCivilianForNation
 0x4d2270|0.8910891089108911|TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
-0x4d2380|0.7272727272727273|TCivMgr::HandleCivilianTileSelectionOrReportClick
-0x4d2540|0.8041237113402062|TCivMgr::ResolveCivilianTileSelectionOrReportActionCode
-0x4d2610|0.5581395348837209|TCivMgr::GetTileAction
+0x4d2380|0.7368421052631579|TCivMgr::HandleCivilianTileSelectionOrReportClick
+0x4d2540|0.8247422680412371|TCivMgr::ResolveCivilianTileSelectionOrReportActionCode
+0x4d2610|0.5813953488372093|TCivMgr::GetTileAction
 0x4d26d0|0.8224852071005917|TCivMgr::HandleCivilianTileOrderAction
 0x4d2930|1.0|TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex
-0x4d2960|0.4077669902912621|TCivMgr::ResolveCivilianTileOrderActionCode
+0x4d2960|0.4174757281553398|TCivMgr::ResolveCivilianTileOrderActionCode
 0x4d2c60|0.7647058823529411|TCivMgr::SetActiveCivilianSelection
 0x4d2cf0|1.0|TCivMgr::OrderAndCycle
 0x4d2d30|0.7461139896373057|TCivMgr::ShowDisbandCivilianConfirmationDialog
@@ -2241,7 +2246,7 @@ address|matching|name
 0x4d4bf0|0.21052631578947367|StrategicMapCallbackRecord::AppendPackedColorDword
 0x4d4dd0|1.0|stretch<unsigned char>::OverStretch
 0x4d4e40|1.0|stretch<unsigned char>::operator[]
-0x4d4ff0|0.1044776119402985|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer
+0x4d4ff0|0.10294117647058823|StrategicMapCallbackRecord::ApplyBitmapMaskToPixelBuffer
 0x4d5090|0.2389937106918239|StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows
 0x4d5580|1.0|StrategicMapCallbackRecord::AppendOpcodeByte
 0x4d5610|0.16842105263157894|StrategicMapCallbackRecord::AppendOpcodeBytePair
@@ -2343,8 +2348,8 @@ address|matching|name
 0x4db7d0|0.7043010752688172|TGreatPower::BuildTransportLinkedInfluenceMap
 0x4dbac0|1.0|TGreatPower::MarkConnectedOwnedRegionsFrom
 0x4dbbb0|0.872093023255814|TGreatPower::BuildCityInfluenceLevelMap
-0x4dbd20|0.19433198380566802|TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets
-0x4dbf00|0.2672955974842767|TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents
+0x4dbd20|0.2288135593220339|TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets
+0x4dbf00|0.43042071197411|TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndHandleEvents
 0x4dc3f0|0.34782608695652173|TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch
 0x4dc440|1.0|TGreatPower::HasAnyCommodityRecordBelowStepValue
 0x4dc4c0|0.8888888888888888|TGreatPower::ComputeTreasuryStatusPromptCode
@@ -2376,7 +2381,7 @@ address|matching|name
 0x4dd340|1.0|TGreatPower::AddAmountToAidAllocationMatrixCellAndTotal
 0x4dd3b0|1.0|TGreatPower::SumAidAllocationMatrixColumnForTarget
 0x4dd3f0|1.0|TGreatPower::SumAidAllocationMatrixAllCells
-0x4dd430|0.5142857142857142|TGreatPower::ComputeRemainingDiplomacyAidBudget
+0x4dd430|0.5714285714285714|TGreatPower::ComputeRemainingDiplomacyAidBudget
 0x4dd470|1.0|TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches
 0x4dd4e0|0.6081504702194357|TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots
 0x4dd740|1.0|TGreatPower::GetStockpile
@@ -2385,7 +2390,7 @@ address|matching|name
 0x4dd7f0|0.6987951807228916|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DeliverItem
 0x4dda40|1.0|TGreatPower::ConsumeMerchantCapacityForPurchase
-0x4dda60|0.6|TGreatPower::GetAmtUnsold
+0x4dda60|1.0|TGreatPower::GetAmtUnsold
 0x4dda90|1.0|TGreatPower::SetTradeOffersFor
 0x4ddad0|0.7916666666666666|TGreatPower::AreAdvancedManufacturedTradeOffersExhausted
 0x4ddb20|1.0|TGreatPower::GetTradeOffersFor
@@ -2449,15 +2454,15 @@ address|matching|name
 0x4e0740|1.0|TGreatPower::GetBuildingCapacity
 0x4e0770|1.0|TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6
 0x4e07b0|0.8976377952755905|TGreatPower::GetReinforcementPotential
-0x4e0890|0.7933884297520661|TGreatPower::GetMilitaryPower
-0x4e09a0|0.7717391304347826|TGreatPower::GetTotalNavalForce
+0x4e0890|0.8925619834710744|TGreatPower::GetMilitaryPower
+0x4e09a0|0.7934782608695652|TGreatPower::GetTotalNavalForce
 0x4e0b20|0.8333333333333334|TGreatPower::ComputeArmyScoreRatioVsNation
 0x4e0c10|0.7361963190184049|TGreatPower::ComputeArmyScoreStandingRatioVsNation
 0x4e0d80|0.8333333333333334|TGreatPower::ComputeNavyScoreRatioVsNation
 0x4e0e70|0.7361963190184049|TGreatPower::ComputeNavyScoreStandingRatioVsNation
-0x4e0fe0|0.7708333333333334|TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary
+0x4e0fe0|0.7807486631016043|TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary
 0x4e1170|0.782608695652174|TGreatPower::ComputeArmyScoreStandingRatioVsNationPair
-0x4e1300|0.7708333333333334|TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary
+0x4e1300|0.7807486631016043|TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary
 0x4e1490|0.782608695652174|TGreatPower::ComputeNavyScoreStandingRatioVsNationPair
 0x4e1620|0.9|TGreatPower::ComputeArmyScoreRatioForNationPair
 0x4e1750|0.6321243523316062|TGreatPower::ComputeArmyScoreStandingRatioForNationPair
@@ -2501,7 +2506,7 @@ address|matching|name
 0x4e4660|1.0|TMinor::GetStockpile
 0x4e4680|1.0|TMinor::GetTradeOffersFor
 0x4e46a0|0.949438202247191|TMinor::InitializeTradeStatus
-0x4e49b0|0.328|TMinor::PurchaseItem
+0x4e49b0|0.3467741935483871|TMinor::PurchaseItem
 0x4e4bd0|0.7104477611940299|TMinor::SetTradeBids
 0x4e4ee0|0.3783783783783784|TMinor::StillBuyingItem
 0x4e4f50|1.0|TMinor::ReplyToTradeOffer
@@ -2567,7 +2572,7 @@ address|matching|name
 0x4e7ec0|0.9294605809128631|TAutoGreatPower::HandleWarTransitionRequestWithRoleSwap
 0x4e8040|0.6914285714285714|TAutoGreatPower::PassesDiplomacyStrengthThresholdForTarget
 0x4e8300|0.5918367346938775|TAutoGreatPower::SetPortZoneStateForNation
-0x4e83d0|0.6796116504854369|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates
+0x4e83d0|0.6699029126213593|TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates
 0x4e8540|0.6163522012578616|TAutoGreatPower::CreateMission
 0x4e8680|0.9666666666666667|TAutoGreatPower::RemoveMission
 0x4e8750|0.8927038626609443|TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric
@@ -2600,7 +2605,7 @@ address|matching|name
 0x4eb0d0|0.9607843137254902|TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
 0x4eb190|0.5878136200716846|TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools
 0x4eb5d0|0.6496815286624203|CompareMissionsByWeightedShortfall
-0x4eb6b0|0.515625|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio
+0x4eb6b0|0.5058365758754864|TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio
 0x4eb8b0|0.6575|TAutoGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits
 0x4ec020|0.4897959183673469|TDefenseMinister::CreateObject
 0x4ec0a0|1.0|TDefenseMinister::GetStategicEscalationMultiplier
@@ -2852,10 +2857,10 @@ address|matching|name
 0x4fc950|1.0|TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4fc9c0|0.5818181818181818|TMapKey::CreateObject
 0x4fca70|1.0|TMapKey::GetRuntimeClass
-0x4fcac0|0.481994459833795|TMapKey::DoPostCreate
+0x4fcac0|0.48753462603878117|TMapKey::DoPostCreate
 0x4fcea0|0.8181818181818182|TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
 0x4fcf80|0.75|TMapKey::Draw
-0x4fd000|0.832|TMapKey::RenderMapHintOverlayMode0
+0x4fd000|0.816|TMapKey::RenderMapHintOverlayMode0
 0x4fd220|0.2955145118733509|TMapKey::RenderMapHintOverlayMode4
 0x4fd5c0|0.3055555555555556|TMapKey::RenderMapHintOverlayMode1
 0x4fd910|0.5506216696269982|TMapKey::RenderMapHintOverlayMode2
@@ -3055,7 +3060,7 @@ address|matching|name
 0x5083f0|0.4037854889589905|TLanguageMgr::Localize
 0x5086a0|0.8108108108108109|TLanguageMgr::ReloadPreplutNewsTableAndResources
 0x508760|0.5714285714285714|TLanguageMgr::FreeNestedPointerTableRowsAndResetDimensions
-0x508800|0.7230769230769231|TLanguageMgr::BuildNewsTableDimensions
+0x508800|0.6461538461538462|TLanguageMgr::BuildNewsTableDimensions
 0x508910|0.49238578680203043|TLanguageMgr::PickGender
 0x508c50|0.49079754601226994|TLanguageMgr::NormalizeRuntimeCredentialNameToken
 0x508f30|0.31334622823984526|BuildHexNeighborHighlightPolygonForTile
@@ -3086,7 +3091,7 @@ address|matching|name
 0x50bbc0|1.0|TMacViewMgr::ApplySellOrderRowToNationState
 0x50bc50|0.6167400881057269|TMacViewMgr::SyncSellTaggedChildControlWithNationState
 0x50be30|0.96|TMacViewMgr::MakeBookDialog
-0x50bea0|0.2995126273814798|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
+0x50bea0|0.2977403633141338|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets
 0x50d310|0.5625|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag
 0x50d360|0.6857142857142857|TMacViewMgr::OpenBuildingWindow
 0x50d470|0.7195121951219512|TMacViewMgr::RestoreBuildingWindowAtSavedPosition
@@ -3138,20 +3143,21 @@ address|matching|name
 0x511e80|1.0|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress
 0x511ed0|0.6666666666666666|TMapMgr::DispatchTurnEvent7DDForActiveNation
 0x511f10|1.0|TMapMgr::ComputeRepresentativeTileIndexForNation
-0x511f30|0.24|TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
+0x511f30|0.16666666666666666|TMapMgr::DoNationTerritoriesShareRegionClass
 0x5121d0|0.3111111111111111|TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext
 0x5122b0|1.0|TMapMgr::IsShiftKeyDown
 0x5122d0|1.0|TMapMgr::IsAltKeyDown
+0x5122f0|0.5|ComputeStrategicHexTileDistance
 0x5123e0|1.0|ComputeStridedRecordAddress6C
 0x512440|0.8155339805825242|ProjectTileIndexToWrappedScreenOffsetByScale
 0x5125a0|1.0|SplitTileIndexToRowAndColumn
 0x5127e0|0.6551724137931034|SplitTileIndexToHexRasterColumnX2AndRow
 0x512850|1.0|ComputeTileIndexFromHexColumnX2AndRow
 0x5128f0|1.0|LookupHexNeighborRowDeltaByDirection
-0x512930|0.25622775800711745|BuildHexAreaTileIndexList
+0x512930|0.27177700348432055|BuildHexAreaTileIndexList
 0x512b50|0.4375|TMapMgr::GetNeighborTileIDArray
-0x512cc0|0.4647887323943662|TMapMgr::GetNeighborTileID
-0x512dd0|0.5435897435897435|TMapMgr::GetDirectionFrom
+0x512cc0|0.44594594594594594|TMapMgr::GetNeighborTileID
+0x512dd0|0.7961165048543689|TMapMgr::GetDirectionFrom
 0x512f10|1.0|AreTileIndicesHexAdjacent
 0x513050|0.85|NormalizeWrappedMapCoord108x60
 0x513120|0.95|NormalizeWrappedMapCoord217x60
@@ -3161,16 +3167,16 @@ address|matching|name
 0x5133f0|0.4818181818181818|TMapMgr::SetOwner
 0x5135a0|0.45614035087719296|TMapMgr::FindResourceCapabilityRequirementLevelByType
 0x513610|0.896551724137931|TMapMgr::FindResourceCapabilityRequirementLevel
-0x513660|0.7142857142857143|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
-0x5136a0|1.0|TMapMgr::SetCivilianDevelopmentClassNibble
-0x513720|0.4155844155844156|TMapMgr::FindMaxResourceCapabilityValueForTile
-0x5137b0|0.36363636363636365|TMapMgr::CanBuildPortAtTile
+0x513660|1.0|TMapMgr::GetTileCivilianWorkOrderCostClassNibble
+0x5136a0|0.8888888888888888|TMapMgr::SetCivilianDevelopmentClassNibble
+0x513720|1.0|TMapMgr::FindMaxResourceCapabilityValueForTile
+0x5137b0|0.39823008849557523|TMapMgr::CanBuildPortAtTile
 0x513980|0.556390977443609|TMapMgr::IsValidSecondaryNationHomeTileCandidate
-0x513ca0|0.5782312925170068|TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask
+0x513ca0|0.7986348122866894|TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask
 0x513ed0|0.6111111111111112|TMapMgr::CheckTileProspectingDiscoveryCandidate
 0x513f60|0.9722222222222222|TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair
-0x513ff0|0.647887323943662|TMapMgr::ApplyRailSectionEndpointDirectionFlags
-0x514080|0.647887323943662|TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles
+0x513ff0|0.676056338028169|TMapMgr::ApplyRailSectionEndpointDirectionFlags
+0x514080|0.676056338028169|TMapMgr::ApplyEngineerRailCostDeltaForConnectedTiles
 0x514110|0.6751592356687898|TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
 0x514250|1.0|TMapMgr::GetTileUnitEntryByOwner
 0x514290|0.47058823529411764|TMapMgr::ResolveTileOwnerNationCodeNormalized
@@ -3180,30 +3186,30 @@ address|matching|name
 0x5145b0|0.6075949367088608|TMapMgr::QueueDepotConstructionOrder
 0x5147d0|0.6491228070175439|TMapMgr::QueuePortConstructionOrder
 0x5149d0|0.918918918918919|TMapMgr::SetProvinceCapitalTileFlagBit08
-0x514a20|0.3333333333333333|TMapMgr::PlaceCity
+0x514a20|0.36|TMapMgr::PlaceCity
 0x514c80|0.8163265306122449|FindReachableRecruitSpawnTileWithVisitedReset
 0x514cd0|0.6231884057971014|TMapMgr::FindReachableRecruitSpawnTileRecursive
 0x514dc0|0.6666666666666666|TMapMgr::SeedValidCitySiteCandidateTilesForNation
-0x514e40|0.2222222222222222|TMapMgr::SeedRecruitSearchVisitedStateExcludingNation
+0x514e40|0.48484848484848486|TMapMgr::SeedRecruitSearchVisitedStateExcludingNation
 0x514e80|1.0|TMapMgr::SeedRecruitSearchVisitedStateFromSelectedCivilianOrder
-0x514ef0|0.2|TMapMgr::ResetRecruitSearchVisitedState
+0x514ef0|1.0|TMapMgr::ResetRecruitSearchVisitedState
 0x514f20|0.375|TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory
-0x5150e0|0.5034013605442177|TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
+0x5150e0|0.46511627906976744|TMapMgr::SeedRecruitSearchVisitedStateFromMilitaryUnitCandidates
 0x515330|0.3170731707317073|TMapMgr::DimByProspecting
 0x515460|0.3707865168539326|TMapMgr::DimByDevelopment
 0x5155c0|0.3236994219653179|TMapMgr::DimByMining
 0x515720|0.39106145251396646|TMapMgr::DimByFishing
 0x515890|0.1958041958041958|TMapMgr::DimByCompany
 0x5159b0|0.378698224852071|TMapMgr::DimByTrackLaying
-0x515b10|0.3167420814479638|TMapMgr::DimByEngineering
+0x515b10|0.3470319634703196|TMapMgr::DimByEngineering
 0x515d60|1.0|TMapMgr::ApplyUnitMovementClassForTileIfValid
 0x515db0|0.5217391304347826|TMapMgr::DimmingOff
 0x515de0|1.0|TMapMgr::NoOpVirtualSlot2D
 0x515e00|1.0|TMapMgr::SetMapTileStateByteAndNotifyObserver
-0x515e50|1.0|TMapMgr::TileHasMovementClassId
+0x515e50|1.0|TMapMgr::IsProvinceAdjacentTo
 0x515ec0|1.0|TMapMgr::AssignCityRecordDisplayName
 0x515f40|1.0|TMapMgr::SetGlobalMapCellSharedLabel
-0x515f80|0.4888888888888889|TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags
+0x515f80|0.5223880597014925|TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags
 0x516090|1.0|TMapMgr::FindLinkedTileForAdjacentProvince
 0x516100|0.8888888888888888|TMapMgr::SetCapitalCityDevelopmentStageIfValidNationSlot
 0x516150|1.0|TMapMgr::LookupTileSpriteVariantOffsetByTerrainAndGate
@@ -3220,11 +3226,11 @@ address|matching|name
 0x5176c0|1.0|TMapMgr::ComputeTerrainRecordByteOffsetForIndex
 0x5176e0|1.0|TMapMgr::GetMapImprovementTierBucketOffset
 0x517710|0.4|TMapMgr::ApplyMapImprovementSelectionState
-0x517780|0.6923076923076923|TMapMgr::GetMapImprovementSpriteBaseOffset
+0x517780|1.0|TMapMgr::GetMapImprovementSpriteBaseOffset
 0x5177d0|1.0|TMapMgr::GetMapImprovementTileOffsetFromClass
 0x5177f0|0.25806451612903225|TMapMgr::GetMapImprovementTileSpriteOffset
 0x5178c0|0.75|TMapMgr::ResetAllTileMarkerSlotIndicesToSentinel
-0x5178f0|0.3431372549019608|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
+0x5178f0|0.3488943488943489|TMapMgr::ComputeRepresentativeTileIndexForNationWithWrapBias
 0x517c30|0.358974358974359|TMapMgr::AreNationsBorderLinked
 0x517d40|0.5416666666666666|TMapMgr::HasAdjacentProvinceOwnedByNation
 0x517dd0|0.40963855421686746|TMapMgr::HasDirectOrFallbackLinkedNodeType
@@ -3242,7 +3248,7 @@ address|matching|name
 0x518aa0|0.8|TMapMgr::HasActiveLinkedTileWithReachableSea
 0x518b40|0.9523809523809523|TMapMgr::CalculateDeveloperTilePurchaseCost
 0x518bd0|0.6033057851239669|TMapMgr::MarkAdjacentHexOrderDirectionAndSelectTile
-0x518d90|0.40707964601769914|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
+0x518d90|0.4107142857142857|TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
 0x519140|0.534453781512605|TMapMgr::DumpAndResetMapScriptState
 0x519610|0.4939759036144578|TMapMgr::ChooseNationSetupProfilesForOpenSlots
@@ -3298,7 +3304,7 @@ address|matching|name
 0x51cc40|1.0|TMapEditView::GetRuntimeClass
 0x51cc60|0.3434343434343434|TMapEditView::DoPostCreate
 0x51ce60|0.6748466257668712|TMapEditView::HandleMapClickByInteractionMode
-0x51cfa0|0.58|TMapEditView::InvokeDialogHooks1D8ThenE4
+0x51cfa0|0.58|TMapEditView::CenterOnTileAndRefresh
 0x51d060|0.7904761904761904|TMapEditView::DispatchOverlayEvent78FromStridedRecord
 0x51d210|0.21301775147928995|TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79
 0x51d380|0.3006535947712418|TMapEditView::PlaceTerrain
@@ -3317,7 +3323,7 @@ address|matching|name
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
 0x51e260|0.30535894843276035|TMapDialog::Draw
-0x51eb40|0.31497127407908077|TMapDialog::DrawOneTile
+0x51eb40|0.31475852752448497|TMapDialog::DrawOneTile
 0x520670|0.860125260960334|TMapDialog::DrawBorder
 0x520970|0.7682926829268293|TMapDialog::DrawMapDialogGuidePatternSetA_00520970
 0x520a90|1.0|TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
@@ -3360,6 +3366,7 @@ address|matching|name
 0x525990|1.0|TMapMaker::`scalar deleting destructor'
 0x5259c0|1.0|TMapMaker::~TMapMaker
 0x525a30|0.7480719794344473|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides
+0x526620|0.4858757062146893|TMapMaker::CheckProvs
 0x526710|0.3076923076923077|TMapMaker::ValidateAllColumnsHaveAssignedRegionClass
 0x526760|1.0|TMapMaker::ValidateTerrainClassAdjacencyCoverageMask
 0x5267f0|0.17982456140350878|TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass
@@ -3385,11 +3392,12 @@ address|matching|name
 0x5296a0|0.8484848484848485|TMapMaker::CopyRegionTemplateBankWithRandomVariant
 0x5297e0|0.8735632183908046|TMapMaker::CopyRegionTemplateBankToNeighborCell
 0x5298a0|0.5172413793103449|TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
-0x529960|0.27251732101616627|TMapMaker::RotateMapColumnsByPeakCityTileDensity
-0x529d90|0.6413793103448275|TMapMaker::ComputeOwnedTerritoryCentroidTile
+0x529960|0.27251732101616627|TMapMaker::RotateMapColumnsByPeakWaterTileDensity
+0x529c80|0.8901734104046243|TMapMaker::ZoneCorner
+0x529d90|0.625|TMapMaker::ComputeOwnedTerritoryCentroidTile
 0x529f60|0.6068965517241379|TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders
 0x52a0a0|0.47058823529411764|TMapMaker::CompactCityRegionIds
-0x52a160|0.26161790017211706|TMapMaker::GenerateCityRegionIdsBySeedAndNeighborPropagation
+0x52a160|0.26161790017211706|TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation
 0x52a600|1.0|TMapMaker::IsSeaTile
 0x52a670|0.7586206896551724|TMapMaker::GetCityRegionIdAtTileIndex
 0x52a6b0|1.0|TMapMaker::SetSeaZoneIndex
@@ -3406,7 +3414,7 @@ address|matching|name
 0x52b500|1.0|stretch<SeaSegment>::Detach
 0x52b520|0.4582210242587601|AssignRegionIdAlongBorderSegmentChain
 0x52b820|1.0|TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides
-0x52b9b0|0.22508038585209003|TMapMaker::AssignCityRegionIdsFromOverlayScanlineIntersections
+0x52b9b0|0.22508038585209003|TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections
 0x52bef0|0.21359223300970873|SeaSegment::ExtractWrappedEndpoint
 0x52c000|1.0|SeaSegment::SelectAttrByAngle
 0x52c0a0|1.0|stretch<Seapoint>::Add
@@ -3414,7 +3422,7 @@ address|matching|name
 0x52c990|0.8333333333333334|ConvertTileIndexToOverlayCoord216BySide
 0x52ca20|0.6666666666666666|EmitOverlaySegmentFromTileEdgeSorted
 0x52cae0|0.27353463587921845|TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks
-0x52d030|1.0|Seapoint::WrappedDeltaMetric
+0x52d030|0.6923076923076923|Seapoint::WrappedDeltaMetric
 0x52d150|0.7021276595744681|stretch<Seapoint>::operator[]
 0x52d1f0|0.2784090909090909|TMapMaker::ReindexContiguousCityRegionIds
 0x52d4b0|0.35856573705179284|TMapMaker::RepairOrphanedTileValuesFromNeighbors
@@ -3460,7 +3468,7 @@ address|matching|name
 0x52f730|1.0|TForeignMinister::WeNeedMoney
 0x52f7b0|0.6310679611650486|TForeignMinister::ArrangeMaterialsOffers
 0x52f940|0.5897435897435898|TForeignMinister::SetTradeBids
-0x52f9d0|0.391304347826087|TForeignMinister::DoUsualSubsidyRule
+0x52f9d0|0.37815126050420167|TForeignMinister::DoUsualSubsidyRule
 0x52fba0|0.32558139534883723|TForeignMinister::ReplyToTradeOffer
 0x52fcc0|1.0|TForeignMinister::EndTradePhase
 0x52fd10|1.0|TForeignMinister::SetDiplomacyPolicies
@@ -3494,13 +3502,13 @@ address|matching|name
 0x531ce0|1.0|TBillForeignMinister::WriteTo
 0x531d20|0.3708609271523179|TBillForeignMinister::SetBuyPriorities
 0x531e50|0.3486238532110092|TBillForeignMinister::SetTradeBids
-0x532190|0.4014732965009208|TBillForeignMinister::ReplyToTradeOffer
+0x532190|0.39779005524861877|TBillForeignMinister::ReplyToTradeOffer
 0x532520|0.8035714285714286|TBillForeignMinister::DoFirstTurnDiplomacy
 0x5325e0|1.0|TBillForeignMinister::DoSecondTurnDiplomacy
 0x532650|1.0|TBillForeignMinister::MakeNewCity
 0x5326e0|0.19607843137254902|TDiplomatForeignMinister::CreateObject
 0x532760|1.0|TDiplomatForeignMinister::GetRuntimeClass
-0x532780|0.07142857142857142|TDiplomatForeignMinister::TDiplomatForeignMinister
+0x532780|0.06896551724137931|TDiplomatForeignMinister::TDiplomatForeignMinister
 0x5327f0|1.0|TDiplomatForeignMinister::`scalar deleting destructor'
 0x532820|1.0|TDiplomatForeignMinister
 0x532840|1.0|TDiplomatForeignMinister::DoFirstTurnDiplomacy
@@ -3511,7 +3519,7 @@ address|matching|name
 0x533050|1.0|TDiplomatForeignMinister::MakeNewCity
 0x533070|0.19230769230769232|TTextileForeignMinister::CreateObject
 0x5330f0|1.0|TTextileForeignMinister::GetRuntimeClass
-0x533110|0.07142857142857142|TTextileForeignMinister::TTextileForeignMinister
+0x533110|0.06666666666666667|TTextileForeignMinister::TTextileForeignMinister
 0x533180|1.0|TTextileForeignMinister::`scalar deleting destructor'
 0x5331b0|1.0|TTextileForeignMinister
 0x5331d0|0.7692307692307693|TTextileForeignMinister::SetBuyPriorities
@@ -3520,7 +3528,7 @@ address|matching|name
 0x533780|1.0|TTextileForeignMinister::MakeNewCity
 0x533800|0.19607843137254902|TTraderForeignMinister::CreateObject
 0x533880|1.0|TTraderForeignMinister::GetRuntimeClass
-0x5338a0|0.07142857142857142|TTraderForeignMinister::TTraderForeignMinister
+0x5338a0|0.06896551724137931|TTraderForeignMinister::TTraderForeignMinister
 0x533910|1.0|TTraderForeignMinister::`scalar deleting destructor'
 0x533940|1.0|TTraderForeignMinister
 0x533960|0.5922330097087378|TTraderForeignMinister::SetBuyPriorities
@@ -3723,6 +3731,7 @@ address|matching|name
 0x53bc20|1.0|TScatteredShipsMission::CalculateImportance
 0x53bc40|0.8571428571428571|TScatteredShipsMission::CalculateNeeds
 0x53bcc0|1.0|TScatteredShipsMission::Matches
+0x53bd30|0.5321100917431193|SelectNearestInactiveShipToZone
 0x53bdd0|0.472|TScatteredShipsMission::GiveOrders
 0x53bf90|1.0|TScatteredShipsMission::RefreshMissionPortZoneContextForNation
 0x53bfb0|1.0|TArmyMission::CreateObject
@@ -3740,6 +3749,7 @@ address|matching|name
 0x53c5e0|0.6666666666666666|TArmyMission::RejectConstituent
 0x53c620|0.7783251231527094|TArmyMission::AccumulateLack
 0x53c7a0|0.5420560747663551|TArmyMission::ComputeProvinceImportance
+0x53c880|0.9259259259259259|ComputeProvinceImportanceForNation
 0x53c950|0.7936507936507936|TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent
 0x53c9d0|1.0|TArmyMission::ProjectEquipage
 0x53cac0|0.547945205479452|TArmyMission::ProjectSatisfaction
@@ -3747,9 +3757,9 @@ address|matching|name
 0x53cc10|0.4731182795698925|AccumulateUnitOrderPriorityVectorContribution
 0x53cda0|0.562962962962963|TArmyMission::GetWeightedEquipage
 0x53ceb0|0.4607329842931937|TArmyMission::GetWeightedSatisfaction
-0x53d020|0.44621513944223107|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
+0x53d020|0.4444444444444444|TArmyMission::ComputeArmyMissionScoreDeltaWithCandidateUnit
 0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
-0x53d3e0|0.8181818181818182|TArmyMission::IndustrialCostOfNeeds
+0x53d3e0|0.9090909090909091|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
 0x53d4a0|0.6985645933014354|TArmyMission::FitnessOf
 0x53d630|0.5925925925925926|TArmyMission::GetReplacementSlot48
@@ -3791,7 +3801,7 @@ address|matching|name
 0x53f160|0.7142857142857143|TInvadeMission::ForgetTaskForce
 0x53f190|0.6666666666666666|TInvadeMission::AcceptReenforcement
 0x53f1c0|0.6666666666666666|TInvadeMission::RejectConstituent
-0x53f1f0|0.8333333333333334|TInvadeMission::IndustrialCostOfNeeds
+0x53f1f0|0.8888888888888888|TInvadeMission::IndustrialCostOfNeeds
 0x53f240|1.0|TInvadeMission::IsHospitalMission
 0x53f260|1.0|TInvadeMission::GetRuntimeClass
 0x53f2a0|1.0|operator>>(class CArchive &, class TInvadeMission *&)
@@ -3921,7 +3931,7 @@ address|matching|name
 0x544720|0.627906976744186|TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots
 0x544840|0.41706161137440756|IltTarget_00544840
 0x5449b0|0.44036697247706424|BuildTurnEvent2ArraySyncPacketDeltaOrFull
-0x544b30|0.4|IltTarget_00544b30
+0x544b30|0.3904761904761905|IltTarget_00544b30
 0x544cd0|0.3422459893048128|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode
 0x544e30|1.0|TMultiplayerMgr::DoIdle
 0x544e70|1.0|TMultiplayerMgr::InitializeProtocolOptionControlFromProvider
@@ -3936,7 +3946,7 @@ address|matching|name
 0x545660|1.0|TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5
 0x5456a0|0.6956521739130435|TMultiplayerMgr::CloseLobbyDialogAndEmitTurnEvent3
 0x545730|0.42033898305084744|TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-0x545940|0.46973599484867995|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
+0x545940|0.4565357372826787|TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine
 0x549240|1.0|TouchSessionActiveNationId
 0x549280|1.0|TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C
 0x5493c0|0.3516483516483517|TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags
@@ -4022,7 +4032,7 @@ address|matching|name
 0x54f500|0.9523809523809523|TShip::TShip
 0x54f5c0|1.0|TShip::`scalar deleting destructor'
 0x54f5f0|0.9696969696969697|TShip::~TShip
-0x54f640|0.44171779141104295|TShip::Free
+0x54f640|0.8651685393258427|TShip::Free
 0x54f7b0|0.5540540540540541|TShip::IShip
 0x54f8e0|0.6068376068376068|CreateNavyPrimaryOrderNodeAndAssignDisplayName
 0x54fab0|1.0|TShip::WriteTo
@@ -4061,7 +4071,7 @@ address|matching|name
 0x550f30|1.0|GetResourceDescriptorStatByColumn
 0x550f60|1.0|TShip::IsInHomePort
 0x550f80|1.0|TShip::Damage
-0x550ff0|0.5112781954887218|TShip::ReassignToForce
+0x550ff0|0.958904109589041|TShip::ReassignToForce
 0x551100|0.5211267605633803|TShip::Capture
 0x551220|1.0|TShip::SetTaskForce
 0x5512d0|0.3018867924528302|TAdmiral::CreateObject
@@ -4076,7 +4086,7 @@ address|matching|name
 0x551850|0.7291666666666666|TAdmiral::ReassignThyself
 0x551990|1.0|TAdmiral::IsSeniorTo
 0x5519d0|1.0|FindCumulativeWeightBucketIndex
-0x551a00|0.39166666666666666|TAdmiral::EstimateEnemyForces
+0x551a00|0.4166666666666667|TAdmiral::EstimateEnemyForces
 0x551be0|0.40484429065743943|TAdmiral::GetFleetReport
 0x552160|0.5116279069767442|TAdmiral::EstimateStrengthRating
 0x552250|1.0|TAdmiral::AssignToShip
@@ -4104,13 +4114,13 @@ address|matching|name
 0x552f80|0.6572769953051644|TTaskForce::OrderEvade
 0x5530f0|0.6517857142857143|TTaskForce::OrderPatrol
 0x553270|0.6697247706422018|TTaskForce::OrderSail
-0x5533f0|0.3858695652173913|TTaskForce::OrderSailTowards
+0x5533f0|0.3837837837837838|TTaskForce::OrderSailTowards
 0x5536c0|0.6697247706422018|TTaskForce::OrderBlockade
 0x553840|0.6697247706422018|TTaskForce::OrderSendInTheMarines
 0x5539c0|1.0|TTaskForce::MaxOut
 0x553a50|1.0|TTaskForce::DropShips
-0x553b10|0.4827586206896552|TTaskForce::IsEmpty
-0x553b50|0.8363636363636363|TTaskForce::NoSelection
+0x553b10|0.41379310344827586|TTaskForce::IsEmpty
+0x553b50|0.7636363636363637|TTaskForce::NoSelection
 0x553bc0|0.6536585365853659|TTaskForce::Add
 0x553e30|1.0|TTaskForce::ElectFlagship
 0x553e70|0.2608695652173913|TTaskForce::Victory
@@ -4119,7 +4129,8 @@ address|matching|name
 0x5540b0|0.5172413793103449|TTaskForce::SubmitOrders
 0x554300|0.6105263157894737|TTaskForce::MouseCodeForTarget(class TZone *)
 0x554460|1.0|TTaskForce::MouseCodeForTarget(struct Province *)
-0x554590|0.6075949367088608|TTaskForce::IsValidTarget
+0x5544a0|0.5732484076433121|TTaskForce::IsValidTarget(class TZone *)
+0x554590|0.6075949367088608|TTaskForce::IsValidTarget(struct Province *)
 0x554660|0.9026548672566371|TTaskForce::CommitToOrders
 0x5547d0|0.8472222222222222|TTaskForce::CancelOrders
 0x5548e0|1.0|TTaskForce::DemocraticallyDetermineAggressionLevel
@@ -4127,20 +4138,20 @@ address|matching|name
 0x5549a0|1.0|TTaskForce::Select(class TShip *, unsigned char)
 0x554a30|0.95|TTaskForce::GetSelected
 0x554a80|0.9565217391304348|TTaskForce::GetWorstSpeed
-0x554ad0|0.8275862068965517|TTaskForce::GetDeciSpeed
+0x554ad0|0.9655172413793104|TTaskForce::GetDeciSpeed
 0x554b20|0.2681564245810056|TTaskForce::GetCompositionDescription
 0x554c90|1.0|TTaskForce::GetSnooperDescription
 0x554e70|0.5514018691588785|TTaskForce::GetGeneralDescription
 0x555090|0.4583333333333333|TTaskForce::RemoveStragglers
 0x5551d0|0.37104072398190047|TTaskForce::GetAuthority
-0x555420|0.5181347150259067|TTaskForce::Encounter
-0x555720|0.2549019607843137|TTaskForce::TryToSpot
+0x555420|0.5284974093264249|TTaskForce::Encounter
+0x555720|0.2484076433121019|TTaskForce::TryToSpot
 0x555920|0.7842105263157895|TTaskForce::ResolveEncounterWith
 0x555c20|0.5945945945945946|TTaskForce::AttemptToEvade
 0x555d10|0.6055045871559633|TTaskForce::BattleWith
 0x555de0|0.4794007490636704|TTaskForce::IsAfraidOf
 0x556010|0.5736434108527132|TTaskForce::GetBattleStrengthRating
-0x556100|0.8117647058823529|TTaskForce::CarryOutOrders
+0x556100|0.8538011695906432|TTaskForce::CarryOutOrders
 0x5562c0|1.0|TTaskForce::CountShips
 0x5563d0|1.0|TTaskForce::GetNationalIndex
 0x556410|0.9090909090909091|TTaskForce::CreateIngot
@@ -4170,18 +4181,22 @@ address|matching|name
 0x557560|0.9866666666666667|TNavyMgr::MakeSureAllShipsHaveOrders
 0x5577b0|0.8043478260869565|TNavyMgr::PrepareToCarryOutAllOrders
 0x557870|1.0|TTaskForce::RechargeAll
-0x5578a0|0.45883940620782726|TNavyMgr::CarryOutOrders
-0x557e10|0.6464646464646465|TNavyMgr::AssignEscorts
+0x5578a0|0.46153846153846156|TNavyMgr::CarryOutOrders
+0x557e10|0.7169811320754716|TNavyMgr::AssignEscorts
 0x557f10|0.33748960931005817|TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext
 0x558960|0.3333333333333333|TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes
 0x559a70|0.3867403314917127|GetMapContextActionCode
-0x559bd0|0.4290909090909091|GetActiveMapOrderEntryActionCode
+0x559bd0|0.43636363636363634|GetActiveMapOrderEntryActionCode
 0x559dd0|0.6666666666666666|TNavyMgr::ActionCursor
 0x559e00|0.4013377926421405|TNavyMgr::SelectionCursor
 0x55a020|0.6847826086956522|TNavyMgr::SelectionClick
 0x55a160|0.4221105527638191|TNavyMgr::DoTileClick
 0x55a4d0|1.0|TNavyMgr::WhoseIngotIsAt
-0x55a780|0.34975961538461536|TNavyMgr::ResolveStrategicBattle
+0x55a520|0.6588235294117647|SumTaskForceChildPowerAtOrAboveTier
+0x55a5e0|0.9473684210526315|CountTaskForceChildrenAtOrAboveTier
+0x55a630|1.0|CountTaskForceChildren
+0x55a690|0.5714285714285714|ApplyTaskForceConflictAttrition
+0x55a780|0.23434343434343435|TNavyMgr::ResolveStrategicBattle
 0x55b670|1.0|TNewsMgr::CreateObject
 0x55b6a0|1.0|TNewsMgr::`scalar deleting destructor'
 0x55b6d0|1.0|TNewsMgr::~TNewsMgr
@@ -4194,7 +4209,7 @@ address|matching|name
 0x55ba10|1.0|TLanguageMgr::GetNewsTexPath
 0x55ba30|0.3383458646616541|TNewsMgr::LoadNewsTable
 0x55bbf0|1.0|TLanguageMgr::GetNewsTabPath
-0x55bc10|0.7587548638132295|TNewsMgr::CreateNewspaper
+0x55bc10|0.625|TNewsMgr::CreateNewspaper
 0x55c010|0.2482638888888889|TNewsMgr::CreateEventStories
 0x55c970|0.5185185185185185|TNewsMgr::AddEvent
 0x55c9f0|0.8392156862745098|TNewsMgr::AddTreatyEvent
@@ -4249,7 +4264,8 @@ address|matching|name
 0x55ff70|0.39655172413793105|TZone::ScoreCoastalTileForContextAndCityStateAffinity
 0x560150|0.674364896073903|TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
 0x560470|0.5373134328358209|TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates
-0x560580|0.35602094240837695|TZone::SetMapOrderUiFlag
+0x5604e0|0.3269230769230769|TZone::ReconsiderFocusIngot
+0x560580|0.35602094240837695|TZone::ShowFocusIngot
 0x5606f0|0.5602836879432624|TZone::BuildNavalIntelligenceSourceDescription
 0x560970|1.0|TZone::FindReportingAdmiralForNation
 0x5609e0|1.0|TZone::CreateTaskForceFromNavyOrdersForNationIfEligible
@@ -4297,7 +4313,7 @@ address|matching|name
 0x562af0|0.738255033557047|RelaxMapTileCostFieldByNeighborTerrain
 0x562c00|0.5803108808290155|SelectBestSeedTileForNationFromCostField
 0x562d90|0.7722772277227723|TOcean::InitializeMapActionContextsForNationCountUsingCostField
-0x562f20|0.583554376657825|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks
+0x562f20|0.5935828877005348|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks
 0x563220|1.0|RegenerateAllMapActionContextStatusCodes
 0x563300|1.0|TOcean::GetMapActionContextEntryByNationCodeOffset17
 0x563330|1.0|TOcean::GetMapActionContextEntryByIndex
@@ -4396,7 +4412,7 @@ address|matching|name
 0x569500|1.0|TNavyToolbarCluster::`scalar deleting destructor'
 0x569530|1.0|TNavyToolbarCluster::~TNavyToolbarCluster
 0x569550|0.44970414201183434|TNavyToolbarCluster::DoEvent
-0x5696d0|0.5|TNavyToolbarCluster::IsTradeControlAtMinimum
+0x5696d0|1.0|TNavyToolbarCluster::IsTradeControlAtMinimum
 0x5696f0|1.0|TNavyToolbarCluster::SetSelectedChildTagAndRefresh
 0x5697d0|1.0|TSuperNavyRoster::CreateObject
 0x569870|1.0|TSuperNavyRoster::`scalar deleting destructor'
@@ -4532,7 +4548,7 @@ address|matching|name
 0x570de0|1.0|TPictureRadioButton::ViewEnable
 0x570ea0|0.5057471264367817|TPictureRadioButton::DefaultSize
 0x570f40|0.84375|TPictureRadioButton::Select
-0x570fb0|0.6178861788617886|TPictureRadioButton::HandleMouseDown
+0x570fb0|0.6341463414634146|TPictureRadioButton::HandleMouseDown
 0x571050|0.4897959183673469|TToggleButton::CreateObject
 0x5710d0|1.0|TToggleButton::GetRuntimeClass
 0x5710f0|1.0|TToggleButton::TToggleButton
@@ -4547,7 +4563,7 @@ address|matching|name
 0x571460|1.0|TUberCluster::TUberCluster
 0x571490|1.0|TUberCluster::`scalar deleting destructor'
 0x5714c0|1.0|TUberCluster::~TUberCluster
-0x5714e0|0.5|TUberCluster::IsTradeControlAtMinimum
+0x5714e0|1.0|TUberCluster::IsTradeControlAtMinimum
 0x571500|1.0|TUpDownPictureButton::CreateObject
 0x571580|1.0|TUpDownPictureButton::GetRuntimeClass
 0x5715a0|1.0|TUpDownPictureButton
@@ -4664,7 +4680,9 @@ address|matching|name
 0x573ce0|1.0|TScrollView::DoPostCreate
 0x573df0|1.0|TScrollBarView::`scalar deleting destructor'
 0x573e20|1.0|TScrollBarView::~TScrollBarView
-0x573f60|0.591715976331361|TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp
+0x573e40|0.2903225806451613|TScrollView::ScrollOnce
+0x573ed0|0.36065573770491804|TScrollView::ScrollPage
+0x573f60|0.591715976331361|TScrollView::ScrollRelative
 0x5740a0|1.0|TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext
 0x5741e0|1.0|TScrollView::SyncBoundedValueAndToggleControlStates
 0x5742b0|0.6612903225806451|TScrollView::PaintVisibleChildrenIntersectingClipRect
@@ -4754,7 +4772,7 @@ address|matching|name
 0x579740|1.0|TRadioTextCluster::DoPostCreate
 0x579770|1.0|TRadioTextCluster::DoEvent
 0x5797c0|1.0|TRadioTextCluster::SetSelectedTextOptionByTag
-0x5798a0|0.5865384615384616|TRadioTextCluster::AddItem
+0x5798a0|0.5673076923076923|TRadioTextCluster::AddItem
 0x579a60|0.5106382978723404|TRadioTextCluster::Draw
 0x579ae0|0.4897959183673469|TScenarioChooser::CreateObject
 0x579b60|1.0|TScenarioChooser::GetRuntimeClass
@@ -4762,7 +4780,7 @@ address|matching|name
 0x57a050|0.6187050359712231|TScenarioChooser::DoEvent
 0x57a2d0|0.6086956521739131|TScenarioChooser::ExitScreen
 0x57a310|1.0|TScenarioChooser::DoKeyEvent
-0x57a350|0.44680851063829785|TScenarioChooser::StartGame
+0x57a350|0.3732590529247911|TScenarioChooser::StartGame
 0x57a6e0|0.3493282149712092|TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore
 0x57ab30|1.0|TScenarioChooser::Free
 0x57ab70|0.5517241379310345|TTextList::CreateObject
@@ -4785,9 +4803,10 @@ address|matching|name
 0x57bb50|1.0|TSimMgr::`scalar deleting destructor'
 0x57bb80|0.926829268292683|TSimMgr::~TSimMgr
 0x57bbf0|0.7368421052631579|TSimMgr::ISimMgr
+0x57bc90|0.6363636363636364|TSimMgr::ResetTurnFlowStateAndRandomSeed
 0x57bd20|0.9895833333333334|TSimMgr::Free
 0x57bea0|0.944|TSimMgr::ReadFrom
-0x57c230|0.875|TSimMgr::WriteTo
+0x57c230|0.7734375|TSimMgr::WriteTo
 0x57c390|1.0|TSimMgr::RebuildNationStateSlotsNoOp
 0x57c3b0|0.9915966386554622|TSimMgr::RebuildGlobalOrderManagersAndCapabilityState
 0x57c7c0|0.8744588744588745|TSimMgr::RebuildMapContextAndGlobalMapState
@@ -4795,6 +4814,7 @@ address|matching|name
 0x57cad0|0.7278481012658228|TSimMgr::RebuildNationStateSlotsAndAvailability
 0x57cda0|0.532319391634981|TSimMgr::RebuildPrimaryNationStateForSlot
 0x57d520|0.797153024911032|TSimMgr::RebuildSecondaryNationStateForSlot
+0x57d7a0|0.8285714285714286|TSimMgr::DoPerTurnMissionAIStuff
 0x57d830|1.0|TSimMgr::GetSeason
 0x57d870|0.5517241379310345|TSimMgr::SetDifficultyLevel
 0x57d8b0|1.0|TSimMgr::GetEconomicTurn
@@ -4834,7 +4854,7 @@ address|matching|name
 0x581280|0.8148148148148148|TSimMgr::IsNationSlotEligibleForEventProcessing
 0x581300|0.5370370370370371|TSimMgr::RemoveNationSlotAndNotifyPeers
 0x581400|0.5362318840579711|TSimMgr::InitializeOrLoadEntryArray14AndClampLimits
-0x581510|0.9927007299270073|TSimMgr::UpdatePersistentTopTenNationScores
+0x581510|0.9878345498783455|TSimMgr::UpdatePersistentTopTenNationScores
 0x581870|0.5555555555555556|ReinitializeGameFlowAndPostTurnEventCode
 0x581ae0|1.0|TSimMgr::SetSelectedIndex6AAndTriggerRefresh
 0x581b20|1.0|TSimMgr::LoadNormalizedCredentialName
@@ -4898,7 +4918,7 @@ address|matching|name
 0x5840e0|1.0|TDipDlgCluster::TDipDlgCluster
 0x584110|1.0|TDipDlgCluster::`scalar deleting destructor'
 0x584140|1.0|TDipDlgCluster::~TDipDlgCluster
-0x584160|0.8631578947368421|TDipDlgCluster::IsTradeControlAtMinimum
+0x584160|0.9263157894736842|TDipDlgCluster::IsTradeControlAtMinimum
 0x584200|0.4897959183673469|TTradePolicyCluster::CreateObject
 0x584280|1.0|TTradePolicyCluster::GetRuntimeClass
 0x5842a0|1.0|TTradePolicyCluster::TTradePolicyCluster
@@ -4952,7 +4972,7 @@ address|matching|name
 0x586040|1.0|TUnitToolbarCluster::`scalar deleting destructor'
 0x586070|1.0|TUnitToolbarCluster::~TUnitToolbarCluster
 0x586090|0.7358490566037735|TUnitToolbarCluster::DoEvent
-0x586150|0.5|TUnitToolbarCluster::IsTradeControlAtMinimum
+0x586150|1.0|TUnitToolbarCluster::IsTradeControlAtMinimum
 0x586170|0.8652482269503546|TUnitToolbarCluster::SetSelectedChildTagAndRefresh
 0x586280|0.43636363636363634|TStatusButton::CreateObject
 0x586310|1.0|TStatusButton::GetRuntimeClass
@@ -4995,8 +5015,8 @@ address|matching|name
 0x5870e0|1.0|TTradeCluster::`scalar deleting destructor'
 0x587110|1.0|TTradeCluster
 0x587130|0.8024316109422492|TTradeCluster::DoPostCreate
-0x5873e0|0.5170278637770898|TTradeCluster::DoEvent
-0x587900|0.7272727272727273|TTradeCluster::IsTradeControlAtMinimum
+0x5873e0|0.6383647798742138|TTradeCluster::DoEvent
+0x587900|0.7727272727272727|TTradeCluster::IsTradeControlAtMinimum
 0x587950|1.0|TTradeCluster::GetTradeSellControlValue
 0x587980|0.7936507936507936|TTradeCluster::IsSelectionAllowed
 0x587a10|0.7384615384615385|TTradeCluster::GetBoolSlot1DC
@@ -5004,7 +5024,7 @@ address|matching|name
 0x587bb0|1.0|TTradeCluster::SetTradeBidControlBitmap
 0x587dd0|1.0|TTradeCluster::SetTradeOfferControlBitmap
 0x588030|0.6832298136645962|TTradeCluster::SetTradeOfferSecondaryBitmap
-0x5882f0|0.5267489711934157|TTradeCluster::SetMoveAmount
+0x5882f0|0.540084388185654|TTradeCluster::SetMoveAmount
 0x5884c0|1.0|TAmtBar::CreateObject
 0x588560|1.0|TAmtBar::GetRuntimeClass
 0x5885c0|1.0|TAmtBar::`scalar deleting destructor'
@@ -5037,7 +5057,7 @@ address|matching|name
 0x589720|1.0|TRailCluster::TRailCluster
 0x589760|1.0|TRailCluster::`scalar deleting destructor'
 0x589790|1.0|TRailCluster::~TRailCluster
-0x5897b0|0.3349282296650718|TRailCluster::DoPostCreate
+0x5897b0|0.32|TRailCluster::DoPostCreate
 0x5899c0|1.0|TRailCluster::SetMoveAmount(short)
 0x5899f0|0.49586776859504134|TRailCluster::SetMoveAmount(short, unsigned char)
 0x589d10|1.0|TRailCluster::UpdateMax
@@ -5047,7 +5067,7 @@ address|matching|name
 0x589f90|0.631578947368421|TRailAmtBar::TRailAmtBar
 0x589fd0|1.0|TRailAmtBar::`scalar deleting destructor'
 0x58a000|1.0|TRailAmtBar
-0x58a020|0.5|TRailAmtBar::DoPostCreate
+0x58a020|0.52|TRailAmtBar::DoPostCreate
 0x58a1b0|0.4845814977973568|TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
 0x58a3b0|0.4838709677419355|TRailAmtBar::RenderQuickDrawOverlayWithHitRegion
 0x58a4d0|0.5818181818181818|TShipyardCluster::CreateObject
@@ -5114,7 +5134,7 @@ address|matching|name
 0x58c330|1.0|TNumberedArrowButton::SetValue
 0x58c360|1.0|TNumberedArrowButton::SetState
 0x58c3d0|0.24778761061946902|TNumberedArrowButton::Draw
-0x58c640|0.7592592592592593|TNumberedArrowButton::TrackMouse
+0x58c640|1.0|TNumberedArrowButton::TrackMouse
 0x58c7c0|1.0|TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x58c830|0.4897959183673469|TCombatReportView::CreateObject
 0x58c8b0|1.0|TCombatReportView::GetRuntimeClass
@@ -5144,14 +5164,14 @@ address|matching|name
 0x58ead0|1.0|TCivToolbar::`scalar deleting destructor'
 0x58eb00|1.0|TCivToolbar::~TCivToolbar
 0x58eb20|0.4472049689440994|TCivToolbar::RefreshCivilianCommandPanelForSelection
-0x58ec50|0.5896656534954408|TCivToolbar::RefreshCivilianStackButtonsForTile
+0x58ec50|0.5878787878787879|TCivToolbar::RefreshCivilianStackButtonsForTile
 0x58eed0|0.47533632286995514|TCivToolbar::DoEvent
 0x58f050|0.5714285714285714|TCivDescription::CreateObject
 0x58f0f0|1.0|TCivDescription::GetRuntimeClass
 0x58f110|0.6857142857142857|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
 0x58f1a0|0.3471698113207547|TCivDescription::DoMouseCommand
 0x58f3c0|1.0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-0x58f550|0.5300353356890459|TCivDescription::Draw
+0x58f550|0.6148409893992933|TCivDescription::Draw
 0x58f7b0|0.6032171581769437|TCivDescription::DrawEngineer
 0x58fec0|0.48905109489051096|TCivDescription::DrawProspector
 0x5903c0|0.4683257918552036|TCivDescription::DrawDeveloper
@@ -5213,9 +5233,9 @@ address|matching|name
 0x595040|1.0|TWorldView::`scalar deleting destructor'
 0x595090|1.0|TWorldView::DoPostCreate
 0x5950b0|0.6440677966101694|TWorldView::DoEvent
-0x595130|0.39618138424821003|TWorldView::DoKeyEvent
+0x595130|0.3957091775923719|TWorldView::DoKeyEvent
 0x595810|1.0|TWorldView::DoSetCursor
-0x5958b0|0.38073394495412843|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
+0x5958b0|0.4166666666666667|TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x595c40|1.0|TWorldView::SetMapOverlayModeAndRenderPreview
 0x595c70|0.2942528735632184|TWorldView::RenderMapContextOverlayWithScopedClipAndSurface
 0x596020|1.0|TWorldView::RenderMapOrderEntryTilePreview
@@ -5226,7 +5246,7 @@ address|matching|name
 0x5960c0|1.0|TWorldView::ConvertPoint
 0x5960e0|1.0|TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale
 0x596100|0.5729166666666666|TWorldView::HandleMouseDown
-0x596270|0.47619047619047616|TWorldView::InvokeDialogHooks1D8ThenE4
+0x596270|1.0|TWorldView::CenterOnTileAndRefresh
 0x5962a0|0.4794520547945205|TWorldView::HandleMapTileClickSetOrderContextAndHandleEvent79
 0x5963d0|1.0|TWorldView::DispatchOverlayEvent78FromStridedRecord
 0x596440|1.0|TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord
@@ -5250,7 +5270,7 @@ address|matching|name
 0x596cb0|0.7016574585635359|TMapUberPicture::SetMapInteractionMode
 0x597020|0.3064935064935065|ComposeAndDispatchTurnSummaryLocalizedMessage
 0x597340|0.4068965517241379|TMapUberPicture::DoEvent
-0x597600|0.6706586826347305|TMapUberPicture::DoMenuCommand
+0x597600|0.6627218934911243|TMapUberPicture::DoMenuCommand
 0x597770|1.0|TMapUberPicture::DoKeyEvent
 0x5977a0|0.8636363636363636|TMapUberPicture::Scroll
 0x597810|0.6195652173913043|TMapUberPicture::RefreshMapOrderEntryPanel
@@ -5292,7 +5312,7 @@ address|matching|name
 0x59ad70|1.0|TTacticalPlayer::StartBattle
 0x59ad90|1.0|TTacticalPlayer::AdvanceTacticalTurnPulse
 0x59adb0|1.0|TTacticalPlayer::NoOpTacticalPlayerHook0C
-0x59add0|1.0|TTacticalPlayer::CommitTacticalResultsToSourceUnits
+0x59add0|1.0|TTacticalPlayer::ApplyChanges
 0x59adf0|1.0|TTacticalPlayer::AlwaysTrueTacticalPredicate10
 0x59ae10|1.0|TTacticalPlayer::ProceedAfterBattleIntroAccepted
 0x59ae30|1.0|TTacticalPlayer::`scalar deleting destructor'
@@ -5312,7 +5332,7 @@ address|matching|name
 0x59b1b0|0.9606299212598425|TArmyPlayer::IArmyPlayer
 0x59b390|1.0|TArmyTacUnit::`scalar deleting destructor'
 0x59b3c0|1.0|TArmyTacUnit::~TArmyTacUnit
-0x59b3e0|0.7761194029850746|TArmyPlayer::CommitTacticalResultsToSourceUnits
+0x59b3e0|0.7761194029850746|TArmyPlayer::ApplyChanges
 0x59b4f0|0.5217391304347826|TArmyPlayer::RemoveTacticalUnitFromUnitList
 0x59b540|0.7666666666666667|TArmyPlayer::AddTacticalUnitToUnitListHead
 0x59b5b0|0.6018518518518519|TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges
@@ -5368,7 +5388,7 @@ address|matching|name
 0x59ed60|1.0|TNavyTacUnit::GetSourceShip
 0x59ed80|1.0|TNavyTacUnit::`scalar deleting destructor'
 0x59edb0|1.0|TNavyTacUnit::~TNavyTacUnit
-0x59edd0|0.9041095890410958|TNavyPlayer::CommitTacticalResultsToSourceUnits
+0x59edd0|0.9041095890410958|TNavyPlayer::ApplyChanges
 0x59ee60|0.8666666666666667|TNavyPlayer::RemoveTacticalUnitFromUnitList
 0x59eea0|0.9090909090909091|TNavyPlayer::AddTacticalUnitToUnitListHead
 0x59eef0|1.0|TNavyHumanPlayer::CreateObject
@@ -5387,13 +5407,13 @@ address|matching|name
 0x59f610|0.9142857142857143|CompareTacticalUnitsForTurnOrder
 0x59f6d0|0.2926829268292683|TTacticalBattle::CreateObject
 0x59f710|1.0|TTacticalBattle::DeployTacticalUnitToTile
-0x59f730|0.6666666666666666|TTacticalBattle::FinalizeTacticalBattleOutcome
+0x59f730|0.6666666666666666|TTacticalBattle::EndBattle
 0x59f750|1.0|TTacticalBattle::GetRuntimeClass
 0x59f770|1.0|TTacticalBattle::TTacticalBattle
 0x59f7a0|1.0|TTacticalBattle::`scalar deleting destructor'
 0x59f7d0|1.0|TTacticalBattle
 0x59f7f0|1.0|TArmyBattle::AllocateRecordList
-0x59f890|1.0|TTacticalBattle::BuildTacticalBattleStateFromBothSides
+0x59f890|1.0|TTacticalBattle::InitTacticalBattle
 0x59fb50|1.0|TTacticalBattle::Free
 0x59fc20|1.0|TTacticalBattle::StartBattle
 0x59fc40|1.0|TArmyBattle::ComputeBattlefieldColumnCountFromUnitRanges
@@ -5405,14 +5425,16 @@ address|matching|name
 0x5a02e0|0.17616580310880828|TTacticalBattle::PropagateTileAccessibilityStrengthLevels
 0x5a0420|1.0|TTacticalBattle::GetNeighborList
 0x5a0550|1.0|TTacticalBattle::AreNeighbors
-0x5a05a0|0.1376281112737921|TTacticalBattle::ComputeTacticalHoverCursorStateIndex
+0x5a05a0|0.30701754385964913|TTacticalBattle::ComputeTacticalHoverCursorStateIndex
 0x5a0a90|0.4533333333333333|TTacticalBattle::ResolveTacticalHoverCursorResourceId
 0x5a0c50|1.0|TTacticalBattle::HandleTacticalBattleCommandTag
-0x5a0d60|1.0|TTacticalBattle::QueueTacticalEventPacket232A
+0x5a0d60|1.0|TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand
+0x5a0e20|1.0|TTacticalBattle::NextMove
 0x5a0ea0|0.6339285714285714|TTacticalBattle::AdvanceToNextTacticalUnitTurnStep
 0x5a1010|1.0|TTacticalBattle::SetCurrentTacticalUnitSelection
-0x5a10e0|0.3036649214659686|TTacticalBattle::ProcessTacticalUnitState1TurnStep
+0x5a10e0|0.2760416666666667|TTacticalBattle::ProcessTacticalUnitState1TurnStep
 0x5a1400|1.0|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
+0x5a14d0|1.0|TTacticalBattle::UndeployUnit
 0x5a1520|0.5259259259259259|TTacticalBattle::MoveTacticalUnitTowardTile
 0x5a16e0|0.759493670886076|TTacticalBattle::BuildPathToTargetByDistanceField
 0x5a1910|1.0|TTacticalBattle::MoveTacticalUnitBetweenTiles
@@ -5421,8 +5443,9 @@ address|matching|name
 0x5a1bd0|1.0|TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
 0x5a1ca0|1.0|TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 0x5a1d70|0.5662100456621004|TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction
-0x5a1ee0|0.6737400530503979|TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
+0x5a1ee0|0.5649867374005305|TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a24a0|1.0|TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit
+0x5a2630|0.6666666666666666|TTacticalBattle::FindMoraleBonus
 0x5a2700|1.0|TTacticalBattle::TransferTacticalUnitToOpposingSide
 0x5a2750|0.7524752475247525|TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog
 0x5a3190|1.0|TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket
@@ -5438,6 +5461,7 @@ address|matching|name
 0x5a39a0|0.9393939393939394|ComputeHexTileDistanceFromIndices
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|1.0|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
+0x5a3cc0|0.5079365079365079|TTacticalBattle::CanFireOn
 0x5a3d30|0.8104956268221575|IsTacticalTargetTileReachableForAction
 0x5a3f10|0.3154929577464789|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
@@ -5445,26 +5469,27 @@ address|matching|name
 0x5a42e0|0.5|TTacticalBattle::HasFortWallGarrison
 0x5a4330|1.0|TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff
 0x5a4370|1.0|TTacticalBattle::HandleTacticalCommandTag_depl
-0x5a4460|1.0|TTacticalBattle::BuildTacticalDistanceFieldForSide
-0x5a4690|0.7901234567901234|TTacticalBattle::IsTacticalTileAtFortWallSectionSlot
+0x5a4460|0.7147540983606557|TTacticalBattle::BuildTacticalDistanceFieldForSide
+0x5a4690|1.0|TTacticalBattle::IsTacticalTileAtFortWallSectionSlot
 0x5a4710|0.19047619047619047|TArmyBattle::CreateObject
 0x5a4750|1.0|TArmyBattle::GetRuntimeClass
 0x5a4790|0.873015873015873|TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8
-0x5a4990|0.7809847198641766|TArmyBattle::ReadFrom
+0x5a4990|0.7843803056027164|TArmyBattle::ReadFrom
 0x5a4da0|0.783625730994152|TArmyBattle::WriteTo
 0x5a4fc0|0.8550185873605948|TArmyBattle::LoadBattleSetupTabDataByIndex
 0x5a51e0|0.783068783068783|TArmyBattle::DeployTacticalUnitToTile
-0x5a5320|0.68|TArmyBattle::FinalizeTacticalBattleOutcome
+0x5a5320|0.6732673267326733|TArmyBattle::EndBattle
 0x5a53e0|1.0|TTacticalBattle::SeekLinkedListCursorByNestedId
 0x5a5480|0.19047619047619047|TNavyBattle::CreateObject
 0x5a54d0|1.0|TNavyBattle::`scalar deleting destructor'
 0x5a5500|1.0|TNavyBattle
 0x5a5520|1.0|TNavyBattle::GetRuntimeClass
+0x5a5540|1.0|TNavyBattle::InitTacticalBattle
 0x5a55c0|1.0|TNavyBattle::DeployTacticalUnitToTile
 0x5a5730|0.6744186046511628|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
 0x5a59a0|1.0|ConvertHexTileIndexToRowAndDoubleColumn
 0x5a59f0|1.0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory
-0x5a5b70|1.0|TNavyBattle::FinalizeTacticalBattleOutcome
+0x5a5b70|1.0|TNavyBattle::EndBattle
 0x5a5b90|1.0|TNavyBattle::SetTargeting
 0x5a5bc0|1.0|TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 0x5a5c50|0.7706422018348624|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget
@@ -5481,10 +5506,10 @@ address|matching|name
 0x5a5eb0|1.0|TTacticalUnit::FlipUnitSideAffiliation
 0x5a5ed0|1.0|TArmyTacUnit::CreateObject
 0x5a5f00|1.0|TArmyTacUnit::GetRuntimeClass
-0x5a5f20|0.8539325842696629|TArmyTacUnit::IArmyTacUnit
+0x5a5f20|0.8764044943820225|TArmyTacUnit::IArmyTacUnit
 0x5a5fe0|0.7571428571428571|TArmyTacUnit::ComputeTacticalProjectionScoreVector
 0x5a6120|1.0|TArmyTacUnit::GetBaseActionPoints
-0x5a6140|0.9090909090909091|TArmyTacUnit::GetUnitRange
+0x5a6140|1.0|TArmyTacUnit::GetUnitRange
 0x5a6180|1.0|TArmyTacUnit::GetBaseAttackPower
 0x5a61a0|1.0|TArmyTacUnit::GetDamageScale
 0x5a61c0|1.0|TArmyTacUnit::ApplyTacticalDamage
@@ -5495,7 +5520,7 @@ address|matching|name
 0x5a6330|1.0|TNavyTacUnit::GetUnitRange
 0x5a6350|1.0|TNavyTacUnit::GetBaseAttackPower
 0x5a6370|1.0|TNavyTacUnit::GetDamageScale
-0x5a63c0|0.7916666666666666|TNavyTacUnit::ApplyNavalDamage
+0x5a63c0|0.8591549295774648|TNavyTacUnit::ApplyNavalDamage
 0x5a64d0|1.0|TNextMoveCommand::CreateObject
 0x5a6540|1.0|TNextMoveCommand::GetRuntimeClass
 0x5a6590|1.0|TNextMoveCommand::`scalar deleting destructor'
@@ -5526,7 +5551,7 @@ address|matching|name
 0x5a8d40|0.5252525252525253|TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x5a9090|0.8805970149253731|TTacticalBattleView::PlayTacticalTileEffect
 0x5a9170|0.9541284403669725|TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog
-0x5a9240|0.5463414634146342|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
+0x5a9240|0.5369458128078818|TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles
 0x5a9550|0.23429541595925296|TTacticalBattleView::DrawUiTilesAndOverlay
 0x5a99e0|1.0|DrawHexSelectionOutlineSegments
 0x5a9b40|0.92|TTacticalBattleView::UpdateTacticalActionControlBitmapForCurrentUnit
@@ -5766,7 +5791,7 @@ address|matching|name
 0x5b6f70|0.5132743362831859|TTown::CalculateRawResources
 0x5b7140|0.39622641509433965|TTown::CalculateResources
 0x5b73e0|0.5212765957446809|TTown::CalculateCityResources
-0x5b7570|0.7134502923976608|TTown::Grow
+0x5b7570|0.7251461988304093|TTown::Grow
 0x5b77e0|1.0|TTown::SetName
 0x5b7830|1.0|TTown::IsUnblockedPort
 0x5b79d0|0.42424242424242425|TTradeMgr::CreateObject
@@ -5885,8 +5910,8 @@ address|matching|name
 0x5bea00|0.7489878542510121|TOfferDeskPicture::PoseOfferSheet
 0x5bf740|0.64|TOfferDeskPicture::DoEvent
 0x5bf860|1.0|TOfferDeskPicture::DoKeyEvent
-0x5bf930|0.7775020678246485|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
-0x5c04f0|0.8274428274428275|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
+0x5bf930|0.7956989247311828|TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo
+0x5c04f0|0.8340248962655602|TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt
 0x5c0930|1.0|TOfferDeskPicture::HandleMouseUp
 0x5c09d0|0.7842105263157895|TOfferDeskPicture::UpdateTradeSelectionStateAndRefreshUiIfChanged
 0x5c0cf0|0.4897959183673469|TDealLine::CreateObject
@@ -5934,7 +5959,7 @@ address|matching|name
 0x5c28f0|1.0|TCivUnit::`scalar deleting destructor'
 0x5c2920|1.0|TCivUnit
 0x5c2940|1.0|TCivUnit::ICivUnit
-0x5c2980|0.6363636363636364|TCivUnit::IsInIdleSelectionState
+0x5c2980|0.8181818181818182|TCivUnit::IsInIdleSelectionState
 0x5c29b0|1.0|TCivUnit::TickCivWorkOrderCountdownAndComplete
 0x5c29f0|1.0|TCivUnit::SetOrders
 0x5c2a90|0.6428571428571429|TCivUnit::ContinueOrders
@@ -6017,8 +6042,8 @@ address|matching|name
 0x5d4240|1.0|ShouldRetryMappedFlavorTextGeneration
 0x5d4410|0.4788732394366197|SetSharedStringFromMappedFlavorTextWithLengthClamp
 0x5d4550|0.6330935251798561|AssignNextProvinceNameForNationSlot
-0x5d46b0|0.875|GenerateMappedFlavorTextByTableSlot
-0x5d46e0|0.7142857142857143|GenerateMappedFlavorTextByCurrentContextNation
+0x5d46b0|1.0|GenerateMappedFlavorTextByTableSlot
+0x5d46e0|0.7857142857142857|GenerateMappedFlavorTextByCurrentContextNation
 0x5d4720|0.874251497005988|GenerateMappedFlavorTextUntilValidationPasses
 0x5d4890|1.0|IsMappedShortcutKeyPressed(short)
 0x5d48c0|1.0|FormatAndAssignTurnStateSharedTextFromTemplate
@@ -6090,7 +6115,7 @@ address|matching|name
 0x5dc180|1.0|TViewMgr::ForwardBuildStrategicMapRenderAtlasesAndTileMaskCaches
 0x5dc1a0|1.0|TViewMgr::RebuildMapTileNeighborHighlightPolygonsForAllTiles
 0x5dc1c0|1.0|TViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress
-0x5dc1e0|1.0|TViewMgr::InitializeCitySiteSelectionScreenForNation
+0x5dc1e0|0.9876543209876543|TViewMgr::InitializeCitySiteSelectionScreenForNation
 0x5dc3f0|1.0|TViewMgr::ConfigureActiveDialogGoldValueGridForTurnEvent3C0
 0x5dc430|1.0|TViewMgr::ShowBuildingExpansionDialog
 0x5dc560|1.0|DispatchUiRuntimeMessage102CAndRefreshActiveView

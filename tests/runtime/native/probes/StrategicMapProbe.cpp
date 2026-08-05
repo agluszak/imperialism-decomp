@@ -1,5 +1,6 @@
 #include "StrategicMapProbe.h"
 
+#include "MapRenderingProbe.h"
 #include "RuntimeObservations.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
@@ -60,6 +61,10 @@ RuntimeActionResult StrategicMapProbe::VerifyRendering() {
     return RuntimeActionResult::Failure(
         "mini-map viewport frame did not alter the rendered thumbnail");
   }
+  if (!MapRenderingProbe::TransportConnectivityChangesTilePixels(mapView->subview2A8)) {
+    return RuntimeActionResult::Failure(
+        "strategic road or rail connectivity did not change the rendered tile pixels");
+  }
   return RuntimeActionResult::Success();
 }
 
@@ -101,11 +106,8 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   GetGWorld(&savedSurface, &savedSurfaceFlags);
   short savedInteractionMode = mapView->activeUnitCategoryIndex96;
   mapView->activeUnitCategoryIndex96 = 5;
-  SetGWorld(g_pPrimaryRenderSurfaceContext, savedSurfaceFlags);
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&firstHoverPoint, 0);
-  bool firstHoverKeptCache =
-      g_pActiveQuickDrawSurfaceContextHead == g_pPrimaryRenderSurfaceContext &&
-      memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
+  bool firstHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   mapDialog->HandleCursorHoverSelectionByChildHitTestAndFallback(&secondHoverPoint, 0);
   bool secondHoverKeptCache = memcmp(beforeHover, mapCache->pixelBits, mapCacheBytes) == 0;
   bool usedStrategicNeighborCache = g_aCitySiteNeighborHighlightTiles_00697320[0] == 0;
@@ -125,6 +127,10 @@ RuntimeActionResult StrategicMapProbe::VerifyHoverCache() {
   if (!firstHoverKeptCache || !secondHoverKeptCache || !usedStrategicNeighborCache) {
     return RuntimeActionResult::Failure(
         "combined-map hover retained transient selection pixels in the map cache");
+  }
+  if (!MapRenderingProbe::HoverMovementRestoresPreviousTiles(mapDialog, -1)) {
+    return RuntimeActionResult::Failure(
+        "combined-map hover movement did not restore the previous tile's window pixels");
   }
   return RuntimeActionResult::Success();
 }

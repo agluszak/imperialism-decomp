@@ -114,7 +114,15 @@ clang-tidy-audit filter="/(TScrollBarView|TGreatPower|TMapMaker|TViewMgr|NetMess
 # Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
 [group('build')]
 resource-check:
-  uv run python -m tools.workflow.pe_resources check "{{build_dir}}/Imperialism.exe" --menu-id 128
+  just backdrop-resource --check
+  just executable-chrome-resources --check
+  uv run python -m tools.workflow.pe_resources check "{{build_dir}}/Imperialism.exe" \
+    --menu-id 128 \
+    --require 2:281:1033 \
+    --require 14:31234:1033 \
+    --require 16:1:1033
+  uv run python -m tools.workflow.pe_resources direct-resource-parity \
+    "$ORIGINAL_BINARY" "{{build_dir}}/Imperialism.exe"
 
 # Generate resource-driven UI factory TUs from committed semantic Mac View IR
 # plus the one evidenced Windows-only tree. Normal generation never reads the

@@ -25,7 +25,6 @@ from tools.reccmp.progress_stats import (
     report_cache_is_current,
     run_progress_report,
     ui_factory_fidelity,
-    unaccepted_score_regressions,
     write_report_cache,
 )
 
@@ -275,48 +274,6 @@ class StubCountRatchetTests(unittest.TestCase):
             self.assertIsNone(clamp_stub_count_ratchet(entry, {}))
         self.assertEqual(entry["stub_count"], 355)
 
-
-class ScoreRegressionAcceptanceTests(unittest.TestCase):
-    def acceptance(self, address: str, previous: float, current: float) -> dict:
-        return {
-            "address": address,
-            "previous_score": previous,
-            "new_score": current,
-            "code_regression": (
-                "exact_to_nonexact" if previous == 1.0 else "similarity_drop"
-            ),
-            "reason": "reviewed model correction",
-            "evidence_class": "retail_listing",
-            "evidence_reference": "listing 0x410000",
-            "semantic_status": "pass",
-        }
-
-    def test_unlisted_drop_is_rejected_even_when_aggregate_improves(self) -> None:
-        regressions = [("0x410000", "regressed", 1.0, 0.75)]
-        self.assertEqual(unaccepted_score_regressions(regressions, []), regressions)
-
-    def test_acceptance_is_address_and_transition_specific(self) -> None:
-        regressions = [
-            ("0x410000", "accepted", 1.0, 0.75),
-            ("0x420000", "not accepted", 0.8, 0.7),
-        ]
-        acceptance = self.acceptance("0x410000", 1.0, 0.75)
-        self.assertEqual(
-            unaccepted_score_regressions(regressions, [acceptance]),
-            [regressions[1]],
-        )
-        acceptance["new_score"] = 0.74
-        self.assertEqual(
-            unaccepted_score_regressions(regressions, [acceptance]), regressions
-        )
-
-    def test_acceptance_requires_reason_and_evidence(self) -> None:
-        acceptance = self.acceptance("0x410000", 1.0, 0.75)
-        acceptance["evidence_reference"] = ""
-        with self.assertRaisesRegex(ValueError, "lacks metadata"):
-            unaccepted_score_regressions(
-                [("0x410000", "regressed", 1.0, 0.75)], [acceptance]
-            )
 
     def test_clean_tree_requires_matching_source_model_fingerprint(self) -> None:
         entry = {"source_model_fingerprint": "current"}

@@ -228,7 +228,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
-    RotateMapColumnsByPeakCityTileDensity();
+    RotateMapColumnsByPeakWaterTileDensity();
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
@@ -1667,7 +1667,7 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
       }
     }
   } else {
-    GenerateCityRegionIdsBySeedAndNeighborPropagation();
+    GenerateWaterRegionIdsBySeedAndNeighborPropagation();
   }
 
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {

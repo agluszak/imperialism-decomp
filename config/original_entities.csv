@@ -3396,7 +3396,7 @@ address|name|symbol|size|type|prototype|provenance
 511e80|TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress||49|function|undefined TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress()|
 511ed0|TMapMgr::DispatchTurnEvent7DDForActiveNation||42|function|undefined DispatchTurnEvent7DDForActiveNation()|
 511f10|TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias||15|function|short __thiscall ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(int terrainType)|
-511f30|TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask||518|function|undefined TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask()|
+511f30|TMapMgr::DoNationTerritoriesShareRegionClass||518|function|undefined DoNationTerritoriesShareRegionClass()|
 5121d0|TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext||162|function|undefined IsNodeTypeLinkUnavailableAndNoActiveMapActionContext()|
 5122b0|TMapMgr::IsShiftKeyDown||14|function|undefined IsShiftKeyDown()|
 5122d0|TMapMgr::IsAltKeyDown||14|function|undefined IsAltKeyDown()|
@@ -3665,12 +3665,12 @@ address|name|symbol|size|type|prototype|provenance
 5297e0|TMapMaker::FindUiChildControlByWindowHandleRecursive_25||133|function|undefined RestoreFinePatternBandFromNeighborCell()|
 5298a0|TMapMaker::vmethod_0081||74|function|undefined GetFineGridCellBasePointerFromCoarseIndex()|
 529910|IltTarget_00529910||53|function|undefined IltTarget_00529910()|
-529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
+529960|TMapMaker::RotateMapColumnsByPeakWaterTileDensity||636|function|undefined RotateMapColumnsByPeakWaterTileDensity()|
 529c80|TMapMaker::ZoneCorner||200|function|int __thiscall TMapMaker::ZoneCorner(long nationCode)|curated
 529d90|ComputeOwnedTerritoryCentroidTile||358|function|undefined ComputeOwnedTerritoryCentroidTile()|
 529f60|TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders||247|function|void __thiscall TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode)|
 52a0a0|CompactCityRegionIds||143|function|undefined CompactCityRegionIds()|
-52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
+52a160|TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateWaterRegionIdsBySeedAndNeighborPropagation()|
 52a600|TMapMaker::IsSeaTile||28|function|unsigned char __thiscall TMapMaker::IsSeaTile(int tileIndex)|curated
 52a630|IltTarget_0052a630||41|function|undefined IltTarget_0052a630()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
@@ -3690,7 +3690,7 @@ address|name|symbol|size|type|prototype|provenance
 52b500|stretch<SeaSegment>::Detach||15|function|SeaSegment * __thiscall Detach()|template
 52b520|IltTarget_0052b520||597|function|undefined IltTarget_0052b520()|
 52b820|IltTarget_0052b820||319|function|undefined IltTarget_0052b820()|
-52b9b0|AssignCityRegionIdsFromOverlayScanlineIntersections||1068|function|undefined AssignCityRegionIdsFromOverlayScanlineIntersections()|
+52b9b0|TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections||1068|function|undefined AssignWaterRegionIdsFromOverlayScanlineIntersections()|
 52bef0|ExtractWrappedEndpointFromSpanRecordBySide||196|function|undefined ExtractWrappedEndpointFromSpanRecordBySide()|
 52c000|SelectSpanEndpointXByThreshold||18|function|undefined SelectSpanEndpointXByThreshold()|
 52c030|stretch<SeaSegment>::At||28|function|SeaSegment * __thiscall At(unsigned int index)|template

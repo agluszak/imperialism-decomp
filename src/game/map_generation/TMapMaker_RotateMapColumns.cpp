@@ -1,5 +1,5 @@
-// TMapMaker::RotateMapColumnsByPeakCityTileDensity (0x00529960) -- a UMapper.cpp pass that
-// rotates the 108-column tile map horizontally so the column band with the highest city-tile
+// TMapMaker::RotateMapColumnsByPeakWaterTileDensity (0x00529960) -- a UMapper.cpp pass that
+// rotates the 108-column tile map horizontally so the column band with the highest water-tile
 // density is recentred. It finds the peak of a 3-column sliding sum of water tiles over the
 // 60 rows (row stride 0xf30 = 108*0x24), nudges an empty peak column to
 // the midpoint of the nearest non-empty columns on either side, then copies the whole grid
@@ -17,7 +17,7 @@
 namespace {
 
 // Water tiles in one 60-row column, starting at byte pointer `column`.
-inline int CountCityTilesInColumn(char* column) {
+inline int CountWaterTilesInColumn(char* column) {
   int count = 0;
   int rows = 0x3c;
   do {
@@ -33,7 +33,7 @@ inline int CountCityTilesInColumn(char* column) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x00529960
-void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
+void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
   int total = 0;
   int windowPos = 0;
   int bestDensity = -1;
@@ -45,7 +45,7 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
   char* column = mapTileGrid08 + 0xea0;
   int prime = 3;
   do {
-    int count = CountCityTilesInColumn(column);
+    int count = CountWaterTilesInColumn(column);
     *w = count;
     total = total + count;
     column = column + 0x24;
@@ -57,7 +57,7 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
   int scanCol = 0;
   column = mapTileGrid08;
   do {
-    int count = CountCityTilesInColumn(column);
+    int count = CountWaterTilesInColumn(column);
     total = total + count;
     if (bestDensity < total) {
       bestColumn = scanCol;
@@ -74,9 +74,9 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
     column = column + 0x24;
   } while (scanCol < 0x6c);
 
-  // If the peak column itself holds no city tiles, recentre on the midpoint between the nearest
+  // If the peak column itself holds no water tiles, recentre on the midpoint between the nearest
   // non-empty columns to its left and right.
-  if (CountCityTilesInColumn(mapTileGrid08 + bestColumn * 0x24) == 0) {
+  if (CountWaterTilesInColumn(mapTileGrid08 + bestColumn * 0x24) == 0) {
     int leftCol = bestColumn + -1;
     if (leftCol < 0) {
       leftCol = bestColumn + 0x6b;
@@ -85,13 +85,13 @@ void TMapMaker::RotateMapColumnsByPeakCityTileDensity() {
     if (0x6b < bestColumn) {
       bestColumn = 0;
     }
-    while (CountCityTilesInColumn(mapTileGrid08 + leftCol * 0x24) == 0) {
+    while (CountWaterTilesInColumn(mapTileGrid08 + leftCol * 0x24) == 0) {
       leftCol = leftCol + -1;
       if (leftCol < 0) {
         leftCol = 0x6b;
       }
     }
-    while (CountCityTilesInColumn(mapTileGrid08 + bestColumn * 0x24) == 0) {
+    while (CountWaterTilesInColumn(mapTileGrid08 + bestColumn * 0x24) == 0) {
       bestColumn = bestColumn + 1;
       if (0x6b < bestColumn) {
         bestColumn = 0;
