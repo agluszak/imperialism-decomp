@@ -126,7 +126,7 @@ public:
   void SetNationDisplayNameAndLocalizationSlotRef(const CString& name);
 
   // 0x004d7150, __thiscall, one stack arg (sign-extended short -> int store).
-  void SetSerializedField8c(short value);
+  void SetSerializedField8c(int value);
 
   // Bare `this+0xe` (encodedNationSlot) range check, same test as the free-function
   // IsNationTerrainEligible helper in TSimMgr::AdvanceGlobalTurnStateMachine (its sole

@@ -89,10 +89,9 @@ short TTrainingOrder::MaxOrder() {
 // FUNCTION: IMPERIALISM 0x004b6cd0
 bool TTrainingOrder::SetQuantity(short quantity) {
   short delta = static_cast<short>(quantity - this->quantity);
-  if (quantity > MaxOrder() || quantity < 0) {
+  if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
   }
-  this->quantity = quantity;
 
   TGreatPower* owner = ownerCity->ownerNationAc;
   if (resourceTypeIndex == 1) {

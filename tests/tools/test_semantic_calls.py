@@ -38,9 +38,12 @@ from tools.semantic_calls import (
     _virtual_target,
     _prune_targeted_reports,
     _reccmp_proves_call_contract,
+    _reccmp_statuses,
     _row_reusable,
+    accepted_equivalence_errors,
     check_gate,
     compare_extracted_calls,
+    contract_fingerprint,
     extract_calls,
 )
 
@@ -967,6 +970,104 @@ class SemanticCallTests(unittest.TestCase):
         errors = check_gate(report, baseline)
         self.assertTrue(any("protected functions regressed: 0x3" in item for item in errors))
         self.assertTrue(any("semantic debt resolved" in item for item in errors))
+
+    def test_address_specific_equivalence_accepts_only_exact_contract_shape(self):
+        row = {
+            "original": "0x3",
+            "status": "mismatch",
+            "reason": "call_contract",
+            "call_count_status": "pass",
+            "reccmp": {"status": "inconclusive", "inconclusive_reason": "alignment_failure"},
+            "missing": [{"count": 1, "call": {"kind": "direct"}}],
+            "extra": [{"count": 1, "call": {"kind": "indirect"}}],
+        }
+        report = {"functions": [row]}
+        baseline = {
+            "mode": "ratchet",
+            "required": ["0x3"],
+            "debt": [],
+            "accepted_equivalences": [
+                {
+                    "address": "0x3",
+                    "contract_fingerprint": contract_fingerprint(row),
+                    "reason": "register-held virtual target",
+                    "evidence_class": "retail_listing",
+                    "evidence_reference": "listing 0x3",
+                    "machine_status": "inconclusive",
+                }
+            ],
+        }
+        self.assertEqual(check_gate(report, baseline), [])
+        row["extra"] = []
+        errors = check_gate(report, baseline)
+        self.assertTrue(any("accepted equivalence drifted: 0x3" in item for item in errors))
+        self.assertTrue(any("protected functions regressed: 0x3" in item for item in errors))
+
+    def test_accepted_equivalence_requires_evidence_and_must_be_removed_when_resolved(self):
+        passing = {
+            "original": "0x3",
+            "status": "pass",
+            "reccmp": {"status": "exact"},
+        }
+        baseline = {
+            "accepted_equivalences": [
+                {
+                    "address": "0x3",
+                    "contract_fingerprint": contract_fingerprint(passing),
+                    "reason": "reviewed",
+                    "evidence_class": "retail_listing",
+                    "evidence_reference": "listing 0x3",
+                    "machine_status": "exact",
+                }
+            ]
+        }
+        accepted, errors = accepted_equivalence_errors(
+            {"functions": [passing]}, baseline
+        )
+        self.assertEqual(accepted, set())
+        self.assertTrue(any("accepted equivalence resolved" in item for item in errors))
+
+        baseline["accepted_equivalences"][0]["evidence_reference"] = ""
+        _, errors = accepted_equivalence_errors(
+            {"functions": [{"original": "0x3", "status": "mismatch"}]},
+            baseline,
+        )
+        self.assertTrue(any("lacks metadata" in item for item in errors))
+
+    def test_reccmp_status_report_must_postdate_machine_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binary = root / "Imperialism.exe"
+            pdb = root / "Imperialism.pdb"
+            binary.write_bytes(b"exe")
+            pdb.write_bytes(b"pdb")
+            now = time.time()
+            os.utime(binary, (now, now))
+            os.utime(pdb, (now, now))
+            (root / "reccmp_report.json").write_text(
+                json.dumps({"timestamp": now - 1, "data": []}), encoding="utf-8"
+            )
+            with self.assertRaisesRegex(RuntimeError, "stale reccmp_report"):
+                _reccmp_statuses(root, (binary, pdb))
+
+            (root / "reccmp_report.json").write_text(
+                json.dumps(
+                    {
+                        "timestamp": now + 1,
+                        "data": [
+                            {
+                                "address": "0x3",
+                                "comparison": {"status": "exact"},
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            self.assertEqual(
+                _reccmp_statuses(root, (binary, pdb)),
+                {3: {"status": "exact"}},
+            )
 
     def test_varargs_arity_asymmetry_is_inconclusive_not_mismatch(self):
         # Same call, but only one image's decompiler attached the pushed values.

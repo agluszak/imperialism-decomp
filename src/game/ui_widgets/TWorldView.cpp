@@ -45,7 +45,7 @@ TWorldView::~TWorldView() {}
 // TWorldView::CreateObject
 
 // FUNCTION: IMPERIALISM 0x00594fc0
-void TWorldView::CenterOn(StrategicTileIndex tileIndex) {
+void TWorldView::CenterOn(int tileIndex) {
   (void)tileIndex;
 }
 

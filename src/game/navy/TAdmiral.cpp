@@ -82,13 +82,17 @@ TAdmiral::~TAdmiral() {}
 
 // FUNCTION: IMPERIALISM 0x005515d0
 void TAdmiral::Free() {
-  if (this->prev != 0) {
-    this->prev->next = this->next;
-  } else {
+  if (g_pNavySecondaryOrderListHead == this) {
     g_pNavySecondaryOrderListHead = this->next;
   }
   if (this->next != 0) {
     this->next->prev = this->prev;
+  }
+  if (this->prev != 0) {
+    this->prev->next = this->next;
+  }
+  if (this->assignedShip != 0) {
+    this->assignedShip->admiral = 0;
   }
   delete this;
 }
@@ -323,7 +327,7 @@ int TAdmiral::EstimateStrengthRating(const TTaskForce* force, int unusedArg) con
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + 5 + descriptor.NavyPriorityWeightDword() * 10;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + 5 + descriptor.ResolveWeight() * 10;
+    int resolveScore = strengthBucket + 5 + descriptor.ResolveWeightDword() * 10;
     short resolveBucket = static_cast<short>(resolveScore / 10);
     total += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
               ship->strength) /

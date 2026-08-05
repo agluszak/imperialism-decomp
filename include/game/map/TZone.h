@@ -128,7 +128,7 @@ public:
   // Naval-intelligence helpers used by TMapUberPicture::NavalIntelligenceDialog.
   // They fold the primary ship list for this zone/nation using the same preference
   // rule as the order UI, then expose its reporting admiral/source label.
-  TAdmiral* FindReportingAdmiralForNation(short nation);
+  TAdmiral* FindReportingAdmiralForNation(int nation);
   void BuildNavalIntelligenceSourceDescription(CString* out, short nation);
   // 0x0055f140 — average node value of this context. Port zones (QueryPortZone-
   // Capability true) refresh via AssertValid, then return the home-region city score

@@ -46,9 +46,9 @@ public:
   // (CALL [vtbl+0xb0]) on the minor-nation array element, not as a direct call.
   virtual char WouldAcceptOffer(NationSlot targetNationSlot,
                                 DiplomacyProposalCodeStorage proposalCode); // 0x4e4ff0
-  virtual void ConvertCapitolToTown(int nationId);                          // slot 0x2d 0x4e5730
+  virtual void HandleNetworkPortConstructionOrder(int nationId);            // slot 0x2d 0x4e5730
   virtual void SetBoycottPoliciesToMatch(int targetNationSlot);             // slot 0x2e 0x4e5a40
-  virtual void KillForeignCompaniesIn(int provinceId);                      // slot 0x2f 0x4e5ac0
+  virtual void ClearTileActivityOverlayByProvinceId(int provinceId);        // slot 0x2f 0x4e5ac0
   virtual void KillBoycottedForeignCompanies(void);                         // slot 0x30 0x4e5be0
   virtual void KillEnemyCiviliansIn(int provinceId);                        // slot 0x31 0x4e5d90
   short GetDiplomacyRandomThreshold124() const {

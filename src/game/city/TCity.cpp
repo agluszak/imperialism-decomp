@@ -689,7 +689,7 @@ int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
     short count = orderCountByType5c[type];
-    weightedSum += GetResourceDescriptorWeightWord1ByType(static_cast<short>(type)) * count;
+    weightedSum += GetResourceDescriptorWeightWord1ByType(type) * count;
     totalCount += count;
   }
   if (totalCount != 0) {
@@ -704,7 +704,7 @@ int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
   int totalCount = 0;
   for (int type = 0; type < 0xe; ++type) {
     short count = orderCountByType5c[type];
-    weightedSum += GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) * count;
+    weightedSum += GetResourceDescriptorWeightWord0ByType(type) * count;
     totalCount += count;
   }
   if (totalCount != 0) {

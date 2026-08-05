@@ -350,7 +350,7 @@ void TMinor::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->diplomacyPolicyGate132, 2);
   stream->ReadBytes(diplomacySaveFields134, 8);
   SwapShortArrayBytes(diplomacySaveFields134, 4);
-  if (g_nSaveFormatVersion > 0x39) {
+  if (g_nSaveFormatVersion >= 0x3a) {
     stream->ReadBytes(diplomacySaveExt13c, 0x2e);
     SwapShortArrayBytes(diplomacySaveExt13c, 0x17);
   }
@@ -659,16 +659,15 @@ void TMinor::SetTradeBids(void) {
 
 // FUNCTION: IMPERIALISM 0x004e4ee0
 bool TMinor::StillBuyingItem(ResourceKindStorage resourceKind) {
-  if (resourceKind <= kResourceFuel || resourceKind >= kResourceGrain) {
-    return false;
+  if (resourceKind > kResourceFuel && resourceKind < kResourceGrain) {
+    if (resourceKind == this->diplomacyPolicyPredicateCode12c) {
+      return this->diplomacyPolicyGate130 == 0;
+    }
+    if (resourceKind == this->diplomacyPolicyPredicateCode12e) {
+      return this->diplomacyPolicyGate132 == 0;
+    }
   }
-  if (resourceKind == this->diplomacyPolicyPredicateCode12c) {
-    return this->diplomacyPolicyGate130 == 0;
-  }
-  if (resourceKind == this->diplomacyPolicyPredicateCode12e) {
-    return this->diplomacyPolicyGate132 == 0;
-  }
-  return false;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4f50
@@ -715,16 +714,11 @@ char TMinor::WouldAcceptOffer(NationSlot targetNationSlot,
   short* peerStandingRow =
       &g_pDiplomacyTurnStateManager->relationStandingScores[source * kNationSlotCount];
   for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
-    if (peerSlot == targetNationSlot || g_apTerrainTypeDescriptorTable[peerSlot] == 0) {
-      continue;
-    }
-    int delta = static_cast<int>(peerStandingRow[peerSlot]) - static_cast<int>(standing);
-    if (delta < 0) {
-      delta = -delta;
-    }
-    if (delta < 10) {
-      canPropose = 0;
-      break;
+    if (g_apTerrainTypeDescriptorTable[peerSlot] != 0 && peerSlot != targetNationSlot) {
+      int delta = abs(static_cast<int>(peerStandingRow[peerSlot]) - static_cast<int>(standing));
+      if (delta < 10) {
+        canPropose = 0;
+      }
     }
   }
   return canPropose;
@@ -804,7 +798,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
   } else {
     decodedNationSlot = this->nationSlot;
   }
-  this->ConvertCapitolToTown(targetNationSlot);
+  this->HandleNetworkPortConstructionOrder(targetNationSlot);
 
   if (this->encodedNationSlot < 200) {
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -903,7 +897,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
     }
   }
 
-  this->KillForeignCompaniesIn(-1);
+  this->ClearTileActivityOverlayByProvinceId(-1);
   TGreatPower* previousOwner = g_apNationStates[decodedNationSlot];
   if (previousOwner->pendingActionStatus.byAction[6] < '3') {
     previousOwner->SetNationPendingActionStateAndPayload(6, this->nationSlot);
@@ -911,7 +905,7 @@ void TMinor::BecomeProtectorateOf(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5730
-void TMinor::ConvertCapitolToTown(int nationId) {
+void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
   unsigned char nationTileFlags = static_cast<unsigned char>(
       g_pGlobalMapState->terrainStateTable[static_cast<short>(this->homeTileIndex)].activeFlags1c);
   if ((nationTileFlags >> 2 & 1) != 0) {
@@ -923,9 +917,7 @@ void TMinor::ConvertCapitolToTown(int nationId) {
   marker->activeFlag = 1;
   g_pGlobalMapState->SetTileTransportFlags(static_cast<short>(this->homeTileIndex), 0x15);
   TGreatPower* targetNation = g_apNationStates[nationId];
-  if (targetNation != 0 && targetNation->townMarkerList != 0) {
-    targetNation->townMarkerList->AddTail(marker);
-  }
+  targetNation->townMarkerList->AddTail(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x004e5840
@@ -999,12 +991,9 @@ void TMinor::SetBoycottPoliciesToMatch(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e5ac0
-void TMinor::KillForeignCompaniesIn(int provinceId) {
+void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
   TTerrainStateRecord* terrainTiles = g_pGlobalMapState->terrainStateTable;
   if (provinceId == -1) {
-    if (this->ownedRegionList == 0) {
-      return;
-    }
     int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
@@ -1089,8 +1078,8 @@ void TMinor::KillEnemyCiviliansIn(int provinceId) {
     ownerNationSlot = this->nationSlot;
   }
 
-  char relationMaskByNation[kTerrainTypeDescriptorTableCount];
-  for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
+  char relationMaskByNation[kMajorNationCount];
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
         g_pDiplomacyTurnStateManager->IsNationPairAtWar(ownerNationSlot, nationSlot) != 0) {
@@ -1205,8 +1194,8 @@ void TMinor::DeportCiviliansIn(int provinceId, unsigned char includeAllPolicyTar
     ownerNationSlot = g_pGlobalMapState->cityScoreTable[provinceId].ownerNationCode00;
   }
 
-  char relationMaskByNation[kTerrainTypeDescriptorTableCount];
-  for (int nationSlot = 0; nationSlot < kTerrainTypeDescriptorTableCount; ++nationSlot) {
+  char relationMaskByNation[kMajorNationCount];
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     relationMaskByNation[nationSlot] = 0;
     if (g_apTerrainTypeDescriptorTable[nationSlot] != 0 && nationSlot != ownerNationSlot &&
         (includeAllPolicyTargets != 0 || g_pDiplomacyTurnStateManager->HasNationPairNeedLevel300(
@@ -1285,7 +1274,7 @@ void TMinor::LoseProvince(int regionId) {
   // The original dereferences the list unguarded here (mov ecx,[esi+0x90] straight
   // into mov eax,[ecx]; call [eax+0x34] at 0x4e64a9) -- the null test was ours.
   this->ownedRegionList->Delete(regionId);
-  this->KillForeignCompaniesIn(regionId);
+  this->ClearTileActivityOverlayByProvinceId(regionId);
   this->KillEnemyCiviliansIn(regionId);
   this->DeportCiviliansIn(regionId, 1);
 }

@@ -119,6 +119,9 @@ module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto
 module|tools.runtime.cli|just:runtime-test|Semantic runtime test discovery, execution, suites, and result display
 module|tools.runtime.generate_native_registry|just:runtime-test-build|Generate the native runtime registry from the authoritative Python catalog
 module|tools.runtime.differential|just:diff-run|OG versus matching-recomp semantic trace-tape runner
+module|tools.runtime.map_scanline_differential|just:diff-map-scanline|Isolated fixed-segment retail oracle for the map-region scanline fill
+module|tools.runtime.population_eating_differential|just:diff-population-eating|Isolated retail oracle for population food consumption and prediction
+module|tools.runtime.turn_event2_codec_differential|just:diff-turn-event2-codec|Byte-exact retail oracle for TurnEvent2 array packet builders and decoder
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
 module|tools.workflow.agent_task|just:agent-start|Stateful agent workflow entrypoints (start/check/finish)

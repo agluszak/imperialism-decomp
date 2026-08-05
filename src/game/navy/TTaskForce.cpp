@@ -1274,8 +1274,7 @@ void TTaskForce::CancelOrders(unsigned char cancellationMode) {
   Free();
 
   if (cancelsBeachhead) {
-    g_pMapContextActionManager->ValidateOrderSupportDeltaAndMarkDirectionalOverlays(
-        g_pSimMgr->GetActiveNationId(), cityIndex);
+    g_pMapContextActionManager->ReassessLanding(g_pSimMgr->GetActiveNationId(), cityIndex);
   }
   g_pViewMgr->mapUberPictureF0->SetActiveMapOrderEntry(previousContext);
 }
@@ -1569,16 +1568,9 @@ void TTaskForce::GetAuthority(CString* out) const {
   }
 }
 
-namespace {
-// Per-order-type priority weight used by both IsAfraidOf
-// and Encounter; indexed by aggression (only 0-2 are
-// meaningful -- the original indexes the same 3-entry stack array unconditionally, so an
-// out-of-range aggression reads original stack garbage there too).
-const int kOrderTypePriorityWeight[3] = {200, 100, 50};
-} // namespace
-
 // FUNCTION: IMPERIALISM 0x00555420
 bool TTaskForce::Encounter(TTaskForce* other) {
+  const int priorityWeight[3] = {200, 100, 50};
   if (CountShips() == 0) {
     return 0;
   }
@@ -1617,10 +1609,12 @@ bool TTaskForce::Encounter(TTaskForce* other) {
   int thisScore = GetBattleStrengthRating();
   int otherScore = other->GetBattleStrengthRating();
   bool resolved;
-  if (thisScore * 100 < kOrderTypePriorityWeight[aggression] * otherScore) {
+  if (static_cast<int>(static_cast<short>(thisScore)) * 100 <
+      priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherScore))) {
     int otherScore2 = other->GetBattleStrengthRating();
     int thisScore2 = GetBattleStrengthRating();
-    if (otherScore2 * 100 < kOrderTypePriorityWeight[other->aggression] * thisScore2 ||
+    if (static_cast<int>(static_cast<short>(otherScore2)) * 100 <
+            priorityWeight[other->aggression] * static_cast<int>(static_cast<short>(thisScore2)) ||
         other->defeated != 0) {
       resolved = false;
     } else {
@@ -1717,6 +1711,7 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
 
 // FUNCTION: IMPERIALISM 0x00555920
 bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
+  const int priorityWeight[3] = {200, 100, 50};
   int thisTotal = 0;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     thisTotal += static_cast<TShip*>(node->payload)->GetBattleStrengthRating();
@@ -1727,7 +1722,8 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     otherTotal += static_cast<TShip*>(otherNode->payload)->GetBattleStrengthRating();
   }
 
-  if (thisTotal * 100 < kOrderTypePriorityWeight[aggression] * otherTotal) {
+  if (static_cast<int>(static_cast<short>(thisTotal)) * 100 <
+      priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherTotal))) {
     int refreshedOtherTotal = 0;
     for (TMapOrderChildLinkNode* refreshedOtherNodeA = other->shipList;
          refreshedOtherNodeA != nullptr; refreshedOtherNodeA = refreshedOtherNodeA->next) {
@@ -1735,8 +1731,9 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
           static_cast<TShip*>(refreshedOtherNodeA->payload)->GetBattleStrengthRating();
     }
     int thisAggregateScore = GetBattleStrengthRating();
-    if (refreshedOtherTotal * 100 <
-            kOrderTypePriorityWeight[other->aggression] * thisAggregateScore ||
+    if (static_cast<int>(static_cast<short>(refreshedOtherTotal)) * 100 <
+            priorityWeight[other->aggression] *
+                static_cast<int>(static_cast<short>(thisAggregateScore)) ||
         other->defeated != 0) {
       return 0;
     }
@@ -1775,8 +1772,9 @@ bool TTaskForce::ResolveEncounterWith(TTaskForce* other) {
     refreshedThisTotal +=
         static_cast<TShip*>(refreshedThisNode->payload)->GetBattleStrengthRating();
   }
-  if (refreshedOtherTotal * 100 <
-      kOrderTypePriorityWeight[other->aggression] * refreshedThisTotal) {
+  if (static_cast<int>(static_cast<short>(refreshedOtherTotal)) * 100 <
+      priorityWeight[other->aggression] *
+          static_cast<int>(static_cast<short>(refreshedThisTotal))) {
     unsigned int minWeight = other->GetWorstSpeed();
     int threshold = static_cast<int>(minWeight + 5) * 10 - GetDeciSpeed();
     if (rand() % 100 < threshold) {
@@ -1856,6 +1854,7 @@ bool TTaskForce::BattleWith(TTaskForce* other, TTaskForce*& unresolvedForce) {
 
 // FUNCTION: IMPERIALISM 0x00555de0
 bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
+  const int priorityWeight[3] = {200, 100, 50};
   int thisSum = 0;
   for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
     TShip* ship = static_cast<TShip*>(node->payload);
@@ -1865,7 +1864,7 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
+    int resolveScore = strengthBucket + descriptor.ResolveWeightDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
     thisSum += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
                 ship->strength) /
@@ -1882,13 +1881,14 @@ bool TTaskForce::IsAfraidOf(TTaskForce* other) const {
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
+    int resolveScore = strengthBucket + descriptor.ResolveWeightDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
     otherSum += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
                  ship->strength) /
                 descriptor.TaskForceWeight();
   }
-  return thisSum * 100 < kOrderTypePriorityWeight[aggression] * otherSum;
+  return static_cast<int>(static_cast<short>(thisSum)) * 100 <
+         priorityWeight[aggression] * static_cast<int>(static_cast<short>(otherSum));
 }
 
 // FUNCTION: IMPERIALISM 0x00556010
@@ -1902,7 +1902,7 @@ int TTaskForce::GetBattleStrengthRating() const {
         g_NavyOrderResourceDescriptorTable[resourceType];
     int navyPriorityScore = strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5;
     short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-    int resolveScore = strengthBucket + descriptor.ResolveWeight() * 10 + 5;
+    int resolveScore = strengthBucket + descriptor.ResolveWeightDword() * 10 + 5;
     short resolveBucket = static_cast<short>(resolveScore / 10);
     total += ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
               ship->strength) /

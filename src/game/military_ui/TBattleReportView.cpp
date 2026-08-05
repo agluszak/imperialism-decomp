@@ -568,9 +568,10 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->AssertValid();
     CString strLocation;
     CString strTerrain;
-    int cityRecordIndex = reinterpret_cast<int>(record->location08);
-    g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &strLocation);
-    int ownerNation = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+    g_pGlobalMapState->AssignCityRecordDisplayName(reinterpret_cast<int>(record->location08),
+                                                   &strLocation);
+    int ownerNation = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
+                          .ownerNationCode00;
     g_apTerrainTypeDescriptorTable[ownerNation]->FormatOverlayTerrainLabelText(&strTerrain);
     CString locationTemplate;
     g_pSimMgr->GetString(0x273d, 7, &locationTemplate);
@@ -625,8 +626,7 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     userStringGroup = 0x273d;
     int activeHomeRegion =
         g_apTerrainTypeDescriptorTable[g_pSimMgr->GetActiveNationId()]->GetCapitolProvince();
-    int cityRecordIndex = reinterpret_cast<int>(record->location08);
-    char activeNationOwnsBattleSite = activeHomeRegion == cityRecordIndex;
+    char activeNationOwnsBattleSite = activeHomeRegion == reinterpret_cast<int>(record->location08);
     char reportSidesAreSame = record->reservedByte03 == record->participantIndex02;
     char reportParticipantIsActive =
         static_cast<signed char>(
@@ -638,7 +638,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       otherNation = static_cast<signed char>(record->nationIds[1]);
     }
     bool otherNationOwnsBattleSite =
-        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() == cityRecordIndex;
+        g_apTerrainTypeDescriptorTable[otherNation]->GetCapitolProvince() ==
+        reinterpret_cast<int>(record->location08);
 
     if (activeNationOwnsBattleSite && displayedParticipantIsActive) {
       userStringIndex = 48;

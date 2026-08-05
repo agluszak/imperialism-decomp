@@ -344,9 +344,8 @@ void TAutoGreatPower::SetTradeOffersFor(short resourceKind, short offerContext) 
 void TAutoGreatPower::ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
-    short orderCount = this->city->orderCountByType5c[resourceType];
-    total += static_cast<short>(resourceWeight * orderCount);
+    total += GetResourceDescriptorWeightWord0ByType(resourceType) *
+             this->city->orderCountByType5c[resourceType];
   }
 
   this->merchantCapacity = static_cast<short>(total);
@@ -1778,7 +1777,7 @@ void TAutoGreatPower::UpdateTrackedEntryEligibilityByClassMaskAndRatio(int unuse
     }
 
     unsigned char eligible =
-        classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 != 0;
+        classMask == 0 || (classMask & availableClassMask) == classMask || mission->state08 == 0;
     if (eligible && (classMask & 1) != 0 && !mission->IsArmyMission()) {
       eligible = 0;
     }

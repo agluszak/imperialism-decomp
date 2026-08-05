@@ -33,8 +33,8 @@ short GetResourceDescriptorWord20ByType(short resourceType) {
 }
 
 // FUNCTION: IMPERIALISM 0x00550ed0
-short GetResourceDescriptorWeightWord1ByType(short resourceType) {
-  return g_NavyOrderResourceDescriptorTable[resourceType].DescriptorWeight();
+short GetResourceDescriptorWeightWord1ByType(int resourceType) {
+  return g_NavyOrderResourceDescriptorTable[static_cast<short>(resourceType)].DescriptorWeight();
 }
 
 // Generic accessor: reads the low short of the `statColumn`-th 4-byte column in the

@@ -16,7 +16,5 @@ public:
   void DoPostCreate(int arg) override;
   short ApplyMoveClamp(int baseValue, short requestedValue) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
-
-  void UpdateFromScaleOrRatio(int scaleValue, int ratioValue);
 };
 ASSERT_SIZE(TTraderAmtBar, 0x68);

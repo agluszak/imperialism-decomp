@@ -121,7 +121,7 @@ void TNavyMission::Free() {
   taskForce20 = nullptr;
 
   while (orderList24 != nullptr) {
-    orderList24->payload = nullptr;
+    static_cast<TShip*>(orderList24->payload)->mission = nullptr;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
 
@@ -189,7 +189,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00536740
 char TNavyMission::SmokeEmIfYouGotEm() {
   while (orderList24 != nullptr) {
-    orderList24->payload = nullptr;
+    static_cast<TShip*>(orderList24->payload)->mission = nullptr;
     orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
   return 1;
@@ -211,9 +211,7 @@ void TNavyMission::AcceptReenforcement(TShip* item, unsigned char notify) {
 // FUNCTION: IMPERIALISM 0x005367d0
 void TNavyMission::RejectConstituent(TShip* item, unsigned char notify) {
   (void)notify;
-  if (orderList24 != nullptr) {
-    orderList24 = orderList24->RemoveLinkedOrderNodeByValueRecursive(item);
-  }
+  orderList24 = orderList24->RemoveLinkedOrderNodeByValueRecursive(item);
   item->mission = nullptr;
   if (selectedOrder1c == item) {
     selectedOrder1c = nullptr;
@@ -670,11 +668,11 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
 
 // FUNCTION: IMPERIALISM 0x005378c0
 float TNavyMission::IndustrialCostOfNeeds() {
-  double total = 0.0;
+  float total = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int i = 0; i < 4; ++i) {
-    total += static_cast<double>(requiredShipEquipageByCategory[i]);
+    total += requiredShipEquipageByCategory[i] * g_NavyMissionIndustrialCostWeights_0065A910[i];
   }
-  return static_cast<float>(total);
+  return total;
 }
 // Builds a per-category priority vector over every orderList24 ship: a ship counts if
 // it's within `distanceThreshold` hops of `nearZone` (or unconditionally when `nearZone`

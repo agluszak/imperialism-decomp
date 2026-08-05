@@ -232,15 +232,15 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
-void TCountry::SetSerializedField8c(short value) {
-  this->overlayAnchorTileCache8c = value;
+void TCountry::SetSerializedField8c(int value) {
+  this->overlayAnchorTileCache8c = static_cast<short>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7170
 short TCountry::GetOrComputeOverlayAnchorTileIndex() {
   if (overlayAnchorTileCache8c == -1) {
-    overlayAnchorTileCache8c =
-        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, 1);
+    overlayAnchorTileCache8c = static_cast<short>(
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForNationWithWrapBias(nationSlot, 1));
   }
   return static_cast<short>(overlayAnchorTileCache8c);
 }

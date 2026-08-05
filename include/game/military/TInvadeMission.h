@@ -56,8 +56,10 @@ public:
   virtual float
   ValueOf(TShip* candidate) override; // slot 0x1d 0x53fb60 -- beachhead score if enabled
 
+  using TAttackProvinceMission::AcceptReenforcement;
   virtual void AcceptReenforcement(TShip* ship,
                                    unsigned char notify) override; // slot 0x21 0x53f190
+  using TAttackProvinceMission::RejectConstituent;
   virtual void RejectConstituent(TShip* ship,
                                  unsigned char notify) override; // slot 0x23 0x53f1c0
   virtual void ForgetTaskForce(TTaskForce* taskForce) override;  // slot 0x24 0x53f160

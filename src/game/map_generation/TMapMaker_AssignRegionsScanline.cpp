@@ -6,9 +6,9 @@
 // crossing segments by shared endpoint + heading angle, then writes that segment's region id
 // (SelectAttrByAngle) into the tile. Own translation unit.
 //
-// The scanline crossing and two-segment tie-break follow the listing's integer slope and
-// shared-endpoint angle comparisons; the exact overlay-coordinate interpretation remains
-// provisional.
+// ORACLE: fixed retail/recomp segment-table differentials cover even/odd scanline boundaries,
+// sloped crossings, shared-endpoint tie-breaks, and the 0xd8-wide horizontal seam. The
+// resulting complete 108x60 region arrays agree byte-for-byte.
 
 #include "game/map_generation/TMapMaker.h"
 

@@ -32,8 +32,17 @@ public:
   // ReplaceUiResourceContextPairBuffer (0x427060); the factory-builder TUs call the
   // out-of-line Reset body (0x41b420) instead.
   TUiStyleBytes() {
-    packedColor = 0;
-    styleWord = 0;
+    // MATCH: VC5 emits the retail constructor's eight byte stores from this
+    // character view while the payload retains its recovered typed fields.
+    unsigned char* bytes = reinterpret_cast<unsigned char*>(this);
+    bytes[0] = 0;
+    bytes[1] = 0;
+    bytes[2] = 0;
+    bytes[3] = 0;
+    bytes[4] = 0;
+    bytes[5] = 0;
+    bytes[6] = 0;
+    bytes[7] = 0;
   }
   TUiStyleBytes* Reset(); // 0x41b420 — same zeroing, out-of-line (thiscall, returns this)
   int packedColor;        // +0

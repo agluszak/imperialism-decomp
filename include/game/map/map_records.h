@@ -96,7 +96,7 @@ struct Province {
   // Founding owner for the context panel's "formerly of" label.
   signed char formerOwnerNationCode01;
   signed char developmentStage;
-  unsigned char fortLevel03;
+  signed char fortLevel03;
   StrategicTileIndex cityTileIndex04; // -1 when unanchored
   short lastTurnTick;
   signed char adjacentRegionCount08;

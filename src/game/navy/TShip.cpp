@@ -391,7 +391,7 @@ int TShip::ComputeValueForMission(int missionType) const {
 // FUNCTION: IMPERIALISM 0x00550370
 void TShip::Victory(short experienceGain) {
   experience = static_cast<short>(experience + experienceGain);
-  if (experience > 499) {
+  if (experience >= 500) {
     experience = 499;
   }
 }
@@ -633,7 +633,7 @@ int TShip::GetBattleStrengthRating() const {
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[resourceType];
   int navyPriorityScore = strengthBucket + 5 + desc.NavyPriorityWeightDword() * 10;
   short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
-  int resolveScore = strengthBucket + 5 + desc.ResolveWeight() * 10;
+  int resolveScore = strengthBucket + 5 + desc.ResolveWeightDword() * 10;
   short resolveBucket = static_cast<short>(resolveScore / 10);
 
   return ((navyPriorityBucket + desc.CalculateWeight()) * 100 + resolveBucket + strength) /
@@ -655,8 +655,9 @@ int TShip::GetStudliness() const {
 }
 
 // FUNCTION: IMPERIALISM 0x00550e70
-short GetResourceDescriptorWeightWord0ByType(short resourceType) {
-  return g_NavyOrderResourceDescriptorTable[resourceType].ResourceDescriptorWeightWord0();
+short GetResourceDescriptorWeightWord0ByType(int resourceType) {
+  return g_NavyOrderResourceDescriptorTable[static_cast<short>(resourceType)]
+      .ResourceDescriptorWeightWord0();
 }
 
 // FUNCTION: IMPERIALISM 0x00550f60

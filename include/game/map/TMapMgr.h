@@ -146,7 +146,7 @@ public:
                                                        short nationTag); // slot 0x16 0x5121d0
   virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
   virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
-  virtual short ComputeRepresentativeTileIndexForNation(int nationSlot); // slot 0x19 0x511f10
+  virtual int ComputeRepresentativeTileIndexForNation(int nationSlot);   // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
   // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
   // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
@@ -520,7 +520,7 @@ public:
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
   static StrategicTileIndex TileIndexFromRowCol(int row, int col);
 
-  short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
+  int ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
   // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.

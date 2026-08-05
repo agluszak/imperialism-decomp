@@ -6,6 +6,7 @@ from __future__ import annotations
 import sys
 import unittest
 from unittest.mock import patch
+from types import SimpleNamespace
 
 import tempfile
 from pathlib import Path
@@ -55,6 +56,37 @@ class StopEventTests(unittest.TestCase):
 
 
 class GdbSessionTests(unittest.TestCase):
+    def test_read_memory_decodes_mi_contents(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            executable = root / "Imperialism.exe"
+            executable.write_bytes(b"")
+            session = GdbSession(executable, root, {}, root)
+            mi = SimpleNamespace(command=lambda *_args: None)
+            response = SimpleNamespace(
+                result=SimpleNamespace(
+                    payload={"memory": [{"begin": "0x1000", "contents": "0011aaff"}]},
+                    raw='^done,memory=[{begin="0x1000",contents="0011aaff"}]',
+                )
+            )
+            with (
+                patch.object(session, "_require_mi", return_value=mi),
+                patch.object(session, "_call", return_value=response),
+            ):
+                self.assertEqual(session.read_memory(0x1000, 4), b"\x00\x11\xaa\xff")
+
+    def test_write_memory_uses_one_mi_byte_command(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            executable = root / "Imperialism.exe"
+            executable.write_bytes(b"")
+            session = GdbSession(executable, root, {}, root)
+            with patch.object(session, "_command") as command:
+                session.write_memory(0x2000, b"\x01\x02\xfe")
+            command.assert_called_once_with(
+                "-data-write-memory-bytes 0x00002000 0102fe", timeout=30.0
+            )
+
     def test_interrupt_and_capture_uses_mi_interrupt_and_captures_stop(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

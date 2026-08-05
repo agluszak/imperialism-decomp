@@ -336,7 +336,7 @@ void TDefendProvinceMission::CalculateNeeds() {
     }
   }
 
-  unsigned char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation14].fortLevel03;
+  signed char fortLevel = g_pGlobalMapState->cityScoreTable[presentLocation14].fortLevel03;
   int offset = (fortLevel < 1) ? 0 : 15;
   short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
 

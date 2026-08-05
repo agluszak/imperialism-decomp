@@ -91,6 +91,7 @@ extern short g_nArmsAdvancedResourceOfferSplitCount_006a3a58;
 extern IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
 extern const float g_AttackProvinceMissionReadinessThreshold_0065A8F0;
 extern const float g_DefendProvinceMissionCrossSupportFloorScale_0065A8F8;
+extern const float g_NavyMissionIndustrialCostWeights_0065A910[4];
 extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958;
 extern const float g_NavyMissionSimilarityExcessBlend_0065A960;
 extern const float g_AttackProvinceMissionResourceScaleByDifficultyAndFortLevel_0065A968[5][4];

@@ -190,8 +190,47 @@ nested_conversion_reviews:
   1bca097815b7e702:
     classification: signed_byte_sign_test
     evidence: "the packed map-tile action state byte is read signed so the retail SETGE test implements >= 0, then normalized to a byte for the retail byte compare."
+  465df7bebad8ae2c:
+    classification: retail_short_score_compare
+    evidence: "TTaskForce::Encounter accumulates an int battle-strength score, but retail explicitly MOVSX-es its low word before the weighted comparison; the inner short conversion restores that gameplay boundary and the outer int conversion is the multiplication width."
+  1ae0a30826f32d64:
+    classification: retail_short_score_compare
+    evidence: "the opposing Encounter score is likewise truncated to a signed word by retail before multiplication."
+  1222caebd2c08876:
+    classification: retail_short_score_compare
+    evidence: "Encounter recomputes the opposing score and retail again consumes AX through MOVSX before the second weighted comparison."
+  d59e17910a8e9f31:
+    classification: retail_short_score_compare
+    evidence: "the recomputed local Encounter score crosses the same signed-word gameplay boundary."
+  63a8b13b7433d812:
+    classification: retail_short_score_compare
+    evidence: "ResolveEncounterWith accumulates child ratings in an int, then retail MOVSX-es BX before comparing the weighted totals."
+  d9c3847f7d61ac94:
+    classification: retail_short_score_compare
+    evidence: "the opposing ResolveEncounterWith aggregate is explicitly consumed from DI as a signed word."
+  18c3a20abdc1c34b:
+    classification: retail_short_score_compare
+    evidence: "the refreshed opposing aggregate is explicitly consumed through MOVSX EAX,DI before the second comparison."
+  ae325f44a735e6aa:
+    classification: retail_short_score_compare
+    evidence: "ResolveEncounterWith calls GetBattleStrengthRating, then retail consumes the returned AX through MOVSX EDX before applying the opposing aggression weight; the inner short conversion restores that gameplay boundary."
+  0867780a90715e5d:
+    classification: retail_short_score_compare
+    evidence: "the late ResolveEncounterWith comparison truncates the refreshed opposing aggregate to the signed word retail consumes."
+  2dc50bb1ce17f60c:
+    classification: retail_short_score_compare
+    evidence: "the refreshed local aggregate in the same late comparison is also narrowed to retail's signed-word operand."
+  ef596748a8555754:
+    classification: retail_short_score_compare
+    evidence: "IsAfraidOf accumulates a full int for traversal, but retail compares only its signed low word after MOVSX."
+  ff537b67d9bc93c5:
+    classification: retail_short_score_compare
+    evidence: "the opposing IsAfraidOf aggregate crosses the same signed-word boundary before the aggression-weight multiplication."
 
 predicate_storage_reviews:
+  c8605fd8dc3584f4:
+    classification: byte_local_storage
+    evidence: "TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup materializes multiplayerSessionRole == 1 with SETZ CL and tests that byte before the host callback at retail 0x004a5bd2-0x004a5bd7."
   06ed593903a04495:
     classification: byte_field_storage
     evidence: "TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch."

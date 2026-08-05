@@ -38,13 +38,16 @@ void TOrItemOrder::IOrItemOrder(TCity* city, short resourceType, short primaryIn
 short TOrItemOrder::MaxOrder() {
   short currentQuantity = quantity;
   short workforceLimit = static_cast<short>(productionSummary->strength / 2 + currentQuantity);
-  short resourceLimit = static_cast<short>((trackingSlots[secondaryInputResourceId] +
-                                            trackingSlots[primaryInputResourceId] +
-                                            ownerCity->CityStockByType(secondaryInputResourceId) +
-                                            ownerCity->CityStockByType(primaryInputResourceId)) /
-                                           2);
-  short productionLimit =
-      static_cast<short>(ownerCity->productionAccum1fc[productionSlot] + currentQuantity);
+  short availableResources = trackingSlots[secondaryInputResourceId];
+  availableResources =
+      static_cast<short>(availableResources + trackingSlots[primaryInputResourceId]);
+  availableResources =
+      static_cast<short>(availableResources + ownerCity->CityStockByType(secondaryInputResourceId));
+  availableResources =
+      static_cast<short>(availableResources + ownerCity->CityStockByType(primaryInputResourceId));
+  short resourceLimit = static_cast<short>(availableResources / 2);
+  short productionLimit = ownerCity->productionAccum1fc[productionSlot];
+  productionLimit = static_cast<short>(productionLimit + currentQuantity);
 
   limitingConstraint = kProductionOrderLimitCapacity;
   short limit = productionLimit;
@@ -62,10 +65,9 @@ short TOrItemOrder::MaxOrder() {
 // FUNCTION: IMPERIALISM 0x004b5990
 bool TOrItemOrder::SetQuantity(short quantity) {
   short delta = static_cast<short>(quantity - this->quantity);
-  if (quantity > MaxOrder() || quantity < 0) {
+  if (!TProductionOrder::SetQuantity(quantity)) {
     return false;
   }
-  this->quantity = quantity;
   requestedQuantity4c = quantity;
 
   short primaryAvailable;

@@ -71,7 +71,7 @@ short GetResourceDescriptorWord0CByType(short resourceType);
 short GetResourceDescriptorWord10ByType(short resourceType);
 short GetResourceDescriptorWord14ByType(short resourceType);
 short GetResourceDescriptorWord18ByType(short resourceType);
-short GetResourceDescriptorWeightWord1ByType(short resourceType);
+short GetResourceDescriptorWeightWord1ByType(int resourceType);
 short GetResourceDescriptorWord20ByType(short resourceType);
 short GetResourceDescriptorStatByColumn(short resourceType, short statColumn);
 void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,

@@ -61,8 +61,17 @@ void __cdecl SetUiResourceContextStringCode(int nCode) {
 
 // FUNCTION: IMPERIALISM 0x0041b420
 TUiStyleBytes* TUiStyleBytes::Reset() {
-  packedColor = 0;
-  styleWord = 0;
+  // MATCH: preserve the retail byte-store sequence without restoring the
+  // obsolete anonymous-union representation.
+  unsigned char* bytes = reinterpret_cast<unsigned char*>(this);
+  bytes[0] = 0;
+  bytes[1] = 0;
+  bytes[2] = 0;
+  bytes[3] = 0;
+  bytes[4] = 0;
+  bytes[5] = 0;
+  bytes[6] = 0;
+  bytes[7] = 0;
   return this;
 }
 

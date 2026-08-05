@@ -12,7 +12,7 @@ class TZone;
 // until it drops to <= 0, returning the index reached.
 int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
-short GetResourceDescriptorWeightWord0ByType(short resourceType);
+short GetResourceDescriptorWeightWord0ByType(int resourceType);
 
 // Walks the primary navy order list for `nation`'s eligible port-owner ships (owner
 // matches, the order's zone is a port zone, and the ship's normalization base doesn't
