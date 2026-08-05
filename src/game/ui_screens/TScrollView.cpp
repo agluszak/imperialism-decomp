@@ -41,12 +41,42 @@ void TScrollView::DoPostCreate(int arg) {
   scrollBar64 = bar;
 }
 
-// Clip painting to this scroll view's own frame: select a rect region covering the
-// slot-0x57 bounds into the paint DC, run the base TView child-paint recursion, then
-// clear the DC's clip region again. (The CRgn is deleted right after SelectClipRgn —
-// the DC keeps its own copy of the region.)
+// FUNCTION: IMPERIALISM 0x00573e40
+void TScrollView::ScrollOnce(int direction) {
+  switch (direction) {
+  case 0:
+    ScrollRelative(0, 0xc);
+    return;
+  case 1:
+    ScrollRelative(0, -0xc);
+    return;
+  case 2:
+    ScrollRelative(0xc, 0);
+    return;
+  case 3:
+    ScrollRelative(-0xc, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00573ed0
+void TScrollView::ScrollPage(int direction) {
+  switch (direction) {
+  case 0:
+    ScrollRelative(0, -static_cast<short>(frameHeight38));
+    return;
+  case 1:
+    ScrollRelative(0, static_cast<short>(frameHeight38));
+    return;
+  case 2:
+    ScrollRelative(0xc, 0);
+    return;
+  case 3:
+    ScrollRelative(-0xc, 0);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00573f60
-void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short delta) {
+void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
   if (contentView60 == nullptr) {
     return;
   }
@@ -59,8 +89,8 @@ void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short d
   CPoint origin;
   int baseX = contentView60->ownerLocalX;
   int baseY = contentView60->ownerLocalY;
-  origin.x = baseX + mode;
-  origin.y = baseY + delta;
+  origin.x = baseX + horizontalDelta;
+  origin.y = baseY + verticalDelta;
   if (contentView60->frameWidth34 < origin.x) {
     origin.x = contentView60->frameWidth34;
   }

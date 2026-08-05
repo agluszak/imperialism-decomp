@@ -12,12 +12,12 @@ class TTacticalPlayer : public TObject {
 public:
   DECLARE_DYNCREATE(TTacticalPlayer)
   // FUNCTION: IMPERIALISM 0x0059ae60
-  virtual ~TTacticalPlayer() override {}             // slot 0x01 (scalar deleting destructor)
-  virtual void Free() override;                      // slot 0x07 0x59aee0
-  virtual void StartBattle();                        // slot 0x0a 0x59ad70
-  virtual void AdvanceTacticalTurnPulse();           // slot 0x0b 0x59ad90
-  virtual void NoOpTacticalPlayerHook0C(int unused); // slot 0x0c 0x59adb0
-  virtual void CommitTacticalResultsToSourceUnits(int unused);            // slot 0x0d 0x59add0
+  virtual ~TTacticalPlayer() override {}                // slot 0x01 (scalar deleting destructor)
+  virtual void Free() override;                         // slot 0x07 0x59aee0
+  virtual void StartBattle();                           // slot 0x0a 0x59ad70
+  virtual void AdvanceTacticalTurnPulse();              // slot 0x0b 0x59ad90
+  virtual void NoOpTacticalPlayerHook0C(int unused);    // slot 0x0c 0x59adb0
+  virtual void ApplyChanges(unsigned char sideWonFlag); // slot 0x0d 0x59add0
   virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
   virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
   virtual unsigned char

@@ -92,6 +92,11 @@ public:
   // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
+  // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
+  // virtual ErrorCheck, empty-column scan, then full terrain-class frontier coverage.
+  // 0x00526620.
+  char CheckProvs();
+
   // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).
   // 0x00526710.
   char ValidateAllColumnsHaveAssignedRegionClass();
@@ -174,6 +179,11 @@ public:
   // placeholder (-2, -3, ...) and hand it the next sequential value from *nextValue.
   // Returns how many entries were assigned. 0x0052d6b0, __thiscall.
   int AssignSequentialValuesToRegionPlaceholders(short* tileValues, int* nextValue);
+
+  // ORACLE: Mac TMapMaker::ZoneCorner(long). Selects the row containing the longest
+  // contiguous run of nationCode, then returns the wrap-aware average owned column in
+  // that row. Returns -1 when the selected row contains no matching tile. 0x00529c80.
+  int ZoneCorner(long nationCode);
 
   // Centroid tile of every grid record owned by `nationCode` (record[4]). Tiles hugging
   // both the left (col < 0x19) and right (col > 0x53) edges mean the territory wraps: with

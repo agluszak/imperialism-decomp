@@ -19,6 +19,6 @@ TUberCluster::TUberCluster() : TCluster() {}
 TUberCluster::~TUberCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005714e0
-int TUberCluster::IsTradeControlAtMinimum() {
+char TUberCluster::IsTradeControlAtMinimum() {
   return 1;
 }

@@ -70,7 +70,7 @@ void TNavyToolbarCluster::DoEvent(int commandId, TEventHandler* sourceHandler, T
 }
 
 // FUNCTION: IMPERIALISM 0x005696d0
-int TNavyToolbarCluster::IsTradeControlAtMinimum() {
+char TNavyToolbarCluster::IsTradeControlAtMinimum() {
   return 1;
 }
 

@@ -13,7 +13,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override;                      // slot 0x0f 0x00569550
   virtual void SetSelectedChildTagAndRefresh(int childTag) override; // slot 0x72 0x5696f0
-  virtual int IsTradeControlAtMinimum() override;                    // slot 0x73 0x5696d0
+  virtual char IsTradeControlAtMinimum() override;                   // slot 0x73 0x5696d0
 
   TNavyToolbarCluster();
 };

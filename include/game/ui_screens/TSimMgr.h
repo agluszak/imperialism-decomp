@@ -113,6 +113,9 @@ public:
   int GetNumGPs();       // Mac oracle; 0x5811e0
   void ReduceNumGPs();   // Mac oracle; 0x581200
   int GetNumCountries(); // Mac oracle; great powers + minor countries, 0x581240
+  // Mac oracle: DoPerTurnMissionAIStuff(short). The Windows body forwards the complete
+  // pushed dword to TGreatPower slot 0xae, so retain the observed Windows argument width.
+  void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0
 
   // Active great-power slot (this+0x2e). Every original callsite loads ECX from
   // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
@@ -132,6 +135,9 @@ public:
   // and out-of-range values clear it. Windows 0x57d870.
   void SetDifficultyLevel(int difficulty);
   void ISimMgr();
+  // 0x57bc90. Resets the transient turn-flow state and PRNG seed without changing
+  // difficulty, scenario selection, or persisted preference values.
+  void ResetTurnFlowStateAndRandomSeed();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
   // 0x581510. Loads the 10-entry {score, name} table from scores.dat (defaulting each
   // slot to {0, this nation's own name} when the file/entry is missing), recomputes the

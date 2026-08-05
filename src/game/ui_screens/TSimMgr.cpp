@@ -14,6 +14,7 @@
 #include "game/assets/TAssetMgr.h"
 #include "game/city_ui/TCountry.h"
 #include "game/nation/TGreatPower.h"
+#include "game/nation/TGreatPower_internal.h"
 #include "game/ui_core/THelpMgr.h"
 #include "game/ui_core/TMacViewMgr.h"
 #include "game/net/TMultiplayerMgr.h"
@@ -213,6 +214,33 @@ void TSimMgr::ISimMgr() {
   gateFlag7a = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0057bc90
+void TSimMgr::ResetTurnFlowStateAndRandomSeed() {
+  economicTurn = 0;
+  activeNationSlot = -1;
+  field14 = 0;
+  turnStateCode = 1;
+  turnFlowStatusFlags = 0;
+  field_64 = 0;
+  phaseStateByDecade[0] = 0;
+  phaseStateByDecade[1] = 1;
+  phaseStateByDecade[2] = 1;
+  phaseStateByDecade[3] = 1;
+  phaseStateByDecade[4] = 1;
+  phaseStateByDecade[5] = 1;
+  phaseStateByDecade[6] = 1;
+  phaseStateByDecade[7] = 1;
+  phaseStateByDecade[8] = 1;
+  phaseStateByDecade[9] = 1;
+  field79 = 1;
+  field78 = 2;
+
+  CFileStatus conanFileStatus;
+  CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+  g_bRandomMapDeveloperCheatFlag = 0;
+  ReinitializeRandomSeed();
+}
+
 // FUNCTION: IMPERIALISM 0x0057bd20
 void TSimMgr::Free() {
   int i;
@@ -406,7 +434,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&field15, 0x17);
   stream->WriteBytes(&multiplayerSessionRole, 4);
 
-  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
+  unsigned char hasGameFlowState = turnFlowStatusFlags != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }
@@ -843,6 +871,26 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 
   g_apSecondaryNationStateSlots[nationIndex] = minor;
   g_apTerrainTypeDescriptorTable[nationIndex] = minor;
+}
+
+// FUNCTION: IMPERIALISM 0x0057d7a0
+void TSimMgr::DoPerTurnMissionAIStuff(int replanMode) {
+  g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
+  RecomputeNationOrderPriorityMetrics();
+
+  short nationSlot = 0;
+  TGreatPower** nation = g_apNationStates;
+  do {
+    if (nationSlot != -1) {
+      TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
+      if (country != nullptr && (nationSlot >= 7 || country->encodedNationSlot < 100 ||
+                                 country->encodedNationSlot >= 200)) {
+        (*nation)->RefreshTrackedEntriesAndReplanAiDevelopment(replanMode);
+      }
+    }
+    ++nation;
+    ++nationSlot;
+  } while (nation < &g_apNationStates[7]);
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830

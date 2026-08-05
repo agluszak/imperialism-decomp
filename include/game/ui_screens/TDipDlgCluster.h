@@ -9,8 +9,8 @@
 class TDipDlgCluster : public TUberCluster {
 public:
   DECLARE_DYNCREATE(TDipDlgCluster)
-  virtual ~TDipDlgCluster() override;             // slot 0x01 (scalar deleting destructor)
-  virtual int IsTradeControlAtMinimum() override; // slot 0x73 0x584160
+  virtual ~TDipDlgCluster() override;              // slot 0x01 (scalar deleting destructor)
+  virtual char IsTradeControlAtMinimum() override; // slot 0x73 0x584160
 
   TDipDlgCluster();
 };

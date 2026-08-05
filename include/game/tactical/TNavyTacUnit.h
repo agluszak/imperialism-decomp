@@ -24,12 +24,11 @@ public:
 
   // Non-virtual (TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant, 0x5a5730,
   // calls it directly on a downcast occupant4 -- TNavyBattle only ever holds navy occupants).
-  // targeting is the attacking side's TNavyPlayer::targetingMode2c (the hull/crew/sail
-  // ship-panel toggle also serves as the aim-point selector): 0 = hull (full damage to strength4,
-  // 25% splash to crewStrength38), 1 = crew (25%/75% split between strength4/crewStrength38),
-  // 2 = sail (25% to strength4, plus a 1-in-10-chance 10-point hit to baseActionPoints3c
-  // when rand()%10 < damageAmount). Destroys the unit (state1c = 3) when strength4 or
-  // crewStrength38 drops to <= 0. 0x5a63c0, __thiscall, RET 0x8.
+  // targeting is the attacking side's TNavyPlayer::targetingMode2c. Mode 0 applies
+  // ratio A to strength4 and full damage to the second combat pool; mode 1 applies
+  // ratio B to strength4 and ratio A to the second pool; mode 2 applies ratio A only
+  // to the second pool and may also remove 10 action points. Destroys the unit
+  // (state1c = 3) when either combat pool drops to <= 0. 0x5a63c0, __thiscall, RET 0x8.
   void ApplyNavalDamage(float damageAmount, NavyTargeting targeting);
 
   // Navy slice (+0x34..+0x40): fully covered. A field-xref sweep finds every access --
@@ -37,11 +36,10 @@ public:
   // InitializeFromSourceShip and ApplyNavalDamage, +0x3c in
   // GetBaseActionPoints (0x5a6310) -- and nothing touches +0x40 or beyond.
   TShip* sourceShip34; // +0x34 source strategic ship (range delegate, 0x5a6330)
-  // Second combat-resource pool alongside strength4 (TTacticalUnit); provisional name from
-  // ApplyNavalDamage's targeting split (see above) -- not yet cross-checked
-  // against a UI reader.
-  int crewStrength38;     // +0x38
-  int baseActionPoints3c; // +0x3c
+  // Second combat-resource pool alongside strength4 (TTacticalUnit); its domain is not
+  // yet cross-checked against a UI reader.
+  int secondaryCombatStrength38; // +0x38
+  int baseActionPoints3c;        // +0x3c
 
   // NOOP: verified empty in original 0x005a6242 (no standalone TNavyTacUnit::TNavyTacUnit body exists: construction is fully inlined into CreateObject 0x005a6240; that address is its operator-new call site)
   TNavyTacUnit() {}

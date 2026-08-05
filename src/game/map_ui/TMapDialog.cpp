@@ -1183,13 +1183,14 @@ void TMapDialog::DrawOneTile(short tileIndex, short screenY, short screenX) {
   tileRect.right = screenX + 0x40;
   tileRect.bottom = screenY + 0x40;
 
-  if (terrain.adjacencyBits06 != 0 || terrain.railFlags17 != 0) {
+  if (terrain.adjacencyMaskA0a != 0 || terrain.adjacencyMaskB0b != 0) {
     for (int direction = 0; direction < 6; ++direction) {
       unsigned char directionBit = static_cast<unsigned char>(1 << direction);
       StrategicMapCallbackRecord* routeMask = 0;
-      if ((static_cast<unsigned char>(terrain.adjacencyBits06) & directionBit) != 0) {
+      if ((terrain.adjacencyMaskA0a & directionBit) != 0) {
         routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x18 + direction];
-      } else if ((terrain.railFlags17 & directionBit) != 0) {
+      } else if ((terrain.adjacencyMaskB0b & directionBit) != 0 &&
+                 terrain.GetTerrainKind() != kStrategicTerrainDesert) {
         routeMask = &g_pMacViewMgr->strategicTileMasks6bc[0x1e + direction];
       }
       if (routeMask != 0) {

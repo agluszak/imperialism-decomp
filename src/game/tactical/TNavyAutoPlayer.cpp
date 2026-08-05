@@ -118,6 +118,6 @@ void TNavyAutoPlayer::AdvanceTacticalTurnPulse() {
   delete[] distances;
 
   if (battle14->selectedUnit1c == unit) {
-    battle14->QueueTacticalEventPacket232A();
+    battle14->FinishTacticalActionAndPostNextMoveCommand();
   }
 }

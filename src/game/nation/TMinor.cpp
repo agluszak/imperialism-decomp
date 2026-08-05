@@ -500,61 +500,53 @@ void TMinor::PurchaseItem(short resourceKind, short amount, short price) {
   if (deltaShort >= 1 && resourceSlot >= 0xd && resourceSlot <= 0x10) {
     if (resourceSlot == this->diplomacyPolicyPredicateCode12c) {
       this->diplomacyPolicyGate130 = deltaShort;
-      return;
-    }
-    if (resourceSlot == this->diplomacyPolicyPredicateCode12e) {
+    } else if (resourceSlot == this->diplomacyPolicyPredicateCode12e) {
       this->diplomacyPolicyGate132 = deltaShort;
-      return;
     }
-    return;
-  }
-
-  if (resourceSlot < 0 || resourceSlot > 6) {
+  } else if (resourceSlot < 0 || resourceSlot > 6) {
     if (resourceSlot == 7) {
       this->grantAmountsByResource[7] =
           static_cast<short>(this->grantAmountsByResource[7] + deltaShort);
     }
-    return;
-  }
+  } else {
+    this->grantAmountsByResource[resourceSlot] =
+        static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
+    if (this->recurringGrantByResource[resourceSlot] != 0) {
+      for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
+        if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
+          continue;
+        }
+        short linkValue = this->statusRows[resourceSlot].fields[majorNationSlot];
+        if (linkValue == 0) {
+          continue;
+        }
 
-  this->grantAmountsByResource[resourceSlot] =
-      static_cast<short>(this->grantAmountsByResource[resourceSlot] + deltaShort);
-  if (this->recurringGrantByResource[resourceSlot] == 0) {
-    return;
-  }
+        short needCurrent = this->needCurrentByType[resourceSlot];
+        short standing =
+            g_pDiplomacyTurnStateManager
+                ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
+        int negDelta = -static_cast<int>(deltaShort);
+        int intFactor = negDelta;
+        if (linkValue < negDelta) {
+          intFactor = linkValue;
+        }
 
-  for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
-    if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
-      continue;
+        float floatAmount = static_cast<float>(linkValue) / static_cast<float>(needCurrent);
+        floatAmount = floatAmount * static_cast<float>(standing);
+        floatAmount = floatAmount * static_cast<float>(price);
+        floatAmount = floatAmount * static_cast<float>(deltaShort);
+        floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale_00653728;
+        float integerAmount =
+            static_cast<float>(intFactor * static_cast<int>(standing) * price / 255);
+        int integerGrantAmount = static_cast<int>(integerAmount);
+        int grantAmount = static_cast<int>(floatAmount);
+        if (integerGrantAmount > grantAmount) {
+          grantAmount = integerGrantAmount;
+        }
+        g_apNationStates[majorNationSlot]->AddAmountToAidAllocationMatrixCellAndTotal(
+            grantAmount, resourceSlot, this->nationSlot);
+      }
     }
-    short linkValue = this->statusRows[resourceSlot].fields[majorNationSlot];
-    if (linkValue == 0) {
-      continue;
-    }
-
-    short needCurrent = this->needCurrentByType[resourceSlot];
-    short standing =
-        g_pDiplomacyTurnStateManager
-            ->relationStandingScores[this->nationSlot * kNationSlotCount + majorNationSlot];
-    int negDelta = -static_cast<int>(deltaShort);
-    int intFactor = negDelta;
-    if (linkValue < negDelta) {
-      intFactor = linkValue;
-    }
-
-    float floatAmount = static_cast<float>(linkValue) / static_cast<float>(needCurrent);
-    floatAmount = floatAmount * static_cast<float>(standing);
-    floatAmount = floatAmount * static_cast<float>(price);
-    floatAmount = floatAmount * static_cast<float>(deltaShort);
-    floatAmount = floatAmount * g_ApplyIndexedResourceDeltaScale_00653728;
-    int amountFloat = static_cast<int>(floatAmount);
-    int integerAmount = intFactor * static_cast<int>(standing) * price / 255;
-    int grantAmount = amountFloat;
-    if (integerAmount > grantAmount) {
-      grantAmount = integerAmount;
-    }
-    g_apNationStates[majorNationSlot]->AddAmountToAidAllocationMatrixCellAndTotal(
-        grantAmount, resourceSlot, this->nationSlot);
   }
 }
 

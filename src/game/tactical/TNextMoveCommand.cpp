@@ -29,9 +29,9 @@ void TNextMoveCommand::DoIt() {
 
   if (battle->battleOutcomeCode44 != 0) {
     int sideWonFlag = (battle->battleOutcomeCode44 == 1);
-    battle->tacticalPlayer14->CommitTacticalResultsToSourceUnits(sideWonFlag);
-    battle->tacticalPlayer18->CommitTacticalResultsToSourceUnits(!sideWonFlag);
-    battle->FinalizeTacticalBattleOutcome(sideWonFlag);
+    battle->tacticalPlayer14->ApplyChanges(static_cast<unsigned char>(sideWonFlag));
+    battle->tacticalPlayer18->ApplyChanges(static_cast<unsigned char>(!sideWonFlag));
+    battle->EndBattle(static_cast<unsigned char>(sideWonFlag));
   } else {
     battle->pendingEndOfActionFlag48 = 1;
     battle->AdvanceToNextTacticalUnitTurnStep();

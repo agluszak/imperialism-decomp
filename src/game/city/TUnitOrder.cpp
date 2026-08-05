@@ -183,10 +183,7 @@ void TUnitOrder::Produce() {
   }
 
   TGreatPower* ownerNation = cityContext->ownerNationAc;
-  short ownerNationSlot = 0;
-  if (ownerNation != 0) {
-    ownerNationSlot = ownerNation->nationSlot;
-  }
+  short ownerNationSlot = ownerNation->nationSlot;
 
   if (specialist == 0) {
     cityContext->cityMetricsBlock4A[entryId] =
@@ -201,10 +198,6 @@ void TUnitOrder::Produce() {
       }
 
       TCivUnit* orderObject = new TCivUnit();
-      if (orderObject == nullptr) {
-        continue;
-      }
-
       CivilianUnitKind unitKind = DecodeCivilianUnitKind(entryId);
       orderObject->ICivUnit(unitKind, spawnTile, ownerNationSlot);
     }
@@ -213,9 +206,6 @@ void TUnitOrder::Produce() {
       short homeTile = cityContext->HomeTownTileId();
       short homeProvince = g_pGlobalMapState->terrainStateTable[homeTile].cityRecordIndex;
       TMilitaryUnit* orderObject = new TMilitaryUnit();
-      if (orderObject == 0) {
-        continue;
-      }
       orderObject->IMilitaryUnit(static_cast<MilitaryUnitKindStorage>(entryId), homeProvince,
                                  ownerNationSlot, 0);
       if (ownerNation->pendingActionStatus.byAction[6] >= 0x33) {

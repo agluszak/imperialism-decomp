@@ -12,7 +12,7 @@ public:
   virtual void DoEvent(int commandId, TEventHandler* sourceHandler,
                        TEvent* event) override;                      // slot 0x0f 0x00586090
   virtual void SetSelectedChildTagAndRefresh(int childTag) override; // slot 0x72 0x586170
-  virtual int IsTradeControlAtMinimum() override;                    // slot 0x73 0x586150
+  virtual char IsTradeControlAtMinimum() override;                   // slot 0x73 0x586150
   // FUNCTION: IMPERIALISM 0x00586010
   TUnitToolbarCluster() : TUberCluster() {}
   DECLARE_DYNCREATE(TUnitToolbarCluster)

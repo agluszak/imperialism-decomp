@@ -72,8 +72,10 @@ public:
   virtual short FindNearestActiveSeaContextTileFromOffset216(); // slot 0x13 0x55fe60
   virtual short GetActiveNationSlotTile();                      // slot 0x14 0x55fef0
   virtual short FindBestCoastalTileForContextAndCityStateByHeuristic(
-      Province* contextProvince);            // slot 0x15 0x560150
-  virtual void SetMapOrderUiFlag(bool flag); // slot 0x16 0x560580
+      Province* contextProvince); // slot 0x15 0x560150
+  // Mac oracle: ShowFocusIngot(unsigned char). Shows or hides this zone's strategic-map
+  // focus marker and its companion overlay markers.
+  virtual void ShowFocusIngot(unsigned char show); // slot 0x16 0x560580
   // --- vtable ends at slot 0x16 (orig 0x17..0x1b are NULL; see note above) ---
 
   // The original table group continues with two embedded stretch<TZone*> member vtables
@@ -83,6 +85,9 @@ public:
   // (mov ecx, zone; test ecx,ecx inside), so keep the `this == 0` guard.
   short GetContextOrdinalOrInvalid();
   void GenerateZoneStatusCodeIfUnset(); // 0x55f5c0
+  // Mac oracle: ReconsiderFocusIngot(). Shows the focus marker only when the active nation
+  // has an unassigned ship in this visible zone.
+  void ReconsiderFocusIngot(); // 0x5604e0
   // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
   // Add (Ghidra: DispatchMapActionContextCallbackViaField24).
   void AppendUniquePrimaryNeighbor(TZone* zone);

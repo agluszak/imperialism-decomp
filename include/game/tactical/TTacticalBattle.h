@@ -60,7 +60,7 @@ public:
   // Base is a no-op stub; TArmyBattle/TNavyBattle override with the real per-side
   // outcome processing. The old "CreateTTacticalBattleInstance" name was Ghidra junk
   // (the function finalizes an existing battle, it never constructs one).
-  virtual void FinalizeTacticalBattleOutcome(int sideWonFlag); // slot 0x12 0x59f730
+  virtual void EndBattle(unsigned char sideWonFlag); // slot 0x12 0x59f730, Mac oracle
   virtual void MarkTacticalTileStateQueuedAndMaybeDispatchPacket(
       TArmyTacUnit* unit,
       TacticalTileIndex targetTileIndex); // slot 0x13 0x5a3190
@@ -100,12 +100,12 @@ public:
   // Allocated by TArmyBattle::AllocateRecordList (0x59f7f0), called separately after
   // construction; TArmyBattle::ReadFrom appends the deserialized units here.
   TList* recordList20; // +0x20
-  // Four owned per-tile work planes, (re)allocated by BuildTacticalBattleStateFromBothSides
+  // Four owned per-tile work planes, (re)allocated by InitTacticalBattle
   // and freed (POD operator delete) by Free (0x59fb50).
   short* tileMoveCostArray24;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
   char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
   // +0x2c: the AI's per-tile candidate-score plane. Allocated as tacticalTileCount3c
-  // ints and zero-filled by BuildTacticalBattleStateFromBothSides (0x59fa15/0x59fa29)
+  // ints and zero-filled by InitTacticalBattle (0x59fa15/0x59fa29)
   // and freed by Free (0x59fbaf) -- the only three accesses through a TTacticalBattle*
   // receiver. Its real writers reach it through TArmyPlayer::battle14:
   // SelectTacticalTileIndexByColumnPriorityVariantA (0x59bfe0) stores each artillery
@@ -146,10 +146,9 @@ public:
   // (network join). 0x0059fc20.
   void StartBattle();
 
-  // Battle-state assembly (Mac oracle: InitTacticalBattle); sets tacticalPlayer14/18
+  // Battle-state assembly; sets tacticalPlayer14/18
   // and allocates the tile grid. 0x0059f890.
-  void BuildTacticalBattleStateFromBothSides(TTacticalPlayer* ourPlayer,
-                                             TTacticalPlayer* enemyPlayer);
+  void InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer);
 
   // Tactical command family (local execution + multiplayer echo; turn events
   // 0x29/0x2a re-enter these with remoteFlag = 1 on the battle at
@@ -165,6 +164,7 @@ public:
   // fatal if the retreat couldn't move the unit at all), and always queues the end-of-
   // action turn event. 0x5a10e0.
   void ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit);
+  void UndeployUnit(TacticalTileIndex tileIndex); // 0x5a14d0, Mac oracle
   void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, TacticalTileIndex fromTileIndex,
                                     TacticalTileIndex toTileIndex, char remoteFlag); // 0x5a1910
   void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,
@@ -172,6 +172,7 @@ public:
                                                     TacticalTileIndex targetTileIndex, int damageA,
                                                     int damageB, char effectCode2C,
                                                     char remoteFlag); // 0x5a24a0
+  float FindMoraleBonus(unsigned char side);                          // 0x5a2630, Mac oracle
   void HandleTacticalCommandTag_mine(TacticalTileIndex tileIndex, int amount,
                                      char remoteFlag); // 0x5a35a0
   void HandleTacticalCommandTag_digg(TTacticalUnit* unit, TacticalTileIndex targetTileIndex,
@@ -192,6 +193,9 @@ public:
   // Top-level tactical toolbar command dispatch for the current side (tags done/auto/retr/
   // skip/targ); no-op unless the current side is human-watched. 0x5a0c50, __thiscall.
   void HandleTacticalBattleCommandTag(int commandTag);
+  // Completes a decided battle, or re-arms and advances the live battle to its next unit.
+  // Mac oracle: TTacticalBattle::NextMove().
+  void NextMove(); // 0x5a0e20
   // "targ" command: cycles the selected unit's target to the next reachable enemy unit,
   // recentering the view on it (or plays a "no target" cue). 0x5a3f10, __thiscall.
   void HandleTacticalCommandTag_targ();
@@ -209,11 +213,11 @@ public:
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
   // Queues the 0x232a end-of-action turn event (news a TCommand and clears pendingEndOfActionFlag48).
   // 0x5a0d60, __thiscall.
-  void QueueTacticalEventPacket232A();
+  void FinishTacticalActionAndPostNextMoveCommand();
   // Advances the turn cursor to the next live unit in recordList20's turn order,
   // skipping destroyed (state1c == 3) records; on wraparound bumps roundCounter74 and
   // ends the battle once it reaches 35 rounds (EvaluateTacticalSideStateAndShowBattle-
-  // SummaryDialog + QueueTacticalEventPacket232A). Selects the found unit and either
+  // SummaryDialog + FinishTacticalActionAndPostNextMoveCommand). Selects the found unit and either
   // runs its morale-broken turn step, its sap/mine tile-state advance (category 8 with
   // a pending sapTargetTileIndex40), or the current side's AdvanceTacticalTurnPulse.
   // Called from TNextMoveCommand::DoIt (0x5a6620) when the battle isn't yet decided.
@@ -240,6 +244,8 @@ public:
   unsigned char IsTacticalTargetTileReachableForAction(TacticalTileIndex attackerTileIndex,
                                                        TacticalTileIndex targetTileIndex,
                                                        char directFireFlag, int range);
+  unsigned char CanFireOn(TTacticalUnit* unit,
+                          TacticalTileIndex targetTileIndex); // 0x5a3cc0, Mac oracle
   // Hover-cursor state for `tileIndex` relative to the current selection/side: not-your-turn
   // (1), pre-battle-live setup checks (own-unit hover 0xc, blocked 2, deployment zone 3), and
   // once the battle is live: own-tile reselect (6), reachable empty move tile (4), manned fort

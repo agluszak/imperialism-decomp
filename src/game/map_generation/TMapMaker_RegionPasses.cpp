@@ -37,6 +37,59 @@ inline int HexNeighborInline(int tileIndex, int direction) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00529c80
+int TMapMaker::ZoneCorner(long nationCode) {
+  int longestRun = 0;
+  int selectedRow = 0;
+  int currentRun = 0;
+  int tileIndex = 0;
+  char* owner = mapTileGrid08 + 4;
+
+  do {
+    if (*owner == nationCode) {
+      currentRun = currentRun + 1;
+    } else {
+      if (longestRun < currentRun) {
+        longestRun = currentRun;
+        selectedRow = tileIndex / 0x6c;
+      }
+      currentRun = 0;
+    }
+    tileIndex = tileIndex + 1;
+    owner = owner + 0x24;
+  } while (tileIndex < 0x1950);
+
+  int leftEdgeCount = 0;
+  int rightEdgeCount = 0;
+  int columnSum = 0;
+  int matchCount = 0;
+  int column = 0;
+  int selectedRowTile = selectedRow * 0x6c;
+  owner = mapTileGrid08 + selectedRowTile * 0x24 + 4;
+  do {
+    if (*owner == nationCode) {
+      if (column < 0x19) {
+        leftEdgeCount = leftEdgeCount + 1;
+      }
+      if (0x53 < column) {
+        rightEdgeCount = rightEdgeCount + 1;
+      }
+      columnSum = columnSum + column;
+      matchCount = matchCount + 1;
+    }
+    column = column + 1;
+    owner = owner + 0x24;
+  } while (column < 0x6c);
+
+  if (0 < leftEdgeCount && 0 < rightEdgeCount) {
+    columnSum = columnSum + leftEdgeCount * 0x6c;
+  }
+  if (matchCount == 0) {
+    return -1;
+  }
+  return (columnSum / matchCount) % 0x6c + selectedRowTile;
+}
+
 // Centroid tile of the territory owned by `nationCode`, read from each grid record's
 // owner byte (record[4]). Territory touching both the left and right map edges wraps
 // horizontally; `useWrapOffset` biases the accumulated column sum instead of re-sweeping

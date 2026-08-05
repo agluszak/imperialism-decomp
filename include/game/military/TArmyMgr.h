@@ -17,7 +17,7 @@ struct TextStyle;
 // 0x268-byte POD record copied into the TSortedPtrList pointed to by
 // TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
-// small nation-id array indexed by participantIndex02; actionType04 selects how
+// small nation-id array indexed by reportParticipantIndex02; actionType04 selects how
 // location08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
 // table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
 // the report-marker placement state stamped by that hook.
@@ -25,12 +25,12 @@ struct TextStyle;
 // tile/record index for actionType04 in {0,3,4} (index into g_pGlobalMapState's stride-0xa8
 // table), otherwise a map-object pointer encoded in the same 32-bit field.
 struct MapContextActionRecord {
-  unsigned char nationIds[2];       // +0x00
-  unsigned char participantIndex02; // +0x02
+  unsigned char nationIds[2];             // +0x00
+  unsigned char reportParticipantIndex02; // +0x02
   // +0x03 -- read/written by ReadFrom/WriteTo like every other field here, so it is a
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
-  unsigned char reservedByte03;
+  unsigned char displayedParticipantIndex03;
   int actionType04; // +0x04 (0..4; 2 widens the marker sprite code)
   void* location08; // +0x08
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
@@ -205,7 +205,12 @@ public:
   void DispatchMapActionForRegionByAdjacency(int contextArg);
 
   short pendingMapActionIndex; // +0x31c
-  unsigned char pad31e[0x39a - 0x31e];
+  // Tactical-combat side summary built by DoTacticalCombat before the battle UI/report
+  // consumes it: the two stack nation/category bytes, the caller's battle context, and
+  // one 30-entry unit-type count table per side.
+  signed char tacticalCombatNationCode31e[2];
+  short tacticalCombatContext320;
+  short tacticalCombatUnitCountByType322[2][30];
   // +0x39a -- set when a terrain-descriptor refresh is pending; consumed and cleared by
   // EndBattlePhase (0x4a1eb0).
   unsigned char needsTerrainRefreshFlag39a;
@@ -220,6 +225,10 @@ public:
   // Map hotkey 'N': clear active order modes on the nation's stationed army units,
   // then advance the map interaction selection when no selection remains. 0x004a7590.
   void ClearNationArmyActionModesAndCycleSelection(int nationId);
+
+  // Mac oracle: TArmyMgr::DoTacticalCombat(TArmyStack*, TArmyStack*, long).
+  // Captures both sides and rebuilds the per-unit-type counts used by tactical combat.
+  void DoTacticalCombat(TArmyStack* ourStack, TArmyStack* enemyStack, int battleContext);
 
   // Retail Mac EndBattlePhase. Releases the 3 cached battle objects, performs the
   // slot-0x0d unit cleanup and DoOwnershipChanges, refreshes nation clip regions when
@@ -349,7 +358,7 @@ public:
   //  - Allocates a scratch `TList` (0x20 bytes, already-recovered class), CIterator-walks
   //    g_apNationStates[nationId]'s order list (TCountry::militaryUnitList44, a
   //    TSortedList* of TMilitaryUnit*), and AddTail()s every entry whose tileIndex06
-  //    isn't a movement-class tile (TileHasMovementClassId) for cityIndex when its
+  //    isn't adjacent to cityIndex (TMapMgr::IsProvinceAdjacentTo) when its
   //    orderTargetIndex0C == cityIndex, summing GetArmsCarried per entry into a budget.
   //  - Subtracts g_pNavyOrderManager->GetInvasionCapacity(
   //    nationId, &g_pGlobalMapState->cityScoreTable[cityIndex], 0) from that
@@ -383,7 +392,7 @@ public:
   // map-context action record, clears the record list, and resets flag8. 0x004a6df0.
   void CleanUpStacks();
 
-  // Called by TArmyBattle::FinalizeTacticalBattleOutcome once a tactical battle's
+  // Called by TArmyBattle::EndBattle once a tactical battle's
   // outcome is decided (sideWonFlag = whether ourStack's side won). Dispatches the
   // army-context report, then applies the win/loss aftermath to both stacks: the
   // winning stack's units settle into their tile (MoveTo + SetOrders)

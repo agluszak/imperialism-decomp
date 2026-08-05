@@ -556,6 +556,9 @@ void TTaskForce::OrderSailTowards(TZone* pContextAnchor) {
     }
   }
 
+  shipOrders = 1;
+  flagship = nullptr;
+
   for (TMapOrderChildLinkNode* pruneNode = shipList; pruneNode != nullptr;) {
     if (pruneNode->active != 0) {
       pruneNode = pruneNode->next;
@@ -1141,6 +1144,47 @@ char TTaskForce::MouseCodeForTarget(Province* province) const {
   return stale ? 0x10 : 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005544a0
+bool TTaskForce::IsValidTarget(TZone* candidate) {
+  if (candidate == nullptr) {
+    return false;
+  }
+
+  bool noSelection = (this == nullptr) || shipCountsByToolbarSlot[0] + shipCountsByToolbarSlot[3] +
+                                                  shipCountsByToolbarSlot[1] +
+                                                  shipCountsByToolbarSlot[2] ==
+                                              0;
+  if (!noSelection) {
+    noSelection = true;
+    TMapOrderChildLinkNode* node = shipList;
+    while (node != nullptr) {
+      if (node->active != 0) {
+        noSelection = false;
+        break;
+      }
+      node = node->next;
+    }
+  }
+  if (noSelection) {
+    return false;
+  }
+
+  unsigned short worstSpeed = 10000;
+  for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
+    if (node->active != 0) {
+      short speed = g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
+                        .DescriptorWeight();
+      if (speed < static_cast<short>(worstSpeed)) {
+        worstSpeed = speed;
+      }
+    }
+  }
+
+  short distance = location->GetCachedMapActionContextDistanceOrRecompute(candidate);
+  short movementLimit = worstSpeed != 10000 ? static_cast<short>(worstSpeed) : 0;
+  return distance <= movementLimit;
+}
+
 // True (returns the province's +0xa0 eligibility byte) only when this entry has a
 // queued-children region AND an active child link; otherwise 0. Guards a province-context
 // command before DoTileClick commits it.
@@ -1376,10 +1420,10 @@ int TTaskForce::GetDeciSpeed() const {
       ++count;
     }
   }
-  if (count == 0) {
-    return 0;
+  if (count != 0) {
+    return (sum * 10) / count;
   }
-  return (sum * 10) / count;
+  return 0;
 }
 
 // Mac oracle: TTaskForce::GetCompositionDescription(CStr255&) const.
@@ -1655,6 +1699,9 @@ bool TTaskForce::TryToSpot(const TTaskForce* other) const {
     ++thisShipCount;
   }
   if (thisShipCount == 0) {
+    return 0;
+  }
+  if (other == nullptr) {
     return 0;
   }
   short otherShipCount = 0;
@@ -1945,8 +1992,9 @@ void TTaskForce::CarryOutOrders() {
   case 8: {
     for (TMapOrderChildLinkNode* node = shipList; node != nullptr; node = node->next) {
       TShip* child = static_cast<TShip*>(node->payload);
+      child->strength = static_cast<s16>(
+          child->strength + g_NavyOrderResourceDescriptorTable[child->type].StockCap() / 4);
       short cap = static_cast<short>(g_NavyOrderResourceDescriptorTable[child->type].StockCap());
-      child->strength = static_cast<s16>(child->strength + cap / 4);
       if (cap < child->strength) {
         child->strength = cap;
       }
@@ -1955,7 +2003,7 @@ void TTaskForce::CarryOutOrders() {
   }
   default:
     if (g_UnknownMapOrderExecutionGuard_006a3ee0 == 0) {
-      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0xb78);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0xb78);
     }
     break;
   }

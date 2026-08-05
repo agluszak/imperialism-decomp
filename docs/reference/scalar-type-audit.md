@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 393
+- Findings: 397
 - `native_integral_boundary`: 18
 - `nested_integral_cast`: 44
 - `predicate_storage_cast`: 16
-- `raw_discriminant_literal`: 315
+- `raw_discriminant_literal`: 319
 
 ## clang-tidy evaluation
 
@@ -72,30 +72,30 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | the same per-character promotion for byte 4 of the tag. |
 | `src/game/city_ui/TUniversityView.cpp:374` | signed char -> int | `signed_table_byte_then_int` | the university requirement table stores signed bytes; the signed step preserves negative levels and the int step is the arithmetic width. |
 | `src/game/map/TZone.cpp:780` | signed char -> unsigned char | `signed_byte_sign_test` | the packed map-tile action state byte is read signed so the retail SETGE test implements >= 0, then normalized to a byte for the retail byte compare. |
-| `src/game/map_generation/TMapMaker.cpp:1479` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup. |
-| `src/game/map_generation/TMapMaker.cpp:1491` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
-| `src/game/map_generation/TMapMaker.cpp:1498` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
-| `src/game/map_generation/TMapMaker.cpp:1501` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the second neighbour. |
-| `src/game/map_generation/TMapMaker.cpp:1504` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the third neighbour. |
-| `src/game/military/TArmyMgr.cpp:2006` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage. |
-| `src/game/military/TArmyMgr.cpp:2012` | int -> short | `prng_extract_then_narrow` | the sibling extraction with a modulus of 100, same three-step shape. |
-| `src/game/military/TArmyMgr.cpp:2022` | unsigned int -> int | `prng_extract_then_narrow` | the same LCG extraction consumed directly as an int. |
-| `src/game/nation/TGreatPower.cpp:373` | int -> unsigned int | `signed_difference_then_unsigned_use` | the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare. |
-| `src/game/nation/TGreatPower.cpp:1852` | unsigned short -> int | `packed_word_pair` | the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed. |
+| `src/game/map_generation/TMapMaker.cpp:1533` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step selects retail signed remainder code and the short step is the direction word consumed by the inlined neighbor lookup. |
+| `src/game/map_generation/TMapMaker.cpp:1545` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the region-class grid stores signed bytes; the signed step preserves the -1 sentinel and the unsigned short step is the word key the neighbour tally uses. |
+| `src/game/map_generation/TMapMaker.cpp:1552` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the first neighbour. |
+| `src/game/map_generation/TMapMaker.cpp:1555` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the second neighbour. |
+| `src/game/map_generation/TMapMaker.cpp:1558` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | the same signed-byte grid read for the third neighbour. |
+| `src/game/military/TArmyMgr.cpp:2042` | int -> short | `prng_extract_then_narrow` | the map-generation LCG state is unsigned so the >> 0xc extraction is logical; the int step keeps the modulus signed and the short step is the caller's word storage. |
+| `src/game/military/TArmyMgr.cpp:2048` | int -> short | `prng_extract_then_narrow` | the sibling extraction with a modulus of 100, same three-step shape. |
+| `src/game/military/TArmyMgr.cpp:2058` | unsigned int -> int | `prng_extract_then_narrow` | the same LCG extraction consumed directly as an int. |
+| `src/game/nation/TGreatPower.cpp:363` | int -> unsigned int | `signed_difference_then_unsigned_use` | the economic-turn difference is computed signed and consumed as an unsigned quantity; both steps are required to reproduce the retail compare. |
+| `src/game/nation/TGreatPower.cpp:1839` | unsigned short -> int | `packed_word_pair` | the low word is isolated before being shifted into the high half of a packed 32-bit code; the int step keeps the shift signed. |
 | `src/game/nation/TGreatPower_lifecycle.cpp:842` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | field8d6 holds a signed difficulty byte; the signed step preserves sign extension before the +0x33 bias and the unsigned step is the byte written into the flags array. |
 | `src/game/nation/TGreatPower_lifecycle.cpp:845` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | the sibling flag byte, same two-step bias. |
-| `src/game/navy/TTaskForce.cpp:1612` | short -> int | `retail_short_score_compare` | TTaskForce::Encounter accumulates an int battle-strength score, but retail explicitly MOVSX-es its low word before the weighted comparison; the inner short conversion restores that gameplay boundary and the outer int conversion is the multiplication width. |
-| `src/game/navy/TTaskForce.cpp:1613` | short -> int | `retail_short_score_compare` | the opposing Encounter score is likewise truncated to a signed word by retail before multiplication. |
-| `src/game/navy/TTaskForce.cpp:1616` | short -> int | `retail_short_score_compare` | Encounter recomputes the opposing score and retail again consumes AX through MOVSX before the second weighted comparison. |
-| `src/game/navy/TTaskForce.cpp:1617` | short -> int | `retail_short_score_compare` | the recomputed local Encounter score crosses the same signed-word gameplay boundary. |
-| `src/game/navy/TTaskForce.cpp:1725` | short -> int | `retail_short_score_compare` | ResolveEncounterWith accumulates child ratings in an int, then retail MOVSX-es BX before comparing the weighted totals. |
-| `src/game/navy/TTaskForce.cpp:1726` | short -> int | `retail_short_score_compare` | the opposing ResolveEncounterWith aggregate is explicitly consumed from DI as a signed word. |
-| `src/game/navy/TTaskForce.cpp:1734` | short -> int | `retail_short_score_compare` | the refreshed opposing aggregate is explicitly consumed through MOVSX EAX,DI before the second comparison. |
-| `src/game/navy/TTaskForce.cpp:1736` | short -> int | `retail_short_score_compare` | ResolveEncounterWith calls GetBattleStrengthRating, then retail consumes the returned AX through MOVSX EDX before applying the opposing aggression weight; the inner short conversion restores that gameplay boundary. |
-| `src/game/navy/TTaskForce.cpp:1775` | short -> int | `retail_short_score_compare` | the late ResolveEncounterWith comparison truncates the refreshed opposing aggregate to the signed word retail consumes. |
-| `src/game/navy/TTaskForce.cpp:1777` | short -> int | `retail_short_score_compare` | the refreshed local aggregate in the same late comparison is also narrowed to retail's signed-word operand. |
-| `src/game/navy/TTaskForce.cpp:1890` | short -> int | `retail_short_score_compare` | IsAfraidOf accumulates a full int for traversal, but retail compares only its signed low word after MOVSX. |
-| `src/game/navy/TTaskForce.cpp:1891` | short -> int | `retail_short_score_compare` | the opposing IsAfraidOf aggregate crosses the same signed-word boundary before the aggression-weight multiplication. |
+| `src/game/navy/TTaskForce.cpp:1656` | short -> int | `retail_short_score_compare` | TTaskForce::Encounter accumulates an int battle-strength score, but retail explicitly MOVSX-es its low word before the weighted comparison; the inner short conversion restores that gameplay boundary and the outer int conversion is the multiplication width. |
+| `src/game/navy/TTaskForce.cpp:1657` | short -> int | `retail_short_score_compare` | the opposing Encounter score is likewise truncated to a signed word by retail before multiplication. |
+| `src/game/navy/TTaskForce.cpp:1660` | short -> int | `retail_short_score_compare` | Encounter recomputes the opposing score and retail again consumes AX through MOVSX before the second weighted comparison. |
+| `src/game/navy/TTaskForce.cpp:1661` | short -> int | `retail_short_score_compare` | the recomputed local Encounter score crosses the same signed-word gameplay boundary. |
+| `src/game/navy/TTaskForce.cpp:1772` | short -> int | `retail_short_score_compare` | ResolveEncounterWith accumulates child ratings in an int, then retail MOVSX-es BX before comparing the weighted totals. |
+| `src/game/navy/TTaskForce.cpp:1773` | short -> int | `retail_short_score_compare` | the opposing ResolveEncounterWith aggregate is explicitly consumed from DI as a signed word. |
+| `src/game/navy/TTaskForce.cpp:1781` | short -> int | `retail_short_score_compare` | the refreshed opposing aggregate is explicitly consumed through MOVSX EAX,DI before the second comparison. |
+| `src/game/navy/TTaskForce.cpp:1783` | short -> int | `retail_short_score_compare` | ResolveEncounterWith calls GetBattleStrengthRating, then retail consumes the returned AX through MOVSX EDX before applying the opposing aggression weight; the inner short conversion restores that gameplay boundary. |
+| `src/game/navy/TTaskForce.cpp:1822` | short -> int | `retail_short_score_compare` | the late ResolveEncounterWith comparison truncates the refreshed opposing aggregate to the signed word retail consumes. |
+| `src/game/navy/TTaskForce.cpp:1824` | short -> int | `retail_short_score_compare` | the refreshed local aggregate in the same late comparison is also narrowed to retail's signed-word operand. |
+| `src/game/navy/TTaskForce.cpp:1937` | short -> int | `retail_short_score_compare` | IsAfraidOf accumulates a full int for traversal, but retail compares only its signed low word after MOVSX. |
+| `src/game/navy/TTaskForce.cpp:1938` | short -> int | `retail_short_score_compare` | the opposing IsAfraidOf aggregate crosses the same signed-word boundary before the aggression-weight multiplication. |
 | `src/game/net/TMultiplayerMgr.cpp:1451` | unsigned int -> short | `packet_word_extract` | the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field. |
 | `src/game/tactical/TArmyPlayer.cpp:1272` | int -> char | `float_table_read_then_byte_store` | g_afTacticalDirectFireFlagByCategoryCode is a float table; the int step performs the retail truncation and the char step is the byte the caller stores. |
 | `src/game/tactical/TArmyPlayer.cpp:1349` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation for a second category lookup. |
@@ -108,7 +108,7 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `src/game/tactical_ui/TTechMgr.cpp:186` | int -> short | `prng_extract_then_narrow` | the same LCG extraction shape as TArmyMgr, with a caller-supplied range span. |
 | `src/game/trade_ui/TDealTabControl.cpp:89` | short -> short | `narrow_operand_then_narrow_result` | CPoint::y and CRect::top are LONG, so the inner casts are real narrowings to the retail word arithmetic; the outer cast stores the row index as a short. Same-width cast names in the report describe the cast types, not the operand types. |
 | `src/game/ui_core/TLanguageMgr.cpp:171` | unsigned int -> int | `unsigned_char_then_signed_compare` | the format character is widened without sign extension, then compared as a signed count. |
-| `src/game/ui_screens/TScrollBarView.cpp:197` | short -> short | `narrow_operand_then_narrow_result` | TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic. |
+| `src/game/ui_screens/TScrollBarView.cpp:195` | short -> short | `narrow_operand_then_narrow_result` | TView::frameHeight38 is an int, so the inner cast is a real narrowing to the retail word arithmetic. |
 | `src/game/ui_screens/TSimMgr.cpp:2274` | short -> short | `narrow_operand_then_narrow_result` | slotToken is an unsigned int read from the save stream, so the inner cast is a real narrowing before the *10 + 0x717 word computation. |
 
 ## Reviewed predicate storage boundaries
@@ -127,12 +127,12 @@ decisions -- including the ones that were measured and reverted -- is
 | `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | TEngineerDialog::BuildCityViewProductionControls stores the fort-availability predicate ((activeFlags1c >> 4) & 1 == 0) into a one-byte local mirroring the original's SETZ byte store; the explicit conversion preserves that byte layout and the value later gates widget construction, not a bool branch. |
 | `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | the rail-availability predicate ((activeFlags1c >> 2) & 1 == 0) stored into the sibling one-byte local, same SETZ byte-store shape. |
 | `src/game/map/TZone.cpp:780` | predicate -> unsigned char | `byte_comparison_of_packed_state` | the second operand of the same byte compare -- the sign test on the packed map-tile action state byte. |
-| `src/game/military/TArmyMgr.cpp:1795` | predicate -> unsigned char | `byte_local_storage` | TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup materializes multiplayerSessionRole == 1 with SETZ CL and tests that byte before the host callback at retail 0x004a5bd2-0x004a5bd7. |
+| `src/game/military/TArmyMgr.cpp:1831` | predicate -> unsigned char | `byte_local_storage` | TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup materializes multiplayerSessionRole == 1 with SETZ CL and tests that byte before the host callback at retail 0x004a5bd2-0x004a5bd7. |
 | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | TArmyCheckBox::SetState is a virtual taking `unsigned char on` at slot 0x72 (0x004aa360); the toggle passes the inverted IsOn() predicate through that byte parameter, so the conversion belongs at the ABI boundary and the parameter must not become bool. |
 | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x72 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char drawImmediate). |
 | `src/game/nation/TGreatPower.cpp:256` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `(town->enabledFlag != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value. |
-| `src/game/nation/TGreatPower.cpp:1647` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
-| `src/game/nation/TGreatPower.cpp:1655` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
+| `src/game/nation/TGreatPower.cpp:1634` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
+| `src/game/nation/TGreatPower.cpp:1642` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
 | `src/game/net/TMultiplayerMgr.cpp:2303` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 method rather than TView::ViewEnable(int, int)). |
 | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family. |
 | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow). |
@@ -153,7 +153,7 @@ is classified, and a family that stops appearing must be removed.
 | `aiState` | 3 | `closed_domain_needs_listing_evidence` | TArmyPlayer tests 2, 5 and 0xe against the same field aiStateCode2c reads; recovering the state machine is army-AI work, not a mechanical rename. |
 | `aiStateCode2c` | 5 | `closed_domain_needs_listing_evidence` | same TArmyPlayer state machine as aiState, tested against 2, 4, 5 and 0xc. |
 | `alignmentCode` | 1 | `external_api_or_resource_constant` | TStaticText maps the value onto Win32 DrawText alignment flags. |
-| `battleOutcomeCode44` | 9 | `closed_domain_needs_listing_evidence` | three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed. |
+| `battleOutcomeCode44` | 11 | `closed_domain_needs_listing_evidence` | three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed. |
 | `bfType` | 1 | `external_api_or_resource_constant` | BITMAPFILEHEADER::bfType is the Win32 BMP file signature field; 0x4d42 is the external bitmap format magic, not a game-domain discriminant. |
 | `buildingType` | 7 | `closed_domain_needs_listing_evidence` | TCity bands building types at 8, 0x10 and 0x20, which is a three-tier building-class layout; the tier names come from the city construction tables, which are not yet recovered. |
 | `categoryCode` | 10 | `army_unit_category_domain` | ArmyUnitCategory is recovered (imperialism-decomp-1uj.99.1.4) and this is that domain: TTacticalBattle reads g_awTacticalUnitCategoryCodeBySlot[unitTypeC] into it and indexes the move-cost table by it; the residual literals are category numbers the recovered enum already names, pending a rename sweep. |
@@ -236,8 +236,8 @@ is classified, and a family that stops appearing must be removed.
 | `tileActionState16` | 4 | `map_tile_action_state_domain` | MapTileActionStateStorage is recovered (imperialism-decomp-1uj.99.1.4); the residual comparisons are its signed >= 0 validity test and the >= 2 band edge. |
 | `turnStateCode` | 1 | `closed_domain_needs_listing_evidence` | TSimMgr's global turn state machine tests step 0x10; the step table is being recovered under the turn-event work. |
 | `unitCategoryCode0` | 3 | `army_unit_category_domain` | the same ArmyUnitCategory values 8 and 9 read from the tactical category table. |
-| `unitType` | 3 | `mixed_domain_needs_per_site_split` | TUnitsView bounds the 30-entry MilitaryUnitKind domain while TAutoGreatPower bounds the 14-entry industry/navy-order domain through the same parameter name. |
-| `unitTypeC` | 6 | `military_unit_kind_domain` | MilitaryUnitKind is recovered (imperialism-decomp-1uj.99.1.4); unitTypeC indexes g_awTacticalUnitCategoryCodeBySlot, so 0x15 and 0x1b are kind numbers the recovered enum already names. |
+| `unitType` | 4 | `mixed_domain_needs_per_site_split` | TUnitsView bounds the 30-entry MilitaryUnitKind domain while TAutoGreatPower bounds the 14-entry industry/navy-order domain through the same parameter name. |
+| `unitTypeC` | 7 | `military_unit_kind_domain` | MilitaryUnitKind is recovered (imperialism-decomp-1uj.99.1.4); unitTypeC indexes g_awTacticalUnitCategoryCodeBySlot, so 0x15 and 0x1b are kind numbers the recovered enum already names. |
 | `unitTypeCode` | 1 | `military_unit_kind_domain` | TArmyUnitView compares a MilitaryUnitKind value (0xe) read from the unit record. |
 | `updateMode` | 2 | `byte_or_int_predicate_not_a_domain` | TDiplomacyMgr's retail SetTreatyStatus, TerminateAlliance, and InflictWarPenalty entries read this argument as a byte and only test whether it equals 1 to enable relationship side effects. |
 | `useType4` | 1 | `byte_or_int_predicate_not_a_domain` | TTaskForce selects between two ship-order counts from a zero/non-zero flag. |
@@ -273,30 +273,30 @@ is classified, and a family that stops appearing must be removed.
 | `239a01f6e5d42d4e` | `nested_integral_cast` | `include/game/ui_fourcc.h:34` | unsigned char -> unsigned int | `encoding_policy_widening` | `imperialism-decomp-1uj.99.2` |
 | `fb4cc0429d2807ae` | `nested_integral_cast` | `src/game/city_ui/TUniversityView.cpp:374` | signed char -> int | `signed_table_byte_then_int` | `imperialism-decomp-1uj.99.2` |
 | `1bca097815b7e702` | `nested_integral_cast` | `src/game/map/TZone.cpp:780` | signed char -> unsigned char | `signed_byte_sign_test` | `imperialism-decomp-1uj.99.2` |
-| `97c056bc7e96eea0` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1479` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
-| `202b87edfb803074` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1491` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `d23df993c6ad64f5` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1498` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `963cc2f0cf9f7ade` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1501` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `6c9a5f05b6663c22` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1504` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
-| `d04e53616a68e0c4` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2006` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
-| `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2012` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
-| `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2022` | unsigned int -> int | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
-| `762276b4ea380e3b` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:373` | int -> unsigned int | `signed_difference_then_unsigned_use` | `imperialism-decomp-1uj.99.2` |
-| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1852` | unsigned short -> int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
+| `97c056bc7e96eea0` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1533` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `202b87edfb803074` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1545` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `d23df993c6ad64f5` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1552` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `963cc2f0cf9f7ade` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1555` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `6c9a5f05b6663c22` | `nested_integral_cast` | `src/game/map_generation/TMapMaker.cpp:1558` | signed char -> unsigned short | `signed_grid_cell_then_word_key` | `imperialism-decomp-1uj.99.2` |
+| `d04e53616a68e0c4` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2042` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `5d24093db60dff4e` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2048` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `991e04b36a1b6e0f` | `nested_integral_cast` | `src/game/military/TArmyMgr.cpp:2058` | unsigned int -> int | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
+| `762276b4ea380e3b` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:363` | int -> unsigned int | `signed_difference_then_unsigned_use` | `imperialism-decomp-1uj.99.2` |
+| `68e7a90c5513ee66` | `nested_integral_cast` | `src/game/nation/TGreatPower.cpp:1839` | unsigned short -> int | `packed_word_pair` | `imperialism-decomp-1uj.99.2` |
 | `853f788ff413bf8c` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:842` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `f53ae4b65489ba45` | `nested_integral_cast` | `src/game/nation/TGreatPower_lifecycle.cpp:845` | char -> unsigned char | `signed_byte_then_unsigned_byte_store` | `imperialism-decomp-1uj.99.2` |
-| `465df7bebad8ae2c` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1612` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `1ae0a30826f32d64` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1613` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `1222caebd2c08876` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1616` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `d59e17910a8e9f31` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1617` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `63a8b13b7433d812` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1725` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `d9c3847f7d61ac94` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1726` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `18c3a20abdc1c34b` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1734` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `ae325f44a735e6aa` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1736` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `0867780a90715e5d` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1775` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `2dc50bb1ce17f60c` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1777` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `ef596748a8555754` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1890` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `ff537b67d9bc93c5` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1891` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `465df7bebad8ae2c` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1656` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `1ae0a30826f32d64` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1657` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `1222caebd2c08876` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1660` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `d59e17910a8e9f31` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1661` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `63a8b13b7433d812` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1772` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `d9c3847f7d61ac94` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1773` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `18c3a20abdc1c34b` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1781` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `ae325f44a735e6aa` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1783` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `0867780a90715e5d` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1822` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `2dc50bb1ce17f60c` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1824` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `ef596748a8555754` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1937` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
+| `ff537b67d9bc93c5` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1938` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
 | `eb265394ddb5605a` | `nested_integral_cast` | `src/game/net/TMultiplayerMgr.cpp:1451` | unsigned int -> short | `packet_word_extract` | `imperialism-decomp-1uj.99.2` |
 | `d255e88d15a541ef` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1272` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `de75db3d85d58b05` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1349` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
@@ -309,19 +309,19 @@ is classified, and a family that stops appearing must be removed.
 | `9f9caf8fda50fb94` | `nested_integral_cast` | `src/game/tactical_ui/TTechMgr.cpp:186` | int -> short | `prng_extract_then_narrow` | `imperialism-decomp-1uj.99.2` |
 | `6c7e30e81b08a3f7` | `nested_integral_cast` | `src/game/trade_ui/TDealTabControl.cpp:89` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `eb220da528b853bc` | `nested_integral_cast` | `src/game/ui_core/TLanguageMgr.cpp:171` | unsigned int -> int | `unsigned_char_then_signed_compare` | `imperialism-decomp-1uj.99.2` |
-| `070987d9276298aa` | `nested_integral_cast` | `src/game/ui_screens/TScrollBarView.cpp:197` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
+| `070987d9276298aa` | `nested_integral_cast` | `src/game/ui_screens/TScrollBarView.cpp:195` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `bd0a5d6bf28d042b` | `nested_integral_cast` | `src/game/ui_screens/TSimMgr.cpp:2274` | short -> short | `narrow_operand_then_narrow_result` | `imperialism-decomp-1uj.99.2` |
 | `d144e1a86956838b` | `predicate_storage_cast` | `src/game/city/TCity.cpp:862` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
 | `853e86ea99ed7cf3` | `predicate_storage_cast` | `src/game/city/TCity.cpp:870` | predicate -> char | `predicate_arithmetic_into_byte_return` | `imperialism-decomp-1uj.99.7` |
 | `06ed593903a04495` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:115` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `290838552df4ad4a` | `predicate_storage_cast` | `src/game/city_ui/TEngineerDialog.cpp:116` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `c5705f8f8668f444` | `predicate_storage_cast` | `src/game/map/TZone.cpp:780` | predicate -> unsigned char | `byte_comparison_of_packed_state` | `imperialism-decomp-1uj.99.7` |
-| `c8605fd8dc3584f4` | `predicate_storage_cast` | `src/game/military/TArmyMgr.cpp:1795` | predicate -> unsigned char | `byte_local_storage` | `imperialism-decomp-1uj.99.7` |
+| `c8605fd8dc3584f4` | `predicate_storage_cast` | `src/game/military/TArmyMgr.cpp:1831` | predicate -> unsigned char | `byte_local_storage` | `imperialism-decomp-1uj.99.7` |
 | `ef3d88e3b5456166` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:140` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1b59484a1b41425a` | `predicate_storage_cast` | `src/game/military_ui/TArmyCheckBox.cpp:146` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `c1274198c896b970` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:256` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `imperialism-decomp-1uj.99.7` |
-| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1647` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
-| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1655` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
+| `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1634` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
+| `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1642` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
 | `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2303` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `d525f39e47be4ea5` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `65f76dbb872a689f` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
@@ -413,15 +413,15 @@ is classified, and a family that stops appearing must be removed.
 | `997a52658ffd76dd` | `raw_discriminant_literal` | `src/game/gfx/TModuleLibraryCacheTableStateB.cpp:221` | patternMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `7b961e77ff19b05e` | `raw_discriminant_literal` | `src/game/gfx/TTemplateDialogs.cpp:183` | renderMode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `9185f23ff1c0e55f` | `raw_discriminant_literal` | `src/game/map/TBeachheadMission.cpp:165` | navyState28 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `c870122e8cec8fc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:265` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `a5a7ff77939f0f4a` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:273` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `484aff0476c99917` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:437` | politicalCode >= 0x17 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `657dd985259e6911` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:447` | politicalCode < 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `c870122e8cec8fc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:263` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `a5a7ff77939f0f4a` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:271` | reloadPoliticalMapState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `484aff0476c99917` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:435` | politicalCode >= 0x17 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `657dd985259e6911` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:445` | politicalCode < 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e33b4fe446a8f214` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2796` | orderType != 1 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `09d4e4e5287945bb` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:2796` | orderType != 7 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `ce0290539c3a9dc5` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3003` | orderType == 0 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `1349d5fd980e9988` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3421` | categoryCode < 7 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `a8ed50b8e31bddc2` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3694` | nationCode > 6 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
+| `a8ed50b8e31bddc2` | `raw_discriminant_literal` | `src/game/map/TMapMgr.cpp:3697` | nationCode > 6 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
 | `36d6ad0c1b2c391e` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:137` | previousMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e8676fc50fc10d50` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:139` | previousMode == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e2ad95951f5a369d` | `raw_discriminant_literal` | `src/game/map/TMapUberPicture.cpp:148` | previousMode == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -437,13 +437,13 @@ is classified, and a family that stops appearing must be removed.
 | `fd2282a1284889ae` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:352` | navyState28 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `b3f384e5d7867a6b` | `raw_discriminant_literal` | `src/game/map/TNavyMission.cpp:361` | navyState28 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `6aa65958c92ec78a` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:179` | g_zoneStatusCodePrngSeed_006a5aec == 0 | `open_index_count_or_bound` | `imperialism-decomp-1uj.99.8` |
-| `4674eae69ddffe58` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1302` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `02fad6537f7d7cf2` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1305` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `c25bd6e17d3bdf81` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1316` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `b0a9c7cfb2435934` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1345` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `fff70bd9045e0f72` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1348` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `133ad553d2b6d9b8` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1384` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1415` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
+| `4674eae69ddffe58` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1356` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `02fad6537f7d7cf2` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1359` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `c25bd6e17d3bdf81` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1370` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `b0a9c7cfb2435934` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1399` | ringState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `fff70bd9045e0f72` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1402` | ringState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `133ad553d2b6d9b8` | `raw_discriminant_literal` | `src/game/map_generation/TMapMaker.cpp:1438` | ringState == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `ff0fefe2c5903075` | `raw_discriminant_literal` | `src/game/map_ui/TMapDialog.cpp:1416` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `bc1131ea218c9ee6` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:100` | editorActionMode368 != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2388240767cdc1a4` | `raw_discriminant_literal` | `src/game/map_ui/TMapEditView.cpp:130` | editorActionMode368 != 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `44df54f8df9583ad` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:67` | actionType04 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -457,6 +457,7 @@ is classified, and a family that stops appearing must be removed.
 | `16f836edcdaf06a4` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:1140` | actionKind == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `71ff442cab82dfbd` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:1140` | actionKind == 4 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `334c7e444b353935` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:1142` | actionKind == 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `c5b39c701e3ebff2` | `raw_discriminant_literal` | `src/game/military/TArmyMgr.cpp:1252` | unitType < 30 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
 | `6f878eddf96f7e2e` | `raw_discriminant_literal` | `src/game/military/TArmyUnitView.cpp:60` | unitTypeCode == 0xe | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
 | `ad22edb45462ff50` | `raw_discriminant_literal` | `src/game/military/TMilitaryUnit.cpp:332` | secondaryMetricCode == 0xc | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e71536a51ec3fed1` | `raw_discriminant_literal` | `src/game/military/mapped_flavor_text.cpp:396` | nShortcutCode == 2 | `character_or_virtual_key_code` | `imperialism-decomp-1uj.99.8` |
@@ -479,11 +480,11 @@ is classified, and a family that stops appearing must be removed.
 | `f50e36331741996f` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1345` | primaryMetricCode != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `cd628d669d834c04` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:1350` | secondaryMetricCode != 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `01a039a885041b22` | `raw_discriminant_literal` | `src/game/nation/TAutoGreatPower.cpp:2025` | unitType < 30 | `mixed_domain_needs_per_site_split` | `imperialism-decomp-1uj.99.8` |
-| `c8ff202faf574806` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1260` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `03d9fcef3dc75464` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1260` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3203` | proposalCode != 1 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
-| `62c20b03795433bb` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1490` | actionCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `78e8835c98c86d61` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1557` | actionCode == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `c8ff202faf574806` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1247` | policyCode <= 0xc | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `03d9fcef3dc75464` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:1247` | policyCode >= 0x11 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `c72a0da6796fe9b5` | `raw_discriminant_literal` | `src/game/nation/TGreatPower.cpp:3190` | proposalCode != 1 | `diplomacy_proposal_code_domain` | `imperialism-decomp-1uj.99.8` |
+| `62c20b03795433bb` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1509` | actionCode != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `78e8835c98c86d61` | `raw_discriminant_literal` | `src/game/navy/TNavyMgr.cpp:1576` | actionCode == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `973cffb713529276` | `raw_discriminant_literal` | `src/game/navy/TOcean.cpp:521` | nationCode < 0x17 | `nation_slot_domain` | `imperialism-decomp-1uj.99.8` |
 | `849d1d91180cf373` | `raw_discriminant_literal` | `src/game/navy/TTaskForce.cpp:259` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `b3b21ec2fbb105f8` | `raw_discriminant_literal` | `src/game/navy/TTaskForce.cpp:353` | useType4 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
@@ -531,32 +532,35 @@ is classified, and a family that stops appearing must be removed.
 | `dfcc15167a3a4e53` | `raw_discriminant_literal` | `src/game/tactical/TNavyBattle.cpp:260` | battleOutcomeCode44 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `efdbc8e553d9aee4` | `raw_discriminant_literal` | `src/game/tactical/TNextMoveCommand.cpp:30` | battleOutcomeCode44 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `e002016b9e1a1100` | `raw_discriminant_literal` | `src/game/tactical/TNextMoveCommand.cpp:31` | battleOutcomeCode44 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `434c5b540fb2f58a` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:547` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `55b4a92c17a0fd14` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:547` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
 | `0a6d67cab6cc6ca3` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:562` | unitCategoryCode0 == 8 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
 | `c3369e5d17cea950` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:581` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
 | `1291dfae9cb5f506` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:585` | unitCategoryCode0 == 9 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
 | `3a63a4865100cdd2` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:631` | unitCategoryCode0 != 8 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
 | `961a597dc6b87715` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:673` | hoverState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `e7beb4ae63501d74` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1106` | currentTacticalActionCode4c != 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `7fa09cb3fa5c69d7` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1190` | battleOutcomeCode44 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `126064f63a5ed080` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1221` | categoryCode == 4 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `8f4296371215bbc2` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1221` | categoryCode == 5 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `6717d223030ce7f5` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1233` | battleOutcomeCode44 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `d3d7fd3939efcc3c` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1254` | categoryCode == 9 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `faf0973bd5adff3f` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1270` | categoryCode == 8 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `720c2f68563b0b79` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1436` | unitTypeC >= 0x1b | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `f08a7893f91da1b5` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1489` | categoryCode == 6 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `f8cab52974804f50` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1489` | categoryCode == 7 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
-| `9721b3650948841b` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1489` | unitTypeC == 0x15 | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `3d24b213ee4f0845` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1573` | battleOutcomeCode44 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `4e8b6a1ba47de17c` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1575` | battleOutcomeCode44 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `14e4e0b0095b4cbb` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1955` | newState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `73574b6407553adf` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1957` | newState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `16854fcd4f47ea05` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2233` | terrainType0 == 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `e6890d6ab863a92e` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2267` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `0f9357b832b5948b` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2358` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `06bc8af9e6141757` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2367` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
-| `26e97e2c2b311fda` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2416` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `6717d223030ce7f5` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:745` | battleOutcomeCode44 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `04858975ba986547` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:746` | battleOutcomeCode44 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `e7beb4ae63501d74` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1120` | currentTacticalActionCode4c != 7 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `7fa09cb3fa5c69d7` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1204` | battleOutcomeCode44 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `126064f63a5ed080` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1235` | categoryCode == 4 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `8f4296371215bbc2` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1235` | categoryCode == 5 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `5ccbc55ae9e85663` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1247` | battleOutcomeCode44 != 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `d3d7fd3939efcc3c` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1268` | categoryCode == 9 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `faf0973bd5adff3f` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1284` | categoryCode == 8 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `720c2f68563b0b79` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1450` | unitTypeC >= 0x1b | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `f08a7893f91da1b5` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1503` | categoryCode == 6 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `f8cab52974804f50` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1503` | categoryCode == 7 | `army_unit_category_domain` | `imperialism-decomp-1uj.99.8` |
+| `9721b3650948841b` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1503` | unitTypeC == 0x15 | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `5c013a03faeb295e` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1537` | unitTypeC >= 0x1b | `military_unit_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `3d24b213ee4f0845` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1603` | battleOutcomeCode44 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `4e8b6a1ba47de17c` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1605` | battleOutcomeCode44 == 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `14e4e0b0095b4cbb` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1985` | newState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `73574b6407553adf` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:1987` | newState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
+| `16854fcd4f47ea05` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2263` | terrainType0 == 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `e6890d6ab863a92e` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2297` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `0f9357b832b5948b` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2388` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `06bc8af9e6141757` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2397` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
+| `26e97e2c2b311fda` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattle.cpp:2446` | terrainType0 != 4 | `tactical_terrain_kind_domain` | `imperialism-decomp-1uj.99.8` |
 | `ba16b1b19dcb397d` | `raw_discriminant_literal` | `src/game/tactical/TTacticalBattleView.cpp:1238` | battleOutcomeCode44 == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `93802f66da7ebc08` | `raw_discriminant_literal` | `src/game/tactical_ui/TCityTask.cpp:32` | citySlotType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3c0d3f6d315f27a3` | `raw_discriminant_literal` | `src/game/tactical_ui/TShipBuildingTask.cpp:34` | citySlotType == 5 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
@@ -631,8 +635,8 @@ is classified, and a family that stops appearing must be removed.
 | `e4055687cb745727` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:90` | selectionState != 2 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `2ee9a167ca66d93b` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:93` | selectionState == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `3277a241d21f2728` | `raw_discriminant_literal` | `src/game/ui_widgets/THQButton.cpp:95` | selectionState == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
-| `3aa9c9558b6528c0` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:104` | visualState != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `0e5ebc14bbebe7a9` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:111` | visualState == 2 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `4a19444c5a3a6c6b` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:98` | visualState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
+| `0e5ebc14bbebe7a9` | `raw_discriminant_literal` | `src/game/ui_widgets/TNumberedArrowButton.cpp:107` | visualState == 2 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `3f1d7dc933c6026b` | `raw_discriminant_literal` | `src/game/ui_widgets/TToolBarCluster.cpp:65` | screenModeAt24 > 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `8bee51a3dae8191c` | `raw_discriminant_literal` | `src/game/ui_widgets/TUnitToolbarCluster.cpp:43` | screenModeAt24 == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `814e14be7afefa1f` | `raw_discriminant_literal` | `src/game/ui_widgets/TWorldView.cpp:365` | interactionMode == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

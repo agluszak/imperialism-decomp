@@ -79,7 +79,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTile
 }
 
 // FUNCTION: IMPERIALISM 0x0059f730
-void TTacticalBattle::FinalizeTacticalBattleOutcome(int) {}
+void TTacticalBattle::EndBattle(unsigned char) {}
 
 // SYNTHETIC: IMPERIALISM 0x0059f750
 // TTacticalBattle::GetRuntimeClass
@@ -107,8 +107,7 @@ TTacticalBattle::TTacticalBattle() {
 // the longest unit range (+11), (re)allocates the per-tile work arrays and the hex tile
 // grid, and publishes the battle to g_pActiveTacticalBattle.
 // FUNCTION: IMPERIALISM 0x0059f890
-void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* ourPlayer,
-                                                            TTacticalPlayer* enemyPlayer) {
+void TTacticalBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPlayer* enemyPlayer) {
   tacticalPlayer14 = ourPlayer;
   tacticalPlayer18 = enemyPlayer;
   ourPlayer->battle14 = this;
@@ -271,7 +270,7 @@ void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
   // TSortedList ordinals are 1-based, so GetEntryByOrdinal(GetCount()) is the tail.
   selectedUnit1c =
       static_cast<TTacticalUnit*>(recordList20->GetEntryByOrdinal(recordList20->GetCount()));
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // Selection/UI helpers dispatched by the tactical command family.
@@ -543,8 +542,8 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
       return 0xc;
     }
 
-    int column = tileIndex % tacticalTileStride40;
-    if (tileIndex >= tacticalTileStride40 && tile->terrainType0 != 4 && occupant == 0) {
+    int column = tileIndex % 0x1d;
+    if (tileIndex >= 0x1d && tile->terrainType0 != 4 && occupant == 0) {
       if (currentSideC == 0) {
         if (column > 2 && column < 6) {
           return 3;
@@ -571,7 +570,7 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
     }
     if (tileIsNeighbor) {
       TacticalTileRecord* tile = &tileGrid4[tileIndex];
-      if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / tacticalTileStride40 / 2] > 0) {
+      if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / 58] > 0) {
         state = 9;
       } else if (selectedUnit1c->actionPoints28 >=
                      g_awUnitTypeBaseActionPointTable[selectedUnit1c->unitTypeC] / 2 &&
@@ -602,7 +601,7 @@ int TTacticalBattle::ComputeTacticalHoverCursorStateIndex(TacticalTileIndex tile
 
   if (state == 0) {
     TacticalTileRecord* tile = &tileGrid4[tileIndex];
-    if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / tacticalTileStride40 / 2] > 0) {
+    if (tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / 58] > 0) {
       // Manned fort wall: direct-fire units can't shoot over it at all; indirect-fire units
       // can if in range (the wall-crossing check inside IsTacticalTargetTileReachableForAction
       // is skipped by passing directFireFlag=0).
@@ -678,7 +677,7 @@ short TTacticalBattle::ResolveTacticalHoverCursorResourceId(TacticalTileIndex ti
     bool intactFortSection = g_afTacticalDirectFireFlagByCategory[category] ==
                                  g_fTacticalRetreatQualityWeightDefault_00669EC0 &&
                              tile->deployMark8 > 1 && fortStrengthPoints54[tileIndex / 58] > 0 &&
-                             selectedUnit1c->attackTarget30 == 0;
+                             selectedUnit1c->side20 == 0;
     if (enemyTarget || intactFortSection) {
       char directFire = static_cast<char>(g_afTacticalDirectFireFlagByCategory[category]);
       return IsTacticalTargetTileReachableForAction(selectedUnit1c->tileIndex8, tileIndex,
@@ -701,7 +700,7 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
   switch (commandTag) {
   case kControlTagDone: // 'done'
     if (battleLive10 == 1) {
-      QueueTacticalEventPacket232A();
+      FinishTacticalActionAndPostNextMoveCommand();
       return;
     }
     ApplyTacticalDoneSelectionAndRefreshUi(player->SelectNextTacticalUnitForDoneCommand());
@@ -732,12 +731,25 @@ void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
 // Ends the current action round: clears the follow-up latch and posts a 'next move'
 // command (turn event 0x232a) carrying this battle to the UI root controller.
 // FUNCTION: IMPERIALISM 0x005a0d60
-void TTacticalBattle::QueueTacticalEventPacket232A() {
+void TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand() {
   pendingEndOfActionFlag48 = 0;
   TNextMoveCommand* command = new TNextMoveCommand();
   command->ICommand(0x232a, g_pAmbitApplication, 0, 0, 0);
   command->battle18 = this;
   g_pAmbitApplication->DispatchUiSelectionToHandler(command);
+}
+
+// FUNCTION: IMPERIALISM 0x005a0e20
+void TTacticalBattle::NextMove() {
+  if (battleOutcomeCode44 != 0) {
+    unsigned char sideWonFlag = battleOutcomeCode44 == 1;
+    tacticalPlayer14->ApplyChanges(sideWonFlag);
+    tacticalPlayer18->ApplyChanges(sideWonFlag == 0);
+    EndBattle(sideWonFlag);
+    return;
+  }
+  pendingEndOfActionFlag48 = 1;
+  AdvanceToNextTacticalUnitTurnStep();
 }
 
 // FUNCTION: IMPERIALISM 0x005a0ea0
@@ -765,7 +777,7 @@ void TTacticalBattle::AdvanceToNextTacticalUnitTurnStep() {
       ++roundCounter74;
       if (roundCounter74 >= 0x23) {
         EvaluateTacticalSideStateAndShowBattleSummaryDialog();
-        QueueTacticalEventPacket232A();
+        FinishTacticalActionAndPostNextMoveCommand();
         return;
       }
       position = 1;
@@ -891,7 +903,8 @@ void TTacticalBattle::ProcessTacticalUnitState1TurnStep(TTacticalUnit* unit) {
       }
     }
   }
-  QueueTacticalEventPacket232A();
+  EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // FUNCTION: IMPERIALISM 0x005a1400
@@ -923,6 +936,16 @@ unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(
     }
   }
   return foundEnemy;
+}
+
+// FUNCTION: IMPERIALISM 0x005a14d0
+void TTacticalBattle::UndeployUnit(TacticalTileIndex tileIndex) {
+  TTacticalUnit* unit = tileGrid4[tileIndex].occupant4;
+  if (battleView8 != 0) {
+    battleView8->InvalidateTacticalUnitTileRect(unit);
+  }
+  unit->tileIndex8 = -2;
+  tileGrid4[tileIndex].occupant4 = 0;
 }
 
 // Listing 0x005a1520 reads the stack byte without initializing it on the headless,
@@ -1207,7 +1230,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
       }
     }
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // Resolves the action against the target tile (virtual slot 0x10), then ends the
@@ -1231,16 +1254,16 @@ void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
           // The cavalry unit can still move on: only close the round when the battle
           // outcome is already decided.
           if (battleOutcomeCode44 != 0) {
-            QueueTacticalEventPacket232A();
+            FinishTacticalActionAndPostNextMoveCommand();
           }
           return;
         }
       }
     }
-    QueueTacticalEventPacket232A();
+    FinishTacticalActionAndPostNextMoveCommand();
     return;
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // Whether the selected unit still has a valid follow-up target: category 9 (engineer)
@@ -1514,6 +1537,22 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 }
 
+// FUNCTION: IMPERIALISM 0x005a2630
+float TTacticalBattle::FindMoraleBonus(unsigned char side) {
+  float moraleBonus = 2.0f;
+  CIterator unitIter((side == 0) ? tacticalPlayer14->unitList4 : tacticalPlayer18->unitList4);
+  for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
+    if (unit->unitTypeC >= 0x1b && unit->state1c == 0) {
+      float unitBonus = static_cast<float>(2.0 - unit->qualityLevel10 * 0.2 - 0.2);
+      if (unitBonus < moraleBonus) {
+        moraleBonus = unitBonus;
+      }
+    }
+  }
+  return moraleBonus;
+}
+
 // Moves a unit's record from its own side's player unit list onto the opposing side's
 // list (artillery capture path; the unit's side20 itself is not touched here).
 // FUNCTION: IMPERIALISM 0x005a2700
@@ -1728,7 +1767,7 @@ void TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket(
     unit->actionPoints28 = 0;
     return;
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // Advances the unit's queued sap/mine run one step. If the target wall tile no longer
@@ -1770,7 +1809,7 @@ void TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(T
     tileGrid4[runTileIndex].mineRunStateC = 1;
   }
   if (unit->actionPoints28 == 0) {
-    QueueTacticalEventPacket232A();
+    FinishTacticalActionAndPostNextMoveCommand();
     return;
   }
   unit->actionPoints28 = 0;
@@ -1811,7 +1850,7 @@ void TTacticalBattle::DispatchTacticalActionByHoverStateIndex(TacticalTileIndex 
     ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(selectedUnit1c, tileIndex);
     break;
   case 6:
-    QueueTacticalEventPacket232A();
+    FinishTacticalActionAndPostNextMoveCommand();
     break;
   case 7:
     ExecuteTacticalDigActionAndConsumeUnitActionPoints(selectedUnit1c, tileIndex);
@@ -1858,7 +1897,7 @@ void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* uni
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3a9d, 0, 1);
     battleView8->PlayTacticalTileEffect(tileIndex, 0xf98, 6);
   }
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // 'mine' command: multiplayer echo (no unit), consume from the side resource pool for
@@ -1893,7 +1932,7 @@ void TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(
   unit->actionPoints28 = actionPointsBefore - g_awUnitTypeBaseActionPointTable[unit->unitTypeC] / 2;
   ComputeTacticalReachableTileCostsByUnitCategory(unit);
   if (unit->actionPoints28 == 0) {
-    QueueTacticalEventPacket232A();
+    FinishTacticalActionAndPostNextMoveCommand();
   }
 }
 
@@ -1962,7 +2001,7 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTactical
     }
   }
   HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, 0);
-  QueueTacticalEventPacket232A();
+  FinishTacticalActionAndPostNextMoveCommand();
 }
 
 // 'raly' command: multiplayer echo, sets the unit's state (rallying a broken unit) and
@@ -2058,6 +2097,19 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(TacticalT
       battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 29);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a3cc0
+unsigned char TTacticalBattle::CanFireOn(TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
+  TacticalTileIndex attackerTileIndex = unit->tileIndex8;
+  if (unit->selectedFlag18 == 0) {
+    return 0;
+  }
+  int category = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+  int range = unit->GetUnitRange();
+  int directFireFlag = static_cast<int>(g_afTacticalDirectFireFlagByCategory[category]);
+  return IsTacticalTargetTileReachableForAction(attackerTileIndex, targetTileIndex,
+                                                static_cast<char>(directFireFlag), range);
 }
 
 // Range/line-of-fire test on the doubled-x hex grid. Distance uses axial x = 2*col +

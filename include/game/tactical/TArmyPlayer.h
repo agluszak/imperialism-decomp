@@ -15,7 +15,7 @@ public:
   virtual ~TArmyPlayer() override {}                // slot 0x01 (scalar deleting destructor)
   virtual void StartBattle() override;              // slot 0x0a 0x59b830
   virtual void AdvanceTacticalTurnPulse() override; // slot 0x0b 0x59e3e0
-  virtual void CommitTacticalResultsToSourceUnits(int unused) override;      // slot 0x0d 0x59b3e0
+  virtual void ApplyChanges(unsigned char sideWonFlag) override;             // slot 0x0d 0x59b3e0
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
   virtual void ProceedAfterBattleIntroAccepted() override;                   // slot 0x11 0x59eb40

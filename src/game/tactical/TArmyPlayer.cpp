@@ -148,8 +148,8 @@ void TArmyPlayer::IArmyPlayer(TArmyStack* stack, unsigned char isOurSide, unsign
 // word and detaches (kills) units that ended the battle at zero strength, on both
 // owned record lists.
 // FUNCTION: IMPERIALISM 0x0059b3e0
-void TArmyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
-  (void)unused;
+void TArmyPlayer::ApplyChanges(unsigned char sideWonFlag) {
+  (void)sideWonFlag;
   if (unitList4->GetCount() > 0) {
     CIterator unitIter(unitList4);
     for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
@@ -1678,7 +1678,7 @@ void TArmyPlayer::AdvanceTacticalTurnPulse() {
     while (unitIter.More() != 0) {
       if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8 && record->state1c == 0) {
         if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
-          battle14->QueueTacticalEventPacket232A();
+          battle14->FinishTacticalActionAndPostNextMoveCommand();
           return;
         }
         field20 = 0;
@@ -1837,7 +1837,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
 
   // Hand the turn back.
   if (battle14->pendingEndOfActionFlag48 != 0) {
-    battle14->QueueTacticalEventPacket232A();
+    battle14->FinishTacticalActionAndPostNextMoveCommand();
   }
 }
 
