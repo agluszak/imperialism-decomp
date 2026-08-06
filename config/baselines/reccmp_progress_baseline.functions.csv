@@ -2387,7 +2387,7 @@ address|matching|name
 0x4dd740|1.0|TGreatPower::GetStockpile
 0x4dd770|1.0|TGreatPower::SetCityStockCounterAndRefresh
 0x4dd7b0|1.0|TGreatPower::AddToCityStockCounterAndRefresh
-0x4dd7f0|0.6867469879518072|TGreatPower::ComputeProductionMetricForOrderKind
+0x4dd7f0|0.6626506024096386|TGreatPower::ComputeProductionMetricForOrderKind
 0x4dda20|1.0|TGreatPower::DeliverItem
 0x4dda40|1.0|TGreatPower::ConsumeMerchantCapacityForPurchase
 0x4dda60|0.6|TGreatPower::GetAmtUnsold
@@ -2473,7 +2473,7 @@ address|matching|name
 0x4e1d50|0.5408805031446541|TGreatPower::HandleWarTransitionRequest
 0x4e1e40|0.6040268456375839|TGreatPower::HandleWarTransitionRequestWithRoleSwap
 0x4e1f20|1.0|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16
-0x4e1f40|0.3517915309446254|TGreatPower::GetPeaceThreat
+0x4e1f40|0.4583333333333333|TGreatPower::GetPeaceThreat
 0x4e2190|1.0|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner
 0x4e21b0|0.9166666666666666|TGreatPower::ChangeMaster
 0x4e2270|1.0|TGreatPower::LoseProvince

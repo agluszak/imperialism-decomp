@@ -2944,12 +2944,22 @@ void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e1f40
 float TGreatPower::GetPeaceThreat(int targetNation) {
-  float selfArmyScore = TruncatedScoreFactorToFloat(this->GetMilitaryPower());
-  float selfNavyScore = TruncatedScoreFactorToFloat(this->GetTotalNavalForce());
   float alliedArmyForSelf = 0.0f;
   float alliedNavyForSelf = 0.0f;
   float alliedArmyForTarget = 0.0f;
   float alliedNavyForTarget = 0.0f;
+
+  int selfArmyScoreValue = static_cast<int>(this->GetMilitaryPower());
+  if (selfArmyScoreValue <= 1) {
+    selfArmyScoreValue = 1;
+  }
+  float selfArmyScore = static_cast<float>(selfArmyScoreValue);
+
+  int selfNavyScoreValue = static_cast<int>(this->GetTotalNavalForce());
+  if (selfNavyScoreValue <= 1) {
+    selfNavyScoreValue = 1;
+  }
+  float selfNavyScore = static_cast<float>(selfNavyScoreValue);
 
   int nationIndex = 0;
   while (nationIndex < kMajorNationCount) {
@@ -2957,8 +2967,8 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationIndex) != 0 &&
         nationIndex != targetNation) {
       TGreatPower* allyState = g_apNationStates[nationIndex];
-      alliedArmyForSelf += TruncatedScoreFactorToFloat(allyState->GetMilitaryPower());
-      alliedNavyForSelf += TruncatedScoreFactorToFloat(allyState->GetTotalNavalForce());
+      alliedArmyForSelf += allyState->GetMilitaryPower();
+      alliedNavyForSelf += allyState->GetTotalNavalForce();
     }
     ++nationIndex;
   }
@@ -2969,8 +2979,8 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationIndex) != 0 &&
         nationIndex != this->nationSlot) {
       TGreatPower* allyState = g_apNationStates[nationIndex];
-      alliedArmyForTarget += TruncatedScoreFactorToFloat(allyState->GetMilitaryPower());
-      alliedNavyForTarget += TruncatedScoreFactorToFloat(allyState->GetTotalNavalForce());
+      alliedArmyForTarget += allyState->GetMilitaryPower();
+      alliedNavyForTarget += allyState->GetTotalNavalForce();
     }
     ++nationIndex;
   }
@@ -2980,7 +2990,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
 
   TGreatPower* targetState = g_apNationStates[targetNation];
   if (borderLinked != 0) {
-    float targetArmyScore = TruncatedScoreFactorToFloat(targetState->GetMilitaryPower());
+    float targetArmyScore = targetState->GetMilitaryPower();
     float numerator =
         selfArmyScore + alliedArmyForSelf * (-g_Compute_Advisory_Peer_LookupTable_00653724);
     float denominator =
@@ -2988,7 +2998,7 @@ float TGreatPower::GetPeaceThreat(int targetNation) {
     return numerator / denominator;
   }
 
-  float targetNavyScore = TruncatedScoreFactorToFloat(targetState->GetTotalNavalForce());
+  float targetNavyScore = targetState->GetTotalNavalForce();
   float numerator =
       selfNavyScore + alliedNavyForSelf * (-g_Compute_Advisory_Peer_LookupTable_00653724);
   float denominator =
