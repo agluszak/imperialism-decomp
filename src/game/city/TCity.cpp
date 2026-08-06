@@ -797,7 +797,7 @@ void TCity::MakeTown(short selectedResourceType) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b46c0
-void TCity::TransferTransportRequests(void*) {
+void TCity::TransferTransportRequests() {
   this->eventQueue274->InvokePtrListResetHook();
 }
 

@@ -69,7 +69,7 @@ public:
   // city stock and push the new target (TGreatPower slot 0x45).
   virtual short DirectTransport(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
-  virtual void TransferTransportRequests(void* message = 0);
+  virtual void TransferTransportRequests();
   // slot 0x15 — body 0x004b46e0 (vtable stores direct body, not ILT 0x00407464).
   virtual short GetMaxBuildingCapacity(int buildingSlot);
   // slot 0x16 — body 0x004b48a0: capacity tier (1..4) for a building slot, with the
