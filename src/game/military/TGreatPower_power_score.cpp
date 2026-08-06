@@ -63,14 +63,6 @@ int GetClampedQuarterYearTerm(void) {
   return yearTerm;
 }
 
-float TruncatedScoreFactorToFloat(float score) {
-  int truncated = static_cast<int>(score);
-  if (truncated <= 1) {
-    truncated = 1;
-  }
-  return static_cast<float>(truncated);
-}
-
 // Recomputes per-nation navy/army order-priority metrics from queued map-order
 // distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
 // passes. For each eligible nation (g_pSimMgr->IsNationSlotEligibleForEventProcessing):

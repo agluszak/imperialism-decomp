@@ -26,5 +26,4 @@ float SumAlliedArmyScoreFactors(int targetNation);
 float SumAlliedNavyScoreFactors(int targetNation);
 short* GetRelationStandingRowForNation(short nationSlot);
 int GetClampedQuarterYearTerm(void);
-float TruncatedScoreFactorToFloat(float score);
 void RecomputeNationOrderPriorityMetrics(void);
