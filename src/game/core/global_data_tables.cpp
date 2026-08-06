@@ -1733,6 +1733,11 @@ extern const float g_BlockadePortMissionThreatFloor_0065A900 = 10.0f;
 extern const float g_BlockadePortMissionThreatScale_0065A904 = 0.5f;
 // GLOBAL: IMPERIALISM 0x0065a910
 extern const float g_NavyMissionIndustrialCostWeights_0065A910[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+// Fourteen-entry signed lookup object following the industrial-cost weights.
+// GLOBAL: IMPERIALISM 0x0065a920
+extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14] = {
+    -1, -1, -1, 0, 1, -1, -1, 2, 3, 4, -1, 5, 6, 7,
+};
 // GLOBAL: IMPERIALISM 0x0065a958
 extern const float g_NavyMissionQueuedWeightDeficitScale_0065A958 = 1.0f;
 // GLOBAL: IMPERIALISM 0x0065a95c

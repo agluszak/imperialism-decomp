@@ -127,6 +127,7 @@ extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUOcean_006984CC[];
 
 extern short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+extern const int g_NavyMissionIndustrialCostTrailingLookup_0065A920[14];
 
 // TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
 // ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
