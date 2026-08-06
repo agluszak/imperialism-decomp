@@ -56,9 +56,9 @@ public:
   // FindFirstPortZoneContextByNation).
   void RemovePortZoneByTile(short nTileIndex);
 
-  // 0x00563540 — walk g_pMapActionContextListHead for TPortZone contexts owned by
-  // nationSlot. Real __thiscall on the TOcean singleton (ret 4; callers load
-  // g_pActiveMapOrderContext into ecx); `this` is unused by the body.
+  // 0x00563540 — walk g_pMapActionContextListHead for the first TPortZone whose
+  // port tile's former-owner tag matches nationSlot. Real __thiscall on the TOcean
+  // singleton; `this` is unused by the body.
   TZone* FindFirstPortZoneContextByNation(short nationSlot);
 
   // 0x00564570 — walk g_pMapActionContextListHead (via prev18) for the zone whose

@@ -16,16 +16,10 @@
 #include "game/globals/navy_globals.h"
 #include "game/globals/shared_globals.h"
 
-// The binary body inlines TMission() (state08/importanceScore0c/marker11) and does NOT touch
-// nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
-TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
-  missionTargetZone = targetZone;
-  resolvedPortZone = nullptr;
-  selectedOrder1c = nullptr;
-  taskForce20 = nullptr;
-  orderList24 = nullptr;
-  navyState28 = 0;
+TNavyMission::TNavyMission(TZone* targetZone)
+    : TMission(), missionTargetZone(targetZone), resolvedPortZone(nullptr),
+      selectedOrder1c(nullptr), taskForce20(nullptr), orderList24(nullptr), navyState28(0) {
   for (int i = 0; i < 4; ++i) {
     requiredShipEquipageByCategory[i] = 0.0f;
   }

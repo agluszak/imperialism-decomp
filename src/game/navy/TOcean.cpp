@@ -575,7 +575,7 @@ TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
   do {
     short tileIndex = static_cast<TPortZone*>(eax)->portTileIndex48;
     short ownerTag =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+        static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03);
     if (ownerTag == nationSlot) {
       return eax;
     }
