@@ -173,10 +173,6 @@ public:
 
 // g_apTerrainTypeDescriptorTable — see game/global_data_tables.h.
 
-// Nation-slot decode helpers (terrain table rows are TCountry*).
-int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain,
-                                          EncodedNationSlot encodedNationSlot);
-int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 // 0x004a5aa0 moved to TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex — both
 // original callsites load ecx = g_pMapContextActionManager (thiscall, this unused).
 
