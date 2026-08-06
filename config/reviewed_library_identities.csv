@@ -1317,7 +1317,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x005fb0d5||?RelayToolTipMessage@@YGXPAVCToolTipCtrl@@PAUtagMSG@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x005fee24||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x005fee4e||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x005fee99||?FindOneOf@CString@@QBEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fee99|CString::Find|?Find@CString@@QBEHPBD@Z|public: int __thiscall CString::Find(char const *) const|nafxcw|strex.obj|listing_body_calls___mbsstr+callsite_0x005d4379(agent-verified)|LIBRARY
 0x005ff3cd||?InitString@CSimpleException@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x0060038d||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006003de||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY

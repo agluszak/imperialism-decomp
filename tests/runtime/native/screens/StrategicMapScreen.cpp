@@ -274,7 +274,8 @@ RuntimeActionResult ClickArrowZone(TNumberedArrowButton* arrow, bool lowerHalf, 
   event.commandCode = 0;
   event.keyFlags = 0;
   event.mouseButton24 = 0;
-  if (window->HandleMouseDown(windowPoint, &event, CPoint(0, 0)) == 0 ||
+  CPoint windowOrigin(0, 0); // RUNTIME_COORDINATE_EXPLAINED: origin of the owning window
+  if (window->HandleMouseDown(windowPoint, &event, windowOrigin) == 0 ||
       g_McAppMouseCaptureState.capturedControl != arrow) {
     return RuntimeActionResult::Failure("numbered arrow did not receive the view-tree mouse down");
   }

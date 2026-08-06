@@ -17,8 +17,8 @@ class UiPlatformDiffTests(unittest.TestCase):
     def test_report_covers_every_generated_case_and_node(self) -> None:
         self.assertEqual(self.errors, [])
         self.assertEqual(self.report["summary"]["functions"], 17)
-        self.assertEqual(self.report["summary"]["cases"], 94)
-        self.assertEqual(self.report["summary"]["nodes"], 1853)
+        self.assertEqual(self.report["summary"]["cases"], 82)
+        self.assertEqual(self.report["summary"]["nodes"], 1729)
         self.assertEqual(self.report["summary"]["unexplained_deltas"], 0)
 
     def test_declared_toolbar_class_substitution_is_explicit(self) -> None:
@@ -43,11 +43,9 @@ class UiPlatformDiffTests(unittest.TestCase):
             )
         )
 
-    def test_functional_parity_extensions_are_distinct_from_platform_nodes(self) -> None:
-        case = self.report["functions"]["0x004357b0"]["cases"]["0x07e5"]
-
-        self.assertEqual(case["classification"], "functional_parity_extension")
-        self.assertIn("0x005d57ce", case["manifest_evidence"])
+    def test_alternate_runtime_paths_are_absent_from_factory_report(self) -> None:
+        self.assertEqual(self.report["summary"]["functional_parity_cases"], 0)
+        self.assertNotIn("0x07e5", self.report["functions"]["0x004357b0"]["cases"])
 
 
 if __name__ == "__main__":

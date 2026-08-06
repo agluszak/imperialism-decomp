@@ -33,6 +33,26 @@ gap_owners: {}
 # a factory case alone is NOT evidence (many working screens, e.g. the Minister
 # books 0x22e2..0x25f8, are built through other dispatch paths entirely).
 non_factory_dispositions:
+  0x03c5:
+    status: windows_alternate_path
+    summary: county-seat placement resolves and configures the dialog directly
+    evidence: >-
+      TMapEditView::PlaceCountySeat 0x0051dc90 receives event 0x03c5 and calls
+      TAssetMgr::ResolveTurnEventDialogNodeByMessageContext directly; retail builder
+      0x004538a0 has no 0x03c5 case.
+  0x07e5:
+    status: windows_alternate_path
+    summary: gold-dialog refresh resolves and opens the dialog directly
+    evidence: >-
+      TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog 0x005d57b0 receives event
+      0x07e5, calls TAssetMgr resolver slot 0x28, and configures and opens the returned
+      dialog; retail builder 0x004357b0 has no 0x07e5 case.
+  0x0f3d:
+    status: windows_alternate_path
+    summary: unit-history dispatch uses the dedicated Windows screen path
+    evidence: >-
+      TViewMgr::DispatchTurnEvent 0x005d7240 handles event 0x0f3d explicitly through
+      TViewMgr::ShowUnitHistory; retail builder 0x0046fd10 has no 0x0f3d case.
   0x22e2:
     status: excluded_unreachable_controller
     summary: foreign-minister recommendation book survives only in dead shelf code

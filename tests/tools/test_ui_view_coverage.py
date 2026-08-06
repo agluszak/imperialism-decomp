@@ -30,11 +30,10 @@ class UiViewCoverageTests(unittest.TestCase):
         self.assertEqual(
             Counter(row.status for row in rows),
             {
-                "generated_turn_event_factory": 93,
-                "windows_runtime_gap": 1,
-                "windows_alternate_path": 1,
-                "excluded_mac_only_or_obsolete": 10,
-                "excluded_mac_test_debug_or_framework": 16,
+                "generated_turn_event_factory": 81,
+                "windows_alternate_path": 5,
+                "excluded_mac_only_or_obsolete": 18,
+                "excluded_mac_test_debug_or_framework": 17,
             },
         )
 
@@ -47,7 +46,7 @@ class UiViewCoverageTests(unittest.TestCase):
         self.assertTrue(any("assertion line number" in item for item in minimap.evidence))
         self.assertTrue(any("0x00599cf0" in item for item in minimap.evidence))
 
-    def test_confirmed_runtime_gaps_are_owned_as_functional_parity_cases(self) -> None:
+    def test_confirmed_runtime_requests_use_recovered_alternate_paths(self) -> None:
         rows, errors = build_coverage_rows(REPO_ROOT)
         self.assertEqual(errors, [])
         runtime_gap_resources = {
@@ -58,12 +57,8 @@ class UiViewCoverageTests(unittest.TestCase):
         recovered = {row.key.text(): row for row in rows if row.key.text() in runtime_gap_resources}
 
         self.assertEqual(set(recovered), runtime_gap_resources)
-        self.assertTrue(
-            all(row.status == "generated_turn_event_factory" for row in recovered.values())
-        )
-        self.assertTrue(
-            all("functional-parity case" in row.evidence[0] for row in recovered.values())
-        )
+        self.assertTrue(all(row.status == "windows_alternate_path" for row in recovered.values()))
+        self.assertTrue(all(any("0x00" in item for item in row.evidence) for row in recovered.values()))
 
     def test_committed_report_is_current(self) -> None:
         rows, errors = build_coverage_rows(REPO_ROOT)

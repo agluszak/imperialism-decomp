@@ -129,14 +129,6 @@ TTurnEventDialogFactoryRegistry::ResolveDialogNodeByMessageContext(TurnEventId m
   return InvokeDialogFactoryFromPacket(contextSlot, nullptr, messageContext, anchor);
 }
 
-void EnsureTurnEventDialogFactoryRegistryInitialized() {
-  if (g_pTurnEventDialogFactoryRegistry != nullptr) {
-    return;
-  }
-  g_pTurnEventDialogFactoryRegistry = new TTurnEventDialogFactoryRegistry();
-  RegisterStartupDialogFactoryCallbacks(g_pTurnEventDialogFactoryRegistry);
-}
-
 // FUNCTION: IMPERIALISM 0x00491cc0
 TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     int nContextId, TView* pEventPacket, TurnEventId nEventCode, const CPoint& anchorPoint) {

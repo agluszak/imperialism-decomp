@@ -434,7 +434,7 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytes(&field15, 0x17);
   stream->WriteBytes(&multiplayerSessionRole, 4);
 
-  unsigned char hasGameFlowState = turnFlowStatusFlags != 0;
+  unsigned char hasGameFlowState = multiplayerSessionRole != 0;
   if (hasGameFlowState) {
     g_pGameFlowState->WriteTo(stream);
   }

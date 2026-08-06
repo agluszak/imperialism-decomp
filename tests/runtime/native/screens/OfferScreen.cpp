@@ -90,7 +90,7 @@ RuntimeActionResult OfferScreen::PoseOfferToSelf(short nationSlot, short resourc
   // The dialog's main action control carries the offer. Its middle parameters are still
   // provisional in the recovered signature; what the desk does with them -- the quantity it
   // opens the purchase field at and the price it prints -- is what this scenario asserts on.
-  g_pViewMgr->DispatchNationActionToMainControl(nationSlot, nationSlot, quantity, price, resource);
+  g_pViewMgr->ShowOfferSheet(nationSlot, nationSlot, quantity, price, resource);
   return RuntimeActionResult::Success();
 }
 

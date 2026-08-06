@@ -24,27 +24,7 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/ui_screens_globals.h"
 
-// FUNCTION: IMPERIALISM 0x005d4ba0
-void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream) {
-  int count = 0;
-  if (maxLength <= 0) {
-    return;
-  }
-
-  while ((stream->_flag & _IOEOF) == 0) {
-    char value = static_cast<char>(fgetc(stream));
-    *destination = value;
-    if (value == '\n' || value == '\r' || value == '\0') {
-      *destination = '\0';
-      return;
-    }
-    ++destination;
-    ++count;
-    if (count >= maxLength) {
-      return;
-    }
-  }
-}
+void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream);
 
 // FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
@@ -398,4 +378,26 @@ void TScenarioChooser::Free() {
     }
   }
   TView::Free();
+}
+
+// FUNCTION: IMPERIALISM 0x005d4ba0
+void ReadLineFromBufferedStreamUntilTerminator(char* destination, int maxLength, FILE* stream) {
+  int count = 0;
+  if (maxLength <= 0) {
+    return;
+  }
+
+  while ((stream->_flag & _IOEOF) == 0) {
+    char value = static_cast<char>(fgetc(stream));
+    *destination = value;
+    if (value == '\n' || value == '\r' || value == '\0') {
+      *destination = '\0';
+      return;
+    }
+    ++destination;
+    ++count;
+    if (count >= maxLength) {
+      return;
+    }
+  }
 }

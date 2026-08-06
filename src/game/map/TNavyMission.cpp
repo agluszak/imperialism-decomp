@@ -605,7 +605,7 @@ float TNavyMission::ValueOf(TShip* candidate) {
 
 // Scores how badly a candidate navy order node fits this mission's target profile:
 // squared distance between the node's normalized 4-category priority vector and the
-// profile floats at targetProfile+0x10, plus a distance-bucket weight from the score
+// profile floats at targetProfile+0x14, plus a distance-bucket weight from the score
 // table and an understock penalty.
 // FUNCTION: IMPERIALISM 0x00537610
 float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
@@ -652,7 +652,7 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   }
   const float* targetVector = targetProfile;
   for (componentIndex = 0; componentIndex < 4; ++componentIndex) {
-    float delta = profile[componentIndex] / sum - targetVector[componentIndex + 4];
+    float delta = profile[componentIndex] / sum - targetVector[componentIndex + 5];
     sumSquares = delta * delta + sumSquares;
   }
   double understockPenalty;
@@ -663,7 +663,7 @@ float TNavyMission::FitnessOf(TShip* candidate, float* targetProfile) {
   } else {
     understockPenalty = g_Recompute_Nation_Order_LookupTable_0065A9F0;
   }
-  return static_cast<float>((sumSquares + bucketWeight) + understockPenalty);
+  return -static_cast<float>((sumSquares + bucketWeight) + understockPenalty);
 }
 
 // FUNCTION: IMPERIALISM 0x005378c0

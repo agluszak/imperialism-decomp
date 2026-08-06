@@ -1646,7 +1646,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
        mission = static_cast<TMission*>(missionIter.Advance())) {
     mission->AssertValid();
     if (mission->flag10 == 0) {
-      mission->AccumulateLack(resourcePools + 1, 1);
+      mission->AccumulateLack(resourcePools, 1);
     }
   }
 
@@ -1654,8 +1654,7 @@ void TAutoGreatPower::PlanAiDevelopmentActionsFromResourcePools(int unused) {
   int averageAllocation = interiorMinister->GetAverageDevelopmentOrderAllocation();
   int cityActionLimit = averageAllocation + 2;
   int industryActionLimit = averageAllocation / 2 + 1;
-  float developmentBudget =
-      interiorMinister->GetAiDevelopmentResourceBudgetScale(resourcePools + 1);
+  float developmentBudget = interiorMinister->GetAiDevelopmentResourceBudgetScale(resourcePools);
   int industryActionCount = 0;
   int cityActionCount = 0;
 

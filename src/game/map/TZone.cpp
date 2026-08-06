@@ -562,24 +562,6 @@ void TZone::HandleKeyDown(int key_id) {
   ShowFocusIngot(0);
 }
 
-// FUNCTION: IMPERIALISM 0x005604e0
-void TZone::ReconsiderFocusIngot() {
-  short activeNation = g_pSimMgr->GetActiveNationId();
-  if (activeNation == -1) {
-    activeNation = g_pSimMgr->GetActiveNationId();
-  }
-
-  if ((nationKeyMask10 & (1U << (static_cast<unsigned char>(activeNation) & 0x1f))) != 0) {
-    for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
-      if (ship->location == this && ship->nation == activeNation && ship->taskForce == 0) {
-        ShowFocusIngot(1);
-        return;
-      }
-    }
-  }
-  ShowFocusIngot(0);
-}
-
 // FUNCTION: IMPERIALISM 0x0055fe60
 short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   short stepSign = 1;
@@ -788,6 +770,24 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(Province* cont
   }
 
   return bestTile;
+}
+
+// FUNCTION: IMPERIALISM 0x005604e0
+void TZone::ReconsiderFocusIngot() {
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  if (activeNation == -1) {
+    activeNation = g_pSimMgr->GetActiveNationId();
+  }
+
+  if ((nationKeyMask10 & (1U << (static_cast<unsigned char>(activeNation) & 0x1f))) != 0) {
+    for (TShip* ship = TShip::GetFirst(); ship != 0; ship = ship->next) {
+      if (ship->location == this && ship->nation == activeNation && ship->taskForce == 0) {
+        ShowFocusIngot(1);
+        return;
+      }
+    }
+  }
+  ShowFocusIngot(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00560580

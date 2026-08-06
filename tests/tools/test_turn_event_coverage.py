@@ -15,12 +15,13 @@ class TurnEventCoverageTests(unittest.TestCase):
         cls.rows, cls.mac_complement, cls.callbacks = build_rows(REPO_ROOT)
         cls.by_event = {row["event"]: row for row in cls.rows}
 
-    def test_boot_path_has_no_unowned_gap(self) -> None:
+    def test_boot_path_has_only_the_owned_random_map_gap(self) -> None:
         boot = [row for row in self.rows if row["boot_stage"]]
 
         self.assertEqual(len(boot), 6)
-        self.assertTrue(all(not row["gap_bead"] for row in boot))
-        self.assertTrue(all(row["status"] == "implemented_reachable" for row in boot))
+        gaps = [row for row in boot if row["status"] != "implemented_reachable"]
+        self.assertEqual([row["event"] for row in gaps], [0x03C0])
+        self.assertEqual(gaps[0]["gap_bead"], "imperialism-decomp-1uj.57")
 
     def test_vocabulary_is_complete_and_unique(self) -> None:
         names = [row["vocabulary_name"] for row in self.rows]
@@ -48,14 +49,21 @@ class TurnEventCoverageTests(unittest.TestCase):
     def test_missing_builders_have_follow_up_owners(self) -> None:
         missing = [row for row in self.rows if row["status"] == "posted_missing_builder"]
 
-        self.assertEqual(missing, [])
+        self.assertEqual([row["event"] for row in missing], [0x03C0])
+        self.assertEqual(missing[0]["gap_bead"], "imperialism-decomp-1uj.57")
 
     def test_non_factory_dispositions_carry_evidence(self) -> None:
         disposed = {row["event"]: row for row in self.rows if row["disposition"]}
 
-        self.assertEqual(set(disposed), {0x0F0A, 0x1C52})
+        self.assertEqual(
+            {event for event, row in disposed.items() if row["status"] == "foreign_resource_domain"},
+            {0x0F0A, 0x1C52},
+        )
+        self.assertEqual(
+            {event for event, row in disposed.items() if row["status"] == "windows_alternate_path"},
+            {0x03C5, 0x07E5, 0x0F3D},
+        )
         for event, row in disposed.items():
-            self.assertEqual(row["status"], "foreign_resource_domain")
             self.assertFalse(row["gap_bead"], f"0x{event:04x} still carries a gap bead")
             self.assertIn("0x", row["disposition"]["evidence"])
 

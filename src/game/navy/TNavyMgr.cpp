@@ -70,138 +70,10 @@ static inline void AppendCStringIntoFixedBuffer(char* dest, int destSize, const 
   }
 }
 
-// Sum, over shipList entries whose resource-type priorityTier is >= minTier, of
-// (child experience/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
-// term ResolveStrategicBattle's tier-scoring loop accumulates as a float.
-// FUNCTION: IMPERIALISM 0x0055a520
-static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier) {
-  float total = 0.0f;
-  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    TShip* child = static_cast<TShip*>(node->payload);
-    const TNavyOrderResourceDescriptor& descriptor =
-        g_NavyOrderResourceDescriptorTable[child->type];
-    if (descriptor.PriorityTier() < minTier) {
-      continue;
-    }
-    int power = (child->experience / 100 + descriptor.ResolveWeightDword() * 10 + 5) / 10;
-    total += static_cast<float>(power);
-  }
-  return total;
-}
+static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head);
+static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head);
+static inline int CalculateMapOrderInteractionShipStrength(TShip* ship);
 
-// Count of shipList entries whose resource-type priorityTier is >= minTier.
-// FUNCTION: IMPERIALISM 0x0055a5e0
-static int CountTaskForceChildrenAtOrAboveTier(TTaskForce* force, int minTier) {
-  int count = 0;
-  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-            .PriorityTier() >= minTier) {
-      ++count;
-    }
-  }
-  return count;
-}
-
-// FUNCTION: IMPERIALISM 0x0055a630
-static int CountTaskForceChildren(TTaskForce* force) {
-  int count = 0;
-  if (force != nullptr) {
-    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
-      ++count;
-    }
-  }
-  return count;
-}
-
-static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
-  int count = 0;
-  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    ++count;
-  }
-  return count;
-}
-
-static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head) {
-  int sum = 0;
-  int count = 0;
-  for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
-    if (node->active != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
-                 .DescriptorWeight();
-      ++count;
-    }
-  }
-  if (count == 0) {
-    return 0;
-  }
-  return (sum * 10) / count;
-}
-
-// The selector's non-hostile comparison branch expands this same integer score at both
-// child-list walks instead of calling TShip::GetBattleStrengthRating.
-static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
-  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
-  short strengthBucket = static_cast<short>(ship->experience / 100);
-  short navyPriorityBucket =
-      static_cast<short>((strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
-  short resolveBucket =
-      static_cast<short>((strengthBucket + descriptor.ResolveWeightDword() * 10 + 5) / 10);
-  return ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
-          ship->strength) /
-         descriptor.TaskForceWeight();
-}
-
-// Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
-// `target` of `head`'s children: for each candidate node, rolls
-// rand()%currentCount < target to select it, restarting at the head until exactly
-// `target` children have been selected, then reduces each selected ship's strength by
-// 0.5 - taskForceWeight[child->type] * ((rand()%100+rand()%100+100) * 0.005) *
-// favorRatio * -0.01.
-// FUNCTION: IMPERIALISM 0x0055a690
-static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio, int target,
-                                            int currentCount) {
-  if (target <= 0) {
-    return;
-  }
-  int selected = 0;
-  do {
-    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr && selected < target;
-         node = node->next) {
-      if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
-        ++selected;
-        int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
-        TShip* child = static_cast<TShip*>(node->payload);
-        short damage = static_cast<short>(
-            0.5 - g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
-                      (roll * 0.005) * favorRatio * -0.01);
-        child->strength = static_cast<short>(child->strength - damage);
-      }
-    }
-  } while (selected < target);
-}
-
-// Removes a depleted (nation < 1) list head and prunes any other depleted entries
-// further down the chain; matches the real call sequence at 0x55afff/0x55b06e
-// (SetMapOrderActiveChildEntry(nullptr) + Free() + DeleteMapOrderChildLinkAndReturnNext on a
-// depleted head, else a side-effect-only PruneDefeatedMapOrderChildrenAndReturnHead(head->next)
-// call on a still-alive head) rather than TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead's
-// own equivalent-but-differently-sequenced internal logic.
-static inline TMapOrderChildLinkNode*
-PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
-  if (head == nullptr) {
-    return nullptr;
-  }
-  TShip* child = static_cast<TShip*>(head->payload);
-  if (child->strength < 1) {
-    child->SetTaskForce(nullptr);
-    child->Free();
-    head = head->DeleteMapOrderChildLinkAndReturnNext();
-    head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
-  } else {
-    head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
-  }
-  return head;
-}
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0054f110
@@ -1735,6 +1607,142 @@ TTaskForce* TNavyMgr::WhoseIngotIsAt(short tileIndex) {
   }
   return entry;
 }
+
+namespace {
+
+// Sum, over shipList entries whose resource-type priorityTier is >= minTier, of
+// (child experience/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
+// term ResolveStrategicBattle's tier-scoring loop accumulates as a float.
+// FUNCTION: IMPERIALISM 0x0055a520
+static float SumTaskForceChildPowerAtOrAboveTier(TTaskForce* force, int minTier) {
+  float total = 0.0f;
+  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+    TShip* child = static_cast<TShip*>(node->payload);
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[child->type];
+    if (descriptor.PriorityTier() < minTier) {
+      continue;
+    }
+    int power = (child->experience / 100 + descriptor.ResolveWeightDword() * 10 + 5) / 10;
+    total += static_cast<float>(power);
+  }
+  return total;
+}
+
+// Count of shipList entries whose resource-type priorityTier is >= minTier.
+// FUNCTION: IMPERIALISM 0x0055a5e0
+static int CountTaskForceChildrenAtOrAboveTier(TTaskForce* force, int minTier) {
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+    if (g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
+            .PriorityTier() >= minTier) {
+      ++count;
+    }
+  }
+  return count;
+}
+
+// FUNCTION: IMPERIALISM 0x0055a630
+static int CountTaskForceChildren(TTaskForce* force) {
+  int count = 0;
+  if (force != nullptr) {
+    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr; node = node->next) {
+      ++count;
+    }
+  }
+  return count;
+}
+
+static inline int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+    ++count;
+  }
+  return count;
+}
+
+static inline int CalculateActiveChildAverageDescriptorWeightX10(TMapOrderChildLinkNode* head) {
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = head; node != 0; node = node->next) {
+    if (node->active != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TShip*>(node->payload)->type]
+                 .DescriptorWeight();
+      ++count;
+    }
+  }
+  if (count == 0) {
+    return 0;
+  }
+  return (sum * 10) / count;
+}
+
+// The selector's non-hostile comparison branch expands this same integer score at both
+// child-list walks instead of calling TShip::GetBattleStrengthRating.
+static inline int CalculateMapOrderInteractionShipStrength(TShip* ship) {
+  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[ship->type];
+  short strengthBucket = static_cast<short>(ship->experience / 100);
+  short navyPriorityBucket =
+      static_cast<short>((strengthBucket + descriptor.NavyPriorityWeightDword() * 10 + 5) / 10);
+  short resolveBucket =
+      static_cast<short>((strengthBucket + descriptor.ResolveWeightDword() * 10 + 5) / 10);
+  return ((navyPriorityBucket + descriptor.CalculateWeight()) * 100 + resolveBucket +
+          ship->strength) /
+         descriptor.TaskForceWeight();
+}
+
+// Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
+// `target` of `head`'s children: for each candidate node, rolls
+// rand()%currentCount < target to select it, restarting at the head until exactly
+// `target` children have been selected, then reduces each selected ship's strength by
+// 0.5 - taskForceWeight[child->type] * ((rand()%100+rand()%100+100) * 0.005) *
+// favorRatio * -0.01.
+// FUNCTION: IMPERIALISM 0x0055a690
+static void ApplyTaskForceConflictAttrition(TTaskForce* force, float favorRatio, int target,
+                                            int currentCount) {
+  if (target <= 0) {
+    return;
+  }
+  int selected = 0;
+  do {
+    for (TMapOrderChildLinkNode* node = force->shipList; node != nullptr && selected < target;
+         node = node->next) {
+      if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
+        ++selected;
+        int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
+        TShip* child = static_cast<TShip*>(node->payload);
+        short damage = static_cast<short>(
+            0.5 - g_NavyOrderResourceDescriptorTable[child->type].TaskForceWeight() *
+                      (roll * 0.005) * favorRatio * -0.01);
+        child->strength = static_cast<short>(child->strength - damage);
+      }
+    }
+  } while (selected < target);
+}
+
+// Removes a depleted (nation < 1) list head and prunes any other depleted entries
+// further down the chain; matches the real call sequence at 0x55afff/0x55b06e
+// (SetMapOrderActiveChildEntry(nullptr) + Free() + DeleteMapOrderChildLinkAndReturnNext on a
+// depleted head, else a side-effect-only PruneDefeatedMapOrderChildrenAndReturnHead(head->next)
+// call on a still-alive head) rather than TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead's
+// own equivalent-but-differently-sequenced internal logic.
+static inline TMapOrderChildLinkNode*
+PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
+  if (head == nullptr) {
+    return nullptr;
+  }
+  TShip* child = static_cast<TShip*>(head->payload);
+  if (child->strength < 1) {
+    child->SetTaskForce(nullptr);
+    child->Free();
+    head = head->DeleteMapOrderChildLinkAndReturnNext();
+    head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
+  } else {
+    head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+  }
+  return head;
+}
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0055a780
 void TNavyMgr::ResolveStrategicBattle(TTaskForce* leftEntry, TTaskForce* rightEntry) {

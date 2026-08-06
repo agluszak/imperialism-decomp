@@ -145,6 +145,7 @@ module|tools.workflow.boundary_audit|just:boundary-audit|Manual/autogen boundary
 module|tools.workflow.check_boundary_ratchet|just:boundary-gate|Boundary ratchet: manual->stub refs + fn-ptr casts must not rise
 module|tools.workflow.check_shadow_stubs|just:shadow-stub-gate|Shadow-stub gate: non-virtual degenerate methods hiding a real vtable slot
 module|tools.workflow.scalar_type_audit|just:scalar-type-audit|Classified scalar-conversion and enum-candidate source audit with fingerprint ratchet
+module|tools.workflow.ret_cleanup_audit|just:ret-cleanup-audit|Compare original and recompiled RET cleanup immediates for paired functions
 module|tools.workflow.check_datacmp_baseline|just:datacmp-gate|Global-data drift ratchet over reccmp-datacmp
 module|tools.workflow.check_empty_bodies|just:noop-gate|Silent no-op detector + empty-body ratchet
 module|tools.workflow.check_ctor_placement|just:ctor-placement-gate|Unmarked out-of-line constructor ratchet (bd nwdn)
