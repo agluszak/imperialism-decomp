@@ -615,22 +615,6 @@ void TCountry::NameUnits(void) {
   } while (ordinal <= this->militaryUnitList44->GetCount());
 }
 
-int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain,
-                                          EncodedNationSlot encodedNationSlot) {
-  if (encodedNationSlot < 200) {
-    if (encodedNationSlot < 100) {
-      return terrain->nationSlot;
-    }
-    return encodedNationSlot - 100;
-  }
-  return encodedNationSlot - 200;
-}
-
-int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
-  const TCountry* terrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
-  return DecodeTerrainNationSlotFromDescriptor(terrain, terrain->encodedNationSlot);
-}
-
 // FUNCTION: IMPERIALISM 0x004d8390
 int TCountry::ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
   return g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(nodeIndex);

@@ -1432,16 +1432,31 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetC
     }
 
     TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
-    if (terrainDescriptor != 0) {
-      const TCountry* terrain = terrainDescriptor;
-      short encodedNationSlot = terrain->encodedNationSlot;
-      if (encodedNationSlot > 199) {
-        int resolvedNationSlot = DecodeTerrainNationSlotFromDescriptor(terrain, encodedNationSlot);
-        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNationSlot) ==
-            0) {
-          this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot,
-                                                                 kDiplomacyProposalDeclareWar);
+    signed char isClientNation = terrainDescriptor->encodedNationSlot >= 200;
+    if (isClientNation != 0) {
+      short encodedNationSlot = terrainDescriptor->encodedNationSlot;
+      short resolvedNationSlot;
+      if (encodedNationSlot >= 200) {
+        resolvedNationSlot = static_cast<short>(encodedNationSlot - 200);
+      } else if (encodedNationSlot >= 100) {
+        resolvedNationSlot = static_cast<short>(encodedNationSlot - 100);
+      } else {
+        resolvedNationSlot = terrainDescriptor->nationSlot;
+      }
+
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNationSlot) ==
+          0) {
+        terrainDescriptor = g_apTerrainTypeDescriptorTable[targetClass];
+        encodedNationSlot = terrainDescriptor->encodedNationSlot;
+        if (encodedNationSlot >= 200) {
+          resolvedNationSlot = static_cast<short>(encodedNationSlot - 200);
+        } else if (encodedNationSlot >= 100) {
+          resolvedNationSlot = static_cast<short>(encodedNationSlot - 100);
+        } else {
+          resolvedNationSlot = terrainDescriptor->nationSlot;
         }
+        this->ApplyDiplomacyPolicyStateForTargetWithCostChecks(resolvedNationSlot,
+                                                               kDiplomacyProposalDeclareWar);
       }
     }
 
@@ -3052,9 +3067,17 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
   if (policyCode == kPolicyDefensivePact || policyCode != kPolicyTradeAgreement) {
     this->needLevelByNation[targetNation] = 100;
   } else {
-    int resolvedNation = ResolveTerrainNationSlotFromTarget(targetNation);
-    this->needLevelByNation[targetNation] =
-        this->needLevelByNation[static_cast<short>(resolvedNation)];
+    TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetNation];
+    short encodedNationSlot = terrainDescriptor->encodedNationSlot;
+    short resolvedNation;
+    if (encodedNationSlot >= 200) {
+      resolvedNation = static_cast<short>(encodedNationSlot - 200);
+    } else if (encodedNationSlot >= 100) {
+      resolvedNation = static_cast<short>(encodedNationSlot - 100);
+    } else {
+      resolvedNation = terrainDescriptor->nationSlot;
+    }
+    this->needLevelByNation[targetNation] = this->needLevelByNation[resolvedNation];
   }
 
   this->diplomacyGrantByNation[targetNation] = -1;
@@ -3074,8 +3097,17 @@ void TGreatPower::NewStatusFor(int targetNationSlot, int policyCode) {
   }
 
   if (this->candidateNationFlags[targetNation] == 0) {
-    int resolvedNation = ResolveTerrainNationSlotFromTarget(targetNation);
-    if (this->candidateNationFlags[static_cast<short>(resolvedNation)] == 0) {
+    TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[targetNation];
+    short encodedNationSlot = terrainDescriptor->encodedNationSlot;
+    short resolvedNation;
+    if (encodedNationSlot >= 200) {
+      resolvedNation = static_cast<short>(encodedNationSlot - 200);
+    } else if (encodedNationSlot >= 100) {
+      resolvedNation = static_cast<short>(encodedNationSlot - 100);
+    } else {
+      resolvedNation = terrainDescriptor->nationSlot;
+    }
+    if (this->candidateNationFlags[resolvedNation] == 0) {
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(this->nationSlot, resolvedNation) == 0) {
         this->StopBeingEnemiesWith(targetNation);
