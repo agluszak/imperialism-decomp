@@ -475,9 +475,9 @@ float TArmyMission::ValueOf(TMilitaryUnit* candidateUnit) {
 
 // FUNCTION: IMPERIALISM 0x0053d4a0
 float TArmyMission::FitnessOf(TMilitaryUnit* candidateUnit, float* referenceVector) {
-  if (static_cast<double>(candidateUnit->strength34) *
-          g_ArmyMissionEligibleUnitStrengthScale_0065AA48 <
-      g_Recompute_Nation_Order_LookupTable_0065AA20) {
+  float scaledStrength = static_cast<float>(static_cast<double>(candidateUnit->strength34) *
+                                            g_ArmyMissionEligibleUnitStrengthScale_0065AA48);
+  if (scaledStrength < g_Recompute_Nation_Order_LookupTable_0065AA20) {
     if (!IsANoBrainer()) {
       return -1000.0f;
     }

@@ -3761,7 +3761,7 @@ address|matching|name
 0x53d200|0.43137254901960786|TArmyMission::ComputeArmyMissionScoreDeltaWithScaledCandidateUnit
 0x53d3e0|0.9090909090909091|TArmyMission::IndustrialCostOfNeeds
 0x53d420|1.0|TArmyMission::ValueOf
-0x53d4a0|0.6857142857142857|TArmyMission::FitnessOf
+0x53d4a0|0.7177033492822966|TArmyMission::FitnessOf
 0x53d630|0.5925925925925926|TArmyMission::GetReplacementSlot48
 0x53d670|1.0|TAttackProvinceMission::CreateObject
 0x53d6f0|1.0|TAttackProvinceMission::IsHospitalMission
