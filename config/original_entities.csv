@@ -1838,7 +1838,7 @@ address|name|symbol|size|type|prototype|provenance
 4b44d0|TCity::GetCitySummaryRecordSlot74||78|function|undefined GetCitySummaryRecordSlot74()|
 4b4540|TCity::AddTransportRequest||39|function|void __thiscall AddTransportRequest(short low, short high)|
 4b4580|TCity::MakeTown||247|function|void MakeTown(short selectedResourceType)|
-4b46c0|TCity::TransferTransportRequests||11|function|void __thiscall TransferTransportRequests(void* message)|
+4b46c0|TCity::TransferTransportRequests||11|function|void __thiscall TransferTransportRequests()|
 4b46e0|TCity::GetMaxBuildingCapacity||312|function|short __thiscall GetMaxBuildingCapacity(int buildingSlot)|
 4b48a0|TCity::GetNextBuildingLevel||123|function|char __thiscall GetNextBuildingLevel(int buildingSlot)|
 4b4940|TCity::GetNextBuildingType||577|function|short TCity::GetNextBuildingType(short buildingSlot)|
