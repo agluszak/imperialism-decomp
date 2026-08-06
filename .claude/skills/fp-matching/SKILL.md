@@ -71,6 +71,14 @@ register-allocation noise; see §47.)
 
   *(ex decomp-loop list-note 82)*
 
+- **A named `float` intermediate can select an m32 comparison without forcing an
+    `FSTP`.** In `TArmyMission::FitnessOf` (0x53d4a0), assigning the result of a
+    double-width multiply to `float scaledStrength` kept the value live in x87 but made
+    VC5 emit the retail `FCOMP dword ptr [floatGlobal]`. Comparing the direct double
+    expression instead emitted `FLD dword ptr [floatGlobal]; FCOMPP`. A declared source
+    type can therefore control the comparison operand width even when the compiler
+    elides the local's rounding store.
+
 ### The dead-arg-slot assignment is one global, source-immune allocator choice
 *(ex decomp-loop note 113)*
 
