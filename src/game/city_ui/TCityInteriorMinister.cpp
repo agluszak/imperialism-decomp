@@ -1205,8 +1205,8 @@ void TCityInteriorMinister::ProcessUnitOrders() {
 
   RebuildMapTileNeighborBucketsForInteriorMinister();
   AutoAssignProspectingOrdersByTileHeuristics();
-  delete secondaryDistanceMap;
-  delete primaryDistanceMap;
+  delete[] secondaryDistanceMap;
+  delete[] primaryDistanceMap;
 }
 
 // FUNCTION: IMPERIALISM 0x004c1990
@@ -2668,7 +2668,7 @@ void TCityInteriorMinister::SeekResources(TShortintList* ownedTiles, char* prima
     }
   }
 
-  orderTypeTableFC[23] = 2;
+  orderTypeTableFC[22] = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x004c56e0

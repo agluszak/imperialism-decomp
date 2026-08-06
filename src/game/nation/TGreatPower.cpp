@@ -1227,8 +1227,8 @@ char TGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, s
                                     ResourceKindStorage resourceKind) {
   if (this->StillBuyingItem(resourceKind) != 0) {
     TViewMgr* uiRuntimeContext = g_pViewMgr;
-    uiRuntimeContext->DispatchNationActionToMainControl(this->nationSlot, targetNationSlot, amount,
-                                                        price, resourceKind);
+    uiRuntimeContext->ShowOfferSheet(this->nationSlot, targetNationSlot, amount, price,
+                                     resourceKind);
     return 1;
   }
 

@@ -255,7 +255,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
       g_pViewMgr->DispatchTurnEvent(EncodeTurnEventCode(kTurnEventOfferSheet), activeNationSlot);
-      g_pViewMgr->DispatchNationActionToMainControl(-1, 0, 0, 0, 0x16);
+      g_pViewMgr->ShowOfferSheet(-1, 0, 0, 0, 0x16);
     }
     if (multiplayerSessionRole != 2) {
       DoTrade();

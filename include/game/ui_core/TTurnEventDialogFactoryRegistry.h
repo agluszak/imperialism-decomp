@@ -39,5 +39,4 @@ public:
   CList<TurnEventDialogFactoryProc, TurnEventDialogFactoryProc> factories;
 };
 
-void EnsureTurnEventDialogFactoryRegistryInitialized();
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry);

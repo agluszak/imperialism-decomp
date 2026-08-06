@@ -10,7 +10,7 @@
 #include "game/trade_ui/TDealBookPicture.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 
-#include "game/turn_event_dialog_provisional.h"
+#include "game/unreachable_turn_event_dialog.h"
 
 #include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitApplication.h"
@@ -350,12 +350,8 @@ void TViewMgr::ShowNavyRosterDialogAndApplySelection() {
 
 // FUNCTION: IMPERIALISM 0x005dd770
 void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
-  // Only the +2 city-record index is established for this opaque event payload.
-  struct TurnEventMapSelection {
-    short unresolved0;
-    short cityRecordIndex2;
-  };
-  TurnEventMapSelection* mapSelection = static_cast<TurnEventMapSelection*>(selection);
+  turn_event_dialog::TurnEventMapSelection* mapSelection =
+      static_cast<turn_event_dialog::TurnEventMapSelection*>(selection);
 
   TWorldView* activeMapDialog =
       static_cast<TWorldView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagDialog));
@@ -372,14 +368,14 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE8(void* selection) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1c9);
   }
-  turn_event_dialog::TDialogValueControl* gold =
-      static_cast<turn_event_dialog::TDialogValueControl*>(
+  turn_event_dialog::UnreachableTacticalMapPictureControl* gold =
+      static_cast<turn_event_dialog::UnreachableTacticalMapPictureControl*>(
           node->ResolveControlByTag(kControlTagDialog));
   if (gold == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x1ca);
   }
-  gold->StuffValues(selection);
+  gold->ApplySelection(mapSelection);
   CPoint placement;
   ComputeTurnEventDialogPlacementByCode(node, &placement);
   node->Locate(placement, 0);

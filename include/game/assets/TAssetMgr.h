@@ -22,12 +22,12 @@ public:
   virtual void OpenFilesForView(short fileSet); // slot 0x0b 0x5df780
   virtual void OpenFilesFor(short fileSet);     // slot 0x0c 0x5df3f0
   virtual void CloseFilesFor(short fileSet);    // slot 0x0d 0x5df410
-  // Ground truth (0x5dfc10): two parameters only — the movie view pointer is the
-  // second arg (stored into g_pViewMgr->activeMovieViewF4 at 0x5dfc8e);
-  // there is no mode flag.
-  virtual void
-  PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                            TMovieView* movieView); // slot 0x0e 0x5dfc10
+  // The third argument is unused by the Windows body but is part of the retail virtual ABI:
+  // the caller pushes it before the movie-view and CString-reference arguments, and the callee
+  // returns with RET 0x0c.
+  virtual void PlayMovieClipAndDispatchTurnStateFollowup(const CString& movieName,
+                                                         TMovieView* movieView,
+                                                         int unused); // slot 0x0e 0x5dfc10
 
   // Non-virtual resource-stream helpers (every call site loads ECX = g_pAssetMgr;
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).

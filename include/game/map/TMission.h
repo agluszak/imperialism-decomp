@@ -14,8 +14,8 @@ class TSortedList;
 
 // Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
 // (TMission::CreateMission) and to TMission::Matches. The Windows
-// binary only exposes the integer values 0..5; enumerator names below are provisional,
-// taken from the mission each kind primarily constructs (several kinds fall back to a
+// binary exposes the integer values 0..5; the enumerator names identify the mission
+// each kind primarily constructs (several kinds fall back to a
 // TControlSeaZoneMission when their context/beachhead argument is absent).
 enum eMissionType {
   kMissionTypeAttackProvince = 0, // TAttackProvinceMission (direct) / TControlSeaZoneMission

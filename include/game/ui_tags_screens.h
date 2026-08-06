@@ -18,6 +18,8 @@ const int kControlTagBatt =
     IMPERIALISM_FOURCC('b', 'a', 't', 't'); // query-floater "declare war"/battle hotspot
 const int kControlTagChar =
     IMPERIALISM_FOURCC('c', 'h', 'a', 'r'); // query-floater "chart"/graph hotspot
+const int kControlTagCountryDescription =
+    IMPERIALISM_FOURCC('c', 'd', 'e', 's'); // scenario chooser nation description
 const int kControlTagClnc =
     IMPERIALISM_FOURCC('c', 'l', 'n', 'c'); // query-floater cancel hotspot (lower)
 const int kControlTagCre2 = IMPERIALISM_FOURCC('c', 'r', 'e', '2'); // credits text line 2
@@ -62,6 +64,8 @@ const int kControlTagPtfr =
 const int kControlTagScdn = IMPERIALISM_FOURCC('s', 'c', 'd', 'n'); // TScrollBarView.cpp
 const int kControlTagScn0 =
     IMPERIALISM_FOURCC('s', 'c', 'n', '0'); // TGameSetupMultiplayerPicture.cpp, TMultiplayerMgr.cpp
+const int kControlTagScenarioDescription =
+    IMPERIALISM_FOURCC('s', 'd', 'e', 's'); // scenario chooser scenario description
 const int kControlTagScra =
     IMPERIALISM_FOURCC('s', 'c', 'r', 'a'); // TGameScorePicture.cpp; 1 Mac screen(s)
 const int kControlTagScup = IMPERIALISM_FOURCC('s', 'c', 'u', 'p'); // TScrollBarView.cpp

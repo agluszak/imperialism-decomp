@@ -57,7 +57,7 @@ enum TurnEventId {
   // TViewMgr::HandleTurnEventDialogFactorySlotE8 hands it to the view resolver.
   kTurnEventTacticalMapPictureBase = 0x0f0a,
   kTurnEventTacticalDeployChoice = 0x0f19,
-  kTurnEventProvisional0F3C = 0x0f3c,
+  kTurnEventTacticalStatusRefresh = 0x0f3c,
   kTurnEventUnitHistory = 0x0f3d,
   kTurnEventQueryFloater = 0x101a,
   kTurnEventFlagButton = 0x102c,

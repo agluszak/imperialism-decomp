@@ -10,7 +10,6 @@
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/core/TStream.h"
-#include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TWindow.h"
@@ -72,8 +71,6 @@ void TAmbitApplication::IAmbitApplication() {
   TAssetMgr* assetMgr = new TAssetMgr();
   assetMgr->ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
   g_pAssetMgr = assetMgr;
-
-  EnsureTurnEventDialogFactoryRegistryInitialized();
 
   TViewMgr* viewMgr = new TViewMgr();
   if (viewMgr != nullptr) {
@@ -172,7 +169,7 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
   if (!InModalState() && edgeScrollTarget48 != nullptr) {
     short code = g_pViewMgr->currentTurnEventCode;
     if (code == kTurnEventStrategicMap || code == kTurnEventCitySiteSelector ||
-        code == kTurnEventTacticalView || code == kTurnEventProvisional0F3C ||
+        code == kTurnEventTacticalView || code == kTurnEventTacticalStatusRefresh ||
         code == kTurnEventMapEditor) {
       if (!InModalState()) {
         CPoint pt;

@@ -40,7 +40,7 @@ class UiCodegenTests(unittest.TestCase):
 
     def test_committed_manifest_and_resource_ir_validate(self) -> None:
         self.assertEqual(len(self.recipes), 17)
-        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 94)
+        self.assertEqual(sum(len(recipe.cases) for recipe in self.recipes), 82)
         self.assertEqual(
             validate(
                 REPO_ROOT,
@@ -72,7 +72,6 @@ class UiCodegenTests(unittest.TestCase):
 
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
-        self.assertIn("->HiliteState(", rendered)
         self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)
         startup_factory = self.rendered[0x004538A0]
         self.assertIn("node_quer, 0x5b, 8, 0x1a, 0x24, 1, 1,", startup_factory)
@@ -251,29 +250,12 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(case_text.count("new TCzechBox()"), 7)
         self.assertIn("evidence at 0x0044e466", case_text)
 
-    def test_functional_parity_cases_emit_nonempty_mac_trees_with_provenance(self) -> None:
-        expected = {
-            0x07E5: "Windows request 0x005d57ce",
-            0x03C5: "Windows request 0x0051dd0b",
-            0x0F3D: "Windows request 0x0057e984",
+    def test_alternate_runtime_paths_are_not_fabricated_as_factory_cases(self) -> None:
+        emitted_events = {
+            case.event for recipe in self.recipes for case in recipe.cases
         }
-        cases = {
-            case.event: (recipe, case)
-            for recipe in self.recipes
-            for case in recipe.cases
-            if case.event in expected
-        }
-
-        self.assertEqual(set(cases), set(expected))
-        for event, evidence in expected.items():
-            recipe, case = cases[event]
-            self.assertIsNotNone(case.resource)
-            self.assertIn(evidence, case.evidence)
-            text = self.rendered[recipe.address]
-            case_text = text[text.index(f"case {self.vocabulary_by_event[event]}:") :]
-            self.assertIn("// FUNCTIONAL_PARITY:", case_text)
-            self.assertIn("RegisterUiResourceEntry", case_text)
-        self.assertNotIn("WINDOWS_ONLY", case_text)
+        self.assertTrue({0x07E5, 0x03C5, 0x0F3D}.isdisjoint(emitted_events))
+        self.assertNotIn("FUNCTIONAL_PARITY", "\n".join(self.rendered.values()))
         windows_view_text = (
             REPO_ROOT / "config/ui_factory_windows_views.yml"
         ).read_text()
@@ -342,7 +324,7 @@ class UiCodegenTests(unittest.TestCase):
                         self.assertLessEqual(end, len(generated_lines))
                         self.assertIn(node["source"], generated_lines[start])
                         node_count += 1
-            self.assertEqual(case_count, 94)
+            self.assertEqual(case_count, 82)
             self.assertGreater(node_count, 1700)
 
 

@@ -9,8 +9,8 @@
 // 0x00649538, single ON_WM_CHAR entry) that forwards Return/Linefeed/Escape to
 // the main view host before default edit processing. GetRuntimeClass stays the
 // base's — the original vtable slot 0 (0x00623996) returns the CEdit runtime
-// class, which pins the base as CEdit; the class itself has no own RTTI, so
-// the name here is provisional.
+// class, which pins the base as CEdit. This local name describes its message-map role;
+// the class has no independent RTTI name in the Windows image.
 // VTABLE: IMPERIALISM 0x0064afd8
 class CMcEditWindow : public CEdit {
 public:

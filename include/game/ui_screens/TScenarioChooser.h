@@ -37,7 +37,7 @@ public:
   // +0x114 -- how many rows DoPostCreate actually appended to the 'list' control.
   short scenarioListRowCount114;
   unsigned char padding116[2];
-  // Per-nation-slot description text + length, passed to the 'desc' TDeluxeText's
+  // Per-nation-slot description text + length, passed to the 'cdes' TDeluxeText's
   // SetTextEntryFromChars(textChars, textLength) in DoEvent's 'pick' branch, indexed
   // by TMapPreviewView::pendingNation6C.
   char* nationDescriptionTextByMapSelection118[(0x134 - 0x118) / 4];

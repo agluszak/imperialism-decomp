@@ -35,7 +35,7 @@ public:
 
   virtual void EnsureBitmapResourceLoadedAndCopyRectSize(); // slot 0x00 0x495b70
   virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
-  // slot 0x02 0x4a1100 -- provisional name; asserts (QuickDraw.h:417) and returns 0.
+  // slot 0x02 0x4a1100 -- asserts (QuickDraw.h:417) and returns 0.
   virtual int ReportUnimplementedResourceVirtualSlot02();
   unsigned char GetLoaderFlags() const;        // 0x00495440
   void SetLoaderFlags(unsigned char newFlags); // 0x00495460

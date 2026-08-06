@@ -862,16 +862,13 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
 
 // FUNCTION: IMPERIALISM 0x005df7a0
 BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial) {
-  char rootPath[4];
-  rootPath[0] = static_cast<char>('A' + driveIndex);
-  rootPath[1] = ':';
-  rootPath[2] = '\\';
-  rootPath[3] = '\0';
-
-  char volumeBuffer[0x1f];
-  volumeBuffer[0] = '\0';
-  BOOL result = GetVolumeInformationA(rootPath, volumeBuffer, 0x1e, serial, 0, 0, 0, 0);
-  *volumeName = CString(volumeBuffer);
+  UINT previousErrorMode = SetErrorMode(SEM_FAILCRITICALERRORS);
+  CString rootPath(static_cast<char>('A' + driveIndex), 1);
+  rootPath += ":\\";
+  BOOL result =
+      GetVolumeInformationA(rootPath, volumeName->GetBuffer(0x1e), 0x1e, serial, 0, 0, 0, 0);
+  SetErrorMode(previousErrorMode);
+  volumeName->ReleaseBuffer(-1);
   return result;
 }
 

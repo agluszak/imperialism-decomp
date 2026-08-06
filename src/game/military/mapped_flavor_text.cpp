@@ -247,8 +247,7 @@ char* ExpandBracketMappedStringToSinkCallback(TSimMgr* sim, int /*unused*/, int 
   return sink.RawData();
 }
 
-// The generated flavor text is rejected (regenerate) if it contains any character from
-// this banned set list; each entry is a FindOneOf char-set probe against the result.
+// The generated flavor text is rejected when it contains any banned substring.
 // FUNCTION: IMPERIALISM 0x005d4240
 bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
   const char* bannedSets[34] = {s_mcflavor_0069b640, s_mcflavor_0069b638,
@@ -269,7 +268,7 @@ bool ShouldRetryMappedFlavorTextGeneration(CString* dest) {
                                 s_mcflavor_0069b54c, s_mcflavor_0069b544,
                                 s_mcflavor_0069b53c, 0};
   for (const char* const* set = bannedSets; *set != 0; set = set + 1) {
-    if (dest->FindOneOf(*set) > -1) {
+    if (dest->Find(*set) > -1) {
       return true;
     }
   }

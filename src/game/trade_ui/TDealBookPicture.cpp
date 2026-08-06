@@ -319,6 +319,26 @@ void TDealBookPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEve
       scanBracketExpressions(g_pSimMgr, &composedTitle, static_cast<LPCSTR>(templateText),
                              static_cast<LPCSTR>(categoryName));
       titLControl->SetTextAndMaybeRefresh(&composedTitle, 0);
+
+      CRect titleBounds;
+      titLControl->QueryBounds(&titleBounds);
+      InvalidateCityDialogRectRegion(&titleBounds, 1);
+
+      TDropShadowText* rtilControl =
+          static_cast<TDropShadowText*>(ResolveControlByTag(kControlTagRtil));
+      rtilControl->AssertValid();
+      if (!rtilControl->IsActionable()) {
+        ApplyUiTextStyleAndThemeFlags(rtilControl, 0, 0x12, 0x2b6b, 0x2b6c);
+
+        CString seasonName;
+        CString yearText;
+        yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->economicTurn / 4);
+        g_pSimMgr->GetSeason(&seasonName);
+        CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
+        rtilControl->SetTextAndMaybeRefresh(&headerText, 0);
+        rtilControl->Show(1, 1);
+      }
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x13f0, 0, 1);
     }
   } else if (commandId == 0xa) {
     unsigned int tag = sourceHandler->controlTag;

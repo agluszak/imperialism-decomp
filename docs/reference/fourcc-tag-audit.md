@@ -8,17 +8,17 @@ policy (Mac resource order, read big-endian).
 
 ## Summary
 
-- Tags: 554
+- Tags: 556
 - `generated_resource_manifest_tag`: 67
 - `multiplayer_session_or_message_tag`: 32
-- `ui_tag_app_and_setup_screens`: 57
+- `ui_tag_app_and_setup_screens`: 59
 - `ui_tag_city_and_trade`: 62
 - `ui_tag_diplomacy`: 18
 - `ui_tag_military_navy_tactical`: 49
 - `ui_tag_shared`: 147
 - `ui_tag_strategic_map`: 23
 - `ui_tag_widget_plumbing`: 99
-- Corroborated by the Mac control-tag index: 414 of 554
+- Corroborated by the Mac control-tag index: 416 of 556
 - Violations: 0
 
 ## Violations
@@ -138,6 +138,7 @@ build does not ship.
 | `kControlTagBatt` | `batt` | `0x62617474` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagChar` | `char` | `0x63686172` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagClnc` | `clnc` | `0x636c6e63` | `ui_tag_app_and_setup_screens` |  |
+| `kControlTagCountryDescription` | `cdes` | `0x63646573` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagCre2` | `cre2` | `0x63726532` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagDate` | `date` | `0x64617465` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagDif0` | `dif0` | `0x64696630` | `ui_tag_app_and_setup_screens` | 1 |
@@ -170,6 +171,7 @@ build does not ship.
 | `kControlTagPagf` | `pagf` | `0x70616766` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagPtfr` | `ptfr` | `0x70746672` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagScdn` | `scdn` | `0x7363646e` | `ui_tag_app_and_setup_screens` |  |
+| `kControlTagScenarioDescription` | `sdes` | `0x73646573` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagScn0` | `scn0` | `0x73636e30` | `ui_tag_app_and_setup_screens` |  |
 | `kControlTagScra` | `scra` | `0x73637261` | `ui_tag_app_and_setup_screens` | 1 |
 | `kControlTagScup` | `scup` | `0x73637570` | `ui_tag_app_and_setup_screens` |  |

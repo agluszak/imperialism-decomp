@@ -1009,7 +1009,6 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x006077c0|CWnd::CWnd_006077C0|||||migrated_from:src/game/MfcRuntime.cpp|LIBRARY
 0x005e8c50|`eh vector ctor iterator'|??_L@YGXPAXIHP6EX0@Z1@Z|void __stdcall `eh vector ctor iterator'(void *, unsigned int, int, void (__thiscall *)(void *), void (__thiscall *)(void *))|libcmt|ehvecctr.obj|retail_listing_matches_recomp_pdb_symbol_and_five_argument_eh_vector_ctor_abi|LIBRARY
 0x005e8cc8|SehCleanup_CallCallbackRepeatedly|||||migrated_from:src/game/MfcRuntime.cpp|SYNTHETIC
-0x005d4ba0||||||migrated_from:src/game/buffered_stream.cpp comment:"fgets-style line read from CRT FILE"|LIBRARY
 0x005e8760||||||migrated_from:src/game/buffered_stream.cpp comment:"atoi-style signed decimal parse"|LIBRARY
 0x005e8800||||||migrated_from:src/game/buffered_stream.cpp comment:"atoi wrapper"|LIBRARY
 0x005e9010||||||migrated_from:src/game/buffered_stream.cpp comment:"fclose-style stream close"|LIBRARY
@@ -1318,7 +1317,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x005fb0d5||?RelayToolTipMessage@@YGXPAVCToolTipCtrl@@PAUtagMSG@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x005fee24||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x005fee4e||?SpanExcluding@CString@@QBE?AV1@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x005fee99||?FindOneOf@CString@@QBEHPBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x005fee99|CString::Find|?Find@CString@@QBEHPBD@Z|public: int __thiscall CString::Find(char const *) const|nafxcw|strex.obj|listing_body_calls___mbsstr+callsite_0x005d4379(agent-verified)|LIBRARY
 0x005ff3cd||?InitString@CSimpleException@@QAEXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x0060038d||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006003de||?FormatGmt@CTime@@QBE?AVCString@@PBD@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY

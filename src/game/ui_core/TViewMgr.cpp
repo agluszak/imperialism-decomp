@@ -19,9 +19,9 @@
 #include "game/ui_widgets/TCombatReportView.h"
 
 #include "game/trade_ui/TDealBookPicture.h"
+#include "game/trade_ui/TOfferDeskPicture.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 
-#include "game/turn_event_dialog_provisional.h"
 #include "game/resource_domain_types.h"
 
 #include "game/ImperialismApp.h"
@@ -778,7 +778,7 @@ void TViewMgr::ComputeTurnEventDialogPlacementByCode(TView* dialogView, POINT* o
     margin = 0x16;
   } else if ((code >= kTurnEventDiplomacyMap && code <= kTurnEventCityProduction) ||
              code == kTurnEventTransport || code == kTurnEventTechnologyAdvance ||
-             code == kTurnEventProvisional0F3C || code == kTurnEventTacticalView ||
+             code == kTurnEventTacticalStatusRefresh || code == kTurnEventTacticalView ||
              code == kTurnEventOfferSheet || code == kTurnEventDealBook) {
     designHeight = 0x1c0;
   }
@@ -1084,18 +1084,18 @@ void DispatchPostTurnStateUpdatesTail() {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x005d71b0
-void TViewMgr::DispatchNationActionToMainControl(int sourceNation, int arg1, int arg2, int arg3,
-                                                 int targetNation) {
+void TViewMgr::ShowOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
+                              short maxAmount, short commodityType) {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
-  turn_event_dialog::MainActionControl* mainControl =
-      static_cast<turn_event_dialog::MainActionControl*>(
-          activeDialog->ResolveControlByTag(kControlTagMain));
+  TOfferDeskPicture* mainControl =
+      static_cast<TOfferDeskPicture*>(activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   if (mainControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x5c7);
   }
-  mainControl->InvokeMainAction(sourceNation, arg1, arg2, arg3, targetNation);
+  mainControl->PoseOfferSheet(respondingNation, offeringNation, proposedAmount, maxAmount,
+                              commodityType);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7240
@@ -1297,7 +1297,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
         break;
       }
     } else if (newCode > kTurnEventTechnologyAdvance) {
-      if (newCode == kTurnEventTacticalView || newCode == kTurnEventProvisional0F3C) {
+      if (newCode == kTurnEventTacticalView || newCode == kTurnEventTacticalStatusRefresh) {
         this->SyncTacticalStatusPanelRegion();
       } else if (newCode == kTurnEventTechnologyStore) {
         this->RefreshTechnologyStorePageAndHudText(payload);
@@ -2255,6 +2255,9 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
     movieName = CString("win");
     break;
   case 0x17:
+    movieName = CString("lose");
+    break;
+  case 0x19:
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       movieName = CString("win");
     } else {
@@ -2267,7 +2270,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   }
 
   if (!movieName.IsEmpty()) {
-    g_pAssetMgr->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView);
+    g_pAssetMgr->PlayMovieClipAndDispatchTurnStateFollowup(movieName, movieView, 0);
   }
 }
 

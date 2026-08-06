@@ -7,7 +7,7 @@
 #include "game/mfc.h"
 
 // SDI main frame for ProcessShellCommand (CRuntimeClass @ 0x00648628, m_lpszClassName
-// "CMainFrame"). Ghidra buckets frame helpers under provisional TMacViewMgr_* labels.
+// "CMainFrame").
 // No // VTABLE: annotation yet — the CObject->CCmdTarget->CFrameWnd LIBRARY per-slot pass
 // (the CDialog-vtable pattern) has not been run for this class, so its shared trivial MFC
 // stubs still pair ambiguously. This is NOT an OLE divergence: the game's MFC has OLE
@@ -39,7 +39,7 @@ public:
   afx_msg LRESULT OnMsg0464(WPARAM wParam, LPARAM lParam); // 0x00484fb0
   afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
   // ON_WM_QUERYNEWPALETTE (0x30F): realize the cached palette into the active view DC
-  // (also called directly from OnCreate / OnCommand8009 / OnPaletteChanged).
+  // (also called directly from OnCommand8009 and palette replacement).
   afx_msg BOOL OnQueryNewPalette();                    // 0x00484ff0
   CDibPal* ReplacePaletteAndRealize(CDibPal* palette); // 0x00485150
   // Message 0x2420 (posted by TApplication::PostTurnEventCodeMessage2420): dispatch the

@@ -307,7 +307,15 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
                 }
             )
 
-    events = set(factories) | set(refs_by_event) | set(hooks) | set(teardown) | set(boot)
+    events = (
+        set(factories)
+        | set(refs_by_event)
+        | set(hooks)
+        | set(teardown)
+        | set(boot)
+        | set(gap_owners)
+        | set(dispositions)
+    )
     missing_vocabulary = events - set(vocabulary_by_event)
     extra_vocabulary = set(vocabulary_by_event) - events
     if missing_vocabulary or extra_vocabulary:
@@ -345,10 +353,10 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
             status = "implemented_reachable"
         elif factory_rows:
             status = "implemented_apparently_unreachable"
+        elif event in dispositions:
+            status = str(dispositions[event]["status"])
         elif senders or dialogs:
             status = "posted_missing_builder"
-            if event in dispositions:
-                status = str(dispositions[event]["status"])
         else:
             status = "dispatch_only_unknown"
         boot_row = boot.get(event)

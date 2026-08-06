@@ -18,9 +18,9 @@
 // CObject::GetRuntimeClass (0x00606fba), they default-construct with hash size 17 / block
 // size 10 (the CMap defaults), and their destructors free the hash buffer + CPlex chain with
 // no per-element key/value destruction — so both key and value are scalar. The two have
-// distinct vtables (0x0064ba80 / 0x0064ba68), i.e. two distinct instantiations; the exact
-// scalar key/value types (which fix the per-instantiation vtable but not the layout) are
-// still provisional pending the resource lookup/insert sites.
+// distinct vtables (0x0064ba80 / 0x0064ba68), i.e. two distinct instantiations. The
+// resource lookup/insert sites have not yet identified the exact scalar key/value types;
+// this distinction affects the per-instantiation vtable but not the recovered layout.
 //
 // bd 1uj.44: these two CMap<> destructors are compiler-emitted (no hand-written body is
 // correct per the mfc-collections skill) at 0x0049ae30 (CMap<short,short,CacheRecord*,

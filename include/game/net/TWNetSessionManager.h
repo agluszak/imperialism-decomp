@@ -54,7 +54,6 @@ public:
   virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
   // DirectPlay DPESC_TIMEDOUT branch of the EnumSessions callback: while Ctrl is held,
   // extend the enumeration timeout by 500ms and return TRUE to keep enumerating.
-  // (Ghidra's "ApplyCtrlScrollAcceleration" was a provisional name -- Hard Rule 6.)
   virtual BOOL ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs);
   virtual BOOL SelectRuntimeProvider(GUID* providerGuid);
   virtual BOOL ShowJoinGameSelectionDialogAndCaptureChoice(GUID* selectedSessionGuid);
@@ -79,7 +78,7 @@ ASSERT_SIZE(TDirectPlaySessionManagerBase, 0xa8);
 // DirectPlay session manager from the original D:\Ambit\DirectPlay.cpp TU (assert helpers
 // 0x47fb20/0x47fb50/0x480820 name it). Lives as a global object embedded at fixed address
 // 0x006a5f60 (not a pointer-to-object); the original loads `MOV ECX, 0x6a5f60` directly.
-// The class name is provisional (no Mac counterpart — the Mac build used NetSprocket).
+// Windows DirectPlay session manager; the Mac build used the unrelated NetSprocket API.
 // VTABLE: IMPERIALISM 0x0066f9f0
 class TWNetSessionManager : public TDirectPlaySessionManagerBase {
 public:
