@@ -1,0 +1,189 @@
+name: Temporary score audit
+
+on:
+  push:
+    branches:
+      - analysis/score-audit-20260807
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+
+    steps:
+      - name: Check out the audit branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Bootstrap exact retail binary and MSVC 5 build
+        id: bootstrap
+        shell: bash
+        run: |
+          set +e
+          mkdir -p audit
+          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/bin:$PATH"
+          bash scripts/bootstrap.sh "$GITHUB_WORKSPACE" 2>&1 | tee audit/bootstrap.log
+          rc=${PIPESTATUS[0]}
+          echo "return_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Verify the downloaded binary
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          mkdir -p audit
+          {
+            echo "bootstrap_return_code=${{ steps.bootstrap.outputs.return_code }}"
+            echo "expected_sha256=6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691"
+            if [[ -f orig/Imperialism.exe ]]; then
+              sha256sum orig/Imperialism.exe
+              stat --printf='size=%s bytes\n' orig/Imperialism.exe
+              file orig/Imperialism.exe
+              objdump -f orig/Imperialism.exe || true
+              objdump -h orig/Imperialism.exe || true
+            else
+              echo "orig/Imperialism.exe is missing"
+            fi
+          } > audit/binary-metadata.txt 2>&1
+          cat audit/binary-metadata.txt
+
+      - name: Produce comparison and semantic partitions
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/bin:$PATH"
+          mkdir -p audit
+
+          run_report() {
+            local name="$1"
+            shift
+            echo "+ $*" > "audit/${name}.txt"
+            "$@" >> "audit/${name}.txt" 2>&1
+            local rc=$?
+            echo >> "audit/${name}.txt"
+            echo "return_code=$rc" >> "audit/${name}.txt"
+            return 0
+          }
+
+          if [[ -f build-msvc500/Imperialism.exe && -f orig/Imperialism.exe ]]; then
+            run_report stats just stats
+            run_report semantic-gate just semantic-gate
+            run_report semantic-stats just semantic-stats
+            run_report sweep just sweep --limit 200 --json audit/sweep.json --csv audit/sweep.csv
+            run_report stackcmp-triage just stackcmp-triage --min 0.15 --max 0.999 --limit 200
+            run_report session-loop just session-loop 30 200 64
+            run_report core-impact just core-impact --top 200 --min-size 1
+            run_report port-candidates just port-candidates --min-size 64 --limit 300
+
+            run_report rendering-scores just compare --file \
+              src/game/ui_core/CMainFrame.cpp \
+              src/game/ui_core/quickdraw_rendering.cpp \
+              src/game/ui_core/ScopedMapQuickDrawContext.cpp \
+              src/game/map_ui/TMapDialog.cpp \
+              src/game/ui_widgets/TWorldView.cpp \
+              src/game/map/TMapUberPicture.cpp
+
+            run_report rendering-triage just triage \
+              0x00494700 0x004947e0 0x004948b0 0x00496d40 \
+              0x00519e00 0x0051e260 0x0051eb40 0x00522c10 \
+              0x00523060 0x005958b0 0x00599cf0
+          else
+            echo "Build or retail binary unavailable; comparison commands skipped." \
+              > audit/comparison-skipped.txt
+          fi
+
+      - name: Triage the highest-ranked behavioural candidates
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/usr/local/bin:$PATH"
+          mkdir -p audit
+
+          if [[ ! -s audit/sweep.json ]]; then
+            echo "No semantic sweep was generated." > audit/top-actionable-triage.txt
+            exit 0
+          fi
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          result = json.loads(Path('audit/sweep.json').read_text(encoding='utf-8'))
+          rows = (
+              result.get('tier1_proven_divergence', [])[:20]
+              + result.get('tier2_contract_divergence', [])[:12]
+          )
+          seen = set()
+          addresses = []
+          for row in rows:
+              address = row.get('address')
+              if address and address not in seen:
+                  seen.add(address)
+                  addresses.append(address)
+          Path('audit/top-actionable-addresses.txt').write_text(
+              '\n'.join(addresses) + ('\n' if addresses else ''), encoding='utf-8'
+          )
+          PY
+
+          mapfile -t addresses < audit/top-actionable-addresses.txt
+          if (( ${#addresses[@]} == 0 )); then
+            echo "No actionable addresses." > audit/top-actionable-triage.txt
+            exit 0
+          fi
+
+          just compare "${addresses[@]}" > audit/top-actionable-scores.txt 2>&1 || true
+          just triage "${addresses[@]}" > audit/top-actionable-triage.txt 2>&1 || true
+
+          just ghidra-daemon > audit/ghidra-daemon.txt 2>&1 || true
+          : > audit/top-actionable-original-listings.txt
+          for address in "${addresses[@]:0:12}"; do
+            {
+              echo
+              echo "===== $address ====="
+              just ghidra listing "$address"
+            } >> audit/top-actionable-original-listings.txt 2>&1 || true
+          done
+          just ghidra-daemon-stop >> audit/ghidra-daemon.txt 2>&1 || true
+
+      - name: Collect generated reports
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          mkdir -p audit
+          for file in \
+            build-msvc500/reccmp_report.json \
+            build-msvc500/reccmp_report.log \
+            build-msvc500/reccmp_roadmap.csv \
+            build-msvc500/next_loop.md \
+            build-msvc500/next_loop.json \
+            build-msvc500/core_impact.md \
+            build-msvc500/core_impact.json \
+            build-msvc500/semantic/semantic_report.json \
+            build-msvc500/semantic/semantic_report.md; do
+            if [[ -f "$file" ]]; then
+              cp "$file" "audit/$(basename "$file")"
+            fi
+          done
+          git status --short > audit/git-status.txt
+          git rev-parse HEAD > audit/audited-commit.txt
+          find audit -maxdepth 1 -type f -printf '%f %s bytes\n' | sort > audit/manifest.txt
+          cat audit/manifest.txt
+
+      - name: Upload reports only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: imperialism-score-audit
+          path: audit/
+          if-no-files-found: error
+          retention-days: 1
