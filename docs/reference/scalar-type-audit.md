@@ -96,7 +96,7 @@ canonical types these boundaries convert between live in `docs/reference/scalar-
 | `src/game/navy/TTaskForce.cpp:1824` | short -> int | `retail_short_score_compare` | the refreshed local aggregate in the same late comparison is also narrowed to retail's signed-word operand. |
 | `src/game/navy/TTaskForce.cpp:1937` | short -> int | `retail_short_score_compare` | IsAfraidOf accumulates a full int for traversal, but retail compares only its signed low word after MOVSX. |
 | `src/game/navy/TTaskForce.cpp:1938` | short -> int | `retail_short_score_compare` | the opposing IsAfraidOf aggregate crosses the same signed-word boundary before the aggression-weight multiplication. |
-| `src/game/net/TMultiplayerMgr.cpp:1454` | unsigned int -> short | `packet_word_extract` | the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field. |
+| `src/game/net/TMultiplayerMgr.cpp:1453` | unsigned int -> short | `packet_word_extract` | the trade code is shifted logically as unsigned before the high word is stored into a signed word packet field. |
 | `src/game/tactical/TArmyPlayer.cpp:1271` | int -> char | `float_table_read_then_byte_store` | g_afTacticalDirectFireFlagByCategoryCode is a float table; the int step performs the retail truncation and the char step is the byte the caller stores. |
 | `src/game/tactical/TArmyPlayer.cpp:1348` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation for a second category lookup. |
 | `src/game/tactical/TArmyPlayer.cpp:1495` | int -> char | `float_table_read_then_byte_store` | the same float-table truncation. |
@@ -133,7 +133,7 @@ decisions -- including the ones that were measured and reverted -- is
 | `src/game/nation/TGreatPower.cpp:256` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `(town->enabledFlag != 0) + 1` yields influence weight 1 or 2 written into the byte influence map; the comparison is an addend, not a logical value. |
 | `src/game/nation/TGreatPower.cpp:1629` | predicate -> char | `byte_return_abi` | the enclosing affordability query returns char and its callers consume AL; converting the local alone would only move the normalization. |
 | `src/game/nation/TGreatPower.cpp:1637` | predicate -> char | `byte_return_abi` | the sibling affordability query with the same char return contract. |
-| `src/game/net/TMultiplayerMgr.cpp:2306` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 method rather than TView::ViewEnable(int, int)). |
+| `src/game/net/TMultiplayerMgr.cpp:2305` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState takes unsigned char at recovered slot 0x75; the selected-slot predicate crosses that byte ABI boundary (both byte args cast explicitly to pick the slot-0x75 method rather than TView::ViewEnable(int, int)). |
 | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | TCzechBox::SetState is a virtual taking `unsigned char isOn` at slot 0x75 (0x00571e00); same byte ABI as the TArmyCheckBox family. |
 | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | the same slot-0x75 byte parameter, reached from ToggleIf(unsigned char expectedState, unsigned char refreshNow). |
 | `src/game/ui_screens/TLoadSavePicture.cpp:51` | predicate -> unsigned char | `byte_field_storage` | TLoadSavePicture::loadModeFlag90 is a one-byte object field initialized from the save-format predicate; the explicit conversion preserves the recovered byte layout. |
@@ -293,7 +293,7 @@ is classified, and a family that stops appearing must be removed.
 | `2dc50bb1ce17f60c` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1824` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
 | `ef596748a8555754` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1937` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
 | `ff537b67d9bc93c5` | `nested_integral_cast` | `src/game/navy/TTaskForce.cpp:1938` | short -> int | `retail_short_score_compare` | `imperialism-decomp-1uj.99.2` |
-| `eb265394ddb5605a` | `nested_integral_cast` | `src/game/net/TMultiplayerMgr.cpp:1454` | unsigned int -> short | `packet_word_extract` | `imperialism-decomp-1uj.99.2` |
+| `eb265394ddb5605a` | `nested_integral_cast` | `src/game/net/TMultiplayerMgr.cpp:1453` | unsigned int -> short | `packet_word_extract` | `imperialism-decomp-1uj.99.2` |
 | `d255e88d15a541ef` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1271` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `de75db3d85d58b05` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1348` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
 | `824a25dd60447ccc` | `nested_integral_cast` | `src/game/tactical/TArmyPlayer.cpp:1495` | int -> char | `float_table_read_then_byte_store` | `imperialism-decomp-1uj.99.2` |
@@ -318,7 +318,7 @@ is classified, and a family that stops appearing must be removed.
 | `c1274198c896b970` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:256` | predicate -> char | `predicate_arithmetic_into_byte_storage` | `imperialism-decomp-1uj.99.7` |
 | `f25ec5fb631b91f5` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1629` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
 | `40aca8b0eb14fbab` | `predicate_storage_cast` | `src/game/nation/TGreatPower.cpp:1637` | predicate -> char | `byte_return_abi` | `imperialism-decomp-1uj.99.7` |
-| `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2306` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
+| `b5fa1d97e89a5eb5` | `predicate_storage_cast` | `src/game/net/TMultiplayerMgr.cpp:2305` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `d525f39e47be4ea5` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:73` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `65f76dbb872a689f` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1a972fb69f5925f0` | `predicate_storage_cast` | `src/game/ui_screens/TLoadSavePicture.cpp:51` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |

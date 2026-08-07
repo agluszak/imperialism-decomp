@@ -13,6 +13,7 @@ from tools.semantic_calls import (
     AUDIT_REPORT_RELATIVE_PATH,
     CACHE_KEEP_COUNT,
     REPORT_RELATIVE_PATH,
+    MAX_EXPRESSION_NODES,
     DepRecorder,
     DirectCallABI,
     ExpressionNormalizer,
@@ -20,6 +21,7 @@ from tools.semantic_calls import (
     FunctionPair,
     ReuseContext,
     _asymmetric_arity_targets,
+    _augment_original_library_functions,
     _attach_reuse_records,
     _canonical_arithmetic,
     _canonical_call_value,
@@ -46,6 +48,7 @@ from tools.semantic_calls import (
     contract_fingerprint,
     extract_calls,
 )
+from tools.mfc.reviewed_identities import ReviewedIdentity
 
 
 class FakeDataType:
@@ -286,6 +289,27 @@ class SemanticCallTests(unittest.TestCase):
         right = FakeVarnode(definition=FakeOp("INT_ADD", right_param, left_param))
         normalizer = ExpressionNormalizer(None, ImageId.ORIG, {}, {})
         self.assertEqual(normalizer.normalize(left), normalizer.normalize(right))
+
+    def test_default_expression_budget_handles_large_switch_phi(self):
+        inputs = [FakeVarnode(value=value) for value in range(600)]
+        expression = FakeVarnode(definition=FakeOp("MULTIEQUAL", *inputs))
+        normalizer = ExpressionNormalizer(None, ImageId.ORIG, {}, {})
+        self.assertGreater(MAX_EXPRESSION_NODES, len(inputs))
+        self.assertEqual(normalizer.normalize(expression)[0], "multiequal")
+
+    def test_reviewed_library_symbols_and_wrappers_share_paired_identity(self):
+        identities = [
+            ReviewedIdentity(0x1000, "CString::CString", "ctor", "", "mfc", "", ""),
+            ReviewedIdentity(0x2000, "CString::CString", "ctor", "", "mfc", "", ""),
+        ]
+        augmented = _augment_original_library_functions(
+            {0x1000: 0x1000, 0x3000: 0x3000},
+            {0x4000: 0x3000},
+            identities,
+            {0x1000: "ctor", 0x2000: "ctor"},
+        )
+        self.assertEqual(augmented[0x2000], 0x1000)
+        self.assertEqual(augmented[0x4000], 0x3000)
 
     def test_copy_is_transparent_and_entity_addresses_are_mapped(self):
         address = FakeVarnode(value=0x500000, address=True)
