@@ -119,6 +119,33 @@ fn run() -> Result<(), String> {
                         .map_err(|error| format!("Rust trade settlement failed: {error}"))?;
                     event_count += outcome.events.len();
                 }
+                DifferentialStep::PlaceTradeBid {
+                    nation,
+                    resource,
+                    amount,
+                } => {
+                    let resource = resource_kind(resource)?;
+                    let outcome = rust_state
+                        .apply_command(GameCommand::PlaceTradeBid {
+                            nation: NationId::new(nation),
+                            resource,
+                            amount,
+                        })
+                        .map_err(|error| format!("Rust trade bid failed: {error}"))?;
+                    event_count += outcome.events.len();
+                }
+                DifferentialStep::RememberTradeBids { nation } => {
+                    let outcome = rust_state
+                        .remember_trade_bids(NationId::new(nation))
+                        .map_err(|error| format!("Rust bid snapshot failed: {error}"))?;
+                    event_count += outcome.events.len();
+                }
+                DifferentialStep::CommitPurchasedItems { nation } => {
+                    let outcome = rust_state
+                        .commit_purchased_items(NationId::new(nation))
+                        .map_err(|error| format!("Rust purchased-item commit failed: {error}"))?;
+                    event_count += outcome.events.len();
+                }
             }
         }
         if let Some(difference) = first_state_difference(&cpp_state, &rust_state) {
@@ -168,7 +195,7 @@ enum RustSource {
 fn required_argument(program: &OsString, value: Option<OsString>) -> Result<OsString, String> {
     value.ok_or_else(|| {
         format!(
-            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [--specialist-recruit NATION UNIT_TYPE QUANTITY] [--purchase-item NATION RESOURCE AMOUNT PRICE]...",
+            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [COMMAND]...\ncommands: --specialist-recruit NATION UNIT_TYPE QUANTITY | --place-trade-bid NATION RESOURCE AMOUNT | --remember-trade-bids NATION | --purchase-item NATION RESOURCE AMOUNT PRICE | --commit-purchased-items NATION",
             Path::new(program).display(),
             Path::new(program).display()
         )
@@ -193,6 +220,17 @@ enum DifferentialStep {
         resource: i16,
         amount: i16,
         price: i16,
+    },
+    PlaceTradeBid {
+        nation: u8,
+        resource: i16,
+        amount: i16,
+    },
+    RememberTradeBids {
+        nation: u8,
+    },
+    CommitPurchasedItems {
+        nation: u8,
     },
 }
 
@@ -222,6 +260,24 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
                 amount: parse_number(arguments.next(), "amount", "a signed 16-bit integer")?,
                 price: parse_number(arguments.next(), "price", "a signed 16-bit integer")?,
             });
+        } else if flag == "--place-trade-bid" {
+            options.steps.push(DifferentialStep::PlaceTradeBid {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+                resource: parse_number(
+                    arguments.next(),
+                    "resource kind",
+                    "a signed 16-bit integer",
+                )?,
+                amount: parse_number(arguments.next(), "amount", "a signed 16-bit integer")?,
+            });
+        } else if flag == "--remember-trade-bids" {
+            options.steps.push(DifferentialStep::RememberTradeBids {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+            });
+        } else if flag == "--commit-purchased-items" {
+            options.steps.push(DifferentialStep::CommitPurchasedItems {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+            });
         } else {
             return Err(format!(
                 "unexpected differential option {}",
@@ -230,6 +286,13 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
         }
     }
     Ok(options)
+}
+
+fn resource_kind(value: i16) -> Result<ResourceKind, String> {
+    usize::try_from(value)
+        .ok()
+        .and_then(|index| ResourceKind::ALL.get(index).copied())
+        .ok_or_else(|| format!("resource kind {value} is out of range"))
 }
 
 fn parse_number<T: std::str::FromStr>(
@@ -446,6 +509,34 @@ mod tests {
         assert_eq!(
             parse_options(vec!["--specialist-recruit".into(), "6".into(), "24".into(),]),
             Err("quantity is required".to_owned())
+        );
+    }
+
+    #[test]
+    fn parses_the_purchased_items_phase_trace() {
+        assert_eq!(
+            parse_options(vec![
+                "--place-trade-bid".into(),
+                "6".into(),
+                "8".into(),
+                "-1".into(),
+                "--remember-trade-bids".into(),
+                "6".into(),
+                "--commit-purchased-items".into(),
+                "6".into(),
+            ]),
+            Ok(DifferentialOptions {
+                seed: 1,
+                steps: vec![
+                    DifferentialStep::PlaceTradeBid {
+                        nation: 6,
+                        resource: 8,
+                        amount: -1,
+                    },
+                    DifferentialStep::RememberTradeBids { nation: 6 },
+                    DifferentialStep::CommitPurchasedItems { nation: 6 },
+                ],
+            })
         );
     }
 }
