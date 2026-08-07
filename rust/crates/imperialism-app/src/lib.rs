@@ -15,114 +15,25 @@ use imperialism_formats::{
     AssetManifestError, NormalizedAssetManifestV1, Rgba8, StrategicMapAssetManifest,
     read_normalized_asset_manifest,
 };
-use std::error::Error;
-use std::ffi::OsString;
-use std::fmt;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::sync::Arc;
 
 const GAME_LAYERS: RenderLayers = RenderLayers::layer(0);
 const DISPLAY_LAYERS: RenderLayers = RenderLayers::layer(1);
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ViewerConfig {
-    pub snapshot: PathBuf,
-    pub asset_manifest: PathBuf,
-}
-
-impl ViewerConfig {
-    pub fn usage() -> &'static str {
-        "usage: cargo run -p imperialism-app -- SNAPSHOT.json [--assets ASSET_PACK]\n\
-         \n\
-         ASSET_PACK defaults to imported-assets and must contain manifest.json."
-    }
-
-    pub fn parse(
-        arguments: impl IntoIterator<Item = OsString>,
-    ) -> Result<Option<Self>, ViewerConfigError> {
-        let mut snapshot = None;
-        let mut asset_pack = PathBuf::from("imported-assets");
-        let mut arguments = arguments.into_iter();
-        while let Some(argument) = arguments.next() {
-            if argument == "--help" || argument == "-h" {
-                return Ok(None);
-            }
-            if argument == "--assets" {
-                asset_pack = PathBuf::from(
-                    arguments
-                        .next()
-                        .ok_or(ViewerConfigError::MissingAssetPack)?,
-                );
-                continue;
-            }
-            if argument.to_string_lossy().starts_with('-') {
-                return Err(ViewerConfigError::UnknownOption(argument));
-            }
-            if snapshot.replace(PathBuf::from(argument)).is_some() {
-                return Err(ViewerConfigError::MultipleSnapshots);
-            }
-        }
-        let snapshot = snapshot.ok_or(ViewerConfigError::MissingSnapshot)?;
-        Ok(Some(Self {
-            snapshot,
-            asset_manifest: asset_pack.join("manifest.json"),
-        }))
-    }
-}
-
-#[derive(Debug, Eq, PartialEq)]
-pub enum ViewerConfigError {
-    MissingSnapshot,
-    MissingAssetPack,
-    MultipleSnapshots,
-    UnknownOption(OsString),
-}
-
-impl fmt::Display for ViewerConfigError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingSnapshot => formatter.write_str("missing canonical snapshot path"),
-            Self::MissingAssetPack => formatter.write_str("--assets requires a directory"),
-            Self::MultipleSnapshots => formatter.write_str("only one snapshot may be viewed"),
-            Self::UnknownOption(option) => write!(formatter, "unknown option {option:?}"),
-        }
-    }
-}
-
-impl Error for ViewerConfigError {}
-
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum ViewerLoadError {
-    SnapshotIo(std::io::Error),
-    SnapshotJson(serde_json::Error),
-    SnapshotValidation(imperialism_core::SnapshotValidationError),
-    Assets(AssetManifestError),
+    #[error("could not read snapshot: {0}")]
+    SnapshotIo(#[source] std::io::Error),
+    #[error("could not decode snapshot: {0}")]
+    SnapshotJson(#[source] serde_json::Error),
+    #[error("invalid snapshot: {0}")]
+    SnapshotValidation(#[source] imperialism_core::SnapshotValidationError),
+    #[error(transparent)]
+    Assets(#[from] AssetManifestError),
+    #[error("cannot present snapshot: {0}")]
     Presentation(String),
-}
-
-impl fmt::Display for ViewerLoadError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::SnapshotIo(error) => write!(formatter, "could not read snapshot: {error}"),
-            Self::SnapshotJson(error) => write!(formatter, "could not decode snapshot: {error}"),
-            Self::SnapshotValidation(error) => write!(formatter, "invalid snapshot: {error}"),
-            Self::Assets(error) => error.fmt(formatter),
-            Self::Presentation(message) => write!(formatter, "cannot present snapshot: {message}"),
-        }
-    }
-}
-
-impl Error for ViewerLoadError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::SnapshotIo(error) => Some(error),
-            Self::SnapshotJson(error) => Some(error),
-            Self::SnapshotValidation(error) => Some(error),
-            Self::Assets(error) => Some(error),
-            Self::Presentation(_) => None,
-        }
-    }
 }
 
 pub struct ViewerInput {
@@ -130,16 +41,18 @@ pub struct ViewerInput {
     assets: NormalizedAssetManifestV1,
 }
 
-pub fn load_viewer(config: &ViewerConfig) -> Result<ViewerInput, ViewerLoadError> {
-    let bytes = fs::read(&config.snapshot).map_err(ViewerLoadError::SnapshotIo)?;
+pub fn load_viewer(
+    snapshot_path: &Path,
+    asset_manifest_path: &Path,
+) -> Result<ViewerInput, ViewerLoadError> {
+    let bytes = fs::read(snapshot_path).map_err(ViewerLoadError::SnapshotIo)?;
     let value = serde_json::from_slice::<serde_json::Value>(&bytes)
         .map_err(ViewerLoadError::SnapshotJson)?;
     let snapshot_value = value.get("game_snapshot").unwrap_or(&value).clone();
     let snapshot = serde_json::from_value::<GameSnapshotV1>(snapshot_value)
         .map_err(ViewerLoadError::SnapshotJson)?;
     let game = GameState::try_from(snapshot).map_err(ViewerLoadError::SnapshotValidation)?;
-    let assets =
-        read_normalized_asset_manifest(&config.asset_manifest).map_err(ViewerLoadError::Assets)?;
+    let assets = read_normalized_asset_manifest(asset_manifest_path)?;
     validate_presentation(&game, &assets)?;
     Ok(ViewerInput { game, assets })
 }
@@ -637,22 +550,6 @@ mod tests {
             navy_marker: Rgba8([0, 0, 0, 255]),
             selection_marker: Rgba8([0, 0, 0, 255]),
         }
-    }
-
-    #[test]
-    fn parses_snapshot_and_asset_pack_paths() {
-        let config = ViewerConfig::parse([
-            OsString::from("snapshot.json"),
-            OsString::from("--assets"),
-            OsString::from("local-assets"),
-        ])
-        .unwrap()
-        .unwrap();
-        assert_eq!(config.snapshot, Path::new("snapshot.json"));
-        assert_eq!(
-            config.asset_manifest,
-            Path::new("local-assets/manifest.json")
-        );
     }
 
     #[test]

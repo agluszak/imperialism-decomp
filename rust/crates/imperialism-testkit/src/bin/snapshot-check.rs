@@ -1,73 +1,66 @@
 #![forbid(unsafe_code)]
 
+use anyhow::{Context, bail};
+use clap::Parser;
 use imperialism_core::GameState;
 use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
-use std::env;
-use std::path::Path;
-use std::process::ExitCode;
+use std::path::PathBuf;
 
-fn main() -> ExitCode {
-    let mut arguments = env::args_os();
-    let program = arguments.next().unwrap_or_else(|| "snapshot-check".into());
-    let Some(snapshot_path) = arguments.next() else {
-        eprintln!("usage: {} SNAPSHOT.json", Path::new(&program).display());
-        return ExitCode::from(2);
-    };
-    let comparison_path = arguments.next();
-    if arguments.next().is_some() {
-        eprintln!("snapshot-check accepts one snapshot path and an optional comparison path");
-        return ExitCode::from(2);
-    }
+#[derive(Debug, Parser)]
+#[command(about = "Validate or compare canonical Imperialism snapshots")]
+struct Args {
+    /// Snapshot to validate.
+    snapshot: PathBuf,
 
-    match read_game_snapshot(Path::new(&snapshot_path)) {
-        Ok(snapshot) => {
-            let state = match GameState::try_from(snapshot.clone()) {
-                Ok(state) => state,
-                Err(error) => {
-                    eprintln!("snapshot cannot populate GameState: {error}");
-                    return ExitCode::FAILURE;
-                }
-            };
-            println!(
-                "{}: {} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions, state {}",
-                snapshot.schema,
-                snapshot.world.tiles.len(),
-                state.nations.iter().flatten().count(),
-                state.cities.iter().flatten().count(),
-                state.military_units.len(),
-                state.civilian_units.len(),
-                state.ships.len(),
-                state.missions.len(),
-                snapshot.hashes.state
+    /// Optional snapshot to compare semantically.
+    comparison: Option<PathBuf>,
+}
+
+fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+    let snapshot = read_game_snapshot(&args.snapshot)
+        .with_context(|| format!("reading snapshot {}", args.snapshot.display()))?;
+    let state =
+        GameState::try_from(snapshot.clone()).context("snapshot cannot populate GameState")?;
+    println!(
+        "{}: {} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions, state {}",
+        snapshot.schema,
+        snapshot.world.tiles.len(),
+        state.nations.iter().flatten().count(),
+        state.cities.iter().flatten().count(),
+        state.military_units.len(),
+        state.civilian_units.len(),
+        state.ships.len(),
+        state.missions.len(),
+        snapshot.hashes.state
+    );
+    if let Some(comparison_path) = args.comparison {
+        let comparison = read_game_snapshot(&comparison_path).with_context(|| {
+            format!("reading comparison snapshot {}", comparison_path.display())
+        })?;
+        if let Some(difference) = first_snapshot_difference(&snapshot, &comparison)
+            .context("could not compare snapshots")?
+        {
+            bail!(
+                "{} differs: C++ {:?}, Rust {:?}",
+                difference.path,
+                difference.original,
+                difference.reimplementation
             );
-            if let Some(comparison_path) = comparison_path {
-                let comparison = match read_game_snapshot(Path::new(&comparison_path)) {
-                    Ok(snapshot) => snapshot,
-                    Err(error) => {
-                        eprintln!("{error}");
-                        return ExitCode::FAILURE;
-                    }
-                };
-                match first_snapshot_difference(&snapshot, &comparison) {
-                    Ok(None) => println!("semantic snapshots are identical"),
-                    Ok(Some(difference)) => {
-                        eprintln!(
-                            "{} differs: C++ {:?}, Rust {:?}",
-                            difference.path, difference.original, difference.reimplementation
-                        );
-                        return ExitCode::FAILURE;
-                    }
-                    Err(error) => {
-                        eprintln!("could not compare snapshots: {error}");
-                        return ExitCode::FAILURE;
-                    }
-                }
-            }
-            ExitCode::SUCCESS
         }
-        Err(error) => {
-            eprintln!("{error}");
-            ExitCode::FAILURE
-        }
+        println!("semantic snapshots are identical");
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_snapshot_and_optional_comparison() {
+        let args = Args::try_parse_from(["snapshot-check", "left.json", "right.json"]).unwrap();
+        assert_eq!(args.snapshot, PathBuf::from("left.json"));
+        assert_eq!(args.comparison, Some(PathBuf::from("right.json")));
     }
 }

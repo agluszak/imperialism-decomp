@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+use anyhow::{Context, anyhow, bail};
 use imperialism_core::{
     GameCommand, GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind, SkillBand,
     UnitCostProfile, UnitProductionOrder,
@@ -11,29 +12,23 @@ use std::ffi::OsString;
 use std::fmt::Debug;
 use std::fs;
 use std::path::{Path, PathBuf};
-use std::process::{Command, ExitCode};
+use std::process::Command;
 
-fn main() -> ExitCode {
-    match run() {
-        Ok(()) => ExitCode::SUCCESS,
-        Err(error) => {
-            eprintln!("{error}");
-            ExitCode::FAILURE
-        }
-    }
+fn main() -> anyhow::Result<()> {
+    run()
 }
 
-fn run() -> Result<(), String> {
+fn run() -> anyhow::Result<()> {
     let mut arguments = env::args_os();
     let program = arguments.next().unwrap_or_else(|| "differential".into());
-    let fixture = required_argument(&program, arguments.next())?;
-    let source = match required_argument(&program, arguments.next())? {
-        flag if flag == "--legacy-save" => {
-            RustSource::LegacySave(required_argument(&program, arguments.next())?)
-        }
+    let fixture = required_argument(&program, arguments.next()).map_err(anyhow::Error::msg)?;
+    let source = match required_argument(&program, arguments.next()).map_err(anyhow::Error::msg)? {
+        flag if flag == "--legacy-save" => RustSource::LegacySave(
+            required_argument(&program, arguments.next()).map_err(anyhow::Error::msg)?,
+        ),
         snapshot => RustSource::Snapshot(snapshot),
     };
-    let options = parse_options(arguments.collect())?;
+    let options = parse_options(arguments.collect()).map_err(anyhow::Error::msg)?;
 
     let repository = repository_root()?;
     let output = Command::new("just")
@@ -43,32 +38,31 @@ fn run() -> Result<(), String> {
         .arg("--seed")
         .arg(options.seed.to_string())
         .output()
-        .map_err(|error| format!("could not launch the C++ oracle: {error}"))?;
+        .context("launching the C++ oracle")?;
     let stderr = String::from_utf8_lossy(&output.stderr);
     if !output.status.success() {
-        return Err(format!(
+        bail!(
             "C++ oracle fixture {} failed:\n{}",
             Path::new(&fixture).display(),
             stderr.trim()
-        ));
+        );
     }
-    let artifact_dir = artifact_path(&stderr)
-        .ok_or_else(|| "C++ oracle did not report its artifact directory".to_owned())?;
+    let artifact_dir =
+        artifact_path(&stderr).context("C++ oracle did not report its artifact directory")?;
     let cpp_snapshot_path = artifact_dir.join("native-result.json");
-    let cpp = read_game_snapshot(&cpp_snapshot_path)
-        .map_err(|error| format!("C++ oracle snapshot is invalid: {error}"))?;
+    let cpp = read_game_snapshot(&cpp_snapshot_path).with_context(|| {
+        format!(
+            "reading C++ oracle snapshot {}",
+            cpp_snapshot_path.display()
+        )
+    })?;
     let rust = match source {
         RustSource::Snapshot(path) => read_game_snapshot(Path::new(&path))
-            .map_err(|error| format!("Rust snapshot is invalid: {error}"))?,
+            .with_context(|| format!("reading Rust snapshot {}", Path::new(&path).display()))?,
         RustSource::LegacySave(path) => {
-            let bytes = fs::read(&path).map_err(|error| {
-                format!(
-                    "could not read retail save {}: {error}",
-                    Path::new(&path).display()
-                )
-            })?;
-            let save = LegacySaveV62::parse(&bytes)
-                .map_err(|error| format!("could not decode retail save: {error}"))?;
+            let bytes = fs::read(&path)
+                .with_context(|| format!("reading retail save {}", Path::new(&path).display()))?;
+            let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
             save.snapshot(LegacySnapshotContext {
                 runtime_seed: cpp.rng.runtime_seed,
                 crt_rand_state: cpp.rng.crt_rand_state,
@@ -76,15 +70,13 @@ fn run() -> Result<(), String> {
                 zone_status_lcg: cpp.rng.zone_status_lcg,
                 selected_nation: cpp.metadata.selected_nation,
             })
-            .map_err(|error| format!("could not project retail save: {error}"))?
+            .context("projecting retail save")?
         }
     };
 
     if !options.steps.is_empty() {
-        let cpp_state = GameState::try_from(cpp)
-            .map_err(|error| format!("C++ oracle state is invalid: {error}"))?;
-        let mut rust_state = GameState::try_from(rust)
-            .map_err(|error| format!("Rust initial state is invalid: {error}"))?;
+        let cpp_state = GameState::try_from(cpp).context("C++ oracle state is invalid")?;
+        let mut rust_state = GameState::try_from(rust).context("Rust initial state is invalid")?;
         let mut event_count = 0;
         for step in options.steps {
             match step {
@@ -96,7 +88,7 @@ fn run() -> Result<(), String> {
                     let mut order = specialist_order(unit_type, quantity);
                     let outcome = rust_state
                         .produce_specialist_recruits(NationId::new(nation), &mut order)
-                        .map_err(|error| format!("Rust specialist recruitment failed: {error}"))?;
+                        .context("Rust specialist recruitment failed")?;
                     event_count += outcome.events.len();
                 }
                 DifferentialStep::PurchaseItem {
@@ -108,7 +100,7 @@ fn run() -> Result<(), String> {
                     let resource = usize::try_from(resource)
                         .ok()
                         .and_then(|index| ResourceKind::ALL.get(index).copied())
-                        .ok_or_else(|| format!("resource kind {resource} is out of range"))?;
+                        .ok_or_else(|| anyhow!("resource kind {resource} is out of range"))?;
                     let outcome = rust_state
                         .apply_command(GameCommand::PurchaseItem {
                             nation: NationId::new(nation),
@@ -116,7 +108,7 @@ fn run() -> Result<(), String> {
                             amount,
                             price,
                         })
-                        .map_err(|error| format!("Rust trade settlement failed: {error}"))?;
+                        .context("Rust trade settlement failed")?;
                     event_count += outcome.events.len();
                 }
                 DifferentialStep::PlaceTradeBid {
@@ -131,25 +123,25 @@ fn run() -> Result<(), String> {
                             resource,
                             amount,
                         })
-                        .map_err(|error| format!("Rust trade bid failed: {error}"))?;
+                        .context("Rust trade bid failed")?;
                     event_count += outcome.events.len();
                 }
                 DifferentialStep::RememberTradeBids { nation } => {
                     let outcome = rust_state
                         .remember_trade_bids(NationId::new(nation))
-                        .map_err(|error| format!("Rust bid snapshot failed: {error}"))?;
+                        .context("Rust bid snapshot failed")?;
                     event_count += outcome.events.len();
                 }
                 DifferentialStep::CommitPurchasedItems { nation } => {
                     let outcome = rust_state
                         .commit_purchased_items(NationId::new(nation))
-                        .map_err(|error| format!("Rust purchased-item commit failed: {error}"))?;
+                        .context("Rust purchased-item commit failed")?;
                     event_count += outcome.events.len();
                 }
             }
         }
         if let Some(difference) = first_state_difference(&cpp_state, &rust_state) {
-            return Err(format!("post-command GameState differs: {difference}"));
+            bail!("post-command GameState differs: {difference}");
         }
         println!(
             "post-command GameState is identical ({} domain events)",
@@ -173,17 +165,17 @@ fn run() -> Result<(), String> {
         println!("{section:<12} {cpp_hash}  {rust_hash}");
     }
 
-    match first_snapshot_difference(&cpp, &rust)
-        .map_err(|error| format!("could not compare snapshots: {error}"))?
-    {
+    match first_snapshot_difference(&cpp, &rust).context("comparing snapshots")? {
         None => {
             println!("semantic snapshots are identical");
             Ok(())
         }
-        Some(difference) => Err(format!(
+        Some(difference) => bail!(
             "{} differs: C++ {:?}, Rust {:?}",
-            difference.path, difference.original, difference.reimplementation
-        )),
+            difference.path,
+            difference.original,
+            difference.reimplementation
+        ),
     }
 }
 
@@ -288,11 +280,11 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
     Ok(options)
 }
 
-fn resource_kind(value: i16) -> Result<ResourceKind, String> {
+fn resource_kind(value: i16) -> anyhow::Result<ResourceKind> {
     usize::try_from(value)
         .ok()
         .and_then(|index| ResourceKind::ALL.get(index).copied())
-        .ok_or_else(|| format!("resource kind {value} is out of range"))
+        .ok_or_else(|| anyhow!("resource kind {value} is out of range"))
 }
 
 fn parse_number<T: std::str::FromStr>(
@@ -400,11 +392,11 @@ fn first_slice_difference<T: Debug + PartialEq>(
     })
 }
 
-fn repository_root() -> Result<&'static Path, String> {
+fn repository_root() -> anyhow::Result<&'static Path> {
     Path::new(env!("CARGO_MANIFEST_DIR"))
         .ancestors()
         .nth(3)
-        .ok_or_else(|| "could not locate the repository root".to_owned())
+        .context("could not locate the repository root")
 }
 
 fn artifact_path(stderr: &str) -> Option<PathBuf> {

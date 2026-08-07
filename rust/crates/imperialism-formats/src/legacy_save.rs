@@ -7,7 +7,6 @@ use imperialism_core::{
     SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission, SnapshotPending,
     SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot, TurnCalendar,
 };
-use std::fmt;
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
 const CURRENT_RETAIL_VERSION: u32 = 0x3e;
@@ -721,61 +720,30 @@ impl LegacyMapState {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum LegacySaveError {
-    Stream(StreamError),
+    #[error(transparent)]
+    Stream(#[from] StreamError),
+    #[error("invalid Imperialism save magic {0:?}")]
     InvalidMagic([u8; 4]),
+    #[error(
+        "unsupported Imperialism save version {0:#x}; the current decoder requires {CURRENT_RETAIL_VERSION:#x}"
+    )]
     UnsupportedVersion(u32),
+    #[error(
+        "multiplayer save role {0} requires the game-flow manager DTO before the simulation suffix can be located"
+    )]
     UnsupportedMultiplayerRole(i32),
+    #[error("{context} contains {count} MFC polymorphic object(s) at {offset:#x}")]
     UnsupportedPolymorphicObjects {
         context: &'static str,
         count: u32,
         offset: usize,
     },
-    InvalidMfcObject {
-        offset: usize,
-        detail: String,
-    },
+    #[error("invalid MFC object at {offset:#x}: {detail}")]
+    InvalidMfcObject { offset: usize, detail: String },
+    #[error("{0}")]
     SnapshotProjection(String),
-}
-
-impl fmt::Display for LegacySaveError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Stream(error) => error.fmt(formatter),
-            Self::InvalidMagic(magic) => {
-                write!(formatter, "invalid Imperialism save magic {magic:?}")
-            }
-            Self::UnsupportedVersion(version) => write!(
-                formatter,
-                "unsupported Imperialism save version {version:#x}; the current decoder requires {CURRENT_RETAIL_VERSION:#x}"
-            ),
-            Self::UnsupportedMultiplayerRole(role) => write!(
-                formatter,
-                "multiplayer save role {role} requires the game-flow manager DTO before the simulation suffix can be located"
-            ),
-            Self::UnsupportedPolymorphicObjects {
-                context,
-                count,
-                offset,
-            } => write!(
-                formatter,
-                "{context} contains {count} MFC polymorphic object(s) at {offset:#x}"
-            ),
-            Self::InvalidMfcObject { offset, detail } => {
-                write!(formatter, "invalid MFC object at {offset:#x}: {detail}")
-            }
-            Self::SnapshotProjection(detail) => formatter.write_str(detail),
-        }
-    }
-}
-
-impl std::error::Error for LegacySaveError {}
-
-impl From<StreamError> for LegacySaveError {
-    fn from(value: StreamError) -> Self {
-        Self::Stream(value)
-    }
 }
 
 impl LegacySaveV62 {

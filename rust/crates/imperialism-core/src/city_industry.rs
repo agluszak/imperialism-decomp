@@ -1,6 +1,4 @@
 use crate::{CityState, RngState};
-use std::error::Error;
-use std::fmt;
 
 const INDUSTRY_ACTION_COUNT: usize = 14;
 
@@ -77,27 +75,13 @@ const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> Indus
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CityIndustryError {
+    #[error("{field} has {actual} entries, expected {INDUSTRY_ACTION_COUNT}")]
     InvalidActionCount { field: &'static str, actual: usize },
+    #[error("positive action total has no selectable action")]
     NoSelectableAction,
 }
-
-impl fmt::Display for CityIndustryError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidActionCount { field, actual } => write!(
-                formatter,
-                "{field} has {actual} entries, expected {INDUSTRY_ACTION_COUNT}"
-            ),
-            Self::NoSelectableAction => {
-                write!(formatter, "positive action total has no selectable action")
-            }
-        }
-    }
-}
-
-impl Error for CityIndustryError {}
 
 impl CityState {
     pub fn average_descriptor_weight_times_ten(&self) -> Result<i32, CityIndustryError> {

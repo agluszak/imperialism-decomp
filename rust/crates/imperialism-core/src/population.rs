@@ -1,6 +1,4 @@
 use crate::{CityState, PopulationState, ResourceKind};
-use std::error::Error;
-use std::fmt;
 
 const PREDICTED_NEED_RESOURCE_COUNT: usize = ResourceKind::COUNT;
 const STRIKE_RESOURCE_IDS: [usize; 3] = [
@@ -96,34 +94,19 @@ impl SkillBand {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum PopulationError {
+    #[error("population is missing its {0}")]
     MissingLaborPool(&'static str),
+    #[error(
+        "population has {actual} predicted-need slots, expected {PREDICTED_NEED_RESOURCE_COUNT}"
+    )]
     InvalidPredictedNeedCount { actual: usize },
+    #[error("city has {actual} resource slots, expected {PREDICTED_NEED_RESOURCE_COUNT}")]
     InvalidStockCount { actual: usize },
+    #[error("population has invalid strike phase {phase}")]
     InvalidStrikePhase { phase: i16 },
 }
-
-impl fmt::Display for PopulationError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingLaborPool(name) => write!(formatter, "population is missing its {name}"),
-            Self::InvalidPredictedNeedCount { actual } => write!(
-                formatter,
-                "population has {actual} predicted-need slots, expected {PREDICTED_NEED_RESOURCE_COUNT}"
-            ),
-            Self::InvalidStockCount { actual } => write!(
-                formatter,
-                "city has {actual} resource slots, expected {PREDICTED_NEED_RESOURCE_COUNT}"
-            ),
-            Self::InvalidStrikePhase { phase } => {
-                write!(formatter, "population has invalid strike phase {phase}")
-            }
-        }
-    }
-}
-
-impl Error for PopulationError {}
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct FoodOutcome {

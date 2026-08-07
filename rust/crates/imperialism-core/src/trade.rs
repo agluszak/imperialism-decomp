@@ -2,64 +2,28 @@ use crate::{
     GameCommand, GameEvent, GameState, MajorNationState, NationEconomyError, NationId, NationKind,
     NationState, ResourceKind, StepOutcome,
 };
-use std::error::Error;
-use std::fmt;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum RuleError {
-    MissingNation {
-        nation: NationId,
-    },
-    NotMajorNation {
-        nation: NationId,
-    },
-    MissingCity {
-        nation: NationId,
-    },
-    CityNationMismatch {
-        nation: NationId,
-        actual: NationId,
-    },
+    #[error("nation {} is not present", .nation.get())]
+    MissingNation { nation: NationId },
+    #[error("nation {} is not a major nation", .nation.get())]
+    NotMajorNation { nation: NationId },
+    #[error("nation {} has no city state", .nation.get())]
+    MissingCity { nation: NationId },
+    #[error("city slot {} belongs to nation {}", .nation.get(), .actual.get())]
+    CityNationMismatch { nation: NationId, actual: NationId },
+    #[error(
+        "nation {} {field} has {actual} entries, expected {}",
+        .nation.get(),
+        ResourceKind::COUNT
+    )]
     InvalidResourceCount {
         nation: NationId,
         field: &'static str,
         actual: usize,
     },
 }
-
-impl fmt::Display for RuleError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingNation { nation } => {
-                write!(formatter, "nation {} is not present", nation.get())
-            }
-            Self::NotMajorNation { nation } => {
-                write!(formatter, "nation {} is not a major nation", nation.get())
-            }
-            Self::MissingCity { nation } => {
-                write!(formatter, "nation {} has no city state", nation.get())
-            }
-            Self::CityNationMismatch { nation, actual } => write!(
-                formatter,
-                "city slot {} belongs to nation {}",
-                nation.get(),
-                actual.get()
-            ),
-            Self::InvalidResourceCount {
-                nation,
-                field,
-                actual,
-            } => write!(
-                formatter,
-                "nation {} {field} has {actual} entries, expected {}",
-                nation.get(),
-                ResourceKind::COUNT
-            ),
-        }
-    }
-}
-
-impl Error for RuleError {}
 
 impl GameState {
     pub fn apply_command(&mut self, command: GameCommand) -> Result<StepOutcome, RuleError> {

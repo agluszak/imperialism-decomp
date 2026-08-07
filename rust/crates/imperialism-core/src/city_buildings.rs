@@ -1,6 +1,4 @@
 use crate::{CityState, MajorNationState};
-use std::error::Error;
-use std::fmt;
 
 const PRODUCTION_SLOT_COUNT: usize = 16;
 const REGION_CAPACITY_SLOT: usize = 15;
@@ -35,28 +33,13 @@ pub struct BuildingWindowState {
     pub accumulated: i16,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CityBuildingError {
+    #[error("{field} has {actual} entries, expected {PRODUCTION_SLOT_COUNT}")]
     InvalidProductionCount { field: &'static str, actual: usize },
+    #[error("pending nation actions have {actual} entries, expected at least 13")]
     InvalidPendingActionCount { actual: usize },
 }
-
-impl fmt::Display for CityBuildingError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidProductionCount { field, actual } => write!(
-                formatter,
-                "{field} has {actual} entries, expected {PRODUCTION_SLOT_COUNT}"
-            ),
-            Self::InvalidPendingActionCount { actual } => write!(
-                formatter,
-                "pending nation actions have {actual} entries, expected at least 13"
-            ),
-        }
-    }
-}
-
-impl Error for CityBuildingError {}
 
 impl CityState {
     pub fn set_building_window_state(

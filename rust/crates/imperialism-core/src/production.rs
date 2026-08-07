@@ -1,8 +1,6 @@
 use crate::{
     CityState, MajorNationState, PopulationError, ProductionSlot, ResourceKind, SkillBand,
 };
-use std::error::Error;
-use std::fmt;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ProductionConstraint {
@@ -1032,53 +1030,22 @@ impl ItemProductionOrder {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum ProductionError {
+    #[error("city stock has {actual} entries, expected {}", ResourceKind::COUNT)]
     InvalidResourceCount { actual: usize },
+    #[error("{field} has {actual} entries, expected {}", ProductionSlot::COUNT)]
     InvalidProductionCount { field: &'static str, actual: usize },
+    #[error("pending nation actions have {actual} entries, expected at least 10")]
     InvalidPendingActionCount { actual: usize },
+    #[error("pending nation action payloads have {actual} entries, expected at least 8")]
     InvalidPendingActionPayloadCount { actual: usize },
+    #[error("city has no {0} labor pool")]
     MissingLaborPool(&'static str),
+    #[error("unit resource cost for {resource:?} is zero")]
     ZeroUnitResourceCost { resource: ResourceKind },
-    Population(PopulationError),
-}
-
-impl fmt::Display for ProductionError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidResourceCount { actual } => write!(
-                formatter,
-                "city stock has {actual} entries, expected {}",
-                ResourceKind::COUNT
-            ),
-            Self::InvalidProductionCount { field, actual } => write!(
-                formatter,
-                "{field} has {actual} entries, expected {}",
-                ProductionSlot::COUNT
-            ),
-            Self::InvalidPendingActionCount { actual } => write!(
-                formatter,
-                "pending nation actions have {actual} entries, expected at least 10"
-            ),
-            Self::InvalidPendingActionPayloadCount { actual } => write!(
-                formatter,
-                "pending nation action payloads have {actual} entries, expected at least 8"
-            ),
-            Self::MissingLaborPool(name) => write!(formatter, "city has no {name} labor pool"),
-            Self::ZeroUnitResourceCost { resource } => {
-                write!(formatter, "unit resource cost for {resource:?} is zero")
-            }
-            Self::Population(error) => error.fmt(formatter),
-        }
-    }
-}
-
-impl Error for ProductionError {}
-
-impl From<PopulationError> for ProductionError {
-    fn from(value: PopulationError) -> Self {
-        Self::Population(value)
-    }
+    #[error(transparent)]
+    Population(#[from] PopulationError),
 }
 
 fn validate_city(city: &CityState) -> Result<(), ProductionError> {
