@@ -9159,6 +9159,8 @@ address|name|symbol|size|type|prototype|provenance
 66fad0|g_dMasterVolumeExponentScale|||global|double g_dMasterVolumeExponentScale|
 66fc00|CDialog::classRuntimeClass|||global||
 66fdc8|CWinApp::classRuntimeClass|||global||
+66fdec|_AFX_WIN_STATE::`vftable'|??_7_AFX_WIN_STATE@@6B@||global||curated
+66fdf4|CNoTrackObject::`vftable'|??_7CNoTrackObject@@6B@||global||curated
 66fec4|CObject::`vftable'|??_7CObject@@6B@||global||
 670320|CFrameWnd::classRuntimeClass|||global||
 670338|CView::classRuntimeClass|||global||
