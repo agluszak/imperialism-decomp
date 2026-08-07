@@ -51,6 +51,8 @@ def parse_args() -> argparse.Namespace:
                         help="Create the functions and save the program (default: dry-run).")
     parser.add_argument("--limit", type=int, default=0,
                         help="Stop after creating N functions (0 = no limit).")
+    parser.add_argument("--address", action="append", default=[],
+                        help="Restrict repair to an explicit function start (repeatable).")
     return parser.parse_args()
 
 
@@ -160,6 +162,13 @@ def main() -> int:
             addr = int(addr_text, 16)
             if CODE_LO <= addr < CODE_HI and in_exec_block(addr):
                 candidates.setdefault(addr, "symbols.csv row")
+
+        if args.address:
+            requested = {int(value, 0) for value in args.address}
+            candidates = {
+                address: candidates.get(address, "explicit address")
+                for address in sorted(requested)
+            }
 
         # --- classify -------------------------------------------------------
         missing: list[tuple[int, str]] = []
