@@ -33,18 +33,18 @@ struct TurnEvent2CPacket : NetMessage {
   unsigned char pad1a[2];
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
-  int field910;                       // +0x20
-  int aidAllocationTotal;             // +0x24
-  unsigned char pad28[6];             // +0x28
-  short cityMetricsBlock0E[0x1e];     // +0x2e
-  short cityMetricsBlock4A[9];        // +0x6a
-  short orderCountByType[0x0e];       // +0x7c
-  int cityRollingItemProductionScore; // +0x98
-  short cityFieldB4;                  // +0x9c
-  short cityStock[0x17];              // +0x9e
-  short productionOrderTable[0x10];   // +0xcc
-  short productionAccum[0x10];        // +0xec
-  short populationGrowthPenaltyTicks; // +0x10c
+  int field910;                                     // +0x20
+  int aidAllocationTotal;                           // +0x24
+  unsigned char pad28[6];                           // +0x28
+  short cityMetricsBlock0E[0x1e];                   // +0x2e
+  short cityMetricsBlock4A[9];                      // +0x6a
+  short orderCountByType[kIndustryActionSlotCount]; // +0x7c
+  int cityRollingItemProductionScore;               // +0x98
+  short cityFieldB4;                                // +0x9c
+  short cityStock[0x17];                            // +0x9e
+  short productionOrderTable[0x10];                 // +0xcc
+  short productionAccum[0x10];                      // +0xec
+  short populationGrowthPenaltyTicks;               // +0x10c
   unsigned char pad10e[2];
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
@@ -64,15 +64,15 @@ struct TurnEvent19Packet : NetMessage {
   unsigned char pad15[3];
   short pendingNationSlot; // +0x18
   unsigned char pad1a[2];
-  short nationSlot;                    // +0x1c
-  short transportCapacity;             // +0x1e
-  short orderCountByType[0x0e];        // +0x20
-  short externalStateByTarget[0x17];   // +0x3c
-  short metricBySlot7C[0x11];          // +0x6a
-  short diplomacyPolicyByNation[0x17]; // +0x8c
-  short diplomacyGrantByNation[0x17];  // +0xba
-  short needLevelByNation[0x17];       // +0xe8
-  unsigned char pad116[2];             // total 0x118
+  short nationSlot;                                 // +0x1c
+  short transportCapacity;                          // +0x1e
+  short orderCountByType[kIndustryActionSlotCount]; // +0x20
+  short externalStateByTarget[0x17];                // +0x3c
+  short metricBySlot7C[0x11];                       // +0x6a
+  short diplomacyPolicyByNation[0x17];              // +0x8c
+  short diplomacyGrantByNation[0x17];               // +0xba
+  short needLevelByNation[0x17];                    // +0xe8
+  unsigned char pad116[2];                          // total 0x118
 };
 
 // Turn-event-0x15 payload: the sender nation's full diplomacy need-state block.
@@ -1095,8 +1095,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     TGreatPower* nation19 = g_apNationStates[nationSlot19];
     nation19->transportCapacity = stateArrays->transportCapacity;
-    for (int orderType19 = 0; orderType19 < kIndustryActionOrderTypeCount; ++orderType19) {
-      nation19->city->orderCountByType5c[orderType19] = stateArrays->orderCountByType[orderType19];
+    for (int industryActionSlot19 = 0; industryActionSlot19 < kIndustryActionSlotCount;
+         ++industryActionSlot19) {
+      nation19->city->orderCountByType5c[industryActionSlot19] =
+          stateArrays->orderCountByType[industryActionSlot19];
     }
     nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     for (int stockSlot19 = 0; stockSlot19 < 0x17; ++stockSlot19) {
@@ -1137,8 +1139,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int metric4A = 0; metric4A < 9; ++metric4A) {
       city2C->cityMetricsBlock4A[metric4A] = composite->cityMetricsBlock4A[metric4A];
     }
-    for (int orderType2C = 0; orderType2C < kIndustryActionOrderTypeCount; ++orderType2C) {
-      city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
+    for (int industryActionSlot2C = 0; industryActionSlot2C < kIndustryActionSlotCount;
+         ++industryActionSlot2C) {
+      city2C->orderCountByType5c[industryActionSlot2C] =
+          composite->orderCountByType[industryActionSlot2C];
     }
     g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
     city2C->rollingItemProductionScore78 = composite->cityRollingItemProductionScore;
@@ -2776,8 +2780,9 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     for (int j = 0; j < 9; ++j) {
       packet.cityMetricsBlock4A[j] = city->cityMetricsBlock4A[j];
     }
-    for (int orderType = 0; orderType < 0x0e; ++orderType) {
-      packet.orderCountByType[orderType] = city->orderCountByType5c[orderType];
+    for (int industryActionSlot = 0; industryActionSlot < kIndustryActionSlotCount;
+         ++industryActionSlot) {
+      packet.orderCountByType[industryActionSlot] = city->orderCountByType5c[industryActionSlot];
     }
     packet.cityRollingItemProductionScore = city->rollingItemProductionScore78;
     packet.cityFieldB4 = city->powerAvailableB4;
@@ -2844,8 +2849,10 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
   packet.nationSlot = nationSlot;
   EmitNationDiplomacyNeedStateSnapshotEvent15(1, nationSlot);
   packet.transportCapacity = nation->transportCapacity;
-  for (int orderType = 0; orderType < 0x0e; ++orderType) {
-    packet.orderCountByType[orderType] = nation->city->orderCountByType5c[orderType];
+  for (int industryActionSlot = 0; industryActionSlot < kIndustryActionSlotCount;
+       ++industryActionSlot) {
+    packet.orderCountByType[industryActionSlot] =
+        nation->city->orderCountByType5c[industryActionSlot];
   }
   for (int i = 0; i < 0x17; ++i) {
     packet.externalStateByTarget[i] = nation->GetStockpile(static_cast<short>(i));

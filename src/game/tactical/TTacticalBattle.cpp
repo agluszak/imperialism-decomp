@@ -133,7 +133,7 @@ void TTacticalBattle::InitTacticalBattle(TTacticalPlayer* ourPlayer, TTacticalPl
 
   battleLive10 = 0;
   currentSideC = 1;
-  battleOutcomeCode44 = 0;
+  battleOutcome44 = kTacticalBattleInProgress;
   selectedUnit1c = enemyPlayer->SelectNextTacticalUnitForDoneCommand();
 
   // battlefieldColumnCount34 = longest per-unit range across both sides + 11 (the original calls the
@@ -740,8 +740,8 @@ void TTacticalBattle::FinishTacticalActionAndPostNextMoveCommand() {
 
 // FUNCTION: IMPERIALISM 0x005a0e20
 void TTacticalBattle::NextMove() {
-  if (battleOutcomeCode44 != 0) {
-    unsigned char sideWonFlag = battleOutcomeCode44 == 1;
+  if (battleOutcome44 != kTacticalBattleInProgress) {
+    unsigned char sideWonFlag = battleOutcome44 == kTacticalBattleSide0Victory;
     tacticalPlayer14->ApplyChanges(sideWonFlag);
     tacticalPlayer18->ApplyChanges(sideWonFlag == 0);
     EndBattle(sideWonFlag);
@@ -1209,7 +1209,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
   if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] == 7) {
     unit->selectedFlag18 = 0;
   }
-  if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
+  if (unit->state1c == 0 && battleOutcome44 == kTacticalBattleInProgress) {
     if (unit->selectedFlag18 != 0) {
       if (HasValidTacticalFollowupTargetForCurrentAction() != 0) {
         return;
@@ -1234,7 +1234,7 @@ void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarg
 
 // Resolves the action against the target tile (virtual slot 0x10), then ends the
 // action round; category-4/5 (cavalry) attackers with an adjacent tile still reachable
-// keep the round open unless the battle outcome (battleOutcomeCode44) is already decided.
+// keep the round open unless the battle outcome is already decided.
 // FUNCTION: IMPERIALISM 0x005a1ca0
 void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
     TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
@@ -1252,7 +1252,7 @@ void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
         if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
           // The cavalry unit can still move on: only close the round when the battle
           // outcome is already decided.
-          if (battleOutcomeCode44 != 0) {
+          if (battleOutcome44 != kTacticalBattleInProgress) {
             FinishTacticalActionAndPostNextMoveCommand();
           }
           return;
@@ -1568,7 +1568,7 @@ void TTacticalBattle::TransferTacticalUnitToOpposingSide(TTacticalUnit* unit) {
 }
 
 // Post-round tactical evaluation: scan recordList20 for live units per side, decide
-// the battle outcome code (battleOutcomeCode44: 1 = side 0 still standing before round 35,
+// the battle outcome (side 0 still standing before round 35,
 // 2 = side 0 wiped out or round limit reached; battle continues while both sides
 // live and roundCounter74 < 35), then -- only when a live battle view exists -- build and run
 // the battle-summary turn-event dialog (message context 0xeed): per-nation header
@@ -1597,9 +1597,9 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
     }
   }
   if (sideHasLiveUnit[0] != 0 && roundCounter74 < 0x23) {
-    battleOutcomeCode44 = 1;
+    battleOutcome44 = kTacticalBattleSide0Victory;
   } else {
-    battleOutcomeCode44 = 2;
+    battleOutcome44 = kTacticalBattleSide1Victory;
   }
 
   if (battleView8 == 0) {
@@ -1608,9 +1608,9 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
 
   unsigned char localIsSide0Player = tacticalPlayer14->IsTacticalControllerOwnedByActiveNation();
   unsigned char localSideWon;
-  if ((battleOutcomeCode44 == 1 &&
+  if ((battleOutcome44 == kTacticalBattleSide0Victory &&
        tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
-      (battleOutcomeCode44 == 2 &&
+      (battleOutcome44 == kTacticalBattleSide1Victory &&
        tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
     localSideWon = 1;
   } else {

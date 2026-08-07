@@ -49,6 +49,14 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
 // +0x04 value tested at 0x004c2c23 is TTask::citySlotIndex, not TUnit::orderType.
 static const short kPendingProspectorRecruitmentCitySlot = 0x22;
 
+template <class T> static __inline T* AllocateCityMinisterScratchArray(int count, int assertLine) {
+  T* result = new T[count];
+  if (result == 0) {
+    FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, assertLine);
+  }
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x004be000
 void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
                                                  float* candidateScores, short* candidateTiles,
@@ -1150,23 +1158,25 @@ void TCityInteriorMinister::ProcessUnitOrders() {
     SeekLostTowns(primaryDistanceMap, secondaryDistanceMap);
   }
 
-  short selectedOrderType = 0;
-  while (field3c == -1 && selectedOrderType != -1) {
-    selectedOrderType = -1;
-    for (short orderType = 0; orderType < 23; ++orderType) {
-      if (((orderType >= 0 && orderType <= 6) || (orderType >= 17 && orderType <= 22)) &&
-          orderTypeTableFC[orderType] != 0 &&
-          (selectedOrderType < 0 ||
-           orderTypeTableFC[selectedOrderType] < orderTypeTableFC[orderType])) {
-        selectedOrderType = orderType;
+  ResourceKindStorage selectedResourceKind = 0;
+  while (field3c == -1 && selectedResourceKind != kResourceKindNone) {
+    selectedResourceKind = kResourceKindNone;
+    for (ResourceKindStorage resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
+      if (((resourceKind >= kResourceIndustrialRawFirst &&
+            resourceKind <= kResourceIndustrialRawLast) ||
+           (resourceKind >= kResourceHarvestedFirst && resourceKind <= kResourceHarvestedLast)) &&
+          orderTypeTableFC[resourceKind] != 0 &&
+          (selectedResourceKind < kResourceCotton ||
+           orderTypeTableFC[selectedResourceKind] < orderTypeTableFC[resourceKind])) {
+        selectedResourceKind = resourceKind;
       }
     }
 
-    if (selectedOrderType != -1) {
-      StartRailheadProject(selectedOrderType, &ownedTiles, primaryDistanceMap,
+    if (selectedResourceKind != kResourceKindNone) {
+      StartRailheadProject(selectedResourceKind, &ownedTiles, primaryDistanceMap,
                            secondaryDistanceMap);
       if (field3c == -1) {
-        orderTypeTableFC[selectedOrderType] = 0;
+        orderTypeTableFC[selectedResourceKind] = 0;
       }
     }
   }
@@ -1395,6 +1405,17 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     }
   }
 
+  short* prospectingTiles = 0;
+  float* prospectingScores = 0;
+  if (prospectingOrderCount != 0) {
+    prospectingTiles = AllocateCityMinisterScratchArray<short>(prospectingOrderCount, 0x970);
+    prospectingScores = AllocateCityMinisterScratchArray<float>(prospectingOrderCount, 0x972);
+    for (int index = 0; index < prospectingOrderCount; ++index) {
+      prospectingTiles[index] = -1;
+      prospectingScores[index] = 0.0f;
+    }
+  }
+
   int affordableDeveloperCount = ownerContextAt04->ComputeAvailableDiplomacyBudget() / 2000;
   if (affordableDeveloperCount < 0) {
     affordableDeveloperCount = 0;
@@ -1403,17 +1424,16 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     developerOrderCount = affordableDeveloperCount;
   }
 
-  short* prospectingTiles = prospectingOrderCount == 0 ? 0 : new short[prospectingOrderCount];
-  float* prospectingScores = prospectingOrderCount == 0 ? 0 : new float[prospectingOrderCount];
-  for (int index = 0; index < prospectingOrderCount; ++index) {
-    prospectingTiles[index] = -1;
-    prospectingScores[index] = 0.0f;
-  }
-  short* developerTiles = developerOrderCount == 0 ? 0 : new short[developerOrderCount];
-  float* developerScores = developerOrderCount == 0 ? 0 : new float[developerOrderCount];
-  for (int developerInitIndex = 0; developerInitIndex < developerOrderCount; ++developerInitIndex) {
-    developerTiles[developerInitIndex] = -1;
-    developerScores[developerInitIndex] = 0.0f;
+  short* developerTiles = 0;
+  float* developerScores = 0;
+  if (developerOrderCount != 0) {
+    developerTiles = AllocateCityMinisterScratchArray<short>(developerOrderCount, 0x985);
+    developerScores = AllocateCityMinisterScratchArray<float>(developerOrderCount, 0x987);
+    for (int developerInitIndex = 0; developerInitIndex < developerOrderCount;
+         ++developerInitIndex) {
+      developerTiles[developerInitIndex] = -1;
+      developerScores[developerInitIndex] = 0.0f;
+    }
   }
 
   int resourceWeights[23];
@@ -1695,7 +1715,8 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
 }
 
 // FUNCTION: IMPERIALISM 0x004c3170
-void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintList* ownedTiles,
+void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKind,
+                                                 TShortintList* ownedTiles,
                                                  char* primaryDistanceMap,
                                                  char* secondaryDistanceMap) {
   TTown* projectedTown = new TTown();
@@ -1725,7 +1746,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
     if (!hasConnectedNeighbor) {
       projectedTown->tileIndex = tileIndex;
       projectedTown->CalculateResources();
-      if (projectedTown->resourceYieldByType[resourceType] != 0) {
+      if (projectedTown->resourceYieldByType[resourceKind] != 0) {
         candidateTiles->InsertLast(tileIndex);
       }
     }

@@ -2813,7 +2813,8 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
         (terrainStateTable[tileIndex].ownerNationTag04 != refOwner) ? 1 : 0;
   }
 
-  if (pCivilianOrderEntry->orderType != 1 && pCivilianOrderEntry->orderType != 7) {
+  if (pCivilianOrderEntry->orderType != EncodeCivilianUnitKind(kCivilianUnitProspector) &&
+      pCivilianOrderEntry->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     return;
   }
   if (pCivilianOrderEntry->militaryRegistrationFlag1C != 0) {
@@ -3020,7 +3021,7 @@ void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x005155c0
 void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   unsigned char qualifiesByResourceType[23] = {0};
-  if (pCivilianOrderEntry->orderType == 0) {
+  if (pCivilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner)) {
     qualifiesByResourceType[3] = 1;
     qualifiesByResourceType[4] = 1;
     qualifiesByResourceType[21] = 1;
@@ -3270,6 +3271,11 @@ char TMapMgr::IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinc
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
+}
+
+// FUNCTION: IMPERIALISM 0x00515f00
+void TMapMgr::GetProvinceName(int provinceIndex, CString* outName) {
+  *outName = cityScoreTable[provinceIndex].cityNameA4;
 }
 
 // FUNCTION: IMPERIALISM 0x00515f40

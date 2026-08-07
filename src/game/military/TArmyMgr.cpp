@@ -48,9 +48,9 @@
 #include "game/ui_core/quickdraw_rendering.h" // BuildUiTextStyleDescriptor
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
-// displayedParticipantIndex03/actionType04/location08 read up front; nationIds[1] is read later,
+// displayedParticipantIndex03/reportKind04/location08 read up front; nationIds[1] is read later,
 // interleaved into the per-side loop below alongside nationIds[0]), resolving
-// location08 either as a raw tile/record index (actionType04 in {0,3,4}) or, via
+// location08 either as a raw tile/record index (land-report kinds) or, via
 // FindMapActionContextByNodeId, a live TZone* -- mirrors the port-zone/context-array
 // two-way match idiom used throughout TZone.cpp. Then for each side (0/1), reads the
 // nation-id byte, the fixed name/overlay buffers (a version-gated legacy string read
@@ -60,10 +60,12 @@
 void MapContextActionRecord::ReadFrom(TStream* stream) {
   stream->ReadBytes(&reportParticipantIndex02, 1);
   stream->ReadBytes(&displayedParticipantIndex03, 1);
-  stream->ReadBytes(&actionType04, 4);
+  stream->ReadBytes(&reportKind04, 4);
   short nodeId;
   stream->ReadBytes(&nodeId, 2);
-  if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
+  if (reportKind04 == kMapContextReportLandBattle ||
+      reportKind04 == kMapContextReportPreemptedLandBattle ||
+      reportKind04 == kMapContextReportUncontestedTakeover) {
     location08 = reinterpret_cast<void*>(static_cast<int>(nodeId));
   } else {
     location08 = FindMapActionContextByNodeId(nodeId);
@@ -104,10 +106,12 @@ void MapContextActionRecord::ReadFrom(TStream* stream) {
 void MapContextActionRecord::WriteTo(TStream* stream) {
   stream->WriteBytes(&reportParticipantIndex02, 1);
   stream->WriteBytes(&displayedParticipantIndex03, 1);
-  stream->WriteBytes(&actionType04, 4);
+  stream->WriteBytes(&reportKind04, 4);
 
   short nodeId;
-  if (actionType04 == 0 || actionType04 == 3 || actionType04 == 4) {
+  if (reportKind04 == kMapContextReportLandBattle ||
+      reportKind04 == kMapContextReportPreemptedLandBattle ||
+      reportKind04 == kMapContextReportUncontestedTakeover) {
     nodeId = static_cast<short>(reinterpret_cast<int>(location08));
   } else {
     nodeId = static_cast<TZone*>(location08)->GetContextOrdinalOrInvalid();
@@ -634,14 +638,14 @@ static void BuildArmyContextActionRecordsAndDispatchLabel(TArmyStack* ourStack,
   record.nationIds[1] = enemyStack->categoryFlag8;
   record.nationIds[0] = ourStack->categoryFlag8;
   record.location08 = reinterpret_cast<void*>(ownerNationCodeInt);
-  record.actionType04 = 0;
+  record.reportKind04 = kMapContextReportLandBattle;
   record.displayedParticipantIndex03 = 0;
 
   if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
           ourStack->categoryFlag8, enemyStack->categoryFlag8)) {
-    record.actionType04 = 3;
+    record.reportKind04 = kMapContextReportPreemptedLandBattle;
   } else if (enemyStack->ResetCursorAndGetHeadUnit() == 0) {
-    record.actionType04 = 4;
+    record.reportKind04 = kMapContextReportUncontestedTakeover;
   }
 
   const int kUnitTypeSlotCount = 30;
@@ -1134,10 +1138,10 @@ void TArmyMgr::DoOwnershipChanges() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a3d90
-void TArmyMgr::DispatchTileActionByKind(int contextArg, short actionKind) {
-  if (actionKind == 1 || actionKind == 4) {
+void TArmyMgr::DispatchTileActionByKind(int contextArg, short tileActionCode) {
+  if (tileActionCode == 1 || tileActionCode == 4) {
     this->SelectMovableUnitOnCurrentTileAndPlaySfx(contextArg);
-  } else if (actionKind == 7) {
+  } else if (tileActionCode == 7) {
     this->CommitCityActionGateCostIfAffordable(contextArg);
   }
 

@@ -71,7 +71,9 @@ public:
   void Free() override;
 
   static TShip* GetFirst();
+  static TShip* GetLast();
   static TShip* GetNth(short index);
+  static short GetTypeSlot(short shipType);
 
   // Per-category (0-3) priority-contribution percentage for this order node, used
   // by callers that accumulate a 4-component category vector. Sibling of
@@ -104,13 +106,19 @@ public:
   // Per-type descriptor-table reads (0x550510 / 0x550820).
   short GetToolbarSlot() const;
   short GetRange() const;
+  short GetArmorFactor() const;
+  int GetInvasionCapacity() const;
+  int ModByExp(int value) const;
   // Node-score family (0x550840 / 0x550aa0): descriptor-blended scores of this
   // order node's strength/stock.
   int GetSpeed() const;
+  short GetBattleSpeed() const;
+  int GetFirepower() const;
   // Mac oracle: GetBattleStrengthRating() const.
   int GetBattleStrengthRating() const;
   // 0x00550f80 -- strength -= decrement (battle losses commit path).
   void Damage(short decrement);
+  void Repair();
   // 0x005501b0 -- 4-category priority score of this order node against score
   // profile `nScoreProfileId` (same descriptor/divisor tables as the per-category
   // contribution scorer).

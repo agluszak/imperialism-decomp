@@ -877,4 +877,8 @@ bool QueryDriveTypeByDriveIndex(char driveIndex) {
 
 // The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
 // 0x00412d40 (ctor) / 0x00412d70 (dtor).
+// SYNTHETIC: IMPERIALISM 0x00412d40
+// InitializeImperialismAppSingletonGlobal
+// SYNTHETIC: IMPERIALISM 0x00412d70
+// DestroyImperialismAppSingletonGlobal
 ImperialismApp theApp;

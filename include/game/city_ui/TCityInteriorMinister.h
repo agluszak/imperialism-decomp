@@ -3,6 +3,7 @@
 #include "compat.h"
 
 #include "game/city_ui/TInteriorMinister.h"
+#include "game/resource_domain_types.h"
 
 class TCity;
 class TGreatPower;
@@ -82,7 +83,7 @@ public:
                              char* secondaryDistanceMap); // slot 0x36 0x4c2d50
   virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
                                        char* secondaryDistanceMap); // slot 0x37 0x4c2e10
-  virtual void StartRailheadProject(short orderType, TShortintList* ownedTiles,
+  virtual void StartRailheadProject(ResourceKindStorage resourceKind, TShortintList* ownedTiles,
                                     char* primaryDistanceMap,
                                     char* secondaryDistanceMap); // slot 0x38 0x4c3170
   virtual short EvaluateResources(short tileIndex);              // slot 0x39 0x4c3490

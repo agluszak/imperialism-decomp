@@ -281,15 +281,12 @@ discriminant_reviews:
   actionCode:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TNavyMgr tests whether ResolveCivilianTileOrderActionCode produced an action at all; the equality sites on the same domain already use the recovered tag and proposal enumerators.
-  actionKind:
+  tileActionCode:
     classification: closed_domain_needs_listing_evidence
-    evidence: TCivMgr and TArmyMgr select on 1, 2, 4, 7 and 10 with gaps, which is a sparse command domain rather than a contiguous enum; the producing dispatcher must be decoded first.
+    evidence: TArmyMgr::DispatchTileActionByKind consumes codes 1, 4 and 7, but the source caller is a vtable dispatch and the Windows producer has not yet been paired with the Mac GetTileAction/DoTileClick identities.
   comparisonMode:
     classification: status_picture_metric_selector
     evidence: TStatusPicture::SetComparisonModeAndRefresh at 0x005941e0 selects the mode-0 comparative-power path; modes 1..9 are handled by RecomputeNationComparisonValuesAndNormalizeScale at 0x00594900.
-  actionType04:
-    classification: closed_domain_needs_listing_evidence
-    evidence: MapContextActionRecord::actionType04 selects five battle/news report shapes (0..4) across TArmyMgr, TBattleReportView and TNewsMgr and is serialized as four bytes by TArmyMgr 0x004a1c40; naming the five needs each report body decoded.
   aiState:
     classification: closed_domain_needs_listing_evidence
     evidence: TArmyPlayer tests 2, 5 and 0xe against the same field aiStateCode2c reads; recovering the state machine is army-AI work, not a mechanical rename.
@@ -299,9 +296,6 @@ discriminant_reviews:
   alignmentCode:
     classification: external_api_or_resource_constant
     evidence: TStaticText maps the value onto Win32 DrawText alignment flags.
-  battleOutcomeCode44:
-    classification: closed_domain_needs_listing_evidence
-    evidence: three outcome codes 0/1/2 shared by TNavyBattle, TTacticalBattle and TNextMoveCommand; the producer that assigns them has not been decoded, so the names are not yet evidence-backed.
   bfType:
     classification: external_api_or_resource_constant
     evidence: BITMAPFILEHEADER::bfType is the Win32 BMP file signature field; 0x4d42 is the external bitmap format magic, not a game-domain discriminant.
@@ -425,9 +419,6 @@ discriminant_reviews:
   orderKind:
     classification: closed_domain_needs_listing_evidence
     evidence: TCityInteriorMinister returns order kind 2 from a switch default; the order-kind domain is TUnitOrder work.
-  orderType:
-    classification: mixed_domain_needs_per_site_split
-    evidence: 'the sites mix three proven domains under one parameter name: ResourceKind bands (< 23, <= 22, >= 17, <= 6) in TCityInteriorMinister, the 14-entry industry domain (< 0x0e) in TMultiplayerMgr, and TUnit::orderType civilian/military kinds in TTerrainHelpPicture. Splitting them requires renaming the parameters per owner class first.'
   ownerCode:
     classification: nation_slot_domain
     evidence: TCouncilView's census reads Province::ownerNationCode00 into ownerCode; > 6 separates the seven major-power slots from the minor/reserved band and the == sites compare against the selected NationSlot pair, the same domain as nationCode/ownerNationCode.
@@ -503,9 +494,6 @@ discriminant_reviews:
   selectedIndustryUnitTypeA4:
     classification: open_index_count_or_bound
     evidence: TIndustryView tests > 0 for `a selection exists`, not for a particular kind.
-  selectedOrderType:
-    classification: open_index_count_or_bound
-    evidence: TCityInteriorMinister tests < 0 for the `no order selected` sentinel.
   selectionState:
     classification: closed_domain_needs_listing_evidence
     evidence: THQButton drives a three-value selection state 0/1/2 through TControl's mode byte.

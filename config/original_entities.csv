@@ -1243,7 +1243,7 @@ address|name|symbol|size|type|prototype|provenance
 4925e0|DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass||101|function|undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()|
 492670|TCluster::SerializeRecordList_0x0C_WithBlockPool_C||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_C()|
 4927e0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::Serialize|?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
-492950|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)|
+492950|??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z|??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z|30|function|void * __thiscall CList<TWindow *,TWindow *>::`scalar deleting destructor`(unsigned int)|vtable+base-destructor-layout+synthetic-scalar-dtor
 492980|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'|??_G?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 4929b0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::~CList|??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ|101|function|undefined ~CList()|template
 492a40|WrapperFor_AllocateAndLinkBlockHead_At00492a40||94|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()|
@@ -2305,7 +2305,7 @@ address|name|symbol|size|type|prototype|provenance
 4c68e0|TLongintList::AtDelete||136|function|void __thiscall AtDelete(int oneBasedIndex)|
 4c69a0|TLongintList::RemoveAll||45|function|void __thiscall RemoveAll(void)|
 4c69e0|TLongintList::Delete||133|function|void __thiscall Delete(int value)|
-4c6aa0|WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0()|
+4c6aa0|??_G?$CList@JJ@@UAEPAXI@Z|??_G?$CList@JJ@@UAEPAXI@Z|30|function|void * __thiscall CList<long,long>::`scalar deleting destructor`(unsigned int)|vtable+base-destructor-layout+synthetic-scalar-dtor
 4c6ad0|CList<long,long>::~CList|??1?$CList@JJ@@UAE@XZ|101|function|undefined ~CList()|template
 4c6b60|TLongintList::Dump||99|function|void __thiscall Dump(CDumpContext & dc)|
 4c6bf0|TLongintList::Free||23|function|void __thiscall Free(void)|
@@ -3365,8 +3365,8 @@ address|name|symbol|size|type|prototype|provenance
 50e490|TMapMgr::~TMapMgr||62|function|TMapMgr::~TMapMgr()|
 50e4e0|TMapMgr::InitializeGlobalMapState|?InitializeGlobalMapState@TMapMgr@@QAEXXZ|28|function|void __thiscall InitializeGlobalMapState(void)|
 50e510|TMapMgr::Free||75|function|undefined Helper_Uses_FreeHeapBufferIfNotNull_At0050e510(void)|
-50e580|IltTarget_0050e580||83|function|undefined IltTarget_0050e580()|
-50e600|OrphanTiny_ThisAdjustJump_a4_0050e600||11|function|undefined OrphanTiny_ThisAdjustJump_a4_0050e600()|
+50e580|Province::`vector deleting destructor'||83|function|void * __thiscall Province::`vector deleting destructor`(unsigned int)|province-array+vector-deleting-dtor-layout
+50e600|Province::`cityNameA4 destructor closure'||11|function|void __thiscall Province::`cityNameA4 destructor closure`(void)|this-adjust-0xa4+CString-destructor+EH-cleanup
 50e620|TMapMgr::ReadFrom||293|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At0050e620(int * param_1)|
 50e7a0|TMapMgr::WriteTo||200|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At0050e7a0(int * param_1)|
 50e8b0|TMapMgr::AllocateAndResetTerrainAndCityScoreTables||747|function|void TMapMgr::AllocateAndResetTerrainAndCityScoreTables(void)|
@@ -6699,8 +6699,8 @@ address|name|symbol|size|type|prototype|provenance
 5e26a0|`dynamic initializer for 'g_scaledShortConst_6A5F3C''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A5F3C''(void)|library
 5e26d0|InitializeRuntimeClassState_0066FA50_AndRegisterAtExit||26|function|undefined InitializeRuntimeClassState_0066FA50_AndRegisterAtExit()|
 5e2700|DestroyRuntimeClassState_0066FA50_AtExit||5|function|undefined DestroyRuntimeClassState_0066FA50_AtExit()|
-5e2720|InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2720||24|function|undefined InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2720()|
-5e2770|InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2770||24|function|undefined InitStub_thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7_At005e2770()|
+5e2720|InitializeWNetSerializedPtrArrayBAndRegisterAtExit||24|function|void __cdecl InitializeWNetSerializedPtrArrayBAndRegisterAtExit(void)|global-constructor+atexit-registration+synthetic-initializer
+5e2770|InitializeWNetSerializedPtrArrayAAndRegisterAtExit||24|function|void __cdecl InitializeWNetSerializedPtrArrayAAndRegisterAtExit(void)|global-constructor+atexit-registration+synthetic-initializer
 5e27c0|IltTarget_005e27c0||102|function|undefined IltTarget_005e27c0()|
 5e2850|ReleaseSharedStringRefOnly_005e2850||8|function|undefined ReleaseSharedStringRefOnly_005e2850()|
 5e2870|IltTarget_005e2870||102|function|undefined IltTarget_005e2870()|
@@ -6750,7 +6750,7 @@ address|name|symbol|size|type|prototype|provenance
 5e47b0|CArray<void*,void*>::~CArray|??1?$CArray@PAXPAX@@UAE@XZ|81|function|void ~CArray()|curated
 5e4830|TNetMgr::SerializeDynamicDwordPointerArrayState||392|function|undefined SerializeDynamicDwordPointerArrayState()|
 5e4a30|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
-5e4a60|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)|
+5e4a60|??_G?$CArray@PAXPAX@@UAEPAXI@Z|??_G?$CArray@PAXPAX@@UAEPAXI@Z|30|function|void * __thiscall CArray<void *,void *>::`scalar deleting destructor`(unsigned int)|vtable+base-destructor-layout+synthetic-scalar-dtor
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|`dynamic initializer for 'g_scaledShortConst_6A60B8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A60B8''(void)|library
 5e4d80|`dynamic initializer for 'g_soundResourceManager''||40|function|void __cdecl `dynamic initializer for 'g_soundResourceManager''(void)|

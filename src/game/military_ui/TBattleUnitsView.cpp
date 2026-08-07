@@ -25,17 +25,17 @@ IMPLEMENT_DYNCREATE(TBattleUnitsView, TMilitaryPageView)
 
 // FUNCTION: IMPERIALISM 0x004b06f0
 void TBattleUnitsView::StuffValues(BattleRecord& battleRecord, int participantIndex) {
-  switch (battleRecord.actionType04) {
-  case 0:
-  case 3:
-  case 4:
+  switch (battleRecord.reportKind04) {
+  case kMapContextReportLandBattle:
+  case kMapContextReportPreemptedLandBattle:
+  case kMapContextReportUncontestedTakeover:
     primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
     break;
-  case 1:
+  case kMapContextReportSeaBattle:
     primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
     secondaryUnitAtlas88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
     break;
-  case 2:
+  case kMapContextReportMerchantInterception:
     primaryUnitAtlas84 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdbb);
     secondaryUnitAtlas88 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
     break;

@@ -1014,7 +1014,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         snapshot.childCount[1] = 0;
         snapshot.childRecords[0] = nullptr;
         snapshot.childRecords[1] = nullptr;
-        snapshot.actionType04 = 1;
+        snapshot.reportKind04 = kMapContextReportSeaBattle;
         snapshot.targetObject08 = entry->location;
         snapshot.displayedParticipantIndex03 = 0;
         snapshot.reportParticipantIndex02 = 1;
@@ -1125,7 +1125,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.nationIds[1] = static_cast<unsigned char>(nation);
         snapshot.reportParticipantIndex02 = 0;
         snapshot.displayedParticipantIndex03 = 0;
-        snapshot.actionType04 = 2;
+        snapshot.reportKind04 = kMapContextReportMerchantInterception;
         snapshot.targetObject08 = selection.selectedEntry->location;
 
         CString labelScratch;
@@ -1195,8 +1195,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
             CString resourceList;
             int reportIndex = 1;
-            for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount;
-                 ++resourceType) {
+            for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
               short resourceCount = drawnCounts[resourceType];
               if (resourceCount == 0) {
                 continue;
@@ -1247,7 +1246,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 item.detailIdentity28 = kControlTagItem; // 'item'
               }
 
-              for (int resourceType2 = 0; resourceType2 < kIndustryActionOrderTypeCount;
+              for (int resourceType2 = 0; resourceType2 < kIndustryActionSlotCount;
                    ++resourceType2) {
                 if (drawnCounts[resourceType2] != 0) {
                   g_apNationStates[selection.offerNationCode]

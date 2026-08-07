@@ -878,7 +878,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 // FUNCTION: IMPERIALISM 0x004dd140
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
-  for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount; ++resourceType) {
+  for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
     total += GetResourceDescriptorWeightWord0ByType(resourceType) *
              this->city->orderCountByType5c[resourceType];
   }

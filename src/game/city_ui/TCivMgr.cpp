@@ -178,37 +178,37 @@ bool TCivMgr::HandleCivilianTileSelectionOrReportClick(short nTileIndex, short n
 // FUNCTION: IMPERIALISM 0x004d2540
 unsigned short TCivMgr::ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
                                                                        short nClickMode) {
-  int actionKind = 0;
+  CivilianTileActionCodeStorage actionCode = kCivilianTileActionNone;
   TCivUnit* entry =
       g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
   if (entry != nullptr) {
     entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
     if (entry->IsInIdleSelectionState() == 0) {
-      actionKind = 10;
+      actionCode = kCivilianTileActionShowOrderReport;
     } else if (nClickMode == 2 ||
                (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
-      actionKind = 2;
+      actionCode = kCivilianTileActionSelectUnit;
     }
   }
-  if (actionKind == 2) {
+  if (actionCode == kCivilianTileActionSelectUnit) {
     return 0x3f9;
   }
-  return (actionKind != 10) - 1 & 0x3f3;
+  return (actionCode != kCivilianTileActionShowOrderReport) - 1 & 0x3f3;
 }
 
 // Mac oracle: GetTileAction.
 // FUNCTION: IMPERIALISM 0x004d2610
-int TCivMgr::GetTileAction(short tileIndex, short mode) {
-  int actionCode = 0;
+CivilianTileActionCodeStorage TCivMgr::GetTileAction(short tileIndex, short mode) {
+  CivilianTileActionCodeStorage actionCode = kCivilianTileActionNone;
   if (g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId()) != 0) {
     // The original looks the unit up a second time rather than reusing the first result.
     TCivUnit* unit =
         g_pGlobalMapState->GetTileUnitEntryByOwner(tileIndex, g_pSimMgr->GetActiveNationId());
     if (unit->IsInIdleSelectionState() == 0) {
-      actionCode = 10;
+      actionCode = kCivilianTileActionShowOrderReport;
     } else if (mode == 2 ||
                ((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c >> 5) & 1) == 0) {
-      return 2;
+      return kCivilianTileActionSelectUnit;
     }
   }
   return actionCode;
@@ -217,9 +217,10 @@ int TCivMgr::GetTileAction(short tileIndex, short mode) {
 // FUNCTION: IMPERIALISM 0x004d26d0
 bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) {
   bool handled = false;
-  int actionCode = ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+  CivilianTileActionCodeStorage actionCode =
+      ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
   switch (actionCode) {
-  case 2: {
+  case kCivilianTileActionSelectUnit: {
     TCivUnit* tileEntry = g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20;
     selectedEntry = tileEntry;
     DispatchSelectedUnitToGlobalMapStateHandler(tileEntry);
@@ -239,7 +240,7 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
     g_pSfxPlaybackSystem->PlaySoundEffect(0x2338, 0, 1);
     return false;
   }
-  case 3:
+  case kCivilianTileActionMoveUnit:
     handled = CanAssignCivilianOrderToTile(nTileIndex);
     if (handled) {
       selectedEntry->SetOrders(kUnitOrderRedeploy, selectedEntry->tileIndex06);
@@ -247,12 +248,12 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
       RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
     }
     return handled;
-  case 4:
-  case 5:
-  case 6:
-  case 7:
+  case kCivilianTileActionEngineerSameTile:
+  case kCivilianTileActionEngineerDirection14:
+  case kCivilianTileActionEngineerDirection03:
+  case kCivilianTileActionEngineerDirection25:
     return HandleEngineerConstructionAction(nTileIndex);
-  case 8:
+  case kCivilianTileActionProspect:
     selectedEntry->SetOrders(kUnitOrderProspect, selectedEntry->tileIndex06);
     RelinkCivilianOrderTileAndInvalidateMapTiles(nTileIndex, selectedEntry);
     g_pSfxPlaybackSystem->PlaySoundEffect(0x232e, 0, 1);
@@ -268,13 +269,13 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
       } while (nowTick - startTick < 0x1e);
     }
     return true;
-  case 9:
+  case kCivilianTileActionDevelopResource:
     return QueueCivilianWorkOrderWithCostCheck(nTileIndex);
-  case 10:
+  case kCivilianTileActionShowOrderReport:
     HandleCivilianReportDecision(
         g_pGlobalMapState->terrainStateTable[nTileIndex].firstCivilianOrder20);
     return false;
-  case 11:
+  case kCivilianTileActionPurchaseLand:
     handled = PromptAndQueueDeveloperTilePurchaseOrder(nTileIndex);
     break;
   }
@@ -284,18 +285,20 @@ bool TCivMgr::HandleCivilianTileOrderAction(short nTileIndex, short nInputHint) 
 // FUNCTION: IMPERIALISM 0x004d2930
 unsigned short TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex(short nTileIndex,
                                                                         short nInputHint) {
-  int actionCode = this->ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
+  CivilianTileActionCodeStorage actionCode =
+      this->ResolveCivilianTileOrderActionCode(nTileIndex, nInputHint);
   return g_civilianTileOrderCursorTokenTable[actionCode];
 }
 
 // FUNCTION: IMPERIALISM 0x004d2960
-int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint) {
+CivilianTileActionCodeStorage TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex,
+                                                                          short nInputHint) {
   short nationId = g_pSimMgr->GetActiveNationId();
   TCivUnit* pClickedTileUnit = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
 
   if ((g_pGlobalMapState->hexNeighborWrapHorizontally != 0) &&
       ((nTileIndex % 0x6c == 0) || (nTileIndex % 0x6c == 0x6b))) {
-    return 1;
+    return kCivilianTileActionBlocked;
   }
 
   TCivUnit* selectedEntry = this->selectedEntry;
@@ -304,67 +307,69 @@ int TCivMgr::ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHi
     TCivUnit* pOwnedCivilianEntry =
         g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, nationId);
     if (pOwnedCivilianEntry == nullptr) {
-      return 0;
+      return kCivilianTileActionNone;
     }
     if (!g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId())
              ->IsInIdleSelectionState()) {
-      return 10;
+      return kCivilianTileActionShowOrderReport;
     }
     if ((nInputHint != 2) &&
         (((g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5) & 1) != 0)) {
-      return 0;
+      return kCivilianTileActionNone;
     }
-    return 2;
+    return kCivilianTileActionSelectUnit;
   }
 
   if ((pClickedTileUnit != nullptr) && (pClickedTileUnit != selectedEntry)) {
-    return (pClickedTileUnit->unitOrder != kUnitOrderIdle) ? 10 : 2;
+    return (pClickedTileUnit->unitOrder != kUnitOrderIdle) ? kCivilianTileActionShowOrderReport
+                                                           : kCivilianTileActionSelectUnit;
   }
 
   if (IsMappedShortcutKeyPressed(2)) {
     if (this->CanAssignCivilianOrderToTile(nTileIndex)) {
-      return 3;
+      return kCivilianTileActionMoveUnit;
     }
-    return 1;
+    return kCivilianTileActionBlocked;
   }
 
   TTerrainStateRecord* tile = &g_pGlobalMapState->terrainStateTable[nTileIndex];
   if (tile->recruitSearchVisited0e == 0) {
     CivilianUnitKind unitKind = selectedEntry->GetCivilianUnitKind();
     if (unitKind == kCivilianUnitProspector) {
-      return 8;
+      return kCivilianTileActionProspect;
     }
     if (unitKind == kCivilianUnitEngineer) {
       short homeTile = selectedEntry->tileIndex06;
       if (nTileIndex == homeTile) {
-        return 4;
+        return kCivilianTileActionEngineerSameTile;
       }
       StrategicHexDirectionStorage dir = TMapMgr::GetDirectionFrom(homeTile, nTileIndex);
       if ((dir == 1) || (dir == 4)) {
-        return 5;
+        return kCivilianTileActionEngineerDirection14;
       }
       if ((dir == 0) || (dir == 3)) {
-        return 6;
+        return kCivilianTileActionEngineerDirection03;
       }
-      return 7;
+      return kCivilianTileActionEngineerDirection25;
     }
     if (unitKind == kCivilianUnitDeveloper) {
-      return 0xb;
+      return kCivilianTileActionPurchaseLand;
     }
-    return 9;
+    return kCivilianTileActionDevelopResource;
   }
 
   TCivUnit* orderAtTile = tile->firstCivilianOrder20;
   if (orderAtTile != nullptr) {
     nationId = g_pSimMgr->GetActiveNationId();
     if (orderAtTile->ownerNationSlot18 == nationId) {
-      return orderAtTile->IsInIdleSelectionState() ? 2 : 10;
+      return orderAtTile->IsInIdleSelectionState() ? kCivilianTileActionSelectUnit
+                                                   : kCivilianTileActionShowOrderReport;
     }
   }
   if (this->CanAssignCivilianOrderToTile(nTileIndex)) {
-    return 3;
+    return kCivilianTileActionMoveUnit;
   }
-  return 1;
+  return kCivilianTileActionBlocked;
 }
 
 // Selection helpers. The global g_pSelectedCivilianOrderState @0x6a43dc is this

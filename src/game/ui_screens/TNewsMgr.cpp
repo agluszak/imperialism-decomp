@@ -434,7 +434,9 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
           list->GetPtrListEntryByOneBasedIndex(rand() % recordCount + 1));
       newsStory* story = &stories[nation][*minorCursor][*majorCursor];
       int wantId;
-      if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
+      if (record->reportKind04 == kMapContextReportLandBattle ||
+          record->reportKind04 == kMapContextReportPreemptedLandBattle ||
+          record->reportKind04 == kMapContextReportUncontestedTakeover) {
         story->parmKind[0] = 3;
         story->parmValue[0] = reinterpret_cast<int>(record->location08);
         wantId = (record->reportParticipantIndex02 != 0) - 0x1a;
@@ -442,7 +444,7 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
         short ordinalValue = static_cast<TZone*>(record->location08)->GetContextOrdinalOrInvalid();
         story->parmValue[0] = ordinalValue;
         story->parmKind[0] = 4;
-        wantId = -0x1b - (record->actionType04 != 1);
+        wantId = -0x1b - (record->reportKind04 != kMapContextReportSeaBattle);
       }
       story->feature38 = 1;
       story->parmKind[1] = 1;

@@ -34,8 +34,8 @@ void TNextMoveCommand::DoIt() {
     return;
   }
 
-  if (battle->battleOutcomeCode44 != 0) {
-    int sideWonFlag = (battle->battleOutcomeCode44 == 1);
+  if (battle->battleOutcome44 != kTacticalBattleInProgress) {
+    int sideWonFlag = (battle->battleOutcome44 == kTacticalBattleSide0Victory);
     battle->tacticalPlayer14->ApplyChanges(static_cast<unsigned char>(sideWonFlag));
     battle->tacticalPlayer18->ApplyChanges(static_cast<unsigned char>(!sideWonFlag));
     battle->EndBattle(static_cast<unsigned char>(sideWonFlag));

@@ -360,7 +360,11 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   unsigned char* topRowPixels = primarySurface->pixelBits - (bitmapHeight - 1) * rowStep;
 
   g_pViewMgr->ApplyLegendSplitSlot34(0x32);
-  CRect clippedRect(*rectBuffer);
+  CRect clippedRect;
+  clippedRect.left = rectBuffer->left;
+  clippedRect.top = rectBuffer->top;
+  clippedRect.right = rectBuffer->right;
+  clippedRect.bottom = rectBuffer->bottom;
   FillRectWithQuickDrawBrushAndContextOffset(&clippedRect);
 
   int row;
@@ -377,15 +381,14 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       int unwrappedColumn = scrollColOffset7e + column;
       int tileIndex = baseTileIndex + unwrappedColumn;
-      bool blankCell = false;
       if (unwrappedColumn >= 0x6c) {
         tileIndex -= 0x6c;
-        blankCell = !blankWrappedRightEdge;
+        if (blankWrappedRightEdge) {
+          g_pViewMgr->ApplyLegendSplitSlot34(0);
+          FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
+          continue;
+        }
       } else if (blankWrappedLeftEdge && unwrappedColumn > 0x3c) {
-        blankCell = true;
-      }
-
-      if (blankCell) {
         g_pViewMgr->ApplyLegendSplitSlot34(0);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
         continue;
@@ -733,8 +736,11 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       CRect destinationRect(tileRect);
       UpdatePaletteIndexWithDefaultFallback(0x10);
       if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != 0) {
-        int surfaceHeight =
-            g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
+        int surfaceHeight = g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader
+                                ->bmiHeader.biHeight;
+        if (surfaceHeight < 1) {
+          surfaceHeight = -surfaceHeight;
+        }
         OffsetRect(&destinationRect, 0,
                    surfaceHeight - destinationRect.top - destinationRect.bottom);
       }
@@ -1008,6 +1014,29 @@ void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileI
   *outVerticalOffset = static_cast<short>((row - scrollRowOffset7c) << 4);
   *outHorizontalOffset = static_cast<short>(
       ((((mapTileIndex - scrollColOffset7e) + 0x6c) % 0x6c) << 4) - (((~row) & 1) * 8));
+}
+
+// FUNCTION: IMPERIALISM 0x005686d0
+void TOceanDialog::BuildTileViewportRect(short tileIndex, CRect* outRect) {
+  if (tileIndex < 0) {
+    *outRect = CRect(0, 0, 0, 0);
+    return;
+  }
+
+  int index = tileIndex;
+  int column = (index - scrollColOffset7e + 0x6c) % 0x6c;
+  int row = index / 0x6c;
+  *outRect = CRect(column, row, 0, 0);
+  int left = outRect->left;
+  unsigned char rowParity = static_cast<unsigned char>(outRect->top);
+  left <<= 4;
+  outRect->left = left;
+  if ((rowParity & 1) == 0) {
+    outRect->left -= 8;
+  }
+  outRect->top = (outRect->top - scrollRowOffset7c) << 4;
+  outRect->right = outRect->left + 0x10;
+  outRect->bottom = outRect->top + 0x10;
 }
 
 // FUNCTION: IMPERIALISM 0x005687b0
