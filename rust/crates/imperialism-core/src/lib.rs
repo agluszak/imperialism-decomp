@@ -4,6 +4,7 @@ mod calendar;
 mod city_economy;
 mod ids;
 mod map_geometry;
+mod nation_economy;
 mod population;
 mod resources;
 mod snapshot;
@@ -19,6 +20,7 @@ pub use ids::{
 pub use map_geometry::{
     HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
+pub use nation_economy::NationEconomyError;
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use resources::ResourceKind;
 pub use snapshot::{

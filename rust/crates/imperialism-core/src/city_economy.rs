@@ -1,4 +1,4 @@
-use crate::{CityState, MajorNationState, PopulationError, ResourceKind};
+use crate::{CityState, MajorNationState, NationEconomyError, PopulationError, ResourceKind};
 use std::error::Error;
 use std::fmt;
 
@@ -11,6 +11,7 @@ pub enum CityEconomyError {
     InvalidResourceCount { field: &'static str, actual: usize },
     InvalidPurchasedItemCount { actual: usize },
     InvalidProductionAccumCount { actual: usize },
+    Nation(NationEconomyError),
     Population(PopulationError),
 }
 
@@ -31,6 +32,7 @@ impl fmt::Display for CityEconomyError {
                 formatter,
                 "city production accumulation has {actual} entries, expected {PRODUCTION_ACCUM_COUNT}"
             ),
+            Self::Nation(error) => error.fmt(formatter),
             Self::Population(error) => error.fmt(formatter),
         }
     }
@@ -41,6 +43,12 @@ impl Error for CityEconomyError {}
 impl From<PopulationError> for CityEconomyError {
     fn from(value: PopulationError) -> Self {
         Self::Population(value)
+    }
+}
+
+impl From<NationEconomyError> for CityEconomyError {
+    fn from(value: NationEconomyError) -> Self {
+        Self::Nation(value)
     }
 }
 
@@ -117,10 +125,51 @@ impl CityState {
         }
 
         self.stock_by_type[index] = self.stock_by_type[index].wrapping_add(amount);
-        nation.need_target_by_type[index] = nation.need_target_by_type[index].wrapping_add(amount);
-        nation.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX] =
-            nation.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX].wrapping_add(amount);
+        nation.update_need_target(
+            resource,
+            nation.need_target_by_type[index].wrapping_add(amount),
+        )?;
         Ok(amount)
+    }
+
+    /// Mirrors `TGreatPower::IncreaseRollingStock` against the owning city's
+    /// lumber and steel stockpile.
+    pub fn increase_rolling_stock(
+        &mut self,
+        nation: &mut MajorNationState,
+    ) -> Result<bool, CityEconomyError> {
+        validate_resources("city stock", &self.stock_by_type)?;
+        if self.stock_by_type[ResourceKind::Lumber.index()] == 0
+            || self.stock_by_type[ResourceKind::Steel.index()] == 0
+        {
+            return Ok(false);
+        }
+
+        self.add_to_stock_and_verify(ResourceKind::Lumber, -1)?;
+        self.add_to_stock_and_verify(ResourceKind::Steel, -1)?;
+        let capacity = nation.transport_capacity_mut();
+        *capacity = capacity.wrapping_add(1);
+        Ok(true)
+    }
+
+    /// Mirrors `TGreatPower::IncreaseMerchantMarine` against the owning
+    /// city's lumber and fabric stockpile.
+    pub fn increase_merchant_marine(
+        &mut self,
+        nation: &mut MajorNationState,
+    ) -> Result<bool, CityEconomyError> {
+        validate_resources("city stock", &self.stock_by_type)?;
+        if self.stock_by_type[ResourceKind::Lumber.index()] <= 2
+            || self.stock_by_type[ResourceKind::Fabric.index()] == 0
+        {
+            return Ok(false);
+        }
+
+        self.add_to_stock_and_verify(ResourceKind::Lumber, -3)?;
+        self.add_to_stock_and_verify(ResourceKind::Fabric, -1)?;
+        let capacity = nation.merchant_capacity_mut();
+        *capacity = capacity.wrapping_add(1);
+        Ok(true)
     }
 
     /// Mirrors `TCity::GetCitySummaryRecordSlot74` after the population need
@@ -177,6 +226,16 @@ impl CityState {
     fn clear_precious_metal_stock(&mut self) {
         self.stock_by_type[ResourceKind::Gold.index()] = 0;
         self.stock_by_type[ResourceKind::Gems.index()] = 0;
+    }
+
+    fn add_to_stock_and_verify(
+        &mut self,
+        resource: ResourceKind,
+        delta: i16,
+    ) -> Result<(), CityEconomyError> {
+        let stock = &mut self.stock_by_type[resource.index()];
+        *stock = stock.wrapping_add(delta);
+        self.verify_stocks()
     }
 }
 
@@ -322,6 +381,36 @@ mod tests {
         assert_eq!(state.stock_by_type[ResourceKind::Livestock.index()], 2);
         assert_eq!(state.stock_by_type[ResourceKind::Gems.index()], 0);
         assert_eq!(state.stock_by_type[ResourceKind::Gold.index()], 0);
+    }
+
+    #[test]
+    fn rolling_stock_consumes_lumber_and_steel() {
+        let mut state = city();
+        let mut owner = nation();
+        state.stock_by_type[ResourceKind::Lumber.index()] = 2;
+        state.stock_by_type[ResourceKind::Steel.index()] = 1;
+
+        assert!(state.increase_rolling_stock(&mut owner).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Lumber.index()], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Steel.index()], 0);
+        assert_eq!(owner.capacities[TRANSPORT_CAPACITY_INDEX], 16);
+        assert!(!state.increase_rolling_stock(&mut owner).unwrap());
+        assert_eq!(owner.capacities[TRANSPORT_CAPACITY_INDEX], 16);
+    }
+
+    #[test]
+    fn merchant_marine_requires_three_lumber_and_one_fabric() {
+        let mut state = city();
+        let mut owner = nation();
+        state.stock_by_type[ResourceKind::Lumber.index()] = 2;
+        state.stock_by_type[ResourceKind::Fabric.index()] = 1;
+        assert!(!state.increase_merchant_marine(&mut owner).unwrap());
+
+        state.stock_by_type[ResourceKind::Lumber.index()] = 3;
+        assert!(state.increase_merchant_marine(&mut owner).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Lumber.index()], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Fabric.index()], 0);
+        assert_eq!(owner.capacities[1], 1);
     }
 
     #[test]
