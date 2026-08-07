@@ -1659,6 +1659,17 @@ TurnEventQueuePacket* TMultiplayerMgr::PopTimelyMessage() {
   return packet;
 }
 
+// FUNCTION: IMPERIALISM 0x00549280
+void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node) {
+  node->nextQueuePacket = 0;
+  TurnEventQueuePacket** tail = &primaryTurnEventQueueHead;
+  for (TurnEventQueuePacket* queued = primaryTurnEventQueueHead; queued != 0;
+       queued = queued->nextQueuePacket) {
+    tail = &queued->nextQueuePacket;
+  }
+  *tail = node;
+}
+
 // FUNCTION: IMPERIALISM 0x005492c0
 TurnEventQueuePacket* TMultiplayerMgr::PopVerbalMessage() {
   TurnEventQueuePacket* packet = secondaryTurnEventQueueHead;
@@ -1697,17 +1708,6 @@ bool TMultiplayerMgr::IsTimelyMessage(NetMessage* packet) {
   default:
     return false;
   }
-}
-
-// FUNCTION: IMPERIALISM 0x00549280
-void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node) {
-  node->nextQueuePacket = 0;
-  TurnEventQueuePacket** tail = &primaryTurnEventQueueHead;
-  for (TurnEventQueuePacket* queued = primaryTurnEventQueueHead; queued != 0;
-       queued = queued->nextQueuePacket) {
-    tail = &queued->nextQueuePacket;
-  }
-  *tail = node;
 }
 
 // FUNCTION: IMPERIALISM 0x005493c0

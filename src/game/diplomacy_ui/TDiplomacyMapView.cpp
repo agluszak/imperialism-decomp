@@ -1571,6 +1571,12 @@ void TDiplomacyMapView::DoKeyEvent(TToolboxEvent* event) {
   TEventHandler::DoKeyEvent(event);
 }
 
+// FUNCTION: IMPERIALISM 0x004f7170
+void TDiplomacyMapView::SetOverlay(int overlay) {
+  interactionModeAt94 = overlay;
+  InvalidateCityDialogRectRegion(&mapViewportRect514, 1);
+}
+
 // FUNCTION: IMPERIALISM 0x004f71a0
 void TDiplomacyMapView::DrawVoteNuggets() {
   ResetQuickDrawStrokeState();
@@ -1642,12 +1648,6 @@ void ShowDiplomacyActionRejectedNotice() {
   g_pSimMgr->GetString(0x2754, g_pDiplomacyTurnStateManager->proposalArrayMode - 1, &message);
   g_pViewMgr->ModalMessage(3, CString(g_szEmptyString), message, g_ptDiplomacyNoticeModalMessage, 0,
                            0);
-}
-
-// FUNCTION: IMPERIALISM 0x004f7170
-void TDiplomacyMapView::SetOverlay(int overlay) {
-  interactionModeAt94 = overlay;
-  InvalidateCityDialogRectRegion(&mapViewportRect514, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x004f74f0

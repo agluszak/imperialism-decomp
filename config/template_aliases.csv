@@ -36,6 +36,9 @@
 0x004ac370|0x004adc40|??0CString@@QAE@PBD@Z|library_callee_alias
 0x004b0970|0x00605797|??0CString@@QAE@XZ|library_callee_alias
 0x00426ec0|0x00479b00|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|per_tu_duplicate
+0x00479d50|0x00415f90|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|per_tu_duplicate
+0x0048ada0|0x00415f90|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|per_tu_duplicate
+0x0060d058|0x005e691b|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|library_linked_copy
 0x004847a0|0x004829f0|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|per_tu_duplicate
 0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
 0x005e4a30|0x00486f60|??_G?$CList@PAXPAX@@UAEPAXI@Z|per_tu_duplicate

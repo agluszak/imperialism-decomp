@@ -1383,7 +1383,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x0060c622||?ConvertDialogUnitsToPixels@@YAXPBDGHHPAUtagSIZE@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x0060cda8||?AbbreviateName@@YAXPADHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x0060d044||?DeleteTempMap@CMenu@@SGXXZ||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x0060d058||?afxMapHMENU@@YAPAVCHandleMap@@H@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x0060d058|afxMapHMENU_60d058|||||migrated_from:src/game/library_msvc500_fid.cpp;distinct linked copy with separate module-state layout|LIBRARY
 0x0060d151|CMenu::DeleteObject|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x0060d2c0||?FromHandle@CHandleMap@@QAEPAVCObject@@PAX@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00610ce5||?DoSave@CDocument@@UAEHPBDH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY

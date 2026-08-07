@@ -5635,7 +5635,7 @@ address|name|symbol|size|type|prototype|provenance
 594fe0|TWorldView::GetRuntimeClass||6|function|undefined GetTWorldViewClassNamePointer()|rtti
 595000|TWorldView::ConstructTWorldViewBaseState||42|function|undefined ConstructTWorldViewBaseState()|
 595040|TWorldView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-595070|TWorldView::~TWorldView||1|function|void __thiscall ~TWorldView(void)|curated
+595070|IltTarget_00595070||1|function|void IltTarget_00595070(void)|curated
 595090|TWorldView::DoPostCreate||13|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5950b0|TWorldView::DoEvent||81|function|undefined HandleNationStateCommandX78AndForwardToChild()|
 595130|TWorldView::DoKeyEvent||1232|function|void __thiscall HandleMapScreenHotkeyDispatch(int * pKeyEvent)|
@@ -7788,7 +7788,7 @@ address|name|symbol|size|type|prototype|provenance
 60cfa8|AUX_DATA::UpdateSysColors|?UpdateSysColors@AUX_DATA@@QAEXXZ|68|function|public: void __thiscall AUX_DATA::UpdateSysColors(void)|msvc500_library_oracle
 60cfec|AUX_DATA::UpdateSysMetrics|?UpdateSysMetrics@AUX_DATA@@QAEXXZ|88|function|public: void __thiscall AUX_DATA::UpdateSysMetrics(void)|msvc500_library_oracle
 60d044|CMenu::DeleteTempMap|?DeleteTempMap@CMenu@@SGXXZ|20|function|undefined DeleteTempMap_60d044()|
-60d058|afxMapHMENU|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|112|function|undefined afxMapHIMAGELIST_60d058()|
+60d058|afxMapHMENU_60d058|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|112|function|undefined afxMapHIMAGELIST_60d058()|
 60d0c8|CMenu::FromHandle|?FromHandle@CMenu@@SGPAV1@PAUHMENU__@@@Z|22|function|public: static class CMenu * __stdcall CMenu::FromHandle(struct HMENU__*)|msvc500_library_oracle
 60d0de|CMenu::FromHandlePermanent|?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z|28|function|public: static class CMenu * __stdcall CMenu::FromHandlePermanent(struct HMENU__*)|msvc500_library_oracle
 60d127|Detach||42|function|undefined ?Detach@CMenu@@QAEPAUHMENU__@@XZ()|
