@@ -134,12 +134,14 @@ CString CaptureMetadata(const RuntimeRun& run) {
   // screen used to reach it.
   CString json;
   json.Format("{\"scenario_map_index_plus_one\":%d,\"economic_turn\":%d,\"turn_state\":%d,"
-              "\"difficulty\":%d,\"active_nation\":%d,\"selected_nation\":%d}",
+              "\"difficulty\":%d,\"active_nation\":%d,\"selected_nation\":%d,"
+              "\"persistent_unit_id_counter\":%d}",
               g_pSimMgr != 0 ? g_pSimMgr->scenarioMapIndexPlusOne : 0,
               g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1,
               g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1,
               g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot());
+              g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot(),
+              g_pSimMgr != 0 ? g_pSimMgr->field_64 : 0);
   return json;
 }
 
@@ -154,8 +156,8 @@ CString CaptureRng(const RuntimeRun& run) {
 
 CString CaptureWorld() {
   CString json;
-  json.Format("{\"width\":108,\"height\":60,\"wrap\":%d,\"tiles\":[",
-              g_pGlobalMapState->hexNeighborWrapHorizontally);
+  json.Format("{\"width\":108,\"height\":60,\"wraps_horizontally\":%s,\"tiles\":[",
+              g_pGlobalMapState->hexNeighborWrapHorizontally == 0 ? "true" : "false");
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
     const TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
     CString row;

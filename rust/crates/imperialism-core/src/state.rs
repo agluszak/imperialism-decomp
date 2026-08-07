@@ -8,6 +8,7 @@ use crate::{
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameState {
     pub turn: TurnState,
+    pub persistent_unit_id_counter: i32,
     pub world: WorldState,
     pub rng: RngState,
     pub nations: Vec<Option<NationState>>,
@@ -300,6 +301,18 @@ pub enum GameCommand {}
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameEvent {
     PhaseAdvanceRequested,
+    CivilianUnitRecruited {
+        id: CivilianUnitId,
+        nation: NationId,
+        unit_type: i16,
+        tile: TileId,
+    },
+    RecruitmentAnnounced {
+        nation: NationId,
+        specialist: bool,
+        unit_type: i16,
+        requested: i16,
+    },
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -326,10 +339,11 @@ impl TryFrom<GameSnapshotV1> for GameState {
                 active_nation: snapshot.metadata.active_nation,
                 selected_nation: snapshot.metadata.selected_nation,
             },
+            persistent_unit_id_counter: snapshot.metadata.persistent_unit_id_counter,
             world: WorldState {
                 width: snapshot.world.width,
                 height: snapshot.world.height,
-                wraps_horizontally: snapshot.world.wrap != 0,
+                wraps_horizontally: snapshot.world.wraps_horizontally,
                 tiles: snapshot
                     .world
                     .tiles

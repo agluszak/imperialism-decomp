@@ -66,7 +66,7 @@ pub struct LegacySimulationPrefix {
     pub difficulty: u8,
     pub game_setup: LegacyGameSetup,
     pub scenario_map_index_plus_one: i32,
-    pub localization_group_code: i32,
+    pub persistent_unit_id_counter: i32,
     pub nation_availability: [u8; NATION_COUNT],
     pub saved_multiplayer_role: i32,
     pub preference_slot_10: i16,
@@ -710,7 +710,7 @@ impl LegacyMapState {
         SnapshotWorld {
             width: STRATEGIC_MAP_WIDTH,
             height: STRATEGIC_MAP_HEIGHT,
-            wrap: i32::from(self.no_horizontal_wrap),
+            wraps_horizontally: self.no_horizontal_wrap == 0,
             tiles: self
                 .tiles
                 .iter()
@@ -823,7 +823,7 @@ impl LegacySaveV62 {
         let difficulty = stream.read_u8()?;
         let game_setup = read_game_setup(&mut stream)?;
         let scenario_map_index_plus_one = i32::from(game_setup.scenario_map_index_plus_one);
-        let localization_group_code = stream.read_le_i32()?;
+        let persistent_unit_id_counter = stream.read_le_i32()?;
         let nation_availability = stream.read_bytes(NATION_COUNT)?.try_into().unwrap();
         let saved_multiplayer_role = stream.read_le_i32()?;
         if saved_multiplayer_role != 0 {
@@ -852,7 +852,7 @@ impl LegacySaveV62 {
             difficulty,
             game_setup,
             scenario_map_index_plus_one,
-            localization_group_code,
+            persistent_unit_id_counter,
             nation_availability,
             saved_multiplayer_role,
             preference_slot_10,
@@ -1042,6 +1042,15 @@ impl LegacySaveV62 {
             })
             .collect::<Result<Vec<_>, _>>()?;
 
+        // The retail load path restores this counter before deserializing units.
+        // Every TUnit constructor increments it once, even though ReadFrom then
+        // replaces the unit's generated ID with the persisted ID.
+        let loaded_unit_count = military_units.len().wrapping_add(civilian_units.len());
+        let persistent_unit_id_counter = self
+            .simulation
+            .persistent_unit_id_counter
+            .wrapping_add(loaded_unit_count as i32);
+
         let mut snapshot = GameSnapshotV1 {
             schema: GAME_SNAPSHOT_SCHEMA.to_owned(),
             sections: GAME_SNAPSHOT_SECTIONS.map(str::to_owned).to_vec(),
@@ -1053,6 +1062,7 @@ impl LegacySaveV62 {
                 difficulty: i32::from(self.simulation.difficulty),
                 active_nation: i32::from(self.simulation.active_nation),
                 selected_nation: context.selected_nation,
+                persistent_unit_id_counter,
             },
             rng: SnapshotRng {
                 runtime_seed: context.runtime_seed,
@@ -2300,7 +2310,7 @@ mod tests {
         assert_eq!(save.map.tiles[0].owner_nation, 82);
         assert_eq!(
             save.map.snapshot_world().semantic_hash().unwrap(),
-            "dbd2668d"
+            "f5b26fa2"
         );
         assert!(!save.ocean.zones.is_empty());
         assert!(save.navy.ships.is_empty());
@@ -2516,15 +2526,16 @@ mod tests {
             save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
         );
         assert_eq!(snapshot.missions.records.len(), 66);
-        assert_eq!(snapshot.hashes.metadata, "c05f0452");
+        assert_eq!(snapshot.metadata.persistent_unit_id_counter, 950);
+        assert_eq!(snapshot.hashes.metadata, "092efbfb");
         assert_eq!(snapshot.hashes.rng, "e90a6b4e");
-        assert_eq!(snapshot.hashes.world, "dbd2668d");
+        assert_eq!(snapshot.hashes.world, "f5b26fa2");
         assert_eq!(snapshot.hashes.nations, "1d88ea9d");
         assert_eq!(snapshot.hashes.economy, "4a05e963");
         assert_eq!(snapshot.hashes.military, "e15fdcf6");
         assert_eq!(snapshot.hashes.missions, "b6cc8e06");
         assert_eq!(snapshot.hashes.pending, "1ca83a13");
-        assert_eq!(snapshot.hashes.state, "bfe91fed");
+        assert_eq!(snapshot.hashes.state, "3629aa9b");
 
         let mut game = imperialism_core::GameState::try_from(snapshot).unwrap();
         assert_eq!(game.civilian_units.len(), expected_civilian_count);

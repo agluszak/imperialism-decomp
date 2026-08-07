@@ -9,6 +9,7 @@ mod map_geometry;
 mod nation_economy;
 mod population;
 mod production;
+mod recruitment;
 mod resources;
 mod rng;
 mod snapshot;
@@ -34,6 +35,7 @@ pub use production::{
     PowerPlantProductionOrder, ProductionConstraint, ProductionError, ResourceCost, TrainingLevel,
     TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
 };
+pub use recruitment::RecruitmentError;
 pub use resources::ResourceKind;
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,

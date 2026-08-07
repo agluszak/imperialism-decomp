@@ -45,6 +45,7 @@ pub struct SnapshotMetadata {
     pub difficulty: i32,
     pub active_nation: i32,
     pub selected_nation: i32,
+    pub persistent_unit_id_counter: i32,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -59,7 +60,7 @@ pub struct SnapshotRng {
 pub struct SnapshotWorld {
     pub width: u16,
     pub height: u16,
-    pub wrap: i32,
+    pub wraps_horizontally: bool,
     pub tiles: Vec<TileSnapshot>,
 }
 
@@ -673,6 +674,15 @@ impl GameSnapshotV1 {
                 )));
             }
         }
+        if unit_ids
+            .iter()
+            .chain(civilian_ids.iter())
+            .any(|id| *id > self.metadata.persistent_unit_id_counter)
+        {
+            return Err(SnapshotValidationError::Shape(
+                "unit id exceeds the persistent unit counter".to_owned(),
+            ));
+        }
         for (index, ship) in self.military.ships.iter().enumerate() {
             if usize::try_from(ship.index).ok() != Some(index) {
                 return Err(SnapshotValidationError::Shape(format!(
@@ -1041,6 +1051,7 @@ mod tests {
                 difficulty: 1,
                 active_nation: 6,
                 selected_nation: 6,
+                persistent_unit_id_counter: 43,
             },
             rng: SnapshotRng {
                 runtime_seed: 1,
@@ -1051,7 +1062,7 @@ mod tests {
             world: SnapshotWorld {
                 width: 108,
                 height: 60,
-                wrap: 0,
+                wraps_horizontally: true,
                 tiles: vec![TileSnapshot([0; 10]); 6480],
             },
             nations: SnapshotNations {

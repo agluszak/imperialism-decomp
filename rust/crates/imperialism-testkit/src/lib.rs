@@ -182,13 +182,17 @@ mod tests {
             },
             "metadata": {
                 "scenario_map_index_plus_one": 0, "economic_turn": 1, "turn_state": 5,
-                "difficulty": 1, "active_nation": 6, "selected_nation": 6
+                "difficulty": 1, "active_nation": 6, "selected_nation": 6,
+                "persistent_unit_id_counter": 0
             },
             "rng": {
                 "runtime_seed": 1, "crt_rand_state": 1, "map_generation_lcg": 1,
                 "zone_status_lcg": 1
             },
-            "world": {"width": 108, "height": 60, "wrap": 0, "tiles": vec![[0; 10]; 6480]},
+            "world": {
+                "width": 108, "height": 60, "wraps_horizontally": true,
+                "tiles": vec![[0; 10]; 6480]
+            },
             "nations": {"records": (0..23).map(|slot| json!({
                 "slot": slot,
                 "kind": if slot < 7 { "major" } else { "minor" },
