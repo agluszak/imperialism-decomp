@@ -49,6 +49,16 @@ class RuntimeFixtureMetadataTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "scenario"):
                 validate_fixture_metadata(fixture, "other_scenario")
 
+    def test_explicitly_authorized_consumer_scenario_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            fixture = self._fixture(Path(temporary))
+            sidecar = fixture.with_suffix(".imp.json")
+            metadata = json.loads(sidecar.read_text(encoding="utf-8"))
+            metadata["scenarios"] = ["load_saved_game", "specialist_recruitment"]
+            sidecar.write_text(json.dumps(metadata), encoding="utf-8")
+            validated = validate_fixture_metadata(fixture, "specialist_recruitment")
+        self.assertEqual(validated["scenario"], "load_saved_game")
+
 
 if __name__ == "__main__":
     unittest.main()

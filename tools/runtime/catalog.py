@@ -167,6 +167,17 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "specialist_recruitment",
+        "SpecialistRecruitmentTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game",),
+    ),
+    RuntimeTestSpec(
         "diplomacy_screen_operates",
         "DiplomacyScreenTest",
         ("full",),

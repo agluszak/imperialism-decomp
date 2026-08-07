@@ -307,6 +307,18 @@ pub enum GameEvent {
         unit_type: i16,
         tile: TileId,
     },
+    MilitaryUnitRecruited {
+        id: MilitaryUnitId,
+        nation: NationId,
+        unit_type: i16,
+        province: i16,
+        experience: i16,
+    },
+    NationPendingActionQueued {
+        nation: NationId,
+        action: u8,
+        payload: i16,
+    },
     RecruitmentAnnounced {
         nation: NationId,
         specialist: bool,

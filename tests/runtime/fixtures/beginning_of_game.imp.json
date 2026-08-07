@@ -4,6 +4,10 @@
   "format": "imperialism-save",
   "format_version": 62,
   "scenario": "load_saved_game",
+  "scenarios": [
+    "load_saved_game",
+    "specialist_recruitment"
+  ],
   "schema": 1,
   "sha256": "e1ad5d4bfed15dcd749cf00e2a0b944b966ff9b516e263d469bbcd56b7301587",
   "size": 403129,
