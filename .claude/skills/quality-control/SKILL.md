@@ -210,6 +210,11 @@ boolean and old report schema are unsupported. It contains:
   structured facts identify the failing side/stage, graph shape, edge roles,
   jump-table rows, or incompatible x87 join state. `unsupported_control_flow`
   remains a legacy report-deserialization value, not a current analyzer result.
+- `semantic_similarity`, when present on a `mismatch`, is a diagnostic repair-distance
+  estimate over reachable, isomorphic control flow. It is independent of raw textual
+  similarity and may be lower than it; never clamp or blend the two. If local recovery
+  would discharge an earlier one-sided potentially-faulting load obligation, reccmp
+  omits the estimate and aggregate reporting uses its documented fallback.
 
 Result precedence is `exact` → any complete `effective` proof → a concrete mismatch
 from trusted CFG/lockstep pairing → `inconclusive`. A speculative alignment failure
