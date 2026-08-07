@@ -54,6 +54,12 @@ class ExactIdentitySelectionTests(unittest.TestCase):
         )
         self.assertEqual(decisions[0].status, "oracle-unique-via-existing-high")
 
+    def test_existing_exact_identity_is_report_only(self) -> None:
+        decisions = select_exact_identities(
+            [row("0x401000", "_same")], {"_same": 1}, {0x401000: "different-but-curated"}
+        )
+        self.assertEqual(decisions[0].status, "already-modeled")
+
     def test_output_contains_only_selected_rows(self) -> None:
         decisions = select_exact_identities(
             [row("0x401000", "_yes"), row("0x402000", "_no")],
@@ -66,7 +72,7 @@ class ExactIdentitySelectionTests(unittest.TestCase):
                 rows = list(csv.DictReader(fd, delimiter="|"))
         self.assertEqual(
             rows,
-            [{"address": "0x00401000", "symbol": "_yes", "type": "function"}],
+            [{"address": "0x00401000", "symbol": "_yes"}],
         )
 
 

@@ -55,6 +55,11 @@ build-crt-startup-oracle *args:
 build-library-pairing-identities *args:
   uv run python -m tools.mfc.library_pairing_identities {{args}}
 
+# Join archive-oracle decisions to typed pairing states by member.
+[group('rewrite')]
+library-link-surface-report *args:
+  uv run python -m tools.mfc.library_link_surface_report {{args}}
+
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]
 format *paths:

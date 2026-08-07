@@ -36,12 +36,12 @@ address|matching|name
 0x413c30|0.8301886792452831|TDDTemplateDialog::~TDDTemplateDialog
 0x413cd0|1.0|TDDTemplateDialog::`scalar deleting destructor'
 0x413d00|0.0|ImperialismApp::OnDeveloperCommand8014
-0x413d20|0.6442953020134228|ImperialismApp::OnSelectActiveNation
-0x413ed0|0.4782608695652174|TDBTemplateDialog
+0x413d20|0.6577181208053692|ImperialismApp::OnSelectActiveNation
+0x413ed0|0.5217391304347826|TDBTemplateDialog
 0x413f60|0.45454545454545453|ImperialismApp::OnApplyTurnCooldownOverride
 0x414070|0.0|TDCTemplateDialog
-0x4140f0|0.45098039215686275|ImperialismApp::OnAdjustNationResourcesAndPopulation
-0x414320|0.4782608695652174|TDETemplateDialog
+0x4140f0|0.46078431372549017|ImperialismApp::OnAdjustNationResourcesAndPopulation
+0x414320|0.5217391304347826|TDETemplateDialog
 0x4143b0|0.5384615384615384|ImperialismApp::OnPreviewDibResource
 0x4145d0|1.0|TDFTemplateDialog
 0x4145f0|1.0|ImperialismApp::OnIdle
@@ -62,7 +62,7 @@ address|matching|name
 0x415050|1.0|CWnd::BeginModalState
 0x415070|1.0|CWnd::EndModalState
 0x415090|0.8877551020408163|ImperialismApp::ShowAutoResolutionDialogIfNeeded
-0x4152e0|0.7407407407407407|TAutoResolutionDialog::~TAutoResolutionDialog
+0x4152e0|0.8148148148148148|TAutoResolutionDialog::~TAutoResolutionDialog
 0x415380|1.0|T64TemplateDialog::OnInitDialog
 0x4153a0|0.8857142857142857|ReadSettingsPrefIntByIndex
 0x415440|0.5625|WriteSettingsPrefIntByIndex
@@ -77,11 +77,11 @@ address|matching|name
 0x415ce0|0.8888888888888888|TObject::ShallowFree
 0x415d50|1.0|TEventHandler::GetIdleFreq
 0x415d70|1.0|TEventHandler::SetIdleFreq
+0x415e20|0.6|$CRT_CPP_Initializer(4)
 0x415e70|0.9696969696969697|CList<TView *,TView *>::~CList<TView *,TView *>
 0x415f00|1.0|CObject::`scalar deleting destructor'
 0x415f30|1.0|CObject::~CObject(void)
 0x415f50|0.6666666666666666|CList<TView *,TView *>::CList<TView *,TView *>
-0x415f90|1.0|CList<TView *,TView *>::`scalar deleting destructor'(unsigned int)
 0x415fe0|0.40587713243269896|BuildTradeSchoolDialogControls
 0x41b1c0|1.0|CObject::operator new
 0x41b210|0.29743589743589743|RegisterUiResourceEntry
@@ -316,6 +316,7 @@ address|matching|name
 0x479e10|0.8235294117647058|ClearUiResourceEntryDwords
 0x479e40|0.43636363636363634|CDib::CreateObject
 0x479ed0|1.0|CDib::GetRuntimeClass
+0x479ef0|0.75|$CRT_CPP_Initializer(5)
 0x479f10|1.0|operator>>(class CArchive &, class CDib *&)
 0x479f40|1.0|CDib::CDib(void)
 0x479fb0|1.0|CDib::`scalar deleting destructor'
@@ -370,14 +371,15 @@ address|matching|name
 0x47ce10|1.0|TCdAudioDevice::QueryMciStatusField5
 0x47ce30|1.0|TCdAudioDevice::QueryMciStatusField8
 0x47ce50|1.0|TCdAudioDevice::QueryMciStatusField3
+0x47cfa0|1.0|$CRT_CPP_Initializer(6)
 0x47cfd0|0.8115942028985508|TC2TemplateDialog::TC2TemplateDialog
 0x47d090|1.0|TC2TemplateDialog::`scalar deleting destructor'
-0x47d0c0|0.7407407407407407|TC2TemplateDialog
+0x47d0c0|0.8148148148148148|TC2TemplateDialog
 0x47d160|1.0|TC2TemplateDialog::DoDataExchange
 0x47d1a0|0.5|TC2TemplateDialog::GetMessageMap
 0x47d1c0|0.8135593220338984|TD2TemplateDialog::TD2TemplateDialog
 0x47d250|1.0|TD2TemplateDialog::`scalar deleting destructor'
-0x47d280|0.4782608695652174|TD2TemplateDialog
+0x47d280|0.5217391304347826|TD2TemplateDialog
 0x47d310|1.0|TD2TemplateDialog::DoDataExchange
 0x47d340|0.5|TD2TemplateDialog::GetMessageMap
 0x47d360|0.8135593220338984|TDBTemplateDialog::TDBTemplateDialog
@@ -407,7 +409,7 @@ address|matching|name
 0x47de10|1.0|TDFTemplateDialog::OnInitDialog
 0x47de40|0.8135593220338984|TFATemplateDialog::TFATemplateDialog
 0x47ded0|1.0|TFATemplateDialog::`scalar deleting destructor'
-0x47df00|0.4782608695652174|TFATemplateDialog
+0x47df00|0.5217391304347826|TFATemplateDialog
 0x47df90|1.0|TFATemplateDialog::DoDataExchange
 0x47dfb0|0.5|TFATemplateDialog::GetMessageMap
 0x47dfd0|0.6575342465753424|TAutoResolutionDialog::TAutoResolutionDialog
@@ -415,9 +417,9 @@ address|matching|name
 0x47e0c0|1.0|TAutoResolutionDialog::DoDataExchange
 0x47e100|0.5|TAutoResolutionDialog::GetMessageMap
 0x47e120|1.0|TAutoResolutionDialog::OnInitDialog
-0x47e200|0.9090909090909091|CButton::`scalar deleting destructor'
-0x47e230|0.9090909090909091|CListBox::`scalar deleting destructor'
-0x47e260|0.9090909090909091|CSliderCtrl::`scalar deleting destructor'
+0x47e200|1.0|CButton::`scalar deleting destructor'
+0x47e230|1.0|CListBox::`scalar deleting destructor'
+0x47e260|1.0|CSliderCtrl::`scalar deleting destructor'
 0x47e360|1.0|CDibPal::CDibPal
 0x47e390|1.0|CDibPal::`scalar deleting destructor'
 0x47e3c0|0.9615384615384616|CDibPal::~CDibPal
@@ -433,6 +435,7 @@ address|matching|name
 0x47eea0|1.0|CDibPal::SavePalette(class CFile *)
 0x47ef20|1.0|CDibPal::SavePalette(unsigned int)
 0x47efa0|0.4796380090497738|CDibPal::SavePalette(struct HMMIO__*)
+0x47f250|1.0|$CRT_CPP_Initializer(7)
 0x47f280|1.0|TA3TemplateDialog::TA3TemplateDialog
 0x47f2b0|1.0|TA3TemplateDialog::VerifyDialogContext
 0x47f2d0|1.0|TA3TemplateDialog::`scalar deleting destructor'
@@ -447,31 +450,32 @@ address|matching|name
 0x47f430|0.5|TA4TemplateDialog::GetMessageMap
 0x47f450|0.8135593220338984|TADTemplateDialog::TADTemplateDialog
 0x47f4e0|1.0|TADTemplateDialog::`scalar deleting destructor'
-0x47f510|0.4782608695652174|TADTemplateDialog
+0x47f510|0.5217391304347826|TADTemplateDialog
 0x47f5d0|1.0|TADTemplateDialog::DoDataExchange
 0x47f600|0.5|TADTemplateDialog::GetMessageMap
 0x47f620|1.0|TADTemplateDialog::OnInitDialog
+0x47f710|0.25|$CRT_CPP_Initializer(8)
 0x47f7f0|1.0|RuntimeSelectionRecord::~RuntimeSelectionRecord
 0x47f810|1.0|ForwardEnumSessionToCallbackTable
 0x47f870|1.0|ForwardEnumSessionsToSessionManager
 0x47f8b0|0.7123287671232876|TDirectPlaySessionManagerBase::OnEnumerateServiceProvider
 0x47fb20|1.0|TDirectPlaySessionManagerBase::OnDirectPlayAssertion111
 0x47fb50|1.0|TDirectPlaySessionManagerBase::OnEnumerateJoinableSession
-0x47fb80|0.9375|TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult
+0x47fb80|1.0|TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult
 0x47fbc0|0.7790697674418605|TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreResult
 0x47fcb0|1.0|TWNetSessionManager::CreatePlayerAndStoreResult
 0x47fd30|1.0|TWNetSessionManager::DestroyPlayerAndStoreResult
 0x47fd70|1.0|TDirectPlaySessionManagerBase::GetRuntimeSelectionAuxStatus
-0x47fd90|0.9761904761904762|TWNetSessionManager::RebuildRuntimeSelectionSource
+0x47fd90|1.0|TWNetSessionManager::RebuildRuntimeSelectionSource
 0x47fe50|0.5571428571428572|TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate
 0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
 0x480400|1.0|TWNetSessionManager::ResetRuntimeSelectionRecordBuffer
 0x4804c0|1.0|TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld
-0x480500|0.375|TDirectPlaySessionManagerBase::SelectRuntimeProvider
+0x480500|0.3854166666666667|TDirectPlaySessionManagerBase::SelectRuntimeProvider
 0x480750|1.0|TModalDialogBase::TModalDialogBase
-0x480790|0.4782608695652174|T104TemplateDialog
+0x480790|0.5217391304347826|T104TemplateDialog
 0x480820|1.0|TDirectPlaySessionManagerBase::ShowJoinGameSelectionDialogAndCaptureChoice
 0x480850|1.0|TWNetSessionManager::TrySendNetworkPacket
 0x4808a0|1.0|TWNetSessionManager::TryReceiveNetworkPacketIntoResizableBuffer
@@ -494,7 +498,7 @@ address|matching|name
 0x481220|1.0|T102TemplateDialog::OnInitDialog
 0x4813a0|0.8974358974358975|TA1TemplateDialog::TA1TemplateDialog
 0x481480|1.0|TA1TemplateDialog::`scalar deleting destructor'
-0x4814b0|0.8679245283018868|TA1TemplateDialog
+0x4814b0|0.9811320754716981|TA1TemplateDialog
 0x481540|1.0|TA1TemplateDialog::DoDataExchange
 0x4815d0|0.5|TA1TemplateDialog::GetMessageMap
 0x4815f0|1.0|TA5TemplateDialog::TA5TemplateDialog
@@ -623,7 +627,7 @@ address|matching|name
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|1.0|CMainFrame::~CMainFrame
 0x484d00|0.9545454545454546|CMainFrame::OnCreate
-0x484d70|0.9615384615384616|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
+0x484d70|0.9743589743589743|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
 0x484f70|1.0|CMainFrame::PreCreateWindow
 0x484fb0|1.0|CMainFrame::OnMsg0464
 0x484fd0|1.0|CMainFrame::OnStartupCommand100
@@ -631,9 +635,9 @@ address|matching|name
 0x485110|0.7317073170731707|CMainFrame::OnPaletteChanged
 0x485150|1.0|CMainFrame::ReplacePaletteAndRealize
 0x485180|1.0|CMainFrame::OnCommand8009
-0x4851b0|0.6020942408376964|CMainFrame::OnCommand800C
+0x4851b0|0.612565445026178|CMainFrame::OnCommand800C
 0x485590|1.0|CMainFrame::OnCommand800D
-0x4855b0|0.8138801261829653|CMainFrame::OnCommand8013
+0x4855b0|0.8391167192429022|CMainFrame::OnCommand8013
 0x485920|0.8148148148148148|CMainFrame::HandleCustomMessage2420DispatchTurnEvent
 0x485960|1.0|CMainFrame::OnMsg0BC0
 0x485990|1.0|CMainFrame::SetBackgroundColorAndInvalidate
@@ -642,9 +646,10 @@ address|matching|name
 0x485c00|1.0|CMainFrame::OnChar
 0x485c20|0.8181818181818182|CMainFrame::WinHelp
 0x485c60|1.0|CMainFrame::OnActivate
-0x485c90|0.7857142857142857|CMainFrame::OnActivateApp
+0x485c90|0.8214285714285714|CMainFrame::OnActivateApp
 0x485df0|1.0|TObject::CreateObject
 0x485e20|1.0|TObject::GetRuntimeClass
+0x485e40|0.75|$CRT_CPP_Initializer(13)
 0x485e60|1.0|operator>>(class CArchive &, class TObject *&)
 0x485e90|0.8235294117647058|TObject::Serialize
 0x485f50|1.0|TObject(void)
@@ -1003,7 +1008,9 @@ address|matching|name
 0x48cfd0|0.6486486486486487|TIncludeView::DoPostCreate
 0x48d090|0.27586206896551724|TWindow::CreateObject
 0x48d220|1.0|TWindow::GetRuntimeClass
+0x48d240|0.7272727272727273|$CRT_CPP_Initializer(17)
 0x48d290|1.0|GetModalStackTopHostView
+0x48d4a0|0.7272727272727273|$CRT_CPP_Initializer(18)
 0x48d500|0.7169811320754716|TWindow::TWindow
 0x48d640|1.0|TWindow::`scalar deleting destructor'
 0x48d670|0.5622119815668203|TWindow::~TWindow
@@ -1151,7 +1158,10 @@ address|matching|name
 0x4925e0|0.9696969696969697|CList<TWindow *,TWindow *>::~CList<TWindow *,TWindow *>
 0x492670|1.0|CList<TWindow *,TWindow *>::Serialize
 0x4927e0|1.0|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::Serialize
+0x492950|1.0|CList<TWindow *,TWindow *>::`scalar deleting destructor'
+0x492980|1.0|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::`scalar deleting destructor'
 0x4929b0|0.9696969696969697|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::~CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>
+0x492a40|1.0|CList<TWindow *,TWindow *>::NewNode
 0x492c70|1.0|TEvent::`scalar deleting destructor'
 0x492ca0|1.0|TEvent
 0x492cc0|1.0|TWindow::GetWindow
@@ -1194,6 +1204,8 @@ address|matching|name
 0x493ce0|0.7777777777777778|CMcWindow::OnChar
 0x493d50|1.0|CMcWindow::OnIdleUpdateMsg36A
 0x493d80|1.0|CMcWindow::PreCreateWindow
+0x493f90|0.25|$CRT_CPP_Initializer(21)
+0x494010|1.0|$E211(1)
 0x494040|0.6274509803921569|TQuickDrawClipStateInitializer::TQuickDrawClipStateInitializer
 0x494130|0.47533632286995514|CreateFontFromPresetAndAttachRegionHandle
 0x494340|0.7272727272727273|CPen::`scalar deleting destructor'
@@ -1307,6 +1319,10 @@ address|matching|name
 0x498dd0|1.0|TE0TemplateDialog::`scalar deleting destructor'
 0x498e00|1.0|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette(void)
 0x498e30|1.0|TQuickDrawPaletteSelectionState::SelectDefaultDibPalette(class CDC *)
+0x498e70|1.0|$CRT_CPP_Initializer(25)
+0x498e90|1.0|$CRT_CPP_Initializer(26)
+0x498eb0|1.0|$CRT_CPP_Initializer(27)
+0x498ee0|1.0|$CRT_CPP_Initializer(28)
 0x498f10|1.0|TQuickDrawOwnedObjectRecord::~TQuickDrawOwnedObjectRecord
 0x498f60|0.6938775510204082|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB
 0x498fe0|0.5103092783505154|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB
@@ -1345,9 +1361,19 @@ address|matching|name
 0x49b7f0|1.0|CMap<void *,void *,CacheRecord *,CacheRecord *>::InitHashTable
 0x49b870|1.0|CMap<void *,void *,CacheRecord *,CacheRecord *>::NewAssoc
 0x49b980|1.0|CMap<void *,void *,CacheRecord *,CacheRecord *>::GetAssocAt
-0x49baf0|0.918918918918919|TD0TemplateDialog
+0x49b9d0|1.0|$CRT_CPP_Initializer(30)
+0x49b9f0|1.0|$CRT_CPP_Initializer(31)
+0x49ba10|1.0|$CRT_CPP_Initializer(32)
+0x49ba40|1.0|$CRT_CPP_Initializer(33)
+0x49baa0|0.7272727272727273|$CRT_CPP_Initializer(35)
+0x49bad0|1.0|$E248
+0x49baf0|0.972972972972973|TD0TemplateDialog
 0x49bb60|1.0|TracePrintfWithContext
 0x49bbb0|1.0|TracePrintf
+0x49bc00|1.0|$CRT_CPP_Initializer(36)
+0x49bc20|1.0|$CRT_CPP_Initializer(37)
+0x49bc40|1.0|$CRT_CPP_Initializer(38)
+0x49bc70|1.0|$CRT_CPP_Initializer(39)
 0x49bcd0|0.9642857142857143|TD0TemplateDialog::TD0TemplateDialog
 0x49bd60|1.0|TD0TemplateDialog::`scalar deleting destructor'
 0x49bd90|0.8571428571428571|TD0TemplateDialog::AppendTraceTextAndFlushCompleteLines
@@ -1355,6 +1381,13 @@ address|matching|name
 0x49bf90|0.5|TD0TemplateDialog::GetMessageMap
 0x49bfb0|1.0|TD0TemplateDialog::OnOK
 0x49bfd0|1.0|TD0TemplateDialog::OnCancel
+0x49bff0|1.0|$CRT_CPP_Initializer(41)
+0x49c010|1.0|$CRT_CPP_Initializer(42)
+0x49c030|1.0|$CRT_CPP_Initializer(43)
+0x49c060|1.0|$CRT_CPP_Initializer(44)
+0x49c0c0|1.0|$CRT_CPP_Initializer(46)
+0x49c0f0|1.0|$CRT_CPP_Initializer(47)
+0x49c120|1.0|$CRT_CPP_Initializer(48)
 0x49c150|0.42857142857142855|TSoundResourceManager::CreateChannelBuffer
 0x49c240|1.0|TSoundResourceManager::UpdateLocalizationAudioSlot
 0x49c290|0.9733333333333334|TSoundResourceManager::LoadWaveFileByPathAndBuildBuffer
@@ -1364,7 +1397,11 @@ address|matching|name
 0x49c850|1.0|TSoundResourceManager::SetChannelVolumesUntilAccepted
 0x49c8a0|1.0|TSoundResourceManager::SetChannelVolume
 0x49c8e0|1.0|TSoundResourceManager::ReleaseDirectSoundDeviceAndChannels(void)
-0x49c970|0.6870229007633588|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels
+0x49c970|0.7022900763358778|TSoundResourceManager::InitializeDirectSoundDeviceAndChannels
+0x49cac0|1.0|$CRT_CPP_Initializer(49)
+0x49cae0|1.0|$CRT_CPP_Initializer(50)
+0x49cb00|1.0|$CRT_CPP_Initializer(51)
+0x49cb30|1.0|$CRT_CPP_Initializer(52)
 0x49cb90|1.0|TBackdropWindow::TBackdropWindow
 0x49cbc0|1.0|TBackdropWindow::`scalar deleting destructor'
 0x49cbf0|1.0|TBackdropWindow::~TBackdropWindow
@@ -1378,14 +1415,26 @@ address|matching|name
 0x49d090|1.0|TBackdropWindow::OnCreate
 0x49d180|0.85|TBackdropWindow::OnPaint
 0x49d240|1.0|TBackdropWindow::OnTimer
+0x49d290|1.0|$CRT_CPP_Initializer(54)
+0x49d2b0|1.0|$CRT_CPP_Initializer(55)
+0x49d2d0|1.0|$CRT_CPP_Initializer(56)
+0x49d300|1.0|$CRT_CPP_Initializer(57)
 0x49d360|0.5733333333333334|TModalDialogBase::PrepareAndCreateModalFromTemplate
 0x49d450|0.96|TModalDialogBase::DoModal
 0x49d510|1.0|TModalDialogBase::CleanupModalCreateState
+0x49d550|1.0|$CRT_CPP_Initializer(59)
+0x49d570|1.0|$CRT_CPP_Initializer(60)
+0x49d590|1.0|$CRT_CPP_Initializer(61)
+0x49d5c0|1.0|$CRT_CPP_Initializer(62)
 0x49d620|0.9333333333333333|TemporarilyClearAndRestoreUiInvalidationFlag
 0x49d650|0.7586206896551724|TAdorner::CreateObject
 0x49d6d0|1.0|TAdorner::GetRuntimeClass
 0x49d6f0|0.6451612903225806|TDialogView::CreateObject
 0x49d790|1.0|TDialogView::GetRuntimeClass
+0x49d7b0|1.0|$CRT_CPP_Initializer(64)
+0x49d7d0|1.0|$CRT_CPP_Initializer(65)
+0x49d7f0|1.0|$CRT_CPP_Initializer(66)
+0x49d820|1.0|$CRT_CPP_Initializer(67)
 0x49d880|1.0|TDialogView::EnsureField48Buffer
 0x49d8b0|1.0|TDialogView::`scalar deleting destructor'
 0x49d8e0|1.0|TDialogView::~TDialogView
@@ -1400,6 +1449,16 @@ address|matching|name
 0x49da80|1.0|TAdorner::DoesAdorn
 0x49dab0|1.0|TAdorner::`scalar deleting destructor'
 0x49dae0|1.0|TAdorner
+0x49db00|1.0|$CRT_CPP_Initializer(69)
+0x49db30|1.0|$CRT_CPP_Initializer(70)
+0x49db60|1.0|$CRT_CPP_Initializer(71)
+0x49db90|1.0|$CRT_CPP_Initializer(72)
+0x49dbb0|1.0|$CRT_CPP_Initializer(73)
+0x49dbe0|1.0|$CRT_CPP_Initializer(74)
+0x49dc10|1.0|$CRT_CPP_Initializer(75)
+0x49dc30|1.0|$CRT_CPP_Initializer(76)
+0x49dc60|1.0|$CRT_CPP_Initializer(77)
+0x49dc90|1.0|$CRT_CPP_Initializer(78)
 0x49dcc0|1.0|QuickDrawCompatibilityReturnZeroShort_0049DCC0
 0x49dce0|1.0|QuickDrawCompatibilityNoOp_0049DCE0
 0x49dd00|1.0|QuickDrawCompatibilityReturnSecondArgument_0049DD00
@@ -1676,13 +1735,13 @@ address|matching|name
 0x4ad560|1.0|TBattleReportView::Free
 0x4ad5a0|0.7909090909090909|TBattleReportView::DoIdle
 0x4ad7a0|0.43478260869565216|TBattleReportView::DoEvent
-0x4adc40|0.3103448275862069|CString::CString(char const *)
+0x4adc40|0.3448275862068966|CString::CString(char const *)
 0x4adc80|1.0|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback
 0x4adcb0|1.0|TBattleReportView::DoMouseCommand
 0x4ade00|1.0|TBattleReportView::Draw
 0x4ade30|0.8743718592964824|TBattleReportView::RenderMapContextActionMarkers
 0x4adfc0|0.7698961937716263|TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
-0x4ae990|0.34615384615384615|CString::CString(unsigned short const *)
+0x4ae990|0.38461538461538464|CString::CString(unsigned short const *)
 0x4ae9d0|0.6666666666666666|TBattleDetailBook::CreateObject
 0x4aea70|1.0|TBattleDetailBook::GetRuntimeClass
 0x4aea90|1.0|TBattleDetailBook::DoEvent
@@ -1940,6 +1999,7 @@ address|matching|name
 0x4b9340|1.0|SwapFirstTwoBytesInBuffer
 0x4b9360|1.0|TExpansionOrder::FillOrderSheet
 0x4b94a0|1.0|WriteByteSwappedShortArrayToStream
+0x4b95c0|0.04054054054054054|$CRT_CPP_Initializer(87)
 0x4ba240|1.0|TCityProductionView::CreateObject
 0x4ba2c0|1.0|TCityProductionView::GetRuntimeClass
 0x4ba2e0|0.875|TCityProductionView::TCityProductionView
@@ -2103,6 +2163,7 @@ address|matching|name
 0x4c68e0|1.0|TLongintList::AtDelete
 0x4c69a0|1.0|TLongintList::RemoveAll
 0x4c69e0|1.0|TLongintList::Delete
+0x4c6aa0|1.0|CList<long,long>::`scalar deleting destructor'
 0x4c6b60|1.0|TLongintList::Dump
 0x4c6bf0|1.0|TLongintList::Free
 0x4c6df0|0.9206349206349206|TBuildingView::CreateObject
@@ -2889,6 +2950,7 @@ address|matching|name
 0x4fe290|1.0|TScoreGraph::GetRuntimeClass
 0x4fe2b0|1.0|TScoreGraph::DoPostCreate
 0x4fe390|0.41295546558704455|TScoreGraph::Draw
+0x4fe6a0|0.16666666666666666|$CRT_CPP_Initializer(98)
 0x4fe710|0.25|TDisplayMgr::CreateObject
 0x4fe780|1.0|TDisplayMgr::GetRuntimeClass
 0x4fe7a0|0.5641025641025641|TDisplayMgr::TDisplayMgr
@@ -3120,6 +3182,7 @@ address|matching|name
 0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
 0x50df40|0.2857142857142857|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.5255474452554745|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
+0x50e290|1.0|$CRT_CPP_Initializer(104)
 0x50e2c0|1.0|Province::GetIndex
 0x50e2f0|0.47761194029850745|TMapMgr::CreateObject
 0x50e3b0|1.0|TMapMgr::GetRuntimeClass
@@ -3127,11 +3190,12 @@ address|matching|name
 0x50e460|1.0|TMapMgr::`scalar deleting destructor'
 0x50e490|0.9696969696969697|TMapMgr::~TMapMgr
 0x50e4e0|1.0|TMapMgr::IMapMgr
-0x50e510|0.9|TMapMgr::Free
-0x50e580|0.9411764705882353|Province::`vector deleting destructor'
+0x50e510|0.9333333333333333|TMapMgr::Free
+0x50e580|1.0|Province::`vector deleting destructor'
+0x50e600|1.0|Province::~Province
 0x50e620|0.9174311926605505|TMapMgr::ReadFrom
 0x50e7a0|1.0|TMapMgr::WriteTo
-0x50e8b0|0.2785515320334262|TMapMgr::AllocateAndResetTerrainAndCityScoreTables
+0x50e8b0|0.2841225626740947|TMapMgr::AllocateAndResetTerrainAndCityScoreTables
 0x50ec60|1.0|Province::Province
 0x50ec90|1.0|TMapMgr::BuildOrLoadGlobalMapStateForSession
 0x50f0e0|0.4090909090909091|TMapMgr::ReadInRGBMap
@@ -3271,7 +3335,7 @@ address|matching|name
 0x519010|0.3821656050955414|TMapMgr::ClassifyCityGateTerrainComposition
 0x519140|0.534453781512605|TMapMgr::DumpAndResetMapScriptState
 0x519610|0.4939759036144578|TMapMgr::ChooseNationSetupProfilesForOpenSlots
-0x519970|1.0|InitializeMapDialogViewportTileSpan
+0x519970|1.0|$CRT_CPP_Initializer(void)
 0x5199c0|0.2988505747126437|TMapDialog::CreateObject
 0x519af0|1.0|TWorldView::QueryMinusOneWordSlot77
 0x519b10|1.0|TWorldView::~TWorldView
@@ -3335,9 +3399,9 @@ address|matching|name
 0x51dba0|0.5172413793103449|TMapEditView::PlaceRiver
 0x51dc90|0.7983870967741935|TMapEditView::PlaceCountySeat
 0x51deb0|0.8082191780821918|TMapEditView::DoKeyEvent
-0x51e0b0|1.0|InitializeMapInteractionPreviewScaleXDefault
-0x51e0e0|1.0|InitializeMapInteractionPreviewScaleYDefault
-0x51e110|1.0|RecomputeMapInteractionPreviewVerticalOffsetFromScale
+0x51e0b0|1.0|$CRT_CPP_Initializer(void)
+0x51e0e0|1.0|$CRT_CPP_Initializer(void)
+0x51e110|1.0|$CRT_CPP_Initializer(void)
 0x51e160|0.2857142857142857|ConfigureWhiteQuickDrawPen
 0x51e1a0|1.0|TMapDialog::ResetAllTileMarkersToSentinel
 0x51e1f0|0.2777777777777778|TMapDialog::ReleaseTileMarkerForTile
@@ -3609,6 +3673,7 @@ address|matching|name
 0x534f70|1.0|TMission::Hold
 0x534f90|1.0|TMission::SmokeEmIfYouGotEm
 0x534fb0|1.0|TMission::GetRuntimeClass
+0x534fd0|0.75|$CRT_CPP_Initializer(114)
 0x534ff0|1.0|operator>>(class CArchive &, class TMission *&)
 0x535020|1.0|TMission::TMission
 0x535050|1.0|TMission::`scalar deleting destructor'
@@ -3651,6 +3716,7 @@ address|matching|name
 0x5362c0|0.9504950495049505|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
 0x536390|1.0|TNavyMission::CreateObject
 0x536450|1.0|TNavyMission::GetRuntimeClass
+0x536470|0.75|$CRT_CPP_Initializer(116)
 0x536490|1.0|operator>>(class CArchive &, class TNavyMission *&)
 0x5364c0|1.0|TNavyMission::Free
 0x536530|1.0|TNavyMission::WriteTo
@@ -3684,6 +3750,7 @@ address|matching|name
 0x5383f0|0.5892351274787535|TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder
 0x5386c0|1.0|TControlSeaZoneMission::CreateObject
 0x538780|1.0|TControlSeaZoneMission::GetRuntimeClass
+0x5387a0|0.75|$CRT_CPP_Initializer(117)
 0x5387c0|1.0|operator>>(class CArchive &, class TControlSeaZoneMission *&)
 0x5387f0|0.7746478873239436|TControlSeaZoneMission::Initialize
 0x538900|0.5161290322580645|TControlSeaZoneMission::GetReplacementSlot48
@@ -3703,6 +3770,7 @@ address|matching|name
 0x539960|1.0|TEscortMission::`scalar deleting destructor'
 0x539990|1.0|TEscortMission::~TEscortMission
 0x5399b0|1.0|TEscortMission::GetRuntimeClass
+0x5399d0|0.75|$CRT_CPP_Initializer(118)
 0x5399f0|1.0|operator>>(class CArchive &, class TEscortMission *&)
 0x539a20|0.3448275862068966|TEscortMission::TEscortMission
 0x539a70|1.0|TEscortMission::Initialize
@@ -3717,6 +3785,7 @@ address|matching|name
 0x53a3d0|1.0|TBeachheadMission::`scalar deleting destructor'
 0x53a400|1.0|TBeachheadMission::~TBeachheadMission
 0x53a420|1.0|TBeachheadMission::GetRuntimeClass
+0x53a440|0.75|$CRT_CPP_Initializer(119)
 0x53a460|1.0|operator>>(class CArchive &, class TBeachheadMission *&)
 0x53a490|0.30303030303030304|TBeachheadMission::TBeachheadMission
 0x53a500|0.3860759493670886|TBeachheadMission::CalculateNeeds
@@ -3730,6 +3799,7 @@ address|matching|name
 0x53aa90|1.0|TBlockadePortMission::`scalar deleting destructor'
 0x53aac0|1.0|TBlockadePortMission::~TBlockadePortMission
 0x53aae0|1.0|TBlockadePortMission::GetRuntimeClass
+0x53ab00|0.75|$CRT_CPP_Initializer(120)
 0x53ab20|1.0|operator>>(class CArchive &, class TBlockadePortMission *&)
 0x53ab50|0.38016528925619836|TBlockadePortMission::TBlockadePortMission
 0x53ac60|1.0|TBlockadePortMission::WriteTo
@@ -3744,6 +3814,7 @@ address|matching|name
 0x53ba40|1.0|TBlockadePortMission::GiveActionOrders
 0x53ba60|1.0|TScatteredShipsMission::CreateObject
 0x53bb20|1.0|TScatteredShipsMission::GetRuntimeClass
+0x53bb40|0.75|$CRT_CPP_Initializer(121)
 0x53bb60|1.0|operator>>(class CArchive &, class TScatteredShipsMission *&)
 0x53bb90|0.75|TScatteredShipsMission::Initialize
 0x53bbb0|1.0|TScatteredShipsMission::Reassess
@@ -3757,6 +3828,7 @@ address|matching|name
 0x53bf90|1.0|TScatteredShipsMission::RefreshMissionPortZoneContextForNation
 0x53bfb0|1.0|TArmyMission::CreateObject
 0x53c030|1.0|TArmyMission::GetRuntimeClass
+0x53c050|0.75|$CRT_CPP_Initializer(122)
 0x53c070|1.0|operator>>(class CArchive &, class TArmyMission *&)
 0x53c0a0|1.0|TArmyMission::TArmyMission
 0x53c1b0|1.0|TArmyMission::IsANoBrainer
@@ -3787,6 +3859,7 @@ address|matching|name
 0x53d670|1.0|TAttackProvinceMission::CreateObject
 0x53d6f0|1.0|TAttackProvinceMission::IsHospitalMission
 0x53d710|1.0|TAttackProvinceMission::GetRuntimeClass
+0x53d730|0.75|$CRT_CPP_Initializer(123)
 0x53d750|1.0|operator>>(class CArchive &, class TAttackProvinceMission *&)
 0x53d780|1.0|TAttackProvinceMission::TAttackProvinceMission
 0x53d7c0|1.0|TAttackProvinceMission::`scalar deleting destructor'
@@ -3806,6 +3879,7 @@ address|matching|name
 0x53e5b0|1.0|TAttackProvinceMission::Matches
 0x53e5f0|1.0|TDefendProvinceMission::CreateObject
 0x53e670|1.0|TDefendProvinceMission::GetRuntimeClass
+0x53e690|0.75|$CRT_CPP_Initializer(124)
 0x53e6b0|1.0|operator>>(class CArchive &, class TDefendProvinceMission *&)
 0x53e6e0|0.6545454545454545|TDefendProvinceMission::ComputeCrossNationSupportVectorScore
 0x53ea70|0.574585635359116|TDefendProvinceMission::ComputeLocalSupportVectorScore
@@ -3825,6 +3899,7 @@ address|matching|name
 0x53f1f0|0.8888888888888888|TInvadeMission::IndustrialCostOfNeeds
 0x53f240|1.0|TInvadeMission::IsHospitalMission
 0x53f260|1.0|TInvadeMission::GetRuntimeClass
+0x53f280|0.75|$CRT_CPP_Initializer(125)
 0x53f2a0|1.0|operator>>(class CArchive &, class TInvadeMission *&)
 0x53f2d0|0.3|TInvadeMission::TInvadeMission
 0x53f3c0|1.0|TInvadeMission::`scalar deleting destructor'
@@ -4367,6 +4442,8 @@ address|matching|name
 0x564530|1.0|TOcean::ComputeGlobalMapActionContextNodeValueAverage
 0x564570|1.0|TOcean::FindMapActionContextContainingNodeByIndex
 0x564600|1.0|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh
+0x564800|1.0|$CRT_CPP_Initializer(133)
+0x564830|1.0|$CRT_CPP_Initializer(134)
 0x564860|0.5818181818181818|TMilitaryPageView::CreateObject
 0x564900|1.0|TMilitaryPageView::GetRuntimeClass
 0x564920|1.0|TMilitaryPageView::TMilitaryPageView
@@ -4784,6 +4861,7 @@ address|matching|name
 0x576d80|0.6122448979591837|TSetupRandomMapPicture::TSetupRandomMapPicture
 0x576e00|1.0|TSetupRandomMapPicture::`scalar deleting destructor'
 0x576e30|0.972972972972973|TSetupRandomMapPicture::~TSetupRandomMapPicture
+0x576ea0|0.25|$CRT_CPP_Initializer(141)
 0x576fe0|1.0|TSetupRandomMapPicture::RecheckCountryName
 0x577030|0.5611374407582939|TSetupRandomMapPicture::DoPostCreate
 0x5779c0|0.8739130434782608|TSetupRandomMapPicture::DoEvent
@@ -5271,6 +5349,7 @@ address|matching|name
 0x594790|0.3235294117647059|TStatusPicture::DrawBar
 0x594900|0.39263803680981596|TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale
 0x594c00|0.7948717948717948|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
+0x594ed0|1.0|$CRT_CPP_Initializer(146)
 0x594f20|0.5079365079365079|TWorldView::CreateObject
 0x594fc0|1.0|TWorldView::CenterOn
 0x594fe0|1.0|TWorldView::GetRuntimeClass
@@ -5638,7 +5717,7 @@ address|matching|name
 0x5ad6c0|0.4897959183673469|TTacticalHolaPicture::CreateObject
 0x5ad740|1.0|TTacticalHolaPicture::GetRuntimeClass
 0x5ad760|1.0|TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels
-0x5ad9e0|1.0|ResetUiFrameClipOrigin
+0x5ad9e0|1.0|$CRT_CPP_Initializer(void)
 0x5adb40|0.42424242424242425|TTask::CreateObject
 0x5adb70|1.0|TTask::GetRuntimeClass
 0x5adb90|1.0|TTask::TTask
@@ -6045,6 +6124,7 @@ address|matching|name
 0x5c3670|0.7063492063492064|TMilitaryUnit::Upgrade
 0x5c3840|0.8709677419354839|TMilitaryUnit::UpgradeRequirements
 0x5c38e0|0.9636363636363636|TMilitaryUnit::FindUnitByUID
+0x5c3b00|0.75|$CRT_CPP_Initializer(161)
 0x5c3b40|1.0|WaitForSixteenthSecondTicks
 0x5c3b70|0.3504273504273504|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext
 0x5c3d20|0.8617886178861789|ResolveUiThemeColor
@@ -6177,7 +6257,7 @@ address|matching|name
 0x5dc430|1.0|TViewMgr::ShowBuildingExpansionDialog
 0x5dc560|1.0|DispatchUiRuntimeMessage102CAndRefreshActiveView
 0x5dc690|0.7400468384074942|TViewMgr::ShowUnitHistory
-0x5dcaa0|0.8943089430894309|TViewMgr::MakeGameSetupDialog
+0x5dcaa0|0.943089430894309|TViewMgr::MakeGameSetupDialog
 0x5dcc90|1.0|TModalMessageCommand::CreateObject
 0x5dcd10|1.0|TModalMessageCommand::DoIt
 0x5dcd50|1.0|TModalMessageCommand::`scalar deleting destructor'
@@ -6290,10 +6370,15 @@ address|matching|name
 0x5e24e0|1.0|TMovieView::PlayMovieIfActive
 0x5e2500|1.0|TMovieView::StopMovieIfActive
 0x5e2520|1.0|TMovieView::HandleMouseDown
+0x5e26d0|0.7272727272727273|$CRT_CPP_Initializer(168)
+0x5e2720|0.25|$CRT_CPP_Initializer(169)
+0x5e2770|0.25|$CRT_CPP_Initializer(170)
 0x5e2850|1.0|WNetSelectionRecord::~WNetSelectionRecord
 0x5e2900|0.463768115942029|RecordHostPlayerIdDuringEnumeration
 0x5e2980|1.0|TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration
-0x5e2a20|0.5352112676056338|TWNetSessionManager::~TWNetSessionManager
+0x5e29d0|0.25|$CRT_CPP_Initializer(171)
+0x5e2a00|1.0|$E487
+0x5e2a20|0.5492957746478874|TWNetSessionManager::~TWNetSessionManager
 0x5e2b50|1.0|TDirectPlaySessionManagerBase::InitializeSessionDescription
 0x5e2b70|1.0|TDirectPlaySessionManagerBase::ResetSessionDescription
 0x5e2bb0|1.0|TWNetSessionManager::ResetSessionDescription
@@ -6328,6 +6413,11 @@ address|matching|name
 0x5e42f0|0.75|TNetMgr::CheckConnectivityOrShowLocalizedWarningAndReturnReady
 0x5e43e0|0.6794871794871795|TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask
 0x5e4540|0.9090909090909091|CList<void *,void *>::CList<void *,void *>
+0x5e4830|1.0|CArray<WNetSelectionRecord *,WNetSelectionRecord *>::Serialize
+0x5e4a90|1.0|CArray<WNetSelectionRecord *,WNetSelectionRecord *>::SetSize
+0x5e4d80|0.8571428571428571|$CRT_CPP_Initializer(173)
+0x5e4dc0|1.0|$E210
+0x5e4de0|0.25|$CRT_CPP_Initializer(174)
 0x5e4e70|0.9508196721311475|TSoundPlayer::ISoundPlayer
 0x5e4f60|1.0|TSoundPlayer::DefaultSoundCapabilityPredicate
 0x5e4f80|1.0|TSoundPlayer::RequestDirectSoundInitIfAllowed
@@ -6352,7 +6442,7 @@ address|matching|name
 0x5e54a0|0.9375|CProcessLocal<_AFX_WIN_STATE>::CreateObject
 0x5e54d1|1.0|CWnd::GetOwner
 0x5e54e8|1.0|CHandleMap::~CHandleMap
-0x5e5529|0.8823529411764706|CDragListBox::~CDragListBox
+0x5e5529|0.9411764705882353|CDragListBox::~CDragListBox
 0x5e5561|1.0|CDragListBox::PreSubclassWindow
 0x5e556b|1.0|CDragListBox::BeginDrag
 0x5e5597|1.0|CDragListBox::CancelDrag
@@ -6396,6 +6486,7 @@ address|matching|name
 0x5e62fa|1.0|CTreeCtrl::OnDestroy
 0x5e6379|1.0|CSpinButtonCtrl::Create
 0x5e6416|1.0|CSliderCtrl::Create
+0x5e644f|0.9411764705882353|CSliderCtrl::~CSliderCtrl
 0x5e64be|1.0|CSliderCtrl::SetRange
 0x5e6557|1.0|CProgressCtrl::Create
 0x5e65c8|1.0|CHeaderCtrl::Create
@@ -6403,19 +6494,19 @@ address|matching|name
 0x5e6710|1.0|CTabCtrl::Create
 0x5e67ec|1.0|CAnimateCtrl::Create
 0x5e68be|0.42424242424242425|CBrush::~CBrush(void)
-0x5e68f1|1.0|CMenu::Detach(void)
-0x5e691b|0.868421052631579|afxMapHMENU(int)
+0x5e68f1|0.9473684210526315|CMenu::Detach(void)
 0x5e698b|0.875|CMenu::DestroyMenu
-0x5e69a1|1.0|CMenu::DeleteTempMap(void)
-0x5e69cb|1.0|CMenu::FromHandlePermanent(struct HMENU__*)
+0x5e69a1|0.875|CMenu::DeleteTempMap(void)
+0x5e69cb|0.9|CMenu::FromHandlePermanent(struct HMENU__*)
 0x5e69e7|1.0|CImageList::Create(int, int, unsigned int, int, int)
 0x5e6a0f|1.0|CImageList::Create(unsigned int, int, int, unsigned long)
 0x5e6a41|1.0|CImageList::Create(char const *, int, int, unsigned long)
 0x5e6a73|1.0|CImageList::Create(class CImageList &, int, class CImageList &, int, int, int)
 0x5e6aa4|0.9523809523809523|CImageList::Attach
-0x5e6ad1|0.95|CImageList::Read
-0x5e6afe|0.9375|CImageList::Write
+0x5e6ad1|1.0|CImageList::Read
+0x5e6afe|1.0|CImageList::Write
 0x5e6b22|1.0|CListBox::GetCurSel
+0x5e6b35|1.0|CDragListBox::`scalar deleting destructor'
 0x5e6cf5|1.0|CFile::SetFilePath
 0x5e6d04|1.0|CArchive::operator<<(unsigned char)
 0x5e6d27|1.0|CArchive::operator<<(unsigned short)
@@ -6424,10 +6515,13 @@ address|matching|name
 0x5e6da3|1.0|CArchive::operator>>(unsigned short &)
 0x5e6dd6|1.0|CArchive::operator>>(unsigned long &)
 0x5e6e08|0.9166666666666666|CMemoryException::CMemoryException(int, unsigned int)
+0x5e6ebe|1.0|CDC::PtVisible
 0x5e6ee2|0.8571428571428571|CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 0x5e6efe|1.0|CDC::ExtTextOutA
 0x5e6f23|1.0|CDC::TabbedTextOutA
 0x5e6f77|1.0|CDC::GrayStringA
+0x5e6fa7|1.0|CDC::Escape
+0x5e709d|1.0|CCtrlView::~CCtrlView
 0x5e711d|0.8|CArchiveStream::CArchiveStream
 0x5e717e|0.8571428571428571|CArchiveStream::Read
 0x5e71d6|0.8620689655172413|CArchiveStream::Write
@@ -6438,12 +6532,12 @@ address|matching|name
 0x5e7400|1.0|?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
 0x5e7440|1.0|?_CallMemberFunction0@@YGXPAX0@Z
 0x5e7450|1.0|?_CallMemberFunction2@@YGXPAX00H@Z
-0x5e7470|0.96875|?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z
+0x5e7470|1.0|?_UnwindNestedFrames@@YGXPAUEHRegistrationNode@@PAUEHExceptionRecord@@@Z
 0x5e74d0|1.0|___CxxFrameHandler
 0x5e7530|0.8888888888888888|?_CallCatchBlock2@@YAPAXPAUEHRegistrationNode@@PBU_s_FuncInfo@@PAXHK@Z
 0x5e75c0|0.9655172413793104|?_CallSETranslator@@YAHPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAX2PBU_s_FuncInfo@@H1@Z
 0x5e7720|1.0|?_GetRangeOfTrysToCheck@@YAPBU_s_TryBlockMapEntry@@PBU_s_FuncInfo@@HHPAI1@Z
-0x5e77a0|0.7555555555555555|__global_unwind2
+0x5e77a0|1.0|__global_unwind2
 0x5e77e2|0.8813559322033898|__local_unwind2
 0x5e784a|0.9|__abnormal_termination
 0x5e786d|0.75|__NLG_Notify1
@@ -6496,7 +6590,7 @@ address|matching|name
 0x5e9a90|1.0|_memset
 0x5e9ae8|1.0|__EH_prolog
 0x5e9b10|1.0|__strdup
-0x5e9b60|0.46153846153846156|__cinit
+0x5e9b60|0.7692307692307693|__cinit
 0x5e9b90|0.42857142857142855|_exit
 0x5e9bb0|0.42857142857142855|__exit
 0x5e9cb0|1.0|__lockexit
@@ -6691,6 +6785,7 @@ address|matching|name
 0x5fa7f8|1.0|_AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE
 0x5fa80b|1.0|_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE
 0x5fa845|0.9444444444444444|CToolTipCtrl::CToolTipCtrl
+0x5fa87e|1.0|CToolTipCtrl::`scalar deleting destructor'
 0x5fa89a|1.0|CToolTipCtrl::Create
 0x5fa8e5|0.95|CToolTipCtrl::~CToolTipCtrl
 0x5fa92c|1.0|CToolTipCtrl::DestroyToolTipCtrl
@@ -6711,8 +6806,8 @@ address|matching|name
 0x5faddb|1.0|CWnd::FilterToolTipMessage
 0x5fb0d5|1.0|RelayToolTipMessage
 0x5feb02|1.0|AfxIsValidAddress
-0x5feb3b|0.9473684210526315|CString::CString(char, int)
-0x5feb73|0.9444444444444444|CString::CString(char const *, int)
+0x5feb3b|1.0|CString::CString(char, int)
+0x5feb73|1.0|CString::CString(char const *, int)
 0x5feba9|1.0|CString::operator=(char)
 0x5febbe|1.0|operator+(class CString const &, char)
 0x5fec20|1.0|operator+(char, class CString const &)
@@ -6734,7 +6829,7 @@ address|matching|name
 0x5ff439|0.8|AfxThrowMemoryException
 0x5ff454|0.8|AfxThrowNotSupportedException
 0x5ff46f|0.9789473684210527|CFileDialog::CFileDialog
-0x5ff5e1|0.9710144927536232|CFileDialog::DoModal
+0x5ff5e1|1.0|CFileDialog::DoModal
 0x5ff69e|1.0|CFileDialog::GetPathName
 0x5ff7ac|1.0|CFileDialog::GetFileName
 0x5ff976|1.0|CFileDialog::GetFileTitle
@@ -6756,8 +6851,12 @@ address|matching|name
 0x601b74|1.0|CPlex::Create
 0x601b94|1.0|CPlex::FreeDataChain
 0x601baa|0.875|CPtrArray::CPtrArray
+0x601bc1|1.0|CPtrArray::`scalar deleting destructor'
 0x601bdd|0.9411764705882353|CPtrArray::~CPtrArray
-0x601c14|1.0|CPtrArray::SetSize(int, int)
+0x601c14|1.0|CPtrArray::SetSize
+0x601d37|1.0|CPtrArray::Append
+0x601d71|1.0|CPtrArray::Copy
+0x601d9d|1.0|CPtrArray::FreeExtra
 0x601de3|1.0|CPtrArray::SetAtGrow
 0x601e0a|1.0|CPtrArray::InsertAt(int, void *, int)
 0x601e9f|1.0|CPtrArray::RemoveAt
@@ -6777,6 +6876,7 @@ address|matching|name
 0x6021b4|1.0|CPtrList::FindIndex
 0x6021d6|1.0|CPtrList::Find
 0x60339a|0.9090909090909091|CMapPtrToPtr::CMapPtrToPtr
+0x6033c1|1.0|CMapPtrToPtr::`scalar deleting destructor'
 0x6033dd|1.0|CMapPtrToPtr::InitHashTable
 0x603423|1.0|CMapPtrToPtr::RemoveAll
 0x60344e|0.9333333333333333|CMapPtrToPtr::~CMapPtrToPtr
@@ -6789,10 +6889,18 @@ address|matching|name
 0x6035bb|1.0|CMapPtrToPtr::RemoveKey
 0x6035fd|1.0|CMapPtrToPtr::GetNextAssoc
 0x60366f|0.9090909090909091|CMapStringToPtr::CMapStringToPtr
-0x60374a|0.8666666666666667|CMapStringToPtr::~CMapStringToPtr
-0x603860|0.9333333333333333|CMapStringToPtr::Lookup
-0x603882|0.9333333333333333|CMapStringToPtr::LookupKey
-0x6038a4|0.9230769230769231|CMapStringToPtr::operator[]
+0x603696|1.0|CMapStringToPtr::`scalar deleting destructor'
+0x6036b2|1.0|CMapStringToPtr::InitHashTable
+0x6036f8|1.0|CMapStringToPtr::RemoveAll
+0x60374a|0.9333333333333333|CMapStringToPtr::~CMapStringToPtr
+0x60377d|1.0|CMapStringToPtr::NewAssoc
+0x6037dd|1.0|CMapStringToPtr::FreeAssoc
+0x603806|1.0|CMapStringToPtr::GetAssocAt
+0x603860|1.0|CMapStringToPtr::Lookup
+0x603882|1.0|CMapStringToPtr::LookupKey
+0x6038a4|1.0|CMapStringToPtr::operator[]
+0x603906|1.0|CMapStringToPtr::RemoveKey
+0x60396e|1.0|CMapStringToPtr::GetNextAssoc
 0x604b68|0.95|AfxDlgProc
 0x604ba2|0.5|CDialog::GetMessageMap
 0x604ba8|0.4225352112676056|CDialog::PreTranslateMessage
@@ -6804,7 +6912,7 @@ address|matching|name
 0x604ddd|1.0|CDialog::CreateIndirect(struct DLGTEMPLATE const *, class CWnd *, void *, struct HINSTANCE__*)
 0x604e08|1.0|CWnd::CreateDlg
 0x604e4c|1.0|CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *)
-0x604e5e|0.9643835616438357|CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *, struct HINSTANCE__*)
+0x604e5e|0.9698630136986301|CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *, struct HINSTANCE__*)
 0x60507c|1.0|CWnd::SetOccDialogInfo
 0x605081|1.0|CDialog::SetOccDialogInfo
 0x60508e|0.9583333333333334|CDialog::CDialog(char const *, class CWnd *)
@@ -6825,17 +6933,18 @@ address|matching|name
 0x6055d0|1.0|CWinApp::WinHelpA
 0x605607|0.2222222222222222|CWinApp::ProcessWndProcException
 0x60567e|1.0|CWinApp::OnIdle
-0x6056e4|0.9384615384615385|CWinApp::DevModeChange
-0x605797|0.875|CString::CString(void)
-0x6057a7|0.9545454545454546|CString::CString(class CString const &)
-0x6057de|0.9545454545454546|CString::AllocBuffer
-0x605818|0.95|CString::Release(void)
+0x6056e4|1.0|CWinApp::DevModeChange
+0x605791|0.5|AfxGetEmptyString
+0x605797|1.0|CString::CString(void)
+0x6057a7|1.0|CString::CString(class CString const &)
+0x6057de|1.0|CString::AllocBuffer
+0x605818|1.0|CString::Release(void)
 0x60584a|1.0|CString::Release(struct CStringData *)
 0x60586d|1.0|CString::Empty
 0x60588b|1.0|CString::CopyBeforeWrite
 0x6058b9|1.0|CString::AllocBeforeWrite
 0x6058e2|1.0|CString::~CString
-0x60590b|0.96875|CString::AllocCopy
+0x60590b|1.0|CString::AllocCopy
 0x6059fc|1.0|CString::AssignCopy
 0x605a29|1.0|CString::operator=(class CString const &)
 0x605a78|1.0|CString::operator=(char const *)
@@ -6881,6 +6990,7 @@ address|matching|name
 0x606934|1.0|CWinThread::GetMainWnd
 0x60694f|1.0|CWinThread::PumpMessage
 0x60698f|0.9166666666666666|CCmdTarget::CCmdTarget
+0x6069af|1.0|CCmdTarget::`scalar deleting destructor'
 0x6069cb|0.9473684210526315|CCmdTarget::~CCmdTarget
 0x606a07|1.0|CCmdTarget::OnCmdMsg
 0x606b1f|0.9458128078817734|DispatchCmdMsg
@@ -6943,6 +7053,7 @@ address|matching|name
 0x6075ea|1.0|CWnd::GetDSCCursor
 0x607643|1.0|CWnd::AttachControlSite(class CHandleMap *)
 0x607673|1.0|CWnd::AttachControlSite(class CWnd *)
+0x607716|1.0|$CRT_CPP_Initializer(187)
 0x6077c6|0.9333333333333333|CWnd::CWnd(void)
 0x6077f0|1.0|CWnd::`scalar deleting destructor'
 0x60780c|0.9473684210526315|CWnd::CWnd(struct HWND__*)
@@ -6954,6 +7065,7 @@ address|matching|name
 0x6079d6|1.0|_AfxPostInitDialog
 0x607a4f|1.0|CWnd::GetCurrentMessage
 0x607a84|1.0|CWnd::Default
+0x607aab|1.0|CWnd::DeleteTempMap
 0x607abf|0.9473684210526315|afxMapHWND
 0x607b2f|1.0|CWnd::FromHandle
 0x607b57|1.0|CWnd::FromHandlePermanent
@@ -6965,7 +7077,7 @@ address|matching|name
 0x607d5d|1.0|_AfxHandleActivate
 0x607dbe|1.0|_AfxHandleSetCursor
 0x607e36|1.0|_AfxGrayBackgroundWndProc
-0x607eb2|0.9854014598540146|_AfxCbtFilterHook
+0x607eb2|1.0|_AfxCbtFilterHook
 0x608040|1.0|AfxHookWindowCreate
 0x60808c|1.0|AfxUnhookWindowCreate
 0x6080ce|1.0|CWnd::CreateEx(unsigned long, char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, unsigned int, void *)
@@ -6984,10 +7096,12 @@ address|matching|name
 0x6084d1|1.0|CWnd::CancelToolTips
 0x60852e|1.0|CWnd::OnToolHitTest
 0x60859f|1.0|CWnd::GetWindowTextA(class CString &)
-0x608657|1.0|CWnd::GetWindowPlacement(struct tagWINDOWPLACEMENT *)
+0x608657|1.0|CWnd::GetWindowPlacement
+0x60866e|1.0|CWnd::SetWindowPlacement
 0x608685|1.0|CWnd::OnDrawItem
 0x6086c2|1.0|CWnd::OnCompareItem
-0x60870c|1.0|CWnd::OnCharToItem(unsigned int, class CListBox *, unsigned int)
+0x60870c|1.0|CWnd::OnCharToItem
+0x608737|1.0|CWnd::OnVKeyToItem
 0x608762|1.0|CMenu::TrackPopupMenu
 0x6087b6|1.0|CWnd::OnMeasureItem
 0x60882f|1.0|FindPopupMenuFromID
@@ -7038,7 +7152,8 @@ address|matching|name
 0x609f56|1.0|CWnd::OnHelpInfo
 0x609fba|1.0|CWnd::OnDisplayChange
 0x60a007|1.0|CWnd::OnDragList
-0x60a031|1.0|CWnd::OnVScroll(unsigned int, unsigned int, class CScrollBar *)
+0x60a031|1.0|CWnd::OnVScroll
+0x60a052|1.0|CWnd::OnHScroll
 0x60a073|1.0|CWnd::OnEnterIdle
 0x60a0bd|1.0|CWnd::OnCtlColor
 0x60a0e4|1.0|CWnd::OnGrayCtlColor
@@ -7054,13 +7169,14 @@ address|matching|name
 0x60a60a|1.0|CWnd::RunModalLoop
 0x60a769|1.0|CWnd::ContinueModal
 0x60a770|1.0|CWnd::EndModalLoop
-0x60a794|0.9387755102040817|AfxEndDeferRegisterClass
+0x60a794|0.9591836734693877|AfxEndDeferRegisterClass
+0x60a8ce|1.0|RegisterWithIcon
 0x60a90f|1.0|CWnd::IsFrameWnd
 0x60a912|1.0|CFrameWnd::IsFrameWnd
 0x60a916|1.0|CFrameWnd::IsTracking
 0x60a935|1.0|CWnd::SubclassCtl3d
 0x60a97f|1.0|CWnd::SubclassDlg3d
-0x60a9c4|0.9615384615384616|CWnd::SubclassWindow
+0x60a9c4|1.0|CWnd::SubclassWindow
 0x60aa6e|1.0|CWnd::UnsubclassWindow
 0x60aa96|0.75|CException::CException(void)
 0x60aaa6|0.8|CException::CException(int)
@@ -7070,6 +7186,7 @@ address|matching|name
 0x60ab56|1.0|AfxGetExceptionContext
 0x60ab7e|1.0|AfxTryCleanup
 0x60abac|0.9473684210526315|CFile::CFile(void)
+0x60abec|1.0|CFile::`scalar deleting destructor'
 0x60ac08|0.95|CFile::CFile(int)
 0x60ac4c|0.96|CFile::CFile(char const *, unsigned int)
 0x60acf6|0.9545454545454546|CFile::~CFile
@@ -7082,7 +7199,8 @@ address|matching|name
 0x60afda|1.0|CFile::Flush
 0x60affb|1.0|CFile::Close
 0x60b03c|1.0|CFile::Abort
-0x60b05c|1.0|CFile::LockRange(unsigned long, unsigned long)
+0x60b05c|1.0|CFile::LockRange
+0x60b085|1.0|CFile::UnlockRange
 0x60b0ae|1.0|CFile::SetLength
 0x60b0da|1.0|CFile::GetLength
 0x60b10a|1.0|CFile::Rename
@@ -7096,7 +7214,7 @@ address|matching|name
 0x60b4cb|1.0|AfxFullPath
 0x60b5a4|1.0|AfxGetRoot
 0x60b66a|1.0|AfxComparePath
-0x60b72d|0.9696969696969697|AfxGetFileTitle
+0x60b72d|1.0|AfxGetFileTitle
 0x60b783|1.0|AfxGetModuleShortFileName
 0x60b7dd|1.0|CFile::GetFileName
 0x60b85f|1.0|CFile::GetFileTitle
@@ -7125,6 +7243,7 @@ address|matching|name
 0x60c57d|1.0|CDialogTemplate::GetSizeInPixels
 0x60c622|1.0|ConvertDialogUnitsToPixels
 0x60c723|0.9838709677419355|CRecentFileList::CRecentFileList
+0x60c7df|1.0|CRecentFileList::`scalar deleting destructor'
 0x60c7fb|1.0|CString::`vector deleting destructor'
 0x60c837|0.9629629629629629|CRecentFileList::~CRecentFileList
 0x60c894|1.0|CRecentFileList::Add
@@ -7139,10 +7258,10 @@ address|matching|name
 0x60cf30|1.0|AfxExtractSubString
 0x60cfa8|1.0|AUX_DATA::UpdateSysColors
 0x60cfec|1.0|AUX_DATA::UpdateSysMetrics
-0x60d0c8|1.0|CMenu::FromHandle
+0x60d0c8|0.8571428571428571|CMenu::FromHandle
 0x60d127|0.9473684210526315|CGdiObject::Detach
 0x60d16d|1.0|AfxLockTempMaps
-0x60d176|0.9534883720930233|AfxUnlockTempMaps
+0x60d176|0.9883720930232558|AfxUnlockTempMaps
 0x60d264|1.0|CHandleMap::CHandleMap
 0x60d2c0|0.9064748201438849|CHandleMap::FromHandle
 0x60d39b|1.0|CHandleMap::DeleteTemp
@@ -7191,7 +7310,7 @@ address|matching|name
 0x6118ba|1.0|CDocument::SendInitialUpdate
 0x6118ed|1.0|CDocument::OnCmdMsg
 0x611930|1.0|operator<<(class CArchive &, class CString const &)
-0x6119aa|0.9836065573770492|operator>>(class CArchive &, class CString &)
+0x6119aa|1.0|operator>>(class CArchive &, class CString &)
 0x611a47|1.0|ReadStringLength
 0x611a9e|1.0|SerializeElements
 0x611aec|1.0|CRuntimeClass::Load
@@ -7217,6 +7336,7 @@ address|matching|name
 0x61249e|1.0|CArchive::ReadClass
 0x612682|0.8571428571428571|CDC::CDC
 0x612696|1.0|CDC::`scalar deleting destructor'
+0x6126b2|1.0|CDC::DeleteTempMap
 0x6126c6|0.9473684210526315|afxMapHDC
 0x612736|1.0|CDC::FromHandle
 0x61274c|1.0|CDC::Attach
@@ -7228,14 +7348,21 @@ address|matching|name
 0x612931|1.0|CDC::SelectObject(class CPen *)
 0x612984|1.0|CDC::SelectObject(class CBrush *)
 0x6129d7|1.0|CDC::SelectObject(class CFont *)
+0x612a2a|1.0|CDC::SelectObject(class CRgn *)
 0x612a78|0.5|CDC::SelectPalette
 0x612a9a|0.9615384615384616|CDC::SetPolyFillMode(int)
 0x612ad2|1.0|CDC::SetBkMode
+0x612b42|1.0|CDC::SetROP2
+0x612b7a|1.0|CDC::SetStretchBltMode
+0x612bb2|1.0|CDC::SetTextColor
 0x612bea|1.0|CDC::SetMapMode
 0x612c22|0.9714285714285714|CDC::MoveTo
-0x612c6e|0.9714285714285714|CDC::OffsetWindowOrg(int, int)
+0x612c6e|1.0|CDC::OffsetViewportOrg
+0x612cba|1.0|CDC::SetViewportExt
 0x612d06|0.9743589743589743|CDC::ScaleWindowExt(int, int, int, int)
 0x612d5e|1.0|CDC::SetWindowOrg
+0x612daa|1.0|CDC::OffsetWindowOrg(int, int)
+0x612df6|1.0|CDC::SetWindowExt
 0x612e9a|1.0|CDC::GetClipBox
 0x612eaa|1.0|CDC::SelectClipRgn(class CRgn *)
 0x612ef8|1.0|CDC::ExcludeClipRect(int, int, int, int)
@@ -7246,10 +7373,14 @@ address|matching|name
 0x613062|1.0|CDC::OffsetClipRgn(struct tagSIZE)
 0x6130ec|1.0|CDC::LineTo
 0x613121|1.0|CDC::SetTextAlign
+0x613155|1.0|CDC::SetTextJustification
+0x613193|1.0|CDC::SetTextCharacterExtra
 0x6131cb|1.0|CDC::SetMapperFlags
 0x613203|1.0|CDC::ArcTo
+0x61325b|1.0|CDC::SetArcDirection
 0x613293|1.0|CDC::PolyDraw
 0x6132dc|0.9655172413793104|CDC::PolyBezierTo(struct tagPOINT const *, int)
+0x613322|1.0|CDC::SetColorAdjustment
 0x6133a0|1.0|CDC::SelectClipPath
 0x6133fe|1.0|CDC::SelectClipRgn(class CRgn *, int)
 0x613452|1.0|AfxEnumMetaFileProc
@@ -7260,14 +7391,16 @@ address|matching|name
 0x6137e7|1.0|CClientDC::`scalar deleting destructor'
 0x613803|0.95|CClientDC::~CClientDC
 0x613845|0.9642857142857143|CWindowDC::CWindowDC
+0x61389b|1.0|CWindowDC::`scalar deleting destructor'
 0x6138b7|0.95|CWindowDC::~CWindowDC
 0x6138f9|0.9642857142857143|CPaintDC::CPaintDC
 0x61394f|1.0|CPaintDC::`scalar deleting destructor'
 0x61396b|0.9545454545454546|CPaintDC::~CPaintDC
+0x6139b2|1.0|CGdiObject::DeleteTempMap
 0x6139c6|0.9473684210526315|afxMapHGDIOBJ
 0x613a36|1.0|CGdiObject::FromHandle
 0x613a4c|1.0|CGdiObject::Attach
-0x613aa3|0.875|CGdiObject::DeleteObject
+0x613aa3|1.0|CGdiObject::DeleteObject
 0x613ab9|0.96|CPen::CPen(int, int, unsigned long)
 0x613b09|0.9629629629629629|CPen::CPen(int, int, struct tagLOGBRUSH const *, int, unsigned long const *)
 0x613b5f|0.9565217391304348|CBrush::CBrush(unsigned long)
@@ -7277,6 +7410,7 @@ address|matching|name
 0x613c75|0.8|AfxThrowResourceException
 0x613c90|0.8|AfxThrowUserException
 0x613cb1|0.875|CView::CView
+0x613cc7|1.0|CView::`scalar deleting destructor'
 0x613ce3|0.9523809523809523|CView::~CView
 0x613d23|1.0|CView::PreCreateWindow
 0x613d76|1.0|CView::OnCreate
@@ -7318,6 +7452,7 @@ address|matching|name
 0x614603|1.0|CDocManager::OpenDocumentFile
 0x614744|1.0|CDocManager::GetOpenDocumentCount
 0x614790|0.9878048780487805|CDocTemplate::CDocTemplate
+0x614893|1.0|CDocTemplate::`scalar deleting destructor'
 0x6148af|1.0|CDocTemplate::LoadTemplate
 0x61499c|0.972972972972973|CDocTemplate::~CDocTemplate
 0x614a04|1.0|CDocTemplate::GetDocString
@@ -7416,6 +7551,7 @@ address|matching|name
 0x6199fd|1.0|MapClientArea
 0x619a92|1.0|MapNonClientArea
 0x619aac|0.9333333333333333|CMemFile::CMemFile(unsigned int)
+0x619adc|1.0|CMemFile::`scalar deleting destructor'
 0x619af8|0.95|CMemFile::CMemFile(unsigned char *, unsigned int, unsigned int)
 0x619b34|1.0|CMemFile::Attach
 0x619b71|0.9615384615384616|CMemFile::~CMemFile
@@ -7478,7 +7614,7 @@ address|matching|name
 0x61d6d5|1.0|CFrameWnd::OnQueryEndSession
 0x61d6f6|1.0|CFrameWnd::OnEndSession
 0x61d72a|1.0|CFrameWnd::OnDDEInitiate
-0x61d7e5|0.9622641509433962|CFrameWnd::OnDDEExecute
+0x61d7e5|1.0|CFrameWnd::OnDDEExecute
 0x61d89b|1.0|CFrameWnd::GetActiveView
 0x61d8a2|1.0|CFrameWnd::SetActiveView
 0x61d917|1.0|CFrameWnd::GetActiveDocument
@@ -7508,7 +7644,9 @@ address|matching|name
 0x61e762|1.0|CControlBar::GetDockingFrame
 0x61e773|1.0|CControlBar::IsFloating
 0x61e79d|0.9230769230769231|CButton::Create(char const *, unsigned long, struct tagRECT const &, class CWnd *, unsigned int)
+0x61e819|0.9411764705882353|CButton::~CButton
 0x61e851|1.0|CWnd::GetCheckedRadioButton
+0x61e8cb|0.9411764705882353|CListBox::~CListBox
 0x61e921|1.0|CListBox::OnChildNotify
 0x61e9ba|1.0|CListBox::GetText
 0x61ea9c|1.0|CComboBox::OnChildNotify
@@ -7545,6 +7683,7 @@ address|matching|name
 0x622442|0.5|CDialog::GetRuntimeClass
 0x622451|1.0|_AFX_WIN_STATE::`scalar deleting destructor'
 0x62246c|0.9827586206896551|CWinApp::CWinApp
+0x622556|1.0|CWinApp::`scalar deleting destructor'
 0x622572|1.0|CWinApp::InitApplication
 0x622632|0.9047619047619048|CWinApp::ParseCommandLine
 0x622690|0.9666666666666667|CCommandLineInfo::CCommandLineInfo
@@ -7558,6 +7697,7 @@ address|matching|name
 0x622a13|0.8888888888888888|CWinApp::SaveStdProfileSettings
 0x622a4f|1.0|CWinApp::ExitInstance
 0x622a85|0.5|CWinApp::GetRuntimeClass
+0x622b3c|1.0|CWinThread::`scalar deleting destructor'
 0x622b58|0.95|CWinThread::CWinThread(void)
 0x622b95|1.0|CWinThread::CommonConstruct
 0x622bcd|0.9876543209876543|_AfxLoadDotBitmap
@@ -7582,7 +7722,7 @@ address|matching|name
 0x623559|0.9565217391304348|AFX_MODULE_STATE::AFX_MODULE_STATE
 0x6235bd|0.9|_AFX_BASE_MODULE_STATE::`scalar deleting destructor'
 0x6235d8|0.9642857142857143|AFX_MODULE_STATE::~AFX_MODULE_STATE
-0x62368b|0.9032258064516129|AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE
+0x62368b|0.9354838709677419|AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE
 0x6236f6|1.0|AFX_MODULE_THREAD_STATE::`scalar deleting destructor'
 0x623711|0.9733333333333334|AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE
 0x623824|0.9545454545454546|CProcessLocal<_AFX_BASE_MODULE_STATE>::CreateObject

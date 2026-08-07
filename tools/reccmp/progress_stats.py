@@ -57,6 +57,10 @@ ROW_TYPE_LABELS = {
     "import": "imports",
     "import_thunk": "import thunks",
 }
+PAIRING_STATE_NORMALIZATION = {
+    "original_alias": "alias",
+    "recomp_duplicate": "duplicate",
+}
 PAIRING_STATES = frozenset(("paired", "unexplained", "recomp_only", "alias", "duplicate"))
 
 
@@ -65,6 +69,8 @@ METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("paired_fun_count", "address-paired functions", "int", "higher"),
     ("compared_fun_count", "implemented paired functions", "int", "higher"),
     ("orig_only_count", "original-only functions", "int", "lower"),
+    ("original_function_alias_count", "original function aliases", "int", "higher"),
+    ("recomp_function_duplicate_count", "recomp duplicate functions", "int", "higher"),
     ("template_alias_recognized_count", "recognized duplicate template bodies", "int", "higher"),
     ("template_canonical_paired_count", "template canonical bodies paired", "int", "higher"),
     ("recomp_only_count", "recomp-only functions", "int", "lower"),
@@ -115,6 +121,18 @@ def parse_args() -> argparse.Namespace:
         help="Committed baseline JSON. Relative paths resolve from the repo root.",
     )
     parser.add_argument("--commit-baseline", action="store_true", help="Overwrite the baseline.")
+    parser.add_argument(
+        "--allow-unpaired",
+        action="append",
+        default=[],
+        type=lambda value: int(value, 16),
+        metavar="0xADDR",
+        help=(
+            "Explicitly permit a previously paired address to become unpaired during "
+            "a baseline migration. Repeat per evidence-reviewed identity; never implied "
+            "by aggregate improvements."
+        ),
+    )
     parser.add_argument("--roadmap-csv", default="reccmp_roadmap.csv")
     parser.add_argument("--report-json", default="reccmp_report.json")
     parser.add_argument("--report-log", default="reccmp_report.log")
@@ -257,6 +275,7 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
             if row_type not in raw_orig:
                 continue
             state = (row.get("pairing_state") or "").strip().lower()
+            state = PAIRING_STATE_NORMALIZATION.get(state, state)
             if state not in PAIRING_STATES:
                 raise ValueError(f"Roadmap CSV line {line_no}: invalid pairing_state {state!r}")
             orig_addr = parse_optional_int(row.get("orig_addr", ""))
@@ -282,14 +301,19 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
     for err in duplicate_errors + folded_errors:
         print(f"WARNING template_aliases.csv: {err}")
     paired_functions = function_rows["paired"]
-    recognized = {
-        alias for alias, canonical in aliases.items()
+    legacy_recognized = {
+        alias
+        for alias, canonical in aliases.items()
         if alias in raw_orig[FUNCTION_ROW_TYPE]
         and alias in function_rows["unexplained"]
         and canonical in paired_functions
     }
-    function_rows["unexplained"] -= recognized
-    function_rows["duplicate"] |= recognized
+    explicit_recognized = set(aliases) & (
+        function_rows["alias"] | function_rows["duplicate"]
+    )
+    recognized = legacy_recognized | explicit_recognized
+    function_rows["unexplained"] -= legacy_recognized
+    function_rows["duplicate"] |= legacy_recognized
     canonical_paired = {c for c in aliases.values() if c in paired_functions}
 
     stats = {
@@ -297,6 +321,8 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
         "recompiled_fun_count": len(raw_recomp[FUNCTION_ROW_TYPE]),
         "paired_fun_count": len(paired_functions),
         "orig_only_count": len(function_rows["unexplained"]),
+        "original_function_alias_count": len(function_rows["alias"]),
+        "recomp_function_duplicate_count": len(function_rows["duplicate"]),
         "recomp_only_count": len(function_rows["recomp_only"]),
         "template_alias_recognized_count": len(recognized),
         "template_canonical_paired_count": len(canonical_paired),
@@ -476,6 +502,13 @@ def function_changes(
     regressed.sort(key=lambda item: item[3] - item[2])  # biggest drop first
     unpaired_now.sort(key=lambda item: item[0])
     return regressed, unpaired_now, improved, newly_paired
+
+
+def unapproved_unpaired(
+    unpaired_now: list[tuple[str, str, float]], allowed: set[int]
+) -> list[tuple[str, str, float]]:
+    """Keep baseline-loss rows not named by an explicit identity migration."""
+    return [row for row in unpaired_now if int(row[0], 16) not in allowed]
 
 
 def baseline_provenance_error(
@@ -855,7 +888,6 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
                     "uv",
                     "run",
                     "python",
-                    "-m",
                     str(repo_root_from_file(__file__) / "tools" / "reccmp" / "typed_roadmap.py"),
                     "--target",
                     args.target,
@@ -991,6 +1023,12 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_count_line("exact functions (100%)", entry, baseline, "exact_fun_count")
     print_count_line("not exact vs original", entry, baseline, "not_exact_vs_original_count")
     print_count_line("original-only functions", entry, baseline, "orig_only_count")
+    print_count_line(
+        "original function aliases", entry, baseline, "original_function_alias_count"
+    )
+    print_count_line(
+        "recomp duplicate functions", entry, baseline, "recomp_function_duplicate_count"
+    )
     print_count_line("recognized duplicate template bodies", entry, baseline,
                      "template_alias_recognized_count")
     print_count_line("template canonical bodies paired", entry, baseline,
@@ -1121,9 +1159,20 @@ def main() -> int:
                 regressed, unpaired_now, _improved, _newly_paired = function_changes(
                     curr_funcs, func_baseline
                 )
-                if unpaired_now:
+                allowed_unpaired = set(args.allow_unpaired)
+                blocked_unpaired = unapproved_unpaired(
+                    unpaired_now, allowed_unpaired
+                )
+                if blocked_unpaired:
                     raise RuntimeError(
                         "refusing baseline update with previously paired functions now unpaired: "
+                        + ", ".join(
+                            address for address, _name, _score in blocked_unpaired
+                        )
+                    )
+                if unpaired_now:
+                    print(
+                        "Accepted explicit pairing-identity migration for: "
                         + ", ".join(address for address, _name, _score in unpaired_now)
                     )
             stub_ratchet_notice = clamp_stub_count_ratchet(entry, baseline)

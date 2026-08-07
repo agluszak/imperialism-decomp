@@ -26,6 +26,7 @@ from tools.reccmp.progress_stats import (
     report_cache_is_current,
     run_progress_report,
     ui_factory_fidelity,
+    unapproved_unpaired,
     write_report_cache,
 )
 
@@ -246,6 +247,16 @@ class ProgressStatsTests(unittest.TestCase):
             report_cache_is_current(cache_path, "IMPERIALISM", inputs, outputs)
         )
 
+    def test_unpaired_baseline_migration_requires_each_address(self) -> None:
+        rows = [
+            ("0x00401000", "first", 1.0),
+            ("0x00402000", "second", 0.5),
+        ]
+        self.assertEqual(
+            unapproved_unpaired(rows, {0x00401000}),
+            [("0x00402000", "second", 0.5)],
+        )
+
 
 class StubCountRatchetTests(unittest.TestCase):
     """stats-baseline-update must not re-arm the stub ratchet at a raised height.
@@ -371,6 +382,8 @@ class UiFactoryFidelityTests(unittest.TestCase):
         roadmap.write_text(
             "orig_addr,recomp_addr,row_type,pairing_state\n"
             "0x410000,0x510000,function,paired\n"
+            "0x411000,,function,original_alias\n"
+            ",0x512000,function,recomp_duplicate\n"
             "0x420000,,data,unexplained\n"
             "0x430000,0x530000,string,paired\n"
             "0x440000,,label,unexplained\n"
@@ -385,6 +398,8 @@ class UiFactoryFidelityTests(unittest.TestCase):
 
         counts = parse_roadmap_counts(roadmap)
 
+        self.assertEqual(counts["original_function_alias_count"], 1)
+        self.assertEqual(counts["recomp_function_duplicate_count"], 1)
         self.assertEqual(counts["original_import_count"], 2)
         self.assertEqual(counts["paired_import_count"], 1)
         self.assertEqual(counts["unexplained_import_count"], 1)

@@ -26,6 +26,7 @@ DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 DEFAULT_PDB = "build-msvc500/Imperialism.pdb"
 DEFAULT_OUT = "build-msvc500/evidence/library/reccmp_library_identities.csv"
 DEFAULT_REPORT = "build-msvc500/evidence/library/reccmp_library_identity_report.csv"
+DEFAULT_SYMBOLS = "config/original_entities.csv"
 
 
 @dataclass(frozen=True)
@@ -45,7 +46,9 @@ class IdentityDecision:
 
 
 def select_exact_identities(
-    rows: Iterable[Mapping[str, str]], recomp_symbol_counts: Mapping[str, int]
+    rows: Iterable[Mapping[str, str]],
+    recomp_symbol_counts: Mapping[str, int],
+    existing_symbols: Mapping[int, str] | None = None,
 ) -> list[IdentityDecision]:
     """Classify exact-oracle rows without making an arbitrary duplicate choice.
 
@@ -55,6 +58,7 @@ def select_exact_identities(
     A decorated identity is selected only when it occurs once in candidate original
     rows and once in the recomp PDB.
     """
+    existing_symbols = existing_symbols or {}
     parsed: list[tuple[ExactIdentity, str, str]] = []
     for row in rows:
         address_text = (row.get("address") or "").strip()
@@ -89,6 +93,8 @@ def select_exact_identities(
         recomp_count = int(recomp_symbol_counts.get(identity.symbol, 0))
         if kind != "unique" or confidence != "high":
             status = f"oracle-{kind or 'unknown'}-{confidence or 'unknown'}"
+        elif identity.address in existing_symbols:
+            status = "already-modeled"
         elif orig_count != 1:
             status = "ambiguous-original-symbol"
         elif recomp_count == 0:
@@ -112,7 +118,7 @@ def write_identity_source(path: Path, decisions: Iterable[IdentityDecision]) -> 
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as fd:
         writer = csv.DictWriter(
-            fd, fieldnames=("address", "symbol", "type"), delimiter="|", lineterminator="\n"
+            fd, fieldnames=("address", "symbol"), delimiter="|", lineterminator="\n"
         )
         writer.writeheader()
         for decision in sorted(decisions, key=lambda d: d.identity.address):
@@ -121,7 +127,6 @@ def write_identity_source(path: Path, decisions: Iterable[IdentityDecision]) -> 
                     {
                         "address": f"0x{decision.identity.address:08x}",
                         "symbol": decision.identity.symbol,
-                        "type": "function",
                     }
                 )
 
@@ -155,6 +160,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--pdb", default=DEFAULT_PDB)
     parser.add_argument("--out", default=DEFAULT_OUT)
     parser.add_argument("--report", default=DEFAULT_REPORT)
+    parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
     return parser.parse_args()
 
 
@@ -164,7 +170,14 @@ def main() -> int:
     oracle = resolve_repo_path(root, args.oracle)
     pdb = resolve_repo_path(root, args.pdb)
     rows = read_pipe_rows(oracle)
-    decisions = select_exact_identities(rows, recomp_public_symbol_counts(pdb))
+    existing_symbols = {
+        int(row["address"], 16): (row.get("symbol") or "").strip()
+        for row in read_pipe_rows(resolve_repo_path(root, args.symbols))
+        if row.get("address")
+    }
+    decisions = select_exact_identities(
+        rows, recomp_public_symbol_counts(pdb), existing_symbols
+    )
     write_identity_source(resolve_repo_path(root, args.out), decisions)
     write_report(resolve_repo_path(root, args.report), decisions)
 

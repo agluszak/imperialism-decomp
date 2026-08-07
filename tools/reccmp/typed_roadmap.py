@@ -21,11 +21,7 @@ def typed_entity_name(entity_type: int | None) -> str:
 
 
 def pairing_state(row: roadmap.RoadmapRow) -> str:
-    if row.orig_addr is not None and row.recomp_addr is not None:
-        return "paired"
-    if row.orig_addr is not None:
-        return "unexplained"
-    return "recomp_only"
+    return row.pairing_state
 
 
 def export_typed_csv(csv_file: str, results: Iterable[roadmap.RoadmapRow]) -> None:
