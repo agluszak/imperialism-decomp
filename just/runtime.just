@@ -31,8 +31,8 @@ cstring-runtime-probe:
 runtime-harness-lint:
   just runtime-source-policy-gate
   uv run python -m tools.runtime.generate_native_registry \
-    --output "{{lint_build_dir}}/generated/runtime/RuntimeRegistry.inc"
-  just lint "-DIMPERIALISM_RUNTIME_TESTS=ON"
+    --output "{{runtime_lint_build_dir}}/generated/runtime/RuntimeRegistry.inc"
+  just _lint-in "{{runtime_lint_build_dir}}" "-DIMPERIALISM_RUNTIME_TESTS=ON"
 
 [doc('Reject coordinate input and polling synchronization in native runtime scenarios')]
 [group('gates')]
