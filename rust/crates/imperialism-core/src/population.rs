@@ -1,15 +1,19 @@
-use crate::{CityState, PopulationState};
+use crate::{CityState, PopulationState, ResourceKind};
 use std::error::Error;
 use std::fmt;
 
-const PREDICTED_NEED_RESOURCE_COUNT: usize = 23;
-const STRIKE_RESOURCE_IDS: [usize; 3] = [15, 13, 14];
-const GRAIN_RESOURCE_ID: usize = 17;
-const FRUIT_RESOURCE_ID: usize = 18;
-const ANIMAL_FOOD_RESOURCE_ID: usize = 20;
-const CANNED_FOOD_RESOURCE_ID: usize = 7;
-const FISH_RESOURCE_ID: usize = 19;
-const LIVESTOCK_RESOURCE_ID: usize = 20;
+const PREDICTED_NEED_RESOURCE_COUNT: usize = ResourceKind::COUNT;
+const STRIKE_RESOURCE_IDS: [usize; 3] = [
+    ResourceKind::Hardware.index(),
+    ResourceKind::Clothing.index(),
+    ResourceKind::Furniture.index(),
+];
+const GRAIN_RESOURCE_ID: usize = ResourceKind::Grain.index();
+const FRUIT_RESOURCE_ID: usize = ResourceKind::Fruit.index();
+const ANIMAL_FOOD_RESOURCE_ID: usize = ResourceKind::Livestock.index();
+const CANNED_FOOD_RESOURCE_ID: usize = ResourceKind::Food.index();
+const FISH_RESOURCE_ID: usize = ResourceKind::Fish.index();
+const LIVESTOCK_RESOURCE_ID: usize = ResourceKind::Livestock.index();
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct LaborPool {
@@ -276,7 +280,7 @@ impl PopulationState {
     pub fn refresh_predicted_needs(
         &mut self,
         order_quantity: i16,
-    ) -> Result<&[i16], PopulationError> {
+    ) -> Result<&mut [i16], PopulationError> {
         if self.predicted_need_by_resource.len() != PREDICTED_NEED_RESOURCE_COUNT {
             return Err(PopulationError::InvalidPredictedNeedCount {
                 actual: self.predicted_need_by_resource.len(),
@@ -291,7 +295,7 @@ impl PopulationState {
         self.predicted_need_by_resource[FRUIT_RESOURCE_ID] =
             ((i32::from(supported) + 2) / 4) as i16;
         self.predicted_need_by_resource[ANIMAL_FOOD_RESOURCE_ID] = supported / 4;
-        Ok(&self.predicted_need_by_resource)
+        Ok(&mut self.predicted_need_by_resource)
     }
 
     /// Mirrors `TPopulationMgr::RemovePopulation`, including its unusual use
