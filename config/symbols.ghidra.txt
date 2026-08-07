@@ -7831,15 +7831,12 @@ _ms_p5_test_fdiv 5EC6E0 f
 _ms_p5_mp_test_fdiv 5EC730 f
 _forcdecpt 5EC760 f
 WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850 5EC850 f
-WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882 5EC882 f
 _cftoe 5EC8B0 f
 AppendExponentSuffixToNumericBuffer 5EC930 f
 _cftof 5ECA30 f
 AppendFractionalDigitsAndPadNumericBuffer 5ECAA0 f
 _cftog 5ECB60 f
 WrapperFor_FormatNumericStringAndAppend_At005ecc20 5ECC20 f
-WrapperFor_FormatNumericStringWithWidthAndTrimRules_At005ecc4b 5ECC4B f
-WrapperFor_FormatNumericStringAndAppendWithFlags_At005ecc68 5ECC68 f
 WrapperFor_MoveMemoryOverlapSafe_At005ecc90 5ECC90 f
 ___InternalCxxFrameHandler 5ECCC0 f
 FindHandler 5ECD90 f
@@ -7867,7 +7864,6 @@ __lock_file2 5EDC00 f
 __unlock_file 5EDC30 f
 __unlock_file2 5EDC70 f
 ConvertBrokenDownLocalTimeToEpochSeconds 5EDCC0 f
-RunLocalExceptionFilterChainAndUnwind 5EDDEB f
 __heap_init 5EDE90 f
 ___sbh_new_region 5EDF40 f
 ___sbh_release_region 5EE0B0 f
@@ -8655,7 +8651,6 @@ CDC::SelectObject 612984 f
 CDC::SelectObject 6129D7 f
 CDC::SelectClipRgn 612A2A f
 CDC::SelectPalette 612A78 f
-TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate 612A88 f
 CDC::SetPolyFillMode 612A9A f
 CDC::SetBkMode 612AD2 f
 CDC::SetPolyFillMode 612B0A f
@@ -8895,7 +8890,6 @@ SendMessage199Minus1AndRefreshSelection 619F0E l
 CNewTypeDlg_OnOK 619F62 f
 CDocManager::AddDocTemplate 619FAA f
 CDocManager::SaveAllModified 61A027 f
-DispatchVslot84ForLinkedNodeChain 61A04D f
 CDocManager::DoPromptFileName 61A06A f
 AppendFilterSuffix 61A216 f
 CDocManager::OnDDECommand 61A2EF f

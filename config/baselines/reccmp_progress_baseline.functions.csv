@@ -6742,7 +6742,7 @@ address|matching|name
 0x5e722f|0.9047619047619048|CArchiveStream::Seek
 0x5e7350|0.47619047619047616|__fpmath
 0x5e7370|1.0|__fpclear
-0x5e7380|0.25|__cfltcvt_init
+0x5e7380|0.4166666666666667|__cfltcvt_init
 0x5e73d0|1.0|__ftol
 0x5e7400|1.0|?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
 0x5e7440|1.0|?_CallMemberFunction0@@YGXPAX0@Z
@@ -6767,8 +6767,8 @@ address|matching|name
 0x5e7d30|1.0|__findclose
 0x5e7d60|1.0|___timet_from_ft
 0x5e7df0|1.0|__aullshr
-0x5e7e10|0.6428571428571429|??_M@YGXPAXIHP6EX0@Z@Z
-0x5e7ec0|0.7323943661971831|?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
+0x5e7e10|0.6607142857142857|??_M@YGXPAXIHP6EX0@Z@Z
+0x5e7ec0|0.7605633802816901|?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 0x5e7f50|0.8888888888888888|_free
 0x5e7fc0|0.9766081871345029|_realloc
 0x5e8170|0.9142857142857143|??1type_info@@UAE@XZ
@@ -6784,7 +6784,7 @@ address|matching|name
 0x5e8970|0.6875|_isdigit
 0x5e89d0|0.6875|_isspace
 0x5e8bb0|1.0|_vsprintf
-0x5e8c50|0.7142857142857143|??_L@YGXPAXIHP6EX0@Z1@Z
+0x5e8c50|0.7346938775510204|??_L@YGXPAXIHP6EX0@Z1@Z
 0x5e8cf0|0.9421965317919075|_localtime
 0x5e8ee0|1.0|_time
 0x5e9010|1.0|_fclose
@@ -6801,7 +6801,7 @@ address|matching|name
 0x5e95c0|1.0|_fgetc
 0x5e9620|0.8771929824561403|__itoa
 0x5e9840|1.0|_sprintf
-0x5e98b0|0.8270676691729323|_WinMainCRTStartup
+0x5e98b0|0.8345864661654135|_WinMainCRTStartup
 0x5e9a60|0.6153846153846154|__amsg_exit
 0x5e9a90|1.0|_memset
 0x5e9ae8|1.0|__EH_prolog
@@ -6849,18 +6849,22 @@ address|matching|name
 0x5ec6e0|0.96|__ms_p5_test_fdiv
 0x5ec730|1.0|__ms_p5_mp_test_fdiv
 0x5ec760|0.8831168831168831|__forcdecpt
+0x5ec850|1.0|__fassign
 0x5ec8b0|0.8598130841121495|__cftoe
 0x5eca30|0.8695652173913043|__cftof
 0x5ecb60|0.9176470588235294|__cftog
+0x5ecc20|1.0|__cfltcvt
 0x5eccc0|0.9290322580645162|___InternalCxxFrameHandler
-0x5ed130|0.7068965517241379|___FrameUnwindToState
-0x5ed640|0.6976744186046512|?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z
+0x5ed130|0.7241379310344828|___FrameUnwindToState
+0x5ed640|0.7441860465116279|?_DestructExceptionObject@@YAXPAUEHExceptionRecord@@E@Z
 0x5ed6f0|0.6666666666666666|__CallSettingFrame@12
 0x5ed740|0.8787878787878788|__mtinit
 0x5ed7d0|0.2857142857142857|__initptd
 0x5ed7f0|0.8936170212765957|__getptd
 0x5ed870|0.9401709401709402|__freeptd
-0x5ed9e0|0.5609756097560976|?_inconsistency@@YAXXZ
+0x5ed930|0.6756756756756757|?terminate@@YAXXZ
+0x5ed9c0|1.0|?unexpected@@YAXXZ
+0x5ed9e0|0.5853658536585366|?_inconsistency@@YAXXZ
 0x5eda70|1.0|__mtinitlocks
 0x5edb20|0.7954545454545454|__lock
 0x5edba0|0.5384615384615384|__unlock
@@ -6869,6 +6873,7 @@ address|matching|name
 0x5edc30|0.68|__unlock_file
 0x5edc70|1.0|__unlock_file2
 0x5edcc0|0.8823529411764706|___loctotime_t
+0x5eddb8|1.0|__except_handler3
 0x5ede75|1.0|__seh_longjmp_unwind@4
 0x5ede90|0.7111111111111111|__heap_init
 0x5edf40|0.8632478632478633|___sbh_new_region
@@ -6916,7 +6921,7 @@ address|matching|name
 0x5f2c40|0.971830985915493|___crtLCMapStringA
 0x5f2e90|1.0|__strrev
 0x5f2ec0|0.9261744966442953|_calloc
-0x5f2f70|0.782608695652174|?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z
+0x5f2f70|1.0|?__CxxUnhandledExceptionFilter@@YGJPAU_EXCEPTION_POINTERS@@@Z
 0x5f3000|1.0|_strspn
 0x5f3040|1.0|_strcspn
 0x5f3080|1.0|_strrchr
@@ -6972,6 +6977,7 @@ address|matching|name
 0x5f5b60|0.7722772277227723|_mbtowc
 0x5f5be0|0.9368421052631579|__mbtowc_lk
 0x5f5ce0|1.0|__allshl
+0x5f5d00|1.0|_ungetc
 0x5f5d30|1.0|__ungetc_lk
 0x5f5dc0|1.0|___crtMessageBoxA
 0x5f5e50|0.7636363636363637|___init_time
@@ -7812,6 +7818,7 @@ address|matching|name
 0x619f62|1.0|CNewTypeDlg::OnOK
 0x619faa|1.0|CDocManager::AddDocTemplate
 0x61a027|1.0|CDocManager::SaveAllModified
+0x61a049|1.0|CDocManager::CloseAllDocuments
 0x61a06a|1.0|CDocManager::DoPromptFileName
 0x61a216|1.0|AppendFilterSuffix
 0x61a2ef|1.0|CDocManager::OnDDECommand

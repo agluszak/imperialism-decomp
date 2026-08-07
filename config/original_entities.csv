@@ -7047,16 +7047,13 @@ address|name|symbol|size|type|prototype|provenance
 5ec6e0|_ms_p5_test_fdiv|__ms_p5_test_fdiv|80|function|undefined IsRuntimeFloatThresholdNegative_006739C8()|msvc500_library_oracle
 5ec730|_ms_p5_mp_test_fdiv|__ms_p5_mp_test_fdiv|41|function|undefined ProbeProcessorFeatureApiOrFallbackInit()|msvc500_library_oracle
 5ec760|_forcdecpt|__forcdecpt|93|function|undefined RotateNumericStringAtExponentAndInsertDecimalPoint()|msvc500_library_oracle
-5ec850|WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850||50|function|undefined WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850()|
-5ec882|WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882||32|function|undefined WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882()|
+5ec850|WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850||82|function|undefined WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850()|
 5ec8b0|_cftoe|__cftoe|115|function|undefined FormatNumericStringAndAppendWithFlags()|msvc500_library_oracle
 5ec930|AppendExponentSuffixToNumericBuffer||242|function|undefined AppendExponentSuffixToNumericBuffer()|
 5eca30|_cftof|__cftof|102|function|undefined FormatNumericStringAndAppend()|msvc500_library_oracle
 5ecaa0|AppendFractionalDigitsAndPadNumericBuffer||182|function|undefined AppendFractionalDigitsAndPadNumericBuffer()|
 5ecb60|_cftog|__cftog|182|function|undefined FormatNumericStringWithWidthAndTrimRules()|msvc500_library_oracle
-5ecc20|WrapperFor_FormatNumericStringAndAppend_At005ecc20||43|function|undefined WrapperFor_FormatNumericStringAndAppend_At005ecc20()|
-5ecc4b|WrapperFor_FormatNumericStringWithWidthAndTrimRules_At005ecc4b||29|function|undefined WrapperFor_FormatNumericStringWithWidthAndTrimRules_At005ecc4b()|
-5ecc68|WrapperFor_FormatNumericStringAndAppendWithFlags_At005ecc68||29|function|undefined WrapperFor_FormatNumericStringAndAppendWithFlags_At005ecc68()|
+5ecc20|WrapperFor_FormatNumericStringAndAppend_At005ecc20||101|function|undefined WrapperFor_FormatNumericStringAndAppend_At005ecc20()|
 5ecc90|WrapperFor_MoveMemoryOverlapSafe_At005ecc90||41|function|undefined WrapperFor_MoveMemoryOverlapSafe_At005ecc90()|
 5eccc0|___InternalCxxFrameHandler|___InternalCxxFrameHandler|199|function|undefined DispatchStructuredExceptionThroughFrameInfo()|
 5ecd90|FindHandler|?FindHandler@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PAXPBU_s_FuncInfo@@EH1@Z|699|function|undefined RunStructuredExceptionHandlerSearch()|
@@ -7084,7 +7081,6 @@ address|name|symbol|size|type|prototype|provenance
 5edc30|CRT FILE stream lock leave|__unlock_file|54|function|undefined LeaveStreamCriticalSection()|
 5edc70|__unlock_file2|__unlock_file2|40|function|undefined WrapperFor_LeaveIndexedCriticalSection_At005edc70()|
 5edcc0|ConvertBrokenDownLocalTimeToEpochSeconds|___loctotime_t|226|function|undefined ConvertBrokenDownLocalTimeToEpochSeconds()|
-5eddeb|RunLocalExceptionFilterChainAndUnwind||117|function|undefined RunLocalExceptionFilterChainAndUnwind()|
 5ede90|__heap_init|__heap_init|55|function|undefined InitializeCrtHeapSubsystem()|
 5edf40|___sbh_new_region|___sbh_new_region|354|function|undefined AllocateCrtHeapRegionDescriptor()|
 5ee0b0|___sbh_release_region|___sbh_release_region|91|function|undefined FreeAllocatorPageNodeAndUnlink()|
@@ -7209,7 +7205,7 @@ address|name|symbol|size|type|prototype|provenance
 5f5b60|_mbtowc|_mbtowc|113|function|undefined CallWithAtomicRefAndOptionalCriticalSection13()|
 5f5be0|__mbtowc_lk|__mbtowc_lk|254|function|undefined DecodeNextMultibyteCharToWideChar()|
 5f5ce0|__allshl|__allshl|31|function|undefined allshl()|
-5f5d00|ExecuteCallbackUnderStreamCriticalSection||1|function|undefined ExecuteCallbackUnderStreamCriticalSection()|
+5f5d00|ExecuteCallbackUnderStreamCriticalSection||45|function|undefined ExecuteCallbackUnderStreamCriticalSection()|
 5f5d30|__ungetc_lk|__ungetc_lk|131|function|undefined WriteByteToBufferedStreamState()|
 5f5dc0|___crtMessageBoxA|___crtMessageBoxA|143|function|undefined ShowRuntimeErrorMessageBoxWithLazyUser32Imports()|
 5f5e50|RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer||174|function|undefined RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer()|
@@ -7864,7 +7860,6 @@ address|name|symbol|size|type|prototype|provenance
 6129d7|CDC::SelectObject|?SelectObject@CDC@@QAEPAVCPen@@PAV2@@Z|83|function|public: class CPen * __thiscall CDC::SelectObject(class CPen *)|msvc500_library_oracle
 612a2a|CDC::SelectClipRgn|CDC::SelectClipRgn|78|function|undefined ?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z@00612a2a()|
 612a78|CDC::SelectPalette||16|function|undefined SelectPalette()|
-612a88|TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate||18|function|undefined SelectPaletteThenLookupHandleMapEntryWithCreate()|
 612a9a|CDC::SetPolyFillMode|?SetPolyFillMode@CDC@@QAEHH@Z|56|function|undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612a9a()|
 612ad2|CDC::SetMapperFlags|?SetMapperFlags@CDC@@QAEKK@Z|56|function|undefined SetBkModeOnPrimaryAndSecondaryDc()|
 612b0a|CDC::SetPolyFillMode|?SetPolyFillMode@CDC@@QAEHH@Z|56|function|undefined ?SetMapperFlags@CDC@@QAEKK@Z@00612b0a()|
@@ -8102,7 +8097,6 @@ address|name|symbol|size|type|prototype|provenance
 619f62|WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62||72|function|undefined WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62()|
 619faa|CDocManager::AddDocTemplate|?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z|105|function|public: virtual void __thiscall CDocManager::AddDocTemplate(class CDocTemplate *)|msvc500_library_oracle
 61a027|CDocManager::SaveAllModified|?SaveAllModified@CDocManager@@UAEHXZ|34|function|public: virtual int __thiscall CDocManager::SaveAllModified(void)|msvc500_library_oracle
-61a04d|DispatchVslot84ForLinkedNodeChain||29|function|undefined DispatchVslot84ForLinkedNodeChain()|
 61a06a|CDocManager::DoPromptFileName|?DoPromptFileName@CDocManager@@UAEHAAVCString@@IKHPAVCDocTemplate@@@Z|428|function|public: virtual int __thiscall CDocManager::DoPromptFileName(class CString &, unsigned int, unsigned long, int, class CDocTemplate *)|msvc500_library_oracle
 61a216|AppendFilterSuffix|?AppendFilterSuffix@@YAXAAVCString@@AAUtagOFNA@@PAVCDocTemplate@@PAV1@@Z|217|function|undefined AppendFilterSuffix()|
 61a2ef|CDocManager::OnDDECommand|?OnDDECommand@CDocManager@@UAEHPAD@Z|1518|function|public: virtual int __thiscall CDocManager::OnDDECommand(char *)|msvc500_library_oracle
