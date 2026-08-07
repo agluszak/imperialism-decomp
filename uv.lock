@@ -176,7 +176,7 @@ requires-dist = [
     { name = "pyghidra", specifier = "==3.1.0" },
     { name = "python-xlib", specifier = ">=0.33" },
     { name = "pyyaml", specifier = ">=6.0.3" },
-    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=a924443bbb0bd8cce8fab78bd91f3ad7ddf00e01" },
+    { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=943675e9067481698e8bf006114278da88d3730c" },
     { name = "tree-sitter", specifier = ">=0.26.0" },
     { name = "tree-sitter-cpp", specifier = ">=0.23.4" },
 ]
@@ -559,7 +559,7 @@ wheels = [
 [[package]]
 name = "reccmp"
 version = "0.1.6"
-source = { git = "https://github.com/agluszak/reccmp.git?rev=a924443bbb0bd8cce8fab78bd91f3ad7ddf00e01#a924443bbb0bd8cce8fab78bd91f3ad7ddf00e01" }
+source = { git = "https://github.com/agluszak/reccmp.git?rev=943675e9067481698e8bf006114278da88d3730c#943675e9067481698e8bf006114278da88d3730c" }
 dependencies = [
     { name = "capstone" },
     { name = "colorama" },

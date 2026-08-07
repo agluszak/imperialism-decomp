@@ -129,6 +129,8 @@ class ProgressStatsTests(unittest.TestCase):
                 "semantic_score_coverage_pct": 50.0,
                 "semantic_scored_bytes": 1,
                 "semantic_fallback_bytes": 1,
+                "semantic_fallback_reason_counts": {"analysis_limit": 1},
+                "semantic_fallback_reason_bytes": {"analysis_limit": 1},
                 "semantic_score_byte_coverage_pct": 50.0,
                 "semantic_size_weighted_matching_pct": 62.5,
                 "avg_matching_pct": 62.5,
@@ -172,7 +174,11 @@ class ProgressStatsTests(unittest.TestCase):
             {
                 "address": "0x404000",
                 "matching": 0.5,
-                "comparison": {"status": "mismatch", "semantic_similarity": None},
+                "comparison": {
+                    "status": "inconclusive",
+                    "inconclusive_reason": "non_isomorphic_cfg",
+                    "semantic_similarity": None,
+                },
             },
         ]
         self.report_path.write_text(json.dumps({"data": rows}), encoding="utf-8")
@@ -190,6 +196,41 @@ class ProgressStatsTests(unittest.TestCase):
         self.assertEqual(counts["semantic_scored_bytes"], 500)
         self.assertEqual(counts["semantic_fallback_bytes"], 500)
         self.assertEqual(counts["semantic_score_byte_coverage_pct"], 50.0)
+        self.assertEqual(
+            counts["semantic_fallback_reason_counts"], {"non_isomorphic_cfg": 1}
+        )
+        self.assertEqual(
+            counts["semantic_fallback_reason_bytes"], {"non_isomorphic_cfg": 500}
+        )
+
+    def test_semantic_fallback_breakdown_uses_mismatch_kind(self) -> None:
+        self.report_path.write_text(
+            json.dumps(
+                {
+                    "data": [
+                        {
+                            "address": "0x401000",
+                            "matching": 0.5,
+                            "comparison": {
+                                "status": "mismatch",
+                                "semantic_similarity": None,
+                                "difference": {"kind": "memory_address"},
+                            },
+                        }
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        counts = parse_report_counts(self.report_path, sizes={0x401000: 25})
+
+        self.assertEqual(
+            counts["semantic_fallback_reason_counts"], {"mismatch:memory_address": 1}
+        )
+        self.assertEqual(
+            counts["semantic_fallback_reason_bytes"], {"mismatch:memory_address": 25}
+        )
 
     def test_counts_only_functions_and_excludes_stubs(self) -> None:
         self.write_report(
@@ -217,6 +258,8 @@ class ProgressStatsTests(unittest.TestCase):
                 "semantic_score_coverage_pct": 50.0,
                 "semantic_scored_bytes": 1,
                 "semantic_fallback_bytes": 1,
+                "semantic_fallback_reason_counts": {"unknown": 1},
+                "semantic_fallback_reason_bytes": {"unknown": 1},
                 "semantic_score_byte_coverage_pct": 50.0,
                 "semantic_size_weighted_matching_pct": 62.5,
                 "avg_matching_pct": 62.5,

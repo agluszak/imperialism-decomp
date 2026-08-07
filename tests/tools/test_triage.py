@@ -232,6 +232,25 @@ class TriageRenderTests(unittest.TestCase):
             output.endswith("Investigate verifier/metadata/alignment instead.")
         )
 
+    def test_inconclusive_cfg_diagnostic_renders_structured_facts_and_advice(self) -> None:
+        value = entity("inconclusive", inconclusive="non_isomorphic_cfg")
+        value["comparison"]["inconclusive_location"] = side(
+            index=7,
+            address=0x401278,
+            failure="edge_roles",
+            orig_block_count=8,
+            recomp_block_count=9,
+            orig_edge_roles="fall,taken",
+            recomp_edge_roles="jmp",
+        )
+        output = render(value)
+        self.assertIn("non isomorphic cfg at original 0x00401278", output)
+        self.assertIn("failure: edge_roles", output)
+        self.assertIn("orig block count: 8", output)
+        self.assertIn("recomp edge roles: jmp", output)
+        self.assertIn("reachable block graphs differ", output)
+        self.assertIn("semantic span scoring cannot start", output)
+
     def test_rendering_is_deterministic(self) -> None:
         value = entity(
             "effective",

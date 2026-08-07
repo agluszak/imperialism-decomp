@@ -615,7 +615,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
     return sizes
 
 
-def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict[str, float | int]:
+def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
 
@@ -629,6 +629,8 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
     total_matching = 0.0
     semantic_scored = 0
     semantic_scored_bytes = 0
+    semantic_fallback_reason_counts: dict[str, int] = {}
+    semantic_fallback_reason_bytes: dict[str, int] = {}
     exact = 0
     # Size-weighted similarity: sum(matching * original size) / sum(original size).
     # The unweighted mean over-counts tiny bodies (a 12-byte thunk moves it as much
@@ -641,7 +643,10 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
         matching = effective_matching(row)
         semantic = semantic_matching(row)
         comparison = row.get("comparison")
-        if isinstance(comparison, dict) and comparison.get("semantic_similarity") is not None:
+        has_semantic_score = (
+            isinstance(comparison, dict) and comparison.get("semantic_similarity") is not None
+        )
+        if has_semantic_score:
             semantic_scored += 1
         total_matching += matching
         exact += int(matching >= 1.0)
@@ -654,8 +659,24 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
         weighted_sum += matching * weight
         semantic_weighted_sum += semantic * weight
         weight_total += weight
-        if isinstance(comparison, dict) and comparison.get("semantic_similarity") is not None:
+        if has_semantic_score:
             semantic_scored_bytes += weight
+        else:
+            assert isinstance(comparison, dict)
+            status = str(comparison.get("status") or "unknown")
+            if status == "inconclusive":
+                reason = str(comparison.get("inconclusive_reason") or "unknown")
+            elif status == "mismatch" and isinstance(comparison.get("difference"), dict):
+                kind = str(comparison["difference"].get("kind") or "unknown")
+                reason = f"mismatch:{kind}"
+            else:
+                reason = f"{status}:no_semantic_score"
+            semantic_fallback_reason_counts[reason] = (
+                semantic_fallback_reason_counts.get(reason, 0) + 1
+            )
+            semantic_fallback_reason_bytes[reason] = (
+                semantic_fallback_reason_bytes.get(reason, 0) + weight
+            )
 
     return {
         "compared_fun_count": compared,
@@ -666,6 +687,8 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
         "semantic_score_coverage_pct": pct(semantic_scored, compared),
         "semantic_scored_bytes": semantic_scored_bytes,
         "semantic_fallback_bytes": max(int(weight_total) - semantic_scored_bytes, 0),
+        "semantic_fallback_reason_counts": semantic_fallback_reason_counts,
+        "semantic_fallback_reason_bytes": semantic_fallback_reason_bytes,
         "semantic_score_byte_coverage_pct": pct(semantic_scored_bytes, int(weight_total)),
         "semantic_size_weighted_matching_pct": (
             (semantic_weighted_sum / weight_total) * 100.0 if weight_total else 0.0
@@ -1067,6 +1090,12 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
         f"{entry['semantic_fallback_fun_count']} functions, "
         f"{entry['semantic_fallback_bytes']} bytes"
     )
+    fallback_counts = entry.get("semantic_fallback_reason_counts", {})
+    fallback_bytes = entry.get("semantic_fallback_reason_bytes", {})
+    if fallback_counts:
+        print("  fallback breakdown (functions / bytes):")
+        for reason in sorted(fallback_counts, key=lambda key: (-fallback_bytes[key], key)):
+            print(f"    {reason}: {fallback_counts[reason]} / {fallback_bytes[reason]}")
     print("")
 
     print("Counts")
