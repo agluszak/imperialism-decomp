@@ -10,6 +10,7 @@ from pathlib import Path
 from tools.common.template_aliases import (
     CLASS_DUPLICATE_EMISSION,
     CLASS_FOLDED_SYMBOL_GROUP,
+    CLASS_LIBRARY_CALLEE_ALIAS,
     load_alias_rows,
     load_aliases,
 )
@@ -30,6 +31,7 @@ class TestLoadAliasRows(unittest.TestCase):
             "# comment\n"
             "0x00426ec0|0x00479b00|?AddTail@X@Z|per_tu_duplicate\n"
             "0x00430380|0x0048a9d0|TTreatiesView::~TTreatiesView|folded_symbol_group\n"
+            "0x0049eb00|0x006057a7|??0CString@@QAE@ABV0@@Z|library_callee_alias\n"
         )
         rows, errors = load_alias_rows(path)
         self.assertEqual(errors, [])
@@ -42,6 +44,12 @@ class TestLoadAliasRows(unittest.TestCase):
                     0x48A9D0,
                     "TTreatiesView::~TTreatiesView",
                     "folded_symbol_group",
+                ),
+                (
+                    0x49EB00,
+                    0x6057A7,
+                    "??0CString@@QAE@ABV0@@Z",
+                    "library_callee_alias",
                 ),
             ],
         )
@@ -67,13 +75,21 @@ class TestLoadAliasRows(unittest.TestCase):
         path = write_csv(
             "0x1000|0x2000|A|per_tu_duplicate\n"
             "0x3000|0x4000|B|folded_symbol_group\n"
+            "0x5000|0x6000|C|library_callee_alias\n"
         )
         all_aliases, _ = load_aliases(path)
-        self.assertEqual(all_aliases, {0x1000: 0x2000, 0x3000: 0x4000})
+        self.assertEqual(
+            all_aliases,
+            {0x1000: 0x2000, 0x3000: 0x4000, 0x5000: 0x6000},
+        )
         dup, _ = load_aliases(path, equivalence_class=CLASS_DUPLICATE_EMISSION)
         self.assertEqual(dup, {0x1000: 0x2000})
         folded, _ = load_aliases(path, equivalence_class=CLASS_FOLDED_SYMBOL_GROUP)
         self.assertEqual(folded, {0x3000: 0x4000})
+        library, _ = load_aliases(
+            path, equivalence_class=CLASS_LIBRARY_CALLEE_ALIAS
+        )
+        self.assertEqual(library, {0x5000: 0x6000})
 
     def test_missing_file_is_empty(self) -> None:
         aliases, errors = load_aliases(Path("/nonexistent/aliases.csv"))

@@ -18,8 +18,11 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from reccmp.compare import Compare
-from reccmp.compare.diff import DiffReport
-from reccmp.compare.report import ReccmpStatusReport, serialize_reccmp_report
+from reccmp.compare.report import (
+    ReccmpComparedEntity,
+    ReccmpStatusReport,
+    serialize_reccmp_report,
+)
 from reccmp.project.detect import RecCmpProject
 from reccmp.types import EntityType
 
@@ -30,7 +33,11 @@ from tools.common.function_baseline import (
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
-from tools.common.template_aliases import load_aliases
+from tools.common.template_aliases import (
+    CLASS_DUPLICATE_EMISSION,
+    CLASS_FOLDED_SYMBOL_GROUP,
+    load_aliases,
+)
 from tools.stubgen import ILT_THUNK_RANGE, compute_stub_rows
 
 FUNCTION_ROW_TYPE = "fun"
@@ -150,7 +157,7 @@ def run_logged(cmd: list[str], cwd: Path, log_path: Path) -> None:
 
 
 def build_progress_report(
-    filename: str, compared: Iterable[DiffReport]
+    filename: str, compared: Iterable[ReccmpComparedEntity]
 ) -> ReccmpStatusReport:
     """Build the complete report used for progress accounting.
 
@@ -250,7 +257,14 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
     # already carries the marker). Aliases whose canonical is still unpaired
     # keep counting as original-only (the canonical is the work item). Claimed
     # islands are paired (effective) and never reach this reclassification.
-    aliases, alias_errors = load_aliases()
+    duplicate_aliases, duplicate_errors = load_aliases(
+        equivalence_class=CLASS_DUPLICATE_EMISSION
+    )
+    folded_aliases, folded_errors = load_aliases(
+        equivalence_class=CLASS_FOLDED_SYMBOL_GROUP
+    )
+    aliases = {**duplicate_aliases, **folded_aliases}
+    alias_errors = duplicate_errors + folded_errors
     for err in alias_errors:
         print(f"WARNING template_aliases.csv: {err}")
     recognized = {
@@ -333,7 +347,10 @@ def parse_report_functions(path: Path) -> dict[str, dict[str, Any]]:
         address = row.get("address")
         if not address:
             continue
-        funcs[address] = {"m": effective_matching(row), "n": row.get("name", "")}
+        funcs[address] = {
+            "m": effective_matching(row),
+            "n": str(row.get("name") or "").rstrip(),
+        }
     return funcs
 
 
