@@ -15,6 +15,14 @@ void __cdecl CopyCurrentMouseCapturePoint(CPoint* outPoint);
 // real __thiscall methods (ecx = &g_McAppMouseCaptureState).
 class TMouseCaptureState {
 public:
+  TMouseCaptureState() : capturedControl(0) {}
+  ~TMouseCaptureState() {
+    if (capturedControl != 0) {
+      capturedControl = 0;
+      ::ReleaseCapture();
+    }
+  }
+
   CPoint startPoint;         // 0x00 point DoMouseCommand latched
   CPoint lastPoint;          // 0x08 previous currentPoint, shifted down on each update
   CPoint currentPoint;       // 0x10 latest tracked point
