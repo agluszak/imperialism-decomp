@@ -5,6 +5,43 @@ binary into matching C++, rebuild it with the original MSVC500 toolchain in
 Docker/Wine, and track per-function similarity with `reccmp`. The goal is a
 byte-faithful, reproducible-in-git rebuild.
 
+## Simplicity, scope, and compatibility
+
+This project has **no external compatibility obligations**. The only compatibility
+target is the retail `Imperialism.exe` and the retail data/file behavior we are
+intentionally reproducing.
+
+1. **Prefer the simplest implementation that satisfies current retail behavior and
+   current tests.** Fewer types, layers, protocols, helpers, modes, and configuration
+   knobs are better. Do not generalize for hypothetical future uses.
+2. **No feature creep.** Implement the requested or observed behavior only. Do not add
+   speculative features, extension points, plugin systems, fallback modes, generic
+   frameworks, migration tooling, or "future-proofing" without a concrete current need.
+3. **Break our own compatibility freely.** Internal C++/Rust APIs, JSON schemas,
+   snapshots, command/event representations, CLI flags, generated data, config formats,
+   and test fixtures may be changed in place. Update all in-repo users in the same
+   change and delete the old shape.
+4. **No compatibility shims for our own code.** Do not add deprecated aliases, adapter
+   layers, legacy readers/writers, dual-path implementations, version negotiation,
+   `V1`/`V2` protocol forks, migration guides, or preserve-old-and-add-new designs unless
+   a concrete current requirement truly needs both forms at the same time.
+5. **Version only real retail facts.** A retail save/resource format version is evidence
+   and must be modeled when needed. An internal schema version invented in anticipation
+   of future users is not. Do not create migration machinery for software nobody uses.
+6. **Delete obsolete code.** When replacing an internal design, remove the old code,
+   docs, tests, and tooling in the same change unless they are still needed to reproduce
+   or compare retail behavior.
+7. **Require a current reason for machinery.** Before adding an abstraction, helper
+   framework, protocol layer, compatibility path, or config option, identify the current
+   caller, retail behavior, or test that requires it. If there is none, do not add it.
+8. **Do not optimize for hypothetical downstream users.** There are none. Optimize for
+   faithful retail behavior, clarity, small changes, and ease of deleting or changing
+   code tomorrow.
+
+Do not preserve compatibility with an earlier decomp/Rust/tooling design merely because
+it existed. If it is wrong, redundant, or needlessly complicated, replace it directly.
+**Retail compatibility wins; repository-internal compatibility does not.**
+
 This file is the contract: the invariants below hold for all work. Per-workflow and
 per-topic detail lives in **skills** (`.claude/skills/`). **Loading the matching
 skill is part of the job, not optional**: before porting a function, load the
@@ -214,10 +251,12 @@ target). They need a built binary + reccmp DB. Details in the `quality-control` 
 ## Hard Rules
 
 1. No inline assembly. (enforced by `just antipattern-gate`)
-2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
-   `compare`, `stats`, `generate`). Do not run raw
-   `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
-   keep the direct command minimal and add a target afterward.
+2. Use `just` targets for normal recurring workflows (`tooling-check`, `build`,
+   `detect`, `compare`, `stats`, `generate`). Do not run raw `docker` or
+   `uv run reccmp-*` when a suitable target already exists. If no target exists, use
+   the minimal direct command. Add a new `just` target only when the workflow actually
+   recurs or needs to encode project policy; do not create workflow machinery for a
+   one-off command.
 3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function
    declaration — no comment or blank line between them. (enforced by `just marker-gate`)
 4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
