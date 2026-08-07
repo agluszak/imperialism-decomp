@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decompile Function"
+  short_description: "Recover retail C++ functions faithfully"
+  default_prompt: "Use $decompile-function to recover a retail function from listing evidence."

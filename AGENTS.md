@@ -1,485 +1,65 @@
-# Imperialism Decomp — Agent Guide
+# Imperialism repository guide
 
-Decompilation workspace for the Windows game **Imperialism (1997)**. We reverse the
-binary into matching C++, rebuild it with the original MSVC500 toolchain in
-Docker/Wine, and track per-function similarity with `reccmp`. The goal is a
-byte-faithful, reproducible-in-git rebuild.
+This repository contains two related implementations of Imperialism (1997):
 
-This file is the contract: the invariants below hold for all work. Per-workflow and
-per-topic detail lives in **skills** (`.claude/skills/`). **Loading the matching
-skill is part of the job, not optional**: before porting a function, load the
-topical skills matching its dominant traits (see the table below); before any
-workflow task, load its workflow skill. The old monolithic heuristics file is gone —
-its notes live inside these skills, so skipping the skill means working blind.
+- `decomp/` is the behaviorally and ABI-faithful C++ reconstruction of the retail game.
+- `rust/` is the new Rust implementation.
 
-## The workflow entrypoints (use these, not memory)
+Retail behavior and evidence are the ultimate behavioral reference. The C++ reconstruction is an
+executable oracle for the Rust implementation, but Rust must not reproduce accidental C++/MFC/ABI
+structure. Shared contracts are explicit and versioned; the implementations communicate through
+serialized data and process boundaries, never by linking Rust to the reconstructed executable.
 
-Every porting/fixing task goes through three stateful commands — they execute the
-correct process so you never have to reconstruct it:
+## Scope
 
-```sh
-just agent-start port 0xADDR   # investigation front door: refuses stale bases,
-                               # already-implemented targets, and addresses claimed
-                               # by another live branch (refs/agent-claims/*); runs
-                               # tooling-check, func-status, ghidra portprep, the
-                               # initial compare, library-identify; writes
-                               # build-msvc500/agent-tasks/<branch>/receipt.json
-just advice 0xADDR             # the 5-10 most relevant active rules for this target
-                               # (from config/agent_rules.yml); `just advice --diff`
-                               # selects by the current working diff instead
-just agent-check               # diff-aware verification: regenerates build inputs
-                               # (hard error on hand-edited generated files),
-                               # format-check on touched paths, build, detect,
-                               # compare+triage of every touched address (added markers
-                               # and edited bodies, mapped hunk->marker), gates, tests,
-                               # generated-integrity gate on precommit's own base
-just agent-finish              # PR title + body from the receipt; REFUSES unless
-                               # agent-check is green for this exact tree
-                               # (build-msvc500/agent-tasks/<branch>/pr-body.md)
-just agent-release             # after the work lands: free the claim refs (24h TTL otherwise)
-```
+- Follow `decomp/AGENTS.md` for work under `decomp/`.
+- Follow `rust/AGENTS.md` for work under `rust/`.
+- Cross-implementation changes must satisfy both scoped guides.
+- `interop/` contains only contracts and fixtures genuinely shared across implementations.
+- Keep implementation-owned code, tests, assets, evidence, and compatibility details in the owning
+  subproject. Do not create a generic `shared/` directory.
 
-The receipt is guidance, not proof — `just precommit` recomputes the checks. Policy-baseline
-updates (`stub-count-gate-update`, `datacmp-gate-update`, `noop-gate-update`, and
-friends) are exceptions to architecture rules and refuse to run without
-`ALLOW_POLICY_BASELINE_UPDATE=1`, which requires an explicit human approval —
-never set it to make a red gate go away (see the gate-chasing guardrail). The
-fully-eradicated gates (construction/antipattern, raw-vtable, dual-use, ilt-
-ossification, boundary, vtable-abi) are baseline-free **hard bans** with no
-`-update` target at all: any hit is a source defect to fix, never to bless.
+Start tools from the relevant subproject directory. This keeps implementation-specific instructions,
+skills, settings, and command surfaces out of unrelated sessions.
 
-## Workflow skills (how to do each kind of task)
+## Shared architecture
 
-- **`decomp-loop`** — the core function-porting loop (seed → shape pass → data
-  pass → build → compare). Its `heuristics.md` keeps only loop-process notes and the
-  legacy note-number resolution table.
-- **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
-  dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
-- **`quality-control`** — build, reccmp detect/compare/stats, structured semantic
-  diagnosis, gates, formatting, and reccmp pairing-failure diagnosis.
-- **`sync-pipeline`** — the derived-artifact pipeline: the raw entity inventory, function
-  ownership, generated stubs, `just generate`/`ghidra-apply-source`, and the
-  resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
-- **`class-recovery`** — class/vtable reconstruction, slice/class discovery,
-  Mac-evidence oracle use, and real-virtual dispatch on recovered classes.
-- **`vtable-matching`** — drive `just vtable <Class>` to 100%: read the reccmp vtable
-  diff and fix per-slot mismatches (inherited-base, scalar-deleting-dtor, missing
-  override, stub-in-slot, imported-thunk). Separate from `class-recovery`, which
-  reconstructs an unknown layout/inheritance in the first place.
-- **`run-debug`** — run the recomp under Wine, scripted winedbg sessions, and the
-  capture-by-window-ID screenshot recipe for visual verification.
-- **`runtime-tests`** — write and debug native semantic runtime tests: the linear-script
-  API (`RT_` macros, script scenarios, screens, flows), the fast authoring loop
-  (`runtime-dev`/`runtime-run`), control discovery (`runtime-tree`), and the MSVC500 rules
-  the protothread imposes. Load before adding or migrating a runtime scenario.
+- `imperialism-core` owns authoritative deterministic Rust game state and the serializable
+  command/event boundary.
+- The Bevy application is a presentation, input, and lifecycle client of that domain model.
+- Retail import and legacy compatibility belong at format/import boundaries.
+- Differential tests invoke the C++ reconstruction as an external process and compare complete
+  serialized state and events.
+- Canonical snapshots and the serializable command/event protocol are interoperability contracts.
+  Version shared formats deliberately and document compatibility changes in `interop/`.
 
-## Topical skills (load by what the target function contains)
+## Beads
 
-Match a function's traits to skills and load EVERY one that applies **before**
-porting or diagnosing it:
+This repository uses Beads (`bd`) for durable work tracking and multi-session handoff.
 
-| The function/target has… | Load |
-| --- | --- |
-| any callee to declare, an ECX load before a CALL, a Ghidra `__cdecl` label, a `ret N` question, a suspect receiver/attribution | **`calling-conventions`** |
-| CString/text/format/assert strings, string-pool literals, `CDumpContext` | **`string-handling`** |
-| an EH prologue (`push -1`/`__ehhandler`), non-POD locals, `new`-expressions, ctor/dtor work, scalar deleting dtors | **`ctors-dtors-eh`** |
-| float/double math, FPU diff lines, unexplained +8 frame bytes | **`fp-matching`** |
-| loop/branch/switch shape mismatches, flag bytes, `sete`, magic-number division, sign-extension noise | **`codegen-shapes`** |
-| unlabeled `.data`/`.rdata` reads, new globals/structs, field-width questions | **`data-modeling`** |
-| size ≥ ~500B, a giant switch, or any "this is too complex" feeling | **`big-functions`** |
-| MFC collection-shaped vtables/fields/internals | **`mfc-collections`** |
-| unknown class layout/inheritance to reconstruct | **`class-recovery`** |
-| a below-100% vtable or wrong-slot diff | **`vtable-matching`** |
+- Run `bd prime` when starting or recovering context.
+- Create and claim a Bead before implementation work.
+- Use `bd ready`, `bd show <id>`, `bd update <id> --claim`, and `bd close <id>`.
+- Record blockers, dependencies, and follow-up work in Beads, not markdown TODO lists.
+- Every retail-behavior bug must require faithful source/data/resource/control-flow evidence and a
+  semantic test of the real path; symptom suppression is not completion.
+- Beads Dolt synchronization is separate from Git publication and requires explicit authorization.
 
-Standing behavioral rules the topical skills exist to enforce:
+## Git and concurrent work
 
-1. **No function is "too complex" to port.** Strings, EH scaffolding, size, and FP
-   density are never reasons to postpone, stub, approximate, or hand back a target —
-   each has a skill that turns it into mechanical transcription. Deferred/TODO bodies
-   are not an outcome; a structurally-faithful port at 40–60% is.
-2. **Ground truth comes from the Ghidra tooling, not from memory or the decompile.**
-   Before porting: `just ghidra listing 0xADDR` for the real instructions, resolve
-   every ILT thunk to its target, verify conventions per `calling-conventions`, and
-   read constants/strings from the binary (`just ghidra string-oracle`, datacmp). If you
-   have not run the listing, you do not know what the function does.
-3. **Assume there are no gameplay bugs in the original retail game.** A bug observed
-   in the recomp is a symptom of unfaithfully ported code, data, layout, ownership, or
-   control flow. Diagnose it against the original listing and live retail behavior,
-   then restore the original semantics. **A disappearing symptom is not a completed bug
-   fix unless the source, data, resources, and control flow are retail-faithful.** Never
-   fix a symptom by adding a workaround, guard, special case, guessed value, alternate
-   behavior, incomplete test fixture, or test-only state bypass that is absent from the
-   original. If a semantic runtime test cannot traverse the retail path because its
-   fixture is incomplete, repair the fixture/resource model instead of bypassing the
-   transition.
+- Preserve changes you did not create. Never use blanket stash, restore, checkout, reset, or clean
+  operations to escape a failure.
+- Keep commits scoped and review the complete diff before staging.
+- Completed, verified work is committed locally by default. Push or open a PR only when requested.
+- Fetch the remote base immediately before publication and verify ancestry rather than trusting a
+  potentially stale local branch.
+- Do not rewrite policy baselines merely to make a red check pass.
+- When verification exposes a real architectural problem, fix forward or report the blocker.
 
-## IMPORTANT
-- Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
-- code coming from MFC/other Windows libraries MUST NOT be modelled/ported. Use // LIBRARY annotations for it
-- ILT thunks must not be used at all - they should be completely ignored. Use the target methods instead.
+## Documentation
 
-## Docs (the durable record)
-
-### Production-source comment policy
-
-- Keep source ownership markers (`FUNCTION`, `GLOBAL`, `VTABLE`, `SYNTHETIC`, and
-  `TEMPLATE`) and comments that state the current contract, argument meaning,
-  sentinels, ownership, or non-obvious invariants.
-- Explain intentionally unusual source with a short `ABI:`, `MATCH:`, `ORACLE:`, or
-  `LAYOUT:` comment when the distinction is useful.
-- Do not archive investigation history in production source: no bead IDs, resolved
-  TODOs, former names/models, reverted implementations, stale paths, or narratives
-  about what Ghidra or an earlier port once claimed. Keep detailed proof in Ghidra,
-  focused evidence documents, Beads, and Git history.
-
-- Git history — clear commit messages are the durable execution record for what
-  changed, how it was verified, and any score deltas.
-- `docs/workflows.md` — the canonical command playbooks (fresh-worktree bootstrap,
-  daily port loop, marker/ownership edits, full Ghidra DB resync). Start here when
-  unsure which `just` target to run; `just --list` groups every target and flags
-  mutating ones. In a fresh worktree, run its §0 bootstrap first (`.env`,
-  `reccmp-user.yml`, `just restore-project`) — gitignored machine state does not
-  follow the git tree.
-- `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
-- `docs/cloud-env.md` — Cursor Cloud session setup (dockerd, Ghidra paths, blockers).
-- `docs/reference/` — layout/contract and game-domain references (struct layouts,
-  function/entry-chain map, bitmap IDs, tech unlocks).
-
-## Environment & tooling
-
-- **Python tooling runs through `uv`.** Use the `just` targets (preferred) or
-  `uv run python -m tools...`; never bare `python`. `.env` holds only machine-specific
-  paths (`GHIDRA_INSTALL_DIR`, `ORIGINAL_BINARY`, optional `MACOS_IMPERIALISM_DUMP`);
-  see `.env.example`. Everything else is a constant in the `justfile`.
-- **MSVC/MFC headers are available locally for reference.** Populate the gitignored
-  mirror with `just vendor-msvc500-headers`, then inspect
-  `vendor/msvc500/headers/{include,mfc/include,atl/include}` instead of guessing MFC
-  signatures or collection layouts.
-- **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
-  a decompile or a name; prefer it over objdump. The full inspect-command catalog
-  (listing, xrefs, func-sig, field-xrefs, string-oracle, cdecl/thiscall scan, decompile,
-  persistent daemon) lives in the `ghidra` skill and `just --list`. The vendored project
-  (`vendor/ghidra`) is authoritative; the tools verify the installed Ghidra matches
-  `ghidra.toml` and fail fast on a mismatch.
-- **Ghidra naming and calling conventions are provisional** (see Hard Rule 6 and the
-  MSVC500 calling-convention guardrail): treat every name and
-  `__cdecl`/`__fastcall`/`__thiscall` label as a hypothesis to verify against the
-  assembly, never as ground truth.
-
-### reccmp verification & comparison commands
-
-Each wraps a `uv run reccmp-*` tool via a `just` target (Hard Rule 2 — prefer the
-target). They need a built binary + reccmp DB. Details in the `quality-control` skill.
-
-- `just precommit` — the whole pre-commit sequence in one command: `build` +
-  `gates` + `test` (tooling unit tests) + `stats`.
-- `just install-reccmp-merge-driver` — one-time local setup for generated progress
-  baselines. On a baseline conflict, the driver keeps a valid side and tracked hooks
-  rebuild/regenerate both baseline files after the merge/rebase completes, leaving
-  reviewable unstaged changes rather than a hand-merged JSON artifact.
-- `just gates` — the mechanical source-policy gates: `decomplint` plus the ratchet
-  gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
-  with a `just <gate>-update` baseline target.
-- `just serde-audit` — for any `ReadFrom`/`WriteTo` work: compares each serializer's
-  stream ops against the original's listing (direction, width, repeat count, slot
-  identity). Run it before reading scores. It cannot see a wrong *value* at the right
-  width — a length prefix that disagrees with the records after it needs the runtime
-  round-trip test.
-- `just triage 0xADDR` / `just triage --file src/game/X.cpp` — consume reccmp's
-  structured semantic result and add Imperialism-specific advice. Address and file
-  requests are filtered inside reccmp and analyzed together in one fresh process;
-  reccmp loads only the required PDB object modules when it can prove the mapping,
-  and its fingerprinted `.reccmp-cache` beside the PDB accelerates repeat queries.
-  The cache contains parsed analysis only, never proof results, and invalidates on
-  binary, PDB, source-marker, data-source, config, or analyzer changes. Never loop
-  over single-address invocations. Run this before reading a raw
-  `just compare` diff. The four statuses are authoritative:
-  `exact` needs no work; `effective` is a completed proof whose reasons describe
-  safe compiler variation; `mismatch` is the first trusted machine-level divergence;
-  `inconclusive` means reccmp could not prove either outcome and is **not** evidence
-  that the source is wrong. Triage never derives safety or operand meaning by parsing
-  rendered assembly.
-  `commutative_order` includes reassociated integer-add reductions when no
-  intermediate flags are observed; keep the natural typed expression instead of
-  permuting operands to chase VC5's load schedule.
-- `just vtable [Name]` (vtable correctness). An oversized warning reports the
-  candidate/original slot counts, the first original null slot, the size trigger,
-  and the entity imposing an address boundary. `boundary` with no null can be a
-  stale interior annotation; a named adjacent dispatch table can be a real model
-  boundary; `null` identifies a concrete original tail. Do not treat these cases as
-  interchangeable. `just datacmp [-a]` (global data values),
-  `just roadmap` (symbol locations of functions/vtables/data), `just stackcmp 0xADDR`
-  + `just stackcmp-triage` (stack layout of near-matching functions).
-
-## Hard Rules
-
-1. No inline assembly. (enforced by `just antipattern-gate`)
-2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
-   `compare`, `stats`, `generate`). Do not run raw
-   `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
-   keep the direct command minimal and add a target afterward.
-3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function
-   declaration — no comment or blank line between them. (enforced by `just marker-gate`)
-4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
-   for the same address across manual files and stubs. (enforced by `just marker-gate`)
-5. After editing markers/ownership, just run `just build` — it regenerates the build
-   inputs (source index + stubs) from current markers automatically — and `just gates`
-   before committing (raw-vtable + construction anti-pattern + marker-hygiene gates;
-   run `just format-check <touched paths>` separately on files you edited).
-6. Treat Ghidra class/method/field names as **provisional** —
-   they may be auto-generated placeholders, even entirely random. reccmp pairs by the
-   `// FUNCTION:` address marker, not by name, so drive matching and field naming from
-   observed behavior in the disassembly, and keep tentative names hedged.
-7. Keep class-owned functions in `src/game/<subsystem>/<ClassName>.cpp` (subsystem
-   folders per `docs/reference/subsystem_assignment.csv`; unassigned/shared files
-   sit at the `src/game/` root). **Every file under
-   `include/game/` and `src/game/` is manually owned source** — author and edit its
-   declarations and bodies by hand, then verify with `just build` / `just vtable` /
-   `just gates`. There are no tool-owned source trees anymore: generated inputs
-   (stub TUs, the source index) live in the build directory and Ghidra reference
-   exports go to build evidence — only files carrying an `AUTO-GENERATED by tools/…`
-   banner are tool output; do not hand-edit those. The
-   retired `recover-class` source generator is gone: there are no "generated
-   declaration" blocks or "do not hand-edit" boundaries inside manual headers (a
-   `just generated-marker-gate` rejects them if they reappear). Read-only Ghidra
-   extractors (`just class-vtable-dump`, `just vtable-abi-audit`, discovery targets)
-   may inspect manual source and push its names into the Ghidra DB, but must never
-   rewrite a declaration, body, symbol prototype, or ownership row.
-8. Promote repeated `this + offset` / `reinterpret_cast` access that maps to a stable
-   class region into a typed class field (or typed view struct) instead of cast-helper
-   indirection.
-9. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
-   local `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing,
-   and no generated `VCall_*` facade wrappers.
-10. When adding a dispatch to an unrecovered receiver, declare the method on the owning
-    class header at the verified slot and call `obj->Method(args)` directly.
-11. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
-    and `just session-loop --refresh-ignore` do it; run them only when you explicitly
-    intend to rewrite ignore configuration (`just session-loop` alone is read-only).
-12. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
-    name/signature **oracle only** — it must never assign Windows addresses, calling
-    conventions, vtables, or inheritance.
-13. Never discard working-tree changes: no `git stash`, `git checkout --` /
-    `git restore`, `git reset --hard`, or other blanket revert to escape a build/gate
-    failure or "get a clean slate". Fix forward per the gate-chasing guardrail.
-    Uncommitted changes may also belong to concurrent agents sharing this checkout —
-    discarding them destroys in-flight work. Reverting requires an explicit user
-    instruction.
-
-## Hard rules: real C++ construction and inheritance
-
-Mandatory. Do not use bridge thunks, placement-new shims, manual vtable writes, or fake
-runtime helpers when a real C++ construct can express the same thing. Full recipes,
-examples, and rationale: `docs/reference/construction.md`.
-
-1. **Prefer real inheritance over construction bridges** — `class TDerived : public
-   TBase` with a natural `: TBase()` ctor, not `ConstructTBaseAtThis(this)` /
-   `new (this) TBase()` / `VCall_RuntimeBaseCtor(this)`.
-2. **No manual vtable writes** (`*(void**)this = ...`, `vptr = g_vtbl...`). `// VTABLE:` +
-   C++ inheritance own vtable emission; a needed vptr write means the class model is
-   wrong. Allowed only in quarantined runtime files with a comment proving it isn't normal
-   construction. *(enforced by `just antipattern-gate`)*
-3. **Constructor field init is about placement.** Use member-initializer lists (in
-   declaration order) when the original writes scalar fields before constructing later
-   non-POD members; body assignments force the member construction first and mismatch.
-4. **Declaration order is part of the reconstruction** — C++ constructs members in
-   declaration order. Match the original layout; do not reorder fields for looks.
-5. **Use real member objects, not raw storage + init helpers** — a `CString` member is
-   `CString`, not `unsigned char[4]` + `InitializeCString`. Raw storage only while the
-   type is genuinely unknown.
-6. **Compiler construction/destruction helpers are compiler output, not source APIs.**
-   MSVC EH/vector-iterator functions (array ctors/dtors, cleanup callbacks, unwind
-   helpers) and scalar deleting destructors must not be restored, wrapped, ported into
-   invented helper TUs, or renamed as gameplay/runtime abstractions — in manual source
-   they disappear into real C++ constructs. Recover the actual element/member type and
-   let C++ member arrays, ctors, dtors, scalar deleting dtors, and inheritance emit those
-   helper calls naturally. Never introduce `callback_helpers`, `CallCallbackRepeatedly`,
-   raw callback-address wrappers, or similar fakes in place of the real element type.
-7. **Virtual calls are real virtual calls / real member methods**, not `VCall_*` facades
-   or `reinterpret_cast` to fake calling conventions (see the guardrail below).
-8. **No `operator new`/`operator delete` factories or `__cdecl` free-function factory /
-   class-name helpers** (`CreateTViewInstance`, etc.) as a porting approach — port real
-   methods + real inheritance. The retired "EH-new factory" pattern is not a template.
-   *(hard-banned by `just antipattern-gate`)*
-9. **No placement-new (`new (this) T()`) for base construction** — use real inheritance;
-   placement-new is only for genuine placement semantics (pools, explicit reconstruction
-   into a buffer). *(enforced by `just antipattern-gate`)*
-10. **Scalar deleting destructors (`??_G`/`??_E`) are compiler-generated** — claim them
-   with `// SYNTHETIC` + an exact backtick name in `config/original_entities.csv`; never
-   hand-write a `Destruct*AndMaybeFree` bridge. Requires a genuinely polymorphic class.
-11. **Retire temporary scaffolding** (`Construct*AtThis`, `VCall_*Runtime`,
-    `*AndMaybeFree`) as classes become understood; name any unavoidable bridge as
-    temporary with a removal condition. *(hard-banned by `just antipattern-gate`)*
-12. **Don't corrupt the source model to chase a local score.** A 70% match with correct
-    architecture beats a 100% match built on fake source that blocks hierarchy recovery.
-    **This applies to gates too:** a failing `just gates` / `just vtable` with correct
-    source is not permission to revert to stubs — see the gate-chasing guardrail below.
-13. **Evidence required for inheritance** — base edges need constructor/destructor
-    sequencing, vtable layout, prefix-layout, or Mac-symbol evidence; never names alone.
-14. **Treat reccmp's structured comparison as semantic ground truth.** Never infer
-    that register-shaped or reordered rendered diffs are safe by eye or with regexes.
-    Only a `mismatch` is actionable source-recovery evidence. An `effective` result is
-    already proved harmless; an `inconclusive` result requires verifier/metadata/
-    alignment investigation and must never be presented as proof of a source defect.
-
-## Gate-chasing guardrail (never revert architecture to pass verification)
-
-When `just gates`, `just vtable`, `just build`, or a pre-commit check fails **after** you
-have promoted real C++ shape — typed fields, real methods, `new T()`, typed singleton
-globals — **never undo that work to make verification pass.** Reverting real methods to
-`extern undefined4` + `reinterpret_cast` at the callsite is strictly worse than a failing
-gate and is a source-model corruption (construction Hard Rule 11). Promotion is one-way:
-bridges get retired, never restored.
-
-**Fix forward or stop and report — never fix backward.** If a build/link, duplicate
-marker, `just vtable`, or `antipattern-gate` failure cannot be resolved *without*
-architectural regression, stop and report what failed and what class-model work remains.
-A blocked commit with correct source beats a passing commit with reverted stubs. The
-step-by-step fix-forward order and the callee-classification table (thiscall / vtable /
-operator-new / LIBRARY / cdecl → correct model vs forbidden rollback) live in the
-**`quality-control`** skill.
-
-## MSVC500 calling-convention guardrail
-
-- **Ghidra's calling-convention attribution is frequently WRONG** — it default-labels
-  unknown functions `__cdecl` (~33% of "defined `__cdecl`" are really `__thiscall`), and
-  mislabels `__fastcall`/`__thiscall`/vtable dispatch. Treat every convention as a
-  hypothesis to verify against the assembly (who sets `ecx`/`edx`, who cleans the stack).
-- **Model real classes with real methods/virtuals — never fake a convention with
-  `reinterpret_cast` to paper over a label.** This is the single most repeated correction
-  (enforced by `just antipattern-gate`). A `thiscall` callee is a class method → declare
-  it and call `obj->Method(args)`; a vtable dispatch → real `virtual` in the verified slot
-  order, called on the recovered class. Do NOT cast a free-function pointer to a fake
-  `__fastcall(void*, int /*edx*/, …)` shape with a dummy `edx`.
-- Adjusting only the return/argument types of a genuinely same-convention free function
-  (e.g. a real `__cdecl(void)` thunk) is fine; faking the *convention* is not. For an
-  unavoidable bridge where no class can yet be modeled, prefer `__fastcall`, keep it out
-  of primary method bodies, and first ask whether the right fix is to recover the owning
-  class. Full recipes: the **`calling-conventions`** skill.
-
-## Type-modeling guardrail
-
-Examples and evidence recipes live in the **`data-modeling`** and **`mfc-collections`**
-skills; the invariants:
-
-- **Use the real type — the real MFC type when the data is one.** Model a field/param/
-  local as what the original used, not `int`, raw `unsigned char[]`, or a hand-rolled
-  stand-in. MFC data gets the MFC type (`CString`, `CPtrList`/`CObList`/`CObArray`/
-  `CTypedPtrList`, `CPoint`/`CRect`/`RECT`, `CWnd`, `CArchive`, `CRuntimeClass`, …) so
-  members construct and call sites use the real API instead of protected internals. A
-  `reinterpret_cast` to reach a method is the smell of a mismodelled type.
-- **Never borrow a type from a neighbouring signature.** A parameter labelled `TEvent*`
-  elsewhere does not make this object a `TEvent`. Confirm the real class (ctor/vtable,
-  `config/recovered_globals.csv`, `original_entities.csv`, or the Mac oracle) before
-  typing or casting. Distinct classes sharing a layout region or slot are *not*
-  interchangeable (`PostCommand(TCommand*)` vs `PostAnEvent(TEvent*)` proves
-  `TCommand` ≠ `TEvent`).
-- **An opaque/polymorphic vtable slot takes `void*`, not one caller's type** — do the
-  `static_cast<TCommand*>` interpretation inside each override body so every call site
-  converts implicitly. Don't force other callers to `reinterpret_cast`.
-- **Type pointer-bearing fields as typed pointers** (`TEventHandler* targetHandler`, not
-  `int field10`) and update the init helper's argument to match, so call sites pass real
-  objects via implicit upcast with no cast.
-- **"Dual-use" / "dual-purpose" / "same slot used as X and Y" is NEVER a final
-  explanation — it is a mandatory investigation trigger.** A purported dual-use field is an
-  *unresolved modelling defect* until proven otherwise; the label usually hides a wrong
-  receiver, a wrong offset from a wrong layout, adjacent fields read as one region, or two
-  concrete classes merged into one. Until resolved keep the slot opaque and tagged
-  `// UNRESOLVED_FIELD_ATTRIBUTION:` with the conflicting readings and evidence addresses —
-  never prose calling it intentional, never `reinterpret_cast<int>` of a pointer as the
-  "answer". Eight conditions must ALL hold before a slot is a legitimate variant, and the
-  final model must then be a real `union`/variant/discriminator — the list and its evidence
-  recipes are in the **`data-modeling`** skill. (Enforced by `just dual-use-gate`.)
-- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe** —
-  reccmp pairs by address and these casts compile to nothing. Reuse the curated
-  `original_entities.csv` name (don't invent a third); confirm with `just compare <addr>`.
-  Update an override's signature in lockstep with its base or it silently stops overriding.
-- **Be opportunistic in touched code.** While reading/editing any function for another
-  task, fix the wrong types, stray `reinterpret_cast`s, junk names, and obvious bugs you
-  see there — even if you didn't cause them. Don't go out of scope hunting elsewhere.
-- **Every global in `global_data_tables.cpp` must be declared in exactly one
-  `include/game/globals/*.h` subsystem header** (the subsystem its users live in;
-  `shared_globals.h` when unsure), and consumers must `#include` that subsystem header
-  (plus `globals/prelude.h`) — never hand-roll a local `extern`, and never include the
-  umbrella `global_data_tables.h` from new code. Add the `extern` in the same change as
-  a new global; migrate any local re-declaration or umbrella include you touch
-  (opportunistic-fix scope above).
-
-## Commit-message policy
-
-**Pre-commit verification** (required before every commit):
-
-1. `just precommit` — build + all gates + tooling tests + stats in one command
-2. Review the stats deltas vs `config/reccmp_progress_baseline.json`
-3. `just stats-baseline-update` — refresh the baseline; commit it with the source change
-
-If gates fail or stats regress for reasons unrelated to your edit, stop and report
-rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.
-Never revert promoted real C++ to pass gates — see the **Gate-chasing guardrail** above.
-
-**Raw score wobble is not a regression.** Growing a TU or linking new code elsewhere can
-flip commutative-FP operand order (100%→43% on untouched FP leaves), cause sub-1pp
-register-allocation wobble in neighbouring functions, and re-pair nearby LIBRARY
-functions — all in code you never touched. These phantom drops are not regressions:
-never revert real structure, relocate globals, or contort the design to defend the old
-score. Check `just triage`: `effective` confirms the variation is semantically harmless;
-only `mismatch` supplies actionable source evidence, while `inconclusive` calls for
-analysis/metadata work rather than source contortions. Accept proven-safe deltas and
-`just stats-baseline-update` (full pattern: the
-`fp-matching` and `data-modeling` skills' wobble notes).
-
-- Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
-  as historical context only.
-- Write clear commit messages that explain what changed, how it was verified, and
-  any relevant score deltas or accepted residual risks.
-- Don't duplicate the same long status across multiple files.
-- Persist transferable matching lessons in the matching **topical skill's** field
-  notes (`calling-conventions`, `ctors-dtors-eh`, `string-handling`, `fp-matching`,
-  `codegen-shapes`, `data-modeling`, `big-functions`, `vtable-matching`,
-  `class-recovery`, `mfc-collections`); loop-process lessons go to
-  `.claude/skills/decomp-loop/heuristics.md`.
-
-<!-- BEGIN BEADS INTEGRATION v:1 -->
-## Beads Issue Tracker
-
-This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
-
-### Quick Reference
-
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>         # Complete work
-```
-
-### Rules
-
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
-- Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
-- Every bug Bead must make retail faithfulness explicit in its acceptance criteria.
-  Do not close it merely because the symptom disappears: closure requires evidence that
-  the recovered source/data/resource/control flow matches retail and a semantic test that
-  traverses the real path. Guards, guesses, alternate behavior, incomplete fixtures, and
-  test-only state bypasses are closure failures.
-
-**Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/SYNC_CONCEPTS.md for details and anti-patterns.
-
-## Git policy
-
-Completed, verified repository work is committed locally by default. Keep staging scoped,
-run the repository's required pre-commit checks, and include the refreshed stats baseline
-when source changes affect it. Pushing Git commits and synchronizing Beads through the
-Dolt remote are separate operations and require explicit authorization. A current
-"do not commit" or "do not push" instruction still wins.
-
-## Session completion
-
-Subordinate to explicit user, repository, or orchestrator instructions. When ending a
-Beads workflow: file beads for anything left over, run the gates if code changed, close or
-update the issues you touched, commit per **Git policy** above, then hand off with what
-changed, how it was verified, issue status, and any step that stayed blocked (naming the
-exact command and error).
-
-<!-- END BEADS INTEGRATION -->
+- Keep standing invariants in the nearest scoped `AGENTS.md`.
+- Keep repeatable procedures in scoped skills.
+- Keep durable technical evidence in the owning subproject's docs or evidence stores.
+- Use Beads for active work and Git commits for execution history; do not add worklogs or checked-in
+  agent plans.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Decomp Runtime"
+  short_description: "Run debug and test retail behavior"
+  default_prompt: "Use $runtime to run or debug a semantic runtime scenario."

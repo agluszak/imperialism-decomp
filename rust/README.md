@@ -1,7 +1,7 @@
 # Imperialism Rust port
 
-This directory is an independent Cargo workspace. It is not part of the CMake, `just`,
-MSVC500, or reccmp workflows in the repository root. Run Rust commands from this directory.
+This directory is an independent Cargo workspace and a first-class sibling of the C++
+reconstruction in `../decomp/`. Run Rust commands from this directory.
 
 - `imperialism-core` owns deterministic game state and the command/event boundary. It has no
   Bevy dependency.
@@ -11,8 +11,8 @@ MSVC500, or reccmp workflows in the repository root. Run Rust commands from this
   differential runner.
 
 The only contracts shared with the C++ implementation are versioned canonical snapshots and the
-serializable command protocol. The Rust game state does not depend on C++ layouts or Bevy ECS
-entities.
+serializable command/event protocol documented in `../interop/`. The Rust game state does not
+depend on C++ layouts or Bevy ECS entities.
 
 ```sh
 cargo test --workspace
@@ -50,7 +50,7 @@ palette and persist a snapshot directly from the retail save fixture:
 ```sh
 cp -r assets.example imported-assets
 cargo run -p imperialism-formats --bin legacy-inspect -- \
-  ../tests/runtime/fixtures/beginning_of_game.imp --canonical 1 1 1 1 0 \
+  ../interop/fixtures/beginning_of_game.imp --canonical 1 1 1 1 0 \
   > beginning-of-game.snapshot.json
 cargo run -p imperialism-app -- viewer beginning-of-game.snapshot.json
 ```
@@ -67,8 +67,8 @@ publishes ordered domain events. Bevy ECS contains only disposable projections c
 The existing UI generator also emits the deterministic 640x480 launch catalog consumed by Rust:
 
 ```sh
-uv run python -m tools.ui_codegen --check
-uv run python -m tools.ui_codegen --write-rust-catalog
+(cd ../decomp && uv run python -m tools.ui_codegen --check)
+(cd ../decomp && uv run python -m tools.ui_codegen --write-rust-catalog)
 ```
 
 The catalog is generated from the committed Mac View IR plus declared Windows deltas. Resource IDs

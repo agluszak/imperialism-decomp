@@ -3,7 +3,7 @@ command -v git-lfs >/dev/null 2>&1 || { printf >&2 "\n%s\n\n" "This repository i
 git lfs post-commit "$@"
 
 # --- BEGIN RECCMP BASELINE INTEGRATION ---
-if command -v uv >/dev/null 2>&1 && [ -f tools/workflow/reccmp_baseline_merge.py ]; then
-  uv run python -m tools.workflow.reccmp_baseline_merge refresh --event post-commit
+if command -v uv >/dev/null 2>&1 && [ -f decomp/tools/workflow/reccmp_baseline_merge.py ]; then
+  PYTHONPATH=decomp uv run --project decomp python -m tools.workflow.reccmp_baseline_merge refresh --event post-commit
 fi
 # --- END RECCMP BASELINE INTEGRATION ---

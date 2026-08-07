@@ -1,0 +1,101 @@
+# Local original game files.
+# Leading slash matters: unanchored `assets/` also swallowed the manual source
+# dirs include/game/assets/ and src/game/assets/, so new files there were
+# silently unaddable.
+/orig/
+/assets/
+
+# Build artifacts
+/build/
+/build-*/
+# Stubs/indexes are generated into the build dir; a stale committed-era copy here
+# would double-register reccmp markers.
+src/autogen/
+src/ghidra_autogen/
+include/ghidra_autogen/
+/out/
+/tmp_decomp/
+*.obj
+*.pdb
+*.ilk
+*.lib
+!vendor/msvc500/lib/*.lib
+*.exp
+*.exe
+!tools/**/tests/*.exe
+resources/*.res
+resources/generated/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# IDE/editor
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# User-specific reccmp config
+config/reccmp-project.yml
+reccmp-user.yml
+reccmp-build.yml
+
+# Local environment config
+.env
+
+# Vendored Ghidra: keep the portable archive (vendor/ghidra/exports/*.gzf, via LFS);
+# the live working project is regenerable from it via `just restore-project`.
+vendor/ghidra/*.rep/
+vendor/ghidra/*.gpr
+vendor/ghidra/*.lock
+vendor/ghidra/*.lock~
+vendor/ghidra/*.rep.bak
+# Live working project restored by `just restore-project` (regenerable from exports/)
+vendor/ghidra/imperialism-decomp/
+vendor/ghidra/imperialism-decomp.rep/
+
+# Local MSVC 5.0 header mirror for agent/reference use.
+# Populate with `just vendor-msvc500-headers`.
+vendor/msvc500/headers/
+
+# Local DirectX 5 SDK mirror for agent/reference use.
+# Populate with `just vendor-directx-headers`.
+vendor/directx/include/
+vendor/directx/lib/
+
+/scratch
+
+# reccmp detect output at repo root (build artifact)
+/detect.log
+
+# Beads / Dolt files (added by bd init).
+# `*.db` stays root-anchored: unanchored it matched the vendored Ghidra FID
+# database *directories* (vendor/msvc500/fid-generation/.../~0000????.db/),
+# hiding 759 tracked files. Beads' own .beads/.gitignore covers .beads/*.db.
+.dolt/
+/*.db
+.beads-credential-key
+.beads/proxieddb/
+.beads/interactions.jsonl
+
+# Ghidra query daemon runtime state (tools/ghidra/daemon.py)
+.ghidra-query.sock
+.ghidra-query.pid
+.ghidra-query.log
+.ghidra-daemon.log
+compile_commands.json
+
+# Session-specific agent memory — never commit (stale conclusions poison future agents)
+.claude/projects/
+# Per-machine Claude Code overrides (permissions etc.); .claude/settings.json is shared
+.claude/settings.local.json
+
+# clangd index cache (per-machine, regenerated on demand)
+.cache/
+
+# Local retail-derived save fixtures for runtime tests (never committed)
+/tests/runtime/fixtures/
