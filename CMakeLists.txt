@@ -27,6 +27,9 @@ list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
 # unaffected and still produces a real executable.
 option(IMPERIALISM_LINT_COMPILE_ONLY "Compile sources only; do not link an executable" OFF)
 option(IMPERIALISM_RUNTIME_TESTS "Compile the native semantic runtime-test driver" OFF)
+option(IMPERIALISM_LINT_WERROR "Lint build: treat warnings as errors" ON)
+option(IMPERIALISM_LINT_WARNING_GATE_TEST
+       "Lint build: compile the intentional warning regression fixture" OFF)
 
 if(IMPERIALISM_LINT_COMPILE_ONLY)
     add_library(Imperialism OBJECT
@@ -41,6 +44,17 @@ else()
 endif()
 
 set(IMPERIALISM_COMPILE_TARGETS Imperialism)
+
+# The warning-gate regression asks whether this lint profile rejects a known warning,
+# not whether the other ~500 translation units still compile (the normal lint gate
+# proves that separately). Keep the real Imperialism target configured but out of the
+# default build, and put the fixture through the same shared definitions/options below.
+if(IMPERIALISM_LINT_COMPILE_ONLY AND IMPERIALISM_LINT_WARNING_GATE_TEST)
+    set_target_properties(Imperialism PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    add_library(ImperialismLintWarningFixture OBJECT
+        tests/lint/intentional_warning.cpp)
+    set(IMPERIALISM_COMPILE_TARGETS ImperialismLintWarningFixture)
+endif()
 
 # Runtime-test instrumentation belongs to a separate build tree. Nothing under
 # tests/runtime/native is part of the production source glob, and the compile
@@ -180,10 +194,6 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
     # Lint-only modern compiler (clang/MinGW or clang-cl). Never used for reccmp; its job is
     # to surface errors MSVC 5.0 silently accepts (missing `override`, narrowing,
     # bad vtable signatures).
-    option(IMPERIALISM_LINT_WERROR "Lint build: treat warnings as errors" ON)
-    option(IMPERIALISM_LINT_WARNING_GATE_TEST
-           "Lint build: add an intentionally warning-producing regression fixture" OFF)
-
     foreach(_imp_compile_target IN LISTS IMPERIALISM_COMPILE_TARGETS)
         target_compile_definitions(${_imp_compile_target} PRIVATE IMPERIALISM_LINT)
 
@@ -240,9 +250,6 @@ if(IMPERIALISM_LINT_COMPILE_ONLY)
             target_compile_options(${_imp_compile_target} PRIVATE -Werror)
         endif()
     endforeach()
-    if(IMPERIALISM_LINT_WARNING_GATE_TEST)
-        target_sources(Imperialism PRIVATE tests/lint/intentional_warning.cpp)
-    endif()
 else()
     if(MSVC)
         # Keep runtime static to mirror old retail distribution patterns.

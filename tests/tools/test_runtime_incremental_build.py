@@ -21,8 +21,21 @@ from tools.runtime.incremental_build import (
     SOURCE_GLOBS,
     newest_generated_input,
     regenerate_sources_if_stale,
+    runtime_build_environment,
     source_set_digest,
 )
+
+
+class RuntimeBuildEnvironmentTest(unittest.TestCase):
+    def test_parallel_builds_select_jom_and_publish_the_worker_count(self):
+        environment = runtime_build_environment(12)
+        self.assertEqual(environment["CMAKE_GENERATOR"], "NMake Makefiles JOM")
+        self.assertEqual(environment["BUILD_JOBS"], "12")
+
+    def test_one_worker_preserves_the_serial_nmake_escape_hatch(self):
+        environment = runtime_build_environment(1)
+        self.assertEqual(environment["CMAKE_GENERATOR"], "NMake Makefiles")
+        self.assertNotIn("BUILD_JOBS", environment)
 
 
 class SourceSetDigestTest(unittest.TestCase):

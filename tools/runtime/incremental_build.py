@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -61,6 +62,18 @@ GENERATED_INPUT_GLOBS = (
     "config/reviewed_library_identities.csv",
     "config/ui_factory_codegen.yml",
 )
+
+
+def runtime_build_environment(jobs: int) -> dict[str, str]:
+    """The parallel-safe VC5 runtime profile shared by cold and incremental builds."""
+    worker_count = max(1, jobs)
+    environment = {"CMAKE_FLAGS": "-DIMPERIALISM_RUNTIME_TESTS=ON"}
+    if worker_count == 1:
+        environment["CMAKE_GENERATOR"] = "NMake Makefiles"
+    else:
+        environment["CMAKE_GENERATOR"] = "NMake Makefiles JOM"
+        environment["BUILD_JOBS"] = str(worker_count)
+    return environment
 
 
 def source_set_digest(repo: Path) -> str:
@@ -167,6 +180,12 @@ def main(argv: list[str] | None = None) -> int:
         default=DEFAULT_DOCKER_IMAGE,
         help="Toolchain image (default: the justfile's docker_image).",
     )
+    parser.add_argument(
+        "--jobs",
+        type=int,
+        default=os.cpu_count() or 1,
+        help="Parallel JOM workers; 1 selects serial NMake (default: host CPU count).",
+    )
     args = parser.parse_args(argv)
 
     repo = repo_root_from_file(__file__)
@@ -202,9 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     elif needs_configure and not bootstrapping:
         print("no recorded source set; running a full CMake configure")
 
-    environment = {
-        "CMAKE_FLAGS": "-DIMPERIALISM_RUNTIME_TESTS=ON",
-    }
+    environment = runtime_build_environment(args.jobs)
     if not needs_configure:
         environment["BUILD_ONLY"] = "1"
 
@@ -218,14 +235,15 @@ def main(argv: list[str] | None = None) -> int:
         f"{build_dir}:/build",
         args.docker_image,
     ]
-    # Share the MSVC build lock: the toolchain writes shared temporaries into the build
-    # tree, so a concurrent `just build` in the same checkout would corrupt this one.
+    # Serialize writers to this runtime build tree. Production uses a separate tree,
+    # Docker filesystem, Wine prefix and TMP directory, so the two cold builds can run
+    # concurrently without sharing compiler outputs or temporaries.
     locked = [
         sys.executable,
         "-m",
         "tools.workflow.msvc_build_lock",
         "--lock",
-        str(repo / "build-msvc500" / ".msvc-build.lock"),
+        str(build_dir / ".msvc-build.lock"),
         "--",
         *command,
     ]
