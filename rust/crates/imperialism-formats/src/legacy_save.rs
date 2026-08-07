@@ -391,7 +391,7 @@ pub struct LegacyGreatPowerPostCity {
     pub pressure_counter: i8,
     pub opaque_counter: i32,
     pub turn_finished_flag: u8,
-    pub opaque_tail_value: i32,
+    pub special_resource_trade_balance: i32,
     pub aid_allocation_total: i32,
     pub colony_boycott_flags: [u8; NATION_COUNT],
     pub military_expenses: i32,
@@ -1123,6 +1123,7 @@ fn snapshot_major_nation(slot: u8, nation: &LegacyGreatPowerState) -> SnapshotNa
             aid_allocation_matrix: prefix.aid_allocation_matrix.to_vec(),
             budget_pool_base: prefix.budget_pool_base,
             budget_pool_delta: prefix.budget_pool_delta,
+            special_resource_trade_balance: post.special_resource_trade_balance,
             candidate_nation_flags: post.candidate_nation_flags.to_vec(),
             // scenarioInitFlag is constructed as zero and is not part of the save stream.
             scenario_initialized: 0,
@@ -1958,7 +1959,7 @@ fn read_great_power_post_city(
         });
     }
 
-    let opaque_tail_value = stream.read_le_i32()?;
+    let special_resource_trade_balance = stream.read_le_i32()?;
     let aid_allocation_total = stream.read_le_i32()?;
     let colony_boycott_flags = stream.read_bytes(NATION_COUNT)?.try_into().unwrap();
     let military_expenses = stream.read_le_i32()?;
@@ -1972,7 +1973,7 @@ fn read_great_power_post_city(
         pressure_counter,
         opaque_counter,
         turn_finished_flag,
-        opaque_tail_value,
+        special_resource_trade_balance,
         aid_allocation_total,
         colony_boycott_flags,
         military_expenses,
@@ -2398,6 +2399,7 @@ mod tests {
         assert_eq!(post_city.towns[0].tile_index, 3_494);
         assert_eq!(post_city.civilian_units.len(), 2);
         assert_eq!(post_city.diplomacy_budget_base, 50_000);
+        assert_eq!(post_city.special_resource_trade_balance, 0);
         assert_eq!(auto_offset, 0x4fcc1);
 
         let (auto, first_mission_offset) =
@@ -2530,12 +2532,12 @@ mod tests {
         assert_eq!(snapshot.hashes.metadata, "092efbfb");
         assert_eq!(snapshot.hashes.rng, "e90a6b4e");
         assert_eq!(snapshot.hashes.world, "f5b26fa2");
-        assert_eq!(snapshot.hashes.nations, "1d88ea9d");
+        assert_eq!(snapshot.hashes.nations, "ada71c9d");
         assert_eq!(snapshot.hashes.economy, "4a05e963");
         assert_eq!(snapshot.hashes.military, "e15fdcf6");
         assert_eq!(snapshot.hashes.missions, "b6cc8e06");
         assert_eq!(snapshot.hashes.pending, "1ca83a13");
-        assert_eq!(snapshot.hashes.state, "3629aa9b");
+        assert_eq!(snapshot.hashes.state, "cbe1a61b");
 
         let mut game = imperialism_core::GameState::try_from(snapshot).unwrap();
         assert_eq!(game.civilian_units.len(), expected_civilian_count);

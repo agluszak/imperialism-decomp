@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use imperialism_core::{
-    GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind, SkillBand,
+    GameCommand, GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind, SkillBand,
     UnitCostProfile, UnitProductionOrder,
 };
 use imperialism_formats::{LegacySaveV62, LegacySnapshotContext};
@@ -80,26 +80,53 @@ fn run() -> Result<(), String> {
         }
     };
 
-    if let DifferentialStep::SpecialistRecruitment {
-        nation,
-        unit_type,
-        quantity,
-    } = options.step
-    {
+    if !options.steps.is_empty() {
         let cpp_state = GameState::try_from(cpp)
             .map_err(|error| format!("C++ oracle state is invalid: {error}"))?;
         let mut rust_state = GameState::try_from(rust)
             .map_err(|error| format!("Rust initial state is invalid: {error}"))?;
-        let mut order = specialist_order(unit_type, quantity);
-        let outcome = rust_state
-            .produce_specialist_recruits(NationId::new(nation), &mut order)
-            .map_err(|error| format!("Rust specialist recruitment failed: {error}"))?;
+        let mut event_count = 0;
+        for step in options.steps {
+            match step {
+                DifferentialStep::SpecialistRecruitment {
+                    nation,
+                    unit_type,
+                    quantity,
+                } => {
+                    let mut order = specialist_order(unit_type, quantity);
+                    let outcome = rust_state
+                        .produce_specialist_recruits(NationId::new(nation), &mut order)
+                        .map_err(|error| format!("Rust specialist recruitment failed: {error}"))?;
+                    event_count += outcome.events.len();
+                }
+                DifferentialStep::PurchaseItem {
+                    nation,
+                    resource,
+                    amount,
+                    price,
+                } => {
+                    let resource = usize::try_from(resource)
+                        .ok()
+                        .and_then(|index| ResourceKind::ALL.get(index).copied())
+                        .ok_or_else(|| format!("resource kind {resource} is out of range"))?;
+                    let outcome = rust_state
+                        .apply_command(GameCommand::PurchaseItem {
+                            nation: NationId::new(nation),
+                            resource,
+                            amount,
+                            price,
+                        })
+                        .map_err(|error| format!("Rust trade settlement failed: {error}"))?;
+                    event_count += outcome.events.len();
+                }
+            }
+        }
         if let Some(difference) = first_state_difference(&cpp_state, &rust_state) {
             return Err(format!("post-command GameState differs: {difference}"));
         }
         println!(
             "post-command GameState is identical ({} domain events)",
-            outcome.events.len()
+            event_count
         );
         return Ok(());
     }
@@ -141,47 +168,60 @@ enum RustSource {
 fn required_argument(program: &OsString, value: Option<OsString>) -> Result<OsString, String> {
     value.ok_or_else(|| {
         format!(
-            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [--specialist-recruit NATION UNIT_TYPE QUANTITY]",
+            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [--specialist-recruit NATION UNIT_TYPE QUANTITY] [--purchase-item NATION RESOURCE AMOUNT PRICE]...",
             Path::new(program).display(),
             Path::new(program).display()
         )
     })
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 struct DifferentialOptions {
     seed: u32,
-    step: DifferentialStep,
+    steps: Vec<DifferentialStep>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum DifferentialStep {
-    None,
     SpecialistRecruitment {
         nation: u8,
         unit_type: i16,
         quantity: i16,
+    },
+    PurchaseItem {
+        nation: u8,
+        resource: i16,
+        amount: i16,
+        price: i16,
     },
 }
 
 fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String> {
     let mut options = DifferentialOptions {
         seed: 1,
-        step: DifferentialStep::None,
+        steps: Vec::new(),
     };
     let mut arguments = arguments.into_iter();
     while let Some(flag) = arguments.next() {
         if flag == "--seed" {
             options.seed = parse_number(arguments.next(), "--seed", "an unsigned integer")?;
         } else if flag == "--specialist-recruit" {
-            if options.step != DifferentialStep::None {
-                return Err("only one differential command may be supplied".to_owned());
-            }
-            options.step = DifferentialStep::SpecialistRecruitment {
+            options.steps.push(DifferentialStep::SpecialistRecruitment {
                 nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
                 unit_type: parse_number(arguments.next(), "unit type", "a signed 16-bit integer")?,
                 quantity: parse_number(arguments.next(), "quantity", "a signed 16-bit integer")?,
-            };
+            });
+        } else if flag == "--purchase-item" {
+            options.steps.push(DifferentialStep::PurchaseItem {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+                resource: parse_number(
+                    arguments.next(),
+                    "resource kind",
+                    "a signed 16-bit integer",
+                )?,
+                amount: parse_number(arguments.next(), "amount", "a signed 16-bit integer")?,
+                price: parse_number(arguments.next(), "price", "a signed 16-bit integer")?,
+            });
         } else {
             return Err(format!(
                 "unexpected differential option {}",
@@ -346,11 +386,57 @@ mod tests {
             ]),
             Ok(DifferentialOptions {
                 seed: 7,
-                step: DifferentialStep::SpecialistRecruitment {
+                steps: vec![DifferentialStep::SpecialistRecruitment {
                     nation: 6,
                     unit_type: 24,
                     quantity: 1,
-                },
+                }],
+            })
+        );
+    }
+
+    #[test]
+    fn parses_a_repeated_trade_command_trace() {
+        assert_eq!(
+            parse_options(vec![
+                "--purchase-item".into(),
+                "6".into(),
+                "8".into(),
+                "3".into(),
+                "7".into(),
+                "--purchase-item".into(),
+                "6".into(),
+                "13".into(),
+                "-2".into(),
+                "5".into(),
+                "--purchase-item".into(),
+                "6".into(),
+                "8".into(),
+                "-1".into(),
+                "4".into(),
+            ]),
+            Ok(DifferentialOptions {
+                seed: 1,
+                steps: vec![
+                    DifferentialStep::PurchaseItem {
+                        nation: 6,
+                        resource: 8,
+                        amount: 3,
+                        price: 7,
+                    },
+                    DifferentialStep::PurchaseItem {
+                        nation: 6,
+                        resource: 13,
+                        amount: -2,
+                        price: 5,
+                    },
+                    DifferentialStep::PurchaseItem {
+                        nation: 6,
+                        resource: 8,
+                        amount: -1,
+                        price: 4,
+                    },
+                ],
             })
         );
     }

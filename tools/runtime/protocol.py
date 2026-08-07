@@ -120,6 +120,11 @@ def validate_game_snapshot(snapshot: object) -> None:
             _require_integer_array(record, "need_level_by_nation", 23)
         if record["present"] and slot < 7:
             major = record["major"]
+            special_balance = major.get("special_resource_trade_balance")
+            if isinstance(special_balance, bool) or not isinstance(special_balance, int):
+                raise ValueError(
+                    "game_snapshot major nation special-resource trade balance must be an integer"
+                )
             for field in (
                 "diplomacy_policy_by_nation",
                 "diplomacy_grant_by_nation",

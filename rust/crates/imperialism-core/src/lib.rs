@@ -14,6 +14,7 @@ mod resources;
 mod rng;
 mod snapshot;
 mod state;
+mod trade;
 mod turn_flow;
 
 pub use calendar::TurnCalendar;
@@ -52,4 +53,5 @@ pub use state::{
     StepOutcome, TaskForceState, TaskForceTarget, TileState, TurnStartEventState, TurnState,
     WorldState,
 };
+pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;
