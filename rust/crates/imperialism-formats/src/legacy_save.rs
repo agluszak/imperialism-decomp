@@ -11,6 +11,9 @@ const CURRENT_RETAIL_VERSION: u32 = 0x3e;
 const SAVE_LABEL_LENGTH: usize = 0x20;
 const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
 const NATION_COUNT: usize = 23;
+const RESOURCE_KIND_COUNT: usize = 23;
+const AID_ALLOCATION_COUNT: usize = 0x170;
+const PENDING_ACTION_COUNT: usize = 13;
 const TRADE_CATEGORY_COUNT: usize = 17;
 const TRADE_CATEGORY_SERIALIZED_SIZE: usize = 158;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
@@ -78,8 +81,134 @@ pub struct LegacySaveV62 {
     pub simulation: LegacySimulationPrefix,
     pub animator_idle_frequency: i32,
     pub map: LegacyMapState,
-    /// Byte position immediately after `TMapMgr`; the ocean manager starts here.
+    pub ocean: LegacyOceanState,
+    pub navy: LegacyNavyState,
+    pub army_report_count: u16,
+    /// Byte position immediately after `TArmyMgr`; nation records start here.
     pub remaining_manager_chain_offset: usize,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyZone {
+    pub display_name: String,
+    pub status_code: i16,
+    pub tile_or_terrain_id: i32,
+    pub seed_nation_id: i16,
+    pub active_tile_index: i16,
+    pub context_ordinal: i16,
+    pub port_tile_index: Option<i16>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyOceanState {
+    pub zones: Vec<LegacyZone>,
+    pub port_zones: Vec<LegacyZone>,
+    pub route_segments: Vec<[i32; 4]>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyShip {
+    pub ship_type: i16,
+    pub aggression: i32,
+    pub nation: i16,
+    pub name: String,
+    pub strength: i16,
+    pub selection: i32,
+    pub experience: i16,
+    pub zone_ordinal: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyAdmiral {
+    pub nation: i16,
+    pub name: String,
+    pub experience: i16,
+    pub ship_index: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyTaskForce {
+    pub aggression: i32,
+    pub order: i32,
+    pub target_ordinal: i16,
+    pub location_ordinal: i16,
+    pub nation: i16,
+    pub ingot_tile: i16,
+    pub ships: Vec<[i16; 2]>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyNavyState {
+    /// Head-first runtime order, matching canonical snapshot IDs.
+    pub ships: Vec<LegacyShip>,
+    pub admirals: Vec<LegacyAdmiral>,
+    pub task_forces: Vec<LegacyTaskForce>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyMilitaryUnit {
+    pub unit_type: i16,
+    pub stationed_province: i16,
+    pub order_target: i16,
+    pub owner_nation: i16,
+    pub roster_id: i16,
+    pub registered: u8,
+    pub order: i32,
+    pub persistent_id: i32,
+    pub name: String,
+    pub order_target_tiles: [i16; 3],
+    pub order_target_mirrors: [i16; 3],
+    pub strength: i16,
+    pub era: i16,
+    pub experience: i16,
+    pub battle_flags: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyCountryBase {
+    pub identity: String,
+    pub alternate_identity: String,
+    pub nation_slot: i16,
+    pub encoded_nation_slot: i16,
+    pub unit_name_ordinal_by_type: [i16; 30],
+    pub unit_name_counter: i16,
+    pub treasury: i32,
+    pub home_tile: i32,
+    pub overlay_anchor_tile: i32,
+    pub need_level_by_nation: [i16; NATION_COUNT],
+    pub military_units: Vec<LegacyMilitaryUnit>,
+    pub owned_regions: Vec<i32>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyGreatPowerPrefix {
+    pub diplomacy_eligible: u8,
+    pub capacities: [i16; 4],
+    pub grant_total_cost: i32,
+    pub unfilled_trade_offer_count: i16,
+    pub diplomacy_policy_by_nation: [i16; NATION_COUNT],
+    pub diplomacy_grant_by_nation: [i16; NATION_COUNT],
+    pub need_current_by_type: [i16; RESOURCE_KIND_COUNT],
+    pub need_target_by_type: [i16; RESOURCE_KIND_COUNT],
+    pub relation_delta_current: [i16; RESOURCE_KIND_COUNT],
+    pub purchased_items_by_resource: [i16; RESOURCE_KIND_COUNT],
+    pub item_potentials: [i16; RESOURCE_KIND_COUNT],
+    pub unfilled_trade_turns_by_resource: [i16; RESOURCE_KIND_COUNT],
+    pub transported_items_by_resource: [i16; RESOURCE_KIND_COUNT],
+    pub remembered_trade_offers_by_resource: [i16; RESOURCE_KIND_COUNT],
+    pub budget_pool_base: i32,
+    pub budget_pool_delta: i32,
+    pub aid_allocation_matrix: [i32; AID_ALLOCATION_COUNT],
+    pub pending_action_status: [i8; PENDING_ACTION_COUNT],
+    pub pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT],
+    pub relationship_lists: Vec<LegacyFixedRecordList>,
+    pub minister_presence_mask: u8,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct LegacyFixedRecordList {
+    pub record_size: u16,
+    pub records: Vec<Vec<u8>>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -275,14 +404,58 @@ impl LegacySaveV62 {
         stream.skip(DIPLOMACY_SERIALIZED_SIZE_V62)?;
         stream.skip(TECH_SERIALIZED_SIZE_V62)?;
         let map = read_map(&mut stream)?;
+        let ocean = read_ocean(&mut stream)?;
+        let navy = read_navy(&mut stream)?;
+        let army_report_count = skip_army_reports(&mut stream)?;
         Ok(Self {
             header,
             simulation,
             animator_idle_frequency,
             map,
+            ocean,
+            navy,
+            army_report_count,
             remaining_manager_chain_offset: stream.position(),
         })
     }
+}
+
+/// Decodes the common `TCountry` prefix at an already-located nation record.
+///
+/// The returned offset is the first byte of the derived `TGreatPower` or `TMinor`
+/// suffix. Keeping location separate from decoding lets the manager-chain parser
+/// choose the concrete retail nation class without embedding C++ layout in the DTO.
+pub fn parse_country_base_at(
+    bytes: &[u8],
+    offset: usize,
+) -> Result<(LegacyCountryBase, usize), LegacySaveError> {
+    let remaining = bytes.get(offset..).ok_or(StreamError {
+        offset,
+        requested: 1,
+        remaining: 0,
+    })?;
+    let mut stream = LegacyStream::new(remaining);
+    let country = read_country_base(&mut stream)?;
+    Ok((country, offset + stream.position()))
+}
+
+/// Decodes the fixed portion of a `TGreatPower` derived record.
+///
+/// The returned offset points just after the minister-presence byte, at the first
+/// optional minister or city payload. It includes the two turn/proposal queues and
+/// 17 diplomacy lists serialized as fixed-size `TSortedPtrList` records.
+pub fn parse_great_power_prefix_at(
+    bytes: &[u8],
+    offset: usize,
+) -> Result<(LegacyGreatPowerPrefix, usize), LegacySaveError> {
+    let remaining = bytes.get(offset..).ok_or(StreamError {
+        offset,
+        requested: 1,
+        remaining: 0,
+    })?;
+    let mut stream = LegacyStream::new(remaining);
+    let prefix = read_great_power_prefix(&mut stream)?;
+    Ok((prefix, offset + stream.position()))
 }
 
 fn skip_trade_manager(stream: &mut LegacyStream<'_>) -> Result<(), StreamError> {
@@ -319,6 +492,266 @@ fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError
         tiles,
         provinces,
         pending_river_mouth_tile,
+    })
+}
+
+fn read_ocean(stream: &mut LegacyStream<'_>) -> Result<LegacyOceanState, StreamError> {
+    let zone_count = usize::from(stream.read_le_u16()?);
+    let zones = (0..zone_count)
+        .map(|_| read_zone(stream, false))
+        .collect::<Result<Vec<_>, _>>()?;
+    let port_zone_count = usize::from(stream.read_le_u16()?);
+    let port_zones = (0..port_zone_count)
+        .map(|_| read_zone(stream, true))
+        .collect::<Result<Vec<_>, _>>()?;
+    let route_count = usize::from(stream.read_le_u16()?);
+    let route_segments = (0..route_count)
+        .map(|_| {
+            Ok([
+                stream.read_le_i32()?,
+                stream.read_le_i32()?,
+                stream.read_le_i32()?,
+                stream.read_le_i32()?,
+            ])
+        })
+        .collect::<Result<Vec<_>, StreamError>>()?;
+    Ok(LegacyOceanState {
+        zones,
+        port_zones,
+        route_segments,
+    })
+}
+
+fn read_zone(stream: &mut LegacyStream<'_>, port: bool) -> Result<LegacyZone, StreamError> {
+    let display_name = lossy_text(&stream.read_mfc_string()?);
+    let status_code = stream.read_le_i16()?;
+    let tile_or_terrain_id = stream.read_le_i32()?;
+    let seed_nation_id = stream.read_le_i16()?;
+    let active_tile_index = stream.read_le_i16()?;
+    let context_ordinal = stream.read_le_i16()?;
+    let port_tile_index = port.then(|| stream.read_le_i16()).transpose()?;
+    Ok(LegacyZone {
+        display_name,
+        status_code,
+        tile_or_terrain_id,
+        seed_nation_id,
+        active_tile_index,
+        context_ordinal,
+        port_tile_index,
+    })
+}
+
+fn read_navy(stream: &mut LegacyStream<'_>) -> Result<LegacyNavyState, StreamError> {
+    let ship_count = usize::from(stream.read_le_u16()?);
+    let mut ships = (0..ship_count)
+        .map(|_| read_ship(stream))
+        .collect::<Result<Vec<_>, _>>()?;
+    ships.reverse();
+    let admiral_count = usize::from(stream.read_le_u16()?);
+    let admirals = (0..admiral_count)
+        .map(|_| read_admiral(stream))
+        .collect::<Result<Vec<_>, _>>()?;
+    let task_force_count = usize::from(stream.read_le_u16()?);
+    let task_forces = (0..task_force_count)
+        .map(|_| read_task_force(stream))
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok(LegacyNavyState {
+        ships,
+        admirals,
+        task_forces,
+    })
+}
+
+fn read_ship(stream: &mut LegacyStream<'_>) -> Result<LegacyShip, StreamError> {
+    Ok(LegacyShip {
+        ship_type: stream.read_le_i16()?,
+        aggression: stream.read_le_i32()?,
+        nation: stream.read_le_i16()?,
+        name: lossy_text(&stream.read_mfc_string()?),
+        strength: stream.read_le_i16()?,
+        selection: stream.read_le_i32()?,
+        experience: stream.read_le_i16()?,
+        zone_ordinal: stream.read_le_i16()?,
+    })
+}
+
+fn read_admiral(stream: &mut LegacyStream<'_>) -> Result<LegacyAdmiral, StreamError> {
+    Ok(LegacyAdmiral {
+        nation: stream.read_le_i16()?,
+        name: lossy_text(&stream.read_mfc_string()?),
+        experience: stream.read_le_i16()?,
+        ship_index: stream.read_le_i16()?,
+    })
+}
+
+fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, StreamError> {
+    let aggression = stream.read_le_i32()?;
+    let order = stream.read_le_i32()?;
+    let target_ordinal = stream.read_le_i16()?;
+    let location_ordinal = stream.read_le_i16()?;
+    let nation = stream.read_le_i16()?;
+    stream.skip(1)?;
+    let ingot_tile = stream.read_le_i16()?;
+    let child_count = usize::from(stream.read_le_u16()?);
+    let ships = (0..child_count)
+        .map(|_| Ok([stream.read_le_i16()?, stream.read_le_i16()?]))
+        .collect::<Result<Vec<_>, StreamError>>()?;
+    Ok(LegacyTaskForce {
+        aggression,
+        order,
+        target_ordinal,
+        location_ordinal,
+        nation,
+        ingot_tile,
+        ships,
+    })
+}
+
+fn skip_army_reports(stream: &mut LegacyStream<'_>) -> Result<u16, StreamError> {
+    let report_count = stream.read_le_u16()?;
+    for _ in 0..report_count {
+        stream.skip(8)?;
+        for _ in 0..2 {
+            stream.skip(1 + 0x20 + 0xff)?;
+            let child_count = usize::from(stream.read_le_u16()?);
+            stream.skip(child_count.saturating_mul(42))?;
+        }
+    }
+    Ok(report_count)
+}
+
+fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase, StreamError> {
+    let identity = lossy_text(&stream.read_mfc_string()?);
+    let alternate_identity = lossy_text(&stream.read_mfc_string()?);
+    let nation_slot = stream.read_le_i16()?;
+    let encoded_nation_slot = stream.read_le_i16()?;
+    let unit_name_ordinal_by_type = read_be_short_array(stream)?;
+    let unit_name_counter = stream.read_le_i16()?;
+    let treasury = stream.read_le_i32()?;
+    let home_tile = stream.read_le_i32()?;
+    let overlay_anchor_tile = stream.read_le_i32()?;
+    let need_level_by_nation = read_be_short_array(stream)?;
+
+    // TSortedList::ReadFrom is a retail no-op; the count follows immediately.
+    let military_unit_count = stream.read_le_u32()? as usize;
+    let military_units = (0..military_unit_count)
+        .map(|_| read_military_unit(stream))
+        .collect::<Result<Vec<_>, _>>()?;
+
+    // TLongintList::NoOpReadFrom is likewise a no-op.
+    let owned_region_count = stream.read_le_u32()? as usize;
+    let owned_regions = (0..owned_region_count)
+        .map(|_| stream.read_le_i32())
+        .collect::<Result<Vec<_>, _>>()?;
+
+    Ok(LegacyCountryBase {
+        identity,
+        alternate_identity,
+        nation_slot,
+        encoded_nation_slot,
+        unit_name_ordinal_by_type,
+        unit_name_counter,
+        treasury,
+        home_tile,
+        overlay_anchor_tile,
+        need_level_by_nation,
+        military_units,
+        owned_regions,
+    })
+}
+
+fn read_military_unit(stream: &mut LegacyStream<'_>) -> Result<LegacyMilitaryUnit, StreamError> {
+    Ok(LegacyMilitaryUnit {
+        unit_type: stream.read_le_i16()?,
+        stationed_province: stream.read_le_i16()?,
+        order_target: stream.read_le_i16()?,
+        owner_nation: stream.read_le_i16()?,
+        roster_id: stream.read_le_i16()?,
+        registered: stream.read_u8()?,
+        order: stream.read_le_i32()?,
+        persistent_id: stream.read_le_i32()?,
+        name: lossy_text(&stream.read_mfc_string()?),
+        order_target_tiles: read_be_short_array(stream)?,
+        order_target_mirrors: read_be_short_array(stream)?,
+        strength: stream.read_le_i16()?,
+        era: stream.read_le_i16()?,
+        experience: stream.read_le_i16()?,
+        battle_flags: stream.read_le_i16()?,
+    })
+}
+
+fn read_great_power_prefix(
+    stream: &mut LegacyStream<'_>,
+) -> Result<LegacyGreatPowerPrefix, StreamError> {
+    let diplomacy_eligible = stream.read_u8()?;
+    let capacities = read_short_array(stream)?;
+    let grant_total_cost = stream.read_le_i32()?;
+    let unfilled_trade_offer_count = stream.read_le_i16()?;
+    let diplomacy_policy_by_nation = read_be_short_array(stream)?;
+    let diplomacy_grant_by_nation = read_be_short_array(stream)?;
+    let need_current_by_type = read_be_short_array(stream)?;
+    let need_target_by_type = read_be_short_array(stream)?;
+    let relation_delta_current = read_be_short_array(stream)?;
+    let purchased_items_by_resource = read_be_short_array(stream)?;
+    let item_potentials = read_be_short_array(stream)?;
+    let unfilled_trade_turns_by_resource = read_be_short_array(stream)?;
+    let transported_items_by_resource = read_be_short_array(stream)?;
+    let remembered_trade_offers_by_resource = read_be_short_array(stream)?;
+    let budget_pool_base = stream.read_le_i32()?;
+    let budget_pool_delta = stream.read_le_i32()?;
+    let mut aid_allocation_matrix = [0; AID_ALLOCATION_COUNT];
+    for value in &mut aid_allocation_matrix {
+        *value = stream.read_be_i32()?;
+    }
+    let mut pending_action_status = [0; PENDING_ACTION_COUNT];
+    for value in &mut pending_action_status {
+        *value = stream.read_i8()?;
+    }
+    let pending_action_payload_by_action = read_be_short_array(stream)?;
+
+    // These are TSortedByRelationshipList/TSortedPtrList instances, unlike the
+    // no-op TSortedList hooks used by object-owning lists elsewhere.
+    let relationship_lists = (0..19)
+        .map(|_| read_fixed_record_list(stream))
+        .collect::<Result<Vec<_>, _>>()?;
+    let minister_presence_mask = stream.read_u8()?;
+
+    Ok(LegacyGreatPowerPrefix {
+        diplomacy_eligible,
+        capacities,
+        grant_total_cost,
+        unfilled_trade_offer_count,
+        diplomacy_policy_by_nation,
+        diplomacy_grant_by_nation,
+        need_current_by_type,
+        need_target_by_type,
+        relation_delta_current,
+        purchased_items_by_resource,
+        item_potentials,
+        unfilled_trade_turns_by_resource,
+        transported_items_by_resource,
+        remembered_trade_offers_by_resource,
+        budget_pool_base,
+        budget_pool_delta,
+        aid_allocation_matrix,
+        pending_action_status,
+        pending_action_payload_by_action,
+        relationship_lists,
+        minister_presence_mask,
+    })
+}
+
+fn read_fixed_record_list(
+    stream: &mut LegacyStream<'_>,
+) -> Result<LegacyFixedRecordList, StreamError> {
+    let record_size = stream.read_le_u16()?;
+    let record_count = stream.read_le_u32()? as usize;
+    let records = (0..record_count)
+        .map(|_| Ok(stream.read_bytes(usize::from(record_size))?.to_vec()))
+        .collect::<Result<Vec<_>, StreamError>>()?;
+    Ok(LegacyFixedRecordList {
+        record_size,
+        records,
     })
 }
 
@@ -381,6 +814,16 @@ fn read_short_array<const N: usize>(
     Ok(values)
 }
 
+fn read_be_short_array<const N: usize>(
+    stream: &mut LegacyStream<'_>,
+) -> Result<[i16; N], StreamError> {
+    let mut values = [0; N];
+    for value in &mut values {
+        *value = stream.read_be_i16()?;
+    }
+    Ok(values)
+}
+
 fn fixed_text(bytes: &[u8]) -> String {
     let length = bytes
         .iter()
@@ -430,7 +873,37 @@ mod tests {
             save.map.snapshot_world().semantic_hash().unwrap(),
             "dbd2668d"
         );
-        assert!(save.remaining_manager_chain_offset > 0x3d1bd);
+        assert!(!save.ocean.zones.is_empty());
+        assert!(save.navy.ships.is_empty());
+        assert!(save.navy.task_forces.is_empty());
+        assert_eq!(save.army_report_count, 0);
+        assert_eq!(save.remaining_manager_chain_offset, 0x4dc51);
+
+        let (country, suffix_offset) =
+            parse_country_base_at(RETAIL_FIXTURE, save.remaining_manager_chain_offset).unwrap();
+        assert_eq!(country.identity, "Zimm");
+        assert_eq!(country.alternate_identity, "Zimm");
+        assert_eq!(country.nation_slot, 0);
+        assert_eq!(country.encoded_nation_slot, -1);
+        assert_eq!(country.treasury, 10_000);
+        assert_eq!(country.home_tile, 3_494);
+        assert_eq!(country.overlay_anchor_tile, -1);
+        assert_eq!(country.need_level_by_nation, [100; NATION_COUNT]);
+        assert_eq!(country.military_units.len(), 27);
+        assert_eq!(country.military_units[0].name, "1st Minutemen");
+        assert_eq!(country.military_units[0].persistent_id, 0x113);
+        assert_eq!(country.military_units[0].stationed_province, 79);
+        assert_eq!(country.military_units[0].strength, 500);
+        assert_eq!(suffix_offset, 0x4e2a3);
+
+        let (great_power, optional_payload_offset) =
+            parse_great_power_prefix_at(RETAIL_FIXTURE, suffix_offset).unwrap();
+        assert_eq!(great_power.capacities, [0, 0, 15, 11]);
+        assert_eq!(great_power.relationship_lists.len(), 19);
+        assert_eq!(great_power.relationship_lists[0].record_size, 4);
+        assert_eq!(great_power.relationship_lists[2].record_size, 12);
+        assert_eq!(great_power.minister_presence_mask, 0x0f);
+        assert_eq!(optional_payload_offset, 0x4eae0);
     }
 
     #[test]

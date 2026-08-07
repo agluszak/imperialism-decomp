@@ -9,7 +9,10 @@ mod legacy_save;
 mod legacy_stream;
 
 pub use legacy_save::{
-    LegacyGameSetup, LegacyMapState, LegacyProvince, LegacySaveError, LegacySaveHeader,
-    LegacySaveV62, LegacySimulationPrefix, LegacyTerrainTile,
+    LegacyAdmiral, LegacyCountryBase, LegacyFixedRecordList, LegacyGameSetup,
+    LegacyGreatPowerPrefix, LegacyMapState, LegacyMilitaryUnit, LegacyNavyState, LegacyOceanState,
+    LegacyProvince, LegacySaveError, LegacySaveHeader, LegacySaveV62, LegacyShip,
+    LegacySimulationPrefix, LegacyTaskForce, LegacyTerrainTile, LegacyZone, parse_country_base_at,
+    parse_great_power_prefix_at,
 };
 pub use legacy_stream::{LegacyStream, StreamError};
