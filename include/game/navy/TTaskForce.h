@@ -131,6 +131,9 @@ public:
   // when its cached graph distance does not exceed the slowest selected ship's movement
   // weight. 0x005544a0.
   bool IsValidTarget(TZone* candidate);
+  // Mac oracle: IsPassingThroughPort(TZone*) const. Only sail orders (kind 1) pass
+  // through their location or target port. 0x00554620.
+  int IsPassingThroughPort(TZone* port) const;
   // 0x00554300 -- action-context command resolver (0x0C/0x0D/0x0E/0x0F, fallback 1) from
   // this entry's location zone and a candidate context zone's capability slots.
   int MouseCodeForTarget(TZone* candidate) const;
@@ -138,6 +141,11 @@ public:
   // sharing the same nation value; -1 if `this` is null or not found in the
   // queue.
   int GetNationalIndex() const; // 0x5563d0
+  // Mac oracle: GetNationalNth(short, short). Returns the nth queued force belonging
+  // to a nation, or null when the ordinal is -1/out of range. 0x00556380.
+  short CountForcesFromHere() const; // 0x5562f0, includes this node
+  TTaskForce* GetNth(short index);   // 0x556340
+  static TTaskForce* GetNationalNth(short nth, short nation);
   // Clears this order's map marker tile if one is set (ingotTileIndex != -1).
   void DestroyIngot(); // 0x5564f0
   // Recomputes and repaints this order's map-tile marker from its `shipOrders` kind,
@@ -166,6 +174,8 @@ public:
   void GetGeneralDescription(CString* out) const; // 0x554e70
   // Mac oracle: GetAuthority / CancelOrders. GetAuthority names the admiral or
   // captain commanding flagship; CancelOrders removes this queue entry.
+  // Mac oracle: null-safe preferred-ship officer lookup.
+  TAdmiral* GetSeniorOfficer() const;                // 0x5551a0
   void GetAuthority(CString* out) const;             // 0x5551d0
   void CancelOrders(unsigned char cancellationMode); // 0x5547d0
 
@@ -192,6 +202,8 @@ public:
 
   // Counts active shipList entries whose descriptor toolbar-bucket index equals
   // nationClass.
+  // Mac oracle: sums the invasion capacity of surviving child ships.
+  int GetInvasionCapacity() const;          // 0x5549f0
   int GetSelected(short nationClass) const; // 0x554a30
 
   // Average (x10) of the resource-type descriptorWeight column across active

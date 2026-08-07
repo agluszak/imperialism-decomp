@@ -28,6 +28,11 @@ public:
   // so release via the matching free(), not
   // delete[]). Ground truth: TZone::~TZone (0x5627a0) frees primaryNeighbors/
   // secondaryNeighbors this same way as part of member teardown.
+  // Retained, unreferenced VC5 copies of this inline template destructor.
+  // SYNTHETIC: IMPERIALISM 0x0055eaa0
+  // stretch<TZone*>::~stretch
+  // SYNTHETIC: IMPERIALISM 0x0055eb70
+  // stretch<Province*>::~stretch
   ~stretch() {
     if (data != 0) {
       free(data);

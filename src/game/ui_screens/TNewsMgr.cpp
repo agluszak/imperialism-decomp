@@ -533,6 +533,21 @@ void TNewsMgr::CreateEventStories(int nation, int* majorCursor, int* minorCursor
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0055c930
+newsEntry* TNewsMgr::FindEntry(int storyId) {
+  newsEntry* entry = storyTemplateTable;
+  int count = storyTemplateCount;
+  int index = 0;
+  while (index < count) {
+    if (entry->storyId == storyId) {
+      return entry;
+    }
+    ++entry;
+    ++index;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055c970
 void TNewsMgr::AddEvent(int nationSlot, NewsEvent* event, unsigned char isReplayBypass) {
   if (g_pSimMgr->gateFlag7a != 0) {

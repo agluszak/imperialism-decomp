@@ -44,6 +44,8 @@ public:
 
   // Returns the next selectable unit (tileIndex8 != -2) from unitList4, advancing
   // cursorIndex18. 0x0059af20, __thiscall.
+  void ITacticalPlayer(unsigned char isOurSide, unsigned char watch, int nationIndex);
+
   class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
 
   // Handles the "skip" tactical command: unless the selected unit's type category is 8,

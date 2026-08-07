@@ -23,6 +23,8 @@ public:
   void DoMouseCommand(CPoint& point, TToolboxEvent* event,
                       CPoint origin) override; // slot 0x47 0x4adcb0
 
+  char ShouldDisplay(MapContextActionRecord* record) const;
+  MapContextActionRecord* GetBattleAt(const CPoint& point) const;
   void RefreshMapContextSelectionPanelAndInfoLabels(MapContextActionRecord* mapContextRecord);
 
   // 0x4ade30 (311 bytes) -- draws a small marker glyph from the strategic-map icon strip

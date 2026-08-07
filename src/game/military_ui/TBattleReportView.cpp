@@ -458,6 +458,28 @@ void TBattleReportView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoi
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004add50
+char TBattleReportView::ShouldDisplay(MapContextActionRecord*) const {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x004add70
+MapContextActionRecord* TBattleReportView::GetBattleAt(const CPoint& point) const {
+  MapContextActionRecord* selectedRecord = 0;
+  int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
+  for (; remaining > 0; --remaining) {
+    MapContextActionRecord* record = static_cast<MapContextActionRecord*>(
+        g_pMapContextActionManager->mapContextActionRecordList04->GetPtrListEntryByOneBasedIndex(
+            remaining));
+    if (record->placedFlag260 != 0 && point.x >= record->markerPixelX258 &&
+        point.x < record->markerPixelX258 + 0x12 && point.y >= record->markerPixelY25c &&
+        point.y < record->markerPixelY25c + 0x12) {
+      selectedRecord = record;
+    }
+  }
+  return selectedRecord;
+}
+
 // FUNCTION: IMPERIALISM 0x004ade00
 void TBattleReportView::Draw(RECT* rectBuffer) {
   TDiplomacyMapView::Draw(rectBuffer);

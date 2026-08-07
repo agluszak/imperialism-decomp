@@ -28,6 +28,13 @@ void TIdleMeAnimation::IIdleMeAnimation(TView* ownerView) {
   g_pUiAnimator->AddObjectToUiTransientRegistry(this);
 }
 
+// FUNCTION: IMPERIALISM 0x004aca30
+void TIdleMeAnimation::Die() {
+  if (this != 0) {
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004aca60
 void TIdleMeAnimation::Tick() {
   if (ownerView->DoIdle(1) && this != 0) {

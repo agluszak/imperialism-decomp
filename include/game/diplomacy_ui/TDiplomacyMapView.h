@@ -100,6 +100,7 @@ public:
   char PoseWarOffer(short sourceNationSlot, int minorNationSlot, int enemyNationSlot,
                     int promptCode);
   void DrawVoteNuggets();
+  void SetOverlay(int overlay); // 0x4f7170, Mac oracle eDipDrawStatus
   // 0x4f4a30 -- Mac CodeWarrior names this TDiplomacyMapView::DrawNames(const VRect&).
   // Draws the per-nation map labels over nationLabelRects234: great powers 0..6,
   // then minors 7..22 with the default DIB palette selected for their theme colors.

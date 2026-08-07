@@ -173,6 +173,7 @@ public:
   // minor's own decoded disposition band when it already has one, else from the
   // requesting nation's IsInConsortiumWith capability check), and
   // finally notifies every eligible major power via SetTradePolicyTo.
+  void UpdateTables(int nationCode); // 0x4f2430, Mac oracle
   void RebuildMinorNationDispositionLookupTables(NationSlot nationCode);
 };
 ASSERT_SIZE(TDiplomacyMgr, 0x18dc);

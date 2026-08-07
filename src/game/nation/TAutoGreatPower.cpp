@@ -792,12 +792,22 @@ void TAutoGreatPower::RemoveMission(eMissionType missionType, int key, TZone* zo
 // forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
 // already uses directly.
 // FUNCTION: IMPERIALISM 0x004e8b50
-void TAutoGreatPower::SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value) {
+void TAutoGreatPower::SetProvinceStatus(int provinceIndex, int value) {
   if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
                         provinceIndex, nationSlot)) {
     value = 0;
   }
   mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
+}
+
+// FUNCTION: IMPERIALISM 0x004e8ba0
+void TAutoGreatPower::SetProvinceStatus(int provinceIndex, int status, unsigned char bypassGate) {
+  if (status == 1 && bypassGate == 0 &&
+      g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(provinceIndex,
+                                                                              nationSlot)) {
+    status = 0;
+  }
+  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(status);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8bf0

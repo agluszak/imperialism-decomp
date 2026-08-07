@@ -39,7 +39,7 @@ void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 short TWorldView::QueryMinusOneWordSlot77() {
   return -1;
 }
-// FUNCTION: IMPERIALISM 0x00519b10
+// FUNCTION: IMPERIALISM 0x00595070
 TWorldView::~TWorldView() {}
 // SYNTHETIC: IMPERIALISM 0x00594f20
 // TWorldView::CreateObject

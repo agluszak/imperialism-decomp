@@ -12,8 +12,10 @@
 
 class TStream;
 class TTacticalUnit;
+class TTacticalBattle;
 struct NetMessage;
 struct TurnEventQueuePacket;
+struct TurnEvent2SyncPacket;
 
 // One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
 // TMultiplayerMgr construction/destruction (0x542670/0x542810) uses VC5's vector
@@ -101,6 +103,10 @@ public:
   void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
+  TurnEventQueuePacket* PopTimelyMessage();
+  TurnEventQueuePacket* PopVerbalMessage();
+  void QueueVerbalMessage(TurnEventQueuePacket* packet);
+  bool IsTimelyMessage(NetMessage* packet);
   void AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node);
   // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
   void EnableDiplomacyQueueRoutingAndSetContextField44(TEventHandler* nContext, char fEnable);
@@ -118,6 +124,8 @@ public:
   // g_pSimMgr->multiplayerSessionRole == 2 -- broadcasts a minimal event-0xd "time" packet. Always returns 1.
   unsigned char ResetNationStatusSlotsAndInitializeNameControls(TView* panel);
   enum TurnEvent11MapOffsetBase { kTurnEvent11TerrainStateBase = 0, kTurnEvent11CityScoreBase = 1 };
+  void DoGameDataHunk(TurnEvent2SyncPacket* packet);      // 0x5447e0
+  char UpdatePendingNationMaskIfChanged(int* cachedMask); // 0x544810
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
                                                   TurnEvent11MapOffsetBase mapOffsetBase,
                                                   const void* mapEntry, short shortA,
@@ -203,10 +211,13 @@ public:
   // every TTacticalBattle command handler. Retail bodies are empty (0x54c680 = bare
   // `ret 0x10`, 0x54c6a0 = bare `ret 0x18`) -- the echo was compiled out.
   void EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
-                                 int arg4); // 0x54c680
+                                 int arg4);         // 0x54c680
+  void SendTacticalBattle(TTacticalBattle* battle); // 0x54c6c0
   void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                      TTacticalUnit* targetUnit, int damageA, int damageB,
                                      int effectCode);         // 0x54c6a0
+  void DiscardPlayer(int nationId);                           // 0x54c7d0
+  bool WaitForClients();                                      // 0x54cb80
   void ResetNationStatusArraysAndTurnEventContext();          // 0x54c6e0
   unsigned char HandleActiveNationAwolTransitionOrRecovery(); // 0x54c800
   void CreateAndQueueTurnEventPacketTagPOGC();                // 0x54cde0
@@ -228,6 +239,7 @@ public:
   // first kMajorNationSessionSlotCount terrain descriptor slots are populated. Every callsite
   // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
   // a real TMultiplayerMgr method, not a free function. 0x543120.
+  bool IsEverybodyConnected() const; // 0x00543100
   void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);
 
   // Refresh defaultNationTextSlots/nationDisplayNameSlots/nationStatusTags for one slot,
@@ -329,6 +341,7 @@ public:
 
 // 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the
 // session's active nation id, or -1. Free __cdecl function.
+int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId);
 int FindActiveNationSlotIndexInGameFlowList();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

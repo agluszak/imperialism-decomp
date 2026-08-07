@@ -75,6 +75,7 @@ public:
   // grows experiencePercent38 (percent-scaled quality) by 35 if boosted else 20, capped at 400.
   // 0x004a82b0, __thiscall, 1 arg.
   void ApplyMeterGrowthToEligibleUnits(bool boosted);
+  bool UnitsFighting(); // 0x4a8330, Mac oracle
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
   // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
   // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's callsite disassembly.

@@ -55,6 +55,7 @@ public:
   void WriteTo(TStream* stream) override;  // slot 0x05 0x55eff0
   void ReadFrom(TStream* stream) override; // slot 0x06 0x55ed20
   void Free() override;                    // slot 0x07 0x55ec60
+  void Vanish();                           // 0x55ecd0, Mac oracle
   virtual void
   GenerateMapActionContextDisplayNameAndHeadline(unsigned char* usedCityFlags,
                                                  const char* overrideName); // slot 0x0a 0x55f780
@@ -94,6 +95,8 @@ public:
   // 0x55f3a0 -- the secondaryNeighbors (+0x34) counterpart of the line above; same
   // shape, dispatching through that stretch's virtual Add.
   void AppendUniqueSecondaryNeighbor(Province* province);
+  bool HasNeighbor(TZone* zone);        // 0x55f320, Mac oracle
+  bool HasNeighbor(Province* province); // 0x55f3c0, Mac oracle
   // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
   // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
   // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in
@@ -216,6 +219,7 @@ ASSERT_SIZE(TZone, 0x48);
 
 // Walks g_pMapActionContextListHead (via prev18) for the zone whose contextOrdinal14
 // context ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
+TZone* GetLastMapActionContext();                  // 0x55f0d0
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 
 // Clears the traversal level on every live map-action context and the transient navy-order

@@ -97,6 +97,13 @@ void TAdmiral::Free() {
   delete this;
 }
 
+// FUNCTION: IMPERIALISM 0x00551640
+void TAdmiral::FreeAll() {
+  while (g_pNavySecondaryOrderListHead != 0) {
+    g_pNavySecondaryOrderListHead->Free();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00551670
 void TAdmiral::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);

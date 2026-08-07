@@ -992,6 +992,15 @@ bool TMapUberPicture::TrySelectNextValidMapOrderEntry(char includeCurrent) {
   return false;
 }
 
+// FUNCTION: IMPERIALISM 0x005999c0
+void TMapUberPicture::GrandCycle() {
+  if (invalidationFlag94 != 0) {
+    SetMapInteractionMode(1);
+    return;
+  }
+  SetMapInteractionMode(2);
+}
+
 // FUNCTION: IMPERIALISM 0x005999f0
 void TMapUberPicture::ResetMapInteractionToCivilianMode() {
   EnterMapInteractionOverlayMode(nullptr);

@@ -829,6 +829,19 @@ int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int 
 // direction, tracking up to 3 member classes per group in groupMemberLists1a8).
 // Returns false the moment two neighbors' classes already belong to two DIFFERENT
 // established groups (a genuine conflict) or a group's member list is full.
+// FUNCTION: IMPERIALISM 0x005272c0
+void TMapMaker::TranslateZones() {
+  int* zone = cityRegionIds200;
+  int remaining = 0x17;
+  do {
+    if (*zone == -1) {
+      *zone = ++cityRegionNextId1fc;
+    }
+    ++zone;
+    --remaining;
+  } while (remaining != 0);
+}
+
 // FUNCTION: IMPERIALISM 0x00527300
 char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex) {
   for (int dir = 0; dir < 6; ++dir) {
@@ -1691,6 +1704,11 @@ void TMapMaker::AssignOrCompactCityRegionIdsAndRebuildBorders(int mode) {
 // FUNCTION: IMPERIALISM 0x0052a600
 unsigned char TMapMaker::IsSeaTile(int tileIndex) {
   return mapTileGrid08[tileIndex * 0x24] == kStrategicTerrainWater;
+}
+
+// FUNCTION: IMPERIALISM 0x0052a630
+unsigned char TMapMaker::IsSeaTile(int column, int row) {
+  return mapTileGrid08[(column + row * 0x6c) * 0x24] == kStrategicTerrainWater;
 }
 
 // FUNCTION: IMPERIALISM 0x0052a670

@@ -13,7 +13,8 @@ class TCity;
 class TCapacityOrder : public TItemOrder {
 public:
   DECLARE_DYNCREATE(TCapacityOrder)
-  // NOOP: verified empty in original 0x004b8c92 (no standalone TCapacityOrder::TCapacityOrder body exists: construction is fully inlined into CreateObject 0x004b8c90; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004b8ce0
+  // TCapacityOrder::TCapacityOrder
   TCapacityOrder() {}
 
   // FUNCTION: IMPERIALISM 0x004b8d30

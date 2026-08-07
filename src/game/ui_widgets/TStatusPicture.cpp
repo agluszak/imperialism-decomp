@@ -283,15 +283,7 @@ void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
 
   SortSevenEntriesAndUpdatePictureWidgets();
 
-  int maxVal = values94[0];
-  if (maxVal > 400) {
-    values94[0] = 400;
-    for (int k = 1; k < 7; ++k) {
-      if (pictureIds_b0[k] != -1) {
-        values94[k] = (values94[k] * 400) / maxVal;
-      }
-    }
-  }
+  NormalizeAsNeeded();
 }
 
 // FUNCTION: IMPERIALISM 0x00594c00

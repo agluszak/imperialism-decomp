@@ -70,10 +70,12 @@ public:
   void ReadFrom(TStream* stream) override;
   void Free() override;
 
+  static void FreeAll();
   static TShip* GetFirst();
   static TShip* GetLast();
   static TShip* GetNth(short index);
   static short GetTypeSlot(short shipType);
+  static int GetTypeAttribute(int attribute, short shipType);
 
   // Per-category (0-3) priority-contribution percentage for this order node, used
   // by callers that accumulate a 4-component category vector. Sibling of
@@ -109,6 +111,7 @@ public:
   short GetArmorFactor() const;
   int GetInvasionCapacity() const;
   int ModByExp(int value) const;
+  float ModByExp(float value) const;
   // Node-score family (0x550840 / 0x550aa0): descriptor-blended scores of this
   // order node's strength/stock.
   int GetSpeed() const;

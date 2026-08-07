@@ -98,3 +98,11 @@ void TArmyTacUnit::ApplyTacticalDamage(int damageA, int damageB) {
     state1c = 3;
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005a6210
+int TArmyTacUnit::GetUID() const {
+  if (this != 0 && sourceUnit38 != 0) {
+    return sourceUnit38->persistentUnitId20;
+  }
+  return 0;
+}
