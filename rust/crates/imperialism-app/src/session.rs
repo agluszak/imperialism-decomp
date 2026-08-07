@@ -138,9 +138,9 @@ fn apply_game_commands(
 mod tests {
     use super::*;
     use imperialism_core::{
-        MajorNationState, MajorNationTable, NationId, NationKind, NationPendingWork, NationState,
-        NationTable, PendingActionTable, PendingWorkState, ResourceKind, ResourceTable, RngState,
-        TurnState, WorldState,
+        MajorNationState, MajorNationTable, NationCommonState, NationData, NationId,
+        NationPendingWork, NationState, NationTable, PendingActionTable, PendingWorkState,
+        ResourceKind, ResourceTable, RngState, TurnState, WorldState,
     };
 
     fn game() -> GameState {
@@ -148,13 +148,14 @@ mod tests {
         let mut nations = vec![None; 7];
         nations[6] = Some(NationState {
             id: nation,
-            kind: NationKind::Major,
-            encoded_nation_slot: 6,
-            owner_nation: 6,
-            treasury: 1_000,
-            home_tile: 0,
-            need_level_by_nation: NationTable::default(),
-            major: Some(MajorNationState {
+            common: NationCommonState {
+                encoded_nation_slot: 6,
+                owner_nation: 6,
+                treasury: 1_000,
+                home_tile: 0,
+                need_level_by_nation: NationTable::default(),
+            },
+            data: NationData::Major(MajorNationState {
                 diplomacy_eligible: true,
                 capacities: [10; 4],
                 grant_total_cost: 0,
@@ -255,6 +256,7 @@ mod tests {
             session.simulation().state().nations[6]
                 .as_ref()
                 .unwrap()
+                .common
                 .treasury,
             979
         );

@@ -7,12 +7,12 @@ use crate::strategic_map::{
 use crate::ui::UiRuntimePlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_core::{GameSnapshotV1, GameState, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH};
+use imperialism_core::{GameState, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH};
 use imperialism_formats::{
-    AssetManifestError, NormalizedAssetManifestV1, read_normalized_asset_manifest,
+    AssetManifestError, NormalizedAssetManifestV1, SnapshotReadError, game_state_from_snapshot,
+    read_game_snapshot, read_normalized_asset_manifest,
 };
 use std::ffi::OsString;
-use std::fs;
 use std::path::{Path, PathBuf};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -75,12 +75,8 @@ pub enum ViewerConfigError {
 
 #[derive(Debug, thiserror::Error)]
 pub enum ViewerLoadError {
-    #[error("could not read snapshot: {0}")]
-    SnapshotIo(#[source] std::io::Error),
-    #[error("could not decode snapshot: {0}")]
-    SnapshotJson(#[source] serde_json::Error),
-    #[error("invalid snapshot: {0}")]
-    SnapshotValidation(#[source] imperialism_core::SnapshotValidationError),
+    #[error(transparent)]
+    Snapshot(#[from] SnapshotReadError),
     #[error(transparent)]
     Assets(#[from] AssetManifestError),
     #[error("cannot present snapshot: {0}")]
@@ -93,13 +89,8 @@ pub struct ViewerInput {
 }
 
 pub fn load_viewer(config: &ViewerConfig) -> Result<ViewerInput, ViewerLoadError> {
-    let bytes = fs::read(&config.snapshot).map_err(ViewerLoadError::SnapshotIo)?;
-    let value = serde_json::from_slice::<serde_json::Value>(&bytes)
-        .map_err(ViewerLoadError::SnapshotJson)?;
-    let snapshot_value = value.get("game_snapshot").unwrap_or(&value).clone();
-    let snapshot = serde_json::from_value::<GameSnapshotV1>(snapshot_value)
-        .map_err(ViewerLoadError::SnapshotJson)?;
-    let game = GameState::try_from(snapshot).map_err(ViewerLoadError::SnapshotValidation)?;
+    let snapshot = read_game_snapshot(&config.snapshot)?;
+    let game = game_state_from_snapshot(snapshot).map_err(SnapshotReadError::Validation)?;
     let assets =
         read_normalized_asset_manifest(&config.asset_manifest).map_err(ViewerLoadError::Assets)?;
     validate_presentation(&game, &assets)?;

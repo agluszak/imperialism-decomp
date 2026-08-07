@@ -1,11 +1,14 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
-use imperialism_core::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, PENDING_ACTION_COUNT,
-    STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SnapshotArmyMission,
+use crate::snapshot::{
+    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
     SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
     SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission,
     SnapshotMissions, SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission,
-    SnapshotPending, SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot, TurnCalendar,
+    SnapshotPending, SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot,
+};
+use imperialism_core::{
+    PENDING_ACTION_COUNT, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
+    TurnCalendar,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -2506,7 +2509,7 @@ mod tests {
         assert_eq!(snapshot.hashes.pending, "1ca83a13");
         assert_eq!(snapshot.hashes.state, "cbe1a61b");
 
-        let mut game = imperialism_core::GameState::try_from(snapshot).unwrap();
+        let mut game = crate::game_state_from_snapshot(snapshot).unwrap();
         assert_eq!(game.civilian_units.len(), expected_civilian_count);
         assert!(game.all_humans_finished().unwrap());
         assert!(!game.turn.in_linear_phase());

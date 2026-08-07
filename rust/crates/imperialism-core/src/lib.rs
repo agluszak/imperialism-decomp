@@ -16,7 +16,6 @@ mod recruitment;
 mod resources;
 mod rng;
 mod simulation;
-mod snapshot;
 mod state;
 mod tables;
 mod trade;
@@ -53,14 +52,6 @@ pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailLcg, hash_retail_scenario_tag};
 pub use simulation::{CommandError, Simulation};
-pub use snapshot::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
-    SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
-    SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission,
-    SnapshotMissions, SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission,
-    SnapshotPending, SnapshotPopulation, SnapshotRng, SnapshotShip, SnapshotTaskForce,
-    SnapshotTurnStartEvent, SnapshotValidationError, SnapshotWorld, TileSnapshot,
-};
 pub use state::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, GameCommand, GameEvent,
     GameState, MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState,

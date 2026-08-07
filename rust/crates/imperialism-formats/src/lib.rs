@@ -10,6 +10,7 @@ mod legacy_stream;
 mod normalized_assets;
 mod retail_assets;
 mod retail_pe;
+pub mod snapshot;
 mod ui_catalog;
 
 pub use legacy_save::{
@@ -41,6 +42,15 @@ pub use retail_assets::{
 pub use retail_pe::{
     DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
     bitmap_resource_to_bmp, decode_string_table_block,
+};
+pub use snapshot::{
+    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
+    SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
+    SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission,
+    SnapshotMissions, SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission,
+    SnapshotPending, SnapshotPopulation, SnapshotReadError, SnapshotRng, SnapshotShip,
+    SnapshotTaskForce, SnapshotTurnStartEvent, SnapshotValidationError, SnapshotWorld,
+    TileSnapshot, decode_game_snapshot, game_state_from_snapshot, read_game_snapshot,
 };
 pub use ui_catalog::{
     EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UI_CATALOG_SCHEMA, UiCatalogError,

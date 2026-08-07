@@ -2,7 +2,7 @@
 
 use anyhow::{Context, bail};
 use clap::Parser;
-use imperialism_core::GameState;
+use imperialism_formats::game_state_from_snapshot;
 use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
 use std::path::PathBuf;
 
@@ -21,7 +21,7 @@ fn main() -> anyhow::Result<()> {
     let snapshot = read_game_snapshot(&args.snapshot)
         .with_context(|| format!("reading snapshot {}", args.snapshot.display()))?;
     let state =
-        GameState::try_from(snapshot.clone()).context("snapshot cannot populate GameState")?;
+        game_state_from_snapshot(snapshot.clone()).context("snapshot cannot populate GameState")?;
     println!(
         "{}: {} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions, state {}",
         snapshot.schema,

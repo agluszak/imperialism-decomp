@@ -5,7 +5,7 @@ use imperialism_core::{
     GameCommand, GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind,
     ResourceTable, SkillBand, UnitCostProfile, UnitProductionOrder,
 };
-use imperialism_formats::{LegacySaveV62, LegacySnapshotContext};
+use imperialism_formats::{LegacySaveV62, LegacySnapshotContext, game_state_from_snapshot};
 use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
 use std::env;
 use std::ffi::OsString;
@@ -75,8 +75,9 @@ fn run() -> anyhow::Result<()> {
     };
 
     if !options.steps.is_empty() {
-        let cpp_state = GameState::try_from(cpp).context("C++ oracle state is invalid")?;
-        let mut rust_state = GameState::try_from(rust).context("Rust initial state is invalid")?;
+        let cpp_state = game_state_from_snapshot(cpp).context("C++ oracle state is invalid")?;
+        let mut rust_state =
+            game_state_from_snapshot(rust).context("Rust initial state is invalid")?;
         let mut event_count = 0;
         for step in options.steps {
             match step {

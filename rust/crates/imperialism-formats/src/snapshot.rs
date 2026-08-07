@@ -1,6 +1,13 @@
 use serde::ser::SerializeStruct;
 use serde::{Deserialize, Serialize, Serializer};
 use std::collections::BTreeSet;
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+mod conversion;
+
+pub use conversion::game_state_from_snapshot;
 
 pub const GAME_SNAPSHOT_SCHEMA: &str = "imperialism.game_snapshot.v1";
 pub const GAME_SNAPSHOT_SECTIONS: [&str; 8] = [
@@ -418,6 +425,41 @@ pub enum SnapshotValidationError {
     },
     #[error("snapshot serialization failed: {0}")]
     Serialization(String),
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum SnapshotReadError {
+    #[error("could not read game snapshot: {0}")]
+    Io(#[source] std::io::Error),
+    #[error("could not decode game snapshot: {0}")]
+    Json(#[source] serde_json::Error),
+    #[error("result contains no game snapshot")]
+    MissingGameSnapshot,
+    #[error("invalid game snapshot: {0}")]
+    Validation(#[from] SnapshotValidationError),
+}
+
+pub fn read_game_snapshot(path: impl AsRef<Path>) -> Result<GameSnapshotV1, SnapshotReadError> {
+    let file = File::open(path).map_err(SnapshotReadError::Io)?;
+    decode_game_snapshot(file)
+}
+
+pub fn decode_game_snapshot(reader: impl Read) -> Result<GameSnapshotV1, SnapshotReadError> {
+    let value: serde_json::Value =
+        serde_json::from_reader(reader).map_err(SnapshotReadError::Json)?;
+    let snapshot_value = if value.get("schema").is_some() {
+        value
+    } else {
+        value
+            .get("game_snapshot")
+            .cloned()
+            .filter(|snapshot| !snapshot.is_null())
+            .ok_or(SnapshotReadError::MissingGameSnapshot)?
+    };
+    let snapshot = serde_json::from_value::<GameSnapshotV1>(snapshot_value)
+        .map_err(SnapshotReadError::Json)?;
+    snapshot.verify_hashes()?;
+    Ok(snapshot)
 }
 
 impl GameSnapshotV1 {
@@ -1239,19 +1281,25 @@ mod tests {
         let json = serde_json::to_value(&snapshot).unwrap();
         assert_eq!(json["military"]["ships"][0]["type"], 3);
         snapshot.verify_hashes().unwrap();
-        let state = crate::GameState::try_from(snapshot).unwrap();
+        let state = crate::game_state_from_snapshot(snapshot).unwrap();
         assert_eq!(state.military_units.len(), 1);
         assert_eq!(state.civilian_units.len(), 1);
-        assert_eq!(state.civilian_units[0].tile, Some(crate::TileId::new(10)));
-        assert_eq!(state.ships[0].task_force, Some(crate::TaskForceId::new(0)));
+        assert_eq!(
+            state.civilian_units[0].tile,
+            Some(imperialism_core::TileId::new(10))
+        );
+        assert_eq!(
+            state.ships[0].task_force,
+            Some(imperialism_core::TaskForceId::new(0))
+        );
         assert_eq!(
             state.task_forces[0].ships,
-            vec![(crate::ShipId::new(0), true)]
+            vec![(imperialism_core::ShipId::new(0), true)]
         );
         assert!(matches!(
             &state.missions[0].data,
-            crate::MissionData::Invade {
-                attack: crate::AttackMissionState {
+            imperialism_core::MissionData::Invade {
+                attack: imperialism_core::AttackMissionState {
                     target_province: 12,
                     amassing_province: 11,
                     ..
@@ -1259,6 +1307,19 @@ mod tests {
                 beachhead: Some(_),
             }
         ));
+    }
+
+    #[test]
+    fn decodes_direct_and_wrapped_snapshots_through_one_boundary() {
+        let snapshot = snapshot();
+        let direct = serde_json::to_vec(&snapshot).unwrap();
+        assert_eq!(decode_game_snapshot(&direct[..]).unwrap(), snapshot);
+
+        let wrapped = serde_json::to_vec(&serde_json::json!({
+            "game_snapshot": snapshot,
+        }))
+        .unwrap();
+        assert_eq!(decode_game_snapshot(&wrapped[..]).unwrap(), snapshot);
     }
 
     #[test]

@@ -1,8 +1,9 @@
 #![forbid(unsafe_code)]
 
-use imperialism_core::{
-    CoarseMapGeneration, GameSnapshotV1, RetailLcg, SnapshotValidationError,
-    generate_coarse_random_map,
+use imperialism_core::{CoarseMapGeneration, RetailLcg, generate_coarse_random_map};
+pub use imperialism_formats::{
+    GameSnapshotV1, SnapshotReadError, SnapshotValidationError, decode_game_snapshot,
+    read_game_snapshot,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
@@ -11,15 +12,11 @@ use std::io::Read;
 use std::path::Path;
 
 #[derive(Debug, thiserror::Error)]
-pub enum SnapshotReadError {
-    #[error("could not read game snapshot: {0}")]
+pub enum GeneratedWorldReadError {
+    #[error("could not read generated-world snapshot: {0}")]
     Io(#[source] std::io::Error),
-    #[error("could not decode game snapshot: {0}")]
+    #[error("could not decode generated-world snapshot: {0}")]
     Json(#[source] serde_json::Error),
-    #[error("result contains no game snapshot")]
-    MissingGameSnapshot,
-    #[error("invalid game snapshot: {0}")]
-    Validation(#[source] SnapshotValidationError),
     #[error("result contains no generated-world snapshot")]
     MissingGeneratedWorld,
     #[error("generated-world snapshot contains no coarse-generation oracle")]
@@ -61,16 +58,16 @@ pub struct GeneratedWorldCoarseAttempt {
 
 pub fn read_generated_world_coarse(
     path: &Path,
-) -> Result<GeneratedWorldCoarseOracle, SnapshotReadError> {
-    let file = File::open(path).map_err(SnapshotReadError::Io)?;
+) -> Result<GeneratedWorldCoarseOracle, GeneratedWorldReadError> {
+    let file = File::open(path).map_err(GeneratedWorldReadError::Io)?;
     decode_generated_world_coarse(file)
 }
 
 pub fn decode_generated_world_coarse(
     reader: impl Read,
-) -> Result<GeneratedWorldCoarseOracle, SnapshotReadError> {
+) -> Result<GeneratedWorldCoarseOracle, GeneratedWorldReadError> {
     let value: serde_json::Value =
-        serde_json::from_reader(reader).map_err(SnapshotReadError::Json)?;
+        serde_json::from_reader(reader).map_err(GeneratedWorldReadError::Json)?;
     let world = if value.get("schema").is_some() {
         value
     } else {
@@ -78,13 +75,13 @@ pub fn decode_generated_world_coarse(
             .get("generated_world")
             .cloned()
             .filter(|snapshot| !snapshot.is_null())
-            .ok_or(SnapshotReadError::MissingGeneratedWorld)?
+            .ok_or(GeneratedWorldReadError::MissingGeneratedWorld)?
     };
     let coarse = world
         .get("coarse_generation")
         .cloned()
-        .ok_or(SnapshotReadError::MissingCoarseGeneration)?;
-    serde_json::from_value(coarse).map_err(SnapshotReadError::Json)
+        .ok_or(GeneratedWorldReadError::MissingCoarseGeneration)?;
+    serde_json::from_value(coarse).map_err(GeneratedWorldReadError::Json)
 }
 
 pub fn generate_and_compare_coarse_oracle(
@@ -153,31 +150,6 @@ pub fn coarse_oracle_difference(
 
 fn option_bool_code(value: Option<bool>) -> i32 {
     value.map_or(-1, i32::from)
-}
-
-pub fn read_game_snapshot(path: &Path) -> Result<GameSnapshotV1, SnapshotReadError> {
-    let file = File::open(path).map_err(SnapshotReadError::Io)?;
-    decode_game_snapshot(file)
-}
-
-pub fn decode_game_snapshot(reader: impl Read) -> Result<GameSnapshotV1, SnapshotReadError> {
-    let value: serde_json::Value =
-        serde_json::from_reader(reader).map_err(SnapshotReadError::Json)?;
-    let snapshot_value = if value.get("schema").is_some() {
-        value
-    } else {
-        value
-            .get("game_snapshot")
-            .cloned()
-            .filter(|snapshot| !snapshot.is_null())
-            .ok_or(SnapshotReadError::MissingGameSnapshot)?
-    };
-    let snapshot: GameSnapshotV1 =
-        serde_json::from_value(snapshot_value).map_err(SnapshotReadError::Json)?;
-    snapshot
-        .verify_hashes()
-        .map_err(SnapshotReadError::Validation)?;
-    Ok(snapshot)
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
