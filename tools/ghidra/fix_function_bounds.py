@@ -61,6 +61,14 @@ def parse_args() -> argparse.Namespace:
             "function (the body then stops at the data and resumes after it)"
         ),
     )
+    parser.add_argument(
+        "--end",
+        type=lambda value: int(value, 16),
+        help=(
+            "set one listing-verified function body to the inclusive instruction-end "
+            "address; refuses non-instruction boundaries and overlapping functions"
+        ),
+    )
     parser.add_argument("--apply", action="store_true",
                         help="Fix the bounds and save the program (default: dry-run).")
     parser.add_argument("--force", action="store_true",
@@ -92,12 +100,16 @@ def main() -> int:
             file=sys.stderr,
         )
         return 2
+    if args.end is not None and len(targets) != 1:
+        print("--end takes exactly ONE function address.", file=sys.stderr)
+        return 2
 
     import pyghidra
 
     project = ghidra_env.open_project()
     from ghidra.app.cmd.disassemble import DisassembleCommand
     from ghidra.app.cmd.function import CreateFunctionCmd
+    from ghidra.program.model.address import AddressSet
 
     consumer, program = ghidra_env.open_program(project, writable=args.apply)
     try:
@@ -121,6 +133,7 @@ def main() -> int:
                 old_size = func.getBody().getNumAddresses()
                 name = func.getName()
                 holes = body_holes(func)
+                instruction_span_repaired = False
                 if old_size > 1 and not args.force:
                     print(f"  0x{t:08x}  already {old_size} bytes ({name}) — skipped"
                           f"{f'; {len(holes)} body hole(s), pass --force' if holes else ''}")
@@ -194,7 +207,64 @@ def main() -> int:
                         )
                         print(f"      hole 0x{lo + 1:08x}-0x{hi - 1:08x}: cleared + disassembled")
                 before = func.getBody()
-                CreateFunctionCmd.fixupFunctionBody(program, func, pyghidra.task_monitor())
+                if args.end is not None:
+                    end = af.getAddress(args.end)
+                    candidate = AddressSet(taddr, end)
+                    overlaps = [
+                        other.getEntryPoint().getOffset()
+                        for other in fm.getFunctionsOverlapping(candidate)
+                        if other.getEntryPoint().getOffset() != t
+                    ]
+                    if overlaps:
+                        print(f"  0x{t:08x}  REFUSED ({name}): explicit body overlaps "
+                              + ", ".join(f"0x{s:08x}" for s in sorted(overlaps)))
+                        still_bad.append(t)
+                        continue
+                    cursor = taddr
+                    first_gap = None
+                    while cursor is not None and cursor.compareTo(end) <= 0:
+                        instruction = listing.getInstructionAt(cursor)
+                        if instruction is None:
+                            first_gap = cursor
+                            break
+                        cursor = instruction.getMaxAddress().next()
+                    if first_gap is not None:
+                        if not args.clear_data_holes:
+                            print(
+                                f"  0x{t:08x}  REFUSED ({name}): explicit body has a "
+                                f"non-instruction byte at 0x{first_gap.getOffset():08x}; "
+                                "inspect raw bytes, then pass --clear-data-holes"
+                            )
+                            still_bad.append(t)
+                            continue
+                        listing.clearCodeUnits(first_gap, end, False)
+                        DisassembleCommand(first_gap, None, True).applyTo(
+                            program, pyghidra.task_monitor()
+                        )
+                        instruction_span_repaired = True
+                        print(
+                            f"      span 0x{first_gap.getOffset():08x}-0x{args.end:08x}: "
+                            "cleared + disassembled"
+                        )
+                    cursor = taddr
+                    while cursor is not None and cursor.compareTo(end) <= 0:
+                        instruction = listing.getInstructionAt(cursor)
+                        if instruction is None:
+                            break
+                        cursor = instruction.getMaxAddress().next()
+                    final_instruction = listing.getInstructionContaining(end)
+                    if cursor is None or cursor.compareTo(end.next()) != 0 or (
+                        final_instruction is None or final_instruction.getMaxAddress() != end
+                    ):
+                        print(
+                            f"  0x{t:08x}  REFUSED ({name}): --end 0x{args.end:08x} "
+                            "does not produce a continuous instruction body"
+                        )
+                        still_bad.append(t)
+                        continue
+                    func.setBody(candidate)
+                else:
+                    CreateFunctionCmd.fixupFunctionBody(program, func, pyghidra.task_monitor())
                 # Never let a re-bound body swallow a neighbouring function.
                 swallowed = [
                     other.getEntryPoint().getOffset()
@@ -208,8 +278,11 @@ def main() -> int:
                     still_bad.append(t)
                     continue
                 new_size = func.getBody().getNumAddresses()
-                if new_size > 1 and new_size != old_size:
-                    print(f"  0x{t:08x}  {old_size} -> {new_size} bytes ({name}); "
+                if new_size > 1 and (new_size != old_size or instruction_span_repaired):
+                    size_change = f"{old_size} -> {new_size} bytes"
+                    if new_size == old_size:
+                        size_change = f"{new_size} bytes; instruction span repaired"
+                    print(f"  0x{t:08x}  {size_change} ({name}); "
                           f"holes {len(holes)} -> {len(body_holes(func))}")
                     fixed.append(t)
                 elif new_size > 1:
