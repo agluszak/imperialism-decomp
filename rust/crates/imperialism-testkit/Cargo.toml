@@ -1,0 +1,10 @@
+[package]
+name = "imperialism-testkit"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+imperialism-core = { path = "../imperialism-core" }
+imperialism-formats = { path = "../imperialism-formats" }
+serde_json.workspace = true

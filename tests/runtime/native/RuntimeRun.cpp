@@ -111,6 +111,7 @@ void RuntimeRun::StartScenario(RuntimeScenario* value) {
   actionLog = "[";
   lastFingerprint.Empty();
   mapStateJson.Empty();
+  gameSnapshotJson.Empty();
   serializationRoundtripJson.Empty();
   assertionFailures = "[";
 }
@@ -304,6 +305,9 @@ CString& RuntimeRun::LastFingerprint() {
 }
 CString& RuntimeRun::MapStateJson() {
   return mapStateJson;
+}
+CString& RuntimeRun::GameSnapshotJson() {
+  return gameSnapshotJson;
 }
 CString& RuntimeRun::SerializationRoundtripJson() {
   return serializationRoundtripJson;

@@ -1,15 +1,24 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "RuntimeGameSnapshot.h"
 #include "probes/UnitChainProbe.h"
 #include "screens/LoadSaveScreen.h"
 #include "screens/NewspaperScreen.h"
 #include "screens/StrategicMapScreen.h"
 
 #include "game/assets/TAssetMgr.h"
-#include "game/core/global_data_tables.h"
-#include "game/globals/shared_globals.h"
+#include "game/city/TCity.h"
+#include "game/city/TShipOrder.h"
+#include "game/globals/assets_globals.h"
+#include "game/globals/game_session_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TShip.h"
+#include "game/navy/TTaskForce.h"
+#include "game/nation/TGreatPower.h"
+#include "game/nation_domain_types.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_tags_common.h"
@@ -37,10 +46,13 @@ namespace {
 // The slot this scenario saves into, and the save mode that names its file.
 const short kSaveSlot = 0;
 const int kNormalSaveMode = 0;
+const short kFirstNavyShipyardRow = 4;
+const int kPatrolOrder = 3;
 
 class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
-  SaveLoadRoundtripTestCase() : savedTurn(0), savedNation(0) {}
+  SaveLoadRoundtripTestCase()
+      : savedTurn(0), savedNation(0), savedTurnState(0), savedDifficulty(0), savedScenarioMap(0) {}
 
 protected:
   void Script() override {
@@ -48,6 +60,13 @@ protected:
 
     savedTurn = g_pSimMgr->economicTurn;
     savedNation = g_pSimMgr->activeNationSlot;
+    savedTurnState = g_pSimMgr->turnStateCode;
+    savedDifficulty = g_pSimMgr->difficultyLevel;
+    savedScenarioMap = g_pSimMgr->scenarioMapIndexPlusOne;
+    SetSelectedNation(savedNation);
+    RT_REQUIRE(CreatePersistedNavyState());
+    RT_REQUIRE(BuildRuntimeGameSnapshot(RunState(), beforeSaveSnapshot));
+    beforePersistentState = PersistentSnapshotState(beforeSaveSnapshot);
 
     RT_DO("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
     RT_REQUIRE(LoadSaveScreen::IsCurrent());
@@ -87,13 +106,89 @@ protected:
           UnitChainProbe::VerifyChainsAreWalkable("the reload"));
     RT_REQUIRE_EQ(savedNation, g_pSimMgr->activeNationSlot);
     RT_REQUIRE_EQ(savedTurn, g_pSimMgr->economicTurn);
+    RT_REQUIRE_EQ(savedTurnState, g_pSimMgr->turnStateCode);
+    RT_REQUIRE_EQ(savedDifficulty, g_pSimMgr->difficultyLevel);
+    RT_REQUIRE_EQ(savedScenarioMap, g_pSimMgr->scenarioMapIndexPlusOne);
     SetSelectedNation(g_pSimMgr->activeNationSlot);
+    RT_REQUIRE(BuildRuntimeGameSnapshot(RunState(), afterLoadSnapshot));
+    afterPersistentState = PersistentSnapshotState(afterLoadSnapshot);
+    if (beforePersistentState != afterPersistentState) {
+      snapshotDifference = DescribeSnapshotDifference(beforePersistentState, afterPersistentState);
+      RT_FAIL(snapshotDifference);
+    }
     RT_PASS();
 
     RT_END();
   }
 
 private:
+  bool CreatePersistedNavyState() {
+    TGreatPower* player = g_apNationStates[savedNation];
+    TCity* city = player != 0 ? player->city : 0;
+    TShipOrder* order = city != 0 ? city->shipOrderSlots190[kFirstNavyShipyardRow] : 0;
+    if (order == 0) {
+      return false;
+    }
+
+    // A fresh random game need not stock every input for this hull. Supply exactly one hull's
+    // retail costs, then use the ordinary SetQuantity/Produce path so the save fixture contains
+    // state created by the game rather than a hand-built TShip or TTaskForce.
+    const short type = order->resourceTypeIndex;
+    city->cityStockLumberC8 = g_industryActionCostWeightResCode09[type];
+    city->cityStockFabricC6 = g_industryActionCostWeightResCode08[type];
+    city->cityStockArmsD6 = g_industryActionCostWeightResCode10[type];
+    city->cityStockSteelCC = g_industryActionCostWeightResCode0B[type];
+    city->cityStockCoalBC = g_industryActionCostWeightResCode03[type];
+    city->cityStockFuelCE = g_industryActionCostWeightResCode0C[type];
+    if (!order->SetQuantity(1)) {
+      return false;
+    }
+
+    TShip* priorHead = g_pNavyPrimaryOrderListHead;
+    order->Produce();
+    TShip* ship = g_pNavyPrimaryOrderListHead;
+    if (ship == 0 || ship == priorHead || ship->nation != savedNation) {
+      return false;
+    }
+
+    TTaskForce* force = ship->DemandExclusiveTaskForce();
+    if (force == 0) {
+      return false;
+    }
+    force->SubmitOrders(kPatrolOrder, 0);
+    return g_pNavyOrderManager != 0 && g_pNavyOrderManager->orderQueueHead == force &&
+           ship->taskForce == force;
+  }
+
+  CString PersistentSnapshotState(const CString& snapshot) {
+    int stateIndex = snapshot.Find("\"world\":{");
+    return stateIndex < 0 ? CString() : snapshot.Mid(stateIndex);
+  }
+
+  CString DescribeSnapshotDifference(const CString& before, const CString& after) {
+    const char* bodyMarker = "\"world\":{";
+    int beforeIndex = before.Find(bodyMarker);
+    int afterIndex = after.Find(bodyMarker);
+    if (beforeIndex < 0 || afterIndex < 0) {
+      return CString("game snapshot has no persistent world section");
+    }
+    int sharedLength = before.GetLength() - beforeIndex;
+    if (after.GetLength() - afterIndex < sharedLength) {
+      sharedLength = after.GetLength() - afterIndex;
+    }
+    int difference = 0;
+    while (difference < sharedLength &&
+           before[beforeIndex + difference] == after[afterIndex + difference]) {
+      ++difference;
+    }
+    int contextStart = difference > 60 ? difference - 60 : 0;
+    CString message;
+    message.Format("canonical game state differs at byte %d; before: %.160s; after: %.160s",
+                   difference, static_cast<LPCSTR>(before.Mid(beforeIndex + contextStart)),
+                   static_cast<LPCSTR>(after.Mid(afterIndex + contextStart)));
+    return message;
+  }
+
   RuntimeActionResult ReopenSavedGame() {
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
       return RuntimeActionResult::Failure(
@@ -120,7 +215,7 @@ private:
     header[2] = 0;
     file.Read(header, sizeof(header));
     int liveNations = 0;
-    for (short slot = 0; slot < kTerrainTypeDescriptorTableCount; ++slot) {
+    for (short slot = 0; slot < kNationSlotCount; ++slot) {
       if (g_apTerrainTypeDescriptorTable[slot] != 0) {
         ++liveNations;
       }
@@ -136,7 +231,15 @@ private:
 
   int savedTurn;
   short savedNation;
+  int savedTurnState;
+  int savedDifficulty;
+  int savedScenarioMap;
   CString savedPath;
+  CString beforeSaveSnapshot;
+  CString afterLoadSnapshot;
+  CString beforePersistentState;
+  CString afterPersistentState;
+  CString snapshotDifference;
 };
 
 } // namespace

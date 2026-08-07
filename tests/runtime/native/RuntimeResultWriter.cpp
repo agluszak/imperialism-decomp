@@ -100,6 +100,10 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   if (!run.MapStateJson().IsEmpty()) {
     mapState = run.MapStateJson();
   }
+  CString gameSnapshot("null");
+  if (!run.GameSnapshotJson().IsEmpty()) {
+    gameSnapshot = run.GameSnapshotJson();
+  }
   CString roundtrip("null");
   if (!run.SerializationRoundtripJson().IsEmpty()) {
     roundtrip = run.SerializationRoundtripJson();
@@ -128,6 +132,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "  \"ui_snapshots\": %s,\n"
               "  \"capital_confirmation_snapshot\": %s,\n"
               "  \"map_state\": %s,\n"
+              "  \"game_snapshot\": %s,\n"
               "  \"serialization_roundtrip\": %s,\n"
               "  \"assertion_id\": %s,\n"
               "  \"assertions\": %s,\n"
@@ -163,8 +168,8 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               static_cast<LPCSTR>(currentUiTree), static_cast<LPCSTR>(eventSequence),
               static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
               static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
-              static_cast<LPCSTR>(roundtrip), static_cast<LPCSTR>(assertionId),
-              static_cast<LPCSTR>(assertions),
+              static_cast<LPCSTR>(gameSnapshot), static_cast<LPCSTR>(roundtrip),
+              static_cast<LPCSTR>(assertionId), static_cast<LPCSTR>(assertions),
               g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1, RuntimeClassName(mainView),
               g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot(),
               g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1, activeCity != 0 ? "true" : "false",

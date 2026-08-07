@@ -21,7 +21,7 @@ from tools.runtime.catalog import (
 )
 from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.generate_native_registry import render_registry
-from tools.runtime.protocol import validate_result
+from tools.runtime.protocol import validate_game_snapshot, validate_result
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -161,6 +161,67 @@ class RuntimeCatalogTests(unittest.TestCase):
 
 
 class RuntimeProtocolTests(unittest.TestCase):
+    @staticmethod
+    def game_snapshot() -> dict:
+        return {
+            "schema": "imperialism.game_snapshot.v1",
+            "sections": [
+                "metadata",
+                "rng",
+                "world",
+                "nations",
+                "economy",
+                "military",
+                "missions",
+                "pending",
+            ],
+            "hashes": {
+                "metadata": "0123abcd",
+                "rng": "0123abcd",
+                "world": "0123abcd",
+                "nations": "0123abcd",
+                "economy": "0123abcd",
+                "military": "0123abcd",
+                "missions": "0123abcd",
+                "pending": "0123abcd",
+                "state": "0123abcd",
+            },
+            "metadata": {},
+            "rng": {},
+            "world": {"width": 108, "height": 60, "wrap": 0, "tiles": [[0] * 10] * 6480},
+            "nations": {
+                "records": [
+                    {
+                        "slot": slot,
+                        "kind": "major" if slot < 7 else "minor",
+                        "present": False,
+                    }
+                    for slot in range(23)
+                ]
+            },
+            "economy": {
+                "cities": [
+                    {"nation": slot, "present": False} for slot in range(7)
+                ]
+            },
+            "military": {"units": [], "ships": [], "task_forces": []},
+            "missions": {"records": []},
+            "pending": {
+                "turn_flow_status_flags": 0,
+                "nations": [
+                    {
+                        "nation": nation,
+                        "turn_events": [],
+                        "proposals": [],
+                        "turn_summary": [],
+                        "turn_start_events": [],
+                    }
+                    for nation in range(7)
+                ],
+                "war_transitions": [],
+            },
+        }
+
     def test_valid_result(self) -> None:
         validate_result(
             {"format_version": 1, "name": "boot_managers", "seed": 1, "status": "passed"},
@@ -183,6 +244,33 @@ class RuntimeProtocolTests(unittest.TestCase):
                 "boot_managers",
                 1,
             )
+
+    def test_game_snapshot_foundation_is_validated(self) -> None:
+        validate_game_snapshot(self.game_snapshot())
+
+    def test_game_snapshot_rejects_wrong_tile_count(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["world"]["tiles"] = []
+        with self.assertRaisesRegex(ValueError, "tile count"):
+            validate_game_snapshot(snapshot)
+
+    def test_game_snapshot_rejects_malformed_hash(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["hashes"]["world"] = "not-a-hash"
+        with self.assertRaisesRegex(ValueError, "hash for world"):
+            validate_game_snapshot(snapshot)
+
+    def test_game_snapshot_rejects_wrong_nation_count(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["nations"]["records"] = []
+        with self.assertRaisesRegex(ValueError, "23 records"):
+            validate_game_snapshot(snapshot)
+
+    def test_game_snapshot_rejects_wrong_city_count(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["economy"]["cities"] = []
+        with self.assertRaisesRegex(ValueError, "seven city records"):
+            validate_game_snapshot(snapshot)
 
 
 class MissingOracleRecordingTests(unittest.TestCase):

@@ -98,7 +98,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -125,7 +125,7 @@ TESTS = (
         ("pr", "full"),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -134,7 +134,7 @@ TESTS = (
         ("full",),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -165,6 +165,17 @@ TESTS = (
         required_oracles=("map",),
         native_snapshots=("map",),
         record_game_flow=True,
+    ),
+    RuntimeTestSpec(
+        "specialist_recruitment",
+        "SpecialistRecruitmentTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game",),
     ),
     RuntimeTestSpec(
         "diplomacy_screen_operates",
@@ -223,7 +234,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("map",),
-        native_snapshots=("map",),
+        native_snapshots=("map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -242,7 +253,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=("map",),
-        native_snapshots=("map",),
+        native_snapshots=("map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
