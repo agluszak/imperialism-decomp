@@ -6693,7 +6693,7 @@ address|matching|name
 0x5e67ec|1.0|CAnimateCtrl::Create
 0x5e68be|0.42424242424242425|CBrush::~CBrush(void)
 0x5e68f1|1.0|CMenu::Detach(void)
-0x5e691b|0.868421052631579|afxMapHMENU
+0x5e691b|0.8947368421052632|afxMapHMENU
 0x5e698b|0.875|CMenu::DestroyMenu
 0x5e69a1|1.0|CMenu::DeleteTempMap(void)
 0x5e69cb|1.0|CMenu::FromHandlePermanent(struct HMENU__*)
@@ -6729,6 +6729,7 @@ address|matching|name
 0x5e7072|1.0|CNotSupportedException::~CNotSupportedException
 0x5e709d|1.0|CCtrlView::~CCtrlView
 0x5e711d|0.8|CArchiveStream::CArchiveStream
+0x5e713a|0.9047619047619048|CArchiveStream::QueryInterface
 0x5e717e|0.8571428571428571|CArchiveStream::Read
 0x5e71d6|0.8620689655172413|CArchiveStream::Write
 0x5e722f|0.9047619047619048|CArchiveStream::Seek
@@ -7111,7 +7112,7 @@ address|matching|name
 0x60396e|1.0|CMapStringToPtr::GetNextAssoc
 0x604b68|0.95|AfxDlgProc
 0x604ba2|0.5|CDialog::GetMessageMap
-0x604ba8|0.4225352112676056|CDialog::PreTranslateMessage
+0x604ba8|1.0|CDialog::PreTranslateMessage
 0x604c41|1.0|CDialog::OnCmdMsg
 0x604cc6|0.9230769230769231|CDialog::CDialog(void)
 0x604d04|0.9473684210526315|CDialog::~CDialog
@@ -7139,7 +7140,7 @@ address|matching|name
 0x6054cb|1.0|CDialog::CheckAutoCenter
 0x6055ae|1.0|CWinApp::Run
 0x6055d0|1.0|CWinApp::WinHelpA
-0x605607|0.2222222222222222|CWinApp::ProcessWndProcException
+0x605607|0.9583333333333334|CWinApp::ProcessWndProcException
 0x60567e|1.0|CWinApp::OnIdle
 0x6056e4|1.0|CWinApp::DevModeChange
 0x605791|0.5|AfxGetEmptyString
@@ -7276,7 +7277,7 @@ address|matching|name
 0x607a4f|1.0|CWnd::GetCurrentMessage
 0x607a84|1.0|CWnd::Default
 0x607aab|1.0|CWnd::DeleteTempMap
-0x607abf|0.9473684210526315|afxMapHWND
+0x607abf|0.9736842105263158|afxMapHWND
 0x607b2f|1.0|CWnd::FromHandle
 0x607b57|1.0|CWnd::FromHandlePermanent
 0x607b73|1.0|CWnd::Attach
@@ -7474,7 +7475,7 @@ address|matching|name
 0x60d16d|1.0|AfxLockTempMaps
 0x60d176|0.9883720930232558|AfxUnlockTempMaps
 0x60d264|1.0|CHandleMap::CHandleMap
-0x60d2c0|0.9064748201438849|CHandleMap::FromHandle
+0x60d2c0|0.920863309352518|CHandleMap::FromHandle
 0x60d39b|1.0|CHandleMap::DeleteTemp
 0x60d3fc|1.0|AfxWinMain
 0x6106bd|0.9166666666666666|CSingleDocTemplate::CSingleDocTemplate
@@ -7551,12 +7552,13 @@ address|matching|name
 0x612682|0.8571428571428571|CDC::CDC
 0x612696|1.0|CDC::`scalar deleting destructor'
 0x6126b2|1.0|CDC::DeleteTempMap
-0x6126c6|0.9473684210526315|afxMapHDC
+0x6126c6|0.9736842105263158|afxMapHDC
 0x612736|1.0|CDC::FromHandle
 0x61274c|1.0|CDC::Attach
 0x612783|1.0|CDC::Detach
 0x6127ca|0.9473684210526315|CDC::~CDC
 0x612828|1.0|CDC::StartDocA
+0x612860|1.0|CDC::SaveDC
 0x612897|1.0|CDC::RestoreDC
 0x6128ec|1.0|CDC::SelectStockObject
 0x612931|1.0|CDC::SelectObject(class CPen *)
@@ -7611,7 +7613,7 @@ address|matching|name
 0x61394f|1.0|CPaintDC::`scalar deleting destructor'
 0x61396b|0.9545454545454546|CPaintDC::~CPaintDC
 0x6139b2|1.0|CGdiObject::DeleteTempMap
-0x6139c6|0.9473684210526315|afxMapHGDIOBJ
+0x6139c6|0.9736842105263158|afxMapHGDIOBJ
 0x613a36|1.0|CGdiObject::FromHandle
 0x613a4c|1.0|CGdiObject::Attach
 0x613aa3|1.0|CGdiObject::DeleteObject
@@ -7630,6 +7632,7 @@ address|matching|name
 0x613d76|1.0|CView::OnCreate
 0x613da6|1.0|CView::OnDestroy
 0x613dd5|1.0|CView::PostNcDestroy
+0x613de1|1.0|CView::CalcWindowRect
 0x613e49|1.0|CView::OnCmdMsg
 0x613eb0|1.0|CView::OnPaint
 0x613f04|1.0|CView::OnInitialUpdate
@@ -7663,6 +7666,7 @@ address|matching|name
 0x6144eb|1.0|AfxDeleteObject
 0x614504|1.0|AfxCancelModes
 0x61457b|1.0|AfxGlobalFree
+0x6145b1|0.9714285714285714|AfxCriticalNewHandler
 0x614603|1.0|CDocManager::OpenDocumentFile
 0x614744|1.0|CDocManager::GetOpenDocumentCount
 0x614790|0.9878048780487805|CDocTemplate::CDocTemplate
@@ -7743,7 +7747,7 @@ address|matching|name
 0x618d0f|1.0|DDX_Check
 0x618d61|1.0|DDX_Radio
 0x618df2|1.0|DDX_LBString
-0x618e72|0.7407407407407407|DDX_LBStringExact
+0x618e72|1.0|DDX_LBStringExact
 0x618ec3|1.0|DDX_CBString
 0x618f43|1.0|DDX_CBStringExact
 0x618f94|1.0|DDX_LBIndex
@@ -7771,15 +7775,25 @@ address|matching|name
 0x619af8|0.95|CMemFile::CMemFile(unsigned char *, unsigned int, unsigned int)
 0x619b34|1.0|CMemFile::Attach
 0x619b71|0.9615384615384616|CMemFile::~CMemFile
+0x619bbd|1.0|CMemFile::Alloc
 0x619bca|1.0|CMemFile::Realloc
+0x619bdc|1.0|CMemFile::Memcpy
+0x619c01|1.0|CMemFile::Free
+0x619c0e|1.0|CMemFile::GetPosition
 0x619c12|1.0|CMemFile::GrowFile
 0x619c6b|1.0|CMemFile::SetLength
+0x619c8e|1.0|CMemFile::Read
 0x619ccf|1.0|CMemFile::Write
 0x619d11|1.0|CMemFile::Seek
+0x619d57|1.0|CMemFile::Flush
 0x619d58|1.0|CMemFile::Close
 0x619d82|1.0|CMemFile::Abort
+0x619d87|1.0|CMemFile::LockRange
+0x619d8f|1.0|CMemFile::UnlockRange
+0x619d97|1.0|CMemFile::Duplicate
 0x619d9f|1.0|CMemFile::GetBufferPtr
 0x619e4e|1.0|CNewTypeDlg::OnInitDialog
+0x619f62|1.0|CNewTypeDlg::OnOK
 0x619faa|1.0|CDocManager::AddDocTemplate
 0x61a027|1.0|CDocManager::SaveAllModified
 0x61a06a|1.0|CDocManager::DoPromptFileName

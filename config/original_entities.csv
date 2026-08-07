@@ -6912,9 +6912,7 @@ address|name|symbol|size|type|prototype|provenance
 5e70ce|CGdiObject::`scalar deleting dtor'|??_GCGdiObject@@UAEPAXI@Z|28|function|undefined ??_GCGdiObject@@UAEPAXI@Z()|
 5e70ea|CBrush::~CBrush|??1CBrush@@UAE@XZ|51|function|undefined SehProlog_DeleteObjectHandle_Wrapper()|
 5e711d|CArchiveStream::CArchiveStream|??0CArchiveStream@@QAE@PAVCArchive@@@Z|18|function|public: __thiscall CArchiveStream::CArchiveStream(class CArchive *)|msvc500_library_oracle
-5e713a|WrapperFor_memcmp_At005e713a||51|function|undefined WrapperFor_memcmp_At005e713a()|
-5e716d|thunk_NoOpRuntimeCallback_005e717b||2|function|undefined thunk_NoOpRuntimeCallback_005e717b()|
-5e717b|NoOpRuntimeCallback_005e717b||3|function|undefined NoOpRuntimeCallback_005e717b()|
+5e713a|WrapperFor_memcmp_At005e713a||68|function|undefined WrapperFor_memcmp_At005e713a()|
 5e717e|CArchiveStream::Read|?Read@CArchiveStream@@UAGJPAXKPAK@Z|69|function|undefined WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e717e()|
 5e71d6|CArchiveStream::Write|?Write@CArchiveStream@@UAGJPBXKPAK@Z|70|function|undefined WrapperFor_Cluster_TurnStateCalleeHint_005e9ae8_At005e71d6()|
 5e722f|CArchiveStream::Seek|?Seek@CArchiveStream@@UAGJT_LARGE_INTEGER@@KPAT_ULARGE_INTEGER@@@Z|111|function|undefined Seek()|
@@ -7403,10 +7401,7 @@ address|name|symbol|size|type|prototype|provenance
 60396e|GetNextAssoc||107|function|undefined ?GetNextAssoc@CMapStringToOb@@QBEXAAPAU__POSITION@@AAVCString@@AAPAVCObject@@@Z()|
 604b68|AfxDlgProc|?AfxDlgProc@@YGHPAUHWND__@@IIJ@Z|58|function|int __stdcall AfxDlgProc(struct HWND__*, unsigned int, unsigned int, long)|msvc500_library_oracle
 604ba2|CDialog::GetMessageMap|?GetMessageMap@CDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CDialog::GetMessageMap(void)const|msvc500_library_override
-604ba8|CDialog::PreTranslateMessage|?PreTranslateMessage@CDialog@@UAEHPAUtagMSG@@@Z|37|function|public: virtual int __thiscall CDialog::PreTranslateMessage(struct tagMSG *)|msvc500_library_override
-604bcd|thunk_NoOpPaddingStub_00604c3c||2|function|undefined thunk_NoOpPaddingStub_00604c3c()|
-604c32|thunk_NoOpPaddingStub_00604c3c_00604C32||2|function|undefined thunk_NoOpPaddingStub_00604c3c_00604C32()|
-604c3c|NoOpPaddingStub_00604c3c||5|function|undefined NoOpPaddingStub_00604c3c()|
+604ba8|CDialog::PreTranslateMessage|?PreTranslateMessage@CDialog@@UAEHPAUtagMSG@@@Z|153|function|public: virtual int __thiscall CDialog::PreTranslateMessage(struct tagMSG *)|msvc500_library_override
 604c41|CDialog::OnCmdMsg|?OnCmdMsg@CDialog@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|133|function|public: virtual int __thiscall CDialog::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)|msvc500_library_override
 604cc6|CDialog::CDialog|??0CDialog@@QAE@XZ|34|function|public: __thiscall CDialog::CDialog(void)|msvc500_library_oracle
 604ce8|CSharedFile::`scalar deleting destructor'|CSharedFile::`scalar_deleting_destructor'|28|function|undefined ScalarDeletingDestructor()|
@@ -7435,10 +7430,7 @@ address|name|symbol|size|type|prototype|provenance
 6054cb|CDialog::CheckAutoCenter|?CheckAutoCenter@CDialog@@UAEHXZ|124|function|public: virtual int __thiscall CDialog::CheckAutoCenter(void)|msvc500_library_oracle
 6055ae|CWinApp::Run|?Run@CWinApp@@UAEHXZ|34|function|public: virtual int __thiscall CWinApp::Run(void)|msvc500_library_oracle
 6055d0|CWinApp::WinHelpA|?WinHelpA@CWinApp@@UAEXKI@Z|55|function|public: virtual void __thiscall CWinApp::WinHelpA(unsigned long, unsigned int)|msvc500_library_oracle
-605607|CWinApp::ProcessWndProcException|?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z|12|function|public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)|msvc500_library_override
-605613|HandleWndProcExceptionWithNodeTypeDispatch_00605613||59|function|undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613()|
-60564e|thunk_DispatchVirtualSlot18OnImplicitObject||2|function|undefined thunk_DispatchVirtualSlot18OnImplicitObject()|
-605665|DispatchVirtualSlot18OnImplicitObject||15|function|undefined DispatchVirtualSlot18OnImplicitObject()|
+605607|CWinApp::ProcessWndProcException|?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z|119|function|public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)|msvc500_library_override
 60567e|CWinApp::OnIdle|?OnIdle@CWinApp@@UAEHJ@Z|102|function|public: virtual int __thiscall CWinApp::OnIdle(long)|msvc500_library_oracle
 6056e4|CWinApp::DevModeChange|?DevModeChange@CWinApp@@QAEXPAD@Z|173|function|public: void __thiscall CWinApp::DevModeChange(char *)|msvc500_library_oracle
 605791|GetSharedEmptyStringRef||6|function|undefined GetSharedEmptyStringRef()|
@@ -7876,9 +7868,7 @@ address|name|symbol|size|type|prototype|provenance
 612783|CDC::Detach|?Detach@CDC@@QAEPAUHDC__@@XZ|49|function|public: struct HDC__* __thiscall CDC::Detach(void)|msvc500_library_oracle
 6127ca|CDC::~CDC|??1CDC@@UAE@XZ|64|function|public: virtual __thiscall CDC::~CDC(void)|msvc500_library_oracle
 612828|CDC::StartDocA|?StartDocA@CDC@@QAEHPBD@Z|56|function|public: int __thiscall CDC::StartDocA(char const *)|msvc500_library_oracle
-612860|SaveDcStateForWindowAndBackupHdc_00612860||24|function|undefined SaveDcStateForWindowAndBackupHdc_00612860()|
-612878|thunk_CallDcCallbackIfPrimaryHdcDiffers||2|function|undefined thunk_CallDcCallbackIfPrimaryHdcDiffers()|
-61287e|CallDcCallbackIfPrimaryHdcDiffers||25|function|undefined CallDcCallbackIfPrimaryHdcDiffers()|
+612860|SaveDcStateForWindowAndBackupHdc_00612860||55|function|undefined SaveDcStateForWindowAndBackupHdc_00612860()|
 612897|CDC::RestoreDC|?RestoreDC@CDC@@UAEHH@Z|62|function|public: virtual int __thiscall CDC::RestoreDC(int)|msvc500_library_oracle
 6128ec|CDC::SelectStockObject|?SelectStockObject@CDC@@UAEPAVCGdiObject@@H@Z|69|function|public: virtual class CGdiObject * __thiscall CDC::SelectStockObject(int)|msvc500_library_oracle
 612931|SelectObject||83|function|undefined SelectObject()|
@@ -7958,9 +7948,7 @@ address|name|symbol|size|type|prototype|provenance
 613d76|CView::OnCreate|?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z|48|function|protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTA *)|msvc500_library_oracle
 613da6|CView::OnDestroy|?OnDestroy@CView@@IAEXXZ|47|function|protected: void __thiscall CView::OnDestroy(void)|msvc500_library_oracle
 613dd5|CView::PostNcDestroy|?PostNcDestroy@CView@@MAEXXZ|12|function|protected: virtual void __thiscall CView::PostNcDestroy(void)|msvc500_library_override
-613de1|AdjustWindowRectForClientAndScrollStyles||85|function|undefined AdjustWindowRectForClientAndScrollStyles()|
-613e36|thunk_NoOpVirtualStub_00613e44||2|function|undefined thunk_NoOpVirtualStub_00613e44()|
-613e44|NoOpVirtualStub_00613e44||5|function|undefined NoOpVirtualStub_00613e44()|
+613de1|AdjustWindowRectForClientAndScrollStyles||104|function|undefined AdjustWindowRectForClientAndScrollStyles()|
 613e49|GetTEventHandlerClassNamePointer|?OnCmdMsg@CView@@MAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|103|function|protected: virtual int __thiscall CView::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)|msvc500_library_oracle
 613eb0|CView::OnPaint|?OnPaint@CView@@IAEXXZ|84|function|protected: void __thiscall CView::OnPaint(void)|msvc500_library_oracle
 613f04|CView::OnInitialUpdate|?OnInitialUpdate@CView@@UAEXXZ|14|function|public: virtual void __thiscall CView::OnInitialUpdate(void)|msvc500_library_oracle
@@ -7995,10 +7983,7 @@ address|name|symbol|size|type|prototype|provenance
 6144eb|AfxDeleteObject|?AfxDeleteObject@@YGXPAPAX@Z|25|function|void __stdcall AfxDeleteObject(void **)|msvc500_library_oracle
 614504|AfxCancelModes|?AfxCancelModes@@YGXPAUHWND__@@@Z|119|function|void __stdcall AfxCancelModes(struct HWND__*)|msvc500_library_oracle
 61457b|AfxGlobalFree|?AfxGlobalFree@@YGXPAX@Z|54|function|void __stdcall AfxGlobalFree(void *)|msvc500_library_oracle
-6145b1|EnsureMfcModuleThreadBufferCapacity||50|function|undefined EnsureMfcModuleThreadBufferCapacity()|
-6145e3|thunk_ReturnOneStub_006145f5||2|function|undefined thunk_ReturnOneStub_006145f5()|
-6145f5|ReturnOneStub_006145f5||5|function|undefined ReturnOneStub_006145f5()|
-6145fa|WrapperFor_ThrowMfcResourceException_At006145fa||9|function|undefined WrapperFor_ThrowMfcResourceException_At006145fa()|
+6145b1|EnsureMfcModuleThreadBufferCapacity||82|function|undefined EnsureMfcModuleThreadBufferCapacity()|
 614603|CDocManager::OpenDocumentFile|?OpenDocumentFile@CDocManager@@UAEPAVCDocument@@PBD@Z|321|function|public: virtual class CDocument * __thiscall CDocManager::OpenDocumentFile(char const *)|msvc500_library_oracle
 614744|CDocManager::GetOpenDocumentCount|?GetOpenDocumentCount@CDocManager@@UAEHXZ|76|function|public: virtual int __thiscall CDocManager::GetOpenDocumentCount(void)|msvc500_library_oracle
 614790|CDocTemplate::CDocTemplate|??0CDocTemplate@@IAE@IPAUCRuntimeClass@@00@Z|259|function|protected: __thiscall CDocTemplate::CDocTemplate(unsigned int, struct CRuntimeClass *, struct CRuntimeClass *, struct CRuntimeClass *)|msvc500_library_oracle
@@ -8081,8 +8066,7 @@ address|name|symbol|size|type|prototype|provenance
 618d0f|DDX_Check|?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z|82|function|void __stdcall DDX_Check(class CDataExchange *, int, int &)|msvc500_library_override
 618d61|DDX_Radio|?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z|145|function|void __stdcall DDX_Radio(class CDataExchange *, int, int &)|msvc500_library_oracle
 618df2|DDX_LBString|?DDX_LBString@@YGXPAVCDataExchange@@HAAVCString@@@Z|128|function|void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)|
-618e72|DDX_LBStringExact||52|function|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)|
-618ea6|SelectListBoxStringExactIfPresent||29|function|undefined SelectListBoxStringExactIfPresent()|
+618e72|DDX_LBStringExact||81|function|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)|
 618ec3|DDX_CBString|?DDX_CBString@@YGXPAVCDataExchange@@HAAVCString@@@Z|128|function|void __stdcall DDX_CBString(class CDataExchange *, int, class CString &)|msvc500_library_oracle
 618f43|DDX_CBStringExact|?DDX_CBStringExact@@YGXPAVCDataExchange@@HAAVCString@@@Z|81|function|void __stdcall DDX_CBStringExact(class CDataExchange *, int, class CString &)|msvc500_library_oracle
 618f94|DDX_LBIndex|?DDX_LBIndex@@YGXPAVCDataExchange@@HAAH@Z|66|function|void __stdcall DDX_LBIndex(class CDataExchange *, int, int &)|msvc500_library_oracle
@@ -8113,14 +8097,15 @@ address|name|symbol|size|type|prototype|provenance
 619b71|CMemFile::~CMemFile|??1CMemFile@@UAE@XZ|76|function|public: virtual __thiscall CMemFile::~CMemFile(void)|msvc500_library_oracle
 619bbd|WrapperFor_AllocateWithGlobalNewMode_At00619bbd||13|function|undefined WrapperFor_AllocateWithGlobalNewMode_At00619bbd()|
 619bca|CMemFile::Realloc|?Realloc@CMemFile@@MAEPAEPAEK@Z|18|function|protected: virtual unsigned char * __thiscall CMemFile::Realloc(unsigned char *, unsigned long)|msvc500_library_oracle
+619bdc|CMemFile_Memcpy||37|function|undefined CMemFile_Memcpy()|
 619c01|WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01||13|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01()|
+619c0e|CMemFile_GetPosition||4|function|undefined CMemFile_GetPosition()|
 619c12|CMemFile::GrowFile|?GrowFile@CMemFile@@MAEXK@Z|89|function|protected: virtual void __thiscall CMemFile::GrowFile(unsigned long)|msvc500_library_oracle
 619c6b|CMemFile::SetLength|?SetLength@CMemFile@@UAEXK@Z|35|function|public: virtual void __thiscall CMemFile::SetLength(unsigned long)|msvc500_library_oracle
-619ca0|CopyIntoStreamBufferFromSourceWithClamp_00619ca0||6|function|undefined CopyIntoStreamBufferFromSourceWithClamp_00619ca0()|
-619ca6|thunk_NoOpVirtualStub_00619cca||2|function|undefined thunk_NoOpVirtualStub_00619cca()|
-619cca|NoOpVirtualStub_00619cca||5|function|undefined NoOpVirtualStub_00619cca()|
+619c8e|CMemFile_Read||65|function|undefined CMemFile_Read()|
 619ccf|CMemFile::Write|?Write@CMemFile@@UAEXPBXI@Z|66|function|public: virtual void __thiscall CMemFile::Write(void const *, unsigned int)|msvc500_library_oracle
 619d11|CMemFile::Seek|?Seek@CMemFile@@UAEJJI@Z|70|function|public: virtual long __thiscall CMemFile::Seek(long, unsigned int)|msvc500_library_oracle
+619d57|CMemFile_Flush||1|function|undefined CMemFile_Flush()|
 619d58|CMemFile::Close|?Close@CMemFile@@UAEXXZ|42|function|public: virtual void __thiscall CMemFile::Close(void)|msvc500_library_oracle
 619d82|DispatchVirtualSlot54_NoArgs||5|function|undefined DispatchVirtualSlot54_NoArgs()|
 619d87|WrapperFor_AfxThrowNotSupportedException_At00619d87||8|function|undefined WrapperFor_AfxThrowNotSupportedException_At00619d87()|
@@ -8128,8 +8113,7 @@ address|name|symbol|size|type|prototype|provenance
 619d97|WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97||8|function|undefined WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97()|
 619d9f|CMemFile::GetBufferPtr|?GetBufferPtr@CMemFile@@UAEIIIPAPAX0@Z|169|function|public: virtual unsigned int __thiscall CMemFile::GetBufferPtr(unsigned int, unsigned int, void **, void **)|msvc500_library_oracle
 619e4e|OnInitDialog_619e4e||276|function|undefined OnInitDialog_619e4e()|
-619f62|WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62||48|function|undefined WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62()|
-619f92|SendMessage199AndFinalizeSelection||24|function|undefined SendMessage199AndFinalizeSelection()|
+619f62|WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62||72|function|undefined WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62()|
 619faa|CDocManager::AddDocTemplate|?AddDocTemplate@CDocManager@@UAEXPAVCDocTemplate@@@Z|105|function|public: virtual void __thiscall CDocManager::AddDocTemplate(class CDocTemplate *)|msvc500_library_oracle
 61a027|CDocManager::SaveAllModified|?SaveAllModified@CDocManager@@UAEHXZ|34|function|public: virtual int __thiscall CDocManager::SaveAllModified(void)|msvc500_library_oracle
 61a04d|DispatchVslot84ForLinkedNodeChain||29|function|undefined DispatchVslot84ForLinkedNodeChain()|
