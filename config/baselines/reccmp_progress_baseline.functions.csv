@@ -95,7 +95,7 @@ address|matching|name
 0x41b5a0|0.7777777777777778|SetUiResourceContextNumberValueAndRange
 0x41b5f0|1.0|ClearUiResourceContext
 0x41b610|1.0|PopUiResourcePoolNode
-0x41b6d0|0.14531716745738885|InitializeIndustryViewTradeMoveControlsAndCommodityRows
+0x41b6d0|0.6560646663445064|InitializeIndustryViewTradeMoveControlsAndCommodityRows
 0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
 0x426f60|1.0|CList<TView *,TView *>::GetTail
 0x426fa0|1.0|SetUiResourceContextFlagsAndMetrics
@@ -121,7 +121,7 @@ address|matching|name
 0x429500|1.0|TNumberText
 0x429530|1.0|TNumberText::`scalar deleting destructor'
 0x429560|1.0|TNumberText::~TNumberText
-0x4295a0|0.6316126963770439|BuildTurnEventDialogResourcesForEvent547Or7D8
+0x4295a0|0.6316633266533066|BuildTurnEventDialogResourcesForEvent547Or7D8
 0x430250|1.0|TBook::TBook
 0x430280|1.0|TBook::`scalar deleting destructor'
 0x4302b0|1.0|TBook::~TBook
@@ -220,7 +220,7 @@ address|matching|name
 0x43db40|1.0|TGamePreferencesPicture::~TGamePreferencesPicture
 0x43db60|1.0|TRadioText::~TRadioText
 0x43db80|1.0|TCreditsPicture::~TCreditsPicture
-0x43dbc0|0.3652661506870952|InitializeArmyNavyReportViewsAndCommandTags
+0x43dbc0|0.4523537071380657|InitializeArmyNavyReportViewsAndCommandTags
 0x44a6c0|1.0|TPageCorner::TPageCorner
 0x44a6f0|1.0|TShipFractionCluster::TShipFractionCluster
 0x44a720|1.0|TShipFractionCluster::`scalar deleting destructor'
@@ -229,7 +229,7 @@ address|matching|name
 0x44a7a0|1.0|TCivDescription::`scalar deleting destructor'
 0x44a7d0|1.0|TCivDescription::~TCivDescription
 0x44a810|0.21448467966573817|BuildTurnEventDialogResources_2508
-0x44af90|0.28120823309275594|InitializeJoinSelectorDialogControlsAndNationSlots
+0x44af90|0.31970061480887463|InitializeJoinSelectorDialogControlsAndNationSlots
 0x44fa80|1.0|TMultiMessagePicture::TMultiMessagePicture
 0x44fab0|1.0|TJoinSelectorDialog::`scalar deleting destructor'
 0x44fae0|1.0|TLoungeDialog::`scalar deleting destructor'
@@ -241,7 +241,7 @@ address|matching|name
 0x453800|1.0|TOverlayRadioButton::TOverlayRadioButton
 0x453830|1.0|TOverlayRadioButton::`scalar deleting destructor'
 0x453860|1.0|TOverlayRadioButton::~TOverlayRadioButton
-0x4538a0|0.2760386190754827|InitializeGameSetupScreenControlsAndModeTags
+0x4538a0|0.6089818607372732|InitializeGameSetupScreenControlsAndModeTags
 0x45acb0|1.0|TSpecialQuitPicture::Hilite
 0x45acd0|1.0|TSpecialQuitPicture::`scalar deleting destructor'
 0x45ad00|1.0|TSpecialQuitPicture::~TSpecialQuitPicture

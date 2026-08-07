@@ -14,21 +14,21 @@ functions:
     name: InitializeIndustryViewTradeMoveControlsAndCommodityRows
     prototype: TView* __cdecl InitializeIndustryViewTradeMoveControlsAndCommodityRows(CWnd* pHostWindow, int nEventCode)
     cases:
+      - {event: 0x23f3, resource: Citydlog.rsrc:9203}
+      - {event: 0x23fd, resource: Citydlog.rsrc:9213}
+      - {event: 0x23ff, resource: Citydlog.rsrc:9215}
+      - {event: 0x2405, resource: Citydlog.rsrc:9221}
+      - {event: 0x23f9, resource: Citydlog.rsrc:9209}
+      - {event: 0x2404, resource: Citydlog.rsrc:9220}
+      - {event: 0x23fb, resource: Citydlog.rsrc:9211}
+      - {event: 0x23fe, resource: Citydlog.rsrc:9214}
+      - {event: 0x23f2, resource: Citydlog.rsrc:9202}
+      - {event: 0x23f4, resource: Citydlog.rsrc:9204}
       - {event: 0x23f0, resource: Citydlog.rsrc:9200}
       - {event: 0x23f1, resource: Citydlog.rsrc:9201}
-      - {event: 0x23f2, resource: Citydlog.rsrc:9202}
-      - {event: 0x23f3, resource: Citydlog.rsrc:9203}
-      - {event: 0x23f4, resource: Citydlog.rsrc:9204}
       - {event: 0x23f5, resource: Citydlog.rsrc:9205}
       - {event: 0x23f6, resource: Citydlog.rsrc:9206}
-      - {event: 0x23f9, resource: Citydlog.rsrc:9209}
-      - {event: 0x23fb, resource: Citydlog.rsrc:9211}
       - {event: 0x23fc, resource: Citydlog.rsrc:9212}
-      - {event: 0x23fd, resource: Citydlog.rsrc:9213}
-      - {event: 0x23fe, resource: Citydlog.rsrc:9214}
-      - {event: 0x23ff, resource: Citydlog.rsrc:9215}
-      - {event: 0x2404, resource: Citydlog.rsrc:9220}
-      - {event: 0x2405, resource: Citydlog.rsrc:9221}
 
   - address: 0x00427360
     name: InitializeIndustryOverviewPlacardsAndTradeStatusTags
@@ -40,24 +40,24 @@ functions:
     name: BuildTurnEventDialogResourcesForEvent547Or7D8
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent547Or7D8(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x0547, resource: Diplo.rsrc:1351}
       - {event: 0x0548, resource: Diplo.rsrc:1352}
+      - {event: 0x0547, resource: Diplo.rsrc:1351}
       - {event: 0x07d8, resource: Diplo.rsrc:2008}
-      - {event: 0x07e0, resource: Diplo.rsrc:2016}
       - {event: 0x07e1, resource: Diplo.rsrc:2017}
+      - {event: 0x07e0, resource: Diplo.rsrc:2016}
 
   - address: 0x00430c50
     name: InitializeDealBookScreenControlsAndCommandTags
     prototype: TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x2103, resource: FlagView.rsrc:8451}
+      - {event: 0x2260, resource: FlagView.rsrc:8800}
       - event: 0x2134
         resource: FlagView.rsrc:8500
         windows_overrides:
           0x0370:
             style: {word: 0, packed_color: 0x99ccff}
             evidence: "original builder 0x004329bd-0x00432a03 allocates purc +0x48 and stores {packedColor=0x99ccff, styleWord=0}"
-      - {event: 0x2260, resource: FlagView.rsrc:8800}
+      - {event: 0x2103, resource: FlagView.rsrc:8451}
 
   - address: 0x004357b0
     name: BuildTurnEventDialogUiByCode
@@ -67,8 +67,8 @@ functions:
       - {event: 0x03ba, resource: Linger.rsrc:954}
       - {event: 0x03ea, resource: Linger.rsrc:1002}
       - {event: 0x05de, resource: Linger.rsrc:1502}
-      - {event: 0x07d1, resource: Linger.rsrc:2001}
       - {event: 0x07d2, resource: Linger.rsrc:2002}
+      - {event: 0x07d1, resource: Linger.rsrc:2001}
       - {event: 0x07e4, resource: Linger.rsrc:2020}
       - {event: 0x0bb8, resource: Linger.rsrc:3000}
       - {event: 0x0bbd, resource: Linger.rsrc:3005}
@@ -76,9 +76,9 @@ functions:
       - {event: 0x102c, resource: Linger.rsrc:4140}
       - {event: 0x1036, resource: Linger.rsrc:4150}
       - {event: 0x104f, resource: Linger.rsrc:4175}
-      - {event: 0x10cc, resource: Linger.rsrc:4300}
-      - {event: 0x11f8, resource: Linger.rsrc:4600}
       - {event: 0x3a98, resource: Linger.rsrc:15000}
+      - {event: 0x11f8, resource: Linger.rsrc:4600}
+      - {event: 0x10cc, resource: Linger.rsrc:4300}
 
   - address: 0x0043dbc0
     name: InitializeArmyNavyReportViewsAndCommandTags
@@ -96,12 +96,12 @@ functions:
       - {event: 0x0db4, resource: MapView.rsrc:3508}
       - {event: 0x1c20, resource: MapView.rsrc:7200}
       - {event: 0x24f4, resource: MapView.rsrc:9460}
-      - {event: 0x24f6, resource: MapView.rsrc:9462}
       - {event: 0x24f9, resource: MapView.rsrc:9465}
       - {event: 0x2502, resource: MapView.rsrc:9474}
-      - {event: 0x2503, resource: MapView.rsrc:9475}
       - {event: 0x2505, resource: MapView.rsrc:9477}
+      - {event: 0x24f6, resource: MapView.rsrc:9462}
       - {event: 0x2506, resource: MapView.rsrc:9478}
+      - {event: 0x2503, resource: MapView.rsrc:9475}
 
   - address: 0x0044a810
     name: BuildTurnEventDialogResources_2508
@@ -113,9 +113,9 @@ functions:
     name: InitializeJoinSelectorDialogControlsAndNationSlots
     prototype: TView* __cdecl InitializeJoinSelectorDialogControlsAndNationSlots(CWnd* pHostWindow, int nEventCode)
     cases:
+      - {event: 0x05e6, resource: Multiplayer.rsrc:1510}
       - {event: 0x05e3, resource: Multiplayer.rsrc:1507}
       - {event: 0x05e4, resource: Multiplayer.rsrc:1508}
-      - {event: 0x05e6, resource: Multiplayer.rsrc:1510}
       - {event: 0x05e7, windows_view: join_selector_message}
 
   - address: 0x0044fbc0
@@ -128,15 +128,15 @@ functions:
     name: InitializeGameSetupScreenControlsAndModeTags
     prototype: TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03b9, resource: Startup.rsrc:953}
+      - {event: 0x03b8, resource: Startup.rsrc:952}
       - {event: 0x03c6, resource: Startup.rsrc:966}
+      - {event: 0x05e2, resource: Startup.rsrc:1506}
+      - {event: 0x05e0, resource: Startup.rsrc:1504}
       - {event: 0x05dc, resource: Startup.rsrc:1500}
+      - {event: 0x05e5, resource: Startup.rsrc:1509}
       - {event: 0x05dd, resource: Startup.rsrc:1501}
       - {event: 0x05df, resource: Startup.rsrc:1503}
-      - {event: 0x05e0, resource: Startup.rsrc:1504}
-      - {event: 0x05e2, resource: Startup.rsrc:1506}
-      - {event: 0x05e5, resource: Startup.rsrc:1509}
       - {event: 0x05eb, resource: Startup.rsrc:1515}
       - {event: 0x4e20, resource: Startup.rsrc:20000}
 
@@ -144,9 +144,9 @@ functions:
     name: InitializeTacticalBattleViewToolbarAndDialogControls
     prototype: TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x0ed8, resource: Tactical.rsrc:3800}
-      - {event: 0x0eed, resource: Tactical.rsrc:3821}
       - {event: 0x0f19, resource: Tactical.rsrc:3865}
+      - {event: 0x0eed, resource: Tactical.rsrc:3821}
+      - {event: 0x0ed8, resource: Tactical.rsrc:3800}
 
   - address: 0x0045d520
     name: BuildTurnEventDialogResourcesForEvent898
@@ -158,15 +158,15 @@ functions:
     name: BuildTurnEventDialogResourcesForEvent8FC
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x08fc, resource: TechStore.rsrc:2300}
       - {event: 0x0942, resource: TechStore.rsrc:2370}
+      - {event: 0x08fc, resource: TechStore.rsrc:2300}
 
   - address: 0x004601b0
     name: InitializeTradeScreenBitmapControls
     prototype: TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x07d9, resource: Trade.rsrc:2009}
       - {event: 0x07da, resource: Trade.rsrc:2010}
+      - {event: 0x07d9, resource: Trade.rsrc:2009}
 
   - address: 0x0046fd10
     name: BuildTurnEventDialogResourcesForEvent7DE
