@@ -130,8 +130,21 @@ def _read_suite_case(name: str, returncode: int) -> SuiteCaseResult:
     return SuiteCaseResult(name, returncode, status, parsed)
 
 
+def _suite_execution_order(tests: tuple) -> tuple:
+    """Run host-only checks before starting the shared Wine game prefix.
+
+    The worktree wineserver exits after a few client-free seconds. Interleaving the
+    native harness between game cases therefore makes the following game pay a second
+    server startup. Harness cases have no game-state relationship to Wine scenarios,
+    so grouping them first preserves the relative order of both groups.
+    """
+    return tuple(test for test in tests if test.execution == "harness") + tuple(
+        test for test in tests if test.execution != "harness"
+    )
+
+
 def run_suite(args: argparse.Namespace) -> int:
-    tests = tests_in_suite(args.suite)
+    tests = _suite_execution_order(tests_in_suite(args.suite))
     if not tests:
         raise SystemExit(f"unknown or empty suite {args.suite!r}; choices: {', '.join(suite_names())}")
 

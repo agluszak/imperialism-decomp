@@ -15,7 +15,7 @@ from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
 from tools.runtime.catalog import RuntimeTestSpec
-from tools.runtime.cli import _suite_command, run_one, run_suite
+from tools.runtime.cli import _suite_command, _suite_execution_order, run_one, run_suite
 from tools.runtime.models import HostResult, RunConfig
 from tools.runtime.runner import RunnerDependencies
 from tools.runtime.runtime_tests import run_test
@@ -95,6 +95,27 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(run_one(args), 0)
         harness.assert_called_once()
         game.assert_not_called()
+
+    def test_host_only_cases_run_before_the_shared_wine_prefix_starts(self) -> None:
+        first_game = RuntimeTestSpec(
+            "first_game", "FirstGame", ("pr",), "internal_invariant"
+        )
+        harness = RuntimeTestSpec(
+            "harness",
+            "Harness",
+            ("pr",),
+            "internal_invariant",
+            execution="harness",
+        )
+        second_game = RuntimeTestSpec(
+            "second_game", "SecondGame", ("pr",), "internal_invariant"
+        )
+
+        ordered = _suite_execution_order((first_game, harness, second_game))
+
+        self.assertEqual(
+            [test.name for test in ordered], ["harness", "first_game", "second_game"]
+        )
 
     def test_suite_command_uses_catalog_timeout_unless_cli_overrides_it(self) -> None:
         args = suite_args(Path("runtime.xml"))

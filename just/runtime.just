@@ -90,6 +90,14 @@ runtime-dev name *args:
 runtime-dev-build:
   uv run python -m tools.runtime.incremental_build --build-dir "{{runtime_test_build_dir}}" --docker-image "{{docker_image}}"
 
+# Precommit already ran the vtable gate in its production build. Refresh every
+# generated runtime input, then let CMake reuse its valid configuration while still
+# rebuilding changed sources and reconfiguring automatically when build inputs demand it.
+[private]
+_runtime-precommit-build:
+  uv run python -m tools.runtime.incremental_build --canonical \
+    --build-dir "{{runtime_test_build_dir}}" --docker-image "{{docker_image}}"
+
 [doc('Run one named native semantic runtime test (rebuilds first)')]
 [group('runtime-test')]
 runtime-test name *args:

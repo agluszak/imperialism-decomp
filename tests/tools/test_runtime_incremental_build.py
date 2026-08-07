@@ -126,6 +126,20 @@ class GeneratedTreeStalenessTest(unittest.TestCase):
                 self.assertTrue(regenerate_sources_if_stale(root, build))
                 run.assert_called_once()
 
+    def test_canonical_generation_runs_even_when_the_tree_is_fresh(self):
+        with TemporaryDirectory() as raw:
+            root = Path(raw)
+            build = self._repo(root)
+            model = build / "generated" / "source_model.json"
+            model.write_text("{}\n", encoding="utf-8")
+            os.utime(model, (2_000_000_000, 2_000_000_000))
+
+            with patch.object(incremental_build.subprocess, "run") as run:
+                self.assertTrue(
+                    regenerate_sources_if_stale(root, build, force=True)
+                )
+                run.assert_called_once()
+
     def test_registry_is_not_regenerated_on_every_run(self):
         """The generator leaves the .inc alone when unchanged, so its mtime cannot be the test.
 
@@ -176,6 +190,31 @@ class GeneratedTreeStalenessTest(unittest.TestCase):
                 self.assertFalse(incremental_build.regenerate_registry_if_stale(root, build))
                 os.utime(catalog, (2_000_000_000, 2_000_000_000))
                 self.assertTrue(incremental_build.regenerate_registry_if_stale(root, build))
+
+    def test_canonical_registry_generation_ignores_a_fresh_stamp(self):
+        with TemporaryDirectory() as raw:
+            root = Path(raw)
+            build = self._repo(root)
+            (root / "tools" / "runtime").mkdir(parents=True)
+            (root / "tools" / "runtime" / "catalog.py").write_text(
+                "TESTS = ()\n", encoding="utf-8"
+            )
+            (root / "tools" / "runtime" / "generate_native_registry.py").write_text(
+                "# generator\n", encoding="utf-8"
+            )
+            output = build / "generated" / "runtime" / "RuntimeRegistry.inc"
+            output.parent.mkdir(parents=True)
+            output.write_text("// registry\n", encoding="utf-8")
+
+            with patch.object(incremental_build.subprocess, "run") as run:
+                incremental_build.regenerate_registry_if_stale(root, build)
+                run.reset_mock()
+                self.assertTrue(
+                    incremental_build.regenerate_registry_if_stale(
+                        root, build, force=True
+                    )
+                )
+                run.assert_called_once()
 
     def test_config_inputs_count_as_sources(self):
         """An ownership CSV edit changes the generated stubs without touching any .cpp."""
