@@ -11,6 +11,7 @@
 #include "game/GameAssert.h"
 #include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/ui_invalidation_guard.h"
 #include "game/core/CString.h"
@@ -486,6 +487,11 @@ short TShip::GetToolbarSlot() const {
   return static_cast<short>(g_NavyOrderResourceDescriptorTable[type].ToolbarBucketIndex());
 }
 
+// FUNCTION: IMPERIALISM 0x00550530
+short TShip::GetBattleSpeed() const {
+  return g_NavyOrderResourceDescriptorTable[type].DescriptorWeight();
+}
+
 // FUNCTION: IMPERIALISM 0x00550550
 short TShip::GetTurnDistanceTo(TZone* otherZone) const {
   short hopDistance = location->GetCachedMapActionContextDistanceOrRecompute(otherZone);
@@ -504,6 +510,15 @@ short TShip::GetMaxStrength() const {
 // FUNCTION: IMPERIALISM 0x005505c0
 TShip* TShip::GetFirst() {
   return g_pNavyPrimaryOrderListHead;
+}
+
+// FUNCTION: IMPERIALISM 0x005505e0
+TShip* TShip::GetLast() {
+  TShip* ship = g_pNavyPrimaryOrderListHead;
+  while (ship != 0 && ship->next != 0) {
+    ship = ship->next;
+  }
+  return ship;
 }
 
 // FUNCTION: IMPERIALISM 0x00550610
@@ -591,6 +606,13 @@ TShip* TShip::Finest(TShip* candidate, unsigned char preferUnassigned) {
   return candidate;
 }
 
+// FUNCTION: IMPERIALISM 0x005507b0
+int TShip::GetFirepower() const {
+  int scaledBase = g_NavyOrderResourceDescriptorTable[type].ResolveWeightDword() * 5;
+  short experienceTier = static_cast<short>(experience / 100);
+  return (experienceTier + scaledBase * 2 + 5) / 10;
+}
+
 // FUNCTION: IMPERIALISM 0x00550820
 short TShip::GetRange() const {
   return g_NavyOrderResourceDescriptorTable[type].CalculateWeight();
@@ -603,9 +625,28 @@ int TShip::GetSpeed() const {
   return (strengthBucket + 5 + desc.NavyPriorityWeightDword() * 10) / 10;
 }
 
+// FUNCTION: IMPERIALISM 0x005508b0
+short TShip::GetArmorFactor() const {
+  return g_NavyOrderResourceDescriptorTable[type].TaskForceWeight();
+}
+
+// FUNCTION: IMPERIALISM 0x005508d0
+int TShip::ModByExp(int value) const {
+  short experienceTier = static_cast<short>(experience / 100);
+  return (experienceTier + value * 10 + 5) / 10;
+}
+
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
   return g_industryActionCostWeightResCode10[resourceType];
+}
+
+// FUNCTION: IMPERIALISM 0x00550990
+int TShip::GetInvasionCapacity() const {
+  if (strength > 0) {
+    return g_industryActionCostWeightResCode10[type];
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005509c0
@@ -688,6 +729,11 @@ short GetResourceDescriptorWeightWord0ByType(int resourceType) {
       .ResourceDescriptorWeightWord0();
 }
 
+// FUNCTION: IMPERIALISM 0x00550f00
+short TShip::GetTypeSlot(short shipType) {
+  return g_NavyOrderResourceDescriptorTable[shipType].PriorityTier();
+}
+
 // FUNCTION: IMPERIALISM 0x00550f60
 bool TShip::IsInHomePort() const {
   return location->QueryPortZoneCapability();
@@ -696,6 +742,15 @@ bool TShip::IsInHomePort() const {
 // FUNCTION: IMPERIALISM 0x00550f80
 void TShip::Damage(short decrement) {
   strength = static_cast<short>(strength - decrement);
+}
+
+// FUNCTION: IMPERIALISM 0x00550fa0
+void TShip::Repair() {
+  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[type];
+  strength = static_cast<short>(strength + descriptor.StockCap() / 4);
+  if (strength > descriptor.StockCap()) {
+    strength = descriptor.StockCap();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00550ff0

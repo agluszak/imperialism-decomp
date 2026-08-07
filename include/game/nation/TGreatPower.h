@@ -93,10 +93,6 @@ public:
   // ORACLE: Mac names TGreatPower::AddOfferFrom(short, short).
   void AddOfferFrom(NationSlot sourceNationSlot,
                     DiplomacyProposalCodeStorage proposalCode) override;
-  // Reads the pending-policy pairs in field8d6, so it belongs here and not on TCountry:
-  // TMinor also derives from TCountry and is only 0x2dc bytes, while field8d6 sits at
-  // +0x8d6 inside TGreatPower's 0x964.
-  char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   // ORACLE: Mac names TGreatPower::AddNoticeFrom(short, short).
   void AddNoticeFrom(short sourceNation, short actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
@@ -520,8 +516,6 @@ public:
   TGreatPower();
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
-  void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
-  bool TryHandleWarTransitionRequest(int targetNation, int sourceNation);
   // 0x004e3620 — sums the encoded diplomacyGrantByNation entries (masking off the
   // top 2 flag bits), skipping the 0xffff "no grant" sentinel. Used by the grants/aid
   // screen's "Total" row (TGrantsView::Draw).

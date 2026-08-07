@@ -47,13 +47,13 @@ TIndustryCluster::~TIndustryCluster() {}
 void TIndustryCluster::DoPostCreate(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = g_pSimMgr->GetActiveNationId();
-  TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
+  TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* province = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
-  int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
+  int mappedSummaryTag = g_pTradeSummarySelectionMap[0];
   while (mappedSummaryTag != this->controlTag) {
     tagIndex = (short)(tagIndex + 1);
-    mappedSummaryTag = GetTradeSummarySelectionTagByIndex(tagIndex);
+    mappedSummaryTag = g_pTradeSummarySelectionMap[tagIndex];
   }
 
   TProductionOrder* selectedMetricRecord = province->orderSlotsE4[tagIndex];
@@ -119,7 +119,8 @@ void TIndustryCluster::SetMoveAmount(short dragValue, unsigned char updateContro
 
   int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
   int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
-  barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
+  barControl->UpdateBarValuesAndRefresh(static_cast<short>(scaledMoveAmount),
+                                        static_cast<short>(scaledMaximum));
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;

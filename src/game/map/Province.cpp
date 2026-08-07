@@ -9,6 +9,12 @@ ProvinceIndex Province::GetIndex() const {
 // FUNCTION: IMPERIALISM 0x0050ec60
 Province::Province() {}
 
+// SYNTHETIC: IMPERIALISM 0x0050e580
+// Province::`vector deleting destructor'
+
+// SYNTHETIC: IMPERIALISM 0x0050e600
+// Province::`cityNameA4 destructor closure'
+
 // FUNCTION: IMPERIALISM 0x0054ae90
 Province& Province::operator=(const Province& source) {
   ownerNationCode00 = source.ownerNationCode00;

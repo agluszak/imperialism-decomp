@@ -29,6 +29,8 @@ public:
   bool QueryZoneCapabilityFlagC() override;                      // slot 0x0f 0x5616a0
   bool QueryZoneCapabilityFlagD(NationSlot nationSlot) override; // slot 0x10 0x561b10
   bool QueryZoneCapabilityFlagE(NationSlot nationSlot) override; // slot 0x11 0x561b50
+  short GetPortTileFormerOwnerNationSlot();
+  TPortZone* FindPreviousPortZone();                             // 0x561bc0
   bool HasZoneActiveChildCount(TTaskForce* force) override;      // slot 0x12 0x561dc0
   short FindNearestActiveSeaContextTileFromOffset216() override; // slot 0x13 0x561e40
 
@@ -39,3 +41,5 @@ public:
 };
 
 ASSERT_SIZE(TPortZone, 0x4c);
+
+TPortZone* FindLastPortZoneInMapActionContextList();

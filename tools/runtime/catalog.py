@@ -245,6 +245,13 @@ TESTS = (
         native_snapshots=("map",),
         record_game_flow=True,
     ),
+    RuntimeTestSpec(
+        "population_growth_order_is_one_shot",
+        "PopulationGrowthOrderIsOneShotTest",
+        ("full",),
+        "internal_invariant",
+        required_oracles=(),
+    ),
 )
 
 

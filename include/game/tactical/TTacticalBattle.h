@@ -11,6 +11,13 @@ class TTacticalBattleView;
 class TTacticalPlayer;
 class TTacticalUnit;
 
+enum TacticalBattleOutcome {
+  kTacticalBattleInProgress = 0,
+  kTacticalBattleSide0Victory = 1,
+  kTacticalBattleSide1Victory = 2
+};
+typedef int TacticalBattleOutcomeStorage;
+
 // One 0x14-byte battle-grid tile record (array at TTacticalBattle::tileGrid4).
 // +0x08 is written 1 when a trench-capable unit deploys; +0x10 is the trench-link
 // bitmask: bits 0-5 = hex directions, 0x80 = first dig on a bare tile, 0x40 replaces
@@ -117,9 +124,9 @@ public:
   int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
   int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
   int tacticalTileStride40;     // +0x40 = 0x1d (29)
-  // battleOutcomeCode44: 0 undecided; 1 = side 0 still standing before round 35 (side-0
-  // win), 2 = side-1 win (see the round-cutoff check near roundCounter74 below).
-  int battleOutcomeCode44; // +0x44 serialized; 0x5a5320 sets it to 1
+  // Serialized outcome. EvaluateTacticalSideStateAndShowBattleSummaryDialog chooses the
+  // surviving side; TNextMoveCommand consumes it before EndBattle marks finalization.
+  TacticalBattleOutcomeStorage battleOutcome44; // +0x44
   // pendingEndOfActionFlag48: cleared when the 0x232a end-of-action turn event is queued
   // (news a TCommand) and re-armed by TNextMoveCommand::DoIt before advancing the turn.
   // TArmyPlayer's move/target-selection loops gate on it being nonzero.
@@ -134,7 +141,7 @@ public:
   // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
   // the mine action, gates passability in slot 0x0a.
   int fortStrengthPoints54[8]; // +0x54
-  // roundCounter74: current battle round; battleOutcomeCode44 is only decided once a side
+  // roundCounter74: current battle round; battleOutcome44 is only decided once a side
   // has no live units and roundCounter74 < 0x23 (35).
   int roundCounter74; // +0x74
 

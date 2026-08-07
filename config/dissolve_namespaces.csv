@@ -4,7 +4,7 @@ TRuntimeLinkedBlockChainState_0066FA50|Not a class. 0x0066fa50 is a shared secon
 TLinkedBlockChainState_00650A50|Not a class. 0x00650a50 is the CList<long,long> template-base vtable immediately following TLongintList's derived table at 0x650a08; 0x4bec40/0x4c6ad0 are compiler-emitted copies of that base destructor.
 TRuntimeHeapBufferOwnerState_0066FA68|Not a class. 0x0066fa68 is a shared heap-buffer-owner base vtable; members are ctor/dtor of that base subobject for different owners.
 TCViewOwnedBufferChainState_00648578|Not a class. 0x00648578 is the CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord&> template-base vtable used by CIncludeView's overlay record list.
-TCViewOwnedBufferRegistryState_00648560|Not a class. 0x00648560 is CIncludeView's CView base table during construction/destruction; the complete-object table is 0x00648418.
+TCViewOwnedBufferRegistryState_00648560|Not a class. 0x00648560 is the ctor-TU duplicate vtable for CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord&>; its scalar destructor at 0x4829f0 aliases the duplicate emitted at 0x4847a0.
 TModuleLibraryCacheTableStateA_0064BA68|Not a class. 0x0064ba68 is CObjectVtbl_0064ba68; single member is a destructor that resets this->vptr to CObject.
 TModuleLibraryCacheTableStateB_0064BA80|Not a class. 0x0064ba80 is a shared base vtable; members are ctor/dtor/loader of a module-library cache dual-table owner.
 TCommandLineParseContextState_0066FEA4|Not a class. 0x0066fea4 is CObjectVtbl_0066fea4; members (CCommandLineInfo ctor + DestructCommandLineParseContext) are MFC command-line parse context helpers grouped by the shared CObject vtable address.

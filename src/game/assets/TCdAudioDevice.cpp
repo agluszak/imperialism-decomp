@@ -5,6 +5,8 @@
 #include "game/globals/assets_globals.h"
 #include "game/globals/shared_globals.h"
 
+// SYNTHETIC: IMPERIALISM 0x005e4de0
+// `dynamic initializer for 'g_cdAudioDevice''
 TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 
 // FUNCTION: IMPERIALISM 0x0047cca0
@@ -231,5 +233,5 @@ bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
 
 // FUNCTION: IMPERIALISM 0x005e1a10
 void __stdcall SendMciStopCommandToDevice(MCIDEVICEID device) {
-  mciSendCommandA(device, MCI_STOP, 0, PointerAddressBits32(&device));
+  mciSendCommandA(device, MCI_STOP, 0, reinterpret_cast<DWORD>(&device));
 }

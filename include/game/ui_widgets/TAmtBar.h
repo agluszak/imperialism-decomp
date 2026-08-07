@@ -29,8 +29,6 @@ public:
   virtual short ApplyMoveClamp(int baseValue, short requestedValue);
   virtual void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
   virtual void RenderPrimarySurfaceOverlayPanelWithClipCache();
-
-  void SetBarMetric(int value, int range);
 };
 
 ASSERT_SIZE(TAmtBar, 0x68);

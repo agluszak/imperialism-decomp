@@ -40,17 +40,6 @@ inline int RegionAtByteOffset(char* grid, int byteOffset) {
   return tile[4] - 0x17;
 }
 
-inline int RegionAtTileIndex(char* grid, int tileIndex) {
-  if (tileIndex < 0) {
-    return -1;
-  }
-  char* tile = grid + tileIndex * 0x24;
-  if (*tile != kStrategicTerrainWater) {
-    return -1;
-  }
-  return tile[4] - 0x17;
-}
-
 // Inlined neighbour lookup (same logic as GetNeighborTileIndexOnMap108x60, which the original
 // inlines here for directions 4/5/1 with a constant index and calls out-of-line for direction
 // 2 and the tail sweep).
@@ -105,7 +94,7 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
   int byteOffset = 0;
   do {
     int region1 = RegionAtByteOffset(mapTileGrid08, byteOffset);
-    int region2 = RegionAtTileIndex(mapTileGrid08, HexNeighborInline(tileIdx, 4));
+    int region2 = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 4) * 0x24);
     if (region1 != region2 && region1 != -1 && region2 != -1) {
       AppendBorderQuad(tileIdx, region1, region2, 2);
     }
@@ -118,8 +107,8 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
     byteOffset = tileIdx * 0x24;
     do {
       int thisRegion = RegionAtByteOffset(mapTileGrid08, byteOffset);
-      int dir4region = RegionAtTileIndex(mapTileGrid08, HexNeighborInline(tileIdx, 4));
-      int dir5region = RegionAtTileIndex(mapTileGrid08, HexNeighborInline(tileIdx, 5));
+      int dir4region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 4) * 0x24);
+      int dir5region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(tileIdx, 5) * 0x24);
 
       int codeDir45 = 4;
       int codeThisDir4 = 2;
@@ -159,8 +148,9 @@ void TMapMaker::BuildCityRegionBorderOverlaySegments() {
   int off3 = 0;
   do {
     int rThis = RegionAtByteOffset(mapTileGrid08, off3);
-    int dir1region = RegionAtTileIndex(mapTileGrid08, HexNeighborInline(t3, 1));
-    int dir2region = RegionAtTileIndex(mapTileGrid08, GetNeighborTileIndexOnMap108x60(t3, 2));
+    int dir1region = RegionAtByteOffset(mapTileGrid08, HexNeighborInline(t3, 1) * 0x24);
+    int dir2region =
+        RegionAtByteOffset(mapTileGrid08, GetNeighborTileIndexOnMap108x60(t3, 2) * 0x24);
 
     int codeA = 1;
     int codeB = 3;

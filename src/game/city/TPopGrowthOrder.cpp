@@ -97,7 +97,7 @@ void TPopGrowthOrder::Produce() {
       city->productionAccum1fc[0x0f] = 1;
     }
   }
-  quantity = 0;
+  this->quantity = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b8420

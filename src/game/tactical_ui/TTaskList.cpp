@@ -20,13 +20,29 @@ TTaskList::~TTaskList() {}
 void TTaskList::ITaskList() {}
 
 // FUNCTION: IMPERIALISM 0x005aeca0
-POSITION TTaskList::Insert(TTask* task) {
-  return AddTail(task);
+void TTaskList::AddTask(TTask* task) {
+  AddTail(task);
+}
+
+// FUNCTION: IMPERIALISM 0x005aecc0
+void TTaskList::ProcessTasks() {
+  int ordinal = 1;
+  while (ordinal <= GetCount()) {
+    TTask* task = static_cast<TTask*>(GetEntryByOrdinal(ordinal));
+    if (task->Execute(this)) {
+      RemoveAtOrdinal(ordinal);
+      task->Free();
+      if (ordinal > 0) {
+        --ordinal;
+      }
+    }
+    ++ordinal;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005aed50
 unsigned char TTaskList::ContainsTask(short citySlotIndex) {
-  for (int ordinal = 1; ordinal <= GetCount(); ++ordinal) {
+  for (short ordinal = 1; ordinal <= GetCount(); ++ordinal) {
     TTask* task = static_cast<TTask*>(GetEntryByOrdinal(ordinal));
     if (task->citySlotIndex == citySlotIndex) {
       return 1;

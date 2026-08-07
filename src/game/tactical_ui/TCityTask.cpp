@@ -1,9 +1,9 @@
 #include "game/tactical_ui/TCityTask.h"
+#include "game/tactical_ui/TTaskList.h"
 #include "game/city/TCity.h"
 #include "game/nation/TForeignMinister.h"
 #include "game/nation/TGreatPower.h"
 #include "game/city/TItemOrder.h"
-#include "game/ui_core/TSortedList.h"
 #include "game/core/TStream.h"
 #include "game/city/TUnitOrder.h"
 #include "game/order_sheet.h"
@@ -32,71 +32,74 @@ void TCityTask::ICityTask(short citySlotType, TCity* owner, short amount) {
   if (citySlotType == 5) {
     remainingAttempts = 3;
   }
-  pendingFlag = 1;
+  serializedTaskKind = 1;
 }
 
-// Tries to satisfy requestedAmount directly from the owning city's stock
-// (TCity::DirectTransport) for slot indices 0..6, then always re-checks the order's
-// MaxOrder()/quantity headroom, filling the order's OrderSheet and draining
-// per-resource DirectTransport calls when short, bumping the order's SetQuantity either
-// way. Finally dispatches to the type-specific queueing override selected by
-// citySlotIndex, then falls back to the base countdown when the request wasn't fully
-// satisfied. Renamed from the placeholder OrphanLeaf_NoCall_Ins04_005adc30.
+// Resource-slot tasks use direct transport. Production-slot tasks fill the selected
+// order and queue any prerequisite work needed to satisfy the request.
 // FUNCTION: IMPERIALISM 0x005adde0
-bool TCityTask::Tick(TSortedList* commandQueue) {
+bool TCityTask::Execute(TTaskList* taskList) {
+  bool fullySatisfied = true;
   if (citySlotIndex >= 0 && citySlotIndex <= 6) {
     requestedAmount = static_cast<short>(
         requestedAmount - ownerCity->DirectTransport(citySlotIndex, requestedAmount));
+    if (requestedAmount > 0) {
+      fullySatisfied = false;
+    }
     --remainingAttempts;
+    if (remainingAttempts == 0) {
+      fullySatisfied = true;
+    }
   }
 
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
-  short maxOrder = order->MaxOrder();
-  short headroom = static_cast<short>(maxOrder - order->quantity);
-  if (headroom < requestedAmount && order->limitingConstraint == kProductionOrderLimitResources) {
-    OrderSheet sheet;
-    order->FillOrderSheet(&sheet, requestedAmount);
-    for (short i = 0; i < 0x17; ++i) {
-      short amount = sheet.slotByResourceCode[i];
-      if (amount != 0) {
-        ownerCity->DirectTransport(i, amount);
+  if (order != 0) {
+    short maxOrder = order->MaxOrder();
+    short headroom = static_cast<short>(maxOrder - order->quantity);
+    if (headroom < requestedAmount && order->limitingConstraint == kProductionOrderLimitResources) {
+      OrderSheet sheet;
+      order->FillOrderSheet(&sheet, requestedAmount);
+      for (short i = 0; i < 0x17; ++i) {
+        short amount = sheet.slotByResourceCode[i];
+        if (amount != 0) {
+          ownerCity->DirectTransport(i, amount);
+        }
       }
+      maxOrder = order->MaxOrder();
+      headroom = static_cast<short>(maxOrder - order->quantity);
     }
-    maxOrder = order->MaxOrder();
-    headroom = static_cast<short>(maxOrder - order->quantity);
-  }
 
-  bool fullySatisfied;
-  if (headroom < requestedAmount) {
-    order->SetQuantity(maxOrder);
-    requestedAmount = static_cast<short>(requestedAmount - headroom);
-    fullySatisfied = false;
+    if (headroom < requestedAmount) {
+      order->SetQuantity(maxOrder);
+      requestedAmount = static_cast<short>(requestedAmount - headroom);
+      fullySatisfied = false;
 
-    if (citySlotIndex >= 8 && citySlotIndex <= 0xc) {
-      ApplyProductionDistributionToCitySlots();
-    } else if (citySlotIndex >= 0xd && citySlotIndex <= 0x10) {
-      QueueCityProductionOrderCommand(commandQueue);
-    } else if ((citySlotIndex >= 0x35 && citySlotIndex <= 0x3b) || citySlotIndex == 0x33) {
-      QueueCityRecruitmentSupportCommandsIfDeficit(commandQueue);
-    } else if ((citySlotIndex >= 0x19 && citySlotIndex <= 0x1c) ||
-               (citySlotIndex >= 0x22 && citySlotIndex <= 0x26)) {
-      QueueCityOrderInputDeltaCommands(commandQueue);
-    } else if (citySlotIndex >= 0x17 && citySlotIndex <= 0x18) {
-      QueueCityOrderType10CommandIfReady(commandQueue);
+      if (citySlotIndex > 7 && citySlotIndex <= 0xc) {
+        IncompleteMaterials();
+      } else if (citySlotIndex >= 0xd && citySlotIndex <= 0x10) {
+        IncompleteGoods(taskList);
+      } else if ((citySlotIndex >= 0x35 && citySlotIndex <= 0x3b) || citySlotIndex == 0x33) {
+        IncompleteCapacity(taskList);
+      } else if ((citySlotIndex >= 0x19 && citySlotIndex <= 0x1c) ||
+                 (citySlotIndex >= 0x22 && citySlotIndex <= 0x26)) {
+        IncompleteLandUnit(taskList);
+      } else if (citySlotIndex >= 0x17 && citySlotIndex <= 0x18) {
+        IncompleteTraining(taskList);
+      }
+    } else {
+      order->SetQuantity(static_cast<short>(order->quantity + requestedAmount));
+      fullySatisfied = true;
     }
-  } else {
-    order->SetQuantity(static_cast<short>(order->quantity + requestedAmount));
-    fullySatisfied = true;
-  }
 
-  if (!fullySatisfied && --remainingAttempts == 0) {
-    fullySatisfied = true;
+    if (!fullySatisfied && --remainingAttempts == 0) {
+      fullySatisfied = true;
+    }
   }
   return fullySatisfied;
 }
 
 // FUNCTION: IMPERIALISM 0x005ae010
-void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
+void TCityTask::IncompleteTraining(TTaskList* taskList) {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
   if (order->limitingConstraint == kProductionOrderLimitResources) {
@@ -109,9 +112,9 @@ void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
     newTask->ownerCity = ownerCity;
     newTask->citySlotIndex = 0xa;
     newTask->alreadyQueuedFlag = 0;
-    newTask->pendingFlag = 1;
+    newTask->serializedTaskKind = 1;
     newTask->remainingAttempts = 1;
-    commandQueue->AddTail(newTask);
+    taskList->AddTail(newTask);
     alreadyQueuedFlag = 1;
   }
   if (order->limitingConstraint == kProductionOrderLimitTreasury) {
@@ -120,7 +123,7 @@ void TCityTask::QueueCityOrderType10CommandIfReady(TSortedList* commandQueue) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ae0e0
-void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* commandQueue) {
+void TCityTask::IncompleteCapacity(TTaskList* taskList) {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
   bool queuedAny = false;
@@ -133,8 +136,8 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* comman
       newTask->remainingAttempts = 4;
       newTask->requestedAmount = static_cast<short>(-lumberDeficit);
       newTask->alreadyQueuedFlag = 0;
-      newTask->pendingFlag = 1;
-      commandQueue->AddTail(newTask);
+      newTask->serializedTaskKind = 1;
+      taskList->AddTail(newTask);
       queuedAny = true;
     }
 
@@ -146,8 +149,8 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* comman
       newTask->remainingAttempts = 4;
       newTask->requestedAmount = static_cast<short>(-steelDeficit);
       newTask->alreadyQueuedFlag = 0;
-      newTask->pendingFlag = 1;
-      commandQueue->AddTail(newTask);
+      newTask->serializedTaskKind = 1;
+      taskList->AddTail(newTask);
       queuedAny = true;
     }
 
@@ -159,7 +162,7 @@ void TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* comman
 }
 
 // FUNCTION: IMPERIALISM 0x005ae240
-void TCityTask::QueueCityOrderInputDeltaCommands(TSortedList* commandQueue) {
+void TCityTask::IncompleteLandUnit(TTaskList* taskList) {
   TUnitOrder* order = static_cast<TUnitOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
   if (order->limitingConstraint != kProductionOrderLimitResources || alreadyQueuedFlag != 0) {
@@ -184,8 +187,8 @@ void TCityTask::QueueCityOrderInputDeltaCommands(TSortedList* commandQueue) {
     if (order->primaryInputResourceId == 5) {
       newTask->remainingAttempts = 3;
     }
-    newTask->pendingFlag = 1;
-    commandQueue->AddTail(newTask);
+    newTask->serializedTaskKind = 1;
+    taskList->AddTail(newTask);
     queuedAny = true;
   }
 
@@ -203,8 +206,8 @@ void TCityTask::QueueCityOrderInputDeltaCommands(TSortedList* commandQueue) {
     if (order->secondaryInputResourceId == 5) {
       newTask->remainingAttempts = 3;
     }
-    newTask->pendingFlag = 1;
-    commandQueue->AddTail(newTask);
+    newTask->serializedTaskKind = 1;
+    taskList->AddTail(newTask);
     queuedAny = true;
   }
 
@@ -214,7 +217,7 @@ void TCityTask::QueueCityOrderInputDeltaCommands(TSortedList* commandQueue) {
 }
 
 // FUNCTION: IMPERIALISM 0x005ae420
-void TCityTask::ApplyProductionDistributionToCitySlots() {
+void TCityTask::IncompleteMaterials() {
   TProductionOrder* order = static_cast<TProductionOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   TForeignMinister* foreignMinister = ownerCity->ownerNationAc->foreignMinister;
 
@@ -231,7 +234,7 @@ void TCityTask::ApplyProductionDistributionToCitySlots() {
 }
 
 // FUNCTION: IMPERIALISM 0x005ae4b0
-void TCityTask::QueueCityProductionOrderCommand(TSortedList* commandQueue) {
+void TCityTask::IncompleteGoods(TTaskList* taskList) {
   TItemOrder* order = static_cast<TItemOrder*>(ownerCity->orderSlotsE4[citySlotIndex]);
   order->MaxOrder();
   if (order->limitingConstraint == kProductionOrderLimitResources && alreadyQueuedFlag == 0) {
@@ -244,15 +247,15 @@ void TCityTask::QueueCityProductionOrderCommand(TSortedList* commandQueue) {
     if (order->primaryInputResourceId == 5) {
       newTask->remainingAttempts = 3;
     }
-    newTask->pendingFlag = 1;
-    commandQueue->AddTail(newTask);
+    newTask->serializedTaskKind = 1;
+    taskList->AddTail(newTask);
     alreadyQueuedFlag = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005ae570
 void TCityTask::WriteTo(TStream* stream) {
-  stream->WriteBytes(&pendingFlag, 1);
+  stream->WriteBytes(&serializedTaskKind, 1);
   TObject::WriteTo(stream);
   stream->WriteBytes(&citySlotIndex, 2);
   stream->WriteBytes(&remainingAttempts, 2);

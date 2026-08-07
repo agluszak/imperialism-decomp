@@ -21,6 +21,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TAttackProvinceMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053d750
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053d730
+// `dynamic initializer for '_init_TAttackProvinceMission''
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053d670

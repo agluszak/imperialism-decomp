@@ -2813,7 +2813,8 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
         (terrainStateTable[tileIndex].ownerNationTag04 != refOwner) ? 1 : 0;
   }
 
-  if (pCivilianOrderEntry->orderType != 1 && pCivilianOrderEntry->orderType != 7) {
+  if (pCivilianOrderEntry->orderType != EncodeCivilianUnitKind(kCivilianUnitProspector) &&
+      pCivilianOrderEntry->orderType != EncodeCivilianUnitKind(kCivilianUnitDeveloper)) {
     return;
   }
   if (pCivilianOrderEntry->militaryRegistrationFlag1C != 0) {
@@ -3020,7 +3021,7 @@ void TMapMgr::DimByDevelopment(TCivUnit* pCivilianOrderEntry) {
 // FUNCTION: IMPERIALISM 0x005155c0
 void TMapMgr::DimByMining(TCivUnit* pCivilianOrderEntry) {
   unsigned char qualifiesByResourceType[23] = {0};
-  if (pCivilianOrderEntry->orderType == 0) {
+  if (pCivilianOrderEntry->orderType == EncodeCivilianUnitKind(kCivilianUnitMiner)) {
     qualifiesByResourceType[3] = 1;
     qualifiesByResourceType[4] = 1;
     qualifiesByResourceType[21] = 1;
@@ -3270,6 +3271,11 @@ char TMapMgr::IsProvinceAdjacentTo(int sourceProvinceIndex, int candidateProvinc
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignCityRecordDisplayName(ProvinceIndex cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
+}
+
+// FUNCTION: IMPERIALISM 0x00515f00
+void TMapMgr::GetProvinceName(int provinceIndex, CString* outName) {
+  *outName = cityScoreTable[provinceIndex].cityNameA4;
 }
 
 // FUNCTION: IMPERIALISM 0x00515f40
@@ -4541,6 +4547,35 @@ TMapMgr::StepHexTileIndexByDirectionWithWrapRules(StrategicTileIndex tileIndex,
   return static_cast<short>(col + static_cast<int>(row) * 0x6c);
 }
 
+// Advances a tile without applying the north/south map-edge rejection used by TMapMgr.
+// FUNCTION: IMPERIALISM 0x0055e470
+StrategicTileIndex StepStrategicTileIndexAcrossWrappedRow(StrategicTileIndex tileIndex,
+                                                          StrategicHexDirectionStorage direction) {
+  int column = tileIndex % 0x6c;
+  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
+  if (direction == EncodeStrategicHexDirection(kStrategicHexDirectionWest) ||
+      (direction > EncodeStrategicHexDirection(kStrategicHexDirectionSouthEast) &&
+       (row & 1U) == 0U)) {
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0 && --column < 0) {
+      column = 0x6b;
+    }
+  } else if (direction == EncodeStrategicHexDirection(kStrategicHexDirectionEast) ||
+             (direction < EncodeStrategicHexDirection(kStrategicHexDirectionSouthWest) &&
+              (row & 1U) != 0U)) {
+    if (g_pGlobalMapState->hexNeighborWrapHorizontally == 0 && ++column > 0x6b) {
+      column = 0;
+    }
+  }
+  if (direction == EncodeStrategicHexDirection(kStrategicHexDirectionNorthWest) ||
+      direction == EncodeStrategicHexDirection(kStrategicHexDirectionNorthEast)) {
+    --row;
+  } else if (direction == EncodeStrategicHexDirection(kStrategicHexDirectionSouthWest) ||
+             direction == EncodeStrategicHexDirection(kStrategicHexDirectionSouthEast)) {
+    ++row;
+  }
+  return static_cast<StrategicTileIndex>(column + row * 0x6c);
+}
+
 // FUNCTION: IMPERIALISM 0x0055e550
 bool TMapMgr::StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction) {
   if (direction == kStrategicHexDirectionWest ||
@@ -4582,6 +4617,12 @@ bool TMapMgr::StepHexRowColByDirectionWithWrapRules(int* row, int* col, int dire
   return true;
 }
 
+// Checks the signed range of the 108 by 60 strategic-map tile table.
+// FUNCTION: IMPERIALISM 0x0055e630
+bool IsValidStrategicTileIndex(short tileIndex) {
+  return tileIndex >= 0 && tileIndex < 0x1950;
+}
+
 // FUNCTION: IMPERIALISM 0x00560470
 void TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(HexSpiralSearchState* state) {
   int stepInRing = state->stepInRing + 1;
@@ -4597,13 +4638,6 @@ void TMapMgr::AdvanceSpiralSearchStateAndStepHexCoordinates(HexSpiralSearchState
     }
   }
   TMapMgr::StepHexRowColByDirectionWithWrapRules(&state->row, &state->col, state->direction);
-}
-
-StrategicTileIndex TMapMgr::TileIndexFromRowCol(int row, int col) {
-  if ((row < 0) || (row > 0x3b) || (col < 0) || (col > 0x6b)) {
-    return -1;
-  }
-  return static_cast<short>(col + row * 0x6c);
 }
 
 // Maps a tile index to its owning city/province record (cityScoreTable indexed by the tile's

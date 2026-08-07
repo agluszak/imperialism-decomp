@@ -48,6 +48,12 @@ StrategicTileIndex TraceTerrainFlowToNearestSeaTile(StrategicTileIndex tileIndex
 extern "C" StrategicTileIndex* __cdecl BuildHexAreaTileIndexList(StrategicTileIndex centerTileIndex,
                                                                  short radius);
 
+// Free map-coordinate helper used by legacy strategic-map callers.
+StrategicTileIndex StepStrategicTileIndexAcrossWrappedRow(StrategicTileIndex tileIndex,
+                                                          StrategicHexDirectionStorage direction);
+
+bool IsValidStrategicTileIndex(short tileIndex);
+
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
@@ -525,7 +531,6 @@ public:
   }
   static bool StepHexRowColByDirectionWithWrapRules(int* row, int* col, int direction);
   static void AdvanceSpiralSearchStateAndStepHexCoordinates(struct HexSpiralSearchState* state);
-  static StrategicTileIndex TileIndexFromRowCol(int row, int col);
 
   short ComputeRepresentativeTileIndexForNationWithWrapBias(short nationSlot, char wrapBias);
 
@@ -562,6 +567,7 @@ public:
                                                             short ownerNationTag,
                                                             char allowActiveFlag2); // 0x00514cd0
   // 0x515f40. Write a city display-name CString into cityScoreTable[cityRecordIndex]+0xa4.
+  void GetProvinceName(int provinceIndex, CString* outName);
   void SetGlobalMapCellSharedLabel(ProvinceIndex cityRecordIndex, CString* name);
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric).

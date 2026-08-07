@@ -14,6 +14,7 @@
 #include "game/mfc.h"
 #include "game/navy/TAdmiral.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/TMapUberPicture.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/navy/TOcean.h"
 #include "game/military_ui/TDiplomacyMgr.h"
@@ -25,10 +26,6 @@
 #include "game/ui_core/TViewMgr.h"
 
 namespace {
-
-void DeleteUnlinkedZone(TZone* zone) {
-  delete zone;
-}
 
 static inline int SignedRemainderByFour(int value) {
   return value % 4;
@@ -149,7 +146,7 @@ void TZone::Free() {
   }
   next1c = 0;
   prev18 = 0;
-  DeleteUnlinkedZone(this);
+  delete this;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ed20
@@ -802,24 +799,24 @@ void TZone::ShowFocusIngot(unsigned char flag) {
     if (QueryPortZoneCapability() != 0) {
       g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
           activeTileIndex20, static_cast<int>(sign) * kMapTileActionStatePortZoneMarkerFrame);
-      NotifyMapUberPictureTileMarker(activeTileIndex20);
+      g_pViewMgr->mapUberPictureF0->InvalidateTile(activeTileIndex20);
       return;
     }
     int magnitude = static_cast<int>(sign);
     short centerTile = activeTileIndex20;
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         centerTile, magnitude * kMapTileActionStateZoneCenterMarkerFrame);
-    NotifyMapUberPictureTileMarker(centerTile);
+    g_pViewMgr->mapUberPictureF0->InvalidateTile(centerTile);
     short northWestTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthWest);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northWestTile, magnitude * kMapTileActionStateZoneNorthWestMarkerFrame);
-    NotifyMapUberPictureTileMarker(northWestTile);
+    g_pViewMgr->mapUberPictureF0->InvalidateTile(northWestTile);
     short northEastTile = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(
         centerTile, kStrategicHexDirectionNorthEast);
     g_pGlobalMapState->SetMapTileStateByteAndNotifyObserver(
         northEastTile, magnitude * kMapTileActionStateZoneNorthEastMarkerFrame);
-    NotifyMapUberPictureTileMarker(northEastTile);
+    g_pViewMgr->mapUberPictureF0->InvalidateTile(northEastTile);
   }
 }
 

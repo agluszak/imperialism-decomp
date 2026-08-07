@@ -3,6 +3,7 @@
 #include "game/pointer_representation.h"
 #include "game/ui_core/TCommand.h"
 #include "game/ui_core/CIncludeView.h" // GetMainViewHostFromActiveThread()->m_hWnd
+#include "game/turn_event_codes.h"
 #include "game/ImperialismApp.h"
 #include "game/gfx/TBackdropWindow.h"
 #include "game/gfx/TModuleLibraryCacheTableStateB.h"
@@ -14,18 +15,6 @@
 #include "game/globals/shared_globals.h"
 
 #include <new>
-
-void TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void);
-
-namespace {
-
-void ReleaseFrameRefTarget(CObject* target) {
-  if (target != nullptr) {
-    delete target;
-  }
-}
-
-} // namespace
 
 // The MCI stop-notify handler (0x00484230) is CIncludeView's MCIWNDM_NOTIFYMODE (msg 0x4c8)
 // message-map entry — see CIncludeView::OnMciNotifyMode.
@@ -91,8 +80,12 @@ CMainFrame::CMainFrame() : CFrameWnd(), field_BC(0), field_C4(0), field_CC(1) {
 
 // FUNCTION: IMPERIALISM 0x00484c70
 CMainFrame::~CMainFrame() {
-  ReleaseFrameRefTarget(field_BC);
-  ReleaseFrameRefTarget(field_C4);
+  if (field_BC != 0) {
+    delete field_BC;
+  }
+  if (field_C4 != 0) {
+    delete field_C4;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00484d00
@@ -200,8 +193,47 @@ void CMainFrame::OnCommand8009() {
   OnQueryNewPalette();
 }
 
+// FUNCTION: IMPERIALISM 0x004851b0
 void CMainFrame::OnCommand800C() {
-  TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog();
+  TC2TemplateDialog dialog(0);
+  dialog.PrepareAndCreateModalFromTemplate();
+
+  dialog.slider.SetRange(0, 6, FALSE);
+  HWND hSlider = dialog.slider.m_hWnd;
+  HWND hList = dialog.listbox.m_hWnd;
+
+  ::SendMessageA(hSlider, TBM_SETPOS, 1, g_pViewMgr->currentTurnEventNationSlot06);
+
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e18);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694e08);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694df8);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694de8);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694dd4);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694dbc);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694da4);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694d94);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694d80);
+  ::SendMessageA(hList, LB_ADDSTRING, 0, 0x694d68);
+
+  ::SendMessageA(hList, LB_SETITEMDATA, 0, kTurnEventCitySiteSelector);
+  ::SendMessageA(hList, LB_SETITEMDATA, 1, kTurnEventCitySiteSelector);
+  ::SendMessageA(hList, LB_SETITEMDATA, 2, kTurnEventDiplomacyMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 3, kTurnEventOfferSheet);
+  ::SendMessageA(hList, LB_SETITEMDATA, 4, kTurnEventTradeOverview);
+  ::SendMessageA(hList, LB_SETITEMDATA, 5, kTurnEventDiplomacyMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 6, kTurnEventCityProduction);
+  ::SendMessageA(hList, LB_SETITEMDATA, 7, kTurnEventDealBook);
+  ::SendMessageA(hList, LB_SETITEMDATA, 8, kTurnEventStrategicMap);
+  ::SendMessageA(hList, LB_SETITEMDATA, 9, kTurnEventTransport);
+
+  ::SendMessageA(hList, LB_SETCURSEL, 4, 0);
+
+  if (dialog.DoModal() == 1) {
+    LRESULT sliderPos = ::SendMessageA(hSlider, TBM_GETPOS, 0, 0);
+    WPARAM selectedRow = ::SendMessageA(hList, LB_GETCURSEL, 0, 0);
+    LRESULT eventCode = ::SendMessageA(hList, LB_GETITEMDATA, selectedRow, 0);
+    g_pViewMgr->DispatchTurnEvent(static_cast<short>(eventCode), static_cast<int>(sliderPos));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00485590

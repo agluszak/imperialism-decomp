@@ -7,9 +7,6 @@ class TGreatPower;
 class TMinor;
 class TCountry;
 
-TGreatPower* GetNationStateBySlot(short slotId);
-short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
-
 struct AiCityActionCostProfile {
   short primaryMetricCode;
   short primaryMetricMultiplier;

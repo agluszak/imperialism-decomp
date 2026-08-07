@@ -25,6 +25,7 @@ void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
   RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
   Draw(&rect);
 }
+
 // SYNTHETIC: IMPERIALISM 0x005743f0
 // TScrollBarView::CreateObject
 
@@ -256,4 +257,18 @@ void TScrollBarView::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pr
   origin.y = -(ratio * heightDiff / 1024);
   origin.x = content->ownerLocalX;
   content->Locate(origin, 1);
+}
+// FUNCTION: IMPERIALISM 0x00574e20
+void TScrollBarView::SetThumb(int percent, unsigned char refresh) {
+  short value = static_cast<short>(
+      word88 + ((word8a - word88) * percent + ((word8a - word88) * percent >> 31 & 0x3ff)) / 0x400);
+  word8c = value;
+  if (word8c < word88) {
+    word8c = word88;
+  } else if (word8c > word8a) {
+    word8c = word8a;
+  }
+  if (refresh != 0) {
+    RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  }
 }

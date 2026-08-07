@@ -103,10 +103,10 @@ void TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList(void* record) {
 
 // FUNCTION: IMPERIALISM 0x00488360
 short TSortedPtrList::Compare(void* a, void* b) {
-  if (PointerAddressBits32(a) > PointerAddressBits32(b)) {
+  if (reinterpret_cast<unsigned int>(a) > reinterpret_cast<unsigned int>(b)) {
     return 1;
   }
-  if (PointerAddressBits32(a) < PointerAddressBits32(b)) {
+  if (reinterpret_cast<unsigned int>(a) < reinterpret_cast<unsigned int>(b)) {
     return -1;
   }
   return 0;

@@ -24,6 +24,8 @@ public:
 
   TTextList();
 
+  void AddEntry(char* entryText); // 0x57ac50
+
   void Draw(RECT* rectBuffer) override;
   void DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) override;
 };

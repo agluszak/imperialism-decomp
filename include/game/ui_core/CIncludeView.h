@@ -43,6 +43,15 @@ struct IncludeViewOverlayRectRecord {
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 
+// Concrete project queue whose sole, offset-zero storage member is the MFC list template.
+// The custom three-argument AddHead overload coalesces overlapping dirty rectangles.
+class CIncludeViewOverlayRectQueue {
+public:
+  CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> records;
+  void AddHead(RECT* rect, int processedFlag, int field14); // 0x00483ba0
+};
+ASSERT_SIZE(CIncludeViewOverlayRectQueue, 0x1c);
+
 // Full 68-slot vtable. The two game overrides (PreCreateWindow 0x64, OnCommand 0x80),
 // CalcWindowRect 0x68, OnInitialUpdate/OnActivateView/OnDraw and the message-map handlers
 // are modelled here; every inherited CObject/CCmdTarget/CWnd/CView library slot is claimed
@@ -144,6 +153,7 @@ public:
   // Blit the main-pane bitmap (m_pMainPaneDib) into the offscreen surface, clipped to
   // `clipRect` when one is supplied. 0x00482ed0, __thiscall.
   void BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect);
+  void QueueOrMergeOverlayDirtyRect(RECT* rect, int processedFlag, int field14); // 0x482f70
 
   // Tear down the hosted dialog tree, re-resolve the 'main' pane picture, blit its bitmap
   // into the offscreen surface and force a full window repaint. Returns the (now cleared)
@@ -162,7 +172,7 @@ public:
   // 0x4c — overlay dirty-rect queue. The original emitted the CList<Rec,Rec&>
   // instantiation twice (ctor TU vtable 0x648560, dtor/Serialize TU vtable 0x648578) —
   // the twin-copy template pattern; both are the same class.
-  CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> m_overlayRectQueue;
+  CIncludeViewOverlayRectQueue m_overlayRectQueue;
   POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
   int m_field70;                  // 0x70 — ctor-zeroed dword, purpose not yet resolved

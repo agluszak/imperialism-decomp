@@ -37,10 +37,6 @@ void TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
   EnsurePictWvDataGobLoadedBySlot(0);
 }
 
-void TAssetMgr::EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag) {
-  EnsurePictWvDataGobLoadedBySlot(languageTag);
-}
-
 // FUNCTION: IMPERIALISM 0x005df3c0
 TWindow* TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TurnEventId messageContext) {
   return static_cast<TWindow*>(

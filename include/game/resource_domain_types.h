@@ -72,10 +72,12 @@ enum ResourceKindBand {
 // same sentinel through.
 enum { kResourceKindNone = -1 };
 
-// The 14-entry industry / navy-order type domain. It is NOT ResourceKind, even though
-// the same `resourceType` parameter name reaches both: TCity::orderCountByType5c and
-// TTechMgr::CapRowB::selectedByResourceType are both [0x0e], TTechMgr's slotMap covers
-// 0..13, and GetResourceDescriptorWeightWord0ByType is indexed over the same range.
-enum { kIndustryActionOrderTypeCount = 14 };
+// The 14-entry city industry/action slot domain. It is NOT ResourceKind:
+// TCity::orderCountByType5c and TTechMgr::CapRowB::selectedByResourceType are both
+// [0x0e], TTechMgr's slotMap covers 0..13, and
+// GetResourceDescriptorWeightWord0ByType is indexed over the same range.
+enum { kIndustryActionSlotCount = 14 };
+
+typedef short IndustryActionSlotStorage;
 
 typedef short ResourceKindStorage;

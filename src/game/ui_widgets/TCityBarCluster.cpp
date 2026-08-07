@@ -67,7 +67,3 @@ void TCityBarCluster::ApplyMoveValue(TCity* city) {
   }
   profControl->SetControlValue(population->baselineSlots10->highSkillCount08, 1);
 }
-
-void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCity* city) {
-  ApplyMoveValue(city);
-}

@@ -26,3 +26,21 @@ inline CivilianUnitKind DecodeCivilianUnitKind(CivilianUnitKindStorage storedKin
 inline CivilianUnitKindStorage EncodeCivilianUnitKind(CivilianUnitKind kind) {
   return static_cast<CivilianUnitKindStorage>(kind);
 }
+
+// Result of TCivMgr::GetTileAction/ResolveCivilianTileOrderActionCode. The producer
+// and HandleCivilianTileOrderAction cover the complete 0..11 dispatch table.
+enum CivilianTileActionCode {
+  kCivilianTileActionNone = 0,
+  kCivilianTileActionBlocked = 1,
+  kCivilianTileActionSelectUnit = 2,
+  kCivilianTileActionMoveUnit = 3,
+  kCivilianTileActionEngineerSameTile = 4,
+  kCivilianTileActionEngineerDirection14 = 5,
+  kCivilianTileActionEngineerDirection03 = 6,
+  kCivilianTileActionEngineerDirection25 = 7,
+  kCivilianTileActionProspect = 8,
+  kCivilianTileActionDevelopResource = 9,
+  kCivilianTileActionShowOrderReport = 10,
+  kCivilianTileActionPurchaseLand = 11
+};
+typedef int CivilianTileActionCodeStorage;

@@ -22,10 +22,6 @@ short TAmtBar::ApplyMoveClamp(int baseValue, short requestedValue) {
   return baseValue;
 }
 
-void TAmtBar::SetBarMetric(int value, int range) {
-  UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
-}
-
 // SYNTHETIC: IMPERIALISM 0x005884c0
 // TAmtBar::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00588560

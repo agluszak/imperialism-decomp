@@ -19,6 +19,11 @@ TSortByPriceList::TSortByPriceList() {}
 // SYNTHETIC: IMPERIALISM 0x00534770
 // TSortByPriceList::~TSortByPriceList
 
+// FUNCTION: IMPERIALISM 0x00534790
+void TSortByPriceList::ISortByPriceList() {
+  recordSize14 = 4;
+}
+
 // FUNCTION: IMPERIALISM 0x005347b0
 short TSortByPriceList::Compare(void* a, void* b) {
   short aKey = static_cast<short*>(a)[1];

@@ -41,5 +41,6 @@ public:
   void ScrollOnce(int direction);
   void ScrollPage(int direction);
   void ScrollRelative(short horizontalDelta, short verticalDelta);
+  void ScrollToPercent(int percent); // 0x574160
 };
 ASSERT_SIZE(TScrollView, 0x68);

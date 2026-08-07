@@ -21,9 +21,4 @@ struct TurnOrderDispatchPacket {
   short flags;
 };
 
-int SumMilitaryUnitPowerWeights(TSortedList* unitList);
-float SumAlliedArmyScoreFactors(int targetNation);
-float SumAlliedNavyScoreFactors(int targetNation);
-short* GetRelationStandingRowForNation(short nationSlot);
-int GetClampedQuarterYearTerm(void);
 void RecomputeNationOrderPriorityMetrics(void);
