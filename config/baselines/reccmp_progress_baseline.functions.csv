@@ -479,7 +479,7 @@ address|matching|name
 0x480030|1.0|TWNetSessionManager::OpenRuntimeSelectionSourceFromCurrentContext
 0x480150|0.526984126984127|TWNetSessionManager::OpenRuntimeSelectionSourceWithUserChoice
 0x4803d0|1.0|TWNetSessionManager::OpenCurrentSessionDescriptionForJoin
-0x480400|1.0|TWNetSessionManager::ResetRuntimeSelectionRecordBuffer
+0x480400|1.0|TDirectPlaySessionManagerBase::ResetRuntimeSelectionRecordBuffer
 0x4804c0|1.0|TDirectPlaySessionManagerBase::ExtendEnumSessionsTimeoutWhileCtrlHeld
 0x480500|0.3854166666666667|TDirectPlaySessionManagerBase::SelectRuntimeProvider
 0x480750|1.0|TModalDialogBase::TModalDialogBase
@@ -998,7 +998,7 @@ address|matching|name
 0x48c1c0|1.0|TView::HandleHelp
 0x48c1e0|1.0|TView::GetDrawableRegion
 0x48c220|1.0|TView::SetHoverHelpText
-0x48c250|0.8292682926829268|TView::DoSetCursor
+0x48c250|0.8414634146341463|TView::DoSetCursor
 0x48c380|0.8|TView::ApplyBounds
 0x48c450|0.6918918918918919|TView::HandleMouseDown
 0x48c590|0.6918918918918919|TView::HandleMouseUp
@@ -2156,6 +2156,7 @@ address|matching|name
 0x4c11c0|0.2766990291262136|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore
 0x4c1510|0.6192468619246861|TCityInteriorMinister::ProcessUnitOrders
 0x4c18a0|0.6060606060606061|stretch<short>::Add
+0x4c1960|0.875|TShortintList::~TShortintList
 0x4c1990|0.5679012345679012|TCityInteriorMinister::DispatchBuilders
 0x4c1ac0|0.2621951219512195|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister
 0x4c2010|0.5454545454545454|TCityInteriorMinister::RequestMissingCivilianOrderTypes
@@ -5118,6 +5119,7 @@ address|matching|name
 0x57fef0|0.631578947368421|scanBracketExpressions
 0x580060|0.2868217054263566|BuildUiMessageTextFromBracketTemplate
 0x580280|0.504424778761062|AppendInterNationEventSummaryTextEntry_Impl
+0x580430|0.875|stretch<char>::~stretch<char>
 0x580460|1.0|stretch<char>::Add
 0x5804f0|0.19498607242339833|ExpandBracketMappedStringToSinkCallback
 0x580760|1.0|TSimMgr::GetString
@@ -5725,7 +5727,7 @@ address|matching|name
 0x5a10e0|0.2760416666666667|TTacticalBattle::ProcessTacticalUnitState1TurnStep
 0x5a1400|1.0|TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection
 0x5a14d0|1.0|TTacticalBattle::UndeployUnit
-0x5a1520|0.5259259259259259|TTacticalBattle::MoveTacticalUnitTowardTile
+0x5a1520|0.48148148148148145|TTacticalBattle::MoveTacticalUnitTowardTile
 0x5a16e0|0.759493670886076|TTacticalBattle::BuildPathToTargetByDistanceField
 0x5a1910|1.0|TTacticalBattle::MoveTacticalUnitBetweenTiles
 0x5a1a20|0.7931034482758621|TTacticalBattle::ResolveTacticalReactionChecksForTile
@@ -5752,7 +5754,7 @@ address|matching|name
 0x5a3a70|0.4|TTacticalBattle::FindFortWallTileCrossedByFiringLine
 0x5a3c20|1.0|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted
 0x5a3cc0|0.5079365079365079|TTacticalBattle::CanFireOn
-0x5a3d30|0.8104956268221575|IsTacticalTargetTileReachableForAction
+0x5a3d30|0.8163265306122449|IsTacticalTargetTileReachableForAction
 0x5a3f10|0.3154929577464789|TTacticalBattle::HandleTacticalCommandTag_targ
 0x5a41c0|0.6|TTacticalBattle::ApplyGridColumnSelectionGuard
 0x5a4240|0.48695652173913045|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide
@@ -6527,8 +6529,11 @@ address|matching|name
 0x5e0520|0.9130434782608695|TAssetMgr::ScheduleTimerSlotCallbackWithInterval
 0x5e0590|0.5793103448275863|TAssetMgr::FormatVersionStringFromVersionResource
 0x5e0780|0.9688581314878892|WaveOpenFile
+0x5e09a0|1.0|WaveStartDataRead
 0x5e09f0|0.9047619047619048|WaveReadFile
+0x5e0b00|1.0|WaveCloseReadFile
 0x5e0b50|0.8858447488584474|WaveCreateFile
+0x5e0cc0|1.0|WaveStartDataWrite
 0x5e0d10|0.5777777777777777|WaveWriteFile
 0x5e0da0|0.5851063829787234|WaveCloseWriteFile
 0x5e0ec0|1.0|WaveCopyUselessChunks
@@ -6536,7 +6541,9 @@ address|matching|name
 0x5e10c0|0.6701570680628273|WaveLoadFile
 0x5e1220|0.72|WaveSaveFile
 0x5e1430|1.0|ProbeAuxOutputDeviceIndexByPidMask
+0x5e14c0|1.0|SetAuxOutputVolumeByChannel
 0x5e1500|1.0|SetAuxOutputVolumeFromScalar
+0x5e1540|1.0|GetAuxOutputVolumeRaw
 0x5e1590|0.5777777777777777|SetAuxOutputVolumeAcrossCompatibleDevices
 0x5e1620|0.5636363636363636|GetAuxOutputVolumeFromFirstCompatibleDevice
 0x5e16f0|1.0|SendMciStatusCommand814AndIgnoreFailure
@@ -6580,15 +6587,16 @@ address|matching|name
 0x5e2980|1.0|TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration
 0x5e29d0|0.25|$CRT_CPP_Initializer(245)
 0x5e2a00|1.0|$E933
-0x5e2a20|0.5492957746478874|TWNetSessionManager::~TWNetSessionManager
+0x5e2a20|0.5379310344827586|TWNetSessionManager::~TWNetSessionManager
 0x5e2b50|1.0|TDirectPlaySessionManagerBase::InitializeSessionDescription
 0x5e2b70|1.0|TDirectPlaySessionManagerBase::ResetSessionDescription
+0x5e2b90|1.0|TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase
 0x5e2bb0|1.0|TWNetSessionManager::ResetSessionDescription
 0x5e2c80|1.0|TWNetSessionManager::InitializeSessionDescription
 0x5e2cf0|0.7186440677966102|TWNetSessionManager::OnEnumerateJoinableSession
 0x5e2f60|0.37735849056603776|TWNetSessionManager::OnEnumerateServiceProvider
 0x5e30c0|0.459546925566343|TWNetSessionManager::ShowJoinGameSelectionDialogAndCaptureChoice
-0x5e3310|0.6285714285714286|TWNetSessionManager::TWNetSessionManager
+0x5e3310|1.0|TWNetSessionManager::TWNetSessionManager
 0x5e3390|0.42424242424242425|TNetMgr::CreateObject
 0x5e33c0|1.0|TNetMgr::GetRuntimeClass
 0x5e33e0|1.0|TNetMgr::TNetMgr

@@ -43,6 +43,7 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class TDirectPlaySessionManagerBase {
 public:
   TDirectPlaySessionManagerBase() : directPlayInterface04(0), directPlayLobby08(0) {}
+  ~TDirectPlaySessionManagerBase();
 
   virtual BOOL OnEnumerateServiceProvider(LPGUID providerGuid, LPSTR providerName,
                                           DWORD majorVersion, DWORD minorVersion);
@@ -64,6 +65,8 @@ public:
   BOOL GetPlayerData(DPID playerId, void* buffer, DWORD* sizeInOut);
   BOOL CreateDirectPlayLobbyAndStoreResult(); // 0x0047fb80
   BOOL FindHostPlayerIdByEnumeration();       // 0x005e2980
+  // Free the runtime selection entries and release the DirectPlay interfaces.
+  void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
 
   IDirectPlay2* directPlayInterface04;
   IDirectPlayLobbyA* directPlayLobby08;
@@ -110,8 +113,6 @@ public:
   // IDirectPlay2::DestroyPlayer + result capture (no interface null-check, unlike
   // TrySendNetworkPacket). Returns SUCCEEDED(result) in AL.
   unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer);
-  // Free the runtime selection entries and release the DirectPlay interfaces.
-  void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
   // If providerGuid is null and a session is already open (directPlayInterface04 !=
   // 0), no-op success. Otherwise closes any open session, then either creates a
   // fresh IDirectPlay bound to providerGuid (DirectPlayCreate, ordinal 1 of

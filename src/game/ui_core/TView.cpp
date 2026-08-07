@@ -102,8 +102,8 @@ void TView::DoMouseCommand(CPoint& point, TToolboxEvent* event, CPoint origin) {
 // TEMPLATE: IMPERIALISM 0x00479be0
 // ?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z
 
-// TEMPLATE: IMPERIALISM 0x00479d50
-// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x00479d50
+// CList<TView *,TView *>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x00479d80
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
@@ -219,8 +219,8 @@ void TView::AttachChildControl(class TView* child, int flag) {
 
   child->UpdateCoordinates();
 }
-// TEMPLATE: IMPERIALISM 0x0048ada0
-// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x0048ada0
+// CList<TView *,TView *>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x0048add0
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ

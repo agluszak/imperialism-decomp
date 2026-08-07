@@ -13,6 +13,8 @@ class TShortintList : public stretch<short> {
 public:
   TShortintList() : stretch<short>() {}
   TShortintList(int initialCapacity) : stretch<short>(initialCapacity) {}
+  // SYNTHETIC: IMPERIALISM 0x004c1960
+  // TShortintList::~TShortintList
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 

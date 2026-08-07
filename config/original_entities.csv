@@ -93,7 +93,7 @@ address|name|symbol|size|type|prototype|provenance
 415f00|CObject::`scalar deleting destructor'||32|function|undefined ScalarDeletingDestructor()|
 415f30|IltTarget_00415f30||7|function|undefined IltTarget_00415f30()|
 415f50|InitializeUiResourcePoolRuntimeClassFields||33|function|undefined InitializeUiResourcePoolRuntimeClassFields()|
-415f90|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+415f90|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 415fe0|BuildTradeSchoolDialogControls||16760|function|TView* __cdecl BuildTradeSchoolDialogControls(CWnd* pHostWindow, int nEventCode)|
 41b1c0|CObject::operator new|??2CObject@@SGPAXI@Z|16|function|void * __stdcall operator new(unsigned int nSize)|
 41b210|RegisterUiResourceEntry||312|function|undefined RegisterUiResourceEntry()|
@@ -347,7 +347,7 @@ address|name|symbol|size|type|prototype|provenance
 479ba0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl||4|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl()|
 479bc0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0||10|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()|
 479be0|CList<TView *,TView *>::Serialize|?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
-479d50|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+479d50|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 479d80|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 479e10|RegisterUiResourceEntry_Impl||17|function|undefined RegisterUiResourceEntry_Impl()|
 479e40|CDib::CreateObject|?CreateObject@CDib@@SGPAVCObject@@XZ|100|function|undefined CreateObject()|rtti
@@ -531,7 +531,7 @@ address|name|symbol|size|type|prototype|provenance
 480b20|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::CArray|??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ|23|function|void CArray()|template
 480b50|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::~CArray|??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ|81|function|void ~CArray()|template
 480bd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::Serialize|?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z|392|function|undefined Serialize(CArchive &)|template
-480dd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'|??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+480dd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'|??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 480e00|ResizeDynamicPointerArrayWithGrowthStep||310|function|undefined ResizeDynamicPointerArrayWithGrowthStep()|
 4810c0|`dynamic initializer for 'g_scaledShortConst_6A1680''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1680''(void)|library
 4810f0|IltTarget_004810f0||41|function|undefined IltTarget_004810f0()|
@@ -620,7 +620,7 @@ address|name|symbol|size|type|prototype|provenance
 482930|CIncludeView::GetRuntimeClass|?GetRuntimeClass@CIncludeView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 482950|CIncludeView::CIncludeView||77|function|undefined ConstructCViewOwnedBufferRegistryState()|
 4829c0|CIncludeView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4829f0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()|template
+4829f0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()|compiler_synthetic
 482a20|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()|template
 482ab0|CIncludeView::~CIncludeView|??1CIncludeView@@UAE@XZ|213|function|undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()|
 482bd0|CIncludeView::GetMessageMap|?GetMessageMap@CIncludeView@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CIncludeView::GetMessageMap(void)const|
@@ -667,7 +667,7 @@ address|name|symbol|size|type|prototype|provenance
 4845a0|TUiEvent::TUiEvent||23|function|undefined TUiEvent()|
 4845f0|DereferencePointerCellInPlace||16|function|undefined DereferencePointerCellInPlace()|
 484610|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize|?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z|307|function|undefined SerializeRecordList_0x18_WithBlockPool()|template
-4847a0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()|template
+4847a0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()|compiler_synthetic
 4847d0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()|template
 484860|WrapperFor_FreeLinkedBlockChain_At00484860||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00484860()|
 484970|InitializeRefCountedObjectBaseVtable||9|function|undefined InitializeRefCountedObjectBaseVtable()|
@@ -750,7 +750,7 @@ address|name|symbol|size|type|prototype|provenance
 486b50|TApplication::DispatchQueuedUiCommandAndRelease||50|function|undefined PostCustomMessageBC0ToMainWindow()|
 486ba0|TApplication::DoMenuCommand||393|function|void __thiscall DoMenuCommand(int command)|
 486df0|CList<void *,void *>::Serialize|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
-486f60|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+486f60|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 486f90|CList<void *,void *>::~CList|??1?$CList@PAXPAX@@UAE@XZ|101|function|undefined ~CList()|template
 487150|`dynamic initializer for 'g_scaledShortConst_6A1938''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A1938''(void)|library
 487180|TBehavior::CreateObject|?CreateObject@TBehavior@@SGPAVCObject@@XZ|42|function|undefined CreateObject()|rtti
@@ -1001,7 +1001,7 @@ address|name|symbol|size|type|prototype|provenance
 48ab90|TView::ForwardMapViewVirtualC4IfPresent_b5||23|function|undefined ForwardMapViewVirtualC4IfPresent()|
 48abc0|TView::GetTEventHandlerClassNamePointer_bc||1|function|undefined GetTEventHandlerClassNamePointer(void)|
 48abe0|TView::AttachChildControl_e0||341|function|void __thiscall AttachChildControl(class TView * child, int flag)|
-48ada0|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+48ada0|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 48add0|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 48ae60|TView::DetachUiElementFromOwnerListAndClearBackref_e1||215|function|undefined DetachUiElementFromOwnerListAndClearBackref()|
 48af80|TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa||62|function|undefined CtrlSlot38_SwitchActiveChildAndNotify_Impl()|
@@ -1244,12 +1244,12 @@ address|name|symbol|size|type|prototype|provenance
 492670|TCluster::SerializeRecordList_0x0C_WithBlockPool_C||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_C()|
 4927e0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::Serialize|?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 492950|??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z|??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z|30|function|void * __thiscall CList<TWindow *,TWindow *>::`scalar deleting destructor`(unsigned int)|vtable+base-destructor-layout+synthetic-scalar-dtor
-492980|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'|??_G?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+492980|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'|??_G?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 4929b0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::~CList|??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ|101|function|undefined ~CList()|template
 492a40|WrapperFor_AllocateAndLinkBlockHead_At00492a40||94|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()|
 492ac0|WrapperFor_FreeLinkedBlockChain_At00492ac0||45|function|undefined WrapperFor_FreeLinkedBlockChain_At00492ac0()|
 492b00|WrapperFor_FreeLinkedBlockChain_At00492b00||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00492b00()|
-492b70|WrapperFor_StringSharedRef_AssignFromPtr_At00492b70||19|function|undefined WrapperFor_StringSharedRef_AssignFromPtr_At00492b70()|
+492b70|CString::CString(class CString const &)||19|function|void CString(CString const &other)|
 492c70|TEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 492ca0|TEvent::~TEvent||7|function|TEvent::~TEvent()|
 492cc0|TWindow::GetWindow||3|function|TWindow * __thiscall GetWindow(void)|
@@ -2241,7 +2241,7 @@ address|name|symbol|size|type|prototype|provenance
 4c11c0|TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore||643|function|int __thiscall SelectBestSecondaryHomeTileByFrogCityScore()|
 4c1510|TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass||706|function|undefined BuildNationTileDevelopmentScoreListForTerrainClass()|
 4c18a0|stretch<short>::Add|?Add@?$stretch@F@@UAEPAFF@Z|131|function|short * __thiscall Add(short value)|template
-4c1960|IltTarget_004c1960||23|function|undefined IltTarget_004c1960()|
+4c1960|TShortintList::~TShortintList|??1TShortintList@@QAE@XZ|23|function|TShortintList::~TShortintList()|compiler_synthetic
 4c1990|TCityInteriorMinister::DispatchBuilders||238|function|void TCityInteriorMinister::DispatchBuilders()|
 4c1ac0|TCityInteriorMinister::RebuildMapTileNeighborBucketsForInteriorMinister||1022|function|void __thiscall RebuildMapTileNeighborBucketsForInteriorMinister()|
 4c1fc0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0||55|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0()|
@@ -4591,9 +4591,9 @@ address|name|symbol|size|type|prototype|provenance
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
 55e8e0|TZonePrimaryNeighborStretch::Add||167|function|TZone** __thiscall Add(TZone* zone)|
 55e9c0|TZoneSecondaryNeighborStretch::Add||167|function|Province** __thiscall Add(Province* entry)|
-55eaa0|stretch<TZone*>::~stretch||23|function|undefined ~stretch()|compiler_synthetic
+55eaa0|stretch<TZone*>::~stretch|??1?$stretch@PAVTZone@@@@QAE@XZ|23|function|stretch<TZone*>::~stretch()|template
 55ead0|stretch<TZone*>::Add|?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z|124|function|TZone ** __thiscall Add(TZone * zone)|template
-55eb70|stretch<Province*>::~stretch||23|function|undefined ~stretch()|compiler_synthetic
+55eb70|stretch<Province*>::~stretch|??1?$stretch@PAUProvince@@@@QAE@XZ|23|function|stretch<Province*>::~stretch()|template
 55eba0|stretch<Province*>::Add|?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z|124|function|Province ** __thiscall Add(Province * entry)|template
 55ec40|IltTarget_0055ec40||1|function|void IltTarget_0055ec40(void)|curated
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
@@ -5234,7 +5234,7 @@ address|name|symbol|size|type|prototype|provenance
 57fef0|scanBracketExpressions||286|function|void __cdecl scanBracketExpressions(void * ctx, void * out_or_state, const char * input_str, ...)|
 580060|BuildUiMessageTextFromBracketTemplate||424|function|undefined BuildUiMessageTextFromBracketTemplate()|
 580280|AppendInterNationEventSummaryTextEntry_Impl||335|function|undefined AppendInterNationEventSummaryTextEntry_Impl()|
-580430|IltTarget_00580430||23|function|undefined IltTarget_00580430()|
+580430|stretch<char>::~stretch|??1?$stretch@D@@QAE@XZ|23|function|stretch<char>::~stretch()|template
 580460|stretch<char>::Add|?Add@?$stretch@D@@UAEPADD@Z|109|function|char * __thiscall Add(char value)|template
 5804f0|ExpandBracketMappedStringToSinkCallback||489|function|undefined ExpandBracketMappedStringToSinkCallback()|
 580760|TSimMgr::LoadUiStringByCodeGroupAndOffset||32|function|undefined LoadUiStringByCodeGroupAndOffset(short param_1, short param_2, undefined4 param_3)|
@@ -6648,11 +6648,11 @@ address|name|symbol|size|type|prototype|provenance
 5e0520|TAssetMgr::ScheduleTimerSlotCallbackWithInterval||79|function|void __thiscall ScheduleTimerSlotCallbackWithInterval(char (__cdecl* callback)(void), unsigned int interval, int slot)|
 5e0590|FormatVersionStringFromVersionResource||212|function|undefined FormatVersionStringFromVersionResource()|
 5e0780|OpenWaveMmioReadFmtChunkAndAllocateHeader||428|function|UINT OpenWaveMmioReadFmtChunkAndAllocateHeader(char* pszFileName, HMMIO* phmmio, WAVEFORMATEX** ppwfx, MMCKINFO* pckInRIFF, MMIOINFO* pmmioInfo)|
-5e09a0|IltTarget_005e09a0||54|function|undefined IltTarget_005e09a0()|
+5e09a0|WaveStartDataRead||54|function|UINT WaveStartDataRead(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF)|curated
 5e09f0|ReadMmioBytesToBufferAndUpdateChunkRemaining||205|function|UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead)|
-5e0b00|IltTarget_005e0b00||53|function|undefined IltTarget_005e0b00()|
+5e0b00|WaveCloseReadFile||53|function|UINT WaveCloseReadFile(HMMIO* phmmio, WAVEFORMATEX** ppwfx)|curated
 5e0b50|CreateWaveFileAndWriteFmtFactChunks||287|function|undefined CreateWaveFileAndWriteFmtFactChunks()|
-5e0cc0|IltTarget_005e0cc0||55|function|undefined IltTarget_005e0cc0()|
+5e0cc0|WaveStartDataWrite||55|function|UINT WaveStartDataWrite(HMMIO* phmmioOut, MMCKINFO* pckOut, MMIOINFO* pmmioinfoOut)|curated
 5e0d10|IltTarget_005e0d10||102|function|undefined IltTarget_005e0d10()|
 5e0da0|IltTarget_005e0da0||217|function|undefined IltTarget_005e0da0()|
 5e0ec0|IltTarget_005e0ec0||189|function|undefined IltTarget_005e0ec0()|
@@ -6660,9 +6660,9 @@ address|name|symbol|size|type|prototype|provenance
 5e10c0|LoadWaveDataAndFormatFromFilePath||262|function|UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples, WAVEFORMATEX** ppwfx, unsigned char** ppbData, MMIOINFO* pmmioInfo)|
 5e1220|IltTarget_005e1220||256|function|undefined IltTarget_005e1220()|
 5e1430|ProbeAuxOutputDeviceIndexByPidMask||110|function|undefined ProbeAuxOutputDeviceIndexByPidMask()|
-5e14c0|IltTarget_005e14c0||44|function|undefined IltTarget_005e14c0()|
+5e14c0|SetAuxOutputVolumeByChannel||44|function|int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume)|curated
 5e1500|SetAuxOutputVolumeFromScalar||43|function|undefined SetAuxOutputVolumeFromScalar()|
-5e1540|IltTarget_005e1540||56|function|undefined IltTarget_005e1540()|
+5e1540|GetAuxOutputVolumeRaw||56|function|int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume)|curated
 5e1590|SetAuxOutputVolumeAcrossCompatibleDevices||110|function|undefined SetAuxOutputVolumeAcrossCompatibleDevices()|
 5e1620|GetAuxOutputVolumeFromFirstCompatibleDevice||154|function|undefined GetAuxOutputVolumeFromFirstCompatibleDevice()|
 5e16f0|SendMciStatusCommand814AndIgnoreFailure||70|function|undefined SendMciStatusCommand814AndIgnoreFailure()|
@@ -6711,7 +6711,7 @@ address|name|symbol|size|type|prototype|provenance
 5e2a20|DestructRuntimeSelectionRecordBufferState||229|function|undefined DestructRuntimeSelectionRecordBufferState()|
 5e2b50|NoOpJoinGameSelectionVtableSlotA||1|function|undefined NoOpJoinGameSelectionVtableSlotA()|
 5e2b70|NoOpJoinGameSelectionVtableSlotB||1|function|undefined NoOpJoinGameSelectionVtableSlotB()|
-5e2b90|IltTarget_005e2b90||11|function|undefined IltTarget_005e2b90()|
+5e2b90|TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase|??1TDirectPlaySessionManagerBase@@QAE@XZ|11|function|TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase()|curated
 5e2bb0|ResetJoinableGameDescriptorBuffer||145|function|undefined ResetJoinableGameDescriptorBuffer()|
 5e2c80|InitializeJoinGameSelectionDialogState||66|function|undefined InitializeJoinGameSelectionDialogState()|
 5e2cf0|AppendJoinableGameDescriptorEntry||488|function|undefined AppendJoinableGameDescriptorEntry()|
@@ -6749,7 +6749,7 @@ address|name|symbol|size|type|prototype|provenance
 5e4780|CArray<void*,void*>::CArray|??0?$CArray@PAXPAX@@QAE@XZ|23|function|void CArray()|curated
 5e47b0|CArray<void*,void*>::~CArray|??1?$CArray@PAXPAX@@UAE@XZ|81|function|void ~CArray()|curated
 5e4830|TNetMgr::SerializeDynamicDwordPointerArrayState||392|function|undefined SerializeDynamicDwordPointerArrayState()|
-5e4a30|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+5e4a30|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|compiler_synthetic
 5e4a60|??_G?$CArray@PAXPAX@@UAEPAXI@Z|??_G?$CArray@PAXPAX@@UAEPAXI@Z|30|function|void * __thiscall CArray<void *,void *>::`scalar deleting destructor`(unsigned int)|vtable+base-destructor-layout+synthetic-scalar-dtor
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|`dynamic initializer for 'g_scaledShortConst_6A60B8''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A60B8''(void)|library

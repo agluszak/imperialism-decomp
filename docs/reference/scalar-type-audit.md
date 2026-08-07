@@ -53,8 +53,8 @@ a stale category-level approval.
 | `806aaeb52fe4f325` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:562` | `win32_struct_byte_field` | RGBQUAD.rgbGreen is BYTE; retail 0x005de010 extracts packed-color bits 8 through 15 into the structure. |
 | `ed6f4dcdc439d462` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:563` | `win32_struct_byte_field` | RGBQUAD.rgbRed is BYTE; retail 0x005de010 extracts packed-color bits 16 through 23 into the structure. |
 | `ce82c4c20067c59c` | `src/game/ui_core/TViewMgr_dialog_dispatch.cpp:564` | `win32_struct_byte_field` | RGBQUAD.rgbReserved is BYTE; retail 0x005de010 extracts packed-color bits 24 through 31 into the structure. |
-| `d97fbba03dae091e` | `src/game/assets/TCdAudioDevice.cpp:182` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
-| `9440836a8128678f` | `src/game/assets/TCdAudioDevice.cpp:183` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
+| `d97fbba03dae091e` | `src/game/assets/TCdAudioDevice.cpp:202` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwFrom is DWORD; retail 0x005e1850 masks the track index to eight bits before the dword store. |
+| `9440836a8128678f` | `src/game/assets/TCdAudioDevice.cpp:203` | `multimedia_dword_field` | MCI_PLAY_PARMS.dwTo is DWORD; retail 0x005e1850 increments then masks the track index before the dword store. |
 | `c35544f8b821ac5f` | `src/game/ui_core/TEditText.cpp:136` | `mfc_control_identifier` | CWnd::Create takes a UINT child-control identifier; TEditText::Open forwards the full 32-bit controlTag at this MFC boundary. |
 
 ## Reviewed nested integral conversions
@@ -246,8 +246,8 @@ is classified, and a family that stops appearing must be removed.
 
 | Fingerprint | Category | Source | Detail | Classification | Owner |
 | --- | --- | --- | --- | --- | --- |
-| `d97fbba03dae091e` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:182` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
-| `9440836a8128678f` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:183` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `d97fbba03dae091e` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:202` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
+| `9440836a8128678f` | `native_integral_boundary` | `src/game/assets/TCdAudioDevice.cpp:203` | game scalar -> DWORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `ddb6e55e5ead83ab` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:85` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `90ad32c2364f4c93` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:514` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
 | `1bedaab2dce1eddf` | `native_integral_boundary` | `src/game/gfx/CDib.cpp:536` | game scalar -> WORD | `win32_mfc_boundary` | `imperialism-decomp-1uj.99.9` |
@@ -324,8 +324,8 @@ is classified, and a family that stops appearing must be removed.
 | `65f76dbb872a689f` | `predicate_storage_cast` | `src/game/ui_screens/TCzechBox.cpp:79` | predicate -> unsigned char | `byte_abi_argument` | `imperialism-decomp-1uj.99.7` |
 | `1a972fb69f5925f0` | `predicate_storage_cast` | `src/game/ui_screens/TLoadSavePicture.cpp:51` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
 | `2d4eed00b9f919c8` | `predicate_storage_cast` | `src/game/ui_screens/TRadioTextCluster.cpp:69` | predicate -> unsigned char | `byte_field_storage` | `imperialism-decomp-1uj.99.7` |
-| `e1450c1f63078863` | `raw_discriminant_literal` | `src/game/assets/TCdAudioDevice.cpp:213` | deviceKind == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
-| `754a989e0e3df21a` | `raw_discriminant_literal` | `src/game/assets/TCdAudioDevice.cpp:213` | deviceKind == 2 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `e1450c1f63078863` | `raw_discriminant_literal` | `src/game/assets/TCdAudioDevice.cpp:233` | deviceKind == 1 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
+| `754a989e0e3df21a` | `raw_discriminant_literal` | `src/game/assets/TCdAudioDevice.cpp:233` | deviceKind == 2 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |
 | `f907e6612b1d2cf9` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:295` | taskKind == 1 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `c9b19f9faa0f5a57` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:902` | buildingType == 0 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |
 | `d787baa854421514` | `raw_discriminant_literal` | `src/game/city/TCity.cpp:905` | buildingType < 0x10 | `closed_domain_needs_listing_evidence` | `imperialism-decomp-1uj.99.8` |

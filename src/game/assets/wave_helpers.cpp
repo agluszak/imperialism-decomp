@@ -73,6 +73,13 @@ ErrorReadingWave:
   return result;
 }
 
+// FUNCTION: IMPERIALISM 0x005e09a0
+UINT WaveStartDataRead(HMMIO* phmmioIn, MMCKINFO* pckIn, MMCKINFO* pckInRIFF) {
+  mmioSeek(*phmmioIn, pckInRIFF->dwDataOffset + sizeof(FOURCC), SEEK_SET);
+  pckIn->ckid = mmioFOURCC('d', 'a', 't', 'a');
+  return mmioDescend(*phmmioIn, pckIn, pckInRIFF, MMIO_FINDCHUNK);
+}
+
 // FUNCTION: IMPERIALISM 0x005e09f0
 UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT* pcbActualRead) {
   MMIOINFO mmioinfoIn;
@@ -107,6 +114,19 @@ UINT WaveReadFile(HMMIO hmmio, UINT cbRead, HPSTR pbDest, MMCKINFO* pckIn, UINT*
   }
   *pcbActualRead = 0;
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0b00
+UINT WaveCloseReadFile(HMMIO* phmmio, WAVEFORMATEX** ppwfx) {
+  if (*ppwfx != 0) {
+    GlobalFree(*ppwfx);
+    *ppwfx = 0;
+  }
+  if (*phmmio != 0) {
+    mmioClose(*phmmio, 0);
+    *phmmio = 0;
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e0b50
@@ -156,6 +176,17 @@ UINT WaveCreateFile(char* pszFileName, HMMIO* phmmioOut, WAVEFORMATEX* pwfxDest,
     }
   }
   return ER_CANNOTWRITE;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0cc0
+UINT WaveStartDataWrite(HMMIO* phmmioOut, MMCKINFO* pckOut, MMIOINFO* pmmioinfoOut) {
+  pckOut->ckid = mmioFOURCC('d', 'a', 't', 'a');
+  pckOut->cksize = 0;
+  UINT result = mmioCreateChunk(*phmmioOut, pckOut, 0);
+  if (result == 0) {
+    result = mmioGetInfo(*phmmioOut, pmmioinfoOut, 0);
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005e0d10

@@ -2918,8 +2918,8 @@ template void CList<TView*, TView*>::FreeNode(CList<TView*, TView*>::CNode*);
 template void CList<TWindow*, TWindow*>::RemoveAll();
 template void CList<TWindow*, TWindow*>::FreeNode(CList<TWindow*, TWindow*>::CNode*);
 
-// TEMPLATE: IMPERIALISM 0x00415f90
-// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x00415f90
+// CList<TView *,TView *>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x00415e70
 // ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
@@ -2942,8 +2942,8 @@ template void CList<TWindow*, TWindow*>::FreeNode(CList<TWindow*, TWindow*>::CNo
 // TEMPLATE: IMPERIALISM 0x005e4830
 // ?Serialize@?$CArray@PAXPAX@@UAEXAAVCArchive@@@Z
 
-// TEMPLATE: IMPERIALISM 0x005e4a30
-// ??_G?$CList@PAXPAX@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x005e4a30
+// CList<void *,void *>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x005e4780
 // ??0?$CArray@PAXPAX@@QAE@XZ
@@ -2987,8 +2987,8 @@ CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecor
 // TEMPLATE: IMPERIALISM 0x00480bd0
 // ?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z
 
-// TEMPLATE: IMPERIALISM 0x00480dd0
-// ??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x00480dd0
+// CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'
 
 // SetSize is claimed here but its CArray<void*,void*> twin at 0x005e4a90 is not: retail
 // calls that one out of line from the array's Serialize, while our build inlines it there,
