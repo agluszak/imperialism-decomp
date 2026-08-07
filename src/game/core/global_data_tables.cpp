@@ -2902,7 +2902,21 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // ??0?$CList@PAVTView@@PAV1@@@QAE@H@Z
 
 // TEMPLATE: IMPERIALISM 0x00492a40
-// CList<TView*, TView*>::NewNode
+// ?NewNode@?$CList@PAVTWindow@@PAV1@@@IAEPAUCNode@1@PAU21@0@Z
+
+// TEMPLATE: IMPERIALISM 0x00484860
+// ?FreeNode@?$CList@PAVTView@@PAV1@@@IAEXPAUCNode@1@@Z
+
+template void CList<TView*, TView*>::FreeNode(CList<TView*, TView*>::CNode*);
+
+// TEMPLATE: IMPERIALISM 0x00492ac0
+// ?RemoveAll@?$CList@PAVTWindow@@PAV1@@@QAEXXZ
+
+// TEMPLATE: IMPERIALISM 0x00492b00
+// ?FreeNode@?$CList@PAVTWindow@@PAV1@@@IAEXPAUCNode@1@@Z
+
+template void CList<TWindow*, TWindow*>::RemoveAll();
+template void CList<TWindow*, TWindow*>::FreeNode(CList<TWindow*, TWindow*>::CNode*);
 
 // TEMPLATE: IMPERIALISM 0x00415f90
 // ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z

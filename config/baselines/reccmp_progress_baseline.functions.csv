@@ -630,6 +630,7 @@ address|matching|name
 0x484260|0.26136363636363635|CIncludeView::OnKeyDown
 0x4845a0|0.875|TUiEvent::TUiEvent
 0x484610|1.0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::Serialize
+0x484860|1.0|CList<TView *,TView *>::FreeNode
 0x484970|1.0|TObject(void)
 0x484990|1.0|TObject::`scalar deleting destructor'
 0x4849e0|1.0|CDib::ForwardBlitSurfaceRectSkippingTransparentColor
@@ -1181,6 +1182,8 @@ address|matching|name
 0x492980|1.0|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::`scalar deleting destructor'
 0x4929b0|0.9696969696969697|CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::~CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>
 0x492a40|1.0|CList<TWindow *,TWindow *>::NewNode
+0x492ac0|1.0|CList<TWindow *,TWindow *>::RemoveAll
+0x492b00|1.0|CList<TWindow *,TWindow *>::FreeNode
 0x492c70|1.0|TEvent::`scalar deleting destructor'
 0x492ca0|1.0|TEvent
 0x492cc0|1.0|TWindow::GetWindow
@@ -6633,13 +6636,14 @@ address|matching|name
 0x5e51b0|1.0|TSoundPlayer::PlayAiffFile
 0x5e51d0|1.0|TSoundPlayer::Free
 0x5e539c|1.0|AfxGetMainWnd
+0x5e53bc|1.0|CNoTrackObject::`scalar deleting destructor'
 0x5e53d8|1.0|CThreadLocal<AFX_MODULE_THREAD_STATE>::CreateObject
 0x5e540c|1.0|CThreadLocal<_AFX_THREAD_STATE>::CreateObject
 0x5e5440|0.875|CProcessLocal<_AFX_CTL3D_STATE>::CreateObject
 0x5e5455|1.0|_AFX_CTL3D_STATE::`scalar deleting destructor'
 0x5e5470|0.875|CThreadLocal<_AFX_CTL3D_THREAD>::CreateObject
 0x5e5485|1.0|_AFX_CTL3D_THREAD::`scalar deleting destructor'
-0x5e54a0|0.9375|CProcessLocal<_AFX_WIN_STATE>::CreateObject
+0x5e54a0|1.0|CProcessLocal<_AFX_WIN_STATE>::CreateObject
 0x5e54d1|1.0|CWnd::GetOwner
 0x5e54e8|1.0|CHandleMap::~CHandleMap
 0x5e5529|0.9411764705882353|CDragListBox::~CDragListBox
@@ -6649,7 +6653,7 @@ address|matching|name
 0x5e55a4|1.0|CDragListBox::Dragging
 0x5e55ee|1.0|CDragListBox::Dropped
 0x5e56cd|1.0|CDragListBox::DrawInsert
-0x5e56f2|0.96|CDragListBox::DrawSingle
+0x5e56f2|0.9733333333333334|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
 0x5e58ab|1.0|CToolBarCtrl::Create
 0x5e58e4|0.9411764705882353|CProgressCtrl::~CProgressCtrl(void)
@@ -6719,6 +6723,7 @@ address|matching|name
 0x5e6e7f|1.0|CUserException::`scalar deleting destructor'
 0x5e6e9b|1.0|CUserException::~CUserException
 0x5e6ebe|1.0|CDC::PtVisible
+0x5e6ed2|1.0|CDC::RectVisible
 0x5e6ee2|0.8571428571428571|CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 0x5e6efe|1.0|CDC::ExtTextOutA
 0x5e6f23|1.0|CDC::TabbedTextOutA
@@ -6736,6 +6741,7 @@ address|matching|name
 0x5e71d6|0.8620689655172413|CArchiveStream::Write
 0x5e722f|0.9047619047619048|CArchiveStream::Seek
 0x5e7350|0.47619047619047616|__fpmath
+0x5e7370|1.0|__fpclear
 0x5e7380|0.25|__cfltcvt_init
 0x5e73d0|1.0|__ftol
 0x5e7400|1.0|?_JumpToContinuation@@YGXPAXPAUEHRegistrationNode@@@Z
@@ -6822,6 +6828,7 @@ address|matching|name
 0x5ea8d0|0.8305084745762712|__ismbcdigit
 0x5ea970|1.0|__mbsinc
 0x5ea990|0.8305084745762712|__ismbcspace
+0x5eaa30|1.0|_abs
 0x5eaa40|0.6923076923076923|_strtol
 0x5eacf0|0.6923076923076923|_strtoul
 0x5ead10|0.46153846153846156|__purecall
@@ -7231,6 +7238,7 @@ address|matching|name
 0x606e3f|1.0|CCmdUI::SetRadio
 0x606e91|1.0|CCmdUI::SetText
 0x606ee7|1.0|CCmdUI::DoUpdate
+0x606f4e|1.0|AfxNewHandler
 0x606f5f|1.0|AfxSetNewHandler
 0x606f73|1.0|operator new
 0x606faf|1.0|operator delete
@@ -7446,6 +7454,7 @@ address|matching|name
 0x60c0f7|1.0|CDialogTemplate::SetTemplate
 0x60c157|1.0|CDialogTemplate::~CDialogTemplate
 0x60c165|1.0|CDialogTemplate::Load
+0x60c1ba|1.0|CDialogTemplate::Detach
 0x60c1c0|1.0|CDialogTemplate::HasFont
 0x60c1eb|1.0|CDialogTemplate::GetFontSizeField
 0x60c241|1.0|CDialogTemplate::GetTemplateSize
@@ -7603,8 +7612,8 @@ address|matching|name
 0x6133fe|1.0|CDC::SelectClipRgn(class CRgn *, int)
 0x613452|1.0|AfxEnumMetaFileProc
 0x613686|1.0|CDC::PlayMetaFile
-0x6136bf|0.9047619047619048|CDC::LPtoDP
-0x613728|0.9047619047619048|CDC::DPtoLP
+0x6136bf|1.0|CDC::LPtoDP
+0x613728|1.0|CDC::DPtoLP
 0x613791|0.9642857142857143|CClientDC::CClientDC
 0x6137e7|1.0|CClientDC::`scalar deleting destructor'
 0x613803|0.95|CClientDC::~CClientDC
@@ -7882,21 +7891,24 @@ address|matching|name
 0x61e819|0.9411764705882353|CButton::~CButton
 0x61e851|1.0|CWnd::GetCheckedRadioButton
 0x61e8cb|0.9411764705882353|CListBox::~CListBox
+0x61e911|1.0|CListBox::VKeyToItem
+0x61e919|1.0|CListBox::CharToItem
 0x61e921|1.0|CListBox::OnChildNotify
 0x61e9ba|1.0|CListBox::GetText
 0x61ea9c|1.0|CComboBox::OnChildNotify
 0x61eb46|0.9|CComboBox::Create
+0x61ec0f|1.0|$E351(1)
 0x61ec1a|1.0|CDC::DPtoHIMETRIC
 0x61ecab|1.0|CDC::HIMETRICtoDP
 0x61ed3c|1.0|CDC::LPtoHIMETRIC
 0x61ed57|1.0|CDC::HIMETRICtoLP
 0x61ed72|1.0|CDC::GetHalftoneBrush
-0x61ede5|0.985239852398524|CDC::DrawDragRect
+0x61ede5|0.992619926199262|CDC::DrawDragRect
 0x61f0fa|1.0|CDC::FillSolidRect(struct tagRECT const *, unsigned long)
 0x61f124|1.0|CDC::FillSolidRect(int, int, int, int, unsigned long)
 0x61f19b|1.0|CDC::Draw3dRect(int, int, int, int, unsigned long, unsigned long)
 0x61f205|1.0|CFont::CreatePointFont
-0x61f24a|0.9846153846153847|CFont::CreatePointFontIndirect
+0x61f24a|1.0|CFont::CreatePointFontIndirect
 0x61f307|1.0|CRect::InflateRect(struct tagRECT const *)
 0x61f342|1.0|CRect::DeflateRect(struct tagRECT const *)
 0x61f37d|1.0|CRect::MulDiv
@@ -7916,6 +7928,7 @@ address|matching|name
 0x621297|0.9666666666666667|CDumpContext::HexDump
 0x62132a|1.0|CDumpContext::operator<<(unsigned short const *)
 0x622442|0.5|CDialog::GetRuntimeClass
+0x622448|1.0|_AFX_WIN_STATE::_AFX_WIN_STATE
 0x622451|1.0|_AFX_WIN_STATE::`scalar deleting destructor'
 0x62246c|0.9827586206896551|CWinApp::CWinApp
 0x622556|1.0|CWinApp::`scalar deleting destructor'
@@ -7953,14 +7966,14 @@ address|matching|name
 0x623471|0.5|CWnd::GetRuntimeClass
 0x623477|0.8|_AFX_THREAD_STATE::_AFX_THREAD_STATE
 0x62348e|1.0|_AFX_THREAD_STATE::`scalar deleting destructor'
-0x6234a9|0.9555555555555556|_AFX_THREAD_STATE::~_AFX_THREAD_STATE
+0x6234a9|0.9777777777777777|_AFX_THREAD_STATE::~_AFX_THREAD_STATE
 0x623523|1.0|AfxGetThreadState
 0x623559|0.9565217391304348|AFX_MODULE_STATE::AFX_MODULE_STATE
 0x6235bd|0.9|_AFX_BASE_MODULE_STATE::`scalar deleting destructor'
-0x6235d8|0.9642857142857143|AFX_MODULE_STATE::~AFX_MODULE_STATE
-0x62368b|0.9354838709677419|AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE
+0x6235d8|0.9821428571428571|AFX_MODULE_STATE::~AFX_MODULE_STATE
+0x62368b|0.967741935483871|AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE
 0x6236f6|1.0|AFX_MODULE_THREAD_STATE::`scalar deleting destructor'
-0x623711|0.9733333333333334|AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE
+0x623711|0.9866666666666667|AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE
 0x623824|0.9545454545454546|CProcessLocal<_AFX_BASE_MODULE_STATE>::CreateObject
 0x623886|0.9|AfxGetModuleState
 0x6238ac|1.0|AfxGetModuleThreadState
@@ -7981,6 +7994,8 @@ address|matching|name
 0x623c75|1.0|CThreadSlotData::AllocSlot
 0x623d87|1.0|CThreadSlotData::FreeSlot
 0x623de4|0.9864864864864865|CThreadSlotData::SetValue
+0x623eb2|1.0|CThreadData::`scalar deleting destructor'
+0x623ecd|1.0|CNoTrackObject::~CNoTrackObject
 0x623ed4|1.0|CThreadSlotData::AssignInstance
 0x623f15|1.0|CThreadSlotData::DeleteValues(struct CThreadData *, struct HINSTANCE__*)
 0x623f9d|1.0|CThreadSlotData::DeleteValues(struct HINSTANCE__*, int)
@@ -7991,11 +8006,12 @@ address|matching|name
 0x624123|1.0|CProcessLocalObject::~CProcessLocalObject
 0x62415e|1.0|AfxTermLocalData
 0x6241a7|0.5|$CRT_CPP_Initializer(281)
+0x6241b1|1.0|$CRT_CPP_Initializer(282)
 0x6241d1|1.0|AfxEnableWin40Compatibility
 0x624201|1.0|AfxEnableWin31Compatibility
 0x624223|1.0|AUX_DATA::AUX_DATA
-0x6242de|0.9166666666666666|_AFX_CTL3D_STATE::~_AFX_CTL3D_STATE
-0x624325|0.9047619047619048|_AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD
+0x6242de|0.9583333333333334|_AFX_CTL3D_STATE::~_AFX_CTL3D_STATE
+0x624325|0.9523809523809523|_AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD
 0x6244d3|0.6666666666666666|AfxCriticalInit
 0x62456f|0.8055555555555556|AfxLockGlobals
 0x6245df|0.75|AfxUnlockGlobals
@@ -8008,7 +8024,7 @@ address|matching|name
 0x624e73|1.0|AfxWinInit
 0x624ed6|1.0|CWinApp::SetCurrentHandles
 0x624ff3|1.0|AfxGetFileName
-0x626b59|0.8823529411764706|_AFX_WIN_STATE::~_AFX_WIN_STATE
+0x626b59|1.0|_AFX_WIN_STATE::~_AFX_WIN_STATE
 0x626b90|1.0|AfxPostQuitMessage
 0x626bb3|0.96|CWinThread::~CWinThread
 0x626c02|1.0|AUX_DATA::~AUX_DATA
