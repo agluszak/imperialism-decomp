@@ -319,6 +319,7 @@ address|matching|name
 0x479990|1.0|CAmbitDocument::OnSaveDocument
 0x479a80|1.0|CList<TView *,TView *>::RemoveTail
 0x479ba0|1.0|CDocManager::GetFirstDocTemplatePosition(void)
+0x479bc0|1.0|CList<TView *,TView *>::GetAt
 0x479be0|1.0|CList<TView *,TView *>::Serialize
 0x479e10|0.8235294117647058|ClearUiResourceEntryDwords
 0x479e40|0.43636363636363634|CDib::CreateObject
