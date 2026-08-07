@@ -116,7 +116,7 @@ address|name|symbol|size|type|prototype|provenance
 427010|ApplyUiResourceColorTripletFromContext||61|function|undefined ApplyUiResourceColorTripletFromContext()|
 427060|ReplaceUiResourceContextPairBuffer||83|function|undefined ReplaceUiResourceContextPairBuffer()|
 4270e0|TUiStyleRef::TUiStyleRef|??0TUiStyleRef@@QAE@H@Z|11|function|__thiscall TUiStyleRef(int value)|
-427100|SetUiResourcePairValues||18|function|undefined SetUiResourcePairValues()|
+427100|CPoint::CPoint|??0CPoint@@QAE@HH@Z|18|function|public: __thiscall CPoint::CPoint(int, int)|template
 427200|TView::GetCursorID||5|function|unsigned short GetCursorID()|
 427220|TView::PostRender||1|function|void PostRender()|
 427240|TView::HandleMouseCommandToSelf||3|function|void __thiscall HandleMouseCommandToSelf(CPoint &point, TToolboxEvent *event, CPoint origin)|
@@ -615,7 +615,7 @@ address|name|symbol|size|type|prototype|provenance
 4824e0|TF7TemplateDialog::OnCommand4||55|function|void TF7TemplateDialog::OnCommand4()|windows_listing
 482730|`dynamic initializer for 'g_scaledShortConst_6A177C''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A177C''(void)|library
 482760|UiCursorTickTimerProc||131|function|void UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)|
-482820|InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820||18|function|undefined InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820()|
+482820|CPoint::CPoint|??0CPoint@@QAE@HH@Z|18|function|public: __thiscall CPoint::CPoint(int, int)|template
 482850|CIncludeView::CreateObject|?CreateObject@CIncludeView@@SGPAVCObject@@XZ|161|function|undefined CreateObject()|rtti
 482930|CIncludeView::GetRuntimeClass|?GetRuntimeClass@CIncludeView@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 482950|CIncludeView::CIncludeView||77|function|undefined ConstructCViewOwnedBufferRegistryState()|

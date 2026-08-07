@@ -48,9 +48,13 @@ TUiStyleBytes* TUiStyleBytes::Reset() {
 // TEMPLATE: IMPERIALISM 0x00479b00
 // ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
 
+// TEMPLATE: IMPERIALISM 0x00479bc0
+// CList<TView*, TView*>::GetAt(POSITION)
+
 template TView* CList<TView*, TView*>::GetTail() const;
 template TView* CList<TView*, TView*>::RemoveTail();
 template POSITION CList<TView*, TView*>::AddTail(TView*);
+template TView*& CList<TView*, TView*>::GetAt(POSITION);
 
 // FUNCTION: IMPERIALISM 0x00479e10
 int __stdcall ClearUiResourceEntryDwords(int* destination, int count) {
