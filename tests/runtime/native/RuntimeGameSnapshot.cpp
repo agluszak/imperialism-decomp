@@ -652,9 +652,10 @@ CString CaptureMilitary() {
                static_cast<int>(force->nation));
     json += row;
     AppendShortArray(json, force->shipCountsByToolbarSlot, 4);
-    row.Format(",\"defeated\":%d,\"ingot_tile\":%d,\"flagship\":%d,\"ships\":[",
-               static_cast<int>(force->defeated), static_cast<int>(force->ingotTileIndex),
-               SnapshotShipIndex(force->flagship));
+    // Both retail constructors leave defeated uninitialized; RechargeAll establishes it before
+    // battle processing. A freshly submitted order therefore cannot expose this allocator byte.
+    row.Format(",\"ingot_tile\":%d,\"flagship\":%d,\"ships\":[",
+               static_cast<int>(force->ingotTileIndex), SnapshotShipIndex(force->flagship));
     json += row;
     int childIndex = 0;
     for (TMapOrderChildLinkNode* link = force->shipList; link != 0; link = link->next) {

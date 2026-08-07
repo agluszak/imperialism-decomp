@@ -17,3 +17,13 @@ later, command protocol. The Rust game state must not depend on C++ layouts or B
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 ```
+
+Run a C++ fixture as an external oracle and compare it with a Rust-produced snapshot:
+
+```sh
+cargo run -p imperialism-testkit --bin differential -- \
+  save_load_roundtrip path/to/rust-snapshot.json --seed 1
+```
+
+The runner invokes the existing C++ runtime command across a process boundary. It does not link
+the implementations or add Cargo to the repository-root tooling.

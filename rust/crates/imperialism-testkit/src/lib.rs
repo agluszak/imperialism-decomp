@@ -168,6 +168,51 @@ mod tests {
     use super::*;
     use serde_json::json;
 
+    fn snapshot() -> GameSnapshotV1 {
+        let mut snapshot: GameSnapshotV1 = serde_json::from_value(json!({
+            "schema": "imperialism.game_snapshot.v1",
+            "sections": [
+                "metadata", "rng", "world", "nations", "economy", "military",
+                "missions", "pending"
+            ],
+            "hashes": {
+                "metadata": "00000000", "rng": "00000000", "world": "00000000",
+                "nations": "00000000", "economy": "00000000", "military": "00000000",
+                "missions": "00000000", "pending": "00000000", "state": "00000000"
+            },
+            "metadata": {
+                "scenario_map_index_plus_one": 0, "economic_turn": 1, "turn_state": 5,
+                "difficulty": 1, "active_nation": 6, "selected_nation": 6
+            },
+            "rng": {
+                "runtime_seed": 1, "crt_rand_state": 1, "map_generation_lcg": 1,
+                "zone_status_lcg": 1
+            },
+            "world": {"width": 108, "height": 60, "wrap": 0, "tiles": vec![[0; 10]; 6480]},
+            "nations": {"records": (0..23).map(|slot| json!({
+                "slot": slot,
+                "kind": if slot < 7 { "major" } else { "minor" },
+                "present": false
+            })).collect::<Vec<_>>()},
+            "economy": {"cities": (0..7).map(|nation| json!({
+                "nation": nation, "present": false
+            })).collect::<Vec<_>>()},
+            "military": {"units": [], "ships": [], "task_forces": []},
+            "missions": {"records": []},
+            "pending": {
+                "turn_flow_status_flags": 0,
+                "nations": (0..7).map(|nation| json!({
+                    "nation": nation, "turn_events": [], "proposals": [],
+                    "turn_summary": [], "turn_start_events": []
+                })).collect::<Vec<_>>(),
+                "war_transitions": []
+            }
+        }))
+        .unwrap();
+        snapshot.refresh_hashes().unwrap();
+        snapshot
+    }
+
     #[test]
     fn reports_the_first_structural_path() {
         let original = json!({"cities": [{"stock": [2, 4, 6]}]});
@@ -181,5 +226,39 @@ mod tests {
         assert_eq!(difference.path, "economy.cities[0].stock[1]");
         assert_eq!(difference.original, Some(json!(4)));
         assert_eq!(difference.reimplementation, Some(json!(5)));
+    }
+
+    #[test]
+    fn accepts_equal_semantic_snapshots() {
+        let snapshot = snapshot();
+        assert_eq!(
+            first_snapshot_difference(&snapshot, &snapshot).unwrap(),
+            None
+        );
+    }
+
+    #[test]
+    fn reports_unequal_semantic_snapshots() {
+        let original = snapshot();
+        let mut reimplementation = original.clone();
+        reimplementation.pending.turn_flow_status_flags = 0x40;
+        let difference = first_snapshot_difference(&original, &reimplementation)
+            .unwrap()
+            .unwrap();
+        assert_eq!(difference.path, "pending.turn_flow_status_flags");
+    }
+
+    #[test]
+    fn rejects_malformed_and_incompatible_snapshots() {
+        assert!(matches!(
+            decode_game_snapshot(&b"{"[..]),
+            Err(SnapshotReadError::Json(_))
+        ));
+        let mut incompatible = snapshot();
+        incompatible.schema = "imperialism.game_snapshot.v2".to_owned();
+        assert!(matches!(
+            incompatible.verify_hashes(),
+            Err(SnapshotValidationError::Schema(_))
+        ));
     }
 }
