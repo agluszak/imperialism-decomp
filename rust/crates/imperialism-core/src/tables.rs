@@ -1,9 +1,9 @@
 use crate::{NationId, ProductionSlot};
+use enum_map::{Enum, EnumMap};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = 23;
 pub const MAJOR_NATION_COUNT: usize = 7;
-pub const PENDING_ACTION_COUNT: usize = 13;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct NationTable<T>([T; NATION_COUNT]);
@@ -69,53 +69,26 @@ impl<T> IndexMut<NationId> for MajorNationTable<T> {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct PendingActionSlot(u8);
-
-impl PendingActionSlot {
-    pub const COUNT: usize = PENDING_ACTION_COUNT;
-
-    pub const fn new(value: u8) -> Option<Self> {
-        if (value as usize) < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn index(self) -> usize {
-        self.0 as usize
-    }
+/// Zero-based entries in the retail reward-prompt string group `0x273a`.
+#[derive(Clone, Copy, Debug, Enum, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum PendingActionKind {
+    NavyGrowthReward,
+    ArmyGrowthReward,
+    OverseasDeveloperReward,
+    VillageDevelopment,
+    TownDevelopment,
+    ShipyardIronworkingUpgrade,
+    ConqueredCapitalArmoryUpgrade,
+    UniversityExpansion,
+    RailyardExpansion,
+    AnnexedGreatPowerCapitalExpansion,
+    ColonyMonumentMerchantCapacity,
+    CouncilLeadMonument,
+    ConquestMonumentArmory,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct PendingActionTable<T>([T; PENDING_ACTION_COUNT]);
-
-impl<T> PendingActionTable<T> {
-    pub const fn from_array(values: [T; PENDING_ACTION_COUNT]) -> Self {
-        Self(values)
-    }
-}
-
-impl<T: Default> Default for PendingActionTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<PendingActionSlot> for PendingActionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: PendingActionSlot) -> &Self::Output {
-        &self.0[slot.index()]
-    }
-}
-
-impl<T> IndexMut<PendingActionSlot> for PendingActionTable<T> {
-    fn index_mut(&mut self, slot: PendingActionSlot) -> &mut Self::Output {
-        &mut self.0[slot.index()]
-    }
-}
+pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
+pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ProductionTable<T>([T; ProductionSlot::COUNT]);
@@ -172,9 +145,8 @@ mod tests {
         production[slot] = 11_i16;
         assert_eq!(production[slot], 11);
 
-        let action = PendingActionSlot::new(7).unwrap();
         let mut pending = PendingActionTable::default();
-        pending[action] = 3_i16;
-        assert_eq!(pending[action], 3);
+        pending[PendingActionKind::UniversityExpansion] = 3_i16;
+        assert_eq!(pending[PendingActionKind::UniversityExpansion], 3);
     }
 }

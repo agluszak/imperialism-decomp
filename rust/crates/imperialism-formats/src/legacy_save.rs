@@ -1,11 +1,11 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, STRATEGIC_MAP_HEIGHT,
-    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SnapshotArmyMission, SnapshotAttackMission,
-    SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes, SnapshotMajorNation,
-    SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission, SnapshotMissions,
-    SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission, SnapshotPending,
-    SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot, TurnCalendar,
+    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, PENDING_ACTION_COUNT,
+    STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SnapshotArmyMission,
+    SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
+    SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission,
+    SnapshotMissions, SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission,
+    SnapshotPending, SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot, TurnCalendar,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -15,7 +15,6 @@ const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
 const NATION_COUNT: usize = 23;
 const RESOURCE_KIND_COUNT: usize = 23;
 const AID_ALLOCATION_COUNT: usize = 0x170;
-const PENDING_ACTION_COUNT: usize = 13;
 const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
 const CITY_ORDER_SLOT_COUNT: usize = 61;
 const TRADE_CATEGORY_COUNT: usize = 17;
@@ -2512,21 +2511,16 @@ mod tests {
         assert!(game.all_humans_finished().unwrap());
         assert!(!game.turn.in_linear_phase());
         game.reset_turn_flags().unwrap();
-        assert!(game.nations[..6].iter().all(|nation| {
-            nation
-                .as_ref()
-                .unwrap()
-                .major
-                .as_ref()
-                .unwrap()
-                .turn_finished
-        }));
+        assert!(
+            game.nations[..6]
+                .iter()
+                .all(|nation| { nation.as_ref().unwrap().major().unwrap().turn_finished })
+        );
         assert!(
             !game.nations[6]
                 .as_ref()
                 .unwrap()
-                .major
-                .as_ref()
+                .major()
                 .unwrap()
                 .turn_finished
         );

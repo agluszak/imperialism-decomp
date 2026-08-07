@@ -1,6 +1,6 @@
 use crate::{
     CivilianUnitId, CivilianUnitState, GameEvent, GameState, MapGeometry, MilitaryUnitId,
-    MilitaryUnitState, NationId, PendingActionSlot, StepOutcome, TileId, UnitProductionOrder,
+    MilitaryUnitState, NationId, PendingActionKind, StepOutcome, TileId, UnitProductionOrder,
     WorldState,
 };
 
@@ -192,8 +192,7 @@ impl GameState {
             .get(nation_index)
             .and_then(Option::as_ref)
             .ok_or(RecruitmentError::MissingNation(nation))?
-            .major
-            .as_ref()
+            .major()
             .ok_or(RecruitmentError::NotMajorNation(nation))?;
         let (home_province, experienced) = if pending_delta > 0 {
             let home_tile = u16::try_from(city.home_town_tile)
@@ -209,7 +208,8 @@ impl GameState {
                     self.world.tiles[usize::from(home_tile.get())].city_or_province_index,
                 )
             })?;
-            let action_6 = major.pending_action_status[PendingActionSlot::new(6).unwrap()];
+            let action_6 =
+                major.pending_action_status[PendingActionKind::ConqueredCapitalArmoryUpgrade];
             self.selected_military_power_score(nation)?;
             (province, action_6 >= 0x33)
         } else {
@@ -264,10 +264,9 @@ impl GameState {
                 let pending_status = self.nations[nation_index]
                     .as_ref()
                     .expect("nation presence was checked")
-                    .major
-                    .as_ref()
+                    .major()
                     .expect("major-nation presence was checked")
-                    .pending_action_status[PendingActionSlot::new(1).unwrap()];
+                    .pending_action_status[PendingActionKind::ArmyGrowthReward];
                 if pending_status != 0x32 {
                     let current_level = if pending_status == 0 {
                         0
@@ -281,12 +280,11 @@ impl GameState {
                         let major = self.nations[nation_index]
                             .as_mut()
                             .expect("nation presence was checked")
-                            .major
-                            .as_mut()
+                            .major_mut()
                             .expect("major-nation presence was checked");
-                        major.pending_action_status[PendingActionSlot::new(1).unwrap()] = 0x32;
+                        major.pending_action_status[PendingActionKind::ArmyGrowthReward] = 0x32;
                         major.pending_action_payload_by_action
-                            [PendingActionSlot::new(1).unwrap()] = payload;
+                            [PendingActionKind::ArmyGrowthReward] = payload;
                         events.push(GameEvent::NationPendingActionQueued {
                             nation,
                             action: 1,
@@ -381,9 +379,9 @@ pub enum RecruitmentError {
 mod tests {
     use super::*;
     use crate::{
-        CityState, LaborPool, MajorNationState, MilitaryUnitState, NationKind, NationState,
-        PopulationState, ProductionConstraint, ResourceCost, ResourceKind, RngState, SkillBand,
-        TileState, TurnState, UnitCostProfile,
+        CityState, LaborPool, MajorNationState, MilitaryUnitState, NationCommonState, NationData,
+        NationState, PopulationState, ProductionConstraint, ResourceCost, ResourceKind, RngState,
+        SkillBand, TileState, TurnState, UnitCostProfile,
     };
 
     fn tile(owner_nation: i64) -> TileState {
@@ -472,13 +470,14 @@ mod tests {
         let mut nations = vec![None; 23];
         nations[0] = Some(NationState {
             id: nation,
-            kind: NationKind::Major,
-            encoded_nation_slot: 0,
-            owner_nation: 0,
-            treasury: 0,
-            home_tile: i32::from(home_town_tile.get()),
-            need_level_by_nation: crate::NationTable::default(),
-            major: Some(MajorNationState {
+            common: NationCommonState {
+                encoded_nation_slot: 0,
+                owner_nation: 0,
+                treasury: 0,
+                home_tile: i32::from(home_town_tile.get()),
+                need_level_by_nation: crate::NationTable::default(),
+            },
+            data: NationData::Major(MajorNationState {
                 diplomacy_eligible: true,
                 capacities: [0; 4],
                 grant_total_cost: 0,
@@ -719,17 +718,15 @@ mod tests {
         state.nations[0]
             .as_mut()
             .unwrap()
-            .major
-            .as_mut()
+            .major_mut()
             .unwrap()
-            .pending_action_status[PendingActionSlot::new(1).unwrap()] = 0x32;
+            .pending_action_status[PendingActionKind::ArmyGrowthReward] = 0x32;
         state.nations[0]
             .as_mut()
             .unwrap()
-            .major
-            .as_mut()
+            .major_mut()
             .unwrap()
-            .pending_action_status[PendingActionSlot::new(6).unwrap()] = 0x33;
+            .pending_action_status[PendingActionKind::ConqueredCapitalArmoryUpgrade] = 0x33;
         let mut production = specialist_order(24, 1);
 
         let outcome = state
@@ -807,13 +804,13 @@ mod tests {
         assert_eq!(state.military_units[14].roster_index, 14);
         assert_eq!(state.military_units[15].id, MilitaryUnitId::new(56));
         assert_eq!(state.military_units[15].roster_index, 15);
-        let major = state.nations[0].as_ref().unwrap().major.as_ref().unwrap();
+        let major = state.nations[0].as_ref().unwrap().major().unwrap();
         assert_eq!(
-            major.pending_action_status[PendingActionSlot::new(1).unwrap()],
+            major.pending_action_status[PendingActionKind::ArmyGrowthReward],
             0x32
         );
         assert_eq!(
-            major.pending_action_payload_by_action[PendingActionSlot::new(1).unwrap()],
+            major.pending_action_payload_by_action[PendingActionKind::ArmyGrowthReward],
             1
         );
         assert_eq!(

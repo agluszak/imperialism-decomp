@@ -47,7 +47,7 @@ impl GameState {
             self.nations
                 .get(slot)
                 .and_then(Option::as_ref)
-                .and_then(|nation| nation.major.as_ref())
+                .and_then(|nation| nation.major())
                 .map(|major| major.turn_finished)
         }))
     }
@@ -60,7 +60,7 @@ impl GameState {
                 .nations
                 .get(slot)
                 .and_then(Option::as_ref)
-                .and_then(|nation| nation.major.as_ref())
+                .and_then(|nation| nation.major())
                 .is_some();
             if !present {
                 return Err(TurnFlowError::MissingMajorNation { slot });
@@ -69,7 +69,7 @@ impl GameState {
         for nation in self.nations.iter_mut().take(MAJOR_NATION_COUNT) {
             let major = nation
                 .as_mut()
-                .and_then(|nation| nation.major.as_mut())
+                .and_then(|nation| nation.major_mut())
                 .expect("major-nation presence was checked above");
             reset_finished_flag(major.diplomacy_eligible, &mut major.turn_finished);
         }

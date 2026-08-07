@@ -198,7 +198,7 @@ fn spawn_semantic_markers(
     layout: StrategicMapLayout,
 ) {
     for nation in game.nations.iter().flatten() {
-        let Ok(tile_index) = u16::try_from(nation.home_tile) else {
+        let Ok(tile_index) = u16::try_from(nation.common.home_tile) else {
             continue;
         };
         let tile = TileId::new(tile_index);

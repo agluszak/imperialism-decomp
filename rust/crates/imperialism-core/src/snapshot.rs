@@ -719,6 +719,52 @@ impl GameSnapshotV1 {
                 )));
             }
             next_queue_index[nation] += 1;
+            let payloads_match_class = match mission.class.as_str() {
+                "TDefendProvinceMission" => {
+                    mission.army.is_some()
+                        && mission.navy.is_none()
+                        && mission.attack.is_none()
+                        && mission.beachhead.is_none()
+                        && mission.blockade_port_zone.is_none()
+                }
+                "TAttackProvinceMission" => {
+                    mission.army.is_some()
+                        && mission.navy.is_none()
+                        && mission.attack.is_some()
+                        && mission.beachhead.is_none()
+                        && mission.blockade_port_zone.is_none()
+                }
+                "TInvadeMission" => {
+                    mission.army.is_some()
+                        && mission.navy.is_none()
+                        && mission.attack.is_some()
+                        && mission.blockade_port_zone.is_none()
+                }
+                "TControlSeaZoneMission"
+                | "TEscortMission"
+                | "TScatteredShipsMission"
+                | "TBeachheadMission" => {
+                    mission.army.is_none()
+                        && mission.navy.is_some()
+                        && mission.attack.is_none()
+                        && mission.beachhead.is_none()
+                        && mission.blockade_port_zone.is_none()
+                }
+                "TBlockadePortMission" => {
+                    mission.army.is_none()
+                        && mission.navy.is_some()
+                        && mission.attack.is_none()
+                        && mission.beachhead.is_none()
+                        && mission.blockade_port_zone.is_some()
+                }
+                _ => false,
+            };
+            if !payloads_match_class {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "mission class {} has incompatible payloads",
+                    mission.class
+                )));
+            }
             if let Some(army) = &mission.army {
                 for unit in &army.units {
                     if !unit_ids.contains(unit) {
@@ -1202,6 +1248,17 @@ mod tests {
             state.task_forces[0].ships,
             vec![(crate::ShipId::new(0), true)]
         );
+        assert!(matches!(
+            &state.missions[0].data,
+            crate::MissionData::Invade {
+                attack: crate::AttackMissionState {
+                    target_province: 12,
+                    amassing_province: 11,
+                    ..
+                },
+                beachhead: Some(_),
+            }
+        ));
     }
 
     #[test]
@@ -1226,6 +1283,18 @@ mod tests {
             snapshot.validate(),
             Err(SnapshotValidationError::Shape(message))
                 if message == "invalid civilian roster index for nation 6"
+        ));
+    }
+
+    #[test]
+    fn rejects_mission_payloads_that_do_not_match_the_runtime_class() {
+        let mut snapshot = snapshot();
+        snapshot.missions.records[0].navy = snapshot.missions.records[0].beachhead.clone();
+        snapshot.refresh_hashes().unwrap();
+        assert!(matches!(
+            snapshot.validate(),
+            Err(SnapshotValidationError::Shape(message))
+                if message == "mission class TInvadeMission has incompatible payloads"
         ));
     }
 }

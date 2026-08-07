@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+#![allow(clippy::large_enum_variant)]
 
 mod calendar;
 mod city_buildings;
@@ -61,15 +62,15 @@ pub use snapshot::{
     SnapshotTurnStartEvent, SnapshotValidationError, SnapshotWorld, TileSnapshot,
 };
 pub use state::{
-    ArmyMissionState, CityState, CivilianUnitState, GameCommand, GameEvent, GameState,
-    MajorNationState, MilitaryUnitState, MissionKind, MissionState, NationKind, NationPendingWork,
-    NationState, NavyMissionState, PendingWorkState, PopulationState, RngState, ShipState,
-    StepOutcome, TaskForceState, TaskForceTarget, TileState, TurnStartEventState, TurnState,
-    WorldState,
+    ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, GameCommand, GameEvent,
+    GameState, MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState,
+    NationData, NationPendingWork, NationState, NavyMissionState, PendingWorkState,
+    PopulationState, RngState, ShipState, StepOutcome, TaskForceState, TaskForceTarget, TileState,
+    TurnStartEventState, TurnState, WorldState,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT, NationTable, PENDING_ACTION_COUNT,
-    PendingActionSlot, PendingActionTable, ProductionTable,
+    PendingActionKind, PendingActionTable, ProductionTable,
 };
 pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;

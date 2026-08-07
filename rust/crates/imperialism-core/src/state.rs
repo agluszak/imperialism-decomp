@@ -63,22 +63,49 @@ pub struct RngState {
     pub zone_status: u32,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum NationKind {
-    Major,
-    Minor,
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct NationState {
     pub id: NationId,
-    pub kind: NationKind,
+    pub common: NationCommonState,
+    pub data: NationData,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct NationCommonState {
     pub encoded_nation_slot: i16,
     pub owner_nation: i16,
     pub treasury: i32,
     pub home_tile: i32,
     pub need_level_by_nation: NationTable<i16>,
-    pub major: Option<MajorNationState>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum NationData {
+    Major(MajorNationState),
+    Minor,
+}
+
+impl NationState {
+    pub const fn major(&self) -> Option<&MajorNationState> {
+        match &self.data {
+            NationData::Major(major) => Some(major),
+            NationData::Minor => None,
+        }
+    }
+
+    pub const fn major_mut(&mut self) -> Option<&mut MajorNationState> {
+        match &mut self.data {
+            NationData::Major(major) => Some(major),
+            NationData::Minor => None,
+        }
+    }
+
+    pub fn major_parts_mut(&mut self) -> Option<(&mut NationCommonState, &mut MajorNationState)> {
+        match &mut self.data {
+            NationData::Major(major) => Some((&mut self.common, major)),
+            NationData::Minor => None,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -228,18 +255,6 @@ pub struct TaskForceState {
     pub ships: Vec<(ShipId, bool)>,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum MissionKind {
-    AttackProvince,
-    Invade,
-    DefendProvince,
-    ControlSeaZone,
-    Escort,
-    ScatteredShips,
-    BlockadePort,
-    Beachhead,
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ArmyMissionState {
     pub present_location: i16,
@@ -259,22 +274,41 @@ pub struct NavyMissionState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct AttackMissionState {
+    pub army: ArmyMissionState,
+    pub target_province: i16,
+    pub amassing_province: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum MissionData {
+    AttackProvince(AttackMissionState),
+    Invade {
+        attack: AttackMissionState,
+        beachhead: Option<NavyMissionState>,
+    },
+    DefendProvince(ArmyMissionState),
+    ControlSeaZone(NavyMissionState),
+    Escort(NavyMissionState),
+    ScatteredShips(NavyMissionState),
+    BlockadePort {
+        navy: NavyMissionState,
+        port_zone: i16,
+    },
+    Beachhead(NavyMissionState),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct MissionState {
     pub id: MissionId,
     pub nation: NationId,
     pub queue_index: u32,
-    pub kind: MissionKind,
+    pub data: MissionData,
     pub source_nation: i16,
     pub path_marker: i16,
     pub state: u8,
     pub importance_bits: u32,
     pub marker: u8,
-    pub army: Option<ArmyMissionState>,
-    pub navy: Option<NavyMissionState>,
-    pub target_province: Option<i16>,
-    pub amassing_province: Option<i16>,
-    pub beachhead: Option<NavyMissionState>,
-    pub blockade_port_zone: Option<i16>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -515,23 +549,38 @@ fn nation_state(snapshot: SnapshotNation) -> Result<Option<NationState>, Snapsho
         return Ok(None);
     }
     let slot = snapshot.slot;
-    let kind = if snapshot.kind == "major" {
-        NationKind::Major
-    } else {
-        NationKind::Minor
+    let data = match (snapshot.kind.as_str(), snapshot.major) {
+        ("major", Some(major)) => NationData::Major(MajorNationState::try_from(major)?),
+        ("minor", None) => NationData::Minor,
+        ("major", None) => {
+            return Err(SnapshotValidationError::Shape(format!(
+                "present major nation {slot} has no major state"
+            )));
+        }
+        ("minor", Some(_)) => {
+            return Err(SnapshotValidationError::Shape(format!(
+                "minor nation {slot} contains major state"
+            )));
+        }
+        (kind, _) => {
+            return Err(SnapshotValidationError::Shape(format!(
+                "unsupported nation kind {kind}"
+            )));
+        }
     };
     Ok(Some(NationState {
         id: NationId::new(slot),
-        kind,
-        encoded_nation_slot: required(snapshot.encoded_nation_slot, "encoded nation slot")?,
-        owner_nation: required(snapshot.owner_nation, "owner nation")?,
-        treasury: required(snapshot.treasury, "treasury")?,
-        home_tile: required(snapshot.home_tile, "home tile")?,
-        need_level_by_nation: nation_table(
-            required(snapshot.need_level_by_nation, "nation need levels")?,
-            "nation need levels",
-        )?,
-        major: snapshot.major.map(MajorNationState::try_from).transpose()?,
+        common: NationCommonState {
+            encoded_nation_slot: required(snapshot.encoded_nation_slot, "encoded nation slot")?,
+            owner_nation: required(snapshot.owner_nation, "owner nation")?,
+            treasury: required(snapshot.treasury, "treasury")?,
+            home_tile: required(snapshot.home_tile, "home tile")?,
+            need_level_by_nation: nation_table(
+                required(snapshot.need_level_by_nation, "nation need levels")?,
+                "nation need levels",
+            )?,
+        },
+        data,
     }))
 }
 
@@ -891,41 +940,88 @@ fn task_force_state(
 }
 
 fn mission_state(snapshot: SnapshotMission) -> Result<MissionState, SnapshotValidationError> {
-    let kind = match snapshot.class.as_str() {
-        "TAttackProvinceMission" => MissionKind::AttackProvince,
-        "TInvadeMission" => MissionKind::Invade,
-        "TDefendProvinceMission" => MissionKind::DefendProvince,
-        "TControlSeaZoneMission" => MissionKind::ControlSeaZone,
-        "TEscortMission" => MissionKind::Escort,
-        "TScatteredShipsMission" => MissionKind::ScatteredShips,
-        "TBlockadePortMission" => MissionKind::BlockadePort,
-        "TBeachheadMission" => MissionKind::Beachhead,
-        class => {
+    let class = snapshot.class;
+    let data = match (
+        class.as_str(),
+        snapshot.army,
+        snapshot.navy,
+        snapshot.attack,
+        snapshot.beachhead,
+        snapshot.blockade_port_zone,
+    ) {
+        ("TDefendProvinceMission", Some(army), None, None, None, None) => {
+            MissionData::DefendProvince(army_mission_state(army)?)
+        }
+        ("TAttackProvinceMission", Some(army), None, Some(attack), None, None) => {
+            MissionData::AttackProvince(AttackMissionState {
+                army: army_mission_state(army)?,
+                target_province: attack.target_province,
+                amassing_province: attack.amassing_province,
+            })
+        }
+        ("TInvadeMission", Some(army), None, Some(attack), beachhead, None) => {
+            MissionData::Invade {
+                attack: AttackMissionState {
+                    army: army_mission_state(army)?,
+                    target_province: attack.target_province,
+                    amassing_province: attack.amassing_province,
+                },
+                beachhead: beachhead.map(navy_mission_state).transpose()?,
+            }
+        }
+        ("TControlSeaZoneMission", None, Some(navy), None, None, None) => {
+            MissionData::ControlSeaZone(navy_mission_state(navy)?)
+        }
+        ("TEscortMission", None, Some(navy), None, None, None) => {
+            MissionData::Escort(navy_mission_state(navy)?)
+        }
+        ("TScatteredShipsMission", None, Some(navy), None, None, None) => {
+            MissionData::ScatteredShips(navy_mission_state(navy)?)
+        }
+        ("TBlockadePortMission", None, Some(navy), None, None, Some(port_zone)) => {
+            MissionData::BlockadePort {
+                navy: navy_mission_state(navy)?,
+                port_zone,
+            }
+        }
+        ("TBeachheadMission", None, Some(navy), None, None, None) => {
+            MissionData::Beachhead(navy_mission_state(navy)?)
+        }
+        (
+            "TAttackProvinceMission"
+            | "TInvadeMission"
+            | "TDefendProvinceMission"
+            | "TControlSeaZoneMission"
+            | "TEscortMission"
+            | "TScatteredShipsMission"
+            | "TBlockadePortMission"
+            | "TBeachheadMission",
+            _,
+            _,
+            _,
+            _,
+            _,
+        ) => {
+            return Err(SnapshotValidationError::Shape(format!(
+                "mission class {class} has incompatible payloads"
+            )));
+        }
+        _ => {
             return Err(SnapshotValidationError::Shape(format!(
                 "unsupported mission class {class}"
             )));
         }
     };
-    let (target_province, amassing_province) = snapshot
-        .attack
-        .map(|attack| (Some(attack.target_province), Some(attack.amassing_province)))
-        .unwrap_or((None, None));
     Ok(MissionState {
         id: MissionId::new(snapshot.index),
         nation: NationId::new(snapshot.nation),
         queue_index: snapshot.queue_index,
-        kind,
+        data,
         source_nation: snapshot.source_nation,
         path_marker: snapshot.path_marker,
         state: snapshot.state,
         importance_bits: snapshot.importance_bits,
         marker: snapshot.marker,
-        army: snapshot.army.map(army_mission_state).transpose()?,
-        navy: snapshot.navy.map(navy_mission_state).transpose()?,
-        target_province,
-        amassing_province,
-        beachhead: snapshot.beachhead.map(navy_mission_state).transpose()?,
-        blockade_port_zone: snapshot.blockade_port_zone,
     })
 }
 

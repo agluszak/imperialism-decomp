@@ -1,5 +1,5 @@
 use crate::{
-    CityState, MajorNationState, PendingActionSlot, PopulationError, ProductionSlot, ResourceKind,
+    CityState, MajorNationState, PendingActionKind, PopulationError, ProductionSlot, ResourceKind,
     ResourceTable, SkillBand,
 };
 
@@ -694,12 +694,13 @@ impl TrainingProductionOrder {
             TrainingLevel::High => {
                 let new_level = i32::from(baseline.high) + i32::from(self.quantity);
                 if new_level >= 10 {
-                    let payload = if owner.pending_action_status[PendingActionSlot::new(7).unwrap()]
+                    let payload = if owner.pending_action_status
+                        [PendingActionKind::UniversityExpansion]
                         < b'2' as i8
                     {
                         Some(2)
                     } else if new_level >= 30
-                        && owner.pending_action_status[PendingActionSlot::new(7).unwrap()]
+                        && owner.pending_action_status[PendingActionKind::UniversityExpansion]
                             <= b'3' as i8
                     {
                         Some(3)
@@ -707,7 +708,7 @@ impl TrainingProductionOrder {
                         None
                     };
                     if let Some(payload) = payload {
-                        set_pending_action(owner, PendingActionSlot::new(7).unwrap(), payload);
+                        set_pending_action(owner, PendingActionKind::UniversityExpansion, payload);
                     }
                 }
                 baseline.medium = baseline.medium.wrapping_sub(self.quantity);
@@ -982,7 +983,10 @@ pub enum ProductionError {
 }
 
 fn retail_region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
-    let divisor = if owner.pending_action_status[PendingActionSlot::new(9).unwrap()] >= b'3' as i8 {
+    let divisor = if owner.pending_action_status
+        [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
+        >= b'3' as i8
+    {
         3
     } else {
         4
@@ -1006,7 +1010,7 @@ fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quantity: i16) 
     city.add_to_stock_and_verify(cost.resource, change.wrapping_neg());
 }
 
-fn set_pending_action(owner: &mut MajorNationState, action: PendingActionSlot, payload: i16) {
+fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, payload: i16) {
     owner.pending_action_status[action] = b'2' as i8;
     owner.pending_action_payload_by_action[action] = payload;
 }
@@ -1380,7 +1384,8 @@ mod tests {
             quantity: 2,
             limiting_constraint: ProductionConstraint::Resources,
         };
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'3' as i8;
         let float_count = state.population.count_float_bits;
 
         production.produce(&mut state, &owner, 12).unwrap();
@@ -1459,7 +1464,8 @@ mod tests {
         let mut owner = nation();
         let mut production = capacity_order(CapacityTarget::RegionalPopulation);
         production.quantity = 2;
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'3' as i8;
         state.production_orders[slot(15)] = 1;
         state.production_accum[slot(15)] = 3;
 
@@ -1520,7 +1526,8 @@ mod tests {
         let mut owner = nation();
         let mut production = expansion_order(ExpansionTarget::RegionalPopulation);
         production.quantity = 1;
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'2' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'2' as i8;
         state.production_orders[slot(15)] = 8;
         state.production_accum[slot(15)] = 10;
 
@@ -1725,7 +1732,7 @@ mod tests {
         assert_eq!(state.population.baseline_labor.unwrap().medium, 4);
         assert_eq!(medium.quantity, 0);
 
-        owner.pending_action_status[PendingActionSlot::new(7).unwrap()] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::UniversityExpansion] = b'3' as i8;
         owner.pending_action_payload_by_action = crate::PendingActionTable::default();
         state.population.baseline_labor.as_mut().unwrap().high = 29;
         let mut high = TrainingProductionOrder::new(TrainingLevel::High);
@@ -1734,11 +1741,11 @@ mod tests {
         assert_eq!(state.population.baseline_labor.unwrap().medium, 3);
         assert_eq!(state.population.baseline_labor.unwrap().high, 30);
         assert_eq!(
-            owner.pending_action_status[PendingActionSlot::new(7).unwrap()],
+            owner.pending_action_status[PendingActionKind::UniversityExpansion],
             b'2' as i8
         );
         assert_eq!(
-            owner.pending_action_payload_by_action[PendingActionSlot::new(7).unwrap()],
+            owner.pending_action_payload_by_action[PendingActionKind::UniversityExpansion],
             3
         );
         assert_eq!(high.quantity, 0);
@@ -1755,11 +1762,11 @@ mod tests {
 
         production.produce(&mut state, &mut owner).unwrap();
         assert_eq!(
-            owner.pending_action_status[PendingActionSlot::new(7).unwrap()],
+            owner.pending_action_status[PendingActionKind::UniversityExpansion],
             b'2' as i8
         );
         assert_eq!(
-            owner.pending_action_payload_by_action[PendingActionSlot::new(7).unwrap()],
+            owner.pending_action_payload_by_action[PendingActionKind::UniversityExpansion],
             2
         );
     }
