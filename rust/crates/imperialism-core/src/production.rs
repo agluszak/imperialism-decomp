@@ -1,4 +1,4 @@
-use crate::{CityState, ProductionSlot, ResourceKind};
+use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind};
 use std::error::Error;
 use std::fmt;
 
@@ -34,6 +34,98 @@ pub struct ItemProductionOrder {
 pub struct FoodProductionOrder {
     pub quantity: i16,
     pub reserved_workforce: i16,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PopulationGrowthOrder {
+    pub quantity: i16,
+    pub limiting_constraint: ProductionConstraint,
+}
+
+impl Default for PopulationGrowthOrder {
+    fn default() -> Self {
+        Self {
+            quantity: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+        }
+    }
+}
+
+impl PopulationGrowthOrder {
+    pub fn max_order(&mut self, city: &CityState) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        let mut limit =
+            city.stock_by_type[ResourceKind::Furniture.index()].wrapping_add(self.quantity);
+        limit = limit
+            .min(city.stock_by_type[ResourceKind::Clothing.index()].wrapping_add(self.quantity));
+        limit =
+            limit.min(city.stock_by_type[ResourceKind::Food.index()].wrapping_add(self.quantity));
+        let capacity_limit = city.production_accum[15].wrapping_add(self.quantity);
+
+        self.limiting_constraint = ProductionConstraint::Resources;
+        if capacity_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Capacity;
+            limit = capacity_limit;
+        }
+        Ok(limit)
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        validate_city(city)?;
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city)? || quantity < 0 {
+            return Ok(false);
+        }
+        self.quantity = quantity;
+        city.add_to_stock_and_verify(ResourceKind::Furniture, delta.wrapping_neg());
+        city.add_to_stock_and_verify(ResourceKind::Clothing, delta.wrapping_neg());
+        city.add_to_stock_and_verify(ResourceKind::Food, delta.wrapping_neg());
+        city.production_accum[15] = city.production_accum[15].wrapping_sub(delta);
+        Ok(true)
+    }
+
+    pub fn produce(
+        &mut self,
+        city: &mut CityState,
+        owner: &MajorNationState,
+        owned_region_count: i32,
+    ) -> Result<(), ProductionError> {
+        validate_city(city)?;
+        validate_pending_actions(owner)?;
+        if city.population.baseline_labor.is_none() {
+            return Err(ProductionError::MissingLaborPool("baseline"));
+        }
+        if city.population.production_labor.is_none() {
+            return Err(ProductionError::MissingLaborPool("production"));
+        }
+        let baseline = city
+            .population
+            .baseline_labor
+            .as_mut()
+            .expect("baseline labor was validated");
+        baseline.low = baseline.low.wrapping_add(self.quantity);
+        let production = city
+            .population
+            .production_labor
+            .as_mut()
+            .expect("production labor was validated");
+        production.low = production.low.wrapping_add(self.quantity);
+        city.population.count = city.population.count.wrapping_add(self.quantity);
+
+        let divisor = if owner.pending_action_status[9] >= b'3' as i8 {
+            3
+        } else {
+            4
+        };
+        let capacity = owned_region_count / divisor;
+        city.production_accum[15] = if capacity > 1 { capacity as i16 } else { 1 };
+        self.quantity = 0;
+        Ok(())
+    }
 }
 
 impl FoodProductionOrder {
@@ -266,6 +358,8 @@ impl ItemProductionOrder {
 pub enum ProductionError {
     InvalidResourceCount { actual: usize },
     InvalidProductionCount { actual: usize },
+    InvalidPendingActionCount { actual: usize },
+    MissingLaborPool(&'static str),
 }
 
 impl fmt::Display for ProductionError {
@@ -281,6 +375,11 @@ impl fmt::Display for ProductionError {
                 "city production accumulation has {actual} entries, expected {}",
                 ProductionSlot::COUNT
             ),
+            Self::InvalidPendingActionCount { actual } => write!(
+                formatter,
+                "pending nation actions have {actual} entries, expected at least 10"
+            ),
+            Self::MissingLaborPool(name) => write!(formatter, "city has no {name} labor pool"),
         }
     }
 }
@@ -299,6 +398,16 @@ fn validate_city(city: &CityState) -> Result<(), ProductionError> {
         });
     }
     Ok(())
+}
+
+fn validate_pending_actions(owner: &MajorNationState) -> Result<(), ProductionError> {
+    if owner.pending_action_status.len() >= 10 {
+        Ok(())
+    } else {
+        Err(ProductionError::InvalidPendingActionCount {
+            actual: owner.pending_action_status.len(),
+        })
+    }
 }
 
 #[cfg(test)]
@@ -343,6 +452,40 @@ mod tests {
                 pending_labor_delta: Some(LaborPool::default()),
                 predicted_need_by_resource: vec![0; ResourceKind::COUNT],
             },
+        }
+    }
+
+    fn nation() -> MajorNationState {
+        MajorNationState {
+            diplomacy_eligible: true,
+            capacities: [0; 4],
+            grant_total_cost: 0,
+            unfilled_trade_offer_count: 0,
+            diplomacy_policy_by_nation: vec![0; ResourceKind::COUNT],
+            diplomacy_grant_by_nation: vec![0; ResourceKind::COUNT],
+            need_current_by_type: vec![0; ResourceKind::COUNT],
+            need_target_by_type: vec![0; ResourceKind::COUNT],
+            relation_delta_current: vec![0; ResourceKind::COUNT],
+            purchased_items_by_resource: vec![0; ResourceKind::COUNT],
+            item_potentials: vec![0; ResourceKind::COUNT],
+            unfilled_trade_turns_by_resource: vec![0; ResourceKind::COUNT],
+            transported_items_by_resource: vec![0; ResourceKind::COUNT],
+            remembered_trade_offers_by_resource: vec![0; ResourceKind::COUNT],
+            aid_allocation_matrix: vec![],
+            budget_pool_base: 0,
+            budget_pool_delta: 0,
+            candidate_nation_flags: vec![],
+            scenario_initialized: false,
+            turn_finished: false,
+            pending_action_status: vec![0; 13],
+            pending_action_payload_by_action: vec![],
+            diplomacy_budget_base: 0,
+            escalation_counter: 0,
+            pending_commitment_cost: 0,
+            pressure_counter: 0,
+            aid_allocation_total: 0,
+            colony_boycott_flags: vec![],
+            military_expenses: 0,
         }
     }
 
@@ -616,5 +759,69 @@ mod tests {
         assert_eq!(state.stock_by_type[ResourceKind::Food.index()], 4);
         assert_eq!(production.quantity, 0);
         assert_eq!(production.reserved_workforce, 0);
+    }
+
+    #[test]
+    fn population_growth_selects_resource_then_capacity_limits() {
+        let mut state = city();
+        let mut production = PopulationGrowthOrder::default();
+        state.stock_by_type[ResourceKind::Furniture.index()] = 3;
+        state.stock_by_type[ResourceKind::Clothing.index()] = 2;
+        state.stock_by_type[ResourceKind::Food.index()] = 4;
+        state.production_accum[15] = 10;
+        assert_eq!(production.max_order(&state).unwrap(), 2);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Resources
+        );
+
+        state.production_accum[15] = 1;
+        assert_eq!(production.max_order(&state).unwrap(), 1);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Capacity
+        );
+    }
+
+    #[test]
+    fn population_growth_quantity_reserves_and_refunds_all_inputs() {
+        let mut state = city();
+        let mut production = PopulationGrowthOrder::default();
+        state.stock_by_type[ResourceKind::Furniture.index()] = 3;
+        state.stock_by_type[ResourceKind::Clothing.index()] = 3;
+        state.stock_by_type[ResourceKind::Food.index()] = 3;
+        state.production_accum[15] = 3;
+
+        assert!(production.set_quantity(&mut state, 2).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Furniture.index()], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Clothing.index()], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Food.index()], 1);
+        assert_eq!(state.production_accum[15], 1);
+
+        assert!(production.set_quantity(&mut state, 1).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Furniture.index()], 2);
+        assert_eq!(state.stock_by_type[ResourceKind::Clothing.index()], 2);
+        assert_eq!(state.stock_by_type[ResourceKind::Food.index()], 2);
+        assert_eq!(state.production_accum[15], 2);
+    }
+
+    #[test]
+    fn population_growth_produces_low_skill_population_and_refreshes_capacity() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut production = PopulationGrowthOrder {
+            quantity: 2,
+            limiting_constraint: ProductionConstraint::Resources,
+        };
+        owner.pending_action_status[9] = b'3' as i8;
+        let float_count = state.population.count_float_bits;
+
+        production.produce(&mut state, &owner, 12).unwrap();
+        assert_eq!(state.population.baseline_labor.unwrap().low, 6);
+        assert_eq!(state.population.production_labor.unwrap().low, 6);
+        assert_eq!(state.population.count, 9);
+        assert_eq!(state.population.count_float_bits, float_count);
+        assert_eq!(state.production_accum[15], 4);
+        assert_eq!(production.quantity, 0);
     }
 }

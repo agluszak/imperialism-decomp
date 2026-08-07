@@ -29,7 +29,8 @@ pub use map_geometry::{
 pub use nation_economy::NationEconomyError;
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
-    FoodProductionOrder, ItemInputs, ItemProductionOrder, ProductionConstraint, ProductionError,
+    FoodProductionOrder, ItemInputs, ItemProductionOrder, PopulationGrowthOrder,
+    ProductionConstraint, ProductionError,
 };
 pub use resources::ResourceKind;
 pub use snapshot::{
