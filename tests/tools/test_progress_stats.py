@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression tests for complete, function-only reccmp progress accounting."""
+"""Regression tests for typed reccmp progress accounting."""
 
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ from tools.reccmp.progress_stats import (
     function_changes,
     generated_stub_report_errors,
     parse_report_counts,
+    parse_roadmap_counts,
     parse_report_functions,
     report_cache_is_current,
     run_progress_report,
@@ -364,6 +365,47 @@ class UiFactoryFidelityTests(unittest.TestCase):
             report = self._report(directory, [])
             with patch("tools.ui_codegen.load_recipes", return_value=[]):
                 self.assertEqual(ui_factory_fidelity(report, {}, directory), {})
+
+    def test_typed_roadmap_separates_imports_and_actionable_states(self) -> None:
+        roadmap = Path(tempfile.mkdtemp()) / "roadmap.csv"
+        roadmap.write_text(
+            "orig_addr,recomp_addr,row_type,pairing_state\n"
+            "0x410000,0x510000,function,paired\n"
+            "0x420000,,data,unexplained\n"
+            "0x430000,0x530000,string,paired\n"
+            "0x440000,,label,unexplained\n"
+            "0x450000,,float,unexplained\n"
+            "0x460000,0x560000,import,paired\n"
+            "0x470000,,import,unexplained\n"
+            "0x480000,0x580000,import_thunk,paired\n"
+            "0x490000,,import_thunk,alias\n"
+            "0x4a0000,,vtable,duplicate\n",
+            encoding="utf-8",
+        )
+
+        counts = parse_roadmap_counts(roadmap)
+
+        self.assertEqual(counts["original_import_count"], 2)
+        self.assertEqual(counts["paired_import_count"], 1)
+        self.assertEqual(counts["unexplained_import_count"], 1)
+        self.assertEqual(counts["original_import_thunk_count"], 2)
+        self.assertEqual(counts["paired_import_thunk_count"], 1)
+        self.assertEqual(counts["alias_import_thunk_count"], 1)
+        self.assertEqual(counts["duplicate_vtable_count"], 1)
+        self.assertEqual(counts["actionable_non_fun_count"], 7)
+        self.assertEqual(counts["actionable_non_fun_covered_count"], 5)
+        self.assertEqual(counts["actionable_non_fun_unexplained_count"], 2)
+        self.assertEqual(counts["expected_unpaired_label_count"], 1)
+        self.assertEqual(counts["expected_unpaired_float_count"], 1)
+
+    def test_legacy_abbreviated_roadmap_is_rejected(self) -> None:
+        roadmap = Path(tempfile.mkdtemp()) / "roadmap.csv"
+        roadmap.write_text(
+            "orig_addr,recomp_addr,row_type\n0x410000,0x510000,imp\n",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ValueError, "typed schema"):
+            parse_roadmap_counts(roadmap)
 
 
 if __name__ == "__main__":

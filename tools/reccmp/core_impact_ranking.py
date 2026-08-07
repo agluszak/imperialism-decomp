@@ -128,7 +128,7 @@ def load_roadmap_rows(path: Path) -> list[dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as fd:
         reader = csv.DictReader(fd)
         for row in reader:
-            if row.get("row_type") != "fun":
+            if row.get("row_type") != "function":
                 continue
             if not (row.get("orig_addr") or "").strip():
                 continue
