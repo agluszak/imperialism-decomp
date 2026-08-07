@@ -97,26 +97,36 @@ if(IMPERIALISM_AUTOGEN_UI_SOURCES)
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0041b6d0.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_00427360.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_00430c50.cpp"
-        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044a810.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044af90.cpp"
-        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044fbc0.cpp"
-        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045b100.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045d520.cpp"
-        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045e0b0.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_004601b0.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_004749a0.cpp")
+    set(IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCES
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044a810.cpp"
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044fbc0.cpp"
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045b100.cpp"
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045e0b0.cpp")
     set(IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE
         "${IMPERIALISM_GENERATED_DIR}/ui/AmbitResourceBuilder.cpp")
+    set(IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCE
+        "${IMPERIALISM_GENERATED_DIR}/ui/AmbitLateInlineResourceFactories.cpp")
     list(REMOVE_ITEM IMPERIALISM_AUTOGEN_UI_SOURCES
         ${IMPERIALISM_AMBIT_FACTORY_SOURCES}
-        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}")
+        ${IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCES}
+        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}"
+        "${IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCE}")
     configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AmbitResourceBuilder.cpp.in"
         "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}"
         @ONLY)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AmbitLateInlineResourceFactories.cpp.in"
+        "${IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCE}"
+        @ONLY)
     target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_UI_SOURCES})
     target_sources(Imperialism PRIVATE
-        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}")
+        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}"
+        "${IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCE}")
 endif()
 if(IMPERIALISM_AUTOGEN_STUB_SOURCES)
     target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_STUB_SOURCES})
