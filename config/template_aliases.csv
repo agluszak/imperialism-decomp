@@ -1,4 +1,4 @@
-# Fold-aware equivalence metadata (bd 5jjn) in two classes, keyed by the
+# Fold-aware equivalence metadata (bd 5jjn) in three classes, keyed by the
 # classification column. An alias row is comparison metadata -- never a reason
 # to invent a source class, duplicate an instantiation, or re-model a member.
 # Every row is re-verified by `just template-alias-check`.
@@ -24,7 +24,17 @@
 #   - the canonical is a sized function in config/symbols.csv.
 # Discover candidates with `just stale-jmp-islands [--emit]`.
 #
+# library_callee_alias: compiler wrappers that directly call a linked library
+# body with the same decorated ABI identity. The wrapper remains a distinct
+# report entity; this row canonicalizes only call operands. Verified:
+#   - both addresses are sized functions;
+#   - the wrapper has a direct call resolving to the canonical body;
+#   - the row carries the canonical decorated library identity.
+#
 # original_address|canonical_address|decorated_name|classification
+0x0049eb00|0x006057a7|??0CString@@QAE@ABV0@@Z|library_callee_alias
+0x004ac370|0x004adc40|??0CString@@QAE@PBD@Z|library_callee_alias
+0x004b0970|0x00605797|??0CString@@QAE@XZ|library_callee_alias
 0x00426ec0|0x00479b00|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|per_tu_duplicate
 0x004847a0|0x004829f0|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|per_tu_duplicate
 0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
@@ -88,6 +98,16 @@
 0x0045d4e0|0x0048f250|TTacticalHolaPicture::~TTacticalHolaPicture|folded_symbol_group
 0x00460120|0x0048a9d0|TTechStorePage::~TTechStorePage|folded_symbol_group
 0x00460170|0x0048a9d0|TTechHistoryView::~TTechHistoryView|folded_symbol_group
+0x0047f300|0x00604d04|TA3TemplateDialog|folded_symbol_group
+0x0047f3c0|0x00604d04|TA4TemplateDialog|folded_symbol_group
+0x00481650|0x00604d04|TA5TemplateDialog|folded_symbol_group
+0x00481710|0x00604d04|TA6TemplateDialog|folded_symbol_group
+0x00481950|0x00604d04|TA8TemplateDialog|folded_symbol_group
+0x00481a10|0x00604d04|TA9TemplateDialog|folded_symbol_group
+0x00481ad0|0x00604d04|TAATemplateDialog|folded_symbol_group
+0x00481d60|0x00604d04|TACTemplateDialog|folded_symbol_group
+0x00481ff0|0x00604d04|TAFTemplateDialog|folded_symbol_group
+0x00482400|0x00604d04|TF7TemplateDialog|folded_symbol_group
 0x004883c0|0x00601bdd|CObArray::thunk_DestructCObArray|folded_symbol_group
 0x004884f0|0x00601bdd|thunk_DestructCObArray|folded_symbol_group
 0x00490a30|0x0061eb67|CMcEditWindow::~CMcEditWindow|folded_symbol_group

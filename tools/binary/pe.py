@@ -123,6 +123,21 @@ def load_symbol_names() -> dict[int, str]:
     return names
 
 
+def load_decorated_symbols() -> dict[int, str]:
+    """addr -> curated decorated linker symbol from original_entities.csv."""
+    symbols: dict[int, str] = {}
+    with open(REPO_ROOT / "config" / "original_entities.csv", newline="") as f:
+        for row in csv.reader(f, delimiter="|"):
+            if (
+                len(row) >= 3
+                and row[0]
+                and row[2]
+                and re.fullmatch(r"[0-9a-fA-F]+", row[0])
+            ):
+                symbols[int(row[0], 16)] = row[2]
+    return symbols
+
+
 def load_symbol_sizes() -> dict[int, int]:
     """addr -> size (bytes) from config/original_entities.csv function rows."""
     sizes: dict[int, int] = {}

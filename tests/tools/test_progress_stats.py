@@ -11,7 +11,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from reccmp.compare.diagnosis import ComparisonAnalysis
-from reccmp.compare.diff import DiffReport, EntityCompareResult
+from reccmp.compare.report import ReccmpComparedEntity
 from reccmp.types import EntityType
 
 from tools.reccmp.progress_stats import (
@@ -36,18 +36,19 @@ def make_match(
     *,
     entity_type: EntityType = EntityType.FUNCTION,
     stub: bool = False,
-) -> DiffReport:
+) -> ReccmpComparedEntity:
     analysis = (
         ComparisonAnalysis.exact()
         if ratio == 1.0
         else ComparisonAnalysis.inconclusive("analysis_limit")
     )
-    return DiffReport(
-        match_type=entity_type,
+    return ReccmpComparedEntity(
+        type=entity_type,
         orig_addr=address,
         recomp_addr=address + 0x1000,
         name=name,
-        result=EntityCompareResult(match_ratio=ratio, analysis=analysis),
+        accuracy=ratio,
+        analysis=analysis,
         is_stub=stub,
     )
 
@@ -60,13 +61,13 @@ class ProgressStatsTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.tempdir.cleanup()
 
-    def write_report(self, matches: list[DiffReport]) -> None:
+    def write_report(self, matches: list[ReccmpComparedEntity]) -> None:
         report = build_progress_report("Imperialism.exe", matches)
         rows = []
         for entity in report.entities.values():
             rows.append(
                 {
-                    "address": entity.orig_addr,
+                    "address": f"{entity.orig_addr:#x}",
                     "name": entity.name,
                     "matching": entity.accuracy,
                     "comparison": {"status": entity.analysis.status.value},
@@ -166,6 +167,14 @@ class ProgressStatsTests(unittest.TestCase):
         self.assertEqual(
             set(parse_report_functions(self.report_path)),
             {"0x401000", "0x402000"},
+        )
+
+    def test_function_names_drop_report_rendering_whitespace(self) -> None:
+        self.write_report([make_match("CString::operator char const * ", 0x401000, 1.0)])
+
+        self.assertEqual(
+            parse_report_functions(self.report_path)["0x401000"]["n"],
+            "CString::operator char const *",
         )
 
     def test_every_generated_placeholder_is_reported_as_a_stub(self) -> None:
