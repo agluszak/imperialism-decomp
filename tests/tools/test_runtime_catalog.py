@@ -165,13 +165,14 @@ class RuntimeProtocolTests(unittest.TestCase):
     def game_snapshot() -> dict:
         return {
             "schema": "imperialism.game_snapshot.v1",
-            "sections": ["metadata", "rng", "world", "nations", "economy"],
+            "sections": ["metadata", "rng", "world", "nations", "economy", "military"],
             "hashes": {
                 "metadata": "0123abcd",
                 "rng": "0123abcd",
                 "world": "0123abcd",
                 "nations": "0123abcd",
                 "economy": "0123abcd",
+                "military": "0123abcd",
                 "state": "0123abcd",
             },
             "metadata": {},
@@ -192,6 +193,7 @@ class RuntimeProtocolTests(unittest.TestCase):
                     {"nation": slot, "present": False} for slot in range(7)
                 ]
             },
+            "military": {"units": [], "ships": [], "task_forces": []},
         }
 
     def test_valid_result(self) -> None:

@@ -27,6 +27,9 @@ id_type!(CityId, u16);
 id_type!(ArmyId, u32);
 id_type!(NavyId, u32);
 id_type!(MissionId, u32);
+id_type!(MilitaryUnitId, u32);
+id_type!(ShipId, u32);
+id_type!(TaskForceId, u32);
 
 #[cfg(test)]
 mod tests {

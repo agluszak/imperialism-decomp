@@ -1,10 +1,12 @@
 use serde::ser::SerializeStruct;
 use serde::{Deserialize, Serialize, Serializer};
+use std::collections::BTreeSet;
 use std::error::Error;
 use std::fmt;
 
 pub const GAME_SNAPSHOT_SCHEMA: &str = "imperialism.game_snapshot.v1";
-pub const GAME_SNAPSHOT_SECTIONS: [&str; 5] = ["metadata", "rng", "world", "nations", "economy"];
+pub const GAME_SNAPSHOT_SECTIONS: [&str; 6] =
+    ["metadata", "rng", "world", "nations", "economy", "military"];
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GameSnapshotV1 {
@@ -16,6 +18,7 @@ pub struct GameSnapshotV1 {
     pub world: SnapshotWorld,
     pub nations: SnapshotNations,
     pub economy: SnapshotEconomy,
+    pub military: SnapshotMilitary,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -25,6 +28,7 @@ pub struct SnapshotHashes {
     pub world: String,
     pub nations: String,
     pub economy: String,
+    pub military: String,
     pub state: String,
 }
 
@@ -234,6 +238,64 @@ pub struct SnapshotPopulation {
     pub predicted_need_by_resource: Vec<i16>,
 }
 
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotMilitary {
+    pub units: Vec<SnapshotMilitaryUnit>,
+    pub ships: Vec<SnapshotShip>,
+    pub task_forces: Vec<SnapshotTaskForce>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotMilitaryUnit {
+    pub nation: u8,
+    pub roster_index: u32,
+    pub persistent_id: i32,
+    pub unit_type: i16,
+    pub stationed_province: i16,
+    pub order: i32,
+    pub order_target: i16,
+    pub owner_nation: i16,
+    pub roster_id: i16,
+    pub registered: u8,
+    pub order_target_tiles: [i16; 3],
+    pub order_target_mirrors: [i16; 3],
+    pub name: String,
+    pub strength: i16,
+    pub era: i16,
+    pub experience: i16,
+    pub battle_flags: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotShip {
+    pub index: u32,
+    pub r#type: i16,
+    pub location: i16,
+    pub task_force: i32,
+    pub aggression: i32,
+    pub nation: i16,
+    pub name: String,
+    pub strength: i16,
+    pub experience: i16,
+    pub selection: i32,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotTaskForce {
+    pub index: u32,
+    pub aggression: i32,
+    pub order: i32,
+    pub target_kind: i32,
+    pub target: i32,
+    pub location: i16,
+    pub nation: i16,
+    pub ship_counts: [i16; 4],
+    pub defeated: i8,
+    pub ingot_tile: i16,
+    pub flagship: i32,
+    pub ships: Vec<[i32; 2]>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SnapshotValidationError {
     Schema(String),
@@ -321,6 +383,7 @@ impl GameSnapshotV1 {
         }
         self.validate_nations()?;
         self.validate_economy()?;
+        self.validate_military()?;
         for (section, hash) in self.hashes.iter() {
             if hash.len() != 8
                 || !hash
@@ -345,6 +408,7 @@ impl GameSnapshotV1 {
             ("world", &self.hashes.world, &computed.world),
             ("nations", &self.hashes.nations, &computed.nations),
             ("economy", &self.hashes.economy, &computed.economy),
+            ("military", &self.hashes.military, &computed.military),
             ("state", &self.hashes.state, &computed.state),
         ] {
             if expected != actual {
@@ -369,20 +433,28 @@ impl GameSnapshotV1 {
         let world = compact_json(&self.world)?;
         let nations = compact_json(&self.nations)?;
         let economy = compact_json(&self.economy)?;
+        let military = compact_json(&self.military)?;
         let mut state = String::with_capacity(
-            metadata.len() + rng.len() + world.len() + nations.len() + economy.len(),
+            metadata.len()
+                + rng.len()
+                + world.len()
+                + nations.len()
+                + economy.len()
+                + military.len(),
         );
         state.push_str(&metadata);
         state.push_str(&rng);
         state.push_str(&world);
         state.push_str(&nations);
         state.push_str(&economy);
+        state.push_str(&military);
         Ok(SnapshotHashes {
             metadata: fnv1a_hex(metadata.as_bytes()),
             rng: fnv1a_hex(rng.as_bytes()),
             world: fnv1a_hex(world.as_bytes()),
             nations: fnv1a_hex(nations.as_bytes()),
             economy: fnv1a_hex(economy.as_bytes()),
+            military: fnv1a_hex(military.as_bytes()),
             state: fnv1a_hex(state.as_bytes()),
         })
     }
@@ -444,16 +516,85 @@ impl GameSnapshotV1 {
         }
         Ok(())
     }
+
+    fn validate_military(&self) -> Result<(), SnapshotValidationError> {
+        let mut unit_ids = BTreeSet::new();
+        let mut expected_roster = [0_u32; 23];
+        for unit in &self.military.units {
+            let nation = usize::from(unit.nation);
+            if nation >= expected_roster.len() || unit.roster_index != expected_roster[nation] {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid military roster index for nation {}",
+                    unit.nation
+                )));
+            }
+            expected_roster[nation] += 1;
+            if !unit_ids.insert(unit.persistent_id) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "duplicate military unit id {}",
+                    unit.persistent_id
+                )));
+            }
+        }
+        for (index, ship) in self.military.ships.iter().enumerate() {
+            if usize::try_from(ship.index).ok() != Some(index) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid ship identity at index {index}"
+                )));
+            }
+            if ship.task_force >= 0
+                && usize::try_from(ship.task_force)
+                    .ok()
+                    .is_none_or(|force| force >= self.military.task_forces.len())
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "ship {index} references invalid task force {}",
+                    ship.task_force
+                )));
+            }
+        }
+        for (index, force) in self.military.task_forces.iter().enumerate() {
+            if usize::try_from(force.index).ok() != Some(index) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid task-force identity at index {index}"
+                )));
+            }
+            for child in &force.ships {
+                if child[0] < 0
+                    || usize::try_from(child[0])
+                        .ok()
+                        .is_none_or(|ship| ship >= self.military.ships.len())
+                {
+                    return Err(SnapshotValidationError::Shape(format!(
+                        "task force {index} references invalid ship {}",
+                        child[0]
+                    )));
+                }
+            }
+            if force.flagship >= 0
+                && usize::try_from(force.flagship)
+                    .ok()
+                    .is_none_or(|ship| ship >= self.military.ships.len())
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "task force {index} references invalid flagship {}",
+                    force.flagship
+                )));
+            }
+        }
+        Ok(())
+    }
 }
 
 impl SnapshotHashes {
-    fn iter(&self) -> [(&'static str, &str); 6] {
+    fn iter(&self) -> [(&'static str, &str); 7] {
         [
             ("metadata", &self.metadata),
             ("rng", &self.rng),
             ("world", &self.world),
             ("nations", &self.nations),
             ("economy", &self.economy),
+            ("military", &self.military),
             ("state", &self.state),
         ]
     }
@@ -689,6 +830,53 @@ mod tests {
                     })
                     .collect(),
             },
+            military: SnapshotMilitary {
+                units: vec![SnapshotMilitaryUnit {
+                    nation: 6,
+                    roster_index: 0,
+                    persistent_id: 42,
+                    unit_type: 5,
+                    stationed_province: 12,
+                    order: 0,
+                    order_target: -1,
+                    owner_nation: 6,
+                    roster_id: 0,
+                    registered: 1,
+                    order_target_tiles: [-1; 3],
+                    order_target_mirrors: [-1; 3],
+                    name: "First Army".to_owned(),
+                    strength: 100,
+                    era: 0,
+                    experience: 0,
+                    battle_flags: 0,
+                }],
+                ships: vec![SnapshotShip {
+                    index: 0,
+                    r#type: 3,
+                    location: 57,
+                    task_force: 0,
+                    aggression: 1,
+                    nation: 6,
+                    name: "Woopnist".to_owned(),
+                    strength: 900,
+                    experience: 0,
+                    selection: 0,
+                }],
+                task_forces: vec![SnapshotTaskForce {
+                    index: 0,
+                    aggression: 1,
+                    order: 3,
+                    target_kind: 0,
+                    target: -1,
+                    location: 57,
+                    nation: 6,
+                    ship_counts: [0, 1, 0, 0],
+                    defeated: 0,
+                    ingot_tile: 2968,
+                    flagship: 0,
+                    ships: vec![[0, 1]],
+                }],
+            },
         };
         snapshot.refresh_hashes().unwrap();
         snapshot
@@ -699,7 +887,16 @@ mod tests {
         let snapshot = snapshot();
         assert_eq!(snapshot.hashes.metadata.len(), 8);
         assert_eq!(snapshot.hashes.rng, "cda0c2d8");
+        let json = serde_json::to_value(&snapshot).unwrap();
+        assert_eq!(json["military"]["ships"][0]["type"], 3);
         snapshot.verify_hashes().unwrap();
+        let state = crate::GameState::try_from(snapshot).unwrap();
+        assert_eq!(state.military_units.len(), 1);
+        assert_eq!(state.ships[0].task_force, Some(crate::TaskForceId::new(0)));
+        assert_eq!(
+            state.task_forces[0].ships,
+            vec![(crate::ShipId::new(0), true)]
+        );
     }
 
     #[test]

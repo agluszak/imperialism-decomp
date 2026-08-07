@@ -12,7 +12,7 @@ from tools.runtime.catalog import EVIDENCE_KINDS
 
 FORMAT_VERSION = 1
 GAME_SNAPSHOT_SCHEMA = "imperialism.game_snapshot.v1"
-GAME_SNAPSHOT_SECTIONS = ("metadata", "rng", "world", "nations", "economy")
+GAME_SNAPSHOT_SECTIONS = ("metadata", "rng", "world", "nations", "economy", "military")
 HASH_PATTERN = re.compile(r"[0-9a-f]{8}")
 
 
@@ -142,6 +142,34 @@ def validate_game_snapshot(snapshot: object) -> None:
             for field in ("baseline_labor", "production_labor", "pending_labor_delta"):
                 if population.get(field) is not None:
                     _require_integer_array(population, field, 3)
+
+    military = snapshot["military"]
+    for field in ("units", "ships", "task_forces"):
+        if not isinstance(military.get(field), list):
+            raise ValueError(f"game_snapshot military {field} must be an array")
+    for unit in military["units"]:
+        if not isinstance(unit, dict):
+            raise ValueError("game_snapshot military units must be objects")
+        _require_integer_array(unit, "order_target_tiles", 3)
+        _require_integer_array(unit, "order_target_mirrors", 3)
+    for index, ship in enumerate(military["ships"]):
+        if not isinstance(ship, dict) or ship.get("index") != index:
+            raise ValueError("game_snapshot ships must be objects in index order")
+    for index, force in enumerate(military["task_forces"]):
+        if not isinstance(force, dict) or force.get("index") != index:
+            raise ValueError("game_snapshot task forces must be objects in index order")
+        _require_integer_array(force, "ship_counts", 4)
+        ships = force.get("ships")
+        if (
+            not isinstance(ships, list)
+            or any(
+                not isinstance(child, list)
+                or len(child) != 2
+                or any(isinstance(value, bool) or not isinstance(value, int) for value in child)
+                for child in ships
+            )
+        ):
+            raise ValueError("game_snapshot task-force ships must be integer pairs")
 
 
 def _require_integer_array(container: dict[str, Any], field: str, count: int) -> None:

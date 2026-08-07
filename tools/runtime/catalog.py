@@ -125,7 +125,7 @@ TESTS = (
         ("pr", "full"),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -134,7 +134,7 @@ TESTS = (
         ("full",),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -242,7 +242,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=("map",),
-        native_snapshots=("map",),
+        native_snapshots=("map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(

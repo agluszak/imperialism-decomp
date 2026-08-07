@@ -1,5 +1,6 @@
 #include "RuntimeGameSnapshot.h"
 
+#include "RuntimeJson.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
 
@@ -10,7 +11,14 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/TZone.h"
+#include "game/map/map_records.h"
+#include "game/military/TMilitaryUnit.h"
 #include "game/nation/TGreatPower.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TShip.h"
+#include "game/navy/TTaskForce.h"
+#include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 
 #include <string.h>
@@ -324,6 +332,129 @@ CString CaptureEconomy() {
   return json;
 }
 
+int SnapshotShipIndex(const TShip* target) {
+  int index = 0;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    if (ship == target) {
+      return index;
+    }
+    ++index;
+  }
+  return -1;
+}
+
+int SnapshotTaskForceIndex(const TTaskForce* target) {
+  if (g_pNavyOrderManager == 0) {
+    return -1;
+  }
+  int index = 0;
+  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != 0;
+       force = force->nextForce) {
+    if (force == target) {
+      return index;
+    }
+    ++index;
+  }
+  return -1;
+}
+
+CString CaptureMilitary() {
+  CString json("{\"units\":[");
+  bool first = true;
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[nationSlot];
+    if (country == 0 || country->militaryUnitList44 == 0) {
+      continue;
+    }
+    CIterator cursor(country->militaryUnitList44);
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+    int rosterIndex = 0;
+    while (cursor.More() != 0) {
+      CString row;
+      row.Format("%s{\"nation\":%d,\"roster_index\":%d,\"persistent_id\":%d,"
+                 "\"unit_type\":%d,\"stationed_province\":%d,\"order\":%d,"
+                 "\"order_target\":%d,\"owner_nation\":%d,\"roster_id\":%d,"
+                 "\"registered\":%u,\"order_target_tiles\":",
+                 first ? "" : ",", nationSlot, rosterIndex, unit->persistentUnitId20,
+                 static_cast<int>(unit->orderType), static_cast<int>(unit->tileIndex06),
+                 static_cast<int>(unit->unitOrder), static_cast<int>(unit->orderTargetIndex0C),
+                 static_cast<int>(unit->ownerNationSlot18), static_cast<int>(unit->unitRosterId1A),
+                 static_cast<unsigned int>(unit->militaryRegistrationFlag1C));
+      json += row;
+      AppendShortArray(json, unit->orderTargetTiles28, 3);
+      json += ",\"order_target_mirrors\":";
+      AppendShortArray(json, unit->orderTargetTilesMirror2E, 3);
+      json += ",\"name\":";
+      RuntimeJson::AppendString(json, static_cast<LPCSTR>(unit->name24));
+      row.Format(",\"strength\":%d,\"era\":%d,\"experience\":%d,\"battle_flags\":%d}",
+                 static_cast<int>(unit->strength34), static_cast<int>(unit->eraIndex36),
+                 static_cast<int>(unit->experiencePercent38),
+                 static_cast<int>(unit->battleStateFlags3A));
+      json += row;
+      first = false;
+      ++rosterIndex;
+      unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+    }
+  }
+
+  json += "],\"ships\":[";
+  int shipIndex = 0;
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
+    CString row;
+    row.Format("%s{\"index\":%d,\"type\":%d,\"location\":%d,\"task_force\":%d,"
+               "\"aggression\":%d,\"nation\":%d,\"name\":",
+               shipIndex == 0 ? "" : ",", shipIndex, static_cast<int>(ship->type),
+               ship->location != 0 ? static_cast<int>(ship->location->contextOrdinal14) : -1,
+               SnapshotTaskForceIndex(ship->taskForce), ship->aggression,
+               static_cast<int>(ship->nation));
+    json += row;
+    RuntimeJson::AppendString(json, static_cast<LPCSTR>(ship->name));
+    row.Format(",\"strength\":%d,\"experience\":%d,\"selection\":%d}",
+               static_cast<int>(ship->strength), static_cast<int>(ship->experience),
+               ship->selection);
+    json += row;
+    ++shipIndex;
+  }
+
+  json += "],\"task_forces\":[";
+  int forceIndex = 0;
+  TTaskForce* force = g_pNavyOrderManager != 0 ? g_pNavyOrderManager->orderQueueHead : 0;
+  for (; force != 0; force = force->nextForce) {
+    int targetKind = force->shipOrders == 5 ? 1 : 0;
+    int targetIndex = -1;
+    if (force->target != 0) {
+      targetIndex = targetKind != 0
+                        ? static_cast<int>(static_cast<Province*>(force->target)->GetIndex())
+                        : static_cast<int>(static_cast<TZone*>(force->target)->contextOrdinal14);
+    }
+    CString row;
+    row.Format("%s{\"index\":%d,\"aggression\":%d,\"order\":%d,\"target_kind\":%d,"
+               "\"target\":%d,\"location\":%d,\"nation\":%d,\"ship_counts\":",
+               forceIndex == 0 ? "" : ",", forceIndex, force->aggression, force->shipOrders,
+               targetKind, targetIndex,
+               force->location != 0 ? static_cast<int>(force->location->contextOrdinal14) : -1,
+               static_cast<int>(force->nation));
+    json += row;
+    AppendShortArray(json, force->shipCountsByToolbarSlot, 4);
+    row.Format(",\"defeated\":%d,\"ingot_tile\":%d,\"flagship\":%d,\"ships\":[",
+               static_cast<int>(force->defeated), static_cast<int>(force->ingotTileIndex),
+               SnapshotShipIndex(force->flagship));
+    json += row;
+    int childIndex = 0;
+    for (TMapOrderChildLinkNode* link = force->shipList; link != 0; link = link->next) {
+      row.Format("%s[%d,%u]", childIndex == 0 ? "" : ",",
+                 SnapshotShipIndex(static_cast<TShip*>(link->payload)),
+                 static_cast<unsigned int>(link->active));
+      json += row;
+      ++childIndex;
+    }
+    json += "]}";
+    ++forceIndex;
+  }
+  json += "]}";
+  return json;
+}
+
 } // namespace
 
 bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson) {
@@ -336,29 +467,36 @@ bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson) {
   CString world(CaptureWorld());
   CString nations(CaptureNations());
   CString economy(CaptureEconomy());
+  CString military(CaptureMilitary());
   CString state(metadata);
   state += rng;
   state += world;
   state += nations;
   state += economy;
+  state += military;
   CString metadataHash(RuntimeHashText(metadata));
   CString rngHash(RuntimeHashText(rng));
   CString worldHash(RuntimeHashText(world));
   CString nationsHash(RuntimeHashText(nations));
   CString economyHash(RuntimeHashText(economy));
+  CString militaryHash(RuntimeHashText(military));
   CString stateHash(RuntimeHashText(state));
 
   snapshotJson.Format("{\"schema\":\"imperialism.game_snapshot.v1\","
-                      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\"],"
+                      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\","
+                      "\"military\"],"
                       "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
-                      "\"nations\":\"%s\",\"economy\":\"%s\",\"state\":\"%s\"},"
-                      "\"metadata\":%s,\"rng\":%s,\"world\":%s,\"nations\":%s,\"economy\":%s}",
+                      "\"nations\":\"%s\",\"economy\":\"%s\",\"military\":\"%s\","
+                      "\"state\":\"%s\"},"
+                      "\"metadata\":%s,\"rng\":%s,\"world\":%s,\"nations\":%s,"
+                      "\"economy\":%s,\"military\":%s}",
                       static_cast<LPCSTR>(metadataHash), static_cast<LPCSTR>(rngHash),
                       static_cast<LPCSTR>(worldHash), static_cast<LPCSTR>(nationsHash),
-                      static_cast<LPCSTR>(economyHash), static_cast<LPCSTR>(stateHash),
-                      static_cast<LPCSTR>(metadata), static_cast<LPCSTR>(rng),
-                      static_cast<LPCSTR>(world), static_cast<LPCSTR>(nations),
-                      static_cast<LPCSTR>(economy));
+                      static_cast<LPCSTR>(economyHash), static_cast<LPCSTR>(militaryHash),
+                      static_cast<LPCSTR>(stateHash), static_cast<LPCSTR>(metadata),
+                      static_cast<LPCSTR>(rng), static_cast<LPCSTR>(world),
+                      static_cast<LPCSTR>(nations), static_cast<LPCSTR>(economy),
+                      static_cast<LPCSTR>(military));
   return true;
 }
 

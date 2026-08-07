@@ -1,6 +1,7 @@
 use crate::{
-    GameSnapshotV1, NationId, SnapshotCity, SnapshotMajorNation, SnapshotNation,
-    SnapshotPopulation, SnapshotValidationError, TileSnapshot,
+    GameSnapshotV1, MilitaryUnitId, NationId, ShipId, SnapshotCity, SnapshotMajorNation,
+    SnapshotMilitaryUnit, SnapshotNation, SnapshotPopulation, SnapshotShip, SnapshotTaskForce,
+    SnapshotValidationError, TaskForceId, TileSnapshot,
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -10,6 +11,9 @@ pub struct GameState {
     pub rng: RngState,
     pub nations: Vec<Option<NationState>>,
     pub cities: Vec<Option<CityState>>,
+    pub military_units: Vec<MilitaryUnitState>,
+    pub ships: Vec<ShipState>,
+    pub task_forces: Vec<TaskForceState>,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -143,6 +147,63 @@ pub struct PopulationState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MilitaryUnitState {
+    pub id: MilitaryUnitId,
+    pub nation: NationId,
+    pub roster_index: u32,
+    pub unit_type: i16,
+    pub stationed_province: i16,
+    pub order: i32,
+    pub order_target: i16,
+    pub owner_nation: i16,
+    pub roster_id: i16,
+    pub registered: bool,
+    pub order_target_tiles: [i16; 3],
+    pub order_target_mirrors: [i16; 3],
+    pub name: String,
+    pub strength: i16,
+    pub era: i16,
+    pub experience: i16,
+    pub battle_flags: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ShipState {
+    pub id: ShipId,
+    pub ship_type: i16,
+    pub location: i16,
+    pub task_force: Option<TaskForceId>,
+    pub aggression: i32,
+    pub nation: i16,
+    pub name: String,
+    pub strength: i16,
+    pub experience: i16,
+    pub selection: i32,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TaskForceTarget {
+    None,
+    Zone(i32),
+    Province(i32),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TaskForceState {
+    pub id: TaskForceId,
+    pub aggression: i32,
+    pub order: i32,
+    pub target: TaskForceTarget,
+    pub location: i16,
+    pub nation: i16,
+    pub ship_counts: [i16; 4],
+    pub defeated: bool,
+    pub ingot_tile: i16,
+    pub flagship: Option<ShipId>,
+    pub ships: Vec<(ShipId, bool)>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameCommand {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -194,6 +255,24 @@ impl TryFrom<GameSnapshotV1> for GameState {
                 .cities
                 .into_iter()
                 .map(city_state)
+                .collect::<Result<_, _>>()?,
+            military_units: snapshot
+                .military
+                .units
+                .into_iter()
+                .map(military_unit_state)
+                .collect::<Result<_, _>>()?,
+            ships: snapshot
+                .military
+                .ships
+                .into_iter()
+                .map(ship_state)
+                .collect::<Result<_, _>>()?,
+            task_forces: snapshot
+                .military
+                .task_forces
+                .into_iter()
+                .map(task_force_state)
                 .collect::<Result<_, _>>()?,
         })
     }
@@ -325,6 +404,99 @@ impl From<SnapshotPopulation> for PopulationState {
 
 fn required<T>(value: Option<T>, label: &str) -> Result<T, SnapshotValidationError> {
     value.ok_or_else(|| SnapshotValidationError::Shape(format!("missing {label}")))
+}
+
+fn military_unit_state(
+    snapshot: SnapshotMilitaryUnit,
+) -> Result<MilitaryUnitState, SnapshotValidationError> {
+    let persistent_id = u32::try_from(snapshot.persistent_id).map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "invalid military unit id {}",
+            snapshot.persistent_id
+        ))
+    })?;
+    Ok(MilitaryUnitState {
+        id: MilitaryUnitId::new(persistent_id),
+        nation: NationId::new(snapshot.nation),
+        roster_index: snapshot.roster_index,
+        unit_type: snapshot.unit_type,
+        stationed_province: snapshot.stationed_province,
+        order: snapshot.order,
+        order_target: snapshot.order_target,
+        owner_nation: snapshot.owner_nation,
+        roster_id: snapshot.roster_id,
+        registered: snapshot.registered != 0,
+        order_target_tiles: snapshot.order_target_tiles,
+        order_target_mirrors: snapshot.order_target_mirrors,
+        name: snapshot.name,
+        strength: snapshot.strength,
+        era: snapshot.era,
+        experience: snapshot.experience,
+        battle_flags: snapshot.battle_flags,
+    })
+}
+
+fn ship_state(snapshot: SnapshotShip) -> Result<ShipState, SnapshotValidationError> {
+    Ok(ShipState {
+        id: ShipId::new(snapshot.index),
+        ship_type: snapshot.r#type,
+        location: snapshot.location,
+        task_force: optional_id(snapshot.task_force, TaskForceId::new, "task force")?,
+        aggression: snapshot.aggression,
+        nation: snapshot.nation,
+        name: snapshot.name,
+        strength: snapshot.strength,
+        experience: snapshot.experience,
+        selection: snapshot.selection,
+    })
+}
+
+fn task_force_state(
+    snapshot: SnapshotTaskForce,
+) -> Result<TaskForceState, SnapshotValidationError> {
+    let target = if snapshot.target < 0 {
+        TaskForceTarget::None
+    } else if snapshot.target_kind == 1 {
+        TaskForceTarget::Province(snapshot.target)
+    } else {
+        TaskForceTarget::Zone(snapshot.target)
+    };
+    let ships = snapshot
+        .ships
+        .into_iter()
+        .map(|child| {
+            let id = u32::try_from(child[0]).map_err(|_| {
+                SnapshotValidationError::Shape(format!("invalid ship id {}", child[0]))
+            })?;
+            Ok((ShipId::new(id), child[1] != 0))
+        })
+        .collect::<Result<_, _>>()?;
+    Ok(TaskForceState {
+        id: TaskForceId::new(snapshot.index),
+        aggression: snapshot.aggression,
+        order: snapshot.order,
+        target,
+        location: snapshot.location,
+        nation: snapshot.nation,
+        ship_counts: snapshot.ship_counts,
+        defeated: snapshot.defeated != 0,
+        ingot_tile: snapshot.ingot_tile,
+        flagship: optional_id(snapshot.flagship, ShipId::new, "flagship")?,
+        ships,
+    })
+}
+
+fn optional_id<T>(
+    value: i32,
+    construct: impl FnOnce(u32) -> T,
+    label: &str,
+) -> Result<Option<T>, SnapshotValidationError> {
+    if value < 0 {
+        return Ok(None);
+    }
+    let value = u32::try_from(value)
+        .map_err(|_| SnapshotValidationError::Shape(format!("invalid {label} id {value}")))?;
+    Ok(Some(construct(value)))
 }
 
 impl From<TileSnapshot> for TileState {

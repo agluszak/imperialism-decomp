@@ -8,10 +8,16 @@
 #include "screens/StrategicMapScreen.h"
 
 #include "game/assets/TAssetMgr.h"
+#include "game/city/TCity.h"
+#include "game/city/TShipOrder.h"
 #include "game/globals/assets_globals.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/navy/TNavyMgr.h"
+#include "game/navy/TShip.h"
+#include "game/navy/TTaskForce.h"
+#include "game/nation/TGreatPower.h"
 #include "game/nation_domain_types.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -40,6 +46,8 @@ namespace {
 // The slot this scenario saves into, and the save mode that names its file.
 const short kSaveSlot = 0;
 const int kNormalSaveMode = 0;
+const short kFirstNavyShipyardRow = 4;
+const int kPatrolOrder = 3;
 
 class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
@@ -56,6 +64,7 @@ protected:
     savedDifficulty = g_pSimMgr->difficultyLevel;
     savedScenarioMap = g_pSimMgr->scenarioMapIndexPlusOne;
     SetSelectedNation(savedNation);
+    RT_REQUIRE(CreatePersistedNavyState());
     RT_REQUIRE(BuildRuntimeGameSnapshot(RunState(), beforeSaveSnapshot));
     beforePersistentState = PersistentSnapshotState(beforeSaveSnapshot);
 
@@ -113,6 +122,44 @@ protected:
   }
 
 private:
+  bool CreatePersistedNavyState() {
+    TGreatPower* player = g_apNationStates[savedNation];
+    TCity* city = player != 0 ? player->city : 0;
+    TShipOrder* order = city != 0 ? city->shipOrderSlots190[kFirstNavyShipyardRow] : 0;
+    if (order == 0) {
+      return false;
+    }
+
+    // A fresh random game need not stock every input for this hull. Supply exactly one hull's
+    // retail costs, then use the ordinary SetQuantity/Produce path so the save fixture contains
+    // state created by the game rather than a hand-built TShip or TTaskForce.
+    const short type = order->resourceTypeIndex;
+    city->cityStockLumberC8 = g_industryActionCostWeightResCode09[type];
+    city->cityStockFabricC6 = g_industryActionCostWeightResCode08[type];
+    city->cityStockArmsD6 = g_industryActionCostWeightResCode10[type];
+    city->cityStockSteelCC = g_industryActionCostWeightResCode0B[type];
+    city->cityStockCoalBC = g_industryActionCostWeightResCode03[type];
+    city->cityStockFuelCE = g_industryActionCostWeightResCode0C[type];
+    if (!order->SetQuantity(1)) {
+      return false;
+    }
+
+    TShip* priorHead = g_pNavyPrimaryOrderListHead;
+    order->Produce();
+    TShip* ship = g_pNavyPrimaryOrderListHead;
+    if (ship == 0 || ship == priorHead || ship->nation != savedNation) {
+      return false;
+    }
+
+    TTaskForce* force = ship->DemandExclusiveTaskForce();
+    if (force == 0) {
+      return false;
+    }
+    force->SubmitOrders(kPatrolOrder, 0);
+    return g_pNavyOrderManager != 0 && g_pNavyOrderManager->orderQueueHead == force &&
+           ship->taskForce == force;
+  }
+
   CString PersistentSnapshotState(const CString& snapshot) {
     int stateIndex = snapshot.Find("\"world\":{");
     return stateIndex < 0 ? CString() : snapshot.Mid(stateIndex);
