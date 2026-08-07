@@ -69,6 +69,7 @@ public:
   afx_msg void OnPreviewDibResource();                          // 0x004143b0, command 0x8018
   afx_msg void OnRunAmbitDeveloperAssert();                     // 0x00414640, command 0x8019
   afx_msg void OnUpdateAmbitDeveloperAssert(CCmdUI* commandUi); // 0x00414670
+  afx_msg void OnDeveloperCommand801D();                        // 0x005de830, command 0x801d
   // Retail compiles these out to empty bodies, so the message-map command ID is the
   // only surviving evidence of what they did; named after it rather than invented.
   afx_msg void OnDeveloperCommand801E();                        // 0x004147b0, command 0x801e

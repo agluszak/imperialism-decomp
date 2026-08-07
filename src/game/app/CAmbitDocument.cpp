@@ -1,6 +1,7 @@
 #include "game/app/CAmbitDocument.h"
 
 #include "game/ArchiveStreamAdapter.h"
+#include "game/ImperialismApp.h"
 #include "game/gfx/TAmbitFileBasedDocument.h"
 #include "game/ui_core/TTurnEventDialogFactoryRegistry.h"
 #include "game/ui_core/TView.h"
@@ -19,6 +20,7 @@
 // CAmbitDocument::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CAmbitDocument, CDocument)
+ON_COMMAND(0x8003, OnCommand8003)
 END_MESSAGE_MAP()
 #endif
 
@@ -74,6 +76,11 @@ void CAmbitDocument::Serialize(CArchive& ar) {
   }
   adapter->Free();
   SetModifiedFlag(TRUE);
+}
+
+// FUNCTION: IMPERIALISM 0x00479940
+void CAmbitDocument::OnCommand8003() {
+  g_pImperialismApp->HandleStartupCommand100();
 }
 
 // FUNCTION: IMPERIALISM 0x00479960

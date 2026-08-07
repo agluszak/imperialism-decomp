@@ -52,6 +52,8 @@ void SetControlHoverHelpTextAltEntry(CString text, TView* control);
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 
+void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TextStyle* state, int flag);
+
 // 0x5c4310: resolve `controlTag` on g_pDisplayMgr->activeDialog, AssertValid it, and
 // forward to ApplyControlThemeStyleAndOptionalCaption. Genuine __cdecl free function
 // (callers clean 0x18).
