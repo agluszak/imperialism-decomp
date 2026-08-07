@@ -201,8 +201,15 @@ boolean and old report schema are unsupported. It contains:
   `preserved_state`, `symbol_resolution`) plus original/recompiled instruction
   indices, addresses, and primitive facts;
 - `inconclusive_reason` and optional `inconclusive_location`, only for
-  `inconclusive` (`unsupported_instruction`, `unsupported_control_flow`,
-  `alignment_failure`, `missing_metadata`, `analysis_limit`).
+  `inconclusive`. Control-flow failures are split into `empty_control_flow`,
+  `control_flow_metadata_mismatch`, `invalid_control_flow_target`,
+  `jump_table_data`, `non_isomorphic_cfg`, `indirect_jump`,
+  `external_control_flow_state`, `function_fallthrough`, and
+  `state_join_failure`; other reasons include `unsupported_instruction`,
+  `alignment_failure`, `missing_metadata`, and `analysis_limit`. The location's
+  structured facts identify the failing side/stage, graph shape, edge roles,
+  jump-table rows, or incompatible x87 join state. `unsupported_control_flow`
+  remains a legacy report-deserialization value, not a current analyzer result.
 
 Result precedence is `exact` → any complete `effective` proof → a concrete mismatch
 from trusted CFG/lockstep pairing → `inconclusive`. A speculative alignment failure

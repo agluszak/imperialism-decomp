@@ -38,6 +38,61 @@ REASON_LABELS = {
     "load_folding": "memory-load folding into the consuming instruction",
 }
 
+INCONCLUSIVE_ADVICE = {
+    "alignment_failure": (
+        "the verifier could not produce a sound instruction pairing",
+        "the attached stage and block lengths identify where alignment stopped",
+    ),
+    "unsupported_instruction": (
+        "an instruction effect is not modeled while the paired states differ",
+        "use the attached instruction address to extend verifier semantics",
+    ),
+    "missing_metadata": (
+        "branch or instruction metadata required by CFG analysis is unavailable",
+        "refresh disassembly metadata before changing source",
+    ),
+    "analysis_limit": (
+        "symbolic execution exceeded a conservative complexity or state limit",
+        "investigate verifier limits; this is not a source mismatch",
+    ),
+    "non_isomorphic_cfg": (
+        "the reachable block graphs differ in shape or edge roles",
+        "semantic span scoring cannot start until the CFGs can be paired",
+    ),
+    "jump_table_data": (
+        "the function contains embedded jump/data-table rows",
+        "reccmp does not yet pair computed destinations across those tables",
+    ),
+    "empty_control_flow": (
+        "one paired function has no disassembled instructions",
+        "inspect function extents, aliases, and zero-sized metadata",
+    ),
+    "control_flow_metadata_mismatch": (
+        "instruction and branch-target metadata lengths disagree",
+        "inspect disassembly metadata rather than changing source",
+    ),
+    "invalid_control_flow_target": (
+        "a branch target falls outside the disassembled instruction range",
+        "inspect the function extent and disassembly boundary",
+    ),
+    "indirect_jump": (
+        "execution reaches a computed jump whose destinations are not paired",
+        "jump-table destination pairing is required before semantic proof",
+    ),
+    "external_control_flow_state": (
+        "control leaves the function before the paired machine states converge",
+        "inspect the tail-call/function boundary and live outgoing state",
+    ),
+    "function_fallthrough": (
+        "the disassembly falls beyond the recorded function extent",
+        "inspect function bounds and missing terminal control flow",
+    ),
+    "state_join_failure": (
+        "incoming symbolic states cannot be merged at a CFG join",
+        "the attached x87 shape facts identify the incompatible paths",
+    ),
+}
+
 
 def _hex(value: object) -> str:
     return f"0x{value:x}" if isinstance(value, int) else "unknown"
@@ -313,11 +368,25 @@ def render_entity(
         reason = str(comparison.get("inconclusive_reason") or "analysis_limit")
         location = comparison.get("inconclusive_location")
         location_text = ""
+        facts: dict[str, Any] = {}
         if isinstance(location, dict):
-            location_text = f" at {_side_location(location, 'original')}"
+            facts = location.get("facts") or {}
+            side_label = str(facts.get("side") or "original")
+            location_text = f" at {_side_location(location, side_label)}"
         lines += [
             "reccmp analysis inconclusive:",
             f"  {reason.replace('_', ' ')}{location_text}",
+        ]
+        if facts:
+            lines.extend(
+                f"  {key.replace('_', ' ')}: {value}"
+                for key, value in sorted(facts.items())
+                if key != "side"
+            )
+        advice = INCONCLUSIVE_ADVICE.get(reason)
+        if advice:
+            lines += ["", "diagnostic:"] + [f"  {item}" for item in advice]
+        lines += [
             "",
             "inconclusive: the verifier could not prove either outcome — this is",
             "NOT evidence of a source defect; do not contort source to chase it.",

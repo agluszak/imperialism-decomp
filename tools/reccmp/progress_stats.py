@@ -32,7 +32,7 @@ from tools.common.function_baseline import (
 )
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
-from tools.common.report_score import effective_matching
+from tools.common.report_score import effective_matching, semantic_matching
 from tools.common.template_aliases import (
     CLASS_DUPLICATE_EMISSION,
     CLASS_FOLDED_SYMBOL_GROUP,
@@ -65,6 +65,19 @@ PAIRING_STATES = frozenset(("paired", "unexplained", "recomp_only", "alias", "du
 
 
 METRICS: tuple[tuple[str, str, str, str], ...] = (
+    (
+        "semantic_size_weighted_matching_pct",
+        "semantic size-weighted similarity",
+        "pct",
+        "higher",
+    ),
+    (
+        "semantic_score_byte_coverage_pct",
+        "semantic score byte coverage",
+        "pct",
+        "higher",
+    ),
+    ("semantic_score_coverage_pct", "semantic score coverage", "pct", "higher"),
     ("exact_fun_count", "exact functions (100%)", "int", "higher"),
     ("paired_fun_count", "address-paired functions", "int", "higher"),
     ("compared_fun_count", "implemented paired functions", "int", "higher"),
@@ -602,7 +615,7 @@ def load_function_sizes(build_dir: Path) -> dict[int, int]:
     return sizes
 
 
-def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict[str, float | int]:
+def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Missing reccmp JSON report: {path}")
 
@@ -614,15 +627,27 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
     ]
     compared = len(rows)
     total_matching = 0.0
+    semantic_scored = 0
+    semantic_scored_bytes = 0
+    semantic_fallback_reason_counts: dict[str, int] = {}
+    semantic_fallback_reason_bytes: dict[str, int] = {}
     exact = 0
     # Size-weighted similarity: sum(matching * original size) / sum(original size).
     # The unweighted mean over-counts tiny bodies (a 12-byte thunk moves it as much
     # as a 5KB dispatcher); the weighted form tracks matched code volume. Rows with
     # no known original size fall back to weight 1 so they still participate.
     weighted_sum = 0.0
+    semantic_weighted_sum = 0.0
     weight_total = 0.0
     for row in rows:
         matching = effective_matching(row)
+        semantic = semantic_matching(row)
+        comparison = row.get("comparison")
+        has_semantic_score = (
+            isinstance(comparison, dict) and comparison.get("semantic_similarity") is not None
+        )
+        if has_semantic_score:
+            semantic_scored += 1
         total_matching += matching
         exact += int(matching >= 1.0)
         weight = 1
@@ -632,12 +657,42 @@ def parse_report_counts(path: Path, sizes: dict[int, int] | None = None) -> dict
             except (TypeError, ValueError):
                 weight = 1
         weighted_sum += matching * weight
+        semantic_weighted_sum += semantic * weight
         weight_total += weight
+        if has_semantic_score:
+            semantic_scored_bytes += weight
+        else:
+            assert isinstance(comparison, dict)
+            status = str(comparison.get("status") or "unknown")
+            if status == "inconclusive":
+                reason = str(comparison.get("inconclusive_reason") or "unknown")
+            elif status == "mismatch" and isinstance(comparison.get("difference"), dict):
+                kind = str(comparison["difference"].get("kind") or "unknown")
+                reason = f"mismatch:{kind}"
+            else:
+                reason = f"{status}:no_semantic_score"
+            semantic_fallback_reason_counts[reason] = (
+                semantic_fallback_reason_counts.get(reason, 0) + 1
+            )
+            semantic_fallback_reason_bytes[reason] = (
+                semantic_fallback_reason_bytes.get(reason, 0) + weight
+            )
 
     return {
         "compared_fun_count": compared,
         "exact_fun_count": exact,
         "not_exact_compared_count": max(compared - exact, 0),
+        "semantic_scored_fun_count": semantic_scored,
+        "semantic_fallback_fun_count": max(compared - semantic_scored, 0),
+        "semantic_score_coverage_pct": pct(semantic_scored, compared),
+        "semantic_scored_bytes": semantic_scored_bytes,
+        "semantic_fallback_bytes": max(int(weight_total) - semantic_scored_bytes, 0),
+        "semantic_fallback_reason_counts": semantic_fallback_reason_counts,
+        "semantic_fallback_reason_bytes": semantic_fallback_reason_bytes,
+        "semantic_score_byte_coverage_pct": pct(semantic_scored_bytes, int(weight_total)),
+        "semantic_size_weighted_matching_pct": (
+            (semantic_weighted_sum / weight_total) * 100.0 if weight_total else 0.0
+        ),
         "avg_matching_pct": (total_matching / compared) * 100.0 if compared else 0.0,
         "size_weighted_matching_pct": (weighted_sum / weight_total) * 100.0 if weight_total else 0.0,
     }
@@ -787,6 +842,7 @@ def report_input_hashes(
         repo_root / "uv.lock",
         repo_root / "reccmp-project.yml",
         repo_root / "reccmp-user.yml",
+        repo_root / "tools" / "common" / "report_score.py",
         build_dir / "reccmp-build.yml",
         Path(__file__),
         target.original_path,
@@ -1015,6 +1071,33 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
         print(f"Baseline: {base_date} @ {base_commit}")
     print("")
 
+    print("Headline")
+    print_pct_line(
+        "semantic size-weighted similarity",
+        entry,
+        baseline,
+        "semantic_size_weighted_matching_pct",
+    )
+    print(
+        "  direct semantic scores: "
+        f"{entry['semantic_scored_fun_count']}/{entry['compared_fun_count']} functions "
+        f"({entry['semantic_score_coverage_pct']:.2f}%), "
+        f"{entry['semantic_scored_bytes']}/{entry['semantic_scored_bytes'] + entry['semantic_fallback_bytes']} "
+        f"bytes ({entry['semantic_score_byte_coverage_pct']:.2f}%)"
+    )
+    print(
+        "  effective/raw fallback: "
+        f"{entry['semantic_fallback_fun_count']} functions, "
+        f"{entry['semantic_fallback_bytes']} bytes"
+    )
+    fallback_counts = entry.get("semantic_fallback_reason_counts", {})
+    fallback_bytes = entry.get("semantic_fallback_reason_bytes", {})
+    if fallback_counts:
+        print("  fallback breakdown (functions / bytes):")
+        for reason in sorted(fallback_counts, key=lambda key: (-fallback_bytes[key], key)):
+            print(f"    {reason}: {fallback_counts[reason]} / {fallback_bytes[reason]}")
+    print("")
+
     print("Counts")
     print_count_line("original functions", entry, baseline, "original_fun_count")
     print_count_line("recompiled functions", entry, baseline, "recompiled_fun_count")
@@ -1045,8 +1128,18 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     )
     print_pct_line("exact/original", entry, baseline, "exact_vs_original_pct")
     print_pct_line("exact/implemented", entry, baseline, "exact_vs_implemented_pct")
-    print_pct_line("size-weighted similarity", entry, baseline, "size_weighted_matching_pct")
-    print_pct_line("average similarity (unweighted)", entry, baseline, "avg_matching_pct")
+    print_pct_line(
+        "effective/raw size-weighted similarity",
+        entry,
+        baseline,
+        "size_weighted_matching_pct",
+    )
+    print_pct_line(
+        "effective/raw average similarity (unweighted)",
+        entry,
+        baseline,
+        "avg_matching_pct",
+    )
     if "ui_factory_weighted_pct" in entry:
         print_pct_line(
             f"generated UI factories ({entry.get('ui_factory_paired_count', 0)}"

@@ -114,21 +114,25 @@ static inline void AssertActionButtonResolved(void* button) {
 void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
   short width = static_cast<short>(rect->right) - static_cast<short>(rect->left);
   short height = static_cast<short>(rect->bottom) - static_cast<short>(rect->top);
-  if (rect->top < bounds->top) {
-    rect->top = bounds->top;
-    rect->bottom = height + bounds->top;
+  int edge = bounds->top;
+  if (rect->top < edge) {
+    rect->top = edge;
+    rect->bottom = height + edge;
   }
-  if (bounds->bottom < rect->bottom) {
-    rect->bottom = bounds->bottom;
-    rect->top = bounds->bottom - height;
+  edge = bounds->bottom;
+  if (edge < rect->bottom) {
+    rect->bottom = edge;
+    rect->top = edge - height;
   }
-  if (rect->left < bounds->left) {
-    rect->left = bounds->left;
-    rect->right = width + bounds->left;
+  edge = bounds->left;
+  if (rect->left < edge) {
+    rect->left = edge;
+    rect->right = width + edge;
   }
-  if (bounds->right < rect->right) {
-    rect->right = bounds->right;
-    rect->left = bounds->right - width;
+  edge = bounds->right;
+  if (edge < rect->right) {
+    rect->right = edge;
+    rect->left = edge - width;
   }
 }
 
