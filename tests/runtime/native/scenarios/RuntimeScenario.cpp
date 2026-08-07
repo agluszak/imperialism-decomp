@@ -1,5 +1,7 @@
 #include "RuntimeScenario.h"
 
+#include "RuntimeGameSnapshot.h"
+
 #include "RuntimeContext.h"
 #include "RuntimeExceptionCapture.h"
 #include "RuntimeHarness.h"
@@ -272,6 +274,9 @@ void RuntimeScenario::Finish(const char* status, const char* failure) {
   run->Finish();
   if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
     CaptureRuntimeMapState(*run);
+  }
+  if (lstrcmpA(status, "passed") == 0) {
+    CaptureRuntimeGameSnapshot(*run);
   }
   if (!WriteRuntimeResult(*run, *this, status, failure)) {
     OutputDebugStringA("Imperialism runtime test could not write its result file.\n");

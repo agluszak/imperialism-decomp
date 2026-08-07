@@ -36,6 +36,8 @@ def render_registry() -> str:
             flags.append("kRuntimeSnapshotUi")
         if "map" in snapshots:
             flags.append("kRuntimeSnapshotMap")
+        if "game" in snapshots:
+            flags.append("kRuntimeSnapshotGame")
         return " | ".join(flags) or "kRuntimeSnapshotNone"
 
     # One array per test that captures UI trees, named after the test so the generated file

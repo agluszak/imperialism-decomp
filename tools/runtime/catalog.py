@@ -98,7 +98,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui", "map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(

@@ -78,6 +78,7 @@ public:
   CString& ActionLog();
   CString& LastFingerprint();
   CString& MapStateJson();
+  CString& GameSnapshotJson();
   CString& SerializationRoundtripJson();
   CString AssertionFailuresJson() const;
   bool HasAssertionFailures() const;
@@ -117,6 +118,7 @@ private:
   CString actionLog;
   CString lastFingerprint;
   CString mapStateJson;
+  CString gameSnapshotJson;
   CString serializationRoundtripJson;
   CString assertionFailures;
 };
