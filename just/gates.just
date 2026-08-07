@@ -87,13 +87,26 @@ ui-platform-diff-check:
 [group('gates')]
 precommit:
   just build
-  just gates
-  just cstring-runtime-probe
-  just runtime-harness-lint
-  just lint-warning-gate-test
-  just test
-  just _precommit-generated-integrity-gate
+  just --jobs 4 _precommit-after-build
+
+[private]
+[parallel]
+_precommit-after-build: _precommit-post-build-checks _precommit-runtime-check
+
+[private]
+_precommit-runtime-check:
   just runtime-check pr --jobs 1 --junit build-runtime-tests/runtime-pr.xml
+
+# These checks touch disjoint build/output trees and are read-only over tracked source.
+# Running them together hides gate and tooling-test latency without changing what
+# precommit proves.
+[private]
+[parallel]
+_precommit-post-build-checks: gates _precommit-independent-checks
+
+[private]
+[parallel]
+_precommit-independent-checks: cstring-runtime-probe runtime-harness-lint lint-warning-gate-test test _precommit-generated-integrity-gate
 
 # Compare the entire current branch plus worktree with main. PRECOMMIT_BASE_REF
 # permits an explicit integration base; otherwise prefer origin/main, then local

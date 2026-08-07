@@ -7,6 +7,8 @@ build_dir := "build-msvc500"
 runtime_test_build_dir := "build-runtime-tests"
 docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
+runtime_lint_build_dir := "build-clang-runtime"
+lint_warning_test_build_dir := "build-clang-warning-test"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
