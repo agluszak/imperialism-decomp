@@ -5,7 +5,10 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
+anyhow.workspace = true
 bevy.workspace = true
+clap.workspace = true
 imperialism-core = { path = "../imperialism-core" }
 imperialism-formats = { path = "../imperialism-formats" }
 serde_json.workspace = true
+thiserror.workspace = true

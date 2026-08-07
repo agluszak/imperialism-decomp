@@ -1,8 +1,6 @@
 use serde::ser::SerializeStruct;
 use serde::{Deserialize, Serialize, Serializer};
 use std::collections::BTreeSet;
-use std::error::Error;
-use std::fmt;
 
 pub const GAME_SNAPSHOT_SCHEMA: &str = "imperialism.game_snapshot.v1";
 pub const GAME_SNAPSHOT_SECTIONS: [&str; 8] = [
@@ -395,69 +393,32 @@ pub struct SnapshotTurnStartEvent {
     pub land_sale: Option<[i16; 2]>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum SnapshotValidationError {
+    #[error("unsupported game snapshot schema {0:?}")]
     Schema(String),
+    #[error("invalid game snapshot sections {0:?}")]
     Sections(Vec<String>),
-    Dimensions {
-        width: u16,
-        height: u16,
-    },
-    TileCount {
-        expected: usize,
-        actual: usize,
-    },
+    #[error("invalid game snapshot dimensions {width}x{height}")]
+    Dimensions { width: u16, height: u16 },
+    #[error("expected {expected} world tiles, found {actual}")]
+    TileCount { expected: usize, actual: usize },
+    #[error("{0}")]
     Shape(String),
+    #[error("invalid {section} hash {value:?}")]
     HashFormat {
         section: &'static str,
         value: String,
     },
+    #[error("{section} hash mismatch: snapshot {expected}, computed {actual}")]
     HashMismatch {
         section: &'static str,
         expected: String,
         actual: String,
     },
+    #[error("snapshot serialization failed: {0}")]
     Serialization(String),
 }
-
-impl fmt::Display for SnapshotValidationError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Schema(schema) => {
-                write!(formatter, "unsupported game snapshot schema {schema:?}")
-            }
-            Self::Sections(sections) => {
-                write!(formatter, "invalid game snapshot sections {sections:?}")
-            }
-            Self::Dimensions { width, height } => {
-                write!(
-                    formatter,
-                    "invalid game snapshot dimensions {width}x{height}"
-                )
-            }
-            Self::TileCount { expected, actual } => {
-                write!(formatter, "expected {expected} world tiles, found {actual}")
-            }
-            Self::Shape(message) => formatter.write_str(message),
-            Self::HashFormat { section, value } => {
-                write!(formatter, "invalid {section} hash {value:?}")
-            }
-            Self::HashMismatch {
-                section,
-                expected,
-                actual,
-            } => write!(
-                formatter,
-                "{section} hash mismatch: snapshot {expected}, computed {actual}"
-            ),
-            Self::Serialization(message) => {
-                write!(formatter, "snapshot serialization failed: {message}")
-            }
-        }
-    }
-}
-
-impl Error for SnapshotValidationError {}
 
 impl GameSnapshotV1 {
     pub fn validate(&self) -> Result<(), SnapshotValidationError> {

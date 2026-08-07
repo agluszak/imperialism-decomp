@@ -1,29 +1,14 @@
 use crate::{CityState, MajorNationState, ResourceKind};
-use std::error::Error;
-use std::fmt;
 
 const MERCHANT_CAPACITY_INDEX: usize = 1;
 const TRANSPORT_CAPACITY_INDEX: usize = 2;
 const RESERVED_TRANSPORT_CAPACITY_INDEX: usize = 3;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum NationEconomyError {
+    #[error("{field} has {actual} entries, expected {}", ResourceKind::COUNT)]
     InvalidResourceCount { field: &'static str, actual: usize },
 }
-
-impl fmt::Display for NationEconomyError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidResourceCount { field, actual } => write!(
-                formatter,
-                "{field} has {actual} entries, expected {}",
-                ResourceKind::COUNT
-            ),
-        }
-    }
-}
-
-impl Error for NationEconomyError {}
 
 impl MajorNationState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.

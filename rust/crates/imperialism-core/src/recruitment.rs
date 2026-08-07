@@ -2,8 +2,6 @@ use crate::{
     CivilianUnitId, CivilianUnitState, GameEvent, GameState, MapGeometry, MilitaryUnitId,
     MilitaryUnitState, NationId, StepOutcome, TileId, UnitProductionOrder, WorldState,
 };
-use std::error::Error;
-use std::fmt;
 
 const MILITARY_POWER_BY_UNIT_TYPE: [i16; 30] = [
     0, 1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 2, 2, 4, 4, 0, 4, 4, 4, 4, 10, 6, 8, 2, 2, 3, 0, 0, 0,
@@ -373,70 +371,33 @@ fn pending_military_action_payload(military_power: i32, current_level: i32) -> O
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum RecruitmentError {
+    #[error("nation {} has no city", .0.get())]
     MissingCity(NationId),
+    #[error("nation {} has no nation state", .0.get())]
     MissingNation(NationId),
+    #[error("nation {} has no major-nation state", .0.get())]
     NotMajorNation(NationId),
+    #[error("nation {} has no pending-work state", .0.get())]
     MissingPendingNation(NationId),
+    #[error("invalid civilian unit type {0}")]
     InvalidEntryId(i16),
+    #[error("invalid military unit type {0}")]
     InvalidMilitaryUnitType(i16),
+    #[error("invalid recruit origin tile {0}")]
     InvalidHomeTile(i16),
+    #[error("invalid recruit home province {0}")]
     InvalidHomeProvince(i64),
+    #[error("missing pending-action state {0}")]
     MissingPendingAction(usize),
+    #[error("missing pending-action payload {0}")]
     MissingPendingActionPayload(usize),
+    #[error("civilian recruitment uses the civilian path")]
     CivilianOrder,
+    #[error("military recruitment uses the specialist path")]
     SpecialistOrder,
 }
-
-impl fmt::Display for RecruitmentError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingCity(nation) => {
-                write!(formatter, "nation {} has no city", nation.get())
-            }
-            Self::MissingNation(nation) => {
-                write!(formatter, "nation {} has no nation state", nation.get())
-            }
-            Self::NotMajorNation(nation) => {
-                write!(
-                    formatter,
-                    "nation {} has no major-nation state",
-                    nation.get()
-                )
-            }
-            Self::MissingPendingNation(nation) => {
-                write!(
-                    formatter,
-                    "nation {} has no pending-work state",
-                    nation.get()
-                )
-            }
-            Self::InvalidEntryId(entry) => write!(formatter, "invalid civilian unit type {entry}"),
-            Self::InvalidMilitaryUnitType(entry) => {
-                write!(formatter, "invalid military unit type {entry}")
-            }
-            Self::InvalidHomeTile(tile) => write!(formatter, "invalid recruit origin tile {tile}"),
-            Self::InvalidHomeProvince(province) => {
-                write!(formatter, "invalid recruit home province {province}")
-            }
-            Self::MissingPendingAction(action) => {
-                write!(formatter, "missing pending-action state {action}")
-            }
-            Self::MissingPendingActionPayload(action) => {
-                write!(formatter, "missing pending-action payload {action}")
-            }
-            Self::CivilianOrder => {
-                write!(formatter, "civilian recruitment uses the civilian path")
-            }
-            Self::SpecialistOrder => {
-                write!(formatter, "military recruitment uses the specialist path")
-            }
-        }
-    }
-}
-
-impl Error for RecruitmentError {}
 
 #[cfg(test)]
 mod tests {

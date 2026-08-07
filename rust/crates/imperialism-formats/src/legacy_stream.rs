@@ -1,23 +1,12 @@
-use std::fmt;
-
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+#[error(
+    "legacy stream ended at offset {offset:#x}: requested {requested} bytes, {remaining} remain"
+)]
 pub struct StreamError {
     pub offset: usize,
     pub requested: usize,
     pub remaining: usize,
 }
-
-impl fmt::Display for StreamError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            formatter,
-            "legacy stream ended at offset {:#x}: requested {} bytes, {} remain",
-            self.offset, self.requested, self.remaining
-        )
-    }
-}
-
-impl std::error::Error for StreamError {}
 
 pub struct LegacyStream<'a> {
     bytes: &'a [u8],

@@ -1,25 +1,12 @@
 use crate::{GameEvent, GameState, StepOutcome, TurnState};
-use std::error::Error;
-use std::fmt;
 
 const MAJOR_NATION_COUNT: usize = 7;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum TurnFlowError {
+    #[error("major nation slot {slot} is not active")]
     MissingMajorNation { slot: usize },
 }
-
-impl fmt::Display for TurnFlowError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingMajorNation { slot } => {
-                write!(formatter, "major nation slot {slot} is not active")
-            }
-        }
-    }
-}
-
-impl Error for TurnFlowError {}
 
 impl TurnState {
     /// Mirrors `TSimMgr::AdvanceSeason`: increment the original signed short with

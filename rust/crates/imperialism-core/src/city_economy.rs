@@ -1,55 +1,24 @@
 use crate::{CityState, MajorNationState, NationEconomyError, PopulationError, ResourceKind};
-use std::error::Error;
-use std::fmt;
 
 const TRANSPORT_CAPACITY_INDEX: usize = 2;
 const RESERVED_TRANSPORT_CAPACITY_INDEX: usize = 3;
 const PRODUCTION_ACCUM_COUNT: usize = 16;
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CityEconomyError {
+    #[error("{field} has {actual} entries, expected {}", ResourceKind::COUNT)]
     InvalidResourceCount { field: &'static str, actual: usize },
+    #[error(
+        "purchased item vector has {actual} entries, expected {}",
+        ResourceKind::PURCHASED_COUNT
+    )]
     InvalidPurchasedItemCount { actual: usize },
+    #[error("city production accumulation has {actual} entries, expected {PRODUCTION_ACCUM_COUNT}")]
     InvalidProductionAccumCount { actual: usize },
-    Nation(NationEconomyError),
-    Population(PopulationError),
-}
-
-impl fmt::Display for CityEconomyError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidResourceCount { field, actual } => write!(
-                formatter,
-                "{field} has {actual} entries, expected {}",
-                ResourceKind::COUNT
-            ),
-            Self::InvalidPurchasedItemCount { actual } => write!(
-                formatter,
-                "purchased item vector has {actual} entries, expected {}",
-                ResourceKind::PURCHASED_COUNT
-            ),
-            Self::InvalidProductionAccumCount { actual } => write!(
-                formatter,
-                "city production accumulation has {actual} entries, expected {PRODUCTION_ACCUM_COUNT}"
-            ),
-            Self::Nation(error) => error.fmt(formatter),
-            Self::Population(error) => error.fmt(formatter),
-        }
-    }
-}
-
-impl Error for CityEconomyError {}
-
-impl From<PopulationError> for CityEconomyError {
-    fn from(value: PopulationError) -> Self {
-        Self::Population(value)
-    }
-}
-
-impl From<NationEconomyError> for CityEconomyError {
-    fn from(value: NationEconomyError) -> Self {
-        Self::Nation(value)
-    }
+    #[error(transparent)]
+    Nation(#[from] NationEconomyError),
+    #[error(transparent)]
+    Population(#[from] PopulationError),
 }
 
 impl CityState {

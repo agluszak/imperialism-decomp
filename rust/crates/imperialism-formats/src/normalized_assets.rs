@@ -1,7 +1,5 @@
 use imperialism_core::{STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH};
 use serde::{Deserialize, Serialize};
-use std::error::Error;
-use std::fmt;
 use std::fs;
 use std::path::Path;
 
@@ -31,41 +29,14 @@ pub struct StrategicMapAssetManifest {
     pub selection_marker: Rgba8,
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum AssetManifestError {
-    Io(std::io::Error),
-    Json(serde_json::Error),
+    #[error("could not read normalized asset manifest: {0}")]
+    Io(#[source] std::io::Error),
+    #[error("could not decode normalized asset manifest: {0}")]
+    Json(#[source] serde_json::Error),
+    #[error("invalid normalized asset manifest: {0}")]
     Validation(String),
-}
-
-impl fmt::Display for AssetManifestError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Io(error) => write!(
-                formatter,
-                "could not read normalized asset manifest: {error}"
-            ),
-            Self::Json(error) => {
-                write!(
-                    formatter,
-                    "could not decode normalized asset manifest: {error}"
-                )
-            }
-            Self::Validation(message) => {
-                write!(formatter, "invalid normalized asset manifest: {message}")
-            }
-        }
-    }
-}
-
-impl Error for AssetManifestError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Io(error) => Some(error),
-            Self::Json(error) => Some(error),
-            Self::Validation(_) => None,
-        }
-    }
 }
 
 impl NormalizedAssetManifestV1 {
