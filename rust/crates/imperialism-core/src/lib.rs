@@ -8,6 +8,7 @@ mod ids;
 mod map_geometry;
 mod nation_economy;
 mod population;
+mod production;
 mod resources;
 mod rng;
 mod snapshot;
@@ -27,6 +28,7 @@ pub use map_geometry::{
 };
 pub use nation_economy::NationEconomyError;
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
+pub use production::{ItemProductionOrder, ProductionConstraint, ProductionError};
 pub use resources::ResourceKind;
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
