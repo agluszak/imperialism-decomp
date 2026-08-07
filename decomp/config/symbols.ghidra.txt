@@ -8981,7 +8981,7 @@ CButton::Create 61E7F7 f
 CProgressCtrl::~CHotKeyCtrl 61E819 f
 CWnd::GetCheckedRadioButton 61E851 f
 CListCtrl::OnChildNotify 61E87C f
-Dtor_CListBox_FID_61e8cb 61E8CB f
+Dtor_CListBox_61e8cb 61E8CB f
 WrapperFor_Default_At0061e911 61E911 f
 WrapperFor_Default_At0061e919 61E919 f
 CListBox::OnChildNotify 61E921 f

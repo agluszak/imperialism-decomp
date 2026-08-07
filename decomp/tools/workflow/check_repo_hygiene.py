@@ -15,11 +15,9 @@ failure mode that let the clangd indexes survive. Because the categories are emp
 is unambiguous: something was added that should not have been, and the fix is to untrack
 it rather than to widen this list.
 
-Two exemptions are real, and both are vendored third-party material we did not produce:
-
-  vendor/msvc500/fid-generation/    the Ghidra FID build logs (23 .log files) and its
-                                   .rep project database (binary .gbf chunks, multiple MB)
-  vendor/, LFS-tracked paths        vendored archives and libraries
+Vendored archives and libraries are exempt from the large-binary rule, as are paths tracked through
+Git LFS. Generated Ghidra projects, databases, inventories, and logs are not vendored inputs and must
+remain untracked.
 
 Large binaries are handled separately from the extension bans. Sizeable *text* files are
 normal here -- config/vtable_abi_evidence.json and the Mac evidence crosswalks run to
@@ -71,10 +69,8 @@ BANNED_PREFIXES = {
     "build-msvc500/": "build output",
     "build/": "build output",
     "dist/": "build output",
+    "vendor/msvc500/fid-generation/": "retired generated-library artifacts",
 }
-
-# Vendored third-party material we did not generate and do not rebuild.
-VENDORED_EXEMPT_PREFIXES = ("vendor/msvc500/fid-generation/",)
 
 # Prefixes where a large binary is expected (vendored archives, libraries, Ghidra DBs).
 LARGE_BINARY_EXEMPT_PREFIXES = ("vendor/",)
@@ -133,9 +129,6 @@ def find_offenders(repo_root: Path, max_binary_bytes: int) -> list[tuple[str, st
     offenders: list[tuple[str, str]] = []
 
     for path in paths:
-        if path.startswith(VENDORED_EXEMPT_PREFIXES):
-            continue
-
         posix = Path(path)
         suffix_reason = BANNED_SUFFIXES.get(posix.suffix.lower())
         if suffix_reason is not None:

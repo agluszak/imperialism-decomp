@@ -26,14 +26,12 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 Surgical inventory edits are allowed (deleting junk rows); a full resync
 re-derives the file, and the merge preserves curated values by address.
 
-## Library identity (a FID miss is NOT game code)
+## Library identity
 
-Ghidra FID is heuristic — it has minimum-length/score thresholds, so it silently
-skips tiny or aliased CRT/MFC functions (the canonical case: `rand` at
-`0x005e83f0`, whose body is the MSVC LCG `state*0x343fd + 0x269ec3`,
-`(state>>16)&0x7fff`). `apply_msvc500_library_region.py` only sees functions FID
-returned, so a miss keeps its invented Ghidra name (`GenerateThreadLocalRandom15`)
-with no `_rand` symbol and no library ownership — forever.
+Small or aliased CRT/MFC functions must not be behaviorally named from their apparent
+effect. The canonical case is `rand` at `0x005e83f0`, whose body is the MSVC LCG
+`state*0x343fd + 0x269ec3`, `(state>>16)&0x7fff`. Use the archive-backed object matcher
+and reviewed identity table for durable attribution.
 
 The **reviewed override layer** fixes such rows durably:
 
@@ -43,21 +41,19 @@ The **reviewed override layer** fixes such rows durably:
 - Every reviewed row IS a LIBRARY claim in the central source model — no marker
   file, no applier. The generation-time overlay (tools/generate_symbols.py)
   projects name/symbol/prototype into the generated symbols table.
-- Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
-  The FID apply defers override addresses, so a manual FID re-run can't clobber them.
+- Precedence: **reviewed override > object match > existing curated > provisional Ghidra**.
 - `just library-identity-gate` (in `just gates`) requires every reviewed row to
   project EXACTLY (no count baseline; git history records intentional removals) —
   regressing rand back to a descriptive name fails the gate.
 
 **Before behaviourally naming any MSVC/MFC-range or CRT-shaped function, run
-`just library-identify 0xADDR`.** It aggregates symbols/ownership/override/FID/oracle
-into a verdict; a missing FID result is explicitly flagged as *not* evidence of game
-ownership.
+`just library-identify 0xADDR`.** It aggregates symbols, ownership, reviewed overrides,
+and the object-matcher oracle into a verdict.
 
 ### The object-matcher oracle (systematic identity)
 
-`just build-library-oracle` is the authoritative identity source — it does not
-depend on FID. It parses the vendored `vendor/msvc500/lib/{libcmt,nafxcw}.lib` COFF
+`just build-library-oracle` is the authoritative identity source. It parses the vendored
+`vendor/msvc500/lib/{libcmt,nafxcw}.lib` COFF
 object members, masks each function's relocation fields (call/jmp targets, absolute
 data refs) and trims alignment padding to a normal form, then matches every
 executable function's bytes against it. An exact-size, exact-masked match is a
@@ -79,8 +75,8 @@ Guards that keep it safe:
   `config/library_oracle_gamecode_allowlist.csv`. Moving one to library needs a build
   to confirm its callers still link.
 
-Precedence: **reviewed override > object-match > FID > curated game identity >
-provisional Ghidra**. Library names/prototypes converge into the Ghidra DB on the
+Precedence: **reviewed override > object match > curated game identity > provisional
+Ghidra**. Library names/prototypes converge into the Ghidra DB on the
 next refresh (`ghidra-apply-source` pushes names over the
 dense range).
 

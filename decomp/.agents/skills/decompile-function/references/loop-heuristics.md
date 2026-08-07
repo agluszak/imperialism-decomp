@@ -124,7 +124,7 @@ series. Resolution:
 | 93-L | A low-scoring "already-ported" leaf may just carry the WRO | stays here (below) |
 | 94-L | `undefined`→`void` on a vtable slot with a trailing `+xor  | `vtable-matching` |
 | 95-L | A fake `(args…)` forwarder that ignores its args and tail- | `calling-conventions` |
-| 96-L | A FID miss is not evidence of game code — the relocation-m | stays here (below) |
+| 96-L | Use the relocation-masked object matcher for library identity | stays here (below) |
 | 97-L | Moving an oracle-flagged game-code mislabel to library: tw | stays here (below) |
 | 98-L | CDialog / CWnd vtable slots don't fail from ICF — MSVC500  | `vtable-matching` |
 | 89 | CView/CFrameWnd-family vtable LIBRARY pass: align the RECO | `vtable-matching` |
@@ -396,11 +396,10 @@ here (see §20, §38); a real regression has a real cause. Related from the same
 
   *(ex decomp-loop list-note 93)*
 
-- **A FID miss is not evidence of game code — the relocation-masked `.obj` matcher is
-    the authoritative identity oracle.** Ghidra FID has minimum-length/score thresholds,
-    so it silently skips small/aliased CRT/MFC functions (rand at 0x005e83f0 kept the
-    invented name `GenerateThreadLocalRandom15`, no `_rand` symbol, no library ownership).
-    The durable fix is `just build-library-oracle`: parse the vendored
+- **The relocation-masked `.obj` matcher is the authoritative library identity oracle.**
+    Do not behaviorally name small or aliased CRT/MFC functions from their apparent effect
+    (the canonical example is `rand` at 0x005e83f0). The durable attribution path is
+    `just build-library-oracle`: parse the vendored
     `libcmt.lib`/`nafxcw.lib` COFF members, mask each function's relocation fields and trim
     trailing 0xCC/0x90 padding to a normal form, and exact-match executable function bytes
     against it — raw bytes differ (linker-assigned addresses) but the masked bodies are
@@ -415,8 +414,8 @@ here (see §20, §38); a real regression has a real cause. Related from the same
     non-discriminative — demote to review, never auto-name by body alone. (e) Auto-convert
     unowned rows to library only inside the dense range and only when the invented name is
     unreferenced in manual source (else removing its stub breaks the link). The oracle
-    found ~1100 confident identities incl. 48 FID-missed conversions and 25 game-code
-    mislabels (13 libcmt float internals ported as `bignum96_math.cpp`). `just
+    found ~1100 confident identities and 25 game-code mislabels (13 libcmt float internals
+    ported as `bignum96_math.cpp`). `just
     library-identify 0xADDR` surfaces all of this; `library-identity-gate` pins it.
 
   *(ex decomp-loop list-note 96)*

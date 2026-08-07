@@ -518,12 +518,6 @@ apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-[private]
-[group('ghidra-db')]
-apply-fidb *args: _require-ghidra-install
-  uv run python -m tools.ghidra.apply_fidb {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
 # Atomically re-attribute a class in the DB: namespace + functions + datatypes +
 # vtable-struct + vtable label, in one transaction (ghidra-apply-source only does
 # function/label names, so a datatype-level junk name survives it). Dry-run by default.
@@ -563,10 +557,9 @@ import-ghidra *args: _require-ghidra-install
     --file "$file_in_project" \
     {{args}})
 
-# Diagnostic: aggregate every identity signal for one address (symbols, ownership,
-# reviewed override, cached FID match, object-matcher oracle) into a verdict.
-# Run before behaviourally naming any MSVC/MFC-range or CRT-shaped function:
-# a missing FID result is NOT evidence of game ownership. `just library-identify 0xADDR`.
+# Diagnostic: aggregate maintained identity signals for one address (symbols,
+# ownership, reviewed override, object-matcher oracle) into a verdict. Run before
+# behaviourally naming any MSVC/MFC-range or CRT-shaped function.
 [group('ghidra-inspect')]
 library-identify address:
   uv run python -m tools.mfc.library_identify "{{address}}"

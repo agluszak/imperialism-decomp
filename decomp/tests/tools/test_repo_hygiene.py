@@ -61,12 +61,14 @@ class RepoHygieneTest(unittest.TestCase):
         self._track("build/CMakeCache.txt")
         self.assertIn("build/CMakeCache.txt", self._offenders())
 
-    def test_rejects_stray_logs_but_exempts_the_vendored_fid_logs(self) -> None:
+    def test_rejects_retired_generation_artifacts(self) -> None:
         self._track("runtime-results/session.log")
         self._track("vendor/msvc500/fid-generation/logs/import.log")
+        self._track("vendor/msvc500/fid-generation/project/idata/db.1.gbf")
         offenders = self._offenders()
         self.assertIn("runtime-results/session.log", offenders)
-        self.assertNotIn("vendor/msvc500/fid-generation/logs/import.log", offenders)
+        self.assertIn("vendor/msvc500/fid-generation/logs/import.log", offenders)
+        self.assertIn("vendor/msvc500/fid-generation/project/idata/db.1.gbf", offenders)
 
     def test_large_text_evidence_is_allowed(self) -> None:
         # The Mac crosswalks and vtable ABI evidence are multi-MB JSON. Size alone must

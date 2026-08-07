@@ -8186,16 +8186,16 @@ address|name|symbol|size|type|prototype|provenance
 61e819|CProgressCtrl::~CHotKeyCtrl|CProgressCtrl::~CHotKeyCtrl|56|function|undefined ??1CProgressCtrl@@UAE@XZ@0061e819()|
 61e851|CWnd::GetCheckedRadioButton|?GetCheckedRadioButton@CWnd@@QAEHHH@Z|40|function|public: int __thiscall CWnd::GetCheckedRadioButton(int, int)|msvc500_library_oracle
 61e87c|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c()|
-61e8cb|Dtor_CListBox_FID_61e8cb|Dtor_CListBox_FID_61e8cb|56|function|undefined Dtor_CListBox_FID_61e8cb()|
+61e8cb|Dtor_CListBox_61e8cb|Dtor_CListBox_61e8cb|56|function|undefined Dtor_CListBox_61e8cb()|
 61e911|WrapperFor_Default_At0061e911||8|function|undefined WrapperFor_Default_At0061e911()|
 61e919|WrapperFor_Default_At0061e919||8|function|undefined WrapperFor_Default_At0061e919()|
 61e921|CListBox::OnChildNotify|?OnChildNotify@CListBox@@MAEHIIJPAJ@Z|153|function|protected: virtual int __thiscall CListBox::OnChildNotify(unsigned int, unsigned int, long, long *)|msvc500_library_oracle
 61e9ba|CListBox::GetText|?GetText@CListBox@@QBEXHAAVCString@@@Z|67|function|public: void __thiscall CListBox::GetText(int, class CString &) const|msvc500_library_oracle
-61ea56|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61ea56()|
+61ea56|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_61ea56()|
 61ea9c|CComboBox::OnChildNotify|?OnChildNotify@CComboBox@@MAEHIIJPAJ@Z|103|function|protected: virtual int __thiscall CComboBox::OnChildNotify(unsigned int, unsigned int, long, long *)|msvc500_library_oracle
 61eb46|InvokeDialogCreateVslot5CWithTemplate45||33|function|undefined InvokeDialogCreateVslot5CWithTemplate45()|
-61eb67|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61eb67()|
-61ebc0|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61ebc0()|
+61eb67|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_61eb67()|
+61ebc0|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_61ebc0()|
 61ebf8|WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8||10|function|undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()|
 61ec02|NoOpVirtualStub_0061ec02||1|function|void NoOpVirtualStub_0061ec02(void)|curated
 61ec03|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()|

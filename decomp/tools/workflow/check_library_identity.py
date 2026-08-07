@@ -6,12 +6,11 @@ not whether library identities are semantically correct. This gate closes that
 hole for the reviewed set: every row in `config/reviewed_library_identities.csv`
 must be faithfully projected into `config/original_entities.csv` and `// LIBRARY:` markers.
 
-It exists because the sync pipeline stabilizes a FID miss into a durable mistake:
-a function FID skipped (e.g. `rand` at 0x005e83f0, whose body is the MSVC LCG
-`state*0x343fd + 0x269ec3`, `(state>>16)&0x7fff`) keeps its invented Ghidra name
-`GenerateThreadLocalRandom15` forever, with no `_rand` symbol and no library
-ownership. The reviewed override layer fixes such rows; this gate makes the fix
-un-revertible.
+It exists because provisional Ghidra names can stabilize into durable mistakes. For
+example, `rand` at 0x005e83f0 has the MSVC LCG body `state*0x343fd + 0x269ec3`,
+`(state>>16)&0x7fff`; a descriptive provisional name is not a substitute for `_rand`
+identity and library ownership. The reviewed override layer fixes such rows; this gate
+makes the fix un-revertible.
 
 Failures (for the reviewed override set):
   - an override is not applied to symbols.csv (name/symbol/prototype/type drift);
@@ -119,8 +118,7 @@ def check_oracle_gamecode_conflicts(
 ) -> list[str]:
     """A high-confidence unique library match must not be labeled manual game code.
 
-    This is the mechanical form of 'unmatched-by-FID != game code': the object
-    matcher independently proves the byte identity, so a confident unique match
+    The object matcher independently proves the byte identity, so a confident unique match
     owned by a game .cpp (e.g. libcmt float internals ported as bignum96_math.cpp)
     is a mislabel. Pre-existing ones are acknowledged in the allowlist; a NEW one
     (regression) fails the gate.
@@ -148,7 +146,7 @@ def check_oracle_gamecode_conflicts(
         problems.append(
             f"0x{address:08x}: high-confidence library match {row.get('symbol')!r} "
             f"({row.get('member')}) is labeled game code in {owner[0]} (ownership={owner[1]}). "
-            f"A FID/heuristic miss is not evidence of game ownership — move it to library, "
+            f"Move it to library "
             f"or acknowledge in {DEFAULT_GAMECODE_ALLOWLIST}."
         )
     return problems

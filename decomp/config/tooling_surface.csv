@@ -77,7 +77,6 @@ module|tools.ghidra.apply_class_model|just:apply-class-model|Project the verifie
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
-module|tools.ghidra.apply_fidb|just:apply-fidb|Attach/query/apply an MSVC/MFC Function ID database into Ghidra
 module|tools.ghidra.datatype_audit|just:ghidra-datatype-audit|Audit Ghidra datatype state
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
@@ -153,7 +152,7 @@ module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared original_entities.csv loaders + marker-derived ownership view
-module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
+module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/oracle verdict)
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: every reviewed library identity must project EXACTLY (no count baseline)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins

@@ -5,7 +5,7 @@ Each row asserts a confirmed CRT/MFC library identity (name + linker symbol;
 prototype is optional enrichment). The central source model treats every row as
 a LIBRARY claim; the generated symbols overlay projects the fields; the
 library-identity gate requires exact consistency. Accepting an object-matcher
-or FID result means editing this CSV — nothing else.
+result means editing this CSV — nothing else.
 """
 
 from __future__ import annotations

@@ -165,8 +165,8 @@ tool-owned source trees. Generated build inputs live in the build directory.
 - `just/` — the justfile modules behind `just --list` (`build`, `compare`, `gates`,
   `agent`, `sync`, `ghidra`, …)
 - `tests/` — tooling unit tests (`just test`)
-- `vendor/` — vendored inputs: the Ghidra `.gzf` archive (via LFS), the MSVC500
-  library/FID data, Mac CodeWarrior evidence, DirectX headers
+- `vendor/` — vendored inputs: the Ghidra `.gzf` archive (via LFS), MSVC500 libraries,
+  Mac CodeWarrior evidence, and DirectX headers
 - `build-msvc500/generated/` — **generated**, not in git: the linkable stubs and
   source index, rebuilt by `just generate` / `just build`. The old
   `src/autogen/`, `src/ghidra_autogen/` and `include/ghidra_autogen/` trees are

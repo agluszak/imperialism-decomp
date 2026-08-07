@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Relocation-masked MSVC500 static-library identity oracle.
 
-FID is heuristic (length/score thresholds), so it silently misses small or
-aliased CRT/MFC functions and mislabels others. This builds an *authoritative*
-identity oracle by matching the linked executable's function bytes against the
+This builds an authoritative identity oracle by matching the linked executable's
+function bytes against the
 exact object members of the vendored `libcmt.lib` / `nafxcw.lib`, normalized so
 that linker-assigned addresses don't matter:
 

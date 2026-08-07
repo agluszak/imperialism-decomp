@@ -62,6 +62,9 @@ vendor/ghidra/imperialism-decomp.rep/
 # Populate with `just vendor-msvc500-headers`.
 vendor/msvc500/headers/
 
+# Generated Ghidra FID databases, projects, inventories, and logs are local evidence.
+vendor/msvc500/fid-generation/
+
 # Local DirectX 5 SDK mirror for agent/reference use.
 # Populate with `just vendor-directx-headers`.
 vendor/directx/include/
