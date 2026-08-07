@@ -283,8 +283,16 @@ def render_entity(
     address = int(entity["address"], 16)
     matching = float(entity.get("matching", 0.0)) * 100.0
     status = comparison["status"]
-    raw = " raw" if status == "effective" else ""
-    lines = [f"0x{address:08x}  {matching:6.2f}%{raw}  {entity['name']}", ""]
+    semantic = comparison.get("semantic_similarity")
+    if status == "mismatch" and isinstance(semantic, (int, float)):
+        score = (
+            f"{float(semantic) * 100.0:6.2f}% semantic similarity (diagnostic; "
+            f"{matching:.2f}% raw)"
+        )
+    else:
+        raw = " raw" if status == "effective" else ""
+        score = f"{matching:6.2f}%{raw}"
+    lines = [f"0x{address:08x}  {score}  {entity['name']}", ""]
     if status == "exact":
         lines.append("exact match — nothing to triage")
     elif status == "effective":
