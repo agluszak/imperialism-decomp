@@ -1,4 +1,4 @@
-use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind};
+use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind, SkillBand};
 use std::error::Error;
 use std::fmt;
 
@@ -118,6 +118,44 @@ pub struct PowerPlantProductionOrder {
     pub limiting_constraint: ProductionConstraint,
     pub accumulated_value: i32,
     pub desired_quantity: i16,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TrainingLevel {
+    Medium,
+    High,
+}
+
+impl TrainingLevel {
+    const fn input_band(self) -> SkillBand {
+        match self {
+            Self::Medium => SkillBand::Low,
+            Self::High => SkillBand::Medium,
+        }
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TrainingProductionOrder {
+    pub level: TrainingLevel,
+    pub quantity: i16,
+    pub tracking_by_resource: [i16; ResourceKind::COUNT],
+    pub reserved_workforce: i16,
+    pub limiting_constraint: ProductionConstraint,
+    pub accumulated_value: i32,
+}
+
+impl TrainingProductionOrder {
+    pub fn new(level: TrainingLevel) -> Self {
+        Self {
+            level,
+            quantity: 0,
+            tracking_by_resource: [0; ResourceKind::COUNT],
+            reserved_workforce: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+            accumulated_value: 0,
+        }
+    }
 }
 
 impl Default for PowerPlantProductionOrder {
@@ -577,6 +615,129 @@ impl PowerPlantProductionOrder {
     }
 }
 
+impl TrainingProductionOrder {
+    pub fn max_order(
+        &mut self,
+        city: &CityState,
+        owner: &MajorNationState,
+        treasury: i32,
+    ) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        let production = city
+            .population
+            .production_labor
+            .as_ref()
+            .ok_or(ProductionError::MissingLaborPool("production"))?;
+        let (paper_per_unit, cash_per_unit, workforce_limit) = match self.level {
+            TrainingLevel::Medium => (1_i16, 100_i32, production.low.min(city.population.strength)),
+            TrainingLevel::High => (
+                2_i16,
+                1_000_i32,
+                production.medium.min(city.population.strength / 2),
+            ),
+        };
+
+        let cash_limit = if !owner.diplomacy_eligible {
+            workforce_limit
+        } else {
+            let available = treasury.wrapping_add(owner.diplomacy_budget_base / 100);
+            let available = if available <= 0 { 0 } else { available };
+            let limit = (available / cash_per_unit) as i16;
+            if limit < 0 { 0 } else { limit }
+        };
+        let paper_limit = city.stock_by_type[ResourceKind::Paper.index()] / paper_per_unit;
+
+        self.limiting_constraint = ProductionConstraint::Workforce;
+        let mut limit = workforce_limit;
+        if cash_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Treasury;
+            limit = cash_limit;
+        }
+        if paper_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Resources;
+            limit = paper_limit;
+        }
+        if i32::from(self.quantity) + i32::from(limit) > 99 {
+            limit = 99_i16.wrapping_sub(self.quantity);
+        }
+        Ok(self.quantity.wrapping_add(limit))
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        owner: &MajorNationState,
+        treasury: &mut i32,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city, owner, *treasury)? || quantity < 0 {
+            return Ok(false);
+        }
+        self.quantity = quantity;
+
+        let (paper_change, cash_change) = match self.level {
+            TrainingLevel::Medium => (delta, i32::from(delta).wrapping_mul(100)),
+            TrainingLevel::High => (delta.wrapping_mul(2), i32::from(delta).wrapping_mul(1_000)),
+        };
+        city.add_to_stock_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
+        *treasury = treasury.wrapping_sub(cash_change);
+        city.population
+            .make_unavailable(self.level.input_band(), delta)
+            .map_err(|error| match error {
+                crate::PopulationError::MissingLaborPool(name) => {
+                    ProductionError::MissingLaborPool(name)
+                }
+                _ => unreachable!("training only accesses a validated labor pool"),
+            })?;
+        Ok(true)
+    }
+
+    pub fn produce(
+        &mut self,
+        city: &mut CityState,
+        owner: &mut MajorNationState,
+    ) -> Result<(), ProductionError> {
+        if self.quantity == 0 {
+            return Ok(());
+        }
+        let baseline = city
+            .population
+            .baseline_labor
+            .as_mut()
+            .ok_or(ProductionError::MissingLaborPool("baseline"))?;
+
+        match self.level {
+            TrainingLevel::Medium => {
+                baseline.low = baseline.low.wrapping_sub(self.quantity);
+                baseline.medium = baseline.medium.wrapping_add(self.quantity);
+            }
+            TrainingLevel::High => {
+                let new_level = i32::from(baseline.high) + i32::from(self.quantity);
+                if new_level >= 10 {
+                    validate_pending_actions(owner)?;
+                    let payload = if owner.pending_action_status[7] < b'2' as i8 {
+                        Some(2)
+                    } else if new_level >= 30 && owner.pending_action_status[7] <= b'3' as i8 {
+                        Some(3)
+                    } else {
+                        None
+                    };
+                    if let Some(payload) = payload {
+                        set_pending_action(owner, 7, payload)?;
+                    }
+                }
+                baseline.medium = baseline.medium.wrapping_sub(self.quantity);
+                baseline.high = baseline.high.wrapping_add(self.quantity);
+            }
+        }
+        self.quantity = 0;
+        Ok(())
+    }
+
+    pub const fn restock(&self) {}
+}
+
 impl ItemProductionOrder {
     pub fn new(output: ResourceKind, inputs: ItemInputs, production_slot: ProductionSlot) -> Self {
         Self {
@@ -751,6 +912,7 @@ pub enum ProductionError {
     InvalidResourceCount { actual: usize },
     InvalidProductionCount { field: &'static str, actual: usize },
     InvalidPendingActionCount { actual: usize },
+    InvalidPendingActionPayloadCount { actual: usize },
     MissingLaborPool(&'static str),
 }
 
@@ -770,6 +932,10 @@ impl fmt::Display for ProductionError {
             Self::InvalidPendingActionCount { actual } => write!(
                 formatter,
                 "pending nation actions have {actual} entries, expected at least 10"
+            ),
+            Self::InvalidPendingActionPayloadCount { actual } => write!(
+                formatter,
+                "pending nation action payloads have {actual} entries, expected at least 8"
             ),
             Self::MissingLaborPool(name) => write!(formatter, "city has no {name} labor pool"),
         }
@@ -817,6 +983,21 @@ fn validate_pending_actions(owner: &MajorNationState) -> Result<(), ProductionEr
             actual: owner.pending_action_status.len(),
         })
     }
+}
+
+fn set_pending_action(
+    owner: &mut MajorNationState,
+    index: usize,
+    payload: i16,
+) -> Result<(), ProductionError> {
+    if owner.pending_action_payload_by_action.len() <= index {
+        return Err(ProductionError::InvalidPendingActionPayloadCount {
+            actual: owner.pending_action_payload_by_action.len(),
+        });
+    }
+    owner.pending_action_status[index] = b'2' as i8;
+    owner.pending_action_payload_by_action[index] = payload;
+    Ok(())
 }
 
 #[cfg(test)]
@@ -1494,5 +1675,133 @@ mod tests {
         let expected = production.clone();
         production.produce();
         assert_eq!(production, expected);
+    }
+
+    #[test]
+    fn training_limits_record_workforce_treasury_resources_and_the_global_cap() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut medium = TrainingProductionOrder::new(TrainingLevel::Medium);
+        state.stock_by_type[ResourceKind::Paper.index()] = 10;
+        assert_eq!(medium.max_order(&state, &owner, 10_000).unwrap(), 4);
+        assert_eq!(medium.limiting_constraint, ProductionConstraint::Workforce);
+
+        assert_eq!(medium.max_order(&state, &owner, 150).unwrap(), 1);
+        assert_eq!(medium.limiting_constraint, ProductionConstraint::Treasury);
+
+        state.stock_by_type[ResourceKind::Paper.index()] = 0;
+        assert_eq!(medium.max_order(&state, &owner, 10_000).unwrap(), 0);
+        assert_eq!(medium.limiting_constraint, ProductionConstraint::Resources);
+
+        owner.diplomacy_eligible = false;
+        state.stock_by_type[ResourceKind::Paper.index()] = 100;
+        medium.quantity = 98;
+        assert_eq!(medium.max_order(&state, &owner, -50_000).unwrap(), 99);
+
+        let mut high = TrainingProductionOrder::new(TrainingLevel::High);
+        assert_eq!(high.max_order(&state, &owner, 0).unwrap(), 2);
+        assert_eq!(high.limiting_constraint, ProductionConstraint::Workforce);
+    }
+
+    #[test]
+    fn training_quantity_reserves_and_refunds_paper_cash_and_workers() {
+        let mut state = city();
+        let owner = nation();
+        let mut treasury = 1_000;
+        let mut production = TrainingProductionOrder::new(TrainingLevel::Medium);
+        state.stock_by_type[ResourceKind::Paper.index()] = 10;
+
+        assert!(
+            production
+                .set_quantity(&mut state, &owner, &mut treasury, 2)
+                .unwrap()
+        );
+        assert_eq!(state.stock_by_type[ResourceKind::Paper.index()], 8);
+        assert_eq!(treasury, 800);
+        assert_eq!(state.population.production_labor.unwrap().low, 2);
+        assert_eq!(state.population.strength, 8);
+
+        assert!(
+            production
+                .set_quantity(&mut state, &owner, &mut treasury, 1)
+                .unwrap()
+        );
+        assert_eq!(state.stock_by_type[ResourceKind::Paper.index()], 9);
+        assert_eq!(treasury, 900);
+        assert_eq!(state.population.production_labor.unwrap().low, 3);
+        assert_eq!(state.population.strength, 9);
+    }
+
+    #[test]
+    fn high_training_uses_two_paper_and_one_thousand_cash_per_worker() {
+        let mut state = city();
+        let owner = nation();
+        let mut treasury = 3_000;
+        let mut production = TrainingProductionOrder::new(TrainingLevel::High);
+        state.stock_by_type[ResourceKind::Paper.index()] = 6;
+
+        assert!(
+            production
+                .set_quantity(&mut state, &owner, &mut treasury, 2)
+                .unwrap()
+        );
+        assert_eq!(state.stock_by_type[ResourceKind::Paper.index()], 2);
+        assert_eq!(treasury, 1_000);
+        assert_eq!(state.population.production_labor.unwrap().medium, 0);
+        assert_eq!(state.population.strength, 6);
+    }
+
+    #[test]
+    fn training_production_promotes_the_requested_baseline_workers() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut medium = TrainingProductionOrder::new(TrainingLevel::Medium);
+        medium.quantity = 2;
+
+        medium.produce(&mut state, &mut owner).unwrap();
+        assert_eq!(state.population.baseline_labor.unwrap().low, 2);
+        assert_eq!(state.population.baseline_labor.unwrap().medium, 4);
+        assert_eq!(medium.quantity, 0);
+
+        owner.pending_action_status[7] = b'3' as i8;
+        owner.pending_action_payload_by_action = vec![0; 13];
+        state.population.baseline_labor.as_mut().unwrap().high = 29;
+        let mut high = TrainingProductionOrder::new(TrainingLevel::High);
+        high.quantity = 1;
+        high.produce(&mut state, &mut owner).unwrap();
+        assert_eq!(state.population.baseline_labor.unwrap().medium, 3);
+        assert_eq!(state.population.baseline_labor.unwrap().high, 30);
+        assert_eq!(owner.pending_action_status[7], b'2' as i8);
+        assert_eq!(owner.pending_action_payload_by_action[7], 3);
+        assert_eq!(high.quantity, 0);
+    }
+
+    #[test]
+    fn high_training_preserves_the_retail_pending_action_threshold_order() {
+        let mut state = city();
+        let mut owner = nation();
+        owner.pending_action_payload_by_action = vec![0; 13];
+        state.population.baseline_labor.as_mut().unwrap().high = 29;
+        let mut production = TrainingProductionOrder::new(TrainingLevel::High);
+        production.quantity = 1;
+
+        production.produce(&mut state, &mut owner).unwrap();
+        assert_eq!(owner.pending_action_status[7], b'2' as i8);
+        assert_eq!(owner.pending_action_payload_by_action[7], 2);
+    }
+
+    #[test]
+    fn zero_training_order_does_not_require_population_or_pending_action_state() {
+        let mut state = city();
+        let mut owner = nation();
+        state.population.baseline_labor = None;
+        owner.pending_action_status.clear();
+        let mut production = TrainingProductionOrder::new(TrainingLevel::High);
+        let expected_state = state.clone();
+        let expected_owner = owner.clone();
+
+        production.produce(&mut state, &mut owner).unwrap();
+        assert_eq!(state, expected_state);
+        assert_eq!(owner, expected_owner);
     }
 }
