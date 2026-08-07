@@ -7,7 +7,7 @@ This repository contains two related implementations of Imperialism (1997):
 
 Retail behavior and evidence are the ultimate behavioral reference. The C++ reconstruction is an
 executable oracle for the Rust implementation, but Rust must not reproduce accidental C++/MFC/ABI
-structure. Shared contracts are explicit and versioned; the implementations communicate through
+structure. Shared contracts are explicit and current; the implementations communicate through
 serialized data and process boundaries, never by linking Rust to the reconstructed executable.
 
 ## Scope
@@ -16,22 +16,46 @@ serialized data and process boundaries, never by linking Rust to the reconstruct
 - Follow `rust/AGENTS.md` for work under `rust/`.
 - Cross-implementation changes must satisfy both scoped guides.
 - `interop/` contains only contracts and fixtures genuinely shared across implementations.
-- Keep implementation-owned code, tests, assets, evidence, and compatibility details in the owning
+- Keep implementation-owned code, tests, assets, evidence, and retail-format details in the owning
   subproject. Do not create a generic `shared/` directory.
 
 Start tools from the relevant subproject directory. This keeps implementation-specific instructions,
 skills, settings, and command surfaces out of unrelated sessions.
+
+## Simplicity and compatibility
+
+Write the simplest code that satisfies a concrete current requirement. Keep changes narrow and
+direct. Do not add feature creep, speculative abstractions, extension points, fallback modes,
+configuration switches, or “future-proofing.” Every abstraction, option, protocol layer, and format
+variant must have a concrete current caller, test, or retail requirement.
+
+Retail `Imperialism.exe`, its behavior, and its real file/network formats are the compatibility
+targets. Our previous C++ or Rust implementations are not compatibility targets. No released user
+base depends on our internal APIs, so internal APIs, snapshots, schemas, command protocols, CLI
+flags, fixtures, and serialized test formats may be broken freely and updated in place with all
+current callers.
+
+- Do not add compatibility shims, deprecated aliases, dual readers or writers, V1/V2 protocol
+  forks, version negotiation, or migration guides unless a concrete simultaneous-use requirement
+  exists now.
+- Versioning is justified when the retail game has genuinely distinct formats or when two versions
+  must actually interoperate at the same time. Imaginary future consumers are not justification.
+- Delete obsolete implementations instead of preserving them behind adapters, legacy modes, or
+  fallback paths.
+- When changing a repository-owned contract, change the contract and every current producer,
+  consumer, fixture, and test together. Do not preserve the old shape “just in case.”
 
 ## Shared architecture
 
 - `imperialism-core` owns authoritative deterministic Rust game state and the serializable
   command/event boundary.
 - The Bevy application is a presentation, input, and lifecycle client of that domain model.
-- Retail import and legacy compatibility belong at format/import boundaries.
+- Retail import and retail-format quirks belong at format/import boundaries.
 - Differential tests invoke the C++ reconstruction as an external process and compare complete
   serialized state and events.
 - Canonical snapshots and the serializable command/event protocol are interoperability contracts.
-  Version shared formats deliberately and document compatibility changes in `interop/`.
+  Keep one current form and update both implementations together unless retail evidence or a real
+  simultaneous-use requirement demands multiple forms.
 
 ## Beads
 

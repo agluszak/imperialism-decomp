@@ -7,14 +7,14 @@ repository rules in `../AGENTS.md` plus this guide.
 
 - `imperialism-core` owns authoritative deterministic game state, rules, typed IDs, commands, and
   ordered domain events. It must not depend on Bevy.
-- `imperialism-formats` owns retail-file parsing, import, normalization, and compatibility ugliness.
+- `imperialism-formats` owns retail-file parsing, import, normalization, and retail-format ugliness.
 - `imperialism-app` owns Bevy presentation, input, audio, and lifecycle. ECS is a disposable
   projection, not the gameplay database.
 - `imperialism-testkit` owns canonical snapshot comparison and process-isolated C++ oracle tooling.
 - Port retail behavior, not the recovered C++ class hierarchy, ownership model, MFC types, ABI, or
   incidental control flow.
 
-Keep compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
+Keep retail compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
 weak identifiers, binary-layout constraints, or C++-shaped APIs into the domain model merely because
 the decomp uses them.
 
@@ -29,8 +29,8 @@ the decomp uses them.
 - Compare complete post-state and ordered events, not only the symptom or a selected field.
 - Add ordinary focused Rust tests for every behavior change. Add or extend a differential oracle
   when the change asserts retail semantics.
-- Preserve deterministic RNG state, iteration order, integer widths, serialization versions, and
-  error behavior at compatibility boundaries.
+- Preserve deterministic RNG state, iteration order, integer widths, and error behavior. Model
+  retail format-version distinctions only when retail evidence requires them.
 
 Load the `port-behavior` skill for cross-implementation gameplay work. Load `ui-recovery` for the
 View IR/catalog/Bevy hierarchy pipeline. Do not create generic Rust or Bevy skills without a repeated,
