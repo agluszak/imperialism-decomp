@@ -16,8 +16,14 @@
 #include "game/city/TUnitOrder.h"
 #include "game/app/TTransFocusAnimation.h"
 #include "game/core/global_data_tables.h"
+#include "game/globals/game_session_globals.h"
+#include "game/globals/military_ui_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/map/TZone.h"
+#include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
+#include "game/navy/TOcean.h"
 #include "game/navy_order.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_screens/TSimMgr.h"
@@ -34,6 +40,10 @@ enum {
   kTradeSchoolSlot = kTurnEventSchool - kTurnEventTextileMill,
   kRailyardSlot = kTurnEventRailyard - kTurnEventTextileMill
 };
+
+// TCity's retail shipyard order layout: the first two entries are merchant hulls, while row four
+// is the first navy hull and therefore enters the map's primary ship chain when completed.
+const short kFirstNavyShipyardRow = 4;
 
 // Training one tradesman costs a hundred from the treasury and one paper from the city.
 const int kTrainingCashCost = 100;
@@ -104,6 +114,12 @@ protected:
     RT_REQUIRE_EQ(shipBefore.quantity + 1, Building().ShipOrder(raisedRow)->quantity);
     RT_DO("confirm the shipyard's counts", Building().VerifyLiveOrderState());
     RT_REQUIRE(CompletedShipOrderUpdatedTheFleet());
+
+    raisedRow = kFirstNavyShipyardRow;
+    CaptureShipOrder(Building().ShipOrder(raisedRow));
+    RT_DO("order one navy ship", Building().RaiseRow(raisedRow));
+    RT_REQUIRE_EQ(shipBefore.quantity + 1, Building().ShipOrder(raisedRow)->quantity);
+    RT_REQUIRE(CompletedShipOrderUpdatedTheFleet());
     RT_RUN(CloseBuilding(*this));
 
     // --- The railyard: opened only to confirm its count, which the open sequence does. It has no
@@ -143,6 +159,8 @@ protected:
     RT_RUN(CloseBuilding(*this));
 
     RT_CLOSE_TO_MAP("leave the city production screen", City().Close());
+    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+    RT_REQUIRE(LiveZoneMasksCountOnlyNationsAtWar());
     RT_PASS();
 
     RT_END();
@@ -375,6 +393,28 @@ private:
       }
     }
     return -1;
+  }
+
+  bool LiveZoneMasksCountOnlyNationsAtWar() const {
+    int examinedRelations = 0;
+    for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+      for (int nation = 0; nation < 7; ++nation) {
+        int expected = 0;
+        for (int slot = 0; slot < 7; ++slot) {
+          if (g_apTerrainTypeDescriptorTable[slot] != 0 &&
+              (zone->nationKeyMask10 & (1 << slot)) != 0) {
+            ++examinedRelations;
+            if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nation, slot)) {
+              ++expected;
+            }
+          }
+        }
+        if (zone->CountDiplomaticallyRelatedNationsInKeyMask(nation) != expected) {
+          return false;
+        }
+      }
+    }
+    return examinedRelations != 0;
   }
 
   enum { kIndustryPageLimit = 7 };

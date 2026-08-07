@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -489,6 +490,85 @@ def classify_contract_row(
     }
 
 
+_PROVENANCE_HASH = re.compile(r"#[0-9a-f]{6,}")
+# Signed compare pairs that mean the same thing one step apart: `x < N` and
+# `x <= N-1` are identical over integers, and MSVC picks between them freely.
+_EQUIVALENT_FORMS: dict[tuple[str, str], int] = {
+    ("lt_s", "le_s"): -1,
+    ("le_s", "lt_s"): 1,
+    ("gt_s", "ge_s"): 1,
+    ("ge_s", "gt_s"): -1,
+}
+
+
+def _strip_provenance(text: str) -> str:
+    """Drop the trailing value-provenance fingerprints reccmp renders.
+
+    `ne:('imm', 2)#52a2881d` and `ne:('imm', 2)#b310eb7f` are the same
+    comparison against the same constant; the hashes record where each side's
+    operand came from, which differs whenever the two compilers schedule the
+    load differently.
+    """
+    return _PROVENANCE_HASH.sub("", text)
+
+
+def _split_trailing_int(text: str) -> tuple[str, int] | None:
+    match = re.fullmatch(r"(.*?)(-?\d+)", text)
+    if match is None:
+        return None
+    return match.group(1), int(match.group(2))
+
+
+def tier1_noise(comparison: dict[str, Any]) -> str | None:
+    """Name the shape when a reccmp `mismatch` describes no behavioural change.
+
+    reccmp proves the two instruction streams differ; it does not claim the
+    difference is observable.  Two shapes provably are not, and both dominated
+    the ranked output until they were named:
+
+      * the rendered facts are identical once value-provenance fingerprints are
+        removed -- same operator, same operand, same constant;
+      * the predicates are an equivalent signed compare pair (`< N` / `<= N-1`).
+
+    Anything else stays actionable: this only ever suppresses on a positive
+    match, never on absence of evidence.
+    """
+    difference = comparison.get("difference")
+    if not isinstance(difference, dict):
+        return None
+    orig = (difference.get("orig") or {}).get("facts") or {}
+    recomp = (difference.get("recomp") or {}).get("facts") or {}
+    if not isinstance(orig, dict) or not isinstance(recomp, dict):
+        return None
+
+    for field in ("predicate", "value"):
+        left, right = orig.get(field), recomp.get(field)
+        if not isinstance(left, str) or not isinstance(right, str) or not left:
+            continue
+        if left == right:
+            continue
+        if _strip_provenance(left) == _strip_provenance(right):
+            return "provenance_fingerprint"
+
+    left, right = orig.get("predicate"), recomp.get("predicate")
+    if isinstance(left, str) and isinstance(right, str):
+        left, right = _strip_provenance(left), _strip_provenance(right)
+        left_parts, right_parts = left.split(":", 1), right.split(":", 1)
+        if len(left_parts) == 2 and len(right_parts) == 2:
+            delta = _EQUIVALENT_FORMS.get((left_parts[0], right_parts[0]))
+            left_split = _split_trailing_int(left_parts[1])
+            right_split = _split_trailing_int(right_parts[1])
+            if (
+                delta is not None
+                and left_split is not None
+                and right_split is not None
+                and left_split[0] == right_split[0]
+                and right_split[1] == left_split[1] + delta
+            ):
+                return "equivalent_compare_form"
+    return None
+
+
 def _difference_symbols(comparison: dict[str, Any]) -> set[str]:
     symbols: set[str] = set()
     difference = comparison.get("difference")
@@ -545,6 +625,12 @@ def sweep(
 
         if status == "mismatch":
             kind = str((comparison.get("difference") or {}).get("kind", ""))
+            # reccmp proved the streams differ; that is not the same as proving
+            # the behaviour differs.  Named non-behavioural shapes leave tier 1.
+            noise = tier1_noise(comparison)
+            if noise is not None:
+                suppressed_rows.append({**base, "kind": kind, "bucket": noise})
+                continue
             corroborated = sorted(
                 symbol
                 for symbol in _difference_symbols(comparison)
