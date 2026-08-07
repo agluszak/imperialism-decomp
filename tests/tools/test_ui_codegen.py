@@ -98,6 +98,21 @@ class UiCodegenTests(unittest.TestCase):
         purc = offer_case[purc_start:purc_end]
         self.assertIn("ReplaceUiResourceContextPairBuffer(0, 0x99ccff);", purc)
 
+    def test_technology_advance_uses_windows_resource_deltas(self) -> None:
+        factory = self.rendered[0x0045D520]
+        main_start = factory.index("TPicture* node_main")
+        main_end = factory.index("TStaticText* node_text", main_start)
+        main = factory[main_start:main_end]
+        self.assertIn("node_main, 0, 0, 0x280, 0x1e0, 0, 1,", main)
+        self.assertIn("SetUiResourceEventNumberAndInsets(0xa, 0, 0, 0, 0);", main)
+        self.assertIn("ReplaceUiResourceContextPairBuffer(0, 0xffffff);", main)
+        self.assertIn(
+            "g_szUiPlaceholderSampleText_00694A98", factory
+        )
+        self.assertIn("g_szUiPlaceholderSeason_006943BC", factory)
+        self.assertIn("g_szUiPlaceholderTreasury_006943B0", factory)
+        self.assertIn("node_end, 5, 0x20, 0x1f, 0x33, 1, 0,", factory)
+
     def test_all_factories_use_the_canonical_semantic_emitter(self) -> None:
         manifest_text = (REPO_ROOT / "config/ui_factory_codegen.yml").read_text()
         self.assertNotIn("emission:", manifest_text)
@@ -127,6 +142,11 @@ class UiCodegenTests(unittest.TestCase):
             text,
         )
         self.assertNotIn("SetUiResourceLayoutValues(6, 0, 0x300", text)
+
+    def test_empty_text_uses_the_retail_shared_string(self) -> None:
+        rendered = "\n".join(self.rendered.values())
+        self.assertIn(", g_szEmptyString,", rendered)
+        self.assertNotIn(', "",', rendered)
 
     def test_generated_factories_use_recovered_member_names(self) -> None:
         placeholder = re.compile(

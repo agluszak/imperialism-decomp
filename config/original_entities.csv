@@ -96,6 +96,7 @@ address|name|symbol|size|type|prototype|provenance
 415f90|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 415fe0|BuildTradeSchoolDialogControls||16760|function|TView* __cdecl BuildTradeSchoolDialogControls(CWnd* pHostWindow, int nEventCode)|
 41b1c0|CObject::operator new|??2CObject@@SGPAXI@Z|16|function|void * __stdcall operator new(unsigned int nSize)|
+41b1e0|CRect::CRect|??0CRect@@QAE@HHHH@Z|32|function|public: __thiscall CRect::CRect(int,int,int,int)|mfc_inline
 41b210|RegisterUiResourceEntry||312|function|undefined RegisterUiResourceEntry()|
 41b3a0|SetUiResourceStateFlags||20|function|undefined SetUiResourceStateFlags()|
 41b3d0|SetUiResourceContextPictureId||22|function|void __cdecl SetUiResourceContextPictureId(int nPictureId)|

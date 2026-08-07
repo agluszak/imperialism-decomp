@@ -108,8 +108,11 @@ class UiCaseRecipe:
 class UiNodeOverride:
     node_id: str
     enabled: int | None
+    control_value: int | None
+    content_insets: tuple[int, int, int, int] | None
     style_word: int | None
     packed_color: int | None
+    text_source: str | None
     evidence: str
 
 
@@ -316,13 +319,35 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     f"{MANIFEST_PATH}: 0x{address:08x}/0x{event:x}/{raw_node_id}"
                 )
                 override = _mapping(raw_override, override_context)
-                allowed_override_fields = {"enabled", "style", "evidence"}
+                allowed_override_fields = {
+                    "enabled",
+                    "control_value",
+                    "content_insets",
+                    "style",
+                    "text_source",
+                    "evidence",
+                }
                 if set(override) - allowed_override_fields or "evidence" not in override:
                     raise ValueError(
                         f"{override_context}: expected enabled and/or style plus evidence"
                     )
                 override_evidence = str(override["evidence"])
                 enabled = int(override["enabled"]) if "enabled" in override else None
+                control_value = (
+                    int(override["control_value"])
+                    if "control_value" in override
+                    else None
+                )
+                content_insets = None
+                if "content_insets" in override:
+                    content_insets = tuple(
+                        int(value)
+                        for value in _sequence(
+                            override["content_insets"],
+                            4,
+                            f"{override_context}/content_insets",
+                        )
+                    )
                 style = override.get("style")
                 style_word = None
                 packed_color = None
@@ -334,8 +359,19 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                         )
                     style_word = int(style_mapping["word"])
                     packed_color = int(style_mapping["packed_color"])
-                if enabled is None and style is None:
-                    raise ValueError(f"{override_context}: expected enabled and/or style")
+                text_source = (
+                    str(override["text_source"])
+                    if "text_source" in override
+                    else None
+                )
+                if (
+                    enabled is None
+                    and control_value is None
+                    and content_insets is None
+                    and style is None
+                    and text_source is None
+                ):
+                    raise ValueError(f"{override_context}: expected a semantic override")
                 if not override_evidence:
                     raise ValueError(f"{override_context}: evidence is required")
                 if enabled is not None and enabled not in (0, 1):
@@ -344,8 +380,11 @@ def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
                     UiNodeOverride(
                         f"0x{int(raw_node_id):04x}",
                         enabled,
+                        control_value,
+                        content_insets,
                         style_word,
                         packed_color,
+                        text_source,
                         override_evidence,
                     )
                 )
@@ -850,35 +889,49 @@ def apply_case_windows_overrides(
             f"{MANIFEST_PATH}: 0x{recipe.address:08x}/0x{case.event:x} "
             f"overrides unknown nodes {', '.join(unknown_nodes)}"
         )
-    return replace(
-        view,
-        nodes=tuple(
+    nodes: list[UiSemanticNode] = []
+    for node in view.nodes:
+        override = overrides.get(node.node_id)
+        if override is None:
+            nodes.append(node)
+            continue
+        family = node.family
+        if override.content_insets is not None:
+            if family.content_insets is None:
+                raise ValueError(
+                    f"{MANIFEST_PATH}: 0x{recipe.address:08x}/0x{case.event:x}/"
+                    f"{node.node_id} overrides missing content insets"
+                )
+            family = replace(family, content_insets=override.content_insets)
+        if override.style_word is not None and override.packed_color is not None:
+            family = replace(
+                family,
+                style=UiStylePayload(override.style_word, override.packed_color),
+            )
+        if override.text_source is not None:
+            if family.text is None:
+                raise ValueError(
+                    f"{MANIFEST_PATH}: 0x{recipe.address:08x}/0x{case.event:x}/"
+                    f"{node.node_id} overrides missing text"
+                )
+            family = replace(
+                family,
+                text=replace(family.text, value=None, source=override.text_source),
+            )
+        nodes.append(
             replace(
                 node,
-                enabled=(
-                    overrides[node.node_id].enabled
-                    if overrides[node.node_id].enabled is not None
-                    else node.enabled
+                enabled=(override.enabled if override.enabled is not None else node.enabled),
+                control_value=(
+                    override.control_value
+                    if override.control_value is not None
+                    else node.control_value
                 ),
-                family=(
-                    replace(
-                        node.family,
-                        style=UiStylePayload(
-                            overrides[node.node_id].style_word,
-                            overrides[node.node_id].packed_color,
-                        ),
-                    )
-                    if overrides[node.node_id].style_word is not None
-                    and overrides[node.node_id].packed_color is not None
-                    else node.family
-                ),
-                source=f"{node.source}; Windows: {overrides[node.node_id].evidence}",
+                family=family,
+                source=f"{node.source}; Windows: {override.evidence}",
             )
-            if node.node_id in overrides
-            else node
-            for node in view.nodes
-        ),
-    )
+        )
+    return replace(view, nodes=tuple(nodes))
 
 
 def _validate_semantic_view(
@@ -1008,6 +1061,9 @@ def _cpp_args(values: Iterable[object]) -> str:
 
 
 def _cpp_string(value: str) -> str:
+    if not value:
+        return "g_szEmptyString"
+
     pieces: list[str] = []
     for byte in value.encode("cp1252", errors="replace"):
         if byte == 0x22:

@@ -83,8 +83,9 @@ address|matching|name
 0x415f30|1.0|CObject::~CObject(void)
 0x415f50|0.6666666666666666|CList<TView *,TView *>::CList<TView *,TView *>
 0x415f90|1.0|CList<TView *,TView *>::`scalar deleting destructor'(unsigned int)
-0x415fe0|0.2838063439065108|BuildTradeSchoolDialogControls
+0x415fe0|0.28621777035800405|BuildTradeSchoolDialogControls
 0x41b1c0|1.0|CObject::operator new
+0x41b1e0|1.0|CRect::CRect
 0x41b210|0.29743589743589743|RegisterUiResourceEntry
 0x41b3a0|1.0|SetUiResourceStateFlags
 0x41b3d0|1.0|SetUiResourceContextPictureId
@@ -96,7 +97,7 @@ address|matching|name
 0x41b5a0|0.7777777777777778|SetUiResourceContextNumberValueAndRange
 0x41b5f0|1.0|ClearUiResourceContext
 0x41b610|1.0|PopUiResourcePoolNode
-0x41b6d0|0.876800557030332|InitializeIndustryViewTradeMoveControlsAndCommodityRows
+0x41b6d0|0.8827190043082814|InitializeIndustryViewTradeMoveControlsAndCommodityRows
 0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
 0x426f60|1.0|CList<TView *,TView *>::GetTail
 0x426fa0|1.0|SetUiResourceContextFlagsAndMetrics
@@ -110,7 +111,7 @@ address|matching|name
 0x427290|1.0|TView::QueryBounds
 0x4272d0|1.0|TView::TranslateRectToWindow
 0x427330|0.5|TView::SuperToLocal
-0x427360|0.34282807731434384|InitializeIndustryOverviewPlacardsAndTradeStatusTags
+0x427360|0.35096642929806715|InitializeIndustryOverviewPlacardsAndTradeStatusTags
 0x429330|0.375|TInfoBarText::TInfoBarText
 0x4293c0|1.0|TInfoBarText::`scalar deleting destructor'
 0x4293f0|1.0|TInfoBarText::~TInfoBarText
@@ -122,7 +123,7 @@ address|matching|name
 0x429500|1.0|TNumberText
 0x429530|1.0|TNumberText::`scalar deleting destructor'
 0x429560|1.0|TNumberText::~TNumberText
-0x4295a0|0.6316633266533066|BuildTurnEventDialogResourcesForEvent547Or7D8
+0x4295a0|0.6329458917835671|BuildTurnEventDialogResourcesForEvent547Or7D8
 0x430250|1.0|TBook::TBook
 0x430280|1.0|TBook::`scalar deleting destructor'
 0x4302b0|1.0|TBook::~TBook
@@ -170,7 +171,7 @@ address|matching|name
 0x430bd0|1.0|TView::GetEventNumber
 0x430bf0|1.0|TView::Draw
 0x430c10|1.0|TView::DoMouseCommand
-0x430c50|0.5111087259847591|InitializeDealBookScreenControlsAndCommandTags
+0x430c50|0.517548567135344|InitializeDealBookScreenControlsAndCommandTags
 0x435540|1.0|TDealTabControl::`scalar deleting destructor'
 0x435570|1.0|TDealTabControl::~TDealTabControl
 0x435590|1.0|TTradePageSellView::TTradePageSellView
@@ -185,7 +186,7 @@ address|matching|name
 0x435710|1.0|TNewspaperView::`scalar deleting destructor'
 0x435740|1.0|TNewspaperView::~TNewspaperView
 0x435760|1.0|TControl::ShallowClone
-0x4357b0|0.5889389153954707|BuildTurnEventDialogUiByCode
+0x4357b0|0.5909549089442914|BuildTurnEventDialogUiByCode
 0x43d590|1.0|TMapPreviewView::TMapPreviewView
 0x43d5c0|1.0|TMapPreviewView::`scalar deleting destructor'
 0x43d5f0|1.0|TMapPreviewView::~TMapPreviewView
@@ -229,8 +230,8 @@ address|matching|name
 0x44a770|0.8888888888888888|TCivDescription::TCivDescription
 0x44a7a0|1.0|TCivDescription::`scalar deleting destructor'
 0x44a7d0|1.0|TCivDescription::~TCivDescription
-0x44a810|0.7991120976692564|BuildTurnEventDialogResources_2508
-0x44af90|0.393830551447285|InitializeJoinSelectorDialogControlsAndNationSlots
+0x44a810|0.8057713651498335|BuildTurnEventDialogResources_2508
+0x44af90|0.4010141559264737|InitializeJoinSelectorDialogControlsAndNationSlots
 0x44fa80|1.0|TMultiMessagePicture::TMultiMessagePicture
 0x44fab0|1.0|TJoinSelectorDialog::`scalar deleting destructor'
 0x44fae0|1.0|TLoungeDialog::`scalar deleting destructor'
@@ -238,11 +239,11 @@ address|matching|name
 0x44fb40|1.0|TJoinSelectorDialog::~TJoinSelectorDialog
 0x44fb60|1.0|TLoungeDialog::~TLoungeDialog
 0x44fb80|1.0|TMultiMessagePicture::~TMultiMessagePicture
-0x44fbc0|0.5468225178019616|BuildUiResourceTreeByTemplateIdAndBindScreenContext
+0x44fbc0|0.5538089480048367|BuildUiResourceTreeByTemplateIdAndBindScreenContext
 0x453800|1.0|TOverlayRadioButton::TOverlayRadioButton
 0x453830|1.0|TOverlayRadioButton::`scalar deleting destructor'
 0x453860|1.0|TOverlayRadioButton::~TOverlayRadioButton
-0x4538a0|0.6089818607372732|InitializeGameSetupScreenControlsAndModeTags
+0x4538a0|0.6101521357519017|InitializeGameSetupScreenControlsAndModeTags
 0x45acb0|1.0|TSpecialQuitPicture::Hilite
 0x45acd0|1.0|TSpecialQuitPicture::`scalar deleting destructor'
 0x45ad00|1.0|TSpecialQuitPicture::~TSpecialQuitPicture
@@ -268,7 +269,7 @@ address|matching|name
 0x45b060|1.0|TGWorldPartView::~TGWorldPartView
 0x45b080|1.0|CRGBColor::CRGBColor(void)
 0x45b0a0|1.0|CRGBColor::CRGBColor(unsigned short, unsigned short, unsigned short)
-0x45b100|0.4246274126557537|InitializeTacticalBattleViewToolbarAndDialogControls
+0x45b100|0.4295138040557049|InitializeTacticalBattleViewToolbarAndDialogControls
 0x45d270|1.0|TMapUberUberPicture::TMapUberUberPicture
 0x45d2a0|1.0|TMapUberUberPicture::Scroll
 0x45d2c0|1.0|TMapUberUberPicture::`scalar deleting destructor'
@@ -285,16 +286,16 @@ address|matching|name
 0x45d480|1.0|TTacticalHolaPicture::TTacticalHolaPicture
 0x45d4b0|1.0|TTacticalHolaPicture::`scalar deleting destructor'
 0x45d4e0|1.0|TTacticalHolaPicture::~TTacticalHolaPicture
-0x45d520|0.3798177995795375|BuildTurnEventDialogResourcesForEvent898
-0x45e0b0|0.5642330195878911|BuildTurnEventDialogResourcesForEvent8FC
+0x45d520|0.38714185883997204|BuildTurnEventDialogResourcesForEvent898
+0x45e0b0|0.5947596031544137|BuildTurnEventDialogResourcesForEvent8FC
 0x4600c0|1.0|TTechStorePage::TTechStorePage
 0x4600f0|1.0|TTechStorePage::`scalar deleting destructor'
 0x460120|1.0|TTechStorePage::~TTechStorePage
 0x460140|1.0|TTechHistoryView::`scalar deleting destructor'
 0x460170|1.0|TTechHistoryView::~TTechHistoryView
 0x4601b0|0.7021438245301094|InitializeTradeScreenBitmapControls
-0x46fd10|0.2460420451596159|BuildTurnEventDialogResourcesForEvent7DE
-0x4749a0|0.5291585969442651|BuildUniversityDialogShell
+0x46fd10|0.29758064516129035|BuildTurnEventDialogResourcesForEvent7DE
+0x4749a0|0.5364751452550033|BuildUniversityDialogShell
 0x4793c0|1.0|CAmbitDocument::CreateObject
 0x479440|0.5|CAmbitDocument::GetRuntimeClass
 0x479460|0.5|CAmbitDocument::GetMessageMap
@@ -2007,6 +2008,7 @@ address|matching|name
 0x4b9360|1.0|TExpansionOrder::FillOrderSheet
 0x4b94a0|1.0|WriteByteSwappedShortArrayToStream
 0x4b95c0|0.04054054054054054|$CRT_CPP_Initializer(87)
+0x4b98b0|1.0|$CRT_CPP_Initializer(88)
 0x4ba240|1.0|TCityProductionView::CreateObject
 0x4ba2c0|1.0|TCityProductionView::GetRuntimeClass
 0x4ba2e0|0.875|TCityProductionView::TCityProductionView
@@ -2963,7 +2965,7 @@ address|matching|name
 0x4fe290|1.0|TScoreGraph::GetRuntimeClass
 0x4fe2b0|1.0|TScoreGraph::DoPostCreate
 0x4fe390|0.41295546558704455|TScoreGraph::Draw
-0x4fe6a0|0.16666666666666666|$CRT_CPP_Initializer(98)
+0x4fe6a0|0.16666666666666666|$CRT_CPP_Initializer(99)
 0x4fe710|0.25|TDisplayMgr::CreateObject
 0x4fe780|1.0|TDisplayMgr::GetRuntimeClass
 0x4fe7a0|0.5641025641025641|TDisplayMgr::TDisplayMgr
@@ -3197,7 +3199,7 @@ address|matching|name
 0x50dd40|0.32679738562091504|TMacViewMgr::DrawStrategicMapUnitIcon
 0x50df40|0.2857142857142857|TMacViewMgr::DrawStrategicMapUnitIconOverlay
 0x50e070|0.5255474452554745|TMacViewMgr::BlitStrategicMapUnitActivityOverlayFrame
-0x50e290|1.0|$CRT_CPP_Initializer(104)
+0x50e290|1.0|$CRT_CPP_Initializer(105)
 0x50e2c0|1.0|Province::GetIndex
 0x50e2f0|0.47761194029850745|TMapMgr::CreateObject
 0x50e3b0|1.0|TMapMgr::GetRuntimeClass
@@ -3691,7 +3693,7 @@ address|matching|name
 0x534f70|1.0|TMission::Hold
 0x534f90|1.0|TMission::SmokeEmIfYouGotEm
 0x534fb0|1.0|TMission::GetRuntimeClass
-0x534fd0|0.75|$CRT_CPP_Initializer(114)
+0x534fd0|0.75|$CRT_CPP_Initializer(115)
 0x534ff0|1.0|operator>>(class CArchive &, class TMission *&)
 0x535020|1.0|TMission::TMission
 0x535050|1.0|TMission::`scalar deleting destructor'
@@ -3734,7 +3736,7 @@ address|matching|name
 0x5362c0|0.9504950495049505|ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
 0x536390|1.0|TNavyMission::CreateObject
 0x536450|1.0|TNavyMission::GetRuntimeClass
-0x536470|0.75|$CRT_CPP_Initializer(116)
+0x536470|0.75|$CRT_CPP_Initializer(117)
 0x536490|1.0|operator>>(class CArchive &, class TNavyMission *&)
 0x5364c0|1.0|TNavyMission::Free
 0x536530|1.0|TNavyMission::WriteTo
@@ -3768,7 +3770,7 @@ address|matching|name
 0x5383f0|0.5892351274787535|TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder
 0x5386c0|1.0|TControlSeaZoneMission::CreateObject
 0x538780|1.0|TControlSeaZoneMission::GetRuntimeClass
-0x5387a0|0.75|$CRT_CPP_Initializer(117)
+0x5387a0|0.75|$CRT_CPP_Initializer(118)
 0x5387c0|1.0|operator>>(class CArchive &, class TControlSeaZoneMission *&)
 0x5387f0|0.7746478873239436|TControlSeaZoneMission::Initialize
 0x538900|0.5161290322580645|TControlSeaZoneMission::GetReplacementSlot48
@@ -3788,7 +3790,7 @@ address|matching|name
 0x539960|1.0|TEscortMission::`scalar deleting destructor'
 0x539990|1.0|TEscortMission::~TEscortMission
 0x5399b0|1.0|TEscortMission::GetRuntimeClass
-0x5399d0|0.75|$CRT_CPP_Initializer(118)
+0x5399d0|0.75|$CRT_CPP_Initializer(119)
 0x5399f0|1.0|operator>>(class CArchive &, class TEscortMission *&)
 0x539a20|0.3448275862068966|TEscortMission::TEscortMission
 0x539a70|1.0|TEscortMission::Initialize
@@ -3803,7 +3805,7 @@ address|matching|name
 0x53a3d0|1.0|TBeachheadMission::`scalar deleting destructor'
 0x53a400|1.0|TBeachheadMission::~TBeachheadMission
 0x53a420|1.0|TBeachheadMission::GetRuntimeClass
-0x53a440|0.75|$CRT_CPP_Initializer(119)
+0x53a440|0.75|$CRT_CPP_Initializer(120)
 0x53a460|1.0|operator>>(class CArchive &, class TBeachheadMission *&)
 0x53a490|0.30303030303030304|TBeachheadMission::TBeachheadMission
 0x53a500|0.3860759493670886|TBeachheadMission::CalculateNeeds
@@ -3817,7 +3819,7 @@ address|matching|name
 0x53aa90|1.0|TBlockadePortMission::`scalar deleting destructor'
 0x53aac0|1.0|TBlockadePortMission::~TBlockadePortMission
 0x53aae0|1.0|TBlockadePortMission::GetRuntimeClass
-0x53ab00|0.75|$CRT_CPP_Initializer(120)
+0x53ab00|0.75|$CRT_CPP_Initializer(121)
 0x53ab20|1.0|operator>>(class CArchive &, class TBlockadePortMission *&)
 0x53ab50|0.38016528925619836|TBlockadePortMission::TBlockadePortMission
 0x53ac60|1.0|TBlockadePortMission::WriteTo
@@ -3832,7 +3834,7 @@ address|matching|name
 0x53ba40|1.0|TBlockadePortMission::GiveActionOrders
 0x53ba60|1.0|TScatteredShipsMission::CreateObject
 0x53bb20|1.0|TScatteredShipsMission::GetRuntimeClass
-0x53bb40|0.75|$CRT_CPP_Initializer(121)
+0x53bb40|0.75|$CRT_CPP_Initializer(122)
 0x53bb60|1.0|operator>>(class CArchive &, class TScatteredShipsMission *&)
 0x53bb90|0.75|TScatteredShipsMission::Initialize
 0x53bbb0|1.0|TScatteredShipsMission::Reassess
@@ -3846,7 +3848,7 @@ address|matching|name
 0x53bf90|1.0|TScatteredShipsMission::RefreshMissionPortZoneContextForNation
 0x53bfb0|1.0|TArmyMission::CreateObject
 0x53c030|1.0|TArmyMission::GetRuntimeClass
-0x53c050|0.75|$CRT_CPP_Initializer(122)
+0x53c050|0.75|$CRT_CPP_Initializer(123)
 0x53c070|1.0|operator>>(class CArchive &, class TArmyMission *&)
 0x53c0a0|1.0|TArmyMission::TArmyMission
 0x53c1b0|1.0|TArmyMission::IsANoBrainer
@@ -3877,7 +3879,7 @@ address|matching|name
 0x53d670|1.0|TAttackProvinceMission::CreateObject
 0x53d6f0|1.0|TAttackProvinceMission::IsHospitalMission
 0x53d710|1.0|TAttackProvinceMission::GetRuntimeClass
-0x53d730|0.75|$CRT_CPP_Initializer(123)
+0x53d730|0.75|$CRT_CPP_Initializer(124)
 0x53d750|1.0|operator>>(class CArchive &, class TAttackProvinceMission *&)
 0x53d780|1.0|TAttackProvinceMission::TAttackProvinceMission
 0x53d7c0|1.0|TAttackProvinceMission::`scalar deleting destructor'
@@ -3897,7 +3899,7 @@ address|matching|name
 0x53e5b0|1.0|TAttackProvinceMission::Matches
 0x53e5f0|1.0|TDefendProvinceMission::CreateObject
 0x53e670|1.0|TDefendProvinceMission::GetRuntimeClass
-0x53e690|0.75|$CRT_CPP_Initializer(124)
+0x53e690|0.75|$CRT_CPP_Initializer(125)
 0x53e6b0|1.0|operator>>(class CArchive &, class TDefendProvinceMission *&)
 0x53e6e0|0.6545454545454545|TDefendProvinceMission::ComputeCrossNationSupportVectorScore
 0x53ea70|0.574585635359116|TDefendProvinceMission::ComputeLocalSupportVectorScore
@@ -3917,7 +3919,7 @@ address|matching|name
 0x53f1f0|0.8888888888888888|TInvadeMission::IndustrialCostOfNeeds
 0x53f240|1.0|TInvadeMission::IsHospitalMission
 0x53f260|1.0|TInvadeMission::GetRuntimeClass
-0x53f280|0.75|$CRT_CPP_Initializer(125)
+0x53f280|0.75|$CRT_CPP_Initializer(126)
 0x53f2a0|1.0|operator>>(class CArchive &, class TInvadeMission *&)
 0x53f2d0|0.3|TInvadeMission::TInvadeMission
 0x53f3c0|1.0|TInvadeMission::`scalar deleting destructor'
@@ -4486,8 +4488,8 @@ address|matching|name
 0x564530|1.0|TOcean::ComputeGlobalMapActionContextNodeValueAverage
 0x564570|1.0|TOcean::FindMapActionContextContainingNodeByIndex
 0x564600|1.0|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh
-0x564800|1.0|$CRT_CPP_Initializer(133)
-0x564830|1.0|$CRT_CPP_Initializer(134)
+0x564800|1.0|$CRT_CPP_Initializer(134)
+0x564830|1.0|$CRT_CPP_Initializer(135)
 0x564860|0.5818181818181818|TMilitaryPageView::CreateObject
 0x564900|1.0|TMilitaryPageView::GetRuntimeClass
 0x564920|1.0|TMilitaryPageView::TMilitaryPageView
@@ -4905,7 +4907,7 @@ address|matching|name
 0x576d80|0.6122448979591837|TSetupRandomMapPicture::TSetupRandomMapPicture
 0x576e00|1.0|TSetupRandomMapPicture::`scalar deleting destructor'
 0x576e30|0.972972972972973|TSetupRandomMapPicture::~TSetupRandomMapPicture
-0x576ea0|0.25|$CRT_CPP_Initializer(141)
+0x576ea0|0.25|$CRT_CPP_Initializer(142)
 0x576fe0|1.0|TSetupRandomMapPicture::RecheckCountryName
 0x577030|0.5611374407582939|TSetupRandomMapPicture::DoPostCreate
 0x5779c0|0.8739130434782608|TSetupRandomMapPicture::DoEvent
@@ -5394,7 +5396,7 @@ address|matching|name
 0x594790|0.3235294117647059|TStatusPicture::DrawBar
 0x594900|0.39263803680981596|TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale
 0x594c00|0.7948717948717948|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
-0x594ed0|1.0|$CRT_CPP_Initializer(146)
+0x594ed0|1.0|$CRT_CPP_Initializer(147)
 0x594f20|0.5079365079365079|TWorldView::CreateObject
 0x594fc0|1.0|TWorldView::CenterOn
 0x594fe0|1.0|TWorldView::GetRuntimeClass
@@ -6172,7 +6174,7 @@ address|matching|name
 0x5c3670|0.7063492063492064|TMilitaryUnit::Upgrade
 0x5c3840|0.8709677419354839|TMilitaryUnit::UpgradeRequirements
 0x5c38e0|0.9636363636363636|TMilitaryUnit::FindUnitByUID
-0x5c3b00|0.75|$CRT_CPP_Initializer(161)
+0x5c3b00|0.75|$CRT_CPP_Initializer(162)
 0x5c3b40|1.0|WaitForSixteenthSecondTicks
 0x5c3b70|0.3504273504273504|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext
 0x5c3d20|0.8617886178861789|ResolveUiThemeColor
@@ -6418,13 +6420,13 @@ address|matching|name
 0x5e24e0|1.0|TMovieView::PlayMovieIfActive
 0x5e2500|1.0|TMovieView::StopMovieIfActive
 0x5e2520|1.0|TMovieView::HandleMouseDown
-0x5e26d0|0.7272727272727273|$CRT_CPP_Initializer(168)
-0x5e2720|0.25|$CRT_CPP_Initializer(169)
-0x5e2770|0.25|$CRT_CPP_Initializer(170)
+0x5e26d0|0.7272727272727273|$CRT_CPP_Initializer(169)
+0x5e2720|0.25|$CRT_CPP_Initializer(170)
+0x5e2770|0.25|$CRT_CPP_Initializer(171)
 0x5e2850|1.0|WNetSelectionRecord::~WNetSelectionRecord
 0x5e2900|0.463768115942029|RecordHostPlayerIdDuringEnumeration
 0x5e2980|1.0|TDirectPlaySessionManagerBase::FindHostPlayerIdByEnumeration
-0x5e29d0|0.25|$CRT_CPP_Initializer(171)
+0x5e29d0|0.25|$CRT_CPP_Initializer(172)
 0x5e2a00|1.0|$E487
 0x5e2a20|0.5492957746478874|TWNetSessionManager::~TWNetSessionManager
 0x5e2b50|1.0|TDirectPlaySessionManagerBase::InitializeSessionDescription
@@ -6463,9 +6465,9 @@ address|matching|name
 0x5e4540|0.9090909090909091|CList<void *,void *>::CList<void *,void *>
 0x5e4830|1.0|CArray<WNetSelectionRecord *,WNetSelectionRecord *>::Serialize
 0x5e4a90|1.0|CArray<WNetSelectionRecord *,WNetSelectionRecord *>::SetSize
-0x5e4d80|0.8571428571428571|$CRT_CPP_Initializer(173)
+0x5e4d80|0.8571428571428571|$CRT_CPP_Initializer(174)
 0x5e4dc0|1.0|$E210
-0x5e4de0|0.25|$CRT_CPP_Initializer(174)
+0x5e4de0|0.25|$CRT_CPP_Initializer(175)
 0x5e4e70|0.9508196721311475|TSoundPlayer::ISoundPlayer
 0x5e4f60|1.0|TSoundPlayer::DefaultSoundCapabilityPredicate
 0x5e4f80|1.0|TSoundPlayer::RequestDirectSoundInitIfAllowed
@@ -7102,7 +7104,7 @@ address|matching|name
 0x6075ea|1.0|CWnd::GetDSCCursor
 0x607643|1.0|CWnd::AttachControlSite(class CHandleMap *)
 0x607673|1.0|CWnd::AttachControlSite(class CWnd *)
-0x607716|1.0|$CRT_CPP_Initializer(187)
+0x607716|1.0|$CRT_CPP_Initializer(188)
 0x6077c6|0.9333333333333333|CWnd::CWnd(void)
 0x6077f0|1.0|CWnd::`scalar deleting destructor'
 0x60780c|0.9473684210526315|CWnd::CWnd(struct HWND__*)

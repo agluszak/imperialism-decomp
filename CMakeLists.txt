@@ -100,6 +100,7 @@ if(IMPERIALISM_AUTOGEN_UI_SOURCES)
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044af90.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0045d520.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_004601b0.cpp"
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0046fd10.cpp"
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_004749a0.cpp")
     set(IMPERIALISM_AMBIT_LATE_INLINE_FACTORY_SOURCES
         "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0044a810.cpp"
