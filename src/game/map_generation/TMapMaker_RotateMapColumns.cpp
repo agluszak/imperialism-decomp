@@ -16,6 +16,10 @@
 
 namespace {
 
+inline unsigned char IsWaterTile(char* tile) {
+  return *tile == kStrategicTerrainWater;
+}
+
 // Water tiles in one 60-row column, starting at byte pointer `column`.
 inline int CountWaterTilesInColumn(char* column) {
   int count = 0;
@@ -31,6 +35,21 @@ inline int CountWaterTilesInColumn(char* column) {
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00529910
+int TMapMaker::CountSeaTilesInColumn(int columnIndex) {
+  int count = 0;
+  int rows = 0x3c;
+  char* tile = mapTileGrid08 + columnIndex * 0x24;
+  do {
+    if (IsWaterTile(tile) != 0) {
+      ++count;
+    }
+    tile += 0xf30;
+    --rows;
+  } while (rows != 0);
+  return count;
+}
 
 // FUNCTION: IMPERIALISM 0x00529960
 void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Loader for config/template_aliases.csv: fold-aware equivalence metadata.
 
-Three distinct equivalence classes share the table (bd 5jjn):
+Four distinct equivalence classes share the table (bd 5jjn):
 
 - duplicate_emission (classification ``per_tu_duplicate``): per-TU duplicate
   MFC-template COMDAT bodies recorded as aliases of one canonical body
@@ -21,6 +21,11 @@ Three distinct equivalence classes share the table (bd 5jjn):
   wrapper whose direct call reaches a linked library body with the same ABI
   identity. The wrapper and body remain distinct report entities, but calls to
   either compare through the library body's canonical identity.
+
+- library_linked_copy (classification ``library_linked_copy``): separately
+  linked copies of the same decorated library function. Their bodies may use
+  module-local state layouts and remain distinct report entities, while calls
+  compare through the shared decorated identity.
 
 Consumers:
 - tools.workflow.template_alias_check re-verifies each row's per-class
@@ -44,12 +49,14 @@ ALIASES_CSV = repo_root_from_file(__file__) / "config" / "template_aliases.csv"
 CLASS_DUPLICATE_EMISSION = "duplicate_emission"
 CLASS_FOLDED_SYMBOL_GROUP = "folded_symbol_group"
 CLASS_LIBRARY_CALLEE_ALIAS = "library_callee_alias"
+CLASS_LIBRARY_LINKED_COPY = "library_linked_copy"
 
 # classification column value -> equivalence class
 CLASSIFICATIONS: dict[str, str] = {
     "per_tu_duplicate": CLASS_DUPLICATE_EMISSION,
     "folded_symbol_group": CLASS_FOLDED_SYMBOL_GROUP,
     "library_callee_alias": CLASS_LIBRARY_CALLEE_ALIAS,
+    "library_linked_copy": CLASS_LIBRARY_LINKED_COPY,
 }
 
 

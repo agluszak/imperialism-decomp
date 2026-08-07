@@ -433,3 +433,24 @@ void TArmyStack::ApplyMeterGrowthToEligibleUnits(bool boosted) {
     }
   }
 }
+
+// FUNCTION: IMPERIALISM 0x004a8330
+bool TArmyStack::UnitsFighting() {
+  cursor18 = head14;
+  TMilitaryUnit* unit = cursor18 != 0 ? static_cast<TMilitaryUnit*>(cursor18->unit) : 0;
+  while (unit != 0) {
+    if (unit->strength34 > unit->strengthSnapshot3C / 2) {
+      unsigned char battleFlags = static_cast<unsigned char>(unit->battleStateFlags3A);
+      battleFlags >>= 1;
+      battleFlags &= 1;
+      if (battleFlags == 0) {
+        return true;
+      }
+    }
+    if (cursor18 != 0) {
+      cursor18 = cursor18->next;
+    }
+    unit = cursor18 != 0 ? static_cast<TMilitaryUnit*>(cursor18->unit) : 0;
+  }
+  return false;
+}

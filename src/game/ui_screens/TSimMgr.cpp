@@ -1293,6 +1293,11 @@ void TSimMgr::ReduceNumGPs() {
   --numGreatPowers;
 }
 
+// FUNCTION: IMPERIALISM 0x00581220
+int TSimMgr::GetNumMinorCountries() const {
+  return numMinorCountries;
+}
+
 // FUNCTION: IMPERIALISM 0x00581240
 int TSimMgr::GetNumCountries() {
   return numMinorCountries + numGreatPowers;

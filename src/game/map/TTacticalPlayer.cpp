@@ -49,6 +49,18 @@ void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
 IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 
 // Frees both unit lists (payloads included) and self-deletes.
+// FUNCTION: IMPERIALISM 0x0059aea0
+void TTacticalPlayer::ITacticalPlayer(unsigned char isOurSide, unsigned char watch,
+                                      int nationIndex) {
+  isOurSideFlagC = isOurSide;
+  watchFlagD = watch;
+  fieldF = 0;
+  sideReadyFlag10 = 0;
+  cursorIndex18 = 0;
+  nationIndex1C = nationIndex;
+  field20 = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0059aee0
 void TTacticalPlayer::Free() {
   if (unitList4 != 0) {

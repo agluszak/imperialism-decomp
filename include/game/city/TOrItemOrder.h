@@ -17,7 +17,8 @@ public:
                             short secondaryInputResource,
                             short productionSlot); // slot 0x12 0x4b5870
 
-  // NOOP: verified empty in original 0x004b57b2 (no standalone TOrItemOrder::TOrItemOrder body exists: construction is fully inlined into CreateObject 0x004b57b0; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004b5800
+  // TOrItemOrder::TOrItemOrder
   TOrItemOrder() {}
 };
 ASSERT_SIZE(TOrItemOrder, 0x54);

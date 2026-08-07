@@ -150,6 +150,13 @@ void TShip::Free() {
 }
 
 // Mac oracle: IShip.
+// FUNCTION: IMPERIALISM 0x0054f780
+void TShip::FreeAll() {
+  while (g_pNavyPrimaryOrderListHead != 0) {
+    g_pNavyPrimaryOrderListHead->Free();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0054f7b0
 void TShip::IShip(short shipType, TZone* zone, short nationArg, const char* nameOverride) {
   type = shipType;
@@ -238,6 +245,26 @@ void TShip::NameThyself() {
 // FUNCTION: IMPERIALISM 0x0054fc60
 void TShip::SetLocation(TZone* zone) {
   location = zone;
+}
+
+// FUNCTION: IMPERIALISM 0x0054fc80
+int TShip::GetTypeAttribute(int attribute, short shipType) {
+  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[shipType];
+  switch (attribute) {
+  case 0: {
+    int value = descriptor.CalculateWeight();
+    return descriptor.ResolveWeight() * value * value;
+  }
+  case 1:
+    return (descriptor.CalculateWeight() * descriptor.StockCap() * 100) /
+           descriptor.TaskForceWeight();
+  case 2:
+    return descriptor.NavyPriorityWeight();
+  case 3:
+    return g_industryActionCostWeightResCode10[shipType];
+  default:
+    return 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054fd50
@@ -634,6 +661,12 @@ short TShip::GetArmorFactor() const {
 int TShip::ModByExp(int value) const {
   short experienceTier = static_cast<short>(experience / 100);
   return (experienceTier + value * 10 + 5) / 10;
+}
+
+// FUNCTION: IMPERIALISM 0x00550920
+float TShip::ModByExp(float value) const {
+  short experienceTier = static_cast<short>(experience / 100);
+  return (experienceTier - value * -10.0) * 0.1;
 }
 
 // FUNCTION: IMPERIALISM 0x00550970

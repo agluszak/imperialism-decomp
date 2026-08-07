@@ -149,6 +149,21 @@ void TZone::Free() {
   delete this;
 }
 
+// FUNCTION: IMPERIALISM 0x0055ecd0
+void TZone::Vanish() {
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = prev18;
+  }
+  if (prev18 != 0) {
+    prev18->next1c = next1c;
+  }
+  if (next1c != 0) {
+    next1c->prev18 = prev18;
+  }
+  next1c = 0;
+  prev18 = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055ed20
 void TZone::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
@@ -227,6 +242,15 @@ short TZone::GetContextOrdinalOrInvalid() {
   return contextOrdinal14;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f0d0
+TZone* GetLastMapActionContext() {
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != 0 && zone->prev18 != 0) {
+    zone = zone->prev18;
+  }
+  return zone;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f100
 TZone* FindMapActionContextByNodeId(short nodeId) {
   if (nodeId == -1) {
@@ -272,9 +296,19 @@ void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
   primaryNeighbors.Add(zone);
 }
 
+// FUNCTION: IMPERIALISM 0x0055f320
+bool TZone::HasNeighbor(TZone* zone) {
+  return primaryNeighbors.FindEntry(zone) != 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f3a0
 void TZone::AppendUniqueSecondaryNeighbor(Province* province) {
   secondaryNeighbors.Add(province);
+}
+
+// FUNCTION: IMPERIALISM 0x0055f3c0
+bool TZone::HasNeighbor(Province* province) {
+  return secondaryNeighbors.FindEntry(province) != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f440

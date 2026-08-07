@@ -18,6 +18,21 @@
 // TFocusAnimation::CreateObject
 
 IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
+
+// FUNCTION: IMPERIALISM 0x004a00c0
+void TFocusAnimation::IFocusAnimation(TView* ownerViewArg, RECT* rect, short frameCountArg,
+                                      short frameResourceBaseIdArg, int ticksPerFrameArg,
+                                      int registryTagArg) {
+  ownerView = ownerViewArg;
+  screenRect = *rect;
+  frameCount = frameCountArg;
+  frameResourceBaseId = frameResourceBaseIdArg;
+  frameIndex = 0;
+  ticksSinceFrameChange = 0;
+  ticksPerFrame = ticksPerFrameArg;
+  registryTag = registryTagArg;
+}
+
 // FUNCTION: IMPERIALISM 0x004a0140
 void TFocusAnimation::Tick() {
   ticksSinceFrameChange++;

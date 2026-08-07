@@ -92,6 +92,9 @@ public:
   // not a water tile. 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
+  // Mac oracle: assigns sequential group ids to every still-unassigned class.
+  void TranslateZones(); // 0x005272c0
+
   // ORACLE: Mac TMapMaker::CheckProvs(). Composite map-generation rejection predicate:
   // virtual ErrorCheck, empty-column scan, then full terrain-class frontier coverage.
   // 0x00526620.
@@ -200,8 +203,12 @@ public:
 
   char* mapTileGrid08; // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
 
+  // Mac oracle: CountSeaTilesInColumn(int).
+  int CountSeaTilesInColumn(int column); // 0x00529910
   // ORACLE: IsSeaTile. The tile's terrain kind byte is water. 0x0052a600.
   unsigned char IsSeaTile(int tileIndex);
+  // Coordinate overload: the first argument is column and the second is row.
+  unsigned char IsSeaTile(int column, int row); // 0x0052a630
   // ORACLE: SetSeaZoneIndex. Stores the sea-zone ordinal into the tile's owner
   // tag byte (+0x04), biased by 0x17 -- the same bias the map-order context applies
   // when it turns an owner tag back into a context-array index. 0x0052a6b0.

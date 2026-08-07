@@ -127,6 +127,11 @@ bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, 
   return true;
 }
 
+// FUNCTION: IMPERIALISM 0x00508280
+int IsNewsTableColumnDelimiter(char value) {
+  return value == '\n' || value == '\r' || value == '\t' || value == '\0';
+}
+
 // FUNCTION: IMPERIALISM 0x005082b0
 void TLanguageMgr::ParseNewsTableRow(char* line) {
   int rowIndex = static_cast<unsigned char>(line[1]);

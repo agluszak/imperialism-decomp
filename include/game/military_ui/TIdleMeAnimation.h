@@ -21,6 +21,7 @@ public:
   // the g_nIdleMeAnimationNextRegistryTag counter (as its registryTag), zeroes the
   // rect/frame state via the base helper, and registers itself with g_pUiAnimator.
   void IIdleMeAnimation(TView* ownerView);
+  void Die();
 };
 
 ASSERT_SIZE(TIdleMeAnimation, 0x2c);

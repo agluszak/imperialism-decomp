@@ -21,6 +21,9 @@ public:
   virtual void IdleDraw();                                  // slot 13 / 0x34 0x4a0190
   virtual void ClipAndPaste();                              // slot 14 / 0x38 0x4a0280
 
+  void IFocusAnimation(TView* ownerView, RECT* rect, short frameCount, short frameResourceBaseId,
+                       int ticksPerFrame, int registryTag);
+
   char enabledFlag; // 0x2c
 
   char padding2D[3];

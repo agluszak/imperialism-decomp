@@ -110,9 +110,10 @@ public:
   unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
-  int GetNumGPs();       // Mac oracle; 0x5811e0
-  void ReduceNumGPs();   // Mac oracle; 0x581200
-  int GetNumCountries(); // Mac oracle; great powers + minor countries, 0x581240
+  int GetNumGPs();                  // Mac oracle; 0x5811e0
+  void ReduceNumGPs();              // Mac oracle; 0x581200
+  int GetNumMinorCountries() const; // 0x581220
+  int GetNumCountries();            // Mac oracle; great powers + minor countries, 0x581240
   // Mac oracle: DoPerTurnMissionAIStuff(short). The Windows body forwards the complete
   // pushed dword to TGreatPower slot 0xae, so retain the observed Windows argument width.
   void DoPerTurnMissionAIStuff(int replanMode); // 0x57d7a0

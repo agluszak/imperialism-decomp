@@ -170,7 +170,8 @@ public:
   // province's map-action-context link is unavailable (no active context for this
   // nation), in which case it's forced to 0 instead. Same gate/array
   // QueueMapActionMissionsForPortZoneCandidates already uses directly. 0x4e8b50.
-  void SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value);
+  void SetProvinceStatus(int provinceIndex, int status);
+  void SetProvinceStatus(int provinceIndex, int status, unsigned char bypassGate);
 
   // Tail AI-state block: moved here from TGreatPower (RTTI m_nObjectSize proves this
   // data is TAutoGreatPower-only -- see the comment at the end of TGreatPower's field

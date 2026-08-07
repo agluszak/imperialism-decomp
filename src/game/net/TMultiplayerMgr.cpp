@@ -1650,6 +1650,15 @@ struct TurnEvent11Packet : NetMessage {
   unsigned char pad24[4]; // original frame/messageLength is 0x28
 };
 
+// FUNCTION: IMPERIALISM 0x00549260
+TurnEventQueuePacket* TMultiplayerMgr::PopTimelyMessage() {
+  TurnEventQueuePacket* packet = primaryTurnEventQueueHead;
+  if (packet != 0) {
+    primaryTurnEventQueueHead = packet->nextQueuePacket;
+  }
+  return packet;
+}
+
 // FUNCTION: IMPERIALISM 0x00549280
 void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* node) {
   node->nextQueuePacket = 0;
@@ -1659,6 +1668,46 @@ void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(TurnEventQueuePacket* 
     tail = &queued->nextQueuePacket;
   }
   *tail = node;
+}
+
+// FUNCTION: IMPERIALISM 0x005492c0
+TurnEventQueuePacket* TMultiplayerMgr::PopVerbalMessage() {
+  TurnEventQueuePacket* packet = secondaryTurnEventQueueHead;
+  if (packet != 0) {
+    secondaryTurnEventQueueHead = packet->nextQueuePacket;
+  }
+  return packet;
+}
+
+// FUNCTION: IMPERIALISM 0x005492e0
+void TMultiplayerMgr::QueueVerbalMessage(TurnEventQueuePacket* packet) {
+  packet->nextQueuePacket = 0;
+  TurnEventQueuePacket** tail = &secondaryTurnEventQueueHead;
+  while (*tail != 0) {
+    tail = &(*tail)->nextQueuePacket;
+  }
+  *tail = packet;
+}
+
+// FUNCTION: IMPERIALISM 0x00549320
+bool TMultiplayerMgr::IsTimelyMessage(NetMessage* packet) {
+  switch (packet->eventCode) {
+  case 1:
+  case 2:
+  case 6:
+  case 0xa:
+  case 0xb:
+  case 0xf:
+  case 0x18:
+  case 0x19:
+  case 0x1a:
+  case 0x2e:
+  case 0x2f:
+  case 0x30:
+    return true;
+  default:
+    return false;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005493c0
@@ -2591,6 +2640,11 @@ void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUni
   (void)effectCode;
 }
 
+// FUNCTION: IMPERIALISM 0x0054c6c0
+void TMultiplayerMgr::SendTacticalBattle(TTacticalBattle* battle) {
+  battle->StartBattle();
+}
+
 // FUNCTION: IMPERIALISM 0x0054c6e0
 void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   CString statusText;
@@ -2605,6 +2659,11 @@ void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
   pendingNationSlotIndex = -1;
   queueSyncDword = 0;
   g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
+}
+
+// FUNCTION: IMPERIALISM 0x0054c7d0
+void TMultiplayerMgr::DiscardPlayer(int nationId) {
+  g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationId);
 }
 
 // FUNCTION: IMPERIALISM 0x0054c800
@@ -2695,6 +2754,11 @@ void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet
       g_pNetMgr006a6014->Send(&seatClaim, 0);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0054cb80
+bool TMultiplayerMgr::WaitForClients() {
+  return g_pNetMgr006a6014->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0054cc00
