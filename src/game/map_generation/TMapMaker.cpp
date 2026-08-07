@@ -16,6 +16,10 @@
 #include "game/globals/shared_globals.h"
 #include "game/map/sea_geometry.h"
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeCoarseMapOracle.h"
+#endif
+
 // Same hex-neighbor math as TMapMgr::GetNeighborTileIDArray, but over
 // TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
 // 0x24) rather than the coarse 15x27 region grid.
@@ -180,6 +184,10 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     g_zoneStatusCodePrngSeed_006a5aec = ClockDerivedPrngSeed();
   }
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeCoarseMapOracleReset(g_mapGenLcgState_006a38e8);
+#endif
+
   for (;;) {
     // Attempt loop: regenerate until the attempt sticks and both region-class
     // validations accept it. The setup-picture globe spins between every phase.
@@ -188,7 +196,31 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
         g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
       }
+#ifdef IMPERIALISM_RUNTIME_TESTS
+      RuntimeCoarseMapOracleBeginAttempt();
+#endif
       RunMapGenerationAttempt();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+      RuntimeCoarseMapOracleCaptureSeededAttempt(this, g_mapGenLcgState_006a38e8);
+      int errorCheckFailed = ErrorCheck();
+      int hasContinuousOceanColumn = -1;
+      int frontierMaskComplete = -1;
+      retryAttempt = static_cast<char>(errorCheckFailed);
+      if (retryAttempt != 0) {
+        retryAttempt = 1;
+      } else {
+        hasContinuousOceanColumn = ValidateAllColumnsHaveAssignedRegionClass();
+        if (hasContinuousOceanColumn == 0) {
+          retryAttempt = 1;
+        } else {
+          frontierMaskComplete = ValidateTerrainClassAdjacencyCoverageMask();
+          retryAttempt = (frontierMaskComplete == 0);
+        }
+      }
+      RuntimeCoarseMapOracleFinishAttempt(this, errorCheckFailed, hasContinuousOceanColumn,
+                                          frontierMaskComplete, retryAttempt == 0,
+                                          g_mapGenLcgState_006a38e8);
+#else
       retryAttempt = ErrorCheck();
       if (retryAttempt != 0) {
         retryAttempt = 1;
@@ -197,6 +229,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       } else {
         retryAttempt = (ValidateTerrainClassAdjacencyCoverageMask() == 0);
       }
+#endif
     } while (retryAttempt != 0);
 
     // Backfill the unassigned city-region id slots.
@@ -214,6 +247,9 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     ExpandRegionGridIntoTilesAndAllocateCityRecords();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeCoarseMapOracleCaptureExpansion(this, g_mapGenLcgState_006a38e8);
+#endif
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
@@ -694,6 +730,9 @@ void TMapMaker::RunMapGenerationAttempt() {
       int cellIndex;
       do {
         g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        RuntimeCoarseMapOracleRecordDraw();
+#endif
         cellIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x195);
       } while (regionClassGridFlat[cellIndex] != -1);
       assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 8, classIndex, 5);
@@ -726,6 +765,10 @@ void TMapMaker::RunMapGenerationAttempt() {
       for (int attempt = 0; attempt < 4 && !hasAssignedNeighbor; ++attempt) {
         unsigned int rngTemp = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
         g_mapGenLcgState_006a38e8 = rngTemp * 0x15a4e35 + 1;
+#ifdef IMPERIALISM_RUNTIME_TESTS
+        RuntimeCoarseMapOracleRecordDraw();
+        RuntimeCoarseMapOracleRecordDraw();
+#endif
         int roll1 = static_cast<int>((rngTemp >> 0xc & 0x7fff) % 0x1b);
         int roll2 = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0xf);
         cellIndex =
@@ -799,6 +842,9 @@ int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int 
     }
 
     g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeCoarseMapOracleRecordDraw();
+#endif
     int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % totalWeight);
     int selectedDir = 0;
     if (weights[0] < roll) {

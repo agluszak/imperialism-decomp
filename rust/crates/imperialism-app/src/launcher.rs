@@ -1,4 +1,5 @@
 use crate::app::{ViewerConfig, ViewerConfigError};
+use crate::audio::RetailAudioPlugin;
 use crate::flow::{AppState, ScreenFlowPlugin};
 use crate::session::{GameSession, SessionPlugin};
 use crate::ui::{StartupUiPlugin, UiCatalogResource, UiRuntimePlugin};
@@ -189,6 +190,11 @@ impl Error for MainMenuLoadError {
 pub struct RetailAssetPackResource(ImportedRetailAssets);
 
 impl RetailAssetPackResource {
+    #[cfg(test)]
+    pub(crate) fn new(imported: ImportedRetailAssets) -> Self {
+        Self(imported)
+    }
+
     pub fn cache_root(&self) -> &Path {
         &self.0.cache_root
     }
@@ -199,6 +205,10 @@ impl RetailAssetPackResource {
 
     pub const fn manifest(&self) -> &RetailAssetPackManifestV1 {
         &self.0.manifest
+    }
+
+    pub(crate) fn object_path(&self, object: &imperialism_formats::CachedRetailObject) -> PathBuf {
+        self.0.object_path(object)
     }
 }
 
@@ -215,6 +225,7 @@ pub fn configure_main_menu_app(
             ScreenFlowPlugin,
             UiRuntimePlugin,
             StartupUiPlugin,
+            RetailAudioPlugin,
         ))
         .add_systems(Startup, enter_main_menu);
     Ok(())

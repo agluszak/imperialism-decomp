@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod app;
+mod audio;
 mod flow;
 mod input;
 mod launcher;
@@ -11,6 +12,12 @@ pub mod ui;
 pub use app::{
     ViewerConfig, ViewerConfigError, ViewerInput, ViewerLoadError, example_asset_manifest_path,
     load_viewer, run_viewer,
+};
+pub use audio::{
+    AudioCue, AudioCueFailed, AudioCuePlayback, AudioCueQueued, RETAIL_MAIN_MENU_MUSIC,
+    RETAIL_UI_CLICK_WAVE, RetailAudioAsset, RetailAudioError, RetailAudioPlayback,
+    RetailAudioPlugin, RetailMusicTrack, RetailMusicTrackError, RetailWaveId,
+    resolve_retail_audio_path,
 };
 pub use flow::{AppState, GameScreen, ScreenFlowPlugin, ScreenStack};
 pub use input::GameInputPlugin;

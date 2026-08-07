@@ -1,5 +1,6 @@
 #include "RuntimeGeneratedWorldSnapshot.h"
 
+#include "RuntimeCoarseMapOracle.h"
 #include "RuntimeJson.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
@@ -268,6 +269,10 @@ bool BuildRuntimeGeneratedWorldSnapshot(const RuntimeRun& run, CString& snapshot
   CString seaRegions(CaptureSeaRegions());
   CString routes(CaptureRoutes());
   CString borderLinks(CaptureBorderLinks());
+  const CString& coarseGeneration = RuntimeCoarseMapOracleJson();
+  if (coarseGeneration.IsEmpty()) {
+    return false;
+  }
   snapshotJson.Format(
       "{\"schema\":\"imperialism.generated_world.v1\","
       "\"tile_fields\":[\"terrain_kind\",\"sprite_variant\",\"river_sprite_code\","
@@ -280,14 +285,14 @@ bool BuildRuntimeGeneratedWorldSnapshot(const RuntimeRun& run, CString& snapshot
       "\"secondary_owner_nation\",\"tile_action_ordinal\",\"active_flags\"],"
       "\"border_link_fields\":[\"x0\",\"y0\",\"x1\",\"y1\",\"coord0\",\"coord1\","
       "\"region_a\",\"region_b\",\"angle\",\"wrap\"],"
-      "\"map\":%s,\"rng\":%s,\"tiles\":%s,\"provinces\":%s,"
+      "\"map\":%s,\"rng\":%s,\"coarse_generation\":%s,\"tiles\":%s,\"provinces\":%s,"
       "\"ocean_context_array_count\":%d,\"sea_region_count\":%d,\"sea_regions\":%s,"
       "\"route_count\":%d,\"routes\":%s,\"border_links\":%s}",
-      static_cast<LPCSTR>(map), static_cast<LPCSTR>(rng), static_cast<LPCSTR>(tiles),
-      static_cast<LPCSTR>(provinces), static_cast<int>(g_pActiveMapOrderContext->nationCount),
-      g_nMapActionContextCount, static_cast<LPCSTR>(seaRegions),
-      static_cast<int>(g_pActiveMapOrderContext->routeNodeCount), static_cast<LPCSTR>(routes),
-      static_cast<LPCSTR>(borderLinks));
+      static_cast<LPCSTR>(map), static_cast<LPCSTR>(rng), static_cast<LPCSTR>(coarseGeneration),
+      static_cast<LPCSTR>(tiles), static_cast<LPCSTR>(provinces),
+      static_cast<int>(g_pActiveMapOrderContext->nationCount), g_nMapActionContextCount,
+      static_cast<LPCSTR>(seaRegions), static_cast<int>(g_pActiveMapOrderContext->routeNodeCount),
+      static_cast<LPCSTR>(routes), static_cast<LPCSTR>(borderLinks));
   return true;
 }
 

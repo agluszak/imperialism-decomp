@@ -1,13 +1,19 @@
+use crate::launcher::RetailAssetPackResource;
 use crate::session::GameLoopSet;
+use bevy::asset::RenderAssetUsages;
+use bevy::ecs::system::SystemParam;
+use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
 use bevy::prelude::*;
 use bevy::ui::{FocusPolicy, InteractionDisabled};
 use imperialism_formats::{
-    FourCc, ScopedViewId, UiCatalogError, UiCatalogV1, UiNode as CatalogNode, UiNodeId,
-    UiView as CatalogView, WidgetKind,
+    FourCc, PictureLibrary, ResourceIdentifier, ScopedViewId, UiCatalogError, UiCatalogV1,
+    UiNode as CatalogNode, UiNodeId, UiView as CatalogView, WidgetKind,
 };
 use std::collections::HashMap;
 use std::error::Error;
 use std::fmt;
+use std::fs;
+use std::path::PathBuf;
 
 #[derive(Resource)]
 pub struct UiCatalogResource(UiCatalogV1);
@@ -45,6 +51,20 @@ pub struct UiWidgetFlags {
     pub child_hit_test: bool,
 }
 
+#[derive(Component, Clone, Debug, Eq, PartialEq)]
+pub struct PresentedRetailPicture {
+    pub picture_id: i16,
+    pub picture_library: Option<PictureLibrary>,
+    pub resource_name: ResourceIdentifier,
+    pub source_path: String,
+    pub object_sha256: String,
+}
+
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct UiPictureLookup {
+    pub world_variant: u8,
+}
+
 #[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct UiViewRoot;
 
@@ -71,6 +91,37 @@ pub struct UiViewSpawned {
 pub struct UiViewSpawnFailed {
     pub view: ScopedViewId,
     pub error: UiSpawnError,
+}
+
+#[derive(Message, Debug)]
+pub struct UiPictureBindingFailed {
+    pub instance: ViewInstanceId,
+    pub view: ScopedViewId,
+    pub node: UiNodeId,
+    pub picture_id: i32,
+    pub error: UiPictureBindingError,
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum UiPictureBindingError {
+    #[error("retail asset pack is unavailable")]
+    RetailAssetPackUnavailable,
+    #[error("catalog picture ID {0} does not fit the retail 16-bit resource ID")]
+    InvalidPictureId(i32),
+    #[error("retail picture {picture_id} is absent for world slot {world_variant}")]
+    PictureNotFound { picture_id: i16, world_variant: u8 },
+    #[error("could not read normalized retail picture object {}: {source}", path.display())]
+    ObjectIo {
+        path: PathBuf,
+        #[source]
+        source: std::io::Error,
+    },
+    #[error("could not decode normalized retail BMP object {}: {source}", path.display())]
+    BmpDecode {
+        path: PathBuf,
+        #[source]
+        source: TextureError,
+    },
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -119,6 +170,18 @@ impl Default for NextViewInstance {
     }
 }
 
+#[derive(Resource, Default)]
+struct RetailPictureHandles(HashMap<PathBuf, Handle<Image>>);
+
+#[derive(SystemParam)]
+struct UiPictureResources<'w> {
+    retail_assets: Option<Res<'w, RetailAssetPackResource>>,
+    lookup: Res<'w, UiPictureLookup>,
+    images: ResMut<'w, Assets<Image>>,
+    handles: ResMut<'w, RetailPictureHandles>,
+    failed: MessageWriter<'w, UiPictureBindingFailed>,
+}
+
 pub struct UiRuntimePlugin;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, SystemSet)]
@@ -131,10 +194,14 @@ pub enum UiRuntimeSet {
 impl Plugin for UiRuntimePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<NextViewInstance>()
+            .init_resource::<Assets<Image>>()
+            .init_resource::<RetailPictureHandles>()
+            .init_resource::<UiPictureLookup>()
             .add_message::<SpawnUiView>()
             .add_message::<DespawnUiView>()
             .add_message::<UiViewSpawned>()
             .add_message::<UiViewSpawnFailed>()
+            .add_message::<UiPictureBindingFailed>()
             .add_message::<UiIntent>()
             .add_systems(
                 Update,
@@ -157,6 +224,7 @@ impl Plugin for UiRuntimePlugin {
 fn spawn_requested_views(
     mut commands: Commands,
     catalog: Option<Res<UiCatalogResource>>,
+    mut pictures: UiPictureResources,
     mut requests: MessageReader<SpawnUiView>,
     mut spawned: MessageWriter<UiViewSpawned>,
     mut failed: MessageWriter<UiViewSpawnFailed>,
@@ -181,6 +249,7 @@ fn spawn_requested_views(
             catalog.catalog().logical_resolution,
             view,
             instance,
+            &mut pictures,
         );
         spawned.write(UiViewSpawned {
             instance,
@@ -195,6 +264,7 @@ fn spawn_view(
     logical_resolution: [u32; 2],
     view: &CatalogView,
     instance: ViewInstanceId,
+    pictures: &mut UiPictureResources,
 ) -> Entity {
     let root = commands
         .spawn((
@@ -214,7 +284,7 @@ fn spawn_view(
 
     let mut entities = HashMap::with_capacity(view.nodes.len());
     for node in &view.nodes {
-        let entity = spawn_node(commands, view, node, instance);
+        let entity = spawn_node(commands, view, node, instance, pictures);
         entities.insert(node.id, entity);
     }
     for node in &view.nodes {
@@ -230,6 +300,7 @@ fn spawn_node(
     view: &CatalogView,
     node: &CatalogNode,
     instance: ViewInstanceId,
+    pictures: &mut UiPictureResources,
 ) -> Entity {
     let mut entity = commands.spawn((
         Node {
@@ -283,7 +354,84 @@ fn spawn_node(
             entity.insert(TextFont::from_font_size(point_size as f32));
         }
     }
+    if let Some(picture_id) = node.properties.picture_id {
+        match load_retail_picture(
+            picture_id,
+            pictures.retail_assets.as_deref(),
+            pictures.lookup.world_variant,
+            &mut pictures.images,
+            &mut pictures.handles,
+        ) {
+            Ok((picture, handle)) => {
+                entity.insert((picture, ImageNode::new(handle)));
+            }
+            Err(error) => {
+                pictures.failed.write(UiPictureBindingFailed {
+                    instance,
+                    view: view.id.clone(),
+                    node: node.id,
+                    picture_id,
+                    error,
+                });
+            }
+        }
+    }
     entity.id()
+}
+
+fn load_retail_picture(
+    catalog_picture_id: i32,
+    retail_assets: Option<&RetailAssetPackResource>,
+    world_variant: u8,
+    images: &mut Assets<Image>,
+    picture_handles: &mut RetailPictureHandles,
+) -> Result<(PresentedRetailPicture, Handle<Image>), UiPictureBindingError> {
+    let picture_id = i16::try_from(catalog_picture_id)
+        .map_err(|_| UiPictureBindingError::InvalidPictureId(catalog_picture_id))?;
+    let retail_assets = retail_assets.ok_or(UiPictureBindingError::RetailAssetPackUnavailable)?;
+    let asset = retail_assets
+        .manifest()
+        .resolve_picture(picture_id, world_variant)
+        .ok_or(UiPictureBindingError::PictureNotFound {
+            picture_id,
+            world_variant,
+        })?;
+    let path = retail_assets.object_path(&asset.object);
+    let object_key = asset.object.relative_path();
+    let handle = match picture_handles.0.get(&object_key) {
+        Some(handle) => handle.clone(),
+        None => {
+            let bytes = fs::read(&path).map_err(|source| UiPictureBindingError::ObjectIo {
+                path: path.clone(),
+                source,
+            })?;
+            let image = Image::from_buffer(
+                &bytes,
+                ImageType::Format(ImageFormat::Bmp),
+                CompressedImageFormats::NONE,
+                true,
+                ImageSampler::nearest(),
+                RenderAssetUsages::default(),
+            )
+            .map_err(|source| UiPictureBindingError::BmpDecode {
+                path: path.clone(),
+                source,
+            })?;
+            let handle = images.add(image);
+            picture_handles.0.insert(object_key, handle.clone());
+            handle
+        }
+    };
+    Ok((
+        PresentedRetailPicture {
+            picture_id,
+            picture_library: asset.picture_library,
+            resource_name: asset.resource_name.clone(),
+            source_path: asset.source_path.clone(),
+            object_sha256: asset.object.sha256.clone(),
+        },
+        handle,
+    ))
 }
 
 fn is_interactive(node: &CatalogNode) -> bool {
@@ -345,7 +493,13 @@ fn despawn_requested_views(
 mod tests {
     use super::*;
     use bevy::ecs::message::Messages;
+    use imperialism_formats::{
+        CachedRetailObject, ImportedRetailAssets, RETAIL_ASSET_PACK_SCHEMA,
+        RetailAssetPackManifestV1, RetailResourceAsset,
+    };
     use std::collections::{HashMap, HashSet};
+    use std::fs;
+    use std::sync::atomic::{AtomicU64, Ordering};
 
     const CATALOG_JSON: &str =
         include_str!("../../../imperialism-formats/assets/ui_catalog_v1.json");
@@ -359,6 +513,103 @@ mod tests {
         app.insert_resource(UiCatalogResource::new(catalog()).unwrap())
             .add_plugins(UiRuntimePlugin);
         app
+    }
+
+    static NEXT_FIXTURE: AtomicU64 = AtomicU64::new(1);
+
+    struct RetailPictureFixture {
+        root: PathBuf,
+        imported: ImportedRetailAssets,
+    }
+
+    impl RetailPictureFixture {
+        fn new(resources: Vec<RetailResourceAsset>) -> Self {
+            let serial = NEXT_FIXTURE.fetch_add(1, Ordering::Relaxed);
+            let root = std::env::temp_dir().join(format!(
+                "imperialism-app-ui-picture-{}-{serial}",
+                std::process::id()
+            ));
+            fs::create_dir_all(root.join("objects/sha256")).unwrap();
+            for asset in &resources {
+                let path = root.join(asset.object.relative_path());
+                fs::write(path, one_pixel_bmp()).unwrap();
+            }
+            Self {
+                imported: ImportedRetailAssets {
+                    cache_root: root.clone(),
+                    pack_dir: root.join("packs/v1/test"),
+                    manifest: RetailAssetPackManifestV1 {
+                        schema: RETAIL_ASSET_PACK_SCHEMA.to_owned(),
+                        cache_key: "0".repeat(64),
+                        logical_resolution: [640, 480],
+                        bitmap_lookup_is_name_then_numeric: true,
+                        sources: Vec::new(),
+                        resources,
+                        strings: Vec::new(),
+                        fonts: Vec::new(),
+                        music: Vec::new(),
+                    },
+                },
+                root,
+            }
+        }
+
+        fn app(&self) -> App {
+            let mut app = app();
+            app.insert_resource(RetailAssetPackResource::new(self.imported.clone()));
+            app
+        }
+    }
+
+    impl Drop for RetailPictureFixture {
+        fn drop(&mut self) {
+            fs::remove_dir_all(&self.root).unwrap();
+        }
+    }
+
+    fn picture_asset(
+        picture_id: i16,
+        library: PictureLibrary,
+        named: bool,
+        identity: &str,
+    ) -> RetailResourceAsset {
+        RetailResourceAsset {
+            source_path: identity.to_owned(),
+            picture_library: Some(library),
+            resource_type: ResourceIdentifier::Numeric(2),
+            resource_name: if named {
+                ResourceIdentifier::Named(format!("{picture_id}.BMP"))
+            } else {
+                ResourceIdentifier::Numeric(u32::from(picture_id as u16))
+            },
+            language: 1033,
+            retail_byte_length: 4,
+            retail_sha256: identity.to_owned(),
+            object: CachedRetailObject {
+                sha256: identity.to_owned(),
+                byte_length: 58,
+                extension: "bmp".to_owned(),
+            },
+        }
+    }
+
+    fn one_pixel_bmp() -> Vec<u8> {
+        let mut bmp = Vec::with_capacity(58);
+        bmp.extend_from_slice(b"BM");
+        bmp.extend_from_slice(&58_u32.to_le_bytes());
+        bmp.extend_from_slice(&[0; 4]);
+        bmp.extend_from_slice(&54_u32.to_le_bytes());
+        bmp.extend_from_slice(&40_u32.to_le_bytes());
+        bmp.extend_from_slice(&1_i32.to_le_bytes());
+        bmp.extend_from_slice(&1_i32.to_le_bytes());
+        bmp.extend_from_slice(&1_u16.to_le_bytes());
+        bmp.extend_from_slice(&24_u16.to_le_bytes());
+        bmp.extend_from_slice(&0_u32.to_le_bytes());
+        bmp.extend_from_slice(&4_u32.to_le_bytes());
+        bmp.extend_from_slice(&[0; 16]);
+        bmp.extend_from_slice(&[0, 0, 0xff, 0]);
+        assert_eq!(bmp.len(), 58);
+        bmp
     }
 
     fn px(value: Val) -> f32 {
@@ -573,5 +824,155 @@ mod tests {
             .map(|instance| instance.0)
             .collect::<HashSet<_>>();
         assert_eq!(remaining, HashSet::from([2]));
+    }
+
+    #[test]
+    fn startup_views_bind_catalog_pictures_to_nearest_sampled_retail_images() {
+        let launch_views = [1500, 1501];
+        let catalog = catalog();
+        let expected = catalog
+            .views
+            .iter()
+            .filter(|view| launch_views.contains(&view.id.resource_id))
+            .flat_map(|view| {
+                view.nodes.iter().filter_map(|node| {
+                    node.properties
+                        .picture_id
+                        .map(|picture_id| (view.id.clone(), node.id, picture_id as i16))
+                })
+            })
+            .collect::<HashSet<_>>();
+        let resources = expected
+            .iter()
+            .map(|(_, _, picture_id)| {
+                picture_asset(
+                    *picture_id,
+                    PictureLibrary::Localized,
+                    true,
+                    &format!("picture-{picture_id}"),
+                )
+            })
+            .collect();
+        let fixture = RetailPictureFixture::new(resources);
+        let mut app = fixture.app();
+        for resource_id in launch_views {
+            app.world_mut()
+                .write_message(SpawnUiView(ScopedViewId {
+                    resource_file: "Startup.rsrc".to_owned(),
+                    resource_id,
+                }))
+                .unwrap();
+        }
+
+        app.update();
+
+        let bound = app
+            .world_mut()
+            .query::<(
+                &PresentedViewId,
+                &PresentedUiNode,
+                &PresentedRetailPicture,
+                &ImageNode,
+            )>()
+            .iter(app.world())
+            .filter(|(view, _, _, _)| launch_views.contains(&view.0.resource_id))
+            .map(|(view, node, picture, image_node)| {
+                assert_eq!(picture.picture_library, Some(PictureLibrary::Localized));
+                let image = app
+                    .world()
+                    .resource::<Assets<Image>>()
+                    .get(&image_node.image)
+                    .unwrap();
+                assert_eq!(image.sampler, ImageSampler::nearest());
+                (view.0.clone(), node.0, picture.picture_id)
+            })
+            .collect::<HashSet<_>>();
+        assert_eq!(bound, expected);
+        assert!(
+            bound
+                .iter()
+                .any(|(view, _, picture_id)| { view.resource_id == 1500 && *picture_id == 4500 })
+        );
+        assert!(bound.iter().any(|(view, _, _)| view.resource_id == 1501));
+    }
+
+    #[test]
+    fn picture_binding_uses_manifest_name_then_library_slot_precedence() {
+        let resources = vec![
+            picture_asset(4500, PictureLibrary::Universal, true, "named-universal"),
+            picture_asset(4500, PictureLibrary::Localized, false, "numeric-localized"),
+            picture_asset(4500, PictureLibrary::Localized, true, "named-localized"),
+        ];
+        let fixture = RetailPictureFixture::new(resources);
+        let mut app = fixture.app();
+        app.world_mut()
+            .write_message(SpawnUiView(ScopedViewId {
+                resource_file: "Startup.rsrc".to_owned(),
+                resource_id: 1500,
+            }))
+            .unwrap();
+
+        app.update();
+
+        let picture = app
+            .world_mut()
+            .query::<&PresentedRetailPicture>()
+            .single(app.world())
+            .unwrap();
+        assert_eq!(picture.source_path, "named-localized");
+        assert_eq!(
+            picture.resource_name,
+            ResourceIdentifier::Named("4500.BMP".to_owned())
+        );
+        assert_eq!(picture.picture_library, Some(PictureLibrary::Localized));
+    }
+
+    #[test]
+    fn missing_catalog_picture_reports_a_typed_failure_without_panicking() {
+        let fixture = RetailPictureFixture::new(Vec::new());
+        let mut app = fixture.app();
+        let view = ScopedViewId {
+            resource_file: "Startup.rsrc".to_owned(),
+            resource_id: 1500,
+        };
+        app.world_mut()
+            .write_message(SpawnUiView(view.clone()))
+            .unwrap();
+
+        app.update();
+
+        let failures = app
+            .world_mut()
+            .resource_mut::<Messages<UiPictureBindingFailed>>()
+            .drain()
+            .collect::<Vec<_>>();
+        assert_eq!(failures.len(), 1);
+        let failure = &failures[0];
+        assert_eq!(failure.view, view);
+        assert_eq!(failure.picture_id, 4500);
+        assert!(matches!(
+            failure.error,
+            UiPictureBindingError::PictureNotFound {
+                picture_id: 4500,
+                world_variant: 0,
+            }
+        ));
+        let picture_node = catalog()
+            .view(&view)
+            .unwrap()
+            .nodes
+            .iter()
+            .find(|node| node.properties.picture_id == Some(4500))
+            .unwrap()
+            .id;
+        assert_eq!(failure.node, picture_node);
+        assert!(
+            app.world_mut()
+                .query::<(&PresentedViewId, &PresentedUiNode, Option<&ImageNode>)>()
+                .iter(app.world())
+                .any(|(presented_view, node, image)| {
+                    presented_view.0 == view && node.0 == picture_node && image.is_none()
+                })
+        );
     }
 }

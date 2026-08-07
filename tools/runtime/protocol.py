@@ -105,6 +105,7 @@ def validate_generated_world(snapshot: object) -> None:
             "border_link_fields",
             "map",
             "rng",
+            "coarse_generation",
             "tiles",
             "provinces",
             "ocean_context_array_count",
@@ -171,6 +172,8 @@ def validate_generated_world(snapshot: object) -> None:
     )
     for field, value in rng.items():
         _require_int_range(value, 0, 0xFFFFFFFF, f"generated_world rng {field}")
+
+    _validate_coarse_generation(snapshot["coarse_generation"])
 
     tiles = snapshot["tiles"]
     if not isinstance(tiles, list) or len(tiles) != 108 * 60:
@@ -272,6 +275,94 @@ def validate_generated_world(snapshot: object) -> None:
     _require_integer_rows(
         border_links, len(GENERATED_WORLD_BORDER_LINK_FIELDS), "generated_world border_links"
     )
+
+
+def _validate_coarse_generation(value: object) -> None:
+    if not isinstance(value, dict):
+        raise ValueError("generated_world coarse_generation must be an object")
+    _require_exact_keys(
+        value,
+        {
+            "initial_map_lcg",
+            "attempt_count",
+            "attempts",
+            "accepted_map_lcg",
+            "accepted_grid",
+            "city_region_next_id",
+            "city_region_ids",
+            "group_members",
+            "expanded_province_count",
+            "expanded_tile_fields",
+            "expanded_tiles",
+            "expanded_provinces",
+        },
+        "generated_world coarse_generation",
+    )
+    _require_int_range(
+        value["initial_map_lcg"], 0, 0xFFFFFFFF, "coarse_generation initial_map_lcg"
+    )
+    _require_int_range(
+        value["accepted_map_lcg"], 0, 0xFFFFFFFF, "coarse_generation accepted_map_lcg"
+    )
+    _require_integer(value["attempt_count"], "coarse_generation attempt_count")
+    attempts = value["attempts"]
+    if not isinstance(attempts, list) or len(attempts) != value["attempt_count"] or not attempts:
+        raise ValueError("coarse_generation attempt_count must match nonempty attempts")
+    attempt_keys = {
+        "index",
+        "draw_count",
+        "map_lcg_after_seeding",
+        "pre_validation_grid",
+        "city_region_next_id",
+        "city_region_ids",
+        "group_members",
+        "post_validation_grid",
+        "error_check_failed",
+        "has_continuous_ocean_column",
+        "frontier_mask_complete",
+        "accepted",
+        "map_lcg_after_validation",
+    }
+    for index, attempt in enumerate(attempts):
+        if not isinstance(attempt, dict):
+            raise ValueError("coarse_generation attempts must be objects")
+        _require_exact_keys(attempt, attempt_keys, "coarse_generation attempt")
+        if attempt["index"] != index:
+            raise ValueError("coarse_generation attempts must be in index order")
+        _require_integer(attempt["draw_count"], "coarse_generation attempt draw_count")
+        for field in ("map_lcg_after_seeding", "map_lcg_after_validation"):
+            _require_int_range(attempt[field], 0, 0xFFFFFFFF, f"coarse_generation {field}")
+        for field in ("pre_validation_grid", "post_validation_grid"):
+            _require_integer_array_for(attempt, field, 15 * 27, "coarse_generation attempt")
+        _require_integer_array_for(
+            attempt, "city_region_ids", 23, "coarse_generation attempt"
+        )
+        _require_integer_array_for(attempt, "group_members", 7 * 3, "coarse_generation attempt")
+        for field in (
+            "error_check_failed",
+            "has_continuous_ocean_column",
+            "frontier_mask_complete",
+            "accepted",
+        ):
+            _require_int_range(attempt[field], -1, 1, f"coarse_generation attempt {field}")
+    if attempts[-1]["accepted"] != 1 or any(attempt["accepted"] == 1 for attempt in attempts[:-1]):
+        raise ValueError("coarse_generation only the final attempt may be accepted")
+
+    _require_integer_array_for(value, "accepted_grid", 15 * 27, "coarse_generation")
+    _require_integer_array_for(value, "city_region_ids", 23, "coarse_generation")
+    _require_integer_array_for(value, "group_members", 7 * 3, "coarse_generation")
+    _require_integer(value["city_region_next_id"], "coarse_generation city_region_next_id")
+    _require_integer(value["expanded_province_count"], "coarse_generation province count")
+    if value["expanded_tile_fields"] != ["terrain_kind", "owner_nation", "province_index"]:
+        raise ValueError("coarse_generation expanded_tile_fields do not match the v1 schema")
+    tiles = value["expanded_tiles"]
+    if not isinstance(tiles, list) or len(tiles) != 108 * 60:
+        raise ValueError("coarse_generation expanded_tiles must contain 6480 rows")
+    _require_integer_rows(tiles, 3, "coarse_generation expanded_tiles")
+    provinces = value["expanded_provinces"]
+    if not isinstance(provinces, list) or len(provinces) != value["expanded_province_count"]:
+        raise ValueError("coarse_generation expanded province count must match records")
+    _require_integer_rows(provinces, 2, "coarse_generation expanded_provinces")
 
 
 def validate_game_snapshot(snapshot: object) -> None:
