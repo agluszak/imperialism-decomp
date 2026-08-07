@@ -6,6 +6,7 @@
   "scenario": "load_saved_game",
   "scenarios": [
     "load_saved_game",
+    "major_trade_settlement",
     "specialist_recruitment"
   ],
   "schema": 1,

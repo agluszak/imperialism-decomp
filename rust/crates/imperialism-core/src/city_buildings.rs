@@ -331,6 +331,7 @@ mod tests {
             aid_allocation_matrix: vec![],
             budget_pool_base: 0,
             budget_pool_delta: 0,
+            special_resource_trade_balance: 0,
             candidate_nation_flags: vec![],
             scenario_initialized: false,
             turn_finished: false,

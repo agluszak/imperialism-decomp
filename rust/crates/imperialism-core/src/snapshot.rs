@@ -135,6 +135,7 @@ pub struct SnapshotMajorNation {
     pub aid_allocation_matrix: Vec<i32>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
+    pub special_resource_trade_balance: i32,
     pub candidate_nation_flags: Vec<u8>,
     pub scenario_initialized: u8,
     pub turn_finished: u8,

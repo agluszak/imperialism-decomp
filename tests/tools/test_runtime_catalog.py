@@ -266,6 +266,41 @@ class RuntimeProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "23 records"):
             validate_game_snapshot(snapshot)
 
+    def test_game_snapshot_requires_the_special_resource_trade_balance(self) -> None:
+        snapshot = self.game_snapshot()
+        major = {
+            field: [0] * 23
+            for field in (
+                "diplomacy_policy_by_nation",
+                "diplomacy_grant_by_nation",
+                "need_current_by_type",
+                "need_target_by_type",
+                "relation_delta_current",
+                "purchased_items_by_resource",
+                "item_potentials",
+                "unfilled_trade_turns_by_resource",
+                "transported_items_by_resource",
+                "remembered_trade_offers_by_resource",
+                "candidate_nation_flags",
+                "colony_boycott_flags",
+            )
+        }
+        major.update(
+            capacities=[0] * 4,
+            aid_allocation_matrix=[0] * 0x170,
+            pending_action_status=[0] * 13,
+            pending_action_payload_by_action=[0] * 13,
+        )
+        snapshot["nations"]["records"][0] = {
+            "slot": 0,
+            "kind": "major",
+            "present": True,
+            "need_level_by_nation": [0] * 23,
+            "major": major,
+        }
+        with self.assertRaisesRegex(ValueError, "special-resource trade balance"):
+            validate_game_snapshot(snapshot)
+
     def test_game_snapshot_rejects_wrong_city_count(self) -> None:
         snapshot = self.game_snapshot()
         snapshot["economy"]["cities"] = []

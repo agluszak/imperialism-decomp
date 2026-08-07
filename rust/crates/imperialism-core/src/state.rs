@@ -96,6 +96,7 @@ pub struct MajorNationState {
     pub aid_allocation_matrix: Vec<i32>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
+    pub special_resource_trade_balance: i32,
     pub candidate_nation_flags: Vec<u8>,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
@@ -296,7 +297,14 @@ pub struct TurnStartEventState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum GameCommand {}
+pub enum GameCommand {
+    PurchaseItem {
+        nation: NationId,
+        resource: crate::ResourceKind,
+        amount: i16,
+        price: i16,
+    },
+}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameEvent {
@@ -318,6 +326,12 @@ pub enum GameEvent {
         nation: NationId,
         action: u8,
         payload: i16,
+    },
+    TradeSettled {
+        nation: NationId,
+        resource: crate::ResourceKind,
+        amount: i16,
+        price: i16,
     },
     RecruitmentAnnounced {
         nation: NationId,
@@ -495,6 +509,7 @@ impl From<SnapshotMajorNation> for MajorNationState {
             aid_allocation_matrix: snapshot.aid_allocation_matrix,
             budget_pool_base: snapshot.budget_pool_base,
             budget_pool_delta: snapshot.budget_pool_delta,
+            special_resource_trade_balance: snapshot.special_resource_trade_balance,
             candidate_nation_flags: snapshot.candidate_nation_flags,
             scenario_initialized: snapshot.scenario_initialized != 0,
             turn_finished: snapshot.turn_finished != 0,

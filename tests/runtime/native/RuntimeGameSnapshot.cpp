@@ -233,8 +233,8 @@ CString CaptureNations() {
       json += ",\"aid_allocation_matrix\":";
       AppendIntArray(json, nation->aidAllocationMatrix, 0x170);
       row.Format(",\"budget_pool_base\":%d,\"budget_pool_delta\":%d,"
-                 "\"candidate_nation_flags\":",
-                 nation->budgetPoolBase, nation->budgetPoolDelta);
+                 "\"special_resource_trade_balance\":%d,\"candidate_nation_flags\":",
+                 nation->budgetPoolBase, nation->budgetPoolDelta, nation->field910);
       json += row;
       AppendUnsignedByteArray(json, nation->candidateNationFlags, kNationSlotCount);
       row.Format(",\"scenario_initialized\":%u,\"turn_finished\":%u,"
