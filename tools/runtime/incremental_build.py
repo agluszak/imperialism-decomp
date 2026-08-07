@@ -82,7 +82,9 @@ def newest_generated_input(repo: Path) -> float:
     return newest
 
 
-def regenerate_sources_if_stale(repo: Path, build_dir: Path) -> bool:
+def regenerate_sources_if_stale(
+    repo: Path, build_dir: Path, *, force: bool = False
+) -> bool:
     """Re-run `tools.generate` when a manual source outdates the generated tree.
 
     The stubs and UI factories in that tree are compiled into the same binary the scenario
@@ -91,7 +93,11 @@ def regenerate_sources_if_stale(repo: Path, build_dir: Path) -> bool:
     """
     gen_dir = build_dir / "generated"
     model = gen_dir / "source_model.json"
-    if model.is_file() and model.stat().st_mtime >= newest_generated_input(repo):
+    if (
+        not force
+        and model.is_file()
+        and model.stat().st_mtime >= newest_generated_input(repo)
+    ):
         return False
     subprocess.run(
         [sys.executable, "-m", "tools.generate", "--gen-dir", str(gen_dir)],
@@ -101,7 +107,9 @@ def regenerate_sources_if_stale(repo: Path, build_dir: Path) -> bool:
     return True
 
 
-def regenerate_registry_if_stale(repo: Path, build_dir: Path) -> bool:
+def regenerate_registry_if_stale(
+    repo: Path, build_dir: Path, *, force: bool = False
+) -> bool:
     """Regenerate RuntimeRegistry.inc when the catalog is newer. Returns True if written.
 
     Staleness is tracked in a stamp rather than by comparing the output's own mtime, because
@@ -115,7 +123,7 @@ def regenerate_registry_if_stale(repo: Path, build_dir: Path) -> bool:
     output = build_dir / "generated" / "runtime" / "RuntimeRegistry.inc"
     stamp = build_dir / ".runtime-registry-inputs"
     newest_input = f"{max(catalog.stat().st_mtime, generator.stat().st_mtime)}"
-    if output.exists() and stamp.is_file():
+    if not force and output.exists() and stamp.is_file():
         if stamp.read_text(encoding="utf-8").strip() == newest_input:
             return False
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -147,6 +155,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Force a full CMake configure even when the source set is unchanged.",
     )
     parser.add_argument(
+        "--canonical",
+        action="store_true",
+        help=(
+            "Unconditionally refresh generated inputs, but reuse a valid CMake "
+            "configuration. Used by precommit after its full gated production build."
+        ),
+    )
+    parser.add_argument(
         "--docker-image",
         default=DEFAULT_DOCKER_IMAGE,
         help="Toolchain image (default: the justfile's docker_image).",
@@ -163,10 +179,18 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{build_dir.name} does not exist; bootstrapping it with a full configure")
         build_dir.mkdir(parents=True)
 
-    if regenerate_sources_if_stale(repo, build_dir):
-        print("regenerated stubs/UI factories (a manual source outdated the generated tree)")
-    if regenerate_registry_if_stale(repo, build_dir):
-        print("regenerated RuntimeRegistry.inc (catalog changed)")
+    if regenerate_sources_if_stale(repo, build_dir, force=args.canonical):
+        print(
+            "refreshed canonical stubs/UI factories"
+            if args.canonical
+            else "regenerated stubs/UI factories (a manual source outdated the generated tree)"
+        )
+    if regenerate_registry_if_stale(repo, build_dir, force=args.canonical):
+        print(
+            "refreshed canonical RuntimeRegistry.inc"
+            if args.canonical
+            else "regenerated RuntimeRegistry.inc (catalog changed)"
+        )
 
     stamp = build_dir / ".runtime-source-set"
     digest = source_set_digest(repo)

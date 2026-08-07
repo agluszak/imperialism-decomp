@@ -51,7 +51,8 @@ class PrecommitWorkflowTests(unittest.TestCase):
         runtime_body = "\n".join(
             line[0] for line in recipes["_precommit-runtime-check"]["body"]
         )
-        self.assertIn("runtime-check pr --jobs 1", runtime_body)
+        self.assertIn("_runtime-precommit-build", runtime_body)
+        self.assertIn("cli suite pr --require-fixtures --jobs 1", runtime_body)
 
     def test_lint_option_sets_use_distinct_cmake_caches(self) -> None:
         assignments = self.dump["assignments"]

@@ -95,7 +95,11 @@ _precommit-after-build: _precommit-post-build-checks _precommit-runtime-check
 
 [private]
 _precommit-runtime-check:
-  just runtime-check pr --jobs 1 --junit build-runtime-tests/runtime-pr.xml
+  : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
+  test -f "$ORIGINAL_BINARY"
+  just _runtime-precommit-build
+  uv run python -m tools.runtime.cli suite pr --require-fixtures --jobs 1 \
+    --junit build-runtime-tests/runtime-pr.xml
 
 # These checks touch disjoint build/output trees and are read-only over tracked source.
 # Running them together hides gate and tooling-test latency without changing what
