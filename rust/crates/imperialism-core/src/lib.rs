@@ -8,6 +8,7 @@ mod map_geometry;
 mod nation_economy;
 mod population;
 mod resources;
+mod rng;
 mod snapshot;
 mod state;
 mod turn_flow;
