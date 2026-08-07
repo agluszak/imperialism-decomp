@@ -1,12 +1,18 @@
 #![forbid(unsafe_code)]
 
+mod calendar;
 mod ids;
+mod map_geometry;
 mod snapshot;
 mod state;
 
+pub use calendar::TurnCalendar;
 pub use ids::{
     ArmyId, CityId, MilitaryUnitId, MissionId, NationId, NavyId, ProvinceId, ShipId, TaskForceId,
     TileId,
+};
+pub use map_geometry::{
+    HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,

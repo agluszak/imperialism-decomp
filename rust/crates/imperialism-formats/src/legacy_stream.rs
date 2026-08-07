@@ -1,0 +1,147 @@
+use std::fmt;
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct StreamError {
+    pub offset: usize,
+    pub requested: usize,
+    pub remaining: usize,
+}
+
+impl fmt::Display for StreamError {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            formatter,
+            "legacy stream ended at offset {:#x}: requested {} bytes, {} remain",
+            self.offset, self.requested, self.remaining
+        )
+    }
+}
+
+impl std::error::Error for StreamError {}
+
+pub struct LegacyStream<'a> {
+    bytes: &'a [u8],
+    position: usize,
+}
+
+impl<'a> LegacyStream<'a> {
+    pub const fn new(bytes: &'a [u8]) -> Self {
+        Self { bytes, position: 0 }
+    }
+
+    pub const fn position(&self) -> usize {
+        self.position
+    }
+
+    pub fn read_bytes(&mut self, length: usize) -> Result<&'a [u8], StreamError> {
+        let remaining = self.bytes.len().saturating_sub(self.position);
+        if length > remaining {
+            return Err(StreamError {
+                offset: self.position,
+                requested: length,
+                remaining,
+            });
+        }
+        let start = self.position;
+        self.position += length;
+        Ok(&self.bytes[start..self.position])
+    }
+
+    pub fn skip(&mut self, length: usize) -> Result<(), StreamError> {
+        self.read_bytes(length).map(|_| ())
+    }
+
+    pub fn read_u8(&mut self) -> Result<u8, StreamError> {
+        Ok(self.read_bytes(1)?[0])
+    }
+
+    pub fn read_i8(&mut self) -> Result<i8, StreamError> {
+        Ok(self.read_u8()? as i8)
+    }
+
+    pub fn read_le_u16(&mut self) -> Result<u16, StreamError> {
+        Ok(u16::from_le_bytes(self.read_bytes(2)?.try_into().unwrap()))
+    }
+
+    pub fn read_le_i16(&mut self) -> Result<i16, StreamError> {
+        Ok(i16::from_le_bytes(self.read_bytes(2)?.try_into().unwrap()))
+    }
+
+    pub fn read_le_u32(&mut self) -> Result<u32, StreamError> {
+        Ok(u32::from_le_bytes(self.read_bytes(4)?.try_into().unwrap()))
+    }
+
+    pub fn read_le_i32(&mut self) -> Result<i32, StreamError> {
+        Ok(i32::from_le_bytes(self.read_bytes(4)?.try_into().unwrap()))
+    }
+
+    pub fn read_be_i16(&mut self) -> Result<i16, StreamError> {
+        Ok(i16::from_be_bytes(self.read_bytes(2)?.try_into().unwrap()))
+    }
+
+    pub fn read_be_i32(&mut self) -> Result<i32, StreamError> {
+        Ok(i32::from_be_bytes(self.read_bytes(4)?.try_into().unwrap()))
+    }
+
+    /// Reads the compact length used by MFC `CArchive` for serialized `CString`s.
+    pub fn read_mfc_string(&mut self) -> Result<Vec<u8>, StreamError> {
+        let byte_length = self.read_u8()?;
+        let length = if byte_length != u8::MAX {
+            usize::from(byte_length)
+        } else {
+            let word_length = self.read_le_u16()?;
+            if word_length != u16::MAX {
+                usize::from(word_length)
+            } else {
+                self.read_le_u32()? as usize
+            }
+        };
+        Ok(self.read_bytes(length)?.to_vec())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn reads_native_and_swapped_integer_shapes() {
+        let bytes = [0x34, 0x12, 0x12, 0x34, 0x78, 0x56, 0x34, 0x12];
+        let mut stream = LegacyStream::new(&bytes);
+        assert_eq!(stream.read_le_i16().unwrap(), 0x1234);
+        assert_eq!(stream.read_be_i16().unwrap(), 0x1234);
+        assert_eq!(stream.read_le_i32().unwrap(), 0x1234_5678);
+    }
+
+    #[test]
+    fn reports_the_exact_truncation_offset() {
+        let mut stream = LegacyStream::new(&[1, 2]);
+        stream.read_u8().unwrap();
+        assert_eq!(
+            stream.read_le_u16().unwrap_err(),
+            StreamError {
+                offset: 1,
+                requested: 2,
+                remaining: 1
+            }
+        );
+    }
+
+    #[test]
+    fn reads_all_mfc_string_length_forms() {
+        let bytes = [
+            3, b'o', b'n', b'e', 0xff, 4, 0, b't', b'e', b's', b't', 0xff, 0xff, 0xff, 2, 0, 0, 0,
+            b'o', b'k',
+        ];
+        let mut stream = LegacyStream::new(&bytes);
+        assert_eq!(stream.read_mfc_string().unwrap(), b"one");
+        assert_eq!(stream.read_mfc_string().unwrap(), b"test");
+        assert_eq!(stream.read_mfc_string().unwrap(), b"ok");
+    }
+
+    #[test]
+    fn reads_big_endian_longs() {
+        let mut stream = LegacyStream::new(&[0x12, 0x34, 0x56, 0x78]);
+        assert_eq!(stream.read_be_i32().unwrap(), 0x1234_5678);
+    }
+}

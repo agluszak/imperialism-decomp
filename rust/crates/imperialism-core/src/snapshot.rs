@@ -67,6 +67,12 @@ pub struct SnapshotWorld {
 #[serde(transparent)]
 pub struct TileSnapshot(pub [i64; 10]);
 
+impl SnapshotWorld {
+    pub fn semantic_hash(&self) -> Result<String, SnapshotValidationError> {
+        compact_json(self).map(|json| fnv1a_hex(json.as_bytes()))
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct SnapshotNations {
     pub records: Vec<SnapshotNation>,
