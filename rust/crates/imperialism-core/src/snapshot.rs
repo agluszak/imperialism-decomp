@@ -253,6 +253,7 @@ pub struct SnapshotPopulation {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct SnapshotMilitary {
     pub units: Vec<SnapshotMilitaryUnit>,
+    pub civilians: Vec<SnapshotCivilianUnit>,
     pub ships: Vec<SnapshotShip>,
     pub task_forces: Vec<SnapshotTaskForce>,
 }
@@ -276,6 +277,21 @@ pub struct SnapshotMilitaryUnit {
     pub era: i16,
     pub experience: i16,
     pub battle_flags: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotCivilianUnit {
+    pub nation: u8,
+    pub roster_index: u32,
+    pub persistent_id: i32,
+    pub unit_type: i16,
+    pub tile: i16,
+    pub order: i32,
+    pub order_target: i16,
+    pub owner_nation: i16,
+    pub roster_id: i16,
+    pub registered: u8,
+    pub remaining_turns: i16,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -626,6 +642,34 @@ impl GameSnapshotV1 {
                 return Err(SnapshotValidationError::Shape(format!(
                     "duplicate military unit id {}",
                     unit.persistent_id
+                )));
+            }
+        }
+        let mut civilian_ids = BTreeSet::new();
+        let mut expected_civilian_roster = [0_u32; 7];
+        for unit in &self.military.civilians {
+            let nation = usize::from(unit.nation);
+            if nation >= expected_civilian_roster.len()
+                || unit.roster_index != expected_civilian_roster[nation]
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid civilian roster index for nation {}",
+                    unit.nation
+                )));
+            }
+            expected_civilian_roster[nation] += 1;
+            if unit.persistent_id < 0 || !civilian_ids.insert(unit.persistent_id) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid or duplicate civilian unit id {}",
+                    unit.persistent_id
+                )));
+            }
+            if unit.tile < -1
+                || usize::try_from(unit.tile).is_ok_and(|tile| tile >= self.world.tiles.len())
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "civilian unit {} references invalid tile {}",
+                    unit.persistent_id, unit.tile
                 )));
             }
         }
@@ -1078,6 +1122,19 @@ mod tests {
                     experience: 0,
                     battle_flags: 0,
                 }],
+                civilians: vec![SnapshotCivilianUnit {
+                    nation: 6,
+                    roster_index: 0,
+                    persistent_id: 43,
+                    unit_type: 4,
+                    tile: 10,
+                    order: 0,
+                    order_target: -1,
+                    owner_nation: 6,
+                    roster_id: 0,
+                    registered: 0,
+                    remaining_turns: 0,
+                }],
                 ships: vec![SnapshotShip {
                     index: 0,
                     r#type: 3,
@@ -1165,6 +1222,8 @@ mod tests {
         snapshot.verify_hashes().unwrap();
         let state = crate::GameState::try_from(snapshot).unwrap();
         assert_eq!(state.military_units.len(), 1);
+        assert_eq!(state.civilian_units.len(), 1);
+        assert_eq!(state.civilian_units[0].tile, Some(crate::TileId::new(10)));
         assert_eq!(state.ships[0].task_force, Some(crate::TaskForceId::new(0)));
         assert_eq!(
             state.task_forces[0].ships,
@@ -1182,6 +1241,18 @@ mod tests {
                 section: "world",
                 ..
             })
+        ));
+    }
+
+    #[test]
+    fn rejects_invalid_civilian_roster_state() {
+        let mut snapshot = snapshot();
+        snapshot.military.civilians[0].roster_index = 1;
+        snapshot.refresh_hashes().unwrap();
+        assert!(matches!(
+            snapshot.validate(),
+            Err(SnapshotValidationError::Shape(message))
+                if message == "invalid civilian roster index for nation 6"
         ));
     }
 }

@@ -2,9 +2,9 @@ use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, STRATEGIC_MAP_HEIGHT,
     STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SnapshotArmyMission, SnapshotAttackMission,
-    SnapshotCity, SnapshotEconomy, SnapshotHashes, SnapshotMajorNation, SnapshotMetadata,
-    SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission, SnapshotMissions, SnapshotNation,
-    SnapshotNationPending, SnapshotNations, SnapshotNavyMission, SnapshotPending,
+    SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes, SnapshotMajorNation,
+    SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission, SnapshotMissions,
+    SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission, SnapshotPending,
     SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot, TurnCalendar,
 };
 use std::fmt;
@@ -395,6 +395,28 @@ pub struct LegacyGreatPowerPostCity {
     pub aid_allocation_total: i32,
     pub colony_boycott_flags: [u8; NATION_COUNT],
     pub military_expenses: i32,
+}
+
+impl LegacyGreatPowerPostCity {
+    pub fn snapshot_civilian_units(&self, nation: u8) -> Vec<SnapshotCivilianUnit> {
+        self.civilian_units
+            .iter()
+            .enumerate()
+            .map(|(roster_index, unit)| SnapshotCivilianUnit {
+                nation,
+                roster_index: roster_index as u32,
+                persistent_id: unit.persistent_id,
+                unit_type: unit.unit_type,
+                tile: unit.tile_index,
+                order: unit.order,
+                order_target: unit.order_target,
+                owner_nation: unit.owner_nation,
+                roster_id: unit.roster_id,
+                registered: unit.registered,
+                remaining_turns: unit.remaining_turns,
+            })
+            .collect()
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -941,6 +963,7 @@ impl LegacySaveV62 {
 
         let mut cities = Vec::with_capacity(7);
         let mut military_units = Vec::new();
+        let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
         for slot in 0..7 {
             let nation = self
@@ -964,6 +987,7 @@ impl LegacySaveV62 {
                 None => absent_city(slot as u8),
             });
             military_units.extend(great_power.country.snapshot_military_units(slot as u8));
+            civilian_units.extend(great_power.post_city.snapshot_civilian_units(slot as u8));
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for (queue_index, mission) in auto.missions.iter().enumerate() {
                     missions.push(mission.snapshot(
@@ -1041,6 +1065,7 @@ impl LegacySaveV62 {
             economy: SnapshotEconomy { cities },
             military: SnapshotMilitary {
                 units: military_units,
+                civilians: civilian_units,
                 ships: Vec::new(),
                 task_forces: Vec::new(),
             },
@@ -2476,19 +2501,33 @@ mod tests {
                 selected_nation: 6,
             })
             .unwrap();
+        let expected_civilian_count = save
+            .major_nations
+            .iter()
+            .map(|nation| nation.great_power().post_city.civilian_units.len())
+            .sum::<usize>();
         assert_eq!(snapshot.military.units.len(), 461);
+        assert!(expected_civilian_count > 0);
+        assert_eq!(snapshot.military.civilians.len(), expected_civilian_count);
+        assert_eq!(snapshot.military.civilians[0].nation, 0);
+        assert_eq!(snapshot.military.civilians[0].roster_index, 0);
+        assert_eq!(
+            snapshot.military.civilians[0].persistent_id,
+            save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
+        );
         assert_eq!(snapshot.missions.records.len(), 66);
         assert_eq!(snapshot.hashes.metadata, "c05f0452");
         assert_eq!(snapshot.hashes.rng, "e90a6b4e");
         assert_eq!(snapshot.hashes.world, "dbd2668d");
         assert_eq!(snapshot.hashes.nations, "1d88ea9d");
         assert_eq!(snapshot.hashes.economy, "4a05e963");
-        assert_eq!(snapshot.hashes.military, "34395d08");
+        assert_eq!(snapshot.hashes.military, "e15fdcf6");
         assert_eq!(snapshot.hashes.missions, "b6cc8e06");
         assert_eq!(snapshot.hashes.pending, "1ca83a13");
-        assert_eq!(snapshot.hashes.state, "854af387");
+        assert_eq!(snapshot.hashes.state, "bfe91fed");
 
         let mut game = imperialism_core::GameState::try_from(snapshot).unwrap();
+        assert_eq!(game.civilian_units.len(), expected_civilian_count);
         assert!(game.all_humans_finished().unwrap());
         assert!(!game.turn.in_linear_phase());
         game.reset_turn_flags().unwrap();

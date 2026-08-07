@@ -197,7 +197,7 @@ mod tests {
             "economy": {"cities": (0..7).map(|nation| json!({
                 "nation": nation, "present": false
             })).collect::<Vec<_>>()},
-            "military": {"units": [], "ships": [], "task_forces": []},
+            "military": {"units": [], "civilians": [], "ships": [], "task_forces": []},
             "missions": {"records": []},
             "pending": {
                 "turn_flow_status_flags": 0,

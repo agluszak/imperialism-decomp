@@ -19,6 +19,7 @@
 #include "game/map/map_records.h"
 #include "game/military/TArmyMission.h"
 #include "game/military/TAttackProvinceMission.h"
+#include "game/military/TCivUnit.h"
 #include "game/military/TInvadeMission.h"
 #include "game/military/TMilitaryUnit.h"
 #include "game/military_ui/TDiplomacyMgr.h"
@@ -612,6 +613,31 @@ CString CaptureMilitary() {
       first = false;
       ++rosterIndex;
       unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+    }
+  }
+
+  json += "],\"civilians\":[";
+  first = true;
+  for (int civilianNationSlot = 0; civilianNationSlot < kMajorNationCount; ++civilianNationSlot) {
+    TGreatPower* nation = g_apNationStates[civilianNationSlot];
+    int civilianCount =
+        nation != 0 && nation->trackedObjectList != 0 ? nation->trackedObjectList->GetCount() : 0;
+    for (int ordinal = 1; ordinal <= civilianCount; ++ordinal) {
+      TCivUnit* unit =
+          static_cast<TCivUnit*>(nation->trackedObjectList->GetEntryByOrdinal(ordinal));
+      CString row;
+      row.Format("%s{\"nation\":%d,\"roster_index\":%d,\"persistent_id\":%d,"
+                 "\"unit_type\":%d,\"tile\":%d,\"order\":%d,\"order_target\":%d,"
+                 "\"owner_nation\":%d,\"roster_id\":%d,\"registered\":%u,"
+                 "\"remaining_turns\":%d}",
+                 first ? "" : ",", civilianNationSlot, ordinal - 1, unit->persistentUnitId20,
+                 static_cast<int>(unit->orderType), static_cast<int>(unit->tileIndex06),
+                 static_cast<int>(unit->unitOrder), static_cast<int>(unit->orderTargetIndex0C),
+                 static_cast<int>(unit->ownerNationSlot18), static_cast<int>(unit->unitRosterId1A),
+                 static_cast<unsigned int>(unit->militaryRegistrationFlag1C),
+                 static_cast<int>(unit->remainingTurns24));
+      json += row;
+      first = false;
     }
   }
 

@@ -1,8 +1,8 @@
 use crate::{
-    GameSnapshotV1, LaborPool, MilitaryUnitId, MissionId, NationId, ShipId, SnapshotArmyMission,
-    SnapshotCity, SnapshotMajorNation, SnapshotMilitaryUnit, SnapshotMission, SnapshotNation,
-    SnapshotNavyMission, SnapshotPopulation, SnapshotShip, SnapshotTaskForce,
-    SnapshotValidationError, TaskForceId, TileSnapshot,
+    CivilianUnitId, GameSnapshotV1, LaborPool, MilitaryUnitId, MissionId, NationId, ShipId,
+    SnapshotArmyMission, SnapshotCity, SnapshotCivilianUnit, SnapshotMajorNation,
+    SnapshotMilitaryUnit, SnapshotMission, SnapshotNation, SnapshotNavyMission, SnapshotPopulation,
+    SnapshotShip, SnapshotTaskForce, SnapshotValidationError, TaskForceId, TileId, TileSnapshot,
 };
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -13,6 +13,7 @@ pub struct GameState {
     pub nations: Vec<Option<NationState>>,
     pub cities: Vec<Option<CityState>>,
     pub military_units: Vec<MilitaryUnitState>,
+    pub civilian_units: Vec<CivilianUnitState>,
     pub ships: Vec<ShipState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
@@ -169,6 +170,21 @@ pub struct MilitaryUnitState {
     pub era: i16,
     pub experience: i16,
     pub battle_flags: i16,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CivilianUnitState {
+    pub id: CivilianUnitId,
+    pub nation: NationId,
+    pub roster_index: u32,
+    pub unit_type: i16,
+    pub tile: Option<TileId>,
+    pub order: i32,
+    pub order_target: i16,
+    pub owner_nation: i16,
+    pub roster_id: i16,
+    pub registered: bool,
+    pub remaining_turns: i16,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -343,6 +359,12 @@ impl TryFrom<GameSnapshotV1> for GameState {
                 .units
                 .into_iter()
                 .map(military_unit_state)
+                .collect::<Result<_, _>>()?,
+            civilian_units: snapshot
+                .military
+                .civilians
+                .into_iter()
+                .map(civilian_unit_state)
                 .collect::<Result<_, _>>()?,
             ships: snapshot
                 .military
@@ -561,6 +583,37 @@ fn military_unit_state(
         era: snapshot.era,
         experience: snapshot.experience,
         battle_flags: snapshot.battle_flags,
+    })
+}
+
+fn civilian_unit_state(
+    snapshot: SnapshotCivilianUnit,
+) -> Result<CivilianUnitState, SnapshotValidationError> {
+    let persistent_id = u32::try_from(snapshot.persistent_id).map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "invalid civilian unit id {}",
+            snapshot.persistent_id
+        ))
+    })?;
+    let tile = if snapshot.tile < 0 {
+        None
+    } else {
+        Some(TileId::new(u16::try_from(snapshot.tile).map_err(|_| {
+            SnapshotValidationError::Shape(format!("invalid civilian tile {}", snapshot.tile))
+        })?))
+    };
+    Ok(CivilianUnitState {
+        id: CivilianUnitId::new(persistent_id),
+        nation: NationId::new(snapshot.nation),
+        roster_index: snapshot.roster_index,
+        unit_type: snapshot.unit_type,
+        tile,
+        order: snapshot.order,
+        order_target: snapshot.order_target,
+        owner_nation: snapshot.owner_nation,
+        roster_id: snapshot.roster_id,
+        registered: snapshot.registered != 0,
+        remaining_turns: snapshot.remaining_turns,
     })
 }
 
