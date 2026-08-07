@@ -1973,6 +1973,8 @@ int g_nMapActionContextDistanceCacheSizedFor = -1;
 
 // GLOBAL: IMPERIALISM 0x006a42dc
 unsigned char g_bRandomMapDeveloperCheatFlag = 0;
+// GLOBAL: IMPERIALISM 0x006a42f0
+POINT g_ptTurnTransitionModalMessage = {0, 0};
 // Developer-cheat probe filename: TSimMgr::ISimMgr (0x57bc2d)
 // stats a file literally named "Conan" via CFile::GetStatus.
 // GLOBAL: IMPERIALISM 0x00698bec

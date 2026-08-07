@@ -11,17 +11,18 @@
 #include "game/globals/ui_core_globals.h"
 
 // FUNCTION: IMPERIALISM 0x0041b210
-void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlTag, TView* widget,
-                                     int offsetX, int offsetY, int width, int height,
-                                     int stateValue, int enabledState, unsigned int ownerTag,
-                                     int field3cValue) {
+inline void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlTag,
+                                            TView* widget, int offsetX, int offsetY, int width,
+                                            int height, int stateValue, int enabledState,
+                                            unsigned int ownerTag, int field3cValue) {
   (void)nameTag;
   (void)ownerTag;
 
   TView* parent;
   g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
-    parent = g_UiWidgetBuildStack006a13e0.GetTail();
+    const CList<TView*, TView*>& buildStack = g_UiWidgetBuildStack006a13e0;
+    parent = buildStack.GetTail();
   } else {
     g_pUiResourceHead = widget;
     parent = 0;
@@ -42,20 +43,20 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
-void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d) {
+inline void __cdecl SetUiResourceStateFlags(bool inputGateFlag4c, bool childHitTestFlag4d) {
   TView* context = g_pUiResourceContext;
   context->inputGateFlag4c = inputGateFlag4c;
   context->childHitTestFlag4d = childHitTestFlag4d;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3d0
-void __cdecl SetUiResourceContextPictureId(int nPictureId) {
+inline void __cdecl SetUiResourceContextPictureId(int nPictureId) {
   static_cast<TPicture*>(g_pUiResourceContext)
       ->SetPictureResourceIdAndRefresh(static_cast<short>(nPictureId), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b400
-void __cdecl SetUiResourceContextStringCode(int nCode) {
+inline void __cdecl SetUiResourceContextStringCode(int nCode) {
   static_cast<TCluster*>(g_pUiResourceContext)->selectedChildTag = nCode;
 }
 
@@ -76,8 +77,8 @@ TUiStyleBytes* TUiStyleBytes::Reset() {
 }
 
 // FUNCTION: IMPERIALISM 0x0041b450
-void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
-                                               int rectRight, int rectBottom) {
+inline void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, int rectTop,
+                                                      int rectRight, int rectBottom) {
   TControl* context = static_cast<TControl*>(g_pUiResourceContext);
   context->eventNumber60 = eventNumber;
   context->contentInsets68.left = rectLeft;
@@ -91,9 +92,9 @@ void __cdecl SetUiResourceEventNumberAndInsets(int eventNumber, int rectLeft, in
 // nVariant are present at every call site but unused by the body (signature fidelity,
 // like RegisterUiResourceEntry's tags).
 // FUNCTION: IMPERIALISM 0x0041b490
-void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* szText, short nMode,
-                                        short nFlag, short nPointSize, TUiStyleRef styleRef,
-                                        short nThemeCode) {
+inline void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* szText,
+                                               short nMode, short nFlag, short nPointSize,
+                                               TUiStyleRef styleRef, short nThemeCode) {
   (void)nGroupId;
   (void)nVariant;
 
@@ -113,14 +114,14 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, const char* 
 
 // Set the current context edit control's max-character-count word (+0x9c).
 // FUNCTION: IMPERIALISM 0x0041b570
-void __cdecl SetUiResourceContextMaxCharCount(short maxChars) {
+inline void __cdecl SetUiResourceContextMaxCharCount(short maxChars) {
   TEditText* context = static_cast<TEditText*>(g_pUiResourceContext);
   context->AssertValid();
   context->maxCharacterCount = maxChars;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b5a0
-void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue) {
+inline void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue) {
   TNumberText* context = static_cast<TNumberText*>(g_pUiResourceContext);
   context->AssertValid();
   context->maximumValue = maxValue;
@@ -129,12 +130,12 @@ void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, in
 }
 
 // FUNCTION: IMPERIALISM 0x0041b5f0
-void __cdecl ClearUiResourceContext() {
+inline void __cdecl ClearUiResourceContext() {
   g_pUiResourceContext = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b610
-void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
+inline void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
   (void)nameTag;
   // CList::RemoveTail -> FreeNode already performs the on-empty RemoveAll teardown
   // (walk + CPlex::FreeDataChain + member zeroing) — do not repeat it here.

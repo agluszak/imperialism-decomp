@@ -34,7 +34,13 @@ from reccmp.types import ImageId
 
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
-from tools.common.template_aliases import CLASS_FOLDED_SYMBOL_GROUP, load_aliases
+from tools.common.template_aliases import (
+    CLASS_FOLDED_SYMBOL_GROUP,
+    CLASS_LIBRARY_CALLEE_ALIAS,
+    load_aliases,
+)
+from tools.binary.pe import load_decorated_symbols
+from tools.mfc.reviewed_identities import ReviewedIdentity, load_reviewed_identities
 from tools.source_model import Claim, build_model
 
 SCHEMA_VERSION = 3
@@ -43,6 +49,7 @@ SCHEMA_VERSION = 3
 BASELINE_SCHEMA_VERSION = 3
 PREP_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 30
+MAX_EXPRESSION_NODES = 4096
 PROJECT_NAME = "recompiled-semantic"
 PROGRAM_NAME = "Imperialism.exe"
 # Keep the current cache plus one predecessor so a quick branch switch back does
@@ -454,6 +461,8 @@ def report_inputs(
         repo_root / "vendor" / "ghidra" / "exports" / "Imperialism.gzf",
         repo_root / "ghidra.toml",
         target.recompiled_path.parent / "reccmp_report.json",
+        repo_root / "config" / "reviewed_library_identities.csv",
+        repo_root / "config" / "template_aliases.csv",
         Path(__file__),
     ]
     return {
@@ -479,6 +488,8 @@ def row_context_inputs(repo_root: Path, target: RecCmpTarget) -> dict[str, Any]:
     paths = [
         repo_root / "vendor" / "ghidra" / "exports" / "Imperialism.gzf",
         repo_root / "ghidra.toml",
+        repo_root / "config" / "original_entities.csv",
+        repo_root / "config" / "reviewed_library_identities.csv",
         repo_root / "config" / "template_aliases.csv",
         Path(__file__),
     ]
@@ -515,6 +526,16 @@ def _class_name(value: Any) -> str:
         return type(value).__name__
 
 
+def _contains_recurrence(value: Any) -> bool:
+    if isinstance(value, list):
+        if value and value[0] == "recurrence":
+            return True
+        return any(_contains_recurrence(item) for item in value)
+    if isinstance(value, dict):
+        return any(_contains_recurrence(item) for item in value.values())
+    return False
+
+
 class ExpressionNormalizer:
     """Convert a high-p-code SSA value into a cross-image structural value."""
 
@@ -526,7 +547,7 @@ class ExpressionNormalizer:
         functions: dict[int, int],
         *,
         max_depth: int = 80,
-        max_nodes: int = 500,
+        max_nodes: int = MAX_EXPRESSION_NODES,
     ):
         self.program = program
         self.image_id = image_id
@@ -536,6 +557,7 @@ class ExpressionNormalizer:
         self.max_nodes = max_nodes
         self.recorder: DepRecorder | None = None
         self._active: set[int] = set()
+        self._memo: dict[int, Any] = {}
         self._nodes = 0
         try:
             memory = program.getMemory()
@@ -548,9 +570,21 @@ class ExpressionNormalizer:
 
     def reset(self) -> None:
         self._active.clear()
+        self._memo.clear()
         self._nodes = 0
 
     def normalize(self, varnode: Any, depth: int = 0) -> Any:
+        if depth == 0:
+            self._memo.clear()
+        key = int(varnode.hashCode())
+        if key in self._memo:
+            return self._memo[key]
+        normalized = self._normalize_uncached(varnode, depth)
+        if not _contains_recurrence(normalized):
+            self._memo[key] = normalized
+        return normalized
+
+    def _normalize_uncached(self, varnode: Any, depth: int) -> Any:
         self._nodes += 1
         if self._nodes > self.max_nodes:
             raise UnresolvedExpression("expression node limit exceeded")
@@ -1644,8 +1678,38 @@ def _reccmp_proves_call_contract(status: dict[str, Any] | None) -> bool:
     return status is not None and status.get("status") in {"exact", "effective"}
 
 
+def _augment_original_library_functions(
+    original_functions: dict[int, int],
+    aliases: dict[int, int],
+    identities: Sequence[ReviewedIdentity],
+    decorated_symbols: dict[int, str],
+) -> dict[int, int]:
+    """Map reviewed library copies and wrappers to one paired ABI identity."""
+    augmented = dict(original_functions)
+
+    changed = True
+    while changed:
+        changed = False
+        for alias, canonical in aliases.items():
+            if alias not in augmented and canonical in augmented:
+                augmented[alias] = augmented[canonical]
+                changed = True
+
+    reviewed_symbols = {identity.symbol for identity in identities if identity.symbol}
+    paired_by_symbol: dict[str, set[int]] = {}
+    for address, symbol in decorated_symbols.items():
+        if symbol in reviewed_symbols and address in augmented:
+            paired_by_symbol.setdefault(symbol, set()).add(augmented[address])
+    for identity in identities:
+        candidates = paired_by_symbol.get(identity.symbol, set())
+        if identity.symbol and len(candidates) == 1:
+            augmented.setdefault(identity.address, next(iter(candidates)))
+    return augmented
+
+
 def _build_maps(
     compare: Compare,
+    repo_root: Path | None = None,
 ) -> tuple[
     dict[int, FunctionPair],
     dict[int, int],
@@ -1665,11 +1729,17 @@ def _build_maps(
         original_functions[match.orig_addr] = match.orig_addr
         recompiled_functions[match.recomp_addr] = match.orig_addr
 
-    aliases, alias_errors = load_aliases(
+    folded_aliases, alias_errors = load_aliases(
         equivalence_class=CLASS_FOLDED_SYMBOL_GROUP
     )
+    library_aliases, library_alias_errors = load_aliases(
+        equivalence_class=CLASS_LIBRARY_CALLEE_ALIAS
+    )
+    alias_errors.extend(library_alias_errors)
     if alias_errors:
         raise RuntimeError("invalid template aliases: " + "; ".join(alias_errors))
+    aliases = dict(folded_aliases)
+    aliases.update(library_aliases)
 
     def canonical_function(address: int) -> int:
         seen: set[int] = set()
@@ -1686,6 +1756,13 @@ def _build_maps(
         address: canonical_function(original)
         for address, original in recompiled_functions.items()
     }
+    root = repo_root or repo_root_from_file(__file__, 1)
+    original_functions = _augment_original_library_functions(
+        original_functions,
+        aliases,
+        load_reviewed_identities(root / "config" / "reviewed_library_identities.csv"),
+        load_decorated_symbols(),
+    )
 
     original_entities: dict[int, tuple[int, int]] = {}
     recompiled_entities: dict[int, tuple[int, int]] = {}
@@ -2467,6 +2544,19 @@ def _select_claims(
     return selected
 
 
+def _report_output_path(
+    build_dir: Path, selected: Sequence[Claim], full: bool
+) -> Path:
+    if full:
+        return build_dir / _full_report_relative_path()
+    selection_fingerprint = fingerprint([claim.address for claim in selected])[:12]
+    return (
+        build_dir
+        / "semantic"
+        / f"semantic_report.targeted-{selection_fingerprint}.json"
+    )
+
+
 def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     repo_root = repo_root_from_file(__file__, 1)
     build_dir = Path(args.build_dir).resolve()
@@ -2479,13 +2569,14 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     inputs = report_inputs(repo_root, target, claims, prep_fingerprint)
     full = len(selected) == len(claims)
     full_output = build_dir / _full_report_relative_path()
-    if full and not args.force and full_output.is_file():
-        previous = json.loads(full_output.read_text(encoding="utf-8"))
+    output = _report_output_path(build_dir, selected, full)
+    if not args.force and output.is_file():
+        previous = json.loads(output.read_text(encoding="utf-8"))
         if (
-            previous.get("scope") == "all"
+            previous.get("scope") == ("all" if full else "targeted")
             and previous.get("fingerprint") == fingerprint(inputs)
         ):
-            return previous, full_output
+            return previous, output
 
     phase_started = time.monotonic()
     compare = Compare.from_target(target)
@@ -2495,7 +2586,7 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         recompiled_functions,
         original_entities,
         recompiled_entities,
-    ) = _build_maps(compare)
+    ) = _build_maps(compare, repo_root)
     reccmp_statuses = _reccmp_statuses(
         build_dir, (target.recompiled_path, target.recompiled_pdb)
     )
@@ -2531,15 +2622,16 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     maps_seconds = round(time.monotonic() - phase_started, 3)
 
     previous_rows: dict[str, dict[str, Any]] = {}
+    previous_output = output if output.is_file() else full_output
     if (
         not args.force
         and os.environ.get(REUSE_DISABLE_ENV) != "1"
-        and full_output.is_file()
+        and previous_output.is_file()
     ):
-        previous = json.loads(full_output.read_text(encoding="utf-8"))
+        previous = json.loads(previous_output.read_text(encoding="utf-8"))
         if (
             previous.get("schema") == SCHEMA_VERSION
-            and previous.get("scope") == "all"
+            and previous.get("scope") in {"all", "targeted"}
             and previous.get("row_context") == context_fp
         ):
             previous_rows = {
@@ -2682,17 +2774,6 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         },
         "functions": rows,
     }
-    if full:
-        output = full_output
-    else:
-        selection_fingerprint = fingerprint(
-            [claim.address for claim in selected]
-        )[:12]
-        output = (
-            build_dir
-            / "semantic"
-            / f"semantic_report.targeted-{selection_fingerprint}.json"
-        )
     atomic_json(output, report, indent=None)
     _prune_targeted_reports(build_dir / "semantic")
     return report, output

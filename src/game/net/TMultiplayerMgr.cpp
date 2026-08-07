@@ -309,6 +309,7 @@ void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView
 
 // FUNCTION: IMPERIALISM 0x00545940
 unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
+  TurnEvent1PendingMaskPacket pendingMaskPacket;
   switch (packet->eventCode) {
   case 0xf: {
     // Clear the acknowledging nation's pending bit; when hosting, re-broadcast the mask
@@ -319,22 +320,16 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (hosting == 0) {
       return 1;
     }
-    TurnEvent1PendingMaskPacket maskPacketF;
-    maskPacketF.InitializeEmitEventHeaderWithActiveNation();
-    maskPacketF.eventCode = 0;
-    maskPacketF.fromNetworkId = 0;
-    maskPacketF.eventCode = 1;
-    maskPacketF.toNetworkId = 0;
-    maskPacketF.pendingMask = pendingNationBitmask;
-    maskPacketF.messageLength = 0;
-    maskPacketF.messageLength = 0x1c;
-    maskPacketF.toNetworkId = 0;
-    g_pNetMgr006a6014->Send(&maskPacketF, 0);
-    if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
-      HandleDiplomacyTurnEventPacketByCode();
-      return 1;
-    }
-    break;
+    pendingMaskPacket.InitializeEmitEventHeaderWithActiveNation();
+    pendingMaskPacket.eventCode = 0;
+    pendingMaskPacket.fromNetworkId = 0;
+    pendingMaskPacket.eventCode = 1;
+    pendingMaskPacket.toNetworkId = 0;
+    pendingMaskPacket.pendingMask = pendingNationBitmask;
+    pendingMaskPacket.messageLength = 0;
+    pendingMaskPacket.messageLength = 0x1c;
+    pendingMaskPacket.toNetworkId = 0;
+    goto sendPendingMask;
   }
   case 0xa: {
     // A resuming nation announces its home region and city name.
@@ -350,23 +345,23 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (hostingA == 0) {
       return 1;
     }
-    TurnEvent1PendingMaskPacket maskPacketA;
-    maskPacketA.InitializeEmitEventHeaderWithActiveNation();
-    maskPacketA.eventCode = 0;
-    maskPacketA.fromNetworkId = 0;
-    maskPacketA.eventCode = 1;
-    maskPacketA.toNetworkId = 0;
-    maskPacketA.pendingMask = pendingNationBitmask;
-    maskPacketA.messageLength = 0;
-    maskPacketA.messageLength = 0x1c;
-    maskPacketA.toNetworkId = 0;
-    g_pNetMgr006a6014->Send(&maskPacketA, 0);
+    pendingMaskPacket.InitializeEmitEventHeaderWithActiveNation();
+    pendingMaskPacket.eventCode = 0;
+    pendingMaskPacket.fromNetworkId = 0;
+    pendingMaskPacket.eventCode = 1;
+    pendingMaskPacket.toNetworkId = 0;
+    pendingMaskPacket.pendingMask = pendingNationBitmask;
+    pendingMaskPacket.messageLength = 0;
+    pendingMaskPacket.messageLength = 0x1c;
+    pendingMaskPacket.toNetworkId = 0;
+  }
+  sendPendingMask:
+    g_pNetMgr006a6014->Send(&pendingMaskPacket, 0);
     if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
       HandleDiplomacyTurnEventPacketByCode();
       return 1;
     }
     break;
-  }
   case 0xb: {
     // Full nation directory: refresh each minor's home tile, city/nation names, and
     // port-zone ordinal, then rebuild all status labels.
@@ -976,13 +971,17 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
                                                                   action->nationB1E);
         }
       } else {
+        char targetNation;
+        unsigned char relationMode;
         if (action->flag20 == 0) {
-          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
-              action->nation1C, action->nationA1D, 1);
+          targetNation = action->nationA1D;
+          relationMode = 1;
         } else {
-          g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
-              action->nation1C, action->nationB1E, 0);
+          targetNation = action->nationB1E;
+          relationMode = 0;
         }
+        g_pDiplomacyTurnStateManager->ApplyPeaceRelationshipAndQueueEvent18ForTargetNation(
+            action->nation1C, targetNation, relationMode);
       }
     } else if (action->actionCode1F == 'i' && action->flag21 != 0) {
       if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
