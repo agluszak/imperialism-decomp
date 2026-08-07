@@ -1,4 +1,6 @@
-use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind, SkillBand};
+use crate::{
+    CityState, MajorNationState, PopulationError, ProductionSlot, ResourceKind, SkillBand,
+};
 use std::error::Error;
 use std::fmt;
 
@@ -143,6 +145,45 @@ pub struct TrainingProductionOrder {
     pub reserved_workforce: i16,
     pub limiting_constraint: ProductionConstraint,
     pub accumulated_value: i32,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct ResourceCost {
+    pub resource: ResourceKind,
+    pub per_unit: i16,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct UnitCostProfile {
+    pub entry_id: i16,
+    pub primary: ResourceCost,
+    pub secondary: Option<ResourceCost>,
+    pub cash_per_unit: i16,
+    pub workforce: Option<SkillBand>,
+    pub specialist: bool,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct UnitProductionOrder {
+    pub profile: UnitCostProfile,
+    pub quantity: i16,
+    pub tracking_by_resource: [i16; ResourceKind::COUNT],
+    pub reserved_workforce: i16,
+    pub limiting_constraint: ProductionConstraint,
+    pub accumulated_value: i32,
+}
+
+impl UnitProductionOrder {
+    pub fn new(profile: UnitCostProfile) -> Self {
+        Self {
+            profile,
+            quantity: 0,
+            tracking_by_resource: [0; ResourceKind::COUNT],
+            reserved_workforce: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+            accumulated_value: 0,
+        }
+    }
 }
 
 impl TrainingProductionOrder {
@@ -683,13 +724,7 @@ impl TrainingProductionOrder {
         city.add_to_stock_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
         *treasury = treasury.wrapping_sub(cash_change);
         city.population
-            .make_unavailable(self.level.input_band(), delta)
-            .map_err(|error| match error {
-                crate::PopulationError::MissingLaborPool(name) => {
-                    ProductionError::MissingLaborPool(name)
-                }
-                _ => unreachable!("training only accesses a validated labor pool"),
-            })?;
+            .make_unavailable(self.level.input_band(), delta)?;
         Ok(true)
     }
 
@@ -736,6 +771,96 @@ impl TrainingProductionOrder {
     }
 
     pub const fn restock(&self) {}
+}
+
+impl UnitProductionOrder {
+    pub fn max_order(
+        &mut self,
+        city: &CityState,
+        owner: &MajorNationState,
+        treasury: i32,
+    ) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        validate_unit_resource_cost(self.profile.primary)?;
+        if let Some(secondary) = self.profile.secondary {
+            validate_unit_resource_cost(secondary)?;
+        }
+
+        let workforce_limit = if let Some(band) = self.profile.workforce {
+            if city.population.baseline_labor.is_none() {
+                return Err(ProductionError::MissingLaborPool("baseline"));
+            }
+            let production = city
+                .population
+                .production_labor
+                .as_ref()
+                .ok_or(ProductionError::MissingLaborPool("production"))?;
+            let (available, divisor) = match band {
+                SkillBand::Low => (production.low, 1),
+                SkillBand::Medium => (production.medium, 2),
+                SkillBand::High => (production.high, 4),
+            };
+            available.min(city.population.strength / divisor)
+        } else {
+            9_999
+        };
+
+        let primary_limit = city.stock_by_type[self.profile.primary.resource.index()]
+            / self.profile.primary.per_unit;
+        let secondary_limit = if let Some(secondary) = self.profile.secondary {
+            city.stock_by_type[secondary.resource.index()] / secondary.per_unit
+        } else {
+            primary_limit
+        };
+        let cash_limit = if self.profile.cash_per_unit != 0 && owner.diplomacy_eligible {
+            let limit = (owner.available_diplomacy_budget(treasury)
+                / i32::from(self.profile.cash_per_unit)) as i16;
+            if limit < 0 { 0 } else { limit }
+        } else {
+            primary_limit
+        };
+
+        self.limiting_constraint = ProductionConstraint::Workforce;
+        let mut limit = workforce_limit;
+        if primary_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Resources;
+            limit = primary_limit;
+        }
+        if secondary_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Resources;
+            limit = secondary_limit;
+        }
+        if cash_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Treasury;
+            limit = cash_limit;
+        }
+        Ok(self.quantity.wrapping_add(limit))
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        owner: &MajorNationState,
+        treasury: &mut i32,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city, owner, *treasury)? || quantity < 0 {
+            return Ok(false);
+        }
+        self.quantity = quantity;
+
+        apply_resource_cost(city, self.profile.primary, delta);
+        if let Some(secondary) = self.profile.secondary {
+            apply_resource_cost(city, secondary, delta);
+        }
+        if let Some(workforce) = self.profile.workforce {
+            city.population.remove_population(workforce, delta)?;
+        }
+        let cash_change = i32::from(self.profile.cash_per_unit).wrapping_mul(i32::from(delta));
+        *treasury = treasury.wrapping_sub(cash_change);
+        Ok(true)
+    }
 }
 
 impl ItemProductionOrder {
@@ -914,6 +1039,8 @@ pub enum ProductionError {
     InvalidPendingActionCount { actual: usize },
     InvalidPendingActionPayloadCount { actual: usize },
     MissingLaborPool(&'static str),
+    ZeroUnitResourceCost { resource: ResourceKind },
+    Population(PopulationError),
 }
 
 impl fmt::Display for ProductionError {
@@ -938,11 +1065,21 @@ impl fmt::Display for ProductionError {
                 "pending nation action payloads have {actual} entries, expected at least 8"
             ),
             Self::MissingLaborPool(name) => write!(formatter, "city has no {name} labor pool"),
+            Self::ZeroUnitResourceCost { resource } => {
+                write!(formatter, "unit resource cost for {resource:?} is zero")
+            }
+            Self::Population(error) => error.fmt(formatter),
         }
     }
 }
 
 impl Error for ProductionError {}
+
+impl From<PopulationError> for ProductionError {
+    fn from(value: PopulationError) -> Self {
+        Self::Population(value)
+    }
+}
 
 fn validate_city(city: &CityState) -> Result<(), ProductionError> {
     if city.stock_by_type.len() != ResourceKind::COUNT {
@@ -983,6 +1120,21 @@ fn validate_pending_actions(owner: &MajorNationState) -> Result<(), ProductionEr
             actual: owner.pending_action_status.len(),
         })
     }
+}
+
+fn validate_unit_resource_cost(cost: ResourceCost) -> Result<(), ProductionError> {
+    if cost.per_unit == 0 {
+        Err(ProductionError::ZeroUnitResourceCost {
+            resource: cost.resource,
+        })
+    } else {
+        Ok(())
+    }
+}
+
+fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quantity: i16) {
+    let change = cost.per_unit.wrapping_mul(quantity);
+    city.add_to_stock_and_verify(cost.resource, change.wrapping_neg());
 }
 
 fn set_pending_action(
@@ -1803,5 +1955,153 @@ mod tests {
         production.produce(&mut state, &mut owner).unwrap();
         assert_eq!(state, expected_state);
         assert_eq!(owner, expected_owner);
+    }
+
+    fn unit_profile(workforce: Option<SkillBand>) -> UnitCostProfile {
+        UnitCostProfile {
+            entry_id: 4,
+            primary: ResourceCost {
+                resource: ResourceKind::Paper,
+                per_unit: 2,
+            },
+            secondary: Some(ResourceCost {
+                resource: ResourceKind::Steel,
+                per_unit: 1,
+            }),
+            cash_per_unit: 100,
+            workforce,
+            specialist: true,
+        }
+    }
+
+    #[test]
+    fn unit_order_supports_each_retail_workforce_mode() {
+        let mut state = city();
+        let mut owner = nation();
+        owner.diplomacy_eligible = false;
+        state.stock_by_type[ResourceKind::Paper.index()] = 200;
+        state.stock_by_type[ResourceKind::Steel.index()] = 200;
+
+        for (workforce, expected) in [
+            (Some(SkillBand::Low), 4),
+            (Some(SkillBand::Medium), 2),
+            (Some(SkillBand::High), 1),
+            (None, 100),
+        ] {
+            let mut production = UnitProductionOrder::new(unit_profile(workforce));
+            assert_eq!(production.max_order(&state, &owner, -1).unwrap(), expected);
+            assert_eq!(
+                production.limiting_constraint,
+                if workforce.is_some() {
+                    ProductionConstraint::Workforce
+                } else {
+                    ProductionConstraint::Resources
+                }
+            );
+        }
+    }
+
+    #[test]
+    fn unit_order_records_primary_secondary_and_treasury_limits() {
+        let mut state = city();
+        let owner = nation();
+        let mut production = UnitProductionOrder::new(unit_profile(None));
+        state.stock_by_type[ResourceKind::Paper.index()] = 4;
+        state.stock_by_type[ResourceKind::Steel.index()] = 10;
+        assert_eq!(production.max_order(&state, &owner, 10_000).unwrap(), 2);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Resources
+        );
+
+        state.stock_by_type[ResourceKind::Paper.index()] = 20;
+        state.stock_by_type[ResourceKind::Steel.index()] = 3;
+        assert_eq!(production.max_order(&state, &owner, 10_000).unwrap(), 3);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Resources
+        );
+
+        state.stock_by_type[ResourceKind::Steel.index()] = 20;
+        assert_eq!(production.max_order(&state, &owner, 150).unwrap(), 1);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Treasury
+        );
+    }
+
+    #[test]
+    fn unit_order_reserves_and_refunds_resources_population_and_cash() {
+        let mut state = city();
+        let owner = nation();
+        let mut treasury = 1_000;
+        let mut production = UnitProductionOrder::new(unit_profile(Some(SkillBand::Low)));
+        state.stock_by_type[ResourceKind::Paper.index()] = 10;
+        state.stock_by_type[ResourceKind::Steel.index()] = 10;
+
+        assert!(
+            production
+                .set_quantity(&mut state, &owner, &mut treasury, 2)
+                .unwrap()
+        );
+        assert_eq!(state.stock_by_type[ResourceKind::Paper.index()], 6);
+        assert_eq!(state.stock_by_type[ResourceKind::Steel.index()], 8);
+        assert_eq!(treasury, 800);
+        assert_eq!(state.population.baseline_labor.unwrap().low, 2);
+        assert_eq!(state.population.production_labor.unwrap().low, 2);
+        assert_eq!(state.population.count, 5);
+        assert_eq!(state.population.count_float(), 5.0);
+        assert_eq!(state.population.strength, 8);
+
+        assert!(
+            production
+                .set_quantity(&mut state, &owner, &mut treasury, 1)
+                .unwrap()
+        );
+        assert_eq!(state.stock_by_type[ResourceKind::Paper.index()], 8);
+        assert_eq!(state.stock_by_type[ResourceKind::Steel.index()], 9);
+        assert_eq!(treasury, 900);
+        assert_eq!(state.population.baseline_labor.unwrap().low, 3);
+        assert_eq!(state.population.production_labor.unwrap().low, 3);
+        assert_eq!(state.population.count, 6);
+        assert_eq!(state.population.count_float(), 6.0);
+        assert_eq!(state.population.strength, 9);
+    }
+
+    #[test]
+    fn unit_order_ignores_treasury_when_the_nation_is_not_eligible() {
+        let mut state = city();
+        let mut owner = nation();
+        owner.diplomacy_eligible = false;
+        let mut production = UnitProductionOrder::new(unit_profile(None));
+        state.stock_by_type[ResourceKind::Paper.index()] = 12;
+        state.stock_by_type[ResourceKind::Steel.index()] = 12;
+
+        assert_eq!(production.max_order(&state, &owner, -10_000).unwrap(), 6);
+        assert_eq!(
+            production.limiting_constraint,
+            ProductionConstraint::Resources
+        );
+    }
+
+    #[test]
+    fn unit_order_rejects_zero_per_unit_cost_before_mutating_state() {
+        let mut state = city();
+        let owner = nation();
+        let mut treasury = 1_000;
+        let mut profile = unit_profile(None);
+        profile.primary.per_unit = 0;
+        let mut production = UnitProductionOrder::new(profile);
+        let expected_state = state.clone();
+
+        assert_eq!(
+            production.set_quantity(&mut state, &owner, &mut treasury, 1),
+            Err(ProductionError::ZeroUnitResourceCost {
+                resource: ResourceKind::Paper
+            })
+        );
+        assert_eq!(state, expected_state);
+        assert_eq!(treasury, 1_000);
+        assert_eq!(production.quantity, 0);
     }
 }
