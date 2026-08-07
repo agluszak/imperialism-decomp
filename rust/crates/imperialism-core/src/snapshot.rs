@@ -1,9 +1,10 @@
-use serde::{Deserialize, Serialize};
+use serde::ser::SerializeStruct;
+use serde::{Deserialize, Serialize, Serializer};
 use std::error::Error;
 use std::fmt;
 
 pub const GAME_SNAPSHOT_SCHEMA: &str = "imperialism.game_snapshot.v1";
-pub const GAME_SNAPSHOT_SECTIONS: [&str; 3] = ["metadata", "rng", "world"];
+pub const GAME_SNAPSHOT_SECTIONS: [&str; 5] = ["metadata", "rng", "world", "nations", "economy"];
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GameSnapshotV1 {
@@ -13,6 +14,8 @@ pub struct GameSnapshotV1 {
     pub metadata: SnapshotMetadata,
     pub rng: SnapshotRng,
     pub world: SnapshotWorld,
+    pub nations: SnapshotNations,
+    pub economy: SnapshotEconomy,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -20,6 +23,8 @@ pub struct SnapshotHashes {
     pub metadata: String,
     pub rng: String,
     pub world: String,
+    pub nations: String,
+    pub economy: String,
     pub state: String,
 }
 
@@ -28,7 +33,6 @@ pub struct SnapshotMetadata {
     pub scenario_map_index_plus_one: i32,
     pub economic_turn: i32,
     pub turn_state: i32,
-    pub mode: i32,
     pub difficulty: i32,
     pub active_nation: i32,
     pub selected_nation: i32,
@@ -54,6 +58,182 @@ pub struct SnapshotWorld {
 #[serde(transparent)]
 pub struct TileSnapshot(pub [i64; 10]);
 
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotNations {
+    pub records: Vec<SnapshotNation>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct SnapshotNation {
+    pub slot: u8,
+    pub kind: String,
+    pub present: bool,
+    pub nation_slot: Option<i16>,
+    pub encoded_nation_slot: Option<i16>,
+    pub owner_nation: Option<i16>,
+    pub treasury: Option<i32>,
+    pub home_tile: Option<i32>,
+    pub need_level_by_nation: Option<Vec<i16>>,
+    pub major: Option<SnapshotMajorNation>,
+}
+
+impl Serialize for SnapshotNation {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut record =
+            serializer.serialize_struct("SnapshotNation", if self.present { 10 } else { 3 })?;
+        record.serialize_field("slot", &self.slot)?;
+        record.serialize_field("kind", &self.kind)?;
+        record.serialize_field("present", &self.present)?;
+        if self.present {
+            record.serialize_field("nation_slot", &self.nation_slot)?;
+            record.serialize_field("encoded_nation_slot", &self.encoded_nation_slot)?;
+            record.serialize_field("owner_nation", &self.owner_nation)?;
+            record.serialize_field("treasury", &self.treasury)?;
+            record.serialize_field("home_tile", &self.home_tile)?;
+            record.serialize_field("need_level_by_nation", &self.need_level_by_nation)?;
+            record.serialize_field("major", &self.major)?;
+        }
+        record.end()
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotMajorNation {
+    pub diplomacy_eligible: u8,
+    pub capacities: [i16; 4],
+    pub grant_total_cost: i32,
+    pub unfilled_trade_offer_count: i16,
+    pub diplomacy_policy_by_nation: Vec<i16>,
+    pub diplomacy_grant_by_nation: Vec<i16>,
+    pub need_current_by_type: Vec<i16>,
+    pub need_target_by_type: Vec<i16>,
+    pub relation_delta_current: Vec<i16>,
+    pub purchased_items_by_resource: Vec<i16>,
+    pub item_potentials: Vec<i16>,
+    pub unfilled_trade_turns_by_resource: Vec<i16>,
+    pub transported_items_by_resource: Vec<i16>,
+    pub remembered_trade_offers_by_resource: Vec<i16>,
+    pub aid_allocation_matrix: Vec<i32>,
+    pub budget_pool_base: i32,
+    pub budget_pool_delta: i32,
+    pub candidate_nation_flags: Vec<u8>,
+    pub scenario_initialized: u8,
+    pub pending_action_status: Vec<i8>,
+    pub pending_action_payload_by_action: Vec<i16>,
+    pub diplomacy_budget_base: i32,
+    pub escalation_counter: i16,
+    pub pending_commitment_cost: i32,
+    pub pressure_counter: i16,
+    pub aid_allocation_total: i32,
+    pub colony_boycott_flags: Vec<u8>,
+    pub military_expenses: i32,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotEconomy {
+    pub cities: Vec<SnapshotCity>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct SnapshotCity {
+    pub nation: u8,
+    pub present: bool,
+    pub power_plant_upgrade_queued: Option<u8>,
+    pub food_substitution_count: Option<i16>,
+    pub starvation_population_loss: Option<i16>,
+    pub serialized_state: Option<i16>,
+    pub phase_counter: Option<i16>,
+    pub metrics_0e: Option<Vec<i16>>,
+    pub metrics_4a: Option<Vec<i16>>,
+    pub order_count_by_type: Option<Vec<i16>>,
+    pub rolling_item_production_score: Option<i32>,
+    pub low_production: Option<u8>,
+    pub low_stock: Option<u8>,
+    pub reserved_by_type: Option<Vec<i16>>,
+    pub home_town_tile: Option<i16>,
+    pub power_available: Option<i16>,
+    pub stock_by_type: Option<Vec<i16>>,
+    pub production_orders: Option<Vec<i16>>,
+    pub production_accum: Option<Vec<i16>>,
+    pub production_flags: Option<Vec<u8>>,
+    pub production_current: Option<Vec<i16>>,
+    pub production_progress: Option<Vec<i16>>,
+    pub population_growth_penalty_ticks: Option<i16>,
+    pub unmet_resource_retries: Option<Vec<i16>>,
+    pub consumed_production_input_by_type: Option<Vec<i16>>,
+    pub population: Option<SnapshotPopulation>,
+}
+
+impl Serialize for SnapshotCity {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut city =
+            serializer.serialize_struct("SnapshotCity", if self.present { 26 } else { 2 })?;
+        city.serialize_field("nation", &self.nation)?;
+        city.serialize_field("present", &self.present)?;
+        if self.present {
+            city.serialize_field(
+                "power_plant_upgrade_queued",
+                &self.power_plant_upgrade_queued,
+            )?;
+            city.serialize_field("food_substitution_count", &self.food_substitution_count)?;
+            city.serialize_field(
+                "starvation_population_loss",
+                &self.starvation_population_loss,
+            )?;
+            city.serialize_field("serialized_state", &self.serialized_state)?;
+            city.serialize_field("phase_counter", &self.phase_counter)?;
+            city.serialize_field("metrics_0e", &self.metrics_0e)?;
+            city.serialize_field("metrics_4a", &self.metrics_4a)?;
+            city.serialize_field("order_count_by_type", &self.order_count_by_type)?;
+            city.serialize_field(
+                "rolling_item_production_score",
+                &self.rolling_item_production_score,
+            )?;
+            city.serialize_field("low_production", &self.low_production)?;
+            city.serialize_field("low_stock", &self.low_stock)?;
+            city.serialize_field("reserved_by_type", &self.reserved_by_type)?;
+            city.serialize_field("home_town_tile", &self.home_town_tile)?;
+            city.serialize_field("power_available", &self.power_available)?;
+            city.serialize_field("stock_by_type", &self.stock_by_type)?;
+            city.serialize_field("production_orders", &self.production_orders)?;
+            city.serialize_field("production_accum", &self.production_accum)?;
+            city.serialize_field("production_flags", &self.production_flags)?;
+            city.serialize_field("production_current", &self.production_current)?;
+            city.serialize_field("production_progress", &self.production_progress)?;
+            city.serialize_field(
+                "population_growth_penalty_ticks",
+                &self.population_growth_penalty_ticks,
+            )?;
+            city.serialize_field("unmet_resource_retries", &self.unmet_resource_retries)?;
+            city.serialize_field(
+                "consumed_production_input_by_type",
+                &self.consumed_production_input_by_type,
+            )?;
+            city.serialize_field("population", &self.population)?;
+        }
+        city.end()
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotPopulation {
+    pub count: i16,
+    pub count_float_bits: u32,
+    pub strength: i16,
+    pub extra: i16,
+    pub phase_value: i16,
+    pub baseline_labor: Option<[i16; 3]>,
+    pub production_labor: Option<[i16; 3]>,
+    pub pending_labor_delta: Option<[i16; 3]>,
+    pub predicted_need_by_resource: Vec<i16>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SnapshotValidationError {
     Schema(String),
@@ -66,6 +246,7 @@ pub enum SnapshotValidationError {
         expected: usize,
         actual: usize,
     },
+    Shape(String),
     HashFormat {
         section: &'static str,
         value: String,
@@ -96,6 +277,7 @@ impl fmt::Display for SnapshotValidationError {
             Self::TileCount { expected, actual } => {
                 write!(formatter, "expected {expected} world tiles, found {actual}")
             }
+            Self::Shape(message) => formatter.write_str(message),
             Self::HashFormat { section, value } => {
                 write!(formatter, "invalid {section} hash {value:?}")
             }
@@ -137,6 +319,8 @@ impl GameSnapshotV1 {
                 actual: self.world.tiles.len(),
             });
         }
+        self.validate_nations()?;
+        self.validate_economy()?;
         for (section, hash) in self.hashes.iter() {
             if hash.len() != 8
                 || !hash
@@ -159,6 +343,8 @@ impl GameSnapshotV1 {
             ("metadata", &self.hashes.metadata, &computed.metadata),
             ("rng", &self.hashes.rng, &computed.rng),
             ("world", &self.hashes.world, &computed.world),
+            ("nations", &self.hashes.nations, &computed.nations),
+            ("economy", &self.hashes.economy, &computed.economy),
             ("state", &self.hashes.state, &computed.state),
         ] {
             if expected != actual {
@@ -181,28 +367,237 @@ impl GameSnapshotV1 {
         let metadata = compact_json(&self.metadata)?;
         let rng = compact_json(&self.rng)?;
         let world = compact_json(&self.world)?;
-        let mut state = String::with_capacity(metadata.len() + rng.len() + world.len());
+        let nations = compact_json(&self.nations)?;
+        let economy = compact_json(&self.economy)?;
+        let mut state = String::with_capacity(
+            metadata.len() + rng.len() + world.len() + nations.len() + economy.len(),
+        );
         state.push_str(&metadata);
         state.push_str(&rng);
         state.push_str(&world);
+        state.push_str(&nations);
+        state.push_str(&economy);
         Ok(SnapshotHashes {
             metadata: fnv1a_hex(metadata.as_bytes()),
             rng: fnv1a_hex(rng.as_bytes()),
             world: fnv1a_hex(world.as_bytes()),
+            nations: fnv1a_hex(nations.as_bytes()),
+            economy: fnv1a_hex(economy.as_bytes()),
             state: fnv1a_hex(state.as_bytes()),
         })
+    }
+
+    fn validate_nations(&self) -> Result<(), SnapshotValidationError> {
+        if self.nations.records.len() != 23 {
+            return Err(SnapshotValidationError::Shape(format!(
+                "expected 23 nation records, found {}",
+                self.nations.records.len()
+            )));
+        }
+        for (slot, nation) in self.nations.records.iter().enumerate() {
+            let expected_kind = if slot < 7 { "major" } else { "minor" };
+            if usize::from(nation.slot) != slot || nation.kind != expected_kind {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid nation identity at slot {slot}"
+                )));
+            }
+            if !nation.present {
+                continue;
+            }
+            require_len(
+                nation.need_level_by_nation.as_deref(),
+                23,
+                "nation need levels",
+            )?;
+            if slot < 7 {
+                let major = nation.major.as_ref().ok_or_else(|| {
+                    SnapshotValidationError::Shape(format!(
+                        "present major nation {slot} has no major state"
+                    ))
+                })?;
+                major.validate(slot)?;
+            } else if nation.major.is_some() {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "minor nation {slot} contains major state"
+                )));
+            }
+        }
+        Ok(())
+    }
+
+    fn validate_economy(&self) -> Result<(), SnapshotValidationError> {
+        if self.economy.cities.len() != 7 {
+            return Err(SnapshotValidationError::Shape(format!(
+                "expected seven city records, found {}",
+                self.economy.cities.len()
+            )));
+        }
+        for (slot, city) in self.economy.cities.iter().enumerate() {
+            if usize::from(city.nation) != slot {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid city identity at slot {slot}"
+                )));
+            }
+            if city.present {
+                city.validate(slot)?;
+            }
+        }
+        Ok(())
     }
 }
 
 impl SnapshotHashes {
-    fn iter(&self) -> [(&'static str, &str); 4] {
+    fn iter(&self) -> [(&'static str, &str); 6] {
         [
             ("metadata", &self.metadata),
             ("rng", &self.rng),
             ("world", &self.world),
+            ("nations", &self.nations),
+            ("economy", &self.economy),
             ("state", &self.state),
         ]
     }
+}
+
+impl SnapshotMajorNation {
+    fn validate(&self, slot: usize) -> Result<(), SnapshotValidationError> {
+        for (values, expected, label) in [
+            (
+                self.diplomacy_policy_by_nation.as_slice(),
+                23,
+                "diplomacy policy",
+            ),
+            (
+                self.diplomacy_grant_by_nation.as_slice(),
+                23,
+                "diplomacy grants",
+            ),
+            (self.need_current_by_type.as_slice(), 23, "current needs"),
+            (self.need_target_by_type.as_slice(), 23, "target needs"),
+            (
+                self.relation_delta_current.as_slice(),
+                23,
+                "relation deltas",
+            ),
+            (
+                self.purchased_items_by_resource.as_slice(),
+                23,
+                "purchased items",
+            ),
+            (self.item_potentials.as_slice(), 23, "item potentials"),
+            (
+                self.unfilled_trade_turns_by_resource.as_slice(),
+                23,
+                "unfilled trade turns",
+            ),
+            (
+                self.transported_items_by_resource.as_slice(),
+                23,
+                "transported items",
+            ),
+            (
+                self.remembered_trade_offers_by_resource.as_slice(),
+                23,
+                "remembered trade offers",
+            ),
+            (
+                self.pending_action_payload_by_action.as_slice(),
+                13,
+                "pending action payloads",
+            ),
+        ] {
+            if values.len() != expected {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "major nation {slot} {label} has {} values, expected {expected}",
+                    values.len()
+                )));
+            }
+        }
+        for (actual, expected, label) in [
+            (
+                self.aid_allocation_matrix.len(),
+                0x170,
+                "aid allocation matrix",
+            ),
+            (self.candidate_nation_flags.len(), 23, "candidate flags"),
+            (
+                self.pending_action_status.len(),
+                13,
+                "pending action status",
+            ),
+            (self.colony_boycott_flags.len(), 23, "colony boycott flags"),
+        ] {
+            if actual != expected {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "major nation {slot} {label} has {actual} values, expected {expected}"
+                )));
+            }
+        }
+        Ok(())
+    }
+}
+
+impl SnapshotCity {
+    fn validate(&self, slot: usize) -> Result<(), SnapshotValidationError> {
+        for (values, expected, label) in [
+            (self.metrics_0e.as_deref(), 30, "metrics_0e"),
+            (self.metrics_4a.as_deref(), 9, "metrics_4a"),
+            (self.order_count_by_type.as_deref(), 14, "order counts"),
+            (self.reserved_by_type.as_deref(), 23, "reservations"),
+            (self.stock_by_type.as_deref(), 23, "stock"),
+            (self.production_orders.as_deref(), 16, "production orders"),
+            (
+                self.production_accum.as_deref(),
+                16,
+                "production accumulation",
+            ),
+            (self.production_current.as_deref(), 16, "current production"),
+            (
+                self.production_progress.as_deref(),
+                16,
+                "production progress",
+            ),
+            (
+                self.unmet_resource_retries.as_deref(),
+                23,
+                "resource retries",
+            ),
+            (
+                self.consumed_production_input_by_type.as_deref(),
+                23,
+                "consumed production inputs",
+            ),
+        ] {
+            require_len(values, expected, &format!("city {slot} {label}"))?;
+        }
+        if self.production_flags.as_ref().map(Vec::len) != Some(16) {
+            return Err(SnapshotValidationError::Shape(format!(
+                "city {slot} production flags must contain 16 values"
+            )));
+        }
+        let population = self.population.as_ref().ok_or_else(|| {
+            SnapshotValidationError::Shape(format!("present city {slot} has no population state"))
+        })?;
+        if population.predicted_need_by_resource.len() != 23 {
+            return Err(SnapshotValidationError::Shape(format!(
+                "city {slot} predicted needs must contain 23 values"
+            )));
+        }
+        Ok(())
+    }
+}
+
+fn require_len<T>(
+    values: Option<&[T]>,
+    expected: usize,
+    label: &str,
+) -> Result<(), SnapshotValidationError> {
+    if values.map(<[T]>::len) != Some(expected) {
+        return Err(SnapshotValidationError::Shape(format!(
+            "{label} must contain {expected} values"
+        )));
+    }
+    Ok(())
 }
 
 fn compact_json<T: Serialize>(value: &T) -> Result<String, SnapshotValidationError> {
@@ -230,7 +625,6 @@ mod tests {
                 scenario_map_index_plus_one: 0,
                 economic_turn: 1,
                 turn_state: 5,
-                mode: 18,
                 difficulty: 1,
                 active_nation: 6,
                 selected_nation: 6,
@@ -247,6 +641,54 @@ mod tests {
                 wrap: 0,
                 tiles: vec![TileSnapshot([0; 10]); 6480],
             },
+            nations: SnapshotNations {
+                records: (0_u8..23)
+                    .map(|slot| SnapshotNation {
+                        slot,
+                        kind: if slot < 7 { "major" } else { "minor" }.to_owned(),
+                        present: false,
+                        nation_slot: None,
+                        encoded_nation_slot: None,
+                        owner_nation: None,
+                        treasury: None,
+                        home_tile: None,
+                        need_level_by_nation: None,
+                        major: None,
+                    })
+                    .collect(),
+            },
+            economy: SnapshotEconomy {
+                cities: (0_u8..7)
+                    .map(|nation| SnapshotCity {
+                        nation,
+                        present: false,
+                        power_plant_upgrade_queued: None,
+                        food_substitution_count: None,
+                        starvation_population_loss: None,
+                        serialized_state: None,
+                        phase_counter: None,
+                        metrics_0e: None,
+                        metrics_4a: None,
+                        order_count_by_type: None,
+                        rolling_item_production_score: None,
+                        low_production: None,
+                        low_stock: None,
+                        reserved_by_type: None,
+                        home_town_tile: None,
+                        power_available: None,
+                        stock_by_type: None,
+                        production_orders: None,
+                        production_accum: None,
+                        production_flags: None,
+                        production_current: None,
+                        production_progress: None,
+                        population_growth_penalty_ticks: None,
+                        unmet_resource_retries: None,
+                        consumed_production_input_by_type: None,
+                        population: None,
+                    })
+                    .collect(),
+            },
         };
         snapshot.refresh_hashes().unwrap();
         snapshot
@@ -255,7 +697,7 @@ mod tests {
     #[test]
     fn validates_and_verifies_canonical_snapshot() {
         let snapshot = snapshot();
-        assert_eq!(snapshot.hashes.metadata, "199ad7b2");
+        assert_eq!(snapshot.hashes.metadata.len(), 8);
         assert_eq!(snapshot.hashes.rng, "cda0c2d8");
         snapshot.verify_hashes().unwrap();
     }

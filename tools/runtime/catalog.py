@@ -223,7 +223,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("map",),
-        native_snapshots=("map",),
+        native_snapshots=("map", "game"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(

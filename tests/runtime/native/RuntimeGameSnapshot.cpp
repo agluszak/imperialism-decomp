@@ -3,10 +3,17 @@
 #include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
 
+#include "game/city/TCity.h"
+#include "game/city/TPopulationMgr.h"
+#include "game/debug/TLaborPool.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/ui_screens/TSimMgr.h"
+
+#include <string.h>
 
 // VC5 libcmt rand.obj stores the thread-local LCG state at +0x14 in the block returned
 // by _getptd. This test-only observation is backed by the vendored rand.obj disassembly;
@@ -41,13 +48,74 @@ unsigned int RuntimeCrtRandState() {
   return threadData != 0 ? threadData->randState14 : 0;
 }
 
+void AppendShortArray(CString& json, const short* values, int count) {
+  json += "[";
+  for (int index = 0; index < count; ++index) {
+    CString item;
+    item.Format("%s%d", index == 0 ? "" : ",", static_cast<int>(values[index]));
+    json += item;
+  }
+  json += "]";
+}
+
+void AppendIntArray(CString& json, const int* values, int count) {
+  json += "[";
+  for (int index = 0; index < count; ++index) {
+    CString item;
+    item.Format("%s%d", index == 0 ? "" : ",", values[index]);
+    json += item;
+  }
+  json += "]";
+}
+
+void AppendSignedByteArray(CString& json, const signed char* values, int count) {
+  json += "[";
+  for (int index = 0; index < count; ++index) {
+    CString item;
+    item.Format("%s%d", index == 0 ? "" : ",", static_cast<int>(values[index]));
+    json += item;
+  }
+  json += "]";
+}
+
+void AppendUnsignedByteArray(CString& json, const unsigned char* values, int count) {
+  json += "[";
+  for (int index = 0; index < count; ++index) {
+    CString item;
+    item.Format("%s%u", index == 0 ? "" : ",", static_cast<unsigned int>(values[index]));
+    json += item;
+  }
+  json += "]";
+}
+
+unsigned int FloatBits(float value) {
+  unsigned int bits = 0;
+  memcpy(&bits, &value, sizeof(bits));
+  return bits;
+}
+
+void AppendLaborPool(CString& json, const TLaborPool* pool) {
+  if (pool == 0) {
+    json += "null";
+    return;
+  }
+  CString values;
+  values.Format("[%d,%d,%d]", static_cast<int>(pool->lowSkillCount04),
+                static_cast<int>(pool->mediumSkillCount06),
+                static_cast<int>(pool->highSkillCount08));
+  json += values;
+}
+
 CString CaptureMetadata(const RuntimeRun& run) {
+  // TSimMgr::mode selects the current presentation flow and changes while a saved game is
+  // reopened. It is intentionally absent: the canonical snapshot owns simulation state, not the
+  // screen used to reach it.
   CString json;
   json.Format("{\"scenario_map_index_plus_one\":%d,\"economic_turn\":%d,\"turn_state\":%d,"
-              "\"mode\":%d,\"difficulty\":%d,\"active_nation\":%d,\"selected_nation\":%d}",
+              "\"difficulty\":%d,\"active_nation\":%d,\"selected_nation\":%d}",
               g_pSimMgr != 0 ? g_pSimMgr->scenarioMapIndexPlusOne : 0,
               g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
+              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1,
               g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
               g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot());
   return json;
@@ -83,31 +151,220 @@ CString CaptureWorld() {
   return json;
 }
 
+CString CaptureNations() {
+  CString json("{\"records\":[");
+  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+    TCountry* country = g_apTerrainTypeDescriptorTable[slot];
+    CString row;
+    row.Format("%s{\"slot\":%d,\"kind\":\"%s\",\"present\":%s", slot == 0 ? "" : ",", slot,
+               slot < kMajorNationCount ? "major" : "minor", country != 0 ? "true" : "false");
+    json += row;
+    if (country == 0) {
+      json += "}";
+      continue;
+    }
+
+    row.Format(",\"nation_slot\":%d,\"encoded_nation_slot\":%d,\"owner_nation\":%d,"
+               "\"treasury\":%d,\"home_tile\":%d,\"need_level_by_nation\":",
+               static_cast<int>(country->nationSlot), static_cast<int>(country->encodedNationSlot),
+               static_cast<int>(country->DecodeOwnerNationSlot()), country->treasuryValue10,
+               country->homeTileIndex);
+    json += row;
+    AppendShortArray(json, country->needLevelByNation, kNationSlotCount);
+
+    json += ",\"major\":";
+    TGreatPower* nation = slot < kMajorNationCount ? g_apNationStates[slot] : 0;
+    if (nation == 0) {
+      json += "null";
+    } else {
+      row.Format("{\"diplomacy_eligible\":%u,\"capacities\":[%d,%d,%d,%d],"
+                 "\"grant_total_cost\":%d,\"unfilled_trade_offer_count\":%d,"
+                 "\"diplomacy_policy_by_nation\":",
+                 static_cast<unsigned int>(nation->diplomacyEligibilityA0),
+                 static_cast<int>(nation->availableMerchantCapacity),
+                 static_cast<int>(nation->merchantCapacity),
+                 static_cast<int>(nation->transportCapacity),
+                 static_cast<int>(nation->reservedTransportCapacity), nation->grantTotalCost,
+                 static_cast<int>(nation->unfilledTradeOfferCount));
+      json += row;
+      AppendShortArray(json, nation->diplomacyPolicyByNation, kNationSlotCount);
+      json += ",\"diplomacy_grant_by_nation\":";
+      AppendShortArray(json, nation->diplomacyGrantByNation, kNationSlotCount);
+      json += ",\"need_current_by_type\":";
+      AppendShortArray(json, nation->needCurrentByType, kResourceKindCount);
+      json += ",\"need_target_by_type\":";
+      AppendShortArray(json, nation->needTargetByType, kResourceKindCount);
+      json += ",\"relation_delta_current\":";
+      AppendShortArray(json, nation->relationDeltaCurrent, kResourceKindCount);
+      json += ",\"purchased_items_by_resource\":";
+      AppendShortArray(json, nation->purchasedItemsByResource, kResourceKindCount);
+      json += ",\"item_potentials\":";
+      AppendShortArray(json, nation->itemPotentials, kResourceKindCount);
+      json += ",\"unfilled_trade_turns_by_resource\":";
+      AppendShortArray(json, nation->unfilledTradeTurnCountsByResource, kResourceKindCount);
+      json += ",\"transported_items_by_resource\":";
+      AppendShortArray(json, nation->transportedItemsByResource, kResourceKindCount);
+      json += ",\"remembered_trade_offers_by_resource\":";
+      AppendShortArray(json, nation->rememberedTradeOffersByResource, kResourceKindCount);
+      json += ",\"aid_allocation_matrix\":";
+      AppendIntArray(json, nation->aidAllocationMatrix, 0x170);
+      row.Format(",\"budget_pool_base\":%d,\"budget_pool_delta\":%d,"
+                 "\"candidate_nation_flags\":",
+                 nation->budgetPoolBase, nation->budgetPoolDelta);
+      json += row;
+      AppendUnsignedByteArray(json, nation->candidateNationFlags, kNationSlotCount);
+      row.Format(",\"scenario_initialized\":%u,\"pending_action_status\":",
+                 static_cast<unsigned int>(nation->scenarioInitFlag));
+      json += row;
+      AppendSignedByteArray(json, nation->pendingActionStatus.byAction, 0x0d);
+      json += ",\"pending_action_payload_by_action\":";
+      AppendShortArray(json, nation->field8d6, 0x0d);
+      row.Format(",\"diplomacy_budget_base\":%d,\"escalation_counter\":%d,"
+                 "\"pending_commitment_cost\":%d,\"pressure_counter\":%d,"
+                 "\"aid_allocation_total\":%d,\"colony_boycott_flags\":",
+                 nation->diplomacyBudgetBase, static_cast<int>(nation->escalationCounter),
+                 nation->pendingCommitmentCost, static_cast<int>(nation->pressureCounter),
+                 nation->aidAllocationTotal);
+      json += row;
+      AppendUnsignedByteArray(json, nation->colonyBoycottFlags, kNationSlotCount);
+      // gameScoreRows930 is an on-demand derived display cache. It is not initialized until the
+      // score screen or turn-end calculation requests it, so serializing it would expose heap
+      // history rather than game state.
+      row.Format(",\"military_expenses\":%d}", nation->militaryExpenses960);
+      json += row;
+    }
+    json += "}";
+  }
+  json += "]}";
+  return json;
+}
+
+CString CaptureEconomy() {
+  CString json("{\"cities\":[");
+  for (int slot = 0; slot < kMajorNationCount; ++slot) {
+    TGreatPower* nation = g_apNationStates[slot];
+    TCity* city = nation != 0 ? nation->city : 0;
+    CString row;
+    row.Format("%s{\"nation\":%d,\"present\":%s", slot == 0 ? "" : ",", slot,
+               city != 0 ? "true" : "false");
+    json += row;
+    if (city == 0) {
+      json += "}";
+      continue;
+    }
+
+    row.Format(",\"power_plant_upgrade_queued\":%u,\"food_substitution_count\":%d,"
+               "\"starvation_population_loss\":%d,\"serialized_state\":%d,"
+               "\"phase_counter\":%d,\"metrics_0e\":",
+               static_cast<unsigned int>(city->powerPlantUpgradeQueuedFlag04),
+               static_cast<int>(city->foodSubstitutionCount06),
+               static_cast<int>(city->starvationPopulationLoss08),
+               static_cast<int>(city->serializedState0a),
+               static_cast<int>(city->cityPhaseCounter0c));
+    json += row;
+    AppendShortArray(json, city->cityMetricsBlock0E, 0x1e);
+    json += ",\"metrics_4a\":";
+    AppendShortArray(json, city->cityMetricsBlock4A, 9);
+    json += ",\"order_count_by_type\":";
+    AppendShortArray(json, city->orderCountByType5c, kIndustryActionSlotCount);
+    row.Format(",\"rolling_item_production_score\":%d,\"low_production\":%u,"
+               "\"low_stock\":%u,\"reserved_by_type\":",
+               city->rollingItemProductionScore78,
+               static_cast<unsigned int>(city->lowProductionFlag7c),
+               static_cast<unsigned int>(city->lowStockFlag7d));
+    json += row;
+    AppendShortArray(json, city->reservedByType7e, kResourceKindCount);
+    row.Format(",\"home_town_tile\":%d,\"power_available\":%d,\"stock_by_type\":",
+               city->homeTownMarkerB0 != 0 ? static_cast<int>(city->homeTownMarkerB0->tileIndex)
+                                           : -1,
+               static_cast<int>(city->powerAvailableB4));
+    json += row;
+    AppendShortArray(json, &city->cityStockCottonB6, kResourceKindCount);
+    json += ",\"production_orders\":";
+    AppendShortArray(json, city->productionOrderTable1dc, 0x10);
+    json += ",\"production_accum\":";
+    AppendShortArray(json, city->productionAccum1fc, 0x10);
+    json += ",\"production_flags\":";
+    AppendUnsignedByteArray(json, city->productionFlags21c, 0x10);
+    json += ",\"production_current\":";
+    AppendShortArray(json, city->production22c, 0x10);
+    json += ",\"production_progress\":";
+    AppendShortArray(json, city->production24c, 0x10);
+    row.Format(",\"population_growth_penalty_ticks\":%d,\"unmet_resource_retries\":",
+               static_cast<int>(city->populationGrowthPenaltyTicks26c));
+    json += row;
+    AppendShortArray(json, city->unmetResourceRetryCount278, kResourceKindCount);
+    json += ",\"consumed_production_input_by_type\":";
+    AppendShortArray(json, city->consumedProductionInputByType2a6, kResourceKindCount);
+    json += ",\"population\":";
+
+    TPopulationMgr* population = city->productionSummary1d8;
+    if (population == 0) {
+      json += "null";
+    } else {
+      row.Format("{\"count\":%d,\"count_float_bits\":%u,\"strength\":%d,"
+                 "\"extra\":%d,\"phase_value\":%d,\"baseline_labor\":",
+                 static_cast<int>(population->populationCount08),
+                 FloatBits(population->populationCountFloat0c),
+                 static_cast<int>(population->strength), static_cast<int>(population->extraAt1e),
+                 static_cast<int>(population->fieldAt20));
+      json += row;
+      AppendLaborPool(json, population->baselineSlots10);
+      json += ",\"production_labor\":";
+      AppendLaborPool(json, population->productionSlots14);
+      json += ",\"pending_labor_delta\":";
+      AppendLaborPool(json, population->pendingDeltaSlots18);
+      json += ",\"predicted_need_by_resource\":";
+      AppendShortArray(json, population->predictedNeedByResource22, kResourceKindCount);
+      json += "}";
+    }
+    json += "}";
+  }
+  json += "]}";
+  return json;
+}
+
 } // namespace
 
-void CaptureRuntimeGameSnapshot(RuntimeRun& run) {
-  if (!run.CapturesSnapshot(kRuntimeSnapshotGame) || !run.GameSnapshotJson().IsEmpty() ||
-      g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 || g_pSimMgr == 0) {
-    return;
+bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson) {
+  if (g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 || g_pSimMgr == 0) {
+    return false;
   }
 
   CString metadata(CaptureMetadata(run));
   CString rng(CaptureRng(run));
   CString world(CaptureWorld());
+  CString nations(CaptureNations());
+  CString economy(CaptureEconomy());
   CString state(metadata);
   state += rng;
   state += world;
+  state += nations;
+  state += economy;
   CString metadataHash(RuntimeHashText(metadata));
   CString rngHash(RuntimeHashText(rng));
   CString worldHash(RuntimeHashText(world));
+  CString nationsHash(RuntimeHashText(nations));
+  CString economyHash(RuntimeHashText(economy));
   CString stateHash(RuntimeHashText(state));
 
-  run.GameSnapshotJson().Format("{\"schema\":\"imperialism.game_snapshot.v1\","
-                                "\"sections\":[\"metadata\",\"rng\",\"world\"],"
-                                "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
-                                "\"state\":\"%s\"},\"metadata\":%s,\"rng\":%s,\"world\":%s}",
-                                static_cast<LPCSTR>(metadataHash), static_cast<LPCSTR>(rngHash),
-                                static_cast<LPCSTR>(worldHash), static_cast<LPCSTR>(stateHash),
-                                static_cast<LPCSTR>(metadata), static_cast<LPCSTR>(rng),
-                                static_cast<LPCSTR>(world));
+  snapshotJson.Format("{\"schema\":\"imperialism.game_snapshot.v1\","
+                      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\"],"
+                      "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
+                      "\"nations\":\"%s\",\"economy\":\"%s\",\"state\":\"%s\"},"
+                      "\"metadata\":%s,\"rng\":%s,\"world\":%s,\"nations\":%s,\"economy\":%s}",
+                      static_cast<LPCSTR>(metadataHash), static_cast<LPCSTR>(rngHash),
+                      static_cast<LPCSTR>(worldHash), static_cast<LPCSTR>(nationsHash),
+                      static_cast<LPCSTR>(economyHash), static_cast<LPCSTR>(stateHash),
+                      static_cast<LPCSTR>(metadata), static_cast<LPCSTR>(rng),
+                      static_cast<LPCSTR>(world), static_cast<LPCSTR>(nations),
+                      static_cast<LPCSTR>(economy));
+  return true;
+}
+
+void CaptureRuntimeGameSnapshot(RuntimeRun& run) {
+  if (!run.CapturesSnapshot(kRuntimeSnapshotGame) || !run.GameSnapshotJson().IsEmpty()) {
+    return;
+  }
+  BuildRuntimeGameSnapshot(run, run.GameSnapshotJson());
 }

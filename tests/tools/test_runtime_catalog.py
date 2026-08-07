@@ -165,16 +165,33 @@ class RuntimeProtocolTests(unittest.TestCase):
     def game_snapshot() -> dict:
         return {
             "schema": "imperialism.game_snapshot.v1",
-            "sections": ["metadata", "rng", "world"],
+            "sections": ["metadata", "rng", "world", "nations", "economy"],
             "hashes": {
                 "metadata": "0123abcd",
                 "rng": "0123abcd",
                 "world": "0123abcd",
+                "nations": "0123abcd",
+                "economy": "0123abcd",
                 "state": "0123abcd",
             },
             "metadata": {},
             "rng": {},
             "world": {"width": 108, "height": 60, "wrap": 0, "tiles": [[0] * 10] * 6480},
+            "nations": {
+                "records": [
+                    {
+                        "slot": slot,
+                        "kind": "major" if slot < 7 else "minor",
+                        "present": False,
+                    }
+                    for slot in range(23)
+                ]
+            },
+            "economy": {
+                "cities": [
+                    {"nation": slot, "present": False} for slot in range(7)
+                ]
+            },
         }
 
     def test_valid_result(self) -> None:
@@ -213,6 +230,18 @@ class RuntimeProtocolTests(unittest.TestCase):
         snapshot = self.game_snapshot()
         snapshot["hashes"]["world"] = "not-a-hash"
         with self.assertRaisesRegex(ValueError, "hash for world"):
+            validate_game_snapshot(snapshot)
+
+    def test_game_snapshot_rejects_wrong_nation_count(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["nations"]["records"] = []
+        with self.assertRaisesRegex(ValueError, "23 records"):
+            validate_game_snapshot(snapshot)
+
+    def test_game_snapshot_rejects_wrong_city_count(self) -> None:
+        snapshot = self.game_snapshot()
+        snapshot["economy"]["cities"] = []
+        with self.assertRaisesRegex(ValueError, "seven city records"):
             validate_game_snapshot(snapshot)
 
 

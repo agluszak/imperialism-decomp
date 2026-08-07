@@ -6,9 +6,11 @@ mod state;
 
 pub use ids::{ArmyId, CityId, MissionId, NationId, NavyId, ProvinceId, TileId};
 pub use snapshot::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotHashes, SnapshotMetadata,
-    SnapshotRng, SnapshotValidationError, SnapshotWorld, TileSnapshot,
+    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotCity, SnapshotEconomy,
+    SnapshotHashes, SnapshotMajorNation, SnapshotMetadata, SnapshotNation, SnapshotNations,
+    SnapshotPopulation, SnapshotRng, SnapshotValidationError, SnapshotWorld, TileSnapshot,
 };
 pub use state::{
-    GameCommand, GameEvent, GameState, RngState, StepOutcome, TileState, TurnState, WorldState,
+    CityState, GameCommand, GameEvent, GameState, MajorNationState, NationKind, NationState,
+    PopulationState, RngState, StepOutcome, TileState, TurnState, WorldState,
 };

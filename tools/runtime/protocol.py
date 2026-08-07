@@ -12,7 +12,7 @@ from tools.runtime.catalog import EVIDENCE_KINDS
 
 FORMAT_VERSION = 1
 GAME_SNAPSHOT_SCHEMA = "imperialism.game_snapshot.v1"
-GAME_SNAPSHOT_SECTIONS = ("metadata", "rng", "world")
+GAME_SNAPSHOT_SECTIONS = ("metadata", "rng", "world", "nations", "economy")
 HASH_PATTERN = re.compile(r"[0-9a-f]{8}")
 
 
@@ -55,7 +55,7 @@ def validate_game_snapshot(snapshot: object) -> None:
         value = hashes.get(name)
         if not isinstance(value, str) or HASH_PATTERN.fullmatch(value) is None:
             raise ValueError(f"invalid game_snapshot hash for {name}")
-    for name in ("metadata", "rng", "world"):
+    for name in GAME_SNAPSHOT_SECTIONS:
         if not isinstance(snapshot.get(name), dict):
             raise ValueError(f"game_snapshot {name} must be an object")
     world = snapshot["world"]
@@ -73,3 +73,82 @@ def validate_game_snapshot(snapshot: object) -> None:
         for tile in tiles
     ):
         raise ValueError("game_snapshot world tile rows must contain ten integers")
+
+    records = snapshot["nations"].get("records")
+    if not isinstance(records, list) or len(records) != 23:
+        raise ValueError("game_snapshot nations must contain 23 records")
+    for slot, record in enumerate(records):
+        if not isinstance(record, dict):
+            raise ValueError("game_snapshot nation records must be objects")
+        if record.get("slot") != slot:
+            raise ValueError("game_snapshot nation records must be in slot order")
+        expected_kind = "major" if slot < 7 else "minor"
+        if record.get("kind") != expected_kind or not isinstance(record.get("present"), bool):
+            raise ValueError("game_snapshot nation record identity is invalid")
+        if record["present"] and slot < 7 and not isinstance(record.get("major"), dict):
+            raise ValueError("game_snapshot present major nations must contain major state")
+        if record["present"]:
+            _require_integer_array(record, "need_level_by_nation", 23)
+        if record["present"] and slot < 7:
+            major = record["major"]
+            for field in (
+                "diplomacy_policy_by_nation",
+                "diplomacy_grant_by_nation",
+                "need_current_by_type",
+                "need_target_by_type",
+                "relation_delta_current",
+                "purchased_items_by_resource",
+                "item_potentials",
+                "unfilled_trade_turns_by_resource",
+                "transported_items_by_resource",
+                "remembered_trade_offers_by_resource",
+                "candidate_nation_flags",
+                "colony_boycott_flags",
+            ):
+                _require_integer_array(major, field, 23)
+            _require_integer_array(major, "capacities", 4)
+            _require_integer_array(major, "aid_allocation_matrix", 0x170)
+            _require_integer_array(major, "pending_action_status", 13)
+            _require_integer_array(major, "pending_action_payload_by_action", 13)
+
+    cities = snapshot["economy"].get("cities")
+    if not isinstance(cities, list) or len(cities) != 7:
+        raise ValueError("game_snapshot economy must contain seven city records")
+    for slot, city in enumerate(cities):
+        if not isinstance(city, dict):
+            raise ValueError("game_snapshot city records must be objects")
+        if city.get("nation") != slot or not isinstance(city.get("present"), bool):
+            raise ValueError("game_snapshot city record identity is invalid")
+        if city["present"] and not isinstance(city.get("population"), dict):
+            raise ValueError("game_snapshot present cities must contain population state")
+        if city["present"]:
+            for field, count in (
+                ("metrics_0e", 30),
+                ("metrics_4a", 9),
+                ("order_count_by_type", 14),
+                ("reserved_by_type", 23),
+                ("stock_by_type", 23),
+                ("production_orders", 16),
+                ("production_accum", 16),
+                ("production_flags", 16),
+                ("production_current", 16),
+                ("production_progress", 16),
+                ("unmet_resource_retries", 23),
+                ("consumed_production_input_by_type", 23),
+            ):
+                _require_integer_array(city, field, count)
+            population = city["population"]
+            _require_integer_array(population, "predicted_need_by_resource", 23)
+            for field in ("baseline_labor", "production_labor", "pending_labor_delta"):
+                if population.get(field) is not None:
+                    _require_integer_array(population, field, 3)
+
+
+def _require_integer_array(container: dict[str, Any], field: str, count: int) -> None:
+    values = container.get(field)
+    if (
+        not isinstance(values, list)
+        or len(values) != count
+        or any(isinstance(value, bool) or not isinstance(value, int) for value in values)
+    ):
+        raise ValueError(f"game_snapshot {field} must contain {count} integers")

@@ -6,7 +6,9 @@
 #endif
 
 class RuntimeRun;
+class CString;
 
+bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson);
 void CaptureRuntimeGameSnapshot(RuntimeRun& run);
 
 #endif
