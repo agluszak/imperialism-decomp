@@ -30,6 +30,69 @@ pub struct ItemProductionOrder {
     pub production_slot: ProductionSlot,
 }
 
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct FoodProductionOrder {
+    pub quantity: i16,
+    pub reserved_workforce: i16,
+}
+
+impl FoodProductionOrder {
+    pub fn max_order(&self, city: &CityState) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        let mut limit = city.stock_by_type[ResourceKind::Grain.index()] / 2;
+        let animal_food = city.stock_by_type[ResourceKind::Fish.index()]
+            .wrapping_add(city.stock_by_type[ResourceKind::Livestock.index()]);
+        let workforce_limit = city.population.strength / 2;
+        limit = limit.min(city.stock_by_type[ResourceKind::Fruit.index()]);
+        limit = limit.min(animal_food);
+        limit = limit.min(workforce_limit);
+        Ok(self.quantity.wrapping_add(limit.wrapping_mul(2)))
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        mut quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        validate_city(city)?;
+        if quantity & 1 != 0 {
+            quantity = quantity.wrapping_add(1);
+        }
+        let previous_quantity = self.quantity;
+        if quantity > self.max_order(city)? || quantity < 0 {
+            return Ok(false);
+        }
+        self.quantity = quantity;
+
+        let half_delta = quantity.wrapping_sub(previous_quantity) / 2;
+        city.add_to_stock_and_verify(ResourceKind::Grain, half_delta.wrapping_mul(-2));
+        city.add_to_stock_and_verify(ResourceKind::Fruit, half_delta.wrapping_neg());
+        city.population.strength = city
+            .population
+            .strength
+            .wrapping_sub(half_delta.wrapping_mul(2));
+
+        let livestock_index = ResourceKind::Livestock.index();
+        let livestock = city.stock_by_type[livestock_index];
+        if livestock < half_delta {
+            city.stock_by_type[livestock_index] = 0;
+            let fish_change = half_delta.wrapping_sub(livestock);
+            city.add_to_stock_and_verify(ResourceKind::Fish, fish_change.wrapping_neg());
+        } else {
+            city.add_to_stock_and_verify(ResourceKind::Livestock, half_delta.wrapping_neg());
+        }
+        Ok(true)
+    }
+
+    pub fn produce(&mut self, city: &mut CityState) -> Result<(), ProductionError> {
+        validate_city(city)?;
+        city.add_to_stock_and_verify(ResourceKind::Food, self.quantity);
+        self.quantity = 0;
+        self.reserved_workforce = 0;
+        Ok(())
+    }
+}
+
 impl ItemProductionOrder {
     pub fn new(output: ResourceKind, inputs: ItemInputs, production_slot: ProductionSlot) -> Self {
         Self {
@@ -492,5 +555,66 @@ mod tests {
             production.tracking_by_resource[ResourceKind::Coal.index()],
             1
         );
+    }
+
+    #[test]
+    fn food_processing_limit_uses_grain_fruit_animals_and_workforce() {
+        let mut state = city();
+        let production = FoodProductionOrder::default();
+        state.stock_by_type[ResourceKind::Grain.index()] = 10;
+        state.stock_by_type[ResourceKind::Fruit.index()] = 4;
+        state.stock_by_type[ResourceKind::Fish.index()] = 1;
+        state.stock_by_type[ResourceKind::Livestock.index()] = 2;
+        state.population.strength = 10;
+        assert_eq!(production.max_order(&state).unwrap(), 6);
+    }
+
+    #[test]
+    fn food_processing_rounds_even_and_consumes_livestock_before_fish() {
+        let mut state = city();
+        let mut production = FoodProductionOrder::default();
+        state.stock_by_type[ResourceKind::Grain.index()] = 10;
+        state.stock_by_type[ResourceKind::Fruit.index()] = 5;
+        state.stock_by_type[ResourceKind::Fish.index()] = 3;
+        state.stock_by_type[ResourceKind::Livestock.index()] = 1;
+        state.population.strength = 10;
+
+        assert!(production.set_quantity(&mut state, 3).unwrap());
+        assert_eq!(production.quantity, 4);
+        assert_eq!(state.stock_by_type[ResourceKind::Grain.index()], 6);
+        assert_eq!(state.stock_by_type[ResourceKind::Fruit.index()], 3);
+        assert_eq!(state.stock_by_type[ResourceKind::Livestock.index()], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Fish.index()], 2);
+        assert_eq!(state.population.strength, 6);
+
+        assert!(production.set_quantity(&mut state, 1).unwrap());
+        assert_eq!(production.quantity, 2);
+        assert_eq!(state.stock_by_type[ResourceKind::Grain.index()], 8);
+        assert_eq!(state.stock_by_type[ResourceKind::Fruit.index()], 4);
+        assert_eq!(state.stock_by_type[ResourceKind::Livestock.index()], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Fish.index()], 2);
+        assert_eq!(state.population.strength, 8);
+    }
+
+    #[test]
+    fn food_processing_accepts_minus_one_as_zero_after_retail_rounding() {
+        let mut state = city();
+        let mut production = FoodProductionOrder::default();
+        assert!(production.set_quantity(&mut state, -1).unwrap());
+        assert_eq!(production.quantity, 0);
+        assert_eq!(state.population.strength, 10);
+    }
+
+    #[test]
+    fn food_processing_produces_canned_food_and_clears_the_order() {
+        let mut state = city();
+        let mut production = FoodProductionOrder {
+            quantity: 4,
+            reserved_workforce: 7,
+        };
+        production.produce(&mut state).unwrap();
+        assert_eq!(state.stock_by_type[ResourceKind::Food.index()], 4);
+        assert_eq!(production.quantity, 0);
+        assert_eq!(production.reserved_workforce, 0);
     }
 }
