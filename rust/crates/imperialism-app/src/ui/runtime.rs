@@ -6,8 +6,11 @@ use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError}
 use bevy::prelude::*;
 use bevy::ui::{FocusPolicy, InteractionDisabled};
 use imperialism_formats::{
-    FourCc, PictureLibrary, ResourceIdentifier, ScopedViewId, UiCatalogError, UiCatalogV1,
-    UiNode as CatalogNode, UiNodeId, UiView as CatalogView, WidgetKind,
+    FourCc, PictureLibrary, ResolvedRetailTextStyle, ResourceIdentifier, RetailFontDecodeError,
+    RetailFontFace, RetailFontMetrics, RetailTextAlignment, RetailTextStyleError,
+    RetailTextStylePreset, ScopedViewId, UiCatalogError, UiCatalogV1, UiNode as CatalogNode,
+    UiNodeId, UiTextBinding, UiView as CatalogView, WidgetKind, decode_retail_font_metrics,
+    resolve_retail_text_style,
 };
 use std::collections::HashMap;
 use std::fs;
@@ -58,6 +61,14 @@ pub struct PresentedRetailPicture {
     pub object_sha256: String,
 }
 
+#[derive(Component, Clone, Debug, Eq, PartialEq)]
+pub struct PresentedRetailText {
+    pub style: ResolvedRetailTextStyle,
+    pub font_metrics: RetailFontMetrics,
+    pub source_path: String,
+    pub object_sha256: String,
+}
+
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct UiPictureLookup {
     pub world_variant: u8,
@@ -98,6 +109,32 @@ pub struct UiPictureBindingFailed {
     pub node: UiNodeId,
     pub picture_id: i32,
     pub error: UiPictureBindingError,
+}
+
+#[derive(Message, Debug)]
+pub struct UiTextBindingFailed {
+    pub instance: ViewInstanceId,
+    pub view: ScopedViewId,
+    pub node: UiNodeId,
+    pub error: UiTextBindingError,
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum UiTextBindingError {
+    #[error("retail asset pack is unavailable")]
+    RetailAssetPackUnavailable,
+    #[error(transparent)]
+    Style(#[from] RetailTextStyleError),
+    #[error("retail font asset {} is absent from the normalized pack", .0.relative_path())]
+    FontNotFound(RetailFontFace),
+    #[error("could not read normalized retail font object {}: {source}", path.display())]
+    ObjectIo {
+        path: PathBuf,
+        #[source]
+        source: std::io::Error,
+    },
+    #[error(transparent)]
+    FontDecode(#[from] RetailFontDecodeError),
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -162,6 +199,9 @@ impl Default for NextViewInstance {
 #[derive(Resource, Default)]
 struct RetailPictureHandles(HashMap<PathBuf, Handle<Image>>);
 
+#[derive(Resource, Default)]
+struct RetailFontHandles(HashMap<PathBuf, Handle<Font>>);
+
 #[derive(SystemParam)]
 struct UiPictureResources<'w> {
     retail_assets: Option<Res<'w, RetailAssetPackResource>>,
@@ -169,6 +209,9 @@ struct UiPictureResources<'w> {
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
     failed: MessageWriter<'w, UiPictureBindingFailed>,
+    fonts: ResMut<'w, Assets<Font>>,
+    font_handles: ResMut<'w, RetailFontHandles>,
+    text_failed: MessageWriter<'w, UiTextBindingFailed>,
 }
 
 pub struct UiRuntimePlugin;
@@ -184,13 +227,16 @@ impl Plugin for UiRuntimePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<NextViewInstance>()
             .init_resource::<Assets<Image>>()
+            .init_resource::<Assets<Font>>()
             .init_resource::<RetailPictureHandles>()
+            .init_resource::<RetailFontHandles>()
             .init_resource::<UiPictureLookup>()
             .add_message::<SpawnUiView>()
             .add_message::<DespawnUiView>()
             .add_message::<UiViewSpawned>()
             .add_message::<UiViewSpawnFailed>()
             .add_message::<UiPictureBindingFailed>()
+            .add_message::<UiTextBindingFailed>()
             .add_message::<UiIntent>()
             .add_systems(
                 Update,
@@ -291,6 +337,7 @@ fn spawn_node(
     instance: ViewInstanceId,
     pictures: &mut UiPictureResources,
 ) -> Entity {
+    let [inset_left, inset_top, inset_right, inset_bottom] = catalog_content_insets(node);
     let mut entity = commands.spawn((
         Node {
             position_type: PositionType::Absolute,
@@ -298,6 +345,12 @@ fn spawn_node(
             top: Val::Px(node.rect.y as f32),
             width: Val::Px(node.rect.width as f32),
             height: Val::Px(node.rect.height as f32),
+            padding: UiRect {
+                left: Val::Px(inset_left as f32),
+                top: Val::Px(inset_top as f32),
+                right: Val::Px(inset_right as f32),
+                bottom: Val::Px(inset_bottom as f32),
+            },
             ..default()
         },
         instance,
@@ -326,21 +379,32 @@ fn spawn_node(
             entity.insert(InteractionDisabled);
         }
     }
-    if let Some(text) = node
-        .properties
-        .text
-        .as_ref()
-        .and_then(|binding| binding.value.as_ref())
-    {
-        entity.insert(Text::new(text.clone()));
-        if let Some(point_size) = node
-            .properties
-            .text
-            .as_ref()
-            .map(|binding| binding.point_size)
-            .filter(|point_size| *point_size > 0)
-        {
-            entity.insert(TextFont::from_font_size(point_size as f32));
+    if let Some(binding) = node.properties.text.as_ref() {
+        match load_retail_text(
+            binding,
+            pictures.retail_assets.as_deref(),
+            &mut pictures.fonts,
+            &mut pictures.font_handles,
+        ) {
+            Ok((presented, font, layout, underline)) => {
+                entity.insert((
+                    Text::new(binding.value.clone().unwrap_or_default()),
+                    presented,
+                    font,
+                    layout,
+                ));
+                if underline {
+                    entity.insert(Underline);
+                }
+            }
+            Err(error) => {
+                pictures.text_failed.write(UiTextBindingFailed {
+                    instance,
+                    view: view.id.clone(),
+                    node: node.id,
+                    error,
+                });
+            }
         }
     }
     if let Some(picture_id) = node.properties.picture_id {
@@ -366,6 +430,82 @@ fn spawn_node(
         }
     }
     entity.id()
+}
+
+fn catalog_content_insets(node: &CatalogNode) -> [i32; 4] {
+    node.properties.content_insets.unwrap_or([0; 4])
+}
+
+#[cfg(test)]
+fn catalog_text_content_box(node: &CatalogNode) -> ([i32; 2], [i32; 2]) {
+    let [left, top, right, bottom] = catalog_content_insets(node);
+    (
+        [node.rect.x + left, node.rect.y + top],
+        [
+            (node.rect.width - left - right).max(0),
+            (node.rect.height - top - bottom).max(0),
+        ],
+    )
+}
+
+fn load_retail_text(
+    binding: &UiTextBinding,
+    retail_assets: Option<&RetailAssetPackResource>,
+    fonts: &mut Assets<Font>,
+    font_handles: &mut RetailFontHandles,
+) -> Result<(PresentedRetailText, TextFont, TextLayout, bool), UiTextBindingError> {
+    let style = resolve_retail_text_style(RetailTextStylePreset {
+        font_family: binding.font_family,
+        face_flags: binding.face_flags,
+        point_size: binding.point_size,
+        alignment: binding.alignment,
+    })?;
+    let retail_assets = retail_assets.ok_or(UiTextBindingError::RetailAssetPackUnavailable)?;
+    let asset = retail_assets
+        .manifest()
+        .resolve_font(style.face)
+        .ok_or(UiTextBindingError::FontNotFound(style.face))?;
+    let path = retail_assets.object_path(&asset.object);
+    let object_key = asset.object.relative_path();
+    let bytes = fs::read(&path).map_err(|source| UiTextBindingError::ObjectIo {
+        path: path.clone(),
+        source,
+    })?;
+    let metrics = decode_retail_font_metrics(
+        style.face,
+        &bytes,
+        binding.value.as_deref().unwrap_or_default(),
+    )?;
+    let handle = match font_handles.0.get(&object_key) {
+        Some(handle) => handle.clone(),
+        None => {
+            let handle = fonts.add(Font::from_bytes(bytes));
+            font_handles.0.insert(object_key, handle.clone());
+            handle
+        }
+    };
+    let mut font = TextFont::from_font_size(style.logical_pixel_height as f32)
+        .with_font(handle)
+        .with_font_smoothing(FontSmoothing::None);
+    if style.italic {
+        font.style = FontStyle::Italic;
+    }
+    let justify = match style.alignment {
+        RetailTextAlignment::Left => Justify::Left,
+        RetailTextAlignment::Center => Justify::Center,
+        RetailTextAlignment::Right => Justify::Right,
+    };
+    Ok((
+        PresentedRetailText {
+            style,
+            font_metrics: metrics,
+            source_path: asset.relative_path.clone(),
+            object_sha256: asset.object.sha256.clone(),
+        },
+        font,
+        TextLayout::justify(justify),
+        style.underline,
+    ))
 }
 
 fn load_retail_picture(
@@ -484,7 +624,7 @@ mod tests {
     use bevy::ecs::message::Messages;
     use imperialism_formats::{
         CachedRetailObject, ImportedRetailAssets, RETAIL_ASSET_PACK_SCHEMA,
-        RetailAssetPackManifestV1, RetailResourceAsset,
+        RetailAssetPackManifestV1, RetailResourceAsset, import_english_gog_assets,
     };
     use std::collections::{HashMap, HashSet};
     use std::fs;
@@ -707,6 +847,11 @@ mod tests {
                 assert_eq!(px(ui.top), node.rect.y as f32);
                 assert_eq!(px(ui.width), node.rect.width as f32);
                 assert_eq!(px(ui.height), node.rect.height as f32);
+                let [left, top, right, bottom] = catalog_content_insets(node);
+                assert_eq!(px(ui.padding.left), left as f32);
+                assert_eq!(px(ui.padding.top), top as f32);
+                assert_eq!(px(ui.padding.right), right as f32);
+                assert_eq!(px(ui.padding.bottom), bottom as f32);
                 assert_eq!(
                     *focus_policy,
                     if node.child_hit_test {
@@ -719,6 +864,36 @@ mod tests {
                 assert_eq!(parent.parent(), expected_parent, "node {entity:?}");
             }
         }
+    }
+
+    #[test]
+    fn catalog_content_insets_define_bevy_padding_and_text_content_box() {
+        let catalog = catalog();
+        let view = catalog
+            .view(&ScopedViewId {
+                resource_file: "Startup.rsrc".to_owned(),
+                resource_id: 1501,
+            })
+            .unwrap();
+        let country = view.nodes.iter().find(|node| node.tag.0 == "coun").unwrap();
+        assert_eq!(catalog_content_insets(country), [0, 3, 3, 3]);
+        assert_eq!(catalog_text_content_box(country), ([23, 252], [303, 16]));
+
+        let mut app = app();
+        app.world_mut()
+            .write_message(SpawnUiView(view.id.clone()))
+            .unwrap();
+        app.update();
+        let padding = app
+            .world_mut()
+            .query::<(&PresentedUiNode, &Node)>()
+            .iter(app.world())
+            .find_map(|(node, ui)| (node.0 == country.id).then_some(ui.padding))
+            .unwrap();
+        assert_eq!(px(padding.left), 0.0);
+        assert_eq!(px(padding.top), 3.0);
+        assert_eq!(px(padding.right), 3.0);
+        assert_eq!(px(padding.bottom), 3.0);
     }
 
     #[test]
@@ -963,5 +1138,209 @@ mod tests {
                     presented_view.0 == view && node.0 == picture_node && image.is_none()
                 })
         );
+    }
+
+    #[test]
+    fn missing_retail_font_reports_a_typed_failure_without_using_a_system_font() {
+        let fixture = RetailPictureFixture::new(Vec::new());
+        let mut app = fixture.app();
+        let view = ScopedViewId {
+            resource_file: "Startup.rsrc".to_owned(),
+            resource_id: 1501,
+        };
+        app.world_mut()
+            .write_message(SpawnUiView(view.clone()))
+            .unwrap();
+
+        app.update();
+
+        let failures = app
+            .world_mut()
+            .resource_mut::<Messages<UiTextBindingFailed>>()
+            .drain()
+            .collect::<Vec<_>>();
+        assert!(failures.iter().any(|failure| {
+            failure.view == view
+                && matches!(
+                    failure.error,
+                    UiTextBindingError::FontNotFound(RetailFontFace::BelweBold)
+                )
+        }));
+        assert_eq!(
+            app.world_mut()
+                .query::<(&PresentedViewId, &TextFont)>()
+                .iter(app.world())
+                .filter(|(presented, _)| presented.0 == view)
+                .count(),
+            0
+        );
+    }
+
+    #[test]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR, IMPERIALISM_RETAIL_CACHE, and IMPERIALISM_TEXT_EVIDENCE_PATH"]
+    fn real_retail_random_setup_text_renders_deterministic_640x480_evidence() {
+        let retail_dir = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_DIR")
+                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+        );
+        let cache = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_CACHE")
+                .expect("IMPERIALISM_RETAIL_CACHE must name a task-specific cache"),
+        );
+        let output = PathBuf::from(
+            std::env::var_os("IMPERIALISM_TEXT_EVIDENCE_PATH")
+                .expect("IMPERIALISM_TEXT_EVIDENCE_PATH must name the output PPM"),
+        );
+        let imported = import_english_gog_assets(&retail_dir, &cache).unwrap();
+        let retail_assets = RetailAssetPackResource::new(imported);
+        let catalog = catalog();
+        let view = catalog
+            .view(&ScopedViewId {
+                resource_file: "Startup.rsrc".to_owned(),
+                resource_id: 1501,
+            })
+            .unwrap();
+
+        let first = render_text_evidence(view, &retail_assets);
+        let second = render_text_evidence(view, &retail_assets);
+        assert_eq!(first, second);
+        const PPM_HEADER: &[u8] = b"P6\n640 480\n255\n";
+        assert_eq!(&first[..PPM_HEADER.len()], PPM_HEADER);
+        let pixels = &first[PPM_HEADER.len()..];
+        assert_eq!(pixels.len(), 640 * 480 * 3);
+        assert!(pixels.iter().any(|byte| *byte != 0));
+        fs::write(output, first).unwrap();
+    }
+
+    fn render_text_evidence(
+        view: &CatalogView,
+        retail_assets: &RetailAssetPackResource,
+    ) -> Vec<u8> {
+        use bevy::text::{
+            ComputedTextBlock, FontAtlasSet, FontCx, FontHinting, LayoutCx, LetterSpacing,
+            LineHeight, ScaleCx, TextBounds, TextLayoutInfo, TextPipeline,
+        };
+
+        let mut fonts = Assets::<Font>::default();
+        let mut handles = RetailFontHandles::default();
+        let mut prepared = Vec::new();
+        let mut unresolved = Vec::new();
+        for node in &view.nodes {
+            let Some(binding) = node.properties.text.as_ref() else {
+                continue;
+            };
+            if binding.value.as_deref().unwrap_or_default().is_empty() {
+                continue;
+            }
+            match load_retail_text(binding, Some(retail_assets), &mut fonts, &mut handles) {
+                Ok((_, font, layout, _)) => {
+                    prepared.push((node, binding.value.as_deref().unwrap(), font, layout));
+                }
+                Err(UiTextBindingError::Style(RetailTextStyleError::UnresolvedFontFamily {
+                    effective_family: 0,
+                    ..
+                })) => unresolved.push((node.id, node.tag.0.as_str())),
+                Err(error) => panic!(
+                    "could not prepare visible nonempty text node {} tag {:?}: {error}",
+                    node.id.0, node.tag.0
+                ),
+            }
+        }
+        assert_eq!(unresolved, vec![(UiNodeId(2406), "auto")]);
+        assert_eq!(prepared.len(), 9);
+
+        let mut font_registration = App::new();
+        font_registration
+            .insert_resource(fonts)
+            .init_resource::<FontCx>()
+            .add_systems(Update, bevy::text::load_font_assets_into_font_collection);
+        font_registration.update();
+        let fonts = font_registration
+            .world_mut()
+            .remove_resource::<Assets<Font>>()
+            .unwrap();
+        let mut font_cx = font_registration
+            .world_mut()
+            .remove_resource::<FontCx>()
+            .unwrap();
+        let mut pipeline = TextPipeline::default();
+        let mut layout_cx = LayoutCx::default();
+        let mut scale_cx = ScaleCx::default();
+        let mut atlases = FontAtlasSet::default();
+        let mut textures = Assets::<Image>::default();
+        let mut canvas = vec![0_u8; 640 * 480 * 3];
+        for (node, text, font, layout) in prepared {
+            let (content_origin, content_size) = catalog_text_content_box(node);
+            let text_bounds = TextBounds::new(content_size[0] as f32, content_size[1] as f32);
+            let mut computed = ComputedTextBlock::default();
+            pipeline
+                .update_buffer(
+                    &fonts,
+                    std::iter::once((
+                        Entity::PLACEHOLDER,
+                        0,
+                        text,
+                        &font,
+                        Color::WHITE,
+                        LineHeight::default(),
+                        LetterSpacing::default(),
+                    )),
+                    layout.linebreak,
+                    layout.justify,
+                    text_bounds,
+                    1.0,
+                    &mut computed,
+                    &mut font_cx,
+                    &mut layout_cx,
+                    Vec2::new(640.0, 480.0),
+                    20.0,
+                )
+                .unwrap();
+            let mut layout_info = TextLayoutInfo::default();
+            pipeline
+                .update_text_layout_info(
+                    &mut layout_info,
+                    &mut atlases,
+                    &mut textures,
+                    &mut computed,
+                    &mut scale_cx,
+                    text_bounds,
+                    layout.justify,
+                    FontHinting::Enabled,
+                )
+                .unwrap();
+            for glyph in &layout_info.glyphs {
+                let atlas = textures.get(glyph.atlas_info.texture).unwrap();
+                let atlas_data = atlas.data.as_ref().unwrap();
+                let atlas_width = atlas.texture_descriptor.size.width as usize;
+                let source_x = glyph.atlas_info.rect.min.x as usize;
+                let source_y = glyph.atlas_info.rect.min.y as usize;
+                let width = glyph.atlas_info.rect.width() as usize;
+                let height = glyph.atlas_info.rect.height() as usize;
+                let destination_x = content_origin[0]
+                    + (glyph.position.x - glyph.atlas_info.rect.width() / 2.0) as i32;
+                let destination_y = content_origin[1]
+                    + (glyph.position.y - glyph.atlas_info.rect.height() / 2.0) as i32;
+                for y in 0..height {
+                    for x in 0..width {
+                        let alpha =
+                            atlas_data[((source_y + y) * atlas_width + source_x + x) * 4 + 3];
+                        let target_x = destination_x + x as i32;
+                        let target_y = destination_y + y as i32;
+                        if alpha == 0
+                            || !(0..640).contains(&target_x)
+                            || !(0..480).contains(&target_y)
+                        {
+                            continue;
+                        }
+                        let target = (target_y as usize * 640 + target_x as usize) * 3;
+                        canvas[target..target + 3].fill(255);
+                    }
+                }
+            }
+        }
+        let mut ppm = b"P6\n640 480\n255\n".to_vec();
+        ppm.extend(canvas);
+        ppm
     }
 }

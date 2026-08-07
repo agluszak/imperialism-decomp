@@ -14,6 +14,10 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeCoarseMapOracle.h"
+#endif
+
 namespace {
 
 // Inlined hex neighbour lookup (matches the original's inlined accessor in the flood phase).
@@ -167,6 +171,9 @@ void TMapMaker::GenerateWaterRegionIdsBySeedAndNeighborPropagation() {
         off = off + 0x24;
         pw = pw + 1;
       } while (off < 0x38f40);
+#ifdef IMPERIALISM_RUNTIME_TESTS
+      RuntimeTerrainMapOracleCaptureStage("after_water_regions", this, g_mapGenLcgState_006a38e8);
+#endif
       delete[] labels;
       return;
     }

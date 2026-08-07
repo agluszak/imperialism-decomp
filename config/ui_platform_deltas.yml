@@ -1,5 +1,65 @@
 format_version: 1
 
+# Post-create text-style changes made by the recovered Windows controllers.
+# These patch semantic catalog properties only; resource geometry and hierarchy
+# remain owned by the Mac View IR.
+node_property_patches:
+  - view: Startup.rsrc:1501
+    node: 0x0247
+    tag: tcou
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x030f
+    tag: coun
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls RefreshActiveControlThenApplyThemeStyleAndCaption(coun, 0, 12, ..., 1, ...)
+  - view: Startup.rsrc:1501
+    node: 0x049b
+    tag: dif0
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x050b
+    tag: dif1
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x057b
+    tag: dif2
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x05eb
+    tag: dif3
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x065b
+    tag: dif4
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x06cb
+    tag: dift
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x0740
+    tag: tnam
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x0828
+    tag: hist
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x0898
+    tag: rand
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims; each substitution must remain
 # represented by tools.ui_codegen.CLASS_ALIASES and appear in the delta report.

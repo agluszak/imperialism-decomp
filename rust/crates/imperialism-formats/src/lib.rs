@@ -9,6 +9,7 @@ mod legacy_save;
 mod legacy_stream;
 mod normalized_assets;
 mod retail_assets;
+mod retail_fonts;
 mod retail_pe;
 mod runtime_capture;
 mod ui_catalog;
@@ -38,6 +39,12 @@ pub use retail_assets::{
     RetailAssetImportError, RetailAssetPackManifestV1, RetailResourceAsset, RetailSourceDigest,
     RetailStandaloneAsset, RetailStringAsset, default_retail_cache_dir, import_english_gog_assets,
     parse_retail_import_args,
+};
+pub use retail_fonts::{
+    ResolvedRetailTextStyle, RetailFontDecodeError, RetailFontFace, RetailFontMetrics,
+    RetailGlyphBounds, RetailGlyphMetrics, RetailTextAlignment, RetailTextStyleError,
+    RetailTextStylePreset, decode_retail_font_metrics, resolve_retail_text_style,
+    retail_logical_font_height,
 };
 pub use retail_pe::{
     DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,

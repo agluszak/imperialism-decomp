@@ -133,6 +133,19 @@ class UiCodegenTests(unittest.TestCase):
         self.assertFalse(nodes_by_tag["quer"]["enabled"])
         self.assertIn("Windows:", nodes_by_tag["Flag"]["source"])
 
+        random_setup = by_id[("Startup.rsrc", 1501)]
+        setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
+        for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
+            text = setup_by_tag[tag]["properties"]["text"]
+            self.assertEqual(
+                (text["font_family"], text["face_flags"], text["point_size"], text["alignment"]),
+                (1, 0, 12, 1),
+            )
+            self.assertIn("Windows:", setup_by_tag[tag]["source"])
+        for tag in ("tcou", "dift", "tnam"):
+            text = setup_by_tag[tag]["properties"]["text"]
+            self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
+
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())
         self.assertNotIn("SetControlStateFlagAndMaybeRefresh", rendered)

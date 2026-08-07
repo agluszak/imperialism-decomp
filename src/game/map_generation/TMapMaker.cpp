@@ -186,6 +186,11 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeCoarseMapOracleReset(g_mapGenLcgState_006a38e8);
+  RuntimeTerrainMapOracleReset(static_cast<int>(g_pGlobalMapState->hexNeighborWrapHorizontally),
+                               g_mapGenDesertQuota_006a38bc, g_mapGenMountainQuota_006a3470,
+                               g_mapGenHillsQuota_006a38c0, g_mapGenForestQuota_006a38f8,
+                               g_mapGenSwampQuota_006a38e0, g_mapGenRiverCount_006a38e4,
+                               g_regionSeedGridRows_006a38ec, g_regionSeedGridCols_006a38f0);
 #endif
 
   for (;;) {
@@ -249,6 +254,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     ExpandRegionGridIntoTilesAndAllocateCityRecords();
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeCoarseMapOracleCaptureExpansion(this, g_mapGenLcgState_006a38e8);
+    RuntimeTerrainMapOracleBeginAttempt(this, g_mapGenLcgState_006a38e8);
 #endif
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
@@ -257,14 +263,23 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     RandomizeRegionTemplatesAndSmoothOwnership();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTerrainMapOracleCaptureStage("after_templates", this, g_mapGenLcgState_006a38e8);
+#endif
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     PlaceTerrainFeatureQuotas();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTerrainMapOracleCaptureStage("after_features", this, g_mapGenLcgState_006a38e8);
+#endif
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
     RotateMapColumnsByPeakWaterTileDensity();
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTerrainMapOracleCaptureStage("after_rotation", this, g_mapGenLcgState_006a38e8);
+#endif
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
@@ -443,7 +458,14 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
     if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
       g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
     }
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeTerrainMapOracleCaptureKeywordStage(this, g_mapGenLcgState_006a38e8);
+    int seedCandidatesAccepted = ValidateSeedCandidateExistsForEachTerrainClass();
+    RuntimeTerrainMapOracleFinishAttempt(this, seedCandidatesAccepted, g_mapGenLcgState_006a38e8);
+    if (seedCandidatesAccepted != 0) {
+#else
     if (ValidateSeedCandidateExistsForEachTerrainClass() != 0) {
+#endif
       break;
     }
     g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
@@ -561,6 +583,9 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
   int seedFound[23];
   int seedCandidate[23];
   int i;
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTerrainMapOracleResetSeedCandidates();
+#endif
 
   int* pInit = seedFound;
   for (i = 0x17; i != 0; i = i + -1) {
@@ -655,6 +680,9 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
                   (g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1,
                    (g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 5 == 3)) {
                 seedCandidate[cls] = (int)nIdx;
+#ifdef IMPERIALISM_RUNTIME_TESTS
+                RuntimeTerrainMapOracleRecordSeedCandidate(cls, static_cast<int>(nIdx));
+#endif
               }
               break;
             }

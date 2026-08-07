@@ -1,5 +1,7 @@
 #include "RandomSetupScreen.h"
 
+#include "RuntimeUiDriver.h"
+
 #include "game/turn_event_codes.h"
 #include "game/ui_core/CMcEditWindow.h"
 #include "game/ui_core/TControl.h"
@@ -54,6 +56,35 @@ RuntimeActionResult RandomSetupScreen::SetCountryName(const char* name) {
     country->editWindow->SetWindowText(countryName);
   } else {
     country->SetTextAndMaybeRefresh(&countryName, 1);
+  }
+  return RuntimeActionResult::Success();
+}
+
+RuntimeActionResult RandomSetupScreen::RegeneratePlanet(const char* planetSeed) {
+  if (!IsValid() || setupView == 0) {
+    return InvalidScreen("regenerate the planet from its seed text");
+  }
+  CString failure;
+  if (!RuntimeUiDriver::PostSetText(
+          RuntimeControlSelector(kControlTagPlan, RUNTIME_CLASS(TEditText)), planetSeed,
+          &failure)) {
+    CString message;
+    message.Format("cannot queue the planet-name edit: %s", static_cast<LPCSTR>(failure));
+    return RuntimeActionResult::Failure(message);
+  }
+  if (!RuntimeUiDriver::PostActivate(RuntimeControlSelector(kControlTagOkay), &failure)) {
+    CString message;
+    message.Format("cannot queue the planet-name confirmation: %s", static_cast<LPCSTR>(failure));
+    return RuntimeActionResult::Failure(message);
+  }
+  RuntimeActionResult opened =
+      Activate(kControlTagKeyP, RUNTIME_CLASS(TControl), "open the planet-name dialog");
+  if (!opened.Succeeded()) {
+    return opened;
+  }
+  if (setupView->planetSeed94 != planetSeed) {
+    return ScreenFailure("regenerate the planet from its seed text",
+                         CString("the setup screen did not retain the requested planet seed"));
   }
   return RuntimeActionResult::Success();
 }

@@ -18,4 +18,18 @@ void RuntimeCoarseMapOracleFinishAttempt(const TMapMaker* mapMaker, int errorChe
 void RuntimeCoarseMapOracleCaptureExpansion(const TMapMaker* mapMaker, unsigned int mapLcg);
 const CString& RuntimeCoarseMapOracleJson();
 
+void RuntimeTerrainMapOracleReset(int topologyByte, int desertQuota, int mountainQuota,
+                                  int hillsQuota, int forestQuota, int swampQuota, int riverCount,
+                                  int regionRows, int regionColumns);
+void RuntimeTerrainMapOracleBeginAttempt(const TMapMaker* mapMaker, unsigned int mapLcg);
+void RuntimeTerrainMapOracleCaptureStage(const char* stageName, const TMapMaker* mapMaker,
+                                         unsigned int mapLcg);
+void RuntimeTerrainMapOracleRecordRotationColumn(int column);
+void RuntimeTerrainMapOracleCaptureKeywordStage(const TMapMaker* mapMaker, unsigned int mapLcg);
+void RuntimeTerrainMapOracleResetSeedCandidates();
+void RuntimeTerrainMapOracleRecordSeedCandidate(int terrainClass, int tileIndex);
+void RuntimeTerrainMapOracleFinishAttempt(const TMapMaker* mapMaker, int accepted,
+                                          unsigned int mapLcg);
+const CString& RuntimeTerrainMapOracleJson();
+
 #endif

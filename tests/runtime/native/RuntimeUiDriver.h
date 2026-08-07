@@ -13,7 +13,12 @@ struct CRuntimeClass;
 
 const UINT WM_RUNTIME_ACTION = WM_APP + 0x173;
 
-enum RuntimeActionKind { kRuntimeActionActivate, kRuntimeActionBarrier, kRuntimeActionObservation };
+enum RuntimeActionKind {
+  kRuntimeActionActivate,
+  kRuntimeActionBarrier,
+  kRuntimeActionObservation,
+  kRuntimeActionSetText
+};
 
 struct RuntimeControlSelector {
   enum { kMaxTagPath = 8 };
@@ -31,8 +36,11 @@ struct RuntimeControlSelector {
 };
 
 struct PendingRuntimeAction {
+  enum { kTextCapacity = 256 };
+
   RuntimeControlSelector selector;
   RuntimeActionKind kind;
+  char text[kTextCapacity];
 };
 
 class RuntimeUiDriver {
@@ -41,6 +49,8 @@ public:
                                   CString* failure);
   static bool Activate(TView* root, const RuntimeControlSelector& selector, CString* failure = 0);
   static bool PostActivate(const RuntimeControlSelector& selector, CString* failure = 0);
+  static bool PostSetText(const RuntimeControlSelector& selector, const char* text,
+                          CString* failure = 0);
   static bool PostBarrier(CString* failure = 0);
   static bool PostObservation(unsigned int observationKinds, CString* failure = 0);
   static bool HandlePostedAction(CString* failure = 0);
