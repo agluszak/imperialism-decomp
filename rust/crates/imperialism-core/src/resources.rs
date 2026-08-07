@@ -1,4 +1,6 @@
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+use enum_map::{Enum, EnumMap};
+
+#[derive(Clone, Copy, Debug, Enum, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[repr(u8)]
 pub enum ResourceKind {
     Cotton = 0,
@@ -26,38 +28,19 @@ pub enum ResourceKind {
     Gold = 22,
 }
 
-impl ResourceKind {
-    pub const COUNT: usize = 23;
-    pub const PURCHASED_COUNT: usize = Self::Grain as usize;
-    pub const ALL: [Self; Self::COUNT] = [
-        Self::Cotton,
-        Self::Wool,
-        Self::Timber,
-        Self::Coal,
-        Self::Iron,
-        Self::Horses,
-        Self::Oil,
-        Self::Food,
-        Self::Fabric,
-        Self::Lumber,
-        Self::Paper,
-        Self::Steel,
-        Self::Fuel,
-        Self::Clothing,
-        Self::Furniture,
-        Self::Hardware,
-        Self::Arms,
-        Self::Grain,
-        Self::Fruit,
-        Self::Fish,
-        Self::Livestock,
-        Self::Gems,
-        Self::Gold,
-    ];
+pub type ResourceTable<T> = EnumMap<ResourceKind, T>;
 
-    pub const fn index(self) -> usize {
-        self as usize
+impl ResourceKind {
+    pub const PURCHASED_COUNT: usize = Self::Grain as usize;
+
+    pub fn from_retail_index(value: i16) -> Option<Self> {
+        let index = usize::try_from(value).ok()?;
+        (index < Self::LENGTH).then(|| Self::from_usize(index))
     }
+}
+
+pub fn all_resources() -> impl ExactSizeIterator<Item = ResourceKind> {
+    (0..ResourceKind::LENGTH).map(ResourceKind::from_usize)
 }
 
 #[cfg(test)]
@@ -66,18 +49,24 @@ mod tests {
 
     #[test]
     fn preserves_the_retail_resource_table_order() {
-        assert_eq!(ResourceKind::Cotton.index(), 0);
-        assert_eq!(ResourceKind::Food.index(), 7);
-        assert_eq!(ResourceKind::Arms.index(), 16);
-        assert_eq!(ResourceKind::Grain.index(), 17);
-        assert_eq!(ResourceKind::Gold.index(), 22);
-        assert_eq!(ResourceKind::COUNT, 23);
-        assert_eq!(ResourceKind::ALL.len(), ResourceKind::COUNT);
+        assert_eq!(ResourceKind::Cotton.into_usize(), 0);
+        assert_eq!(ResourceKind::Food.into_usize(), 7);
+        assert_eq!(ResourceKind::Arms.into_usize(), 16);
+        assert_eq!(ResourceKind::Grain.into_usize(), 17);
+        assert_eq!(ResourceKind::Gold.into_usize(), 22);
+        assert_eq!(ResourceKind::LENGTH, 23);
         assert!(
-            ResourceKind::ALL
-                .iter()
+            all_resources()
                 .enumerate()
-                .all(|(index, resource)| resource.index() == index)
+                .all(|(index, resource)| resource.into_usize() == index)
         );
+    }
+
+    #[test]
+    fn resource_tables_have_one_value_for_every_kind() {
+        let mut table = ResourceTable::<i16>::default();
+        table[ResourceKind::Steel] = 7;
+        assert_eq!(table.len(), ResourceKind::LENGTH);
+        assert_eq!(table[ResourceKind::Steel], 7);
     }
 }

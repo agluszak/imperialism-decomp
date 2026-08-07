@@ -1,9 +1,12 @@
 use crate::{
-    CivilianUnitId, GameSnapshotV1, LaborPool, MilitaryUnitId, MissionId, NationId, ShipId,
+    CivilianUnitId, GameSnapshotV1, LaborPool, MAJOR_NATION_COUNT, MajorNationTable,
+    MilitaryUnitId, MissionId, NATION_COUNT, NationId, NationTable, PENDING_ACTION_COUNT,
+    PendingActionTable, ProductionSlot, ProductionTable, ResourceKind, ResourceTable, ShipId,
     SnapshotArmyMission, SnapshotCity, SnapshotCivilianUnit, SnapshotMajorNation,
     SnapshotMilitaryUnit, SnapshotMission, SnapshotNation, SnapshotNavyMission, SnapshotPopulation,
     SnapshotShip, SnapshotTaskForce, SnapshotValidationError, TaskForceId, TileId, TileSnapshot,
 };
+use enum_map::Enum;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameState {
@@ -73,7 +76,7 @@ pub struct NationState {
     pub owner_nation: i16,
     pub treasury: i32,
     pub home_tile: i32,
-    pub need_level_by_nation: Vec<i16>,
+    pub need_level_by_nation: NationTable<i16>,
     pub major: Option<MajorNationState>,
 }
 
@@ -83,16 +86,16 @@ pub struct MajorNationState {
     pub capacities: [i16; 4],
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
-    pub diplomacy_policy_by_nation: Vec<i16>,
-    pub diplomacy_grant_by_nation: Vec<i16>,
-    pub need_current_by_type: Vec<i16>,
-    pub need_target_by_type: Vec<i16>,
-    pub relation_delta_current: Vec<i16>,
-    pub purchased_items_by_resource: Vec<i16>,
-    pub item_potentials: Vec<i16>,
-    pub unfilled_trade_turns_by_resource: Vec<i16>,
-    pub transported_items_by_resource: Vec<i16>,
-    pub remembered_trade_offers_by_resource: Vec<i16>,
+    pub diplomacy_policy_by_nation: NationTable<i16>,
+    pub diplomacy_grant_by_nation: NationTable<i16>,
+    pub need_current_by_type: ResourceTable<i16>,
+    pub need_target_by_type: ResourceTable<i16>,
+    pub relation_delta_current: ResourceTable<i16>,
+    pub purchased_items_by_resource: ResourceTable<i16>,
+    pub item_potentials: ResourceTable<i16>,
+    pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
+    pub transported_items_by_resource: ResourceTable<i16>,
+    pub remembered_trade_offers_by_resource: ResourceTable<i16>,
     pub aid_allocation_matrix: Vec<i32>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
@@ -100,8 +103,8 @@ pub struct MajorNationState {
     pub candidate_nation_flags: Vec<u8>,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
-    pub pending_action_status: Vec<i8>,
-    pub pending_action_payload_by_action: Vec<i16>,
+    pub pending_action_status: PendingActionTable<i8>,
+    pub pending_action_payload_by_action: PendingActionTable<i16>,
     pub diplomacy_budget_base: i32,
     pub escalation_counter: i16,
     pub pending_commitment_cost: i32,
@@ -125,18 +128,18 @@ pub struct CityState {
     pub rolling_item_production_score: i32,
     pub low_production: bool,
     pub low_stock: bool,
-    pub reserved_by_type: Vec<i16>,
+    pub reserved_by_type: ResourceTable<i16>,
     pub home_town_tile: i16,
     pub power_available: i16,
-    pub stock_by_type: Vec<i16>,
-    pub production_orders: Vec<i16>,
-    pub production_accum: Vec<i16>,
-    pub production_flags: Vec<u8>,
-    pub production_current: Vec<i16>,
-    pub production_progress: Vec<i16>,
+    pub stock_by_type: ResourceTable<i16>,
+    pub production_orders: ProductionTable<i16>,
+    pub production_accum: ProductionTable<i16>,
+    pub production_flags: ProductionTable<u8>,
+    pub production_current: ProductionTable<i16>,
+    pub production_progress: ProductionTable<i16>,
     pub population_growth_penalty_ticks: i16,
-    pub unmet_resource_retries: Vec<i16>,
-    pub consumed_production_input_by_type: Vec<i16>,
+    pub unmet_resource_retries: ResourceTable<i16>,
+    pub consumed_production_input_by_type: ResourceTable<i16>,
     pub population: PopulationState,
 }
 
@@ -150,7 +153,7 @@ pub struct PopulationState {
     pub baseline_labor: Option<LaborPool>,
     pub production_labor: Option<LaborPool>,
     pub pending_labor_delta: Option<LaborPool>,
-    pub predicted_need_by_resource: Vec<i16>,
+    pub predicted_need_by_resource: ResourceTable<i16>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -276,7 +279,7 @@ pub struct MissionState {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PendingWorkState {
     pub turn_flow_status_flags: u32,
-    pub nations: Vec<NationPendingWork>,
+    pub nations: MajorNationTable<NationPendingWork>,
     pub war_transitions: Vec<(NationId, NationId)>,
 }
 
@@ -442,36 +445,39 @@ impl TryFrom<GameSnapshotV1> for GameState {
                 .collect::<Result<_, _>>()?,
             pending: PendingWorkState {
                 turn_flow_status_flags: snapshot.pending.turn_flow_status_flags,
-                nations: snapshot
-                    .pending
-                    .nations
-                    .into_iter()
-                    .map(|pending| NationPendingWork {
-                        nation: NationId::new(pending.nation),
-                        turn_events: pending
-                            .turn_events
-                            .into_iter()
-                            .map(|record| (record[0], record[1]))
-                            .collect(),
-                        proposals: pending
-                            .proposals
-                            .into_iter()
-                            .map(|record| (record[0], record[1]))
-                            .collect(),
-                        turn_summary: pending.turn_summary,
-                        turn_start_events: pending
-                            .turn_start_events
-                            .into_iter()
-                            .map(|event| TurnStartEventState {
-                                class: event.class,
-                                tag: event.tag,
-                                land_sale: event
-                                    .land_sale
-                                    .map(|record| (record[0], NationId::new(record[1] as u8))),
-                            })
-                            .collect(),
-                    })
-                    .collect(),
+                nations: major_nation_table(
+                    snapshot
+                        .pending
+                        .nations
+                        .into_iter()
+                        .map(|pending| NationPendingWork {
+                            nation: NationId::new(pending.nation),
+                            turn_events: pending
+                                .turn_events
+                                .into_iter()
+                                .map(|record| (record[0], record[1]))
+                                .collect(),
+                            proposals: pending
+                                .proposals
+                                .into_iter()
+                                .map(|record| (record[0], record[1]))
+                                .collect(),
+                            turn_summary: pending.turn_summary,
+                            turn_start_events: pending
+                                .turn_start_events
+                                .into_iter()
+                                .map(|event| TurnStartEventState {
+                                    class: event.class,
+                                    tag: event.tag,
+                                    land_sale: event
+                                        .land_sale
+                                        .map(|record| (record[0], NationId::new(record[1] as u8))),
+                                })
+                                .collect(),
+                        })
+                        .collect(),
+                    "pending nation records",
+                )?,
                 war_transitions: snapshot
                     .pending
                     .war_transitions
@@ -500,28 +506,63 @@ fn nation_state(snapshot: SnapshotNation) -> Result<Option<NationState>, Snapsho
         owner_nation: required(snapshot.owner_nation, "owner nation")?,
         treasury: required(snapshot.treasury, "treasury")?,
         home_tile: required(snapshot.home_tile, "home tile")?,
-        need_level_by_nation: required(snapshot.need_level_by_nation, "nation need levels")?,
-        major: snapshot.major.map(MajorNationState::from),
+        need_level_by_nation: nation_table(
+            required(snapshot.need_level_by_nation, "nation need levels")?,
+            "nation need levels",
+        )?,
+        major: snapshot.major.map(MajorNationState::try_from).transpose()?,
     }))
 }
 
-impl From<SnapshotMajorNation> for MajorNationState {
-    fn from(snapshot: SnapshotMajorNation) -> Self {
-        Self {
+impl TryFrom<SnapshotMajorNation> for MajorNationState {
+    type Error = SnapshotValidationError;
+
+    fn try_from(snapshot: SnapshotMajorNation) -> Result<Self, Self::Error> {
+        Ok(Self {
             diplomacy_eligible: snapshot.diplomacy_eligible != 0,
             capacities: snapshot.capacities,
             grant_total_cost: snapshot.grant_total_cost,
             unfilled_trade_offer_count: snapshot.unfilled_trade_offer_count,
-            diplomacy_policy_by_nation: snapshot.diplomacy_policy_by_nation,
-            diplomacy_grant_by_nation: snapshot.diplomacy_grant_by_nation,
-            need_current_by_type: snapshot.need_current_by_type,
-            need_target_by_type: snapshot.need_target_by_type,
-            relation_delta_current: snapshot.relation_delta_current,
-            purchased_items_by_resource: snapshot.purchased_items_by_resource,
-            item_potentials: snapshot.item_potentials,
-            unfilled_trade_turns_by_resource: snapshot.unfilled_trade_turns_by_resource,
-            transported_items_by_resource: snapshot.transported_items_by_resource,
-            remembered_trade_offers_by_resource: snapshot.remembered_trade_offers_by_resource,
+            diplomacy_policy_by_nation: nation_table(
+                snapshot.diplomacy_policy_by_nation,
+                "major nation diplomacy policy",
+            )?,
+            diplomacy_grant_by_nation: nation_table(
+                snapshot.diplomacy_grant_by_nation,
+                "major nation diplomacy grants",
+            )?,
+            need_current_by_type: resource_table(
+                snapshot.need_current_by_type,
+                "major nation current needs",
+            )?,
+            need_target_by_type: resource_table(
+                snapshot.need_target_by_type,
+                "major nation target needs",
+            )?,
+            relation_delta_current: resource_table(
+                snapshot.relation_delta_current,
+                "major nation relation deltas",
+            )?,
+            purchased_items_by_resource: resource_table(
+                snapshot.purchased_items_by_resource,
+                "major nation purchased items",
+            )?,
+            item_potentials: resource_table(
+                snapshot.item_potentials,
+                "major nation item potentials",
+            )?,
+            unfilled_trade_turns_by_resource: resource_table(
+                snapshot.unfilled_trade_turns_by_resource,
+                "major nation unfilled trade turns",
+            )?,
+            transported_items_by_resource: resource_table(
+                snapshot.transported_items_by_resource,
+                "major nation transported items",
+            )?,
+            remembered_trade_offers_by_resource: resource_table(
+                snapshot.remembered_trade_offers_by_resource,
+                "major nation remembered trade offers",
+            )?,
             aid_allocation_matrix: snapshot.aid_allocation_matrix,
             budget_pool_base: snapshot.budget_pool_base,
             budget_pool_delta: snapshot.budget_pool_delta,
@@ -529,8 +570,14 @@ impl From<SnapshotMajorNation> for MajorNationState {
             candidate_nation_flags: snapshot.candidate_nation_flags,
             scenario_initialized: snapshot.scenario_initialized != 0,
             turn_finished: snapshot.turn_finished != 0,
-            pending_action_status: snapshot.pending_action_status,
-            pending_action_payload_by_action: snapshot.pending_action_payload_by_action,
+            pending_action_status: pending_action_table(
+                snapshot.pending_action_status,
+                "major nation pending action status",
+            )?,
+            pending_action_payload_by_action: pending_action_table(
+                snapshot.pending_action_payload_by_action,
+                "major nation pending action payloads",
+            )?,
             diplomacy_budget_base: snapshot.diplomacy_budget_base,
             escalation_counter: snapshot.escalation_counter,
             pending_commitment_cost: snapshot.pending_commitment_cost,
@@ -538,7 +585,7 @@ impl From<SnapshotMajorNation> for MajorNationState {
             aid_allocation_total: snapshot.aid_allocation_total,
             colony_boycott_flags: snapshot.colony_boycott_flags,
             military_expenses: snapshot.military_expenses,
-        }
+        })
     }
 }
 
@@ -571,31 +618,60 @@ fn city_state(snapshot: SnapshotCity) -> Result<Option<CityState>, SnapshotValid
         )?,
         low_production: required(snapshot.low_production, "low production flag")? != 0,
         low_stock: required(snapshot.low_stock, "low stock flag")? != 0,
-        reserved_by_type: required(snapshot.reserved_by_type, "city reservations")?,
+        reserved_by_type: resource_table(
+            required(snapshot.reserved_by_type, "city reservations")?,
+            "city reservations",
+        )?,
         home_town_tile: required(snapshot.home_town_tile, "home town tile")?,
         power_available: required(snapshot.power_available, "available power")?,
-        stock_by_type: required(snapshot.stock_by_type, "city stock")?,
-        production_orders: required(snapshot.production_orders, "production orders")?,
-        production_accum: required(snapshot.production_accum, "production accumulation")?,
-        production_flags: required(snapshot.production_flags, "production flags")?,
-        production_current: required(snapshot.production_current, "current production")?,
-        production_progress: required(snapshot.production_progress, "production progress")?,
+        stock_by_type: resource_table(
+            required(snapshot.stock_by_type, "city stock")?,
+            "city stock",
+        )?,
+        production_orders: production_table(
+            required(snapshot.production_orders, "production orders")?,
+            "production orders",
+        )?,
+        production_accum: production_table(
+            required(snapshot.production_accum, "production accumulation")?,
+            "production accumulation",
+        )?,
+        production_flags: production_table(
+            required(snapshot.production_flags, "production flags")?,
+            "production flags",
+        )?,
+        production_current: production_table(
+            required(snapshot.production_current, "current production")?,
+            "current production",
+        )?,
+        production_progress: production_table(
+            required(snapshot.production_progress, "production progress")?,
+            "production progress",
+        )?,
         population_growth_penalty_ticks: required(
             snapshot.population_growth_penalty_ticks,
             "population growth penalty",
         )?,
-        unmet_resource_retries: required(snapshot.unmet_resource_retries, "resource retry counts")?,
-        consumed_production_input_by_type: required(
-            snapshot.consumed_production_input_by_type,
-            "consumed production inputs",
+        unmet_resource_retries: resource_table(
+            required(snapshot.unmet_resource_retries, "resource retry counts")?,
+            "city resource retry counts",
         )?,
-        population: PopulationState::from(required(snapshot.population, "population state")?),
+        consumed_production_input_by_type: resource_table(
+            required(
+                snapshot.consumed_production_input_by_type,
+                "consumed production inputs",
+            )?,
+            "city consumed production inputs",
+        )?,
+        population: PopulationState::try_from(required(snapshot.population, "population state")?)?,
     }))
 }
 
-impl From<SnapshotPopulation> for PopulationState {
-    fn from(snapshot: SnapshotPopulation) -> Self {
-        Self {
+impl TryFrom<SnapshotPopulation> for PopulationState {
+    type Error = SnapshotValidationError;
+
+    fn try_from(snapshot: SnapshotPopulation) -> Result<Self, Self::Error> {
+        Ok(Self {
             count: snapshot.count,
             count_float_bits: snapshot.count_float_bits,
             strength: snapshot.strength,
@@ -604,9 +680,79 @@ impl From<SnapshotPopulation> for PopulationState {
             baseline_labor: snapshot.baseline_labor.map(LaborPool::from),
             production_labor: snapshot.production_labor.map(LaborPool::from),
             pending_labor_delta: snapshot.pending_labor_delta.map(LaborPool::from),
-            predicted_need_by_resource: snapshot.predicted_need_by_resource,
-        }
+            predicted_need_by_resource: resource_table(
+                snapshot.predicted_need_by_resource,
+                "population predicted needs",
+            )?,
+        })
     }
+}
+
+fn resource_table(
+    values: Vec<i16>,
+    field: &'static str,
+) -> Result<ResourceTable<i16>, SnapshotValidationError> {
+    let actual = values.len();
+    let values: [i16; ResourceKind::LENGTH] = values.try_into().map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "{field} has {actual} entries, expected {}",
+            ResourceKind::LENGTH
+        ))
+    })?;
+    Ok(ResourceTable::from_array(values))
+}
+
+fn nation_table<T>(
+    values: Vec<T>,
+    field: &'static str,
+) -> Result<NationTable<T>, SnapshotValidationError> {
+    let actual = values.len();
+    let values: [T; NATION_COUNT] = values.try_into().map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "{field} has {actual} entries, expected {NATION_COUNT}"
+        ))
+    })?;
+    Ok(NationTable::from_array(values))
+}
+
+fn production_table<T>(
+    values: Vec<T>,
+    field: &'static str,
+) -> Result<ProductionTable<T>, SnapshotValidationError> {
+    let actual = values.len();
+    let values: [T; ProductionSlot::COUNT] = values.try_into().map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "{field} has {actual} entries, expected {}",
+            ProductionSlot::COUNT
+        ))
+    })?;
+    Ok(ProductionTable::from_array(values))
+}
+
+fn major_nation_table<T>(
+    values: Vec<T>,
+    field: &'static str,
+) -> Result<MajorNationTable<T>, SnapshotValidationError> {
+    let actual = values.len();
+    let values: [T; MAJOR_NATION_COUNT] = values.try_into().map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "{field} has {actual} entries, expected {MAJOR_NATION_COUNT}"
+        ))
+    })?;
+    Ok(MajorNationTable::from_array(values))
+}
+
+fn pending_action_table<T>(
+    values: Vec<T>,
+    field: &'static str,
+) -> Result<PendingActionTable<T>, SnapshotValidationError> {
+    let actual = values.len();
+    let values: [T; PENDING_ACTION_COUNT] = values.try_into().map_err(|_| {
+        SnapshotValidationError::Shape(format!(
+            "{field} has {actual} entries, expected {PENDING_ACTION_COUNT}"
+        ))
+    })?;
+    Ok(PendingActionTable::from_array(values))
 }
 
 fn required<T>(value: Option<T>, label: &str) -> Result<T, SnapshotValidationError> {
@@ -834,5 +980,38 @@ impl From<TileSnapshot> for TileState {
             action_state: fields[8],
             active_flags: fields[9],
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn fixed_tables_accept_only_their_canonical_wire_lengths() {
+        assert!(resource_table(vec![0; ResourceKind::LENGTH], "resources").is_ok());
+        assert!(resource_table(vec![0; ResourceKind::LENGTH - 1], "resources").is_err());
+
+        assert!(nation_table(vec![0; NATION_COUNT], "nations").is_ok());
+        assert!(nation_table(vec![0; NATION_COUNT - 1], "nations").is_err());
+
+        assert!(production_table(vec![0; ProductionSlot::COUNT], "production").is_ok());
+        assert!(production_table(vec![0; ProductionSlot::COUNT - 1], "production").is_err());
+
+        assert!(major_nation_table(vec![0; MAJOR_NATION_COUNT], "major nations").is_ok());
+        assert!(major_nation_table(vec![0; MAJOR_NATION_COUNT - 1], "major nations").is_err());
+
+        assert!(pending_action_table(vec![0; PENDING_ACTION_COUNT], "actions").is_ok());
+        assert!(pending_action_table(vec![0; PENDING_ACTION_COUNT - 1], "actions").is_err());
+    }
+
+    #[test]
+    fn resource_table_preserves_canonical_retail_order() {
+        let values: Vec<i16> = (0..ResourceKind::LENGTH as i16).collect();
+        let table = resource_table(values.clone(), "resources").unwrap();
+        let round_trip: Vec<i16> = crate::all_resources()
+            .map(|resource| table[resource])
+            .collect();
+        assert_eq!(round_trip, values);
     }
 }

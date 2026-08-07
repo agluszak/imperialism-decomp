@@ -1,17 +1,10 @@
-use crate::{CityState, PopulationState, ResourceKind};
+use crate::{CityState, PopulationState, ResourceKind, ResourceTable};
 
-const PREDICTED_NEED_RESOURCE_COUNT: usize = ResourceKind::COUNT;
-const STRIKE_RESOURCE_IDS: [usize; 3] = [
-    ResourceKind::Hardware.index(),
-    ResourceKind::Clothing.index(),
-    ResourceKind::Furniture.index(),
+const STRIKE_RESOURCES: [ResourceKind; 3] = [
+    ResourceKind::Hardware,
+    ResourceKind::Clothing,
+    ResourceKind::Furniture,
 ];
-const GRAIN_RESOURCE_ID: usize = ResourceKind::Grain.index();
-const FRUIT_RESOURCE_ID: usize = ResourceKind::Fruit.index();
-const ANIMAL_FOOD_RESOURCE_ID: usize = ResourceKind::Livestock.index();
-const CANNED_FOOD_RESOURCE_ID: usize = ResourceKind::Food.index();
-const FISH_RESOURCE_ID: usize = ResourceKind::Fish.index();
-const LIVESTOCK_RESOURCE_ID: usize = ResourceKind::Livestock.index();
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct LaborPool {
@@ -98,12 +91,6 @@ impl SkillBand {
 pub enum PopulationError {
     #[error("population is missing its {0}")]
     MissingLaborPool(&'static str),
-    #[error(
-        "population has {actual} predicted-need slots, expected {PREDICTED_NEED_RESOURCE_COUNT}"
-    )]
-    InvalidPredictedNeedCount { actual: usize },
-    #[error("city has {actual} resource slots, expected {PREDICTED_NEED_RESOURCE_COUNT}")]
-    InvalidStockCount { actual: usize },
     #[error("population has invalid strike phase {phase}")]
     InvalidStrikePhase { phase: i16 },
 }
@@ -118,7 +105,6 @@ impl CityState {
     /// Mirrors `TPopulationMgr::Eat` and records the two city summary fields
     /// updated by the original routine.
     pub fn consume_population_food(&mut self) -> Result<FoodOutcome, PopulationError> {
-        validate_resource_slots(&self.stock_by_type)?;
         let outcome = self.population.consume_food(&mut self.stock_by_type)?;
         self.food_substitution_count = outcome.substitution_count;
         self.starvation_population_loss = outcome.starvation_count;
@@ -138,20 +124,16 @@ impl CityState {
     /// Mirrors `TPopulationMgr::PretendToEat` without mutating either input.
     pub fn forecast_population_food(
         &self,
-        nation_need_targets: &[i16],
+        nation_need_targets: &ResourceTable<i16>,
     ) -> Result<FoodOutcome, PopulationError> {
-        validate_resource_slots(nation_need_targets)?;
-        validate_resource_slots(&self.stock_by_type)?;
-        Ok(self.population.forecast_food(
-            nation_need_targets,
-            self.stock_by_type[CANNED_FOOD_RESOURCE_ID],
-        ))
+        Ok(self
+            .population
+            .forecast_food(nation_need_targets, self.stock_by_type[ResourceKind::Food]))
     }
 
     /// Mirrors `TPopulationMgr::Strike` and returns whether any of the three
     /// rotated resources was short.
     pub fn apply_population_strike(&mut self) -> Result<bool, PopulationError> {
-        validate_resource_slots(&self.stock_by_type)?;
         let baseline = *self.population.baseline()?;
         let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
         let mut cycles = (skilled / 10) as i16;
@@ -178,7 +160,7 @@ impl CityState {
         }
 
         let mut shortage = false;
-        for (resource, amount) in STRIKE_RESOURCE_IDS.into_iter().zip(consumption) {
+        for (resource, amount) in STRIKE_RESOURCES.into_iter().zip(consumption) {
             if self.stock_by_type[resource] < amount {
                 self.stock_by_type[resource] = 0;
                 verify_stocks(&mut self.stock_by_type);
@@ -260,25 +242,17 @@ impl PopulationState {
 
     /// Mirrors `TPopulationMgr::PredictedNeeds`; the order quantity is the
     /// city's trailing order slot 9 contribution to supported population.
-    pub fn refresh_predicted_needs(
-        &mut self,
-        order_quantity: i16,
-    ) -> Result<&mut [i16], PopulationError> {
-        if self.predicted_need_by_resource.len() != PREDICTED_NEED_RESOURCE_COUNT {
-            return Err(PopulationError::InvalidPredictedNeedCount {
-                actual: self.predicted_need_by_resource.len(),
-            });
-        }
-        for resource in STRIKE_RESOURCE_IDS {
+    pub fn refresh_predicted_needs(&mut self, order_quantity: i16) -> &mut ResourceTable<i16> {
+        for resource in STRIKE_RESOURCES {
             self.predicted_need_by_resource[resource] = 0;
         }
         let supported = self.count.wrapping_add(order_quantity);
-        self.predicted_need_by_resource[GRAIN_RESOURCE_ID] =
+        self.predicted_need_by_resource[ResourceKind::Grain] =
             ((i32::from(supported) + 1) / 2) as i16;
-        self.predicted_need_by_resource[FRUIT_RESOURCE_ID] =
+        self.predicted_need_by_resource[ResourceKind::Fruit] =
             ((i32::from(supported) + 2) / 4) as i16;
-        self.predicted_need_by_resource[ANIMAL_FOOD_RESOURCE_ID] = supported / 4;
-        Ok(&mut self.predicted_need_by_resource)
+        self.predicted_need_by_resource[ResourceKind::Livestock] = supported / 4;
+        &mut self.predicted_need_by_resource
     }
 
     /// Mirrors `TPopulationMgr::RemovePopulation`, including its unusual use
@@ -355,8 +329,10 @@ impl PopulationState {
         Ok(())
     }
 
-    fn consume_food(&mut self, stocks: &mut [i16]) -> Result<FoodOutcome, PopulationError> {
-        validate_resource_slots(stocks)?;
+    fn consume_food(
+        &mut self,
+        stocks: &mut ResourceTable<i16>,
+    ) -> Result<FoodOutcome, PopulationError> {
         self.require_labor_pools()?;
         let pending = *self.pending()?;
         let production = self.production_mut()?;
@@ -369,7 +345,7 @@ impl PopulationState {
         let mut substituted = 0;
 
         if unmet != 0 {
-            let canned = &mut stocks[CANNED_FOOD_RESOURCE_ID];
+            let canned = &mut stocks[ResourceKind::Food];
             if unmet < *canned {
                 *canned = canned.wrapping_sub(unmet);
                 verify_stocks(stocks);
@@ -420,13 +396,13 @@ impl PopulationState {
         })
     }
 
-    fn forecast_food(&self, available: &[i16], canned_food: i16) -> FoodOutcome {
+    fn forecast_food(&self, available: &ResourceTable<i16>, canned_food: i16) -> FoodOutcome {
         let mut food = FoodRemainders {
-            grain: available[GRAIN_RESOURCE_ID],
-            fruit: available[FRUIT_RESOURCE_ID],
-            animal: available[FISH_RESOURCE_ID].wrapping_add(available[LIVESTOCK_RESOURCE_ID]),
-            original_fish: available[FISH_RESOURCE_ID],
-            original_livestock: available[LIVESTOCK_RESOURCE_ID],
+            grain: available[ResourceKind::Grain],
+            fruit: available[ResourceKind::Fruit],
+            animal: available[ResourceKind::Fish].wrapping_add(available[ResourceKind::Livestock]),
+            original_fish: available[ResourceKind::Fish],
+            original_livestock: available[ResourceKind::Livestock],
         };
         let mut unmet = food.consume_normal_needs(self.count);
         let mut substitution = 0;
@@ -504,13 +480,13 @@ struct FoodRemainders {
 }
 
 impl FoodRemainders {
-    fn from_city_stocks(stocks: &[i16]) -> Self {
+    fn from_city_stocks(stocks: &ResourceTable<i16>) -> Self {
         Self {
-            grain: stocks[GRAIN_RESOURCE_ID],
-            fruit: stocks[FRUIT_RESOURCE_ID],
-            animal: stocks[FISH_RESOURCE_ID].wrapping_add(stocks[LIVESTOCK_RESOURCE_ID]),
-            original_fish: stocks[FISH_RESOURCE_ID],
-            original_livestock: stocks[LIVESTOCK_RESOURCE_ID],
+            grain: stocks[ResourceKind::Grain],
+            fruit: stocks[ResourceKind::Fruit],
+            animal: stocks[ResourceKind::Fish].wrapping_add(stocks[ResourceKind::Livestock]),
+            original_fish: stocks[ResourceKind::Fish],
+            original_livestock: stocks[ResourceKind::Livestock],
         }
     }
 
@@ -535,16 +511,16 @@ impl FoodRemainders {
         }
     }
 
-    fn write_back(self, stocks: &mut [i16]) {
-        stocks[GRAIN_RESOURCE_ID] = self.grain;
+    fn write_back(self, stocks: &mut ResourceTable<i16>) {
+        stocks[ResourceKind::Grain] = self.grain;
         verify_stocks(stocks);
-        stocks[FRUIT_RESOURCE_ID] = self.fruit;
+        stocks[ResourceKind::Fruit] = self.fruit;
         verify_stocks(stocks);
 
         if self.animal == 0 {
-            stocks[LIVESTOCK_RESOURCE_ID] = 0;
+            stocks[ResourceKind::Livestock] = 0;
             verify_stocks(stocks);
-            stocks[FISH_RESOURCE_ID] = 0;
+            stocks[ResourceKind::Fish] = 0;
             verify_stocks(stocks);
             return;
         }
@@ -568,25 +544,15 @@ impl FoodRemainders {
             fish = fish.wrapping_sub(shift);
             livestock = livestock.wrapping_add(shift);
         }
-        stocks[LIVESTOCK_RESOURCE_ID] = livestock;
+        stocks[ResourceKind::Livestock] = livestock;
         verify_stocks(stocks);
-        stocks[FISH_RESOURCE_ID] = fish;
+        stocks[ResourceKind::Fish] = fish;
         verify_stocks(stocks);
     }
 }
 
-fn validate_resource_slots(slots: &[i16]) -> Result<(), PopulationError> {
-    if slots.len() == PREDICTED_NEED_RESOURCE_COUNT {
-        Ok(())
-    } else {
-        Err(PopulationError::InvalidStockCount {
-            actual: slots.len(),
-        })
-    }
-}
-
-fn verify_stocks(stocks: &mut [i16]) {
-    for stock in stocks {
+fn verify_stocks(stocks: &mut ResourceTable<i16>) {
+    for (_, stock) in stocks {
         if *stock < 0 {
             *stock = 0;
         }
@@ -638,7 +604,7 @@ mod tests {
             baseline_labor: Some(LaborPool::new(4, 2, 1)),
             production_labor: Some(LaborPool::new(4, 2, 1)),
             pending_labor_delta: Some(LaborPool::new(1, -1, 2)),
-            predicted_need_by_resource: vec![9; PREDICTED_NEED_RESOURCE_COUNT],
+            predicted_need_by_resource: ResourceTable::from_fn(|_| 9),
         }
     }
 
@@ -660,18 +626,18 @@ mod tests {
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
-            reserved_by_type: vec![0; PREDICTED_NEED_RESOURCE_COUNT],
+            reserved_by_type: ResourceTable::default(),
             home_town_tile: 1,
             power_available: 0,
-            stock_by_type: vec![0; PREDICTED_NEED_RESOURCE_COUNT],
-            production_orders: vec![0; 16],
-            production_accum: vec![0; 16],
-            production_flags: vec![0; 16],
-            production_current: vec![0; 16],
-            production_progress: vec![0; 16],
+            stock_by_type: ResourceTable::default(),
+            production_orders: crate::ProductionTable::default(),
+            production_accum: crate::ProductionTable::default(),
+            production_flags: crate::ProductionTable::default(),
+            production_current: crate::ProductionTable::default(),
+            production_progress: crate::ProductionTable::default(),
             population_growth_penalty_ticks: 0,
-            unmet_resource_retries: vec![0; PREDICTED_NEED_RESOURCE_COUNT],
-            consumed_production_input_by_type: vec![0; PREDICTED_NEED_RESOURCE_COUNT],
+            unmet_resource_retries: ResourceTable::default(),
+            consumed_production_input_by_type: ResourceTable::default(),
             population,
         }
     }
@@ -684,11 +650,11 @@ mod tests {
         fish: i16,
         livestock: i16,
     ) {
-        city.stock_by_type[CANNED_FOOD_RESOURCE_ID] = canned;
-        city.stock_by_type[GRAIN_RESOURCE_ID] = grain;
-        city.stock_by_type[FRUIT_RESOURCE_ID] = fruit;
-        city.stock_by_type[FISH_RESOURCE_ID] = fish;
-        city.stock_by_type[LIVESTOCK_RESOURCE_ID] = livestock;
+        city.stock_by_type[ResourceKind::Food] = canned;
+        city.stock_by_type[ResourceKind::Grain] = grain;
+        city.stock_by_type[ResourceKind::Fruit] = fruit;
+        city.stock_by_type[ResourceKind::Fish] = fish;
+        city.stock_by_type[ResourceKind::Livestock] = livestock;
     }
 
     #[test]
@@ -733,14 +699,14 @@ mod tests {
     #[test]
     fn refreshes_only_the_retail_predicted_need_slots() {
         let mut state = population();
-        state.refresh_predicted_needs(2).unwrap();
-        assert_eq!(state.predicted_need_by_resource[13], 0);
-        assert_eq!(state.predicted_need_by_resource[14], 0);
-        assert_eq!(state.predicted_need_by_resource[15], 0);
-        assert_eq!(state.predicted_need_by_resource[17], 5);
-        assert_eq!(state.predicted_need_by_resource[18], 2);
-        assert_eq!(state.predicted_need_by_resource[20], 2);
-        assert_eq!(state.predicted_need_by_resource[16], 9);
+        state.refresh_predicted_needs(2);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Clothing], 0);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Furniture], 0);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Hardware], 0);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Grain], 5);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Fruit], 2);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Livestock], 2);
+        assert_eq!(state.predicted_need_by_resource[ResourceKind::Arms], 9);
     }
 
     #[test]
@@ -775,11 +741,11 @@ mod tests {
             state.consume_population_food().unwrap(),
             FoodOutcome::default()
         );
-        assert_eq!(state.stock_by_type[CANNED_FOOD_RESOURCE_ID], 2);
-        assert_eq!(state.stock_by_type[GRAIN_RESOURCE_ID], 0);
-        assert_eq!(state.stock_by_type[FRUIT_RESOURCE_ID], 0);
-        assert_eq!(state.stock_by_type[FISH_RESOURCE_ID], 0);
-        assert_eq!(state.stock_by_type[LIVESTOCK_RESOURCE_ID], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Food], 2);
+        assert_eq!(state.stock_by_type[ResourceKind::Grain], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Fruit], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Fish], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Livestock], 0);
         assert_eq!(state.population.count, 7);
     }
 
@@ -791,7 +757,7 @@ mod tests {
             state.consume_population_food().unwrap(),
             FoodOutcome::default()
         );
-        assert_eq!(state.stock_by_type[CANNED_FOOD_RESOURCE_ID], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Food], 1);
         assert_eq!(
             state.population.production_labor,
             state.population.baseline_labor
@@ -849,10 +815,10 @@ mod tests {
         let mut state = city();
         stock_food(&mut state, 0, 99, 99, 99, 99);
         let before = state.clone();
-        let mut targets = vec![0; PREDICTED_NEED_RESOURCE_COUNT];
-        targets[GRAIN_RESOURCE_ID] = 3;
-        targets[FRUIT_RESOURCE_ID] = 3;
-        targets[FISH_RESOURCE_ID] = 1;
+        let mut targets = ResourceTable::default();
+        targets[ResourceKind::Grain] = 3;
+        targets[ResourceKind::Fruit] = 3;
+        targets[ResourceKind::Fish] = 1;
         assert_eq!(
             state.forecast_population_food(&targets).unwrap(),
             FoodOutcome {
@@ -884,13 +850,13 @@ mod tests {
         let mut state = city();
         state.population.baseline_labor = Some(LaborPool::new(0, 20, 0));
         state.population.phase_value = 2;
-        state.stock_by_type[15] = 1;
-        state.stock_by_type[13] = 1;
-        state.stock_by_type[14] = 0;
+        state.stock_by_type[ResourceKind::Hardware] = 1;
+        state.stock_by_type[ResourceKind::Clothing] = 1;
+        state.stock_by_type[ResourceKind::Furniture] = 0;
         assert!(state.apply_population_strike().unwrap());
         assert_eq!(state.population.phase_value, 0);
-        assert_eq!(state.stock_by_type[15], 1);
-        assert_eq!(state.stock_by_type[13], 1);
-        assert_eq!(state.stock_by_type[14], 0);
+        assert_eq!(state.stock_by_type[ResourceKind::Hardware], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Clothing], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Furniture], 0);
     }
 }

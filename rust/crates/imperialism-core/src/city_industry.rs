@@ -192,7 +192,7 @@ fn validate_action_table<T>(field: &'static str, values: &[T]) -> Result<(), Cit
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, NationId, PopulationState, ResourceKind};
+    use crate::{LaborPool, NationId, PopulationState};
 
     fn city() -> CityState {
         CityState {
@@ -208,18 +208,18 @@ mod tests {
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
-            reserved_by_type: vec![0; ResourceKind::COUNT],
+            reserved_by_type: crate::ResourceTable::default(),
             home_town_tile: 1,
             power_available: 0,
-            stock_by_type: vec![0; ResourceKind::COUNT],
-            production_orders: vec![0; 16],
-            production_accum: vec![0; 16],
-            production_flags: vec![0; 16],
-            production_current: vec![0; 16],
-            production_progress: vec![0; 16],
+            stock_by_type: crate::ResourceTable::default(),
+            production_orders: crate::ProductionTable::default(),
+            production_accum: crate::ProductionTable::default(),
+            production_flags: crate::ProductionTable::default(),
+            production_current: crate::ProductionTable::default(),
+            production_progress: crate::ProductionTable::default(),
             population_growth_penalty_ticks: 0,
-            unmet_resource_retries: vec![0; ResourceKind::COUNT],
-            consumed_production_input_by_type: vec![0; ResourceKind::COUNT],
+            unmet_resource_retries: crate::ResourceTable::default(),
+            consumed_production_input_by_type: crate::ResourceTable::default(),
             population: PopulationState {
                 count: 7,
                 count_float_bits: 7.0_f32.to_bits(),
@@ -229,7 +229,7 @@ mod tests {
                 baseline_labor: Some(LaborPool::new(4, 2, 1)),
                 production_labor: Some(LaborPool::new(4, 2, 1)),
                 pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: vec![0; ResourceKind::COUNT],
+                predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
     }

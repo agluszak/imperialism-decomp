@@ -1,6 +1,5 @@
 use crate::{
-    GameCommand, GameEvent, GameState, MajorNationState, NationEconomyError, NationId, NationKind,
-    NationState, ResourceKind, StepOutcome,
+    GameCommand, GameEvent, GameState, NationId, NationKind, NationState, ResourceKind, StepOutcome,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -13,16 +12,6 @@ pub enum RuleError {
     MissingCity { nation: NationId },
     #[error("city slot {} belongs to nation {}", .nation.get(), .actual.get())]
     CityNationMismatch { nation: NationId, actual: NationId },
-    #[error(
-        "nation {} {field} has {actual} entries, expected {}",
-        .nation.get(),
-        ResourceKind::COUNT
-    )]
-    InvalidResourceCount {
-        nation: NationId,
-        field: &'static str,
-        actual: usize,
-    },
 }
 
 impl GameState {
@@ -38,10 +27,8 @@ impl GameState {
                     .major
                     .as_mut()
                     .expect("major-nation presence was checked before placing a bid");
-                major
-                    .set_item_potential(resource, amount)
-                    .map_err(|error| rule_error(nation, error))?;
-                let applied = major.item_potentials[resource.index()];
+                major.set_item_potential(resource, amount);
+                let applied = major.item_potentials[resource];
                 Ok(StepOutcome {
                     events: vec![GameEvent::TradeBidPlaced {
                         nation,
@@ -57,7 +44,7 @@ impl GameState {
                 price,
             } => {
                 let state = self.major_nation_mut(nation)?;
-                settle_purchase(state, nation, resource, amount, price)?;
+                settle_purchase(state, resource, amount, price)?;
                 Ok(StepOutcome {
                     events: vec![GameEvent::TradeSettled {
                         nation,
@@ -75,8 +62,7 @@ impl GameState {
             .major
             .as_mut()
             .expect("major-nation presence was checked before remembering bids")
-            .remember_trade_bids()
-            .map_err(|error| rule_error(nation, error))?;
+            .remember_trade_bids();
         Ok(StepOutcome {
             events: vec![GameEvent::TradeBidsRemembered { nation }],
         })
@@ -103,9 +89,7 @@ impl GameState {
         let city = self.cities[index]
             .as_mut()
             .expect("city presence was checked before committing purchases");
-        major
-            .settle_purchased_items(city)
-            .map_err(|error| rule_error(nation, error))?;
+        major.settle_purchased_items(city);
         Ok(StepOutcome {
             events: vec![GameEvent::PurchasedItemsCommitted { nation }],
         })
@@ -132,21 +116,8 @@ impl GameState {
     }
 }
 
-fn rule_error(nation: NationId, error: NationEconomyError) -> RuleError {
-    match error {
-        NationEconomyError::InvalidResourceCount { field, actual } => {
-            RuleError::InvalidResourceCount {
-                nation,
-                field,
-                actual,
-            }
-        }
-    }
-}
-
 fn settle_purchase(
     nation: &mut NationState,
-    nation_id: NationId,
     resource: ResourceKind,
     amount: i16,
     price: i16,
@@ -155,11 +126,8 @@ fn settle_purchase(
         .major
         .as_mut()
         .expect("major-nation presence was checked before settlement");
-    validate_purchased_items(major, nation_id)?;
-
-    let index = resource.index();
-    major.purchased_items_by_resource[index] =
-        major.purchased_items_by_resource[index].wrapping_add(amount);
+    major.purchased_items_by_resource[resource] =
+        major.purchased_items_by_resource[resource].wrapping_add(amount);
     let cost = i32::from(price).wrapping_mul(i32::from(amount));
     nation.treasury = nation.treasury.wrapping_sub(cost);
 
@@ -177,19 +145,6 @@ fn settle_purchase(
     Ok(())
 }
 
-fn validate_purchased_items(major: &MajorNationState, nation: NationId) -> Result<(), RuleError> {
-    let actual = major.purchased_items_by_resource.len();
-    if actual == ResourceKind::COUNT {
-        Ok(())
-    } else {
-        Err(RuleError::InvalidResourceCount {
-            nation,
-            field: "purchased items",
-            actual,
-        })
-    }
-}
-
 const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool {
     matches!(
         resource,
@@ -204,7 +159,8 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, LaborPool, PendingWorkState, PopulationState, RngState, TurnState, WorldState,
+        CityState, LaborPool, MajorNationState, PendingWorkState, PopulationState, RngState,
+        TurnState, WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -213,16 +169,16 @@ mod tests {
             capacities: [10, 4, 0, 0],
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: vec![0; ResourceKind::COUNT],
-            diplomacy_grant_by_nation: vec![0; ResourceKind::COUNT],
-            need_current_by_type: vec![0; ResourceKind::COUNT],
-            need_target_by_type: vec![0; ResourceKind::COUNT],
-            relation_delta_current: vec![0; ResourceKind::COUNT],
-            purchased_items_by_resource: vec![0; ResourceKind::COUNT],
-            item_potentials: vec![0; ResourceKind::COUNT],
-            unfilled_trade_turns_by_resource: vec![0; ResourceKind::COUNT],
-            transported_items_by_resource: vec![0; ResourceKind::COUNT],
-            remembered_trade_offers_by_resource: vec![0; ResourceKind::COUNT],
+            diplomacy_policy_by_nation: crate::NationTable::default(),
+            diplomacy_grant_by_nation: crate::NationTable::default(),
+            need_current_by_type: crate::ResourceTable::default(),
+            need_target_by_type: crate::ResourceTable::default(),
+            relation_delta_current: crate::ResourceTable::default(),
+            purchased_items_by_resource: crate::ResourceTable::default(),
+            item_potentials: crate::ResourceTable::default(),
+            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
+            transported_items_by_resource: crate::ResourceTable::default(),
+            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
             aid_allocation_matrix: vec![0; 23 * 23],
             budget_pool_base: 200,
             budget_pool_delta: 100,
@@ -230,8 +186,8 @@ mod tests {
             candidate_nation_flags: vec![0; 23],
             scenario_initialized: false,
             turn_finished: false,
-            pending_action_status: vec![0; 13],
-            pending_action_payload_by_action: vec![0; 13],
+            pending_action_status: crate::PendingActionTable::default(),
+            pending_action_payload_by_action: crate::PendingActionTable::default(),
             diplomacy_budget_base: 0,
             escalation_counter: 0,
             pending_commitment_cost: 0,
@@ -252,7 +208,7 @@ mod tests {
             owner_nation: 6,
             treasury: 1_000,
             home_tile: 0,
-            need_level_by_nation: vec![0; 23],
+            need_level_by_nation: crate::NationTable::default(),
             major: (kind == NationKind::Major).then(major),
         });
         let mut cities = vec![None; 7];
@@ -287,7 +243,13 @@ mod tests {
             missions: vec![],
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: vec![],
+                nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
+                    nation: NationId::new(nation as u8),
+                    turn_events: vec![],
+                    proposals: vec![],
+                    turn_summary: vec![],
+                    turn_start_events: vec![],
+                }),
                 war_transitions: vec![],
             },
         }
@@ -307,18 +269,18 @@ mod tests {
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
-            reserved_by_type: vec![0; ResourceKind::COUNT],
+            reserved_by_type: crate::ResourceTable::default(),
             home_town_tile: 0,
             power_available: 0,
-            stock_by_type: vec![0; ResourceKind::COUNT],
-            production_orders: vec![0; 16],
-            production_accum: vec![0; 16],
-            production_flags: vec![0; 16],
-            production_current: vec![0; 16],
-            production_progress: vec![0; 16],
+            stock_by_type: crate::ResourceTable::default(),
+            production_orders: crate::ProductionTable::default(),
+            production_accum: crate::ProductionTable::default(),
+            production_flags: crate::ProductionTable::default(),
+            production_current: crate::ProductionTable::default(),
+            production_progress: crate::ProductionTable::default(),
             population_growth_penalty_ticks: 0,
-            unmet_resource_retries: vec![0; ResourceKind::COUNT],
-            consumed_production_input_by_type: vec![0; ResourceKind::COUNT],
+            unmet_resource_retries: crate::ResourceTable::default(),
+            consumed_production_input_by_type: crate::ResourceTable::default(),
             population: PopulationState {
                 count: 0,
                 count_float_bits: 0,
@@ -328,7 +290,7 @@ mod tests {
                 baseline_labor: Some(LaborPool::default()),
                 production_labor: Some(LaborPool::default()),
                 pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: vec![0; ResourceKind::COUNT],
+                predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
     }
@@ -360,10 +322,7 @@ mod tests {
         let state = game.nations[6].as_ref().unwrap();
         let major = state.major.as_ref().unwrap();
         assert_eq!(state.treasury, 979);
-        assert_eq!(
-            major.purchased_items_by_resource[ResourceKind::Fabric.index()],
-            3
-        );
+        assert_eq!(major.purchased_items_by_resource[ResourceKind::Fabric], 3);
         assert_eq!(major.capacities[0], 7);
         assert_eq!(major.budget_pool_delta, 79);
         assert_eq!(major.budget_pool_base, 200);
@@ -393,7 +352,7 @@ mod tests {
                 .major
                 .as_ref()
                 .unwrap()
-                .item_potentials[ResourceKind::Fabric.index()],
+                .item_potentials[ResourceKind::Fabric],
             4
         );
         assert_eq!(
@@ -422,7 +381,7 @@ mod tests {
             .unwrap();
         game.apply_command(purchase(nation, ResourceKind::Food, -30, 1))
             .unwrap();
-        game.cities[6].as_mut().unwrap().stock_by_type[ResourceKind::Food.index()] = 20;
+        game.cities[6].as_mut().unwrap().stock_by_type[ResourceKind::Food] = 20;
 
         assert_eq!(
             game.commit_purchased_items(nation).unwrap().events,
@@ -433,43 +392,19 @@ mod tests {
             major
                 .purchased_items_by_resource
                 .iter()
-                .all(|amount| *amount == 0)
+                .all(|(_, amount)| *amount == 0)
         );
         assert_eq!(
-            major.unfilled_trade_turns_by_resource[ResourceKind::Fabric.index()],
+            major.unfilled_trade_turns_by_resource[ResourceKind::Fabric],
             0
         );
         assert_eq!(
-            major.unfilled_trade_turns_by_resource[ResourceKind::Clothing.index()],
+            major.unfilled_trade_turns_by_resource[ResourceKind::Clothing],
             1
         );
         let city = game.cities[6].as_ref().unwrap();
-        assert_eq!(city.stock_by_type[ResourceKind::Fabric.index()], 3);
-        assert_eq!(city.stock_by_type[ResourceKind::Food.index()], 0);
-    }
-
-    #[test]
-    fn trade_phase_validation_prevents_partial_mutation() {
-        let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
-        game.nations[6]
-            .as_mut()
-            .unwrap()
-            .major
-            .as_mut()
-            .unwrap()
-            .remembered_trade_offers_by_resource
-            .pop();
-        let before = game.clone();
-        assert_eq!(
-            game.commit_purchased_items(nation),
-            Err(RuleError::InvalidResourceCount {
-                nation,
-                field: "remembered nation trade offers",
-                actual: 22,
-            })
-        );
-        assert_eq!(game, before);
+        assert_eq!(city.stock_by_type[ResourceKind::Fabric], 3);
+        assert_eq!(city.stock_by_type[ResourceKind::Food], 0);
     }
 
     #[test]
@@ -482,7 +417,7 @@ mod tests {
         let major = state.major.as_ref().unwrap();
         assert_eq!(state.treasury, 1_010);
         assert_eq!(
-            major.purchased_items_by_resource[ResourceKind::Clothing.index()],
+            major.purchased_items_by_resource[ResourceKind::Clothing],
             -2
         );
         assert_eq!(major.capacities[0], 10);
@@ -510,37 +445,21 @@ mod tests {
     }
 
     #[test]
-    fn command_rejects_missing_minor_and_malformed_nation_state() {
+    fn command_rejects_missing_and_minor_nations_without_mutation() {
         let nation = NationId::new(6);
         let mut game = state(NationKind::Minor);
+        let before = game.clone();
         assert_eq!(
             game.apply_command(purchase(nation, ResourceKind::Food, 1, 1)),
             Err(RuleError::NotMajorNation { nation })
         );
+        assert_eq!(game, before);
         assert_eq!(
             game.apply_command(purchase(NationId::new(5), ResourceKind::Food, 1, 1)),
             Err(RuleError::MissingNation {
                 nation: NationId::new(5)
             })
         );
-
-        let mut malformed = state(NationKind::Major);
-        malformed.nations[6]
-            .as_mut()
-            .unwrap()
-            .major
-            .as_mut()
-            .unwrap()
-            .purchased_items_by_resource
-            .pop();
-        assert_eq!(
-            malformed.apply_command(purchase(nation, ResourceKind::Food, 1, 1)),
-            Err(RuleError::InvalidResourceCount {
-                nation,
-                field: "purchased items",
-                actual: 22,
-            })
-        );
-        assert_eq!(malformed.nations[6].as_ref().unwrap().treasury, 1_000);
+        assert_eq!(game, before);
     }
 }
