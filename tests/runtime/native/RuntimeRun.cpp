@@ -112,6 +112,7 @@ void RuntimeRun::StartScenario(RuntimeScenario* value) {
   lastFingerprint.Empty();
   mapStateJson.Empty();
   gameSnapshotJson.Empty();
+  generatedWorldSnapshotJson.Empty();
   serializationRoundtripJson.Empty();
   assertionFailures = "[";
 }
@@ -308,6 +309,9 @@ CString& RuntimeRun::MapStateJson() {
 }
 CString& RuntimeRun::GameSnapshotJson() {
   return gameSnapshotJson;
+}
+CString& RuntimeRun::GeneratedWorldSnapshotJson() {
+  return generatedWorldSnapshotJson;
 }
 CString& RuntimeRun::SerializationRoundtripJson() {
   return serializationRoundtripJson;

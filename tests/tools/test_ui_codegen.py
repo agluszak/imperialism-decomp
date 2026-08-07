@@ -8,11 +8,15 @@ from pathlib import Path
 
 from tools.source_model import build_model
 from tools.ui_codegen import (
+    RUST_UI_CATALOG_PATH,
+    build_rust_ui_catalog,
     load_recipes,
     load_text_resources,
     load_ui_views,
     load_windows_views,
     render_factory,
+    render_rust_ui_catalog,
+    rust_ui_catalog_is_current,
     validate,
     write_generated,
 )
@@ -69,6 +73,65 @@ class UiCodegenTests(unittest.TestCase):
         )
         self.assertIn("RegisterUiResourceEntry", first_text)
         self.assertIn("RegisterUiResourceEntry", second_text)
+
+    def test_rust_catalog_is_deterministic_and_current(self) -> None:
+        first = render_rust_ui_catalog(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        second = render_rust_ui_catalog(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        self.assertEqual(first, second)
+        self.assertEqual(
+            first,
+            (REPO_ROOT / RUST_UI_CATALOG_PATH).read_text(encoding="utf-8"),
+        )
+        self.assertTrue(
+            rust_ui_catalog_is_current(
+                REPO_ROOT, self.recipes, self.views, self.text_resources
+            )
+        )
+
+    def test_rust_catalog_covers_the_launch_slice_with_scoped_ids(self) -> None:
+        catalog = build_rust_ui_catalog(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        ids = {
+            (view["id"]["resource_file"], view["id"]["resource_id"])
+            for view in catalog["views"]
+        }
+        self.assertEqual(
+            ids,
+            {
+                ("Startup.rsrc", 1500),
+                ("Startup.rsrc", 1501),
+                ("Startup.rsrc", 952),
+                ("Startup.rsrc", 953),
+                ("FlagView.rsrc", 8451),
+                ("MapView.rsrc", 2013),
+            },
+        )
+        self.assertEqual(len(ids), len(catalog["views"]))
+
+    def test_rust_catalog_preserves_diagnostics_and_windows_deltas(self) -> None:
+        catalog = build_rust_ui_catalog(
+            REPO_ROOT, self.recipes, self.views, self.text_resources
+        )
+        by_id = {
+            (view["id"]["resource_file"], view["id"]["resource_id"]): view
+            for view in catalog["views"]
+        }
+        newspaper = by_id[("FlagView.rsrc", 8451)]
+        toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
+        self.assertEqual(toolbar["id"], toolbar["resource_offset"])
+        self.assertEqual(toolbar["legacy_class"], "TToolBarCluster")
+        self.assertEqual(toolbar["resolved_class"], "TToolBarCluster")
+
+        strategic_map = by_id[("MapView.rsrc", 2013)]
+        nodes_by_tag = {node["tag"]: node for node in strategic_map["nodes"]}
+        self.assertFalse(nodes_by_tag["Flag"]["enabled"])
+        self.assertFalse(nodes_by_tag["quer"]["enabled"])
+        self.assertIn("Windows:", nodes_by_tag["Flag"]["source"])
 
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())

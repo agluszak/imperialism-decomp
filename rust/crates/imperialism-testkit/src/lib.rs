@@ -1,6 +1,10 @@
 #![forbid(unsafe_code)]
 
-use imperialism_core::{GameSnapshotV1, SnapshotValidationError};
+use imperialism_core::{
+    CoarseMapGeneration, GameSnapshotV1, RetailLcg, SnapshotValidationError,
+    generate_coarse_random_map,
+};
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use std::fs::File;
 use std::io::Read;
@@ -16,6 +20,139 @@ pub enum SnapshotReadError {
     MissingGameSnapshot,
     #[error("invalid game snapshot: {0}")]
     Validation(#[source] SnapshotValidationError),
+    #[error("result contains no generated-world snapshot")]
+    MissingGeneratedWorld,
+    #[error("generated-world snapshot contains no coarse-generation oracle")]
+    MissingCoarseGeneration,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct GeneratedWorldCoarseOracle {
+    pub initial_map_lcg: u32,
+    pub attempt_count: usize,
+    pub attempts: Vec<GeneratedWorldCoarseAttempt>,
+    pub accepted_map_lcg: u32,
+    pub accepted_grid: Vec<i32>,
+    pub city_region_next_id: i32,
+    pub city_region_ids: Vec<i32>,
+    pub group_members: Vec<i32>,
+    pub expanded_province_count: usize,
+    pub expanded_tile_fields: Vec<String>,
+    pub expanded_tiles: Vec<[i32; 3]>,
+    pub expanded_provinces: Vec<[i32; 2]>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct GeneratedWorldCoarseAttempt {
+    pub index: usize,
+    pub draw_count: u32,
+    pub map_lcg_after_seeding: u32,
+    pub pre_validation_grid: Vec<i32>,
+    pub city_region_next_id: i32,
+    pub city_region_ids: Vec<i32>,
+    pub group_members: Vec<i32>,
+    pub post_validation_grid: Vec<i32>,
+    pub error_check_failed: i32,
+    pub has_continuous_ocean_column: i32,
+    pub frontier_mask_complete: i32,
+    pub accepted: i32,
+    pub map_lcg_after_validation: u32,
+}
+
+pub fn read_generated_world_coarse(
+    path: &Path,
+) -> Result<GeneratedWorldCoarseOracle, SnapshotReadError> {
+    let file = File::open(path).map_err(SnapshotReadError::Io)?;
+    decode_generated_world_coarse(file)
+}
+
+pub fn decode_generated_world_coarse(
+    reader: impl Read,
+) -> Result<GeneratedWorldCoarseOracle, SnapshotReadError> {
+    let value: serde_json::Value =
+        serde_json::from_reader(reader).map_err(SnapshotReadError::Json)?;
+    let world = if value.get("schema").is_some() {
+        value
+    } else {
+        value
+            .get("generated_world")
+            .cloned()
+            .filter(|snapshot| !snapshot.is_null())
+            .ok_or(SnapshotReadError::MissingGeneratedWorld)?
+    };
+    let coarse = world
+        .get("coarse_generation")
+        .cloned()
+        .ok_or(SnapshotReadError::MissingCoarseGeneration)?;
+    serde_json::from_value(coarse).map_err(SnapshotReadError::Json)
+}
+
+pub fn generate_and_compare_coarse_oracle(
+    oracle: &GeneratedWorldCoarseOracle,
+) -> Result<CoarseMapGeneration, SnapshotDifference> {
+    let mut rng = RetailLcg::from_state(oracle.initial_map_lcg);
+    let actual = generate_coarse_random_map(&mut rng);
+    if let Some(difference) = coarse_oracle_difference(oracle, &actual) {
+        Err(difference)
+    } else {
+        Ok(actual)
+    }
+}
+
+pub fn coarse_oracle_difference(
+    oracle: &GeneratedWorldCoarseOracle,
+    actual: &CoarseMapGeneration,
+) -> Option<SnapshotDifference> {
+    let expected = serde_json::to_value(oracle).expect("oracle serialization cannot fail");
+    let attempts = actual
+        .attempts
+        .iter()
+        .enumerate()
+        .map(|(index, attempt)| {
+            serde_json::json!({
+                "index": index,
+                "draw_count": attempt.draw_count,
+                "map_lcg_after_seeding": attempt.map_lcg_after_seeding,
+                "pre_validation_grid": attempt.pre_validation_grid.flattened().map(i32::from).collect::<Vec<_>>(),
+                "city_region_next_id": attempt.city_region_next_id,
+                "city_region_ids": attempt.city_region_ids,
+                "group_members": attempt.group_members.iter().flatten().copied().collect::<Vec<_>>(),
+                "post_validation_grid": attempt.post_validation_grid.flattened().map(i32::from).collect::<Vec<_>>(),
+                "error_check_failed": i32::from(attempt.error_check_failed),
+                "has_continuous_ocean_column": option_bool_code(attempt.has_continuous_ocean_column),
+                "frontier_mask_complete": option_bool_code(attempt.frontier_mask_complete),
+                "accepted": i32::from(attempt.accepted),
+                "map_lcg_after_validation": attempt.map_lcg_after_validation,
+            })
+        })
+        .collect::<Vec<_>>();
+    let actual = serde_json::json!({
+        "initial_map_lcg": actual.initial_map_lcg,
+        "attempt_count": actual.attempts.len(),
+        "attempts": attempts,
+        "accepted_map_lcg": actual.accepted_map_lcg,
+        "accepted_grid": actual.accepted_grid.flattened().map(i32::from).collect::<Vec<_>>(),
+        "city_region_next_id": actual.city_region_next_id,
+        "city_region_ids": actual.city_region_ids,
+        "group_members": actual.group_members.iter().flatten().copied().collect::<Vec<_>>(),
+        "expanded_province_count": actual.expanded_provinces.len(),
+        "expanded_tile_fields": ["terrain_kind", "owner_nation", "province_index"],
+        "expanded_tiles": actual.expanded_tiles.iter().map(|tile| [
+            i32::from(tile.terrain_kind), i32::from(tile.owner_nation), i32::from(tile.province_index)
+        ]).collect::<Vec<_>>(),
+        "expanded_provinces": actual.expanded_provinces.iter().map(|province| [
+            i32::from(province.owner_nation), i32::from(province.region_class)
+        ]).collect::<Vec<_>>(),
+    });
+    difference_at(
+        "coarse_generation".to_owned(),
+        Some(&expected),
+        Some(&actual),
+    )
+}
+
+fn option_bool_code(value: Option<bool>) -> i32 {
+    value.map_or(-1, i32::from)
 }
 
 pub fn read_game_snapshot(path: &Path) -> Result<GameSnapshotV1, SnapshotReadError> {

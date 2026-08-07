@@ -111,6 +111,15 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "generated_world_snapshot",
+        "GeneratedWorldSnapshotTest",
+        ("pr", "full", "generated_world"),
+        "self_consistency",
+        required_oracles=(),
+        native_snapshots=("generated_world",),
+        record_game_flow=True,
+    ),
+    RuntimeTestSpec(
         "random_game_enters_map",
         "RandomGameJourneyTest",
         ("full",),

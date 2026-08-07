@@ -12,6 +12,47 @@ from tools.runtime.catalog import EVIDENCE_KINDS
 
 FORMAT_VERSION = 1
 GAME_SNAPSHOT_SCHEMA = "imperialism.game_snapshot.v1"
+GENERATED_WORLD_SCHEMA = "imperialism.generated_world.v1"
+GENERATED_WORLD_TILE_FIELDS = (
+    "terrain_kind",
+    "sprite_variant",
+    "river_sprite_code",
+    "former_owner_nation",
+    "owner_nation",
+    "region_subtype",
+    "adjacency_bits",
+    "owner_border_mask",
+    "city_border_mask",
+    "water_adjacency_mask",
+    "adjacency_mask_a",
+    "adjacency_mask_b",
+    "development_class_nibbles",
+    "pending_development_flag",
+    "recruit_search_visited",
+    "per_tile_visited_flag",
+    "marker_slot_index",
+    "resource_edge_0",
+    "resource_edge_1",
+    "gate_flag",
+    "province_index",
+    "tile_action_state",
+    "rail_flags",
+    "secondary_owner_nation",
+    "tile_action_ordinal",
+    "active_flags",
+)
+GENERATED_WORLD_BORDER_LINK_FIELDS = (
+    "x0",
+    "y0",
+    "x1",
+    "y1",
+    "coord0",
+    "coord1",
+    "region_a",
+    "region_b",
+    "angle",
+    "wrap",
+)
 GAME_SNAPSHOT_SECTIONS = (
     "metadata",
     "rng",
@@ -48,6 +89,280 @@ def validate_result(result: dict[str, Any], expected_name: str, expected_seed: i
     snapshot = result.get("game_snapshot")
     if snapshot is not None:
         validate_game_snapshot(snapshot)
+    generated_world = result.get("generated_world")
+    if generated_world is not None:
+        validate_generated_world(generated_world)
+
+
+def validate_generated_world(snapshot: object) -> None:
+    if not isinstance(snapshot, dict):
+        raise ValueError("generated_world must be an object")
+    _require_exact_keys(
+        snapshot,
+        {
+            "schema",
+            "tile_fields",
+            "border_link_fields",
+            "map",
+            "rng",
+            "coarse_generation",
+            "tiles",
+            "provinces",
+            "ocean_context_array_count",
+            "sea_region_count",
+            "sea_regions",
+            "route_count",
+            "routes",
+            "border_links",
+        },
+        "generated_world",
+    )
+    if snapshot["schema"] != GENERATED_WORLD_SCHEMA:
+        raise ValueError(f"unsupported generated_world schema {snapshot['schema']!r}")
+    if snapshot["tile_fields"] != list(GENERATED_WORLD_TILE_FIELDS):
+        raise ValueError("generated_world tile_fields do not match the v1 schema")
+    if snapshot["border_link_fields"] != list(GENERATED_WORLD_BORDER_LINK_FIELDS):
+        raise ValueError("generated_world border_link_fields do not match the v1 schema")
+
+    map_state = snapshot["map"]
+    if not isinstance(map_state, dict):
+        raise ValueError("generated_world map must be an object")
+    _require_exact_keys(
+        map_state,
+        {
+            "width",
+            "height",
+            "scenario_tag",
+            "retail_topology_byte",
+            "wraps_horizontally",
+            "strategic_map_palette_preview_ready",
+            "map_manager_ready",
+            "map_data_ready",
+            "tile_search_flag",
+            "city_score_total",
+            "pending_river_mouth_tile",
+        },
+        "generated_world map",
+    )
+    if map_state["width"] != 108 or map_state["height"] != 60:
+        raise ValueError("generated_world map must be 108x60")
+    if not isinstance(map_state["scenario_tag"], str):
+        raise ValueError("generated_world scenario_tag must be a string")
+    _require_int_range(map_state["retail_topology_byte"], -128, 127, "retail_topology_byte")
+    if not isinstance(map_state["wraps_horizontally"], bool):
+        raise ValueError("generated_world wraps_horizontally must be a boolean")
+    if map_state["wraps_horizontally"] != (map_state["retail_topology_byte"] == 0):
+        raise ValueError("generated_world topology byte has invalid retail wrap semantics")
+    for field in (
+        "strategic_map_palette_preview_ready",
+        "map_data_ready",
+        "tile_search_flag",
+    ):
+        _require_int_range(map_state[field], 0, 255, f"generated_world map {field}")
+    for field in ("map_manager_ready", "city_score_total", "pending_river_mouth_tile"):
+        _require_integer(map_state[field], f"generated_world map {field}")
+
+    rng = snapshot["rng"]
+    if not isinstance(rng, dict):
+        raise ValueError("generated_world rng must be an object")
+    _require_exact_keys(
+        rng,
+        {"runtime_seed", "crt_rand_state", "map_generation_lcg", "zone_status_lcg"},
+        "generated_world rng",
+    )
+    for field, value in rng.items():
+        _require_int_range(value, 0, 0xFFFFFFFF, f"generated_world rng {field}")
+
+    _validate_coarse_generation(snapshot["coarse_generation"])
+
+    tiles = snapshot["tiles"]
+    if not isinstance(tiles, list) or len(tiles) != 108 * 60:
+        raise ValueError("generated_world tiles must contain the 108x60 tile grid")
+    _require_integer_rows(tiles, len(GENERATED_WORLD_TILE_FIELDS), "generated_world tiles")
+
+    provinces = snapshot["provinces"]
+    if not isinstance(provinces, list) or len(provinces) != 0x180:
+        raise ValueError("generated_world provinces must contain 384 records")
+    province_keys = {
+        "index",
+        "owner_nation",
+        "former_owner_nation",
+        "development_stage",
+        "fort_level",
+        "city_tile",
+        "last_turn_tick",
+        "adjacent_region_count",
+        "adjacent_region_ids",
+        "adjacent_region_anchor_tiles",
+        "linked_region_count",
+        "secondary_neighbor_tile",
+        "primary_neighbor_tile",
+        "linked_tile_indices",
+        "resource_development_counts",
+        "city_score",
+        "navy_order_reachable",
+        "explored_by_nation_mask",
+        "resource_presence_mask",
+        "region_class",
+        "city_name",
+    }
+    province_arrays = (
+        ("adjacent_region_ids", 12),
+        ("adjacent_region_anchor_tiles", 12),
+        ("linked_tile_indices", 32),
+        ("resource_development_counts", 10),
+    )
+    for index, province in enumerate(provinces):
+        if not isinstance(province, dict):
+            raise ValueError("generated_world province records must be objects")
+        _require_exact_keys(province, province_keys, "generated_world province")
+        if province["index"] != index:
+            raise ValueError("generated_world provinces must be in index order")
+        if not isinstance(province["city_name"], str):
+            raise ValueError("generated_world province city_name must be a string")
+        for field, count in province_arrays:
+            _require_integer_array_for(province, field, count, "generated_world province")
+        for field in province_keys - {"city_name", *(field for field, _ in province_arrays)}:
+            _require_integer(province[field], f"generated_world province {field}")
+
+    for field in ("ocean_context_array_count", "sea_region_count", "route_count"):
+        _require_integer(snapshot[field], f"generated_world {field}")
+    sea_regions = snapshot["sea_regions"]
+    if not isinstance(sea_regions, list) or len(sea_regions) != snapshot["sea_region_count"]:
+        raise ValueError("generated_world sea_region_count must match sea_regions")
+    sea_region_keys = {
+        "index",
+        "kind",
+        "context_ordinal",
+        "status_code",
+        "display_name",
+        "tile_or_terrain_id",
+        "nation_key_mask",
+        "seed_nation_id",
+        "active_tile",
+        "distance_level",
+        "port_tile",
+        "primary_neighbors",
+        "secondary_neighbors",
+    }
+    for index, region in enumerate(sea_regions):
+        if not isinstance(region, dict):
+            raise ValueError("generated_world sea regions must be objects")
+        _require_exact_keys(region, sea_region_keys, "generated_world sea region")
+        if region["index"] != index or region["kind"] not in {"zone", "port"}:
+            raise ValueError("generated_world sea region identity is invalid")
+        if not isinstance(region["display_name"], str):
+            raise ValueError("generated_world sea region display_name must be a string")
+        for field in ("primary_neighbors", "secondary_neighbors"):
+            values = region[field]
+            if not isinstance(values, list) or any(not _is_integer(value) for value in values):
+                raise ValueError(f"generated_world sea region {field} must contain integers")
+        for field in sea_region_keys - {
+            "kind",
+            "display_name",
+            "primary_neighbors",
+            "secondary_neighbors",
+        }:
+            _require_integer(region[field], f"generated_world sea region {field}")
+
+    routes = snapshot["routes"]
+    if not isinstance(routes, list) or len(routes) != snapshot["route_count"]:
+        raise ValueError("generated_world route_count must match routes")
+    _require_integer_rows(routes, 4, "generated_world routes")
+    border_links = snapshot["border_links"]
+    if not isinstance(border_links, list):
+        raise ValueError("generated_world border_links must be an array")
+    _require_integer_rows(
+        border_links, len(GENERATED_WORLD_BORDER_LINK_FIELDS), "generated_world border_links"
+    )
+
+
+def _validate_coarse_generation(value: object) -> None:
+    if not isinstance(value, dict):
+        raise ValueError("generated_world coarse_generation must be an object")
+    _require_exact_keys(
+        value,
+        {
+            "initial_map_lcg",
+            "attempt_count",
+            "attempts",
+            "accepted_map_lcg",
+            "accepted_grid",
+            "city_region_next_id",
+            "city_region_ids",
+            "group_members",
+            "expanded_province_count",
+            "expanded_tile_fields",
+            "expanded_tiles",
+            "expanded_provinces",
+        },
+        "generated_world coarse_generation",
+    )
+    _require_int_range(
+        value["initial_map_lcg"], 0, 0xFFFFFFFF, "coarse_generation initial_map_lcg"
+    )
+    _require_int_range(
+        value["accepted_map_lcg"], 0, 0xFFFFFFFF, "coarse_generation accepted_map_lcg"
+    )
+    _require_integer(value["attempt_count"], "coarse_generation attempt_count")
+    attempts = value["attempts"]
+    if not isinstance(attempts, list) or len(attempts) != value["attempt_count"] or not attempts:
+        raise ValueError("coarse_generation attempt_count must match nonempty attempts")
+    attempt_keys = {
+        "index",
+        "draw_count",
+        "map_lcg_after_seeding",
+        "pre_validation_grid",
+        "city_region_next_id",
+        "city_region_ids",
+        "group_members",
+        "post_validation_grid",
+        "error_check_failed",
+        "has_continuous_ocean_column",
+        "frontier_mask_complete",
+        "accepted",
+        "map_lcg_after_validation",
+    }
+    for index, attempt in enumerate(attempts):
+        if not isinstance(attempt, dict):
+            raise ValueError("coarse_generation attempts must be objects")
+        _require_exact_keys(attempt, attempt_keys, "coarse_generation attempt")
+        if attempt["index"] != index:
+            raise ValueError("coarse_generation attempts must be in index order")
+        _require_integer(attempt["draw_count"], "coarse_generation attempt draw_count")
+        for field in ("map_lcg_after_seeding", "map_lcg_after_validation"):
+            _require_int_range(attempt[field], 0, 0xFFFFFFFF, f"coarse_generation {field}")
+        for field in ("pre_validation_grid", "post_validation_grid"):
+            _require_integer_array_for(attempt, field, 15 * 27, "coarse_generation attempt")
+        _require_integer_array_for(
+            attempt, "city_region_ids", 23, "coarse_generation attempt"
+        )
+        _require_integer_array_for(attempt, "group_members", 7 * 3, "coarse_generation attempt")
+        for field in (
+            "error_check_failed",
+            "has_continuous_ocean_column",
+            "frontier_mask_complete",
+            "accepted",
+        ):
+            _require_int_range(attempt[field], -1, 1, f"coarse_generation attempt {field}")
+    if attempts[-1]["accepted"] != 1 or any(attempt["accepted"] == 1 for attempt in attempts[:-1]):
+        raise ValueError("coarse_generation only the final attempt may be accepted")
+
+    _require_integer_array_for(value, "accepted_grid", 15 * 27, "coarse_generation")
+    _require_integer_array_for(value, "city_region_ids", 23, "coarse_generation")
+    _require_integer_array_for(value, "group_members", 7 * 3, "coarse_generation")
+    _require_integer(value["city_region_next_id"], "coarse_generation city_region_next_id")
+    _require_integer(value["expanded_province_count"], "coarse_generation province count")
+    if value["expanded_tile_fields"] != ["terrain_kind", "owner_nation", "province_index"]:
+        raise ValueError("coarse_generation expanded_tile_fields do not match the v1 schema")
+    tiles = value["expanded_tiles"]
+    if not isinstance(tiles, list) or len(tiles) != 108 * 60:
+        raise ValueError("coarse_generation expanded_tiles must contain 6480 rows")
+    _require_integer_rows(tiles, 3, "coarse_generation expanded_tiles")
+    provinces = value["expanded_provinces"]
+    if not isinstance(provinces, list) or len(provinces) != value["expanded_province_count"]:
+        raise ValueError("coarse_generation expanded province count must match records")
+    _require_integer_rows(provinces, 2, "coarse_generation expanded_provinces")
 
 
 def validate_game_snapshot(snapshot: object) -> None:
@@ -207,10 +522,47 @@ def validate_game_snapshot(snapshot: object) -> None:
 
 
 def _require_integer_array(container: dict[str, Any], field: str, count: int) -> None:
+    _require_integer_array_for(container, field, count, "game_snapshot")
+
+
+def _require_integer_array_for(
+    container: dict[str, Any], field: str, count: int, context: str
+) -> None:
     values = container.get(field)
     if (
         not isinstance(values, list)
         or len(values) != count
-        or any(isinstance(value, bool) or not isinstance(value, int) for value in values)
+        or any(not _is_integer(value) for value in values)
     ):
-        raise ValueError(f"game_snapshot {field} must contain {count} integers")
+        raise ValueError(f"{context} {field} must contain {count} integers")
+
+
+def _require_integer_rows(rows: list[object], width: int, context: str) -> None:
+    if any(
+        not isinstance(row, list)
+        or len(row) != width
+        or any(not _is_integer(value) for value in row)
+        for row in rows
+    ):
+        raise ValueError(f"{context} rows must contain {width} integers")
+
+
+def _require_exact_keys(container: dict[str, Any], keys: set[str], context: str) -> None:
+    if set(container) != keys:
+        raise ValueError(f"{context} fields do not match the v1 schema")
+
+
+def _is_integer(value: object) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _require_integer(value: object, context: str) -> None:
+    if not _is_integer(value):
+        raise ValueError(f"{context} must be an integer")
+
+
+def _require_int_range(value: object, minimum: int, maximum: int, context: str) -> None:
+    _require_integer(value, context)
+    assert isinstance(value, int)
+    if value < minimum or value > maximum:
+        raise ValueError(f"{context} is outside {minimum}..{maximum}")

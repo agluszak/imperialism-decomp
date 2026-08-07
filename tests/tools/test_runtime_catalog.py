@@ -21,7 +21,13 @@ from tools.runtime.catalog import (
 )
 from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.generate_native_registry import render_registry
-from tools.runtime.protocol import validate_game_snapshot, validate_result
+from tools.runtime.protocol import (
+    GENERATED_WORLD_BORDER_LINK_FIELDS,
+    GENERATED_WORLD_TILE_FIELDS,
+    validate_game_snapshot,
+    validate_generated_world,
+    validate_result,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -222,6 +228,115 @@ class RuntimeProtocolTests(unittest.TestCase):
             },
         }
 
+    @staticmethod
+    def generated_world_snapshot() -> dict:
+        province = {
+            "index": 0,
+            "owner_nation": -1,
+            "former_owner_nation": -1,
+            "development_stage": 0,
+            "fort_level": 0,
+            "city_tile": -1,
+            "last_turn_tick": 999,
+            "adjacent_region_count": 0,
+            "adjacent_region_ids": [-1] * 12,
+            "adjacent_region_anchor_tiles": [-1] * 12,
+            "linked_region_count": 0,
+            "secondary_neighbor_tile": -1,
+            "primary_neighbor_tile": -1,
+            "linked_tile_indices": [-1] * 32,
+            "resource_development_counts": [0] * 10,
+            "city_score": 0,
+            "navy_order_reachable": 0,
+            "explored_by_nation_mask": 0,
+            "resource_presence_mask": 0,
+            "region_class": -1,
+            "city_name": "",
+        }
+        provinces = []
+        for index in range(384):
+            record = dict(province)
+            record["index"] = index
+            provinces.append(record)
+        return {
+            "schema": "imperialism.generated_world.v1",
+            "tile_fields": list(GENERATED_WORLD_TILE_FIELDS),
+            "border_link_fields": list(GENERATED_WORLD_BORDER_LINK_FIELDS),
+            "map": {
+                "width": 108,
+                "height": 60,
+                "scenario_tag": "-1174031836",
+                "retail_topology_byte": 0,
+                "wraps_horizontally": True,
+                "strategic_map_palette_preview_ready": 1,
+                "map_manager_ready": 1,
+                "map_data_ready": 1,
+                "tile_search_flag": 0,
+                "city_score_total": 0,
+                "pending_river_mouth_tile": -1,
+            },
+            "rng": {
+                "runtime_seed": 1,
+                "crt_rand_state": 2745024,
+                "map_generation_lcg": 1,
+                "zone_status_lcg": 1,
+            },
+            "coarse_generation": {
+                "initial_map_lcg": 1,
+                "attempt_count": 1,
+                "attempts": [
+                    {
+                        "index": 0,
+                        "draw_count": 1,
+                        "map_lcg_after_seeding": 2,
+                        "pre_validation_grid": [-1] * 405,
+                        "city_region_next_id": -1,
+                        "city_region_ids": [-1] * 23,
+                        "group_members": [-1] * 21,
+                        "post_validation_grid": [-1] * 405,
+                        "error_check_failed": 0,
+                        "has_continuous_ocean_column": 1,
+                        "frontier_mask_complete": 1,
+                        "accepted": 1,
+                        "map_lcg_after_validation": 2,
+                    }
+                ],
+                "accepted_map_lcg": 2,
+                "accepted_grid": [-1] * 405,
+                "city_region_next_id": 22,
+                "city_region_ids": list(range(23)),
+                "group_members": [-1] * 21,
+                "expanded_province_count": 0,
+                "expanded_tile_fields": ["terrain_kind", "owner_nation", "province_index"],
+                "expanded_tiles": [[0, -1, -1] for _ in range(6480)],
+                "expanded_provinces": [],
+            },
+            "tiles": [[0] * len(GENERATED_WORLD_TILE_FIELDS) for _ in range(6480)],
+            "provinces": provinces,
+            "ocean_context_array_count": 1,
+            "sea_region_count": 1,
+            "sea_regions": [
+                {
+                    "index": 0,
+                    "kind": "zone",
+                    "context_ordinal": 0,
+                    "status_code": 0,
+                    "display_name": "",
+                    "tile_or_terrain_id": -1,
+                    "nation_key_mask": 0,
+                    "seed_nation_id": 0,
+                    "active_tile": -1,
+                    "distance_level": 0,
+                    "port_tile": -1,
+                    "primary_neighbors": [],
+                    "secondary_neighbors": [],
+                }
+            ],
+            "route_count": 1,
+            "routes": [[0, 0, 1, 1]],
+            "border_links": [[0, 0, 1, 1, 0, 1, 0, 1, 0, 0]],
+        }
+
     def test_valid_result(self) -> None:
         validate_result(
             {"format_version": 1, "name": "boot_managers", "seed": 1, "status": "passed"},
@@ -306,6 +421,49 @@ class RuntimeProtocolTests(unittest.TestCase):
         snapshot["economy"]["cities"] = []
         with self.assertRaisesRegex(ValueError, "seven city records"):
             validate_game_snapshot(snapshot)
+
+    def test_generated_world_v1_is_validated(self) -> None:
+        validate_generated_world(self.generated_world_snapshot())
+
+    def test_result_validates_generated_world(self) -> None:
+        result = {
+            "format_version": 1,
+            "name": "generated_world_snapshot",
+            "seed": 1,
+            "status": "passed",
+            "generated_world": self.generated_world_snapshot(),
+        }
+        validate_result(result, "generated_world_snapshot", 1)
+
+    def test_generated_world_rejects_wrong_tile_schema(self) -> None:
+        snapshot = self.generated_world_snapshot()
+        snapshot["tile_fields"][-1] = "pointer"
+        with self.assertRaisesRegex(ValueError, "tile_fields"):
+            validate_generated_world(snapshot)
+
+    def test_generated_world_rejects_pointer_fields(self) -> None:
+        snapshot = self.generated_world_snapshot()
+        snapshot["sea_regions"][0]["next_pointer"] = 0x1234
+        with self.assertRaisesRegex(ValueError, "fields"):
+            validate_generated_world(snapshot)
+
+    def test_generated_world_enforces_retail_topology_semantics(self) -> None:
+        snapshot = self.generated_world_snapshot()
+        snapshot["map"]["wraps_horizontally"] = False
+        with self.assertRaisesRegex(ValueError, "wrap semantics"):
+            validate_generated_world(snapshot)
+
+    def test_generated_world_rejects_malformed_province_array(self) -> None:
+        snapshot = self.generated_world_snapshot()
+        snapshot["provinces"][0]["linked_tile_indices"] = []
+        with self.assertRaisesRegex(ValueError, "linked_tile_indices"):
+            validate_generated_world(snapshot)
+
+    def test_generated_world_requires_active_route_count(self) -> None:
+        snapshot = self.generated_world_snapshot()
+        snapshot["route_count"] = 2
+        with self.assertRaisesRegex(ValueError, "route_count"):
+            validate_generated_world(snapshot)
 
 
 class MissingOracleRecordingTests(unittest.TestCase):

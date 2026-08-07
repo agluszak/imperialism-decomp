@@ -9,9 +9,12 @@ mod map_geometry;
 mod nation_economy;
 mod population;
 mod production;
+mod random_game_setup;
+mod random_map;
 mod recruitment;
 mod resources;
 mod rng;
+mod simulation;
 mod snapshot;
 mod state;
 mod tables;
@@ -36,8 +39,19 @@ pub use production::{
     PowerPlantProductionOrder, ProductionConstraint, ProductionError, ResourceCost, TrainingLevel,
     TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
 };
+pub use random_game_setup::{
+    BeginRandomGameSetupInputs, RandomGameSetupModel, RandomGameSetupState,
+    RandomGameSetupValidationError, RestoredRandomGameSetupInputs, RetailTopologyByte,
+};
+pub use random_map::{
+    COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMapAttempt,
+    CoarseMapGeneration, CoarseMapGrid, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH,
+    ExpandedMapSeedTile, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT, generate_coarse_random_map,
+};
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
+pub use rng::{RetailLcg, hash_retail_scenario_tag};
+pub use simulation::{CommandError, Simulation};
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
     SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
