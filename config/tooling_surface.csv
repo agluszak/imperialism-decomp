@@ -180,3 +180,7 @@ module|tools.runtime.tree|just:runtime-tree|Print the UI tree a runtime test las
 module|tools.runtime.script_debt|just:runtime-script-debt-gate|Ban control-tree mechanics in native runtime scenario bodies; every scenario is a linear script
 module|tools.runtime.scaffold|just:runtime-new|Scaffold a new runtime test: source skeleton plus its catalog entry
 module|tools.workflow.protothread_probe|just:protothread-probe|Ask MSVC500 whether the linear-script switch/case __LINE__ protothread compiles and resumes
+module|tools.mfc.library_link_surface_report|just:library-link-surface-report|Join exact archive-oracle decisions to typed roadmap states and summarize residual link surface per object member
+module|tools.mfc.library_pairing_identities|just:build-library-pairing-identities|Emit only mutually unique exact archive identities not already represented by the curated original inventory
+module|tools.reccmp.crt_startup_oracle|just:build-crt-startup-oracle|Recover VC5 CRT initializer-array boundary labels structurally from the retail __cinit routine
+module|tools.reccmp.zero_size_data_audit|just:zero-size-data-audit|Classify residual zero-size original DATA by section containment opcodes and code-pointer evidence without mutating inventory

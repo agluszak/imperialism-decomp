@@ -9,8 +9,8 @@
 # The snapshot's `stub_count` is a ratchet, not an observation: it falls freely but a
 # rise is held back (gate stays red) unless ALLOW_POLICY_BASELINE_UPDATE=1.
 [group('baseline-update')]
-stats-baseline-update:
-  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
+stats-baseline-update *args:
+  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline {{args}}
 
 [doc('MUTATES: config/tooling_surface.csv. Appends placeholder rows for justfile modules missing from the manifest (fill in each note); never removes stale rows')]
 [group('baseline-update')]

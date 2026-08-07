@@ -40,6 +40,8 @@ _build-msvc500-unlocked jobs:
     -v "$PWD":/imperialism \
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
+  just build-library-oracle
+  just build-library-pairing-identities
   just detect
 
 [doc('reccmp-project detect: record the recompiled binary/PDB for comparison')]
