@@ -45,6 +45,10 @@ struct TCdAudioDevice {
 // between WaveLoadFile's end and these functions -- part of this module, not wave.c).
 // 0x005e1500 -- duplicates dwVolume into both channel words and calls winmm auxSetVolume.
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
+// 0x005e14c0 -- combines independently supplied left and right channel words.
+int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume);
+// 0x005e1540 -- returns the raw packed left/right channel volume.
+int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume);
 // 0x005e1590 -- sets volume on every aux device whose wPid&7 is 1 or 2; returns whether the
 // last auxGetDevCaps call succeeded.
 bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level);

@@ -29,10 +29,12 @@ public:
   // delete[]). Ground truth: TZone::~TZone (0x5627a0) frees primaryNeighbors/
   // secondaryNeighbors this same way as part of member teardown.
   // Retained, unreferenced VC5 copies of this inline template destructor.
-  // SYNTHETIC: IMPERIALISM 0x0055eaa0
-  // stretch<TZone*>::~stretch
-  // SYNTHETIC: IMPERIALISM 0x0055eb70
-  // stretch<Province*>::~stretch
+  // TEMPLATE: IMPERIALISM 0x0055eaa0
+  // ??1?$stretch@PAVTZone@@@@QAE@XZ
+  // TEMPLATE: IMPERIALISM 0x0055eb70
+  // ??1?$stretch@PAUProvince@@@@QAE@XZ
+  // TEMPLATE: IMPERIALISM 0x00580430
+  // ??1?$stretch@D@@QAE@XZ
   ~stretch() {
     if (data != 0) {
       free(data);

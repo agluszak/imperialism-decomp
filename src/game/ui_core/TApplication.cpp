@@ -183,8 +183,8 @@ void TApplication::DoMenuCommand(int command) {
 // TEMPLATE: IMPERIALISM 0x00486df0
 // ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
 
-// TEMPLATE: IMPERIALISM 0x00486f60
-// ??_G?$CList@PAXPAX@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x00486f60
+// CList<void *,void *>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x00486f90
 // ??1?$CList@PAXPAX@@UAE@XZ

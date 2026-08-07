@@ -85,12 +85,32 @@ int ReturnTrueStub(void) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005e14c0
+int __stdcall SetAuxOutputVolumeByChannel(int leftVolume, int rightVolume) {
+  if (g_nAuxOutputDeviceIndex == -1) {
+    return 0;
+  }
+  auxSetVolume(g_nAuxOutputDeviceIndex, (rightVolume << 16) + leftVolume);
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x005e1500
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar) {
   if (g_nAuxOutputDeviceIndex == -1) {
     return 0;
   }
   auxSetVolume(g_nAuxOutputDeviceIndex, (scalar << 16) + scalar);
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1540
+int __stdcall GetAuxOutputVolumeRaw(DWORD* outVolume) {
+  DWORD volume = 0;
+  if (g_nAuxOutputDeviceIndex == -1) {
+    return 0;
+  }
+  auxGetVolume(g_nAuxOutputDeviceIndex, &volume);
+  *outVolume = volume;
   return 1;
 }
 

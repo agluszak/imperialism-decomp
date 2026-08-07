@@ -103,8 +103,8 @@ CIncludeView::CIncludeView()
 // IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
 // copy per TU): vtable 0x648560 + these two in the ctor's TU, vtable 0x648578 + the
 // 0x4847xx copies and the single Serialize body in the other.
-// TEMPLATE: IMPERIALISM 0x004829f0
-// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x004829f0
+// CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x00482a20
 // ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ
@@ -823,8 +823,8 @@ void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 // TEMPLATE: IMPERIALISM 0x00484610
 // ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
 
-// TEMPLATE: IMPERIALISM 0x004847a0
-// ??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z
+// SYNTHETIC: IMPERIALISM 0x004847a0
+// CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'
 
 // TEMPLATE: IMPERIALISM 0x004847d0
 // ??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ

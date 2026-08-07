@@ -281,7 +281,7 @@ unsigned char TWNetSessionManager::OpenCurrentSessionDescriptionForJoin() {
 }
 
 // FUNCTION: IMPERIALISM 0x00480400
-void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
+void TDirectPlaySessionManagerBase::ResetRuntimeSelectionRecordBuffer() {
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
@@ -436,6 +436,11 @@ void TDirectPlaySessionManagerBase::InitializeSessionDescription() {}
 
 // FUNCTION: IMPERIALISM 0x005e2b70
 void TDirectPlaySessionManagerBase::ResetSessionDescription() {}
+
+// FUNCTION: IMPERIALISM 0x005e2b90
+TDirectPlaySessionManagerBase::~TDirectPlaySessionManagerBase() {
+  ResetRuntimeSelectionRecordBuffer();
+}
 
 // FUNCTION: IMPERIALISM 0x005e2bb0
 void TWNetSessionManager::ResetSessionDescription() {
