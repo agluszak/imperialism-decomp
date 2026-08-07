@@ -37,7 +37,7 @@ IMPLEMENT_DYNCREATE(TShipOrder, TProductionOrder)
 // TShipOrder::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x004b85a0
-bool TShipOrder::CanMakeFromCityStock() {
+bool TShipOrder::AutoCanMakeProduct() {
   TCity* city = this->ownerCity;
 
   if (ReadWeight(g_industryActionCostWeightResCode09, this->resourceTypeIndex) <=
@@ -58,7 +58,7 @@ bool TShipOrder::CanMakeFromCityStock() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8630
-bool TShipOrder::CanFillOrderSheet() {
+bool TShipOrder::CanMakeProduct() {
   const short weightIndex = this->resourceTypeIndex;
   const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
   const short weight08 = ReadWeight(g_industryActionCostWeightResCode08, weightIndex);
@@ -175,12 +175,12 @@ bool TShipOrder::SetQuantity(short quantity) {
 // FUNCTION: IMPERIALISM 0x004b8970
 void TShipOrder::Produce() {
   if (this->resourceTypeIndex != 0 && this->quantity != 0) {
-    this->CommitQueuedNavyOrdersAndUpdateTierByCapability();
+    this->LaunchShip();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004b89a0
-void TShipOrder::CommitQueuedNavyOrdersAndUpdateTierByCapability() {
+void TShipOrder::LaunchShip() {
   short resourceTypeIndex = this->resourceTypeIndex;
   TCity* city = this->ownerCity;
 

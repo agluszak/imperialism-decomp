@@ -46,6 +46,8 @@ short TArmyMission::GetPresentLocation() const {
 //   CArchive& AFXAPI operator>>(CArchive&, TArmyMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053c070
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053c050
+// `dynamic initializer for '_init_TArmyMission''
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
 // FUNCTION: IMPERIALISM 0x0053c0a0

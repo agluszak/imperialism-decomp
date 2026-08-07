@@ -49,6 +49,14 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
 // +0x04 value tested at 0x004c2c23 is TTask::citySlotIndex, not TUnit::orderType.
 static const short kPendingProspectorRecruitmentCitySlot = 0x22;
 
+template <class T> static __inline T* AllocateCityMinisterScratchArray(int count, int assertLine) {
+  T* result = new T[count];
+  if (result == 0) {
+    FailNilPointerWithAssert(s_SourcePathUCityMinister_006964B0, assertLine);
+  }
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x004be000
 void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
                                                  float* candidateScores, short* candidateTiles,
@@ -240,7 +248,7 @@ void TCityInteriorMinister::IndustryOrder(short industrySlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004bef10
-void TCityInteriorMinister::SelectRecruitmentProductionCommand(short commandIndex) {
+void TCityInteriorMinister::PleaseBuildCivilian(short commandIndex) {
   pendingRecruitmentCommandIndex36 = commandIndex;
 }
 
@@ -444,11 +452,11 @@ void TCityInteriorMinister::FillOrders() {
     }
   }
 
-  EvaluateCityShortagesAndNotifyForeignMinister(city);
+  DetermineTradeBid(city);
 }
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-void TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity* city) {
+void TCityInteriorMinister::DetermineTradeBid(TCity* city) {
   if (orderMetricTable40[0] != 0 || orderMetricTable40[1] != 0) {
     bool roll = (rand() % 100) >= 75;
     ownerContextAt04->foreignMinister->PleaseBuy(0, roll);
@@ -497,19 +505,18 @@ void TCityInteriorMinister::EvaluateCityShortagesAndNotifyForeignMinister(TCity*
 }
 
 // FUNCTION: IMPERIALISM 0x004bfa50
-void TCityInteriorMinister::QueueCityProductionPolicyCommands(TCity* city,
-                                                              TTaskList* commandQueue) {
+void TCityInteriorMinister::IssueBasicOrders(TCity* city, TTaskList* commandQueue) {
   if (city->lowProductionFlag7c != 0 && city->lowStockFlag7d == 0) {
-    QueueCityProductionCommand17Or18FromSupportRatio(city, commandQueue);
+    TrainingMode(city, commandQueue);
   } else if (city->lowProductionFlag7c == 0 && city->lowStockFlag7d != 0) {
-    DistributeCityProductionCommandBudgetAndQueueOrders(city, commandQueue);
+    IncreaseCapacityMode(city, commandQueue);
   }
 
   if (accumulatedUnmetNeed3e != 0) {
-    QueueCityProductionCommand33FromAccumulatedDeficit(city, commandQueue);
+    IncreaseRailCapacityMode(city, commandQueue);
   }
   if (pendingShipType32 != 0) {
-    QueueShipProductionCommandIfMissing(city, commandQueue);
+    BuildMerchantShipMode(city, commandQueue);
   }
   if (pendingRecruitmentCommandIndex36 > -1) {
     QueuePendingRecruitmentProductionCommand(city, commandQueue);
@@ -518,12 +525,11 @@ void TCityInteriorMinister::QueueCityProductionPolicyCommands(TCity* city,
     QueuePendingUnitProductionCommand(city, commandQueue);
   }
 
-  QueueCityProductionRebalanceCommandsByThresholds(city, commandQueue);
+  OverstockCheck(city, commandQueue);
 }
 
 // FUNCTION: IMPERIALISM 0x004bfb20
-void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
-    TCity* city, TTaskList* commandQueue) {
+void TCityInteriorMinister::OverstockCheck(TCity* city, TTaskList* commandQueue) {
   short amount;
   TCityTask* task;
 
@@ -534,7 +540,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x35) == 0) {
       task = new TCityTask();
       task->ICityTask(0x35, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 
@@ -543,7 +549,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x37) == 0) {
       task = new TCityTask();
       task->ICityTask(0x37, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 
@@ -553,7 +559,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x39) == 0) {
       task = new TCityTask();
       task->ICityTask(0x39, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 
@@ -562,7 +568,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x36) == 0) {
       task = new TCityTask();
       task->ICityTask(0x36, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 
@@ -571,7 +577,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x38) == 0) {
       task = new TCityTask();
       task->ICityTask(0x38, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 
@@ -580,7 +586,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
     if (amount > 0 && commandQueue->ContainsTask(0x3a) == 0) {
       task = new TCityTask();
       task->ICityTask(0x3a, city, amount);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 }
@@ -589,8 +595,7 @@ void TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(
 void TCityInteriorMinister::NoOpProductionCommandHook24(int, int) {}
 
 // FUNCTION: IMPERIALISM 0x004bff80
-void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
-    TCity* city, TTaskList* commandQueue) {
+void TCityInteriorMinister::IncreaseRailCapacityMode(TCity* city, TTaskList* commandQueue) {
   short needCap = ownerContextAt04 != 0 ? ownerContextAt04->transportCapacity : 0;
   if (commandQueue->ContainsTask(0x33) != 0) {
     return;
@@ -609,13 +614,12 @@ void TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(
   if (amount > 0) {
     TCityTask* task = new TCityTask();
     task->ICityTask(0x33, city, amount);
-    commandQueue->Insert(task);
+    commandQueue->AddTask(task);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004c0090
-void TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(
-    TCity* city, TTaskList* commandQueue) {
+void TCityInteriorMinister::IncreaseCapacityMode(TCity* city, TTaskList* commandQueue) {
   short totalProduction = 0;
   for (short initialBuildingSlot = 0; initialBuildingSlot <= 6; ++initialBuildingSlot) {
     totalProduction =
@@ -656,14 +660,13 @@ void TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(
       TCityTask* task = new TCityTask();
       task->ICityTask(static_cast<short>(queuedBuildingSlot + 0x35), city,
                       commandCounts[queuedBuildingSlot]);
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004c02c0
-void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
-    TCity* city, TTaskList* commandQueue) {
+void TCityInteriorMinister::TrainingMode(TCity* city, TTaskList* commandQueue) {
   TLaborPool* labor = city->productionSummary1d8->baselineSlots10;
   short mediumSkill = labor->mediumSkillCount06;
   short lowSkill = labor->lowSkillCount04;
@@ -703,21 +706,19 @@ void TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(
     task->ICityTask(0x17, city, amount);
   }
 
-  commandQueue->Insert(task);
+  commandQueue->AddTask(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c04e0
-void TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(TCity* city,
-                                                                   TTaskList* commandQueue) {
+void TCityInteriorMinister::LandUnitMode(TCity* city, TTaskList* commandQueue) {
   short command = static_cast<short>(rand() % 4 + 0x19);
   TCityTask* task = new TCityTask();
   task->ICityTask(command, city, 1);
-  commandQueue->Insert(task);
+  commandQueue->AddTask(task);
 }
 
 // FUNCTION: IMPERIALISM 0x004c05a0
-void TCityInteriorMinister::QueueShipProductionCommandIfMissing(TCity* city,
-                                                                TTaskList* commandQueue) {
+void TCityInteriorMinister::BuildMerchantShipMode(TCity* city, TTaskList* commandQueue) {
   for (int ordinal = 1; ordinal <= commandQueue->GetCount(); ++ordinal) {
     TTask* task = static_cast<TTask*>(commandQueue->GetEntryByOrdinal(ordinal));
     if (task->citySlotIndex == 0x2b) {
@@ -727,7 +728,7 @@ void TCityInteriorMinister::QueueShipProductionCommandIfMissing(TCity* city,
 
   TShipBuildingTask* task = new TShipBuildingTask();
   task->IShipBuildingTask(0x2b, city, pendingShipType32);
-  commandQueue->Insert(task);
+  commandQueue->AddTask(task);
   pendingShipType32 = 0;
 }
 
@@ -737,7 +738,7 @@ void TCityInteriorMinister::QueuePendingRecruitmentProductionCommand(TCity* city
   short command = static_cast<short>(pendingRecruitmentCommandIndex36 + 0x22);
   TCityTask* task = new TCityTask();
   task->ICityTask(command, city, 1);
-  commandQueue->Insert(task);
+  commandQueue->AddTask(task);
   pendingRecruitmentCommandIndex36 = -1;
 }
 
@@ -747,7 +748,7 @@ void TCityInteriorMinister::QueuePendingUnitProductionCommand(TCity* city,
   short command = static_cast<short>(pendingUnitCommandIndex38 + 0x19);
   TCityTask* task = new TCityTask();
   task->ICityTask(command, city, 1);
-  commandQueue->Insert(task);
+  commandQueue->AddTask(task);
   pendingUnitCommandIndex38 = -1;
 }
 
@@ -994,7 +995,7 @@ short TCityInteriorMinister::RebuildNeedTargetsAndQueueProductionShortfalls(
       task->ICityTask(inputResourceType, city,
                       static_cast<short>(citySummary[inputResourceType] -
                                          city->CityStockByType(inputResourceType)));
-      commandQueue->Insert(task);
+      commandQueue->AddTask(task);
     }
     city->CityStockByType(inputResourceType) =
         static_cast<short>(city->CityStockByType(inputResourceType) - amount);
@@ -1157,23 +1158,25 @@ void TCityInteriorMinister::ProcessUnitOrders() {
     SeekLostTowns(primaryDistanceMap, secondaryDistanceMap);
   }
 
-  short selectedOrderType = 0;
-  while (field3c == -1 && selectedOrderType != -1) {
-    selectedOrderType = -1;
-    for (short orderType = 0; orderType < 23; ++orderType) {
-      if (((orderType >= 0 && orderType <= 6) || (orderType >= 17 && orderType <= 22)) &&
-          orderTypeTableFC[orderType] != 0 &&
-          (selectedOrderType < 0 ||
-           orderTypeTableFC[selectedOrderType] < orderTypeTableFC[orderType])) {
-        selectedOrderType = orderType;
+  ResourceKindStorage selectedResourceKind = 0;
+  while (field3c == -1 && selectedResourceKind != kResourceKindNone) {
+    selectedResourceKind = kResourceKindNone;
+    for (ResourceKindStorage resourceKind = 0; resourceKind < kResourceKindCount; ++resourceKind) {
+      if (((resourceKind >= kResourceIndustrialRawFirst &&
+            resourceKind <= kResourceIndustrialRawLast) ||
+           (resourceKind >= kResourceHarvestedFirst && resourceKind <= kResourceHarvestedLast)) &&
+          orderTypeTableFC[resourceKind] != 0 &&
+          (selectedResourceKind < kResourceCotton ||
+           orderTypeTableFC[selectedResourceKind] < orderTypeTableFC[resourceKind])) {
+        selectedResourceKind = resourceKind;
       }
     }
 
-    if (selectedOrderType != -1) {
-      StartRailheadProject(selectedOrderType, &ownedTiles, primaryDistanceMap,
+    if (selectedResourceKind != kResourceKindNone) {
+      StartRailheadProject(selectedResourceKind, &ownedTiles, primaryDistanceMap,
                            secondaryDistanceMap);
       if (field3c == -1) {
-        orderTypeTableFC[selectedOrderType] = 0;
+        orderTypeTableFC[selectedResourceKind] = 0;
       }
     }
   }
@@ -1196,7 +1199,7 @@ void TCityInteriorMinister::ProcessUnitOrders() {
       }
     }
     if (!hasBuilderOrder) {
-      SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitEngineer));
+      PleaseBuildCivilian(EncodeCivilianUnitKind(kCivilianUnitEngineer));
     }
     if (availableBuilderOrder != 0) {
       ContinueRailheadProject(availableBuilderOrder, primaryDistanceMap, secondaryDistanceMap);
@@ -1352,7 +1355,7 @@ void TCityInteriorMinister::RequestMissingCivilianOrderTypes() {
         }
       }
       if (needed) {
-        SelectRecruitmentProductionCommand(unitKindStorage);
+        PleaseBuildCivilian(unitKindStorage);
       }
     }
   }
@@ -1402,6 +1405,17 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     }
   }
 
+  short* prospectingTiles = 0;
+  float* prospectingScores = 0;
+  if (prospectingOrderCount != 0) {
+    prospectingTiles = AllocateCityMinisterScratchArray<short>(prospectingOrderCount, 0x970);
+    prospectingScores = AllocateCityMinisterScratchArray<float>(prospectingOrderCount, 0x972);
+    for (int index = 0; index < prospectingOrderCount; ++index) {
+      prospectingTiles[index] = -1;
+      prospectingScores[index] = 0.0f;
+    }
+  }
+
   int affordableDeveloperCount = ownerContextAt04->ComputeAvailableDiplomacyBudget() / 2000;
   if (affordableDeveloperCount < 0) {
     affordableDeveloperCount = 0;
@@ -1410,17 +1424,16 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics() {
     developerOrderCount = affordableDeveloperCount;
   }
 
-  short* prospectingTiles = prospectingOrderCount == 0 ? 0 : new short[prospectingOrderCount];
-  float* prospectingScores = prospectingOrderCount == 0 ? 0 : new float[prospectingOrderCount];
-  for (int index = 0; index < prospectingOrderCount; ++index) {
-    prospectingTiles[index] = -1;
-    prospectingScores[index] = 0.0f;
-  }
-  short* developerTiles = developerOrderCount == 0 ? 0 : new short[developerOrderCount];
-  float* developerScores = developerOrderCount == 0 ? 0 : new float[developerOrderCount];
-  for (int developerInitIndex = 0; developerInitIndex < developerOrderCount; ++developerInitIndex) {
-    developerTiles[developerInitIndex] = -1;
-    developerScores[developerInitIndex] = 0.0f;
+  short* developerTiles = 0;
+  float* developerScores = 0;
+  if (developerOrderCount != 0) {
+    developerTiles = AllocateCityMinisterScratchArray<short>(developerOrderCount, 0x985);
+    developerScores = AllocateCityMinisterScratchArray<float>(developerOrderCount, 0x987);
+    for (int developerInitIndex = 0; developerInitIndex < developerOrderCount;
+         ++developerInitIndex) {
+      developerTiles[developerInitIndex] = -1;
+      developerScores[developerInitIndex] = 0.0f;
+    }
   }
 
   int resourceWeights[23];
@@ -1595,7 +1608,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbors() {
             shouldRequestProspector = false;
           }
           if (shouldRequestProspector) {
-            SelectRecruitmentProductionCommand(EncodeCivilianUnitKind(kCivilianUnitMiner));
+            PleaseBuildCivilian(EncodeCivilianUnitKind(kCivilianUnitMiner));
           }
         }
       }
@@ -1702,7 +1715,8 @@ short __stdcall TraceDescendingTileScoreGradientToSource(short startTile, char* 
 }
 
 // FUNCTION: IMPERIALISM 0x004c3170
-void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintList* ownedTiles,
+void TCityInteriorMinister::StartRailheadProject(ResourceKindStorage resourceKind,
+                                                 TShortintList* ownedTiles,
                                                  char* primaryDistanceMap,
                                                  char* secondaryDistanceMap) {
   TTown* projectedTown = new TTown();
@@ -1732,7 +1746,7 @@ void TCityInteriorMinister::StartRailheadProject(short resourceType, TShortintLi
     if (!hasConnectedNeighbor) {
       projectedTown->tileIndex = tileIndex;
       projectedTown->CalculateResources();
-      if (projectedTown->resourceYieldByType[resourceType] != 0) {
+      if (projectedTown->resourceYieldByType[resourceKind] != 0) {
         candidateTiles->InsertLast(tileIndex);
       }
     }

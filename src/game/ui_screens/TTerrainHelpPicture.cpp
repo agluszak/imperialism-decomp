@@ -14,6 +14,7 @@
 #include "game/ui_widgets/TSoundPlayer.h"
 #include "game/globals/global_types.h"
 #include "game/globals/shared_globals.h"
+#include "game/civilian_domain_types.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/ui_core/quickdraw_rendering.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -102,9 +103,10 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].secondaryOwnerNationTag18 != -1) {
     menuItemIds94[count++] = 0x1c;
   }
-  for (short orderType = 0; orderType <= 8; orderType++) {
-    if (g_pGlobalMapState->HasCivilianUnitKind(nTileIndex, orderType)) {
-      menuItemIds94[count++] = static_cast<short>(orderType + 0x21);
+  for (CivilianUnitKindStorage civilianUnitKind = 0; civilianUnitKind <= kCivilianUnitDriller;
+       ++civilianUnitKind) {
+    if (g_pGlobalMapState->HasCivilianUnitKind(nTileIndex, civilianUnitKind)) {
+      menuItemIds94[count++] = static_cast<short>(civilianUnitKind + 0x21);
     }
   }
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].perTileVisitedFlag0f > 0) {

@@ -10,6 +10,16 @@ struct TQuickDrawSurfaceContext;
 // third, the horizontal fourth.
 void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint* viewportOrigin,
                                                   short* outY, short* outX, short scale);
+void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRow, short* outColumn,
+                                           const CPoint* viewportOrigin);
+void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
+                                      const CPoint* viewportOrigin);
+void ProjectMapPointToScaledScreenOffset(const CPoint* sourcePoint, const CPoint* rowReference,
+                                         short* outY, short* outX);
+short GetWrappedHexDirectionColumnDelta(short direction);
+void NormalizeProjectionColumnForRowParity(short* column, short* row);
+void ProjectTileIndexToMapGridPoint(int tileIndex, int* outX, int* outY, int cellSize,
+                                    short referenceColumn, short referenceRow);
 
 // One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
 // coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.

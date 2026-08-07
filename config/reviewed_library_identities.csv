@@ -1,4 +1,5 @@
 address|name|symbol|prototype|library_family|object_member|evidence|kind
+0x00415c00|CWaitCursor::~CWaitCursor|??1CWaitCursor@@QAE@XZ|public: __thiscall CWaitCursor::~CWaitCursor(void)|nafxcw|wincore.obj|library_oracle_unique_high;CWaitCursor_RAII_MFC_destructor|LIBRARY
 0x00415030|CWnd::DoDataExchange|?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z|protected: virtual void __thiscall CWnd::DoDataExchange(class CDataExchange *)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
 0x00415050|CWnd::BeginModalState|?BeginModalState@CWnd@@UAEXXZ|public: virtual void __thiscall CWnd::BeginModalState(void)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
 0x00415070|CWnd::EndModalState|?EndModalState@CWnd@@UAEXXZ|public: virtual void __thiscall CWnd::EndModalState(void)|nafxcw|wincore.obj|cdialog_vtable_0x66fc2c_slot_recomp_pdb+ghidra_decompile+mfc_header_order(agent-verified)
@@ -974,8 +975,8 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00626c7d|AfxWinTerm|?AfxWinTerm@@YGXXZ|void __stdcall AfxWinTerm(void)|nafxcw|appterm.obj|object_matcher:unique:high (accepted 2026-07)
 0x0047d960|CGdiObject::~CGdiObject|||||migrated_from:src/game/CBrush.cpp|LIBRARY
 0x005e6ea2||||||migrated_from:src/game/CBrush.cpp comment:"CBrush::`scalar deleting destructor'"|SYNTHETIC
-0x00613791|CClientDC::CClientDC|||||migrated_from:src/game/CClientDC.cpp|LIBRARY
-0x00613803|CClientDC::~CClientDC|||||migrated_from:src/game/CClientDC.cpp|LIBRARY
+0x00613791|CClientDC::CClientDC|??0CClientDC@@QAE@PAVCWnd@@@Z|public: __thiscall CClientDC::CClientDC(class CWnd *)|nafxcw|wingdi.obj|migrated_from:src/game/CClientDC.cpp;VC5_afxwin_h_constructor|LIBRARY
+0x00613803|CClientDC::~CClientDC|??1CClientDC@@UAE@XZ|public: virtual __thiscall CClientDC::~CClientDC(void)|nafxcw|wingdi.obj|migrated_from:src/game/CClientDC.cpp;VC5_afxwin_h_virtual_destructor|LIBRARY
 0x00612a78||||||migrated_from:src/game/CDC.cpp original_tu_name:"?SelectPalette@CDC@@QAEPAVCPalette@@PAV2@H@Z" (inventory name kept)|LIBRARY
 0x006109cf||||||migrated_from:src/game/CDocument.cpp comment:"CDocument::`scalar deleting destructor'"|SYNTHETIC
 0x00610c08|CDocument::PreCloseFrame|||||migrated_from:src/game/CDocument.cpp|LIBRARY
@@ -1410,10 +1411,10 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x00612df6||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
 0x00612e42||?ScaleWindowExt@CDC@@UAE?AVCSize@@HHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00612eaa||?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612ef8||?IntersectClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612f42||?ExcludeClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612f8e||?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
-0x00612fd8|CDC::IntersectClipRect|||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612ef8||?ExcludeClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612f42||?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612f8e||?IntersectClipRect@CDC@@QAEHHHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
+0x00612fd8||?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00613024||?OffsetClipRgn@CDC@@QAEHHH@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x00613062||?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z||||migrated_from:src/game/library_msvc500_fid.cpp|LIBRARY
 0x006130a0||?MoveTo@CDC@@QAE?AVCPoint@@HH@Z||||MoveToEx import at 0x006aae18|LIBRARY
@@ -1506,3 +1507,33 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x0047ec00|CFileDialog::~CFileDialog|??1CFileDialog@@UAE@XZ|public: virtual __thiscall CFileDialog::~CFileDialog(void)|mfc_inline|afxdlgs.h|listing_destroys_CString_at_0xac_then_CDialog_base;MFC_owned|LIBRARY
 0x004986a0|TScopedQuickDrawPen::`scalar deleting destructor'|??_GTScopedQuickDrawPen@@UAEPAXI@Z|public: virtual void * __thiscall TScopedQuickDrawPen::`scalar deleting destructor'(unsigned int)|||compiler_emitted_vtable_slot_for_polymorphic_TScopedQuickDrawPen;source_destructor_at_0x498610_emits_it_naturally|SYNTHETIC
 0x00623471|CWnd::GetRuntimeClass|?GetRuntimeClass@CWnd@@UBEPAUCRuntimeClass@@XZ|public: virtual CRuntimeClass * __thiscall CWnd::GetRuntimeClass(void) const|nafxcw|wincore.obj|recompiled_PDB_roadmap_wincore_obj_exact_6_byte_body;TBackdropWindow_vtable_slot_0;listing_returns_CWnd_runtime_class_0x670b10|LIBRARY
+0x0060396e|CMapStringToOb::GetNextAssoc|?GetNextAssoc@CMapStringToOb@@QBEXAAPAU__POSITION@@AAVCString@@AAPAVCObject@@@Z|public: void __thiscall CMapStringToOb::GetNextAssoc(struct __POSITION *&, class CString &, class CObject *&) const|nafxcw|map_so.obj|oracle_ambiguous_masked_match:ambiguous_2_candidates;nafxcw/map_so.obj;public_symbol|LIBRARY
+0x005e8c20|_alloca_probe|__alloca_probe||libcmt|chkstk.obj|oracle_ambiguous_masked_match:ambiguous_2_candidates;libcmt/chkstk.obj;public_symbol|LIBRARY
+0x00601d71|CDWordArray::Copy|?Copy@CDWordArray@@QAEXABV1@@Z|public: void __thiscall CDWordArray::Copy(class CDWordArray const &)|nafxcw|array_d.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/array_d.obj;public_symbol|LIBRARY
+0x0060d127|CGdiObject::Detach|?Detach@CGdiObject@@QAEPAXXZ|public: void * __thiscall CGdiObject::Detach(void)|nafxcw|wingdi.obj|oracle_ambiguous_masked_match:ambiguous_3_candidates;nafxcw/wingdi.obj;public_symbol|LIBRARY
+0x0061eb46|CComboBox::Create|?Create@CComboBox@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|public: int __thiscall CComboBox::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|nafxcw|winctrl1.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/winctrl1.obj;public_symbol|LIBRARY
+0x005e6ee2|CDC::DrawTextA|?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z|public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)|nafxcw|wingdi.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/wingdi.obj;public_symbol|LIBRARY
+0x005e6f5b|CDC::DrawTextA|?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z|public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)|nafxcw|wingdi.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/wingdi.obj;public_symbol|LIBRARY
+0x005e6fa7|CDC::DrawTextA|?DrawTextA@CDC@@UAEHPBDHPAUtagRECT@@I@Z|public: virtual int __thiscall CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)|nafxcw|wingdi.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/wingdi.obj;public_symbol|LIBRARY
+0x00608657|CWnd::GetWindowPlacement|?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z|public: int __thiscall CWnd::GetWindowPlacement(struct tagWINDOWPLACEMENT *) const|nafxcw|wincore.obj|oracle_ambiguous_masked_match:ambiguous_2_candidates;nafxcw/wincore.obj;public_symbol|LIBRARY
+0x0060866e|CWnd::GetWindowPlacement|?GetWindowPlacement@CWnd@@QBEHPAUtagWINDOWPLACEMENT@@@Z|public: int __thiscall CWnd::GetWindowPlacement(struct tagWINDOWPLACEMENT *) const|nafxcw|wincore.obj|oracle_ambiguous_masked_match:ambiguous_2_candidates;nafxcw/wincore.obj;public_symbol|LIBRARY
+0x005e6ebe|CFtpConnection::GetCurrentDirectoryA|?GetCurrentDirectoryA@CFtpConnection@@QBEHPADPAK@Z|public: int __thiscall CFtpConnection::GetCurrentDirectoryA(char *, unsigned long *) const|nafxcw|inet.obj|oracle_ambiguous_masked_match:ambiguous_4_candidates;nafxcw/inet.obj;public_symbol|LIBRARY
+0x005e4a90|CPtrArray::SetSize|||nafxcw|array_p.obj|MSVC500_header_afxcoll_h;fid_catalog_array_p_obj;duplicate_public_symbol_at_0x601c14;listing_matches_CPtrArray_layout_and_TWNetSessionManager_calls|LIBRARY
+0x005f6af9|___init_ctype|___init_ctype|void __cdecl ___init_ctype(void)|libcmt|initctyp.obj|listing_locale_classification_tables;fid_catalog_initctyp_obj|LIBRARY
+0x005f75c0|_raise|_raise|int __cdecl _raise(int signal)|libcmt|winsig.obj|listing_signal_handler_dispatch;fid_catalog_winsig_obj|LIBRARY
+0x005ec930|AppendExponentSuffixToNumericBuffer|||libcmt|cvt.obj|called_only_by_CRT__cftoe_and__cftog;listing_numeric_exponent_formatting|LIBRARY
+0x005ecaa0|AppendFractionalDigitsAndPadNumericBuffer|||libcmt|cvt.obj|called_only_by_CRT__cftof_and__cftog;listing_numeric_fraction_formatting|LIBRARY
+0x005e9bf0|_doexit|_doexit|void __cdecl _doexit(int status, int quick, int retcaller)|libcmt|crt0dat.obj|listing_exit_callback_termination;fid_catalog_crt0dat_obj|LIBRARY
+0x005f65c0|___lconv_init|___lconv_init|int __cdecl ___lconv_init(void)|libcmt|lcnvinit.obj|listing_locale_lconv_initialization;fid_catalog_lcnvinit_obj|LIBRARY
+0x005f4060|MapFpControlWordToRuntimeControlBits|||libcmt|ieee87.obj|called_only_by_CRT__control87;listing_x87_control_word_to_runtime_bits|LIBRARY
+0x005f4100|StoreMappedFpControlBits_NoOp|||libcmt|ieee87.obj|called_only_by_CRT__control87;listing_runtime_bits_to_x87_control_word|LIBRARY
+0x00412600|`vector constructor iterator'|??_H@YGXPAXIHP6EX0@Z@Z|void __stdcall `vector constructor iterator'(void * base,unsigned int elementSize,int count,void * (__thiscall * ctor)(void *))|msvc500_compiler||decorated_name_??_H+compiler_array_construction_helper+xrefs_from_non_POD_local_arrays|LIBRARY
+0x0061d89b|CFrameWnd::GetActiveView|?GetActiveView@CFrameWnd@@QBEPAVCView@@XZ|public: class CView * __thiscall CFrameWnd::GetActiveView(void) const|nafxcw|winfrm.obj|exact_decorated_symbol+VC5_afxwin_h_declaration+body_reads_CFrameWnd_m_pViewActive_at_0x98|LIBRARY
+0x00494340|CPen::`scalar deleting destructor'|??_GCPen@@UAEPAXI@Z|public: virtual void * __thiscall CPen::`scalar deleting destructor'(unsigned int)|nafxcw|wingdi.obj|exact_decorated_scalar_dtor+CPen_vtable_0x64b934+calls_CPen_dtor_then_operator_delete|LIBRARY
+0x005df630|CResourceException::`scalar deleting destructor'|??_GCResourceException@@UAEPAXI@Z|public: virtual void * __thiscall CResourceException::`scalar deleting destructor'(unsigned int)|nafxcw|except.obj|exact_decorated_scalar_dtor+CResourceException_vtable_0x672238+calls_CResourceException_dtor_then_operator_delete|LIBRARY
+0x005df610|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY
+0x005e6e4e|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY
+0x005e6e9b|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY
+0x005e7025|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY
+0x005e7072|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY
+0x00415f30|CObject::~CObject|??1CObject@@UAE@XZ|public: virtual __thiscall CObject::~CObject(void)|nafxcw||exact_CObject_vtable_0x66fec4_reset+called_as_base_destructor+per_TU_COMDAT_copy|LIBRARY

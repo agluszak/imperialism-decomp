@@ -94,6 +94,7 @@ public:
   // 0x005528c0 — empty post-construction slot invoked thiscall (no args) by both
   // TTaskForce factory sites right after the ctor; the real body is a single ret.
   void ITaskForce();
+  short CountSelectedShips() const;
   // 0x005548e0 — averages each child's cached aggression and stores the rounded result.
   void DemocraticallyDetermineAggressionLevel();
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active

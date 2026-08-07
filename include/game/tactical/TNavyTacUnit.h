@@ -18,6 +18,7 @@ public:
   virtual int GetUnitRange() override;         // slot 0x0b 0x5a6330
   virtual float GetBaseAttackPower() override; // slot 0x0c 0x5a6350
   virtual float GetDamageScale() override;     // slot 0x0d 0x5a6370
+  short GetSourceShipTypeDescriptorWord();     // 0x5a6390
   // Navy-only added virtual: returns the unit's source fleet (the old
   // ConstructTNavyPlayerBaseState name was Ghidra junk).
   virtual TShip* GetSourceShip(); // slot 0x10 0x59ed60 (Mac: GetRealShip)

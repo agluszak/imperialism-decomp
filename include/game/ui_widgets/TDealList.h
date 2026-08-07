@@ -21,5 +21,6 @@ public:
   short Compare(void* a, void* b) override; // slot 0x11 0x5ba260
 
   TDealList();
+  void IDealList();
 };
 ASSERT_SIZE(TDealList, 0x18);

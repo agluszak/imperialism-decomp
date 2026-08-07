@@ -8,10 +8,20 @@
 
 IMPLEMENT_DYNCREATE(TTask, TObject)
 
+// FUNCTION: IMPERIALISM 0x005adb90
+TTask::TTask() {}
+
 // SYNTHETIC: IMPERIALISM 0x005adbb0
 // TTask::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005adc00
+void TTask::ITask(short citySlotType) {
+  remainingAttempts = 4;
+  citySlotIndex = citySlotType;
+}
+
 // FUNCTION: IMPERIALISM 0x005adc30
-bool TTask::Tick(TSortedList*) {
+bool TTask::Execute(TTaskList*) {
   return --remainingAttempts == 0;
 }
 

@@ -234,7 +234,7 @@ void TNavyBattle::SetTargeting(NavyTargeting targeting) {
 void TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
     TTacticalUnit* unit, TacticalTileIndex targetTileIndex) {
   EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
-  if (battleOutcomeCode44 == 0) {
+  if (battleOutcome44 == kTacticalBattleInProgress) {
     TacticalTileIndex neighborTiles[6];
     GetNeighborList(selectedUnit1c->tileIndex8, neighborTiles);
     int direction;
@@ -273,7 +273,7 @@ void TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       return;
     }
   }
-  if (unit->state1c == 0 && battleOutcomeCode44 == 0) {
+  if (unit->state1c == 0 && battleOutcome44 == kTacticalBattleInProgress) {
     return;
   }
   FinishTacticalActionAndPostNextMoveCommand();

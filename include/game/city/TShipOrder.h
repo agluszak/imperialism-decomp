@@ -16,9 +16,9 @@ public:
   short MaxOrder() override;                                            // slot 0x0c 0x4b86d0
   void Produce() override;                                              // slot 0x0d 0x4b8970
   void FillOrderSheet(OrderSheet* orderSheet, short quantity) override; // slot 0x10 0x4b8b80
-  virtual bool CanMakeFromCityStock();                                  // slot 0x11 0x4b85a0
-  virtual bool CanFillOrderSheet();                                     // slot 0x12 0x4b8630
-  virtual void CommitQueuedNavyOrdersAndUpdateTierByCapability();       // slot 0x13 0x4b89a0
+  virtual bool AutoCanMakeProduct();                                    // slot 0x11 0x4b85a0
+  virtual bool CanMakeProduct();                                        // slot 0x12 0x4b8630
+  virtual void LaunchShip();                                            // slot 0x13 0x4b89a0
 
   // CreateObject (0x004b8470) allocates 0x4c bytes and stores the vptr, nothing else --
   // the original does NOT clear the tracking slots at construction, and TProductionOrder's

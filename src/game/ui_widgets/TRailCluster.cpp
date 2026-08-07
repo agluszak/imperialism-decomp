@@ -51,7 +51,7 @@ TRailCluster::~TRailCluster() {}
 void TRailCluster::DoPostCreate(int styleSeed) {
   short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pSimMgr->GetActiveNationId();
-  TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
+  TGreatPower* activeNationState = g_apNationStates[activeNationId];
   TCity* city = activeNationState == 0 ? 0 : activeNationState->GetCityState();
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
@@ -162,7 +162,8 @@ void TRailCluster::SetMoveAmount(short dragValue, unsigned char updateFlag) {
 
   int scaledMoveAmount = static_cast<int>(static_cast<float>(selectedOrder->quantity) * barScale);
   int scaledMaximum = static_cast<int>(static_cast<float>(selectedOrder->MaxOrder()) * barScale);
-  barControl->SetBarMetric(scaledMoveAmount, scaledMaximum);
+  barControl->UpdateBarValuesAndRefresh(static_cast<short>(scaledMoveAmount),
+                                        static_cast<short>(scaledMaximum));
 
   CPoint moveControlPosition;
   moveControlPosition.x = barControl->ownerLocalX + static_cast<short>(scaledMoveAmount) - 2;

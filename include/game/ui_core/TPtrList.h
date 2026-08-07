@@ -23,8 +23,6 @@ public:
   // Same copy-to-front behavior as inherited slot 0x40, exposed by TPtrList as its
   // own final virtual slot.
   virtual void PrependCopiedRecordToPtrList(void* record); // slot 0x48 0x488470
-
-  static void* GetTPtrListClassNamePointer();
 };
 
 ASSERT_SIZE(TPtrList, 0x18);

@@ -35,7 +35,7 @@ extern short g_awTacticalUnitAiClassByUnitType_006693B8[32];
 
 extern short g_awTacticalUnitActionPointCostByType_006693F8[32];
 
-extern int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15];
+extern int g_anTacticalTileHeuristicWeightsByAiState_00699500[20][15];
 
 extern short g_awTacticalCompositionReferenceProfiles_00697870[];
 

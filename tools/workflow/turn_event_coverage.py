@@ -227,7 +227,7 @@ def dispatch_hooks(
     same_start = dispatch_body.index("// Same-code refresh")
     same_end = dispatch_body.index("// Cross-code path", same_start)
     cross_start = same_end
-    cross_end = dispatch_body.index("DispatchPostTurnStateUpdatesTail();", cross_start)
+    cross_end = dispatch_body.index("DispatchPostTurnStateUpdatesTail(", cross_start)
     teardown = dispatch_body[teardown_start:teardown_end]
     same = dispatch_body[same_start:same_end]
     cross = dispatch_body[cross_start:cross_end]

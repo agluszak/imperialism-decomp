@@ -18,6 +18,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TEscortMission*&)
 // SYNTHETIC: IMPERIALISM 0x005399f0
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x005399d0
+// `dynamic initializer for '_init_TEscortMission''
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x00539840

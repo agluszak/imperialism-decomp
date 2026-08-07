@@ -1235,7 +1235,7 @@ void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
     DrawTacticalTileInClipRect(static_cast<short>(tileIndex), &tileRect);
   }
   SetClip(savedClip.tempRgn);
-  if (toolbarD0 != 0 && tacticalBattle60->battleOutcomeCode44 == 0) {
+  if (toolbarD0 != 0 && tacticalBattle60->battleOutcome44 == kTacticalBattleInProgress) {
     toolbarD0->UpdateTacticalOtherSideUnitControl(
         static_cast<TArmyTacUnit*>(tacticalBattle60->tileGrid4[tileIndex].occupant4));
   }

@@ -131,7 +131,7 @@ void TTradeCluster::DoPostCreate(int styleSeed) {
   rightControl->ViewEnable(0, 0);
 
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
+  TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
   if (activeNationState != 0 && QueryNationTradeCapacity(activeNationState) == 0) {
     leftControl->Show(0, 0);
     rightControl->Show(0, 0);
@@ -163,8 +163,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
 
       int sellValue = sellControl->UpdateControlCachedIntFromWindowText();
       short activeNationSlot = g_pSimMgr->GetActiveNationId();
-      TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-      short maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+      TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
+      short maxByNationMetric = activeNationState->GetStockpile(tradeMetricSlot);
 
       TNumberText* capacityControl =
           static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
@@ -236,8 +236,8 @@ void TTradeCluster::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     break;
   case 0x69: {
     short activeNationSlot = g_pSimMgr->GetActiveNationId();
-    TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-    short maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+    TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
+    short maxByNationMetric = activeNationState->GetStockpile(tradeMetricSlot);
 
     TNumberText* capacityControl =
         static_cast<TNumberText*>(ownerPanel->ResolveControlByTag(kControlTagMCap));
@@ -474,12 +474,12 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
   offerControl->Resize(size, 1);
 
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-  short tradeMetricAvailable = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+  TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
+  short tradeMetricAvailable = activeNationState->GetStockpile(tradeMetricSlot);
 
   if (tradeMetricAvailable != 0) {
     short activeNationSlotAgain = g_pSimMgr->GetActiveNationId();
-    TGreatPower* activeNationStateAgain = GetNationStateBySlot(activeNationSlotAgain);
+    TGreatPower* activeNationStateAgain = g_apNationStates[activeNationSlotAgain];
     if (QueryNationTradeCapacity(activeNationStateAgain) != 0) {
       offerControl->Show(1, 0);
       if (controlTag == kTradeRowStateTag_67643020) {
@@ -525,8 +525,8 @@ void TTradeCluster::SetTradeOfferSecondaryBitmap() {
 // FUNCTION: IMPERIALISM 0x005882f0
 void TTradeCluster::SetMoveAmount(short metricClampMax) {
   short activeNationSlot = g_pSimMgr->GetActiveNationId();
-  TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
-  int tradeMetricValue = (int)QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+  TGreatPower* activeNationState = g_apNationStates[activeNationSlot];
+  int tradeMetricValue = (int)activeNationState->GetStockpile(tradeMetricSlot);
   if (tradeMetricValue > metricClampMax) {
     tradeMetricValue = metricClampMax;
   }
@@ -554,10 +554,11 @@ void TTradeCluster::SetMoveAmount(short metricClampMax) {
       barScale = (float)barRange / (float)barSteps;
     }
     int scaledMetricValue = (int)((float)tradeMetricValue * barScale);
-    barControl->SetBarMetric(scaledMetricValue, barRange);
+    barControl->UpdateBarValuesAndRefresh(static_cast<short>(scaledMetricValue),
+                                          static_cast<short>(barRange));
     return;
   }
 
-  barControl->SetBarMetric(0, barRange);
+  barControl->UpdateBarValuesAndRefresh(0, static_cast<short>(barRange));
   greenControl->Show(0, 1);
 }

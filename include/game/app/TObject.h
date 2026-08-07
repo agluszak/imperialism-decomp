@@ -10,12 +10,8 @@ class TStream;
 class TObject : public CObject {
 public:
   DECLARE_SERIAL(TObject)
-  // In-class inline: the original binary has no out-of-line TObject::TObject — every
-  // derived constructor absorbs it (e.g. TNetMgr::TNetMgr 0x5e33e0 is a single vptr
-  // store), so an out-of-line definition would pessimize all of them into a call.
-  // NOOP: verified empty in original 0x005e33e0 (no standalone body exists; every
-  // derived ctor absorbs it — e.g. TNetMgr::TNetMgr is just the vptr store)
-  TObject() {}
+  // FUNCTION: IMPERIALISM 0x00484970
+  TObject() {} // NOOP: verified empty in original 0x00484970; VC5 emits the vptr store.
   // Inline so every derived game-object destructor can reproduce the original direct
   // CObject vtable reset instead of calling an out-of-line TObject destructor.
   // 0x4849c0 is the per-TU duplicate COMDAT copy the linker kept beside the

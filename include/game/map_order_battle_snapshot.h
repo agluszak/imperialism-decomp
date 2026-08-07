@@ -33,6 +33,18 @@ struct CStr255 {
 };
 ASSERT_SIZE(CStr255, 0xff);
 
+// Four-byte discriminator shared by the serialized map-context report and the
+// stack-local snapshot from which it is built. Each value selects both the location
+// payload type and one retail report-text family.
+enum MapContextReportKind {
+  kMapContextReportLandBattle = 0,
+  kMapContextReportSeaBattle = 1,
+  kMapContextReportMerchantInterception = 2,
+  kMapContextReportPreemptedLandBattle = 3,
+  kMapContextReportUncontestedTakeover = 4
+};
+typedef int MapContextReportKindStorage;
+
 // One detail row in a map-order action report. Conflict resolution initially retains a
 // live unit pointer while refreshing ship state, then finalizes that four-byte slot to
 // the category tag consumed by the battle-report UI.
@@ -57,7 +69,7 @@ struct MapOrderBattleSnapshot {
   unsigned char nationIds[2];                // +0x00/+0x01, indexed by participant side
   unsigned char reportParticipantIndex02;    // +0x02
   unsigned char displayedParticipantIndex03; // +0x03
-  int actionType04;                          // +0x04
+  MapContextReportKindStorage reportKind04;  // +0x04
   void* targetObject08;                      // +0x08
   CStr32 nameBuffer[2];                      // +0x0c..+0x4b -- per-side terrain/nation label text
   CStr255 overlayLabel[2]; // +0x4c..+0x249 -- per-side selection overlay label text

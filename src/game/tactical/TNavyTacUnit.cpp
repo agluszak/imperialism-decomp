@@ -64,6 +64,11 @@ float TNavyTacUnit::GetDamageScale() {
   return g_afTacticalNavyDamageScaleByUnitType[unitTypeC];
 }
 
+// FUNCTION: IMPERIALISM 0x005a6390
+short TNavyTacUnit::GetSourceShipTypeDescriptorWord() {
+  return GetResourceDescriptorWord14ByType(sourceShip34->type);
+}
+
 // FUNCTION: IMPERIALISM 0x005a63c0
 void TNavyTacUnit::ApplyNavalDamage(float damageAmount, NavyTargeting targeting) {
   int strengthDelta;

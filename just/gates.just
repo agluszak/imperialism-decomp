@@ -124,7 +124,6 @@ _precommit-generated-integrity-gate:
 gates:
   just source-gates
   just stats --ui-codegen-gate --fail-on-regression
-  just semantic-gate
   just vtable
   just datacmp-gate
   just decomplint

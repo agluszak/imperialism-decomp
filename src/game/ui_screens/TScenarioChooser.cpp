@@ -261,32 +261,6 @@ void TScenarioChooser::StartGame() {
   }
 }
 
-// Copies one '#'-delimited field out of the metadata stream, translating newlines to
-// spaces and '^' to a carriage return, and stopping at the field separator, end of file
-// or 0x7fe bytes. Returns one past the NUL it writes.
-static char* ReadScenarioMetadataField(FILE* stream, char* destination) {
-  char* cursor = destination;
-  for (;;) {
-    int ch = fgetc(stream);
-    if (ch == '#') {
-      break;
-    }
-    if (ch == '\n' || ch == '\r') {
-      *cursor = ' ';
-    } else if (ch == '^') {
-      *cursor = '\r';
-    } else {
-      *cursor = static_cast<char>(ch);
-    }
-    ++cursor;
-    if (cursor - destination >= 0x7fe) {
-      break;
-    }
-  }
-  *cursor = 0;
-  return cursor + 1;
-}
-
 // FUNCTION: IMPERIALISM 0x0057a6e0
 void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenarioIndex) {
   CString path;
@@ -302,7 +276,25 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
     ch = fgetc(metadataStream);
   } while (feof(metadataStream) == 0 && ch != '#');
 
-  char* scenarioDescriptionEnd = ReadScenarioMetadataField(metadataStream, fieldBuffer);
+  char* scenarioDescriptionEnd = fieldBuffer;
+  for (;;) {
+    ch = fgetc(metadataStream);
+    if (ch == '#') {
+      break;
+    }
+    if (ch == '\n' || ch == '\r') {
+      *scenarioDescriptionEnd = ' ';
+    } else if (ch == '^') {
+      *scenarioDescriptionEnd = '\r';
+    } else {
+      *scenarioDescriptionEnd = static_cast<char>(ch);
+    }
+    ++scenarioDescriptionEnd;
+    if (scenarioDescriptionEnd - fieldBuffer >= 0x7fe) {
+      break;
+    }
+  }
+  *scenarioDescriptionEnd++ = 0;
   TDeluxeText* scenarioDescription =
       static_cast<TDeluxeText*>(ResolveControlByTag(kControlTagScenarioDescription));
   scenarioDescription->AssertValid();
@@ -313,7 +305,25 @@ void TScenarioChooser::LoadScenarioMetadataByIndexIntoUiControlCore(short scenar
 
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
     char* nationText = nationDescriptionTextByMapSelection118[nationSlot];
-    char* nationTextEnd = ReadScenarioMetadataField(metadataStream, nationText);
+    char* nationTextEnd = nationText;
+    for (;;) {
+      ch = fgetc(metadataStream);
+      if (ch == '#') {
+        break;
+      }
+      if (ch == '\n' || ch == '\r') {
+        *nationTextEnd = ' ';
+      } else if (ch == '^') {
+        *nationTextEnd = '\r';
+      } else {
+        *nationTextEnd = static_cast<char>(ch);
+      }
+      ++nationTextEnd;
+      if (nationTextEnd - nationText >= 0x7fe) {
+        break;
+      }
+    }
+    *nationTextEnd++ = 0;
     nationDescriptionLengthByMapSelection134[nationSlot] =
         static_cast<short>(nationTextEnd - nationText);
   }

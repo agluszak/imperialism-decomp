@@ -5,6 +5,7 @@
 #include "game/tactical/TTacticalBattle.h"
 #include "game/map/TTacticalPlayer.h"
 #include "game/globals/global_types.h"
+#include "game/gfx/TAmbitApplication.h"
 #include "game/globals/shared_globals.h"
 
 // SYNTHETIC: IMPERIALISM 0x005a64d0
@@ -20,6 +21,12 @@ IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 // FUNCTION: IMPERIALISM 0x005a65c0
 TNextMoveCommand::~TNextMoveCommand() {}
 
+// FUNCTION: IMPERIALISM 0x005a65e0
+void TNextMoveCommand::INextMoveCommand(TTacticalBattle* battle) {
+  ICommand(0x232a, static_cast<TCommandHandler*>(g_pAmbitApplication), 0, 0, 0);
+  battle18 = battle;
+}
+
 // FUNCTION: IMPERIALISM 0x005a6620
 void TNextMoveCommand::DoIt() {
   TTacticalBattle* battle = battle18;
@@ -27,8 +34,8 @@ void TNextMoveCommand::DoIt() {
     return;
   }
 
-  if (battle->battleOutcomeCode44 != 0) {
-    int sideWonFlag = (battle->battleOutcomeCode44 == 1);
+  if (battle->battleOutcome44 != kTacticalBattleInProgress) {
+    int sideWonFlag = (battle->battleOutcome44 == kTacticalBattleSide0Victory);
     battle->tacticalPlayer14->ApplyChanges(static_cast<unsigned char>(sideWonFlag));
     battle->tacticalPlayer18->ApplyChanges(static_cast<unsigned char>(!sideWonFlag));
     battle->EndBattle(static_cast<unsigned char>(sideWonFlag));

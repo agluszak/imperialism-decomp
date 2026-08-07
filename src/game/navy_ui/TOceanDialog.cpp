@@ -49,100 +49,6 @@ private:
   CPalette* m_previousPalette;
 };
 
-static int ClampOceanOwnerTag(int ownerTag) {
-  if (ownerTag < 0) {
-    return 0;
-  }
-  if (ownerTag > 0x17) {
-    return 0x17;
-  }
-  return ownerTag;
-}
-
-static void WriteOceanOverviewPixel(TQuickDrawBlitSurface* surface, int x, int y,
-                                    unsigned char paletteIndex) {
-  if (surface == 0 || surface->pixelBits == 0 || surface->surfaceDib == 0 ||
-      x < surface->clipRect.left || x >= surface->clipRect.right || y < surface->clipRect.top ||
-      y >= surface->clipRect.bottom) {
-    return;
-  }
-
-  int height = surface->surfaceDib->GetAbsoluteHeight();
-  if (y < 0 || y >= height) {
-    return;
-  }
-  surface->pixelBits[(height - y - 1) * surface->stride + x] = paletteIndex;
-}
-
-static void PaintOceanOverviewNeighborEdge(TQuickDrawBlitSurface* surface, int tileX, int tileY,
-                                           int direction, int currentOwner, int neighborOwner,
-                                           bool cityBoundary) {
-  if (neighborOwner < 0 && !cityBoundary) {
-    return;
-  }
-
-  int edgeOwner = neighborOwner < 0 ? currentOwner : neighborOwner;
-  unsigned char edgeColor = g_aOceanMapBorderPaletteIndexByNationTag[ClampOceanOwnerTag(edgeOwner)];
-  unsigned char innerColor =
-      g_aOceanMapBorderPaletteIndexByNationTag[ClampOceanOwnerTag(currentOwner)];
-  int offset;
-  if (direction == 4 || direction == 1) {
-    int edgeX = tileX + (direction == 4 ? 0 : 15);
-    int innerX = tileX + (direction == 4 ? 1 : 14);
-    for (offset = 0; offset < 16; ++offset) {
-      WriteOceanOverviewPixel(surface, edgeX, tileY + offset, edgeColor);
-      if (neighborOwner != currentOwner) {
-        WriteOceanOverviewPixel(surface, innerX, tileY + offset, innerColor);
-      }
-    }
-    return;
-  }
-
-  int startX = tileX;
-  if (direction == 0 || direction == 2) {
-    startX += 8;
-  }
-  int edgeY = tileY + ((direction == 2 || direction == 3) ? 15 : 0);
-  int innerY = tileY + ((direction == 2 || direction == 3) ? 14 : 1);
-  for (offset = 0; offset < 8; ++offset) {
-    WriteOceanOverviewPixel(surface, startX + offset, edgeY, edgeColor);
-    if (neighborOwner != currentOwner) {
-      WriteOceanOverviewPixel(surface, startX + offset, innerY, innerColor);
-    }
-  }
-}
-
-static void PaintOceanOverviewOwnerTransitions(short tileIndex, int tileX, int tileY) {
-  short neighbors[6];
-  short neighborOwners[6];
-  short neighborCities[6];
-  TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  int currentOwner = ClampOceanOwnerTag(tile.ownerNationTag04);
-  TMapMgr::GetNeighborTileIDArray(tileIndex, neighbors,
-                                  g_pGlobalMapState->hexNeighborWrapHorizontally);
-
-  int direction;
-  for (direction = 0; direction < 6; ++direction) {
-    if (neighbors[direction] < 0) {
-      neighborOwners[direction] = -1;
-      neighborCities[direction] = -1;
-    } else {
-      TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighbors[direction]];
-      neighborOwners[direction] = static_cast<short>(ClampOceanOwnerTag(neighbor.ownerNationTag04));
-      neighborCities[direction] = neighbor.cityRecordIndex;
-    }
-  }
-
-  TQuickDrawBlitSurface* surface = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
-  for (direction = 0; direction < 6; ++direction) {
-    bool cityBoundary = neighborOwners[direction] == currentOwner &&
-                        neighborCities[direction] != tile.cityRecordIndex;
-    if (neighborOwners[direction] != currentOwner || cityBoundary) {
-      PaintOceanOverviewNeighborEdge(surface, tileX, tileY, direction, currentOwner,
-                                     neighborOwners[direction], cityBoundary);
-    }
-  }
-}
 } // namespace
 
 // SYNTHETIC: IMPERIALISM 0x00565db0
@@ -443,8 +349,22 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   SetClip(savedClip.tempRgn);
 
+  TQuickDrawBlitSurface* primarySurface = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
+  int bitmapHeight = primarySurface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (bitmapHeight < 1) {
+    bitmapHeight = -bitmapHeight;
+  }
+  unsigned int bitmapStride =
+      (primarySurface->surfaceDib->m_pInfoHeader->bmiHeader.biWidth + 3U) & ~3U;
+  int rowStep = -static_cast<int>(bitmapStride);
+  unsigned char* topRowPixels = primarySurface->pixelBits - (bitmapHeight - 1) * rowStep;
+
   g_pViewMgr->ApplyLegendSplitSlot34(0x32);
-  CRect clippedRect(*rectBuffer);
+  CRect clippedRect;
+  clippedRect.left = rectBuffer->left;
+  clippedRect.top = rectBuffer->top;
+  clippedRect.right = rectBuffer->right;
+  clippedRect.bottom = rectBuffer->bottom;
   FillRectWithQuickDrawBrushAndContextOffset(&clippedRect);
 
   int row;
@@ -461,29 +381,334 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
 
       int unwrappedColumn = scrollColOffset7e + column;
       int tileIndex = baseTileIndex + unwrappedColumn;
-      bool blankCell = false;
       if (unwrappedColumn >= 0x6c) {
         tileIndex -= 0x6c;
-        blankCell = !blankWrappedRightEdge;
+        if (blankWrappedRightEdge) {
+          g_pViewMgr->ApplyLegendSplitSlot34(0);
+          FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
+          continue;
+        }
       } else if (blankWrappedLeftEdge && unwrappedColumn > 0x3c) {
-        blankCell = true;
-      }
-
-      if (blankCell) {
         g_pViewMgr->ApplyLegendSplitSlot34(0);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
         continue;
       }
 
       TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-      int ownerTag = ClampOceanOwnerTag(tile.ownerNationTag04);
+      int ownerTag = tile.ownerNationTag04;
+      if (ownerTag > 0x17) {
+        ownerTag = 0x17;
+      }
       if (tile.GetTerrainKind() != kStrategicTerrainWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
       }
 
       if (screenX >= 0) {
-        PaintOceanOverviewOwnerTransitions(static_cast<short>(tileIndex), screenX, screenY);
+        short neighborTiles[6];
+        short neighborOwners[6];
+        short neighborCities[6];
+        TMapMgr::GetNeighborTileIDArray(static_cast<short>(tileIndex), neighborTiles,
+                                        g_pGlobalMapState->hexNeighborWrapHorizontally);
+
+        int neighborIndex;
+        for (neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+          short neighborTile = neighborTiles[neighborIndex];
+          if (neighborTile < 0) {
+            neighborOwners[neighborIndex] = neighborTile;
+            neighborCities[neighborIndex] = -1;
+          } else {
+            TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
+            short neighborOwner = neighbor.ownerNationTag04;
+            if (neighborOwner > 0x17) {
+              neighborOwner = 0x17;
+            }
+            neighborOwners[neighborIndex] = neighborOwner;
+            neighborCities[neighborIndex] = neighbor.cityRecordIndex;
+          }
+        }
+
+        unsigned char verticalNeighborOffsets[16];
+        verticalNeighborOffsets[0] = 2;
+        verticalNeighborOffsets[1] = 3;
+        verticalNeighborOffsets[2] = 9;
+        verticalNeighborOffsets[3] = 13;
+        verticalNeighborOffsets[4] = 2;
+        verticalNeighborOffsets[5] = 11;
+        verticalNeighborOffsets[6] = 12;
+        verticalNeighborOffsets[7] = 13;
+        verticalNeighborOffsets[8] = 2;
+        verticalNeighborOffsets[9] = 3;
+        verticalNeighborOffsets[10] = 4;
+        verticalNeighborOffsets[11] = 5;
+        verticalNeighborOffsets[12] = 10;
+        verticalNeighborOffsets[13] = 11;
+        verticalNeighborOffsets[14] = 12;
+        verticalNeighborOffsets[15] = 13;
+
+        unsigned char verticalWaterOffsets[16];
+        verticalWaterOffsets[0] = 4;
+        verticalWaterOffsets[1] = 8;
+        verticalWaterOffsets[2] = 10;
+        verticalWaterOffsets[3] = 12;
+        verticalWaterOffsets[4] = 3;
+        verticalWaterOffsets[5] = 4;
+        verticalWaterOffsets[6] = 9;
+        verticalWaterOffsets[7] = 10;
+        verticalWaterOffsets[8] = 6;
+        verticalWaterOffsets[9] = 7;
+        verticalWaterOffsets[10] = 8;
+        verticalWaterOffsets[11] = 9;
+        verticalWaterOffsets[12] = 6;
+        verticalWaterOffsets[13] = 7;
+        verticalWaterOffsets[14] = 8;
+        verticalWaterOffsets[15] = 9;
+
+        unsigned char verticalCurrentOffsets[16];
+        verticalCurrentOffsets[0] = 5;
+        verticalCurrentOffsets[1] = 6;
+        verticalCurrentOffsets[2] = 7;
+        verticalCurrentOffsets[3] = 11;
+        verticalCurrentOffsets[4] = 5;
+        verticalCurrentOffsets[5] = 6;
+        verticalCurrentOffsets[6] = 7;
+        verticalCurrentOffsets[7] = 8;
+        verticalCurrentOffsets[8] = 10;
+        verticalCurrentOffsets[9] = 11;
+        verticalCurrentOffsets[10] = 12;
+        verticalCurrentOffsets[11] = 13;
+        verticalCurrentOffsets[12] = 2;
+        verticalCurrentOffsets[13] = 3;
+        verticalCurrentOffsets[14] = 4;
+        verticalCurrentOffsets[15] = 5;
+
+        unsigned char diagonalCurrentOffsets[8];
+        diagonalCurrentOffsets[0] = 4;
+        diagonalCurrentOffsets[1] = 5;
+        diagonalCurrentOffsets[2] = 2;
+        diagonalCurrentOffsets[3] = 2;
+        diagonalCurrentOffsets[4] = 5;
+        diagonalCurrentOffsets[5] = 5;
+        diagonalCurrentOffsets[6] = 5;
+        diagonalCurrentOffsets[7] = 5;
+
+        unsigned char diagonalNeighborOffsets[8];
+        diagonalNeighborOffsets[0] = 3;
+        diagonalNeighborOffsets[1] = 3;
+        diagonalNeighborOffsets[2] = 3;
+        diagonalNeighborOffsets[3] = 4;
+        diagonalNeighborOffsets[4] = 4;
+        diagonalNeighborOffsets[5] = 4;
+        diagonalNeighborOffsets[6] = 3;
+        diagonalNeighborOffsets[7] = 4;
+
+        unsigned char diagonalWaterOffsets[8];
+        diagonalWaterOffsets[0] = 2;
+        diagonalWaterOffsets[1] = 2;
+        diagonalWaterOffsets[2] = 5;
+        diagonalWaterOffsets[3] = 5;
+        diagonalWaterOffsets[4] = 2;
+        diagonalWaterOffsets[5] = 3;
+        diagonalWaterOffsets[6] = 2;
+        diagonalWaterOffsets[7] = 2;
+
+        unsigned char* tilePixels = topRowPixels + screenY * rowStep + screenX;
+        unsigned char currentBorder = g_aOceanMapBorderPaletteIndexByNationTag[ownerTag];
+        bool isWater = tile.GetTerrainKind() == kStrategicTerrainWater;
+        int patternIndex;
+        int pixelIndex;
+
+        if (neighborOwners[4] >= 0 && neighborOwners[4] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[4]];
+          patternIndex = (tileIndex % 4) * 4;
+          if (neighborOwners[5] == neighborOwners[4]) {
+            tilePixels[0] = g_aOceanMapOwnerPaletteIndexByNationTag[neighborOwners[4]];
+            tilePixels[1] = neighborBorder;
+            tilePixels[rowStep] = neighborBorder;
+            tilePixels[rowStep + 1] = currentBorder;
+          } else {
+            tilePixels[0] = currentBorder;
+            tilePixels[rowStep] = currentBorder;
+          }
+          for (pixelIndex = 0; pixelIndex < 4; ++pixelIndex) {
+            int currentOffset = verticalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = verticalNeighborOffsets[patternIndex + pixelIndex];
+            tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep] = currentBorder;
+            tilePixels[neighborOffset * rowStep] = neighborBorder;
+            tilePixels[neighborOffset * rowStep + 1] = currentBorder;
+            if (isWater) {
+              tilePixels[currentOffset * rowStep] = currentBorder;
+              tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 1] =
+                  currentBorder;
+              tilePixels[neighborOffset * rowStep + 2] = currentBorder;
+            }
+          }
+          unsigned char* lowerLeft = tilePixels + 14 * rowStep;
+          if (neighborOwners[3] == neighborOwners[4]) {
+            lowerLeft[0] = neighborBorder;
+            lowerLeft[1] = currentBorder;
+            lowerLeft[rowStep] = neighborBorder;
+            lowerLeft[rowStep + 1] = g_aOceanMapOwnerPaletteIndexByNationTag[neighborOwners[4]];
+          } else {
+            lowerLeft[0] = currentBorder;
+            lowerLeft[rowStep] = currentBorder;
+          }
+        } else if (tile.cityRecordIndex != neighborCities[4]) {
+          for (pixelIndex = 0; pixelIndex < 16; ++pixelIndex) {
+            tilePixels[pixelIndex * rowStep] = currentBorder;
+          }
+        }
+
+        if (neighborOwners[1] >= 0 && neighborOwners[1] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[1]];
+          patternIndex = (neighborTiles[1] % 4) * 4;
+          if (neighborOwners[0] == neighborOwners[1]) {
+            tilePixels[14] = neighborBorder;
+            tilePixels[15] = g_aOceanMapOwnerPaletteIndexByNationTag[neighborOwners[4]];
+            tilePixels[rowStep + 15] = neighborBorder;
+            tilePixels[rowStep + 14] = currentBorder;
+          } else {
+            tilePixels[15] = currentBorder;
+            tilePixels[rowStep + 15] = currentBorder;
+          }
+          for (pixelIndex = 0; pixelIndex < 4; ++pixelIndex) {
+            int currentOffset = verticalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = verticalNeighborOffsets[patternIndex + pixelIndex];
+            tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 15] =
+                currentBorder;
+            tilePixels[neighborOffset * rowStep + 15] = neighborBorder;
+            tilePixels[neighborOffset * rowStep + 14] = currentBorder;
+            if (isWater) {
+              tilePixels[currentOffset * rowStep + 15] = currentBorder;
+              tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 14] =
+                  currentBorder;
+              tilePixels[neighborOffset * rowStep + 13] = currentBorder;
+            }
+          }
+          unsigned char* lowerRight = tilePixels + 14 * rowStep + 15;
+          if (neighborOwners[2] == neighborOwners[1]) {
+            lowerRight[0] = neighborBorder;
+            lowerRight[-1] = currentBorder;
+            lowerRight[rowStep] = neighborBorder;
+            lowerRight[rowStep - 1] = g_aOceanMapOwnerPaletteIndexByNationTag[neighborOwners[4]];
+          } else {
+            lowerRight[0] = currentBorder;
+            lowerRight[rowStep] = currentBorder;
+          }
+        }
+
+        if (neighborOwners[5] >= 0 && neighborOwners[5] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[5]];
+          patternIndex = (tileIndex % 4) * 2;
+          if (neighborOwners[5] != neighborOwners[4]) {
+            tilePixels[0] = currentBorder;
+            tilePixels[1] = currentBorder;
+          }
+          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
+            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
+            tilePixels[neighborOffset] = currentBorder;
+            tilePixels[currentOffset] = neighborBorder;
+            tilePixels[rowStep + currentOffset] = currentBorder;
+            if (isWater) {
+              tilePixels[diagonalWaterOffsets[patternIndex + pixelIndex]] = currentBorder;
+              tilePixels[rowStep + neighborOffset] = currentBorder;
+              tilePixels[rowStep * 2 + currentOffset] = currentBorder;
+            }
+          }
+          if (neighborOwners[0] != ownerTag) {
+            tilePixels[6] = currentBorder;
+            tilePixels[7] = currentBorder;
+          }
+        } else if (tile.cityRecordIndex != neighborCities[5]) {
+          memset(tilePixels, currentBorder, 8);
+        }
+
+        if (neighborOwners[0] >= 0 && neighborOwners[0] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[0]];
+          patternIndex = (neighborTiles[0] % 4) * 2;
+          unsigned char* upperRight = tilePixels + 8;
+          if (neighborOwners[5] != ownerTag) {
+            upperRight[0] = currentBorder;
+            upperRight[1] = currentBorder;
+          }
+          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
+            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
+            upperRight[neighborOffset] = currentBorder;
+            upperRight[currentOffset] = neighborBorder;
+            upperRight[rowStep + currentOffset] = currentBorder;
+            if (isWater) {
+              upperRight[diagonalWaterOffsets[patternIndex + pixelIndex]] = currentBorder;
+              upperRight[rowStep + neighborOffset] = currentBorder;
+              upperRight[rowStep * 2 + currentOffset] = currentBorder;
+            }
+          }
+          if (neighborOwners[0] != neighborOwners[1]) {
+            upperRight[6] = currentBorder;
+            upperRight[7] = currentBorder;
+          }
+        } else if (tile.cityRecordIndex != neighborCities[0]) {
+          memset(tilePixels + 8, currentBorder, 8);
+        }
+
+        if (neighborOwners[2] >= 0 && neighborOwners[2] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[2]];
+          patternIndex = (neighborTiles[2] % 4) * 2;
+          unsigned char* lowerRight = tilePixels + 15 * rowStep + 8;
+          lowerRight[0] = currentBorder;
+          lowerRight[1] = currentBorder;
+          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
+            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
+            int edgeOffset = diagonalWaterOffsets[patternIndex + pixelIndex];
+            lowerRight[neighborOffset] = currentBorder;
+            lowerRight[edgeOffset] = neighborBorder;
+            lowerRight[edgeOffset - rowStep] = currentBorder;
+            if (isWater) {
+              lowerRight[currentOffset] = currentBorder;
+              lowerRight[neighborOffset - rowStep] = currentBorder;
+              lowerRight[edgeOffset - rowStep * 2] = currentBorder;
+            }
+          }
+          if (neighborOwners[2] != neighborOwners[1]) {
+            lowerRight[6] = currentBorder;
+            lowerRight[7] = currentBorder;
+          }
+        }
+
+        if (neighborOwners[3] >= 0 && neighborOwners[3] != ownerTag) {
+          unsigned char neighborBorder =
+              g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[3]];
+          patternIndex = (tileIndex % 4) * 2;
+          unsigned char* lowerLeft = tilePixels + 15 * rowStep;
+          if (neighborOwners[3] != neighborOwners[4]) {
+            lowerLeft[0] = currentBorder;
+            lowerLeft[1] = currentBorder;
+          }
+          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
+            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
+            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
+            int edgeOffset = diagonalWaterOffsets[patternIndex + pixelIndex];
+            lowerLeft[neighborOffset] = currentBorder;
+            lowerLeft[edgeOffset] = neighborBorder;
+            lowerLeft[edgeOffset - rowStep] = currentBorder;
+            if (isWater) {
+              lowerLeft[currentOffset] = currentBorder;
+              lowerLeft[neighborOffset - rowStep] = currentBorder;
+              lowerLeft[edgeOffset - rowStep * 2] = currentBorder;
+            }
+          }
+          if (neighborOwners[3] != neighborOwners[2]) {
+            lowerLeft[6] = currentBorder;
+            lowerLeft[7] = currentBorder;
+          }
+        }
       }
 
       bool hasImprovementSprite = tile.tileActionState16 >= 0 || tile.perTileVisitedFlag0f > 0 ||
@@ -511,8 +736,11 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       CRect destinationRect(tileRect);
       UpdatePaletteIndexWithDefaultFallback(0x10);
       if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != 0) {
-        int surfaceHeight =
-            g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->GetAbsoluteHeight();
+        int surfaceHeight = g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader
+                                ->bmiHeader.biHeight;
+        if (surfaceHeight < 1) {
+          surfaceHeight = -surfaceHeight;
+        }
         OffsetRect(&destinationRect, 0,
                    surfaceHeight - destinationRect.top - destinationRect.bottom);
       }
@@ -623,6 +851,26 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
                                      &viewportRect, &viewportRect, 0, 0);
     UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   }
+}
+
+// Draws one wrapped route segment in the ocean map's doubled-column coordinate system.
+// FUNCTION: IMPERIALISM 0x00567f00
+void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationColumn,
+                           int destinationRow) {
+  int difference = sourceColumn - destinationColumn;
+  if (abs(difference) > 0x6c) {
+    if (sourceColumn < 0x6d) {
+      if (destinationColumn > 0x6c) {
+        destinationColumn = static_cast<short>(destinationColumn - 0xd8);
+      }
+    } else {
+      sourceColumn = static_cast<short>(sourceColumn - 0xd8);
+    }
+  }
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>((sourceColumn * 0x10) / 2),
+                                          static_cast<short>(sourceRow << 4));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>((destinationColumn * 0x10) / 2),
+                               static_cast<short>(destinationRow << 4));
 }
 
 // FUNCTION: IMPERIALISM 0x00567fa0
@@ -768,6 +1016,29 @@ void TOceanDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileI
       ((((mapTileIndex - scrollColOffset7e) + 0x6c) % 0x6c) << 4) - (((~row) & 1) * 8));
 }
 
+// FUNCTION: IMPERIALISM 0x005686d0
+void TOceanDialog::BuildTileViewportRect(short tileIndex, CRect* outRect) {
+  if (tileIndex < 0) {
+    *outRect = CRect(0, 0, 0, 0);
+    return;
+  }
+
+  int index = tileIndex;
+  int column = (index - scrollColOffset7e + 0x6c) % 0x6c;
+  int row = index / 0x6c;
+  *outRect = CRect(column, row, 0, 0);
+  int left = outRect->left;
+  unsigned char rowParity = static_cast<unsigned char>(outRect->top);
+  left <<= 4;
+  outRect->left = left;
+  if ((rowParity & 1) == 0) {
+    outRect->left -= 8;
+  }
+  outRect->top = (outRect->top - scrollRowOffset7c) << 4;
+  outRect->right = outRect->left + 0x10;
+  outRect->bottom = outRect->top + 0x10;
+}
+
 // FUNCTION: IMPERIALISM 0x005687b0
 unsigned char TOceanDialog::IsTileVisible(short tileIndex) {
   short tileRow = static_cast<short>(tileIndex / 0x6c);
@@ -781,6 +1052,22 @@ unsigned char TOceanDialog::IsTileVisible(short tileIndex) {
     return 0;
   }
   return 1;
+}
+
+// Converts a viewport pixel point to a wrapped map tile index.
+// FUNCTION: IMPERIALISM 0x00568840
+int TOceanDialog::ComputeWrappedTileIndexFromViewportPoint(const CPoint* point) {
+  int y = point->y;
+  int yQuotient = (y + (y >> 31 & 0xf)) >> 4;
+  short row = static_cast<short>(scrollRowOffset7c + yQuotient);
+  int x = point->x;
+  if ((row & 1) == 0) {
+    x += 8;
+  }
+  int xQuotient = (x + (x >> 31 & 0xf)) >> 4;
+  short column = static_cast<short>(scrollColOffset7e + xQuotient);
+  NormalizeWrappedMapCoord108x60(&column, &row);
+  return column + row * 0x6c;
 }
 
 // FUNCTION: IMPERIALISM 0x005688d0

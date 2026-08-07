@@ -4,6 +4,7 @@
 
 #include "game/app/TObject.h"
 #include "game/mfc.h"
+#include "game/civilian_domain_types.h"
 #include "game/unit_domain_types.h"
 
 // VTABLE: IMPERIALISM 0x00653248
@@ -65,7 +66,8 @@ public:
   // 0x004d2960. Resolves the civilian map-click action code from current selection and tile
   // context (see cpp for the full action-code map). Ghidra mis-attributed this to TCivToolbar
   // via a thunk-only caller, same as CanAssignCivilianOrderToTile above.
-  int ResolveCivilianTileOrderActionCode(short nTileIndex, short nInputHint);
+  CivilianTileActionCodeStorage ResolveCivilianTileOrderActionCode(short nTileIndex,
+                                                                   short nInputHint);
 
   // 0x004d2930. Cursor resource id for the action code ResolveCivilianTileOrderActionCode
   // would return for this click. Same mis-attribution as above; `this` is implicitly forwarded
@@ -80,7 +82,7 @@ public:
   // Mac oracle: GetTileAction. Sibling of the resolver above: 10 when this nation's unit
   // on the tile is busy, 2 when it is idle and either the caller asked for mode 2 or the
   // tile's bit 5 is clear, otherwise 0. 0x004d2610, __thiscall.
-  int GetTileAction(short tileIndex, short mode);
+  CivilianTileActionCodeStorage GetTileAction(short tileIndex, short mode);
 
   // 0x004d2ef0. Attempts to queue a plain movement order (order type 1) for the selected
   // civilian onto nTileIndex; false if CanAssignCivilianOrderToTile rejects the tile. Same

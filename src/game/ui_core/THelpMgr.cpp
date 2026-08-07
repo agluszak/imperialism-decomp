@@ -147,18 +147,6 @@ void THelpMgr::IHelpMgr() {
 
 namespace {
 
-void ReleasePendingHelpDialogView(TWindow** dialogView) {
-  if (*dialogView != 0) {
-    (*dialogView)->CloseAndFree();
-    *dialogView = 0;
-  }
-}
-
-int GetSortedPtrListEntryCount(TSortedPtrList* list) {
-  // +0x8 is CPtrArray::m_nSize; GetSize() reads exactly that.
-  return list->GetSize();
-}
-
 __inline int ReadLocalizationFlowMode() {
   return g_pSimMgr->mode;
 }
@@ -236,7 +224,7 @@ void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
       nullptr; // context match, rank>=threshold, previousHelpResourceBaseId==0
   short threshold = g_pSimMgr->GetEconomicTurn();
   short contextId = g_pViewMgr->currentTurnEventCode;
-  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+  for (int index = 1; index <= indexList->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->contextId == contextId) {
@@ -786,16 +774,22 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
   HelpSetRecord* pendingEntry = 0;
 
   if (eventCode != kTurnEventStrategicMap && eventCode != kTurnEventCitySiteSelector) {
-    ReleasePendingHelpDialogView(&pendingDialogViewC);
+    if (pendingDialogViewC != 0) {
+      pendingDialogViewC->CloseAndFree();
+      pendingDialogViewC = 0;
+    }
   }
 
   if (ReadLocalizationPendingEventGate5c() == 0) {
-    ReleasePendingHelpDialogView(&pendingDialogView8);
+    if (pendingDialogView8 != 0) {
+      pendingDialogView8->CloseAndFree();
+      pendingDialogView8 = 0;
+    }
   } else {
     if (eventCode != kTurnEventNewspaperStatus || g_bMultiplayerScenarioSetupActive == 0) {
       int index = 1;
       while (!nationAlreadyCurrent && activateCandidate == 0) {
-        if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
+        if (indexList == 0 || index > indexList->GetSize()) {
           break;
         }
         HelpSetRecord* entry =
@@ -819,14 +813,17 @@ char THelpMgr::HandlePendingEventActivationByCode(TurnEventCodeStorage eventCode
       ActivatePendingEventAndRefreshView(pendingEntry);
       return activateCandidate;
     }
-    ReleasePendingHelpDialogView(&pendingDialogView8);
+    if (pendingDialogView8 != 0) {
+      pendingDialogView8->CloseAndFree();
+      pendingDialogView8 = 0;
+    }
   }
   return activateCandidate;
 }
 
 // FUNCTION: IMPERIALISM 0x00503320
 void THelpMgr::SelectAndActivatePendingEventType1A0A() {
-  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+  for (int index = 1; index <= indexList->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->contextId == 0x1a0a) {
@@ -839,7 +836,7 @@ void THelpMgr::SelectAndActivatePendingEventType1A0A() {
 // FUNCTION: IMPERIALISM 0x00503370
 void THelpMgr::SelectAndActivatePendingEventTypeOffsetFrom1A0B(int idx) {
   short targetContextId = static_cast<short>(idx + 0x1a0b);
-  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+  for (int index = 1; index <= indexList->GetSize(); ++index) {
     HelpSetRecord* record =
         static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
     if (record->contextId == targetContextId) {

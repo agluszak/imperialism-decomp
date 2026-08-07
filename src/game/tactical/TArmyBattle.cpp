@@ -197,7 +197,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
   selectedUnit1c = linkedRecord;
 
   stream->ReadBytes(&battleSiteIndex38, 4);
-  stream->ReadBytes(&battleOutcomeCode44, 4);
+  stream->ReadBytes(&battleOutcome44, 4);
   stream->ReadBytes(&fortLevel49, 1);
   stream->ReadBytes(&currentTacticalActionCode4c, 4);
   stream->ReadBytes(&compositionClass50, 4);
@@ -275,7 +275,7 @@ void TArmyBattle::WriteTo(TStream* stream) {
   stream->WriteBytes(&linkedUnitId, 4);
 
   stream->WriteBytes(&battleSiteIndex38, 4);
-  stream->WriteBytes(&battleOutcomeCode44, 4);
+  stream->WriteBytes(&battleOutcome44, 4);
   stream->WriteBytes(&fortLevel49, 1);
   stream->WriteBytes(&currentTacticalActionCode4c, 4);
   stream->WriteBytes(&compositionClass50, 4);
@@ -395,7 +395,7 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, TacticalTileInde
 
 // FUNCTION: IMPERIALISM 0x005a5320
 void TArmyBattle::EndBattle(unsigned char sideWonFlag) {
-  battleOutcomeCode44 = 1;
+  battleOutcome44 = kTacticalBattleSide0Victory;
   tacticalPlayer14->AssertValid();
   tacticalPlayer18->AssertValid();
   g_pSfxPlaybackSystem->StopCdAudioPlayback(0);

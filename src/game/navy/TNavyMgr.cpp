@@ -293,28 +293,6 @@ void TNavyMgr::ReadFrom(TStream* stream) {
   ReadFromFilterously(stream, -1);
 }
 
-static void RemoveMatchingSecondaryOrders(short nationSlot) {
-  TAdmiral* node = g_pNavySecondaryOrderListHead;
-  while (node != 0) {
-    TAdmiral* nextNode = node->next;
-    if (node->nationSlot == nationSlot) {
-      node->Free();
-    }
-    node = nextNode;
-  }
-}
-
-static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlot) {
-  TTaskForce* node = navyManager->orderQueueHead;
-  while (node != nullptr) {
-    TTaskForce* nextNode = node->nextForce;
-    if (node->nation == nationSlot) {
-      node->Free();
-    }
-    node = nextNode;
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x00556ad0
 void TNavyMgr::ReadFromFilterously(TStream* stream, short nationFilter) {
   if (nationFilter == -1) {
@@ -553,8 +531,23 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
     }
   }
 
-  RemoveMatchingSecondaryOrders(nationSlot);
-  RemoveMatchingTaskForceOrders(this, nationSlot);
+  TAdmiral* secondaryOrder = g_pNavySecondaryOrderListHead;
+  while (secondaryOrder != 0) {
+    TAdmiral* nextSecondaryOrder = secondaryOrder->next;
+    if (secondaryOrder->nationSlot == nationSlot) {
+      secondaryOrder->Free();
+    }
+    secondaryOrder = nextSecondaryOrder;
+  }
+
+  TTaskForce* taskForceOrder = orderQueueHead;
+  while (taskForceOrder != 0) {
+    TTaskForce* nextTaskForceOrder = taskForceOrder->nextForce;
+    if (taskForceOrder->nation == nationSlot) {
+      taskForceOrder->Free();
+    }
+    taskForceOrder = nextTaskForceOrder;
+  }
 }
 
 // Per-turn map-order revalidation sweep: for every map-action context zone and
@@ -1021,7 +1014,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
         snapshot.childCount[1] = 0;
         snapshot.childRecords[0] = nullptr;
         snapshot.childRecords[1] = nullptr;
-        snapshot.actionType04 = 1;
+        snapshot.reportKind04 = kMapContextReportSeaBattle;
         snapshot.targetObject08 = entry->location;
         snapshot.displayedParticipantIndex03 = 0;
         snapshot.reportParticipantIndex02 = 1;
@@ -1132,7 +1125,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         snapshot.nationIds[1] = static_cast<unsigned char>(nation);
         snapshot.reportParticipantIndex02 = 0;
         snapshot.displayedParticipantIndex03 = 0;
-        snapshot.actionType04 = 2;
+        snapshot.reportKind04 = kMapContextReportMerchantInterception;
         snapshot.targetObject08 = selection.selectedEntry->location;
 
         CString labelScratch;
@@ -1202,8 +1195,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
             CString resourceList;
             int reportIndex = 1;
-            for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount;
-                 ++resourceType) {
+            for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
               short resourceCount = drawnCounts[resourceType];
               if (resourceCount == 0) {
                 continue;
@@ -1254,7 +1246,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
                 item.detailIdentity28 = kControlTagItem; // 'item'
               }
 
-              for (int resourceType2 = 0; resourceType2 < kIndustryActionOrderTypeCount;
+              for (int resourceType2 = 0; resourceType2 < kIndustryActionSlotCount;
                    ++resourceType2) {
                 if (drawnCounts[resourceType2] != 0) {
                   g_apNationStates[selection.offerNationCode]

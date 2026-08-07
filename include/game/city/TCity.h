@@ -127,7 +127,7 @@ public:
   // the pending-action FSM (0x004dab20) bumps the active zone's entry and entry 6
   // (navy secondary orders); 0x004dd140 weights all 14 entries by the resource
   // descriptor to rebuild the diplomacy aid budget score.
-  short orderCountByType5c[0x0e];
+  short orderCountByType5c[kIndustryActionSlotCount];
   // +0x78 — exponentially decayed item-production activity. TItemOrder::Produce
   // accumulates completed quantities here; EndCityPhase applies old*0.9 + new*10.
   int rollingItemProductionScore78;

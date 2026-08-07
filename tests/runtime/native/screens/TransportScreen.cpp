@@ -3,6 +3,7 @@
 #include "game/gfx/TDisplayMgr.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/shared_globals.h"
+#include "game/globals/trade_ui_globals.h"
 #include "game/globals/ui_widgets_globals.h"
 #include "game/turn_event_codes.h"
 #include "game/ui_core/TPicture.h"
@@ -80,7 +81,7 @@ bool TransportScreen::ToolbarIconIsSelected() const {
 }
 
 bool TransportScreen::CommodityHelpIsSubstituted(short commodityIndex) const {
-  TView* commodity = Find(GetTradeSummarySelectionTagByIndex(commodityIndex));
+  TView* commodity = Find(g_pTradeSummarySelectionMap[commodityIndex]);
   if (commodity == 0) {
     return false;
   }

@@ -2010,6 +2010,20 @@ void TTaskForce::CarryOutOrders() {
   defeated = 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00556240
+short TTaskForce::CountSelectedShips() const {
+  if (this == 0) {
+    return 0;
+  }
+  short count = 0;
+  for (TMapOrderChildLinkNode* node = shipList; node != 0; node = node->next) {
+    if (node->active != 0) {
+      ++count;
+    }
+  }
+  return count;
+}
+
 // FUNCTION: IMPERIALISM 0x005562c0
 short TTaskForce::CountShips() const {
   if (this == nullptr) {

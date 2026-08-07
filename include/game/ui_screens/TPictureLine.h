@@ -16,6 +16,9 @@ public:
   // NOOP: verified empty in original 0x00570032 (no standalone TPictureLine::TPictureLine body exists: construction is fully inlined into CreateObject 0x00570030; that address is its operator-new call site)
   TPictureLine() {}
 
+  void SetPictureLineRowBoundsAndResource(short rowArg, short colArg, int* bounds,
+                                          short pictureResourceId); // 0x5700f0
+
   // Original object size is 0x14 (CRuntimeClass m_nObjectSize); the source class ended at 0x10. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
   short pictureResourceId10;
   short reserved12;

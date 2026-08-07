@@ -51,190 +51,6 @@ unsigned char TNetMgr::DefaultUnhandledTurnEventHookReturnsFalse(TurnEventQueueP
   return 0;
 }
 
-static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
-static const char kNetworkErrorGeneric[] = "A network error has occurred.";
-static const char kDirectPlayOk[] = "DirectPlay OK";
-
-// The comparison tree mirrors the binary-search shape MSVC emitted for the original
-// switch on the DPERR codes; each pivot is the largest constant of its branch + 1.
-static const char* LookupDirectPlayErrorDetailText(int errorCode) {
-  if (errorCode < DPERR_OUTOFMEMORY + 1) {
-    if (errorCode == DPERR_OUTOFMEMORY) {
-      return "Not enough memory available.";
-    }
-    if (errorCode == DPERR_UNSUPPORTED) {
-      return "This function is not supported on this system.";
-    }
-    if (errorCode == DPERR_NOINTERFACE) {
-      return "No such interface supported.";
-    }
-    if (errorCode == DPERR_GENERIC) {
-      return "An undefined error code was returned from a DirectPlay function.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_ALREADYINITIALIZED + 1) {
-    if (errorCode == DPERR_ALREADYINITIALIZED) {
-      return "This object is already initialized.";
-    }
-    if (errorCode == DPERR_INVALIDPARAMS) {
-      return "One or more parameters were invalid.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_ACTIVEPLAYERS + 1) {
-    if (errorCode == DPERR_ACTIVEPLAYERS) {
-      return "There are active players in the session.";
-    }
-    if (errorCode == DPERR_ACCESSDENIED) {
-      return "Access to the object is denied.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_CANTADDPLAYER + 1) {
-    if (errorCode == DPERR_CANTADDPLAYER) {
-      return "Can't add player.";
-    }
-    if (errorCode == DPERR_BUFFERTOOSMALL) {
-      return "The buffer supplied is too small.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_CANTCREATEPLAYER + 1) {
-    if (errorCode == DPERR_CANTCREATEPLAYER) {
-      return "Can't create player.";
-    }
-    if (errorCode == DPERR_CANTCREATEGROUP) {
-      return "Can't create group.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_CAPSNOTAVAILABLEYET + 1) {
-    if (errorCode == DPERR_CAPSNOTAVAILABLEYET) {
-      return "The capabilities requested are not yet available.";
-    }
-    if (errorCode == DPERR_CANTCREATESESSION) {
-      return "Can't create session.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_INVALIDFLAGS + 1) {
-    if (errorCode == DPERR_INVALIDFLAGS) {
-      return "Invalid flags were specified.";
-    }
-    if (errorCode == DPERR_EXCEPTION) {
-      return "An exception occurred.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_INVALIDPLAYER + 1) {
-    if (errorCode == DPERR_INVALIDPLAYER) {
-      return "Invalid player.";
-    }
-    if (errorCode == DPERR_INVALIDOBJECT) {
-      return "Invalid object.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_NOCONNECTION + 1) {
-    if (errorCode == DPERR_NOCONNECTION) {
-      return "No connection.";
-    }
-    if (errorCode == DPERR_NOCAPS) {
-      return "The required capabilities are not available.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_NONAMESERVERFOUND + 1) {
-    if (errorCode == DPERR_NONAMESERVERFOUND) {
-      return "No name server found.";
-    }
-    if (errorCode == DPERR_NOMESSAGES) {
-      return "There are no messages waiting.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_NOSESSIONS + 1) {
-    if (errorCode == DPERR_NOSESSIONS) {
-      return "There are no sessions available.";
-    }
-    if (errorCode == DPERR_NOPLAYERS) {
-      return "There are no players available.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_TIMEOUT + 1) {
-    if (errorCode == DPERR_TIMEOUT) {
-      return "The operation timed out.";
-    }
-    if (errorCode == DPERR_SENDTOOBIG) {
-      return "The message is too large to send.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_BUSY + 1) {
-    if (errorCode == DPERR_BUSY) {
-      return "The message queue is full.";
-    }
-    if (errorCode == DPERR_UNAVAILABLE) {
-      return "The service is unavailable.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_CANNOTCREATESERVER + 1) {
-    if (errorCode == DPERR_CANNOTCREATESERVER) {
-      return "Can't create server.";
-    }
-    if (errorCode == DPERR_USERCANCEL) {
-      return "The user canceled the operation.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_SESSIONLOST + 1) {
-    if (errorCode == DPERR_SESSIONLOST) {
-      return "The session was lost.";
-    }
-    if (errorCode == DPERR_PLAYERLOST) {
-      return "The player was lost.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_CANTCREATEPROCESS + 1) {
-    if (errorCode == DPERR_CANTCREATEPROCESS) {
-      return "Can't create process.";
-    }
-    if (errorCode == DPERR_BUFFERTOOLARGE) {
-      return "The buffer is too large.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_INVALIDINTERFACE + 1) {
-    if (errorCode == DPERR_INVALIDINTERFACE) {
-      return "Invalid interface.";
-    }
-    if (errorCode == DPERR_APPNOTSTARTED) {
-      return "The application is not started.";
-    }
-    return 0;
-  }
-  if (errorCode < DPERR_UNKNOWNAPPLICATION + 1) {
-    if (errorCode == DPERR_UNKNOWNAPPLICATION) {
-      return "Unknown application.";
-    }
-    if (errorCode == DPERR_NOSERVICEPROVIDER) {
-      return "No service provider available.";
-    }
-    return 0;
-  }
-  if (errorCode == DPERR_NOTLOBBIED) {
-    return "Not lobbied.";
-  }
-  if (errorCode == DP_OK) {
-    return kDirectPlayOk;
-  }
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x005e34d0
 unsigned char TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
   g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
@@ -243,13 +59,133 @@ unsigned char TNetMgr::ResetRuntimeSelectionRecordBufferAndReturnTrue() {
 
 // FUNCTION: IMPERIALISM 0x005e34f0
 void TNetMgr::HandleError(int errorCode) {
-  CString message(kDirectPlayErrorTitle);
-  const char* detailText = LookupDirectPlayErrorDetailText(errorCode);
-  if (detailText == 0) {
-    CString genericMessage(kNetworkErrorGeneric);
+  CString message("DirectPlay Error: ");
+  switch (errorCode) {
+  case DPERR_OUTOFMEMORY:
+    message += "DPERR_NOMEMORY";
+    break;
+  case DPERR_UNSUPPORTED:
+    message += "DPERR_UNSUPPORTED";
+    break;
+  case DPERR_NOINTERFACE:
+    message += "DPERR_NOINTERFACE";
+    break;
+  case DPERR_GENERIC:
+    message += "DPERR_GENERIC";
+    break;
+  case DPERR_ALREADYINITIALIZED:
+    message += "DPERR_ALREADYINITIALIZED";
+    break;
+  case DPERR_INVALIDPARAMS:
+    message += "DPERR_INVALIDPARAM";
+    break;
+  case DPERR_ACTIVEPLAYERS:
+    message += "DPERR_ACTIVEPLAYERS";
+    break;
+  case DPERR_ACCESSDENIED:
+    message += "DPERR_ACCESSDENIED";
+    break;
+  case DPERR_CANTADDPLAYER:
+    message += "DPERR_CANTADDPLAYER";
+    break;
+  case DPERR_BUFFERTOOSMALL:
+    message += "DPERR_BUFFERTOOSMALL";
+    break;
+  case DPERR_CANTCREATEPLAYER:
+    message += "DPERR_CANTCREATEPLAYER";
+    break;
+  case DPERR_CANTCREATEGROUP:
+    message += "DPERR_CANTCREATEGROUP";
+    break;
+  case DPERR_CAPSNOTAVAILABLEYET:
+    message += "DPERR_CAPSNOTAVAILABLEYET";
+    break;
+  case DPERR_CANTCREATESESSION:
+    message += "DPERR_CANTCREATESESSION";
+    break;
+  case DPERR_INVALIDFLAGS:
+    message += "DPERR_INVALIDFLAGS";
+    break;
+  case DPERR_EXCEPTION:
+    message += "DPERR_EXCEPTION";
+    break;
+  case DPERR_INVALIDPLAYER:
+    message += "DPERR_INVALIDPLAYER";
+    break;
+  case DPERR_INVALIDOBJECT:
+    message += "DPERR_INVALIDOBJECT";
+    break;
+  case DPERR_NOCONNECTION:
+    message += "DPERR_NOCONNECTION";
+    break;
+  case DPERR_NOCAPS:
+    message += "DPERR_NOCAPS";
+    break;
+  case DPERR_NONAMESERVERFOUND:
+    message += "DPERR_NONAMESERVERFOUND";
+    break;
+  case DPERR_NOMESSAGES:
+    message += "DPERR_NOMESSAGES";
+    break;
+  case DPERR_NOSESSIONS:
+    message += "DPERR_NOSESSIONS";
+    break;
+  case DPERR_NOPLAYERS:
+    message += "DPERR_NOPLAYERS";
+    break;
+  case DPERR_TIMEOUT:
+    message += "DPERR_TIMEOUT";
+    break;
+  case DPERR_SENDTOOBIG:
+    message += "DPERR_SENDTOOBIG";
+    break;
+  case DPERR_BUSY:
+    message += "DPERR_BUSY";
+    break;
+  case DPERR_UNAVAILABLE:
+    message += "DPERR_UNAVAILABLE";
+    break;
+  case DPERR_CANNOTCREATESERVER:
+    message += "DPERR_CANNOTCREATESERVER";
+    break;
+  case DPERR_USERCANCEL:
+    message += "DPERR_USERCANCEL";
+    break;
+  case DPERR_SESSIONLOST:
+    message += "DPERR_SESSIONLOST";
+    break;
+  case DPERR_PLAYERLOST:
+    message += "DPERR_PLAYERLOST";
+    break;
+  case DPERR_CANTCREATEPROCESS:
+    message += "DPERR_CANTCREATEPROCESS";
+    break;
+  case DPERR_BUFFERTOOLARGE:
+    message += "DPERR_BUFFERTOOLARGE";
+    break;
+  case DPERR_INVALIDINTERFACE:
+    message += "DPERR_INVALIDINTERFACE";
+    break;
+  case DPERR_APPNOTSTARTED:
+    message += "DPERR_APPNOTSTARTED";
+    break;
+  case DPERR_UNKNOWNAPPLICATION:
+    message += "DPERR_UNKNOWNAPPLICATION";
+    break;
+  case DPERR_NOSERVICEPROVIDER:
+    message += "DPERR_NOSERVICEPROVIDER";
+    break;
+  case DPERR_NOTLOBBIED:
+    message += "DPERR_NOTLOBBIED";
+    break;
+  case DP_OK:
+    message += "DP_OK";
+    break;
+  default: {
+    CString genericMessage("A network error has occured");
     message = genericMessage;
-  } else {
-    message += detailText;
+    break;
+  }
   }
 
   g_pViewMgr->ModalMessage(message, g_ptNetworkModalMessage006a5ed8);

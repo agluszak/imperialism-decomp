@@ -137,7 +137,7 @@ CWnd* TEditText::Open() {
 
     editFont = CreateFontFromPresetAndAttachRegionHandle(&textStyle78);
     ::SendMessageA(editWindow->m_hWnd, WM_SETFONT,
-                   PointerAddressBits32(editFont != 0 ? editFont->m_hObject : 0), 0);
+                   reinterpret_cast<DWORD>(editFont != 0 ? editFont->m_hObject : 0), 0);
     if (text != 0 && text->GetLength() != 0) {
       editWindow->SetWindowText(*text);
     }

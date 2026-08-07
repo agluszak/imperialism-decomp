@@ -15,55 +15,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/globals/tactical_globals.h"
 
-int SumMilitaryUnitPowerWeights(TSortedList* unitList) {
-  int powerSum = 0;
-  CIterator unitIter(unitList);
-  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
-       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    powerSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
-  }
-  return powerSum;
-}
-
-float SumAlliedArmyScoreFactors(int targetNation) {
-  float allySum = 0.0f;
-  int allyIndex = 0;
-  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
-    do {
-      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
-      allySum = allySum + g_apNationStates[allyNation]->GetMilitaryPower();
-      ++allyIndex;
-    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
-  }
-  return allySum;
-}
-
-float SumAlliedNavyScoreFactors(int targetNation) {
-  float allySum = 0.0f;
-  int allyIndex = 0;
-  if (g_pDiplomacyTurnStateManager->GetNumAllies(targetNation) > 0) {
-    do {
-      int allyNation = g_pDiplomacyTurnStateManager->GetAllyNumber(allyIndex, targetNation);
-      allySum = allySum + g_apNationStates[allyNation]->GetTotalNavalForce();
-      ++allyIndex;
-    } while (allyIndex < g_pDiplomacyTurnStateManager->GetNumAllies(targetNation));
-  }
-  return allySum;
-}
-
-short* GetRelationStandingRowForNation(short nationSlot) {
-  return &g_pDiplomacyTurnStateManager->relationStandingScores[nationSlot * kNationSlotCount];
-}
-
-int GetClampedQuarterYearTerm(void) {
-  TSimMgr* localization = g_pSimMgr;
-  int yearTerm = static_cast<short>(localization->economicTurn / 4);
-  if (yearTerm >= 0x3c) {
-    yearTerm = 0x3c;
-  }
-  return yearTerm;
-}
-
 // Recomputes per-nation navy/army order-priority metrics from queued map-order
 // distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
 // passes. For each eligible nation (g_pSimMgr->IsNationSlotEligibleForEventProcessing):

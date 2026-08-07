@@ -110,8 +110,6 @@ public:
 
 ASSERT_SIZE(TOcean, 0x18);
 
-void NotifyMapUberPictureTileMarker(short tileIndex);
-
 // Map-action-context maintenance passes (bodies in TZone.cpp).
 void PopulatePortZoneAdjacencyToNearbyCityContexts();   // 0x00563da0
 void RefreshPortZoneNeighborContextLinksAndFallbacks(); // 0x00563f50

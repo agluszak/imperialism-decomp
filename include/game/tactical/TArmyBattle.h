@@ -20,7 +20,7 @@ public:
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x5a4990
   virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
                                         TacticalTileIndex tileIndex) override; // slot 0x0c 0x5a51e0
-  // Marks the battle decided (battleOutcomeCode44 = 1), asserts both sides, silences the
+  // Marks the battle decided, asserts both sides, silences the
   // blink cue, resets the 'tool' toolbar's current-unit display, then delegates to
   // g_pMapContextActionManager->ApplyPostBattleStackOutcomeAndGrowUnitMeters with each
   // side's armyStack28 to relocate/reset the losing side and grow unit quality.

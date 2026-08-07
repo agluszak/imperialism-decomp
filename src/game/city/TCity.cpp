@@ -302,7 +302,7 @@ void TCity::ReadFrom(TStream* stream) {
       shipTask->ReadFrom(stream);
       task = shipTask;
     }
-    trackedOrderList270->Insert(task);
+    trackedOrderList270->AddTask(task);
   }
   eventQueue274->ReadFrom(stream);
 }

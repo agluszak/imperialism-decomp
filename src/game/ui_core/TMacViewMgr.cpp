@@ -96,13 +96,8 @@ static __inline void ScanBracketExpressionsInto(CString* dest, const CString& te
                          static_cast<LPCSTR>(token3));
 }
 
-// NOT __inline, unlike its neighbours: inlining it took 0x50d6c0 from 59.26% to 51.43%,
-// so the original keeps this one out of line.
-static bool QueryPointInsideHitRegion(short x, short y, RgnHandle region) {
-  CPoint point;
-  point.x = x;
-  point.y = y;
-  return PtInRgn(&point, region);
+static __inline unsigned char QueryPointInsideHitRegion(CPoint* point, RgnHandle region) {
+  return PtInRgn(point, region);
 }
 
 static __inline void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
@@ -938,7 +933,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(short resource
   CString itemName;
   CString hoverTemplate;
 
-  int summaryTag = GetTradeSummarySelectionTagByIndex(static_cast<short>(resourceSlot));
+  int summaryTag = g_pTradeSummarySelectionMap[resourceSlot];
   TTransportPicture* panel =
       ResolveTaggedPanelOrFail(hostView, static_cast<unsigned int>(summaryTag));
 
@@ -1341,9 +1336,9 @@ void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(RgnHandle so
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
-bool TMacViewMgr::IsPointInsideClipRegionSlot(CPoint* point, short regionIndex) {
+unsigned char TMacViewMgr::IsPointInsideClipRegionSlot(CPoint* point, short regionIndex) {
   if (regionSlots[regionIndex] != 0) {
-    return QueryPointInsideHitRegion(point->x, point->y, regionSlots[regionIndex]);
+    return QueryPointInsideHitRegion(point, regionSlots[regionIndex]);
   }
   return false;
 }

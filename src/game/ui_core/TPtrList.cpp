@@ -7,10 +7,6 @@
 
 IMPLEMENT_DYNCREATE(TPtrList, TSortedPtrList)
 
-void* TPtrList::GetTPtrListClassNamePointer() {
-  return RUNTIME_CLASS(TPtrList);
-}
-
 // FUNCTION: IMPERIALISM 0x00488470
 void TPtrList::PrependCopiedRecordToPtrList(void* record) {
   unsigned char* copy = new unsigned char[recordSize14];

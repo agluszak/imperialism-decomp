@@ -17,13 +17,10 @@ struct TextStyle;
 // 0x268-byte POD record copied into the TSortedPtrList pointed to by
 // TArmyMgr::mapContextActionRecordList04.
 // Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
-// small nation-id array indexed by reportParticipantIndex02; actionType04 selects how
-// location08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
-// table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
-// the report-marker placement state stamped by that hook.
-// +0x08 location context, discriminated by actionType04: a
-// tile/record index for actionType04 in {0,3,4} (index into g_pGlobalMapState's stride-0xa8
-// table), otherwise a map-object pointer encoded in the same 32-bit field.
+// small nation-id array indexed by reportParticipantIndex02. Land reports interpret
+// location08 as an index into g_pGlobalMapState's stride-0xa8 table; sea reports use a
+// map-object pointer whose short at +0xc is the map cell. The +0x258 tail is the
+// report-marker placement state stamped by that hook.
 struct MapContextActionRecord {
   unsigned char nationIds[2];             // +0x00
   unsigned char reportParticipantIndex02; // +0x02
@@ -31,8 +28,8 @@ struct MapContextActionRecord {
   // real serialized byte rather than compiler padding, even though no reader has been
   // found for it yet.
   unsigned char displayedParticipantIndex03;
-  int actionType04; // +0x04 (0..4; 2 widens the marker sprite code)
-  void* location08; // +0x08
+  MapContextReportKindStorage reportKind04; // +0x04
+  void* location08;                         // +0x08
   // +0xc..+0x24f -- per-side (0/1) working state, laid out exactly like the tail of
   // MapOrderBattleSnapshot (map_order_battle_snapshot.h): a fixed name buffer, a fixed
   // overlay-label buffer, a child-record count, then (after a 2-byte alignment pad) the
@@ -63,7 +60,7 @@ struct MapContextActionRecord {
 
   // 0x4a13c0 -- reads one record from `stream`: the fixed header fields, resolving
   // location08 either as a raw tile/record index or (via FindMapActionContextByNodeId)
-  // a live TZone* depending on actionType04, then for each side allocates and reads its
+  // a live TZone* depending on reportKind04, then for each side allocates and reads its
   // MapOrderBattleSideChildRecord array.
   void ReadFrom(TStream* stream);
   void WriteTo(TStream* stream); // 0x4a1640
@@ -121,11 +118,11 @@ public:
                                                         TArmyStack* stack2); // slot 0x11 0x4a3830
   virtual void DoOwnershipChanges();                                         // slot 0x12 0x4a3bc0
   // Ground truth (RET 0x8, 2 stack args) proves the previous 1-arg declaration was a
-  // poison-pill arity mismatch. actionKind selects between the slot-0x14/0x15 dispatch
+  // poison-pill arity mismatch. tileActionCode selects between the slot-0x14/0x15 dispatch
   // (1/4 -> SelectMovableUnitOnCurrentTileAndPlaySfx, 7 -> CommitCityActionGateCostIfAffordable)
   // before the shared tile-unit tail runs.
   virtual void DispatchTileActionByKind(int contextArg,
-                                        short actionKind); // slot 0x13 0x4a3d90
+                                        short tileActionCode); // slot 0x13 0x4a3d90
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill arity
   // mismatch; contextArg is forwarded as TUnit::SetOrders's payload. Returns
   // whether a movable unit was found and commanded (BL in the ground truth, matching

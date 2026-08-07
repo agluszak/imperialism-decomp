@@ -69,4 +69,10 @@ extern double g_mapCellRowScale_006a3360;
 
 extern double g_mapCellColumnScale_006a3388;
 
+// Map-projection origin scales and the seam column. The retail BSS values are dynamically
+// initialized to 1/64, 1/64, and 9 at 0x50e230/0x50e260/0x50e290.
+extern double g_mapProjectionColumnScale_006a32f8;
+extern double g_mapProjectionRowScale_006a3320;
+extern short g_mapProjectionSeamColumn_006a3348;
+
 } // extern "C"

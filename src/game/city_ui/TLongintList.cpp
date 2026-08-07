@@ -22,6 +22,9 @@ void TLongintList::NoOpReadFrom(TStream* stream) {
 // TEMPLATE: IMPERIALISM 0x004bec40
 // ??1?$CList@JJ@@UAE@XZ
 
+// SYNTHETIC: IMPERIALISM 0x004c6aa0
+// ??_G?$CList@JJ@@UAEPAXI@Z
+
 // TEMPLATE: IMPERIALISM 0x004c6ad0
 // ??1?$CList@JJ@@UAE@XZ
 

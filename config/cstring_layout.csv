@@ -101,7 +101,7 @@ TLanguageMgr|52|padding26|unsigned char[2]|other|38|2|no|e8b88321d0cefa03|includ
 TLanguageMgr|52|newsTexPath|CString|embedded|40|4|yes|e8b88321d0cefa03|include/game/ui_core/TLanguageMgr.h
 TLanguageMgr|52|newsTabPath|CString|embedded|44|4|yes|e8b88321d0cefa03|include/game/ui_core/TLanguageMgr.h
 TLanguageMgr|52|field30|int|other|48|4|no|e8b88321d0cefa03|include/game/ui_core/TLanguageMgr.h
-TLowDiskWarningDialog|120|promptText|CString|embedded|116|4|yes|feb8a440c2eec51e|include/game/app/TModalTemplateDialog.h
+TLowDiskWarningDialog|120|promptText|CString|embedded|116|4|yes|34ec686fe9a1b435|include/game/app/TModalTemplateDialog.h
 TMapMgr|40|strategicMapPalettePreviewReady|unsigned char|other|4|1|no|c88e182adf495e39|include/game/map/TMapMgr.h
 TMapMgr|40|pad5|unsigned char|other|5|1|no|c88e182adf495e39|include/game/map/TMapMgr.h
 TMapMgr|40|field6|short|other|6|2|no|c88e182adf495e39|include/game/map/TMapMgr.h

@@ -21,6 +21,11 @@ TDealList::TDealList() : TSortedPtrList() {}
 // FUNCTION: IMPERIALISM 0x005ba220
 TDealList::~TDealList() {}
 
+// FUNCTION: IMPERIALISM 0x005ba240
+void TDealList::IDealList() {
+  recordSize14 = 0x10;
+}
+
 // FUNCTION: IMPERIALISM 0x005ba260
 short TDealList::Compare(void* a, void* b) {
   TradeDealEntry* recA = static_cast<TradeDealEntry*>(a);

@@ -1,10 +1,10 @@
 #include "game/tactical_ui/TShipBuildingTask.h"
+#include "game/tactical_ui/TTaskList.h"
 
 #include <string.h>
 
 #include "game/city/TCity.h"
 #include "game/city/TShipOrder.h"
-#include "game/ui_core/TSortedList.h"
 #include "game/core/TStream.h"
 #include "game/globals/global_types.h"
 #include "game/globals/nation_globals.h"
@@ -37,15 +37,15 @@ void TShipBuildingTask::IShipBuildingTask(short citySlotType, TCity* owner,
   requestedShipType14 = requestedShipType;
   waitingForShipOrderAdvance16 = 0;
   remainingAttempts += 2;
-  pendingFlag = 2;
+  serializedTaskKind = 2;
 }
 
 // FUNCTION: IMPERIALISM 0x005ae780
-bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
+bool TShipBuildingTask::Execute(TTaskList* taskList) {
   TShipOrder* shipOrder = ownerCity->shipOrderSlots190[0];
 
   if (waitingForShipOrderAdvance16 == 0) {
-    if (shipOrder->CanFillOrderSheet()) {
+    if (shipOrder->CanMakeProduct()) {
       if (remainingAttempts < 0) {
         remainingAttempts = 1;
       }
@@ -100,8 +100,8 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
           if (resource == 5) {
             task->remainingAttempts = 3;
           }
-          task->pendingFlag = 1;
-          commandQueue->AddTail(task);
+          task->serializedTaskKind = 1;
+          taskList->AddTail(task);
         }
       }
       ++remainingAttempts;
@@ -118,7 +118,7 @@ bool TShipBuildingTask::Tick(TSortedList* commandQueue) {
 
 // FUNCTION: IMPERIALISM 0x005ae9e0
 void TShipBuildingTask::WriteTo(TStream* stream) {
-  stream->WriteBytes(&pendingFlag, 1);
+  stream->WriteBytes(&serializedTaskKind, 1);
   TObject::WriteTo(stream);
   stream->WriteBytes(&citySlotIndex, 2);
   stream->WriteBytes(&remainingAttempts, 2);

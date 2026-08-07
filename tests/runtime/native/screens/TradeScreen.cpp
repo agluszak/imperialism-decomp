@@ -213,7 +213,7 @@ int TradeScreen::AvailableStock(short resource) const {
   TGreatPower* player = ActiveNationState();
   // The row knows which of the nation's metric slots holds its commodity; the stock itself is
   // nation state, not screen state.
-  return row != 0 && player != 0 ? QueryNationMetricBySlot(player, row->tradeMetricSlot) : -1;
+  return row != 0 && player != 0 ? player->GetStockpile(row->tradeMetricSlot) : -1;
 }
 
 short TradeScreen::FirstSellableCommodityOtherThan(short excludedResource) const {

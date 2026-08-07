@@ -3,6 +3,7 @@
 #include "compat.h"
 
 #include "game/city_ui/TInteriorMinister.h"
+#include "game/resource_domain_types.h"
 
 class TCity;
 class TGreatPower;
@@ -37,46 +38,33 @@ public:
   // PretendToEat substitution/starvation pair, else cityStockSteelCC/cityStockLumberC8/
   // cityStockCannedFoodC4 vs TPopulationMgr::populationCount08) and reports it via
   // SetInteriorMinisterBid, unless no condition qualified.
-  virtual void EvaluateCityShortagesAndNotifyForeignMinister(TCity* city); // slot 0x21
-                                                                           // 0x4bf8a0
-  // Dispatches production-order-queueing helpers for `city`: exactly one of
-  // QueueCityProductionCommand17Or18FromSupportRatio (lowProductionFlag7c set,
-  // lowStockFlag7d clear) / DistributeCityProductionCommandBudgetAndQueueOrders
-  // (the reverse), then unconditionally QueueCityProductionCommand33From
-  // AccumulatedDeficit / QueueShipProductionCommandIfMissing /
-  // QueuePendingRecruitmentProductionCommand / QueuePendingUnitProductionCommand,
-  // then always
-  // QueueCityProductionRebalanceCommandsByThresholds.
-  virtual void QueueCityProductionPolicyCommands(TCity* city,
-                                                 TTaskList* commandQueue); // slot 0x22 0x4bfa50
-  virtual void
-  QueueCityProductionRebalanceCommandsByThresholds(TCity* city,
-                                                   TTaskList* commandQueue); // slot 0x23 0x4bfb20
+  virtual void DetermineTradeBid(TCity* city); // slot 0x21 0x4bf8a0
+  // Dispatches the city's training, capacity, ship, civilian, and land-unit task modes,
+  // then applies the overstock policy.
+  virtual void IssueBasicOrders(TCity* city,
+                                TTaskList* commandQueue); // slot 0x22 0x4bfa50
+  virtual void OverstockCheck(TCity* city,
+                              TTaskList* commandQueue); // slot 0x23 0x4bfb20
   // Verified empty in the original: `ret 8` only, no reads/writes. Ghidra's
   // "GetTEventHandlerClassNamePointer" name is a misattribution shared by several
   // no-op/near-no-op slots in this class; renamed to reflect the real (empty) body.
   virtual void NoOpProductionCommandHook24(int unusedArg1, int unusedArg2); // slot 0x24 0x4bff60
-  virtual void
-  QueueCityProductionCommand17Or18FromSupportRatio(TCity* city,
-                                                   TTaskList* commandQueue); // slot 0x25 0x4c02c0
-  virtual void DistributeCityProductionCommandBudgetAndQueueOrders(
-      TCity* city, TTaskList* commandQueue); // slot 0x26 0x4c0090
-  virtual void
-  QueueRandomCityProductionCommand19To1C(TCity* city,
-                                         TTaskList* commandQueue); // slot 0x27 0x4c04e0
-  virtual void QueueShipProductionCommandIfMissing(TCity* city,
-                                                   TTaskList* commandQueue); // slot 0x28 0x4c05a0
+  virtual void TrainingMode(TCity* city, TTaskList* commandQueue);          // slot 0x25 0x4c02c0
+  virtual void IncreaseCapacityMode(TCity* city,
+                                    TTaskList* commandQueue);      // slot 0x26 0x4c0090
+  virtual void LandUnitMode(TCity* city, TTaskList* commandQueue); // slot 0x27 0x4c04e0
+  virtual void BuildMerchantShipMode(TCity* city,
+                                     TTaskList* commandQueue); // slot 0x28 0x4c05a0
   virtual void
   QueuePendingRecruitmentProductionCommand(TCity* city,
                                            TTaskList* commandQueue); // slot 0x29 0x4c0690
   virtual void QueuePendingUnitProductionCommand(TCity* city,
                                                  TTaskList* commandQueue); // slot 0x2a 0x4c0730
-  virtual void
-  QueueCityProductionCommand33FromAccumulatedDeficit(TCity* city,
-                                                     TTaskList* commandQueue); // slot 0x2b 0x4bff80
+  virtual void IncreaseRailCapacityMode(TCity* city,
+                                        TTaskList* commandQueue); // slot 0x2b 0x4bff80
   virtual void DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(
-      TCity* city);                                                    // slot 0x2c 0x4c07d0
-  virtual void SelectRecruitmentProductionCommand(short commandIndex); // slot 0x2d 0x4bef10
+      TCity* city);                                     // slot 0x2c 0x4c07d0
+  virtual void PleaseBuildCivilian(short commandIndex); // slot 0x2d 0x4bef10
   virtual short RaiseNeedTargetWithinAvailableSurplus(short resourceType, short requestedAmount,
                                                       short allocationLimit); // slot 0x2e 0x4c0de0
   virtual short
@@ -95,7 +83,7 @@ public:
                              char* secondaryDistanceMap); // slot 0x36 0x4c2d50
   virtual void ContinueRailheadProject(TUnit* order, char* primaryDistanceMap,
                                        char* secondaryDistanceMap); // slot 0x37 0x4c2e10
-  virtual void StartRailheadProject(short orderType, TShortintList* ownedTiles,
+  virtual void StartRailheadProject(ResourceKindStorage resourceKind, TShortintList* ownedTiles,
                                     char* primaryDistanceMap,
                                     char* secondaryDistanceMap); // slot 0x38 0x4c3170
   virtual short EvaluateResources(short tileIndex);              // slot 0x39 0x4c3490
@@ -156,7 +144,7 @@ public:
   short field3c;                          // +0x3c  init -1
   short accumulatedUnmetNeed3e;           // +0x3e  queued via command 0x33
   // +0x40..0xba -- per-resource-index foreign-minister counter deltas, read/written
-  // one short at a time (EvaluateCityShortagesAndNotifyForeignMinister reads
+  // one short at a time (DetermineTradeBid reads
   // orderMetricTable40[0]/[1] as a paired "any nonzero" trigger and [2]..[6]
   // individually). Index 60 is the low-skill labor shortfall; serialization proves
   // this is one 61-entry table rather than a separate trailing field.

@@ -43,6 +43,8 @@ TObject* TObject::ShallowClone() {
 //   CArchive& AFXAPI operator>>(CArchive&, TObject*&)
 // SYNTHETIC: IMPERIALISM 0x00485e60
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x00485e40
+// `dynamic initializer for '_init_TObject''
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
 // SYNTHETIC: IMPERIALISM 0x00485e20

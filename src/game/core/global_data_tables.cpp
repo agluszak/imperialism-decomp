@@ -981,19 +981,6 @@ BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"
 
-// Diplomacy helper functions.
-TGreatPower* GetNationStateBySlot(short slotId) {
-  return g_apNationStates[slotId];
-}
-
-short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
-  return nationState->GetStockpile(metricSlot);
-}
-
-int GetTradeSummarySelectionTagByIndex(short index) {
-  return g_pTradeSummarySelectionMap[index];
-}
-
 // Active root of the in-progress UI resource tree and the entry currently being registered.
 // GLOBAL: IMPERIALISM 0x006a141c
 TView* g_pUiResourceHead = nullptr;
@@ -1134,6 +1121,12 @@ short g_MapPreviewVerticalOffset6A3448;
 extern double g_mapCellRowScale_006a3360;
 // GLOBAL: IMPERIALISM 0x006a3388
 extern double g_mapCellColumnScale_006a3388;
+// GLOBAL: IMPERIALISM 0x006a32f8
+extern double g_mapProjectionColumnScale_006a32f8;
+// GLOBAL: IMPERIALISM 0x006a3320
+extern double g_mapProjectionRowScale_006a3320;
+// GLOBAL: IMPERIALISM 0x006a3348
+extern short g_mapProjectionSeamColumn_006a3348;
 
 } // extern "C"
 
@@ -1782,10 +1775,8 @@ extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
 // Consumed by the distribution-similarity scorer (0x5362c0) callers.
 short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-// 4 back-to-back 4-entry target-percentage profiles consumed by distinct navy-order
-// divergence-score callers: [0..3] NormalizeFourComponentNavyVector's callers, [4..7]
-// TNavyMission::ComputeOrderDistributionSimilarityScoreForZone, [8..15] two further
-// profiles used by sibling scorers in this same cluster.
+// Four back-to-back target-percentage profiles consumed by the navy-order distribution
+// scorers. TNavyMission::ComputeOrderDistributionSimilarityScoreForZone uses [4..7].
 short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
                                                                  35, 35, 0,  30, 0,  20, 80, 0};
 const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
@@ -1890,6 +1881,8 @@ POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 // GLOBAL: IMPERIALISM 0x00656f60
 extern const char* const g_pszEmptyTextPointer_00656f60 = g_szEmptyString;
 
+// SYNTHETIC: IMPERIALISM 0x00576ea0
+// InitializeSharedStringRef_006A4220_AndRegisterAtExit
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;
@@ -1954,6 +1947,8 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pTradeMgr = 0;
+// SYNTHETIC: IMPERIALISM 0x00576ed0
+// DestroySharedStringRef_006A4220_AtExit
 // GLOBAL: IMPERIALISM 0x006a4220
 CString g_cstrCountryNameSettingValue006A4220;
 // GLOBAL: IMPERIALISM 0x006a4268
@@ -2117,6 +2112,8 @@ static inline double DefaultMiniMapViewportCoordinateScale() {
 }
 
 static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x00594ed0
+// `dynamic initializer for 'g_scaledShortConst_6A460C''
 // GLOBAL: IMPERIALISM 0x006a460c
 short g_defaultMarkerBoxWidth_006a460c =
     static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
@@ -2258,12 +2255,22 @@ const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 
 #include "game/net/TWNetSessionManager.h"
 
+// SYNTHETIC: IMPERIALISM 0x00415e20
+// InitializeUiResourcePoolStateAndRegisterAtExit
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
 // vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
 // CList<void*,void*> copies below.
+// SYNTHETIC: IMPERIALISM 0x00415e50
+// DestroyUiResourcePoolStateAtExit
 // GLOBAL: IMPERIALISM 0x006a13e0
 CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
+// SYNTHETIC: IMPERIALISM 0x005e2770
+// InitializeWNetSerializedPtrArrayAAndRegisterAtExit
+// SYNTHETIC: IMPERIALISM 0x005e2720
+// InitializeWNetSerializedPtrArrayBAndRegisterAtExit
+// SYNTHETIC: IMPERIALISM 0x005e26d0
+// InitializeRuntimeClassState_0066FA50_AndRegisterAtExit
 // WNetMgr.cpp file-scope statics; g_ptNetworkModalMessage006a5ed8 is the POINT passed
 // to TViewMgr::ModalMessage, while g_WNetPendingPacketList006a5f40 is the
 // local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
@@ -2274,6 +2281,8 @@ POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+// SYNTHETIC: IMPERIALISM 0x005e2700
+// DestroyRuntimeClassState_0066FA50_AtExit
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
@@ -2284,6 +2293,12 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // Compiler-emitted dtor copies for the g_UiWidgetBuildStack006a13e0
 // CList<TView*,TView*> template instantiation. These previously carried invented
 // vtable-address-suffixed placeholder class names.
+// TEMPLATE: IMPERIALISM 0x00415f50
+// ??0?$CList@PAVTView@@PAV1@@@QAE@H@Z
+
+// TEMPLATE: IMPERIALISM 0x00492a40
+// CList<TView*, TView*>::NewNode
+
 // TEMPLATE: IMPERIALISM 0x00415f90
 // ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
 
@@ -2314,9 +2329,16 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // TEMPLATE: IMPERIALISM 0x005e4780
 // ??0?$CArray@PAXPAX@@QAE@XZ
 
+// SYNTHETIC: IMPERIALISM 0x005e4a60
+// ??_G?$CArray@PAXPAX@@UAEPAXI@Z
+
 // TEMPLATE: IMPERIALISM 0x005e47b0
 // ??1?$CArray@PAXPAX@@UAE@XZ
 
+// SYNTHETIC: IMPERIALISM 0x005e2a00
+// DestroyGlobalState_006A5F60_AtExit
+// SYNTHETIC: IMPERIALISM 0x005e29d0
+// InitializeNetManagerInstanceAndRegisterAtExit
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
@@ -2326,8 +2348,12 @@ TWNetSessionManager g_NetworkSessionManager006a5f60;
 const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
     0xc55dc2ef, 0xfd3e, 0x11d0, {0xbc, 0x16, 0x44, 0x45, 0x53, 0x54, 0x00, 0x00}};
 
+// SYNTHETIC: IMPERIALISM 0x0047f710
+// InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit
 // Heap-owned runtime selection records used by the DirectPlay session chooser.
 // This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
+// SYNTHETIC: IMPERIALISM 0x0047f740
+// DestroyRuntimeSelectionRecordArrayStateAtExit
 // GLOBAL: IMPERIALISM 0x006a15e0
 CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 
@@ -2383,6 +2409,8 @@ const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
 };
 
 // Palette entries used to color ocean-map previews by their owning nation tag.
+// SYNTHETIC: IMPERIALISM 0x00564800
+// `dynamic initializer for 'g_aOceanMapOwnerPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985b8
 unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
     0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c,
@@ -2403,6 +2431,8 @@ const unsigned char g_bDrawOceanZoneLabels = 1;
 const unsigned char g_bDrawOceanNationLabels = 1;
 
 // Border/transition colors paired with the owner-fill table immediately above.
+// SYNTHETIC: IMPERIALISM 0x00564830
+// `dynamic initializer for 'g_aOceanMapBorderPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985d0
 unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
     0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae,
@@ -2422,12 +2452,21 @@ POINT g_ptControlStringModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a1ab0
 CPoint g_turnEventDialogAnchorPoint(0, 0);
 
+// SYNTHETIC: IMPERIALISM 0x0048d240
+// InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit
 // McAppUI-wide modal-window stack (base 0x006a1ac0). TWindow::
 // ExecuteViewModalStateWithPushPopChain pushes the active window on entry and pops it on
 // exit, disabling/re-enabling the window beneath it across the modal run. Shares the
 // CList<TWindow*, TWindow*> specialization (vtable 0x0064b580) with g_LiveViewRegistry.
+// SYNTHETIC: IMPERIALISM 0x0048d270
+// DestroyViewModalStateNodeBlockChainAtExit
+// GLOBAL: IMPERIALISM 0x006a1ac0
 CList<TWindow*, TWindow*> g_ModalViewStack;
 
+// SYNTHETIC: IMPERIALISM 0x0048d4d0
+// DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce
+// SYNTHETIC: IMPERIALISM 0x0048d4a0
+// InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit
 // McAppUI live-view registry: every TWindow links itself in on construction and unlinks on
 // teardown; the window-manager iterator (CWMgrIterator) sweeps it.
 // GLOBAL: IMPERIALISM 0x006a1a40
@@ -2435,8 +2474,16 @@ CList<TWindow*, TWindow*> g_LiveViewRegistry;
 
 // Compiler-emitted members of the CList<TWindow*, TWindow*> specialization shared by the
 // two registries above (vtable 0x0064b580). The source implementation is the retail MFC
-// CList template. RemoveAt's out-of-line copy at 0x00492550 is not claimed: our build
-// inlines it into TWindow::~TWindow, so no standalone copy is emitted to pair against.
+// CList template.
+// SYNTHETIC: IMPERIALISM 0x00492950
+// ??_G?$CList@PAVTWindow@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x004924e0
+// CList<TWindow*, TWindow*>::GetPrev
+
+// TEMPLATE: IMPERIALISM 0x00492550
+// CList<TWindow*, TWindow*>::RemoveAt
+
 // TEMPLATE: IMPERIALISM 0x00492510
 // ??0?$CList@PAVTWindow@@PAV1@@@QAE@H@Z
 
@@ -2667,11 +2714,11 @@ short g_awTacticalUnitActionPointCostByType_006693F8[32] = {
     40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30,
     50, 70, 50, 40, 110, 90, 80, 30, 40, 40, 50, 90, 90,  90, 0,  0};
 
-// Tactical tile-selection heuristic weights per AI stance (.rdata): 19 rows of 15
+// Tactical tile-selection heuristic weights per AI stance (.rdata): 20 rows of 15
 // weights, one weight per tile-score heuristic; row index = TTacticalUnit AI stance
 // (aiStateCode2c) or a strategy-specific row (12/13 sapper, 18 artillery hold).
 // GLOBAL: IMPERIALISM 0x00699500
-int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15] = {
+int g_anTacticalTileHeuristicWeightsByAiState_00699500[20][15] = {
     {1, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0},
     {0, 100, 0, 200, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -2690,7 +2737,8 @@ int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15] = {
     {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 200, 0, 0, 0},
     {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-    {0, 1, 0, 0, -100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+    {0, 1, 0, 0, -100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}};
 
 // Direct-fire flag per unit category (.rdata floats): 0.0 marks the indirect-fire
 // categories 6/7 whose shots erode a fort wall they cross.
@@ -2805,6 +2853,8 @@ short g_awTacticalFireSfxTokenByUnitType[32] = {
 // GLOBAL: IMPERIALISM 0x006a4758
 char g_nForceTacticalBattleViewFlag_006A4758;
 
+// SYNTHETIC: IMPERIALISM 0x004fe6a0
+// InitializeSharedStringRefBatch_006A3060_AndRegisterAtExit
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -2861,6 +2911,8 @@ char g_szUiOpenParen_0069806C[] = "(";
 POINT g_ptCivilianOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2df0
 POINT g_ptGreatPowerModalMessage = {0, 0};
+// SYNTHETIC: IMPERIALISM 0x004fe6e0
+// DestroySharedStringRefBatch_006A3060_AtExit
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;
 // GLOBAL: IMPERIALISM 0x006a3080
@@ -2960,6 +3012,8 @@ int g_streamLine596AssertGuard = 0;
 
 // Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
 // see global_data_tables.h. Runtime-initialized.
+// SYNTHETIC: IMPERIALISM 0x005c3b00
+// `dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0

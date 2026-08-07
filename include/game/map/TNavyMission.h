@@ -117,8 +117,7 @@ public:
   // [0..3]. 0x539a90.
   float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
   // Same shape as ComputeOrderDistributionSimilarityScoreForZone but scores against
-  // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table/slice
-  // NormalizeFourComponentNavyVector's other callers use). 0x538dd0.
+  // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3]. 0x538dd0.
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
   // Builds a 4-category priority vector from every existing orderList24 ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
@@ -155,15 +154,9 @@ public:
   // AccumulateNavyOrderCategoryVectorWithScale, but the original inlines its own copy here
   // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.
   void BuildMissionQueuedOrderCategoryVector(float* vector);
-  // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
-  // NationWithExclusion + a sqrt-coefficient tail), but always uses missionTargetZone as the near
-  // zone and resolvedPortZone as the far zone, with an explicit caller-
-  // supplied distance threshold instead of a fixed 0/1. 0x537eb0.
+  // Builds the queued category vector for missionTargetZone/resolvedPortZone and returns
+  // its similarity to the required category vector. 0x537eb0.
   float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
-
-private:
-  // Shared by Reassess's mode-transition checks (0x536b30).
-  float ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent);
 };
 
 ASSERT_SIZE(TNavyMission, 0x3c);

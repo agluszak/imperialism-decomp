@@ -15,21 +15,6 @@
 #include "game/globals/shared_globals.h"
 #include "game/ui_text_label_helpers_decls.h"
 
-namespace {
-
-HelpSetRecord* FindHelpSetById(short helpSetId) {
-  TPtrList* list = g_pHelpMgr->indexList;
-  for (int index = 1; index <= list->GetSize(); ++index) {
-    HelpSetRecord* record =
-        static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));
-    if (record->helpResourceBaseId == helpSetId) {
-      return record;
-    }
-  }
-  return 0;
-}
-
-} // namespace
 // SYNTHETIC: IMPERIALISM 0x00503bd0
 // THelpPicture::CreateObject
 
@@ -117,7 +102,16 @@ void THelpPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
 // FUNCTION: IMPERIALISM 0x00504120
 void THelpPicture::ShowNextHelpSet() {
-  HelpSetRecord* next = FindHelpSetById(currentHelpSet90->nextHelpResourceBaseId);
+  HelpSetRecord* next = 0;
+  TPtrList* list = g_pHelpMgr->indexList;
+  for (int index = 1; index <= list->GetSize(); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));
+    if (record->helpResourceBaseId == currentHelpSet90->nextHelpResourceBaseId) {
+      next = record;
+      break;
+    }
+  }
   if (next != 0) {
     currentHelpSet90 = next;
   }
@@ -126,7 +120,16 @@ void THelpPicture::ShowNextHelpSet() {
 
 // FUNCTION: IMPERIALISM 0x005041a0
 void THelpPicture::ShowPreviousHelpSet() {
-  HelpSetRecord* previous = FindHelpSetById(currentHelpSet90->previousHelpResourceBaseId);
+  HelpSetRecord* previous = 0;
+  TPtrList* list = g_pHelpMgr->indexList;
+  for (int index = 1; index <= list->GetSize(); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(list->GetPtrListEntryByOneBasedIndex(index));
+    if (record->helpResourceBaseId == currentHelpSet90->previousHelpResourceBaseId) {
+      previous = record;
+      break;
+    }
+  }
   if (previous != 0) {
     currentHelpSet90 = previous;
   }

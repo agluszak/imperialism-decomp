@@ -129,6 +129,35 @@ bool TPortZone::QueryZoneCapabilityFlagE(NationSlot nationSlot) {
                                                                               nationSlot);
 }
 
+// Returns the signed owner-nation tag for this port's coastal tile.
+// FUNCTION: IMPERIALISM 0x00561bc0
+short TPortZone::GetPortTileFormerOwnerNationSlot() {
+  return static_cast<short>(
+      g_pGlobalMapState->terrainStateTable[portTileIndex48].formerOwnerNationTag03);
+}
+
+// Returns the final port-zone node in the global map-action-context chain.
+// FUNCTION: IMPERIALISM 0x00561cc0
+TPortZone* FindLastPortZoneInMapActionContextList() {
+  TPortZone* lastPort = 0;
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    if (zone->IsKindOf(RUNTIME_CLASS(TPortZone))) {
+      lastPort = static_cast<TPortZone*>(zone);
+    }
+  }
+  return lastPort;
+}
+
+// Finds the preceding port-zone node in the map-action-context chain.
+// FUNCTION: IMPERIALISM 0x00561d80
+TPortZone* TPortZone::FindPreviousPortZone() {
+  TZone* zone = prev18;
+  while (zone != 0 && !zone->IsKindOf(RUNTIME_CLASS(TPortZone))) {
+    zone = zone->prev18;
+  }
+  return static_cast<TPortZone*>(zone);
+}
+
 // slot 0x12 — TZone::HasZoneActiveChildCount override. Keeps the base's distance-level
 // test, then rejects the force's own location and accepts the port only when the force's
 // nation owns it or the diplomacy manager relates the pair.

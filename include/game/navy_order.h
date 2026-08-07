@@ -18,8 +18,7 @@ short GetResourceDescriptorWeightWord0ByType(int resourceType);
 // matches, the order's zone is a port zone, and the ship's normalization base doesn't
 // exceed its stock), accumulates a 4-category priority vector (categories 0..2 scaled
 // by strength/normalizationBase, category 3 unscaled), then scores the vector's
-// divergence from g_NavyOrderDistributionCategoryWeights_00697978's target percentages
-// (same divergence-score shape as TNavyMission's NormalizeFourComponentNavyVector).
+// divergence from g_NavyOrderDistributionCategoryWeights_00697978's target percentages.
 // Returns 0 if the vector sums to zero. 0x53b800.
 float ComputeNavyOrderDistributionScoreForNation(short nation);
 

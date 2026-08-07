@@ -111,7 +111,9 @@ void TBattleReportView::DoPostCreate(int arg) {
     selectedOrdinal = remaining;
 
     short cell;
-    if (record->actionType04 == 0 || record->actionType04 == 3 || record->actionType04 == 4) {
+    if (record->reportKind04 == kMapContextReportLandBattle ||
+        record->reportKind04 == kMapContextReportPreemptedLandBattle ||
+        record->reportKind04 == kMapContextReportUncontestedTakeover) {
       cell = g_pGlobalMapState->cityScoreTable[reinterpret_cast<int>(record->location08)]
                  .cityTileIndex04;
     } else {
@@ -205,7 +207,7 @@ void TBattleReportView::DoPostCreate(int arg) {
       spriteBase = 8;
     }
     record->markerSpriteCode262 = spriteBase;
-    if (record->actionType04 == 2) {
+    if (record->reportKind04 == kMapContextReportMerchantInterception) {
       record->markerSpriteCode262 = spriteBase + 2;
     }
   }
@@ -561,10 +563,10 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
       static_cast<signed char>(record->nationIds[participantIndex]) ==
       g_pSimMgr->GetActiveNationId();
 
-  switch (record->actionType04) {
-  case 0:
-  case 3:
-  case 4: {
+  switch (record->reportKind04) {
+  case kMapContextReportLandBattle:
+  case kMapContextReportPreemptedLandBattle:
+  case kMapContextReportUncontestedTakeover: {
     TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
     locaText->AssertValid();
     CString strLocation;
@@ -583,8 +585,8 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
     locaText->SetTextAndMaybeRefresh(&combinedStr, 1);
     break;
   }
-  case 1:
-  case 2: {
+  case kMapContextReportSeaBattle:
+  case kMapContextReportMerchantInterception: {
     TStaticText* locaText = static_cast<TStaticText*>(ResolveControlByTag(kControlTagLoca));
     locaText->AssertValid();
     CString nameStr;
@@ -611,16 +613,16 @@ void TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(
 
   int userStringGroup;
   int userStringIndex;
-  if (record->actionType04 == 2) {
+  if (record->reportKind04 == kMapContextReportMerchantInterception) {
     userStringGroup = 0x273c;
     userStringIndex = activeSideRelation + 5;
-  } else if (record->actionType04 == 1) {
+  } else if (record->reportKind04 == kMapContextReportSeaBattle) {
     userStringGroup = 0x273c;
     userStringIndex = activeSideRelation + 8;
-  } else if (record->actionType04 == 3) {
+  } else if (record->reportKind04 == kMapContextReportPreemptedLandBattle) {
     userStringGroup = 0x273d;
     userStringIndex = activeSideRelation + 40;
-  } else if (record->actionType04 == 4) {
+  } else if (record->reportKind04 == kMapContextReportUncontestedTakeover) {
     userStringGroup = 0x273d;
     userStringIndex = activeSideRelation + 43;
   } else {

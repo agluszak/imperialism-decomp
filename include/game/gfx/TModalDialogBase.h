@@ -15,7 +15,7 @@
 // embedded controls / strings from 0x74. The scratch fields map onto the writes made by
 // PrepareAndCreateModalFromTemplate (0x49d360) / DoModal (0x49d450) / CleanupModalCreateState
 // (0x49d510):
-//   0x5c modalCreated, 0x60 createdDialog (HWND), 0x64 finalizeState,
+//   0x5c modalCreated, 0x60 dialogCreatedSuccessfully, 0x64 finalizeState,
 //   0x68 ownerWasDisabled, 0x6c ownerWindow (HWND), 0x70 loadedResource (HGLOBAL).
 //
 // vtable 0x0063e5a0 = CDialog's vtable (0x0066fc2c) with: slot index 1 the class
@@ -39,10 +39,10 @@ public:
   virtual int PrepareAndCreateModalFromTemplate(); // 0x0049d360 (vtable index 54 / byte 0xd8)
   virtual void CleanupModalCreateState();          // 0x0049d510 (vtable index 55 / byte 0xdc)
 
-  int modalCreated;       // 0x5c
-  HWND createdDialog;     // 0x60
-  int finalizeState;      // 0x64
-  int ownerWasDisabled;   // 0x68
-  HWND ownerWindow;       // 0x6c
-  HGLOBAL loadedResource; // 0x70
+  int modalCreated;              // 0x5c
+  int dialogCreatedSuccessfully; // 0x60
+  int finalizeState;             // 0x64
+  int ownerWasDisabled;          // 0x68
+  HWND ownerWindow;              // 0x6c
+  HGLOBAL loadedResource;        // 0x70
 };

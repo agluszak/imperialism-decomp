@@ -878,7 +878,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
 // FUNCTION: IMPERIALISM 0x004dd140
 void TGreatPower::RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void) {
   int total = 0;
-  for (int resourceType = 0; resourceType < kIndustryActionOrderTypeCount; ++resourceType) {
+  for (int resourceType = 0; resourceType < kIndustryActionSlotCount; ++resourceType) {
     total += GetResourceDescriptorWeightWord0ByType(resourceType) *
              this->city->orderCountByType5c[resourceType];
   }
@@ -1233,26 +1233,6 @@ char TGreatPower::ReplyToTradeOffer(NationSlot targetNationSlot, short amount, s
   }
 
   this->AddToDealBook(1, targetNationSlot, 0, resourceKind, 0);
-  return 0;
-}
-
-// Moved off TCountry, where the body had to reinterpret_cast<TGreatPower*>(this) to reach
-// field8d6 at +0x8d6 -- far past TCountry's own 0x94 and past TMinor's 0x2dc, so the cast
-// was an out-of-bounds read for every TMinor. field8d6 holds pending-policy pairs
-// (code, state); the policy is allowed only while the matching pair's state is still 0.
-// Markerless: no standalone address claims this body.
-char TGreatPower::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
-                                                              short targetNationSlot) {
-  (void)targetNationSlot;
-  if (policyCode <= 0xc || policyCode >= 0x11) {
-    return 0;
-  }
-  if (policyCode == this->field8d6[0]) {
-    return this->field8d6[1] == 0;
-  }
-  if (policyCode == this->field8d6[2]) {
-    return this->field8d6[3] == 0;
-  }
   return 0;
 }
 
@@ -2928,10 +2908,6 @@ int TGreatPower::HandleWarTransitionRequest(int targetNation, int sourceNation) 
   return result != 0;
 }
 
-bool TGreatPower::TryHandleWarTransitionRequest(int targetNation, int sourceNation) {
-  return this->HandleWarTransitionRequest(targetNation, sourceNation) != 0;
-}
-
 // FUNCTION: IMPERIALISM 0x004e1e40
 int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int sourceNation,
                                                         char swapRoles) {
@@ -2953,9 +2929,6 @@ int TGreatPower::HandleWarTransitionRequestWithRoleSwap(int targetNation, int so
 
 // FUNCTION: IMPERIALISM 0x004e1f20
 void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {}
-
-// --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
-// Helpers live in TGreatPower_power_score.cpp (TGreatPower_internal.h).
 
 // FUNCTION: IMPERIALISM 0x004e1f40
 float TGreatPower::GetPeaceThreat(int targetNation) {
@@ -3142,10 +3115,6 @@ void TGreatPower::KillUnitsIn(int ownerClass) {
       unit->Free();
     }
   }
-}
-
-void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass) {
-  this->KillUnitsIn(ownerClass);
 }
 
 // FUNCTION: IMPERIALISM 0x004e25c0

@@ -25,6 +25,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TBlockadePortMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053ab20
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053ab00
+// `dynamic initializer for '_init_TBlockadePortMission''
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053a990
