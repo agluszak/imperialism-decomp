@@ -2296,9 +2296,6 @@ int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 // TEMPLATE: IMPERIALISM 0x00415f50
 // ??0?$CList@PAVTView@@PAV1@@@QAE@H@Z
 
-// TEMPLATE: IMPERIALISM 0x00426f60
-// ?GetTail@?$CList@PAVTView@@PAV1@@@QBEPAVTView@@XZ
-
 // TEMPLATE: IMPERIALISM 0x00492a40
 // CList<TView*, TView*>::NewNode
 

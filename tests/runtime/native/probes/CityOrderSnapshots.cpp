@@ -34,7 +34,8 @@ void UnitOrderSnapshot::CaptureFrom(TUnitOrder* order) {
   productionHigh = population->productionSlots14->highSkillCount08;
 }
 
-ShipOrderSnapshot::ShipOrderSnapshot() : quantity(0), shipCount(0), merchantCapacity(0) {}
+ShipOrderSnapshot::ShipOrderSnapshot()
+    : quantity(0), shipCount(0), merchantCapacity(0), armsInNavy(0) {}
 
 void ShipOrderSnapshot::CaptureFrom(TShipOrder* order) {
   quantity = order->quantity;
@@ -42,6 +43,7 @@ void ShipOrderSnapshot::CaptureFrom(TShipOrder* order) {
   // The capacity is derived, so it has to be recomputed before it can be read as a baseline.
   order->ownerCity->ownerNationAc->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
   merchantCapacity = order->ownerCity->ownerNationAc->merchantCapacity;
+  armsInNavy = order->ownerCity->ownerNationAc->GetArmsInNavy();
 }
 
 TrainingOrderSnapshot::TrainingOrderSnapshot()

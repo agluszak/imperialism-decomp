@@ -42,8 +42,7 @@ extern short g_civilianMapCursorTokenByStateIndex_00695680[12];
 extern unsigned char g_abStackCompositionClassTable[16];
 
 // Per-fort-level attacker penalty percent (0x695568), indexed by
-// Province::fortLevel03; observed values 100/85/75/65/0/0/0/0 for levels
-// 0-7 (only the low byte of each int is ever read). Used by
+// Province::fortLevel03. Used by
 // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState to gate the per-unit meter snapshot.
 extern int g_anFortLevelAttackerPenaltyPercentByLevel[4];
 
@@ -110,6 +109,7 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48;
 extern const float g_MissionResourceWeightScale_0065A8FC;
 extern const float g_BlockadePortMissionThreatFloor_0065A900;
+extern const float g_NavyMissionIndustrialCostWeights_0065A910[4];
 extern const float g_BlockadePortMissionThreatScale_0065A904;
 extern const float g_MissionEmptyResourceWeight_0065AA24;
 extern const double g_BeachheadMissionPriorityNormalization_0065AA30;

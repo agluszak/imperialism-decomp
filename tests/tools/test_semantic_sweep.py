@@ -87,8 +87,8 @@ class ClassifierTests(unittest.TestCase):
             0x406000: "DoMore",
         }
 
-    def classify(self, row):
-        return classify_contract_row(row, self.names, self.index)
+    def classify(self, row, ownership=None):
+        return classify_contract_row(row, self.names, self.index, ownership)
 
     def test_same_identity_same_arity_is_suppressed_provenance(self):
         row = _rows(
@@ -155,6 +155,61 @@ class ClassifierTests(unittest.TestCase):
         row = _rows([_direct("0x405000", [["parameter", 1]])], [different_args])
         result = self.classify(row)
         self.assertEqual(result["buckets"], {"different_callee": 1})
+
+    def test_ambiguous_leftovers_are_never_paired_as_wrong_callee(self):
+        """The defect that made ShowTerrainMap report 23 wrong callees.
+
+        Leftovers used to be zipped positionally, so two calls with nothing in
+        common were reported as "the original called X, we call Y". With more
+        than one candidate on each side there is no evidence of correspondence,
+        so they are one-sided work.
+        """
+        missing = [_direct("0x405000", [["parameter", 1]]),
+                   _direct("0x406000", [["parameter", 2]])]
+        extra = [_direct("0x403000", [["constant", 7]]),
+                 _direct("0x404000", [["constant", 9]])]
+        result = self.classify(_rows(missing, extra))
+        self.assertNotIn("different_callee", result["buckets"])
+        self.assertEqual(result["buckets"], {"missing_call": 2, "extra_call": 2})
+
+    def test_identical_arguments_still_prove_a_wrong_callee(self):
+        """Same arguments, different target: the calls do occupy the same slot."""
+        missing = [_direct("0x405000", [["parameter", 1]]),
+                   _direct("0x406000", [["constant", 3]])]
+        extra = [_direct("0x403000", [["constant", 3]]),
+                 _direct("0x404000", [["parameter", 1]])]
+        result = self.classify(_rows(missing, extra))
+        self.assertEqual(result["buckets"], {"different_callee": 2})
+
+    def test_strongest_correspondence_wins_over_a_weaker_one(self):
+        """An exact-argument pair must not be consumed by a same-arity one."""
+        missing = [_direct("0x405000", [["parameter", 1]])]
+        extra = [_direct("0x403000", [["constant", 9]]),
+                 _direct("0x404000", [["parameter", 1]])]
+        result = self.classify(_rows(missing, extra))
+        pairs = [d for d in result["details"] if d["bucket"] == "different_callee"]
+        self.assertEqual(1, len(pairs))
+        self.assertEqual("TUnknown::TUnknown", pairs[0]["recompiled"]["name"])
+
+    def test_one_sided_library_construction_is_churn_not_missing_work(self):
+        """A CString temporary in one image and not the other is shape."""
+        row = _rows([], [_direct("0x407000", [["parameter", 1]])])
+        names = {**self.names, 0x407000: "CString::CString"}
+        result = classify_contract_row(row, names, self.index, {0x407000: "library"})
+        self.assertEqual(result["buckets"], {"library_value_churn": 1})
+        self.assertFalse(result["divergent"])
+
+    def test_library_attribution_requires_both_ownership_and_shape(self):
+        """Neither half alone may suppress: a dropped library call is still work."""
+        row = _rows([], [_direct("0x407000", [["parameter", 1]])])
+        names = {**self.names, 0x407000: "CString::GetLength"}
+        # Library-owned but not construction -> stays actionable.
+        result = classify_contract_row(row, names, self.index, {0x407000: "library"})
+        self.assertEqual(result["buckets"], {"extra_call": 1})
+        # Construction-shaped but game-owned -> stays actionable.
+        names = {**self.names, 0x407000: "TOther::TOther"}
+        result = classify_contract_row(row, names, self.index, {0x407000: "function"})
+        self.assertEqual(result["buckets"], {"extra_call": 1})
 
     def test_disabled_record_model_never_suppresses(self):
         index = CtorDtorIndex(None)

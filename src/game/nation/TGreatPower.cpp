@@ -1569,7 +1569,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 // FUNCTION: IMPERIALISM 0x004de5e0
 void TGreatPower::GiveGrantTo(int arg1) {
   short targetNation = static_cast<short>(arg1);
-  int grantValue = static_cast<short>(
+  short grantValue = static_cast<short>(
       static_cast<unsigned short>(this->diplomacyGrantByNation[targetNation]) & 0x3FFF);
   if (grantValue <= 0) {
     return;

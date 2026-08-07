@@ -178,7 +178,8 @@ void TEscortMission::CalculateNeeds() {
       float delta = 0.0f;
       const short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
       for (int c = 0; c < 4; ++c) {
-        float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) * 0.01f;
+        float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) *
+                                           g_Recompute_Nation_Order_LookupTable_0065A9F8;
         if (diff <= 0.0f) {
           diff = -diff;
         }
@@ -191,7 +192,8 @@ void TEscortMission::CalculateNeeds() {
 
   for (int c = 0; c < 4; ++c) {
     requiredShipEquipageByCategory[c] =
-        static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[c]) * total * 0.01f;
+        static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[c]) * total *
+        g_Recompute_Nation_Order_LookupTable_0065A9F8;
   }
 }
 

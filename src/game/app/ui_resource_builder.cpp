@@ -146,6 +146,11 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 // - see global_data_tables.h. The builders call them directly
 // (g_UiWidgetBuildStack006a13e0.RemoveTail()/.AddTail(node)); claimed here as templates.
 
+// The early builders also call the const GetTail specialization to recover the current
+// TView* from the stack's tail node.
+// TEMPLATE: IMPERIALISM 0x00426f60
+// ?GetTail@?$CList@PAVTView@@PAV1@@@QBEPAVTView@@XZ
+
 // TEMPLATE: IMPERIALISM 0x00479a80
 // ?RemoveTail@?$CList@PAVTView@@PAV1@@@QAEPAVTView@@XZ
 
@@ -154,6 +159,7 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 // TEMPLATE: IMPERIALISM 0x00479b00
 // ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z
 
+template TView* CList<TView*, TView*>::GetTail() const;
 template TView* CList<TView*, TView*>::RemoveTail();
 template POSITION CList<TView*, TView*>::AddTail(TView*);
 

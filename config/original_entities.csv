@@ -110,7 +110,7 @@ address|name|symbol|size|type|prototype|provenance
 41b6b0|IltTarget_0041b6b0||15|function|undefined IltTarget_0041b6b0()|
 41b6d0|InitializeIndustryViewTradeMoveControlsAndCommodityRows||37576|function|undefined InitializeIndustryViewTradeMoveControlsAndCommodityRows()|
 426ec0|CList<TView *,TView *>::AddTail|?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z|125|function|POSITION __thiscall AddTail(TView *)|template
-426f60|GetUiLinkedListNodePayload||7|function|undefined GetUiLinkedListNodePayload()|
+426f60|CList<TView *,TView *>::GetTail|?GetTail@?$CList@PAVTView@@PAV1@@@QBEPAVTView@@XZ|7|function|TView * __thiscall GetTail(void) const|template
 426f80|NoOpRuntimeCallback_00426f80||1|function|void NoOpRuntimeCallback_00426f80(void)|curated
 426fa0|SetUiResourceContextFlagsAndMetrics||69|function|undefined SetUiResourceContextFlagsAndMetrics()|
 427010|ApplyUiResourceColorTripletFromContext||61|function|undefined ApplyUiResourceColorTripletFromContext()|
@@ -1718,7 +1718,7 @@ address|name|symbol|size|type|prototype|provenance
 4a6df0|TArmyMgr::CleanUpStacks||108|function|void __thiscall CleanUpStacks()|
 4a6e80|DispatchMapInteractionPayloadAndResetWorkingFields||68|function|undefined DispatchMapInteractionPayloadAndResetWorkingFields()|
 4a6ef0|TrimExcessNavyOrderSupportAndRebuildOrderBuffer||897|function|undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer()|
-4a7370|ValidateOrderSupportDeltaAndMarkDirectionalOverlays||421|function|undefined ValidateOrderSupportDeltaAndMarkDirectionalOverlays()|
+4a7370|TArmyMgr::ReassessLanding||421|function|void __thiscall ReassessLanding(int nationSlot, int zone)|mac-symbol
 4a7590|TArmyMgr::ClearNationArmyActionModesAndCycleSelection||208|function|void __thiscall ClearNationArmyActionModesAndCycleSelection(int nationId)|listing
 4a76a0|TArmyStack::CreateObject|?CreateObject@TArmyStack@@SGPAVCObject@@XZ|32|function|undefined CreateObject()|rtti
 4a76d0|TArmyStack::GetRuntimeClass||6|function|undefined GetTArmyStackClassNamePointer()|rtti

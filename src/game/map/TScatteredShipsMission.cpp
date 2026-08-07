@@ -83,12 +83,13 @@ void TScatteredShipsMission::CalculateNeeds() {
   TAutoGreatPower* nation = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nation->AssertValid();
   float navyPressure = nation->activeMissionPressureAverageB6c;
-  float scale = (navyPressure + 1.0f) * 0.01f;
+  float pressureScale = navyPressure + g_MissionPositiveFallback_0065A9B8;
 
   const short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   for (int i = 0; i < 4; ++i) {
-    requiredShipEquipageByCategory[i] =
-        static_cast<float>(static_cast<short>(lookupTable[i])) * scale;
+    requiredShipEquipageByCategory[i] = static_cast<float>(static_cast<short>(lookupTable[i])) *
+                                        pressureScale *
+                                        g_Recompute_Nation_Order_LookupTable_0065A9F8;
   }
 }
 
