@@ -136,6 +136,7 @@ pub struct SnapshotMajorNation {
     pub budget_pool_delta: i32,
     pub candidate_nation_flags: Vec<u8>,
     pub scenario_initialized: u8,
+    pub turn_finished: u8,
     pub pending_action_status: Vec<i8>,
     pub pending_action_payload_by_action: Vec<i16>,
     pub diplomacy_budget_base: i32,

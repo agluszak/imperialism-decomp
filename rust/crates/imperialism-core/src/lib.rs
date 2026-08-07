@@ -5,6 +5,7 @@ mod ids;
 mod map_geometry;
 mod snapshot;
 mod state;
+mod turn_flow;
 
 pub use calendar::TurnCalendar;
 pub use ids::{
@@ -28,3 +29,4 @@ pub use state::{
     NavyMissionState, PendingWorkState, PopulationState, RngState, ShipState, StepOutcome,
     TaskForceState, TaskForceTarget, TileState, TurnStartEventState, TurnState, WorldState,
 };
+pub use turn_flow::TurnFlowError;

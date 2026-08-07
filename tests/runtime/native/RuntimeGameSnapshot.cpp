@@ -234,8 +234,10 @@ CString CaptureNations() {
                  nation->budgetPoolBase, nation->budgetPoolDelta);
       json += row;
       AppendUnsignedByteArray(json, nation->candidateNationFlags, kNationSlotCount);
-      row.Format(",\"scenario_initialized\":%u,\"pending_action_status\":",
-                 static_cast<unsigned int>(nation->scenarioInitFlag));
+      row.Format(",\"scenario_initialized\":%u,\"turn_finished\":%u,"
+                 "\"pending_action_status\":",
+                 static_cast<unsigned int>(nation->scenarioInitFlag),
+                 static_cast<unsigned int>(nation->field904));
       json += row;
       AppendSignedByteArray(json, nation->pendingActionStatus.byAction, 0x0d);
       json += ",\"pending_action_payload_by_action\":";

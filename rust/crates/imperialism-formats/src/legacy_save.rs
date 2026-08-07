@@ -1091,6 +1091,7 @@ fn snapshot_major_nation(slot: u8, nation: &LegacyGreatPowerState) -> SnapshotNa
             candidate_nation_flags: post.candidate_nation_flags.to_vec(),
             // scenarioInitFlag is constructed as zero and is not part of the save stream.
             scenario_initialized: 0,
+            turn_finished: post.turn_finished_flag,
             pending_action_status: prefix.pending_action_status.to_vec(),
             pending_action_payload_by_action: prefix.pending_action_payload_by_action.to_vec(),
             diplomacy_budget_base: post.diplomacy_budget_base,
@@ -2480,12 +2481,43 @@ mod tests {
         assert_eq!(snapshot.hashes.metadata, "c05f0452");
         assert_eq!(snapshot.hashes.rng, "e90a6b4e");
         assert_eq!(snapshot.hashes.world, "dbd2668d");
-        assert_eq!(snapshot.hashes.nations, "c0e55802");
+        assert_eq!(snapshot.hashes.nations, "1d88ea9d");
         assert_eq!(snapshot.hashes.economy, "4a05e963");
         assert_eq!(snapshot.hashes.military, "34395d08");
         assert_eq!(snapshot.hashes.missions, "b6cc8e06");
         assert_eq!(snapshot.hashes.pending, "1ca83a13");
-        assert_eq!(snapshot.hashes.state, "04485a10");
+        assert_eq!(snapshot.hashes.state, "854af387");
+
+        let mut game = imperialism_core::GameState::try_from(snapshot).unwrap();
+        assert!(game.all_humans_finished().unwrap());
+        assert!(!game.turn.in_linear_phase());
+        game.reset_turn_flags().unwrap();
+        assert!(game.nations[..6].iter().all(|nation| {
+            nation
+                .as_ref()
+                .unwrap()
+                .major
+                .as_ref()
+                .unwrap()
+                .turn_finished
+        }));
+        assert!(
+            !game.nations[6]
+                .as_ref()
+                .unwrap()
+                .major
+                .as_ref()
+                .unwrap()
+                .turn_finished
+        );
+        game.set_turn_flow_flags(0x40);
+        assert!(game.has_turn_flow_flags(0x40));
+        game.turn.advance_season();
+        assert_eq!(game.turn.economic_turn, 2);
+        assert_eq!(
+            game.request_next_phase().events,
+            vec![imperialism_core::GameEvent::PhaseAdvanceRequested]
+        );
     }
 
     #[test]

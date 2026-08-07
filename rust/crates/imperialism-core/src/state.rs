@@ -22,7 +22,7 @@ pub struct GameState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct TurnState {
     pub scenario_map_index_plus_one: i32,
-    pub economic_turn: i32,
+    pub economic_turn: i16,
     pub phase_code: i32,
     pub difficulty: i32,
     pub active_nation: i32,
@@ -96,6 +96,7 @@ pub struct MajorNationState {
     pub budget_pool_delta: i32,
     pub candidate_nation_flags: Vec<u8>,
     pub scenario_initialized: bool,
+    pub turn_finished: bool,
     pub pending_action_status: Vec<i8>,
     pub pending_action_payload_by_action: Vec<i16>,
     pub diplomacy_budget_base: i32,
@@ -281,7 +282,9 @@ pub struct TurnStartEventState {
 pub enum GameCommand {}
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum GameEvent {}
+pub enum GameEvent {
+    PhaseAdvanceRequested,
+}
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
 pub struct StepOutcome {
@@ -296,7 +299,12 @@ impl TryFrom<GameSnapshotV1> for GameState {
         Ok(Self {
             turn: TurnState {
                 scenario_map_index_plus_one: snapshot.metadata.scenario_map_index_plus_one,
-                economic_turn: snapshot.metadata.economic_turn,
+                economic_turn: i16::try_from(snapshot.metadata.economic_turn).map_err(|_| {
+                    SnapshotValidationError::Shape(format!(
+                        "economic turn {} does not fit the retail signed 16-bit field",
+                        snapshot.metadata.economic_turn
+                    ))
+                })?,
                 phase_code: snapshot.metadata.turn_state,
                 difficulty: snapshot.metadata.difficulty,
                 active_nation: snapshot.metadata.active_nation,
@@ -441,6 +449,7 @@ impl From<SnapshotMajorNation> for MajorNationState {
             budget_pool_delta: snapshot.budget_pool_delta,
             candidate_nation_flags: snapshot.candidate_nation_flags,
             scenario_initialized: snapshot.scenario_initialized != 0,
+            turn_finished: snapshot.turn_finished != 0,
             pending_action_status: snapshot.pending_action_status,
             pending_action_payload_by_action: snapshot.pending_action_payload_by_action,
             diplomacy_budget_base: snapshot.diplomacy_budget_base,
