@@ -17,6 +17,58 @@ pub enum ItemInputs {
     Either(ResourceKind, ResourceKind),
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum CapacityTarget {
+    Production(ProductionSlot),
+    Transport,
+    RegionalPopulation,
+}
+
+impl CapacityTarget {
+    pub const fn from_retail_slot(slot: ProductionSlot) -> Self {
+        match slot.get() {
+            14 => Self::Transport,
+            15 => Self::RegionalPopulation,
+            _ => Self::Production(slot),
+        }
+    }
+
+    pub const fn slot(self) -> ProductionSlot {
+        match self {
+            Self::Production(slot) => slot,
+            Self::Transport => ProductionSlot::new(14).expect("retail transport slot is valid"),
+            Self::RegionalPopulation => {
+                ProductionSlot::new(15).expect("retail population slot is valid")
+            }
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum ExpansionTarget {
+    Production(ProductionSlot),
+    RegionalPopulation,
+}
+
+impl ExpansionTarget {
+    pub const fn from_retail_slot(slot: ProductionSlot) -> Self {
+        if slot.get() == 15 {
+            Self::RegionalPopulation
+        } else {
+            Self::Production(slot)
+        }
+    }
+
+    pub const fn slot(self) -> ProductionSlot {
+        match self {
+            Self::Production(slot) => slot,
+            Self::RegionalPopulation => {
+                ProductionSlot::new(15).expect("retail population slot is valid")
+            }
+        }
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ItemProductionOrder {
     pub output: ResourceKind,
@@ -27,6 +79,34 @@ pub struct ItemProductionOrder {
     pub accumulated_value: i32,
     pub requested_quantity: i16,
     pub inputs: ItemInputs,
+    pub production_slot: ProductionSlot,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct CapacityProductionOrder {
+    pub target: CapacityTarget,
+    pub quantity: i16,
+    pub tracking_by_resource: [i16; ResourceKind::COUNT],
+    pub reserved_workforce: i16,
+    pub limiting_constraint: ProductionConstraint,
+    pub accumulated_value: i32,
+    pub requested_quantity: i16,
+    pub primary_input: ResourceKind,
+    pub secondary_input: ResourceKind,
+    pub production_slot: ProductionSlot,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ExpansionProductionOrder {
+    pub target: ExpansionTarget,
+    pub quantity: i16,
+    pub tracking_by_resource: [i16; ResourceKind::COUNT],
+    pub reserved_workforce: i16,
+    pub limiting_constraint: ProductionConstraint,
+    pub accumulated_value: i32,
+    pub requested_quantity: i16,
+    pub primary_input: ResourceKind,
+    pub secondary_input: ResourceKind,
     pub production_slot: ProductionSlot,
 }
 
@@ -116,13 +196,7 @@ impl PopulationGrowthOrder {
         production.low = production.low.wrapping_add(self.quantity);
         city.population.count = city.population.count.wrapping_add(self.quantity);
 
-        let divisor = if owner.pending_action_status[9] >= b'3' as i8 {
-            3
-        } else {
-            4
-        };
-        let capacity = owned_region_count / divisor;
-        city.production_accum[15] = if capacity > 1 { capacity as i16 } else { 1 };
+        city.production_accum[15] = retail_region_capacity(owner, owned_region_count);
         self.quantity = 0;
         Ok(())
     }
@@ -182,6 +256,250 @@ impl FoodProductionOrder {
         self.quantity = 0;
         self.reserved_workforce = 0;
         Ok(())
+    }
+}
+
+impl CapacityProductionOrder {
+    pub fn new(
+        target: CapacityTarget,
+        primary_input: ResourceKind,
+        secondary_input: ResourceKind,
+        production_slot: ProductionSlot,
+    ) -> Self {
+        Self {
+            target,
+            quantity: 0,
+            tracking_by_resource: [0; ResourceKind::COUNT],
+            reserved_workforce: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+            accumulated_value: 0,
+            requested_quantity: 0,
+            primary_input,
+            secondary_input,
+            production_slot,
+        }
+    }
+
+    pub fn max_order(&mut self, city: &CityState) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        let workforce_limit = (city.population.strength / 2).wrapping_add(self.quantity);
+        let production_limit =
+            city.production_accum[self.production_slot.index()].wrapping_add(self.quantity);
+        let primary_index = self.primary_input.index();
+        let secondary_index = self.secondary_input.index();
+        let resource_limit = self.tracking_by_resource[primary_index]
+            .wrapping_add(city.stock_by_type[primary_index])
+            .min(
+                self.tracking_by_resource[secondary_index]
+                    .wrapping_add(city.stock_by_type[secondary_index]),
+            );
+
+        self.limiting_constraint = ProductionConstraint::Capacity;
+        let mut limit = production_limit;
+        if workforce_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Workforce;
+            limit = workforce_limit;
+        }
+        if resource_limit < limit {
+            self.limiting_constraint = ProductionConstraint::Resources;
+            limit = resource_limit;
+        }
+        Ok(limit)
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        validate_city(city)?;
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city)? || quantity < 0 {
+            return Ok(false);
+        }
+
+        self.quantity = quantity;
+        self.requested_quantity = quantity;
+        self.apply_input_change(city, self.primary_input, delta);
+        self.apply_input_change(city, self.secondary_input, delta);
+        let workforce_change = delta.wrapping_mul(2);
+        city.population.strength = city.population.strength.wrapping_sub(workforce_change);
+        self.reserved_workforce = self.reserved_workforce.wrapping_add(workforce_change);
+        let production = &mut city.production_accum[self.production_slot.index()];
+        *production = production.wrapping_sub(delta);
+        Ok(true)
+    }
+
+    pub fn produce(
+        &mut self,
+        city: &mut CityState,
+        owner: &mut MajorNationState,
+        owned_region_count: i32,
+    ) -> Result<(), ProductionError> {
+        if self.quantity == 0 {
+            return Ok(());
+        }
+
+        match self.target {
+            CapacityTarget::Transport => {
+                let capacity = owner.transport_capacity_mut();
+                *capacity = capacity.wrapping_add(self.quantity);
+            }
+            CapacityTarget::Production(slot) => {
+                validate_city(city)?;
+                let base = city.production_orders[slot.index()];
+                self.apply_production_increase(city, slot, base);
+            }
+            CapacityTarget::RegionalPopulation => {
+                validate_city(city)?;
+                validate_pending_actions(owner)?;
+                let base = retail_region_capacity(owner, owned_region_count);
+                self.apply_production_increase(city, self.target.slot(), base);
+            }
+        }
+
+        self.requested_quantity = 0;
+        self.quantity = 0;
+        self.tracking_by_resource[self.primary_input.index()] = 0;
+        self.tracking_by_resource[self.secondary_input.index()] = 0;
+        self.reserved_workforce = 0;
+        Ok(())
+    }
+
+    pub fn restock(&mut self, city: &mut CityState) -> Result<bool, ProductionError> {
+        let max_order = self.max_order(city)?;
+        let saved_requested_quantity = self.requested_quantity;
+        self.quantity = 0;
+        if max_order < saved_requested_quantity
+            && self.limiting_constraint == ProductionConstraint::Resources
+        {
+            let accepted = self.set_quantity(city, max_order)?;
+            self.requested_quantity = saved_requested_quantity;
+            Ok(accepted)
+        } else {
+            self.set_quantity(city, saved_requested_quantity)
+        }
+    }
+
+    fn apply_input_change(&mut self, city: &mut CityState, resource: ResourceKind, change: i16) {
+        city.add_to_stock_and_verify(resource, change.wrapping_neg());
+        let tracking = &mut self.tracking_by_resource[resource.index()];
+        *tracking = tracking.wrapping_add(change);
+    }
+
+    fn apply_production_increase(&self, city: &mut CityState, slot: ProductionSlot, base: i16) {
+        let index = slot.index();
+        let new_value = base.wrapping_add(self.quantity);
+        let delta = new_value.wrapping_sub(city.production_orders[index]);
+        city.production_accum[index] = city.production_accum[index].wrapping_add(delta);
+        city.production_orders[index] = new_value;
+    }
+}
+
+impl ExpansionProductionOrder {
+    pub fn new(
+        target: ExpansionTarget,
+        primary_input: ResourceKind,
+        secondary_input: ResourceKind,
+        production_slot: ProductionSlot,
+    ) -> Self {
+        Self {
+            target,
+            quantity: 0,
+            tracking_by_resource: [0; ResourceKind::COUNT],
+            reserved_workforce: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+            accumulated_value: 0,
+            requested_quantity: 0,
+            primary_input,
+            secondary_input,
+            production_slot,
+        }
+    }
+
+    pub fn max_order(&self, city: &CityState) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        let primary_index = self.primary_input.index();
+        let secondary_index = self.secondary_input.index();
+        Ok(self.tracking_by_resource[primary_index]
+            .wrapping_add(city.stock_by_type[primary_index])
+            .min(
+                self.tracking_by_resource[secondary_index]
+                    .wrapping_add(city.stock_by_type[secondary_index]),
+            ))
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        validate_city(city)?;
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city)? || quantity < 0 {
+            return Ok(false);
+        }
+
+        self.quantity = quantity;
+        self.requested_quantity = quantity;
+        self.apply_input_change(city, self.primary_input, delta);
+        self.apply_input_change(city, self.secondary_input, delta);
+        Ok(true)
+    }
+
+    pub fn produce(
+        &mut self,
+        city: &mut CityState,
+        owner: &MajorNationState,
+        owned_region_count: i32,
+    ) -> Result<(), ProductionError> {
+        if self.quantity == 0 {
+            return Ok(());
+        }
+        validate_city(city)?;
+
+        let (slot, base) = match self.target {
+            ExpansionTarget::Production(slot) => (slot, city.production_orders[slot.index()]),
+            ExpansionTarget::RegionalPopulation => {
+                validate_pending_actions(owner)?;
+                (
+                    self.target.slot(),
+                    retail_region_capacity(owner, owned_region_count),
+                )
+            }
+        };
+        let index = slot.index();
+        let new_value = base.wrapping_add(self.quantity);
+        let delta = new_value.wrapping_sub(city.production_orders[index]);
+        city.production_accum[index] = city.production_accum[index].wrapping_add(delta);
+        city.production_orders[index] = new_value;
+
+        self.requested_quantity = 0;
+        self.quantity = 0;
+        self.tracking_by_resource[self.primary_input.index()] = 0;
+        self.tracking_by_resource[self.secondary_input.index()] = 0;
+        Ok(())
+    }
+
+    pub fn restock(&mut self, city: &mut CityState) -> Result<bool, ProductionError> {
+        let max_order = self.max_order(city)?;
+        let saved_requested_quantity = self.requested_quantity;
+        self.quantity = 0;
+        if max_order < saved_requested_quantity
+            && self.limiting_constraint == ProductionConstraint::Resources
+        {
+            let accepted = self.set_quantity(city, max_order)?;
+            self.requested_quantity = saved_requested_quantity;
+            Ok(accepted)
+        } else {
+            self.set_quantity(city, saved_requested_quantity)
+        }
+    }
+
+    fn apply_input_change(&mut self, city: &mut CityState, resource: ResourceKind, change: i16) {
+        city.add_to_stock_and_verify(resource, change.wrapping_neg());
+        let tracking = &mut self.tracking_by_resource[resource.index()];
+        *tracking = tracking.wrapping_add(change);
     }
 }
 
@@ -357,7 +675,7 @@ impl ItemProductionOrder {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum ProductionError {
     InvalidResourceCount { actual: usize },
-    InvalidProductionCount { actual: usize },
+    InvalidProductionCount { field: &'static str, actual: usize },
     InvalidPendingActionCount { actual: usize },
     MissingLaborPool(&'static str),
 }
@@ -370,9 +688,9 @@ impl fmt::Display for ProductionError {
                 "city stock has {actual} entries, expected {}",
                 ResourceKind::COUNT
             ),
-            Self::InvalidProductionCount { actual } => write!(
+            Self::InvalidProductionCount { field, actual } => write!(
                 formatter,
-                "city production accumulation has {actual} entries, expected {}",
+                "{field} has {actual} entries, expected {}",
                 ProductionSlot::COUNT
             ),
             Self::InvalidPendingActionCount { actual } => write!(
@@ -392,12 +710,29 @@ fn validate_city(city: &CityState) -> Result<(), ProductionError> {
             actual: city.stock_by_type.len(),
         });
     }
+    if city.production_orders.len() != ProductionSlot::COUNT {
+        return Err(ProductionError::InvalidProductionCount {
+            field: "city production orders",
+            actual: city.production_orders.len(),
+        });
+    }
     if city.production_accum.len() != ProductionSlot::COUNT {
         return Err(ProductionError::InvalidProductionCount {
+            field: "city production accumulation",
             actual: city.production_accum.len(),
         });
     }
     Ok(())
+}
+
+fn retail_region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
+    let divisor = if owner.pending_action_status[9] >= b'3' as i8 {
+        3
+    } else {
+        4
+    };
+    let capacity = owned_region_count / divisor;
+    if capacity > 1 { capacity as i16 } else { 1 }
 }
 
 fn validate_pending_actions(owner: &MajorNationState) -> Result<(), ProductionError> {
@@ -823,5 +1158,180 @@ mod tests {
         assert_eq!(state.population.count_float_bits, float_count);
         assert_eq!(state.production_accum[15], 4);
         assert_eq!(production.quantity, 0);
+    }
+
+    fn capacity_order(target: CapacityTarget) -> CapacityProductionOrder {
+        CapacityProductionOrder::new(
+            target,
+            ResourceKind::Lumber,
+            ResourceKind::Steel,
+            ProductionSlot::new(14).unwrap(),
+        )
+    }
+
+    fn expansion_order(target: ExpansionTarget) -> ExpansionProductionOrder {
+        ExpansionProductionOrder::new(
+            target,
+            ResourceKind::Lumber,
+            ResourceKind::Steel,
+            ProductionSlot::new(14).unwrap(),
+        )
+    }
+
+    #[test]
+    fn capacity_order_uses_item_reservations_then_expands_a_production_slot() {
+        let mut state = city();
+        let mut production =
+            capacity_order(CapacityTarget::Production(ProductionSlot::new(3).unwrap()));
+        state.stock_by_type[ResourceKind::Lumber.index()] = 5;
+        state.stock_by_type[ResourceKind::Steel.index()] = 4;
+        state.production_accum[14] = 10;
+        state.production_orders[3] = 6;
+
+        assert!(production.set_quantity(&mut state, 2).unwrap());
+        assert_eq!(state.population.strength, 6);
+        assert_eq!(state.production_accum[14], 8);
+        production.produce(&mut state, &mut nation(), 0).unwrap();
+
+        assert_eq!(state.production_orders[3], 8);
+        assert_eq!(state.production_accum[3], 2);
+        assert_eq!(production.quantity, 0);
+        assert_eq!(production.requested_quantity, 0);
+        assert_eq!(production.reserved_workforce, 0);
+        assert_eq!(
+            production.tracking_by_resource[ResourceKind::Lumber.index()],
+            0
+        );
+        assert_eq!(
+            production.tracking_by_resource[ResourceKind::Steel.index()],
+            0
+        );
+    }
+
+    #[test]
+    fn capacity_order_transport_target_increases_the_nation_capacity() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut production = capacity_order(CapacityTarget::Transport);
+        production.quantity = 3;
+        production.requested_quantity = 3;
+        production.reserved_workforce = 6;
+        production.tracking_by_resource[ResourceKind::Lumber.index()] = 3;
+        production.tracking_by_resource[ResourceKind::Steel.index()] = 3;
+        owner.capacities[2] = i16::MAX;
+
+        production.produce(&mut state, &mut owner, 0).unwrap();
+        assert_eq!(owner.capacities[2], i16::MIN.wrapping_add(2));
+        assert_eq!(state.production_orders, vec![0; ProductionSlot::COUNT]);
+        assert_eq!(production.quantity, 0);
+        assert_eq!(production.reserved_workforce, 0);
+    }
+
+    #[test]
+    fn capacity_order_region_target_rebases_before_adding_the_order() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut production = capacity_order(CapacityTarget::RegionalPopulation);
+        production.quantity = 2;
+        owner.pending_action_status[9] = b'3' as i8;
+        state.production_orders[15] = 1;
+        state.production_accum[15] = 3;
+
+        production.produce(&mut state, &mut owner, 12).unwrap();
+        assert_eq!(state.production_orders[15], 6);
+        assert_eq!(state.production_accum[15], 8);
+    }
+
+    #[test]
+    fn expansion_order_reserves_only_its_two_material_inputs() {
+        let mut state = city();
+        let mut production =
+            expansion_order(ExpansionTarget::Production(ProductionSlot::new(2).unwrap()));
+        state.stock_by_type[ResourceKind::Lumber.index()] = 3;
+        state.stock_by_type[ResourceKind::Steel.index()] = 2;
+        state.production_accum[14] = 9;
+
+        assert_eq!(production.max_order(&state).unwrap(), 2);
+        assert!(production.set_quantity(&mut state, 2).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Lumber.index()], 1);
+        assert_eq!(state.stock_by_type[ResourceKind::Steel.index()], 0);
+        assert_eq!(state.population.strength, 10);
+        assert_eq!(state.production_accum[14], 9);
+        assert_eq!(production.reserved_workforce, 0);
+
+        assert!(production.set_quantity(&mut state, 1).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Lumber.index()], 2);
+        assert_eq!(state.stock_by_type[ResourceKind::Steel.index()], 1);
+    }
+
+    #[test]
+    fn expansion_production_keeps_the_unused_inherited_workforce_field() {
+        let mut state = city();
+        let owner = nation();
+        let mut production =
+            expansion_order(ExpansionTarget::Production(ProductionSlot::new(2).unwrap()));
+        state.production_orders[2] = 4;
+        state.production_accum[2] = 7;
+        production.quantity = 2;
+        production.requested_quantity = 2;
+        production.reserved_workforce = 9;
+        production.tracking_by_resource[ResourceKind::Lumber.index()] = 2;
+        production.tracking_by_resource[ResourceKind::Steel.index()] = 2;
+
+        production.produce(&mut state, &owner, 0).unwrap();
+        assert_eq!(state.production_orders[2], 6);
+        assert_eq!(state.production_accum[2], 9);
+        assert_eq!(production.quantity, 0);
+        assert_eq!(production.requested_quantity, 0);
+        assert_eq!(production.reserved_workforce, 9);
+        assert_eq!(
+            production.tracking_by_resource[ResourceKind::Lumber.index()],
+            0
+        );
+        assert_eq!(
+            production.tracking_by_resource[ResourceKind::Steel.index()],
+            0
+        );
+    }
+
+    #[test]
+    fn expansion_region_target_uses_the_retail_region_divisor() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut production = expansion_order(ExpansionTarget::RegionalPopulation);
+        production.quantity = 1;
+        owner.pending_action_status[9] = b'2' as i8;
+        state.production_orders[15] = 8;
+        state.production_accum[15] = 10;
+
+        production.produce(&mut state, &owner, 12).unwrap();
+        assert_eq!(state.production_orders[15], 4);
+        assert_eq!(state.production_accum[15], 6);
+    }
+
+    #[test]
+    fn zero_capacity_and_expansion_orders_do_not_touch_any_state() {
+        let mut state = city();
+        let mut owner = nation();
+        let mut capacity = capacity_order(CapacityTarget::RegionalPopulation);
+        let mut expansion = expansion_order(ExpansionTarget::RegionalPopulation);
+        capacity.requested_quantity = 4;
+        capacity.reserved_workforce = 7;
+        expansion.requested_quantity = 5;
+        expansion.reserved_workforce = 8;
+        owner.pending_action_status.clear();
+        state.production_orders.clear();
+        state.production_accum.clear();
+        let expected_state = state.clone();
+        let expected_owner = owner.clone();
+        let expected_capacity = capacity.clone();
+        let expected_expansion = expansion.clone();
+
+        capacity.produce(&mut state, &mut owner, 20).unwrap();
+        expansion.produce(&mut state, &owner, 20).unwrap();
+        assert_eq!(state, expected_state);
+        assert_eq!(owner, expected_owner);
+        assert_eq!(capacity, expected_capacity);
+        assert_eq!(expansion, expected_expansion);
     }
 }
