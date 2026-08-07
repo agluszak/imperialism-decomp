@@ -7,6 +7,7 @@
 
 mod legacy_save;
 mod legacy_stream;
+mod normalized_assets;
 
 pub use legacy_save::{
     LegacyAdmiral, LegacyArmyMission, LegacyAutoGreatPowerPrefix, LegacyAutoGreatPowerState,
@@ -24,3 +25,7 @@ pub use legacy_save::{
     parse_minor_record_at, parse_missions_at,
 };
 pub use legacy_stream::{LegacyStream, StreamError};
+pub use normalized_assets::{
+    ASSET_PACK_SCHEMA, AssetManifestError, NormalizedAssetManifestV1, Rgba8,
+    StrategicMapAssetManifest, read_normalized_asset_manifest,
+};
