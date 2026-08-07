@@ -95,7 +95,7 @@ address|matching|name
 0x41b5a0|0.7777777777777778|SetUiResourceContextNumberValueAndRange
 0x41b5f0|1.0|ClearUiResourceContext
 0x41b610|1.0|PopUiResourcePoolNode
-0x41b6d0|0.6560646663445064|InitializeIndustryViewTradeMoveControlsAndCommodityRows
+0x41b6d0|0.8878206528864222|InitializeIndustryViewTradeMoveControlsAndCommodityRows
 0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
 0x426f60|1.0|CList<TView *,TView *>::GetTail
 0x426fa0|1.0|SetUiResourceContextFlagsAndMetrics
@@ -3396,7 +3396,7 @@ address|matching|name
 0x5274d0|0.37593984962406013|TMapMaker::TryMergeRegionGroupWithNeighbors
 0x5275a0|0.3783783783783784|TMapMaker::ExpandRegionGridIntoTilesAndAllocateCityRecords
 0x527730|0.39017735334242837|TMapMaker::PlaceTerrainFeatureQuotas
-0x527d00|0.4979919678714859|TMapMaker::CreateRivers
+0x527d00|0.4899598393574297|TMapMaker::CreateRivers
 0x527ed0|0.39644970414201186|TMapMaker::GrowRiver
 0x528140|0.35942028985507246|TMapMaker::PlaceCityMarkerAndSpreadNeighbors
 0x5283c0|0.33421750663129973|TMapMaker::SeedMountainRange

@@ -13,6 +13,14 @@ file(GLOB IMPERIALISM_GAME_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/game/*/*.cpp"
 )
 
+# Ambit.cpp owned the UI-resource helpers and the 0x0041b6d0 generated builder in
+# one translation unit.  Compile that proven unit together so VC5 can reproduce
+# its early inline expansions and later out-of-line helper calls.
+set(IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game/app/ui_resource_builder.cpp")
+list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
+    "${IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE}")
+
 # Lint-only builds (clang/MinGW, see cmake/clang-mingw-i686.cmake) compile the
 # sources for diagnostics without linking, since the autogen stubs do not yet
 # provide a complete link surface. Default OFF so the MSVC500 reccmp build is
@@ -84,7 +92,20 @@ file(GLOB IMPERIALISM_AUTOGEN_UI_SOURCES CONFIGURE_DEPENDS
     "${IMPERIALISM_GENERATED_DIR}/ui/*.cpp"
 )
 if(IMPERIALISM_AUTOGEN_UI_SOURCES)
+    set(IMPERIALISM_AMBIT_FACTORY_SOURCE
+        "${IMPERIALISM_GENERATED_DIR}/ui/turn_event_dialog_factory_0041b6d0.cpp")
+    set(IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE
+        "${IMPERIALISM_GENERATED_DIR}/ui/AmbitResourceBuilder.cpp")
+    list(REMOVE_ITEM IMPERIALISM_AUTOGEN_UI_SOURCES
+        "${IMPERIALISM_AMBIT_FACTORY_SOURCE}"
+        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}")
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/AmbitResourceBuilder.cpp.in"
+        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}"
+        @ONLY)
     target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_UI_SOURCES})
+    target_sources(Imperialism PRIVATE
+        "${IMPERIALISM_AMBIT_RESOURCE_BUILDER_SOURCE}")
 endif()
 if(IMPERIALISM_AUTOGEN_STUB_SOURCES)
     target_sources(Imperialism PRIVATE ${IMPERIALISM_AUTOGEN_STUB_SOURCES})
