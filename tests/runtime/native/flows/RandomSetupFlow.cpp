@@ -2,6 +2,7 @@
 
 #include "RuntimeJson.h"
 #include "RuntimeObservations.h"
+#include "RuntimeGeneratedWorldSnapshot.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 #include "screens/RandomSetupScreen.h"
@@ -29,6 +30,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     scenario.RunState().SetSelectedNationSlot(RandomSetup().SelectedNationSlot());
+    CaptureRuntimeGeneratedWorldSnapshot(scenario.RunState());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();

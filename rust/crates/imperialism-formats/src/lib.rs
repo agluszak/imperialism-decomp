@@ -8,6 +8,9 @@
 mod legacy_save;
 mod legacy_stream;
 mod normalized_assets;
+mod retail_assets;
+mod retail_pe;
+mod ui_catalog;
 
 pub use legacy_save::{
     LegacyAdmiral, LegacyArmyMission, LegacyAutoGreatPowerPrefix, LegacyAutoGreatPowerState,
@@ -28,4 +31,20 @@ pub use legacy_stream::{LegacyStream, StreamError};
 pub use normalized_assets::{
     ASSET_PACK_SCHEMA, AssetManifestError, NormalizedAssetManifestV1, Rgba8,
     StrategicMapAssetManifest, read_normalized_asset_manifest,
+};
+pub use retail_assets::{
+    CachedRetailObject, ImportedRetailAssets, PictureLibrary, RETAIL_ASSET_PACK_SCHEMA,
+    RetailAssetImportError, RetailAssetPackManifestV1, RetailResourceAsset, RetailSourceDigest,
+    RetailStandaloneAsset, RetailStringAsset, default_retail_cache_dir, import_english_gog_assets,
+    parse_retail_import_args,
+};
+pub use retail_pe::{
+    DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
+    bitmap_resource_to_bmp, decode_string_table_block,
+};
+pub use ui_catalog::{
+    EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UI_CATALOG_SCHEMA, UiCatalogError,
+    UiCatalogSource, UiCatalogSources, UiCatalogV1, UiNode, UiNodeId, UiNumberRange, UiStyle,
+    UiTextBinding, UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,
+    read_ui_catalog,
 };

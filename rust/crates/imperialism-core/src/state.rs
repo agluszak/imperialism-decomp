@@ -7,6 +7,7 @@ use crate::{
     SnapshotShip, SnapshotTaskForce, SnapshotValidationError, TaskForceId, TileId, TileSnapshot,
 };
 use enum_map::Enum;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct GameState {
@@ -299,7 +300,8 @@ pub struct TurnStartEventState {
     pub land_sale: Option<(i16, NationId)>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum GameCommand {
     PlaceTradeBid {
         nation: NationId,
@@ -311,6 +313,25 @@ pub enum GameCommand {
         resource: crate::ResourceKind,
         amount: i16,
         price: i16,
+    },
+    BeginRandomGameSetup {
+        setup: crate::BeginRandomGameSetupInputs,
+    },
+    SetRandomGamePlanet {
+        planet_seed: String,
+        retail_topology: crate::RetailTopologyByte,
+    },
+    SelectRandomGameNation {
+        nation_slot: i16,
+    },
+    SetRandomGameCountryName {
+        country_name: String,
+    },
+    SetRandomGameDifficulty {
+        difficulty: i32,
+    },
+    SetRandomGameNameMode {
+        use_localized_name_tables: bool,
     },
 }
 

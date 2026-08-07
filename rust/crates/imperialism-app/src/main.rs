@@ -1,48 +1,48 @@
 #![forbid(unsafe_code)]
 
-use anyhow::Context;
-use clap::Parser;
-use imperialism_app::{load_viewer, run_viewer};
-use std::path::PathBuf;
+use imperialism_app::{ExecutableMode, load_viewer, prepare_main_menu, run_main_menu, run_viewer};
+use std::env;
+use std::process::ExitCode;
 
-#[derive(Debug, Parser)]
-#[command(about = "Present a canonical Imperialism snapshot")]
-struct Args {
-    /// Canonical snapshot JSON, either directly or inside a game_snapshot wrapper.
-    snapshot: PathBuf,
+fn main() -> ExitCode {
+    let mode = match ExecutableMode::parse(env::args_os().skip(1)) {
+        Ok(ExecutableMode::Help) => {
+            println!("{}", ExecutableMode::usage());
+            return ExitCode::SUCCESS;
+        }
+        Ok(mode) => mode,
+        Err(error) => {
+            eprintln!("{error}\n\n{}", ExecutableMode::usage());
+            return ExitCode::FAILURE;
+        }
+    };
 
-    /// Imported asset-pack directory containing manifest.json.
-    #[arg(long, default_value = "imported-assets", value_name = "ASSET_PACK")]
-    assets: PathBuf,
-}
-
-fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
-    let asset_manifest = args.assets.join("manifest.json");
-    let input = load_viewer(&args.snapshot, &asset_manifest).with_context(|| {
-        format!(
-            "could not start strategic-map viewer from {}",
-            args.snapshot.display()
-        )
-    })?;
-    run_viewer(input);
-    Ok(())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn parses_snapshot_and_asset_pack_paths() {
-        let args = Args::try_parse_from([
-            "imperialism-app",
-            "snapshot.json",
-            "--assets",
-            "local-assets",
-        ])
-        .unwrap();
-        assert_eq!(args.snapshot, PathBuf::from("snapshot.json"));
-        assert_eq!(args.assets, PathBuf::from("local-assets"));
+    match mode {
+        ExecutableMode::MainMenu(config) => match prepare_main_menu(&config) {
+            Ok(prepared) => match run_main_menu(prepared) {
+                Ok(()) => ExitCode::SUCCESS,
+                Err(error) => {
+                    eprintln!("could not construct main menu: {error}");
+                    ExitCode::FAILURE
+                }
+            },
+            Err(error) => {
+                eprintln!("could not prepare main menu: {error}");
+                ExitCode::FAILURE
+            }
+        },
+        ExecutableMode::SnapshotViewer(config) => match load_viewer(&config) {
+            Ok(input) => {
+                run_viewer(input);
+                ExitCode::SUCCESS
+            }
+            Err(error) => {
+                eprintln!("could not start strategic-map viewer: {error}");
+                ExitCode::FAILURE
+            }
+        },
+        ExecutableMode::Help => {
+            unreachable!("help exits before launch dispatch")
+        }
     }
 }

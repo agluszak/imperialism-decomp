@@ -10,7 +10,8 @@ enum RuntimeSnapshotFlags {
   kRuntimeSnapshotNone = 0,
   kRuntimeSnapshotUi = 1,
   kRuntimeSnapshotMap = 2,
-  kRuntimeSnapshotGame = 4
+  kRuntimeSnapshotGame = 4,
+  kRuntimeSnapshotGeneratedWorld = 8
 };
 
 struct RuntimeTestDescriptor {

@@ -18,6 +18,7 @@ class RuntimeDeterminismTests(unittest.TestCase):
             "elapsed_ms": 42,
             "host": {"artifact_path": "/tmp/one"},
             "map_state": {"wrap": 3},
+            "generated_world": {"schema": "imperialism.generated_world.v1", "tiles": [[1]]},
             "state": {"turn": 4},
             "actions": [{"action": "done", "t_ms": 30}],
         }
@@ -72,6 +73,12 @@ class RuntimeDeterminismTests(unittest.TestCase):
                 for item in classify_leaks(baseline, {"sample": changed}, "gdb")
             },
         )
+
+    def test_generated_world_is_part_of_the_byte_stable_observation(self) -> None:
+        left = self._result()
+        right = self._result()
+        right["generated_world"]["tiles"][0][0] = 2
+        self.assertNotEqual(normalized_observation(left), normalized_observation(right))
 
 
 if __name__ == "__main__":

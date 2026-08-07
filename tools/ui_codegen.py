@@ -30,7 +30,12 @@ IR_PATH = "vendor/macos_codewarrior/evidence/resources/ui_views.json"
 STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
+WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
+RUST_UI_CATALOG_PATH = (
+    "rust/crates/imperialism-formats/assets/ui_catalog_v1.json"
+)
 FORMAT_VERSION = 1
+RUST_UI_CATALOG_SCHEMA = "imperialism.ui_catalog.v1"
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -92,6 +97,16 @@ class UiResourceKey:
 
     def text(self) -> str:
         return f"{self.resource_file}:{self.view_id}"
+
+
+RUST_LAUNCH_VIEW_KEYS = (
+    UiResourceKey("Startup.rsrc", 1500),
+    UiResourceKey("Startup.rsrc", 1501),
+    UiResourceKey("Startup.rsrc", 952),
+    UiResourceKey("Startup.rsrc", 953),
+    UiResourceKey("FlagView.rsrc", 8451),
+    UiResourceKey("MapView.rsrc", 2013),
+)
 
 
 @dataclass(frozen=True)
@@ -934,6 +949,232 @@ def apply_case_windows_overrides(
     return replace(view, nodes=tuple(nodes))
 
 
+def _rust_widget_kind(node: UiSemanticNode) -> str:
+    class_name = node.class_name.casefold()
+    if node.type_code == "wind":
+        return "window"
+    if node.type_code == "fwnd":
+        return "floating_window"
+    if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
+        return "checkbox"
+    if node.type_code == "radb" or "radio" in class_name:
+        return "radio_or_cluster_control"
+    if node.type_code == "pict":
+        if "toggle" in class_name:
+            return "toggle"
+        if "button" in class_name:
+            return "picture_button"
+        return "picture"
+    if node.type_code == "stat":
+        return "static_text"
+    if node.type_code == "nmbr":
+        return "numeric_value"
+    if node.type_code == "edit":
+        return "edit_control"
+    if node.type_code == "tevw":
+        return "list_or_scrolling_pane"
+    if node.type_code == "clus":
+        return "radio_or_cluster_control"
+    if node.type_code == "view":
+        return "container" if node.class_name == "TView" else "custom_canvas"
+    return "specialized"
+
+
+def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
+    style = (
+        {"word": family.style.word, "packed_color": family.style.packed_color}
+        if family.style is not None
+        else None
+    )
+    text = None
+    if family.text is not None:
+        text = {
+            "resource_id": family.text.resource_id,
+            "resource_index": family.text.resource_index,
+            "value": family.text.value,
+            "source": family.text.source,
+            "font_family": family.text.mode,
+            "face_flags": family.text.flags,
+            "point_size": family.text.point_size,
+            "style_ref": family.text.style_ref,
+            "alignment": family.text.theme,
+        }
+    number = None
+    if family.number is not None:
+        number = {
+            "value": family.number.value,
+            "minimum": family.number.minimum,
+            "maximum": family.number.maximum,
+        }
+    window = None
+    if family.window is not None:
+        color = None
+        if family.window.color is not None:
+            color = {
+                "behavior_flag": family.window.color.behavior_flag,
+                "triplet_flag": family.window.color.triplet_flag,
+                "foreground": family.window.color.foreground,
+                "background": family.window.color.background,
+            }
+        window = {
+            "flags": family.window.flags,
+            "style_type": family.window.style_type,
+            "topmost": family.window.topmost,
+            "resource_6f": family.window.resource_6f,
+            "resource_6e": family.window.resource_6e,
+            "captioned_frame": family.window.captioned_frame,
+            "resource_6c": family.window.resource_6c,
+            "resource_71": family.window.resource_71,
+            "color": color,
+        }
+    return {
+        "frame_style": family.frame_style,
+        "content_insets": family.content_insets,
+        "picture_id": family.picture_id,
+        "control_state": family.control_state,
+        "style": style,
+        "text": text,
+        "max_chars": family.max_chars,
+        "number": number,
+        "cluster_value": family.cluster_value,
+        "window": window,
+    }
+
+
+def _catalog_case_for_resource(
+    recipes: Iterable[UiFactoryRecipe], key: UiResourceKey
+) -> tuple[UiFactoryRecipe, UiCaseRecipe]:
+    matches = [
+        (recipe, case)
+        for recipe in recipes
+        for case in recipe.cases
+        if case.resource == key
+    ]
+    if len(matches) != 1:
+        raise ValueError(
+            f"{key.text()}: expected one factory case, found {len(matches)}"
+        )
+    return matches[0]
+
+
+def _catalog_source(repo_root: Path, relative_path: str) -> dict[str, str]:
+    return {"path": relative_path, "sha256": _sha256(repo_root / relative_path)}
+
+
+def build_rust_ui_catalog(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> dict[str, object]:
+    recipe_list = list(recipes)
+    catalog_views: list[dict[str, object]] = []
+    for key in sorted(
+        RUST_LAUNCH_VIEW_KEYS, key=lambda item: (item.resource_file, item.view_id)
+    ):
+        raw_view = views.get(key)
+        if raw_view is None:
+            raise ValueError(f"{key.text()}: missing committed Mac View IR")
+        recipe, case = _catalog_case_for_resource(recipe_list, key)
+        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
+        raw_nodes = {int(node["offset"]): node for node in raw_view.get("nodes", [])}
+        roots = [node for node in semantic_view.nodes if node.parent_id is None]
+        if len(roots) != 1:
+            raise ValueError(f"{key.text()}: expected one semantic root")
+        nodes: list[dict[str, object]] = []
+        for node in semantic_view.nodes:
+            offset = int(node.node_id, 16)
+            raw_node = raw_nodes[offset]
+            x, y, width, height = node.geometry
+            legacy_class = str(raw_node.get("class_name") or "") or None
+            nodes.append(
+                {
+                    "id": offset,
+                    "parent": (
+                        int(node.parent_id, 16)
+                        if node.parent_id is not None
+                        else None
+                    ),
+                    "tag": node.tag,
+                    "kind": _rust_widget_kind(node),
+                    "rect": {"x": x, "y": y, "width": width, "height": height},
+                    "state": bool(node.state),
+                    "enabled": bool(node.enabled),
+                    "input_gate": bool(node.input_gate),
+                    "child_hit_test": bool(node.child_hit_test),
+                    "control_value": node.control_value,
+                    "properties": _rust_catalog_family(node.family),
+                    "legacy_type": node.type_code,
+                    "legacy_class": legacy_class,
+                    "resolved_class": node.class_name,
+                    "resource_offset": offset,
+                    "source": node.source,
+                    "confidence": node.confidence,
+                }
+            )
+        catalog_views.append(
+            {
+                "id": {
+                    "resource_file": key.resource_file,
+                    "resource_id": key.view_id,
+                },
+                "event": case.event,
+                "root": int(roots[0].node_id, 16),
+                "nodes": nodes,
+                "source": semantic_view.source,
+            }
+        )
+    return {
+        "schema": RUST_UI_CATALOG_SCHEMA,
+        "logical_resolution": [640, 480],
+        "sources": {
+            "mac_view_ir": _catalog_source(repo_root, IR_PATH),
+            "mac_strings": _catalog_source(repo_root, STRINGS_PATH),
+            "mac_text_resources": _catalog_source(repo_root, TEXT_RESOURCES_PATH),
+            "factory_manifest": _catalog_source(repo_root, MANIFEST_PATH),
+            "windows_deltas": _catalog_source(repo_root, WINDOWS_DELTA_PATH),
+        },
+        "views": catalog_views,
+    }
+
+
+def render_rust_ui_catalog(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> str:
+    catalog = build_rust_ui_catalog(repo_root, recipes, views, text_resources)
+    return json.dumps(catalog, indent=2, sort_keys=True) + "\n"
+
+
+def write_rust_ui_catalog(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> Path:
+    path = repo_root / RUST_UI_CATALOG_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _write_if_changed(
+        path, render_rust_ui_catalog(repo_root, recipes, views, text_resources)
+    )
+    return path
+
+
+def rust_ui_catalog_is_current(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> bool:
+    path = repo_root / RUST_UI_CATALOG_PATH
+    return path.is_file() and path.read_text(encoding="utf-8") == render_rust_ui_catalog(
+        repo_root, recipes, views, text_resources
+    )
+
+
 def _validate_semantic_view(
     repo_root: Path, context: str, view: UiSemanticView
 ) -> list[str]:
@@ -1418,6 +1659,11 @@ def generated_claim_rows(repo_root: Path) -> list[dict[str, object]]:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument(
+        "--write-rust-catalog",
+        action="store_true",
+        help=f"write the normalized launch catalog to {RUST_UI_CATALOG_PATH}",
+    )
     parser.add_argument("--gen-dir", default="build-msvc500/generated/ui")
     parser.add_argument("--function", help="Generate only one factory address")
     parser.add_argument("--view", help="Print one committed Mac View as FILE:ID JSON")
@@ -1555,6 +1801,12 @@ def main() -> int:
     if args.triage_map:
         _print_source_map_triage(repo_root, args.gen_dir, args.triage_map)
         return 0
+    if args.write_rust_catalog:
+        path = write_rust_ui_catalog(
+            repo_root, recipes, views, text_resources
+        )
+        print(f"Wrote normalized Rust UI catalog to {path}")
+        return 0
     selected = recipes
     if args.function:
         address = int(args.function, 0)
@@ -1562,6 +1814,14 @@ def main() -> int:
         if not selected:
             raise SystemExit(f"No UI factory at 0x{address:08x}")
     if args.check:
+        if not rust_ui_catalog_is_current(
+            repo_root, recipes, views, text_resources
+        ):
+            print(
+                f"UI codegen check failed: {RUST_UI_CATALOG_PATH} is stale; "
+                "run with --write-rust-catalog"
+            )
+            return 1
         print(
             f"UI codegen check passed: {len(recipes)} functions, "
             f"{sum(len(recipe.cases) for recipe in recipes)} cases"

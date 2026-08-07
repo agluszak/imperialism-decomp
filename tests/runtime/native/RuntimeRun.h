@@ -79,6 +79,7 @@ public:
   CString& LastFingerprint();
   CString& MapStateJson();
   CString& GameSnapshotJson();
+  CString& GeneratedWorldSnapshotJson();
   CString& SerializationRoundtripJson();
   CString AssertionFailuresJson() const;
   bool HasAssertionFailures() const;
@@ -119,6 +120,7 @@ private:
   CString lastFingerprint;
   CString mapStateJson;
   CString gameSnapshotJson;
+  CString generatedWorldSnapshotJson;
   CString serializationRoundtripJson;
   CString assertionFailures;
 };

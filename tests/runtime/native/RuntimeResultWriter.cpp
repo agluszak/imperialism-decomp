@@ -69,6 +69,12 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
     failureJson = "\"scenario UI snapshot is missing\"";
     run.RecordAssertion("result.scenario_ui_snapshot.present", failureJson, true);
   }
+  if (run.CapturesSnapshot(kRuntimeSnapshotGeneratedWorld) &&
+      run.GeneratedWorldSnapshotJson().IsEmpty()) {
+    status = "failed";
+    failureJson = "\"generated-world snapshot is missing on random setup\"";
+    run.RecordAssertion("result.generated_world.present", failureJson, true);
+  }
   CString uiSnapshots("[");
   if (run.CapturesSnapshot(kRuntimeSnapshotUi)) {
     if (!run.RandomSetupUiSnapshot().IsEmpty()) {
@@ -104,6 +110,10 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   if (!run.GameSnapshotJson().IsEmpty()) {
     gameSnapshot = run.GameSnapshotJson();
   }
+  CString generatedWorld("null");
+  if (!run.GeneratedWorldSnapshotJson().IsEmpty()) {
+    generatedWorld = run.GeneratedWorldSnapshotJson();
+  }
   CString roundtrip("null");
   if (!run.SerializationRoundtripJson().IsEmpty()) {
     roundtrip = run.SerializationRoundtripJson();
@@ -133,6 +143,7 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               "  \"capital_confirmation_snapshot\": %s,\n"
               "  \"map_state\": %s,\n"
               "  \"game_snapshot\": %s,\n"
+              "  \"generated_world\": %s,\n"
               "  \"serialization_roundtrip\": %s,\n"
               "  \"assertion_id\": %s,\n"
               "  \"assertions\": %s,\n"
@@ -168,8 +179,9 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
               static_cast<LPCSTR>(currentUiTree), static_cast<LPCSTR>(eventSequence),
               static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
               static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
-              static_cast<LPCSTR>(gameSnapshot), static_cast<LPCSTR>(roundtrip),
-              static_cast<LPCSTR>(assertionId), static_cast<LPCSTR>(assertions),
+              static_cast<LPCSTR>(gameSnapshot), static_cast<LPCSTR>(generatedWorld),
+              static_cast<LPCSTR>(roundtrip), static_cast<LPCSTR>(assertionId),
+              static_cast<LPCSTR>(assertions),
               g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1, RuntimeClassName(mainView),
               g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot(),
               g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1, activeCity != 0 ? "true" : "false",
