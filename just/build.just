@@ -56,15 +56,22 @@ detect:
 [doc('Compile-only clang/MinGW warning-as-error check; never used for reccmp')]
 [group('build')]
 lint flags="":
-  mkdir -p "{{lint_build_dir}}"
-  uv run python -m tools.generate --gen-dir "{{lint_build_dir}}/generated" \
+  just _lint-in "{{lint_build_dir}}" "{{flags}}"
+
+# Keep each stable CMake option set in its own cache. Runtime-harness lint and the
+# intentional-warning fixture otherwise toggle options in build-clang and force all
+# manually owned translation units to rebuild during every precommit.
+[private]
+_lint-in lint_dir flags="":
+  mkdir -p "{{lint_dir}}"
+  uv run python -m tools.generate --gen-dir "{{lint_dir}}/generated" \
     --chunk-prefix lint_stubs_part --ui-annotation-kind none \
     --stub-annotation-kind none
   docker run --rm --network none \
     -e CMAKE_FLAGS="-DIMPERIALISM_LINT_WERROR=ON -DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF {{flags}}" \
     -e LINT=1 \
     -v "$PWD":/imperialism \
-    -v "$PWD/{{lint_build_dir}}":/build \
+    -v "$PWD/{{lint_dir}}":/build \
     "{{docker_image}}"
 
 # Evaluate the scalar-focused clang-tidy checks on a stable sample of manually
@@ -139,16 +146,16 @@ ui-codegen *args:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" {{args}}
 
 # Regression proof: enabling the fixture must make the real project lint gate fail.
-# Restore the cache option afterward so subsequent incremental lint runs stay usable.
+# Its dedicated cache stays enabled, so neither this test nor normal lint invalidates
+# the other's object files on the next precommit.
 [doc('Prove the lint warning gate rejects an intentionally warning-producing TU')]
 [group('test')]
 lint-warning-gate-test:
   #!/usr/bin/env bash
   set -euo pipefail
-  if just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=ON"; then
+  if just _lint-in "{{lint_warning_test_build_dir}}" \
+      "-DIMPERIALISM_LINT_WARNING_GATE_TEST=ON"; then
     echo "lint warning gate unexpectedly accepted the intentional warning fixture"
-    just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF"
     exit 1
   fi
-  just lint "-DIMPERIALISM_LINT_WARNING_GATE_TEST=OFF"
   echo "lint warning gate regression fixture rejected as expected"
