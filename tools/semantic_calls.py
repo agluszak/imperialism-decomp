@@ -2544,6 +2544,19 @@ def _select_claims(
     return selected
 
 
+def _report_output_path(
+    build_dir: Path, selected: Sequence[Claim], full: bool
+) -> Path:
+    if full:
+        return build_dir / _full_report_relative_path()
+    selection_fingerprint = fingerprint([claim.address for claim in selected])[:12]
+    return (
+        build_dir
+        / "semantic"
+        / f"semantic_report.targeted-{selection_fingerprint}.json"
+    )
+
+
 def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     repo_root = repo_root_from_file(__file__, 1)
     build_dir = Path(args.build_dir).resolve()
@@ -2556,13 +2569,14 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     inputs = report_inputs(repo_root, target, claims, prep_fingerprint)
     full = len(selected) == len(claims)
     full_output = build_dir / _full_report_relative_path()
-    if full and not args.force and full_output.is_file():
-        previous = json.loads(full_output.read_text(encoding="utf-8"))
+    output = _report_output_path(build_dir, selected, full)
+    if not args.force and output.is_file():
+        previous = json.loads(output.read_text(encoding="utf-8"))
         if (
-            previous.get("scope") == "all"
+            previous.get("scope") == ("all" if full else "targeted")
             and previous.get("fingerprint") == fingerprint(inputs)
         ):
-            return previous, full_output
+            return previous, output
 
     phase_started = time.monotonic()
     compare = Compare.from_target(target)
@@ -2608,15 +2622,16 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     maps_seconds = round(time.monotonic() - phase_started, 3)
 
     previous_rows: dict[str, dict[str, Any]] = {}
+    previous_output = output if output.is_file() else full_output
     if (
         not args.force
         and os.environ.get(REUSE_DISABLE_ENV) != "1"
-        and full_output.is_file()
+        and previous_output.is_file()
     ):
-        previous = json.loads(full_output.read_text(encoding="utf-8"))
+        previous = json.loads(previous_output.read_text(encoding="utf-8"))
         if (
             previous.get("schema") == SCHEMA_VERSION
-            and previous.get("scope") == "all"
+            and previous.get("scope") in {"all", "targeted"}
             and previous.get("row_context") == context_fp
         ):
             previous_rows = {
@@ -2759,17 +2774,6 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         },
         "functions": rows,
     }
-    if full:
-        output = full_output
-    else:
-        selection_fingerprint = fingerprint(
-            [claim.address for claim in selected]
-        )[:12]
-        output = (
-            build_dir
-            / "semantic"
-            / f"semantic_report.targeted-{selection_fingerprint}.json"
-        )
     atomic_json(output, report, indent=None)
     _prune_targeted_reports(build_dir / "semantic")
     return report, output

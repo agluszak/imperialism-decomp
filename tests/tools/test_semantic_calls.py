@@ -39,6 +39,7 @@ from tools.semantic_calls import (
     _restore_orig_calls,
     _virtual_target,
     _prune_targeted_reports,
+    _report_output_path,
     _reccmp_proves_call_contract,
     _reccmp_statuses,
     _row_reusable,
@@ -49,6 +50,7 @@ from tools.semantic_calls import (
     extract_calls,
 )
 from tools.mfc.reviewed_identities import ReviewedIdentity
+from tools.source_model import Claim
 
 
 class FakeDataType:
@@ -1472,6 +1474,18 @@ class SemanticCallTests(unittest.TestCase):
             self.assertTrue(fresh.exists())
             self.assertFalse(stale.exists())
             self.assertTrue(full.exists())  # never prune the full report
+
+    def test_targeted_report_path_is_stable_for_selected_addresses(self):
+        build_dir = Path("/tmp/build")
+        claims = [
+            Claim(0x1000, "FUNCTION", "src/a.cpp", 1),
+            Claim(0x2000, "FUNCTION", "src/b.cpp", 2),
+        ]
+        first = _report_output_path(build_dir, claims, False)
+        second = _report_output_path(build_dir, claims, False)
+        self.assertEqual(first, second)
+        self.assertEqual(first.parent, build_dir / "semantic")
+        self.assertTrue(first.name.startswith("semantic_report.targeted-"))
 
 
 if __name__ == "__main__":
