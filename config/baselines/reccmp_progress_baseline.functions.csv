@@ -6496,7 +6496,7 @@ address|matching|name
 0x5df3f0|1.0|TAssetMgr::OpenFilesFor
 0x5df410|1.0|TAssetMgr::CloseFilesFor
 0x5df430|0.7168141592920354|TAssetMgr::LoadTableResourceStreamByName
-0x5df630|0.7272727272727273|CResourceException::`scalar deleting destructor'
+0x5df630|0.7272727272727273|CResourceException::`scalar deleting destructor'(unsigned int)
 0x5df6d0|1.0|TAssetMgr::ReleaseResourceStreamIfNotNull
 0x5df700|1.0|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance
 0x5df730|1.0|TAssetMgr::SeekResourceStreamFromBeginning
@@ -6645,7 +6645,7 @@ address|matching|name
 0x5e556b|1.0|CDragListBox::BeginDrag
 0x5e5597|1.0|CDragListBox::CancelDrag
 0x5e55a4|1.0|CDragListBox::Dragging
-0x5e55ee|0.6607142857142857|CDragListBox::Dropped
+0x5e55ee|1.0|CDragListBox::Dropped
 0x5e56cd|1.0|CDragListBox::DrawInsert
 0x5e56f2|0.96|CDragListBox::DrawSingle
 0x5e57e9|0.9871794871794872|CDragListBox::OnChildNotify
@@ -6714,12 +6714,19 @@ address|matching|name
 0x5e6da3|1.0|CArchive::operator>>(unsigned short &)
 0x5e6dd6|1.0|CArchive::operator>>(unsigned long &)
 0x5e6e08|0.9166666666666666|CMemoryException::CMemoryException(int, unsigned int)
+0x5e6e7f|1.0|CUserException::`scalar deleting destructor'
+0x5e6e9b|1.0|CUserException::~CUserException
 0x5e6ebe|1.0|CDC::PtVisible
 0x5e6ee2|0.8571428571428571|CDC::DrawTextA(char const *, int, struct tagRECT *, unsigned int)
 0x5e6efe|1.0|CDC::ExtTextOutA
 0x5e6f23|1.0|CDC::TabbedTextOutA
 0x5e6f77|1.0|CDC::GrayStringA
 0x5e6fa7|1.0|CDC::Escape
+0x5e6fc3|0.9090909090909091|CException::`scalar deleting destructor'
+0x5e7009|1.0|CMemoryException::`scalar deleting destructor'
+0x5e7025|1.0|CMemoryException::~CMemoryException
+0x5e7056|1.0|CNotSupportedException::`scalar deleting destructor'
+0x5e7072|1.0|CNotSupportedException::~CNotSupportedException
 0x5e709d|1.0|CCtrlView::~CCtrlView
 0x5e711d|0.8|CArchiveStream::CArchiveStream
 0x5e717e|0.8571428571428571|CArchiveStream::Read
@@ -7025,9 +7032,11 @@ address|matching|name
 0x5ff2d2|1.0|CString::TrimLeft
 0x5ff36a|1.0|CopyElements
 0x5ff3cd|1.0|CSimpleException::InitString
+0x5ff3f6|1.0|CSimpleException::GetErrorMessage
 0x5ff439|0.8|AfxThrowMemoryException
 0x5ff454|0.8|AfxThrowNotSupportedException
 0x5ff46f|0.9789473684210527|CFileDialog::CFileDialog
+0x5ff5c5|1.0|CFileDialog::`scalar deleting destructor'
 0x5ff5e1|1.0|CFileDialog::DoModal
 0x5ff69e|1.0|CFileDialog::GetPathName
 0x5ff7ac|1.0|CFileDialog::GetFileName
@@ -7201,6 +7210,7 @@ address|matching|name
 0x606c67|1.0|CCmdTarget::BeginWaitCursor
 0x606c7c|1.0|CCmdTarget::EndWaitCursor
 0x606c91|1.0|CCmdTarget::RestoreWaitCursor
+0x606ca6|0.5|CCmdTarget::GetMessageMap
 0x606cac|0.5|CCmdTarget::GetDispatchMap
 0x606cb2|0.5|CCmdTarget::GetEventSinkMap
 0x606cb8|0.5|CCmdTarget::GetInterfaceMap
@@ -7252,6 +7262,7 @@ address|matching|name
 0x6075ea|1.0|CWnd::GetDSCCursor
 0x607643|1.0|CWnd::AttachControlSite(class CHandleMap *)
 0x607673|1.0|CWnd::AttachControlSite(class CWnd *)
+0x60770c|0.5|$CRT_CPP_Initializer(261)
 0x607716|1.0|$CRT_CPP_Initializer(262)
 0x6077c6|0.9333333333333333|CWnd::CWnd(void)
 0x6077f0|1.0|CWnd::`scalar deleting destructor'
@@ -7272,6 +7283,7 @@ address|matching|name
 0x607bac|1.0|CWnd::Detach
 0x607bda|1.0|CWnd::PreSubclassWindow
 0x607bdb|1.0|AfxWndProc
+0x607c0a|1.0|AfxGetAfxWndProc
 0x607c10|1.0|_AfxActivationWndProc
 0x607d5d|1.0|_AfxHandleActivate
 0x607dbe|1.0|_AfxHandleSetCursor
@@ -7466,10 +7478,13 @@ address|matching|name
 0x60d39b|1.0|CHandleMap::DeleteTemp
 0x60d3fc|1.0|AfxWinMain
 0x6106bd|0.9166666666666666|CSingleDocTemplate::CSingleDocTemplate
+0x6106e5|1.0|CSingleDocTemplate::`scalar deleting destructor'
+0x610701|0.5|CSingleDocTemplate::~CSingleDocTemplate
 0x610728|1.0|CSingleDocTemplate::AddDocument
 0x61073e|1.0|CSingleDocTemplate::RemoveDocument
 0x610752|1.0|CSingleDocTemplate::OpenDocumentFile
 0x6108fe|1.0|CSingleDocTemplate::SetDefaultTitle
+0x610965|0.5|CDocument::GetMessageMap
 0x61096b|0.9642857142857143|CDocument::CDocument
 0x6109cf|1.0|CDocument::`scalar deleting destructor'
 0x6109eb|0.96875|CDocument::~CDocument
@@ -7668,6 +7683,8 @@ address|matching|name
 0x614ca9|0.9666666666666667|CDocTemplate::OnCmdMsg
 0x614cfa|1.0|_AfxGetMouseScrollLines
 0x614e71|0.9375|CScrollView::CScrollView
+0x614e98|1.0|CScrollView::`scalar deleting destructor'
+0x614eb4|0.5|CScrollView::~CScrollView
 0x614ebf|1.0|CScrollView::OnPrepareDC
 0x614f95|1.0|CScrollView::SetScaleToFitSize
 0x615020|1.0|CScrollView::SetScrollSizes
@@ -7769,6 +7786,8 @@ address|matching|name
 0x61a216|1.0|AppendFilterSuffix
 0x61a2ef|1.0|CDocManager::OnDDECommand
 0x61a8dd|0.9818181818181818|CDocManager::OnFileNew
+0x61a982|0.5|CNewTypeDlg::~CNewTypeDlg
+0x61a98d|1.0|CNewTypeDlg::`scalar deleting destructor'
 0x61a9a9|1.0|CDocManager::OnFileOpen
 0x61aa0e|1.0|AfxFormatStrings(class CString &, unsigned int, char const *const *, int)
 0x61aa48|1.0|AfxFormatStrings(class CString &, char const *, char const *const *, int)
@@ -7901,6 +7920,7 @@ address|matching|name
 0x622b58|0.95|CWinThread::CWinThread(void)
 0x622b95|1.0|CWinThread::CommonConstruct
 0x622bcd|0.9876543209876543|_AfxLoadDotBitmap
+0x622cad|0.5|CCmdTarget::GetRuntimeClass
 0x622cb3|1.0|CWinApp::ProcessShellCommand
 0x622dfc|1.0|CWinApp::Unregister
 0x622f2b|1.0|CWinApp::DelRegTree
@@ -7930,9 +7950,12 @@ address|matching|name
 0x6238ac|1.0|AfxGetModuleThreadState
 0x6238c3|1.0|CTypeLibCache::Unlock
 0x623996|0.5|CEdit::GetRuntimeClass
+0x6239a2|0.5|CDocument::GetRuntimeClass
 0x623a82|0.5|CPen::GetRuntimeClass
 0x623a9a|0.5|CPalette::GetRuntimeClass
 0x623b3a|0.5|CPtrList::GetRuntimeClass
+0x623b40|0.5|CFileException::GetRuntimeClass
+0x623b46|0.5|CMemFile::GetRuntimeClass
 0x623b4c|1.0|CSimpleList::AddHead
 0x623b5f|1.0|CSimpleList::Remove
 0x623baa|1.0|CNoTrackObject::operator new
@@ -7951,6 +7974,7 @@ address|matching|name
 0x6240b8|0.8571428571428571|CProcessLocalObject::GetData
 0x624123|1.0|CProcessLocalObject::~CProcessLocalObject
 0x62415e|1.0|AfxTermLocalData
+0x6241a7|0.5|$CRT_CPP_Initializer(281)
 0x6241d1|1.0|AfxEnableWin40Compatibility
 0x624201|1.0|AfxEnableWin31Compatibility
 0x624223|1.0|AUX_DATA::AUX_DATA

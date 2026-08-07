@@ -96,7 +96,6 @@ address|name|symbol|size|type|prototype|provenance
 415f90|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 415fe0|BuildTradeSchoolDialogControls||16760|function|TView* __cdecl BuildTradeSchoolDialogControls(CWnd* pHostWindow, int nEventCode)|
 41b1c0|CObject::operator new|??2CObject@@SGPAXI@Z|16|function|void * __stdcall operator new(unsigned int nSize)|
-41b1e0|CRect::CRect|??0CRect@@QAE@HHHH@Z|32|function|public: __thiscall CRect::CRect(int,int,int,int)|mfc_inline
 41b210|RegisterUiResourceEntry||312|function|undefined RegisterUiResourceEntry()|
 41b3a0|SetUiResourceStateFlags||20|function|undefined SetUiResourceStateFlags()|
 41b3d0|SetUiResourceContextPictureId||22|function|void __cdecl SetUiResourceContextPictureId(int nPictureId)|
@@ -6789,8 +6788,7 @@ address|name|symbol|size|type|prototype|provenance
 5e556b|CDragListBox::BeginDrag|?BeginDrag@CDragListBox@@UAEHVCPoint@@@Z|44|function|public: virtual int __thiscall CDragListBox::BeginDrag(class CPoint)|msvc500_library_oracle
 5e5597|CDragListBox::CancelDrag|?CancelDrag@CDragListBox@@UAEXVCPoint@@@Z|13|function|public: virtual void __thiscall CDragListBox::CancelDrag(class CPoint)|msvc500_library_oracle
 5e55a4|CDragListBox::Dragging|?Dragging@CDragListBox@@UAEIVCPoint@@@Z|74|function|public: virtual unsigned int __thiscall CDragListBox::Dragging(class CPoint)|msvc500_library_oracle
-5e55ee|CDragListBox::Dropped|?Dropped@CDragListBox@@UAEXHVCPoint@@@Z|115|function|undefined Dropped()|
-5e5661|MoveListBoxEntryPreserveItemData||108|function|undefined MoveListBoxEntryPreserveItemData()|
+5e55ee|CDragListBox::Dropped|?Dropped@CDragListBox@@UAEXHVCPoint@@@Z|223|function|undefined Dropped()|
 5e56cd|CDragListBox::DrawInsert|?DrawInsert@CDragListBox@@UAEXH@Z|37|function|public: virtual void __thiscall CDragListBox::DrawInsert(int)|msvc500_library_oracle
 5e56f2|CDragListBox::DrawSingle|?DrawSingle@CDragListBox@@QAEXH@Z|247|function|public: void __thiscall CDragListBox::DrawSingle(int)|msvc500_library_oracle
 5e57e9|CDragListBox::OnChildNotify|?OnChildNotify@CDragListBox@@MAEHIIJPAJ@Z|188|function|protected: virtual int __thiscall CDragListBox::OnChildNotify(unsigned int, unsigned int, long, long *)|msvc500_library_oracle
@@ -7272,7 +7270,7 @@ address|name|symbol|size|type|prototype|provenance
 5fa7da|AfxInitialize|?AfxInitialize@@YGHHK@Z|30|function|int __stdcall AfxInitialize(int, unsigned long)|msvc500_library_oracle
 5fa7f8|_AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE|??0_AFX_TERM_APP_STATE@@QAE@XZ|19|function|public: __thiscall _AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE(void)|msvc500_library_oracle
 5fa80b|_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE|??1_AFX_TERM_APP_STATE@@QAE@XZ|10|function|public: __thiscall _AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE(void)|msvc500_library_override
-5fa815|WrapperFor_TerminateMfcApplicationState_At005fa815||5|function|undefined WrapperFor_TerminateMfcApplicationState_At005fa815()|
+5fa815|WrapperFor_TerminateMfcApplicationState_At005fa815||10|function|undefined WrapperFor_TerminateMfcApplicationState_At005fa815()|
 5fa81f|TerminateMfcApplicationState||10|function|undefined TerminateMfcApplicationState()|
 5fa829|WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At005fa829()|
 5fa845|CToolTipCtrl::CToolTipCtrl|??0CToolTipCtrl@@QAE@XZ|57|function|public: __thiscall CToolTipCtrl::CToolTipCtrl(void)|msvc500_library_oracle
@@ -7318,9 +7316,7 @@ address|name|symbol|size|type|prototype|provenance
 5ff2d2|CString::TrimLeft|?TrimLeft@CString@@QAEXXZ|69|function|public: void __thiscall CString::TrimLeft(void)|msvc500_library_oracle
 5ff36a|CopyElements|?CopyElements@@YGXPAVCString@@PBV1@H@Z|44|function|void __stdcall CopyElements(class CString *, class CString const *, int)|msvc500_library_oracle
 5ff3cd|CSimpleException::InitString|?InitString@CSimpleException@@QAEXXZ|41|function|void __thiscall ?InitString@CSimpleException@@QAEXXZ(void)|
-5ff3f6|WrapperFor_InitString_At005ff3f6||51|function|undefined WrapperFor_InitString_At005ff3f6()|
-5ff429|thunk_GetThisField10Value||2|function|undefined thunk_GetThisField10Value()|
-5ff432|GetThisField10Value||7|function|undefined GetThisField10Value()|
+5ff3f6|WrapperFor_InitString_At005ff3f6||67|function|undefined WrapperFor_InitString_At005ff3f6()|
 5ff439|AfxThrowMemoryException|?AfxThrowMemoryException@@YGXXZ|27|function|void __stdcall AfxThrowMemoryException(void)|msvc500_library_oracle
 5ff454|AfxThrowNotSupportedException|?AfxThrowNotSupportedException@@YGXXZ|27|function|void __stdcall AfxThrowNotSupportedException(void)|msvc500_library_oracle
 5ff46f|CFileDialog::CFileDialog|??0CFileDialog@@QAE@HPBD0K0PAVCWnd@@@Z|342|function|public: __thiscall CFileDialog::CFileDialog(int, char const *, char const *, unsigned long, char const *, class CWnd *)|msvc500_library_oracle
@@ -7570,16 +7566,16 @@ address|name|symbol|size|type|prototype|provenance
 607643|CWnd::AttachControlSite|?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z|48|function|void __thiscall ?AttachControlSite@CWnd@@IAEXPAVCHandleMap@@@Z(CHandleMap * param_1)|
 607673|CWnd::AttachControlSite|?AttachControlSite@CWnd@@QAEXPAV1@@Z|69|function|public: void __thiscall CWnd::AttachControlSite(class CWnd *)|msvc500_library_oracle
 6076bd|RegisterCommctrlDragListMessage||17|function|undefined RegisterCommctrlDragListMessage()|
-6076ce|WrapperFor_E361_At006076ce||5|function|undefined WrapperFor_E361_At006076ce()|
+6076ce|WrapperFor_E361_At006076ce||10|function|undefined WrapperFor_E361_At006076ce()|
 6076e5|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()|
 607706|CWnd::CWnd||5|function|void __thiscall CWnd(void)|
-60770c|WrapperFor_E367_At0060770c||5|function|undefined WrapperFor_E367_At0060770c()|
+60770c|WrapperFor_E367_At0060770c||10|function|undefined WrapperFor_E367_At0060770c()|
 607723|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()|
 607744|CWnd::CWnd_00607744||5|function|void __thiscall CWnd_00607744(void)|
-60774a|WrapperFor_E372_At0060774a||5|function|undefined WrapperFor_E372_At0060774a()|
+60774a|WrapperFor_E372_At0060774a||10|function|undefined WrapperFor_E372_At0060774a()|
 607761|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()|
 607782|CWnd::CWnd_00607782||5|function|void __thiscall CWnd_00607782(void)|
-607788|WrapperFor_E377_At00607788||5|function|undefined WrapperFor_E377_At00607788()|
+607788|WrapperFor_E377_At00607788||10|function|undefined WrapperFor_E377_At00607788()|
 60779f|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()|
 6077c0|CWnd::CWnd_006077C0||5|function|void __thiscall CWnd_006077C0(void)|
 6077c6|CWnd::CWnd|??0CWnd@@QAE@XZ|42|function|public: __thiscall CWnd::CWnd(void)|msvc500_library_oracle
@@ -8236,7 +8232,7 @@ address|name|symbol|size|type|prototype|provenance
 61eb46|InvokeDialogCreateVslot5CWithTemplate45||33|function|undefined InvokeDialogCreateVslot5CWithTemplate45()|
 61eb67|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61eb67()|
 61ebc0|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined Dtor_CHeaderCtrl_FID_61ebc0()|
-61ebf8|WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8||5|function|undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()|
+61ebf8|WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8||10|function|undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()|
 61ec02|NoOpVirtualStub_0061ec02||1|function|void NoOpVirtualStub_0061ec02(void)|curated
 61ec03|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()|
 61ec0f|WrapperFor_AfxDeleteObject_At0061ec0f||11|function|undefined WrapperFor_AfxDeleteObject_At0061ec0f()|
@@ -8287,7 +8283,7 @@ address|name|symbol|size|type|prototype|provenance
 622a13|CWinApp::SaveStdProfileSettings|?SaveStdProfileSettings@CWinApp@@IAEXXZ|60|function|protected: void __thiscall CWinApp::SaveStdProfileSettings(void)|msvc500_library_oracle
 622a4f|CWinApp::ExitInstance|?ExitInstance@CWinApp@@UAEHXZ|54|function|public: virtual int __thiscall CWinApp::ExitInstance(void)|msvc500_library_override
 622a85|CWinApp::GetRuntimeClass|?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ|6|function|public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const|msvc500_library_override
-622a8b|WrapperFor_NoOpThreadInitializationStub_At00622a8b||5|function|undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()|
+622a8b|WrapperFor_NoOpThreadInitializationStub_At00622a8b||10|function|undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()|
 622a95|NoOpThreadInitializationStub||1|function|void NoOpThreadInitializationStub(void)|curated
 622a96|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96()|
 622aa2|thunk_thunk_CProcessLocalObject_At00622aa2||10|function|undefined thunk_thunk_CProcessLocalObject_At00622aa2()|
@@ -8327,15 +8323,15 @@ address|name|symbol|size|type|prototype|provenance
 6238c3|CTypeLibCache::Unlock|?Unlock@CTypeLibCache@@QAEXXZ|53|function|void __thiscall ?Unlock@CTypeLibCache@@QAEXXZ(void)|
 623996|CEdit::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass(void)|
 6239a2|GetCDocumentRuntimeClass||6|function|undefined GetCDocumentRuntimeClass()|
-6239ae|WrapperFor_E350_At006239ae||5|function|undefined WrapperFor_E350_At006239ae()|
+6239ae|WrapperFor_E350_At006239ae||10|function|undefined WrapperFor_E350_At006239ae()|
 6239ca|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006239ca()|
-6239e6|WrapperFor_E355_At006239e6||5|function|undefined WrapperFor_E355_At006239e6()|
+6239e6|WrapperFor_E355_At006239e6||10|function|undefined WrapperFor_E355_At006239e6()|
 623a02|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623a02()|
 623a82|CPen::GetRuntimeClass||6|function|CRuntimeClass * __thiscall GetRuntimeClass(void)|
 623a9a|CPalette::GetRuntimeClass||6|function|CRuntimeClass * GetRuntimeClass() const|
-623ab2|WrapperFor_E350_At00623ab2||5|function|undefined WrapperFor_E350_At00623ab2()|
+623ab2|WrapperFor_E350_At00623ab2||10|function|undefined WrapperFor_E350_At00623ab2()|
 623ace|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623ace()|
-623aea|WrapperFor_E355_At00623aea||5|function|undefined WrapperFor_E355_At00623aea()|
+623aea|WrapperFor_E355_At00623aea||10|function|undefined WrapperFor_E355_At00623aea()|
 623b06|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00623b06()|
 623b3a|CPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|
 623b40|GetCFileExceptionRuntimeClass||6|function|undefined GetCFileExceptionRuntimeClass()|
@@ -8360,7 +8356,7 @@ address|name|symbol|size|type|prototype|provenance
 6240b8|CProcessLocalObject::GetData|?GetData@CProcessLocalObject@@QAEPAVCNoTrackObject@@P6GPAV2@XZ@Z|82|function|undefined GetData_6240b8()|
 624123|CProcessLocalObject::~CProcessLocalObject|??1CProcessLocalObject@@QAE@XZ|37|function|void __thiscall ??1CProcessLocalObject@@QAE@XZ(void)|
 62415e|AfxTermLocalData|?AfxTermLocalData@@YGXPAUHINSTANCE__@@H@Z|26|function|void __stdcall AfxTermLocalData(struct HINSTANCE__*, int)|msvc500_library_oracle
-6241a7|WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7||5|function|undefined WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7()|
+6241a7|WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7||10|function|undefined WrapperFor_InitializeGlobalMfcVersionAndCursorState_At006241a7()|
 6241b1|InitializeGlobalMfcVersionAndCursorState||10|function|undefined InitializeGlobalMfcVersionAndCursorState()|
 6241bb|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006241bb()|
 6241d1|AfxEnableWin40Compatibility|?AfxEnableWin40Compatibility@@YGXXZ|48|function|void __stdcall AfxEnableWin40Compatibility(void)|msvc500_library_oracle
@@ -8368,11 +8364,10 @@ address|name|symbol|size|type|prototype|provenance
 624223|AUX_DATA::AUX_DATA|??0AUX_DATA@@QAE@XZ|155|function|public: __thiscall AUX_DATA::AUX_DATA(void)|msvc500_library_oracle
 6242de|_AFX_CTL3D_STATE::~_AFX_CTL3D_STATE|??1_AFX_CTL3D_STATE@@UAE@XZ|71|function|public: virtual __thiscall _AFX_CTL3D_STATE::~_AFX_CTL3D_STATE(void)|msvc500_library_oracle
 624325|_AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD|??1_AFX_CTL3D_THREAD@@UAE@XZ|64|function|public: virtual __thiscall _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD(void)|msvc500_library_oracle
-624487|WrapperFor_NoOpPaddingStub_00624491_At00624487||5|function|undefined WrapperFor_NoOpPaddingStub_00624491_At00624487()|
+624487|WrapperFor_NoOpPaddingStub_00624491_At00624487||10|function|undefined WrapperFor_NoOpPaddingStub_00624491_At00624487()|
 624491|NoOpPaddingStub_00624491||1|function|void NoOpPaddingStub_00624491(void)|curated
 624492|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00624492()|
-62449e|Dtor_CThreadLocalObject_Global_006A7D70||5|function|undefined Dtor_CThreadLocalObject_Global_006A7D70()|
-6244a3|CThreadLocalObject||5|function|undefined CThreadLocalObject()|
+62449e|Dtor_CThreadLocalObject_Global_006A7D70||10|function|undefined Dtor_CThreadLocalObject_Global_006A7D70()|
 6244b7|NoOpPaddingStub_006244b7||1|function|void NoOpPaddingStub_006244b7(void)|curated
 6244b8|WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8()|
 6244c4|thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4||10|function|undefined thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4()|
@@ -10532,8 +10527,20 @@ address|name|symbol|size|type|prototype|provenance
 6a7f88|nRegisteredMessage|||global||xref_oracle
 6a7fac|g_pGlobalCallback_006a7fac|||global||
 6a8018|_mbctype|||global||xref_oracle
+4125a0|`dynamic initializer for 'g_gfxCoordinateScale_6A12F8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A12F8''(void)|source_recovery
+415dc0|`dynamic initializer for 'g_gfxCoordinateScale_6A13A8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A13A8''(void)|source_recovery
+41b1e0|CRect::CRect|??0CRect@@QAE@HHHH@Z|32|function|public: __thiscall CRect::CRect(int,int,int,int)|mfc_inline
 47ca90|CPalette::`scalar deleting destructor'|??_GCPalette@@UAEPAXI@Z|30|function|void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)|compiler_emission
 47e200|CButton::`scalar deleting destructor'|??_GCButton@@UAEPAXI@Z|30|function|void * __thiscall CButton::`scalar deleting destructor'(unsigned int)|compiler_emission
+481090|`dynamic initializer for 'g_gfxCoordinateScale_6A1638''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1638''(void)|source_recovery
+481340|`dynamic initializer for 'g_gfxCoordinateScale_6A1690''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1690''(void)|source_recovery
+482700|`dynamic initializer for 'g_gfxCoordinateScale_6A1730''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1730''(void)|source_recovery
+484a90|`dynamic initializer for 'g_gfxCoordinateScale_6A17E8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A17E8''(void)|source_recovery
+487120|`dynamic initializer for 'g_gfxCoordinateScale_6A18F0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A18F0''(void)|source_recovery
+4899f0|`dynamic initializer for 'g_gfxCoordinateScale_6A1A30''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1A30''(void)|source_recovery
+489ae0|`dynamic atexit destructor for 'g_McAppMouseCaptureState''||0|function|void __cdecl `dynamic atexit destructor for 'g_McAppMouseCaptureState''(void)|source_recovery
+493370|`dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''(void)|source_recovery
+493f00|`dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''(void)|source_recovery
 498e70|`dynamic initializer for 'g_defaultPoint_006A1CF8''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1CF8''(void)|
 498e90|`dynamic initializer for 'g_defaultPoint_006A1D78''||13|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A1D78''(void)|
 498eb0|`dynamic initializer for 'g_defaultRect_006A1D30''||23|function|void __cdecl `dynamic initializer for 'g_defaultRect_006A1D30''(void)|
@@ -10562,29 +10569,6 @@ address|name|symbol|size|type|prototype|provenance
 49dc10|`dynamic initializer for 'g_defaultPoint_006A2198''||16|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2198''(void)|
 49dc30|`dynamic initializer for 'g_defaultPoint_006A2160''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A2160''(void)|
 49dc90|`dynamic initializer for 'g_defaultPoint_006A21B0''||21|function|void __cdecl `dynamic initializer for 'g_defaultPoint_006A21B0''(void)|
-5ede75|__seh_longjmp_unwind@4|__seh_longjmp_unwind@4|27|function||
-6069af|CCmdTarget::`scalar deleting dtor'|??_GCCmdTarget@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CCmdTarget::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
-6076d8|_$E361|_$E361|13|function||
-607716|_$E367|_$E367|13|function||
-607754|_$E372|_$E372|13|function||
-607792|_$E377|_$E377|13|function||
-619adc|CMemFile::`scalar deleting dtor'|??_GCMemFile@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CMemFile::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
-6239b8|_$E350|_$E350|18|function||
-6239f0|_$E355|_$E355|18|function||
-623abc|_$E350|_$E350|18|function||
-623af4|_$E355|_$E355|18|function||
-6a2198|g_defaultPoint_006A2198|||global||
-489ae0|`dynamic atexit destructor for 'g_McAppMouseCaptureState''||0|function|void __cdecl `dynamic atexit destructor for 'g_McAppMouseCaptureState''(void)|source_recovery
-4125a0|`dynamic initializer for 'g_gfxCoordinateScale_6A12F8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A12F8''(void)|source_recovery
-415dc0|`dynamic initializer for 'g_gfxCoordinateScale_6A13A8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A13A8''(void)|source_recovery
-481090|`dynamic initializer for 'g_gfxCoordinateScale_6A1638''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1638''(void)|source_recovery
-481340|`dynamic initializer for 'g_gfxCoordinateScale_6A1690''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1690''(void)|source_recovery
-482700|`dynamic initializer for 'g_gfxCoordinateScale_6A1730''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1730''(void)|source_recovery
-484a90|`dynamic initializer for 'g_gfxCoordinateScale_6A17E8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A17E8''(void)|source_recovery
-487120|`dynamic initializer for 'g_gfxCoordinateScale_6A18F0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A18F0''(void)|source_recovery
-4899f0|`dynamic initializer for 'g_gfxCoordinateScale_6A1A30''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1A30''(void)|source_recovery
-493370|`dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''(void)|source_recovery
-493f00|`dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''(void)|source_recovery
 49efa0|`dynamic initializer for 'g_gfxCoordinateScale_6A21F8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A21F8''(void)|source_recovery
 4a1230|`dynamic initializer for 'g_gfxCoordinateScale_6A2268''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2268''(void)|source_recovery
 4a8710|`dynamic initializer for 'g_gfxCoordinateScale_6A2308''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2308''(void)|source_recovery
@@ -10649,3 +10633,15 @@ address|name|symbol|size|type|prototype|provenance
 5e1b60|`dynamic initializer for 'g_gfxCoordinateScale_6A5DE0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5DE0''(void)|source_recovery
 5e2670|`dynamic initializer for 'g_gfxCoordinateScale_6A5EC8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5EC8''(void)|source_recovery
 5e4d20|`dynamic initializer for 'g_gfxCoordinateScale_6A6070''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A6070''(void)|source_recovery
+5ede75|__seh_longjmp_unwind@4|__seh_longjmp_unwind@4|27|function||
+6069af|CCmdTarget::`scalar deleting dtor'|??_GCCmdTarget@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CCmdTarget::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
+6076d8|_$E361|_$E361|13|function||
+607716|_$E367|_$E367|13|function||
+607754|_$E372|_$E372|13|function||
+607792|_$E377|_$E377|13|function||
+619adc|CMemFile::`scalar deleting dtor'|??_GCMemFile@@UAEPAXI@Z|28|function|public: virtual void * __thiscall CMemFile::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
+6239b8|_$E350|_$E350|18|function||
+6239f0|_$E355|_$E355|18|function||
+623abc|_$E350|_$E350|18|function||
+623af4|_$E355|_$E355|18|function||
+6a2198|g_defaultPoint_006A2198|||global||
