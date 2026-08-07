@@ -298,6 +298,11 @@ pub struct TurnStartEventState {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameCommand {
+    PlaceTradeBid {
+        nation: NationId,
+        resource: crate::ResourceKind,
+        amount: i16,
+    },
     PurchaseItem {
         nation: NationId,
         resource: crate::ResourceKind,
@@ -327,11 +332,22 @@ pub enum GameEvent {
         action: u8,
         payload: i16,
     },
+    TradeBidPlaced {
+        nation: NationId,
+        resource: crate::ResourceKind,
+        amount: i16,
+    },
+    TradeBidsRemembered {
+        nation: NationId,
+    },
     TradeSettled {
         nation: NationId,
         resource: crate::ResourceKind,
         amount: i16,
         price: i16,
+    },
+    PurchasedItemsCommitted {
+        nation: NationId,
     },
     RecruitmentAnnounced {
         nation: NationId,
