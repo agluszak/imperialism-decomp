@@ -3,6 +3,7 @@
 mod calendar;
 mod ids;
 mod map_geometry;
+mod population;
 mod snapshot;
 mod state;
 mod turn_flow;
@@ -15,6 +16,7 @@ pub use ids::{
 pub use map_geometry::{
     HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
+pub use population::{LaborPool, PopulationError, SkillBand};
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
     SnapshotAttackMission, SnapshotCity, SnapshotEconomy, SnapshotHashes, SnapshotMajorNation,

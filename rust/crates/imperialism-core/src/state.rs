@@ -1,6 +1,6 @@
 use crate::{
-    GameSnapshotV1, MilitaryUnitId, MissionId, NationId, ShipId, SnapshotArmyMission, SnapshotCity,
-    SnapshotMajorNation, SnapshotMilitaryUnit, SnapshotMission, SnapshotNation,
+    GameSnapshotV1, LaborPool, MilitaryUnitId, MissionId, NationId, ShipId, SnapshotArmyMission,
+    SnapshotCity, SnapshotMajorNation, SnapshotMilitaryUnit, SnapshotMission, SnapshotNation,
     SnapshotNavyMission, SnapshotPopulation, SnapshotShip, SnapshotTaskForce,
     SnapshotValidationError, TaskForceId, TileSnapshot,
 };
@@ -144,9 +144,9 @@ pub struct PopulationState {
     pub strength: i16,
     pub extra: i16,
     pub phase_value: i16,
-    pub baseline_labor: Option<[i16; 3]>,
-    pub production_labor: Option<[i16; 3]>,
-    pub pending_labor_delta: Option<[i16; 3]>,
+    pub baseline_labor: Option<LaborPool>,
+    pub production_labor: Option<LaborPool>,
+    pub pending_labor_delta: Option<LaborPool>,
     pub predicted_need_by_resource: Vec<i16>,
 }
 
@@ -522,9 +522,9 @@ impl From<SnapshotPopulation> for PopulationState {
             strength: snapshot.strength,
             extra: snapshot.extra,
             phase_value: snapshot.phase_value,
-            baseline_labor: snapshot.baseline_labor,
-            production_labor: snapshot.production_labor,
-            pending_labor_delta: snapshot.pending_labor_delta,
+            baseline_labor: snapshot.baseline_labor.map(LaborPool::from),
+            production_labor: snapshot.production_labor.map(LaborPool::from),
+            pending_labor_delta: snapshot.pending_labor_delta.map(LaborPool::from),
             predicted_need_by_resource: snapshot.predicted_need_by_resource,
         }
     }
