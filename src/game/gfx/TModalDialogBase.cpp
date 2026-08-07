@@ -4,17 +4,7 @@
 
 #include "game/mfc.h"
 #include "game/pointer_representation.h"
-
-namespace {
-
-HWND ResolvePreModalOwner() {
-  if (AfxGetApp() == nullptr || AfxGetApp()->m_pMainWnd == nullptr) {
-    return nullptr;
-  }
-  return AfxGetApp()->m_pMainWnd->GetSafeHwnd();
-}
-
-} // namespace
+#include <afxpriv.h>
 
 // The virtual destructor finalizes any still-open modal create-state before chaining to
 // ~CDialog. Kept out-of-line here (not inline in the header): inlining it into every leaf
@@ -35,13 +25,14 @@ TModalDialogBase::~TModalDialogBase() {
 
 // FUNCTION: IMPERIALISM 0x00480750
 TModalDialogBase::TModalDialogBase(UINT nIDTemplate, CWnd* pParentWnd)
-    : CDialog(nIDTemplate, pParentWnd), modalCreated(0), createdDialog(nullptr), finalizeState(0) {}
+    : CDialog(nIDTemplate, pParentWnd), modalCreated(0), dialogCreatedSuccessfully(0),
+      finalizeState(0) {}
 
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
   void* templateBytes = const_cast<void*>(static_cast<const void*>(m_lpDialogTemplate));
   loadedResource = m_hDialogTemplate;
-  const UINT templateId = PointerAddressBits32(m_lpszTemplateName);
+  const UINT templateId = reinterpret_cast<UINT>(m_lpszTemplateName);
   if (templateId != 0) {
     AFX_MODULE_STATE* moduleState = AfxGetModuleState();
     HMODULE module = moduleState->m_hCurrentInstanceHandle;
@@ -58,26 +49,39 @@ int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
     return 0;
   }
 
-  ownerWindow = ResolvePreModalOwner();
+  ownerWindow = PreModal();
+  AfxUnhookWindowCreate();
+  CWnd* owner = CWnd::FromHandle(ownerWindow);
   ownerWasDisabled = 0;
   if (ownerWindow != nullptr && ::IsWindowEnabled(ownerWindow)) {
     ::EnableWindow(ownerWindow, FALSE);
     ownerWasDisabled = 1;
   }
-  createdDialog = ::CreateDialogIndirectA(
-      AfxGetInstanceHandle(), static_cast<LPCDLGTEMPLATE>(templateBytes), ownerWindow, nullptr);
+  AfxHookWindowCreate(this);
+  dialogCreatedSuccessfully = CreateDlgIndirect(static_cast<LPCDLGTEMPLATE>(templateBytes), owner);
   modalCreated = 1;
-  return createdDialog != nullptr ? 1 : 0;
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d450
 int TModalDialogBase::DoModal() {
+  if (modalCreated == 0) {
+    PrepareAndCreateModalFromTemplate();
+  }
+  if (dialogCreatedSuccessfully != 0) {
+    DWORD modalFlags = 4;
+    if ((GetStyle() & 0x100) != 0) {
+      modalFlags = 5;
+    }
+    RunModalLoop(modalFlags);
+    SetWindowPos(0, 0, 0, 0, 0, 0x97);
+  }
   if (ownerWasDisabled != 0) {
     ::EnableWindow(ownerWindow, TRUE);
   }
   if (ownerWindow != nullptr) {
     HWND activeWindow = ::GetActiveWindow();
-    if (activeWindow == createdDialog) {
+    if (activeWindow == m_hWnd) {
       ::SetActiveWindow(ownerWindow);
     }
   }
@@ -92,7 +96,7 @@ void TModalDialogBase::CleanupModalCreateState() {
     DestroyWindow();
     PostModal();
     finalizeState = 0;
-    createdDialog = nullptr;
+    dialogCreatedSuccessfully = 0;
     modalCreated = 0;
   }
 }

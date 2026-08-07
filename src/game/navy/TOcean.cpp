@@ -35,12 +35,6 @@ ASSERT_SIZE(MapTileCostField, 0x32a0);
 TOcean g_anchorTOceanInstance;
 } // namespace
 
-void NotifyMapUberPictureTileMarker(short tileIndex) {
-  if (g_pViewMgr != 0 && g_pViewMgr->mapUberPictureF0 != 0) {
-    g_pViewMgr->mapUberPictureF0->InvalidateTile(static_cast<short>(tileIndex));
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x0052e7b0
 void TOcean::AllocateRouteNodeStateBufferByCount(short count) {
   routeNodeCount = count;

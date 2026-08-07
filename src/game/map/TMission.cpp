@@ -23,6 +23,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TMission*&)
 // SYNTHETIC: IMPERIALISM 0x00534ff0
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x00534fd0
+// `dynamic initializer for '_init_TMission''
 IMPLEMENT_SERIAL(TMission, TObject, 1)
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---

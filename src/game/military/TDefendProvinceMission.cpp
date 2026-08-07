@@ -20,6 +20,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TDefendProvinceMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053e6b0
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053e690
+// `dynamic initializer for '_init_TDefendProvinceMission''
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/ui_core/CIterator.h"

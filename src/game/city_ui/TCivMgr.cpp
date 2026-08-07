@@ -31,13 +31,6 @@
 #include "game/pointer_representation.h"
 #include "game/ui_core/ui_message_pump.h"
 
-// 0x005d4890. 'D' (0x44) is the only currently-known remapped shortcut code (keyCode 2);
-// other codes pass through as literal virtual-key codes.
-static bool IsMappedShortcutKeyPressed(short keyCode) {
-  short virtualKey = (keyCode == 2) ? 0x44 : keyCode;
-  return (GetKeyState(virtualKey) & 0x8000) != 0;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004d2000
 // TCivMgr::CreateObject
 

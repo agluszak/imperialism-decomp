@@ -23,24 +23,26 @@ struct DiplomacyMaskBufferRun {
   // (IsMaskPixelSetAndOnRegionEdge) expands this five times, which /Ob1 only does for an
   // inline-marked function. The out-of-line copy at 0x004d6310 is still emitted for
   // BuildDiplomacyOverlayHitMaskOpcodeStream, which calls it eight times.
-  // FUNCTION: IMPERIALISM 0x004d6310
-  bool IsMaskPixelSet(int x, int y) const {
-    CPoint point(x, y);
-    if (PtInRect(&boundsAt04, point) == 0) {
-      return false;
-    }
-
-    int xOffset = x - boundsAt04.left;
-    int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
-    int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
-    return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
-  }
+  bool IsMaskPixelSet(int x, int y) const;
 
   unsigned char* maskBytesAt00;
   CRect boundsAt04;
 };
 
 ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
+
+// FUNCTION: IMPERIALISM 0x004d6310
+inline bool DiplomacyMaskBufferRun::IsMaskPixelSet(int x, int y) const {
+  CPoint point(x, y);
+  if (PtInRect(&boundsAt04, point) == 0) {
+    return false;
+  }
+
+  int xOffset = x - boundsAt04.left;
+  int rowStride = (boundsAt04.right - boundsAt04.left) >> 3;
+  int byteIndex = (y - boundsAt04.top) * rowStride + (xOffset >> 3);
+  return (maskBytesAt00[byteIndex] & (1 << (xOffset & 7))) != 0;
+}
 
 // Is the mask pixel set, and is it on the region's edge? With `edgeOnly` clear this is just
 // the pixel test; with it set, a pixel whose four orthogonal neighbours are all set counts

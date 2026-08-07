@@ -30,15 +30,8 @@ public:
   virtual ~TProductionOrder() override {}          // slot 0x01 (scalar deleting destructor)
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x4b4fe0
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x4b5060
-  virtual void IProductionOrder(TCity* city, short resourceType); // slot 0x0a 0x4b4f70
-  // FUNCTION: IMPERIALISM 0x004b5100
-  virtual bool SetQuantity(short newQuantity) { // slot 0x0b
-    if (newQuantity > MaxOrder() || newQuantity < 0) {
-      return false;
-    }
-    quantity = newQuantity;
-    return true;
-  }
+  virtual void IProductionOrder(TCity* city, short resourceType);      // slot 0x0a 0x4b4f70
+  virtual bool SetQuantity(short newQuantity);                         // slot 0x0b 0x4b5100
   virtual short MaxOrder();                                            // slot 0x0c 0x4b50e0
   virtual void Produce();                                              // slot 0x0d 0x4b5160
   virtual void Restock();                                              // slot 0x0e 0x4b5140
@@ -64,3 +57,12 @@ public:
 };
 
 ASSERT_SIZE(TProductionOrder, 0x4c);
+
+// FUNCTION: IMPERIALISM 0x004b5100
+inline bool TProductionOrder::SetQuantity(short newQuantity) {
+  if (newQuantity > MaxOrder() || newQuantity < 0) {
+    return false;
+  }
+  quantity = newQuantity;
+  return true;
+}

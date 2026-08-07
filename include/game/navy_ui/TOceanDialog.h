@@ -41,6 +41,8 @@ public:
   virtual void SetMapViewCellCoordinates(int column, int row) override;
   virtual void RefreshMapTile(short tileIndex) override;
   virtual unsigned char IsTileVisible(short tileIndex) override;
+  void BuildTileViewportRect(short tileIndex, CRect* outRect);       // 0x5686d0
+  int ComputeWrappedTileIndexFromViewportPoint(const CPoint* point); // 0x568840
   // Wraps (scrollRowOffset7c+0xe, scrollColOffset7e+0x10) onto the 108x60 hex map via
   // NormalizeWrappedMapCoord108x60 and returns the resulting linear tile index
   // (row*0x6c + col). 0x00568ab0.
@@ -69,3 +71,5 @@ ASSERT_SIZE(TOceanDialog, 0x80);
 // 0x0f), bit 1 mirrors it vertically (shifting the origin down by 0x0d rather than 2).
 // 0x005662e0, __cdecl.
 void DrawTileClassCornerTick(short colorCode, int x, int y, unsigned int cornerFlags);
+void DrawOceanRouteSegment(short sourceColumn, int sourceRow, short destinationColumn,
+                           int destinationRow);

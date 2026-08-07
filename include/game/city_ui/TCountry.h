@@ -94,12 +94,6 @@ public:
   // country into ecx); `this` is unused by the body.
   int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 
-  // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
-  void DeserializeDiplomacyNationStateFromStream(TStream* stream);
-  void SerializeDiplomacyNationStateToStream(TStream* stream);
-  void SetNationTradePolicyValueForTargetAndNotify(NationSlot targetNationSlot, short policyValue);
-  void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
-
   void InitializeNationStateIdentityAndOwnedRegionList(NationSlot nationSlot);
   // Mac oracle: GenerateEthnicName(CStr32&) const. The Windows port uses CString;
   // the ABI is a single CString* stack argument on this TCountry receiver.

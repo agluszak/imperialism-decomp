@@ -40,7 +40,6 @@ struct StrategicMapCallbackRecord {
   // x86 stream directly; interpreting its small opcode vocabulary keeps the recovered source
   // portable and avoids inline assembly while preserving the mask semantics.
   void ApplyBitmapMaskToPixelBuffer(unsigned char* destinationPixels);
-  void ApplyPackedColorToPixelBuffer(unsigned char* destinationPixels);
   void SetDestinationHeightNoOp(int unusedHeight); // 0x004d4bd0
 
   StrategicMapOpcodeByteStretch opcodeBytes00;

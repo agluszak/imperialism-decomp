@@ -27,6 +27,19 @@ TTextList::TTextList() : TView() {
   selectedIndex = -1;
 }
 
+// FUNCTION: IMPERIALISM 0x0057ac50
+void TTextList::AddEntry(char* entryText) {
+  if (totalItems < 0x40) {
+    char* destination = items[totalItems].text;
+    char* source = entryText;
+    while (*source != '\0' && source - entryText < 0x40 && *source != '\n') {
+      *destination++ = *source++;
+    }
+    *destination = '\0';
+    ++totalItems;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0057acc0
 void TTextList::Draw(RECT* rectBuffer) {
   (void)rectBuffer;

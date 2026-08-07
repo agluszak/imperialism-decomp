@@ -71,7 +71,6 @@ public:
   // 0x5df3a0 — thiscall passthrough forwarder: calls EnsurePict…BySlot(0), reusing the
   // incoming `this` in ECX (no reload). Ignores its languageTag argument.
   void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
-  void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
   // Save the MFC document to `savePath`, then restamp its path with the "__saved"
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
   // through g_pAssetMgr. 0x005e0030.

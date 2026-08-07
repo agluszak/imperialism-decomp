@@ -120,6 +120,20 @@ void TScrollView::ScrollRelative(short horizontalDelta, short verticalDelta) {
   scrollBar64->RefreshCityDialogScrollableViewportWithQuickDrawContext();
 }
 
+// FUNCTION: IMPERIALISM 0x00574160
+void TScrollView::ScrollToPercent(int percent) {
+  if (contentView60 != 0) {
+    short heightDiff =
+        static_cast<short>(contentView60->frameHeight38) - static_cast<short>(frameHeight38);
+    if (heightDiff > 0) {
+      CPoint origin(
+          contentView60->ownerLocalX,
+          -static_cast<short>((percent * heightDiff + (percent * heightDiff >> 31 & 0x3ff)) >> 10));
+      contentView60->Locate(origin, 1);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005741e0
 void TScrollView::SyncBoundedValueAndToggleControlStates() {
   CPoint contentOrigin;

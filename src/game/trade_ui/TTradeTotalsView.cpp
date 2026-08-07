@@ -26,6 +26,13 @@ TTradeTotalsView::TTradeTotalsView() : TView() {}
 // FUNCTION: IMPERIALISM 0x005c1b70
 TTradeTotalsView::~TTradeTotalsView() {}
 
+// FUNCTION: IMPERIALISM 0x005c1b90
+void TTradeTotalsView::ITradeTotalsView(TView* panel, int* offsetLayout, int* sizeLayout,
+                                        short nation) {
+  InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
+  nationSlot = nation;
+}
+
 // FUNCTION: IMPERIALISM 0x005c1bd0
 void TTradeTotalsView::Draw(RECT* rectBuffer) {
   CString strA;

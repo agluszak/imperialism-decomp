@@ -50,6 +50,16 @@ void TTextLine::SetTextLineStyleDescriptor(const TextStyle* descriptor) {
   styleDescriptor14 = *descriptor;
 }
 
+// FUNCTION: IMPERIALISM 0x00570470
+void TTextLine::SetTextLineStyleComponents(short fontCode, short styleCode, short sizeCode,
+                                           unsigned char red, unsigned char green,
+                                           unsigned char blue) {
+  styleDescriptor14.fontFamily = fontCode;
+  styleDescriptor14.fontStyleFlags = styleCode;
+  styleDescriptor14.fontSize = sizeCode;
+  styleDescriptor14.textColor = RGB(red, green, blue);
+}
+
 // FUNCTION: IMPERIALISM 0x005704e0
 void TTextLine::SetTextAlignmentCode(short value) {
   textAlignmentCode = value;

@@ -98,6 +98,34 @@ void TStatusPicture::DoPostCreate(int arg) {
   cursControl->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 }
 
+// FUNCTION: IMPERIALISM 0x005941e0
+void TStatusPicture::SetComparisonModeAndRefresh(int comparisonMode) {
+  comparisonMode90 = comparisonMode;
+  RefreshControl();
+  if (comparisonMode == 0) {
+    g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+    for (int i = 0; i < 7; ++i) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != 0) {
+        int sum = 0;
+        int* metric = g_pDiplomacyTurnStateManager->comparativePowerRows[i];
+        int metricCount = 4;
+        do {
+          sum += *metric;
+          ++metric;
+          --metricCount;
+        } while (metricCount != 0);
+        values94[i] = static_cast<short>(sum) * 400 / 400;
+        pictureIds_b0[i] = static_cast<short>(i);
+      } else {
+        pictureIds_b0[i] = -1;
+      }
+    }
+    SortSevenEntriesAndUpdatePictureWidgets();
+    return;
+  }
+  RecomputeNationComparisonValuesAndNormalizeScale();
+}
+
 // FUNCTION: IMPERIALISM 0x005942f0
 void TStatusPicture::DoEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {

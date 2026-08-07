@@ -14,18 +14,12 @@
 
 namespace {
 
-// The loader's original vtable has no destructor slot; every caller owns this exact type.
 IMPERIALISM_BEGIN_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
-static void ReleaseBitmapLoaderHandle(TBitmapResourceLoader** loaderHandle) {
-  if (loaderHandle == nullptr) {
-    return;
-  }
+static __inline void ReleaseLoadedBitmapHandle(TBitmapResourceLoader** loaderHandle) {
   TBitmapResourceLoader* loader = *loaderHandle;
-  if (loader != 0) {
-    loader->ReleaseBitmapResource();
-    loader->flags &= static_cast<unsigned char>(~1);
-    delete loader;
-  }
+  loader->ReleaseBitmapResource();
+  loader->flags &= static_cast<unsigned char>(~1);
+  delete loader;
   delete loaderHandle;
 }
 IMPERIALISM_END_EXACT_TYPE_NON_VIRTUAL_DTOR_DELETE
@@ -176,7 +170,6 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
     g_pDisplayMgr->MakeNewGWorld(outContext, 8, bitmapRect);
   }
   if (outContext == 0) {
-    ReleaseBitmapLoaderHandle(loaderHandle);
     return 0;
   }
 
@@ -191,7 +184,7 @@ LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(unsigned short resourceId) {
   ResetQuickDrawStrokeState();
   BlitBitmapResourceLoaderToActiveDc(loaderHandle, &bitmapRect);
 
-  ReleaseBitmapLoaderHandle(loaderHandle);
+  ReleaseLoadedBitmapHandle(loaderHandle);
 
   UnlockPixels(pixMap);
   SetGWorld(savedContext, savedFlags);

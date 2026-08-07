@@ -36,13 +36,6 @@
 
 #include <stdlib.h>
 
-static void GenerateDifferentRandomMapSeed(CString* seed) {
-  CString previousSeed(*seed);
-  do {
-    GenerateMappedFlavorTextByCurrentContextNation(seed);
-  } while (seed->Compare(previousSeed) == 0);
-}
-
 // SYNTHETIC: IMPERIALISM 0x00576ca0
 // TSetupRandomMapPicture::CreateObject
 
@@ -264,7 +257,7 @@ void TSetupRandomMapPicture::DoEvent(int commandId, TEventHandler* sourceHandler
     if (controlTag == kControlTagCanc || controlTag == kControlTagCncl) {
       ExitScreen();
     } else if (controlTag == kControlTagGlob) {
-      GenerateDifferentRandomMapSeed(&planetSeed94);
+      GenerateMappedFlavorTextByCurrentContextNation(&planetSeed94);
       MajorTomToGroundControl(1);
     } else if (controlTag == kControlTagKeyP || controlTag == kControlTagPlan) {
       CString planetSeed(planetSeed94);

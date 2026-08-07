@@ -994,15 +994,6 @@ void TArmyMgr::RelocateStackUnitsToStackTile(TArmyStack* stack) {
   }
 }
 
-// Not ground truth's own function -- ground truth repeats this exact eligibility check
-// inline 4 times inside UpdateDualLinkedEntryMetersAndBlinkState; factored out here rather
-// than duplicated.
-static bool IsUnitMeterEligible(TUnit* unit) {
-  TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(unit);
-  return milUnit->strength34 > milUnit->strengthSnapshot3C / 2 &&
-         (milUnit->battleStateFlags3A & 2) == 0;
-}
-
 // FUNCTION: IMPERIALISM 0x004a3830
 bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArmyStack* stack2) {
   // Phase 1: snapshot stack1's units' strength34 into strengthSnapshot3C and clear blink-mask bits 1/2,
@@ -1046,14 +1037,20 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   int counter = 0;
   while (true) {
     TUnit* eligible1 = stack1->ResetCursorAndGetHeadUnit();
-    while (eligible1 != nullptr && !IsUnitMeterEligible(eligible1)) {
+    while (eligible1 != nullptr &&
+           (static_cast<TMilitaryUnit*>(eligible1)->strength34 <=
+                static_cast<TMilitaryUnit*>(eligible1)->strengthSnapshot3C / 2 ||
+            (static_cast<TMilitaryUnit*>(eligible1)->battleStateFlags3A & 2) != 0)) {
       eligible1 = stack1->AdvanceCursorAndGetUnit();
     }
     if (eligible1 == nullptr) {
       break;
     }
     TUnit* eligible2 = stack2->ResetCursorAndGetHeadUnit();
-    while (eligible2 != nullptr && !IsUnitMeterEligible(eligible2)) {
+    while (eligible2 != nullptr &&
+           (static_cast<TMilitaryUnit*>(eligible2)->strength34 <=
+                static_cast<TMilitaryUnit*>(eligible2)->strengthSnapshot3C / 2 ||
+            (static_cast<TMilitaryUnit*>(eligible2)->battleStateFlags3A & 2) != 0)) {
       eligible2 = stack2->AdvanceCursorAndGetUnit();
     }
     if (eligible2 == nullptr) {
@@ -1077,7 +1074,9 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   TUnit* probe = stack1->ResetCursorAndGetHeadUnit();
   bool stack1StillEligible = false;
   while (probe != nullptr) {
-    if (IsUnitMeterEligible(probe)) {
+    TMilitaryUnit* militaryProbe = static_cast<TMilitaryUnit*>(probe);
+    if (militaryProbe->strength34 > militaryProbe->strengthSnapshot3C / 2 &&
+        (militaryProbe->battleStateFlags3A & 2) == 0) {
       stack1StillEligible = true;
       break;
     }

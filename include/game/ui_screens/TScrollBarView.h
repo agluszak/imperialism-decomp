@@ -54,5 +54,6 @@ public:
   // 0x005740a0 — RAII-scoped map QuickDraw context around a PrepareForDrawing() + viewport rect
   // rebuild (Draw): rect = {0, word88, frameWidth34, word8a + 0x12}.
   void RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  void SetThumb(int percent, unsigned char refresh); // 0x574e20
 };
 ASSERT_SIZE(TScrollBarView, 0x94);

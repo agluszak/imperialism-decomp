@@ -52,6 +52,7 @@ public:
   virtual void InitializeSessionDescription();
   virtual void ResetSessionDescription();
   virtual BOOL GetRuntimeSelectionAuxStatus(void* value);
+  BOOL ConnectDirectPlayFromLobbySettingsAndStoreResult(); // 0x47fbc0
   // DirectPlay DPESC_TIMEDOUT branch of the EnumSessions callback: while Ctrl is held,
   // extend the enumeration timeout by 500ms and return TRUE to keep enumerating.
   virtual BOOL ExtendEnumSessionsTimeoutWhileCtrlHeld(DWORD* timeoutMs);

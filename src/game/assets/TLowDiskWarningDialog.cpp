@@ -7,11 +7,7 @@
 // FUNCTION: IMPERIALISM 0x005e1bc0
 TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam)
     : TModalTemplateDialog(0x98, static_cast<CWnd*>(initParam)), promptText() {
-  SetPromptText(g_szEmptyString);
-}
-
-void TLowDiskWarningDialog::SetPromptText(LPCSTR text) {
-  promptText = text;
+  promptText = g_szEmptyString;
 }
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor.

@@ -22,6 +22,7 @@ public:
   // two live callers from 100% to 49% and 82%, respectively, so the dead copy remains
   // intentionally unclaimed rather than being represented by a fake helper.
   TNextMoveCommand() : TCommand() {}
+  void INextMoveCommand(TTacticalBattle* battle); // 0x5a65e0
 };
 
 ASSERT_SIZE(TNextMoveCommand, 0x1c);

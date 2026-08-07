@@ -15,6 +15,7 @@ namespace {
 struct MinisterTerrainPreferenceEntry {
   short terrainType;
   short score;
+  short rank;
 };
 
 } // namespace

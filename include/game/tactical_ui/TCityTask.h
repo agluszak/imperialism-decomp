@@ -8,13 +8,12 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 class TCity;
-class TSortedList;
+class TTaskList;
 
 // A queued city production/order command: references the owning city and an amount
 // still to be sourced, dispatching to a type-specific queueing helper based on the
 // base TTask::citySlotIndex. Constructed via `new TCityTask()` +
-// ICityTask(city, type, amount) (0x5add90), then handed to a
-// command queue.
+// ICityTask(city, type, amount) (0x5add90), then handed to a TTaskList.
 // VTABLE: IMPERIALISM 0x0066a9a8
 class TCityTask : public TTask {
 public:
@@ -28,18 +27,14 @@ public:
   // MaxOrder()/quantity headroom, filling the order's OrderSheet and draining
   // per-resource DirectTransport calls when short, bumping the order's SetQuantity
   // either way. Finally dispatches to the type-specific queueing override selected by
-  // citySlotIndex (ApplyProductionDistributionToCitySlots / QueueCityProductionOrderCommand /
-  // QueueCityRecruitmentSupportCommandsIfDeficit / QueueCityOrderInputDeltaCommands /
-  // QueueCityOrderType10CommandIfReady), then falls back to the base countdown when the
-  // request wasn't fully satisfied. Renamed from the placeholder
-  // OrphanLeaf_NoCall_Ins04_005adc30.
-  virtual bool Tick(TSortedList* commandQueue) override;                      // slot 0x0a 0x5adde0
-  virtual void QueueCityOrderType10CommandIfReady(TSortedList* commandQueue); // slot 0x0b 0x5ae010
-  virtual void ApplyProductionDistributionToCitySlots();                      // slot 0x0c 0x5ae420
-  virtual void
-  QueueCityRecruitmentSupportCommandsIfDeficit(TSortedList* commandQueue);  // slot 0x0d 0x5ae0e0
-  virtual void QueueCityOrderInputDeltaCommands(TSortedList* commandQueue); // slot 0x0e 0x5ae240
-  virtual void QueueCityProductionOrderCommand(TSortedList* commandQueue);  // slot 0x0f 0x5ae4b0
+  // citySlotIndex, then falls back to the base countdown when the request wasn't fully
+  // satisfied.
+  virtual bool Execute(TTaskList* taskList) override;   // slot 0x0a 0x5adde0
+  virtual void IncompleteTraining(TTaskList* taskList); // slot 0x0b 0x5ae010
+  virtual void IncompleteMaterials();                   // slot 0x0c 0x5ae420
+  virtual void IncompleteCapacity(TTaskList* taskList); // slot 0x0d 0x5ae0e0
+  virtual void IncompleteLandUnit(TTaskList* taskList); // slot 0x0e 0x5ae240
+  virtual void IncompleteGoods(TTaskList* taskList);    // slot 0x0f 0x5ae4b0
 
   TCityTask(); // 0x005add20
 
@@ -48,9 +43,9 @@ public:
   void ICityTask(short citySlotType, TCity* owner,
                  short amount); // 0x005add90
 
-  TCity* ownerCity;          // +0x08
-  short requestedAmount;     // +0x0c — quantity still needed
-  short alreadyQueuedFlag;   // +0x0e — set once a follow-up TCityTask has been queued this tick
-  unsigned char pendingFlag; // +0x10 — always 1 on construction; not restored by ReadFrom
+  TCity* ownerCity;                 // +0x08
+  short requestedAmount;            // +0x0c — quantity still needed
+  short alreadyQueuedFlag;          // +0x0e — set after a follow-up task is queued
+  unsigned char serializedTaskKind; // +0x10 — 1 for TCityTask, 2 for TShipBuildingTask
 };
 ASSERT_SIZE(TCityTask, 0x14);

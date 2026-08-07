@@ -21,6 +21,7 @@ public:
   // Non-virtual append entry point -- the whole body is a dispatch to the virtual AddTail
   // slot. Every queue-a-task site calls this out-of-line copy rather than dispatching
   // inline, which is how the 15 xrefs to 0x5aeca0 are shaped.
-  POSITION Insert(TTask* task);
+  void AddTask(TTask* task);
+  void ProcessTasks();
 };
 ASSERT_SIZE(TTaskList, 0x20);

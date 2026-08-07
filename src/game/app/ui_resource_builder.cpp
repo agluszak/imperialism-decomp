@@ -156,3 +156,13 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 
 template TView* CList<TView*, TView*>::RemoveTail();
 template POSITION CList<TView*, TView*>::AddTail(TView*);
+
+// FUNCTION: IMPERIALISM 0x00479e10
+int __stdcall ClearUiResourceEntryDwords(int* destination, int count) {
+  while (count != 0) {
+    *destination = 0;
+    ++destination;
+    --count;
+  }
+  return 0;
+}

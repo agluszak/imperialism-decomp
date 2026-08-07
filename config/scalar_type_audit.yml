@@ -284,6 +284,9 @@ discriminant_reviews:
   actionKind:
     classification: closed_domain_needs_listing_evidence
     evidence: TCivMgr and TArmyMgr select on 1, 2, 4, 7 and 10 with gaps, which is a sparse command domain rather than a contiguous enum; the producing dispatcher must be decoded first.
+  comparisonMode:
+    classification: status_picture_metric_selector
+    evidence: TStatusPicture::SetComparisonModeAndRefresh at 0x005941e0 selects the mode-0 comparative-power path; modes 1..9 are handled by RecomputeNationComparisonValuesAndNormalizeScale at 0x00594900.
   actionType04:
     classification: closed_domain_needs_listing_evidence
     evidence: MapContextActionRecord::actionType04 selects five battle/news report shapes (0..4) across TArmyMgr, TBattleReportView and TNewsMgr and is serialized as four bytes by TArmyMgr 0x004a1c40; naming the five needs each report body decoded.
@@ -380,9 +383,6 @@ discriminant_reviews:
   interactionModeAt94:
     classification: closed_domain_needs_listing_evidence
     evidence: TDiplomacyMapView selects five sparse interaction modes 1, 2, 4 and 5; the gap at 3 means the domain is not contiguous and needs the producer decoded.
-  keyCode:
-    classification: character_or_virtual_key_code
-    evidence: TCivMgr remaps key code 2 onto virtual key 0x44 before dispatch.
   lastErrorCode0c:
     classification: external_api_or_resource_constant
     evidence: TWNetSessionManager stores a DirectPlay HRESULT; the comparisons are the standard < 0 / == 0 / >= 0 success tests, not a domain.

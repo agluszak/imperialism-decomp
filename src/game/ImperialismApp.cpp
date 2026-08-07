@@ -781,44 +781,6 @@ BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
   return TRUE;
 }
 
-namespace {
-
-int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
-  ULARGE_INTEGER freeBytesAvailable;
-  ULARGE_INTEGER totalBytes;
-  ULARGE_INTEGER totalFreeBytes;
-  freeBytesAvailable.QuadPart = 0;
-  totalBytes.QuadPart = 0;
-  totalFreeBytes.QuadPart = 0;
-
-  typedef BOOL(WINAPI * GetDiskFreeSpaceExProc)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER,
-                                                PULARGE_INTEGER);
-  HMODULE kernel32 = LoadLibraryA("KERNEL32.DLL");
-  if (kernel32 != 0) {
-    GetDiskFreeSpaceExProc getDiskFreeSpaceEx =
-        (GetDiskFreeSpaceExProc)GetProcAddress(kernel32, "GetDiskFreeSpaceExA");
-    if (getDiskFreeSpaceEx != 0 &&
-        getDiskFreeSpaceEx(windowsDirectory, &freeBytesAvailable, &totalBytes, &totalFreeBytes)) {
-      FreeLibrary(kernel32);
-      return (int)(freeBytesAvailable.QuadPart / (1024UL * 1024UL));
-    }
-    FreeLibrary(kernel32);
-  }
-
-  DWORD sectorsPerCluster = 0;
-  DWORD bytesPerSector = 0;
-  DWORD numberOfFreeClusters = 0;
-  DWORD totalClusters = 0;
-  if (!GetDiskFreeSpaceA(windowsDirectory, &sectorsPerCluster, &bytesPerSector,
-                         &numberOfFreeClusters, &totalClusters)) {
-    return 0x7fffffff;
-  }
-  const DWORD freeBytes = sectorsPerCluster * bytesPerSector * numberOfFreeClusters;
-  return (int)(freeBytes / (1024UL * 1024UL));
-}
-
-} // namespace
-
 // The low-disk-space startup gate: warns and asks to continue if free space on the Windows
 // install volume drops below 25 MB.
 // FUNCTION: IMPERIALISM 0x00415760
@@ -836,7 +798,38 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   }
   windowsDirectory.ReleaseBuffer(-1);
 
-  const int freeMegabytes = QueryFreeDiskMegabytesOnWindowsVolume(windowsDirectory);
+  int freeMegabytes = 0x7fffffff;
+  ULARGE_INTEGER freeBytesAvailable;
+  ULARGE_INTEGER totalBytes;
+  ULARGE_INTEGER totalFreeBytes;
+  freeBytesAvailable.QuadPart = 0;
+  totalBytes.QuadPart = 0;
+  totalFreeBytes.QuadPart = 0;
+
+  typedef BOOL(WINAPI * GetDiskFreeSpaceExProc)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER,
+                                                PULARGE_INTEGER);
+  HMODULE kernel32 = LoadLibraryA("KERNEL32.DLL");
+  GetDiskFreeSpaceExProc getDiskFreeSpaceEx = 0;
+  if (kernel32 != 0) {
+    getDiskFreeSpaceEx = (GetDiskFreeSpaceExProc)GetProcAddress(kernel32, "GetDiskFreeSpaceExA");
+  }
+  if (getDiskFreeSpaceEx != 0 &&
+      getDiskFreeSpaceEx(windowsDirectory, &freeBytesAvailable, &totalBytes, &totalFreeBytes)) {
+    freeMegabytes = (int)(freeBytesAvailable.QuadPart / (1024UL * 1024UL));
+  } else {
+    DWORD sectorsPerCluster = 0;
+    DWORD bytesPerSector = 0;
+    DWORD numberOfFreeClusters = 0;
+    DWORD totalClusters = 0;
+    if (GetDiskFreeSpaceA(windowsDirectory, &sectorsPerCluster, &bytesPerSector,
+                          &numberOfFreeClusters, &totalClusters)) {
+      const DWORD freeBytes = sectorsPerCluster * bytesPerSector * numberOfFreeClusters;
+      freeMegabytes = (int)(freeBytes / (1024UL * 1024UL));
+    }
+  }
+  if (kernel32 != 0) {
+    FreeLibrary(kernel32);
+  }
   if (freeMegabytes >= 0x19) {
     return TRUE;
   }
@@ -852,7 +845,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
                          static_cast<LPCSTR>(scratch));
 
   TLowDiskWarningDialog dialog(nullptr);
-  dialog.SetPromptText(formattedText);
+  dialog.promptText = formattedText;
   if (!dialog.PrepareAndCreateModalFromTemplate()) {
     return FALSE;
   }

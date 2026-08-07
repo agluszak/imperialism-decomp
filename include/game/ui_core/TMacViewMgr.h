@@ -86,8 +86,8 @@ public:
   // RET 0x8 = 2 dwords. arg1 is the (transformed) hit-test point, arg2 the region-slot
   // index — the previous 1-arg `(short)` form mis-attributed the region index to arg1 and
   // dropped the point (caller 0x4f5e00 dispatches slot 0x90 with (&localPoint, index)).
-  virtual bool IsPointInsideClipRegionSlot(CPoint* point,
-                                           short regionIndex); // slot 0x24 0x50d6c0
+  virtual unsigned char IsPointInsideClipRegionSlot(CPoint* point,
+                                                    short regionIndex); // slot 0x24 0x50d6c0
   virtual void
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(RgnHandle sourceRegion,
                                                     short slotIndex); // slot 0x25 0x50d680

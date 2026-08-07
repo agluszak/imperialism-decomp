@@ -26,6 +26,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TBeachheadMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053a460
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053a440
+// `dynamic initializer for '_init_TBeachheadMission''
 IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053a2d0

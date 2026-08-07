@@ -25,25 +25,6 @@ namespace {
 const int kMapTileCount = 0x1950;
 const int kCityRecordCount = 0x180;
 
-TNumberText* ResolveProvinceNumberControl(TView* owner) {
-  TNumberText* control = static_cast<TNumberText*>(owner->ResolveControlByTag(kControlTagPrnu));
-  control->AssertValid();
-  return control;
-}
-
-void ClearTileAdjacencyRenderCache(TTerrainStateRecord& tile) {
-  tile.adjacencyMaskA0a = 0;
-  tile.adjacencyMaskB0b = 0;
-  tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
-  tile.spriteVariantIndex01 = 0;
-}
-
-void ClearTileBorderMasks(TTerrainStateRecord& tile) {
-  tile.ownerBorderMask07 = 0;
-  tile.cityBorderMask08 = 0;
-  tile.waterAdjacencyMask09 = 0;
-}
-
 } // namespace
 
 // SYNTHETIC: IMPERIALISM 0x0051cbf0
@@ -88,7 +69,10 @@ void TMapEditView::DoPostCreate(int arg) {
     }
   }
 
-  ResolveProvinceNumberControl(ownerContext)->maximumValue = 0x17f;
+  TNumberText* provinceNumber =
+      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+  provinceNumber->AssertValid();
+  provinceNumber->maximumValue = 0x17f;
 }
 
 // FUNCTION: IMPERIALISM 0x0051ce60
@@ -237,7 +221,10 @@ void TMapEditView::HandleMapTileClickSetOrderContextAndHandleEvent79(int arg1, i
 void TMapEditView::PlaceTerrain(short tileIndex) {
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
   tile.SetTerrainKind(static_cast<StrategicTerrainKind>(editorActionValue36c));
-  ClearTileAdjacencyRenderCache(tile);
+  tile.adjacencyMaskA0a = 0;
+  tile.adjacencyMaskB0b = 0;
+  tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
+  tile.spriteVariantIndex01 = 0;
   g_pGlobalMapState->AssignPictToTile(tileIndex);
   InvalidateTile(tileIndex);
 
@@ -272,7 +259,10 @@ void TMapEditView::DefaultResources(short tileIndex) {
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   tile.gateFlag = static_cast<signed char>(editorActionValue36c);
   tile.SetTerrainKind(static_cast<StrategicTerrainKind>(terrainByProfile[editorActionValue36c]));
-  ClearTileAdjacencyRenderCache(tile);
+  tile.adjacencyMaskA0a = 0;
+  tile.adjacencyMaskB0b = 0;
+  tile.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
+  tile.spriteVariantIndex01 = 0;
   tile.resourceTypeByEdge[0] = static_cast<signed char>(resourceByProfile[tile.gateFlag]);
   tile.resourceTypeByEdge[1] = -1;
   g_pGlobalMapState->AssignPictToTile(tileIndex);
@@ -282,7 +272,10 @@ void TMapEditView::DefaultResources(short tileIndex) {
     short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
-      ClearTileAdjacencyRenderCache(neighbor);
+      neighbor.adjacencyMaskA0a = 0;
+      neighbor.adjacencyMaskB0b = 0;
+      neighbor.riverSpriteCode |= kRiverSpriteCodeNeedsResolution;
+      neighbor.spriteVariantIndex01 = 0;
       g_pGlobalMapState->AssignPictToTile(neighborIndex);
       InvalidateTile(neighborIndex);
     }
@@ -296,9 +289,13 @@ void TMapEditView::PlaceProvince(short tileIndex) {
   }
 
   TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-  tile.cityRecordIndex = static_cast<short>(
-      ResolveProvinceNumberControl(ownerContext)->UpdateControlCachedIntFromWindowText());
-  ClearTileBorderMasks(tile);
+  TNumberText* provinceNumber =
+      static_cast<TNumberText*>(ownerContext->ResolveControlByTag(kControlTagPrnu));
+  provinceNumber->AssertValid();
+  tile.cityRecordIndex = static_cast<short>(provinceNumber->UpdateControlCachedIntFromWindowText());
+  tile.ownerBorderMask07 = 0;
+  tile.cityBorderMask08 = 0;
+  tile.waterAdjacencyMask09 = 0;
   g_pSfxPlaybackSystem->PlaySoundEffect(4000);
   g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
   InvalidateTile(tileIndex);
@@ -308,7 +305,9 @@ void TMapEditView::PlaceProvince(short tileIndex) {
     short neighborIndex = TMapMgr::GetNeighborTileID(tileIndex, direction);
     if (neighborIndex != -1) {
       TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborIndex];
-      ClearTileBorderMasks(neighbor);
+      neighbor.ownerBorderMask07 = 0;
+      neighbor.cityBorderMask08 = 0;
+      neighbor.waterAdjacencyMask09 = 0;
       g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(neighborIndex, 0);
       InvalidateTile(neighborIndex);
     }

@@ -126,14 +126,11 @@ const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(short cursorResourceId);
 
-// The RTTI/CRuntimeClass oracle previously assigned TViewMgr::CreateObject to
-// 0x005d4c60, but that address's real body (verified via `just ghidra listing`
-// and `just ghidra decompile`) is a CString truncate-with-ellipsis text helper --
-// no `operator new` call, no vtable store, just MeasureTextExtentWithCachedQuick-
-// DrawStyle + CString::Mid + string concatenation. It is now ported for real as
-// TruncateTextToFitWidthWithEllipsis (quickdraw_rendering.cpp, 0x5d4c60). TViewMgr's
-// real CreateObject address is unknown; leaving this class's DYNCREATE CreateObject
-// unclaimed rather than reinstating the wrong pairing.
+// SYNTHETIC: IMPERIALISM 0x005d4fd0
+// TViewMgr::CreateObject
+// `IMPLEMENT_DYNCREATE` emits this static MFC allocation factory. The original allocates
+// 0xfc bytes, installs TViewMgr's vptr, and performs the same initialization as the
+// adjacent real constructor; do not hand-write a factory body.
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // SYNTHETIC: IMPERIALISM 0x005d5040
@@ -633,14 +630,14 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int messageKind, CString tit
   return true;
 }
 
-static void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
-  short* dst = setup->cityMinisterPolicyIds;
+static __inline void InitializeGameSetupFromDefaultNationPolicies(GameSetup* setup) {
+  short* destination = setup->cityMinisterPolicyIds;
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    dst[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
-    dst[0] = g_aDefaultNationSetupPolicyProfiles[nationSlot][1];
-    dst[7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
-    dst[0xe] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
-    ++dst;
+    destination[-7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][0];
+    destination[0] = g_aDefaultNationSetupPolicyProfiles[nationSlot][1];
+    destination[7] = g_aDefaultNationSetupPolicyProfiles[nationSlot][2];
+    destination[0xe] = g_aDefaultNationSetupPolicyProfiles[nationSlot][3];
+    ++destination;
   }
 }
 
@@ -968,8 +965,7 @@ void TViewMgr::NoOpTurnEventStateVtableSlotD4(int arg) {
   (void)arg;
 }
 
-// Clears style bit 0x02000000 on the main view's host window.
-static void ModifyMainViewChildWindowStyleClear02000000(TView* mainView) {
+static __inline void ClearMainViewChildWindowStyle(TView* mainView) {
   if (mainView->nativeWindow50 != nullptr) {
     mainView->nativeWindow50->ModifyStyle(0, 0x02000000);
   }
@@ -1069,19 +1065,13 @@ inline void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidt
 
 } // namespace turn_event_ui_refresh
 
-namespace {
-void DispatchPostTurnStateUpdatesTail() {
-  if (g_pHelpMgr == nullptr) {
-    return;
+static __inline void DispatchPostTurnStateUpdatesTail(TurnEventCodeStorage eventCode) {
+  if (g_pHelpMgr != nullptr && IsTurnFlowCooldownActiveAndResetExpiredState() == 0) {
+    g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
+    g_pHelpMgr->HandlePendingEventActivationByCode(eventCode);
+    g_pHelpMgr->HandlePostPendingEventActivationNoOp(eventCode);
   }
-  if (IsTurnFlowCooldownActiveAndResetExpiredState() != 0) {
-    return;
-  }
-  g_pHelpMgr->HandlePostDispatchTurnStateEventUpdates();
-  g_pHelpMgr->HandlePendingEventActivationByCode(g_pViewMgr->currentTurnEventCode);
-  g_pHelpMgr->HandlePostPendingEventActivationNoOp(g_pViewMgr->currentTurnEventCode);
 }
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x005d71b0
 void TViewMgr::ShowOfferSheet(short respondingNation, short offeringNation, short proposedAmount,
@@ -1135,7 +1125,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
   const int curCode = this->currentTurnEventCode;
   if (curCode < 0x2135) {
     if (curCode == kTurnEventOfferSheet) {
-      ModifyMainViewChildWindowStyleClear02000000(mainView);
+      ClearMainViewChildWindowStyle(mainView);
     } else {
       switch (curCode) {
       case kTurnEventTradeOverview:
@@ -1219,7 +1209,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
       mainView->RefreshControl();
       this->ShowDealBookScreen(static_cast<short>(payload));
     }
-    DispatchPostTurnStateUpdatesTail();
+    DispatchPostTurnStateUpdatesTail(newCode);
     return;
   }
 
@@ -1356,7 +1346,7 @@ void TViewMgr::DispatchTurnEvent(TurnEventCodeStorage eventCode, int payload) {
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeTestDriver::ObserveActivatedTurnEvent(newCode);
 #endif
-  DispatchPostTurnStateUpdatesTail();
+  DispatchPostTurnStateUpdatesTail(newCode);
 }
 
 // FUNCTION: IMPERIALISM 0x005d7c40
@@ -2274,23 +2264,6 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   }
 }
 
-namespace {
-// Shared by each main-menu button: resolve by tag, assert (msgbox + one-shot invalidation-flag
-// clear if missing, matching the sibling null-check blocks elsewhere in this file), fetch the
-// button's localized label from g_pSimMgr's string table, and apply it.
-void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short codeGroup,
-                                short stringIndex, int assertLine) {
-  TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
-  if (control == nullptr) {
-    GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, assertLine);
-  }
-  CString label;
-  g_pSimMgr->GetString(codeGroup, stringIndex, &label);
-  control->SetHoverHelpText(label);
-}
-} // namespace
-
 // Screen-exit backbone: record the followup turn state; when leaving (state 0),
 // re-apply the audio volume preferences and post the followup turn-event code for the
 // current TSimMgr mode (1 -> 0x5dc main menu, 0xe/0x16/0x17 -> 0x7e0,
@@ -2323,6 +2296,18 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   default:
     ReinitializeGameFlowAndPostTurnEventCode(kTurnEventRebuildRegisteredWindows);
   }
+}
+
+static __inline void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag,
+                                                short codeGroup, short stringIndex, int assertLine,
+                                                CString* label) {
+  TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
+  if (control == nullptr) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, assertLine);
+  }
+  g_pSimMgr->GetString(codeGroup, stringIndex, label);
+  control->SetHoverHelpText(*label);
 }
 
 // Main-menu screen setup (turn-event 0x5dc): resets the background-music cue pools, then
@@ -2359,13 +2344,14 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF8() {
   CString emptyString(g_szEmptyString);
   mainControl->SetHoverHelpText(emptyString);
 
-  RefreshMainMenuButtonLabel(mainView, kControlTagRand, 0x2737, 0, 0xdf0);
-  RefreshMainMenuButtonLabel(mainView, kControlTagLoad, 0x2737, 1, 0xdf9);
-  RefreshMainMenuButtonLabel(mainView, kControlTagMult, 0x2737, 2, 0xdfe);
-  RefreshMainMenuButtonLabel(mainView, kControlTagHigh, 0x2737, 3, 0xe03);
-  RefreshMainMenuButtonLabel(mainView, kControlTagScen, 0x2737, 4, 0xe08);
-  RefreshMainMenuButtonLabel(mainView, kControlTagQuit, 0x2737, 9, 0xe0d);
-  RefreshMainMenuButtonLabel(mainView, kControlTagPref, 0x2743, 8, 0xe12);
+  CString label;
+  RefreshMainMenuButtonLabel(mainView, kControlTagRand, 0x2737, 0, 0xdf0, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagLoad, 0x2737, 1, 0xdf9, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagMult, 0x2737, 2, 0xdfe, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagHigh, 0x2737, 3, 0xe03, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagScen, 0x2737, 4, 0xe08, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagQuit, 0x2737, 9, 0xe0d, &label);
+  RefreshMainMenuButtonLabel(mainView, kControlTagPref, 0x2743, 8, 0xe12, &label);
 }
 
 // FUNCTION: IMPERIALISM 0x005dbd10

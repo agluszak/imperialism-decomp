@@ -13,7 +13,5 @@ public:
   virtual void ApplyMoveValue(TCity* city); // slot 0x74 0x5866b0
   TCityBarCluster();
   DECLARE_DYNCREATE(TCityBarCluster)
-
-  void UpdateTradeSummaryMetricControlsFromRecord(TCity* city);
 };
 ASSERT_SIZE(TCityBarCluster, 0x88);

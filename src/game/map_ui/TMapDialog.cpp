@@ -101,6 +101,7 @@ bool WasStrategicMapImprovementTileObservedForRuntimeTest() {
 #include "game/globals/global_types.h"
 #include "game/globals/gfx_globals.h"
 #include "game/globals/map_ui_globals.h"
+#include "game/globals/map_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/gfx/quickdraw_regions.h"
 #include "game/ui_core/quickdraw_rendering.h"
@@ -161,6 +162,12 @@ static inline void Blit64x64StrategicMapAtlasTile(TQuickDrawSurfaceContext* atla
 
 double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
 double g_mapCellColumnScale_006a3388 = DefaultMapCellScale();
+double g_mapProjectionColumnScale_006a32f8 = DefaultMapCellScale();
+double g_mapProjectionRowScale_006a3320 = DefaultMapCellScale();
+// SYNTHETIC: IMPERIALISM 0x0050e290
+// `dynamic initializer for 'g_scaledShortConst_6A3348''
+short g_mapProjectionSeamColumn_006a3348 =
+    static_cast<short>(g_mapProjectionColumnScale_006a32f8 * 512.0 - -1.0);
 
 // Genuine __cdecl free function (bare RET; every caller cleans the 0x14 arg bytes) — not a
 // TMapDialog member, despite living among the map-dialog projection code. The vertical
@@ -186,6 +193,103 @@ void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, const CPoint*
   }
   *outY = static_cast<short>(*outY / scale);
   *outX = static_cast<short>(*outX / scale);
+}
+
+// Converts a map-space point to scaled screen coordinates, offsetting the horizontal
+// projection by half a cell on odd rows.
+// FUNCTION: IMPERIALISM 0x00512500
+void ProjectMapPointToScaledScreenOffset(const CPoint* sourcePoint, const CPoint* rowReference,
+                                         short* outY, short* outX) {
+  const CPoint* reference = rowReference;
+  const CPoint* source = sourcePoint;
+  int referenceY = reference->y;
+  int projectedY = static_cast<int>(source->y * g_mapProjectionRowScale_006a3320);
+  *outY = static_cast<short>(projectedY);
+  int referenceRow = (referenceY + (referenceY >> 31 & 0x3f)) >> 6;
+  if (((referenceRow + projectedY) & 1) != 0) {
+    *outX = static_cast<short>((sourcePoint->x + 0x20) * g_mapProjectionColumnScale_006a32f8 - 1.0);
+    return;
+  }
+  *outX = static_cast<short>(sourcePoint->x * g_mapProjectionColumnScale_006a32f8);
+}
+
+// Projects explicit map column/row coordinates relative to the scaled viewport origin.
+// FUNCTION: IMPERIALISM 0x005125e0
+void ProjectMapCoordinatesToScaledViewport(short row, short column, short* outRow, short* outColumn,
+                                           const CPoint* viewportOrigin) {
+  *outColumn = column;
+  *outRow = row;
+  if (*outColumn >= 0x6c) {
+    *outColumn = static_cast<short>(*outColumn - 0x6c);
+  } else if (*outColumn < 0) {
+    *outColumn = static_cast<short>(*outColumn + 0x6c);
+  }
+  if (*outRow < 0) {
+    *outRow = 0;
+  } else if (*outRow >= 0x3c) {
+    *outRow = 0x3b;
+  }
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn_006a3348) * 0x40 &&
+      *outColumn < g_mapProjectionSeamColumn_006a3348) {
+    *outColumn = static_cast<short>(*outColumn + 0x6c);
+  }
+  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale_006a3320);
+  *outColumn =
+      static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale_006a32f8);
+}
+
+// Projects a tile index through the same scaled-viewport transform.
+// FUNCTION: IMPERIALISM 0x005126d0
+void ProjectTileIndexToScaledViewport(short tileIndex, short* outRow, short* outColumn,
+                                      const CPoint* viewportOrigin) {
+  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
+  *outColumn = static_cast<short>(tileIndex % 0x6c);
+  *outRow = static_cast<short>(row);
+  if (*outColumn >= 0x6c) {
+    *outColumn = static_cast<short>(*outColumn - 0x6c);
+  } else if (*outColumn < 0) {
+    *outColumn = static_cast<short>(*outColumn + 0x6c);
+  }
+  if (*outRow < 0) {
+    *outRow = 0;
+  } else if (*outRow >= 0x3c) {
+    *outRow = 0x3b;
+  }
+  if (viewportOrigin->x > (0x6c - g_mapProjectionSeamColumn_006a3348) * 0x40 &&
+      *outColumn < g_mapProjectionSeamColumn_006a3348) {
+    *outColumn = static_cast<short>(*outColumn + 0x6c);
+  }
+  *outRow = static_cast<short>(*outRow - viewportOrigin->y * g_mapProjectionRowScale_006a3320);
+  *outColumn =
+      static_cast<short>(*outColumn - viewportOrigin->x * g_mapProjectionColumnScale_006a32f8);
+}
+
+// Returns the column delta for a hex direction after wrapping it into [0, 6).
+// FUNCTION: IMPERIALISM 0x005128b0
+short GetWrappedHexDirectionColumnDelta(short direction) {
+  if (direction < 0) {
+    direction = static_cast<short>(direction + 6);
+  } else if (direction > 5) {
+    direction = static_cast<short>(direction - 6);
+  }
+  return g_Build_Hex_Area_LookupTable_00696E70[direction];
+}
+
+// Normalizes a projection row and wraps the column across the seam using row parity.
+// FUNCTION: IMPERIALISM 0x005130a0
+void NormalizeProjectionColumnForRowParity(short* column, short* row) {
+  if (*row > 8) {
+    *row = static_cast<short>(abs(*row) % 8);
+  } else if (*row < 0) {
+    *row = 0;
+  }
+  if (*column > g_mapProjectionSeamColumn_006a3348) {
+    if ((*row & 1) != 0) {
+      *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn_006a3348 - 1);
+      return;
+    }
+    *column = static_cast<short>((*column + 1) % g_mapProjectionSeamColumn_006a3348);
+  }
 }
 
 // The retail CRT initializer computes the nine staggered columns covered by the
@@ -2732,4 +2836,14 @@ void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int tileInd
   ProjectTileIndexToWrappedScreenOffsetByScale(static_cast<short>(tileIndex), viewportOrigin,
                                                outVerticalOffset, outHorizontalOffset,
                                                static_cast<short>(projectionScale));
+}
+
+// Projects a tile index into a staggered grid point relative to a reference tile.
+// FUNCTION: IMPERIALISM 0x00565c90
+void ProjectTileIndexToMapGridPoint(int tileIndex, int* outX, int* outY, int cellSize,
+                                    short referenceColumn, short referenceRow) {
+  *outY = tileIndex / 0x6c;
+  int oddRowOffset = ((*outY & 1) != 0) ? cellSize / 2 : 0;
+  *outX = ((tileIndex - referenceColumn + 0x6c) % 0x6c) * cellSize + oddRowOffset;
+  *outY = (*outY - referenceRow) * cellSize + cellSize / 2;
 }

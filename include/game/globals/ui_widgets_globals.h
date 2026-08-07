@@ -6,8 +6,6 @@
 extern "C" char* g_pSmallViewsEmptyText_00662B90;
 extern "C" char* g_pStatusPictureMainSharedText_00668b88;
 
-int GetTradeSummarySelectionTagByIndex(short index);
-
 extern "C" double g_dMasterVolumeExponentScale;
 
 extern char s_szCombatLossesHeading_00699324[];

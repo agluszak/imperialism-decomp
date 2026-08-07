@@ -981,19 +981,6 @@ BOOL g_cachedShowSplashFlag = FALSE;
 
 } // extern "C"
 
-// Diplomacy helper functions.
-TGreatPower* GetNationStateBySlot(short slotId) {
-  return g_apNationStates[slotId];
-}
-
-short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
-  return nationState->GetStockpile(metricSlot);
-}
-
-int GetTradeSummarySelectionTagByIndex(short index) {
-  return g_pTradeSummarySelectionMap[index];
-}
-
 // Active root of the in-progress UI resource tree and the entry currently being registered.
 // GLOBAL: IMPERIALISM 0x006a141c
 TView* g_pUiResourceHead = nullptr;
@@ -1134,6 +1121,12 @@ short g_MapPreviewVerticalOffset6A3448;
 extern double g_mapCellRowScale_006a3360;
 // GLOBAL: IMPERIALISM 0x006a3388
 extern double g_mapCellColumnScale_006a3388;
+// GLOBAL: IMPERIALISM 0x006a32f8
+extern double g_mapProjectionColumnScale_006a32f8;
+// GLOBAL: IMPERIALISM 0x006a3320
+extern double g_mapProjectionRowScale_006a3320;
+// GLOBAL: IMPERIALISM 0x006a3348
+extern short g_mapProjectionSeamColumn_006a3348;
 
 } // extern "C"
 
@@ -1782,10 +1775,8 @@ extern const double g_ArmyMissionEligibleUnitStrengthScale_0065AA48 = 0.002;
 // Consumed by the distribution-similarity scorer (0x5362c0) callers.
 short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-// 4 back-to-back 4-entry target-percentage profiles consumed by distinct navy-order
-// divergence-score callers: [0..3] NormalizeFourComponentNavyVector's callers, [4..7]
-// TNavyMission::ComputeOrderDistributionSimilarityScoreForZone, [8..15] two further
-// profiles used by sibling scorers in this same cluster.
+// Four back-to-back target-percentage profiles consumed by the navy-order distribution
+// scorers. TNavyMission::ComputeOrderDistributionSimilarityScoreForZone uses [4..7].
 short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {40, 40, 20, 0,  40, 30, 30, 0,
                                                                  35, 35, 0,  30, 0,  20, 80, 0};
 const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
@@ -1954,6 +1945,8 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 short g_randomAudioCuePollCounter = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pTradeMgr = 0;
+// SYNTHETIC: IMPERIALISM 0x00576ed0
+// DestroySharedStringRef_006A4220_AtExit
 // GLOBAL: IMPERIALISM 0x006a4220
 CString g_cstrCountryNameSettingValue006A4220;
 // GLOBAL: IMPERIALISM 0x006a4268
@@ -2117,6 +2110,8 @@ static inline double DefaultMiniMapViewportCoordinateScale() {
 }
 
 static double s_miniMapViewportCoordinateScale = DefaultMiniMapViewportCoordinateScale();
+// SYNTHETIC: IMPERIALISM 0x00594ed0
+// `dynamic initializer for 'g_scaledShortConst_6A460C''
 // GLOBAL: IMPERIALISM 0x006a460c
 short g_defaultMarkerBoxWidth_006a460c =
     static_cast<short>(s_miniMapViewportCoordinateScale * 512.0 - -1.0);
@@ -2261,6 +2256,8 @@ const char* g_cstrTradeTotalsBalanceSubstitution0066DB50 = g_szEmptyString;
 // UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
 // vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
 // CList<void*,void*> copies below.
+// SYNTHETIC: IMPERIALISM 0x00415e50
+// DestroyUiResourcePoolStateAtExit
 // GLOBAL: IMPERIALISM 0x006a13e0
 CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
 
@@ -2328,6 +2325,8 @@ const GUID g_ImperialismDirectPlayApplicationGuid0066f968 = {
 
 // Heap-owned runtime selection records used by the DirectPlay session chooser.
 // This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
+// SYNTHETIC: IMPERIALISM 0x0047f740
+// DestroyRuntimeSelectionRecordArrayStateAtExit
 // GLOBAL: IMPERIALISM 0x006a15e0
 CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 
@@ -2383,6 +2382,8 @@ const short g_ShipRosterAtlasHorizontalOffsetByResourceType_006985E8[14] = {
 };
 
 // Palette entries used to color ocean-map previews by their owning nation tag.
+// SYNTHETIC: IMPERIALISM 0x00564800
+// `dynamic initializer for 'g_aOceanMapOwnerPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985b8
 unsigned char g_aOceanMapOwnerPaletteIndexByNationTag[24] = {
     0xf3, 0x2a, 0x25, 0x1d, 0xf6, 0x8c,
@@ -2403,6 +2404,8 @@ const unsigned char g_bDrawOceanZoneLabels = 1;
 const unsigned char g_bDrawOceanNationLabels = 1;
 
 // Border/transition colors paired with the owner-fill table immediately above.
+// SYNTHETIC: IMPERIALISM 0x00564830
+// `dynamic initializer for 'g_aOceanMapBorderPaletteIndexByNationTag''
 // GLOBAL: IMPERIALISM 0x006985d0
 unsigned char g_aOceanMapBorderPaletteIndexByNationTag[24] = {
     0x15, 0x2d, 0x1e, 0x1c, 0x30, 0xae,
@@ -2426,6 +2429,9 @@ CPoint g_turnEventDialogAnchorPoint(0, 0);
 // ExecuteViewModalStateWithPushPopChain pushes the active window on entry and pops it on
 // exit, disabling/re-enabling the window beneath it across the modal run. Shares the
 // CList<TWindow*, TWindow*> specialization (vtable 0x0064b580) with g_LiveViewRegistry.
+// SYNTHETIC: IMPERIALISM 0x0048d270
+// DestroyViewModalStateNodeBlockChainAtExit
+// GLOBAL: IMPERIALISM 0x006a1ac0
 CList<TWindow*, TWindow*> g_ModalViewStack;
 
 // McAppUI live-view registry: every TWindow links itself in on construction and unlinks on
@@ -2861,6 +2867,8 @@ char g_szUiOpenParen_0069806C[] = "(";
 POINT g_ptCivilianOrderModalMessage = {0, 0};
 // GLOBAL: IMPERIALISM 0x006a2df0
 POINT g_ptGreatPowerModalMessage = {0, 0};
+// SYNTHETIC: IMPERIALISM 0x004fe6e0
+// DestroySharedStringRefBatch_006A3060_AtExit
 // GLOBAL: IMPERIALISM 0x006a3060
 CString g_cstrUiFontBelweLight;
 // GLOBAL: IMPERIALISM 0x006a3080
@@ -2960,6 +2968,8 @@ int g_streamLine596AssertGuard = 0;
 
 // Zone status-code PRNG seed (0x006a5aec) + display-name cache key (0x006984b8);
 // see global_data_tables.h. Runtime-initialized.
+// SYNTHETIC: IMPERIALISM 0x005c3b00
+// `dynamic initializer for 'g_zoneStatusCodePrngSeed_006a5aec''
 // GLOBAL: IMPERIALISM 0x006a5aec
 unsigned int g_zoneStatusCodePrngSeed_006a5aec = GetTickCountDiv16();
 // GLOBAL: IMPERIALISM 0x006a5af0

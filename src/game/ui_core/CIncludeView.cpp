@@ -279,12 +279,19 @@ void CIncludeView::BlitMainPaneBitmapToOffscreenClipped(RECT* clipRect) {
       blitRect.bottom - blitRect.top, blitRect.left, blitRect.top, -1);
 }
 
+// FUNCTION: IMPERIALISM 0x00482f70
+void CIncludeView::QueueOrMergeOverlayDirtyRect(RECT* rect, int processedFlag, int field14) {
+  RECT copiedRect;
+  CopyRect(&copiedRect, rect);
+  m_overlayRectQueue.AddHead(&copiedRect, processedFlag, field14);
+}
+
 // FUNCTION: IMPERIALISM 0x00482fc0
 void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRect) {
   // Pass 1: blit each not-yet-processed hint rect into the offscreen surface.
-  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectCursor68 != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       CPoint dimensions;
@@ -304,9 +311,9 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     }
   }
   // Pass 2: repaint the hosted dialog tree over each remaining unprocessed rect.
-  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectCursor68 != 0) {
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
     if (rec.processedFlag10 == 0) {
       rec.processedFlag10 = 1;
       RECT paintRect;
@@ -320,13 +327,13 @@ void CIncludeView::UpdateAndRenderMapTileHintOverlayQueue(CDC* dc, RECT* clipRec
     // LIBRARY: CDC::FromHandle (0x00612736)
     targetDc = CDC::FromHandle(::GetDC(m_hWnd));
   }
-  m_overlayRectCursor68 = m_overlayRectQueue.GetHeadPosition();
+  m_overlayRectCursor68 = m_overlayRectQueue.records.GetHeadPosition();
   while (m_overlayRectCursor68 != 0) {
     POSITION current = m_overlayRectCursor68;
-    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.GetNext(m_overlayRectCursor68);
+    IncludeViewOverlayRectRecord& rec = m_overlayRectQueue.records.GetNext(m_overlayRectCursor68);
     if (rec.processedFlag10 == 2) {
       RECT flushRect = rec.rect;
-      m_overlayRectQueue.RemoveAt(current);
+      m_overlayRectQueue.records.RemoveAt(current);
       BlitMapDialogSurfaceToHdcWithClipBounds(targetDc, &flushRect);
     }
   }
@@ -580,6 +587,28 @@ void CIncludeView::OnLButtonDblClk(UINT nFlags, CPoint point) {
   if (m_uiInteractiveFlag90 != 0) {
     Default();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00483ba0
+void CIncludeViewOverlayRectQueue::AddHead(RECT* rect, int processedFlag, int field14) {
+  POSITION headPosition = records.GetHeadPosition();
+  if (headPosition != 0) {
+    IncludeViewOverlayRectRecord& head = records.GetAt(headPosition);
+    RECT intersection;
+    if (head.processedFlag10 != 2 && IntersectRect(&intersection, &head.rect, rect)) {
+      UnionRect(&head.rect, &head.rect, rect);
+      if (processedFlag != 0 && head.processedFlag10 != 0) {
+        head.processedFlag10 = 0;
+      }
+      return;
+    }
+  }
+
+  IncludeViewOverlayRectRecord record;
+  record.rect = *rect;
+  record.processedFlag10 = processedFlag != 0;
+  record.field14 = field14;
+  records.AddHead(record);
 }
 
 // Command 0x8011 momentarily enters and leaves MFC's wait-cursor state. This forces the

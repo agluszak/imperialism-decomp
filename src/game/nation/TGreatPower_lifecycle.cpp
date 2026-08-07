@@ -113,7 +113,7 @@ int TGreatPower::ClassifyNationMilitaryPowerBandAgainstGlobalMean() {
   if (myPower > mean + stddev) {
     return 3;
   }
-  if (myPower <= mean - stddev) {
+  if (myPower >= mean - stddev) {
     return 2;
   }
   if (myPower >= mean - 2.0f * stddev) {

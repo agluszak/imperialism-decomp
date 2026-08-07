@@ -16,6 +16,8 @@
 //   CArchive& AFXAPI operator>>(CArchive&, TScatteredShipsMission*&)
 // SYNTHETIC: IMPERIALISM 0x0053bb60
 // operator>>
+// SYNTHETIC: IMPERIALISM 0x0053bb40
+// `dynamic initializer for '_init_TScatteredShipsMission''
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
 // SYNTHETIC: IMPERIALISM 0x0053ba60

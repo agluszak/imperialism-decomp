@@ -26,11 +26,6 @@ namespace {
 
 const int kClass99WindowId = 99;
 
-static void AssignUiFontGlobalFromLiteral(CString& globalSlot, const char* literal) {
-  CString local(literal);
-  globalSlot = local;
-}
-
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x004931e0
@@ -98,9 +93,12 @@ void TDisplayMgr::IDisplayMgr() {
 
   dialogActiveFlag = 0;
 
-  AssignUiFontGlobalFromLiteral(g_cstrUiFontBelweBdBt, g_szUiFontLiteralBelweBdBt);
-  AssignUiFontGlobalFromLiteral(g_cstrUiFontBelweLight, g_szUiFontLiteralBelweLight);
-  AssignUiFontGlobalFromLiteral(g_cstrUiFontPalatino, g_szUiFontLiteralPalatino);
+  CString fontName(g_szUiFontLiteralBelweBdBt);
+  g_cstrUiFontBelweBdBt = fontName;
+  fontName = g_szUiFontLiteralBelweLight;
+  g_cstrUiFontBelweLight = fontName;
+  fontName = g_szUiFontLiteralPalatino;
+  g_cstrUiFontPalatino = fontName;
 
   GlobalViewportRectDefaultsRecord** rectDefaultsHandle =
       InitializeGlobalRectDefaultsIfUninitialized();

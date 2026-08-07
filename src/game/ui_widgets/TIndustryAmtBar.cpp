@@ -41,11 +41,11 @@ void TIndustryAmtBar::DoPostCreate(int arg) {
   TGreatPower* nationState = g_apNationStates[g_pSimMgr->GetActiveNationId()];
   TCity* province = nationState != 0 ? nationState->GetCityState() : 0;
   short summaryTagIndex = 0;
-  int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
+  int mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   int summaryTag = this->ownerContext->controlTag;
   while (mappedTag != summaryTag) {
     summaryTagIndex = (short)(summaryTagIndex + 1);
-    mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
+    mappedTag = g_pTradeSummarySelectionMap[summaryTagIndex];
   }
 
   selectedMetricRecord = province->orderSlotsE4[summaryTagIndex];

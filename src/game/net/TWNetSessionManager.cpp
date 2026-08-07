@@ -90,6 +90,34 @@ BOOL TDirectPlaySessionManagerBase::CreateDirectPlayLobbyAndStoreResult() {
   return lastErrorCode0c >= 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0047fbc0
+BOOL TDirectPlaySessionManagerBase::ConnectDirectPlayFromLobbySettingsAndStoreResult() {
+  DWORD settingsSize = 0;
+  lastErrorCode0c = directPlayLobby08->GetConnectionSettings(0, 0, &settingsSize);
+  if (lastErrorCode0c != DPERR_BUFFERTOOSMALL) {
+    return FALSE;
+  }
+
+  DPLCONNECTION* settings = new DPLCONNECTION;
+  if (settings == 0) {
+    lastErrorCode0c = E_OUTOFMEMORY;
+    return FALSE;
+  }
+
+  lastErrorCode0c = directPlayLobby08->GetConnectionSettings(0, settings, &settingsSize);
+  if (lastErrorCode0c < 0 || lastErrorCode0c == DPERR_NOCONNECTION) {
+    return FALSE;
+  }
+  if (GetRuntimeSelectionAuxStatus(settings) != FALSE) {
+    lastErrorCode0c = directPlayLobby08->SetConnectionSettings(0, 0, settings);
+  }
+  if (lastErrorCode0c < 0) {
+    return FALSE;
+  }
+  lastErrorCode0c = directPlayLobby08->Connect(0, &directPlayInterface04, 0);
+  return lastErrorCode0c >= 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0047fcb0
 char TWNetSessionManager::CreatePlayerAndStoreResult(LPDPID idOut, LPSTR shortName) {
   DPNAME name;
@@ -106,13 +134,6 @@ unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
   this->lastErrorCode0c = destroyResult;
   return destroyResult >= 0;
-}
-
-static void ClearRuntimeSelectionRecordArray() {
-  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
-    delete g_RuntimeSelectionRecords006a15e0[index];
-  }
-  g_RuntimeSelectionRecords006a15e0.RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x0047fd70
@@ -150,7 +171,10 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     selectedProviderGuid = *providerGuid;
     lastErrorCode0c = DirectPlayCreate(&selectedProviderGuid, &createdInterface, 0);
   } else {
-    ClearRuntimeSelectionRecordArray();
+    for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+      delete g_RuntimeSelectionRecords006a15e0[index];
+    }
+    g_RuntimeSelectionRecords006a15e0.RemoveAll();
     g_RuntimeSelectionRecords006a15e0.SetSize(0, -1);
     lastErrorCode0c = DirectPlayEnumerate(ForwardEnumSessionToCallbackTable, this);
     if (lastErrorCode0c >= 0 && SelectRuntimeProvider(&selectedProviderGuid)) {
@@ -168,7 +192,10 @@ bool TWNetSessionManager::InitializeDirectPlayForProviderGuidOrEnumerate(const G
     createdInterface->Release();
   }
 
-  ClearRuntimeSelectionRecordArray();
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.RemoveAll();
   return lastErrorCode0c >= 0;
 }
 

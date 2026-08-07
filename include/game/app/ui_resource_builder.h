@@ -85,3 +85,6 @@ void __cdecl ClearUiResourceContext();
 // `nameTag` is the FourCC of the widget being closed — present at every call site but
 // unused by the body (signature fidelity, like RegisterUiResourceEntry's tags).
 void __cdecl PopUiResourcePoolNode(unsigned int nameTag);
+
+// Zeroes a contiguous dword resource-entry range; returns zero.
+int __stdcall ClearUiResourceEntryDwords(int* destination, int count);

@@ -138,7 +138,7 @@ void TTechItemView::ITechItemView(TView* panel, int* offsetLayout, int* sizeLayo
     prereqControl->textColor98 = titleStyleFlags;
     prereqControl->shadowTextColor9C = shadowStyleFlags;
     prereqControl->dropShadowEnabledA0 = true;
-    if (nationSlot == 0) {
+    if (missing2 == 0) {
       g_pSimMgr->GetString(0x274f, 2, &templateText);
       g_pSimMgr->GetString(0x2712, static_cast<short>(missing1), &labelText);
       scanBracketExpressions(g_pSimMgr, &assembledText, static_cast<LPCSTR>(templateText),
