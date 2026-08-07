@@ -311,6 +311,54 @@ class RuntimeProtocolTests(unittest.TestCase):
                 "expanded_tiles": [[0, -1, -1] for _ in range(6480)],
                 "expanded_provinces": [],
             },
+            "terrain_generation": {
+                "topology_byte": 0,
+                "tuning": {
+                    "desert_quota": 200,
+                    "mountain_quota": 150,
+                    "hills_quota": 250,
+                    "forest_quota": 250,
+                    "swamp_quota": 150,
+                    "river_count": 10,
+                    "region_seed_rows": 14,
+                    "region_seed_columns": 8,
+                },
+                "attempt_count": 1,
+                "attempts": [
+                    {
+                        "index": 0,
+                        "map_lcg_after_expansion": 2,
+                        **{
+                            stage: {
+                                "map_lcg": 2,
+                                "tile_hash": 0,
+                                "terrain_counts": [6480, 0, 0, 0, 0, 0, 0, 0],
+                                "river_tile_count": 0,
+                            }
+                            for stage in (
+                                "after_expansion",
+                                "after_templates",
+                                "after_features",
+                                "after_rotation",
+                                "after_water_regions",
+                                "after_keyword",
+                            )
+                        },
+                        "accepted": 1,
+                        "map_lcg_after_validation": 2,
+                        "rotation_column": 0,
+                        "seed_candidate_tiles": [0] * 23,
+                        "tile_fields": [
+                            "terrain_kind",
+                            "river_sprite_code",
+                            "owner_nation",
+                            "gate_flag",
+                            "province_index",
+                        ],
+                        "tiles": [[0, 0, -1, -1, -1] for _ in range(6480)],
+                    }
+                ],
+            },
             "tiles": [[0] * len(GENERATED_WORLD_TILE_FIELDS) for _ in range(6480)],
             "provinces": provinces,
             "ocean_context_array_count": 1,

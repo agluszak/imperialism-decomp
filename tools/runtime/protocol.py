@@ -97,6 +97,9 @@ def validate_result(result: dict[str, Any], expected_name: str, expected_seed: i
 def validate_generated_world(snapshot: object) -> None:
     if not isinstance(snapshot, dict):
         raise ValueError("generated_world must be an object")
+    schema = snapshot.get("schema")
+    if schema != GENERATED_WORLD_SCHEMA:
+        raise ValueError(f"unsupported generated_world schema {schema!r}")
     _require_exact_keys(
         snapshot,
         {
@@ -106,6 +109,7 @@ def validate_generated_world(snapshot: object) -> None:
             "map",
             "rng",
             "coarse_generation",
+            "terrain_generation",
             "tiles",
             "provinces",
             "ocean_context_array_count",
@@ -117,8 +121,6 @@ def validate_generated_world(snapshot: object) -> None:
         },
         "generated_world",
     )
-    if snapshot["schema"] != GENERATED_WORLD_SCHEMA:
-        raise ValueError(f"unsupported generated_world schema {snapshot['schema']!r}")
     if snapshot["tile_fields"] != list(GENERATED_WORLD_TILE_FIELDS):
         raise ValueError("generated_world tile_fields do not match the v1 schema")
     if snapshot["border_link_fields"] != list(GENERATED_WORLD_BORDER_LINK_FIELDS):
@@ -174,6 +176,7 @@ def validate_generated_world(snapshot: object) -> None:
         _require_int_range(value, 0, 0xFFFFFFFF, f"generated_world rng {field}")
 
     _validate_coarse_generation(snapshot["coarse_generation"])
+    _validate_terrain_generation(snapshot["terrain_generation"])
 
     tiles = snapshot["tiles"]
     if not isinstance(tiles, list) or len(tiles) != 108 * 60:
@@ -363,6 +366,98 @@ def _validate_coarse_generation(value: object) -> None:
     if not isinstance(provinces, list) or len(provinces) != value["expanded_province_count"]:
         raise ValueError("coarse_generation expanded province count must match records")
     _require_integer_rows(provinces, 2, "coarse_generation expanded_provinces")
+
+
+def _validate_terrain_generation(value: object) -> None:
+    if not isinstance(value, dict):
+        raise ValueError("generated_world terrain_generation must be an object")
+    _require_exact_keys(
+        value,
+        {"topology_byte", "tuning", "attempt_count", "attempts"},
+        "generated_world terrain_generation",
+    )
+    _require_int_range(value["topology_byte"], -128, 127, "terrain_generation topology_byte")
+    tuning = value["tuning"]
+    tuning_fields = {
+        "desert_quota",
+        "mountain_quota",
+        "hills_quota",
+        "forest_quota",
+        "swamp_quota",
+        "river_count",
+        "region_seed_rows",
+        "region_seed_columns",
+    }
+    if not isinstance(tuning, dict):
+        raise ValueError("terrain_generation tuning must be an object")
+    _require_exact_keys(tuning, tuning_fields, "terrain_generation tuning")
+    for field in tuning_fields:
+        _require_integer(tuning[field], f"terrain_generation tuning {field}")
+    _require_integer(value["attempt_count"], "terrain_generation attempt_count")
+    attempts = value["attempts"]
+    if not isinstance(attempts, list) or len(attempts) != value["attempt_count"] or not attempts:
+        raise ValueError("terrain_generation attempt_count must match nonempty attempts")
+    stage_names = (
+        "after_expansion",
+        "after_templates",
+        "after_features",
+        "after_rotation",
+        "after_water_regions",
+        "after_keyword",
+    )
+    attempt_fields = {
+        "index",
+        "map_lcg_after_expansion",
+        *stage_names,
+        "accepted",
+        "map_lcg_after_validation",
+        "rotation_column",
+        "seed_candidate_tiles",
+        "tile_fields",
+        "tiles",
+    }
+    for index, attempt in enumerate(attempts):
+        if not isinstance(attempt, dict):
+            raise ValueError("terrain_generation attempts must be objects")
+        _require_exact_keys(attempt, attempt_fields, "terrain_generation attempt")
+        if attempt["index"] != index:
+            raise ValueError("terrain_generation attempts must be in index order")
+        for field in ("map_lcg_after_expansion", "map_lcg_after_validation"):
+            _require_int_range(attempt[field], 0, 0xFFFFFFFF, f"terrain_generation {field}")
+        for stage_name in stage_names:
+            stage = attempt[stage_name]
+            if not isinstance(stage, dict):
+                raise ValueError(f"terrain_generation {stage_name} must be an object")
+            _require_exact_keys(
+                stage,
+                {"map_lcg", "tile_hash", "terrain_counts", "river_tile_count"},
+                f"terrain_generation {stage_name}",
+            )
+            for field in ("map_lcg", "tile_hash"):
+                _require_int_range(stage[field], 0, 0xFFFFFFFF, f"{stage_name} {field}")
+            _require_integer_array_for(stage, "terrain_counts", 8, stage_name)
+            _require_integer(stage["river_tile_count"], f"{stage_name} river_tile_count")
+        _require_int_range(attempt["accepted"], 0, 1, "terrain_generation accepted")
+        _require_int_range(attempt["rotation_column"], 0, 107, "terrain_generation rotation")
+        _require_integer_array_for(
+            attempt, "seed_candidate_tiles", 23, "terrain_generation attempt"
+        )
+        if attempt["tile_fields"] != [
+            "terrain_kind",
+            "river_sprite_code",
+            "owner_nation",
+            "gate_flag",
+            "province_index",
+        ]:
+            raise ValueError("terrain_generation tile_fields do not match the schema")
+        tiles = attempt["tiles"]
+        if not isinstance(tiles, list) or len(tiles) != 108 * 60:
+            raise ValueError("terrain_generation tiles must contain 6480 rows")
+        _require_integer_rows(tiles, 5, "terrain_generation tiles")
+    if attempts[-1]["accepted"] != 1 or any(
+        attempt["accepted"] == 1 for attempt in attempts[:-1]
+    ):
+        raise ValueError("terrain_generation only the final attempt may be accepted")
 
 
 def validate_game_snapshot(snapshot: object) -> None:

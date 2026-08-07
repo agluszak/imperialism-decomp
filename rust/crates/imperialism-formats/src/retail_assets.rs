@@ -1,3 +1,4 @@
+use crate::RetailFontFace;
 use crate::retail_pe::{
     DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
     bitmap_resource_to_bmp, decode_string_table_block,
@@ -131,6 +132,14 @@ pub struct RetailAssetPackManifestV1 {
 }
 
 impl RetailAssetPackManifestV1 {
+    pub fn resolve_font(&self, face: RetailFontFace) -> Option<&RetailStandaloneAsset> {
+        self.fonts.iter().find(|asset| {
+            asset
+                .relative_path
+                .eq_ignore_ascii_case(face.relative_path())
+        })
+    }
+
     pub fn resolve_picture(
         &self,
         picture_id: i16,

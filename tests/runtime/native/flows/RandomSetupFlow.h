@@ -14,6 +14,7 @@ public:
 private:
   enum Phase {
     kWaitingForRandomSetup,
+    kCapturingRegeneratedPlanet,
     kSettingCountryName,
     kSelectingDifficulty,
     kActivatingOkay,

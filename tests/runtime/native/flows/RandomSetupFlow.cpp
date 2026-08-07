@@ -30,6 +30,27 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     scenario.RunState().SetSelectedNationSlot(RandomSetup().SelectedNationSlot());
+    const char* planetSeed = scenario.RandomSetupPlanetSeed();
+    if (planetSeed != 0) {
+      RuntimeActionResult regenerated = RandomSetup().RegeneratePlanet(planetSeed);
+      if (!regenerated.Succeeded()) {
+        CString failureJson;
+        RuntimeJson::AppendString(failureJson, regenerated.FailureMessage());
+        scenario.FailScenario(failureJson);
+        return kRuntimeFlowRunning;
+      }
+      phase = kCapturingRegeneratedPlanet;
+      scenario.EnterFlowPhase("capturing_regenerated_planet", "regenerate_planet_seed");
+      scenario.ContinueAfterAction();
+      return kRuntimeFlowRunning;
+    }
+    CaptureRuntimeGeneratedWorldSnapshot(scenario.RunState());
+    phase = kSettingCountryName;
+    scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
+    scenario.ContinueAfterAction();
+    return kRuntimeFlowRunning;
+  }
+  if (phase == kCapturingRegeneratedPlanet) {
     CaptureRuntimeGeneratedWorldSnapshot(scenario.RunState());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");

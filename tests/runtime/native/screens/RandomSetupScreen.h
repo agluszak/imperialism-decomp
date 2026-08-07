@@ -26,6 +26,7 @@ public:
   short SelectedNationSlot() const;
 
   RuntimeActionResult SetCountryName(const char* name);
+  RuntimeActionResult RegeneratePlanet(const char* planetSeed);
   RuntimeActionResult SelectDifficulty(int level);
   bool DifficultyIsSelected(int level) const;
   RuntimeActionResult Accept();

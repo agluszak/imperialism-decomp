@@ -247,6 +247,18 @@ class TextResources:
         return self.strings[key]
 
 
+@dataclass(frozen=True)
+class UiTextPropertyPatch:
+    resource: UiResourceKey
+    node_id: str
+    tag: str
+    font_family: int
+    face_flags: int
+    point_size: int
+    alignment: int
+    evidence: str
+
+
 _GAME_HEADER_CACHE: dict[str, dict[str, str]] = {}
 
 
@@ -457,6 +469,105 @@ def load_text_resources(repo_root: Path) -> TextResources:
         for row in text_resources["text_styles"]
     }
     return TextResources(strings, styles)
+
+
+def load_windows_text_property_patches(repo_root: Path) -> tuple[UiTextPropertyPatch, ...]:
+    data = yaml.safe_load((repo_root / WINDOWS_DELTA_PATH).read_text(encoding="utf-8"))
+    rows = data.get("node_property_patches", [])
+    if not isinstance(rows, list):
+        raise ValueError(f"{WINDOWS_DELTA_PATH}: node_property_patches must be a list")
+    patches: list[UiTextPropertyPatch] = []
+    identities: set[tuple[UiResourceKey, str]] = set()
+    for index, raw_row in enumerate(rows):
+        context = f"{WINDOWS_DELTA_PATH}: node_property_patches[{index}]"
+        row = _mapping(raw_row, context)
+        if set(row) != {"view", "node", "tag", "properties", "evidence"}:
+            raise ValueError(f"{context}: malformed scoped node property patch")
+        resource = UiResourceKey.parse(str(row["view"]))
+        node_id = f"0x{int(str(row['node']), 0):04x}"
+        tag = _fourcc(row["tag"], f"{context}/tag")
+        properties = _mapping(row["properties"], f"{context}/properties")
+        if set(properties) != {"text"}:
+            raise ValueError(f"{context}/properties: only generic text patches are supported")
+        text = _mapping(properties["text"], f"{context}/properties/text")
+        expected = {"font_family", "face_flags", "point_size", "alignment"}
+        if set(text) != expected:
+            raise ValueError(f"{context}/properties/text: expected {sorted(expected)!r}")
+        evidence = str(row["evidence"]).strip()
+        if not evidence:
+            raise ValueError(f"{context}: evidence is required")
+        identity = (resource, node_id)
+        if identity in identities:
+            raise ValueError(f"{context}: duplicate patch for {resource.text()} {node_id}")
+        identities.add(identity)
+        patches.append(
+            UiTextPropertyPatch(
+                resource,
+                node_id,
+                tag,
+                int(text["font_family"]),
+                int(text["face_flags"]),
+                int(text["point_size"]),
+                int(text["alignment"]),
+                evidence,
+            )
+        )
+    return tuple(
+        sorted(
+            patches,
+            key=lambda patch: (
+                patch.resource.resource_file,
+                patch.resource.view_id,
+                int(patch.node_id, 16),
+            ),
+        )
+    )
+
+
+def apply_windows_text_property_patches(
+    key: UiResourceKey,
+    view: UiSemanticView,
+    patches: Iterable[UiTextPropertyPatch],
+) -> UiSemanticView:
+    scoped = {patch.node_id: patch for patch in patches if patch.resource == key}
+    if not scoped:
+        return view
+    known_nodes = {node.node_id for node in view.nodes}
+    unknown = sorted(set(scoped) - known_nodes)
+    if unknown:
+        raise ValueError(
+            f"{WINDOWS_DELTA_PATH}: {key.text()} patches unknown nodes {', '.join(unknown)}"
+        )
+    nodes: list[UiSemanticNode] = []
+    for node in view.nodes:
+        patch = scoped.get(node.node_id)
+        if patch is None:
+            nodes.append(node)
+            continue
+        if patch.tag != node.tag:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} tag "
+                f"{node.tag!r} does not match declared {patch.tag!r}"
+            )
+        if node.family.text is None:
+            raise ValueError(
+                f"{WINDOWS_DELTA_PATH}: {key.text()} {node.node_id} has no text binding"
+            )
+        text = replace(
+            node.family.text,
+            mode=patch.font_family,
+            flags=patch.face_flags,
+            point_size=patch.point_size,
+            theme=patch.alignment,
+        )
+        nodes.append(
+            replace(
+                node,
+                family=replace(node.family, text=text),
+                source=f"{node.source}; Windows: {patch.evidence}",
+            )
+        )
+    return replace(view, nodes=tuple(nodes))
 
 
 def _validate_windows_family(family: dict, context: str) -> None:
@@ -1068,6 +1179,7 @@ def build_rust_ui_catalog(
     text_resources: TextResources,
 ) -> dict[str, object]:
     recipe_list = list(recipes)
+    text_property_patches = load_windows_text_property_patches(repo_root)
     catalog_views: list[dict[str, object]] = []
     for key in sorted(
         RUST_LAUNCH_VIEW_KEYS, key=lambda item: (item.resource_file, item.view_id)
@@ -1078,6 +1190,9 @@ def build_rust_ui_catalog(
         recipe, case = _catalog_case_for_resource(recipe_list, key)
         semantic_view = normalize_resource_view(key, raw_view, text_resources)
         semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
+        semantic_view = apply_windows_text_property_patches(
+            key, semantic_view, text_property_patches
+        )
         raw_nodes = {int(node["offset"]): node for node in raw_view.get("nodes", [])}
         roots = [node for node in semantic_view.nodes if node.parent_id is None]
         if len(roots) != 1:

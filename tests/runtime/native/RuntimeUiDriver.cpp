@@ -7,10 +7,14 @@
 #include "game/ImperialismApp.h"
 #include "game/globals/view_registries.h"
 #include "game/ui_core/CIncludeView.h"
+#include "game/ui_core/CMcEditWindow.h"
 #include "game/ui_core/TControl.h"
+#include "game/ui_core/TEditText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TWindow.h"
 #include "game/mfc.h"
+
+#include <string.h>
 
 namespace {
 
@@ -280,12 +284,29 @@ bool RuntimeUiDriver::PostActivate(const RuntimeControlSelector& selector, CStri
   PendingRuntimeAction action;
   action.selector = selector;
   action.kind = kRuntimeActionActivate;
+  action.text[0] = 0;
+  return QueueAction(action, failure);
+}
+
+bool RuntimeUiDriver::PostSetText(const RuntimeControlSelector& selector, const char* text,
+                                  CString* failure) {
+  if (text == 0 || strlen(text) >= PendingRuntimeAction::kTextCapacity) {
+    if (failure != 0) {
+      *failure = "queued runtime edit text is missing or too long";
+    }
+    return false;
+  }
+  PendingRuntimeAction action;
+  action.selector = selector;
+  action.kind = kRuntimeActionSetText;
+  strcpy(action.text, text);
   return QueueAction(action, failure);
 }
 
 bool RuntimeUiDriver::PostBarrier(CString* failure) {
   PendingRuntimeAction action;
   action.kind = kRuntimeActionBarrier;
+  action.text[0] = 0;
   return QueueAction(action, failure);
 }
 
@@ -296,6 +317,7 @@ bool RuntimeUiDriver::PostObservation(unsigned int observationKinds, CString* fa
   }
   PendingRuntimeAction action;
   action.kind = kRuntimeActionObservation;
+  action.text[0] = 0;
   g_observationActionQueued = true;
   if (!QueueAction(action, failure)) {
     g_observationActionQueued = false;
@@ -334,6 +356,24 @@ bool RuntimeUiDriver::HandlePostedAction(CString* failure) {
   }
   if (action.kind == kRuntimeActionActivate) {
     return Activate(root, action.selector, failure);
+  }
+  if (action.kind == kRuntimeActionSetText) {
+    TControl* control = RequireControl(root, action.selector, failure);
+    if (control == 0) {
+      return false;
+    }
+    if (control->IsKindOf(RUNTIME_CLASS(TEditText)) == 0) {
+      SetFailure(failure, "queued text target is not a TEditText", action.selector, control);
+      return false;
+    }
+    TEditText* edit = static_cast<TEditText*>(control);
+    CString text(action.text);
+    if (edit->editWindow != 0) {
+      edit->editWindow->SetWindowText(text);
+    } else {
+      edit->SetTextAndMaybeRefresh(&text, 1);
+    }
+    return true;
   }
   if (failure != 0) {
     *failure = "queued runtime action has an unknown kind";

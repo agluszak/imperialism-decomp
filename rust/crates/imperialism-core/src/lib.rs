@@ -12,6 +12,7 @@ mod population;
 mod production;
 mod random_game_setup;
 mod random_map;
+mod random_map_terrain;
 mod recruitment;
 mod resources;
 mod rng;
@@ -47,6 +48,10 @@ pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMapAttempt,
     CoarseMapGeneration, CoarseMapGrid, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH,
     ExpandedMapSeedTile, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT, generate_coarse_random_map,
+};
+pub use random_map_terrain::{
+    GeneratedTerrainTile, RandomMapTerrainAttempt, RandomMapTerrainGeneration,
+    RandomMapTerrainStage, RandomMapTuning, generate_random_map_terrain,
 };
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};

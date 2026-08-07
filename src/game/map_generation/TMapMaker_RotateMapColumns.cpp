@@ -13,6 +13,9 @@
 #include "game/globals/shared_globals.h"
 #include "game/mfc.h"
 #include "game/gfx/ui_invalidation_guard.h"
+#ifdef IMPERIALISM_RUNTIME_TESTS
+#include "RuntimeCoarseMapOracle.h"
+#endif
 
 namespace {
 
@@ -133,6 +136,9 @@ void TMapMaker::RotateMapColumnsByPeakWaterTileDensity() {
       bestColumn = (rightCol + leftCol) / 2;
     }
   }
+#ifdef IMPERIALISM_RUNTIME_TESTS
+  RuntimeTerrainMapOracleRecordRotationColumn(bestColumn);
+#endif
 
   // Copy the whole grid, then write it back rotated so the chosen column band leads.
   int* scratch = new int[0xe3d0];

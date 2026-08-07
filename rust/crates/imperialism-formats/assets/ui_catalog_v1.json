@@ -23,7 +23,7 @@
     },
     "windows_deltas": {
       "path": "config/ui_platform_deltas.yml",
-      "sha256": "7bda65bcaec05f28c9904f540949e49dec203b61b9797e12e7a13aa19fb7f0ad"
+      "sha256": "154b86bde08fc3a417a50ce796f9b9397aced7d3e601c1cc38853095d6bd25b6"
     }
   },
   "views": [
@@ -4607,8 +4607,8 @@
             "text": {
               "alignment": 0,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 14,
               "resource_id": 1300,
               "resource_index": 65535,
               "source": null,
@@ -4625,7 +4625,7 @@
           },
           "resolved_class": "TDropShadowText",
           "resource_offset": 583,
-          "source": "Mac: Startup.rsrc:1501 node 0x0247",
+          "source": "Mac: Startup.rsrc:1501 node 0x0247; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)",
           "state": false,
           "tag": "tcou"
         },
@@ -4690,10 +4690,10 @@
             "picture_id": null,
             "style": null,
             "text": {
-              "alignment": 0,
+              "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 0,
               "resource_index": -1,
               "source": null,
@@ -4710,7 +4710,7 @@
           },
           "resolved_class": "TEditText",
           "resource_offset": 783,
-          "source": "Mac: Startup.rsrc:1501 node 0x030f",
+          "source": "Mac: Startup.rsrc:1501 node 0x030f; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls RefreshActiveControlThenApplyThemeStyleAndCaption(coun, 0, 12, ..., 1, ...)",
           "state": true,
           "tag": "coun"
         },
@@ -4822,8 +4822,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 12,
               "source": null,
@@ -4840,7 +4840,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 1179,
-          "source": "Mac: Startup.rsrc:1501 node 0x049b",
+          "source": "Mac: Startup.rsrc:1501 node 0x049b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif0"
         },
@@ -4872,8 +4872,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 13,
               "source": null,
@@ -4890,7 +4890,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 1291,
-          "source": "Mac: Startup.rsrc:1501 node 0x050b",
+          "source": "Mac: Startup.rsrc:1501 node 0x050b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif1"
         },
@@ -4922,8 +4922,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 14,
               "source": null,
@@ -4940,7 +4940,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 1403,
-          "source": "Mac: Startup.rsrc:1501 node 0x057b",
+          "source": "Mac: Startup.rsrc:1501 node 0x057b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif2"
         },
@@ -4972,8 +4972,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 17,
               "source": null,
@@ -4990,7 +4990,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 1515,
-          "source": "Mac: Startup.rsrc:1501 node 0x05eb",
+          "source": "Mac: Startup.rsrc:1501 node 0x05eb; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif3"
         },
@@ -5022,8 +5022,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 18,
               "source": null,
@@ -5040,7 +5040,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 1627,
-          "source": "Mac: Startup.rsrc:1501 node 0x065b",
+          "source": "Mac: Startup.rsrc:1501 node 0x065b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif4"
         },
@@ -5072,8 +5072,8 @@
             "text": {
               "alignment": 0,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 14,
               "resource_id": 1300,
               "resource_index": 19,
               "source": null,
@@ -5090,7 +5090,7 @@
           },
           "resolved_class": "TDropShadowText",
           "resource_offset": 1739,
-          "source": "Mac: Startup.rsrc:1501 node 0x06cb",
+          "source": "Mac: Startup.rsrc:1501 node 0x06cb; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)",
           "state": false,
           "tag": "dift"
         },
@@ -5122,8 +5122,8 @@
             "text": {
               "alignment": 0,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 14,
               "resource_id": 1300,
               "resource_index": 2,
               "source": null,
@@ -5140,7 +5140,7 @@
           },
           "resolved_class": "TDropShadowText",
           "resource_offset": 1856,
-          "source": "Mac: Startup.rsrc:1501 node 0x0740",
+          "source": "Mac: Startup.rsrc:1501 node 0x0740; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)",
           "state": false,
           "tag": "tnam"
         },
@@ -5212,8 +5212,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 7,
               "source": null,
@@ -5230,7 +5230,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 2088,
-          "source": "Mac: Startup.rsrc:1501 node 0x0828",
+          "source": "Mac: Startup.rsrc:1501 node 0x0828; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "hist"
         },
@@ -5262,8 +5262,8 @@
             "text": {
               "alignment": 1,
               "face_flags": 0,
-              "font_family": 0,
-              "point_size": 0,
+              "font_family": 1,
+              "point_size": 12,
               "resource_id": 1300,
               "resource_index": 8,
               "source": null,
@@ -5280,7 +5280,7 @@
           },
           "resolved_class": "TRadioText",
           "resource_offset": 2200,
-          "source": "Mac: Startup.rsrc:1501 node 0x0898",
+          "source": "Mac: Startup.rsrc:1501 node 0x0898; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "rand"
         },

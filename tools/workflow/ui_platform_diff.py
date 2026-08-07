@@ -34,7 +34,12 @@ def _load_delta_config(repo_root: Path) -> dict:
     data = yaml.safe_load((repo_root / DELTA_CONFIG_PATH).read_text(encoding="utf-8"))
     if not isinstance(data, dict) or data.get("format_version") != FORMAT_VERSION:
         raise ValueError(f"{DELTA_CONFIG_PATH}: expected format_version {FORMAT_VERSION}")
-    allowed = {"format_version", "class_substitutions", "functional_parity_cases"}
+    allowed = {
+        "format_version",
+        "class_substitutions",
+        "functional_parity_cases",
+        "node_property_patches",
+    }
     unknown = sorted(set(data) - allowed)
     if unknown:
         raise ValueError(f"{DELTA_CONFIG_PATH}: unknown fields {', '.join(unknown)}")
