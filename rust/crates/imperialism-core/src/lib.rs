@@ -28,7 +28,7 @@ pub use map_geometry::{
 };
 pub use nation_economy::NationEconomyError;
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
-pub use production::{ItemProductionOrder, ProductionConstraint, ProductionError};
+pub use production::{ItemInputs, ItemProductionOrder, ProductionConstraint, ProductionError};
 pub use resources::ResourceKind;
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
