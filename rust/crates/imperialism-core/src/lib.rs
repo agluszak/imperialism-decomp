@@ -9,13 +9,16 @@ pub use ids::{
     TileId,
 };
 pub use snapshot::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotCity, SnapshotEconomy,
-    SnapshotHashes, SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit,
-    SnapshotNation, SnapshotNations, SnapshotPopulation, SnapshotRng, SnapshotShip,
-    SnapshotTaskForce, SnapshotValidationError, SnapshotWorld, TileSnapshot,
+    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
+    SnapshotAttackMission, SnapshotCity, SnapshotEconomy, SnapshotHashes, SnapshotMajorNation,
+    SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission, SnapshotMissions,
+    SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission, SnapshotPending,
+    SnapshotPopulation, SnapshotRng, SnapshotShip, SnapshotTaskForce, SnapshotTurnStartEvent,
+    SnapshotValidationError, SnapshotWorld, TileSnapshot,
 };
 pub use state::{
-    CityState, GameCommand, GameEvent, GameState, MajorNationState, MilitaryUnitState, NationKind,
-    NationState, PopulationState, RngState, ShipState, StepOutcome, TaskForceState,
-    TaskForceTarget, TileState, TurnState, WorldState,
+    ArmyMissionState, CityState, GameCommand, GameEvent, GameState, MajorNationState,
+    MilitaryUnitState, MissionKind, MissionState, NationKind, NationPendingWork, NationState,
+    NavyMissionState, PendingWorkState, PopulationState, RngState, ShipState, StepOutcome,
+    TaskForceState, TaskForceTarget, TileState, TurnStartEventState, TurnState, WorldState,
 };

@@ -29,13 +29,14 @@ fn main() -> ExitCode {
                 }
             };
             println!(
-                "{}: {} tiles, {} nations, {} cities, {} units, {} ships, state {}",
+                "{}: {} tiles, {} nations, {} cities, {} units, {} ships, {} missions, state {}",
                 snapshot.schema,
                 snapshot.world.tiles.len(),
                 state.nations.iter().flatten().count(),
                 state.cities.iter().flatten().count(),
                 state.military_units.len(),
                 state.ships.len(),
+                state.missions.len(),
                 snapshot.hashes.state
             );
             if let Some(comparison_path) = comparison_path {

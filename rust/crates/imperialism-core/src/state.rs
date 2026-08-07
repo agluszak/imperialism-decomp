@@ -1,6 +1,7 @@
 use crate::{
-    GameSnapshotV1, MilitaryUnitId, NationId, ShipId, SnapshotCity, SnapshotMajorNation,
-    SnapshotMilitaryUnit, SnapshotNation, SnapshotPopulation, SnapshotShip, SnapshotTaskForce,
+    GameSnapshotV1, MilitaryUnitId, MissionId, NationId, ShipId, SnapshotArmyMission, SnapshotCity,
+    SnapshotMajorNation, SnapshotMilitaryUnit, SnapshotMission, SnapshotNation,
+    SnapshotNavyMission, SnapshotPopulation, SnapshotShip, SnapshotTaskForce,
     SnapshotValidationError, TaskForceId, TileSnapshot,
 };
 
@@ -14,6 +15,8 @@ pub struct GameState {
     pub military_units: Vec<MilitaryUnitState>,
     pub ships: Vec<ShipState>,
     pub task_forces: Vec<TaskForceState>,
+    pub missions: Vec<MissionState>,
+    pub pending: PendingWorkState,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -203,6 +206,78 @@ pub struct TaskForceState {
     pub ships: Vec<(ShipId, bool)>,
 }
 
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum MissionKind {
+    AttackProvince,
+    Invade,
+    DefendProvince,
+    ControlSeaZone,
+    Escort,
+    ScatteredShips,
+    BlockadePort,
+    Beachhead,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ArmyMissionState {
+    pub present_location: i16,
+    pub required_equipage_bits: [u32; 5],
+    pub units: Vec<MilitaryUnitId>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct NavyMissionState {
+    pub target_zone: i16,
+    pub resolved_port_zone: i16,
+    pub selected_ship: Option<ShipId>,
+    pub task_force: Option<TaskForceId>,
+    pub state: i32,
+    pub required_equipage_bits: [u32; 4],
+    pub ships: Vec<(ShipId, bool)>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct MissionState {
+    pub id: MissionId,
+    pub nation: NationId,
+    pub queue_index: u32,
+    pub kind: MissionKind,
+    pub source_nation: i16,
+    pub path_marker: i16,
+    pub state: u8,
+    pub importance_bits: u32,
+    pub marker: u8,
+    pub army: Option<ArmyMissionState>,
+    pub navy: Option<NavyMissionState>,
+    pub target_province: Option<i16>,
+    pub amassing_province: Option<i16>,
+    pub beachhead: Option<NavyMissionState>,
+    pub blockade_port_zone: Option<i16>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PendingWorkState {
+    pub turn_flow_status_flags: u32,
+    pub nations: Vec<NationPendingWork>,
+    pub war_transitions: Vec<(NationId, NationId)>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct NationPendingWork {
+    pub nation: NationId,
+    pub turn_events: Vec<(i16, i16)>,
+    pub proposals: Vec<(i16, i16)>,
+    pub turn_summary: Vec<[i16; 4]>,
+    pub turn_start_events: Vec<TurnStartEventState>,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct TurnStartEventState {
+    pub class: String,
+    pub tag: i32,
+    pub land_sale: Option<(i16, NationId)>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum GameCommand {}
 
@@ -274,6 +349,51 @@ impl TryFrom<GameSnapshotV1> for GameState {
                 .into_iter()
                 .map(task_force_state)
                 .collect::<Result<_, _>>()?,
+            missions: snapshot
+                .missions
+                .records
+                .into_iter()
+                .map(mission_state)
+                .collect::<Result<_, _>>()?,
+            pending: PendingWorkState {
+                turn_flow_status_flags: snapshot.pending.turn_flow_status_flags,
+                nations: snapshot
+                    .pending
+                    .nations
+                    .into_iter()
+                    .map(|pending| NationPendingWork {
+                        nation: NationId::new(pending.nation),
+                        turn_events: pending
+                            .turn_events
+                            .into_iter()
+                            .map(|record| (record[0], record[1]))
+                            .collect(),
+                        proposals: pending
+                            .proposals
+                            .into_iter()
+                            .map(|record| (record[0], record[1]))
+                            .collect(),
+                        turn_summary: pending.turn_summary,
+                        turn_start_events: pending
+                            .turn_start_events
+                            .into_iter()
+                            .map(|event| TurnStartEventState {
+                                class: event.class,
+                                tag: event.tag,
+                                land_sale: event
+                                    .land_sale
+                                    .map(|record| (record[0], NationId::new(record[1] as u8))),
+                            })
+                            .collect(),
+                    })
+                    .collect(),
+                war_transitions: snapshot
+                    .pending
+                    .war_transitions
+                    .into_iter()
+                    .map(|pair| (NationId::new(pair[0] as u8), NationId::new(pair[1] as u8)))
+                    .collect(),
+            },
         })
     }
 }
@@ -483,6 +603,90 @@ fn task_force_state(
         ingot_tile: snapshot.ingot_tile,
         flagship: optional_id(snapshot.flagship, ShipId::new, "flagship")?,
         ships,
+    })
+}
+
+fn mission_state(snapshot: SnapshotMission) -> Result<MissionState, SnapshotValidationError> {
+    let kind = match snapshot.class.as_str() {
+        "TAttackProvinceMission" => MissionKind::AttackProvince,
+        "TInvadeMission" => MissionKind::Invade,
+        "TDefendProvinceMission" => MissionKind::DefendProvince,
+        "TControlSeaZoneMission" => MissionKind::ControlSeaZone,
+        "TEscortMission" => MissionKind::Escort,
+        "TScatteredShipsMission" => MissionKind::ScatteredShips,
+        "TBlockadePortMission" => MissionKind::BlockadePort,
+        "TBeachheadMission" => MissionKind::Beachhead,
+        class => {
+            return Err(SnapshotValidationError::Shape(format!(
+                "unsupported mission class {class}"
+            )));
+        }
+    };
+    let (target_province, amassing_province) = snapshot
+        .attack
+        .map(|attack| (Some(attack.target_province), Some(attack.amassing_province)))
+        .unwrap_or((None, None));
+    Ok(MissionState {
+        id: MissionId::new(snapshot.index),
+        nation: NationId::new(snapshot.nation),
+        queue_index: snapshot.queue_index,
+        kind,
+        source_nation: snapshot.source_nation,
+        path_marker: snapshot.path_marker,
+        state: snapshot.state,
+        importance_bits: snapshot.importance_bits,
+        marker: snapshot.marker,
+        army: snapshot.army.map(army_mission_state).transpose()?,
+        navy: snapshot.navy.map(navy_mission_state).transpose()?,
+        target_province,
+        amassing_province,
+        beachhead: snapshot.beachhead.map(navy_mission_state).transpose()?,
+        blockade_port_zone: snapshot.blockade_port_zone,
+    })
+}
+
+fn army_mission_state(
+    snapshot: SnapshotArmyMission,
+) -> Result<ArmyMissionState, SnapshotValidationError> {
+    Ok(ArmyMissionState {
+        present_location: snapshot.present_location,
+        required_equipage_bits: snapshot.required_equipage_bits,
+        units: snapshot
+            .units
+            .into_iter()
+            .map(|id| {
+                u32::try_from(id).map(MilitaryUnitId::new).map_err(|_| {
+                    SnapshotValidationError::Shape(format!("invalid military unit id {id}"))
+                })
+            })
+            .collect::<Result<_, _>>()?,
+    })
+}
+
+fn navy_mission_state(
+    snapshot: SnapshotNavyMission,
+) -> Result<NavyMissionState, SnapshotValidationError> {
+    Ok(NavyMissionState {
+        target_zone: snapshot.target_zone,
+        resolved_port_zone: snapshot.resolved_port_zone,
+        selected_ship: optional_id(snapshot.selected_ship, ShipId::new, "mission ship")?,
+        task_force: optional_id(snapshot.task_force, TaskForceId::new, "mission task force")?,
+        state: snapshot.state,
+        required_equipage_bits: snapshot.required_equipage_bits,
+        ships: snapshot
+            .ships
+            .into_iter()
+            .map(|child| {
+                u32::try_from(child[0])
+                    .map(|id| (ShipId::new(id), child[1] != 0))
+                    .map_err(|_| {
+                        SnapshotValidationError::Shape(format!(
+                            "invalid mission ship id {}",
+                            child[0]
+                        ))
+                    })
+            })
+            .collect::<Result<_, _>>()?,
     })
 }
 

@@ -5,8 +5,9 @@ use std::error::Error;
 use std::fmt;
 
 pub const GAME_SNAPSHOT_SCHEMA: &str = "imperialism.game_snapshot.v1";
-pub const GAME_SNAPSHOT_SECTIONS: [&str; 6] =
-    ["metadata", "rng", "world", "nations", "economy", "military"];
+pub const GAME_SNAPSHOT_SECTIONS: [&str; 8] = [
+    "metadata", "rng", "world", "nations", "economy", "military", "missions", "pending",
+];
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GameSnapshotV1 {
@@ -19,6 +20,8 @@ pub struct GameSnapshotV1 {
     pub nations: SnapshotNations,
     pub economy: SnapshotEconomy,
     pub military: SnapshotMilitary,
+    pub missions: SnapshotMissions,
+    pub pending: SnapshotPending,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -29,6 +32,8 @@ pub struct SnapshotHashes {
     pub nations: String,
     pub economy: String,
     pub military: String,
+    pub missions: String,
+    pub pending: String,
     pub state: String,
 }
 
@@ -296,6 +301,76 @@ pub struct SnapshotTaskForce {
     pub ships: Vec<[i32; 2]>,
 }
 
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotMissions {
+    pub records: Vec<SnapshotMission>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotMission {
+    pub index: u32,
+    pub nation: u8,
+    pub queue_index: u32,
+    pub class: String,
+    pub source_nation: i16,
+    pub path_marker: i16,
+    pub state: u8,
+    pub importance_bits: u32,
+    pub marker: u8,
+    pub army: Option<SnapshotArmyMission>,
+    pub navy: Option<SnapshotNavyMission>,
+    pub attack: Option<SnapshotAttackMission>,
+    pub beachhead: Option<SnapshotNavyMission>,
+    pub blockade_port_zone: Option<i16>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotArmyMission {
+    pub present_location: i16,
+    pub required_equipage_bits: [u32; 5],
+    pub units: Vec<i32>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotNavyMission {
+    pub target_zone: i16,
+    pub resolved_port_zone: i16,
+    pub selected_ship: i32,
+    pub task_force: i32,
+    pub state: i32,
+    pub required_equipage_bits: [u32; 4],
+    pub ships: Vec<[i32; 2]>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotAttackMission {
+    pub target_province: i16,
+    pub amassing_province: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotPending {
+    pub turn_flow_status_flags: u32,
+    pub nations: Vec<SnapshotNationPending>,
+    pub war_transitions: Vec<[i16; 2]>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotNationPending {
+    pub nation: u8,
+    pub turn_events: Vec<[i16; 2]>,
+    pub proposals: Vec<[i16; 2]>,
+    pub turn_summary: Vec<[i16; 4]>,
+    pub turn_start_events: Vec<SnapshotTurnStartEvent>,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SnapshotTurnStartEvent {
+    pub class: String,
+    pub tag: i32,
+    pub land_sale: Option<[i16; 2]>,
+}
+
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum SnapshotValidationError {
     Schema(String),
@@ -384,6 +459,8 @@ impl GameSnapshotV1 {
         self.validate_nations()?;
         self.validate_economy()?;
         self.validate_military()?;
+        self.validate_missions()?;
+        self.validate_pending()?;
         for (section, hash) in self.hashes.iter() {
             if hash.len() != 8
                 || !hash
@@ -409,6 +486,8 @@ impl GameSnapshotV1 {
             ("nations", &self.hashes.nations, &computed.nations),
             ("economy", &self.hashes.economy, &computed.economy),
             ("military", &self.hashes.military, &computed.military),
+            ("missions", &self.hashes.missions, &computed.missions),
+            ("pending", &self.hashes.pending, &computed.pending),
             ("state", &self.hashes.state, &computed.state),
         ] {
             if expected != actual {
@@ -434,13 +513,17 @@ impl GameSnapshotV1 {
         let nations = compact_json(&self.nations)?;
         let economy = compact_json(&self.economy)?;
         let military = compact_json(&self.military)?;
+        let missions = compact_json(&self.missions)?;
+        let pending = compact_json(&self.pending)?;
         let mut state = String::with_capacity(
             metadata.len()
                 + rng.len()
                 + world.len()
                 + nations.len()
                 + economy.len()
-                + military.len(),
+                + military.len()
+                + missions.len()
+                + pending.len(),
         );
         state.push_str(&metadata);
         state.push_str(&rng);
@@ -448,6 +531,8 @@ impl GameSnapshotV1 {
         state.push_str(&nations);
         state.push_str(&economy);
         state.push_str(&military);
+        state.push_str(&missions);
+        state.push_str(&pending);
         Ok(SnapshotHashes {
             metadata: fnv1a_hex(metadata.as_bytes()),
             rng: fnv1a_hex(rng.as_bytes()),
@@ -455,6 +540,8 @@ impl GameSnapshotV1 {
             nations: fnv1a_hex(nations.as_bytes()),
             economy: fnv1a_hex(economy.as_bytes()),
             military: fnv1a_hex(military.as_bytes()),
+            missions: fnv1a_hex(missions.as_bytes()),
+            pending: fnv1a_hex(pending.as_bytes()),
             state: fnv1a_hex(state.as_bytes()),
         })
     }
@@ -584,10 +671,143 @@ impl GameSnapshotV1 {
         }
         Ok(())
     }
+
+    fn validate_missions(&self) -> Result<(), SnapshotValidationError> {
+        let unit_ids = self
+            .military
+            .units
+            .iter()
+            .map(|unit| unit.persistent_id)
+            .collect::<BTreeSet<_>>();
+        let mut next_queue_index = [0_u32; 7];
+        for (index, mission) in self.missions.records.iter().enumerate() {
+            if usize::try_from(mission.index).ok() != Some(index) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid mission identity at index {index}"
+                )));
+            }
+            let nation = usize::from(mission.nation);
+            if nation >= next_queue_index.len()
+                || mission.queue_index != next_queue_index[nation]
+                || mission.class.is_empty()
+                || !(0..7).contains(&mission.source_nation)
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid mission queue identity at index {index}"
+                )));
+            }
+            next_queue_index[nation] += 1;
+            if let Some(army) = &mission.army {
+                for unit in &army.units {
+                    if !unit_ids.contains(unit) {
+                        return Err(SnapshotValidationError::Shape(format!(
+                            "mission {index} references invalid military unit {unit}"
+                        )));
+                    }
+                }
+            }
+            if let Some(navy) = &mission.navy {
+                self.validate_mission_navy(index, navy)?;
+            }
+            if let Some(beachhead) = &mission.beachhead {
+                self.validate_mission_navy(index, beachhead)?;
+            }
+        }
+        Ok(())
+    }
+
+    fn validate_mission_navy(
+        &self,
+        mission_index: usize,
+        navy: &SnapshotNavyMission,
+    ) -> Result<(), SnapshotValidationError> {
+        for (label, value, count) in [
+            ("ship", navy.selected_ship, self.military.ships.len()),
+            (
+                "task force",
+                navy.task_force,
+                self.military.task_forces.len(),
+            ),
+        ] {
+            if value >= 0 && usize::try_from(value).ok().is_none_or(|id| id >= count) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "mission {mission_index} references invalid {label} {value}"
+                )));
+            }
+        }
+        for child in &navy.ships {
+            if child[0] < 0
+                || usize::try_from(child[0])
+                    .ok()
+                    .is_none_or(|ship| ship >= self.military.ships.len())
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "mission {mission_index} references invalid child ship {}",
+                    child[0]
+                )));
+            }
+        }
+        Ok(())
+    }
+
+    fn validate_pending(&self) -> Result<(), SnapshotValidationError> {
+        if self.pending.nations.len() != 7 {
+            return Err(SnapshotValidationError::Shape(format!(
+                "expected seven pending nation records, found {}",
+                self.pending.nations.len()
+            )));
+        }
+        for (nation, pending) in self.pending.nations.iter().enumerate() {
+            if usize::from(pending.nation) != nation {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "invalid pending nation identity at slot {nation}"
+                )));
+            }
+            if pending
+                .turn_start_events
+                .iter()
+                .any(|event| event.class.is_empty())
+            {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "pending nation {nation} contains an untyped turn-start event"
+                )));
+            }
+            for (label, records) in [
+                ("turn event", pending.turn_events.as_slice()),
+                ("proposal", pending.proposals.as_slice()),
+            ] {
+                if records.iter().any(|record| !(0..23).contains(&record[1])) {
+                    return Err(SnapshotValidationError::Shape(format!(
+                        "pending nation {nation} contains an invalid {label} source"
+                    )));
+                }
+            }
+            if pending.turn_start_events.iter().any(|event| {
+                event
+                    .land_sale
+                    .is_some_and(|record| !(0..23).contains(&record[1]))
+            }) {
+                return Err(SnapshotValidationError::Shape(format!(
+                    "pending nation {nation} contains an invalid land-sale nation"
+                )));
+            }
+        }
+        if self
+            .pending
+            .war_transitions
+            .iter()
+            .any(|pair| !(0..23).contains(&pair[0]) || !(0..23).contains(&pair[1]))
+        {
+            return Err(SnapshotValidationError::Shape(
+                "pending war transition contains an invalid nation".to_owned(),
+            ));
+        }
+        Ok(())
+    }
 }
 
 impl SnapshotHashes {
-    fn iter(&self) -> [(&'static str, &str); 7] {
+    fn iter(&self) -> [(&'static str, &str); 9] {
         [
             ("metadata", &self.metadata),
             ("rng", &self.rng),
@@ -595,6 +815,8 @@ impl SnapshotHashes {
             ("nations", &self.nations),
             ("economy", &self.economy),
             ("military", &self.military),
+            ("missions", &self.missions),
+            ("pending", &self.pending),
             ("state", &self.state),
         ]
     }
@@ -876,6 +1098,52 @@ mod tests {
                     flagship: 0,
                     ships: vec![[0, 1]],
                 }],
+            },
+            missions: SnapshotMissions {
+                records: vec![SnapshotMission {
+                    index: 0,
+                    nation: 0,
+                    queue_index: 0,
+                    class: "TInvadeMission".to_owned(),
+                    source_nation: 0,
+                    path_marker: -1,
+                    state: 2,
+                    importance_bits: 0,
+                    marker: 0,
+                    army: Some(SnapshotArmyMission {
+                        present_location: 12,
+                        required_equipage_bits: [0; 5],
+                        units: vec![42],
+                    }),
+                    navy: None,
+                    attack: Some(SnapshotAttackMission {
+                        target_province: 12,
+                        amassing_province: 11,
+                    }),
+                    beachhead: Some(SnapshotNavyMission {
+                        target_zone: 57,
+                        resolved_port_zone: 57,
+                        selected_ship: 0,
+                        task_force: 0,
+                        state: 1,
+                        required_equipage_bits: [0; 4],
+                        ships: vec![[0, 1]],
+                    }),
+                    blockade_port_zone: None,
+                }],
+            },
+            pending: SnapshotPending {
+                turn_flow_status_flags: 0x40,
+                nations: (0_u8..7)
+                    .map(|nation| SnapshotNationPending {
+                        nation,
+                        turn_events: if nation == 6 { vec![[200, 3]] } else { vec![] },
+                        proposals: vec![],
+                        turn_summary: vec![],
+                        turn_start_events: vec![],
+                    })
+                    .collect(),
+                war_transitions: vec![],
             },
         };
         snapshot.refresh_hashes().unwrap();

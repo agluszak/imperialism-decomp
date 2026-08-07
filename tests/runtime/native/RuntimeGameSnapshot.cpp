@@ -11,10 +11,23 @@
 #include "game/globals/map_globals.h"
 #include "game/globals/nation_globals.h"
 #include "game/map/TMapMgr.h"
+#include "game/map/TBeachheadMission.h"
+#include "game/map/TBlockadePortMission.h"
+#include "game/map/TMission.h"
+#include "game/map/TNavyMission.h"
 #include "game/map/TZone.h"
 #include "game/map/map_records.h"
+#include "game/military/TArmyMission.h"
+#include "game/military/TAttackProvinceMission.h"
+#include "game/military/TInvadeMission.h"
 #include "game/military/TMilitaryUnit.h"
+#include "game/military_ui/TDiplomacyMgr.h"
+#include "game/military_ui/TSortedByRelationshipList.h"
+#include "game/nation/TAutoGreatPower.h"
 #include "game/nation/TGreatPower.h"
+#include "game/nation/TGreatPower_internal.h"
+#include "game/nation/TLandSaleEvent.h"
+#include "game/nation/TTurnStartEvent.h"
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TShip.h"
 #include "game/navy/TTaskForce.h"
@@ -358,6 +371,209 @@ int SnapshotTaskForceIndex(const TTaskForce* target) {
   return -1;
 }
 
+int SnapshotZoneIndex(const TZone* zone) {
+  return zone != 0 ? static_cast<int>(zone->contextOrdinal14) : -1;
+}
+
+void AppendArmyMission(CString& json, TArmyMission* mission) {
+  CString row;
+  row.Format("{\"present_location\":%d,\"required_equipage_bits\":[%u,%u,%u,%u,%u],"
+             "\"units\":[",
+             static_cast<int>(mission->presentLocation14),
+             FloatBits(mission->requiredEquipageByClass[0]),
+             FloatBits(mission->requiredEquipageByClass[1]),
+             FloatBits(mission->requiredEquipageByClass[2]),
+             FloatBits(mission->requiredEquipageByClass[3]),
+             FloatBits(mission->requiredEquipageByClass[4]));
+  json += row;
+  int unitOrdinal = 1;
+  int unitCount = mission->orderListAt18 != 0 ? mission->orderListAt18->GetCount() : 0;
+  for (; unitOrdinal <= unitCount; ++unitOrdinal) {
+    TMilitaryUnit* unit =
+        static_cast<TMilitaryUnit*>(mission->orderListAt18->GetEntryByOrdinal(unitOrdinal));
+    row.Format("%s%d", unitOrdinal == 1 ? "" : ",", unit != 0 ? unit->persistentUnitId20 : -1);
+    json += row;
+  }
+  json += "]}";
+}
+
+void AppendNavyMission(CString& json, TNavyMission* mission) {
+  CString row;
+  row.Format(
+      "{\"target_zone\":%d,\"resolved_port_zone\":%d,\"selected_ship\":%d,"
+      "\"task_force\":%d,\"state\":%d,"
+      "\"required_equipage_bits\":[%u,%u,%u,%u],\"ships\":[",
+      SnapshotZoneIndex(mission->missionTargetZone), SnapshotZoneIndex(mission->resolvedPortZone),
+      SnapshotShipIndex(mission->selectedOrder1c), SnapshotTaskForceIndex(mission->taskForce20),
+      mission->navyState28, FloatBits(mission->requiredShipEquipageByCategory[0]),
+      FloatBits(mission->requiredShipEquipageByCategory[1]),
+      FloatBits(mission->requiredShipEquipageByCategory[2]),
+      FloatBits(mission->requiredShipEquipageByCategory[3]));
+  json += row;
+  int childIndex = 0;
+  for (TMapOrderChildLinkNode* link = mission->orderList24; link != 0; link = link->next) {
+    row.Format("%s[%d,%u]", childIndex == 0 ? "" : ",",
+               SnapshotShipIndex(static_cast<TShip*>(link->payload)),
+               static_cast<unsigned int>(link->active));
+    json += row;
+    ++childIndex;
+  }
+  json += "]}";
+}
+
+CString CaptureMissions() {
+  CString json("{\"records\":[");
+  bool first = true;
+  int missionIndex = 0;
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation == 0 || nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+      continue;
+    }
+    TSortedList* queue = static_cast<TAutoGreatPower*>(nation)->missionQueue;
+    int missionCount = queue != 0 ? queue->GetCount() : 0;
+    for (int queueOrdinal = 1; queueOrdinal <= missionCount; ++queueOrdinal) {
+      TMission* mission = static_cast<TMission*>(queue->GetEntryByOrdinal(queueOrdinal));
+      if (mission == 0) {
+        continue;
+      }
+      CRuntimeClass* runtimeClass = mission->GetRuntimeClass();
+      CString row;
+      row.Format("%s{\"index\":%d,\"nation\":%d,\"queue_index\":%d,\"class\":", first ? "" : ",",
+                 missionIndex, nationSlot, queueOrdinal - 1);
+      json += row;
+      RuntimeJson::AppendString(json,
+                                runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
+      // TMission's retail constructor leaves flag10 uninitialized until Hold assigns it. It is
+      // therefore allocator history for fresh missions, not canonical state.
+      row.Format(",\"source_nation\":%d,\"path_marker\":%d,\"state\":%u,"
+                 "\"importance_bits\":%u,\"marker\":%u,\"army\":",
+                 static_cast<int>(mission->nationId04), static_cast<int>(mission->pathMarker06),
+                 static_cast<unsigned int>(mission->state08), FloatBits(mission->importanceScore0c),
+                 static_cast<unsigned int>(mission->marker11));
+      json += row;
+      if (mission->IsKindOf(RUNTIME_CLASS(TArmyMission))) {
+        AppendArmyMission(json, static_cast<TArmyMission*>(mission));
+      } else {
+        json += "null";
+      }
+      json += ",\"navy\":";
+      if (mission->IsKindOf(RUNTIME_CLASS(TNavyMission))) {
+        AppendNavyMission(json, static_cast<TNavyMission*>(mission));
+      } else {
+        json += "null";
+      }
+      json += ",\"attack\":";
+      if (mission->IsKindOf(RUNTIME_CLASS(TAttackProvinceMission))) {
+        TAttackProvinceMission* attack = static_cast<TAttackProvinceMission*>(mission);
+        row.Format("{\"target_province\":%d,\"amassing_province\":%d}",
+                   static_cast<int>(attack->targetProvince30),
+                   static_cast<int>(attack->amassingProvince32));
+        json += row;
+      } else {
+        json += "null";
+      }
+      json += ",\"beachhead\":";
+      if (mission->IsKindOf(RUNTIME_CLASS(TInvadeMission)) &&
+          static_cast<TInvadeMission*>(mission)->beachhead34 != 0) {
+        AppendNavyMission(json, static_cast<TInvadeMission*>(mission)->beachhead34);
+      } else {
+        json += "null";
+      }
+      json += ",\"blockade_port_zone\":";
+      if (mission->IsKindOf(RUNTIME_CLASS(TBlockadePortMission))) {
+        row.Format("%d", SnapshotZoneIndex(
+                             static_cast<TBlockadePortMission*>(mission)->portZoneContext3c));
+        json += row;
+      } else {
+        json += "null";
+      }
+      json += "}";
+      first = false;
+      ++missionIndex;
+    }
+  }
+  json += "]}";
+  return json;
+}
+
+void AppendRelationshipQueue(CString& json, TSortedByRelationshipList* queue) {
+  json += "[";
+  int count = queue != 0 ? queue->GetSize() : 0;
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    short* record = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    CString row;
+    row.Format("%s[%d,%d]", ordinal == 1 ? "" : ",", static_cast<int>(record[0]),
+               static_cast<int>(record[1]));
+    json += row;
+  }
+  json += "]";
+}
+
+CString CapturePending() {
+  CString json;
+  json.Format("{\"turn_flow_status_flags\":%u,\"nations\":[",
+              g_pSimMgr != 0 ? g_pSimMgr->turnFlowStatusFlags : 0);
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    CString row;
+    row.Format("%s{\"nation\":%d,\"turn_events\":", nationSlot == 0 ? "" : ",", nationSlot);
+    json += row;
+    AppendRelationshipQueue(json, nation != 0 ? nation->turnEventQueue : 0);
+    json += ",\"proposals\":";
+    AppendRelationshipQueue(json, nation != 0 ? nation->proposalQueue : 0);
+    json += ",\"turn_summary\":[";
+    int summaryCount =
+        nation != 0 && nation->turnSummaryQueue != 0 ? nation->turnSummaryQueue->GetSize() : 0;
+    for (int summaryOrdinal = 1; summaryOrdinal <= summaryCount; ++summaryOrdinal) {
+      TurnOrderDispatchPacket* packet = static_cast<TurnOrderDispatchPacket*>(
+          nation->turnSummaryQueue->GetPtrListEntryByOneBasedIndex(summaryOrdinal));
+      row.Format("%s[%d,%d,%d,%d]", summaryOrdinal == 1 ? "" : ",",
+                 static_cast<int>(packet->turnTick), static_cast<int>(packet->orderKind),
+                 static_cast<int>(packet->payload), static_cast<int>(packet->flags));
+      json += row;
+    }
+    json += "],\"turn_start_events\":[";
+    int eventCount =
+        nation != 0 && nation->missionNodeQueue != 0 ? nation->missionNodeQueue->GetCount() : 0;
+    for (int eventOrdinal = 1; eventOrdinal <= eventCount; ++eventOrdinal) {
+      TTurnStartEvent* event =
+          static_cast<TTurnStartEvent*>(nation->missionNodeQueue->GetEntryByOrdinal(eventOrdinal));
+      CRuntimeClass* runtimeClass = event != 0 ? event->GetRuntimeClass() : 0;
+      row.Format("%s{\"class\":", eventOrdinal == 1 ? "" : ",");
+      json += row;
+      RuntimeJson::AppendString(json,
+                                runtimeClass != 0 ? runtimeClass->m_lpszClassName : "unknown");
+      row.Format(",\"tag\":%d,\"land_sale\":", event != 0 ? event->eventTag04 : 0);
+      json += row;
+      if (event != 0 && event->IsKindOf(RUNTIME_CLASS(TLandSaleEvent))) {
+        TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
+        row.Format("[%d,%d]", static_cast<int>(landSale->tileIndex08),
+                   static_cast<int>(landSale->nationCode0a));
+        json += row;
+      } else {
+        json += "null";
+      }
+      json += "}";
+    }
+    json += "]}";
+  }
+  json += "],\"war_transitions\":[";
+  TSortedPtrList* warQueue = g_pDiplomacyTurnStateManager != 0
+                                 ? g_pDiplomacyTurnStateManager->pendingWarTransitionQueue
+                                 : 0;
+  int warCount = warQueue != 0 ? warQueue->GetSize() : 0;
+  for (int warOrdinal = 1; warOrdinal <= warCount; ++warOrdinal) {
+    short* pair = static_cast<short*>(warQueue->GetPtrListEntryByOneBasedIndex(warOrdinal));
+    CString row;
+    row.Format("%s[%d,%d]", warOrdinal == 1 ? "" : ",", static_cast<int>(pair[0]),
+               static_cast<int>(pair[1]));
+    json += row;
+  }
+  json += "]}";
+  return json;
+}
+
 CString CaptureMilitary() {
   CString json("{\"units\":[");
   bool first = true;
@@ -468,35 +684,43 @@ bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson) {
   CString nations(CaptureNations());
   CString economy(CaptureEconomy());
   CString military(CaptureMilitary());
+  CString missions(CaptureMissions());
+  CString pending(CapturePending());
   CString state(metadata);
   state += rng;
   state += world;
   state += nations;
   state += economy;
   state += military;
+  state += missions;
+  state += pending;
   CString metadataHash(RuntimeHashText(metadata));
   CString rngHash(RuntimeHashText(rng));
   CString worldHash(RuntimeHashText(world));
   CString nationsHash(RuntimeHashText(nations));
   CString economyHash(RuntimeHashText(economy));
   CString militaryHash(RuntimeHashText(military));
+  CString missionsHash(RuntimeHashText(missions));
+  CString pendingHash(RuntimeHashText(pending));
   CString stateHash(RuntimeHashText(state));
 
-  snapshotJson.Format("{\"schema\":\"imperialism.game_snapshot.v1\","
-                      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\","
-                      "\"military\"],"
-                      "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
-                      "\"nations\":\"%s\",\"economy\":\"%s\",\"military\":\"%s\","
-                      "\"state\":\"%s\"},"
-                      "\"metadata\":%s,\"rng\":%s,\"world\":%s,\"nations\":%s,"
-                      "\"economy\":%s,\"military\":%s}",
-                      static_cast<LPCSTR>(metadataHash), static_cast<LPCSTR>(rngHash),
-                      static_cast<LPCSTR>(worldHash), static_cast<LPCSTR>(nationsHash),
-                      static_cast<LPCSTR>(economyHash), static_cast<LPCSTR>(militaryHash),
-                      static_cast<LPCSTR>(stateHash), static_cast<LPCSTR>(metadata),
-                      static_cast<LPCSTR>(rng), static_cast<LPCSTR>(world),
-                      static_cast<LPCSTR>(nations), static_cast<LPCSTR>(economy),
-                      static_cast<LPCSTR>(military));
+  snapshotJson.Format(
+      "{\"schema\":\"imperialism.game_snapshot.v1\","
+      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\","
+      "\"military\",\"missions\",\"pending\"],"
+      "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
+      "\"nations\":\"%s\",\"economy\":\"%s\",\"military\":\"%s\","
+      "\"missions\":\"%s\",\"pending\":\"%s\","
+      "\"state\":\"%s\"},"
+      "\"metadata\":%s,\"rng\":%s,\"world\":%s,\"nations\":%s,"
+      "\"economy\":%s,\"military\":%s,\"missions\":%s,\"pending\":%s}",
+      static_cast<LPCSTR>(metadataHash), static_cast<LPCSTR>(rngHash),
+      static_cast<LPCSTR>(worldHash), static_cast<LPCSTR>(nationsHash),
+      static_cast<LPCSTR>(economyHash), static_cast<LPCSTR>(militaryHash),
+      static_cast<LPCSTR>(missionsHash), static_cast<LPCSTR>(pendingHash),
+      static_cast<LPCSTR>(stateHash), static_cast<LPCSTR>(metadata), static_cast<LPCSTR>(rng),
+      static_cast<LPCSTR>(world), static_cast<LPCSTR>(nations), static_cast<LPCSTR>(economy),
+      static_cast<LPCSTR>(military), static_cast<LPCSTR>(missions), static_cast<LPCSTR>(pending));
   return true;
 }
 

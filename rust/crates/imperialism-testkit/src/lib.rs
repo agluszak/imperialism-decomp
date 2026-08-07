@@ -105,6 +105,16 @@ pub fn first_snapshot_difference(
             serde_json::to_value(&original.military)?,
             serde_json::to_value(&reimplementation.military)?,
         ),
+        (
+            "missions",
+            serde_json::to_value(&original.missions)?,
+            serde_json::to_value(&reimplementation.missions)?,
+        ),
+        (
+            "pending",
+            serde_json::to_value(&original.pending)?,
+            serde_json::to_value(&reimplementation.pending)?,
+        ),
     ] {
         if let Some(difference) = difference_at(
             name.to_owned(),

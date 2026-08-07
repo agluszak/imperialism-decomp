@@ -12,7 +12,16 @@ from tools.runtime.catalog import EVIDENCE_KINDS
 
 FORMAT_VERSION = 1
 GAME_SNAPSHOT_SCHEMA = "imperialism.game_snapshot.v1"
-GAME_SNAPSHOT_SECTIONS = ("metadata", "rng", "world", "nations", "economy", "military")
+GAME_SNAPSHOT_SECTIONS = (
+    "metadata",
+    "rng",
+    "world",
+    "nations",
+    "economy",
+    "military",
+    "missions",
+    "pending",
+)
 HASH_PATTERN = re.compile(r"[0-9a-f]{8}")
 
 
@@ -73,6 +82,26 @@ def validate_game_snapshot(snapshot: object) -> None:
         for tile in tiles
     ):
         raise ValueError("game_snapshot world tile rows must contain ten integers")
+
+    missions = snapshot["missions"].get("records")
+    if not isinstance(missions, list):
+        raise ValueError("game_snapshot missions must contain ordered records")
+    for index, mission in enumerate(missions):
+        if (
+            not isinstance(mission, dict)
+            or mission.get("index") != index
+            or not isinstance(mission.get("class"), str)
+        ):
+            raise ValueError("game_snapshot mission identity is invalid")
+
+    pending_nations = snapshot["pending"].get("nations")
+    if not isinstance(pending_nations, list) or len(pending_nations) != 7:
+        raise ValueError("game_snapshot pending work must contain seven nation records")
+    if any(
+        not isinstance(record, dict) or record.get("nation") != nation
+        for nation, record in enumerate(pending_nations)
+    ):
+        raise ValueError("game_snapshot pending nation identity is invalid")
 
     records = snapshot["nations"].get("records")
     if not isinstance(records, list) or len(records) != 23:
