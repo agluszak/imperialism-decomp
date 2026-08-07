@@ -1688,32 +1688,52 @@ void TViewMgr::SyncTacticalStatusPanelRegion() {
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
 void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
-  turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
-  turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
+  CString sharedString;
+  TView* mainView = g_pDisplayMgr->activeDialog;
+  g_pSimMgr->SetFlags(0x100);
 
-  TToolBarCluster* topToolbar = static_cast<TToolBarCluster*>(
-      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTopB));
+  g_pCursorControlPanel =
+      static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TUpDownPictureButton* tradeControl =
+      static_cast<TUpDownPictureButton*>(mainView->ResolveControlByTag(kControlTagTrad));
+  if (tradeControl != 0) {
+    tradeControl->SetPictureResourceIdAndRefresh(static_cast<short>(tradeControl->glyphBase84 + 1),
+                                                 false);
+    tradeControl->ViewEnable(0, 0);
+    g_pSimMgr->GetString(0x2730, 0x1b, &sharedString);
+    SetControlHoverHelpTextAltEntry(sharedString, tradeControl);
+  }
+
+  TToolBarCluster* topToolbar =
+      static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTopB));
   topToolbar->AssertValid();
   topToolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
-  TToolBarCluster* toolbar = static_cast<TToolBarCluster*>(
-      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagTool));
+  TToolBarCluster* toolbar =
+      static_cast<TToolBarCluster*>(mainView->ResolveControlByTag(kControlTagTool));
   toolbar->AssertValid();
-  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(static_cast<short>(nationIndex));
+  toolbar->UpdateControlTagTreaTextFromNationAndMapContext(nationIndex);
   toolbar->RefreshTurnOrderStatusPanelTextsAndControls();
 
-  turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagQuer, 0x2730, 2);
+  TView* queryControl = mainView->ResolveControlByTag(kControlTagQuer);
+  if (queryControl != 0) {
+    g_pSimMgr->GetString(0x2730, 2, &sharedString);
+    SetControlHoverHelpText(sharedString, queryControl);
+  }
 
-  TControl* mainControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMain);
+  TView* mainControl = mainView->ResolveControlByTag(kControlTagMain);
   mainControl->AssertValid();
-  mainControl->SetHoverHelpText(g_szEmptyString);
+  sharedString = CString(g_szEmptyString);
+  SetControlHoverHelpText(sharedString, mainControl);
 
-  TGreatPower* nation = g_apNationStates[static_cast<short>(nationIndex)];
-  g_pSimMgr->SetFlags(0x100);
-  nation->RecallTradeBids();
+  short nationSlot = static_cast<short>(nationIndex);
+  g_apNationStates[nationSlot]->RecallTradeBids();
   this->fieldEc = 0;
   for (short metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
-    if (nation->GetTradeOffersFor(metricSlot) == -1) {
+    if (g_apNationStates[nationSlot]->GetTradeOffersFor(metricSlot) == -1) {
       this->fieldEc = static_cast<short>(this->fieldEc + 1);
     }
   }
@@ -1726,60 +1746,70 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   const unsigned int kTagQuantityTitle = IMPERIALISM_FOURCC('q', 't', 'y', 'T');
   const unsigned int kTagMiniPicture = IMPERIALISM_FOURCC('m', 'P', 'i', 'c');
 
-  CString label;
+  TextStyle columnStyle = {0};
   TDropShadowText* title =
-      static_cast<TDropShadowText*>(turn_event_ui_refresh::ResolveMainTaggedControl(kTagTopTitle));
+      static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kTagTopTitle));
   title->AssertValid();
   ApplyUiTextStyleAndThemeFlags(title, 0, 0x10, 0x2b6c, 0x2b67);
-  g_pSimMgr->GetString(0x2731, 0xc, &label);
-  title->SetTextAndMaybeRefresh(&label, 0);
+  g_pSimMgr->GetString(0x2731, 0xc, &sharedString);
+  title->SetTextAndMaybeRefresh(&sharedString, 0);
 
-  TDropShadowText* commodityTitle = static_cast<TDropShadowText*>(
-      turn_event_ui_refresh::ResolveMainTaggedControl(kTagCommodityTitle));
+  TDropShadowText* commodityTitle =
+      static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kTagCommodityTitle));
   commodityTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(commodityTitle, 0, 0xc, 0x2b6c, 0x2b67);
-  g_pSimMgr->GetString(0x2731, 0xd, &label);
-  commodityTitle->SetTextAndMaybeRefresh(&label, 0);
+  g_pSimMgr->GetString(0x2731, 0, &sharedString);
+  g_pSimMgr->GetString(0x2731, 0xd, &sharedString);
+  commodityTitle->SetTextAndMaybeRefresh(&sharedString, 0);
 
-  TDropShadowText* ordersTitle = static_cast<TDropShadowText*>(
-      turn_event_ui_refresh::ResolveMainTaggedControl(kTagOrdersTitle));
+  TDropShadowText* ordersTitle =
+      static_cast<TDropShadowText*>(mainView->ResolveControlByTag(kTagOrdersTitle));
   ordersTitle->AssertValid();
   ApplyUiTextStyleAndThemeFlags(ordersTitle, 0, 0xc, 0x2b6c, 0x2b67);
-  g_pSimMgr->GetString(0x2731, 0xe, &label);
-  ordersTitle->SetTextAndMaybeRefresh(&label, 0);
+  g_pSimMgr->GetString(0x2731, 0xe, &sharedString);
+  ordersTitle->SetTextAndMaybeRefresh(&sharedString, 0);
 
-  TextStyle columnStyle;
   BuildUiTextStyleDescriptor(&columnStyle, 0, 0xc, 0x2b68);
-  const unsigned int columnTags[3] = {kTagPriceTitle, kTagAvailableTitle, kTagQuantityTitle};
-  for (short column = 0; column < 3; ++column) {
-    TStaticText* columnTitle = static_cast<TStaticText*>(
-        turn_event_ui_refresh::ResolveMainTaggedControl(columnTags[column]));
-    columnTitle->AssertValid();
-    columnTitle->InstallTextStyle(columnStyle, 0);
-    g_pSimMgr->GetString(0x2731, static_cast<short>(0xf + column), &label);
-    columnTitle->SetTextAndMaybeRefresh(&label, 0);
-  }
+  TStaticText* priceTitle =
+      static_cast<TStaticText*>(mainView->ResolveControlByTag(kTagPriceTitle));
+  priceTitle->AssertValid();
+  priceTitle->InstallTextStyle(columnStyle, 0);
+  g_pSimMgr->GetString(0x2731, 0xf, &sharedString);
+  priceTitle->SetTextAndMaybeRefresh(&sharedString, 0);
 
-  TView* miniPicture = turn_event_ui_refresh::ResolveMainTaggedControl(kTagMiniPicture);
+  TStaticText* availableTitle =
+      static_cast<TStaticText*>(mainView->ResolveControlByTag(kTagAvailableTitle));
+  availableTitle->AssertValid();
+  availableTitle->InstallTextStyle(columnStyle, 0);
+  g_pSimMgr->GetString(0x2731, 0x10, &sharedString);
+  availableTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+
+  TStaticText* quantityTitle =
+      static_cast<TStaticText*>(mainView->ResolveControlByTag(kTagQuantityTitle));
+  quantityTitle->AssertValid();
+  quantityTitle->InstallTextStyle(columnStyle, 0);
+  g_pSimMgr->GetString(0x2731, 0x11, &sharedString);
+  quantityTitle->SetTextAndMaybeRefresh(&sharedString, 0);
+
+  TView* miniPicture = mainView->ResolveControlByTag(kTagMiniPicture);
   miniPicture->AssertValid();
-  g_pSimMgr->GetString(0x2731, 3, &label);
-  miniPicture->SetHoverHelpText(label);
+  g_pSimMgr->GetString(0x2731, 3, &sharedString);
+  SetControlHoverHelpText(sharedString, miniPicture);
 
-  TDropShadowNumberText* capacity = static_cast<TDropShadowNumberText*>(
-      turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagMCap));
+  TDropShadowNumberText* capacity =
+      static_cast<TDropShadowNumberText*>(mainView->ResolveControlByTag(kControlTagMCap));
   if (capacity == nullptr) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x686);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa52);
   }
-  capacity->AssertValid();
   ApplyUiNumberTextStyleAndThemeColor(capacity, 0, 0xa, 0x2b6c, 0x2b67);
-  capacity->HiliteState(1, 0);
-  capacity->SetControlValue(nation->merchantCapacity, 0);
+  capacity->SetTextAlignmentAndMaybeRefresh(1, 0);
+  capacity->SetControlValue(g_apNationStates[nationSlot]->merchantCapacity, 0);
 
-  TCity* city = nation->city;
+  TCity* city = g_apNationStates[nationSlot] == 0 ? 0 : g_apNationStates[nationSlot]->city;
   if (city == nullptr) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x697);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa5a);
   }
   short* citySummary = city->GetCitySummaryRecordSlot74();
 
@@ -1794,75 +1824,142 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
   const unsigned int kTagLumber = IMPERIALISM_FOURCC('l', 'u', 'm', 'b');
   const unsigned int kTagSteel = IMPERIALISM_FOURCC('s', 't', 'e', 'e');
 
-  TView* food = turn_event_ui_refresh::ResolveMainTaggedControl(kTagFood);
+  TView* food = mainView->ResolveControlByTag(kTagFood);
   if (food == nullptr) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x6ad);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xa60);
   }
-  const int foodOnHand =
+  const short foodOnHand = static_cast<short>(
       city->cityStockCannedFoodC4 + city->cityStockLivestockDE + city->cityStockGrainD8 +
-      city->cityStockFruitDA + nation->needTargetByType[kResourceLivestock] +
-      nation->needTargetByType[kResourceFruit] + nation->needTargetByType[kResourceFish] +
-      nation->needTargetByType[kResourceGrain];
-  const int foodRequired =
-      citySummary[kResourceLivestock] + citySummary[kResourceFruit] + citySummary[kResourceGrain];
-  const bool foodShortage = foodOnHand < foodRequired;
-  food->Show(foodShortage ? 1 : 0, 0);
-  g_pSimMgr->GetString(0x2731, foodShortage ? 4 : 8, &label);
-  food->SetHoverHelpText(label);
-
-  TView* cotton = turn_event_ui_refresh::ResolveMainTaggedControl(kTagCotton);
-  TView* wool = turn_event_ui_refresh::ResolveMainTaggedControl(kTagWool);
-  const bool textileShortage = city->cityStockCottonB6 + city->cityStockWoolB8 +
-                                   nation->needTargetByType[kResourceCotton] +
-                                   nation->needTargetByType[kResourceWool] <
-                               city->GetBuildingType(0) * 2;
-  g_pSimMgr->GetString(0x2731, 0x13, &label);
-  cotton->Show(textileShortage ? 1 : 0, 0);
-  wool->Show(textileShortage ? 1 : 0, 0);
-  cotton->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
-  wool->SetHoverHelpText(textileShortage ? label : CString(g_szEmptyString));
-
-  struct ShortageControl {
-    unsigned int tag;
-    short stock;
-    short needType;
-    short buildingType;
-    short multiplier;
-    short stringIndex;
-  };
-  const ShortageControl shortageControls[7] = {
-      {kTagTimber, city->cityStockTimberBA, kResourceTimber, 4, 2, 0x15},
-      {kTagCoal, city->cityStockCoalBC, kResourceCoal, 2, 1, 0x16},
-      {kTagIron, city->cityStockIronBE, kResourceIron, 2, 1, 0x17},
-      {kTagOil, city->cityStockOilC2, kResourceOil, 6, 2, 0x18},
-      {kTagFabric, city->cityStockFabricC6, kResourceFabric, 1, 2, 0x19},
-      {kTagLumber, city->cityStockLumberC8, kResourceLumber, 5, 2, 0x1a},
-      {kTagSteel, city->cityStockSteelCC, kResourceSteel, 3, 2, 0x1b}};
-  for (short i = 0; i < 7; ++i) {
-    TView* shortageControl =
-        turn_event_ui_refresh::ResolveMainTaggedControl(shortageControls[i].tag);
-    const bool shortage =
-        shortageControls[i].stock + nation->needTargetByType[shortageControls[i].needType] <
-        city->GetBuildingType(shortageControls[i].buildingType) * shortageControls[i].multiplier;
-    shortageControl->Show(shortage ? 1 : 0, 0);
-    if (shortage) {
-      g_pSimMgr->GetString(0x2731, shortageControls[i].stringIndex, &label);
-      shortageControl->SetHoverHelpText(label);
-    } else {
-      shortageControl->SetHoverHelpText(g_szEmptyString);
-    }
+      city->cityStockFruitDA + g_apNationStates[nationSlot]->needTargetByType[kResourceLivestock] +
+      g_apNationStates[nationSlot]->needTargetByType[kResourceFruit] +
+      g_apNationStates[nationSlot]->needTargetByType[kResourceFish] +
+      g_apNationStates[nationSlot]->needTargetByType[kResourceGrain]);
+  const short foodRequired = static_cast<short>(
+      citySummary[kResourceLivestock] + citySummary[kResourceFruit] + citySummary[kResourceGrain]);
+  if (foodOnHand < foodRequired) {
+    food->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 4, &sharedString);
+  } else {
+    food->Show(0, 0);
+    g_pSimMgr->GetString(0x2731, 8, &sharedString);
   }
+  SetControlHoverHelpText(sharedString, food);
 
-  if (nation->merchantCapacity == 0) {
-    g_pSimMgr->GetString(0x2731, 0x12, &label);
-    ModalMessage(label, g_ptCitySiteSelectionDialogPlacement);
+  TView* cotton = mainView->ResolveControlByTag(kTagCotton);
+  TView* wool = mainView->ResolveControlByTag(kTagWool);
+  short textileNeeds =
+      static_cast<short>(g_apNationStates[nationSlot]->needTargetByType[kResourceCotton] +
+                         g_apNationStates[nationSlot]->needTargetByType[kResourceWool]);
+  short textileStock = static_cast<short>(city->cityStockWoolB8 + city->cityStockCottonB6);
+  if (static_cast<int>(textileStock) + static_cast<int>(textileNeeds) <
+      static_cast<short>(city->GetBuildingType(0) << 1)) {
+    cotton->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x13, &sharedString);
+    SetControlHoverHelpText(sharedString, cotton);
+    wool->Show(1, 0);
+  } else {
+    cotton->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    SetControlHoverHelpText(sharedString, cotton);
+    wool->Show(0, 0);
+  }
+  SetControlHoverHelpText(sharedString, wool);
+
+  TView* timber = mainView->ResolveControlByTag(kTagTimber);
+  if (static_cast<int>(city->cityStockTimberBA) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceTimber]) <
+      static_cast<short>(city->GetBuildingType(4) * 2)) {
+    timber->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x15, &sharedString);
+  } else {
+    timber->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, timber);
+
+  TView* coal = mainView->ResolveControlByTag(kTagCoal);
+  if (static_cast<int>(city->cityStockCoalBC) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceCoal]) <
+      static_cast<int>(city->GetBuildingType(2))) {
+    coal->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x16, &sharedString);
+  } else {
+    coal->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, coal);
+
+  TView* iron = mainView->ResolveControlByTag(kTagIron);
+  if (static_cast<int>(city->cityStockIronBE) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceIron]) <
+      static_cast<int>(city->GetBuildingType(2))) {
+    iron->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x17, &sharedString);
+  } else {
+    iron->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, iron);
+
+  TView* oil = mainView->ResolveControlByTag(kTagOil);
+  if (static_cast<int>(city->cityStockOilC2) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceOil]) <
+      static_cast<short>(city->GetBuildingType(6) * 2)) {
+    oil->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x18, &sharedString);
+  } else {
+    oil->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, oil);
+
+  TView* fabric = mainView->ResolveControlByTag(kTagFabric);
+  if (static_cast<int>(city->cityStockFabricC6) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceFabric]) <
+      static_cast<short>(city->GetBuildingType(1) * 2)) {
+    fabric->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x19, &sharedString);
+  } else {
+    fabric->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, fabric);
+
+  TView* lumber = mainView->ResolveControlByTag(kTagLumber);
+  if (static_cast<int>(city->cityStockLumberC8) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceLumber]) <
+      static_cast<short>(city->GetBuildingType(5) * 2)) {
+    lumber->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x1a, &sharedString);
+  } else {
+    lumber->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+  }
+  SetControlHoverHelpText(sharedString, lumber);
+
+  TView* steel = mainView->ResolveControlByTag(kTagSteel);
+  if (static_cast<int>(city->cityStockSteelCC) +
+          static_cast<int>(g_apNationStates[nationSlot]->needTargetByType[kResourceSteel]) <
+      static_cast<short>(city->GetBuildingType(3) * 2)) {
+    steel->Show(1, 0);
+    g_pSimMgr->GetString(0x2731, 0x1b, &sharedString);
+    SetControlHoverHelpText(sharedString, steel);
+  } else {
+    steel->Show(0, 0);
+    sharedString = CString(g_pNationInfoEmptyText_0066f050);
+    SetControlHoverHelpText(sharedString, steel);
+  }
+  SetControlHoverHelpText(sharedString, steel);
+
+  if (g_apNationStates[nationSlot]->merchantCapacity == 0) {
+    g_pSimMgr->GetString(0x2731, 0x12, &sharedString);
+    g_pViewMgr->ModalMessage(sharedString, g_ptCitySiteSelectionDialogPlacement);
     this->fieldEc = 5;
   }
 
   for (short commodity = 0; commodity < 0x11; ++commodity) {
-    TView* row = turn_event_ui_refresh::ActiveMainView()->ResolveControlByTag(
-        g_tradeCommodityRowTagTable[commodity]);
+    TView* row = mainView->ResolveControlByTag(g_strategicMapStatusIconTagTable[commodity]);
     if (row == nullptr) {
       continue;
     }
@@ -1872,8 +1969,8 @@ void TViewMgr::RefreshTradeAndIndustryOverviewScreen(int nationIndex) {
         g_pTechMgr->perTechUnlockFlag180[TTechMgr::kProductionOrderTechId] == 0) {
       row->Free();
     } else {
-      g_pSimMgr->GetStringPrelude(commodity, &label);
-      row->SetHoverHelpText(label);
+      g_pSimMgr->GetStringPrelude(commodity, &sharedString);
+      SetControlHoverHelpText(sharedString, row);
     }
   }
 }

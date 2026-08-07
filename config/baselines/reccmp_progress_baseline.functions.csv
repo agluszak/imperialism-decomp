@@ -6154,7 +6154,7 @@ address|matching|name
 0x5d8980|0.6394984326018809|TViewMgr::ShowAbilityStatusReport
 0x5d8c40|1.0|TViewMgr::ShowNewspaper
 0x5d8cc0|1.0|TViewMgr::SyncTacticalStatusPanelRegion
-0x5d8dd0|0.11883289124668435|TViewMgr::RefreshTradeAndIndustryOverviewScreen
+0x5d8dd0|0.7326454033771107|TViewMgr::RefreshTradeAndIndustryOverviewScreen
 0x5da040|0.5483870967741935|TViewMgr::RefreshMainDialogAndCursorHelp
 0x5da180|0.958139534883721|TViewMgr::ShowDealBookScreen
 0x5da360|0.6070120355834642|TViewMgr::ShowTerrainMap
