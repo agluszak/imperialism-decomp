@@ -152,7 +152,26 @@ functions:
     name: BuildTurnEventDialogResourcesForEvent898
     prototype: TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode)
     cases:
-      - {event: 0x0898, resource: Tech.rsrc:2200}
+      - event: 0x0898
+        resource: Tech.rsrc:2200
+        windows_overrides:
+          0x0048:
+            control_value: 0
+            content_insets: [0, 0, 0, 0]
+            style: {word: 0, packed_color: 0xffffff}
+            evidence: "original builder 0x0045d69a-0x0045d758 stores field3c=0, zero insets, and {packedColor=0xffffff, styleWord=0}"
+          0x00de:
+            text_source: g_szUiPlaceholderSampleText_00694A98
+            evidence: "original builder 0x0045d865 passes the retail string global at 0x00694a98"
+          0x01b5:
+            enabled: 0
+            evidence: "original builder 0x0045da22-0x0045da30 calls Show(0, 0)"
+          0x0223:
+            text_source: g_szUiPlaceholderSeason_006943BC
+            evidence: "original builder 0x0045dba3 passes the retail string global at 0x006943bc"
+          0x0298:
+            text_source: g_szUiPlaceholderTreasury_006943B0
+            evidence: "original builder 0x0045dcc7 passes the retail string global at 0x006943b0"
 
   - address: 0x0045e0b0
     name: BuildTurnEventDialogResourcesForEvent8FC

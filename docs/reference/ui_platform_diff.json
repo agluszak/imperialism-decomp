@@ -61916,22 +61916,28 @@
               "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
             },
             "0x0048": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0045d69a-0x0045d758 stores field3c=0, zero insets, and {packedColor=0xffffff, styleWord=0}",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 1
+              },
               "generated_lines": [
                 25,
-                32
+                33
               ],
               "mac_source": "Tech.rsrc:2200 node 0x0048",
               "semantic": {
                 "child_hit_test": 1,
                 "class_name": "TPicture",
-                "control_value": 65536,
+                "control_value": 0,
                 "enabled": 1,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
-                    1,
+                    0,
                     0,
                     0,
                     0
@@ -61941,7 +61947,10 @@
                   "max_chars": null,
                   "number": null,
                   "picture_id": 2200,
-                  "style": null,
+                  "style": {
+                    "packed_color": 16777215,
+                    "word": 0
+                  },
                   "text": null,
                   "window": null
                 },
@@ -61959,14 +61968,20 @@
                 "type_code": "pict"
               },
               "tag": "main",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0045d69a-0x0045d758 stores field3c=0, zero insets, and {packedColor=0xffffff, styleWord=0}"
             },
             "0x00de": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0045d865 passes the retail string global at 0x00694a98",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 1
+              },
               "generated_lines": [
-                33,
-                40
+                34,
+                41
               ],
               "mac_source": "Tech.rsrc:2200 node 0x00de",
               "semantic": {
@@ -61994,10 +62009,10 @@
                     "point_size": 12,
                     "resource_id": 3200,
                     "resource_index": 1,
-                    "source": null,
+                    "source": "g_szUiPlaceholderSampleText_00694A98",
                     "style_ref": 0,
                     "theme": 1,
-                    "value": "Sample Text 1\r2\r3\r4\r5\r6\r7\r8"
+                    "value": null
                   },
                   "window": null
                 },
@@ -62015,14 +62030,14 @@
                 "type_code": "stat"
               },
               "tag": "text",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0045d865 passes the retail string global at 0x00694a98"
             },
             "0x0144": {
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                42,
-                49
+                43,
+                50
               ],
               "mac_source": "Tech.rsrc:2200 node 0x0144",
               "semantic": {
@@ -62064,18 +62079,24 @@
               "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
             },
             "0x01b5": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0045da22-0x0045da30 calls Show(0, 0)",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 0
+              },
               "generated_lines": [
-                50,
-                57
+                51,
+                58
               ],
               "mac_source": "Tech.rsrc:2200 node 0x01b5",
               "semantic": {
                 "child_hit_test": 1,
                 "class_name": "TPictureButton",
                 "control_value": 0,
-                "enabled": 1,
+                "enabled": 0,
                 "family": {
                   "cluster_value": null,
                   "content_insets": [
@@ -62107,14 +62128,20 @@
                 "type_code": "pict"
               },
               "tag": "end ",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0045da22-0x0045da30 calls Show(0, 0)"
             },
             "0x0223": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0045dba3 passes the retail string global at 0x006943bc",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 1
+              },
               "generated_lines": [
-                59,
-                66
+                60,
+                67
               ],
               "mac_source": "Tech.rsrc:2200 node 0x0223",
               "semantic": {
@@ -62142,10 +62169,10 @@
                     "point_size": 9,
                     "resource_id": 3300,
                     "resource_index": 1,
-                    "source": null,
+                    "source": "g_szUiPlaceholderSeason_006943BC",
                     "style_ref": 0,
                     "theme": 1,
-                    "value": "Winter, 1888"
+                    "value": null
                   },
                   "window": null
                 },
@@ -62163,14 +62190,20 @@
                 "type_code": "stat"
               },
               "tag": "seas",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0045dba3 passes the retail string global at 0x006943bc"
             },
             "0x0298": {
-              "classification": "same_semantics",
-              "delta": null,
+              "classification": "expected_windows_field_override",
+              "delta": {
+                "evidence": "original builder 0x0045dcc7 passes the retail string global at 0x006943b0",
+                "field": "enabled",
+                "mac": 1,
+                "reason": "original Windows builder differs from the Mac resource",
+                "windows": 1
+              },
               "generated_lines": [
-                68,
-                75
+                69,
+                76
               ],
               "mac_source": "Tech.rsrc:2200 node 0x0298",
               "semantic": {
@@ -62198,10 +62231,10 @@
                     "point_size": 9,
                     "resource_id": 3300,
                     "resource_index": 2,
-                    "source": null,
+                    "source": "g_szUiPlaceholderTreasury_006943B0",
                     "style_ref": 0,
                     "theme": 1,
-                    "value": "$55,555"
+                    "value": null
                   },
                   "window": null
                 },
@@ -62219,14 +62252,14 @@
                 "type_code": "stat"
               },
               "tag": "trea",
-              "windows_binary_evidence": "not encoded; Mac semantic resource is canonical for functional parity"
+              "windows_binary_evidence": "original builder 0x0045dcc7 passes the retail string global at 0x006943b0"
             },
             "0x030d": {
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                78,
-                83
+                79,
+                84
               ],
               "mac_source": "Tech.rsrc:2200 node 0x030d",
               "semantic": {
@@ -62266,8 +62299,8 @@
               "classification": "same_semantics",
               "delta": null,
               "generated_lines": [
-                85,
-                92
+                86,
+                93
               ],
               "mac_source": "Tech.rsrc:2200 node 0x03ab",
               "semantic": {
@@ -62313,7 +62346,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045d520.cpp",
-      "generated_sha256": "d09b79253656c426a04ebbde0e4228dec5a24f0110c7f348bebd7c2cb03fb2a5",
+      "generated_sha256": "199cec4b2ed014cbdac4dabbed97caf392b76df49613ae11b5a54a28ecf2c95f",
       "name": "BuildTurnEventDialogResourcesForEvent898"
     },
     "0x0045e0b0": {
@@ -85919,12 +85952,12 @@
   "summary": {
     "cases": 82,
     "expected_windows_class_substitution": 1,
-    "expected_windows_field_override": 3,
+    "expected_windows_field_override": 8,
     "functional_parity_cases": 0,
     "functions": 17,
     "mapped_mac_cases": 81,
     "nodes": 1729,
-    "same_semantics": 1713,
+    "same_semantics": 1708,
     "unexplained_deltas": 0,
     "windows_only_cases": 1,
     "windows_only_nodes": 12

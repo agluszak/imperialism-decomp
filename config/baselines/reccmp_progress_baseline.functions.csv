@@ -286,7 +286,7 @@ address|matching|name
 0x45d480|1.0|TTacticalHolaPicture::TTacticalHolaPicture
 0x45d4b0|1.0|TTacticalHolaPicture::`scalar deleting destructor'
 0x45d4e0|1.0|TTacticalHolaPicture::~TTacticalHolaPicture
-0x45d520|0.3854239663629993|BuildTurnEventDialogResourcesForEvent898
+0x45d520|0.38714185883997204|BuildTurnEventDialogResourcesForEvent898
 0x45e0b0|0.5947596031544137|BuildTurnEventDialogResourcesForEvent8FC
 0x4600c0|1.0|TTechStorePage::TTechStorePage
 0x4600f0|1.0|TTechStorePage::`scalar deleting destructor'
