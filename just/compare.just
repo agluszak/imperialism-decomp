@@ -86,7 +86,7 @@ datacmp *args:
 #   just roadmap -v       -> pass through reccmp-roadmap flags
 [group('compare')]
 roadmap *args:
-  (cd "{{build_dir}}" && uv run reccmp-roadmap --target "{{target}}" {{args}})
+  (cd "{{build_dir}}" && uv run python ../tools/reccmp/typed_roadmap.py --target "{{target}}" {{args}})
 
 # Translate original-binary addresses to recomp addresses and back (for winedbg
 # breakpoints, crash addresses, etc.). Direction auto-detected; result cached next
@@ -157,3 +157,8 @@ core-impact *args:
 [group('compare')]
 global-xref-oracle *args:
   uv run python -m tools.reccmp.global_xref_oracle {{args}}
+
+# Evidence-only categorization of original-only zero-size DATA roadmap rows.
+[group('compare')]
+zero-size-data-audit:
+  uv run python -m tools.reccmp.zero_size_data_audit

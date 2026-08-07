@@ -24,6 +24,8 @@ import argparse
 
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.generate_symbols import generate_rows
+from tools.mfc.build_library_oracle import resolve_binary
+from tools.reccmp.crt_startup_oracle import recover_from_image
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
 from tools.source_model import build_model, model_to_json
 from tools.stubgen import write_stubs
@@ -109,13 +111,36 @@ def main() -> int:
 
     # 3. The generated symbol table, from the same model object.
     fieldnames, rows, stats = generate_rows(repo_root, args.target, model=model)
+    crt_labels = recover_from_image(
+        resolve_binary(repo_root, None), repo_root / "config" / "original_entities.csv"
+    )
+    existing_addresses = {int(row["address"], 16) for row in rows}
+    for name, address in crt_labels.items():
+        if address in existing_addresses:
+            raise SystemExit(
+                f"CRT startup boundary 0x{address:08x} already has a symbol row"
+            )
+        rows.append(
+            {
+                "address": f"0x{address:08x}",
+                "name": name,
+                "symbol": "",
+                "size": "",
+                "type": "global",
+                "prototype": "",
+                "provenance": "generated-crt-oracle",
+            }
+        )
+    rows.sort(key=lambda row: int(row["address"], 16))
+    stats["crt_oracle"] = len(crt_labels)
     symbols_path = gen_dir / "symbols.csv"
     write_symbols_csv(symbols_path, fieldnames, rows)
     print(
         f"Wrote {symbols_path} ({len(rows)} rows; dropped {stats['dropped']} at "
         f"source-VTABLE addresses and {stats['dropped_interior']} inside verified "
         f"vtable extents; reviewed overlay: {stats['reviewed']} updated, "
-        f"{stats['added']} added; source-declaration overlay: {stats['source']} updated)"
+        f"{stats['added']} added; source-declaration overlay: {stats['source']} updated; "
+        f"CRT oracle: {stats['crt_oracle']} added)"
     )
 
     # 4. The stubs, from the same model + rows.

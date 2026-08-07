@@ -40,26 +40,37 @@ from tools.common.template_aliases import (
 )
 from tools.stubgen import ILT_THUNK_RANGE, compute_stub_rows
 
-FUNCTION_ROW_TYPE = "fun"
-REPORT_CACHE_VERSION = 1
+FUNCTION_ROW_TYPE = "function"
+REPORT_CACHE_VERSION = 2
 REPORT_CACHE_FILE = "reccmp_report.inputs.json"
-GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
-AUX_NON_FUNCTION_ROW_TYPES = ("imp",)
+GLOBAL_ROW_TYPES = ("data", "label", "string", "float", "widechar", "vtable")
+AUX_NON_FUNCTION_ROW_TYPES = ("import", "import_thunk")
 TRACKED_NON_FUNCTION_ROW_TYPES = GLOBAL_ROW_TYPES + AUX_NON_FUNCTION_ROW_TYPES
+EXPECTED_UNPAIRED_ROW_TYPES = frozenset(("label", "float"))
 ROW_TYPE_LABELS = {
-    "dat": "data",
-    "lab": "labels",
-    "str": "strings",
-    "flo": "float constants",
-    "wid": "wide strings",
-    "imp": "imports",
+    "data": "data",
+    "label": "labels",
+    "string": "strings",
+    "float": "float constants",
+    "widechar": "wide strings",
+    "vtable": "vtables",
+    "import": "imports",
+    "import_thunk": "import thunks",
 }
+PAIRING_STATE_NORMALIZATION = {
+    "original_alias": "alias",
+    "recomp_duplicate": "duplicate",
+}
+PAIRING_STATES = frozenset(("paired", "unexplained", "recomp_only", "alias", "duplicate"))
+
 
 METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("exact_fun_count", "exact functions (100%)", "int", "higher"),
     ("paired_fun_count", "address-paired functions", "int", "higher"),
     ("compared_fun_count", "implemented paired functions", "int", "higher"),
     ("orig_only_count", "original-only functions", "int", "lower"),
+    ("original_function_alias_count", "original function aliases", "int", "higher"),
+    ("recomp_function_duplicate_count", "recomp duplicate functions", "int", "higher"),
     ("template_alias_recognized_count", "recognized duplicate template bodies", "int", "higher"),
     ("template_canonical_paired_count", "template canonical bodies paired", "int", "higher"),
     ("recomp_only_count", "recomp-only functions", "int", "lower"),
@@ -76,7 +87,8 @@ METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("global_recomp_only_count", "global recomp-only", "int", "lower"),
     ("global_coverage_pct", "global coverage", "pct", "higher"),
     ("paired_non_fun_count", "paired non-functions", "int", "higher"),
-    ("non_fun_coverage_pct", "non-function coverage", "pct", "higher"),
+    ("non_fun_coverage_pct", "raw non-function coverage", "pct", "higher"),
+    ("actionable_non_fun_coverage_pct", "actionable non-function coverage", "pct", "higher"),
     ("dropped_duplicate_address_count", "dropped duplicate addresses", "int", "lower"),
     ("failed_to_match_function_count", "failed-to-match lines", "int", "lower"),
     ("invalid_address_count", "invalid-address lines", "int", "lower"),
@@ -109,6 +121,18 @@ def parse_args() -> argparse.Namespace:
         help="Committed baseline JSON. Relative paths resolve from the repo root.",
     )
     parser.add_argument("--commit-baseline", action="store_true", help="Overwrite the baseline.")
+    parser.add_argument(
+        "--allow-unpaired",
+        action="append",
+        default=[],
+        type=lambda value: int(value, 16),
+        metavar="0xADDR",
+        help=(
+            "Explicitly permit a previously paired address to become unpaired during "
+            "a baseline migration. Repeat per evidence-reviewed identity; never implied "
+            "by aggregate improvements."
+        ),
+    )
     parser.add_argument("--roadmap-csv", default="reccmp_roadmap.csv")
     parser.add_argument("--report-json", default="reccmp_report.json")
     parser.add_argument("--report-log", default="reccmp_report.log")
@@ -214,49 +238,59 @@ def parse_optional_int(raw: str) -> int | None:
 
 
 def parse_roadmap_counts(path: Path) -> dict[str, int]:
+    """Count typed roadmap entities without lossy three-letter type aliases.
+
+    ``pairing_state`` is part of the project roadmap schema.  Current roadmap
+    generation emits paired/unexplained/recomp_only.  Alias-aware reccmp
+    versions may additionally emit alias/duplicate; those states are accepted
+    now so progress accounting does not have to infer equivalence from names.
+    """
     if not path.exists():
         raise FileNotFoundError(f"Missing roadmap CSV: {path}")
 
-    fun_orig: set[int] = set()
-    fun_recomp: set[int] = set()
-    fun_paired: set[int] = set()
+    function_rows: dict[str, set[int]] = {
+        state: set() for state in PAIRING_STATES
+    }
     non_fun_sets: dict[str, dict[str, set[int]]] = {
-        row_type: {"orig": set(), "recomp": set(), "paired": set()}
+        row_type: {state: set() for state in PAIRING_STATES}
         for row_type in TRACKED_NON_FUNCTION_ROW_TYPES
     }
+    raw_orig: dict[str, set[int]] = {FUNCTION_ROW_TYPE: set()}
+    raw_recomp: dict[str, set[int]] = {FUNCTION_ROW_TYPE: set()}
+    for row_type in TRACKED_NON_FUNCTION_ROW_TYPES:
+        raw_orig[row_type] = set()
+        raw_recomp[row_type] = set()
 
     with path.open("r", encoding="utf-8", newline="") as fd:
-        for row in csv.DictReader(fd):
-            row_type = row.get("row_type", "")
+        reader = csv.DictReader(fd)
+        required = {"row_type", "pairing_state", "orig_addr", "recomp_addr"}
+        missing = required - set(reader.fieldnames or ())
+        if missing:
+            raise ValueError(
+                f"Roadmap CSV lacks typed schema columns: {', '.join(sorted(missing))}. "
+                "Regenerate it with the repository roadmap target."
+            )
+        for line_no, row in enumerate(reader, 2):
+            row_type = (row.get("row_type") or "").strip().lower()
+            if row_type not in raw_orig:
+                continue
+            state = (row.get("pairing_state") or "").strip().lower()
+            state = PAIRING_STATE_NORMALIZATION.get(state, state)
+            if state not in PAIRING_STATES:
+                raise ValueError(f"Roadmap CSV line {line_no}: invalid pairing_state {state!r}")
             orig_addr = parse_optional_int(row.get("orig_addr", ""))
             recomp_addr = parse_optional_int(row.get("recomp_addr", ""))
+            if orig_addr is not None:
+                raw_orig[row_type].add(orig_addr)
+            if recomp_addr is not None:
+                raw_recomp[row_type].add(recomp_addr)
+            target = function_rows if row_type == FUNCTION_ROW_TYPE else non_fun_sets[row_type]
+            identity = orig_addr if orig_addr is not None else recomp_addr
+            if identity is not None:
+                target[state].add(identity)
 
-            if row_type == FUNCTION_ROW_TYPE:
-                if orig_addr is not None:
-                    fun_orig.add(orig_addr)
-                if recomp_addr is not None:
-                    fun_recomp.add(recomp_addr)
-                if orig_addr is not None and recomp_addr is not None:
-                    fun_paired.add(orig_addr)
-                continue
-
-            if row_type in non_fun_sets:
-                entry = non_fun_sets[row_type]
-                if orig_addr is not None:
-                    entry["orig"].add(orig_addr)
-                if recomp_addr is not None:
-                    entry["recomp"].add(recomp_addr)
-                if orig_addr is not None and recomp_addr is not None:
-                    entry["paired"].add(orig_addr)
-
-    # Equivalence-alias members (config/template_aliases.csv): an unpaired
-    # alias original whose canonical IS paired is a recognized duplicate/folded
-    # body, not unported work -- the recomp legitimately emits one copy
-    # (duplicate_emission), or the island is the same symbol's stale pre-move
-    # address (folded_symbol_group; unclaimable when the body's current address
-    # already carries the marker). Aliases whose canonical is still unpaired
-    # keep counting as original-only (the canonical is the work item). Claimed
-    # islands are paired (effective) and never reach this reclassification.
+    # Function aliases use the reviewed equivalence table until reccmp emits
+    # their state directly.  Explicit typed-roadmap states always win.
     duplicate_aliases, duplicate_errors = load_aliases(
         equivalence_class=CLASS_DUPLICATE_EMISSION
     )
@@ -264,65 +298,82 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
         equivalence_class=CLASS_FOLDED_SYMBOL_GROUP
     )
     aliases = {**duplicate_aliases, **folded_aliases}
-    alias_errors = duplicate_errors + folded_errors
-    for err in alias_errors:
+    for err in duplicate_errors + folded_errors:
         print(f"WARNING template_aliases.csv: {err}")
-    recognized = {
+    paired_functions = function_rows["paired"]
+    legacy_recognized = {
         alias
         for alias, canonical in aliases.items()
-        if alias in fun_orig and alias not in fun_paired and canonical in fun_paired
+        if alias in raw_orig[FUNCTION_ROW_TYPE]
+        and alias in function_rows["unexplained"]
+        and canonical in paired_functions
     }
-    canonical_paired = {c for c in aliases.values() if c in fun_paired}
+    explicit_recognized = set(aliases) & (
+        function_rows["alias"] | function_rows["duplicate"]
+    )
+    recognized = legacy_recognized | explicit_recognized
+    function_rows["unexplained"] -= legacy_recognized
+    function_rows["duplicate"] |= legacy_recognized
+    canonical_paired = {c for c in aliases.values() if c in paired_functions}
 
     stats = {
-        "original_fun_count": len(fun_orig),
-        "recompiled_fun_count": len(fun_recomp),
-        "paired_fun_count": len(fun_paired),
-        "orig_only_count": max(len(fun_orig) - len(fun_paired) - len(recognized), 0),
-        "recomp_only_count": max(len(fun_recomp) - len(fun_paired), 0),
+        "original_fun_count": len(raw_orig[FUNCTION_ROW_TYPE]),
+        "recompiled_fun_count": len(raw_recomp[FUNCTION_ROW_TYPE]),
+        "paired_fun_count": len(paired_functions),
+        "orig_only_count": len(function_rows["unexplained"]),
+        "original_function_alias_count": len(function_rows["alias"]),
+        "recomp_function_duplicate_count": len(function_rows["duplicate"]),
+        "recomp_only_count": len(function_rows["recomp_only"]),
         "template_alias_recognized_count": len(recognized),
         "template_canonical_paired_count": len(canonical_paired),
     }
 
-    global_orig: set[int] = set()
-    global_recomp: set[int] = set()
-    global_paired: set[int] = set()
-    non_fun_orig: set[int] = set()
-    non_fun_recomp: set[int] = set()
-    non_fun_paired: set[int] = set()
+    global_orig = global_recomp = global_covered = 0
+    non_fun_orig = non_fun_recomp = non_fun_covered = 0
+    actionable_orig = actionable_covered = actionable_unexplained = 0
 
-    for row_type, entry in non_fun_sets.items():
-        orig = entry["orig"]
-        recomp = entry["recomp"]
-        paired = entry["paired"]
+    for row_type, states in non_fun_sets.items():
+        orig = raw_orig[row_type]
+        recomp = raw_recomp[row_type]
+        covered = states["paired"] | states["alias"] | states["duplicate"]
+        expected = states["unexplained"] if row_type in EXPECTED_UNPAIRED_ROW_TYPES else set()
+        unexplained = set() if row_type in EXPECTED_UNPAIRED_ROW_TYPES else states["unexplained"]
         stats[f"original_{row_type}_count"] = len(orig)
         stats[f"recompiled_{row_type}_count"] = len(recomp)
-        stats[f"paired_{row_type}_count"] = len(paired)
-        stats[f"{row_type}_orig_only_count"] = max(len(orig) - len(paired), 0)
-        stats[f"{row_type}_recomp_only_count"] = max(len(recomp) - len(paired), 0)
+        stats[f"paired_{row_type}_count"] = len(states["paired"])
+        stats[f"alias_{row_type}_count"] = len(states["alias"])
+        stats[f"duplicate_{row_type}_count"] = len(states["duplicate"])
+        stats[f"unexplained_{row_type}_count"] = len(unexplained)
+        stats[f"expected_unpaired_{row_type}_count"] = len(expected)
+        stats[f"{row_type}_recomp_only_count"] = len(states["recomp_only"])
 
-        non_fun_orig |= orig
-        non_fun_recomp |= recomp
-        non_fun_paired |= paired
+        non_fun_orig += len(orig)
+        non_fun_recomp += len(recomp)
+        non_fun_covered += len(covered)
+        if row_type not in EXPECTED_UNPAIRED_ROW_TYPES:
+            actionable_orig += len(orig)
+            actionable_covered += len(covered)
+            actionable_unexplained += len(unexplained)
         if row_type in GLOBAL_ROW_TYPES:
-            global_orig |= orig
-            global_recomp |= recomp
-            global_paired |= paired
+            global_orig += len(orig)
+            global_recomp += len(recomp)
+            global_covered += len(covered)
 
-    stats.update(
-        {
-            "original_global_count": len(global_orig),
-            "recompiled_global_count": len(global_recomp),
-            "paired_global_count": len(global_paired),
-            "global_orig_only_count": max(len(global_orig) - len(global_paired), 0),
-            "global_recomp_only_count": max(len(global_recomp) - len(global_paired), 0),
-            "original_non_fun_count": len(non_fun_orig),
-            "recompiled_non_fun_count": len(non_fun_recomp),
-            "paired_non_fun_count": len(non_fun_paired),
-            "non_fun_orig_only_count": max(len(non_fun_orig) - len(non_fun_paired), 0),
-            "non_fun_recomp_only_count": max(len(non_fun_recomp) - len(non_fun_paired), 0),
-        }
-    )
+    stats.update({
+        "original_global_count": global_orig,
+        "recompiled_global_count": global_recomp,
+        "paired_global_count": global_covered,
+        "global_orig_only_count": global_orig - global_covered,
+        "global_recomp_only_count": max(global_recomp - global_covered, 0),
+        "original_non_fun_count": non_fun_orig,
+        "recompiled_non_fun_count": non_fun_recomp,
+        "paired_non_fun_count": non_fun_covered,
+        "non_fun_orig_only_count": non_fun_orig - non_fun_covered,
+        "non_fun_recomp_only_count": max(non_fun_recomp - non_fun_covered, 0),
+        "actionable_non_fun_count": actionable_orig,
+        "actionable_non_fun_covered_count": actionable_covered,
+        "actionable_non_fun_unexplained_count": actionable_unexplained,
+    })
     return stats
 
 
@@ -451,6 +502,13 @@ def function_changes(
     regressed.sort(key=lambda item: item[3] - item[2])  # biggest drop first
     unpaired_now.sort(key=lambda item: item[0])
     return regressed, unpaired_now, improved, newly_paired
+
+
+def unapproved_unpaired(
+    unpaired_now: list[tuple[str, str, float]], allowed: set[int]
+) -> list[tuple[str, str, float]]:
+    """Keep baseline-loss rows not named by an explicit identity migration."""
+    return [row for row in unpaired_now if int(row[0], 16) not in allowed]
 
 
 def baseline_provenance_error(
@@ -829,7 +887,8 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
                 [
                     "uv",
                     "run",
-                    "reccmp-roadmap",
+                    "python",
+                    str(repo_root_from_file(__file__) / "tools" / "reccmp" / "typed_roadmap.py"),
                     "--target",
                     args.target,
                     "--csv",
@@ -883,6 +942,9 @@ def build_entry(args: argparse.Namespace, build_dir: Path) -> dict[str, Any]:
     )
     entry["global_coverage_pct"] = pct(entry["paired_global_count"], entry["original_global_count"])
     entry["non_fun_coverage_pct"] = pct(entry["paired_non_fun_count"], entry["original_non_fun_count"])
+    entry["actionable_non_fun_coverage_pct"] = pct(
+        entry["actionable_non_fun_covered_count"], entry["actionable_non_fun_count"]
+    )
     entry["not_exact_vs_original_count"] = max(
         entry["original_fun_count"] - entry["exact_fun_count"], 0
     )
@@ -961,6 +1023,12 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_count_line("exact functions (100%)", entry, baseline, "exact_fun_count")
     print_count_line("not exact vs original", entry, baseline, "not_exact_vs_original_count")
     print_count_line("original-only functions", entry, baseline, "orig_only_count")
+    print_count_line(
+        "original function aliases", entry, baseline, "original_function_alias_count"
+    )
+    print_count_line(
+        "recomp duplicate functions", entry, baseline, "recomp_function_duplicate_count"
+    )
     print_count_line("recognized duplicate template bodies", entry, baseline,
                      "template_alias_recognized_count")
     print_count_line("template canonical bodies paired", entry, baseline,
@@ -990,21 +1058,23 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print("Globals / non-functions")
     print_count_line("paired globals", entry, baseline, "paired_global_count")
     print_pct_line("global coverage", entry, baseline, "global_coverage_pct")
-    print_count_line("paired non-functions", entry, baseline, "paired_non_fun_count")
-    print_pct_line("non-function coverage", entry, baseline, "non_fun_coverage_pct")
+    print_count_line("covered non-functions (paired/alias/duplicate)", entry, baseline, "paired_non_fun_count")
+    print_pct_line("raw non-function coverage", entry, baseline, "non_fun_coverage_pct")
+    print_pct_line("actionable non-function coverage", entry, baseline,
+                   "actionable_non_fun_coverage_pct")
     for row_type in TRACKED_NON_FUNCTION_ROW_TYPES:
         label = ROW_TYPE_LABELS.get(row_type, row_type)
-        original_key = f"original_{row_type}_count"
-        paired_key = f"paired_{row_type}_count"
-        coverage = pct(entry[paired_key], entry[original_key])
-        # flo/lab pair at exactly 0% by reccmp design, not by project omission:
-        # LABEL is a function-interior "passenger" entity (jump targets,
-        # __ehhandler/__Unwind markers) never matched standalone, and float-
-        # constant matching is unimplemented upstream (create_analysis_floats:
-        # "not matching anything right now"). Operand comparison resolves float
-        # values by name on both sides, so the zeros do not depress scores.
-        note = " (never matched by reccmp; expected 0%)" if row_type in ("flo", "lab") else ""
-        print(f"  {row_type} ({label}): original {entry[original_key]}, paired {entry[paired_key]}, coverage {coverage:.2f}%{note}")
+        original = entry[f"original_{row_type}_count"]
+        paired = entry[f"paired_{row_type}_count"]
+        aliases = entry[f"alias_{row_type}_count"]
+        duplicates = entry[f"duplicate_{row_type}_count"]
+        unexplained = entry[f"unexplained_{row_type}_count"]
+        expected = entry[f"expected_unpaired_{row_type}_count"]
+        print(
+            f"  {row_type} ({label}): raw original {original}, paired {paired}, "
+            f"alias {aliases}, duplicate {duplicates}, unexplained {unexplained}, "
+            f"expected-unpaired {expected}"
+        )
     print("")
 
     print("Noise")
@@ -1089,9 +1159,20 @@ def main() -> int:
                 regressed, unpaired_now, _improved, _newly_paired = function_changes(
                     curr_funcs, func_baseline
                 )
-                if unpaired_now:
+                allowed_unpaired = set(args.allow_unpaired)
+                blocked_unpaired = unapproved_unpaired(
+                    unpaired_now, allowed_unpaired
+                )
+                if blocked_unpaired:
                     raise RuntimeError(
                         "refusing baseline update with previously paired functions now unpaired: "
+                        + ", ".join(
+                            address for address, _name, _score in blocked_unpaired
+                        )
+                    )
+                if unpaired_now:
+                    print(
+                        "Accepted explicit pairing-identity migration for: "
                         + ", ".join(address for address, _name, _score in unpaired_now)
                     )
             stub_ratchet_notice = clamp_stub_count_ratchet(entry, baseline)
