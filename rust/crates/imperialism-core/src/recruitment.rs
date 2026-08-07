@@ -1,6 +1,7 @@
 use crate::{
     CivilianUnitId, CivilianUnitState, GameEvent, GameState, MapGeometry, MilitaryUnitId,
-    MilitaryUnitState, NationId, StepOutcome, TileId, UnitProductionOrder, WorldState,
+    MilitaryUnitState, NationId, PendingActionSlot, StepOutcome, TileId, UnitProductionOrder,
+    WorldState,
 };
 
 const MILITARY_POWER_BY_UNIT_TYPE: [i16; 30] = [
@@ -194,13 +195,6 @@ impl GameState {
             .major
             .as_ref()
             .ok_or(RecruitmentError::NotMajorNation(nation))?;
-        let pending_nation_index = self
-            .pending
-            .nations
-            .iter()
-            .position(|pending| pending.nation == nation)
-            .ok_or(RecruitmentError::MissingPendingNation(nation))?;
-
         let (home_province, experienced) = if pending_delta > 0 {
             let home_tile = u16::try_from(city.home_town_tile)
                 .ok()
@@ -215,18 +209,7 @@ impl GameState {
                     self.world.tiles[usize::from(home_tile.get())].city_or_province_index,
                 )
             })?;
-            let action_6 = *major
-                .pending_action_status
-                .get(6)
-                .ok_or(RecruitmentError::MissingPendingAction(6))?;
-            major
-                .pending_action_status
-                .get(1)
-                .ok_or(RecruitmentError::MissingPendingAction(1))?;
-            major
-                .pending_action_payload_by_action
-                .get(1)
-                .ok_or(RecruitmentError::MissingPendingActionPayload(1))?;
+            let action_6 = major.pending_action_status[PendingActionSlot::new(6).unwrap()];
             self.selected_military_power_score(nation)?;
             (province, action_6 >= 0x33)
         } else {
@@ -284,7 +267,7 @@ impl GameState {
                     .major
                     .as_ref()
                     .expect("major-nation presence was checked")
-                    .pending_action_status[1];
+                    .pending_action_status[PendingActionSlot::new(1).unwrap()];
                 if pending_status != 0x32 {
                     let current_level = if pending_status == 0 {
                         0
@@ -301,8 +284,9 @@ impl GameState {
                             .major
                             .as_mut()
                             .expect("major-nation presence was checked");
-                        major.pending_action_status[1] = 0x32;
-                        major.pending_action_payload_by_action[1] = payload;
+                        major.pending_action_status[PendingActionSlot::new(1).unwrap()] = 0x32;
+                        major.pending_action_payload_by_action
+                            [PendingActionSlot::new(1).unwrap()] = payload;
                         events.push(GameEvent::NationPendingActionQueued {
                             nation,
                             action: 1,
@@ -321,7 +305,7 @@ impl GameState {
         });
         insert_turn_summary(
             &mut self.rng,
-            &mut self.pending.nations[pending_nation_index].turn_summary,
+            &mut self.pending.nations[nation].turn_summary,
             [
                 self.turn.economic_turn,
                 3,
@@ -379,8 +363,6 @@ pub enum RecruitmentError {
     MissingNation(NationId),
     #[error("nation {} has no major-nation state", .0.get())]
     NotMajorNation(NationId),
-    #[error("nation {} has no pending-work state", .0.get())]
-    MissingPendingNation(NationId),
     #[error("invalid civilian unit type {0}")]
     InvalidEntryId(i16),
     #[error("invalid military unit type {0}")]
@@ -389,10 +371,6 @@ pub enum RecruitmentError {
     InvalidHomeTile(i16),
     #[error("invalid recruit home province {0}")]
     InvalidHomeProvince(i64),
-    #[error("missing pending-action state {0}")]
-    MissingPendingAction(usize),
-    #[error("missing pending-action payload {0}")]
-    MissingPendingActionPayload(usize),
     #[error("civilian recruitment uses the civilian path")]
     CivilianOrder,
     #[error("military recruitment uses the specialist path")]
@@ -461,18 +439,18 @@ mod tests {
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
-            reserved_by_type: vec![0; ResourceKind::COUNT],
+            reserved_by_type: crate::ResourceTable::default(),
             home_town_tile,
             power_available: 0,
-            stock_by_type: vec![0; ResourceKind::COUNT],
-            production_orders: vec![0; 16],
-            production_accum: vec![0; 16],
-            production_flags: vec![0; 16],
-            production_current: vec![0; 16],
-            production_progress: vec![0; 16],
+            stock_by_type: crate::ResourceTable::default(),
+            production_orders: crate::ProductionTable::default(),
+            production_accum: crate::ProductionTable::default(),
+            production_flags: crate::ProductionTable::default(),
+            production_current: crate::ProductionTable::default(),
+            production_progress: crate::ProductionTable::default(),
             population_growth_penalty_ticks: 0,
-            unmet_resource_retries: vec![0; ResourceKind::COUNT],
-            consumed_production_input_by_type: vec![0; ResourceKind::COUNT],
+            unmet_resource_retries: crate::ResourceTable::default(),
+            consumed_production_input_by_type: crate::ResourceTable::default(),
             population: PopulationState {
                 count: 7,
                 count_float_bits: 7.0_f32.to_bits(),
@@ -482,7 +460,7 @@ mod tests {
                 baseline_labor: Some(LaborPool::new(7, 0, 0)),
                 production_labor: Some(LaborPool::new(7, 0, 0)),
                 pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: vec![0; ResourceKind::COUNT],
+                predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
     }
@@ -499,22 +477,22 @@ mod tests {
             owner_nation: 0,
             treasury: 0,
             home_tile: i32::from(home_town_tile.get()),
-            need_level_by_nation: vec![0; 23],
+            need_level_by_nation: crate::NationTable::default(),
             major: Some(MajorNationState {
                 diplomacy_eligible: true,
                 capacities: [0; 4],
                 grant_total_cost: 0,
                 unfilled_trade_offer_count: 0,
-                diplomacy_policy_by_nation: vec![0; 23],
-                diplomacy_grant_by_nation: vec![0; 23],
-                need_current_by_type: vec![0; ResourceKind::COUNT],
-                need_target_by_type: vec![0; ResourceKind::COUNT],
-                relation_delta_current: vec![0; 23],
-                purchased_items_by_resource: vec![0; ResourceKind::COUNT],
-                item_potentials: vec![0; ResourceKind::COUNT],
-                unfilled_trade_turns_by_resource: vec![0; ResourceKind::COUNT],
-                transported_items_by_resource: vec![0; ResourceKind::COUNT],
-                remembered_trade_offers_by_resource: vec![0; ResourceKind::COUNT],
+                diplomacy_policy_by_nation: crate::NationTable::default(),
+                diplomacy_grant_by_nation: crate::NationTable::default(),
+                need_current_by_type: crate::ResourceTable::default(),
+                need_target_by_type: crate::ResourceTable::default(),
+                relation_delta_current: crate::ResourceTable::default(),
+                purchased_items_by_resource: crate::ResourceTable::default(),
+                item_potentials: crate::ResourceTable::default(),
+                unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
+                transported_items_by_resource: crate::ResourceTable::default(),
+                remembered_trade_offers_by_resource: crate::ResourceTable::default(),
                 aid_allocation_matrix: vec![0; 23 * 23],
                 budget_pool_base: 0,
                 budget_pool_delta: 0,
@@ -522,8 +500,8 @@ mod tests {
                 candidate_nation_flags: vec![0; 23],
                 scenario_initialized: false,
                 turn_finished: false,
-                pending_action_status: vec![0; 13],
-                pending_action_payload_by_action: vec![0; 13],
+                pending_action_status: crate::PendingActionTable::default(),
+                pending_action_payload_by_action: crate::PendingActionTable::default(),
                 diplomacy_budget_base: 0,
                 escalation_counter: 0,
                 pending_commitment_cost: 0,
@@ -558,15 +536,13 @@ mod tests {
             missions: Vec::new(),
             pending: crate::PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: (0..7)
-                    .map(|nation| crate::NationPendingWork {
-                        nation: NationId::new(nation),
-                        turn_events: Vec::new(),
-                        proposals: Vec::new(),
-                        turn_summary: Vec::new(),
-                        turn_start_events: Vec::new(),
-                    })
-                    .collect(),
+                nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
+                    nation: NationId::new(nation as u8),
+                    turn_events: Vec::new(),
+                    proposals: Vec::new(),
+                    turn_summary: Vec::new(),
+                    turn_start_events: Vec::new(),
+                }),
                 war_transitions: Vec::new(),
             },
         }
@@ -586,7 +562,7 @@ mod tests {
                 specialist: false,
             },
             quantity,
-            tracking_by_resource: [0; ResourceKind::COUNT],
+            tracking_by_resource: crate::ResourceTable::default(),
             reserved_workforce: 0,
             limiting_constraint: ProductionConstraint::Resources,
             accumulated_value: 0,
@@ -746,14 +722,14 @@ mod tests {
             .major
             .as_mut()
             .unwrap()
-            .pending_action_status[1] = 0x32;
+            .pending_action_status[PendingActionSlot::new(1).unwrap()] = 0x32;
         state.nations[0]
             .as_mut()
             .unwrap()
             .major
             .as_mut()
             .unwrap()
-            .pending_action_status[6] = 0x33;
+            .pending_action_status[PendingActionSlot::new(6).unwrap()] = 0x33;
         let mut production = specialist_order(24, 1);
 
         let outcome = state
@@ -784,7 +760,10 @@ mod tests {
         );
         assert_eq!(state.persistent_unit_id_counter, 41);
         assert_eq!(production.quantity, 0);
-        assert_eq!(state.pending.nations[0].turn_summary, vec![[1, 3, 24, 1]]);
+        assert_eq!(
+            state.pending.nations[NationId::new(0)].turn_summary,
+            vec![[1, 3, 24, 1]]
+        );
         assert_eq!(
             outcome.events,
             vec![
@@ -829,8 +808,14 @@ mod tests {
         assert_eq!(state.military_units[15].id, MilitaryUnitId::new(56));
         assert_eq!(state.military_units[15].roster_index, 15);
         let major = state.nations[0].as_ref().unwrap().major.as_ref().unwrap();
-        assert_eq!(major.pending_action_status[1], 0x32);
-        assert_eq!(major.pending_action_payload_by_action[1], 1);
+        assert_eq!(
+            major.pending_action_status[PendingActionSlot::new(1).unwrap()],
+            0x32
+        );
+        assert_eq!(
+            major.pending_action_payload_by_action[PendingActionSlot::new(1).unwrap()],
+            1
+        );
         assert_eq!(
             outcome
                 .events
@@ -880,7 +865,10 @@ mod tests {
 
         assert!(state.military_units.is_empty());
         assert_eq!(state.cities[0].as_ref().unwrap().serialized_state, 1);
-        assert_eq!(state.pending.nations[0].turn_summary, vec![[1, 3, 0, -2]]);
+        assert_eq!(
+            state.pending.nations[NationId::new(0)].turn_summary,
+            vec![[1, 3, 0, -2]]
+        );
         assert_eq!(production.quantity, 0);
         assert_eq!(
             outcome.events,

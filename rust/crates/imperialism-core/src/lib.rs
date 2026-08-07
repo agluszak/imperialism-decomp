@@ -14,11 +14,12 @@ mod resources;
 mod rng;
 mod snapshot;
 mod state;
+mod tables;
 mod trade;
 mod turn_flow;
 
 pub use calendar::TurnCalendar;
-pub use city_buildings::{BuildingWindowState, CityBuildingError, ProductionSlot};
+pub use city_buildings::{BuildingWindowState, ProductionSlot};
 pub use city_economy::CityEconomyError;
 pub use city_industry::{CityIndustryError, IndustryActionSlot};
 pub use ids::{
@@ -28,7 +29,6 @@ pub use ids::{
 pub use map_geometry::{
     HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
 };
-pub use nation_economy::NationEconomyError;
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
     CapacityProductionOrder, CapacityTarget, ExpansionProductionOrder, ExpansionTarget,
@@ -37,7 +37,7 @@ pub use production::{
     TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
 };
 pub use recruitment::RecruitmentError;
-pub use resources::ResourceKind;
+pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use snapshot::{
     GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
     SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
@@ -52,6 +52,10 @@ pub use state::{
     NationState, NavyMissionState, PendingWorkState, PopulationState, RngState, ShipState,
     StepOutcome, TaskForceState, TaskForceTarget, TileState, TurnStartEventState, TurnState,
     WorldState,
+};
+pub use tables::{
+    MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT, NationTable, PENDING_ACTION_COUNT,
+    PendingActionSlot, PendingActionTable, ProductionTable,
 };
 pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;

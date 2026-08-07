@@ -2,8 +2,8 @@
 
 use anyhow::{Context, anyhow, bail};
 use imperialism_core::{
-    GameCommand, GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind, SkillBand,
-    UnitCostProfile, UnitProductionOrder,
+    GameCommand, GameState, NationId, ProductionConstraint, ResourceCost, ResourceKind,
+    ResourceTable, SkillBand, UnitCostProfile, UnitProductionOrder,
 };
 use imperialism_formats::{LegacySaveV62, LegacySnapshotContext};
 use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
@@ -97,10 +97,7 @@ fn run() -> anyhow::Result<()> {
                     amount,
                     price,
                 } => {
-                    let resource = usize::try_from(resource)
-                        .ok()
-                        .and_then(|index| ResourceKind::ALL.get(index).copied())
-                        .ok_or_else(|| anyhow!("resource kind {resource} is out of range"))?;
+                    let resource = resource_kind(resource)?;
                     let outcome = rust_state
                         .apply_command(GameCommand::PurchaseItem {
                             nation: NationId::new(nation),
@@ -281,9 +278,7 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
 }
 
 fn resource_kind(value: i16) -> anyhow::Result<ResourceKind> {
-    usize::try_from(value)
-        .ok()
-        .and_then(|index| ResourceKind::ALL.get(index).copied())
+    ResourceKind::from_retail_index(value)
         .ok_or_else(|| anyhow!("resource kind {value} is out of range"))
 }
 
@@ -313,7 +308,7 @@ fn specialist_order(unit_type: i16, quantity: i16) -> UnitProductionOrder {
             specialist: true,
         },
         quantity,
-        tracking_by_resource: [0; ResourceKind::COUNT],
+        tracking_by_resource: ResourceTable::default(),
         reserved_workforce: 0,
         limiting_constraint: ProductionConstraint::Resources,
         accumulated_value: 0,
