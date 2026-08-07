@@ -27,6 +27,20 @@ public:
   // each entry's picture id into its child picture widget. 0x594c00.
   void SortSevenEntriesAndUpdatePictureWidgets();
   void RecomputeNationComparisonValuesAndNormalizeScale();
+  // Retained VC5 copy of a method inlined at its only live callsite.
+  // SYNTHETIC: IMPERIALISM 0x00594d30
+  // TStatusPicture::NormalizeAsNeeded
+  void NormalizeAsNeeded() {
+    int maxValue = values94[0];
+    if (maxValue > 400) {
+      values94[0] = 400;
+      for (int index = 1; index < 7; ++index) {
+        if (pictureIds_b0[index] != -1) {
+          values94[index] = values94[index] * 400 / maxValue;
+        }
+      }
+    }
+  }
 };
 
 ASSERT_SIZE(TStatusPicture, 0xc0);

@@ -22,6 +22,7 @@
 #include "game/ui_core/TViewMgr.h"
 #include "game/globals/global_types.h"
 #include "game/globals/navy_globals.h"
+#include "game/globals/nation_globals.h"
 #include "game/globals/shared_globals.h"
 #include "game/military/mapped_flavor_text.h"
 #include "game/gfx/ui_invalidation_guard.h"
@@ -1207,6 +1208,15 @@ unsigned int TTaskForce::IsValidTarget(Province* province) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00554620
+int TTaskForce::IsPassingThroughPort(TZone* port) const {
+  bool isSailOrder = shipOrders == 1;
+  if (isSailOrder && (location == port || target == port)) {
+    return true;
+  }
+  return false;
+}
+
 // Drop every inactive child (returning it to a free agent), recompute the
 // preferred active child, then re-insert this entry at the head of the global
 // TNavyMgr order queue (freeing it instead when no children survive), and
@@ -1379,6 +1389,16 @@ void TTaskForce::Select(TShip* ship, unsigned char activeFlag) {
       ship->selection = 0;
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005549f0
+int TTaskForce::GetInvasionCapacity() const {
+  int capacity = 0;
+  for (TMapOrderChildLinkNode* node = shipList; node != 0; node = node->next) {
+    TShip* ship = static_cast<TShip*>(node->payload);
+    capacity += ship->strength > 0 ? g_industryActionCostWeightResCode10[ship->type] : 0;
+  }
+  return capacity;
 }
 
 // FUNCTION: IMPERIALISM 0x00554a30
@@ -1586,6 +1606,14 @@ TTaskForce* TTaskForce::RemoveStragglers() {
     nextForce->RemoveStragglers();
     return this;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005551a0
+TAdmiral* TTaskForce::GetSeniorOfficer() const {
+  if (this != 0 && flagship != 0) {
+    return flagship->admiral;
+  }
+  return 0;
 }
 
 // Mac oracle: TTaskForce::GetAuthority(CStr255&) const.
@@ -2034,6 +2062,52 @@ short TTaskForce::CountShips() const {
     ++count;
   }
   return count;
+}
+
+// FUNCTION: IMPERIALISM 0x005562f0
+short TTaskForce::CountForcesFromHere() const {
+  if (this == 0) {
+    return 0;
+  }
+  int count = 0;
+  const TTaskForce* force = this;
+  do {
+    force = force->nextForce;
+    ++count;
+  } while (force != 0);
+  return static_cast<short>(count);
+}
+
+// FUNCTION: IMPERIALISM 0x00556340
+TTaskForce* TTaskForce::GetNth(short index) {
+  if (index < 0) {
+    return 0;
+  }
+  TTaskForce* force = this;
+  while (force != 0 && index != 0) {
+    force = force->nextForce;
+    --index;
+  }
+  return force;
+}
+
+// FUNCTION: IMPERIALISM 0x00556380
+TTaskForce* TTaskForce::GetNationalNth(short nth, short nation) {
+  if (nth == -1) {
+    return nullptr;
+  }
+
+  int nationalIndex = 0;
+  for (TTaskForce* force = g_pNavyOrderManager->orderQueueHead; force != nullptr;
+       force = force->nextForce) {
+    if (force->nation == nation) {
+      if (nationalIndex == nth) {
+        return force;
+      }
+      ++nationalIndex;
+    }
+  }
+  return nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x005563d0

@@ -71,3 +71,9 @@ void TLonelyTileView::Draw(RECT* rectBuffer) {
   }
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
+
+// FUNCTION: IMPERIALISM 0x00505dc0
+void TLonelyTileView::SetTile(short tileIndex) {
+  tileIndex60 = tileIndex;
+  RefreshControl();
+}

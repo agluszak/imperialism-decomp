@@ -46,6 +46,7 @@ public:
   // Fills the float projection vector (+0x44..+0x54) from the source unit's five
   // per-type stat percentages scaled by strength. 0x5a5fe0, __thiscall.
   void ComputeTacticalProjectionScoreVector();
+  int GetUID() const; // 0x5a6210, Mac oracle
 };
 
 ASSERT_SIZE(TArmyTacUnit, 0x58);

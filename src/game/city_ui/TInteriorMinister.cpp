@@ -32,6 +32,14 @@ IMPLEMENT_DYNCREATE(TInteriorMinister, TMinister)
 // SYNTHETIC: IMPERIALISM 0x004be200
 // TInteriorMinister::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x004be250
+void TInteriorMinister::IInteriorMinister(TGreatPower* owner) {
+  TMinister::IMinister(owner);
+  field10 = 0;
+  field12 = 0;
+  memset(trailingTable, 0, sizeof(trailingTable));
+}
+
 // FUNCTION: IMPERIALISM 0x004be290
 void TInteriorMinister::ReadFrom(TStream* stream) {
   TMinister::ReadFrom(stream);

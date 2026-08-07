@@ -13,6 +13,13 @@ IMPLEMENT_DYNCREATE(TLaborPool, TObject)
 // FUNCTION: IMPERIALISM 0x004b2190
 TLaborPool::~TLaborPool() {}
 
+// FUNCTION: IMPERIALISM 0x004b21b0
+void TLaborPool::ILaborPool() {
+  mediumSkillCount06 = 0;
+  lowSkillCount04 = 0;
+  highSkillCount08 = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004b21d0
 void TLaborPool::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);

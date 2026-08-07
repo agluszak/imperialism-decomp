@@ -11,6 +11,7 @@ from tools.common.template_aliases import (
     CLASS_DUPLICATE_EMISSION,
     CLASS_FOLDED_SYMBOL_GROUP,
     CLASS_LIBRARY_CALLEE_ALIAS,
+    CLASS_LIBRARY_LINKED_COPY,
     load_alias_rows,
     load_aliases,
 )
@@ -32,6 +33,7 @@ class TestLoadAliasRows(unittest.TestCase):
             "0x00426ec0|0x00479b00|?AddTail@X@Z|per_tu_duplicate\n"
             "0x00430380|0x0048a9d0|TTreatiesView::~TTreatiesView|folded_symbol_group\n"
             "0x0049eb00|0x006057a7|??0CString@@QAE@ABV0@@Z|library_callee_alias\n"
+            "0x0060d058|0x005e691b|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|library_linked_copy\n"
         )
         rows, errors = load_alias_rows(path)
         self.assertEqual(errors, [])
@@ -50,6 +52,12 @@ class TestLoadAliasRows(unittest.TestCase):
                     0x6057A7,
                     "??0CString@@QAE@ABV0@@Z",
                     "library_callee_alias",
+                ),
+                (
+                    0x60D058,
+                    0x5E691B,
+                    "?afxMapHMENU@@YAPAVCHandleMap@@H@Z",
+                    "library_linked_copy",
                 ),
             ],
         )
@@ -76,11 +84,12 @@ class TestLoadAliasRows(unittest.TestCase):
             "0x1000|0x2000|A|per_tu_duplicate\n"
             "0x3000|0x4000|B|folded_symbol_group\n"
             "0x5000|0x6000|C|library_callee_alias\n"
+            "0x7000|0x8000|D|library_linked_copy\n"
         )
         all_aliases, _ = load_aliases(path)
         self.assertEqual(
             all_aliases,
-            {0x1000: 0x2000, 0x3000: 0x4000, 0x5000: 0x6000},
+            {0x1000: 0x2000, 0x3000: 0x4000, 0x5000: 0x6000, 0x7000: 0x8000},
         )
         dup, _ = load_aliases(path, equivalence_class=CLASS_DUPLICATE_EMISSION)
         self.assertEqual(dup, {0x1000: 0x2000})
@@ -90,6 +99,10 @@ class TestLoadAliasRows(unittest.TestCase):
             path, equivalence_class=CLASS_LIBRARY_CALLEE_ALIAS
         )
         self.assertEqual(library, {0x5000: 0x6000})
+        linked, _ = load_aliases(
+            path, equivalence_class=CLASS_LIBRARY_LINKED_COPY
+        )
+        self.assertEqual(linked, {0x7000: 0x8000})
 
     def test_missing_file_is_empty(self) -> None:
         aliases, errors = load_aliases(Path("/nonexistent/aliases.csv"))

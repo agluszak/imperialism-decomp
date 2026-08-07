@@ -73,6 +73,18 @@
 // Cross/UMissionSubs.cpp session and lobby lifecycle extent (0x5421a0-0x545930).
 char ReturnTrueRuntimeCredentialInitStub();
 
+// FUNCTION: IMPERIALISM 0x00542170
+int FindNationSlotIndexBySessionIdInGameFlowList(int sessionId) {
+  int slot = 0;
+  while (slot < TMultiplayerMgr::kMajorNationSessionSlotCount) {
+    if (g_pGameFlowState->nationSessionIds[slot] == sessionId) {
+      return slot;
+    }
+    ++slot;
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x005421a0
 int FindActiveNationSlotIndexInGameFlowList() {
   int activeId = g_pNetMgr006a6014->GetSessionActiveNationId();
@@ -291,6 +303,11 @@ void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TEventHand
   diplomacyQueueContext = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00543100
+bool TMultiplayerMgr::IsEverybodyConnected() const {
+  return pendingNationBitmask == 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00543120
 void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlot,
                                                             int activeNationSlot) {
@@ -405,6 +422,23 @@ void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
 
 // Forwards the idle tick to the routing child handler (the lounge dialog, when one is
 // open) before draining the diplomacy turn-state queue. Always reports "not handled".
+// FUNCTION: IMPERIALISM 0x005447e0
+void TMultiplayerMgr::DoGameDataHunk(TurnEvent2SyncPacket* packet) {
+  if (packet->flag20 == 0) {
+    g_pDiplomacyTurnStateManager->ApplyTurnEvent2SyncPacketToRelationMatrix(packet);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00544810
+char TMultiplayerMgr::UpdatePendingNationMaskIfChanged(int* cachedMask) {
+  int currentMask = pendingNationBitmask;
+  if (currentMask == *cachedMask) {
+    return 0;
+  }
+  *cachedMask = currentMask;
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00544e30
 char TMultiplayerMgr::DoIdle(int action) {
   if (diplomacyQueueContext != 0) {

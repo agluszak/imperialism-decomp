@@ -1571,6 +1571,12 @@ void TDiplomacyMapView::DoKeyEvent(TToolboxEvent* event) {
   TEventHandler::DoKeyEvent(event);
 }
 
+// FUNCTION: IMPERIALISM 0x004f7170
+void TDiplomacyMapView::SetOverlay(int overlay) {
+  interactionModeAt94 = overlay;
+  InvalidateCityDialogRectRegion(&mapViewportRect514, 1);
+}
+
 // FUNCTION: IMPERIALISM 0x004f71a0
 void TDiplomacyMapView::DrawVoteNuggets() {
   ResetQuickDrawStrokeState();

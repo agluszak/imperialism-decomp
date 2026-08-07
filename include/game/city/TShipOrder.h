@@ -20,10 +20,9 @@ public:
   virtual bool CanMakeProduct();                                        // slot 0x12 0x4b8630
   virtual void LaunchShip();                                            // slot 0x13 0x4b89a0
 
-  // CreateObject (0x004b8470) allocates 0x4c bytes and stores the vptr, nothing else --
-  // the original does NOT clear the tracking slots at construction, and TProductionOrder's
-  // ctor (0x004b4f00, 9 bytes) only stores a vptr, so the previous body's claim that the
-  // base zero-inits these fields was wrong. The clear survives in the reset path below.
+  // Construction stores only the derived vptr; it does not clear tracking slots.
+  // SYNTHETIC: IMPERIALISM 0x004b84c0
+  // TShipOrder::TShipOrder
   TShipOrder() : TProductionOrder() {}
 
   // TShipOrder adds no fields of its own: `config/rtti_class_oracle.csv` gives

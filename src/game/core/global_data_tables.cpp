@@ -2292,6 +2292,11 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // GLOBAL: IMPERIALISM 0x006a6020
 int g_suppressUnexpectedDirectPlaySystemMessageAssert006a6020;
 
+// Compiler-emitted out-of-line copy of the MFC inline CPoint constructor used by
+// resource-driven UI builders.
+// TEMPLATE: IMPERIALISM 0x00427100
+// CPoint::CPoint(int, int)
+
 // Compiler-emitted dtor copies for the g_UiWidgetBuildStack006a13e0
 // CList<TView*,TView*> template instantiation. These previously carried invented
 // vtable-address-suffixed placeholder class names.

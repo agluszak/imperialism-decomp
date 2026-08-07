@@ -1709,6 +1709,16 @@ int TDiplomacyMgr::GetFavorite(int sourceNationSlot, int primaryOnlyFlag, int si
   return matchedNationSlot;
 }
 
+// FUNCTION: IMPERIALISM 0x004f2430
+void TDiplomacyMgr::UpdateTables(int nationCode) {
+  for (int otherNation = 0; otherNation < kNationSlotCount; ++otherNation) {
+    relationStandingScores[otherNation * kNationSlotCount + nationCode] = 90;
+    relationStandingScores[nationCode * kNationSlotCount + otherNation] = 90;
+    relationPropagationMatrix[otherNation * kNationSlotCount + nationCode] = 4;
+    relationPropagationMatrix[nationCode * kNationSlotCount + otherNation] = 4;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004f24a0
 void TDiplomacyMgr::RebuildMinorNationDispositionLookupTables(NationSlot nationCode) {
   // Ground truth walks the aux-slot table by byte offset (esi stepping 4 into

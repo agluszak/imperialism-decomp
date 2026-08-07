@@ -56,6 +56,21 @@ template <class T> static __inline T* AllocateCityMinisterScratchArray(int count
   }
   return result;
 }
+// FUNCTION: IMPERIALISM 0x004bdf90
+char IsResourceCodeInRange13To16(short resourceCode) {
+  if (resourceCode >= 0xd && resourceCode <= 0x10) {
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004bdfc0
+char IsResourceCodeInRanges0To6Or17To22(short resourceCode) {
+  if ((resourceCode >= 0 && resourceCode <= 6) || (resourceCode >= 0x11 && resourceCode <= 0x16)) {
+    return 1;
+  }
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004be000
 void InsertScoredTileCandidateWithRandomTieBreak(float score, short tileIndex,
@@ -82,6 +97,7 @@ float TCityInteriorMinister::GetAiDevelopmentResourceBudgetScale(int* resourcePo
   (void)resourcePools;
   return g_AiDevelopmentResourceBudgetScale_00650758;
 }
+
 // SYNTHETIC: IMPERIALISM 0x004be710
 // TCityInteriorMinister::CreateObject
 

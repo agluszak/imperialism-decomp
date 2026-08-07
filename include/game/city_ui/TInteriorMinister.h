@@ -16,6 +16,7 @@ public:
   TInteriorMinister() : TMinister(), capabilityFlag14(1), capabilityFlag16(1) {}
 
   DECLARE_DYNCREATE(TInteriorMinister)
+  void IInteriorMinister(TGreatPower* owner);
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short GetRankingCriterionForGP(short nationSlot) override;

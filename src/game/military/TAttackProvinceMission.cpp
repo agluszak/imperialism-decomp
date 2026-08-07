@@ -61,14 +61,14 @@ void TAttackProvinceMission::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0053d890
 void TAttackProvinceMission::Free() {
   // The AI-only tail state block (mapNodeStateFlags/portZoneStateFlags/...) that
-  // SetMapStateByteFlag970WithRuntimeGate touches lives only on TAutoGreatPower (RTTI
+  // SetProvinceStatus touches lives only on TAutoGreatPower (RTTI
   // object size proves the other GreatPower subclasses have no room for it); missions
   // are an AI-only game mechanic, so g_apNationStates[nationId04] here is genuinely a
   // TAutoGreatPower.
   TAutoGreatPower* nationState = static_cast<TAutoGreatPower*>(g_apNationStates[nationId04]);
   nationState->AssertValid();
 
-  nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
+  nationState->SetProvinceStatus(targetProvince30, 0);
 
   CIterator iter(orderListAt18);
   void* current = iter.Reset();

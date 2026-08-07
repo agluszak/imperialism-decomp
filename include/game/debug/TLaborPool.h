@@ -20,7 +20,10 @@ public:
   virtual short TransferToHighSkillFirst(TLaborPool* destination,
                                          short amount); // slot 0x0b 0x4b2340
 
+  // SYNTHETIC: IMPERIALISM 0x004b2130
+  // TLaborPool::TLaborPool
   TLaborPool() : lowSkillCount04(0), mediumSkillCount06(0), highSkillCount08(0), pad0a(0) {}
+  void ILaborPool();
 
   short lowSkillCount04;
   short mediumSkillCount06;

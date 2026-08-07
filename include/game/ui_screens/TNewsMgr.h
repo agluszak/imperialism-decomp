@@ -91,6 +91,7 @@ public:
   // ("empty"), leaving parmValue untouched. Reads nothing from `this`.
   void ClearStoryParms(newsStory* story); // 0x0055d090
   void InitializeNewsManager();
+  newsEntry* FindEntry(int storyId); // 0x55c930, Mac oracle
 
   // Mac-oracle event-queue API (gameplay side).
   void AddTreatyEvent(InterNationEventKind eventKind, int nationA, int nationB,

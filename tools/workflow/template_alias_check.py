@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate config/template_aliases.csv: fold-aware equivalence metadata in three
+"""Validate config/template_aliases.csv: fold-aware equivalence metadata in four
 classes (bd 5jjn), each with its own machine-checkable invariant re-verified on
 every run.
 
@@ -26,6 +26,10 @@ library_callee_alias: a compiler wrapper whose direct call resolves to a linked
 library body with the row's canonical decorated identity. The wrapper remains a
 distinct report entity; only call operands share the canonical identity.
 
+library_linked_copy: separately linked bodies carrying the same decorated
+library symbol. The bodies may differ because each module uses its own state
+layout; only their call identity is shared.
+
 Curated names intentionally DIFFER within a folded group (leaf dtor vs shared
 base body), so no name check applies there.
 
@@ -51,6 +55,7 @@ from tools.common.template_aliases import (
     ALIASES_CSV,
     CLASS_FOLDED_SYMBOL_GROUP,
     CLASS_LIBRARY_CALLEE_ALIAS,
+    CLASS_LIBRARY_LINKED_COPY,
     CLASSIFICATIONS,
     load_alias_rows,
 )
@@ -123,6 +128,27 @@ def _check_library_callee_alias(
     return True, f"wrapper calls {reached:#x} with canonical identity {decorated}"
 
 
+def _check_library_linked_copy(
+    symbols: dict[int, str],
+    sizes: dict[int, int],
+    alias: int,
+    canonical: int,
+    decorated: str,
+) -> tuple[bool, str]:
+    if not sizes.get(alias) or not sizes.get(canonical):
+        return False, f"not in symbols.csv (sizes {sizes.get(alias)}/{sizes.get(canonical)})"
+    if not decorated:
+        return False, "missing shared decorated library identity"
+    alias_symbol = symbols.get(alias)
+    canonical_symbol = symbols.get(canonical)
+    if alias_symbol != decorated or canonical_symbol != decorated:
+        return False, (
+            f"linked symbols are {alias_symbol!r}/{canonical_symbol!r}, "
+            f"not {decorated!r}"
+        )
+    return True, f"both linked bodies carry library identity {decorated}"
+
+
 def main() -> int:
     if not ALIASES_CSV.is_file():
         print(f"no {ALIASES_CSV.name} yet -- nothing to check.")
@@ -142,6 +168,10 @@ def main() -> int:
         elif equivalence_class == CLASS_LIBRARY_CALLEE_ALIAS:
             equal, reason = _check_library_callee_alias(
                 img, symbols, sizes, alias, canonical, decorated
+            )
+        elif equivalence_class == CLASS_LIBRARY_LINKED_COPY:
+            equal, reason = _check_library_linked_copy(
+                symbols, sizes, alias, canonical, decorated
             )
         else:
             equal, reason = _check_duplicate_emission(img, names, sizes, alias, canonical)

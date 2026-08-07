@@ -71,7 +71,8 @@ public:
   // serialize all 23 shorts as a single persistent block.
   short predictedNeedByResource22[kResourceKindCount];
 
-  // NOOP: verified empty in original 0x004b5b42 (no standalone TPopulationMgr::TPopulationMgr body exists: construction is fully inlined into CreateObject 0x004b5b40; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004b5b90
+  // TPopulationMgr::TPopulationMgr
   TPopulationMgr() {}
 };
 ASSERT_SIZE(TPopulationMgr, 0x50);

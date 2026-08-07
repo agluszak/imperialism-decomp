@@ -20,7 +20,8 @@ public:
                                short secondaryInputResource,
                                short productionSlot); // slot 0x12 0x4b9010
 
-  // NOOP: verified empty in original 0x004b8f52 (no standalone TExpansionOrder::TExpansionOrder body exists: construction is fully inlined into CreateObject 0x004b8f50; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004b8fa0
+  // TExpansionOrder::TExpansionOrder
   TExpansionOrder() {}
 };
 ASSERT_SIZE(TExpansionOrder, 0x54);

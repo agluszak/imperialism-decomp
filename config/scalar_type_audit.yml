@@ -470,6 +470,9 @@ discriminant_reviews:
   renderMode:
     classification: byte_or_int_predicate_not_a_domain
     evidence: TC2TemplateDialog tests non-zero to choose the alternate render path.
+  resourceCode:
+    classification: resource_kind_domain
+    evidence: The two retained city-production predicates at 0x004bdf90/0x004bdfc0 test exact ResourceKindStorage bands (13..16 and 0..6/17..22); the literals are retail range edges, not unrelated magic modes.
   resourceType:
     classification: industry_action_order_type_domain
     evidence: the residual sites are the 14-entry industry/navy-order domain (TGreatPower 0x004dd140 walks orderCountByType5c[0x0e], TNavyMgr its 14-entry report table) plus one signed -1 sentinel test and TTechMgr's slotMap index; none are ResourceKind.

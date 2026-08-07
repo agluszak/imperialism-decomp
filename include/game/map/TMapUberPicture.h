@@ -123,6 +123,7 @@ public:
   // moved here rather than left mis-attributed (see also TWorldView.cpp's own
   // independent caveat about the same object).
   void SetMapInteractionMode(short nMode);
+  void GrandCycle(); // 0x5999c0, Mac oracle
   // Refreshes the mini-map tool window if it exists. Null-receiver-safe:
   // call sites invoke this on a possibly-null ownerContext. 0x00599fa0, __thiscall,
   // 0 args.

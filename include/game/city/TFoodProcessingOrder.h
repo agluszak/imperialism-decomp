@@ -19,7 +19,8 @@ public:
                               short quantity) override; // slot 0x10 0x4b80c0
   virtual void IFoodProcessingOrder(TCity* city);       // slot 0x11 0x4b7e80
 
-  // NOOP: verified empty in original 0x004b7dc2 (no standalone TFoodProcessingOrder::TFoodProcessingOrder body exists: construction is fully inlined into CreateObject 0x004b7dc0; that address is its operator-new call site)
+  // SYNTHETIC: IMPERIALISM 0x004b7e10
+  // TFoodProcessingOrder::TFoodProcessingOrder
   TFoodProcessingOrder() {}
 };
 ASSERT_SIZE(TFoodProcessingOrder, 0x4c);

@@ -1941,7 +1941,7 @@ address|name|symbol|size|type|prototype|provenance
 4b20a0|`dynamic initializer for 'g_scaledShortConst_6A24D0''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A24D0''(void)|library
 4b20d0|TLaborPool::CreateObject|?CreateObject@TLaborPool@@SGPAVCObject@@XZ|38|function|undefined CreateObject()|rtti
 4b2110|TLaborPool::GetRuntimeClass||6|function|undefined GetTLaborPoolClassNamePointer()|rtti
-4b2130|IltTarget_004b2130||23|function|undefined IltTarget_004b2130()|
+4b2130|TLaborPool::TLaborPool||23|function|TLaborPool* __thiscall TLaborPool::TLaborPool(void)|macos-name-oracle+windows-vtable+listing
 4b2160|TLaborPool::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b2190|TLaborPool::DestructTLaborPoolAndMaybeFree||7|function|undefined DestructTLaborPoolAndMaybeFree()|
 4b21b0|IltTarget_004b21b0||15|function|undefined IltTarget_004b21b0()|
@@ -2003,7 +2003,7 @@ address|name|symbol|size|type|prototype|provenance
 4b51b0|TProductionOrder::FillOrderSheet||13|function|undefined FillOrderSheet()|
 4b51d0|TItemOrder::CreateObject|?CreateObject@TItemOrder@@SGPAVCObject@@XZ|30|function|undefined CreateObject()|rtti
 4b5200|TItemOrder::GetRuntimeClass||6|function|undefined GetTItemOrderClassNamePointer()|rtti
-4b5220|IltTarget_004b5220||15|function|undefined IltTarget_004b5220()|
+4b5220|TItemOrder::TItemOrder||15|function|TItemOrder* __thiscall TItemOrder::TItemOrder(void)|macos-name-oracle+windows-vtable+listing
 4b5240|TItemOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5270|TItemOrder::DestructTItemOrderAndMaybeFree||7|function|undefined DestructTItemOrderAndMaybeFree()|
 4b5290|TItemOrder::InitializeItemOrderContext||96|function|void InitializeItemOrderContext(TCity* city, short outputResourceType, short primaryInputResourceId, short secondaryInputResourceId, short productionSlot)|
@@ -2016,7 +2016,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5710|TItemOrder::ReadFrom||125|function|undefined DeserializeCityOrderItemContextCore()|
 4b57b0|TOrItemOrder::CreateObject|?CreateObject@TOrItemOrder@@SGPAVCObject@@XZ|30|function|undefined CreateObject()|rtti
 4b57e0|TOrItemOrder::GetRuntimeClass||6|function|undefined GetTOrItemOrderClassNamePointer()|rtti
-4b5800|IltTarget_004b5800||15|function|undefined IltTarget_004b5800()|
+4b5800|TOrItemOrder::TOrItemOrder||15|function|TOrItemOrder* __thiscall TOrItemOrder::TOrItemOrder(void)|macos-name-oracle+windows-vtable+listing
 4b5820|TOrItemOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5850|TOrItemOrder::DestructTOrItemOrderAndMaybeFree||7|function|undefined DestructTOrItemOrderAndMaybeFree()|
 4b5870|TOrItemOrder::OrItemOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
@@ -2024,7 +2024,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5990|TOrItemOrder::SetQuantity||331|function|bool SetQuantity(short quantity)|
 4b5b40|TPopulationMgr::CreateObject|?CreateObject@TPopulationMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b5b70|TPopulationMgr::GetRuntimeClass||6|function|undefined GetTPopulationMgrClassNamePointer()|rtti
-4b5b90|IltTarget_004b5b90||9|function|undefined IltTarget_004b5b90()|
+4b5b90|TPopulationMgr::TPopulationMgr||9|function|TPopulationMgr* __thiscall TPopulationMgr::TPopulationMgr(void)|macos-name-oracle+windows-vtable+listing
 4b5bb0|TPopulationMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5be0|TPopulationMgr::DestructTPopulationMgrAndMaybeFree||7|function|undefined DestructTPopulationMgrAndMaybeFree()|
 4b5c00|TPopulationMgr::InitializePopulationState||196|function|void InitializePopulationState(TCity *)|
@@ -2046,7 +2046,7 @@ address|name|symbol|size|type|prototype|provenance
 4b6a30|TPopulationMgr::AddExpert||32|function|void __thiscall AddExpert(short count)|curated
 4b6a60|TTrainingOrder::CreateObject|?CreateObject@TTrainingOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b6a90|TTrainingOrder::GetRuntimeClass||6|function|undefined GetTTrainingOrderClassNamePointer()|rtti
-4b6ab0|IltTarget_004b6ab0||9|function|undefined IltTarget_004b6ab0()|
+4b6ab0|TTrainingOrder::TTrainingOrder||9|function|TTrainingOrder* __thiscall TTrainingOrder::TTrainingOrder(void)|macos-name-oracle+windows-vtable+listing
 4b6ad0|TTrainingOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b6b00|TTrainingOrder::DestructTTrainingOrderAndMaybeFree||7|function|undefined DestructTTrainingOrderAndMaybeFree()|
 4b6b20|TTrainingOrder::TrainingOrderSlot11||65|function|undefined InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)|
@@ -2057,7 +2057,7 @@ address|name|symbol|size|type|prototype|provenance
 4b6f00|TTrainingOrder::ResetCityOrderItemDerivedStateNoop||1|function|undefined ResetCityOrderItemDerivedStateNoop(void)|
 4b6f20|TUnitOrder::CreateObject|?CreateObject@TUnitOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b6f50|TUnitOrder::GetRuntimeClass||6|function|undefined GetTUnitOrderClassNamePointer()|rtti
-4b6f70|IltTarget_004b6f70||9|function|undefined IltTarget_004b6f70()|
+4b6f70|TUnitOrder::TUnitOrder||9|function|TUnitOrder* __thiscall TUnitOrder::TUnitOrder(void)|macos-name-oracle+windows-vtable+listing
 4b6f90|TUnitOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b6fc0|TUnitOrder::DestructTUnitOrderAndMaybeFree||7|function|undefined DestructTUnitOrderAndMaybeFree()|
 4b6fe0|TUnitOrder::InitializeCityRecruitmentOrderContext||126|function|void __thiscall InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode)|
@@ -2070,7 +2070,7 @@ address|name|symbol|size|type|prototype|provenance
 4b7920|TUnitOrder::ReadFrom||155|function|void __thiscall SyncCityEntryOrderStateWithArchive(int * pArchive)|
 4b79f0|TPowerPlantOrder::CreateObject|?CreateObject@TPowerPlantOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b7a20|TPowerPlantOrder::GetRuntimeClass||6|function|undefined GetTPowerPlantOrderClassNamePointer()|rtti
-4b7a40|IltTarget_004b7a40||9|function|undefined IltTarget_004b7a40()|
+4b7a40|TPowerPlantOrder::TPowerPlantOrder||9|function|TPowerPlantOrder* __thiscall TPowerPlantOrder::TPowerPlantOrder(void)|macos-name-oracle+windows-vtable+listing
 4b7a60|TPowerPlantOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b7a90|TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree||7|function|undefined DestructTPowerPlantOrderAndMaybeFree()|
 4b7ab0|TPowerPlantOrder::InitializeCityProductionState_Impl||64|function|undefined InitializeCityProductionState_Impl()|
@@ -2083,7 +2083,7 @@ address|name|symbol|size|type|prototype|provenance
 4b7d40|TPowerPlantOrder::ReadFrom||95|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(int * param_1)|
 4b7dc0|TFoodProcessingOrder::CreateObject|?CreateObject@TFoodProcessingOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b7df0|TFoodProcessingOrder::GetRuntimeClass||6|function|undefined GetTFoodProcessingOrderClassNamePointer()|rtti
-4b7e10|IltTarget_004b7e10||9|function|undefined IltTarget_004b7e10()|
+4b7e10|TFoodProcessingOrder::TFoodProcessingOrder||9|function|TFoodProcessingOrder* __thiscall TFoodProcessingOrder::TFoodProcessingOrder(void)|macos-name-oracle+windows-vtable+listing
 4b7e30|TFoodProcessingOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b7e60|TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree||7|function|undefined DestructTFoodProcessingOrderAndMaybeFree()|
 4b7e80|TFoodProcessingOrder::FoodProcessingOrderSlot11||62|function|undefined InitializeCityProductionState_Impl_At004b7e80(int param_1)|
@@ -2102,7 +2102,7 @@ address|name|symbol|size|type|prototype|provenance
 4b8440|TPopGrowthOrder::FillOrderSheet||32|function|undefined CreateTShipOrderInstance()|
 4b8470|TShipOrder::CreateObject|?CreateObject@TShipOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 4b84a0|TShipOrder::GetRuntimeClass||6|function|undefined GetTShipOrderClassNamePointer()|rtti
-4b84c0|IltTarget_004b84c0||9|function|undefined IltTarget_004b84c0()|
+4b84c0|TShipOrder::TShipOrder||9|function|TShipOrder* __thiscall TShipOrder::TShipOrder(void)|macos-name-oracle+windows-vtable+listing
 4b84e0|TShipOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b8510|TShipOrder::DestructTShipOrderAndMaybeFree||7|function|undefined DestructTShipOrderAndMaybeFree()|
 4b8530|IltTarget_004b8530||65|function|undefined IltTarget_004b8530()|
@@ -2115,14 +2115,14 @@ address|name|symbol|size|type|prototype|provenance
 4b8b80|TShipOrder::FillOrderSheet||201|function|undefined FillOrderSheet()|
 4b8c90|TCapacityOrder::CreateObject|?CreateObject@TCapacityOrder@@SGPAVCObject@@XZ|30|function|undefined CreateObject()|rtti
 4b8cc0|TCapacityOrder::GetRuntimeClass||6|function|undefined GetTCapacityOrderClassNamePointer()|rtti
-4b8ce0|IltTarget_004b8ce0||15|function|undefined IltTarget_004b8ce0()|
+4b8ce0|TCapacityOrder::TCapacityOrder||15|function|TCapacityOrder* __thiscall TCapacityOrder::TCapacityOrder(void)|macos-name-oracle+windows-vtable+listing
 4b8d00|TCapacityOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b8d30|TCapacityOrder::DestructTCapacityOrderAndMaybeFree||7|function|undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)|
 4b8d50|TCapacityOrder::ICapacityOrder||96|function|undefined ICapacityOrder()|
 4b8dd0|TCapacityOrder::CommitIfPending||302|function|undefined CommitIfPending(void)|
 4b8f50|TExpansionOrder::CreateObject|?CreateObject@TExpansionOrder@@SGPAVCObject@@XZ|30|function|undefined CreateObject()|rtti
 4b8f80|TExpansionOrder::GetRuntimeClass||6|function|undefined GetTExpansionOrderClassNamePointer()|rtti
-4b8fa0|IltTarget_004b8fa0||15|function|undefined IltTarget_004b8fa0()|
+4b8fa0|TExpansionOrder::TExpansionOrder||15|function|TExpansionOrder* __thiscall TExpansionOrder::TExpansionOrder(void)|macos-name-oracle+windows-vtable+listing
 4b8fc0|TExpansionOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b8ff0|TExpansionOrder::DestructTExpansionOrderAndMaybeFree||7|function|undefined DestructTExpansionOrderAndMaybeFree()|
 4b9010|TExpansionOrder::ExpansionOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
@@ -4591,9 +4591,9 @@ address|name|symbol|size|type|prototype|provenance
 55e8c0|TZone::HasZoneActiveChildCount||12|function|undefined HasZoneActiveChildCount()|
 55e8e0|TZonePrimaryNeighborStretch::Add||167|function|TZone** __thiscall Add(TZone* zone)|
 55e9c0|TZoneSecondaryNeighborStretch::Add||167|function|Province** __thiscall Add(Province* entry)|
-55eaa0|IltTarget_0055eaa0||23|function|undefined IltTarget_0055eaa0()|
+55eaa0|stretch<TZone*>::~stretch||23|function|undefined ~stretch()|compiler_synthetic
 55ead0|stretch<TZone*>::Add|?Add@?$stretch@PAVTZone@@@@UAEPAPAVTZone@@PAV2@@Z|124|function|TZone ** __thiscall Add(TZone * zone)|template
-55eb70|IltTarget_0055eb70||23|function|undefined IltTarget_0055eb70()|
+55eb70|stretch<Province*>::~stretch||23|function|undefined ~stretch()|compiler_synthetic
 55eba0|stretch<Province*>::Add|?Add@?$stretch@PAUProvince@@@@UAEPAPAUProvince@@PAU2@@Z|124|function|Province ** __thiscall Add(Province * entry)|template
 55ec40|IltTarget_0055ec40||1|function|void IltTarget_0055ec40(void)|curated
 55ec60|TZone::Free||65|function|undefined RemoveZoneFromGlobalListAndRelease()|
@@ -5628,7 +5628,7 @@ address|name|symbol|size|type|prototype|provenance
 594830|IltTarget_00594830||153|function|undefined IltTarget_00594830()|
 594900|RecomputeNationComparisonValuesAndNormalizeScale||559|function|undefined RecomputeNationComparisonValuesAndNormalizeScale()|
 594c00|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets||225|function|undefined SortSevenEntriesAndUpdatePictureWidgets()|
-594d30|IltTarget_00594d30||79|function|undefined IltTarget_00594d30()|
+594d30|TStatusPicture::NormalizeAsNeeded||79|function|void NormalizeAsNeeded()|compiler_synthetic
 594ed0|`dynamic initializer for 'g_scaledShortConst_6A460C''||30|function|void __cdecl `dynamic initializer for 'g_scaledShortConst_6A460C''(void)|library
 594f20|TWorldView::CreateObject|?CreateObject@TWorldView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 594fc0|TWorldView::UpdateMapViewTileMarker||3|function|undefined OrphanRetStub_00594fc0(void)|
@@ -7788,7 +7788,7 @@ address|name|symbol|size|type|prototype|provenance
 60cfa8|AUX_DATA::UpdateSysColors|?UpdateSysColors@AUX_DATA@@QAEXXZ|68|function|public: void __thiscall AUX_DATA::UpdateSysColors(void)|msvc500_library_oracle
 60cfec|AUX_DATA::UpdateSysMetrics|?UpdateSysMetrics@AUX_DATA@@QAEXXZ|88|function|public: void __thiscall AUX_DATA::UpdateSysMetrics(void)|msvc500_library_oracle
 60d044|CMenu::DeleteTempMap|?DeleteTempMap@CMenu@@SGXXZ|20|function|undefined DeleteTempMap_60d044()|
-60d058|afxMapHMENU|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|112|function|undefined afxMapHIMAGELIST_60d058()|
+60d058|afxMapHMENU_60d058|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|112|function|undefined afxMapHIMAGELIST_60d058()|
 60d0c8|CMenu::FromHandle|?FromHandle@CMenu@@SGPAV1@PAUHMENU__@@@Z|22|function|public: static class CMenu * __stdcall CMenu::FromHandle(struct HMENU__*)|msvc500_library_oracle
 60d0de|CMenu::FromHandlePermanent|?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z|28|function|public: static class CMenu * __stdcall CMenu::FromHandlePermanent(struct HMENU__*)|msvc500_library_oracle
 60d127|Detach||42|function|undefined ?Detach@CMenu@@QAEPAUHMENU__@@XZ()|
