@@ -24,7 +24,7 @@ pub struct MainMenuConfig {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum ExecutableMode {
     MainMenu(MainMenuConfig),
-    SnapshotViewer(ViewerConfig),
+    StateViewer(ViewerConfig),
     Help,
 }
 
@@ -33,7 +33,7 @@ impl ExecutableMode {
         concat!(
             "usage:\n",
             "  imperialism-app --retail-dir PATH [--cache-dir PATH]\n",
-            "  imperialism-app viewer SNAPSHOT.json [--assets ASSET_PACK]\n",
+            "  imperialism-app viewer RUNTIME_RESULT.json [--assets ASSET_PACK]\n",
             "\n",
             "Normal launch requires an English GOG Windows installation. The retail path is\n",
             "validated before Bevy creates a window and is never persisted. Derived assets are\n",
@@ -57,7 +57,7 @@ impl ExecutableMode {
         {
             return ViewerConfig::parse(arguments.into_iter().skip(1))
                 .map_err(ExecutableConfigError::Viewer)
-                .map(|config| config.map_or(Self::Help, Self::SnapshotViewer));
+                .map(|config| config.map_or(Self::Help, Self::StateViewer));
         }
 
         let mut retail_dir = None;
@@ -106,7 +106,7 @@ pub enum ExecutableConfigError {
     DuplicateOption(&'static str),
     #[error("unknown option {0:?}")]
     UnknownOption(OsString),
-    #[error("unexpected argument {0:?}; use the viewer subcommand for snapshots")]
+    #[error("unexpected argument {0:?}; use the viewer subcommand for runtime captures")]
     UnexpectedArgument(OsString),
     #[error("invalid viewer arguments: {0}")]
     Viewer(#[from] ViewerConfigError),
@@ -271,23 +271,23 @@ mod tests {
     }
 
     #[test]
-    fn snapshots_require_the_explicit_viewer_subcommand() {
-        let ambiguous = ExecutableMode::parse([OsString::from("snapshot.json")]).unwrap_err();
+    fn runtime_results_require_the_explicit_viewer_subcommand() {
+        let ambiguous = ExecutableMode::parse([OsString::from("runtime-result.json")]).unwrap_err();
         assert!(matches!(
             ambiguous,
             ExecutableConfigError::UnexpectedArgument(_)
         ));
         let viewer = ExecutableMode::parse([
             OsString::from("viewer"),
-            OsString::from("snapshot.json"),
+            OsString::from("runtime-result.json"),
             OsString::from("--assets"),
             OsString::from("assets"),
         ])
         .unwrap();
         assert_eq!(
             viewer,
-            ExecutableMode::SnapshotViewer(ViewerConfig {
-                snapshot: PathBuf::from("snapshot.json"),
+            ExecutableMode::StateViewer(ViewerConfig {
+                runtime_result: PathBuf::from("runtime-result.json"),
                 asset_manifest: PathBuf::from("assets/manifest.json"),
             })
         );

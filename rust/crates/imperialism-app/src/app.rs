@@ -9,21 +9,21 @@ use bevy::prelude::*;
 use bevy::window::WindowPlugin;
 use imperialism_core::{GameState, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH};
 use imperialism_formats::{
-    AssetManifestError, NormalizedAssetManifestV1, SnapshotReadError, game_state_from_snapshot,
-    read_game_snapshot, read_normalized_asset_manifest,
+    AssetManifestError, NormalizedAssetManifestV1, RuntimeCaptureError,
+    read_normalized_asset_manifest, read_runtime_capture,
 };
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ViewerConfig {
-    pub snapshot: PathBuf,
+    pub runtime_result: PathBuf,
     pub asset_manifest: PathBuf,
 }
 
 impl ViewerConfig {
     pub fn usage() -> &'static str {
-        "usage: imperialism-app viewer SNAPSHOT.json [--assets ASSET_PACK]\n\
+        "usage: imperialism-app viewer RUNTIME_RESULT.json [--assets ASSET_PACK]\n\
          \n\
          ASSET_PACK defaults to imported-assets and must contain manifest.json."
     }
@@ -31,7 +31,7 @@ impl ViewerConfig {
     pub fn parse(
         arguments: impl IntoIterator<Item = OsString>,
     ) -> Result<Option<Self>, ViewerConfigError> {
-        let mut snapshot = None;
+        let mut runtime_result = None;
         let mut asset_pack = PathBuf::from("imported-assets");
         let mut arguments = arguments.into_iter();
         while let Some(argument) = arguments.next() {
@@ -49,13 +49,13 @@ impl ViewerConfig {
             if argument.to_string_lossy().starts_with('-') {
                 return Err(ViewerConfigError::UnknownOption(argument));
             }
-            if snapshot.replace(PathBuf::from(argument)).is_some() {
-                return Err(ViewerConfigError::MultipleSnapshots);
+            if runtime_result.replace(PathBuf::from(argument)).is_some() {
+                return Err(ViewerConfigError::MultipleRuntimeResults);
             }
         }
-        let snapshot = snapshot.ok_or(ViewerConfigError::MissingSnapshot)?;
+        let runtime_result = runtime_result.ok_or(ViewerConfigError::MissingRuntimeResult)?;
         Ok(Some(Self {
-            snapshot,
+            runtime_result,
             asset_manifest: asset_pack.join("manifest.json"),
         }))
     }
@@ -63,12 +63,12 @@ impl ViewerConfig {
 
 #[derive(Debug, Eq, PartialEq, thiserror::Error)]
 pub enum ViewerConfigError {
-    #[error("missing canonical snapshot path")]
-    MissingSnapshot,
+    #[error("missing runtime-result path")]
+    MissingRuntimeResult,
     #[error("--assets requires a directory")]
     MissingAssetPack,
-    #[error("only one snapshot may be viewed")]
-    MultipleSnapshots,
+    #[error("only one runtime result may be viewed")]
+    MultipleRuntimeResults,
     #[error("unknown option {0:?}")]
     UnknownOption(OsString),
 }
@@ -76,10 +76,10 @@ pub enum ViewerConfigError {
 #[derive(Debug, thiserror::Error)]
 pub enum ViewerLoadError {
     #[error(transparent)]
-    Snapshot(#[from] SnapshotReadError),
+    Capture(#[from] RuntimeCaptureError),
     #[error(transparent)]
     Assets(#[from] AssetManifestError),
-    #[error("cannot present snapshot: {0}")]
+    #[error("cannot present game state: {0}")]
     Presentation(String),
 }
 
@@ -89,8 +89,7 @@ pub struct ViewerInput {
 }
 
 pub fn load_viewer(config: &ViewerConfig) -> Result<ViewerInput, ViewerLoadError> {
-    let snapshot = read_game_snapshot(&config.snapshot)?;
-    let game = game_state_from_snapshot(snapshot).map_err(SnapshotReadError::Validation)?;
+    let game = read_runtime_capture(&config.runtime_result, "game_state")?;
     let assets =
         read_normalized_asset_manifest(&config.asset_manifest).map_err(ViewerLoadError::Assets)?;
     validate_presentation(&game, &assets)?;
@@ -136,7 +135,7 @@ pub fn run_viewer(input: ViewerInput) {
                 .set(ImagePlugin::default_nearest())
                 .set(WindowPlugin {
                     primary_window: Some(Window {
-                        title: "Imperialism strategic-map snapshot".to_owned(),
+                        title: "Imperialism strategic map".to_owned(),
                         resolution: (logical_resolution[0], logical_resolution[1]).into(),
                         ..default()
                     }),
@@ -167,15 +166,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parses_snapshot_and_asset_pack_paths() {
+    fn parses_runtime_result_and_asset_pack_paths() {
         let config = ViewerConfig::parse([
-            OsString::from("snapshot.json"),
+            OsString::from("runtime-result.json"),
             OsString::from("--assets"),
             OsString::from("local-assets"),
         ])
         .unwrap()
         .unwrap();
-        assert_eq!(config.snapshot, Path::new("snapshot.json"));
+        assert_eq!(config.runtime_result, Path::new("runtime-result.json"));
         assert_eq!(
             config.asset_manifest,
             Path::new("local-assets/manifest.json")

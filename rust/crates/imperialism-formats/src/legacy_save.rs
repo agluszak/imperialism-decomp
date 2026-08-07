@@ -1,23 +1,20 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
-use crate::snapshot::{
-    GAME_SNAPSHOT_SCHEMA, GAME_SNAPSHOT_SECTIONS, GameSnapshotV1, SnapshotArmyMission,
-    SnapshotAttackMission, SnapshotCity, SnapshotCivilianUnit, SnapshotEconomy, SnapshotHashes,
-    SnapshotMajorNation, SnapshotMetadata, SnapshotMilitary, SnapshotMilitaryUnit, SnapshotMission,
-    SnapshotMissions, SnapshotNation, SnapshotNationPending, SnapshotNations, SnapshotNavyMission,
-    SnapshotPending, SnapshotPopulation, SnapshotRng, SnapshotWorld, TileSnapshot,
-};
 use imperialism_core::{
-    PENDING_ACTION_COUNT, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
-    TurnCalendar,
+    AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
+    CivilianUnitId, CivilianUnitState, GameState, LaborPool, MajorNationId, MajorNationState,
+    MajorNationTable, MilitaryUnitId, MilitaryUnitState, MissionData, MissionId, MissionState,
+    NATION_COUNT, NationCommonState, NationData, NationId, NationPendingWork, NationState,
+    NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
+    PopulationState, ProductionTable, ResourceTable, RngState, STRATEGIC_MAP_HEIGHT,
+    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId,
+    TileState, TurnCalendar, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
 const CURRENT_RETAIL_VERSION: u32 = 0x3e;
 const SAVE_LABEL_LENGTH: usize = 0x20;
 const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
-const NATION_COUNT: usize = 23;
 const RESOURCE_KIND_COUNT: usize = 23;
-const AID_ALLOCATION_COUNT: usize = 0x170;
 const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
 const CITY_ORDER_SLOT_COUNT: usize = 61;
 const TRADE_CATEGORY_COUNT: usize = 17;
@@ -103,8 +100,7 @@ pub struct LegacySaveV62 {
 
 /// Runtime-only state that the retail save format does not persist.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct LegacySnapshotContext {
-    pub runtime_seed: u32,
+pub struct LegacyGameStateContext {
     pub crt_rand_state: u32,
     pub map_generation_lcg: u32,
     pub zone_status_lcg: u32,
@@ -204,21 +200,21 @@ pub struct LegacyCountryBase {
 }
 
 impl LegacyCountryBase {
-    pub fn snapshot_military_units(&self, nation: u8) -> Vec<SnapshotMilitaryUnit> {
+    pub fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
         self.military_units
             .iter()
             .enumerate()
-            .map(|(roster_index, unit)| SnapshotMilitaryUnit {
+            .map(|(roster_index, unit)| MilitaryUnitState {
+                id: MilitaryUnitId::new(unit.persistent_id),
                 nation,
                 roster_index: roster_index as u32,
-                persistent_id: unit.persistent_id,
                 unit_type: unit.unit_type,
                 stationed_province: unit.stationed_province,
                 order: unit.order,
                 order_target: unit.order_target,
                 owner_nation: unit.owner_nation,
                 roster_id: unit.roster_id,
-                registered: unit.registered,
+                registered: unit.registered != 0,
                 order_target_tiles: unit.order_target_tiles,
                 order_target_mirrors: unit.order_target_mirrors,
                 name: unit.name.clone(),
@@ -399,21 +395,21 @@ pub struct LegacyGreatPowerPostCity {
 }
 
 impl LegacyGreatPowerPostCity {
-    pub fn snapshot_civilian_units(&self, nation: u8) -> Vec<SnapshotCivilianUnit> {
+    pub fn civilian_unit_states(&self, nation: NationId) -> Vec<CivilianUnitState> {
         self.civilian_units
             .iter()
             .enumerate()
-            .map(|(roster_index, unit)| SnapshotCivilianUnit {
+            .map(|(roster_index, unit)| CivilianUnitState {
+                id: CivilianUnitId::new(unit.persistent_id),
                 nation,
                 roster_index: roster_index as u32,
-                persistent_id: unit.persistent_id,
                 unit_type: unit.unit_type,
-                tile: unit.tile_index,
+                tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
                 order: unit.order,
                 order_target: unit.order_target,
                 owner_nation: unit.owner_nation,
                 roster_id: unit.roster_id,
-                registered: unit.registered,
+                registered: unit.registered != 0,
                 remaining_turns: unit.remaining_turns,
             })
             .collect()
@@ -532,120 +528,157 @@ pub struct LegacyMission {
 }
 
 impl LegacyMission {
-    pub fn snapshot(
+    pub fn mission_state(
         &self,
         index: u32,
-        nation: u8,
+        nation: NationId,
         queue_index: u32,
         military_units: &[LegacyMilitaryUnit],
-    ) -> Result<SnapshotMission, LegacySaveError> {
-        let army = self
-            .army
-            .as_ref()
-            .map(|army| {
-                let units = army
-                    .unit_ordinals
-                    .iter()
-                    .map(|ordinal| {
-                        usize::try_from(*ordinal - 1)
-                            .ok()
-                            .and_then(|index| military_units.get(index))
-                            .map(|unit| unit.persistent_id)
-                            .ok_or_else(|| LegacySaveError::SnapshotProjection(format!(
-                                "mission {index} references absent unit ordinal {ordinal} for nation {nation}"
-                            )))
-                    })
-                    .collect::<Result<Vec<_>, _>>()?;
-                Ok::<SnapshotArmyMission, LegacySaveError>(SnapshotArmyMission {
-                    present_location: army.present_location,
-                    required_equipage_bits: army.required_equipage_bits,
-                    units,
-                })
+    ) -> Result<MissionState, LegacySaveError> {
+        let army = if let Some(army) = &self.army {
+            let mut units = Vec::with_capacity(army.unit_ordinals.len());
+            for ordinal in &army.unit_ordinals {
+                let unit = usize::try_from(*ordinal - 1)
+                    .ok()
+                    .and_then(|unit_index| military_units.get(unit_index))
+                    .ok_or_else(|| {
+                        LegacySaveError::StateProjection(format!(
+                            "mission {index} references absent unit ordinal {ordinal} for nation {}",
+                            nation.get()
+                        ))
+                    })?;
+                units.push(MilitaryUnitId::new(unit.persistent_id));
+            }
+            Some(ArmyMissionState {
+                present_location: army.present_location,
+                required_equipage_bits: army.required_equipage_bits,
+                units,
             })
-            .transpose()?;
-        Ok(SnapshotMission {
-            index,
+        } else {
+            None
+        };
+        let navy = self.navy.as_ref().map(navy_mission_state);
+        let beachhead = self.beachhead.as_ref().map(navy_mission_state);
+        let attack = self
+            .target_province
+            .zip(self.amassing_province)
+            .zip(army.clone())
+            .map(
+                |((target_province, amassing_province), army)| AttackMissionState {
+                    army,
+                    target_province,
+                    amassing_province,
+                },
+            );
+        let data = match self.class.as_str() {
+            "TDefendProvinceMission" => {
+                MissionData::DefendProvince(required_state(army, "defend-province army mission")?)
+            }
+            "TAttackProvinceMission" => MissionData::AttackProvince(required_state(
+                attack,
+                "attack-province mission payload",
+            )?),
+            "TInvadeMission" => MissionData::Invade {
+                attack: required_state(attack, "invade mission payload")?,
+                beachhead,
+            },
+            "TControlSeaZoneMission" => {
+                MissionData::ControlSeaZone(required_state(navy, "control-sea-zone navy mission")?)
+            }
+            "TEscortMission" => MissionData::Escort(required_state(navy, "escort navy mission")?),
+            "TScatteredShipsMission" => {
+                MissionData::ScatteredShips(required_state(navy, "scattered-ships navy mission")?)
+            }
+            "TBlockadePortMission" => MissionData::BlockadePort {
+                navy: required_state(navy, "blockade-port navy mission")?,
+                port_zone: required_state(self.blockade_port_zone, "blockade port zone")?,
+            },
+            "TBeachheadMission" => {
+                MissionData::Beachhead(required_state(navy, "beachhead navy mission")?)
+            }
+            class => {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "unsupported mission class {class}"
+                )));
+            }
+        };
+        Ok(MissionState {
+            id: MissionId::new(index),
             nation,
             queue_index,
-            class: self.class.clone(),
+            data,
             source_nation: self.source_nation,
             path_marker: self.path_marker,
             state: self.state,
             importance_bits: self.importance_bits,
             marker: self.marker,
-            army,
-            navy: self.navy.as_ref().map(snapshot_navy_mission),
-            attack: self.target_province.zip(self.amassing_province).map(
-                |(target_province, amassing_province)| SnapshotAttackMission {
-                    target_province,
-                    amassing_province,
-                },
-            ),
-            beachhead: self.beachhead.as_ref().map(snapshot_navy_mission),
-            blockade_port_zone: self.blockade_port_zone,
         })
     }
 }
 
-fn snapshot_navy_mission(mission: &LegacyNavyMission) -> SnapshotNavyMission {
-    SnapshotNavyMission {
+fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
+    NavyMissionState {
         target_zone: mission.target_zone,
         resolved_port_zone: mission.resolved_port_zone,
         // These two fields are deliberately rebuilt as null by TNavyMission::ReadFrom.
-        selected_ship: -1,
-        task_force: -1,
+        selected_ship: None,
+        task_force: None,
         state: mission.state,
         required_equipage_bits: mission.required_equipage_bits,
         ships: mission
             .ship_ordinals
             .iter()
-            .map(|ordinal| [i32::from(*ordinal), 0])
+            .map(|ordinal| SelectedShip {
+                ship: imperialism_core::ShipId::new(*ordinal as u32),
+                selected: false,
+            })
             .collect(),
     }
 }
 
 impl LegacyCityState {
-    pub fn snapshot(&self, nation: u8, home_town_tile: i16) -> SnapshotCity {
-        SnapshotCity {
+    pub fn city_state(&self, nation: NationId, home_town_tile: i16) -> CityState {
+        CityState {
             nation,
-            present: true,
-            power_plant_upgrade_queued: Some(self.power_plant_upgrade_queued),
-            food_substitution_count: Some(self.food_substitution_count),
-            starvation_population_loss: Some(self.starvation_population_loss),
-            serialized_state: Some(self.serialized_state),
-            phase_counter: Some(self.phase_counter),
-            metrics_0e: Some(self.metrics_0e.to_vec()),
-            metrics_4a: Some(self.metrics_4a.to_vec()),
-            order_count_by_type: Some(self.order_count_by_type.to_vec()),
-            rolling_item_production_score: Some(self.rolling_item_production_score),
-            low_production: Some(self.low_production),
-            low_stock: Some(self.low_stock),
-            reserved_by_type: Some(self.reserved_by_type.to_vec()),
-            home_town_tile: Some(home_town_tile),
-            power_available: Some(self.power_available),
-            stock_by_type: Some(self.stock_by_type.to_vec()),
-            production_orders: Some(self.production_orders.to_vec()),
-            production_accum: Some(self.production_accum.to_vec()),
-            production_flags: Some(self.production_flags.to_vec()),
-            production_current: Some(self.production_current.to_vec()),
-            production_progress: Some(self.production_progress.to_vec()),
+            power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
+            food_substitution_count: self.food_substitution_count,
+            starvation_population_loss: self.starvation_population_loss,
+            serialized_state: self.serialized_state,
+            phase_counter: self.phase_counter,
+            metrics_0e: self.metrics_0e,
+            metrics_4a: self.metrics_4a,
+            order_count_by_type: self.order_count_by_type,
+            rolling_item_production_score: self.rolling_item_production_score,
+            low_production: self.low_production != 0,
+            low_stock: self.low_stock != 0,
+            reserved_by_type: ResourceTable::from_array(self.reserved_by_type),
+            home_town_tile,
+            power_available: self.power_available,
+            stock_by_type: ResourceTable::from_array(self.stock_by_type),
+            production_orders: ProductionTable::from_array(self.production_orders),
+            production_accum: ProductionTable::from_array(self.production_accum),
+            production_flags: ProductionTable::from_array(self.production_flags),
+            production_current: ProductionTable::from_array(self.production_current),
+            production_progress: ProductionTable::from_array(self.production_progress),
             // This constructed cache is not persisted by TCity::ReadFrom.
-            population_growth_penalty_ticks: Some(0),
-            unmet_resource_retries: Some(self.unmet_resource_retries.to_vec()),
-            consumed_production_input_by_type: Some(
-                self.consumed_production_input_by_type.to_vec(),
+            population_growth_penalty_ticks: 0,
+            unmet_resource_retries: ResourceTable::from_array(self.unmet_resource_retries),
+            consumed_production_input_by_type: ResourceTable::from_array(
+                self.consumed_production_input_by_type,
             ),
-            population: Some(SnapshotPopulation {
+            population: PopulationState {
                 count: self.population.count,
                 count_float_bits: self.population.count_float_bits,
                 strength: self.population.strength,
                 extra: self.population.extra,
                 phase_value: self.population.phase_value,
-                baseline_labor: Some(self.population.baseline_labor),
-                production_labor: Some(self.population.production_labor),
-                pending_labor_delta: Some(self.population.pending_labor_delta),
-                predicted_need_by_resource: self.population.predicted_need_by_resource.to_vec(),
-            }),
+                baseline_labor: Some(LaborPool::from(self.population.baseline_labor)),
+                production_labor: Some(LaborPool::from(self.population.production_labor)),
+                pending_labor_delta: Some(LaborPool::from(self.population.pending_labor_delta)),
+                predicted_need_by_resource: ResourceTable::from_array(
+                    self.population.predicted_need_by_resource,
+                ),
+            },
         }
     }
 }
@@ -664,20 +697,26 @@ pub struct LegacyTerrainTile {
 }
 
 impl LegacyTerrainTile {
-    fn snapshot(self) -> TileSnapshot {
-        TileSnapshot([
-            i64::from(self.terrain_kind),
-            i64::from(self.owner_nation),
-            i64::from(self.former_owner_nation),
-            i64::from(self.city_or_province_index),
-            i64::from(self.development_classes),
-            i64::from(self.edge_resources[0]),
-            i64::from(self.edge_resources[1]),
-            i64::from(self.rail_flags),
-            i64::from(self.action_state),
-            i64::from(self.active_flags),
-        ])
+    fn tile_state(self) -> TileState {
+        TileState {
+            terrain_kind: self.terrain_kind,
+            owner_nation: (self.owner_nation >= 0).then_some(self.owner_nation),
+            former_owner_nation: (self.former_owner_nation >= 0)
+                .then_some(self.former_owner_nation),
+            province: (self.city_or_province_index >= 0).then_some(self.city_or_province_index),
+            development_classes: self.development_classes,
+            edge_resources: self
+                .edge_resources
+                .map(|resource| (resource >= 0).then_some(resource)),
+            rail_flags: self.rail_flags,
+            action_state: i16::from(self.action_state),
+            active_flags: self.active_flags,
+        }
     }
+}
+
+fn required_state<T>(value: Option<T>, name: &str) -> Result<T, LegacySaveError> {
+    value.ok_or_else(|| LegacySaveError::StateProjection(format!("missing {name}")))
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -707,8 +746,8 @@ pub struct LegacyMapState {
 }
 
 impl LegacyMapState {
-    pub fn snapshot_world(&self) -> SnapshotWorld {
-        SnapshotWorld {
+    pub fn world_state(&self) -> WorldState {
+        WorldState {
             width: STRATEGIC_MAP_WIDTH,
             height: STRATEGIC_MAP_HEIGHT,
             wraps_horizontally: self.no_horizontal_wrap == 0,
@@ -716,7 +755,7 @@ impl LegacyMapState {
                 .tiles
                 .iter()
                 .copied()
-                .map(LegacyTerrainTile::snapshot)
+                .map(LegacyTerrainTile::tile_state)
                 .collect(),
         }
     }
@@ -745,7 +784,7 @@ pub enum LegacySaveError {
     #[error("invalid MFC object at {offset:#x}: {detail}")]
     InvalidMfcObject { offset: usize, detail: String },
     #[error("{0}")]
-    SnapshotProjection(String),
+    StateProjection(String),
 }
 
 impl LegacySaveV62 {
@@ -894,75 +933,69 @@ impl LegacySaveV62 {
         })
     }
 
-    /// Projects the fully decoded save into the frontend-independent canonical model.
+    /// Projects the fully decoded save directly into live semantic state.
     /// Runtime-only RNG and selection state must be supplied by the process that loaded
     /// the save because the retail stream does not contain them.
-    pub fn snapshot(
+    pub fn game_state(
         &self,
-        context: LegacySnapshotContext,
-    ) -> Result<GameSnapshotV1, LegacySaveError> {
+        context: LegacyGameStateContext,
+    ) -> Result<GameState, LegacySaveError> {
         if !self.navy.ships.is_empty() || !self.navy.task_forces.is_empty() {
-            return Err(LegacySaveError::SnapshotProjection(
-                "canonical projection of non-empty retail navy relationships is not implemented"
+            return Err(LegacySaveError::StateProjection(
+                "semantic projection of non-empty retail navy relationships is not implemented"
                     .to_owned(),
             ));
         }
 
-        let mut nations = Vec::with_capacity(NATION_COUNT);
+        let mut nations = NationTable::default();
         for slot in 0..NATION_COUNT {
+            let id = NationId::new(slot as u8);
             if slot < 7 {
                 let nation = self
                     .major_nations
                     .iter()
                     .find(|nation| nation.great_power().country.nation_slot == slot as i16);
-                nations.push(match nation {
-                    Some(nation) => snapshot_major_nation(slot as u8, nation.great_power()),
-                    None => absent_nation(slot as u8, "major"),
-                });
+                nations[id] = nation.map(|nation| major_nation_state(id, nation.great_power()));
             } else {
                 let nation = self
                     .minor_nations
                     .iter()
                     .find(|nation| nation.country.nation_slot == slot as i16);
-                nations.push(match nation {
-                    Some(nation) => snapshot_country(slot as u8, "minor", &nation.country, None),
-                    None => absent_nation(slot as u8, "minor"),
-                });
+                nations[id] =
+                    nation.map(|nation| country_state(id, &nation.country, NationData::Minor));
             }
         }
 
-        let mut cities = Vec::with_capacity(7);
+        let mut cities = MajorNationTable::default();
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
         for slot in 0..7 {
+            let major_id = MajorNationId::new(slot as u8);
+            let nation_id = major_id.nation();
             let nation = self
                 .major_nations
                 .iter()
                 .find(|nation| nation.great_power().country.nation_slot == slot as i16);
             let Some(nation) = nation else {
-                cities.push(absent_city(slot as u8));
                 continue;
             };
             let great_power = nation.great_power();
-            cities.push(match &great_power.city {
-                Some(city) => {
-                    let home_town = great_power
-                        .post_city
-                        .towns
-                        .first()
-                        .map_or(great_power.country.home_tile as i16, |town| town.tile_index);
-                    city.snapshot(slot as u8, home_town)
-                }
-                None => absent_city(slot as u8),
+            cities[major_id] = great_power.city.as_ref().map(|city| {
+                let home_town = great_power
+                    .post_city
+                    .towns
+                    .first()
+                    .map_or(great_power.country.home_tile as i16, |town| town.tile_index);
+                city.city_state(nation_id, home_town)
             });
-            military_units.extend(great_power.country.snapshot_military_units(slot as u8));
-            civilian_units.extend(great_power.post_city.snapshot_civilian_units(slot as u8));
+            military_units.extend(great_power.country.military_unit_states(nation_id));
+            civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id));
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for (queue_index, mission) in auto.missions.iter().enumerate() {
-                    missions.push(mission.snapshot(
+                    missions.push(mission.mission_state(
                         missions.len() as u32,
-                        slot as u8,
+                        nation_id,
                         queue_index as u32,
                         &great_power.country.military_units,
                     )?);
@@ -975,42 +1008,30 @@ impl LegacySaveV62 {
                 .iter()
                 .find(|nation| nation.country.nation_slot == slot as i16)
             {
-                military_units.extend(nation.country.snapshot_military_units(slot as u8));
+                military_units.extend(
+                    nation
+                        .country
+                        .military_unit_states(NationId::new(slot as u8)),
+                );
             }
         }
 
-        let pending_nations = (0..7)
-            .map(|slot| {
-                if let Some(nation) = self
-                    .major_nations
-                    .iter()
-                    .find(|nation| nation.great_power().country.nation_slot == slot)
-                {
-                    let lists = &nation.great_power().prefix.relationship_lists;
-                    if lists[0].records.is_empty() && lists[1].records.is_empty() {
-                        Ok(SnapshotNationPending {
-                            nation: slot as u8,
-                            turn_events: Vec::new(),
-                            proposals: Vec::new(),
-                            turn_summary: Vec::new(),
-                            turn_start_events: Vec::new(),
-                        })
-                    } else {
-                        Err(LegacySaveError::SnapshotProjection(format!(
-                            "pending event projection is not implemented for nation {slot}"
-                        )))
-                    }
-                } else {
-                    Ok(SnapshotNationPending {
-                        nation: slot as u8,
-                        turn_events: Vec::new(),
-                        proposals: Vec::new(),
-                        turn_summary: Vec::new(),
-                        turn_start_events: Vec::new(),
-                    })
-                }
-            })
-            .collect::<Result<Vec<_>, _>>()?;
+        for nation in &self.major_nations {
+            let slot = nation.great_power().country.nation_slot;
+            let lists = &nation.great_power().prefix.relationship_lists;
+            if !lists[0].records.is_empty() || !lists[1].records.is_empty() {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "pending event projection is not implemented for nation {slot}"
+                )));
+            }
+        }
+        let pending_nations = MajorNationTable::from_fn(|nation| NationPendingWork {
+            nation: nation.nation(),
+            turn_events: Vec::new(),
+            proposals: Vec::new(),
+            turn_summary: Vec::new(),
+            turn_start_events: Vec::new(),
+        });
 
         // The retail load path restores this counter before deserializing units.
         // Every TUnit constructor increments it once, even though ReadFrom then
@@ -1021,159 +1042,101 @@ impl LegacySaveV62 {
             .persistent_unit_id_counter
             .wrapping_add(loaded_unit_count as i32);
 
-        let mut snapshot = GameSnapshotV1 {
-            schema: GAME_SNAPSHOT_SCHEMA.to_owned(),
-            sections: GAME_SNAPSHOT_SECTIONS.map(str::to_owned).to_vec(),
-            hashes: SnapshotHashes::default(),
-            metadata: SnapshotMetadata {
+        Ok(GameState {
+            turn: TurnState {
                 scenario_map_index_plus_one: self.simulation.scenario_map_index_plus_one,
-                economic_turn: i32::from(self.simulation.economic_turn),
-                turn_state: i32::from(self.simulation.turn_state_code),
+                economic_turn: self.simulation.economic_turn,
+                phase_code: i32::from(self.simulation.turn_state_code),
                 difficulty: i32::from(self.simulation.difficulty),
                 active_nation: i32::from(self.simulation.active_nation),
                 selected_nation: context.selected_nation,
-                persistent_unit_id_counter,
             },
-            rng: SnapshotRng {
-                runtime_seed: context.runtime_seed,
-                crt_rand_state: context.crt_rand_state,
-                map_generation_lcg: context.map_generation_lcg,
-                zone_status_lcg: context.zone_status_lcg,
+            persistent_unit_id_counter,
+            world: self.map.world_state(),
+            rng: RngState {
+                crt_rand: context.crt_rand_state,
+                map_generation: context.map_generation_lcg,
+                zone_status: context.zone_status_lcg,
             },
-            world: self.map.snapshot_world(),
-            nations: SnapshotNations { records: nations },
-            economy: SnapshotEconomy { cities },
-            military: SnapshotMilitary {
-                units: military_units,
-                civilians: civilian_units,
-                ships: Vec::new(),
-                task_forces: Vec::new(),
-            },
-            missions: SnapshotMissions { records: missions },
-            pending: SnapshotPending {
+            nations,
+            cities,
+            military_units,
+            civilian_units,
+            ships: Vec::<ShipState>::new(),
+            task_forces: Vec::<TaskForceState>::new(),
+            missions,
+            pending: PendingWorkState {
                 turn_flow_status_flags: self.simulation.turn_flow_status_flags,
                 nations: pending_nations,
                 war_transitions: Vec::new(),
             },
-        };
-        snapshot
-            .refresh_hashes()
-            .map_err(|error| LegacySaveError::SnapshotProjection(error.to_string()))?;
-        snapshot
-            .verify_hashes()
-            .map_err(|error| LegacySaveError::SnapshotProjection(error.to_string()))?;
-        Ok(snapshot)
+        })
     }
 }
 
-fn snapshot_major_nation(slot: u8, nation: &LegacyGreatPowerState) -> SnapshotNation {
+fn major_nation_state(id: NationId, nation: &LegacyGreatPowerState) -> NationState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
-    snapshot_country(
-        slot,
-        "major",
+    country_state(
+        id,
         &nation.country,
-        Some(SnapshotMajorNation {
-            diplomacy_eligible: prefix.diplomacy_eligible,
+        NationData::Major(MajorNationState {
+            diplomacy_eligible: prefix.diplomacy_eligible != 0,
             capacities: prefix.capacities,
             grant_total_cost: prefix.grant_total_cost,
             unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
-            diplomacy_policy_by_nation: prefix.diplomacy_policy_by_nation.to_vec(),
-            diplomacy_grant_by_nation: prefix.diplomacy_grant_by_nation.to_vec(),
-            need_current_by_type: prefix.need_current_by_type.to_vec(),
-            need_target_by_type: prefix.need_target_by_type.to_vec(),
-            relation_delta_current: prefix.relation_delta_current.to_vec(),
-            purchased_items_by_resource: prefix.purchased_items_by_resource.to_vec(),
-            item_potentials: prefix.item_potentials.to_vec(),
-            unfilled_trade_turns_by_resource: prefix.unfilled_trade_turns_by_resource.to_vec(),
-            transported_items_by_resource: prefix.transported_items_by_resource.to_vec(),
-            remembered_trade_offers_by_resource: prefix
-                .remembered_trade_offers_by_resource
-                .to_vec(),
-            aid_allocation_matrix: prefix.aid_allocation_matrix.to_vec(),
+            diplomacy_policy_by_nation: NationTable::from_array(prefix.diplomacy_policy_by_nation),
+            diplomacy_grant_by_nation: NationTable::from_array(prefix.diplomacy_grant_by_nation),
+            need_current_by_type: ResourceTable::from_array(prefix.need_current_by_type),
+            need_target_by_type: ResourceTable::from_array(prefix.need_target_by_type),
+            relation_delta_current: ResourceTable::from_array(prefix.relation_delta_current),
+            purchased_items_by_resource: ResourceTable::from_array(
+                prefix.purchased_items_by_resource,
+            ),
+            item_potentials: ResourceTable::from_array(prefix.item_potentials),
+            unfilled_trade_turns_by_resource: ResourceTable::from_array(
+                prefix.unfilled_trade_turns_by_resource,
+            ),
+            transported_items_by_resource: ResourceTable::from_array(
+                prefix.transported_items_by_resource,
+            ),
+            remembered_trade_offers_by_resource: ResourceTable::from_array(
+                prefix.remembered_trade_offers_by_resource,
+            ),
+            aid_allocation_matrix: AidAllocationTable::from_array(prefix.aid_allocation_matrix),
             budget_pool_base: prefix.budget_pool_base,
             budget_pool_delta: prefix.budget_pool_delta,
             special_resource_trade_balance: post.special_resource_trade_balance,
-            candidate_nation_flags: post.candidate_nation_flags.to_vec(),
+            candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
             // scenarioInitFlag is constructed as zero and is not part of the save stream.
-            scenario_initialized: 0,
-            turn_finished: post.turn_finished_flag,
-            pending_action_status: prefix.pending_action_status.to_vec(),
-            pending_action_payload_by_action: prefix.pending_action_payload_by_action.to_vec(),
+            scenario_initialized: false,
+            turn_finished: post.turn_finished_flag != 0,
+            pending_action_status: PendingActionTable::from_array(prefix.pending_action_status),
+            pending_action_payload_by_action: PendingActionTable::from_array(
+                prefix.pending_action_payload_by_action,
+            ),
             diplomacy_budget_base: post.diplomacy_budget_base,
             escalation_counter: i16::from(post.escalation_counter),
             pending_commitment_cost: post.pending_commitment_cost,
             pressure_counter: i16::from(post.pressure_counter),
             aid_allocation_total: post.aid_allocation_total,
-            colony_boycott_flags: post.colony_boycott_flags.to_vec(),
+            colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
             military_expenses: post.military_expenses,
         }),
     )
 }
 
-fn snapshot_country(
-    slot: u8,
-    kind: &str,
-    country: &LegacyCountryBase,
-    major: Option<SnapshotMajorNation>,
-) -> SnapshotNation {
-    SnapshotNation {
-        slot,
-        kind: kind.to_owned(),
-        present: true,
-        nation_slot: Some(country.nation_slot),
-        encoded_nation_slot: Some(country.encoded_nation_slot),
-        owner_nation: Some(country.nation_slot),
-        treasury: Some(country.treasury),
-        home_tile: Some(country.home_tile),
-        need_level_by_nation: Some(country.need_level_by_nation.to_vec()),
-        major,
-    }
-}
-
-fn absent_nation(slot: u8, kind: &str) -> SnapshotNation {
-    SnapshotNation {
-        slot,
-        kind: kind.to_owned(),
-        present: false,
-        nation_slot: None,
-        encoded_nation_slot: None,
-        owner_nation: None,
-        treasury: None,
-        home_tile: None,
-        need_level_by_nation: None,
-        major: None,
-    }
-}
-
-fn absent_city(nation: u8) -> SnapshotCity {
-    SnapshotCity {
-        nation,
-        present: false,
-        power_plant_upgrade_queued: None,
-        food_substitution_count: None,
-        starvation_population_loss: None,
-        serialized_state: None,
-        phase_counter: None,
-        metrics_0e: None,
-        metrics_4a: None,
-        order_count_by_type: None,
-        rolling_item_production_score: None,
-        low_production: None,
-        low_stock: None,
-        reserved_by_type: None,
-        home_town_tile: None,
-        power_available: None,
-        stock_by_type: None,
-        production_orders: None,
-        production_accum: None,
-        production_flags: None,
-        production_current: None,
-        production_progress: None,
-        population_growth_penalty_ticks: None,
-        unmet_resource_retries: None,
-        consumed_production_input_by_type: None,
-        population: None,
+fn country_state(id: NationId, country: &LegacyCountryBase, data: NationData) -> NationState {
+    NationState {
+        id,
+        common: NationCommonState {
+            encoded_nation_slot: country.encoded_nation_slot,
+            owner_nation: country.nation_slot,
+            treasury: country.treasury,
+            home_tile: country.home_tile,
+            need_level_by_nation: NationTable::from_array(country.need_level_by_nation),
+        },
+        data,
     }
 }
 
@@ -2279,10 +2242,6 @@ mod tests {
         assert_eq!(save.map.no_horizontal_wrap, 0);
         assert_eq!(save.map.tiles[0].terrain_kind, 5);
         assert_eq!(save.map.tiles[0].owner_nation, 82);
-        assert_eq!(
-            save.map.snapshot_world().semantic_hash().unwrap(),
-            "f5b26fa2"
-        );
         assert!(!save.ocean.zones.is_empty());
         assert!(save.navy.ships.is_empty());
         assert!(save.navy.task_forces.is_empty());
@@ -2304,13 +2263,13 @@ mod tests {
         assert_eq!(country.military_units[0].persistent_id, 0x113);
         assert_eq!(country.military_units[0].stationed_province, 79);
         assert_eq!(country.military_units[0].strength, 500);
-        let snapshot_units = country.snapshot_military_units(0);
-        assert_eq!(snapshot_units.len(), 27);
-        assert_eq!(snapshot_units[0].roster_index, 0);
-        assert_eq!(snapshot_units[0].persistent_id, 275);
-        assert_eq!(snapshot_units[0].order_target_tiles, [79; 3]);
-        assert_eq!(snapshot_units[26].roster_index, 26);
-        assert_eq!(snapshot_units[26].persistent_id, 301);
+        let unit_states = country.military_unit_states(NationId::new(0));
+        assert_eq!(unit_states.len(), 27);
+        assert_eq!(unit_states[0].roster_index, 0);
+        assert_eq!(unit_states[0].id.get(), 275);
+        assert_eq!(unit_states[0].order_target_tiles, [79; 3]);
+        assert_eq!(unit_states[26].roster_index, 26);
+        assert_eq!(unit_states[26].id.get(), 301);
         assert_eq!(suffix_offset, 0x4e2a3);
 
         let (great_power, optional_payload_offset) =
@@ -2355,12 +2314,9 @@ mod tests {
         );
         assert_eq!(city_suffix_offset, 0x4fbf6);
 
-        let city_snapshot = city.snapshot(0, 3_494);
-        assert_eq!(city_snapshot.home_town_tile, Some(3_494));
-        assert_eq!(
-            city_snapshot.population.unwrap().count_float_bits,
-            1_088_421_888
-        );
+        let city_state = city.city_state(NationId::new(0), 3_494);
+        assert_eq!(city_state.home_town_tile, 3_494);
+        assert_eq!(city_state.population.count_float_bits, 1_088_421_888);
 
         let (post_city, auto_offset) =
             parse_great_power_post_city_at(RETAIL_FIXTURE, city_suffix_offset).unwrap();
@@ -2397,23 +2353,29 @@ mod tests {
         assert_eq!(missions[10].class, "TScatteredShipsMission");
         assert_eq!(missions[10].importance_bits, 981_668_463);
 
-        let snapshots = missions
+        let mission_states = missions
             .iter()
             .enumerate()
             .map(|(queue_index, mission)| {
                 mission
-                    .snapshot(
+                    .mission_state(
                         queue_index as u32,
-                        0,
+                        NationId::new(0),
                         queue_index as u32,
                         &country.military_units,
                     )
                     .unwrap()
             })
             .collect::<Vec<_>>();
-        assert_eq!(snapshots[0].army.as_ref().unwrap().units, Vec::<i32>::new());
-        assert_eq!(snapshots[8].navy.as_ref().unwrap().selected_ship, -1);
-        assert_eq!(snapshots[10].importance_bits, 981_668_463);
+        let MissionData::DefendProvince(army) = &mission_states[0].data else {
+            panic!("first mission is not defend province");
+        };
+        assert!(army.units.is_empty());
+        let MissionData::ControlSeaZone(navy) = &mission_states[8].data else {
+            panic!("ninth mission is not control sea zone");
+        };
+        assert_eq!(navy.selected_ship, None);
+        assert_eq!(mission_states[10].importance_bits, 981_668_463);
 
         let mut archive = LegacyMfcArchiveState::default();
         let mut nation_offset = save.remaining_manager_chain_offset;
@@ -2429,15 +2391,15 @@ mod tests {
             assert_eq!(major.great_power.country.nation_slot, nation as i16);
             assert_eq!(major.missions.len(), 11);
             for (queue_index, mission) in major.missions.iter().enumerate() {
-                let snapshot = mission
-                    .snapshot(
+                let state = mission
+                    .mission_state(
                         global_mission_index,
-                        nation as u8,
+                        NationId::new(nation as u8),
                         queue_index as u32,
                         &major.great_power.country.military_units,
                     )
                     .unwrap();
-                assert_eq!(snapshot.nation, nation as u8);
+                assert_eq!(state.nation, NationId::new(nation as u8));
                 global_mission_index += 1;
             }
             nation_offset = next_offset;
@@ -2474,9 +2436,8 @@ mod tests {
         assert_eq!(save.help, help);
         assert_eq!(save.end_offset, RETAIL_FIXTURE.len());
 
-        let snapshot = save
-            .snapshot(LegacySnapshotContext {
-                runtime_seed: 1,
+        let mut game = save
+            .game_state(LegacyGameStateContext {
                 crt_rand_state: 1,
                 map_generation_lcg: 0,
                 zone_status_lcg: 3_916_827_792,
@@ -2488,39 +2449,28 @@ mod tests {
             .iter()
             .map(|nation| nation.great_power().post_city.civilian_units.len())
             .sum::<usize>();
-        assert_eq!(snapshot.military.units.len(), 461);
+        assert_eq!(game.military_units.len(), 461);
         assert!(expected_civilian_count > 0);
-        assert_eq!(snapshot.military.civilians.len(), expected_civilian_count);
-        assert_eq!(snapshot.military.civilians[0].nation, 0);
-        assert_eq!(snapshot.military.civilians[0].roster_index, 0);
+        assert_eq!(game.civilian_units.len(), expected_civilian_count);
+        assert_eq!(game.civilian_units[0].nation, NationId::new(0));
+        assert_eq!(game.civilian_units[0].roster_index, 0);
         assert_eq!(
-            snapshot.military.civilians[0].persistent_id,
+            game.civilian_units[0].id.get(),
             save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
         );
-        assert_eq!(snapshot.missions.records.len(), 66);
-        assert_eq!(snapshot.metadata.persistent_unit_id_counter, 950);
-        assert_eq!(snapshot.hashes.metadata, "092efbfb");
-        assert_eq!(snapshot.hashes.rng, "e90a6b4e");
-        assert_eq!(snapshot.hashes.world, "f5b26fa2");
-        assert_eq!(snapshot.hashes.nations, "ada71c9d");
-        assert_eq!(snapshot.hashes.economy, "4a05e963");
-        assert_eq!(snapshot.hashes.military, "e15fdcf6");
-        assert_eq!(snapshot.hashes.missions, "b6cc8e06");
-        assert_eq!(snapshot.hashes.pending, "1ca83a13");
-        assert_eq!(snapshot.hashes.state, "cbe1a61b");
-
-        let mut game = crate::game_state_from_snapshot(snapshot).unwrap();
+        assert_eq!(game.missions.len(), 66);
+        assert_eq!(game.persistent_unit_id_counter, 950);
         assert_eq!(game.civilian_units.len(), expected_civilian_count);
         assert!(game.all_humans_finished().unwrap());
         assert!(!game.turn.in_linear_phase());
         game.reset_turn_flags().unwrap();
         assert!(
-            game.nations[..6]
+            game.nations.as_slice()[..6]
                 .iter()
                 .all(|nation| { nation.as_ref().unwrap().major().unwrap().turn_finished })
         );
         assert!(
-            !game.nations[6]
+            !game.nations[NationId::new(6)]
                 .as_ref()
                 .unwrap()
                 .major()

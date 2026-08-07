@@ -60,6 +60,12 @@ endif()
 # tests/runtime/native is part of the production source glob, and the compile
 # definition below is absent from the byte-matching build.
 if(IMPERIALISM_RUNTIME_TESTS)
+    enable_language(C)
+    add_library(ImperialismRuntimeJson STATIC
+        tests/runtime/third_party/parson/parson.c)
+    target_include_directories(ImperialismRuntimeJson PUBLIC
+        tests/runtime/third_party/parson)
+
   file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
       tests/runtime/native/*.cpp)
     list(FILTER IMPERIALISM_RUNTIME_TEST_SOURCES EXCLUDE REGEX "/selftest/")
@@ -84,6 +90,14 @@ if(IMPERIALISM_RUNTIME_TESTS)
     target_include_directories(Imperialism PRIVATE tests/runtime/native)
     target_include_directories(ImperialismRuntimeHarness PRIVATE tests/runtime/native)
     target_include_directories(ImperialismRuntimeSelfTest PRIVATE tests/runtime/native)
+    target_include_directories(ImperialismRuntimeHarness PRIVATE
+        tests/runtime/third_party/parson)
+    target_include_directories(ImperialismRuntimeSelfTest PRIVATE
+        tests/runtime/third_party/parson)
+    if(NOT IMPERIALISM_LINT_COMPILE_ONLY)
+        target_link_libraries(Imperialism PRIVATE ImperialismRuntimeJson)
+        target_link_libraries(ImperialismRuntimeSelfTest PRIVATE ImperialismRuntimeJson)
+    endif()
 endif()
 
 # Generated build inputs (stubs) live in the build tree, not the source tree.
@@ -278,6 +292,10 @@ else()
         endforeach()
 
         if(IMPERIALISM_RUNTIME_TESTS)
+            set_property(
+                TARGET ImperialismRuntimeJson
+                PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+            )
             set_property(
                 TARGET ImperialismRuntimeHarness
                 PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"

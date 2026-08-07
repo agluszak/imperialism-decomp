@@ -276,7 +276,7 @@ fn first_tile_for_region(game: &GameState, region: i16) -> Option<TileId> {
     game.world
         .tiles
         .iter()
-        .position(|tile| tile.city_or_province_index == i64::from(region))
+        .position(|tile| tile.province == Some(region))
         .map(|index| TileId::new(index as u16))
 }
 

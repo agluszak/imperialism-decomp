@@ -61,14 +61,14 @@ fn update_hovered_tile(
         tile_ref.0 = tile;
         let state = &session.simulation().state().world.tiles[usize::from(tile.get())];
         window.title = format!(
-            "Imperialism snapshot — tile {} terrain {} owner {} region {}",
+            "Imperialism state — tile {} terrain {} owner {:?} province {:?}",
             tile.get(),
             state.terrain_kind,
             state.owner_nation,
-            state.city_or_province_index
+            state.province
         );
     } else {
         *visibility = Visibility::Hidden;
-        window.title = "Imperialism strategic-map snapshot".to_owned();
+        window.title = "Imperialism strategic map".to_owned();
     }
 }

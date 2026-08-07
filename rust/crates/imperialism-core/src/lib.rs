@@ -26,8 +26,8 @@ pub use city_buildings::{BuildingWindowState, ProductionSlot};
 pub use city_economy::CityEconomyError;
 pub use city_industry::{CityIndustryError, IndustryActionSlot};
 pub use ids::{
-    ArmyId, CityId, CivilianUnitId, MilitaryUnitId, MissionId, NationId, NavyId, ProvinceId,
-    ShipId, TaskForceId, TileId,
+    ArmyId, CityId, CivilianUnitId, MajorNationId, MilitaryUnitId, MissionId, NationId, NavyId,
+    ProvinceId, ShipId, TaskForceId, TileId,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT,
@@ -53,11 +53,12 @@ pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailLcg, hash_retail_scenario_tag};
 pub use simulation::{CommandError, Simulation};
 pub use state::{
-    ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, GameCommand, GameEvent,
-    GameState, MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState,
-    NationData, NationPendingWork, NationState, NavyMissionState, PendingWorkState,
-    PopulationState, RngState, ShipState, StepOutcome, TaskForceState, TaskForceTarget, TileState,
-    TurnStartEventState, TurnState, WorldState,
+    AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
+    CivilianUnitState, GameCommand, GameEvent, GameState, LandSale, MajorNationState,
+    MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData, NationPendingWork,
+    NationState, NavyMissionState, PendingWorkState, PopulationState, RngState, SelectedShip,
+    ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget, TileState,
+    TurnStartEventState, TurnState, WarTransition, WorldState,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT, NationTable, PENDING_ACTION_COUNT,

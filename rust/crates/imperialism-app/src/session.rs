@@ -138,15 +138,15 @@ fn apply_game_commands(
 mod tests {
     use super::*;
     use imperialism_core::{
-        MajorNationState, MajorNationTable, NationCommonState, NationData, NationId,
-        NationPendingWork, NationState, NationTable, PendingActionTable, PendingWorkState,
-        ResourceKind, ResourceTable, RngState, TurnState, WorldState,
+        AidAllocationTable, MajorNationState, MajorNationTable, NationCommonState, NationData,
+        NationId, NationPendingWork, NationState, NationTable, PendingActionTable,
+        PendingWorkState, ResourceKind, ResourceTable, RngState, TurnState, WorldState,
     };
 
     fn game() -> GameState {
         let nation = NationId::new(6);
-        let mut nations = vec![None; 7];
-        nations[6] = Some(NationState {
+        let mut nations = NationTable::default();
+        nations[nation] = Some(NationState {
             id: nation,
             common: NationCommonState {
                 encoded_nation_slot: 6,
@@ -170,11 +170,11 @@ mod tests {
                 unfilled_trade_turns_by_resource: ResourceTable::default(),
                 transported_items_by_resource: ResourceTable::default(),
                 remembered_trade_offers_by_resource: ResourceTable::default(),
-                aid_allocation_matrix: vec![0; 23],
+                aid_allocation_matrix: AidAllocationTable::default(),
                 budget_pool_base: 200,
                 budget_pool_delta: 100,
                 special_resource_trade_balance: 30,
-                candidate_nation_flags: vec![0; 23],
+                candidate_nation_flags: NationTable::default(),
                 scenario_initialized: true,
                 turn_finished: false,
                 pending_action_status: PendingActionTable::default(),
@@ -184,7 +184,7 @@ mod tests {
                 pending_commitment_cost: 0,
                 pressure_counter: 0,
                 aid_allocation_total: 0,
-                colony_boycott_flags: vec![0; 23],
+                colony_boycott_flags: NationTable::default(),
                 military_expenses: 0,
             }),
         });
@@ -210,7 +210,7 @@ mod tests {
                 zone_status: 1,
             },
             nations,
-            cities: vec![],
+            cities: MajorNationTable::default(),
             military_units: vec![],
             civilian_units: vec![],
             ships: vec![],
@@ -219,7 +219,7 @@ mod tests {
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
                 nations: MajorNationTable::from_fn(|nation_index| NationPendingWork {
-                    nation: NationId::new(nation_index as u8),
+                    nation: nation_index.nation(),
                     turn_events: vec![],
                     proposals: vec![],
                     turn_summary: vec![],
@@ -253,7 +253,7 @@ mod tests {
         assert_eq!(session.revision(), 1);
         assert_eq!(session.command_log(), &[purchase(NationId::new(6)).0]);
         assert_eq!(
-            session.simulation().state().nations[6]
+            session.simulation().state().nations[NationId::new(6)]
                 .as_ref()
                 .unwrap()
                 .common

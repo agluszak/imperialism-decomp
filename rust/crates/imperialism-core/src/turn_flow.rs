@@ -1,4 +1,4 @@
-use crate::{GameEvent, GameState, StepOutcome, TurnState};
+use crate::{GameEvent, GameState, MajorNationId, StepOutcome, TurnState};
 
 const MAJOR_NATION_COUNT: usize = 7;
 
@@ -45,7 +45,7 @@ impl GameState {
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {
         all_major_flags_finished((0..MAJOR_NATION_COUNT).map(|slot| {
             self.nations
-                .get(slot)
+                .get(MajorNationId::new(slot as u8).nation())
                 .and_then(Option::as_ref)
                 .and_then(|nation| nation.major())
                 .map(|major| major.turn_finished)
@@ -58,7 +58,7 @@ impl GameState {
         for slot in 0..MAJOR_NATION_COUNT {
             let present = self
                 .nations
-                .get(slot)
+                .get(MajorNationId::new(slot as u8).nation())
                 .and_then(Option::as_ref)
                 .and_then(|nation| nation.major())
                 .is_some();
