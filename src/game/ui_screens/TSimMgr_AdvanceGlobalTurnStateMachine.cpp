@@ -6,6 +6,7 @@
 // out-of-line calls.
 
 #include "game/gfx/TAmbitApplication.h"
+#include "game/gfx/TModuleLibraryCacheTableStateB.h"
 #include "game/ui_screens/TLoadSavePicture.h"
 #include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_core/THelpMgr.h"
@@ -14,6 +15,7 @@
 #include "decomp_types.h"
 #include "game/military/TArmyMgr.h"
 #include "game/assets/TAssetMgr.h"
+#include "game/assets/TCdAudioDevice.h"
 #include "game/city_ui/TCountry.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/nation/TGreatPower.h"
@@ -52,7 +54,7 @@ static inline int GetNationTrackedOrderCount(TGreatPower* nation) {
   if (nation == nullptr || nation->trackedObjectList == nullptr) {
     return 0;
   }
-  return nation->trackedObjectList->GetCount();
+  return nation->trackedObjectList->listState.GetCount();
 }
 
 static inline bool ShouldDispatchNextTradePacket(TSimMgr* simMgr) {
@@ -82,16 +84,6 @@ static inline short ReadCityOrderCapabilityField262(void) {
   }
   // 0x262 is the active-tech marker short sitting just past the nationCapRows table.
   return g_pTechMgr->marker262;
-}
-
-static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
-  if (simMgr->multiplayerSessionRole == 0) {
-    SaveGameWithModeAndOptionalLabel(0xa1, 0);
-    return;
-  }
-  if (simMgr->multiplayerSessionRole == 1) {
-    g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x0057da70
@@ -202,9 +194,21 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (alertsPending != 0) {
       break;
     }
+    bool continueTurn = true;
+    while (multiplayerSessionRole != 2 && ReturnTrueStub() == 0) {
+      CString message;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2745, 10);
+      if (g_pViewMgr->ModalMessage(message, g_ptTurnTransitionModalMessage, 1, 1) == 0) {
+        continueTurn = false;
+        break;
+      }
+    }
+    if (!continueTurn) {
+      break;
+    }
     turnStateCode = 6;
     if (multiplayerSessionRole != 0) {
-      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
+      g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, 6);
       turnStateCode = 0x13;
     }
     StartNextPhase();
@@ -250,7 +254,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 7: {
     turnStateCode = 9;
-    g_pDiplomacyTurnStateManager->ApplyDiplomacyInterNationStatesForTurn();
+    g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
     if (multiplayerSessionRole != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
       g_pSfxPlaybackSystem->SetActiveAudioCueAndResetQueue(4, true);
@@ -370,17 +374,25 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       }
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation != nullptr) {
-        nation->ExecuteNationPendingActionStateMachine();
+        nation->MarkAllPendingStatusFlagsHandled();
       }
     }
+    bool saveTurn = false;
     if (g_nTurnCooldownDeferCounter006A43C4 < 1) {
       g_nTurnCooldownDeferCounter006A43C4 = 0;
       g_nTurnCooldownSideFlag00698B10 = 1;
-      HandleTurnEndSavePaths(this);
+      saveTurn = true;
     } else {
-      const int phaseFlags = InLinearPhase();
+      const int phaseFlags = GetEconomicTurn();
       if ((phaseFlags & 0xf) == 10) {
-        HandleTurnEndSavePaths(this);
+        saveTurn = true;
+      }
+    }
+    if (saveTurn) {
+      if (multiplayerSessionRole == 0) {
+        SaveGameWithModeAndOptionalLabel(0xa1, 0);
+      } else if (multiplayerSessionRole == 1) {
+        g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
       }
     }
     if (multiplayerSessionRole != 0) {
@@ -449,7 +461,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (!IsNationTerrainEligible(nationSlot)) {
         continue;
       }
-      nation->IsColonyOf(0);
+      nation->InitializeDiplomacyNotices();
       nation->DispatchMissionNodeCallbacksAndClearQueue();
     }
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
@@ -517,7 +529,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     const short tickB = GetEconomicTurn();
     if (((tickB % 0x28) == 0) && (phaseStateByDecade[tickA / 0x28] != 0) &&
         multiplayerSessionRole != 2 && g_pDiplomacyTurnStateManager != nullptr) {
-      g_pDiplomacyTurnStateManager->SelectPriorityNationIndicesForMinorCapabilityRows();
+      g_pDiplomacyTurnStateManager->RebuildDiplomacyStandingAndInfluenceMatrices(0);
     }
     if (multiplayerSessionRole != 0) {
       g_pGameFlowState->ConfigureTurnResumeStateAndNationMask(mode, turnStateCode);
