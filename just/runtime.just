@@ -3,19 +3,21 @@
 
 [doc('Build the native semantic runtime-test executable into build-runtime-tests/')]
 [group('runtime-test')]
-runtime-test-build:
+runtime-test-build jobs=num_cpus():
   mkdir -p "{{runtime_test_build_dir}}"
   uv run python -m tools.workflow.msvc_build_lock \
-    --lock "{{build_dir}}/.msvc-build.lock" -- just _build-runtime-tests-unlocked
+    --lock "{{runtime_test_build_dir}}/.msvc-build.lock" -- just _build-runtime-tests-unlocked {{jobs}}
 
 [private]
-_build-runtime-tests-unlocked:
+_build-runtime-tests-unlocked jobs:
   just vtable-gate
   uv run python -m tools.generate --gen-dir "{{runtime_test_build_dir}}/generated"
   uv run python -m tools.runtime.generate_native_registry \
     --output "{{runtime_test_build_dir}}/generated/runtime/RuntimeRegistry.inc"
   docker run --rm --network none \
     -e CMAKE_FLAGS="-DIMPERIALISM_RUNTIME_TESTS=ON" \
+    -e CMAKE_GENERATOR="{{ if jobs == '1' { 'NMake Makefiles' } else { 'NMake Makefiles JOM' } }}" \
+    -e BUILD_JOBS="{{ if jobs == '1' { '' } else { jobs } }}" \
     -v "$PWD":/imperialism \
     -v "$PWD/{{runtime_test_build_dir}}":/build \
     "{{docker_image}}"

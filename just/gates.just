@@ -86,8 +86,12 @@ ui-platform-diff-check:
 [doc('Complete local verification: builds + gates + tests + integrity + runtime suite')]
 [group('gates')]
 precommit:
-  just build
+  just --jobs 2 _precommit-builds
   just --jobs 4 _precommit-after-build
+
+[private]
+[parallel]
+_precommit-builds: build _runtime-precommit-build
 
 [private]
 [parallel]
@@ -97,7 +101,6 @@ _precommit-after-build: _precommit-post-build-checks _precommit-runtime-check
 _precommit-runtime-check:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY to your legally obtained Imperialism.exe}"
   test -f "$ORIGINAL_BINARY"
-  just _runtime-precommit-build
   uv run python -m tools.runtime.cli suite pr --require-fixtures --jobs 1 \
     --junit build-runtime-tests/runtime-pr.xml
 

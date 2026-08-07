@@ -24,6 +24,10 @@ class PrecommitWorkflowTests(unittest.TestCase):
     def test_parallel_groups_keep_the_complete_verification_surface(self) -> None:
         recipes = self.dump["recipes"]
         expected_dependencies = {
+            "_precommit-builds": {
+                "build",
+                "_runtime-precommit-build",
+            },
             "_precommit-after-build": {
                 "_precommit-post-build-checks",
                 "_precommit-runtime-check",
@@ -51,7 +55,6 @@ class PrecommitWorkflowTests(unittest.TestCase):
         runtime_body = "\n".join(
             line[0] for line in recipes["_precommit-runtime-check"]["body"]
         )
-        self.assertIn("_runtime-precommit-build", runtime_body)
         self.assertIn("cli suite pr --require-fixtures --jobs 1", runtime_body)
 
     def test_lint_option_sets_use_distinct_cmake_caches(self) -> None:
