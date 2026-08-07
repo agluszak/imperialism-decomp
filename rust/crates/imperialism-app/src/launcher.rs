@@ -9,9 +9,7 @@ use imperialism_formats::{
     ImportedRetailAssets, RetailAssetImportError, RetailAssetPackManifestV1, UiCatalogError,
     UiCatalogV1, default_retail_cache_dir, import_english_gog_assets,
 };
-use std::error::Error;
 use std::ffi::OsString;
-use std::fmt;
 use std::path::{Path, PathBuf};
 
 const COMPILED_UI_CATALOG: &str =
@@ -98,43 +96,20 @@ impl ExecutableMode {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, thiserror::Error)]
 pub enum ExecutableConfigError {
+    #[error("normal launch requires --retail-dir PATH")]
     MissingRetailDirectory,
+    #[error("{0} requires a path")]
     MissingOptionValue(&'static str),
+    #[error("{0} may be supplied only once")]
     DuplicateOption(&'static str),
+    #[error("unknown option {0:?}")]
     UnknownOption(OsString),
+    #[error("unexpected argument {0:?}; use the viewer subcommand for snapshots")]
     UnexpectedArgument(OsString),
-    Viewer(ViewerConfigError),
-}
-
-impl fmt::Display for ExecutableConfigError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingRetailDirectory => {
-                formatter.write_str("normal launch requires --retail-dir PATH")
-            }
-            Self::MissingOptionValue(option) => write!(formatter, "{option} requires a path"),
-            Self::DuplicateOption(option) => {
-                write!(formatter, "{option} may be supplied only once")
-            }
-            Self::UnknownOption(option) => write!(formatter, "unknown option {option:?}"),
-            Self::UnexpectedArgument(argument) => write!(
-                formatter,
-                "unexpected argument {argument:?}; use the viewer subcommand for snapshots"
-            ),
-            Self::Viewer(error) => write!(formatter, "invalid viewer arguments: {error}"),
-        }
-    }
-}
-
-impl Error for ExecutableConfigError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Viewer(error) => Some(error),
-            _ => None,
-        }
-    }
+    #[error("invalid viewer arguments: {0}")]
+    Viewer(#[from] ViewerConfigError),
 }
 
 #[derive(Debug)]
@@ -162,28 +137,12 @@ pub fn prepare_main_menu(config: &MainMenuConfig) -> Result<PreparedMainMenu, Ma
     })
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum MainMenuLoadError {
-    RetailAssets(RetailAssetImportError),
-    UiCatalog(UiCatalogError),
-}
-
-impl fmt::Display for MainMenuLoadError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::RetailAssets(error) => error.fmt(formatter),
-            Self::UiCatalog(error) => error.fmt(formatter),
-        }
-    }
-}
-
-impl Error for MainMenuLoadError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::RetailAssets(error) => Some(error),
-            Self::UiCatalog(error) => Some(error),
-        }
-    }
+    #[error(transparent)]
+    RetailAssets(#[from] RetailAssetImportError),
+    #[error(transparent)]
+    UiCatalog(#[from] UiCatalogError),
 }
 
 #[derive(Resource)]

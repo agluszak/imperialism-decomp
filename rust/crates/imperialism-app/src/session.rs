@@ -1,7 +1,5 @@
 use bevy::prelude::*;
 use imperialism_core::{CommandError, GameCommand, GameEvent, GameState, Simulation};
-use std::error::Error;
-use std::fmt;
 
 #[derive(Resource)]
 pub struct GameSession {
@@ -62,28 +60,12 @@ pub struct CommandRejectedMessage {
     pub error: SessionCommandError,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum SessionCommandError {
+    #[error("no game simulation is active")]
     NoActiveGame,
-    Command(CommandError),
-}
-
-impl fmt::Display for SessionCommandError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::NoActiveGame => formatter.write_str("no game simulation is active"),
-            Self::Command(error) => error.fmt(formatter),
-        }
-    }
-}
-
-impl Error for SessionCommandError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::NoActiveGame => None,
-            Self::Command(error) => Some(error),
-        }
-    }
+    #[error(transparent)]
+    Command(#[from] CommandError),
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, SystemSet)]
@@ -156,8 +138,9 @@ fn apply_game_commands(
 mod tests {
     use super::*;
     use imperialism_core::{
-        MajorNationState, NationId, NationKind, NationPendingWork, NationState, PendingWorkState,
-        ResourceKind, RngState, TurnState, WorldState,
+        MajorNationState, MajorNationTable, NationId, NationKind, NationPendingWork, NationState,
+        NationTable, PendingActionTable, PendingWorkState, ResourceKind, ResourceTable, RngState,
+        TurnState, WorldState,
     };
 
     fn game() -> GameState {
@@ -170,22 +153,22 @@ mod tests {
             owner_nation: 6,
             treasury: 1_000,
             home_tile: 0,
-            need_level_by_nation: vec![0; 23],
+            need_level_by_nation: NationTable::default(),
             major: Some(MajorNationState {
                 diplomacy_eligible: true,
                 capacities: [10; 4],
                 grant_total_cost: 0,
                 unfilled_trade_offer_count: 0,
-                diplomacy_policy_by_nation: vec![0; 23],
-                diplomacy_grant_by_nation: vec![0; 23],
-                need_current_by_type: vec![0; 23],
-                need_target_by_type: vec![0; 23],
-                relation_delta_current: vec![0; 23],
-                purchased_items_by_resource: vec![0; ResourceKind::COUNT],
-                item_potentials: vec![0; 23],
-                unfilled_trade_turns_by_resource: vec![0; 23],
-                transported_items_by_resource: vec![0; 23],
-                remembered_trade_offers_by_resource: vec![0; 23],
+                diplomacy_policy_by_nation: NationTable::default(),
+                diplomacy_grant_by_nation: NationTable::default(),
+                need_current_by_type: ResourceTable::default(),
+                need_target_by_type: ResourceTable::default(),
+                relation_delta_current: ResourceTable::default(),
+                purchased_items_by_resource: ResourceTable::default(),
+                item_potentials: ResourceTable::default(),
+                unfilled_trade_turns_by_resource: ResourceTable::default(),
+                transported_items_by_resource: ResourceTable::default(),
+                remembered_trade_offers_by_resource: ResourceTable::default(),
                 aid_allocation_matrix: vec![0; 23],
                 budget_pool_base: 200,
                 budget_pool_delta: 100,
@@ -193,8 +176,8 @@ mod tests {
                 candidate_nation_flags: vec![0; 23],
                 scenario_initialized: true,
                 turn_finished: false,
-                pending_action_status: vec![0; 23],
-                pending_action_payload_by_action: vec![0; 23],
+                pending_action_status: PendingActionTable::default(),
+                pending_action_payload_by_action: PendingActionTable::default(),
                 diplomacy_budget_base: 0,
                 escalation_counter: 0,
                 pending_commitment_cost: 0,
@@ -234,13 +217,13 @@ mod tests {
             missions: vec![],
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: vec![NationPendingWork {
-                    nation,
+                nations: MajorNationTable::from_fn(|nation_index| NationPendingWork {
+                    nation: NationId::new(nation_index as u8),
                     turn_events: vec![],
                     proposals: vec![],
                     turn_summary: vec![],
                     turn_start_events: vec![],
-                }],
+                }),
                 war_transitions: vec![],
             },
         }

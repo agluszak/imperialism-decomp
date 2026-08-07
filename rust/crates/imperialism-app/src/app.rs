@@ -11,9 +11,7 @@ use imperialism_core::{GameSnapshotV1, GameState, STRATEGIC_MAP_HEIGHT, STRATEGI
 use imperialism_formats::{
     AssetManifestError, NormalizedAssetManifestV1, read_normalized_asset_manifest,
 };
-use std::error::Error;
 use std::ffi::OsString;
-use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -63,58 +61,30 @@ impl ViewerConfig {
     }
 }
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Debug, Eq, PartialEq, thiserror::Error)]
 pub enum ViewerConfigError {
+    #[error("missing canonical snapshot path")]
     MissingSnapshot,
+    #[error("--assets requires a directory")]
     MissingAssetPack,
+    #[error("only one snapshot may be viewed")]
     MultipleSnapshots,
+    #[error("unknown option {0:?}")]
     UnknownOption(OsString),
 }
 
-impl fmt::Display for ViewerConfigError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingSnapshot => formatter.write_str("missing canonical snapshot path"),
-            Self::MissingAssetPack => formatter.write_str("--assets requires a directory"),
-            Self::MultipleSnapshots => formatter.write_str("only one snapshot may be viewed"),
-            Self::UnknownOption(option) => write!(formatter, "unknown option {option:?}"),
-        }
-    }
-}
-
-impl Error for ViewerConfigError {}
-
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum ViewerLoadError {
-    SnapshotIo(std::io::Error),
-    SnapshotJson(serde_json::Error),
-    SnapshotValidation(imperialism_core::SnapshotValidationError),
-    Assets(AssetManifestError),
+    #[error("could not read snapshot: {0}")]
+    SnapshotIo(#[source] std::io::Error),
+    #[error("could not decode snapshot: {0}")]
+    SnapshotJson(#[source] serde_json::Error),
+    #[error("invalid snapshot: {0}")]
+    SnapshotValidation(#[source] imperialism_core::SnapshotValidationError),
+    #[error(transparent)]
+    Assets(#[from] AssetManifestError),
+    #[error("cannot present snapshot: {0}")]
     Presentation(String),
-}
-
-impl fmt::Display for ViewerLoadError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::SnapshotIo(error) => write!(formatter, "could not read snapshot: {error}"),
-            Self::SnapshotJson(error) => write!(formatter, "could not decode snapshot: {error}"),
-            Self::SnapshotValidation(error) => write!(formatter, "invalid snapshot: {error}"),
-            Self::Assets(error) => error.fmt(formatter),
-            Self::Presentation(message) => write!(formatter, "cannot present snapshot: {message}"),
-        }
-    }
-}
-
-impl Error for ViewerLoadError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::SnapshotIo(error) => Some(error),
-            Self::SnapshotJson(error) => Some(error),
-            Self::SnapshotValidation(error) => Some(error),
-            Self::Assets(error) => Some(error),
-            Self::Presentation(_) => None,
-        }
-    }
 }
 
 pub struct ViewerInput {

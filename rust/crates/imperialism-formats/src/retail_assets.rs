@@ -5,9 +5,7 @@ use crate::retail_pe::{
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::HashSet;
-use std::error::Error;
 use std::ffi::OsString;
-use std::fmt;
 use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
@@ -170,56 +168,29 @@ impl ImportedRetailAssets {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum RetailAssetImportError {
+    #[error(
+        "retail directory is missing required English GOG files\n  {paths}",
+        paths = .0.join("\n  ")
+    )]
     MissingFiles(Vec<String>),
+    #[error("{}: {source}", path.display())]
     Io {
         path: PathBuf,
+        #[source]
         source: std::io::Error,
     },
+    #[error("{path}: {source}")]
     Pe {
         path: String,
+        #[source]
         source: PeResourceError,
     },
+    #[error("incompatible English GOG retail assets: {0}")]
     Incompatible(String),
-    Manifest(serde_json::Error),
-}
-
-impl fmt::Display for RetailAssetImportError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::MissingFiles(files) => {
-                write!(
-                    formatter,
-                    "retail directory is missing required English GOG files"
-                )?;
-                for path in files {
-                    write!(formatter, "\n  {path}")?;
-                }
-                Ok(())
-            }
-            Self::Io { path, source } => write!(formatter, "{}: {source}", path.display()),
-            Self::Pe { path, source } => write!(formatter, "{path}: {source}"),
-            Self::Incompatible(message) => {
-                write!(
-                    formatter,
-                    "incompatible English GOG retail assets: {message}"
-                )
-            }
-            Self::Manifest(error) => write!(formatter, "invalid retail cache manifest: {error}"),
-        }
-    }
-}
-
-impl Error for RetailAssetImportError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Io { source, .. } => Some(source),
-            Self::Pe { source, .. } => Some(source),
-            Self::Manifest(source) => Some(source),
-            Self::MissingFiles(_) | Self::Incompatible(_) => None,
-        }
-    }
+    #[error("invalid retail cache manifest: {0}")]
+    Manifest(#[source] serde_json::Error),
 }
 
 pub fn default_retail_cache_dir() -> Result<PathBuf, RetailAssetImportError> {

@@ -1,7 +1,5 @@
 use serde::de::Error as DeserializeError;
 use serde::{Deserialize, Deserializer, Serialize};
-use std::error::Error;
-use std::fmt;
 
 /// The byte stored by the retail map model for its horizontal-edge behavior.
 ///
@@ -170,32 +168,13 @@ pub struct RandomGameSetupModel {
     pub use_localized_name_tables: bool,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum RandomGameSetupValidationError {
+    #[error("random-game nation slot {actual} is outside 0..=6")]
     InvalidNationSlot { actual: i16 },
+    #[error("random-game difficulty {actual} is outside 0..=4")]
     InvalidDifficulty { actual: i32 },
 }
-
-impl fmt::Display for RandomGameSetupValidationError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::InvalidNationSlot { actual } => {
-                write!(
-                    formatter,
-                    "random-game nation slot {actual} is outside 0..=6"
-                )
-            }
-            Self::InvalidDifficulty { actual } => {
-                write!(
-                    formatter,
-                    "random-game difficulty {actual} is outside 0..=4"
-                )
-            }
-        }
-    }
-}
-
-impl Error for RandomGameSetupValidationError {}
 
 fn validate_nation_slot(selected_nation_slot: i16) -> Result<(), RandomGameSetupValidationError> {
     if (0..=6).contains(&selected_nation_slot) {

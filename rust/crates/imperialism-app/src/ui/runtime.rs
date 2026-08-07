@@ -10,8 +10,6 @@ use imperialism_formats::{
     UiNode as CatalogNode, UiNodeId, UiView as CatalogView, WidgetKind,
 };
 use std::collections::HashMap;
-use std::error::Error;
-use std::fmt;
 use std::fs;
 use std::path::PathBuf;
 
@@ -124,24 +122,15 @@ pub enum UiPictureBindingError {
     },
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum UiSpawnError {
+    #[error(
+        "normalized UI view {}:{} is absent from the catalog",
+        .0.resource_file,
+        .0.resource_id
+    )]
     ViewNotFound(ScopedViewId),
 }
-
-impl fmt::Display for UiSpawnError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::ViewNotFound(view) => write!(
-                formatter,
-                "normalized UI view {}:{} is absent from the catalog",
-                view.resource_file, view.resource_id
-            ),
-        }
-    }
-}
-
-impl Error for UiSpawnError {}
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
 pub enum UiIntent {

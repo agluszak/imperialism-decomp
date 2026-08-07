@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
-use std::error::Error;
-use std::fmt;
 use std::fs;
 use std::path::Path;
 
@@ -170,35 +168,14 @@ pub struct UiCatalogV1 {
     pub views: Vec<UiView>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum UiCatalogError {
-    Io(std::io::Error),
-    Json(serde_json::Error),
+    #[error("could not read normalized UI catalog: {0}")]
+    Io(#[source] std::io::Error),
+    #[error("could not decode normalized UI catalog: {0}")]
+    Json(#[source] serde_json::Error),
+    #[error("invalid normalized UI catalog: {0}")]
     Validation(String),
-}
-
-impl fmt::Display for UiCatalogError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Io(error) => write!(formatter, "could not read normalized UI catalog: {error}"),
-            Self::Json(error) => {
-                write!(formatter, "could not decode normalized UI catalog: {error}")
-            }
-            Self::Validation(message) => {
-                write!(formatter, "invalid normalized UI catalog: {message}")
-            }
-        }
-    }
-}
-
-impl Error for UiCatalogError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Io(error) => Some(error),
-            Self::Json(error) => Some(error),
-            Self::Validation(_) => None,
-        }
-    }
 }
 
 impl UiCatalogV1 {

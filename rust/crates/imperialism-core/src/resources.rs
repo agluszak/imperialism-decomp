@@ -1,7 +1,9 @@
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, Enum, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Enum, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 #[repr(u8)]
 #[serde(rename_all = "snake_case")]
 pub enum ResourceKind {

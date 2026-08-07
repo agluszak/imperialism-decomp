@@ -2,8 +2,6 @@ use crate::{
     GameCommand, GameState, RandomGameSetupModel, RandomGameSetupState,
     RandomGameSetupValidationError, RestoredRandomGameSetupInputs, RuleError, StepOutcome,
 };
-use std::error::Error;
-use std::fmt;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Simulation {
@@ -107,33 +105,14 @@ impl Simulation {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CommandError {
-    Trade(RuleError),
-    RandomGameSetup(RandomGameSetupValidationError),
+    #[error(transparent)]
+    Trade(#[from] RuleError),
+    #[error(transparent)]
+    RandomGameSetup(#[from] RandomGameSetupValidationError),
+    #[error("random-game setup has not been initialized")]
     RandomGameSetupNotInitialized,
-}
-
-impl fmt::Display for CommandError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Trade(error) => error.fmt(formatter),
-            Self::RandomGameSetup(error) => error.fmt(formatter),
-            Self::RandomGameSetupNotInitialized => {
-                formatter.write_str("random-game setup has not been initialized")
-            }
-        }
-    }
-}
-
-impl Error for CommandError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match self {
-            Self::Trade(error) => Some(error),
-            Self::RandomGameSetup(error) => Some(error),
-            Self::RandomGameSetupNotInitialized => None,
-        }
-    }
 }
 
 #[cfg(test)]
@@ -175,7 +154,13 @@ mod tests {
             missions: Vec::new(),
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: Vec::new(),
+                nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
+                    nation: NationId::new(nation as u8),
+                    turn_events: Vec::new(),
+                    proposals: Vec::new(),
+                    turn_summary: Vec::new(),
+                    turn_start_events: Vec::new(),
+                }),
                 war_transitions: Vec::new(),
             },
         }

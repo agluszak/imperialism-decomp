@@ -1,6 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::error::Error;
-use std::fmt;
 use std::ops::Range;
 
 const DIRECTORY_BIT: u32 = 0x8000_0000;
@@ -68,24 +66,13 @@ pub struct DecodedStringResource {
     pub text: String,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum PeResourceError {
+    #[error("invalid PE resource file: {0}")]
     Invalid(String),
+    #[error("unsupported PE resource file: {0}")]
     Unsupported(String),
 }
-
-impl fmt::Display for PeResourceError {
-    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Invalid(message) => write!(formatter, "invalid PE resource file: {message}"),
-            Self::Unsupported(message) => {
-                write!(formatter, "unsupported PE resource file: {message}")
-            }
-        }
-    }
-}
-
-impl Error for PeResourceError {}
 
 pub fn decode_string_table_block(
     block: u32,
