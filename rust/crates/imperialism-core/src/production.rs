@@ -110,6 +110,29 @@ pub struct ExpansionProductionOrder {
     pub production_slot: ProductionSlot,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PowerPlantProductionOrder {
+    pub quantity: i16,
+    pub tracking_by_resource: [i16; ResourceKind::COUNT],
+    pub reserved_workforce: i16,
+    pub limiting_constraint: ProductionConstraint,
+    pub accumulated_value: i32,
+    pub desired_quantity: i16,
+}
+
+impl Default for PowerPlantProductionOrder {
+    fn default() -> Self {
+        Self {
+            quantity: 0,
+            tracking_by_resource: [0; ResourceKind::COUNT],
+            reserved_workforce: 0,
+            limiting_constraint: ProductionConstraint::Resources,
+            accumulated_value: 0,
+            desired_quantity: 0,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct FoodProductionOrder {
     pub quantity: i16,
@@ -500,6 +523,57 @@ impl ExpansionProductionOrder {
         city.add_to_stock_and_verify(resource, change.wrapping_neg());
         let tracking = &mut self.tracking_by_resource[resource.index()];
         *tracking = tracking.wrapping_add(change);
+    }
+}
+
+impl PowerPlantProductionOrder {
+    pub fn max_order(&self, city: &CityState) -> Result<i16, ProductionError> {
+        validate_city(city)?;
+        Ok(self
+            .quantity
+            .wrapping_add(city.stock_by_type[ResourceKind::Fuel.index()].wrapping_mul(6)))
+    }
+
+    pub fn set_quantity(
+        &mut self,
+        city: &mut CityState,
+        quantity: i16,
+    ) -> Result<bool, ProductionError> {
+        validate_city(city)?;
+        let delta = quantity.wrapping_sub(self.quantity);
+        if quantity > self.max_order(city)? || quantity < 0 {
+            return Ok(false);
+        }
+        self.quantity = quantity;
+
+        if i32::from(city.population.strength) < -i32::from(delta) {
+            self.quantity = self.quantity.wrapping_sub(delta);
+            return Ok(false);
+        }
+
+        self.desired_quantity = quantity;
+        city.add_to_stock_and_verify(ResourceKind::Fuel, -(delta / 6));
+        let previous_power = city.population.extra;
+        city.power_available = quantity;
+        city.population.extra = quantity;
+        let power_change = quantity.wrapping_sub(previous_power);
+        city.population.strength = city.population.strength.wrapping_add(power_change);
+        Ok(true)
+    }
+
+    pub const fn produce(&self) {}
+
+    pub fn restock(&mut self, city: &mut CityState) -> Result<bool, ProductionError> {
+        let max_order = self.max_order(city)?;
+        let saved_desired_quantity = self.desired_quantity;
+        self.quantity = 0;
+        if max_order < saved_desired_quantity {
+            let accepted = self.set_quantity(city, max_order)?;
+            self.desired_quantity = saved_desired_quantity;
+            Ok(accepted)
+        } else {
+            self.set_quantity(city, saved_desired_quantity)
+        }
     }
 }
 
@@ -1333,5 +1407,92 @@ mod tests {
         assert_eq!(owner, expected_owner);
         assert_eq!(capacity, expected_capacity);
         assert_eq!(expansion, expected_expansion);
+    }
+
+    #[test]
+    fn power_plant_limit_counts_each_fuel_unit_as_six_power() {
+        let mut state = city();
+        let mut production = PowerPlantProductionOrder {
+            quantity: 5,
+            ..PowerPlantProductionOrder::default()
+        };
+        state.stock_by_type[ResourceKind::Fuel.index()] = 3;
+        assert_eq!(production.max_order(&state).unwrap(), 23);
+
+        production.quantity = i16::MAX;
+        state.stock_by_type[ResourceKind::Fuel.index()] = 1;
+        assert_eq!(production.max_order(&state).unwrap(), i16::MIN + 5);
+    }
+
+    #[test]
+    fn power_plant_quantity_reserves_and_refunds_fuel_with_truncating_division() {
+        let mut state = city();
+        let mut production = PowerPlantProductionOrder::default();
+        state.stock_by_type[ResourceKind::Fuel.index()] = 3;
+
+        assert!(production.set_quantity(&mut state, 13).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Fuel.index()], 1);
+        assert_eq!(production.desired_quantity, 13);
+        assert_eq!(state.power_available, 13);
+        assert_eq!(state.population.extra, 13);
+        assert_eq!(state.population.strength, 23);
+
+        assert!(production.set_quantity(&mut state, 6).unwrap());
+        assert_eq!(state.stock_by_type[ResourceKind::Fuel.index()], 2);
+        assert_eq!(production.desired_quantity, 6);
+        assert_eq!(state.power_available, 6);
+        assert_eq!(state.population.extra, 6);
+        assert_eq!(state.population.strength, 16);
+    }
+
+    #[test]
+    fn power_plant_rejects_a_reduction_that_exceeds_available_strength() {
+        let mut state = city();
+        let mut production = PowerPlantProductionOrder {
+            quantity: 6,
+            desired_quantity: 6,
+            ..PowerPlantProductionOrder::default()
+        };
+        state.stock_by_type[ResourceKind::Fuel.index()] = 2;
+        state.population.strength = 2;
+        state.population.extra = 6;
+        state.power_available = 6;
+        let expected_state = state.clone();
+
+        assert!(!production.set_quantity(&mut state, 0).unwrap());
+        assert_eq!(production.quantity, 6);
+        assert_eq!(production.desired_quantity, 6);
+        assert_eq!(state, expected_state);
+    }
+
+    #[test]
+    fn power_plant_restock_clamps_but_preserves_the_desired_quantity() {
+        let mut state = city();
+        let mut production = PowerPlantProductionOrder {
+            desired_quantity: 15,
+            ..PowerPlantProductionOrder::default()
+        };
+        state.stock_by_type[ResourceKind::Fuel.index()] = 2;
+
+        assert!(production.restock(&mut state).unwrap());
+        assert_eq!(production.quantity, 12);
+        assert_eq!(production.desired_quantity, 15);
+        assert_eq!(state.stock_by_type[ResourceKind::Fuel.index()], 0);
+        assert_eq!(state.power_available, 12);
+        assert_eq!(state.population.extra, 12);
+        assert_eq!(state.population.strength, 22);
+    }
+
+    #[test]
+    fn power_plant_production_is_a_retail_no_op() {
+        let production = PowerPlantProductionOrder {
+            quantity: 12,
+            desired_quantity: 18,
+            accumulated_value: 7,
+            ..PowerPlantProductionOrder::default()
+        };
+        let expected = production.clone();
+        production.produce();
+        assert_eq!(production, expected);
     }
 }

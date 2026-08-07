@@ -31,7 +31,7 @@ pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
     CapacityProductionOrder, CapacityTarget, ExpansionProductionOrder, ExpansionTarget,
     FoodProductionOrder, ItemInputs, ItemProductionOrder, PopulationGrowthOrder,
-    ProductionConstraint, ProductionError,
+    PowerPlantProductionOrder, ProductionConstraint, ProductionError,
 };
 pub use resources::ResourceKind;
 pub use snapshot::{
