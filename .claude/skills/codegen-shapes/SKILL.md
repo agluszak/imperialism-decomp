@@ -456,3 +456,22 @@ first load with the mask written twice (rebuilt the whole prologue), and the sam
 index hoisted to a local (54.17%). **Check the stride arithmetic before rewriting
 anything** — chasing this one cost three builds against a defect that did not exist. See
 bd `imperialism-decomp-g4yh.3` for the triage-wording fix.
+
+### Large VC5 pixel walkers: recover pointer triplets, countdowns, and real local lifetimes
+
+*(2026-08, `TOceanDialog::Draw` 0x5667f0, 27.31% -> 37.86%)*
+
+When retail initializes several adjacent byte lookup tables and a drawing loop consumes one
+entry from each table per iteration, an indexed spelling can hide a large structural mismatch.
+Retail's six ocean-border walkers used three advancing byte pointers plus a `4`- or `2`-element
+countdown. Replacing `table[k][pattern + i]` loops with pointers initialized at
+`&table[k][pattern]`, incremented together in a `do` loop, restored 49 missing instructions.
+The instruction-count deficit was the useful diagnostic: the call inventory was already nearly
+identical, while retail had 1305 instructions and recomp only 1185.
+
+Also do not trust a decompiler's reuse of one stack name across disjoint lifetimes. Ghidra showed
+the initial clip rectangle and per-tile destination as one `CRect`, but spelling them as one C++
+object made VC5's frame 16 bytes too small. Two distinct `CRect` locals restored retail's exact
+`sub esp,0x114` frame and improved alignment across the whole function. Use frame size, stack
+accesses, and A/B builds to distinguish genuine source-local identity from decompiler stack-slot
+coalescing.

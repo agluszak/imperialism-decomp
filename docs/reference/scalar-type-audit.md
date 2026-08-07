@@ -14,11 +14,11 @@ rather than domain discriminants.
 
 ## Summary
 
-- Findings: 352
+- Findings: 351
 - `native_integral_boundary`: 18
 - `nested_integral_cast`: 44
 - `predicate_storage_cast`: 16
-- `raw_discriminant_literal`: 274
+- `raw_discriminant_literal`: 273
 
 ## clang-tidy evaluation
 
@@ -229,7 +229,7 @@ is classified, and a family that stops appearing must be removed.
 | `terrainType0` | 9 | `tactical_terrain_kind_domain` | TacticalTileRecord::terrainType0 indexes g_awTacticalMoveCostByCategoryAndTerrain with stride 5, so the tactical domain has exactly five kinds and is independent of the eight-value StrategicTerrainKind; value 4 is the impassable kind every caller excludes. |
 | `textAlignmentCode` | 2 | `external_api_or_resource_constant` | the same TStaticText Win32 alignment selector. |
 | `tileActionCode` | 3 | `closed_domain_needs_listing_evidence` | TArmyMgr::DispatchTileActionByKind consumes codes 1, 4 and 7, but the source caller is a vtable dispatch and the Windows producer has not yet been paired with the Mac GetTileAction/DoTileClick identities. |
-| `tileActionState16` | 4 | `map_tile_action_state_domain` | MapTileActionStateStorage is recovered (imperialism-decomp-1uj.99.1.4); the residual comparisons are its signed >= 0 validity test and the >= 2 band edge. |
+| `tileActionState16` | 3 | `map_tile_action_state_domain` | MapTileActionStateStorage is recovered (imperialism-decomp-1uj.99.1.4); the residual comparisons are its signed >= 0 validity test and the >= 2 band edge. |
 | `turnStateCode` | 1 | `closed_domain_needs_listing_evidence` | TSimMgr's global turn state machine tests step 0x10; the step table is being recovered under the turn-event work. |
 | `unitCategoryCode0` | 3 | `army_unit_category_domain` | the same ArmyUnitCategory values 8 and 9 read from the tactical category table. |
 | `unitType` | 4 | `mixed_domain_needs_per_site_split` | TUnitsView bounds the 30-entry MilitaryUnitKind domain while TAutoGreatPower bounds the 14-entry industry/navy-order domain through the same parameter name. |
@@ -454,8 +454,7 @@ is classified, and a family that stops appearing must be removed.
 | `849d1d91180cf373` | `raw_discriminant_literal` | `src/game/navy/TTaskForce.cpp:259` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `b3b21ec2fbb105f8` | `raw_discriminant_literal` | `src/game/navy/TTaskForce.cpp:353` | useType4 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `d4100dd9246d57ce` | `raw_discriminant_literal` | `src/game/navy_ui/TDisappearingButton.cpp:22` | fEnabledState == 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
-| `57e3a5974770dde4` | `raw_discriminant_literal` | `src/game/navy_ui/TOceanDialog.cpp:714` | tileActionState16 >= 0 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
-| `a2e7252d51d2c1f2` | `raw_discriminant_literal` | `src/game/navy_ui/TOceanDialog.cpp:723` | tileActionState16 >= 2 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
+| `833baab67e650bbe` | `raw_discriminant_literal` | `src/game/navy_ui/TOceanDialog.cpp:766` | tileActionState16 >= 2 | `map_tile_action_state_domain` | `imperialism-decomp-1uj.99.8` |
 | `7c78071d29c9080d` | `raw_discriminant_literal` | `src/game/net/TMadnessButton.cpp:37` | controlState64 != 0 | `byte_or_int_predicate_not_a_domain` | `imperialism-decomp-1uj.99.8` |
 | `e124a0c483572816` | `raw_discriminant_literal` | `src/game/net/TMultiplayerMgr_session.cpp:665` | eventCode == 0xc | `turn_event_code_domain` | `imperialism-decomp-1uj.99.8` |
 | `02077477f6ee0a95` | `raw_discriminant_literal` | `src/game/net/TWNetSessionManager.cpp:90` | lastErrorCode0c >= 0 | `external_api_or_resource_constant` | `imperialism-decomp-1uj.99.8` |

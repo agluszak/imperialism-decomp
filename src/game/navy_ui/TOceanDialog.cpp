@@ -331,33 +331,37 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   CTemporaryRegion scratchRegionB;
   (void)scratchRegionA;
   (void)scratchRegionB;
+  register unsigned char currentBorder = 0;
 
-  bool evenViewportRow = (scrollRowOffset7c & 1) == 0;
+  int viewportRowParity = scrollRowOffset7c & 1;
+  int baseTileIndex = scrollRowOffset7c * 0x6c;
   bool blankWrappedLeftEdge = g_pGlobalMapState->hexNeighborWrapHorizontally != 0 &&
                               (scrollColOffset7e < 2 || scrollColOffset7e > 100);
   bool blankWrappedRightEdge = g_pGlobalMapState->hexNeighborWrapHorizontally != 0 &&
-                               scrollColOffset7e > 70 && scrollColOffset7e <= 100;
+                               scrollColOffset7e <= 100 && scrollColOffset7e > 70;
 
-  CRect viewportRect(0, 0, frameWidth34, frameHeight38);
+  CRect viewportDestinationRect(0, 0, frameWidth34, frameHeight38);
+  CRect viewportSourceRect(0, 0, frameWidth34, frameHeight38);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
   GetClip(savedClip.tempRgn);
 
-  TQuickDrawSurfaceContext* previousSurface = 0;
-  int previousSurfaceFlags = 0;
+  TQuickDrawSurfaceContext* previousSurface = g_pPrimaryRenderSurfaceContext;
+  int previousSurfaceFlags;
   GetGWorld(&previousSurface, &previousSurfaceFlags);
   SetGWorld(g_pPrimaryRenderSurfaceContext, previousSurfaceFlags);
   LockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
-  SetClip(savedClip.tempRgn);
 
-  TQuickDrawBlitSurface* primarySurface = g_pPrimaryRenderSurfaceContext->GetBlitSurface();
-  int bitmapHeight = primarySurface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
-  if (bitmapHeight < 1) {
+  CDib* primaryDib = (*static_cast<TBitmapSurfaceNode**>(
+                          g_pPrimaryRenderSurfaceContext->blitSurface.surfaceObject))
+                         ->dib;
+  int rowStep = -static_cast<int>((primaryDib->m_pInfoHeader->bmiHeader.biWidth + 3U) & ~3U);
+  int bitmapHeight = primaryDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (bitmapHeight <= 0) {
     bitmapHeight = -bitmapHeight;
   }
-  unsigned int bitmapStride =
-      (primarySurface->surfaceDib->m_pInfoHeader->bmiHeader.biWidth + 3U) & ~3U;
-  int rowStep = -static_cast<int>(bitmapStride);
-  unsigned char* topRowPixels = primarySurface->pixelBits - (bitmapHeight - 1) * rowStep;
+  unsigned char* topRowPixels =
+      static_cast<unsigned char*>(primaryDib->m_dibBits) - (bitmapHeight - 1) * rowStep;
+  SetClip(savedClip.tempRgn);
 
   g_pViewMgr->ApplyLegendSplitSlot34(0x32);
   CRect clippedRect;
@@ -368,16 +372,19 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
   FillRectWithQuickDrawBrushAndContextOffset(&clippedRect);
 
   int row;
-  int baseTileIndex = scrollRowOffset7c * 0x6c;
+  CRect tileRect;
   for (row = 0; row < 0x1c; ++row) {
     int screenY = row << 4;
     int column;
-    for (column = 0; column < 0x21; ++column) {
+    for (column = 0; column <= 0x20; ++column) {
       int screenX = column << 4;
-      if (evenViewportRow) {
+      if (viewportRowParity == 0) {
         screenX -= 8;
       }
-      CRect tileRect(screenX, screenY, screenX + 0x10, screenY + 0x10);
+      tileRect.left = screenX;
+      tileRect.top = screenY;
+      tileRect.right = screenX + 0x10;
+      tileRect.bottom = screenY + 0x10;
 
       int unwrappedColumn = scrollColOffset7e + column;
       int tileIndex = baseTileIndex + unwrappedColumn;
@@ -394,12 +401,16 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         continue;
       }
 
-      TTerrainStateRecord& tile = g_pGlobalMapState->terrainStateTable[tileIndex];
-      int ownerTag = tile.ownerNationTag04;
+      unsigned char* tilePixels = topRowPixels + screenY * rowStep + screenX;
+      int ownerTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
       if (ownerTag > 0x17) {
         ownerTag = 0x17;
       }
-      if (tile.GetTerrainKind() != kStrategicTerrainWater) {
+      short tileCityRecordIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
+      currentBorder = g_aOceanMapBorderPaletteIndexByNationTag[ownerTag];
+      bool isWater = g_pGlobalMapState->terrainStateTable[tileIndex].GetTerrainKind() ==
+                     kStrategicTerrainWater;
+      if (!isWater) {
         SetQuickDrawFillColorFromPaletteIndex(g_aOceanMapOwnerPaletteIndexByNationTag[ownerTag]);
         FillRectWithQuickDrawBrushAndContextOffset(&tileRect);
       }
@@ -414,111 +425,115 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         int neighborIndex;
         for (neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
           short neighborTile = neighborTiles[neighborIndex];
-          if (neighborTile < 0) {
+          if (neighborTile <= -1) {
             neighborOwners[neighborIndex] = neighborTile;
             neighborCities[neighborIndex] = -1;
           } else {
-            TTerrainStateRecord& neighbor = g_pGlobalMapState->terrainStateTable[neighborTile];
-            short neighborOwner = neighbor.ownerNationTag04;
+            short neighborOwner =
+                g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
             if (neighborOwner > 0x17) {
               neighborOwner = 0x17;
             }
             neighborOwners[neighborIndex] = neighborOwner;
-            neighborCities[neighborIndex] = neighbor.cityRecordIndex;
+            neighborCities[neighborIndex] =
+                g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
           }
         }
 
-        unsigned char verticalNeighborOffsets[16];
-        verticalNeighborOffsets[0] = 2;
-        verticalNeighborOffsets[1] = 3;
-        verticalNeighborOffsets[2] = 9;
-        verticalNeighborOffsets[3] = 13;
-        verticalNeighborOffsets[4] = 2;
-        verticalNeighborOffsets[5] = 11;
-        verticalNeighborOffsets[6] = 12;
-        verticalNeighborOffsets[7] = 13;
-        verticalNeighborOffsets[8] = 2;
-        verticalNeighborOffsets[9] = 3;
-        verticalNeighborOffsets[10] = 4;
-        verticalNeighborOffsets[11] = 5;
-        verticalNeighborOffsets[12] = 10;
-        verticalNeighborOffsets[13] = 11;
-        verticalNeighborOffsets[14] = 12;
-        verticalNeighborOffsets[15] = 13;
+        unsigned char verticalOffsets[3][16];
+        unsigned char diagonalOffsets[3][8];
 
-        unsigned char verticalWaterOffsets[16];
-        verticalWaterOffsets[0] = 4;
-        verticalWaterOffsets[1] = 8;
-        verticalWaterOffsets[2] = 10;
-        verticalWaterOffsets[3] = 12;
-        verticalWaterOffsets[4] = 3;
-        verticalWaterOffsets[5] = 4;
-        verticalWaterOffsets[6] = 9;
-        verticalWaterOffsets[7] = 10;
-        verticalWaterOffsets[8] = 6;
-        verticalWaterOffsets[9] = 7;
-        verticalWaterOffsets[10] = 8;
-        verticalWaterOffsets[11] = 9;
-        verticalWaterOffsets[12] = 6;
-        verticalWaterOffsets[13] = 7;
-        verticalWaterOffsets[14] = 8;
-        verticalWaterOffsets[15] = 9;
+        verticalOffsets[1][0] = 2;
+        verticalOffsets[1][1] = 3;
+        verticalOffsets[1][2] = 9;
+        verticalOffsets[1][3] = 13;
+        verticalOffsets[1][4] = 2;
+        verticalOffsets[1][5] = 11;
+        verticalOffsets[1][6] = 12;
+        verticalOffsets[1][7] = 13;
+        verticalOffsets[1][8] = 2;
+        verticalOffsets[1][9] = 3;
+        verticalOffsets[1][10] = 4;
+        verticalOffsets[1][11] = 5;
+        verticalOffsets[1][12] = 10;
+        verticalOffsets[1][13] = 11;
+        verticalOffsets[1][14] = 12;
+        verticalOffsets[1][15] = 13;
 
-        unsigned char verticalCurrentOffsets[16];
-        verticalCurrentOffsets[0] = 5;
-        verticalCurrentOffsets[1] = 6;
-        verticalCurrentOffsets[2] = 7;
-        verticalCurrentOffsets[3] = 11;
-        verticalCurrentOffsets[4] = 5;
-        verticalCurrentOffsets[5] = 6;
-        verticalCurrentOffsets[6] = 7;
-        verticalCurrentOffsets[7] = 8;
-        verticalCurrentOffsets[8] = 10;
-        verticalCurrentOffsets[9] = 11;
-        verticalCurrentOffsets[10] = 12;
-        verticalCurrentOffsets[11] = 13;
-        verticalCurrentOffsets[12] = 2;
-        verticalCurrentOffsets[13] = 3;
-        verticalCurrentOffsets[14] = 4;
-        verticalCurrentOffsets[15] = 5;
+        verticalOffsets[2][0] = 4;
+        verticalOffsets[2][1] = 8;
+        verticalOffsets[2][2] = 10;
+        verticalOffsets[2][3] = 12;
+        verticalOffsets[2][4] = 3;
+        verticalOffsets[2][5] = 4;
+        verticalOffsets[2][6] = 9;
+        verticalOffsets[2][7] = 10;
+        verticalOffsets[2][8] = 6;
+        verticalOffsets[2][9] = 7;
+        verticalOffsets[2][10] = 8;
+        verticalOffsets[2][11] = 9;
+        verticalOffsets[2][12] = 6;
+        verticalOffsets[2][13] = 7;
+        verticalOffsets[2][14] = 8;
+        verticalOffsets[2][15] = 9;
 
-        unsigned char diagonalCurrentOffsets[8];
-        diagonalCurrentOffsets[0] = 4;
-        diagonalCurrentOffsets[1] = 5;
-        diagonalCurrentOffsets[2] = 2;
-        diagonalCurrentOffsets[3] = 2;
-        diagonalCurrentOffsets[4] = 5;
-        diagonalCurrentOffsets[5] = 5;
-        diagonalCurrentOffsets[6] = 5;
-        diagonalCurrentOffsets[7] = 5;
+        verticalOffsets[0][0] = 5;
+        verticalOffsets[0][1] = 6;
+        verticalOffsets[0][2] = 7;
+        verticalOffsets[0][3] = 11;
+        verticalOffsets[0][4] = 5;
+        verticalOffsets[0][5] = 6;
+        verticalOffsets[0][6] = 7;
+        verticalOffsets[0][7] = 8;
+        verticalOffsets[0][8] = 10;
+        verticalOffsets[0][9] = 11;
+        verticalOffsets[0][10] = 12;
+        verticalOffsets[0][11] = 13;
+        verticalOffsets[0][12] = 2;
+        verticalOffsets[0][13] = 3;
+        verticalOffsets[0][14] = 4;
+        verticalOffsets[0][15] = 5;
 
-        unsigned char diagonalNeighborOffsets[8];
-        diagonalNeighborOffsets[0] = 3;
-        diagonalNeighborOffsets[1] = 3;
-        diagonalNeighborOffsets[2] = 3;
-        diagonalNeighborOffsets[3] = 4;
-        diagonalNeighborOffsets[4] = 4;
-        diagonalNeighborOffsets[5] = 4;
-        diagonalNeighborOffsets[6] = 3;
-        diagonalNeighborOffsets[7] = 4;
+        diagonalOffsets[2][0] = 2;
+        diagonalOffsets[2][1] = 2;
+        diagonalOffsets[2][2] = 5;
+        diagonalOffsets[2][3] = 5;
+        diagonalOffsets[2][4] = 2;
+        diagonalOffsets[2][5] = 3;
+        diagonalOffsets[2][6] = 2;
+        diagonalOffsets[2][7] = 2;
 
-        unsigned char diagonalWaterOffsets[8];
-        diagonalWaterOffsets[0] = 2;
-        diagonalWaterOffsets[1] = 2;
-        diagonalWaterOffsets[2] = 5;
-        diagonalWaterOffsets[3] = 5;
-        diagonalWaterOffsets[4] = 2;
-        diagonalWaterOffsets[5] = 3;
-        diagonalWaterOffsets[6] = 2;
-        diagonalWaterOffsets[7] = 2;
+        diagonalOffsets[1][0] = 3;
+        diagonalOffsets[1][1] = 3;
+        diagonalOffsets[1][2] = 3;
+        diagonalOffsets[1][3] = 4;
+        diagonalOffsets[1][4] = 4;
+        diagonalOffsets[1][5] = 4;
+        diagonalOffsets[1][6] = 3;
+        diagonalOffsets[1][7] = 4;
 
-        unsigned char* tilePixels = topRowPixels + screenY * rowStep + screenX;
-        unsigned char currentBorder = g_aOceanMapBorderPaletteIndexByNationTag[ownerTag];
-        bool isWater = tile.GetTerrainKind() == kStrategicTerrainWater;
+        diagonalOffsets[0][0] = 4;
+        diagonalOffsets[0][1] = 5;
+        diagonalOffsets[0][2] = 2;
+        diagonalOffsets[0][3] = 2;
+        diagonalOffsets[0][4] = 5;
+        diagonalOffsets[0][5] = 5;
+        diagonalOffsets[0][6] = 5;
+        diagonalOffsets[0][7] = 5;
+
         int patternIndex;
         int pixelIndex;
+        unsigned char* currentOffset;
+        unsigned char* neighborOffset;
+        unsigned char* thirdOffset;
 
-        if (neighborOwners[4] >= 0 && neighborOwners[4] != ownerTag) {
+        if (neighborOwners[4] < 0 || neighborOwners[4] == ownerTag) {
+          if (tileCityRecordIndex != neighborCities[4]) {
+            for (pixelIndex = 0; pixelIndex < 16; ++pixelIndex) {
+              tilePixels[pixelIndex * rowStep] = currentBorder;
+            }
+          }
+        } else {
           unsigned char neighborBorder =
               g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[4]];
           patternIndex = (tileIndex % 4) * 4;
@@ -531,19 +546,23 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             tilePixels[0] = currentBorder;
             tilePixels[rowStep] = currentBorder;
           }
-          for (pixelIndex = 0; pixelIndex < 4; ++pixelIndex) {
-            int currentOffset = verticalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = verticalNeighborOffsets[patternIndex + pixelIndex];
-            tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep] = currentBorder;
-            tilePixels[neighborOffset * rowStep] = neighborBorder;
-            tilePixels[neighborOffset * rowStep + 1] = currentBorder;
+          currentOffset = &verticalOffsets[0][patternIndex];
+          neighborOffset = &verticalOffsets[1][patternIndex];
+          thirdOffset = &verticalOffsets[2][patternIndex];
+          pixelIndex = 4;
+          do {
+            tilePixels[*thirdOffset * rowStep] = currentBorder;
+            tilePixels[*neighborOffset * rowStep] = neighborBorder;
+            tilePixels[*neighborOffset * rowStep + 1] = currentBorder;
             if (isWater) {
-              tilePixels[currentOffset * rowStep] = currentBorder;
-              tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 1] =
-                  currentBorder;
-              tilePixels[neighborOffset * rowStep + 2] = currentBorder;
+              tilePixels[*currentOffset * rowStep] = currentBorder;
+              tilePixels[*thirdOffset * rowStep + 1] = currentBorder;
+              tilePixels[*neighborOffset * rowStep + 2] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           unsigned char* lowerLeft = tilePixels + 14 * rowStep;
           if (neighborOwners[3] == neighborOwners[4]) {
             lowerLeft[0] = neighborBorder;
@@ -553,10 +572,6 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
           } else {
             lowerLeft[0] = currentBorder;
             lowerLeft[rowStep] = currentBorder;
-          }
-        } else if (tile.cityRecordIndex != neighborCities[4]) {
-          for (pixelIndex = 0; pixelIndex < 16; ++pixelIndex) {
-            tilePixels[pixelIndex * rowStep] = currentBorder;
           }
         }
 
@@ -573,20 +588,23 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             tilePixels[15] = currentBorder;
             tilePixels[rowStep + 15] = currentBorder;
           }
-          for (pixelIndex = 0; pixelIndex < 4; ++pixelIndex) {
-            int currentOffset = verticalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = verticalNeighborOffsets[patternIndex + pixelIndex];
-            tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 15] =
-                currentBorder;
-            tilePixels[neighborOffset * rowStep + 15] = neighborBorder;
-            tilePixels[neighborOffset * rowStep + 14] = currentBorder;
+          currentOffset = &verticalOffsets[0][patternIndex];
+          neighborOffset = &verticalOffsets[1][patternIndex];
+          thirdOffset = &verticalOffsets[2][patternIndex];
+          pixelIndex = 4;
+          do {
+            tilePixels[*thirdOffset * rowStep + 15] = currentBorder;
+            tilePixels[*neighborOffset * rowStep + 15] = neighborBorder;
+            tilePixels[*neighborOffset * rowStep + 14] = currentBorder;
             if (isWater) {
-              tilePixels[currentOffset * rowStep + 15] = currentBorder;
-              tilePixels[verticalWaterOffsets[patternIndex + pixelIndex] * rowStep + 14] =
-                  currentBorder;
-              tilePixels[neighborOffset * rowStep + 13] = currentBorder;
+              tilePixels[*currentOffset * rowStep + 15] = currentBorder;
+              tilePixels[*thirdOffset * rowStep + 14] = currentBorder;
+              tilePixels[*neighborOffset * rowStep + 13] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           unsigned char* lowerRight = tilePixels + 14 * rowStep + 15;
           if (neighborOwners[2] == neighborOwners[1]) {
             lowerRight[0] = neighborBorder;
@@ -599,7 +617,11 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
           }
         }
 
-        if (neighborOwners[5] >= 0 && neighborOwners[5] != ownerTag) {
+        if (neighborOwners[5] < 0 || neighborOwners[5] == ownerTag) {
+          if (tileCityRecordIndex != neighborCities[5]) {
+            memset(tilePixels, currentBorder, 8);
+          }
+        } else {
           unsigned char neighborBorder =
               g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[5]];
           patternIndex = (tileIndex % 4) * 2;
@@ -607,27 +629,34 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             tilePixels[0] = currentBorder;
             tilePixels[1] = currentBorder;
           }
-          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
-            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
-            tilePixels[neighborOffset] = currentBorder;
-            tilePixels[currentOffset] = neighborBorder;
-            tilePixels[rowStep + currentOffset] = currentBorder;
+          currentOffset = &diagonalOffsets[0][patternIndex];
+          neighborOffset = &diagonalOffsets[1][patternIndex];
+          thirdOffset = &diagonalOffsets[2][patternIndex];
+          pixelIndex = 2;
+          do {
+            tilePixels[*neighborOffset] = currentBorder;
+            tilePixels[*currentOffset] = neighborBorder;
+            tilePixels[rowStep + *currentOffset] = currentBorder;
             if (isWater) {
-              tilePixels[diagonalWaterOffsets[patternIndex + pixelIndex]] = currentBorder;
-              tilePixels[rowStep + neighborOffset] = currentBorder;
-              tilePixels[rowStep * 2 + currentOffset] = currentBorder;
+              tilePixels[*thirdOffset] = currentBorder;
+              tilePixels[rowStep + *neighborOffset] = currentBorder;
+              tilePixels[rowStep * 2 + *currentOffset] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           if (neighborOwners[0] != ownerTag) {
             tilePixels[6] = currentBorder;
             tilePixels[7] = currentBorder;
           }
-        } else if (tile.cityRecordIndex != neighborCities[5]) {
-          memset(tilePixels, currentBorder, 8);
         }
 
-        if (neighborOwners[0] >= 0 && neighborOwners[0] != ownerTag) {
+        if (neighborOwners[0] < 0 || neighborOwners[0] == ownerTag) {
+          if (tileCityRecordIndex != neighborCities[0]) {
+            memset(tilePixels + 8, currentBorder, 8);
+          }
+        } else {
           unsigned char neighborBorder =
               g_aOceanMapBorderPaletteIndexByNationTag[neighborOwners[0]];
           patternIndex = (neighborTiles[0] % 4) * 2;
@@ -636,24 +665,27 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             upperRight[0] = currentBorder;
             upperRight[1] = currentBorder;
           }
-          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
-            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
-            upperRight[neighborOffset] = currentBorder;
-            upperRight[currentOffset] = neighborBorder;
-            upperRight[rowStep + currentOffset] = currentBorder;
+          currentOffset = &diagonalOffsets[0][patternIndex];
+          neighborOffset = &diagonalOffsets[1][patternIndex];
+          thirdOffset = &diagonalOffsets[2][patternIndex];
+          pixelIndex = 2;
+          do {
+            upperRight[*neighborOffset] = currentBorder;
+            upperRight[*currentOffset] = neighborBorder;
+            upperRight[rowStep + *currentOffset] = currentBorder;
             if (isWater) {
-              upperRight[diagonalWaterOffsets[patternIndex + pixelIndex]] = currentBorder;
-              upperRight[rowStep + neighborOffset] = currentBorder;
-              upperRight[rowStep * 2 + currentOffset] = currentBorder;
+              upperRight[*thirdOffset] = currentBorder;
+              upperRight[rowStep + *neighborOffset] = currentBorder;
+              upperRight[rowStep * 2 + *currentOffset] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           if (neighborOwners[0] != neighborOwners[1]) {
             upperRight[6] = currentBorder;
             upperRight[7] = currentBorder;
           }
-        } else if (tile.cityRecordIndex != neighborCities[0]) {
-          memset(tilePixels + 8, currentBorder, 8);
         }
 
         if (neighborOwners[2] >= 0 && neighborOwners[2] != ownerTag) {
@@ -663,19 +695,23 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
           unsigned char* lowerRight = tilePixels + 15 * rowStep + 8;
           lowerRight[0] = currentBorder;
           lowerRight[1] = currentBorder;
-          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
-            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
-            int edgeOffset = diagonalWaterOffsets[patternIndex + pixelIndex];
-            lowerRight[neighborOffset] = currentBorder;
-            lowerRight[edgeOffset] = neighborBorder;
-            lowerRight[edgeOffset - rowStep] = currentBorder;
+          currentOffset = &diagonalOffsets[0][patternIndex];
+          neighborOffset = &diagonalOffsets[1][patternIndex];
+          thirdOffset = &diagonalOffsets[2][patternIndex];
+          pixelIndex = 2;
+          do {
+            lowerRight[*neighborOffset] = currentBorder;
+            lowerRight[*thirdOffset] = neighborBorder;
+            lowerRight[*thirdOffset - rowStep] = currentBorder;
             if (isWater) {
-              lowerRight[currentOffset] = currentBorder;
-              lowerRight[neighborOffset - rowStep] = currentBorder;
-              lowerRight[edgeOffset - rowStep * 2] = currentBorder;
+              lowerRight[*currentOffset] = currentBorder;
+              lowerRight[*neighborOffset - rowStep] = currentBorder;
+              lowerRight[*thirdOffset - rowStep * 2] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           if (neighborOwners[2] != neighborOwners[1]) {
             lowerRight[6] = currentBorder;
             lowerRight[7] = currentBorder;
@@ -691,19 +727,23 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
             lowerLeft[0] = currentBorder;
             lowerLeft[1] = currentBorder;
           }
-          for (pixelIndex = 0; pixelIndex < 2; ++pixelIndex) {
-            int currentOffset = diagonalCurrentOffsets[patternIndex + pixelIndex];
-            int neighborOffset = diagonalNeighborOffsets[patternIndex + pixelIndex];
-            int edgeOffset = diagonalWaterOffsets[patternIndex + pixelIndex];
-            lowerLeft[neighborOffset] = currentBorder;
-            lowerLeft[edgeOffset] = neighborBorder;
-            lowerLeft[edgeOffset - rowStep] = currentBorder;
+          currentOffset = &diagonalOffsets[0][patternIndex];
+          neighborOffset = &diagonalOffsets[1][patternIndex];
+          thirdOffset = &diagonalOffsets[2][patternIndex];
+          pixelIndex = 2;
+          do {
+            lowerLeft[*neighborOffset] = currentBorder;
+            lowerLeft[*thirdOffset] = neighborBorder;
+            lowerLeft[*thirdOffset - rowStep] = currentBorder;
             if (isWater) {
-              lowerLeft[currentOffset] = currentBorder;
-              lowerLeft[neighborOffset - rowStep] = currentBorder;
-              lowerLeft[edgeOffset - rowStep * 2] = currentBorder;
+              lowerLeft[*currentOffset] = currentBorder;
+              lowerLeft[*neighborOffset - rowStep] = currentBorder;
+              lowerLeft[*thirdOffset - rowStep * 2] = currentBorder;
             }
-          }
+            ++currentOffset;
+            ++neighborOffset;
+            ++thirdOffset;
+          } while (--pixelIndex != 0);
           if (neighborOwners[3] != neighborOwners[2]) {
             lowerLeft[6] = currentBorder;
             lowerLeft[7] = currentBorder;
@@ -711,21 +751,26 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
         }
       }
 
-      bool hasImprovementSprite = tile.tileActionState16 >= 0 || tile.perTileVisitedFlag0f > 0 ||
-                                  (((tile.activeFlags1c & 3) != 0) && tile.gateFlag != 0) ||
-                                  (tile.activeFlags1c & 4) != 0;
+      bool hasImprovementSprite =
+          g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 > -1 ||
+          g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f > 0 ||
+          (((g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 3) != 0) &&
+           g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0) ||
+          (g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 4) != 0;
       if (!hasImprovementSprite) {
         continue;
       }
 
       TQuickDrawSurfaceContext* spriteAtlas;
       short spriteX;
-      if (tile.tileActionState16 >= 2) {
+      if (g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 >= 2) {
         spriteAtlas = g_pMacViewMgr->atlas68c;
-        spriteX = static_cast<short>(tile.tileActionState16 << 4);
-      } else if (tile.perTileVisitedFlag0f > 0) {
+        spriteX = static_cast<short>(
+            g_pGlobalMapState->terrainStateTable[tileIndex].tileActionState16 << 4);
+      } else if (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f > 0) {
         spriteAtlas = g_pMacViewMgr->atlas694[7];
-        spriteX = static_cast<short>((tile.perTileVisitedFlag0f - 1) << 4);
+        spriteX = static_cast<short>(
+            (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) << 4);
       } else {
         spriteAtlas = g_pMacViewMgr->atlas688;
         spriteX =
@@ -733,51 +778,50 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       }
 
       CRect sourceRect(spriteX, 0, spriteX + 0x10, 0x10);
-      CRect destinationRect(tileRect);
       UpdatePaletteIndexWithDefaultFallback(0x10);
       if (g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib != 0) {
         int surfaceHeight = g_pPrimaryRenderSurfaceContext->blitSurface.surfaceDib->m_pInfoHeader
                                 ->bmiHeader.biHeight;
-        if (surfaceHeight < 1) {
+        if (surfaceHeight <= 0) {
           surfaceHeight = -surfaceHeight;
         }
-        OffsetRect(&destinationRect, 0,
-                   surfaceHeight - destinationRect.top - destinationRect.bottom);
+        OffsetRect(&tileRect, 0, surfaceHeight - tileRect.top - tileRect.bottom);
       }
       BlitRectWithOptionalTransparency(spriteAtlas->GetBlitSurface(),
                                        g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                                       &sourceRect, &destinationRect, 0x24, 0);
+                                       &sourceRect, &tileRect, 0x24, 0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
 
     ++baseTileIndex;
     baseTileIndex += 0x6b;
-    evenViewportRow = !evenViewportRow;
+    viewportRowParity = 1 - viewportRowParity;
   }
 
-  if (g_bDrawOceanRouteOverlay != 0 && g_pActiveMapOrderContext != 0) {
+  if (g_bDrawOceanRouteOverlay != 0) {
     g_pViewMgr->ApplyLegendSplitSlot34(0x3c);
-    int viewportColumnX2 = scrollColOffset7e * 2 + 1;
-    for (int routeIndex = 0; routeIndex < g_pActiveMapOrderContext->routeNodeCount; ++routeIndex) {
-      CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
-      short startX = static_cast<short>((route.left - viewportColumnX2 + 0xd8) % 0xd8);
-      short endX = static_cast<short>((route.right - viewportColumnX2 + 0xd8) % 0xd8);
-      int span = startX - endX;
-      if (span < 0) {
-        span = -span;
-      }
-      if (span > 0x6c) {
-        if (startX > 0x6c) {
-          startX = static_cast<short>(startX - 0xd8);
-        } else if (endX > 0x6c) {
-          endX = static_cast<short>(endX - 0xd8);
+    int routeIndex = 0;
+    short viewportRow = scrollRowOffset7c;
+    short viewportColumnX2 = static_cast<short>(scrollColOffset7e * 2 + 1);
+    if (g_pActiveMapOrderContext->routeNodeCount > 0) {
+      do {
+        CRect& route = g_pActiveMapOrderContext->routeSegments[routeIndex];
+        short endX = static_cast<short>((route.right - viewportColumnX2 + 0xd8) % 0xd8);
+        short startX = static_cast<short>((route.left - viewportColumnX2 + 0xd8) % 0xd8);
+        int span = abs(static_cast<int>(startX) - static_cast<int>(endX));
+        if (span > 0x6c) {
+          if (startX > 0x6c) {
+            startX = static_cast<short>(startX - 0xd8);
+          } else if (endX > 0x6c) {
+            endX = static_cast<short>(endX - 0xd8);
+          }
         }
-      }
-      SetQuickDrawTextOriginWithContextOffset(
-          static_cast<short>((startX * 0x10) / 2),
-          static_cast<short>((route.top - scrollRowOffset7c) << 4));
-      DrawCenteredGuideLineOnMapDc(static_cast<short>((endX * 0x10) / 2),
-                                   static_cast<short>((route.bottom - scrollRowOffset7c) << 4));
+        SetQuickDrawTextOriginWithContextOffset(static_cast<short>((startX * 0x10) / 2),
+                                                static_cast<short>((route.top - viewportRow) << 4));
+        DrawCenteredGuideLineOnMapDc(static_cast<short>((endX * 0x10) / 2),
+                                     static_cast<short>((route.bottom - viewportRow) << 4));
+        ++routeIndex;
+      } while (routeIndex < g_pActiveMapOrderContext->routeNodeCount);
     }
   }
 
@@ -788,9 +832,12 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       if (tileIndex == -1) {
         continue;
       }
+      short viewportRow = scrollRowOffset7c;
+      short viewportColumn = scrollColOffset7e;
       int tileRow = tileIndex / 0x6c;
-      int labelY = (tileRow - scrollRowOffset7c) * 0x10 + 8;
-      int labelX = ((tileIndex - scrollColOffset7e + 0x6c) % 0x6c) * 0x10 + ((tileRow & 1) << 3);
+      int labelY = (tileRow - viewportRow) * 0x10 + 8;
+      int labelX = ((tileIndex - viewportColumn + 0x6c) % 0x6c) * 0x10 +
+                   ((static_cast<signed char>(tileRow) & 1) << 3);
       if (labelX < rectBuffer->left || labelX > rectBuffer->right || labelY < rectBuffer->top ||
           labelY > rectBuffer->bottom) {
         continue;
@@ -799,56 +846,58 @@ void TOceanDialog::Draw(RECT* rectBuffer) {
       SetQuickDrawFillColorFromPaletteIndex(zone->QueryPortZoneCapability() ? 0 : 0x13);
       CString label;
       zone->AssignZoneDisplayNameToOutputRef(&label);
-      short labelWidth = MeasureTextRangeWithCachedQuickDrawStyle(
-          static_cast<LPCSTR>(label), 0, static_cast<short>(label.GetLength()));
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX - labelWidth / 2),
-                                              static_cast<short>(labelY + 8));
+      SetQuickDrawTextOriginWithContextOffset(
+          static_cast<short>(
+              labelX - MeasureTextRangeWithCachedQuickDrawStyle(
+                           static_cast<LPCSTR>(label), 0, static_cast<short>(label.GetLength())) /
+                           2),
+          static_cast<short>(labelY + 0x10));
       DrawTextWithCachedQuickDrawStyleState(&label);
     }
   }
 
   if (g_bDrawOceanNationLabels != 0) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0x41, 0xc, 0x2b68);
     SetQuickDrawTextFace(0x41);
-    int descriptorIndex;
-    for (descriptorIndex = 0; descriptorIndex < kTerrainTypeDescriptorTableCount;
-         ++descriptorIndex) {
-      TCountry* descriptor = g_apTerrainTypeDescriptorTable[descriptorIndex];
-      if (descriptor == 0) {
-        continue;
+    TCountry** descriptorSlot = g_apTerrainTypeDescriptorTable;
+    do {
+      TCountry* descriptor = *descriptorSlot;
+      if (descriptor != 0) {
+        int tileIndex = descriptor->GetOrComputeOverlayAnchorTileIndex();
+        if (tileIndex == -1) {
+          break;
+        }
+        short viewportRow = scrollRowOffset7c;
+        short viewportColumn = scrollColOffset7e;
+        int tileRow = tileIndex / 0x6c;
+        int labelY = (tileRow - viewportRow) * 0x10 + 8;
+        int labelX = ((tileIndex - viewportColumn + 0x6c) % 0x6c) * 0x10 +
+                     ((static_cast<signed char>(tileRow) & 1) << 3);
+        if (labelX >= rectBuffer->left && labelX <= rectBuffer->right &&
+            labelY >= rectBuffer->top && labelY <= rectBuffer->bottom) {
+          CString label;
+          descriptor->FormatOverlayTerrainLabelText(&label);
+          short labelWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);
+          labelX -= labelWidth / 2;
+          SetQuickDrawFillColorFromPaletteIndex(0x13);
+          SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX + 1),
+                                                  static_cast<short>(labelY + 1));
+          DrawTextWithCachedQuickDrawStyleState(&label);
+          SetQuickDrawFillColorFromPaletteIndex(0);
+          SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX),
+                                                  static_cast<short>(labelY));
+          DrawTextWithCachedQuickDrawStyleState(&label);
+        }
       }
-      int tileIndex = descriptor->GetOrComputeOverlayAnchorTileIndex();
-      if (tileIndex == -1) {
-        break;
-      }
-      int tileRow = tileIndex / 0x6c;
-      int labelY = (tileRow - scrollRowOffset7c) * 0x10 + 8;
-      int labelX = ((tileIndex - scrollColOffset7e + 0x6c) % 0x6c) * 0x10 + ((tileRow & 1) << 3);
-      if (labelX < rectBuffer->left || labelX > rectBuffer->right || labelY < rectBuffer->top ||
-          labelY > rectBuffer->bottom) {
-        continue;
-      }
-
-      CString label;
-      descriptor->FormatOverlayTerrainLabelText(&label);
-      short labelWidth = MeasureTextExtentWithCachedQuickDrawStyle(&label);
-      labelX -= labelWidth / 2;
-      SetQuickDrawFillColorFromPaletteIndex(0x13);
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX + 1),
-                                              static_cast<short>(labelY + 1));
-      DrawTextWithCachedQuickDrawStyleState(&label);
-      SetQuickDrawFillColorFromPaletteIndex(0);
-      SetQuickDrawTextOriginWithContextOffset(static_cast<short>(labelX),
-                                              static_cast<short>(labelY));
-      DrawTextWithCachedQuickDrawStyleState(&label);
-    }
+      ++descriptorSlot;
+    } while (descriptorSlot < g_apTerrainTypeDescriptorTable + kTerrainTypeDescriptorTableCount);
   }
 
   if (g_bTransferOceanViewportToActiveSurface != 0) {
     SetGWorld(previousSurface, previousSurfaceFlags);
     BlitRectWithOptionalTransparency(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                                     &viewportRect, &viewportRect, 0, 0);
+                                     &viewportSourceRect, &viewportDestinationRect, 0, 0);
     UnlockPixels(GetGWorldPixMap(g_pPrimaryRenderSurfaceContext));
   }
 }
