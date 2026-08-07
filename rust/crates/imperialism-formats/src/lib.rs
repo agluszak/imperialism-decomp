@@ -9,10 +9,18 @@ mod legacy_save;
 mod legacy_stream;
 
 pub use legacy_save::{
-    LegacyAdmiral, LegacyCountryBase, LegacyFixedRecordList, LegacyGameSetup,
-    LegacyGreatPowerPrefix, LegacyMapState, LegacyMilitaryUnit, LegacyNavyState, LegacyOceanState,
-    LegacyProvince, LegacySaveError, LegacySaveHeader, LegacySaveV62, LegacyShip,
-    LegacySimulationPrefix, LegacyTaskForce, LegacyTerrainTile, LegacyZone, parse_country_base_at,
-    parse_great_power_prefix_at,
+    LegacyAdmiral, LegacyArmyMission, LegacyAutoGreatPowerPrefix, LegacyAutoGreatPowerState,
+    LegacyCityState, LegacyCityTask, LegacyCivilianUnit, LegacyCountryBase,
+    LegacyDefenseMinisterState, LegacyFixedRecordList, LegacyForeignMinisterState, LegacyGameSetup,
+    LegacyGreatPowerMinisters, LegacyGreatPowerPostCity, LegacyGreatPowerPrefix,
+    LegacyGreatPowerState, LegacyHelpState, LegacyInteriorMinisterState, LegacyMajorNationState,
+    LegacyMapState, LegacyMfcArchiveState, LegacyMilitaryUnit, LegacyMinorState, LegacyMission,
+    LegacyNavyMission, LegacyNavyState, LegacyOceanState, LegacyPopulationState, LegacyProvince,
+    LegacySaveError, LegacySaveHeader, LegacySaveV62, LegacyShip, LegacySimulationPrefix,
+    LegacySnapshotContext, LegacyTaskForce, LegacyTerrainTile, LegacyTown, LegacyZone,
+    parse_auto_great_power_prefix_at, parse_auto_great_power_record_at, parse_city_at,
+    parse_country_base_at, parse_great_power_ministers_at, parse_great_power_post_city_at,
+    parse_great_power_prefix_at, parse_great_power_record_at, parse_help_manager_at,
+    parse_minor_record_at, parse_missions_at,
 };
 pub use legacy_stream::{LegacyStream, StreamError};

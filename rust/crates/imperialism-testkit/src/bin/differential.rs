@@ -1,8 +1,10 @@
 #![forbid(unsafe_code)]
 
+use imperialism_formats::{LegacySaveV62, LegacySnapshotContext};
 use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
 use std::env;
 use std::ffi::OsString;
+use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitCode};
 
@@ -20,7 +22,12 @@ fn run() -> Result<(), String> {
     let mut arguments = env::args_os();
     let program = arguments.next().unwrap_or_else(|| "differential".into());
     let fixture = required_argument(&program, arguments.next())?;
-    let rust_snapshot = required_argument(&program, arguments.next())?;
+    let source = match required_argument(&program, arguments.next())? {
+        flag if flag == "--legacy-save" => {
+            RustSource::LegacySave(required_argument(&program, arguments.next())?)
+        }
+        snapshot => RustSource::Snapshot(snapshot),
+    };
     let seed = parse_seed(arguments.next(), arguments.next())?;
     if arguments.next().is_some() {
         return Err("differential received unexpected extra arguments".to_owned());
@@ -48,8 +55,28 @@ fn run() -> Result<(), String> {
     let cpp_snapshot_path = artifact_dir.join("native-result.json");
     let cpp = read_game_snapshot(&cpp_snapshot_path)
         .map_err(|error| format!("C++ oracle snapshot is invalid: {error}"))?;
-    let rust = read_game_snapshot(Path::new(&rust_snapshot))
-        .map_err(|error| format!("Rust snapshot is invalid: {error}"))?;
+    let rust = match source {
+        RustSource::Snapshot(path) => read_game_snapshot(Path::new(&path))
+            .map_err(|error| format!("Rust snapshot is invalid: {error}"))?,
+        RustSource::LegacySave(path) => {
+            let bytes = fs::read(&path).map_err(|error| {
+                format!(
+                    "could not read retail save {}: {error}",
+                    Path::new(&path).display()
+                )
+            })?;
+            let save = LegacySaveV62::parse(&bytes)
+                .map_err(|error| format!("could not decode retail save: {error}"))?;
+            save.snapshot(LegacySnapshotContext {
+                runtime_seed: cpp.rng.runtime_seed,
+                crt_rand_state: cpp.rng.crt_rand_state,
+                map_generation_lcg: cpp.rng.map_generation_lcg,
+                zone_status_lcg: cpp.rng.zone_status_lcg,
+                selected_nation: cpp.metadata.selected_nation,
+            })
+            .map_err(|error| format!("could not project retail save: {error}"))?
+        }
+    };
 
     println!("section       C++       Rust");
     for (section, cpp_hash, rust_hash) in [
@@ -80,10 +107,16 @@ fn run() -> Result<(), String> {
     }
 }
 
+enum RustSource {
+    Snapshot(OsString),
+    LegacySave(OsString),
+}
+
 fn required_argument(program: &OsString, value: Option<OsString>) -> Result<OsString, String> {
     value.ok_or_else(|| {
         format!(
-            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]",
+            "usage: {} FIXTURE RUST_SNAPSHOT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N]",
+            Path::new(program).display(),
             Path::new(program).display()
         )
     })

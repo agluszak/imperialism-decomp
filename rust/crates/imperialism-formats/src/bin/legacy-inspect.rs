@@ -1,17 +1,21 @@
 #![forbid(unsafe_code)]
 
-use imperialism_formats::{LegacySaveV62, parse_country_base_at};
+use imperialism_formats::{LegacySaveV62, LegacySnapshotContext, parse_country_base_at};
 use std::env;
 use std::fs;
 use std::path::Path;
 use std::process::ExitCode;
 
 fn main() -> ExitCode {
-    let Some(path) = env::args_os().nth(1) else {
-        eprintln!("usage: legacy-inspect SAVE.imp");
+    let mut arguments = env::args_os().skip(1);
+    let Some(path) = arguments.next() else {
+        eprintln!(
+            "usage: legacy-inspect SAVE.imp [--canonical RUNTIME_SEED CRT_RAND MAP_LCG ZONE_LCG SELECTED_NATION]"
+        );
         return ExitCode::FAILURE;
     };
-    match inspect(Path::new(&path)) {
+    let trailing = arguments.collect::<Vec<_>>();
+    match inspect(Path::new(&path), &trailing) {
         Ok(()) => ExitCode::SUCCESS,
         Err(error) => {
             eprintln!("{error}");
@@ -20,7 +24,7 @@ fn main() -> ExitCode {
     }
 }
 
-fn inspect(path: &Path) -> Result<(), String> {
+fn inspect(path: &Path, arguments: &[std::ffi::OsString]) -> Result<(), String> {
     let bytes =
         fs::read(path).map_err(|error| format!("could not read {}: {error}", path.display()))?;
     let save = LegacySaveV62::parse(&bytes).map_err(|error| error.to_string())?;
@@ -39,7 +43,33 @@ fn inspect(path: &Path) -> Result<(), String> {
         first_country.military_units.len(),
         first_country_suffix_offset
     );
-    serde_json::to_writer(std::io::stdout(), &save.map.snapshot_world())
+    if arguments.is_empty() {
+        return serde_json::to_writer(std::io::stdout(), &save.map.snapshot_world())
+            .map_err(|error| format!("could not encode map snapshot: {error}"));
+    }
+    if arguments.len() != 6 || arguments[0] != "--canonical" {
+        return Err("expected --canonical followed by five decimal runtime values".to_owned());
+    }
+    let values = arguments[1..]
+        .iter()
+        .map(|value| {
+            value
+                .to_str()
+                .ok_or_else(|| "runtime values must be UTF-8 decimal integers".to_owned())?
+                .parse::<u32>()
+                .map_err(|error| format!("invalid runtime value: {error}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let snapshot = save
+        .snapshot(LegacySnapshotContext {
+            runtime_seed: values[0],
+            crt_rand_state: values[1],
+            map_generation_lcg: values[2],
+            zone_status_lcg: values[3],
+            selected_nation: values[4] as i32,
+        })
+        .map_err(|error| format!("could not project canonical snapshot: {error}"))?;
+    serde_json::to_writer(std::io::stdout(), &snapshot)
         .map_err(|error| format!("could not encode map snapshot: {error}"))?;
     Ok(())
 }

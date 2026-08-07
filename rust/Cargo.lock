@@ -688,6 +688,7 @@ name = "imperialism-testkit"
 version = "0.1.0"
 dependencies = [
  "imperialism-core",
+ "imperialism-formats",
  "serde_json",
 ]
 
