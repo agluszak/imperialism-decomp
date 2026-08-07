@@ -19,6 +19,8 @@
 #include "game/ui_core/CIncludeView.h"
 #include "game/ui_core/CMainFrame.h"
 #include "game/ui_core/TMacViewMgr.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_core/TWindow.h"
 #include "game/assets/TAssetMgr.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/city/TCity.h"
@@ -34,6 +36,7 @@
 #include "game/military/mapped_flavor_text.h"
 #include "game/pointer_representation.h"
 #include "game/gfx/quickdraw_regions.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 #include <io.h>  // CRT _findfirst/_findnext/_findclose (LIBRARY 0x5e7ae0/0x5e7c10/0x5e7d30)
 #include <new.h> // CRT _set_new_handler (LIBRARY 0x5e7a80)
@@ -191,6 +194,7 @@ ON_COMMAND(0x8017, OnAdjustNationResourcesAndPopulation)
 ON_COMMAND(0x8018, OnPreviewDibResource)
 ON_COMMAND(0x8019, OnRunAmbitDeveloperAssert)
 ON_UPDATE_COMMAND_UI(0x8019, OnUpdateAmbitDeveloperAssert)
+ON_COMMAND(0x801d, OnDeveloperCommand801D)
 ON_COMMAND(0x801e, OnDeveloperCommand801E)
 ON_UPDATE_COMMAND_UI(0x801e, OnUpdateDeveloperCommand801E)
 ON_COMMAND(0x801f, OnDeveloperCommand801F)
@@ -212,6 +216,14 @@ ImperialismApp::ImperialismApp()
 
 // FUNCTION: IMPERIALISM 0x00412c60
 ImperialismApp::~ImperialismApp() {}
+
+// The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
+// 0x00412d40 (ctor) / 0x00412d70 (dtor).
+// SYNTHETIC: IMPERIALISM 0x00412d40
+// InitializeImperialismAppSingletonGlobal
+// SYNTHETIC: IMPERIALISM 0x00412d70
+// DestroyImperialismAppSingletonGlobal
+ImperialismApp theApp;
 
 // Out-of-memory handler installed by InitInstance through the CRT _set_new_handler;
 // __callnewh (0x5e7ac0) invokes it when operator new fails. Returns 0 (no retry).
@@ -853,6 +865,24 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
   return dialog.DoModal() == 1 ? TRUE : FALSE;
 }
 
+// FUNCTION: IMPERIALISM 0x005de830
+void ImperialismApp::OnDeveloperCommand801D() {
+  TWindow* window =
+      g_pAssetMgr->ResolveTurnEventDialogNodeByMessageContext(static_cast<TurnEventId>(0x3a99));
+  if (window == nullptr) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x327);
+  }
+
+  TextStyle style;
+  style.fontFamily = 0x16;
+  style.fontStyleFlags = 0;
+  style.fontSize = 9;
+  style.textColor = 0;
+  DispatchToSelectableTextOptionEntries(window, &style, 0);
+  window->Open();
+}
+
 // FUNCTION: IMPERIALISM 0x005df7a0
 BOOL QueryVolumeInformationForDriveIndex(char driveIndex, CString* volumeName, LPDWORD serial) {
   UINT previousErrorMode = SetErrorMode(SEM_FAILCRITICALERRORS);
@@ -874,11 +904,3 @@ bool QueryDriveTypeByDriveIndex(char driveIndex) {
   rootPath[3] = '\0';
   return GetDriveTypeA(rootPath) == DRIVE_CDROM;
 }
-
-// The global MFC application object (DAT_006a1210). Its CRT static-init bootstrap is
-// 0x00412d40 (ctor) / 0x00412d70 (dtor).
-// SYNTHETIC: IMPERIALISM 0x00412d40
-// InitializeImperialismAppSingletonGlobal
-// SYNTHETIC: IMPERIALISM 0x00412d70
-// DestroyImperialismAppSingletonGlobal
-ImperialismApp theApp;

@@ -2150,7 +2150,6 @@ ResetGlobalDword6A1E68 49BCA0 f
 TD0TemplateDialog::TD0TemplateDialog 49BCD0 f
 TD0TemplateDialog::'scalar_deleting_destructor' 49BD60 f
 TD0TemplateDialog::AppendTraceTextAndFlushCompleteLines 49BD90 f
-thunk_ReleaseSharedStringRefIfNotEmpty 49BF45 f
 TD0TemplateDialog::DoDataExchange 49BF60 f
 TD0TemplateDialog::GetMessageMap 49BF90 f
 TD0TemplateDialog::OnOK 49BFB0 f
@@ -8007,7 +8006,6 @@ __free_lc_time 5F6280 f
 _storeTimeFmt 5F64C0 f
 RebuildLocaleNumericFormattingTables_005f65c0 5F65C0 f
 WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e 5F666E f
-thunk_InitializeLocaleDecimalSeparatorFromRuntimeLocale 5F66D4 f
 InitializeLocaleDecimalSeparatorFromRuntimeLocale 5F6797 f
 _fix_grouping 5F67C0 f
 ReinitializeLocaleDateTimeFormattingFieldsAndResetSharedState 5F6827 f
@@ -8016,8 +8014,6 @@ __get_lc_lconv 5F68F0 f
 _fix_grouping 5F6A40 f
 __free_lc_lconv 5F6A80 f
 RebuildLocaleWideCharClassificationTables_005f6af9 5F6AF9 f
-thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue 5F6D2D f
-OrphanTail_FreeFourSavedPointersAndReturnTrue 5F6D33 f
 WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f6d68 5F6D68 f
 _strncmp 5F6DC0 f
 _signal 5F7300 f
@@ -8837,8 +8833,6 @@ CWinApp::AddToRecentFileList 6186B7 f
 CWinApp::OpenDocumentFile 6186F2 f
 CWinApp::CloseAllDocuments 618704 f
 CWinApp::OnDDECommand 61873C f
-thunk_NoOpVirtualStub_00618753 61874F f
-NoOpVirtualStub_00618753 618753 f
 CWinApp::AddDocTemplate 61878F f
 CWinApp::GetFirstDocTemplatePosition 6187EB f
 CWinApp::GetNextDocTemplate 6187FD f

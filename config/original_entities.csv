@@ -7222,7 +7222,7 @@ address|name|symbol|size|type|prototype|provenance
 5f6280|__free_lc_time|__free_lc_time|563|function|undefined FreeLocaleDateTimeNameTableEntries43()|
 5f64c0|_storeTimeFmt|_storeTimeFmt|246|function|undefined BuildLocaleTimeFormatPatternString()|
 5f65c0|RebuildLocaleNumericFormattingTables_005f65c0||174|function|undefined RebuildLocaleNumericFormattingTables_005f65c0()|
-5f666e|WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e||102|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e()|
+5f666e|WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e||107|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e()|
 5f6797|InitializeLocaleDecimalSeparatorFromRuntimeLocale||31|function|undefined InitializeLocaleDecimalSeparatorFromRuntimeLocale()|
 5f67c0|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringInPlace_RemoveSemicolons()|
 5f6827|ReinitializeLocaleDateTimeFormattingFieldsAndResetSharedState||116|function|undefined ReinitializeLocaleDateTimeFormattingFieldsAndResetSharedState()|
@@ -7230,9 +7230,7 @@ address|name|symbol|size|type|prototype|provenance
 5f68f0|__get_lc_lconv|__get_lc_lconv|331|function|undefined InitializeLocaleDateTimeFormattingFields()|
 5f6a40|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringAndStripSemicolons()|
 5f6a80|__free_lc_lconv|__free_lc_lconv|102|function|undefined FreeOwnedPointerFieldsIfNotUsingStaticBuffer()|
-5f6af9|RebuildLocaleWideCharClassificationTables_005f6af9||564|function|undefined RebuildLocaleWideCharClassificationTables_005f6af9()|
-5f6d2d|thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue||2|function|undefined thunk_OrphanTail_FreeFourSavedPointersAndReturnTrue()|
-5f6d33|OrphanTail_FreeFourSavedPointersAndReturnTrue||53|function|undefined OrphanTail_FreeFourSavedPointersAndReturnTrue()|
+5f6af9|RebuildLocaleWideCharClassificationTables_005f6af9||623|function|undefined RebuildLocaleWideCharClassificationTables_005f6af9()|
 5f6d68|WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f6d68||66|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f6d68()|
 5f6dc0|_strncmp|_strncmp|56|function|int __cdecl strncmp(char * _Str1, char * _Str2, size_t _MaxCount)|
 5f7300|_signal|_signal|516|function|undefined SetCrtSignalHandlerWithConsoleCtrlSetup()|
@@ -8042,9 +8040,7 @@ address|name|symbol|size|type|prototype|provenance
 6186b7|CWinApp::AddToRecentFileList|?AddToRecentFileList@CWinApp@@UAEXPBD@Z|59|function|public: virtual void __thiscall CWinApp::AddToRecentFileList(char const *)|msvc500_library_override
 6186f2|CWinApp::OpenDocumentFile|?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PBD@Z|18|function|public: virtual class CDocument * __thiscall CWinApp::OpenDocumentFile(char const *)|msvc500_library_oracle
 618704|CWinApp::CloseAllDocuments|?CloseAllDocuments@CWinApp@@QAEXH@Z|22|function|public: void __thiscall CWinApp::CloseAllDocuments(int)|msvc500_library_oracle
-61873c|CWinApp::OnDDECommand|?OnDDECommand@CWinApp@@UAEHPAD@Z|19|function|public: virtual int __thiscall CWinApp::OnDDECommand(char *)|msvc500_library_override
-61874f|thunk_NoOpVirtualStub_00618753||2|function|undefined thunk_NoOpVirtualStub_00618753()|
-618753|NoOpVirtualStub_00618753||3|function|undefined NoOpVirtualStub_00618753()|
+61873c|CWinApp::OnDDECommand|?OnDDECommand@CWinApp@@UAEHPAD@Z|26|function|public: virtual int __thiscall CWinApp::OnDDECommand(char *)|msvc500_library_override
 61878f|CWinApp::AddDocTemplate|?AddDocTemplate@CWinApp@@QAEXPAVCDocTemplate@@@Z|92|function|public: void __thiscall CWinApp::AddDocTemplate(class CDocTemplate *)|msvc500_library_override
 6187eb|CWinApp::GetFirstDocTemplatePosition|?GetFirstDocTemplatePosition@CWinApp@@QBEPAU__POSITION@@XZ|18|function|public: struct __POSITION * __thiscall CWinApp::GetFirstDocTemplatePosition(void) const|msvc500_library_oracle
 6187fd|CWinApp::GetNextDocTemplate|?GetNextDocTemplate@CWinApp@@QBEPAVCDocTemplate@@AAPAU__POSITION@@@Z|18|function|public: class CDocTemplate * __thiscall CWinApp::GetNextDocTemplate(struct __POSITION *&) const|msvc500_library_oracle

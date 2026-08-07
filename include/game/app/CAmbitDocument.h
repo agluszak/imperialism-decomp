@@ -28,6 +28,8 @@ public:
   virtual BOOL OnOpenDocument(LPCTSTR lpszPathName) override;   // 0x00479960 (slot 0x7c)
   virtual BOOL OnSaveDocument(LPCTSTR lpszPathName) override;   // 0x00479990 (slot 0x80)
 
+  afx_msg void OnCommand8003(); // 0x00479940, command 0x8003
+
   TAmbitFileBasedDocument* fileBasedDocument50; // +0x50 (4-byte T-tree document adapter)
 
   DECLARE_MESSAGE_MAP()
