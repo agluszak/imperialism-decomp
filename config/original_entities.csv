@@ -7026,9 +7026,7 @@ address|name|symbol|size|type|prototype|provenance
 5ead20|__dosmaperr|__dosmaperr|115|function|undefined MapWin32ErrorToCrtErrno()|
 5eada0|_errno|__errno|9|function|int * __cdecl _errno(void)|msvc500_library_oracle
 5eadb0|__doserrno|___doserrno|9|function|unsigned long * __cdecl __doserrno(void)|msvc500_library_override
-5eadc0|WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0||55|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0()|
-5eadfd|ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd||71|function|undefined ReallocateHeapBlockWithAllocatorTrimFallback_005eadfd()|
-5eae44|WrapperFor_LeaveIndexedCriticalSection_At005eae44||32|function|undefined WrapperFor_LeaveIndexedCriticalSection_At005eae44()|
+5eadc0|WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0||164|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0()|
 5eae70|__msize|__msize|99|function|undefined QueryAllocationSizeWithCustomAllocatorFallback()|
 5eaee0|__setmbcp|__setmbcp|539|function|undefined SetMultiByteCodePageLocked()|
 5eb100|_getSystemCP|_getSystemCP|77|function|undefined ResolveRequestedCodePageToken()|
@@ -7214,24 +7212,16 @@ address|name|symbol|size|type|prototype|provenance
 5f5d00|ExecuteCallbackUnderStreamCriticalSection||1|function|undefined ExecuteCallbackUnderStreamCriticalSection()|
 5f5d30|__ungetc_lk|__ungetc_lk|131|function|undefined WriteByteToBufferedStreamState()|
 5f5dc0|___crtMessageBoxA|___crtMessageBoxA|143|function|undefined ShowRuntimeErrorMessageBoxWithLazyUser32Imports()|
-5f5e50|RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer||38|function|undefined RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer()|
-5f5e76|ReinitializeLocaleDayMonthNameTableAndResetSharedPointerArray||38|function|undefined ReinitializeLocaleDayMonthNameTableAndResetSharedPointerArray()|
-5f5e9c|AdoptLocaleDateTimeNameTableAsActiveAndOwned||45|function|undefined AdoptLocaleDateTimeNameTableAsActiveAndOwned()|
-5f5ec9|ResetActiveLocaleDateTimeNameTableToSharedDefault||53|function|undefined ResetActiveLocaleDateTimeNameTableToSharedDefault()|
+5f5e50|RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer||174|function|undefined RebuildActiveLocaleDateTimeNameTableAndAdoptOwnedBuffer()|
 5f5f00|__get_lc_time|__get_lc_time|881|function|undefined InitializeLocaleDateTimeNameTable()|
 5f6280|__free_lc_time|__free_lc_time|563|function|undefined FreeLocaleDateTimeNameTableEntries43()|
 5f64c0|_storeTimeFmt|_storeTimeFmt|246|function|undefined BuildLocaleTimeFormatPatternString()|
-5f65c0|RebuildLocaleNumericFormattingTables_005f65c0||174|function|undefined RebuildLocaleNumericFormattingTables_005f65c0()|
-5f666e|WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e||107|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f666e()|
-5f6797|InitializeLocaleDecimalSeparatorFromRuntimeLocale||31|function|undefined InitializeLocaleDecimalSeparatorFromRuntimeLocale()|
+5f65c0|RebuildLocaleNumericFormattingTables_005f65c0||502|function|undefined RebuildLocaleNumericFormattingTables_005f65c0()|
 5f67c0|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringInPlace_RemoveSemicolons()|
-5f6827|ReinitializeLocaleDateTimeFormattingFieldsAndResetSharedState||116|function|undefined ReinitializeLocaleDateTimeFormattingFieldsAndResetSharedState()|
-5f689b|ResetLocaleDateTimeOwnedPointerCacheToStaticDefaults||84|function|undefined ResetLocaleDateTimeOwnedPointerCacheToStaticDefaults()|
 5f68f0|__get_lc_lconv|__get_lc_lconv|331|function|undefined InitializeLocaleDateTimeFormattingFields()|
 5f6a40|_fix_grouping|_fix_grouping|51|function|undefined NormalizeDigitStringAndStripSemicolons()|
 5f6a80|__free_lc_lconv|__free_lc_lconv|102|function|undefined FreeOwnedPointerFieldsIfNotUsingStaticBuffer()|
-5f6af9|RebuildLocaleWideCharClassificationTables_005f6af9||623|function|undefined RebuildLocaleWideCharClassificationTables_005f6af9()|
-5f6d68|WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f6d68||66|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At005f6d68()|
+5f6af9|RebuildLocaleWideCharClassificationTables_005f6af9||689|function|undefined RebuildLocaleWideCharClassificationTables_005f6af9()|
 5f6dc0|_strncmp|_strncmp|56|function|int __cdecl strncmp(char * _Str1, char * _Str2, size_t _MaxCount)|
 5f7300|_signal|_signal|516|function|undefined SetCrtSignalHandlerWithConsoleCtrlSetup()|
 5f7530|ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks||132|function|undefined ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks()|
@@ -8151,7 +8141,7 @@ address|name|symbol|size|type|prototype|provenance
 61ce0b|CFrameWnd::Create|?Create@CFrameWnd@@QAEHPBD0KABUtagRECT@@PAVCWnd@@0KPAUCCreateContext@@@Z|152|function|public: int __thiscall CFrameWnd::Create(char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, char const *, unsigned long, struct CCreateContext *)|msvc500_library_oracle
 61cea3|CFrameWnd::CreateView|?CreateView@CFrameWnd@@QAEPAVCWnd@@PAUCCreateContext@@I@Z|120|function|public: class CWnd * __thiscall CFrameWnd::CreateView(struct CCreateContext *, unsigned int)|msvc500_library_oracle
 61cf1b|CFrameWnd::OnCreateClient|?OnCreateClient@CFrameWnd@@MAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z|34|function|protected: virtual int __thiscall CFrameWnd::OnCreateClient(struct tagCREATESTRUCTA *, struct CCreateContext *)|msvc500_library_oracle
-61cf3d|WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d||4|function|undefined WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d()|
+61cf3d|WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d||15|function|undefined WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d()|
 61cf4c|CFrameWnd::OnCreateHelper|?OnCreateHelper@CFrameWnd@@IAEHPAUtagCREATESTRUCTA@@PAUCCreateContext@@@Z|79|function|protected: int __thiscall CFrameWnd::OnCreateHelper(struct tagCREATESTRUCTA *, struct CCreateContext *)|msvc500_library_oracle
 61cf9b|GetIconWndClass|?GetIconWndClass@CFrameWnd@@IAEPBDKI@Z|131|function|protected: char const * __thiscall CFrameWnd::GetIconWndClass(unsigned long, unsigned int)|msvc500_library_oracle
 61d01e|CFrameWnd::LoadFrame|?LoadFrame@CFrameWnd@@UAEHIKPAVCWnd@@PAUCCreateContext@@@Z|235|function|public: virtual int __thiscall CFrameWnd::LoadFrame(unsigned int, unsigned long, class CWnd *, struct CCreateContext *)|msvc500_library_oracle
@@ -9159,8 +9149,6 @@ address|name|symbol|size|type|prototype|provenance
 66fad0|g_dMasterVolumeExponentScale|||global|double g_dMasterVolumeExponentScale|
 66fc00|CDialog::classRuntimeClass|||global||
 66fdc8|CWinApp::classRuntimeClass|||global||
-66fdec|_AFX_WIN_STATE::`vftable'|??_7_AFX_WIN_STATE@@6B@||global||curated
-66fdf4|CNoTrackObject::`vftable'|??_7CNoTrackObject@@6B@||global||curated
 66fec4|CObject::`vftable'|??_7CObject@@6B@||global||
 670320|CFrameWnd::classRuntimeClass|||global||
 670338|CView::classRuntimeClass|||global||
@@ -10626,4 +10614,6 @@ address|name|symbol|size|type|prototype|provenance
 6239f0|_$E355|_$E355|18|function||
 623abc|_$E350|_$E350|18|function||
 623af4|_$E355|_$E355|18|function||
+66fdec|_AFX_WIN_STATE::`vftable'|??_7_AFX_WIN_STATE@@6B@||global||curated
+66fdf4|CNoTrackObject::`vftable'|??_7CNoTrackObject@@6B@||global||curated
 6a2198|g_defaultPoint_006A2198|||global||

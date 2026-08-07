@@ -642,7 +642,7 @@ address|matching|name
 0x484bf0|1.0|CMainFrame::CMainFrame
 0x484c40|1.0|CMainFrame::`scalar deleting destructor'
 0x484c70|1.0|CMainFrame::~CMainFrame
-0x484d00|0.9545454545454546|CMainFrame::OnCreate
+0x484d00|1.0|CMainFrame::OnCreate
 0x484d70|0.9743589743589743|CMainFrame::ConfigureTopLevelWindowStyleAndPlacement
 0x484f70|1.0|CMainFrame::PreCreateWindow
 0x484fb0|1.0|CMainFrame::OnMsg0464
@@ -6801,7 +6801,8 @@ address|matching|name
 0x5e95c0|1.0|_fgetc
 0x5e9620|0.8771929824561403|__itoa
 0x5e9840|1.0|_sprintf
-0x5e98b0|0.8120300751879699|_WinMainCRTStartup
+0x5e98b0|0.8270676691729323|_WinMainCRTStartup
+0x5e9a60|0.6153846153846154|__amsg_exit
 0x5e9a90|1.0|_memset
 0x5e9ae8|1.0|__EH_prolog
 0x5e9b10|1.0|__strdup
@@ -6818,6 +6819,7 @@ address|matching|name
 0x5ea280|0.9583333333333334|__mbslwr
 0x5ea330|0.9411764705882353|__mbsrev
 0x5ea3b0|0.9263157894736842|__beginthreadex
+0x5ea4e0|0.723404255319149|__endthreadex
 0x5ea520|1.0|_memcmp
 0x5ea5d0|0.8070175438596491|__CxxThrowException@8
 0x5ea620|0.9795918367346939|__mbsspn
@@ -6831,10 +6833,11 @@ address|matching|name
 0x5eaa30|1.0|_abs
 0x5eaa40|0.6923076923076923|_strtol
 0x5eacf0|0.6923076923076923|_strtoul
-0x5ead10|0.46153846153846156|__purecall
+0x5ead10|1.0|__purecall
 0x5ead20|0.7816091954022989|__dosmaperr
 0x5eada0|1.0|__errno
 0x5eadb0|1.0|___doserrno
+0x5eadc0|0.8961038961038961|__expand
 0x5eae70|0.8314606741573034|__msize
 0x5eaee0|0.8617886178861789|__setmbcp
 0x5eb1f0|1.0|___initmbctable
@@ -6855,11 +6858,11 @@ address|matching|name
 0x5ed6f0|0.6666666666666666|__CallSettingFrame@12
 0x5ed740|0.8787878787878788|__mtinit
 0x5ed7d0|0.2857142857142857|__initptd
-0x5ed7f0|0.8723404255319149|__getptd
+0x5ed7f0|0.8936170212765957|__getptd
 0x5ed870|0.9401709401709402|__freeptd
 0x5ed9e0|0.5609756097560976|?_inconsistency@@YAXXZ
 0x5eda70|1.0|__mtinitlocks
-0x5edb20|0.7727272727272727|__lock
+0x5edb20|0.7954545454545454|__lock
 0x5edba0|0.5384615384615384|__unlock
 0x5edbc0|0.68|__lock_file
 0x5edc00|1.0|__lock_file2
@@ -6901,10 +6904,10 @@ address|matching|name
 0x5f1830|1.0|__aulldiv
 0x5f18a0|1.0|__aullrem
 0x5f1c70|0.42857142857142855|__ismbblead
-0x5f1d20|0.9139784946236559|__setenvp
-0x5f1e10|0.8113207547169812|__setargv
+0x5f1d20|0.9354838709677419|__setenvp
+0x5f1e10|0.8301886792452831|__setargv
 0x5f22c0|1.0|___crtGetEnvironmentStringsA
-0x5f2420|0.9195402298850575|__ioinit
+0x5f2420|0.9252873563218391|__ioinit
 0x5f2690|0.7692307692307693|__FF_MSGBANNER
 0x5f26d0|0.9156626506024096|__NMSG_WRITE
 0x5f28f0|0.045454545454545456|_strchr
@@ -6944,7 +6947,7 @@ address|matching|name
 0x5f4950|1.0|__fptostr
 0x5f49f0|1.0|__fltout2
 0x5f4a80|1.0|___dtold
-0x5f4b40|0.46153846153846156|__fptrap
+0x5f4b40|1.0|__fptrap
 0x5f4b50|1.0|?_ValidateRead@@YAHPBXI@Z
 0x5f4b70|1.0|?_ValidateWrite@@YAHPAXI@Z
 0x5f4b90|1.0|?_ValidateExecute@@YAHP6GHXZ@Z
@@ -6971,7 +6974,9 @@ address|matching|name
 0x5f5ce0|1.0|__allshl
 0x5f5d30|1.0|__ungetc_lk
 0x5f5dc0|1.0|___crtMessageBoxA
-0x5f6af9|0.8787185354691075|___init_ctype
+0x5f5e50|0.7636363636363637|___init_time
+0x5f65c0|0.7547169811320755|___init_numeric
+0x5f6af9|0.8971553610503282|___init_ctype
 0x5f6dc0|1.0|_strncmp
 0x5f7300|0.7989276139410187|_signal
 0x5f75c0|0.8392857142857143|_raise
@@ -7191,7 +7196,7 @@ address|matching|name
 0x605f87|0.907103825136612|_AfxThreadEntry
 0x6060bc|1.0|AfxGetThread
 0x606155|1.0|AfxBeginThread(struct CRuntimeClass *, int, unsigned int, unsigned long, struct _SECURITY_ATTRIBUTES *)
-0x6061b7|0.9629629629629629|AfxEndThread
+0x6061b7|1.0|AfxEndThread
 0x6061ff|0.9629629629629629|AfxInitThread
 0x60625e|1.0|AfxTermThread
 0x6062c2|1.0|CWinThread::CreateThread
@@ -7677,7 +7682,7 @@ address|matching|name
 0x6144eb|1.0|AfxDeleteObject
 0x614504|1.0|AfxCancelModes
 0x61457b|1.0|AfxGlobalFree
-0x6145b1|0.9714285714285714|AfxCriticalNewHandler
+0x6145b1|1.0|AfxCriticalNewHandler
 0x614603|1.0|CDocManager::OpenDocumentFile
 0x614744|1.0|CDocManager::GetOpenDocumentCount
 0x614790|0.9878048780487805|CDocTemplate::CDocTemplate
@@ -7843,6 +7848,7 @@ address|matching|name
 0x61ce0b|1.0|CFrameWnd::Create
 0x61cea3|1.0|CFrameWnd::CreateView
 0x61cf1b|1.0|CFrameWnd::OnCreateClient
+0x61cf3d|1.0|CFrameWnd::OnCreate
 0x61cf4c|1.0|CFrameWnd::OnCreateHelper
 0x61cf9b|1.0|CFrameWnd::GetIconWndClass
 0x61d01e|0.9878048780487805|CFrameWnd::LoadFrame
