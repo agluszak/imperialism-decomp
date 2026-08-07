@@ -1008,6 +1008,9 @@ def _cpp_args(values: Iterable[object]) -> str:
 
 
 def _cpp_string(value: str) -> str:
+    if not value:
+        return "g_szEmptyString"
+
     pieces: list[str] = []
     for byte in value.encode("cp1252", errors="replace"):
         if byte == 0x22:

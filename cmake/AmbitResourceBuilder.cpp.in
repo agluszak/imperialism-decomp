@@ -9,4 +9,5 @@
 #include "@IMPERIALISM_GENERATED_DIR@/ui/turn_event_dialog_factory_0044af90.cpp"
 #include "@IMPERIALISM_GENERATED_DIR@/ui/turn_event_dialog_factory_0045d520.cpp"
 #include "@IMPERIALISM_GENERATED_DIR@/ui/turn_event_dialog_factory_004601b0.cpp"
+#include "@IMPERIALISM_GENERATED_DIR@/ui/turn_event_dialog_factory_0046fd10.cpp"
 #include "@IMPERIALISM_GENERATED_DIR@/ui/turn_event_dialog_factory_004749a0.cpp"

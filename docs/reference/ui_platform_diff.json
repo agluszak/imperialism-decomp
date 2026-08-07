@@ -3738,7 +3738,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00415fe0.cpp",
-      "generated_sha256": "dab8288dc8edd3aedee9160bf88c8e5b6238ba88668f7bd16e707cd2521af657",
+      "generated_sha256": "d45538acfe39544db153163e7c495448b1cbdc3b78f6007c90e9caeef4390840",
       "name": "BuildTradeSchoolDialogControls"
     },
     "0x0041b6d0": {
@@ -15857,7 +15857,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0041b6d0.cpp",
-      "generated_sha256": "cd265123abea410991b5fe0db024ee688f0119c4b72231904b5203a5a7207de6",
+      "generated_sha256": "83f882190ae3e2da76e9857fe57d41d7204e8a575e7f79a80e8fbe92b8469bc7",
       "name": "InitializeIndustryViewTradeMoveControlsAndCommodityRows"
     },
     "0x00427360": {
@@ -23283,7 +23283,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004295a0.cpp",
-      "generated_sha256": "2ba018a7ab586d5b2d7d989949496ce8250296955cc8059a23b582cd6c5b0e50",
+      "generated_sha256": "96cc519a204093185d68f70c9ac7acfd5b7b71a80cb85f422198b07c438798bb",
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8"
     },
     "0x00430c50": {
@@ -26470,7 +26470,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_00430c50.cpp",
-      "generated_sha256": "6d11dfc46d30cc0ce08f490df2796ce8ca1345298b58a977911b360ffa347731",
+      "generated_sha256": "8fd9e9b06b03ea2294fa7731b542d45040b3d0210ea3d2a5ecc0c826e40fcf0d",
       "name": "InitializeDealBookScreenControlsAndCommandTags"
     },
     "0x004357b0": {
@@ -34136,7 +34136,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004357b0.cpp",
-      "generated_sha256": "5f783d4642549333a4a0b0a35b1b2b88fa473a3ac5b4cf0b0c53d73156f20d55",
+      "generated_sha256": "8e60df24343c09be5b62882da54a81da4c5d79797999f04648979b4d09bb784f",
       "name": "BuildTurnEventDialogUiByCode"
     },
     "0x0043dbc0": {
@@ -47534,7 +47534,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0043dbc0.cpp",
-      "generated_sha256": "cc8b7f9c53e21a14f7346f2467886cd7c3d5d24665796885ce3612dd74e61957",
+      "generated_sha256": "07a43c0dcd3e3eab7b1a1bcd2caa54c10ff7228d6d2ce7b2d5112f1e5050b780",
       "name": "InitializeArmyNavyReportViewsAndCommandTags"
     },
     "0x0044a810": {
@@ -51012,7 +51012,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044af90.cpp",
-      "generated_sha256": "42e43dcdde7ab3af8a04c322ff2e6a72eb7cfeae5c91e4a1deb2a70135a0770a",
+      "generated_sha256": "1e9a300bbc9322f04aa54e91b37ae392a6002dcd445fe97d831fba2e0c22b57f",
       "name": "InitializeJoinSelectorDialogControlsAndNationSlots"
     },
     "0x0044fbc0": {
@@ -53452,7 +53452,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0044fbc0.cpp",
-      "generated_sha256": "126069d73fb8bc1637769d5cc08cdab2da4b9195c260b48f4ae586529eb1abd0",
+      "generated_sha256": "8323529288098c3d3eab640091720570eb69e6230a85f7e6c9e3c5ed22a9a50f",
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext"
     },
     "0x004538a0": {
@@ -60473,7 +60473,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004538a0.cpp",
-      "generated_sha256": "bcbcf42a6102cf26608aee809ba42a7bc62575ec81b57fc2f320770cab09ec0e",
+      "generated_sha256": "df159a2d2cfa7d0616249ed8f3a8f70fb5c18f36119a790758920767c46ea80e",
       "name": "InitializeGameSetupScreenControlsAndModeTags"
     },
     "0x0045b100": {
@@ -61865,7 +61865,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_0045b100.cpp",
-      "generated_sha256": "eee0e3fdf8d28da0e7ce560624b22bcea81f5afa524548ba75b262c20179c4d1",
+      "generated_sha256": "62ccbf72c528c26ac578614bfdd8e1341b7d12098ea409e6e995c0b1a10c299f",
       "name": "InitializeTacticalBattleViewToolbarAndDialogControls"
     },
     "0x0045d520": {
@@ -85905,7 +85905,7 @@
         }
       },
       "generated_file": "turn_event_dialog_factory_004749a0.cpp",
-      "generated_sha256": "db27462384a61a28159d0d149eaed1fe49de7418da289cdbe309833160e6d836",
+      "generated_sha256": "ecc500246d520707bb947c0763c377cad52371a8c6ecf4fba18cd4be2a371f2a",
       "name": "BuildUniversityDialogShell"
     }
   },

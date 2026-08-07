@@ -1045,6 +1045,7 @@ address|name|symbol|prototype|library_family|object_member|evidence|kind
 0x005e7f50||||||migrated_from:src/game/mfc_heap_library.cpp comment:"_free (CRT free(), per symbols.csv -- not a game-specific tracking helper despite the"|LIBRARY
 0x005e8310|AllocateWithGlobalNewMode|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
 0x0041b1c0|CObject::operator new|||||migrated_from:src/game/mfc_heap_library.cpp|LIBRARY
+0x0041b1e0|CRect::CRect|??0CRect@@QAE@HHHH@Z|public: __thiscall CRect::CRect(int,int,int,int)|mfc_inline|afxwin1.inl|listing stores l,t,r,b to tagRECT fields and returns with ret 0x10; exact vendor inline body|LIBRARY
 0x0049eb00||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(class CString const &)"|LIBRARY
 0x004b0970||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(void)"|LIBRARY
 0x004ac370||||||migrated_from:src/game/mfc_heap_library.cpp comment:"CString::CString(char const *)"|LIBRARY

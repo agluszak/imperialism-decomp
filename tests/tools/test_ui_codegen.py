@@ -128,6 +128,11 @@ class UiCodegenTests(unittest.TestCase):
         )
         self.assertNotIn("SetUiResourceLayoutValues(6, 0, 0x300", text)
 
+    def test_empty_text_uses_the_retail_shared_string(self) -> None:
+        rendered = "\n".join(self.rendered.values())
+        self.assertIn(", g_szEmptyString,", rendered)
+        self.assertNotIn(', "",', rendered)
+
     def test_generated_factories_use_recovered_member_names(self) -> None:
         placeholder = re.compile(
             r"->field(?:_|[0-9A-Fa-f])|"

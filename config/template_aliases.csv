@@ -42,6 +42,8 @@
 0x005e4610|0x00486df0|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|per_tu_duplicate
 0x004849c0|0x00485f50|??1TObject@@UAE@XZ|per_tu_duplicate
 0x0049ca50|0x0049c8e0|?ReleaseDirectSoundDeviceAndChannels@TSoundResourceManager@@QAEXXZ|per_tu_duplicate
+0x00479d50|0x00415f90|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|per_tu_duplicate
+0x0048ada0|0x00415f90|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|per_tu_duplicate
 0x00413620|0x004867e0|TAmbitApplication::~TAmbitApplication|folded_symbol_group
 0x004136a0|0x00604d04|T64TemplateDialog::~T64TemplateDialog|folded_symbol_group
 0x004145d0|0x00604d04|TDFTemplateDialog::~TDFTemplateDialog|folded_symbol_group
