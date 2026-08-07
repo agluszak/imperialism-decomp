@@ -2271,6 +2271,8 @@ POINT g_ptNetworkModalMessage006a5ed8 = {0, 0};
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
 CArray<WNetSelectionRecord*, WNetSelectionRecord*> g_WNetSerializedPtrArrayB006a5f28;
+// SYNTHETIC: IMPERIALISM 0x005e2700
+// DestroyRuntimeClassState_0066FA50_AtExit
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
