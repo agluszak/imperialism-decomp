@@ -244,8 +244,12 @@ def main() -> int:
             "exact_fun_count", history.get("aligned_fun_count", "n/a")
         )
         md_lines.append(f"- Exact functions: {exact_count}")
+        semantic_size_weighted = history.get(
+            "semantic_size_weighted_matching_pct",
+            history.get("size_weighted_matching_pct", history.get("avg_matching_pct", 0.0)),
+        )
         md_lines.append(
-            f"- Avg similarity: {float(history.get('avg_matching_pct', 0.0)):.2f}%"
+            f"- Semantic size-weighted similarity: {float(semantic_size_weighted):.2f}%"
         )
         md_lines.append(f"- Compared: {history.get('compared_fun_count', 'n/a')}")
     md_lines.append("")
