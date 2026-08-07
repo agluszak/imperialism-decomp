@@ -145,8 +145,8 @@ impl CityState {
             return Ok(false);
         }
 
-        self.add_to_stock_and_verify(ResourceKind::Lumber, -1)?;
-        self.add_to_stock_and_verify(ResourceKind::Steel, -1)?;
+        self.add_to_stock_and_verify(ResourceKind::Lumber, -1);
+        self.add_to_stock_and_verify(ResourceKind::Steel, -1);
         let capacity = nation.transport_capacity_mut();
         *capacity = capacity.wrapping_add(1);
         Ok(true)
@@ -165,8 +165,8 @@ impl CityState {
             return Ok(false);
         }
 
-        self.add_to_stock_and_verify(ResourceKind::Lumber, -3)?;
-        self.add_to_stock_and_verify(ResourceKind::Fabric, -1)?;
+        self.add_to_stock_and_verify(ResourceKind::Lumber, -3);
+        self.add_to_stock_and_verify(ResourceKind::Fabric, -1);
         let capacity = nation.merchant_capacity_mut();
         *capacity = capacity.wrapping_add(1);
         Ok(true)
@@ -228,14 +228,14 @@ impl CityState {
         self.stock_by_type[ResourceKind::Gems.index()] = 0;
     }
 
-    fn add_to_stock_and_verify(
-        &mut self,
-        resource: ResourceKind,
-        delta: i16,
-    ) -> Result<(), CityEconomyError> {
+    pub(crate) fn add_to_stock_and_verify(&mut self, resource: ResourceKind, delta: i16) {
         let stock = &mut self.stock_by_type[resource.index()];
         *stock = stock.wrapping_add(delta);
-        self.verify_stocks()
+        for stock in &mut self.stock_by_type {
+            if *stock < 0 {
+                *stock = 0;
+            }
+        }
     }
 }
 

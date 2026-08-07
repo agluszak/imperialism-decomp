@@ -29,6 +29,31 @@ pub enum ResourceKind {
 impl ResourceKind {
     pub const COUNT: usize = 23;
     pub const PURCHASED_COUNT: usize = Self::Grain as usize;
+    pub const ALL: [Self; Self::COUNT] = [
+        Self::Cotton,
+        Self::Wool,
+        Self::Timber,
+        Self::Coal,
+        Self::Iron,
+        Self::Horses,
+        Self::Oil,
+        Self::Food,
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+        Self::Clothing,
+        Self::Furniture,
+        Self::Hardware,
+        Self::Arms,
+        Self::Grain,
+        Self::Fruit,
+        Self::Fish,
+        Self::Livestock,
+        Self::Gems,
+        Self::Gold,
+    ];
 
     pub const fn index(self) -> usize {
         self as usize
@@ -47,5 +72,12 @@ mod tests {
         assert_eq!(ResourceKind::Grain.index(), 17);
         assert_eq!(ResourceKind::Gold.index(), 22);
         assert_eq!(ResourceKind::COUNT, 23);
+        assert_eq!(ResourceKind::ALL.len(), ResourceKind::COUNT);
+        assert!(
+            ResourceKind::ALL
+                .iter()
+                .enumerate()
+                .all(|(index, resource)| resource.index() == index)
+        );
     }
 }
