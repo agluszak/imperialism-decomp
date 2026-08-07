@@ -937,7 +937,7 @@ address|name|symbol|size|type|prototype|provenance
 489a50|SetGlobalUiInvalidationFlagAndReturnPrevious||16|function|int SetGlobalUiInvalidationFlagAndReturnPrevious(int newValue)|
 489a70|GetMcAppUiActiveFlag||6|function|int GetMcAppUiActiveFlag()|
 489a90|ClearGlobalUiInvalidationFlagAndReturnPrevious||16|function|int ClearGlobalUiInvalidationFlagAndReturnPrevious(void)|
-489ab0|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0||24|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0()|
+489ab0|`dynamic initializer for 'g_McAppMouseCaptureState''||24|function|void __cdecl `dynamic initializer for 'g_McAppMouseCaptureState''(void)|source_recovery
 489b10|IltTarget_00489b10||10|function|undefined IltTarget_00489b10()|
 489b30|IltTarget_00489b30||21|function|undefined IltTarget_00489b30()|
 489b60|NotifyGlobalCaptureOwnerState1WithCachedCoords||99|function|undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()|
@@ -3675,9 +3675,9 @@ address|name|symbol|size|type|prototype|provenance
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
 52a6b0|TMapMaker::SetSeaZoneIndex||24|function|void __thiscall TMapMaker::SetSeaZoneIndex(int tileIndex, char zoneIndex)|curated
 52a6e0|WrapExtendedMapXCoordinateInPlace||48|function|undefined WrapExtendedMapXCoordinateInPlace()|
-52a720|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052a720()|
+52a720|`dynamic initializer for 'g_regionBorderLinkTable_006a3900''||41|function|void __cdecl `dynamic initializer for 'g_regionBorderLinkTable_006a3900''(void)|source_recovery
 52a760|stretch<SeaSegment>::Add|?Add@?$stretch@USeaSegment@@@@UAEPAUSeaSegment@@U2@@Z|132|function|SeaSegment * __thiscall Add(SeaSegment value)|template
-52a820|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052a820()|
+52a820|`dynamic atexit destructor for 'g_regionBorderLinkTable_006a3900''||29|function|void __cdecl `dynamic atexit destructor for 'g_regionBorderLinkTable_006a3900''(void)|source_recovery
 52a850|IltTarget_0052a850||544|function|undefined IltTarget_0052a850()|
 52ab00|RecomputeOverlaySegmentEndpointsAndAngle||242|function|undefined RecomputeOverlaySegmentEndpointsAndAngle()|
 52ac40|IltTarget_0052ac40||1037|function|undefined IltTarget_0052ac40()|
@@ -3693,9 +3693,9 @@ address|name|symbol|size|type|prototype|provenance
 52bef0|ExtractWrappedEndpointFromSpanRecordBySide||196|function|undefined ExtractWrappedEndpointFromSpanRecordBySide()|
 52c000|SelectSpanEndpointXByThreshold||18|function|undefined SelectSpanEndpointXByThreshold()|
 52c030|stretch<SeaSegment>::At||28|function|SeaSegment * __thiscall At(unsigned int index)|template
-52c060|WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060||41|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0052c060()|
+52c060|`dynamic initializer for 'g_seapointQuadTable_006a3478''||41|function|void __cdecl `dynamic initializer for 'g_seapointQuadTable_006a3478''(void)|source_recovery
 52c0a0|stretch<Seapoint>::Add|?Add@?$stretch@USeapoint@@@@UAEPAUSeapoint@@U2@@Z|147|function|Seapoint * __thiscall Add(Seapoint value)|template
-52c170|WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170||29|function|undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At0052c170()|
+52c170|`dynamic atexit destructor for 'g_seapointQuadTable_006a3478''||29|function|void __cdecl `dynamic atexit destructor for 'g_seapointQuadTable_006a3478''(void)|source_recovery
 52c1a0|BuildCityRegionBorderOverlaySegments||1602|function|undefined BuildCityRegionBorderOverlaySegments()|
 52c990|ConvertTileIndexToOverlayCoord216BySide||77|function|undefined ConvertTileIndexToOverlayCoord216BySide()|
 52ca00|stretch<Seapoint>::Detach||15|function|Seapoint * __thiscall Detach()|template
@@ -10574,3 +10574,78 @@ address|name|symbol|size|type|prototype|provenance
 623abc|_$E350|_$E350|18|function||
 623af4|_$E355|_$E355|18|function||
 6a2198|g_defaultPoint_006A2198|||global||
+489ae0|`dynamic atexit destructor for 'g_McAppMouseCaptureState''||0|function|void __cdecl `dynamic atexit destructor for 'g_McAppMouseCaptureState''(void)|source_recovery
+4125a0|`dynamic initializer for 'g_gfxCoordinateScale_6A12F8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A12F8''(void)|source_recovery
+415dc0|`dynamic initializer for 'g_gfxCoordinateScale_6A13A8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A13A8''(void)|source_recovery
+481090|`dynamic initializer for 'g_gfxCoordinateScale_6A1638''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1638''(void)|source_recovery
+481340|`dynamic initializer for 'g_gfxCoordinateScale_6A1690''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1690''(void)|source_recovery
+482700|`dynamic initializer for 'g_gfxCoordinateScale_6A1730''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1730''(void)|source_recovery
+484a90|`dynamic initializer for 'g_gfxCoordinateScale_6A17E8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A17E8''(void)|source_recovery
+487120|`dynamic initializer for 'g_gfxCoordinateScale_6A18F0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A18F0''(void)|source_recovery
+4899f0|`dynamic initializer for 'g_gfxCoordinateScale_6A1A30''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1A30''(void)|source_recovery
+493370|`dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1BF0''(void)|source_recovery
+493f00|`dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A1CD8''(void)|source_recovery
+49efa0|`dynamic initializer for 'g_gfxCoordinateScale_6A21F8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A21F8''(void)|source_recovery
+4a1230|`dynamic initializer for 'g_gfxCoordinateScale_6A2268''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2268''(void)|source_recovery
+4a8710|`dynamic initializer for 'g_gfxCoordinateScale_6A2308''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2308''(void)|source_recovery
+4ac540|`dynamic initializer for 'g_gfxCoordinateScale_6A2360''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2360''(void)|source_recovery
+4b0a90|`dynamic initializer for 'g_gfxCoordinateScale_6A23D0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A23D0''(void)|source_recovery
+4b1340|`dynamic initializer for 'g_gfxCoordinateScale_6A2428''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2428''(void)|source_recovery
+4b2070|`dynamic initializer for 'g_gfxCoordinateScale_6A2488''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2488''(void)|source_recovery
+4b9540|`dynamic initializer for 'g_gfxCoordinateScale_6A2968''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2968''(void)|source_recovery
+4bde20|`dynamic initializer for 'g_gfxCoordinateScale_6A2BF8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2BF8''(void)|source_recovery
+4c6c80|`dynamic initializer for 'g_gfxCoordinateScale_6A2C98''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2C98''(void)|source_recovery
+4d1f80|`dynamic initializer for 'g_gfxCoordinateScale_6A2D30''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2D30''(void)|source_recovery
+4d64a0|`dynamic initializer for 'g_gfxCoordinateScale_6A2DE0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2DE0''(void)|source_recovery
+4e6a10|`dynamic initializer for 'g_gfxCoordinateScale_6A2E38''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2E38''(void)|source_recovery
+4ea5b0|`dynamic initializer for 'g_gfxCoordinateScale_6A2E90''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2E90''(void)|source_recovery
+4ebfc0|`dynamic initializer for 'g_gfxCoordinateScale_6A2F00''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2F00''(void)|source_recovery
+4ee450|`dynamic initializer for 'g_gfxCoordinateScale_6A2F58''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2F58''(void)|source_recovery
+4f2ae0|`dynamic initializer for 'g_gfxCoordinateScale_6A2FB0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A2FB0''(void)|source_recovery
+4fe640|`dynamic initializer for 'g_gfxCoordinateScale_6A3048''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3048''(void)|source_recovery
+4ffad0|`dynamic initializer for 'g_gfxCoordinateScale_6A3118''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3118''(void)|source_recovery
+5004f0|`dynamic initializer for 'g_gfxCoordinateScale_6A3170''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3170''(void)|source_recovery
+505ef0|`dynamic initializer for 'g_gfxCoordinateScale_6A31D8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A31D8''(void)|source_recovery
+507b60|`dynamic initializer for 'g_gfxCoordinateScale_6A3230''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3230''(void)|source_recovery
+508eb0|`dynamic initializer for 'g_gfxCoordinateScale_6A3290''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3290''(void)|source_recovery
+525890|`dynamic initializer for 'g_gfxCoordinateScale_6A3488''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3488''(void)|source_recovery
+52ead0|`dynamic initializer for 'g_gfxCoordinateScale_6A3A08''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3A08''(void)|source_recovery
+534a50|`dynamic initializer for 'g_gfxCoordinateScale_6A3A78''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3A78''(void)|source_recovery
+536260|`dynamic initializer for 'g_gfxCoordinateScale_6A3BF8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3BF8''(void)|source_recovery
+5407e0|`dynamic initializer for 'g_gfxCoordinateScale_6A3C88''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3C88''(void)|source_recovery
+541f30|`dynamic initializer for 'g_gfxCoordinateScale_6A3CE8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3CE8''(void)|source_recovery
+54d5f0|`dynamic initializer for 'g_gfxCoordinateScale_6A3D88''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3D88''(void)|source_recovery
+54ef80|`dynamic initializer for 'g_gfxCoordinateScale_6A3DE8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3DE8''(void)|source_recovery
+55b610|`dynamic initializer for 'g_gfxCoordinateScale_6A3F18''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3F18''(void)|source_recovery
+55e300|`dynamic initializer for 'g_gfxCoordinateScale_6A3F70''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3F70''(void)|source_recovery
+5647a0|`dynamic initializer for 'g_gfxCoordinateScale_6A3FE0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A3FE0''(void)|source_recovery
+56a4b0|`dynamic initializer for 'g_gfxCoordinateScale_6A4038''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4038''(void)|source_recovery
+56f300|`dynamic initializer for 'g_gfxCoordinateScale_6A4098''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4098''(void)|source_recovery
+5706f0|`dynamic initializer for 'g_gfxCoordinateScale_6A40F0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A40F0''(void)|source_recovery
+572a20|`dynamic initializer for 'g_gfxCoordinateScale_6A4148''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4148''(void)|source_recovery
+573bc0|`dynamic initializer for 'g_gfxCoordinateScale_6A41B0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A41B0''(void)|source_recovery
+575100|`dynamic initializer for 'g_gfxCoordinateScale_6A4208''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4208''(void)|source_recovery
+57b880|`dynamic initializer for 'g_gfxCoordinateScale_6A42E0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A42E0''(void)|source_recovery
+583850|`dynamic initializer for 'g_gfxCoordinateScale_6A4440''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4440''(void)|source_recovery
+5931b0|`dynamic initializer for 'g_gfxCoordinateScale_6A44D0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A44D0''(void)|source_recovery
+593e20|`dynamic initializer for 'g_gfxCoordinateScale_6A4538''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4538''(void)|source_recovery
+59acc0|`dynamic initializer for 'g_gfxCoordinateScale_6A4630''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A4630''(void)|source_recovery
+59f590|`dynamic initializer for 'g_gfxCoordinateScale_6A46D8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A46D8''(void)|source_recovery
+5a67b0|`dynamic initializer for 'g_gfxCoordinateScale_6A5438''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5438''(void)|source_recovery
+5adae0|`dynamic initializer for 'g_gfxCoordinateScale_6A5760''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5760''(void)|source_recovery
+5aeed0|`dynamic initializer for 'g_gfxCoordinateScale_6A57B8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A57B8''(void)|source_recovery
+5b0e10|`dynamic initializer for 'g_gfxCoordinateScale_6A5810''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5810''(void)|source_recovery
+5b26e0|`dynamic initializer for 'g_gfxCoordinateScale_6A5868''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5868''(void)|source_recovery
+5b4eb0|`dynamic initializer for 'g_gfxCoordinateScale_6A58C0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A58C0''(void)|source_recovery
+5b6bb0|`dynamic initializer for 'g_gfxCoordinateScale_6A5920''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5920''(void)|source_recovery
+5b7970|`dynamic initializer for 'g_gfxCoordinateScale_6A5978''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5978''(void)|source_recovery
+5ba5d0|`dynamic initializer for 'g_gfxCoordinateScale_6A59D0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A59D0''(void)|source_recovery
+5c23d0|`dynamic initializer for 'g_gfxCoordinateScale_6A5A48''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5A48''(void)|source_recovery
+5c3aa0|`dynamic initializer for 'g_gfxCoordinateScale_6A5AA0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5AA0''(void)|source_recovery
+5d4ed0|`dynamic initializer for 'g_gfxCoordinateScale_6A5B48''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5B48''(void)|source_recovery
+5dcc30|`dynamic initializer for 'g_gfxCoordinateScale_6A5BD0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5BD0''(void)|source_recovery
+5dedf0|`dynamic initializer for 'g_gfxCoordinateScale_6A5C28''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5C28''(void)|source_recovery
+5df170|`dynamic initializer for 'g_gfxCoordinateScale_6A5C80''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5C80''(void)|source_recovery
+5e1b60|`dynamic initializer for 'g_gfxCoordinateScale_6A5DE0''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5DE0''(void)|source_recovery
+5e2670|`dynamic initializer for 'g_gfxCoordinateScale_6A5EC8''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A5EC8''(void)|source_recovery
+5e4d20|`dynamic initializer for 'g_gfxCoordinateScale_6A6070''||48|function|void __cdecl `dynamic initializer for 'g_gfxCoordinateScale_6A6070''(void)|source_recovery
