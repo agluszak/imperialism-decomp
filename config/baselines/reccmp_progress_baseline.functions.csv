@@ -93,6 +93,7 @@ address|matching|name
 0x41b610|1.0|PopUiResourcePoolNode
 0x41b6d0|0.14531716745738885|InitializeIndustryViewTradeMoveControlsAndCommodityRows
 0x426ec0|1.0|CList<TView *,TView *>::AddTail(class TView *)
+0x426f60|1.0|CList<TView *,TView *>::GetTail
 0x426fa0|1.0|SetUiResourceContextFlagsAndMetrics
 0x427010|1.0|ApplyUiResourceColorTripletFromContext
 0x427060|1.0|ReplaceUiResourceContextPairBuffer
@@ -1544,7 +1545,7 @@ address|matching|name
 0x4a6df0|1.0|TArmyMgr::CleanUpStacks
 0x4a6e80|1.0|TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields
 0x4a6ef0|0.4335154826958106|TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer
-0x4a7370|0.6640316205533597|TArmyMgr::ReassessLanding
+0x4a7370|0.84|TArmyMgr::ReassessLanding
 0x4a7590|0.8387096774193549|TArmyMgr::ClearNationArmyActionModesAndCycleSelection
 0x4a76a0|0.3333333333333333|TArmyStack::CreateObject
 0x4a76d0|1.0|TArmyStack::GetRuntimeClass
@@ -2411,7 +2412,7 @@ address|matching|name
 0x4de2b0|1.0|TGreatPower::SetDiplomacyPolicies
 0x4de2d0|0.7619047619047619|TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants
 0x4de340|0.6757679180887372|TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
-0x4de5e0|0.46994535519125685|TGreatPower::GiveGrantTo
+0x4de5e0|0.5945945945945946|TGreatPower::GiveGrantTo
 0x4de700|0.7027027027027027|TGreatPower::CanAffordDiplomacyGrantEntryForTarget
 0x4de790|0.7317073170731707|TGreatPower::CanAffordAdditionalDiplomacyCostAfterCommitments
 0x4de7e0|1.0|TGreatPower::FinishDiplomacyPhase
@@ -3671,7 +3672,7 @@ address|matching|name
 0x538dd0|0.5176470588235295|TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile
 0x538fe0|0.47678018575851394|TControlSeaZoneMission::SetStateByte8To2
 0x539290|0.6428571428571429|TControlSeaZoneMission::CalculateImportance
-0x5393a0|0.41454545454545455|TControlSeaZoneMission::CalculateNeeds
+0x5393a0|0.4290909090909091|TControlSeaZoneMission::CalculateNeeds
 0x539600|1.0|TControlSeaZoneMission::Matches
 0x539640|0.9782608695652174|TControlSeaZoneMission::GiveActionOrders
 0x539780|1.0|TControlSeaZoneMission::RefreshMissionPortZoneContextForNation
@@ -3687,7 +3688,7 @@ address|matching|name
 0x539a70|1.0|TEscortMission::Initialize
 0x539a90|0.5390625|TNavyMission::ComputeOrderDistributionSimilarityScoreForZone
 0x539ca0|0.5714285714285714|TEscortMission::CalculateImportance
-0x539e70|0.46952595936794583|TEscortMission::CalculateNeeds
+0x539e70|0.4785553047404063|TEscortMission::CalculateNeeds
 0x53a250|1.0|TEscortMission::Matches
 0x53a290|0.5454545454545454|TEscortMission::GiveOrders
 0x53a2d0|1.0|TBeachheadMission::CreateObject
@@ -3698,7 +3699,7 @@ address|matching|name
 0x53a420|1.0|TBeachheadMission::GetRuntimeClass
 0x53a460|1.0|operator>>(class CArchive &, class TBeachheadMission *&)
 0x53a490|0.30303030303030304|TBeachheadMission::TBeachheadMission
-0x53a500|0.37341772151898733|TBeachheadMission::CalculateNeeds
+0x53a500|0.3860759493670886|TBeachheadMission::CalculateNeeds
 0x53a7b0|1.0|TBeachheadMission::Matches
 0x53a800|0.9387755102040817|TBeachheadMission::GiveActionOrders
 0x53a920|1.0|TBeachheadMission::GetArmyMission
@@ -3729,7 +3730,7 @@ address|matching|name
 0x53bbe0|1.0|TScatteredShipsMission::GetReplacementSlot48
 0x53bc00|1.0|TScatteredShipsMission::SetStateByte8To2
 0x53bc20|1.0|TScatteredShipsMission::CalculateImportance
-0x53bc40|0.8571428571428571|TScatteredShipsMission::CalculateNeeds
+0x53bc40|0.9642857142857143|TScatteredShipsMission::CalculateNeeds
 0x53bcc0|1.0|TScatteredShipsMission::Matches
 0x53bd30|0.5321100917431193|SelectNearestInactiveShipToZone
 0x53bdd0|0.472|TScatteredShipsMission::GiveOrders
@@ -3826,7 +3827,7 @@ address|matching|name
 0x53fc10|0.9553571428571429|TInvadeMission::AccumulateLack
 0x53fdc0|1.0|TInvadeMission::TryResolveTargetTerrainClass
 0x53fe10|1.0|TInvadeMission::GetReplacementSlot48
-0x53fe30|0.3582089552238806|RecomputeNationOrderPriorityMetrics
+0x53fe30|0.3701492537313433|RecomputeNationOrderPriorityMetrics
 0x540440|0.5016501650165016|ComputeBestNationTileDevelopmentScore
 0x540840|1.0|TProxyGreatPower::CreateObject
 0x5408c0|1.0|TProxyGreatPower::IsClient

@@ -52,6 +52,7 @@ struct ShipOrderSnapshot {
   short quantity;
   short shipCount;
   short merchantCapacity;
+  int armsInNavy;
 };
 
 struct TrainingOrderSnapshot {

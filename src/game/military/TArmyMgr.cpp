@@ -2374,7 +2374,7 @@ void TArmyMgr::ReassessLanding(int nationSlot, int zone) {
   }
   short capacity = g_pNavyOrderManager->GetInvasionCapacity(
       static_cast<short>(nationSlot), &g_pGlobalMapState->cityScoreTable[zone], 0);
-  if (totalArms != capacity && totalArms - capacity > -1) {
+  if (totalArms - capacity > 0) {
     CString message;
     g_pSimMgr->GetString(0x2745, 10, &message);
     g_pViewMgr->ModalMessage(message, g_ptArmyValidationModalMessage);
