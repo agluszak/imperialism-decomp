@@ -10,18 +10,19 @@ mod legacy_stream;
 mod normalized_assets;
 mod retail_assets;
 mod retail_pe;
+mod runtime_capture;
 mod ui_catalog;
 
 pub use legacy_save::{
     LegacyAdmiral, LegacyArmyMission, LegacyAutoGreatPowerPrefix, LegacyAutoGreatPowerState,
     LegacyCityState, LegacyCityTask, LegacyCivilianUnit, LegacyCountryBase,
     LegacyDefenseMinisterState, LegacyFixedRecordList, LegacyForeignMinisterState, LegacyGameSetup,
-    LegacyGreatPowerMinisters, LegacyGreatPowerPostCity, LegacyGreatPowerPrefix,
-    LegacyGreatPowerState, LegacyHelpState, LegacyInteriorMinisterState, LegacyMajorNationState,
-    LegacyMapState, LegacyMfcArchiveState, LegacyMilitaryUnit, LegacyMinorState, LegacyMission,
-    LegacyNavyMission, LegacyNavyState, LegacyOceanState, LegacyPopulationState, LegacyProvince,
-    LegacySaveError, LegacySaveHeader, LegacySaveV62, LegacyShip, LegacySimulationPrefix,
-    LegacySnapshotContext, LegacyTaskForce, LegacyTerrainTile, LegacyTown, LegacyZone,
+    LegacyGameStateContext, LegacyGreatPowerMinisters, LegacyGreatPowerPostCity,
+    LegacyGreatPowerPrefix, LegacyGreatPowerState, LegacyHelpState, LegacyInteriorMinisterState,
+    LegacyMajorNationState, LegacyMapState, LegacyMfcArchiveState, LegacyMilitaryUnit,
+    LegacyMinorState, LegacyMission, LegacyNavyMission, LegacyNavyState, LegacyOceanState,
+    LegacyPopulationState, LegacyProvince, LegacySaveError, LegacySaveHeader, LegacySaveV62,
+    LegacyShip, LegacySimulationPrefix, LegacyTaskForce, LegacyTerrainTile, LegacyTown, LegacyZone,
     parse_auto_great_power_prefix_at, parse_auto_great_power_record_at, parse_city_at,
     parse_country_base_at, parse_great_power_ministers_at, parse_great_power_post_city_at,
     parse_great_power_prefix_at, parse_great_power_record_at, parse_help_manager_at,
@@ -41,6 +42,10 @@ pub use retail_assets::{
 pub use retail_pe::{
     DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
     bitmap_resource_to_bmp, decode_string_table_block,
+};
+pub use runtime_capture::{
+    RUNTIME_RESULT_FORMAT_VERSION, RuntimeCaptureError, decode_runtime_capture,
+    read_runtime_capture,
 };
 pub use ui_catalog::{
     EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UI_CATALOG_SCHEMA, UiCatalogError,

@@ -1,11 +1,13 @@
-use crate::{NationId, ProductionSlot};
+use crate::{MajorNationId, NationId, ProductionSlot};
+use enum_map::{Enum, EnumMap};
+use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = 23;
 pub const MAJOR_NATION_COUNT: usize = 7;
-pub const PENDING_ACTION_COUNT: usize = 13;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
 pub struct NationTable<T>([T; NATION_COUNT]);
 
 impl<T> NationTable<T> {
@@ -15,6 +17,26 @@ impl<T> NationTable<T> {
 
     pub fn as_slice(&self) -> &[T] {
         &self.0
+    }
+
+    pub fn as_mut_slice(&mut self) -> &mut [T] {
+        &mut self.0
+    }
+
+    pub fn get(&self, nation: NationId) -> Option<&T> {
+        self.0.get(usize::from(nation.get()))
+    }
+
+    pub fn get_mut(&mut self, nation: NationId) -> Option<&mut T> {
+        self.0.get_mut(usize::from(nation.get()))
+    }
+
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+        self.0.iter()
+    }
+
+    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+        self.0.iter_mut()
     }
 }
 
@@ -38,7 +60,8 @@ impl<T> IndexMut<NationId> for NationTable<T> {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
 pub struct MajorNationTable<T>([T; MAJOR_NATION_COUNT]);
 
 impl<T> MajorNationTable<T> {
@@ -46,78 +69,79 @@ impl<T> MajorNationTable<T> {
         Self(values)
     }
 
-    pub fn from_fn(function: impl FnMut(usize) -> T) -> Self {
-        Self(std::array::from_fn(function))
+    pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
+        Self(std::array::from_fn(|index| {
+            function(MajorNationId::new(index as u8))
+        }))
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
+
+    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+        self.0.iter_mut()
+    }
+
+    pub fn get(&self, nation: MajorNationId) -> Option<&T> {
+        self.0.get(usize::from(nation.get()))
+    }
+
+    pub fn get_mut(&mut self, nation: MajorNationId) -> Option<&mut T> {
+        self.0.get_mut(usize::from(nation.get()))
+    }
+
+    pub fn as_slice(&self) -> &[T] {
+        &self.0
+    }
 }
 
-impl<T> Index<NationId> for MajorNationTable<T> {
+impl<T> Index<MajorNationId> for MajorNationTable<T> {
     type Output = T;
 
-    fn index(&self, nation: NationId) -> &Self::Output {
+    fn index(&self, nation: MajorNationId) -> &Self::Output {
         &self.0[usize::from(nation.get())]
     }
 }
 
-impl<T> IndexMut<NationId> for MajorNationTable<T> {
-    fn index_mut(&mut self, nation: NationId) -> &mut Self::Output {
+impl<T> IndexMut<MajorNationId> for MajorNationTable<T> {
+    fn index_mut(&mut self, nation: MajorNationId) -> &mut Self::Output {
         &mut self.0[usize::from(nation.get())]
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct PendingActionSlot(u8);
-
-impl PendingActionSlot {
-    pub const COUNT: usize = PENDING_ACTION_COUNT;
-
-    pub const fn new(value: u8) -> Option<Self> {
-        if (value as usize) < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn index(self) -> usize {
-        self.0 as usize
-    }
-}
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct PendingActionTable<T>([T; PENDING_ACTION_COUNT]);
-
-impl<T> PendingActionTable<T> {
-    pub const fn from_array(values: [T; PENDING_ACTION_COUNT]) -> Self {
-        Self(values)
-    }
-}
-
-impl<T: Default> Default for PendingActionTable<T> {
+impl<T: Default> Default for MajorNationTable<T> {
     fn default() -> Self {
         Self(std::array::from_fn(|_| T::default()))
     }
 }
 
-impl<T> Index<PendingActionSlot> for PendingActionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: PendingActionSlot) -> &Self::Output {
-        &self.0[slot.index()]
-    }
+/// Zero-based entries in the retail reward-prompt string group `0x273a`.
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum PendingActionKind {
+    NavyGrowthReward,
+    ArmyGrowthReward,
+    OverseasDeveloperReward,
+    VillageDevelopment,
+    TownDevelopment,
+    ShipyardIronworkingUpgrade,
+    ConqueredCapitalArmoryUpgrade,
+    UniversityExpansion,
+    RailyardExpansion,
+    AnnexedGreatPowerCapitalExpansion,
+    ColonyMonumentMerchantCapacity,
+    CouncilLeadMonument,
+    ConquestMonumentArmory,
 }
 
-impl<T> IndexMut<PendingActionSlot> for PendingActionTable<T> {
-    fn index_mut(&mut self, slot: PendingActionSlot) -> &mut Self::Output {
-        &mut self.0[slot.index()]
-    }
-}
+pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
+pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
 pub struct ProductionTable<T>([T; ProductionSlot::COUNT]);
 
 impl<T> ProductionTable<T> {
@@ -172,9 +196,12 @@ mod tests {
         production[slot] = 11_i16;
         assert_eq!(production[slot], 11);
 
-        let action = PendingActionSlot::new(7).unwrap();
         let mut pending = PendingActionTable::default();
-        pending[action] = 3_i16;
-        assert_eq!(pending[action], 3);
+        pending[PendingActionKind::UniversityExpansion] = 3_i16;
+        assert_eq!(pending[PendingActionKind::UniversityExpansion], 3);
+
+        let mut major_nations = MajorNationTable::from_fn(|nation| nation.get());
+        major_nations[MajorNationId::new(6)] = 9;
+        assert_eq!(major_nations[MajorNationId::new(6)], 9);
     }
 }

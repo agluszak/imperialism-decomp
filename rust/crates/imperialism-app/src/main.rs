@@ -31,7 +31,7 @@ fn main() -> ExitCode {
                 ExitCode::FAILURE
             }
         },
-        ExecutableMode::SnapshotViewer(config) => match load_viewer(&config) {
+        ExecutableMode::StateViewer(config) => match load_viewer(&config) {
             Ok(input) => {
                 run_viewer(input);
                 ExitCode::SUCCESS

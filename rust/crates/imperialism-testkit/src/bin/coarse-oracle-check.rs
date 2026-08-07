@@ -1,19 +1,19 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
-use imperialism_testkit::{generate_and_compare_coarse_oracle, read_generated_world_coarse};
+use imperialism_testkit::{generate_and_compare_coarse_capture, read_coarse_map_generation};
 use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Options {
-    /// Native runtime result.json containing GeneratedWorldV1.
+    /// Native runtime result containing a coarse_map_generation capture.
     result: PathBuf,
 }
 
 fn main() -> Result<()> {
     let options = Options::parse();
-    let oracle = read_generated_world_coarse(&options.result)
+    let oracle = read_coarse_map_generation(&options.result)
         .with_context(|| format!("could not read {}", options.result.display()))?;
-    let generation = generate_and_compare_coarse_oracle(&oracle).map_err(|difference| {
+    let generation = generate_and_compare_coarse_capture(&oracle).map_err(|difference| {
         anyhow::anyhow!(
             "coarse oracle mismatch at {}: C++={:?}, Rust={:?}",
             difference.path,

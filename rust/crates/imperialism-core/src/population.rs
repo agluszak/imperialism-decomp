@@ -1,4 +1,5 @@
 use crate::{CityState, PopulationState, ResourceKind, ResourceTable};
+use serde::{Deserialize, Serialize};
 
 const STRIKE_RESOURCES: [ResourceKind; 3] = [
     ResourceKind::Hardware,
@@ -6,7 +7,7 @@ const STRIKE_RESOURCES: [ResourceKind; 3] = [
     ResourceKind::Furniture,
 ];
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct LaborPool {
     pub low: i16,
     pub medium: i16,
@@ -620,9 +621,9 @@ mod tests {
             starvation_population_loss: 0,
             serialized_state: 0,
             phase_counter: 0,
-            metrics_0e: vec![0; 30],
-            metrics_4a: vec![0; 9],
-            order_count_by_type: vec![0; 14],
+            metrics_0e: [0; 30],
+            metrics_4a: [0; 9],
+            order_count_by_type: [0; 14],
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,

@@ -2,7 +2,7 @@
 
 use anyhow::{Context, bail};
 use clap::Parser;
-use imperialism_formats::{LegacySaveV62, LegacySnapshotContext, parse_country_base_at};
+use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, parse_country_base_at};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -12,21 +12,21 @@ struct Args {
     /// Retail version 0x62 save file.
     save: PathBuf,
 
-    /// Project a canonical snapshot using five decimal runtime values.
+    /// Project semantic game state using four decimal runtime values.
     #[arg(
-        long,
-        num_args = 5,
-        value_names = ["RUNTIME_SEED", "CRT_RAND", "MAP_LCG", "ZONE_LCG", "SELECTED_NATION"]
+        long = "game-state",
+        num_args = 4,
+        value_names = ["CRT_RAND", "MAP_LCG", "ZONE_LCG", "SELECTED_NATION"]
     )]
-    canonical: Option<Vec<u32>>,
+    game_state: Option<Vec<u32>>,
 }
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    inspect(&args.save, args.canonical.as_deref())
+    inspect(&args.save, args.game_state.as_deref())
 }
 
-fn inspect(path: &Path, canonical: Option<&[u32]>) -> anyhow::Result<()> {
+fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
     let bytes = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
     let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
     let (first_country, first_country_suffix_offset) =
@@ -44,23 +44,22 @@ fn inspect(path: &Path, canonical: Option<&[u32]>) -> anyhow::Result<()> {
         first_country.military_units.len(),
         first_country_suffix_offset
     );
-    let Some(values) = canonical else {
-        return serde_json::to_writer(std::io::stdout(), &save.map.snapshot_world())
-            .context("encoding map snapshot");
+    let Some(values) = game_state else {
+        return serde_json::to_writer(std::io::stdout(), &save.map.world_state())
+            .context("encoding world state");
     };
-    if values.len() != 5 {
-        bail!("--canonical requires exactly five runtime values");
+    if values.len() != 4 {
+        bail!("--game-state requires exactly four runtime values");
     }
-    let snapshot = save
-        .snapshot(LegacySnapshotContext {
-            runtime_seed: values[0],
-            crt_rand_state: values[1],
-            map_generation_lcg: values[2],
-            zone_status_lcg: values[3],
-            selected_nation: values[4] as i32,
+    let game = save
+        .game_state(LegacyGameStateContext {
+            crt_rand_state: values[0],
+            map_generation_lcg: values[1],
+            zone_status_lcg: values[2],
+            selected_nation: values[3] as i32,
         })
-        .context("projecting canonical snapshot")?;
-    serde_json::to_writer(std::io::stdout(), &snapshot).context("encoding canonical snapshot")?;
+        .context("projecting semantic game state")?;
+    serde_json::to_writer(std::io::stdout(), &game).context("encoding semantic game state")?;
     Ok(())
 }
 
@@ -73,15 +72,14 @@ mod tests {
         let args = Args::try_parse_from([
             "legacy-inspect",
             "retail.imp",
-            "--canonical",
+            "--game-state",
             "1",
             "2",
             "3",
             "4",
-            "6",
         ])
         .unwrap();
         assert_eq!(args.save, PathBuf::from("retail.imp"));
-        assert_eq!(args.canonical, Some(vec![1, 2, 3, 4, 6]));
+        assert_eq!(args.game_state, Some(vec![1, 2, 3, 4]));
     }
 }

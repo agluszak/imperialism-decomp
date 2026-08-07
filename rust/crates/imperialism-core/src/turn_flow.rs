@@ -1,4 +1,4 @@
-use crate::{GameEvent, GameState, StepOutcome, TurnState};
+use crate::{GameEvent, GameState, MajorNationId, StepOutcome, TurnState};
 
 const MAJOR_NATION_COUNT: usize = 7;
 
@@ -45,9 +45,9 @@ impl GameState {
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {
         all_major_flags_finished((0..MAJOR_NATION_COUNT).map(|slot| {
             self.nations
-                .get(slot)
+                .get(MajorNationId::new(slot as u8).nation())
                 .and_then(Option::as_ref)
-                .and_then(|nation| nation.major.as_ref())
+                .and_then(|nation| nation.major())
                 .map(|major| major.turn_finished)
         }))
     }
@@ -58,9 +58,9 @@ impl GameState {
         for slot in 0..MAJOR_NATION_COUNT {
             let present = self
                 .nations
-                .get(slot)
+                .get(MajorNationId::new(slot as u8).nation())
                 .and_then(Option::as_ref)
-                .and_then(|nation| nation.major.as_ref())
+                .and_then(|nation| nation.major())
                 .is_some();
             if !present {
                 return Err(TurnFlowError::MissingMajorNation { slot });
@@ -69,7 +69,7 @@ impl GameState {
         for nation in self.nations.iter_mut().take(MAJOR_NATION_COUNT) {
             let major = nation
                 .as_mut()
-                .and_then(|nation| nation.major.as_mut())
+                .and_then(|nation| nation.major_mut())
                 .expect("major-nation presence was checked above");
             reset_finished_flag(major.diplomacy_eligible, &mut major.turn_finished);
         }

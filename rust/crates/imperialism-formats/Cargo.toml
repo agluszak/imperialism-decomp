@@ -10,5 +10,6 @@ clap.workspace = true
 imperialism-core = { path = "../imperialism-core" }
 serde.workspace = true
 serde_json.workspace = true
+serde_path_to_error.workspace = true
 thiserror.workspace = true
 sha2 = "0.10"

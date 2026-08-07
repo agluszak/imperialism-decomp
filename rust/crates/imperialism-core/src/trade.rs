@@ -1,5 +1,6 @@
 use crate::{
-    GameCommand, GameEvent, GameState, NationId, NationKind, NationState, ResourceKind, StepOutcome,
+    GameCommand, GameEvent, GameState, MajorNationId, MajorNationState, NationCommonState,
+    NationId, ResourceKind, StepOutcome,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -24,11 +25,7 @@ impl GameState {
                 resource,
                 amount,
             } => {
-                let state = self.major_nation_mut(nation)?;
-                let major = state
-                    .major
-                    .as_mut()
-                    .expect("major-nation presence was checked before placing a bid");
+                let (_, major) = self.major_nation_parts_mut(nation)?;
                 major.set_item_potential(resource, amount);
                 let applied = major.item_potentials[resource];
                 Ok(StepOutcome {
@@ -45,8 +42,8 @@ impl GameState {
                 amount,
                 price,
             } => {
-                let state = self.major_nation_mut(nation)?;
-                settle_purchase(state, resource, amount, price)?;
+                let (common, major) = self.major_nation_parts_mut(nation)?;
+                settle_purchase(common, major, resource, amount, price);
                 Ok(StepOutcome {
                     events: vec![GameEvent::TradeSettled {
                         nation,
@@ -61,11 +58,7 @@ impl GameState {
     }
 
     pub fn remember_trade_bids(&mut self, nation: NationId) -> Result<StepOutcome, RuleError> {
-        self.major_nation_mut(nation)?
-            .major
-            .as_mut()
-            .expect("major-nation presence was checked before remembering bids")
-            .remember_trade_bids();
+        self.major_nation_parts_mut(nation)?.1.remember_trade_bids();
         Ok(StepOutcome {
             events: vec![GameEvent::TradeBidsRemembered { nation }],
         })
@@ -85,9 +78,9 @@ impl GameState {
             });
         }
 
-        let major = self.nations[index]
+        let major = self.nations[index.nation()]
             .as_mut()
-            .and_then(|state| state.major.as_mut())
+            .and_then(|state| state.major_mut())
             .expect("major-nation presence was checked before committing purchases");
         let city = self.cities[index]
             .as_mut()
@@ -98,41 +91,44 @@ impl GameState {
         })
     }
 
-    fn major_nation_mut(&mut self, nation: NationId) -> Result<&mut NationState, RuleError> {
-        let index = self.major_nation_index(nation)?;
-        Ok(self.nations[index]
-            .as_mut()
-            .expect("nation presence was checked before mutable access"))
-    }
-
-    fn major_nation_index(&self, nation: NationId) -> Result<usize, RuleError> {
-        let index = usize::from(nation.get());
+    fn major_nation_parts_mut(
+        &mut self,
+        nation: NationId,
+    ) -> Result<(&mut NationCommonState, &mut MajorNationState), RuleError> {
         let state = self
             .nations
-            .get(index)
+            .get_mut(nation)
+            .and_then(Option::as_mut)
+            .ok_or(RuleError::MissingNation { nation })?;
+        state
+            .major_parts_mut()
+            .ok_or(RuleError::NotMajorNation { nation })
+    }
+
+    fn major_nation_index(&self, nation: NationId) -> Result<MajorNationId, RuleError> {
+        let state = self
+            .nations
+            .get(nation)
             .and_then(Option::as_ref)
             .ok_or(RuleError::MissingNation { nation })?;
-        if state.kind != NationKind::Major || state.major.is_none() {
+        if state.major().is_none() {
             return Err(RuleError::NotMajorNation { nation });
         }
-        Ok(index)
+        MajorNationId::from_nation(nation).ok_or(RuleError::NotMajorNation { nation })
     }
 }
 
 fn settle_purchase(
-    nation: &mut NationState,
+    common: &mut NationCommonState,
+    major: &mut MajorNationState,
     resource: ResourceKind,
     amount: i16,
     price: i16,
-) -> Result<(), RuleError> {
-    let major = nation
-        .major
-        .as_mut()
-        .expect("major-nation presence was checked before settlement");
+) {
     major.purchased_items_by_resource[resource] =
         major.purchased_items_by_resource[resource].wrapping_add(amount);
     let cost = i32::from(price).wrapping_mul(i32::from(amount));
-    nation.treasury = nation.treasury.wrapping_sub(cost);
+    common.treasury = common.treasury.wrapping_sub(cost);
 
     if amount > 0 {
         major.capacities[0] = major.capacities[0].wrapping_sub(amount);
@@ -145,7 +141,6 @@ fn settle_purchase(
                 .wrapping_sub(i32::from(amount));
         }
     }
-    Ok(())
 }
 
 const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool {
@@ -162,7 +157,7 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, LaborPool, MajorNationState, PendingWorkState, PopulationState, RngState,
+        CityState, LaborPool, NationData, NationState, PendingWorkState, PopulationState, RngState,
         TurnState, WorldState,
     };
 
@@ -182,11 +177,11 @@ mod tests {
             unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
             transported_items_by_resource: crate::ResourceTable::default(),
             remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_matrix: vec![0; 23 * 23],
+            aid_allocation_matrix: crate::AidAllocationTable::default(),
             budget_pool_base: 200,
             budget_pool_delta: 100,
             special_resource_trade_balance: 30,
-            candidate_nation_flags: vec![0; 23],
+            candidate_nation_flags: crate::NationTable::default(),
             scenario_initialized: false,
             turn_finished: false,
             pending_action_status: crate::PendingActionTable::default(),
@@ -196,26 +191,32 @@ mod tests {
             pending_commitment_cost: 0,
             pressure_counter: 0,
             aid_allocation_total: 0,
-            colony_boycott_flags: vec![0; 23],
+            colony_boycott_flags: crate::NationTable::default(),
             military_expenses: 0,
         }
     }
 
-    fn state(kind: NationKind) -> GameState {
+    fn state(is_major: bool) -> GameState {
         let nation = NationId::new(6);
-        let mut nations = vec![None; 23];
-        nations[6] = Some(NationState {
+        let mut nations = crate::NationTable::default();
+        nations[nation] = Some(NationState {
             id: nation,
-            kind,
-            encoded_nation_slot: 6,
-            owner_nation: 6,
-            treasury: 1_000,
-            home_tile: 0,
-            need_level_by_nation: crate::NationTable::default(),
-            major: (kind == NationKind::Major).then(major),
+            common: NationCommonState {
+                encoded_nation_slot: 6,
+                owner_nation: 6,
+                treasury: 1_000,
+                home_tile: 0,
+                need_level_by_nation: crate::NationTable::default(),
+            },
+            data: if is_major {
+                NationData::Major(major())
+            } else {
+                NationData::Minor
+            },
         });
-        let mut cities = vec![None; 7];
-        cities[6] = Some(city(nation));
+        let major_nation = MajorNationId::new(6);
+        let mut cities = crate::MajorNationTable::default();
+        cities[major_nation] = Some(city(nation));
         GameState {
             turn: TurnState {
                 scenario_map_index_plus_one: 0,
@@ -247,7 +248,7 @@ mod tests {
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
                 nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
-                    nation: NationId::new(nation as u8),
+                    nation: nation.nation(),
                     turn_events: vec![],
                     proposals: vec![],
                     turn_summary: vec![],
@@ -266,9 +267,9 @@ mod tests {
             starvation_population_loss: 0,
             serialized_state: 0,
             phase_counter: 0,
-            metrics_0e: vec![0; 30],
-            metrics_4a: vec![0; 9],
-            order_count_by_type: vec![0; 14],
+            metrics_0e: [0; 30],
+            metrics_4a: [0; 9],
+            order_count_by_type: [0; 14],
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
@@ -318,13 +319,13 @@ mod tests {
     #[test]
     fn buyer_uses_merchant_capacity_and_delta_budget() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
+        let mut game = state(true);
         let outcome = game
             .apply_command(purchase(nation, ResourceKind::Fabric, 3, 7))
             .unwrap();
-        let state = game.nations[6].as_ref().unwrap();
-        let major = state.major.as_ref().unwrap();
-        assert_eq!(state.treasury, 979);
+        let state = game.nations[NationId::new(6)].as_ref().unwrap();
+        let major = state.major().unwrap();
+        assert_eq!(state.common.treasury, 979);
         assert_eq!(major.purchased_items_by_resource[ResourceKind::Fabric], 3);
         assert_eq!(major.capacities[0], 7);
         assert_eq!(major.budget_pool_delta, 79);
@@ -344,16 +345,15 @@ mod tests {
     #[test]
     fn trade_bid_clamps_to_merchant_capacity_and_reports_the_applied_amount() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
+        let mut game = state(true);
         let outcome = game
             .apply_command(bid(nation, ResourceKind::Fabric, 9))
             .unwrap();
         assert_eq!(
-            game.nations[6]
+            game.nations[NationId::new(6)]
                 .as_ref()
                 .unwrap()
-                .major
-                .as_ref()
+                .major()
                 .unwrap()
                 .item_potentials[ResourceKind::Fabric],
             4
@@ -371,7 +371,7 @@ mod tests {
     #[test]
     fn remembered_bids_and_purchased_items_commit_as_one_trade_phase() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
+        let mut game = state(true);
         game.apply_command(bid(nation, ResourceKind::Fabric, -1))
             .unwrap();
         game.apply_command(bid(nation, ResourceKind::Clothing, -1))
@@ -384,13 +384,20 @@ mod tests {
             .unwrap();
         game.apply_command(purchase(nation, ResourceKind::Food, -30, 1))
             .unwrap();
-        game.cities[6].as_mut().unwrap().stock_by_type[ResourceKind::Food] = 20;
+        game.cities[MajorNationId::new(6)]
+            .as_mut()
+            .unwrap()
+            .stock_by_type[ResourceKind::Food] = 20;
 
         assert_eq!(
             game.commit_purchased_items(nation).unwrap().events,
             vec![GameEvent::PurchasedItemsCommitted { nation }]
         );
-        let major = game.nations[6].as_ref().unwrap().major.as_ref().unwrap();
+        let major = game.nations[NationId::new(6)]
+            .as_ref()
+            .unwrap()
+            .major()
+            .unwrap();
         assert!(
             major
                 .purchased_items_by_resource
@@ -405,7 +412,7 @@ mod tests {
             major.unfilled_trade_turns_by_resource[ResourceKind::Clothing],
             1
         );
-        let city = game.cities[6].as_ref().unwrap();
+        let city = game.cities[MajorNationId::new(6)].as_ref().unwrap();
         assert_eq!(city.stock_by_type[ResourceKind::Fabric], 3);
         assert_eq!(city.stock_by_type[ResourceKind::Food], 0);
     }
@@ -413,12 +420,12 @@ mod tests {
     #[test]
     fn special_resource_seller_uses_base_budget_and_balance() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
+        let mut game = state(true);
         game.apply_command(purchase(nation, ResourceKind::Clothing, -2, 5))
             .unwrap();
-        let state = game.nations[6].as_ref().unwrap();
-        let major = state.major.as_ref().unwrap();
-        assert_eq!(state.treasury, 1_010);
+        let state = game.nations[NationId::new(6)].as_ref().unwrap();
+        let major = state.major().unwrap();
+        assert_eq!(state.common.treasury, 1_010);
         assert_eq!(
             major.purchased_items_by_resource[ResourceKind::Clothing],
             -2
@@ -432,15 +439,14 @@ mod tests {
     #[test]
     fn ordinary_resource_seller_does_not_change_special_balance() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Major);
+        let mut game = state(true);
         game.apply_command(purchase(nation, ResourceKind::Fabric, -2, 5))
             .unwrap();
         assert_eq!(
-            game.nations[6]
+            game.nations[NationId::new(6)]
                 .as_ref()
                 .unwrap()
-                .major
-                .as_ref()
+                .major()
                 .unwrap()
                 .special_resource_trade_balance,
             30
@@ -450,7 +456,7 @@ mod tests {
     #[test]
     fn command_rejects_missing_and_minor_nations_without_mutation() {
         let nation = NationId::new(6);
-        let mut game = state(NationKind::Minor);
+        let mut game = state(false);
         let before = game.clone();
         assert_eq!(
             game.apply_command(purchase(nation, ResourceKind::Food, 1, 1)),

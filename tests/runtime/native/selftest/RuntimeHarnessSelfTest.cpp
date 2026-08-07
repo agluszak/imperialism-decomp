@@ -2,6 +2,7 @@
 #include "RuntimeObservation.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeTurnEventQueue.h"
+#include "parson.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -189,6 +190,33 @@ void TestJsonAndAtomicWriting(const char* resultPath) {
          "atomic JSON publication did not replace the complete file");
 }
 
+void TestParsonDom() {
+  JSON_Value* rootValue = json_value_init_object();
+  JSON_Object* root = json_value_get_object(rootValue);
+  JSON_Value* capturesValue = json_value_init_object();
+  JSON_Object* captures = json_value_get_object(capturesValue);
+  JSON_Value* valuesValue = json_value_init_array();
+  JSON_Array* values = json_value_get_array(valuesValue);
+  bool built = rootValue != 0 && capturesValue != 0 && valuesValue != 0;
+  if (built) {
+    built = json_object_set_number(root, "format_version", 2) == JSONSuccess &&
+            json_array_append_number(values, 7) == JSONSuccess &&
+            json_array_append_boolean(values, 1) == JSONSuccess &&
+            json_object_set_value(captures, "probe", valuesValue) == JSONSuccess &&
+            json_object_set_value(root, "captures", capturesValue) == JSONSuccess;
+  }
+  char* serialized = built ? json_serialize_to_string(rootValue) : 0;
+  Expect("json.parson_dom",
+         serialized != 0 &&
+             strcmp(serialized, "{\"format_version\":2,\"captures\":{\"probe\":[7,true]}}") ==
+                 0,
+         "Parson did not construct and serialize the nested runtime-result shape");
+  if (serialized != 0) {
+    json_free_serialized_string(serialized);
+  }
+  json_value_free(rootValue);
+}
+
 } // namespace
 
 int main(int argc, char** argv) {
@@ -208,6 +236,7 @@ int main(int argc, char** argv) {
   TestRegistryLookup();
   TestResultAggregation();
   TestJsonAndAtomicWriting(resultPath);
+  TestParsonDom();
 
   char json[2048];
   const char* status = g_results.HasFailures() ? "failed" : "passed";

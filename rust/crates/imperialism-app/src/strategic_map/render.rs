@@ -198,7 +198,7 @@ fn spawn_semantic_markers(
     layout: StrategicMapLayout,
 ) {
     for nation in game.nations.iter().flatten() {
-        let Ok(tile_index) = u16::try_from(nation.home_tile) else {
+        let Ok(tile_index) = u16::try_from(nation.common.home_tile) else {
             continue;
         };
         let tile = TileId::new(tile_index);
@@ -276,7 +276,7 @@ fn first_tile_for_region(game: &GameState, region: i16) -> Option<TileId> {
     game.world
         .tiles
         .iter()
-        .position(|tile| tile.city_or_province_index == i64::from(region))
+        .position(|tile| tile.province == Some(region))
         .map(|index| TileId::new(index as u16))
 }
 

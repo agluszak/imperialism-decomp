@@ -1,4 +1,4 @@
-use crate::{CityState, MajorNationState, PendingActionSlot};
+use crate::{CityState, MajorNationState, PendingActionKind};
 
 const PRODUCTION_SLOT_COUNT: usize = 16;
 
@@ -150,21 +150,27 @@ impl CityState {
             6 | 11 => i16::from(building_type != 0),
             7 => i16::from(active_nation_has_technology_15) + 1,
             8 => {
-                if status[PendingActionSlot::new(12).unwrap()] == b'3' as i8 {
+                if status[PendingActionKind::ConquestMonumentArmory] == b'3' as i8 {
                     3
                 } else {
-                    i16::from(status[PendingActionSlot::new(6).unwrap()] == b'3' as i8) + 1
+                    i16::from(
+                        status[PendingActionKind::ConqueredCapitalArmoryUpgrade] == b'3' as i8,
+                    ) + 1
                 }
             }
             10 => {
-                if status[PendingActionSlot::new(7).unwrap()] < b'3' as i8 {
+                if status[PendingActionKind::UniversityExpansion] < b'3' as i8 {
                     1
                 } else {
-                    i16::from(status[PendingActionSlot::new(7).unwrap()] != b'3' as i8) + 2
+                    i16::from(status[PendingActionKind::UniversityExpansion] != b'3' as i8) + 2
                 }
             }
-            14 => i16::from(status[PendingActionSlot::new(8).unwrap()] >= b'3' as i8) + 1,
-            15 => i16::from(status[PendingActionSlot::new(9).unwrap()] >= b'3' as i8) + 1,
+            14 => i16::from(status[PendingActionKind::RailyardExpansion] >= b'3' as i8) + 1,
+            15 => {
+                i16::from(
+                    status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] >= b'3' as i8,
+                ) + 1
+            }
             _ => 0,
         }
     }
@@ -181,7 +187,10 @@ impl CityState {
 }
 
 fn region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
-    let divisor = if owner.pending_action_status[PendingActionSlot::new(9).unwrap()] >= b'3' as i8 {
+    let divisor = if owner.pending_action_status
+        [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
+        >= b'3' as i8
+    {
         3
     } else {
         4
@@ -207,9 +216,9 @@ mod tests {
             starvation_population_loss: 0,
             serialized_state: 0,
             phase_counter: 0,
-            metrics_0e: vec![0; 30],
-            metrics_4a: vec![0; 9],
-            order_count_by_type: vec![0; 14],
+            metrics_0e: [0; 30],
+            metrics_4a: [0; 9],
+            order_count_by_type: [0; 14],
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
@@ -255,11 +264,11 @@ mod tests {
             unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
             transported_items_by_resource: crate::ResourceTable::default(),
             remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_matrix: vec![],
+            aid_allocation_matrix: crate::AidAllocationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
             special_resource_trade_balance: 0,
-            candidate_nation_flags: vec![],
+            candidate_nation_flags: crate::NationTable::default(),
             scenario_initialized: false,
             turn_finished: false,
             pending_action_status: crate::PendingActionTable::default(),
@@ -269,7 +278,7 @@ mod tests {
             pending_commitment_cost: 0,
             pressure_counter: 0,
             aid_allocation_total: 0,
-            colony_boycott_flags: vec![],
+            colony_boycott_flags: crate::NationTable::default(),
             military_expenses: 0,
         }
     }
@@ -322,9 +331,11 @@ mod tests {
     fn derives_region_capacity_from_the_retail_status_threshold() {
         let state = city();
         let mut owner = nation();
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'2' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'2' as i8;
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 3);
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'3' as i8;
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 4);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 2), 1);
     }
@@ -355,10 +366,11 @@ mod tests {
         assert_eq!(state.next_building_type(slot(6), &owner, 0, false), 1);
         assert_eq!(state.next_building_type(slot(7), &owner, 0, true), 2);
 
-        owner.pending_action_status[PendingActionSlot::new(12).unwrap()] = b'3' as i8;
-        owner.pending_action_status[PendingActionSlot::new(7).unwrap()] = b'4' as i8;
-        owner.pending_action_status[PendingActionSlot::new(8).unwrap()] = b'3' as i8;
-        owner.pending_action_status[PendingActionSlot::new(9).unwrap()] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::ConquestMonumentArmory] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::UniversityExpansion] = b'4' as i8;
+        owner.pending_action_status[PendingActionKind::RailyardExpansion] = b'3' as i8;
+        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            b'3' as i8;
         assert_eq!(state.next_building_type(slot(8), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(10), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(14), &owner, 0, false), 2);

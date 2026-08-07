@@ -2,44 +2,42 @@
 
 use anyhow::{Context, bail};
 use clap::Parser;
-use imperialism_core::GameState;
-use imperialism_testkit::{first_snapshot_difference, read_game_snapshot};
+use imperialism_testkit::{first_serialized_difference, read_game_state};
 use std::path::PathBuf;
 
 #[derive(Debug, Parser)]
-#[command(about = "Validate or compare canonical Imperialism snapshots")]
+#[command(about = "Validate or compare captured Imperialism game states")]
 struct Args {
-    /// Snapshot to validate.
-    snapshot: PathBuf,
+    /// Runtime result containing a game_state capture.
+    result: PathBuf,
 
-    /// Optional snapshot to compare semantically.
+    /// Optional runtime result to compare semantically.
     comparison: Option<PathBuf>,
 }
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let snapshot = read_game_snapshot(&args.snapshot)
-        .with_context(|| format!("reading snapshot {}", args.snapshot.display()))?;
-    let state =
-        GameState::try_from(snapshot.clone()).context("snapshot cannot populate GameState")?;
+    let state = read_game_state(&args.result)
+        .with_context(|| format!("reading game state {}", args.result.display()))?;
     println!(
-        "{}: {} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions, state {}",
-        snapshot.schema,
-        snapshot.world.tiles.len(),
+        "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions",
+        state.world.tiles.len(),
         state.nations.iter().flatten().count(),
         state.cities.iter().flatten().count(),
         state.military_units.len(),
         state.civilian_units.len(),
         state.ships.len(),
-        state.missions.len(),
-        snapshot.hashes.state
+        state.missions.len()
     );
     if let Some(comparison_path) = args.comparison {
-        let comparison = read_game_snapshot(&comparison_path).with_context(|| {
-            format!("reading comparison snapshot {}", comparison_path.display())
+        let comparison = read_game_state(&comparison_path).with_context(|| {
+            format!(
+                "reading comparison game state {}",
+                comparison_path.display()
+            )
         })?;
-        if let Some(difference) = first_snapshot_difference(&snapshot, &comparison)
-            .context("could not compare snapshots")?
+        if let Some(difference) = first_serialized_difference(&state, &comparison)
+            .context("could not compare game states")?
         {
             bail!(
                 "{} differs: C++ {:?}, Rust {:?}",
@@ -48,7 +46,7 @@ fn main() -> anyhow::Result<()> {
                 difference.reimplementation
             );
         }
-        println!("semantic snapshots are identical");
+        println!("semantic game states are identical");
     }
     Ok(())
 }
@@ -58,9 +56,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parses_snapshot_and_optional_comparison() {
+    fn parses_result_and_optional_comparison() {
         let args = Args::try_parse_from(["snapshot-check", "left.json", "right.json"]).unwrap();
-        assert_eq!(args.snapshot, PathBuf::from("left.json"));
+        assert_eq!(args.result, PathBuf::from("left.json"));
         assert_eq!(args.comparison, Some(PathBuf::from("right.json")));
     }
 }

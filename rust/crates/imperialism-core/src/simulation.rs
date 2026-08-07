@@ -145,8 +145,8 @@ mod tests {
                 map_generation: 0,
                 zone_status: 0,
             },
-            nations: Vec::new(),
-            cities: Vec::new(),
+            nations: crate::NationTable::default(),
+            cities: crate::MajorNationTable::default(),
             military_units: Vec::new(),
             civilian_units: Vec::new(),
             ships: Vec::new(),
@@ -155,7 +155,7 @@ mod tests {
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
                 nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
-                    nation: NationId::new(nation as u8),
+                    nation: nation.nation(),
                     turn_events: Vec::new(),
                     proposals: Vec::new(),
                     turn_summary: Vec::new(),
