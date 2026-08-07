@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Loader for config/template_aliases.csv: fold-aware equivalence metadata.
 
-Two distinct equivalence classes share the table (bd 5jjn):
+Three distinct equivalence classes share the table (bd 5jjn):
 
 - duplicate_emission (classification ``per_tu_duplicate``): per-TU duplicate
   MFC-template COMDAT bodies recorded as aliases of one canonical body
@@ -17,14 +17,19 @@ Two distinct equivalence classes share the table (bd 5jjn):
   alias bytes are a bare ``jmp rel32`` (+ nop/int3 padding) and the chain
   resolves exactly to the canonical address.
 
+- library_callee_alias (classification ``library_callee_alias``): a compiler
+  wrapper whose direct call reaches a linked library body with the same ABI
+  identity. The wrapper and body remain distinct report entities, but calls to
+  either compare through the library body's canonical identity.
+
 Consumers:
 - tools.workflow.template_alias_check re-verifies each row's per-class
   evidence;
 - tools.reccmp.progress_stats reclassifies unpaired duplicate_emission
   originals whose canonical is paired as "recognized duplicate template
   bodies" instead of unported original-only functions;
-- tools.reccmp.core_impact_ranking excludes alias addresses of both classes
-  from the porting queue (porting/claiming the canonical is the work item; an
+- tools.reccmp.core_impact_ranking excludes alias addresses from the porting
+  queue (porting/claiming the canonical is the work item; an
   alias body never is).
 """
 
@@ -38,11 +43,13 @@ ALIASES_CSV = repo_root_from_file(__file__) / "config" / "template_aliases.csv"
 
 CLASS_DUPLICATE_EMISSION = "duplicate_emission"
 CLASS_FOLDED_SYMBOL_GROUP = "folded_symbol_group"
+CLASS_LIBRARY_CALLEE_ALIAS = "library_callee_alias"
 
 # classification column value -> equivalence class
 CLASSIFICATIONS: dict[str, str] = {
     "per_tu_duplicate": CLASS_DUPLICATE_EMISSION,
     "folded_symbol_group": CLASS_FOLDED_SYMBOL_GROUP,
+    "library_callee_alias": CLASS_LIBRARY_CALLEE_ALIAS,
 }
 
 
@@ -51,8 +58,8 @@ def load_aliases(
 ) -> tuple[dict[int, int], list[str]]:
     """(alias_address -> canonical_address, schema errors). Missing file => empty.
 
-    ``equivalence_class`` (CLASS_DUPLICATE_EMISSION / CLASS_FOLDED_SYMBOL_GROUP)
-    restricts the mapping to rows of that class; None returns every row.
+    ``equivalence_class`` restricts the mapping to rows of that class; None
+    returns every row.
     """
     rows, errors = load_alias_rows(path)
     aliases: dict[int, int] = {}

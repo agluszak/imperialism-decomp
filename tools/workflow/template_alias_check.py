@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate config/template_aliases.csv: fold-aware equivalence metadata in two
+"""Validate config/template_aliases.csv: fold-aware equivalence metadata in three
 classes (bd 5jjn), each with its own machine-checkable invariant re-verified on
 every run.
 
@@ -22,6 +22,10 @@ chain lands on the shared final body. Evidence:
   exactly to the canonical address;
 - the canonical is a sized function in config/original_entities.csv.
 
+library_callee_alias: a compiler wrapper whose direct call resolves to a linked
+library body with the row's canonical decorated identity. The wrapper remains a
+distinct report entity; only call operands share the canonical identity.
+
 Curated names intentionally DIFFER within a folded group (leaf dtor vs shared
 base body), so no name check applies there.
 
@@ -36,11 +40,17 @@ usage: just template-alias-check
 
 from __future__ import annotations
 
-from tools.binary.body_hash import bodies_equivalent
-from tools.binary.pe import OriginalImage, load_symbol_names, load_symbol_sizes
+from tools.binary.body_hash import bodies_equivalent, normalized_body
+from tools.binary.pe import (
+    OriginalImage,
+    load_decorated_symbols,
+    load_symbol_names,
+    load_symbol_sizes,
+)
 from tools.common.template_aliases import (
     ALIASES_CSV,
     CLASS_FOLDED_SYMBOL_GROUP,
+    CLASS_LIBRARY_CALLEE_ALIAS,
     CLASSIFICATIONS,
     load_alias_rows,
 )
@@ -82,20 +92,57 @@ def _check_folded_symbol_group(
     return True, f"jmp island chains to {canonical:#x}"
 
 
+def _check_library_callee_alias(
+    img: OriginalImage,
+    symbols: dict[int, str],
+    sizes: dict[int, int],
+    alias: int,
+    canonical: int,
+    decorated: str,
+) -> tuple[bool, str]:
+    alias_size = sizes.get(alias)
+    canonical_size = sizes.get(canonical)
+    if not alias_size or not canonical_size:
+        return False, f"not in symbols.csv (sizes {alias_size}/{canonical_size})"
+    if not decorated:
+        return False, "missing canonical decorated library identity"
+
+    _, raw_calls = normalized_body(img, alias, alias_size)
+    targets = {img.resolve_thunk(target) for target in raw_calls}
+    canonical_target = img.resolve_thunk(canonical)
+    canonical_symbol = symbols.get(canonical_target)
+    matching_symbol_targets = {
+        target for target in targets if symbols.get(target) == decorated
+    }
+    if canonical_symbol != decorated:
+        return False, f"canonical symbol is {canonical_symbol!r}, not {decorated!r}"
+    if canonical_target not in targets and not matching_symbol_targets:
+        rendered = ", ".join(f"{target:#x}" for target in sorted(targets)) or "none"
+        return False, f"wrapper direct-call targets are {rendered}"
+    reached = canonical_target if canonical_target in targets else min(matching_symbol_targets)
+    return True, f"wrapper calls {reached:#x} with canonical identity {decorated}"
+
+
 def main() -> int:
     if not ALIASES_CSV.is_file():
         print(f"no {ALIASES_CSV.name} yet -- nothing to check.")
         return 0
     img = OriginalImage()
     names = load_symbol_names()
+    symbols = load_decorated_symbols()
     sizes = load_symbol_sizes()
 
     rows, errors = load_alias_rows()
 
     ok = 0
     for alias, canonical, decorated, cls in rows:
-        if CLASSIFICATIONS.get(cls) == CLASS_FOLDED_SYMBOL_GROUP:
+        equivalence_class = CLASSIFICATIONS.get(cls)
+        if equivalence_class == CLASS_FOLDED_SYMBOL_GROUP:
             equal, reason = _check_folded_symbol_group(img, sizes, alias, canonical)
+        elif equivalence_class == CLASS_LIBRARY_CALLEE_ALIAS:
+            equal, reason = _check_library_callee_alias(
+                img, symbols, sizes, alias, canonical, decorated
+            )
         else:
             equal, reason = _check_duplicate_emission(img, names, sizes, alias, canonical)
         if not equal:
