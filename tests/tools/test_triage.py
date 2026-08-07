@@ -21,7 +21,14 @@ def side(index=2, address=0x401020, **facts):
     return {"instruction_index": index, "address": address, "facts": facts}
 
 
-def entity(status: str, *, difference=None, reasons=None, inconclusive=None):
+def entity(
+    status: str,
+    *,
+    difference=None,
+    reasons=None,
+    inconclusive=None,
+    semantic_similarity=None,
+):
     return {
         "address": "0x401000",
         "name": "TExample::Run",
@@ -32,6 +39,7 @@ def entity(status: str, *, difference=None, reasons=None, inconclusive=None):
             "difference": difference,
             "inconclusive_reason": inconclusive,
             "inconclusive_location": None,
+            "semantic_similarity": semantic_similarity,
         },
         # Deliberately misleading rendered text. Triage must never inspect it.
         "diff": [["@@", [{"orig": [["0x0", "call Wrong"]]}]]],
@@ -94,6 +102,18 @@ class TriageRenderTests(unittest.TestCase):
         self.assertIn("recompiled: [esi + 0x9c]", output)
         self.assertIn("same object base, different member displacement", output)
         self.assertIn("ASSERT_SIZE", output)
+
+    def test_mismatch_shows_diagnostic_and_raw_similarity(self) -> None:
+        value = mismatch(
+            "memory_value",
+            side(value="imm:1"),
+            side(address=0x501020, value="imm:2"),
+        )
+        value["comparison"]["semantic_similarity"] = 0.875
+        output = render(value)
+        self.assertIn("87.50% semantic similarity", output)
+        self.assertIn("diagnostic; 42.86% raw", output)
+        self.assertIn("first actionable mismatch", output)
 
     def test_memory_address_refined_to_stack_layout(self) -> None:
         output = render(
