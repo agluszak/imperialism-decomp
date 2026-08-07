@@ -3,6 +3,7 @@
 mod calendar;
 mod city_buildings;
 mod city_economy;
+mod city_industry;
 mod ids;
 mod map_geometry;
 mod nation_economy;
@@ -16,6 +17,7 @@ mod turn_flow;
 pub use calendar::TurnCalendar;
 pub use city_buildings::{BuildingWindowState, CityBuildingError, ProductionSlot};
 pub use city_economy::CityEconomyError;
+pub use city_industry::{CityIndustryError, IndustryActionSlot};
 pub use ids::{
     ArmyId, CityId, MilitaryUnitId, MissionId, NationId, NavyId, ProvinceId, ShipId, TaskForceId,
     TileId,
