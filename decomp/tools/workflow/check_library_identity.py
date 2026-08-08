@@ -18,7 +18,12 @@ identity and library ownership.
 Failures:
   - an identity claim is not applied to symbols.csv (name/symbol/prototype/type drift);
   - an identity address is not owned as library/synthetic in the source model;
-  - an identity claim is internally inconsistent (prototype does not declare the name).
+  - an identity claim is internally inconsistent (prototype does not declare the name);
+  - a named `// SYNTHETIC:` claim's source_model name does not match symbols.csv.
+
+Blank-name SYNTHETIC markers are ownership-only and are not name-checked.
+Named SYNTHETIC validation uses `tools.source_model` — there is no second marker
+parser.
 
 Oracle-aware extras: a high-confidence unique library match must not be labeled
 manual game code (unless allowlisted in `config/library_oracle_gamecode_allowlist.csv`).
@@ -209,6 +214,22 @@ def check_override(
     return problems
 
 
+def check_named_synthetic(
+    claim, symbols: dict[int, dict[str, str]]
+) -> list[str]:
+    """Name-only SYNTHETIC markers must match the generated symbols.csv name."""
+    if not claim.name:
+        return []
+    tag = f"0x{claim.address:08x} ({claim.name})"
+    row = symbols.get(claim.address)
+    if row is None:
+        return [f"{tag}: no symbols.csv row for named SYNTHETIC claim"]
+    actual = (row.get("name") or "").strip()
+    if actual != claim.name:
+        return [f"{tag}: symbols.csv name={actual!r} != {claim.name!r}"]
+    return []
+
+
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
@@ -217,6 +238,7 @@ def main() -> int:
     model = build_model(repo_root)
     overrides = identity_checks(model)
     applied_count = len(overrides)
+    covered = {ov.address for ov in overrides}
 
     symbols = index_symbols(symbols_path)
     ownership = index_ownership(repo_root)
@@ -224,6 +246,13 @@ def main() -> int:
     problems: list[str] = []
     for ov in overrides:
         problems.extend(check_override(ov, symbols, ownership))
+
+    named_synthetic = 0
+    for claim in model.functions.values():
+        if claim.kind != "SYNTHETIC" or not claim.name or claim.address in covered:
+            continue
+        named_synthetic += 1
+        problems.extend(check_named_synthetic(claim, symbols))
 
     problems.extend(
         check_oracle_gamecode_conflicts(
@@ -239,7 +268,10 @@ def main() -> int:
             print(f"  - {problem}")
         return 1
 
-    print(f"library-identity gate passed: {applied_count} library identities project exactly.")
+    print(
+        f"library-identity gate passed: {applied_count} library identities and "
+        f"{named_synthetic} named SYNTHETIC claims project exactly."
+    )
     return 0
 
 

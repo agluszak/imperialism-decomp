@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
+from unittest.mock import patch
 
-from tools.reccmp.triage import render_entity
+from tools.reccmp.triage import load_entities, main, render_entity
 
 OWNERSHIP = {0x401000: "manual"}
 NAMES: dict[int, str] = {}
@@ -79,6 +83,46 @@ class TriageRenderTests(unittest.TestCase):
             ownership=OWNERSHIP,
         )
         self.assertIn("inconclusive: alignment failure", text)
+
+
+class TriageCliTests(unittest.TestCase):
+    def test_main_accepts_target_and_build_dir_and_loads_data_list(self) -> None:
+        row = entity("exact")
+        with patch(
+            "tools.reccmp.triage.run_report", return_value=[row]
+        ) as report, patch(
+            "tools.reccmp.triage.names_by_address", return_value={}
+        ), patch(
+            "tools.reccmp.triage.ownership_by_address", return_value=OWNERSHIP
+        ):
+            code = main(
+                [
+                    "--target",
+                    "IMPERIALISM",
+                    "--build-dir",
+                    "build-msvc500",
+                    "0x401000",
+                ]
+            )
+        self.assertEqual(code, 0)
+        report.assert_called_once()
+        args, kwargs = report.call_args
+        self.assertEqual(args[0], "IMPERIALISM")
+        self.assertTrue(kwargs["diet"])
+        self.assertEqual(list(kwargs["orig_addresses"]), [0x401000])
+
+    def test_report_json_reads_data_list(self) -> None:
+        row = entity("exact")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "report.json"
+            path.write_text(json.dumps({"data": [row]}), encoding="utf-8")
+            entities = load_entities(
+                target="IMPERIALISM",
+                build_dir=Path("build-msvc500"),
+                report_json=path,
+                addrs=[0x401000],
+            )
+        self.assertEqual(entities[0x401000]["name"], "TExample::Run")
 
 
 if __name__ == "__main__":

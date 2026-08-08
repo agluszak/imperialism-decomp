@@ -33,23 +33,6 @@ def game_dir() -> Path:
     return Path(original).resolve().parent
 
 
-def resolve_recomp_addr(original_address: int) -> int | None:
-    """Original -> recomp address, or None when reccmp's report drops the
-    pairing (known report-pairing gap; see the addr_translate fallback bead)."""
-    completed = subprocess.run(
-        ["just", "addr", f"0x{original_address:08x}"],
-        cwd=REPO_ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    match = re.search(r"recomp (0x[0-9a-f]+)", completed.stdout)
-    if not match:
-        print(f"WARNING: no recomp pairing for 0x{original_address:08x}; milestone untracked")
-        return None
-    return int(match.group(1), 16)
-
-
 def create_wine_prefix() -> tuple[Path, dict[str, str]]:
     """Per-invocation WINEPREFIX so concurrent runs never share a wineserver.
 

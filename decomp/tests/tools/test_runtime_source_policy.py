@@ -8,11 +8,16 @@ from tools.runtime.source_policy import check_paths
 
 
 class RuntimeSourcePolicyTests(unittest.TestCase):
-    def check_source(self, source: str) -> list[str]:
+    def check_source(self, source: str, *, scenario: bool = False) -> list[str]:
         with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "Scenario.cpp"
+            root = Path(directory)
+            if scenario:
+                path = root / "scenarios" / "ScenarioTest.cpp"
+                path.parent.mkdir()
+            else:
+                path = root / "Scenario.cpp"
             path.write_text(source, encoding="utf-8")
-            return [finding.rule for finding in check_paths([path])]
+            return [finding.rule for finding in check_paths([path if not scenario else root])]
 
     def test_rejects_coordinate_input_and_polling(self) -> None:
         rules = self.check_source(
@@ -43,3 +48,25 @@ class RuntimeSourcePolicyTests(unittest.TestCase):
             ),
             [],
         )
+
+    def test_scenario_body_rejects_control_tree_mechanics(self) -> None:
+        rules = self.check_source(
+            "auto* view = ResolveControlByTag(root, tag);\n"
+            "BitBlt(hdc, 0, 0, 1, 1, src, 0, 0, SRCCOPY);\n"
+            "auto top = g_ModalViewStack;\n",
+            scenario=True,
+        )
+        self.assertEqual(
+            rules,
+            ["tag resolution", "gdi surface", "modal stack"],
+        )
+
+    def test_non_scenario_may_use_control_tree_helpers(self) -> None:
+        self.assertEqual(
+            self.check_source("ResolveControlByTag(root, tag);\nBitBlt(hdc, 0, 0, 1, 1, src, 0, 0, SRCCOPY);\n"),
+            [],
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()

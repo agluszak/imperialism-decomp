@@ -349,8 +349,9 @@ marker plus an exact backtick name in `config/original_entities.csv` so reccmp p
    the adjacent ctor.
 4. `just build` → `just compare`. `just build` regenerates the build inputs (source
    index + stubs) from the current markers on its own (Hard Rule 5), so there is no
-   separate ownership or stub-regeneration step to run first. `just synthetic-gate`
-   checks that the `SYNTHETIC` comment name matches the inventory row exactly.
+   separate ownership or stub-regeneration step to run first. `just library-identity-gate`
+   checks that named `LIBRARY` / `SYNTHETIC` identity claims project into the generated
+   symbols table (via `tools.source_model`).
 
 Canonical example: `src/game/TSortedByRelationshipList.cpp` (+ its header). This only
 works once the class is genuinely polymorphic (its base has a virtual destructor); if it

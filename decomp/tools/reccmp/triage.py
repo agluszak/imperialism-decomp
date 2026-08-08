@@ -36,15 +36,31 @@ REASON_LABELS = {
 }
 
 
-def _load_report(path: Path | None) -> dict[str, Any]:
-    if path is None:
-        return run_report()
-    return json.loads(path.read_text(encoding="utf-8"))
+def load_entities(
+    *,
+    target: str,
+    build_dir: Path,
+    report_json: Path | None,
+    addrs: list[int],
+) -> dict[int, dict[str, Any]]:
+    """Map original address -> reccmp entity row.
 
-
-def _entity_map(report: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    Live reports come from `run_report` (already the `data` list). Saved
+    `--report-json` files are full reccmp documents whose entity rows live under
+    `"data"`.
+    """
+    if report_json is None:
+        rows = run_report(
+            target,
+            build_dir,
+            diet=True,
+            orig_addresses=addrs,
+        )
+    else:
+        payload = json.loads(report_json.read_text(encoding="utf-8"))
+        rows = payload["data"] if isinstance(payload, dict) else payload
     entities: dict[int, dict[str, Any]] = {}
-    for entity in report.get("entities") or []:
+    for entity in rows:
         raw = entity.get("address")
         if not raw:
             continue
@@ -114,6 +130,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("addrs", nargs="*", help="Original addresses (0x...)")
     parser.add_argument("--file", action="append", default=[], help="Source file(s) to expand")
+    parser.add_argument("--target", default="IMPERIALISM")
+    parser.add_argument("--build-dir", type=Path, default=Path("build-msvc500"))
     parser.add_argument("--report-json", type=Path, help="Use an existing reccmp report")
     args = parser.parse_args(argv)
 
@@ -129,8 +147,16 @@ def main(argv: list[str] | None = None) -> int:
     if not addrs:
         parser.error("pass at least one address or --file")
 
-    report = _load_report(args.report_json)
-    entities = _entity_map(report)
+    build_dir = args.build_dir
+    if not build_dir.is_absolute():
+        build_dir = repo / build_dir
+
+    entities = load_entities(
+        target=args.target,
+        build_dir=build_dir,
+        report_json=args.report_json,
+        addrs=addrs,
+    )
     names = names_by_address(repo)
     ownership = ownership_by_address(repo)
     missing = [addr for addr in addrs if addr not in entities]

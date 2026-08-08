@@ -33,7 +33,7 @@ runtime-harness-lint:
   just _lint-in "{{runtime_lint_build_dir}}" "-DIMPERIALISM_RUNTIME_TESTS=ON"
 
 [private]
-[doc('Reject coordinate input and polling synchronization in native runtime scenarios')]
+[doc('Reject UI/control-tree mechanics, coordinate input, and polling in native runtime scenarios')]
 [group('gates')]
 runtime-source-policy-gate:
   uv run python -m tools.runtime.source_policy tests/runtime/native

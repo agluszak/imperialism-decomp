@@ -153,12 +153,6 @@ vtable-annotation-gate:
 vtable-collision-gate:
   uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
 
-# Ensure synthetic symbol names in source comments match symbols.csv.
-[private]
-[group('gates')]
-synthetic-gate:
-  uv run python -m tools.workflow.check_synthetic_names --paths src include
-
 # Structural integrity of config/original_entities.csv: header row exactly at line 1, no
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
 # function rows claiming overlapping byte ranges. (Every consumer is a DictReader
@@ -225,7 +219,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
+_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
