@@ -120,6 +120,15 @@ impl GameState {
         Ok(())
     }
 
+    /// Allocates the next transport capacity across the retail city-policy
+    /// priority list.
+    pub fn allocate_transport_needs(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        self.major_nation_parts_mut(nation)?
+            .1
+            .allocate_transport_needs();
+        Ok(())
+    }
+
     /// Sets one current diplomatic grant, refunding the replaced amount before
     /// charging the replacement.
     pub fn set_diplomacy_grant(
