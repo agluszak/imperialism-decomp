@@ -364,17 +364,17 @@ mod tests {
         let app = app_at(AppState::StrategicMap);
         let catalog = app.world().resource::<UiCatalogResource>();
         let spawned = app.world().resource::<TestFlagSpawned>().0.clone();
-        for tag in ["end ", "quer"] {
+        for tag in [fourcc!("end "), fourcc!("quer")] {
             let entity = spawned
                 .require_unique(catalog, tag)
-                .unwrap_or_else(|error| panic!("flag view missing {tag:?}: {error}"));
+                .unwrap_or_else(|error| panic!("flag view missing {tag}: {error}"));
             assert!(
                 app.world().get::<InteractionDisabled>(entity).is_some(),
-                "{tag:?} should be disabled"
+                "{tag} should be disabled"
             );
             assert!(
                 app.world().get::<GameScreenNavAction>(entity).is_none(),
-                "{tag:?} must not be bound to a nav action"
+                "{tag} must not be bound to a nav action"
             );
         }
     }
@@ -391,7 +391,7 @@ mod tests {
             let catalog = app.world().resource::<UiCatalogResource>();
             let spawned = app.world().resource::<TestSpawned>().0.clone();
             let end_turn = spawned
-                .require_unique(catalog, "end ")
+                .require_unique(catalog, fourcc!("end "))
                 .unwrap_or_else(|error| panic!("{state:?} missing end turn control: {error}"));
             assert!(
                 app.world().get::<InteractionDisabled>(end_turn).is_some(),
