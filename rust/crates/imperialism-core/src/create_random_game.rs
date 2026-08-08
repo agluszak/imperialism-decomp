@@ -1,9 +1,9 @@
 use crate::{
     AidAllocationTable, CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool,
-    MajorNationId, MajorNationState, MajorNationTable, NATION_COUNT, NationCapacityTable,
-    NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
-    PendingWorkState, PopulationState, ProductionTable, ProvinceId, RandomSetupPreview,
-    ResourceTable, RngState, TileId, TileOwnerTag, TileState, TurnState, WorldState,
+    MajorNationId, MajorNationState, MajorNationTable, NationCapacityTable, NationCommonState,
+    NationData, NationId, NationPendingWork, NationState, NationTable, PendingWorkState,
+    PopulationState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState,
+    TileId, TileOwnerTag, TileState, TurnState, WorldState,
 };
 use enum_map::EnumMap;
 
@@ -142,7 +142,7 @@ fn major_nation_state(nation: MajorNationId, difficulty: Difficulty, human: bool
             // chosen later by SelectBestSecondaryHomeTileByFrogCityScore (needs tile
             // post-passes).
             home_tile: None,
-            need_level_by_nation: NationTable::from_array([100; NATION_COUNT]),
+            trade_policy_by_nation: NationTable::default(),
         },
         data: NationData::Major(MajorNationState {
             diplomacy_eligible: human,
@@ -186,7 +186,7 @@ fn minor_nation_state(nation: NationId) -> NationState {
             owner_nation: i16::from(nation.get()),
             treasury: 5_000,
             home_tile: None,
-            need_level_by_nation: NationTable::from_array([100; NATION_COUNT]),
+            trade_policy_by_nation: NationTable::default(),
         },
         data: NationData::Minor,
     }
@@ -300,7 +300,7 @@ mod tests {
         assert_eq!(ai.common.treasury, 10_000);
         assert!(!ai.major().unwrap().diplomacy_eligible);
 
-        assert_eq!(state.nations.iter().flatten().count(), NATION_COUNT);
+        assert_eq!(state.nations.iter().flatten().count(), crate::NATION_COUNT);
         assert_eq!(
             state.cities.iter().flatten().count(),
             crate::MAJOR_NATION_COUNT

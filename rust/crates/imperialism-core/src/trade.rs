@@ -216,6 +216,18 @@ impl GameState {
         Ok(())
     }
 
+    /// Applies one recovered decrement to a bilateral trade-policy score.
+    pub fn decrement_trade_policy_score(
+        &mut self,
+        nation: MajorNationId,
+        target: NationId,
+    ) -> Result<(), RuleError> {
+        let (common, _) = self.major_nation_parts_mut(nation)?;
+        let next = common.trade_policy_by_nation[target].decrement_step(common.treasury);
+        common.trade_policy_by_nation[target] = next;
+        Ok(())
+    }
+
     fn major_nation_parts_mut(
         &mut self,
         nation: MajorNationId,
@@ -295,7 +307,7 @@ mod tests {
     use crate::{
         AID_ALLOCATION_COUNT, AidAllocationTable, CityState, Difficulty, DiplomacyGrantFlags,
         DiplomacyPolicy, IndustryActionSlot, LaborPool, NationData, NationState, PendingWorkState,
-        PopulationState, RngState, TurnState, WorldState,
+        PopulationState, RngState, TradePolicyScore, TurnState, WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -341,7 +353,7 @@ mod tests {
                 owner_nation: 6,
                 treasury: 1_000,
                 home_tile: Some(crate::TileId::new(0)),
-                need_level_by_nation: crate::NationTable::default(),
+                trade_policy_by_nation: crate::NationTable::default(),
             },
             data: if is_major {
                 NationData::Major(major())
@@ -669,6 +681,37 @@ mod tests {
         );
         assert_eq!(state.common.treasury, 3_000);
         assert_eq!(major.grant_total_cost, 7_000);
+    }
+
+    #[test]
+    fn decrements_trade_policy_score_through_the_retail_steps() {
+        let nation = MajorNationId::new(6);
+        let target = NationId::new(0);
+        let mut game = state(true);
+
+        for (score, treasury, expected) in [
+            (100, 0, 95),
+            (95, 0, 90),
+            (90, 0, 75),
+            (75, 10_000, 75),
+            (75, 10_001, 50),
+            (300, 50_000, 300),
+        ] {
+            let common = &mut game.nations[nation.nation()].as_mut().unwrap().common;
+            common.trade_policy_by_nation[target] = TradePolicyScore::new(score);
+            common.treasury = treasury;
+
+            game.decrement_trade_policy_score(nation, target).unwrap();
+
+            assert_eq!(
+                game.nations[nation.nation()]
+                    .as_ref()
+                    .unwrap()
+                    .common
+                    .trade_policy_by_nation[target],
+                TradePolicyScore::new(expected)
+            );
+        }
     }
 
     #[test]

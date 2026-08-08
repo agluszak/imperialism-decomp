@@ -8,8 +8,8 @@ use imperialism_core::{
     NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
     NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
     PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
-    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TurnState,
-    WorldState,
+    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TradePolicyScore,
+    TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -1265,7 +1265,11 @@ fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
             owner_nation: country.nation_slot,
             treasury: country.treasury,
             home_tile: optional_tile_id(country.home_tile),
-            need_level_by_nation: NationTable::from_array(country.need_level_by_nation),
+            trade_policy_by_nation: NationTable::from_array(
+                country
+                    .need_level_by_nation
+                    .map(|score| TradePolicyScore::new(i32::from(score))),
+            ),
         },
         data,
     }
