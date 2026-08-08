@@ -27,49 +27,49 @@ impl UiCatalogResource {
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct ViewInstanceId(pub u64);
+pub(crate) struct ViewInstanceId(pub(crate) u64);
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub struct PresentedViewId(pub ScopedViewId);
+pub(crate) struct PresentedViewId(pub(crate) ScopedViewId);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub struct PresentedUiNode(pub UiNodeId);
+pub(crate) struct PresentedUiNode(pub(crate) UiNodeId);
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub struct WidgetTag(pub FourCc);
+pub(crate) struct WidgetTag(pub(crate) FourCc);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub struct UiWidgetFlags {
-    pub enabled: bool,
-    pub input_gate: bool,
-    pub child_hit_test: bool,
+pub(crate) struct UiWidgetFlags {
+    pub(crate) enabled: bool,
+    pub(crate) input_gate: bool,
+    pub(crate) child_hit_test: bool,
 }
 
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct UiPictureLookup {
-    pub world_variant: u8,
+pub(crate) struct UiPictureLookup {
+    pub(crate) world_variant: u8,
 }
 
 #[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct UiViewRoot;
+pub(crate) struct UiViewRoot;
 
 #[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct InteractiveUiWidget;
+pub(crate) struct InteractiveUiWidget;
 
 #[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
 struct PreviousUiInteraction(Interaction);
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub struct SpawnUiView(pub ScopedViewId);
+pub(crate) struct SpawnUiView(pub(crate) ScopedViewId);
 
 #[derive(Message, Clone, Copy, Debug, Eq, PartialEq)]
-pub struct DespawnUiView(pub ViewInstanceId);
+pub(crate) struct DespawnUiView(pub(crate) ViewInstanceId);
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub struct UiViewSpawned {
-    pub instance: ViewInstanceId,
-    pub view: ScopedViewId,
-    pub root: Entity,
+pub(crate) struct UiViewSpawned {
+    pub(crate) instance: ViewInstanceId,
+    pub(crate) view: ScopedViewId,
+    pub(crate) root: Entity,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -99,16 +99,18 @@ enum UiPictureBindingError {
 }
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub enum UiIntent {
+pub(crate) enum UiIntent {
     Activated {
         view: ViewInstanceId,
         tag: FourCc,
     },
+    #[allow(dead_code)] // Value controls have not been presented by the recovered views yet.
     ValueChanged {
         view: ViewInstanceId,
         tag: FourCc,
         value: i32,
     },
+    #[allow(dead_code)] // Text controls have not been presented by the recovered views yet.
     TextChanged {
         view: ViewInstanceId,
         tag: FourCc,
@@ -141,10 +143,10 @@ struct UiPictureResources<'w> {
     font_handles: ResMut<'w, RetailFontHandles>,
 }
 
-pub struct UiRuntimePlugin;
+pub(crate) struct UiRuntimePlugin;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, SystemSet)]
-pub enum UiRuntimeSet {
+pub(crate) enum UiRuntimeSet {
     EmitIntents,
     SpawnViews,
     DespawnViews,

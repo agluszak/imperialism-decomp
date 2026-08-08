@@ -14,14 +14,14 @@ const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const MAIN_MENU_RESOURCE_ID: i16 = 1500;
 const RANDOM_SETUP_RESOURCE_ID: i16 = 1501;
 
-pub fn main_menu_view_id() -> ScopedViewId {
+pub(crate) fn main_menu_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: MAIN_MENU_RESOURCE_ID,
     }
 }
 
-pub fn random_setup_view_id() -> ScopedViewId {
+pub(crate) fn random_setup_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: RANDOM_SETUP_RESOURCE_ID,
@@ -33,7 +33,7 @@ pub fn random_setup_view_id() -> ScopedViewId {
 /// Their retail labels have not yet been recovered, so the draft retains the
 /// control values rather than assigning speculative names to them.
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub enum Difficulty {
+pub(crate) enum Difficulty {
     #[default]
     Level0,
     Level1,
@@ -43,7 +43,7 @@ pub enum Difficulty {
 }
 
 impl Difficulty {
-    pub const fn from_retail_value(value: i32) -> Option<Self> {
+    pub(crate) const fn from_retail_value(value: i32) -> Option<Self> {
         match value {
             0 => Some(Self::Level0),
             1 => Some(Self::Level1),
@@ -60,13 +60,13 @@ impl Difficulty {
 /// This is deliberately not simulation state: pressing Start will later pass
 /// this complete draft to the one game-creation operation.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
-pub struct RandomGameSetup {
-    pub planet_seed: String,
-    pub topology: RetailTopologyByte,
-    pub nation: MajorNationId,
-    pub country_name: String,
-    pub difficulty: Difficulty,
-    pub localized_names: bool,
+pub(crate) struct RandomGameSetup {
+    pub(crate) planet_seed: String,
+    pub(crate) topology: RetailTopologyByte,
+    pub(crate) nation: MajorNationId,
+    pub(crate) country_name: String,
+    pub(crate) difficulty: Difficulty,
+    pub(crate) localized_names: bool,
 }
 
 impl Default for RandomGameSetup {
@@ -83,22 +83,24 @@ impl Default for RandomGameSetup {
 }
 
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct StartupScreenInstances {
+pub(crate) struct StartupScreenInstances {
     main_menu: Option<ViewInstanceId>,
     random_setup: Option<ViewInstanceId>,
 }
 
 impl StartupScreenInstances {
-    pub const fn main_menu(&self) -> Option<ViewInstanceId> {
+    #[cfg(test)]
+    pub(crate) const fn main_menu(&self) -> Option<ViewInstanceId> {
         self.main_menu
     }
 
-    pub const fn random_setup(&self) -> Option<ViewInstanceId> {
+    #[cfg(test)]
+    pub(crate) const fn random_setup(&self) -> Option<ViewInstanceId> {
         self.random_setup
     }
 }
 
-pub struct StartupUiPlugin;
+pub(crate) struct StartupUiPlugin;
 
 impl Plugin for StartupUiPlugin {
     fn build(&self, app: &mut App) {

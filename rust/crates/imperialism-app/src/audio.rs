@@ -19,14 +19,10 @@ use std::fs;
 use std::path::PathBuf;
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct RetailWaveId(u16);
+pub(crate) struct RetailWaveId(u16);
 
 impl RetailWaveId {
-    pub const fn new(resource_id: u16) -> Self {
-        Self(resource_id)
-    }
-
-    pub const fn get(self) -> u16 {
+    pub(crate) const fn get(self) -> u16 {
         self.0
     }
 }
@@ -38,10 +34,11 @@ impl fmt::Display for RetailWaveId {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct RetailMusicTrack(u8);
+pub(crate) struct RetailMusicTrack(u8);
 
 impl RetailMusicTrack {
-    pub const fn new(track: u8) -> Result<Self, RetailMusicTrackError> {
+    #[cfg(test)]
+    const fn new(track: u8) -> Result<Self, RetailMusicTrackError> {
         if track >= 2 && track <= 12 {
             Ok(Self(track))
         } else {
@@ -49,7 +46,7 @@ impl RetailMusicTrack {
         }
     }
 
-    pub const fn get(self) -> u8 {
+    pub(crate) const fn get(self) -> u8 {
         self.0
     }
 }
@@ -62,18 +59,14 @@ impl fmt::Display for RetailMusicTrack {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 #[error("retail music track {track} is outside the supported Track02-Track12 range")]
-pub struct RetailMusicTrackError {
-    pub track: u8,
+#[cfg(test)]
+struct RetailMusicTrackError {
+    track: u8,
 }
 
-/// The recovered click sound used by ordinary retail UI controls.
-pub const RETAIL_UI_CLICK_WAVE: RetailWaveId = RetailWaveId(0x1b58);
-
-/// The sole music cue installed by the recovered retail main-menu setup path.
-pub const RETAIL_MAIN_MENU_MUSIC: RetailMusicTrack = RetailMusicTrack(6);
-
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
-pub enum RetailAudioAsset {
+#[allow(dead_code)] // A presentation system produces these cues as controls are recovered.
+pub(crate) enum RetailAudioAsset {
     Wave(RetailWaveId),
     Music(RetailMusicTrack),
 }
@@ -88,26 +81,28 @@ impl fmt::Display for RetailAudioAsset {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum AudioCuePlayback {
+#[allow(dead_code)] // A presentation system produces these cues as controls are recovered.
+pub(crate) enum AudioCuePlayback {
     Once,
     Loop,
 }
 
 #[derive(Message, Clone, Copy, Debug, Eq, PartialEq)]
-pub struct AudioCue {
-    pub asset: RetailAudioAsset,
-    pub playback: AudioCuePlayback,
+pub(crate) struct AudioCue {
+    pub(crate) asset: RetailAudioAsset,
+    pub(crate) playback: AudioCuePlayback,
 }
 
+#[allow(dead_code)] // Cue producers are presentation systems, not the playback system itself.
 impl AudioCue {
-    pub const fn sound_effect(wave: RetailWaveId) -> Self {
+    pub(crate) const fn sound_effect(wave: RetailWaveId) -> Self {
         Self {
             asset: RetailAudioAsset::Wave(wave),
             playback: AudioCuePlayback::Once,
         }
     }
 
-    pub const fn music(track: RetailMusicTrack, playback: AudioCuePlayback) -> Self {
+    pub(crate) const fn music(track: RetailMusicTrack, playback: AudioCuePlayback) -> Self {
         Self {
             asset: RetailAudioAsset::Music(track),
             playback,
@@ -135,7 +130,7 @@ enum RetailAudioError {
 #[derive(Resource, Default)]
 struct RetailAudioHandles(HashMap<RetailAudioAsset, Handle<AudioSource>>);
 
-pub struct RetailAudioPlugin;
+pub(crate) struct RetailAudioPlugin;
 
 impl Plugin for RetailAudioPlugin {
     fn build(&self, app: &mut App) {

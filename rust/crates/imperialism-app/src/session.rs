@@ -1,33 +1,37 @@
 use bevy::prelude::*;
-use imperialism_core::{GameCommand, GameEvent, GameState, Simulation};
+#[cfg(test)]
+use imperialism_core::GameState;
+use imperialism_core::{GameCommand, GameEvent, Simulation};
 
 #[derive(Resource)]
-pub struct GameSession(Simulation);
+pub(crate) struct GameSession(Simulation);
 
 impl GameSession {
-    pub fn new(state: GameState) -> Self {
+    #[cfg(test)]
+    pub(crate) fn new(state: GameState) -> Self {
         Self(Simulation::new(state))
     }
 
-    pub fn simulation(&self) -> &Simulation {
+    #[cfg(test)]
+    pub(crate) fn simulation(&self) -> &Simulation {
         &self.0
     }
 }
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub struct SubmitCommand(pub GameCommand);
+pub(crate) struct SubmitCommand(pub(crate) GameCommand);
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub struct DomainEventMessage(pub GameEvent);
+pub(crate) struct DomainEventMessage(pub(crate) GameEvent);
 
 #[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, SystemSet)]
-pub enum GameLoopSet {
+pub(crate) enum GameLoopSet {
     TranslateUiIntents,
     ApplyGameCommands,
     UpdatePresentation,
 }
 
-pub struct SessionPlugin;
+pub(crate) struct SessionPlugin;
 
 impl Plugin for SessionPlugin {
     fn build(&self, app: &mut App) {
@@ -71,8 +75,8 @@ fn apply_game_commands(
 mod tests {
     use super::*;
     use imperialism_core::{
-        AidAllocationTable, MajorNationState, MajorNationTable, NationCommonState, NationData,
-        NationId, NationPendingWork, NationState, NationTable, PendingActionTable,
+        AidAllocationTable, GameState, MajorNationState, MajorNationTable, NationCommonState,
+        NationData, NationId, NationPendingWork, NationState, NationTable, PendingActionTable,
         PendingWorkState, ResourceKind, ResourceTable, RngState, TurnState, WorldState,
     };
 
