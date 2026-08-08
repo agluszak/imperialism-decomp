@@ -1,3 +1,4 @@
+[private]
 [doc('Validate committed UI semantics, structural invariants, and class bindings')]
 [group('gates')]
 ui-codegen-check:
@@ -72,18 +73,21 @@ gates:
 
 # Named warning gate used by the general checks. Keep it separate from the
 # implementation recipe so callers have one stable policy entrypoint.
+[private]
 [doc('Fail unless every clang-cl lint translation unit compiles warning-free')]
 [group('gates')]
 lint-warning-gate:
   just lint
 
 # ASSERT_SIZE vs the RTTI oracle. Any mismatch is a hard failure.
+[private]
 [group('gates')]
 class-size-gate:
   uv run python -m tools.workflow.check_class_sizes --strict
 
 # Empty-body hard ban: intentionally-empty
 # bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
+[private]
 [group('gates')]
 noop-gate:
   uv run python -m tools.workflow.check_empty_bodies --gate
@@ -108,16 +112,19 @@ serde-audit *args:
   uv run python -m tools.workflow.serde_audit {{args}}
 
 # Raw-vtable source gate (Hard Rule 13); also runs as the first step of `just build`.
+[private]
 [group('gates')]
 vtable-gate:
   uv run python -m tools.workflow.check_no_raw_vtable_calls
 
+[private]
 [group('gates')]
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
 
 # CString is the real VC5/MFC type: reject pseudo/internal models, unpaired mutable
 # buffers, and CString objects passed through the stack-indexed string ellipsis.
+[private]
 [group('gates')]
 cstring-gate:
   uv run python -m tools.workflow.check_cstring_usage
@@ -125,12 +132,14 @@ cstring-gate:
 # Hard-ban gate against ILT/thunk-name ossification in manual source: rejects ANY
 # identifier that starts with thunk_/ILT_/WrapperFor_ or ends with _At<8hex> (calls via
 # linker thunks; history-encoded body names). Baseline-free: zero occurrences allowed.
+[private]
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
 
 # Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
 # (not a forward declaration, comment, or blank line).
+[private]
 [doc('Every // VTABLE: must be immediately followed by its class/struct')]
 [group('gates')]
 vtable-annotation-gate:
@@ -138,12 +147,14 @@ vtable-annotation-gate:
 
 # Ensure no inventory DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
 # address (which would make reccmp drop the vtable entity as a duplicate).
+[private]
 [doc('No inventory DATA row or // GLOBAL: marker may collide with a // VTABLE: address')]
 [group('gates')]
 vtable-collision-gate:
   uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
 
 # Ensure synthetic symbol names in source comments match symbols.csv.
+[private]
 [group('gates')]
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
@@ -152,6 +163,7 @@ synthetic-gate:
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
 # function rows claiming overlapping byte ranges. (Every consumer is a DictReader
 # that silently degrades when the header is misplaced.)
+[private]
 [doc('symbols.csv structural integrity: header at line 1, parseable + unique addresses, no function-range overlaps')]
 [group('gates')]
 symbols-integrity-gate:
@@ -162,6 +174,7 @@ symbols-integrity-gate:
 # the next add of that exact path, which is how 1933 clangd index files under .cache/
 # survived until PR #318. Whole-tree rather than diff-scoped, because every category is at
 # zero tracked hits -- a diff-scoped check would grandfather whatever slipped in earlier.
+[private]
 [doc('Reject tracked build/editor artifacts and stray large binaries')]
 [group('gates')]
 repo-hygiene-gate:
@@ -169,17 +182,20 @@ repo-hygiene-gate:
 
 # Reject generated build inputs and retired generated source trees in a branch or
 # worktree diff. `precommit` resolves the merge base and includes local changes.
+[private]
 [doc('Reject generated artifacts relative to a merge base')]
 [group('gates')]
 generated-integrity-gate *args:
   uv run python -m tools.workflow.check_generated_integrity {{args}}
 
 # Reviewed MSVC500 library identities must be faithfully projected into the current source model.
+[private]
 [doc('Library-identity gate: reviewed overrides applied + ownership=library')]
 [group('gates')]
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
 
+[private]
 [group('gates')]
 antipattern-gate:
   uv run python -m tools.workflow.check_construction_antipatterns
@@ -194,6 +210,7 @@ decomplint:
 # Shadow-stub gate: non-virtual degenerate methods that hide a real vtable
 # slot -- direct calls into do-nothing bodies where the original dispatches virtually.
 # Every offender is a hard error.
+[private]
 [group('gates')]
 shadow-stub-gate:
   uv run python -m tools.workflow.check_shadow_stubs

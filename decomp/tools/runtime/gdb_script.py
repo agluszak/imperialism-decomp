@@ -57,11 +57,11 @@ def create_wine_prefix() -> tuple[Path, dict[str, str]]:
     ~0.6s instead of a ~6.5s wineboot.
 
     Honours IMPERIALISM_RUNTIME_DISPLAY the same way the semantic runner does, so a
-    smoke run can go off-screen instead of mapping a window on the developer's desktop.
+    debug session can go off-screen instead of mapping a window on the developer's desktop.
     The Xvfb handle is stashed on the returned environment and released by
     shut_down_wine_prefix.
     """
-    parent = Path(tempfile.mkdtemp(prefix="imperialism-smoke-wine-"))
+    parent = Path(tempfile.mkdtemp(prefix="imperialism-runtime-wine-"))
     prefix = parent / "prefix"
     environment = prefix_environment(prefix)
     display = virtual_display(environment)

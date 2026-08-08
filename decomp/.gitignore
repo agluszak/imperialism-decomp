@@ -94,6 +94,3 @@ compile_commands.json
 
 # clangd index cache (per-machine, regenerated on demand)
 .cache/
-
-# Local regenerable Ghidra text export (write with sync_exports; do not commit)
-config/symbols.ghidra.txt

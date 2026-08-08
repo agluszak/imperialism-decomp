@@ -19,14 +19,12 @@ Detection (all conditions must hold):
 
 All findings are hard errors — the combination of conditions has no
 known-legitimate instance; if one ever appears, fix the model or claim the
-address rather than allowlisting. Optional slot enrichment from a local ABI
-evidence dump is used when present.
+address rather than allowlisting.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -41,7 +39,6 @@ _CPP = Language(tree_sitter_cpp.language())
 VOID_CAST_RE = re.compile(rb"^\(\s*void\s*\)\s*\w+\s*;$")
 MARKER_RE = re.compile(r"//\s*(?:FUNCTION|SYNTHETIC|STUB|LIBRARY|NOOP):")
 VTABLE_RE = re.compile(r"//\s*VTABLE:\s*\w+\s+0x(?P<addr>[0-9a-fA-F]+)\s*\n\s*class\s+(?P<name>\w+)")
-SLOT_NAME_RE = re.compile(r"Slot([0-9A-Fa-f]{1,3})$")
 
 
 def parse(source: bytes):
@@ -109,8 +106,6 @@ def main() -> int:
 
     vt_classes = vtable_classes(repo_root)
     virtuals = virtual_declarations(repo_root)
-    abi_path = repo_root / "config" / "vtable_abi_evidence.json"
-    abi = json.loads(abi_path.read_text())["classes"] if abi_path.is_file() else {}
 
     # Collect candidate degenerate definitions.
     candidates = []  # (class, method, rel, line)
@@ -182,18 +177,9 @@ def main() -> int:
         sites = max(0, sites - 1)
         if sites == 0:
             continue
-        slot_note = ""
-        m = SLOT_NAME_RE.search(name)
-        if m and cls in abi:
-            byte_off = int(m.group(1), 16)
-            for slot in abi[cls].get("slots", []):
-                if slot.get("byte_offset") == byte_off and not slot.get("null"):
-                    slot_note = (f" — vtable slot at byte 0x{byte_off:x} resolves to real "
-                                 f"original code {slot.get('target')}")
-                    break
         errors.append((f"{cls}::{name}",
                        f"{rel}:{line}: {cls}::{name} — non-virtual degenerate body with "
-                       f"live call sites on a vtable-carrying class{slot_note}"))
+                       f"live call sites on a vtable-carrying class"))
 
     if not errors:
         print(f"Shadow-stub gate passed ({len(candidates)} degenerate candidates, "

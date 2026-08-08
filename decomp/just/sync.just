@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 # sync — regenerate derived artifacts (original_entities.csv).
-# The three canonical playbooks live in docs/workflows.md.
+# Daily workflow notes live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
 # MUTATES: Ghidra DB (--apply). The ONE sanctioned source->Ghidra operation:

@@ -23,6 +23,7 @@ _build-runtime-tests-unlocked jobs:
     -v "$PWD/{{runtime_test_build_dir}}":/build \
     "{{docker_image}}"
 
+[private]
 [doc('Compile the native runtime harness with clang-cl diagnostics')]
 [group('runtime-test')]
 runtime-harness-lint:
@@ -31,6 +32,7 @@ runtime-harness-lint:
     --output "{{runtime_lint_build_dir}}/generated/runtime/RuntimeRegistry.inc"
   just _lint-in "{{runtime_lint_build_dir}}" "-DIMPERIALISM_RUNTIME_TESTS=ON"
 
+[private]
 [doc('Reject coordinate input and polling synchronization in native runtime scenarios')]
 [group('gates')]
 runtime-source-policy-gate:

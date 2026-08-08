@@ -6,7 +6,6 @@ preserves how it got here; do not rebuild it from obsolete replay tools.
 ## Inspect
 
 ```sh
-just ghidra-daemon          # optional warm JVM for fast queries
 just ghidra listing 0xADDR
 just ghidra decompile 0xADDR
 just ghidra xrefs 0xADDR
@@ -15,7 +14,8 @@ just ghidra portprep 0xADDR
 just ghidra vtable-dump Class=0xVT
 ```
 
-`just ghidra` with no subcommand lists the full dispatcher.
+`just ghidra` with no subcommand lists the full dispatcher. The optional warm
+daemon (`just ghidra-daemon`) keeps one JVM up so repeated queries stay fast.
 
 ## Mutate
 

@@ -1,4 +1,4 @@
-"""Isolated Wine-prefix lifecycle shared by semantic tests and smoke tools."""
+"""Isolated Wine-prefix lifecycle shared by semantic runtime tests."""
 
 from __future__ import annotations
 

@@ -20,6 +20,7 @@ format *paths:
 
 # MUTATES: resources/cursors with --write. Reconstruct the custom named cursor files
 # from the retail PE's GROUP_CURSOR and CURSOR resources; check mode is read-only.
+[private]
 [doc('MUTATES (--write): resources/cursors. Check or regenerate retail cursor assets')]
 [group('rewrite')]
 cursor-resources mode="--check":
@@ -29,6 +30,7 @@ cursor-resources mode="--check":
 
 # MUTATES: resources/bitmaps/backdrop_0119.bmp with --write. Reconstruct the
 # executable backdrop bitmap from retail RT_BITMAP 281 without changing its DIB.
+[private]
 [doc('MUTATES (--write): retail executable backdrop bitmap 281')]
 [group('rewrite')]
 backdrop-resource mode="--check":
@@ -38,6 +40,7 @@ backdrop-resource mode="--check":
 
 # MUTATES: resources/chrome with --write. Reconstruct the app icon and version
 # blobs read directly from the retail executable by recovered production source.
+[private]
 [doc('MUTATES (--write): direct retail executable icon and version resources')]
 [group('rewrite')]
 executable-chrome-resources mode="--check":

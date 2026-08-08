@@ -57,7 +57,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=os.getenv("OUTPUT_DIR", str(repo_root / "config")),
-        help="Output directory for symbols.ghidra.txt and original_entities.csv",
+        help="Output directory for original_entities.csv",
     )
     parser.add_argument(
         "--decomp-output-dir",
@@ -79,7 +79,7 @@ def parse_args() -> argparse.Namespace:
         "--inventory-only",
         action="store_true",
         help=(
-            "Export only symbols.ghidra.txt + original_entities.csv (the raw "
+            "Export only original_entities.csv (the raw "
             "inventory); skip the expensive decompiled-body and type-header "
             "evidence snapshot."
         ),
@@ -166,7 +166,6 @@ def main() -> int:
         decomp_output_dir.mkdir(parents=True, exist_ok=True)
         types_output_dir.mkdir(parents=True, exist_ok=True)
 
-        symbols_txt = output_dir / "symbols.ghidra.txt"
         symbols_csv = output_dir / "original_entities.csv"
         curated_by_addr: dict[int, dict[str, str]] = {}
         curated_rows: list[dict[str, str]] = []
@@ -195,7 +194,7 @@ def main() -> int:
             raise FileNotFoundError(f"Missing script: {script_path}")
 
         script_args = [
-            str(symbols_txt),
+            "-",  # skip obsolete symbols.txt side export
             str(symbols_csv),
             str(decomp_output_dir),
             str(types_output_dir),
@@ -362,7 +361,6 @@ def main() -> int:
                 f"orphans={merge_stats.retained_orphans} "
                 f"unclaimed_orphans={merge_stats.unclaimed_orphans}"
             )
-        print(f"  {symbols_txt}")
         print(f"  {symbols_csv}")
         print(f"  {decomp_output_dir}")
         print(f"  {types_output_dir}")

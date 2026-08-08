@@ -2,7 +2,7 @@
 # Unified export script for Imperialism decomp pipeline.
 #
 # Script args:
-#   0: symbols_txt_path
+#   0: symbols_txt_path ("-" to skip the obsolete reccmp symbols.txt export)
 #   1: symbols_csv_path
 #   2: decomp_output_dir
 #   3: types_output_dir
@@ -621,7 +621,8 @@ def require_nonempty(value, name):
     return value
 
 
-symbols_txt = require_nonempty(get_arg(0, None), "symbols_txt_path")
+# Arg 0 may be "-" to skip the obsolete reccmp symbols.txt side export.
+symbols_txt = get_arg(0, "-")
 symbols_csv = require_nonempty(get_arg(1, None), "symbols_csv_path")
 decomp_dir = require_nonempty(get_arg(2, None), "decomp_output_dir")
 types_dir = require_nonempty(get_arg(3, None), "types_output_dir")
@@ -632,7 +633,10 @@ export_mode = get_arg(7, "full")  # full | inventory-only
 
 enforce_ghidra_version(expected_version, expected_release)
 
-export_user_symbols(symbols_txt)
+if symbols_txt and str(symbols_txt).strip() not in ("", "-"):
+    export_user_symbols(symbols_txt)
+else:
+    print("symbols.txt export: skipped")
 export_reccmp_csv(symbols_csv)
 if export_mode != "inventory-only":
     export_decompiled_bodies(decomp_dir, max_per_file)

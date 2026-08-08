@@ -122,6 +122,7 @@ clang-tidy-audit filter="/(TScrollBarView|TGreatPower|TMapMaker|TViewMgr|NetMess
     '{{filter}}'
 
 # Assert the recomp PE has .rsrc and SDI template MENU id 128 (0x80).
+[private]
 [group('build')]
 resource-check:
   just backdrop-resource --check
@@ -134,6 +135,7 @@ resource-check:
   uv run python -m tools.workflow.pe_resources direct-resource-parity \
     "$ORIGINAL_BINARY" "{{build_dir}}/Imperialism.exe"
 
+[private]
 [doc('Generate resource-driven turn-event factory TUs into the build tree')]
 [group('build')]
 ui-codegen *args:
@@ -142,6 +144,7 @@ ui-codegen *args:
 # Regression proof: enabling the fixture must make the real project lint gate fail.
 # Its dedicated cache stays enabled, so neither this test nor normal lint invalidates
 # the other's object files on the next precommit.
+[private]
 [doc('Prove the lint warning gate rejects an intentionally warning-producing TU')]
 [group('test')]
 lint-warning-gate-test:

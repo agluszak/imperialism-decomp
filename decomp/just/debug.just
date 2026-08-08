@@ -113,6 +113,7 @@ debug *args:
   printf '%s' "$script" | winedbg "$recomp" "$@"
 
 # Run the debugger with a short timeout. Override with DEBUG_TIMEOUT=10s.
+[private]
 [group('debug')]
 debug-timeout *args:
   #!/usr/bin/env bash
