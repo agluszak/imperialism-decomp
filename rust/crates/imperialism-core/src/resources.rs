@@ -37,9 +37,8 @@ pub type ResourceTable<T> = EnumMap<ResourceKind, T>;
 impl ResourceKind {
     pub const PURCHASED_COUNT: usize = Self::Grain as usize;
 
-    pub fn from_retail_index(value: i16) -> Option<Self> {
-        let index = usize::try_from(value).ok()?;
-        (index < Self::LENGTH).then(|| Self::from_usize(index))
+    pub fn from_index(index: u8) -> Option<Self> {
+        (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
     }
 }
 

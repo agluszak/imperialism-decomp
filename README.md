@@ -10,8 +10,8 @@ contracts without sharing implementation structure.
 - [`fixtures/retail/`](fixtures/retail/) contains retail-produced fixtures used as shared evidence.
 
 Retail behavior is the common reference. The C++ reconstruction can act as an executable oracle for
-Rust, but Rust does not link to it or mirror its C++ object layout. Canonical snapshots and the
-serializable command/event protocol are the formal boundary.
+Rust, but Rust does not link to it or mirror its C++ object layout. The harness exchanges only
+narrow named semantic captures.
 
 Run implementation commands from the relevant subproject directory and follow its scoped guide:
 

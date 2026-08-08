@@ -1,40 +1,39 @@
 /// Imperialism advances its economic calendar in four quarter turns per year.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct TurnCalendar {
-    starting_year: i16,
-    economic_turn: i16,
+    starting_year: i32,
+    economic_turn: i32,
 }
 
 impl TurnCalendar {
-    pub const TURNS_PER_YEAR: i16 = 4;
+    pub const TURNS_PER_YEAR: i32 = 4;
 
-    pub const fn new(starting_year: i16, economic_turn: i16) -> Self {
+    pub const fn new(starting_year: i32, economic_turn: i32) -> Self {
         Self {
             starting_year,
             economic_turn,
         }
     }
 
-    pub const fn starting_year(self) -> i16 {
+    pub const fn starting_year(self) -> i32 {
         self.starting_year
     }
 
-    pub const fn economic_turn(self) -> i16 {
+    pub const fn economic_turn(self) -> i32 {
         self.economic_turn
     }
 
-    pub fn year(self) -> i16 {
-        self.starting_year
-            .wrapping_add(self.economic_turn.div_euclid(Self::TURNS_PER_YEAR))
+    pub fn year(self) -> i32 {
+        self.starting_year + self.economic_turn.div_euclid(Self::TURNS_PER_YEAR)
     }
 
     pub fn quarter(self) -> u8 {
         self.economic_turn.rem_euclid(Self::TURNS_PER_YEAR) as u8
     }
 
-    /// Mirrors `TSimMgr::AdvanceSeason`: only the signed 16-bit turn counter changes.
+    /// Advances one economic quarter.
     pub fn advance(&mut self) {
-        self.economic_turn = self.economic_turn.wrapping_add(1);
+        self.economic_turn += 1;
     }
 }
 
@@ -53,9 +52,9 @@ mod tests {
     }
 
     #[test]
-    fn retail_increment_wraps_like_a_short() {
-        let mut calendar = TurnCalendar::new(1914, i16::MAX);
+    fn advances_without_a_storage_width_boundary() {
+        let mut calendar = TurnCalendar::new(1914, 99_999);
         calendar.advance();
-        assert_eq!(calendar.economic_turn(), i16::MIN);
+        assert_eq!(calendar.economic_turn(), 100_000);
     }
 }

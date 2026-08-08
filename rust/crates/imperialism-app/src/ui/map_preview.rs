@@ -465,8 +465,7 @@ fn enhance_preview_selection(pixels: &mut [PaletteIndex], selected_nation: Major
 }
 
 fn is_selection_maskable(palette: PaletteIndex) -> bool {
-    palette == SELECTED_EDGE_PALETTE
-        || matches!(palette.get(), 0 | 2 | 0x0f | 6 | 0x20 | 5 | 0xca)
+    palette == SELECTED_EDGE_PALETTE || matches!(palette.get(), 0 | 2 | 0x0f | 6 | 0x20 | 5 | 0xca)
 }
 
 fn major_nation_palette(nation: MajorNationId) -> PaletteIndex {

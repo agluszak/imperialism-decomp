@@ -42,7 +42,9 @@ fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
             crt_rand_state: values[0],
             map_generation_lcg: values[1],
             zone_status_lcg: values[2],
-            selected_nation: NationId::from_retail_slot(i64::from(values[3]))
+            selected_nation: u8::try_from(values[3])
+                .ok()
+                .and_then(NationId::try_new)
                 .context("selected nation is outside the nation range")?,
         })
         .context("projecting semantic game state")?;

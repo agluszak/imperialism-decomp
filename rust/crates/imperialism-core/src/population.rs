@@ -20,11 +20,7 @@ impl LaborPool {
     }
 
     pub fn strength(self) -> i16 {
-        self.low.wrapping_add(
-            self.medium
-                .wrapping_add(self.high.wrapping_mul(2))
-                .wrapping_mul(2),
-        )
+        self.low + (self.medium + self.high * 2) * 2
     }
 
     /// Mirrors `TLaborPool::TransferToLowSkillFirst`.
@@ -151,13 +147,13 @@ impl CityState {
                 .ok_or(PopulationError::InvalidStrikePhase {
                     phase: self.population.phase_value,
                 })?;
-            *amount = amount.wrapping_add(1);
+            *amount += 1;
             self.population.phase_value = if self.population.phase_value == 3 {
                 0
             } else {
-                self.population.phase_value.wrapping_add(1)
+                self.population.phase_value + 1
             };
-            cycles = cycles.wrapping_sub(1);
+            cycles -= 1;
         }
 
         let mut shortage = false;
@@ -167,7 +163,7 @@ impl CityState {
                 verify_stocks(&mut self.stock_by_type);
                 shortage = true;
             } else {
-                self.stock_by_type[resource] = self.stock_by_type[resource].wrapping_sub(amount);
+                self.stock_by_type[resource] -= amount;
                 verify_stocks(&mut self.stock_by_type);
             }
         }
@@ -204,7 +200,7 @@ impl PopulationState {
         *self.baseline_mut()? = labor;
         *self.production_mut()? = labor;
         self.strength = labor.strength();
-        self.count = medium.wrapping_add(high).wrapping_add(low);
+        self.count = medium + high + low;
         self.count_float_bits = f32::from(self.count).to_bits();
         *self.pending_mut()? = LaborPool::default();
         self.phase_value = 0;
@@ -247,7 +243,7 @@ impl PopulationState {
         for resource in STRIKE_RESOURCES {
             self.predicted_need_by_resource[resource] = 0;
         }
-        let supported = self.count.wrapping_add(order_quantity);
+        let supported = self.count + order_quantity;
         self.predicted_need_by_resource[ResourceKind::Grain] =
             ((i32::from(supported) + 1) / 2) as i16;
         self.predicted_need_by_resource[ResourceKind::Fruit] =
@@ -257,7 +253,7 @@ impl PopulationState {
     }
 
     /// Mirrors `TPopulationMgr::RemovePopulation`, including its unusual use
-    /// of the post-band remainder in the overflow strength adjustments.
+    /// of the post-band remainder in the strength adjustments.
     pub fn remove_population(
         &mut self,
         starting_band: SkillBand,
@@ -269,22 +265,18 @@ impl PopulationState {
         while let Some(current) = band {
             let available = self.baseline()?.band(current);
             if remaining <= available {
-                *self.baseline_mut()?.band_mut(current) = available.wrapping_sub(remaining);
+                *self.baseline_mut()?.band_mut(current) = available - remaining;
                 let production = self.production_mut()?.band_mut(current);
-                *production = production.wrapping_sub(remaining);
-                self.strength = self
-                    .strength
-                    .wrapping_sub(remaining.wrapping_mul(current.weight()));
+                *production -= remaining;
+                self.strength -= remaining * current.weight();
                 remaining = 0;
                 break;
             }
 
-            remaining = remaining.wrapping_sub(available);
+            remaining -= available;
             *self.baseline_mut()?.band_mut(current) = 0;
             *self.production_mut()?.band_mut(current) = 0;
-            self.strength = self
-                .strength
-                .wrapping_sub(remaining.wrapping_mul(current.weight()));
+            self.strength -= remaining * current.weight();
             band = match current {
                 SkillBand::Low => Some(SkillBand::Medium),
                 SkillBand::Medium => Some(SkillBand::High),
@@ -292,8 +284,8 @@ impl PopulationState {
             };
         }
 
-        let removed = amount.wrapping_sub(remaining);
-        self.count = self.count.wrapping_sub(removed);
+        let removed = amount - remaining;
+        self.count -= removed;
         self.count_float_bits = (self.count_float() - f32::from(removed)).to_bits();
         Ok(())
     }
@@ -304,29 +296,27 @@ impl PopulationState {
         amount: i16,
     ) -> Result<(), PopulationError> {
         let production = self.production_mut()?.band_mut(band);
-        *production = production.wrapping_sub(amount);
-        self.strength = self
-            .strength
-            .wrapping_sub(amount.wrapping_mul(band.weight()));
+        *production -= amount;
+        self.strength -= amount * band.weight();
         Ok(())
     }
 
     pub fn add_untrained(&mut self, count: i16) -> Result<(), PopulationError> {
         let baseline = &mut self.baseline_mut()?.low;
-        *baseline = baseline.wrapping_add(count);
+        *baseline += count;
         let production = &mut self.production_mut()?.low;
-        *production = production.wrapping_add(count);
-        self.count = self.count.wrapping_add(count);
+        *production += count;
+        self.count += count;
         Ok(())
     }
 
     pub fn add_expert(&mut self, count: i16) -> Result<(), PopulationError> {
         let baseline = &mut self.baseline_mut()?.high;
-        *baseline = baseline.wrapping_add(count);
+        *baseline += count;
         let production = &mut self.production_mut()?.high;
-        *production = production.wrapping_add(count);
-        self.count = self.count.wrapping_add(count);
-        self.strength = self.strength.wrapping_add(count.wrapping_mul(4));
+        *production += count;
+        self.count += count;
+        self.strength += count * 4;
         Ok(())
     }
 
@@ -337,9 +327,9 @@ impl PopulationState {
         self.require_labor_pools()?;
         let pending = *self.pending()?;
         let production = self.production_mut()?;
-        production.low = production.low.wrapping_add(pending.low);
-        production.medium = production.medium.wrapping_add(pending.medium);
-        production.high = production.high.wrapping_add(pending.high);
+        production.low += pending.low;
+        production.medium += pending.medium;
+        production.high += pending.high;
 
         let mut food = FoodRemainders::from_city_stocks(stocks);
         let mut unmet = food.consume_normal_needs(self.count);
@@ -348,11 +338,11 @@ impl PopulationState {
         if unmet != 0 {
             let canned = &mut stocks[ResourceKind::Food];
             if unmet < *canned {
-                *canned = canned.wrapping_sub(unmet);
+                *canned -= unmet;
                 verify_stocks(stocks);
                 unmet = 0;
             } else {
-                unmet = unmet.wrapping_sub(*canned);
+                unmet -= *canned;
                 *canned = 0;
                 verify_stocks(stocks);
             }
@@ -360,7 +350,7 @@ impl PopulationState {
             if unmet != 0 {
                 let before = unmet;
                 food.substitute_surpluses(&mut unmet);
-                substituted = before.wrapping_sub(unmet);
+                substituted = before - unmet;
             }
         }
 
@@ -370,7 +360,7 @@ impl PopulationState {
             let mut lost = LaborPool::default();
             self.baseline_mut()?
                 .transfer_low_skill_first(&mut lost, unmet);
-            self.count = self.count.wrapping_sub(unmet);
+            self.count -= unmet;
             self.count_float_bits = (self.count_float() - f32::from(unmet)).to_bits();
             unmet.max(0)
         } else {
@@ -401,7 +391,7 @@ impl PopulationState {
         let mut food = FoodRemainders {
             grain: available[ResourceKind::Grain],
             fruit: available[ResourceKind::Fruit],
-            animal: available[ResourceKind::Fish].wrapping_add(available[ResourceKind::Livestock]),
+            animal: available[ResourceKind::Fish] + available[ResourceKind::Livestock],
             original_fish: available[ResourceKind::Fish],
             original_livestock: available[ResourceKind::Livestock],
         };
@@ -412,12 +402,12 @@ impl PopulationState {
             if unmet < canned_food {
                 unmet = 0;
             } else {
-                unmet = unmet.wrapping_sub(canned_food);
+                unmet -= canned_food;
             }
             if unmet != 0 {
                 let before = unmet;
                 food.substitute_surpluses(&mut unmet);
-                substitution = before.wrapping_sub(unmet);
+                substitution = before - unmet;
             }
         }
 
@@ -485,7 +475,7 @@ impl FoodRemainders {
         Self {
             grain: stocks[ResourceKind::Grain],
             fruit: stocks[ResourceKind::Fruit],
-            animal: stocks[ResourceKind::Fish].wrapping_add(stocks[ResourceKind::Livestock]),
+            animal: stocks[ResourceKind::Fish] + stocks[ResourceKind::Livestock],
             original_fish: stocks[ResourceKind::Fish],
             original_livestock: stocks[ResourceKind::Livestock],
         }
@@ -532,18 +522,18 @@ impl FoodRemainders {
             self.animal / 2
         };
         let mut fish = if self.animal & 1 != 0 {
-            livestock.wrapping_sub(1)
+            livestock - 1
         } else {
             livestock
         };
         if self.original_livestock < livestock {
-            let shift = livestock.wrapping_sub(self.original_livestock);
-            livestock = livestock.wrapping_sub(shift);
-            fish = fish.wrapping_add(shift);
+            let shift = livestock - self.original_livestock;
+            livestock -= shift;
+            fish += shift;
         } else if self.original_fish < fish {
-            let shift = fish.wrapping_sub(self.original_fish);
-            fish = fish.wrapping_sub(shift);
-            livestock = livestock.wrapping_add(shift);
+            let shift = fish - self.original_fish;
+            fish -= shift;
+            livestock += shift;
         }
         stocks[ResourceKind::Livestock] = livestock;
         verify_stocks(stocks);
@@ -562,19 +552,19 @@ fn verify_stocks(stocks: &mut ResourceTable<i16>) {
 
 fn consume_need(remaining: &mut i16, need: i16, unmet: &mut i16) {
     if *remaining < need {
-        *unmet = unmet.wrapping_add(need.wrapping_sub(*remaining));
+        *unmet += need - *remaining;
         *remaining = 0;
     } else {
-        *remaining = remaining.wrapping_sub(need);
+        *remaining -= need;
     }
 }
 
 fn consume_surplus(remaining: &mut i16, unmet: &mut i16) {
     if *remaining < *unmet {
-        *unmet = unmet.wrapping_sub(*remaining);
+        *unmet -= *remaining;
         *remaining = 0;
     } else {
-        *remaining = remaining.wrapping_sub(*unmet);
+        *remaining -= *unmet;
         *unmet = 0;
     }
 }
@@ -585,9 +575,9 @@ fn transfer_band(source: &mut i16, destination: &mut i16, remaining: &mut i16) {
     } else {
         *remaining
     };
-    *source = source.wrapping_sub(moved);
-    *destination = destination.wrapping_add(moved);
-    *remaining = remaining.wrapping_sub(moved);
+    *source -= moved;
+    *destination += moved;
+    *remaining -= moved;
 }
 
 #[cfg(test)]
@@ -621,12 +611,12 @@ mod tests {
             phase_counter: 0,
             military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: [0; 14],
+            order_count_by_type: crate::IndustryActionTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: ResourceTable::default(),
-            home_town_tile: 1,
+            home_town_tile: Some(crate::TileId::new(1)),
             power_available: 0,
             stock_by_type: ResourceTable::default(),
             production_orders: crate::ProductionTable::default(),
@@ -670,14 +660,14 @@ mod tests {
     }
 
     #[test]
-    fn initializes_all_population_bands_with_retail_short_arithmetic() {
+    fn initializes_all_population_bands() {
         let mut state = population();
-        state.set_population(i16::MAX, 2, 3).unwrap();
-        assert_eq!(state.baseline_labor, Some(LaborPool::new(i16::MAX, 2, 3)));
+        state.set_population(4, 2, 3).unwrap();
+        assert_eq!(state.baseline_labor, Some(LaborPool::new(4, 2, 3)));
         assert_eq!(state.production_labor, state.baseline_labor);
         assert_eq!(state.pending_labor_delta, Some(LaborPool::default()));
-        assert_eq!(state.strength, i16::MIN.wrapping_add(15));
-        assert_eq!(state.count, i16::MIN.wrapping_add(4));
+        assert_eq!(state.strength, 20);
+        assert_eq!(state.count, 9);
         assert_eq!(state.count_float(), f32::from(state.count));
         assert_eq!(state.phase_value, 0);
     }
@@ -709,7 +699,7 @@ mod tests {
     }
 
     #[test]
-    fn preserves_remove_population_overflow_branch_semantics() {
+    fn removes_population_across_skill_bands() {
         let mut state = population();
         state.remove_population(SkillBand::Low, 5).unwrap();
         assert_eq!(state.baseline_labor, Some(LaborPool::new(0, 1, 1)));
