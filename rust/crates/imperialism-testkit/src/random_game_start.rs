@@ -4,22 +4,24 @@
 //! Delete it once complete `GameState` equality holds for several seeds.
 
 use imperialism_core::{
-    GameState, MajorNation, MajorNationTable, MinorNationTable, NationPendingWork, Nations,
-    PendingWorkState, RetailCrtRng, RetailLcg, RngState, TurnState, WorldState,
+    GameState, MajorNation, MajorNationTable, MilitaryUnitState, MinorNation, MinorNationTable,
+    NationPendingWork, Nations, PendingWorkState, RetailCrtRng, RetailLcg, RngState, TurnState,
+    WorldState,
 };
 use serde::{Deserialize, Serialize};
 
 /// Currently compared blocks of the capital-selection-ready boundary.
 ///
-/// Includes turn state, all major-nation slots (human Frog City + AI homes), and the
-/// map-generation LCG after preview post-passes. Tile bodies, minors/militia, CRT/zone
-/// RNG, and pending-work join as each retail operation lands.
+/// Includes turn state, all nations, military units (minor militia), and the map/CRT RNG
+/// streams after Accept bootstrap. Tile bodies, zone RNG, and pending-work join next.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameStartBoundarySubset {
     pub turn: TurnState,
     pub majors: MajorNationTable<Option<MajorNation>>,
-    /// `RngState.map_generation` after Accept-time post-passes.
+    pub minors: MinorNationTable<Option<MinorNation>>,
+    pub military_units: Vec<MilitaryUnitState>,
     pub map_generation: RetailLcg,
+    pub crt_rand: RetailCrtRng,
 }
 
 impl RandomGameStartBoundarySubset {
@@ -27,7 +29,10 @@ impl RandomGameStartBoundarySubset {
         Self {
             turn: state.turn,
             majors: state.nations.majors.clone(),
+            minors: state.nations.minors.clone(),
+            military_units: state.military_units.clone(),
             map_generation: state.rng.map_generation,
+            crt_rand: state.rng.crt_rand,
         }
     }
 
@@ -41,16 +46,16 @@ impl RandomGameStartBoundarySubset {
                 tiles: Vec::new(),
             },
             rng: RngState {
-                crt_rand: RetailCrtRng::from_state(0),
+                crt_rand: self.crt_rand,
                 map_generation: self.map_generation,
                 zone_status: RetailLcg::from_state(0),
             },
             market: Default::default(),
             nations: Nations {
                 majors: self.majors,
-                minors: MinorNationTable::from_fn(|_| None),
+                minors: self.minors,
             },
-            military_units: Vec::new(),
+            military_units: self.military_units,
             civilian_units: Vec::new(),
             ships: Vec::new(),
             task_forces: Vec::new(),

@@ -497,7 +497,8 @@ fn accept_random_setup(
         nation: setup.nation,
         difficulty: setup.difficulty,
     };
-    let mut session = create_random_game(generated, options.nation, options.difficulty);
+    // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
+    let mut session = create_random_game(generated, options.nation, options.difficulty, 1);
     if requires_capital_site_selection(options.difficulty) {
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);

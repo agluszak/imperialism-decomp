@@ -259,7 +259,7 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
                 setup.planet_seed
             )
         })?;
-    let actual = create_random_game(&preview, setup.nation, setup.difficulty);
+    let actual = create_random_game(&preview, setup.nation, setup.difficulty, runtime.seed);
     let expected: GameState = runtime
         .capture("game_state")
         .with_context(|| format!("could not read {}", result.display()))?;

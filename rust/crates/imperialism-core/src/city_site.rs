@@ -268,7 +268,7 @@ mod tests {
             RetailTopologyByte::from_wraps_horizontally(true),
             1,
         );
-        create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal)
+        create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1)
     }
 
     #[test]
@@ -357,7 +357,7 @@ mod tests {
             RetailTopologyByte::from_wraps_horizontally(true),
             1,
         );
-        let mut state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy);
+        let mut state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
         enter_strategic_map_without_capital_selection(&mut state).unwrap();
         assert_eq!(state.turn.phase_code, 5);
         assert_eq!(

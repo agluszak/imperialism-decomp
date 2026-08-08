@@ -1,7 +1,8 @@
 use crate::{
     CityState, DevelopmentLevel, Difficulty, GameState, GeneratedMap, GeneratedTerrainTile,
-    LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MinorNation,
-    MinorNationTable, NationCommonState, NationPendingWork, NationTable, Nations, PendingWorkState,
+    LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MilitaryUnitId,
+    MilitaryUnitKind, MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable,
+    NationCommonState, NationId, NationPendingWork, NationTable, Nations, PendingWorkState,
     ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
     RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag,
     TileState, TradeMarketState, TurnState, WorldState,
@@ -65,6 +66,7 @@ pub fn create_random_game(
     preview: &RandomSetupPreview,
     human_nation: MajorNationId,
     difficulty: Difficulty,
+    runtime_seed: u32,
 ) -> GameState {
     let mut map_lcg = RetailLcg::from_state(preview.final_map_lcg);
     let wraps = preview.topology.wraps_horizontally();
@@ -74,6 +76,11 @@ pub fn create_random_game(
         wraps_horizontally: wraps,
         tiles: post.tiles,
     };
+    // Runtime-test / Accept entry: map build ends in `srand(runtime_seed)`, then setup
+    // `DoPostCreate` draws one `rand() % 7` for the initial nation when the slot was -1.
+    let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
+    let _ = crt_rand.next_rand();
+
     // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): AI majors PlaceCity;
     // the human Normal+ path only attaches Frog City at tile 0.
     place_ai_frog_cities(
@@ -83,6 +90,21 @@ pub fn create_random_game(
         &mut nations,
         human_nation,
     );
+
+    let mut military_units = Vec::new();
+    let mut persistent_unit_id_counter = 0i32;
+    // `RebuildSecondaryNationStateForSlot` for minors 7..22.
+    bootstrap_minors(
+        &mut world,
+        &mut post.gate_flags,
+        &mut post.province_capitals,
+        &mut nations,
+        &mut crt_rand,
+        &mut military_units,
+        &mut persistent_unit_id_counter,
+        difficulty,
+    );
+
     GameState {
         turn: TurnState {
             scenario_map_index_plus_one: 0,
@@ -92,18 +114,18 @@ pub fn create_random_game(
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),
         },
-        persistent_unit_id_counter: 0,
+        persistent_unit_id_counter,
         world,
         rng: RngState {
-            // CRT/zone advance during later Accept bootstrap; map_generation continues
-            // through the preview post-passes that stamp edge resources.
-            crt_rand: RetailCrtRng::from_state(0),
+            crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),
+            // Zone stream is reseeded from the clock/runtime seed after map build; Accept
+            // then advances it in GenerateProvinceNames (not ported here yet).
             zone_status: RetailLcg::from_state(0),
         },
         market: TradeMarketState::default(),
         nations,
-        military_units: Vec::new(),
+        military_units,
         civilian_units: Vec::new(),
         ships: Vec::new(),
         task_forces: Vec::new(),
@@ -328,6 +350,292 @@ fn place_ai_frog_cities(
             }
         }
     }
+}
+
+/// Minor capital marker from `TMapMgr::ResetTileToBaseTransportFlag` (`1 | 0x20`).
+const MINOR_HOME_ACTIVE_FLAGS: u16 = 0x21;
+
+const LAND_UNIT_TYPE_NAMES: [&str; 8] = [
+    "Minutemen",
+    "Skirmishers",
+    "Regulars",
+    "Grenadiers",
+    "Hussars",
+    "Cuirassiers",
+    "Light Artillery",
+    "Artillery",
+];
+
+/// `RebuildSecondaryNationStateForSlot` for minors: home pick, militia, trailing Regulars.
+#[allow(clippy::too_many_arguments)]
+fn bootstrap_minors(
+    world: &mut WorldState,
+    gate_flags: &mut [i8],
+    province_capitals: &mut [Option<usize>],
+    nations: &mut Nations,
+    crt: &mut RetailCrtRng,
+    military_units: &mut Vec<MilitaryUnitState>,
+    persistent_unit_id_counter: &mut i32,
+    difficulty: Difficulty,
+) {
+    for minor_id in MinorNationId::all() {
+        let owner = TileOwnerTag::new(minor_id.nation().get());
+        let Some(home) = select_minor_home_tile(world, owner, crt) else {
+            continue;
+        };
+        reset_tile_to_base_transport_flag(world, gate_flags, province_capitals, home);
+        if let Some(minor) = nations.minors[minor_id].as_mut() {
+            minor.common.home_tile = Some(TileId::new(home as u16));
+        }
+
+        let mut name_ordinals = [1i16; MilitaryUnitKind::LENGTH];
+        let mut next_roster_id = 1i16;
+        let owned = owned_province_ids(world, province_capitals, owner);
+        spawn_initial_militia_for_minor(
+            world,
+            province_capitals,
+            minor_id,
+            &owned,
+            difficulty,
+            military_units,
+            persistent_unit_id_counter,
+            &mut name_ordinals,
+            &mut next_roster_id,
+        );
+        // RebuildSecondaryNationStateForSlot trailing pair after InitialMilitia.
+        let home_province = world.tiles[home]
+            .province
+            .map(|province| i16::try_from(province.get()).expect("province fits i16"))
+            .unwrap_or(-1);
+        for _ in 0..2 {
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                minor_id.nation(),
+                MilitaryUnitKind::Regulars,
+                home_province,
+                2,
+            );
+        }
+        name_units_for_nation(
+            military_units,
+            minor_id.nation(),
+            &mut name_ordinals,
+            &mut next_roster_id,
+        );
+    }
+}
+
+fn select_minor_home_tile(
+    world: &WorldState,
+    owner: TileOwnerTag,
+    crt: &mut RetailCrtRng,
+) -> Option<usize> {
+    let mut selected = None;
+    let mut candidates = Vec::new();
+    for (index, tile) in world.tiles.iter().enumerate() {
+        if tile.owner_nation != Some(owner) {
+            continue;
+        }
+        if (tile.active_flags & 1) != 0 {
+            selected = Some(index);
+        }
+        let tile_id = TileId::new(index as u16);
+        if is_valid_secondary_nation_home_tile_candidate(world, tile_id).unwrap_or(false) {
+            candidates.push(index);
+        }
+    }
+    if selected.is_some() {
+        return selected;
+    }
+    if candidates.is_empty() {
+        return None;
+    }
+    // `At(rand() % count + 1)` on a 1-based list ≡ zero-based `rand() % count`.
+    let pick = (crt.next_rand() as usize) % candidates.len();
+    Some(candidates[pick])
+}
+
+/// `TMapMgr::ResetTileToBaseTransportFlag` (0x00518990).
+fn reset_tile_to_base_transport_flag(
+    world: &mut WorldState,
+    gate_flags: &mut [i8],
+    province_capitals: &mut [Option<usize>],
+    tile: usize,
+) {
+    set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, tile);
+    world.tiles[tile].active_flags = MINOR_HOME_ACTIVE_FLAGS;
+    initialize_tile_neighbor_connection_mask_if_needed(&mut world.tiles, gate_flags, tile);
+}
+
+fn owned_province_ids(
+    world: &WorldState,
+    province_capitals: &[Option<usize>],
+    owner: TileOwnerTag,
+) -> Vec<u16> {
+    let mut owned = Vec::new();
+    for (province_index, capital) in province_capitals.iter().enumerate() {
+        let Some(capital) = *capital else {
+            continue;
+        };
+        if world.tiles[capital].owner_nation == Some(owner) {
+            owned.push(province_index as u16);
+        }
+    }
+    owned
+}
+
+/// `TCountry::InitialMilitia` for random-map minors at the pre-capital boundary.
+#[allow(clippy::too_many_arguments)]
+fn spawn_initial_militia_for_minor(
+    world: &mut WorldState,
+    province_capitals: &[Option<usize>],
+    minor_id: MinorNationId,
+    owned_provinces: &[u16],
+    difficulty: Difficulty,
+    military_units: &mut Vec<MilitaryUnitState>,
+    persistent_unit_id_counter: &mut i32,
+    name_ordinals: &mut [i16],
+    next_roster_id: &mut i16,
+) {
+    let nation = minor_id.nation();
+    let set_garrison_orders = matches!(difficulty, Difficulty::Introductory | Difficulty::Easy);
+    for &province in owned_provinces {
+        let capital = province_capitals
+            .get(usize::from(province))
+            .copied()
+            .flatten();
+        let capital_flags = capital
+            .map(|index| world.tiles[index].active_flags)
+            .unwrap_or(0);
+        if (capital_flags & 1) != 0 {
+            let order = if set_garrison_orders { 2 } else { 0 };
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Regulars,
+                province as i16,
+                order,
+            );
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Regulars,
+                province as i16,
+                order,
+            );
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Artillery,
+                province as i16,
+                order,
+            );
+            if let Some(capital) = capital {
+                world.tiles[capital].active_flags |= 8;
+            }
+        }
+        // `AddMilitia` ×3 (minors always spawn type 0 / Minutemen with order 2).
+        for _ in 0..3 {
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Minutemen,
+                province as i16,
+                2,
+            );
+        }
+        if matches!(difficulty, Difficulty::Hard | Difficulty::NighOnImpossible) {
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Minutemen,
+                province as i16,
+                2,
+            );
+            push_military_unit(
+                military_units,
+                persistent_unit_id_counter,
+                nation,
+                MilitaryUnitKind::Artillery,
+                province as i16,
+                0,
+            );
+        }
+    }
+    name_units_for_nation(military_units, nation, name_ordinals, next_roster_id);
+}
+
+fn push_military_unit(
+    military_units: &mut Vec<MilitaryUnitState>,
+    persistent_unit_id_counter: &mut i32,
+    nation: NationId,
+    unit_type: MilitaryUnitKind,
+    stationed_province: i16,
+    order: i32,
+) {
+    *persistent_unit_id_counter += 1;
+    military_units.push(MilitaryUnitState {
+        id: MilitaryUnitId::new(*persistent_unit_id_counter),
+        nation,
+        unit_type,
+        stationed_province,
+        order,
+        order_target: -1,
+        owner_nation: nation,
+        roster_id: 0,
+        registered: true,
+        order_target_tiles: [stationed_province; 3],
+        order_target_mirrors: [stationed_province; 3],
+        name: String::new(),
+        strength: 500,
+        era: unit_type.spawn_era(),
+        experience: 0,
+        battle_flags: 0,
+    });
+}
+
+/// `TCountry::NameUnits` for non-general land units (English STR# 0x2717 / 0x275f).
+fn name_units_for_nation(
+    military_units: &mut [MilitaryUnitState],
+    nation: NationId,
+    name_ordinals: &mut [i16],
+    next_roster_id: &mut i16,
+) {
+    for unit in military_units
+        .iter_mut()
+        .filter(|unit| unit.nation == nation)
+    {
+        if unit.roster_id != 0 {
+            continue;
+        }
+        let kind = unit.unit_type.index() as usize;
+        if kind >= MilitaryUnitKind::GeneralEra1 as usize {
+            continue;
+        }
+        let ordinal = name_ordinals[kind];
+        let type_name = LAND_UNIT_TYPE_NAMES.get(kind).copied().unwrap_or("Unit");
+        unit.name = format!("{} {}", english_ordinal(ordinal), type_name);
+        unit.roster_id = *next_roster_id;
+        *next_roster_id += 1;
+        name_ordinals[kind] = ordinal + 1;
+    }
+}
+
+fn english_ordinal(value: i16) -> String {
+    let value = i32::from(value);
+    let suffix = match value % 10 {
+        1 if value != 11 => "st",
+        2 if value != 12 => "nd",
+        3 if value != 13 => "rd",
+        _ => "th",
+    };
+    format!("{value}{suffix}")
 }
 
 /// `TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore` (0x004c11c0).
@@ -903,7 +1211,7 @@ mod tests {
             RetailTopologyByte::from_wraps_horizontally(true),
             1,
         );
-        let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal);
+        let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1);
 
         assert_eq!(state.turn.phase_code, 2);
         assert_eq!(state.turn.difficulty, Difficulty::Normal);
@@ -980,5 +1288,43 @@ mod tests {
         let human_city = state.nations.city(MajorNationId::new(6)).unwrap();
         assert_eq!(human_city.home_town_tile, Some(TileId::new(0)));
         assert_eq!(human_city.stock_by_type[ResourceKind::Food], 20);
+
+        let placed_minors = state
+            .nations
+            .minors
+            .iter()
+            .flatten()
+            .filter(|minor| minor.common.home_tile.is_some())
+            .count();
+        assert!(placed_minors > 0, "minors receive home tiles");
+        assert!(
+            state.world.tiles.iter().any(
+                |tile| (tile.active_flags & MINOR_HOME_ACTIVE_FLAGS) == MINOR_HOME_ACTIVE_FLAGS
+            ),
+            "minor homes stamp active_flags with bit0|0x20"
+        );
+        assert!(
+            !state.military_units.is_empty(),
+            "minor InitialMilitia produces military units"
+        );
+        assert!(
+            state
+                .military_units
+                .iter()
+                .all(|unit| unit.nation.get() >= MinorNationId::FIRST),
+            "pre-capital military units are minor-owned only"
+        );
+        assert!(
+            state
+                .military_units
+                .iter()
+                .any(|unit| unit.name.starts_with("1st ")),
+            "NameUnits assigns English ordinal names"
+        );
+        assert_ne!(
+            state.rng.crt_rand,
+            RetailCrtRng::from_state(1),
+            "minor home selection advances CRT rand"
+        );
     }
 }
