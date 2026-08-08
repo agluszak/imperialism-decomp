@@ -86,8 +86,6 @@ impl SkillBand {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum PopulationError {
-    #[error("population is missing its {0}")]
-    MissingLaborPool(&'static str),
     #[error("population has invalid strike phase {phase}")]
     InvalidStrikePhase { phase: i16 },
 }
@@ -101,37 +99,36 @@ pub struct FoodOutcome {
 impl CityState {
     /// Mirrors `TPopulationMgr::Eat` and records the two city summary fields
     /// updated by the original routine.
-    pub fn consume_population_food(&mut self) -> Result<FoodOutcome, PopulationError> {
-        let outcome = self.population.consume_food(&mut self.stock_by_type)?;
+    pub fn consume_population_food(&mut self) -> FoodOutcome {
+        let outcome = self.population.consume_food(&mut self.stock_by_type);
         self.food_substitution_count = outcome.substitution_count;
         self.starvation_population_loss = outcome.starvation_count;
-        Ok(outcome)
+        outcome
     }
 
     /// Mirrors `TPopulationMgr::StartProductionPhase`.
-    pub fn start_production_phase(&mut self) -> Result<FoodOutcome, PopulationError> {
-        let baseline = *self.population.baseline()?;
-        *self.population.production_mut()? = baseline;
-        let outcome = self.consume_population_food()?;
-        self.population.strength = self.population.production()?.strength();
+    pub fn start_production_phase(&mut self) -> FoodOutcome {
+        let baseline = self.population.baseline_labor;
+        self.population.production_labor = baseline;
+        let outcome = self.consume_population_food();
+        self.population.strength = self.population.production_labor.strength();
         self.population.extra = 0;
-        Ok(outcome)
+        outcome
     }
 
     /// Mirrors `TPopulationMgr::PretendToEat` without mutating either input.
     pub fn forecast_population_food(
         &self,
         nation_need_targets: &ResourceTable<i16>,
-    ) -> Result<FoodOutcome, PopulationError> {
-        Ok(self
-            .population
-            .forecast_food(nation_need_targets, self.stock_by_type[ResourceKind::Food]))
+    ) -> FoodOutcome {
+        self.population
+            .forecast_food(nation_need_targets, self.stock_by_type[ResourceKind::Food])
     }
 
     /// Mirrors `TPopulationMgr::Strike` and returns whether any of the three
     /// rotated resources was short.
     pub fn apply_population_strike(&mut self) -> Result<bool, PopulationError> {
-        let baseline = *self.population.baseline()?;
+        let baseline = self.population.baseline_labor;
         let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
         let mut cycles = (skilled / 10) as i16;
         let mut consumption = [0_i16; 4];
@@ -178,33 +175,26 @@ impl PopulationState {
 
     /// Mirrors the one-argument `TPopulationMgr::SetPopulation` overload. The
     /// original only replaces the low-skill bands and leaves the others alone.
-    pub fn set_untrained_population(&mut self, count: i16) -> Result<(), PopulationError> {
-        self.baseline_mut()?.low = count;
-        self.production_mut()?.low = count;
+    pub fn set_untrained_population(&mut self, count: i16) {
+        self.baseline_labor.low = count;
+        self.production_labor.low = count;
         self.strength = count;
         self.count = count;
         self.count_float_bits = f32::from(count).to_bits();
-        *self.pending_mut()? = LaborPool::default();
+        self.pending_labor_delta = LaborPool::default();
         self.phase_value = 0;
-        Ok(())
     }
 
     /// Mirrors the three-argument `TPopulationMgr::SetPopulation` overload.
-    pub fn set_population(
-        &mut self,
-        low: i16,
-        medium: i16,
-        high: i16,
-    ) -> Result<(), PopulationError> {
+    pub fn set_population(&mut self, low: i16, medium: i16, high: i16) {
         let labor = LaborPool::new(low, medium, high);
-        *self.baseline_mut()? = labor;
-        *self.production_mut()? = labor;
+        self.baseline_labor = labor;
+        self.production_labor = labor;
         self.strength = labor.strength();
         self.count = medium + high + low;
         self.count_float_bits = f32::from(self.count).to_bits();
-        *self.pending_mut()? = LaborPool::default();
+        self.pending_labor_delta = LaborPool::default();
         self.phase_value = 0;
-        Ok(())
     }
 
     /// Mirrors the retail growth table and its signed penalty constants. The
@@ -254,28 +244,23 @@ impl PopulationState {
 
     /// Mirrors `TPopulationMgr::RemovePopulation`, including its unusual use
     /// of the post-band remainder in the strength adjustments.
-    pub fn remove_population(
-        &mut self,
-        starting_band: SkillBand,
-        amount: i16,
-    ) -> Result<(), PopulationError> {
+    pub fn remove_population(&mut self, starting_band: SkillBand, amount: i16) {
         let mut remaining = amount;
         let mut band = Some(starting_band);
 
         while let Some(current) = band {
-            let available = self.baseline()?.band(current);
+            let available = self.baseline_labor.band(current);
             if remaining <= available {
-                *self.baseline_mut()?.band_mut(current) = available - remaining;
-                let production = self.production_mut()?.band_mut(current);
-                *production -= remaining;
+                *self.baseline_labor.band_mut(current) = available - remaining;
+                *self.production_labor.band_mut(current) -= remaining;
                 self.strength -= remaining * current.weight();
                 remaining = 0;
                 break;
             }
 
             remaining -= available;
-            *self.baseline_mut()?.band_mut(current) = 0;
-            *self.production_mut()?.band_mut(current) = 0;
+            *self.baseline_labor.band_mut(current) = 0;
+            *self.production_labor.band_mut(current) = 0;
             self.strength -= remaining * current.weight();
             band = match current {
                 SkillBand::Low => Some(SkillBand::Medium),
@@ -287,49 +272,31 @@ impl PopulationState {
         let removed = amount - remaining;
         self.count -= removed;
         self.count_float_bits = (self.count_float() - f32::from(removed)).to_bits();
-        Ok(())
     }
 
-    pub fn make_unavailable(
-        &mut self,
-        band: SkillBand,
-        amount: i16,
-    ) -> Result<(), PopulationError> {
-        let production = self.production_mut()?.band_mut(band);
-        *production -= amount;
+    pub fn make_unavailable(&mut self, band: SkillBand, amount: i16) {
+        *self.production_labor.band_mut(band) -= amount;
         self.strength -= amount * band.weight();
-        Ok(())
     }
 
-    pub fn add_untrained(&mut self, count: i16) -> Result<(), PopulationError> {
-        let baseline = &mut self.baseline_mut()?.low;
-        *baseline += count;
-        let production = &mut self.production_mut()?.low;
-        *production += count;
+    pub fn add_untrained(&mut self, count: i16) {
+        self.baseline_labor.low += count;
+        self.production_labor.low += count;
         self.count += count;
-        Ok(())
     }
 
-    pub fn add_expert(&mut self, count: i16) -> Result<(), PopulationError> {
-        let baseline = &mut self.baseline_mut()?.high;
-        *baseline += count;
-        let production = &mut self.production_mut()?.high;
-        *production += count;
+    pub fn add_expert(&mut self, count: i16) {
+        self.baseline_labor.high += count;
+        self.production_labor.high += count;
         self.count += count;
         self.strength += count * 4;
-        Ok(())
     }
 
-    fn consume_food(
-        &mut self,
-        stocks: &mut ResourceTable<i16>,
-    ) -> Result<FoodOutcome, PopulationError> {
-        self.require_labor_pools()?;
-        let pending = *self.pending()?;
-        let production = self.production_mut()?;
-        production.low += pending.low;
-        production.medium += pending.medium;
-        production.high += pending.high;
+    fn consume_food(&mut self, stocks: &mut ResourceTable<i16>) -> FoodOutcome {
+        let pending = self.pending_labor_delta;
+        self.production_labor.low += pending.low;
+        self.production_labor.medium += pending.medium;
+        self.production_labor.high += pending.high;
 
         let mut food = FoodRemainders::from_city_stocks(stocks);
         let mut unmet = food.consume_normal_needs(self.count);
@@ -358,7 +325,7 @@ impl PopulationState {
 
         let starvation = if unmet != 0 {
             let mut lost = LaborPool::default();
-            self.baseline_mut()?
+            self.baseline_labor
                 .transfer_low_skill_first(&mut lost, unmet);
             self.count -= unmet;
             self.count_float_bits = (self.count_float() - f32::from(unmet)).to_bits();
@@ -367,24 +334,17 @@ impl PopulationState {
             0
         };
 
-        let baseline = *self.baseline()?;
-        *self.production_mut()? = baseline;
+        let baseline = self.baseline_labor;
+        self.production_labor = baseline;
         if substituted != 0 {
-            let production = self
-                .production_labor
-                .as_mut()
-                .expect("labor-pool presence was checked above");
-            let pending = self
-                .pending_labor_delta
-                .as_mut()
-                .expect("labor-pool presence was checked above");
-            production.transfer_low_skill_first(pending, substituted);
+            self.production_labor
+                .transfer_low_skill_first(&mut self.pending_labor_delta, substituted);
         }
 
-        Ok(FoodOutcome {
+        FoodOutcome {
             substitution_count: substituted,
             starvation_count: starvation,
-        })
+        }
     }
 
     fn forecast_food(&self, available: &ResourceTable<i16>, canned_food: i16) -> FoodOutcome {
@@ -415,49 +375,6 @@ impl PopulationState {
             substitution_count: substitution,
             starvation_count: unmet.max(0),
         }
-    }
-
-    fn baseline(&self) -> Result<&LaborPool, PopulationError> {
-        self.baseline_labor
-            .as_ref()
-            .ok_or(PopulationError::MissingLaborPool("baseline labor pool"))
-    }
-
-    fn baseline_mut(&mut self) -> Result<&mut LaborPool, PopulationError> {
-        self.baseline_labor
-            .as_mut()
-            .ok_or(PopulationError::MissingLaborPool("baseline labor pool"))
-    }
-
-    fn production_mut(&mut self) -> Result<&mut LaborPool, PopulationError> {
-        self.production_labor
-            .as_mut()
-            .ok_or(PopulationError::MissingLaborPool("production labor pool"))
-    }
-
-    fn production(&self) -> Result<&LaborPool, PopulationError> {
-        self.production_labor
-            .as_ref()
-            .ok_or(PopulationError::MissingLaborPool("production labor pool"))
-    }
-
-    fn pending_mut(&mut self) -> Result<&mut LaborPool, PopulationError> {
-        self.pending_labor_delta
-            .as_mut()
-            .ok_or(PopulationError::MissingLaborPool("pending labor pool"))
-    }
-
-    fn pending(&self) -> Result<&LaborPool, PopulationError> {
-        self.pending_labor_delta
-            .as_ref()
-            .ok_or(PopulationError::MissingLaborPool("pending labor pool"))
-    }
-
-    fn require_labor_pools(&self) -> Result<(), PopulationError> {
-        self.baseline()?;
-        self.production()?;
-        self.pending()?;
-        Ok(())
     }
 }
 
@@ -591,9 +508,9 @@ mod tests {
             strength: 12,
             extra: 5,
             phase_value: 3,
-            baseline_labor: Some(LaborPool::new(4, 2, 1)),
-            production_labor: Some(LaborPool::new(4, 2, 1)),
-            pending_labor_delta: Some(LaborPool::new(1, -1, 2)),
+            baseline_labor: LaborPool::new(4, 2, 1),
+            production_labor: LaborPool::new(4, 2, 1),
+            pending_labor_delta: LaborPool::new(1, -1, 2),
             predicted_need_by_resource: ResourceTable::from_fn(|_| 9),
         }
     }
@@ -602,7 +519,7 @@ mod tests {
         let mut population = population();
         population.extra = 5;
         population.phase_value = 0;
-        population.pending_labor_delta = Some(LaborPool::default());
+        population.pending_labor_delta = LaborPool::default();
         CityState {
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
@@ -662,10 +579,10 @@ mod tests {
     #[test]
     fn initializes_all_population_bands() {
         let mut state = population();
-        state.set_population(4, 2, 3).unwrap();
-        assert_eq!(state.baseline_labor, Some(LaborPool::new(4, 2, 3)));
+        state.set_population(4, 2, 3);
+        assert_eq!(state.baseline_labor, LaborPool::new(4, 2, 3));
         assert_eq!(state.production_labor, state.baseline_labor);
-        assert_eq!(state.pending_labor_delta, Some(LaborPool::default()));
+        assert_eq!(state.pending_labor_delta, LaborPool::default());
         assert_eq!(state.strength, 20);
         assert_eq!(state.count, 9);
         assert_eq!(state.count_float(), f32::from(state.count));
@@ -701,8 +618,8 @@ mod tests {
     #[test]
     fn removes_population_across_skill_bands() {
         let mut state = population();
-        state.remove_population(SkillBand::Low, 5).unwrap();
-        assert_eq!(state.baseline_labor, Some(LaborPool::new(0, 1, 1)));
+        state.remove_population(SkillBand::Low, 5);
+        assert_eq!(state.baseline_labor, LaborPool::new(0, 1, 1));
         assert_eq!(state.production_labor, state.baseline_labor);
         assert_eq!(state.strength, 9);
         assert_eq!(state.count, 2);
@@ -712,11 +629,11 @@ mod tests {
     #[test]
     fn availability_and_additions_update_only_retail_fields() {
         let mut state = population();
-        state.make_unavailable(SkillBand::Medium, 1).unwrap();
-        state.add_untrained(2).unwrap();
-        state.add_expert(1).unwrap();
-        assert_eq!(state.baseline_labor, Some(LaborPool::new(6, 2, 2)));
-        assert_eq!(state.production_labor, Some(LaborPool::new(6, 1, 2)));
+        state.make_unavailable(SkillBand::Medium, 1);
+        state.add_untrained(2);
+        state.add_expert(1);
+        assert_eq!(state.baseline_labor, LaborPool::new(6, 2, 2));
+        assert_eq!(state.production_labor, LaborPool::new(6, 1, 2));
         assert_eq!(state.count, 10);
         assert_eq!(state.count_float(), 7.0);
         assert_eq!(state.strength, 14);
@@ -726,10 +643,7 @@ mod tests {
     fn consumes_each_required_food_without_substitution() {
         let mut state = city();
         stock_food(&mut state, 2, 4, 2, 1, 0);
-        assert_eq!(
-            state.consume_population_food().unwrap(),
-            FoodOutcome::default()
-        );
+        assert_eq!(state.consume_population_food(), FoodOutcome::default());
         assert_eq!(state.stock_by_type[ResourceKind::Food], 2);
         assert_eq!(state.stock_by_type[ResourceKind::Grain], 0);
         assert_eq!(state.stock_by_type[ResourceKind::Fruit], 0);
@@ -742,19 +656,13 @@ mod tests {
     fn spends_canned_food_before_reassigning_workers() {
         let mut state = city();
         stock_food(&mut state, 2, 3, 2, 1, 0);
-        assert_eq!(
-            state.consume_population_food().unwrap(),
-            FoodOutcome::default()
-        );
+        assert_eq!(state.consume_population_food(), FoodOutcome::default());
         assert_eq!(state.stock_by_type[ResourceKind::Food], 1);
         assert_eq!(
             state.population.production_labor,
             state.population.baseline_labor
         );
-        assert_eq!(
-            state.population.pending_labor_delta,
-            Some(LaborPool::default())
-        );
+        assert_eq!(state.population.pending_labor_delta, LaborPool::default());
     }
 
     #[test]
@@ -762,7 +670,7 @@ mod tests {
         let mut state = city();
         stock_food(&mut state, 0, 3, 3, 1, 0);
         assert_eq!(
-            state.consume_population_food().unwrap(),
+            state.consume_population_food(),
             FoodOutcome {
                 substitution_count: 1,
                 starvation_count: 0,
@@ -771,11 +679,11 @@ mod tests {
         assert_eq!(state.food_substitution_count, 1);
         assert_eq!(
             state.population.production_labor,
-            Some(LaborPool::new(3, 2, 1))
+            LaborPool::new(3, 2, 1)
         );
         assert_eq!(
             state.population.pending_labor_delta,
-            Some(LaborPool::new(1, 0, 0))
+            LaborPool::new(1, 0, 0)
         );
     }
 
@@ -783,7 +691,7 @@ mod tests {
     fn starvation_removes_population_low_skill_first() {
         let mut state = city();
         assert_eq!(
-            state.consume_population_food().unwrap(),
+            state.consume_population_food(),
             FoodOutcome {
                 substitution_count: 0,
                 starvation_count: 7,
@@ -792,11 +700,8 @@ mod tests {
         assert_eq!(state.starvation_population_loss, 7);
         assert_eq!(state.population.count, 0);
         assert_eq!(state.population.count_float(), 0.0);
-        assert_eq!(state.population.baseline_labor, Some(LaborPool::default()));
-        assert_eq!(
-            state.population.production_labor,
-            Some(LaborPool::default())
-        );
+        assert_eq!(state.population.baseline_labor, LaborPool::default());
+        assert_eq!(state.population.production_labor, LaborPool::default());
     }
 
     #[test]
@@ -809,7 +714,7 @@ mod tests {
         targets[ResourceKind::Fruit] = 3;
         targets[ResourceKind::Fish] = 1;
         assert_eq!(
-            state.forecast_population_food(&targets).unwrap(),
+            state.forecast_population_food(&targets),
             FoodOutcome {
                 substitution_count: 1,
                 starvation_count: 0,
@@ -821,11 +726,11 @@ mod tests {
     #[test]
     fn start_phase_recomputes_strength_after_food_reassignment() {
         let mut state = city();
-        state.population.production_labor = Some(LaborPool::new(99, 99, 99));
-        state.population.pending_labor_delta = Some(LaborPool::new(1, 0, 0));
+        state.population.production_labor = LaborPool::new(99, 99, 99);
+        state.population.pending_labor_delta = LaborPool::new(1, 0, 0);
         state.population.strength = -1;
         stock_food(&mut state, 0, 4, 2, 1, 0);
-        state.start_production_phase().unwrap();
+        state.start_production_phase();
         assert_eq!(
             state.population.production_labor,
             state.population.baseline_labor
@@ -837,7 +742,7 @@ mod tests {
     #[test]
     fn strike_rotates_skilled_consumption_and_reports_shortage() {
         let mut state = city();
-        state.population.baseline_labor = Some(LaborPool::new(0, 20, 0));
+        state.population.baseline_labor = LaborPool::new(0, 20, 0);
         state.population.phase_value = 2;
         state.stock_by_type[ResourceKind::Hardware] = 1;
         state.stock_by_type[ResourceKind::Clothing] = 1;
