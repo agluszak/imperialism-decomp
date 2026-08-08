@@ -12,7 +12,6 @@ class RuntimeDeterminismTests(unittest.TestCase):
     @staticmethod
     def _result() -> dict:
         return {
-            "format_version": 2,
             "name": "sample",
             "seed": 1,
             "status": "passed",

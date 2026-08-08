@@ -10,7 +10,6 @@ mod legacy_stream;
 mod retail_assets;
 mod retail_fonts;
 mod retail_resources;
-mod runtime_capture;
 mod ui_catalog;
 
 pub use legacy_save::{LegacyGameStateContext, LegacySaveError, LegacySaveV62};
@@ -19,7 +18,6 @@ pub use retail_fonts::{
     ResolvedRetailTextStyle, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
     RetailTextStylePreset, resolve_retail_text_style,
 };
-pub use runtime_capture::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
 pub use ui_catalog::{
     FourCc, LogicalRect, ScopedViewId, UiCatalog, UiNode, UiNodeId, UiNumberRange, UiStyle,
     UiTextBinding, UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,

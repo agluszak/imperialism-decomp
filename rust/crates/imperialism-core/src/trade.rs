@@ -11,8 +11,6 @@ pub enum RuleError {
     NotMajorNation { nation: NationId },
     #[error("nation {} has no city state", .nation.get())]
     MissingCity { nation: NationId },
-    #[error("city slot {} belongs to nation {}", .nation.get(), .actual.get())]
-    CityNationMismatch { nation: NationId, actual: NationId },
 }
 
 impl GameState {
@@ -63,16 +61,8 @@ impl GameState {
 
     pub fn commit_purchased_items(&mut self, nation: NationId) -> Result<StepOutcome, RuleError> {
         let index = self.major_nation_index(nation)?;
-        let city = self
-            .cities
-            .get(index)
-            .and_then(Option::as_ref)
-            .ok_or(RuleError::MissingCity { nation })?;
-        if city.nation != nation {
-            return Err(RuleError::CityNationMismatch {
-                nation,
-                actual: city.nation,
-            });
+        if self.cities.get(index).and_then(Option::as_ref).is_none() {
+            return Err(RuleError::MissingCity { nation });
         }
 
         let major = self.nations[index.nation()]
@@ -197,7 +187,6 @@ mod tests {
         let nation = NationId::new(6);
         let mut nations = crate::NationTable::default();
         nations[nation] = Some(NationState {
-            id: nation,
             common: NationCommonState {
                 encoded_nation_slot: 6,
                 owner_nation: 6,
@@ -213,7 +202,7 @@ mod tests {
         });
         let major_nation = MajorNationId::new(6);
         let mut cities = crate::MajorNationTable::default();
-        cities[major_nation] = Some(city(nation));
+        cities[major_nation] = Some(city());
         GameState {
             turn: TurnState {
                 scenario_map_index_plus_one: 0,
@@ -225,8 +214,6 @@ mod tests {
             },
             persistent_unit_id_counter: 0,
             world: WorldState {
-                width: 0,
-                height: 0,
                 wraps_horizontally: false,
                 tiles: vec![],
             },
@@ -244,8 +231,7 @@ mod tests {
             missions: vec![],
             pending: PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
-                    nation: nation.nation(),
+                nations: crate::MajorNationTable::from_fn(|_nation| crate::NationPendingWork {
                     turn_events: vec![],
                     proposals: vec![],
                     turn_summary: vec![],
@@ -256,9 +242,8 @@ mod tests {
         }
     }
 
-    fn city(nation: NationId) -> CityState {
+    fn city() -> CityState {
         CityState {
-            nation,
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

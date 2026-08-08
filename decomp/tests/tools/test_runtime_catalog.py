@@ -180,7 +180,6 @@ class RuntimeProtocolTests(unittest.TestCase):
         name: str = "boot_managers", seed: int = 1, **overrides: object
     ) -> dict:
         return {
-            "format_version": 2,
             "name": name,
             "seed": seed,
             "status": "passed",
@@ -188,12 +187,13 @@ class RuntimeProtocolTests(unittest.TestCase):
             **overrides,
         }
 
-    def test_valid_v2_result_is_accepted(self) -> None:
+    def test_valid_result_is_accepted(self) -> None:
         validate_result(self.result(), "boot_managers", 1)
 
-    def test_wrong_version_is_rejected(self) -> None:
-        with self.assertRaisesRegex(ValueError, "format_version"):
-            validate_result(self.result(format_version=1), "boot_managers", 1)
+    def test_extra_top_level_fields_are_allowed(self) -> None:
+        validate_result(
+            self.result(evidence_kind="host-side metadata only"), "boot_managers", 1
+        )
 
     def test_wrong_name_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "requested"):
@@ -208,12 +208,6 @@ class RuntimeProtocolTests(unittest.TestCase):
     def test_captures_must_be_an_object(self) -> None:
         with self.assertRaisesRegex(ValueError, "captures"):
             validate_result(self.result(captures=[]), "boot_managers", 1)
-
-    def test_unknown_top_level_field_is_rejected(self) -> None:
-        with self.assertRaisesRegex(ValueError, "unexpected"):
-            validate_result(
-                self.result(evidence_kind="host-side metadata only"), "boot_managers", 1
-            )
 
     def test_capture_payloads_are_not_validated_by_python(self) -> None:
         captures = {
@@ -230,10 +224,13 @@ class RuntimeProtocolTests(unittest.TestCase):
         }
         validate_result(self.result(captures=captures), "boot_managers", 1)
 
-    def test_unknown_top_level_capture_does_not_satisfy_the_envelope(self) -> None:
-        result = self.result(obsolete_capture={"legacy": True})
-        with self.assertRaisesRegex(ValueError, "unexpected"):
-            validate_result(result, "boot_managers", 1)
+    def test_missing_required_keys_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "missing"):
+            validate_result(
+                {"name": "boot_managers", "seed": 1, "status": "passed"},
+                "boot_managers",
+                1,
+            )
 
 
 class MissingOracleRecordingTests(unittest.TestCase):

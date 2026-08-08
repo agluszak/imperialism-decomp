@@ -1,9 +1,8 @@
-use crate::flow::AppState;
-use crate::session::GameLoopSet;
 use crate::ui::{
-    DespawnUiView, InteractiveUiWidget, PresentedViewId, SpawnUiView, UiIntent, UiRuntimeSet,
-    UiViewSpawned, UiWidgetFlags, ViewInstanceId, WidgetTag,
+    DespawnUiView, InteractiveUiWidget, SpawnUiView, UiIntent, UiRuntimeSet, UiViewSpawned,
+    ViewInstanceId, WidgetTag,
 };
+use crate::{AppState, GameLoopSet};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -28,44 +27,19 @@ pub(crate) fn random_setup_view_id() -> ScopedViewId {
     }
 }
 
-/// The five values exposed by the recovered random-game setup controls.
-///
-/// Their retail labels have not yet been recovered, so the draft retains the
-/// control values rather than assigning speculative names to them.
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) enum Difficulty {
-    #[default]
-    Level0,
-    Level1,
-    Level2,
-    Level3,
-    Level4,
-}
-
-impl Difficulty {
-    pub(crate) const fn from_retail_value(value: i32) -> Option<Self> {
-        match value {
-            0 => Some(Self::Level0),
-            1 => Some(Self::Level1),
-            2 => Some(Self::Level2),
-            3 => Some(Self::Level3),
-            4 => Some(Self::Level4),
-            _ => None,
-        }
-    }
-}
-
 /// Presentation-owned values edited by the random-game setup screen.
 ///
 /// This is deliberately not simulation state: pressing Start will later pass
 /// this complete draft to the one game-creation operation.
+///
+/// `difficulty` is the opaque retail control value `0..=4`; labels are unknown.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
     pub(crate) planet_seed: String,
     pub(crate) topology: RetailTopologyByte,
     pub(crate) nation: MajorNationId,
     pub(crate) country_name: String,
-    pub(crate) difficulty: Difficulty,
+    pub(crate) difficulty: u8,
     pub(crate) localized_names: bool,
 }
 
@@ -76,7 +50,7 @@ impl Default for RandomGameSetup {
             topology: RetailTopologyByte::from_wraps_horizontally(true),
             nation: MajorNationId::new(0),
             country_name: String::new(),
-            difficulty: Difficulty::default(),
+            difficulty: 0,
             localized_names: false,
         }
     }
@@ -90,12 +64,12 @@ pub(crate) struct StartupScreenInstances {
 
 impl StartupScreenInstances {
     #[cfg(test)]
-    pub(crate) const fn main_menu(&self) -> Option<ViewInstanceId> {
+    pub(crate) const fn main_menu(self) -> Option<ViewInstanceId> {
         self.main_menu
     }
 
     #[cfg(test)]
-    pub(crate) const fn random_setup(&self) -> Option<ViewInstanceId> {
+    pub(crate) const fn random_setup(self) -> Option<ViewInstanceId> {
         self.random_setup
     }
 }
@@ -167,18 +141,17 @@ fn record_spawned_startup_views(
 
 fn apply_main_menu_availability(
     mut commands: Commands,
-    mut widgets: Query<
-        (Entity, &PresentedViewId, &WidgetTag, &mut UiWidgetFlags),
-        With<InteractiveUiWidget>,
-    >,
+    instances: Res<StartupScreenInstances>,
+    widgets: Query<(Entity, &ViewInstanceId, &WidgetTag), With<InteractiveUiWidget>>,
 ) {
-    let main_menu = main_menu_view_id();
-    for (entity, view, tag, mut flags) in &mut widgets {
-        if view.0 != main_menu {
+    let Some(main_menu) = instances.main_menu else {
+        return;
+    };
+    for (entity, instance, tag) in &widgets {
+        if *instance != main_menu {
             continue;
         }
         let available = matches!(tag.0.0.as_str(), "rand" | "quit");
-        flags.enabled = available;
         if available {
             commands.entity(entity).remove::<InteractionDisabled>();
         } else {
@@ -196,74 +169,41 @@ fn translate_startup_intents(
     mut exit: MessageWriter<AppExit>,
 ) {
     for intent in intents.read() {
-        let view = match intent {
-            UiIntent::Activated { view, .. }
-            | UiIntent::ValueChanged { view, .. }
-            | UiIntent::TextChanged { view, .. } => *view,
-        };
-        if *state.get() == AppState::MainMenu && instances.main_menu == Some(view) {
-            if let UiIntent::Activated { tag, .. } = intent {
-                match tag.0.as_str() {
-                    "rand" => {
-                        next_state.set(AppState::RandomSetup);
-                    }
-                    "quit" => {
-                        exit.write(AppExit::Success);
-                    }
-                    _ => {}
+        let UiIntent::Activated { view, tag } = intent;
+        if *state.get() == AppState::MainMenu && instances.main_menu == Some(*view) {
+            match tag.0.as_str() {
+                "rand" => next_state.set(AppState::RandomSetup),
+                "quit" => {
+                    exit.write(AppExit::Success);
                 }
+                _ => {}
             }
             continue;
         }
-        if *state.get() != AppState::RandomSetup || instances.random_setup != Some(view) {
+        if *state.get() != AppState::RandomSetup || instances.random_setup != Some(*view) {
             continue;
         }
-        apply_random_setup_intent(&mut setup, intent);
+        apply_random_setup_intent(&mut setup, tag.0.as_str());
     }
 }
 
-fn apply_random_setup_intent(setup: &mut RandomGameSetup, intent: &UiIntent) {
-    match intent {
-        UiIntent::Activated { tag, .. } => match tag.0.as_str() {
-            "dif0" => setup.difficulty = Difficulty::Level0,
-            "dif1" => setup.difficulty = Difficulty::Level1,
-            "dif2" => setup.difficulty = Difficulty::Level2,
-            "dif3" => setup.difficulty = Difficulty::Level3,
-            "dif4" => setup.difficulty = Difficulty::Level4,
-            "hist" => setup.localized_names = true,
-            "rand" => setup.localized_names = false,
-            _ => {}
-        },
-        UiIntent::ValueChanged { tag, value, .. } => match tag.0.as_str() {
-            "diff" => {
-                if let Some(difficulty) = Difficulty::from_retail_value(*value) {
-                    setup.difficulty = difficulty;
-                }
-            }
-            "name" => setup.localized_names = *value != 0,
-            "map " => {
-                if let Ok(nation) = u8::try_from(*value)
-                    && nation < MajorNationId::COUNT
-                {
-                    setup.nation = MajorNationId::new(nation);
-                }
-            }
-            _ => {}
-        },
-        UiIntent::TextChanged { tag, value, .. } => {
-            if tag.0 == "coun" {
-                setup.country_name.clone_from(value);
-            }
-        }
+fn apply_random_setup_intent(setup: &mut RandomGameSetup, tag: &str) {
+    match tag {
+        "dif0" => setup.difficulty = 0,
+        "dif1" => setup.difficulty = 1,
+        "dif2" => setup.difficulty = 2,
+        "dif3" => setup.difficulty = 3,
+        "dif4" => setup.difficulty = 4,
+        "hist" => setup.localized_names = true,
+        "rand" => setup.localized_names = false,
+        _ => {}
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::flow::ScreenFlowPlugin;
-    use crate::session::{GameSession, SessionPlugin, SubmitCommand};
-    use crate::ui::{UiCatalogResource, UiRuntimePlugin, UiViewRoot};
+    use crate::ui::{PresentedViewId, UiCatalogResource, UiRuntimePlugin, UiViewRoot};
     use bevy::ecs::message::{MessageCursor, Messages};
     use imperialism_formats::{FourCc, UiCatalog};
     use std::collections::HashMap;
@@ -275,15 +215,16 @@ mod tests {
         let mut app = App::new();
         app.insert_resource(UiCatalogResource::new(catalog))
             .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins((
-                ScreenFlowPlugin,
-                SessionPlugin,
-                UiRuntimePlugin,
-                StartupUiPlugin,
-            ));
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::MainMenu);
+            .init_state::<AppState>()
+            .configure_sets(
+                Update,
+                (
+                    GameLoopSet::TranslateUiIntents,
+                    GameLoopSet::UpdatePresentation,
+                )
+                    .chain(),
+            )
+            .add_plugins((UiRuntimePlugin, StartupUiPlugin));
         app.update();
         app.update();
         app
@@ -308,34 +249,33 @@ mod tests {
     #[test]
     fn main_menu_enables_only_random_and_quit_without_hiding_other_choices() {
         let mut app = app();
+        let menu = app
+            .world()
+            .resource::<StartupScreenInstances>()
+            .main_menu()
+            .unwrap();
         let world = app.world_mut();
         let widgets = world
             .query::<(
                 Entity,
-                &PresentedViewId,
+                &ViewInstanceId,
                 &WidgetTag,
-                &UiWidgetFlags,
                 &Node,
                 Option<&InteractionDisabled>,
             )>()
             .iter(world)
-            .filter(|(_, view, _, _, _, _)| view.0 == main_menu_view_id())
-            .map(|(entity, _, tag, flags, node, disabled)| {
-                (
-                    tag.0.0.clone(),
-                    (entity, *flags, node.display, disabled.is_some()),
-                )
+            .filter(|(_, instance, _, _, _)| **instance == menu)
+            .map(|(entity, _, tag, node, disabled)| {
+                (tag.0.0.clone(), (entity, node.display, disabled.is_some()))
             })
             .collect::<HashMap<_, _>>();
         for tag in ["rand", "quit"] {
-            let (_, flags, display, disabled) = widgets[tag];
-            assert!(flags.enabled);
+            let (_, display, disabled) = widgets[tag];
             assert_eq!(display, Display::Flex);
             assert!(!disabled);
         }
         for tag in ["load", "mult", "high", "scen", "pref"] {
-            let (_, flags, display, disabled) = widgets[tag];
-            assert!(!flags.enabled);
+            let (_, display, disabled) = widgets[tag];
             assert_eq!(display, Display::Flex);
             assert!(disabled);
         }
@@ -420,7 +360,7 @@ mod tests {
     }
 
     #[test]
-    fn random_setup_intents_update_the_app_draft_without_a_game_session() {
+    fn random_setup_activated_intents_update_the_app_draft() {
         let mut app = app();
         let menu = app
             .world()
@@ -440,45 +380,15 @@ mod tests {
             .resource::<StartupScreenInstances>()
             .random_setup()
             .unwrap();
-        let intents = [
-            UiIntent::Activated {
-                view: setup,
-                tag: FourCc("dif3".to_owned()),
-            },
-            UiIntent::Activated {
-                view: setup,
-                tag: FourCc("hist".to_owned()),
-            },
-            UiIntent::ValueChanged {
-                view: setup,
-                tag: FourCc("map ".to_owned()),
-                value: 4,
-            },
-            UiIntent::TextChanged {
-                view: setup,
-                tag: FourCc("coun".to_owned()),
-                value: "Testland".to_owned(),
-            },
-            UiIntent::ValueChanged {
-                view: setup,
-                tag: FourCc("diff".to_owned()),
-                value: 5,
-            },
-            UiIntent::ValueChanged {
-                view: setup,
-                tag: FourCc("map ".to_owned()),
-                value: 7,
-            },
-            UiIntent::Activated {
-                view: setup,
-                tag: FourCc("okay".to_owned()),
-            },
-        ];
-        for intent in intents {
-            app.world_mut().write_message(intent).unwrap();
+        for tag in ["dif3", "hist", "okay"] {
+            app.world_mut()
+                .write_message(UiIntent::Activated {
+                    view: setup,
+                    tag: FourCc(tag.to_owned()),
+                })
+                .unwrap();
         }
         app.update();
-        assert!(!app.world().contains_resource::<GameSession>());
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::RandomSetup
@@ -488,12 +398,11 @@ mod tests {
             &RandomGameSetup {
                 planet_seed: String::new(),
                 topology: RetailTopologyByte::from_wraps_horizontally(true),
-                nation: MajorNationId::new(4),
-                country_name: "Testland".to_owned(),
-                difficulty: Difficulty::Level3,
+                nation: MajorNationId::new(0),
+                country_name: String::new(),
+                difficulty: 3,
                 localized_names: true,
             }
         );
-        assert_eq!(app.world().resource::<Messages<SubmitCommand>>().len(), 0);
     }
 }

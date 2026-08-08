@@ -2,12 +2,11 @@ use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
     CivilianUnitId, CivilianUnitState, GameState, LaborPool, MajorNationId, MajorNationState,
-    MajorNationTable, MilitaryUnitId, MilitaryUnitState, MissionData, MissionId, MissionState,
-    NATION_COUNT, NationCommonState, NationData, NationId, NationPendingWork, NationState,
-    NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
-    PopulationState, ProductionTable, ResourceTable, RngState, STRATEGIC_MAP_HEIGHT,
-    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId,
-    TileState, TurnState, WorldState,
+    MajorNationTable, MilitaryUnitId, MilitaryUnitState, MissionData, MissionState, NATION_COUNT,
+    NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
+    NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
+    ProductionTable, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState,
+    TaskForceState, TileId, TileState, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -524,7 +523,6 @@ pub(crate) struct LegacyMission {
 impl LegacyMission {
     fn mission_state(
         &self,
-        index: u32,
         nation: NationId,
         queue_index: u32,
         military_units: &[LegacyMilitaryUnit],
@@ -537,7 +535,7 @@ impl LegacyMission {
                     .and_then(|unit_index| military_units.get(unit_index))
                     .ok_or_else(|| {
                         LegacySaveError::StateProjection(format!(
-                            "mission {index} references absent unit ordinal {ordinal} for nation {}",
+                            "mission queue {queue_index} references absent unit ordinal {ordinal} for nation {}",
                             nation.get()
                         ))
                     })?;
@@ -597,7 +595,6 @@ impl LegacyMission {
             }
         };
         Ok(MissionState {
-            id: MissionId::new(index),
             nation,
             queue_index,
             data,
@@ -631,9 +628,8 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
 }
 
 impl LegacyCityState {
-    fn city_state(&self, nation: NationId, home_town_tile: i16) -> CityState {
+    fn city_state(&self, home_town_tile: i16) -> CityState {
         CityState {
-            nation,
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
             starvation_population_loss: self.starvation_population_loss,
@@ -742,8 +738,6 @@ pub(crate) struct LegacyMapState {
 impl LegacyMapState {
     fn world_state(&self) -> WorldState {
         WorldState {
-            width: STRATEGIC_MAP_WIDTH,
-            height: STRATEGIC_MAP_HEIGHT,
             wraps_horizontally: self.no_horizontal_wrap == 0,
             tiles: self
                 .tiles
@@ -970,14 +964,14 @@ impl LegacySaveV62 {
                     .major_nations
                     .iter()
                     .find(|nation| nation.great_power().country.nation_slot == slot as i16);
-                nations[id] = nation.map(|nation| major_nation_state(id, nation.great_power()));
+                nations[id] = nation.map(|nation| major_nation_state(nation.great_power()));
             } else {
                 let nation = self
                     .minor_nations
                     .iter()
                     .find(|nation| nation.country.nation_slot == slot as i16);
                 nations[id] =
-                    nation.map(|nation| country_state(id, &nation.country, NationData::Minor));
+                    nation.map(|nation| country_state(&nation.country, NationData::Minor));
             }
         }
 
@@ -1002,14 +996,13 @@ impl LegacySaveV62 {
                     .towns
                     .first()
                     .map_or(great_power.country.home_tile as i16, |town| town.tile_index);
-                city.city_state(nation_id, home_town)
+                city.city_state(home_town)
             });
             military_units.extend(great_power.country.military_unit_states(nation_id));
             civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id));
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for (queue_index, mission) in auto.missions.iter().enumerate() {
                     missions.push(mission.mission_state(
-                        missions.len() as u32,
                         nation_id,
                         queue_index as u32,
                         &great_power.country.military_units,
@@ -1040,8 +1033,7 @@ impl LegacySaveV62 {
                 )));
             }
         }
-        let pending_nations = MajorNationTable::from_fn(|nation| NationPendingWork {
-            nation: nation.nation(),
+        let pending_nations = MajorNationTable::from_fn(|_nation| NationPendingWork {
             turn_events: Vec::new(),
             proposals: Vec::new(),
             turn_summary: Vec::new(),
@@ -1089,11 +1081,10 @@ impl LegacySaveV62 {
     }
 }
 
-fn major_nation_state(id: NationId, nation: &LegacyGreatPowerState) -> NationState {
+fn major_nation_state(nation: &LegacyGreatPowerState) -> NationState {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
     country_state(
-        id,
         &nation.country,
         NationData::Major(MajorNationState {
             diplomacy_eligible: prefix.diplomacy_eligible != 0,
@@ -1141,9 +1132,8 @@ fn major_nation_state(id: NationId, nation: &LegacyGreatPowerState) -> NationSta
     )
 }
 
-fn country_state(id: NationId, country: &LegacyCountryBase, data: NationData) -> NationState {
+fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
     NationState {
-        id,
         common: NationCommonState {
             encoded_nation_slot: country.encoded_nation_slot,
             owner_nation: country.nation_slot,
@@ -2330,7 +2320,7 @@ mod tests {
         );
         assert_eq!(city_suffix_offset, 0x4fbf6);
 
-        let city_state = city.city_state(NationId::new(0), 3_494);
+        let city_state = city.city_state(3_494);
         assert_eq!(city_state.home_town_tile, 3_494);
         assert_eq!(city_state.population.count_float_bits, 1_088_421_888);
 
@@ -2375,7 +2365,6 @@ mod tests {
             .map(|(queue_index, mission)| {
                 mission
                     .mission_state(
-                        queue_index as u32,
                         NationId::new(0),
                         queue_index as u32,
                         &country.military_units,
@@ -2409,7 +2398,6 @@ mod tests {
             for (queue_index, mission) in major.missions.iter().enumerate() {
                 let state = mission
                     .mission_state(
-                        global_mission_index,
                         NationId::new(nation as u8),
                         queue_index as u32,
                         &major.great_power.country.military_units,
