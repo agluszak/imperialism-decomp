@@ -380,7 +380,7 @@ mod tests {
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            let mut app = app_at(state);
+            let app = app_at(state);
             let catalog = app.world().resource::<UiCatalogResource>();
             let spawned = app.world().resource::<TestSpawned>().0.clone();
             let end_turn = spawned
