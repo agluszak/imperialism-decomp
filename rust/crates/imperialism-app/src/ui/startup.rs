@@ -373,11 +373,13 @@ fn translate_startup_activations(
                 if activation.tag.0 == "cncl" {
                     next_state.set(AppState::MainMenu);
                 } else if activation.tag.0 == "okay" {
-                    accept_random_setup(
+                    if accept_random_setup(
                         &random_setup.setup,
                         &random_setup.preview,
                         &mut random_setup.commands,
-                    );
+                    ) {
+                        next_state.set(AppState::StrategicMap);
+                    }
                 } else {
                     apply_random_setup_intent(&mut random_setup, activation.tag.0.as_str());
                 }
@@ -418,9 +420,9 @@ fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
     commands: &mut Commands,
-) {
+) -> bool {
     let Some(generated) = preview.preview.as_ref() else {
-        return;
+        return false;
     };
     let draft = RandomGameDraft {
         topology: setup.topology,
@@ -430,9 +432,10 @@ fn accept_random_setup(
         localized_names: setup.localized_names,
     };
     let Ok(state) = create_random_game(&draft, generated) else {
-        return;
+        return false;
     };
     commands.insert_resource(GameSession(state));
+    true
 }
 
 fn regenerate_random_setup_planet(
@@ -831,6 +834,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: menu,
+                control: menu,
                 tag: FourCc("rand".to_owned()),
             })
             .unwrap();
@@ -949,6 +953,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: menu,
+                control: menu,
                 tag: FourCc("rand".to_owned()),
             })
             .unwrap();
@@ -975,6 +980,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: menu,
+                control: menu,
                 tag: FourCc("quit".to_owned()),
             })
             .unwrap();
@@ -995,14 +1001,16 @@ mod tests {
             app.world_mut()
                 .write_message(UiActivated {
                     view: setup,
+                    control: setup,
                     tag: FourCc(tag.to_owned()),
                 })
                 .unwrap();
         }
         app.update();
+        app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
-            &AppState::RandomSetup
+            &AppState::StrategicMap
         );
         assert_eq!(
             app.world().resource::<RandomGameSetup>(),
@@ -1072,6 +1080,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: setup_view,
+                control: setup_view,
                 tag: FourCc("glob".to_owned()),
             })
             .unwrap();
@@ -1097,6 +1106,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: setup_view,
+                control: setup_view,
                 tag: FourCc("coun".to_owned()),
             })
             .unwrap();
@@ -1127,6 +1137,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: setup_view,
+                control: setup_view,
                 tag: FourCc("cncl".to_owned()),
             })
             .unwrap();
@@ -1196,6 +1207,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: dialog_root,
+                control: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();
@@ -1229,6 +1241,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: dialog_root,
+                control: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();
@@ -1261,6 +1274,7 @@ mod tests {
         app.world_mut()
             .write_message(UiActivated {
                 view: dialog_root,
+                control: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();

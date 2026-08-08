@@ -171,6 +171,10 @@ mod tests {
             ("Startup.rsrc", 953),
             ("FlagView.rsrc", 8451),
             ("MapView.rsrc", 2013),
+            ("Trade.rsrc", 2009),
+            ("Citymain.rsrc", 2011),
+            ("Transport.rsrc", 2014),
+            ("Diplo.rsrc", 2008),
         ];
         for (resource_file, resource_id) in expected {
             assert!(

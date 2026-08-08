@@ -109,6 +109,10 @@ class UiCodegenTests(unittest.TestCase):
                 ("Startup.rsrc", 953),
                 ("FlagView.rsrc", 8451),
                 ("MapView.rsrc", 2013),
+                ("Trade.rsrc", 2009),
+                ("Citymain.rsrc", 2011),
+                ("Transport.rsrc", 2014),
+                ("Diplo.rsrc", 2008),
             },
         )
         self.assertEqual(len(ids), len(catalog["views"]))

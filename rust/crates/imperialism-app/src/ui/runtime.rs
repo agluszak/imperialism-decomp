@@ -64,6 +64,7 @@ impl SpawnedView {
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct UiActivated {
     pub view: Entity,
+    pub control: Entity,
     pub tag: FourCc,
 }
 
@@ -342,6 +343,7 @@ type UiActivationQuery<'w, 's> = Query<
     'w,
     's,
     (
+        Entity,
         &'static Interaction,
         &'static ViewRoot,
         &'static WidgetTag,
@@ -351,10 +353,11 @@ type UiActivationQuery<'w, 's> = Query<
 >;
 
 fn emit_ui_activations(widgets: UiActivationQuery, mut activations: MessageWriter<UiActivated>) {
-    for (interaction, view, tag, disabled) in &widgets {
+    for (control, interaction, view, tag, disabled) in &widgets {
         if *interaction == Interaction::Pressed && disabled.is_none() {
             activations.write(UiActivated {
                 view: view.0,
+                control,
                 tag: tag.0.clone(),
             });
         }

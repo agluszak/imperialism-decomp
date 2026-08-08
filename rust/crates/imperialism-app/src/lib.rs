@@ -13,6 +13,11 @@ pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
+    StrategicMap,
+    Trade,
+    City,
+    Transport,
+    Diplomacy,
 }
 
 #[derive(Resource)]
@@ -53,6 +58,7 @@ pub fn run(retail_assets: RetailAssets) {
             ui::UiRuntimePlugin,
             ui::StartupUiPlugin,
             ui::MapPreviewPlugin,
+            ui::GameScreensPlugin,
         ));
     app.world_mut().spawn(Camera2d);
     app.run();

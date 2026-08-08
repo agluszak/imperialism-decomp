@@ -105,6 +105,10 @@ RUST_LAUNCH_VIEW_KEYS = (
     UiResourceKey("Startup.rsrc", 953),
     UiResourceKey("FlagView.rsrc", 8451),
     UiResourceKey("MapView.rsrc", 2013),
+    UiResourceKey("Trade.rsrc", 2009),
+    UiResourceKey("Citymain.rsrc", 2011),
+    UiResourceKey("Transport.rsrc", 2014),
+    UiResourceKey("Diplo.rsrc", 2008),
 )
 
 
