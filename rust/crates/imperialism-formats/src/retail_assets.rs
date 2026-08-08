@@ -169,9 +169,12 @@ struct RetailFonts {
 impl RetailFonts {
     fn read(root: &Path) -> Result<Self, RetailAssetError> {
         Ok(Self {
-            belwe_bold: read_font(root, "Data/WeBeBd__.ttf")?,
-            book_antiqua_regular: read_font(root, "Data/Antqua.ttf")?,
-            book_antiqua_bold: read_font(root, "Data/Antquab.ttf")?,
+            belwe_bold: read_font(root, RetailFontFace::BelweBold.relative_path())?,
+            book_antiqua_regular: read_font(
+                root,
+                RetailFontFace::BookAntiquaRegular.relative_path(),
+            )?,
+            book_antiqua_bold: read_font(root, RetailFontFace::BookAntiquaBold.relative_path())?,
         })
     }
 

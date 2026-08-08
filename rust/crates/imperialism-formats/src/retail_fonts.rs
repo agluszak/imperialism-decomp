@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
 
 const BOOK_ANTIQUA_HEIGHTS: [i32; 25] = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 14, 14, 15, 16, 17, 20, 20, 20, 20, 20, 20, 25, 25, 25, 25, 30,
@@ -10,6 +11,33 @@ pub enum RetailFontFace {
     BelweBold,
     BookAntiquaRegular,
     BookAntiquaBold,
+}
+
+impl RetailFontFace {
+    pub(crate) const fn relative_path(self) -> &'static str {
+        match self {
+            Self::BelweBold => "Data/WeBeBd__.ttf",
+            Self::BookAntiquaRegular => "Data/Antqua.ttf",
+            Self::BookAntiquaBold => "Data/Antquab.ttf",
+        }
+    }
+
+    #[allow(dead_code)]
+    pub(crate) const fn expected_family_name(self) -> &'static str {
+        match self {
+            Self::BelweBold => "Belwe Bd BT",
+            Self::BookAntiquaRegular | Self::BookAntiquaBold => "Book Antiqua",
+        }
+    }
+
+    #[allow(dead_code)]
+    pub(crate) const fn expected_postscript_name(self) -> &'static str {
+        match self {
+            Self::BelweBold => "BelweBT-Bold",
+            Self::BookAntiquaRegular => "BookAntiqua",
+            Self::BookAntiquaBold => "BookAntiqua-Bold",
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -122,6 +150,164 @@ fn retail_logical_font_height(
     }
     i32::try_from((i64::from(point_size) * 10 + 3) / 8)
         .map_err(|_| RetailTextStyleError::HeightOverflow(point_size))
+}
+
+/// Retail glyph evidence retained for the unfinished exact-metrics path.
+#[allow(dead_code)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct RetailGlyphBounds {
+    pub x_min: i16,
+    pub y_min: i16,
+    pub x_max: i16,
+    pub y_max: i16,
+}
+
+#[allow(dead_code)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct RetailGlyphMetrics {
+    pub character: char,
+    pub glyph_id: u16,
+    pub horizontal_advance: u16,
+    pub horizontal_side_bearing: i16,
+    pub bounds: Option<RetailGlyphBounds>,
+}
+
+#[allow(dead_code)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct RetailFontMetrics {
+    pub face: RetailFontFace,
+    pub family_names: Vec<String>,
+    pub full_names: Vec<String>,
+    pub postscript_names: Vec<String>,
+    pub units_per_em: u16,
+    pub ascender: i16,
+    pub descender: i16,
+    pub line_gap: i16,
+    pub glyph_count: u16,
+    pub glyphs: Vec<RetailGlyphMetrics>,
+}
+
+#[allow(dead_code)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+pub(crate) enum RetailFontDecodeError {
+    #[error("retail font data is not a supported TrueType/OpenType face")]
+    InvalidFont,
+    #[error("retail font {face:?} reports family names {actual:?}, expected {expected:?}")]
+    UnexpectedFamily {
+        face: RetailFontFace,
+        expected: String,
+        actual: Vec<String>,
+    },
+    #[error("retail font {face:?} reports PostScript names {actual:?}, expected {expected:?}")]
+    UnexpectedPostscriptName {
+        face: RetailFontFace,
+        expected: String,
+        actual: Vec<String>,
+    },
+    #[error("retail font {face:?} has no glyph for {character:?} (U+{code_point:04X})")]
+    MissingGlyph {
+        face: RetailFontFace,
+        character: char,
+        code_point: u32,
+    },
+    #[error("retail font {face:?} has incomplete horizontal metrics for glyph {glyph_id}")]
+    MissingHorizontalMetrics { face: RetailFontFace, glyph_id: u16 },
+}
+
+#[allow(dead_code)]
+pub(crate) fn decode_retail_font_metrics(
+    face_kind: RetailFontFace,
+    bytes: &[u8],
+    text: &str,
+) -> Result<RetailFontMetrics, RetailFontDecodeError> {
+    let face = ttf_parser::Face::parse(bytes, 0).map_err(|_| RetailFontDecodeError::InvalidFont)?;
+    let family_names = font_names(&face, ttf_parser::name_id::FAMILY);
+    let full_names = font_names(&face, ttf_parser::name_id::FULL_NAME);
+    let postscript_names = font_names(&face, ttf_parser::name_id::POST_SCRIPT_NAME);
+    if !family_names
+        .iter()
+        .any(|name| name == face_kind.expected_family_name())
+    {
+        return Err(RetailFontDecodeError::UnexpectedFamily {
+            face: face_kind,
+            expected: face_kind.expected_family_name().to_owned(),
+            actual: family_names,
+        });
+    }
+    if !postscript_names
+        .iter()
+        .any(|name| name == face_kind.expected_postscript_name())
+    {
+        return Err(RetailFontDecodeError::UnexpectedPostscriptName {
+            face: face_kind,
+            expected: face_kind.expected_postscript_name().to_owned(),
+            actual: postscript_names,
+        });
+    }
+    let characters = text
+        .chars()
+        .filter(|character| !matches!(character, '\n' | '\r'))
+        .collect::<BTreeSet<_>>();
+    let mut glyphs = Vec::with_capacity(characters.len());
+    for character in characters {
+        let glyph = face
+            .glyph_index(character)
+            .ok_or(RetailFontDecodeError::MissingGlyph {
+                face: face_kind,
+                character,
+                code_point: u32::from(character),
+            })?;
+        let horizontal_advance = face.glyph_hor_advance(glyph).ok_or(
+            RetailFontDecodeError::MissingHorizontalMetrics {
+                face: face_kind,
+                glyph_id: glyph.0,
+            },
+        )?;
+        let horizontal_side_bearing = face.glyph_hor_side_bearing(glyph).ok_or(
+            RetailFontDecodeError::MissingHorizontalMetrics {
+                face: face_kind,
+                glyph_id: glyph.0,
+            },
+        )?;
+        let bounds = face
+            .glyph_bounding_box(glyph)
+            .map(|rect| RetailGlyphBounds {
+                x_min: rect.x_min,
+                y_min: rect.y_min,
+                x_max: rect.x_max,
+                y_max: rect.y_max,
+            });
+        glyphs.push(RetailGlyphMetrics {
+            character,
+            glyph_id: glyph.0,
+            horizontal_advance,
+            horizontal_side_bearing,
+            bounds,
+        });
+    }
+    Ok(RetailFontMetrics {
+        face: face_kind,
+        family_names,
+        full_names,
+        postscript_names,
+        units_per_em: face.units_per_em(),
+        ascender: face.ascender(),
+        descender: face.descender(),
+        line_gap: face.line_gap(),
+        glyph_count: face.number_of_glyphs(),
+        glyphs,
+    })
+}
+
+#[allow(dead_code)]
+fn font_names(face: &ttf_parser::Face<'_>, name_id: u16) -> Vec<String> {
+    face.names()
+        .into_iter()
+        .filter(|name| name.name_id == name_id)
+        .filter_map(|name| name.to_string())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
 }
 
 #[cfg(test)]
