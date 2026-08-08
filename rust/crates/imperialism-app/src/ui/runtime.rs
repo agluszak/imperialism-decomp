@@ -1,4 +1,4 @@
-use crate::launcher::RetailAssetPackResource;
+use crate::launcher::RetailAssetsResource;
 use crate::session::GameLoopSet;
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
@@ -6,15 +6,11 @@ use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError}
 use bevy::prelude::*;
 use bevy::ui::{FocusPolicy, InteractionDisabled};
 use imperialism_formats::{
-    FourCc, PictureLibrary, ResolvedRetailTextStyle, ResourceIdentifier, RetailFontDecodeError,
-    RetailFontFace, RetailFontMetrics, RetailTextAlignment, RetailTextStyleError,
+    FourCc, RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
     RetailTextStylePreset, ScopedViewId, UiCatalog, UiCatalogError, UiNode as CatalogNode,
-    UiNodeId, UiTextBinding, UiView as CatalogView, WidgetKind, decode_retail_font_metrics,
-    resolve_retail_text_style,
+    UiNodeId, UiTextBinding, UiView as CatalogView, WidgetKind, resolve_retail_text_style,
 };
 use std::collections::HashMap;
-use std::fs;
-use std::path::PathBuf;
 
 #[derive(Resource)]
 pub struct UiCatalogResource(UiCatalog);
@@ -50,23 +46,6 @@ pub struct UiWidgetFlags {
     pub enabled: bool,
     pub input_gate: bool,
     pub child_hit_test: bool,
-}
-
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub struct PresentedRetailPicture {
-    pub picture_id: i16,
-    pub picture_library: Option<PictureLibrary>,
-    pub resource_name: ResourceIdentifier,
-    pub source_path: String,
-    pub object_sha256: String,
-}
-
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub struct PresentedRetailText {
-    pub style: ResolvedRetailTextStyle,
-    pub font_metrics: RetailFontMetrics,
-    pub source_path: String,
-    pub object_sha256: String,
 }
 
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -121,39 +100,25 @@ pub struct UiTextBindingFailed {
 
 #[derive(Debug, thiserror::Error)]
 pub enum UiTextBindingError {
-    #[error("retail asset pack is unavailable")]
-    RetailAssetPackUnavailable,
+    #[error("retail assets are unavailable")]
+    RetailAssetsUnavailable,
     #[error(transparent)]
     Style(#[from] RetailTextStyleError),
-    #[error("retail font asset {} is absent from the normalized pack", .0.relative_path())]
-    FontNotFound(RetailFontFace),
-    #[error("could not read normalized retail font object {}: {source}", path.display())]
-    ObjectIo {
-        path: PathBuf,
-        #[source]
-        source: std::io::Error,
-    },
     #[error(transparent)]
-    FontDecode(#[from] RetailFontDecodeError),
+    RetailAssets(#[from] RetailAssetError),
 }
 
 #[derive(Debug, thiserror::Error)]
 pub enum UiPictureBindingError {
-    #[error("retail asset pack is unavailable")]
-    RetailAssetPackUnavailable,
+    #[error("retail assets are unavailable")]
+    RetailAssetsUnavailable,
     #[error("catalog picture ID {0} does not fit the retail 16-bit resource ID")]
     InvalidPictureId(i32),
-    #[error("retail picture {picture_id} is absent for world slot {world_variant}")]
-    PictureNotFound { picture_id: i16, world_variant: u8 },
-    #[error("could not read normalized retail picture object {}: {source}", path.display())]
-    ObjectIo {
-        path: PathBuf,
-        #[source]
-        source: std::io::Error,
-    },
-    #[error("could not decode normalized retail BMP object {}: {source}", path.display())]
+    #[error(transparent)]
+    RetailAssets(#[from] RetailAssetError),
+    #[error("could not decode retail picture {picture_id}: {source}")]
     BmpDecode {
-        path: PathBuf,
+        picture_id: i16,
         #[source]
         source: TextureError,
     },
@@ -197,14 +162,14 @@ impl Default for NextViewInstance {
 }
 
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<PathBuf, Handle<Image>>);
+struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
 
 #[derive(Resource, Default)]
-struct RetailFontHandles(HashMap<PathBuf, Handle<Font>>);
+struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
 
 #[derive(SystemParam)]
 struct UiPictureResources<'w> {
-    retail_assets: Option<Res<'w, RetailAssetPackResource>>,
+    retail_assets: Option<Res<'w, RetailAssetsResource>>,
     lookup: Res<'w, UiPictureLookup>,
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
@@ -386,10 +351,9 @@ fn spawn_node(
             &mut pictures.fonts,
             &mut pictures.font_handles,
         ) {
-            Ok((presented, font, layout, underline)) => {
+            Ok((font, layout, underline)) => {
                 entity.insert((
                     Text::new(binding.value.clone().unwrap_or_default()),
-                    presented,
                     font,
                     layout,
                 ));
@@ -415,8 +379,8 @@ fn spawn_node(
             &mut pictures.images,
             &mut pictures.handles,
         ) {
-            Ok((picture, handle)) => {
-                entity.insert((picture, ImageNode::new(handle)));
+            Ok(handle) => {
+                entity.insert(ImageNode::new(handle));
             }
             Err(error) => {
                 pictures.failed.write(UiPictureBindingFailed {
@@ -450,37 +414,23 @@ fn catalog_text_content_box(node: &CatalogNode) -> ([i32; 2], [i32; 2]) {
 
 fn load_retail_text(
     binding: &UiTextBinding,
-    retail_assets: Option<&RetailAssetPackResource>,
+    retail_assets: Option<&RetailAssetsResource>,
     fonts: &mut Assets<Font>,
     font_handles: &mut RetailFontHandles,
-) -> Result<(PresentedRetailText, TextFont, TextLayout, bool), UiTextBindingError> {
+) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
     let style = resolve_retail_text_style(RetailTextStylePreset {
         font_family: binding.font_family,
         face_flags: binding.face_flags,
         point_size: binding.point_size,
         alignment: binding.alignment,
     })?;
-    let retail_assets = retail_assets.ok_or(UiTextBindingError::RetailAssetPackUnavailable)?;
-    let asset = retail_assets
-        .manifest()
-        .resolve_font(style.face)
-        .ok_or(UiTextBindingError::FontNotFound(style.face))?;
-    let path = retail_assets.object_path(&asset.object);
-    let object_key = asset.object.relative_path();
-    let bytes = fs::read(&path).map_err(|source| UiTextBindingError::ObjectIo {
-        path: path.clone(),
-        source,
-    })?;
-    let metrics = decode_retail_font_metrics(
-        style.face,
-        &bytes,
-        binding.value.as_deref().unwrap_or_default(),
-    )?;
-    let handle = match font_handles.0.get(&object_key) {
+    let retail_assets = retail_assets.ok_or(UiTextBindingError::RetailAssetsUnavailable)?;
+    let bytes = retail_assets.assets().font_bytes(style.face)?;
+    let handle = match font_handles.0.get(&style.face) {
         Some(handle) => handle.clone(),
         None => {
-            let handle = fonts.add(Font::from_bytes(bytes));
-            font_handles.0.insert(object_key, handle.clone());
+            let handle = fonts.add(Font::from_bytes(bytes.to_vec()));
+            font_handles.0.insert(style.face, handle.clone());
             handle
         }
     };
@@ -495,45 +445,24 @@ fn load_retail_text(
         RetailTextAlignment::Center => Justify::Center,
         RetailTextAlignment::Right => Justify::Right,
     };
-    Ok((
-        PresentedRetailText {
-            style,
-            font_metrics: metrics,
-            source_path: asset.relative_path.clone(),
-            object_sha256: asset.object.sha256.clone(),
-        },
-        font,
-        TextLayout::justify(justify),
-        style.underline,
-    ))
+    Ok((font, TextLayout::justify(justify), style.underline))
 }
 
 fn load_retail_picture(
     catalog_picture_id: i32,
-    retail_assets: Option<&RetailAssetPackResource>,
+    retail_assets: Option<&RetailAssetsResource>,
     world_variant: u8,
     images: &mut Assets<Image>,
     picture_handles: &mut RetailPictureHandles,
-) -> Result<(PresentedRetailPicture, Handle<Image>), UiPictureBindingError> {
+) -> Result<Handle<Image>, UiPictureBindingError> {
     let picture_id = i16::try_from(catalog_picture_id)
         .map_err(|_| UiPictureBindingError::InvalidPictureId(catalog_picture_id))?;
-    let retail_assets = retail_assets.ok_or(UiPictureBindingError::RetailAssetPackUnavailable)?;
-    let asset = retail_assets
-        .manifest()
-        .resolve_picture(picture_id, world_variant)
-        .ok_or(UiPictureBindingError::PictureNotFound {
-            picture_id,
-            world_variant,
-        })?;
-    let path = retail_assets.object_path(&asset.object);
-    let object_key = asset.object.relative_path();
-    let handle = match picture_handles.0.get(&object_key) {
+    let retail_assets = retail_assets.ok_or(UiPictureBindingError::RetailAssetsUnavailable)?;
+    let key = (picture_id, world_variant);
+    let handle = match picture_handles.0.get(&key) {
         Some(handle) => handle.clone(),
         None => {
-            let bytes = fs::read(&path).map_err(|source| UiPictureBindingError::ObjectIo {
-                path: path.clone(),
-                source,
-            })?;
+            let bytes = retail_assets.assets().picture(picture_id, world_variant)?;
             let image = Image::from_buffer(
                 &bytes,
                 ImageType::Format(ImageFormat::Bmp),
@@ -542,25 +471,13 @@ fn load_retail_picture(
                 ImageSampler::nearest(),
                 RenderAssetUsages::default(),
             )
-            .map_err(|source| UiPictureBindingError::BmpDecode {
-                path: path.clone(),
-                source,
-            })?;
+            .map_err(|source| UiPictureBindingError::BmpDecode { picture_id, source })?;
             let handle = images.add(image);
-            picture_handles.0.insert(object_key, handle.clone());
+            picture_handles.0.insert(key, handle.clone());
             handle
         }
     };
-    Ok((
-        PresentedRetailPicture {
-            picture_id,
-            picture_library: asset.picture_library,
-            resource_name: asset.resource_name.clone(),
-            source_path: asset.source_path.clone(),
-            object_sha256: asset.object.sha256.clone(),
-        },
-        handle,
-    ))
+    Ok(handle)
 }
 
 fn is_interactive(node: &CatalogNode) -> bool {
@@ -622,13 +539,10 @@ fn despawn_requested_views(
 mod tests {
     use super::*;
     use bevy::ecs::message::Messages;
-    use imperialism_formats::{
-        CachedRetailObject, ImportedRetailAssets, RetailAssetPackManifest, RetailResourceAsset,
-        import_english_gog_assets,
-    };
+    use imperialism_formats::{RetailAssets, UiCatalog};
     use std::collections::{HashMap, HashSet};
     use std::fs;
-    use std::sync::atomic::{AtomicU64, Ordering};
+    use std::path::PathBuf;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
@@ -641,102 +555,6 @@ mod tests {
         app.insert_resource(UiCatalogResource::new(catalog()).unwrap())
             .add_plugins(UiRuntimePlugin);
         app
-    }
-
-    static NEXT_FIXTURE: AtomicU64 = AtomicU64::new(1);
-
-    struct RetailPictureFixture {
-        root: PathBuf,
-        imported: ImportedRetailAssets,
-    }
-
-    impl RetailPictureFixture {
-        fn new(resources: Vec<RetailResourceAsset>) -> Self {
-            let serial = NEXT_FIXTURE.fetch_add(1, Ordering::Relaxed);
-            let root = std::env::temp_dir().join(format!(
-                "imperialism-app-ui-picture-{}-{serial}",
-                std::process::id()
-            ));
-            fs::create_dir_all(root.join("objects/sha256")).unwrap();
-            for asset in &resources {
-                let path = root.join(asset.object.relative_path());
-                fs::write(path, one_pixel_bmp()).unwrap();
-            }
-            Self {
-                imported: ImportedRetailAssets {
-                    cache_root: root.clone(),
-                    pack_dir: root.join("packs/test"),
-                    manifest: RetailAssetPackManifest {
-                        cache_key: "0".repeat(64),
-                        logical_resolution: [640, 480],
-                        bitmap_lookup_is_name_then_numeric: true,
-                        sources: Vec::new(),
-                        resources,
-                        strings: Vec::new(),
-                        fonts: Vec::new(),
-                        music: Vec::new(),
-                    },
-                },
-                root,
-            }
-        }
-
-        fn app(&self) -> App {
-            let mut app = app();
-            app.insert_resource(RetailAssetPackResource::new(self.imported.clone()));
-            app
-        }
-    }
-
-    impl Drop for RetailPictureFixture {
-        fn drop(&mut self) {
-            fs::remove_dir_all(&self.root).unwrap();
-        }
-    }
-
-    fn picture_asset(
-        picture_id: i16,
-        library: PictureLibrary,
-        named: bool,
-        identity: &str,
-    ) -> RetailResourceAsset {
-        RetailResourceAsset {
-            source_path: identity.to_owned(),
-            picture_library: Some(library),
-            resource_type: ResourceIdentifier::Numeric(2),
-            resource_name: if named {
-                ResourceIdentifier::Named(format!("{picture_id}.BMP"))
-            } else {
-                ResourceIdentifier::Numeric(u32::from(picture_id as u16))
-            },
-            language: 1033,
-            retail_byte_length: 4,
-            retail_sha256: identity.to_owned(),
-            object: CachedRetailObject {
-                sha256: identity.to_owned(),
-                byte_length: 58,
-                extension: "bmp".to_owned(),
-            },
-        }
-    }
-
-    fn one_pixel_bmp() -> Vec<u8> {
-        let mut bmp = Vec::with_capacity(58);
-        bmp.extend_from_slice(b"BM");
-        bmp.extend_from_slice(&58_u32.to_le_bytes());
-        bmp.extend_from_slice(&[0; 4]);
-        bmp.extend_from_slice(&54_u32.to_le_bytes());
-        bmp.extend_from_slice(&40_u32.to_le_bytes());
-        bmp.extend_from_slice(&1_i32.to_le_bytes());
-        bmp.extend_from_slice(&1_i32.to_le_bytes());
-        bmp.extend_from_slice(&1_u16.to_le_bytes());
-        bmp.extend_from_slice(&24_u16.to_le_bytes());
-        bmp.extend_from_slice(&0_u32.to_le_bytes());
-        bmp.extend_from_slice(&4_u32.to_le_bytes());
-        bmp.extend_from_slice(&[0; 16]);
-        bmp.extend_from_slice(&[0, 0, 0xff, 0]);
-        assert_eq!(bmp.len(), 58);
-        bmp
     }
 
     fn px(value: Val) -> f32 {
@@ -989,110 +807,8 @@ mod tests {
     }
 
     #[test]
-    fn startup_views_bind_catalog_pictures_to_nearest_sampled_retail_images() {
-        let launch_views = [1500, 1501];
-        let catalog = catalog();
-        let expected = catalog
-            .views
-            .iter()
-            .filter(|view| launch_views.contains(&view.id.resource_id))
-            .flat_map(|view| {
-                view.nodes.iter().filter_map(|node| {
-                    node.properties
-                        .picture_id
-                        .map(|picture_id| (view.id.clone(), node.id, picture_id as i16))
-                })
-            })
-            .collect::<HashSet<_>>();
-        let resources = expected
-            .iter()
-            .map(|(_, _, picture_id)| {
-                picture_asset(
-                    *picture_id,
-                    PictureLibrary::Localized,
-                    true,
-                    &format!("picture-{picture_id}"),
-                )
-            })
-            .collect();
-        let fixture = RetailPictureFixture::new(resources);
-        let mut app = fixture.app();
-        for resource_id in launch_views {
-            app.world_mut()
-                .write_message(SpawnUiView(ScopedViewId {
-                    resource_file: "Startup.rsrc".to_owned(),
-                    resource_id,
-                }))
-                .unwrap();
-        }
-
-        app.update();
-
-        let bound = app
-            .world_mut()
-            .query::<(
-                &PresentedViewId,
-                &PresentedUiNode,
-                &PresentedRetailPicture,
-                &ImageNode,
-            )>()
-            .iter(app.world())
-            .filter(|(view, _, _, _)| launch_views.contains(&view.0.resource_id))
-            .map(|(view, node, picture, image_node)| {
-                assert_eq!(picture.picture_library, Some(PictureLibrary::Localized));
-                let image = app
-                    .world()
-                    .resource::<Assets<Image>>()
-                    .get(&image_node.image)
-                    .unwrap();
-                assert_eq!(image.sampler, ImageSampler::nearest());
-                (view.0.clone(), node.0, picture.picture_id)
-            })
-            .collect::<HashSet<_>>();
-        assert_eq!(bound, expected);
-        assert!(
-            bound
-                .iter()
-                .any(|(view, _, picture_id)| { view.resource_id == 1500 && *picture_id == 4500 })
-        );
-        assert!(bound.iter().any(|(view, _, _)| view.resource_id == 1501));
-    }
-
-    #[test]
-    fn picture_binding_uses_manifest_name_then_library_slot_precedence() {
-        let resources = vec![
-            picture_asset(4500, PictureLibrary::Universal, true, "named-universal"),
-            picture_asset(4500, PictureLibrary::Localized, false, "numeric-localized"),
-            picture_asset(4500, PictureLibrary::Localized, true, "named-localized"),
-        ];
-        let fixture = RetailPictureFixture::new(resources);
-        let mut app = fixture.app();
-        app.world_mut()
-            .write_message(SpawnUiView(ScopedViewId {
-                resource_file: "Startup.rsrc".to_owned(),
-                resource_id: 1500,
-            }))
-            .unwrap();
-
-        app.update();
-
-        let picture = app
-            .world_mut()
-            .query::<&PresentedRetailPicture>()
-            .single(app.world())
-            .unwrap();
-        assert_eq!(picture.source_path, "named-localized");
-        assert_eq!(
-            picture.resource_name,
-            ResourceIdentifier::Named("4500.BMP".to_owned())
-        );
-        assert_eq!(picture.picture_library, Some(PictureLibrary::Localized));
-    }
-
-    #[test]
-    fn missing_catalog_picture_reports_a_typed_failure_without_panicking() {
-        let fixture = RetailPictureFixture::new(Vec::new());
-        let mut app = fixture.app();
+    fn picture_binding_reports_missing_retail_assets_without_panicking() {
+        let mut app = app();
         let view = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
             resource_id: 1500,
@@ -1114,10 +830,7 @@ mod tests {
         assert_eq!(failure.picture_id, 4500);
         assert!(matches!(
             failure.error,
-            UiPictureBindingError::PictureNotFound {
-                picture_id: 4500,
-                world_variant: 0,
-            }
+            UiPictureBindingError::RetailAssetsUnavailable
         ));
         let picture_node = catalog()
             .view(&view)
@@ -1139,9 +852,8 @@ mod tests {
     }
 
     #[test]
-    fn missing_retail_font_reports_a_typed_failure_without_using_a_system_font() {
-        let fixture = RetailPictureFixture::new(Vec::new());
-        let mut app = fixture.app();
+    fn text_binding_reports_missing_retail_assets_without_using_a_system_font() {
+        let mut app = app();
         let view = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
             resource_id: 1501,
@@ -1159,10 +871,7 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(failures.iter().any(|failure| {
             failure.view == view
-                && matches!(
-                    failure.error,
-                    UiTextBindingError::FontNotFound(RetailFontFace::BelweBold)
-                )
+                && matches!(failure.error, UiTextBindingError::RetailAssetsUnavailable)
         }));
         assert_eq!(
             app.world_mut()
@@ -1175,22 +884,17 @@ mod tests {
     }
 
     #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR, IMPERIALISM_RETAIL_CACHE, and IMPERIALISM_TEXT_EVIDENCE_PATH"]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR and IMPERIALISM_TEXT_EVIDENCE_PATH"]
     fn real_retail_random_setup_text_renders_deterministic_640x480_evidence() {
         let retail_dir = PathBuf::from(
             std::env::var_os("IMPERIALISM_RETAIL_DIR")
                 .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
         );
-        let cache = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_CACHE")
-                .expect("IMPERIALISM_RETAIL_CACHE must name a task-specific cache"),
-        );
         let output = PathBuf::from(
             std::env::var_os("IMPERIALISM_TEXT_EVIDENCE_PATH")
                 .expect("IMPERIALISM_TEXT_EVIDENCE_PATH must name the output PPM"),
         );
-        let imported = import_english_gog_assets(&retail_dir, &cache).unwrap();
-        let retail_assets = RetailAssetPackResource::new(imported);
+        let retail_assets = RetailAssetsResource::new(RetailAssets::open(&retail_dir).unwrap());
         let catalog = catalog();
         let view = catalog
             .view(&ScopedViewId {
@@ -1210,10 +914,7 @@ mod tests {
         fs::write(output, first).unwrap();
     }
 
-    fn render_text_evidence(
-        view: &CatalogView,
-        retail_assets: &RetailAssetPackResource,
-    ) -> Vec<u8> {
+    fn render_text_evidence(view: &CatalogView, retail_assets: &RetailAssetsResource) -> Vec<u8> {
         use bevy::text::{
             ComputedTextBlock, FontAtlasSet, FontCx, FontHinting, LayoutCx, LetterSpacing,
             LineHeight, ScaleCx, TextBounds, TextLayoutInfo, TextPipeline,
@@ -1231,7 +932,7 @@ mod tests {
                 continue;
             }
             match load_retail_text(binding, Some(retail_assets), &mut fonts, &mut handles) {
-                Ok((_, font, layout, _)) => {
+                Ok((font, layout, _)) => {
                     prepared.push((node, binding.value.as_deref().unwrap(), font, layout));
                 }
                 Err(UiTextBindingError::Style(RetailTextStyleError::UnresolvedFontFamily {

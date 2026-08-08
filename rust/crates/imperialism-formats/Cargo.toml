@@ -8,9 +8,9 @@ rust-version.workspace = true
 anyhow.workspace = true
 clap.workspace = true
 imperialism-core = { path = "../imperialism-core" }
+pelite.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 serde_path_to_error.workspace = true
 thiserror.workspace = true
-sha2 = "0.10"
 ttf-parser = "0.25"

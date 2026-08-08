@@ -1,21 +1,26 @@
 use crate::RetailFontFace;
-use crate::retail_pe::{
-    DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
-    bitmap_resource_to_bmp, decode_string_table_block,
-};
-use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256};
-use std::collections::HashSet;
-use std::ffi::OsString;
+use crate::retail_resources::{bitmap_resource_to_bmp, decode_string_table_block};
+use pelite::pe32::{Pe, PeFile};
+use pelite::resources::{FindError, Name};
+use std::collections::BTreeMap;
+use std::fmt::Display;
 use std::fs;
-use std::io::Write;
+use std::ops::Range;
 use std::path::{Path, PathBuf};
 
-const CACHE_KEY_DOMAIN: &[u8] = b"imperialism.retail_asset_import\0";
 const ENGLISH_LANGUAGE: u32 = 1033;
 
+const PICTURE_ARCHIVE_PATHS: [&str; 7] = [
+    "Data/pictenu.gob",
+    "Data/pictpaid.gob",
+    "Data/pictwv0.gob",
+    "Data/pictwv1.gob",
+    "Data/pictwv2.gob",
+    "Data/pictwv3.gob",
+    "Data/pictuniv.gob",
+];
+
 const REQUIRED_RETAIL_FILES: &[&str] = &[
-    "Data/confenu.irg",
     "Data/pictenu.gob",
     "Data/pictpaid.gob",
     "Data/pictuniv.gob",
@@ -24,12 +29,10 @@ const REQUIRED_RETAIL_FILES: &[&str] = &[
     "Data/pictwv2.gob",
     "Data/pictwv3.gob",
     "Data/STR#ENU.GOB",
-    "Data/tabsenu.gob",
     "Data/wave.gob",
     "Data/Antqua.ttf",
     "Data/Antquab.ttf",
     "Data/WeBeBd__.ttf",
-    "Data/WeBeLt__.ttf",
     "MUSIC/Track02.ogg",
     "MUSIC/Track03.ogg",
     "MUSIC/Track04.ogg",
@@ -43,140 +46,309 @@ const REQUIRED_RETAIL_FILES: &[&str] = &[
     "MUSIC/Track12.ogg",
 ];
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum PictureLibrary {
-    Localized,
-    Paid,
-    World0,
-    World1,
-    World2,
-    World3,
-    Universal,
+/// Direct access to the retail files needed by the current application.
+///
+/// The object owns raw archive/font bytes and indexes English PE resource ranges during opening.
+/// It deliberately retains no borrowed PE views.
+#[derive(Debug)]
+pub struct RetailAssets {
+    root: PathBuf,
+    pictures: [ResourceArchive; 7],
+    wave: ResourceArchive,
+    strings: BTreeMap<u32, String>,
+    fonts: RetailFonts,
 }
 
-impl PictureLibrary {
-    pub const fn active_lookup_order(world_variant: u8) -> Option<[Self; 4]> {
-        let world = match world_variant {
-            0 => Self::World0,
-            1 => Self::World1,
-            2 => Self::World2,
-            3 => Self::World3,
-            _ => return None,
-        };
-        Some([Self::Localized, Self::Paid, world, Self::Universal])
-    }
-}
+impl RetailAssets {
+    /// Opens the current English GOG input files and indexes their English resources.
+    pub fn open(retail_dir: impl AsRef<Path>) -> Result<Self, RetailAssetError> {
+        let root = retail_dir.as_ref().to_owned();
+        require_retail_files(&root)?;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailSourceDigest {
-    pub relative_path: String,
-    pub byte_length: u64,
-    pub sha256: String,
-}
+        let pictures = [
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[0])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[1])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[2])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[3])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[4])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[5])?,
+            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[6])?,
+        ];
+        let wave = ResourceArchive::read(&root, "Data/wave.gob")?;
+        let strings = ResourceArchive::read(&root, "Data/STR#ENU.GOB")?.english_strings()?;
+        let fonts = RetailFonts::read(&root)?;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct CachedRetailObject {
-    pub sha256: String,
-    pub byte_length: u64,
-    pub extension: String,
-}
-
-impl CachedRetailObject {
-    pub fn relative_path(&self) -> PathBuf {
-        PathBuf::from("objects")
-            .join("sha256")
-            .join(format!("{}.{}", self.sha256, self.extension))
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailResourceAsset {
-    pub source_path: String,
-    pub picture_library: Option<PictureLibrary>,
-    pub resource_type: ResourceIdentifier,
-    pub resource_name: ResourceIdentifier,
-    pub language: u32,
-    pub retail_byte_length: u64,
-    pub retail_sha256: String,
-    pub object: CachedRetailObject,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailStringAsset {
-    pub id: u32,
-    pub block: u32,
-    pub index: u8,
-    pub text: String,
-    pub source_path: String,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailStandaloneAsset {
-    pub relative_path: String,
-    pub object: CachedRetailObject,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailAssetPackManifest {
-    pub cache_key: String,
-    pub logical_resolution: [u32; 2],
-    pub bitmap_lookup_is_name_then_numeric: bool,
-    pub sources: Vec<RetailSourceDigest>,
-    pub resources: Vec<RetailResourceAsset>,
-    pub strings: Vec<RetailStringAsset>,
-    pub fonts: Vec<RetailStandaloneAsset>,
-    pub music: Vec<RetailStandaloneAsset>,
-}
-
-impl RetailAssetPackManifest {
-    pub fn resolve_font(&self, face: RetailFontFace) -> Option<&RetailStandaloneAsset> {
-        self.fonts.iter().find(|asset| {
-            asset
-                .relative_path
-                .eq_ignore_ascii_case(face.relative_path())
+        Ok(Self {
+            root,
+            pictures,
+            wave,
+            strings,
+            fonts,
         })
     }
 
-    pub fn resolve_picture(
-        &self,
-        picture_id: i16,
-        world_variant: u8,
-    ) -> Option<&RetailResourceAsset> {
-        let libraries = PictureLibrary::active_lookup_order(world_variant)?;
-        let named = ResourceIdentifier::Named(format!("{picture_id}.BMP"));
-        let numeric = ResourceIdentifier::Numeric(u32::from(picture_id as u16));
-        for name in [&named, &numeric] {
-            for library in libraries {
-                if let Some(asset) = self.resources.iter().find(|asset| {
-                    asset.picture_library == Some(library)
-                        && asset.resource_type == ResourceIdentifier::Numeric(2)
-                        && &asset.resource_name == name
-                        && asset.language == ENGLISH_LANGUAGE
-                }) {
-                    return Some(asset);
+    /// Resolves a retail picture using name-before-numeric and library-slot precedence.
+    ///
+    /// The returned bytes are a BMP file assembled from the retail DIB resource.
+    pub fn picture(&self, picture_id: i16, world_variant: u8) -> Result<Vec<u8>, RetailAssetError> {
+        let archives = self.active_picture_archives(world_variant)?;
+        let named = format!("{picture_id}.BMP");
+        let names = [
+            ResourceName::Text(named),
+            ResourceName::Id(u32::from(picture_id as u16)),
+        ];
+        for name in &names {
+            for archive in archives {
+                if let Some(dib) = archive.find(ResourceName::Id(2), name.clone())? {
+                    return bitmap_resource_to_bmp(dib)
+                        .map_err(|error| resource_error(&archive.path, error));
                 }
             }
         }
-        None
+        Err(RetailAssetError::PictureNotFound {
+            picture_id,
+            world_variant,
+        })
+    }
+
+    /// Looks up a decoded English retail string.
+    pub fn string(&self, id: u32) -> Option<&str> {
+        self.strings.get(&id).map(String::as_str)
+    }
+
+    /// Returns the font bytes consumed by the UI.
+    pub fn font_bytes(&self, face: RetailFontFace) -> Result<&[u8], RetailAssetError> {
+        Ok(self.fonts.bytes(face))
+    }
+
+    /// Returns a complete RIFF/WAVE payload from `Data/wave.gob`.
+    pub fn wave_bytes(&self, id: u16) -> Result<&[u8], RetailAssetError> {
+        let bytes = self
+            .wave
+            .find(
+                ResourceName::Text("WAVE".to_owned()),
+                ResourceName::Id(u32::from(id)),
+            )?
+            .ok_or(RetailAssetError::WaveNotFound(id))?;
+        validate_wave_payload("Data/wave.gob", bytes)?;
+        Ok(bytes)
+    }
+
+    /// Resolves a music file without copying it into an importer cache.
+    pub fn music_path(&self, track: u8) -> Result<PathBuf, RetailAssetError> {
+        if !(2..=12).contains(&track) {
+            return Err(RetailAssetError::InvalidMusicTrack(track));
+        }
+        Ok(self.root.join(format!("MUSIC/Track{track:02}.ogg")))
+    }
+
+    fn active_picture_archives(
+        &self,
+        world_variant: u8,
+    ) -> Result<[&ResourceArchive; 4], RetailAssetError> {
+        let world = match world_variant {
+            0..=3 => 2 + usize::from(world_variant),
+            _ => return Err(RetailAssetError::InvalidWorldVariant(world_variant)),
+        };
+        Ok([
+            &self.pictures[0],
+            &self.pictures[1],
+            &self.pictures[world],
+            &self.pictures[6],
+        ])
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct ImportedRetailAssets {
-    pub cache_root: PathBuf,
-    pub pack_dir: PathBuf,
-    pub manifest: RetailAssetPackManifest,
+#[derive(Debug)]
+struct RetailFonts {
+    belwe_bold: Vec<u8>,
+    book_antiqua_regular: Vec<u8>,
+    book_antiqua_bold: Vec<u8>,
 }
 
-impl ImportedRetailAssets {
-    pub fn object_path(&self, object: &CachedRetailObject) -> PathBuf {
-        self.cache_root.join(object.relative_path())
+impl RetailFonts {
+    fn read(root: &Path) -> Result<Self, RetailAssetError> {
+        Ok(Self {
+            belwe_bold: read_font(root, "Data/WeBeBd__.ttf")?,
+            book_antiqua_regular: read_font(root, "Data/Antqua.ttf")?,
+            book_antiqua_bold: read_font(root, "Data/Antquab.ttf")?,
+        })
     }
+
+    fn bytes(&self, face: RetailFontFace) -> &[u8] {
+        match face {
+            RetailFontFace::BelweBold => &self.belwe_bold,
+            RetailFontFace::BookAntiquaRegular => &self.book_antiqua_regular,
+            RetailFontFace::BookAntiquaBold => &self.book_antiqua_bold,
+        }
+    }
+}
+
+#[derive(Debug)]
+struct ResourceArchive {
+    path: PathBuf,
+    bytes: Vec<u8>,
+    english_resources: BTreeMap<ResourceKey, Range<usize>>,
+}
+
+impl ResourceArchive {
+    fn read(root: &Path, relative: &str) -> Result<Self, RetailAssetError> {
+        let path = root.join(relative);
+        let bytes = read_file(&path)?;
+        let english_resources = index_english_resources(&path, &bytes)?;
+        Ok(Self {
+            path,
+            bytes,
+            english_resources,
+        })
+    }
+
+    fn find(
+        &self,
+        resource_type: ResourceName,
+        name: ResourceName,
+    ) -> Result<Option<&[u8]>, RetailAssetError> {
+        let key = ResourceKey {
+            resource_type,
+            name,
+        };
+        let Some(range) = self.english_resources.get(&key) else {
+            return Ok(None);
+        };
+        self.bytes
+            .get(range.clone())
+            .map(Some)
+            .ok_or_else(|| RetailAssetError::Resource {
+                path: self.path.clone(),
+                detail: "indexed resource range is outside its owning archive".to_owned(),
+            })
+    }
+
+    fn english_strings(&self) -> Result<BTreeMap<u32, String>, RetailAssetError> {
+        let mut strings = BTreeMap::new();
+        for (key, range) in &self.english_resources {
+            if key.resource_type != ResourceName::Id(6) {
+                continue;
+            }
+            let ResourceName::Id(block) = &key.name else {
+                return Err(RetailAssetError::Incompatible(format!(
+                    "{} has named STRING block",
+                    self.path.display()
+                )));
+            };
+            let bytes =
+                self.bytes
+                    .get(range.clone())
+                    .ok_or_else(|| RetailAssetError::Resource {
+                        path: self.path.clone(),
+                        detail: "indexed STRING range is outside its owning archive".to_owned(),
+                    })?;
+            let decoded = decode_string_table_block(*block, bytes)
+                .map_err(|error| resource_error(&self.path, error))?;
+            for string in decoded {
+                if !string.text.is_empty() {
+                    strings.insert(string.id, string.text);
+                }
+            }
+        }
+        Ok(strings)
+    }
+}
+
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+enum ResourceName {
+    Id(u32),
+    Text(String),
+}
+
+impl ResourceName {
+    fn from_pelite(name: Name<'_>, path: &Path) -> Result<Self, RetailAssetError> {
+        match name {
+            Name::Id(id) => Ok(Self::Id(id)),
+            Name::Wide(words) => String::from_utf16(words)
+                .map(Self::Text)
+                .map_err(|error| resource_error(path, error)),
+            Name::Str(text) => Ok(Self::Text(text.to_owned())),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+struct ResourceKey {
+    resource_type: ResourceName,
+    name: ResourceName,
+}
+
+fn index_english_resources(
+    path: &Path,
+    bytes: &[u8],
+) -> Result<BTreeMap<ResourceKey, Range<usize>>, RetailAssetError> {
+    let pe = PeFile::from_bytes(bytes).map_err(|error| resource_error(path, error))?;
+    let resources = pe
+        .resources()
+        .map_err(|error| resource_error(path, error))?;
+    let root = resources
+        .root()
+        .map_err(|error| resource_error(path, error))?;
+    let mut index = BTreeMap::new();
+    for type_entry in root.entries() {
+        let resource_type = ResourceName::from_pelite(
+            type_entry
+                .name()
+                .map_err(|error| resource_error(path, error))?,
+            path,
+        )?;
+        let names = type_entry
+            .entry()
+            .map_err(|error| resource_error(path, error))?
+            .dir()
+            .ok_or_else(|| invalid_resource_shape(path, "resource type is not a directory"))?;
+        for name_entry in names.entries() {
+            let name = ResourceName::from_pelite(
+                name_entry
+                    .name()
+                    .map_err(|error| resource_error(path, error))?,
+                path,
+            )?;
+            let languages = name_entry
+                .entry()
+                .map_err(|error| resource_error(path, error))?
+                .dir()
+                .ok_or_else(|| invalid_resource_shape(path, "resource name is not a directory"))?;
+            let data = match languages.get_data(Name::Id(ENGLISH_LANGUAGE)) {
+                Ok(data) => data,
+                Err(FindError::NotFound) => continue,
+                Err(error) => return Err(resource_error(path, error)),
+            };
+            let start = pe
+                .rva_to_file_offset(data.image().OffsetToData)
+                .map_err(|error| resource_error(path, error))?;
+            let end = start
+                .checked_add(data.size())
+                .ok_or_else(|| invalid_resource_shape(path, "resource range overflows"))?;
+            if bytes.get(start..end).is_none() {
+                return Err(invalid_resource_shape(
+                    path,
+                    "resource range is outside the PE file",
+                ));
+            }
+            let key = ResourceKey {
+                resource_type: resource_type.clone(),
+                name,
+            };
+            if index.insert(key, start..end).is_some() {
+                return Err(invalid_resource_shape(
+                    path,
+                    "duplicate English resource name",
+                ));
+            }
+        }
+    }
+    Ok(index)
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum RetailAssetImportError {
+pub enum RetailAssetError {
     #[error(
         "retail directory is missing required English GOG files\n  {paths}",
         paths = .0.join("\n  ")
@@ -188,699 +360,217 @@ pub enum RetailAssetImportError {
         #[source]
         source: std::io::Error,
     },
-    #[error("{path}: {source}")]
-    Pe {
-        path: String,
-        #[source]
-        source: PeResourceError,
-    },
+    #[error("{}: invalid PE/resource data: {detail}", path.display())]
+    Resource { path: PathBuf, detail: String },
     #[error("incompatible English GOG retail assets: {0}")]
     Incompatible(String),
-    #[error("invalid retail cache manifest: {0}")]
-    Manifest(#[source] serde_json::Error),
+    #[error("no English picture {picture_id} is available for world variant {world_variant}")]
+    PictureNotFound { picture_id: i16, world_variant: u8 },
+    #[error("Data/wave.gob has no English WAVE resource {0}")]
+    WaveNotFound(u16),
+    #[error("world variant {0} is outside the retail range 0..=3")]
+    InvalidWorldVariant(u8),
+    #[error("retail music track {0} is outside the supported range 2..=12")]
+    InvalidMusicTrack(u8),
 }
 
-pub fn default_retail_cache_dir() -> Result<PathBuf, RetailAssetImportError> {
-    if let Some(path) = std::env::var_os("XDG_CACHE_HOME").filter(|value| !value.is_empty()) {
-        return Ok(PathBuf::from(path).join("imperialism-rs"));
-    }
-    if let Some(path) = std::env::var_os("HOME").filter(|value| !value.is_empty()) {
-        return Ok(PathBuf::from(path).join(".cache").join("imperialism-rs"));
-    }
-    Err(RetailAssetImportError::Incompatible(
-        "could not determine a cache directory; pass --cache-dir".to_owned(),
-    ))
-}
-
-pub fn import_english_gog_assets(
-    retail_dir: &Path,
-    cache_root: &Path,
-) -> Result<ImportedRetailAssets, RetailAssetImportError> {
-    let source_paths = required_source_paths(retail_dir)?;
-    let sources = hash_sources(&source_paths)?;
-    let cache_key = cache_key(&sources);
-    let pack_dir = cache_root.join("packs").join(&cache_key);
-    let manifest_path = pack_dir.join("manifest.json");
-    if manifest_path.is_file()
-        && let Ok(manifest) = read_manifest(&manifest_path)
-        && validate_cached_manifest(cache_root, &manifest, &sources, &cache_key)?
-    {
-        return Ok(ImportedRetailAssets {
-            cache_root: cache_root.to_owned(),
-            pack_dir,
-            manifest,
-        });
-    }
-
-    let config = read_pe(retail_dir, "Data/confenu.irg")?;
-    validate_english_config(&config)?;
-
-    create_dir_all(cache_root)?;
-    let mut resources = Vec::new();
-    let picture_archives = [
-        ("Data/pictenu.gob", PictureLibrary::Localized),
-        ("Data/pictpaid.gob", PictureLibrary::Paid),
-        ("Data/pictwv0.gob", PictureLibrary::World0),
-        ("Data/pictwv1.gob", PictureLibrary::World1),
-        ("Data/pictwv2.gob", PictureLibrary::World2),
-        ("Data/pictwv3.gob", PictureLibrary::World3),
-        ("Data/pictuniv.gob", PictureLibrary::Universal),
-    ];
-    for (relative, library) in picture_archives {
-        let pe = read_pe(retail_dir, relative)?;
-        validate_picture_archive(relative, library, &pe)?;
-        import_resource_archive(cache_root, relative, Some(library), &pe, &mut resources)?;
-    }
-
-    let wave = read_pe(retail_dir, "Data/wave.gob")?;
-    validate_named_archive("Data/wave.gob", &wave, "WAVE", &["7000"])?;
-    import_resource_archive(cache_root, "Data/wave.gob", None, &wave, &mut resources)?;
-
-    let tables = read_pe(retail_dir, "Data/tabsenu.gob")?;
-    validate_named_archive(
-        "Data/tabsenu.gob",
-        &tables,
-        "TABLE",
-        &["NEWS.TAB", "NEWS.TEX"],
-    )?;
-    import_resource_archive(
-        cache_root,
-        "Data/tabsenu.gob",
-        None,
-        &tables,
-        &mut resources,
-    )?;
-
-    let strings_pe = read_pe(retail_dir, "Data/STR#ENU.GOB")?;
-    let strings = import_strings("Data/STR#ENU.GOB", &strings_pe)?;
-    validate_launch_strings(&strings)?;
-
-    let fonts = import_standalone_group(
-        retail_dir,
-        cache_root,
-        &[
-            "Data/Antqua.ttf",
-            "Data/Antquab.ttf",
-            "Data/WeBeBd__.ttf",
-            "Data/WeBeLt__.ttf",
-        ],
-        "ttf",
-        validate_font,
-    )?;
-    let music_paths = (2..=12)
-        .map(|track| format!("MUSIC/Track{track:02}.ogg"))
-        .collect::<Vec<_>>();
-    let music_refs = music_paths.iter().map(String::as_str).collect::<Vec<_>>();
-    let music = import_standalone_group(retail_dir, cache_root, &music_refs, "ogg", validate_ogg)?;
-
-    let manifest = RetailAssetPackManifest {
-        cache_key: cache_key.clone(),
-        logical_resolution: [640, 480],
-        bitmap_lookup_is_name_then_numeric: true,
-        sources,
-        resources,
-        strings,
-        fonts,
-        music,
-    };
-    write_pack_atomically(cache_root, &pack_dir, &manifest, pack_dir.exists())?;
-    Ok(ImportedRetailAssets {
-        cache_root: cache_root.to_owned(),
-        pack_dir,
-        manifest,
-    })
-}
-
-fn required_source_paths(
-    retail_dir: &Path,
-) -> Result<Vec<(String, PathBuf)>, RetailAssetImportError> {
-    let paths = REQUIRED_RETAIL_FILES
+fn require_retail_files(root: &Path) -> Result<(), RetailAssetError> {
+    let missing = REQUIRED_RETAIL_FILES
         .iter()
-        .map(|relative| ((*relative).to_owned(), retail_dir.join(relative)))
+        .filter(|relative| !root.join(relative).is_file())
+        .map(|relative| (*relative).to_owned())
         .collect::<Vec<_>>();
-    let missing = paths
-        .iter()
-        .filter(|(_, path)| !path.is_file())
-        .map(|(relative, _)| relative.clone())
-        .collect::<Vec<_>>();
-    if !missing.is_empty() {
-        return Err(RetailAssetImportError::MissingFiles(missing));
-    }
-    Ok(paths)
-}
-
-fn hash_sources(
-    paths: &[(String, PathBuf)],
-) -> Result<Vec<RetailSourceDigest>, RetailAssetImportError> {
-    let mut sources = Vec::with_capacity(paths.len());
-    for (relative, path) in paths {
-        let bytes = read(path)?;
-        sources.push(RetailSourceDigest {
-            relative_path: relative.clone(),
-            byte_length: bytes.len() as u64,
-            sha256: sha256(&bytes),
-        });
-    }
-    sources.sort_by(|left, right| left.relative_path.cmp(&right.relative_path));
-    Ok(sources)
-}
-
-fn cache_key(sources: &[RetailSourceDigest]) -> String {
-    let mut digest = Sha256::new();
-    digest.update(CACHE_KEY_DOMAIN);
-    for source in sources {
-        digest.update(source.relative_path.as_bytes());
-        digest.update([0]);
-        digest.update(source.byte_length.to_le_bytes());
-        digest.update(source.sha256.as_bytes());
-        digest.update([0]);
-    }
-    hex_digest(digest.finalize().as_slice())
-}
-
-fn read_pe(retail_dir: &Path, relative: &str) -> Result<PeResourceFile, RetailAssetImportError> {
-    PeResourceFile::parse(read(&retail_dir.join(relative))?).map_err(|source| {
-        RetailAssetImportError::Pe {
-            path: relative.to_owned(),
-            source,
-        }
-    })
-}
-
-fn validate_english_config(config: &PeResourceFile) -> Result<(), RetailAssetImportError> {
-    let mut decoded = Vec::new();
-    for entry in config.resources() {
-        if entry.resource_type == ResourceIdentifier::Numeric(6) {
-            let ResourceIdentifier::Numeric(block) = &entry.name else {
-                continue;
-            };
-            decoded.extend(
-                decode_string_table_block(*block, config.payload(entry)).map_err(|source| {
-                    RetailAssetImportError::Pe {
-                        path: "Data/confenu.irg".to_owned(),
-                        source,
-                    }
-                })?,
-            );
-        }
-    }
-    let expected = [
-        (128, "data/wave.gob"),
-        (663, "data/str#enu.gob"),
-        (710, "data/pictenu.gob"),
-        (803, "enu"),
-        (2112, "data/tabsenu.gob"),
-        (7734, "English"),
-    ];
-    for (id, value) in expected {
-        let actual = decoded.iter().find(|entry| entry.id == id);
-        if actual.map(|entry| entry.text.as_str()) != Some(value) {
-            return Err(RetailAssetImportError::Incompatible(format!(
-                "Data/confenu.irg STRING {id} does not identify {value:?}"
-            )));
-        }
-    }
-    Ok(())
-}
-
-fn validate_picture_archive(
-    relative: &str,
-    library: PictureLibrary,
-    pe: &PeResourceFile,
-) -> Result<(), RetailAssetImportError> {
-    if !pe.resources().iter().any(|entry| {
-        entry.resource_type == ResourceIdentifier::Numeric(2) && entry.language == ENGLISH_LANGUAGE
-    }) {
-        return Err(RetailAssetImportError::Incompatible(format!(
-            "{relative} has no English BITMAP resources"
-        )));
-    }
-    let required: &[i16] = match library {
-        PictureLibrary::Localized => &[950, 1031, 4500, 8452],
-        PictureLibrary::World0 => &[4550],
-        PictureLibrary::Universal => &[1016, 4540, 8453],
-        PictureLibrary::Paid
-        | PictureLibrary::World1
-        | PictureLibrary::World2
-        | PictureLibrary::World3 => &[],
-    };
-    for id in required {
-        let name = ResourceIdentifier::Named(format!("{id}.BMP"));
-        if pe
-            .find(&ResourceIdentifier::Numeric(2), &name, ENGLISH_LANGUAGE)
-            .is_none()
-        {
-            return Err(RetailAssetImportError::Incompatible(format!(
-                "{relative} has no launch BITMAP {id}.BMP"
-            )));
-        }
-    }
-    Ok(())
-}
-
-fn validate_named_archive(
-    relative: &str,
-    pe: &PeResourceFile,
-    resource_type: &str,
-    required_names: &[&str],
-) -> Result<(), RetailAssetImportError> {
-    let resource_type = ResourceIdentifier::Named(resource_type.to_owned());
-    for required in required_names {
-        let name = required
-            .parse::<u32>()
-            .map(ResourceIdentifier::Numeric)
-            .unwrap_or_else(|_| ResourceIdentifier::Named((*required).to_owned()));
-        if pe.find(&resource_type, &name, ENGLISH_LANGUAGE).is_none() {
-            return Err(RetailAssetImportError::Incompatible(format!(
-                "{relative} has no {resource_type:?} resource {required}"
-            )));
-        }
-    }
-    Ok(())
-}
-
-fn import_resource_archive(
-    cache_root: &Path,
-    relative: &str,
-    picture_library: Option<PictureLibrary>,
-    pe: &PeResourceFile,
-    output: &mut Vec<RetailResourceAsset>,
-) -> Result<(), RetailAssetImportError> {
-    for entry in pe.resources() {
-        if entry.language != ENGLISH_LANGUAGE {
-            continue;
-        }
-        let payload = pe.payload(entry);
-        let (normalized, extension) =
-            normalize_resource(entry, payload).map_err(|source| RetailAssetImportError::Pe {
-                path: relative.to_owned(),
-                source,
-            })?;
-        let object = write_object(cache_root, &normalized, extension)?;
-        output.push(RetailResourceAsset {
-            source_path: relative.to_owned(),
-            picture_library,
-            resource_type: entry.resource_type.clone(),
-            resource_name: entry.name.clone(),
-            language: entry.language,
-            retail_byte_length: payload.len() as u64,
-            retail_sha256: sha256(payload),
-            object,
-        });
-    }
-    Ok(())
-}
-
-fn normalize_resource(
-    entry: &PeResourceEntry,
-    payload: &[u8],
-) -> Result<(Vec<u8>, &'static str), PeResourceError> {
-    match &entry.resource_type {
-        ResourceIdentifier::Numeric(2) => Ok((bitmap_resource_to_bmp(payload)?, "bmp")),
-        ResourceIdentifier::Named(name) if name == "WAVE" => {
-            if payload.len() < 12 || &payload[..4] != b"RIFF" || &payload[8..12] != b"WAVE" {
-                return Err(PeResourceError::Invalid(
-                    "WAVE resource is not a complete RIFF/WAVE file".to_owned(),
-                ));
-            }
-            Ok((payload.to_vec(), "wav"))
-        }
-        ResourceIdentifier::Named(name) if name == "TABLE" => Ok((payload.to_vec(), "table")),
-        _ => Ok((payload.to_vec(), "bin")),
-    }
-}
-
-fn import_strings(
-    relative: &str,
-    pe: &PeResourceFile,
-) -> Result<Vec<RetailStringAsset>, RetailAssetImportError> {
-    let mut strings = Vec::new();
-    for entry in pe.resources() {
-        if entry.resource_type != ResourceIdentifier::Numeric(6)
-            || entry.language != ENGLISH_LANGUAGE
-        {
-            continue;
-        }
-        let ResourceIdentifier::Numeric(block) = &entry.name else {
-            return Err(RetailAssetImportError::Incompatible(format!(
-                "{relative} has a named STRING block"
-            )));
-        };
-        let decoded = decode_string_table_block(*block, pe.payload(entry)).map_err(|source| {
-            RetailAssetImportError::Pe {
-                path: relative.to_owned(),
-                source,
-            }
-        })?;
-        strings.extend(decoded.into_iter().filter_map(
-            |DecodedStringResource {
-                 id,
-                 block,
-                 index,
-                 text,
-             }| {
-                (!text.is_empty()).then(|| RetailStringAsset {
-                    id,
-                    block,
-                    index,
-                    text,
-                    source_path: relative.to_owned(),
-                })
-            },
-        ));
-    }
-    strings.sort_by_key(|entry| entry.id);
-    Ok(strings)
-}
-
-fn validate_launch_strings(strings: &[RetailStringAsset]) -> Result<(), RetailAssetImportError> {
-    for (id, text) in [
-        (20_861, "Start New Game on Random Map"),
-        (20_870, "Quit"),
-        (20_874, "Introductory"),
-        (24_167, "(generating world...)"),
-    ] {
-        if strings
-            .iter()
-            .find(|entry| entry.id == id)
-            .map(|entry| entry.text.as_str())
-            != Some(text)
-        {
-            return Err(RetailAssetImportError::Incompatible(format!(
-                "Data/STR#ENU.GOB STRING {id} is not the expected English launch text"
-            )));
-        }
-    }
-    Ok(())
-}
-
-fn import_standalone_group(
-    retail_dir: &Path,
-    cache_root: &Path,
-    relative_paths: &[&str],
-    extension: &str,
-    validate: fn(&str, &[u8]) -> Result<(), RetailAssetImportError>,
-) -> Result<Vec<RetailStandaloneAsset>, RetailAssetImportError> {
-    relative_paths
-        .iter()
-        .map(|relative| {
-            let bytes = read(&retail_dir.join(relative))?;
-            validate(relative, &bytes)?;
-            Ok(RetailStandaloneAsset {
-                relative_path: (*relative).to_owned(),
-                object: write_object(cache_root, &bytes, extension)?,
-            })
-        })
-        .collect()
-}
-
-fn validate_font(relative: &str, bytes: &[u8]) -> Result<(), RetailAssetImportError> {
-    let valid = bytes.starts_with(&[0, 1, 0, 0]) || bytes.starts_with(b"OTTO");
-    if valid {
+    if missing.is_empty() {
         Ok(())
     } else {
-        Err(RetailAssetImportError::Incompatible(format!(
-            "{relative} is not a TrueType/OpenType font"
+        Err(RetailAssetError::MissingFiles(missing))
+    }
+}
+
+fn validate_wave_payload(relative: &str, bytes: &[u8]) -> Result<(), RetailAssetError> {
+    if bytes.len() >= 12 && &bytes[..4] == b"RIFF" && &bytes[8..12] == b"WAVE" {
+        Ok(())
+    } else {
+        Err(RetailAssetError::Incompatible(format!(
+            "{relative} WAVE resource is not a complete RIFF/WAVE file"
         )))
     }
 }
 
-fn validate_ogg(relative: &str, bytes: &[u8]) -> Result<(), RetailAssetImportError> {
-    if bytes.starts_with(b"OggS") {
-        Ok(())
-    } else {
-        Err(RetailAssetImportError::Incompatible(format!(
-            "{relative} is not an Ogg stream"
-        )))
-    }
+fn read_font(root: &Path, relative: &str) -> Result<Vec<u8>, RetailAssetError> {
+    read_file(&root.join(relative))
 }
 
-fn write_object(
-    cache_root: &Path,
-    bytes: &[u8],
-    extension: &str,
-) -> Result<CachedRetailObject, RetailAssetImportError> {
-    let digest = sha256(bytes);
-    let object = CachedRetailObject {
-        sha256: digest.clone(),
-        byte_length: bytes.len() as u64,
-        extension: extension.to_owned(),
-    };
-    let final_path = cache_root.join(object.relative_path());
-    if object_file_matches(&final_path, bytes)? {
-        return Ok(object);
-    }
-    let parent = final_path.parent().ok_or_else(|| {
-        RetailAssetImportError::Incompatible("cache object has no parent directory".to_owned())
-    })?;
-    create_dir_all(parent)?;
-    let temp = parent.join(format!(".{digest}.{}.tmp", std::process::id()));
-    match fs::OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(&temp)
-    {
-        Ok(mut file) => {
-            file.write_all(bytes)
-                .map_err(|source| io_error(&temp, source))?;
-            file.sync_all().map_err(|source| io_error(&temp, source))?;
-            if final_path.is_file() {
-                if object_file_matches(&final_path, bytes)? {
-                    fs::remove_file(&temp).map_err(|source| io_error(&temp, source))?;
-                    return Ok(object);
-                }
-                fs::remove_file(&final_path).map_err(|source| io_error(&final_path, source))?;
-            }
-            match fs::rename(&temp, &final_path) {
-                Ok(()) => {}
-                Err(error) if object_file_matches(&final_path, bytes)? => {
-                    fs::remove_file(&temp).map_err(|source| io_error(&temp, source))?;
-                    let _ = error;
-                }
-                Err(source) => return Err(io_error(&final_path, source)),
-            }
-        }
-        Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
-            if !final_path.is_file() {
-                return Err(io_error(&temp, error));
-            }
-        }
-        Err(source) => return Err(io_error(&temp, source)),
-    }
-    Ok(object)
-}
-
-fn object_file_matches(path: &Path, expected: &[u8]) -> Result<bool, RetailAssetImportError> {
-    match fs::metadata(path) {
-        Ok(metadata) if metadata.is_file() && metadata.len() == expected.len() as u64 => {
-            Ok(read(path)? == expected)
-        }
-        Ok(_) => Ok(false),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(false),
-        Err(source) => Err(io_error(path, source)),
-    }
-}
-
-fn write_pack_atomically(
-    cache_root: &Path,
-    pack_dir: &Path,
-    manifest: &RetailAssetPackManifest,
-    replace_existing: bool,
-) -> Result<(), RetailAssetImportError> {
-    let parent = pack_dir.parent().ok_or_else(|| {
-        RetailAssetImportError::Incompatible("cache pack has no parent directory".to_owned())
-    })?;
-    create_dir_all(parent)?;
-    let temp_dir = parent.join(format!(
-        ".{}.{}.tmp",
-        manifest.cache_key,
-        std::process::id()
-    ));
-    match fs::create_dir(&temp_dir) {
-        Ok(()) => {}
-        Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
-            return Err(io_error(&temp_dir, error));
-        }
-        Err(source) => return Err(io_error(&temp_dir, source)),
-    }
-    let encoded = serde_json::to_vec_pretty(manifest).map_err(RetailAssetImportError::Manifest)?;
-    let manifest_path = temp_dir.join("manifest.json");
-    let write_result =
-        fs::write(&manifest_path, encoded).map_err(|source| io_error(&manifest_path, source));
-    if let Err(error) = write_result {
-        let _ = fs::remove_dir_all(&temp_dir);
-        return Err(error);
-    }
-    if replace_existing && pack_dir.is_dir() {
-        fs::remove_dir_all(pack_dir).map_err(|source| io_error(pack_dir, source))?;
-    }
-    match fs::rename(&temp_dir, pack_dir) {
-        Ok(()) => Ok(()),
-        Err(_) if pack_dir.join("manifest.json").is_file() => {
-            let existing = read_manifest(&pack_dir.join("manifest.json"))?;
-            let valid = validate_cached_manifest(
-                cache_root,
-                &existing,
-                &manifest.sources,
-                &manifest.cache_key,
-            )?;
-            if valid {
-                fs::remove_dir_all(&temp_dir).map_err(|source| io_error(&temp_dir, source))
-            } else {
-                Err(RetailAssetImportError::Incompatible(format!(
-                    "cache pack {} was concurrently replaced by incompatible data",
-                    pack_dir.display()
-                )))
-            }
-        }
-        Err(source) => Err(io_error(pack_dir, source)),
-    }?;
-    Ok(())
-}
-
-fn validate_cached_manifest(
-    cache_root: &Path,
-    manifest: &RetailAssetPackManifest,
-    sources: &[RetailSourceDigest],
-    cache_key: &str,
-) -> Result<bool, RetailAssetImportError> {
-    if manifest.cache_key != cache_key
-        || manifest.sources != sources
-        || manifest.logical_resolution != [640, 480]
-        || !manifest.bitmap_lookup_is_name_then_numeric
-    {
-        return Ok(false);
-    }
-    if manifest.resources.iter().any(|asset| {
-        asset.retail_sha256.len() != 64
-            || !asset
-                .retail_sha256
-                .bytes()
-                .all(|byte| byte.is_ascii_hexdigit())
-    }) {
-        return Ok(false);
-    }
-
-    let mut checked = HashSet::new();
-    for object in manifest
-        .resources
-        .iter()
-        .map(|asset| &asset.object)
-        .chain(manifest.fonts.iter().map(|asset| &asset.object))
-        .chain(manifest.music.iter().map(|asset| &asset.object))
-    {
-        if object.sha256.len() != 64
-            || !object.sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
-            || object.extension.is_empty()
-            || !object
-                .extension
-                .bytes()
-                .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit())
-        {
-            return Ok(false);
-        }
-        let relative_path = object.relative_path();
-        if !checked.insert(relative_path.clone()) {
-            continue;
-        }
-        let path = cache_root.join(relative_path);
-        let metadata = match fs::metadata(&path) {
-            Ok(metadata) => metadata,
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(false),
-            Err(source) => return Err(io_error(&path, source)),
-        };
-        if !metadata.is_file() || metadata.len() != object.byte_length {
-            return Ok(false);
-        }
-        if sha256(&read(&path)?) != object.sha256 {
-            return Ok(false);
-        }
-    }
-    Ok(true)
-}
-
-fn read_manifest(path: &Path) -> Result<RetailAssetPackManifest, RetailAssetImportError> {
-    serde_json::from_slice(&read(path)?).map_err(RetailAssetImportError::Manifest)
-}
-
-fn create_dir_all(path: &Path) -> Result<(), RetailAssetImportError> {
-    fs::create_dir_all(path).map_err(|source| io_error(path, source))
-}
-
-fn read(path: &Path) -> Result<Vec<u8>, RetailAssetImportError> {
-    fs::read(path).map_err(|source| io_error(path, source))
-}
-
-fn io_error(path: &Path, source: std::io::Error) -> RetailAssetImportError {
-    RetailAssetImportError::Io {
+fn read_file(path: &Path) -> Result<Vec<u8>, RetailAssetError> {
+    fs::read(path).map_err(|source| RetailAssetError::Io {
         path: path.to_owned(),
         source,
+    })
+}
+
+fn resource_error(path: &Path, error: impl Display) -> RetailAssetError {
+    RetailAssetError::Resource {
+        path: path.to_owned(),
+        detail: error.to_string(),
     }
 }
 
-fn sha256(bytes: &[u8]) -> String {
-    hex_digest(&Sha256::digest(bytes))
-}
-
-fn hex_digest(bytes: &[u8]) -> String {
-    const HEX: &[u8; 16] = b"0123456789abcdef";
-    let mut text = String::with_capacity(bytes.len() * 2);
-    for byte in bytes {
-        text.push(HEX[usize::from(byte >> 4)] as char);
-        text.push(HEX[usize::from(byte & 0xf)] as char);
+fn invalid_resource_shape(path: &Path, detail: &str) -> RetailAssetError {
+    RetailAssetError::Resource {
+        path: path.to_owned(),
+        detail: detail.to_owned(),
     }
-    text
-}
-
-pub fn parse_retail_import_args<I>(
-    args: I,
-) -> Result<(PathBuf, Option<PathBuf>), RetailAssetImportError>
-where
-    I: IntoIterator<Item = OsString>,
-{
-    let mut args = args.into_iter();
-    let mut retail_dir = None;
-    let mut cache_dir = None;
-    while let Some(argument) = args.next() {
-        match argument.to_str() {
-            Some("--retail-dir") => {
-                retail_dir = Some(PathBuf::from(args.next().ok_or_else(|| {
-                    RetailAssetImportError::Incompatible(
-                        "--retail-dir requires a directory".to_owned(),
-                    )
-                })?));
-            }
-            Some("--cache-dir") => {
-                cache_dir = Some(PathBuf::from(args.next().ok_or_else(|| {
-                    RetailAssetImportError::Incompatible(
-                        "--cache-dir requires a directory".to_owned(),
-                    )
-                })?));
-            }
-            Some(value) => {
-                return Err(RetailAssetImportError::Incompatible(format!(
-                    "unknown retail-import argument {value:?}"
-                )));
-            }
-            None => {
-                return Err(RetailAssetImportError::Incompatible(
-                    "retail-import arguments must be valid UTF-8 option names".to_owned(),
-                ));
-            }
-        }
-    }
-    let retail_dir = retail_dir.ok_or_else(|| {
-        RetailAssetImportError::Incompatible("--retail-dir is required".to_owned())
-    })?;
-    Ok((retail_dir, cache_dir))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::collections::BTreeMap;
     use std::time::{SystemTime, UNIX_EPOCH};
 
-    fn temporary_cache(name: &str) -> PathBuf {
+    const PE_OFFSET: usize = 0x80;
+    const OPTIONAL_OFFSET: usize = PE_OFFSET + 24;
+    const SECTION_OFFSET: usize = OPTIONAL_OFFSET + 224;
+    const RESOURCE_OFFSET: usize = 0x200;
+    const RESOURCE_RVA: u32 = 0x1000;
+    const RESOURCE_SIZE: usize = 0x3e00;
+
+    #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+    enum TestName {
+        Id(u32),
+        Text(String),
+    }
+
+    impl TestName {
+        fn id(value: u32) -> Self {
+            Self::Id(value)
+        }
+
+        fn text(value: &str) -> Self {
+            Self::Text(value.to_owned())
+        }
+    }
+
+    struct TestResource {
+        resource_type: TestName,
+        name: TestName,
+        bytes: Vec<u8>,
+    }
+
+    impl TestResource {
+        fn new(resource_type: TestName, name: TestName, bytes: Vec<u8>) -> Self {
+            Self {
+                resource_type,
+                name,
+                bytes,
+            }
+        }
+    }
+
+    enum TestNode {
+        Directory(Vec<(TestName, TestNode)>),
+        Data(Vec<u8>),
+    }
+
+    #[test]
+    fn reports_all_runtime_retail_inputs_before_parsing() {
+        let root = temporary_root("missing");
+        let error = RetailAssets::open(&root).unwrap_err();
+        let RetailAssetError::MissingFiles(files) = error else {
+            panic!("expected missing files");
+        };
+        assert_eq!(files.len(), REQUIRED_RETAIL_FILES.len());
+        assert!(files.contains(&"Data/pictenu.gob".to_owned()));
+        assert!(files.contains(&"MUSIC/Track12.ogg".to_owned()));
+        assert!(!files.contains(&"Data/confenu.irg".to_owned()));
+    }
+
+    #[test]
+    fn opens_runtime_files_without_eager_content_validation() {
+        let root = synthetic_retail_install();
+        let assets = RetailAssets::open(&root).unwrap();
+
+        assert_eq!(assets.string(1), Some("direct lookup"));
+        assert_eq!(assets.string(20_874), None);
+        assert_eq!(
+            assets.font_bytes(RetailFontFace::BelweBold).unwrap(),
+            b"not a font"
+        );
+        assert_eq!(assets.wave_bytes(7000).unwrap(), b"RIFF\0\0\0\0WAVE");
+        assert_eq!(
+            assets.music_path(6).unwrap(),
+            root.join("MUSIC/Track06.ogg")
+        );
+
+        let bitmap = assets.picture(4500, 0).unwrap();
+        assert_eq!(bitmap[bitmap.len() - 4], 0x22);
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn resource_lookup_uses_the_index_built_at_open() {
+        let root = synthetic_retail_install();
+        let mut assets = RetailAssets::open(&root).unwrap();
+
+        assets.pictures[0].bytes[..2].copy_from_slice(b"NO");
+
+        let bitmap = assets.picture(4500, 0).unwrap();
+        assert_eq!(bitmap[bitmap.len() - 4], 0x22);
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn wave_payload_validation_happens_at_lookup() {
+        let root = synthetic_retail_install();
+        write_retail_file(
+            &root,
+            "Data/wave.gob",
+            &synthetic_pe(vec![TestResource::new(
+                TestName::text("WAVE"),
+                TestName::id(7000),
+                b"not a wave".to_vec(),
+            )]),
+        );
+
+        let assets = RetailAssets::open(&root).unwrap();
+        assert!(matches!(
+            assets.wave_bytes(7000),
+            Err(RetailAssetError::Incompatible(_))
+        ));
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_world_variants_outside_retail_range() {
+        let root = synthetic_retail_install();
+        let assets = RetailAssets::open(&root).unwrap();
+
+        assert!(matches!(
+            assets.picture(4500, 4),
+            Err(RetailAssetError::InvalidWorldVariant(4))
+        ));
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    #[ignore = "requires IMPERIALISM_RETAIL_DIR pointing at the English GOG installation"]
+    fn opens_the_english_gog_installation_directly() {
+        let root = PathBuf::from(
+            std::env::var_os("IMPERIALISM_RETAIL_DIR")
+                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
+        );
+        let assets = RetailAssets::open(&root).unwrap();
+
+        assert_eq!(assets.string(20_874), Some("Introductory"));
+        assert!(assets.picture(4500, 0).unwrap().starts_with(b"BM"));
+        assert!(assets.wave_bytes(7000).unwrap().starts_with(b"RIFF"));
+    }
+
+    fn temporary_root(name: &str) -> PathBuf {
         let nonce = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .unwrap()
@@ -891,147 +581,221 @@ mod tests {
         ))
     }
 
-    fn object(name: &str, library: PictureLibrary) -> RetailResourceAsset {
-        RetailResourceAsset {
-            source_path: "synthetic.gob".to_owned(),
-            picture_library: Some(library),
-            resource_type: ResourceIdentifier::Numeric(2),
-            resource_name: ResourceIdentifier::Named(name.to_owned()),
-            language: ENGLISH_LANGUAGE,
-            retail_byte_length: 1,
-            retail_sha256: sha256(b"x"),
-            object: CachedRetailObject {
-                sha256: "0".repeat(64),
-                byte_length: 1,
-                extension: "bmp".to_owned(),
-            },
+    fn synthetic_retail_install() -> PathBuf {
+        let root = temporary_root("retail-assets");
+        for (index, relative) in PICTURE_ARCHIVE_PATHS.iter().enumerate() {
+            let mut resources = Vec::new();
+            if index == 0 {
+                resources.push(TestResource::new(
+                    TestName::id(2),
+                    TestName::id(4500),
+                    one_pixel_dib(0x11),
+                ));
+                resources.push(TestResource::new(
+                    TestName::id(2),
+                    TestName::text("4500.BMP"),
+                    one_pixel_dib(0x22),
+                ));
+            }
+            if index == 6 {
+                resources.push(TestResource::new(
+                    TestName::id(2),
+                    TestName::text("4500.BMP"),
+                    one_pixel_dib(0x33),
+                ));
+            }
+            write_retail_file(&root, relative, &synthetic_pe(resources));
+        }
+
+        let string_resources = vec![TestResource::new(
+            TestName::id(6),
+            TestName::id(1),
+            string_block(&[(1, "direct lookup")]),
+        )];
+        write_retail_file(&root, "Data/STR#ENU.GOB", &synthetic_pe(string_resources));
+        write_retail_file(
+            &root,
+            "Data/wave.gob",
+            &synthetic_pe(vec![TestResource::new(
+                TestName::text("WAVE"),
+                TestName::id(7000),
+                b"RIFF\0\0\0\0WAVE".to_vec(),
+            )]),
+        );
+
+        for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
+            write_retail_file(&root, relative, b"not a font");
+        }
+        for track in 2..=12 {
+            write_retail_file(&root, &format!("MUSIC/Track{track:02}.ogg"), b"not an ogg");
+        }
+        root
+    }
+
+    fn write_retail_file(root: &Path, relative: &str, bytes: &[u8]) {
+        let path = root.join(relative);
+        fs::create_dir_all(path.parent().unwrap()).unwrap();
+        fs::write(path, bytes).unwrap();
+    }
+
+    fn one_pixel_dib(marker: u8) -> Vec<u8> {
+        let mut dib = Vec::new();
+        dib.extend_from_slice(&40u32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1u16.to_le_bytes());
+        dib.extend_from_slice(&24u16.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&4u32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&[marker, 0, 0, 0]);
+        dib
+    }
+
+    fn string_block(entries: &[(u8, &str)]) -> Vec<u8> {
+        let mut block = Vec::new();
+        for index in 0..16u8 {
+            let text = entries
+                .iter()
+                .find_map(|(entry_index, text)| (*entry_index == index).then_some(*text))
+                .unwrap_or("");
+            let encoded = text.encode_utf16().collect::<Vec<_>>();
+            block.extend_from_slice(&(encoded.len() as u16).to_le_bytes());
+            for unit in encoded {
+                block.extend_from_slice(&unit.to_le_bytes());
+            }
+        }
+        block
+    }
+
+    fn synthetic_pe(resources: Vec<TestResource>) -> Vec<u8> {
+        let mut types = BTreeMap::<TestName, BTreeMap<TestName, Vec<u8>>>::new();
+        for resource in resources {
+            types
+                .entry(resource.resource_type)
+                .or_default()
+                .insert(resource.name, resource.bytes);
+        }
+        let root = TestNode::Directory(
+            types
+                .into_iter()
+                .map(|(resource_type, names)| {
+                    let names = names
+                        .into_iter()
+                        .map(|(name, bytes)| {
+                            (
+                                name,
+                                TestNode::Directory(vec![(
+                                    TestName::id(ENGLISH_LANGUAGE),
+                                    TestNode::Data(bytes),
+                                )]),
+                            )
+                        })
+                        .collect();
+                    (resource_type, TestNode::Directory(names))
+                })
+                .collect(),
+        );
+
+        let mut bytes = vec![0u8; RESOURCE_OFFSET + RESOURCE_SIZE];
+        bytes[..2].copy_from_slice(b"MZ");
+        write_u32(&mut bytes, 0x3c, PE_OFFSET as u32);
+        bytes[PE_OFFSET..PE_OFFSET + 4].copy_from_slice(b"PE\0\0");
+        write_u16(&mut bytes, PE_OFFSET + 4, 0x14c);
+        write_u16(&mut bytes, PE_OFFSET + 6, 1);
+        write_u16(&mut bytes, PE_OFFSET + 20, 224);
+        write_u16(&mut bytes, OPTIONAL_OFFSET, 0x10b);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 32, 0x1000);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 36, 0x200);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 56, 0x5000);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 60, RESOURCE_OFFSET as u32);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 92, 16);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 112, RESOURCE_RVA);
+        write_u32(&mut bytes, OPTIONAL_OFFSET + 116, RESOURCE_SIZE as u32);
+        bytes[SECTION_OFFSET..SECTION_OFFSET + 8].copy_from_slice(b".rsrc\0\0\0");
+        write_u32(&mut bytes, SECTION_OFFSET + 8, RESOURCE_SIZE as u32);
+        write_u32(&mut bytes, SECTION_OFFSET + 12, RESOURCE_RVA);
+        write_u32(&mut bytes, SECTION_OFFSET + 16, RESOURCE_SIZE as u32);
+        write_u32(&mut bytes, SECTION_OFFSET + 20, RESOURCE_OFFSET as u32);
+
+        let mut cursor = 0usize;
+        let (root_offset, root_is_directory) = write_node(&mut bytes, &mut cursor, &root);
+        assert_eq!(root_offset, 0);
+        assert!(root_is_directory);
+        bytes
+    }
+
+    fn write_node(bytes: &mut [u8], cursor: &mut usize, node: &TestNode) -> (u32, bool) {
+        match node {
+            TestNode::Data(payload) => {
+                let data_entry = allocate(cursor, 16, 4);
+                let data = allocate(cursor, payload.len(), 1);
+                let base = RESOURCE_OFFSET;
+                bytes[base + data..base + data + payload.len()].copy_from_slice(payload);
+                write_u32(bytes, base + data_entry, RESOURCE_RVA + data as u32);
+                write_u32(bytes, base + data_entry + 4, payload.len() as u32);
+                (data_entry as u32, false)
+            }
+            TestNode::Directory(entries) => {
+                let directory = allocate(cursor, 16 + entries.len() * 8, 4);
+                let mut ordered = entries.iter().collect::<Vec<_>>();
+                ordered.sort_by(|(left, _), (right, _)| {
+                    let left_kind = matches!(left, TestName::Text(_));
+                    let right_kind = matches!(right, TestName::Text(_));
+                    right_kind.cmp(&left_kind).then_with(|| left.cmp(right))
+                });
+                let named = ordered
+                    .iter()
+                    .filter(|(name, _)| matches!(name, TestName::Text(_)))
+                    .count();
+                let base = RESOURCE_OFFSET;
+                write_u16(bytes, base + directory + 12, named as u16);
+                write_u16(bytes, base + directory + 14, (ordered.len() - named) as u16);
+                for (index, (name, child)) in ordered.into_iter().enumerate() {
+                    let raw_name = write_name(bytes, cursor, name);
+                    let (child_offset, child_is_directory) = write_node(bytes, cursor, child);
+                    let target = child_offset | if child_is_directory { 0x8000_0000 } else { 0 };
+                    let entry = base + directory + 16 + index * 8;
+                    write_u32(bytes, entry, raw_name);
+                    write_u32(bytes, entry + 4, target);
+                }
+                (directory as u32, true)
+            }
         }
     }
 
-    #[test]
-    fn picture_lookup_preserves_retail_slot_precedence() {
-        let mut manifest = empty_manifest();
-        manifest
-            .resources
-            .push(object("4500.BMP", PictureLibrary::Universal));
-        manifest
-            .resources
-            .push(object("4500.BMP", PictureLibrary::Localized));
-
-        let resolved = manifest.resolve_picture(4500, 0).unwrap();
-
-        assert_eq!(resolved.picture_library, Some(PictureLibrary::Localized));
-    }
-
-    #[test]
-    fn cache_key_changes_when_retail_identity_changes() {
-        let sources = vec![RetailSourceDigest {
-            relative_path: "Data/pictenu.gob".to_owned(),
-            byte_length: 12,
-            sha256: "a".repeat(64),
-        }];
-        let original = cache_key(&sources);
-        let changed_contents = cache_key(&[RetailSourceDigest {
-            sha256: "b".repeat(64),
-            ..sources[0].clone()
-        }]);
-        let changed_slot = cache_key(&[RetailSourceDigest {
-            relative_path: "Data/pictuniv.gob".to_owned(),
-            ..sources[0].clone()
-        }]);
-
-        assert_eq!(original.len(), 64);
-        assert_ne!(original, changed_contents);
-        assert_ne!(original, changed_slot);
-    }
-
-    #[test]
-    fn reports_all_missing_retail_inputs_before_parsing() {
-        let root = std::env::temp_dir().join(format!(
-            "imperialism-formats-missing-{}",
-            std::process::id()
-        ));
-        let error = required_source_paths(&root).unwrap_err();
-        let RetailAssetImportError::MissingFiles(files) = error else {
-            panic!("expected missing files");
-        };
-        assert_eq!(files.len(), REQUIRED_RETAIL_FILES.len());
-        assert!(files.contains(&"Data/confenu.irg".to_owned()));
-        assert!(files.contains(&"MUSIC/Track12.ogg".to_owned()));
-    }
-
-    #[test]
-    fn cached_manifest_reuse_rejects_a_missing_object() {
-        let root = temporary_cache("missing-object");
-        let sources = vec![RetailSourceDigest {
-            relative_path: "Data/pictenu.gob".to_owned(),
-            byte_length: 4,
-            sha256: sha256(b"retail"),
-        }];
-        let mut manifest = empty_manifest();
-        manifest.cache_key = cache_key(&sources);
-        manifest.sources.clone_from(&sources);
-        let object = write_object(&root, b"font", "ttf").unwrap();
-        manifest.fonts.push(RetailStandaloneAsset {
-            relative_path: "Data/Antqua.ttf".to_owned(),
-            object: object.clone(),
-        });
-
-        assert!(validate_cached_manifest(&root, &manifest, &sources, &manifest.cache_key).unwrap());
-        fs::remove_file(root.join(object.relative_path())).unwrap();
-        assert!(
-            !validate_cached_manifest(&root, &manifest, &sources, &manifest.cache_key).unwrap()
-        );
-
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
-    fn object_write_repairs_corrupt_content_at_the_expected_digest_path() {
-        let root = temporary_cache("corrupt-object");
-        let object = write_object(&root, b"font", "ttf").unwrap();
-        let path = root.join(object.relative_path());
-        fs::write(&path, b"evil").unwrap();
-
-        assert_eq!(write_object(&root, b"font", "ttf").unwrap(), object);
-        assert_eq!(fs::read(&path).unwrap(), b"font");
-
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
-    fn stale_pack_manifest_is_replaced_instead_of_reported_as_success() {
-        let root = temporary_cache("stale-pack");
-        let pack_dir = root.join("packs/current");
-        fs::create_dir_all(&pack_dir).unwrap();
-        fs::write(pack_dir.join("manifest.json"), b"stale").unwrap();
-        let manifest = empty_manifest();
-
-        write_pack_atomically(&root, &pack_dir, &manifest, true).unwrap();
-
-        assert_eq!(
-            read_manifest(&pack_dir.join("manifest.json")).unwrap(),
-            manifest
-        );
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
-    fn cli_requires_a_retail_directory() {
-        let error = parse_retail_import_args(Vec::<OsString>::new()).unwrap_err();
-        assert!(error.to_string().contains("--retail-dir is required"));
-    }
-
-    fn empty_manifest() -> RetailAssetPackManifest {
-        RetailAssetPackManifest {
-            cache_key: "0".repeat(64),
-            logical_resolution: [640, 480],
-            bitmap_lookup_is_name_then_numeric: true,
-            sources: Vec::new(),
-            resources: Vec::new(),
-            strings: Vec::new(),
-            fonts: Vec::new(),
-            music: Vec::new(),
+    fn write_name(bytes: &mut [u8], cursor: &mut usize, name: &TestName) -> u32 {
+        match name {
+            TestName::Id(value) => *value,
+            TestName::Text(text) => {
+                let encoded = text.encode_utf16().collect::<Vec<_>>();
+                let offset = allocate(cursor, 2 + encoded.len() * 2, 2);
+                let base = RESOURCE_OFFSET + offset;
+                write_u16(bytes, base, encoded.len() as u16);
+                for (index, unit) in encoded.into_iter().enumerate() {
+                    write_u16(bytes, base + 2 + index * 2, unit);
+                }
+                0x8000_0000 | offset as u32
+            }
         }
+    }
+
+    fn allocate(cursor: &mut usize, size: usize, alignment: usize) -> usize {
+        *cursor = (*cursor + alignment - 1) & !(alignment - 1);
+        let offset = *cursor;
+        *cursor += size;
+        assert!(*cursor <= RESOURCE_SIZE);
+        offset
+    }
+
+    fn write_u16(bytes: &mut [u8], offset: usize, value: u16) {
+        bytes[offset..offset + 2].copy_from_slice(&value.to_le_bytes());
+    }
+
+    fn write_u32(bytes: &mut [u8], offset: usize, value: u32) {
+        bytes[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
     }
 }
