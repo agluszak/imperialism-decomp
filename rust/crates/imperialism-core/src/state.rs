@@ -50,6 +50,10 @@ pub struct TileState {
     pub rail_flags: u8,
     pub action_state: i16,
     pub active_flags: u16,
+    /// `TTerrainStateRecord::regionSubtypeTag05`. Unassigned is `-1`.
+    pub region_marker: i8,
+    /// `TTerrainStateRecord::riverSpriteCode`. Zero means no river.
+    pub river_sprite_code: u8,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]

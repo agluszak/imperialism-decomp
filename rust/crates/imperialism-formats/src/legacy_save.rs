@@ -730,6 +730,8 @@ impl LegacyTerrainTile {
             rail_flags: self.rail_flags,
             action_state: i16::from(self.action_state),
             active_flags: self.active_flags,
+            region_marker: -1,
+            river_sprite_code: 0,
         }
     }
 }

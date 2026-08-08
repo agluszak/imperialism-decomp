@@ -1,9 +1,11 @@
-use super::runtime::SpawnedView;
-use super::startup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
-use crate::{AppState, RetailAssetsResource};
+use super::catalog::{SpawnedView, UiPictureResources};
+use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
+use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
-use bevy::image::{CompressedImageFormats, ImageFormat, ImageSampler, ImageType};
+use bevy::image::ImageSampler;
 use bevy::log::warn;
+use bevy::math::Rect;
+use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
@@ -61,9 +63,10 @@ impl Plugin for MapPreviewPlugin {
                 sync_random_setup_coat,
                 sync_random_setup_flag,
             )
-                .chain(),
+                .chain()
+                .run_if(in_state(crate::AppState::RandomSetup)),
         )
-        .add_systems(Update, select_nation_from_map_preview);
+        .add_observer(on_map_preview_click);
     }
 }
 
@@ -90,8 +93,7 @@ pub(crate) fn attach_random_setup_widgets(
 
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
-    retail_assets: Res<RetailAssetsResource>,
-    mut images: ResMut<Assets<Image>>,
+    mut pictures: UiPictureResources,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
     for (mut coat, mut image_node) in &mut coats {
@@ -99,28 +101,14 @@ fn sync_random_setup_coat(
             continue;
         }
         let picture_id = coat_picture_id(setup.nation);
-        let bytes = match retail_assets.assets().picture(picture_id, 0) {
-            Ok(bytes) => bytes,
+        let handle = match pictures.picture(picture_id) {
+            Ok(handle) => handle,
             Err(error) => {
                 warn!("could not load retail setup coat picture {picture_id}: {error}");
                 continue;
             }
         };
-        let image = match Image::from_buffer(
-            &bytes,
-            ImageType::Format(ImageFormat::Bmp),
-            CompressedImageFormats::NONE,
-            true,
-            ImageSampler::nearest(),
-            RenderAssetUsages::default(),
-        ) {
-            Ok(image) => image,
-            Err(error) => {
-                warn!("could not decode retail setup coat picture {picture_id}: {error}");
-                continue;
-            }
-        };
-        image_node.image = images.add(image);
+        image_node.image = handle;
         coat.nation = Some(setup.nation);
     }
 }
@@ -132,81 +120,43 @@ fn coat_picture_id(nation: MajorNationId) -> i16 {
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
-    retail_assets: Res<RetailAssetsResource>,
-    mut images: ResMut<Assets<Image>>,
+    mut pictures: UiPictureResources,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
 ) {
+    let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
+        Ok(handle) => handle,
+        Err(error) => {
+            warn!("could not load retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
+            return;
+        }
+    };
+    // Magenta→alpha is idempotent on the shared cached image.
+    let _ = pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency);
+
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {
             continue;
         }
-        let bytes = match retail_assets.assets().picture(FLAG_ATLAS_PICTURE, 0) {
-            Ok(bytes) => bytes,
-            Err(error) => {
-                warn!("could not load retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
-                continue;
-            }
-        };
-        let atlas = match Image::from_buffer(
-            &bytes,
-            ImageType::Format(ImageFormat::Bmp),
-            CompressedImageFormats::NONE,
-            true,
-            ImageSampler::nearest(),
-            RenderAssetUsages::default(),
-        ) {
-            Ok(image) => image,
-            Err(error) => {
-                warn!("could not decode retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
-                continue;
-            }
-        };
-        let image = match crop_setup_flag(&atlas, setup.nation) {
-            Ok(image) => image,
-            Err(error) => {
-                warn!("could not crop retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
-                continue;
-            }
-        };
+        let left = f32::from(setup.nation.get()) * FLAG_WIDTH as f32;
+        let rect = Rect::new(left, 0.0, left + FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
         if let Some(mut image_node) = image_node {
-            if let Some(mut existing) = images.get_mut(&image_node.image) {
-                *existing = image;
-            } else {
-                image_node.image = images.add(image);
-            }
+            image_node.image = handle.clone();
+            image_node.rect = Some(rect);
         } else {
-            commands
-                .entity(entity)
-                .insert(ImageNode::new(images.add(image)));
+            commands.entity(entity).insert(ImageNode {
+                image: handle.clone(),
+                rect: Some(rect),
+                ..default()
+            });
         }
         flag.nation = Some(setup.nation);
     }
 }
 
-fn crop_setup_flag(atlas: &Image, nation: MajorNationId) -> Result<Image, &'static str> {
-    if atlas.texture_descriptor.dimension != TextureDimension::D2
-        || atlas.texture_descriptor.size.depth_or_array_layers != 1
-        || atlas.texture_descriptor.format != TextureFormat::Rgba8UnormSrgb
-    {
-        return Err("flag atlas is not a single RGBA 2D image");
-    }
-    let width = atlas.texture_descriptor.size.width as usize;
-    let height = atlas.texture_descriptor.size.height as usize;
-    let left = usize::from(nation.get()) * FLAG_WIDTH;
-    if width < left + FLAG_WIDTH || height < FLAG_HEIGHT {
-        return Err("flag atlas does not contain the selected 32 by 24 cell");
-    }
-    let source = atlas.data.as_deref().ok_or("flag atlas has no pixels")?;
-    if source.len() < width * height * 4 {
-        return Err("flag atlas pixels are truncated");
-    }
-
-    let mut pixels = Vec::with_capacity(FLAG_WIDTH * FLAG_HEIGHT * 4);
-    for row in 0..FLAG_HEIGHT {
-        let start = (row * width + left) * 4;
-        let end = start + FLAG_WIDTH * 4;
-        pixels.extend_from_slice(&source[start..end]);
-    }
+fn apply_flag_atlas_transparency(image: &mut Image) {
+    let Some(pixels) = image.data.as_mut() else {
+        return;
+    };
     for pixel in pixels.chunks_exact_mut(4) {
         // TGWorldPartView blits with palette index 0x10 as its transparent
         // background; in the default DIB that palette entry is #ff00ff.
@@ -214,20 +164,6 @@ fn crop_setup_flag(atlas: &Image, nation: MajorNationId) -> Result<Image, &'stat
             pixel[3] = 0;
         }
     }
-
-    let mut image = Image::new(
-        Extent3d {
-            width: FLAG_WIDTH as u32,
-            height: FLAG_HEIGHT as u32,
-            depth_or_array_layers: 1,
-        },
-        TextureDimension::D2,
-        pixels,
-        TextureFormat::Rgba8UnormSrgb,
-        RenderAssetUsages::default(),
-    );
-    image.sampler = ImageSampler::nearest();
-    Ok(image)
 }
 
 fn render_map_preview(
@@ -277,40 +213,30 @@ fn render_map_preview(
     }
 }
 
-fn select_nation_from_map_preview(
-    state: Res<State<AppState>>,
+fn on_map_preview_click(
+    click: On<Pointer<Click>>,
     mut setup: ResMut<RandomGameSetup>,
-    maps: Query<
-        (
-            &Interaction,
-            &RelativeCursorPosition,
-            &RandomSetupMapPreview,
-        ),
-        Changed<Interaction>,
-    >,
+    maps: Query<(&RelativeCursorPosition, &RandomSetupMapPreview)>,
 ) {
-    if *state.get() != AppState::RandomSetup {
+    let Ok((cursor, map_preview)) = maps.get(click.entity) else {
+        return;
+    };
+    if !cursor.cursor_over() {
         return;
     }
-    for (interaction, cursor, map_preview) in &maps {
-        if *interaction != Interaction::Pressed || !cursor.cursor_over() {
-            continue;
-        }
-        let Some(normalized) = cursor.normalized else {
-            continue;
-        };
-        let Some(nation) = nation_at_preview_position(&map_preview.palette_indices, normalized)
-        else {
-            continue;
-        };
-        if setup.nation != nation {
-            setup.nation = nation;
-        }
+    let Some(normalized) = cursor.normalized else {
+        return;
+    };
+    let Some(nation) = nation_at_preview_position(&map_preview.palette_indices, normalized) else {
+        return;
+    };
+    if setup.nation != nation {
+        setup.nation = nation;
     }
 }
 
-fn compose_preview_indices(
-    tiles: &[imperialism_core::GeneratedTerrainTile],
+pub(crate) fn compose_owner_preview_indices(
+    owners: &[i8],
     selected_nation: MajorNationId,
 ) -> Vec<PaletteIndex> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
@@ -328,8 +254,8 @@ fn compose_preview_indices(
         let py = 3 * usize::from(row);
         let neighbor_tags = geometry
             .neighbors(tile_id)
-            .map(|neighbor| owner_tag(tiles, neighbor));
-        let self_tag = owner_tag(tiles, Some(tile_id));
+            .map(|neighbor| owner_tag(owners, neighbor));
+        let self_tag = owner_tag(owners, Some(tile_id));
 
         let tag = if self_tag == neighbor_tags[5] {
             self_tag
@@ -392,9 +318,17 @@ fn compose_preview_indices(
     pixels
 }
 
-fn owner_tag(tiles: &[imperialism_core::GeneratedTerrainTile], tile: Option<TileId>) -> i8 {
-    tile.and_then(|tile| tiles.get(usize::from(tile.get())))
-        .map_or(-1, |tile| tile.owner_nation)
+fn compose_preview_indices(
+    tiles: &[imperialism_core::GeneratedTerrainTile],
+    selected_nation: MajorNationId,
+) -> Vec<PaletteIndex> {
+    let owners: Vec<i8> = tiles.iter().map(|tile| tile.owner_nation).collect();
+    compose_owner_preview_indices(&owners, selected_nation)
+}
+
+fn owner_tag(owners: &[i8], tile: Option<TileId>) -> i8 {
+    tile.and_then(|tile| owners.get(usize::from(tile.get())).copied())
+        .unwrap_or(-1)
 }
 
 fn preview_palette(owner_tag: i8) -> PaletteIndex {
@@ -472,6 +406,27 @@ fn major_nation_palette(nation: MajorNationId) -> PaletteIndex {
     MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
+pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<TileId> {
+    let column_px = ((normalized_position.x + 0.5) * PREVIEW_WIDTH as f32).floor();
+    let row_px = ((normalized_position.y + 0.5) * PREVIEW_HEIGHT as f32).floor();
+    if !(0.0..PREVIEW_WIDTH as f32).contains(&column_px)
+        || !(0.0..PREVIEW_HEIGHT as f32).contains(&row_px)
+    {
+        return None;
+    }
+    let row = (row_px as u16) / 3;
+    if row >= 60 {
+        return None;
+    }
+    let odd_row = row & 1 != 0;
+    let adjusted = column_px as i32 - i32::from(odd_row);
+    if adjusted < 0 {
+        return None;
+    }
+    let column = (adjusted as u16) / 3;
+    MapGeometry::new(false).tile(row, column)
+}
+
 fn nation_at_preview_position(
     palette_indices: &[PaletteIndex],
     normalized_position: Vec2,
@@ -495,6 +450,13 @@ fn nation_for_palette(palette: PaletteIndex) -> Option<MajorNationId> {
         .iter()
         .position(|candidate| *candidate == palette)
         .map(|nation| MajorNationId::new(nation as u8))
+}
+
+pub(crate) fn preview_image_from_indices(
+    palette_indices: &[PaletteIndex],
+    palette: &DibPalette,
+) -> Image {
+    preview_image(palette_indices, palette)
 }
 
 fn preview_image(palette_indices: &[PaletteIndex], palette: &DibPalette) -> Image {
@@ -633,20 +595,12 @@ mod tests {
     }
 
     #[test]
-    fn crops_the_selected_flag_cell_and_keys_retail_magenta() {
-        let atlas_width = FLAG_WIDTH * 2;
-        let mut pixels = vec![0; atlas_width * FLAG_HEIGHT * 4];
-        for row in 0..FLAG_HEIGHT {
-            for column in 0..atlas_width {
-                let offset = (row * atlas_width + column) * 4;
-                pixels[offset..offset + 4].copy_from_slice(&[column as u8, row as u8, 0x7f, 0xff]);
-            }
-        }
-        pixels[(FLAG_WIDTH * 4)..(FLAG_WIDTH * 4 + 4)].copy_from_slice(&[0xff, 0, 0xff, 0xff]);
-        let atlas = Image::new(
+    fn flag_atlas_transparency_keys_retail_magenta() {
+        let pixels = vec![0xff_u8, 0x00, 0xff, 0xff, 0x11, 0x22, 0x33, 0xff];
+        let mut image = Image::new(
             Extent3d {
-                width: atlas_width as u32,
-                height: FLAG_HEIGHT as u32,
+                width: 2,
+                height: 1,
                 depth_or_array_layers: 1,
             },
             TextureDimension::D2,
@@ -654,26 +608,11 @@ mod tests {
             TextureFormat::Rgba8UnormSrgb,
             RenderAssetUsages::default(),
         );
-
-        let flag = crop_setup_flag(&atlas, MajorNationId::new(1)).unwrap();
-
-        assert_eq!(flag.texture_descriptor.size.width, FLAG_WIDTH as u32);
-        assert_eq!(flag.texture_descriptor.size.height, FLAG_HEIGHT as u32);
-        assert_eq!(&flag.data.as_ref().unwrap()[..4], &[0xff, 0, 0xff, 0]);
-        assert_eq!(&flag.data.as_ref().unwrap()[4..8], &[33, 0, 0x7f, 0xff]);
-        assert_eq!(flag.sampler, ImageSampler::nearest());
-
-        let short_atlas = Image::new(
-            Extent3d {
-                width: FLAG_WIDTH as u32,
-                height: FLAG_HEIGHT as u32,
-                depth_or_array_layers: 1,
-            },
-            TextureDimension::D2,
-            vec![0; FLAG_WIDTH * FLAG_HEIGHT * 4],
-            TextureFormat::Rgba8UnormSrgb,
-            RenderAssetUsages::default(),
+        apply_flag_atlas_transparency(&mut image);
+        assert_eq!(&image.data.as_ref().unwrap()[..4], &[0xff, 0, 0xff, 0]);
+        assert_eq!(
+            &image.data.as_ref().unwrap()[4..],
+            &[0x11, 0x22, 0x33, 0xff]
         );
-        assert!(crop_setup_flag(&short_atlas, MajorNationId::new(1)).is_err());
     }
 }

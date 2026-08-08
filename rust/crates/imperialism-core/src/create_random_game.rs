@@ -110,6 +110,8 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         // Map tiles default to "no action" (-1) after generation.
         action_state: -1,
         active_flags: 0,
+        region_marker: -1,
+        river_sprite_code: tile.river_sprite_code,
     }
 }
 

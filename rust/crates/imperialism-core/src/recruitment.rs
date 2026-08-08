@@ -353,6 +353,8 @@ mod tests {
             rail_flags: 0,
             action_state: -1,
             active_flags: 0,
+            region_marker: -1,
+            river_sprite_code: 0,
         }
     }
 

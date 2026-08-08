@@ -2,6 +2,7 @@
 
 mod ui;
 
+use bevy::input_focus::tab_navigation::TabNavigationPlugin;
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
 use imperialism_formats::{RetailAssets, UiCatalog};
@@ -13,6 +14,12 @@ pub(crate) enum AppState {
     #[default]
     MainMenu,
     RandomSetup,
+    CitySite,
+    StrategicMap,
+    Trade,
+    City,
+    Transport,
+    Diplomacy,
 }
 
 #[derive(Resource)]
@@ -50,9 +57,13 @@ pub fn run(retail_assets: RetailAssets) {
         .insert_resource(RetailAssetsResource::new(retail_assets))
         .init_state::<AppState>()
         .add_plugins((
-            ui::UiRuntimePlugin,
-            ui::StartupUiPlugin,
+            TabNavigationPlugin,
+            ui::UiCatalogPlugin,
+            ui::MainMenuPlugin,
+            ui::RandomSetupPlugin,
             ui::MapPreviewPlugin,
+            ui::CitySitePlugin,
+            ui::GameScreensPlugin,
         ));
     app.world_mut().spawn(Camera2d);
     app.run();
