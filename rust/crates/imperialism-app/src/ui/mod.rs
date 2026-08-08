@@ -3,11 +3,9 @@ mod runtime;
 mod startup;
 
 pub(crate) use map_preview::MapPreviewPlugin;
-pub(crate) use runtime::UiCatalogResource;
-pub(crate) use runtime::{
-    DespawnUiView, InteractiveUiWidget, SpawnUiView, UiIntent, UiRuntimePlugin, UiRuntimeSet,
-    UiViewSpawned, ViewInstanceId, WidgetTag,
-};
 #[cfg(test)]
-pub(crate) use runtime::{PresentedViewId, UiViewRoot};
+pub(crate) use runtime::{PresentedViewId, UiViewRoot, ViewRoot, WidgetTag, spawn_view_nodes};
+pub(crate) use runtime::{
+    SpawnedView, UiActivated, UiCatalogResource, UiPictureResources, UiRuntimePlugin, spawn_view,
+};
 pub(crate) use startup::StartupUiPlugin;

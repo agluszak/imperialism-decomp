@@ -3,6 +3,8 @@
 //! PE traversal belongs to `pelite`; this module only understands the payload formats the game
 //! stores inside those resources.
 
+use crate::{DibPalette, Rgb};
+
 #[derive(Debug, thiserror::Error)]
 pub(super) enum RetailResourceDecodeError {
     #[error("invalid resource payload: {0}")]
@@ -112,7 +114,7 @@ pub(super) fn bitmap_resource_to_bmp(dib: &[u8]) -> Result<Vec<u8>, RetailResour
 /// The application obtains this from the named `950.BMP` resource. It is a
 /// `BITMAPINFOHEADER` 8-bit DIB, so this intentionally does not try to become
 /// a general image decoder.
-pub(super) fn bitmap_palette_rgb(dib: &[u8]) -> Result<[[u8; 3]; 256], RetailResourceDecodeError> {
+pub(super) fn bitmap_palette_rgb(dib: &[u8]) -> Result<DibPalette, RetailResourceDecodeError> {
     let header_size = usize::try_from(read_u32(dib, 0, "DIB header size")?)
         .map_err(|_| invalid("DIB header size does not fit usize"))?;
     if header_size < 40 {
@@ -136,13 +138,13 @@ pub(super) fn bitmap_palette_rgb(dib: &[u8]) -> Result<[[u8; 3]; 256], RetailRes
         .ok_or_else(|| invalid("DIB palette size overflow"))?;
     require_range(dib, palette_start, palette_bytes, "default DIB palette")?;
 
-    let mut palette = [[0; 3]; 256];
-    for (index, color) in palette.iter_mut().enumerate() {
+    let mut colors = [Rgb::default(); 256];
+    for (index, color) in colors.iter_mut().enumerate() {
         let offset = palette_start + index * 4;
         let bgr = &dib[offset..offset + 3];
-        *color = [bgr[2], bgr[1], bgr[0]];
+        *color = Rgb::from_bgr(bgr[0], bgr[1], bgr[2]);
     }
-    Ok(palette)
+    Ok(DibPalette::new(colors))
 }
 
 fn palette_count(bit_count: u16, colors_used: u32) -> Result<usize, RetailResourceDecodeError> {
@@ -261,7 +263,7 @@ mod tests {
 
         let palette = bitmap_palette_rgb(&dib).unwrap();
 
-        assert_eq!(palette[0], [2, 1, 0]);
-        assert_eq!(palette[0x16], [0x18, 0x17, 0x16]);
+        assert_eq!(palette[0], Rgb::new(2, 1, 0));
+        assert_eq!(palette[0x16], Rgb::new(0x18, 0x17, 0x16));
     }
 }

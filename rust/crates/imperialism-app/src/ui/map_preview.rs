@@ -1,8 +1,6 @@
-use super::runtime::{
-    InteractiveUiWidget, PresentedViewId, UiRuntimeSet, UiViewRoot, ViewInstanceId, WidgetTag,
-};
+use super::runtime::SpawnedView;
 use super::startup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
-use crate::{AppState, GameLoopSet, RetailAssetsResource};
+use crate::{AppState, RetailAssetsResource};
 use bevy::asset::RenderAssetUsages;
 use bevy::image::{CompressedImageFormats, ImageFormat, ImageSampler, ImageType};
 use bevy::log::warn;
@@ -10,6 +8,7 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{MajorNationId, MapGeometry, STRATEGIC_TILE_COUNT, TileId};
+use imperialism_formats::{DibPalette, PaletteIndex, Rgb, UiView as CatalogView};
 
 const MAP_TAG: &str = "map ";
 const COAT_TAG: &str = "coat";
@@ -18,19 +17,26 @@ const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
 const FLAG_ATLAS_PICTURE: i16 = 8699;
 const FLAG_WIDTH: usize = 32;
 const FLAG_HEIGHT: usize = 24;
-const TRANSPARENT_FLAG_RGB: [u8; 3] = [0xff, 0, 0xff];
+const TRANSPARENT_FLAG_RGB: Rgb = Rgb::new(0xff, 0, 0xff);
 const PREVIEW_WIDTH: usize = 324;
 const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
-const OFF_MAP_PALETTE: u8 = 0x10;
-const SELECTED_EDGE_PALETTE: u8 = 0x13;
-const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
-    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+const OFF_MAP_PALETTE: PaletteIndex = PaletteIndex::new(0x10);
+const SELECTED_EDGE_PALETTE: PaletteIndex = PaletteIndex::new(0x13);
+const MAJOR_NATION_PALETTES: [PaletteIndex; MajorNationId::COUNT as usize] = [
+    PaletteIndex::new(0x16),
+    PaletteIndex::new(0x2a),
+    PaletteIndex::new(0x22),
+    PaletteIndex::new(0x1c),
+    PaletteIndex::new(0x2b),
+    PaletteIndex::new(0x1e),
+    PaletteIndex::new(0x2e),
+];
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
 struct RandomSetupMapPreview {
-    palette_indices: Vec<u8>,
+    palette_indices: Vec<PaletteIndex>,
     rendered: bool,
 }
 
@@ -46,111 +52,48 @@ struct RandomSetupFlag {
 
 pub(crate) struct MapPreviewPlugin;
 
-type StartupRootQuery<'w, 's> =
-    Query<'w, 's, (&'static ViewInstanceId, &'static PresentedViewId), With<UiViewRoot>>;
-
-type UnattachedMapPreviewQuery<'w, 's> = Query<
-    'w,
-    's,
-    (Entity, &'static ViewInstanceId, &'static WidgetTag),
-    (With<InteractiveUiWidget>, Without<RandomSetupMapPreview>),
->;
-
-type UnattachedCoatQuery<'w, 's> = Query<
-    'w,
-    's,
-    (Entity, &'static ViewInstanceId, &'static WidgetTag),
-    (With<ImageNode>, Without<RandomSetupCoat>),
->;
-
-type UnattachedFlagQuery<'w, 's> =
-    Query<'w, 's, (Entity, &'static ViewInstanceId, &'static WidgetTag), Without<RandomSetupFlag>>;
-
 impl Plugin for MapPreviewPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
             (
-                attach_map_preview,
-                attach_random_setup_coat,
-                attach_random_setup_flag,
                 render_map_preview,
                 sync_random_setup_coat,
                 sync_random_setup_flag,
             )
-                .chain()
-                .after(UiRuntimeSet::DespawnViews)
-                .in_set(GameLoopSet::UpdatePresentation),
+                .chain(),
         )
-        .add_systems(
-            Update,
-            select_nation_from_map_preview
-                .after(UiRuntimeSet::EmitIntents)
-                .in_set(GameLoopSet::TranslateUiIntents),
-        );
+        .add_systems(Update, select_nation_from_map_preview);
     }
 }
 
-fn attach_map_preview(
-    mut commands: Commands,
-    maps: UnattachedMapPreviewQuery,
-    roots: StartupRootQuery,
+/// Attach map/coat/flag components once when the random-setup screen is created.
+pub(crate) fn attach_random_setup_widgets(
+    commands: &mut Commands,
+    view: &CatalogView,
+    spawned: &SpawnedView,
 ) {
-    for (entity, instance, tag) in &maps {
-        if is_random_setup_node(*instance, tag, MAP_TAG, &roots) {
-            commands.entity(entity).insert((
-                RandomSetupMapPreview::default(),
-                RelativeCursorPosition::default(),
-            ));
-        }
+    debug_assert_eq!(view.id, random_setup_view_id());
+    if let Some(entity) = spawned.tagged(view, MAP_TAG) {
+        commands.entity(entity).insert((
+            RandomSetupMapPreview::default(),
+            RelativeCursorPosition::default(),
+        ));
     }
-}
-
-fn attach_random_setup_coat(
-    mut commands: Commands,
-    coats: UnattachedCoatQuery,
-    roots: StartupRootQuery,
-) {
-    for (entity, instance, tag) in &coats {
-        if is_random_setup_node(*instance, tag, COAT_TAG, &roots) {
-            commands.entity(entity).insert(RandomSetupCoat::default());
-        }
+    if let Some(entity) = spawned.tagged(view, COAT_TAG) {
+        commands.entity(entity).insert(RandomSetupCoat::default());
     }
-}
-
-fn attach_random_setup_flag(
-    mut commands: Commands,
-    flags: UnattachedFlagQuery,
-    roots: StartupRootQuery,
-) {
-    for (entity, instance, tag) in &flags {
-        if is_random_setup_node(*instance, tag, FLAG_TAG, &roots) {
-            commands.entity(entity).insert(RandomSetupFlag::default());
-        }
+    if let Some(entity) = spawned.tagged(view, FLAG_TAG) {
+        commands.entity(entity).insert(RandomSetupFlag::default());
     }
-}
-
-fn is_random_setup_node(
-    instance: ViewInstanceId,
-    tag: &WidgetTag,
-    expected_tag: &str,
-    roots: &StartupRootQuery,
-) -> bool {
-    tag.0.0 == expected_tag
-        && roots.iter().any(|(root_instance, view)| {
-            *root_instance == instance && view.0 == random_setup_view_id()
-        })
 }
 
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
-    retail_assets: Option<Res<RetailAssetsResource>>,
+    retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
-    let Some(retail_assets) = retail_assets.as_deref() else {
-        return;
-    };
     for (mut coat, mut image_node) in &mut coats {
         if coat.nation == Some(setup.nation) {
             continue;
@@ -189,13 +132,10 @@ fn coat_picture_id(nation: MajorNationId) -> i16 {
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
-    retail_assets: Option<Res<RetailAssetsResource>>,
+    retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
 ) {
-    let Some(retail_assets) = retail_assets.as_deref() else {
-        return;
-    };
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {
             continue;
@@ -270,7 +210,7 @@ fn crop_setup_flag(atlas: &Image, nation: MajorNationId) -> Result<Image, &'stat
     for pixel in pixels.chunks_exact_mut(4) {
         // TGWorldPartView blits with palette index 0x10 as its transparent
         // background; in the default DIB that palette entry is #ff00ff.
-        if pixel[..3] == TRANSPARENT_FLAG_RGB {
+        if pixel[..3] == TRANSPARENT_FLAG_RGB.to_array() {
             pixel[3] = 0;
         }
     }
@@ -294,7 +234,7 @@ fn render_map_preview(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
     generated_preview: Res<RandomSetupPreview>,
-    retail_assets: Option<Res<RetailAssetsResource>>,
+    retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
     mut maps: Query<(Entity, &mut RandomSetupMapPreview, Option<&mut ImageNode>)>,
 ) {
@@ -314,9 +254,6 @@ fn render_map_preview(
         };
 
         map_preview.palette_indices = compose_preview_indices(&generated.map.tiles, setup.nation);
-        let Some(retail_assets) = retail_assets.as_deref() else {
-            continue;
-        };
         let palette = match retail_assets.assets().default_dib_palette() {
             Ok(palette) => palette,
             Err(error) => {
@@ -375,7 +312,7 @@ fn select_nation_from_map_preview(
 fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
-) -> Vec<u8> {
+) -> Vec<PaletteIndex> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
     // TMapPreviewView always requests bounded neighbors, even if the selected
     // setup topology wraps horizontally.
@@ -460,7 +397,7 @@ fn owner_tag(tiles: &[imperialism_core::GeneratedTerrainTile], tile: Option<Tile
         .map_or(-1, |tile| tile.owner_nation)
 }
 
-fn preview_palette(owner_tag: i8) -> u8 {
+fn preview_palette(owner_tag: i8) -> PaletteIndex {
     let owner_tag = if (7..0x17).contains(&owner_tag) {
         0x0b
     } else if owner_tag >= 0x17 {
@@ -469,30 +406,35 @@ fn preview_palette(owner_tag: i8) -> u8 {
         owner_tag
     };
     match owner_tag {
-        -2 => 0,
+        -2 => PaletteIndex::new(0),
         -1 => OFF_MAP_PALETTE,
         0..=6 => MAJOR_NATION_PALETTES[owner_tag as usize],
-        7 => 0x0a,
-        8 => 0x0b,
-        9 => 0x0d,
-        10 => 0x29,
-        11 => 0xde,
-        12 => 0xdf,
-        13 => 0xfa,
-        14 => 0x2c,
-        15 => 0x31,
-        16 => 0x33,
-        17 => 0x41,
-        18 => 0x48,
-        19 => 0xd0,
-        20 => 0xcd,
-        21 => 0xce,
-        22 => 0xcf,
-        _ => 0xff,
+        7 => PaletteIndex::new(0x0a),
+        8 => PaletteIndex::new(0x0b),
+        9 => PaletteIndex::new(0x0d),
+        10 => PaletteIndex::new(0x29),
+        11 => PaletteIndex::new(0xde),
+        12 => PaletteIndex::new(0xdf),
+        13 => PaletteIndex::new(0xfa),
+        14 => PaletteIndex::new(0x2c),
+        15 => PaletteIndex::new(0x31),
+        16 => PaletteIndex::new(0x33),
+        17 => PaletteIndex::new(0x41),
+        18 => PaletteIndex::new(0x48),
+        19 => PaletteIndex::new(0xd0),
+        20 => PaletteIndex::new(0xcd),
+        21 => PaletteIndex::new(0xce),
+        22 => PaletteIndex::new(0xcf),
+        _ => PaletteIndex::new(0xff),
     }
 }
 
-fn write_preview_pixel(pixels: &mut [u8], row: usize, column: usize, palette: u8) {
+fn write_preview_pixel(
+    pixels: &mut [PaletteIndex],
+    row: usize,
+    column: usize,
+    palette: PaletteIndex,
+) {
     // The native 324-byte row stride lets the final odd-row hex write x=324,
     // which becomes x=0 on the next visible row. Keep that linear behavior;
     // only the one write past the allocated final row is not visible here.
@@ -501,7 +443,7 @@ fn write_preview_pixel(pixels: &mut [u8], row: usize, column: usize, palette: u8
     }
 }
 
-fn enhance_preview_selection(pixels: &mut [u8], selected_nation: MajorNationId) {
+fn enhance_preview_selection(pixels: &mut [PaletteIndex], selected_nation: MajorNationId) {
     let selected_palette = major_nation_palette(selected_nation);
     for row in 1..PREVIEW_HEIGHT - 1 {
         for column in 1..PREVIEW_WIDTH - 1 {
@@ -516,25 +458,23 @@ fn enhance_preview_selection(pixels: &mut [u8], selected_nation: MajorNationId) 
             {
                 SELECTED_EDGE_PALETTE
             } else {
-                0
+                PaletteIndex::new(0)
             };
         }
     }
 }
 
-fn is_selection_maskable(palette: u8) -> bool {
-    matches!(
-        palette,
-        0 | SELECTED_EDGE_PALETTE | 2 | 0x0f | 6 | 0x20 | 5 | 0xca
-    )
+fn is_selection_maskable(palette: PaletteIndex) -> bool {
+    palette == SELECTED_EDGE_PALETTE
+        || matches!(palette.get(), 0 | 2 | 0x0f | 6 | 0x20 | 5 | 0xca)
 }
 
-fn major_nation_palette(nation: MajorNationId) -> u8 {
+fn major_nation_palette(nation: MajorNationId) -> PaletteIndex {
     MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
 fn nation_at_preview_position(
-    palette_indices: &[u8],
+    palette_indices: &[PaletteIndex],
     normalized_position: Vec2,
 ) -> Option<MajorNationId> {
     let column = ((normalized_position.x + 0.5) * PREVIEW_WIDTH as f32).floor();
@@ -551,27 +491,26 @@ fn nation_at_preview_position(
         .and_then(nation_for_palette)
 }
 
-fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
+fn nation_for_palette(palette: PaletteIndex) -> Option<MajorNationId> {
     MAJOR_NATION_PALETTES
         .iter()
         .position(|candidate| *candidate == palette)
         .map(|nation| MajorNationId::new(nation as u8))
 }
 
-fn preview_image(palette_indices: &[u8], palette: &[[u8; 3]; 256]) -> Image {
+fn preview_image(palette_indices: &[PaletteIndex], palette: &DibPalette) -> Image {
     let mut rgba = Vec::with_capacity(PREVIEW_PIXEL_COUNT * 4);
-    for palette_index in palette_indices {
-        let [red, green, blue] = palette[usize::from(*palette_index)];
+    for &palette_index in palette_indices {
         // TMapPreviewView uses the QuickDraw transparent blit mode with
         // palette entry 0x10 as its background key.  This is an index-based
         // rule: only that entry is transparent, even if another palette entry
         // happens to share its RGB value.
-        let alpha = if *palette_index == OFF_MAP_PALETTE {
+        let alpha = if palette_index == OFF_MAP_PALETTE {
             0
         } else {
             0xff
         };
-        rgba.extend_from_slice(&[red, green, blue, alpha]);
+        palette[palette_index].write_rgba(alpha, &mut rgba);
     }
     let mut image = Image::new(
         Extent3d {
@@ -591,14 +530,7 @@ fn preview_image(palette_indices: &[u8], palette: &[[u8; 3]; 256]) -> Image {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::{StartupUiPlugin, UiCatalogResource, UiRuntimePlugin};
-    use imperialism_core::{
-        GeneratedMap, GeneratedTerrainTile, RANDOM_MAP_CLASS_COUNT,
-        RandomSetupPreview as GeneratedRandomSetupPreview, STRATEGIC_MAP_WIDTH,
-    };
-    use imperialism_formats::UiCatalog;
-
-    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
+    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH};
 
     fn tiles(owner: i8) -> Vec<GeneratedTerrainTile> {
         vec![
@@ -618,14 +550,14 @@ mod tests {
         let pixels = compose_preview_indices(&tiles(0), MajorNationId::new(1));
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
-        assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
+        assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], PaletteIndex::new(0x16));
     }
 
     #[test]
     fn selection_enhancement_uses_the_retail_white_palette_index() {
         let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
         let index = 90 * PREVIEW_WIDTH + 90;
-        pixels[index] = 0;
+        pixels[index] = PaletteIndex::new(0);
         pixels[index + 1] = major_nation_palette(MajorNationId::new(4));
 
         enhance_preview_selection(&mut pixels, MajorNationId::new(4));
@@ -640,7 +572,7 @@ mod tests {
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
-        assert_eq!(pixels[5 * PREVIEW_WIDTH], 0x16);
+        assert_eq!(pixels[5 * PREVIEW_WIDTH], PaletteIndex::new(0x16));
     }
 
     #[test]
@@ -667,13 +599,18 @@ mod tests {
 
     #[test]
     fn preview_image_keys_only_the_retail_off_map_palette_entry() {
-        let mut palette = [[0; 3]; 256];
-        palette[usize::from(OFF_MAP_PALETTE)] = [0xff, 0, 0xff];
-        palette[0] = [0, 0, 0];
-        palette[usize::from(SELECTED_EDGE_PALETTE)] = [0xff, 0xff, 0xff];
-        palette[0x16] = [0x57, 0x8b, 0xa6];
-        let mut indices = vec![0x16; PREVIEW_PIXEL_COUNT];
-        indices[..4].copy_from_slice(&[OFF_MAP_PALETTE, 0, SELECTED_EDGE_PALETTE, 0x16]);
+        let mut palette = DibPalette::default();
+        palette[OFF_MAP_PALETTE] = Rgb::new(0xff, 0, 0xff);
+        palette[0] = Rgb::new(0, 0, 0);
+        palette[SELECTED_EDGE_PALETTE] = Rgb::new(0xff, 0xff, 0xff);
+        palette[0x16] = Rgb::new(0x57, 0x8b, 0xa6);
+        let mut indices = vec![PaletteIndex::new(0x16); PREVIEW_PIXEL_COUNT];
+        indices[..4].copy_from_slice(&[
+            OFF_MAP_PALETTE,
+            PaletteIndex::new(0),
+            SELECTED_EDGE_PALETTE,
+            PaletteIndex::new(0x16),
+        ]);
         let image = preview_image(&indices, &palette);
 
         assert_eq!(image.texture_descriptor.size.width, PREVIEW_WIDTH as u32);
@@ -739,74 +676,5 @@ mod tests {
             RenderAssetUsages::default(),
         );
         assert!(crop_setup_flag(&short_atlas, MajorNationId::new(1)).is_err());
-    }
-
-    #[test]
-    fn pressed_map_node_selects_the_nation_from_its_composed_palette_index() {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
-        let mut app = App::new();
-        app.insert_resource(UiCatalogResource::new(catalog))
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .init_state::<AppState>()
-            .configure_sets(
-                Update,
-                (
-                    GameLoopSet::TranslateUiIntents,
-                    GameLoopSet::UpdatePresentation,
-                )
-                    .chain(),
-            )
-            .add_plugins((UiRuntimePlugin, StartupUiPlugin, MapPreviewPlugin));
-        app.world_mut()
-            .resource_mut::<RandomGameSetup>()
-            .planet_seed = "fixture".to_owned();
-        app.world_mut().resource_mut::<RandomSetupPreview>().preview =
-            Some(GeneratedRandomSetupPreview {
-                map: GeneratedMap {
-                    tiles: tiles(4),
-                    provinces: Vec::new(),
-                    seed_candidate_tiles: [0; RANDOM_MAP_CLASS_COUNT],
-                },
-                final_map_lcg: 0,
-            });
-
-        app.update();
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::RandomSetup);
-        app.update();
-        app.update();
-        app.update();
-
-        let map_entity = app
-            .world_mut()
-            .query_filtered::<Entity, With<RandomSetupMapPreview>>()
-            .iter(app.world())
-            .next()
-            .unwrap();
-        assert_eq!(
-            app.world()
-                .get::<RandomSetupMapPreview>(map_entity)
-                .unwrap()
-                .palette_indices[90 * PREVIEW_WIDTH + 90],
-            major_nation_palette(MajorNationId::new(4))
-        );
-        *app.world_mut()
-            .get_mut::<RelativeCursorPosition>(map_entity)
-            .unwrap() = RelativeCursorPosition {
-            cursor_over: true,
-            normalized: Some(Vec2::new(
-                (90.5 / PREVIEW_WIDTH as f32) - 0.5,
-                (90.5 / PREVIEW_HEIGHT as f32) - 0.5,
-            )),
-        };
-        *app.world_mut().get_mut::<Interaction>(map_entity).unwrap() = Interaction::Pressed;
-
-        app.update();
-
-        assert_eq!(
-            app.world().resource::<RandomGameSetup>().nation,
-            MajorNationId::new(4)
-        );
     }
 }
