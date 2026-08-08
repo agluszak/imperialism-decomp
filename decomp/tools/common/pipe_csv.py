@@ -18,7 +18,7 @@ def header_column_indices(header_line: str, *columns: str) -> tuple[int, ...]:
     For line-preserving rewriters that must keep unrelated rows byte-identical
     (so they cannot round-trip through DictReader/DictWriter). Never hardcode
     column indices — a schema change silently breaks them (the prune_ilt_thunks
-    / gen_library_annotations parts[3]-vs-parts[4] bug class).
+    parts[3]-vs-parts[4] bug class).
     """
     names = [name.strip() for name in header_line.rstrip("\n").split("|")]  # pipe-split-ok
     out = []

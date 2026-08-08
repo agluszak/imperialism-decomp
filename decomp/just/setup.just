@@ -1,7 +1,9 @@
+[private]
 [group('setup')]
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
 
+[private]
 [group('setup')]
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
@@ -10,16 +12,19 @@ bootstrap-reccmp:
 # Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
 # navigation. Not for matching questions — the reccmp build is MSVC500. The lint
 # *build* may fail (advisory); the database comes from the CMake configure step.
+[private]
 [group('setup')]
 gen-compile-commands:
   -just lint "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
   uv run python -m tools.workflow.gen_compile_commands
 
+[private]
 [group('setup')]
 vendor-msvc500-headers *args:
   uv run python -m tools.workflow.vendor_msvc500_headers {{args}}
 
 # Mirror the DirectX 5 SDK inc/lib (reference copy of C:\dxsdk in the build image).
+[private]
 [group('setup')]
 vendor-directx-headers *args:
   uv run python -m tools.workflow.vendor_directx_headers {{args}}

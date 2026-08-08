@@ -89,6 +89,7 @@ addr *args:
 
 # Compare the stack layout of a single near-matching function.
 #   just stackcmp 0xADDR
+[private]
 [group('compare')]
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")

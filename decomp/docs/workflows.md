@@ -17,7 +17,9 @@ just build
 
 A new worktree needs its own `.env` and `reccmp-user.yml`. Docker images and the local Ghidra
 installation are machine-wide. A worktree beneath a dot-directory needs a dot-free
-`GHIDRA_PROJECT_DIR` override because Ghidra refuses such paths.
+`GHIDRA_PROJECT_DIR` override because Ghidra refuses such paths. One-time setup recipes
+(`vendor-msvc500-headers`, `bootstrap-reccmp`, …) remain invokable even when hidden from
+`just --list`.
 
 ## Recover a function
 

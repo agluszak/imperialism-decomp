@@ -21,6 +21,11 @@ set(IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE
 list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
     "${IMPERIALISM_UI_RESOURCE_BUILDER_SOURCE}")
 
+# Annotation-only carrier (`#if 0` LIBRARY/SYNTHETIC markers). Scanned by
+# source_model; must not become a compile TU.
+list(REMOVE_ITEM IMPERIALISM_GAME_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game/core/library_identities.cpp")
+
 # Lint-only builds (clang/MinGW, see cmake/clang-mingw-i686.cmake) compile the
 # sources for diagnostics without linking, since the autogen stubs do not yet
 # provide a complete link surface. Default OFF so the MSVC500 reccmp build is
@@ -186,10 +191,10 @@ if(MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     )
 endif()
 
-# Groundwork for the retail-MFC migration (see docs/toolchain.md and
-# tools/mfc/gen_library_annotations.py). When ON, link the statically-linked retail
-# MFC (nafxcw.lib, byte-identical to the original) plus the Win32 import libs MFC
-# needs; the toolchain's INCLUDE/LIB already point at C:\msvc\mfc\{include,lib}.
+# Groundwork for the retail-MFC migration (see docs/toolchain.md). When ON, link
+# the statically-linked retail MFC (nafxcw.lib, byte-identical to the original)
+# plus the Win32 import libs MFC needs; the toolchain's INCLUDE/LIB already point
+# at C:\msvc\mfc\{include,lib}.
 # nafxcw must precede the static CRT (libcmt) on the link line — verified to link a
 # minimal exe. OFF until the hand-rolled MFC C* classes are swapped for <afx.h>.
 option(IMPERIALISM_LINK_MFC "Link retail static MFC (nafxcw.lib) instead of hand-rolled MFC" ON)

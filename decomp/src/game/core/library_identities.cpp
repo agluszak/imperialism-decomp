@@ -1,3 +1,5 @@
+// Annotation-only carrier (#if 0). Scanned by source_model for LIBRARY/SYNTHETIC
+// identity markers; excluded from the compile TU list in CMakeLists.txt.
 // CRT/MFC library and synthetic identity claims. Ownership plus reccmp
 // name/symbol/prototype overlays live here as // LIBRARY or // SYNTHETIC markers.
 // Accepting an object-matcher oracle hit means adding a block below.
