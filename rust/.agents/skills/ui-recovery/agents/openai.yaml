@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI Recovery"
+  short_description: "Carry retail UI evidence into Bevy"
+  default_prompt: "Use $ui-recovery to carry retail UI evidence through the Bevy pipeline."

@@ -1,0 +1,107 @@
+
+# Post-create text-style changes made by the recovered Windows controllers.
+# These patch semantic catalog properties only; resource geometry and hierarchy
+# remain owned by the Mac View IR.
+node_property_patches:
+  - view: Startup.rsrc:1501
+    node: 0x0247
+    tag: tcou
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x030f
+    tag: coun
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls RefreshActiveControlThenApplyThemeStyleAndCaption(coun, 0, 12, ..., 1, ...)
+  - view: Startup.rsrc:1501
+    node: 0x049b
+    tag: dif0
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x050b
+    tag: dif1
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x057b
+    tag: dif2
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x05eb
+    tag: dif3
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x065b
+    tag: dif4
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x06cb
+    tag: dift
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x0740
+    tag: tnam
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 14, alignment: 0}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)
+  - view: Startup.rsrc:1501
+    node: 0x0828
+    tag: hist
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+  - view: Startup.rsrc:1501
+    node: 0x0898
+    tag: rand
+    properties: {text: {font_family: 1, face_flags: 0, point_size: 12, alignment: 1}}
+    evidence: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)
+
+# Explicit semantic differences between the Mac resource class name and the
+# Windows source model. These are not ABI claims; each substitution must remain
+# represented by tools.ui_codegen.CLASS_ALIASES and appear in the delta report.
+class_substitutions:
+  TBookView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the price-history shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8990 DLOG has the TBook serialized pict shape and lcor/rcor children; TBook is present in Windows RTTI while TBookView is absent from both code symbol corpora
+  TDefenseNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the defense-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9610 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x258a and has TBook RTTI but no TDefenseNotesView RTTI
+  TExportsView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the exports shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8960 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x2300 and has TBook RTTI but no TExportsView RTTI
+  TForeignNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the foreign-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8930 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22e2 and has TBook RTTI but no TForeignNotesView RTTI
+  TInteriorNotesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the interior-notes shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9710 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25ee and has TBook RTTI but no TInteriorNotesView RTTI
+  TMerchantMarineView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the merchant-marine shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8940 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22ec and has TBook RTTI but no TMerchantMarineView RTTI
+  TMiniDealBookView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the mini-deal shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:8950 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x22f6 and has TBook RTTI but no TMiniDealBookView RTTI
+  TToolbarCluster:
+    windows_class: TToolBarCluster
+    reason: Windows source and RTTI use the internal-capital spelling for the toolbar cluster class.
+    evidence: FlagView.rsrc:8800 node tbr2; Windows TToolBarCluster source/RTTI identity
+  TTreasuriesView:
+    windows_class: TBook
+    reason: The Windows port uses the shared TBook pager for the treasuries shell instead of the resource-only Mac class name.
+    evidence: Minister.rsrc:9720 DLOG has the TBook serialized pict shape and lcor/rcor children; Windows requests event 0x25f8 and has TBook RTTI but no TTreasuriesView RTTI
+  TMyWindow:
+    windows_class: TWindow
+    reason: Mac utility resources use a local window subclass absent from the Windows source model.
+    evidence: Linger.rsrc:1000 root WIND; Windows RTTI has TWindow and no TMyWindow
+
+functional_parity_cases: {}

@@ -11,8 +11,7 @@ use std::fs;
 use std::io::Write;
 use std::path::{Path, PathBuf};
 
-pub const RETAIL_ASSET_PACK_SCHEMA: &str = "imperialism.retail_asset_pack.v1";
-const CACHE_KEY_DOMAIN: &[u8] = b"imperialism.retail_asset_import.v1\0";
+const CACHE_KEY_DOMAIN: &[u8] = b"imperialism.retail_asset_import\0";
 const ENGLISH_LANGUAGE: u32 = 1033;
 
 const REQUIRED_RETAIL_FILES: &[&str] = &[
@@ -119,8 +118,7 @@ pub struct RetailStandaloneAsset {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailAssetPackManifestV1 {
-    pub schema: String,
+pub struct RetailAssetPackManifest {
     pub cache_key: String,
     pub logical_resolution: [u32; 2],
     pub bitmap_lookup_is_name_then_numeric: bool,
@@ -131,7 +129,7 @@ pub struct RetailAssetPackManifestV1 {
     pub music: Vec<RetailStandaloneAsset>,
 }
 
-impl RetailAssetPackManifestV1 {
+impl RetailAssetPackManifest {
     pub fn resolve_font(&self, face: RetailFontFace) -> Option<&RetailStandaloneAsset> {
         self.fonts.iter().find(|asset| {
             asset
@@ -168,7 +166,7 @@ impl RetailAssetPackManifestV1 {
 pub struct ImportedRetailAssets {
     pub cache_root: PathBuf,
     pub pack_dir: PathBuf,
-    pub manifest: RetailAssetPackManifestV1,
+    pub manifest: RetailAssetPackManifest,
 }
 
 impl ImportedRetailAssets {
@@ -221,7 +219,7 @@ pub fn import_english_gog_assets(
     let source_paths = required_source_paths(retail_dir)?;
     let sources = hash_sources(&source_paths)?;
     let cache_key = cache_key(&sources);
-    let pack_dir = cache_root.join("packs").join("v1").join(&cache_key);
+    let pack_dir = cache_root.join("packs").join(&cache_key);
     let manifest_path = pack_dir.join("manifest.json");
     if manifest_path.is_file()
         && let Ok(manifest) = read_manifest(&manifest_path)
@@ -295,8 +293,7 @@ pub fn import_english_gog_assets(
     let music_refs = music_paths.iter().map(String::as_str).collect::<Vec<_>>();
     let music = import_standalone_group(retail_dir, cache_root, &music_refs, "ogg", validate_ogg)?;
 
-    let manifest = RetailAssetPackManifestV1 {
-        schema: RETAIL_ASSET_PACK_SCHEMA.to_owned(),
+    let manifest = RetailAssetPackManifest {
         cache_key: cache_key.clone(),
         logical_resolution: [640, 480],
         bitmap_lookup_is_name_then_numeric: true,
@@ -687,7 +684,7 @@ fn object_file_matches(path: &Path, expected: &[u8]) -> Result<bool, RetailAsset
 fn write_pack_atomically(
     cache_root: &Path,
     pack_dir: &Path,
-    manifest: &RetailAssetPackManifestV1,
+    manifest: &RetailAssetPackManifest,
     replace_existing: bool,
 ) -> Result<(), RetailAssetImportError> {
     let parent = pack_dir.parent().ok_or_else(|| {
@@ -743,12 +740,11 @@ fn write_pack_atomically(
 
 fn validate_cached_manifest(
     cache_root: &Path,
-    manifest: &RetailAssetPackManifestV1,
+    manifest: &RetailAssetPackManifest,
     sources: &[RetailSourceDigest],
     cache_key: &str,
 ) -> Result<bool, RetailAssetImportError> {
-    if manifest.schema != RETAIL_ASSET_PACK_SCHEMA
-        || manifest.cache_key != cache_key
+    if manifest.cache_key != cache_key
         || manifest.sources != sources
         || manifest.logical_resolution != [640, 480]
         || !manifest.bitmap_lookup_is_name_then_numeric
@@ -803,7 +799,7 @@ fn validate_cached_manifest(
     Ok(true)
 }
 
-fn read_manifest(path: &Path) -> Result<RetailAssetPackManifestV1, RetailAssetImportError> {
+fn read_manifest(path: &Path) -> Result<RetailAssetPackManifest, RetailAssetImportError> {
     serde_json::from_slice(&read(path)?).map_err(RetailAssetImportError::Manifest)
 }
 
@@ -1006,7 +1002,7 @@ mod tests {
     #[test]
     fn stale_pack_manifest_is_replaced_instead_of_reported_as_success() {
         let root = temporary_cache("stale-pack");
-        let pack_dir = root.join("packs/v1/current");
+        let pack_dir = root.join("packs/current");
         fs::create_dir_all(&pack_dir).unwrap();
         fs::write(pack_dir.join("manifest.json"), b"stale").unwrap();
         let manifest = empty_manifest();
@@ -1026,9 +1022,8 @@ mod tests {
         assert!(error.to_string().contains("--retail-dir is required"));
     }
 
-    fn empty_manifest() -> RetailAssetPackManifestV1 {
-        RetailAssetPackManifestV1 {
-            schema: RETAIL_ASSET_PACK_SCHEMA.to_owned(),
+    fn empty_manifest() -> RetailAssetPackManifest {
+        RetailAssetPackManifest {
             cache_key: "0".repeat(64),
             logical_resolution: [640, 480],
             bitmap_lookup_is_name_then_numeric: true,

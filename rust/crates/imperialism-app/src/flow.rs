@@ -12,7 +12,6 @@ pub enum AppState {
 pub enum GameScreen {
     MainMenu,
     RandomSetup,
-    StrategicMap,
 }
 
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]

@@ -314,8 +314,7 @@ mod tests {
     use super::*;
     use crate::{GameSession, SessionPlugin};
     use imperialism_formats::{
-        ImportedRetailAssets, RETAIL_ASSET_PACK_SCHEMA, RetailAssetPackManifestV1,
-        RetailResourceAsset, RetailStandaloneAsset,
+        ImportedRetailAssets, RetailAssetPackManifest, RetailResourceAsset, RetailStandaloneAsset,
     };
     use std::path::Path;
     use std::time::{SystemTime, UNIX_EPOCH};
@@ -366,9 +365,8 @@ mod tests {
         }
         let imported = ImportedRetailAssets {
             cache_root: root.clone(),
-            pack_dir: root.join("packs/v1/test"),
-            manifest: RetailAssetPackManifestV1 {
-                schema: RETAIL_ASSET_PACK_SCHEMA.to_owned(),
+            pack_dir: root.join("packs/test"),
+            manifest: RetailAssetPackManifest {
                 cache_key: "d".repeat(64),
                 logical_resolution: [640, 480],
                 bitmap_lookup_is_name_then_numeric: true,

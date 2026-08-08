@@ -31,7 +31,7 @@ fn run() -> anyhow::Result<()> {
 
     let repository = repository_root()?;
     let output = Command::new("just")
-        .current_dir(repository)
+        .current_dir(repository.join("decomp"))
         .arg("runtime-run")
         .arg(&fixture)
         .arg("--seed")

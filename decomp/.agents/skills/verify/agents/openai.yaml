@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Decomp"
+  short_description: "Build triage and verify decomp changes"
+  default_prompt: "Use $verify to validate the current decomp change."

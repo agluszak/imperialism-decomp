@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recover Class"
+  short_description: "Recover class layouts and vtables"
+  default_prompt: "Use $recover-class to reconstruct a retail class and its vtable."

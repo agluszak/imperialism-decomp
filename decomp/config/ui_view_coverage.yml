@@ -1,0 +1,381 @@
+
+# Explicit classification for every committed Mac View resource not yet owned by
+# config/ui_factory_codegen.yml. The coverage checker rejects omissions, stale
+# names, and overlap with generated resources.
+resources:
+  Linger.rsrc:2021:
+    status: windows_alternate_path
+    name: Really End Turn?
+    reason: Windows resolves this confirmation dialog directly through the asset manager, outside builder 0x004357b0.
+    evidence:
+      - Request site 0x005d57ce posts event 0x07e5
+      - TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog 0x005d57b0 calls TAssetMgr resolver slot 0x28 directly, then configures and opens the returned dialog
+      - Retail builder 0x004357b0 omits event 0x07e5; its former generated case duplicated that alternate path
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8930:
+    status: excluded_mac_only_or_obsolete
+    name: FM Recco Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f314e posts event 0x22e2
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8940:
+    status: excluded_mac_only_or_obsolete
+    name: MerMar Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f312c posts event 0x22ec
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8950:
+    status: excluded_mac_only_or_obsolete
+    name: Mini Deal Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f30e5 posts event 0x22f6
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8960:
+    status: excluded_mac_only_or_obsolete
+    name: Exports Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f30f9 posts event 0x2300
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:8990:
+    status: excluded_mac_only_or_obsolete
+    name: Price History Book
+    reason: Request survives only in the unreachable foreign-minister shelf controller.
+    evidence:
+      - Request site 0x004f3162 posts event 0x231e
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9610:
+    status: excluded_mac_only_or_obsolete
+    name: DM Recco Book
+    reason: Request survives only in the unreachable defense-minister shelf controller.
+    evidence:
+      - Request site 0x004f345d posts event 0x258a
+      - TDefenseMinisterView constructor 0x004f32f0 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9710:
+    status: excluded_mac_only_or_obsolete
+    name: IM Recco book
+    reason: Request survives only in the unreachable interior-minister shelf controller.
+    evidence:
+      - Request site 0x004f37e8 posts event 0x25ee
+      - TInteriorMinisterView constructor 0x004f3690 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Minister.rsrc:9720:
+    status: excluded_mac_only_or_obsolete
+    name: Treasuries Book
+    reason: Request survives only in the unreachable interior-minister shelf controller.
+    evidence:
+      - Request site 0x004f37ac posts event 0x25f8
+      - TInteriorMinisterView constructor 0x004f3690 has no callers; its vtable is written only by the constructor and CreateObject
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Startup.rsrc:960:
+    status: windows_alternate_path
+    name: Map editor
+    reason: The map setup is activated by the central turn-event path and its dedicated post-build initializer, not builder 0x004538a0.
+    evidence:
+      - Request site 0x0050ed78 posts event 0x03c0
+      - TViewMgr::DispatchTurnEvent 0x005d7240 handles 0x03c0 explicitly with ConfigureActiveDialogGoldValueGridForTurnEvent3C0
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Startup.rsrc:965:
+    status: windows_alternate_path
+    name: Province editor
+    reason: The province editor is resolved directly by TMapEditView through the asset-manager message-context path.
+    evidence:
+      - Request site 0x0051dd0b posts event 0x03c5
+      - TMapEditView::PlaceCountySeat 0x0051dc90 calls TAssetMgr::ResolveTurnEventDialogNodeByMessageContext and operates on the returned dialog
+    bead: imperialism-decomp-1uj.106.15.82
+
+  Transport.rsrc:3901:
+    status: windows_alternate_path
+    name: kShowUnitHistoryView
+    reason: Unit history is initialized by the central turn-event dispatcher after packet construction, outside builder 0x0046fd10.
+    evidence:
+      - Request site 0x0057e984 posts event 0x0f3d
+      - TViewMgr::DispatchTurnEvent 0x005d7240 handles 0x0f3d explicitly with ShowUnitHistory
+    bead: imperialism-decomp-1uj.106.15.82
+
+  FlagView.rsrc:8450:
+    status: excluded_mac_only_or_obsolete
+    name: Diplo Offer Desk
+    reason: Obsolete Mac diplomacy-desk predecessor replaced by the generated Offer Sheet screen.
+    evidence:
+      - FlagView.rsrc:8450 uses TDiploDeskPicture and the same tool/accept/reject/wait/query tag family later expanded by FlagView.rsrc:8500
+      - FlagView.rsrc:8500 is generated as event 0x2134 with the Windows RTTI class TOfferDeskPicture; Windows RTTI has no TDiploDeskPicture
+      - Exact Windows immediate search finds no event/resource request 0x2102
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:200:
+    status: excluded_mac_test_debug_or_framework
+    name: MA - IDClipWindow
+    reason: MacApp framework clip-window resource; no gameplay construction request is known.
+    evidence:
+      - Mac View name identifies the MA framework resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:300:
+    status: excluded_mac_test_debug_or_framework
+    name: MA - kDialogTEViewID
+    reason: MacApp framework dialog resource; no gameplay construction request is known.
+    evidence:
+      - Mac View name identifies the MA framework resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:900:
+    status: excluded_mac_test_debug_or_framework
+    name: Debug Flags Window
+    reason: Explicit debug-only window pending proof of its Windows disposition.
+    evidence:
+      - Mac View name identifies a debug resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:901:
+    status: excluded_mac_test_debug_or_framework
+    name: debug - Initialize PerfMon
+    reason: Explicit debug performance monitor pending proof of its Windows disposition.
+    evidence:
+      - Mac View name identifies a debug resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1000:
+    status: excluded_mac_test_debug_or_framework
+    name: test - modal message-offscreen test
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1003:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Show GP Stockpiles
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1009:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cGPRelationshipTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1012:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cMinorsRelationshipTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1014:
+    status: excluded_mac_test_debug_or_framework
+    name: test - MinorStockpiles
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1015:
+    status: excluded_mac_test_debug_or_framework
+    name: test - MinorTradeBids
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1024:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cMinorsTreatyTable
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1025:
+    status: excluded_mac_test_debug_or_framework
+    name: test - cGP Treaty Table
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1026:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Automated turns
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:1050:
+    status: excluded_mac_only_or_obsolete
+    name: GWorld Menu
+    reason: Mac graphics-world utility View omitted from the Windows UI construction model.
+    evidence:
+      - The Mac View is a two-node GWorld utility window, not a gameplay screen
+      - Windows uses of numeric value 0x041a are a custom window message, a cursor-table value, and a TPicture resource ID at 0x0059a0f2; none requests Linger.rsrc View 1050
+      - Resource identity is file-and-type scoped; those numeric collisions do not reference this View
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:1060:
+    status: excluded_mac_only_or_obsolete
+    name: GWorld Peeker
+    reason: Mac graphics-world inspection utility retained as dead class code but omitted as a Windows View.
+    evidence:
+      - Exact Windows immediate 0x0424 appears as MFC dialog control ID 0x424 at 0x0047dda8 and unrelated stack/arithmetic constants, never as a View request
+      - TGWorldPeeker exists in Windows RTTI, but vtable 0x00656748 is written only by CreateObject and has no direct construction site
+      - The Mac View name and two-node hierarchy identify a GWorld inspection utility rather than a retail screen
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:2005:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Diplomacy Notices
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:2050:
+    status: windows_alternate_path
+    name: Minimap
+    reason: Windows replaces the standalone Mac float window with a dynamically attached TMiniMapView.
+    evidence:
+      - 0x005466f1 uses 0x802 as an assertion line number, not a View request
+      - TMapUberPicture::DisplayMiniMap at 0x00599cf0 allocates a 0xa0-byte TMiniMapView, writes vtable 0x00669170, and attaches it under the tool control
+      - The Windows path initializes the minimap at 0x71 by 0x41 and stores it in TMapUberPicture+0xc0 instead of constructing the Mac TMiniMapWindow root
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:8155:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Naval Battle
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3
+
+  Linger.rsrc:9285:
+    status: excluded_mac_only_or_obsolete
+    name: Brick court
+    reason: Mac-only novelty/debug screen with no corresponding Windows class or request.
+    evidence:
+      - The three-node Mac tree is rooted in class TChupacabra with picture 7200 and a single score label
+      - Windows RTTI and source contain no TChupacabra class
+      - Exact Windows immediate search finds no request for View ID 0x2445
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Linger.rsrc:15001:
+    status: excluded_mac_test_debug_or_framework
+    name: Cheaty Mission Snooper
+    reason: The Windows executable retains a debug opener, but no live retail path references it.
+    evidence:
+      - 0x005de83d pushes event 0x3a99 before TAssetMgr factory dispatch slot 0x28.
+      - The only direct reference to opener 0x005de830 is ILT thunk 0x0040901b via incremental-link island 0x00414790.
+      - Original-PE scans find no caller or stored pointer to 0x00414790, 0x0040901b, or 0x005de830, and the executable has no export that can reach it.
+      - The Mac resource name is explicitly "Cheaty Mission Snooper"; Windows retains no TMissionSnooperView RTTI, constructor, vtable, or factory model.
+    bead: imperialism-decomp-1uj.58.7.1.1
+
+  MapView.rsrc:9470:
+    status: excluded_mac_only_or_obsolete
+    name: Civilian Maker
+    reason: Mac map-editor authoring panel omitted from the retail Windows construction paths.
+    evidence:
+      - The Mac tree is an unnamed window/picture with type and owner editor clusters, not a recovered gameplay control class
+      - Exact Windows immediate search finds no request for View ID 0x24fe
+      - Windows TMapMaker is the map-generation backend; no Windows View construction site references this editor tree
+    bead: imperialism-decomp-1uj.58.7.2
+
+  MapView.rsrc:9476:
+    status: excluded_mac_only_or_obsolete
+    name: Navy Maker
+    reason: Mac map-editor authoring panel omitted from the retail Windows construction paths.
+    evidence:
+      - The Mac tree is an unnamed editor window with type, quantity, and country controls and shares picture 9470 with Civilian Maker
+      - Exact Windows immediate search finds no request for View ID 0x2504
+      - Windows TMapMaker is the map-generation backend; no Windows View construction site references this editor tree
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:8900:
+    status: excluded_mac_only_or_obsolete
+    name: Foreign Minister Dlog
+    reason: Mac minister shelf omitted from the reachable retail Windows UI flow; its controller survives only as uninstantiated RTTI and dead handler code.
+    evidence:
+      - Windows RTTI identifies TForeignMinisterView and HandleEvent 0x004f3050 posts child-book events 0x22e2 through 0x231e
+      - Exact Windows immediate search finds no request for shelf View ID 0x22c4
+      - TForeignMinisterView constructor 0x004f2fd0 has no callers; vtable 0x00655308 is written only by the constructor and CreateObject
+      - CRuntimeClass::CreateObject 0x00606ff2 has no game UI callers; its reachable paths are MFC archive, thread, document, frame, and CWnd creation
+    bead: imperialism-decomp-1uj.58.7.5
+
+  Minister.rsrc:8970:
+    status: excluded_mac_only_or_obsolete
+    name: Escorts Book - Can We kill this?
+    reason: Explicitly questioned obsolete Mac minister book with no Windows request or class.
+    evidence:
+      - Mac View name questions whether the resource survived the Windows port
+      - Windows RTTI and source contain no TEscortBookView class
+      - Exact Windows immediate search finds no request for View ID 0x230a while adjacent retained books are posted explicitly by TForeignMinisterView::HandleEvent
+    bead: imperialism-decomp-1uj.58.7.2
+
+  Minister.rsrc:9600:
+    status: excluded_mac_only_or_obsolete
+    name: Defense Minister shelf
+    reason: Mac minister shelf omitted from the reachable retail Windows UI flow; its controller survives only as uninstantiated RTTI and dead handler code.
+    evidence:
+      - Windows RTTI identifies TDefenseMinisterView and HandleEvent 0x004f3370 posts child-book event 0x258a
+      - Exact Windows immediate search finds no request for shelf View ID 0x2580
+      - TDefenseMinisterView constructor 0x004f32f0 has no callers; vtable 0x00655518 is written only by the constructor and CreateObject
+      - CRuntimeClass::CreateObject 0x00606ff2 has no game UI callers; its reachable paths are MFC archive, thread, document, frame, and CWnd creation
+    bead: imperialism-decomp-1uj.58.7.5
+
+  Minister.rsrc:9700:
+    status: excluded_mac_only_or_obsolete
+    name: Interior Minister shelf
+    reason: Mac minister shelf omitted from the reachable retail Windows UI flow; its controller survives only as uninstantiated RTTI and dead handler code.
+    evidence:
+      - Windows RTTI identifies TInteriorMinisterView and HandleEvent 0x004f3710 posts child-book events 0x25ee and 0x25f8
+      - Exact Windows immediate search finds no request for shelf View ID 0x25e4
+      - TInteriorMinisterView constructor 0x004f3690 has no callers; vtable 0x00655720 is written only by the constructor and CreateObject
+      - CRuntimeClass::CreateObject 0x00606ff2 has no game UI callers; its reachable paths are MFC archive, thread, document, frame, and CWnd creation
+    bead: imperialism-decomp-1uj.58.7.5
+
+  Startup.rsrc:951:
+    status: excluded_mac_test_debug_or_framework
+    name: test - Game Setup Dialog
+    reason: Explicit Mac test view with no production Windows request site.
+    evidence:
+      - Mac View name identifies a test resource
+      - Initial Windows immediate/xref audit found no construction request
+    bead: imperialism-decomp-1uj.58.7.3

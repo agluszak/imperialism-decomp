@@ -11,7 +11,6 @@ use std::fs::File;
 use std::io::Read;
 use std::path::Path;
 
-const GENERATED_WORLD_SCHEMA: &str = "imperialism.generated_world.v1";
 const TERRAIN_TILE_FIELDS: [&str; 5] = [
     "terrain_kind",
     "river_sprite_code",
@@ -30,8 +29,6 @@ pub enum TerrainOracleReadError {
     MissingGeneratedWorld,
     #[error("generated-world oracle contains no terrain-generation evidence")]
     MissingTerrainGeneration,
-    #[error("unexpected generated-world schema {0}")]
-    WrongGeneratedWorldSchema(String),
     #[error("invalid terrain-generation oracle: {0}")]
     InvalidTerrainGeneration(String),
 }
@@ -97,15 +94,6 @@ pub fn decode_generated_world_terrain(
         .cloned()
         .filter(|snapshot| !snapshot.is_null())
         .ok_or(TerrainOracleReadError::MissingGeneratedWorld)?;
-    let schema = world
-        .get("schema")
-        .and_then(serde_json::Value::as_str)
-        .ok_or_else(|| TerrainOracleReadError::WrongGeneratedWorldSchema("<missing>".to_owned()))?;
-    if schema != GENERATED_WORLD_SCHEMA {
-        return Err(TerrainOracleReadError::WrongGeneratedWorldSchema(
-            schema.to_owned(),
-        ));
-    }
     let scenario_tag = world
         .pointer("/map/scenario_tag")
         .and_then(serde_json::Value::as_str)
@@ -399,12 +387,10 @@ mod tests {
             "river_tile_count": 0,
         });
         serde_json::json!({
-            "format_version": 1,
             "name": "generated_world_ordinary_terrain",
             "seed": 1,
             "status": "passed",
             "generated_world": {
-                "schema": "imperialism.generated_world.v1",
                 "map": {"scenario_tag": "ordinary"},
                 "coarse_generation": {"initial_map_lcg": 1},
                 "terrain_generation": {
@@ -442,15 +428,7 @@ mod tests {
     }
 
     #[test]
-    fn terrain_decoder_rejects_wrong_schema_unknown_fields_and_malformed_shapes() {
-        let mut wrong_schema = terrain_result();
-        wrong_schema["generated_world"]["schema"] =
-            serde_json::json!("imperialism.generated_world.invalid");
-        assert!(matches!(
-            decode_generated_world_terrain(serde_json::to_vec(&wrong_schema).unwrap().as_slice()),
-            Err(TerrainOracleReadError::WrongGeneratedWorldSchema(_))
-        ));
-
+    fn terrain_decoder_rejects_unknown_fields_and_malformed_shapes() {
         let mut unknown = terrain_result();
         unknown["generated_world"]["terrain_generation"]["unknown"] = serde_json::json!(1);
         assert!(matches!(

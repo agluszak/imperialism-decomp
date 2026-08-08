@@ -1,0 +1,4 @@
+interface:
+  display_name: "Port Behavior"
+  short_description: "Port retail behavior into deterministic Rust"
+  default_prompt: "Use $port-behavior to port a retail semantic slice into Rust."

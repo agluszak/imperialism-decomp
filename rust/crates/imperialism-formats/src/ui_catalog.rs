@@ -3,8 +3,6 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::path::Path;
 
-pub const UI_CATALOG_SCHEMA: &str = "imperialism.ui_catalog.v1";
-
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct ScopedViewId {
     pub resource_file: String,
@@ -161,8 +159,7 @@ pub struct UiView {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct UiCatalogV1 {
-    pub schema: String,
+pub struct UiCatalog {
     pub logical_resolution: [u32; 2],
     pub sources: UiCatalogSources,
     pub views: Vec<UiView>,
@@ -178,11 +175,8 @@ pub enum UiCatalogError {
     Validation(String),
 }
 
-impl UiCatalogV1 {
+impl UiCatalog {
     pub fn validate(&self) -> Result<(), UiCatalogError> {
-        if self.schema != UI_CATALOG_SCHEMA {
-            return Err(validation(format!("unsupported schema {:?}", self.schema)));
-        }
         if self.logical_resolution != [640, 480] {
             return Err(validation(format!(
                 "retail logical resolution must be 640x480, found {}x{}",
@@ -320,9 +314,9 @@ fn validation(message: String) -> UiCatalogError {
     UiCatalogError::Validation(message)
 }
 
-pub fn read_ui_catalog(path: &Path) -> Result<UiCatalogV1, UiCatalogError> {
+pub fn read_ui_catalog(path: &Path) -> Result<UiCatalog, UiCatalogError> {
     let bytes = fs::read(path).map_err(UiCatalogError::Io)?;
-    let catalog = serde_json::from_slice::<UiCatalogV1>(&bytes).map_err(UiCatalogError::Json)?;
+    let catalog = serde_json::from_slice::<UiCatalog>(&bytes).map_err(UiCatalogError::Json)?;
     catalog.validate()?;
     Ok(catalog)
 }
@@ -331,9 +325,9 @@ pub fn read_ui_catalog(path: &Path) -> Result<UiCatalogV1, UiCatalogError> {
 mod tests {
     use super::*;
 
-    const GENERATED_CATALOG: &str = include_str!("../assets/ui_catalog_v1.json");
+    const GENERATED_CATALOG: &str = include_str!("../assets/ui_catalog.json");
 
-    fn generated_catalog() -> UiCatalogV1 {
+    fn generated_catalog() -> UiCatalog {
         serde_json::from_str(GENERATED_CATALOG).unwrap()
     }
 
@@ -342,7 +336,7 @@ mod tests {
         let catalog = generated_catalog();
         catalog.validate().unwrap();
         let encoded = serde_json::to_vec(&catalog).unwrap();
-        let decoded: UiCatalogV1 = serde_json::from_slice(&encoded).unwrap();
+        let decoded: UiCatalog = serde_json::from_slice(&encoded).unwrap();
         assert_eq!(decoded, catalog);
     }
 

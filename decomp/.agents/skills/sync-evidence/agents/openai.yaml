@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync Evidence"
+  short_description: "Synchronize source and binary evidence"
+  default_prompt: "Use $sync-evidence to resynchronize derived decomp evidence."
