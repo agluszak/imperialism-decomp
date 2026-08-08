@@ -124,7 +124,7 @@ impl MajorNationState {
         self.available_merchant_capacity() > 0 && self.item_potentials[resource] < 0
     }
 
-    pub fn settle_transported_items(&mut self, city: &mut CityState) {
+    pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let amount = self.transported_items_by_resource[resource];
             city.add_to_stock_and_verify(resource, amount);
