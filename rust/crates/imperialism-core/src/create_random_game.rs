@@ -1719,5 +1719,23 @@ mod tests {
                 .all(|mission| mission.nation.get() != 6),
             "human Normal+ majors do not receive Accept mission queues"
         );
+        assert_eq!(
+            state.persistent_unit_id_counter,
+            state.military_units.len() as i32,
+            "field_64 tracks each spawned TUnit"
+        );
+        assert_eq!(state.market, TradeMarketState::default());
+        assert!(state.civilian_units.is_empty());
+        assert!(state.ships.is_empty());
+        assert!(state.task_forces.is_empty());
+        assert!(state
+            .pending
+            .nations
+            .iter()
+            .all(|work| work.turn_events.is_empty()
+                && work.proposals.is_empty()
+                && work.turn_summary.is_empty()
+                && work.turn_start_events.is_empty()));
+        assert!(state.pending.war_transitions.is_empty());
     }
 }
