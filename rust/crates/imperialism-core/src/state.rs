@@ -83,6 +83,7 @@ pub struct TradePolicyScore(i32);
 
 impl TradePolicyScore {
     pub const NEUTRAL: Self = Self(100);
+    pub const BOYCOTT: Self = Self(300);
 
     pub const fn new(score: i32) -> Self {
         Self(score)
