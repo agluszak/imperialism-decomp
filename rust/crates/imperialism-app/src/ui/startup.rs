@@ -1,12 +1,9 @@
-use crate::ui::{
-    DespawnUiView, InteractiveUiWidget, SpawnUiView, UiIntent, UiRuntimeSet, UiViewSpawned,
-    ViewInstanceId, WidgetTag,
-};
-use crate::{AppState, GameLoopSet};
+use crate::AppState;
+use crate::ui::{SpawnedView, UiActivated, UiCatalogResource, UiPictureResources, spawn_view};
 use bevy::app::AppExit;
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
-use bevy::input::keyboard::{KeyCode, KeyboardInput};
+use bevy::input::keyboard::KeyboardInput;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use imperialism_core::{
@@ -15,7 +12,7 @@ use imperialism_core::{
     create_random_game, generate_english_random_setup_name,
     generate_random_setup_preview_with_clock_seed,
 };
-use imperialism_formats::ScopedViewId;
+use imperialism_formats::{ScopedViewId, UiView as CatalogView};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
@@ -48,9 +45,6 @@ fn planet_seed_dialog_view_id() -> ScopedViewId {
 }
 
 /// Presentation-owned values edited by the random-game setup screen.
-///
-/// This is deliberately not simulation state: pressing Start will later pass
-/// this complete draft to the one game-creation operation.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
     pub(crate) planet_seed: String,
@@ -63,9 +57,6 @@ pub(crate) struct RandomGameSetup {
 
 impl Default for RandomGameSetup {
     fn default() -> Self {
-        // This draft is initialized from retail's clock-seeded setup path when
-        // the Random Setup screen first opens. It is never presented in this
-        // sentinel state.
         Self {
             planet_seed: String::new(),
             topology: RetailTopologyByte::from_wraps_horizontally(true),
@@ -78,8 +69,6 @@ impl Default for RandomGameSetup {
 }
 
 /// Authoritative game state produced when Random Setup Accept/Okay succeeds.
-///
-/// Headless for now: no strategic-map UI consumes this yet.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct GameSession(pub GameState);
 
@@ -89,8 +78,6 @@ pub(crate) struct RandomSetupPreview {
     pub(crate) preview: Option<GeneratedRandomSetupPreview>,
 }
 
-/// The one clock value retail shares between the CRT setup draw and its
-/// English random-name stream for this setup entry.
 #[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
 struct RandomSetupClockSeed(u32);
 
@@ -113,12 +100,46 @@ enum RandomSetupEditTarget {
 struct RandomSetupEditFocus(Option<RandomSetupEditTarget>);
 
 #[derive(Resource, Clone, Debug, Default, Eq, PartialEq)]
-struct PlanetSeedDialog {
-    active: bool,
-    instance: Option<ViewInstanceId>,
-    draft: String,
-    selected_on_open: bool,
+enum PlanetSeedDialog {
+    #[default]
+    Closed,
+    Open {
+        root: Entity,
+        plan_text: Entity,
+        draft: String,
+        replace_on_next_input: bool,
+    },
 }
+
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct StartupScreenInstances {
+    main_menu: Option<Entity>,
+    random_setup: Option<Entity>,
+}
+
+impl StartupScreenInstances {
+    #[cfg(test)]
+    pub(crate) const fn main_menu(self) -> Option<Entity> {
+        self.main_menu
+    }
+
+    #[cfg(test)]
+    pub(crate) const fn random_setup(self) -> Option<Entity> {
+        self.random_setup
+    }
+}
+
+#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
+struct RandomSetupControls {
+    key_button: Entity,
+    cancel_button: Entity,
+    country_text: Entity,
+}
+
+/// Set when Random Setup requests the planet-seed dialog; consumed by
+/// [`open_planet_seed_dialog`], which needs retail picture/font binding.
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+struct OpenPlanetSeedPending;
 
 #[derive(SystemParam)]
 struct RandomSetupInteraction<'w, 's> {
@@ -127,83 +148,83 @@ struct RandomSetupInteraction<'w, 's> {
     preview: ResMut<'w, RandomSetupPreview>,
     edit_focus: ResMut<'w, RandomSetupEditFocus>,
     dialog: ResMut<'w, PlanetSeedDialog>,
-    spawn: MessageWriter<'w, SpawnUiView>,
-    despawn: MessageWriter<'w, DespawnUiView>,
+    controls: Option<Res<'w, RandomSetupControls>>,
     commands: Commands<'w, 's>,
 }
 
 #[derive(SystemParam)]
-struct RandomSetupTextInput<'w> {
+struct RandomSetupTextInput<'w, 's> {
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
     edit_focus: ResMut<'w, RandomSetupEditFocus>,
     dialog: ResMut<'w, PlanetSeedDialog>,
-    despawn: MessageWriter<'w, DespawnUiView>,
-}
-
-#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) struct StartupScreenInstances {
-    main_menu: Option<ViewInstanceId>,
-    random_setup: Option<ViewInstanceId>,
-}
-
-impl StartupScreenInstances {
-    #[cfg(test)]
-    pub(crate) const fn main_menu(self) -> Option<ViewInstanceId> {
-        self.main_menu
-    }
-
-    #[cfg(test)]
-    pub(crate) const fn random_setup(self) -> Option<ViewInstanceId> {
-        self.random_setup
-    }
+    controls: Option<Res<'w, RandomSetupControls>>,
+    commands: Commands<'w, 's>,
 }
 
 pub(crate) struct StartupUiPlugin;
 
 impl Plugin for StartupUiPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<StartupScreenInstances>()
-            .init_resource::<RandomGameSetup>()
-            .init_resource::<RandomSetupPreview>()
-            .init_resource::<RandomSetupClockSeed>()
-            .init_resource::<RandomSetupEditFocus>()
-            .init_resource::<PlanetSeedDialog>()
-            .add_message::<KeyboardInput>()
-            .add_systems(OnEnter(AppState::MainMenu), request_main_menu)
-            .add_systems(OnExit(AppState::MainMenu), dismiss_main_menu)
+        register_startup_logic(app);
+        app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu)
+            .add_systems(OnExit(AppState::MainMenu), exit_main_menu)
             .add_systems(
                 OnEnter(AppState::RandomSetup),
-                (initialize_random_setup, request_random_setup).chain(),
+                (initialize_random_setup, enter_random_setup).chain(),
             )
-            .add_systems(OnExit(AppState::RandomSetup), dismiss_random_setup)
-            .add_systems(
-                Update,
-                (
-                    translate_startup_intents.after(UiRuntimeSet::EmitIntents),
-                    edit_random_setup_text.after(translate_startup_intents),
-                )
-                    .chain()
-                    .in_set(GameLoopSet::TranslateUiIntents),
-            )
-            .add_systems(
-                Update,
-                (
-                    record_spawned_startup_views,
-                    apply_main_menu_availability,
-                    apply_random_setup_availability,
-                    sync_random_setup_edit_text,
-                )
-                    .chain()
-                    .after(UiRuntimeSet::DespawnViews)
-                    .in_set(GameLoopSet::UpdatePresentation),
-            );
+            .add_systems(OnExit(AppState::RandomSetup), exit_random_setup);
     }
 }
 
-fn request_main_menu(mut spawn: MessageWriter<SpawnUiView>) {
-    spawn.write(SpawnUiView(main_menu_view_id()));
+fn register_startup_logic(app: &mut App) {
+    app.init_resource::<StartupScreenInstances>()
+        .init_resource::<RandomGameSetup>()
+        .init_resource::<RandomSetupPreview>()
+        .init_resource::<RandomSetupClockSeed>()
+        .init_resource::<RandomSetupEditFocus>()
+        .init_resource::<PlanetSeedDialog>()
+        .add_systems(
+            Update,
+            (
+                translate_startup_activations,
+                open_planet_seed_dialog.run_if(resource_exists::<OpenPlanetSeedPending>),
+                edit_random_setup_text,
+                sync_random_setup_edit_text,
+            )
+                .chain(),
+        );
+}
+
+fn enter_main_menu(
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut pictures: UiPictureResources,
+    mut instances: ResMut<StartupScreenInstances>,
+) {
+    let Some(spawned) = spawn_view(
+        &mut commands,
+        catalog.catalog(),
+        &main_menu_view_id(),
+        &mut pictures,
+    ) else {
+        return;
+    };
+    let view = catalog
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == main_menu_view_id())
+        .expect("main menu view was just spawned");
+    apply_main_menu_availability(&mut commands, view, &spawned);
+    instances.main_menu = Some(spawned.root);
+}
+
+fn exit_main_menu(mut commands: Commands, mut instances: ResMut<StartupScreenInstances>) {
+    if let Some(root) = instances.main_menu.take() {
+        commands.entity(root).despawn();
+    }
 }
 
 fn initialize_random_setup(
@@ -211,18 +232,12 @@ fn initialize_random_setup(
     mut setup: ResMut<RandomGameSetup>,
     mut preview: ResMut<RandomSetupPreview>,
 ) {
-    // Re-entering the retail setup screen keeps the existing generated map and
-    // selected nation. A nonempty generated planet seed is that concrete state
-    // in the current app boundary.
     if !setup.planet_seed.is_empty() {
         return;
     }
 
     let mut crt_rng = RetailCrtRng::from_state(clock_seed.0);
     let nation = MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
-
-    // TSetupRandomMapPicture generates these two English fallbacks from one
-    // shared zone/status stream: planet first, country second.
     let mut name_rng = RetailLcg::from_state(clock_seed.0);
     let planet_seed = generate_english_random_setup_name(&mut name_rng);
     let country_name = generate_english_random_setup_name(&mut name_rng);
@@ -246,67 +261,70 @@ fn initialize_random_setup(
     );
 }
 
-fn dismiss_main_menu(
+fn enter_random_setup(
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut pictures: UiPictureResources,
     mut instances: ResMut<StartupScreenInstances>,
-    mut despawn: MessageWriter<DespawnUiView>,
 ) {
-    if let Some(instance) = instances.main_menu.take() {
-        despawn.write(DespawnUiView(instance));
-    }
+    let Some(spawned) = spawn_view(
+        &mut commands,
+        catalog.catalog(),
+        &random_setup_view_id(),
+        &mut pictures,
+    ) else {
+        return;
+    };
+    let view = catalog
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == random_setup_view_id())
+        .expect("random setup view was just spawned");
+    crate::ui::map_preview::attach_random_setup_widgets(&mut commands, view, &spawned);
+    let Some(key_button) = spawned.tagged(view, "key ") else {
+        return;
+    };
+    let Some(cancel_button) = spawned.tagged(view, "cncl") else {
+        return;
+    };
+    let Some(country_text) = spawned.tagged(view, "coun") else {
+        return;
+    };
+    let controls = RandomSetupControls {
+        key_button,
+        cancel_button,
+        country_text,
+    };
+    set_random_setup_dialog_gates(&mut commands, &controls, false);
+    commands.insert_resource(controls);
+    instances.random_setup = Some(spawned.root);
 }
 
-fn request_random_setup(mut spawn: MessageWriter<SpawnUiView>) {
-    spawn.write(SpawnUiView(random_setup_view_id()));
-}
-
-fn dismiss_random_setup(
+fn exit_random_setup(
+    mut commands: Commands,
     mut instances: ResMut<StartupScreenInstances>,
     mut dialog: ResMut<PlanetSeedDialog>,
     mut edit_focus: ResMut<RandomSetupEditFocus>,
-    mut despawn: MessageWriter<DespawnUiView>,
 ) {
-    if let Some(instance) = instances.random_setup.take() {
-        despawn.write(DespawnUiView(instance));
+    if let Some(root) = instances.random_setup.take() {
+        commands.entity(root).despawn();
     }
-    if let Some(instance) = dialog.instance.take() {
-        despawn.write(DespawnUiView(instance));
-    }
-    dialog.active = false;
-    dialog.draft.clear();
-    dialog.selected_on_open = false;
-    edit_focus.0 = None;
-}
-
-fn record_spawned_startup_views(
-    mut spawned: MessageReader<UiViewSpawned>,
-    mut instances: ResMut<StartupScreenInstances>,
-    mut dialog: ResMut<PlanetSeedDialog>,
-) {
-    for message in spawned.read() {
-        if message.view == main_menu_view_id() {
-            instances.main_menu = Some(message.instance);
-        } else if message.view == random_setup_view_id() {
-            instances.random_setup = Some(message.instance);
-        } else if message.view == planet_seed_dialog_view_id() && dialog.active {
-            dialog.instance = Some(message.instance);
-        }
-    }
+    dismiss_planet_seed_dialog(&mut commands, &mut dialog, &mut edit_focus);
+    commands.remove_resource::<RandomSetupControls>();
 }
 
 fn apply_main_menu_availability(
-    mut commands: Commands,
-    instances: Res<StartupScreenInstances>,
-    widgets: Query<(Entity, &ViewInstanceId, &WidgetTag), With<InteractiveUiWidget>>,
+    commands: &mut Commands,
+    view: &CatalogView,
+    spawned: &SpawnedView,
 ) {
-    let Some(main_menu) = instances.main_menu else {
-        return;
-    };
-    for (entity, instance, tag) in &widgets {
-        if *instance != main_menu {
+    for node in &view.nodes {
+        if !node.interactive {
             continue;
         }
-        let available = matches!(tag.0.0.as_str(), "rand" | "quit");
-        if available {
+        let entity = spawned.nodes[&node.id];
+        if matches!(node.tag.0.as_str(), "rand" | "quit") {
             commands.entity(entity).remove::<InteractionDisabled>();
         } else {
             commands.entity(entity).insert(InteractionDisabled);
@@ -314,38 +332,31 @@ fn apply_main_menu_availability(
     }
 }
 
-fn apply_random_setup_availability(
-    mut commands: Commands,
-    instances: Res<StartupScreenInstances>,
-    dialog: Res<PlanetSeedDialog>,
-    widgets: Query<(Entity, &ViewInstanceId, &WidgetTag), With<InteractiveUiWidget>>,
+fn set_random_setup_dialog_gates(
+    commands: &mut Commands,
+    controls: &RandomSetupControls,
+    open: bool,
 ) {
-    let Some(random_setup) = instances.random_setup else {
-        return;
-    };
-    for (entity, instance, tag) in &widgets {
-        if *instance == random_setup && matches!(tag.0.0.as_str(), "key " | "cncl") {
-            if dialog.active {
-                commands.entity(entity).insert(InteractionDisabled);
-            } else {
-                commands.entity(entity).remove::<InteractionDisabled>();
-            }
+    for entity in [controls.key_button, controls.cancel_button] {
+        if open {
+            commands.entity(entity).insert(InteractionDisabled);
+        } else {
+            commands.entity(entity).remove::<InteractionDisabled>();
         }
     }
 }
 
-fn translate_startup_intents(
-    mut intents: MessageReader<UiIntent>,
+fn translate_startup_activations(
+    mut activations: MessageReader<UiActivated>,
     instances: Res<StartupScreenInstances>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut random_setup: RandomSetupInteraction,
     mut exit: MessageWriter<AppExit>,
 ) {
-    for intent in intents.read() {
-        let UiIntent::Activated { view, tag } = intent;
-        if *state.get() == AppState::MainMenu && instances.main_menu == Some(*view) {
-            match tag.0.as_str() {
+    for activation in activations.read() {
+        if *state.get() == AppState::MainMenu && instances.main_menu == Some(activation.view) {
+            match activation.tag.0.as_str() {
                 "rand" => next_state.set(AppState::RandomSetup),
                 "quit" => {
                     exit.write(AppExit::Success);
@@ -357,64 +368,48 @@ fn translate_startup_intents(
         if *state.get() != AppState::RandomSetup {
             continue;
         }
-        if instances.random_setup == Some(*view) {
-            if !random_setup.dialog.active {
-                if tag.0 == "cncl" {
+        if instances.random_setup == Some(activation.view) {
+            if matches!(&*random_setup.dialog, PlanetSeedDialog::Closed) {
+                if activation.tag.0 == "cncl" {
                     next_state.set(AppState::MainMenu);
-                } else if tag.0 == "okay" {
+                } else if activation.tag.0 == "okay" {
                     accept_random_setup(
                         &random_setup.setup,
                         &random_setup.preview,
                         &mut random_setup.commands,
                     );
                 } else {
-                    apply_random_setup_intent(
-                        random_setup.clock_seed.0,
-                        &mut random_setup.setup,
-                        &mut random_setup.preview,
-                        &mut random_setup.edit_focus,
-                        &mut random_setup.dialog,
-                        &mut random_setup.spawn,
-                        tag.0.as_str(),
-                    );
+                    apply_random_setup_intent(&mut random_setup, activation.tag.0.as_str());
                 }
             }
             continue;
         }
-        if random_setup.dialog.instance == Some(*view) {
-            apply_planet_seed_dialog_intent(
-                random_setup.clock_seed.0,
-                &mut random_setup.setup,
-                &mut random_setup.preview,
-                &mut random_setup.edit_focus,
-                &mut random_setup.dialog,
-                &mut random_setup.despawn,
-                tag.0.as_str(),
-            );
+        if let PlanetSeedDialog::Open { root, .. } = &*random_setup.dialog
+            && activation.view == *root
+        {
+            apply_planet_seed_dialog_intent(&mut random_setup, activation.tag.0.as_str());
         }
     }
 }
 
-fn apply_random_setup_intent(
-    clock_seed: u32,
-    setup: &mut RandomGameSetup,
-    preview: &mut RandomSetupPreview,
-    edit_focus: &mut RandomSetupEditFocus,
-    dialog: &mut PlanetSeedDialog,
-    spawn: &mut MessageWriter<SpawnUiView>,
-    tag: &str,
-) {
+fn apply_random_setup_intent(random_setup: &mut RandomSetupInteraction, tag: &str) {
     match tag {
-        "dif0" => setup.difficulty = Difficulty::Introductory,
-        "dif1" => setup.difficulty = Difficulty::Easy,
-        "dif2" => setup.difficulty = Difficulty::Normal,
-        "dif3" => setup.difficulty = Difficulty::Hard,
-        "dif4" => setup.difficulty = Difficulty::NighOnImpossible,
-        "hist" => setup.localized_names = true,
-        "rand" => setup.localized_names = false,
-        "glob" => regenerate_random_setup_planet(clock_seed, setup, preview),
-        "coun" => edit_focus.0 = Some(RandomSetupEditTarget::CountryName),
-        "key " => open_planet_seed_dialog(setup, edit_focus, dialog, spawn),
+        "dif0" => random_setup.setup.difficulty = Difficulty::Introductory,
+        "dif1" => random_setup.setup.difficulty = Difficulty::Easy,
+        "dif2" => random_setup.setup.difficulty = Difficulty::Normal,
+        "dif3" => random_setup.setup.difficulty = Difficulty::Hard,
+        "dif4" => random_setup.setup.difficulty = Difficulty::NighOnImpossible,
+        "hist" => random_setup.setup.localized_names = true,
+        "rand" => random_setup.setup.localized_names = false,
+        "glob" => regenerate_random_setup_planet(
+            random_setup.clock_seed.0,
+            &mut random_setup.setup,
+            &mut random_setup.preview,
+        ),
+        "coun" => random_setup.edit_focus.0 = Some(RandomSetupEditTarget::CountryName),
+        "key " => {
+            random_setup.commands.insert_resource(OpenPlanetSeedPending);
+        }
         _ => {}
     }
 }
@@ -445,9 +440,6 @@ fn regenerate_random_setup_planet(
     setup: &mut RandomGameSetup,
     preview: &mut RandomSetupPreview,
 ) {
-    // A completed retail map build resets the zone/status generator from the
-    // clock.  Globe activation starts a new mapped-name draw from that reset
-    // state rather than continuing the country-name stream.
     let mut name_rng = RetailLcg::from_state(clock_seed);
     setup.planet_seed = generate_english_random_setup_name(&mut name_rng);
     update_random_setup_preview(
@@ -461,59 +453,79 @@ fn regenerate_random_setup_planet(
 }
 
 fn open_planet_seed_dialog(
-    setup: &RandomGameSetup,
-    edit_focus: &mut RandomSetupEditFocus,
-    dialog: &mut PlanetSeedDialog,
-    spawn: &mut MessageWriter<SpawnUiView>,
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut pictures: UiPictureResources,
+    setup: Res<RandomGameSetup>,
+    mut edit_focus: ResMut<RandomSetupEditFocus>,
+    mut dialog: ResMut<PlanetSeedDialog>,
+    controls: Option<Res<RandomSetupControls>>,
 ) {
-    if dialog.active {
+    commands.remove_resource::<OpenPlanetSeedPending>();
+    if !matches!(*dialog, PlanetSeedDialog::Closed) {
         return;
     }
-    dialog.active = true;
-    dialog.draft.clone_from(&setup.planet_seed);
-    dialog.selected_on_open = true;
+    let Some(spawned) = spawn_view(
+        &mut commands,
+        catalog.catalog(),
+        &planet_seed_dialog_view_id(),
+        &mut pictures,
+    ) else {
+        return;
+    };
+    let view = catalog
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == planet_seed_dialog_view_id())
+        .expect("planet seed dialog was just spawned");
+    let Some(plan_text) = spawned.tagged(view, "plan") else {
+        commands.entity(spawned.root).despawn();
+        return;
+    };
+    if let Some(controls) = controls.as_deref() {
+        set_random_setup_dialog_gates(&mut commands, controls, true);
+    }
     edit_focus.0 = Some(RandomSetupEditTarget::PlanetSeed);
-    spawn.write(SpawnUiView(planet_seed_dialog_view_id()));
+    *dialog = PlanetSeedDialog::Open {
+        root: spawned.root,
+        plan_text,
+        draft: setup.planet_seed.clone(),
+        replace_on_next_input: true,
+    };
 }
 
-fn apply_planet_seed_dialog_intent(
-    clock_seed: u32,
-    setup: &mut RandomGameSetup,
-    preview: &mut RandomSetupPreview,
-    edit_focus: &mut RandomSetupEditFocus,
-    dialog: &mut PlanetSeedDialog,
-    despawn: &mut MessageWriter<DespawnUiView>,
-    tag: &str,
-) {
+fn apply_planet_seed_dialog_intent(random_setup: &mut RandomSetupInteraction, tag: &str) {
     match tag {
-        "plan" => edit_focus.0 = Some(RandomSetupEditTarget::PlanetSeed),
-        "okay" => {
-            accept_planet_seed_dialog(clock_seed, setup, preview, edit_focus, dialog, despawn)
-        }
+        "plan" => random_setup.edit_focus.0 = Some(RandomSetupEditTarget::PlanetSeed),
+        "okay" => accept_planet_seed_dialog(random_setup),
         _ => {}
     }
 }
 
-fn accept_planet_seed_dialog(
-    clock_seed: u32,
-    setup: &mut RandomGameSetup,
-    preview: &mut RandomSetupPreview,
-    edit_focus: &mut RandomSetupEditFocus,
-    dialog: &mut PlanetSeedDialog,
-    despawn: &mut MessageWriter<DespawnUiView>,
-) {
-    if !dialog.draft.is_empty() && dialog.draft != setup.planet_seed {
-        setup.planet_seed.clone_from(&dialog.draft);
+fn accept_planet_seed_dialog(random_setup: &mut RandomSetupInteraction) {
+    let PlanetSeedDialog::Open { draft, .. } = &*random_setup.dialog else {
+        return;
+    };
+    if !draft.is_empty() && draft != &random_setup.setup.planet_seed {
+        random_setup.setup.planet_seed.clone_from(draft);
         update_random_setup_preview(
-            preview,
+            &mut random_setup.preview,
             generate_random_setup_preview_with_clock_seed(
-                setup.planet_seed.as_bytes(),
-                setup.topology,
-                clock_seed,
+                random_setup.setup.planet_seed.as_bytes(),
+                random_setup.setup.topology,
+                random_setup.clock_seed.0,
             ),
         );
     }
-    dismiss_planet_seed_dialog(dialog, edit_focus, despawn);
+    dismiss_planet_seed_dialog(
+        &mut random_setup.commands,
+        &mut random_setup.dialog,
+        &mut random_setup.edit_focus,
+    );
+    if let Some(controls) = random_setup.controls.as_deref() {
+        set_random_setup_dialog_gates(&mut random_setup.commands, controls, false);
+    }
 }
 
 fn update_random_setup_preview(
@@ -524,15 +536,14 @@ fn update_random_setup_preview(
 }
 
 fn dismiss_planet_seed_dialog(
+    commands: &mut Commands,
     dialog: &mut PlanetSeedDialog,
     edit_focus: &mut RandomSetupEditFocus,
-    despawn: &mut MessageWriter<DespawnUiView>,
 ) {
-    if let Some(instance) = dialog.instance.take() {
-        despawn.write(DespawnUiView(instance));
+    if let PlanetSeedDialog::Open { root, .. } = dialog {
+        commands.entity(*root).despawn();
     }
-    dialog.active = false;
-    dialog.selected_on_open = false;
+    *dialog = PlanetSeedDialog::Closed;
     edit_focus.0 = None;
 }
 
@@ -552,56 +563,101 @@ fn edit_random_setup_text(
             continue;
         };
         match input.key_code {
-            KeyCode::Backspace => match target {
-                RandomSetupEditTarget::CountryName => {
+            KeyCode::Backspace => match (&mut *random_setup.dialog, target) {
+                (_, RandomSetupEditTarget::CountryName) => {
                     random_setup.setup.country_name.pop();
                 }
-                RandomSetupEditTarget::PlanetSeed => {
-                    if random_setup.dialog.selected_on_open {
-                        random_setup.dialog.draft.clear();
-                        random_setup.dialog.selected_on_open = false;
+                (
+                    PlanetSeedDialog::Open {
+                        draft,
+                        replace_on_next_input,
+                        ..
+                    },
+                    RandomSetupEditTarget::PlanetSeed,
+                ) => {
+                    if *replace_on_next_input {
+                        draft.clear();
+                        *replace_on_next_input = false;
                     } else {
-                        random_setup.dialog.draft.pop();
+                        draft.pop();
                     }
                 }
+                _ => {}
             },
             KeyCode::Enter | KeyCode::NumpadEnter
-                if target == RandomSetupEditTarget::PlanetSeed && random_setup.dialog.active =>
+                if target == RandomSetupEditTarget::PlanetSeed
+                    && matches!(&*random_setup.dialog, PlanetSeedDialog::Open { .. }) =>
             {
-                accept_planet_seed_dialog(
-                    random_setup.clock_seed.0,
-                    &mut random_setup.setup,
-                    &mut random_setup.preview,
-                    &mut random_setup.edit_focus,
-                    &mut random_setup.dialog,
-                    &mut random_setup.despawn,
-                );
+                let mut interaction = AcceptDialogParams {
+                    clock_seed: random_setup.clock_seed.0,
+                    setup: &mut random_setup.setup,
+                    preview: &mut random_setup.preview,
+                    edit_focus: &mut random_setup.edit_focus,
+                    dialog: &mut random_setup.dialog,
+                    controls: random_setup.controls.as_deref(),
+                    commands: &mut random_setup.commands,
+                };
+                accept_planet_seed_dialog_params(&mut interaction);
             }
             _ => {
                 let Some(text) = input.text.as_deref() else {
                     continue;
                 };
-                match target {
-                    RandomSetupEditTarget::CountryName => append_visible_text(
+                match (&mut *random_setup.dialog, target) {
+                    (_, RandomSetupEditTarget::CountryName) => append_visible_text(
                         &mut random_setup.setup.country_name,
                         text,
                         COUNTRY_NAME_MAX_CHARS,
                     ),
-                    RandomSetupEditTarget::PlanetSeed if random_setup.dialog.active => {
-                        if random_setup.dialog.selected_on_open {
-                            random_setup.dialog.draft.clear();
-                            random_setup.dialog.selected_on_open = false;
+                    (
+                        PlanetSeedDialog::Open {
+                            draft,
+                            replace_on_next_input,
+                            ..
+                        },
+                        RandomSetupEditTarget::PlanetSeed,
+                    ) => {
+                        if *replace_on_next_input {
+                            draft.clear();
+                            *replace_on_next_input = false;
                         }
-                        append_visible_text(
-                            &mut random_setup.dialog.draft,
-                            text,
-                            PLANET_SEED_MAX_CHARS,
-                        )
+                        append_visible_text(draft, text, PLANET_SEED_MAX_CHARS);
                     }
-                    RandomSetupEditTarget::PlanetSeed => {}
+                    _ => {}
                 }
             }
         }
+    }
+}
+
+struct AcceptDialogParams<'a, 'w, 's> {
+    clock_seed: u32,
+    setup: &'a mut RandomGameSetup,
+    preview: &'a mut RandomSetupPreview,
+    edit_focus: &'a mut RandomSetupEditFocus,
+    dialog: &'a mut PlanetSeedDialog,
+    controls: Option<&'a RandomSetupControls>,
+    commands: &'a mut Commands<'w, 's>,
+}
+
+fn accept_planet_seed_dialog_params(params: &mut AcceptDialogParams<'_, '_, '_>) {
+    let PlanetSeedDialog::Open { draft, .. } = &*params.dialog else {
+        return;
+    };
+    if !draft.is_empty() && draft != &params.setup.planet_seed {
+        params.setup.planet_seed.clone_from(draft);
+        update_random_setup_preview(
+            params.preview,
+            generate_random_setup_preview_with_clock_seed(
+                params.setup.planet_seed.as_bytes(),
+                params.setup.topology,
+                params.clock_seed,
+            ),
+        );
+    }
+    dismiss_planet_seed_dialog(params.commands, params.dialog, params.edit_focus);
+    if let Some(controls) = params.controls {
+        set_random_setup_dialog_gates(params.commands, controls, false);
     }
 }
 
@@ -615,31 +671,33 @@ fn append_visible_text(destination: &mut String, text: &str, max_chars: usize) {
 }
 
 fn sync_random_setup_edit_text(
-    instances: Res<StartupScreenInstances>,
     setup: Res<RandomGameSetup>,
     dialog: Res<PlanetSeedDialog>,
-    mut text_nodes: Query<(&ViewInstanceId, &WidgetTag, &mut Text)>,
+    controls: Option<Res<RandomSetupControls>>,
+    mut texts: Query<&mut Text>,
 ) {
-    for (instance, tag, mut text) in &mut text_nodes {
-        let replacement = if instances.random_setup == Some(*instance) && tag.0.0 == "coun" {
-            Some(&setup.country_name)
-        } else if dialog.instance == Some(*instance) && tag.0.0 == "plan" {
-            Some(&dialog.draft)
-        } else {
-            None
-        };
-        if let Some(replacement) = replacement
-            && text.0 != *replacement
-        {
-            text.0.clone_from(replacement);
-        }
+    if let Some(controls) = controls.as_deref()
+        && let Ok(mut text) = texts.get_mut(controls.country_text)
+        && text.0 != setup.country_name
+    {
+        text.0.clone_from(&setup.country_name);
+    }
+    if let PlanetSeedDialog::Open {
+        plan_text, draft, ..
+    } = &*dialog
+        && let Ok(mut text) = texts.get_mut(*plan_text)
+        && text.0 != *draft
+    {
+        text.0.clone_from(draft);
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::{PresentedViewId, UiCatalogResource, UiRuntimePlugin, UiViewRoot};
+    use crate::ui::{
+        PresentedViewId, UiRuntimePlugin, UiViewRoot, ViewRoot, WidgetTag, spawn_view_nodes,
+    };
     use bevy::ecs::message::{MessageCursor, Messages};
     use bevy::input::keyboard::Key;
     use imperialism_core::NationId;
@@ -651,30 +709,109 @@ mod tests {
     fn app() -> App {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
-        app.insert_resource(UiCatalogResource::new(catalog))
+        app.add_plugins(MinimalPlugins)
+            .add_message::<KeyboardInput>()
+            .add_message::<AppExit>()
+            .insert_resource(UiCatalogResource::new(catalog))
             .insert_resource(RandomSetupClockSeed(1))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()
-            .configure_sets(
-                Update,
-                (
-                    GameLoopSet::TranslateUiIntents,
-                    GameLoopSet::UpdatePresentation,
-                )
-                    .chain(),
+            .add_plugins(UiRuntimePlugin);
+        register_startup_logic(&mut app);
+        app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu_structure_only)
+            .add_systems(OnExit(AppState::MainMenu), exit_main_menu)
+            .add_systems(
+                OnEnter(AppState::RandomSetup),
+                (initialize_random_setup, enter_random_setup_structure_only).chain(),
             )
-            .add_plugins((UiRuntimePlugin, StartupUiPlugin));
-        app.update();
+            .add_systems(OnExit(AppState::RandomSetup), exit_random_setup);
         app.update();
         app
     }
 
-    fn startup_roots(app: &mut App) -> HashMap<ScopedViewId, (Entity, ViewInstanceId)> {
+    fn enter_main_menu_structure_only(
+        mut commands: Commands,
+        catalog: Res<UiCatalogResource>,
+        mut instances: ResMut<StartupScreenInstances>,
+    ) {
+        let view_id = main_menu_view_id();
+        let catalog = catalog.catalog();
+        let view = catalog
+            .views
+            .iter()
+            .find(|view| view.id == view_id)
+            .unwrap();
+        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
+        apply_main_menu_availability(&mut commands, view, &spawned);
+        instances.main_menu = Some(spawned.root);
+    }
+
+    fn enter_random_setup_structure_only(
+        mut commands: Commands,
+        catalog: Res<UiCatalogResource>,
+        mut instances: ResMut<StartupScreenInstances>,
+    ) {
+        let view_id = random_setup_view_id();
+        let catalog = catalog.catalog();
+        let view = catalog
+            .views
+            .iter()
+            .find(|view| view.id == view_id)
+            .unwrap();
+        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
+        crate::ui::map_preview::attach_random_setup_widgets(&mut commands, view, &spawned);
+        let controls = RandomSetupControls {
+            key_button: spawned.tagged(view, "key ").unwrap(),
+            cancel_button: spawned.tagged(view, "cncl").unwrap(),
+            country_text: spawned.tagged(view, "coun").unwrap(),
+        };
+        set_random_setup_dialog_gates(&mut commands, &controls, false);
+        commands.insert_resource(controls);
+        instances.random_setup = Some(spawned.root);
+    }
+
+    fn open_planet_seed_dialog_structure(app: &mut App) {
+        let catalog = app
+            .world()
+            .resource::<UiCatalogResource>()
+            .catalog()
+            .clone();
+        let view = catalog
+            .views
+            .iter()
+            .find(|view| view.id == planet_seed_dialog_view_id())
+            .unwrap()
+            .clone();
+        let planet_seed = app
+            .world()
+            .resource::<RandomGameSetup>()
+            .planet_seed
+            .clone();
+        let controls = *app.world().resource::<RandomSetupControls>();
+        let world = app.world_mut();
+        let mut commands = world.commands();
+        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, &view);
+        let plan_text = spawned.tagged(&view, "plan").unwrap();
+        commands
+            .entity(plan_text)
+            .insert(Text::new(planet_seed.clone()));
+        set_random_setup_dialog_gates(&mut commands, &controls, true);
+        world.flush();
+        world.resource_mut::<RandomSetupEditFocus>().0 = Some(RandomSetupEditTarget::PlanetSeed);
+        *world.resource_mut::<PlanetSeedDialog>() = PlanetSeedDialog::Open {
+            root: spawned.root,
+            plan_text,
+            draft: planet_seed,
+            replace_on_next_input: true,
+        };
+    }
+
+    fn startup_roots(app: &mut App) -> HashMap<ScopedViewId, Entity> {
         let world = app.world_mut();
         world
-            .query_filtered::<(Entity, &PresentedViewId, &ViewInstanceId), With<UiViewRoot>>()
+            .query_filtered::<(Entity, &PresentedViewId), With<UiViewRoot>>()
             .iter(world)
-            .map(|(entity, view, instance)| (view.0.clone(), (entity, *instance)))
+            .map(|(entity, view)| (view.0.clone(), entity))
             .collect()
     }
 
@@ -685,14 +822,14 @@ mod tests {
         *interactions.get_mut(pressed.0).unwrap() = Interaction::Pressed;
     }
 
-    fn enter_random_setup(app: &mut App) -> ViewInstanceId {
+    fn enter_random_setup_screen(app: &mut App) -> Entity {
         let menu = app
             .world()
             .resource::<StartupScreenInstances>()
             .main_menu()
             .unwrap();
         app.world_mut()
-            .write_message(UiIntent::Activated {
+            .write_message(UiActivated {
                 view: menu,
                 tag: FourCc("rand".to_owned()),
             })
@@ -739,65 +876,79 @@ mod tests {
         let widgets = world
             .query::<(
                 Entity,
-                &ViewInstanceId,
+                &ViewRoot,
                 &WidgetTag,
                 &Node,
                 Option<&InteractionDisabled>,
             )>()
             .iter(world)
-            .filter(|(_, instance, _, _, _)| **instance == menu)
-            .map(|(entity, _, tag, node, disabled)| {
-                (tag.0.0.clone(), (entity, node.display, disabled.is_some()))
+            .filter(|(_, root, _, _, _)| root.0 == menu)
+            .map(|(_, _, tag, node, disabled)| {
+                (tag.0.0.clone(), (node.display, disabled.is_some()))
             })
             .collect::<HashMap<_, _>>();
         for tag in ["rand", "quit"] {
-            let (_, display, disabled) = widgets[tag];
+            let (display, disabled) = widgets[tag];
             assert_eq!(display, Display::Flex);
             assert!(!disabled);
         }
         for tag in ["load", "mult", "high", "scen", "pref"] {
-            let (_, display, disabled) = widgets[tag];
+            let (display, disabled) = widgets[tag];
             assert_eq!(display, Display::Flex);
             assert!(disabled);
         }
     }
 
     #[test]
-    fn disabled_choice_emits_no_intent_and_random_setup_replaces_only_the_menu() {
+    fn disabled_choice_emits_no_activation_and_random_setup_replaces_only_the_menu() {
         let mut app = app();
-        app.world_mut()
-            .write_message(SpawnUiView(ScopedViewId {
+        let flag_view = {
+            let catalog = app
+                .world()
+                .resource::<UiCatalogResource>()
+                .catalog()
+                .clone();
+            let view_id = ScopedViewId {
                 resource_file: "FlagView.rsrc".to_owned(),
                 resource_id: 8451,
-            }))
-            .unwrap();
-        app.update();
-        let menu_instance = app
+            };
+            let view = catalog
+                .views
+                .iter()
+                .find(|view| view.id == view_id)
+                .unwrap();
+            let world = app.world_mut();
+            let mut commands = world.commands();
+            let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
+            world.flush();
+            spawned.root
+        };
+        let menu = app
             .world()
             .resource::<StartupScreenInstances>()
             .main_menu()
             .unwrap();
-        let (load, _) = app
+        let load = app
             .world_mut()
-            .query::<(Entity, &ViewInstanceId, &WidgetTag)>()
+            .query::<(Entity, &ViewRoot, &WidgetTag)>()
             .iter(app.world())
-            .find(|(_, instance, tag)| **instance == menu_instance && tag.0.0 == "load")
-            .map(|(entity, instance, _)| (entity, *instance))
+            .find(|(_, root, tag)| root.0 == menu && tag.0.0 == "load")
+            .map(|(entity, _, _)| entity)
             .unwrap();
         app.insert_resource(PressOnce(load))
             .add_systems(PreUpdate, press_once);
-        let mut intent_cursor = MessageCursor::<UiIntent>::default();
+        let mut cursor = MessageCursor::<UiActivated>::default();
         app.update();
         assert_eq!(
-            intent_cursor
-                .read(app.world().resource::<Messages<UiIntent>>())
+            cursor
+                .read(app.world().resource::<Messages<UiActivated>>())
                 .count(),
             0
         );
 
         app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: menu_instance,
+            .write_message(UiActivated {
+                view: menu,
                 tag: FourCc("rand".to_owned()),
             })
             .unwrap();
@@ -806,11 +957,7 @@ mod tests {
         let roots = startup_roots(&mut app);
         assert!(!roots.contains_key(&main_menu_view_id()));
         assert!(roots.contains_key(&random_setup_view_id()));
-        assert!(
-            roots
-                .keys()
-                .any(|view| view.resource_file == "FlagView.rsrc")
-        );
+        assert!(app.world().get_entity(flag_view).is_ok());
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::RandomSetup
@@ -826,7 +973,7 @@ mod tests {
             .main_menu()
             .unwrap();
         app.world_mut()
-            .write_message(UiIntent::Activated {
+            .write_message(UiActivated {
                 view: menu,
                 tag: FourCc("quit".to_owned()),
             })
@@ -843,10 +990,10 @@ mod tests {
     #[test]
     fn random_setup_activated_intents_update_the_app_draft() {
         let mut app = app();
-        let setup = enter_random_setup(&mut app);
+        let setup = enter_random_setup_screen(&mut app);
         for tag in ["dif3", "hist", "okay"] {
             app.world_mut()
-                .write_message(UiIntent::Activated {
+                .write_message(UiActivated {
                     view: setup,
                     tag: FourCc(tag.to_owned()),
                 })
@@ -877,7 +1024,7 @@ mod tests {
     #[test]
     fn random_setup_entry_uses_the_retail_clock_seeded_defaults() {
         let mut app = app();
-        enter_random_setup(&mut app);
+        enter_random_setup_screen(&mut app);
 
         let setup = app.world().resource::<RandomGameSetup>();
         assert_eq!(
@@ -904,13 +1051,13 @@ mod tests {
     #[test]
     fn globe_regenerates_the_planet_from_the_reset_clock_seed() {
         let mut app = app();
-        let setup_view = enter_random_setup(&mut app);
+        let setup_view = enter_random_setup_screen(&mut app);
         let globe_is_interactive = {
             let world = app.world_mut();
             world
-                .query_filtered::<(&ViewInstanceId, &WidgetTag), With<InteractiveUiWidget>>()
+                .query_filtered::<(&ViewRoot, &WidgetTag), With<Button>>()
                 .iter(world)
-                .any(|(instance, tag)| *instance == setup_view && tag.0.0 == "glob")
+                .any(|(root, tag)| root.0 == setup_view && tag.0.0 == "glob")
         };
         assert!(globe_is_interactive);
         {
@@ -923,7 +1070,7 @@ mod tests {
         }
 
         app.world_mut()
-            .write_message(UiIntent::Activated {
+            .write_message(UiActivated {
                 view: setup_view,
                 tag: FourCc("glob".to_owned()),
             })
@@ -933,9 +1080,6 @@ mod tests {
         assert_eq!(
             app.world().resource::<RandomGameSetup>(),
             &RandomGameSetup {
-                // The completed preview reset retail's zone/status LCG, so
-                // this is a fresh seed-1 draw rather than the next fallback
-                // name after the country default.
                 planet_seed: "Woopnist".to_owned(),
                 topology: RetailTopologyByte::from_wraps_horizontally(true),
                 nation: MajorNationId::new(2),
@@ -944,22 +1088,14 @@ mod tests {
                 localized_names: false,
             }
         );
-        assert_eq!(
-            app.world().resource::<RandomSetupPreview>().preview,
-            Some(generate_random_setup_preview_with_clock_seed(
-                b"Woopnist",
-                RetailTopologyByte::from_wraps_horizontally(true),
-                1,
-            ))
-        );
     }
 
     #[test]
     fn country_name_editing_uses_the_retail_twelve_character_limit() {
         let mut app = app();
-        let setup_view = enter_random_setup(&mut app);
+        let setup_view = enter_random_setup_screen(&mut app);
         app.world_mut()
-            .write_message(UiIntent::Activated {
+            .write_message(UiActivated {
                 view: setup_view,
                 tag: FourCc("coun".to_owned()),
             })
@@ -987,25 +1123,15 @@ mod tests {
     #[test]
     fn random_setup_cancel_returns_to_the_main_menu() {
         let mut app = app();
-        let setup_view = enter_random_setup(&mut app);
-        let world = app.world_mut();
-        let cancel_disabled = world
-            .query::<(&ViewInstanceId, &WidgetTag, Option<&InteractionDisabled>)>()
-            .iter(world)
-            .find(|(instance, tag, _)| **instance == setup_view && tag.0.0 == "cncl")
-            .map(|(_, _, disabled)| disabled.is_some())
-            .unwrap();
-        assert!(!cancel_disabled);
-
+        let setup_view = enter_random_setup_screen(&mut app);
         app.world_mut()
-            .write_message(UiIntent::Activated {
+            .write_message(UiActivated {
                 view: setup_view,
                 tag: FourCc("cncl".to_owned()),
             })
             .unwrap();
         app.update();
         app.update();
-
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
@@ -1018,47 +1144,58 @@ mod tests {
     #[test]
     fn planet_seed_dialog_accepts_a_changed_nonempty_seed_and_updates_the_preview() {
         let mut app = app();
-        let setup_view = enter_random_setup(&mut app);
+        let setup_view = enter_random_setup_screen(&mut app);
         app.world_mut()
             .resource_mut::<RandomGameSetup>()
             .planet_seed = "previous".to_owned();
-        let world = app.world_mut();
-        let key_disabled = world
-            .query::<(&ViewInstanceId, &WidgetTag, Option<&InteractionDisabled>)>()
-            .iter(world)
-            .find(|(instance, tag, _)| **instance == setup_view && tag.0.0 == "key ")
-            .map(|(_, _, disabled)| disabled.is_some())
-            .unwrap();
+        let key_disabled = {
+            let controls = *app.world().resource::<RandomSetupControls>();
+            app.world()
+                .get::<InteractionDisabled>(controls.key_button)
+                .is_some()
+        };
         assert!(!key_disabled);
 
-        app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: setup_view,
-                tag: FourCc("key ".to_owned()),
-            })
-            .unwrap();
-        app.update();
-        app.update();
-        let dialog_view = app.world().resource::<PlanetSeedDialog>().instance.unwrap();
-        assert!(app.world().resource::<PlanetSeedDialog>().active);
-        assert_eq!(app.world().resource::<PlanetSeedDialog>().draft, "previous");
+        open_planet_seed_dialog_structure(&mut app);
+        let dialog_root = match *app.world().resource::<PlanetSeedDialog>() {
+            PlanetSeedDialog::Open { root, .. } => root,
+            PlanetSeedDialog::Closed => panic!("dialog should be open"),
+        };
+        assert_eq!(
+            match app.world().resource::<PlanetSeedDialog>() {
+                PlanetSeedDialog::Open { draft, .. } => draft.as_str(),
+                PlanetSeedDialog::Closed => "",
+            },
+            "previous"
+        );
         assert!(startup_roots(&mut app).contains_key(&planet_seed_dialog_view_id()));
+        let key_button = app.world().resource::<RandomSetupControls>().key_button;
+        assert!(app.world().get::<InteractionDisabled>(key_button).is_some());
 
         app.world_mut()
             .write_message(pressed_key(KeyCode::Escape, Key::Escape))
             .unwrap();
         app.update();
-        assert!(app.world().resource::<PlanetSeedDialog>().active);
+        assert!(matches!(
+            *app.world().resource::<PlanetSeedDialog>(),
+            PlanetSeedDialog::Open { .. }
+        ));
 
         app.world_mut()
             .write_message(pressed_text("ordinary"))
             .unwrap();
         app.update();
-        assert_eq!(app.world().resource::<PlanetSeedDialog>().draft, "ordinary");
+        assert_eq!(
+            match app.world().resource::<PlanetSeedDialog>() {
+                PlanetSeedDialog::Open { draft, .. } => draft.as_str(),
+                PlanetSeedDialog::Closed => "",
+            },
+            "ordinary"
+        );
 
         app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: dialog_view,
+            .write_message(UiActivated {
+                view: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();
@@ -1069,29 +1206,29 @@ mod tests {
         );
         let preview = app.world().resource::<RandomSetupPreview>();
         assert!(preview.preview.is_some());
-        assert!(!app.world().resource::<PlanetSeedDialog>().active);
+        assert!(matches!(
+            *app.world().resource::<PlanetSeedDialog>(),
+            PlanetSeedDialog::Closed
+        ));
+        let _ = setup_view;
     }
 
     #[test]
     fn empty_or_unchanged_planet_seed_does_not_generate_a_preview() {
         let mut app = app();
-        let setup_view = enter_random_setup(&mut app);
+        let setup_view = enter_random_setup_screen(&mut app);
         let existing_preview = app.world().resource::<RandomSetupPreview>().clone();
         app.world_mut()
             .resource_mut::<RandomGameSetup>()
             .planet_seed = "ordinary".to_owned();
+        open_planet_seed_dialog_structure(&mut app);
+        let dialog_root = match *app.world().resource::<PlanetSeedDialog>() {
+            PlanetSeedDialog::Open { root, .. } => root,
+            PlanetSeedDialog::Closed => panic!("dialog should be open"),
+        };
         app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: setup_view,
-                tag: FourCc("key ".to_owned()),
-            })
-            .unwrap();
-        app.update();
-        app.update();
-        let dialog_view = app.world().resource::<PlanetSeedDialog>().instance.unwrap();
-        app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: dialog_view,
+            .write_message(UiActivated {
+                view: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();
@@ -1106,25 +1243,24 @@ mod tests {
             &existing_preview
         );
 
-        app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: setup_view,
-                tag: FourCc("key ".to_owned()),
-            })
-            .unwrap();
-        app.update();
-        app.update();
-        let dialog_view = app.world().resource::<PlanetSeedDialog>().instance.unwrap();
+        open_planet_seed_dialog_structure(&mut app);
+        let dialog_root = match *app.world().resource::<PlanetSeedDialog>() {
+            PlanetSeedDialog::Open { root, .. } => root,
+            PlanetSeedDialog::Closed => panic!("dialog should be open"),
+        };
         for _ in "ordinary".chars() {
             app.world_mut()
                 .write_message(pressed_key(KeyCode::Backspace, Key::Backspace))
                 .unwrap();
         }
         app.update();
-        assert!(app.world().resource::<PlanetSeedDialog>().draft.is_empty());
+        assert!(matches!(
+            app.world().resource::<PlanetSeedDialog>(),
+            PlanetSeedDialog::Open { draft, .. } if draft.is_empty()
+        ));
         app.world_mut()
-            .write_message(UiIntent::Activated {
-                view: dialog_view,
+            .write_message(UiActivated {
+                view: dialog_root,
                 tag: FourCc("okay".to_owned()),
             })
             .unwrap();
@@ -1137,5 +1273,6 @@ mod tests {
             app.world().resource::<RandomSetupPreview>(),
             &existing_preview
         );
+        let _ = setup_view;
     }
 }

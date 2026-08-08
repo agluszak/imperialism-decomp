@@ -1,4 +1,5 @@
 use crate::RetailFontFace;
+use crate::color::DibPalette;
 use crate::retail_resources::{
     bitmap_palette_rgb, bitmap_resource_to_bmp, decode_string_table_block,
 };
@@ -89,7 +90,7 @@ impl RetailAssets {
     ///
     /// The native UI builds its indexed preview surfaces with this named bitmap
     /// from the localized picture library before it draws the random-map preview.
-    pub fn default_dib_palette(&self) -> Result<[[u8; 3]; 256], RetailAssetError> {
+    pub fn default_dib_palette(&self) -> Result<DibPalette, RetailAssetError> {
         let archive = &self.pictures[0];
         let dib = archive
             .find(
@@ -466,7 +467,7 @@ mod tests {
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
         assert_eq!(
             assets.default_dib_palette().unwrap()[0x16],
-            [0x57, 0x8b, 0xa6]
+            crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
 
         fs::remove_dir_all(root).unwrap();
@@ -532,8 +533,8 @@ mod tests {
         assert_eq!(assets.string(20_874), Some("Introductory"));
         assert!(assets.picture(4500, 0).unwrap().starts_with(b"BM"));
         let palette = assets.default_dib_palette().unwrap();
-        assert_eq!(palette[0x13], [0xff, 0xff, 0xff]);
-        assert_eq!(palette[0x16], [0x57, 0x8b, 0xa6]);
+        assert_eq!(palette[0x13], crate::Rgb::new(0xff, 0xff, 0xff));
+        assert_eq!(palette[0x16], crate::Rgb::new(0x57, 0x8b, 0xa6));
         assert!(assets.wave_bytes(7000).unwrap().starts_with(b"RIFF"));
     }
 

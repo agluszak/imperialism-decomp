@@ -15,12 +15,6 @@ pub(crate) enum AppState {
     RandomSetup,
 }
 
-#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq, SystemSet)]
-pub(crate) enum GameLoopSet {
-    TranslateUiIntents,
-    UpdatePresentation,
-}
-
 #[derive(Resource)]
 pub(crate) struct RetailAssetsResource(RetailAssets);
 
@@ -55,14 +49,6 @@ pub fn run(retail_assets: RetailAssets) {
     app.insert_resource(ui::UiCatalogResource::new(ui_catalog))
         .insert_resource(RetailAssetsResource::new(retail_assets))
         .init_state::<AppState>()
-        .configure_sets(
-            Update,
-            (
-                GameLoopSet::TranslateUiIntents,
-                GameLoopSet::UpdatePresentation,
-            )
-                .chain(),
-        )
         .add_plugins((
             ui::UiRuntimePlugin,
             ui::StartupUiPlugin,
