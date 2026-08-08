@@ -1,6 +1,6 @@
 use crate::{
-    CityState, MajorNationState, PendingActionKind, PopulationError, ProductionSlot, ResourceKind,
-    ResourceTable, SkillBand,
+    CityState, MajorNationState, PendingActionKind, ProductionSlot, ResourceKind, ResourceTable,
+    SkillBand,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -618,10 +618,10 @@ impl TrainingProductionOrder {
         owner: &MajorNationState,
         treasury: &mut i32,
         quantity: i16,
-    ) -> Result<bool, ProductionError> {
+    ) -> bool {
         let delta = quantity - self.quantity;
         if quantity > self.max_order(city, owner, *treasury) || quantity < 0 {
-            return Ok(false);
+            return false;
         }
         self.quantity = quantity;
 
@@ -632,8 +632,8 @@ impl TrainingProductionOrder {
         city.add_to_stock_and_verify(ResourceKind::Paper, -paper_change);
         *treasury -= cash_change;
         city.population
-            .make_unavailable(self.level.input_band(), delta)?;
-        Ok(true)
+            .make_unavailable(self.level.input_band(), delta);
+        true
     }
 
     pub fn produce(&mut self, city: &mut CityState, owner: &mut MajorNationState) {
@@ -749,7 +749,7 @@ impl UnitProductionOrder {
             apply_resource_cost(city, secondary, delta);
         }
         if let Some(workforce) = self.profile.workforce {
-            city.population.remove_population(workforce, delta)?;
+            city.population.remove_population(workforce, delta);
         }
         let cash_change = i32::from(self.profile.cash_per_unit) * i32::from(delta);
         *treasury -= cash_change;
@@ -917,8 +917,6 @@ impl ItemProductionOrder {
 pub enum ProductionError {
     #[error("unit resource cost for {resource:?} is zero")]
     ZeroUnitResourceCost { resource: ResourceKind },
-    #[error(transparent)]
-    Population(#[from] PopulationError),
 }
 
 fn retail_region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
@@ -1601,21 +1599,13 @@ mod tests {
         let mut production = TrainingProductionOrder::new(TrainingLevel::Medium);
         state.stock_by_type[ResourceKind::Paper] = 10;
 
-        assert!(
-            production
-                .set_quantity(&mut state, &owner, &mut treasury, 2)
-                .unwrap()
-        );
+        assert!(production.set_quantity(&mut state, &owner, &mut treasury, 2));
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 8);
         assert_eq!(treasury, 800);
         assert_eq!(state.population.production_labor.low, 2);
         assert_eq!(state.population.strength, 8);
 
-        assert!(
-            production
-                .set_quantity(&mut state, &owner, &mut treasury, 1)
-                .unwrap()
-        );
+        assert!(production.set_quantity(&mut state, &owner, &mut treasury, 1));
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 9);
         assert_eq!(treasury, 900);
         assert_eq!(state.population.production_labor.low, 3);
@@ -1630,11 +1620,7 @@ mod tests {
         let mut production = TrainingProductionOrder::new(TrainingLevel::High);
         state.stock_by_type[ResourceKind::Paper] = 6;
 
-        assert!(
-            production
-                .set_quantity(&mut state, &owner, &mut treasury, 2)
-                .unwrap()
-        );
+        assert!(production.set_quantity(&mut state, &owner, &mut treasury, 2));
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 2);
         assert_eq!(treasury, 1_000);
         assert_eq!(state.population.production_labor.medium, 0);
