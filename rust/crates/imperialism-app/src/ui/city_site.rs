@@ -1,8 +1,6 @@
 use crate::AppState;
 use crate::RetailAssetsResource;
-use crate::ui::catalog::{
-    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
-};
+use crate::ui::catalog::{SpawnedView, UiCatalogResource, spawn_view};
 use crate::ui::random_setup::GameSession;
 use crate::ui::random_setup_map::{
     compose_owner_preview_indices, preview_image_from_indices, tile_at_preview_position,
@@ -77,31 +75,35 @@ impl Plugin for CitySitePlugin {
     }
 }
 
-fn enter_city_site(
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
-) {
-    let Some(view) = find_view(catalog.catalog(), &city_site_view_id()) else {
+fn enter_city_site(world: &mut World) {
+    let view_id = city_site_view_id();
+    let Some(view) = world
+        .resource::<UiCatalogResource>()
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == view_id)
+        .cloned()
+    else {
         return;
     };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
-    bind_city_site_controls(&mut commands, view, &spawned);
-    commands
-        .entity(spawned.root)
+    let spawned = spawn_view(world, &view);
+    bind_city_site_controls(world, &view, &spawned);
+    world
+        .entity_mut(spawned.root)
         .insert(DespawnOnExit(AppState::CitySite));
 }
 
-fn bind_city_site_controls(commands: &mut Commands, view: &CatalogView, spawned: &SpawnedView) {
+fn bind_city_site_controls(world: &mut World, view: &CatalogView, spawned: &SpawnedView) {
     if let Some(entity) = spawned.tagged(view, "canc") {
-        commands
-            .entity(entity)
+        world
+            .entity_mut(entity)
             .insert((UiButton, CitySiteAction::Cancel))
             .remove::<InteractionDisabled>();
     }
     // Retail opens the New City dialog from a validated map click, not from `send`.
     if let Some(entity) = spawned.tagged(view, MAP_TAG) {
-        commands.entity(entity).insert((
+        world.entity_mut(entity).insert((
             CitySiteMap {
                 palette_indices: Vec::new(),
             },
@@ -178,8 +180,6 @@ fn on_city_site_map_click(
     session: Res<GameSession>,
     maps: Query<(&RelativeCursorPosition, &CitySiteMap)>,
     mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
 ) {
     if !dialog_open.is_empty() {
         return;
@@ -200,30 +200,36 @@ fn on_city_site_map_click(
         return;
     }
     commands.insert_resource(PendingCapitalSite { tile });
-    open_new_city_dialog(&mut commands, &catalog, &mut pictures);
+    commands.queue(|world: &mut World| {
+        open_new_city_dialog(world);
+    });
 }
 
-fn open_new_city_dialog(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    pictures: &mut UiPictureResources,
-) {
-    let Some(view) = find_view(catalog.catalog(), &new_city_dialog_view_id()) else {
+fn open_new_city_dialog(world: &mut World) {
+    let view_id = new_city_dialog_view_id();
+    let Some(view) = world
+        .resource::<UiCatalogResource>()
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == view_id)
+        .cloned()
+    else {
         return;
     };
-    let spawned = spawn_view(commands, catalog.catalog(), view, pictures);
-    commands
-        .entity(spawned.root)
+    let spawned = spawn_view(world, &view);
+    world
+        .entity_mut(spawned.root)
         .insert((NewCityDialogRoot, ZIndex(10), Pickable::default()));
-    if let Some(okay) = spawned.tagged(view, "okay") {
-        commands
-            .entity(okay)
+    if let Some(okay) = spawned.tagged(&view, "okay") {
+        world
+            .entity_mut(okay)
             .insert((UiButton, NewCityAction::Accept))
             .remove::<InteractionDisabled>();
     }
-    if let Some(cancel) = spawned.tagged(view, "cncl") {
-        commands
-            .entity(cancel)
+    if let Some(cancel) = spawned.tagged(&view, "cncl") {
+        world
+            .entity_mut(cancel)
             .insert((UiButton, NewCityAction::Cancel))
             .remove::<InteractionDisabled>();
     }
