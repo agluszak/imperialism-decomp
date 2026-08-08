@@ -28,7 +28,7 @@ impl CityState {
 
     /// Mirrors `TCity::DirectTransport`, including surplus and remaining-capacity
     /// limits and the target/reservation update.
-    pub fn direct_transport(
+    pub(crate) fn direct_transport(
         &mut self,
         nation: &mut MajorNationState,
         resource: ResourceKind,

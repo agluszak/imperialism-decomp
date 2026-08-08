@@ -113,6 +113,18 @@ impl GameState {
         Ok(())
     }
 
+    /// Moves one resource into city stock, limited by both the resource need
+    /// and unused transport capacity.
+    pub fn direct_transport(
+        &mut self,
+        nation: MajorNationId,
+        resource: ResourceKind,
+        requested: i16,
+    ) -> Result<i16, RuleError> {
+        let (_, major, city) = self.major_nation_city_parts_mut(nation)?;
+        Ok(city.direct_transport(major, resource, requested))
+    }
+
     /// Allocates the next transport capacity across the retail city-policy
     /// priority list.
     pub fn allocate_transport_needs(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
