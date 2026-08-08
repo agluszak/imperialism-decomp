@@ -144,6 +144,26 @@ impl GameState {
         Ok(())
     }
 
+    /// Restores the remembered trade bids, constrained by current city stock,
+    /// and clears the preceding aid allocations.
+    pub fn recall_trade_bids(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        let stock_by_type = self.cities[nation]
+            .as_ref()
+            .map(|city| city.stock_by_type)
+            .unwrap_or_default();
+        let (_, major) = self.major_nation_parts_mut(nation)?;
+
+        for resource in all_resources() {
+            let bid = major.remembered_trade_offers_by_resource[resource];
+            if bid == -1 {
+                major.unfilled_trade_offer_count += 1;
+            }
+            major.item_potentials[resource] = bid.min(stock_by_type[resource]);
+        }
+        major.aid_allocation_matrix.clear();
+        Ok(())
+    }
+
     /// Sets one current diplomatic grant, refunding the replaced amount before
     /// charging the replacement.
     pub fn set_diplomacy_grant(
@@ -242,9 +262,9 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, Difficulty, DiplomacyGrantFlags, DiplomacyPolicy, IndustryActionSlot, LaborPool,
-        NationData, NationState, PendingWorkState, PopulationState, RngState, TurnState,
-        WorldState,
+        AID_ALLOCATION_COUNT, AidAllocationTable, CityState, Difficulty, DiplomacyGrantFlags,
+        DiplomacyPolicy, IndustryActionSlot, LaborPool, NationData, NationState, PendingWorkState,
+        PopulationState, RngState, TurnState, WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -638,6 +658,46 @@ mod tests {
             .unwrap();
         assert_eq!(major.capacities[NationCapacity::TradeOffer], 28);
         assert_eq!(major.capacities[NationCapacity::AvailableMerchant], 28);
+    }
+
+    #[test]
+    fn recalls_bids_clamps_them_to_stock_and_clears_aid() {
+        let nation = MajorNationId::new(6);
+        let mut game = state(true);
+        let city = game.cities[nation].as_mut().unwrap();
+        city.stock_by_type[ResourceKind::Cotton] = 3;
+        city.stock_by_type[ResourceKind::Timber] = 5;
+
+        let major = game.nations[nation.nation()]
+            .as_mut()
+            .unwrap()
+            .major_mut()
+            .unwrap();
+        major.unfilled_trade_offer_count = 4;
+        major.item_potentials[ResourceKind::Cotton] = 99;
+        major.remembered_trade_offers_by_resource[ResourceKind::Cotton] = 7;
+        major.remembered_trade_offers_by_resource[ResourceKind::Wool] = -1;
+        major.remembered_trade_offers_by_resource[ResourceKind::Timber] = 2;
+        major.aid_allocation_matrix = AidAllocationTable::from_array([8; AID_ALLOCATION_COUNT]);
+
+        game.recall_trade_bids(nation).unwrap();
+
+        let major = game.nations[nation.nation()]
+            .as_ref()
+            .unwrap()
+            .major()
+            .unwrap();
+        assert_eq!(major.unfilled_trade_offer_count, 5);
+        assert_eq!(major.item_potentials[ResourceKind::Cotton], 3);
+        assert_eq!(major.item_potentials[ResourceKind::Wool], -1);
+        assert_eq!(major.item_potentials[ResourceKind::Timber], 2);
+        assert!(
+            major
+                .aid_allocation_matrix
+                .as_slice()
+                .iter()
+                .all(|value| *value == 0)
+        );
     }
 
     #[test]
