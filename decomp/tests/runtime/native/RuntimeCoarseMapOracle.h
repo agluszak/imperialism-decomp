@@ -18,6 +18,7 @@ void RuntimeCoarseMapOracleFinishAttempt(const TMapMaker* mapMaker, int errorChe
                                          int hasContinuousOceanColumn, int frontierMaskComplete,
                                          int accepted, unsigned int mapLcg);
 void RuntimeCoarseMapOracleCaptureExpansion(const TMapMaker* mapMaker, unsigned int mapLcg);
+// Serializes the completed coarse trace once; caller does not own the value.
 const JSON_Value* RuntimeCoarseMapOracleValue();
 
 void RuntimeTerrainMapOracleReset(unsigned int initialMapLcg, int topologyByte, int desertQuota,
@@ -32,6 +33,7 @@ void RuntimeTerrainMapOracleCaptureKeywordStage(const TMapMaker* mapMaker, unsig
 void RuntimeTerrainMapOracleResetSeedCandidates();
 void RuntimeTerrainMapOracleRecordSeedCandidate(int terrainClass, int tileIndex);
 void RuntimeTerrainMapOracleFinishAttempt(int accepted, unsigned int mapLcg);
+// Serializes the completed terrain trace once; caller does not own the value.
 const JSON_Value* RuntimeTerrainMapOracleValue();
 int RuntimeTerrainMapOracleTopologyByte();
 

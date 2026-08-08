@@ -113,3 +113,20 @@ JSON_Value* JsonNullValue() {
   }
   return value;
 }
+
+void JsonFreeValue(JSON_Value* value) {
+  if (value != 0) {
+    json_value_free(value);
+  }
+}
+
+JSON_Value* JsonDeepCopy(const JSON_Value* value) {
+  if (value == 0) {
+    return 0;
+  }
+  JSON_Value* copy = json_value_deep_copy(value);
+  if (copy == 0) {
+    FailJson("json_value_deep_copy");
+  }
+  return copy;
+}

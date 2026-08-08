@@ -40,5 +40,7 @@ private:
 };
 
 JSON_Value* JsonNullValue();
+void JsonFreeValue(JSON_Value* value);
+JSON_Value* JsonDeepCopy(const JSON_Value* value);
 
 #endif
