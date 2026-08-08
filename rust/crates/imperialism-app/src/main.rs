@@ -1,23 +1,31 @@
 #![forbid(unsafe_code)]
 
 use clap::Parser;
-use imperialism_app::{MainMenuConfig, prepare_main_menu, run_main_menu};
-use std::process::ExitCode;
+use imperialism_formats::RetailAssets;
+use std::path::PathBuf;
 
-fn main() -> ExitCode {
-    let config = MainMenuConfig::parse();
+#[derive(Debug, Parser)]
+struct Args {
+    #[arg(long)]
+    retail_dir: PathBuf,
+}
 
-    match prepare_main_menu(&config) {
-        Ok(prepared) => match run_main_menu(prepared) {
-            Ok(()) => ExitCode::SUCCESS,
-            Err(error) => {
-                eprintln!("could not construct main menu: {error}");
-                ExitCode::FAILURE
-            }
-        },
-        Err(error) => {
-            eprintln!("could not prepare main menu: {error}");
-            ExitCode::FAILURE
-        }
+fn main() -> anyhow::Result<()> {
+    let args = Args::parse();
+    let assets = RetailAssets::open(args.retail_dir)?;
+    imperialism_app::run(assets);
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parser_requires_an_explicit_retail_directory() {
+        let args = Args::try_parse_from(["imperialism-app", "--retail-dir", "gog"]).unwrap();
+        assert_eq!(args.retail_dir, PathBuf::from("gog"));
+        assert!(Args::try_parse_from(["imperialism-app"]).is_err());
+        assert!(Args::try_parse_from(["imperialism-app", "--cache-dir", "cache"]).is_err());
     }
 }

@@ -30,7 +30,7 @@ from tools.runtime.models import (
 )
 from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.oracles.ui import evaluate_ui_oracle
-from tools.runtime.protocol import read_json_file, validate_result
+from tools.runtime.protocol import FORMAT_VERSION, read_json_file, validate_result
 from tools.runtime.session import execute_run
 
 
@@ -97,9 +97,11 @@ def record_failure(result: JsonObject, summary: str) -> None:
 def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult:
     if raw is None:
         validated: JsonObject = {
+            "format_version": FORMAT_VERSION,
             "name": config.name,
             "seed": config.seed,
             "status": "failed",
+            "captures": {},
             "failure": "missing result file",
         }
     else:
@@ -108,9 +110,11 @@ def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult
             validate_result(validated, config.name, config.seed)
         except ValueError as error:
             validated = {
+                "format_version": FORMAT_VERSION,
                 "name": config.name,
                 "seed": config.seed,
                 "status": "failed",
+                "captures": {},
                 "failure": f"invalid native result: {error}",
                 "invalid_native_result": raw,
             }
@@ -130,6 +134,10 @@ def process_attempt(
     result = native.validated
     if raw is None and host.classification is not None:
         result["failure"] = host.classification
+    elif result.get("status") == "failed" and not result.get("failure"):
+        # The native envelope deliberately carries no diagnostic fields. Keep the reporting
+        # cause in the host-side result rather than growing the oracle protocol again.
+        result["failure"] = host.classification or "native runtime reported failure"
 
     oracle_results: list[OracleResult] = []
     evaluators = (
@@ -191,23 +199,16 @@ def _diagnostic_summary(attempt: AttemptResult) -> JsonObject:
     }
 
 
-def _awaiting_summary(result: JsonObject, host) -> str | None:
+def _awaiting_summary(host: HostResult) -> str | None:
     """One line naming the wait the run ended on, or None if it was not waiting.
 
-    Prefers the result file (written at Finish) over the heartbeat, since a scenario that
-    failed while a wait was armed records the same object there. Reads as
-    `expression @ source [observations]` so a stall report is actionable without opening
-    the run bundle.
+    The heartbeat is the host's live diagnostic channel; the native result is only a
+    semantic capture envelope. Reads as `expression @ source [observations]` so a stall
+    report is actionable without opening the run bundle.
     """
-    await_state = result.get("await")
-    if isinstance(await_state, dict):
-        expression = await_state.get("expression")
-        source = await_state.get("source")
-        observations = await_state.get("observations")
-    else:
-        expression = host.awaiting
-        source = host.awaiting_source
-        observations = host.awaiting_observations
+    expression = host.awaiting
+    source = host.awaiting_source
+    observations = host.awaiting_observations
     if not expression:
         return None
     text = str(expression)
@@ -222,13 +223,12 @@ def _result_summary(result: JsonObject, attempts: list[AttemptResult]) -> JsonOb
     primary = attempts[0]
     return {
         "duration_seconds": primary.host.duration_seconds,
-        "phase": result.get("phase") or primary.host.phase,
-        "classification": primary.host.classification,
-        "action": result.get("last_action") or primary.host.action,
-        "awaiting": _awaiting_summary(result, primary.host),
+        "phase": primary.host.phase,
+        "classification": result.get("classification") or primary.host.classification,
+        "action": primary.host.action,
+        "awaiting": _awaiting_summary(primary.host),
         "artifact_path": str(primary.run_dir),
         "primary_failure": result.get("failure"),
-        "assertion_id": result.get("assertion_id"),
         "diagnostic_outcomes": [
             _diagnostic_summary(attempt) for attempt in attempts[1:]
         ],
@@ -249,7 +249,6 @@ def format_console_summary(result: JsonObject) -> str:
         f"classification={summary.get('classification') or 'none'} "
         f"action={summary.get('action') or 'none'} "
         f"awaiting={summary.get('awaiting') or 'none'} "
-        f"assertion={summary.get('assertion_id') or 'none'} "
         f"expectation={summary.get('expectation_outcome') or 'none'} "
         f"artifacts={summary.get('artifact_path') or 'none'} "
         f"failure={summary.get('primary_failure') or 'none'} diagnostics={diagnostic_text}"
@@ -279,7 +278,6 @@ class RuntimeRunner:
             "awaiting": None,
             "artifact_path": str(self.result_dir / f"{result['name']}.json"),
             "primary_failure": result.get("failure"),
-            "assertion_id": result.get("assertion_id"),
             "diagnostic_outcomes": [],
         }
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
@@ -295,8 +293,11 @@ class RuntimeRunner:
         fixture = self.fixture_dir / fixture_name
         if not fixture.is_file():
             result: JsonObject = {
+                "format_version": FORMAT_VERSION,
                 "name": request.name,
+                "seed": request.seed,
                 "status": "failed" if request.require_fixtures else "skipped",
+                "captures": {},
                 "failure": (
                     f"missing local save fixture {fixture}; place a retail-derived "
                     "save there to enable this test"
@@ -309,8 +310,11 @@ class RuntimeRunner:
             metadata = self.dependencies.fixture_validator(fixture)
         except ValueError as error:
             result = {
+                "format_version": FORMAT_VERSION,
                 "name": request.name,
+                "seed": request.seed,
                 "status": "failed",
+                "captures": {},
                 "failure": str(error),
             }
             return fixture, None, self._publish_without_attempt(result, 1)

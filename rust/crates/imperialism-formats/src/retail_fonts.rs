@@ -14,7 +14,7 @@ pub enum RetailFontFace {
 }
 
 impl RetailFontFace {
-    pub const fn relative_path(self) -> &'static str {
+    pub(crate) const fn relative_path(self) -> &'static str {
         match self {
             Self::BelweBold => "Data/WeBeBd__.ttf",
             Self::BookAntiquaRegular => "Data/Antqua.ttf",
@@ -22,14 +22,16 @@ impl RetailFontFace {
         }
     }
 
-    pub const fn expected_family_name(self) -> &'static str {
+    #[allow(dead_code)]
+    pub(crate) const fn expected_family_name(self) -> &'static str {
         match self {
             Self::BelweBold => "Belwe Bd BT",
             Self::BookAntiquaRegular | Self::BookAntiquaBold => "Book Antiqua",
         }
     }
 
-    pub const fn expected_postscript_name(self) -> &'static str {
+    #[allow(dead_code)]
+    pub(crate) const fn expected_postscript_name(self) -> &'static str {
         match self {
             Self::BelweBold => "BelweBT-Bold",
             Self::BookAntiquaRegular => "BookAntiqua",
@@ -124,7 +126,7 @@ pub fn resolve_retail_text_style(
     })
 }
 
-pub fn retail_logical_font_height(
+fn retail_logical_font_height(
     font_family: i32,
     requested_point_size: i32,
 ) -> Result<i32, RetailTextStyleError> {
@@ -150,16 +152,19 @@ pub fn retail_logical_font_height(
         .map_err(|_| RetailTextStyleError::HeightOverflow(point_size))
 }
 
+/// Retail glyph evidence retained for the unfinished exact-metrics path.
+#[allow(dead_code)]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailGlyphBounds {
+pub(crate) struct RetailGlyphBounds {
     pub x_min: i16,
     pub y_min: i16,
     pub x_max: i16,
     pub y_max: i16,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailGlyphMetrics {
+pub(crate) struct RetailGlyphMetrics {
     pub character: char,
     pub glyph_id: u16,
     pub horizontal_advance: u16,
@@ -167,8 +172,9 @@ pub struct RetailGlyphMetrics {
     pub bounds: Option<RetailGlyphBounds>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RetailFontMetrics {
+pub(crate) struct RetailFontMetrics {
     pub face: RetailFontFace,
     pub family_names: Vec<String>,
     pub full_names: Vec<String>,
@@ -181,8 +187,9 @@ pub struct RetailFontMetrics {
     pub glyphs: Vec<RetailGlyphMetrics>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum RetailFontDecodeError {
+pub(crate) enum RetailFontDecodeError {
     #[error("retail font data is not a supported TrueType/OpenType face")]
     InvalidFont,
     #[error("retail font {face:?} reports family names {actual:?}, expected {expected:?}")]
@@ -207,7 +214,8 @@ pub enum RetailFontDecodeError {
     MissingHorizontalMetrics { face: RetailFontFace, glyph_id: u16 },
 }
 
-pub fn decode_retail_font_metrics(
+#[allow(dead_code)]
+pub(crate) fn decode_retail_font_metrics(
     face_kind: RetailFontFace,
     bytes: &[u8],
     text: &str,
@@ -291,6 +299,7 @@ pub fn decode_retail_font_metrics(
     })
 }
 
+#[allow(dead_code)]
 fn font_names(face: &ttf_parser::Face<'_>, name_id: u16) -> Vec<String> {
     face.names()
         .into_iter()

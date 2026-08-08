@@ -21,13 +21,7 @@ from tools.runtime.catalog import (
 )
 from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.generate_native_registry import render_registry
-from tools.runtime.protocol import (
-    GENERATED_WORLD_BORDER_LINK_FIELDS,
-    GENERATED_WORLD_TILE_FIELDS,
-    validate_game_snapshot,
-    validate_generated_world,
-    validate_result,
-)
+from tools.runtime.protocol import validate_result
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -68,9 +62,7 @@ class RuntimeCatalogTests(unittest.TestCase):
             expected = test.expected_failure
             self.assertIsNotNone(expected)
             assert expected is not None
-            self.assertTrue(
-                expected.assertion_ids or expected.phases or expected.classifications
-            )
+            self.assertTrue(expected.phases or expected.classifications)
 
     def test_expected_failure_distinguishes_match_difference_and_xpass(self) -> None:
         spec = RuntimeTestSpec(
@@ -79,13 +71,12 @@ class RuntimeCatalogTests(unittest.TestCase):
             ("repro",),
             "internal_invariant",
             expected_failure=ExpectedFailureSpec(
-                assertion_ids=("map.zoom",), classifications=("crash",)
+                phases=("waiting_for_map",), classifications=("crash",)
             ),
         )
         matched = {
             "status": "failed",
-            "assertion_id": "map.zoom",
-            "classification": "crash",
+            "summary": {"phase": "waiting_for_map", "classification": "crash"},
         }
         apply_expected_failure(spec, matched)
         self.assertEqual(matched["status"], "expected_failure")
@@ -93,8 +84,7 @@ class RuntimeCatalogTests(unittest.TestCase):
 
         different = {
             "status": "failed",
-            "assertion_id": "map.coast",
-            "classification": "crash",
+            "summary": {"phase": "different_phase", "classification": "crash"},
         }
         apply_expected_failure(spec, different)
         self.assertEqual(different["status"], "failed")
@@ -152,9 +142,29 @@ class RuntimeCatalogTests(unittest.TestCase):
             ("map",),
         )
 
-    def test_oracle_requirements_have_declared_native_snapshot_policy(self) -> None:
+    def test_oracle_requirements_have_declared_native_capture_policy(self) -> None:
+        capture_for_oracle = {"ui": "ui_tree", "map": "map_state"}
         for test in TESTS:
-            self.assertLessEqual(set(test.required_oracles), set(test.native_snapshots))
+            required_captures = {capture_for_oracle[oracle] for oracle in test.required_oracles}
+            self.assertLessEqual(required_captures, set(test.native_snapshots))
+
+    def test_random_map_scenarios_request_narrow_semantic_captures(self) -> None:
+        snapshot = find_test("random_map_generation")
+        assert snapshot is not None
+        self.assertEqual(
+            snapshot.native_snapshots,
+            ("coarse_map_generation", "random_map_terrain"),
+        )
+        for name in (
+            "random_map_terrain_ordinary",
+            "random_map_terrain_tuned",
+            "random_map_terrain_dune",
+            "random_map_terrain_mirkwood",
+            "random_map_terrain_eclectia",
+        ):
+            test = find_test(name)
+            assert test is not None
+            self.assertEqual(test.native_snapshots, ("random_map_terrain",))
 
     def test_native_scenarios_do_not_use_legacy_configuration_objects(self) -> None:
         header = (
@@ -166,339 +176,64 @@ class RuntimeCatalogTests(unittest.TestCase):
 
 class RuntimeProtocolTests(unittest.TestCase):
     @staticmethod
-    def game_snapshot() -> dict:
+    def result(
+        name: str = "boot_managers", seed: int = 1, **overrides: object
+    ) -> dict:
         return {
-            "sections": [
-                "metadata",
-                "rng",
-                "world",
-                "nations",
-                "economy",
-                "military",
-                "missions",
-                "pending",
-            ],
-            "hashes": {
-                "metadata": "0123abcd",
-                "rng": "0123abcd",
-                "world": "0123abcd",
-                "nations": "0123abcd",
-                "economy": "0123abcd",
-                "military": "0123abcd",
-                "missions": "0123abcd",
-                "pending": "0123abcd",
-                "state": "0123abcd",
-            },
-            "metadata": {},
-            "rng": {},
-            "world": {"width": 108, "height": 60, "wrap": 0, "tiles": [[0] * 10] * 6480},
-            "nations": {
-                "records": [
-                    {
-                        "slot": slot,
-                        "kind": "major" if slot < 7 else "minor",
-                        "present": False,
-                    }
-                    for slot in range(23)
-                ]
-            },
-            "economy": {
-                "cities": [
-                    {"nation": slot, "present": False} for slot in range(7)
-                ]
-            },
-            "military": {"units": [], "ships": [], "task_forces": []},
-            "missions": {"records": []},
-            "pending": {
-                "turn_flow_status_flags": 0,
-                "nations": [
-                    {
-                        "nation": nation,
-                        "turn_events": [],
-                        "proposals": [],
-                        "turn_summary": [],
-                        "turn_start_events": [],
-                    }
-                    for nation in range(7)
-                ],
-                "war_transitions": [],
-            },
+            "format_version": 2,
+            "name": name,
+            "seed": seed,
+            "status": "passed",
+            "captures": {},
+            **overrides,
         }
 
-    @staticmethod
-    def generated_world_snapshot() -> dict:
-        province = {
-            "index": 0,
-            "owner_nation": -1,
-            "former_owner_nation": -1,
-            "development_stage": 0,
-            "fort_level": 0,
-            "city_tile": -1,
-            "last_turn_tick": 999,
-            "adjacent_region_count": 0,
-            "adjacent_region_ids": [-1] * 12,
-            "adjacent_region_anchor_tiles": [-1] * 12,
-            "linked_region_count": 0,
-            "secondary_neighbor_tile": -1,
-            "primary_neighbor_tile": -1,
-            "linked_tile_indices": [-1] * 32,
-            "resource_development_counts": [0] * 10,
-            "city_score": 0,
-            "navy_order_reachable": 0,
-            "explored_by_nation_mask": 0,
-            "resource_presence_mask": 0,
-            "region_class": -1,
-            "city_name": "",
-        }
-        provinces = []
-        for index in range(384):
-            record = dict(province)
-            record["index"] = index
-            provinces.append(record)
-        return {
-            "tile_fields": list(GENERATED_WORLD_TILE_FIELDS),
-            "border_link_fields": list(GENERATED_WORLD_BORDER_LINK_FIELDS),
-            "map": {
-                "width": 108,
-                "height": 60,
-                "scenario_tag": "-1174031836",
-                "retail_topology_byte": 0,
-                "wraps_horizontally": True,
-                "strategic_map_palette_preview_ready": 1,
-                "map_manager_ready": 1,
-                "map_data_ready": 1,
-                "tile_search_flag": 0,
-                "city_score_total": 0,
-                "pending_river_mouth_tile": -1,
-            },
-            "rng": {
-                "runtime_seed": 1,
-                "crt_rand_state": 2745024,
-                "map_generation_lcg": 1,
-                "zone_status_lcg": 1,
-            },
-            "coarse_generation": {
-                "initial_map_lcg": 1,
-                "attempt_count": 1,
-                "attempts": [
-                    {
-                        "index": 0,
-                        "draw_count": 1,
-                        "map_lcg_after_seeding": 2,
-                        "pre_validation_grid": [-1] * 405,
-                        "city_region_next_id": -1,
-                        "city_region_ids": [-1] * 23,
-                        "group_members": [-1] * 21,
-                        "post_validation_grid": [-1] * 405,
-                        "error_check_failed": 0,
-                        "has_continuous_ocean_column": 1,
-                        "frontier_mask_complete": 1,
-                        "accepted": 1,
-                        "map_lcg_after_validation": 2,
-                    }
-                ],
-                "accepted_map_lcg": 2,
-                "accepted_grid": [-1] * 405,
-                "city_region_next_id": 22,
-                "city_region_ids": list(range(23)),
-                "group_members": [-1] * 21,
-                "expanded_province_count": 0,
-                "expanded_tile_fields": ["terrain_kind", "owner_nation", "province_index"],
-                "expanded_tiles": [[0, -1, -1] for _ in range(6480)],
-                "expanded_provinces": [],
-            },
-            "terrain_generation": {
-                "topology_byte": 0,
-                "tuning": {
-                    "desert_quota": 200,
-                    "mountain_quota": 150,
-                    "hills_quota": 250,
-                    "forest_quota": 250,
-                    "swamp_quota": 150,
-                    "river_count": 10,
-                    "region_seed_rows": 14,
-                    "region_seed_columns": 8,
-                },
-                "attempt_count": 1,
-                "attempts": [
-                    {
-                        "index": 0,
-                        "map_lcg_after_expansion": 2,
-                        **{
-                            stage: {
-                                "map_lcg": 2,
-                                "tile_hash": 0,
-                                "terrain_counts": [6480, 0, 0, 0, 0, 0, 0, 0],
-                                "river_tile_count": 0,
-                            }
-                            for stage in (
-                                "after_expansion",
-                                "after_templates",
-                                "after_features",
-                                "after_rotation",
-                                "after_water_regions",
-                                "after_keyword",
-                            )
-                        },
-                        "accepted": 1,
-                        "map_lcg_after_validation": 2,
-                        "rotation_column": 0,
-                        "seed_candidate_tiles": [0] * 23,
-                        "tile_fields": [
-                            "terrain_kind",
-                            "river_sprite_code",
-                            "owner_nation",
-                            "gate_flag",
-                            "province_index",
-                        ],
-                        "tiles": [[0, 0, -1, -1, -1] for _ in range(6480)],
-                    }
-                ],
-            },
-            "tiles": [[0] * len(GENERATED_WORLD_TILE_FIELDS) for _ in range(6480)],
-            "provinces": provinces,
-            "ocean_context_array_count": 1,
-            "sea_region_count": 1,
-            "sea_regions": [
-                {
-                    "index": 0,
-                    "kind": "zone",
-                    "context_ordinal": 0,
-                    "status_code": 0,
-                    "display_name": "",
-                    "tile_or_terrain_id": -1,
-                    "nation_key_mask": 0,
-                    "seed_nation_id": 0,
-                    "active_tile": -1,
-                    "distance_level": 0,
-                    "port_tile": -1,
-                    "primary_neighbors": [],
-                    "secondary_neighbors": [],
-                }
-            ],
-            "route_count": 1,
-            "routes": [[0, 0, 1, 1]],
-            "border_links": [[0, 0, 1, 1, 0, 1, 0, 1, 0, 0]],
-        }
+    def test_valid_v2_result_is_accepted(self) -> None:
+        validate_result(self.result(), "boot_managers", 1)
 
-    def test_valid_result(self) -> None:
-        validate_result(
-            {"name": "boot_managers", "seed": 1, "status": "passed"},
-            "boot_managers",
-            1,
-        )
+    def test_wrong_version_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "format_version"):
+            validate_result(self.result(format_version=1), "boot_managers", 1)
 
     def test_wrong_name_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "requested"):
+            validate_result(self.result(name="turn_event_queue_bounds"), "boot_managers", 1)
+
+    def test_wrong_seed_or_status_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "seed"):
+            validate_result(self.result(seed=2), "boot_managers", 1)
+        with self.assertRaisesRegex(ValueError, "status"):
+            validate_result(self.result(status="expected_failure"), "boot_managers", 1)
+
+    def test_captures_must_be_an_object(self) -> None:
+        with self.assertRaisesRegex(ValueError, "captures"):
+            validate_result(self.result(captures=[]), "boot_managers", 1)
+
+    def test_unknown_top_level_field_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unexpected"):
             validate_result(
-                {"name": "other", "seed": 1, "status": "passed"},
-                "boot_managers",
-                1,
+                self.result(evidence_kind="host-side metadata only"), "boot_managers", 1
             )
 
-    def test_game_snapshot_foundation_is_validated(self) -> None:
-        validate_game_snapshot(self.game_snapshot())
-
-    def test_game_snapshot_rejects_wrong_tile_count(self) -> None:
-        snapshot = self.game_snapshot()
-        snapshot["world"]["tiles"] = []
-        with self.assertRaisesRegex(ValueError, "tile count"):
-            validate_game_snapshot(snapshot)
-
-    def test_game_snapshot_rejects_malformed_hash(self) -> None:
-        snapshot = self.game_snapshot()
-        snapshot["hashes"]["world"] = "not-a-hash"
-        with self.assertRaisesRegex(ValueError, "hash for world"):
-            validate_game_snapshot(snapshot)
-
-    def test_game_snapshot_rejects_wrong_nation_count(self) -> None:
-        snapshot = self.game_snapshot()
-        snapshot["nations"]["records"] = []
-        with self.assertRaisesRegex(ValueError, "23 records"):
-            validate_game_snapshot(snapshot)
-
-    def test_game_snapshot_requires_the_special_resource_trade_balance(self) -> None:
-        snapshot = self.game_snapshot()
-        major = {
-            field: [0] * 23
-            for field in (
-                "diplomacy_policy_by_nation",
-                "diplomacy_grant_by_nation",
-                "need_current_by_type",
-                "need_target_by_type",
-                "relation_delta_current",
-                "purchased_items_by_resource",
-                "item_potentials",
-                "unfilled_trade_turns_by_resource",
-                "transported_items_by_resource",
-                "remembered_trade_offers_by_resource",
-                "candidate_nation_flags",
-                "colony_boycott_flags",
-            )
+    def test_capture_payloads_are_not_validated_by_python(self) -> None:
+        captures = {
+            "game_state": {"new_rust_field": ["owned", {"semantic": True}]},
+            "coarse_map_generation": {"unmodeled": "payload"},
+            "random_map_terrain": {"unmodeled": "payload"},
+            "map_state": {"unmodeled": "payload"},
+            "serialization_roundtrip": {"unmodeled": "payload"},
+            "ui_tree": {
+                "snapshots": [],
+                "current": None,
+                "capital_confirmation": None,
+            },
         }
-        major.update(
-            capacities=[0] * 4,
-            aid_allocation_matrix=[0] * 0x170,
-            pending_action_status=[0] * 13,
-            pending_action_payload_by_action=[0] * 13,
-        )
-        snapshot["nations"]["records"][0] = {
-            "slot": 0,
-            "kind": "major",
-            "present": True,
-            "need_level_by_nation": [0] * 23,
-            "major": major,
-        }
-        with self.assertRaisesRegex(ValueError, "special-resource trade balance"):
-            validate_game_snapshot(snapshot)
+        validate_result(self.result(captures=captures), "boot_managers", 1)
 
-    def test_game_snapshot_rejects_wrong_city_count(self) -> None:
-        snapshot = self.game_snapshot()
-        snapshot["economy"]["cities"] = []
-        with self.assertRaisesRegex(ValueError, "seven city records"):
-            validate_game_snapshot(snapshot)
-
-    def test_generated_world_is_validated(self) -> None:
-        validate_generated_world(self.generated_world_snapshot())
-
-    def test_result_validates_generated_world(self) -> None:
-        result = {
-            "name": "generated_world_snapshot",
-            "seed": 1,
-            "status": "passed",
-            "generated_world": self.generated_world_snapshot(),
-        }
-        validate_result(result, "generated_world_snapshot", 1)
-
-    def test_generated_world_rejects_wrong_tile_schema(self) -> None:
-        snapshot = self.generated_world_snapshot()
-        snapshot["tile_fields"][-1] = "pointer"
-        with self.assertRaisesRegex(ValueError, "tile_fields"):
-            validate_generated_world(snapshot)
-
-    def test_generated_world_rejects_pointer_fields(self) -> None:
-        snapshot = self.generated_world_snapshot()
-        snapshot["sea_regions"][0]["next_pointer"] = 0x1234
-        with self.assertRaisesRegex(ValueError, "fields"):
-            validate_generated_world(snapshot)
-
-    def test_generated_world_enforces_retail_topology_semantics(self) -> None:
-        snapshot = self.generated_world_snapshot()
-        snapshot["map"]["wraps_horizontally"] = False
-        with self.assertRaisesRegex(ValueError, "wrap semantics"):
-            validate_generated_world(snapshot)
-
-    def test_generated_world_rejects_malformed_province_array(self) -> None:
-        snapshot = self.generated_world_snapshot()
-        snapshot["provinces"][0]["linked_tile_indices"] = []
-        with self.assertRaisesRegex(ValueError, "linked_tile_indices"):
-            validate_generated_world(snapshot)
-
-    def test_generated_world_requires_active_route_count(self) -> None:
-        snapshot = self.generated_world_snapshot()
-        snapshot["route_count"] = 2
-        with self.assertRaisesRegex(ValueError, "route_count"):
-            validate_generated_world(snapshot)
+    def test_unknown_top_level_capture_does_not_satisfy_the_envelope(self) -> None:
+        result = self.result(obsolete_capture={"legacy": True})
+        with self.assertRaisesRegex(ValueError, "unexpected"):
+            validate_result(result, "boot_managers", 1)
 
 
 class MissingOracleRecordingTests(unittest.TestCase):
@@ -601,10 +336,6 @@ class MapExpectationConsistencyTests(unittest.TestCase):
             self.assertTrue(path.is_file(), f"{test.name} requires the map oracle but has no {path}")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class ScenarioPolicyInCatalogTests(unittest.TestCase):
     """Harness policy belongs beside suites and evidence, not in a scenario's class body.
 
@@ -620,12 +351,12 @@ class ScenarioPolicyInCatalogTests(unittest.TestCase):
                 with self.subTest(test=test.name, event=event):
                     self.assertTrue(event.startswith("kTurnEvent"), event)
 
-    def test_snapshot_events_imply_a_ui_snapshot(self):
-        """Capturing a tree without declaring the ui snapshot would drop the evidence."""
+    def test_snapshot_events_imply_a_ui_capture(self):
+        """Capturing a tree without declaring the UI capture would drop the evidence."""
         for test in TESTS:
             if test.ui_snapshot_events:
                 with self.subTest(test=test.name):
-                    self.assertIn("ui", test.native_snapshots)
+                    self.assertIn("ui_tree", test.native_snapshots)
 
     def test_no_scenario_overrides_the_policy_hooks(self):
         """The overrides are gone; a new one would silently outrank its catalog entry."""
@@ -644,4 +375,9 @@ class ScenarioPolicyInCatalogTests(unittest.TestCase):
         self.assertIn("kCityScreenOpensSnapshotEvents[] = {kTurnEventCityProduction}", rendered)
         # boot_managers declares neither, so it must render the empty form.
         self.assertIn('{"boot_managers"', rendered)
+        self.assertIn("kRuntimeCaptureCoarseMapGeneration | kRuntimeCaptureRandomMapTerrain", rendered)
         self.assertIn("false, 0, 0}", rendered)
+
+
+if __name__ == "__main__":
+    unittest.main()

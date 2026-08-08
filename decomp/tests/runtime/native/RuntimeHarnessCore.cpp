@@ -284,57 +284,6 @@ int FindRuntimeDescriptorIndex(const char* name, const RuntimeTestDescriptor* de
   return -1;
 }
 
-bool EscapeRuntimeJsonString(const char* value, char* escaped, unsigned long capacity) {
-  unsigned long length = 0;
-  if (capacity < 3) {
-    return false;
-  }
-  escaped[length++] = '"';
-  const unsigned char* cursor = reinterpret_cast<const unsigned char*>(value);
-  for (; *cursor != 0; ++cursor) {
-    char control[7];
-    const char* addition = 0;
-    char literal[2];
-    switch (*cursor) {
-    case '"':
-      addition = "\\\"";
-      break;
-    case '\\':
-      addition = "\\\\";
-      break;
-    case '\n':
-      addition = "\\n";
-      break;
-    case '\r':
-      addition = "\\r";
-      break;
-    case '\t':
-      addition = "\\t";
-      break;
-    default:
-      if (*cursor < 0x20) {
-        wsprintfA(control, "\\u%04x", static_cast<unsigned int>(*cursor));
-        addition = control;
-      } else {
-        literal[0] = static_cast<char>(*cursor);
-        literal[1] = 0;
-        addition = literal;
-      }
-      break;
-    }
-    unsigned long additionLength = static_cast<unsigned long>(strlen(addition));
-    if (length + additionLength + 2 > capacity) {
-      escaped[0] = 0;
-      return false;
-    }
-    memcpy(escaped + length, addition, additionLength);
-    length += additionLength;
-  }
-  escaped[length++] = '"';
-  escaped[length] = 0;
-  return true;
-}
-
 namespace {
 
 bool WriteAll(HANDLE file, const char* bytes, DWORD size) {

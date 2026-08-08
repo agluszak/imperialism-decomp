@@ -6,18 +6,19 @@
 
 class RuntimeTestCase;
 
-enum RuntimeSnapshotFlags {
-  kRuntimeSnapshotNone = 0,
-  kRuntimeSnapshotUi = 1,
-  kRuntimeSnapshotMap = 2,
-  kRuntimeSnapshotGame = 4,
-  kRuntimeSnapshotGeneratedWorld = 8
+enum RuntimeCaptureFlags {
+  kRuntimeCaptureNone = 0,
+  kRuntimeCaptureUiTree = 1,
+  kRuntimeCaptureMapState = 2,
+  kRuntimeCaptureGameState = 4,
+  kRuntimeCaptureCoarseMapGeneration = 8,
+  kRuntimeCaptureRandomMapTerrain = 16
 };
 
 struct RuntimeTestDescriptor {
   const char* name;
   RuntimeTestCase* testCase;
-  unsigned int snapshotFlags;
+  unsigned int captureFlags;
   const char* evidenceKind;
   // Harness policy, from the catalog rather than from a virtual override in the scenario.
   bool recordsGameFlow;

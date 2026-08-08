@@ -2,7 +2,7 @@
 
 use anyhow::{Context, bail};
 use clap::Parser;
-use imperialism_formats::{LegacyGameStateContext, LegacySaveV62, parse_country_base_at};
+use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -29,23 +29,8 @@ fn main() -> anyhow::Result<()> {
 fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
     let bytes = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
     let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
-    let (first_country, first_country_suffix_offset) =
-        parse_country_base_at(&bytes, save.remaining_manager_chain_offset)
-            .context("decoding the first nation record")?;
-    eprintln!(
-        "version={} zones={} ports={} ships={} task_forces={} nation_records_offset={:#x} first_nation={} units={} first_suffix_offset={:#x}",
-        save.header.format_version,
-        save.ocean.zones.len(),
-        save.ocean.port_zones.len(),
-        save.navy.ships.len(),
-        save.navy.task_forces.len(),
-        save.remaining_manager_chain_offset,
-        first_country.identity,
-        first_country.military_units.len(),
-        first_country_suffix_offset
-    );
     let Some(values) = game_state else {
-        return serde_json::to_writer(std::io::stdout(), &save.map.world_state())
+        return serde_json::to_writer(std::io::stdout(), &save.world_state())
             .context("encoding world state");
     };
     if values.len() != 4 {

@@ -31,16 +31,15 @@ def _game_tests():
 
 def render_registry() -> str:
     def snapshot_flags(snapshots: tuple[str, ...]) -> str:
-        flags = []
-        if "ui" in snapshots:
-            flags.append("kRuntimeSnapshotUi")
-        if "map" in snapshots:
-            flags.append("kRuntimeSnapshotMap")
-        if "game" in snapshots:
-            flags.append("kRuntimeSnapshotGame")
-        if "generated_world" in snapshots:
-            flags.append("kRuntimeSnapshotGeneratedWorld")
-        return " | ".join(flags) or "kRuntimeSnapshotNone"
+        flag_by_capture = {
+            "ui_tree": "kRuntimeCaptureUiTree",
+            "map_state": "kRuntimeCaptureMapState",
+            "game_state": "kRuntimeCaptureGameState",
+            "coarse_map_generation": "kRuntimeCaptureCoarseMapGeneration",
+            "random_map_terrain": "kRuntimeCaptureRandomMapTerrain",
+        }
+        flags = [flag_by_capture[capture] for capture in snapshots]
+        return " | ".join(flags) or "kRuntimeCaptureNone"
 
     # One array per test that captures UI trees, named after the test so the generated file
     # stays readable. Emitted as the C++ constant names from the catalog: the numbers live in

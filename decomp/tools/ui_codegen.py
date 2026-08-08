@@ -1080,6 +1080,24 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
     return "specialized"
 
 
+def _rust_widget_interactive(node: UiSemanticNode) -> bool:
+    """Return the launch UI interaction semantic without exposing C++ classes.
+
+    The generator is the one place where the recovered type and class evidence is
+    needed to distinguish a picture button or radio-style static text from an
+    otherwise passive widget.  The generated Rust catalog carries the resolved
+    boolean, not those implementation details.
+    """
+
+    kind = _rust_widget_kind(node)
+    return (
+        node.type_code in ("cntl", "edit", "nmbr", "radb", "chkb")
+        or (node.type_code == "pict" and "button" in node.class_name.casefold())
+        or kind in ("toggle", "checkbox")
+        or (node.type_code == "stat" and "radio" in node.class_name.casefold())
+    )
+
+
 def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
     style = (
         {"word": family.style.word, "packed_color": family.style.packed_color}
@@ -1092,7 +1110,6 @@ def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
             "resource_id": family.text.resource_id,
             "resource_index": family.text.resource_index,
             "value": family.text.value,
-            "source": family.text.source,
             "font_family": family.text.mode,
             "face_flags": family.text.flags,
             "point_size": family.text.point_size,
@@ -1157,10 +1174,6 @@ def _catalog_case_for_resource(
     return matches[0]
 
 
-def _catalog_source(repo_root: Path, relative_path: str) -> dict[str, str]:
-    return {"path": relative_path, "sha256": _sha256(repo_root / relative_path)}
-
-
 def build_rust_ui_catalog(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -1182,16 +1195,13 @@ def build_rust_ui_catalog(
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches
         )
-        raw_nodes = {int(node["offset"]): node for node in raw_view.get("nodes", [])}
         roots = [node for node in semantic_view.nodes if node.parent_id is None]
         if len(roots) != 1:
             raise ValueError(f"{key.text()}: expected one semantic root")
         nodes: list[dict[str, object]] = []
         for node in semantic_view.nodes:
             offset = int(node.node_id, 16)
-            raw_node = raw_nodes[offset]
             x, y, width, height = node.geometry
-            legacy_class = str(raw_node.get("class_name") or "") or None
             nodes.append(
                 {
                     "id": offset,
@@ -1205,16 +1215,11 @@ def build_rust_ui_catalog(
                     "rect": {"x": x, "y": y, "width": width, "height": height},
                     "state": bool(node.state),
                     "enabled": bool(node.enabled),
+                    "interactive": _rust_widget_interactive(node),
                     "input_gate": bool(node.input_gate),
                     "child_hit_test": bool(node.child_hit_test),
                     "control_value": node.control_value,
                     "properties": _rust_catalog_family(node.family),
-                    "legacy_type": node.type_code,
-                    "legacy_class": legacy_class,
-                    "resolved_class": node.class_name,
-                    "resource_offset": offset,
-                    "source": node.source,
-                    "confidence": node.confidence,
                 }
             )
         catalog_views.append(
@@ -1226,18 +1231,10 @@ def build_rust_ui_catalog(
                 "event": case.event,
                 "root": int(roots[0].node_id, 16),
                 "nodes": nodes,
-                "source": semantic_view.source,
             }
         )
     return {
         "logical_resolution": [640, 480],
-        "sources": {
-            "mac_view_ir": _catalog_source(repo_root, IR_PATH),
-            "mac_strings": _catalog_source(repo_root, STRINGS_PATH),
-            "mac_text_resources": _catalog_source(repo_root, TEXT_RESOURCES_PATH),
-            "factory_manifest": _catalog_source(repo_root, MANIFEST_PATH),
-            "windows_deltas": _catalog_source(repo_root, WINDOWS_DELTA_PATH),
-        },
         "views": catalog_views,
     }
 

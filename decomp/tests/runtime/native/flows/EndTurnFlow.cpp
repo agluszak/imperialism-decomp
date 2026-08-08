@@ -134,14 +134,8 @@ RuntimeScriptStatus EndTurnFlow::Advance() {
     RT_FRAGMENT_REQUIRE(CurrentTurnEventForFragment() != kTurnEventOpeningCinematic);
 
     if (ModalScreen::AnyPresent()) {
-      // Recorded before confirming, because a turn alert changes what happens next.
       if (Modal().IsTurnAlert()) {
         sawTurnAlert = true;
-        RecordHandledModalForFragment("turn_alert");
-      } else if (Modal().IsEndTurnWarning()) {
-        RecordHandledModalForFragment("end_turn_warning");
-      } else {
-        RecordUnexpectedModalForFragment(Modal().Top());
       }
       confirmedModal = Modal().Top();
       RT_FRAGMENT_ACTION("confirm the turn-flow dialog", Modal().AcceptDefault());

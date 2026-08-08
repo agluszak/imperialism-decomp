@@ -50,6 +50,68 @@ pub struct ExpandedProvinceSeed {
     pub region_class: i8,
 }
 
+/// The accepted coarse map and the region class assigned to each nation class.
+///
+/// Rejected attempts, generator group bookkeeping, and expanded tile seeds are
+/// not game state. They are available only through `differential_trace` while
+/// the native oracle still requires them.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CoarseMap {
+    pub grid: CoarseMapGrid,
+    pub region_classes: [i8; RANDOM_MAP_CLASS_COUNT],
+}
+
+impl CoarseMap {
+    pub(crate) fn expanded_seed_data(
+        &self,
+    ) -> (Vec<ExpandedMapSeedTile>, Vec<ExpandedProvinceSeed>) {
+        let mut tiles = vec![
+            ExpandedMapSeedTile {
+                terrain_kind: WATER,
+                owner_nation: -1,
+                province_index: -1,
+            };
+            EXPANDED_MAP_WIDTH * EXPANDED_MAP_HEIGHT
+        ];
+        let mut provinces = Vec::new();
+        for coarse_index in 0..COARSE_MAP_CELL_COUNT {
+            let class =
+                self.grid.cells[coarse_index / COARSE_MAP_WIDTH][coarse_index % COARSE_MAP_WIDTH];
+            let (terrain_kind, owner_nation, province_index) =
+                if class == UNASSIGNED || class == DISCONNECTED_OCEAN {
+                    (WATER, -1, -1)
+                } else {
+                    let province_index = provinces.len() as i16;
+                    provinces.push(ExpandedProvinceSeed {
+                        owner_nation: class,
+                        region_class: self.region_classes[class as usize],
+                    });
+                    (PLAINS, class, province_index)
+                };
+            let coarse_row = coarse_index / COARSE_MAP_WIDTH;
+            let coarse_column = coarse_index % COARSE_MAP_WIDTH;
+            for block_row in 0..4 {
+                let row = coarse_row * 4 + block_row;
+                for block_column in 0..4 {
+                    let column = if coarse_row & 1 == 0 {
+                        coarse_column * 4 + block_column
+                    } else {
+                        (coarse_column * 4 + block_column + EXPANDED_MAP_WIDTH - 2)
+                            % EXPANDED_MAP_WIDTH
+                    };
+                    tiles[row * EXPANDED_MAP_WIDTH + column] = ExpandedMapSeedTile {
+                        terrain_kind,
+                        owner_nation,
+                        province_index,
+                    };
+                }
+            }
+        }
+        (tiles, provinces)
+    }
+}
+
+#[cfg(feature = "differential-trace")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CoarseMapAttempt {
     pub draw_count: u32,
@@ -66,8 +128,11 @@ pub struct CoarseMapAttempt {
     pub map_lcg_after_validation: u32,
 }
 
+/// Test-only record of the rejected coarse-generation attempts emitted by the
+/// native differential harness. Normal generation returns [`CoarseMap`].
+#[cfg(feature = "differential-trace")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct CoarseMapGeneration {
+pub struct CoarseMapTrace {
     pub initial_map_lcg: u32,
     pub attempts: Vec<CoarseMapAttempt>,
     pub accepted_map_lcg: u32,
@@ -77,6 +142,44 @@ pub struct CoarseMapGeneration {
     pub group_members: [[i32; 3]; 7],
     pub expanded_tiles: Vec<ExpandedMapSeedTile>,
     pub expanded_provinces: Vec<ExpandedProvinceSeed>,
+}
+
+#[cfg(feature = "differential-trace")]
+impl CoarseMapTrace {
+    fn from_generation_result(
+        initial_map_lcg: u32,
+        accepted_map_lcg: u32,
+        attempts: Vec<CoarseMapAttempt>,
+        result: &CoarseMapBuild,
+    ) -> Self {
+        let (expanded_tiles, expanded_provinces) = result.map.expanded_seed_data();
+        Self {
+            initial_map_lcg,
+            attempts,
+            accepted_map_lcg,
+            accepted_grid: result.map.grid.clone(),
+            city_region_next_id: result.city_region_next_id,
+            city_region_ids: result.map.region_classes.map(i32::from),
+            group_members: result.group_members,
+            expanded_tiles,
+            expanded_provinces,
+        }
+    }
+
+    pub fn final_map(&self) -> CoarseMap {
+        CoarseMap {
+            grid: self.accepted_grid.clone(),
+            region_classes: self.city_region_ids.map(|id| id as i8),
+        }
+    }
+}
+
+struct CoarseMapBuild {
+    map: CoarseMap,
+    #[cfg(feature = "differential-trace")]
+    city_region_next_id: i32,
+    #[cfg(feature = "differential-trace")]
+    group_members: [[i32; 3]; 7],
 }
 
 #[derive(Clone)]
@@ -386,52 +489,6 @@ impl GeneratorScratch {
         }
     }
 
-    fn expand(&self) -> (Vec<ExpandedMapSeedTile>, Vec<ExpandedProvinceSeed>) {
-        let mut tiles = vec![
-            ExpandedMapSeedTile {
-                terrain_kind: WATER,
-                owner_nation: -1,
-                province_index: -1,
-            };
-            EXPANDED_MAP_WIDTH * EXPANDED_MAP_HEIGHT
-        ];
-        let mut provinces = Vec::new();
-        for coarse_index in 0..COARSE_MAP_CELL_COUNT {
-            let class =
-                self.grid.cells[coarse_index / COARSE_MAP_WIDTH][coarse_index % COARSE_MAP_WIDTH];
-            let (terrain_kind, owner_nation, province_index) =
-                if class == UNASSIGNED || class == DISCONNECTED_OCEAN {
-                    (WATER, -1, -1)
-                } else {
-                    let province_index = provinces.len() as i16;
-                    provinces.push(ExpandedProvinceSeed {
-                        owner_nation: class,
-                        region_class: self.city_region_ids[class as usize] as i8,
-                    });
-                    (PLAINS, class, province_index)
-                };
-            let coarse_row = coarse_index / COARSE_MAP_WIDTH;
-            let coarse_column = coarse_index % COARSE_MAP_WIDTH;
-            for block_row in 0..4 {
-                let row = coarse_row * 4 + block_row;
-                for block_column in 0..4 {
-                    let column = if coarse_row & 1 == 0 {
-                        coarse_column * 4 + block_column
-                    } else {
-                        (coarse_column * 4 + block_column + EXPANDED_MAP_WIDTH - 2)
-                            % EXPANDED_MAP_WIDTH
-                    };
-                    tiles[row * EXPANDED_MAP_WIDTH + column] = ExpandedMapSeedTile {
-                        terrain_kind,
-                        owner_nation,
-                        province_index,
-                    };
-                }
-            }
-        }
-        (tiles, provinces)
-    }
-
     fn cell(&self, cell_index: i32) -> i8 {
         let row = cell_index / COARSE_MAP_WIDTH as i32;
         let column = cell_index % COARSE_MAP_WIDTH as i32;
@@ -450,8 +507,27 @@ impl GeneratorScratch {
 /// Retail's coarse neighbor routine always wraps its 27 columns and does not read
 /// the map topology byte. The bounded/wrapping topology choice first affects later
 /// full-resolution passes, so it is intentionally not an input to this function.
-pub fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapGeneration {
+pub fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMap {
+    generate_coarse_random_map_impl(
+        rng,
+        #[cfg(feature = "differential-trace")]
+        None,
+    )
+    .map
+}
+
+#[cfg(feature = "differential-trace")]
+pub fn trace_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapTrace {
     let initial_map_lcg = rng.state();
+    let mut attempts = Vec::new();
+    let result = generate_coarse_random_map_impl(rng, Some(&mut attempts));
+    CoarseMapTrace::from_generation_result(initial_map_lcg, rng.state(), attempts, &result)
+}
+
+fn generate_coarse_random_map_impl(
+    rng: &mut RetailLcg,
+    #[cfg(feature = "differential-trace")] mut attempts: Option<&mut Vec<CoarseMapAttempt>>,
+) -> CoarseMapBuild {
     let mut scratch = GeneratorScratch {
         grid: CoarseMapGrid {
             cells: [[UNASSIGNED; COARSE_MAP_WIDTH]; COARSE_MAP_HEIGHT],
@@ -462,15 +538,19 @@ pub fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapGeneration {
         last_minor_seed_candidate: -1,
         draw_count: 0,
     };
-    let mut attempts = Vec::new();
     loop {
         scratch.run_attempt(rng);
-        let pre_validation_grid = scratch.grid.clone();
-        let city_region_next_id = scratch.city_region_next_id;
-        let city_region_ids = scratch.city_region_ids;
-        let group_members = scratch.group_members;
-        let draw_count = scratch.draw_count;
-        let map_lcg_after_seeding = rng.state();
+        #[cfg(feature = "differential-trace")]
+        let trace_before_validation = attempts.as_ref().map(|_| {
+            (
+                scratch.draw_count,
+                rng.state(),
+                scratch.grid.clone(),
+                scratch.city_region_next_id,
+                scratch.city_region_ids,
+                scratch.group_members,
+            )
+        });
         let error_check_failed = scratch.error_check();
         let has_continuous_ocean_column =
             (!error_check_failed).then(|| scratch.has_continuous_ocean_column());
@@ -480,37 +560,48 @@ pub fn generate_coarse_random_map(rng: &mut RetailLcg) -> CoarseMapGeneration {
         let accepted = !error_check_failed
             && has_continuous_ocean_column == Some(true)
             && frontier_mask_complete == Some(true);
-        attempts.push(CoarseMapAttempt {
-            draw_count,
-            map_lcg_after_seeding,
-            pre_validation_grid,
-            city_region_next_id,
-            city_region_ids,
-            group_members,
-            post_validation_grid: scratch.grid.clone(),
-            error_check_failed,
-            has_continuous_ocean_column,
-            frontier_mask_complete,
-            accepted,
-            map_lcg_after_validation: rng.state(),
-        });
+        #[cfg(feature = "differential-trace")]
+        if let (Some(attempts), Some(trace_before_validation)) =
+            (&mut attempts, trace_before_validation)
+        {
+            let (
+                draw_count,
+                map_lcg_after_seeding,
+                pre_validation_grid,
+                city_region_next_id,
+                city_region_ids,
+                group_members,
+            ) = trace_before_validation;
+            attempts.push(CoarseMapAttempt {
+                draw_count,
+                map_lcg_after_seeding,
+                pre_validation_grid,
+                city_region_next_id,
+                city_region_ids,
+                group_members,
+                post_validation_grid: scratch.grid.clone(),
+                error_check_failed,
+                has_continuous_ocean_column,
+                frontier_mask_complete,
+                accepted,
+                map_lcg_after_validation: rng.state(),
+            });
+        }
         if accepted {
             break;
         }
     }
 
     scratch.backfill_city_region_ids();
-    let (expanded_tiles, expanded_provinces) = scratch.expand();
-    CoarseMapGeneration {
-        initial_map_lcg,
-        attempts,
-        accepted_map_lcg: rng.state(),
-        accepted_grid: scratch.grid,
+    CoarseMapBuild {
+        map: CoarseMap {
+            grid: scratch.grid,
+            region_classes: scratch.city_region_ids.map(|id| id as i8),
+        },
+        #[cfg(feature = "differential-trace")]
         city_region_next_id: scratch.city_region_next_id,
-        city_region_ids: scratch.city_region_ids,
+        #[cfg(feature = "differential-trace")]
         group_members: scratch.group_members,
-        expanded_tiles,
-        expanded_provinces,
     }
 }
 
@@ -550,20 +641,37 @@ mod tests {
         assert_eq!(first_rng, second_rng);
 
         let mut counts = [0; RANDOM_MAP_CLASS_COUNT];
-        for class in first.accepted_grid.flattened().filter(|class| *class >= 0) {
+        for class in first.grid.flattened().filter(|class| *class >= 0) {
             counts[class as usize] += 1;
         }
         assert_eq!(&counts[..7], &[8; 7]);
         assert_eq!(&counts[7..], &[4; 16]);
-        assert_eq!(first.expanded_provinces.len(), 120);
-        assert_eq!(first.expanded_tiles.len(), 108 * 60);
+        let (expanded_tiles, expanded_provinces) = first.expanded_seed_data();
+        assert_eq!(expanded_provinces.len(), 120);
+        assert_eq!(expanded_tiles.len(), 108 * 60);
     }
 
     #[test]
-    fn matches_retail_oracle_seed_one_attempt_stream() {
+    fn seed_one_returns_the_retail_final_map_and_rng_state() {
         let mut rng = RetailLcg::from_state(0x15a6_cd28);
-        let generation = generate_coarse_random_map(&mut rng);
-        let trace = generation
+        let map = generate_coarse_random_map(&mut rng);
+
+        assert_eq!(rng.state(), 259_883_818);
+        assert_eq!(map.grid.fnv1a_hash(), 0x5c1e_ab12);
+        assert_eq!(
+            map.region_classes,
+            [
+                4, 0, 0, 0, 5, 3, 1, 1, 1, 1, 1, 0, 2, 1, 1, 4, 4, 0, 4, 0, 0, 0, 5
+            ]
+        );
+    }
+
+    #[cfg(feature = "differential-trace")]
+    #[test]
+    fn trace_matches_retail_oracle_seed_one_attempt_stream() {
+        let mut rng = RetailLcg::from_state(0x15a6_cd28);
+        let trace = trace_coarse_random_map(&mut rng);
+        let attempts = trace
             .attempts
             .iter()
             .map(|attempt| {
@@ -578,23 +686,24 @@ mod tests {
             })
             .collect::<Vec<_>>();
         assert_eq!(
-            trace,
+            attempts,
             vec![
                 (0xf7c1_cf72, 403, 3_390_400_103, true, None, None),
                 (0x5c1e_ab12, 451, 259_883_818, false, Some(true), Some(true)),
             ]
         );
-        assert_eq!(generation.accepted_map_lcg, 259_883_818);
-        assert_eq!(generation.accepted_grid.fnv1a_hash(), 0x5c1e_ab12);
-        assert_eq!(generation.city_region_next_id, 5);
-        assert_eq!(generation.expanded_provinces.len(), 120);
+        assert_eq!(trace.accepted_map_lcg, 259_883_818);
+        assert_eq!(trace.accepted_grid.fnv1a_hash(), 0x5c1e_ab12);
+        assert_eq!(trace.city_region_next_id, 5);
+        assert_eq!(trace.expanded_provinces.len(), 120);
     }
 
+    #[cfg(feature = "differential-trace")]
     #[test]
-    fn matches_retail_oracle_seed_two_rejection_stream() {
+    fn trace_matches_retail_oracle_seed_two_rejection_stream() {
         let mut rng = RetailLcg::from_state(0x51b2_c045);
-        let generation = generate_coarse_random_map(&mut rng);
-        let trace = generation
+        let trace = trace_coarse_random_map(&mut rng);
+        let attempts = trace
             .attempts
             .iter()
             .map(|attempt| {
@@ -609,7 +718,7 @@ mod tests {
             })
             .collect::<Vec<_>>();
         assert_eq!(
-            trace,
+            attempts,
             vec![
                 (0x699b_52ca, 464, 3_888_987_573, true, None, None),
                 (0x1f0c_d646, 438, 748_813_343, true, None, None),
@@ -624,10 +733,10 @@ mod tests {
                 ),
             ]
         );
-        assert_eq!(generation.accepted_map_lcg, 3_712_210_293);
-        assert_eq!(generation.accepted_grid.fnv1a_hash(), 0xd2a6_ff22);
-        assert_eq!(generation.city_region_next_id, 5);
-        assert_eq!(generation.expanded_provinces.len(), 120);
+        assert_eq!(trace.accepted_map_lcg, 3_712_210_293);
+        assert_eq!(trace.accepted_grid.fnv1a_hash(), 0xd2a6_ff22);
+        assert_eq!(trace.city_region_next_id, 5);
+        assert_eq!(trace.expanded_provinces.len(), 120);
     }
 
     #[test]

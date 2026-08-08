@@ -186,14 +186,17 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
 
 #ifdef IMPERIALISM_RUNTIME_TESTS
   RuntimeCoarseMapOracleReset(g_mapGenLcgState_006a38e8);
-  RuntimeTerrainMapOracleReset(static_cast<int>(g_pGlobalMapState->hexNeighborWrapHorizontally),
-                               g_mapGenDesertQuota_006a38bc, g_mapGenMountainQuota_006a3470,
-                               g_mapGenHillsQuota_006a38c0, g_mapGenForestQuota_006a38f8,
-                               g_mapGenSwampQuota_006a38e0, g_mapGenRiverCount_006a38e4,
-                               g_regionSeedGridRows_006a38ec, g_regionSeedGridCols_006a38f0);
+  RuntimeTerrainMapOracleReset(
+      g_mapGenLcgState_006a38e8, static_cast<int>(g_pGlobalMapState->hexNeighborWrapHorizontally),
+      g_mapGenDesertQuota_006a38bc, g_mapGenMountainQuota_006a3470, g_mapGenHillsQuota_006a38c0,
+      g_mapGenForestQuota_006a38f8, g_mapGenSwampQuota_006a38e0, g_mapGenRiverCount_006a38e4,
+      g_regionSeedGridRows_006a38ec, g_regionSeedGridCols_006a38f0);
 #endif
 
   for (;;) {
+#ifdef IMPERIALISM_RUNTIME_TESTS
+    RuntimeCoarseMapOracleBeginGenerationAttempt(g_mapGenLcgState_006a38e8);
+#endif
     // Attempt loop: regenerate until the attempt sticks and both region-class
     // validations accept it. The setup-picture globe spins between every phase.
     char retryAttempt;
@@ -461,7 +464,7 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileG
 #ifdef IMPERIALISM_RUNTIME_TESTS
     RuntimeTerrainMapOracleCaptureKeywordStage(this, g_mapGenLcgState_006a38e8);
     int seedCandidatesAccepted = ValidateSeedCandidateExistsForEachTerrainClass();
-    RuntimeTerrainMapOracleFinishAttempt(this, seedCandidatesAccepted, g_mapGenLcgState_006a38e8);
+    RuntimeTerrainMapOracleFinishAttempt(seedCandidatesAccepted, g_mapGenLcgState_006a38e8);
     if (seedCandidatesAccepted != 0) {
 #else
     if (ValidateSeedCandidateExistsForEachTerrainClass() != 0) {

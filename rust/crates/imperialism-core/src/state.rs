@@ -414,25 +414,6 @@ pub enum GameCommand {
         amount: i16,
         price: i16,
     },
-    BeginRandomGameSetup {
-        setup: crate::BeginRandomGameSetupInputs,
-    },
-    SetRandomGamePlanet {
-        planet_seed: String,
-        retail_topology: crate::RetailTopologyByte,
-    },
-    SelectRandomGameNation {
-        nation_slot: i16,
-    },
-    SetRandomGameCountryName {
-        country_name: String,
-    },
-    SetRandomGameDifficulty {
-        difficulty: i32,
-    },
-    SetRandomGameNameMode {
-        use_localized_name_tables: bool,
-    },
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

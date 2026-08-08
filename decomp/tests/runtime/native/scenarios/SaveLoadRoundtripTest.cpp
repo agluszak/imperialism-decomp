@@ -1,7 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
-#include "RuntimeGameSnapshot.h"
+#include "RuntimeGameStateCapture.h"
 #include "probes/UnitChainProbe.h"
 #include "screens/LoadSaveScreen.h"
 #include "screens/NewspaperScreen.h"
@@ -49,6 +49,45 @@ const int kNormalSaveMode = 0;
 const short kFirstNavyShipyardRow = 4;
 const int kPatrolOrder = 3;
 
+bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState) {
+  JSON_Value* value = 0;
+  if (!BuildRuntimeGameState(run, &value)) {
+    return false;
+  }
+  JSON_Object* state = json_value_get_object(value);
+  if (state == 0 || json_object_remove(state, "turn") != JSONSuccess ||
+      json_object_remove(state, "persistent_unit_id_counter") != JSONSuccess ||
+      json_object_remove(state, "rng") != JSONSuccess) {
+    json_value_free(value);
+    return false;
+  }
+  char* serialized = json_serialize_to_string(value);
+  json_value_free(value);
+  if (serialized == 0) {
+    return false;
+  }
+  persistentState = serialized;
+  json_free_serialized_string(serialized);
+  return true;
+}
+
+CString DescribeGameStateDifference(const CString& before, const CString& after) {
+  int sharedLength = before.GetLength();
+  if (after.GetLength() < sharedLength) {
+    sharedLength = after.GetLength();
+  }
+  int difference = 0;
+  while (difference < sharedLength && before[difference] == after[difference]) {
+    ++difference;
+  }
+  const int contextStart = difference > 60 ? difference - 60 : 0;
+  CString message;
+  message.Format("persistent game state differs at byte %d; before: %.160s; after: %.160s",
+                 difference, static_cast<LPCSTR>(before.Mid(contextStart)),
+                 static_cast<LPCSTR>(after.Mid(contextStart)));
+  return message;
+}
+
 class SaveLoadRoundtripTestCase : public EasyMapScriptScenario {
 public:
   SaveLoadRoundtripTestCase()
@@ -65,8 +104,7 @@ protected:
     savedScenarioMap = g_pSimMgr->scenarioMapIndexPlusOne;
     SetSelectedNation(savedNation);
     RT_REQUIRE(CreatePersistedNavyState());
-    RT_REQUIRE(BuildRuntimeGameSnapshot(RunState(), beforeSaveSnapshot));
-    beforePersistentState = PersistentSnapshotState(beforeSaveSnapshot);
+    RT_REQUIRE(CapturePersistentGameState(RunState(), beforePersistentState));
 
     RT_DO("open the save dialog", LoadSaveScreen::OpenForNation(savedNation));
     RT_REQUIRE(LoadSaveScreen::IsCurrent());
@@ -110,11 +148,10 @@ protected:
     RT_REQUIRE_EQ(savedDifficulty, g_pSimMgr->difficultyLevel);
     RT_REQUIRE_EQ(savedScenarioMap, g_pSimMgr->scenarioMapIndexPlusOne);
     SetSelectedNation(g_pSimMgr->activeNationSlot);
-    RT_REQUIRE(BuildRuntimeGameSnapshot(RunState(), afterLoadSnapshot));
-    afterPersistentState = PersistentSnapshotState(afterLoadSnapshot);
+    RT_REQUIRE(CapturePersistentGameState(RunState(), afterPersistentState));
     if (beforePersistentState != afterPersistentState) {
-      snapshotDifference = DescribeSnapshotDifference(beforePersistentState, afterPersistentState);
-      RT_FAIL(snapshotDifference);
+      stateDifference = DescribeGameStateDifference(beforePersistentState, afterPersistentState);
+      RT_FAIL(stateDifference);
     }
     RT_PASS();
 
@@ -160,35 +197,6 @@ private:
            ship->taskForce == force;
   }
 
-  CString PersistentSnapshotState(const CString& snapshot) {
-    int stateIndex = snapshot.Find("\"world\":{");
-    return stateIndex < 0 ? CString() : snapshot.Mid(stateIndex);
-  }
-
-  CString DescribeSnapshotDifference(const CString& before, const CString& after) {
-    const char* bodyMarker = "\"world\":{";
-    int beforeIndex = before.Find(bodyMarker);
-    int afterIndex = after.Find(bodyMarker);
-    if (beforeIndex < 0 || afterIndex < 0) {
-      return CString("game snapshot has no persistent world section");
-    }
-    int sharedLength = before.GetLength() - beforeIndex;
-    if (after.GetLength() - afterIndex < sharedLength) {
-      sharedLength = after.GetLength() - afterIndex;
-    }
-    int difference = 0;
-    while (difference < sharedLength &&
-           before[beforeIndex + difference] == after[afterIndex + difference]) {
-      ++difference;
-    }
-    int contextStart = difference > 60 ? difference - 60 : 0;
-    CString message;
-    message.Format("canonical game state differs at byte %d; before: %.160s; after: %.160s",
-                   difference, static_cast<LPCSTR>(before.Mid(beforeIndex + contextStart)),
-                   static_cast<LPCSTR>(after.Mid(afterIndex + contextStart)));
-    return message;
-  }
-
   RuntimeActionResult ReopenSavedGame() {
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(savedPath) == 0) {
       return RuntimeActionResult::Failure(
@@ -200,12 +208,20 @@ private:
   // Header + length only: cheap, and enough to separate "the writer produced nonsense"
   // from "the reader mis-consumed sane bytes".
   void ReportSavedFileShape(const CString& path) {
-    CString report("[");
+    JSON_Value* value = json_value_init_object();
+    JSON_Object* report = value != 0 ? json_value_get_object(value) : 0;
+    if (report == 0) {
+      json_value_free(value);
+      return;
+    }
     CFile file;
     CFileException error;
     if (!file.Open(path, CFile::modeRead | CFile::shareDenyWrite, &error)) {
-      report += "\n    {\"saved_file\": \"unreadable\"}\n  ]";
-      RecordSerializationRoundtripReport(report);
+      if (json_object_set_string(report, "saved_file", "unreadable") != JSONSuccess) {
+        json_value_free(value);
+        return;
+      }
+      RecordSerializationRoundtripReport(value);
       return;
     }
     const int fileLength = static_cast<int>(file.GetLength());
@@ -220,13 +236,15 @@ private:
         ++liveNations;
       }
     }
-    CString entry;
-    entry.Format("\n    {\"saved_file\": \"written\", \"bytes\": %d, \"magic_ok\": %s, "
-                 "\"format_version\": %d, \"live_nation_records\": %d}\n  ]",
-                 fileLength, header[0] == kControlTagAMBI ? "true" : "false", header[1],
-                 liveNations);
-    report += entry;
-    RecordSerializationRoundtripReport(report);
+    if (json_object_set_string(report, "saved_file", "written") != JSONSuccess ||
+        json_object_set_number(report, "bytes", fileLength) != JSONSuccess ||
+        json_object_set_boolean(report, "magic_ok", header[0] == kControlTagAMBI) != JSONSuccess ||
+        json_object_set_number(report, "format_version", header[1]) != JSONSuccess ||
+        json_object_set_number(report, "live_nation_records", liveNations) != JSONSuccess) {
+      json_value_free(value);
+      return;
+    }
+    RecordSerializationRoundtripReport(value);
   }
 
   int savedTurn;
@@ -235,11 +253,9 @@ private:
   int savedDifficulty;
   int savedScenarioMap;
   CString savedPath;
-  CString beforeSaveSnapshot;
-  CString afterLoadSnapshot;
   CString beforePersistentState;
   CString afterPersistentState;
-  CString snapshotDifference;
+  CString stateDifference;
 };
 
 } // namespace

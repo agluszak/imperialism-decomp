@@ -7,7 +7,7 @@ use imperialism_core::{
     NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
     PopulationState, ProductionTable, ResourceTable, RngState, STRATEGIC_MAP_HEIGHT,
     STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId,
-    TileState, TurnCalendar, TurnState, WorldState,
+    TileState, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -26,7 +26,7 @@ const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacySaveHeader {
+pub(crate) struct LegacySaveHeader {
     pub format_version: u32,
     pub saved_session_slot: i32,
     pub save_label: String,
@@ -39,7 +39,7 @@ pub struct LegacySaveHeader {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyGameSetup {
+pub(crate) struct LegacyGameSetup {
     pub multiplayer_game_active: u8,
     pub nation_control_modes: [i16; 7],
     pub city_minister_policy_ids: [i16; 7],
@@ -50,7 +50,7 @@ pub struct LegacyGameSetup {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacySimulationPrefix {
+pub(crate) struct LegacySimulationPrefix {
     pub language_code: u32,
     pub economic_turn: i16,
     pub active_nation: i16,
@@ -74,28 +74,22 @@ pub struct LegacySimulationPrefix {
     pub nation_names: Vec<String>,
 }
 
-impl LegacySimulationPrefix {
-    pub const fn calendar(&self) -> TurnCalendar {
-        TurnCalendar::new(self.starting_year, self.economic_turn)
-    }
-}
-
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct LegacySaveV62 {
-    pub header: LegacySaveHeader,
-    pub simulation: LegacySimulationPrefix,
-    pub animator_idle_frequency: i32,
-    pub map: LegacyMapState,
-    pub ocean: LegacyOceanState,
-    pub navy: LegacyNavyState,
-    pub army_report_count: u16,
+    header: LegacySaveHeader,
+    simulation: LegacySimulationPrefix,
+    animator_idle_frequency: i32,
+    map: LegacyMapState,
+    ocean: LegacyOceanState,
+    navy: LegacyNavyState,
+    army_report_count: u16,
     /// Byte position immediately after `TArmyMgr`; nation records start here.
-    pub remaining_manager_chain_offset: usize,
-    pub major_nations: Vec<LegacyMajorNationState>,
-    pub minor_nations: Vec<LegacyMinorState>,
-    pub help: LegacyHelpState,
+    remaining_manager_chain_offset: usize,
+    major_nations: Vec<LegacyMajorNationState>,
+    minor_nations: Vec<LegacyMinorState>,
+    help: LegacyHelpState,
     /// Must equal the input length for a complete, non-trailing v62 save.
-    pub end_offset: usize,
+    end_offset: usize,
 }
 
 /// Runtime-only state that the retail save format does not persist.
@@ -108,7 +102,7 @@ pub struct LegacyGameStateContext {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyZone {
+pub(crate) struct LegacyZone {
     pub display_name: String,
     pub status_code: i16,
     pub tile_or_terrain_id: i32,
@@ -119,14 +113,14 @@ pub struct LegacyZone {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyOceanState {
+pub(crate) struct LegacyOceanState {
     pub zones: Vec<LegacyZone>,
     pub port_zones: Vec<LegacyZone>,
     pub route_segments: Vec<[i32; 4]>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyShip {
+pub(crate) struct LegacyShip {
     pub ship_type: i16,
     pub aggression: i32,
     pub nation: i16,
@@ -138,7 +132,7 @@ pub struct LegacyShip {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyAdmiral {
+pub(crate) struct LegacyAdmiral {
     pub nation: i16,
     pub name: String,
     pub experience: i16,
@@ -146,7 +140,7 @@ pub struct LegacyAdmiral {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyTaskForce {
+pub(crate) struct LegacyTaskForce {
     pub aggression: i32,
     pub order: i32,
     pub target_ordinal: i16,
@@ -157,7 +151,7 @@ pub struct LegacyTaskForce {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyNavyState {
+pub(crate) struct LegacyNavyState {
     /// Head-first runtime order, matching canonical snapshot IDs.
     pub ships: Vec<LegacyShip>,
     pub admirals: Vec<LegacyAdmiral>,
@@ -165,7 +159,7 @@ pub struct LegacyNavyState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyMilitaryUnit {
+pub(crate) struct LegacyMilitaryUnit {
     pub unit_type: i16,
     pub stationed_province: i16,
     pub order_target: i16,
@@ -184,7 +178,7 @@ pub struct LegacyMilitaryUnit {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyCountryBase {
+pub(crate) struct LegacyCountryBase {
     pub identity: String,
     pub alternate_identity: String,
     pub nation_slot: i16,
@@ -200,7 +194,7 @@ pub struct LegacyCountryBase {
 }
 
 impl LegacyCountryBase {
-    pub fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
+    fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
         self.military_units
             .iter()
             .enumerate()
@@ -228,7 +222,7 @@ impl LegacyCountryBase {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyGreatPowerPrefix {
+pub(crate) struct LegacyGreatPowerPrefix {
     pub diplomacy_eligible: u8,
     pub capacities: [i16; 4],
     pub grant_total_cost: i32,
@@ -253,13 +247,13 @@ pub struct LegacyGreatPowerPrefix {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyFixedRecordList {
+pub(crate) struct LegacyFixedRecordList {
     pub record_size: u16,
     pub records: Vec<Vec<u8>>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyPopulationState {
+pub(crate) struct LegacyPopulationState {
     pub count: i16,
     pub strength: i16,
     pub extra: i16,
@@ -272,13 +266,13 @@ pub struct LegacyPopulationState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyCityTask {
+pub(crate) struct LegacyCityTask {
     pub kind: u8,
     pub payload: Vec<u8>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyCityState {
+pub(crate) struct LegacyCityState {
     pub power_plant_upgrade_queued: u8,
     pub low_production: u8,
     pub low_stock: u8,
@@ -308,7 +302,7 @@ pub struct LegacyCityState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyForeignMinisterState {
+pub(crate) struct LegacyForeignMinisterState {
     pub skill_index: i16,
     pub scalar_fields: [i16; 7],
     pub purchase_priority_by_resource: [i16; 17],
@@ -320,7 +314,7 @@ pub struct LegacyForeignMinisterState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyInteriorMinisterState {
+pub(crate) struct LegacyInteriorMinisterState {
     pub skill_index: i16,
     pub scalar_prefix: [i16; 4],
     pub trailing_table: [i16; 7],
@@ -335,7 +329,7 @@ pub struct LegacyInteriorMinisterState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyDefenseMinisterState {
+pub(crate) struct LegacyDefenseMinisterState {
     pub skill_index: i16,
     pub scalar_fields: [i16; 2],
     pub recruit_order_count_by_type: [i16; 30],
@@ -344,14 +338,14 @@ pub struct LegacyDefenseMinisterState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyGreatPowerMinisters {
+pub(crate) struct LegacyGreatPowerMinisters {
     pub foreign: Option<LegacyForeignMinisterState>,
     pub interior: Option<LegacyInteriorMinisterState>,
     pub defense: Option<LegacyDefenseMinisterState>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyTown {
+pub(crate) struct LegacyTown {
     pub name: String,
     pub tile_index: i16,
     pub opaque_fields: [i16; 2],
@@ -365,7 +359,7 @@ pub struct LegacyTown {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyCivilianUnit {
+pub(crate) struct LegacyCivilianUnit {
     pub unit_type: i16,
     pub tile_index: i16,
     pub order_target: i16,
@@ -378,7 +372,7 @@ pub struct LegacyCivilianUnit {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyGreatPowerPostCity {
+pub(crate) struct LegacyGreatPowerPostCity {
     pub towns: Vec<LegacyTown>,
     pub civilian_units: Vec<LegacyCivilianUnit>,
     pub candidate_nation_flags: [u8; NATION_COUNT],
@@ -395,7 +389,7 @@ pub struct LegacyGreatPowerPostCity {
 }
 
 impl LegacyGreatPowerPostCity {
-    pub fn civilian_unit_states(&self, nation: NationId) -> Vec<CivilianUnitState> {
+    fn civilian_unit_states(&self, nation: NationId) -> Vec<CivilianUnitState> {
         self.civilian_units
             .iter()
             .enumerate()
@@ -417,7 +411,7 @@ impl LegacyGreatPowerPostCity {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyAutoGreatPowerPrefix {
+pub(crate) struct LegacyAutoGreatPowerPrefix {
     pub action_metric_by_quarter: [i16; 6],
     pub map_node_state_flags: [u8; 0x180],
     pub port_zone_state_flags: [u8; 0x70],
@@ -425,7 +419,7 @@ pub struct LegacyAutoGreatPowerPrefix {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyGreatPowerState {
+pub(crate) struct LegacyGreatPowerState {
     pub country: LegacyCountryBase,
     pub prefix: LegacyGreatPowerPrefix,
     pub ministers: LegacyGreatPowerMinisters,
@@ -434,14 +428,14 @@ pub struct LegacyGreatPowerState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyAutoGreatPowerState {
+pub(crate) struct LegacyAutoGreatPowerState {
     pub great_power: LegacyGreatPowerState,
     pub auto_prefix: LegacyAutoGreatPowerPrefix,
     pub missions: Vec<LegacyMission>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyMinorState {
+pub(crate) struct LegacyMinorState {
     pub country: LegacyCountryBase,
     pub need_current_by_type: [i16; RESOURCE_KIND_COUNT],
     pub trade_offers_by_resource: [i16; RESOURCE_KIND_COUNT],
@@ -453,13 +447,13 @@ pub struct LegacyMinorState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum LegacyMajorNationState {
+pub(crate) enum LegacyMajorNationState {
     Auto(Box<LegacyAutoGreatPowerState>),
     Other(Box<LegacyGreatPowerState>),
 }
 
 impl LegacyMajorNationState {
-    pub const fn great_power(&self) -> &LegacyGreatPowerState {
+    const fn great_power(&self) -> &LegacyGreatPowerState {
         match self {
             Self::Auto(nation) => &nation.great_power,
             Self::Other(nation) => nation,
@@ -468,7 +462,7 @@ impl LegacyMajorNationState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyHelpState {
+pub(crate) struct LegacyHelpState {
     pub index_records: LegacyFixedRecordList,
     pub civilian_completion_counters: [i16; 5],
     pub help_index_ready: i16,
@@ -480,7 +474,7 @@ pub struct LegacyHelpState {
 /// and every newly encountered runtime class and object consumes the next index.
 /// The state must therefore survive across all nation mission queues in one save.
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyMfcArchiveState {
+pub(crate) struct LegacyMfcArchiveState {
     entries: Vec<Option<String>>,
 }
 
@@ -493,7 +487,7 @@ impl Default for LegacyMfcArchiveState {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyArmyMission {
+pub(crate) struct LegacyArmyMission {
     pub present_location: i16,
     pub required_equipage_bits: [u32; 5],
     /// One-based ordinals in the owning nation's military-unit list.
@@ -501,7 +495,7 @@ pub struct LegacyArmyMission {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyNavyMission {
+pub(crate) struct LegacyNavyMission {
     pub target_zone: i16,
     pub resolved_port_zone: i16,
     pub required_equipage_bits: [u32; 4],
@@ -511,7 +505,7 @@ pub struct LegacyNavyMission {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyMission {
+pub(crate) struct LegacyMission {
     pub class: String,
     pub source_nation: i16,
     pub state: u8,
@@ -528,7 +522,7 @@ pub struct LegacyMission {
 }
 
 impl LegacyMission {
-    pub fn mission_state(
+    fn mission_state(
         &self,
         index: u32,
         nation: NationId,
@@ -637,7 +631,7 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
 }
 
 impl LegacyCityState {
-    pub fn city_state(&self, nation: NationId, home_town_tile: i16) -> CityState {
+    fn city_state(&self, nation: NationId, home_town_tile: i16) -> CityState {
         CityState {
             nation,
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
@@ -684,7 +678,7 @@ impl LegacyCityState {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct LegacyTerrainTile {
+pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
     pub owner_nation: i8,
     pub former_owner_nation: i8,
@@ -720,7 +714,7 @@ fn required_state<T>(value: Option<T>, name: &str) -> Result<T, LegacySaveError>
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyProvince {
+pub(crate) struct LegacyProvince {
     pub owner_nation: i8,
     pub former_owner_nation: i8,
     pub development_stage: i8,
@@ -732,7 +726,7 @@ pub struct LegacyProvince {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct LegacyMapState {
+pub(crate) struct LegacyMapState {
     pub initialized_flag: i16,
     pub search_state_active: u8,
     pub secondary_state: u8,
@@ -746,7 +740,7 @@ pub struct LegacyMapState {
 }
 
 impl LegacyMapState {
-    pub fn world_state(&self) -> WorldState {
+    fn world_state(&self) -> WorldState {
         WorldState {
             width: STRATEGIC_MAP_WIDTH,
             height: STRATEGIC_MAP_HEIGHT,
@@ -763,8 +757,14 @@ impl LegacyMapState {
 
 #[derive(Debug, thiserror::Error)]
 pub enum LegacySaveError {
-    #[error(transparent)]
-    Stream(#[from] StreamError),
+    #[error(
+        "legacy save ended at offset {offset:#x}: requested {requested} bytes, {remaining} remain"
+    )]
+    Truncated {
+        offset: usize,
+        requested: usize,
+        remaining: usize,
+    },
     #[error("invalid Imperialism save magic {0:?}")]
     InvalidMagic([u8; 4]),
     #[error(
@@ -785,6 +785,16 @@ pub enum LegacySaveError {
     InvalidMfcObject { offset: usize, detail: String },
     #[error("{0}")]
     StateProjection(String),
+}
+
+impl From<StreamError> for LegacySaveError {
+    fn from(error: StreamError) -> Self {
+        Self::Truncated {
+            offset: error.offset,
+            requested: error.requested,
+            remaining: error.remaining,
+        }
+    }
 }
 
 impl LegacySaveV62 {
@@ -931,6 +941,11 @@ impl LegacySaveV62 {
             help,
             end_offset,
         })
+    }
+
+    /// Projects the decoded strategic map into the semantic world state.
+    pub fn world_state(&self) -> WorldState {
+        self.map.world_state()
     }
 
     /// Projects the fully decoded save directly into live semantic state.
@@ -1145,7 +1160,7 @@ fn country_state(id: NationId, country: &LegacyCountryBase, data: NationData) ->
 /// The returned offset is the first byte of the derived `TGreatPower` or `TMinor`
 /// suffix. Keeping location separate from decoding lets the manager-chain parser
 /// choose the concrete retail nation class without embedding C++ layout in the DTO.
-pub fn parse_country_base_at(
+fn parse_country_base_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyCountryBase, usize), LegacySaveError> {
@@ -1164,7 +1179,7 @@ pub fn parse_country_base_at(
 /// The returned offset points just after the minister-presence byte, at the first
 /// optional minister or city payload. It includes the two turn/proposal queues and
 /// 17 diplomacy lists serialized as fixed-size `TSortedPtrList` records.
-pub fn parse_great_power_prefix_at(
+fn parse_great_power_prefix_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyGreatPowerPrefix, usize), LegacySaveError> {
@@ -1179,10 +1194,7 @@ pub fn parse_great_power_prefix_at(
 }
 
 /// Decodes the complete current-format `TCity` payload at an already-located city.
-pub fn parse_city_at(
-    bytes: &[u8],
-    offset: usize,
-) -> Result<(LegacyCityState, usize), LegacySaveError> {
+fn parse_city_at(bytes: &[u8], offset: usize) -> Result<(LegacyCityState, usize), LegacySaveError> {
     let remaining = bytes.get(offset..).ok_or(StreamError {
         offset,
         requested: 1,
@@ -1195,7 +1207,7 @@ pub fn parse_city_at(
 
 /// Decodes the optional minister payload selected by `TGreatPower`'s presence mask.
 /// The foreign policy ID matters only for Bill's one-byte derived suffix.
-pub fn parse_great_power_ministers_at(
+fn parse_great_power_ministers_at(
     bytes: &[u8],
     offset: usize,
     presence_mask: u8,
@@ -1211,7 +1223,7 @@ pub fn parse_great_power_ministers_at(
     Ok((ministers, offset + stream.position()))
 }
 
-pub fn parse_great_power_post_city_at(
+fn parse_great_power_post_city_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyGreatPowerPostCity, usize), LegacySaveError> {
@@ -1225,7 +1237,7 @@ pub fn parse_great_power_post_city_at(
     Ok((post_city, offset + stream.position()))
 }
 
-pub fn parse_auto_great_power_prefix_at(
+fn parse_auto_great_power_prefix_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyAutoGreatPowerPrefix, usize), LegacySaveError> {
@@ -1243,7 +1255,7 @@ pub fn parse_auto_great_power_prefix_at(
 ///
 /// `archive` is intentionally supplied by the caller because its class/object map
 /// spans the complete save stream rather than resetting at each nation.
-pub fn parse_missions_at(
+fn parse_missions_at(
     bytes: &[u8],
     offset: usize,
     count: u32,
@@ -1264,7 +1276,7 @@ pub fn parse_missions_at(
 
 /// Decodes the complete common `TGreatPower` record, stopping before any
 /// controller-specific derived suffix.
-pub fn parse_great_power_record_at(
+fn parse_great_power_record_at(
     bytes: &[u8],
     offset: usize,
     foreign_policy_id: i16,
@@ -1297,7 +1309,7 @@ pub fn parse_great_power_record_at(
 }
 
 /// Decodes one AI-controlled major nation and advances the shared MFC object map.
-pub fn parse_auto_great_power_record_at(
+fn parse_auto_great_power_record_at(
     bytes: &[u8],
     offset: usize,
     foreign_policy_id: i16,
@@ -1318,7 +1330,7 @@ pub fn parse_auto_great_power_record_at(
 }
 
 /// Decodes one v62 `TMinor` record including its current-format diplomacy extension.
-pub fn parse_minor_record_at(
+fn parse_minor_record_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyMinorState, usize), LegacySaveError> {
@@ -1342,7 +1354,7 @@ pub fn parse_minor_record_at(
     Ok((minor, suffix_offset + stream.position()))
 }
 
-pub fn parse_help_manager_at(
+fn parse_help_manager_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyHelpState, usize), LegacySaveError> {
@@ -2231,8 +2243,8 @@ mod tests {
         assert_eq!(save.simulation.minor_nation_count, 16);
         assert_eq!(save.simulation.turn_flow_status_flags, 0x40);
         assert_eq!(save.simulation.starting_year, 1914);
-        assert_eq!(save.simulation.calendar().year(), 1914);
-        assert_eq!(save.simulation.calendar().quarter(), 1);
+        assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).year(), 1914);
+        assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).quarter(), 1);
         assert_eq!(save.simulation.nation_names[0], "Zimm");
         assert_eq!(save.simulation.nation_names[6], " Testland");
         assert_eq!(save.simulation.nation_names[22], "Sindel");
@@ -2242,6 +2254,10 @@ mod tests {
         assert_eq!(save.map.no_horizontal_wrap, 0);
         assert_eq!(save.map.tiles[0].terrain_kind, 5);
         assert_eq!(save.map.tiles[0].owner_nation, 82);
+        let world = save.world_state();
+        assert_eq!(world.tiles.len(), 6480);
+        assert!(world.wraps_horizontally);
+        assert_eq!(world.tiles[0].terrain_kind, 5);
         assert!(!save.ocean.zones.is_empty());
         assert!(save.navy.ships.is_empty());
         assert!(save.navy.task_forces.is_empty());
@@ -2504,7 +2520,15 @@ mod tests {
         ));
         assert!(matches!(
             LegacySaveV62::parse(&RETAIL_FIXTURE[..100]),
-            Err(LegacySaveError::Stream(_))
+            Err(LegacySaveError::Truncated { .. })
+        ));
+        assert!(matches!(
+            LegacySaveV62::parse(&[]),
+            Err(LegacySaveError::Truncated {
+                offset: 0,
+                requested: 4,
+                remaining: 0,
+            })
         ));
     }
 }

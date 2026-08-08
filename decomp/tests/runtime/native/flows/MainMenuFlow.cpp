@@ -1,7 +1,6 @@
 #include "MainMenuFlow.h"
 
 #include "RuntimeObservations.h"
-#include "RuntimeJson.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 #include "screens/MainMenuScreen.h"
@@ -34,9 +33,7 @@ RuntimeFlowStatus MainMenuFlow::Advance(RuntimeScenario& scenario) {
     g_zoneStatusCodePrngSeed_006a5aec = scenario.RunState().Seed();
     RuntimeActionResult started = MainMenu().StartRandomGame();
     if (!started.Succeeded()) {
-      CString failureJson;
-      RuntimeJson::AppendString(failureJson, started.FailureMessage());
-      scenario.FailScenario(failureJson);
+      scenario.FailScenario(static_cast<LPCSTR>(started.FailureMessage()));
       return kRuntimeFlowRunning;
     }
     checkpoint = kRuntimeMainMenuRandomGameRequested;

@@ -5,6 +5,7 @@
 #endif
 
 #include "game/mfc.h"
+#include "parson.h"
 
 class RuntimeRun;
 class TMapDialog;
@@ -15,12 +16,12 @@ struct CRuntimeClass;
 TView* RuntimeMainView();
 const char* RuntimeClassName(TView* view);
 bool RuntimeIsViewKindOf(TView* view, CRuntimeClass* runtimeClass);
-CString CaptureRuntimeUiSnapshot(int eventCode, TView* root);
+JSON_Value* CaptureRuntimeUiSnapshot(int eventCode, TView* root);
 // Every tree reachable right now: the main view, plus each modal on g_ModalViewStack from
 // the head down. Written into the result file whenever a run does not pass, because a
 // selector that failed to resolve is exactly when an author needs to see the real tag
 // hierarchy instead of guessing it from a UI builder. `just runtime-tree` prints it.
-CString CaptureRuntimeCurrentUiTree();
+JSON_Value* CaptureRuntimeCurrentUiTree();
 void CaptureRuntimeMapState(RuntimeRun& run);
 bool VerifyRuntimeStrategicCoastCornerComposite(TMapDialog* mapDialog);
 bool VerifyRuntimeMiniMapViewportFrame(TMiniMapView* miniMap);

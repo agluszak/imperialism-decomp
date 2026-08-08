@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+from contextlib import redirect_stdout
+from io import StringIO
 import json
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from unittest.mock import patch
 
+from tools.runtime import tree
 from tools.runtime.tree import newest_run_result, render_tree
 
 
@@ -138,6 +142,75 @@ class NewestRunResultTest(unittest.TestCase):
     def test_missing_result_is_none(self):
         with TemporaryDirectory() as raw:
             self.assertIsNone(newest_run_result(Path(raw), "trade"))
+
+
+class TreeCommandTest(unittest.TestCase):
+    @staticmethod
+    def _tree() -> dict:
+        return {
+            "role": "main_view",
+            "class": "TTradeScreenPicture",
+            "nodes": [_node("main#1", None, "main", "TTradeScreenPicture")],
+        }
+
+    def _write_result(self, root: Path, result: dict) -> None:
+        result_dir = root / "build-runtime-tests" / "runtime-results"
+        result_dir.mkdir(parents=True)
+        (result_dir / "trade.json").write_text(json.dumps(result), encoding="utf-8")
+
+    def test_reads_current_and_snapshots_from_nested_ui_capture(self) -> None:
+        with TemporaryDirectory() as raw:
+            root = Path(raw)
+            self._write_result(
+                root,
+                {
+                    "status": "failed",
+                    "captures": {
+                        "ui_tree": {
+                            "snapshots": [self._tree()],
+                            "current": [self._tree()],
+                            "capital_confirmation": None,
+                        }
+                    },
+                },
+            )
+            output = StringIO()
+            with (
+                patch("tools.runtime.tree.repo_root_from_file", return_value=root),
+                redirect_stdout(output),
+            ):
+                self.assertEqual(tree.main(["trade"]), 0)
+
+            self.assertIn("TTradeScreenPicture", output.getvalue())
+            output.seek(0)
+            output.truncate(0)
+            with (
+                patch("tools.runtime.tree.repo_root_from_file", return_value=root),
+                redirect_stdout(output),
+            ):
+                self.assertEqual(tree.main(["trade", "--snapshots"]), 0)
+
+            self.assertIn("TTradeScreenPicture", output.getvalue())
+
+    def test_does_not_fall_back_to_legacy_top_level_tree_fields(self) -> None:
+        with TemporaryDirectory() as raw:
+            root = Path(raw)
+            self._write_result(
+                root,
+                {
+                    "status": "failed",
+                    "captures": {},
+                    "current_ui_tree": [self._tree()],
+                },
+            )
+            output = StringIO()
+            with (
+                patch("tools.runtime.tree.repo_root_from_file", return_value=root),
+                redirect_stdout(output),
+            ):
+                self.assertEqual(tree.main(["trade"]), 1)
+
+            self.assertIn("No captures.ui_tree.current", output.getvalue())
 
 
 if __name__ == "__main__":

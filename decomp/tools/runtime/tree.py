@@ -6,8 +6,8 @@ number. Until now the only way to find those was to read the UI builders, or to 
 guess and watch `RuntimeUiDriver::RequireControl` reject it. Both are slow, and the builders
 are generated, so they describe the tags without describing the *hierarchy* a selector needs.
 
-The harness already serialises the whole tree; failed and held runs now record the live one
-under `current_ui_tree`. This renders it as an indented listing:
+The harness already serialises the whole tree; failed and held runs record the live one under
+`captures.ui_tree.current`. This renders it as an indented listing:
 
     TTradeScreenPicture                      (main_view, event=0x07d9)
       mcap  TNumberText            event=0x0001 actionable=0
@@ -137,7 +137,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--snapshots",
         action="store_true",
-        help="Render the recorded ui_snapshots instead of the live tree.",
+        help="Render captures.ui_tree.snapshots instead of the live tree.",
     )
     args = parser.parse_args(argv)
 
@@ -150,12 +150,18 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     result = json.loads(result_path.read_text(encoding="utf-8"))
+    summary = result.get("summary")
+    phase = summary.get("phase") if isinstance(summary, dict) else None
     print(f"# {result_path}")
-    print(f"# status={result.get('status')} phase={result.get('phase')}")
+    print(f"# status={result.get('status')} phase={phase}")
 
-    trees = result.get("ui_snapshots") if args.snapshots else result.get("current_ui_tree")
+    captures = result.get("captures")
+    ui_tree = captures.get("ui_tree") if isinstance(captures, dict) else None
+    if not isinstance(ui_tree, dict):
+        ui_tree = {}
+    trees = ui_tree.get("snapshots") if args.snapshots else ui_tree.get("current")
     if not isinstance(trees, list) or not trees:
-        which = "ui_snapshots" if args.snapshots else "current_ui_tree"
+        which = "captures.ui_tree.snapshots" if args.snapshots else "captures.ui_tree.current"
         print(f"\nNo {which} recorded in this result.")
         if not args.snapshots:
             # The live tree is deliberately only captured when it is useful.

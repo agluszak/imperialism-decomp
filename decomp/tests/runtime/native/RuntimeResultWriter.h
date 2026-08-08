@@ -5,7 +5,5 @@
 #endif
 
 class RuntimeRun;
-class RuntimeScenario;
 
-bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* status,
-                        const char* failureJson);
+bool WriteRuntimeResult(RuntimeRun& run, const char* status);

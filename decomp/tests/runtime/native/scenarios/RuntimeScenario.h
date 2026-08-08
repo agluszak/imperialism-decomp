@@ -5,6 +5,7 @@
 
 #include "RuntimeTestCase.h"
 #include "flows/RuntimeFlow.h"
+#include "parson.h"
 
 class CString;
 class RuntimeContext;
@@ -48,9 +49,7 @@ protected:
   virtual RuntimeFlow* NavigationFlow();
   virtual void OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint);
   void Pass();
-  // `failure` is a pre-escaped JSON fragment (call sites write "\"text\""). Prefer
-  // FailScenarioText for anything new: it takes plain text and escapes it once here
-  // instead of at every call site.
+  // Failure text is ordinary text. The result writer owns JSON encoding at publication.
   void FailScenario(const char* failure);
   void FailScenarioText(const char* failure);
   // As above, but naming the assertion rather than letting it default to the phase name. A
@@ -64,8 +63,6 @@ protected:
   void SetSelectedNation(short nationSlot);
   bool AdvanceNewspaperIfNeeded();
   void ResetNewspaperAdvance();
-  void RecordHandledModal(const char* label);
-  void RecordUnexpectedModalView(TView* modal);
   bool HasScenarioUiSnapshot() const;
   void CaptureScenarioUiSnapshot(int eventCode, TView* root);
   // Snapshot whatever screen is up, for a scenario whose interesting screen is the one it is
@@ -75,9 +72,9 @@ protected:
   // The run being executed. Subclasses need it to read the phase name and the armed wait
   // when building a failure diagnostic; flows already reach it through friendship.
   RuntimeRun& RunState() const;
-  // Per-class serialization round-trip findings, emitted verbatim into the result file
-  // under "serialization_roundtrip" (null when no scenario recorded any).
-  void RecordSerializationRoundtripReport(const CString& reportJson);
+  // Takes ownership of a per-class serialization round-trip report under the dedicated
+  // capture name. A scenario records it only when that test actually ran.
+  void RecordSerializationRoundtripReport(JSON_Value* report);
 
 private:
   // The phase-machine surface. Private with friendship rather than protected, so a scenario
@@ -105,7 +102,7 @@ private:
 
   void AdvanceDriver(unsigned int observationKinds);
   void AdvanceWaitingForManagers();
-  void Finish(const char* status, const char* failure);
+  void Finish(const char* status);
   void EnterFlowPhase(const char* phaseName, const char* action);
 
   RuntimeRun* run;

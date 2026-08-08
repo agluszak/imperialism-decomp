@@ -60,14 +60,6 @@ void RuntimeScriptFragment::ContinueFragmentAfterAction() {
   host->ContinueAfterAction();
 }
 
-void RuntimeScriptFragment::RecordHandledModalForFragment(const char* label) {
-  host->RecordHandledModal(label);
-}
-
-void RuntimeScriptFragment::RecordUnexpectedModalForFragment(TView* modal) {
-  host->RecordUnexpectedModalView(modal);
-}
-
 bool RuntimeScriptFragment::AdvanceNewspaperForFragment() {
   return host->AdvanceNewspaperIfNeeded();
 }

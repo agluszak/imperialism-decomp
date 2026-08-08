@@ -22,6 +22,7 @@ bevy = { version = "=0.19.0", default-features = false, features = [
     "bevy_render",
     "bevy_sprite",
     "bevy_sprite_render",
+    "bevy_state",
     "bevy_ui_render",
     "bevy_winit",
     "bmp",
@@ -33,6 +34,7 @@ bevy = { version = "=0.19.0", default-features = false, features = [
 ] }
 clap = { version = "4", features = ["derive"] }
 enum-map = { version = "2.7", features = ["serde"] }
+pelite = { version = "0.10.0", default-features = false, features = ["std"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_path_to_error = "0.1"

@@ -2,91 +2,78 @@
 
 #include "game/map/map_records.h"
 #include "game/map_generation/TMapMaker.h"
-#include "game/mfc.h"
+#include "parson.h"
 
 namespace {
 
-CString g_attemptsJson;
-CString g_oracleJson;
-unsigned int g_initialMapLcg;
-int g_attemptCount;
-int g_attemptDrawCount;
-CString g_terrainAttemptsJson;
-CString g_terrainOracleJson;
-int g_terrainAttemptCount;
-int g_topologyByte;
-int g_desertQuota;
-int g_mountainQuota;
-int g_hillsQuota;
-int g_forestQuota;
-int g_swampQuota;
-int g_riverCount;
-int g_regionRows;
-int g_regionColumns;
-int g_terrainRotationColumn;
+JSON_Value* g_currentCoarseGeneration = 0;
+JSON_Value* g_lastCoarseGeneration = 0;
+JSON_Object* g_currentCoarseAttempt = 0;
+int g_attemptDrawCount = 0;
+
+JSON_Value* g_terrainGeneration = 0;
+JSON_Value* g_currentTerrainAttemptValue = 0;
+JSON_Object* g_currentTerrainAttempt = 0;
+int g_topologyByte = 0;
+int g_terrainRotationColumn = -1;
 int g_terrainSeedCandidates[23];
 
-void AppendGrid(CString& json, const TMapMaker* mapMaker) {
-  json += "[";
-  for (int row = 0; row < 15; ++row) {
-    for (int column = 0; column < 27; ++column) {
-      CString item;
-      item.Format("%s%d", row == 0 && column == 0 ? "" : ",",
-                  static_cast<int>(mapMaker->regionClassGrid10[row][column]));
-      json += item;
-    }
+void ReplaceValue(JSON_Value*& destination, JSON_Value* value) {
+  if (destination != 0) {
+    json_value_free(destination);
   }
-  json += "]";
+  destination = value;
 }
 
-void AppendCityRegionIds(CString& json, const TMapMaker* mapMaker) {
-  json += "[";
-  for (int index = 0; index < 23; ++index) {
-    CString item;
-    item.Format("%s%d", index == 0 ? "" : ",", mapMaker->cityRegionIds200[index]);
-    json += item;
-  }
-  json += "]";
-}
-
-void AppendGroupMembers(CString& json, const TMapMaker* mapMaker) {
-  json += "[";
-  for (int group = 0; group < 7; ++group) {
-    for (int member = 0; member < 3; ++member) {
-      CString item;
-      item.Format("%s%d", group == 0 && member == 0 ? "" : ",",
-                  mapMaker->groupMemberLists1a8[group][member]);
-      json += item;
-    }
-  }
-  json += "]";
-}
-
-void AppendExpandedTiles(CString& json, const TMapMaker* mapMaker) {
-  const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
-  json += "[";
-  for (int index = 0; index < 108 * 60; ++index) {
-    CString item;
-    item.Format("%s[%d,%d,%d]", index == 0 ? "" : ",",
-                static_cast<int>(tiles[index].GetTerrainKind()),
-                static_cast<int>(tiles[index].ownerNationTag04),
-                static_cast<int>(tiles[index].cityRecordIndex));
-    json += item;
-  }
-  json += "]";
-}
-
-void AppendExpandedProvinces(CString& json, const TMapMaker* mapMaker, int count) {
-  json += "[";
+JSON_Value* MakeNumberArray(const int* values, int count) {
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* array = json_value_get_array(value);
   for (int index = 0; index < count; ++index) {
-    const Province& province = mapMaker->cityScoreTable0c[index];
-    CString item;
-    item.Format("%s[%d,%d]", index == 0 ? "" : ",", static_cast<int>(province.ownerNationCode00),
-                static_cast<int>(province.regionClassA3));
-    json += item;
+    json_array_append_number(array, static_cast<double>(values[index]));
   }
-  json += "]";
+  return value;
+}
+
+JSON_Value* MakeGrid(const TMapMaker* mapMaker) {
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* grid = json_value_get_object(value);
+  JSON_Value* cellsValue = json_value_init_array();
+  JSON_Array* cells = json_value_get_array(cellsValue);
+  for (int row = 0; row < 15; ++row) {
+    JSON_Value* rowValue = json_value_init_array();
+    JSON_Array* rowArray = json_value_get_array(rowValue);
+    for (int column = 0; column < 27; ++column) {
+      json_array_append_number(rowArray,
+                               static_cast<double>(mapMaker->regionClassGrid10[row][column]));
+    }
+    json_array_append_value(cells, rowValue);
+  }
+  json_object_set_value(grid, "cells", cellsValue);
+  return value;
+}
+
+JSON_Value* MakeCityRegionIds(const TMapMaker* mapMaker) {
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* array = json_value_get_array(value);
+  for (int index = 0; index < 23; ++index) {
+    json_array_append_number(array, static_cast<double>(mapMaker->cityRegionIds200[index]));
+  }
+  return value;
+}
+
+JSON_Value* MakeGroupMembers(const TMapMaker* mapMaker) {
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* groups = json_value_get_array(value);
+  for (int group = 0; group < 7; ++group) {
+    JSON_Value* membersValue = json_value_init_array();
+    JSON_Array* members = json_value_get_array(membersValue);
+    for (int member = 0; member < 3; ++member) {
+      json_array_append_number(members,
+                               static_cast<double>(mapMaker->groupMemberLists1a8[group][member]));
+    }
+    json_array_append_value(groups, membersValue);
+  }
+  return value;
 }
 
 int ExpandedProvinceCount(const TMapMaker* mapMaker) {
@@ -100,6 +87,41 @@ int ExpandedProvinceCount(const TMapMaker* mapMaker) {
     }
   }
   return count;
+}
+
+JSON_Value* MakeExpandedTiles(const TMapMaker* mapMaker) {
+  const TTerrainStateRecord* tiles =
+      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* array = json_value_get_array(value);
+  for (int index = 0; index < 108 * 60; ++index) {
+    JSON_Value* tileValue = json_value_init_object();
+    JSON_Object* tile = json_value_get_object(tileValue);
+    json_object_set_number(tile, "terrain_kind",
+                           static_cast<double>(tiles[index].GetTerrainKind()));
+    json_object_set_number(tile, "owner_nation",
+                           static_cast<double>(tiles[index].ownerNationTag04));
+    json_object_set_number(tile, "province_index",
+                           static_cast<double>(tiles[index].cityRecordIndex));
+    json_array_append_value(array, tileValue);
+  }
+  return value;
+}
+
+JSON_Value* MakeExpandedProvinces(const TMapMaker* mapMaker, int count) {
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* array = json_value_get_array(value);
+  for (int index = 0; index < count; ++index) {
+    const Province& province = mapMaker->cityScoreTable0c[index];
+    JSON_Value* provinceValue = json_value_init_object();
+    JSON_Object* provinceObject = json_value_get_object(provinceValue);
+    json_object_set_number(provinceObject, "owner_nation",
+                           static_cast<double>(province.ownerNationCode00));
+    json_object_set_number(provinceObject, "region_class",
+                           static_cast<double>(province.regionClassA3));
+    json_array_append_value(array, provinceValue);
+  }
+  return value;
 }
 
 unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnership) {
@@ -123,7 +145,8 @@ unsigned int HashTerrainTiles(const TMapMaker* mapMaker, bool ignoreWaterOwnersh
   return hash;
 }
 
-void AppendTerrainCounts(CString& json, const TMapMaker* mapMaker) {
+JSON_Value* MakeTerrainStage(const TMapMaker* mapMaker, unsigned int mapLcg,
+                             bool ignoreWaterOwnership) {
   int counts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
   const TTerrainStateRecord* tiles =
       static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
@@ -137,56 +160,37 @@ void AppendTerrainCounts(CString& json, const TMapMaker* mapMaker) {
       ++riverTileCount;
     }
   }
-  CString value;
-  value.Format("[%d,%d,%d,%d,%d,%d,%d,%d],\"river_tile_count\":%d", counts[0], counts[1], counts[2],
-               counts[3], counts[4], counts[5], counts[6], counts[7], riverTileCount);
-  json += value;
-}
-
-void AppendTerrainStage(CString& json, const char* stageName, const TMapMaker* mapMaker,
-                        unsigned int mapLcg) {
-  CString prefix;
-  prefix.Format(",\"%s\":{\"map_lcg\":%u,\"tile_hash\":%u,\"terrain_counts\":", stageName, mapLcg,
-                HashTerrainTiles(mapMaker, false));
-  json += prefix;
-  AppendTerrainCounts(json, mapMaker);
-  json += "}";
-}
-
-void AppendTerrainTiles(CString& json, const TMapMaker* mapMaker) {
-  const TTerrainStateRecord* tiles =
-      static_cast<const TTerrainStateRecord*>(static_cast<const void*>(mapMaker->mapTileGrid08));
-  json += "[";
-  for (int index = 0; index < 108 * 60; ++index) {
-    CString item;
-    item.Format("%s[%d,%u,%d,%d,%d]", index == 0 ? "" : ",",
-                static_cast<int>(tiles[index].GetTerrainKind()),
-                static_cast<unsigned int>(tiles[index].riverSpriteCode),
-                static_cast<int>(tiles[index].ownerNationTag04),
-                static_cast<int>(tiles[index].gateFlag),
-                static_cast<int>(tiles[index].cityRecordIndex));
-    json += item;
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* stage = json_value_get_object(value);
+  json_object_set_number(stage, "map_lcg", static_cast<double>(mapLcg));
+  json_object_set_number(stage, "tile_hash",
+                         static_cast<double>(HashTerrainTiles(mapMaker, ignoreWaterOwnership)));
+  JSON_Value* countsValue = json_value_init_array();
+  JSON_Array* terrainCounts = json_value_get_array(countsValue);
+  for (int terrainIndex = 0; terrainIndex < 8; ++terrainIndex) {
+    json_array_append_number(terrainCounts, static_cast<double>(counts[terrainIndex]));
   }
-  json += "]";
-}
-
-void AppendTerrainSeedCandidates(CString& json) {
-  json += "[";
-  for (int index = 0; index < 23; ++index) {
-    CString item;
-    item.Format("%s%d", index == 0 ? "" : ",", g_terrainSeedCandidates[index]);
-    json += item;
-  }
-  json += "]";
+  json_object_set_value(stage, "terrain_counts", countsValue);
+  json_object_set_number(stage, "river_tile_count", static_cast<double>(riverTileCount));
+  return value;
 }
 
 } // namespace
 
 void RuntimeCoarseMapOracleReset(unsigned int initialMapLcg) {
-  g_attemptsJson = "[";
-  g_oracleJson.Empty();
-  g_initialMapLcg = initialMapLcg;
-  g_attemptCount = 0;
+  (void)initialMapLcg;
+  ReplaceValue(g_currentCoarseGeneration, 0);
+  ReplaceValue(g_lastCoarseGeneration, 0);
+  g_currentCoarseAttempt = 0;
+  g_attemptDrawCount = 0;
+}
+
+void RuntimeCoarseMapOracleBeginGenerationAttempt(unsigned int initialMapLcg) {
+  ReplaceValue(g_currentCoarseGeneration, json_value_init_object());
+  JSON_Object* generation = json_value_get_object(g_currentCoarseGeneration);
+  json_object_set_number(generation, "initial_map_lcg", static_cast<double>(initialMapLcg));
+  json_object_set_value(generation, "attempts", json_value_init_array());
+  g_currentCoarseAttempt = 0;
   g_attemptDrawCount = 0;
 }
 
@@ -199,102 +203,119 @@ void RuntimeCoarseMapOracleRecordDraw() {
 }
 
 void RuntimeCoarseMapOracleCaptureSeededAttempt(const TMapMaker* mapMaker, unsigned int mapLcg) {
-  CString prefix;
-  prefix.Format("%s{\"index\":%d,\"draw_count\":%d,\"map_lcg_after_seeding\":%u,"
-                "\"pre_validation_grid\":",
-                g_attemptCount == 0 ? "" : ",", g_attemptCount, g_attemptDrawCount, mapLcg);
-  g_attemptsJson += prefix;
-  AppendGrid(g_attemptsJson, mapMaker);
-  g_attemptsJson += ",\"city_region_next_id\":";
-  CString nextId;
-  nextId.Format("%d", mapMaker->cityRegionNextId1fc);
-  g_attemptsJson += nextId;
-  g_attemptsJson += ",\"city_region_ids\":";
-  AppendCityRegionIds(g_attemptsJson, mapMaker);
-  g_attemptsJson += ",\"group_members\":";
-  AppendGroupMembers(g_attemptsJson, mapMaker);
+  if (g_currentCoarseGeneration == 0) {
+    return;
+  }
+  JSON_Object* generation = json_value_get_object(g_currentCoarseGeneration);
+  JSON_Array* attempts = json_object_get_array(generation, "attempts");
+  JSON_Value* attemptValue = json_value_init_object();
+  JSON_Object* attempt = json_value_get_object(attemptValue);
+  json_object_set_number(attempt, "draw_count", static_cast<double>(g_attemptDrawCount));
+  json_object_set_number(attempt, "map_lcg_after_seeding", static_cast<double>(mapLcg));
+  json_object_set_value(attempt, "pre_validation_grid", MakeGrid(mapMaker));
+  json_object_set_number(attempt, "city_region_next_id",
+                         static_cast<double>(mapMaker->cityRegionNextId1fc));
+  json_object_set_value(attempt, "city_region_ids", MakeCityRegionIds(mapMaker));
+  json_object_set_value(attempt, "group_members", MakeGroupMembers(mapMaker));
+  json_array_append_value(attempts, attemptValue);
+  g_currentCoarseAttempt = attempt;
 }
 
 void RuntimeCoarseMapOracleFinishAttempt(const TMapMaker* mapMaker, int errorCheckFailed,
                                          int hasContinuousOceanColumn, int frontierMaskComplete,
                                          int accepted, unsigned int mapLcg) {
-  g_attemptsJson += ",\"post_validation_grid\":";
-  AppendGrid(g_attemptsJson, mapMaker);
-  CString tail;
-  tail.Format(",\"error_check_failed\":%d,\"has_continuous_ocean_column\":%d,"
-              "\"frontier_mask_complete\":%d,\"accepted\":%d,"
-              "\"map_lcg_after_validation\":%u}",
-              errorCheckFailed, hasContinuousOceanColumn, frontierMaskComplete, accepted, mapLcg);
-  g_attemptsJson += tail;
-  ++g_attemptCount;
+  if (g_currentCoarseAttempt == 0) {
+    return;
+  }
+  json_object_set_value(g_currentCoarseAttempt, "post_validation_grid", MakeGrid(mapMaker));
+  json_object_set_boolean(g_currentCoarseAttempt, "error_check_failed", errorCheckFailed != 0);
+  if (hasContinuousOceanColumn < 0) {
+    json_object_set_null(g_currentCoarseAttempt, "has_continuous_ocean_column");
+  } else {
+    json_object_set_boolean(g_currentCoarseAttempt, "has_continuous_ocean_column",
+                            hasContinuousOceanColumn != 0);
+  }
+  if (frontierMaskComplete < 0) {
+    json_object_set_null(g_currentCoarseAttempt, "frontier_mask_complete");
+  } else {
+    json_object_set_boolean(g_currentCoarseAttempt, "frontier_mask_complete",
+                            frontierMaskComplete != 0);
+  }
+  json_object_set_boolean(g_currentCoarseAttempt, "accepted", accepted != 0);
+  json_object_set_number(g_currentCoarseAttempt, "map_lcg_after_validation",
+                         static_cast<double>(mapLcg));
+  g_currentCoarseAttempt = 0;
 }
 
 void RuntimeCoarseMapOracleCaptureExpansion(const TMapMaker* mapMaker, unsigned int mapLcg) {
-  g_attemptsJson += "]";
-  CString header;
-  header.Format("{\"initial_map_lcg\":%u,\"attempt_count\":%d,\"attempts\":%s,"
-                "\"accepted_map_lcg\":%u,\"accepted_grid\":",
-                g_initialMapLcg, g_attemptCount, static_cast<LPCSTR>(g_attemptsJson), mapLcg);
-  g_oracleJson = header;
-  AppendGrid(g_oracleJson, mapMaker);
-  g_oracleJson += ",\"city_region_next_id\":";
-  CString nextId;
-  nextId.Format("%d", mapMaker->cityRegionNextId1fc);
-  g_oracleJson += nextId;
-  g_oracleJson += ",\"city_region_ids\":";
-  AppendCityRegionIds(g_oracleJson, mapMaker);
-  g_oracleJson += ",\"group_members\":";
-  AppendGroupMembers(g_oracleJson, mapMaker);
+  if (g_currentCoarseGeneration == 0) {
+    return;
+  }
+  JSON_Object* generation = json_value_get_object(g_currentCoarseGeneration);
+  json_object_set_number(generation, "accepted_map_lcg", static_cast<double>(mapLcg));
+  json_object_set_value(generation, "accepted_grid", MakeGrid(mapMaker));
+  json_object_set_number(generation, "city_region_next_id",
+                         static_cast<double>(mapMaker->cityRegionNextId1fc));
+  json_object_set_value(generation, "city_region_ids", MakeCityRegionIds(mapMaker));
+  json_object_set_value(generation, "group_members", MakeGroupMembers(mapMaker));
   int provinceCount = ExpandedProvinceCount(mapMaker);
-  CString count;
-  count.Format(",\"expanded_province_count\":%d,\"expanded_tile_fields\":"
-               "[\"terrain_kind\",\"owner_nation\",\"province_index\"],"
-               "\"expanded_tiles\":",
-               provinceCount);
-  g_oracleJson += count;
-  AppendExpandedTiles(g_oracleJson, mapMaker);
-  g_oracleJson += ",\"expanded_provinces\":";
-  AppendExpandedProvinces(g_oracleJson, mapMaker, provinceCount);
-  g_oracleJson += "}";
+  json_object_set_value(generation, "expanded_tiles", MakeExpandedTiles(mapMaker));
+  json_object_set_value(generation, "expanded_provinces",
+                        MakeExpandedProvinces(mapMaker, provinceCount));
+  ReplaceValue(g_lastCoarseGeneration, json_value_deep_copy(g_currentCoarseGeneration));
 }
 
-const CString& RuntimeCoarseMapOracleJson() {
-  return g_oracleJson;
+const JSON_Value* RuntimeCoarseMapOracleValue() {
+  return g_lastCoarseGeneration;
 }
 
-void RuntimeTerrainMapOracleReset(int topologyByte, int desertQuota, int mountainQuota,
-                                  int hillsQuota, int forestQuota, int swampQuota, int riverCount,
-                                  int regionRows, int regionColumns) {
-  g_terrainAttemptsJson = "[";
-  g_terrainOracleJson.Empty();
-  g_terrainAttemptCount = 0;
+void RuntimeTerrainMapOracleReset(unsigned int initialMapLcg, int topologyByte, int desertQuota,
+                                  int mountainQuota, int hillsQuota, int forestQuota,
+                                  int swampQuota, int riverCount, int regionRows,
+                                  int regionColumns) {
+  if (g_currentTerrainAttemptValue != 0) {
+    json_value_free(g_currentTerrainAttemptValue);
+    g_currentTerrainAttemptValue = 0;
+  }
+  ReplaceValue(g_terrainGeneration, json_value_init_object());
+  g_currentTerrainAttempt = 0;
   g_topologyByte = topologyByte;
-  g_desertQuota = desertQuota;
-  g_mountainQuota = mountainQuota;
-  g_hillsQuota = hillsQuota;
-  g_forestQuota = forestQuota;
-  g_swampQuota = swampQuota;
-  g_riverCount = riverCount;
-  g_regionRows = regionRows;
-  g_regionColumns = regionColumns;
+  JSON_Object* generation = json_value_get_object(g_terrainGeneration);
+  JSON_Value* tuningValue = json_value_init_object();
+  JSON_Object* tuning = json_value_get_object(tuningValue);
+  json_object_set_number(tuning, "desert_quota", static_cast<double>(desertQuota));
+  json_object_set_number(tuning, "mountain_quota", static_cast<double>(mountainQuota));
+  json_object_set_number(tuning, "hills_quota", static_cast<double>(hillsQuota));
+  json_object_set_number(tuning, "forest_quota", static_cast<double>(forestQuota));
+  json_object_set_number(tuning, "swamp_quota", static_cast<double>(swampQuota));
+  json_object_set_number(tuning, "river_count", static_cast<double>(riverCount));
+  json_object_set_number(tuning, "region_seed_rows", static_cast<double>(regionRows));
+  json_object_set_number(tuning, "region_seed_columns", static_cast<double>(regionColumns));
+  json_object_set_value(generation, "tuning", tuningValue);
+  json_object_set_number(generation, "initial_map_lcg", static_cast<double>(initialMapLcg));
+  json_object_set_value(generation, "attempts", json_value_init_array());
+  json_object_set_number(generation, "final_map_lcg", static_cast<double>(initialMapLcg));
 }
 
 void RuntimeTerrainMapOracleBeginAttempt(const TMapMaker* mapMaker, unsigned int mapLcg) {
+  if (g_terrainGeneration == 0 || g_lastCoarseGeneration == 0) {
+    return;
+  }
   g_terrainRotationColumn = -1;
-  CString prefix;
-  prefix.Format("%s{\"index\":%d,\"map_lcg_after_expansion\":%u,"
-                "\"after_expansion\":{\"map_lcg\":%u,\"tile_hash\":%u,"
-                "\"terrain_counts\":",
-                g_terrainAttemptCount == 0 ? "" : ",", g_terrainAttemptCount, mapLcg, mapLcg,
-                HashTerrainTiles(mapMaker, false));
-  g_terrainAttemptsJson += prefix;
-  AppendTerrainCounts(g_terrainAttemptsJson, mapMaker);
-  g_terrainAttemptsJson += "}";
+  JSON_Value* attemptValue = json_value_init_object();
+  JSON_Object* attempt = json_value_get_object(attemptValue);
+  json_object_set_value(attempt, "coarse_generation", json_value_deep_copy(g_lastCoarseGeneration));
+  json_object_set_value(attempt, "after_expansion", MakeTerrainStage(mapMaker, mapLcg, false));
+  g_currentTerrainAttemptValue = attemptValue;
+  g_currentTerrainAttempt = attempt;
 }
 
 void RuntimeTerrainMapOracleCaptureStage(const char* stageName, const TMapMaker* mapMaker,
                                          unsigned int mapLcg) {
-  AppendTerrainStage(g_terrainAttemptsJson, stageName, mapMaker, mapLcg);
+  if (g_currentTerrainAttempt != 0) {
+    json_object_set_value(g_currentTerrainAttempt, stageName,
+                          MakeTerrainStage(mapMaker, mapLcg, false));
+  }
 }
 
 void RuntimeTerrainMapOracleRecordRotationColumn(int column) {
@@ -302,13 +323,10 @@ void RuntimeTerrainMapOracleRecordRotationColumn(int column) {
 }
 
 void RuntimeTerrainMapOracleCaptureKeywordStage(const TMapMaker* mapMaker, unsigned int mapLcg) {
-  CString prefix;
-  prefix.Format(",\"after_keyword\":{\"map_lcg\":%u,\"tile_hash\":%u,"
-                "\"terrain_counts\":",
-                mapLcg, HashTerrainTiles(mapMaker, true));
-  g_terrainAttemptsJson += prefix;
-  AppendTerrainCounts(g_terrainAttemptsJson, mapMaker);
-  g_terrainAttemptsJson += "}";
+  if (g_currentTerrainAttempt != 0) {
+    json_object_set_value(g_currentTerrainAttempt, "after_keyword",
+                          MakeTerrainStage(mapMaker, mapLcg, true));
+  }
 }
 
 void RuntimeTerrainMapOracleResetSeedCandidates() {
@@ -321,30 +339,30 @@ void RuntimeTerrainMapOracleRecordSeedCandidate(int terrainClass, int tileIndex)
   g_terrainSeedCandidates[terrainClass] = tileIndex;
 }
 
-void RuntimeTerrainMapOracleFinishAttempt(const TMapMaker* mapMaker, int accepted,
-                                          unsigned int mapLcg) {
-  CString tail;
-  tail.Format(",\"accepted\":%d,\"map_lcg_after_validation\":%u,\"rotation_column\":%d,"
-              "\"seed_candidate_tiles\":",
-              accepted, mapLcg, g_terrainRotationColumn);
-  g_terrainAttemptsJson += tail;
-  AppendTerrainSeedCandidates(g_terrainAttemptsJson);
-  g_terrainAttemptsJson += ",\"tile_fields\":[\"terrain_kind\",\"river_sprite_code\","
-                           "\"owner_nation\",\"gate_flag\",\"province_index\"],\"tiles\":";
-  AppendTerrainTiles(g_terrainAttemptsJson, mapMaker);
-  g_terrainAttemptsJson += "}";
-  ++g_terrainAttemptCount;
+void RuntimeTerrainMapOracleFinishAttempt(int accepted, unsigned int mapLcg) {
+  if (g_currentTerrainAttempt == 0 || g_currentTerrainAttemptValue == 0 ||
+      g_terrainRotationColumn < 0) {
+    return;
+  }
+  json_object_set_number(g_currentTerrainAttempt, "map_lcg_after_validation",
+                         static_cast<double>(mapLcg));
+  json_object_set_number(g_currentTerrainAttempt, "rotation_column",
+                         static_cast<double>(g_terrainRotationColumn));
+  json_object_set_value(g_currentTerrainAttempt, "seed_candidate_tiles",
+                        MakeNumberArray(g_terrainSeedCandidates, 23));
+  json_object_set_boolean(g_currentTerrainAttempt, "accepted", accepted != 0);
+  JSON_Object* generation = json_value_get_object(g_terrainGeneration);
+  JSON_Array* attempts = json_object_get_array(generation, "attempts");
+  json_array_append_value(attempts, g_currentTerrainAttemptValue);
+  json_object_set_number(generation, "final_map_lcg", static_cast<double>(mapLcg));
+  g_currentTerrainAttemptValue = 0;
+  g_currentTerrainAttempt = 0;
 }
 
-const CString& RuntimeTerrainMapOracleJson() {
-  CString header;
-  header.Format("{\"topology_byte\":%d,\"tuning\":{\"desert_quota\":%d,"
-                "\"mountain_quota\":%d,\"hills_quota\":%d,\"forest_quota\":%d,"
-                "\"swamp_quota\":%d,\"river_count\":%d,\"region_seed_rows\":%d,"
-                "\"region_seed_columns\":%d},\"attempt_count\":%d,\"attempts\":%s]}",
-                g_topologyByte, g_desertQuota, g_mountainQuota, g_hillsQuota, g_forestQuota,
-                g_swampQuota, g_riverCount, g_regionRows, g_regionColumns, g_terrainAttemptCount,
-                static_cast<LPCSTR>(g_terrainAttemptsJson));
-  g_terrainOracleJson = header;
-  return g_terrainOracleJson;
+const JSON_Value* RuntimeTerrainMapOracleValue() {
+  return g_terrainGeneration;
+}
+
+int RuntimeTerrainMapOracleTopologyByte() {
+  return g_topologyByte;
 }

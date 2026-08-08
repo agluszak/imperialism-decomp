@@ -1,13 +1,11 @@
 mod runtime;
 mod startup;
 
-pub use runtime::{
-    DespawnUiView, InteractiveUiWidget, LegacyWidgetClass, PresentedRetailPicture,
-    PresentedRetailText, PresentedUiNode, PresentedViewId, SpawnUiView, UiCatalogResource,
-    UiIntent, UiPictureBindingError, UiPictureBindingFailed, UiPictureLookup, UiRuntimePlugin,
-    UiRuntimeSet, UiSpawnError, UiTextBindingError, UiTextBindingFailed, UiViewRoot,
-    UiViewSpawnFailed, UiViewSpawned, UiWidgetFlags, ViewInstanceId, WidgetTag,
+pub(crate) use runtime::UiCatalogResource;
+#[cfg(test)]
+pub(crate) use runtime::UiViewRoot;
+pub(crate) use runtime::{
+    DespawnUiView, InteractiveUiWidget, PresentedViewId, SpawnUiView, UiIntent, UiRuntimePlugin,
+    UiRuntimeSet, UiViewSpawned, UiWidgetFlags, ViewInstanceId, WidgetTag,
 };
-pub use startup::{
-    StartupScreenInstances, StartupUiPlugin, main_menu_view_id, random_setup_view_id,
-};
+pub(crate) use startup::StartupUiPlugin;

@@ -97,35 +97,39 @@ def normalize_native_combined_map(result: Mapping[str, Any]) -> dict[str, Any]:
     """Reduce a native driver result to the stable combined-map schema."""
     if result.get("status") != "passed":
         raise ValueError(f"native driver did not pass: {result.get('status')!r}")
-    state = _require_mapping(result.get("state"), "native state")
-    map_state = _require_mapping(result.get("map_state"), "native map_state")
-    root_class = state.get("root_class")
+    captures = _require_mapping(result.get("captures"), "native captures")
+    map_state = _require_mapping(captures.get("map_state"), "native map_state")
+    root_class = map_state.get("root_class")
     if root_class != "TMapUberPicture":
         raise ValueError(f"native active view is {root_class!r}, expected TMapUberPicture")
     return {
         "checkpoint_id": CHECKPOINT_COMBINED_MAP_READY,
         "action_id": ACTION_COMBINED_MAP_ENTRY,
-        "turn_event": _require_int(state.get("turn_event"), "native turn_event"),
+        "turn_event": _require_int(map_state.get("turn_event"), "native turn_event"),
         "active_view": "strategic_map",
         "nation": {
-            "active": _require_int(state.get("active_nation"), "native active_nation"),
+            "active": _require_int(
+                map_state.get("active_nation"), "native active_nation"
+            ),
             "economic_turn": _require_int(
-                state.get("economic_turn"), "native economic_turn"
+                map_state.get("economic_turn"), "native economic_turn"
             ),
         },
         "map": {
-            "present": _require_bool(state.get("global_map"), "native global_map"),
+            "present": _require_bool(
+                map_state.get("global_map"), "native global_map"
+            ),
             "wrap": _require_int(map_state.get("wrap"), "native map wrap"),
         },
         "city_orders": {
             "city_present": _require_bool(
-                state.get("city_present"), "native city_present"
+                map_state.get("city_present"), "native city_present"
             ),
             "production_orders": _require_int_list(
-                state.get("production_orders"), "native production_orders"
+                map_state.get("production_orders"), "native production_orders"
             ),
             "production_flags": _require_int_list(
-                state.get("production_flags"), "native production_flags"
+                map_state.get("production_flags"), "native production_flags"
             ),
         },
     }

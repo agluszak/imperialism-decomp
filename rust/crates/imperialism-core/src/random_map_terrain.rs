@@ -1,5 +1,7 @@
+#[cfg(feature = "differential-trace")]
+use crate::random_map::trace_coarse_random_map;
 use crate::{
-    CoarseMapGeneration, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry,
+    CoarseMap, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, MapGeometry,
     RANDOM_MAP_CLASS_COUNT, RetailLcg, RetailTopologyByte, TileId, generate_coarse_random_map,
 };
 use serde::{Deserialize, Serialize};
@@ -120,51 +122,116 @@ pub struct GeneratedTerrainTile {
     pub province_index: i16,
 }
 
+/// The final terrain map used to create a game. The supplied [`RetailLcg`] has
+/// advanced through every rejected attempt when this value is returned.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RandomMapTerrainAttempt {
-    pub coarse_generation: CoarseMapGeneration,
-    pub after_expansion: RandomMapTerrainStage,
-    pub after_templates: RandomMapTerrainStage,
-    pub after_features: RandomMapTerrainStage,
-    pub after_rotation: RandomMapTerrainStage,
-    pub after_water_regions: RandomMapTerrainStage,
-    pub after_keyword: RandomMapTerrainStage,
+pub struct GeneratedMap {
+    pub tiles: Vec<GeneratedTerrainTile>,
+    pub provinces: Vec<ExpandedProvinceSeed>,
+    pub seed_candidate_tiles: [i32; RANDOM_MAP_CLASS_COUNT],
+}
+
+#[cfg(feature = "differential-trace")]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RandomMapTerrainAttemptTrace {
+    pub coarse_generation: crate::random_map::CoarseMapTrace,
+    pub after_expansion: RandomMapTerrainStageTrace,
+    pub after_templates: RandomMapTerrainStageTrace,
+    pub after_features: RandomMapTerrainStageTrace,
+    pub after_rotation: RandomMapTerrainStageTrace,
+    pub after_water_regions: RandomMapTerrainStageTrace,
+    pub after_keyword: RandomMapTerrainStageTrace,
     pub map_lcg_after_validation: u32,
     pub rotation_column: usize,
     pub seed_candidate_tiles: [i32; RANDOM_MAP_CLASS_COUNT],
     pub accepted: bool,
-    pub tiles: Vec<GeneratedTerrainTile>,
 }
 
+#[cfg(feature = "differential-trace")]
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RandomMapTerrainStage {
+pub struct RandomMapTerrainStageTrace {
     pub map_lcg: u32,
     pub tile_hash: u32,
     pub terrain_counts: [u32; 8],
     pub river_tile_count: u32,
 }
 
+/// Test-only stage record emitted by the native differential harness. Normal
+/// generation returns [`GeneratedMap`] instead.
+#[cfg(feature = "differential-trace")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct RandomMapTerrainGeneration {
+pub struct RandomMapTerrainTrace {
     pub tuning: RandomMapTuning,
     pub initial_map_lcg: u32,
-    pub attempts: Vec<RandomMapTerrainAttempt>,
+    pub attempts: Vec<RandomMapTerrainAttemptTrace>,
     pub final_map_lcg: u32,
 }
 
-pub fn generate_random_map_terrain(
+#[cfg(feature = "differential-trace")]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RandomMapTerrainCapture {
+    pub scenario_tag: String,
+    pub retail_topology: RetailTopologyByte,
+    pub generation: RandomMapTerrainTrace,
+}
+
+pub fn generate_random_map(
     scenario_tag: &[u8],
     topology: RetailTopologyByte,
     rng: &mut RetailLcg,
-) -> RandomMapTerrainGeneration {
+) -> GeneratedMap {
+    let tuning = RandomMapTuning::from_scenario_tag(scenario_tag);
+    generate_random_map_impl(
+        scenario_tag,
+        topology,
+        tuning,
+        rng,
+        #[cfg(feature = "differential-trace")]
+        None,
+    )
+}
+
+#[cfg(feature = "differential-trace")]
+pub fn trace_random_map_terrain(
+    scenario_tag: &[u8],
+    topology: RetailTopologyByte,
+    rng: &mut RetailLcg,
+) -> RandomMapTerrainTrace {
     let tuning = RandomMapTuning::from_scenario_tag(scenario_tag);
     let initial_map_lcg = rng.state();
-    let geometry = MapGeometry::new(topology.wraps_horizontally());
     let mut attempts = Vec::new();
+    let _map = generate_random_map_impl(scenario_tag, topology, tuning, rng, Some(&mut attempts));
+    RandomMapTerrainTrace {
+        tuning,
+        initial_map_lcg,
+        attempts,
+        final_map_lcg: rng.state(),
+    }
+}
+
+fn generate_random_map_impl(
+    scenario_tag: &[u8],
+    topology: RetailTopologyByte,
+    tuning: RandomMapTuning,
+    rng: &mut RetailLcg,
+    #[cfg(feature = "differential-trace")] mut attempts: Option<
+        &mut Vec<RandomMapTerrainAttemptTrace>,
+    >,
+) -> GeneratedMap {
+    let geometry = MapGeometry::new(topology.wraps_horizontally());
     loop {
-        let coarse_generation = generate_coarse_random_map(rng);
-        let mut tiles = coarse_generation
-            .expanded_tiles
+        #[cfg(feature = "differential-trace")]
+        let (coarse_map, coarse_trace) = if attempts.is_some() {
+            let trace = trace_coarse_random_map(rng);
+            (trace.final_map(), Some(trace))
+        } else {
+            (generate_coarse_random_map(rng), None)
+        };
+        #[cfg(not(feature = "differential-trace"))]
+        let coarse_map = generate_coarse_random_map(rng);
+
+        let (expanded_tiles, provinces) = coarse_map.expanded_seed_data();
+        let mut tiles = expanded_tiles
             .iter()
             .map(|tile| GeneratedTerrainTile {
                 terrain_kind: tile.terrain_kind,
@@ -175,13 +242,26 @@ pub fn generate_random_map_terrain(
             })
             .collect::<Vec<_>>();
 
-        let after_expansion = summarize_stage(&tiles, rng.state());
-        randomize_templates_and_smooth(&mut tiles, &coarse_generation, geometry, rng);
-        let after_templates = summarize_stage(&tiles, rng.state());
+        #[cfg(feature = "differential-trace")]
+        let after_expansion = attempts
+            .as_ref()
+            .map(|_| summarize_stage(&tiles, rng.state()));
+        randomize_templates_and_smooth(&mut tiles, &coarse_map, geometry, rng);
+        #[cfg(feature = "differential-trace")]
+        let after_templates = attempts
+            .as_ref()
+            .map(|_| summarize_stage(&tiles, rng.state()));
         place_terrain_features(&mut tiles, geometry, tuning, rng);
-        let after_features = summarize_stage(&tiles, rng.state());
+        #[cfg(feature = "differential-trace")]
+        let after_features = attempts
+            .as_ref()
+            .map(|_| summarize_stage(&tiles, rng.state()));
+        #[allow(unused_variables)]
         let rotation_column = rotate_map_columns(&mut tiles);
-        let after_rotation = summarize_stage(&tiles, rng.state());
+        #[cfg(feature = "differential-trace")]
+        let after_rotation = attempts
+            .as_ref()
+            .map(|_| summarize_stage(&tiles, rng.state()));
         generate_water_region_ids(
             &mut tiles,
             geometry,
@@ -189,50 +269,62 @@ pub fn generate_random_map_terrain(
             tuning.region_seed_columns,
             rng,
         );
-        let after_water_regions = summarize_stage(&tiles, rng.state());
+        #[cfg(feature = "differential-trace")]
+        let after_water_regions = attempts
+            .as_ref()
+            .map(|_| summarize_stage(&tiles, rng.state()));
         apply_scenario_keyword_override(&mut tiles, scenario_tag, rng);
-        let after_keyword = summarize_keyword_stage(&tiles, rng.state());
+        #[cfg(feature = "differential-trace")]
+        let after_keyword = attempts
+            .as_ref()
+            .map(|_| summarize_keyword_stage(&tiles, rng.state()));
         let (accepted, seed_candidate_tiles) = validate_seed_candidates(&tiles, geometry, rng);
-        let map_lcg_after_validation = rng.state();
-        attempts.push(RandomMapTerrainAttempt {
-            coarse_generation,
-            after_expansion,
-            after_templates,
-            after_features,
-            after_rotation,
-            after_water_regions,
-            after_keyword,
-            map_lcg_after_validation,
-            rotation_column,
-            seed_candidate_tiles,
-            accepted,
-            tiles,
-        });
-        if accepted {
-            break;
+        #[cfg(feature = "differential-trace")]
+        if let Some(attempts) = &mut attempts {
+            attempts.push(RandomMapTerrainAttemptTrace {
+                coarse_generation: coarse_trace.expect("trace collection selects a coarse trace"),
+                after_expansion: after_expansion.expect("trace collection summarizes expansion"),
+                after_templates: after_templates.expect("trace collection summarizes templates"),
+                after_features: after_features.expect("trace collection summarizes features"),
+                after_rotation: after_rotation.expect("trace collection summarizes rotation"),
+                after_water_regions: after_water_regions
+                    .expect("trace collection summarizes water regions"),
+                after_keyword: after_keyword.expect("trace collection summarizes scenario keyword"),
+                map_lcg_after_validation: rng.state(),
+                rotation_column,
+                seed_candidate_tiles,
+                accepted,
+            });
         }
-    }
-    RandomMapTerrainGeneration {
-        tuning,
-        initial_map_lcg,
-        attempts,
-        final_map_lcg: rng.state(),
+        if accepted {
+            return GeneratedMap {
+                tiles,
+                provinces,
+                seed_candidate_tiles,
+            };
+        }
     }
 }
 
-fn summarize_stage(tiles: &[GeneratedTerrainTile], map_lcg: u32) -> RandomMapTerrainStage {
+#[cfg(feature = "differential-trace")]
+fn summarize_stage(tiles: &[GeneratedTerrainTile], map_lcg: u32) -> RandomMapTerrainStageTrace {
     summarize_stage_with_water_ownership(tiles, map_lcg, true)
 }
 
-fn summarize_keyword_stage(tiles: &[GeneratedTerrainTile], map_lcg: u32) -> RandomMapTerrainStage {
+#[cfg(feature = "differential-trace")]
+fn summarize_keyword_stage(
+    tiles: &[GeneratedTerrainTile],
+    map_lcg: u32,
+) -> RandomMapTerrainStageTrace {
     summarize_stage_with_water_ownership(tiles, map_lcg, false)
 }
 
+#[cfg(feature = "differential-trace")]
 fn summarize_stage_with_water_ownership(
     tiles: &[GeneratedTerrainTile],
     map_lcg: u32,
     include_water_ownership: bool,
-) -> RandomMapTerrainStage {
+) -> RandomMapTerrainStageTrace {
     let mut tile_hash = 0x811c_9dc5_u32;
     let mut terrain_counts = [0_u32; 8];
     let mut river_tile_count = 0;
@@ -267,7 +359,7 @@ fn summarize_stage_with_water_ownership(
             river_tile_count += 1;
         }
     }
-    RandomMapTerrainStage {
+    RandomMapTerrainStageTrace {
         map_lcg,
         tile_hash,
         terrain_counts,
@@ -277,7 +369,7 @@ fn summarize_stage_with_water_ownership(
 
 fn randomize_templates_and_smooth(
     tiles: &mut [GeneratedTerrainTile],
-    coarse: &CoarseMapGeneration,
+    coarse: &CoarseMap,
     geometry: MapGeometry,
     rng: &mut RetailLcg,
 ) {
@@ -1077,9 +1169,9 @@ fn full_neighbor(geometry: MapGeometry, tile: usize, direction: usize) -> Option
         .map(|tile| usize::from(tile.get()))
 }
 
-fn coarse_class(coarse: &CoarseMapGeneration, index: i32) -> i16 {
+fn coarse_class(coarse: &CoarseMap, index: i32) -> i16 {
     coarse
-        .accepted_grid
+        .grid
         .flattened()
         .nth(index as usize)
         .map(i16::from)
@@ -1122,6 +1214,24 @@ fn copy_tile(tiles: &mut [GeneratedTerrainTile], destination: i32, source: i32) 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn final_tile_hash(tiles: &[GeneratedTerrainTile]) -> u32 {
+        tiles.iter().fold(0x811c_9dc5, |hash, tile| {
+            let province = tile.province_index.to_le_bytes();
+            [
+                tile.terrain_kind as u8,
+                tile.river_sprite_code,
+                tile.owner_nation as u8,
+                tile.gate_flag as u8,
+                province[0],
+                province[1],
+            ]
+            .into_iter()
+            .fold(hash, |hash, byte| {
+                (hash ^ u32::from(byte)).wrapping_mul(0x0100_0193)
+            })
+        })
+    }
 
     #[test]
     fn parses_retail_defaults_and_case_sensitive_option_modifiers() {
@@ -1241,64 +1351,46 @@ mod tests {
     }
 
     #[test]
-    fn seed_one_reaches_the_retail_final_validation_boundary() {
+    fn seed_one_generates_the_retail_final_map_and_rng_state() {
         let mut rng = RetailLcg::from_state(3_122_877_655);
-        let generated = generate_random_map_terrain(
+        let generated = generate_random_map(
             b"ordinary",
             RetailTopologyByte::from_retail_byte(0),
             &mut rng,
         );
-        let final_attempt = generated.attempts.last().unwrap();
-        assert_eq!(generated.initial_map_lcg, 0xba23_54d7);
-        assert_eq!(generated.attempts.len(), 1);
+        assert_eq!(generated.provinces.len(), 120);
+        assert_eq!(generated.tiles.len(), TILE_COUNT);
+        let mut terrain_counts = [0_u32; 8];
+        for tile in &generated.tiles {
+            terrain_counts[usize::try_from(tile.terrain_kind).unwrap()] += 1;
+        }
+        assert_eq!(terrain_counts, [440, 252, 250, 156, 150, 4_538, 343, 351]);
         assert_eq!(
-            final_attempt.after_expansion,
-            RandomMapTerrainStage {
-                map_lcg: 0xa3eb_a49a,
-                tile_hash: 0x790c_a745,
-                terrain_counts: [1_920, 0, 0, 0, 0, 4_560, 0, 0],
-                river_tile_count: 0,
-            }
+            generated.seed_candidate_tiles,
+            [
+                2_987, 4_153, 2_044, 1_666, 3_319, 284, 259, 1_162, 245, 1_529, 1_863, 1_994,
+                1_698, 2_838, 2_013, 3_775, 4_732, 2_836, 2_680, 3_813, 3_833, 4_060, 4_608,
+            ]
         );
-        assert_eq!(
-            final_attempt.after_templates,
-            RandomMapTerrainStage {
-                map_lcg: 0xb54c_f16b,
-                tile_hash: 0xf353_0167,
-                terrain_counts: [1_942, 0, 0, 0, 0, 4_538, 0, 0],
-                river_tile_count: 0,
-            }
+        assert_eq!(final_tile_hash(&generated.tiles), 0xbcd9_91d8);
+        assert_eq!(rng.state(), 0x46a4_5026);
+    }
+
+    #[cfg(feature = "differential-trace")]
+    #[test]
+    fn trace_preserves_retail_stage_boundaries_when_requested() {
+        let mut rng = RetailLcg::from_state(3_122_877_655);
+        let trace = trace_random_map_terrain(
+            b"ordinary",
+            RetailTopologyByte::from_retail_byte(0),
+            &mut rng,
         );
-        assert_eq!(
-            final_attempt.after_features,
-            RandomMapTerrainStage {
-                map_lcg: 0x0d5d_5ad4,
-                tile_hash: 0x0b76_1e05,
-                terrain_counts: [440, 252, 250, 156, 150, 4_538, 343, 351],
-                river_tile_count: 72,
-            }
-        );
-        assert_eq!(
-            final_attempt.after_rotation,
-            RandomMapTerrainStage {
-                map_lcg: 0x0d5d_5ad4,
-                tile_hash: 0x099d_e4c5,
-                terrain_counts: [440, 252, 250, 156, 150, 4_538, 343, 351],
-                river_tile_count: 72,
-            }
-        );
-        assert_eq!(
-            final_attempt.after_water_regions,
-            RandomMapTerrainStage {
-                map_lcg: 0xd938_b2f4,
-                tile_hash: 0xbcd9_91d8,
-                terrain_counts: [440, 252, 250, 156, 150, 4_538, 343, 351],
-                river_tile_count: 72,
-            }
-        );
+        let final_attempt = trace.attempts.last().unwrap();
+        assert_eq!(trace.initial_map_lcg, 0xba23_54d7);
+        assert_eq!(trace.attempts.len(), 1);
         assert_eq!(
             final_attempt.after_keyword,
-            RandomMapTerrainStage {
+            RandomMapTerrainStageTrace {
                 map_lcg: 0xd938_b2f4,
                 tile_hash: 0x099d_e4c5,
                 terrain_counts: [440, 252, 250, 156, 150, 4_538, 343, 351],
@@ -1307,15 +1399,8 @@ mod tests {
         );
         assert!(final_attempt.accepted);
         assert_eq!(final_attempt.rotation_column, 26);
-        assert_eq!(
-            final_attempt.seed_candidate_tiles,
-            [
-                2_987, 4_153, 2_044, 1_666, 3_319, 284, 259, 1_162, 245, 1_529, 1_863, 1_994,
-                1_698, 2_838, 2_013, 3_775, 4_732, 2_836, 2_680, 3_813, 3_833, 4_060, 4_608,
-            ]
-        );
         assert_eq!(final_attempt.map_lcg_after_validation, 0x46a4_5026);
-        assert_eq!(generated.final_map_lcg, 0x46a4_5026);
-        assert_eq!(rng.state(), generated.final_map_lcg);
+        assert_eq!(trace.final_map_lcg, 0x46a4_5026);
+        assert_eq!(rng.state(), trace.final_map_lcg);
     }
 }

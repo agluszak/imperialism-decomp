@@ -9,7 +9,7 @@ import subprocess
 import time
 
 from tools.runtime.catalog import RuntimeTestSpec, apply_expected_failure
-from tools.runtime.protocol import read_json_file, validate_result
+from tools.runtime.protocol import FORMAT_VERSION, read_json_file, validate_result
 
 
 def _windows_path(path: Path) -> str:
@@ -24,7 +24,9 @@ def run_harness_selftest(
         raise SystemExit(f"missing {executable}; run `just runtime-test-build` first")
     result_dir.mkdir(parents=True, exist_ok=True)
     result_path = result_dir / f"{spec.name}.json"
+    native_result_path = result_dir / f"{spec.name}.native-result.json"
     result_path.unlink(missing_ok=True)
+    native_result_path.unlink(missing_ok=True)
     environment = os.environ.copy()
     environment.setdefault("WINEDEBUG", "-all")
     started = time.monotonic()
@@ -32,7 +34,7 @@ def run_harness_selftest(
         [
             "wine",
             _windows_path(executable),
-            _windows_path(result_path),
+            _windows_path(native_result_path),
             spec.name,
             str(seed),
         ],
@@ -43,12 +45,14 @@ def run_harness_selftest(
         text=True,
     )
     duration = time.monotonic() - started
-    result = read_json_file(result_path)
-    if result is None:
+    raw = read_json_file(native_result_path)
+    if raw is None:
         result = {
+            "format_version": FORMAT_VERSION,
             "name": spec.name,
             "seed": seed,
             "status": "failed",
+            "captures": {},
             "failure": (
                 "native harness self-test produced no result; "
                 f"exit={completed.returncode} stderr={completed.stderr.strip()}"
@@ -56,14 +60,20 @@ def run_harness_selftest(
         }
     else:
         try:
-            validate_result(result, spec.name, seed)
+            validate_result(raw, spec.name, seed)
         except ValueError as error:
             result = {
+                "format_version": FORMAT_VERSION,
                 "name": spec.name,
                 "seed": seed,
                 "status": "failed",
+                "captures": {},
                 "failure": f"invalid native harness self-test result: {error}",
             }
+        else:
+            result = dict(raw)
+    if result.get("status") == "failed" and not result.get("failure"):
+        result["failure"] = "native harness self-test failed"
     if completed.returncode != 0 and result.get("status") == "passed":
         result["status"] = "failed"
         result["failure"] = f"native harness self-test exited {completed.returncode}"
@@ -75,12 +85,11 @@ def run_harness_selftest(
     }
     result["summary"] = {
         "duration_seconds": round(duration, 3),
-        "phase": result.get("phase", "finished"),
+        "phase": "finished",
         "classification": None,
-        "action": result.get("last_action", "native_harness_self_test"),
+        "action": "native_harness_self_test",
         "artifact_path": str(result_path),
         "primary_failure": result.get("failure"),
-        "assertion_id": result.get("assertion_id"),
         "expectation_outcome": result.get("expectation_outcome"),
         "diagnostic_outcomes": [],
     }

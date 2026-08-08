@@ -5,7 +5,7 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 
 - `imperialism-core` owns deterministic game state and the command/event boundary. It has no
   Bevy dependency.
-- `imperialism-formats` parses retail files and imports retail assets.
+- `imperialism-formats` parses retail files and accesses retail assets directly.
 - `imperialism-app` is the only Bevy-dependent crate and owns presentation and lifecycle.
 - `imperialism-testkit` reads and verifies canonical snapshots and runs the process-isolated
   differential checks.
@@ -31,15 +31,12 @@ the implementations or add Cargo to the repository-root tooling.
 
 ## Normal retail launch
 
-Normal launch requires an explicit English GOG installation. The importer validates every required
-input and imports or reuses its content-addressed cache before Bevy constructs a window; the retail
-path is not persisted.
+Normal launch requires an explicit English GOG installation. The app validates the files it uses
+and reads them directly before Bevy constructs a window; the retail path is not persisted.
 
 ```sh
 cargo run -p imperialism-app -- --retail-dir /path/to/Imperialism
 ```
-
-Use `--cache-dir PATH` to override the platform cache directory.
 
 ## Recovered UI catalog
 
@@ -51,6 +48,6 @@ The existing UI generator also emits the deterministic 640x480 launch catalog co
 ```
 
 The catalog is generated from the committed Mac View IR plus declared Windows deltas. Resource IDs
-remain scoped by resource file, and each node preserves its retail rectangle, parent, tag, state,
-text/style bindings, historical class, and resource offset. Do not hand-write a second screen
-description in the Bevy crate.
+remain scoped by resource file, and each node carries its runtime rectangle, parent, tag, state,
+interactivity, and text/style bindings. Do not hand-write a second screen description in the Bevy
+crate.

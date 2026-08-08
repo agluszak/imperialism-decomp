@@ -1,7 +1,6 @@
 #include "RuntimeAssertionText.h"
 
 #include "RuntimeHarnessCore.h"
-#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeRun.h"
 
@@ -67,12 +66,6 @@ CString Failure(const RuntimeRun& run, const char* failureText, const char* file
   text.Format("%s\n%s", failureText != 0 ? failureText : "",
               static_cast<LPCSTR>(ContextBlock(run, file, line)));
   return text;
-}
-
-CString RequirementJson(const RuntimeRun& run, const char* expression, const char* file, int line) {
-  CString json;
-  RuntimeJson::AppendString(json, static_cast<LPCSTR>(Requirement(run, expression, file, line)));
-  return json;
 }
 
 const char* PhaseSlug(const char* text) {

@@ -21,7 +21,7 @@ RuntimeFlowStatus LoadGameFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kOpenFixture) {
     CString fixturePath(scenario.FixturePath());
     if (g_pAssetMgr->OpenMainDocumentFromPathAndMarkLoaded(fixturePath) == 0) {
-      scenario.FailScenario("\"saved-game fixture failed to open through the document path\"");
+      scenario.FailScenario("saved-game fixture failed to open through the document path");
       return kRuntimeFlowRunning;
     }
     phase = kWaitForMap;
@@ -41,7 +41,7 @@ RuntimeFlowStatus LoadGameFlow::Advance(RuntimeScenario& scenario) {
     }
     if (g_pGlobalMapState == 0 || g_pSimMgr->activeNationSlot < 0 ||
         g_pSimMgr->activeNationSlot >= 7) {
-      scenario.FailScenario("\"loaded game has no map state or valid active nation\"");
+      scenario.FailScenario("loaded game has no map state or valid active nation");
       return kRuntimeFlowRunning;
     }
     scenario.SetSelectedNation(g_pSimMgr->activeNationSlot);

@@ -1,9 +1,9 @@
 #include "RuntimeObservations.h"
 
-#include "RuntimeJson.h"
 #include "RuntimeRun.h"
 
 #include "game/core/global_data_tables.h"
+#include "game/city/TCity.h"
 #include "game/gfx/CDib.h"
 #include "game/gfx/TDisplayMgr.h"
 #include "game/globals/gfx_globals.h"
@@ -11,6 +11,7 @@
 #include "game/map/TMapUberPicture.h"
 #include "game/map/TMiniMapView.h"
 #include "game/map/TMapMgr.h"
+#include "game/nation/TGreatPower.h"
 #include "game/map_ui/TMapDialog.h"
 #include "game/ui_core/bitmap_descriptor_helpers.h"
 #include "game/ui_core/TControl.h"
@@ -91,57 +92,78 @@ CString ViewPath(TView* view, const CString& parentPath) {
   return path;
 }
 
-void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, bool& firstNode) {
+void AppendViewTreeNodes(JSON_Array* nodes, TView* view, const CString& parentPath) {
   if (view == 0) {
     return;
   }
   CString path = ViewPath(view, parentPath);
   char tag[5];
   FourCcText(static_cast<unsigned int>(view->controlTag), tag);
-  if (!firstNode) {
-    json += ",\n";
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* node = value != 0 ? json_value_get_object(value) : 0;
+  if (node == 0) {
+    json_value_free(value);
+    return;
   }
-  firstNode = false;
-  json += "      {\"path\": ";
-  RuntimeJson::AppendString(json, path);
-  json += ", \"parent\": ";
+  json_object_set_string(node, "path", path);
   if (parentPath.IsEmpty()) {
-    json += "null";
+    json_object_set_null(node, "parent");
   } else {
-    RuntimeJson::AppendString(json, parentPath);
+    json_object_set_string(node, "parent", parentPath);
   }
-  json += ", \"tag\": ";
-  RuntimeJson::AppendString(json, tag);
-  json += ", \"class\": ";
-  RuntimeJson::AppendString(json, RuntimeClassName(view));
-  CString fields;
-  fields.Format(", \"bounds\": [%d, %d, %d, %d], \"absolute\": [%d, %d], \"state\": %d, "
-                "\"enabled\": %d, \"control_value\": %d",
-                view->ownerLocalX, view->ownerLocalY, view->frameWidth34, view->frameHeight38,
-                view->absoluteX, view->absoluteY, view->enabled, view->viewEnabled,
-                view->controlValue3c);
-  json += fields;
+  json_object_set_string(node, "tag", tag);
+  json_object_set_string(node, "class", RuntimeClassName(view));
+  JSON_Value* boundsValue = json_value_init_array();
+  JSON_Array* bounds = boundsValue != 0 ? json_value_get_array(boundsValue) : 0;
+  JSON_Value* absoluteValue = json_value_init_array();
+  JSON_Array* absolute = absoluteValue != 0 ? json_value_get_array(absoluteValue) : 0;
+  if (bounds == 0 || absolute == 0 ||
+      json_array_append_number(bounds, view->ownerLocalX) != JSONSuccess ||
+      json_array_append_number(bounds, view->ownerLocalY) != JSONSuccess ||
+      json_array_append_number(bounds, view->frameWidth34) != JSONSuccess ||
+      json_array_append_number(bounds, view->frameHeight38) != JSONSuccess ||
+      json_array_append_number(absolute, view->absoluteX) != JSONSuccess ||
+      json_array_append_number(absolute, view->absoluteY) != JSONSuccess) {
+    json_value_free(boundsValue);
+    json_value_free(absoluteValue);
+    json_value_free(value);
+    return;
+  }
+  if (json_object_set_value(node, "bounds", boundsValue) != JSONSuccess) {
+    json_value_free(boundsValue);
+    json_value_free(absoluteValue);
+    json_value_free(value);
+    return;
+  }
+  boundsValue = 0;
+  if (json_object_set_value(node, "absolute", absoluteValue) != JSONSuccess) {
+    json_value_free(absoluteValue);
+    json_value_free(value);
+    return;
+  }
+  json_object_set_number(node, "state", view->enabled);
+  json_object_set_boolean(node, "enabled", view->viewEnabled != 0);
+  json_object_set_number(node, "control_value", view->controlValue3c);
   // The two facts a test author needs and cannot get from bounds or class alone: whether
   // the node will accept a semantic activation, and which event it raises when it does.
   // RuntimeUiDriver::RequireControl checks both, so a selector that omits them is guessing.
-  fields.Format(", \"actionable\": %d", view->IsActionable() ? 1 : 0);
-  json += fields;
+  json_object_set_boolean(node, "actionable", view->IsActionable() ? 1 : 0);
   if (view->IsKindOf(RUNTIME_CLASS(TControl)) != 0) {
     TControl* control = static_cast<TControl*>(view);
-    fields.Format(", \"event_number\": %d", control->GetEventNumber());
-    json += fields;
+    json_object_set_number(node, "event_number", control->GetEventNumber());
   }
   if (view->IsKindOf(RUNTIME_CLASS(TPicture)) != 0) {
     TPicture* picture = static_cast<TPicture*>(view);
-    fields.Format(", \"picture_id\": %d", static_cast<int>(picture->glyphBase84));
-    json += fields;
+    json_object_set_number(node, "picture_id", static_cast<int>(picture->glyphBase84));
   }
   if (view->IsKindOf(RUNTIME_CLASS(TStaticText)) != 0) {
     TStaticText* text = static_cast<TStaticText*>(view);
-    json += ", \"text\": ";
-    RuntimeJson::AppendString(json, text->text != 0 ? static_cast<LPCSTR>(*text->text) : "");
+    json_object_set_string(node, "text", text->text != 0 ? static_cast<LPCSTR>(*text->text) : "");
   }
-  json += "}";
+  if (json_array_append_value(nodes, value) != JSONSuccess) {
+    json_value_free(value);
+    return;
+  }
 
   if (view->childList44 == 0) {
     return;
@@ -149,8 +171,52 @@ void AppendViewTreeNodes(CString& json, TView* view, const CString& parentPath, 
   POSITION position = view->childList44->GetHeadPosition();
   while (position != 0) {
     TView* child = view->childList44->GetNext(position);
-    AppendViewTreeNodes(json, child, path, firstNode);
+    AppendViewTreeNodes(nodes, child, path);
   }
+}
+
+void AppendUiTree(JSON_Array* trees, const char* role, int depth, int eventCode, TView* root) {
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* tree = value != 0 ? json_value_get_object(value) : 0;
+  JSON_Value* nodesValue = json_value_init_array();
+  JSON_Array* nodes = nodesValue != 0 ? json_value_get_array(nodesValue) : 0;
+  if (tree == 0 || nodes == 0 || json_object_set_string(tree, "role", role) != JSONSuccess ||
+      json_object_set_number(tree, "event", eventCode) != JSONSuccess ||
+      json_object_set_string(tree, "class", RuntimeClassName(root)) != JSONSuccess) {
+    json_value_free(nodesValue);
+    json_value_free(value);
+    return;
+  }
+  if (depth != 0 && json_object_set_number(tree, "depth", depth) != JSONSuccess) {
+    json_value_free(nodesValue);
+    json_value_free(value);
+    return;
+  }
+  AppendViewTreeNodes(nodes, root, CString());
+  if (json_object_set_value(tree, "nodes", nodesValue) != JSONSuccess) {
+    json_value_free(nodesValue);
+    json_value_free(value);
+    return;
+  }
+  if (json_array_append_value(trees, value) != JSONSuccess) {
+    json_value_free(value);
+  }
+}
+
+bool AppendCityProduction(JSON_Array* entries, TCity* city, bool flags) {
+  if (entries == 0) {
+    return false;
+  }
+  for (int slot = 0; slot < 0x10; ++slot) {
+    int entry = -1;
+    if (city != 0) {
+      entry = flags ? city->productionFlags21c[slot] : city->productionOrderTable1dc[slot];
+    }
+    if (json_array_append_number(entries, entry) != JSONSuccess) {
+      return false;
+    }
+  }
+  return true;
 }
 
 } // namespace
@@ -409,33 +475,38 @@ bool CaptureRuntimeWindowBmp(const char* resultPath, HWND window, int width, int
   return wrote;
 }
 
-CString CaptureRuntimeUiSnapshot(int eventCode, TView* root) {
-  CString json;
-  CString header;
-  header.Format("    {\"event\": %d, \"nodes\": [\n", eventCode);
-  json += header;
-  bool firstNode = true;
-  AppendViewTreeNodes(json, root, CString(), firstNode);
-  json += "\n    ]}";
-  return json;
+JSON_Value* CaptureRuntimeUiSnapshot(int eventCode, TView* root) {
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* snapshot = value != 0 ? json_value_get_object(value) : 0;
+  JSON_Value* nodesValue = json_value_init_array();
+  JSON_Array* nodes = nodesValue != 0 ? json_value_get_array(nodesValue) : 0;
+  if (snapshot == 0 || nodes == 0 ||
+      json_object_set_number(snapshot, "event", eventCode) != JSONSuccess) {
+    json_value_free(nodesValue);
+    json_value_free(value);
+    return 0;
+  }
+  AppendViewTreeNodes(nodes, root, CString());
+  if (json_object_set_value(snapshot, "nodes", nodesValue) != JSONSuccess) {
+    json_value_free(nodesValue);
+    json_value_free(value);
+    return 0;
+  }
+  return value;
 }
 
-CString CaptureRuntimeCurrentUiTree() {
-  CString json("[");
-  bool firstTree = true;
+JSON_Value* CaptureRuntimeCurrentUiTree() {
+  JSON_Value* value = json_value_init_array();
+  JSON_Array* trees = value != 0 ? json_value_get_array(value) : 0;
+  if (trees == 0) {
+    json_value_free(value);
+    return 0;
+  }
   int currentEvent = g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1;
 
   TView* mainView = RuntimeMainView();
   if (mainView != 0) {
-    CString header;
-    header.Format("\n    {\"role\": \"main_view\", \"event\": %d, \"class\": \"%s\", "
-                  "\"nodes\": [\n",
-                  currentEvent, RuntimeClassName(mainView));
-    json += header;
-    bool firstNode = true;
-    AppendViewTreeNodes(json, mainView, CString(), firstNode);
-    json += "\n    ]}";
-    firstTree = false;
+    AppendUiTree(trees, "main_view", 0, currentEvent, mainView);
   }
 
   // Modals are separate roots, and RuntimeUiDriver resolves against the modal head first,
@@ -448,25 +519,13 @@ CString CaptureRuntimeCurrentUiTree() {
     if (modal == 0) {
       continue;
     }
-    if (!firstTree) {
-      json += ",";
-    }
-    CString header;
-    header.Format("\n    {\"role\": \"modal\", \"depth\": %d, \"event\": %d, "
-                  "\"class\": \"%s\", \"nodes\": [\n",
-                  depth, currentEvent, RuntimeClassName(modal));
-    json += header;
-    bool firstNode = true;
-    AppendViewTreeNodes(json, modal, CString(), firstNode);
-    json += "\n    ]}";
-    firstTree = false;
+    AppendUiTree(trees, "modal", depth, currentEvent, modal);
   }
-  json += "\n  ]";
-  return json;
+  return value;
 }
 
 void CaptureRuntimeMapState(RuntimeRun& run) {
-  if (g_pGlobalMapState == 0 || !run.MapStateJson().IsEmpty()) {
+  if (g_pGlobalMapState == 0 || run.HasCapture("map_state")) {
     return;
   }
   long terrainCounts[kStrategicTerrainCount + 1];
@@ -485,24 +544,112 @@ void CaptureRuntimeMapState(RuntimeRun& run) {
       ++ownedTiles[owner];
     }
   }
-  CString terrainJson("[");
-  CString item;
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* mapState = value != 0 ? json_value_get_object(value) : 0;
+  JSON_Value* terrainValue = json_value_init_array();
+  JSON_Array* terrain = terrainValue != 0 ? json_value_get_array(terrainValue) : 0;
+  JSON_Value* ownedValue = json_value_init_array();
+  JSON_Array* owned = ownedValue != 0 ? json_value_get_array(ownedValue) : 0;
+  JSON_Value* productionOrdersValue = json_value_init_array();
+  JSON_Array* productionOrders =
+      productionOrdersValue != 0 ? json_value_get_array(productionOrdersValue) : 0;
+  JSON_Value* productionFlagsValue = json_value_init_array();
+  JSON_Array* productionFlags =
+      productionFlagsValue != 0 ? json_value_get_array(productionFlagsValue) : 0;
+  if (mapState == 0 || terrain == 0 || owned == 0 || productionOrders == 0 ||
+      productionFlags == 0) {
+    json_value_free(terrainValue);
+    json_value_free(ownedValue);
+    json_value_free(productionOrdersValue);
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
   for (int kindIndex = 0; kindIndex <= kStrategicTerrainCount; ++kindIndex) {
-    item.Format("%s%ld", kindIndex == 0 ? "" : ", ", terrainCounts[kindIndex]);
-    terrainJson += item;
+    if (json_array_append_number(terrain, terrainCounts[kindIndex]) != JSONSuccess) {
+      json_value_free(terrainValue);
+      json_value_free(ownedValue);
+      json_value_free(productionOrdersValue);
+      json_value_free(productionFlagsValue);
+      json_value_free(value);
+      return;
+    }
   }
-  terrainJson += "]";
-  CString ownedJson("[");
   for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    item.Format("%s%ld", nationSlot == 0 ? "" : ", ", ownedTiles[nationSlot]);
-    ownedJson += item;
+    if (json_array_append_number(owned, ownedTiles[nationSlot]) != JSONSuccess) {
+      json_value_free(terrainValue);
+      json_value_free(ownedValue);
+      json_value_free(productionOrdersValue);
+      json_value_free(productionFlagsValue);
+      json_value_free(value);
+      return;
+    }
   }
-  ownedJson += "]";
-  run.MapStateJson().Format(
-      "{\"terrain_counts\": %s, \"owned_tiles\": %s, \"wrap\": %d, "
-      "\"representative_tile\": %d, \"economic_turn\": %d}",
-      static_cast<LPCSTR>(terrainJson), static_cast<LPCSTR>(ownedJson),
-      g_pGlobalMapState->hexNeighborWrapHorizontally,
-      g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(run.SelectedNationSlot()),
-      g_pSimMgr != 0 ? static_cast<int>(g_pSimMgr->economicTurn) : -1);
+  TGreatPower* activeNation = 0;
+  if (g_pSimMgr != 0 && g_pSimMgr->activeNationSlot >= 0 && g_pSimMgr->activeNationSlot < 7) {
+    activeNation = g_apNationStates[g_pSimMgr->activeNationSlot];
+  }
+  TCity* activeCity = activeNation != 0 ? activeNation->city : 0;
+  if (!AppendCityProduction(productionOrders, activeCity, false) ||
+      !AppendCityProduction(productionFlags, activeCity, true)) {
+    json_value_free(terrainValue);
+    json_value_free(ownedValue);
+    json_value_free(productionOrdersValue);
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
+  if (json_object_set_value(mapState, "terrain_counts", terrainValue) != JSONSuccess) {
+    json_value_free(terrainValue);
+    json_value_free(ownedValue);
+    json_value_free(productionOrdersValue);
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
+  terrainValue = 0;
+  if (json_object_set_value(mapState, "owned_tiles", ownedValue) != JSONSuccess) {
+    json_value_free(ownedValue);
+    json_value_free(productionOrdersValue);
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
+  ownedValue = 0;
+  if (json_object_set_value(mapState, "production_orders", productionOrdersValue) != JSONSuccess) {
+    json_value_free(productionOrdersValue);
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
+  productionOrdersValue = 0;
+  if (json_object_set_value(mapState, "production_flags", productionFlagsValue) != JSONSuccess) {
+    json_value_free(productionFlagsValue);
+    json_value_free(value);
+    return;
+  }
+  productionFlagsValue = 0;
+  if (json_object_set_number(mapState, "wrap", g_pGlobalMapState->hexNeighborWrapHorizontally) !=
+          JSONSuccess ||
+      json_object_set_number(mapState, "representative_tile",
+                             g_pGlobalMapState->ComputeRepresentativeTileIndexForNation(
+                                 run.SelectedNationSlot())) != JSONSuccess ||
+      json_object_set_number(mapState, "economic_turn",
+                             g_pSimMgr != 0 ? static_cast<int>(g_pSimMgr->economicTurn) : -1) !=
+          JSONSuccess ||
+      json_object_set_number(mapState, "turn_event",
+                             g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1) !=
+          JSONSuccess ||
+      json_object_set_string(mapState, "root_class", RuntimeClassName(RuntimeMainView())) !=
+          JSONSuccess ||
+      json_object_set_number(mapState, "active_nation",
+                             g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1) != JSONSuccess ||
+      json_object_set_number(mapState, "selected_nation", run.SelectedNationSlot()) !=
+          JSONSuccess ||
+      json_object_set_boolean(mapState, "city_present", activeCity != 0) != JSONSuccess ||
+      json_object_set_boolean(mapState, "global_map", g_pGlobalMapState != 0) != JSONSuccess) {
+    json_value_free(value);
+    return;
+  }
+  run.SetCapture("map_state", value);
 }

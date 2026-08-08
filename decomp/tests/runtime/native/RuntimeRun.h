@@ -6,6 +6,7 @@
 
 #include "game/mfc.h"
 #include "RuntimeHarnessCore.h"
+#include "parson.h"
 
 #include <windows.h>
 
@@ -14,9 +15,10 @@ class RuntimeScenario;
 class RuntimeRun {
 public:
   RuntimeRun();
+  ~RuntimeRun();
 
   void InitializeFromEnvironment();
-  void SetDescriptor(unsigned int snapshotFlags, const char* evidenceKind);
+  void SetDescriptor(unsigned int captureFlags);
   // Catalog-declared scenario policy (see RuntimeTestDescriptor).
   void SetScenarioPolicy(bool recordsGameFlow, const int* uiSnapshotEvents,
                          int uiSnapshotEventCount);
@@ -29,10 +31,14 @@ public:
   void ResetHeartbeat();
   void MarkProgress(const char* action);
   void MarkFallbackProgress();
-  void RecordAction(const char* action);
-  void RecordAssertion(const char* assertionId, const char* failureJson, bool fatal);
+  void RecordAssertion(const char* assertionId, const char* failure, bool fatal);
   RuntimeAwaitState& AwaitState();
   const RuntimeAwaitState& AwaitState() const;
+
+  // Takes ownership of value and replaces an existing capture with the same name.
+  void SetCapture(const char* name, JSON_Value* value);
+  bool HasCapture(const char* name) const;
+  JSON_Object* Captures() const;
 
   RuntimeScenario* Scenario() const;
   bool IsFinished() const;
@@ -57,8 +63,7 @@ public:
   bool HoldRequested() const;
   bool HoldAt(const char* target) const;
   bool SpinRequestedForCurrentPhase() const;
-  bool CapturesSnapshot(unsigned int flag) const;
-  const char* EvidenceKind() const;
+  bool RequestsCapture(unsigned int flag) const;
 
   short SelectedNationSlot() const;
   void SetSelectedNationSlot(short value);
@@ -67,26 +72,26 @@ public:
   bool NewspaperAdvanced() const;
   void SetNewspaperAdvanced(bool value);
 
-  CString& RandomSetupUiSnapshot();
-  CString& StrategicMapUiSnapshot();
-  CString& ScenarioUiSnapshot();
-  CString& CapitalConfirmationUiSnapshot();
-  CString& ActivatedEventSequence();
-  CString& HandledModals();
-  CString& UnexpectedModals();
-  CString& Faults();
-  CString& ActionLog();
+  void SetRandomSetupUiSnapshot(JSON_Value* value);
+  void SetStrategicMapUiSnapshot(JSON_Value* value);
+  void SetScenarioUiSnapshot(JSON_Value* value);
+  void SetCapitalConfirmationUiSnapshot(JSON_Value* value);
+  bool HasRandomSetupUiSnapshot() const;
+  bool HasStrategicMapUiSnapshot() const;
+  bool HasScenarioUiSnapshot() const;
+  JSON_Value* RandomSetupUiSnapshot() const;
+  JSON_Value* StrategicMapUiSnapshot() const;
+  JSON_Value* ScenarioUiSnapshot() const;
+  JSON_Value* CapitalConfirmationUiSnapshot() const;
   CString& LastFingerprint();
-  CString& MapStateJson();
-  CString& GameSnapshotJson();
-  CString& GeneratedWorldSnapshotJson();
-  CString& SerializationRoundtripJson();
-  CString AssertionFailuresJson() const;
   bool HasAssertionFailures() const;
   const char* FirstAssertionId() const;
-  const char* FirstFailureJson() const;
+  const char* FirstFailure() const;
 
 private:
+  void ClearJsonValues();
+  void InitializeJsonValues();
+
   RuntimeScenario* scenario;
   RuntimeProgressState progress;
   RuntimeAwaitState awaitState;
@@ -95,7 +100,7 @@ private:
   short selectedNationSlot;
   HWND mainWindowHandle;
   bool newspaperAdvanced;
-  unsigned int snapshotFlags;
+  unsigned int captureFlags;
   bool recordsGameFlow;
   const int* uiSnapshotEvents;
   int uiSnapshotEventCount;
@@ -106,21 +111,11 @@ private:
   char fixturePath[MAX_PATH];
   char holdTarget[48];
   char spinPhase[48];
-  char evidenceKind[32];
-  CString firstFailureJson;
-  CString randomSetupUiSnapshot;
-  CString strategicMapUiSnapshot;
-  CString scenarioUiSnapshot;
-  CString capitalConfirmationUiSnapshot;
-  CString activatedEventSequence;
-  CString handledModals;
-  CString unexpectedModals;
-  CString faults;
-  CString actionLog;
   CString lastFingerprint;
-  CString mapStateJson;
-  CString gameSnapshotJson;
-  CString generatedWorldSnapshotJson;
-  CString serializationRoundtripJson;
-  CString assertionFailures;
+  JSON_Value* capturesValue;
+  JSON_Object* captures;
+  JSON_Value* randomSetupUiSnapshot;
+  JSON_Value* strategicMapUiSnapshot;
+  JSON_Value* scenarioUiSnapshot;
+  JSON_Value* capitalConfirmationUiSnapshot;
 };

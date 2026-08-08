@@ -136,8 +136,8 @@ void TestSourceBasename() {
 
 void TestRegistryLookup() {
   RuntimeTestDescriptor descriptors[] = {
-      {"alpha", 0, kRuntimeSnapshotNone, "internal_invariant"},
-      {"beta", 0, kRuntimeSnapshotUi, "mac_resource_oracle"},
+      {"alpha", 0, kRuntimeCaptureNone, "internal_invariant"},
+      {"beta", 0, kRuntimeCaptureUiTree, "mac_resource_oracle"},
   };
   Expect("registry.first", FindRuntimeDescriptorIndex("alpha", descriptors, 2) == 0,
          "registry missed its first descriptor");
@@ -163,12 +163,19 @@ void TestResultAggregation() {
 }
 
 void TestJsonAndAtomicWriting(const char* resultPath) {
-  char escaped[128];
-  bool escapedOkay =
-      EscapeRuntimeJsonString("quote=\" slash=\\ line=\n tab=\t", escaped, sizeof(escaped));
-  Expect("json.escape",
-         escapedOkay && strcmp(escaped, "\"quote=\\\" slash=\\\\ line=\\n tab=\\t\"") == 0,
-         "JSON escaping changed semantics");
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* object = value != 0 ? json_value_get_object(value) : 0;
+  const char* original = "quote=\" slash=\\ line=\n tab=\t";
+  bool built = object != 0 && json_object_set_string(object, "text", original) == JSONSuccess;
+  char* serialized = built ? json_serialize_to_string(value) : 0;
+  JSON_Value* parsed = serialized != 0 ? json_parse_string(serialized) : 0;
+  JSON_Object* parsedObject = parsed != 0 ? json_value_get_object(parsed) : 0;
+  const char* restored = parsedObject != 0 ? json_object_get_string(parsedObject, "text") : 0;
+  Expect("json.string_roundtrip", restored != 0 && strcmp(restored, original) == 0,
+         "Parson did not preserve a quoted control-string value");
+  json_value_free(parsed);
+  json_free_serialized_string(serialized);
+  json_value_free(value);
 
   char probePath[MAX_PATH];
   lstrcpynA(probePath, resultPath, sizeof(probePath));
@@ -192,26 +199,52 @@ void TestJsonAndAtomicWriting(const char* resultPath) {
 
 void TestParsonDom() {
   JSON_Value* rootValue = json_value_init_object();
-  JSON_Object* root = json_value_get_object(rootValue);
+  JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
   JSON_Value* capturesValue = json_value_init_object();
-  JSON_Object* captures = json_value_get_object(capturesValue);
+  JSON_Object* captures = capturesValue != 0 ? json_value_get_object(capturesValue) : 0;
   JSON_Value* valuesValue = json_value_init_array();
-  JSON_Array* values = json_value_get_array(valuesValue);
-  bool built = rootValue != 0 && capturesValue != 0 && valuesValue != 0;
+  JSON_Array* values = valuesValue != 0 ? json_value_get_array(valuesValue) : 0;
+  bool built = root != 0 && captures != 0 && values != 0;
   if (built) {
-    built = json_array_append_number(values, 7) == JSONSuccess &&
-            json_array_append_boolean(values, 1) == JSONSuccess &&
-            json_object_set_value(captures, "probe", valuesValue) == JSONSuccess &&
-            json_object_set_value(root, "captures", capturesValue) == JSONSuccess;
+    built = json_object_set_number(root, "format_version", 2) == JSONSuccess &&
+            json_object_set_string(root, "name", "parson_probe") == JSONSuccess &&
+            json_object_set_number(root, "seed", 1) == JSONSuccess &&
+            json_object_set_string(root, "status", "passed") == JSONSuccess &&
+            json_array_append_number(values, 7) == JSONSuccess &&
+            json_array_append_boolean(values, 1) == JSONSuccess;
+  }
+  if (built && json_object_set_value(captures, "probe", valuesValue) == JSONSuccess) {
+    valuesValue = 0;
+  } else {
+    built = false;
+  }
+  if (built && json_object_set_value(root, "captures", capturesValue) == JSONSuccess) {
+    capturesValue = 0;
+  } else {
+    built = false;
   }
   char* serialized = built ? json_serialize_to_string(rootValue) : 0;
+  JSON_Value* parsed = serialized != 0 ? json_parse_string(serialized) : 0;
+  JSON_Object* parsedRoot = parsed != 0 ? json_value_get_object(parsed) : 0;
+  JSON_Object* parsedCaptures =
+      parsedRoot != 0 ? json_object_get_object(parsedRoot, "captures") : 0;
+  JSON_Array* probe = parsedCaptures != 0 ? json_object_get_array(parsedCaptures, "probe") : 0;
+  const char* parsedName = parsedRoot != 0 ? json_object_get_string(parsedRoot, "name") : 0;
+  const char* parsedStatus = parsedRoot != 0 ? json_object_get_string(parsedRoot, "status") : 0;
   Expect("json.parson_dom",
-         serialized != 0 &&
-             strcmp(serialized, "{\"captures\":{\"probe\":[7,true]}}") == 0,
-         "Parson did not construct and serialize the nested runtime-result shape");
+         parsedRoot != 0 && json_object_get_number(parsedRoot, "format_version") == 2 &&
+             parsedName != 0 && strcmp(parsedName, "parson_probe") == 0 &&
+             json_object_get_number(parsedRoot, "seed") == 1 && parsedStatus != 0 &&
+             strcmp(parsedStatus, "passed") == 0 && probe != 0 &&
+             json_array_get_count(probe) == 2 && json_array_get_number(probe, 0) == 7 &&
+             json_array_get_boolean(probe, 1) == 1,
+         "Parson did not construct and parse the v2 runtime-result shape");
   if (serialized != 0) {
     json_free_serialized_string(serialized);
   }
+  json_value_free(parsed);
+  json_value_free(valuesValue);
+  json_value_free(capturesValue);
   json_value_free(rootValue);
 }
 
@@ -236,19 +269,29 @@ int main(int argc, char** argv) {
   TestJsonAndAtomicWriting(resultPath);
   TestParsonDom();
 
-  char json[2048];
   const char* status = g_results.HasFailures() ? "failed" : "passed";
-  const char* failure = g_results.HasFailures() ? g_results.FirstFailure() : "";
-  const char* assertion = g_results.HasFailures() ? g_results.FirstAssertionId() : "";
-  wsprintfA(json,
-            "{\n  \"name\": \"%s\",\n  \"seed\": %u,\n"
-            "  \"status\": \"%s\",\n  \"phase\": \"finished\",\n"
-            "  \"last_action\": \"native_harness_self_test\",\n"
-            "  \"evidence_kind\": \"internal_invariant\",\n"
-            "  \"assertion_id\": \"%s\",\n  \"failure\": \"%s\",\n"
-            "  \"checks\": {\"failures\": %d}\n}\n",
-            testName, seed, status, assertion, failure, g_results.FailureCount());
-  if (!WriteRuntimeBytesAtomically(resultPath, json, static_cast<unsigned long>(strlen(json)))) {
+  JSON_Value* rootValue = json_value_init_object();
+  JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
+  JSON_Value* capturesValue = json_value_init_object();
+  JSON_Object* captures = capturesValue != 0 ? json_value_get_object(capturesValue) : 0;
+  bool resultBuilt = root != 0 && captures != 0 &&
+                     json_object_set_number(root, "format_version", 2) == JSONSuccess &&
+                     json_object_set_string(root, "name", testName) == JSONSuccess &&
+                     json_object_set_number(root, "seed", seed) == JSONSuccess &&
+                     json_object_set_string(root, "status", status) == JSONSuccess;
+  if (resultBuilt && json_object_set_value(root, "captures", capturesValue) == JSONSuccess) {
+    capturesValue = 0;
+  } else {
+    resultBuilt = false;
+  }
+  char* resultJson = resultBuilt ? json_serialize_to_string_pretty(rootValue) : 0;
+  bool wrote = resultJson != 0 &&
+               WriteRuntimeBytesAtomically(resultPath, resultJson,
+                                           static_cast<unsigned long>(strlen(resultJson)));
+  json_free_serialized_string(resultJson);
+  json_value_free(capturesValue);
+  json_value_free(rootValue);
+  if (!wrote) {
     return 3;
   }
   return g_results.HasFailures() ? 1 : 0;

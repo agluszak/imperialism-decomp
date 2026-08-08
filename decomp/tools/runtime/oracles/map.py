@@ -24,7 +24,8 @@ def evaluate_map_oracle(result: dict, name: str, seed: int) -> dict:
     Missing expectation files skip explicitly (new tests/seeds); to record one,
     copy the passing run's map_state block into the expectation path.
     """
-    map_state = result.get("map_state")
+    captures = result.get("captures")
+    map_state = captures.get("map_state") if isinstance(captures, dict) else None
     if not map_state:
         # Say why rather than leaving the key absent. The driver only snapshots map
         # state on a passing finish, so this is the normal shape of a crashed or

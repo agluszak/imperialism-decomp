@@ -88,7 +88,6 @@ private:
 
 int FindRuntimeDescriptorIndex(const char* name, const RuntimeTestDescriptor* descriptors,
                                int count);
-bool EscapeRuntimeJsonString(const char* value, char* escaped, unsigned long capacity);
 bool WriteRuntimeBytesAtomically(const char* path, const char* bytes, unsigned long size);
 
 // Render an observation mask as a stable pipe-separated name list, e.g.
