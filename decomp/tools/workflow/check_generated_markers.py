@@ -7,7 +7,7 @@ retired ``recover-class`` codegen used to stamp headers with a
 hand-edit ===`` … ``// === END GENERATED DECLS (Class) ===`` boundary and claim the
 declarations inside it as tool-owned. That workflow no longer exists: declarations
 are authored and edited by hand and verified with ``just build`` / ``just vtable`` /
-``just gates``. The read-only vtable/RTTI extractor (``just class-vtable-dump``) may
+``just gates``. The read-only vtable dump may
 inspect these files but must never rewrite them.
 
 This gate fails if any of the obsolete marker strings reappear in a manual source

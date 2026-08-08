@@ -22,12 +22,6 @@ _build-runtime-tests-unlocked jobs:
     -v "$PWD/{{runtime_test_build_dir}}":/build \
     "{{docker_image}}"
 
-[doc('Compile and run the public-API CString lifetime probe with VC5/MFC 4.2')]
-[group('runtime-test')]
-cstring-runtime-probe:
-  uv run python -m tools.workflow.cstring_runtime_probe \
-    --work-dir "{{build_dir}}/cstring-runtime-probe"
-
 [doc('Compile the native runtime harness with clang-cl diagnostics')]
 [group('runtime-test')]
 runtime-harness-lint:

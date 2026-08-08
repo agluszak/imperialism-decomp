@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only pyghidra vtable extractor: resolve vtable slots to real bodies as JSON.
 
-A standalone inspection command (`just class-vtable-dump`). For one or more vtables
+A standalone inspection command (`just class-vtable-dump`, private). For one or more vtables
 it reads each slot pointer, follows a single ILT `jmp` thunk to the real body, and
 records the resolved target address, Ghidra name, size, listing signature and
 (optionally) the decompiled C, all to stdout. It is purely observational: it never

@@ -22,11 +22,11 @@ Applied to the DB (dry-run by default; --apply writes and saves):
     parsed from the following `class X` declaration).
 
 After --apply, run `just export-project` so the vendored .gzf carries the
-result (`just ghidra-apply-source-full` chains build -> apply -> export).
+result.
 
-Class datatypes/inheritance/signatures come from the recomp PDB via the
-`just import-ghidra` step of `ghidra-apply-source-full` (reccmp's PDB importer).
-The audit at the end reports any remaining class-datatype drift from source.
+Optional PDB import (`just import-ghidra`) can refresh names from the recomp
+PDB when needed. The audit at the end of this tool reports remaining
+class-datatype drift from source.
 """
 
 from __future__ import annotations
@@ -51,18 +51,6 @@ def split_qualified(qualified: str) -> tuple[list[str], str]:
     return parts[:-1], parts[-1]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--target", default="IMPERIALISM")
@@ -83,7 +71,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Exit nonzero on any failure, and (dry-run) on any pending change — "
-            "used by ghidra-apply-source-full to require convergence."
+            "used when a sync playbook requires convergence."
         ),
     )
     return parser.parse_args()

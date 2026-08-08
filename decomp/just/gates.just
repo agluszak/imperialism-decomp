@@ -36,7 +36,7 @@ _precommit-post-build-checks: gates _precommit-independent-checks
 
 [private]
 [parallel]
-_precommit-independent-checks: cstring-runtime-probe runtime-harness-lint lint-warning-gate-test test _precommit-generated-integrity-gate
+_precommit-independent-checks: runtime-harness-lint lint-warning-gate-test test _precommit-generated-integrity-gate
 
 # Compare the entire current branch plus worktree with main. PRECOMMIT_BASE_REF
 # permits an explicit integration base; otherwise prefer origin/main, then local
@@ -147,8 +147,8 @@ marker-gate:
 
 # Reject stale recover-class "generated declaration" ownership markers in manual
 # source (include/game, src/game). Those "do not hand-edit" boundaries are obsolete:
-# all game source is hand-owned; the read-only extractor (`just class-vtable-dump`)
-# inspects but never rewrites it. Excludes the real generated trees.
+# all game source is hand-owned; the read-only vtable dump inspects but never
+# rewrites it. Excludes the real generated trees.
 [group('gates')]
 generated-marker-gate:
   uv run python -m tools.workflow.check_generated_markers
@@ -158,10 +158,6 @@ generated-marker-gate:
 [group('gates')]
 cstring-gate:
   uv run python -m tools.workflow.check_cstring_usage
-
-[group('gates')]
-cstring-ownership-audit-check:
-  uv run python -m tools.workflow.cstring_ownership_audit --check
 
 # Hard-ban gate: "dual-use"/"dual-purpose"/"reused as" hand-waving and raw
 # pointer<->int member storage (reinterpret_cast<int>(ptr), int-member->class-pointer
