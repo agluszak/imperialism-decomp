@@ -1,7 +1,8 @@
 use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitState, GameEvent, GameState, MajorNationId,
-    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind,
-    RecruitKind, StepOutcome, TileId, TurnSummary, UnitProductionOrder, WorldState,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameEvent, GameState,
+    MajorNationId, MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, NationId,
+    PendingActionKind, RecruitKind, StepOutcome, TileId, TurnSummary, UnitProductionOrder,
+    WorldState,
 };
 
 impl WorldState {
@@ -100,8 +101,8 @@ impl GameState {
                     nation,
                     unit_type: unit_kind,
                     tile: Some(tile),
-                    order: 0,
-                    order_target: -1,
+                    order: CivilianWorkOrder::Idle,
+                    order_target: None,
                     owner_nation: nation,
                     roster_id: 0,
                     registered: false,
@@ -343,7 +344,7 @@ mod tests {
             owner_nation,
             former_owner_nation: owner_nation,
             province: None,
-            development_classes: 0,
+            development: Default::default(),
             edge_resources: [None; 2],
             rail_flags: 0,
             action_state: -1,
@@ -359,8 +360,8 @@ mod tests {
             nation: NationId::new(nation),
             unit_type: CivilianUnitKind::Miner,
             tile: Some(tile),
-            order: 0,
-            order_target: -1,
+            order: CivilianWorkOrder::Idle,
+            order_target: None,
             owner_nation: NationId::new(nation),
             roster_id: 0,
             registered: false,

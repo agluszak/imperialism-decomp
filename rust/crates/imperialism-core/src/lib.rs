@@ -6,6 +6,7 @@ mod city_buildings;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod civilian_work;
 mod create_random_game;
 mod difficulty;
 mod ids;
@@ -34,6 +35,7 @@ pub use city_site::{
     is_valid_secondary_nation_home_tile_candidate, place_city, requires_capital_site_selection,
     supports_city_site_terrain, validate_capital_site_selection,
 };
+pub use civilian_work::{CivilianWorkError, CivilianWorkOrder};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
@@ -81,12 +83,13 @@ pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
-    ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, DiplomacyGrant,
-    DiplomacyGrantFlags, DiplomacyPolicy, GameEvent, GameState, LandSale, MajorNationState,
-    MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData, NationPendingWork,
-    NationState, NavyMissionState, PendingWorkState, PopulationState, RngState, SelectedShip,
-    ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget, TileState,
-    TradePolicyScore, TurnStartEventState, TurnState, TurnSummary, WarTransition, WorldState,
+    ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, DevelopmentLevel,
+    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameEvent, GameState, LandSale,
+    MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData,
+    NationPendingWork, NationState, NavyMissionState, PendingWorkState, PopulationState, RngState,
+    SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget,
+    TileDevelopment, TileState, TradePolicyScore, TurnStartEventState, TurnState, TurnSummary,
+    WarTransition, WorldState,
 };
 pub use tables::{
     IndustryActionSlot, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,

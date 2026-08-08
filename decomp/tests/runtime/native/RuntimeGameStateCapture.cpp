@@ -106,6 +106,47 @@ const char* CivilianUnitKindName(int value) {
   return kCivilianUnitKindNames[value];
 }
 
+const char* CivilianWorkOrderName(UnitOrder order) {
+  switch (order) {
+  case kUnitOrderIdle:
+    return "idle";
+  case kUnitOrderRedeploy:
+    return "redeploy";
+  case kUnitOrderSleep:
+    return "sleep";
+  case kUnitOrderLayRail:
+    return "lay_rail";
+  case kUnitOrderBuildDepot:
+    return "build_depot";
+  case kUnitOrderBuildPort:
+    return "build_port";
+  case kUnitOrderProspect:
+    return "prospect";
+  case kUnitOrderDevelopResource:
+    return "develop_resource";
+  case kUnitOrderBuildFort:
+    return "build_fort";
+  case kUnitOrderPurchaseLand:
+    return "purchase_land";
+  default:
+    ASSERT(0);
+    return "";
+  }
+}
+
+JSON_Value* CaptureTileDevelopment(const TTerrainStateRecord& tile) {
+  const unsigned char packed = static_cast<unsigned char>(tile.developmentClassNibbles0c);
+  JsonObject object;
+  JsonArray visibleToMajors;
+  object.Set("surface", static_cast<unsigned int>(packed & 0x0f));
+  object.Set("extractive", static_cast<unsigned int>(packed >> 4));
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    visibleToMajors.Add((tile.pendingDevelopmentFlag0d & (1 << nationSlot)) != 0);
+  }
+  object.Set("resource_visible_to_majors", visibleToMajors.Release());
+  return object.Release();
+}
+
 const char* MilitaryUnitKindName(int value) {
   ASSERT(value >= 0 && value < kMilitaryUnitKindCount);
   return kMilitaryUnitKindNames[value];
@@ -340,7 +381,7 @@ JSON_Value* CaptureWorld() {
     tileObject.SetOptional("owner_nation", static_cast<int>(tile.ownerNationTag04));
     tileObject.SetOptional("former_owner_nation", static_cast<int>(tile.formerOwnerNationTag03));
     tileObject.SetOptional("province", static_cast<int>(tile.cityRecordIndex));
-    tileObject.Set("development_classes", static_cast<int>(tile.developmentClassNibbles0c));
+    tileObject.Set("development", CaptureTileDevelopment(tile));
     if (tile.resourceTypeByEdge[0] < 0) {
       edgeResources.AddNull();
     } else {
@@ -597,8 +638,8 @@ JSON_Value* CaptureCivilianUnits() {
       object.Set("nation", nationSlot);
       object.Set("unit_type", CivilianUnitKindName(static_cast<int>(unit->orderType)));
       object.SetOptional("tile", static_cast<int>(unit->tileIndex06));
-      object.Set("order", static_cast<int>(unit->unitOrder));
-      object.Set("order_target", static_cast<int>(unit->orderTargetIndex0C));
+      object.Set("order", CivilianWorkOrderName(unit->unitOrder));
+      object.SetOptional("order_target", static_cast<int>(unit->orderTargetIndex0C));
       ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
       object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
