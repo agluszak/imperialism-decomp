@@ -38,7 +38,9 @@ the metadata/evidence behind `inconclusive`. `just compare 0xADDR` is the option
 ## Ownership and generated inputs
 
 `// FUNCTION:`, `// STUB:`, `// SYNTHETIC:`, `// TEMPLATE:`, and `// LIBRARY:` markers in manual source
-are the ownership authority. After a marker change, run `just build`; it rebuilds the source index and
+are the ownership authority for game code. Reviewed CRT/MFC identities still live in
+`config/reviewed_library_identities.csv` until that ledger is migrated into markers.
+After a marker or reviewed-identity change, run `just build`; it rebuilds the source index and
 stubs. Never edit generated files to clear a failure.
 
 ## Deliberate Ghidra changes

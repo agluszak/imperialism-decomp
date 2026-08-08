@@ -3,9 +3,12 @@
 
 Each row asserts a confirmed CRT/MFC library identity (name + linker symbol;
 prototype is optional enrichment). The central source model treats every row as
-a LIBRARY claim; the generated symbols overlay projects the fields; the
-library-identity gate requires exact consistency. Accepting an object-matcher
-result means editing this CSV — nothing else.
+a LIBRARY/SYNTHETIC claim; generate_symbols overlays the fields; stubgen emits
+the annotation TU; the library-identity gate requires exact consistency.
+
+Accepting an object-matcher result means editing this CSV — nothing else.
+Hand-written `// LIBRARY:` markers are a small pilot only; do not delete this
+ledger until overlays and claims have a source-side home (bead gdee).
 """
 
 from __future__ import annotations

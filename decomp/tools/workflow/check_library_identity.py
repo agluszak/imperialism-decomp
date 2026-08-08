@@ -4,7 +4,13 @@
 `symbols-integrity-gate` checks CSV *structure* (header, addresses, overlap) but
 not whether library identities are semantically correct. This gate closes that
 hole for the reviewed set: every row in `config/reviewed_library_identities.csv`
-must be faithfully projected into `config/original_entities.csv` and `// LIBRARY:` markers.
+must project exactly into generated `symbols.csv`, and `tools.source_model` must
+treat the row as a LIBRARY (or SYNTHETIC) claim so ownership stays correct.
+
+Claims currently come from the CSV via `source_model.reviewed_identities` (which
+feeds stubgen's annotation TU). Hand-written `// LIBRARY:` markers exist only for
+a small pilot set; deleting the CSV before a full marker/inventory migration would
+drop those claims and explode stubs.
 
 It exists because provisional Ghidra names can stabilize into durable mistakes. For
 example, `rand` at 0x005e83f0 has the MSVC LCG body `state*0x343fd + 0x269ec3`,
@@ -14,13 +20,12 @@ makes the fix un-revertible.
 
 Failures (for the reviewed override set):
   - an override is not applied to symbols.csv (name/symbol/prototype/type drift);
-  - an override address has no `// LIBRARY:` marker;
+  - an override address is not owned as library/synthetic in the source model;
   - an override row is internally inconsistent (missing symbol, or the friendly
-    name is absent from the prototype);
-The broader checks the object-matcher oracle enables (every library row carries a
-symbol; a confirmed oracle match missing from the markers; a high-confidence
-library match classified as game code) are deferred until that oracle lands; see
-`config/reviewed_library_identities.csv` header and docs/reference.
+    name is absent from the prototype).
+
+Oracle-aware extras: a high-confidence unique library match must not be labeled
+manual game code (unless allowlisted in `config/library_oracle_gamecode_allowlist.csv`).
 """
 
 from __future__ import annotations
@@ -196,7 +201,8 @@ def check_override(
     expected_owner = "manual" if ov.kind == "SYNTHETIC" else "library"
     if owner != expected_owner:
         problems.append(
-            f"{tag}: ownership={owner!r} != {expected_owner!r} (marker missing?)"
+            f"{tag}: ownership={owner!r} != {expected_owner!r} "
+            f"(reviewed claim missing from source model)"
         )
 
     return problems

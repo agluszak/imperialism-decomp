@@ -44,7 +44,6 @@ from tools.source_model import build_model
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
 INVENTORY = REPO_ROOT / "config" / "original_entities.csv"
-REVIEWED = REPO_ROOT / "config" / "reviewed_library_identities.csv"
 
 
 def split_qualified(qualified: str) -> tuple[list[str], str]:

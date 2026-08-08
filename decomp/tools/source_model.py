@@ -127,29 +127,21 @@ def reviewed_identities(repo_root: Path) -> list[Claim]:
     path = repo_root / REVIEWED_CSV
     if not path.is_file():
         return []
-    from tools.common.pipe_csv import read_pipe_rows
+    from tools.mfc.reviewed_identities import load_reviewed_identities
 
-    out: list[Claim] = []
-    for row in read_pipe_rows(path):
-        raw = (row.get("address") or "").strip()
-        try:
-            addr = int(raw, 16)
-        except ValueError:
-            continue
-        kind = (row.get("kind") or "LIBRARY").strip().upper()
-        if kind not in ("LIBRARY", "SYNTHETIC"):
-            kind = "LIBRARY"
-        out.append(Claim(
-            address=addr,
-            kind=kind,
+    return [
+        Claim(
+            address=row.address,
+            kind=row.kind if row.kind in ("LIBRARY", "SYNTHETIC") else "LIBRARY",
             file=REVIEWED_CSV,
             line=0,
-            name=(row.get("name") or "").strip(),
-            prototype=(row.get("prototype") or "").strip(),
-            symbol=(row.get("symbol") or "").strip(),
+            name=row.name,
+            prototype=row.prototype,
+            symbol=row.symbol,
             origin="reviewed",
-        ))
-    return out
+        )
+        for row in load_reviewed_identities(path)
+    ]
 
 
 def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:

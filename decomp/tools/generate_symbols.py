@@ -36,7 +36,6 @@ from tools.ghidra.merge_curated_symbols import write_symbols_csv
 from tools.source_model import build_model, reviewed_identities
 
 DEFAULT_INVENTORY = "config/original_entities.csv"
-DEFAULT_REVIEWED = "config/reviewed_library_identities.csv"
 DEFAULT_GEN_DIR = "build-msvc500/generated"
 
 def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
