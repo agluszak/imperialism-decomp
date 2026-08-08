@@ -428,7 +428,7 @@ mod tests {
                 owner_nation: 0,
                 treasury: 0,
                 home_tile: Some(home_town_tile),
-                need_level_by_nation: crate::NationTable::default(),
+                trade_policy_by_nation: crate::NationTable::default(),
             },
             data: NationData::Major(MajorNationState {
                 diplomacy_eligible: true,

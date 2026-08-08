@@ -434,7 +434,7 @@ JSON_Value* CaptureNation(int slot) {
                          static_cast<int>(country->DecodeOwnerNationSlot()));
   json_object_set_number(common, "treasury", country->treasuryValue10);
   SetOptionalNumber(common, "home_tile", country->homeTileIndex);
-  json_object_set_value(common, "need_level_by_nation",
+  json_object_set_value(common, "trade_policy_by_nation",
                         CaptureShortArray(country->needLevelByNation, kNationSlotCount));
   json_object_set_value(object, "common", commonValue);
 

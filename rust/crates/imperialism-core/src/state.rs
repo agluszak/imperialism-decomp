@@ -117,7 +117,39 @@ pub struct NationCommonState {
     pub owner_nation: i16,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
-    pub need_level_by_nation: NationTable<i16>,
+    pub trade_policy_by_nation: NationTable<TradePolicyScore>,
+}
+
+/// A bilateral trade-preference score.
+///
+/// Retail recognizes several named steps, but save data can carry other
+/// scores, so this is deliberately not a closed enum.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct TradePolicyScore(i32);
+
+impl TradePolicyScore {
+    pub const NEUTRAL: Self = Self(100);
+
+    pub const fn new(score: i32) -> Self {
+        Self(score)
+    }
+
+    pub(crate) const fn decrement_step(self, treasury: i32) -> Self {
+        match self.0 {
+            100 => Self(95),
+            95 => Self(90),
+            90 => Self(75),
+            75 if treasury > 10_000 => Self(50),
+            _ => self,
+        }
+    }
+}
+
+impl Default for TradePolicyScore {
+    fn default() -> Self {
+        Self::NEUTRAL
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
