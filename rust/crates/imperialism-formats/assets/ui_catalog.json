@@ -3,28 +3,6 @@
     640,
     480
   ],
-  "sources": {
-    "factory_manifest": {
-      "path": "config/ui_factory_codegen.yml",
-      "sha256": "ebded1987d4d33a6f7098305633556e8db6e58f20296b74a14061c71c4ef6b72"
-    },
-    "mac_strings": {
-      "path": "vendor/macos_codewarrior/evidence/resources/strings.csv",
-      "sha256": "ecd51ca49572be1b0d72ff69ae4740eb2591b9e1b0816ed8209c21bfec51c91b"
-    },
-    "mac_text_resources": {
-      "path": "vendor/macos_codewarrior/evidence/resources/text_resources.json",
-      "sha256": "ba6ee37518234d301da6df780b9772ee00b871f03fd99db0487dd1d6403ca270"
-    },
-    "mac_view_ir": {
-      "path": "vendor/macos_codewarrior/evidence/resources/ui_views.json",
-      "sha256": "c306319909266c0f05a2a296e7703d4027f230c3a0d18292d1b8fd2894b3b5d0"
-    },
-    "windows_deltas": {
-      "path": "config/ui_platform_deltas.yml",
-      "sha256": "bf6164d393ac09428ba7b03e07e871c545a8ff8dbd1f7db2e27e3e3c862593b6"
-    }
-  },
   "views": [
     {
       "event": 8451,
@@ -35,14 +13,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "container",
-          "legacy_class": null,
-          "legacy_type": "view",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -62,22 +38,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TView",
-          "resource_offset": 4,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0004",
           "state": false,
           "tag": "base"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 72,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TNewspaperView",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -102,22 +73,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TNewspaperView",
-          "resource_offset": 72,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0048",
           "state": false,
           "tag": "main"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 182,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TToolBarCluster",
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -142,22 +108,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TToolBarCluster",
-          "resource_offset": 182,
-          "source": "Mac: FlagView.rsrc:8451 node 0x00b6",
           "state": false,
           "tag": "tool"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 295,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 182,
           "properties": {
             "cluster_value": null,
@@ -182,22 +143,17 @@
             "x": 23,
             "y": 15
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 295,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0127",
           "state": true,
           "tag": "end "
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 405,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TToolBarCluster",
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -222,22 +178,17 @@
             "x": 592,
             "y": 15
           },
-          "resolved_class": "TToolBarCluster",
-          "resource_offset": 405,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0195",
           "state": false,
           "tag": "tbr2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 518,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 405,
           "properties": {
             "cluster_value": null,
@@ -262,22 +213,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 518,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0206",
           "state": true,
           "tag": "quer"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 628,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -300,7 +246,6 @@
               "point_size": 0,
               "resource_id": 4000,
               "resource_index": 1,
-              "source": null,
               "style_ref": 0,
               "value": "Winter, 1994"
             },
@@ -312,22 +257,17 @@
             "x": 500,
             "y": 54
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 628,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0274",
           "state": false,
           "tag": "date"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 730,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -350,7 +290,6 @@
               "point_size": 0,
               "resource_id": 4000,
               "resource_index": 1,
-              "source": null,
               "style_ref": 0,
               "value": "Winter, 1994"
             },
@@ -362,22 +301,17 @@
             "x": 20,
             "y": 54
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 730,
-          "source": "Mac: FlagView.rsrc:8451 node 0x02da",
           "state": false,
           "tag": "spec"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 832,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": null,
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -402,15 +336,11 @@
             "x": 0,
             "y": 475
           },
-          "resolved_class": "TPicture",
-          "resource_offset": 832,
-          "source": "Mac: FlagView.rsrc:8451 node 0x0340",
           "state": false,
           "tag": "over"
         }
       ],
-      "root": 4,
-      "source": "Mac: FlagView.rsrc:8451"
+      "root": 4
     },
     {
       "event": 2013,
@@ -421,14 +351,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "container",
-          "legacy_class": null,
-          "legacy_type": "view",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -448,22 +376,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TView",
-          "resource_offset": 4,
-          "source": "Mac: MapView.rsrc:2013 node 0x0004",
           "state": false,
           "tag": "base"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 65536,
           "enabled": true,
           "id": 72,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TMapUberPicture",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -488,22 +411,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TMapUberPicture",
-          "resource_offset": 72,
-          "source": "Mac: MapView.rsrc:2013 node 0x0048",
           "state": false,
           "tag": "main"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 237,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TMapDialog",
-          "legacy_type": "view",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -523,22 +441,17 @@
             "x": 5,
             "y": 27
           },
-          "resolved_class": "TMapDialog",
-          "resource_offset": 237,
-          "source": "Mac: MapView.rsrc:2013 node 0x00ed",
           "state": true,
           "tag": "DLOG"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 315,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TOceanDialog",
-          "legacy_type": "view",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -558,22 +471,17 @@
             "x": 1001,
             "y": 27
           },
-          "resolved_class": "TOceanDialog",
-          "resource_offset": 315,
-          "source": "Mac: MapView.rsrc:2013 node 0x013b",
           "state": true,
           "tag": "DOOG"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 395,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TToolBarCluster",
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -598,22 +506,17 @@
             "x": 517,
             "y": 0
           },
-          "resolved_class": "TToolBarCluster",
-          "resource_offset": 395,
-          "source": "Mac: MapView.rsrc:2013 node 0x018b",
           "state": false,
           "tag": "tool"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 508,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -638,22 +541,17 @@
             "x": 62,
             "y": 8
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 508,
-          "source": "Mac: MapView.rsrc:2013 node 0x01fc; Windows: original builder 0x0043e5c3-0x0043e624",
           "state": true,
           "tag": "Flag"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 618,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -678,22 +576,17 @@
             "x": 33,
             "y": 8
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 618,
-          "source": "Mac: MapView.rsrc:2013 node 0x026a",
           "state": true,
           "tag": "mmap"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 734,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -718,22 +611,17 @@
             "x": 91,
             "y": 8
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 734,
-          "source": "Mac: MapView.rsrc:2013 node 0x02de; Windows: original builder 0x0043e6d3-0x0043e734",
           "state": true,
           "tag": "quer"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 844,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -758,22 +646,17 @@
             "x": 62,
             "y": 119
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 844,
-          "source": "Mac: MapView.rsrc:2013 node 0x034c",
           "state": true,
           "tag": "trad"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 960,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -798,22 +681,17 @@
             "x": 4,
             "y": 119
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 960,
-          "source": "Mac: MapView.rsrc:2013 node 0x03c0",
           "state": true,
           "tag": "tran"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1076,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -838,22 +716,17 @@
             "x": 33,
             "y": 119
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1076,
-          "source": "Mac: MapView.rsrc:2013 node 0x0434",
           "state": true,
           "tag": "city"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1192,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -878,22 +751,17 @@
             "x": 91,
             "y": 119
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1192,
-          "source": "Mac: MapView.rsrc:2013 node 0x04a8",
           "state": true,
           "tag": "dipl"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1308,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TNavyToolbarCluster",
-          "legacy_type": "clus",
           "parent": 395,
           "properties": {
             "cluster_value": 538976288,
@@ -918,22 +786,17 @@
             "x": 128,
             "y": 144
           },
-          "resolved_class": "TNavyToolbarCluster",
-          "resource_offset": 1308,
-          "source": "Mac: MapView.rsrc:2013 node 0x051c",
           "state": false,
           "tag": "unav"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1425,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TNoHilitePicture",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -958,22 +821,17 @@
             "x": 4,
             "y": 34
           },
-          "resolved_class": "TNoHilitePicture",
-          "resource_offset": 1425,
-          "source": "Mac: MapView.rsrc:2013 node 0x0591",
           "state": false,
           "tag": "back"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1053,
           "enabled": true,
           "id": 1537,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -998,22 +856,17 @@
             "x": 91,
             "y": 9
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1537,
-          "source": "Mac: MapView.rsrc:2013 node 0x0601",
           "state": true,
           "tag": "dfnd"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 1653,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1038,22 +891,17 @@
             "x": 62,
             "y": 9
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1653,
-          "source": "Mac: MapView.rsrc:2013 node 0x0675",
           "state": true,
           "tag": "done"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 1769,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1078,22 +926,17 @@
             "x": 4,
             "y": 9
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1769,
-          "source": "Mac: MapView.rsrc:2013 node 0x06e9",
           "state": true,
           "tag": "bomb"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1057,
           "enabled": true,
           "id": 1885,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1118,22 +961,17 @@
             "x": 33,
             "y": 9
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 1885,
-          "source": "Mac: MapView.rsrc:2013 node 0x075d",
           "state": true,
           "tag": "next"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2001,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TShipFractionCluster",
-          "legacy_type": "clus",
           "parent": 1308,
           "properties": {
             "cluster_value": 538976288,
@@ -1158,22 +996,17 @@
             "x": 4,
             "y": 72
           },
-          "resolved_class": "TShipFractionCluster",
-          "resource_offset": 2001,
-          "source": "Mac: MapView.rsrc:2013 node 0x07d1",
           "state": false,
           "tag": "cls0"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1061,
           "enabled": true,
           "id": 2119,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TShipPlacard",
-          "legacy_type": "pict",
           "parent": 2001,
           "properties": {
             "cluster_value": null,
@@ -1198,22 +1031,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TShipPlacard",
-          "resource_offset": 2119,
-          "source": "Mac: MapView.rsrc:2013 node 0x0847",
           "state": false,
           "tag": "ship"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2227,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 2001,
           "properties": {
             "cluster_value": null,
@@ -1238,22 +1066,17 @@
             "x": 100,
             "y": 0
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 2227,
-          "source": "Mac: MapView.rsrc:2013 node 0x08b3",
           "state": true,
           "tag": "arro"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2341,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TShipFractionCluster",
-          "legacy_type": "clus",
           "parent": 1308,
           "properties": {
             "cluster_value": 538976288,
@@ -1278,22 +1101,17 @@
             "x": 4,
             "y": 129
           },
-          "resolved_class": "TShipFractionCluster",
-          "resource_offset": 2341,
-          "source": "Mac: MapView.rsrc:2013 node 0x0925",
           "state": false,
           "tag": "cls1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1061,
           "enabled": true,
           "id": 2459,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TShipPlacard",
-          "legacy_type": "pict",
           "parent": 2341,
           "properties": {
             "cluster_value": null,
@@ -1318,22 +1136,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TShipPlacard",
-          "resource_offset": 2459,
-          "source": "Mac: MapView.rsrc:2013 node 0x099b",
           "state": false,
           "tag": "ship"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2567,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 2341,
           "properties": {
             "cluster_value": null,
@@ -1358,22 +1171,17 @@
             "x": 100,
             "y": 0
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 2567,
-          "source": "Mac: MapView.rsrc:2013 node 0x0a07",
           "state": true,
           "tag": "arro"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2681,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TShipFractionCluster",
-          "legacy_type": "clus",
           "parent": 1308,
           "properties": {
             "cluster_value": 538976288,
@@ -1398,22 +1206,17 @@
             "x": 4,
             "y": 187
           },
-          "resolved_class": "TShipFractionCluster",
-          "resource_offset": 2681,
-          "source": "Mac: MapView.rsrc:2013 node 0x0a79",
           "state": false,
           "tag": "cls2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1061,
           "enabled": true,
           "id": 2799,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TShipPlacard",
-          "legacy_type": "pict",
           "parent": 2681,
           "properties": {
             "cluster_value": null,
@@ -1438,22 +1241,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TShipPlacard",
-          "resource_offset": 2799,
-          "source": "Mac: MapView.rsrc:2013 node 0x0aef",
           "state": false,
           "tag": "ship"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2907,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 2681,
           "properties": {
             "cluster_value": null,
@@ -1478,22 +1276,17 @@
             "x": 100,
             "y": 0
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 2907,
-          "source": "Mac: MapView.rsrc:2013 node 0x0b5b",
           "state": true,
           "tag": "arro"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3021,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TShipFractionCluster",
-          "legacy_type": "clus",
           "parent": 1308,
           "properties": {
             "cluster_value": 538976288,
@@ -1518,22 +1311,17 @@
             "x": 4,
             "y": 244
           },
-          "resolved_class": "TShipFractionCluster",
-          "resource_offset": 3021,
-          "source": "Mac: MapView.rsrc:2013 node 0x0bcd",
           "state": false,
           "tag": "cls3"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1061,
           "enabled": true,
           "id": 3139,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TShipPlacard",
-          "legacy_type": "pict",
           "parent": 3021,
           "properties": {
             "cluster_value": null,
@@ -1558,22 +1346,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TShipPlacard",
-          "resource_offset": 3139,
-          "source": "Mac: MapView.rsrc:2013 node 0x0c43",
           "state": false,
           "tag": "ship"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3247,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3021,
           "properties": {
             "cluster_value": null,
@@ -1598,22 +1381,17 @@
             "x": 100,
             "y": 0
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 3247,
-          "source": "Mac: MapView.rsrc:2013 node 0x0caf",
           "state": true,
           "tag": "arro"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3361,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1638,22 +1416,17 @@
             "x": 4,
             "y": 43
           },
-          "resolved_class": "TRadioPictureButton",
-          "resource_offset": 3361,
-          "source": "Mac: MapView.rsrc:2013 node 0x0d21",
           "state": true,
           "tag": "agr0"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3476,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1678,22 +1451,17 @@
             "x": 43,
             "y": 43
           },
-          "resolved_class": "TRadioPictureButton",
-          "resource_offset": 3476,
-          "source": "Mac: MapView.rsrc:2013 node 0x0d94",
           "state": true,
           "tag": "agr1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3591,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioPictureButton",
-          "legacy_type": "pict",
           "parent": 1308,
           "properties": {
             "cluster_value": null,
@@ -1718,22 +1486,17 @@
             "x": 81,
             "y": 43
           },
-          "resolved_class": "TRadioPictureButton",
-          "resource_offset": 3591,
-          "source": "Mac: MapView.rsrc:2013 node 0x0e07",
           "state": true,
           "tag": "agr2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3706,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TArmyToolbar",
-          "legacy_type": "clus",
           "parent": 395,
           "properties": {
             "cluster_value": 538976288,
@@ -1758,22 +1521,17 @@
             "x": 128,
             "y": 146
           },
-          "resolved_class": "TArmyToolbar",
-          "resource_offset": 3706,
-          "source": "Mac: MapView.rsrc:2013 node 0x0e7a",
           "state": false,
           "tag": "uarm"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3816,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1798,22 +1556,17 @@
             "x": 46,
             "y": 36
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 3816,
-          "source": "Mac: MapView.rsrc:2013 node 0x0ee8",
           "state": true,
           "tag": "arr0"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 3930,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1838,22 +1591,17 @@
             "x": 46,
             "y": 89
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 3930,
-          "source": "Mac: MapView.rsrc:2013 node 0x0f5a",
           "state": true,
           "tag": "arr1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4044,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1878,22 +1626,17 @@
             "x": 46,
             "y": 142
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4044,
-          "source": "Mac: MapView.rsrc:2013 node 0x0fcc",
           "state": true,
           "tag": "arr2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4158,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1918,22 +1661,17 @@
             "x": 46,
             "y": 195
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4158,
-          "source": "Mac: MapView.rsrc:2013 node 0x103e",
           "state": true,
           "tag": "arr3"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4272,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1958,22 +1696,17 @@
             "x": 104,
             "y": 36
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4272,
-          "source": "Mac: MapView.rsrc:2013 node 0x10b0",
           "state": true,
           "tag": "arr4"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4386,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -1998,22 +1731,17 @@
             "x": 104,
             "y": 89
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4386,
-          "source": "Mac: MapView.rsrc:2013 node 0x1122",
           "state": true,
           "tag": "arr5"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4500,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2038,22 +1766,17 @@
             "x": 104,
             "y": 142
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4500,
-          "source": "Mac: MapView.rsrc:2013 node 0x1194",
           "state": true,
           "tag": "arr6"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4614,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2078,22 +1801,17 @@
             "x": 104,
             "y": 195
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4614,
-          "source": "Mac: MapView.rsrc:2013 node 0x1206",
           "state": true,
           "tag": "arr7"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4728,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2118,22 +1836,17 @@
             "x": 46,
             "y": 248
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4728,
-          "source": "Mac: MapView.rsrc:2013 node 0x1278",
           "state": true,
           "tag": "arr8"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4842,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": "TNumberedArrowButton",
-          "legacy_type": "cntl",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2158,22 +1871,17 @@
             "x": 104,
             "y": 248
           },
-          "resolved_class": "TNumberedArrowButton",
-          "resource_offset": 4842,
-          "source": "Mac: MapView.rsrc:2013 node 0x12ea",
           "state": true,
           "tag": "arr9"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1053,
           "enabled": true,
           "id": 4956,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2198,22 +1906,17 @@
             "x": 91,
             "y": 7
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 4956,
-          "source": "Mac: MapView.rsrc:2013 node 0x135c",
           "state": true,
           "tag": "dfnd"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 5072,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2238,22 +1941,17 @@
             "x": 62,
             "y": 7
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 5072,
-          "source": "Mac: MapView.rsrc:2013 node 0x13d0",
           "state": true,
           "tag": "done"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 5188,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2278,22 +1976,17 @@
             "x": 4,
             "y": 7
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 5188,
-          "source": "Mac: MapView.rsrc:2013 node 0x1444",
           "state": true,
           "tag": "garr"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1057,
           "enabled": true,
           "id": 5304,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2318,22 +2011,17 @@
             "x": 33,
             "y": 7
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 5304,
-          "source": "Mac: MapView.rsrc:2013 node 0x14b8",
           "state": true,
           "tag": "latr"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5420,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2358,22 +2046,17 @@
             "x": 4,
             "y": 36
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5420,
-          "source": "Mac: MapView.rsrc:2013 node 0x152c",
           "state": false,
           "tag": "pic0"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5528,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2398,22 +2081,17 @@
             "x": 4,
             "y": 89
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5528,
-          "source": "Mac: MapView.rsrc:2013 node 0x1598",
           "state": false,
           "tag": "pic1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5636,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2438,22 +2116,17 @@
             "x": 4,
             "y": 142
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5636,
-          "source": "Mac: MapView.rsrc:2013 node 0x1604",
           "state": false,
           "tag": "pic2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5744,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2478,22 +2151,17 @@
             "x": 4,
             "y": 195
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5744,
-          "source": "Mac: MapView.rsrc:2013 node 0x1670",
           "state": false,
           "tag": "pic3"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5852,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2518,22 +2186,17 @@
             "x": 57,
             "y": 36
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5852,
-          "source": "Mac: MapView.rsrc:2013 node 0x16dc",
           "state": false,
           "tag": "pic4"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 5960,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2558,22 +2221,17 @@
             "x": 57,
             "y": 89
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 5960,
-          "source": "Mac: MapView.rsrc:2013 node 0x1748",
           "state": false,
           "tag": "pic5"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6068,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2598,22 +2256,17 @@
             "x": 57,
             "y": 142
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 6068,
-          "source": "Mac: MapView.rsrc:2013 node 0x17b4",
           "state": false,
           "tag": "pic6"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6176,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2638,22 +2291,17 @@
             "x": 57,
             "y": 195
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 6176,
-          "source": "Mac: MapView.rsrc:2013 node 0x1820",
           "state": false,
           "tag": "pic7"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6284,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2678,22 +2326,17 @@
             "x": 4,
             "y": 248
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 6284,
-          "source": "Mac: MapView.rsrc:2013 node 0x188c",
           "state": false,
           "tag": "pic8"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6392,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TArmyPlacard",
-          "legacy_type": "pict",
           "parent": 3706,
           "properties": {
             "cluster_value": null,
@@ -2718,22 +2361,17 @@
             "x": 57,
             "y": 248
           },
-          "resolved_class": "TArmyPlacard",
-          "resource_offset": 6392,
-          "source": "Mac: MapView.rsrc:2013 node 0x18f8",
           "state": false,
           "tag": "pic9"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6500,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 395,
           "properties": {
             "cluster_value": null,
@@ -2758,22 +2396,17 @@
             "x": 4,
             "y": 453
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 6500,
-          "source": "Mac: MapView.rsrc:2013 node 0x1964",
           "state": true,
           "tag": "DONE"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6610,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TCivToolbar",
-          "legacy_type": "clus",
           "parent": 395,
           "properties": {
             "cluster_value": 538976288,
@@ -2798,22 +2431,17 @@
             "x": 128,
             "y": 143
           },
-          "resolved_class": "TCivToolbar",
-          "resource_offset": 6610,
-          "source": "Mac: MapView.rsrc:2013 node 0x19d2",
           "state": false,
           "tag": "uciv"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 6719,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TNoHilitePicture",
-          "legacy_type": "pict",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -2838,22 +2466,17 @@
             "x": 33,
             "y": 39
           },
-          "resolved_class": "TNoHilitePicture",
-          "resource_offset": 6719,
-          "source": "Mac: MapView.rsrc:2013 node 0x1a3f",
           "state": false,
           "tag": "unit"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 6831,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TCivDescription",
-          "legacy_type": "view",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -2873,22 +2496,17 @@
             "x": 0,
             "y": 39
           },
-          "resolved_class": "TCivDescription",
-          "resource_offset": 6831,
-          "source": "Mac: MapView.rsrc:2013 node 0x1aaf",
           "state": false,
           "tag": "back"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1053,
           "enabled": true,
           "id": 6914,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -2913,22 +2531,17 @@
             "x": 91,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 6914,
-          "source": "Mac: MapView.rsrc:2013 node 0x1b02",
           "state": true,
           "tag": "dfnd"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 7030,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -2953,22 +2566,17 @@
             "x": 62,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 7030,
-          "source": "Mac: MapView.rsrc:2013 node 0x1b76",
           "state": true,
           "tag": "done"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1055,
           "enabled": true,
           "id": 7146,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -2993,22 +2601,17 @@
             "x": 4,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 7146,
-          "source": "Mac: MapView.rsrc:2013 node 0x1bea",
           "state": true,
           "tag": "garr"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 1057,
           "enabled": true,
           "id": 7262,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 6610,
           "properties": {
             "cluster_value": null,
@@ -3033,22 +2636,17 @@
             "x": 33,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 7262,
-          "source": "Mac: MapView.rsrc:2013 node 0x1c5e",
           "state": true,
           "tag": "latr"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 7378,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": null,
-          "legacy_type": "clus",
           "parent": 395,
           "properties": {
             "cluster_value": 538976288,
@@ -3073,22 +2671,17 @@
             "x": 1,
             "y": 5
           },
-          "resolved_class": "TCluster",
-          "resource_offset": 7378,
-          "source": "Mac: MapView.rsrc:2013 node 0x1cd2",
           "state": false,
           "tag": "ocea"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 7476,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 7378,
           "properties": {
             "cluster_value": null,
@@ -3113,22 +2706,17 @@
             "x": 3,
             "y": 3
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 7476,
-          "source": "Mac: MapView.rsrc:2013 node 0x1d34",
           "state": true,
           "tag": "ZmOt"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 7586,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TToolBarCluster",
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -3153,22 +2741,17 @@
             "x": 3,
             "y": 6
           },
-          "resolved_class": "TToolBarCluster",
-          "resource_offset": 7586,
-          "source": "Mac: MapView.rsrc:2013 node 0x1da2",
           "state": false,
           "tag": "tbr1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 7699,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": "TDropShadowText",
-          "legacy_type": "stat",
           "parent": 7586,
           "properties": {
             "cluster_value": null,
@@ -3191,7 +2774,6 @@
               "point_size": 9,
               "resource_id": 3300,
               "resource_index": 4,
-              "source": null,
               "style_ref": 0,
               "value": "Winter, 1888"
             },
@@ -3203,22 +2785,17 @@
             "x": 2,
             "y": 1
           },
-          "resolved_class": "TDropShadowText",
-          "resource_offset": 7699,
-          "source": "Mac: MapView.rsrc:2013 node 0x1e13",
           "state": false,
           "tag": "seas"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 7816,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": "TDropShadowText",
-          "legacy_type": "stat",
           "parent": 7586,
           "properties": {
             "cluster_value": null,
@@ -3241,7 +2818,6 @@
               "point_size": 9,
               "resource_id": 3300,
               "resource_index": 3,
-              "source": null,
               "style_ref": 0,
               "value": "$55,555"
             },
@@ -3253,22 +2829,17 @@
             "x": 99,
             "y": 1
           },
-          "resolved_class": "TDropShadowText",
-          "resource_offset": 7816,
-          "source": "Mac: MapView.rsrc:2013 node 0x1e88",
           "state": false,
           "tag": "trea"
         },
         {
           "child_hit_test": false,
-          "confidence": "high",
           "control_value": 538976288,
           "enabled": true,
           "id": 7933,
           "input_gate": true,
+          "interactive": false,
           "kind": "list_or_scrolling_pane",
-          "legacy_class": "TInfoBarText",
-          "legacy_type": "tevw",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -3288,22 +2859,17 @@
             "x": 240,
             "y": 5
           },
-          "resolved_class": "TInfoBarText",
-          "resource_offset": 7933,
-          "source": "Mac: MapView.rsrc:2013 node 0x1efd",
           "state": false,
           "tag": "curs"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 8091,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -3328,15 +2894,11 @@
             "x": 220,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 8091,
-          "source": "Mac: MapView.rsrc:2013 node 0x1f9b",
           "state": false,
           "tag": "send"
         }
       ],
-      "root": 4,
-      "source": "Mac: MapView.rsrc:2013"
+      "root": 4
     },
     {
       "event": 952,
@@ -3347,14 +2909,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "container",
-          "legacy_class": null,
-          "legacy_type": "view",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -3374,22 +2934,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TView",
-          "resource_offset": 4,
-          "source": "Mac: Startup.rsrc:952 node 0x0004",
           "state": false,
           "tag": "base"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 65536,
           "enabled": true,
           "id": 72,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TMapUberPicture",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -3414,22 +2969,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TMapUberPicture",
-          "resource_offset": 72,
-          "source": "Mac: Startup.rsrc:952 node 0x0048",
           "state": false,
           "tag": "main"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 237,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TToolBarCluster",
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -3454,22 +3004,17 @@
             "x": 517,
             "y": 0
           },
-          "resolved_class": "TToolBarCluster",
-          "resource_offset": 237,
-          "source": "Mac: Startup.rsrc:952 node 0x00ed",
           "state": false,
           "tag": "tool"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 350,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 237,
           "properties": {
             "cluster_value": null,
@@ -3494,22 +3039,17 @@
             "x": 91,
             "y": 8
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 350,
-          "source": "Mac: Startup.rsrc:952 node 0x015e",
           "state": true,
           "tag": "quer"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 460,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TPictureButton",
-          "legacy_type": "pict",
           "parent": 237,
           "properties": {
             "cluster_value": null,
@@ -3534,22 +3074,17 @@
             "x": 4,
             "y": 8
           },
-          "resolved_class": "TPictureButton",
-          "resource_offset": 460,
-          "source": "Mac: Startup.rsrc:952 node 0x01cc",
           "state": true,
           "tag": "canc"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 570,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TCitySiteView",
-          "legacy_type": "view",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -3569,22 +3104,17 @@
             "x": 5,
             "y": 27
           },
-          "resolved_class": "TCitySiteView",
-          "resource_offset": 570,
-          "source": "Mac: Startup.rsrc:952 node 0x023a",
           "state": true,
           "tag": "DLOG"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 651,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -3609,22 +3139,17 @@
             "x": 220,
             "y": 10
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 651,
-          "source": "Mac: Startup.rsrc:952 node 0x028b",
           "state": false,
           "tag": "send"
         },
         {
           "child_hit_test": false,
-          "confidence": "high",
           "control_value": 538976288,
           "enabled": true,
           "id": 767,
           "input_gate": true,
+          "interactive": false,
           "kind": "list_or_scrolling_pane",
-          "legacy_class": "TInfoBarText",
-          "legacy_type": "tevw",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -3644,15 +3169,11 @@
             "x": 240,
             "y": 5
           },
-          "resolved_class": "TInfoBarText",
-          "resource_offset": 767,
-          "source": "Mac: Startup.rsrc:952 node 0x02ff",
           "state": false,
           "tag": "curs"
         }
       ],
-      "root": 4,
-      "source": "Mac: Startup.rsrc:952"
+      "root": 4
     },
     {
       "event": 953,
@@ -3663,14 +3184,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "window",
-          "legacy_class": null,
-          "legacy_type": "wind",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -3705,22 +3224,17 @@
             "x": 160,
             "y": 138
           },
-          "resolved_class": "TWindow",
-          "resource_offset": 4,
-          "source": "Mac: Startup.rsrc:953 node 0x0004",
           "state": true,
           "tag": "WIND"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 623,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TPlaceCityDialog",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -3745,22 +3259,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TPlaceCityDialog",
-          "resource_offset": 623,
-          "source": "Mac: Startup.rsrc:953 node 0x026f",
           "state": false,
           "tag": "DLOG"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 735,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 623,
           "properties": {
             "cluster_value": null,
@@ -3783,7 +3292,6 @@
               "point_size": 14,
               "resource_id": 1300,
               "resource_index": 65535,
-              "source": null,
               "style_ref": 0,
               "value": ""
             },
@@ -3795,22 +3303,17 @@
             "x": 46,
             "y": 17
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 735,
-          "source": "Mac: Startup.rsrc:953 node 0x02df",
           "state": false,
           "tag": "titl"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 837,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 623,
           "properties": {
             "cluster_value": null,
@@ -3835,22 +3338,17 @@
             "x": 255,
             "y": 142
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 837,
-          "source": "Mac: Startup.rsrc:953 node 0x0345",
           "state": true,
           "tag": "okay"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 953,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 623,
           "properties": {
             "cluster_value": null,
@@ -3875,22 +3373,17 @@
             "x": 13,
             "y": 142
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 953,
-          "source": "Mac: Startup.rsrc:953 node 0x03b9",
           "state": true,
           "tag": "cncl"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1069,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 623,
           "properties": {
             "cluster_value": null,
@@ -3913,7 +3406,6 @@
               "point_size": 0,
               "resource_id": 1300,
               "resource_index": 65535,
-              "source": null,
               "style_ref": 0,
               "value": ""
             },
@@ -3925,22 +3417,17 @@
             "x": 17,
             "y": 92
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 1069,
-          "source": "Mac: Startup.rsrc:953 node 0x042d",
           "state": false,
           "tag": "    "
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1171,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 623,
           "properties": {
             "cluster_value": null,
@@ -3963,7 +3450,6 @@
               "point_size": 0,
               "resource_id": 1300,
               "resource_index": 65535,
-              "source": null,
               "style_ref": 0,
               "value": ""
             },
@@ -3975,15 +3461,11 @@
             "x": 14,
             "y": 59
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 1171,
-          "source": "Mac: Startup.rsrc:953 node 0x0493",
           "state": false,
           "tag": "sust"
         }
       ],
-      "root": 4,
-      "source": "Mac: Startup.rsrc:953"
+      "root": 4
     },
     {
       "event": 1500,
@@ -3994,14 +3476,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "container",
-          "legacy_class": null,
-          "legacy_type": "view",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -4021,22 +3501,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TView",
-          "resource_offset": 4,
-          "source": "Mac: Startup.rsrc:1500 node 0x0004",
           "state": false,
           "tag": "base"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 65536,
           "enabled": true,
           "id": 72,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TGameSetupPicture",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -4061,22 +3536,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TGameSetupPicture",
-          "resource_offset": 72,
-          "source": "Mac: Startup.rsrc:1500 node 0x0048",
           "state": false,
           "tag": "main"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 239,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4101,22 +3571,17 @@
             "x": 61,
             "y": 111
           },
-          "resolved_class": "TControl",
-          "resource_offset": 239,
-          "source": "Mac: Startup.rsrc:1500 node 0x00ef",
           "state": true,
           "tag": "load"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 333,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4141,22 +3606,17 @@
             "x": 14,
             "y": 209
           },
-          "resolved_class": "TControl",
-          "resource_offset": 333,
-          "source": "Mac: Startup.rsrc:1500 node 0x014d",
           "state": true,
           "tag": "rand"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 427,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4181,22 +3641,17 @@
             "x": 458,
             "y": 258
           },
-          "resolved_class": "TControl",
-          "resource_offset": 427,
-          "source": "Mac: Startup.rsrc:1500 node 0x01ab",
           "state": true,
           "tag": "mult"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 521,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4221,22 +3676,17 @@
             "x": 448,
             "y": 113
           },
-          "resolved_class": "TControl",
-          "resource_offset": 521,
-          "source": "Mac: Startup.rsrc:1500 node 0x0209",
           "state": true,
           "tag": "high"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 615,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4261,22 +3711,17 @@
             "x": 1,
             "y": 397
           },
-          "resolved_class": "TControl",
-          "resource_offset": 615,
-          "source": "Mac: Startup.rsrc:1500 node 0x0267",
           "state": true,
           "tag": "scen"
         },
         {
           "child_hit_test": false,
-          "confidence": "high",
           "control_value": 538976288,
           "enabled": true,
           "id": 709,
           "input_gate": true,
+          "interactive": false,
           "kind": "list_or_scrolling_pane",
-          "legacy_class": "TInfoBarText",
-          "legacy_type": "tevw",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4296,22 +3741,17 @@
             "x": 180,
             "y": 424
           },
-          "resolved_class": "TInfoBarText",
-          "resource_offset": 709,
-          "source": "Mac: Startup.rsrc:1500 node 0x02c5",
           "state": false,
           "tag": "curs"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 867,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4336,22 +3776,17 @@
             "x": 221,
             "y": 102
           },
-          "resolved_class": "TControl",
-          "resource_offset": 867,
-          "source": "Mac: Startup.rsrc:1500 node 0x0363",
           "state": true,
           "tag": "quit"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 961,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4376,15 +3811,11 @@
             "x": 540,
             "y": 399
           },
-          "resolved_class": "TControl",
-          "resource_offset": 961,
-          "source": "Mac: Startup.rsrc:1500 node 0x03c1",
           "state": true,
           "tag": "pref"
         }
       ],
-      "root": 4,
-      "source": "Mac: Startup.rsrc:1500"
+      "root": 4
     },
     {
       "event": 1501,
@@ -4395,14 +3826,12 @@
       "nodes": [
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 4,
           "input_gate": true,
+          "interactive": false,
           "kind": "container",
-          "legacy_class": null,
-          "legacy_type": "view",
           "parent": null,
           "properties": {
             "cluster_value": null,
@@ -4422,22 +3851,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TView",
-          "resource_offset": 4,
-          "source": "Mac: Startup.rsrc:1501 node 0x0004",
           "state": false,
           "tag": "base"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 65536,
           "enabled": true,
           "id": 72,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TSetupRandomMapPicture",
-          "legacy_type": "pict",
           "parent": 4,
           "properties": {
             "cluster_value": null,
@@ -4462,22 +3886,17 @@
             "x": 0,
             "y": 0
           },
-          "resolved_class": "TSetupRandomMapPicture",
-          "resource_offset": 72,
-          "source": "Mac: Startup.rsrc:1501 node 0x0048",
           "state": false,
           "tag": "main"
         },
         {
           "child_hit_test": false,
-          "confidence": "high",
           "control_value": 538976288,
           "enabled": true,
           "id": 244,
           "input_gate": true,
+          "interactive": false,
           "kind": "list_or_scrolling_pane",
-          "legacy_class": "TInfoBarText",
-          "legacy_type": "tevw",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -4497,22 +3916,17 @@
             "x": 36,
             "y": 22
           },
-          "resolved_class": "TInfoBarText",
-          "resource_offset": 244,
-          "source": "Mac: Startup.rsrc:1501 node 0x00f4",
           "state": false,
           "tag": "hot!"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 402,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": null,
-          "legacy_type": "clus",
           "parent": 72,
           "properties": {
             "cluster_value": 538976288,
@@ -4537,22 +3951,17 @@
             "x": 288,
             "y": 4
           },
-          "resolved_class": "TCluster",
-          "resource_offset": 402,
-          "source": "Mac: Startup.rsrc:1501 node 0x0192",
           "state": false,
           "tag": "stuf"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 500,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TMapPreviewView",
-          "legacy_type": "view",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -4572,22 +3981,17 @@
             "x": 14,
             "y": 10
           },
-          "resolved_class": "TMapPreviewView",
-          "resource_offset": 500,
-          "source": "Mac: Startup.rsrc:1501 node 0x01f4",
           "state": false,
           "tag": "map "
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 583,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": "TDropShadowText",
-          "legacy_type": "stat",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -4610,7 +4014,6 @@
               "point_size": 14,
               "resource_id": 1300,
               "resource_index": 65535,
-              "source": null,
               "style_ref": 0,
               "value": ""
             },
@@ -4622,22 +4025,17 @@
             "x": 66,
             "y": 230
           },
-          "resolved_class": "TDropShadowText",
-          "resource_offset": 583,
-          "source": "Mac: Startup.rsrc:1501 node 0x0247; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tcou, 0, 14, ...)",
           "state": false,
           "tag": "tcou"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 700,
           "input_gate": true,
+          "interactive": false,
           "kind": "custom_canvas",
-          "legacy_class": "TGWorldPartView",
-          "legacy_type": "view",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -4657,22 +4055,17 @@
             "x": 25,
             "y": 225
           },
-          "resolved_class": "TGWorldPartView",
-          "resource_offset": 700,
-          "source": "Mac: Startup.rsrc:1501 node 0x02bc",
           "state": false,
           "tag": "flag"
         },
         {
           "child_hit_test": false,
-          "confidence": "high",
           "control_value": 538976288,
           "enabled": true,
           "id": 783,
           "input_gate": true,
+          "interactive": true,
           "kind": "edit_control",
-          "legacy_class": null,
-          "legacy_type": "edit",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -4695,7 +4088,6 @@
               "point_size": 12,
               "resource_id": 0,
               "resource_index": -1,
-              "source": null,
               "style_ref": 0,
               "value": ""
             },
@@ -4707,22 +4099,17 @@
             "x": 23,
             "y": 249
           },
-          "resolved_class": "TEditText",
-          "resource_offset": 783,
-          "source": "Mac: Startup.rsrc:1501 node 0x030f; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls RefreshActiveControlThenApplyThemeStyleAndCaption(coun, 0, 12, ..., 1, ...)",
           "state": true,
           "tag": "coun"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 948,
           "input_gate": true,
+          "interactive": true,
           "kind": "picture_button",
-          "legacy_class": "TUpDownPictureButton",
-          "legacy_type": "pict",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -4747,22 +4134,17 @@
             "x": 128,
             "y": 418
           },
-          "resolved_class": "TUpDownPictureButton",
-          "resource_offset": 948,
-          "source": "Mac: Startup.rsrc:1501 node 0x03b4",
           "state": true,
           "tag": "okay"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1064,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioTextCluster",
-          "legacy_type": "clus",
           "parent": 402,
           "properties": {
             "cluster_value": 538976288,
@@ -4787,22 +4169,17 @@
             "x": 25,
             "y": 298
           },
-          "resolved_class": "TRadioTextCluster",
-          "resource_offset": 1064,
-          "source": "Mac: Startup.rsrc:1501 node 0x0428",
           "state": false,
           "tag": "diff"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1179,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1064,
           "properties": {
             "cluster_value": null,
@@ -4825,7 +4202,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 12,
-              "source": null,
               "style_ref": 0,
               "value": "Introductory"
             },
@@ -4837,22 +4213,17 @@
             "x": 2,
             "y": 2
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 1179,
-          "source": "Mac: Startup.rsrc:1501 node 0x049b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif0"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1291,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1064,
           "properties": {
             "cluster_value": null,
@@ -4875,7 +4246,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 13,
-              "source": null,
               "style_ref": 0,
               "value": "Easy"
             },
@@ -4887,22 +4257,17 @@
             "x": 2,
             "y": 18
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 1291,
-          "source": "Mac: Startup.rsrc:1501 node 0x050b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif1"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1403,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1064,
           "properties": {
             "cluster_value": null,
@@ -4925,7 +4290,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 14,
-              "source": null,
               "style_ref": 0,
               "value": "Normal"
             },
@@ -4937,22 +4301,17 @@
             "x": 2,
             "y": 34
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 1403,
-          "source": "Mac: Startup.rsrc:1501 node 0x057b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif2"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1515,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1064,
           "properties": {
             "cluster_value": null,
@@ -4975,7 +4334,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 17,
-              "source": null,
               "style_ref": 0,
               "value": "Hard"
             },
@@ -4987,22 +4345,17 @@
             "x": 2,
             "y": 50
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 1515,
-          "source": "Mac: Startup.rsrc:1501 node 0x05eb; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif3"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1627,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1064,
           "properties": {
             "cluster_value": null,
@@ -5025,7 +4378,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 18,
-              "source": null,
               "style_ref": 0,
               "value": "Nigh-On Impossible"
             },
@@ -5037,22 +4389,17 @@
             "x": 2,
             "y": 66
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 1627,
-          "source": "Mac: Startup.rsrc:1501 node 0x065b; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 loops dif0..dif4 through ApplyUiTextStyleAndThemeFlags(..., 0, 12, ...) and SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "dif4"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1739,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": "TDropShadowText",
-          "legacy_type": "stat",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -5075,7 +4422,6 @@
               "point_size": 14,
               "resource_id": 1300,
               "resource_index": 19,
-              "source": null,
               "style_ref": 0,
               "value": "Difficulty Setting"
             },
@@ -5087,22 +4433,17 @@
             "x": 26,
             "y": 278
           },
-          "resolved_class": "TDropShadowText",
-          "resource_offset": 1739,
-          "source": "Mac: Startup.rsrc:1501 node 0x06cb; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(dift, 0, 14, ...)",
           "state": false,
           "tag": "dift"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1856,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": "TDropShadowText",
-          "legacy_type": "stat",
           "parent": 402,
           "properties": {
             "cluster_value": null,
@@ -5125,7 +4466,6 @@
               "point_size": 14,
               "resource_id": 1300,
               "resource_index": 2,
-              "source": null,
               "style_ref": 0,
               "value": "Names:"
             },
@@ -5137,22 +4477,17 @@
             "x": 26,
             "y": 392
           },
-          "resolved_class": "TDropShadowText",
-          "resource_offset": 1856,
-          "source": "Mac: Startup.rsrc:1501 node 0x0740; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 calls ApplyUiTextStyleAndThemeFlags(tnam, 0, 14, ...)",
           "state": false,
           "tag": "tnam"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 1973,
           "input_gate": true,
+          "interactive": false,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioTextCluster",
-          "legacy_type": "clus",
           "parent": 402,
           "properties": {
             "cluster_value": 538976288,
@@ -5177,22 +4512,17 @@
             "x": 91,
             "y": 390
           },
-          "resolved_class": "TRadioTextCluster",
-          "resource_offset": 1973,
-          "source": "Mac: Startup.rsrc:1501 node 0x07b5",
           "state": false,
           "tag": "name"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2088,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1973,
           "properties": {
             "cluster_value": null,
@@ -5215,7 +4545,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 7,
-              "source": null,
               "style_ref": 0,
               "value": "Historical"
             },
@@ -5227,22 +4556,17 @@
             "x": 2,
             "y": 2
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 2088,
-          "source": "Mac: Startup.rsrc:1501 node 0x0828; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles hist at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "hist"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2200,
           "input_gate": true,
+          "interactive": true,
           "kind": "radio_or_cluster_control",
-          "legacy_class": "TRadioText",
-          "legacy_type": "stat",
           "parent": 1973,
           "properties": {
             "cluster_value": null,
@@ -5265,7 +4589,6 @@
               "point_size": 12,
               "resource_id": 1300,
               "resource_index": 8,
-              "source": null,
               "style_ref": 0,
               "value": "Random"
             },
@@ -5277,22 +4600,17 @@
             "x": 118,
             "y": 2
           },
-          "resolved_class": "TRadioText",
-          "resource_offset": 2200,
-          "source": "Mac: Startup.rsrc:1501 node 0x0898; Windows: TSetupRandomMapPicture::DoPostCreate at 0x00577030 styles rand at 12 and calls SetTextAlignmentAndMaybeRefresh(1, 0)",
           "state": true,
           "tag": "rand"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 2312,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5317,22 +4635,17 @@
             "x": 265,
             "y": 281
           },
-          "resolved_class": "TControl",
-          "resource_offset": 2312,
-          "source": "Mac: Startup.rsrc:1501 node 0x0908",
           "state": true,
           "tag": "key "
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 2406,
           "input_gate": true,
+          "interactive": false,
           "kind": "static_text",
-          "legacy_class": null,
-          "legacy_type": "stat",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5355,7 +4668,6 @@
               "point_size": 0,
               "resource_id": 1300,
               "resource_index": 1,
-              "source": null,
               "style_ref": 0,
               "value": "All AutoGP's"
             },
@@ -5367,22 +4679,17 @@
             "x": 217,
             "y": 66
           },
-          "resolved_class": "TStaticText",
-          "resource_offset": 2406,
-          "source": "Mac: Startup.rsrc:1501 node 0x0966",
           "state": false,
           "tag": "auto"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 2508,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5407,22 +4714,17 @@
             "x": 42,
             "y": 55
           },
-          "resolved_class": "TControl",
-          "resource_offset": 2508,
-          "source": "Mac: Startup.rsrc:1501 node 0x09cc",
           "state": true,
           "tag": "canc"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": false,
           "id": 2602,
           "input_gate": true,
+          "interactive": true,
           "kind": "specialized",
-          "legacy_class": null,
-          "legacy_type": "cntl",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5447,22 +4749,17 @@
             "x": 42,
             "y": 133
           },
-          "resolved_class": "TControl",
-          "resource_offset": 2602,
-          "source": "Mac: Startup.rsrc:1501 node 0x0a2a",
           "state": true,
           "tag": "cncl"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2696,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": null,
-          "legacy_type": "pict",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5487,22 +4784,17 @@
             "x": 173,
             "y": 333
           },
-          "resolved_class": "TPicture",
-          "resource_offset": 2696,
-          "source": "Mac: Startup.rsrc:1501 node 0x0a88",
           "state": false,
           "tag": "coat"
         },
         {
           "child_hit_test": true,
-          "confidence": "high",
           "control_value": 0,
           "enabled": true,
           "id": 2792,
           "input_gate": true,
+          "interactive": false,
           "kind": "picture",
-          "legacy_class": "TNoHilitePicture",
-          "legacy_type": "pict",
           "parent": 72,
           "properties": {
             "cluster_value": null,
@@ -5527,15 +4819,11 @@
             "x": 147,
             "y": 134
           },
-          "resolved_class": "TNoHilitePicture",
-          "resource_offset": 2792,
-          "source": "Mac: Startup.rsrc:1501 node 0x0ae8",
           "state": true,
           "tag": "glob"
         }
       ],
-      "root": 4,
-      "source": "Mac: Startup.rsrc:1501"
+      "root": 4
     }
   ]
 }

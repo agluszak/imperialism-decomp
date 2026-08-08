@@ -1,9 +1,7 @@
 use serde::{Deserialize, Serialize};
-use std::collections::{HashMap, HashSet};
-use std::fs;
-use std::path::Path;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct ScopedViewId {
     pub resource_file: String,
     pub resource_id: i16,
@@ -37,14 +35,7 @@ pub enum WidgetKind {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum EvidenceConfidence {
-    High,
-    Medium,
-    Low,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct LogicalRect {
     pub x: i32,
     pub y: i32,
@@ -53,32 +44,18 @@ pub struct LogicalRect {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct UiCatalogSource {
-    pub path: String,
-    pub sha256: String,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct UiCatalogSources {
-    pub mac_view_ir: UiCatalogSource,
-    pub mac_strings: UiCatalogSource,
-    pub mac_text_resources: UiCatalogSource,
-    pub factory_manifest: UiCatalogSource,
-    pub windows_deltas: UiCatalogSource,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiStyle {
     pub word: i32,
     pub packed_color: i64,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiTextBinding {
     pub resource_id: i32,
     pub resource_index: i32,
     pub value: Option<String>,
-    pub source: Option<String>,
     pub font_family: i32,
     pub face_flags: i32,
     pub point_size: i32,
@@ -87,6 +64,7 @@ pub struct UiTextBinding {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiNumberRange {
     pub value: i32,
     pub minimum: i32,
@@ -94,6 +72,7 @@ pub struct UiNumberRange {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiWindowColor {
     pub behavior_flag: i32,
     pub triplet_flag: i32,
@@ -102,6 +81,7 @@ pub struct UiWindowColor {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiWindowProperties {
     pub flags: i32,
     pub style_type: i32,
@@ -115,6 +95,7 @@ pub struct UiWindowProperties {
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct WidgetProperties {
     pub frame_style: Option<i32>,
     pub content_insets: Option<[i32; 4]>,
@@ -129,6 +110,7 @@ pub struct WidgetProperties {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiNode {
     pub id: UiNodeId,
     pub parent: Option<UiNodeId>,
@@ -137,188 +119,27 @@ pub struct UiNode {
     pub rect: LogicalRect,
     pub state: bool,
     pub enabled: bool,
+    pub interactive: bool,
     pub input_gate: bool,
     pub child_hit_test: bool,
     pub control_value: i32,
     pub properties: WidgetProperties,
-    pub legacy_type: FourCc,
-    pub legacy_class: Option<String>,
-    pub resolved_class: String,
-    pub resource_offset: u32,
-    pub source: String,
-    pub confidence: EvidenceConfidence,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiView {
     pub id: ScopedViewId,
     pub event: i32,
     pub root: UiNodeId,
     pub nodes: Vec<UiNode>,
-    pub source: String,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
 pub struct UiCatalog {
     pub logical_resolution: [u32; 2],
-    pub sources: UiCatalogSources,
     pub views: Vec<UiView>,
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum UiCatalogError {
-    #[error("could not read normalized UI catalog: {0}")]
-    Io(#[source] std::io::Error),
-    #[error("could not decode normalized UI catalog: {0}")]
-    Json(#[source] serde_json::Error),
-    #[error("invalid normalized UI catalog: {0}")]
-    Validation(String),
-}
-
-impl UiCatalog {
-    pub fn validate(&self) -> Result<(), UiCatalogError> {
-        if self.logical_resolution != [640, 480] {
-            return Err(validation(format!(
-                "retail logical resolution must be 640x480, found {}x{}",
-                self.logical_resolution[0], self.logical_resolution[1]
-            )));
-        }
-        for source in [
-            &self.sources.mac_view_ir,
-            &self.sources.mac_strings,
-            &self.sources.mac_text_resources,
-            &self.sources.factory_manifest,
-            &self.sources.windows_deltas,
-        ] {
-            if source.path.is_empty()
-                || source.sha256.len() != 64
-                || !source.sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
-            {
-                return Err(validation(format!(
-                    "source {:?} must have a path and SHA-256 digest",
-                    source.path
-                )));
-            }
-        }
-
-        let mut view_ids = HashSet::new();
-        for view in &self.views {
-            if view.id.resource_file.is_empty() {
-                return Err(validation(
-                    "view resource file must not be empty".to_owned(),
-                ));
-            }
-            if !view_ids.insert(view.id.clone()) {
-                return Err(validation(format!(
-                    "duplicate scoped view {}:{}",
-                    view.id.resource_file, view.id.resource_id
-                )));
-            }
-            validate_view(view)?;
-        }
-        Ok(())
-    }
-
-    pub fn view(&self, id: &ScopedViewId) -> Option<&UiView> {
-        self.views.iter().find(|view| &view.id == id)
-    }
-}
-
-fn validate_view(view: &UiView) -> Result<(), UiCatalogError> {
-    if view.nodes.is_empty() {
-        return Err(validation(format!(
-            "{}:{} has no nodes",
-            view.id.resource_file, view.id.resource_id
-        )));
-    }
-    let mut nodes = HashMap::new();
-    for node in &view.nodes {
-        validate_four_cc(&node.tag, "tag")?;
-        validate_four_cc(&node.legacy_type, "legacy type")?;
-        if node.rect.width < 0 || node.rect.height < 0 {
-            return Err(validation(format!(
-                "{}:{} node {} has negative dimensions",
-                view.id.resource_file, view.id.resource_id, node.id.0
-            )));
-        }
-        if node.resource_offset != node.id.0 {
-            return Err(validation(format!(
-                "{}:{} node {} does not preserve its resource offset",
-                view.id.resource_file, view.id.resource_id, node.id.0
-            )));
-        }
-        if node.resolved_class.is_empty() || node.source.is_empty() {
-            return Err(validation(format!(
-                "{}:{} node {} lacks class or evidence metadata",
-                view.id.resource_file, view.id.resource_id, node.id.0
-            )));
-        }
-        if nodes.insert(node.id, node.parent).is_some() {
-            return Err(validation(format!(
-                "{}:{} has duplicate node {}",
-                view.id.resource_file, view.id.resource_id, node.id.0
-            )));
-        }
-    }
-    if !nodes.contains_key(&view.root) {
-        return Err(validation(format!(
-            "{}:{} root {} is missing",
-            view.id.resource_file, view.id.resource_id, view.root.0
-        )));
-    }
-    let roots = nodes.values().filter(|parent| parent.is_none()).count();
-    if roots != 1 || nodes[&view.root].is_some() {
-        return Err(validation(format!(
-            "{}:{} must have exactly one declared root",
-            view.id.resource_file, view.id.resource_id
-        )));
-    }
-    for (id, parent) in &nodes {
-        let Some(mut ancestor) = *parent else {
-            continue;
-        };
-        let mut visited = HashSet::from([*id]);
-        loop {
-            if !visited.insert(ancestor) {
-                return Err(validation(format!(
-                    "{}:{} node {} has a parent cycle",
-                    view.id.resource_file, view.id.resource_id, id.0
-                )));
-            }
-            match nodes.get(&ancestor) {
-                Some(Some(parent)) => ancestor = *parent,
-                Some(None) => break,
-                None => {
-                    return Err(validation(format!(
-                        "{}:{} node {} references missing parent {}",
-                        view.id.resource_file, view.id.resource_id, id.0, ancestor.0
-                    )));
-                }
-            }
-        }
-    }
-    Ok(())
-}
-
-fn validate_four_cc(value: &FourCc, label: &str) -> Result<(), UiCatalogError> {
-    if value.0.len() != 4 || !value.0.bytes().all(|byte| (0x20..0x7f).contains(&byte)) {
-        return Err(validation(format!(
-            "{label} {:?} is not a printable FourCC",
-            value.0
-        )));
-    }
-    Ok(())
-}
-
-fn validation(message: String) -> UiCatalogError {
-    UiCatalogError::Validation(message)
-}
-
-pub fn read_ui_catalog(path: &Path) -> Result<UiCatalog, UiCatalogError> {
-    let bytes = fs::read(path).map_err(UiCatalogError::Io)?;
-    let catalog = serde_json::from_slice::<UiCatalog>(&bytes).map_err(UiCatalogError::Json)?;
-    catalog.validate()?;
-    Ok(catalog)
 }
 
 #[cfg(test)]
@@ -332,9 +153,8 @@ mod tests {
     }
 
     #[test]
-    fn generated_catalog_validates_and_round_trips() {
+    fn generated_catalog_round_trips() {
         let catalog = generated_catalog();
-        catalog.validate().unwrap();
         let encoded = serde_json::to_vec(&catalog).unwrap();
         let decoded: UiCatalog = serde_json::from_slice(&encoded).unwrap();
         assert_eq!(decoded, catalog);
@@ -353,15 +173,34 @@ mod tests {
         ];
         for (resource_file, resource_id) in expected {
             assert!(
-                catalog
-                    .view(&ScopedViewId {
-                        resource_file: resource_file.to_owned(),
-                        resource_id,
-                    })
-                    .is_some(),
+                catalog.views.iter().any(|view| {
+                    view.id.resource_file == resource_file && view.id.resource_id == resource_id
+                }),
                 "missing {resource_file}:{resource_id}"
             );
         }
+    }
+
+    #[test]
+    fn generated_catalog_uses_explicit_interaction_semantics() {
+        let catalog = generated_catalog();
+        let random_setup = catalog
+            .views
+            .iter()
+            .find(|view| view.id.resource_file == "Startup.rsrc" && view.id.resource_id == 1501)
+            .unwrap();
+        let difficulty = random_setup
+            .nodes
+            .iter()
+            .find(|node| node.tag.0 == "dif0")
+            .unwrap();
+        let heading = random_setup
+            .nodes
+            .iter()
+            .find(|node| node.tag.0 == "dift")
+            .unwrap();
+        assert!(difficulty.interactive);
+        assert!(!heading.interactive);
     }
 
     #[test]
@@ -375,5 +214,16 @@ mod tests {
             resource_id: 953,
         };
         assert_ne!(startup, other);
+    }
+
+    #[test]
+    fn old_provenance_shape_is_not_accepted() {
+        let mut catalog = serde_json::from_str::<serde_json::Value>(GENERATED_CATALOG).unwrap();
+        catalog["sources"] = serde_json::json!({});
+        assert!(serde_json::from_value::<UiCatalog>(catalog).is_err());
+
+        let mut catalog = serde_json::from_str::<serde_json::Value>(GENERATED_CATALOG).unwrap();
+        catalog["views"][0]["nodes"][0]["legacy_type"] = serde_json::json!("view");
+        assert!(serde_json::from_value::<UiCatalog>(catalog).is_err());
     }
 }

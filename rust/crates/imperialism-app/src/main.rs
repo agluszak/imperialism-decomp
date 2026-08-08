@@ -18,13 +18,10 @@ fn main() -> ExitCode {
     };
 
     match prepare_main_menu(&config) {
-        Ok(prepared) => match run_main_menu(prepared) {
-            Ok(()) => ExitCode::SUCCESS,
-            Err(error) => {
-                eprintln!("could not construct main menu: {error}");
-                ExitCode::FAILURE
-            }
-        },
+        Ok(prepared) => {
+            run_main_menu(prepared);
+            ExitCode::SUCCESS
+        }
         Err(error) => {
             eprintln!("could not prepare main menu: {error}");
             ExitCode::FAILURE

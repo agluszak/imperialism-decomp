@@ -38,7 +38,6 @@ pub use retail_fonts::{
 };
 pub use runtime_capture::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
 pub use ui_catalog::{
-    EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UiCatalog, UiCatalogError,
-    UiCatalogSource, UiCatalogSources, UiNode, UiNodeId, UiNumberRange, UiStyle, UiTextBinding,
-    UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties, read_ui_catalog,
+    FourCc, LogicalRect, ScopedViewId, UiCatalog, UiNode, UiNodeId, UiNumberRange, UiStyle,
+    UiTextBinding, UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,
 };

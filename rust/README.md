@@ -48,6 +48,6 @@ The existing UI generator also emits the deterministic 640x480 launch catalog co
 ```
 
 The catalog is generated from the committed Mac View IR plus declared Windows deltas. Resource IDs
-remain scoped by resource file, and each node preserves its retail rectangle, parent, tag, state,
-text/style bindings, historical class, and resource offset. Do not hand-write a second screen
-description in the Bevy crate.
+remain scoped by resource file, and each node carries its runtime rectangle, parent, tag, state,
+interactivity, and text/style bindings. Do not hand-write a second screen description in the Bevy
+crate.

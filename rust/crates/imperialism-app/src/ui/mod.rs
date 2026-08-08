@@ -1,11 +1,10 @@
 mod runtime;
 mod startup;
 
+pub(crate) use runtime::UiCatalogResource;
 pub use runtime::{
-    DespawnUiView, InteractiveUiWidget, LegacyWidgetClass, PresentedUiNode, PresentedViewId,
-    SpawnUiView, UiCatalogResource, UiIntent, UiPictureBindingError, UiPictureBindingFailed,
-    UiPictureLookup, UiRuntimePlugin, UiRuntimeSet, UiSpawnError, UiTextBindingError,
-    UiTextBindingFailed, UiViewRoot, UiViewSpawnFailed, UiViewSpawned, UiWidgetFlags,
+    DespawnUiView, InteractiveUiWidget, PresentedUiNode, PresentedViewId, SpawnUiView, UiIntent,
+    UiPictureLookup, UiRuntimePlugin, UiRuntimeSet, UiViewRoot, UiViewSpawned, UiWidgetFlags,
     ViewInstanceId, WidgetTag,
 };
 pub use startup::{

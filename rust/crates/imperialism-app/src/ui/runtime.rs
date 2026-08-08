@@ -3,25 +3,25 @@ use crate::session::GameLoopSet;
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
+use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::ui::{FocusPolicy, InteractionDisabled};
 use imperialism_formats::{
     FourCc, RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
-    RetailTextStylePreset, ScopedViewId, UiCatalog, UiCatalogError, UiNode as CatalogNode,
-    UiNodeId, UiTextBinding, UiView as CatalogView, WidgetKind, resolve_retail_text_style,
+    RetailTextStylePreset, ScopedViewId, UiCatalog, UiNode as CatalogNode, UiNodeId, UiTextBinding,
+    UiView as CatalogView, resolve_retail_text_style,
 };
 use std::collections::HashMap;
 
 #[derive(Resource)]
-pub struct UiCatalogResource(UiCatalog);
+pub(crate) struct UiCatalogResource(UiCatalog);
 
 impl UiCatalogResource {
-    pub fn new(catalog: UiCatalog) -> Result<Self, UiCatalogError> {
-        catalog.validate()?;
-        Ok(Self(catalog))
+    pub(crate) const fn new(catalog: UiCatalog) -> Self {
+        Self(catalog)
     }
 
-    pub const fn catalog(&self) -> &UiCatalog {
+    pub(crate) const fn catalog(&self) -> &UiCatalog {
         &self.0
     }
 }
@@ -37,9 +37,6 @@ pub struct PresentedUiNode(pub UiNodeId);
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
 pub struct WidgetTag(pub FourCc);
-
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub struct LegacyWidgetClass(pub Option<String>);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 pub struct UiWidgetFlags {
@@ -75,31 +72,8 @@ pub struct UiViewSpawned {
     pub root: Entity,
 }
 
-#[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub struct UiViewSpawnFailed {
-    pub view: ScopedViewId,
-    pub error: UiSpawnError,
-}
-
-#[derive(Message, Debug)]
-pub struct UiPictureBindingFailed {
-    pub instance: ViewInstanceId,
-    pub view: ScopedViewId,
-    pub node: UiNodeId,
-    pub picture_id: i32,
-    pub error: UiPictureBindingError,
-}
-
-#[derive(Message, Debug)]
-pub struct UiTextBindingFailed {
-    pub instance: ViewInstanceId,
-    pub view: ScopedViewId,
-    pub node: UiNodeId,
-    pub error: UiTextBindingError,
-}
-
 #[derive(Debug, thiserror::Error)]
-pub enum UiTextBindingError {
+enum UiTextBindingError {
     #[error("retail assets are unavailable")]
     RetailAssetsUnavailable,
     #[error(transparent)]
@@ -109,7 +83,7 @@ pub enum UiTextBindingError {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum UiPictureBindingError {
+enum UiPictureBindingError {
     #[error("retail assets are unavailable")]
     RetailAssetsUnavailable,
     #[error("catalog picture ID {0} does not fit the retail 16-bit resource ID")]
@@ -122,16 +96,6 @@ pub enum UiPictureBindingError {
         #[source]
         source: TextureError,
     },
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum UiSpawnError {
-    #[error(
-        "normalized UI view {}:{} is absent from the catalog",
-        .0.resource_file,
-        .0.resource_id
-    )]
-    ViewNotFound(ScopedViewId),
 }
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
@@ -173,10 +137,8 @@ struct UiPictureResources<'w> {
     lookup: Res<'w, UiPictureLookup>,
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
-    failed: MessageWriter<'w, UiPictureBindingFailed>,
     fonts: ResMut<'w, Assets<Font>>,
     font_handles: ResMut<'w, RetailFontHandles>,
-    text_failed: MessageWriter<'w, UiTextBindingFailed>,
 }
 
 pub struct UiRuntimePlugin;
@@ -199,9 +161,6 @@ impl Plugin for UiRuntimePlugin {
             .add_message::<SpawnUiView>()
             .add_message::<DespawnUiView>()
             .add_message::<UiViewSpawned>()
-            .add_message::<UiViewSpawnFailed>()
-            .add_message::<UiPictureBindingFailed>()
-            .add_message::<UiTextBindingFailed>()
             .add_message::<UiIntent>()
             .add_systems(
                 Update,
@@ -227,19 +186,22 @@ fn spawn_requested_views(
     mut pictures: UiPictureResources,
     mut requests: MessageReader<SpawnUiView>,
     mut spawned: MessageWriter<UiViewSpawned>,
-    mut failed: MessageWriter<UiViewSpawnFailed>,
     mut next_instance: ResMut<NextViewInstance>,
 ) {
     let Some(catalog) = catalog else {
         return;
     };
     for SpawnUiView(view_id) in requests.read() {
-        let Some(view) = catalog.catalog().view(view_id) else {
-            let error = UiSpawnError::ViewNotFound(view_id.clone());
-            failed.write(UiViewSpawnFailed {
-                view: view_id.clone(),
-                error,
-            });
+        let Some(view) = catalog
+            .catalog()
+            .views
+            .iter()
+            .find(|view| &view.id == view_id)
+        else {
+            warn!(
+                "could not spawn normalized UI view {}:{}: absent from catalog",
+                view_id.resource_file, view_id.resource_id
+            );
             continue;
         };
         let instance = ViewInstanceId(next_instance.0);
@@ -322,7 +284,6 @@ fn spawn_node(
         PresentedViewId(view.id.clone()),
         PresentedUiNode(node.id),
         WidgetTag(node.tag.clone()),
-        LegacyWidgetClass(node.legacy_class.clone()),
         UiWidgetFlags {
             enabled: node.enabled,
             input_gate: node.input_gate,
@@ -334,7 +295,7 @@ fn spawn_node(
             FocusPolicy::Pass
         },
     ));
-    if is_interactive(node) {
+    if node.interactive {
         entity.insert((
             Button,
             InteractiveUiWidget,
@@ -362,12 +323,10 @@ fn spawn_node(
                 }
             }
             Err(error) => {
-                pictures.text_failed.write(UiTextBindingFailed {
-                    instance,
-                    view: view.id.clone(),
-                    node: node.id,
-                    error,
-                });
+                warn!(
+                    "could not bind retail text for UI view {}:{} node {}: {error}",
+                    view.id.resource_file, view.id.resource_id, node.id.0
+                );
             }
         }
     }
@@ -383,13 +342,10 @@ fn spawn_node(
                 entity.insert(ImageNode::new(handle));
             }
             Err(error) => {
-                pictures.failed.write(UiPictureBindingFailed {
-                    instance,
-                    view: view.id.clone(),
-                    node: node.id,
-                    picture_id,
-                    error,
-                });
+                warn!(
+                    "could not bind retail picture {picture_id} for UI view {}:{} node {}: {error}",
+                    view.id.resource_file, view.id.resource_id, node.id.0
+                );
             }
         }
     }
@@ -480,15 +436,6 @@ fn load_retail_picture(
     Ok(handle)
 }
 
-fn is_interactive(node: &CatalogNode) -> bool {
-    match node.legacy_type.0.as_str() {
-        "cntl" | "edit" | "nmbr" | "radb" | "chkb" => true,
-        "pict" => node.resolved_class.contains("Button"),
-        "stat" => node.resolved_class.contains("Radio"),
-        _ => matches!(node.kind, WidgetKind::Toggle | WidgetKind::Checkbox),
-    }
-}
-
 type UiInteractionQuery<'w, 's> = Query<
     'w,
     's,
@@ -552,9 +499,13 @@ mod tests {
 
     fn app() -> App {
         let mut app = App::new();
-        app.insert_resource(UiCatalogResource::new(catalog()).unwrap())
+        app.insert_resource(UiCatalogResource::new(catalog()))
             .add_plugins(UiRuntimePlugin);
         app
+    }
+
+    fn catalog_view<'a>(catalog: &'a UiCatalog, id: &ScopedViewId) -> &'a CatalogView {
+        catalog.views.iter().find(|view| &view.id == id).unwrap()
     }
 
     fn px(value: Val) -> f32 {
@@ -616,11 +567,11 @@ mod tests {
                     &PresentedViewId,
                     &PresentedUiNode,
                     &WidgetTag,
-                    &LegacyWidgetClass,
                     &UiWidgetFlags,
                     &FocusPolicy,
                     &Node,
                     &ChildOf,
+                    Option<&InteractiveUiWidget>,
                 )>()
                 .iter(world)
                 .filter(|(_, candidate, _, _, _, _, _, _, _, _)| **candidate == instance)
@@ -630,7 +581,7 @@ mod tests {
             assert_eq!(
                 presented
                     .values()
-                    .filter(|row| row.9.parent() == *root)
+                    .filter(|row| row.8.parent() == *root)
                     .count(),
                 1
             );
@@ -641,16 +592,16 @@ mod tests {
                     presented_view,
                     node_id,
                     tag,
-                    legacy_class,
                     flags,
                     focus_policy,
                     ui,
                     parent,
+                    interactive,
                 ) = presented[&node.id];
                 assert_eq!(presented_view.0, view.id);
                 assert_eq!(node_id.0, node.id);
                 assert_eq!(tag.0, node.tag);
-                assert_eq!(legacy_class.0, node.legacy_class);
+                assert_eq!(interactive.is_some(), node.interactive);
                 assert_eq!(
                     *flags,
                     UiWidgetFlags {
@@ -685,12 +636,13 @@ mod tests {
     #[test]
     fn catalog_content_insets_define_bevy_padding_and_text_content_box() {
         let catalog = catalog();
-        let view = catalog
-            .view(&ScopedViewId {
+        let view = catalog_view(
+            &catalog,
+            &ScopedViewId {
                 resource_file: "Startup.rsrc".to_owned(),
                 resource_id: 1501,
-            })
-            .unwrap();
+            },
+        );
         let country = view.nodes.iter().find(|node| node.tag.0 == "coun").unwrap();
         assert_eq!(catalog_content_insets(country), [0, 3, 3, 3]);
         assert_eq!(catalog_text_content_box(country), ([23, 252], [303, 16]));
@@ -807,7 +759,7 @@ mod tests {
     }
 
     #[test]
-    fn picture_binding_reports_missing_retail_assets_without_panicking() {
+    fn picture_binding_does_not_fallback_when_retail_assets_are_unavailable() {
         let mut app = app();
         let view = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
@@ -819,28 +771,13 @@ mod tests {
 
         app.update();
 
-        let failures = app
-            .world_mut()
-            .resource_mut::<Messages<UiPictureBindingFailed>>()
-            .drain()
-            .collect::<Vec<_>>();
-        assert_eq!(failures.len(), 1);
-        let failure = &failures[0];
-        assert_eq!(failure.view, view);
-        assert_eq!(failure.picture_id, 4500);
-        assert!(matches!(
-            failure.error,
-            UiPictureBindingError::RetailAssetsUnavailable
-        ));
-        let picture_node = catalog()
-            .view(&view)
-            .unwrap()
+        let catalog = catalog();
+        let picture_node = catalog_view(&catalog, &view)
             .nodes
             .iter()
             .find(|node| node.properties.picture_id == Some(4500))
             .unwrap()
             .id;
-        assert_eq!(failure.node, picture_node);
         assert!(
             app.world_mut()
                 .query::<(&PresentedViewId, &PresentedUiNode, Option<&ImageNode>)>()
@@ -852,7 +789,7 @@ mod tests {
     }
 
     #[test]
-    fn text_binding_reports_missing_retail_assets_without_using_a_system_font() {
+    fn text_binding_does_not_fallback_when_retail_assets_are_unavailable() {
         let mut app = app();
         let view = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
@@ -864,15 +801,6 @@ mod tests {
 
         app.update();
 
-        let failures = app
-            .world_mut()
-            .resource_mut::<Messages<UiTextBindingFailed>>()
-            .drain()
-            .collect::<Vec<_>>();
-        assert!(failures.iter().any(|failure| {
-            failure.view == view
-                && matches!(failure.error, UiTextBindingError::RetailAssetsUnavailable)
-        }));
         assert_eq!(
             app.world_mut()
                 .query::<(&PresentedViewId, &TextFont)>()
@@ -896,12 +824,13 @@ mod tests {
         );
         let retail_assets = RetailAssetsResource::new(RetailAssets::open(&retail_dir).unwrap());
         let catalog = catalog();
-        let view = catalog
-            .view(&ScopedViewId {
+        let view = catalog_view(
+            &catalog,
+            &ScopedViewId {
                 resource_file: "Startup.rsrc".to_owned(),
                 resource_id: 1501,
-            })
-            .unwrap();
+            },
+        );
 
         let first = render_text_evidence(view, &retail_assets);
         let second = render_text_evidence(view, &retail_assets);

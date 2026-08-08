@@ -113,25 +113,27 @@ class UiCodegenTests(unittest.TestCase):
         )
         self.assertEqual(len(ids), len(catalog["views"]))
 
-    def test_rust_catalog_preserves_diagnostics_and_windows_deltas(self) -> None:
+    def test_rust_catalog_emits_runtime_semantics_and_windows_deltas(self) -> None:
         catalog = build_rust_ui_catalog(
             REPO_ROOT, self.recipes, self.views, self.text_resources
         )
+        self.assertEqual(set(catalog), {"logical_resolution", "views"})
         by_id = {
             (view["id"]["resource_file"], view["id"]["resource_id"]): view
             for view in catalog["views"]
         }
         newspaper = by_id[("FlagView.rsrc", 8451)]
         toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
-        self.assertEqual(toolbar["id"], toolbar["resource_offset"])
-        self.assertEqual(toolbar["legacy_class"], "TToolBarCluster")
-        self.assertEqual(toolbar["resolved_class"], "TToolBarCluster")
+        self.assertEqual(toolbar["kind"], "radio_or_cluster_control")
+        self.assertFalse(toolbar["interactive"])
 
         strategic_map = by_id[("MapView.rsrc", 2013)]
         nodes_by_tag = {node["tag"]: node for node in strategic_map["nodes"]}
         self.assertFalse(nodes_by_tag["Flag"]["enabled"])
         self.assertFalse(nodes_by_tag["quer"]["enabled"])
-        self.assertIn("Windows:", nodes_by_tag["Flag"]["source"])
+        self.assertTrue(nodes_by_tag["Flag"]["interactive"])
+        self.assertTrue(nodes_by_tag["quer"]["interactive"])
+        self.assertTrue(nodes_by_tag["agr0"]["interactive"])
 
         random_setup = by_id[("Startup.rsrc", 1501)]
         setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
@@ -141,10 +143,31 @@ class UiCodegenTests(unittest.TestCase):
                 (text["font_family"], text["face_flags"], text["point_size"], text["alignment"]),
                 (1, 0, 12, 1),
             )
-            self.assertIn("Windows:", setup_by_tag[tag]["source"])
+            self.assertTrue(setup_by_tag[tag]["interactive"])
         for tag in ("tcou", "dift", "tnam"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
+
+        forbidden_keys = {
+            "sources",
+            "source",
+            "legacy_type",
+            "legacy_class",
+            "resolved_class",
+            "resource_offset",
+            "confidence",
+        }
+
+        def visit(value: object) -> None:
+            if isinstance(value, dict):
+                self.assertTrue(forbidden_keys.isdisjoint(value), value)
+                for child in value.values():
+                    visit(child)
+            elif isinstance(value, list):
+                for child in value:
+                    visit(child)
+
+        visit(catalog)
 
     def test_control_state_uses_recovered_control_api(self) -> None:
         rendered = "\n".join(self.rendered.values())

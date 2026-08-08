@@ -4,7 +4,7 @@ use crate::session::SessionPlugin;
 use crate::ui::{StartupUiPlugin, UiCatalogResource, UiRuntimePlugin};
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
-use imperialism_formats::{RetailAssetError, RetailAssets, UiCatalog, UiCatalogError};
+use imperialism_formats::{RetailAssetError, RetailAssets, UiCatalog};
 use std::ffi::OsString;
 use std::path::PathBuf;
 
@@ -80,27 +80,14 @@ pub struct PreparedMainMenu {
     ui_catalog: UiCatalog,
 }
 
-pub fn prepare_main_menu(config: &MainMenuConfig) -> Result<PreparedMainMenu, MainMenuLoadError> {
-    let retail_assets =
-        RetailAssets::open(&config.retail_dir).map_err(MainMenuLoadError::RetailAssets)?;
+pub fn prepare_main_menu(config: &MainMenuConfig) -> Result<PreparedMainMenu, RetailAssetError> {
+    let retail_assets = RetailAssets::open(&config.retail_dir)?;
     let ui_catalog = serde_json::from_str::<UiCatalog>(COMPILED_UI_CATALOG)
-        .map_err(UiCatalogError::Json)
-        .map_err(MainMenuLoadError::UiCatalog)?;
-    ui_catalog
-        .validate()
-        .map_err(MainMenuLoadError::UiCatalog)?;
+        .expect("the compiled UI catalog must deserialize");
     Ok(PreparedMainMenu {
         retail_assets,
         ui_catalog,
     })
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum MainMenuLoadError {
-    #[error(transparent)]
-    RetailAssets(#[from] RetailAssetError),
-    #[error(transparent)]
-    UiCatalog(#[from] UiCatalogError),
 }
 
 #[derive(Resource)]
@@ -116,11 +103,8 @@ impl RetailAssetsResource {
     }
 }
 
-pub fn configure_main_menu_app(
-    app: &mut App,
-    prepared: PreparedMainMenu,
-) -> Result<(), UiCatalogError> {
-    let catalog = UiCatalogResource::new(prepared.ui_catalog)?;
+pub fn configure_main_menu_app(app: &mut App, prepared: PreparedMainMenu) {
+    let catalog = UiCatalogResource::new(prepared.ui_catalog);
     app.insert_resource(catalog)
         .insert_resource(RetailAssetsResource::new(prepared.retail_assets))
         .add_plugins((
@@ -131,10 +115,9 @@ pub fn configure_main_menu_app(
             RetailAudioPlugin,
         ))
         .add_systems(Startup, enter_main_menu);
-    Ok(())
 }
 
-pub fn build_main_menu_app(prepared: PreparedMainMenu) -> Result<App, UiCatalogError> {
+pub fn build_main_menu_app(prepared: PreparedMainMenu) -> App {
     let logical_resolution = prepared.ui_catalog.logical_resolution;
     let mut app = App::new();
     app.insert_resource(ClearColor(Color::BLACK)).add_plugins(
@@ -149,13 +132,12 @@ pub fn build_main_menu_app(prepared: PreparedMainMenu) -> Result<App, UiCatalogE
                 ..default()
             }),
     );
-    configure_main_menu_app(&mut app, prepared)?;
-    Ok(app)
+    configure_main_menu_app(&mut app, prepared);
+    app
 }
 
-pub fn run_main_menu(prepared: PreparedMainMenu) -> Result<(), UiCatalogError> {
-    build_main_menu_app(prepared)?.run();
-    Ok(())
+pub fn run_main_menu(prepared: PreparedMainMenu) {
+    build_main_menu_app(prepared).run();
 }
 
 fn enter_main_menu(mut next_state: ResMut<NextState<AppState>>) {
@@ -195,11 +177,9 @@ mod tests {
             )),
         };
 
-        let error = match prepare_main_menu(&config) {
-            Ok(_) => panic!("a missing retail directory unexpectedly prepared a menu"),
-            Err(error) => error,
-        };
-
-        assert!(matches!(error, MainMenuLoadError::RetailAssets(_)));
+        assert!(matches!(
+            prepare_main_menu(&config),
+            Err(RetailAssetError::MissingFiles(_))
+        ));
     }
 }

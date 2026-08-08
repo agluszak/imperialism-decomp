@@ -271,7 +271,7 @@ mod tests {
     fn app() -> App {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
-        app.insert_resource(UiCatalogResource::new(catalog).unwrap())
+        app.insert_resource(UiCatalogResource::new(catalog))
             .add_plugins(bevy::state::app::StatesPlugin)
             .add_plugins((
                 ScreenFlowPlugin,
