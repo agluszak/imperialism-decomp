@@ -15,23 +15,22 @@ rust-version = "1.95"
 anyhow = "1"
 bitflags = { version = "2", features = ["serde"] }
 bevy = { version = "=0.19.0", default-features = false, features = [
-    "async_executor",
-    "bevy_asset",
-    "bevy_audio",
-    "bevy_core_pipeline",
-    "bevy_log",
-    "bevy_render",
-    "bevy_sprite",
-    "bevy_sprite_render",
-    "bevy_state",
-    "bevy_ui_render",
-    "bevy_winit",
-    "bmp",
-    "multi_threaded",
+    # Prefer official collections over hand-picking every crate, but omit
+    # default_platform extras (wayland/gilrs/udev) we do not need here.
+    "default_app",
     "std",
-    "vorbis",
-    "wav",
+    "multi_threaded",
+    "bevy_winit",
+    "bevy_clipboard",
     "x11",
+    "ui_api",
+    "ui_bevy_render",
+    "bevy_ui_widgets",
+    "picking",
+    "2d_bevy_render",
+    "audio",
+    "bmp",
+    "wav",
 ] }
 clap = { version = "4", features = ["derive"] }
 enum-map = { version = "2.7", features = ["serde"] }

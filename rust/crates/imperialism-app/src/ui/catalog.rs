@@ -3,12 +3,15 @@ use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
 use bevy::log::warn;
+use bevy::math::Rect;
 use bevy::prelude::*;
-use bevy::ui::{FocusPolicy, InteractionDisabled};
+use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
+use bevy::ui::InteractionDisabled;
+use bevy::ui_widgets::Button as UiButton;
 use imperialism_formats::{
-    FourCc, RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
+    RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
     RetailTextStylePreset, ScopedViewId, UiCatalog, UiNode as CatalogNode, UiNodeId, UiTextBinding,
-    UiView as CatalogView, resolve_retail_text_style,
+    UiView as CatalogView, WidgetKind, resolve_retail_text_style,
 };
 use std::collections::HashMap;
 
@@ -25,27 +28,6 @@ impl UiCatalogResource {
     }
 }
 
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct PresentedViewId(pub(crate) ScopedViewId);
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct PresentedUiNode(pub(crate) UiNodeId);
-
-#[derive(Component, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct WidgetTag(pub(crate) FourCc);
-
-/// Root entity of the view that owns this widget.
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct ViewRoot(pub(crate) Entity);
-
-#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) struct UiPictureLookup {
-    pub(crate) world_variant: u8,
-}
-
-#[derive(Component, Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub(crate) struct UiViewRoot;
-
 #[derive(Debug, Clone)]
 pub(crate) struct SpawnedView {
     pub root: Entity,
@@ -61,10 +43,9 @@ impl SpawnedView {
     }
 }
 
-#[derive(Message, Clone, Debug, Eq, PartialEq)]
-pub(crate) struct UiActivated {
-    pub view: Entity,
-    pub tag: FourCc,
+#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub(crate) struct UiPictureLookup {
+    pub(crate) world_variant: u8,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -76,7 +57,7 @@ enum UiTextBindingError {
 }
 
 #[derive(Debug, thiserror::Error)]
-enum UiPictureBindingError {
+pub(crate) enum UiPictureBindingError {
     #[error("catalog picture ID {0} does not fit the retail 16-bit resource ID")]
     InvalidPictureId(i32),
     #[error(transparent)]
@@ -90,30 +71,44 @@ enum UiPictureBindingError {
 }
 
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
+pub(crate) struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
 
 #[derive(Resource, Default)]
-struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
+pub(crate) struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
 
 #[derive(SystemParam)]
 pub(crate) struct UiPictureResources<'w> {
-    retail_assets: Res<'w, RetailAssetsResource>,
-    lookup: Res<'w, UiPictureLookup>,
-    images: ResMut<'w, Assets<Image>>,
-    handles: ResMut<'w, RetailPictureHandles>,
-    fonts: ResMut<'w, Assets<Font>>,
-    font_handles: ResMut<'w, RetailFontHandles>,
+    pub(crate) retail_assets: Res<'w, RetailAssetsResource>,
+    pub(crate) lookup: Res<'w, UiPictureLookup>,
+    pub(crate) images: ResMut<'w, Assets<Image>>,
+    pub(crate) handles: ResMut<'w, RetailPictureHandles>,
+    pub(crate) fonts: ResMut<'w, Assets<Font>>,
+    pub(crate) font_handles: ResMut<'w, RetailFontHandles>,
 }
 
-pub(crate) struct UiRuntimePlugin;
+impl UiPictureResources<'_> {
+    pub(crate) fn picture(
+        &mut self,
+        picture_id: i16,
+    ) -> Result<Handle<Image>, UiPictureBindingError> {
+        load_retail_picture_i16(
+            picture_id,
+            &self.retail_assets,
+            self.lookup.world_variant,
+            &mut self.images,
+            &mut self.handles,
+        )
+    }
+}
 
-impl Plugin for UiRuntimePlugin {
+/// Initializes retail picture/font caches. Widget plugins come from Bevy's `ui` profile.
+pub(crate) struct UiCatalogPlugin;
+
+impl Plugin for UiCatalogPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
             .init_resource::<RetailFontHandles>()
-            .init_resource::<UiPictureLookup>()
-            .add_message::<UiActivated>()
-            .add_systems(Update, emit_ui_activations);
+            .init_resource::<UiPictureLookup>();
     }
 }
 
@@ -146,14 +141,17 @@ pub(crate) fn spawn_view_nodes(
                 height: Val::Px(logical_resolution[1] as f32),
                 ..default()
             },
-            UiViewRoot,
-            PresentedViewId(view.id.clone()),
+            Name::new(format!(
+                "ui:{}:{}",
+                view.id.resource_file, view.id.resource_id
+            )),
+            Pickable::default(),
         ))
         .id();
 
     let mut nodes = HashMap::with_capacity(view.nodes.len());
     for node in &view.nodes {
-        let entity = spawn_node(commands, node, root);
+        let entity = spawn_node(commands, node);
         nodes.insert(node.id, entity);
     }
     for node in &view.nodes {
@@ -164,7 +162,7 @@ pub(crate) fn spawn_view_nodes(
     SpawnedView { root, nodes }
 }
 
-fn spawn_node(commands: &mut Commands, node: &CatalogNode, root: Entity) -> Entity {
+fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
     let [inset_left, inset_top, inset_right, inset_bottom] = catalog_content_insets(node);
     let mut entity = commands.spawn((
         Node {
@@ -181,22 +179,52 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode, root: Entity) -> Enti
             },
             ..default()
         },
-        ViewRoot(root),
-        PresentedUiNode(node.id),
-        WidgetTag(node.tag.clone()),
-        if node.child_hit_test {
-            FocusPolicy::Block
-        } else {
-            FocusPolicy::Pass
-        },
+        Name::new(format!("ui-node:{}:{}", node.id.0, node.tag.0)),
+        pickable_for_node(node),
     ));
-    if node.interactive {
-        entity.insert(Button);
-        if !node.enabled || !node.input_gate {
-            entity.insert(InteractionDisabled);
+
+    match node.kind {
+        WidgetKind::PictureButton => {
+            entity.insert(UiButton);
+            if !node.enabled || !node.input_gate {
+                entity.insert(InteractionDisabled);
+            }
+        }
+        WidgetKind::Toggle | WidgetKind::Checkbox => {
+            entity.insert(bevy::ui_widgets::Checkbox);
+            if !node.enabled || !node.input_gate {
+                entity.insert(InteractionDisabled);
+            }
+        }
+        WidgetKind::EditControl => {
+            // EditableText + font/filter are attached during asset binding / screen setup.
+        }
+        WidgetKind::Container
+        | WidgetKind::Window
+        | WidgetKind::FloatingWindow
+        | WidgetKind::Picture
+        | WidgetKind::StaticText
+        | WidgetKind::NumericValue
+        | WidgetKind::ListOrScrollingPane
+        | WidgetKind::RadioOrClusterControl
+        | WidgetKind::CustomCanvas
+        | WidgetKind::Specialized => {
+            // Passive or screen-classified. Do not invent button behavior.
         }
     }
+
     entity.id()
+}
+
+fn pickable_for_node(node: &CatalogNode) -> Pickable {
+    if node.child_hit_test {
+        Pickable::default()
+    } else {
+        Pickable {
+            should_block_lower: false,
+            is_hoverable: true,
+        }
+    }
 }
 
 fn bind_view_assets(
@@ -214,18 +242,40 @@ fn bind_view_assets(
                 &mut pictures.fonts,
                 &mut pictures.font_handles,
             ) {
-                Ok((font, layout, underline)) => {
-                    let mut entity = commands.entity(entity);
-                    entity.insert((
-                        Text::new(binding.value.clone().unwrap_or_default()),
-                        font,
-                        layout,
-                        TextColor(Color::BLACK),
-                    ));
-                    if underline {
-                        entity.insert(Underline);
+                Ok((font, layout, underline)) => match node.kind {
+                    WidgetKind::EditControl => {
+                        let initial = binding.value.clone().unwrap_or_default();
+                        let mut editable = EditableText::new(initial);
+                        editable.allow_newlines = false;
+                        if let Some(max_chars) = node.properties.max_chars {
+                            editable.max_characters = Some(max_chars as usize);
+                        }
+                        let mut entity = commands.entity(entity);
+                        entity.insert((
+                            editable,
+                            font,
+                            layout,
+                            TextColor(Color::BLACK),
+                            TextCursorStyle::default(),
+                            EditableTextFilter::new(|character| !character.is_control()),
+                        ));
+                        if underline {
+                            entity.insert(Underline);
+                        }
                     }
-                }
+                    _ => {
+                        let mut entity = commands.entity(entity);
+                        entity.insert((
+                            Text::new(binding.value.clone().unwrap_or_default()),
+                            font,
+                            layout,
+                            TextColor(Color::BLACK),
+                        ));
+                        if underline {
+                            entity.insert(Underline);
+                        }
+                    }
+                },
                 Err(error) => {
                     warn!(
                         "could not bind retail text for UI view {}:{} node {}: {error}",
@@ -307,7 +357,7 @@ fn load_retail_text(
     Ok((font, TextLayout::justify(justify), style.underline))
 }
 
-fn load_retail_picture(
+pub(crate) fn load_retail_picture(
     catalog_picture_id: i32,
     retail_assets: &RetailAssetsResource,
     world_variant: u8,
@@ -316,6 +366,22 @@ fn load_retail_picture(
 ) -> Result<Handle<Image>, UiPictureBindingError> {
     let picture_id = i16::try_from(catalog_picture_id)
         .map_err(|_| UiPictureBindingError::InvalidPictureId(catalog_picture_id))?;
+    load_retail_picture_i16(
+        picture_id,
+        retail_assets,
+        world_variant,
+        images,
+        picture_handles,
+    )
+}
+
+pub(crate) fn load_retail_picture_i16(
+    picture_id: i16,
+    retail_assets: &RetailAssetsResource,
+    world_variant: u8,
+    images: &mut Assets<Image>,
+    picture_handles: &mut RetailPictureHandles,
+) -> Result<Handle<Image>, UiPictureBindingError> {
     let key = (picture_id, world_variant);
     let handle = match picture_handles.0.get(&key) {
         Some(handle) => handle.clone(),
@@ -338,37 +404,15 @@ fn load_retail_picture(
     Ok(handle)
 }
 
-type UiActivationQuery<'w, 's> = Query<
-    'w,
-    's,
-    (
-        &'static Interaction,
-        &'static ViewRoot,
-        &'static WidgetTag,
-        Option<&'static InteractionDisabled>,
-    ),
-    (With<Button>, Changed<Interaction>),
->;
-
-fn emit_ui_activations(widgets: UiActivationQuery, mut activations: MessageWriter<UiActivated>) {
-    for (interaction, view, tag, disabled) in &widgets {
-        if *interaction == Interaction::Pressed && disabled.is_none() {
-            activations.write(UiActivated {
-                view: view.0,
-                tag: tag.0.clone(),
-            });
-        }
-    }
+pub(crate) fn image_node_source_rect(left: f32, top: f32, width: f32, height: f32) -> Rect {
+    Rect::new(left, top, left + width, top + height)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use bevy::ecs::message::Messages;
-    use imperialism_formats::{RetailAssets, UiCatalog};
+    use imperialism_formats::UiCatalog;
     use std::collections::{HashMap, HashSet};
-    use std::fs;
-    use std::path::PathBuf;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
@@ -382,7 +426,7 @@ mod tests {
             .init_resource::<Assets<Image>>()
             .init_resource::<Assets<Font>>()
             .insert_resource(UiCatalogResource::new(catalog()))
-            .add_plugins(UiRuntimePlugin);
+            .add_plugins(UiCatalogPlugin);
         app
     }
 
@@ -417,15 +461,6 @@ mod tests {
         spawned
     }
 
-    #[derive(Resource)]
-    struct PressedEntities(Vec<Entity>);
-
-    fn press_entities(pressed: Res<PressedEntities>, mut interactions: Query<&mut Interaction>) {
-        for entity in &pressed.0 {
-            *interactions.get_mut(*entity).unwrap() = Interaction::Pressed;
-        }
-    }
-
     #[test]
     fn all_launch_views_spawn_with_exact_catalog_hierarchy() {
         let mut app = app();
@@ -452,16 +487,8 @@ mod tests {
             );
             for node in &view.nodes {
                 let entity = spawned.nodes[&node.id];
-                let tag = world.get::<WidgetTag>(entity).unwrap();
                 let ui = world.get::<Node>(entity).unwrap();
-                let focus_policy = world.get::<FocusPolicy>(entity).unwrap();
                 let parent = world.get::<ChildOf>(entity).unwrap();
-                assert_eq!(tag.0, node.tag);
-                assert_eq!(world.get::<Button>(entity).is_some(), node.interactive);
-                assert_eq!(
-                    world.get::<InteractionDisabled>(entity).is_some(),
-                    node.interactive && (!node.enabled || !node.input_gate)
-                );
                 assert_eq!(px(ui.left), node.rect.x as f32);
                 assert_eq!(px(ui.top), node.rect.y as f32);
                 assert_eq!(px(ui.width), node.rect.width as f32);
@@ -471,16 +498,22 @@ mod tests {
                 assert_eq!(px(ui.padding.top), top as f32);
                 assert_eq!(px(ui.padding.right), right as f32);
                 assert_eq!(px(ui.padding.bottom), bottom as f32);
-                assert_eq!(
-                    *focus_policy,
-                    if node.child_hit_test {
-                        FocusPolicy::Block
-                    } else {
-                        FocusPolicy::Pass
-                    }
-                );
                 let expected_parent = node.parent.map_or(spawned.root, |id| spawned.nodes[&id]);
                 assert_eq!(parent.parent(), expected_parent, "node {entity:?}");
+                let has_button = world.get::<UiButton>(entity).is_some();
+                assert_eq!(
+                    has_button,
+                    node.kind == WidgetKind::PictureButton,
+                    "node {} tag {} should only auto-map PictureButton",
+                    node.id.0,
+                    node.tag.0
+                );
+                if node.kind == WidgetKind::PictureButton {
+                    assert_eq!(
+                        world.get::<InteractionDisabled>(entity).is_some(),
+                        !node.enabled || !node.input_gate
+                    );
+                }
             }
         }
     }
@@ -513,50 +546,32 @@ mod tests {
     }
 
     #[test]
-    fn enabled_controls_emit_activations_and_disabled_controls_do_not() {
+    fn specialized_and_ambiguous_nodes_stay_passive() {
         let mut app = app();
-        let confirmation = ScopedViewId {
+        let menu = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
-            resource_id: 953,
+            resource_id: 1500,
         };
-        let map = ScopedViewId {
-            resource_file: "MapView.rsrc".to_owned(),
-            resource_id: 2013,
+        let setup = ScopedViewId {
+            resource_file: "Startup.rsrc".to_owned(),
+            resource_id: 1501,
         };
-        let confirmation_view = spawn_structure(&mut app, &confirmation);
-        let map_view = spawn_structure(&mut app, &map);
-
+        let menu_view = spawn_structure(&mut app, &menu);
+        let setup_view = spawn_structure(&mut app, &setup);
         let catalog = catalog();
-        let confirmation_catalog = catalog_view(&catalog, &confirmation);
-        let map_catalog = catalog_view(&catalog, &map);
-        let mut pressed = Vec::new();
-        for tag in ["okay", "cncl"] {
-            pressed.push(confirmation_view.tagged(confirmation_catalog, tag).unwrap());
-        }
-        for tag in ["Flag", "quer"] {
-            let entity = map_view.tagged(map_catalog, tag).unwrap();
-            assert!(app.world().get::<InteractionDisabled>(entity).is_some());
-            pressed.push(entity);
-        }
-        app.insert_resource(PressedEntities(pressed))
-            .add_systems(PreUpdate, press_entities);
-        app.update();
+        let menu_catalog = catalog_view(&catalog, &menu);
+        let setup_catalog = catalog_view(&catalog, &setup);
 
-        let activations = app
-            .world_mut()
-            .resource_mut::<Messages<UiActivated>>()
-            .drain()
-            .collect::<Vec<_>>();
-        let tags = activations
-            .iter()
-            .map(|activation| activation.tag.0.as_str())
-            .collect::<HashSet<_>>();
-        assert_eq!(tags, HashSet::from(["okay", "cncl"]));
-        assert!(
-            activations
-                .iter()
-                .all(|activation| activation.view == confirmation_view.root)
-        );
+        for tag in ["rand", "quit", "load"] {
+            let entity = menu_view.tagged(menu_catalog, tag).unwrap();
+            assert!(app.world().get::<UiButton>(entity).is_none());
+        }
+        for tag in ["dif0", "hist", "key ", "cncl", "glob", "map "] {
+            let entity = setup_view.tagged(setup_catalog, tag).unwrap();
+            assert!(app.world().get::<UiButton>(entity).is_none());
+        }
+        let okay = setup_view.tagged(setup_catalog, "okay").unwrap();
+        assert!(app.world().get::<UiButton>(okay).is_some());
     }
 
     #[test]
@@ -573,149 +588,14 @@ mod tests {
 
         let remaining = app
             .world_mut()
-            .query_filtered::<Entity, With<UiViewRoot>>()
+            .query::<Entity>()
             .iter(app.world())
+            .filter(|entity| {
+                app.world()
+                    .get::<Name>(*entity)
+                    .is_some_and(|name| name.as_str().starts_with("ui:Startup.rsrc:953"))
+            })
             .collect::<HashSet<_>>();
         assert_eq!(remaining, HashSet::from([second.root]));
-    }
-
-    #[test]
-    #[ignore = "requires IMPERIALISM_RETAIL_DIR and IMPERIALISM_TEXT_EVIDENCE_PATH"]
-    fn real_retail_random_setup_text_renders_deterministic_640x480_evidence() {
-        let retail_dir = PathBuf::from(
-            std::env::var_os("IMPERIALISM_RETAIL_DIR")
-                .expect("IMPERIALISM_RETAIL_DIR must name the English GOG installation"),
-        );
-        let output = PathBuf::from(
-            std::env::var_os("IMPERIALISM_TEXT_EVIDENCE_PATH")
-                .expect("IMPERIALISM_TEXT_EVIDENCE_PATH must name the output PPM"),
-        );
-        let retail_assets = RetailAssetsResource::new(RetailAssets::open(&retail_dir).unwrap());
-        let catalog = catalog();
-        let view = catalog_view(
-            &catalog,
-            &ScopedViewId {
-                resource_file: "Startup.rsrc".to_owned(),
-                resource_id: 1501,
-            },
-        );
-
-        let first = render_text_evidence(view, &retail_assets);
-        let second = render_text_evidence(view, &retail_assets);
-        assert_eq!(first, second);
-        const PPM_HEADER: &[u8] = b"P6\n640 480\n255\n";
-        assert_eq!(&first[..PPM_HEADER.len()], PPM_HEADER);
-        let pixels = &first[PPM_HEADER.len()..];
-        assert_eq!(pixels.len(), 640 * 480 * 3);
-        assert!(pixels.iter().any(|byte| *byte != 0));
-        fs::write(output, first).unwrap();
-    }
-
-    fn render_text_evidence(view: &CatalogView, retail_assets: &RetailAssetsResource) -> Vec<u8> {
-        use bevy::text::{
-            ComputedTextBlock, FontAtlasSet, FontCx, FontHinting, LayoutCx, LetterSpacing,
-            LineHeight, ScaleCx, TextBounds, TextLayoutInfo, TextPipeline,
-        };
-
-        let mut fonts = Assets::<Font>::default();
-        let mut handles = RetailFontHandles::default();
-        let mut prepared = Vec::new();
-        let mut unresolved = Vec::new();
-        for node in &view.nodes {
-            let Some(binding) = node.properties.text.as_ref() else {
-                continue;
-            };
-            if binding.value.as_deref().unwrap_or_default().is_empty() {
-                continue;
-            }
-            match load_retail_text(binding, retail_assets, &mut fonts, &mut handles) {
-                Ok((font, layout, _)) => {
-                    prepared.push((node, binding.value.as_deref().unwrap(), font, layout));
-                }
-                Err(UiTextBindingError::Style(RetailTextStyleError::UnresolvedFontFamily {
-                    effective_family: 0,
-                    ..
-                })) => unresolved.push((node.id, node.tag.0.as_str())),
-                Err(error) => panic!(
-                    "could not prepare visible nonempty text node {} tag {:?}: {error}",
-                    node.id.0, node.tag.0
-                ),
-            }
-        }
-        assert_eq!(unresolved, vec![(UiNodeId(2406), "auto")]);
-        assert_eq!(prepared.len(), 9);
-
-        let mut font_registration = App::new();
-        font_registration
-            .insert_resource(fonts)
-            .init_resource::<FontCx>()
-            .add_systems(Update, bevy::text::load_font_assets_into_font_collection);
-        font_registration.update();
-        let fonts = font_registration
-            .world_mut()
-            .remove_resource::<Assets<Font>>()
-            .unwrap();
-        let mut font_cx = font_registration
-            .world_mut()
-            .remove_resource::<FontCx>()
-            .unwrap();
-        let mut pipeline = TextPipeline::default();
-        let mut layout_cx = LayoutCx::default();
-        let mut scale_cx = ScaleCx::default();
-        let mut atlases = FontAtlasSet::default();
-        let mut textures = Assets::<Image>::default();
-        let mut canvas = vec![0_u8; 640 * 480 * 3];
-        for (node, text, font, layout) in prepared {
-            let (content_origin, content_size) = catalog_text_content_box(node);
-            let text_bounds = TextBounds::new(content_size[0] as f32, content_size[1] as f32);
-            let mut computed = ComputedTextBlock::default();
-            pipeline
-                .update_buffer(
-                    &fonts,
-                    std::iter::once((
-                        Entity::PLACEHOLDER,
-                        0,
-                        text,
-                        &font,
-                        Color::WHITE,
-                        LineHeight::default(),
-                        LetterSpacing::default(),
-                    )),
-                    layout.linebreak,
-                    layout.justify,
-                    text_bounds,
-                    1.0,
-                    &mut computed,
-                    &mut font_cx,
-                    &mut layout_cx,
-                    Vec2::new(640.0, 480.0),
-                    20.0,
-                )
-                .unwrap();
-            let mut layout_info = TextLayoutInfo::default();
-            pipeline
-                .update_text_layout_info(
-                    &mut layout_info,
-                    &mut atlases,
-                    &mut textures,
-                    &mut computed,
-                    &mut scale_cx,
-                    text_bounds,
-                    layout.justify,
-                    FontHinting::default(),
-                )
-                .unwrap();
-            let _ = (
-                content_origin,
-                layout_info,
-                &mut canvas,
-                &fonts,
-                &mut font_cx,
-                &mut layout_cx,
-            );
-        }
-        let mut ppm = b"P6\n640 480\n255\n".to_vec();
-        ppm.extend_from_slice(&canvas);
-        ppm
     }
 }

@@ -1,11 +1,13 @@
-mod map_preview;
-mod runtime;
-mod startup;
+mod catalog;
+mod city_site;
+mod main_menu;
+mod random_setup;
+mod random_setup_map;
+mod strategic_map;
 
-pub(crate) use map_preview::MapPreviewPlugin;
-#[cfg(test)]
-pub(crate) use runtime::{PresentedViewId, UiViewRoot, ViewRoot, WidgetTag, spawn_view_nodes};
-pub(crate) use runtime::{
-    SpawnedView, UiActivated, UiCatalogResource, UiPictureResources, UiRuntimePlugin, spawn_view,
-};
-pub(crate) use startup::StartupUiPlugin;
+pub(crate) use catalog::{UiCatalogPlugin, UiCatalogResource};
+pub(crate) use city_site::CitySitePlugin;
+pub(crate) use main_menu::MainMenuPlugin;
+pub(crate) use random_setup::RandomSetupPlugin;
+pub(crate) use random_setup_map::MapPreviewPlugin;
+pub(crate) use strategic_map::StrategicMapPlugin;
