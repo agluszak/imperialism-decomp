@@ -1,7 +1,6 @@
 #![forbid(unsafe_code)]
 
 mod runtime_capture;
-mod start_boundary;
 
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, RetailLcg, RetailTopologyByte,
@@ -14,10 +13,6 @@ pub use runtime_capture::{
     RuntimeCaptureError, decode_runtime_capture, read_runtime_capture, read_runtime_seed,
 };
 use serde::{Deserialize, Serialize};
-pub use start_boundary::{
-    RandomGameStartBoundarySubset, compare_random_game_start_boundary,
-    project_random_game_start_boundary,
-};
 use std::collections::BTreeSet;
 use std::path::Path;
 
@@ -51,7 +46,7 @@ pub struct Difference {
 /// difficulty controls.
 ///
 /// The native runtime emits this directly as its `random_game_setup` capture.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameSetupCapture {
     pub planet_seed: String,
     pub topology: RetailTopologyByte,
@@ -213,14 +208,7 @@ mod tests {
             "name": "random_map_generation",
             "seed": 1,
             "status": "passed",
-            "captures": {"random_game_setup": {
-                "planet_seed": expected.planet_seed,
-                "topology": expected.topology.retail_byte(),
-                "nation": expected.nation.get(),
-                "country_name": expected.country_name,
-                "difficulty": expected.difficulty.retail_byte(),
-                "localized_names": expected.localized_names,
-            }},
+            "captures": {"random_game_setup": expected},
         });
         let actual = decode_runtime_capture::<RandomGameSetupCapture>(
             serde_json::to_vec(&result).unwrap().as_slice(),

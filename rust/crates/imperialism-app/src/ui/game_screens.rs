@@ -1,6 +1,8 @@
 use crate::AppState;
-use crate::ui::{SpawnedView, UiActivated, UiCatalogResource, UiPictureResources, spawn_view};
+use crate::ui::catalog::{SpawnedView, UiCatalogResource, UiPictureResources, spawn_view};
 use bevy::prelude::*;
+use bevy::ui::InteractionDisabled;
+use bevy::ui_widgets::{Activate, Button as UiButton};
 use imperialism_formats::{ScopedViewId, UiNodeId, UiView as CatalogView};
 use std::collections::HashMap;
 
@@ -50,35 +52,24 @@ fn view_id_for_state(state: AppState) -> Option<ScopedViewId> {
         AppState::City => Some(city_view_id()),
         AppState::Transport => Some(transport_view_id()),
         AppState::Diplomacy => Some(diplomacy_view_id()),
-        AppState::MainMenu | AppState::RandomSetup => None,
+        AppState::MainMenu | AppState::RandomSetup | AppState::CitySite => None,
     }
 }
 
-/// Toolbar navigation controls resolved once at spawn for the active main view.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-struct GameScreenNav {
-    root: Entity,
-    trade: Entity,
-    transport: Entity,
-    city: Entity,
-    diplomacy: Entity,
-    /// Present on trade/city/transport/diplomacy; returns to the strategic map.
-    end_turn_or_leave: Option<Entity>,
-}
-
-#[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
-struct GameScreenInstance {
-    root: Option<Entity>,
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+enum GameScreenNavAction {
+    Trade,
+    Transport,
+    City,
+    Diplomacy,
+    LeaveToMap,
 }
 
 pub(crate) struct GameScreensPlugin;
 
 impl Plugin for GameScreensPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<GameScreenInstance>().add_systems(
-            Update,
-            translate_game_screen_activations.run_if(in_game_screen),
-        );
+        app.add_observer(on_game_screen_activate);
         for state in [
             AppState::StrategicMap,
             AppState::Trade,
@@ -86,21 +77,9 @@ impl Plugin for GameScreensPlugin {
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            app.add_systems(OnEnter(state), enter_game_screen)
-                .add_systems(OnExit(state), exit_game_screen);
+            app.add_systems(OnEnter(state), enter_game_screen);
         }
     }
-}
-
-fn in_game_screen(state: Res<State<AppState>>) -> bool {
-    matches!(
-        *state.get(),
-        AppState::StrategicMap
-            | AppState::Trade
-            | AppState::City
-            | AppState::Transport
-            | AppState::Diplomacy
-    )
 }
 
 fn enter_game_screen(
@@ -108,13 +87,12 @@ fn enter_game_screen(
     catalog: Res<UiCatalogResource>,
     mut pictures: UiPictureResources,
     state: Res<State<AppState>>,
-    mut instance: ResMut<GameScreenInstance>,
 ) {
-    let Some(view_id) = view_id_for_state(*state.get()) else {
+    let current = *state.get();
+    let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(spawned) = spawn_view(&mut commands, catalog.catalog(), &view_id, &mut pictures)
-    else {
+    let Some(spawned) = spawn_view(&mut commands, catalog.catalog(), &view_id, &mut pictures) else {
         return;
     };
     let view = catalog
@@ -123,30 +101,48 @@ fn enter_game_screen(
         .iter()
         .find(|view| view.id == view_id)
         .expect("game screen view was just spawned");
-    let Some(nav) = resolve_game_screen_nav(view, &spawned) else {
+    if !bind_game_screen_nav(&mut commands, view, &spawned) {
         commands.entity(spawned.root).despawn();
         return;
-    };
-    commands.insert_resource(nav);
-    instance.root = Some(spawned.root);
-}
-
-fn exit_game_screen(mut commands: Commands, mut instance: ResMut<GameScreenInstance>) {
-    if let Some(root) = instance.root.take() {
-        commands.entity(root).despawn();
     }
-    commands.remove_resource::<GameScreenNav>();
+    commands.entity(spawned.root).insert(DespawnOnExit(current));
 }
 
-fn resolve_game_screen_nav(view: &CatalogView, spawned: &SpawnedView) -> Option<GameScreenNav> {
-    Some(GameScreenNav {
-        root: spawned.root,
-        trade: control_under_parents(view, spawned, "trad", TOOLBAR_PARENT_TAGS)?,
-        transport: control_under_parents(view, spawned, "tran", TOOLBAR_PARENT_TAGS)?,
-        city: control_under_parents(view, spawned, "city", TOOLBAR_PARENT_TAGS)?,
-        diplomacy: control_under_parents(view, spawned, "dipl", TOOLBAR_PARENT_TAGS)?,
-        end_turn_or_leave: control_under_parents(view, spawned, "end ", LEAVE_PARENT_TAGS),
-    })
+fn bind_game_screen_nav(
+    commands: &mut Commands,
+    view: &CatalogView,
+    spawned: &SpawnedView,
+) -> bool {
+    let Some(trade) = control_under_parents(view, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
+        return false;
+    };
+    let Some(transport) = control_under_parents(view, spawned, "tran", TOOLBAR_PARENT_TAGS) else {
+        return false;
+    };
+    let Some(city) = control_under_parents(view, spawned, "city", TOOLBAR_PARENT_TAGS) else {
+        return false;
+    };
+    let Some(diplomacy) = control_under_parents(view, spawned, "dipl", TOOLBAR_PARENT_TAGS) else {
+        return false;
+    };
+    for (entity, action) in [
+        (trade, GameScreenNavAction::Trade),
+        (transport, GameScreenNavAction::Transport),
+        (city, GameScreenNavAction::City),
+        (diplomacy, GameScreenNavAction::Diplomacy),
+    ] {
+        commands
+            .entity(entity)
+            .insert((UiButton, action))
+            .remove::<InteractionDisabled>();
+    }
+    if let Some(leave) = control_under_parents(view, spawned, "end ", LEAVE_PARENT_TAGS) {
+        commands
+            .entity(leave)
+            .insert((UiButton, GameScreenNavAction::LeaveToMap))
+            .remove::<InteractionDisabled>();
+    }
+    true
 }
 
 /// Resolve an interactive control under one of the given ancestor tags.
@@ -174,50 +170,32 @@ fn control_under_parents(
     })
 }
 
-fn translate_game_screen_activations(
-    mut activations: MessageReader<UiActivated>,
-    nav: Option<Res<GameScreenNav>>,
+fn on_game_screen_activate(
+    activate: On<Activate>,
+    actions: Query<&GameScreenNavAction>,
     state: Res<State<AppState>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
-    let Some(nav) = nav.as_deref() else {
+    let Ok(action) = actions.get(activate.entity) else {
         return;
     };
-    let current = *state.get();
-    for activation in activations.read() {
-        if activation.view != nav.root {
-            continue;
-        }
-        let destination = if activation.control == nav.trade {
-            Some(AppState::Trade)
-        } else if activation.control == nav.transport {
-            Some(AppState::Transport)
-        } else if activation.control == nav.city {
-            Some(AppState::City)
-        } else if activation.control == nav.diplomacy {
-            Some(AppState::Diplomacy)
-        } else if nav.end_turn_or_leave == Some(activation.control) {
-            Some(AppState::StrategicMap)
-        } else {
-            None
-        };
-        let Some(destination) = destination else {
-            continue;
-        };
-        if destination != current {
-            next_state.set(destination);
-        }
+    let destination = match *action {
+        GameScreenNavAction::Trade => AppState::Trade,
+        GameScreenNavAction::Transport => AppState::Transport,
+        GameScreenNavAction::City => AppState::City,
+        GameScreenNavAction::Diplomacy => AppState::Diplomacy,
+        GameScreenNavAction::LeaveToMap => AppState::StrategicMap,
+    };
+    if destination != *state.get() {
+        next_state.set(destination);
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::{
-        PresentedViewId, UiRuntimePlugin, UiViewRoot, ViewRoot, WidgetTag, spawn_view_nodes,
-    };
-    use bevy::ui::InteractionDisabled;
-    use imperialism_formats::{FourCc, UiCatalog};
+    use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
+    use imperialism_formats::UiCatalog;
     use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -227,10 +205,7 @@ mod tests {
     }
 
     fn register_structure_screens(app: &mut App) {
-        app.init_resource::<GameScreenInstance>().add_systems(
-            Update,
-            translate_game_screen_activations.run_if(in_game_screen),
-        );
+        app.add_observer(on_game_screen_activate);
         for state in [
             AppState::StrategicMap,
             AppState::Trade,
@@ -238,8 +213,7 @@ mod tests {
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            app.add_systems(OnEnter(state), enter_game_screen_structure_only)
-                .add_systems(OnExit(state), exit_game_screen);
+            app.add_systems(OnEnter(state), enter_game_screen_structure_only);
         }
     }
 
@@ -247,9 +221,9 @@ mod tests {
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
         state: Res<State<AppState>>,
-        mut instance: ResMut<GameScreenInstance>,
     ) {
-        let Some(view_id) = view_id_for_state(*state.get()) else {
+        let current = *state.get();
+        let Some(view_id) = view_id_for_state(current) else {
             return;
         };
         let catalog = catalog.catalog();
@@ -259,9 +233,11 @@ mod tests {
             .find(|view| view.id == view_id)
             .unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
-        let nav = resolve_game_screen_nav(view, &spawned).expect("toolbar nav controls");
-        commands.insert_resource(nav);
-        instance.root = Some(spawned.root);
+        assert!(
+            bind_game_screen_nav(&mut commands, view, &spawned),
+            "toolbar nav controls"
+        );
+        commands.entity(spawned.root).insert(DespawnOnExit(current));
     }
 
     fn app_at(state: AppState) -> App {
@@ -269,7 +245,7 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .insert_resource(UiCatalogResource::new(catalog()))
             .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins(UiRuntimePlugin)
+            .add_plugins(UiCatalogPlugin)
             .init_state::<AppState>();
         register_structure_screens(&mut app);
         app.world_mut()
@@ -280,25 +256,36 @@ mod tests {
         app
     }
 
-    fn current_roots(app: &mut App) -> HashSet<ScopedViewId> {
+    fn current_roots(app: &mut App) -> HashSet<String> {
         let world = app.world_mut();
         world
-            .query_filtered::<&PresentedViewId, With<UiViewRoot>>()
+            .query::<&Name>()
             .iter(world)
-            .map(|view| view.0.clone())
+            .filter_map(|name| {
+                let name = name.as_str();
+                name.starts_with("ui:").then(|| name.to_owned())
+            })
             .collect()
     }
 
-    fn activate_nav(app: &mut App, control: Entity) {
-        let nav = *app.world().resource::<GameScreenNav>();
-        let tag = app.world().get::<WidgetTag>(control).unwrap().0.clone();
+    fn root_name(view_id: &ScopedViewId) -> String {
+        format!("ui:{}:{}", view_id.resource_file, view_id.resource_id)
+    }
+
+    fn nav_entity(app: &mut App, action: GameScreenNavAction) -> Entity {
         app.world_mut()
-            .write_message(UiActivated {
-                view: nav.root,
-                control,
-                tag,
-            })
-            .unwrap();
+            .query_filtered::<Entity, With<GameScreenNavAction>>()
+            .iter(app.world())
+            .find(|entity| app.world().get::<GameScreenNavAction>(*entity) == Some(&action))
+            .unwrap_or_else(|| panic!("missing nav action {action:?}"))
+    }
+
+    fn activate_nav(app: &mut App, action: GameScreenNavAction) {
+        let entity = nav_entity(app, action);
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity });
+        app.world_mut().flush();
         app.update();
         app.update();
     }
@@ -308,100 +295,112 @@ mod tests {
         let mut app = app_at(AppState::StrategicMap);
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([strategic_map_view_id()])
+            HashSet::from([root_name(&strategic_map_view_id())])
         );
-        let nav = *app.world().resource::<GameScreenNav>();
-        for entity in [nav.trade, nav.transport, nav.city, nav.diplomacy] {
-            assert!(app.world().get::<Button>(entity).is_some());
+        for action in [
+            GameScreenNavAction::Trade,
+            GameScreenNavAction::Transport,
+            GameScreenNavAction::City,
+            GameScreenNavAction::Diplomacy,
+        ] {
+            let entity = nav_entity(&mut app, action);
+            assert!(app.world().get::<UiButton>(entity).is_some());
             assert!(app.world().get::<InteractionDisabled>(entity).is_none());
         }
-        assert!(nav.end_turn_or_leave.is_none());
+        assert!(
+            app.world_mut()
+                .query_filtered::<Entity, With<GameScreenNavAction>>()
+                .iter(app.world())
+                .all(|entity| {
+                    app.world().get::<GameScreenNavAction>(entity)
+                        != Some(&GameScreenNavAction::LeaveToMap)
+                })
+        );
     }
 
     #[test]
     fn map_toolbar_opens_trade_city_transport_and_diplomacy() {
         let mut app = app_at(AppState::StrategicMap);
-        let nav = *app.world().resource::<GameScreenNav>();
-        activate_nav(&mut app, nav.trade);
+        activate_nav(&mut app, GameScreenNavAction::Trade);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Trade
         );
-        assert_eq!(current_roots(&mut app), HashSet::from([trade_view_id()]));
+        assert_eq!(
+            current_roots(&mut app),
+            HashSet::from([root_name(&trade_view_id())])
+        );
 
-        let nav = *app.world().resource::<GameScreenNav>();
-        activate_nav(&mut app, nav.city);
+        activate_nav(&mut app, GameScreenNavAction::City);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::City
         );
-        assert_eq!(current_roots(&mut app), HashSet::from([city_view_id()]));
+        assert_eq!(
+            current_roots(&mut app),
+            HashSet::from([root_name(&city_view_id())])
+        );
 
-        let nav = *app.world().resource::<GameScreenNav>();
-        activate_nav(&mut app, nav.transport);
+        activate_nav(&mut app, GameScreenNavAction::Transport);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Transport
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([transport_view_id()])
+            HashSet::from([root_name(&transport_view_id())])
         );
 
-        let nav = *app.world().resource::<GameScreenNav>();
-        activate_nav(&mut app, nav.diplomacy);
+        activate_nav(&mut app, GameScreenNavAction::Diplomacy);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Diplomacy
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([diplomacy_view_id()])
+            HashSet::from([root_name(&diplomacy_view_id())])
         );
     }
 
     #[test]
     fn leave_control_returns_to_the_strategic_map() {
         let mut app = app_at(AppState::Trade);
-        let nav = *app.world().resource::<GameScreenNav>();
-        let leave = nav.end_turn_or_leave.expect("trade has end control");
-        activate_nav(&mut app, leave);
+        activate_nav(&mut app, GameScreenNavAction::LeaveToMap);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([strategic_map_view_id()])
+            HashSet::from([root_name(&strategic_map_view_id())])
         );
     }
 
     #[test]
     fn diplomacy_trade_radio_does_not_steal_toolbar_navigation() {
         let mut app = app_at(AppState::Diplomacy);
-        let nav = *app.world().resource::<GameScreenNav>();
-        let world = app.world_mut();
-        let radio_trad = world
-            .query::<(Entity, &ViewRoot, &WidgetTag, &Button)>()
-            .iter(world)
-            .find(|(entity, root, tag, _)| {
-                root.0 == nav.root && tag.0.0 == "trad" && *entity != nav.trade
+        let toolbar_trade = nav_entity(&mut app, GameScreenNavAction::Trade);
+        let radio_trad = app
+            .world_mut()
+            .query::<(Entity, &Name)>()
+            .iter(app.world())
+            .find(|(entity, name)| {
+                name.as_str().ends_with(":trad")
+                    && *entity != toolbar_trade
+                    && app.world().get::<GameScreenNavAction>(*entity).is_none()
             })
-            .map(|(entity, _, _, _)| entity)
+            .map(|(entity, _)| entity)
             .expect("diplomacy has a non-toolbar trad control");
         app.world_mut()
-            .write_message(UiActivated {
-                view: nav.root,
-                control: radio_trad,
-                tag: FourCc("trad".to_owned()),
-            })
-            .unwrap();
+            .commands()
+            .trigger(Activate { entity: radio_trad });
+        app.world_mut().flush();
         app.update();
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Diplomacy
         );
-        activate_nav(&mut app, nav.trade);
+        activate_nav(&mut app, GameScreenNavAction::Trade);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::Trade
@@ -411,19 +410,14 @@ mod tests {
     #[test]
     fn diplomacy_leave_returns_to_the_strategic_map() {
         let mut app = app_at(AppState::Diplomacy);
-        let leave = app
-            .world()
-            .resource::<GameScreenNav>()
-            .end_turn_or_leave
-            .expect("diplomacy has end control");
-        activate_nav(&mut app, leave);
+        activate_nav(&mut app, GameScreenNavAction::LeaveToMap);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::StrategicMap
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([strategic_map_view_id()])
+            HashSet::from([root_name(&strategic_map_view_id())])
         );
     }
 

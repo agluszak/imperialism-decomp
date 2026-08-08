@@ -9,10 +9,9 @@ pub enum TurnFlowError {
 }
 
 impl TurnState {
-    /// Mirrors `TSimMgr::AdvanceSeason`: increment the original signed short with
-    /// retail wrapping behavior.
+    /// Mirrors `TSimMgr::AdvanceSeason`.
     pub fn advance_season(&mut self) {
-        self.economic_turn = self.economic_turn.wrapping_add(1);
+        self.economic_turn += 1;
     }
 
     /// Mirrors `TSimMgr::InLinearPhase` exactly, including unknown phase codes.
@@ -30,23 +29,12 @@ impl GameState {
         }
     }
 
-    /// Mirrors `TSimMgr::SetFlags`.
-    pub fn set_turn_flow_flags(&mut self, flags: u32) {
-        self.pending.turn_flow_status_flags |= flags;
-    }
-
-    /// Mirrors `TSimMgr::TestTurnFlowStatusFlagMask`.
-    pub const fn has_turn_flow_flags(&self, mask: u32) -> bool {
-        self.pending.turn_flow_status_flags & mask != 0
-    }
-
     /// Mirrors `TSimMgr::AllHumansFinished`. The C++ routine assumes all seven
     /// major slots exist; Rust reports that violated phase invariant explicitly.
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {
         all_major_flags_finished((0..MAJOR_NATION_COUNT).map(|slot| {
-            self.nations
-                .get(MajorNationId::new(slot as u8).nation())
-                .and_then(Option::as_ref)
+            self.nations[MajorNationId::new(slot as u8).nation()]
+                .as_ref()
                 .and_then(|nation| nation.major())
                 .map(|major| major.turn_finished)
         }))
@@ -56,10 +44,8 @@ impl GameState {
     /// have their completion flag cleared.
     pub fn reset_turn_flags(&mut self) -> Result<(), TurnFlowError> {
         for slot in 0..MAJOR_NATION_COUNT {
-            let present = self
-                .nations
-                .get(MajorNationId::new(slot as u8).nation())
-                .and_then(Option::as_ref)
+            let present = self.nations[MajorNationId::new(slot as u8).nation()]
+                .as_ref()
                 .and_then(|nation| nation.major())
                 .is_some();
             if !present {
@@ -102,17 +88,17 @@ mod tests {
     use crate::{Difficulty, NationId};
 
     #[test]
-    fn advances_the_retail_short_and_classifies_linear_phases() {
+    fn advances_the_season_and_classifies_linear_phases() {
         let mut turn = TurnState {
             scenario_map_index_plus_one: 0,
-            economic_turn: i16::MAX,
+            economic_turn: 2,
             phase_code: 4,
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(6),
             selected_nation: NationId::new(6),
         };
         turn.advance_season();
-        assert_eq!(turn.economic_turn, i16::MIN);
+        assert_eq!(turn.economic_turn, 3);
         assert!(!turn.in_linear_phase());
         turn.phase_code = 3;
         assert!(turn.in_linear_phase());

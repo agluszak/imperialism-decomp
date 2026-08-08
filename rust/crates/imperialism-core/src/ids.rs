@@ -28,16 +28,32 @@ impl NationId {
     pub const COUNT: u8 = 23;
 
     pub const fn new(value: u8) -> Self {
+        assert!(value < Self::COUNT, "nation ID is out of range");
         Self(value)
+    }
+
+    pub const fn try_new(value: u8) -> Option<Self> {
+        if value < Self::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
     }
 
     pub const fn get(self) -> u8 {
         self.0
     }
 
-    pub fn from_retail_slot(value: i64) -> Option<Self> {
-        let slot = u8::try_from(value).ok()?;
-        (slot < Self::COUNT).then_some(Self(slot))
+    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
+        (0..Self::COUNT).map(Self::new)
+    }
+}
+
+impl TryFrom<u8> for NationId {
+    type Error = ();
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        Self::try_new(value).ok_or(())
     }
 }
 
@@ -46,10 +62,10 @@ impl<'de> Deserialize<'de> for NationId {
     where
         D: serde::Deserializer<'de>,
     {
-        let value = i64::deserialize(deserializer)?;
-        Self::from_retail_slot(value).ok_or_else(|| {
+        let value = u8::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
             serde::de::Error::custom(format_args!(
-                "nation ID {value} is outside the retail range 0..={}",
+                "nation ID {value} is out of range 0..={}",
                 Self::COUNT - 1
             ))
         })
@@ -68,16 +84,20 @@ impl MajorNationId {
         Self(value)
     }
 
+    pub const fn try_new(value: u8) -> Option<Self> {
+        if value < Self::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
     pub const fn from_nation(nation: NationId) -> Option<Self> {
         if nation.get() < Self::COUNT {
             Some(Self(nation.get()))
         } else {
             None
         }
-    }
-
-    pub fn from_retail_slot(value: i64) -> Option<Self> {
-        NationId::from_retail_slot(value).and_then(Self::from_nation)
     }
 
     pub const fn get(self) -> u8 {
@@ -94,14 +114,17 @@ impl<'de> Deserialize<'de> for MajorNationId {
     where
         D: serde::Deserializer<'de>,
     {
-        let value = i64::deserialize(deserializer)?;
-        Self::from_retail_slot(value).ok_or_else(|| {
+        let value = u8::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
             serde::de::Error::custom(format_args!("major-nation ID {value} is out of range"))
         })
     }
 }
 
 id_type!(TileId, u16);
+// A strategic-tile ownership context. Values above the nation range identify
+// non-nation map contexts, so this deliberately is not a NationId.
+id_type!(TileOwnerTag, u8);
 id_type!(ProvinceId, u16);
 id_type!(CityId, u16);
 id_type!(ArmyId, u32);
@@ -111,16 +134,3 @@ id_type!(MilitaryUnitId, i32);
 id_type!(CivilianUnitId, i32);
 id_type!(ShipId, u32);
 id_type!(TaskForceId, u32);
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn ids_preserve_their_storage_widths() {
-        assert_eq!(NationId::new(6).get(), 6);
-        assert_eq!(MajorNationId::new(6).get(), 6);
-        assert_eq!(TileId::new(6479).get(), 6479);
-        assert_eq!(ArmyId::new(70_000).get(), 70_000);
-    }
-}

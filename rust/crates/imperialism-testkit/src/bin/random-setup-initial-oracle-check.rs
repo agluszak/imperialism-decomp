@@ -86,13 +86,13 @@ fn check_initial_setup(result: &Path) -> Result<()> {
     }
 
     println!(
-        "initial random-game setup matched: clock_seed={} planet={:?} topology={} nation={} country={:?} difficulty={} localized_names={} tiles={} provinces={} final={:08x}",
+        "initial random-game setup matched: clock_seed={} planet={:?} topology={} nation={} country={:?} difficulty={:?} localized_names={} tiles={} provinces={} final={:08x}",
         clock_seed,
         setup.planet_seed,
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.country_name,
-        setup.difficulty.retail_byte(),
+        setup.difficulty,
         setup.localized_names,
         preview.map.tiles.len(),
         preview.map.provinces.len(),
@@ -153,9 +153,9 @@ fn validate_setup(
     }
     if actual.difficulty != expected.difficulty {
         bail!(
-            "initial difficulty {} differs from retail default {}",
-            actual.difficulty.retail_byte(),
-            expected.difficulty.retail_byte()
+            "initial difficulty {:?} differs from retail default {:?}",
+            actual.difficulty,
+            expected.difficulty
         );
     }
     if actual.localized_names != expected.localized_names {

@@ -7,6 +7,7 @@
 #include "game/city/TPopulationMgr.h"
 #include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
+#include "game/diplomacy_domain_types.h"
 #include "game/military_domain_types.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
@@ -63,6 +64,44 @@ const char* const kPendingActionNames[0x0d] = {"navy_growth_reward",
                                                "council_lead_monument",
                                                "conquest_monument_armory"};
 
+const char* const kDifficultyNames[5] = {"introductory", "easy", "normal", "hard",
+                                         "nigh_on_impossible"};
+
+const char* const kCivilianUnitKindNames[kCivilianUnitKindCount] = {
+    "miner",   "prospector", "farmer",    "forester", "engineer",
+    "rancher", "fisherman",  "developer", "driller"};
+
+const char* const kMilitaryUnitKindNames[kMilitaryUnitKindCount] = {
+    "minutemen",       "skirmishers",      "regulars",
+    "grenadiers",      "hussars",          "cuirassiers",
+    "light_artillery", "artillery",        "militia",
+    "sharpshooters",   "rifle_infantry",   "guards",
+    "scouts",          "carbine_cavalry",  "field_artillery",
+    "siege_artillery", "conscripts",       "rangers",
+    "infantry",        "machine_gunners",  "mechanized_infantry",
+    "armor",           "mobile_artillery", "railroad_guns",
+    "sappers",         "combat_engineers", "saboteurs",
+    "general_era1",    "general_era2",     "general_era3"};
+
+const char* const kIndustryActionSlotNames[kIndustryActionSlotCount] = {
+    "slot0", "slot1", "slot2", "slot3",  "slot4",  "slot5",  "slot6",
+    "slot7", "slot8", "slot9", "slot10", "slot11", "slot12", "slot13"};
+
+const char* DifficultyName(int value) {
+  ASSERT(value >= 0 && value < 5);
+  return kDifficultyNames[value];
+}
+
+const char* CivilianUnitKindName(int value) {
+  ASSERT(value >= 0 && value < kCivilianUnitKindCount);
+  return kCivilianUnitKindNames[value];
+}
+
+const char* MilitaryUnitKindName(int value) {
+  ASSERT(value >= 0 && value < kMilitaryUnitKindCount);
+  return kMilitaryUnitKindNames[value];
+}
+
 JSON_Value* NewObject(JSON_Object*& object) {
   JSON_Value* value = json_value_init_object();
   object = json_value_get_object(value);
@@ -88,6 +127,103 @@ JSON_Value* CaptureShortArray(const short* values, int count) {
   JSON_Value* value = NewArray(array);
   for (int index = 0; index < count; ++index) {
     json_array_append_number(array, static_cast<int>(values[index]));
+  }
+  return value;
+}
+
+JSON_Value* CaptureIndustryActionCounts(const short* values) {
+  JSON_Object* object = 0;
+  JSON_Value* value = NewObject(object);
+  for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
+    json_object_set_number(object, kIndustryActionSlotNames[slot], static_cast<int>(values[slot]));
+  }
+  return value;
+}
+
+JSON_Value* CaptureCivilianUnitCounts(const short* values) {
+  JSON_Object* object = 0;
+  JSON_Value* value = NewObject(object);
+  for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
+    json_object_set_number(object, kCivilianUnitKindNames[kind], static_cast<int>(values[kind]));
+  }
+  return value;
+}
+
+JSON_Value* CaptureMilitaryUnitCounts(const short* values) {
+  JSON_Object* object = 0;
+  JSON_Value* value = NewObject(object);
+  for (int kind = 0; kind < kMilitaryUnitKindCount; ++kind) {
+    json_object_set_number(object, kMilitaryUnitKindNames[kind], static_cast<int>(values[kind]));
+  }
+  return value;
+}
+
+JSON_Value* CaptureNationCapacities(const TGreatPower* nation) {
+  JSON_Object* object = 0;
+  JSON_Value* value = NewObject(object);
+  json_object_set_number(object, "available_merchant",
+                         static_cast<int>(nation->availableMerchantCapacity));
+  json_object_set_number(object, "trade_offer", static_cast<int>(nation->merchantCapacity));
+  json_object_set_number(object, "transport", static_cast<int>(nation->transportCapacity));
+  json_object_set_number(object, "reserved_transport",
+                         static_cast<int>(nation->reservedTransportCapacity));
+  return value;
+}
+
+JSON_Value* CaptureDiplomacyGrants(const short* values, int count) {
+  JSON_Array* grants = 0;
+  JSON_Value* value = NewArray(grants);
+  for (int index = 0; index < count; ++index) {
+    short entry = values[index];
+    if (entry == -1) {
+      json_array_append_null(grants);
+      continue;
+    }
+
+    ASSERT(entry >= 0);
+    JSON_Object* grant = 0;
+    JSON_Value* grantValue = NewObject(grant);
+    json_object_set_number(grant, "amount", static_cast<int>(entry & 0x3fff));
+    json_object_set_string(grant, "flags", (entry & 0x4000) != 0 ? "RECURRING" : "");
+    json_array_append_value(grants, grantValue);
+  }
+  return value;
+}
+
+const char* DiplomacyPolicyName(short policy) {
+  switch (policy) {
+  case kDiplomacyProposalJoinEmpire:
+    return "join_empire";
+  case kDiplomacyProposalAlliance:
+    return "alliance";
+  case kDiplomacyProposalNonAggressionPact:
+    return "non_aggression_pact";
+  case kDiplomacyProposalPeaceTreaty:
+    return "peace_treaty";
+  case kDiplomacyProposalDeclareWar:
+    return "declare_war";
+  case kDiplomacyProposalJoinEmpireWithWarEntanglements:
+    return "join_empire_with_war_entanglements";
+  case kDiplomacyProposalBuildConsulate:
+    return "build_consulate";
+  case kDiplomacyProposalBuildEmbassy:
+    return "build_embassy";
+  default:
+    ASSERT(FALSE);
+    return "unsupported";
+  }
+}
+
+JSON_Value* CaptureDiplomacyPolicies(const short* values, int count) {
+  JSON_Array* policies = 0;
+  JSON_Value* value = NewArray(policies);
+  for (int index = 0; index < count; ++index) {
+    const short policy = values[index];
+    if (policy == -1) {
+      json_array_append_null(policies);
+    } else {
+      json_array_append_string(policies, DiplomacyPolicyName(policy));
+    }
   }
   return value;
 }
@@ -169,15 +305,14 @@ unsigned int RuntimeCrtRandState() {
 }
 
 JSON_Value* CaptureTurn(const RuntimeRun& run) {
+  ASSERT(g_pSimMgr != 0);
   JSON_Object* object = 0;
   JSON_Value* value = NewObject(object);
-  json_object_set_number(object, "scenario_map_index_plus_one",
-                         g_pSimMgr != 0 ? g_pSimMgr->scenarioMapIndexPlusOne : 0);
-  json_object_set_number(object, "economic_turn", g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1);
-  json_object_set_number(object, "phase_code", g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1);
-  json_object_set_number(object, "difficulty", g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1);
-  json_object_set_number(object, "active_nation",
-                         g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1);
+  json_object_set_number(object, "scenario_map_index_plus_one", g_pSimMgr->scenarioMapIndexPlusOne);
+  json_object_set_number(object, "economic_turn", g_pSimMgr->economicTurn);
+  json_object_set_number(object, "phase_code", g_pSimMgr->turnStateCode);
+  json_object_set_string(object, "difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
+  json_object_set_number(object, "active_nation", g_pSimMgr->activeNationSlot);
   json_object_set_number(object, "selected_nation", run.SelectedNationSlot());
   return value;
 }
@@ -222,8 +357,7 @@ JSON_Value* CaptureWorld() {
       json_array_append_number(edgeResources, static_cast<int>(tile.resourceTypeByEdge[1]));
     }
     json_object_set_value(tileObject, "edge_resources", edgeResourcesValue);
-    json_object_set_number(tileObject, "rail_flags",
-                           static_cast<unsigned int>(tile.railFlags17));
+    json_object_set_number(tileObject, "rail_flags", static_cast<unsigned int>(tile.railFlags17));
     json_object_set_number(tileObject, "action_state", static_cast<int>(tile.tileActionState16));
     json_object_set_number(tileObject, "active_flags",
                            static_cast<unsigned int>(tile.activeFlags1c));
@@ -236,22 +370,17 @@ JSON_Value* CaptureWorld() {
 JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   JSON_Object* object = 0;
   JSON_Value* value = NewObject(object);
-  JSON_Array* capacities = 0;
-  JSON_Value* capacitiesValue = NewArray(capacities);
-  json_array_append_number(capacities, static_cast<int>(nation->availableMerchantCapacity));
-  json_array_append_number(capacities, static_cast<int>(nation->merchantCapacity));
-  json_array_append_number(capacities, static_cast<int>(nation->transportCapacity));
-  json_array_append_number(capacities, static_cast<int>(nation->reservedTransportCapacity));
   json_object_set_string(object, "kind", "major");
   json_object_set_boolean(object, "diplomacy_eligible", nation->diplomacyEligibilityA0 != 0);
-  json_object_set_value(object, "capacities", capacitiesValue);
+  json_object_set_value(object, "capacities", CaptureNationCapacities(nation));
   json_object_set_number(object, "grant_total_cost", nation->grantTotalCost);
   json_object_set_number(object, "unfilled_trade_offer_count",
                          static_cast<int>(nation->unfilledTradeOfferCount));
-  json_object_set_value(object, "diplomacy_policy_by_nation",
-                        CaptureShortArray(nation->diplomacyPolicyByNation, kNationSlotCount));
-  json_object_set_value(object, "diplomacy_grant_by_nation",
-                        CaptureShortArray(nation->diplomacyGrantByNation, kNationSlotCount));
+  json_object_set_value(
+      object, "diplomacy_policy_by_nation",
+      CaptureDiplomacyPolicies(nation->diplomacyPolicyByNation, kNationSlotCount));
+  json_object_set_value(object, "diplomacy_grants_by_nation",
+                        CaptureDiplomacyGrants(nation->diplomacyGrantByNation, kNationSlotCount));
   json_object_set_value(object, "need_current_by_type",
                         CaptureResourceTable(nation->needCurrentByType));
   json_object_set_value(object, "need_target_by_type",
@@ -281,8 +410,7 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   json_object_set_value(object, "pending_action_payload_by_action",
                         CapturePendingActionPayloads(nation->field8d6));
   json_object_set_number(object, "diplomacy_budget_base", nation->diplomacyBudgetBase);
-  json_object_set_number(object, "escalation_counter",
-                         static_cast<int>(nation->escalationCounter));
+  json_object_set_number(object, "escalation_counter", static_cast<int>(nation->escalationCounter));
   json_object_set_number(object, "pending_commitment_cost", nation->pendingCommitmentCost);
   json_object_set_number(object, "pressure_counter", static_cast<int>(nation->pressureCounter));
   json_object_set_number(object, "aid_allocation_total", nation->aidAllocationTotal);
@@ -302,12 +430,10 @@ JSON_Value* CaptureNation(int slot) {
   JSON_Value* value = NewObject(object);
   JSON_Object* common = 0;
   JSON_Value* commonValue = NewObject(common);
-  json_object_set_number(common, "encoded_nation_slot",
-                         static_cast<int>(country->encodedNationSlot));
   json_object_set_number(common, "owner_nation",
                          static_cast<int>(country->DecodeOwnerNationSlot()));
   json_object_set_number(common, "treasury", country->treasuryValue10);
-  json_object_set_number(common, "home_tile", country->homeTileIndex);
+  SetOptionalNumber(common, "home_tile", country->homeTileIndex);
   json_object_set_value(common, "need_level_by_nation",
                         CaptureShortArray(country->needLevelByNation, kNationSlotCount));
   json_object_set_value(object, "common", commonValue);
@@ -342,7 +468,8 @@ JSON_Value* CapturePopulation(const TPopulationMgr* population) {
   json_object_set_number(object, "extra", static_cast<int>(population->extraAt1e));
   json_object_set_number(object, "phase_value", static_cast<int>(population->fieldAt20));
   json_object_set_value(object, "baseline_labor", CaptureLaborPool(population->baselineSlots10));
-  json_object_set_value(object, "production_labor", CaptureLaborPool(population->productionSlots14));
+  json_object_set_value(object, "production_labor",
+                        CaptureLaborPool(population->productionSlots14));
   json_object_set_value(object, "pending_labor_delta",
                         CaptureLaborPool(population->pendingDeltaSlots18));
   json_object_set_value(object, "predicted_need_by_resource",
@@ -367,20 +494,22 @@ JSON_Value* CaptureCity(int slot) {
   json_object_set_number(object, "serialized_state", static_cast<int>(city->serializedState0a));
   json_object_set_number(object, "phase_counter", static_cast<int>(city->cityPhaseCounter0c));
   json_object_set_value(object, "military_recruit_count_by_kind",
-                        CaptureShortArray(city->militaryRecruitCountByKind, kMilitaryUnitKindCount));
+                        CaptureMilitaryUnitCounts(city->militaryRecruitCountByKind));
   json_object_set_value(object, "civilian_recruit_count_by_kind",
-                        CaptureShortArray(city->civilianRecruitCountByKind, kCivilianUnitKindCount));
+                        CaptureCivilianUnitCounts(city->civilianRecruitCountByKind));
   json_object_set_value(object, "order_count_by_type",
-                        CaptureShortArray(city->orderCountByType5c, kIndustryActionSlotCount));
+                        CaptureIndustryActionCounts(city->orderCountByType5c));
   json_object_set_number(object, "rolling_item_production_score",
                          city->rollingItemProductionScore78);
   json_object_set_boolean(object, "low_production", city->lowProductionFlag7c != 0);
   json_object_set_boolean(object, "low_stock", city->lowStockFlag7d != 0);
   json_object_set_value(object, "reserved_by_type", CaptureResourceTable(city->reservedByType7e));
-  json_object_set_number(object, "home_town_tile",
-                         city->homeTownMarkerB0 != 0
-                             ? static_cast<int>(city->homeTownMarkerB0->tileIndex)
-                             : -1);
+  if (city->homeTownMarkerB0 == 0) {
+    json_object_set_null(object, "home_town_tile");
+  } else {
+    json_object_set_number(object, "home_town_tile",
+                           static_cast<int>(city->homeTownMarkerB0->tileIndex));
+  }
   json_object_set_number(object, "power_available", static_cast<int>(city->powerAvailableB4));
   json_object_set_value(object, "stock_by_type", CaptureResourceTable(&city->cityStockCottonB6));
   json_object_set_value(object, "production_orders",
@@ -389,8 +518,7 @@ JSON_Value* CaptureCity(int slot) {
                         CaptureShortArray(city->productionAccum1fc, 0x10));
   json_object_set_value(object, "production_flags",
                         CaptureUnsignedByteArray(city->productionFlags21c, 0x10));
-  json_object_set_value(object, "production_current",
-                        CaptureShortArray(city->production22c, 0x10));
+  json_object_set_value(object, "production_current", CaptureShortArray(city->production22c, 0x10));
   json_object_set_value(object, "production_progress",
                         CaptureShortArray(city->production24c, 0x10));
   json_object_set_number(object, "population_growth_penalty_ticks",
@@ -465,14 +593,13 @@ JSON_Value* CaptureMilitaryUnits() {
     }
     CIterator cursor(country->militaryUnitList44);
     TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
-    int rosterIndex = 0;
     while (cursor.More() != 0) {
       JSON_Object* object = 0;
       JSON_Value* unitValue = NewObject(object);
       json_object_set_number(object, "id", unit->persistentUnitId20);
       json_object_set_number(object, "nation", nationSlot);
-      json_object_set_number(object, "roster_index", rosterIndex);
-      json_object_set_number(object, "unit_type", static_cast<int>(unit->orderType));
+      json_object_set_string(object, "unit_type",
+                             MilitaryUnitKindName(static_cast<int>(unit->orderType)));
       json_object_set_number(object, "stationed_province", static_cast<int>(unit->tileIndex06));
       json_object_set_number(object, "order", static_cast<int>(unit->unitOrder));
       json_object_set_number(object, "order_target", static_cast<int>(unit->orderTargetIndex0C));
@@ -489,7 +616,6 @@ JSON_Value* CaptureMilitaryUnits() {
       json_object_set_number(object, "experience", static_cast<int>(unit->experiencePercent38));
       json_object_set_number(object, "battle_flags", static_cast<int>(unit->battleStateFlags3A));
       json_array_append_value(units, unitValue);
-      ++rosterIndex;
       unit = static_cast<TMilitaryUnit*>(cursor.Advance());
     }
   }
@@ -510,8 +636,8 @@ JSON_Value* CaptureCivilianUnits() {
       JSON_Value* unitValue = NewObject(object);
       json_object_set_number(object, "id", unit->persistentUnitId20);
       json_object_set_number(object, "nation", nationSlot);
-      json_object_set_number(object, "roster_index", ordinal - 1);
-      json_object_set_number(object, "unit_type", static_cast<int>(unit->orderType));
+      json_object_set_string(object, "unit_type",
+                             CivilianUnitKindName(static_cast<int>(unit->orderType)));
       SetOptionalNumber(object, "tile", static_cast<int>(unit->tileIndex06));
       json_object_set_number(object, "order", static_cast<int>(unit->unitOrder));
       json_object_set_number(object, "order_target", static_cast<int>(unit->orderTargetIndex0C));
@@ -558,9 +684,8 @@ JSON_Value* CaptureTaskForceTarget(const TTaskForce* force) {
                            static_cast<int>(static_cast<Province*>(force->target)->GetIndex()));
   } else {
     json_object_set_string(object, "kind", "zone");
-    json_object_set_number(
-        object, "target",
-        static_cast<int>(static_cast<TZone*>(force->target)->contextOrdinal14));
+    json_object_set_number(object, "target",
+                           static_cast<int>(static_cast<TZone*>(force->target)->contextOrdinal14));
   }
   return value;
 }
@@ -594,8 +719,7 @@ JSON_Value* CaptureArmyMission(TArmyMission* mission) {
   JSON_Value* equipageValue = NewArray(equipage);
   JSON_Array* units = 0;
   JSON_Value* unitsValue = NewArray(units);
-  json_object_set_number(object, "present_location",
-                         static_cast<int>(mission->presentLocation14));
+  json_object_set_number(object, "present_location", static_cast<int>(mission->presentLocation14));
   for (int index = 0; index < 5; ++index) {
     json_array_append_number(equipage, FloatBits(mission->requiredEquipageByClass[index]));
   }
@@ -616,14 +740,12 @@ JSON_Value* CaptureNavyMission(TNavyMission* mission) {
   JSON_Array* equipage = 0;
   JSON_Value* equipageValue = NewArray(equipage);
   json_object_set_number(object, "target_zone", RuntimeZoneIndex(mission->missionTargetZone));
-  json_object_set_number(object, "resolved_port_zone",
-                         RuntimeZoneIndex(mission->resolvedPortZone));
+  json_object_set_number(object, "resolved_port_zone", RuntimeZoneIndex(mission->resolvedPortZone));
   SetOptionalNumber(object, "selected_ship", RuntimeShipIndex(mission->selectedOrder1c));
   SetOptionalNumber(object, "task_force", RuntimeTaskForceIndex(mission->taskForce20));
   json_object_set_number(object, "state", mission->navyState28);
   for (int index = 0; index < 4; ++index) {
-    json_array_append_number(equipage,
-                             FloatBits(mission->requiredShipEquipageByCategory[index]));
+    json_array_append_number(equipage, FloatBits(mission->requiredShipEquipageByCategory[index]));
   }
   json_object_set_value(object, "required_equipage_bits", equipageValue);
   json_object_set_value(object, "ships", CaptureSelectedShips(mission->orderList24));
@@ -634,8 +756,7 @@ JSON_Value* CaptureAttackMission(TAttackProvinceMission* mission) {
   JSON_Object* object = 0;
   JSON_Value* value = NewObject(object);
   json_object_set_value(object, "army", CaptureArmyMission(mission));
-  json_object_set_number(object, "target_province",
-                         static_cast<int>(mission->targetProvince30));
+  json_object_set_number(object, "target_province", static_cast<int>(mission->targetProvince30));
   json_object_set_number(object, "amassing_province",
                          static_cast<int>(mission->amassingProvince32));
   return value;
@@ -650,7 +771,7 @@ JSON_Value* CaptureMissionData(TMission* mission) {
     json_object_set_value(object, "attack", CaptureAttackMission(invade));
     json_object_set_value(object, "beachhead",
                           invade->beachhead34 != 0 ? CaptureNavyMission(invade->beachhead34)
-                                                  : json_value_init_null());
+                                                   : json_value_init_null());
     return value;
   }
   if (mission->IsKindOf(RUNTIME_CLASS(TAttackProvinceMission))) {
@@ -669,8 +790,7 @@ JSON_Value* CaptureMissionData(TMission* mission) {
     JSON_Value* value = NewObject(object);
     json_object_set_string(object, "kind", "blockade_port");
     json_object_set_value(object, "navy", CaptureNavyMission(blockade));
-    json_object_set_number(object, "port_zone",
-                           RuntimeZoneIndex(blockade->portZoneContext3c));
+    json_object_set_number(object, "port_zone", RuntimeZoneIndex(blockade->portZoneContext3c));
     return value;
   }
   if (mission->IsKindOf(RUNTIME_CLASS(TBeachheadMission))) {
@@ -749,13 +869,13 @@ JSON_Value* CaptureTurnSummary(TSortedByRelationshipList* queue) {
   for (int ordinal = 1; ordinal <= count; ++ordinal) {
     TurnOrderDispatchPacket* packet =
         static_cast<TurnOrderDispatchPacket*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
-    JSON_Array* fields = 0;
-    JSON_Value* fieldsValue = NewArray(fields);
-    json_array_append_number(fields, static_cast<int>(packet->turnTick));
-    json_array_append_number(fields, static_cast<int>(packet->orderKind));
-    json_array_append_number(fields, static_cast<int>(packet->payload));
-    json_array_append_number(fields, static_cast<int>(packet->flags));
-    json_array_append_value(summaries, fieldsValue);
+    JSON_Object* object = 0;
+    JSON_Value* summaryValue = NewObject(object);
+    json_object_set_number(object, "turn_tick", static_cast<int>(packet->turnTick));
+    json_object_set_number(object, "order_kind", static_cast<int>(packet->orderKind));
+    json_object_set_number(object, "payload", static_cast<int>(packet->payload));
+    json_object_set_number(object, "flags", static_cast<int>(packet->flags));
+    json_array_append_value(summaries, summaryValue);
   }
   return value;
 }
@@ -776,10 +896,8 @@ JSON_Value* CaptureTurnStartEvents(TSortedList* queue) {
       TLandSaleEvent* landSale = static_cast<TLandSaleEvent*>(event);
       JSON_Object* landSaleObject = 0;
       JSON_Value* landSaleValue = NewObject(landSaleObject);
-      json_object_set_number(landSaleObject, "province",
-                             static_cast<int>(landSale->tileIndex08));
-      json_object_set_number(landSaleObject, "nation",
-                             static_cast<int>(landSale->nationCode0a));
+      json_object_set_number(landSaleObject, "province", static_cast<int>(landSale->tileIndex08));
+      json_object_set_number(landSaleObject, "nation", static_cast<int>(landSale->nationCode0a));
       json_object_set_value(object, "land_sale", landSaleValue);
     } else {
       json_object_set_value(object, "land_sale", json_value_init_null());
@@ -810,8 +928,6 @@ JSON_Value* CapturePending() {
   JSON_Value* nationsValue = NewArray(nations);
   JSON_Array* transitions = 0;
   JSON_Value* transitionsValue = NewArray(transitions);
-  json_object_set_number(object, "turn_flow_status_flags",
-                         g_pSimMgr != 0 ? g_pSimMgr->turnFlowStatusFlags : 0);
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
     json_array_append_value(nations, CaptureNationPendingWork(g_apNationStates[nationSlot]));
   }

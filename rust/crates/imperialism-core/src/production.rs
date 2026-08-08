@@ -150,12 +150,11 @@ pub struct ResourceCost {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct UnitCostProfile {
-    pub entry_id: i16,
+    pub recruit_kind: crate::RecruitKind,
     pub primary: ResourceCost,
     pub secondary: Option<ResourceCost>,
     pub cash_per_unit: i16,
     pub workforce: Option<SkillBand>,
-    pub specialist: bool,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -230,11 +229,11 @@ impl Default for PopulationGrowthOrder {
 
 impl PopulationGrowthOrder {
     pub fn max_order(&mut self, city: &CityState) -> i16 {
-        let mut limit = city.stock_by_type[ResourceKind::Furniture].wrapping_add(self.quantity);
-        limit = limit.min(city.stock_by_type[ResourceKind::Clothing].wrapping_add(self.quantity));
-        limit = limit.min(city.stock_by_type[ResourceKind::Food].wrapping_add(self.quantity));
+        let mut limit = city.stock_by_type[ResourceKind::Furniture] + self.quantity;
+        limit = limit.min(city.stock_by_type[ResourceKind::Clothing] + self.quantity);
+        limit = limit.min(city.stock_by_type[ResourceKind::Food] + self.quantity);
         let capacity_limit =
-            city.production_accum[ProductionSlot::REGIONAL_POPULATION].wrapping_add(self.quantity);
+            city.production_accum[ProductionSlot::REGIONAL_POPULATION] + self.quantity;
 
         self.limiting_constraint = ProductionConstraint::Resources;
         if capacity_limit < limit {
@@ -245,16 +244,15 @@ impl PopulationGrowthOrder {
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, quantity: i16) -> bool {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
             return false;
         }
         self.quantity = quantity;
-        city.add_to_stock_and_verify(ResourceKind::Furniture, delta.wrapping_neg());
-        city.add_to_stock_and_verify(ResourceKind::Clothing, delta.wrapping_neg());
-        city.add_to_stock_and_verify(ResourceKind::Food, delta.wrapping_neg());
-        city.production_accum[ProductionSlot::REGIONAL_POPULATION] =
-            city.production_accum[ProductionSlot::REGIONAL_POPULATION].wrapping_sub(delta);
+        city.add_to_stock_and_verify(ResourceKind::Furniture, -delta);
+        city.add_to_stock_and_verify(ResourceKind::Clothing, -delta);
+        city.add_to_stock_and_verify(ResourceKind::Food, -delta);
+        city.production_accum[ProductionSlot::REGIONAL_POPULATION] -= delta;
         true
     }
 
@@ -275,14 +273,14 @@ impl PopulationGrowthOrder {
             .baseline_labor
             .as_mut()
             .expect("baseline labor was validated");
-        baseline.low = baseline.low.wrapping_add(self.quantity);
+        baseline.low += self.quantity;
         let production = city
             .population
             .production_labor
             .as_mut()
             .expect("production labor was validated");
-        production.low = production.low.wrapping_add(self.quantity);
-        city.population.count = city.population.count.wrapping_add(self.quantity);
+        production.low += self.quantity;
+        city.population.count += self.quantity;
 
         city.production_accum[ProductionSlot::REGIONAL_POPULATION] =
             retail_region_capacity(owner, owned_region_count);
@@ -294,18 +292,18 @@ impl PopulationGrowthOrder {
 impl FoodProductionOrder {
     pub fn max_order(&self, city: &CityState) -> i16 {
         let mut limit = city.stock_by_type[ResourceKind::Grain] / 2;
-        let animal_food = city.stock_by_type[ResourceKind::Fish]
-            .wrapping_add(city.stock_by_type[ResourceKind::Livestock]);
+        let animal_food =
+            city.stock_by_type[ResourceKind::Fish] + city.stock_by_type[ResourceKind::Livestock];
         let workforce_limit = city.population.strength / 2;
         limit = limit.min(city.stock_by_type[ResourceKind::Fruit]);
         limit = limit.min(animal_food);
         limit = limit.min(workforce_limit);
-        self.quantity.wrapping_add(limit.wrapping_mul(2))
+        self.quantity + limit * 2
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, mut quantity: i16) -> bool {
         if quantity & 1 != 0 {
-            quantity = quantity.wrapping_add(1);
+            quantity += 1;
         }
         let previous_quantity = self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
@@ -313,22 +311,19 @@ impl FoodProductionOrder {
         }
         self.quantity = quantity;
 
-        let half_delta = quantity.wrapping_sub(previous_quantity) / 2;
-        city.add_to_stock_and_verify(ResourceKind::Grain, half_delta.wrapping_mul(-2));
-        city.add_to_stock_and_verify(ResourceKind::Fruit, half_delta.wrapping_neg());
-        city.population.strength = city
-            .population
-            .strength
-            .wrapping_sub(half_delta.wrapping_mul(2));
+        let half_delta = (quantity - previous_quantity) / 2;
+        city.add_to_stock_and_verify(ResourceKind::Grain, half_delta * -2);
+        city.add_to_stock_and_verify(ResourceKind::Fruit, -half_delta);
+        city.population.strength -= half_delta * 2;
 
         let livestock_index = ResourceKind::Livestock;
         let livestock = city.stock_by_type[livestock_index];
         if livestock < half_delta {
             city.stock_by_type[livestock_index] = 0;
-            let fish_change = half_delta.wrapping_sub(livestock);
-            city.add_to_stock_and_verify(ResourceKind::Fish, fish_change.wrapping_neg());
+            let fish_change = half_delta - livestock;
+            city.add_to_stock_and_verify(ResourceKind::Fish, -fish_change);
         } else {
-            city.add_to_stock_and_verify(ResourceKind::Livestock, half_delta.wrapping_neg());
+            city.add_to_stock_and_verify(ResourceKind::Livestock, -half_delta);
         }
         true
     }
@@ -362,14 +357,13 @@ impl CapacityProductionOrder {
     }
 
     pub fn max_order(&mut self, city: &CityState) -> i16 {
-        let workforce_limit = (city.population.strength / 2).wrapping_add(self.quantity);
-        let production_limit =
-            city.production_accum[self.production_slot].wrapping_add(self.quantity);
-        let resource_limit = self.tracking_by_resource[self.primary_input]
-            .wrapping_add(city.stock_by_type[self.primary_input])
+        let workforce_limit = city.population.strength / 2 + self.quantity;
+        let production_limit = city.production_accum[self.production_slot] + self.quantity;
+        let resource_limit = (self.tracking_by_resource[self.primary_input]
+            + city.stock_by_type[self.primary_input])
             .min(
                 self.tracking_by_resource[self.secondary_input]
-                    .wrapping_add(city.stock_by_type[self.secondary_input]),
+                    + city.stock_by_type[self.secondary_input],
             );
 
         self.limiting_constraint = ProductionConstraint::Capacity;
@@ -386,7 +380,7 @@ impl CapacityProductionOrder {
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, quantity: i16) -> bool {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
             return false;
         }
@@ -395,11 +389,11 @@ impl CapacityProductionOrder {
         self.requested_quantity = quantity;
         self.apply_input_change(city, self.primary_input, delta);
         self.apply_input_change(city, self.secondary_input, delta);
-        let workforce_change = delta.wrapping_mul(2);
-        city.population.strength = city.population.strength.wrapping_sub(workforce_change);
-        self.reserved_workforce = self.reserved_workforce.wrapping_add(workforce_change);
+        let workforce_change = delta * 2;
+        city.population.strength -= workforce_change;
+        self.reserved_workforce += workforce_change;
         let production = &mut city.production_accum[self.production_slot];
-        *production = production.wrapping_sub(delta);
+        *production -= delta;
         true
     }
 
@@ -416,7 +410,7 @@ impl CapacityProductionOrder {
         match self.target {
             CapacityTarget::Transport => {
                 let capacity = owner.transport_capacity_mut();
-                *capacity = capacity.wrapping_add(self.quantity);
+                *capacity += self.quantity;
             }
             CapacityTarget::Production(slot) => {
                 let base = city.production_orders[slot];
@@ -451,15 +445,15 @@ impl CapacityProductionOrder {
     }
 
     fn apply_input_change(&mut self, city: &mut CityState, resource: ResourceKind, change: i16) {
-        city.add_to_stock_and_verify(resource, change.wrapping_neg());
+        city.add_to_stock_and_verify(resource, -change);
         let tracking = &mut self.tracking_by_resource[resource];
-        *tracking = tracking.wrapping_add(change);
+        *tracking += change;
     }
 
     fn apply_production_increase(&self, city: &mut CityState, slot: ProductionSlot, base: i16) {
-        let new_value = base.wrapping_add(self.quantity);
-        let delta = new_value.wrapping_sub(city.production_orders[slot]);
-        city.production_accum[slot] = city.production_accum[slot].wrapping_add(delta);
+        let new_value = base + self.quantity;
+        let delta = new_value - city.production_orders[slot];
+        city.production_accum[slot] += delta;
         city.production_orders[slot] = new_value;
     }
 }
@@ -486,16 +480,15 @@ impl ExpansionProductionOrder {
     }
 
     pub fn max_order(&self, city: &CityState) -> i16 {
-        self.tracking_by_resource[self.primary_input]
-            .wrapping_add(city.stock_by_type[self.primary_input])
+        (self.tracking_by_resource[self.primary_input] + city.stock_by_type[self.primary_input])
             .min(
                 self.tracking_by_resource[self.secondary_input]
-                    .wrapping_add(city.stock_by_type[self.secondary_input]),
+                    + city.stock_by_type[self.secondary_input],
             )
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, quantity: i16) -> bool {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
             return false;
         }
@@ -524,9 +517,9 @@ impl ExpansionProductionOrder {
                 retail_region_capacity(owner, owned_region_count),
             ),
         };
-        let new_value = base.wrapping_add(self.quantity);
-        let delta = new_value.wrapping_sub(city.production_orders[slot]);
-        city.production_accum[slot] = city.production_accum[slot].wrapping_add(delta);
+        let new_value = base + self.quantity;
+        let delta = new_value - city.production_orders[slot];
+        city.production_accum[slot] += delta;
         city.production_orders[slot] = new_value;
 
         self.requested_quantity = 0;
@@ -551,27 +544,26 @@ impl ExpansionProductionOrder {
     }
 
     fn apply_input_change(&mut self, city: &mut CityState, resource: ResourceKind, change: i16) {
-        city.add_to_stock_and_verify(resource, change.wrapping_neg());
+        city.add_to_stock_and_verify(resource, -change);
         let tracking = &mut self.tracking_by_resource[resource];
-        *tracking = tracking.wrapping_add(change);
+        *tracking += change;
     }
 }
 
 impl PowerPlantProductionOrder {
     pub fn max_order(&self, city: &CityState) -> i16 {
-        self.quantity
-            .wrapping_add(city.stock_by_type[ResourceKind::Fuel].wrapping_mul(6))
+        self.quantity + city.stock_by_type[ResourceKind::Fuel] * 6
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, quantity: i16) -> bool {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
             return false;
         }
         self.quantity = quantity;
 
         if i32::from(city.population.strength) < -i32::from(delta) {
-            self.quantity = self.quantity.wrapping_sub(delta);
+            self.quantity -= delta;
             return false;
         }
 
@@ -580,8 +572,8 @@ impl PowerPlantProductionOrder {
         let previous_power = city.population.extra;
         city.power_available = quantity;
         city.population.extra = quantity;
-        let power_change = quantity.wrapping_sub(previous_power);
-        city.population.strength = city.population.strength.wrapping_add(power_change);
+        let power_change = quantity - previous_power;
+        city.population.strength += power_change;
         true
     }
 
@@ -625,7 +617,7 @@ impl TrainingProductionOrder {
         let cash_limit = if !owner.diplomacy_eligible {
             workforce_limit
         } else {
-            let available = treasury.wrapping_add(owner.diplomacy_budget_base / 100);
+            let available = treasury + owner.diplomacy_budget_base / 100;
             let available = if available <= 0 { 0 } else { available };
             let limit = (available / cash_per_unit) as i16;
             if limit < 0 { 0 } else { limit }
@@ -643,9 +635,9 @@ impl TrainingProductionOrder {
             limit = paper_limit;
         }
         if i32::from(self.quantity) + i32::from(limit) > 99 {
-            limit = 99_i16.wrapping_sub(self.quantity);
+            limit = 99 - self.quantity;
         }
-        Ok(self.quantity.wrapping_add(limit))
+        Ok(self.quantity + limit)
     }
 
     pub fn set_quantity(
@@ -655,18 +647,18 @@ impl TrainingProductionOrder {
         treasury: &mut i32,
         quantity: i16,
     ) -> Result<bool, ProductionError> {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city, owner, *treasury)? || quantity < 0 {
             return Ok(false);
         }
         self.quantity = quantity;
 
         let (paper_change, cash_change) = match self.level {
-            TrainingLevel::Medium => (delta, i32::from(delta).wrapping_mul(100)),
-            TrainingLevel::High => (delta.wrapping_mul(2), i32::from(delta).wrapping_mul(1_000)),
+            TrainingLevel::Medium => (delta, i32::from(delta) * 100),
+            TrainingLevel::High => (delta * 2, i32::from(delta) * 1_000),
         };
-        city.add_to_stock_and_verify(ResourceKind::Paper, paper_change.wrapping_neg());
-        *treasury = treasury.wrapping_sub(cash_change);
+        city.add_to_stock_and_verify(ResourceKind::Paper, -paper_change);
+        *treasury -= cash_change;
         city.population
             .make_unavailable(self.level.input_band(), delta)?;
         Ok(true)
@@ -688,8 +680,8 @@ impl TrainingProductionOrder {
 
         match self.level {
             TrainingLevel::Medium => {
-                baseline.low = baseline.low.wrapping_sub(self.quantity);
-                baseline.medium = baseline.medium.wrapping_add(self.quantity);
+                baseline.low -= self.quantity;
+                baseline.medium += self.quantity;
             }
             TrainingLevel::High => {
                 let new_level = i32::from(baseline.high) + i32::from(self.quantity);
@@ -711,8 +703,8 @@ impl TrainingProductionOrder {
                         set_pending_action(owner, PendingActionKind::UniversityExpansion, payload);
                     }
                 }
-                baseline.medium = baseline.medium.wrapping_sub(self.quantity);
-                baseline.high = baseline.high.wrapping_add(self.quantity);
+                baseline.medium -= self.quantity;
+                baseline.high += self.quantity;
             }
         }
         self.quantity = 0;
@@ -782,7 +774,7 @@ impl UnitProductionOrder {
             self.limiting_constraint = ProductionConstraint::Treasury;
             limit = cash_limit;
         }
-        Ok(self.quantity.wrapping_add(limit))
+        Ok(self.quantity + limit)
     }
 
     pub fn set_quantity(
@@ -792,7 +784,7 @@ impl UnitProductionOrder {
         treasury: &mut i32,
         quantity: i16,
     ) -> Result<bool, ProductionError> {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city, owner, *treasury)? || quantity < 0 {
             return Ok(false);
         }
@@ -805,8 +797,8 @@ impl UnitProductionOrder {
         if let Some(workforce) = self.profile.workforce {
             city.population.remove_population(workforce, delta)?;
         }
-        let cash_change = i32::from(self.profile.cash_per_unit).wrapping_mul(i32::from(delta));
-        *treasury = treasury.wrapping_sub(cash_change);
+        let cash_change = i32::from(self.profile.cash_per_unit) * i32::from(delta);
+        *treasury -= cash_change;
         Ok(true)
     }
 }
@@ -827,30 +819,29 @@ impl ItemProductionOrder {
     }
 
     pub fn max_order(&mut self, city: &CityState) -> i16 {
-        let workforce_limit = (city.population.strength / 2).wrapping_add(self.quantity);
-        let production_limit =
-            city.production_accum[self.production_slot].wrapping_add(self.quantity);
+        let workforce_limit = city.population.strength / 2 + self.quantity;
+        let production_limit = city.production_accum[self.production_slot] + self.quantity;
         let resource_limit = match self.inputs {
             ItemInputs::Double(primary) => {
                 let index = primary;
-                self.tracking_by_resource[index].wrapping_add(city.stock_by_type[index]) / 2
+                (self.tracking_by_resource[index] + city.stock_by_type[index]) / 2
             }
             ItemInputs::Both(primary, secondary) => {
                 let primary_index = primary;
                 let secondary_index = secondary;
-                let primary_limit = self.tracking_by_resource[primary_index]
-                    .wrapping_add(city.stock_by_type[primary_index]);
+                let primary_limit =
+                    self.tracking_by_resource[primary_index] + city.stock_by_type[primary_index];
                 let secondary_limit = self.tracking_by_resource[secondary_index]
-                    .wrapping_add(city.stock_by_type[secondary_index]);
+                    + city.stock_by_type[secondary_index];
                 primary_limit.min(secondary_limit)
             }
             ItemInputs::Either(primary, secondary) => {
                 let primary_index = primary;
                 let secondary_index = secondary;
-                self.tracking_by_resource[secondary_index]
-                    .wrapping_add(self.tracking_by_resource[primary_index])
-                    .wrapping_add(city.stock_by_type[secondary_index])
-                    .wrapping_add(city.stock_by_type[primary_index])
+                (self.tracking_by_resource[secondary_index]
+                    + self.tracking_by_resource[primary_index]
+                    + city.stock_by_type[secondary_index]
+                    + city.stock_by_type[primary_index])
                     / 2
             }
         };
@@ -869,7 +860,7 @@ impl ItemProductionOrder {
     }
 
     pub fn set_quantity(&mut self, city: &mut CityState, quantity: i16) -> bool {
-        let delta = quantity.wrapping_sub(self.quantity);
+        let delta = quantity - self.quantity;
         if quantity > self.max_order(city) || quantity < 0 {
             return false;
         }
@@ -878,7 +869,7 @@ impl ItemProductionOrder {
         self.requested_quantity = quantity;
         match self.inputs {
             ItemInputs::Double(primary) => {
-                self.apply_input_change(city, primary, delta.wrapping_mul(2));
+                self.apply_input_change(city, primary, delta * 2);
             }
             ItemInputs::Both(primary, secondary) => {
                 self.apply_input_change(city, primary, delta);
@@ -888,7 +879,7 @@ impl ItemProductionOrder {
                 let (mut primary_change, mut secondary_change) = if delta > 0 {
                     (delta, delta)
                 } else {
-                    let release = delta.wrapping_neg();
+                    let release = -delta;
                     (release, release)
                 };
                 let primary_available = if delta > 0 {
@@ -903,38 +894,36 @@ impl ItemProductionOrder {
                 };
 
                 if primary_available < primary_change {
-                    let shortfall = primary_change.wrapping_sub(primary_available);
-                    primary_change = primary_change.wrapping_sub(shortfall);
-                    secondary_change = secondary_change.wrapping_add(shortfall);
+                    let shortfall = primary_change - primary_available;
+                    primary_change -= shortfall;
+                    secondary_change += shortfall;
                 } else if secondary_available < secondary_change {
-                    let shortfall = secondary_change.wrapping_sub(secondary_available);
-                    secondary_change = secondary_change.wrapping_sub(shortfall);
-                    primary_change = primary_change.wrapping_add(shortfall);
+                    let shortfall = secondary_change - secondary_available;
+                    secondary_change -= shortfall;
+                    primary_change += shortfall;
                 }
                 if delta < 0 {
-                    primary_change = primary_change.wrapping_neg();
-                    secondary_change = secondary_change.wrapping_neg();
+                    primary_change = -primary_change;
+                    secondary_change = -secondary_change;
                 }
                 self.apply_input_change(city, primary, primary_change);
                 self.apply_input_change(city, secondary, secondary_change);
             }
         }
 
-        let workforce_change = delta.wrapping_mul(2);
-        city.population.strength = city.population.strength.wrapping_sub(workforce_change);
-        self.reserved_workforce = self.reserved_workforce.wrapping_add(workforce_change);
+        let workforce_change = delta * 2;
+        city.population.strength -= workforce_change;
+        self.reserved_workforce += workforce_change;
         let production = &mut city.production_accum[self.production_slot];
-        *production = production.wrapping_sub(delta);
+        *production -= delta;
         true
     }
 
     pub fn produce(&mut self, city: &mut CityState) {
         let production = &mut city.production_accum[self.production_slot];
-        *production = production.wrapping_add(self.quantity);
+        *production += self.quantity;
         city.add_to_stock_and_verify(self.output, self.quantity);
-        city.rolling_item_production_score = city
-            .rolling_item_production_score
-            .wrapping_add(i32::from(self.quantity));
+        city.rolling_item_production_score += i32::from(self.quantity);
         match self.inputs {
             ItemInputs::Double(primary) => {
                 self.tracking_by_resource[primary] = 0;
@@ -945,9 +934,7 @@ impl ItemProductionOrder {
             }
         }
         self.reserved_workforce = 0;
-        self.accumulated_value = self
-            .accumulated_value
-            .wrapping_add(i32::from(self.quantity));
+        self.accumulated_value += i32::from(self.quantity);
     }
 
     pub fn restock(&mut self, city: &mut CityState) -> bool {
@@ -966,9 +953,9 @@ impl ItemProductionOrder {
     }
 
     fn apply_input_change(&mut self, city: &mut CityState, resource: ResourceKind, change: i16) {
-        city.add_to_stock_and_verify(resource, change.wrapping_neg());
+        city.add_to_stock_and_verify(resource, -change);
         let tracking = &mut self.tracking_by_resource[resource];
-        *tracking = tracking.wrapping_add(change);
+        *tracking += change;
     }
 }
 
@@ -1006,8 +993,8 @@ fn validate_unit_resource_cost(cost: ResourceCost) -> Result<(), ProductionError
 }
 
 fn apply_resource_cost(city: &mut CityState, cost: ResourceCost, quantity: i16) {
-    let change = cost.per_unit.wrapping_mul(quantity);
-    city.add_to_stock_and_verify(cost.resource, change.wrapping_neg());
+    let change = cost.per_unit * quantity;
+    city.add_to_stock_and_verify(cost.resource, -change);
 }
 
 fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, payload: i16) {
@@ -1018,7 +1005,7 @@ fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, p
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
+    use crate::{LaborPool, NationCapacity, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
@@ -1033,12 +1020,12 @@ mod tests {
             phase_counter: 0,
             military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: [0; 14],
+            order_count_by_type: crate::IndustryActionTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: 1,
+            home_town_tile: Some(crate::TileId::new(1)),
             power_available: 0,
             stock_by_type: crate::ResourceTable::default(),
             production_orders: crate::ProductionTable::default(),
@@ -1066,11 +1053,11 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: [0; 4],
+            capacities: crate::NationCapacityTable::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),
@@ -1448,10 +1435,10 @@ mod tests {
         production.reserved_workforce = 6;
         production.tracking_by_resource[ResourceKind::Lumber] = 3;
         production.tracking_by_resource[ResourceKind::Steel] = 3;
-        owner.capacities[2] = i16::MAX;
+        owner.capacities[NationCapacity::Transport] = 4;
 
         production.produce(&mut state, &mut owner, 0);
-        assert_eq!(owner.capacities[2], i16::MIN.wrapping_add(2));
+        assert_eq!(owner.capacities[NationCapacity::Transport], 7);
         assert_eq!(state.production_orders, crate::ProductionTable::default());
         assert_eq!(production.quantity, 0);
         assert_eq!(production.reserved_workforce, 0);
@@ -1561,16 +1548,12 @@ mod tests {
     #[test]
     fn power_plant_limit_counts_each_fuel_unit_as_six_power() {
         let mut state = city();
-        let mut production = PowerPlantProductionOrder {
+        let production = PowerPlantProductionOrder {
             quantity: 5,
             ..PowerPlantProductionOrder::default()
         };
         state.stock_by_type[ResourceKind::Fuel] = 3;
         assert_eq!(production.max_order(&state), 23);
-
-        production.quantity = i16::MAX;
-        state.stock_by_type[ResourceKind::Fuel] = 1;
-        assert_eq!(production.max_order(&state), i16::MIN + 5);
     }
 
     #[test]
@@ -1786,7 +1769,7 @@ mod tests {
 
     fn unit_profile(workforce: Option<SkillBand>) -> UnitCostProfile {
         UnitCostProfile {
-            entry_id: 4,
+            recruit_kind: crate::RecruitKind::Military(crate::MilitaryUnitKind::Hussars),
             primary: ResourceCost {
                 resource: ResourceKind::Paper,
                 per_unit: 2,
@@ -1797,7 +1780,6 @@ mod tests {
             }),
             cash_per_unit: 100,
             workforce,
-            specialist: true,
         }
     }
 

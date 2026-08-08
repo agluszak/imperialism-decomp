@@ -3,8 +3,45 @@ use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 
-pub const NATION_COUNT: usize = 23;
-pub const MAJOR_NATION_COUNT: usize = 7;
+pub const NATION_COUNT: usize = NationId::COUNT as usize;
+pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
+
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum IndustryActionSlot {
+    Slot0,
+    Slot1,
+    Slot2,
+    Slot3,
+    Slot4,
+    Slot5,
+    Slot6,
+    Slot7,
+    Slot8,
+    Slot9,
+    Slot10,
+    Slot11,
+    Slot12,
+    Slot13,
+}
+
+pub type IndustryActionTable<T> = EnumMap<IndustryActionSlot, T>;
+
+/// Fixed capacities maintained for every major nation.
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum NationCapacity {
+    AvailableMerchant,
+    TradeOffer,
+    Transport,
+    ReservedTransport,
+}
+
+pub type NationCapacityTable<T> = EnumMap<NationCapacity, T>;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
@@ -15,20 +52,18 @@ impl<T> NationTable<T> {
         Self(values)
     }
 
+    pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
+        Self(std::array::from_fn(|index| {
+            function(NationId::new(index as u8))
+        }))
+    }
+
     pub fn as_slice(&self) -> &[T] {
         &self.0
     }
 
     pub fn as_mut_slice(&mut self) -> &mut [T] {
         &mut self.0
-    }
-
-    pub fn get(&self, nation: NationId) -> Option<&T> {
-        self.0.get(usize::from(nation.get()))
-    }
-
-    pub fn get_mut(&mut self, nation: NationId) -> Option<&mut T> {
-        self.0.get_mut(usize::from(nation.get()))
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
@@ -81,14 +116,6 @@ impl<T> MajorNationTable<T> {
 
     pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
-    }
-
-    pub fn get(&self, nation: MajorNationId) -> Option<&T> {
-        self.0.get(usize::from(nation.get()))
-    }
-
-    pub fn get_mut(&mut self, nation: MajorNationId) -> Option<&mut T> {
-        self.0.get_mut(usize::from(nation.get()))
     }
 
     pub fn as_slice(&self) -> &[T] {
@@ -199,6 +226,10 @@ mod tests {
         let mut pending = PendingActionTable::default();
         pending[PendingActionKind::UniversityExpansion] = 3_i16;
         assert_eq!(pending[PendingActionKind::UniversityExpansion], 3);
+
+        let mut capacities = NationCapacityTable::from_array([0_i16, 0, 15, 11]);
+        capacities[NationCapacity::ReservedTransport] += 1;
+        assert_eq!(capacities[NationCapacity::ReservedTransport], 12);
 
         let mut major_nations = MajorNationTable::from_fn(|nation| nation.get());
         major_nations[MajorNationId::new(6)] = 9;

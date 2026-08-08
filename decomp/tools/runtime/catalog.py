@@ -100,14 +100,6 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "random_game_normal_start",
-        "NormalRandomGameStartTest",
-        ("pr", "full"),
-        "self_consistency",
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
         "random_game_introductory_exits_newspaper",
         "IntroductoryRandomGameTest",
         ("pr", "full"),
@@ -253,8 +245,63 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "diplomacy_grant_entry_updates_treasury",
+        "DiplomacyGrantEntryTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "diplomacy_reset_preserves_recurring_grants",
+        "DiplomacyResetTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "purchased_items_phase",
         "PurchasedItemsPhaseTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "created_items_phase",
+        "CreatedItemsPhaseTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "transport_need_allocation",
+        "TransportNeedAllocationTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "trade_capacity_refresh",
+        "TradeCapacityRefreshTest",
         ("full",),
         "retail_fixture_oracle",
         fixture=RuntimeFixtureSpec(

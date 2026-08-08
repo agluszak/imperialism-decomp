@@ -1,45 +1,4 @@
-use crate::{CityState, RngState};
-
-const INDUSTRY_ACTION_COUNT: usize = 14;
-
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct IndustryActionSlot(u8);
-
-impl IndustryActionSlot {
-    pub const COUNT: usize = INDUSTRY_ACTION_COUNT;
-    pub const ALL: [Self; Self::COUNT] = [
-        Self(0),
-        Self(1),
-        Self(2),
-        Self(3),
-        Self(4),
-        Self(5),
-        Self(6),
-        Self(7),
-        Self(8),
-        Self(9),
-        Self(10),
-        Self(11),
-        Self(12),
-        Self(13),
-    ];
-
-    pub const fn new(value: u8) -> Option<Self> {
-        if (value as usize) < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
-        }
-    }
-
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub const fn index(self) -> usize {
-        self.0 as usize
-    }
-}
+use crate::{CityState, IndustryActionTable, RngState};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 struct IndustryActionWeights {
@@ -50,22 +9,23 @@ struct IndustryActionWeights {
 
 // Columns 0, 5, and 7 from g_NavyOrderResourceDescriptorTable. These are the
 // only columns read by TCity's 14-slot weighted-resource methods.
-const ACTION_WEIGHTS: [IndustryActionWeights; INDUSTRY_ACTION_COUNT] = [
-    weights(0, 0, 0),
-    weights(0, 2, 1),
-    weights(0, 4, 1),
-    weights(300, 0, 3),
-    weights(600, 0, 2),
-    weights(0, 8, 1),
-    weights(0, 4, 1),
-    weights(300, 0, 5),
-    weights(500, 0, 3),
-    weights(1000, 0, 4),
-    weights(0, 16, 1),
-    weights(600, 0, 6),
-    weights(2000, 0, 5),
-    weights(1800, 0, 6),
-];
+const ACTION_WEIGHTS: IndustryActionTable<IndustryActionWeights> =
+    IndustryActionTable::from_array([
+        weights(0, 0, 0),
+        weights(0, 2, 1),
+        weights(0, 4, 1),
+        weights(300, 0, 3),
+        weights(600, 0, 2),
+        weights(0, 8, 1),
+        weights(0, 4, 1),
+        weights(300, 0, 5),
+        weights(500, 0, 3),
+        weights(1000, 0, 4),
+        weights(0, 16, 1),
+        weights(600, 0, 6),
+        weights(2000, 0, 5),
+        weights(1800, 0, 6),
+    ]);
 
 const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> IndustryActionWeights {
     IndustryActionWeights {
@@ -75,124 +35,96 @@ const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> Indus
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum CityIndustryError {
-    #[error("{field} has {actual} entries, expected {INDUSTRY_ACTION_COUNT}")]
-    InvalidActionCount { field: &'static str, actual: usize },
-    #[error("positive action total has no selectable action")]
-    NoSelectableAction,
-}
-
 impl CityState {
-    pub fn average_descriptor_weight_times_ten(&self) -> Result<i32, CityIndustryError> {
+    pub(crate) fn trade_capacity(&self) -> i16 {
+        ACTION_WEIGHTS
+            .iter()
+            .map(|(slot, weights)| weights.allocation * self.order_count_by_type[slot])
+            .sum()
+    }
+
+    pub fn average_descriptor_weight_times_ten(&self) -> i32 {
         self.weighted_average_times_ten(false)
     }
 
-    pub fn average_allocation_weight_times_ten(&self) -> Result<i32, CityIndustryError> {
+    pub fn average_allocation_weight_times_ten(&self) -> i32 {
         self.weighted_average_times_ten(true)
     }
 
     pub fn allocate_random_resource_counts(
         &mut self,
         max_weight: i16,
-        output_counts: &mut [i16],
+        output_counts: &mut IndustryActionTable<i16>,
         rng: &mut RngState,
-    ) -> Result<i32, CityIndustryError> {
-        validate_action_table("city industry action counts", &self.order_count_by_type)?;
-        validate_action_table("allocated industry action counts", output_counts)?;
-
+    ) -> i32 {
         let mut allocated_weight = 0_i32;
-        let mut remaining = 0_i16;
-        for slot in IndustryActionSlot::ALL {
-            if action_weights(slot).random_draw_block == 0 {
-                remaining = remaining.wrapping_add(self.order_count_by_type[slot.index()]);
-            }
-        }
+        let mut remaining: i32 = ACTION_WEIGHTS
+            .iter()
+            .filter(|(_, weights)| weights.random_draw_block == 0)
+            .map(|(slot, _)| i32::from(self.order_count_by_type[slot]))
+            .sum();
+        let max_weight = i32::from(max_weight);
 
-        while remaining > 0 && (allocated_weight as i16) < max_weight {
-            let mut roll = rng.next_crt_rand() % i32::from(remaining) + 1;
-            let mut selected = None;
-            for slot in IndustryActionSlot::ALL {
-                if action_weights(slot).random_draw_block == 0 {
-                    roll -= i32::from(self.order_count_by_type[slot.index()]);
-                    if roll < 1 {
-                        selected = Some(slot);
-                        break;
+        while remaining > 0 && allocated_weight < max_weight {
+            let mut roll = rng.next_crt_rand() % remaining + 1;
+            let selected = ACTION_WEIGHTS
+                .iter()
+                .find_map(|(slot, weights)| {
+                    if weights.random_draw_block != 0 {
+                        return None;
                     }
-                }
-            }
-            let selected = selected.ok_or(CityIndustryError::NoSelectableAction)?;
-            let weight = action_weights(selected).allocation;
-            if max_weight < weight
-                && i32::from(weight) - 1 < rng.next_crt_rand() % i32::from(max_weight)
-            {
+                    roll -= i32::from(self.order_count_by_type[slot]);
+                    (roll < 1).then_some(slot)
+                })
+                .expect("positive unblocked action count selects a slot");
+            let weight = i32::from(ACTION_WEIGHTS[selected].allocation);
+            if max_weight < weight && weight - 1 < rng.next_crt_rand() % max_weight {
                 break;
             }
 
-            let index = selected.index();
-            output_counts[index] = output_counts[index].wrapping_add(1);
-            self.order_count_by_type[index] = self.order_count_by_type[index].wrapping_sub(1);
-            allocated_weight = allocated_weight.wrapping_add(i32::from(weight));
-            remaining = remaining.wrapping_sub(1);
+            output_counts[selected] += 1;
+            self.order_count_by_type[selected] -= 1;
+            allocated_weight += weight;
+            remaining -= 1;
         }
 
-        if (allocated_weight as i16) >= max_weight {
-            Ok(i32::from(max_weight))
+        if allocated_weight >= max_weight {
+            max_weight
         } else {
-            Ok(allocated_weight)
+            allocated_weight
         }
     }
 
-    fn weighted_average_times_ten(
-        &self,
-        allocation_column: bool,
-    ) -> Result<i32, CityIndustryError> {
-        validate_action_table("city industry action counts", &self.order_count_by_type)?;
+    fn weighted_average_times_ten(&self, allocation_column: bool) -> i32 {
         let mut weighted_sum = 0_i32;
         let mut total_count = 0_i32;
-        for slot in IndustryActionSlot::ALL {
-            let count = self.order_count_by_type[slot.index()];
-            let weights = action_weights(slot);
+        for (slot, weights) in ACTION_WEIGHTS.iter() {
+            let count = self.order_count_by_type[slot];
             let weight = if allocation_column {
                 weights.allocation
             } else {
                 weights.average
             };
-            weighted_sum = weighted_sum.wrapping_add(i32::from(weight) * i32::from(count));
-            total_count = total_count.wrapping_add(i32::from(count));
+            weighted_sum += i32::from(weight) * i32::from(count);
+            total_count += i32::from(count);
         }
 
         if total_count == 0 {
-            return Ok(i32::from(allocation_column));
+            return i32::from(allocation_column);
         }
-        let scaled = weighted_sum.wrapping_mul(10);
+        let scaled = weighted_sum * 10;
         if allocation_column {
-            Ok(scaled.wrapping_add(total_count / 2) / total_count)
+            (scaled + total_count / 2) / total_count
         } else {
-            Ok(scaled / total_count)
+            scaled / total_count
         }
-    }
-}
-
-const fn action_weights(slot: IndustryActionSlot) -> IndustryActionWeights {
-    ACTION_WEIGHTS[slot.index()]
-}
-
-fn validate_action_table<T>(field: &'static str, values: &[T]) -> Result<(), CityIndustryError> {
-    if values.len() == INDUSTRY_ACTION_COUNT {
-        Ok(())
-    } else {
-        Err(CityIndustryError::InvalidActionCount {
-            field,
-            actual: values.len(),
-        })
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
+    use crate::{IndustryActionSlot, LaborPool, PopulationState};
 
     fn city() -> CityState {
         CityState {
@@ -203,12 +135,12 @@ mod tests {
             phase_counter: 0,
             military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: [0; IndustryActionSlot::COUNT],
+            order_count_by_type: IndustryActionTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: 1,
+            home_town_tile: Some(crate::TileId::new(1)),
             power_available: 0,
             stock_by_type: crate::ResourceTable::default(),
             production_orders: crate::ProductionTable::default(),
@@ -234,31 +166,23 @@ mod tests {
     }
 
     #[test]
-    fn validates_the_retail_industry_action_range() {
-        assert_eq!(IndustryActionSlot::new(0).unwrap().get(), 0);
-        assert_eq!(IndustryActionSlot::new(13).unwrap().get(), 13);
-        assert_eq!(IndustryActionSlot::new(14), None);
-        assert_eq!(IndustryActionSlot::ALL.len(), IndustryActionSlot::COUNT);
-    }
-
-    #[test]
     fn computes_both_retail_weighted_average_variants() {
         let mut state = city();
-        assert_eq!(state.average_descriptor_weight_times_ten().unwrap(), 0);
-        assert_eq!(state.average_allocation_weight_times_ten().unwrap(), 1);
+        assert_eq!(state.average_descriptor_weight_times_ten(), 0);
+        assert_eq!(state.average_allocation_weight_times_ten(), 1);
 
-        state.order_count_by_type[1] = 1;
-        state.order_count_by_type[2] = 2;
-        assert_eq!(state.average_descriptor_weight_times_ten().unwrap(), 10);
-        assert_eq!(state.average_allocation_weight_times_ten().unwrap(), 33);
+        state.order_count_by_type[IndustryActionSlot::Slot1] = 1;
+        state.order_count_by_type[IndustryActionSlot::Slot2] = 2;
+        assert_eq!(state.average_descriptor_weight_times_ten(), 10);
+        assert_eq!(state.average_allocation_weight_times_ten(), 33);
     }
 
     #[test]
     fn allocation_skips_blocked_rows_and_consumes_the_exact_crt_stream() {
         let mut state = city();
-        state.order_count_by_type[1] = 3;
-        state.order_count_by_type[3] = 100;
-        let mut output = [0_i16; IndustryActionSlot::COUNT];
+        state.order_count_by_type[IndustryActionSlot::Slot1] = 3;
+        state.order_count_by_type[IndustryActionSlot::Slot3] = 100;
+        let mut output = IndustryActionTable::default();
         let mut rng = RngState {
             crt_rand: 1,
             map_generation: 2,
@@ -266,15 +190,13 @@ mod tests {
         };
 
         assert_eq!(
-            state
-                .allocate_random_resource_counts(5, &mut output, &mut rng)
-                .unwrap(),
+            state.allocate_random_resource_counts(5, &mut output, &mut rng),
             5
         );
-        assert_eq!(output[1], 3);
-        assert_eq!(output[3], 0);
-        assert_eq!(state.order_count_by_type[1], 0);
-        assert_eq!(state.order_count_by_type[3], 100);
+        assert_eq!(output[IndustryActionSlot::Slot1], 3);
+        assert_eq!(output[IndustryActionSlot::Slot3], 0);
+        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 0);
+        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot3], 100);
         assert_eq!(rng.crt_rand, 415_139_642);
         assert_eq!(rng.map_generation, 2);
         assert_eq!(rng.zone_status, 3);
@@ -283,20 +205,18 @@ mod tests {
     #[test]
     fn zero_budget_leaves_counts_and_rng_untouched() {
         let mut state = city();
-        state.order_count_by_type[1] = 1;
-        let mut output = [0_i16; IndustryActionSlot::COUNT];
+        state.order_count_by_type[IndustryActionSlot::Slot1] = 1;
+        let mut output = IndustryActionTable::default();
         let mut rng = RngState {
             crt_rand: 1,
             map_generation: 2,
             zone_status: 3,
         };
         assert_eq!(
-            state
-                .allocate_random_resource_counts(0, &mut output, &mut rng)
-                .unwrap(),
+            state.allocate_random_resource_counts(0, &mut output, &mut rng),
             0
         );
-        assert_eq!(state.order_count_by_type[1], 1);
+        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 1);
         assert_eq!(rng.crt_rand, 1);
     }
 }

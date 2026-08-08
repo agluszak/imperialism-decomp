@@ -71,12 +71,12 @@ fn main() -> Result<()> {
     }
 
     println!(
-        "random-game setup matched: seed={:?} topology={} nation={} country={:?} difficulty={} localized_names={} tiles={} provinces={} final={:08x}",
+        "random-game setup matched: seed={:?} topology={} nation={} country={:?} difficulty={:?} localized_names={} tiles={} provinces={} final={:08x}",
         setup.planet_seed,
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.country_name,
-        setup.difficulty.retail_byte(),
+        setup.difficulty,
         setup.localized_names,
         preview.map.tiles.len(),
         preview.map.provinces.len(),

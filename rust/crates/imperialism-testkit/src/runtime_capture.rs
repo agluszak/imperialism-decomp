@@ -20,23 +20,12 @@ pub enum RuntimeCaptureError {
 
 #[derive(Deserialize)]
 struct RuntimeResult {
-    name: String,
-    seed: u32,
-    status: RuntimeStatus,
     captures: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Deserialize)]
 struct RuntimeSeed {
     seed: u32,
-}
-
-#[derive(Deserialize)]
-#[serde(rename_all = "snake_case")]
-enum RuntimeStatus {
-    Passed,
-    Failed,
-    Skipped,
 }
 
 pub fn read_runtime_capture<T: serde::de::DeserializeOwned>(
@@ -61,7 +50,6 @@ pub fn decode_runtime_capture<T: serde::de::DeserializeOwned>(
             name: name.to_owned(),
             source,
         })?;
-    let _ = (&result.name, result.seed, &result.status);
     let capture = result
         .captures
         .get(name)
@@ -93,8 +81,7 @@ mod tests {
 
     #[test]
     fn reads_named_captures() {
-        let input =
-            br#"{"name":"probe","seed":1,"status":"passed","captures":{"probe":{"value":7}}}"#;
+        let input = br#"{"captures":{"probe":{"value":7}}}"#;
         assert_eq!(
             decode_runtime_capture::<Probe>(&input[..], "probe").unwrap(),
             Probe { value: 7 }
@@ -109,18 +96,8 @@ mod tests {
     }
 
     #[test]
-    fn ignores_unknown_top_level_fields() {
-        let input = br#"{"name":"probe","seed":1,"status":"passed","captures":{"probe":{"value":7}},"obsolete_capture":{}}"#;
-        assert_eq!(
-            decode_runtime_capture::<Probe>(&input[..], "probe").unwrap(),
-            Probe { value: 7 }
-        );
-    }
-
-    #[test]
     fn reports_decode_errors_with_capture_name() {
-        let input =
-            br#"{"name":"probe","seed":1,"status":"passed","captures":{"probe":{"value":"wrong"}}}"#;
+        let input = br#"{"captures":{"probe":{"value":"wrong"}}}"#;
         let error = decode_runtime_capture::<Probe>(&input[..], "probe").unwrap_err();
         assert!(error.to_string().contains("probe"));
         assert!(matches!(error, RuntimeCaptureError::Json { .. }));

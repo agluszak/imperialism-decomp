@@ -139,6 +139,9 @@ pub struct GeneratedMap {
 /// regenerating the preview.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomSetupPreview {
+    /// The topology used for the retained map. Accept must not be able to
+    /// commit a different topology than the one it previews.
+    pub topology: RetailTopologyByte,
     pub map: GeneratedMap,
     pub final_map_lcg: u32,
 }
@@ -250,6 +253,7 @@ fn generate_random_setup_preview_from_lcg(
 ) -> RandomSetupPreview {
     let map = generate_random_map(seed, topology, rng);
     RandomSetupPreview {
+        topology,
         map,
         final_map_lcg: rng.state(),
     }

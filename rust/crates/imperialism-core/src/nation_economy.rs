@@ -1,18 +1,27 @@
-use crate::{CityState, MajorNationState, ResourceKind, all_resources};
+use crate::{CityState, MajorNationState, NationCapacity, ResourceKind, all_resources};
 
-const MERCHANT_CAPACITY_INDEX: usize = 1;
-const TRANSPORT_CAPACITY_INDEX: usize = 2;
-const RESERVED_TRANSPORT_CAPACITY_INDEX: usize = 3;
+const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
+    ResourceKind::Grain,
+    ResourceKind::Fruit,
+    ResourceKind::Livestock,
+    ResourceKind::Fish,
+    ResourceKind::Timber,
+    ResourceKind::Coal,
+    ResourceKind::Iron,
+    ResourceKind::Cotton,
+    ResourceKind::Wool,
+    ResourceKind::Horses,
+];
 
 impl MajorNationState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
     pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
-        let available = treasury.wrapping_add(self.diplomacy_budget_base / 100);
+        let available = treasury + self.diplomacy_budget_base / 100;
         if available <= 0 { 0 } else { available }
     }
 
-    pub fn set_need_current(&mut self, resource: ResourceKind, value: i32) {
-        self.need_current_by_type[resource] = value as i16;
+    pub fn set_need_current(&mut self, resource: ResourceKind, value: i16) {
+        self.need_current_by_type[resource] = value;
     }
 
     pub fn need_target(&self, resource: ResourceKind) -> i16 {
@@ -25,16 +34,15 @@ impl MajorNationState {
 
     pub fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
         let target = &mut self.need_target_by_type[resource];
-        let delta = value.wrapping_sub(*target);
-        self.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX] =
-            self.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX].wrapping_add(delta);
+        let delta = value - *target;
+        self.capacities[NationCapacity::ReservedTransport] += delta;
         *target = value;
     }
 
     pub fn increment_need_target_toward_current(&mut self, resource: ResourceKind) {
         let target = self.need_target_by_type[resource];
         if target < self.need_current_by_type[resource] {
-            self.update_need_target(resource, target.wrapping_add(1));
+            self.update_need_target(resource, target + 1);
         }
     }
 
@@ -42,31 +50,40 @@ impl MajorNationState {
         let current_total = self
             .need_current_by_type
             .iter()
-            .fold(0_i32, |total, (_, value)| {
-                total.wrapping_add(i32::from(*value))
-            });
-        current_total > i32::from(self.capacities[TRANSPORT_CAPACITY_INDEX])
+            .fold(0_i32, |total, (_, value)| total + i32::from(*value));
+        current_total > i32::from(self.capacities[NationCapacity::Transport])
+    }
+
+    pub(crate) fn allocate_transport_needs(&mut self) {
+        for resource in TRANSPORT_NEED_PRIORITY {
+            let headroom = self.capacities[NationCapacity::Transport]
+                - self.capacities[NationCapacity::ReservedTransport];
+            if headroom == 0 {
+                break;
+            }
+            self.update_need_target(resource, self.need_current_by_type[resource].min(headroom));
+        }
     }
 
     pub fn add_purchased_item_amount(&mut self, resource: ResourceKind, delta: i16) {
         let amount = &mut self.purchased_items_by_resource[resource];
-        *amount = amount.wrapping_add(delta);
+        *amount += delta;
     }
 
     pub fn available_merchant_capacity(&self) -> i16 {
-        self.capacities[0]
+        self.capacities[NationCapacity::AvailableMerchant]
     }
 
     pub fn deliver_item(&mut self, amount: i16) {
-        self.capacities[0] = self.capacities[0].wrapping_sub(amount);
+        self.capacities[NationCapacity::AvailableMerchant] -= amount;
     }
 
-    pub fn consume_merchant_capacity_for_purchase(&mut self, amount: i32) {
-        self.capacities[0] = self.capacities[0].wrapping_sub(amount as i16);
+    pub fn consume_merchant_capacity_for_purchase(&mut self, amount: i16) {
+        self.capacities[NationCapacity::AvailableMerchant] -= amount;
     }
 
     pub fn amount_unsold(&self, resource: ResourceKind) -> i16 {
-        self.item_potentials[resource].wrapping_add(self.purchased_items_by_resource[resource])
+        self.item_potentials[resource] + self.purchased_items_by_resource[resource]
     }
 
     pub fn advanced_manufactured_offers_exhausted(&self) -> bool {
@@ -91,7 +108,7 @@ impl MajorNationState {
     }
 
     pub fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
-        self.item_potentials[resource] = value.min(self.capacities[MERCHANT_CAPACITY_INDEX]);
+        self.item_potentials[resource] = value.min(self.capacities[NationCapacity::TradeOffer]);
     }
 
     pub fn remember_trade_bids(&mut self) {
@@ -120,8 +137,7 @@ impl MajorNationState {
             let purchased = self.purchased_items_by_resource[resource];
             city.add_to_stock_and_verify(resource, purchased);
             if self.remembered_trade_offers_by_resource[resource] == -1 && purchased == 0 {
-                self.unfilled_trade_turns_by_resource[resource] =
-                    self.unfilled_trade_turns_by_resource[resource].wrapping_add(1);
+                self.unfilled_trade_turns_by_resource[resource] += 1;
             } else {
                 self.unfilled_trade_turns_by_resource[resource] = 0;
             }
@@ -129,12 +145,12 @@ impl MajorNationState {
         }
     }
 
-    pub(crate) fn merchant_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities[MERCHANT_CAPACITY_INDEX]
+    pub(crate) fn trade_offer_capacity_mut(&mut self) -> &mut i16 {
+        &mut self.capacities[NationCapacity::TradeOffer]
     }
 
     pub(crate) fn transport_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities[TRANSPORT_CAPACITY_INDEX]
+        &mut self.capacities[NationCapacity::Transport]
     }
 }
 
@@ -152,12 +168,12 @@ mod tests {
             phase_counter: 0,
             military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: [0; 14],
+            order_count_by_type: crate::IndustryActionTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: 1,
+            home_town_tile: Some(crate::TileId::new(1)),
             power_available: 0,
             stock_by_type: crate::ResourceTable::default(),
             production_orders: crate::ProductionTable::default(),
@@ -185,11 +201,11 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: [0, 0, 15, 11],
+            capacities: crate::NationCapacityTable::from_array([0, 0, 15, 11]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),
@@ -227,18 +243,18 @@ mod tests {
     }
 
     #[test]
-    fn updates_current_target_and_reserved_capacity_with_short_arithmetic() {
+    fn updates_current_target_and_reserved_capacity() {
         let mut state = nation();
         let resource = ResourceKind::Steel;
-        state.set_need_current(resource, 0x1_000a);
+        state.set_need_current(resource, 10);
         assert_eq!(state.need_current_by_type[resource], 10);
         assert!(!state.need_target_equals_current(resource));
 
         state.update_need_target(resource, 7);
         assert_eq!(state.need_target(resource), 7);
-        assert_eq!(state.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX], 18);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 18);
         state.update_need_target(resource, 3);
-        assert_eq!(state.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX], 14);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 14);
     }
 
     #[test]
@@ -249,10 +265,10 @@ mod tests {
         state.need_target_by_type[resource] = 1;
         state.increment_need_target_toward_current(resource);
         assert_eq!(state.need_target(resource), 2);
-        assert_eq!(state.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX], 12);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
         state.increment_need_target_toward_current(resource);
         assert_eq!(state.need_target(resource), 2);
-        assert_eq!(state.capacities[RESERVED_TRANSPORT_CAPACITY_INDEX], 12);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
     }
 
     #[test]
@@ -266,21 +282,12 @@ mod tests {
     }
 
     #[test]
-    fn purchased_item_accumulation_wraps_like_the_retail_short() {
+    fn trade_offer_leaves_preserve_capacity() {
         let mut state = nation();
-        let resource = ResourceKind::Arms;
-        state.purchased_items_by_resource[resource] = i16::MAX;
-        state.add_purchased_item_amount(resource, 1);
-        assert_eq!(state.purchased_items_by_resource[resource], i16::MIN);
-    }
-
-    #[test]
-    fn trade_offer_leaves_preserve_capacity_and_short_arithmetic() {
-        let mut state = nation();
-        state.capacities[0] = 5;
-        state.capacities[MERCHANT_CAPACITY_INDEX] = 3;
+        state.capacities[NationCapacity::AvailableMerchant] = 5;
+        state.capacities[NationCapacity::TradeOffer] = 3;
         state.deliver_item(2);
-        state.consume_merchant_capacity_for_purchase(0x1_0001);
+        state.consume_merchant_capacity_for_purchase(1);
         assert_eq!(state.available_merchant_capacity(), 2);
 
         let resource = ResourceKind::Coal;
@@ -346,14 +353,14 @@ mod tests {
         let wool = ResourceKind::Wool;
         let timber = ResourceKind::Timber;
         state.remembered_trade_offers_by_resource[cotton] = -1;
-        state.unfilled_trade_turns_by_resource[cotton] = i16::MAX;
+        state.unfilled_trade_turns_by_resource[cotton] = 3;
         state.remembered_trade_offers_by_resource[wool] = -1;
         state.purchased_items_by_resource[wool] = 2;
         state.unfilled_trade_turns_by_resource[wool] = 9;
         state.unfilled_trade_turns_by_resource[timber] = 9;
 
         state.settle_purchased_items(&mut owner_city);
-        assert_eq!(state.unfilled_trade_turns_by_resource[cotton], i16::MIN);
+        assert_eq!(state.unfilled_trade_turns_by_resource[cotton], 4);
         assert_eq!(state.unfilled_trade_turns_by_resource[wool], 0);
         assert_eq!(state.unfilled_trade_turns_by_resource[timber], 0);
         assert_eq!(owner_city.stock_by_type[wool], 2);
@@ -363,5 +370,22 @@ mod tests {
                 .iter()
                 .all(|(_, amount)| *amount == 0)
         );
+    }
+
+    #[test]
+    fn allocates_transport_needs_in_retail_priority_order() {
+        let mut state = nation();
+        state.capacities[NationCapacity::Transport] = 8;
+        state.capacities[NationCapacity::ReservedTransport] = 2;
+        state.need_current_by_type[ResourceKind::Grain] = 4;
+        state.need_current_by_type[ResourceKind::Fruit] = 3;
+        state.need_current_by_type[ResourceKind::Livestock] = 6;
+
+        state.allocate_transport_needs();
+
+        assert_eq!(state.need_target_by_type[ResourceKind::Grain], 4);
+        assert_eq!(state.need_target_by_type[ResourceKind::Fruit], 2);
+        assert_eq!(state.need_target_by_type[ResourceKind::Livestock], 0);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 8);
     }
 }

@@ -35,18 +35,18 @@ struct TurnEvent2CPacket : NetMessage {
   unsigned char pad1a[2];
   short nationSlot; // +0x1c
   unsigned char pad1e[2];
-  int field910;                                     // +0x20
-  int aidAllocationTotal;                           // +0x24
-  unsigned char pad28[6];                           // +0x28
+  int field910;                                             // +0x20
+  int aidAllocationTotal;                                   // +0x24
+  unsigned char pad28[6];                                   // +0x28
   short militaryRecruitCountByKind[kMilitaryUnitKindCount]; // +0x2e
   short civilianRecruitCountByKind[kCivilianUnitKindCount]; // +0x6a
-  short orderCountByType[kIndustryActionSlotCount]; // +0x7c
-  int cityRollingItemProductionScore;               // +0x98
-  short cityFieldB4;                                // +0x9c
-  short cityStock[0x17];                            // +0x9e
-  short productionOrderTable[0x10];                 // +0xcc
-  short productionAccum[0x10];                      // +0xec
-  short populationGrowthPenaltyTicks;               // +0x10c
+  short orderCountByType[kIndustryActionSlotCount];         // +0x7c
+  int cityRollingItemProductionScore;                       // +0x98
+  short cityFieldB4;                                        // +0x9c
+  short cityStock[0x17];                                    // +0x9e
+  short productionOrderTable[0x10];                         // +0xcc
+  short productionAccum[0x10];                              // +0xec
+  short populationGrowthPenaltyTicks;                       // +0x10c
   unsigned char pad10e[2];
   int orderAccumulatedValues[0x17]; // +0x110
   short popFieldAt8;                // +0x16c
@@ -1134,11 +1134,13 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     } else {
       city2C = g_apNationStates[nationSlot2C]->city;
     }
-    for (int kind = 0; kind < kMilitaryUnitKindCount; ++kind) {
-      city2C->militaryRecruitCountByKind[kind] = composite->militaryRecruitCountByKind[kind];
+    for (int militaryKind = 0; militaryKind < kMilitaryUnitKindCount; ++militaryKind) {
+      city2C->militaryRecruitCountByKind[militaryKind] =
+          composite->militaryRecruitCountByKind[militaryKind];
     }
-    for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
-      city2C->civilianRecruitCountByKind[kind] = composite->civilianRecruitCountByKind[kind];
+    for (int civilianKind = 0; civilianKind < kCivilianUnitKindCount; ++civilianKind) {
+      city2C->civilianRecruitCountByKind[civilianKind] =
+          composite->civilianRecruitCountByKind[civilianKind];
     }
     for (int industryActionSlot2C = 0; industryActionSlot2C < kIndustryActionSlotCount;
          ++industryActionSlot2C) {
