@@ -1,8 +1,6 @@
 use crate::AppState;
 use crate::RetailAssetsResource;
-use crate::ui::catalog::{
-    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
-};
+use crate::ui::catalog::{UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
 use crate::ui::random_setup::GameSession;
 use crate::ui::random_setup_map::{
     compose_owner_preview_indices, preview_image_from_indices, tile_at_preview_position,
@@ -10,13 +8,12 @@ use crate::ui::random_setup_map::{
 use bevy::log::warn;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
 use bevy::ui::RelativeCursorPosition;
-use bevy::ui_widgets::{Activate, Button as UiButton};
+use bevy::ui_widgets::Activate;
 use imperialism_core::{
     MajorNationId, TileId, confirm_capital_site, validate_capital_site_selection,
 };
-use imperialism_formats::{ScopedViewId, UiView as CatalogView};
+use imperialism_formats::ScopedViewId;
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const CITY_SITE_RESOURCE_ID: i16 = 952;
@@ -80,33 +77,31 @@ impl Plugin for CitySitePlugin {
 fn enter_city_site(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
+    mut assets: UiAssetResources,
 ) {
-    let Some(view) = find_view(catalog.catalog(), &city_site_view_id()) else {
+    let Some(view) = catalog.view(&city_site_view_id()) else {
         return;
     };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
-    bind_city_site_controls(&mut commands, view, &spawned);
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    bind_city_site_controls(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::CitySite));
 }
 
-fn bind_city_site_controls(commands: &mut Commands, view: &CatalogView, spawned: &SpawnedView) {
-    if let Some(entity) = spawned.tagged(view, "canc") {
-        commands
-            .entity(entity)
-            .insert((UiButton, CitySiteAction::Cancel))
-            .remove::<InteractionDisabled>();
+fn bind_city_site_controls(
+    commands: &mut Commands,
+    catalog: &UiCatalogResource,
+    spawned: &crate::ui::catalog::SpawnedView,
+) {
+    if let Ok(entity) = spawned.require_unique(catalog, "canc") {
+        commands.entity(entity).insert(CitySiteAction::Cancel);
     }
     // Retail opens the New City dialog from a validated map click, not from `send`.
-    if let Some(entity) = spawned.tagged(view, MAP_TAG) {
-        commands.entity(entity).insert((
-            CitySiteMap {
-                palette_indices: Vec::new(),
-            },
-            RelativeCursorPosition::default(),
-        ));
+    if let Ok(entity) = spawned.require_unique(catalog, MAP_TAG) {
+        commands.entity(entity).insert(CitySiteMap {
+            palette_indices: Vec::new(),
+        });
     }
 }
 
@@ -177,9 +172,7 @@ fn on_city_site_map_click(
     dialog_open: Query<(), With<NewCityDialogRoot>>,
     session: Res<GameSession>,
     maps: Query<(&RelativeCursorPosition, &CitySiteMap)>,
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
+    mut ui: UiSpawner,
 ) {
     if !dialog_open.is_empty() {
         return;
@@ -199,34 +192,17 @@ fn on_city_site_map_click(
     if validate_capital_site_selection(&session.0, tile).is_err() {
         return;
     }
-    commands.insert_resource(PendingCapitalSite { tile });
-    open_new_city_dialog(&mut commands, &catalog, &mut pictures);
+    ui.commands.insert_resource(PendingCapitalSite { tile });
+    open_new_city_dialog(&mut ui);
 }
 
-fn open_new_city_dialog(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    pictures: &mut UiPictureResources,
-) {
-    let Some(view) = find_view(catalog.catalog(), &new_city_dialog_view_id()) else {
+fn open_new_city_dialog(ui: &mut UiSpawner) {
+    let Some(spawned) = ui.spawn_modal(new_city_dialog_view_id()) else {
         return;
     };
-    let spawned = spawn_view(commands, catalog.catalog(), view, pictures);
-    commands
-        .entity(spawned.root)
-        .insert((NewCityDialogRoot, ZIndex(10), Pickable::default()));
-    if let Some(okay) = spawned.tagged(view, "okay") {
-        commands
-            .entity(okay)
-            .insert((UiButton, NewCityAction::Accept))
-            .remove::<InteractionDisabled>();
-    }
-    if let Some(cancel) = spawned.tagged(view, "cncl") {
-        commands
-            .entity(cancel)
-            .insert((UiButton, NewCityAction::Cancel))
-            .remove::<InteractionDisabled>();
-    }
+    ui.commands.entity(spawned.root).insert(NewCityDialogRoot);
+    let _ = ui.attach(&spawned, "okay", NewCityAction::Accept);
+    let _ = ui.attach(&spawned, "cncl", NewCityAction::Cancel);
 }
 
 fn on_new_city_activate(

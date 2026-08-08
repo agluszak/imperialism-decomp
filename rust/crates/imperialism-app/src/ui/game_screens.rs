@@ -1,12 +1,8 @@
 use crate::AppState;
-use crate::ui::catalog::{
-    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
-};
+use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
 use bevy::prelude::*;
-use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, Button as UiButton};
-use imperialism_formats::{ScopedViewId, UiNodeId, UiView as CatalogView};
-use std::collections::HashMap;
+use bevy::ui_widgets::Activate;
+use imperialism_formats::ScopedViewId;
 
 const TOOLBAR_PARENT_TAGS: &[&str] = &["tool", "topB"];
 /// Retail leave/end controls hang under `tool` or the diplomacy `too3` strip.
@@ -90,18 +86,18 @@ struct GameScreenRoot(ScopedViewId);
 fn enter_game_screen(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
+    mut assets: UiAssetResources,
     state: Res<State<AppState>>,
 ) {
     let current = *state.get();
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(view) = find_view(catalog.catalog(), &view_id) else {
+    let Some(view) = catalog.view(&view_id) else {
         return;
     };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
-    if !bind_game_screen_nav(&mut commands, view, &spawned) {
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    if !bind_game_screen_nav(&mut commands, &catalog, &spawned) {
         commands.entity(spawned.root).despawn();
         return;
     }
@@ -112,19 +108,21 @@ fn enter_game_screen(
 
 fn bind_game_screen_nav(
     commands: &mut Commands,
-    view: &CatalogView,
+    catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) -> bool {
-    let Some(trade) = control_under_parents(view, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
+    let Some(trade) = control_under_parents(catalog, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
         return false;
     };
-    let Some(transport) = control_under_parents(view, spawned, "tran", TOOLBAR_PARENT_TAGS) else {
+    let Some(transport) = control_under_parents(catalog, spawned, "tran", TOOLBAR_PARENT_TAGS)
+    else {
         return false;
     };
-    let Some(city) = control_under_parents(view, spawned, "city", TOOLBAR_PARENT_TAGS) else {
+    let Some(city) = control_under_parents(catalog, spawned, "city", TOOLBAR_PARENT_TAGS) else {
         return false;
     };
-    let Some(diplomacy) = control_under_parents(view, spawned, "dipl", TOOLBAR_PARENT_TAGS) else {
+    let Some(diplomacy) = control_under_parents(catalog, spawned, "dipl", TOOLBAR_PARENT_TAGS)
+    else {
         return false;
     };
     for (entity, action) in [
@@ -133,43 +131,29 @@ fn bind_game_screen_nav(
         (city, GameScreenNavAction::City),
         (diplomacy, GameScreenNavAction::Diplomacy),
     ] {
-        commands
-            .entity(entity)
-            .insert((UiButton, action))
-            .remove::<InteractionDisabled>();
+        commands.entity(entity).insert(action);
     }
-    if let Some(leave) = control_under_parents(view, spawned, "end ", LEAVE_PARENT_TAGS) {
+    if let Some(leave) = control_under_parents(catalog, spawned, "end ", LEAVE_PARENT_TAGS) {
         commands
             .entity(leave)
-            .insert((UiButton, GameScreenNavAction::LeaveToMap))
-            .remove::<InteractionDisabled>();
+            .insert(GameScreenNavAction::LeaveToMap);
     }
     true
 }
 
-/// Resolve an interactive control under one of the given ancestor tags.
+/// Resolve an activate control under one of the given ancestor tags.
 fn control_under_parents(
-    view: &CatalogView,
+    catalog: &UiCatalogResource,
     spawned: &SpawnedView,
     tag: &str,
     parents: &[&str],
 ) -> Option<Entity> {
-    let by_id: HashMap<UiNodeId, &imperialism_formats::UiNode> =
-        view.nodes.iter().map(|node| (node.id, node)).collect();
-    view.nodes.iter().find_map(|node| {
-        if node.tag.0 != tag || !node.interactive {
-            return None;
+    for parent in parents {
+        if let Ok(entity) = spawned.require_under(catalog, parent, tag) {
+            return Some(entity);
         }
-        let mut parent = node.parent;
-        while let Some(parent_id) = parent {
-            let parent_node = by_id.get(&parent_id)?;
-            if parents.contains(&parent_node.tag.0.as_str()) {
-                return Some(spawned.nodes[&node.id]);
-            }
-            parent = parent_node.parent;
-        }
-        None
-    })
+    }
+    None
 }
 
 fn on_game_screen_activate(
@@ -197,7 +181,9 @@ fn on_game_screen_activate(
 mod tests {
     use super::*;
     use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
-    use imperialism_formats::UiCatalog;
+    use bevy::ui::InteractionDisabled;
+    use bevy::ui_widgets::Button as UiButton;
+    use imperialism_formats::{UiBehavior, UiCatalog};
     use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -231,15 +217,12 @@ mod tests {
         let Some(view_id) = view_id_for_state(current) else {
             return;
         };
-        let catalog = catalog.catalog();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == view_id)
-            .unwrap();
-        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
+        let Some(view) = catalog.view(&view_id) else {
+            return;
+        };
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         assert!(
-            bind_game_screen_nav(&mut commands, view, &spawned),
+            bind_game_screen_nav(&mut commands, &catalog, &spawned),
             "toolbar nav controls"
         );
         commands.insert_resource(TestSpawned(spawned.clone()));
@@ -373,33 +356,20 @@ mod tests {
     fn diplomacy_trade_radio_does_not_steal_toolbar_navigation() {
         let mut app = app_at(AppState::Diplomacy);
         let toolbar_trade = nav_entity(&mut app, GameScreenNavAction::Trade);
-        let catalog = catalog();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == diplomacy_view_id())
-            .unwrap();
         let spawned = app.world().resource::<TestSpawned>().0.clone();
-        let by_id: std::collections::HashMap<_, _> =
-            view.nodes.iter().map(|node| (node.id, node)).collect();
-        let radio_trad = view
-            .nodes
-            .iter()
-            .find_map(|node| {
-                if node.tag.0 != "trad" || !node.interactive {
-                    return None;
-                }
-                let mut parent = node.parent;
-                while let Some(parent_id) = parent {
-                    let parent_node = by_id.get(&parent_id)?;
-                    if TOOLBAR_PARENT_TAGS.contains(&parent_node.tag.0.as_str()) {
+        let radio_trad = {
+            let catalog = app.world().resource::<UiCatalogResource>();
+            let view = catalog.view(&diplomacy_view_id()).unwrap();
+            view.nodes
+                .iter()
+                .find_map(|node| {
+                    if node.tag.0 != "trad" || node.behavior != UiBehavior::RadioButton {
                         return None;
                     }
-                    parent = parent_node.parent;
-                }
-                Some(spawned.nodes[&node.id])
-            })
-            .expect("diplomacy has a non-toolbar trad control");
+                    Some(spawned.nodes[&node.id])
+                })
+                .expect("diplomacy has a non-toolbar trad control")
+        };
         assert_ne!(radio_trad, toolbar_trade);
         app.world_mut()
             .commands()

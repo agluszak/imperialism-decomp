@@ -21,6 +21,7 @@ pub use retail_fonts::{
     RetailTextStylePreset, resolve_retail_text_style,
 };
 pub use ui_catalog::{
-    FourCc, LogicalRect, ScopedViewId, UiCatalog, UiNode, UiNodeId, UiNumberRange, UiStyle,
-    UiTextBinding, UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,
+    FourCc, LogicalRect, ScopedViewId, UiBehavior, UiCatalog, UiNode, UiNodeId, UiNumberRange,
+    UiStyle, UiTextBinding, UiView, UiViewIndex, UiWindowColor, UiWindowProperties, WidgetKind,
+    WidgetProperties,
 };

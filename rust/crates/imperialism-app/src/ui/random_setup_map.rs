@@ -1,4 +1,4 @@
-use super::catalog::{SpawnedView, UiPictureResources};
+use super::catalog::{SpawnedView, UiCatalogResource, UiPictureResources};
 use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
@@ -10,7 +10,7 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{MajorNationId, MapGeometry, STRATEGIC_TILE_COUNT, TileId};
-use imperialism_formats::{DibPalette, PaletteIndex, Rgb, UiView as CatalogView};
+use imperialism_formats::{DibPalette, PaletteIndex, Rgb};
 
 const MAP_TAG: &str = "map ";
 const COAT_TAG: &str = "coat";
@@ -73,20 +73,20 @@ impl Plugin for MapPreviewPlugin {
 /// Attach map/coat/flag components once when the random-setup screen is created.
 pub(crate) fn attach_random_setup_widgets(
     commands: &mut Commands,
-    view: &CatalogView,
+    catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    debug_assert_eq!(view.id, random_setup_view_id());
-    if let Some(entity) = spawned.tagged(view, MAP_TAG) {
-        commands.entity(entity).insert((
-            RandomSetupMapPreview::default(),
-            RelativeCursorPosition::default(),
-        ));
+    debug_assert_eq!(spawned.view_id, random_setup_view_id());
+    // PointerCanvas behavior already adds RelativeCursorPosition for the map.
+    if let Ok(entity) = spawned.require_unique(catalog, MAP_TAG) {
+        commands
+            .entity(entity)
+            .insert(RandomSetupMapPreview::default());
     }
-    if let Some(entity) = spawned.tagged(view, COAT_TAG) {
+    if let Ok(entity) = spawned.require_unique(catalog, COAT_TAG) {
         commands.entity(entity).insert(RandomSetupCoat::default());
     }
-    if let Some(entity) = spawned.tagged(view, FLAG_TAG) {
+    if let Ok(entity) = spawned.require_unique(catalog, FLAG_TAG) {
         commands.entity(entity).insert(RandomSetupFlag::default());
     }
 }
