@@ -87,6 +87,13 @@ enum Operation {
         #[arg(action = ArgAction::Set)]
         enabled: bool,
     },
+    DirectTransport {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+        #[arg(value_parser = parse_resource_kind)]
+        resource: ResourceKind,
+        requested: i16,
+    },
     AllocateTransportNeeds {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -236,6 +243,15 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .set_power_plant_upgrade(nation, enabled)
                 .context("Rust power-plant upgrade change failed")?;
+        }
+        Operation::DirectTransport {
+            nation,
+            resource,
+            requested,
+        } => {
+            state
+                .direct_transport(nation, resource, requested)
+                .context("Rust direct transport failed")?;
         }
         Operation::AllocateTransportNeeds { nation } => {
             state
