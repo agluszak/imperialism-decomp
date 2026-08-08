@@ -3,9 +3,9 @@
 use anyhow::{Context, Result, bail};
 use clap::{ArgAction, ArgGroup, Parser, Subcommand};
 use imperialism_core::{
-    DiplomacyGrant, DiplomacyGrantFlags, GameState, MajorNationId, MilitaryUnitKind, NationId,
-    ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable, SkillBand,
-    UnitCostProfile, UnitProductionOrder,
+    DiplomacyGrant, DiplomacyGrantFlags, GameState, MajorNationId, MilitaryUnitKind, MinorNationId,
+    NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable,
+    SkillBand, UnitCostProfile, UnitProductionOrder,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use imperialism_testkit::{first_serialized_difference, read_game_state, read_runtime_capture};
@@ -105,6 +105,15 @@ enum Operation {
     RecallTradeBids {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
+    },
+    AddAidAllocation {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+        #[arg(value_parser = parse_minor_nation)]
+        minor_nation: MinorNationId,
+        #[arg(value_parser = parse_resource_kind)]
+        resource: ResourceKind,
+        amount: i32,
     },
     IncreaseRollingStock {
         #[arg(value_parser = parse_major_nation)]
@@ -278,6 +287,16 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
                 .recall_trade_bids(nation)
                 .context("Rust trade-bid recall failed")?;
         }
+        Operation::AddAidAllocation {
+            nation,
+            minor_nation,
+            resource,
+            amount,
+        } => {
+            state
+                .add_aid_allocation(nation, minor_nation, resource, amount)
+                .context("Rust aid allocation failed")?;
+        }
         Operation::IncreaseRollingStock { nation } => {
             if !state
                 .increase_rolling_stock(nation)
@@ -326,6 +345,13 @@ fn parse_major_nation(value: &str) -> Result<MajorNationId, String> {
         .parse()
         .map_err(|_| format!("{value:?} is not a major-nation ID"))?;
     MajorNationId::try_new(index).ok_or_else(|| format!("major-nation ID {index} is out of range"))
+}
+
+fn parse_minor_nation(value: &str) -> Result<MinorNationId, String> {
+    let index = value
+        .parse()
+        .map_err(|_| format!("{value:?} is not a minor-nation ID"))?;
+    MinorNationId::try_new(index).ok_or_else(|| format!("minor-nation ID {index} is out of range"))
 }
 
 fn parse_resource_kind(value: &str) -> Result<ResourceKind, String> {

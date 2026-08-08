@@ -1,58 +1,11 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, IndustryActionTable,
     LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable,
-    NationCapacityTable, NationId, NationTable, PendingActionTable, ProductionTable, ProvinceId,
-    RecruitKind, ResourceTable, ShipId, TaskForceId, TileId, TileOwnerTag,
+    MinorNationTable, NationCapacityTable, NationId, NationTable, PendingActionTable,
+    ProductionTable, ProvinceId, RecruitKind, ResourceTable, ShipId, TaskForceId, TileId,
+    TileOwnerTag,
 };
 use serde::{Deserialize, Serialize};
-
-pub const AID_ALLOCATION_COUNT: usize = 0x170;
-
-#[derive(Clone, Debug, Eq, PartialEq)]
-pub struct AidAllocationTable([i32; AID_ALLOCATION_COUNT]);
-
-impl AidAllocationTable {
-    pub const fn from_array(values: [i32; AID_ALLOCATION_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub fn as_slice(&self) -> &[i32] {
-        &self.0
-    }
-
-    pub(crate) fn clear(&mut self) {
-        self.0.fill(0);
-    }
-}
-
-impl Default for AidAllocationTable {
-    fn default() -> Self {
-        Self([0; AID_ALLOCATION_COUNT])
-    }
-}
-
-impl Serialize for AidAllocationTable {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        self.0.as_slice().serialize(serializer)
-    }
-}
-
-impl<'de> Deserialize<'de> for AidAllocationTable {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let values = Vec::<i32>::deserialize(deserializer)?;
-        let actual = values.len();
-        let values = values.try_into().map_err(|_| {
-            serde::de::Error::invalid_length(actual, &"exactly 368 aid-allocation entries")
-        })?;
-        Ok(Self(values))
-    }
-}
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GameState {
@@ -233,7 +186,7 @@ pub struct MajorNationState {
     pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
     pub transported_items_by_resource: ResourceTable<i16>,
     pub remembered_trade_offers_by_resource: ResourceTable<i16>,
-    pub aid_allocation_matrix: AidAllocationTable,
+    pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
     pub special_resource_trade_balance: i32,

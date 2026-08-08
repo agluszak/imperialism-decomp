@@ -1,10 +1,11 @@
-use crate::{MajorNationId, NationId, ProductionSlot};
+use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot};
 use enum_map::{Enum, EnumMap};
 use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = NationId::COUNT as usize;
 pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
+pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
 
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
@@ -140,6 +141,36 @@ impl<T> IndexMut<MajorNationId> for MajorNationTable<T> {
 impl<T: Default> Default for MajorNationTable<T> {
     fn default() -> Self {
         Self(std::array::from_fn(|_| T::default()))
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct MinorNationTable<T>([T; MINOR_NATION_COUNT]);
+
+impl<T> MinorNationTable<T> {
+    pub const fn from_array(values: [T; MINOR_NATION_COUNT]) -> Self {
+        Self(values)
+    }
+}
+
+impl<T: Default> Default for MinorNationTable<T> {
+    fn default() -> Self {
+        Self(std::array::from_fn(|_| T::default()))
+    }
+}
+
+impl<T> Index<MinorNationId> for MinorNationTable<T> {
+    type Output = T;
+
+    fn index(&self, nation: MinorNationId) -> &Self::Output {
+        &self.0[nation.table_index()]
+    }
+}
+
+impl<T> IndexMut<MinorNationId> for MinorNationTable<T> {
+    fn index_mut(&mut self, nation: MinorNationId) -> &mut Self::Output {
+        &mut self.0[nation.table_index()]
     }
 }
 

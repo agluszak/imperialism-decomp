@@ -205,7 +205,7 @@ mod tests {
             unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
             transported_items_by_resource: crate::ResourceTable::default(),
             remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_matrix: crate::AidAllocationTable::default(),
+            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
             special_resource_trade_balance: 0,
