@@ -7,42 +7,70 @@ pub const NATION_COUNT: usize = NationId::COUNT as usize;
 pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
 pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
 
-#[derive(
-    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
-)]
-#[serde(rename_all = "snake_case")]
-pub enum IndustryActionSlot {
-    Slot0,
-    Slot1,
-    Slot2,
-    Slot3,
-    Slot4,
-    Slot5,
-    Slot6,
-    Slot7,
-    Slot8,
-    Slot9,
-    Slot10,
-    Slot11,
-    Slot12,
-    Slot13,
+pub const INDUSTRY_ACTION_SLOT_COUNT: usize = 14;
+
+/// Fixed 14-slot industry-action counts. Slot names are not yet recovered.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct IndustryActionTable<T>([T; INDUSTRY_ACTION_SLOT_COUNT]);
+
+impl<T> IndustryActionTable<T> {
+    pub const fn from_array(values: [T; INDUSTRY_ACTION_SLOT_COUNT]) -> Self {
+        Self(values)
+    }
+
+    pub fn as_slice(&self) -> &[T] {
+        &self.0
+    }
+
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = (usize, &T)> {
+        self.0.iter().enumerate()
+    }
+
+    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = (usize, &mut T)> {
+        self.0.iter_mut().enumerate()
+    }
 }
 
-pub type IndustryActionTable<T> = EnumMap<IndustryActionSlot, T>;
+impl<T: Default> Default for IndustryActionTable<T> {
+    fn default() -> Self {
+        Self(std::array::from_fn(|_| T::default()))
+    }
+}
+
+impl<T> Index<usize> for IndustryActionTable<T> {
+    type Output = T;
+
+    fn index(&self, slot: usize) -> &Self::Output {
+        &self.0[slot]
+    }
+}
+
+impl<T> IndexMut<usize> for IndustryActionTable<T> {
+    fn index_mut(&mut self, slot: usize) -> &mut Self::Output {
+        &mut self.0[slot]
+    }
+}
 
 /// Fixed capacities maintained for every major nation.
-#[derive(
-    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
-)]
-#[serde(rename_all = "snake_case")]
-pub enum NationCapacity {
-    AvailableMerchant,
-    MerchantCapacity,
-    Transport,
-    ReservedTransport,
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NationCapacities {
+    pub available_merchant: i16,
+    pub trade_offer: i16,
+    pub transport: i16,
+    pub reserved_transport: i16,
 }
 
-pub type NationCapacityTable<T> = EnumMap<NationCapacity, T>;
+impl NationCapacities {
+    pub const fn from_array(values: [i16; 4]) -> Self {
+        Self {
+            available_merchant: values[0],
+            trade_offer: values[1],
+            transport: values[2],
+            reserved_transport: values[3],
+        }
+    }
+}
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
@@ -325,12 +353,16 @@ mod tests {
         pending[PendingActionKind::UniversityExpansion] = 3_i16;
         assert_eq!(pending[PendingActionKind::UniversityExpansion], 3);
 
-        let mut capacities = NationCapacityTable::from_array([0_i16, 0, 15, 11]);
-        capacities[NationCapacity::ReservedTransport] += 1;
-        assert_eq!(capacities[NationCapacity::ReservedTransport], 12);
+        let mut capacities = NationCapacities::from_array([0_i16, 0, 15, 11]);
+        capacities.reserved_transport += 1;
+        assert_eq!(capacities.reserved_transport, 12);
 
         let mut major_nations = MajorNationTable::from_fn(|nation| nation.get());
         major_nations[MajorNationId::new(6)] = 9;
         assert_eq!(major_nations[MajorNationId::new(6)], 9);
+
+        let mut actions = IndustryActionTable::default();
+        actions[1] = 4_i16;
+        assert_eq!(actions[1], 4);
     }
 }

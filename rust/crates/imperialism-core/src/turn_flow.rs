@@ -1,4 +1,4 @@
-use crate::{GameEvent, GameState, MajorNationId, StepOutcome, TurnState};
+use crate::{GameState, MajorNationId, TurnState};
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum TurnFlowError {
@@ -19,14 +19,6 @@ impl TurnState {
 }
 
 impl GameState {
-    /// Replaces the original posted Windows command with explicit deterministic
-    /// domain output. The caller decides when to invoke the phase worker.
-    pub fn request_next_phase(&self) -> StepOutcome {
-        StepOutcome {
-            events: vec![GameEvent::PhaseAdvanceRequested],
-        }
-    }
-
     /// Mirrors `TSimMgr::AllHumansFinished`. The C++ routine assumes all seven
     /// major slots exist; Rust reports that violated phase invariant explicitly.
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {

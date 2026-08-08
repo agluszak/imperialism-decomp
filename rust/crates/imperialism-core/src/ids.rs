@@ -183,10 +183,6 @@ id_type!(TileId, u16);
 // non-nation map contexts, so this deliberately is not a NationId.
 id_type!(TileOwnerTag, u8);
 id_type!(ProvinceId, u16);
-id_type!(CityId, u16);
-id_type!(ArmyId, u32);
-id_type!(NavyId, u32);
-id_type!(MissionId, u32);
 id_type!(MilitaryUnitId, i32);
 id_type!(CivilianUnitId, i32);
 id_type!(ShipId, u32);

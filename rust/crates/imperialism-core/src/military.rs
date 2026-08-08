@@ -19,7 +19,9 @@ impl GameState {
                 .ships
                 .iter()
                 .filter(|ship| ship.nation == nation_id)
-                .map(|ship| NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type])
+                .map(|ship| {
+                    NAVY_ARMS_BY_SHIP_TYPE[usize::try_from(ship.ship_type).expect("ship type slot")]
+                })
                 .sum::<i32>();
         let charge = arms * MILITARY_MAINTENANCE_MULTIPLIER;
 
