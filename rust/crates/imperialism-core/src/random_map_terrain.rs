@@ -2,9 +2,11 @@
 use crate::random_map::trace_coarse_random_map;
 use crate::{
     CoarseMap, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, MapGeometry,
-    MapTopology, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailLcg, RetailTopologyByte, TileId,
-    TileOwnerTag, generate_coarse_random_map, hash_retail_scenario_tag,
+    MapTopology, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailLcg, TileId, TileOwnerTag,
+    generate_coarse_random_map, hash_retail_scenario_tag,
 };
+#[cfg(feature = "differential-trace")]
+use crate::RetailTopologyByte;
 use serde::{Deserialize, Serialize};
 
 const TILE_COUNT: usize = EXPANDED_MAP_WIDTH * EXPANDED_MAP_HEIGHT;
