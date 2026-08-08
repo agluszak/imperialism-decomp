@@ -67,6 +67,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    AllocateTransportNeeds {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     SetDiplomacyGrant {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -188,6 +192,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .add_created_items(nation)
                 .context("Rust created-item settlement failed")?;
+        }
+        Operation::AllocateTransportNeeds { nation } => {
+            state
+                .allocate_transport_needs(nation)
+                .context("Rust transport-need allocation failed")?;
         }
         Operation::SetDiplomacyGrant {
             nation,

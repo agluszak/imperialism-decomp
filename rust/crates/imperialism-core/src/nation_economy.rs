@@ -1,5 +1,18 @@
 use crate::{CityState, MajorNationState, NationCapacity, ResourceKind, all_resources};
 
+const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
+    ResourceKind::Grain,
+    ResourceKind::Fruit,
+    ResourceKind::Livestock,
+    ResourceKind::Fish,
+    ResourceKind::Timber,
+    ResourceKind::Coal,
+    ResourceKind::Iron,
+    ResourceKind::Cotton,
+    ResourceKind::Wool,
+    ResourceKind::Horses,
+];
+
 impl MajorNationState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
     pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
@@ -39,6 +52,17 @@ impl MajorNationState {
             .iter()
             .fold(0_i32, |total, (_, value)| total + i32::from(*value));
         current_total > i32::from(self.capacities[NationCapacity::Transport])
+    }
+
+    pub(crate) fn allocate_transport_needs(&mut self) {
+        for resource in TRANSPORT_NEED_PRIORITY {
+            let headroom = self.capacities[NationCapacity::Transport]
+                - self.capacities[NationCapacity::ReservedTransport];
+            if headroom == 0 {
+                break;
+            }
+            self.update_need_target(resource, self.need_current_by_type[resource].min(headroom));
+        }
     }
 
     pub fn add_purchased_item_amount(&mut self, resource: ResourceKind, delta: i16) {
@@ -346,5 +370,22 @@ mod tests {
                 .iter()
                 .all(|(_, amount)| *amount == 0)
         );
+    }
+
+    #[test]
+    fn allocates_transport_needs_in_retail_priority_order() {
+        let mut state = nation();
+        state.capacities[NationCapacity::Transport] = 8;
+        state.capacities[NationCapacity::ReservedTransport] = 2;
+        state.need_current_by_type[ResourceKind::Grain] = 4;
+        state.need_current_by_type[ResourceKind::Fruit] = 3;
+        state.need_current_by_type[ResourceKind::Livestock] = 6;
+
+        state.allocate_transport_needs();
+
+        assert_eq!(state.need_target_by_type[ResourceKind::Grain], 4);
+        assert_eq!(state.need_target_by_type[ResourceKind::Fruit], 2);
+        assert_eq!(state.need_target_by_type[ResourceKind::Livestock], 0);
+        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 8);
     }
 }
