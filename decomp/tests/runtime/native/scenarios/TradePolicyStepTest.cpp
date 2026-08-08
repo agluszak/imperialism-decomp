@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -11,8 +12,7 @@
 namespace {
 
 // Exercise the one retail policy decrement that depends on treasury: 75 becomes 50 only when
-// the nation has more than 10,000 in its treasury. The captured input and result are the
-// differential oracle.
+// the nation has more than 10,000 in its treasury.
 class TradePolicyStepTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -33,31 +33,22 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no major-nation state");
     }
 
-    short needLevelBefore[kNationSlotCount];
-    int nationIndex;
-    for (nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-      needLevelBefore[nationIndex] = nation->needLevelByNation[nationIndex];
-    }
     nation->needLevelByNation[targetNationSlot] = 75;
     nation->treasuryValue10 = 10001;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure("the semantic trade-policy input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("trade_policy_step_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("source", static_cast<int>(sourceNationSlot));
+    caseCapture.Set("target", static_cast<int>(targetNationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->DecrementNeedLevelByNationStep(targetNationSlot);
 
-    if (nation->needLevelByNation[targetNationSlot] != 50 || nation->treasuryValue10 != 10001) {
-      return RuntimeActionResult::Failure(
-          "retail did not decrement the treasury-gated trade policy");
-    }
-    for (nationIndex = 0; nationIndex < kNationSlotCount; ++nationIndex) {
-      if (nationIndex != targetNationSlot &&
-          nation->needLevelByNation[nationIndex] != needLevelBefore[nationIndex]) {
-        return RuntimeActionResult::Failure("retail changed an unrelated trade policy");
-      }
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

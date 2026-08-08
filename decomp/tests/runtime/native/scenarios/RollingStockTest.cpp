@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -36,20 +37,21 @@ private:
     city->CityStockByType(kResourceLumber) = 1;
     city->CityStockByType(kResourceSteel) = 1;
     nation->transportCapacity = 15;
-    const short reservedTransportCapacity = nation->reservedTransportCapacity;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic rolling-stock input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("rolling_stock_input", inputState);
 
-    const char increased = nation->IncreaseRollingStock();
-    if (increased == 0 || city->CityStockByType(kResourceLumber) != 0 ||
-        city->CityStockByType(kResourceSteel) != 0 || nation->transportCapacity != 16 ||
-        nation->reservedTransportCapacity != reservedTransportCapacity) {
-      return RuntimeActionResult::Failure("retail rolling stock applied the wrong state change");
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
+
+    if (nation->IncreaseRollingStock() == 0) {
+      return RuntimeActionResult::Failure("retail rolling stock could not be increased");
+    }
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

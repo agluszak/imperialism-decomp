@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -13,7 +14,7 @@
 namespace {
 
 // Restore remembered trade bids, clamp sell offers to the current city stock, and clear the
-// aid-allocation matrix. Captured input and result state are the differential oracle.
+// aid-allocation matrix.
 class RecallTradeBidsTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -59,25 +60,18 @@ private:
     nation->aidAllocationMatrix[0] = 17;
     nation->aidAllocationMatrix[aidAllocationCount - 1] = -9;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure("the semantic trade-bid input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("trade_bids_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->RecallTradeBids();
 
-    if (nation->itemPotentials[kResourceCotton] != 3 ||
-        nation->itemPotentials[kResourceWool] != -1 ||
-        nation->itemPotentials[kResourceTimber] != 2 || nation->unfilledTradeOfferCount != 5 ||
-        nation->budgetPoolBase != 600 || nation->budgetPoolDelta != -140 ||
-        nation->merchantCapacity != 19 || nation->availableMerchantCapacity != 7) {
-      return RuntimeActionResult::Failure("retail recalled the trade bids incorrectly");
-    }
-    for (matrixIndex = 0; matrixIndex < aidAllocationCount; ++matrixIndex) {
-      if (nation->aidAllocationMatrix[matrixIndex] != 0) {
-        return RuntimeActionResult::Failure("retail retained an aid-allocation entry");
-      }
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,8 +13,7 @@
 
 namespace {
 
-// Allocate one city's steel need. The request exceeds both its available surplus and the
-// remaining transport capacity, so retail must apply the two clamps in order.
+// Allocate one city's steel need with clamps from surplus and remaining transport capacity.
 class DirectTransportTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -47,17 +47,20 @@ private:
     nation->reservedTransportCapacity = 11;
     city->CityStockByType(kResourceSteel) = 2;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic direct-transport input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("direct_transport_input", inputState);
 
-    const short transported = city->DirectTransport(kResourceSteel, 9);
-    if (transported != 4 || city->CityStockByType(kResourceSteel) != 6 ||
-        nation->needTargetByType[kResourceSteel] != 8 || nation->reservedTransportCapacity != 15) {
-      return RuntimeActionResult::Failure("retail direct transport applied the wrong allocation");
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    caseCapture.Set("resource", "steel");
+    caseCapture.Set("requested", 9);
+    RunState().SetCapture("case", caseCapture.Release());
+
+    city->DirectTransport(kResourceSteel, 9);
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

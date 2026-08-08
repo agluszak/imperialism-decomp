@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,7 +13,6 @@
 namespace {
 
 // Queue the city power-plant upgrade from a deliberately small economic state.
-// Captured input and result GameState values are the differential oracle.
 class PowerPlantUpgradeTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -36,17 +36,19 @@ private:
     city->powerPlantUpgradeQueuedFlag04 = 0;
     nation->treasuryValue10 = 10000;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic power-plant-upgrade input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("power_plant_upgrade_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    caseCapture.Set("enabled", true);
+    RunState().SetCapture("case", caseCapture.Release());
 
     city->BuildPowerPlant(1);
 
-    if (city->powerPlantUpgradeQueuedFlag04 == 0 || nation->treasuryValue10 != 5000) {
-      return RuntimeActionResult::Failure("retail did not queue the power-plant upgrade");
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

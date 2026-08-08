@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,8 +13,7 @@
 
 namespace {
 
-// Turn three lumber and one fabric into a merchant-capacity point through the retail nation
-// rule.
+// Turn three lumber and one fabric into a merchant-capacity point through the retail nation rule.
 class MerchantMarineTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -38,15 +38,20 @@ private:
     city->CityStockByType(kResourceFabric) = 1;
     nation->merchantCapacity = 15;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic merchant-marine input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("merchant_marine_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     if (nation->IncreaseMerchantMarine() == 0) {
       return RuntimeActionResult::Failure("retail merchant marine could not be increased");
+    }
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

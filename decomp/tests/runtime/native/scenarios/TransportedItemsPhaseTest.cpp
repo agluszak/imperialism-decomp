@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,8 +13,7 @@
 
 namespace {
 
-// Commit the active great power's transported-resource ledger to its city. Gold deliberately
-// proves this invokes TGreatPower::AddTransportedItems rather than a city-only helper.
+// Commit the active great power's transported-resource ledger to its city.
 class TransportedItemsPhaseTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -45,23 +45,18 @@ private:
     nation->transportedItemsByResource[kResourceWool] = -7;
     nation->transportedItemsByResource[kResourceGold] = 4;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic transported-items input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("transported_items_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->AddTransportedItems();
 
-    if (city->CityStockByType(kResourceCotton) != 8 || city->CityStockByType(kResourceWool) != 0 ||
-        city->CityStockByType(kResourceGold) != 15) {
-      return RuntimeActionResult::Failure("retail committed transported resources incorrectly");
-    }
-    for (resource = 0; resource < kResourceKindCount; ++resource) {
-      if (nation->transportedItemsByResource[resource] != 0) {
-        return RuntimeActionResult::Failure("retail retained a transported resource entry");
-      }
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

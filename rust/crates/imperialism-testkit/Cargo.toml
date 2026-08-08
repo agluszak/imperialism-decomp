@@ -8,7 +8,6 @@ rust-version.workspace = true
 anyhow.workspace = true
 clap.workspace = true
 imperialism-core = { path = "../imperialism-core", features = ["differential-trace"] }
-imperialism-formats = { path = "../imperialism-formats" }
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true

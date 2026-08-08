@@ -1,6 +1,9 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
+#include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
@@ -8,8 +11,7 @@
 
 namespace {
 
-// Set one semantic grant on the retail-produced beginning-of-game save. The
-// direct game-state capture is the accounting oracle.
+// Set one semantic grant on the retail-produced beginning-of-game save.
 class DiplomacyGrantEntryTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -31,8 +33,22 @@ private:
       return RuntimeActionResult::Failure("the loaded player cannot make the grant-target check");
     }
 
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
+    }
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(activeNationSlot));
+    caseCapture.Set("target", static_cast<int>(targetNationSlot));
+    caseCapture.Set("amount", static_cast<int>(grantAmount));
+    RunState().SetCapture("case", caseCapture.Release());
+
     if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount)) {
       return RuntimeActionResult::Failure("retail rejected the diplomacy grant");
+    }
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

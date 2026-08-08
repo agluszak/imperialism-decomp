@@ -10,23 +10,21 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
-The C++ harness emits narrow named semantic captures. Retail fixtures live in
-`../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS entities.
+Native scenarios capture `before`, `case`, and `after` GameState JSON. Ordinary Rust tests call
+`differential(scenario, |state, case| { ... })`, apply the Rust operation, and compare complete
+states with `first_serialized_difference`. Retail fixtures live in `../fixtures/retail/`. The Rust
+game state does not depend on C++ layouts or Bevy ECS entities.
 
 ```sh
 cargo test --workspace
 cargo clippy --workspace --all-targets -- -D warnings
 ```
 
-Run a C++ fixture as an external oracle and compare it with a Rust-produced snapshot:
+Native-oracle differential tests are ignored by default (they need Wine/`just runtime-run`):
 
 ```sh
-cargo run -p imperialism-testkit --bin differential -- \
-  save_load_roundtrip path/to/rust-snapshot.json --seed 1
+cargo test -p imperialism-testkit -- --ignored
 ```
-
-The runner invokes the existing C++ runtime command across a process boundary. It does not link
-the implementations or add Cargo to the repository-root tooling.
 
 ## Normal retail launch
 

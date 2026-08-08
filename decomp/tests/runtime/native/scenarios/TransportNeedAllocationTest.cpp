@@ -1,6 +1,9 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
+#include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 
 #include "game/city_ui/TCityInteriorMinister.h"
 #include "game/globals/shared_globals.h"
@@ -9,8 +12,7 @@
 
 namespace {
 
-// Allocate the active nation's transport capacity to its city-resource needs from the
-// retail-produced beginning-of-game save. The direct game-state capture is the oracle.
+// Allocate the active nation's transport capacity to its city-resource needs.
 class TransportNeedAllocationTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -30,7 +32,19 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no interior minister");
     }
 
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
+    }
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
+
     nation->interiorMinister->SetCityPolicies();
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
+    }
     return RuntimeActionResult::Success();
   }
 };
