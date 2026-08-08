@@ -3,9 +3,9 @@ use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::ScopedViewId;
+use imperialism_formats::{FourCc, ScopedViewId, fourcc};
 
-const TOOLBAR_PARENT_TAGS: &[&str] = &["tool", "topB"];
+const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
 
 pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     ScopedViewId {
@@ -132,8 +132,8 @@ fn spawn_flag_view_chrome(
     let spawned = spawn_view(commands, catalog.catalog(), &view, assets);
     // `end ` is End Turn and `quer` is the help/query hotspot; neither is
     // implemented yet, so keep both inert rather than leave unbound no-ops.
-    disable_control(commands, catalog, &spawned, "end ");
-    disable_control(commands, catalog, &spawned, "quer");
+    disable_control(commands, catalog, &spawned, fourcc!("end "));
+    disable_control(commands, catalog, &spawned, fourcc!("quer"));
     commands
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
@@ -144,17 +144,21 @@ fn bind_game_screen_nav(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) -> bool {
-    let Some(trade) = control_under_parents(catalog, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
-        return false;
-    };
-    let Some(transport) = control_under_parents(catalog, spawned, "tran", TOOLBAR_PARENT_TAGS)
+    let Some(trade) = control_under_parents(catalog, spawned, fourcc!("trad"), TOOLBAR_PARENT_TAGS)
     else {
         return false;
     };
-    let Some(city) = control_under_parents(catalog, spawned, "city", TOOLBAR_PARENT_TAGS) else {
+    let Some(transport) =
+        control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
+    else {
         return false;
     };
-    let Some(diplomacy) = control_under_parents(catalog, spawned, "dipl", TOOLBAR_PARENT_TAGS)
+    let Some(city) = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
+    else {
+        return false;
+    };
+    let Some(diplomacy) =
+        control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
     else {
         return false;
     };
@@ -169,7 +173,7 @@ fn bind_game_screen_nav(
     // Retail's `end ` hotspot (`kControlTagEnd`) always dispatches End Turn on every
     // screen that hosts it; it is never a leave-to-map control. End Turn is not
     // implemented yet, so keep it disabled rather than bind a fake leave-to-map action.
-    disable_control(commands, catalog, spawned, "end ");
+    disable_control(commands, catalog, spawned, fourcc!("end "));
     true
 }
 
@@ -179,7 +183,7 @@ fn disable_control(
     commands: &mut Commands,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    tag: &str,
+    tag: FourCc,
 ) {
     if let Ok(entity) = spawned.require_unique(catalog, tag) {
         commands.entity(entity).insert(InteractionDisabled);
@@ -190,10 +194,10 @@ fn disable_control(
 fn control_under_parents(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    tag: &str,
-    parents: &[&str],
+    tag: FourCc,
+    parents: &[FourCc],
 ) -> Option<Entity> {
-    for parent in parents {
+    for &parent in parents {
         if let Ok(entity) = spawned.require_under(catalog, parent, tag) {
             return Some(entity);
         }
@@ -226,7 +230,7 @@ mod tests {
     use super::*;
     use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
     use bevy::ui_widgets::Button as UiButton;
-    use imperialism_formats::{UiBehavior, UiCatalog};
+    use imperialism_formats::{UiBehavior, UiCatalog, fourcc};
     use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -286,8 +290,8 @@ mod tests {
                 catalog.catalog().logical_resolution,
                 &flag_view,
             );
-            disable_control(&mut commands, &catalog, &flag_spawned, "end ");
-            disable_control(&mut commands, &catalog, &flag_spawned, "quer");
+            disable_control(&mut commands, &catalog, &flag_spawned, fourcc!("end "));
+            disable_control(&mut commands, &catalog, &flag_spawned, fourcc!("quer"));
             commands.insert_resource(TestFlagSpawned(flag_spawned.clone()));
             commands
                 .entity(flag_spawned.root)
@@ -449,7 +453,7 @@ mod tests {
             view.nodes
                 .iter()
                 .find_map(|node| {
-                    if node.tag.0 != "trad" || node.behavior != UiBehavior::RadioButton {
+                    if node.tag != fourcc!("trad") || node.behavior != UiBehavior::RadioButton {
                         return None;
                     }
                     Some(spawned.nodes[&node.id])

@@ -146,6 +146,8 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(setup_by_tag["map "]["behavior"], "pointer_canvas")
         self.assertEqual(setup_by_tag["glob"]["kind"], "picture")
         self.assertEqual(setup_by_tag["glob"]["behavior"], "activate")
+        self.assertEqual(setup_by_tag["glob"]["picture_visual"], "static")
+        self.assertEqual(setup_by_tag["okay"]["picture_visual"], "up_down")
         self.assertEqual(setup_by_tag["diff"]["behavior"], "radio_group")
         for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
             text = setup_by_tag[tag]["properties"]["text"]
@@ -154,6 +156,7 @@ class UiCodegenTests(unittest.TestCase):
                 (1, 0, 12, 1),
             )
             self.assertEqual(setup_by_tag[tag]["behavior"], "radio_button")
+            self.assertEqual(setup_by_tag[tag]["picture_visual"], "static")
         for tag in ("tcou", "dift", "tnam"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
@@ -167,6 +170,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertFalse(planet_by_tag["1or2"]["state"])
         self.assertFalse(planet_by_tag["1or2"]["enabled"])
         self.assertEqual(planet_by_tag["okay"]["behavior"], "activate")
+        self.assertEqual(planet_by_tag["okay"]["picture_visual"], "up_down")
         self.assertFalse(planet_by_tag["canc"]["state"])
         self.assertFalse(planet_by_tag["canc"]["enabled"])
 
