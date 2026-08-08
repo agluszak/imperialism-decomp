@@ -110,8 +110,12 @@ pub fn create_random_game(
     }
 }
 
+/// Province-capital marker written by `RebuildTileOwnerNeighborCachesAndFallbackAssignments`.
+const PROVINCE_CAPITAL_ACTIVE_FLAGS: u16 = 0x22;
+
 /// Preview-time tile post-passes from `TMapMgr::BuildOrLoadGlobalMapStateForSession`:
-/// icon-variant/edge-resource stamping, former-owner snapshot, and `GuaranteeResources`.
+/// icon-variant/edge-resource stamping, former-owner snapshot, province fallback capitals,
+/// and `GuaranteeResources`.
 fn apply_tile_post_passes(
     map: &GeneratedMap,
     wraps_horizontally: bool,
@@ -132,8 +136,104 @@ fn apply_tile_post_passes(
         );
     }
 
+    // Retail runs this between icon variants and GuaranteeResources; it advances the map
+    // LCG once per occupied province and stamps capital `active_flags`.
+    assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
+
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
     tiles
+}
+
+/// Capital-tile pick + stamp from `TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments`
+/// (0x0050f860). Adjacent-province bookkeeping and transport-mask side effects that are not
+/// represented on [`TileState`] are omitted.
+fn assign_province_fallback_capitals(
+    tiles: &mut [TileState],
+    gate_flags: &mut [i8],
+    geometry: MapGeometry,
+    map_lcg: &mut RetailLcg,
+) {
+    let province_count = tiles
+        .iter()
+        .filter_map(|tile| {
+            tile.province
+                .map(|province| usize::from(province.get()) + 1)
+        })
+        .max()
+        .unwrap_or(0);
+    let mut linked_by_province: Vec<Vec<usize>> = vec![Vec::new(); province_count];
+    for (index, tile) in tiles.iter().enumerate() {
+        if tile.terrain_kind == WATER {
+            continue;
+        }
+        let Some(province) = tile.province else {
+            continue;
+        };
+        linked_by_province[usize::from(province.get())].push(index);
+    }
+
+    for (province_index, linked) in linked_by_province.iter().enumerate() {
+        if linked.is_empty() {
+            continue;
+        }
+
+        let mut interior = Vec::new();
+        for &tile_index in linked {
+            let tile_id = TileId::new(tile_index as u16);
+            let has_foreign_neighbor =
+                geometry
+                    .neighbors(tile_id)
+                    .into_iter()
+                    .flatten()
+                    .any(|neighbor| {
+                        let neighbor_tile = &tiles[usize::from(neighbor.get())];
+                        match neighbor_tile.province {
+                            Some(province) => usize::from(province.get()) != province_index,
+                            None => false,
+                        }
+                    });
+            if !has_foreign_neighbor {
+                interior.push(tile_index);
+            }
+        }
+
+        let chosen = if interior.is_empty() {
+            let sample = map_lcg.next_sample_15() as usize;
+            linked[sample % linked.len()]
+        } else {
+            let flat: Vec<usize> = interior
+                .iter()
+                .copied()
+                .filter(|&index| matches!(tiles[index].terrain_kind, PLAINS | FARMLAND))
+                .collect();
+            if !flat.is_empty() {
+                let sample = map_lcg.next_sample_15() as usize;
+                flat[sample % flat.len()]
+            } else {
+                let sample = map_lcg.next_sample_15() as usize;
+                interior[sample % interior.len()]
+            }
+        };
+
+        initialize_tile_neighbor_connection_mask_if_needed(tiles, gate_flags, chosen);
+        tiles[chosen].active_flags = PROVINCE_CAPITAL_ACTIVE_FLAGS;
+    }
+}
+
+/// `TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded` (0x005107e0).
+///
+/// Neighbor `adjacencyMaskA0a` edits are omitted; they are not part of [`TileState`].
+fn initialize_tile_neighbor_connection_mask_if_needed(
+    tiles: &mut [TileState],
+    gate_flags: &mut [i8],
+    index: usize,
+) {
+    if gate_flags[index] == 1 {
+        return;
+    }
+    tiles[index].terrain_kind = PLAINS;
+    tiles[index].edge_resources = [Some(0x11), None];
+    gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
 
 fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
@@ -506,6 +606,27 @@ mod tests {
                 .iter()
                 .any(|tile| tile.edge_resources[0].is_some()),
             "post-passes must stamp some edge resources"
+        );
+        let province_capitals = state
+            .world
+            .tiles
+            .iter()
+            .filter(|tile| tile.active_flags == PROVINCE_CAPITAL_ACTIVE_FLAGS)
+            .count();
+        assert!(
+            province_capitals > 0,
+            "province fallback capitals must stamp active_flags=0x22"
+        );
+        assert_eq!(
+            province_capitals,
+            state
+                .world
+                .tiles
+                .iter()
+                .filter_map(|tile| tile.province)
+                .collect::<std::collections::BTreeSet<_>>()
+                .len(),
+            "one fallback capital per occupied province"
         );
 
         let human = state.nations.major(MajorNationId::new(6)).unwrap();
