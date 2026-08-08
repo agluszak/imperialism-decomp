@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::fmt;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -12,31 +13,73 @@ pub struct ScopedViewId {
 #[serde(transparent)]
 pub struct UiNodeId(pub u32);
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct FourCc(pub String);
+/// Retail four-character tag. JSON stays a 4-byte string; Rust uses a Copy byte array.
+#[derive(Clone, Copy, Eq, Hash, PartialEq)]
+pub struct FourCc([u8; 4]);
 
 impl FourCc {
-    /// Build a four-character code. Retail tags are exactly four bytes (pad with spaces).
-    pub fn new(value: &str) -> Self {
+    pub const fn new(value: &str) -> Self {
         assert!(
             value.len() == 4,
-            "FourCc tags must be exactly four characters (pad with spaces): {value:?}"
+            "FourCc tags must be exactly four characters (pad with spaces)"
         );
-        Self(value.to_owned())
+        let bytes = value.as_bytes();
+        Self([bytes[0], bytes[1], bytes[2], bytes[3]])
+    }
+
+    pub fn as_str(&self) -> &str {
+        std::str::from_utf8(&self.0).expect("FourCc must be UTF-8")
     }
 }
 
-/// Four-character-code helper that rejects mistyped tags such as `"key"` instead of `"key "`.
+impl fmt::Debug for FourCc {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("FourCc").field(&self.as_str()).finish()
+    }
+}
+
+impl fmt::Display for FourCc {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl AsRef<str> for FourCc {
+    fn as_ref(&self) -> &str {
+        self.as_str()
+    }
+}
+
+impl Serialize for FourCc {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(self.as_str())
+    }
+}
+
+impl<'de> Deserialize<'de> for FourCc {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = String::deserialize(deserializer)?;
+        if value.len() != 4 {
+            return Err(serde::de::Error::custom(format!(
+                "FourCc tags must be exactly four characters, got {value:?}"
+            )));
+        }
+        Ok(Self::new(&value))
+    }
+}
+
+/// Compile-time four-character-code helper that rejects mistyped tags such as `"key"`.
 #[macro_export]
 macro_rules! fourcc {
     ($lit:literal) => {{
-        const _: &str = $lit;
-        const _: () = assert!(
-            $lit.len() == 4,
-            "fourcc! tags must be exactly four characters (pad with spaces)"
-        );
-        $crate::FourCc::new($lit)
+        const TAG: $crate::FourCc = $crate::FourCc::new($lit);
+        TAG
     }};
 }
 
@@ -78,6 +121,41 @@ pub enum UiBehavior {
 impl UiBehavior {
     pub const fn is_interactive(self) -> bool {
         !matches!(self, Self::Passive)
+    }
+}
+
+/// How retail picture art reacts to Pressed / Checked.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PictureVisual {
+    /// Single resting picture; no interaction swap.
+    #[default]
+    Static,
+    /// `TUpDownPictureButton` / `TRadioPictureButton`: pressed/checked uses `picture_id + 1`.
+    UpDown,
+    /// `TCzechBox`: odd ID when checked/pressed, even when idle.
+    CzechBox,
+}
+
+impl PictureVisual {
+    pub fn active_picture_id(self, base: i16, active: bool) -> i16 {
+        match self {
+            Self::Static => base,
+            Self::UpDown => {
+                if active {
+                    base.saturating_add(1)
+                } else {
+                    base
+                }
+            }
+            Self::CzechBox => {
+                if active {
+                    base | 1
+                } else {
+                    base & !1
+                }
+            }
+        }
     }
 }
 
@@ -171,6 +249,8 @@ pub struct UiNode {
     pub tag: FourCc,
     pub kind: WidgetKind,
     pub behavior: UiBehavior,
+    #[serde(default)]
+    pub picture_visual: PictureVisual,
     pub rect: LogicalRect,
     pub state: bool,
     pub enabled: bool,
@@ -199,18 +279,18 @@ pub struct UiView {
 #[derive(Clone, Debug)]
 pub struct UiViewIndex {
     by_id: HashMap<UiNodeId, usize>,
-    by_tag: HashMap<String, Vec<UiNodeId>>,
+    by_tag: HashMap<FourCc, Vec<UiNodeId>>,
     children: HashMap<Option<UiNodeId>, Vec<UiNodeId>>,
 }
 
 impl UiViewIndex {
     pub fn build(view: &UiView) -> Self {
         let mut by_id = HashMap::with_capacity(view.nodes.len());
-        let mut by_tag: HashMap<String, Vec<UiNodeId>> = HashMap::new();
+        let mut by_tag: HashMap<FourCc, Vec<UiNodeId>> = HashMap::new();
         let mut children: HashMap<Option<UiNodeId>, Vec<UiNodeId>> = HashMap::new();
         for (index, node) in view.nodes.iter().enumerate() {
             by_id.insert(node.id, index);
-            by_tag.entry(node.tag.0.clone()).or_default().push(node.id);
+            by_tag.entry(node.tag).or_default().push(node.id);
             children.entry(node.parent).or_default().push(node.id);
         }
         Self {
@@ -228,8 +308,8 @@ impl UiViewIndex {
         self.children.get(&parent).map_or(&[], Vec::as_slice)
     }
 
-    pub fn tagged(&self, tag: &str) -> &[UiNodeId] {
-        self.by_tag.get(tag).map_or(&[], Vec::as_slice)
+    pub fn tagged(&self, tag: FourCc) -> &[UiNodeId] {
+        self.by_tag.get(&tag).map_or(&[], Vec::as_slice)
     }
 }
 
@@ -306,28 +386,35 @@ mod tests {
         let difficulty = random_setup
             .nodes
             .iter()
-            .find(|node| node.tag.0 == "dif0")
+            .find(|node| node.tag == fourcc!("dif0"))
             .unwrap();
         let heading = random_setup
             .nodes
             .iter()
-            .find(|node| node.tag.0 == "dift")
+            .find(|node| node.tag == fourcc!("dift"))
             .unwrap();
         let globe = random_setup
             .nodes
             .iter()
-            .find(|node| node.tag.0 == "glob")
+            .find(|node| node.tag == fourcc!("glob"))
             .unwrap();
         let group = random_setup
             .nodes
             .iter()
-            .find(|node| node.tag.0 == "diff")
+            .find(|node| node.tag == fourcc!("diff"))
             .unwrap();
         assert_eq!(difficulty.behavior, UiBehavior::RadioButton);
         assert_eq!(heading.behavior, UiBehavior::Passive);
         assert_eq!(globe.behavior, UiBehavior::Activate);
         assert_eq!(group.behavior, UiBehavior::RadioGroup);
         assert_eq!(globe.kind, WidgetKind::Picture);
+        assert_eq!(globe.picture_visual, PictureVisual::Static);
+        let okay = random_setup
+            .nodes
+            .iter()
+            .find(|node| node.tag == fourcc!("okay"))
+            .unwrap();
+        assert_eq!(okay.picture_visual, PictureVisual::UpDown);
     }
 
     #[test]
@@ -341,14 +428,17 @@ mod tests {
         let nodes = dialog
             .nodes
             .iter()
-            .map(|node| (node.tag.0.as_str(), node))
+            .map(|node| (node.tag, node))
             .collect::<std::collections::HashMap<_, _>>();
 
         assert_eq!(dialog.event, 0x03ba);
-        assert_eq!(nodes["plan"].kind, WidgetKind::EditControl);
-        assert_eq!(nodes["plan"].behavior, UiBehavior::TextEdit);
-        assert_eq!(nodes["plan"].properties.max_chars, Some(32));
-        assert_eq!(nodes["plan"].properties.max_characters(), Some(32));
+        assert_eq!(nodes[&fourcc!("plan")].kind, WidgetKind::EditControl);
+        assert_eq!(nodes[&fourcc!("plan")].behavior, UiBehavior::TextEdit);
+        assert_eq!(nodes[&fourcc!("plan")].properties.max_chars, Some(32));
+        assert_eq!(
+            nodes[&fourcc!("plan")].properties.max_characters(),
+            Some(32)
+        );
         assert_eq!(
             WidgetProperties {
                 max_chars: Some(-1),
@@ -357,11 +447,15 @@ mod tests {
             .max_characters(),
             None
         );
-        assert!(!nodes["1or2"].state);
-        assert!(!nodes["1or2"].enabled);
-        assert_eq!(nodes["okay"].behavior, UiBehavior::Activate);
-        assert!(!nodes["canc"].state);
-        assert!(!nodes["canc"].enabled);
+        assert!(!nodes[&fourcc!("1or2")].state);
+        assert!(!nodes[&fourcc!("1or2")].enabled);
+        assert_eq!(nodes[&fourcc!("okay")].behavior, UiBehavior::Activate);
+        assert_eq!(
+            nodes[&fourcc!("okay")].picture_visual,
+            PictureVisual::UpDown
+        );
+        assert!(!nodes[&fourcc!("canc")].state);
+        assert!(!nodes[&fourcc!("canc")].enabled);
     }
 
     #[test]
@@ -379,8 +473,19 @@ mod tests {
 
     #[test]
     fn fourcc_preserves_trailing_spaces() {
-        assert_eq!(fourcc!("key ").0, "key ");
-        assert_eq!(fourcc!("end ").0, "end ");
-        assert_eq!(FourCc::new("map ").0, "map ");
+        assert_eq!(fourcc!("key ").as_str(), "key ");
+        assert_eq!(fourcc!("end ").as_str(), "end ");
+        assert_eq!(FourCc::new("map ").as_str(), "map ");
+        const PLANET_KEY: FourCc = fourcc!("key ");
+        assert_eq!(PLANET_KEY.as_str(), "key ");
+    }
+
+    #[test]
+    fn picture_visual_selects_retail_active_ids() {
+        assert_eq!(PictureVisual::UpDown.active_picture_id(4512, false), 4512);
+        assert_eq!(PictureVisual::UpDown.active_picture_id(4512, true), 4513);
+        assert_eq!(PictureVisual::CzechBox.active_picture_id(100, false), 100);
+        assert_eq!(PictureVisual::CzechBox.active_picture_id(100, true), 101);
+        assert_eq!(PictureVisual::CzechBox.active_picture_id(101, false), 100);
     }
 }
