@@ -36,6 +36,13 @@ const fn weights(random_draw_block: i16, allocation: i16, average: i16) -> Indus
 }
 
 impl CityState {
+    pub(crate) fn trade_capacity(&self) -> i16 {
+        ACTION_WEIGHTS
+            .iter()
+            .map(|(slot, weights)| weights.allocation * self.order_count_by_type[slot])
+            .sum()
+    }
+
     pub fn average_descriptor_weight_times_ten(&self) -> i32 {
         self.weighted_average_times_ten(false)
     }

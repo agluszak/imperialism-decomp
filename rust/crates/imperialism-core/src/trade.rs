@@ -129,6 +129,21 @@ impl GameState {
         Ok(())
     }
 
+    /// Replaces a major nation's merchant capacity with its city's current
+    /// industry allocation score.
+    pub fn refresh_trade_capacity(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        let capacity = self.cities[nation]
+            .as_ref()
+            .ok_or(RuleError::MissingCity {
+                nation: nation.nation(),
+            })?
+            .trade_capacity();
+        let (_, major) = self.major_nation_parts_mut(nation)?;
+        major.capacities[NationCapacity::TradeOffer] = capacity;
+        major.capacities[NationCapacity::AvailableMerchant] = capacity;
+        Ok(())
+    }
+
     /// Sets one current diplomatic grant, refunding the replaced amount before
     /// charging the replacement.
     pub fn set_diplomacy_grant(
@@ -227,8 +242,9 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, Difficulty, DiplomacyGrantFlags, DiplomacyPolicy, LaborPool, NationData,
-        NationState, PendingWorkState, PopulationState, RngState, TurnState, WorldState,
+        CityState, Difficulty, DiplomacyGrantFlags, DiplomacyPolicy, IndustryActionSlot, LaborPool,
+        NationData, NationState, PendingWorkState, PopulationState, RngState, TurnState,
+        WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -602,6 +618,26 @@ mod tests {
         );
         assert_eq!(state.common.treasury, 3_000);
         assert_eq!(major.grant_total_cost, 7_000);
+    }
+
+    #[test]
+    fn refresh_trade_capacity_uses_city_industry_weights() {
+        let nation = MajorNationId::new(6);
+        let mut game = state(true);
+        let city = game.cities[nation].as_mut().unwrap();
+        city.order_count_by_type[IndustryActionSlot::Slot1] = 2;
+        city.order_count_by_type[IndustryActionSlot::Slot5] = 1;
+        city.order_count_by_type[IndustryActionSlot::Slot10] = 1;
+
+        game.refresh_trade_capacity(nation).unwrap();
+
+        let major = game.nations[nation.nation()]
+            .as_ref()
+            .unwrap()
+            .major()
+            .unwrap();
+        assert_eq!(major.capacities[NationCapacity::TradeOffer], 28);
+        assert_eq!(major.capacities[NationCapacity::AvailableMerchant], 28);
     }
 
     #[test]
