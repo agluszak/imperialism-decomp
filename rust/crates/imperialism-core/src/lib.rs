@@ -12,6 +12,7 @@ mod population;
 mod production;
 mod random_map;
 mod random_map_terrain;
+mod random_setup_name;
 mod recruitment;
 mod resources;
 mod rng;
@@ -45,8 +46,11 @@ pub use random_map::{
     generate_coarse_random_map,
 };
 pub use random_map_terrain::{
-    GeneratedMap, GeneratedTerrainTile, RandomMapTuning, generate_random_map,
+    GeneratedMap, GeneratedTerrainTile, RandomMapTuning, RandomSetupPreview,
+    RandomSetupPreviewError, generate_random_map, generate_random_setup_preview,
+    generate_random_setup_preview_with_clock_seed,
 };
+pub use random_setup_name::generate_english_random_setup_name;
 
 /// Instrumentation used only by the C++ differential test harness. It is not
 /// enabled by `imperialism-core`'s default feature set and must not be used by
@@ -63,7 +67,7 @@ pub mod differential_trace {
 }
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
-pub use rng::{RetailLcg, hash_retail_scenario_tag};
+pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
     CivilianUnitState, GameCommand, GameEvent, GameState, LandSale, MajorNationState,

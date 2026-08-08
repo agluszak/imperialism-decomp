@@ -107,6 +107,44 @@ pub(super) fn bitmap_resource_to_bmp(dib: &[u8]) -> Result<Vec<u8>, RetailResour
     Ok(bmp)
 }
 
+/// Decodes the 256 RGB entries used by the retail default indexed-DIB palette.
+///
+/// The application obtains this from the named `950.BMP` resource. It is a
+/// `BITMAPINFOHEADER` 8-bit DIB, so this intentionally does not try to become
+/// a general image decoder.
+pub(super) fn bitmap_palette_rgb(dib: &[u8]) -> Result<[[u8; 3]; 256], RetailResourceDecodeError> {
+    let header_size = usize::try_from(read_u32(dib, 0, "DIB header size")?)
+        .map_err(|_| invalid("DIB header size does not fit usize"))?;
+    if header_size < 40 {
+        return Err(RetailResourceDecodeError::Unsupported(format!(
+            "default palette DIB header size {header_size}"
+        )));
+    }
+    require_range(dib, 0, header_size, "DIB header")?;
+    let bit_count = read_u16(dib, 14, "BITMAPINFOHEADER bit count")?;
+    if bit_count != 8 {
+        return Err(RetailResourceDecodeError::Unsupported(format!(
+            "default palette DIB bit count {bit_count}"
+        )));
+    }
+    let compression = read_u32(dib, 16, "BITMAPINFOHEADER compression")?;
+    let palette_start = header_size
+        .checked_add(usize::from(header_size == 40 && compression == 3) * 12)
+        .ok_or_else(|| invalid("DIB palette offset overflow"))?;
+    let palette_bytes = 256usize
+        .checked_mul(4)
+        .ok_or_else(|| invalid("DIB palette size overflow"))?;
+    require_range(dib, palette_start, palette_bytes, "default DIB palette")?;
+
+    let mut palette = [[0; 3]; 256];
+    for (index, color) in palette.iter_mut().enumerate() {
+        let offset = palette_start + index * 4;
+        let bgr = &dib[offset..offset + 3];
+        *color = [bgr[2], bgr[1], bgr[0]];
+    }
+    Ok(palette)
+}
+
 fn palette_count(bit_count: u16, colors_used: u32) -> Result<usize, RetailResourceDecodeError> {
     if colors_used != 0 {
         return usize::try_from(colors_used)
@@ -200,5 +238,30 @@ mod tests {
         assert_eq!(&bmp[..2], b"BM");
         assert_eq!(u32::from_le_bytes(bmp[10..14].try_into().unwrap()), 62);
         assert_eq!(&bmp[14..], dib);
+    }
+
+    #[test]
+    fn decodes_the_rgbquad_default_palette_entries() {
+        let mut dib = Vec::new();
+        dib.extend_from_slice(&40u32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1u16.to_le_bytes());
+        dib.extend_from_slice(&8u16.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&4u32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        for index in 0..256u16 {
+            let value = index as u8;
+            dib.extend_from_slice(&[value, value.wrapping_add(1), value.wrapping_add(2), 0]);
+        }
+
+        let palette = bitmap_palette_rgb(&dib).unwrap();
+
+        assert_eq!(palette[0], [2, 1, 0]);
+        assert_eq!(palette[0x16], [0x18, 0x17, 0x16]);
     }
 }

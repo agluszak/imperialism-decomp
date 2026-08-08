@@ -102,6 +102,7 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(
             ids,
             {
+                ("Linger.rsrc", 954),
                 ("Startup.rsrc", 1500),
                 ("Startup.rsrc", 1501),
                 ("Startup.rsrc", 952),
@@ -136,6 +137,9 @@ class UiCodegenTests(unittest.TestCase):
 
         random_setup = by_id[("Startup.rsrc", 1501)]
         setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
+        self.assertEqual(setup_by_tag["map "]["kind"], "custom_canvas")
+        self.assertTrue(setup_by_tag["map "]["interactive"])
+        self.assertTrue(setup_by_tag["glob"]["interactive"])
         for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual(
@@ -146,6 +150,18 @@ class UiCodegenTests(unittest.TestCase):
         for tag in ("tcou", "dift", "tnam"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
+
+        planet_dialog = by_id[("Linger.rsrc", 954)]
+        self.assertEqual(planet_dialog["event"], 0x03BA)
+        planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}
+        self.assertEqual(planet_by_tag["plan"]["kind"], "edit_control")
+        self.assertTrue(planet_by_tag["plan"]["interactive"])
+        self.assertEqual(planet_by_tag["plan"]["properties"]["max_chars"], 32)
+        self.assertFalse(planet_by_tag["1or2"]["state"])
+        self.assertFalse(planet_by_tag["1or2"]["enabled"])
+        self.assertTrue(planet_by_tag["okay"]["interactive"])
+        self.assertFalse(planet_by_tag["canc"]["state"])
+        self.assertFalse(planet_by_tag["canc"]["enabled"])
 
         forbidden_keys = {
             "sources",

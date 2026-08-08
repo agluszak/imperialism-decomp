@@ -44,6 +44,7 @@
 // prototype: public: __thiscall CWaitCursor::~CWaitCursor(void)
 
 // SYNTHETIC: IMPERIALISM 0x00415f00
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00415f30
 // name: CObject::~CObject
@@ -59,38 +60,55 @@
 // prototype: public: __thiscall CRect::CRect(int,int,int,int)
 
 // SYNTHETIC: IMPERIALISM 0x0041b6b0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00427310
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00429580
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00430c30
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00435790
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0043dba0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0044a7f0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0044af70
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0044fba0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00453880
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0045b0e0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0045d500
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0045e090
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00460190
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0046fcf0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00474980
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x004793a0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00479ba0
 // name: CDocManager::GetFirstDocTemplatePosition
@@ -103,6 +121,7 @@
 // prototype: public: virtual void * __thiscall CPalette::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047cac0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0047cb30
 // name: CGdiObject::`scalar deleting destructor'
@@ -110,11 +129,13 @@
 // prototype: public: virtual void * __thiscall CGdiObject::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047cb60
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x0047d960
 // name: CGdiObject::~CGdiObject
 
 // LIBRARY: IMPERIALISM 0x0047d9d0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0047da40
 // name: CRgn::`scalar deleting destructor'
@@ -122,6 +143,7 @@
 // prototype: public: virtual void * __thiscall CRgn::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0047da70
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0047e200
 // name: CButton::`scalar deleting destructor'
@@ -149,6 +171,7 @@
 // prototype: public: virtual __thiscall CFileDialog::~CFileDialog(void)
 
 // LIBRARY: IMPERIALISM 0x004845f0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x004919e0
 // name: COleStreamFile::GetStream
@@ -161,6 +184,7 @@
 // prototype: public: virtual struct __POSITION * __thiscall CDocManager::GetFirstDocTemplatePosition(void) const
 
 // LIBRARY: IMPERIALISM 0x004924c0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00494340
 // name: CPen::`scalar deleting destructor'
@@ -168,6 +192,7 @@
 // prototype: public: virtual void * __thiscall CPen::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00494370
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x004943e0
 // name: WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0
@@ -182,8 +207,10 @@
 // name: ReleaseCachedGlobalFontObjectIfPresent_At004944b0
 
 // LIBRARY: IMPERIALISM 0x00497400
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00497470
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00497b00
 // name: CBrush::`scalar deleting destructor'
@@ -191,10 +218,13 @@
 // prototype: public: virtual void * __thiscall CBrush::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x00497c20
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00497c40
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00497c60
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x004985b0
 // name: CGdiObject::CGdiObject
@@ -212,10 +242,13 @@
 // prototype: public: virtual void * __thiscall TScopedQuickDrawPen::`scalar deleting destructor'(unsigned int)
 
 // LIBRARY: IMPERIALISM 0x0049eb00
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x004ac370
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x004b0970
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005d5d10
 // name: CString::operator char const *
@@ -751,6 +784,7 @@
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
 // SYNTHETIC: IMPERIALISM 0x005e6ea2
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e6ebe
 // name: CFtpConnection::GetCurrentDirectoryA
@@ -824,6 +858,7 @@
 // prototype: public: virtual __thiscall CObject::~CObject(void)
 
 // LIBRARY: IMPERIALISM 0x005e7079
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e709d
 // name: CCtrlView::~CListView
@@ -958,8 +993,10 @@
 // symbol: __callnewh
 
 // LIBRARY: IMPERIALISM 0x005e7ae0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e7c10
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e7d30
 // name: _findclose
@@ -974,11 +1011,13 @@
 // symbol: ??_M@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: IMPERIALISM 0x005e7e89
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e7ec0
 // symbol: ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: IMPERIALISM 0x005e7f50
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e7fc0
 // name: _realloc
@@ -1019,8 +1058,10 @@
 // prototype: void * __cdecl memmove(void *,void const *,unsigned int)
 
 // LIBRARY: IMPERIALISM 0x005e8760
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e8800
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e8970
 // name: _isdigit
@@ -1054,12 +1095,16 @@
 // prototype: long __cdecl _time(long *)
 
 // LIBRARY: IMPERIALISM 0x005e9010
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9050
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e90c0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9100
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9120
 // name: _fprintf
@@ -1077,10 +1122,13 @@
 // name: _strncpy
 
 // LIBRARY: IMPERIALISM 0x005e9440
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9480
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e95c0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005e9620
 // symbol: __itoa
@@ -1349,6 +1397,7 @@
 // symbol: ?CallCatchBlock@@YAPAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PAU_CONTEXT@@PBU_s_FuncInfo@@PAXHK@Z
 
 // LIBRARY: IMPERIALISM 0x005ed398
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005ed430
 // symbol: ?BuildCatchObject@@YAXPAUEHExceptionRecord@@PAUEHRegistrationNode@@PBU_s_HandlerType@@PBU_s_CatchableType@@@Z
@@ -1403,11 +1452,13 @@
 // symbol: __unlock
 
 // LIBRARY: IMPERIALISM 0x005edbc0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005edc00
 // symbol: __lock_file2
 
 // LIBRARY: IMPERIALISM 0x005edc30
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005edc70
 // symbol: __unlock_file2
@@ -1495,11 +1546,13 @@
 // name: _cvtdate
 
 // LIBRARY: IMPERIALISM 0x005efd50
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005efdc0
 // symbol: __close_lk
 
 // LIBRARY: IMPERIALISM 0x005efe50
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005efe90
 // name: _fflush
@@ -1508,13 +1561,16 @@
 // symbol: __fflush_lk
 
 // LIBRARY: IMPERIALISM 0x005eff10
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005eff90
 // name: _flsall
 
 // LIBRARY: IMPERIALISM 0x005f0050
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005f0220
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005f0300
 // symbol: __stbuf
@@ -1544,8 +1600,10 @@
 // symbol: __whiteout
 
 // LIBRARY: IMPERIALISM 0x005f1490
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005f1580
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005f1600
 // symbol: __read_lk
@@ -1756,6 +1814,7 @@
 // prototype: int __cdecl _ValidateExecute(int (__stdcall *)(void))
 
 // LIBRARY: IMPERIALISM 0x005f4bb0
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005f4cb0
 // symbol: __lseek
@@ -1978,6 +2037,7 @@
 // name: _iswctype
 
 // LIBRARY: IMPERIALISM 0x005fa7c2
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x005fa7da
 // name: AfxInitialize
@@ -2418,6 +2478,7 @@
 // prototype: public: __thiscall CPtrList::CPtrList(int)
 
 // SYNTHETIC: IMPERIALISM 0x00601f40
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00601f5c
 // name: CPtrList::RemoveAll
@@ -2596,6 +2657,7 @@
 // prototype: public: __thiscall CDialog::CDialog(void)
 
 // LIBRARY: IMPERIALISM 0x00604ce8
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00604d04
 // symbol: ??1CDialog@@UAE@XZ
@@ -2760,6 +2822,7 @@
 // symbol: ?FindOneOf@CString@@QBEHPBD@Z
 
 // LIBRARY: IMPERIALISM 0x00605e52
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00605e64
 // symbol: ?MakeReverse@CString@@QAEXXZ
@@ -3215,6 +3278,7 @@
 // prototype: void __cdecl InitializeMfcWndTopGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x006076d8
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x006076e5
 // name: RegisterMfcGlobalCleanup_006076f1
@@ -3228,6 +3292,7 @@
 // prototype: void __cdecl InitializeMfcWndBottomGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607716
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00607723
 // name: RegisterMfcGlobalCleanup_0060772f
@@ -3241,6 +3306,7 @@
 // prototype: void __cdecl InitializeMfcWndTopMostGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607754
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00607761
 // name: RegisterMfcGlobalCleanup_0060776d
@@ -3254,6 +3320,7 @@
 // prototype: void __cdecl InitializeMfcWndNoTopMostGlobal(void)
 
 // LIBRARY: IMPERIALISM 0x00607792
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x0060779f
 // name: RegisterMfcGlobalCleanup_006077ab
@@ -4336,6 +4403,7 @@
 // prototype: public: __thiscall CDocument::CDocument(void)
 
 // SYNTHETIC: IMPERIALISM 0x006109cf
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x006109eb
 // name: CDocument::DestructCDocumentBaseState
@@ -4694,6 +4762,7 @@
 // name: CDC::SelectClipRgn
 
 // LIBRARY: IMPERIALISM 0x00612a78
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00612a9a
 // symbol: ?SetPolyFillMode@CDC@@QAEHH@Z
@@ -4848,6 +4917,7 @@
 // prototype: public: __thiscall CClientDC::CClientDC(class CWnd *)
 
 // LIBRARY: IMPERIALISM 0x006137e7
+// ownership-only
 
 // LIBRARY: IMPERIALISM 0x00613803
 // name: CClientDC::~CClientDC
@@ -6684,6 +6754,7 @@
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectA(void)
 
 // LIBRARY: IMPERIALISM 0x006239b8
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x006239ca
 // name: RegisterMfcGlobalCleanup_006239d6
@@ -6694,6 +6765,7 @@
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectB(void)
 
 // LIBRARY: IMPERIALISM 0x006239f0
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623a02
 // name: RegisterMfcGlobalCleanup_00623a0e
@@ -6712,6 +6784,7 @@
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectC(void)
 
 // LIBRARY: IMPERIALISM 0x00623abc
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623ace
 // name: RegisterMfcGlobalCleanup_00623ada
@@ -6722,6 +6795,7 @@
 // prototype: void __cdecl InitializeMfcGlobalExceptionObjectD(void)
 
 // LIBRARY: IMPERIALISM 0x00623af4
+// ownership-only
 
 // SYNTHETIC: IMPERIALISM 0x00623b06
 // name: RegisterMfcGlobalCleanup_00623b12

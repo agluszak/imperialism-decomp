@@ -1,5 +1,7 @@
 use crate::RetailFontFace;
-use crate::retail_resources::{bitmap_resource_to_bmp, decode_string_table_block};
+use crate::retail_resources::{
+    bitmap_palette_rgb, bitmap_resource_to_bmp, decode_string_table_block,
+};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
 use std::collections::BTreeMap;
@@ -81,6 +83,21 @@ impl RetailAssets {
             picture_id,
             world_variant,
         })
+    }
+
+    /// Returns the RGB palette carried by the retail default DIB, `950.BMP`.
+    ///
+    /// The native UI builds its indexed preview surfaces with this named bitmap
+    /// from the localized picture library before it draws the random-map preview.
+    pub fn default_dib_palette(&self) -> Result<[[u8; 3]; 256], RetailAssetError> {
+        let archive = &self.pictures[0];
+        let dib = archive
+            .find(
+                ResourceName::Id(2),
+                ResourceName::Text("950.BMP".to_owned()),
+            )
+            .ok_or(RetailAssetError::DefaultDibPaletteNotFound)?;
+        bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))
     }
 
     /// Looks up a decoded English retail string.
@@ -326,6 +343,8 @@ pub enum RetailAssetError {
     Incompatible(String),
     #[error("no English picture {picture_id} is available for world variant {world_variant}")]
     PictureNotFound { picture_id: i16, world_variant: u8 },
+    #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
+    DefaultDibPaletteNotFound,
     #[error("Data/wave.gob has no English WAVE resource {0}")]
     WaveNotFound(u16),
     #[error("world variant {0} is outside the retail range 0..=3")]
@@ -445,6 +464,10 @@ mod tests {
 
         let bitmap = assets.picture(4500, 0).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
+        assert_eq!(
+            assets.default_dib_palette().unwrap()[0x16],
+            [0x57, 0x8b, 0xa6]
+        );
 
         fs::remove_dir_all(root).unwrap();
     }
@@ -508,6 +531,9 @@ mod tests {
 
         assert_eq!(assets.string(20_874), Some("Introductory"));
         assert!(assets.picture(4500, 0).unwrap().starts_with(b"BM"));
+        let palette = assets.default_dib_palette().unwrap();
+        assert_eq!(palette[0x13], [0xff, 0xff, 0xff]);
+        assert_eq!(palette[0x16], [0x57, 0x8b, 0xa6]);
         assert!(assets.wave_bytes(7000).unwrap().starts_with(b"RIFF"));
     }
 
@@ -536,6 +562,11 @@ mod tests {
                     TestName::id(2),
                     TestName::text("4500.BMP"),
                     one_pixel_dib(0x22),
+                ));
+                resources.push(TestResource::new(
+                    TestName::id(2),
+                    TestName::text("950.BMP"),
+                    default_palette_dib(),
                 ));
             }
             if index == 6 {
@@ -593,6 +624,32 @@ mod tests {
         dib.extend_from_slice(&0u32.to_le_bytes());
         dib.extend_from_slice(&0u32.to_le_bytes());
         dib.extend_from_slice(&[marker, 0, 0, 0]);
+        dib
+    }
+
+    fn default_palette_dib() -> Vec<u8> {
+        let mut dib = Vec::new();
+        dib.extend_from_slice(&40u32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1i32.to_le_bytes());
+        dib.extend_from_slice(&1u16.to_le_bytes());
+        dib.extend_from_slice(&8u16.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&4u32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0i32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        dib.extend_from_slice(&0u32.to_le_bytes());
+        for index in 0..256u16 {
+            let value = index as u8;
+            let rgb = if value == 0x16 {
+                [0x57, 0x8b, 0xa6]
+            } else {
+                [value, value, value]
+            };
+            dib.extend_from_slice(&[rgb[2], rgb[1], rgb[0], 0]);
+        }
+        dib.extend_from_slice(&[0, 0, 0, 0]);
         dib
     }
 

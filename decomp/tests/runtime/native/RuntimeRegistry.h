@@ -12,7 +12,8 @@ enum RuntimeCaptureFlags {
   kRuntimeCaptureMapState = 2,
   kRuntimeCaptureGameState = 4,
   kRuntimeCaptureCoarseMapGeneration = 8,
-  kRuntimeCaptureRandomMapTerrain = 16
+  kRuntimeCaptureRandomMapTerrain = 16,
+  kRuntimeCaptureRandomGameSetup = 32
 };
 
 struct RuntimeTestDescriptor {

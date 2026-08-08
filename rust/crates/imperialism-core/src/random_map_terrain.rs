@@ -3,6 +3,7 @@ use crate::random_map::trace_coarse_random_map;
 use crate::{
     CoarseMap, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, MapGeometry,
     RANDOM_MAP_CLASS_COUNT, RetailLcg, RetailTopologyByte, TileId, generate_coarse_random_map,
+    hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Serialize};
 
@@ -131,6 +132,25 @@ pub struct GeneratedMap {
     pub seed_candidate_tiles: [i32; RANDOM_MAP_CLASS_COUNT],
 }
 
+/// The generated map preview retained by the random-game setup screen.
+///
+/// `final_map_lcg` is the state after every rejected and accepted map-generation
+/// attempt, so accepting the setup can preserve retail's RNG result without
+/// regenerating the preview.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RandomSetupPreview {
+    pub map: GeneratedMap,
+    pub final_map_lcg: u32,
+}
+
+/// A retail setup seed needs the original clock-derived fallback when its
+/// signed-byte hash is zero.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
+pub enum RandomSetupPreviewError {
+    #[error("the retail random-map seed hash is zero and requires a clock-derived fallback")]
+    ClockSeedRequired,
+}
+
 #[cfg(feature = "differential-trace")]
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomMapTerrainAttemptTrace {
@@ -189,6 +209,82 @@ pub fn generate_random_map(
         #[cfg(feature = "differential-trace")]
         None,
     )
+}
+
+/// Generates the random-map setup preview from an explicit retail seed.
+///
+/// Retail hashes the seed text, then advances its map-generation LCG once
+/// before the first generation attempt. A zero hash takes the retail
+/// clock-derived fallback path, which this deterministic API intentionally
+/// requires its caller to handle explicitly.
+pub fn generate_random_setup_preview(
+    seed: &[u8],
+    topology: RetailTopologyByte,
+) -> Result<RandomSetupPreview, RandomSetupPreviewError> {
+    let mut rng = retail_random_setup_lcg(seed)?;
+    Ok(generate_random_setup_preview_from_lcg(
+        seed, topology, &mut rng,
+    ))
+}
+
+/// Generates a setup preview using the clock-derived value retail supplies
+/// when the seed's signed-byte hash is zero.
+///
+/// Callers without a clock value can use [`generate_random_setup_preview`],
+/// which makes the fallback requirement explicit. The setup screen owns the
+/// clock value, so it uses this exact branch instead of substituting a made-up
+/// seed.
+pub fn generate_random_setup_preview_with_clock_seed(
+    seed: &[u8],
+    topology: RetailTopologyByte,
+    clock_seed: u32,
+) -> RandomSetupPreview {
+    let mut rng = retail_random_setup_lcg_with_clock_seed(seed, clock_seed);
+    generate_random_setup_preview_from_lcg(seed, topology, &mut rng)
+}
+
+fn generate_random_setup_preview_from_lcg(
+    seed: &[u8],
+    topology: RetailTopologyByte,
+    rng: &mut RetailLcg,
+) -> RandomSetupPreview {
+    let map = generate_random_map(seed, topology, rng);
+    RandomSetupPreview {
+        map,
+        final_map_lcg: rng.state(),
+    }
+}
+
+fn retail_random_setup_lcg(seed: &[u8]) -> Result<RetailLcg, RandomSetupPreviewError> {
+    retail_random_setup_lcg_from_hash(hash_retail_scenario_tag(seed))
+}
+
+fn retail_random_setup_lcg_from_hash(seed: i32) -> Result<RetailLcg, RandomSetupPreviewError> {
+    if seed == 0 {
+        return Err(RandomSetupPreviewError::ClockSeedRequired);
+    }
+    Ok(retail_random_setup_lcg_from_seed_state(seed as u32))
+}
+
+fn retail_random_setup_lcg_with_clock_seed(seed: &[u8], clock_seed: u32) -> RetailLcg {
+    retail_random_setup_lcg_from_seed_state(random_setup_map_seed_state(
+        hash_retail_scenario_tag(seed),
+        clock_seed,
+    ))
+}
+
+const fn random_setup_map_seed_state(seed_hash: i32, clock_seed: u32) -> u32 {
+    if seed_hash == 0 {
+        clock_seed
+    } else {
+        seed_hash as u32
+    }
+}
+
+fn retail_random_setup_lcg_from_seed_state(seed: u32) -> RetailLcg {
+    let mut rng = RetailLcg::from_state(seed);
+    rng.advance();
+    rng
 }
 
 #[cfg(feature = "differential-trace")]
@@ -1374,6 +1470,35 @@ mod tests {
         );
         assert_eq!(final_tile_hash(&generated.tiles), 0xbcd9_91d8);
         assert_eq!(rng.state(), 0x46a4_5026);
+    }
+
+    #[test]
+    fn setup_preview_hashes_then_advances_the_retail_map_lcg() {
+        let topology = RetailTopologyByte::from_retail_byte(0);
+        let mut expected_rng = RetailLcg::from_state(3_122_877_655);
+        let expected = generate_random_map(b"ordinary", topology, &mut expected_rng);
+
+        assert_eq!(
+            retail_random_setup_lcg(b"ordinary").unwrap().state(),
+            3_122_877_655
+        );
+        let preview = generate_random_setup_preview(b"ordinary", topology).unwrap();
+        assert_eq!(preview.map, expected);
+        assert_eq!(preview.final_map_lcg, expected_rng.state());
+        assert_eq!(
+            generate_random_setup_preview_with_clock_seed(b"ordinary", topology, 1),
+            preview
+        );
+    }
+
+    #[test]
+    fn setup_preview_requires_a_clock_seed_for_a_zero_hash() {
+        assert_eq!(
+            retail_random_setup_lcg_from_hash(0),
+            Err(RandomSetupPreviewError::ClockSeedRequired)
+        );
+        assert_eq!(random_setup_map_seed_state(0, 0x1234_5678), 0x1234_5678);
+        assert_eq!(random_setup_map_seed_state(-1, 0x1234_5678), u32::MAX);
     }
 
     #[cfg(feature = "differential-trace")]

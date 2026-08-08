@@ -2,16 +2,73 @@
 
 #include "RuntimeObservations.h"
 #include "RuntimeMapGenerationCapture.h"
+#include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 #include "screens/RandomSetupScreen.h"
 
 #include "game/core/global_data_tables.h"
+#include "game/ui_core/TControl.h"
+#include "game/ui_core/TEditText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
 #include "game/ui_core/TViewMgr.h"
+#include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
+#include "game/ui_tags_common.h"
 #include "game/ui_tags_screens.h"
+#include "parson.h"
+
+namespace {
+
+void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
+  if (!run.RequestsCapture(kRuntimeCaptureRandomGameSetup) || run.HasCapture("random_game_setup")) {
+    return;
+  }
+  if (setup == 0) {
+    run.RecordAssertion("capture.random_game_setup", "the random-game setup view is unavailable",
+                        true);
+    return;
+  }
+
+  TEditText* country = static_cast<TEditText*>(setup->ResolveControlByTag(kControlTagCoun));
+  TRadioTextCluster* difficulty =
+      static_cast<TRadioTextCluster*>(setup->ResolveControlByTag(kControlTagDiff));
+  TRadioTextCluster* names =
+      static_cast<TRadioTextCluster*>(setup->ResolveControlByTag(kControlTagName));
+  if (country == 0 || difficulty == 0 || names == 0) {
+    run.RecordAssertion("capture.random_game_setup", "a random-game setup control is unavailable",
+                        true);
+    return;
+  }
+  TControl* selectedDifficulty =
+      static_cast<TControl*>(setup->ResolveControlByTag(difficulty->selectedTag88));
+  if (selectedDifficulty == 0) {
+    run.RecordAssertion("capture.random_game_setup",
+                        "the selected random-game difficulty is unavailable", true);
+    return;
+  }
+
+  CString countryName;
+  country->GetCurrentText(&countryName);
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* object = value != 0 ? json_value_get_object(value) : 0;
+  if (object == 0) {
+    json_value_free(value);
+    run.RecordAssertion("capture.random_game_setup",
+                        "could not allocate the random-game setup capture", true);
+    return;
+  }
+  json_object_set_string(object, "planet_seed", static_cast<LPCSTR>(setup->planetSeed94));
+  json_object_set_number(object, "topology", static_cast<unsigned int>(setup->wrapHorizontally98));
+  json_object_set_number(object, "nation", static_cast<int>(setup->selectedNationSlot9A));
+  json_object_set_string(object, "country_name", static_cast<LPCSTR>(countryName));
+  json_object_set_number(object, "difficulty", selectedDifficulty->controlValue3c);
+  json_object_set_boolean(object, "localized_names", names->selectedTag88 != kControlTagRand);
+  run.SetCapture("random_game_setup", value);
+}
+
+} // namespace
 
 RandomSetupFlow::RandomSetupFlow() : phase(kComplete), checkpoint(kRuntimeNoCheckpoint) {}
 
@@ -42,6 +99,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       return kRuntimeFlowRunning;
     }
     CaptureRuntimeMapGeneration(scenario.RunState());
+    CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();
@@ -49,6 +107,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   }
   if (phase == kCapturingRegeneratedPlanet) {
     CaptureRuntimeMapGeneration(scenario.RunState());
+    CaptureRandomGameSetup(scenario.RunState(), RandomSetup().View());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();

@@ -37,6 +37,7 @@ def render_registry() -> str:
             "game_state": "kRuntimeCaptureGameState",
             "coarse_map_generation": "kRuntimeCaptureCoarseMapGeneration",
             "random_map_terrain": "kRuntimeCaptureRandomMapTerrain",
+            "random_game_setup": "kRuntimeCaptureRandomGameSetup",
         }
         flags = [flag_by_capture[capture] for capture in snapshots]
         return " | ".join(flags) or "kRuntimeCaptureNone"

@@ -6,6 +6,34 @@ const VC5_CRT_RAND_ADDEND: u32 = 2_531_011;
 const RETAIL_MAP_LCG_MULTIPLIER: u32 = 0x015a_4e35;
 const RETAIL_MAP_LCG_ADDEND: u32 = 1;
 
+/// The VC5 C runtime random stream used by setup and gameplay code.
+///
+/// Retail seeds this independently from the map-generation LCG. In
+/// particular, the random-game setup screen chooses its initial major nation
+/// with one `rand() % 7` draw from this stream.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RetailCrtRng(u32);
+
+impl RetailCrtRng {
+    pub const fn from_state(state: u32) -> Self {
+        Self(state)
+    }
+
+    pub const fn state(self) -> u32 {
+        self.0
+    }
+
+    /// Advances exactly as VC5 libcmt's `rand.obj` and returns its 15-bit
+    /// result.
+    pub fn next_rand(&mut self) -> i32 {
+        self.0 = self
+            .0
+            .wrapping_mul(VC5_CRT_RAND_MULTIPLIER)
+            .wrapping_add(VC5_CRT_RAND_ADDEND);
+        ((self.0 >> 16) & 0x7fff) as i32
+    }
+}
+
 /// The map-generation and zone-status generator used by retail. Each domain
 /// owns an independent state even though both use this transition.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -69,11 +97,10 @@ impl RngState {
     /// Mirrors the `rand.obj` shipped with VC5 libcmt. The object updates a
     /// 32-bit LCG state and returns bits 16..30 of the new state.
     pub fn next_crt_rand(&mut self) -> i32 {
-        self.crt_rand = self
-            .crt_rand
-            .wrapping_mul(VC5_CRT_RAND_MULTIPLIER)
-            .wrapping_add(VC5_CRT_RAND_ADDEND);
-        ((self.crt_rand >> 16) & 0x7fff) as i32
+        let mut rng = RetailCrtRng::from_state(self.crt_rand);
+        let result = rng.next_rand();
+        self.crt_rand = rng.state();
+        result
     }
 
     /// Consumes one draw from only the authoritative map-generation stream.
@@ -117,6 +144,15 @@ mod tests {
         assert_eq!(rng.crt_rand, 1_924_036_713);
         assert_eq!(rng.map_generation, 0x1122_3344);
         assert_eq!(rng.zone_status, 0x5566_7788);
+    }
+
+    #[test]
+    fn retail_crt_rng_reproduces_the_setup_nation_draw() {
+        let mut rng = RetailCrtRng::from_state(1);
+        let draw = rng.next_rand();
+        assert_eq!(draw, 41);
+        assert_eq!(draw % 7, 6);
+        assert_eq!(rng.state(), 2_745_024);
     }
 
     #[test]

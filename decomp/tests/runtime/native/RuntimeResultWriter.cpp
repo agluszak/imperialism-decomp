@@ -108,6 +108,10 @@ bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
     RecordMissingCapture(run, "result.random_map_terrain.present",
                          "random-map-terrain capture is missing", resultStatus);
   }
+  if (run.RequestsCapture(kRuntimeCaptureRandomGameSetup) && !run.HasCapture("random_game_setup")) {
+    RecordMissingCapture(run, "result.random_game_setup.present",
+                         "random-game-setup capture is missing", resultStatus);
+  }
 
   bool needsUiTree = run.RequestsCapture(kRuntimeCaptureUiTree) || run.CapturesAnyUiTree() ||
                      lstrcmpA(resultStatus, "passed") != 0 || run.HoldRequested();
