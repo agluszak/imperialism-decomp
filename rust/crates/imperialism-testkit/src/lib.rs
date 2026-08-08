@@ -1,8 +1,11 @@
 #![forbid(unsafe_code)]
 
 use imperialism_core::{
-    CoarseMapGeneration, GameState, RandomMapTerrainCapture, RandomMapTerrainGeneration, RetailLcg,
-    generate_coarse_random_map, generate_random_map_terrain,
+    GameState, RetailLcg,
+    differential_trace::{
+        CoarseMapTrace, RandomMapTerrainCapture, RandomMapTerrainTrace, trace_coarse_random_map,
+        trace_random_map_terrain,
+    },
 };
 pub use imperialism_formats::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
 use serde::Serialize;
@@ -11,9 +14,9 @@ use std::path::Path;
 
 pub fn generate_and_compare_terrain_capture(
     capture: &RandomMapTerrainCapture,
-) -> Result<RandomMapTerrainGeneration, Difference> {
+) -> Result<RandomMapTerrainTrace, Difference> {
     let mut rng = RetailLcg::from_state(capture.generation.initial_map_lcg);
-    let actual = generate_random_map_terrain(
+    let actual = trace_random_map_terrain(
         capture.scenario_tag.as_bytes(),
         capture.retail_topology,
         &mut rng,
@@ -38,17 +41,17 @@ pub fn read_game_state(path: impl AsRef<Path>) -> Result<GameState, RuntimeCaptu
     imperialism_formats::read_runtime_capture(path, "game_state")
 }
 
-pub fn read_coarse_map_generation(
+pub fn read_coarse_map_trace(
     path: impl AsRef<Path>,
-) -> Result<CoarseMapGeneration, RuntimeCaptureError> {
+) -> Result<CoarseMapTrace, RuntimeCaptureError> {
     imperialism_formats::read_runtime_capture(path, "coarse_map_generation")
 }
 
-pub fn generate_and_compare_coarse_capture(
-    expected: &CoarseMapGeneration,
-) -> Result<CoarseMapGeneration, Difference> {
+pub fn generate_and_compare_coarse_trace(
+    expected: &CoarseMapTrace,
+) -> Result<CoarseMapTrace, Difference> {
     let mut rng = RetailLcg::from_state(expected.initial_map_lcg);
-    let actual = generate_coarse_random_map(&mut rng);
+    let actual = trace_coarse_random_map(&mut rng);
     match first_serialized_difference(expected, &actual) {
         Ok(None) => Ok(actual),
         Ok(Some(difference)) => Err(difference),
@@ -120,7 +123,7 @@ mod tests {
         let retail_topology = RetailTopologyByte::from_retail_byte(0);
         let mut rng = RetailLcg::from_state(3_122_877_655);
         let generation =
-            generate_random_map_terrain(scenario_tag.as_bytes(), retail_topology, &mut rng);
+            trace_random_map_terrain(scenario_tag.as_bytes(), retail_topology, &mut rng);
         RandomMapTerrainCapture {
             scenario_tag,
             retail_topology,

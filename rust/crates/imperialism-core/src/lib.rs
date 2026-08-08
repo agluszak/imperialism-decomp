@@ -45,15 +45,27 @@ pub use random_game_setup::{
     RandomGameSetupValidationError, RestoredRandomGameSetupInputs, RetailTopologyByte,
 };
 pub use random_map::{
-    COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMapAttempt,
-    CoarseMapGeneration, CoarseMapGrid, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH,
-    ExpandedMapSeedTile, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT, generate_coarse_random_map,
+    COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMap, CoarseMapGrid,
+    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT,
+    generate_coarse_random_map,
 };
 pub use random_map_terrain::{
-    GeneratedTerrainTile, RandomMapTerrainAttempt, RandomMapTerrainCapture,
-    RandomMapTerrainGeneration, RandomMapTerrainStage, RandomMapTuning,
-    generate_random_map_terrain,
+    GeneratedMap, GeneratedTerrainTile, RandomMapTuning, generate_random_map,
 };
+
+/// Instrumentation used only by the C++ differential test harness. It is not
+/// enabled by `imperialism-core`'s default feature set and must not be used by
+/// normal game creation.
+#[cfg(feature = "differential-trace")]
+pub mod differential_trace {
+    pub use crate::random_map::{
+        CoarseMapAttempt, CoarseMapTrace, ExpandedMapSeedTile, trace_coarse_random_map,
+    };
+    pub use crate::random_map_terrain::{
+        RandomMapTerrainAttemptTrace, RandomMapTerrainCapture, RandomMapTerrainStageTrace,
+        RandomMapTerrainTrace, trace_random_map_terrain,
+    };
+}
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailLcg, hash_retail_scenario_tag};

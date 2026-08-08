@@ -4,6 +4,11 @@ version = "0.1.0"
 edition.workspace = true
 rust-version.workspace = true
 
+[features]
+# Differential captures are test-only diagnostics.  Production map generation
+# returns only its final semantic map and advances the supplied RNG.
+differential-trace = []
+
 [dependencies]
 enum-map.workspace = true
 serde.workspace = true
