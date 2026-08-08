@@ -5,16 +5,16 @@
 
 use imperialism_core::{
     GameState, MajorNation, MajorNationTable, MilitaryUnitState, MinorNation, MinorNationTable,
-    NationPendingWork, Nations, PendingWorkState, RetailCrtRng, RetailLcg, RngState, TurnState,
-    WorldState,
+    MissionState, NationPendingWork, Nations, PendingWorkState, RetailCrtRng, RetailLcg, RngState,
+    TurnState, WorldState,
 };
 use serde::{Deserialize, Serialize};
 
 /// Currently compared blocks of the capital-selection-ready boundary.
 ///
-/// Includes turn, world tiles, all nations, military units, and the three RNG streams
-/// after Accept bootstrap. Pending-work / empty unit lists join when those bootstrap
-/// paths land; then delete this allowlist for full `GameState` equality.
+/// Includes turn, world tiles, all nations, military units, AI Accept missions, and the
+/// three RNG streams after Accept bootstrap. Pending-work / empty unit lists join when
+/// those bootstrap paths land; then delete this allowlist for full `GameState` equality.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameStartBoundarySubset {
     pub turn: TurnState,
@@ -22,6 +22,7 @@ pub struct RandomGameStartBoundarySubset {
     pub majors: MajorNationTable<Option<MajorNation>>,
     pub minors: MinorNationTable<Option<MinorNation>>,
     pub military_units: Vec<MilitaryUnitState>,
+    pub missions: Vec<MissionState>,
     pub map_generation: RetailLcg,
     pub crt_rand: RetailCrtRng,
     pub zone_status: RetailLcg,
@@ -35,6 +36,7 @@ impl RandomGameStartBoundarySubset {
             majors: state.nations.majors.clone(),
             minors: state.nations.minors.clone(),
             military_units: state.military_units.clone(),
+            missions: state.missions.clone(),
             map_generation: state.rng.map_generation,
             crt_rand: state.rng.crt_rand,
             zone_status: state.rng.zone_status,
@@ -61,7 +63,7 @@ impl RandomGameStartBoundarySubset {
             civilian_units: Vec::new(),
             ships: Vec::new(),
             task_forces: Vec::new(),
-            missions: Vec::new(),
+            missions: self.missions,
             pending: PendingWorkState {
                 nations: MajorNationTable::from_fn(|_| NationPendingWork {
                     turn_events: Vec::new(),

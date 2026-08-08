@@ -1,14 +1,22 @@
 use crate::{
-    CityState, DevelopmentLevel, Difficulty, GameState, GeneratedMap, GeneratedTerrainTile,
-    LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MilitaryUnitId,
-    MilitaryUnitKind, MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable,
-    NationCommonState, NationId, NationPendingWork, NationTable, Nations, PendingWorkState,
-    ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
-    RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag,
-    TileState, TradeMarketState, TurnState, WorldState,
-    is_valid_secondary_nation_home_tile_candidate, place_city, supports_city_site_terrain,
+    ArmyMissionState, CityState, DevelopmentLevel, Difficulty, GameState, GeneratedMap,
+    GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId, MajorNationTable,
+    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MinorNation, MinorNationId,
+    MinorNationTable, MissionData, MissionState, NationCommonState, NationId, NationPendingWork,
+    NationTable, Nations, NavyMissionState, PendingWorkState, ProductionTable, ProvinceId,
+    RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RngState,
+    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag, TileState, TradeMarketState,
+    TurnState, WorldState, is_valid_secondary_nation_home_tile_candidate, place_city,
+    supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
+
+/// `g_fScatteredShipsMissionDefaultScore` (0.001f) as IEEE-754 bits.
+const SCATTERED_SHIPS_IMPORTANCE_BITS: u32 = 981_668_463;
+/// `kMapTileActionStateAnchor`.
+const ACTION_STATE_ANCHOR: i16 = 3;
+/// Water-region owner tags are biased by this amount (`label + 0x17`).
+const SEA_OWNER_BIAS: u8 = 0x17;
 
 /// Starting treasury by difficulty for human majors (`g_anNationStartingTreasuryByLocale`).
 ///
@@ -81,14 +89,22 @@ pub fn create_random_game(
     let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
     let _ = crt_rand.next_rand();
 
-    // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): AI majors PlaceCity;
-    // the human Normal+ path only attaches Frog City at tile 0.
+    // Sea-zone ordinals are `owner_tag - 0x17` after water-region assign (and, in retail,
+    // after border/merge/compact). Port zones continue that ordinal space.
+    let mut port_zones = PortZoneTable::new(sea_zone_count(&world.tiles));
+    let mut mission_queues: MajorNationTable<Vec<MissionState>> =
+        MajorNationTable::from_fn(|_| Vec::new());
+
+    // Accept bootstrap (`RebuildPrimaryNationStateForSlot` 6→0): AI majors PlaceCity +
+    // `QueueMapActionMissionsForPortZoneCandidates`; human Normal+ only attaches Frog City.
     place_ai_frog_cities(
         &mut world,
         &mut post.gate_flags,
         &mut post.province_capitals,
         &mut nations,
         human_nation,
+        &mut port_zones,
+        &mut mission_queues,
     );
 
     let mut military_units = Vec::new();
@@ -103,7 +119,10 @@ pub fn create_random_game(
         &mut military_units,
         &mut persistent_unit_id_counter,
         difficulty,
+        &mut port_zones,
     );
+
+    let missions = flatten_mission_queues(&mission_queues);
 
     GameState {
         turn: TurnState {
@@ -129,7 +148,7 @@ pub fn create_random_game(
         civilian_units: Vec::new(),
         ships: Vec::new(),
         task_forces: Vec::new(),
-        missions: Vec::new(),
+        missions,
         pending: PendingWorkState {
             nations: MajorNationTable::from_fn(|_nation| NationPendingWork {
                 turn_events: Vec::new(),
@@ -333,7 +352,10 @@ fn place_ai_frog_cities(
     province_capitals: &mut [Option<usize>],
     nations: &mut Nations,
     human_nation: MajorNationId,
+    port_zones: &mut PortZoneTable,
+    mission_queues: &mut MajorNationTable<Vec<MissionState>>,
 ) {
+    let province_adjacency = build_province_adjacency(world);
     for slot in (0..MajorNationId::COUNT).rev() {
         let nation = MajorNationId::new(slot);
         if nation == human_nation {
@@ -343,12 +365,21 @@ fn place_ai_frog_cities(
             continue;
         };
         place_ai_capital(world, gate_flags, province_capitals, home, nation);
+        ensure_port_zone_for_tile(world, port_zones, usize::from(home.get()));
         if let Some(major) = nations.major_mut(nation) {
             major.common.home_tile = Some(home);
             if let Some(city) = major.city.as_mut() {
                 city.home_town_tile = Some(home);
             }
         }
+        // `QueueMapActionMissionsForPortZoneCandidates` runs only for setup-mode-2 AI.
+        mission_queues[nation] = queue_map_action_missions_for_port_zone_candidates(
+            world,
+            province_capitals,
+            &province_adjacency,
+            port_zones,
+            nation,
+        );
     }
 }
 
@@ -377,6 +408,7 @@ fn bootstrap_minors(
     military_units: &mut Vec<MilitaryUnitState>,
     persistent_unit_id_counter: &mut i32,
     difficulty: Difficulty,
+    port_zones: &mut PortZoneTable,
 ) {
     for minor_id in MinorNationId::all() {
         let owner = TileOwnerTag::new(minor_id.nation().get());
@@ -384,6 +416,8 @@ fn bootstrap_minors(
             continue;
         };
         reset_tile_to_base_transport_flag(world, gate_flags, province_capitals, home);
+        // Retail calls `EnsurePortZoneForTile` after the minor home stamp.
+        ensure_port_zone_for_tile(world, port_zones, home);
         if let Some(minor) = nations.minors[minor_id].as_mut() {
             minor.common.home_tile = Some(TileId::new(home as u16));
         }
@@ -866,6 +900,328 @@ fn place_city_harvest_tiles(tile_index: usize) -> [Option<usize>; 7] {
     out
 }
 
+/// Special-purpose Accept-time port-zone table (no full `TZone` graph).
+///
+/// Sea-zone ordinals are `water_owner - 0x17`. Port zones allocate the next ordinals in
+/// creation order. `ports` is newest-first so `FindFirstPortZone*` walks match retail's
+/// `g_pMapActionContextListHead`/`prev18` chain.
+struct PortZoneTable {
+    next_ordinal: i16,
+    ports: Vec<PortZone>,
+}
+
+#[derive(Clone, Copy, Debug)]
+struct PortZone {
+    ordinal: i16,
+    port_tile: usize,
+    sea_tile: usize,
+    /// `primaryNeighbors[0]` ordinal (sea zone or another port).
+    primary_neighbor: Option<i16>,
+    former_owner: u8,
+}
+
+impl PortZoneTable {
+    fn new(sea_zone_count: i16) -> Self {
+        Self {
+            next_ordinal: sea_zone_count.max(0),
+            ports: Vec::new(),
+        }
+    }
+
+    fn find_port_by_tile(&self, tile: usize) -> Option<&PortZone> {
+        self.ports
+            .iter()
+            .find(|port| port.port_tile == tile || port.sea_tile == tile)
+    }
+
+    fn find_first_port_for_nation(&self, nation: u8) -> Option<&PortZone> {
+        self.ports
+            .iter()
+            .find(|port| port.former_owner == nation)
+    }
+}
+
+fn sea_zone_count(tiles: &[TileState]) -> i16 {
+    let mut max_ordinal = -1_i16;
+    for tile in tiles {
+        if tile.terrain_kind != WATER {
+            continue;
+        }
+        let Some(owner) = tile.owner_nation else {
+            continue;
+        };
+        let tag = i16::from(owner.get());
+        if tag >= i16::from(SEA_OWNER_BIAS) {
+            max_ordinal = max_ordinal.max(tag - i16::from(SEA_OWNER_BIAS));
+        }
+    }
+    max_ordinal + 1
+}
+
+/// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
+fn ensure_port_zone_for_tile(world: &mut WorldState, ports: &mut PortZoneTable, tile_index: usize) {
+    if tile_index >= world.tiles.len() {
+        return;
+    }
+    if (world.tiles[tile_index].active_flags & 1) == 0 {
+        return;
+    }
+    if ports.find_port_by_tile(tile_index).is_some() {
+        return;
+    }
+    let Some(nation_seed) = world.tiles[tile_index].owner_nation.map(|owner| owner.get()) else {
+        return;
+    };
+    let former_owner = world.tiles[tile_index]
+        .former_owner_nation
+        .map(|owner| owner.get())
+        .unwrap_or(nation_seed);
+
+    let geometry = MapGeometry::new(world.wraps_horizontally);
+    let Some(best_sea) = select_port_sea_tile(world, geometry, tile_index, nation_seed) else {
+        return;
+    };
+
+    let primary_neighbor = if world.tiles[best_sea].action_state == ACTION_STATE_ANCHOR
+        || world.tiles[best_sea].action_state == 14
+    {
+        ports
+            .find_port_by_tile(best_sea)
+            .map(|port| port.ordinal)
+    } else {
+        world.tiles[best_sea]
+            .owner_nation
+            .map(|owner| owner.get())
+            .filter(|&tag| tag >= SEA_OWNER_BIAS)
+            .map(|tag| i16::from(tag - SEA_OWNER_BIAS))
+    };
+
+    let ordinal = ports.next_ordinal;
+    ports.next_ordinal = ports.next_ordinal.saturating_add(1);
+    ports.ports.insert(
+        0,
+        PortZone {
+            ordinal,
+            port_tile: tile_index,
+            sea_tile: best_sea,
+            primary_neighbor,
+            former_owner,
+        },
+    );
+    world.tiles[best_sea].action_state = ACTION_STATE_ANCHOR;
+}
+
+fn select_port_sea_tile(
+    world: &WorldState,
+    geometry: MapGeometry,
+    tile_index: usize,
+    nation_seed: u8,
+) -> Option<usize> {
+    let tile_id = TileId::new(tile_index as u16);
+    for offset in 0..6 {
+        let direction = HexDirection::ALL[(tile_index + offset) % 6];
+        let Some(candidate) = geometry.neighbor(tile_id, direction) else {
+            continue;
+        };
+        let candidate_index = usize::from(candidate.get());
+        if world.tiles[candidate_index].terrain_kind != WATER {
+            continue;
+        }
+        let all_neighbors_qualify = geometry
+            .neighbors(candidate)
+            .into_iter()
+            .flatten()
+            .all(|neighbor| {
+                let neighbor_owner = world.tiles[usize::from(neighbor.get())].owner_nation;
+                !matches!(
+                    neighbor_owner,
+                    Some(owner) if owner.get() < SEA_OWNER_BIAS && owner.get() != nation_seed
+                )
+            });
+        if all_neighbors_qualify {
+            return Some(candidate_index);
+        }
+    }
+    // Fallback: any adjacent water tile (skips the full river-flow tracer).
+    geometry
+        .neighbors(tile_id)
+        .into_iter()
+        .flatten()
+        .map(|neighbor| usize::from(neighbor.get()))
+        .find(|&index| world.tiles[index].terrain_kind == WATER)
+}
+
+/// Province adjacency lists used by the defend-province availability gate.
+fn build_province_adjacency(world: &WorldState) -> Vec<Vec<u16>> {
+    let province_count = world
+        .tiles
+        .iter()
+        .filter_map(|tile| tile.province.map(|province| usize::from(province.get()) + 1))
+        .max()
+        .unwrap_or(0);
+    let mut adjacency = vec![Vec::new(); province_count];
+    let geometry = MapGeometry::new(world.wraps_horizontally);
+    for (index, tile) in world.tiles.iter().enumerate() {
+        let Some(province) = tile.province else {
+            continue;
+        };
+        let province_index = usize::from(province.get());
+        for neighbor in geometry
+            .neighbors(TileId::new(index as u16))
+            .into_iter()
+            .flatten()
+        {
+            let Some(neighbor_province) = world.tiles[usize::from(neighbor.get())].province else {
+                continue;
+            };
+            if neighbor_province == province {
+                continue;
+            }
+            let neighbor_index = neighbor_province.get();
+            if !adjacency[province_index].contains(&neighbor_index) {
+                adjacency[province_index].push(neighbor_index);
+            }
+        }
+    }
+    adjacency
+}
+
+/// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext` for Accept-time owned provinces.
+///
+/// Without the sea-zone secondary-neighbor graph, coastal isolation falls back to "has any
+/// adjacent province". The second-degree retail quirk (owned province with a neighbor that
+/// itself has neighbors) is preserved.
+fn province_mission_available(
+    province: u16,
+    nation: TileOwnerTag,
+    world: &WorldState,
+    province_capitals: &[Option<usize>],
+    adjacency: &[Vec<u16>],
+) -> bool {
+    let province_usize = usize::from(province);
+    let neighbors = adjacency.get(province_usize).map(Vec::as_slice).unwrap_or(&[]);
+    for &adjacent in neighbors {
+        let Some(capital) = province_capitals.get(usize::from(adjacent)).copied().flatten() else {
+            continue;
+        };
+        if world.tiles[capital].owner_nation == Some(nation) {
+            return true;
+        }
+    }
+    // CollectSecondDegreeLinksMatchingNodeType: if this owned province has any neighbor that
+    // itself has neighbors, treat as available.
+    if !neighbors.is_empty() {
+        for &adjacent in neighbors {
+            if adjacency
+                .get(usize::from(adjacent))
+                .is_some_and(|list| !list.is_empty())
+            {
+                return true;
+            }
+        }
+    }
+    false
+}
+
+/// `TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates`.
+fn queue_map_action_missions_for_port_zone_candidates(
+    world: &WorldState,
+    province_capitals: &[Option<usize>],
+    adjacency: &[Vec<u16>],
+    ports: &PortZoneTable,
+    nation: MajorNationId,
+) -> Vec<MissionState> {
+    let owner = TileOwnerTag::new(nation.get());
+    let owned = owned_province_ids(world, province_capitals, owner);
+    let mut missions = Vec::new();
+    let mut queue_index = 0u32;
+
+    for &province in &owned {
+        if !province_mission_available(province, owner, world, province_capitals, adjacency) {
+            continue;
+        }
+        missions.push(mission_state(
+            nation,
+            queue_index,
+            MissionData::DefendProvince(ArmyMissionState {
+                present_location: province as i16,
+                required_equipage_bits: [0; 5],
+                units: Vec::new(),
+            }),
+            0,
+        ));
+        queue_index += 1;
+    }
+
+    let Some(port) = ports.find_first_port_for_nation(nation.get()) else {
+        return missions;
+    };
+    let Some(sea_or_neighbor) = port.primary_neighbor else {
+        return missions;
+    };
+
+    // Factory: zone != nation's first port → ControlSeaZone; port itself → Escort.
+    missions.push(mission_state(
+        nation,
+        queue_index,
+        MissionData::ControlSeaZone(empty_navy_mission(sea_or_neighbor, -1)),
+        0,
+    ));
+    queue_index += 1;
+    missions.push(mission_state(
+        nation,
+        queue_index,
+        MissionData::Escort(empty_navy_mission(port.ordinal, port.ordinal)),
+        0,
+    ));
+    queue_index += 1;
+    missions.push(mission_state(
+        nation,
+        queue_index,
+        MissionData::ScatteredShips(empty_navy_mission(-1, -1)),
+        SCATTERED_SHIPS_IMPORTANCE_BITS,
+    ));
+    missions
+}
+
+fn empty_navy_mission(target_zone: i16, resolved_port_zone: i16) -> NavyMissionState {
+    NavyMissionState {
+        target_zone,
+        resolved_port_zone,
+        selected_ship: None,
+        task_force: None,
+        state: 0,
+        required_equipage_bits: [0; 4],
+        ships: Vec::new(),
+    }
+}
+
+fn mission_state(
+    nation: MajorNationId,
+    queue_index: u32,
+    data: MissionData,
+    importance_bits: u32,
+) -> MissionState {
+    MissionState {
+        nation: nation.nation(),
+        queue_index,
+        data,
+        source_nation: i16::from(nation.get()),
+        path_marker: -1,
+        state: 2,
+        importance_bits,
+        marker: 0,
+    }
+}
+
+fn flatten_mission_queues(queues: &MajorNationTable<Vec<MissionState>>) -> Vec<MissionState> {
+    let mut missions = Vec::new();
+    for nation in MajorNationId::all() {
+        missions.extend(queues[nation].iter().cloned());
+    }
+    missions
+}
+
 fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
     let owner = u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new);
     TileState {
@@ -1330,6 +1686,38 @@ mod tests {
             state.rng.crt_rand,
             RetailCrtRng::from_state(1),
             "minor home selection advances CRT rand"
+        );
+        assert!(
+            !state.missions.is_empty(),
+            "AI QueueMapActionMissions fills the Accept mission queues"
+        );
+        assert!(
+            state.missions.iter().any(|mission| {
+                matches!(mission.data, MissionData::ScatteredShips(_))
+                    && mission.importance_bits == SCATTERED_SHIPS_IMPORTANCE_BITS
+            }),
+            "each AI queue ends with ScatteredShips at 0.001f"
+        );
+        assert!(
+            state.missions.iter().any(|mission| {
+                matches!(mission.data, MissionData::DefendProvince(_))
+            }),
+            "AI queues include DefendProvince for owned regions"
+        );
+        assert!(
+            state
+                .world
+                .tiles
+                .iter()
+                .any(|tile| tile.action_state == ACTION_STATE_ANCHOR),
+            "EnsurePortZone stamps Anchor action_state on linked sea tiles"
+        );
+        assert!(
+            state
+                .missions
+                .iter()
+                .all(|mission| mission.nation.get() != 6),
+            "human Normal+ majors do not receive Accept mission queues"
         );
     }
 }
