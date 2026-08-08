@@ -164,13 +164,30 @@ pub struct DiplomacyGrant {
     pub flags: DiplomacyGrantFlags,
 }
 
+/// A proposed diplomatic relationship with one nation.
+///
+/// The retail save stores these as numeric proposal codes. The core keeps the
+/// relationship meaning; absent entries have no current policy.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DiplomacyPolicy {
+    JoinEmpire,
+    Alliance,
+    NonAggressionPact,
+    PeaceTreaty,
+    DeclareWar,
+    JoinEmpireWithWarEntanglements,
+    BuildConsulate,
+    BuildEmbassy,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNationState {
     pub diplomacy_eligible: bool,
     pub capacities: NationCapacityTable<i16>,
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
-    pub diplomacy_policy_by_nation: NationTable<i16>,
+    pub diplomacy_policy_by_nation: NationTable<Option<DiplomacyPolicy>>,
     pub diplomacy_grants_by_nation: NationTable<Option<DiplomacyGrant>>,
     pub need_current_by_type: ResourceTable<i16>,
     pub need_target_by_type: ResourceTable<i16>,

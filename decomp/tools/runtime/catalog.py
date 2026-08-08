@@ -256,6 +256,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "diplomacy_reset_preserves_recurring_grants",
+        "DiplomacyResetTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "purchased_items_phase",
         "PurchasedItemsPhaseTest",
         ("full",),
