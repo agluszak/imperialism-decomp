@@ -18,6 +18,7 @@ from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
+from tools.ghidra.embedded_labels import embedded_owner_addresses
 from tools.ghidra.merge_curated_symbols import (
     index_symbols_by_address,
     collect_source_claimed_addresses,
@@ -56,7 +57,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--output-dir",
         default=os.getenv("OUTPUT_DIR", str(repo_root / "config")),
-        help="Output directory for symbols.ghidra.txt and original_entities.csv",
+        help="Output directory for original_entities.csv",
     )
     parser.add_argument(
         "--decomp-output-dir",
@@ -78,7 +79,7 @@ def parse_args() -> argparse.Namespace:
         "--inventory-only",
         action="store_true",
         help=(
-            "Export only symbols.ghidra.txt + original_entities.csv (the raw "
+            "Export only original_entities.csv (the raw "
             "inventory); skip the expensive decompiled-body and type-header "
             "evidence snapshot."
         ),
@@ -165,7 +166,6 @@ def main() -> int:
         decomp_output_dir.mkdir(parents=True, exist_ok=True)
         types_output_dir.mkdir(parents=True, exist_ok=True)
 
-        symbols_txt = output_dir / "symbols.ghidra.txt"
         symbols_csv = output_dir / "original_entities.csv"
         curated_by_addr: dict[int, dict[str, str]] = {}
         curated_rows: list[dict[str, str]] = []
@@ -188,19 +188,13 @@ def main() -> int:
             else:
                 curated_rows = []
             curated_by_addr = index_symbols_by_address(curated_rows)
-        embedded_owner_addresses: set[int] = set()
-        embedded_path = repo_root / "config" / "embedded_function_labels.csv"
-        if embedded_path.is_file():
-            _embedded_fields, embedded_rows = read_pipe_table(embedded_path)
-            embedded_owner_addresses = {
-                int((row.get("owner") or "").strip(), 16) for row in embedded_rows
-            }
+        embedded_owners = embedded_owner_addresses()
         script_path = Path(__file__).resolve().parent / "SyncExports_Ghidra.py"
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
 
         script_args = [
-            str(symbols_txt),
+            "-",  # skip obsolete symbols.txt side export
             str(symbols_csv),
             str(decomp_output_dir),
             str(types_output_dir),
@@ -314,7 +308,7 @@ def main() -> int:
                     address = int((row.get("address") or "").strip(), 16)
                 except ValueError:
                     continue
-                if address not in embedded_owner_addresses:
+                if address not in embedded_owners:
                     continue
                 curated = curated_by_addr.get(address)
                 if curated is None:
@@ -367,7 +361,6 @@ def main() -> int:
                 f"orphans={merge_stats.retained_orphans} "
                 f"unclaimed_orphans={merge_stats.unclaimed_orphans}"
             )
-        print(f"  {symbols_txt}")
         print(f"  {symbols_csv}")
         print(f"  {decomp_output_dir}")
         print(f"  {types_output_dir}")

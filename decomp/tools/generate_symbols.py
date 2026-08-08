@@ -11,12 +11,12 @@ beyond those raw facts is overlaid at generation time:
      reccmp's vtable pairing;
   2. rows strictly inside `config/verified_vtable_extents.csv` ranges are dropped;
      they are stale entity boundaries in an already verified pointer run;
-  3. `config/reviewed_library_identities.csv` rows overlay name/symbol/prototype
-     (prototype only when reviewed non-empty) and add rows the inventory lacks;
-  4. source-derived names/prototypes (parsed from the C++ declarations under
+  3. `// LIBRARY:` / identity `// SYNTHETIC:` markers overlay name/symbol/prototype
+     (prototype only when present) and add rows the inventory lacks;
+  4. source-derived FUNCTION names/prototypes (parsed from C++ declarations under
      markers by tools.source_model) overlay claimed addresses — a signature
      corrected in C++ mechanically reaches the generated table. Precedence:
-     source declaration > reviewed identity > inventory advisory.
+     source FUNCTION declaration > library/synthetic identity fields > inventory.
 
 All facts come from tools.source_model — this module scans nothing itself.
 
@@ -33,11 +33,22 @@ from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.common.vtable_extents import containing_vtable_extent, load_verified_vtable_extents
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
-from tools.source_model import build_model, reviewed_identities
+from tools.source_model import Claim, build_model
 
 DEFAULT_INVENTORY = "config/original_entities.csv"
-DEFAULT_REVIEWED = "config/reviewed_library_identities.csv"
 DEFAULT_GEN_DIR = "build-msvc500/generated"
+
+
+def identity_overlay_claims(model) -> dict[int, Claim]:
+    """LIBRARY claims, plus SYNTHETIC claims that carry linker identity fields."""
+    out: dict[int, Claim] = {}
+    for address, claim in model.functions.items():
+        if claim.kind == "LIBRARY":
+            out[address] = claim
+        elif claim.kind == "SYNTHETIC" and (claim.symbol or claim.prototype):
+            out[address] = claim
+    return out
+
 
 def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
                   inventory: str = DEFAULT_INVENTORY,
@@ -51,17 +62,15 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
         model = build_model(repo_root, target)
     vtables = model.vtables
     extents = load_verified_vtable_extents(repo_root / "config" / "verified_vtable_extents.csv")
-    reviewed = {c.address: c for c in reviewed_identities(repo_root)}
+    identities = identity_overlay_claims(model)
     # Source-derived spellings: only FUNCTION-kind claims are name-authoritative
-    # (a real parsed C++ declaration). SYNTHETIC/TEMPLATE/LIBRARY convention
-    # comments often carry linker-symbol spellings and never override the
-    # reviewed/inventory name.
+    # (a real parsed C++ declaration).
     source_named = {a: c for a, c in model.functions.items()
                     if c.origin in ("marker", "generated")
                     and c.kind == "FUNCTION" and c.name}
 
     kept: list[dict] = []
-    stats = {"dropped": 0, "dropped_interior": 0, "reviewed": 0, "source": 0, "added": 0}
+    stats = {"dropped": 0, "dropped_interior": 0, "identity": 0, "source": 0, "added": 0}
     seen: set[int] = set()
     for row in rows:
         addr_text = (row.get("address") or "").strip()
@@ -76,12 +85,12 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
         if containing_vtable_extent(addr, extents) is not None:
             stats["dropped_interior"] += 1
             continue
-        rv = reviewed.get(addr)
-        if rv is not None:
+        identity = identities.get(addr)
+        if identity is not None:
             seen.add(addr)
             changed = False
-            for val, dst_key in ((rv.name, "name"), (rv.symbol, "symbol"),
-                                 (rv.prototype, "prototype")):
+            for val, dst_key in ((identity.name, "name"), (identity.symbol, "symbol"),
+                                 (identity.prototype, "prototype")):
                 if val and (row.get(dst_key) or "") != val:
                     row[dst_key] = val
                     changed = True
@@ -89,7 +98,7 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
                 row["type"] = "function"
                 changed = True
             if changed:
-                stats["reviewed"] += 1
+                stats["identity"] += 1
         sc = source_named.get(addr)
         if sc is not None:
             # Source declaration wins last: name always; prototype when parsed.
@@ -104,17 +113,17 @@ def generate_rows(repo_root: Path, target: str = "IMPERIALISM",
                 stats["source"] += 1
         kept.append(row)
 
-    for addr, rv in sorted(reviewed.items()):
+    for addr, identity in sorted(identities.items()):
         if addr in seen or addr in vtables or containing_vtable_extent(addr, extents) is not None:
             continue
         kept.append({
             "address": format(addr, "x"),
-            "name": rv.name,
-            "symbol": rv.symbol,
+            "name": identity.name,
+            "symbol": identity.symbol,
             "size": "",
             "type": "function",
-            "prototype": rv.prototype,
-            "provenance": "reviewed_library_identity",
+            "prototype": identity.prototype,
+            "provenance": "library_identity_marker",
         })
         stats["added"] += 1
     return fieldnames, kept, stats
@@ -128,7 +137,7 @@ def generate(repo_root: Path, target: str, inventory: str, gen_dir: Path) -> Pat
     print(
         f"Wrote {out} ({len(kept)} rows; dropped {stats['dropped']} at source-VTABLE "
         f"addresses and {stats['dropped_interior']} inside verified vtable extents; "
-        f"reviewed overlay: {stats['reviewed']} updated, {stats['added']} "
+        f"identity overlay: {stats['identity']} updated, {stats['added']} "
         f"added; source-declaration overlay: {stats['source']} updated)"
     )
     return out

@@ -6,9 +6,9 @@ an analysis workspace and downstream projection; nothing flows back
 automatically). It derives everything from the two canonical inputs:
 
   1. **The source model** (tools.source_model — the single scanner/parser):
-     marker claims with names parsed from the C++ declarations, reviewed
-     library identities as LIBRARY claims, `// VTABLE:` classes, and
-     `// GLOBAL:` names.
+     marker claims with names parsed from the C++ declarations, library
+     identity markers (`// LIBRARY:` / identity `// SYNTHETIC:`), `// VTABLE:`
+     classes, and `// GLOBAL:` names.
   2. **The raw inventory** (config/original_entities.csv): fallback advisory
      names ONLY for claimed addresses whose source spelling could not be
      parsed. Unclaimed addresses are never touched — source has no opinion on
@@ -22,11 +22,11 @@ Applied to the DB (dry-run by default; --apply writes and saves):
     parsed from the following `class X` declaration).
 
 After --apply, run `just export-project` so the vendored .gzf carries the
-result (`just ghidra-apply-source-full` chains build -> apply -> export).
+result.
 
-Class datatypes/inheritance/signatures come from the recomp PDB via the
-`just import-ghidra` step of `ghidra-apply-source-full` (reccmp's PDB importer).
-The audit at the end reports any remaining class-datatype drift from source.
+Optional PDB import (`just import-ghidra`) can refresh names from the recomp
+PDB when needed. The audit at the end of this tool reports remaining
+class-datatype drift from source.
 """
 
 from __future__ import annotations
@@ -39,28 +39,16 @@ from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
 from tools.common.vtable_extents import load_verified_vtable_extents
+from tools.ghidra.embedded_labels import embedded_label_entries
 from tools.source_model import build_model
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
 INVENTORY = REPO_ROOT / "config" / "original_entities.csv"
-REVIEWED = REPO_ROOT / "config" / "reviewed_library_identities.csv"
 
 
 def split_qualified(qualified: str) -> tuple[list[str], str]:
     parts = qualified.split("::")
     return parts[:-1], parts[-1]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def parse_args() -> argparse.Namespace:
@@ -83,7 +71,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help=(
             "Exit nonzero on any failure, and (dry-run) on any pending change — "
-            "used by ghidra-apply-source-full to require convergence."
+            "used when a sync playbook requires convergence."
         ),
     )
     return parser.parse_args()
@@ -95,16 +83,9 @@ def main() -> int:
     model = build_model(REPO_ROOT, args.target)
     vtables = model.vtables
     extents = load_verified_vtable_extents(REPO_ROOT / "config" / "verified_vtable_extents.csv")
-    embedded_labels: list[tuple[int, str]] = []
-    embedded_path = REPO_ROOT / "config" / "embedded_function_labels.csv"
-    if embedded_path.is_file():
-        _fields, embedded_rows = read_pipe_table(embedded_path)
-        embedded_labels = [
-            (int((row.get("address") or "").strip(), 16), (row.get("name") or "").strip())
-            for row in embedded_rows
-        ]
-    # Claimed entities only: source spelling when parsed, reviewed name for
-    # reviewed claims, inventory advisory ONLY as fallback for claimed
+    embedded_labels = embedded_label_entries()
+    # Claimed entities only: source spelling when parsed, identity-marker
+    # name for LIBRARY/SYNTHETIC overlays, inventory advisory ONLY as fallback
     # addresses whose spelling could not be parsed. Unclaimed addresses are
     # never pushed — the DB's own analysis stands.
     inventory = {}

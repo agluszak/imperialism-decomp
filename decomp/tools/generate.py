@@ -72,7 +72,6 @@ def main() -> int:
     generated_fns = sum(1 for c in model.functions.values() if c.origin == "generated")
     print(f"Wrote {model_path} ({marker_fns} marker claims, "
           f"{generated_fns} generated claims, "
-          f"{len(model.functions) - marker_fns - generated_fns} reviewed claims, "
           f"{len(model.vtables)} vtables, {len(model.globals)} globals)")
     if model.duplicates:
         print("generate FAILED: duplicate function-kind claims (one address, one owner):")
@@ -138,7 +137,7 @@ def main() -> int:
     print(
         f"Wrote {symbols_path} ({len(rows)} rows; dropped {stats['dropped']} at "
         f"source-VTABLE addresses and {stats['dropped_interior']} inside verified "
-        f"vtable extents; reviewed overlay: {stats['reviewed']} updated, "
+        f"vtable extents; identity overlay: {stats['identity']} updated, "
         f"{stats['added']} added; source-declaration overlay: {stats['source']} updated; "
         f"CRT oracle: {stats['crt_oracle']} added)"
     )

@@ -18,76 +18,125 @@
 // candidates at this size); kept as a hedged description, not a reviewed exact symbol.
 
 // LIBRARY: IMPERIALISM 0x00605797
-// CString::CString
+// name: CString::CString
+// symbol: ??0CString@@QAE@XZ
+// prototype: public: __thiscall CString::CString(void)
 
 // LIBRARY: IMPERIALISM 0x006057a7
-// CString::CString
+// name: CString::CString
+// symbol: ??0CString@@QAE@ABV0@@Z
+// prototype: public: __thiscall CString::CString(class CString const &)
 
 // LIBRARY: IMPERIALISM 0x006057de
-// CString::AllocBuffer
+// name: CString::AllocBuffer
+// symbol: ?AllocBuffer@CString@@IAEXH@Z
+// prototype: protected: void __thiscall CString::AllocBuffer(int)
 
 // LIBRARY: IMPERIALISM 0x0060584a
+// name: CString::Release
+// symbol: ?Release@CString@@KGXPAUCStringData@@@Z
+// prototype: protected: static void __stdcall CString::Release(struct CStringData *)
 // CString::Release(CStringData*) -- protected static overload
 
 // LIBRARY: IMPERIALISM 0x0060586d
-// CString::Empty
+// name: CString::Empty
+// symbol: ?Empty@CString@@QAEXXZ
+// prototype: public: void __thiscall CString::Empty(void)
 
 // LIBRARY: IMPERIALISM 0x0060588b
-// CString::CopyBeforeWrite
+// name: CString::CopyBeforeWrite
+// symbol: ?CopyBeforeWrite@CString@@IAEXXZ
+// prototype: protected: void __thiscall CString::CopyBeforeWrite(void)
 
 // LIBRARY: IMPERIALISM 0x006058b9
-// CString::AllocBeforeWrite
+// name: CString::AllocBeforeWrite
+// symbol: ?AllocBeforeWrite@CString@@IAEXH@Z
+// prototype: protected: void __thiscall CString::AllocBeforeWrite(int)
 
 // LIBRARY: IMPERIALISM 0x006058e2
-// CString::~CString
+// name: CString::~CString
+// symbol: ??1CString@@QAE@XZ
+// prototype: public: __thiscall CString::~CString(void)
 
 // LIBRARY: IMPERIALISM 0x00605950
-// CString::CString
+// name: CString::CString
+// symbol: ??0CString@@QAE@PBD@Z
+// prototype: public: __thiscall CString::CString(char const *)
 
 // LIBRARY: IMPERIALISM 0x006059fc
-// CString::AssignCopy
+// name: CString::AssignCopy
+// symbol: ?AssignCopy@CString@@IAEXHPBD@Z
+// prototype: protected: void __thiscall CString::AssignCopy(int, char const *)
 
 // LIBRARY: IMPERIALISM 0x00605a29
-// CString::operator=
+// name: CString::operator=
+// symbol: ??4CString@@QAEABV0@ABV0@@Z
+// prototype: public: class CString const & __thiscall CString::operator=(class CString const &)
 
 // LIBRARY: IMPERIALISM 0x00605a78
-// CString::operator=
+// name: CString::operator=
+// symbol: ??4CString@@QAEABV0@PBD@Z
+// prototype: public: class CString const & __thiscall CString::operator=(char const *)
 
 // LIBRARY: IMPERIALISM 0x00605ae0
-// CString::ConcatCopy
+// name: CString::ConcatCopy
+// symbol: ?ConcatCopy@CString@@IAEXHPBDH0@Z
+// prototype: protected: void __thiscall CString::ConcatCopy(int, char const *, int, char const *)
 
 // LIBRARY: IMPERIALISM 0x00605b21
-// operator+(const CString&, const CString&)
+// name: operator+
+// symbol: ??H@YG?AVCString@@ABV0@0@Z
+// prototype: class CString __stdcall operator+(class CString const &, class CString const &)
 
 // LIBRARY: IMPERIALISM 0x00605b87
-// operator+(const CString&, const char*)
+// name: operator+
+// symbol: ??H@YG?AVCString@@ABV0@PBD@Z
+// prototype: class CString __stdcall operator+(class CString const &, char const *)
 
 // LIBRARY: IMPERIALISM 0x00605bfb
-// operator+(const char*, const CString&)
+// name: operator+
+// symbol: ??H@YG?AVCString@@PBDABV0@@Z
+// prototype: class CString __stdcall operator+(char const *, class CString const &)
 
 // LIBRARY: IMPERIALISM 0x00605c6f
-// CString::ConcatInPlace
+// name: CString::ConcatInPlace
+// symbol: ?ConcatInPlace@CString@@IAEXHPBD@Z
+// prototype: protected: void __thiscall CString::ConcatInPlace(int, char const *)
 
 // LIBRARY: IMPERIALISM 0x00605cce
-// CString::operator+=
+// name: CString::operator+=
+// symbol: ??YCString@@QAEABV0@PBD@Z
+// prototype: public: class CString const & __thiscall CString::operator+=(char const *)
 
 // LIBRARY: IMPERIALISM 0x00605cf5
-// CString::operator+=
+// name: CString::operator+=
+// symbol: ??YCString@@QAEABV0@D@Z
+// prototype: public: class CString const & __thiscall CString::operator+=(char)
 
 // LIBRARY: IMPERIALISM 0x00605d0a
-// CString::operator+=
+// name: CString::operator+=
+// symbol: ??YCString@@QAEABV0@ABV0@@Z
+// prototype: public: class CString const & __thiscall CString::operator+=(class CString const &)
 
 // LIBRARY: IMPERIALISM 0x00605d22
-// CString::GetBuffer
+// name: CString::GetBuffer
+// symbol: ?GetBuffer@CString@@QAEPADH@Z
+// prototype: public: char * __thiscall CString::GetBuffer(int)
 
 // LIBRARY: IMPERIALISM 0x00605d71
-// CString::ReleaseBuffer
+// name: CString::ReleaseBuffer
+// symbol: ?ReleaseBuffer@CString@@QAEXH@Z
+// prototype: public: void __thiscall CString::ReleaseBuffer(int)
 
 // LIBRARY: IMPERIALISM 0x00605d99
-// CString::GetBufferSetLength
+// name: CString::GetBufferSetLength
+// symbol: ?GetBufferSetLength@CString@@QAEPADH@Z
+// prototype: public: char * __thiscall CString::GetBufferSetLength(int)
 
 // LIBRARY: IMPERIALISM 0x00605dec
-// CString::LockBuffer
+// name: CString::LockBuffer
+// symbol: ?LockBuffer@CString@@QAEPADXZ
+// prototype: public: char * __thiscall CString::LockBuffer(void)
 
 // LIBRARY: IMPERIALISM 0x005ff15e
 // CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV

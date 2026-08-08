@@ -17,7 +17,9 @@ just build
 
 A new worktree needs its own `.env` and `reccmp-user.yml`. Docker images and the local Ghidra
 installation are machine-wide. A worktree beneath a dot-directory needs a dot-free
-`GHIDRA_PROJECT_DIR` override because Ghidra refuses such paths.
+`GHIDRA_PROJECT_DIR` override because Ghidra refuses such paths. One-time setup recipes
+(`vendor-msvc500-headers`, `bootstrap-reccmp`, …) remain invokable even when hidden from
+`just --list`.
 
 ## Recover a function
 
@@ -38,8 +40,10 @@ the metadata/evidence behind `inconclusive`. `just compare 0xADDR` is the option
 ## Ownership and generated inputs
 
 `// FUNCTION:`, `// STUB:`, `// SYNTHETIC:`, `// TEMPLATE:`, and `// LIBRARY:` markers in manual source
-are the ownership authority. After a marker change, run `just build`; it rebuilds the source index and
-stubs. Never edit generated files to clear a failure.
+are the ownership authority. CRT/MFC identities live as `// LIBRARY:` / identity
+`// SYNTHETIC:` markers (see `src/game/core/library_identities.cpp`). After a marker
+change, run `just build`; it rebuilds the source index and stubs. Never edit generated
+files to clear a failure.
 
 ## Deliberate Ghidra changes
 

@@ -1,8 +1,6 @@
 // TViewMgr turn-event dialog dispatch and roster/prompt dialogs. Split from
-// TViewMgr.cpp along the original module seam: these 18 functions live in
-// Cross/UViewMgr.more.cpp per the assert-path module map (15 samples,
-// docs/reference/original_module_map.csv), the rest of TViewMgr in
-// Cross/UViewMgr.cpp (bd imperialism-decomp-8mo.15).
+// TViewMgr.cpp along the original module seam (Cross/UViewMgr.more.cpp vs
+// Cross/UViewMgr.cpp; bd imperialism-decomp-8mo.15).
 #include "game/ui_core/TViewMgr.h"
 #include "game/gfx/TTemplateDialogs.h"
 #include "game/ui_core/TEventHandler.h"

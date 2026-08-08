@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Interpret reccmp's structured semantic diagnosis for source recovery.
+"""Print reccmp's structured result plus Imperialism symbol ownership.
 
-Reccmp owns the machine-level proof and the first trusted divergence.  This
-tool adds only Imperialism-specific context: class/stack layout guidance,
-symbol ownership, PE data ranges, and the most useful repository command.
+Reccmp owns exact / effective / mismatch / inconclusive. This tool only adds
+local ownership context and formats the first trusted difference.
 
 Usage:
     just triage 0xADDR [0xADDR ...]
@@ -22,9 +21,7 @@ from typing import Any
 from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import names_by_address, ownership_by_address
-from tools.common.pe import PeImage
 from tools.reccmp.compare_batch import addrs_from_file
-from tools.workflow.prune_ilt_thunks import original_exe_from_user_yml
 
 REASON_LABELS = {
     "register_allocation": "register allocation",
@@ -38,448 +35,141 @@ REASON_LABELS = {
     "load_folding": "memory-load folding into the consuming instruction",
 }
 
-INCONCLUSIVE_ADVICE = {
-    "alignment_failure": (
-        "the verifier could not produce a sound instruction pairing",
-        "the attached stage and block lengths identify where alignment stopped",
-    ),
-    "unsupported_instruction": (
-        "an instruction effect is not modeled while the paired states differ",
-        "use the attached instruction address to extend verifier semantics",
-    ),
-    "missing_metadata": (
-        "branch or instruction metadata required by CFG analysis is unavailable",
-        "refresh disassembly metadata before changing source",
-    ),
-    "analysis_limit": (
-        "symbolic execution exceeded a conservative complexity or state limit",
-        "investigate verifier limits; this is not a source mismatch",
-    ),
-    "non_isomorphic_cfg": (
-        "the reachable block graphs differ in shape or edge roles",
-        "semantic span scoring cannot start until the CFGs can be paired",
-    ),
-    "jump_table_data": (
-        "the function contains embedded jump/data-table rows",
-        "reccmp does not yet pair computed destinations across those tables",
-    ),
-    "empty_control_flow": (
-        "one paired function has no disassembled instructions",
-        "inspect function extents, aliases, and zero-sized metadata",
-    ),
-    "control_flow_metadata_mismatch": (
-        "instruction and branch-target metadata lengths disagree",
-        "inspect disassembly metadata rather than changing source",
-    ),
-    "invalid_control_flow_target": (
-        "a branch target falls outside the disassembled instruction range",
-        "inspect the function extent and disassembly boundary",
-    ),
-    "indirect_jump": (
-        "execution reaches a computed jump whose destinations are not paired",
-        "jump-table destination pairing is required before semantic proof",
-    ),
-    "external_control_flow_state": (
-        "control leaves the function before the paired machine states converge",
-        "inspect the tail-call/function boundary and live outgoing state",
-    ),
-    "function_fallthrough": (
-        "the disassembly falls beyond the recorded function extent",
-        "inspect function bounds and missing terminal control flow",
-    ),
-    "state_join_failure": (
-        "incoming symbolic states cannot be merged at a CFG join",
-        "the attached x87 shape facts identify the incompatible paths",
-    ),
-}
 
-
-def _hex(value: object) -> str:
-    return f"0x{value:x}" if isinstance(value, int) else "unknown"
-
-
-def _side_location(side: dict[str, Any], label: str) -> str:
-    if isinstance(side.get("address"), int):
-        return f"{label} 0x{side['address']:08x}"
-    if isinstance(side.get("instruction_index"), int):
-        return f"{label} instruction {side['instruction_index']}"
-    return f"{label} location unknown"
-
-
-def _format_memory(facts: dict[str, Any]) -> str:
-    value = facts.get("value")
-    if isinstance(value, str) and value:
-        return f"[{value}]"
-    symbol = facts.get("symbol")
-    base = facts.get("base_register")
-    index = facts.get("index_register")
-    scale = facts.get("scale", 1)
-    displacement = facts.get("displacement", 0)
-    terms: list[str] = []
-    if isinstance(symbol, str) and symbol:
-        terms.append(symbol)
-    if isinstance(base, str) and base:
-        terms.append(base.lower())
-    if isinstance(index, str) and index:
-        index_term = index.lower()
-        if isinstance(scale, int) and scale != 1:
-            index_term += f" * {scale}"
-        terms.append(index_term)
-    expression = " + ".join(terms)
-    if isinstance(displacement, int) and displacement:
-        magnitude = f"0x{abs(displacement):x}"
-        if expression:
-            expression += f" {'-' if displacement < 0 else '+'} {magnitude}"
-        elif displacement < 0:
-            expression = f"-{magnitude}"
-        else:
-            expression = magnitude
-    return f"[{expression or '0x0'}]"
-
-
-def _target_text(
-    side: dict[str, Any],
-    symbols: dict[int, str],
+def load_entities(
     *,
-    include_owner: bool,
-    ownership: dict[int, str],
-) -> str:
-    facts = side.get("facts") or {}
-    target = facts.get("target")
-    name = facts.get("target_name")
-    if isinstance(target, int):
-        name = symbols.get(target) or name
-    pieces = [_hex(target)]
-    if isinstance(name, str) and name:
-        pieces.append(name)
-    if include_owner and isinstance(target, int):
-        pieces.append(f"[{ownership.get(target, 'stub/unowned')}]")
-    return " ".join(pieces)
+    target: str,
+    build_dir: Path,
+    report_json: Path | None,
+    addrs: list[int],
+) -> dict[int, dict[str, Any]]:
+    """Map original address -> reccmp entity row.
 
-
-def _memory_interpretation(
-    address: int, orig: dict[str, Any], recomp: dict[str, Any]
-) -> list[str]:
-    orig_facts = orig.get("facts") or {}
-    recomp_facts = recomp.get("facts") or {}
-    orig_base = str(orig_facts.get("base_register") or "").lower()
-    recomp_base = str(recomp_facts.get("base_register") or "").lower()
-    if orig_base in {"ebp", "esp"} or recomp_base in {"ebp", "esp"}:
-        return [
-            "stack-frame location differs",
-            "investigate local declaration order, alignment, and EH objects",
-            f"next: just stackcmp 0x{address:08x}",
-        ]
-    orig_symbol = orig_facts.get("symbol")
-    recomp_symbol = recomp_facts.get("symbol")
-    if orig_symbol != recomp_symbol and (orig_symbol or recomp_symbol):
-        return [
-            "global symbol differs",
-            "likely wrong global selection or missing GLOBAL/STRING annotation",
-        ]
-    if (
-        orig_base
-        and orig_base == recomp_base
-        and orig_facts.get("displacement") != recomp_facts.get("displacement")
-    ):
-        return [
-            "same object base, different member displacement",
-            "likely field declaration, class layout, padding, or receiver-model error",
-            "inspect receiver construction and ASSERT_SIZE evidence",
-        ]
-    return ["address/data-flow differs; trace the producing pointer on both sides"]
-
-
-def _mismatch_lines(
-    entity: dict[str, Any],
-    difference: dict[str, Any],
-    data_ranges,
-    symbols: dict[int, str],
-    ownership: dict[int, str],
-) -> list[str]:
-    kind = difference["kind"]
-    orig = difference["orig"]
-    recomp = difference["recomp"]
-    orig_facts = orig.get("facts") or {}
-    recomp_facts = recomp.get("facts") or {}
-    location = _side_location(orig, "original")
-    lines = ["first actionable mismatch:", f"  {kind.replace('_', ' ')} at {location}"]
-
-    interpretation: list[str]
-    if kind == "memory_address":
-        lines += [
-            f"  original:   {_format_memory(orig_facts)}",
-            f"  recompiled: {_format_memory(recomp_facts)}",
-        ]
-        interpretation = _memory_interpretation(
-            int(entity["address"], 16), orig, recomp
+    Live reports come from `run_report` (already the `data` list). Saved
+    `--report-json` files are full reccmp documents whose entity rows live under
+    `"data"`.
+    """
+    if report_json is None:
+        rows = run_report(
+            target,
+            build_dir,
+            diet=True,
+            orig_addresses=addrs,
         )
-    elif kind == "call_target":
-        lines += [
-            "  original:   "
-            + _target_text(orig, symbols, include_owner=True, ownership=ownership),
-            "  recompiled: "
-            + _target_text(recomp, symbols, include_owner=False, ownership=ownership),
-        ]
-        target = orig_facts.get("target")
-        owner = (
-            ownership.get(target, "stub/unowned")
-            if isinstance(target, int)
-            else "unknown"
-        )
-        interpretation = [
-            f"original callee source owner: {owner}",
-            "inspect the original callee symbol, pairing, and dispatch/source ownership",
-        ]
-        if owner == "stub/unowned":
-            interpretation.append("the original callee is stubbed or unowned")
-    elif kind == "call_argument":
-        register = str(orig_facts.get("register") or "unknown").lower()
-        lines += [
-            f"  register:   {register}",
-            f"  original:   {orig_facts.get('value', 'unknown')}",
-            f"  recompiled: {recomp_facts.get('value', 'unknown')}",
-        ]
-        interpretation = (
-            [
-                "ECX is a checked thiscall/fastcall input; likely receiver mismatch",
-                "inspect the object expression and method owner at this callsite",
-            ]
-            if register == "ecx"
-            else [
-                f"checked {register.upper()} argument provenance differs",
-                "inspect argument construction and calling-convention metadata",
-            ]
-        )
-    elif kind == "symbol_resolution":
-        lines += [
-            f"  original:   {orig_facts.get('symbol', 'unresolved')}",
-            f"  recompiled: {recomp_facts.get('symbol', 'unresolved')}",
-        ]
-        interpretation = [
-            "symbol resolution differs",
-            "check original_entities.csv and add the relevant GLOBAL/STRING/FUNCTION annotation",
-        ]
-    elif kind == "immediate_value":
-        orig_value = orig_facts.get("value")
-        recomp_value = recomp_facts.get("value")
-        lines += [f"  original:   {orig_value}", f"  recompiled: {recomp_value}"]
-        in_data = isinstance(orig_value, int) and any(
-            low <= orig_value < high for low, high in data_ranges
-        )
-        interpretation = [
-            (
-                "the original value lies in a data section; it may be an unresolved address"
-                if in_data
-                else "scalar constant, enum, flag, or source expression differs"
-            )
-        ]
-        if in_data:
-            interpretation.append("check data symbols and GLOBAL/STRING annotations")
-    elif kind == "memory_value":
-        lines += [
-            f"  original:   {orig_facts.get('value', 'unknown')}",
-            f"  recompiled: {recomp_facts.get('value', 'unknown')}",
-        ]
-        interpretation = [
-            "the destination agrees, but the stored value does not",
-            "trace the source expression and object/field value provenance",
-        ]
-    elif kind == "branch_condition":
-        lines += [
-            f"  original:   {orig_facts.get('predicate', 'unknown')}",
-            f"  recompiled: {recomp_facts.get('predicate', 'unknown')}",
-        ]
-        interpretation = [
-            "branch predicate differs; inspect comparison operands and source condition"
-        ]
-    elif kind == "branch_target":
-        lines += [
-            f"  original target:   instruction {orig_facts.get('target_instruction_index')}",
-            f"  recompiled target: instruction {recomp_facts.get('target_instruction_index')}",
-        ]
-        interpretation = [
-            "canonical successor differs; inspect source block/early-return structure"
-        ]
-    elif kind == "return_value":
-        lines += [
-            f"  original:   {orig_facts.get('value', 'unknown')}",
-            f"  recompiled: {recomp_facts.get('value', 'unknown')}",
-        ]
-        interpretation = [
-            "typed return state differs; inspect the returned expression and declared type"
-        ]
-    elif kind == "preserved_state":
-        lines += [
-            f"  original:   {orig_facts.get('value', 'unknown')}",
-            f"  recompiled: {recomp_facts.get('value', 'unknown')}",
-        ]
-        interpretation = [
-            "callee-saved register or stack state differs",
-            "inspect prologue/epilogue shape, local lifetime, and inline assembly",
-        ]
     else:
-        interpretation = ["reccmp reported a structured machine-state mismatch"]
-
-    lines += ["", "interpretation:"] + [f"  {item}" for item in interpretation]
-    return lines
+        payload = json.loads(report_json.read_text(encoding="utf-8"))
+        rows = payload["data"] if isinstance(payload, dict) else payload
+    entities: dict[int, dict[str, Any]] = {}
+    for entity in rows:
+        raw = entity.get("address")
+        if not raw:
+            continue
+        entities[int(raw, 16)] = entity
+    return entities
 
 
 def render_entity(
     entity: dict[str, Any],
-    data_ranges,
-    symbols: dict[int, str],
+    *,
+    names: dict[int, str],
     ownership: dict[int, str],
 ) -> str:
-    """Render one current-schema entity without inspecting its assembly diff."""
-    comparison = entity.get("comparison")
-    if not isinstance(comparison, dict) or "status" not in comparison:
-        raise ValueError("report entity lacks the structured comparison schema")
     address = int(entity["address"], 16)
-    matching = float(entity.get("matching", 0.0)) * 100.0
-    status = comparison["status"]
-    semantic = comparison.get("semantic_similarity")
-    if status == "mismatch" and isinstance(semantic, (int, float)):
-        score = (
-            f"{float(semantic) * 100.0:6.2f}% semantic similarity (diagnostic; "
-            f"{matching:.2f}% raw)"
-        )
-    else:
-        raw = " raw" if status == "effective" else ""
-        score = f"{matching:6.2f}%{raw}"
-    lines = [f"0x{address:08x}  {score}  {entity['name']}", ""]
+    name = entity.get("name") or names.get(address) or "<unnamed>"
+    matching = float(entity.get("matching") or 0.0)
+    comparison = entity.get("comparison") or {}
+    status = comparison.get("status") or "unknown"
+    owner = ownership.get(address, "stub/unowned")
+    header = f"0x{address:08X}  {matching * 100:6.2f}%  {name}  [{owner}]"
+
     if status == "exact":
-        lines.append("exact match — nothing to triage")
-    elif status == "effective":
-        lines.append("safe to ignore:")
-        reasons = comparison.get("effective_reasons") or []
-        # Unknown reason keys must never crash triage: the verifier's reason
-        # vocabulary can grow ahead of this label table (e.g. load_folding).
-        lines.extend(f"  {REASON_LABELS.get(reason, reason)}" for reason in reasons)
-        lines += ["", "effective: proved semantically harmless — no action needed"]
-    elif status == "mismatch":
-        difference = comparison.get("difference")
-        if not isinstance(difference, dict):
-            raise ValueError("mismatch comparison lacks a difference")
-        lines.extend(
-            _mismatch_lines(entity, difference, data_ranges, symbols, ownership)
-        )
-    elif status == "inconclusive":
-        reason = str(comparison.get("inconclusive_reason") or "analysis_limit")
+        return f"{header}\n\nexact match — nothing to triage"
+    if status == "effective":
+        reasons = [
+            REASON_LABELS.get(reason, reason.replace("_", " "))
+            for reason in (comparison.get("effective_reasons") or [])
+        ]
+        body = "\n".join(f"  {reason}" for reason in reasons) or "  (unspecified)"
+        return f"{header}\n\neffective match — safe to ignore:\n{body}\nno action needed"
+
+    lines = [header, ""]
+    if status == "inconclusive":
+        reason = comparison.get("inconclusive_reason") or "unknown"
+        lines.append(f"inconclusive: {reason.replace('_', ' ')}")
         location = comparison.get("inconclusive_location")
-        location_text = ""
-        facts: dict[str, Any] = {}
-        if isinstance(location, dict):
-            facts = location.get("facts") or {}
-            side_label = str(facts.get("side") or "original")
-            location_text = f" at {_side_location(location, side_label)}"
-        lines += [
-            "reccmp analysis inconclusive:",
-            f"  {reason.replace('_', ' ')}{location_text}",
-        ]
-        if facts:
-            lines.extend(
-                f"  {key.replace('_', ' ')}: {value}"
-                for key, value in sorted(facts.items())
-                if key != "side"
-            )
-        advice = INCONCLUSIVE_ADVICE.get(reason)
-        if advice:
-            lines += ["", "diagnostic:"] + [f"  {item}" for item in advice]
-        lines += [
-            "",
-            "inconclusive: the verifier could not prove either outcome — this is",
-            "NOT evidence of a source defect; do not contort source to chase it.",
-            "Investigate verifier/metadata/alignment instead.",
-        ]
+        if location:
+            lines.append(f"  at {location}")
+        return "\n".join(lines)
+
+    difference = comparison.get("difference") or {}
+    kind = difference.get("kind") or "unknown"
+    orig = difference.get("orig") or {}
+    recomp = difference.get("recomp") or {}
+    semantic = comparison.get("semantic_similarity")
+    if semantic is not None:
+        lines.append(
+            f"mismatch ({kind.replace('_', ' ')}; {float(semantic) * 100:.2f}% semantic)"
+        )
     else:
-        raise ValueError(f"unknown comparison status: {status}")
+        lines.append(f"mismatch ({kind.replace('_', ' ')})")
+    lines.append(
+        f"  original @ insn {orig.get('instruction_index')} addr {orig.get('address')}"
+    )
+    lines.append(
+        f"  recomp    @ insn {recomp.get('instruction_index')} addr {recomp.get('address')}"
+    )
+    orig_facts = orig.get("facts") or {}
+    recomp_facts = recomp.get("facts") or {}
+    if orig_facts or recomp_facts:
+        lines.append(f"  orig facts:   {orig_facts}")
+        lines.append(f"  recomp facts: {recomp_facts}")
     return "\n".join(lines)
 
 
-def _load_report(path: Path) -> list[dict[str, Any]]:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    data = value.get("data")
-    if value.get("format") != 1 or not isinstance(data, list):
-        raise ValueError("not a current reccmp JSON report")
-    for entity in data:
-        if not isinstance(entity, dict) or not isinstance(
-            entity.get("comparison"), dict
-        ):
-            raise ValueError("report does not contain structured comparison results")
-    return data
-
-
-def main() -> int:
-    repo_root = repo_root_from_file(__file__)
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("addrs", nargs="*", help="Original addresses (0x...)")
+    parser.add_argument("--file", action="append", default=[], help="Source file(s) to expand")
     parser.add_argument("--target", default="IMPERIALISM")
-    parser.add_argument("--build-dir", default=str(repo_root / "build-msvc500"))
-    parser.add_argument(
-        "--report-json", default="", help="reuse a current-schema report"
-    )
-    parser.add_argument("--original-exe", default="")
-    parser.add_argument(
-        "--file",
-        action="append",
-        default=[],
-        type=Path,
-        help="triage every // FUNCTION marker in the file(s)",
-    )
-    parser.add_argument("addrs", nargs="*", help="original-binary offsets (hex)")
-    args = parser.parse_args()
+    parser.add_argument("--build-dir", type=Path, default=Path("build-msvc500"))
+    parser.add_argument("--report-json", type=Path, help="Use an existing reccmp report")
+    args = parser.parse_args(argv)
 
-    wanted = [int(address, 16) for address in args.addrs]
-    for source_file in args.file:
-        wanted.extend(addrs_from_file(source_file))
-    if not wanted:
-        print(
-            "no addresses given (pass hex offsets and/or --file SRC.cpp)",
-            file=sys.stderr,
-        )
-        return 2
+    addrs: list[int] = []
+    for raw in args.addrs:
+        addrs.append(int(raw, 16))
+    repo = repo_root_from_file(__file__, levels_up=2)
+    for path in args.file:
+        file_path = Path(path)
+        if not file_path.is_absolute():
+            file_path = repo / path
+        addrs.extend(addrs_from_file(file_path))
+    if not addrs:
+        parser.error("pass at least one address or --file")
 
-    exe_path = (
-        Path(args.original_exe)
-        if args.original_exe
-        else original_exe_from_user_yml(repo_root)
+    build_dir = args.build_dir
+    if not build_dir.is_absolute():
+        build_dir = repo / build_dir
+
+    entities = load_entities(
+        target=args.target,
+        build_dir=build_dir,
+        report_json=args.report_json,
+        addrs=addrs,
     )
-    data_ranges = PeImage(exe_path.read_bytes()).data_ranges()
-    symbols = names_by_address(repo_root)
-    ownership = ownership_by_address(repo_root)
-    try:
-        data = (
-            _load_report(Path(args.report_json))
-            if args.report_json
-            else run_report(
-                args.target,
-                Path(args.build_dir),
-                diet=True,
-                orig_addresses=wanted,
-            )
-        )
-    except (ValueError, KeyError, json.JSONDecodeError) as error:
-        print(f"triage: {error}", file=sys.stderr)
-        return 2
-    by_addr = {int(entity["address"], 16): entity for entity in data}
-
-    rc = 0
-    rendered: list[str] = []
-    for address in wanted:
-        entity = by_addr.get(address)
-        if entity is None:
-            rendered.append(
-                f"0x{address:08x}: not in reccmp report (not paired? run `just addr`)"
-            )
-            rc = 1
-            continue
-        try:
-            rendered.append(render_entity(entity, data_ranges, symbols, ownership))
-        except (KeyError, TypeError, ValueError) as error:
-            print(f"triage: 0x{address:08x}: {error}", file=sys.stderr)
-            rc = 2
-    print("\n\n".join(rendered))
-    return rc
+    names = names_by_address(repo)
+    ownership = ownership_by_address(repo)
+    missing = [addr for addr in addrs if addr not in entities]
+    for addr in missing:
+        print(f"0x{addr:08X}  not present in reccmp report", file=sys.stderr)
+    blocks = [
+        render_entity(entities[addr], names=names, ownership=ownership)
+        for addr in addrs
+        if addr in entities
+    ]
+    if blocks:
+        print("\n\n".join(blocks))
+    return 1 if missing else 0
 
 
 if __name__ == "__main__":

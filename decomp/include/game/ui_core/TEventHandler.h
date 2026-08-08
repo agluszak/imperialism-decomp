@@ -46,7 +46,7 @@ public:
   // controlTag at +0x1c -- and no others. idleFrequencyTicks/lastIdleTick are the idle throttle
   // and last-idle stamp and firstBehavior is a list head, none of which a fresh copy
   // inherits.
-  // MATCH: keep this in-class; see config/ctor_placement_exceptions.csv.
+  // MATCH: keep this in-class (MSVC5 copy-ctor emission / reccmp pairing).
   // FUNCTION: IMPERIALISM 0x0048a750
   TEventHandler(const TEventHandler& source)
       : TObject(), enabled(source.enabled), viewEnabled(source.viewEnabled),

@@ -12,10 +12,10 @@ Everything the pipeline knows about the source model is built here, once:
     from the following `class`/`struct` declaration).
   - **globals** — every `// GLOBAL:` annotation with its declared name.
   - **generated UI factory claims** — `config/ui_factory_codegen.yml` owns the
-    declarations emitted into the build tree (origin "generated");
-  - **reviewed library identities** — `config/reviewed_library_identities.csv`
-    rows become LIBRARY claims (origin "reviewed"); a source marker at the same
-    address wins.
+    declarations emitted into the build tree (origin "generated").
+
+CRT/MFC library identities are ordinary `// LIBRARY:` / `// SYNTHETIC:` markers
+(primarily in `src/game/core/library_identities.cpp` and `CString.cpp`).
 
 Downstream consumers (generate_symbols, stubgen, apply_source, and gates)
 import from this module — none of them scan annotations independently.
@@ -39,7 +39,6 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 DEFAULT_GEN_DIR = "build-msvc500/generated"
 MODEL_NAME = "source_model.json"
-REVIEWED_CSV = "config/reviewed_library_identities.csv"
 
 _KINDS = ("FUNCTION", "STUB", "TEMPLATE", "SYNTHETIC", "LIBRARY")
 _VTABLE_RE = re.compile(r"//\s*VTABLE\s*:\s*(\w+)\s+(?:0x)?([0-9a-fA-F]+)", re.IGNORECASE)
@@ -55,6 +54,9 @@ _NAME_COMMENT_RE = re.compile(r"^//\s*((?:[A-Za-z_]\w*::)*~?[A-Za-z_]\w*)\s*$")
 # Linker-symbol spellings: MSVC C++ mangles start with '?', C symbols carry the
 # cdecl underscore on top of any source underscores (`___ld12tod` = __ld12tod).
 _MANGLED_COMMENT_RE = re.compile(r"^//\s*(\?\S+|\S*@\S*|___\S+)\s*$")
+_STRUCTURED_FIELD_RE = re.compile(
+    r"^//\s*(name|symbol|prototype)\s*:\s*(.*\S)?\s*$", re.IGNORECASE
+)
 # Names that are C++ keywords/control flow can never be function names.
 _NOT_NAMES = frozenset(
     "if while for switch return sizeof new delete else do catch throw".split()
@@ -70,7 +72,7 @@ class Claim:
     name: str = ""  # source-derived qualified/free name ("" if unparsable)
     prototype: str = ""  # source declaration head ("" if unparsable)
     symbol: str = ""  # mangled linker symbol when known
-    origin: str = "marker"  # marker | generated | reviewed
+    origin: str = "marker"  # marker | generated
 
 
 @dataclass
@@ -110,46 +112,40 @@ def _claim_name(kind: str, lines: list[str], marker_idx: int) -> tuple[str, str,
     if kind == "FUNCTION":
         name, proto = _parse_decl(lines, marker_idx + 1)
         return name, proto, ""
-    # SYNTHETIC/TEMPLATE/LIBRARY: convention comment line under the marker.
-    # Mangled/linker spellings are symbols, never names — check them first.
-    if marker_idx + 1 < len(lines):
-        text = lines[marker_idx + 1].strip()
+    # SYNTHETIC/TEMPLATE/LIBRARY: optional structured metadata comments
+    # (`// name:`, `// symbol:`, `// prototype:`), else a single legacy
+    # name-or-mangle convention comment under the marker.
+    name = proto = symbol = ""
+    saw_structured = False
+    for j in range(marker_idx + 1, min(marker_idx + 8, len(lines))):
+        text = lines[j].strip()
+        if not text:
+            break
+        if not text.startswith("//"):
+            break
+        field = _STRUCTURED_FIELD_RE.match(text)
+        if field:
+            saw_structured = True
+            key = field.group(1).lower()
+            value = (field.group(2) or "").strip()
+            if key == "name":
+                name = value
+            elif key == "symbol":
+                symbol = value
+            elif key == "prototype":
+                proto = value
+            continue
+        if saw_structured:
+            # Freeform notes may follow structured fields; stop parsing fields.
+            break
         m = _MANGLED_COMMENT_RE.match(text)
         if m:
             return "", "", m.group(1)
         m = _NAME_COMMENT_RE.match(text)
         if m:
             return m.group(1), "", ""
-    return "", "", ""
-
-
-def reviewed_identities(repo_root: Path) -> list[Claim]:
-    path = repo_root / REVIEWED_CSV
-    if not path.is_file():
-        return []
-    from tools.common.pipe_csv import read_pipe_rows
-
-    out: list[Claim] = []
-    for row in read_pipe_rows(path):
-        raw = (row.get("address") or "").strip()
-        try:
-            addr = int(raw, 16)
-        except ValueError:
-            continue
-        kind = (row.get("kind") or "LIBRARY").strip().upper()
-        if kind not in ("LIBRARY", "SYNTHETIC"):
-            kind = "LIBRARY"
-        out.append(Claim(
-            address=addr,
-            kind=kind,
-            file=REVIEWED_CSV,
-            line=0,
-            name=(row.get("name") or "").strip(),
-            prototype=(row.get("prototype") or "").strip(),
-            symbol=(row.get("symbol") or "").strip(),
-            origin="reviewed",
-        ))
-    return out
+        break
+    return name, proto, symbol
 
 
 def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
@@ -211,10 +207,6 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
         if len(claims) > 1:
             model.duplicates[addr] = claims
 
-    # Reviewed library identities are LIBRARY claims; a source marker wins.
-    for claim in reviewed_identities(repo_root):
-        model.functions.setdefault(claim.address, claim)
-
     return model
 
 
@@ -263,7 +255,7 @@ def main() -> int:
     marker_fns = sum(1 for c in model.functions.values() if c.origin == "marker")
     named = sum(1 for c in model.functions.values() if c.name)
     print(f"Wrote {out} ({marker_fns} marker claims, "
-          f"{len(model.functions) - marker_fns} reviewed claims, {named} named, "
+          f"{named} named, "
           f"{len(model.vtables)} vtables, {len(model.globals)} globals)")
     if model.duplicates:
         print("source-model FAILED: duplicate function-kind claims (one address, one owner):")

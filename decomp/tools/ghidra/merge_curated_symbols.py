@@ -274,60 +274,6 @@ def write_symbols_csv(path: Path, fieldnames: list[str], rows: list[dict[str, st
     path.write_text(content, encoding="utf-8", newline="")
 
 
-def function_names_from_symbols_rows(rows: list[dict[str, str]]) -> dict[int, str]:
-    names: dict[int, str] = {}
-    for row in rows:
-        if (row.get("type") or "").strip().lower() != "function":
-            continue
-        addr_text = (row.get("address") or "").strip()
-        name = (row.get("name") or "").strip()
-        if not addr_text or not name:
-            continue
-        names[int(addr_text, 16)] = name
-    return names
-
-
-def apply_function_names_to_symbols_txt(path: Path, name_by_addr: dict[int, str]) -> int:
-    """Rewrite function lines in symbols.ghidra.txt to match symbols.csv names."""
-    if not path.is_file() or not name_by_addr:
-        return 0
-
-    import re
-
-    ws_re = re.compile(r"\s")
-    output: list[str] = []
-    renamed = 0
-
-    for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
-        stripped = line.strip()
-        if not stripped:
-            output.append(line)
-            continue
-        parts = stripped.split()
-        if len(parts) < 3:
-            output.append(line)
-            continue
-        name, addr_text, kind = parts[0], parts[1], parts[2]
-        if kind.lower() != "f":
-            output.append(line)
-            continue
-        try:
-            addr = int(addr_text, 16)
-        except ValueError:
-            output.append(line)
-            continue
-        curated_name = name_by_addr.get(addr)
-        if not curated_name or ws_re.search(curated_name):
-            output.append(line)
-            continue
-        if curated_name != name:
-            renamed += 1
-        output.append(f"{curated_name} {addr_text} {kind}")
-
-    path.write_text("\n".join(output) + "\n", encoding="utf-8")
-    return renamed
-
-
 def load_curated_symbols(path: Path) -> tuple[list[str], dict[int, dict[str, str]]]:
     if not path.is_file():
         return [], {}

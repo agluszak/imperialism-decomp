@@ -22,23 +22,22 @@ validation, and score deltas).
   and the TListObject slot-0x28 drift caveat.
 - `TDiplomacyMapView_layout.md` — discovered offsets for `TDiplomacyMapView`
   (mask-buffer / packed-color runs, frame/legend fields).
+- `stretch-container.md` — stretch-collection layout and ownership notes.
+- `navy_order_model.md` — navy order / mission model evidence.
+- `save_format.md` — retail save format.
 
 ## Game-domain knowledge
 
 - `bitmap-ids.md` — UI bitmap-ID → feature map (buildings, units, resources, terrain).
-- `technology-unlocks.md`, `tech-experiment-university-unlocks.md` — tech tree
-  gating and university recruitment evidence. Active university tracing work is in
-  Beads issue `imperialism-decomp-1uj.34`.
+- `technology-unlocks.md` — tech tree gating and university recruitment evidence.
 - Civilian unit orders and command dispatch facts are in `imperialism-decomp.md`.
-  Active map-order icon-state tracing is in Beads issue `imperialism-decomp-1uj.38`.
-- `cursor-code-usage-sites.md`, `cursor-resource-mapping.md`, `cursor-semantics-exe.md`
-  — game cursor types, resource mapping, control semantics.
-- `gob-stringtable-workflow.md` — GOB resource/string-table structure and extraction.
+- `cursor-resource-mapping.md`, `cursor-semantics-exe.md` — game cursor types,
+  resource mapping, and control semantics.
 - `strenu-strings.tsv` (+ `strenu-index-sample.txt`) — extracted UI/localization string
   table (`id`, `block`, `index`, `text`); the fastest text→resource-ID lookup.
 - `manual_text.txt` — extracted game manual; baseline gameplay/mechanics reference.
 
-## Moved Backlog
+## Moved backlog
 
 Former plan/worklist documents were removed after their full text was preserved in
 Beads issue design fields. Use the Big Goal epic (`imperialism-decomp-1uj`) and

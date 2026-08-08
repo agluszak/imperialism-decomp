@@ -1,32 +1,14 @@
 #!/usr/bin/env python3
 """Read-only pyghidra extractor: per-slot vtable ABI evidence as JSON.
 
-The evidence half of the vtable ABI audit (`just vtable-abi-audit`). For each
-class vtable it walks the slots, resolves ILT thunks to real bodies, and
-records *binary ground truth* about every slot target:
-
-  callee side  — RET kind/immediate (callee-cleaned stack bytes), whether ECX
-                 is read as `this` before being overwritten, best-effort
-                 max stack-argument byte read, size, Ghidra name/cc/prototype
-                 (the latter three are advisory hypotheses, never ground truth);
-  caller side  — direct call sites (including sites that call through an ILT
-                 thunk): explicit PUSH count in the arg-setup region, what set
-                 ECX last, caller stack cleanup after the call (ADD ESP / POP
-                 ECX idioms), and how the return register is consumed
-                 (AL / AX / EAX / ST0 / none).
-
-Raw listing instructions are the ground truth; Ghidra's decompiler-recovered
-signatures are recorded as advisory only. The original binary is immutable, so
-this evidence never changes once extracted — the committed snapshot
-(config/vtable_abi_evidence.json) lets the pure-python audit + gate
-(tools.workflow.vtable_abi_audit) run without Ghidra.
+For each class vtable it walks the slots, resolves ILT thunks to real bodies, and
+records binary ground truth about every slot target (RET kind/immediate, ECX use,
+caller pushes/cleanup). Prefer writing under build/ for one-off investigation;
+continuous verification uses `just vtable`.
 
 Usage (via the query daemon or one-shot):
   uv run python -m tools.ghidra.query vtable-abi-evidence Class=0xVTABLE[:COUNT] ...
   uv run python -m tools.ghidra.query vtable-abi-evidence --from-source [--out FILE]
-
---from-source discovers every `// VTABLE: IMPERIALISM 0xADDR` annotation in
-include/ + src/ and audits all of them (slow: whole-repo extraction).
 """
 
 from __future__ import annotations
@@ -44,9 +26,6 @@ MAX_BACKWARD_INSNS = 32
 MAX_FORWARD_INSNS = 8
 MAX_BODY_SCAN_INSNS = 400
 
-_VTABLE_ANNOT_RE = re.compile(r"//\s*VTABLE:\s*IMPERIALISM\s+(0x[0-9a-fA-F]+)")
-_CLASS_LINE_RE = re.compile(r"^\s*(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)")
-
 _JCC = (
     "ja", "jae", "jb", "jbe", "jc", "je", "jg", "jge", "jl", "jle", "jmp",
     "jna", "jnae", "jnb", "jnbe", "jnc", "jne", "jng", "jnge", "jnl", "jnle",
@@ -56,30 +35,12 @@ _JCC = (
 
 def discover_annotated_classes(repo_root: Path) -> list[tuple[str, int]]:
     """(class_name, vtable_addr) for every `// VTABLE:` annotation in the tree."""
-    out: list[tuple[str, int]] = []
-    seen: set[int] = set()
-    for base in ("include", "src"):
-        for path in sorted((repo_root / base).rglob("*.h")) + sorted(
-            (repo_root / base).rglob("*.cpp")
-        ):
-            try:
-                lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-            except OSError:
-                continue
-            for i, line in enumerate(lines):
-                m = _VTABLE_ANNOT_RE.search(line)
-                if not m:
-                    continue
-                addr = int(m.group(1), 16)
-                if addr in seen:
-                    continue
-                for j in range(i + 1, min(i + 4, len(lines))):
-                    cm = _CLASS_LINE_RE.match(lines[j])
-                    if cm:
-                        out.append((cm.group(1), addr))
-                        seen.add(addr)
-                        break
-    return out
+    from tools.source_model import build_model
+
+    return [
+        (cls, addr)
+        for addr, cls in sorted(build_model(repo_root).vtables.items(), key=lambda item: item[0])
+    ]
 
 
 def parse_spec(spec: str) -> tuple[str, int, int | None]:
@@ -494,7 +455,7 @@ def run(program, argv: list[str]) -> int:
     doc = {
         "comment": "Immutable per-address ABI evidence extracted from the original "
         "binary's raw listing by tools.ghidra.vtable_abi_evidence. Regenerate with "
-        "`just vtable-abi-extract`.",
+        "`just ghidra vtable-abi-evidence --from-source`.",
         "classes": classes,
         "functions": functions,
     }

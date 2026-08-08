@@ -7,7 +7,7 @@ thunks only while they stay unannotated in both binaries; a Function entity
 defined on one (left by auto-analysis, an import pass, or repair-code-gaps)
 blocks reccmp's thunk auto-resolution and collapses vtable matching (~400
 functions lost 100% in the 2026-07 gap-repair attempt; the fix then was manual
-``FunctionManager.removeFunction`` surgery — see docs/ghidra-db-mutations.md).
+``FunctionManager.removeFunction`` surgery — see docs/ghidra-db.md).
 
 ``just prune-ilt-thunks`` cleans the symbols.csv side; this tool cleans the DB
 side. ``just refresh-inventory`` runs it with --apply before the export so a refresh

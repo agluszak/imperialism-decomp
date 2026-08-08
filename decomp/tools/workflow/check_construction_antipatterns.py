@@ -99,7 +99,14 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
 
 def count_patterns(file_path: Path) -> dict[str, int]:
     text = strip_generated_blocks(file_path.read_text(encoding="utf-8", errors="ignore"))
-    return {key: len(pattern.findall(text)) for key, pattern in PATTERNS}
+    # Anti-patterns are about executable source, not documentation or #if 0
+    # annotation carriers (LIBRARY/SYNTHETIC name/symbol/prototype comments).
+    code = "\n".join(
+        line
+        for line in text.splitlines()
+        if not line.lstrip().startswith("//")
+    )
+    return {key: len(pattern.findall(code)) for key, pattern in PATTERNS}
 
 
 def main() -> int:

@@ -73,6 +73,7 @@ datacmp *args:
 # Compare symbol locations (functions, vtables, data) between original and recompiled.
 #   just roadmap          -> full roadmap
 #   just roadmap -v       -> pass through reccmp-roadmap flags
+[private]
 [group('compare')]
 roadmap *args:
   (cd "{{build_dir}}" && uv run reccmp-roadmap --target "{{target}}" {{args}})
@@ -88,6 +89,7 @@ addr *args:
 
 # Compare the stack layout of a single near-matching function.
 #   just stackcmp 0xADDR
+[private]
 [group('compare')]
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
