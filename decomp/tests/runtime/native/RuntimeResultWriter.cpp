@@ -124,7 +124,6 @@ bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
   JSON_Value* captures =
       CopyValue(run.Captures() != 0 ? json_object_get_wrapping_value(run.Captures()) : 0);
   if (root == 0 || captures == 0 ||
-      json_object_set_number(root, "format_version", 2) != JSONSuccess ||
       json_object_set_string(root, "name", run.TestName()) != JSONSuccess ||
       json_object_set_number(root, "seed", run.Seed()) != JSONSuccess ||
       json_object_set_string(root, "status", resultStatus) != JSONSuccess ||

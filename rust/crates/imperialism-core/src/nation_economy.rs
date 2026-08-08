@@ -141,11 +141,10 @@ impl MajorNationState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, NationId, PopulationState};
+    use crate::{LaborPool, PopulationState};
 
     fn city() -> CityState {
         CityState {
-            nation: NationId::new(0),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

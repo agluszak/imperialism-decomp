@@ -415,16 +415,13 @@ mod tests {
 
     fn world() -> WorldState {
         WorldState {
-            width: 108,
-            height: 60,
             wraps_horizontally: true,
             tiles: vec![tile(-1); 108 * 60],
         }
     }
 
-    fn city(nation: NationId, home_town_tile: i16) -> CityState {
+    fn city(home_town_tile: i16) -> CityState {
         CityState {
-            nation,
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,
@@ -466,10 +463,9 @@ mod tests {
         let nation = NationId::new(0);
         let major_nation = MajorNationId::new(0);
         let mut cities = crate::MajorNationTable::default();
-        cities[major_nation] = Some(city(nation, home_town_tile.get() as i16));
+        cities[major_nation] = Some(city(home_town_tile.get() as i16));
         let mut nations = crate::NationTable::default();
         nations[nation] = Some(NationState {
-            id: nation,
             common: NationCommonState {
                 encoded_nation_slot: 0,
                 owner_nation: 0,
@@ -535,8 +531,7 @@ mod tests {
             missions: Vec::new(),
             pending: crate::PendingWorkState {
                 turn_flow_status_flags: 0,
-                nations: crate::MajorNationTable::from_fn(|nation| crate::NationPendingWork {
-                    nation: nation.nation(),
+                nations: crate::MajorNationTable::from_fn(|_nation| crate::NationPendingWork {
                     turn_events: Vec::new(),
                     proposals: Vec::new(),
                     turn_summary: Vec::new(),

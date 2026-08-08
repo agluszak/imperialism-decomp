@@ -1,5 +1,4 @@
-use crate::launcher::RetailAssetsResource;
-use crate::session::GameLoopSet;
+use crate::{GameLoopSet, RetailAssetsResource};
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
@@ -37,13 +36,6 @@ pub(crate) struct PresentedUiNode(pub(crate) UiNodeId);
 
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct WidgetTag(pub(crate) FourCc);
-
-#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-pub(crate) struct UiWidgetFlags {
-    pub(crate) enabled: bool,
-    pub(crate) input_gate: bool,
-    pub(crate) child_hit_test: bool,
-}
 
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub(crate) struct UiPictureLookup {
@@ -100,22 +92,7 @@ enum UiPictureBindingError {
 
 #[derive(Message, Clone, Debug, Eq, PartialEq)]
 pub(crate) enum UiIntent {
-    Activated {
-        view: ViewInstanceId,
-        tag: FourCc,
-    },
-    #[allow(dead_code)] // Value controls have not been presented by the recovered views yet.
-    ValueChanged {
-        view: ViewInstanceId,
-        tag: FourCc,
-        value: i32,
-    },
-    #[allow(dead_code)] // Text controls have not been presented by the recovered views yet.
-    TextChanged {
-        view: ViewInstanceId,
-        tag: FourCc,
-        value: String,
-    },
+    Activated { view: ViewInstanceId, tag: FourCc },
 }
 
 #[derive(Resource)]
@@ -283,14 +260,8 @@ fn spawn_node(
             ..default()
         },
         instance,
-        PresentedViewId(view.id.clone()),
         PresentedUiNode(node.id),
         WidgetTag(node.tag.clone()),
-        UiWidgetFlags {
-            enabled: node.enabled,
-            input_gate: node.input_gate,
-            child_hit_test: node.child_hit_test,
-        },
         if node.child_hit_test {
             FocusPolicy::Block
         } else {
@@ -383,7 +354,7 @@ fn load_retail_text(
         alignment: binding.alignment,
     })?;
     let retail_assets = retail_assets.ok_or(UiTextBindingError::RetailAssetsUnavailable)?;
-    let bytes = retail_assets.assets().font_bytes(style.face)?;
+    let bytes = retail_assets.assets().font_bytes(style.face);
     let handle = match font_handles.0.get(&style.face) {
         Some(handle) => handle.clone(),
         None => {
@@ -447,18 +418,17 @@ type UiInteractionQuery<'w, 's> = Query<
         &'static ViewInstanceId,
         &'static PresentedUiNode,
         &'static WidgetTag,
-        &'static UiWidgetFlags,
+        Option<&'static InteractionDisabled>,
     ),
     With<InteractiveUiWidget>,
 >;
 
 fn emit_ui_intents(mut widgets: UiInteractionQuery, mut intents: MessageWriter<UiIntent>) {
     let mut activated = Vec::new();
-    for (interaction, mut previous, instance, node, tag, flags) in &mut widgets {
+    for (interaction, mut previous, instance, node, tag, disabled) in &mut widgets {
         if *interaction == Interaction::Pressed
             && previous.0 != Interaction::Pressed
-            && flags.enabled
-            && flags.input_gate
+            && disabled.is_none()
         {
             activated.push((*instance, node.0.0, tag.0.clone()));
         }
@@ -566,52 +536,37 @@ mod tests {
                 .query::<(
                     Entity,
                     &ViewInstanceId,
-                    &PresentedViewId,
                     &PresentedUiNode,
                     &WidgetTag,
-                    &UiWidgetFlags,
                     &FocusPolicy,
                     &Node,
                     &ChildOf,
                     Option<&InteractiveUiWidget>,
+                    Option<&InteractionDisabled>,
                 )>()
                 .iter(world)
-                .filter(|(_, candidate, _, _, _, _, _, _, _, _)| **candidate == instance)
-                .map(|row| (row.3.0, row))
+                .filter(|(_, candidate, _, _, _, _, _, _, _)| **candidate == instance)
+                .map(|row| (row.2.0, row))
                 .collect::<HashMap<_, _>>();
             assert_eq!(presented.len(), view.nodes.len());
             assert_eq!(
                 presented
                     .values()
-                    .filter(|row| row.8.parent() == *root)
+                    .filter(|row| row.6.parent() == *root)
                     .count(),
                 1
             );
             for node in &view.nodes {
-                let (
-                    entity,
-                    _,
-                    presented_view,
-                    node_id,
-                    tag,
-                    flags,
-                    focus_policy,
-                    ui,
-                    parent,
-                    interactive,
-                ) = presented[&node.id];
-                assert_eq!(presented_view.0, view.id);
+                let (entity, _, node_id, tag, focus_policy, ui, parent, interactive, disabled) =
+                    presented[&node.id];
                 assert_eq!(node_id.0, node.id);
                 assert_eq!(tag.0, node.tag);
                 assert_eq!(interactive.is_some(), node.interactive);
-                assert_eq!(
-                    *flags,
-                    UiWidgetFlags {
-                        enabled: node.enabled,
-                        input_gate: node.input_gate,
-                        child_hit_test: node.child_hit_test,
-                    }
-                );
+                if node.interactive {
+                    assert_eq!(disabled.is_some(), !node.enabled || !node.input_gate,);
+                } else {
+                    assert!(disabled.is_none());
+                }
                 assert_eq!(px(ui.left), node.rect.x as f32);
                 assert_eq!(px(ui.top), node.rect.y as f32);
                 assert_eq!(px(ui.width), node.rect.width as f32);
@@ -780,12 +735,19 @@ mod tests {
             .find(|node| node.properties.picture_id == Some(4500))
             .unwrap()
             .id;
+        let instance = app
+            .world_mut()
+            .query_filtered::<&ViewInstanceId, With<UiViewRoot>>()
+            .iter(app.world())
+            .next()
+            .copied()
+            .unwrap();
         assert!(
             app.world_mut()
-                .query::<(&PresentedViewId, &PresentedUiNode, Option<&ImageNode>)>()
+                .query::<(&ViewInstanceId, &PresentedUiNode, Option<&ImageNode>)>()
                 .iter(app.world())
-                .any(|(presented_view, node, image)| {
-                    presented_view.0 == view && node.0 == picture_node && image.is_none()
+                .any(|(candidate, node, image)| {
+                    *candidate == instance && node.0 == picture_node && image.is_none()
                 })
         );
     }
@@ -805,9 +767,8 @@ mod tests {
 
         assert_eq!(
             app.world_mut()
-                .query::<(&PresentedViewId, &TextFont)>()
+                .query::<(&ViewInstanceId, &TextFont)>()
                 .iter(app.world())
-                .filter(|(presented, _)| presented.0 == view)
                 .count(),
             0
         );

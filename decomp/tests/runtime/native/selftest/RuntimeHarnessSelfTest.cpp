@@ -206,8 +206,7 @@ void TestParsonDom() {
   JSON_Array* values = valuesValue != 0 ? json_value_get_array(valuesValue) : 0;
   bool built = root != 0 && captures != 0 && values != 0;
   if (built) {
-    built = json_object_set_number(root, "format_version", 2) == JSONSuccess &&
-            json_object_set_string(root, "name", "parson_probe") == JSONSuccess &&
+    built = json_object_set_string(root, "name", "parson_probe") == JSONSuccess &&
             json_object_set_number(root, "seed", 1) == JSONSuccess &&
             json_object_set_string(root, "status", "passed") == JSONSuccess &&
             json_array_append_number(values, 7) == JSONSuccess &&
@@ -232,13 +231,12 @@ void TestParsonDom() {
   const char* parsedName = parsedRoot != 0 ? json_object_get_string(parsedRoot, "name") : 0;
   const char* parsedStatus = parsedRoot != 0 ? json_object_get_string(parsedRoot, "status") : 0;
   Expect("json.parson_dom",
-         parsedRoot != 0 && json_object_get_number(parsedRoot, "format_version") == 2 &&
-             parsedName != 0 && strcmp(parsedName, "parson_probe") == 0 &&
+         parsedRoot != 0 && parsedName != 0 && strcmp(parsedName, "parson_probe") == 0 &&
              json_object_get_number(parsedRoot, "seed") == 1 && parsedStatus != 0 &&
              strcmp(parsedStatus, "passed") == 0 && probe != 0 &&
              json_array_get_count(probe) == 2 && json_array_get_number(probe, 0) == 7 &&
              json_array_get_boolean(probe, 1) == 1,
-         "Parson did not construct and parse the v2 runtime-result shape");
+         "Parson did not construct and parse the runtime-result shape");
   if (serialized != 0) {
     json_free_serialized_string(serialized);
   }
@@ -275,7 +273,6 @@ int main(int argc, char** argv) {
   JSON_Value* capturesValue = json_value_init_object();
   JSON_Object* captures = capturesValue != 0 ? json_value_get_object(capturesValue) : 0;
   bool resultBuilt = root != 0 && captures != 0 &&
-                     json_object_set_number(root, "format_version", 2) == JSONSuccess &&
                      json_object_set_string(root, "name", testName) == JSONSuccess &&
                      json_object_set_number(root, "seed", seed) == JSONSuccess &&
                      json_object_set_string(root, "status", status) == JSONSuccess;

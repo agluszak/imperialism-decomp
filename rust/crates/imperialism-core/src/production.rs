@@ -1018,7 +1018,7 @@ fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, p
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, NationId, PopulationState};
+    use crate::{LaborPool, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
@@ -1026,7 +1026,6 @@ mod tests {
 
     fn city() -> CityState {
         CityState {
-            nation: NationId::new(0),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

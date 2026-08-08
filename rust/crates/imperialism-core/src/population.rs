@@ -593,7 +593,6 @@ fn transfer_band(source: &mut i16, destination: &mut i16, remaining: &mut i16) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::NationId;
 
     fn population() -> PopulationState {
         PopulationState {
@@ -615,7 +614,6 @@ mod tests {
         population.phase_value = 0;
         population.pending_labor_delta = Some(LaborPool::default());
         CityState {
-            nation: NationId::new(0),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

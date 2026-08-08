@@ -1,5 +1,5 @@
 use crate::{
-    CivilianUnitId, LaborPool, MajorNationTable, MilitaryUnitId, MissionId, NationId, NationTable,
+    CivilianUnitId, LaborPool, MajorNationTable, MilitaryUnitId, NationId, NationTable,
     PendingActionTable, ProductionTable, ResourceTable, ShipId, TaskForceId, TileId,
 };
 use serde::{Deserialize, Serialize};
@@ -76,8 +76,6 @@ pub struct TurnState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct WorldState {
-    pub width: u16,
-    pub height: u16,
     pub wraps_horizontally: bool,
     pub tiles: Vec<TileState>,
 }
@@ -104,7 +102,6 @@ pub struct RngState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationState {
-    pub id: NationId,
     pub common: NationCommonState,
     pub data: NationData,
 }
@@ -184,7 +181,6 @@ pub struct MajorNationState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
-    pub nation: NationId,
     pub power_plant_upgrade_queued: bool,
     pub food_substitution_count: i16,
     pub starvation_population_loss: i16,
@@ -262,7 +258,6 @@ pub struct CivilianUnitState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipState {
-    pub id: ShipId,
     pub ship_type: i16,
     pub location: i16,
     pub task_force: Option<TaskForceId>,
@@ -284,7 +279,6 @@ pub enum TaskForceTarget {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TaskForceState {
-    pub id: TaskForceId,
     pub aggression: i32,
     pub order: i32,
     pub target: TaskForceTarget,
@@ -348,7 +342,6 @@ pub enum MissionData {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MissionState {
-    pub id: MissionId,
     pub nation: NationId,
     pub queue_index: u32,
     pub data: MissionData,
@@ -374,7 +367,6 @@ pub struct WarTransition {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationPendingWork {
-    pub nation: NationId,
     pub turn_events: Vec<TaggedValue>,
     pub proposals: Vec<TaggedValue>,
     pub turn_summary: Vec<[i16; 4]>,
