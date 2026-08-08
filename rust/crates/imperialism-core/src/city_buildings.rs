@@ -1,6 +1,4 @@
-use crate::{
-    CityState, GameState, MajorNationId, MajorNationState, PendingActionKind, RuleError,
-};
+use crate::{CityState, GameState, MajorNationId, MajorNationState, PendingActionKind, RuleError};
 
 const PRODUCTION_SLOT_COUNT: usize = 16;
 

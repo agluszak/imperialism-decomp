@@ -6,10 +6,33 @@ pub const STRATEGIC_MAP_HEIGHT: u16 = 60;
 pub const STRATEGIC_TILE_COUNT: usize =
     STRATEGIC_MAP_WIDTH as usize * STRATEGIC_MAP_HEIGHT as usize;
 
+/// Semantic horizontal-edge behavior for live map geometry.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MapTopology {
+    Wrapping,
+    Bounded,
+}
+
+impl MapTopology {
+    pub const fn wraps_horizontally(self) -> bool {
+        matches!(self, Self::Wrapping)
+    }
+
+    pub const fn from_wraps_horizontally(wraps_horizontally: bool) -> Self {
+        if wraps_horizontally {
+            Self::Wrapping
+        } else {
+            Self::Bounded
+        }
+    }
+}
+
 /// The byte stored by the retail map model for its horizontal-edge behavior.
 ///
 /// Despite the recovered C++ field name, zero enables horizontal wrapping and
 /// every nonzero value rejects coordinates beyond the left and right edges.
+/// Keep this at format/oracle boundaries; live core code uses [`MapTopology`].
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct RetailTopologyByte(u8);
@@ -27,10 +50,18 @@ impl RetailTopologyByte {
         self.0 == 0
     }
 
+    pub const fn topology(self) -> MapTopology {
+        MapTopology::from_wraps_horizontally(self.wraps_horizontally())
+    }
+
     /// Produces the canonical byte written by the setup UI for the requested
     /// semantic topology. Reading still preserves arbitrary nonzero bytes.
     pub const fn from_wraps_horizontally(wraps_horizontally: bool) -> Self {
         Self(if wraps_horizontally { 0 } else { 1 })
+    }
+
+    pub const fn from_topology(topology: MapTopology) -> Self {
+        Self::from_wraps_horizontally(topology.wraps_horizontally())
     }
 }
 
@@ -64,6 +95,10 @@ pub struct MapGeometry {
 impl MapGeometry {
     pub const fn new(wraps_horizontally: bool) -> Self {
         Self { wraps_horizontally }
+    }
+
+    pub const fn from_topology(topology: MapTopology) -> Self {
+        Self::new(topology.wraps_horizontally())
     }
 
     pub const fn wraps_horizontally(self) -> bool {
@@ -125,6 +160,8 @@ mod tests {
         assert!(wrapping.wraps_horizontally());
         assert!(!bounded.wraps_horizontally());
         assert_eq!(bounded.retail_byte(), 7);
+        assert_eq!(wrapping.topology(), MapTopology::Wrapping);
+        assert_eq!(bounded.topology(), MapTopology::Bounded);
         assert_eq!(
             RetailTopologyByte::from_wraps_horizontally(true).retail_byte(),
             0

@@ -1,4 +1,4 @@
-use crate::{GameEvent, GameState, MajorNationId, StepOutcome, TurnState};
+use crate::{GameState, MajorNationId, TurnState};
 
 const MAJOR_NATION_COUNT: usize = 7;
 
@@ -21,22 +21,13 @@ impl TurnState {
 }
 
 impl GameState {
-    /// Replaces the original posted Windows command with explicit deterministic
-    /// domain output. The caller decides when to invoke the phase worker.
-    pub fn request_next_phase(&self) -> StepOutcome {
-        StepOutcome {
-            events: vec![GameEvent::PhaseAdvanceRequested],
-        }
-    }
-
     /// Mirrors `TSimMgr::AllHumansFinished`. The C++ routine assumes all seven
     /// major slots exist; Rust reports that violated phase invariant explicitly.
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {
         all_major_flags_finished((0..MAJOR_NATION_COUNT).map(|slot| {
-            self.nations[MajorNationId::new(slot as u8).nation()]
+            self.major_nations[MajorNationId::new(slot as u8)]
                 .as_ref()
-                .and_then(|nation| nation.major())
-                .map(|major| major.turn_finished)
+                .map(|major| major.state.turn_finished)
         }))
     }
 
@@ -44,20 +35,18 @@ impl GameState {
     /// have their completion flag cleared.
     pub fn reset_turn_flags(&mut self) -> Result<(), TurnFlowError> {
         for slot in 0..MAJOR_NATION_COUNT {
-            let present = self.nations[MajorNationId::new(slot as u8).nation()]
-                .as_ref()
-                .and_then(|nation| nation.major())
-                .is_some();
-            if !present {
+            if self.major_nations[MajorNationId::new(slot as u8)].is_none() {
                 return Err(TurnFlowError::MissingMajorNation { slot });
             }
         }
-        for nation in self.nations.iter_mut().take(MAJOR_NATION_COUNT) {
-            let major = nation
+        for major in self.major_nations.iter_mut().take(MAJOR_NATION_COUNT) {
+            let major = major
                 .as_mut()
-                .and_then(|nation| nation.major_mut())
                 .expect("major-nation presence was checked above");
-            reset_finished_flag(major.diplomacy_eligible, &mut major.turn_finished);
+            reset_finished_flag(
+                major.state.diplomacy_eligible,
+                &mut major.state.turn_finished,
+            );
         }
         Ok(())
     }

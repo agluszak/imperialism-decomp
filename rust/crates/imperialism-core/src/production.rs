@@ -1,3 +1,9 @@
+//! Deterministic production-order rules.
+//!
+//! Several private order types are currently exercised only by unit tests; lib
+//! callers land with later phase ports.
+#![allow(dead_code)]
+
 use crate::{
     CityState, MajorNationState, PendingActionKind, ProductionSlot, ResourceKind, ResourceTable,
     SkillBand,

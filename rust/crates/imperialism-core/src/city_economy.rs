@@ -37,8 +37,7 @@ impl CityState {
         if surplus < amount {
             amount = surplus;
         }
-        let available_capacity =
-            nation.capacities.transport - nation.capacities.reserved_transport;
+        let available_capacity = nation.capacities.transport - nation.capacities.reserved_transport;
         if available_capacity < amount {
             amount = available_capacity;
         }

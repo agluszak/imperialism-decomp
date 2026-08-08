@@ -677,10 +677,7 @@ mod tests {
             }
         );
         assert_eq!(state.food_substitution_count, 1);
-        assert_eq!(
-            state.population.production_labor,
-            LaborPool::new(3, 2, 1)
-        );
+        assert_eq!(state.population.production_labor, LaborPool::new(3, 2, 1));
         assert_eq!(
             state.population.pending_labor_delta,
             LaborPool::new(1, 0, 0)

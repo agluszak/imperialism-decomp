@@ -1,9 +1,9 @@
 use crate::{
-    CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool, MajorNationId,
-    MajorNationState, MajorNationTable, NationCapacityTable, NationCommonState, NationData,
-    NationId, NationPendingWork, NationState, NationTable, PendingWorkState, PopulationState,
-    ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState, TileId, TileOwnerTag,
-    TileState, TurnState, WorldState,
+    CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool, MajorNation, MajorNationId,
+    MajorNationState, MajorNationTable, MinorNation, MinorNationId, MinorNationTable,
+    NationCapacities, NationCommonState, NationPendingWork, NationTable, PendingWorkState,
+    PopulationState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState,
+    TileId, TileOwnerTag, TileState, TurnState, WorldState,
 };
 use enum_map::EnumMap;
 
@@ -77,8 +77,8 @@ pub fn create_random_game(
             map_generation: preview.final_map_lcg,
             zone_status: 0,
         },
-        nations: bootstrap_nations(human_nation, difficulty),
-        cities: bootstrap_cities(human_nation, difficulty),
+        major_nations: bootstrap_major_nations(human_nation, difficulty),
+        minor_nations: bootstrap_minor_nations(),
         military_units: Vec::new(),
         civilian_units: Vec::new(),
         ships: Vec::new(),
@@ -115,98 +115,80 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
     }
 }
 
-fn bootstrap_nations(
+fn bootstrap_major_nations(
     human_nation: MajorNationId,
     difficulty: Difficulty,
-) -> NationTable<Option<NationState>> {
-    NationTable::from_fn(|nation| {
-        Some(match MajorNationId::from_nation(nation) {
-            Some(major_nation) => {
-                major_nation_state(major_nation, difficulty, major_nation == human_nation)
-            }
-            None => minor_nation_state(nation),
-        })
-    })
-}
-
-fn major_nation_state(nation: MajorNationId, difficulty: Difficulty, human: bool) -> NationState {
-    let treasury = if human {
-        STARTING_TREASURY_BY_DIFFICULTY[difficulty]
-    } else {
-        // IAutoGreatPower forces treasury to 10000 after IGreatPower.
-        10_000
-    };
-    NationState {
-        common: NationCommonState {
-            owner_nation: i16::from(nation.get()),
-            treasury,
-            // Human Normal+ has no home tile until capital selection. AI homes are
-            // chosen later by SelectBestSecondaryHomeTileByFrogCityScore (needs tile
-            // post-passes).
-            home_tile: None,
-            trade_policy_by_nation: NationTable::default(),
-        },
-        data: NationData::Major(MajorNationState {
-            diplomacy_eligible: human,
-            // Capacities after IGreatPower / IAutoGreatPower construction.
-            capacities: NationCapacityTable::from_array([0, 0, 0x0f, 0]),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: NationTable::default(),
-            diplomacy_grants_by_nation: NationTable::default(),
-            need_current_by_type: ResourceTable::default(),
-            need_target_by_type: ResourceTable::default(),
-            relation_delta_current: ResourceTable::default(),
-            purchased_items_by_resource: ResourceTable::default(),
-            item_potentials: ResourceTable::default(),
-            unfilled_trade_turns_by_resource: ResourceTable::default(),
-            transported_items_by_resource: ResourceTable::default(),
-            remembered_trade_offers_by_resource: ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: true,
-            pending_action_status: crate::PendingActionTable::default(),
-            pending_action_payload_by_action: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 20_000,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: NationTable::default(),
-            military_expenses: 0,
-        }),
-    }
-}
-
-fn minor_nation_state(nation: NationId) -> NationState {
-    NationState {
-        common: NationCommonState {
-            owner_nation: i16::from(nation.get()),
-            treasury: 5_000,
-            home_tile: None,
-            trade_policy_by_nation: NationTable::default(),
-        },
-        data: NationData::Minor,
-    }
-}
-
-fn bootstrap_cities(
-    human_nation: MajorNationId,
-    difficulty: Difficulty,
-) -> MajorNationTable<Option<CityState>> {
+) -> MajorNationTable<Option<MajorNation>> {
     MajorNationTable::from_fn(|nation| {
         let human = nation == human_nation;
+        let treasury = if human {
+            STARTING_TREASURY_BY_DIFFICULTY[difficulty]
+        } else {
+            // IAutoGreatPower forces treasury to 10000 after IGreatPower.
+            10_000
+        };
         let preset_difficulty = if human {
             difficulty
         } else {
             // AI majors always use the Normal preset row.
             Difficulty::Normal
         };
-        Some(scenario_city(preset_difficulty, human))
+        Some(MajorNation {
+            common: NationCommonState {
+                treasury,
+                // Human Normal+ has no home tile until capital selection. AI homes are
+                // chosen later by SelectBestSecondaryHomeTileByFrogCityScore (needs tile
+                // post-passes).
+                home_tile: None,
+                trade_policy_by_nation: NationTable::default(),
+            },
+            state: MajorNationState {
+                diplomacy_eligible: human,
+                // Capacities after IGreatPower / IAutoGreatPower construction.
+                capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
+                grant_total_cost: 0,
+                unfilled_trade_offer_count: 0,
+                diplomacy_policy_by_nation: NationTable::default(),
+                diplomacy_grants_by_nation: NationTable::default(),
+                need_current_by_type: ResourceTable::default(),
+                need_target_by_type: ResourceTable::default(),
+                relation_delta_current: ResourceTable::default(),
+                purchased_items_by_resource: ResourceTable::default(),
+                item_potentials: ResourceTable::default(),
+                unfilled_trade_turns_by_resource: ResourceTable::default(),
+                transported_items_by_resource: ResourceTable::default(),
+                remembered_trade_offers_by_resource: ResourceTable::default(),
+                aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
+                budget_pool_base: 0,
+                budget_pool_delta: 0,
+                special_resource_trade_balance: 0,
+                candidate_nation_flags: NationTable::default(),
+                scenario_initialized: false,
+                turn_finished: true,
+                pending_action_status: crate::PendingActionTable::default(),
+                pending_action_payload_by_action: crate::PendingActionTable::default(),
+                diplomacy_budget_base: 20_000,
+                escalation_counter: 0,
+                pending_commitment_cost: 0,
+                pressure_counter: 0,
+                aid_allocation_total: 0,
+                colony_boycott_flags: NationTable::default(),
+                military_expenses: 0,
+            },
+            city: Some(scenario_city(preset_difficulty, human)),
+        })
+    })
+}
+
+fn bootstrap_minor_nations() -> MinorNationTable<Option<MinorNation>> {
+    MinorNationTable::from_fn(|_nation: MinorNationId| {
+        Some(MinorNation {
+            common: NationCommonState {
+                treasury: 5_000,
+                home_tile: None,
+                trade_policy_by_nation: NationTable::default(),
+            },
+        })
     })
 }
 
@@ -255,9 +237,9 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
             strength: labor.strength(),
             extra: 0,
             phase_value: 0,
-            baseline_labor: Some(labor),
-            production_labor: Some(labor),
-            pending_labor_delta: Some(LaborPool::default()),
+            baseline_labor: labor,
+            production_labor: labor,
+            pending_labor_delta: LaborPool::default(),
             predicted_need_by_resource: ResourceTable::default(),
         },
     }
@@ -267,7 +249,8 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
 mod tests {
     use super::*;
     use crate::{
-        Difficulty, ResourceKind, RetailTopologyByte, generate_random_setup_preview_with_clock_seed,
+        Difficulty, NationId, ResourceKind, RetailTopologyByte,
+        generate_random_setup_preview_with_clock_seed,
     };
 
     #[test]
@@ -293,32 +276,29 @@ mod tests {
             state.world.tiles[0].owner_nation
         );
 
-        let human = state.nations[NationId::new(6)].as_ref().unwrap();
+        let human = state.major_nations[MajorNationId::new(6)].as_ref().unwrap();
         assert_eq!(human.common.treasury, 10_000);
         assert_eq!(human.common.home_tile, None);
-        assert!(human.major().unwrap().diplomacy_eligible);
+        assert!(human.state.diplomacy_eligible);
 
-        let ai = state.nations[NationId::new(0)].as_ref().unwrap();
+        let ai = state.major_nations[MajorNationId::new(0)].as_ref().unwrap();
         assert_eq!(ai.common.treasury, 10_000);
-        assert!(!ai.major().unwrap().diplomacy_eligible);
+        assert!(!ai.state.diplomacy_eligible);
 
-        assert_eq!(state.nations.iter().flatten().count(), crate::NATION_COUNT);
         assert_eq!(
-            state.cities.iter().flatten().count(),
+            state.major_nations.iter().flatten().count(),
             crate::MAJOR_NATION_COUNT
         );
         assert_eq!(
-            state.cities[MajorNationId::new(6)]
-                .as_ref()
-                .unwrap()
-                .home_town_tile,
+            state.minor_nations.iter().flatten().count(),
+            crate::MINOR_NATION_COUNT
+        );
+        assert_eq!(
+            human.city.as_ref().unwrap().home_town_tile,
             Some(TileId::new(0))
         );
         assert_eq!(
-            state.cities[MajorNationId::new(6)]
-                .as_ref()
-                .unwrap()
-                .stock_by_type[ResourceKind::Food],
+            human.city.as_ref().unwrap().stock_by_type[ResourceKind::Food],
             20
         );
     }
