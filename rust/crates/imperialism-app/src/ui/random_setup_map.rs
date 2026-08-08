@@ -322,7 +322,10 @@ fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
 ) -> Vec<PaletteIndex> {
-    let owners: Vec<i8> = tiles.iter().map(|tile| tile.owner_nation).collect();
+    let owners: Vec<i8> = tiles
+        .iter()
+        .map(|tile| tile.owner.map_or(-1, |owner| owner.get() as i8))
+        .collect();
     compose_owner_preview_indices(&owners, selected_nation)
 }
 
@@ -491,16 +494,16 @@ fn preview_image(palette_indices: &[PaletteIndex], palette: &DibPalette) -> Imag
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH};
+    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, TileOwnerTag};
 
     fn tiles(owner: i8) -> Vec<GeneratedTerrainTile> {
         vec![
             GeneratedTerrainTile {
-                terrain_kind: 0,
+                terrain: 0,
                 river_sprite_code: 0,
-                owner_nation: owner,
-                gate_flag: -1,
-                province_index: -1,
+                owner: u8::try_from(owner).ok().map(TileOwnerTag::new),
+                province: None,
+                raw_gate: None,
             };
             STRATEGIC_TILE_COUNT
         ]
@@ -529,7 +532,7 @@ mod tests {
     #[test]
     fn retains_the_native_odd_row_stride_spill() {
         let mut map = tiles(-1);
-        map[STRATEGIC_MAP_WIDTH as usize + 107].owner_nation = 0;
+        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileOwnerTag::new(0));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 

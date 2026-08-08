@@ -51,7 +51,7 @@ fn check_initial_setup(result: &Path) -> Result<()> {
         );
     }
 
-    let preview = generate_random_setup_preview(expected.planet_seed.as_bytes(), expected.topology)
+    let preview = generate_random_setup_preview(expected.planet_seed.as_bytes(), expected.topology.topology())
         .context("could not replay the generated initial setup seed")?;
     let trace = generate_and_compare_terrain_capture(&terrain).map_err(|difference| {
         anyhow::anyhow!(
@@ -64,7 +64,7 @@ fn check_initial_setup(result: &Path) -> Result<()> {
     let mut terrain_rng = RetailLcg::from_state(terrain.generation.initial_map_lcg);
     let terrain_map = generate_random_map(
         terrain.scenario_tag.as_bytes(),
-        terrain.retail_topology,
+        terrain.retail_topology.topology(),
         &mut terrain_rng,
     );
     if preview.map != terrain_map {
@@ -191,7 +191,8 @@ mod tests {
     fn seed_one_initial_preview_reaches_the_native_final_state() {
         let setup = initial_defaults(1);
         let preview =
-            generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology).unwrap();
+            generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
+                .unwrap();
         assert_eq!(preview.map.tiles.len(), 6_480);
         assert_eq!(preview.map.provinces.len(), 120);
         assert_eq!(preview.final_map_lcg, 0x8c98_13e1);

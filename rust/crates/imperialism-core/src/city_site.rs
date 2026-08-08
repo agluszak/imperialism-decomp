@@ -257,14 +257,14 @@ fn river_crosses_nation_boundary_to_sea(
 mod tests {
     use super::*;
     use crate::{
-        Difficulty, MajorNationId, RetailTopologyByte, create_random_game,
+        Difficulty, MajorNationId, MapTopology, create_random_game,
         generate_random_setup_preview_with_clock_seed,
     };
 
     fn normal_start() -> GameState {
         let preview = generate_random_setup_preview_with_clock_seed(
             b"Woopnist",
-            RetailTopologyByte::from_wraps_horizontally(true),
+            MapTopology::Wrapping,
             1,
         );
         create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal)
@@ -353,7 +353,7 @@ mod tests {
     fn easy_path_binds_frog_city_without_selector() {
         let preview = generate_random_setup_preview_with_clock_seed(
             b"Woopnist",
-            RetailTopologyByte::from_wraps_horizontally(true),
+            MapTopology::Wrapping,
             1,
         );
         let mut state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy);

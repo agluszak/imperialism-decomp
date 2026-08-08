@@ -61,7 +61,7 @@ impl GameState {
 
     pub fn produce_civilian_recruits(
         &mut self,
-        nation: NationId,
+        nation: MajorNationId,
         order: &mut UnitProductionOrder,
     ) -> Result<(), RecruitmentError> {
         let pending_delta = order.quantity;
@@ -71,9 +71,7 @@ impl GameState {
         let RecruitKind::Civilian(unit_kind) = order.profile.recruit_kind else {
             return Err(RecruitmentError::SpecialistOrder);
         };
-        let city_index =
-            MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
-        let city = self.major_nations[city_index]
+        let city = self.major_nations[nation]
             .as_ref()
             .and_then(|major| major.city.as_ref())
             .ok_or(RecruitmentError::MissingCity(nation))?;
@@ -82,7 +80,7 @@ impl GameState {
             .filter(|tile| usize::from(tile.get()) < self.world.tiles.len())
             .ok_or(RecruitmentError::InvalidHomeTile)?;
 
-        let metric = &mut self.major_nations[city_index]
+        let metric = &mut self.major_nations[nation]
             .as_mut()
             .expect("city presence was checked")
             .city
@@ -92,6 +90,7 @@ impl GameState {
         *metric += pending_delta;
 
         if pending_delta > 0 {
+            let nation_id = nation.nation();
             for _ in 0..pending_delta {
                 let Some(tile) = self.world.find_reachable_recruit_spawn_tile(
                     &self.civilian_units,
@@ -104,7 +103,7 @@ impl GameState {
                 let id = CivilianUnitId::new(self.persistent_unit_id_counter);
                 let unit = CivilianUnitState {
                     id,
-                    nation,
+                    nation: nation_id,
                     unit_type: unit_kind,
                     tile: Some(tile),
                     raw_order_code: 0,
@@ -116,7 +115,7 @@ impl GameState {
                 let insert_at = self
                     .civilian_units
                     .iter()
-                    .position(|existing| existing.nation.get() > nation.get())
+                    .position(|existing| existing.nation.get() > nation_id.get())
                     .unwrap_or(self.civilian_units.len());
                 self.civilian_units.insert(insert_at, unit);
             }
@@ -124,7 +123,7 @@ impl GameState {
 
         order.quantity = 0;
         if unit_kind == CivilianUnitKind::Miner {
-            let city = self.major_nations[city_index]
+            let city = self.major_nations[nation]
                 .as_mut()
                 .expect("city presence was checked")
                 .city
@@ -137,7 +136,7 @@ impl GameState {
 
     pub fn produce_specialist_recruits(
         &mut self,
-        nation: NationId,
+        nation: MajorNationId,
         order: &mut UnitProductionOrder,
     ) -> Result<(), RecruitmentError> {
         let pending_delta = order.quantity;
@@ -147,9 +146,7 @@ impl GameState {
         let RecruitKind::Military(unit_kind) = order.profile.recruit_kind else {
             return Err(RecruitmentError::CivilianOrder);
         };
-        let nation_index =
-            MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
-        let major = self.major_nations[nation_index]
+        let major = self.major_nations[nation]
             .as_ref()
             .ok_or(RecruitmentError::MissingNation(nation))?;
         let city = major
@@ -175,13 +172,14 @@ impl GameState {
         };
 
         if pending_delta > 0 {
+            let nation_id = nation.nation();
             for _ in 0..pending_delta {
                 self.persistent_unit_id_counter += 1;
                 let id = MilitaryUnitId::new(self.persistent_unit_id_counter);
                 let experience = if experienced { 100 } else { 0 };
                 let unit = MilitaryUnitState {
                     id,
-                    nation,
+                    nation: nation_id,
                     unit_type: unit_kind,
                     stationed_province: home_province,
                     raw_order_code: 0,
@@ -199,11 +197,11 @@ impl GameState {
                 let insert_at = self
                     .military_units
                     .iter()
-                    .position(|existing| existing.nation.get() > nation.get())
+                    .position(|existing| existing.nation.get() > nation_id.get())
                     .unwrap_or(self.military_units.len());
                 self.military_units.insert(insert_at, unit);
 
-                let pending_status = self.major_nations[nation_index]
+                let pending_status = self.major_nations[nation]
                     .as_ref()
                     .expect("nation presence was checked")
                     .state
@@ -214,11 +212,11 @@ impl GameState {
                     } else {
                         i32::from(pending_status) - 0x33
                     };
-                    let military_power = self.selected_military_power_score(nation);
+                    let military_power = self.selected_military_power_score(nation_id);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, current_level)
                     {
-                        let major = &mut self.major_nations[nation_index]
+                        let major = &mut self.major_nations[nation]
                             .as_mut()
                             .expect("nation presence was checked")
                             .state;
@@ -232,7 +230,7 @@ impl GameState {
 
         insert_turn_summary(
             &mut self.rng,
-            &mut self.pending.nations[nation_index].turn_summary,
+            &mut self.pending.nations[nation].turn_summary,
             TurnSummary {
                 turn_tick: self.turn.economic_turn,
                 order_kind: 3,
@@ -242,7 +240,7 @@ impl GameState {
         );
         order.quantity = 0;
         if unit_kind == MilitaryUnitKind::Minutemen {
-            let city = self.major_nations[nation_index]
+            let city = self.major_nations[nation]
                 .as_mut()
                 .expect("city presence was checked")
                 .city
@@ -291,12 +289,10 @@ fn pending_military_action_payload(military_power: i32, current_level: i32) -> O
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum RecruitmentError {
-    #[error("nation {} has no city", .0.get())]
-    MissingCity(NationId),
-    #[error("nation {} has no nation state", .0.get())]
-    MissingNation(NationId),
-    #[error("nation {} has no major-nation state", .0.get())]
-    NotMajorNation(NationId),
+    #[error("major nation {} has no city", .0.get())]
+    MissingCity(MajorNationId),
+    #[error("major nation {} has no nation state", .0.get())]
+    MissingNation(MajorNationId),
     #[error("city has no valid recruit origin tile")]
     InvalidHomeTile,
     #[error("city's recruit origin has no province")]
@@ -524,7 +520,7 @@ mod tests {
         let mut production = order(CivilianUnitKind::Forester, 2);
 
         state
-            .produce_civilian_recruits(NationId::new(0), &mut production)
+            .produce_civilian_recruits(MajorNationId::new(0), &mut production)
             .unwrap();
 
         assert_eq!(state.civilian_units.len(), 2);
@@ -553,7 +549,7 @@ mod tests {
         let mut production = order(CivilianUnitKind::Miner, -2);
 
         state
-            .produce_civilian_recruits(NationId::new(0), &mut production)
+            .produce_civilian_recruits(MajorNationId::new(0), &mut production)
             .unwrap();
 
         assert!(state.civilian_units.is_empty());
@@ -596,7 +592,7 @@ mod tests {
         let mut production = specialist_order(MilitaryUnitKind::Sappers, 1);
 
         state
-            .produce_specialist_recruits(NationId::new(0), &mut production)
+            .produce_specialist_recruits(MajorNationId::new(0), &mut production)
             .unwrap();
 
         assert_eq!(
@@ -644,7 +640,7 @@ mod tests {
         let mut production = specialist_order(MilitaryUnitKind::Skirmishers, 2);
 
         state
-            .produce_specialist_recruits(NationId::new(0), &mut production)
+            .produce_specialist_recruits(MajorNationId::new(0), &mut production)
             .unwrap();
 
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
@@ -698,7 +694,7 @@ mod tests {
         let mut production = specialist_order(MilitaryUnitKind::Minutemen, -2);
 
         state
-            .produce_specialist_recruits(NationId::new(0), &mut production)
+            .produce_specialist_recruits(MajorNationId::new(0), &mut production)
             .unwrap();
 
         assert!(state.military_units.is_empty());

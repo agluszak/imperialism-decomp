@@ -88,7 +88,7 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 mod tests {
     use super::*;
     use imperialism_core::{
-        DiplomacyGrant, DiplomacyGrantFlags, MajorNationId, MilitaryUnitKind, MinorNationId,
+        DiplomacyGrant, MajorNationId, MilitaryUnitKind, MinorNationId,
         NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable,
         SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
     };
@@ -102,7 +102,7 @@ mod tests {
 
     #[derive(Debug, Deserialize)]
     struct SpecialistRecruitmentCase {
-        nation: NationId,
+        nation: MajorNationId,
         unit_kind: MilitaryUnitKind,
         quantity: i16,
     }
@@ -265,7 +265,7 @@ mod tests {
                     case.target,
                     Some(DiplomacyGrant {
                         amount: case.amount,
-                        flags: DiplomacyGrantFlags::empty(),
+                        recurring: false,
                     }),
                 )?;
                 anyhow::ensure!(accepted, "Rust rejected the diplomacy grant");

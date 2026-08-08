@@ -21,7 +21,7 @@ fn main() -> Result<()> {
     let options = Options::parse();
     let setup = read_random_game_setup(&options.result)
         .with_context(|| format!("could not read {}", options.result.display()))?;
-    let preview = generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology)
+    let preview = generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
         .with_context(|| {
             format!(
                 "could not replay the explicit setup seed {:?}",

@@ -24,7 +24,7 @@ pub fn generate_and_compare_terrain_capture(
     let mut rng = RetailLcg::from_state(capture.generation.initial_map_lcg);
     let actual = trace_random_map_terrain(
         capture.scenario_tag.as_bytes(),
-        capture.retail_topology,
+        capture.retail_topology.topology(),
         &mut rng,
     );
     if let Some(difference) = first_serialized_difference(&capture.generation, &actual)
@@ -150,7 +150,7 @@ mod tests {
         let retail_topology = RetailTopologyByte::from_retail_byte(0);
         let mut rng = RetailLcg::from_state(3_122_877_655);
         let generation =
-            trace_random_map_terrain(scenario_tag.as_bytes(), retail_topology, &mut rng);
+            trace_random_map_terrain(scenario_tag.as_bytes(), retail_topology.topology(), &mut rng);
         RandomMapTerrainCapture {
             scenario_tag,
             retail_topology,
@@ -224,7 +224,7 @@ mod tests {
     fn random_game_setup_capture_replays_its_explicit_preview_seed() {
         let capture = random_game_setup_capture();
         let preview =
-            generate_random_setup_preview(capture.planet_seed.as_bytes(), capture.topology)
+            generate_random_setup_preview(capture.planet_seed.as_bytes(), capture.topology.topology())
                 .unwrap();
         assert_eq!(preview.map.tiles.len(), 6_480);
         assert_eq!(preview.map.provinces.len(), 120);

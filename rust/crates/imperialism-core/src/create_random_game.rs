@@ -2,8 +2,8 @@ use crate::{
     CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool, MajorNation, MajorNationId,
     MajorNationState, MajorNationTable, MinorNation, MinorNationId, MinorNationTable,
     NationCapacities, NationCommonState, NationPendingWork, NationTable, PendingWorkState,
-    PopulationState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState,
-    TileId, TileOwnerTag, TileState, TurnState, WorldState,
+    PopulationState, ProductionTable, RandomSetupPreview, ResourceTable, RngState, TileId,
+    TileState, TurnState, WorldState,
 };
 use enum_map::EnumMap;
 
@@ -97,13 +97,12 @@ pub fn create_random_game(
 }
 
 fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
-    let owner = u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new);
     TileState {
-        terrain_kind: tile.terrain_kind,
-        owner_nation: owner,
+        terrain_kind: tile.terrain,
+        owner_nation: tile.owner,
         // Retail stamps former owners from the generation owners before Accept.
-        former_owner_nation: owner,
-        province: u16::try_from(tile.province_index).ok().map(ProvinceId::new),
+        former_owner_nation: tile.owner,
+        province: tile.province,
         development_classes: 0,
         edge_resources: [None, None],
         rail_flags: 0,
@@ -249,7 +248,7 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
 mod tests {
     use super::*;
     use crate::{
-        Difficulty, NationId, ResourceKind, RetailTopologyByte,
+        Difficulty, MapTopology, NationId, ResourceKind,
         generate_random_setup_preview_with_clock_seed,
     };
 
@@ -257,7 +256,7 @@ mod tests {
     fn creates_a_normal_start_boundary_from_the_retained_preview() {
         let preview = generate_random_setup_preview_with_clock_seed(
             b"Woopnist",
-            RetailTopologyByte::from_wraps_horizontally(true),
+            MapTopology::Wrapping,
             1,
         );
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal);
@@ -269,7 +268,7 @@ mod tests {
         assert_eq!(state.world.tiles.len(), crate::STRATEGIC_TILE_COUNT);
         assert_eq!(
             state.world.tiles[0].terrain_kind,
-            preview.map.tiles[0].terrain_kind
+            preview.map.tiles[0].terrain
         );
         assert_eq!(
             state.world.tiles[0].former_owner_nation,

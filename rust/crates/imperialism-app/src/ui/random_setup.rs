@@ -179,7 +179,7 @@ fn initialize_random_setup(
         &mut preview,
         generate_random_setup_preview_with_clock_seed(
             setup.planet_seed.as_bytes(),
-            setup.topology,
+            setup.topology.topology(),
             clock_seed.0,
         ),
     );
@@ -456,7 +456,7 @@ fn regenerate_random_setup_planet(
         preview,
         generate_random_setup_preview_with_clock_seed(
             setup.planet_seed.as_bytes(),
-            setup.topology,
+            setup.topology.topology(),
             clock_seed,
         ),
     );
@@ -560,7 +560,7 @@ fn commit_planet_seed_dialog(commit: &mut PlanetSeedCommit<'_, '_>) {
             &mut commit.preview,
             generate_random_setup_preview_with_clock_seed(
                 commit.setup.planet_seed.as_bytes(),
-                commit.setup.topology,
+                commit.setup.topology.topology(),
                 commit.clock_seed.0,
             ),
         );
@@ -800,7 +800,7 @@ mod tests {
             app.world().resource::<RandomSetupPreview>().preview,
             Some(generate_random_setup_preview_with_clock_seed(
                 b"Woopnist",
-                RetailTopologyByte::from_wraps_horizontally(true),
+                RetailTopologyByte::from_wraps_horizontally(true).topology(),
                 1,
             ))
         );

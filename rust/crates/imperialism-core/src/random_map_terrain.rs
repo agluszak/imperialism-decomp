@@ -2,8 +2,8 @@
 use crate::random_map::trace_coarse_random_map;
 use crate::{
     CoarseMap, EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, MapGeometry,
-    RANDOM_MAP_CLASS_COUNT, RetailLcg, RetailTopologyByte, TileId, generate_coarse_random_map,
-    hash_retail_scenario_tag,
+    MapTopology, ProvinceId, RANDOM_MAP_CLASS_COUNT, RetailLcg, RetailTopologyByte, TileId,
+    TileOwnerTag, generate_coarse_random_map, hash_retail_scenario_tag,
 };
 use serde::{Deserialize, Serialize};
 
@@ -114,13 +114,41 @@ impl RandomMapTuning {
     }
 }
 
+/// Scratch tile used while the retail random-map pipeline mutates raw fields.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct ScratchTerrainTile {
+    terrain_kind: i8,
+    river_sprite_code: u8,
+    owner_nation: i8,
+    gate_flag: i8,
+    province_index: i16,
+}
+
+impl ScratchTerrainTile {
+    fn into_generated(self) -> GeneratedTerrainTile {
+        GeneratedTerrainTile {
+            terrain: self.terrain_kind,
+            river_sprite_code: self.river_sprite_code,
+            owner: u8::try_from(self.owner_nation)
+                .ok()
+                .map(TileOwnerTag::new),
+            province: u16::try_from(self.province_index)
+                .ok()
+                .map(ProvinceId::new),
+            raw_gate: (self.gate_flag != -1).then_some(self.gate_flag),
+        }
+    }
+}
+
+/// One expanded strategic tile after random-map generation.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GeneratedTerrainTile {
-    pub terrain_kind: i8,
+    pub terrain: i8,
     pub river_sprite_code: u8,
-    pub owner_nation: i8,
-    pub gate_flag: i8,
-    pub province_index: i16,
+    pub owner: Option<TileOwnerTag>,
+    pub province: Option<ProvinceId>,
+    /// Opaque until gate-flag semantics are recovered. `-1` becomes `None`.
+    pub raw_gate: Option<i8>,
 }
 
 /// The final terrain map used to create a game. The supplied [`RetailLcg`] has
@@ -141,7 +169,7 @@ pub struct GeneratedMap {
 pub struct RandomSetupPreview {
     /// The topology used for the retained map. Accept must not be able to
     /// commit a different topology than the one it previews.
-    pub topology: RetailTopologyByte,
+    pub topology: MapTopology,
     pub map: GeneratedMap,
     pub final_map_lcg: u32,
 }
@@ -200,7 +228,7 @@ pub struct RandomMapTerrainCapture {
 
 pub fn generate_random_map(
     scenario_tag: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
     rng: &mut RetailLcg,
 ) -> GeneratedMap {
     let tuning = RandomMapTuning::from_scenario_tag(scenario_tag);
@@ -222,7 +250,7 @@ pub fn generate_random_map(
 /// requires its caller to handle explicitly.
 pub fn generate_random_setup_preview(
     seed: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
 ) -> Result<RandomSetupPreview, RandomSetupPreviewError> {
     let mut rng = retail_random_setup_lcg(seed)?;
     Ok(generate_random_setup_preview_from_lcg(
@@ -239,7 +267,7 @@ pub fn generate_random_setup_preview(
 /// seed.
 pub fn generate_random_setup_preview_with_clock_seed(
     seed: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
     clock_seed: u32,
 ) -> RandomSetupPreview {
     let mut rng = retail_random_setup_lcg_with_clock_seed(seed, clock_seed);
@@ -248,7 +276,7 @@ pub fn generate_random_setup_preview_with_clock_seed(
 
 fn generate_random_setup_preview_from_lcg(
     seed: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
     rng: &mut RetailLcg,
 ) -> RandomSetupPreview {
     let map = generate_random_map(seed, topology, rng);
@@ -294,7 +322,7 @@ fn retail_random_setup_lcg_from_seed_state(seed: u32) -> RetailLcg {
 #[cfg(feature = "differential-trace")]
 pub fn trace_random_map_terrain(
     scenario_tag: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
     rng: &mut RetailLcg,
 ) -> RandomMapTerrainTrace {
     let tuning = RandomMapTuning::from_scenario_tag(scenario_tag);
@@ -311,14 +339,14 @@ pub fn trace_random_map_terrain(
 
 fn generate_random_map_impl(
     scenario_tag: &[u8],
-    topology: RetailTopologyByte,
+    topology: MapTopology,
     tuning: RandomMapTuning,
     rng: &mut RetailLcg,
     #[cfg(feature = "differential-trace")] mut attempts: Option<
         &mut Vec<RandomMapTerrainAttemptTrace>,
     >,
 ) -> GeneratedMap {
-    let geometry = MapGeometry::new(topology.wraps_horizontally());
+    let geometry = MapGeometry::from_topology(topology);
     loop {
         #[cfg(feature = "differential-trace")]
         let (coarse_map, coarse_trace) = if attempts.is_some() {
@@ -333,7 +361,7 @@ fn generate_random_map_impl(
         let (expanded_tiles, provinces) = coarse_map.expanded_seed_data();
         let mut tiles = expanded_tiles
             .iter()
-            .map(|tile| GeneratedTerrainTile {
+            .map(|tile| ScratchTerrainTile {
                 terrain_kind: tile.terrain_kind,
                 river_sprite_code: 0,
                 owner_nation: tile.owner_nation,
@@ -398,7 +426,10 @@ fn generate_random_map_impl(
         }
         if accepted {
             return GeneratedMap {
-                tiles,
+                tiles: tiles
+                    .into_iter()
+                    .map(ScratchTerrainTile::into_generated)
+                    .collect(),
                 provinces,
                 seed_candidate_tiles,
             };
@@ -407,13 +438,13 @@ fn generate_random_map_impl(
 }
 
 #[cfg(feature = "differential-trace")]
-fn summarize_stage(tiles: &[GeneratedTerrainTile], map_lcg: u32) -> RandomMapTerrainStageTrace {
+fn summarize_stage(tiles: &[ScratchTerrainTile], map_lcg: u32) -> RandomMapTerrainStageTrace {
     summarize_stage_with_water_ownership(tiles, map_lcg, true)
 }
 
 #[cfg(feature = "differential-trace")]
 fn summarize_keyword_stage(
-    tiles: &[GeneratedTerrainTile],
+    tiles: &[ScratchTerrainTile],
     map_lcg: u32,
 ) -> RandomMapTerrainStageTrace {
     summarize_stage_with_water_ownership(tiles, map_lcg, false)
@@ -421,7 +452,7 @@ fn summarize_keyword_stage(
 
 #[cfg(feature = "differential-trace")]
 fn summarize_stage_with_water_ownership(
-    tiles: &[GeneratedTerrainTile],
+    tiles: &[ScratchTerrainTile],
     map_lcg: u32,
     include_water_ownership: bool,
 ) -> RandomMapTerrainStageTrace {
@@ -468,7 +499,7 @@ fn summarize_stage_with_water_ownership(
 }
 
 fn randomize_templates_and_smooth(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     coarse: &CoarseMap,
     geometry: MapGeometry,
     rng: &mut RetailLcg,
@@ -484,7 +515,7 @@ fn randomize_templates_and_smooth(
 }
 
 fn randomize_template_banks(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     coarse_index: i32,
     base: i16,
     class3: i16,
@@ -524,7 +555,7 @@ fn randomize_template_banks(
 }
 
 fn smooth_ownership(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     rng: &mut RetailLcg,
 ) {
@@ -567,7 +598,7 @@ fn smooth_ownership(
 }
 
 fn place_terrain_features(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     tuning: RandomMapTuning,
     rng: &mut RetailLcg,
@@ -648,7 +679,7 @@ fn place_terrain_features(
 }
 
 fn seed_mountain_range(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     tile_index: i32,
     retry_budget: i32,
@@ -706,7 +737,7 @@ fn seed_mountain_range(
     placed
 }
 
-fn create_deserts(tiles: &mut [GeneratedTerrainTile], geometry: MapGeometry, rng: &mut RetailLcg) {
+fn create_deserts(tiles: &mut [ScratchTerrainTile], geometry: MapGeometry, rng: &mut RetailLcg) {
     let mut remaining = 250;
     let mut chance_step: i32 = 5;
     let mut upper_row = 0;
@@ -741,7 +772,7 @@ fn create_deserts(tiles: &mut [GeneratedTerrainTile], geometry: MapGeometry, rng
 // Retail advances this record pointer linearly while wrapping a separate logical column.
 #[allow(clippy::explicit_counter_loop)]
 fn desert_ring(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     row: i32,
     chance: i32,
@@ -798,7 +829,7 @@ fn desert_ring(
 }
 
 fn place_forest(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     tile_index: i32,
     retry_budget: i32,
@@ -828,7 +859,7 @@ fn place_forest(
 }
 
 fn create_rivers(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     river_count: i32,
     rng: &mut RetailLcg,
@@ -866,7 +897,7 @@ fn create_rivers(
 
 #[allow(clippy::too_many_arguments)]
 fn grow_river(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     tile: usize,
     incoming_direction: usize,
@@ -923,7 +954,7 @@ fn grow_river(
     true
 }
 
-fn rotate_map_columns(tiles: &mut [GeneratedTerrainTile]) -> usize {
+fn rotate_map_columns(tiles: &mut [ScratchTerrainTile]) -> usize {
     let counts = (0..EXPANDED_MAP_WIDTH)
         .map(|column| {
             (0..EXPANDED_MAP_HEIGHT)
@@ -978,7 +1009,7 @@ fn rotate_map_columns(tiles: &mut [GeneratedTerrainTile]) -> usize {
 /// this subpass must live here because it owns both the water owner codes and the intervening LCG
 /// draws observed by every keyword and final seed-candidate validation.
 fn generate_water_region_ids(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     geometry: MapGeometry,
     region_rows: i32,
     region_columns: i32,
@@ -1132,7 +1163,7 @@ fn step_water_seed(
 }
 
 fn apply_scenario_keyword_override(
-    tiles: &mut [GeneratedTerrainTile],
+    tiles: &mut [ScratchTerrainTile],
     tag: &[u8],
     rng: &mut RetailLcg,
 ) {
@@ -1214,7 +1245,7 @@ fn apply_scenario_keyword_override(
 }
 
 fn validate_seed_candidates(
-    tiles: &[GeneratedTerrainTile],
+    tiles: &[ScratchTerrainTile],
     geometry: MapGeometry,
     rng: &mut RetailLcg,
 ) -> (bool, [i32; RANDOM_MAP_CLASS_COUNT]) {
@@ -1305,7 +1336,7 @@ fn fine_cell_base(coarse_index: i32) -> i32 {
     column * 4 + row * 4 * 108 - if row & 1 != 0 { 2 } else { 0 }
 }
 
-fn copy_tile(tiles: &mut [GeneratedTerrainTile], destination: i32, source: i32) {
+fn copy_tile(tiles: &mut [ScratchTerrainTile], destination: i32, source: i32) {
     let source = tiles[usize::try_from(source).expect("retail template source became negative")];
     tiles[usize::try_from(destination).expect("retail template destination became negative")] =
         source;
@@ -1317,12 +1348,17 @@ mod tests {
 
     fn final_tile_hash(tiles: &[GeneratedTerrainTile]) -> u32 {
         tiles.iter().fold(0x811c_9dc5, |hash, tile| {
-            let province = tile.province_index.to_le_bytes();
+            let owner = tile.owner.map_or(-1_i8, |owner| owner.get() as i8);
+            let gate = tile.raw_gate.unwrap_or(-1);
+            let province = tile
+                .province
+                .map_or(-1_i16, |province| province.get() as i16)
+                .to_le_bytes();
             [
-                tile.terrain_kind as u8,
+                tile.terrain as u8,
                 tile.river_sprite_code,
-                tile.owner_nation as u8,
-                tile.gate_flag as u8,
+                owner as u8,
+                gate as u8,
                 province[0],
                 province[1],
             ]
@@ -1392,28 +1428,28 @@ mod tests {
     #[test]
     fn keyword_overrides_preserve_conditional_draw_order() {
         let original = [
-            GeneratedTerrainTile {
+            ScratchTerrainTile {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
                 owner_nation: 0,
                 gate_flag: -1,
                 province_index: 0,
             },
-            GeneratedTerrainTile {
+            ScratchTerrainTile {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
                 owner_nation: 1,
                 gate_flag: -1,
                 province_index: 1,
             },
-            GeneratedTerrainTile {
+            ScratchTerrainTile {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
                 owner_nation: 6,
                 gate_flag: -1,
                 province_index: 2,
             },
-            GeneratedTerrainTile {
+            ScratchTerrainTile {
                 terrain_kind: WATER,
                 river_sprite_code: 0,
                 owner_nation: 23,
@@ -1455,14 +1491,14 @@ mod tests {
         let mut rng = RetailLcg::from_state(3_122_877_655);
         let generated = generate_random_map(
             b"ordinary",
-            RetailTopologyByte::from_retail_byte(0),
+            MapTopology::Wrapping,
             &mut rng,
         );
         assert_eq!(generated.provinces.len(), 120);
         assert_eq!(generated.tiles.len(), TILE_COUNT);
         let mut terrain_counts = [0_u32; 8];
         for tile in &generated.tiles {
-            terrain_counts[usize::try_from(tile.terrain_kind).unwrap()] += 1;
+            terrain_counts[usize::try_from(tile.terrain).unwrap()] += 1;
         }
         assert_eq!(terrain_counts, [440, 252, 250, 156, 150, 4_538, 343, 351]);
         assert_eq!(
@@ -1478,7 +1514,7 @@ mod tests {
 
     #[test]
     fn setup_preview_hashes_then_advances_the_retail_map_lcg() {
-        let topology = RetailTopologyByte::from_retail_byte(0);
+        let topology = MapTopology::Wrapping;
         let mut expected_rng = RetailLcg::from_state(3_122_877_655);
         let expected = generate_random_map(b"ordinary", topology, &mut expected_rng);
 
@@ -1511,7 +1547,7 @@ mod tests {
         let mut rng = RetailLcg::from_state(3_122_877_655);
         let trace = trace_random_map_terrain(
             b"ordinary",
-            RetailTopologyByte::from_retail_byte(0),
+            MapTopology::Wrapping,
             &mut rng,
         );
         let final_attempt = trace.attempts.last().unwrap();

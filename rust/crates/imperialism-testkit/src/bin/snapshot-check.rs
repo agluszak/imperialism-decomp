@@ -20,10 +20,10 @@ fn main() -> anyhow::Result<()> {
     let state = read_game_state(&args.result)
         .with_context(|| format!("reading game state {}", args.result.display()))?;
     println!(
-        "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions",
+        "{} tiles, {} major nations, {} minor nations, {} military units, {} civilian units, {} ships, {} missions",
         state.world.tiles.len(),
-        state.nations.iter().flatten().count(),
-        state.cities.iter().flatten().count(),
+        state.major_nations.iter().flatten().count(),
+        state.minor_nations.iter().flatten().count(),
         state.military_units.len(),
         state.civilian_units.len(),
         state.ships.len(),
