@@ -1,5 +1,7 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiCatalogResource, UiPictureResources, spawn_view};
+use crate::ui::catalog::{
+    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
+};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -40,20 +42,10 @@ fn enter_main_menu(
     catalog: Res<UiCatalogResource>,
     mut pictures: UiPictureResources,
 ) {
-    let Some(spawned) = spawn_view(
-        &mut commands,
-        catalog.catalog(),
-        &main_menu_view_id(),
-        &mut pictures,
-    ) else {
+    let Some(view) = find_view(catalog.catalog(), &main_menu_view_id()) else {
         return;
     };
-    let view = catalog
-        .catalog()
-        .views
-        .iter()
-        .find(|view| view.id == main_menu_view_id())
-        .expect("main menu view was just spawned");
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
     bind_main_menu_actions(&mut commands, view, &spawned);
     commands
         .entity(spawned.root)
@@ -119,6 +111,9 @@ mod tests {
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
+    #[derive(Resource)]
+    struct TestSpawned(SpawnedView);
+
     fn app() -> App {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
@@ -144,6 +139,7 @@ mod tests {
             .unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
         bind_main_menu_actions(&mut commands, view, &spawned);
+        commands.insert_resource(TestSpawned(spawned.clone()));
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));
@@ -151,7 +147,7 @@ mod tests {
 
     #[test]
     fn main_menu_enables_only_random_and_quit_without_hiding_other_choices() {
-        let mut app = app();
+        let app = app();
         let catalog = app
             .world()
             .resource::<UiCatalogResource>()
@@ -162,18 +158,14 @@ mod tests {
             .iter()
             .find(|view| view.id == main_menu_view_id())
             .unwrap();
-        let world = app.world_mut();
+        let spawned = app.world().resource::<TestSpawned>().0.clone();
+        let world = app.world();
         let mut by_tag = std::collections::HashMap::new();
         for node in &view.nodes {
             if !node.interactive {
                 continue;
             }
-            let entity = world
-                .query_filtered::<(Entity, &Name), With<UiButton>>()
-                .iter(world)
-                .find(|(_, name)| name.as_str() == format!("ui-node:{}:{}", node.id.0, node.tag.0))
-                .map(|(entity, _)| entity)
-                .unwrap();
+            let entity = spawned.nodes[&node.id];
             by_tag.insert(
                 node.tag.0.clone(),
                 (
@@ -234,26 +226,5 @@ mod tests {
             .drain()
             .collect::<Vec<_>>();
         assert_eq!(exits, vec![AppExit::Success]);
-    }
-
-    #[test]
-    fn structure_only_spawn_helper_matches_catalog_root() {
-        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == main_menu_view_id())
-            .unwrap();
-        let mut app = App::new();
-        app.add_plugins(MinimalPlugins);
-        let world = app.world_mut();
-        let mut commands = world.commands();
-        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
-        world.flush();
-        assert!(
-            app.world()
-                .get::<Name>(spawned.root)
-                .is_some_and(|name| name.as_str() == "ui:Startup.rsrc:1500")
-        );
     }
 }

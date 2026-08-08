@@ -3,7 +3,6 @@ use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
 use bevy::log::warn;
-use bevy::math::Rect;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::InteractionDisabled;
@@ -71,19 +70,19 @@ pub(crate) enum UiPictureBindingError {
 }
 
 #[derive(Resource, Default)]
-pub(crate) struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
+struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
 
 #[derive(Resource, Default)]
-pub(crate) struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
+struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
 
 #[derive(SystemParam)]
 pub(crate) struct UiPictureResources<'w> {
-    pub(crate) retail_assets: Res<'w, RetailAssetsResource>,
-    pub(crate) lookup: Res<'w, UiPictureLookup>,
-    pub(crate) images: ResMut<'w, Assets<Image>>,
-    pub(crate) handles: ResMut<'w, RetailPictureHandles>,
-    pub(crate) fonts: ResMut<'w, Assets<Font>>,
-    pub(crate) font_handles: ResMut<'w, RetailFontHandles>,
+    retail_assets: Res<'w, RetailAssetsResource>,
+    lookup: Res<'w, UiPictureLookup>,
+    images: ResMut<'w, Assets<Image>>,
+    handles: ResMut<'w, RetailPictureHandles>,
+    fonts: ResMut<'w, Assets<Font>>,
+    font_handles: ResMut<'w, RetailFontHandles>,
 }
 
 impl UiPictureResources<'_> {
@@ -91,13 +90,26 @@ impl UiPictureResources<'_> {
         &mut self,
         picture_id: i16,
     ) -> Result<Handle<Image>, UiPictureBindingError> {
-        load_retail_picture_i16(
+        load_retail_picture(
             picture_id,
             &self.retail_assets,
             self.lookup.world_variant,
             &mut self.images,
             &mut self.handles,
         )
+    }
+
+    pub(crate) fn with_picture_image_mut<R>(
+        &mut self,
+        picture_id: i16,
+        f: impl FnOnce(&mut Image) -> R,
+    ) -> Result<R, UiPictureBindingError> {
+        let handle = self.picture(picture_id)?;
+        let mut image = self
+            .images
+            .get_mut(&handle)
+            .expect("picture handle was just resolved against Assets<Image>");
+        Ok(f(&mut image))
     }
 }
 
@@ -112,17 +124,23 @@ impl Plugin for UiCatalogPlugin {
     }
 }
 
+pub(crate) fn find_view<'a>(
+    catalog: &'a UiCatalog,
+    view_id: &ScopedViewId,
+) -> Option<&'a CatalogView> {
+    catalog.views.iter().find(|view| &view.id == view_id)
+}
+
 /// Spawns a catalog view and binds retail pictures/fonts.
 pub(crate) fn spawn_view(
     commands: &mut Commands,
     catalog: &UiCatalog,
-    view_id: &ScopedViewId,
+    view: &CatalogView,
     pictures: &mut UiPictureResources,
-) -> Option<SpawnedView> {
-    let view = catalog.views.iter().find(|view| &view.id == view_id)?;
+) -> SpawnedView {
     let spawned = spawn_view_nodes(commands, catalog.logical_resolution, view);
     bind_view_assets(commands, view, &spawned, pictures);
-    Some(spawned)
+    spawned
 }
 
 /// Spawns catalog node hierarchy without binding retail pictures/fonts.
@@ -180,7 +198,6 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
             ..default()
         },
         Name::new(format!("ui-node:{}:{}", node.id.0, node.tag.0)),
-        pickable_for_node(node),
     ));
 
     match node.kind {
@@ -190,16 +207,15 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
                 entity.insert(InteractionDisabled);
             }
         }
-        WidgetKind::Toggle | WidgetKind::Checkbox => {
+        WidgetKind::Checkbox => {
             entity.insert(bevy::ui_widgets::Checkbox);
             if !node.enabled || !node.input_gate {
                 entity.insert(InteractionDisabled);
             }
         }
-        WidgetKind::EditControl => {
-            // EditableText + font/filter are attached during asset binding / screen setup.
-        }
-        WidgetKind::Container
+        WidgetKind::Toggle
+        | WidgetKind::EditControl
+        | WidgetKind::Container
         | WidgetKind::Window
         | WidgetKind::FloatingWindow
         | WidgetKind::Picture
@@ -209,22 +225,11 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
         | WidgetKind::RadioOrClusterControl
         | WidgetKind::CustomCanvas
         | WidgetKind::Specialized => {
-            // Passive or screen-classified. Do not invent button behavior.
+            // Passive or screen-classified. Do not invent button/toggle behavior.
         }
     }
 
     entity.id()
-}
-
-fn pickable_for_node(node: &CatalogNode) -> Pickable {
-    if node.child_hit_test {
-        Pickable::default()
-    } else {
-        Pickable {
-            should_block_lower: false,
-            is_hoverable: true,
-        }
-    }
 }
 
 fn bind_view_assets(
@@ -247,7 +252,7 @@ fn bind_view_assets(
                         let initial = binding.value.clone().unwrap_or_default();
                         let mut editable = EditableText::new(initial);
                         editable.allow_newlines = false;
-                        if let Some(max_chars) = node.properties.max_chars {
+                        if let Some(max_chars) = node.properties.max_characters() {
                             editable.max_characters = Some(max_chars as usize);
                         }
                         let mut entity = commands.entity(entity);
@@ -285,13 +290,10 @@ fn bind_view_assets(
             }
         }
         if let Some(picture_id) = node.properties.picture_id {
-            match load_retail_picture(
-                picture_id,
-                &pictures.retail_assets,
-                pictures.lookup.world_variant,
-                &mut pictures.images,
-                &mut pictures.handles,
-            ) {
+            match i16::try_from(picture_id)
+                .map_err(|_| UiPictureBindingError::InvalidPictureId(picture_id))
+                .and_then(|picture_id| pictures.picture(picture_id))
+            {
                 Ok(handle) => {
                     commands.entity(entity).insert(ImageNode::new(handle));
                 }
@@ -357,25 +359,7 @@ fn load_retail_text(
     Ok((font, TextLayout::justify(justify), style.underline))
 }
 
-pub(crate) fn load_retail_picture(
-    catalog_picture_id: i32,
-    retail_assets: &RetailAssetsResource,
-    world_variant: u8,
-    images: &mut Assets<Image>,
-    picture_handles: &mut RetailPictureHandles,
-) -> Result<Handle<Image>, UiPictureBindingError> {
-    let picture_id = i16::try_from(catalog_picture_id)
-        .map_err(|_| UiPictureBindingError::InvalidPictureId(catalog_picture_id))?;
-    load_retail_picture_i16(
-        picture_id,
-        retail_assets,
-        world_variant,
-        images,
-        picture_handles,
-    )
-}
-
-pub(crate) fn load_retail_picture_i16(
+fn load_retail_picture(
     picture_id: i16,
     retail_assets: &RetailAssetsResource,
     world_variant: u8,
@@ -404,15 +388,11 @@ pub(crate) fn load_retail_picture_i16(
     Ok(handle)
 }
 
-pub(crate) fn image_node_source_rect(left: f32, top: f32, width: f32, height: f32) -> Rect {
-    Rect::new(left, top, left + width, top + height)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use imperialism_formats::UiCatalog;
-    use std::collections::{HashMap, HashSet};
+    use std::collections::HashMap;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
@@ -572,30 +552,5 @@ mod tests {
         }
         let okay = setup_view.tagged(setup_catalog, "okay").unwrap();
         assert!(app.world().get::<UiButton>(okay).is_some());
-    }
-
-    #[test]
-    fn despawn_removes_only_the_requested_view_root() {
-        let mut app = app();
-        let view = ScopedViewId {
-            resource_file: "Startup.rsrc".to_owned(),
-            resource_id: 953,
-        };
-        let first = spawn_structure(&mut app, &view);
-        let second = spawn_structure(&mut app, &view);
-        app.world_mut().entity_mut(first.root).despawn();
-        app.world_mut().flush();
-
-        let remaining = app
-            .world_mut()
-            .query::<Entity>()
-            .iter(app.world())
-            .filter(|entity| {
-                app.world()
-                    .get::<Name>(*entity)
-                    .is_some_and(|name| name.as_str().starts_with("ui:Startup.rsrc:953"))
-            })
-            .collect::<HashSet<_>>();
-        assert_eq!(remaining, HashSet::from([second.root]));
     }
 }

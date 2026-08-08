@@ -5,6 +5,7 @@ mod calendar;
 mod city_buildings;
 mod city_economy;
 mod city_industry;
+mod city_site;
 mod create_random_game;
 mod difficulty;
 mod ids;
@@ -26,6 +27,11 @@ mod units;
 
 pub use calendar::TurnCalendar;
 pub use city_buildings::{BuildingWindowState, ProductionSlot};
+pub use city_site::{
+    CitySiteError, confirm_capital_site, enter_strategic_map_without_capital_selection,
+    is_valid_secondary_nation_home_tile_candidate, place_city, requires_capital_site_selection,
+    supports_city_site_terrain, validate_capital_site_selection,
+};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
@@ -53,7 +59,7 @@ pub use random_map_terrain::{
     RandomSetupPreviewError, generate_random_map, generate_random_setup_preview,
     generate_random_setup_preview_with_clock_seed,
 };
-pub use random_setup_name::generate_english_random_setup_name;
+pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setup_name};
 
 /// Instrumentation used only by the C++ differential test harness. It is not
 /// enabled by `imperialism-core`'s default feature set and must not be used by

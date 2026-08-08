@@ -1,5 +1,7 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiCatalogResource, UiPictureResources, spawn_view};
+use crate::ui::catalog::{
+    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
+};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button as UiButton};
@@ -82,6 +84,9 @@ impl Plugin for GameScreensPlugin {
     }
 }
 
+#[derive(Component, Clone, Debug, Eq, PartialEq)]
+struct GameScreenRoot(ScopedViewId);
+
 fn enter_game_screen(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
@@ -92,21 +97,17 @@ fn enter_game_screen(
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(spawned) = spawn_view(&mut commands, catalog.catalog(), &view_id, &mut pictures)
-    else {
+    let Some(view) = find_view(catalog.catalog(), &view_id) else {
         return;
     };
-    let view = catalog
-        .catalog()
-        .views
-        .iter()
-        .find(|view| view.id == view_id)
-        .expect("game screen view was just spawned");
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
     if !bind_game_screen_nav(&mut commands, view, &spawned) {
         commands.entity(spawned.root).despawn();
         return;
     }
-    commands.entity(spawned.root).insert(DespawnOnExit(current));
+    commands
+        .entity(spawned.root)
+        .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
 }
 
 fn bind_game_screen_nav(
@@ -218,6 +219,9 @@ mod tests {
         }
     }
 
+    #[derive(Resource)]
+    struct TestSpawned(SpawnedView);
+
     fn enter_game_screen_structure_only(
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
@@ -238,7 +242,10 @@ mod tests {
             bind_game_screen_nav(&mut commands, view, &spawned),
             "toolbar nav controls"
         );
-        commands.entity(spawned.root).insert(DespawnOnExit(current));
+        commands.insert_resource(TestSpawned(spawned.clone()));
+        commands
+            .entity(spawned.root)
+            .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
     }
 
     fn app_at(state: AppState) -> App {
@@ -257,20 +264,13 @@ mod tests {
         app
     }
 
-    fn current_roots(app: &mut App) -> HashSet<String> {
+    fn current_roots(app: &mut App) -> HashSet<ScopedViewId> {
         let world = app.world_mut();
         world
-            .query::<&Name>()
+            .query::<&GameScreenRoot>()
             .iter(world)
-            .filter_map(|name| {
-                let name = name.as_str();
-                name.starts_with("ui:").then(|| name.to_owned())
-            })
+            .map(|root| root.0.clone())
             .collect()
-    }
-
-    fn root_name(view_id: &ScopedViewId) -> String {
-        format!("ui:{}:{}", view_id.resource_file, view_id.resource_id)
     }
 
     fn nav_entity(app: &mut App, action: GameScreenNavAction) -> Entity {
@@ -294,7 +294,7 @@ mod tests {
         let mut app = app_at(AppState::StrategicMap);
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([root_name(&strategic_map_view_id())])
+            HashSet::from([strategic_map_view_id()])
         );
         for action in [
             GameScreenNavAction::Trade,
@@ -325,20 +325,14 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::Trade
         );
-        assert_eq!(
-            current_roots(&mut app),
-            HashSet::from([root_name(&trade_view_id())])
-        );
+        assert_eq!(current_roots(&mut app), HashSet::from([trade_view_id()]));
 
         activate_nav(&mut app, GameScreenNavAction::City);
         assert_eq!(
             app.world().resource::<State<AppState>>().get(),
             &AppState::City
         );
-        assert_eq!(
-            current_roots(&mut app),
-            HashSet::from([root_name(&city_view_id())])
-        );
+        assert_eq!(current_roots(&mut app), HashSet::from([city_view_id()]));
 
         activate_nav(&mut app, GameScreenNavAction::Transport);
         assert_eq!(
@@ -347,7 +341,7 @@ mod tests {
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([root_name(&transport_view_id())])
+            HashSet::from([transport_view_id()])
         );
 
         activate_nav(&mut app, GameScreenNavAction::Diplomacy);
@@ -357,7 +351,7 @@ mod tests {
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([root_name(&diplomacy_view_id())])
+            HashSet::from([diplomacy_view_id()])
         );
     }
 
@@ -371,7 +365,7 @@ mod tests {
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([root_name(&strategic_map_view_id())])
+            HashSet::from([strategic_map_view_id()])
         );
     }
 
@@ -379,17 +373,34 @@ mod tests {
     fn diplomacy_trade_radio_does_not_steal_toolbar_navigation() {
         let mut app = app_at(AppState::Diplomacy);
         let toolbar_trade = nav_entity(&mut app, GameScreenNavAction::Trade);
-        let radio_trad = app
-            .world_mut()
-            .query::<(Entity, &Name)>()
-            .iter(app.world())
-            .find(|(entity, name)| {
-                name.as_str().ends_with(":trad")
-                    && *entity != toolbar_trade
-                    && app.world().get::<GameScreenNavAction>(*entity).is_none()
+        let catalog = catalog();
+        let view = catalog
+            .views
+            .iter()
+            .find(|view| view.id == diplomacy_view_id())
+            .unwrap();
+        let spawned = app.world().resource::<TestSpawned>().0.clone();
+        let by_id: std::collections::HashMap<_, _> =
+            view.nodes.iter().map(|node| (node.id, node)).collect();
+        let radio_trad = view
+            .nodes
+            .iter()
+            .find_map(|node| {
+                if node.tag.0 != "trad" || !node.interactive {
+                    return None;
+                }
+                let mut parent = node.parent;
+                while let Some(parent_id) = parent {
+                    let parent_node = by_id.get(&parent_id)?;
+                    if TOOLBAR_PARENT_TAGS.contains(&parent_node.tag.0.as_str()) {
+                        return None;
+                    }
+                    parent = parent_node.parent;
+                }
+                Some(spawned.nodes[&node.id])
             })
-            .map(|(entity, _)| entity)
             .expect("diplomacy has a non-toolbar trad control");
+        assert_ne!(radio_trad, toolbar_trade);
         app.world_mut()
             .commands()
             .trigger(Activate { entity: radio_trad });
@@ -416,7 +427,7 @@ mod tests {
         );
         assert_eq!(
             current_roots(&mut app),
-            HashSet::from([root_name(&strategic_map_view_id())])
+            HashSet::from([strategic_map_view_id()])
         );
     }
 

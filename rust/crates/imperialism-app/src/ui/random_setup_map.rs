@@ -1,14 +1,10 @@
-use super::catalog::{
-    RetailPictureHandles, SpawnedView, UiPictureResources, image_node_source_rect,
-    load_retail_picture_i16,
-};
-use super::random_setup::{
-    PlanetSeedDialogRoot, RandomGameSetup, RandomSetupPreview, random_setup_view_id,
-};
+use super::catalog::{SpawnedView, UiPictureResources};
+use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::image::ImageSampler;
 use bevy::log::warn;
+use bevy::math::Rect;
 use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
@@ -56,25 +52,21 @@ struct RandomSetupFlag {
     nation: Option<MajorNationId>,
 }
 
-#[derive(Resource, Default)]
-struct FlagAtlasHandle(Option<Handle<Image>>);
-
 pub(crate) struct MapPreviewPlugin;
 
 impl Plugin for MapPreviewPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<FlagAtlasHandle>()
-            .add_systems(
-                Update,
-                (
-                    render_map_preview,
-                    sync_random_setup_coat,
-                    sync_random_setup_flag,
-                )
-                    .chain()
-                    .run_if(in_state(crate::AppState::RandomSetup)),
+        app.add_systems(
+            Update,
+            (
+                render_map_preview,
+                sync_random_setup_coat,
+                sync_random_setup_flag,
             )
-            .add_observer(on_map_preview_click);
+                .chain()
+                .run_if(in_state(crate::AppState::RandomSetup)),
+        )
+        .add_observer(on_map_preview_click);
     }
 }
 
@@ -128,47 +120,31 @@ fn coat_picture_id(nation: MajorNationId) -> i16 {
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
-    retail_assets: Res<RetailAssetsResource>,
-    mut images: ResMut<Assets<Image>>,
-    mut picture_handles: ResMut<RetailPictureHandles>,
-    mut atlas: ResMut<FlagAtlasHandle>,
+    mut pictures: UiPictureResources,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
 ) {
-    if atlas.0.is_none() {
-        let handle = match load_retail_picture_i16(
-            FLAG_ATLAS_PICTURE,
-            &retail_assets,
-            0,
-            &mut images,
-            &mut picture_handles,
-        ) {
-            Ok(handle) => handle,
-            Err(error) => {
-                warn!("could not load retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
-                return;
-            }
-        };
-        if let Some(mut image) = images.get_mut(&handle) {
-            apply_flag_atlas_transparency(&mut image);
+    let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
+        Ok(handle) => handle,
+        Err(error) => {
+            warn!("could not load retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
+            return;
         }
-        atlas.0 = Some(handle);
-    }
-    let Some(atlas_handle) = atlas.0.clone() else {
-        return;
     };
+    // Magenta→alpha is idempotent on the shared cached image.
+    let _ = pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency);
 
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {
             continue;
         }
         let left = f32::from(setup.nation.get()) * FLAG_WIDTH as f32;
-        let rect = image_node_source_rect(left, 0.0, FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
+        let rect = Rect::new(left, 0.0, left + FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
         if let Some(mut image_node) = image_node {
-            image_node.image = atlas_handle.clone();
+            image_node.image = handle.clone();
             image_node.rect = Some(rect);
         } else {
             commands.entity(entity).insert(ImageNode {
-                image: atlas_handle.clone(),
+                image: handle.clone(),
                 rect: Some(rect),
                 ..default()
             });
@@ -239,15 +215,9 @@ fn render_map_preview(
 
 fn on_map_preview_click(
     click: On<Pointer<Click>>,
-    dialog_open: Query<(), With<PlanetSeedDialogRoot>>,
     mut setup: ResMut<RandomGameSetup>,
     maps: Query<(&RelativeCursorPosition, &RandomSetupMapPreview)>,
 ) {
-    // Modal backdrop structurally blocks picks; this guard covers headless tests
-    // that trigger map clicks without going through picking.
-    if !dialog_open.is_empty() {
-        return;
-    }
     let Ok((cursor, map_preview)) = maps.get(click.entity) else {
         return;
     };
@@ -265,8 +235,8 @@ fn on_map_preview_click(
     }
 }
 
-fn compose_preview_indices(
-    tiles: &[imperialism_core::GeneratedTerrainTile],
+pub(crate) fn compose_owner_preview_indices(
+    owners: &[i8],
     selected_nation: MajorNationId,
 ) -> Vec<PaletteIndex> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
@@ -284,8 +254,8 @@ fn compose_preview_indices(
         let py = 3 * usize::from(row);
         let neighbor_tags = geometry
             .neighbors(tile_id)
-            .map(|neighbor| owner_tag(tiles, neighbor));
-        let self_tag = owner_tag(tiles, Some(tile_id));
+            .map(|neighbor| owner_tag(owners, neighbor));
+        let self_tag = owner_tag(owners, Some(tile_id));
 
         let tag = if self_tag == neighbor_tags[5] {
             self_tag
@@ -348,9 +318,17 @@ fn compose_preview_indices(
     pixels
 }
 
-fn owner_tag(tiles: &[imperialism_core::GeneratedTerrainTile], tile: Option<TileId>) -> i8 {
-    tile.and_then(|tile| tiles.get(usize::from(tile.get())))
-        .map_or(-1, |tile| tile.owner_nation)
+fn compose_preview_indices(
+    tiles: &[imperialism_core::GeneratedTerrainTile],
+    selected_nation: MajorNationId,
+) -> Vec<PaletteIndex> {
+    let owners: Vec<i8> = tiles.iter().map(|tile| tile.owner_nation).collect();
+    compose_owner_preview_indices(&owners, selected_nation)
+}
+
+fn owner_tag(owners: &[i8], tile: Option<TileId>) -> i8 {
+    tile.and_then(|tile| owners.get(usize::from(tile.get())).copied())
+        .unwrap_or(-1)
 }
 
 fn preview_palette(owner_tag: i8) -> PaletteIndex {
@@ -428,6 +406,27 @@ fn major_nation_palette(nation: MajorNationId) -> PaletteIndex {
     MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
+pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<TileId> {
+    let column_px = ((normalized_position.x + 0.5) * PREVIEW_WIDTH as f32).floor();
+    let row_px = ((normalized_position.y + 0.5) * PREVIEW_HEIGHT as f32).floor();
+    if !(0.0..PREVIEW_WIDTH as f32).contains(&column_px)
+        || !(0.0..PREVIEW_HEIGHT as f32).contains(&row_px)
+    {
+        return None;
+    }
+    let row = (row_px as u16) / 3;
+    if row >= 60 {
+        return None;
+    }
+    let odd_row = row & 1 != 0;
+    let adjusted = column_px as i32 - i32::from(odd_row);
+    if adjusted < 0 {
+        return None;
+    }
+    let column = (adjusted as u16) / 3;
+    MapGeometry::new(false).tile(row, column)
+}
+
 fn nation_at_preview_position(
     palette_indices: &[PaletteIndex],
     normalized_position: Vec2,
@@ -451,6 +450,13 @@ fn nation_for_palette(palette: PaletteIndex) -> Option<MajorNationId> {
         .iter()
         .position(|candidate| *candidate == palette)
         .map(|nation| MajorNationId::new(nation as u8))
+}
+
+pub(crate) fn preview_image_from_indices(
+    palette_indices: &[PaletteIndex],
+    palette: &DibPalette,
+) -> Image {
+    preview_image(palette_indices, palette)
 }
 
 fn preview_image(palette_indices: &[PaletteIndex], palette: &DibPalette) -> Image {
@@ -586,16 +592,6 @@ mod tests {
     fn selected_nation_uses_the_retail_coat_picture_range() {
         assert_eq!(coat_picture_id(MajorNationId::new(0)), 0x11c6);
         assert_eq!(coat_picture_id(MajorNationId::new(6)), 0x11cc);
-    }
-
-    #[test]
-    fn flag_source_rect_selects_the_nation_cell() {
-        let left = f32::from(MajorNationId::new(1).get()) * FLAG_WIDTH as f32;
-        let rect = image_node_source_rect(left, 0.0, FLAG_WIDTH as f32, FLAG_HEIGHT as f32);
-        assert_eq!(rect.min.x, FLAG_WIDTH as f32);
-        assert_eq!(rect.max.x, (FLAG_WIDTH * 2) as f32);
-        assert_eq!(rect.min.y, 0.0);
-        assert_eq!(rect.max.y, FLAG_HEIGHT as f32);
     }
 
     #[test]

@@ -109,6 +109,13 @@ pub struct WidgetProperties {
     pub window: Option<UiWindowProperties>,
 }
 
+impl WidgetProperties {
+    /// Non-negative edit limit from the catalog. Negative retail values are rejected.
+    pub fn max_characters(&self) -> Option<u32> {
+        self.max_chars.and_then(|value| u32::try_from(value).ok())
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct UiNode {
@@ -232,6 +239,15 @@ mod tests {
         assert_eq!(nodes["plan"].kind, WidgetKind::EditControl);
         assert!(nodes["plan"].interactive);
         assert_eq!(nodes["plan"].properties.max_chars, Some(32));
+        assert_eq!(nodes["plan"].properties.max_characters(), Some(32));
+        assert_eq!(
+            WidgetProperties {
+                max_chars: Some(-1),
+                ..Default::default()
+            }
+            .max_characters(),
+            None
+        );
         assert!(!nodes["1or2"].state);
         assert!(!nodes["1or2"].enabled);
         assert!(nodes["okay"].interactive);
