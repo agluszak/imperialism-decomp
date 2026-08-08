@@ -2,7 +2,8 @@
 
 use clap::{Parser, Subcommand};
 use imperialism_testkit::{
-    check_coarse, check_random_setup, check_random_setup_initial, check_snapshot, check_terrain,
+    check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
+    check_snapshot, check_terrain,
 };
 use std::path::PathBuf;
 
@@ -38,6 +39,11 @@ enum Command {
         /// Native runtime result.json.
         result: PathBuf,
     },
+    /// Validate create_random_game against a Normal+ pre-capital game_state capture.
+    RandomGameStart {
+        /// Native runtime result.json containing random_game_setup and game_state.
+        result: PathBuf,
+    },
     /// Summarize a game_state capture, optionally comparing two results.
     Snapshot {
         /// Native runtime result.json containing a game_state capture.
@@ -53,6 +59,7 @@ fn main() -> anyhow::Result<()> {
         Command::Terrain { result } => check_terrain(&result),
         Command::RandomSetup { result } => check_random_setup(&result),
         Command::RandomSetupInitial { result } => check_random_setup_initial(&result),
+        Command::RandomGameStart { result } => check_random_game_start(&result),
         Command::Snapshot { result, comparison } => check_snapshot(&result, comparison.as_deref()),
     }
 }
@@ -82,6 +89,18 @@ mod tests {
                 .unwrap();
         match cli.command {
             Command::RandomSetupInitial { result } => {
+                assert_eq!(result, PathBuf::from("result.json"));
+            }
+            other => panic!("unexpected command: {other:?}"),
+        }
+    }
+
+    #[test]
+    fn parses_random_game_start() {
+        let cli = Cli::try_parse_from(["imperialism-oracle", "random-game-start", "result.json"])
+            .unwrap();
+        match cli.command {
+            Command::RandomGameStart { result } => {
                 assert_eq!(result, PathBuf::from("result.json"));
             }
             other => panic!("unexpected command: {other:?}"),

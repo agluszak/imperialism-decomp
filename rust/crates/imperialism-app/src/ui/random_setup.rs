@@ -457,6 +457,18 @@ fn on_country_name_edited(
     }
 }
 
+/// Authoritative options Accept commits into [`create_random_game`].
+///
+/// Country display name and localized-names policy are deliberately omitted: retail
+/// stores them on `TCountry` / `TSimMgr` fields outside the semantic `GameState`
+/// capture. Keep editing them in the setup UI only until those fields exist in
+/// authoritative state — do not silently feed them into game construction.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct RandomGameAcceptOptions {
+    nation: MajorNationId,
+    difficulty: Difficulty,
+}
+
 /// Invariant: `sync_accept_button_availability` keeps Okay [`InteractionDisabled`]
 /// whenever `preview.preview` is `None`, so normal UI activation cannot reach this
 /// function without a generated preview. Treat either gap as an invariant failure
@@ -481,8 +493,12 @@ fn accept_random_setup(
         );
         return;
     }
-    let mut session = create_random_game(generated, setup.nation, setup.difficulty);
-    if requires_capital_site_selection(setup.difficulty) {
+    let options = RandomGameAcceptOptions {
+        nation: setup.nation,
+        difficulty: setup.difficulty,
+    };
+    let mut session = create_random_game(generated, options.nation, options.difficulty);
+    if requires_capital_site_selection(options.difficulty) {
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
