@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -11,8 +12,7 @@
 
 namespace {
 
-// Reset the active nation's posted diplomacy state. The retail routine clears every policy and
-// one-time grant, while posting recurring grants again through its normal treasury path.
+// Reset the active nation's posted diplomacy state after seeding one policy and two grants.
 class DiplomacyResetTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -50,8 +50,6 @@ private:
       }
     }
 
-    const int treasuryBeforeEntries = nation->treasuryValue10;
-    const int grantTotalBeforeEntries = nation->grantTotalCost;
     nation->diplomacyPolicyByNation[policyTarget] = kDiplomacyProposalBuildConsulate;
 
     if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(oneTimeGrantTarget,
@@ -61,28 +59,18 @@ private:
       return RuntimeActionResult::Failure("retail rejected the seeded diplomacy grants");
     }
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure("the semantic diplomacy input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("diplomacy_commitments_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(activeNationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
 
-    for (short resetTargetNation = 0; resetTargetNation < kNationSlotCount; ++resetTargetNation) {
-      if (nation->diplomacyPolicyByNation[resetTargetNation] != -1) {
-        return RuntimeActionResult::Failure("reset retained a diplomacy policy");
-      }
-    }
-    if (nation->diplomacyGrantByNation[oneTimeGrantTarget] != -1 ||
-        nation->diplomacyGrantByNation[recurringGrantTarget] != recurringGrantEntry) {
-      return RuntimeActionResult::Failure(
-          "reset did not clear one-time and retain recurring grants");
-    }
-    if (nation->treasuryValue10 != treasuryBeforeEntries - oneTimeGrant - recurringGrant * 2 ||
-        nation->grantTotalCost != grantTotalBeforeEntries + oneTimeGrant + recurringGrant * 2) {
-      return RuntimeActionResult::Failure(
-          "reset did not repost the recurring grant through treasury");
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

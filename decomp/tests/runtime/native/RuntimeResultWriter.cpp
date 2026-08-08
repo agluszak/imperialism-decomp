@@ -94,7 +94,8 @@ bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
     RecordMissingCapture(run, "result.map_state.present", "map-state capture is missing",
                          resultStatus);
   }
-  if (run.RequestsCapture(kRuntimeCaptureGameState) && !run.HasCapture("game_state")) {
+  if (run.RequestsCapture(kRuntimeCaptureGameState) && !run.HasCapture("game_state") &&
+      !run.HasCapture("after")) {
     RecordMissingCapture(run, "result.game_state.present", "game-state capture is missing",
                          resultStatus);
   }

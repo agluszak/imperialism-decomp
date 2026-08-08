@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,8 +13,7 @@
 
 namespace {
 
-// Prepare the human player's trade phase through the retail virtual. The complete semantic
-// game-state capture supplies the result oracle.
+// Prepare the human player's trade phase through the retail virtual.
 class PlayerTradePhaseResetTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -59,14 +59,19 @@ private:
     nation->availableMerchantCapacity = 7;
     nation->AddAmountToAidAllocationMatrixCellAndTotal(37, kResourceSteel, kMinorNationFirstSlot);
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic player-trade-phase input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("player_trade_phase_reset_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
+    }
     return RuntimeActionResult::Success();
   }
 };

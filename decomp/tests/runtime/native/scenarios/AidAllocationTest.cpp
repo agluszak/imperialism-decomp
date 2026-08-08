@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -11,8 +12,7 @@
 
 namespace {
 
-// Allocate aid for one minor nation and resource. The semantic input and final game state are
-// the differential oracle for the retail treasury, cell, and total update.
+// Allocate aid for one minor nation and resource.
 class AidAllocationTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -32,14 +32,22 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no major-nation state");
     }
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic aid-allocation input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("aid_allocation_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    caseCapture.Set("minor_nation", static_cast<int>(kMinorNationFirstSlot));
+    caseCapture.Set("resource", "steel");
+    caseCapture.Set("amount", 37);
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->AddAmountToAidAllocationMatrixCellAndTotal(37, kResourceSteel, kMinorNationFirstSlot);
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
+    }
     return RuntimeActionResult::Success();
   }
 };

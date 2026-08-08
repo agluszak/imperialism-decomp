@@ -1,7 +1,9 @@
 #![forbid(unsafe_code)]
 
+mod differential;
 mod runtime_capture;
 
+pub use differential::{assert_game_state_eq, differential, differential_from_result};
 use imperialism_core::{
     Difficulty, GameState, MajorNationId, RetailLcg, RetailTopologyByte,
     differential_trace::{

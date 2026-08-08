@@ -1,6 +1,9 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
+#include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -11,7 +14,6 @@
 namespace {
 
 // Exercise the retail bid snapshot and purchased-item commit against a retail-produced save.
-// The Rust differential runner replays the same phase sequence and compares the complete state.
 class PurchasedItemsPhaseTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -31,35 +33,24 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no trade-phase city state");
     }
 
-    const short previousFabric = nation->city->cityStockFabricC6;
-    const int previousTreasury = nation->treasuryValue10;
-    const short previousCapacity = nation->availableMerchantCapacity;
-    const int previousPoolBase = nation->budgetPoolBase;
-    const int previousPoolDelta = nation->budgetPoolDelta;
-
     nation->SetItemPotentials(kResourceFabric, -1);
     nation->SetItemPotentials(kResourceClothing, -1);
+
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
+    }
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
+
     nation->RememberTradeBids();
     nation->PurchaseItem(kResourceFabric, 3, 7);
     nation->PurchaseItem(kResourceFood, -30, 1);
     nation->AddPurchasedItems();
 
-    if (nation->itemPotentials[kResourceFabric] != -1 ||
-        nation->itemPotentials[kResourceClothing] != -1 ||
-        nation->rememberedTradeOffersByResource[kResourceFabric] != -1 ||
-        nation->rememberedTradeOffersByResource[kResourceClothing] != -1 ||
-        nation->unfilledTradeTurnCountsByResource[kResourceFabric] != 0 ||
-        nation->unfilledTradeTurnCountsByResource[kResourceClothing] != 1 ||
-        nation->purchasedItemsByResource[kResourceFabric] != 0 ||
-        nation->purchasedItemsByResource[kResourceFood] != 0 ||
-        nation->city->cityStockFabricC6 != previousFabric + 3 ||
-        nation->city->cityStockCannedFoodC4 != 0 ||
-        nation->treasuryValue10 != previousTreasury + 9 ||
-        nation->availableMerchantCapacity != previousCapacity - 3 ||
-        nation->budgetPoolBase != previousPoolBase + 30 ||
-        nation->budgetPoolDelta != previousPoolDelta - 21) {
-      return RuntimeActionResult::Failure(
-          "purchased-item phase commit diverged from the retail state update");
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

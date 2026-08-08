@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -10,8 +11,7 @@
 
 namespace {
 
-// Set one bilateral policy to the retail 300 score. That score also clears the existing grant
-// through the same retail operation, so the direct game-state captures cover both effects.
+// Set one bilateral policy to the retail 300 score.
 class TradePolicySetTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -39,13 +39,21 @@ private:
       return RuntimeActionResult::Failure("retail rejected the preexisting diplomacy grant");
     }
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure("the semantic trade-policy input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("trade_policy_set_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(sourceNationSlot));
+    caseCapture.Set("target", static_cast<int>(targetNationSlot));
+    caseCapture.Set("policy", static_cast<int>(kBoycottPolicy));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->SetTradePolicyTo(targetNationSlot, kBoycottPolicy);
+
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
+    }
     return RuntimeActionResult::Success();
   }
 };

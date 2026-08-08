@@ -1,6 +1,10 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonArray.h"
+#include "JsonObject.h"
+#include "RuntimeGameStateCapture.h"
+#include "RuntimeRun.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
@@ -9,8 +13,8 @@
 
 namespace {
 
-// Apply one purchase and two sales to the retail-produced beginning-of-game save. The Rust
-// differential runner replays the same signed settlements and compares the complete state.
+// Apply one purchase and two sales to the retail-produced beginning-of-game save. Rust reads
+// before/case/after and compares the complete state.
 class MajorTradeSettlementTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -30,26 +34,37 @@ private:
       return RuntimeActionResult::Failure("the loaded player has no major-nation state");
     }
 
-    const short previousFabric = nation->purchasedItemsByResource[kResourceFabric];
-    const short previousClothing = nation->purchasedItemsByResource[kResourceClothing];
-    const int previousTreasury = nation->treasuryValue10;
-    const short previousCapacity = nation->availableMerchantCapacity;
-    const int previousPoolBase = nation->budgetPoolBase;
-    const int previousPoolDelta = nation->budgetPoolDelta;
-    const int previousSpecialBalance = nation->field910;
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
+    }
+
+    JsonObject caseCapture;
+    JsonArray purchases;
+    JsonObject buyFabric;
+    buyFabric.Set("resource", "fabric");
+    buyFabric.Set("amount", 3);
+    buyFabric.Set("price", 7);
+    purchases.Add(buyFabric.Release());
+    JsonObject sellClothing;
+    sellClothing.Set("resource", "clothing");
+    sellClothing.Set("amount", -2);
+    sellClothing.Set("price", 5);
+    purchases.Add(sellClothing.Release());
+    JsonObject sellFabric;
+    sellFabric.Set("resource", "fabric");
+    sellFabric.Set("amount", -1);
+    sellFabric.Set("price", 4);
+    purchases.Add(sellFabric.Release());
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    caseCapture.Set("purchases", purchases.Release());
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->PurchaseItem(kResourceFabric, 3, 7);
     nation->PurchaseItem(kResourceClothing, -2, 5);
     nation->PurchaseItem(kResourceFabric, -1, 4);
 
-    if (nation->purchasedItemsByResource[kResourceFabric] != previousFabric + 2 ||
-        nation->purchasedItemsByResource[kResourceClothing] != previousClothing - 2 ||
-        nation->treasuryValue10 != previousTreasury - 7 ||
-        nation->availableMerchantCapacity != previousCapacity - 3 ||
-        nation->budgetPoolBase != previousPoolBase + 14 ||
-        nation->budgetPoolDelta != previousPoolDelta - 21 ||
-        nation->field910 != previousSpecialBalance + 2) {
-      return RuntimeActionResult::Failure("trade settlement diverged from the retail state update");
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }

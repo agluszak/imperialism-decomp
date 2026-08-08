@@ -12,6 +12,8 @@ class RuntimeRun;
 // Builds the same semantic object deserialized by imperialism_core::GameState.
 // The caller owns the returned JSON value on success.
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state);
+// Snapshot the live game into a named capture (for example "before" / "after").
+bool CaptureGameState(RuntimeRun& run, const char* name);
 void CaptureRuntimeGameState(RuntimeRun& run);
 
 #endif

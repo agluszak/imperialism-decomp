@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
@@ -12,8 +13,7 @@
 
 namespace {
 
-// Rebuild the active nation's trade capacity from a deliberately small, semantic city-order
-// state. The direct input and result GameState captures are the differential oracle.
+// Rebuild the active nation's trade capacity from a deliberately small city-order state.
 class TradeCapacityRefreshTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
@@ -41,20 +41,18 @@ private:
     city->orderCountByType5c[5] = 1;
     city->orderCountByType5c[10] = 1;
 
-    JSON_Value* inputState = 0;
-    if (!BuildRuntimeGameState(RunState(), &inputState)) {
-      return RuntimeActionResult::Failure(
-          "the semantic trade-capacity input capture is unavailable");
+    if (!CaptureGameState(RunState(), "before")) {
+      return RuntimeActionResult::Failure("the before game-state capture is unavailable");
     }
-    RunState().SetCapture("trade_capacity_input", inputState);
+
+    JsonObject caseCapture;
+    caseCapture.Set("nation", static_cast<int>(nationSlot));
+    RunState().SetCapture("case", caseCapture.Release());
 
     nation->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
 
-    // Resource descriptor weights are 2, 8, and 16 respectively: 2*2 + 8 + 16 = 28.
-    const short expectedCapacity = 28;
-    if (nation->merchantCapacity != expectedCapacity ||
-        nation->availableMerchantCapacity != expectedCapacity) {
-      return RuntimeActionResult::Failure("retail did not rebuild both trade capacities");
+    if (!CaptureGameState(RunState(), "after")) {
+      return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }
     return RuntimeActionResult::Success();
   }
