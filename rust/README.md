@@ -10,9 +10,9 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-testkit` reads and verifies canonical snapshots and runs the process-isolated
   differential checks.
 
-The only contracts shared with the C++ implementation are canonical snapshots and the
-serializable command/event protocol documented in `../interop/`. The Rust game state does not
-depend on C++ layouts or Bevy ECS entities.
+The only contracts shared with the C++ implementation are canonical snapshots and the serializable
+command/event protocol. Retail fixtures live in `../fixtures/retail/`. The Rust game state does
+not depend on C++ layouts or Bevy ECS entities.
 
 ```sh
 cargo test --workspace

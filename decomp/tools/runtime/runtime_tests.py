@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compatibility entrypoint for the typed semantic runtime runner."""
+"""Command entrypoint for the semantic runtime runner."""
 
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from tools.runtime.runner import (
 
 def fixture_directory() -> Path:
     override = os.environ.get("IMPERIALISM_SAVE_FIXTURES")
-    return Path(override) if override else REPO_ROOT.parent / "interop" / "fixtures"
+    return Path(override) if override else REPO_ROOT.parent / "fixtures" / "retail"
 
 
 def run_test(

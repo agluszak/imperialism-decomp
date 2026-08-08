@@ -4,10 +4,9 @@
 //
 // Imperialism inherits the Mac resource convention: a tag is four bytes stored in
 // resource order, and the 32-bit value the code compares is that byte sequence read
-// big-endian, so `'D','L','O','G'` is 0x444c4f47. The Mac control-tag index in
-// docs/reference/mac_control_usage.json stores the same convention (its `tag_value`
-// for DLOG is 1145851719 == 0x444c4f47), which makes it a direct oracle for every
-// tag this source declares.
+// big-endian, so `'D','L','O','G'` is 0x444c4f47. The committed Mac resource evidence
+// uses the same convention, making it the direct oracle for each tag this source
+// declares.
 //
 // Spell tags through this macro rather than as hexadecimal with a comment. A comment
 // is free to disagree with its value -- and eighteen of them did, including

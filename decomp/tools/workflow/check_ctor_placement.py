@@ -20,7 +20,7 @@ halves are mutually exclusive for us:
 
 So when the original has no body there is nothing to lose and in-class is free
 (TPanelView: +7 exact). When it does have one, out-of-line keeps a certain pairing.
-Details in docs/toolchain.md and the decompile-function ctors-dtors-eh reference.
+See docs/toolchain.md for the compiler rationale.
 
 WHAT THIS GATE CHECKS (both directions)
 ---------------------------------------
@@ -145,7 +145,7 @@ def main() -> int:
             "\nAn unmarked ctor has no claimed address. Read the caller (CreateObject /\n"
             "a derived ctor) first: if the original has NO standalone body, move the\n"
             "definition in-class (free win); if it HAS one, keep it out-of-line unless the\n"
-            "inlined sites are worth more. See bd nwdn / the decompile-function ctors-dtors-eh reference.\n"
+            "inlined sites are worth more.\n"
             "Do not add it to the baseline to silence this."
         )
         return 1

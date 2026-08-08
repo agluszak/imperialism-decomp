@@ -2926,10 +2926,7 @@ template void CList<TWindow*, TWindow*>::FreeNode(CList<TWindow*, TWindow*>::CNo
 
 // Compiler-emitted ctor/dtor for the CList<void*,void*> / CArray<void*,void*> template
 // instantiations shared by g_WNetPendingPacketList006a5f40 and
-// g_WNetSerializedPtrArrayA/B006a5f10/28 above (WNetMgr.cpp TU). bd 1uj.44 (junk-named
-// non-RTTI state classes): these previously carried invented vtable-address-suffixed
-// placeholder class names (TRuntimeLinkedBlockChainState_0066FA50 /
-// TRuntimeHeapBufferOwnerState_0066FA68).
+// g_WNetSerializedPtrArrayA/B006a5f10/28 above (WNetMgr.cpp TU).
 // TEMPLATE: IMPERIALISM 0x005e4540
 // ??0?$CList@PAXPAX@@QAE@H@Z
 
@@ -3291,19 +3288,8 @@ double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
 double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
 // Base-class default for TTacticalUnit::GetBaseAttackPower/GetDamageScale; derived unit
 // types (TArmyTacUnit/TNavyTacUnit) override with real per-unit-type table lookups.
-// KNOWN RESIDUAL: this value is genuinely 0.0f in the original. A zero-valued scalar
-// global lands in .bss under this toolchain, which just datacmp flags as
-// "(uninitialized)" against the original's on-disk 0.0 -- a data-section placement
-// quirk, not a source defect (see the decompile-function data-modeling reference's BSS field note). Tried and
-// rejected: a literal `return 0.0f;` (moves the constant into the compiler's
-// CRuntimeClass structure instead, a real call-target mismatch, strictly worse) and a
-// raw `reinterpret_cast<const float*>(0x00669ec0)` address read (same established
-// technique as TDefendProvinceMission.cpp's p_neg_one_/p_1_0_ locals, but reccmp still
-// can't resolve the bare address to a clean symbol here). This named-global form is the
-// only one of the three giving a 100% exact match on all four affected functions
-// (TTacticalUnit/TArmyTacUnit/TNavyTacUnit x2); the residual is isolated to
-// just datacmp-gate, which records this value-equivalent section-placement residue
-// as WARN with the initialized_zero_vs_bss_zero_same_runtime_value note.
+// Retail stores this 0.0f in initialized data while VC5 places it in BSS. The
+// runtime value is equal, though raw datacmp reports the section placement.
 // GLOBAL: IMPERIALISM 0x00669ec0
 float g_fTacticalRetreatQualityWeightDefault_00669EC0 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00669ec8

@@ -1,7 +1,6 @@
 // TMapMaker::AssignRegionIdsToUnclaimedBorderSegmentSides, isolated in its own translation
 // unit: folding it into sea_geometry.cpp perturbed that TU's register allocation and flipped
-// the sort branch in EmitOverlaySegmentFromTileEdgeSorted (the TU-codegen fragility the
-// decompile-function big-functions reference warns about).
+// the sort branch in EmitOverlaySegmentFromTileEdgeSorted.
 
 #include "game/map/sea_geometry.h"
 

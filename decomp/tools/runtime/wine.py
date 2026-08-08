@@ -13,9 +13,7 @@ import subprocess
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-runtime-tests"
-PREFIX_TEMPLATE_SCHEMA = 2
 GAME_ASSET_STAMP_NAME = ".imperialism-assets.json"
-GAME_ASSET_TEMPLATE_SCHEMA = 1
 SETTINGS_KEY = "HKCU\\Software\\SSI\\Imperialism\\Settings"
 SEEDED_REGISTRY_VALUES = (
     ("AutoRes", "REG_DWORD", "0"),
@@ -186,7 +184,6 @@ def _seed_virtual_desktop(environment: dict[str, str]) -> None:
 
 def template_identity(wine_version: str, virtual_desktop: bool = False) -> str:
     payload = {
-        "schema": PREFIX_TEMPLATE_SCHEMA,
         "seeded_registry_values": SEEDED_REGISTRY_VALUES,
         "virtual_desktop": VIRTUAL_DISPLAY_REGISTRY if virtual_desktop else None,
         "wine_version": wine_version,
@@ -203,7 +200,7 @@ def ensure_template_prefix(virtual_desktop: bool = False) -> Path:
     template = BUILD_DIR / f"wineprefix-template-{identity}"
     stamp = template / ".imperialism-template"
     expected_stamp = json.dumps(
-        {"identity": identity, "schema": PREFIX_TEMPLATE_SCHEMA, "wine": wine_version},
+        {"identity": identity, "wine": wine_version},
         sort_keys=True,
     )
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
@@ -320,11 +317,7 @@ def _game_asset_manifest(source: Path) -> tuple[str, list[dict[str, object]]]:
                 "sha256": identity["sha256"],
             }
         )
-    payload = {
-        "schema": GAME_ASSET_TEMPLATE_SCHEMA,
-        "files": rows,
-    }
-    serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    serialized = json.dumps(rows, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(serialized.encode()).hexdigest(), rows
 
 
@@ -381,7 +374,6 @@ def ensure_game_asset_template() -> tuple[Path, str]:
         (staging / stamp.name).write_text(
             json.dumps(
                 {
-                    "schema": GAME_ASSET_TEMPLATE_SCHEMA,
                     "source": str(source),
                     "manifest_sha256": manifest_hash,
                     "file_count": len(rows),

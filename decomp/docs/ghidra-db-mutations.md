@@ -15,20 +15,20 @@ frame that is not packed.
 
 The damage was quiet and entirely downstream. The prototype still printed plausibly, but the
 decompiler rendered the function's dword read of its first slot as `piece(a1, a0)` -- splicing two
-parameters together -- so `just semantic-gate` reported a `call_contract` mismatch: the original
+parameters together -- so structured comparison reported the caller as divergent: the original
 appeared to pass a spliced value to `TOcean::GetLinkedZoneForSeaTile` that the recompiled side
 could not produce.
 
 Cleared the custom storage and re-applied `DYNAMIC_STORAGE_FORMAL_PARAMS`, which places `a0` at
 `+4` and `a1` at `+8`. The row now passes at 100%. Applied with the new
 `just fix-packed-storage --addrs 0x559a70 --apply`, whose check is arithmetic (purge vs
-`4 * stack parameters`) and needs no listing; the other four open semantic-gate rows were checked
+`4 * stack parameters`) and needs no listing; the other four affected comparison rows were checked
 with it and are consistent. Persisted with `just export-project`.
 
-## 2026-07-30: curate six missing original-side prototypes (semantic gate)
+## 2026-07-30: curate six missing original-side prototypes
 
-`just semantic-gate` was red on six protected rows because the *original* side of
-the p-code call-contract comparison had no usable prototype for them: the
+Structured comparison could not classify six rows because the *original* side
+of the p-code call-contract comparison had no usable prototype for them: the
 parameter-area reads rendered as unbound `in_stack_0000000N` inputs instead of
 `parameter` nodes, so the comparator could only report
 `inconclusive`/`local_variable_model` (five rows) and
@@ -52,10 +52,8 @@ transaction; the tool commits only when the re-decompile shows no remaining
   `(*this->vfptr[0x15])(a0)` instead of `(**(code **)(*in_ECX + 0x50))()`, so the
   pushed argument is attributed to the call and matches our virtual call.
 
-Verified with a full no-reuse recompute (`just semantic-verify`, 2373 rows):
-exactly these six rows changed, all `inconclusive -> pass`, nothing else moved.
-Gate afterwards: pass 3224 -> 3230, mismatch 1272 unchanged, inconclusive
-341 -> 335.
+Verified with a full no-reuse recompute: exactly these six rows changed from
+inconclusive to exact/effective, with no other movement.
 
 The `.gzf` carrying this is **not** the one that export produced. #575's inventory
 refresh landed the same six prototypes concurrently (with better names — `MapPt`
@@ -64,8 +62,8 @@ carries and this branch's was dropped when the two conflicted. The entry stays
 because the mutation is still one the ledger must be able to re-run against a
 future DB, and because the *reason* the six rows needed it is not recorded
 anywhere in that refresh: a wholesale `ghidra-apply-source-full` projection and a
-targeted `apply-source-signatures` converge here, which is worth knowing the next
-time `semantic-gate` names an `in_stack` row.
+targeted `apply-source-signatures` converge here, which is worth knowing when a
+comparison exposes an `in_stack` row.
 
 ## 2026-07-29 (later): repair two more punctured game-code extents
 
@@ -111,18 +109,15 @@ Renamed the Ghidra function at `0x00493f90` from the stale behavioral label
 `DynamicInitializerForDefaultQuickDrawSurfaceSentinel`. The authoritative source
 model remains VC5's exact compiler name, ``dynamic initializer for
 'g_defaultQuickDrawSurfaceSentinel'``; Ghidra cannot accept that spelling because
-it contains spaces and backticks. Applied with the new surgical command
-`just rename-functions
-0x00493f90=DynamicInitializerForDefaultQuickDrawSurfaceSentinel --apply`, then
-persisted with `just export-project`.
+it contains spaces and backticks. The one-off DB rename was then persisted with
+`just export-project`.
 
-## 2026-07-19 (latest): 8 more verified MFC layouts, driven by the weak-pointer-type inventory
+## 2026-07-19 (latest): more verified MFC layouts
 
-Follow-up to the CDataExchange/CView entry directly below: ran
-`just weak-pointer-type-inventory` again and worked through its
-`canonical_mfc_type_exists` bucket (12 distinct types) one by one against the
-vendored `vendor/msvc500/headers/mfc/include/*.h`. Eight had a real, findable,
-publicly-documented layout and were added to `MFC_MODELS`: `CFile` (afx.h:1154,
+Follow-up to the CDataExchange/CView entry directly below: a focused review of
+the remaining MFC types checked the vendored
+`vendor/msvc500/headers/mfc/include/*.h` one by one. The types with real,
+findable, publicly documented layouts were added to `MFC_MODELS`: `CFile` (afx.h:1154,
 derives CObject, 3 fields), `COleDataObject` (afxole.h:148, NOT CObject-derived,
 4 fields), `CGdiObject` (afxwin.h:343, derives CObject, 1 field — added as
 `CFont`'s dependency), `CFont` (afxwin.h:451, derives CGdiObject, no own
@@ -149,8 +144,8 @@ Applied via `just apply-mfc-datatypes --apply` (21 total datatypes now, up from
 none collided with a pre-existing `/Demangler` stub):
 `opaque_pointee` 11 -> 3, `generic_pointer_fallback` 51 -> 39,
 `exact_complete` +20, `semantically_converged` +19
-(`just structural-signature-audit`); `weak_pointer_type_inventory.csv` distinct
-types 48 -> 39.
+(`just structural-signature-audit`); the remaining distinct-type count fell
+from 48 to 39.
 
 ## 2026-07-19: CDataExchange/CView added to the MFC datatype pack; TypeResolver stub-exclusion fix
 
@@ -175,11 +170,10 @@ simple-name lookup because no real `/CView` existed yet to collide with it.
 Once the real datatype was added, naive name-collision counting would have
 flagged `ambiguous_simple_name` for a real-definition-vs-disposable-stub pair —
 violating the "ambiguous_simple_name stays zero" invariant the 67-dedup work
-(commit `409a6aa5`) established. Fixed at the RESOLVER level, not by deleting
-the DB stub (the existing `dedupe_ambiguous_datatypes.py` refused to remove it:
-a `/Demangler/CView *` pointer with no root counterpart of its own still
-references it, so cascading the deletion needed more care than this pass
-wanted to risk): `TypeResolver.__init__`'s simple-name selection is now the pure
+(commit `409a6aa5`) established. Fixed at the resolver level, not by deleting
+the DB stub: a `/Demangler/CView *` pointer with no root counterpart of its own
+still references it, so cascading deletion needed more care than this pass
+wanted to risk. `TypeResolver.__init__`'s simple-name selection is now the pure
 `select_named_datatype()`, which excludes `/Demangler/*` stub candidates from
 the ambiguity count the same way it already excluded bare `FunctionDefinition`
 candidates (a Win32 function-pointer typedef's pointee signature) — two
@@ -193,10 +187,9 @@ are pure C++ source constructs Ghidra has zero visibility into — they resolved
 `unresolved` with no table entry mapping them to their real underlying
 primitive. `unresolved` 16 -> 12 live.
 
-New read-only `tools/ghidra/weak_pointer_type_inventory.py` (`just
-weak-pointer-type-inventory`) builds a distinct-type inventory over every
-remaining `opaque_pointee` / `generic_pointer_fallback` / `unresolved` grade
-(48 distinct types after the fixes above) and classifies each as
+A temporary read-only inventory examined every remaining
+`opaque_pointee` / `generic_pointer_fallback` / `unresolved` grade
+(48 distinct types after the fixes above) and classified each as
 `canonical_game_class_exists` / `canonical_mfc_type_exists` /
 `typedef_or_namespace_spelling_mismatch` / `missing_external_opaque_type` /
 `stale_duplicate` / `genuinely_unknown` — the remaining backlog (12
@@ -236,11 +229,10 @@ re-running it with `--apply` against the live DB; verified via dry-run (no
 crash, `descriptors=458 vtables=407 overrides_renamed=2425` unaffected) plus
 the full gate/test/stats suite.
 
-## 2026-07-19: `ghidra-rename-class` tool + full autogen convergence (committed)
+## 2026-07-19: class reattribution + full autogen convergence (committed)
 
-Added `just ghidra-rename-class OLD NEW --vtable 0xADDR --apply`
-(`tools/ghidra/rename_class.py`) — the atomic class re-attribution the ledger's
-"class renames should be atomic" note called for. It migrates, in one transaction: the
+A one-off transaction performed the atomic class re-attribution the ledger's
+"class renames should be atomic" note called for. It migrated, in one transaction: the
 function namespace, the class datatype (Ghidra rewrites applied `&_vftable_`
 construction-site references automatically), the vtable-struct datatype, the
 `::'vftable'` label, and removes the emptied namespace. Verified end-to-end against the
@@ -293,9 +285,8 @@ failed=1 (pre-existing `_fprintf` duplicate). Exported to the vendored .gzf.
 
 Retired: `sync-ghidra`, `db-resync`, `push-names`, `push-source-names` (modules
 deleted; the primary-aware push loop lives inside apply_source). The wholesale
-raw-inventory refresh is now `just refresh-inventory`; class *datatype* renames
-remain the `just ghidra-rename-class` repair tool until PDB-driven type import
-lands (the known gap the audit reports).
+raw-inventory refresh is now `just refresh-inventory`; class-datatype drift is
+reported by the source apply audit.
 
 ## 2026-07-19 (third): PDB-driven type/signature import wired into apply-source-full (committed)
 
@@ -325,7 +316,7 @@ identities as LIBRARY claims. Applied: set_fn=60 (free-function convergence),
 set_label=5, primary_exact=7113, 27 residual duplicate-label conflicts.
 
 The granular source→DB targets (`import-ghidra`, `name-vtable-slots`,
-`propagate-virtual-method-names`, `ghidra-rename-class`) are `[private]` —
+`propagate-virtual-method-names`) are `[private]` —
 internals/repair tools, not sanctioned workflows. `refresh-inventory` is
 inventory-only (`sync_exports --inventory-only`); the full decompile/type
 snapshot is the separate optional `just export-ghidra-evidence`.
@@ -340,8 +331,7 @@ namespace move; 26 stale labels dropped, 26 functions converged, failed=0.
 requires a converged second dry-run (zero pending, zero failures) — verified:
 primary_exact=7205, pending=0, failed=0. The apply audit also reports DB class
 namespaces owning source-claimed functions under a different class than the
-model (6 residual stale namespaces flagged, e.g. TNetMgr x2 — small repair
-queue for ghidra-rename-class).
+model (6 residual stale namespaces flagged, e.g. TNetMgr x2).
 
 **RETRACTED (2026-07-19, sixth):** the `fix-in-stack-params --apply` work in this
 entry was UNSOUND and has been reverted. It appended each `in_stack_*` slot as a
@@ -362,8 +352,8 @@ dry-run (primary_exact=7205, pending=0, failed=0), and re-exported. The strict
 label-cleanup + broader-audit code from the fifth entry is retained (it is
 sound); only the parameter appends are gone.
 
-**Reframed as a classification problem, not a migration backlog.** The read-only
-`just in-stack-audit` (`tools/ghidra/in_stack_audit.py`) classifies the 261:
+**Reframed as a classification problem, not a migration backlog.** A read-only
+review classified the 261:
   - **214 source-owned** — the real prototype already lives in the C++
     declaration (the audit prints it, e.g. `ImperialismCommandLineInfo::ParseParam`
     -> `(LPCSTR, BOOL, BOOL)`); the DB just lags. Fix = PDB import via
@@ -376,9 +366,8 @@ sound); only the parameter appends are gone.
     evidence and are genuine complete-signature (`updateFunction(DYNAMIC_STORAGE_
     FORMAL_PARAMS)`) candidates.
 
-The mutating target is retired; `just in-stack-audit` is read-only. Real repairs
-happen in source (the 214) or as verified per-function ABI fixes (the ~5), not
-as a bulk pass.
+The mutating target is retired. Real repairs happen in source (the 214) or as
+verified per-function ABI fixes (the ~5), not as a bulk pass.
 
 ## 2026-07-19 (seventh): source-model signature projection (PR #92, committed)
 
@@ -414,8 +403,7 @@ Applied on the clean #91 DB: **152 converged** + **11 params_bound_residual**
 unparsable/apply_error (strict passes). The **64** queued
 (`build-msvc500/evidence/source_signature_queue.csv`) are the standing evidence —
 explained, not a backlog — so every source-owned function that still decompiles
-with `in_stack` has an understood reason. `just in-stack-audit` is retained as the
-final read-only diagnostic in the full flow; `packed`/`sret` binding via
+with `in_stack` has an understood reason. `packed`/`sret` binding via
 `CUSTOM_STORAGE` is a deliberate follow-up, not part of this pass.
 
 ## 2026-07-19 (eighth): signature projection made transactionally safe (PR #94, NO DB change)
@@ -695,7 +683,7 @@ stopped auto-resolving through jmp thunks).
 entities in the live DB (`FunctionManager.removeFunction`) *before*
 `sync-ghidra`, rather than relying on `just prune-ilt-thunks` alone — that tool
 turned out to have its own bug (below). `just vtable` held 393/393 through the
-full resync this time, but `just stats` regressed hard (-34 aligned functions,
+full resync this time, but broad comparison regressed hard (-34 aligned functions,
 305 lower-similarity, several functions dropping 100% → 0%, e.g.
 `CMcWindow::OnKeyDown` at 0x493b30). Reverted again (repo tree + the **live**
 Ghidra project both restored from the pre-mutation `.gzf` checkpoint).
@@ -727,8 +715,8 @@ Function-entity deletion (2479 removed), `push-names --apply`, `import-ghidra`,
 `'vftable'`-typed symbols.csv rows colliding with real header `// VTABLE:`
 annotations, same pattern as the merge step; deleted by address), then
 `just export-project` last. Verified: `just gates` clean, `just vtable` 393/393
-100%, `just stats` **zero regressions** vs the pre-mutation baseline (confirmed
-both mechanically and by hand: `CMcWindow::OnKeyDown` and
+100%, and targeted comparison showed no affected regressions (confirmed both
+mechanically and by hand: `CMcWindow::OnKeyDown` and
 `TFileBasedDocument::CreateObject` back to their correct pre-mutation scores).
 
 ## 2026-07-02 (second): pipeline-automation resync
@@ -777,7 +765,7 @@ So the procedure is:
    residual degenerate (1-byte) result — treat a nonzero `degenerate` count as
    worth a look, not silently ignorable.
 3. `just ghidra-apply-source-full`, then `just refresh-inventory`. If `just vtable`
-   (393/393 must stay 100%) or `just stats`
-   (no mass regressions) fails partway, fix forward and re-run; the pipeline
+   (393/393 must stay 100%) or broad comparison shows mass regressions, fix
+   forward and re-run; the pipeline
    ends with `export-project`, so a completed run leaves the committed `.gzf`
    carrying everything.

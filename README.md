@@ -7,7 +7,7 @@ contracts without sharing implementation structure.
   using the original MSVC 5.0 toolchain, Ghidra evidence, and `reccmp` verification.
 - [`rust/`](rust/) is an independent Rust implementation with deterministic domain state, retail
   importers, a Bevy client, and process-isolated differential tests.
-- [`interop/`](interop/) contains only current cross-implementation contracts and fixtures.
+- [`fixtures/retail/`](fixtures/retail/) contains retail-produced fixtures used as shared evidence.
 
 Retail behavior is the common reference. The C++ reconstruction can act as an executable oracle for
 Rust, but Rust does not link to it or mirror its C++ object layout. Canonical snapshots and the
@@ -17,6 +17,6 @@ Run implementation commands from the relevant subproject directory and follow it
 
 - [C++ reconstruction guide](decomp/README.md)
 - [Rust implementation guide](rust/README.md)
-- [Interoperability contract](interop/README.md)
+- [Retail fixtures](fixtures/retail/)
 
 Repository-wide agent, Beads, Git, and concurrency rules are in [AGENTS.md](AGENTS.md).

@@ -1,7 +1,7 @@
 address|class|header|outcome|justification
 # Constructors defined IN-CLASS in a header while carrying a // FUNCTION marker.
 #
-# The standing decision (tools/workflow/check_ctor_placement.py, decompile-function ctors-dtors-eh reference):
+# The standing decision (tools/workflow/check_ctor_placement.py):
 # a constructor is defined in-class IF AND ONLY IF the original has no standalone body
 # for it. A ctor that owns an address stays out-of-line so that body pairs.
 #

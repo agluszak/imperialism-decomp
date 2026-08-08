@@ -48,7 +48,7 @@ void TOneTimeAnimation::Tick() {
     if (nextTick == ticksPerFrame) {
       ownerView->InvalidateCityDialogRectRegion(&screenRect, 1);
 
-      ScopedMapQuickDrawContextGuard quickDrawContext(ownerView);
+      ScopedMapQuickDrawContext quickDrawContext(ownerView);
       ownerView->PrepareForDrawing();
 
       RECT renderRect;

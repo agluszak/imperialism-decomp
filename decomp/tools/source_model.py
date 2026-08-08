@@ -17,8 +17,8 @@ Everything the pipeline knows about the source model is built here, once:
     rows become LIBRARY claims (origin "reviewed"); a source marker at the same
     address wins.
 
-Downstream consumers (generate_symbols, stubgen, apply_source, func_status,
-gates) import from this module — none of them scan annotations independently.
+Downstream consumers (generate_symbols, stubgen, apply_source, and gates)
+import from this module — none of them scan annotations independently.
 `build_model()` is cheap (<1s) and pure; `write_model()` also emits
 `<gen-dir>/source_model.json` for external tooling.
 
@@ -80,10 +80,6 @@ class SourceModel:
     vtables: dict[int, str] = field(default_factory=dict)  # addr -> class name
     globals: dict[int, str] = field(default_factory=dict)  # addr -> name
     duplicates: dict[int, list[Claim]] = field(default_factory=dict)
-
-
-# Backwards-compatible alias (the old tools.source_model dataclass name).
-MarkerClaim = Claim
 
 
 def _parse_decl(lines: list[str], start: int) -> tuple[str, str]:
@@ -220,45 +216,6 @@ def build_model(repo_root: Path, target: str = "IMPERIALISM") -> SourceModel:
         model.functions.setdefault(claim.address, claim)
 
     return model
-
-
-# ---------------------------------------------------------------------------
-# Compatibility views (the old tools.source_model API, single implementation)
-# ---------------------------------------------------------------------------
-
-def scan_marker_claims(repo_root: Path, target: str,
-                       roots: tuple[str, ...] = ("src", "include")) -> list[Claim]:
-    """Marker claims only (no reviewed rows), sorted — the old source_index view."""
-    model = build_model(repo_root, target)
-    out = [c for c in model.functions.values() if c.origin == "marker"]
-    for claims in model.duplicates.values():
-        for c in claims[1:]:
-            out.append(c)
-    out.sort(key=lambda c: (c.address, c.file, c.line))
-    return out
-
-
-def find_duplicate_claims(claims: list[Claim]) -> dict[int, list[Claim]]:
-    by_addr: dict[int, list[Claim]] = {}
-    for c in claims:
-        by_addr.setdefault(c.address, []).append(c)
-    return {a: cs for a, cs in by_addr.items() if len(cs) > 1}
-
-
-def claimed_addresses(repo_root: Path, target: str = "IMPERIALISM") -> set[int]:
-    """Addresses claimed by markers OR reviewed library identities."""
-    return set(build_model(repo_root, target).functions)
-
-
-def ownership_kind(kind: str, origin: str = "marker") -> str:
-    if kind == "LIBRARY":
-        return "library"
-    return "generated" if origin == "generated" else "manual"
-
-
-def ownership_view(repo_root: Path, target: str = "IMPERIALISM") -> dict[int, Claim]:
-    """addr -> claim (markers + reviewed), the ownership authority."""
-    return dict(build_model(repo_root, target).functions)
 
 
 # ---------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 #pragma once
 
-// Transitional umbrella for legacy includes. New code should include the narrow compat
-// header matching its need.
+// Shared compiler, layout, and integer definitions for recovered source.
 #include "compat/compiler.h"
 #include "compat/integer_types.h"
 #include "compat/layout.h"

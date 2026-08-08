@@ -491,11 +491,7 @@ COLORREF TModuleLibraryCacheTableStateB::ResolvePaletteIndexColor(unsigned int p
 
 // Compiler-emitted destructors for the two embedded CMap<> members above (m_tableA,
 // m_tableB); MSVC500 instantiates and calls these automatically as part of
-// ~TModuleLibraryCacheTableStateB(), so there is no source body to write (mfc-collections
-// skill: "let MSVC instantiate them from the real member type"). bd 1uj.44 (junk-named
-// non-RTTI state classes): these previously carried invented vtable-address-suffixed
-// placeholder class names (TModuleLibraryCacheTableStateA_0064BA68 /
-// TModuleLibraryCacheTableStateB_0064BA80) with hand-written stub bodies.
+// ~TModuleLibraryCacheTableStateB(), so there is no source body to write.
 // TEMPLATE: IMPERIALISM 0x0049ae30
 // ??1?$CMap@FFPAUCacheRecord@@PAU1@@@UAE@XZ
 

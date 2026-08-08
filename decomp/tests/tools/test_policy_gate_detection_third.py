@@ -19,7 +19,6 @@ from tools.workflow.check_synthetic_names import (
     SYNTHETIC_MARKER_RE,
     canonical_addr,
 )
-from tools.workflow.check_tooling_surface import JUST_MODULE_RE, PIPE_SPLIT_RE, module_exists
 
 
 class SyntheticNameTest(unittest.TestCase):
@@ -93,44 +92,6 @@ class BoundaryRatchetTest(unittest.TestCase):
         # Pointer-to-pointer casts are codegen-neutral and explicitly allowed; only
         # function-pointer casts are the boundary defect.
         self.assertIsNone(INLINE_FN_PTR_CAST_RE.search("auto* p = reinterpret_cast<TCity*>(raw);"))
-
-
-class ToolingSurfaceTest(unittest.TestCase):
-    """Every module a just recipe runs must exist and be listed in the manifest."""
-
-    def setUp(self) -> None:
-        self._tmp = TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.root = Path(self._tmp.name)
-
-    def test_module_invocations_are_extracted_from_a_recipe(self) -> None:
-        self.assertEqual(
-            JUST_MODULE_RE.findall("  uv run python -m tools.workflow.check_repo_hygiene\n"),
-            ["tools.workflow.check_repo_hygiene"],
-        )
-
-    def test_a_module_file_and_a_package_both_count_as_existing(self) -> None:
-        (self.root / "pkg").mkdir()
-        (self.root / "pkg" / "__init__.py").write_text("")
-        (self.root / "pkg" / "mod.py").write_text("")
-        self.assertTrue(module_exists(self.root, "pkg.mod"))
-        self.assertTrue(module_exists(self.root, "pkg"))
-
-    def test_a_missing_module_is_reported_as_absent(self) -> None:
-        self.assertFalse(module_exists(self.root, "pkg.nope"))
-
-    def test_a_directory_without_init_is_not_a_package(self) -> None:
-        (self.root / "bare").mkdir()
-        self.assertFalse(module_exists(self.root, "bare"))
-
-    def test_naive_pipe_splitting_is_detected(self) -> None:
-        # The inventory is pipe-delimited but quoted fields exist; a bare .split("|")
-        # silently corrupts rows, so the gate bans it in favour of the csv reader.
-        self.assertIsNotNone(PIPE_SPLIT_RE.search('parts = line.split("|")'))
-        self.assertIsNotNone(PIPE_SPLIT_RE.search("parts = line.split('|')"))
-
-    def test_splitting_on_another_delimiter_is_not_flagged(self) -> None:
-        self.assertIsNone(PIPE_SPLIT_RE.search('parts = line.split(",")'))
 
 
 if __name__ == "__main__":

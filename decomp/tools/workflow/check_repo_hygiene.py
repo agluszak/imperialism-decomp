@@ -20,8 +20,8 @@ Git LFS. Generated Ghidra projects, databases, inventories, and logs are not ven
 remain untracked.
 
 Large binaries are handled separately from the extension bans. Sizeable *text* files are
-normal here -- config/vtable_abi_evidence.json and the Mac evidence crosswalks run to
-several MB -- so the size rule only fires on files that are actually binary, are not
+normal here -- config/vtable_abi_evidence.json is several MB -- so the size rule only
+fires on files that are actually binary, are not
 LFS-tracked, and live outside vendor/. That combination is currently empty too.
 
 usage: check-repo-hygiene [--max-binary-bytes N]
@@ -69,7 +69,6 @@ BANNED_PREFIXES = {
     "build-msvc500/": "build output",
     "build/": "build output",
     "dist/": "build output",
-    "vendor/msvc500/fid-generation/": "retired generated-library artifacts",
 }
 
 # Prefixes where a large binary is expected (vendored archives, libraries, Ghidra DBs).

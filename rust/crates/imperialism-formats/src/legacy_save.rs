@@ -2226,7 +2226,7 @@ mod tests {
     use super::*;
 
     const RETAIL_FIXTURE: &[u8] =
-        include_bytes!("../../../../interop/fixtures/beginning_of_game.imp");
+        include_bytes!("../../../../fixtures/retail/beginning_of_game.imp");
 
     #[test]
     fn parses_the_retail_beginning_of_game_prefix() {

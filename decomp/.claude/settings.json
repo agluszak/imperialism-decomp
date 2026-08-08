@@ -2,12 +2,6 @@
   "permissions": {
     "allow": [
       "Bash(just --list)",
-      "Bash(just tooling-check)",
-      "Bash(just agent-start *)",
-      "Bash(just advice *)",
-      "Bash(just agent-check)",
-      "Bash(just agent-finish)",
-      "Bash(just agent-release)",
       "Bash(just build)",
       "Bash(just gates)",
       "Bash(just precommit)",
@@ -17,7 +11,6 @@
       "Bash(just compare *)",
       "Bash(just triage *)",
       "Bash(just detect)",
-      "Bash(just stats)",
       "Bash(just vtable *)",
       "Bash(just datacmp *)",
       "Bash(just roadmap *)",

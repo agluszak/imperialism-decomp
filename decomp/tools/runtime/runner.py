@@ -71,7 +71,7 @@ class RunnerDependencies:
     execute: Callable[[RunConfig], HostResult] = execute_run
     ui_oracle: Callable[[JsonObject], JsonObject | None] = evaluate_ui_oracle
     map_oracle: Callable[[JsonObject, str, int], JsonObject | None] = evaluate_map_oracle
-    fixture_validator: Callable[[Path, str], JsonObject] = validate_fixture_metadata
+    fixture_validator: Callable[[Path], JsonObject] = validate_fixture_metadata
     prune: Callable[[Path, str], tuple[int, list[Path]]] = prune_old_run_dirs
     utc_stamp: Callable[[], str] = lambda: time.strftime(
         "%Y%m%dT%H%M%SZ", time.gmtime()
@@ -307,7 +307,7 @@ class RuntimeRunner:
                 result, 1 if request.require_fixtures else 0
             )
         try:
-            metadata = self.dependencies.fixture_validator(fixture, request.name)
+            metadata = self.dependencies.fixture_validator(fixture)
         except ValueError as error:
             result = {
                 "format_version": FORMAT_VERSION,

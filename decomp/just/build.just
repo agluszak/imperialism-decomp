@@ -133,13 +133,6 @@ resource-check:
   uv run python -m tools.workflow.pe_resources direct-resource-parity \
     "$ORIGINAL_BINARY" "{{build_dir}}/Imperialism.exe"
 
-# Generate resource-driven UI factory TUs from committed semantic Mac View IR
-# plus the one evidenced Windows-only tree. Normal generation never reads the
-# original binary or retail Mac files.
-[group('build')]
-gen-builder *args:
-  uv run python -m tools.ui_codegen {{args}}
-
 [doc('Generate resource-driven turn-event factory TUs into the build tree')]
 [group('build')]
 ui-codegen *args:

@@ -21,9 +21,7 @@
 // no coroutines, no lambdas, no variadic macros -- and it is one of the few places where
 // macros beat explicit C++.
 //
-// Everything here was validated against the real compiler by `just protothread-probe --run`,
-// which compiles each hazard as its own translation unit with the harness flags and then
-// links and runs a protothread to check its resume order. Change a macro and re-run it.
+// Keep this vocabulary small and validate changed behavior with the native runtime suite.
 //
 // ---------------------------------------------------------------------------------------
 // THE ONE RULE: state that must survive a yield is a member field, never a local.

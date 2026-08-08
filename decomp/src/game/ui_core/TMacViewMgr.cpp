@@ -56,8 +56,7 @@
 // These are file-scope helpers only so the three big refresh bodies can share them; the
 // original inlines every one of them. The build uses /Ob1, which inlines ONLY
 // inline-marked functions, so a plain `static` helper compiles to a CALL the original
-// does not have -- 0x50bea0 spent four of them (see the decompile-function big-functions reference on
-// monolithic bodies). __inline is what folds them back into the caller.
+// does not have. __inline folds them back into the caller.
 namespace {
 
 static __inline TTransportPicture* ResolveTaggedPanelOrFail(TView* hostView, unsigned int tag) {

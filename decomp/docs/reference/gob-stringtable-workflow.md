@@ -31,9 +31,8 @@ Each `strtbl-<block>.bin` file is one STRINGTABLE block with 16 entries.
 Entry ID formula:
 - runtime `LoadStringA` ID: `string_id = (block - 1) * 16 + index_in_block`
 - the historical `strenu-strings.tsv` generator used `block * 16 + index_in_block`,
-  so its committed `id` column is 16 higher than the runtime ID; the Mac string
-  crosswalk preserves that value as `legacy_tsv_id` and reports the corrected
-  `load_string_id`
+  so its committed `id` column is 16 higher than the runtime ID; use the runtime
+  formula when comparing a recovered call to the retail resource
 - `index_in_block` is `0..15`
 
 Each entry layout in binary:
@@ -62,20 +61,6 @@ Search canonical ID index:
 rg -n "Construction Options|Civilian Report|Time to completion" \
   docs/reference/strenu-strings.tsv
 ```
-
-Cross-platform semantic queries:
-```bash
-just mac-string-search "railroad"
-just string-crosswalk 1509 2
-just strings-for-function 0x0056f560
-```
-
-`string-crosswalk` deliberately lists every resource-file-scoped Mac match when
-a group/index collides. `Strings.rsrc` entries additionally use the original
-Windows runtime mapping `(group * 100 + index) & 0xffff`; local View-resource
-strings are matched against named embedded globals and GOB text by exact or
-normalized text. Candidate ties remain visible rather than being asserted as a
-single identity.
 
 ## Confirmed anchor strings from STR#ENU.GOB
 - `64662` (`block 4041 idx 6`): `Construction Options`

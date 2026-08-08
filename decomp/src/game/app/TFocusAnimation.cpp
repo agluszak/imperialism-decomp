@@ -49,7 +49,7 @@ void TFocusAnimation::Tick() {
 // FUNCTION: IMPERIALISM 0x004a0190
 void TFocusAnimation::IdleDraw() {
   if (enabledFlag != 0) {
-    ScopedMapQuickDrawContextGuard quickDrawContext(ownerView);
+    ScopedMapQuickDrawContext quickDrawContext(ownerView);
     ownerView->PrepareForDrawing();
     POINT offset = {0, 0};
     DrawNextFrame(&offset);

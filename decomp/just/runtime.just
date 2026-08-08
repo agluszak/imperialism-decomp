@@ -54,18 +54,6 @@ runtime-script-debt-gate *args:
 runtime-new name base='easy-map' *args:
   uv run python -m tools.runtime.scaffold "{{name}}" --base "{{base}}" {{args}}
 
-[doc('Ask MSVC500 whether the switch/case __LINE__ script protothread compiles and resumes correctly; --run links and executes it')]
-[group('runtime-test')]
-protothread-probe *args:
-  uv run python -m tools.workflow.protothread_probe \
-    --work-dir "{{build_dir}}/protothread-probe" {{args}}
-
-[doc('Ask MSVC500 which array-construction shape it emits (inline / call-loop / vector-ctor iterator); --sweep varies the optimization flags')]
-[group('runtime-test')]
-vector-ctor-probe *args:
-  uv run python -m tools.workflow.vector_ctor_probe \
-    --work-dir "{{build_dir}}/vector-ctor-probe" {{args}}
-
 [doc('List registered native semantic runtime tests')]
 [group('runtime-test')]
 runtime-test-list:

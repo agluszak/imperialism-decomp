@@ -10,7 +10,7 @@ The damage is quiet. Nothing fails to build, ``func-sig`` still prints a plausib
 the only visible symptom is downstream: the decompiler renders a dword read of the first slot as
 ``piece(a1, a0)`` -- splicing two parameters together -- so anything comparing call contracts
 against that function sees an argument the recompiled side cannot produce. That is what
-``just semantic-gate`` reports as a ``call_contract`` mismatch on the *caller*.
+structured comparison can report on the *caller*.
 
 The check here is arithmetic and does not need a listing: with dword-aligned formal parameters,
 the purge is ``4 * len(params)`` for ``__stdcall``/``__thiscall``-with-purge. If the recorded

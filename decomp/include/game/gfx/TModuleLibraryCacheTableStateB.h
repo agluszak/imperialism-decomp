@@ -22,15 +22,9 @@
 // resource lookup/insert sites have not yet identified the exact scalar key/value types;
 // this distinction affects the per-instantiation vtable but not the recovered layout.
 //
-// bd 1uj.44: these two CMap<> destructors are compiler-emitted (no hand-written body is
-// correct per the decompile-function mfc-collections reference) at 0x0049ae30 (CMap<short,short,CacheRecord*,
-// CacheRecord*>::~CMap, vtable 0x0064ba80) and 0x0049b270 (CMap<void*,void*,CacheRecord*,
-// CacheRecord*>::~CMap, vtable 0x0064ba68) — claimed via `// TEMPLATE:` markers in
-// TModuleLibraryCacheTableStateB.cpp (see the ISLE-style decorated-name-comment
-// convention). They previously carried invented vtable-address-suffixed placeholder
-// class names (TModuleLibraryCacheTableStateA_0064BA68 / TModuleLibraryCacheTableStateB_
-// 0064BA80) with hand-written stub bodies; both are retired in favor of letting the real
-// `CMap<K,ARG_K,V,ARG_V>` members below emit their own destructors.
+// Their destructors are compiler-emitted at 0x0049ae30 and 0x0049b270. The real
+// `CMap<K,ARG_K,V,ARG_V>` members below emit them naturally; TEMPLATE markers claim
+// those entities in TModuleLibraryCacheTableStateB.cpp.
 struct CacheRecord {
   // NOOP: verified empty in original allocation sites, including 0x00499ed0.
   CacheRecord() {}

@@ -1,13 +1,3 @@
-# ---------------------------------------------------------------------------
-# setup — one-time bootstrap / image builds.
-# Imported by the root justfile (flat namespace: shared variables/recipes work
-# across modules). Recipe text is moved verbatim so `just --list` is unchanged.
-# ---------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
-# setup — one-time bootstrap / image builds.
-# ---------------------------------------------------------------------------
-
 [group('setup')]
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
@@ -16,11 +6,6 @@ docker-build:
 bootstrap-reccmp:
   : "${ORIGINAL_BINARY:?Set ORIGINAL_BINARY in .env}"
   uv run reccmp-project create --originals "$ORIGINAL_BINARY" --scm
-
-[doc('Install the local generated-reccmp-baseline merge driver (tracked hooks regenerate after conflicts)')]
-[group('setup')]
-install-reccmp-merge-driver:
-  uv run python -m tools.workflow.reccmp_baseline_merge install
 
 # Generate ./compile_commands.json (clang-lint flavor, host paths) for clangd/LSP
 # navigation. Not for matching questions — the reccmp build is MSVC500. The lint

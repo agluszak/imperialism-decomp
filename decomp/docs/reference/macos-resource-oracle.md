@@ -12,12 +12,11 @@ evidence. It can establish source-era pane/control tags, class names, resource n
 layout rectangles, and likely relationships between screens. It cannot assign Windows
 addresses, calling conventions, vtable slots, or inheritance.
 
-The existing control-usage evidence also joins directly referenced original
-`U*.cpp` path strings to qualified Windows class owners, then carries those module
-candidates through matching Mac View classes. `ghidra-portprep` surfaces the result
-in the normal function-recovery dossier; there is no separate module-map workflow to
-remember. Direct function/class links are confirmed, while Mac screen and generated
-factory joins remain explicitly candidate evidence.
+`ghidra portprep` builds its control-usage hints directly from this evidence and the
+current Windows source. It joins directly referenced original `U*.cpp` path strings to
+qualified Windows class owners, then carries those module candidates through matching
+Mac View classes. Direct function/class links are confirmed; Mac screen and generated
+factory joins remain candidate evidence.
 
 ## Reproduce it
 
@@ -95,14 +94,12 @@ just ui-codegen
 just ui-resource-show Startup.rsrc:1500
 just ui-codegen-explain 0x43dbc0 0x07dd tool
 just ui-codegen-triage 0x43dbc0
-just ui-platform-diff --function 0x43dbc0 --event 0x07dd
 just build
-just stats --ui-codegen-gate
 ```
 
 `just generate` writes one translation unit per factory under
 `build-msvc500/generated/ui/`. Those generated claims participate in the central
-source model, symbol projection, stub suppression, CMake, and diff-aware agent checks.
+source model, symbol projection, stub suppression, and CMake.
 The former manually owned `src/game/turn_event_dialog_factory_*.cpp` files are therefore
 absent; their 17 addresses have exactly one generated owner.
 
@@ -113,7 +110,7 @@ closure. There are no compact/expanded modes, per-node operation arrays, manual 
 lists, class maps, string-symbol maps, or `config/ui_factory_windows.json`.
 
 Event `0x05e7` is represented by the small evidenced Windows-only tree because no Mac
-`View` counterpart exists. The Windows file is schema-checked to reject code-generation
+`View` counterpart exists. The Windows file is validated to reject code-generation
 choreography; any future Windows-only case must provide a rooted semantic tree and an
 evidence range. Every declared case must emit exactly one rooted tree or carry an
 explicit rejection plus evidence.
@@ -123,62 +120,7 @@ tag, class, semantic evidence, confidence, and generated line span. The explain 
 selects a node by record offset or tag; the triage command summarizes case coverage and
 confidence before machine-level `just triage` work. There are no C++ body templates or
 retail inputs in the normal generation path. The generated manifest hashes every
-committed semantic input. The normal stats pass also protects generated-factory symbol
-pairing and the explicitly accepted similarity baseline, without a second full reccmp
-scan or source-shape constraints.
-
-`docs/reference/ui_platform_diff.json` joins those generated line spans back to the
-normalized Mac nodes and declared Windows deltas. The corresponding source gate rejects
-unexplained class substitutions, undeclared functional-parity cases, missing generated
-nodes, and stale reports. Ordinary Mac-backed nodes are explicitly reported as using
-Mac semantics without pretending that per-node Windows-binary recipes still exist;
-Windows-only nodes retain their listing evidence. `ui-codegen-triage` includes the case
-classification and intentional-delta counts in its summary.
-
-## Resource reference graph
-
-`docs/reference/mac_resource_xrefs.json` joins every committed `View` and widget with
-its file-scoped `PICT`, `STR#`, and decoded `TxSt` targets. Paired `TEXT` and `styl`
-records are graph nodes connected to their decoded style runs. It also connects Windows
-factories to events and mapped views, Mac classes and control tags to their instances, and
-statically resolved Windows `ResolveControlByTag` calls to tags present in the Mac
-corpus. Query any graph identity directly:
-
-```sh
-just mac-resource-xrefs Tech.rsrc:View:2200
-just mac-resource-xrefs Tech.rsrc:PICT:2200 --json
-just mac-resource-xrefs-check
-```
-
-The default query includes the transitive dependency set, so a screen query exposes
-its widget classes, tags, pictures, strings, and text styles as one dossier. Missing
-targets remain dangling under the original resource-file scope; each carries an
-explanation and the focused Beads owner instead of being guessed from a same-numbered
-resource in another file. In particular, an edit control whose file lacks its cited
-`TxSt` stays explicitly unresolved rather than borrowing a collision from another open
-resource file. The graph gate rejects stale output or any dangling edge without an
-explanation and owner.
-
-## Serialized widget payload differentials
-
-`docs/reference/mac_payload_diff.json` groups every retained widget byte segment by
-effective class, type code, and exact segment length. For every class with at least two
-instances it records invariant ranges, varying ranges that exactly correlate with an
-already-decoded scalar, and varying bytes that remain unexplained:
-
-```sh
-just mac-payload-diff TDeluxeText
-just mac-payload-diff TPictureButton --json
-just mac-payload-diff-check
-```
-
-Correlations test one-, two-, and four-byte big-endian encodings across every instance
-in a partition. Confidence reflects width and the number of distinct observed values;
-low-confidence boolean and two-value coincidences stay labeled as such and do not remove
-bytes from the unexplained inventory. Exact prefix comparisons also retain appended
-class-specific segment bytes when every instance supports them. The report otherwise
-compares segment-length sets with generic type-family records, but explicitly treats
-those as serialized-shape differences rather than Mac inheritance proof—and never as
-Windows object-layout or ABI evidence. Tests pin representative `text_style_id` and
-`picture_id` byte correlations while preserving unexplained ranges for future decoder
-work.
+committed semantic input. Platform deltas are declared directly in
+`config/ui_platform_deltas.yml` and checked by the runtime UI oracle when it needs them.
+Mac-backed nodes use Mac semantics; Windows-only nodes carry their listing evidence in
+the semantic catalog. No generated crosswalk or report is a source of truth.

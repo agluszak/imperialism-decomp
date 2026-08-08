@@ -15,9 +15,10 @@ serialized data and process boundaries, never by linking Rust to the reconstruct
 - Follow `decomp/AGENTS.md` for work under `decomp/`.
 - Follow `rust/AGENTS.md` for work under `rust/`.
 - Cross-implementation changes must satisfy both scoped guides.
-- `interop/` contains only contracts and fixtures genuinely shared across implementations.
 - Keep implementation-owned code, tests, assets, evidence, and retail-format details in the owning
   subproject. Do not create a generic `shared/` directory.
+- `fixtures/retail/` contains retail-produced fixtures used by either implementation. It is evidence,
+  not an interoperability namespace.
 
 Start tools from the relevant subproject directory. This keeps implementation-specific instructions,
 skills, settings, and command surfaces out of unrelated sessions.

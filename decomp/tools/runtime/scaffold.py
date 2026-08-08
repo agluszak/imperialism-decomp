@@ -182,7 +182,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     parser.add_argument(
         "--fixture",
-        help="Save fixture filename under ../interop/fixtures (required by --base loaded-map).",
+        help="Save fixture filename under ../fixtures/retail (required by --base loaded-map).",
     )
     args = parser.parse_args(argv)
 
@@ -197,17 +197,17 @@ def main(argv: Sequence[str] | None = None) -> int:
     # entry for that base cannot run at all. Refuse to scaffold one rather than emit a test that
     # is dead on arrival.
     if base.requires_fixture and not args.fixture:
-        print(f"--base {args.base} needs --fixture FILE (a save under ../interop/fixtures).")
+        print(f"--base {args.base} needs --fixture FILE (a save under ../fixtures/retail).")
         return 2
     if args.fixture and not base.requires_fixture:
         print(f"--fixture only applies to a base that loads one; --base {args.base} does not.")
         return 2
     if args.fixture:
-        fixture_path = repo.parent / "interop" / "fixtures" / args.fixture
+        fixture_path = repo.parent / "fixtures" / "retail" / args.fixture
         if not fixture_path.is_file():
             # A warning, not an error: scaffolding the test before producing its save is a
             # reasonable order to work in, and `--require-fixtures` is what enforces presence.
-            print(f"note: ../interop/fixtures/{args.fixture} does not exist yet")
+            print(f"note: ../fixtures/retail/{args.fixture} does not exist yet")
 
     stem = args.factory or camel_case(args.name)
     factory_name = f"{stem}Test"
