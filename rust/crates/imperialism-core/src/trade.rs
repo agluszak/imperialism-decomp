@@ -1,6 +1,6 @@
 use crate::{
     GameCommand, GameEvent, GameState, MajorNationId, MajorNationState, NationCommonState,
-    NationId, ResourceKind, StepOutcome,
+    NationId, ResourceKind, StepOutcome, all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -76,6 +76,42 @@ impl GameState {
         Ok(StepOutcome {
             events: vec![GameEvent::PurchasedItemsCommitted { nation }],
         })
+    }
+
+    /// Mirrors `TGreatPower::AddCreatedItems` at the city-and-transport phase
+    /// boundary. Commodity targets remain available for the rest of the phase;
+    /// only the city's settled stock changes here.
+    pub fn add_created_items(&mut self, nation: NationId) -> Result<(), RuleError> {
+        let index = self.major_nation_index(nation)?;
+        if self.cities.get(index).and_then(Option::as_ref).is_none() {
+            return Err(RuleError::MissingCity { nation });
+        }
+
+        let (nations, cities) = (&mut self.nations, &mut self.cities);
+        let (common, major) = nations[index.nation()]
+            .as_mut()
+            .and_then(|state| state.major_parts_mut())
+            .expect("major-nation presence was checked before settling created items");
+        let city = cities[index]
+            .as_mut()
+            .expect("city presence was checked before settling created items");
+
+        common.treasury = common.treasury.wrapping_add(
+            i32::from(major.need_target_by_type[ResourceKind::Gems]).wrapping_mul(500),
+        );
+        city.stock_by_type[ResourceKind::Gems] = 0;
+        city.verify_stocks();
+
+        common.treasury = common.treasury.wrapping_add(
+            i32::from(major.need_target_by_type[ResourceKind::Gold]).wrapping_mul(200),
+        );
+        city.stock_by_type[ResourceKind::Gold] = 0;
+        city.verify_stocks();
+
+        for resource in all_resources() {
+            city.add_to_stock_and_verify(resource, major.need_target_by_type[resource]);
+        }
+        Ok(())
     }
 
     fn major_nation_parts_mut(
@@ -400,6 +436,41 @@ mod tests {
     }
 
     #[test]
+    fn created_items_credit_precious_metals_and_settle_targets_into_city_stock() {
+        let nation = NationId::new(6);
+        let mut game = state(true);
+        let major = game.nations[nation].as_mut().unwrap().major_mut().unwrap();
+        major.need_target_by_type[ResourceKind::Cotton] = 2;
+        major.need_target_by_type[ResourceKind::Food] = 7;
+        major.need_target_by_type[ResourceKind::Fabric] = 1;
+        major.need_target_by_type[ResourceKind::Gems] = 3;
+        major.need_target_by_type[ResourceKind::Gold] = 4;
+
+        let city = game.cities[MajorNationId::new(6)].as_mut().unwrap();
+        city.stock_by_type[ResourceKind::Cotton] = -5;
+        city.stock_by_type[ResourceKind::Food] = 3;
+        city.stock_by_type[ResourceKind::Fabric] = i16::MAX;
+        city.stock_by_type[ResourceKind::Steel] = -1;
+        city.stock_by_type[ResourceKind::Gems] = 99;
+        city.stock_by_type[ResourceKind::Gold] = 99;
+
+        game.add_created_items(nation).unwrap();
+
+        let state = game.nations[nation].as_ref().unwrap();
+        let major = state.major().unwrap();
+        let city = game.cities[MajorNationId::new(6)].as_ref().unwrap();
+        assert_eq!(state.common.treasury, 3_300);
+        assert_eq!(city.stock_by_type[ResourceKind::Cotton], 2);
+        assert_eq!(city.stock_by_type[ResourceKind::Food], 10);
+        assert_eq!(city.stock_by_type[ResourceKind::Fabric], 0);
+        assert_eq!(city.stock_by_type[ResourceKind::Steel], 0);
+        assert_eq!(city.stock_by_type[ResourceKind::Gems], 3);
+        assert_eq!(city.stock_by_type[ResourceKind::Gold], 4);
+        assert_eq!(major.need_target_by_type[ResourceKind::Gems], 3);
+        assert_eq!(major.need_target_by_type[ResourceKind::Gold], 4);
+    }
+
+    #[test]
     fn special_resource_seller_uses_base_budget_and_balance() {
         let nation = NationId::new(6);
         let mut game = state(true);
@@ -450,6 +521,20 @@ mod tests {
             Err(RuleError::MissingNation {
                 nation: NationId::new(5)
             })
+        );
+        assert_eq!(game, before);
+    }
+
+    #[test]
+    fn created_item_settlement_rejects_a_missing_city_without_mutation() {
+        let nation = NationId::new(6);
+        let mut game = state(true);
+        game.cities[MajorNationId::new(6)] = None;
+        let before = game.clone();
+
+        assert_eq!(
+            game.add_created_items(nation),
+            Err(RuleError::MissingCity { nation })
         );
         assert_eq!(game, before);
     }

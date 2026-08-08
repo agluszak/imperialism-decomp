@@ -131,6 +131,11 @@ fn run() -> anyhow::Result<()> {
                         .context("Rust purchased-item commit failed")?;
                     event_count += outcome.events.len();
                 }
+                DifferentialStep::AddCreatedItems { nation } => {
+                    rust_state
+                        .add_created_items(NationId::new(nation))
+                        .context("Rust created-item settlement failed")?;
+                }
             }
         }
         if let Some(difference) = first_serialized_difference(&cpp_state, &rust_state)
@@ -172,7 +177,7 @@ enum RustSource {
 fn required_argument(program: &OsString, value: Option<OsString>) -> Result<OsString, String> {
     value.ok_or_else(|| {
         format!(
-            "usage: {} FIXTURE RUNTIME_RESULT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [COMMAND]...\ncommands: --specialist-recruit NATION UNIT_TYPE QUANTITY | --place-trade-bid NATION RESOURCE AMOUNT | --remember-trade-bids NATION | --purchase-item NATION RESOURCE AMOUNT PRICE | --commit-purchased-items NATION",
+            "usage: {} FIXTURE RUNTIME_RESULT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [COMMAND]...\ncommands: --specialist-recruit NATION UNIT_TYPE QUANTITY | --place-trade-bid NATION RESOURCE AMOUNT | --remember-trade-bids NATION | --purchase-item NATION RESOURCE AMOUNT PRICE | --commit-purchased-items NATION | --add-created-items NATION",
             Path::new(program).display(),
             Path::new(program).display()
         )
@@ -207,6 +212,9 @@ enum DifferentialStep {
         nation: u8,
     },
     CommitPurchasedItems {
+        nation: u8,
+    },
+    AddCreatedItems {
         nation: u8,
     },
 }
@@ -253,6 +261,10 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
             });
         } else if flag == "--commit-purchased-items" {
             options.steps.push(DifferentialStep::CommitPurchasedItems {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+            });
+        } else if flag == "--add-created-items" {
+            options.steps.push(DifferentialStep::AddCreatedItems {
                 nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
             });
         } else {
@@ -439,6 +451,17 @@ mod tests {
                     DifferentialStep::RememberTradeBids { nation: 6 },
                     DifferentialStep::CommitPurchasedItems { nation: 6 },
                 ],
+            })
+        );
+    }
+
+    #[test]
+    fn parses_the_created_items_phase_step() {
+        assert_eq!(
+            parse_options(vec!["--add-created-items".into(), "6".into()]),
+            Ok(DifferentialOptions {
+                seed: 1,
+                steps: vec![DifferentialStep::AddCreatedItems { nation: 6 }],
             })
         );
     }
