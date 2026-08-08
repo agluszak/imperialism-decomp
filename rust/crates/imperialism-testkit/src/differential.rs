@@ -416,4 +416,14 @@ mod tests {
         })
         .unwrap();
     }
+
+    #[test]
+    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+    fn military_maintenance() {
+        differential("military_maintenance", |state, case: NationCase| {
+            state.pay_for_military(case.nation)?;
+            Ok(())
+        })
+        .unwrap();
+    }
 }

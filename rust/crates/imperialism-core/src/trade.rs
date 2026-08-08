@@ -313,7 +313,7 @@ impl GameState {
         Ok(())
     }
 
-    fn major_nation_parts_mut(
+    pub(crate) fn major_nation_parts_mut(
         &mut self,
         nation: MajorNationId,
     ) -> Result<(&mut NationCommonState, &mut MajorNationState), RuleError> {
