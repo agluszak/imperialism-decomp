@@ -2,49 +2,224 @@ use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
 use bevy::ecs::system::SystemParam;
 use bevy::image::{CompressedImageFormats, ImageSampler, ImageType, TextureError};
+use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::prelude::*;
-use bevy::scene::ScenePlugin;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
-use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Button as UiButton, Checkbox};
+use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
+use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::{
     RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
-    RetailTextStylePreset, UiCatalog, UiNode as CatalogNode, UiNodeId, UiTextBinding,
-    UiView as CatalogView, WidgetKind, resolve_retail_text_style,
+    RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog, UiNode as CatalogNode, UiNodeId,
+    UiTextBinding, UiView as CatalogView, UiViewIndex, resolve_retail_text_style,
 };
 use std::collections::HashMap;
 
-/// Marks a spawned catalog node so hierarchy queries can recover [`UiNodeId`] after BSN spawn.
-#[derive(Component, Clone, Copy, Debug, Default)]
-struct UiCatalogNode(u32);
-
 #[derive(Resource)]
-pub(crate) struct UiCatalogResource(UiCatalog);
+pub(crate) struct UiCatalogResource {
+    catalog: UiCatalog,
+    by_id: HashMap<ScopedViewId, usize>,
+    indexes: Vec<UiViewIndex>,
+}
 
 impl UiCatalogResource {
-    pub(crate) const fn new(catalog: UiCatalog) -> Self {
-        Self(catalog)
+    pub(crate) fn new(catalog: UiCatalog) -> Self {
+        let by_id = catalog
+            .views
+            .iter()
+            .enumerate()
+            .map(|(index, view)| (view.id.clone(), index))
+            .collect();
+        let indexes = catalog.views.iter().map(UiViewIndex::build).collect();
+        Self {
+            catalog,
+            by_id,
+            indexes,
+        }
     }
 
     pub(crate) const fn catalog(&self) -> &UiCatalog {
-        &self.0
+        &self.catalog
+    }
+
+    pub(crate) fn view(&self, view_id: &ScopedViewId) -> Option<&CatalogView> {
+        self.by_id
+            .get(view_id)
+            .map(|&index| &self.catalog.views[index])
+    }
+
+    pub(crate) fn index(&self, view_id: &ScopedViewId) -> Option<&UiViewIndex> {
+        self.by_id.get(view_id).map(|&index| &self.indexes[index])
     }
 }
 
 #[derive(Debug, Clone)]
 pub(crate) struct SpawnedView {
     pub root: Entity,
+    pub view_id: ScopedViewId,
     pub nodes: HashMap<UiNodeId, Entity>,
 }
 
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum UiBindError {
+    #[error("UI view {0}:{1} is not in the catalog")]
+    MissingView(String, i16),
+    #[error("tag {0:?} not found in view {1}:{2}")]
+    MissingTag(String, String, i16),
+    #[error("tag {0:?} is ambiguous in view {1}:{2} ({3} matches)")]
+    AmbiguousTag(String, String, i16, usize),
+    #[error("tag {0:?} not found under ancestor {1:?} in view {2}:{3}")]
+    MissingUnder(String, String, String, i16),
+    #[error("tag {0:?} is ambiguous under ancestor {1:?} in view {2}:{3}")]
+    AmbiguousUnder(String, String, String, i16),
+    #[error("path {0:?} not found in view {1}:{2}")]
+    MissingPath(String, String, i16),
+}
+
 impl SpawnedView {
-    pub(crate) fn tagged(&self, view: &CatalogView, tag: &str) -> Option<Entity> {
-        view.nodes
-            .iter()
-            .find(|node| node.tag.0 == tag)
-            .map(|node| self.nodes[&node.id])
+    pub(crate) fn require_unique(
+        &self,
+        catalog: &UiCatalogResource,
+        tag: &str,
+    ) -> Result<Entity, UiBindError> {
+        let view = catalog
+            .view(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        let index = catalog
+            .index(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        match index.tagged(tag) {
+            [] => Err(UiBindError::MissingTag(
+                tag.to_owned(),
+                view.id.resource_file.clone(),
+                view.id.resource_id,
+            )),
+            [id] => Ok(self.nodes[id]),
+            matches => Err(UiBindError::AmbiguousTag(
+                tag.to_owned(),
+                view.id.resource_file.clone(),
+                view.id.resource_id,
+                matches.len(),
+            )),
+        }
     }
+
+    pub(crate) fn require_under(
+        &self,
+        catalog: &UiCatalogResource,
+        ancestor_tag: &str,
+        tag: &str,
+    ) -> Result<Entity, UiBindError> {
+        let view = catalog
+            .view(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        let index = catalog
+            .index(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        let ancestors = index.tagged(ancestor_tag);
+        if ancestors.is_empty() {
+            return Err(UiBindError::MissingTag(
+                ancestor_tag.to_owned(),
+                view.id.resource_file.clone(),
+                view.id.resource_id,
+            ));
+        }
+        let mut matches = Vec::new();
+        for candidate in index.tagged(tag) {
+            let Some(node) = index.node(view, *candidate) else {
+                continue;
+            };
+            let mut parent = node.parent;
+            while let Some(parent_id) = parent {
+                if ancestors.contains(&parent_id) {
+                    matches.push(*candidate);
+                    break;
+                }
+                parent = index.node(view, parent_id).and_then(|node| node.parent);
+            }
+        }
+        match matches.as_slice() {
+            [] => Err(UiBindError::MissingUnder(
+                tag.to_owned(),
+                ancestor_tag.to_owned(),
+                view.id.resource_file.clone(),
+                view.id.resource_id,
+            )),
+            [id] => Ok(self.nodes[id]),
+            _ => Err(UiBindError::AmbiguousUnder(
+                tag.to_owned(),
+                ancestor_tag.to_owned(),
+                view.id.resource_file.clone(),
+                view.id.resource_id,
+            )),
+        }
+    }
+
+    #[cfg_attr(not(test), expect(dead_code))]
+    pub(crate) fn require_path(
+        &self,
+        catalog: &UiCatalogResource,
+        path: &[&str],
+    ) -> Result<Entity, UiBindError> {
+        let view = catalog
+            .view(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        let index = catalog
+            .index(&self.view_id)
+            .ok_or_else(|| missing_view(&self.view_id))?;
+        let path_label = path.join("/");
+        let mut current_parents: Option<Vec<UiNodeId>> = None;
+        for (step, tag) in path.iter().enumerate() {
+            let candidates = index.tagged(tag);
+            let matches: Vec<UiNodeId> = match &current_parents {
+                None => {
+                    if step == 0 {
+                        candidates.to_vec()
+                    } else {
+                        Vec::new()
+                    }
+                }
+                Some(parents) => candidates
+                    .iter()
+                    .copied()
+                    .filter(|id| {
+                        index
+                            .node(view, *id)
+                            .and_then(|node| node.parent)
+                            .is_some_and(|parent| parents.contains(&parent))
+                    })
+                    .collect(),
+            };
+            match matches.as_slice() {
+                [] => {
+                    return Err(UiBindError::MissingPath(
+                        path_label,
+                        view.id.resource_file.clone(),
+                        view.id.resource_id,
+                    ));
+                }
+                [id] if step + 1 == path.len() => return Ok(self.nodes[id]),
+                many if step + 1 == path.len() => {
+                    return Err(UiBindError::AmbiguousTag(
+                        (*tag).to_owned(),
+                        view.id.resource_file.clone(),
+                        view.id.resource_id,
+                        many.len(),
+                    ));
+                }
+                many => current_parents = Some(many.to_vec()),
+            }
+        }
+        Err(UiBindError::MissingPath(
+            path_label,
+            view.id.resource_file.clone(),
+            view.id.resource_id,
+        ))
+    }
+}
+
+fn missing_view(view_id: &ScopedViewId) -> UiBindError {
+    UiBindError::MissingView(view_id.resource_file.clone(), view_id.resource_id)
 }
 
 #[derive(Resource, Clone, Copy, Debug, Default, Eq, PartialEq)]
@@ -80,15 +255,18 @@ struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
 #[derive(Resource, Default)]
 struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
 
+/// Single asset-loading path for retail pictures and fonts.
 #[derive(SystemParam)]
-pub(crate) struct UiPictureResources<'w> {
+pub(crate) struct UiAssetResources<'w> {
     retail_assets: Res<'w, RetailAssetsResource>,
     lookup: Res<'w, UiPictureLookup>,
     images: ResMut<'w, Assets<Image>>,
     handles: ResMut<'w, RetailPictureHandles>,
+    fonts: ResMut<'w, Assets<Font>>,
+    font_handles: ResMut<'w, RetailFontHandles>,
 }
 
-impl UiPictureResources<'_> {
+impl UiAssetResources<'_> {
     pub(crate) fn picture(
         &mut self,
         picture_id: i16,
@@ -116,162 +294,214 @@ impl UiPictureResources<'_> {
     }
 }
 
-/// Initializes retail picture/font caches and ensures BSN scene spawning works under
-/// `MinimalPlugins` test harnesses (DefaultPlugins already include [`ScenePlugin`]).
+/// Marks a modal dialog root with standard z-order and pointer blocking.
+#[derive(Component, Debug, Default)]
+pub(crate) struct ModalDialog;
+
+/// Initializes retail picture/font caches. Widget plugins come from Bevy's `ui` profile.
 pub(crate) struct UiCatalogPlugin;
 
 impl Plugin for UiCatalogPlugin {
     fn build(&self, app: &mut App) {
-        if !app.is_plugin_added::<AssetPlugin>() {
-            app.add_plugins(AssetPlugin::default());
-        }
-        if !app.is_plugin_added::<ScenePlugin>() {
-            app.add_plugins(ScenePlugin);
-        }
         app.init_resource::<RetailPictureHandles>()
             .init_resource::<RetailFontHandles>()
             .init_resource::<UiPictureLookup>();
     }
 }
 
-pub(crate) fn spawn_view(world: &mut World, view: &CatalogView) -> SpawnedView {
-    let logical_resolution = world
-        .resource::<UiCatalogResource>()
-        .catalog()
-        .logical_resolution;
-    let spawned = spawn_view_nodes(world, logical_resolution, view);
-    bind_view_assets(world, view, &spawned);
+/// Thin convenience API for spawning catalog views from ordinary systems.
+#[derive(SystemParam)]
+pub(crate) struct UiSpawner<'w, 's> {
+    pub(crate) commands: Commands<'w, 's>,
+    catalog: Res<'w, UiCatalogResource>,
+    assets: UiAssetResources<'w>,
+}
+
+impl UiSpawner<'_, '_> {
+    pub(crate) fn catalog(&self) -> &UiCatalogResource {
+        &self.catalog
+    }
+
+    pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> Option<SpawnedView> {
+        let view = self.catalog.view(&view_id)?;
+        Some(spawn_view(
+            &mut self.commands,
+            self.catalog.catalog(),
+            view,
+            &mut self.assets,
+        ))
+    }
+
+    pub(crate) fn spawn_modal(&mut self, view_id: ScopedViewId) -> Option<SpawnedView> {
+        let spawned = self.spawn(view_id)?;
+        self.commands.entity(spawned.root).insert((
+            ModalDialog,
+            TabGroup::modal(),
+            ZIndex(10),
+            Pickable::default(),
+        ));
+        Some(spawned)
+    }
+
+    pub(crate) fn attach<C: Component>(
+        &mut self,
+        spawned: &SpawnedView,
+        tag: &str,
+        component: C,
+    ) -> Result<Entity, UiBindError> {
+        let entity = spawned.require_unique(&self.catalog, tag)?;
+        self.commands
+            .entity(entity)
+            .insert(component)
+            .remove::<InteractionDisabled>();
+        Ok(entity)
+    }
+}
+
+pub(crate) fn spawn_view(
+    commands: &mut Commands,
+    catalog: &UiCatalog,
+    view: &CatalogView,
+    pictures: &mut UiAssetResources,
+) -> SpawnedView {
+    let spawned = spawn_view_nodes(commands, catalog.logical_resolution, view);
+    bind_view_assets(commands, view, &spawned, pictures);
     spawned
 }
 
 /// Spawns catalog node hierarchy without binding retail pictures/fonts.
 pub(crate) fn spawn_view_nodes(
-    world: &mut World,
+    commands: &mut Commands,
     logical_resolution: [u32; 2],
     view: &CatalogView,
 ) -> SpawnedView {
-    let root = world
-        .spawn_scene(view_root_scene(logical_resolution, view))
-        .expect("catalog view scenes have no unloaded asset dependencies")
+    let root = commands
+        .spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(0.0),
+                top: Val::Px(0.0),
+                width: Val::Px(logical_resolution[0] as f32),
+                height: Val::Px(logical_resolution[1] as f32),
+                ..default()
+            },
+            Name::new(format!(
+                "ui:{}:{}",
+                view.id.resource_file, view.id.resource_id
+            )),
+            Pickable::default(),
+        ))
         .id();
+
+    let mut nodes = HashMap::with_capacity(view.nodes.len());
+    for node in &view.nodes {
+        let entity = spawn_node(commands, node);
+        nodes.insert(node.id, entity);
+    }
+    for node in &view.nodes {
+        let entity = nodes[&node.id];
+        let parent = node.parent.map_or(root, |parent| nodes[&parent]);
+        commands.entity(entity).insert(ChildOf(parent));
+    }
     SpawnedView {
         root,
-        nodes: collect_catalog_nodes(world, root),
+        view_id: view.id.clone(),
+        nodes,
     }
 }
 
-fn view_root_scene(logical_resolution: [u32; 2], view: &CatalogView) -> impl Scene {
-    let name = format!("ui:{}:{}", view.id.resource_file, view.id.resource_id);
-    let children = catalog_child_scenes(view, None);
-    bsn! {
-        Node {
-            position_type: PositionType::Absolute,
-            left: px(0),
-            top: px(0),
-            width: px(logical_resolution[0] as f32),
-            height: px(logical_resolution[1] as f32),
-        }
-        Name({name})
-        Pickable
-        Children [{children}]
-    }
-}
-
-fn catalog_child_scenes(view: &CatalogView, parent: Option<UiNodeId>) -> Vec<Box<dyn Scene>> {
-    view.nodes
-        .iter()
-        .filter(|node| node.parent == parent)
-        .map(|node| catalog_node_scene(view, node))
-        .collect()
-}
-
-fn catalog_node_scene(view: &CatalogView, node: &CatalogNode) -> Box<dyn Scene> {
+fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
     let [inset_left, inset_top, inset_right, inset_bottom] = catalog_content_insets(node);
-    let name = format!("ui-node:{}:{}", node.id.0, node.tag.0);
-    let children = catalog_child_scenes(view, Some(node.id));
-    let widget = catalog_widget_scene(node);
-    let node_id = node.id.0;
-    let left = node.rect.x as f32;
-    let top = node.rect.y as f32;
-    let width = node.rect.width as f32;
-    let height = node.rect.height as f32;
-    Box::new(bsn! {
+    let mut entity = commands.spawn((
         Node {
             position_type: PositionType::Absolute,
-            left: px(left),
-            top: px(top),
-            width: px(width),
-            height: px(height),
+            left: Val::Px(node.rect.x as f32),
+            top: Val::Px(node.rect.y as f32),
+            width: Val::Px(node.rect.width as f32),
+            height: Val::Px(node.rect.height as f32),
             padding: UiRect {
-                left: px(inset_left as f32),
-                top: px(inset_top as f32),
-                right: px(inset_right as f32),
-                bottom: px(inset_bottom as f32),
+                left: Val::Px(inset_left as f32),
+                top: Val::Px(inset_top as f32),
+                right: Val::Px(inset_right as f32),
+                bottom: Val::Px(inset_bottom as f32),
             },
-        }
-        Name({name})
-        UiCatalogNode({node_id})
-        {widget}
-        Children [{children}]
-    })
+            ..default()
+        },
+        Name::new(format!("ui-node:{}:{}", node.id.0, node.tag.0)),
+    ));
+
+    apply_behavior_components(&mut entity, node);
+    entity.id()
 }
 
-fn catalog_widget_scene(node: &CatalogNode) -> Box<dyn Scene> {
-    let disabled = !node.enabled || !node.input_gate;
-    match node.kind {
-        WidgetKind::PictureButton if disabled => Box::new(bsn! {
-            UiButton
-            InteractionDisabled
-        }),
-        WidgetKind::PictureButton => Box::new(bsn! { UiButton }),
-        WidgetKind::Checkbox if disabled => Box::new(bsn! {
-            Checkbox
-            InteractionDisabled
-        }),
-        WidgetKind::Checkbox => Box::new(bsn! { Checkbox }),
-        WidgetKind::Toggle
-        | WidgetKind::EditControl
-        | WidgetKind::Container
-        | WidgetKind::Window
-        | WidgetKind::FloatingWindow
-        | WidgetKind::Picture
-        | WidgetKind::StaticText
-        | WidgetKind::NumericValue
-        | WidgetKind::ListOrScrollingPane
-        | WidgetKind::RadioOrClusterControl
-        | WidgetKind::CustomCanvas
-        | WidgetKind::Specialized => Box::new(()),
+fn apply_behavior_components(entity: &mut EntityCommands, node: &CatalogNode) {
+    let disabled = node.interaction_disabled();
+    match node.behavior {
+        UiBehavior::Passive => {}
+        UiBehavior::Activate => {
+            entity.insert(UiButton);
+        }
+        UiBehavior::Checkbox => {
+            entity.insert(Checkbox);
+            if node.state {
+                entity.insert(Checked);
+            }
+        }
+        UiBehavior::Toggle => {
+            // Bevy has no separate Toggle widget; reuse Checkbox presentation.
+            entity.insert(Checkbox);
+            if node.state {
+                entity.insert(Checked);
+            }
+        }
+        UiBehavior::RadioGroup => {
+            entity.insert(RadioGroup);
+        }
+        UiBehavior::RadioButton => {
+            entity.insert(RadioButton);
+            if node.state {
+                entity.insert(Checked);
+            }
+        }
+        UiBehavior::TextEdit => {
+            // EditableText content is bound with retail text assets.
+        }
+        UiBehavior::ScrollArea => {
+            // Scroll projection lands with list ports; keep the node passive for now.
+        }
+        UiBehavior::PointerCanvas => {
+            entity.insert(RelativeCursorPosition::default());
+        }
+    }
+    if disabled && node.behavior.is_interactive() {
+        entity.insert(InteractionDisabled);
     }
 }
 
-fn collect_catalog_nodes(world: &World, root: Entity) -> HashMap<UiNodeId, Entity> {
-    let mut nodes = HashMap::new();
-    let mut stack = vec![root];
-    while let Some(entity) = stack.pop() {
-        if let Some(UiCatalogNode(id)) = world.get::<UiCatalogNode>(entity) {
-            nodes.insert(UiNodeId(*id), entity);
-        }
-        if let Some(children) = world.get::<Children>(entity) {
-            stack.extend(children.iter());
-        }
-    }
-    nodes
-}
-
-fn bind_view_assets(world: &mut World, view: &CatalogView, spawned: &SpawnedView) {
+fn bind_view_assets(
+    commands: &mut Commands,
+    view: &CatalogView,
+    spawned: &SpawnedView,
+    pictures: &mut UiAssetResources,
+) {
     for node in &view.nodes {
         let entity = spawned.nodes[&node.id];
         if let Some(binding) = node.properties.text.as_ref() {
-            match load_retail_text_world(world, binding) {
-                Ok((font, layout, underline)) => match node.kind {
-                    WidgetKind::EditControl => {
+            match load_retail_text(
+                binding,
+                &pictures.retail_assets,
+                &mut pictures.fonts,
+                &mut pictures.font_handles,
+            ) {
+                Ok((font, layout, underline)) => {
+                    if node.behavior == UiBehavior::TextEdit {
                         let initial = binding.value.clone().unwrap_or_default();
                         let mut editable = EditableText::new(initial);
                         editable.allow_newlines = false;
                         if let Some(max_chars) = node.properties.max_characters() {
                             editable.max_characters = Some(max_chars as usize);
                         }
-                        let mut entity = world.entity_mut(entity);
+                        let mut entity = commands.entity(entity);
                         entity.insert((
                             editable,
                             font,
@@ -283,9 +513,8 @@ fn bind_view_assets(world: &mut World, view: &CatalogView, spawned: &SpawnedView
                         if underline {
                             entity.insert(Underline);
                         }
-                    }
-                    _ => {
-                        let mut entity = world.entity_mut(entity);
+                    } else {
+                        let mut entity = commands.entity(entity);
                         entity.insert((
                             Text::new(binding.value.clone().unwrap_or_default()),
                             font,
@@ -296,7 +525,7 @@ fn bind_view_assets(world: &mut World, view: &CatalogView, spawned: &SpawnedView
                             entity.insert(Underline);
                         }
                     }
-                },
+                }
                 Err(error) => {
                     warn!(
                         "could not bind retail text for UI view {}:{} node {}: {error}",
@@ -308,10 +537,10 @@ fn bind_view_assets(world: &mut World, view: &CatalogView, spawned: &SpawnedView
         if let Some(picture_id) = node.properties.picture_id {
             match i16::try_from(picture_id)
                 .map_err(|_| UiPictureBindingError::InvalidPictureId(picture_id))
-                .and_then(|picture_id| load_picture_from_world(world, picture_id))
+                .and_then(|picture_id| pictures.picture(picture_id))
             {
                 Ok(handle) => {
-                    world.entity_mut(entity).insert(ImageNode::new(handle));
+                    commands.entity(entity).insert(ImageNode::new(handle));
                 }
                 Err(error) => {
                     warn!(
@@ -322,36 +551,6 @@ fn bind_view_assets(world: &mut World, view: &CatalogView, spawned: &SpawnedView
             }
         }
     }
-}
-
-fn load_picture_from_world(
-    world: &mut World,
-    picture_id: i16,
-) -> Result<Handle<Image>, UiPictureBindingError> {
-    let world_variant = world.resource::<UiPictureLookup>().world_variant;
-    let key = (picture_id, world_variant);
-    if let Some(handle) = world.resource::<RetailPictureHandles>().0.get(&key) {
-        return Ok(handle.clone());
-    }
-    let bytes = world
-        .resource::<RetailAssetsResource>()
-        .assets()
-        .picture(picture_id, world_variant)?;
-    let image = Image::from_buffer(
-        &bytes,
-        ImageType::Format(ImageFormat::Bmp),
-        CompressedImageFormats::NONE,
-        true,
-        ImageSampler::nearest(),
-        RenderAssetUsages::default(),
-    )
-    .map_err(|source| UiPictureBindingError::BmpDecode { picture_id, source })?;
-    let handle = world.resource_mut::<Assets<Image>>().add(image);
-    world
-        .resource_mut::<RetailPictureHandles>()
-        .0
-        .insert(key, handle.clone());
-    Ok(handle)
 }
 
 fn catalog_content_insets(node: &CatalogNode) -> [i32; 4] {
@@ -370,9 +569,11 @@ fn catalog_text_content_box(node: &CatalogNode) -> ([i32; 2], [i32; 2]) {
     )
 }
 
-fn load_retail_text_world(
-    world: &mut World,
+fn load_retail_text(
     binding: &UiTextBinding,
+    retail_assets: &RetailAssetsResource,
+    fonts: &mut Assets<Font>,
+    font_handles: &mut RetailFontHandles,
 ) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
     let style = resolve_retail_text_style(RetailTextStylePreset {
         font_family: binding.font_family,
@@ -380,22 +581,14 @@ fn load_retail_text_world(
         point_size: binding.point_size,
         alignment: binding.alignment,
     })?;
-    let handle = if let Some(handle) = world.resource::<RetailFontHandles>().0.get(&style.face) {
-        handle.clone()
-    } else {
-        let bytes = world
-            .resource::<RetailAssetsResource>()
-            .assets()
-            .font_bytes(style.face)
-            .to_vec();
-        let handle = world
-            .resource_mut::<Assets<Font>>()
-            .add(Font::from_bytes(bytes));
-        world
-            .resource_mut::<RetailFontHandles>()
-            .0
-            .insert(style.face, handle.clone());
-        handle
+    let bytes = retail_assets.assets().font_bytes(style.face);
+    let handle = match font_handles.0.get(&style.face) {
+        Some(handle) => handle.clone(),
+        None => {
+            let handle = fonts.add(Font::from_bytes(bytes.to_vec()));
+            font_handles.0.insert(style.face, handle.clone());
+            handle
+        }
     };
     let mut font = TextFont::from_font_size(style.logical_pixel_height as f32)
         .with_font(handle)
@@ -443,7 +636,7 @@ fn load_retail_picture(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::{ScopedViewId, UiCatalog};
+    use imperialism_formats::UiCatalog;
     use std::collections::HashMap;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -486,11 +679,15 @@ mod tests {
             .unwrap()
             .clone();
         let logical_resolution = catalog.logical_resolution;
-        spawn_view_nodes(app.world_mut(), logical_resolution, &view)
+        let world = app.world_mut();
+        let mut commands = world.commands();
+        let spawned = spawn_view_nodes(&mut commands, logical_resolution, &view);
+        world.flush();
+        spawned
     }
 
     #[test]
-    fn all_launch_views_spawn_with_exact_catalog_hierarchy() {
+    fn all_catalog_views_spawn_with_exact_catalog_hierarchy() {
         let mut app = app();
         let catalog = catalog();
         let mut roots = HashMap::new();
@@ -531,17 +728,30 @@ mod tests {
                 let has_button = world.get::<UiButton>(entity).is_some();
                 assert_eq!(
                     has_button,
-                    node.kind == WidgetKind::PictureButton,
-                    "node {} tag {} should only auto-map PictureButton",
+                    node.behavior == UiBehavior::Activate,
+                    "node {} tag {} behavior {:?}",
                     node.id.0,
-                    node.tag.0
+                    node.tag.0,
+                    node.behavior
                 );
-                if node.kind == WidgetKind::PictureButton {
+                if node.behavior.is_interactive() {
                     assert_eq!(
                         world.get::<InteractionDisabled>(entity).is_some(),
-                        !node.enabled || !node.input_gate
+                        node.interaction_disabled()
                     );
                 }
+                assert_eq!(
+                    world.get::<RadioButton>(entity).is_some(),
+                    node.behavior == UiBehavior::RadioButton
+                );
+                assert_eq!(
+                    world.get::<RadioGroup>(entity).is_some(),
+                    node.behavior == UiBehavior::RadioGroup
+                );
+                assert_eq!(
+                    world.get::<RelativeCursorPosition>(entity).is_some(),
+                    node.behavior == UiBehavior::PointerCanvas
+                );
             }
         }
     }
@@ -574,31 +784,63 @@ mod tests {
     }
 
     #[test]
-    fn specialized_and_ambiguous_nodes_stay_passive() {
+    fn projector_maps_behaviors_for_random_setup_controls() {
         let mut app = app();
-        let menu = ScopedViewId {
-            resource_file: "Startup.rsrc".to_owned(),
-            resource_id: 1500,
-        };
         let setup = ScopedViewId {
             resource_file: "Startup.rsrc".to_owned(),
             resource_id: 1501,
         };
-        let menu_view = spawn_structure(&mut app, &menu);
+        let menu = ScopedViewId {
+            resource_file: "Startup.rsrc".to_owned(),
+            resource_id: 1500,
+        };
         let setup_view = spawn_structure(&mut app, &setup);
-        let catalog = catalog();
-        let menu_catalog = catalog_view(&catalog, &menu);
-        let setup_catalog = catalog_view(&catalog, &setup);
+        let menu_view = spawn_structure(&mut app, &menu);
+        let catalog = app.world().resource::<UiCatalogResource>();
 
-        for tag in ["rand", "quit", "load"] {
-            let entity = menu_view.tagged(menu_catalog, tag).unwrap();
-            assert!(app.world().get::<UiButton>(entity).is_none());
-        }
-        for tag in ["dif0", "hist", "key ", "cncl", "glob", "map "] {
-            let entity = setup_view.tagged(setup_catalog, tag).unwrap();
-            assert!(app.world().get::<UiButton>(entity).is_none());
-        }
-        let okay = setup_view.tagged(setup_catalog, "okay").unwrap();
+        let okay = setup_view.require_unique(catalog, "okay").unwrap();
         assert!(app.world().get::<UiButton>(okay).is_some());
+        let globe = setup_view.require_unique(catalog, "glob").unwrap();
+        assert!(app.world().get::<UiButton>(globe).is_some());
+        let dif0 = setup_view.require_unique(catalog, "dif0").unwrap();
+        assert!(app.world().get::<RadioButton>(dif0).is_some());
+        let diff = setup_view.require_unique(catalog, "diff").unwrap();
+        assert!(app.world().get::<RadioGroup>(diff).is_some());
+        let map = setup_view.require_unique(catalog, "map ").unwrap();
+        assert!(app.world().get::<RelativeCursorPosition>(map).is_some());
+
+        let rand = menu_view.require_unique(catalog, "rand").unwrap();
+        assert!(app.world().get::<UiButton>(rand).is_some());
+    }
+
+    #[test]
+    fn require_under_distinguishes_duplicate_tags() {
+        let mut app = app();
+        let diplomacy = ScopedViewId {
+            resource_file: "Diplo.rsrc".to_owned(),
+            resource_id: 2008,
+        };
+        let spawned = spawn_structure(&mut app, &diplomacy);
+        let catalog = app.world().resource::<UiCatalogResource>();
+        let toolbar = spawned.require_under(catalog, "topB", "trad").unwrap();
+        assert!(
+            spawned.require_unique(catalog, "trad").is_err(),
+            "trad is ambiguous without an ancestor"
+        );
+        let leave = spawned.require_under(catalog, "too3", "end ").unwrap();
+        assert_ne!(toolbar, leave);
+    }
+
+    #[test]
+    fn require_path_walks_direct_parent_tags() {
+        let mut app = app();
+        let setup = ScopedViewId {
+            resource_file: "Startup.rsrc".to_owned(),
+            resource_id: 1501,
+        };
+        let spawned = spawn_structure(&mut app, &setup);
+        let catalog = app.world().resource::<UiCatalogResource>();
+        let dif0 = spawned.require_path(catalog, &["diff", "dif0"]).unwrap();
+        assert_eq!(dif0, spawned.require_unique(catalog, "dif0").unwrap());
     }
 }

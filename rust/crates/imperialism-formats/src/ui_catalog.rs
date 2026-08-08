@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -11,9 +12,33 @@ pub struct ScopedViewId {
 #[serde(transparent)]
 pub struct UiNodeId(pub u32);
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct FourCc(pub String);
+
+impl FourCc {
+    /// Build a four-character code. Retail tags are exactly four bytes (pad with spaces).
+    pub fn new(value: &str) -> Self {
+        assert!(
+            value.len() == 4,
+            "FourCc tags must be exactly four characters (pad with spaces): {value:?}"
+        );
+        Self(value.to_owned())
+    }
+}
+
+/// Four-character-code helper that rejects mistyped tags such as `"key"` instead of `"key "`.
+#[macro_export]
+macro_rules! fourcc {
+    ($lit:literal) => {{
+        const _: &str = $lit;
+        const _: () = assert!(
+            $lit.len() == 4,
+            "fourcc! tags must be exactly four characters (pad with spaces)"
+        );
+        $crate::FourCc::new($lit)
+    }};
+}
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -32,6 +57,28 @@ pub enum WidgetKind {
     RadioOrClusterControl,
     CustomCanvas,
     Specialized,
+}
+
+/// Interaction semantics independent from [`WidgetKind`] visual representation.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum UiBehavior {
+    #[default]
+    Passive,
+    Activate,
+    Checkbox,
+    Toggle,
+    RadioGroup,
+    RadioButton,
+    TextEdit,
+    ScrollArea,
+    PointerCanvas,
+}
+
+impl UiBehavior {
+    pub const fn is_interactive(self) -> bool {
+        !matches!(self, Self::Passive)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -123,14 +170,20 @@ pub struct UiNode {
     pub parent: Option<UiNodeId>,
     pub tag: FourCc,
     pub kind: WidgetKind,
+    pub behavior: UiBehavior,
     pub rect: LogicalRect,
     pub state: bool,
     pub enabled: bool,
-    pub interactive: bool,
     pub input_gate: bool,
     pub child_hit_test: bool,
     pub control_value: i32,
     pub properties: WidgetProperties,
+}
+
+impl UiNode {
+    pub const fn interaction_disabled(&self) -> bool {
+        !self.enabled || !self.input_gate
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -142,11 +195,55 @@ pub struct UiView {
     pub nodes: Vec<UiNode>,
 }
 
+/// Precomputed lookups over a catalog view hierarchy.
+#[derive(Clone, Debug)]
+pub struct UiViewIndex {
+    by_id: HashMap<UiNodeId, usize>,
+    by_tag: HashMap<String, Vec<UiNodeId>>,
+    children: HashMap<Option<UiNodeId>, Vec<UiNodeId>>,
+}
+
+impl UiViewIndex {
+    pub fn build(view: &UiView) -> Self {
+        let mut by_id = HashMap::with_capacity(view.nodes.len());
+        let mut by_tag: HashMap<String, Vec<UiNodeId>> = HashMap::new();
+        let mut children: HashMap<Option<UiNodeId>, Vec<UiNodeId>> = HashMap::new();
+        for (index, node) in view.nodes.iter().enumerate() {
+            by_id.insert(node.id, index);
+            by_tag.entry(node.tag.0.clone()).or_default().push(node.id);
+            children.entry(node.parent).or_default().push(node.id);
+        }
+        Self {
+            by_id,
+            by_tag,
+            children,
+        }
+    }
+
+    pub fn node<'a>(&self, view: &'a UiView, id: UiNodeId) -> Option<&'a UiNode> {
+        self.by_id.get(&id).map(|&index| &view.nodes[index])
+    }
+
+    pub fn children_of(&self, parent: Option<UiNodeId>) -> &[UiNodeId] {
+        self.children.get(&parent).map_or(&[], Vec::as_slice)
+    }
+
+    pub fn tagged(&self, tag: &str) -> &[UiNodeId] {
+        self.by_tag.get(tag).map_or(&[], Vec::as_slice)
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct UiCatalog {
     pub logical_resolution: [u32; 2],
     pub views: Vec<UiView>,
+}
+
+impl UiCatalog {
+    pub fn view(&self, id: &ScopedViewId) -> Option<&UiView> {
+        self.views.iter().find(|view| &view.id == id)
+    }
 }
 
 #[cfg(test)]
@@ -191,6 +288,11 @@ mod tests {
                 "missing {resource_file}:{resource_id}"
             );
         }
+        assert!(
+            catalog.views.len() >= 81,
+            "expected all resource-backed factory views, found {}",
+            catalog.views.len()
+        );
     }
 
     #[test]
@@ -216,9 +318,16 @@ mod tests {
             .iter()
             .find(|node| node.tag.0 == "glob")
             .unwrap();
-        assert!(difficulty.interactive);
-        assert!(!heading.interactive);
-        assert!(globe.interactive);
+        let group = random_setup
+            .nodes
+            .iter()
+            .find(|node| node.tag.0 == "diff")
+            .unwrap();
+        assert_eq!(difficulty.behavior, UiBehavior::RadioButton);
+        assert_eq!(heading.behavior, UiBehavior::Passive);
+        assert_eq!(globe.behavior, UiBehavior::Activate);
+        assert_eq!(group.behavior, UiBehavior::RadioGroup);
+        assert_eq!(globe.kind, WidgetKind::Picture);
     }
 
     #[test]
@@ -237,7 +346,7 @@ mod tests {
 
         assert_eq!(dialog.event, 0x03ba);
         assert_eq!(nodes["plan"].kind, WidgetKind::EditControl);
-        assert!(nodes["plan"].interactive);
+        assert_eq!(nodes["plan"].behavior, UiBehavior::TextEdit);
         assert_eq!(nodes["plan"].properties.max_chars, Some(32));
         assert_eq!(nodes["plan"].properties.max_characters(), Some(32));
         assert_eq!(
@@ -250,7 +359,7 @@ mod tests {
         );
         assert!(!nodes["1or2"].state);
         assert!(!nodes["1or2"].enabled);
-        assert!(nodes["okay"].interactive);
+        assert_eq!(nodes["okay"].behavior, UiBehavior::Activate);
         assert!(!nodes["canc"].state);
         assert!(!nodes["canc"].enabled);
     }
@@ -266,5 +375,12 @@ mod tests {
             resource_id: 953,
         };
         assert_ne!(startup, other);
+    }
+
+    #[test]
+    fn fourcc_preserves_trailing_spaces() {
+        assert_eq!(fourcc!("key ").0, "key ");
+        assert_eq!(fourcc!("end ").0, "end ");
+        assert_eq!(FourCc::new("map ").0, "map ");
     }
 }

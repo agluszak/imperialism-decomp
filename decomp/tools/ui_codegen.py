@@ -97,19 +97,16 @@ class UiResourceKey:
         return f"{self.resource_file}:{self.view_id}"
 
 
-RUST_LAUNCH_VIEW_KEYS = (
-    UiResourceKey("Linger.rsrc", 954),
-    UiResourceKey("Startup.rsrc", 1500),
-    UiResourceKey("Startup.rsrc", 1501),
-    UiResourceKey("Startup.rsrc", 952),
-    UiResourceKey("Startup.rsrc", 953),
-    UiResourceKey("FlagView.rsrc", 8451),
-    UiResourceKey("MapView.rsrc", 2013),
-    UiResourceKey("Trade.rsrc", 2009),
-    UiResourceKey("Citymain.rsrc", 2011),
-    UiResourceKey("Transport.rsrc", 2014),
-    UiResourceKey("Diplo.rsrc", 2008),
-)
+# Resource-backed or windows-only factory cases that cannot yet be emitted into the
+# Rust catalog. Keys are UiResourceKey.text() or windows_view names.
+RUST_CATALOG_EXCLUSIONS: dict[str, str] = {
+    # Symbolic node ids ("window", "dialog", ...) are not resource offsets, and the
+    # Rust catalog UiNodeId is a u32 offset taken from Mac View IR.
+    "join_selector_message": (
+        "Windows-only semantic view uses symbolic node ids; "
+        "catalog UiNodeId requires resource offsets"
+    ),
+}
 
 
 @dataclass(frozen=True)
@@ -1085,28 +1082,41 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
     return "specialized"
 
 
-def _rust_widget_interactive(key: UiResourceKey, node: UiSemanticNode) -> bool:
-    """Return the launch UI interaction semantic without exposing C++ classes.
+def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
+    """Return interaction behavior independent from visual [`_rust_widget_kind`].
 
-    The generator is the one place where the recovered type and class evidence is
-    needed to distinguish a picture button or radio-style static text from an
-    otherwise passive widget.  The generated Rust catalog carries the resolved
-    boolean, not those implementation details.
+    The generator is the one place where recovered type/class evidence decides
+    whether a static-text-looking control is a radio, a picture is an activate
+    button, or a canvas takes pointer input. The Rust catalog carries the
+    resolved behavior enum, not those C++ class details.
     """
 
+    class_name = node.class_name.casefold()
     kind = _rust_widget_kind(node)
-    return (
-        node.type_code in ("cntl", "edit", "nmbr", "radb", "chkb")
-        or (node.type_code == "pict" and "button" in node.class_name.casefold())
-        or kind in ("toggle", "checkbox")
-        or (node.type_code == "stat" and "radio" in node.class_name.casefold())
+    if node.type_code == "clus":
+        return "radio_group"
+    if node.type_code == "radb" or "radio" in class_name:
+        return "radio_button"
+    if node.type_code == "chkb" or "czechbox" in class_name or "checkbox" in class_name:
+        return "checkbox"
+    if kind == "toggle":
+        return "toggle"
+    if node.type_code == "edit":
+        return "text_edit"
+    if node.type_code == "tevw":
+        return "scroll_area"
+    if node.class_name in ("TMapPreviewView", "TCitySiteView"):
+        return "pointer_canvas"
+    if (
+        node.type_code in ("cntl", "nmbr")
+        or (node.type_code == "pict" and "button" in class_name)
         # TSetupRandomMapPicture::DoEvent handles this otherwise passive
         # TNoHilitePicture as the random-map regeneration action.
         or (key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob")
-        # TMapPreviewView::DoMouseCommand resolves the clicked preview palette
-        # to a nation and dispatches the pick event to its owner.
-        or node.class_name == "TMapPreviewView"
-    )
+    ):
+        return "activate"
+    return "passive"
+
 
 
 def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
@@ -1185,6 +1195,51 @@ def _catalog_case_for_resource(
     return matches[0]
 
 
+def resource_backed_catalog_keys(
+    recipes: Iterable[UiFactoryRecipe],
+) -> list[UiResourceKey]:
+    """Every factory case with a Mac resource, excluding explicitly rejected keys."""
+
+    keys = {
+        case.resource
+        for recipe in recipes
+        for case in recipe.cases
+        if case.resource is not None and case.resource.text() not in RUST_CATALOG_EXCLUSIONS
+    }
+    return sorted(keys, key=lambda item: (item.resource_file, item.view_id))
+
+
+def _emit_catalog_view_nodes(
+    key: UiResourceKey, semantic_view: UiSemanticView
+) -> tuple[list[dict[str, object]], int]:
+    roots = [node for node in semantic_view.nodes if node.parent_id is None]
+    if len(roots) != 1:
+        raise ValueError(f"{key.text()}: expected one semantic root")
+    nodes: list[dict[str, object]] = []
+    for node in semantic_view.nodes:
+        offset = int(node.node_id, 16)
+        x, y, width, height = node.geometry
+        nodes.append(
+            {
+                "id": offset,
+                "parent": (
+                    int(node.parent_id, 16) if node.parent_id is not None else None
+                ),
+                "tag": node.tag,
+                "kind": _rust_widget_kind(node),
+                "behavior": _rust_widget_behavior(key, node),
+                "rect": {"x": x, "y": y, "width": width, "height": height},
+                "state": bool(node.state),
+                "enabled": bool(node.enabled),
+                "input_gate": bool(node.input_gate),
+                "child_hit_test": bool(node.child_hit_test),
+                "control_value": node.control_value,
+                "properties": _rust_catalog_family(node.family),
+            }
+        )
+    return nodes, int(roots[0].node_id, 16)
+
+
 def build_rust_ui_catalog(
     repo_root: Path,
     recipes: Iterable[UiFactoryRecipe],
@@ -1194,9 +1249,7 @@ def build_rust_ui_catalog(
     recipe_list = list(recipes)
     text_property_patches = load_windows_text_property_patches(repo_root)
     catalog_views: list[dict[str, object]] = []
-    for key in sorted(
-        RUST_LAUNCH_VIEW_KEYS, key=lambda item: (item.resource_file, item.view_id)
-    ):
+    for key in resource_backed_catalog_keys(recipe_list):
         raw_view = views.get(key)
         if raw_view is None:
             raise ValueError(f"{key.text()}: missing committed Mac View IR")
@@ -1206,33 +1259,7 @@ def build_rust_ui_catalog(
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches
         )
-        roots = [node for node in semantic_view.nodes if node.parent_id is None]
-        if len(roots) != 1:
-            raise ValueError(f"{key.text()}: expected one semantic root")
-        nodes: list[dict[str, object]] = []
-        for node in semantic_view.nodes:
-            offset = int(node.node_id, 16)
-            x, y, width, height = node.geometry
-            nodes.append(
-                {
-                    "id": offset,
-                    "parent": (
-                        int(node.parent_id, 16)
-                        if node.parent_id is not None
-                        else None
-                    ),
-                    "tag": node.tag,
-                    "kind": _rust_widget_kind(node),
-                    "rect": {"x": x, "y": y, "width": width, "height": height},
-                    "state": bool(node.state),
-                    "enabled": bool(node.enabled),
-                    "interactive": _rust_widget_interactive(key, node),
-                    "input_gate": bool(node.input_gate),
-                    "child_hit_test": bool(node.child_hit_test),
-                    "control_value": node.control_value,
-                    "properties": _rust_catalog_family(node.family),
-                }
-            )
+        nodes, root = _emit_catalog_view_nodes(key, semantic_view)
         catalog_views.append(
             {
                 "id": {
@@ -1240,7 +1267,7 @@ def build_rust_ui_catalog(
                     "resource_id": key.view_id,
                 },
                 "event": case.event,
-                "root": int(roots[0].node_id, 16),
+                "root": root,
                 "nodes": nodes,
             }
         )
@@ -1248,6 +1275,83 @@ def build_rust_ui_catalog(
         "logical_resolution": [640, 480],
         "views": catalog_views,
     }
+
+
+def validate_rust_catalog_coverage(
+    recipes: Iterable[UiFactoryRecipe],
+    catalog: dict[str, object] | None = None,
+) -> list[str]:
+    """Every resource-backed factory case is catalogued or explicitly excluded."""
+
+    errors: list[str] = []
+    catalogued: set[str] = set()
+    if catalog is not None:
+        for view in catalog.get("views", []):
+            view_id = view["id"]
+            catalogued.add(f"{view_id['resource_file']}:{view_id['resource_id']}")
+    for recipe in recipes:
+        for case in recipe.cases:
+            if case.resource is None:
+                if case.windows_view is None:
+                    continue
+                if case.windows_view not in RUST_CATALOG_EXCLUSIONS:
+                    errors.append(
+                        f"windows view {case.windows_view!r} is neither catalogued "
+                        "nor listed in RUST_CATALOG_EXCLUSIONS"
+                    )
+                continue
+            key = case.resource.text()
+            if key in RUST_CATALOG_EXCLUSIONS:
+                continue
+            if catalog is not None and key not in catalogued:
+                errors.append(f"{key}: resource-backed factory case missing from Rust catalog")
+    for key, reason in sorted(RUST_CATALOG_EXCLUSIONS.items()):
+        if not reason.strip():
+            errors.append(f"exclusion {key!r} is missing a reason")
+    return errors
+
+
+def report_unsupported_catalog_roles(
+    repo_root: Path,
+    recipes: Iterable[UiFactoryRecipe],
+    views: dict[UiResourceKey, dict],
+    text_resources: TextResources,
+) -> list[str]:
+    """On-demand report of specialized visuals and deferred behaviors by view."""
+
+    recipe_list = list(recipes)
+    text_property_patches = load_windows_text_property_patches(repo_root)
+    lines: list[str] = []
+    for key in resource_backed_catalog_keys(recipe_list):
+        raw_view = views.get(key)
+        if raw_view is None:
+            lines.append(f"{key.text()}: missing Mac View IR")
+            continue
+        recipe, case = _catalog_case_for_resource(recipe_list, key)
+        semantic_view = normalize_resource_view(key, raw_view, text_resources)
+        semantic_view = apply_case_windows_overrides(recipe, case, semantic_view)
+        semantic_view = apply_windows_text_property_patches(
+            key, semantic_view, text_property_patches
+        )
+        unsupported: list[str] = []
+        for node in semantic_view.nodes:
+            kind = _rust_widget_kind(node)
+            behavior = _rust_widget_behavior(key, node)
+            notes: list[str] = []
+            if kind == "specialized":
+                notes.append(f"kind={kind}")
+            if behavior in ("scroll_area",):
+                notes.append(f"behavior={behavior}")
+            if notes:
+                unsupported.append(
+                    f"  {node.tag!r} ({node.class_name}): " + ", ".join(notes)
+                )
+        if unsupported:
+            lines.append(f"{key.text()} event=0x{case.event:04x}")
+            lines.extend(unsupported)
+    for key, reason in sorted(RUST_CATALOG_EXCLUSIONS.items()):
+        lines.append(f"excluded {key}: {reason}")
+    return lines
 
 
 def render_rust_ui_catalog(
@@ -1772,7 +1876,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--write-rust-catalog",
         action="store_true",
-        help=f"write the normalized launch catalog to {RUST_UI_CATALOG_PATH}",
+        help=f"write the normalized Rust UI catalog to {RUST_UI_CATALOG_PATH}",
+    )
+    parser.add_argument(
+        "--report-unsupported-roles",
+        action="store_true",
+        help="print specialized visuals and deferred behaviors by catalog view",
     )
     parser.add_argument("--gen-dir", default="build-msvc500/generated/ui")
     parser.add_argument("--function", help="Generate only one factory address")
@@ -1895,7 +2004,22 @@ def main() -> int:
         path = write_rust_ui_catalog(
             repo_root, recipes, views, text_resources
         )
+        catalog = build_rust_ui_catalog(
+            repo_root, recipes, views, text_resources
+        )
+        coverage = validate_rust_catalog_coverage(recipes, catalog)
+        if coverage:
+            print("Rust catalog coverage failed:")
+            for error in coverage:
+                print(f"  - {error}")
+            return 1
         print(f"Wrote normalized Rust UI catalog to {path}")
+        return 0
+    if args.report_unsupported_roles:
+        for line in report_unsupported_catalog_roles(
+            repo_root, recipes, views, text_resources
+        ):
+            print(line)
         return 0
     selected = recipes
     if args.function:
@@ -1912,9 +2036,19 @@ def main() -> int:
                 "run with --write-rust-catalog"
             )
             return 1
+        catalog = build_rust_ui_catalog(
+            repo_root, recipes, views, text_resources
+        )
+        coverage = validate_rust_catalog_coverage(recipes, catalog)
+        if coverage:
+            print("UI codegen check failed: Rust catalog coverage:")
+            for error in coverage:
+                print(f"  - {error}")
+            return 1
         print(
             f"UI codegen check passed: {len(recipes)} functions, "
-            f"{sum(len(recipe.cases) for recipe in recipes)} cases"
+            f"{sum(len(recipe.cases) for recipe in recipes)} cases, "
+            f"{len(catalog['views'])} Rust catalog views"
         )
         return 0
     output_dir = resolve_repo_path(repo_root, args.gen_dir)

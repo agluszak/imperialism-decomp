@@ -99,8 +99,7 @@ class UiCodegenTests(unittest.TestCase):
             (view["id"]["resource_file"], view["id"]["resource_id"])
             for view in catalog["views"]
         }
-        self.assertEqual(
-            ids,
+        self.assertTrue(
             {
                 ("Linger.rsrc", 954),
                 ("Startup.rsrc", 1500),
@@ -113,8 +112,10 @@ class UiCodegenTests(unittest.TestCase):
                 ("Citymain.rsrc", 2011),
                 ("Transport.rsrc", 2014),
                 ("Diplo.rsrc", 2008),
-            },
+            }.issubset(ids)
         )
+        # All resource-backed factory cases are emitted (windows-only excluded).
+        self.assertGreaterEqual(len(ids), 81)
         self.assertEqual(len(ids), len(catalog["views"]))
 
     def test_rust_catalog_emits_runtime_semantics_and_windows_deltas(self) -> None:
@@ -129,28 +130,30 @@ class UiCodegenTests(unittest.TestCase):
         newspaper = by_id[("FlagView.rsrc", 8451)]
         toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
         self.assertEqual(toolbar["kind"], "radio_or_cluster_control")
-        self.assertFalse(toolbar["interactive"])
+        self.assertEqual(toolbar["behavior"], "radio_group")
 
         strategic_map = by_id[("MapView.rsrc", 2013)]
         nodes_by_tag = {node["tag"]: node for node in strategic_map["nodes"]}
         self.assertFalse(nodes_by_tag["Flag"]["enabled"])
         self.assertFalse(nodes_by_tag["quer"]["enabled"])
-        self.assertTrue(nodes_by_tag["Flag"]["interactive"])
-        self.assertTrue(nodes_by_tag["quer"]["interactive"])
-        self.assertTrue(nodes_by_tag["agr0"]["interactive"])
+        self.assertEqual(nodes_by_tag["Flag"]["behavior"], "activate")
+        self.assertEqual(nodes_by_tag["quer"]["behavior"], "activate")
+        self.assertEqual(nodes_by_tag["agr0"]["behavior"], "radio_button")
 
         random_setup = by_id[("Startup.rsrc", 1501)]
         setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
         self.assertEqual(setup_by_tag["map "]["kind"], "custom_canvas")
-        self.assertTrue(setup_by_tag["map "]["interactive"])
-        self.assertTrue(setup_by_tag["glob"]["interactive"])
+        self.assertEqual(setup_by_tag["map "]["behavior"], "pointer_canvas")
+        self.assertEqual(setup_by_tag["glob"]["kind"], "picture")
+        self.assertEqual(setup_by_tag["glob"]["behavior"], "activate")
+        self.assertEqual(setup_by_tag["diff"]["behavior"], "radio_group")
         for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual(
                 (text["font_family"], text["face_flags"], text["point_size"], text["alignment"]),
                 (1, 0, 12, 1),
             )
-            self.assertTrue(setup_by_tag[tag]["interactive"])
+            self.assertEqual(setup_by_tag[tag]["behavior"], "radio_button")
         for tag in ("tcou", "dift", "tnam"):
             text = setup_by_tag[tag]["properties"]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
@@ -159,11 +162,11 @@ class UiCodegenTests(unittest.TestCase):
         self.assertEqual(planet_dialog["event"], 0x03BA)
         planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}
         self.assertEqual(planet_by_tag["plan"]["kind"], "edit_control")
-        self.assertTrue(planet_by_tag["plan"]["interactive"])
+        self.assertEqual(planet_by_tag["plan"]["behavior"], "text_edit")
         self.assertEqual(planet_by_tag["plan"]["properties"]["max_chars"], 32)
         self.assertFalse(planet_by_tag["1or2"]["state"])
         self.assertFalse(planet_by_tag["1or2"]["enabled"])
-        self.assertTrue(planet_by_tag["okay"]["interactive"])
+        self.assertEqual(planet_by_tag["okay"]["behavior"], "activate")
         self.assertFalse(planet_by_tag["canc"]["state"])
         self.assertFalse(planet_by_tag["canc"]["enabled"])
 
@@ -175,6 +178,7 @@ class UiCodegenTests(unittest.TestCase):
             "resolved_class",
             "resource_offset",
             "confidence",
+            "interactive",
         }
 
         def visit(value: object) -> None:

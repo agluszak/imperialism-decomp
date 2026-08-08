@@ -1,10 +1,10 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiCatalogResource, spawn_view};
+use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
-use bevy::ui_widgets::{Activate, Button as UiButton};
-use imperialism_formats::{ScopedViewId, UiView as CatalogView};
+use bevy::ui_widgets::Activate;
+use imperialism_formats::{ScopedViewId, UiBehavior};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const MAIN_MENU_RESOURCE_ID: i16 = 1500;
@@ -35,49 +35,50 @@ pub(crate) fn register_main_menu_logic(app: &mut App) {
     app.add_observer(on_main_menu_activate);
 }
 
-fn enter_main_menu(world: &mut World) {
-    let view_id = main_menu_view_id();
-    let Some(view) = world
-        .resource::<UiCatalogResource>()
-        .catalog()
-        .views
-        .iter()
-        .find(|view| view.id == view_id)
-        .cloned()
-    else {
+fn enter_main_menu(
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut assets: UiAssetResources,
+) {
+    let Some(view) = catalog.view(&main_menu_view_id()) else {
         return;
     };
-    let spawned = spawn_view(world, &view);
-    bind_main_menu_actions(world, &view, &spawned);
-    world
-        .entity_mut(spawned.root)
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    bind_main_menu_actions(&mut commands, &catalog, &spawned);
+    commands
+        .entity(spawned.root)
         .insert(DespawnOnExit(AppState::MainMenu));
 }
 
-pub(crate) fn bind_main_menu_actions(world: &mut World, view: &CatalogView, spawned: &SpawnedView) {
+pub(crate) fn bind_main_menu_actions(
+    commands: &mut Commands,
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+) {
+    let Some(view) = catalog.view(&spawned.view_id) else {
+        return;
+    };
     for node in &view.nodes {
-        if !node.interactive {
+        if node.behavior != UiBehavior::Activate {
             continue;
         }
         let entity = spawned.nodes[&node.id];
         match node.tag.0.as_str() {
             "rand" => {
-                world
-                    .entity_mut(entity)
-                    .insert((UiButton, MainMenuAction::RandomGame))
+                commands
+                    .entity(entity)
+                    .insert(MainMenuAction::RandomGame)
                     .remove::<InteractionDisabled>();
             }
             "quit" => {
-                world
-                    .entity_mut(entity)
-                    .insert((UiButton, MainMenuAction::Quit))
+                commands
+                    .entity(entity)
+                    .insert(MainMenuAction::Quit)
                     .remove::<InteractionDisabled>();
             }
             _ => {
-                // Retain visible but disabled Specialized menu choices.
-                world
-                    .entity_mut(entity)
-                    .insert((UiButton, InteractionDisabled));
+                // Retain visible but unavailable Specialized menu choices.
+                commands.entity(entity).insert(InteractionDisabled);
             }
         }
     }
@@ -127,44 +128,29 @@ mod tests {
         app
     }
 
-    fn enter_main_menu_structure_only(world: &mut World) {
+    fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
         let view_id = main_menu_view_id();
-        let (logical_resolution, view) = {
-            let catalog = world.resource::<UiCatalogResource>().catalog();
-            let view = catalog
-                .views
-                .iter()
-                .find(|view| view.id == view_id)
-                .cloned()
-                .unwrap();
-            (catalog.logical_resolution, view)
+        let Some(view) = catalog.view(&view_id) else {
+            return;
         };
-        let spawned = spawn_view_nodes(world, logical_resolution, &view);
-        bind_main_menu_actions(world, &view, &spawned);
-        world
-            .entity_mut(spawned.root)
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        bind_main_menu_actions(&mut commands, &catalog, &spawned);
+        commands
+            .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));
-        world.insert_resource(TestSpawned(spawned));
+        commands.insert_resource(TestSpawned(spawned));
     }
 
     #[test]
     fn main_menu_enables_only_random_and_quit_without_hiding_other_choices() {
         let app = app();
-        let catalog = app
-            .world()
-            .resource::<UiCatalogResource>()
-            .catalog()
-            .clone();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == main_menu_view_id())
-            .unwrap();
+        let catalog = app.world().resource::<UiCatalogResource>();
+        let view = catalog.view(&main_menu_view_id()).unwrap();
         let spawned = app.world().resource::<TestSpawned>().0.clone();
         let world = app.world();
         let mut by_tag = std::collections::HashMap::new();
         for node in &view.nodes {
-            if !node.interactive {
+            if node.behavior != UiBehavior::Activate {
                 continue;
             }
             let entity = spawned.nodes[&node.id];

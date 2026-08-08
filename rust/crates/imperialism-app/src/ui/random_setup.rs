@@ -1,17 +1,17 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiCatalogResource, spawn_view};
+use crate::ui::catalog::{
+    ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
+};
 use crate::ui::random_setup_map;
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
-use bevy::input_focus::tab_navigation::{TabGroup, TabIndex};
+use bevy::input_focus::tab_navigation::TabIndex;
 use bevy::prelude::*;
 use bevy::text::{EditableText, TextEditChange};
-use bevy::ui::{Checked, InteractionDisabled};
-use bevy::ui_widgets::{
-    Activate, Button as UiButton, RadioButton, RadioGroup, SelectAllOnFocus, ValueChange,
-};
+use bevy::ui::Checked;
+use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
 use imperialism_core::{
     COUNTRY_NAME_MAX_CHARS, Difficulty, GameState, MajorNationId,
     RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, RetailTopologyByte,
@@ -19,7 +19,7 @@ use imperialism_core::{
     generate_english_random_setup_name, generate_random_setup_preview_with_clock_seed,
     requires_capital_site_selection,
 };
-use imperialism_formats::{ScopedViewId, UiView as CatalogView};
+use imperialism_formats::ScopedViewId;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
@@ -183,36 +183,30 @@ fn initialize_random_setup(
     );
 }
 
-fn enter_random_setup(world: &mut World) {
-    let view_id = random_setup_view_id();
-    let Some(view) = world
-        .resource::<UiCatalogResource>()
-        .catalog()
-        .views
-        .iter()
-        .find(|view| view.id == view_id)
-        .cloned()
-    else {
+fn enter_random_setup(
+    mut commands: Commands,
+    catalog: Res<UiCatalogResource>,
+    mut assets: UiAssetResources,
+    setup: Res<RandomGameSetup>,
+) {
+    let Some(view) = catalog.view(&random_setup_view_id()) else {
         return;
     };
-    let setup = world.resource::<RandomGameSetup>().clone();
-    let spawned = spawn_view(world, &view);
-    bind_random_setup_controls(world, &view, &spawned, &setup);
-    random_setup_map::attach_random_setup_widgets(world, &view, &spawned);
-    world
-        .entity_mut(spawned.root)
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
+    random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
+    commands
+        .entity(spawned.root)
         .insert(DespawnOnExit(AppState::RandomSetup));
 }
 
+/// Attach screen meanings only; Bevy widget semantics come from catalog behaviors.
 fn bind_random_setup_controls(
-    world: &mut World,
-    view: &CatalogView,
+    commands: &mut Commands,
+    catalog: &UiCatalogResource,
     spawned: &SpawnedView,
     setup: &RandomGameSetup,
 ) {
-    if let Some(group) = spawned.tagged(view, "diff") {
-        world.entity_mut(group).insert(RadioGroup);
-    }
     for (tag, difficulty) in [
         ("dif0", Difficulty::Introductory),
         ("dif1", Difficulty::Easy),
@@ -220,30 +214,31 @@ fn bind_random_setup_controls(
         ("dif3", Difficulty::Hard),
         ("dif4", Difficulty::NighOnImpossible),
     ] {
-        if let Some(entity) = spawned.tagged(view, tag) {
-            let mut entity = world.entity_mut(entity);
-            entity.insert((RadioButton, DifficultyChoice(difficulty)));
+        if let Ok(entity) = spawned.require_unique(catalog, tag) {
+            let mut entity_commands = commands.entity(entity);
+            entity_commands.insert(DifficultyChoice(difficulty));
             if setup.difficulty == difficulty {
-                entity.insert(Checked);
+                entity_commands.insert(Checked);
+            } else {
+                entity_commands.remove::<Checked>();
             }
         }
     }
 
-    if let Some(group) = spawned.tagged(view, "name") {
-        world.entity_mut(group).insert(RadioGroup);
-    }
     for (tag, localized) in [("hist", true), ("rand", false)] {
-        if let Some(entity) = spawned.tagged(view, tag) {
-            let mut entity = world.entity_mut(entity);
-            entity.insert((RadioButton, LocalizedNamesChoice(localized)));
+        if let Ok(entity) = spawned.require_unique(catalog, tag) {
+            let mut entity_commands = commands.entity(entity);
+            entity_commands.insert(LocalizedNamesChoice(localized));
             if setup.localized_names == localized {
-                entity.insert(Checked);
+                entity_commands.insert(Checked);
+            } else {
+                entity_commands.remove::<Checked>();
             }
         }
     }
 
-    if let Some(country) = spawned.tagged(view, "coun") {
-        world.entity_mut(country).insert((
+    if let Ok(country) = spawned.require_unique(catalog, "coun") {
+        commands.entity(country).insert((
             CountryNameField,
             SelectAllOnFocus,
             EditableText {
@@ -260,11 +255,8 @@ fn bind_random_setup_controls(
         ("glob", RandomSetupAction::RegeneratePlanet),
         ("key ", RandomSetupAction::OpenPlanetSeed),
     ] {
-        if let Some(entity) = spawned.tagged(view, tag) {
-            world
-                .entity_mut(entity)
-                .insert((UiButton, action))
-                .remove::<InteractionDisabled>();
+        if let Ok(entity) = spawned.require_unique(catalog, tag) {
+            commands.entity(entity).insert(action);
         }
     }
 }
@@ -326,7 +318,7 @@ fn sync_country_name_from_setup(
 #[derive(SystemParam)]
 struct RandomSetupActivation<'w, 's> {
     actions: Query<'w, 's, &'static RandomSetupAction>,
-    dialog_open: Query<'w, 's, (), With<PlanetSeedDialogRoot>>,
+    dialog_open: Query<'w, 's, (), With<ModalDialog>>,
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
@@ -359,7 +351,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
             );
         }
         RandomSetupAction::OpenPlanetSeed => {
-            // Handled by [`on_open_planet_seed`], which spawns the dialog scene.
+            // Handled by [`on_open_planet_seed`], which needs picture/font assets.
         }
     }
 }
@@ -367,8 +359,9 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
 fn on_open_planet_seed(
     activate: On<Activate>,
     actions: Query<&RandomSetupAction>,
-    dialog_open: Query<(), With<PlanetSeedDialogRoot>>,
-    mut commands: Commands,
+    dialog_open: Query<(), With<ModalDialog>>,
+    mut ui: UiSpawner,
+    setup: Res<RandomGameSetup>,
 ) {
     let Ok(RandomSetupAction::OpenPlanetSeed) = actions.get(activate.entity).copied() else {
         return;
@@ -376,9 +369,7 @@ fn on_open_planet_seed(
     if !dialog_open.is_empty() {
         return;
     }
-    commands.queue(|world: &mut World| {
-        open_planet_seed_dialog(world);
-    });
+    open_planet_seed_dialog(&mut ui, &setup);
 }
 
 fn on_difficulty_selected(
@@ -463,40 +454,19 @@ fn regenerate_random_setup_planet(
     );
 }
 
-fn open_planet_seed_dialog(world: &mut World) {
-    {
-        let mut open = world.query_filtered::<Entity, With<PlanetSeedDialogRoot>>();
-        if open.iter(world).next().is_some() {
-            return;
-        }
-    }
-    let view_id = planet_seed_dialog_view_id();
-    let Some(view) = world
-        .resource::<UiCatalogResource>()
-        .catalog()
-        .views
-        .iter()
-        .find(|view| view.id == view_id)
-        .cloned()
-    else {
+fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
+    let Some(spawned) = ui.spawn_modal(planet_seed_dialog_view_id()) else {
         return;
     };
-    let seed = world.resource::<RandomGameSetup>().planet_seed.clone();
-    let spawned = spawn_view(world, &view);
+    ui.commands
+        .entity(spawned.root)
+        .insert(PlanetSeedDialogRoot);
 
-    // Full-canvas root blocks pointer hits to the setup screen underneath.
-    world.entity_mut(spawned.root).insert((
-        PlanetSeedDialogRoot,
-        TabGroup::modal(),
-        ZIndex(10),
-        Pickable::default(),
-    ));
-
-    let Some(plan) = spawned.tagged(&view, "plan") else {
-        world.entity_mut(spawned.root).despawn();
+    let Ok(plan) = spawned.require_unique(ui.catalog(), "plan") else {
+        ui.commands.entity(spawned.root).despawn();
         return;
     };
-    world.entity_mut(plan).insert((
+    ui.commands.entity(plan).insert((
         PlanetSeedField,
         SelectAllOnFocus,
         AutoFocus,
@@ -504,13 +474,13 @@ fn open_planet_seed_dialog(world: &mut World) {
         EditableText {
             max_characters: Some(PLANET_SEED_MAX_CHARS),
             allow_newlines: false,
-            ..EditableText::new(seed)
+            ..EditableText::new(setup.planet_seed.clone())
         },
     ));
 
-    if let Some(okay) = spawned.tagged(&view, "okay") {
-        world
-            .entity_mut(okay)
+    if let Ok(okay) = spawned.require_unique(ui.catalog(), "okay") {
+        ui.commands
+            .entity(okay)
             .insert((PlanetSeedAccept, TabIndex(1)));
     }
     // Retail cancel control stays disabled; Escape does not dismiss.
@@ -590,7 +560,8 @@ mod tests {
     use crate::ui::main_menu::{
         MainMenuAction, bind_main_menu_actions, main_menu_view_id, register_main_menu_logic,
     };
-    use bevy::ui_widgets::ButtonPlugin;
+    use bevy::input_focus::tab_navigation::TabGroup;
+    use bevy::ui_widgets::{Button as UiButton, ButtonPlugin};
     use imperialism_core::NationId;
     use imperialism_formats::UiCatalog;
 
@@ -618,73 +589,62 @@ mod tests {
         app
     }
 
-    fn enter_main_menu_structure_only(world: &mut World) {
+    fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
         let view_id = main_menu_view_id();
-        let (logical_resolution, view) = {
-            let catalog = world.resource::<UiCatalogResource>().catalog();
-            let view = catalog
-                .views
-                .iter()
-                .find(|view| view.id == view_id)
-                .cloned()
-                .unwrap();
-            (catalog.logical_resolution, view)
+        let Some(view) = catalog.view(&view_id) else {
+            return;
         };
-        let spawned = spawn_view_nodes(world, logical_resolution, &view);
-        bind_main_menu_actions(world, &view, &spawned);
-        world
-            .entity_mut(spawned.root)
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        bind_main_menu_actions(&mut commands, &catalog, &spawned);
+        commands
+            .entity(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));
     }
 
-    fn enter_random_setup_structure_only(world: &mut World) {
+    fn enter_random_setup_structure_only(
+        mut commands: Commands,
+        catalog: Res<UiCatalogResource>,
+        setup: Res<RandomGameSetup>,
+    ) {
         let view_id = random_setup_view_id();
-        let setup = world.resource::<RandomGameSetup>().clone();
-        let (logical_resolution, view) = {
-            let catalog = world.resource::<UiCatalogResource>().catalog();
-            let view = catalog
-                .views
-                .iter()
-                .find(|view| view.id == view_id)
-                .cloned()
-                .unwrap();
-            (catalog.logical_resolution, view)
+        let Some(view) = catalog.view(&view_id) else {
+            return;
         };
-        let spawned = spawn_view_nodes(world, logical_resolution, &view);
-        bind_random_setup_controls(world, &view, &spawned, &setup);
-        random_setup_map::attach_random_setup_widgets(world, &view, &spawned);
-        world
-            .entity_mut(spawned.root)
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
+        random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
+        commands
+            .entity(spawned.root)
             .insert(DespawnOnExit(AppState::RandomSetup));
     }
 
     fn open_planet_seed_dialog_structure(app: &mut App) {
-        let catalog = app
-            .world()
-            .resource::<UiCatalogResource>()
-            .catalog()
-            .clone();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == planet_seed_dialog_view_id())
-            .unwrap()
-            .clone();
         let planet_seed = app
             .world()
             .resource::<RandomGameSetup>()
             .planet_seed
             .clone();
+        let (logical_resolution, view) = {
+            let catalog = app.world().resource::<UiCatalogResource>();
+            let view = catalog.view(&planet_seed_dialog_view_id()).unwrap().clone();
+            (catalog.catalog().logical_resolution, view)
+        };
         let world = app.world_mut();
-        let spawned = spawn_view_nodes(world, catalog.logical_resolution, &view);
-        world.entity_mut(spawned.root).insert((
+        let mut commands = world.commands();
+        let spawned = spawn_view_nodes(&mut commands, logical_resolution, &view);
+        commands.entity(spawned.root).insert((
             PlanetSeedDialogRoot,
+            ModalDialog,
             TabGroup::modal(),
             ZIndex(10),
             Pickable::default(),
         ));
-        let plan = spawned.tagged(&view, "plan").unwrap();
-        world.entity_mut(plan).insert((
+        world.flush();
+        let catalog = world.resource::<UiCatalogResource>();
+        let plan = spawned.require_unique(catalog, "plan").unwrap();
+        let okay = spawned.require_unique(catalog, "okay").unwrap();
+        let mut commands = world.commands();
+        commands.entity(plan).insert((
             PlanetSeedField,
             EditableText {
                 max_characters: Some(PLANET_SEED_MAX_CHARS),
@@ -695,9 +655,8 @@ mod tests {
             AutoFocus,
             TabIndex(0),
         ));
-        let okay = spawned.tagged(&view, "okay").unwrap();
-        world
-            .entity_mut(okay)
+        commands
+            .entity(okay)
             .insert((UiButton, PlanetSeedAccept, TabIndex(1)));
         world.flush();
     }
