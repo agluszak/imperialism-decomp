@@ -10,11 +10,11 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{MajorNationId, MapGeometry, STRATEGIC_TILE_COUNT, TileId};
-use imperialism_formats::{DibPalette, PaletteIndex, Rgb};
+use imperialism_formats::{DibPalette, FourCc, PaletteIndex, Rgb, fourcc};
 
-const MAP_TAG: &str = "map ";
-const COAT_TAG: &str = "coat";
-const FLAG_TAG: &str = "flag";
+const MAP_TAG: FourCc = fourcc!("map ");
+const COAT_TAG: FourCc = fourcc!("coat");
+const FLAG_TAG: FourCc = fourcc!("flag");
 const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
 const FLAG_ATLAS_PICTURE: i16 = 8699;
 const FLAG_WIDTH: usize = 32;

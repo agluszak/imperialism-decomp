@@ -19,7 +19,7 @@ use imperialism_core::{
     generate_english_random_setup_name, generate_random_setup_preview_with_clock_seed,
     requires_capital_site_selection,
 };
-use imperialism_formats::ScopedViewId;
+use imperialism_formats::{ScopedViewId, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
@@ -208,11 +208,11 @@ fn bind_random_setup_controls(
     setup: &RandomGameSetup,
 ) {
     for (tag, difficulty) in [
-        ("dif0", Difficulty::Introductory),
-        ("dif1", Difficulty::Easy),
-        ("dif2", Difficulty::Normal),
-        ("dif3", Difficulty::Hard),
-        ("dif4", Difficulty::NighOnImpossible),
+        (fourcc!("dif0"), Difficulty::Introductory),
+        (fourcc!("dif1"), Difficulty::Easy),
+        (fourcc!("dif2"), Difficulty::Normal),
+        (fourcc!("dif3"), Difficulty::Hard),
+        (fourcc!("dif4"), Difficulty::NighOnImpossible),
     ] {
         if let Ok(entity) = spawned.require_unique(catalog, tag) {
             let mut entity_commands = commands.entity(entity);
@@ -225,7 +225,7 @@ fn bind_random_setup_controls(
         }
     }
 
-    for (tag, localized) in [("hist", true), ("rand", false)] {
+    for (tag, localized) in [(fourcc!("hist"), true), (fourcc!("rand"), false)] {
         if let Ok(entity) = spawned.require_unique(catalog, tag) {
             let mut entity_commands = commands.entity(entity);
             entity_commands.insert(LocalizedNamesChoice(localized));
@@ -237,7 +237,7 @@ fn bind_random_setup_controls(
         }
     }
 
-    if let Ok(country) = spawned.require_unique(catalog, "coun") {
+    if let Ok(country) = spawned.require_unique(catalog, fourcc!("coun")) {
         commands.entity(country).insert((
             CountryNameField,
             SelectAllOnFocus,
@@ -250,10 +250,10 @@ fn bind_random_setup_controls(
     }
 
     for (tag, action) in [
-        ("okay", RandomSetupAction::Accept),
-        ("cncl", RandomSetupAction::Cancel),
-        ("glob", RandomSetupAction::RegeneratePlanet),
-        ("key ", RandomSetupAction::OpenPlanetSeed),
+        (fourcc!("okay"), RandomSetupAction::Accept),
+        (fourcc!("cncl"), RandomSetupAction::Cancel),
+        (fourcc!("glob"), RandomSetupAction::RegeneratePlanet),
+        (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
         if let Ok(entity) = spawned.require_unique(catalog, tag) {
             commands.entity(entity).insert(action);
@@ -462,7 +462,7 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
         .entity(spawned.root)
         .insert(PlanetSeedDialogRoot);
 
-    let Ok(plan) = spawned.require_unique(ui.catalog(), "plan") else {
+    let Ok(plan) = spawned.require_unique(ui.catalog(), fourcc!("plan")) else {
         ui.commands.entity(spawned.root).despawn();
         return;
     };
@@ -478,7 +478,7 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
         },
     ));
 
-    if let Ok(okay) = spawned.require_unique(ui.catalog(), "okay") {
+    if let Ok(okay) = spawned.require_unique(ui.catalog(), fourcc!("okay")) {
         ui.commands
             .entity(okay)
             .insert((PlanetSeedAccept, TabIndex(1)));
@@ -641,8 +641,8 @@ mod tests {
         ));
         world.flush();
         let catalog = world.resource::<UiCatalogResource>();
-        let plan = spawned.require_unique(catalog, "plan").unwrap();
-        let okay = spawned.require_unique(catalog, "okay").unwrap();
+        let plan = spawned.require_unique(catalog, fourcc!("plan")).unwrap();
+        let okay = spawned.require_unique(catalog, fourcc!("okay")).unwrap();
         let mut commands = world.commands();
         commands.entity(plan).insert((
             PlanetSeedField,

@@ -6,12 +6,13 @@ use bevy::input_focus::tab_navigation::TabGroup;
 use bevy::log::warn;
 use bevy::prelude::*;
 use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
-use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
+use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
 use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::{
-    RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
-    RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog, UiNode as CatalogNode, UiNodeId,
-    UiTextBinding, UiView as CatalogView, UiViewIndex, resolve_retail_text_style,
+    FourCc, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
+    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog,
+    UiNode as CatalogNode, UiNodeId, UiTextBinding, UiView as CatalogView, UiViewIndex,
+    resolve_retail_text_style,
 };
 use std::collections::HashMap;
 
@@ -80,7 +81,7 @@ impl SpawnedView {
     pub(crate) fn require_unique(
         &self,
         catalog: &UiCatalogResource,
-        tag: &str,
+        tag: FourCc,
     ) -> Result<Entity, UiBindError> {
         let view = catalog
             .view(&self.view_id)
@@ -90,13 +91,13 @@ impl SpawnedView {
             .ok_or_else(|| missing_view(&self.view_id))?;
         match index.tagged(tag) {
             [] => Err(UiBindError::MissingTag(
-                tag.to_owned(),
+                tag.to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
             [id] => Ok(self.nodes[id]),
             matches => Err(UiBindError::AmbiguousTag(
-                tag.to_owned(),
+                tag.to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
                 matches.len(),
@@ -107,8 +108,8 @@ impl SpawnedView {
     pub(crate) fn require_under(
         &self,
         catalog: &UiCatalogResource,
-        ancestor_tag: &str,
-        tag: &str,
+        ancestor_tag: FourCc,
+        tag: FourCc,
     ) -> Result<Entity, UiBindError> {
         let view = catalog
             .view(&self.view_id)
@@ -119,7 +120,7 @@ impl SpawnedView {
         let ancestors = index.tagged(ancestor_tag);
         if ancestors.is_empty() {
             return Err(UiBindError::MissingTag(
-                ancestor_tag.to_owned(),
+                ancestor_tag.to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             ));
@@ -140,15 +141,15 @@ impl SpawnedView {
         }
         match matches.as_slice() {
             [] => Err(UiBindError::MissingUnder(
-                tag.to_owned(),
-                ancestor_tag.to_owned(),
+                tag.to_string(),
+                ancestor_tag.to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
             [id] => Ok(self.nodes[id]),
             _ => Err(UiBindError::AmbiguousUnder(
-                tag.to_owned(),
-                ancestor_tag.to_owned(),
+                tag.to_string(),
+                ancestor_tag.to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
@@ -159,7 +160,7 @@ impl SpawnedView {
     pub(crate) fn require_path(
         &self,
         catalog: &UiCatalogResource,
-        path: &[&str],
+        path: &[FourCc],
     ) -> Result<Entity, UiBindError> {
         let view = catalog
             .view(&self.view_id)
@@ -167,9 +168,13 @@ impl SpawnedView {
         let index = catalog
             .index(&self.view_id)
             .ok_or_else(|| missing_view(&self.view_id))?;
-        let path_label = path.join("/");
+        let path_label = path
+            .iter()
+            .map(FourCc::as_str)
+            .collect::<Vec<_>>()
+            .join("/");
         let mut current_parents: Option<Vec<UiNodeId>> = None;
-        for (step, tag) in path.iter().enumerate() {
+        for (step, &tag) in path.iter().enumerate() {
             let candidates = index.tagged(tag);
             let matches: Vec<UiNodeId> = match &current_parents {
                 None => {
@@ -201,7 +206,7 @@ impl SpawnedView {
                 [id] if step + 1 == path.len() => return Ok(self.nodes[id]),
                 many if step + 1 == path.len() => {
                     return Err(UiBindError::AmbiguousTag(
-                        (*tag).to_owned(),
+                        tag.to_string(),
                         view.id.resource_file.clone(),
                         view.id.resource_id,
                         many.len(),
@@ -298,14 +303,26 @@ impl UiAssetResources<'_> {
 #[derive(Component, Debug, Default)]
 pub(crate) struct ModalDialog;
 
-/// Initializes retail picture/font caches. Widget plugins come from Bevy's `ui` profile.
+/// Immutable resting picture ID plus the retail press/check swap rule.
+#[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
+struct CatalogPictureVisual {
+    base_id: i16,
+    rule: PictureVisual,
+    shown_id: i16,
+}
+
+/// Initializes retail picture/font caches and picture-state presentation.
 pub(crate) struct UiCatalogPlugin;
 
 impl Plugin for UiCatalogPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<RetailPictureHandles>()
             .init_resource::<RetailFontHandles>()
-            .init_resource::<UiPictureLookup>();
+            .init_resource::<UiPictureLookup>()
+            .add_systems(
+                Update,
+                sync_catalog_picture_visuals.run_if(resource_exists::<Assets<Image>>),
+            );
     }
 }
 
@@ -346,7 +363,7 @@ impl UiSpawner<'_, '_> {
     pub(crate) fn attach<C: Component>(
         &mut self,
         spawned: &SpawnedView,
-        tag: &str,
+        tag: FourCc,
         component: C,
     ) -> Result<Entity, UiBindError> {
         let entity = spawned.require_unique(&self.catalog, tag)?;
@@ -427,7 +444,7 @@ fn spawn_node(commands: &mut Commands, node: &CatalogNode) -> Entity {
             },
             ..default()
         },
-        Name::new(format!("ui-node:{}:{}", node.id.0, node.tag.0)),
+        Name::new(format!("ui-node:{}:{}", node.id.0, node.tag)),
     ));
 
     apply_behavior_components(&mut entity, node);
@@ -537,10 +554,23 @@ fn bind_view_assets(
         if let Some(picture_id) = node.properties.picture_id {
             match i16::try_from(picture_id)
                 .map_err(|_| UiPictureBindingError::InvalidPictureId(picture_id))
-                .and_then(|picture_id| pictures.picture(picture_id))
-            {
-                Ok(handle) => {
-                    commands.entity(entity).insert(ImageNode::new(handle));
+                .and_then(|base_id| {
+                    let active = picture_visual_active(node);
+                    let shown_id = node.picture_visual.active_picture_id(base_id, active);
+                    pictures
+                        .picture(shown_id)
+                        .map(|handle| (base_id, shown_id, handle))
+                }) {
+                Ok((base_id, shown_id, handle)) => {
+                    let mut entity = commands.entity(entity);
+                    entity.insert(ImageNode::new(handle));
+                    if node.picture_visual != PictureVisual::Static {
+                        entity.insert(CatalogPictureVisual {
+                            base_id,
+                            rule: node.picture_visual,
+                            shown_id,
+                        });
+                    }
                 }
                 Err(error) => {
                     warn!(
@@ -548,6 +578,61 @@ fn bind_view_assets(
                         view.id.resource_file, view.id.resource_id, node.id.0
                     );
                 }
+            }
+        }
+    }
+}
+
+fn picture_visual_active(node: &CatalogNode) -> bool {
+    node.state
+        && matches!(
+            node.behavior,
+            UiBehavior::Checkbox | UiBehavior::Toggle | UiBehavior::RadioButton
+        )
+}
+
+fn sync_catalog_picture_visuals(
+    retail_assets: Option<Res<RetailAssetsResource>>,
+    lookup: Res<UiPictureLookup>,
+    mut images: ResMut<Assets<Image>>,
+    mut handles: ResMut<RetailPictureHandles>,
+    mut nodes: Query<(
+        &mut CatalogPictureVisual,
+        &mut ImageNode,
+        Has<Pressed>,
+        Has<Checked>,
+    )>,
+) {
+    for (mut visual, mut image, pressed, checked) in &mut nodes {
+        let active = pressed || checked;
+        let picture_id = visual.rule.active_picture_id(visual.base_id, active);
+        if picture_id == visual.shown_id {
+            continue;
+        }
+        let key = (picture_id, lookup.world_variant);
+        if let Some(handle) = handles.0.get(&key) {
+            image.image = handle.clone();
+            visual.shown_id = picture_id;
+            continue;
+        }
+        let Some(retail_assets) = retail_assets.as_ref() else {
+            continue;
+        };
+        match load_retail_picture(
+            picture_id,
+            retail_assets,
+            lookup.world_variant,
+            &mut images,
+            &mut handles,
+        ) {
+            Ok(handle) => {
+                image.image = handle;
+                visual.shown_id = picture_id;
+            }
+            Err(error) => {
+                warn!(
+                    "could not update retail picture {picture_id} for pressed/checked state: {error}"
+                );
             }
         }
     }
@@ -636,7 +721,7 @@ fn load_retail_picture(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_formats::UiCatalog;
+    use imperialism_formats::{UiCatalog, fourcc};
     use std::collections::HashMap;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -731,7 +816,7 @@ mod tests {
                     node.behavior == UiBehavior::Activate,
                     "node {} tag {} behavior {:?}",
                     node.id.0,
-                    node.tag.0,
+                    node.tag,
                     node.behavior
                 );
                 if node.behavior.is_interactive() {
@@ -766,7 +851,11 @@ mod tests {
                 resource_id: 1501,
             },
         );
-        let country = view.nodes.iter().find(|node| node.tag.0 == "coun").unwrap();
+        let country = view
+            .nodes
+            .iter()
+            .find(|node| node.tag == fourcc!("coun"))
+            .unwrap();
         assert_eq!(catalog_content_insets(country), [0, 3, 3, 3]);
         assert_eq!(catalog_text_content_box(country), ([23, 252], [303, 16]));
 
@@ -798,18 +887,18 @@ mod tests {
         let menu_view = spawn_structure(&mut app, &menu);
         let catalog = app.world().resource::<UiCatalogResource>();
 
-        let okay = setup_view.require_unique(catalog, "okay").unwrap();
+        let okay = setup_view.require_unique(catalog, fourcc!("okay")).unwrap();
         assert!(app.world().get::<UiButton>(okay).is_some());
-        let globe = setup_view.require_unique(catalog, "glob").unwrap();
+        let globe = setup_view.require_unique(catalog, fourcc!("glob")).unwrap();
         assert!(app.world().get::<UiButton>(globe).is_some());
-        let dif0 = setup_view.require_unique(catalog, "dif0").unwrap();
+        let dif0 = setup_view.require_unique(catalog, fourcc!("dif0")).unwrap();
         assert!(app.world().get::<RadioButton>(dif0).is_some());
-        let diff = setup_view.require_unique(catalog, "diff").unwrap();
+        let diff = setup_view.require_unique(catalog, fourcc!("diff")).unwrap();
         assert!(app.world().get::<RadioGroup>(diff).is_some());
-        let map = setup_view.require_unique(catalog, "map ").unwrap();
+        let map = setup_view.require_unique(catalog, fourcc!("map ")).unwrap();
         assert!(app.world().get::<RelativeCursorPosition>(map).is_some());
 
-        let rand = menu_view.require_unique(catalog, "rand").unwrap();
+        let rand = menu_view.require_unique(catalog, fourcc!("rand")).unwrap();
         assert!(app.world().get::<UiButton>(rand).is_some());
     }
 
@@ -822,12 +911,16 @@ mod tests {
         };
         let spawned = spawn_structure(&mut app, &diplomacy);
         let catalog = app.world().resource::<UiCatalogResource>();
-        let toolbar = spawned.require_under(catalog, "topB", "trad").unwrap();
+        let toolbar = spawned
+            .require_under(catalog, fourcc!("topB"), fourcc!("trad"))
+            .unwrap();
         assert!(
-            spawned.require_unique(catalog, "trad").is_err(),
+            spawned.require_unique(catalog, fourcc!("trad")).is_err(),
             "trad is ambiguous without an ancestor"
         );
-        let leave = spawned.require_under(catalog, "too3", "end ").unwrap();
+        let leave = spawned
+            .require_under(catalog, fourcc!("too3"), fourcc!("end "))
+            .unwrap();
         assert_ne!(toolbar, leave);
     }
 
@@ -840,7 +933,105 @@ mod tests {
         };
         let spawned = spawn_structure(&mut app, &setup);
         let catalog = app.world().resource::<UiCatalogResource>();
-        let dif0 = spawned.require_path(catalog, &["diff", "dif0"]).unwrap();
-        assert_eq!(dif0, spawned.require_unique(catalog, "dif0").unwrap());
+        let dif0 = spawned
+            .require_path(catalog, &[fourcc!("diff"), fourcc!("dif0")])
+            .unwrap();
+        assert_eq!(
+            dif0,
+            spawned.require_unique(catalog, fourcc!("dif0")).unwrap()
+        );
+    }
+
+    #[test]
+    fn picture_visual_metadata_marks_up_down_okay_controls() {
+        let catalog = catalog();
+        for (resource_file, resource_id) in [("Startup.rsrc", 1501i16), ("Linger.rsrc", 954)] {
+            let view = catalog_view(
+                &catalog,
+                &ScopedViewId {
+                    resource_file: resource_file.to_owned(),
+                    resource_id,
+                },
+            );
+            let okay = view
+                .nodes
+                .iter()
+                .find(|node| node.tag == fourcc!("okay"))
+                .unwrap();
+            assert_eq!(okay.picture_visual, PictureVisual::UpDown);
+            assert!(okay.properties.picture_id.is_some());
+        }
+    }
+
+    #[test]
+    fn sync_swaps_picture_when_pressed() {
+        let mut app = app();
+        let base_id = 4512i16;
+        let active_id = 4513i16;
+        let base_handle = app
+            .world_mut()
+            .resource_mut::<Assets<Image>>()
+            .add(Image::default());
+        let active_handle = app
+            .world_mut()
+            .resource_mut::<Assets<Image>>()
+            .add(Image::default());
+        {
+            let mut handles = app.world_mut().resource_mut::<RetailPictureHandles>();
+            handles.0.insert((base_id, 0), base_handle.clone());
+            handles.0.insert((active_id, 0), active_handle.clone());
+        }
+        let entity = app
+            .world_mut()
+            .spawn((
+                CatalogPictureVisual {
+                    base_id,
+                    rule: PictureVisual::UpDown,
+                    shown_id: base_id,
+                },
+                ImageNode::new(base_handle.clone()),
+            ))
+            .id();
+
+        app.update();
+        assert_eq!(
+            app.world()
+                .get::<CatalogPictureVisual>(entity)
+                .unwrap()
+                .shown_id,
+            base_id
+        );
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().image,
+            base_handle
+        );
+
+        app.world_mut().entity_mut(entity).insert(Pressed);
+        app.update();
+        assert_eq!(
+            app.world()
+                .get::<CatalogPictureVisual>(entity)
+                .unwrap()
+                .shown_id,
+            active_id
+        );
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().image,
+            active_handle
+        );
+
+        app.world_mut().entity_mut(entity).remove::<Pressed>();
+        app.update();
+        assert_eq!(
+            app.world()
+                .get::<CatalogPictureVisual>(entity)
+                .unwrap()
+                .shown_id,
+            base_id
+        );
+        assert_eq!(
+            app.world().get::<ImageNode>(entity).unwrap().image,
+            base_handle
+        );
     }
 }

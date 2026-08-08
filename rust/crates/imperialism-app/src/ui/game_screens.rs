@@ -2,11 +2,11 @@ use crate::AppState;
 use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn_view};
 use bevy::prelude::*;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::ScopedViewId;
+use imperialism_formats::{FourCc, ScopedViewId, fourcc};
 
-const TOOLBAR_PARENT_TAGS: &[&str] = &["tool", "topB"];
+const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
 /// Retail leave/end controls hang under `tool` or the diplomacy `too3` strip.
-const LEAVE_PARENT_TAGS: &[&str] = &["tool", "too2", "too3"];
+const LEAVE_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("too2"), fourcc!("too3")];
 
 pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     ScopedViewId {
@@ -111,17 +111,21 @@ fn bind_game_screen_nav(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) -> bool {
-    let Some(trade) = control_under_parents(catalog, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
-        return false;
-    };
-    let Some(transport) = control_under_parents(catalog, spawned, "tran", TOOLBAR_PARENT_TAGS)
+    let Some(trade) = control_under_parents(catalog, spawned, fourcc!("trad"), TOOLBAR_PARENT_TAGS)
     else {
         return false;
     };
-    let Some(city) = control_under_parents(catalog, spawned, "city", TOOLBAR_PARENT_TAGS) else {
+    let Some(transport) =
+        control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
+    else {
         return false;
     };
-    let Some(diplomacy) = control_under_parents(catalog, spawned, "dipl", TOOLBAR_PARENT_TAGS)
+    let Some(city) = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
+    else {
+        return false;
+    };
+    let Some(diplomacy) =
+        control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
     else {
         return false;
     };
@@ -133,7 +137,8 @@ fn bind_game_screen_nav(
     ] {
         commands.entity(entity).insert(action);
     }
-    if let Some(leave) = control_under_parents(catalog, spawned, "end ", LEAVE_PARENT_TAGS) {
+    if let Some(leave) = control_under_parents(catalog, spawned, fourcc!("end "), LEAVE_PARENT_TAGS)
+    {
         commands
             .entity(leave)
             .insert(GameScreenNavAction::LeaveToMap);
@@ -145,10 +150,10 @@ fn bind_game_screen_nav(
 fn control_under_parents(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-    tag: &str,
-    parents: &[&str],
+    tag: FourCc,
+    parents: &[FourCc],
 ) -> Option<Entity> {
-    for parent in parents {
+    for &parent in parents {
         if let Ok(entity) = spawned.require_under(catalog, parent, tag) {
             return Some(entity);
         }
@@ -183,7 +188,7 @@ mod tests {
     use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
     use bevy::ui::InteractionDisabled;
     use bevy::ui_widgets::Button as UiButton;
-    use imperialism_formats::{UiBehavior, UiCatalog};
+    use imperialism_formats::{UiBehavior, UiCatalog, fourcc};
     use std::collections::HashSet;
 
     const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
@@ -363,7 +368,7 @@ mod tests {
             view.nodes
                 .iter()
                 .find_map(|node| {
-                    if node.tag.0 != "trad" || node.behavior != UiBehavior::RadioButton {
+                    if node.tag != fourcc!("trad") || node.behavior != UiBehavior::RadioButton {
                         return None;
                     }
                     Some(spawned.nodes[&node.id])

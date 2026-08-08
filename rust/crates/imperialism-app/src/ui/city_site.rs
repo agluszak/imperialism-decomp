@@ -13,12 +13,12 @@ use bevy::ui_widgets::Activate;
 use imperialism_core::{
     MajorNationId, TileId, confirm_capital_site, validate_capital_site_selection,
 };
-use imperialism_formats::ScopedViewId;
+use imperialism_formats::{FourCc, ScopedViewId, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const CITY_SITE_RESOURCE_ID: i16 = 952;
 const NEW_CITY_RESOURCE_ID: i16 = 953;
-const MAP_TAG: &str = "DLOG";
+const MAP_TAG: FourCc = fourcc!("DLOG");
 
 pub(crate) fn city_site_view_id() -> ScopedViewId {
     ScopedViewId {
@@ -94,7 +94,7 @@ fn bind_city_site_controls(
     catalog: &UiCatalogResource,
     spawned: &crate::ui::catalog::SpawnedView,
 ) {
-    if let Ok(entity) = spawned.require_unique(catalog, "canc") {
+    if let Ok(entity) = spawned.require_unique(catalog, fourcc!("canc")) {
         commands.entity(entity).insert(CitySiteAction::Cancel);
     }
     // Retail opens the New City dialog from a validated map click, not from `send`.
@@ -201,8 +201,8 @@ fn open_new_city_dialog(ui: &mut UiSpawner) {
         return;
     };
     ui.commands.entity(spawned.root).insert(NewCityDialogRoot);
-    let _ = ui.attach(&spawned, "okay", NewCityAction::Accept);
-    let _ = ui.attach(&spawned, "cncl", NewCityAction::Cancel);
+    let _ = ui.attach(&spawned, fourcc!("okay"), NewCityAction::Accept);
+    let _ = ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel);
 }
 
 fn on_new_city_activate(

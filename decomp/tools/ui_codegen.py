@@ -1118,6 +1118,41 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
     return "passive"
 
 
+def _rust_picture_visual(node: UiSemanticNode) -> str:
+    """How retail picture art reacts to Pressed / Checked.
+
+    Evidence:
+    - TUpDownPictureButton / TRadioPictureButton / TTextPictureButton:
+      HiliteState swaps to glyphBase84 +/- 1 (immutable resting ID + 1 when active).
+    - TCzechBox: CheckTheLook uses odd ID when checked or pressed, even when idle.
+    - TMadnessButton replaces CzechBox with a multi-offset scheme; leave static
+      until that specialized rule is modeled.
+    - TPictureButton uses visibility hilite, not an ID swap.
+    """
+
+    class_name = node.class_name
+    folded = class_name.casefold()
+    if class_name == "TMadnessButton":
+        return "static"
+    if node.type_code == "chkb" or "czechbox" in folded:
+        return "czech_box"
+    if (
+        node.type_code == "radb"
+        or class_name
+        in (
+            "TUpDownPictureButton",
+            "TRadioPictureButton",
+            "TTextPictureButton",
+            "TSidewaysArrow",
+            "TCivilianButton",
+            "TOverlayRadioButton",
+        )
+        or "updownpicture" in folded
+        or "radiopicture" in folded
+    ):
+        return "up_down"
+    return "static"
+
 
 def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
     style = (
@@ -1228,6 +1263,7 @@ def _emit_catalog_view_nodes(
                 "tag": node.tag,
                 "kind": _rust_widget_kind(node),
                 "behavior": _rust_widget_behavior(key, node),
+                "picture_visual": _rust_picture_visual(node),
                 "rect": {"x": x, "y": y, "width": width, "height": height},
                 "state": bool(node.state),
                 "enabled": bool(node.enabled),

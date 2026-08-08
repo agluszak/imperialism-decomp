@@ -63,7 +63,7 @@ pub(crate) fn bind_main_menu_actions(
             continue;
         }
         let entity = spawned.nodes[&node.id];
-        match node.tag.0.as_str() {
+        match node.tag.as_str() {
             "rand" => {
                 commands
                     .entity(entity)
@@ -155,7 +155,7 @@ mod tests {
             }
             let entity = spawned.nodes[&node.id];
             by_tag.insert(
-                node.tag.0.clone(),
+                node.tag.as_str().to_owned(),
                 (
                     world.get::<InteractionDisabled>(entity).is_some(),
                     world.get::<MainMenuAction>(entity).copied(),
