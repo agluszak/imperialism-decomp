@@ -18,19 +18,10 @@ pub struct UiNodeId(pub u32);
 pub struct FourCc([u8; 4]);
 
 impl FourCc {
-    pub const fn new_const(value: &str) -> Self {
+    pub const fn new(value: &str) -> Self {
         assert!(
             value.len() == 4,
             "FourCc tags must be exactly four characters (pad with spaces)"
-        );
-        let bytes = value.as_bytes();
-        Self([bytes[0], bytes[1], bytes[2], bytes[3]])
-    }
-
-    pub fn new(value: &str) -> Self {
-        assert!(
-            value.len() == 4,
-            "FourCc tags must be exactly four characters (pad with spaces): {value:?}"
         );
         let bytes = value.as_bytes();
         Self([bytes[0], bytes[1], bytes[2], bytes[3]])
@@ -87,7 +78,7 @@ impl<'de> Deserialize<'de> for FourCc {
 #[macro_export]
 macro_rules! fourcc {
     ($lit:literal) => {{
-        const TAG: $crate::FourCc = $crate::FourCc::new_const($lit);
+        const TAG: $crate::FourCc = $crate::FourCc::new($lit);
         TAG
     }};
 }
