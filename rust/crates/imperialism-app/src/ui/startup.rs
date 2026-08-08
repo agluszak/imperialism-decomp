@@ -1,4 +1,3 @@
-use crate::flow::{AppState, GameScreen, ScreenStack};
 use crate::session::{GameLoopSet, SubmitCommand};
 use crate::ui::{
     DespawnUiView, InteractiveUiWidget, PresentedViewId, SpawnUiView, UiIntent, UiRuntimeSet,
@@ -49,7 +48,7 @@ pub struct StartupUiPlugin;
 impl Plugin for StartupUiPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<StartupScreenInstances>()
-            .add_systems(OnEnter(AppState::MainMenu), request_main_menu)
+            .add_systems(Startup, request_main_menu)
             .add_systems(
                 Update,
                 translate_startup_intents
@@ -66,8 +65,7 @@ impl Plugin for StartupUiPlugin {
     }
 }
 
-fn request_main_menu(mut spawn: MessageWriter<SpawnUiView>, mut stack: ResMut<ScreenStack>) {
-    stack.base = GameScreen::MainMenu;
+fn request_main_menu(mut spawn: MessageWriter<SpawnUiView>) {
     spawn.write(SpawnUiView(main_menu_view_id()));
 }
 
@@ -109,7 +107,6 @@ fn apply_main_menu_availability(
 fn translate_startup_intents(
     mut intents: MessageReader<UiIntent>,
     mut instances: ResMut<StartupScreenInstances>,
-    mut stack: ResMut<ScreenStack>,
     mut spawn: MessageWriter<SpawnUiView>,
     mut despawn: MessageWriter<DespawnUiView>,
     mut commands: MessageWriter<SubmitCommand>,
@@ -128,7 +125,6 @@ fn translate_startup_intents(
                         instances.main_menu = None;
                         despawn.write(DespawnUiView(view));
                         spawn.write(SpawnUiView(random_setup_view_id()));
-                        stack.base = GameScreen::RandomSetup;
                     }
                     "quit" => {
                         exit.write(AppExit::Success);
@@ -184,7 +180,6 @@ fn random_setup_command(intent: &UiIntent) -> Option<GameCommand> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::flow::ScreenFlowPlugin;
     use crate::ui::{UiCatalogResource, UiRuntimePlugin, UiViewRoot};
     use bevy::ecs::message::{MessageCursor, Messages};
     use imperialism_formats::{FourCc, UiCatalog};
@@ -197,11 +192,7 @@ mod tests {
         let mut app = App::new();
         app.insert_resource(UiCatalogResource::new(catalog).unwrap())
             .add_message::<SubmitCommand>()
-            .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins((ScreenFlowPlugin, UiRuntimePlugin, StartupUiPlugin));
-        app.world_mut()
-            .resource_mut::<NextState<AppState>>()
-            .set(AppState::MainMenu);
+            .add_plugins((UiRuntimePlugin, StartupUiPlugin));
         app.update();
         app.update();
         app
@@ -307,10 +298,6 @@ mod tests {
             roots
                 .keys()
                 .any(|view| view.resource_file == "FlagView.rsrc")
-        );
-        assert_eq!(
-            app.world().resource::<ScreenStack>().base,
-            GameScreen::RandomSetup
         );
     }
 

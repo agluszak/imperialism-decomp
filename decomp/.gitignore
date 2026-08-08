@@ -62,9 +62,6 @@ vendor/ghidra/imperialism-decomp.rep/
 # Populate with `just vendor-msvc500-headers`.
 vendor/msvc500/headers/
 
-# Generated Ghidra FID databases, projects, inventories, and logs are local evidence.
-vendor/msvc500/fid-generation/
-
 # Local DirectX 5 SDK mirror for agent/reference use.
 # Populate with `just vendor-directx-headers`.
 vendor/directx/include/
@@ -76,9 +73,7 @@ vendor/directx/lib/
 /detect.log
 
 # Beads / Dolt files (added by bd init).
-# `*.db` stays root-anchored: unanchored it matched the vendored Ghidra FID
-# database *directories* (vendor/msvc500/fid-generation/.../~0000????.db/),
-# hiding 759 tracked files. Beads' own .beads/.gitignore covers .beads/*.db.
+# `*.db` stays root-anchored. Beads' own .beads/.gitignore covers .beads/*.db.
 .dolt/
 /*.db
 .beads-credential-key

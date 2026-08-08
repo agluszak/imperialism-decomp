@@ -8,7 +8,7 @@
 // is inherited unchanged from TEvent). Every call site recycles the storage past the
 // TEvent header for an unrelated purpose (a keyboard command code, mouse click
 // coordinates, ...), so this base carries no trailing fields; see the per-call-site
-// layouts that follow it (TKeyCommandEvent below; the mouse-click block local to
+// layouts that follow it (TToolboxEvent below; the mouse-click block local to
 // CIncludeView.cpp).
 class TUiEvent : public TEvent {
 public:
@@ -36,9 +36,6 @@ struct TToolboxEvent {
 };
 
 ASSERT_SIZE(TToolboxEvent, 0x2c);
-
-// Transitional source alias for the already-ported Windows keyboard handlers.
-typedef TToolboxEvent TKeyCommandEvent;
 
 // The key codes the dialog/window handlers test TToolboxEvent::commandCode against.
 //

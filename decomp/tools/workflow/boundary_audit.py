@@ -26,9 +26,8 @@ and classifies each boundary:
   DEAD          no manual reference at all — porting it is optional backlog
   UNKNOWN       referenced, but no Ghidra facts available in this environment
 
-The classification is a lead generator, not ground truth: convention labels
-follow the decompile-function calling-conventions reference rules (verify ECX/EDX and RET in the
-listing before declaring anything).
+The classification is a lead generator, not ground truth: verify ECX/EDX and
+RET in the listing before declaring anything.
 
 Usage:
   uv run python -m tools.workflow.boundary_audit            # referenced only

@@ -1,13 +1,6 @@
 # ---------------------------------------------------------------------------
 # sync — regenerate derived artifacts (original_entities.csv).
 # The three canonical playbooks live in docs/workflows.md.
-# Imported by the root justfile (flat namespace: shared variables/recipes work
-# across modules). Recipe text is moved verbatim so `just --list` is unchanged.
-# ---------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
-# sync — regenerate derived artifacts (original_entities.csv).
-# The three canonical playbooks live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
 # MUTATES: Ghidra DB (--apply). The ONE sanctioned source->Ghidra operation:
@@ -28,7 +21,7 @@ ghidra-apply-source *args: _require-ghidra-install
 # source names win last.
 # Class projection runs BEFORE signature projection so the signature projector
 # resolves parameter types against real layouts instead of 1-byte placeholders.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> type model -> class projection -> signature projection -> audits -> export')]
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> type model -> class projection -> signature projection -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
@@ -41,10 +34,8 @@ ghidra-apply-source-full:
   just apply-source-signatures --apply --strict
   just project-divergent-signatures --apply --strict
   just project-packed-signatures --apply --strict
-  just in-stack-audit
   just structural-signature-audit
   just datatype-hygiene-audit
-  just signature-evidence-union --strict
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (curated refresh).
@@ -69,7 +60,6 @@ refresh-inventory *args: _require-ghidra-install
   just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
-  just body-integrity-gate
   @echo "refresh-inventory done. Run 'just export-project' before committing."
 
 # MUTATES: config/original_entities.csv (with --apply).

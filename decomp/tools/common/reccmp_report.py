@@ -2,12 +2,10 @@
 """Shared runner for structured reccmp JSON reports.
 
 Several tools each shelled out to `reccmp-reccmp --json` with their own
-temp-file plumbing (compare_batch, global_xref_oracle, triage, stackcmp_triage).
+temp-file plumbing (compare_batch and triage).
 This is the one copy. `diet=True` (scores only) is enough for score filtering;
 `diet=False` additionally includes the per-function asm diffs the mining tools
 need.
-
-(progress_stats keeps its specialized invocation for baseline handling.)
 """
 
 from __future__ import annotations

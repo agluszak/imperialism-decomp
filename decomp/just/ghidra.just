@@ -55,11 +55,6 @@ ghidra-daemon-status:
 ghidra *args: _require-ghidra-install
   uv run python -m tools.ghidra.query {{args}}
 
-[doc('Audit data/code function pointers and hidden callback registrations')]
-[group('ghidra-inspect')]
-data-function-pointers *args: _require-ghidra-install
-  uv run python -m tools.ghidra.query data-function-pointers {{args}}
-
 # Read-only vtable evidence dump: resolve each slot of one or more vtables to its real
 # body (ILT thunks chased) as JSON on stdout — target address, Ghidra name, size,
 # listing signature, optional decompile. Inspection only; never writes source/symbols.
@@ -69,61 +64,6 @@ data-function-pointers *args: _require-ghidra-install
 [group('ghidra-inspect')]
 class-vtable-dump *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_slots {{args}}
-# Ordered (address -> constant) store map of an unrolled table-initializer function,
-# read straight from the original binary via capstone (no Ghidra round-trip).
-# `just const-stores 0xADDR [--len N] [--cpp NAME:BASE:STRIDE:f0,f1]`.
-[group('ghidra-inspect')]
-const-stores *args:
-  uv run python -m tools.binary.const_stores {{args}}
-
-# Decode a turn-event screen-builder into widget-block pseudo-source (bd 1uj.51):
-# per-eventCode case map + helper-call sequences with FourCC tags decoded. Reads the
-# ORIGINAL binary directly (no Ghidra round-trip; works where the decompiler
-# degenerates). `just decode-builder 0xADDR [--len N]`.
-[group('ghidra-inspect')]
-decode-builder *args:
-  uv run python -m tools.binary.decode_builder {{args}}
-
-[doc('Check all original UI builder dispatches against the semantic manifest')]
-[group('ghidra-inspect')]
-ui-builder-dispatch-check:
-  uv run python -m tools.binary.decode_builder --check-manifest
-
-[doc('Query the committed Mac control class/tag/screen semantic index')]
-[group('ghidra-inspect')]
-mac-control-usage *args:
-  uv run python -m tools.workflow.mac_control_usage {{args}}
-
-[doc('Query the committed file-scoped Mac resource reference graph')]
-[group('ghidra-inspect')]
-mac-resource-xrefs *args:
-  uv run python -m tools.workflow.mac_resource_xrefs {{args}}
-
-[doc('Inspect differential Mac widget payload evidence for one effective class')]
-[group('ghidra-inspect')]
-mac-payload-diff class_name *args:
-  uv run python -m tools.workflow.mac_payload_diff "{{class_name}}" {{args}}
-
-[doc('Search file-scoped Mac STR# text and show ranked Windows candidates')]
-[group('ghidra-inspect')]
-mac-string-search query:
-  uv run python -m tools.workflow.mac_string_crosswalk search "{{query}}"
-
-[doc('Crosswalk one Mac STR# group/index; add --resource-file through direct tool query when ambiguous')]
-[group('ghidra-inspect')]
-string-crosswalk group index:
-  uv run python -m tools.workflow.mac_string_crosswalk crosswalk "{{group}}" "{{index}}"
-
-[doc('Show statically resolved string references for a Windows function address')]
-[group('ghidra-inspect')]
-strings-for-function address:
-  uv run python -m tools.workflow.mac_string_crosswalk function "{{address}}"
-
-[doc('Report Mac-resource versus generated Windows UI semantic deltas')]
-[group('ghidra-inspect')]
-ui-platform-diff *args:
-  uv run python -m tools.workflow.ui_platform_diff {{args}}
-
 [doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
@@ -139,17 +79,6 @@ ui-codegen-explain *args:
 ui-codegen-triage function:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
 
-# Evidence-only predecessor: disassemble a Windows region into a draft.  It is
-# intentionally outside the build/codegen pipeline.
-[group('ghidra-inspect')]
-gen-builder-binary *args:
-  uv run python -m tools.binary.gen_builder_cpp {{args}}
-
-# Audit every manual `new TViewFamily(...)` spelling against the original's allocator
-# (TView::operator new 0x41b1c0 vs ::operator new 0x606f73). Exit 1 on mismatch.
-[group('ghidra-inspect')]
-alloc-audit:
-  uv run python -m tools.binary.alloc_audit
 # Read-only porting seed: decompile the target into an evidence draft the agent
 # copies/repairs from by hand. Writes {{build_dir}}/evidence/decomp/<addr>.cpp and
 # never touches source or ownership metadata (the replacement for the retired
@@ -164,18 +93,6 @@ seed-function addr: _require-ghidra-install
   uv run python -m tools.ghidra.query decompile {{addr}} > "$out"
   echo "seeded $out ($(wc -l < "$out") lines) — copy/repair by hand; this file is evidence, not source"
 
-# One-stop function status from the config CSVs + reccmp baseline (no Ghidra / no build,
-# instant): curated name/size/proto, ownership, autogen body location, current match %.
-# `just func-status 0xADDR [0xADDR ...]`.
-[group('ghidra-inspect')]
-func-status *args:
-  uv run python -m tools.workflow.func_status {{args}}
-
-# Rank porting candidates: the biggest weakly-matched functions (no Ghidra / no build).
-# `just port-candidates [--range LO HI] [--min-size N] [--max-score PCT] [--limit N]`.
-[group('ghidra-inspect')]
-port-candidates *args:
-  uv run python -m tools.workflow.port_candidates {{args}}
 # Extract the immutable per-slot ABI evidence snapshot the vtable ABI audit
 # consumes. Default: every `// VTABLE:`-annotated class in the tree, written to
 # config/vtable_abi_evidence.json (slow; one-time — the binary never changes).
@@ -191,37 +108,6 @@ vtable-abi-extract *args: _require-ghidra-install
   else
     uv run python -m tools.ghidra.query vtable-abi-evidence {{args}}
   fi
-
-[group('ghidra-inspect')]
-ghidra-vtable-struct-check *args: _require-ghidra-install
-  uv run python -m tools.ghidra.vtable_struct_check {{args}}
-
-[group('ghidra-inspect')]
-ghidra-datatype-audit *args: _require-ghidra-install
-  uv run python -m tools.ghidra.datatype_audit {{args}}
-
-# MUTATES (with --apply): removes /Demangler/<Name> datatypes that duplicate a
-# canonical root datatype by simple name, one cause of TypeResolver's
-# ambiguous_simple_name grade. Dry-run by default.
-[doc('Remove /Demangler duplicate datatypes that make TypeResolver name lookups ambiguous')]
-[group('ghidra-inspect')]
-dedupe-ambiguous-datatypes *args: _require-ghidra-install
-  uv run python -m tools.ghidra.dedupe_ambiguous_datatypes {{args}}
-
-# READ-ONLY: cross-check no_rtti class-model records against original-binary
-# evidence (operator new immediates, ctor/dtor max-offset scans, derived-class
-# zero-own-field chains). Writes build-msvc500/evidence/no_rtti_class_audit.csv.
-[doc('READ-ONLY: audit no_rtti class-model records against original-binary evidence')]
-[group('ghidra-inspect')]
-no-rtti-class-audit *args: _require-ghidra-install
-  uv run python -m tools.ghidra.no_rtti_class_audit {{args}}
-
-# Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
-# Pass --strict to also fail on missing should-improve patterns.
-[doc('Decompile benchmark gate for curated Ghidra typing work')]
-[group('ghidra-inspect')]
-ghidra-decomp-check *args: _require-ghidra-install
-  uv run python -m tools.ghidra.decomp_check {{args}}
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).
@@ -245,7 +131,7 @@ rtti-oracle *args: _require-ghidra-install
   uv run python -m tools.ghidra.rtti_class_oracle {{args}}
 
 # Enumerate every MFC message map (AFX_MSGMAP): per-class message->handler table
-# joined against function ownership (Audit C, bd 1uj.58.3). `--csv` for the full
+# joined against function ownership. `--csv` for the full
 # table, `--unported` for handlers with no manual owner.
 [doc('Enumerate MFC message maps: message->handler->port-status per class; --csv / --unported')]
 [group('ghidra-inspect')]
@@ -297,29 +183,6 @@ fix-function-bounds *args: _require-ghidra-install
 create-switch-table *args: _require-ghidra-install
   uv run python -m tools.ghidra.create_switch_table {{args}}
 
-# READ-ONLY. Body-integrity audit: punctured bodies (holes), labels sitting at a hole
-# start (the demote-to-label signature), fallthrough into unowned or foreign code,
-# entries inside another body, and curated sizes disagreeing with the DB. --strict exits
-# non-zero on any hard violation, so a DB mutation or archive update can be gated on it.
-# Ratchet: fails only on hard body-integrity violations absent from
-# config/baselines/body_integrity_baseline.csv, so a DB mutation cannot introduce a new
-# puncture while the historical ones are worked off. Runs at the end of refresh-inventory.
-[doc('Gate: no NEW Ghidra body-integrity violations vs the baseline')]
-[group('ghidra-db')]
-body-integrity-gate:
-  uv run python -m tools.ghidra.body_integrity --gate
-
-# MUTATES: config/baselines/body_integrity_baseline.csv (accepts today's violations).
-[doc('MUTATES: body-integrity baseline. Accept the current hard violations')]
-[group('baseline-update')]
-body-integrity-gate-update:
-  uv run python -m tools.workflow.baseline_guard --wrap "config/baselines/body_integrity_baseline.csv" -- uv run python -m tools.ghidra.body_integrity --write-baseline
-
-[doc('Read-only: report Ghidra function-body integrity violations')]
-[group('ghidra-db')]
-body-integrity-audit *args: _require-ghidra-install
-  uv run python -m tools.ghidra.body_integrity {{args}}
-
 # MUTATES: Ghidra DB (with --apply).
 # Remove the Function entity at case-body pseudo-function entries (keeps the
 # label) so an enclosing dispatcher can reabsorb the bytes on the next
@@ -338,14 +201,6 @@ delete-labels *args: _require-ghidra-install
   uv run python -m tools.ghidra.delete_labels {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Rename an existing function entry without changing its body or boundary. This
-# covers compiler-generated source names that contain characters Ghidra rejects.
-[doc('MUTATES: Ghidra DB (--apply). Rename existing function entries')]
-[group('ghidra-db')]
-rename-functions *args: _require-ghidra-install
-  uv run python -m tools.ghidra.rename_functions {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; refresh-inventory runs it automatically before the export.
@@ -354,18 +209,6 @@ rename-functions *args: _require-ghidra-install
 [group('ghidra-db')]
 prune-ilt-db-functions *args: _require-ghidra-install
   uv run python -m tools.ghidra.prune_ilt_db_functions {{args}}
-
-# READ-ONLY audit of Ghidra `in_stack_*` locals (unbound positive-stack reads).
-# These are EVIDENCE (missing param OR wrong convention/boundary/purge/varargs),
-# not a param oracle — classifies each into source-owned / library / unported
-# buckets with the ABI evidence needed to repair the RIGHT fact. Writes
-# build-msvc500/evidence/in_stack_audit.csv. (Replaces the retired unsound
-# `fix-in-stack-params --apply`, whose addParameter appended params at
-# convention-chosen offsets, not the detected slot — see the module docstring.)
-[doc('Audit Ghidra in_stack_* locals (read-only): classify each with ABI evidence')]
-[group('ghidra-inspect')]
-in-stack-audit *args: _require-ghidra-install
-  uv run python -m tools.ghidra.in_stack_audit {{args}}
 
 # MUTATES: Ghidra DB (with --apply). Projects source-model C++ prototypes onto
 # source-owned functions whose DB signature is weaker than the declaration (the
@@ -397,8 +240,8 @@ project-divergent-signatures *args: _require-ghidra-install
 # MUTATES: Ghidra DB (with --apply). The inverse of project-packed-signatures: clears custom
 # PACKED parameter storage on a frame whose own stack purge says the parameters each had a dword
 # slot. Wrong packing is quiet -- the prototype still prints plausibly, but the decompiler splices
-# two parameters into one `piece(a1, a0)` read, which surfaces as a semantic-gate call_contract
-# mismatch on the CALLER. Dry-run by default.
+# two parameters into one `piece(a1, a0)` read, which can make the caller's
+# structured comparison inconclusive. Dry-run by default.
 [private]
 [group('ghidra-db')]
 fix-packed-storage *args: _require-ghidra-install
@@ -432,14 +275,6 @@ source-signature-audit *args: _require-ghidra-install
 [group('ghidra-inspect')]
 class-model-audit *args:
   uv run python -m tools.class_model_audit {{args}}
-
-# READ-ONLY: measures semantic field-name/type quality per class (weak fieldXX/
-# padXX names, void*, undefined placeholders) and ranks classes by active weak
-# bytes x code-reference weight. Writes build-msvc500/evidence/class_field_coverage.csv.
-[doc('READ-ONLY: semantic field-quality report ranking classes by weak-byte impact')]
-[group('ghidra-inspect')]
-class-field-coverage *args:
-  uv run python -m tools.class_field_coverage {{args}}
 
 # MUTATES: Ghidra DB (with --apply). Projects the VERIFIED class model into the DB:
 # sized structures replace the 1-byte stubs (references rewrite), game bases are
@@ -480,31 +315,6 @@ structural-signature-audit *args: _require-ghidra-install
 datatype-hygiene-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_signatures --datatype-audit {{args}}
 
-# READ-ONLY, no Ghidra needed (pure file I/O): merges the 3 per-mode projector
-# queues (in_stack/divergent/packed -- previously one shared file, silently
-# clobbered by whichever projector ran last) with the structural audit, datatype
-# hygiene audit, and in_stack_audit into ONE address-keyed view, so nothing masks
-# another phase's evidence. `--strict` fails on "unexplained structural divergence":
-# a non-converged structural row with zero trace in any other evidence source.
-# Writes build-msvc500/evidence/signature_evidence_union.csv.
-[doc('READ-ONLY: merge all signature-projection evidence files by address (no Ghidra)')]
-[group('ghidra-inspect')]
-signature-evidence-union *args:
-  uv run python -m tools.ghidra.signature_evidence_union {{args}}
-
-# READ-ONLY: distinct-type inventory over every source signature's remaining
-# opaque_pointee / generic_pointer_fallback / unresolved type-resolution grade
-# (ambiguous_simple_name and opaque_by_value are already driven to zero). Each
-# DISTINCT type text (not per-function) is classified as
-# canonical_game_class_exists / canonical_mfc_type_exists /
-# typedef_or_namespace_spelling_mismatch / missing_external_opaque_type /
-# stale_duplicate / genuinely_unknown. Writes
-# build-msvc500/evidence/weak_pointer_type_inventory.csv.
-[doc('READ-ONLY: classify every remaining weak source-signature pointer/value type')]
-[group('ghidra-inspect')]
-weak-pointer-type-inventory *args: _require-ghidra-install
-  uv run python -m tools.ghidra.weak_pointer_type_inventory {{args}}
-
 # MUTATES: Ghidra DB (with --apply).
 [private]
 [group('ghidra-db')]
@@ -516,17 +326,6 @@ apply-mfc-datatypes *args: _require-ghidra-install
 [group('ghidra-db')]
 apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-# Atomically re-attribute a class in the DB: namespace + functions + datatypes +
-# vtable-struct + vtable label, in one transaction (ghidra-apply-source only does
-# function/label names, so a datatype-level junk name survives it). Dry-run by default.
-#   just ghidra-rename-class TSoundChannelNode TLongintList --vtable 0x650a08 [--apply]
-[doc('MUTATES: Ghidra DB (--apply). Atomically rename a class: namespace+datatypes+vtable')]
-[private]
-[group('ghidra-db')]
-ghidra-rename-class old new *args: _require-ghidra-install
-  uv run python -m tools.ghidra.rename_class {{old}} {{new}} {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Name + expand a class's <Class>Vtbl struct from its recovered header slot map so

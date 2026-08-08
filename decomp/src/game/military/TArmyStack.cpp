@@ -86,9 +86,7 @@ void TArmyStack::ReadFrom(TStream* stream) {
     short unitTag;
     stream->ReadBytes(&unitTag, 2);
 
-    // Linked where the match is found, not after the loop behind a flag -- see the
-    // found-flag note in the decompile-function codegen-shapes reference; the sibling
-    // AddFirstCountryUnitOfTypeToStack went 57.89% -> 100% on exactly this.
+    // Link the node where the match is found, rather than after the loop behind a flag.
     TSortedList* unitList = g_apTerrainTypeDescriptorTable[categoryFlag8]->militaryUnitList44;
     CIterator cursor(unitList);
     for (TUnit* unit = static_cast<TUnit*>(cursor.Reset()); cursor.More();

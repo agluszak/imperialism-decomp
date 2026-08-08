@@ -961,7 +961,6 @@ targets:
       - DDX_TextWithFormat
       - DecrementSharedStringRefCountAndFree
       - DispatchCmdMsg
-      - Dtor_CListBox_FID_61e8cb
       - EnsureRuntimeLocaleTablesInitializedOnce
       - FailMinMaxWithFormat
       - FillInToolInfo

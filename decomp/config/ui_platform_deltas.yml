@@ -61,7 +61,7 @@ node_property_patches:
 
 # Explicit semantic differences between the Mac resource class name and the
 # Windows source model. These are not ABI claims; each substitution must remain
-# represented by tools.ui_codegen.CLASS_ALIASES and appear in the delta report.
+# represented by tools.ui_codegen.CLASS_ALIASES.
 class_substitutions:
   TBookView:
     windows_class: TBook

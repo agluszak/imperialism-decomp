@@ -17,11 +17,6 @@ Failures (for the reviewed override set):
   - an override address has no `// LIBRARY:` marker;
   - an override row is internally inconsistent (missing symbol, or the friendly
     name is absent from the prototype);
-  - the number of applied overrides dropped below the ratchet baseline (silent
-    removal of a confirmed library identity).
-
-`--write-baseline` records the current applied-override count.
-
 The broader checks the object-matcher oracle enables (every library row carries a
 symbol; a confirmed oracle match missing from the markers; a high-confidence
 library match classified as game code) are deferred until that oracle lands; see
@@ -86,16 +81,26 @@ def index_symbols(symbols_path: Path) -> dict[int, dict[str, str]]:
 
 
 def index_ownership(repo_root: Path) -> dict[int, str]:
-    from tools.source_model import ownership_kind, ownership_view
+    from tools.source_model import build_model
 
-    return {a: ownership_kind(c.kind, c.origin) for a, c in ownership_view(repo_root).items()}
+    return {
+        address: "library" if claim.kind == "LIBRARY"
+        else "generated" if claim.origin == "generated" else "manual"
+        for address, claim in build_model(repo_root).functions.items()
+    }
 
 
 def index_ownership_full(repo_root: Path) -> dict[int, tuple[str, str]]:
-    from tools.source_model import ownership_kind, ownership_view
+    from tools.source_model import build_model
 
-    return {a: (c.file, ownership_kind(c.kind, c.origin))
-            for a, c in ownership_view(repo_root).items()}
+    return {
+        address: (
+            claim.file,
+            "library" if claim.kind == "LIBRARY"
+            else "generated" if claim.origin == "generated" else "manual",
+        )
+        for address, claim in build_model(repo_root).functions.items()
+    }
 
 
 def load_gamecode_allowlist(path: Path) -> set[int]:

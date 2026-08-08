@@ -209,9 +209,8 @@ MFC_MODELS: dict[str, ClassSpec] = {
             FieldSpec(0x3C, "m_pDocument", "void *", 4),
         ),
     ),
-    # The following 8 were driven by weak_pointer_type_inventory.py's
-    # canonical_mfc_type_exists bucket — each layout measured from the vendored MFC 4.2
-    # header, not guessed. CPrintInfo and CTypeLibCache remain unmodeled: neither
+    # The following layouts were measured from the vendored MFC 4.2 header, not
+    # guessed. CPrintInfo and CTypeLibCache remain unmodeled: neither
     # has a real definition anywhere in the vendored header subset (only a
     # forward declaration), so staying opaque is honest, not a defect;
     # CPreviewView is deferred (needs CSize/CScrollView first, for a single

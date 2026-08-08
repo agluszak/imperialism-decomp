@@ -96,7 +96,7 @@ def _pointer_array(inferior, address, count):
 
 
 def capture_runtime_snapshot(address, sim_mgr_global=0, nation_aux_array=0):
-    snapshot = {"schema": "imperialism.runtime-debug.v1"}
+    snapshot = {}
     inferior = gdb.selected_inferior()
     try:
         values = struct.unpack(

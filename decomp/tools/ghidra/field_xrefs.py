@@ -42,10 +42,10 @@ def class_function_addrs(repo_root, cls: str) -> dict[int, str]:
         for addr, name in names_by_addr.items()
         if name.startswith(f"{cls}::") or name.startswith(f"thunk_{cls}::")
     }
-    from tools.source_model import ownership_view
+    from tools.source_model import build_model
 
     target_cpp = f"src/game/{cls}.cpp"
-    for addr, claim in ownership_view(repo_root).items():
+    for addr, claim in build_model(repo_root).functions.items():
         if claim.file == target_cpp:
             out.setdefault(addr, names_by_addr.get(addr, "?"))
     return out

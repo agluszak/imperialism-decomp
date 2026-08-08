@@ -1,21 +1,8 @@
 # Case studies
 
-Long-form worked examples that back the structured rules in
-`config/agent_rules.yml` and the topical skills' field notes. The rule KB and the
-skills stay short and prescriptive; anything narrative — a multi-step diagnosis, a
-dead end worth remembering, a full before/after diff walk — belongs here as one
-markdown file per study.
+These are historical worked examples. They are not standing rules or a required reading list: current
+workflow and invariants live in the scoped `AGENTS.md`, focused skills, source, and mechanical gates.
 
-Conventions:
-
-- One file per study, named `<area>-<slug>.md` (e.g. `fp-commutative-wobble.md`,
-  `tships-mod-vs-div.md`).
-- Start with the outcome (what the correct model turned out to be), then the
-  evidence trail. End with the rule id(s) in `config/agent_rules.yml` the study
-  supports, so `just advice` output can cite it via the rule's `examples:` list.
-- A case study is historical record, not policy: rules and skills are the
-  actionable layer. When a study's lesson changes policy, update the rule/skill
-  and link back — do not make agents read narratives to find requirements.
-
-Migrate long anecdotes out of skill field notes here as they get rewritten into
-rules (first study: `tnewspaperview-advisor-rows-dossier.md`).
+Keep a study only when it preserves retail evidence that is not already captured in Ghidra, source, or a
+small reference document. Git and Beads retain the execution history; do not add agent receipts, rule-ID
+archaeology, or migration narratives here.

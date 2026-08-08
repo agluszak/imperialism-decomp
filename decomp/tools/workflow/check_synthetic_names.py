@@ -9,8 +9,7 @@ config/original_entities.csv for that address. Drift here means reccmp's
 marker that does not match the symbol the address resolves to, which is
 confusing for both tooling and humans.
 
-This is a check-only gate; it never edits files. Renames are done by
-``tools.workflow.correct_scalar_dtors`` (or by hand).
+This is a check-only gate; it never edits files.
 """
 
 from __future__ import annotations

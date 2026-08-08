@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build and query the Mac View control-class/tag semantic index.
+"""Build Mac View control-class/tag semantic hints for porting.
 
 The index is a cross-platform naming and structure oracle.  It deliberately
 does not claim Windows addresses, calling conventions, vtable slots, or
@@ -8,7 +8,6 @@ inheritance from Mac resource evidence.
 
 from __future__ import annotations
 
-import argparse
 import ast
 from collections import Counter, defaultdict
 import json
@@ -17,12 +16,10 @@ import re
 from typing import Iterable
 
 from tools.common.file_scan import iter_files
-from tools.common.repo import repo_root_from_file
 from tools.common.symbols import names_by_address
-from tools.ui_codegen import IR_PATH, UiResourceKey, load_recipes, load_ui_views
+from tools.ui_codegen import IR_PATH, load_recipes, load_ui_views
 
 
-INDEX_PATH = "docs/reference/mac_control_usage.json"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 
 TYPE_FAMILY_CLASSES = {
@@ -452,17 +449,6 @@ def build_index(repo_root: Path) -> dict:
     }
 
 
-def render_index(index: dict) -> str:
-    return json.dumps(index, indent=2, sort_keys=True, ensure_ascii=False) + "\n"
-
-
-def _tag_from_argument(value: str) -> str:
-    if value.lower().startswith("0x"):
-        number = int(value, 16)
-        return number.to_bytes(4, "big").decode("mac_roman")
-    return value
-
-
 def tag_hints(index: dict, tags: Iterable[str], *, max_candidates: int = 4) -> list[str]:
     lines: list[str] = []
     tag_index = index.get("tags", {})
@@ -512,89 +498,3 @@ def source_module_hints(index: dict, address: int, name: str) -> list[str]:
                 f"{', '.join(association['resources'][:3])}"
             )
     return list(dict.fromkeys(rows))
-
-
-def load_committed_index(repo_root: Path | None = None) -> dict | None:
-    root = repo_root or repo_root_from_file(__file__)
-    path = root / INDEX_PATH
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return None
-
-
-def _print_query(index: dict, args: argparse.Namespace) -> None:
-    if args.class_name:
-        result = index["classes"].get(args.class_name)
-        label = f"class {args.class_name}"
-    elif args.tag:
-        tag = _tag_from_argument(args.tag)
-        result = index["tags"].get(tag)
-        label = f"tag {tag!r}"
-    elif args.screen:
-        key = UiResourceKey.parse(args.screen).text()
-        result = index["screens"].get(key)
-        label = f"screen {key}"
-    else:
-        print(json.dumps(index["summary"], indent=2, sort_keys=True))
-        return
-    if result is None:
-        raise SystemExit(f"No Mac control-usage entry for {label}")
-    if args.json:
-        print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
-        return
-    print(label)
-    if args.tag:
-        for line in tag_hints(index, [_tag_from_argument(args.tag)], max_candidates=20):
-            print(line)
-    elif args.class_name:
-        print(f"  instances: {result['instance_count']} ({result['declared_instance_count']} declared)")
-        print(f"  screens: {', '.join(result['screens'])}")
-        print(f"  tags: {', '.join(f'{tag!r}={count}' for tag, count in result['tags'].items())}")
-    else:
-        print(f"  name: {result['name']}")
-        print(f"  nodes: {result['node_count']}")
-        for node_id in result["nodes"]:
-            node = next(item for item in index["nodes"] if item["id"] == node_id)
-            print(
-                f"  0x{node['offset']:04x} depth={node['depth']} tag={node['tag']!r} "
-                f"type={node['type_code']} class={node['class']} ({node['class_source']})"
-            )
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    query = parser.add_mutually_exclusive_group()
-    query.add_argument("--class", dest="class_name")
-    query.add_argument("--tag")
-    query.add_argument("--screen")
-    parser.add_argument("--json", action="store_true")
-    parser.add_argument("--write", action="store_true")
-    parser.add_argument("--check", action="store_true")
-    args = parser.parse_args()
-    repo_root = repo_root_from_file(__file__)
-    index = build_index(repo_root)
-    rendered = render_index(index)
-    path = repo_root / INDEX_PATH
-    if args.write:
-        path.write_text(rendered, encoding="utf-8")
-        print(f"Wrote {INDEX_PATH}: {index['summary']['nodes']} nodes")
-        return 0
-    if args.check:
-        try:
-            committed = path.read_text(encoding="utf-8")
-        except OSError as exc:
-            raise SystemExit(f"{INDEX_PATH}: {exc}") from exc
-        if committed != rendered:
-            raise SystemExit(f"{INDEX_PATH} is stale; run just mac-control-usage --write")
-        print(
-            "Mac control usage passed: "
-            + ", ".join(f"{key}={value}" for key, value in index["summary"].items())
-        )
-        return 0
-    _print_query(index, args)
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

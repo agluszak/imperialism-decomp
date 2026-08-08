@@ -1,17 +1,16 @@
 ---
 name: runtime
-description: Run, debug, author, and validate native semantic runtime scenarios for the Imperialism C++ reconstruction under Wine. Use for live retail/recomp behavior, screenshots, winedbg sessions, runtime harness failures, deterministic scenarios, UI screens and flows, fixtures, differential captures, or new runtime tests under decomp/.
+description: Run and author focused retail/recomp runtime scenarios under Wine for the Imperialism C++ reconstruction.
 ---
 
 # Work with the runtime
 
 Run from `decomp/`.
 
-- Read [run-debug.md](references/run-debug.md) for launching under Wine, scripted debugger sessions,
-  window-ID capture, and live visual verification.
-- Read [runtime-tests.md](references/runtime-tests.md) before adding or migrating a semantic scenario,
-  screen, flow, fixture, or protothread script.
-
-Reproduce the retail path and repair incomplete fixture/resource state rather than bypassing it.
-Runtime success proves only the path the scenario actually traverses; pair it with source/data/control-
-flow evidence when closing a retail-faithfulness bug. Keep the C++ oracle process-isolated from Rust.
+1. Reproduce one retail path with the existing runtime harness or a focused scenario.
+2. Use the actual fixture, resources, and event flow. Do not add test-only state, fallback behavior, or
+   a bypass when the scenario cannot reach the retail path; repair the missing model instead.
+3. Compare the native result against retail where the semantics matter, then keep the regression test
+   deterministic and narrow.
+4. Use the runtime/debug `just` targets for Wine, capture, and debugger sessions. A passing scenario
+   proves only the path it exercises; pair it with listing/source evidence for a faithfulness claim.

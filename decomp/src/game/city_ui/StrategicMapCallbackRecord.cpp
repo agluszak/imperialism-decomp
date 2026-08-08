@@ -322,7 +322,7 @@ void StrategicMapCallbackRecord::StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskB
 // Builds the compact x86 write stream used by AppendPackedColorDword. Each selected mask
 // pixel becomes a byte/word/dword write; long gaps advance the destination base explicitly.
 // Retail calls DiplomacyMaskBufferRun::IsMaskPixelSet out of line at all eight sites
-// here -- a body this size exhausts VC5's inline budget (see the decompile-function big-functions reference).
+// here -- this body exhausts VC5's inline budget.
 // The pixel test is header-inline because the smaller 0x004d5a90 edge test does expand
 // it, so this one function opts out of automatic expansion.
 #pragma inline_depth(0)

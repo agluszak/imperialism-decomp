@@ -51,11 +51,9 @@ after setting the calling convention (Ghidra auto-generates `this`). Never infer
 a parameter from `in_stack_*`; every parameter comes from the C++ declaration.
 
 Each of the three projector modes (in_stack / --project-divergent / --project-packed)
-writes its OWN queue file by default (source_signature_queue_{in_stack,divergent,
+writes its own queue file by default (source_signature_queue_{in_stack,divergent,
 packed}.csv under build-msvc500/evidence/) so a full `ghidra-apply-source-full` run
-never has one mode's evidence overwrite another's — see `_QUEUE_OUT_BY_MODE`.
-`tools/ghidra/signature_evidence_union.py` merges all three (plus in_stack_audit.csv
-and datatype_hygiene.csv) into one address-keyed view.
+never overwrites one mode's evidence with another's.
 """
 
 from __future__ import annotations
@@ -1196,13 +1194,8 @@ def _write_queue(queued, out_path):
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-# Each of the three projector modes gets its OWN default queue file — they used to
-# all share one path (`source_signature_queue.csv`) with no `--queue-out` override
-# in any `just` recipe, so `ghidra-apply-source-full` (which runs all three in
-# sequence) silently clobbered the in-stack and divergent evidence with the
-# packed-mode run's, the last writer. `tools/ghidra/signature_evidence_union.py`
-# reads all three of these (plus in_stack_audit.csv / datatype_hygiene.csv) to
-# build one keyed-by-address view that nothing can clobber.
+# Each projector mode has its own queue file. A full run executes all three, so
+# distinct paths preserve each mode's current diagnostic evidence.
 _QUEUE_OUT_BY_MODE = {
     "in_stack": "build-msvc500/evidence/source_signature_queue_in_stack.csv",
     "divergent": "build-msvc500/evidence/source_signature_queue_divergent.csv",

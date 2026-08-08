@@ -8,8 +8,6 @@ dependencies = [
     "clang-format==21.1.8",
     "reccmp @ git+https://github.com/agluszak/reccmp.git@eac12f7b8154296a1446cd8e40f71f4758947dd9",
     "ghidra-stubs>=12.1.2",
-    "cxxheaderparser>=1.8.1",
-    "pcpp>=1.30",
     "pyyaml>=6.0.3",
     "capstone>=5.0.7",
     "tree-sitter>=0.26.0",

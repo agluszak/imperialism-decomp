@@ -280,7 +280,7 @@ char TBattleReportView::DoIdle(int action) {
   if (action == 1) {
     ++g_nBattleReportMarkerBlinkTicks;
     if (g_nBattleReportMarkerBlinkTicks >= 15) {
-      ScopedMapQuickDrawContextGuard quickDraw(this);
+      ScopedMapQuickDrawContext quickDraw(this);
       PrepareForDrawing();
 
       MapContextActionRecord* record = static_cast<MapContextActionRecord*>(

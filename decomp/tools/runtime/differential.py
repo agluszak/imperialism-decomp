@@ -37,7 +37,7 @@ from tools.runtime.wine import (
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BUILD_DIR = REPO_ROOT / "build-msvc500"
 SCENARIO_DIR = REPO_ROOT / "tests/runtime/scenarios"
-FIXTURE_DIR = REPO_ROOT.parent / "interop/fixtures"
+FIXTURE_DIR = REPO_ROOT.parent / "fixtures" / "retail"
 RESULT_DIR = BUILD_DIR / "differential-results"
 
 

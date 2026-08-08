@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
-"""Report declared Mac-resource versus generated Windows UI semantic deltas."""
+"""Build declared Mac-resource versus generated Windows UI semantic deltas."""
 
 from __future__ import annotations
 
-import argparse
 from dataclasses import asdict
 import hashlib
-import json
 from pathlib import Path
 
 import yaml
 
-from tools.common.repo import repo_root_from_file
 from tools.ui_codegen import (
     CLASS_ALIASES,
     DEFAULT_CLASSES,
@@ -26,7 +23,6 @@ from tools.ui_codegen import (
 
 
 DELTA_CONFIG_PATH = "config/ui_platform_deltas.yml"
-REPORT_PATH = "docs/reference/ui_platform_diff.json"
 
 
 def _load_delta_config(repo_root: Path) -> dict:
@@ -296,80 +292,3 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
         "functions": functions,
     }
     return report, errors
-
-
-def render_report(report: dict) -> str:
-    return json.dumps(report, indent=2, sort_keys=True) + "\n"
-
-
-def _print_query(report: dict, function: str | None, event: str | None) -> None:
-    if function is None:
-        print(json.dumps(report["summary"], indent=2, sort_keys=True))
-        return
-    function_key = f"0x{int(function, 0):08x}"
-    function_row = report["functions"].get(function_key)
-    if function_row is None:
-        raise SystemExit(f"No generated UI factory {function_key}")
-    print(f"{function_key} {function_row['name']}")
-    cases = function_row["cases"]
-    if event is not None:
-        event_key = f"0x{int(event, 0):04x}"
-        if event_key not in cases:
-            raise SystemExit(f"{function_key} has no event {event_key}")
-        cases = {event_key: cases[event_key]}
-    for event_key, case in cases.items():
-        counts: dict[str, int] = {}
-        for node in case["nodes"].values():
-            classification = node["classification"]
-            counts[classification] = counts.get(classification, 0) + 1
-        rendered_counts = ", ".join(f"{key}={value}" for key, value in sorted(counts.items()))
-        print(f"  {event_key} {case['classification']}: {rendered_counts}; {case['source']}")
-        for node_id, node in case["nodes"].items():
-            if node["classification"] != "same_semantics":
-                evidence = (
-                    node["delta"]["evidence"]
-                    if node["delta"] is not None
-                    else node["windows_binary_evidence"]
-                )
-                print(
-                    f"    {node_id} tag={node['tag']!r}: {node['classification']} "
-                    f"evidence={evidence}"
-                )
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--function")
-    parser.add_argument("--event")
-    parser.add_argument("--write", action="store_true")
-    parser.add_argument("--check", action="store_true")
-    parser.add_argument("--json", action="store_true")
-    args = parser.parse_args()
-    repo_root = repo_root_from_file(__file__)
-    report, errors = build_report(repo_root)
-    if errors:
-        raise SystemExit("UI platform delta validation failed:\n  - " + "\n  - ".join(errors))
-    rendered = render_report(report)
-    path = repo_root / REPORT_PATH
-    if args.write:
-        path.write_text(rendered, encoding="utf-8")
-        print(f"Wrote {REPORT_PATH}: {report['summary']['nodes']} nodes")
-        return 0
-    if args.check:
-        try:
-            committed = path.read_text(encoding="utf-8")
-        except OSError as exc:
-            raise SystemExit(f"{REPORT_PATH}: {exc}") from exc
-        if committed != rendered:
-            raise SystemExit(f"{REPORT_PATH} is stale; run just ui-platform-diff-update")
-        print("UI platform delta check passed: " + ", ".join(f"{key}={value}" for key, value in report["summary"].items()))
-        return 0
-    if args.json:
-        print(rendered, end="")
-    else:
-        _print_query(report, args.function, args.event)
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

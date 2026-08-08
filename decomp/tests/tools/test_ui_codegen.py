@@ -20,7 +20,6 @@ from tools.ui_codegen import (
     validate,
     write_generated,
 )
-from tools.reccmp.progress_stats import ui_codegen_regressions
 from tools.turn_event_vocabulary import load_turn_event_vocabulary
 
 
@@ -422,28 +421,6 @@ class UiCodegenTests(unittest.TestCase):
                         node_count += 1
             self.assertEqual(case_count, 82)
             self.assertGreater(node_count, 1700)
-
-
-class UiCodegenMatchingGateTests(unittest.TestCase):
-    def test_accepts_equal_or_improved_scores(self) -> None:
-        self.assertEqual(
-            ui_codegen_regressions(
-                [0x401000, 0x402000],
-                {"0x401000": {"m": 0.5}, "0x402000": {"m": 0.8}},
-                {"0x401000": {"m": 0.5}, "0x402000": {"m": 0.7}},
-            ),
-            [],
-        )
-
-    def test_rejects_regression_and_missing_pair(self) -> None:
-        errors = ui_codegen_regressions(
-            [0x401000, 0x402000],
-            {"0x401000": {"m": 0.4}},
-            {"0x401000": {"m": 0.5}, "0x402000": {"m": 0.7}},
-        )
-        self.assertIn("similarity regressed", errors[0])
-        self.assertIn("not paired", errors[1])
-
 
 if __name__ == "__main__":
     unittest.main()

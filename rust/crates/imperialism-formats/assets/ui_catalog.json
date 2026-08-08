@@ -22,7 +22,7 @@
     },
     "windows_deltas": {
       "path": "config/ui_platform_deltas.yml",
-      "sha256": "bf6164d393ac09428ba7b03e07e871c545a8ff8dbd1f7db2e27e3e3c862593b6"
+      "sha256": "2bea83a608f95ce49bdbc155f9c74ee4063032817ac16d6ff4c24384b9546f96"
     }
   },
   "views": [

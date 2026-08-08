@@ -38,7 +38,6 @@ import sys
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CACHE_PATH = REPO_ROOT / "build-msvc500" / "evidence" / "serde_audit_listings.json"
-BASELINE = REPO_ROOT / "config" / "baselines" / "reccmp_progress_baseline.functions.csv"
 RTTI_ORACLE = REPO_ROOT / "config" / "rtti_class_oracle.csv"
 
 # ---------------------------------------------------------------------------
@@ -858,16 +857,6 @@ def serial_identity_findings() -> list[str]:
     return findings
 
 
-def load_scores() -> dict[int, float]:
-    if not BASELINE.is_file():
-        return {}
-    with BASELINE.open(encoding="utf-8") as handle:
-        return {
-            int(row["address"], 16): float(row["matching"]) * 100.0
-            for row in csv.DictReader(handle, delimiter="|")
-        }
-
-
 def _brief(ops: list[dict], upto: int) -> str:
     window = ops[max(0, upto - 2) : upto + 3]
     def render(op: dict) -> str:
@@ -892,8 +881,7 @@ def main(argv: list[str] | None = None) -> int:
         wanted = {int(value, 16) for value in args.addr}
         serializers = {a: v for a, v in serializers.items() if a in wanted}
 
-    scores = load_scores()
-    divergent, aligned, artifacts, reordered = [], [], [], []
+    divergent, aligned, reordered = [], [], []
 
     for address, info in sorted(serializers.items()):
         original, warnings = binary_stream_ops(address)
@@ -901,7 +889,6 @@ def main(argv: list[str] | None = None) -> int:
             "address": address,
             "name": info["name"],
             "file": info["file"],
-            "score": scores.get(address),
             "original": original,
             "ported": info["ops"],
             "warnings": warnings,
@@ -916,16 +903,10 @@ def main(argv: list[str] | None = None) -> int:
             reordered.append(row)
         elif row["status"] == "aligned":
             aligned.append(row)
-        elif row["score"] is not None and row["score"] >= 99.995:
-            # Self-calibration: a 100%-exact function compiles to the original's bytes,
-            # so its stream behaviour is identical by construction. A divergence flagged
-            # here is therefore a limitation of this tool (usually a same-class helper
-            # holding the real ops, or a shape it cannot expand), never a real desync.
-            artifacts.append(row)
         else:
             divergent.append(row)
 
-    total_unverified = sum(row["unverified"] for row in aligned + divergent + artifacts + reordered)
+    total_unverified = sum(row["unverified"] for row in aligned + divergent + reordered)
     identity_findings = serial_identity_findings() if not args.addr else []
     if not args.addr:
         serial_count = sum(
@@ -944,11 +925,10 @@ def main(argv: list[str] | None = None) -> int:
     print(f"  byte-aligned with the original  : {len(aligned)}")
     print(f"  DESYNC CANDIDATES               : {len(divergent)}")
     print(f"  same ops, branch order differs  : {len(reordered)}")
-    print(f"  tool artifacts (function exact) : {len(artifacts)}")
     print(f"  widths not provable either side : {total_unverified} (sizeof/computed sizes)")
     print()
-    print("A divergence is a save-file desync candidate. A low reccmp score with no")
-    print("divergence is a codegen/EH-shape issue and cannot corrupt a load.")
+    print("A divergence is a save-file desync candidate. Machine-code similarity is")
+    print("irrelevant to this byte-stream audit.")
     print()
     print("The unprovable widths are NOT an audit gap to chase by hand: a sizeof(...) or")
     print("count*N becomes a literal in the compiled push, so reccmp compares it against")
@@ -962,8 +942,7 @@ def main(argv: list[str] | None = None) -> int:
     print()
 
     for row in sorted(divergent, key=lambda r: r["index"]):
-        score = f"{row['score']:.1f}%" if row["score"] is not None else "   -  "
-        print(f"[DESYNC?] 0x{row['address']:06x} {score:>7} {row['name']}  ({row['file']})")
+        print(f"[DESYNC?] 0x{row['address']:06x} {row['name']}  ({row['file']})")
         print(f"          diverges at stream op #{row['index']}  "
               f"(original has {len(row['original'])} ops, ported has {len(row['ported'])})")
         print(f"          original: {_brief(row['original'], row['index'])}")
@@ -979,20 +958,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  0x{row['address']:06x} {row['name']}")
         print()
 
-    if not args.divergent_only and artifacts:
-        print("tool artifacts -- these functions are 100%-exact, so their stream")
-        print("behaviour matches by construction; the divergence is this tool's blind spot:")
-        for row in artifacts:
-            print(f"  0x{row['address']:06x} {row['name']} "
-                  f"(original {len(row['original'])} ops, ported {len(row['ported'])})")
-        print()
-
     if not args.divergent_only and aligned:
         print("byte-aligned:")
         for row in aligned:
-            score = f"{row['score']:.1f}%" if row["score"] is not None else "   -  "
             suffix = f"  ({row['unverified']} unverified widths)" if row["unverified"] else ""
-            print(f"  0x{row['address']:06x} {score:>7} {row['name']}{suffix}")
+            print(f"  0x{row['address']:06x} {row['name']}{suffix}")
 
     if args.check and identity_findings:
         return 1

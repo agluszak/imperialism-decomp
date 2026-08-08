@@ -1,21 +1,11 @@
 #![forbid(unsafe_code)]
 
+use clap::Parser;
 use imperialism_app::{MainMenuConfig, prepare_main_menu, run_main_menu};
-use std::env;
 use std::process::ExitCode;
 
 fn main() -> ExitCode {
-    let config = match MainMenuConfig::parse(env::args_os().skip(1)) {
-        Ok(None) => {
-            println!("{}", MainMenuConfig::usage());
-            return ExitCode::SUCCESS;
-        }
-        Ok(Some(config)) => config,
-        Err(error) => {
-            eprintln!("{error}\n\n{}", MainMenuConfig::usage());
-            return ExitCode::FAILURE;
-        }
-    };
+    let config = MainMenuConfig::parse();
 
     match prepare_main_menu(&config) {
         Ok(prepared) => match run_main_menu(prepared) {

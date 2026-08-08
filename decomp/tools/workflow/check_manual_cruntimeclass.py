@@ -10,8 +10,8 @@ Should be replaced with MFC macros:
   IMPLEMENT_SERIAL(TClass, TBaseClass, schema)
   IMPLEMENT_DYNAMIC(TClass, TBaseClass)
 
-Run `just mfc-runtime-macros --apply` to automatically migrate manual definitions
-to the appropriate MFC macro based on the descriptor's schema and create-object pointer.
+Manual definitions are a source defect; recover the appropriate MFC macro from
+the retail descriptor and update the source directly.
 """
 
 import argparse
@@ -76,7 +76,7 @@ def main():
     if violations:
         print("ERROR: Manual CRuntimeClass definitions found.")
         print("These should be replaced with MFC macros (IMPLEMENT_DYNCREATE, IMPLEMENT_SERIAL, IMPLEMENT_DYNAMIC).")
-        print("Run `just mfc-runtime-macros --apply` to automatically migrate these definitions.")
+        print("Recover the appropriate MFC macro from the retail descriptor and update the source.")
         print()
         print("Violations:")
         for file_path, line_num, line in violations:

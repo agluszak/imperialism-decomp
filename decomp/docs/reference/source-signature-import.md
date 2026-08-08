@@ -4,7 +4,7 @@
 
 `ghidra-apply-source-full` runs `build → import-ghidra → ghidra-apply-source
 --apply --strict → export`. Strict convergence checks that **names** converge.
-Yet `just in-stack-audit` finds **214 source-owned** functions whose Ghidra
+Ghidra evidence found **214 source-owned** functions whose Ghidra
 signature is weaker than the C++ declaration already present in source (the
 missing parameters surface as `in_stack_*` reads). Why does the PDB import miss
 them?
@@ -169,9 +169,9 @@ Every processed function lands in exactly one bucket; the projection is applied
 
 The remaining source-owned `in_stack` therefore carries an understood reason
 apiece — the diagnosis goal ("not zero, but every one explained") is met, and the
-count is no longer a manual backlog. (A tiny number of functions flip `in_stack`
+count is no longer a manual backlog. A tiny number of functions flip `in_stack`
 on/off with surrounding DB state — decompiler context-sensitivity, not a missing
-param; those are caught by `in-stack-audit`, not projected.)
+param — and should be checked against current source and listings.
 
 ## PR #95: authoritative entity kinds + structural convergence audit (read-only)
 
@@ -214,8 +214,8 @@ generic_pointer_fallback=110 (pointee unknown — ABI-size only), ambiguous_simp
 `canonical_alias` count as *semantic* convergence; the pointer fallback counts only as
 *ABI-storage* convergence.
 
-Update: `ambiguous_simple_name` is now **0** (`just dedupe-ambiguous-datatypes --apply`
-removed the `/Demangler/{CCmdTarget,CDC,CFrameWnd,CWnd,"CWnd *"}` placeholder structs
+Update: `ambiguous_simple_name` is now **0** after removing the
+`/Demangler/{CCmdTarget,CDC,CFrameWnd,CWnd,"CWnd *"}` placeholder structs
 Ghidra's demangler analyzer had left duplicating the canonical root MFC classes, and
 `TypeResolver.__init__` now excludes bare `FunctionDefinition` datatypes from the
 by-simple-name ambiguity count — a Win32 callback typedef like `WNDPROC` and Ghidra's

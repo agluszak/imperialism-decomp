@@ -8,8 +8,8 @@
 class TPortZone : public TZone {
 public:
   // The original inlines this at every `new TPortZone()` call site instead of emitting
-  // a standalone out-of-line copy (see the decompile-function ctors-dtors-eh reference's trivial-ctor-factory
-  // note); define it inline here so it inlines the same way, not as a real CALL.
+  // a standalone out-of-line copy; define it inline here so it inlines the same
+  // way, not as a real CALL.
   TPortZone() : TZone() {
     portTileIndex48 = -1;
   }
