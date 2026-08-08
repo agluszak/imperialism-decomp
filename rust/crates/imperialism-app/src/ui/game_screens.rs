@@ -92,7 +92,8 @@ fn enter_game_screen(
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(spawned) = spawn_view(&mut commands, catalog.catalog(), &view_id, &mut pictures) else {
+    let Some(spawned) = spawn_view(&mut commands, catalog.catalog(), &view_id, &mut pictures)
+    else {
         return;
     };
     let view = catalog
@@ -282,9 +283,7 @@ mod tests {
 
     fn activate_nav(app: &mut App, action: GameScreenNavAction) {
         let entity = nav_entity(app, action);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity });
+        app.world_mut().commands().trigger(Activate { entity });
         app.world_mut().flush();
         app.update();
         app.update();
