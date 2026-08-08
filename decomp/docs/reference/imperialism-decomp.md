@@ -1778,6 +1778,5 @@ Using decoded stringtable IDs from `STR#ENU.GOB` (`strenu-strings.tsv`):
 These are strong anchors for identifying engineer click dialogs and existing-order civilian report flows in code.
 
 ## 2026-02-16: Tech Experiment Pointer
-- Detailed notes: `tech-experiment-university-unlocks.md`
 - Summary: `tabsenu.gob` `.SCN` files contain machine-readable `tech` records (`"tech" + nationIndex + techId`, big-endian uint32 values).
 - Relevance: likely scenario-start tech grants that feed unit/building availability checks in UI (including university unit unlock gates).

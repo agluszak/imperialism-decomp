@@ -41,7 +41,6 @@ _build-msvc500-unlocked jobs:
     -v "$PWD/{{build_dir}}":/build \
     "{{docker_image}}"
   just build-library-oracle
-  just build-library-pairing-identities
   just detect
 
 [doc('reccmp-project detect: record the recompiled binary/PDB for comparison')]
@@ -77,6 +76,7 @@ _lint-in lint_dir flags="":
 # Evaluate the scalar-focused clang-tidy checks on a stable sample of manually
 # owned TUs. Regenerating the lint database first prevents cached/no-op lint
 # builds from leaving the analysis on stale compile flags.
+[private]
 [doc('Run scalar-focused clang-tidy checks on representative manual source')]
 [group('build')]
 scalar-clang-tidy:
@@ -106,6 +106,7 @@ scalar-clang-tidy:
 # Run the reviewed advisory profile from .clang-tidy. The default is the stable
 # five-TU evaluation sample; pass a compile-database path regex to expand scope,
 # e.g. `just clang-tidy-audit '^/imperialism/src/game/.*[.]cpp$'`.
+[private]
 [doc('Run the reviewed advisory .clang-tidy profile (optional path regex)')]
 [group('build')]
 clang-tidy-audit filter="/(TScrollBarView|TGreatPower|TMapMaker|TViewMgr|NetMessage)[.]cpp$":

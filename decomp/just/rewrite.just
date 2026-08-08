@@ -2,19 +2,16 @@
 
 # Build the retail library identity oracle from the original executable and
 # vendored libcmt.lib/nafxcw.lib COFF members. Needs ORIGINAL_BINARY.
+[private]
 [group('rewrite')]
 build-library-oracle *args:
   uv run python -m tools.mfc.build_library_oracle {{args}}
 
 # Recover retail ___xi/___xc initializer-array boundaries from __cinit into build evidence.
+[private]
 [group('rewrite')]
 build-crt-startup-oracle *args:
   uv run python -m tools.reccmp.crt_startup_oracle {{args}}
-
-# Select exact archive identities unique in both the retail oracle and recomp PDB.
-[group('rewrite')]
-build-library-pairing-identities *args:
-  uv run python -m tools.mfc.library_pairing_identities {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

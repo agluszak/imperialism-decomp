@@ -90,6 +90,7 @@ noop-gate:
 
 # Report every empty-body finding (audit mode of the noop gate).
 # `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
+[private]
 [group('gates')]
 noop-audit *args:
   uv run python -m tools.workflow.check_empty_bodies {{args}}
@@ -212,6 +213,7 @@ _source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gat
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
 # --show-unasserted to list oracle classes with no size assert yet.
+[private]
 [doc('ASSERT_SIZE vs RTTI-oracle object sizes; --strict to fail on mismatch')]
 [group('gates')]
 class-size-check *args:

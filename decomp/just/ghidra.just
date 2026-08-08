@@ -8,6 +8,7 @@
 
 # Optional full Ghidra evidence snapshot (decompiled bodies + type headers) into
 # {{build_dir}}/evidence/ghidra-export/. Read-only over committed state.
+[private]
 [doc('Full decompile/type evidence snapshot into build evidence (read-only, slow)')]
 [group('ghidra-inspect')]
 export-ghidra-evidence: _require-ghidra-install
@@ -29,6 +30,7 @@ export-ghidra-evidence: _require-ghidra-install
 # project open — the remaining one-shot read tools below and all MUTATES-Ghidra-DB
 # targets — evicts it automatically (via ghidra_env.open_project); re-warm with
 # `just ghidra-daemon` afterwards.
+[private]
 [doc('Start the persistent read-only Ghidra query daemon (one JVM, instant queries)')]
 [group('ghidra-inspect')]
 ghidra-daemon: _require-ghidra-install

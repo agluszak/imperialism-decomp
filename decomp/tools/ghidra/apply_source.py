@@ -39,6 +39,7 @@ from tools.common import ghidra_env
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file
 from tools.common.vtable_extents import load_verified_vtable_extents
+from tools.ghidra.embedded_labels import embedded_label_entries
 from tools.source_model import build_model
 
 REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
@@ -83,14 +84,7 @@ def main() -> int:
     model = build_model(REPO_ROOT, args.target)
     vtables = model.vtables
     extents = load_verified_vtable_extents(REPO_ROOT / "config" / "verified_vtable_extents.csv")
-    embedded_labels: list[tuple[int, str]] = []
-    embedded_path = REPO_ROOT / "config" / "embedded_function_labels.csv"
-    if embedded_path.is_file():
-        _fields, embedded_rows = read_pipe_table(embedded_path)
-        embedded_labels = [
-            (int((row.get("address") or "").strip(), 16), (row.get("name") or "").strip())
-            for row in embedded_rows
-        ]
+    embedded_labels = embedded_label_entries()
     # Claimed entities only: source spelling when parsed, reviewed name for
     # reviewed claims, inventory advisory ONLY as fallback for claimed
     # addresses whose spelling could not be parsed. Unclaimed addresses are

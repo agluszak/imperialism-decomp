@@ -43,6 +43,7 @@ refresh-inventory *args: _require-ghidra-install
 # named address has no function and no label, and that no source marker claims it; keeps
 # anything that fails a check. Dry-run by default.
 [doc('MUTATES: original_entities.csv (--apply). Drop rows whose Ghidra entity is gone')]
+[private]
 [group('sync')]
 inventory-drop *args: _require-ghidra-install
   uv run python -m tools.ghidra.inventory_drop {{args}}
