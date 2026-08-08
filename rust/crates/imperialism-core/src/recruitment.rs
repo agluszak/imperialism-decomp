@@ -1,13 +1,8 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitState, GameEvent, GameState, MajorNationId,
-    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, NationId,
-    PendingActionKind, RecruitKind, StepOutcome, TileId, TurnSummary, UnitProductionOrder,
-    WorldState,
+    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind,
+    RecruitKind, StepOutcome, TileId, TurnSummary, UnitProductionOrder, WorldState,
 };
-
-const MILITARY_POWER_BY_UNIT_TYPE: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
-    0, 1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 2, 2, 4, 4, 0, 4, 4, 4, 4, 10, 6, 8, 2, 2, 3, 0, 0, 0,
-]);
 
 impl WorldState {
     pub fn find_reachable_recruit_spawn_tile(
@@ -36,7 +31,8 @@ impl WorldState {
 
             let occupied = civilians.iter().any(|civilian| {
                 civilian.tile == Some(tile_id)
-                    && Some(civilian.owner_nation) == owner.map(|owner| i16::from(owner.get()))
+                    && Some(civilian.owner_nation)
+                        == owner.and_then(|owner| NationId::try_new(owner.get()))
             });
             if !occupied && (tile.active_flags & 2 == 0 || allow_active_flag_2) {
                 return Some(tile_id);
@@ -55,9 +51,8 @@ impl GameState {
         self.military_units
             .iter()
             .filter(|unit| unit.nation == nation)
-            .fold(0_i32, |power, unit| {
-                power + i32::from(MILITARY_POWER_BY_UNIT_TYPE[unit.unit_type])
-            })
+            .map(|unit| unit.unit_type.arms_required())
+            .sum()
     }
 
     pub fn produce_civilian_recruits(
@@ -107,7 +102,7 @@ impl GameState {
                     tile: Some(tile),
                     order: 0,
                     order_target: -1,
-                    owner_nation: i16::from(nation.get()),
+                    owner_nation: nation,
                     roster_id: 0,
                     registered: false,
                     remaining_turns: 0,
@@ -195,7 +190,7 @@ impl GameState {
                     stationed_province: home_province,
                     order: 0,
                     order_target: -1,
-                    owner_nation: i16::from(nation.get()),
+                    owner_nation: nation,
                     roster_id: 0,
                     registered: true,
                     order_target_tiles: [home_province; 3],
@@ -366,7 +361,7 @@ mod tests {
             tile: Some(tile),
             order: 0,
             order_target: -1,
-            owner_nation: i16::from(nation),
+            owner_nation: NationId::new(nation),
             roster_id: 0,
             registered: false,
             remaining_turns: 0,
@@ -554,7 +549,7 @@ mod tests {
             stationed_province: province,
             order: 0,
             order_target: -1,
-            owner_nation: i16::from(nation),
+            owner_nation: NationId::new(nation),
             roster_id: 0,
             registered: true,
             order_target_tiles: [province; 3],
@@ -733,7 +728,7 @@ mod tests {
                 stationed_province: 17,
                 order: 0,
                 order_target: -1,
-                owner_nation: 0,
+                owner_nation: NationId::new(0),
                 roster_id: 0,
                 registered: true,
                 order_target_tiles: [17; 3],

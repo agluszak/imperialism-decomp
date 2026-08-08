@@ -111,6 +111,11 @@ const char* MilitaryUnitKindName(int value) {
   return kMilitaryUnitKindNames[value];
 }
 
+const char* IndustryActionSlotName(int value) {
+  ASSERT(value >= 0 && value < kIndustryActionSlotCount);
+  return kIndustryActionSlotNames[value];
+}
+
 JSON_Value* CaptureShortArray(const short* values, int count) {
   JsonArray array;
   for (int index = 0; index < count; ++index) {
@@ -560,6 +565,7 @@ JSON_Value* CaptureMilitaryUnits() {
       object.Set("stationed_province", static_cast<int>(unit->tileIndex06));
       object.Set("order", static_cast<int>(unit->unitOrder));
       object.Set("order_target", static_cast<int>(unit->orderTargetIndex0C));
+      ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
       object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
       object.Set("registered", unit->militaryRegistrationFlag1C != 0 ? true : false);
@@ -593,6 +599,7 @@ JSON_Value* CaptureCivilianUnits() {
       object.SetOptional("tile", static_cast<int>(unit->tileIndex06));
       object.Set("order", static_cast<int>(unit->unitOrder));
       object.Set("order_target", static_cast<int>(unit->orderTargetIndex0C));
+      ASSERT(unit->ownerNationSlot18 >= 0 && unit->ownerNationSlot18 < kNationSlotCount);
       object.Set("owner_nation", static_cast<int>(unit->ownerNationSlot18));
       object.Set("roster_id", static_cast<int>(unit->unitRosterId1A));
       object.Set("registered", unit->militaryRegistrationFlag1C != 0 ? true : false);
@@ -607,10 +614,11 @@ JSON_Value* CaptureShips() {
   JsonArray ships;
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != 0; ship = ship->next) {
     JsonObject object;
-    object.Set("ship_type", static_cast<int>(ship->type));
+    object.Set("ship_type", IndustryActionSlotName(static_cast<int>(ship->type)));
     object.Set("location", RuntimeZoneIndex(ship->location));
     object.SetOptional("task_force", RuntimeTaskForceIndex(ship->taskForce));
     object.Set("aggression", ship->aggression);
+    ASSERT(ship->nation >= 0 && ship->nation < kNationSlotCount);
     object.Set("nation", static_cast<int>(ship->nation));
     object.Set("name", static_cast<LPCSTR>(ship->name));
     object.Set("strength", static_cast<int>(ship->strength));

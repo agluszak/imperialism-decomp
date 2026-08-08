@@ -11,6 +11,7 @@ mod difficulty;
 mod ids;
 mod map_geometry;
 mod market;
+mod military;
 mod nation_economy;
 mod population;
 mod production;

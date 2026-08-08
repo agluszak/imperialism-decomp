@@ -1,9 +1,9 @@
 use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, IndustryActionTable,
-    LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable,
-    MinorNationTable, NationCapacityTable, NationId, NationTable, PendingActionTable,
-    ProductionTable, ProvinceId, RecruitKind, ResourceTable, ShipId, TaskForceId, TileId,
-    TileOwnerTag, TradeMarketState,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, IndustryActionSlot,
+    IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
+    MilitaryUnitTable, MinorNationTable, NationCapacityTable, NationId, NationTable,
+    PendingActionTable, ProductionTable, ProvinceId, RecruitKind, ResourceTable, ShipId,
+    TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
@@ -261,7 +261,7 @@ pub struct MilitaryUnitState {
     pub stationed_province: i16,
     pub order: i32,
     pub order_target: i16,
-    pub owner_nation: i16,
+    pub owner_nation: NationId,
     pub roster_id: i16,
     pub registered: bool,
     pub order_target_tiles: [i16; 3],
@@ -281,7 +281,7 @@ pub struct CivilianUnitState {
     pub tile: Option<TileId>,
     pub order: i32,
     pub order_target: i16,
-    pub owner_nation: i16,
+    pub owner_nation: NationId,
     pub roster_id: i16,
     pub registered: bool,
     pub remaining_turns: i16,
@@ -289,11 +289,11 @@ pub struct CivilianUnitState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipState {
-    pub ship_type: i16,
+    pub ship_type: IndustryActionSlot,
     pub location: i16,
     pub task_force: Option<TaskForceId>,
     pub aggression: i32,
-    pub nation: i16,
+    pub nation: NationId,
     pub name: String,
     pub strength: i16,
     pub experience: i16,
