@@ -15,7 +15,6 @@ mod random_map_terrain;
 mod recruitment;
 mod resources;
 mod rng;
-mod simulation;
 mod state;
 mod tables;
 mod trade;
@@ -65,7 +64,6 @@ pub mod differential_trace {
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailLcg, hash_retail_scenario_tag};
-pub use simulation::Simulation;
 pub use state::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
     CivilianUnitState, GameCommand, GameEvent, GameState, LandSale, MajorNationState,

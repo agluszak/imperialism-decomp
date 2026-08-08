@@ -30,7 +30,7 @@ from tools.runtime.models import (
 )
 from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.oracles.ui import evaluate_ui_oracle
-from tools.runtime.protocol import FORMAT_VERSION, read_json_file, validate_result
+from tools.runtime.protocol import read_json_file, validate_result
 from tools.runtime.session import execute_run
 
 
@@ -97,7 +97,6 @@ def record_failure(result: JsonObject, summary: str) -> None:
 def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult:
     if raw is None:
         validated: JsonObject = {
-            "format_version": FORMAT_VERSION,
             "name": config.name,
             "seed": config.seed,
             "status": "failed",
@@ -110,7 +109,6 @@ def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult
             validate_result(validated, config.name, config.seed)
         except ValueError as error:
             validated = {
-                "format_version": FORMAT_VERSION,
                 "name": config.name,
                 "seed": config.seed,
                 "status": "failed",
@@ -293,7 +291,6 @@ class RuntimeRunner:
         fixture = self.fixture_dir / fixture_name
         if not fixture.is_file():
             result: JsonObject = {
-                "format_version": FORMAT_VERSION,
                 "name": request.name,
                 "seed": request.seed,
                 "status": "failed" if request.require_fixtures else "skipped",
@@ -310,7 +307,6 @@ class RuntimeRunner:
             metadata = self.dependencies.fixture_validator(fixture)
         except ValueError as error:
             result = {
-                "format_version": FORMAT_VERSION,
                 "name": request.name,
                 "seed": request.seed,
                 "status": "failed",

@@ -116,7 +116,6 @@ class RuntimeSuiteTests(unittest.TestCase):
 
             def fake_run(*_args: object, **_kwargs: object) -> SimpleNamespace:
                 native = {
-                    "format_version": 2,
                     "name": spec.name,
                     "seed": 7,
                     "status": "passed",
@@ -142,7 +141,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(native),
-                {"format_version", "name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures"},
             )
             self.assertIn("host", canonical)
             self.assertIn("summary", canonical)
@@ -284,7 +283,6 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(returncode, 1)
             self.assertEqual(result["status"], "failed")
-            self.assertEqual(result["format_version"], 2)
             self.assertEqual(result["seed"], 1)
             self.assertEqual(result["captures"], {})
 
@@ -300,7 +298,6 @@ class RuntimeSuiteTests(unittest.TestCase):
                 label = "primary" if len(calls) == 1 else run_dir.name
                 (run_dir / "gdb.log").write_text(label, encoding="utf-8")
                 result = {
-                    "format_version": 2,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": "failed",
@@ -353,7 +350,6 @@ class RuntimeSuiteTests(unittest.TestCase):
                 calls.append(run_dir)
                 status = "failed" if len(calls) == 1 else "passed"
                 native = {
-                    "format_version": 2,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": status,
@@ -392,7 +388,7 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(
                 set(primary_native),
-                {"format_version", "name", "seed", "status", "captures"},
+                {"name", "seed", "status", "captures"},
             )
 
     def test_oracle_errors_and_mismatches_coexist_with_native_result(self) -> None:
@@ -402,7 +398,6 @@ class RuntimeSuiteTests(unittest.TestCase):
             def fake_execute(config: RunConfig) -> HostResult:
                 run_dir = config.run_dir
                 native = {
-                    "format_version": 2,
                     "name": "random_game_easy_skips_capital",
                     "seed": 1,
                     "status": "passed",

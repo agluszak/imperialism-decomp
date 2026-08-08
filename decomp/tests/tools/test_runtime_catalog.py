@@ -90,7 +90,6 @@ class RuntimeProtocolTests(unittest.TestCase):
         name: str = "boot_managers", seed: int = 1, **overrides: object
     ) -> dict:
         return {
-            "format_version": 2,
             "name": name,
             "seed": seed,
             "status": "passed",
@@ -98,12 +97,50 @@ class RuntimeProtocolTests(unittest.TestCase):
             **overrides,
         }
 
-    def test_valid_v2_result_is_accepted(self) -> None:
+    def test_valid_result_is_accepted(self) -> None:
         validate_result(self.result(), "boot_managers", 1)
 
-    def test_wrong_version_is_rejected(self) -> None:
-        with self.assertRaisesRegex(ValueError, "format_version"):
-            validate_result(self.result(format_version=1), "boot_managers", 1)
+    def test_extra_top_level_fields_are_allowed(self) -> None:
+        validate_result(
+            self.result(evidence_kind="host-side metadata only"), "boot_managers", 1
+        )
+
+    def test_wrong_name_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "requested"):
+            validate_result(self.result(name="turn_event_queue_bounds"), "boot_managers", 1)
+
+    def test_wrong_seed_or_status_is_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "seed"):
+            validate_result(self.result(seed=2), "boot_managers", 1)
+        with self.assertRaisesRegex(ValueError, "status"):
+            validate_result(self.result(status="expected_failure"), "boot_managers", 1)
+
+    def test_captures_must_be_an_object(self) -> None:
+        with self.assertRaisesRegex(ValueError, "captures"):
+            validate_result(self.result(captures=[]), "boot_managers", 1)
+
+    def test_capture_payloads_are_not_validated_by_python(self) -> None:
+        captures = {
+            "game_state": {"new_rust_field": ["owned", {"semantic": True}]},
+            "coarse_map_generation": {"unmodeled": "payload"},
+            "random_map_terrain": {"unmodeled": "payload"},
+            "map_state": {"unmodeled": "payload"},
+            "serialization_roundtrip": {"unmodeled": "payload"},
+            "ui_tree": {
+                "snapshots": [],
+                "current": None,
+                "capital_confirmation": None,
+            },
+        }
+        validate_result(self.result(captures=captures), "boot_managers", 1)
+
+    def test_missing_required_keys_are_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "missing"):
+            validate_result(
+                {"name": "boot_managers", "seed": 1, "status": "passed"},
+                "boot_managers",
+                1,
+            )
 
 
 class MissingOracleRecordingTests(unittest.TestCase):

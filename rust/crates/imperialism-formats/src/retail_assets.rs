@@ -20,32 +20,6 @@ const PICTURE_ARCHIVE_PATHS: [&str; 7] = [
     "Data/pictuniv.gob",
 ];
 
-const REQUIRED_RETAIL_FILES: &[&str] = &[
-    "Data/pictenu.gob",
-    "Data/pictpaid.gob",
-    "Data/pictuniv.gob",
-    "Data/pictwv0.gob",
-    "Data/pictwv1.gob",
-    "Data/pictwv2.gob",
-    "Data/pictwv3.gob",
-    "Data/STR#ENU.GOB",
-    "Data/wave.gob",
-    "Data/Antqua.ttf",
-    "Data/Antquab.ttf",
-    "Data/WeBeBd__.ttf",
-    "MUSIC/Track02.ogg",
-    "MUSIC/Track03.ogg",
-    "MUSIC/Track04.ogg",
-    "MUSIC/Track05.ogg",
-    "MUSIC/Track06.ogg",
-    "MUSIC/Track07.ogg",
-    "MUSIC/Track08.ogg",
-    "MUSIC/Track09.ogg",
-    "MUSIC/Track10.ogg",
-    "MUSIC/Track11.ogg",
-    "MUSIC/Track12.ogg",
-];
-
 /// Direct access to the retail files needed by the current application.
 ///
 /// The object owns raw archive/font bytes and indexes English PE resource ranges during opening.
@@ -63,8 +37,6 @@ impl RetailAssets {
     /// Opens the current English GOG input files and indexes their English resources.
     pub fn open(retail_dir: impl AsRef<Path>) -> Result<Self, RetailAssetError> {
         let root = retail_dir.as_ref().to_owned();
-        require_retail_files(&root)?;
-
         let pictures = [
             ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[0])?,
             ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[1])?,
@@ -99,7 +71,7 @@ impl RetailAssets {
         ];
         for name in &names {
             for archive in archives {
-                if let Some(dib) = archive.find(ResourceName::Id(2), name.clone())? {
+                if let Some(dib) = archive.find(ResourceName::Id(2), name.clone()) {
                     return bitmap_resource_to_bmp(dib)
                         .map_err(|error| resource_error(&archive.path, error));
                 }
@@ -117,8 +89,8 @@ impl RetailAssets {
     }
 
     /// Returns the font bytes consumed by the UI.
-    pub fn font_bytes(&self, face: RetailFontFace) -> Result<&[u8], RetailAssetError> {
-        Ok(self.fonts.bytes(face))
+    pub fn font_bytes(&self, face: RetailFontFace) -> &[u8] {
+        self.fonts.bytes(face)
     }
 
     /// Returns a complete RIFF/WAVE payload from `Data/wave.gob`.
@@ -128,7 +100,7 @@ impl RetailAssets {
             .find(
                 ResourceName::Text("WAVE".to_owned()),
                 ResourceName::Id(u32::from(id)),
-            )?
+            )
             .ok_or(RetailAssetError::WaveNotFound(id))?;
         validate_wave_payload("Data/wave.gob", bytes)?;
         Ok(bytes)
@@ -139,7 +111,14 @@ impl RetailAssets {
         if !(2..=12).contains(&track) {
             return Err(RetailAssetError::InvalidMusicTrack(track));
         }
-        Ok(self.root.join(format!("MUSIC/Track{track:02}.ogg")))
+        let path = self.root.join(format!("MUSIC/Track{track:02}.ogg"));
+        if !path.is_file() {
+            return Err(RetailAssetError::Io {
+                path: path.clone(),
+                source: std::io::Error::new(std::io::ErrorKind::NotFound, "music track not found"),
+            });
+        }
+        Ok(path)
     }
 
     fn active_picture_archives(
@@ -206,25 +185,14 @@ impl ResourceArchive {
         })
     }
 
-    fn find(
-        &self,
-        resource_type: ResourceName,
-        name: ResourceName,
-    ) -> Result<Option<&[u8]>, RetailAssetError> {
+    fn find(&self, resource_type: ResourceName, name: ResourceName) -> Option<&[u8]> {
         let key = ResourceKey {
             resource_type,
             name,
         };
-        let Some(range) = self.english_resources.get(&key) else {
-            return Ok(None);
-        };
-        self.bytes
-            .get(range.clone())
-            .map(Some)
-            .ok_or_else(|| RetailAssetError::Resource {
-                path: self.path.clone(),
-                detail: "indexed resource range is outside its owning archive".to_owned(),
-            })
+        self.english_resources
+            .get(&key)
+            .map(|range| &self.bytes[range.clone()])
     }
 
     fn english_strings(&self) -> Result<BTreeMap<u32, String>, RetailAssetError> {
@@ -239,13 +207,7 @@ impl ResourceArchive {
                     self.path.display()
                 )));
             };
-            let bytes =
-                self.bytes
-                    .get(range.clone())
-                    .ok_or_else(|| RetailAssetError::Resource {
-                        path: self.path.clone(),
-                        detail: "indexed STRING range is outside its owning archive".to_owned(),
-                    })?;
+            let bytes = &self.bytes[range.clone()];
             let decoded = decode_string_table_block(*block, bytes)
                 .map_err(|error| resource_error(&self.path, error))?;
             for string in decoded {
@@ -352,11 +314,6 @@ fn index_english_resources(
 
 #[derive(Debug, thiserror::Error)]
 pub enum RetailAssetError {
-    #[error(
-        "retail directory is missing required English GOG files\n  {paths}",
-        paths = .0.join("\n  ")
-    )]
-    MissingFiles(Vec<String>),
     #[error("{}: {source}", path.display())]
     Io {
         path: PathBuf,
@@ -375,19 +332,6 @@ pub enum RetailAssetError {
     InvalidWorldVariant(u8),
     #[error("retail music track {0} is outside the supported range 2..=12")]
     InvalidMusicTrack(u8),
-}
-
-fn require_retail_files(root: &Path) -> Result<(), RetailAssetError> {
-    let missing = REQUIRED_RETAIL_FILES
-        .iter()
-        .filter(|relative| !root.join(relative).is_file())
-        .map(|relative| (*relative).to_owned())
-        .collect::<Vec<_>>();
-    if missing.is_empty() {
-        Ok(())
-    } else {
-        Err(RetailAssetError::MissingFiles(missing))
-    }
 }
 
 fn validate_wave_payload(relative: &str, bytes: &[u8]) -> Result<(), RetailAssetError> {
@@ -476,16 +420,13 @@ mod tests {
     }
 
     #[test]
-    fn reports_all_runtime_retail_inputs_before_parsing() {
+    fn open_reports_the_first_missing_archive() {
         let root = temporary_root("missing");
         let error = RetailAssets::open(&root).unwrap_err();
-        let RetailAssetError::MissingFiles(files) = error else {
-            panic!("expected missing files");
+        let RetailAssetError::Io { path, .. } = error else {
+            panic!("expected io error for missing archive, got {error:?}");
         };
-        assert_eq!(files.len(), REQUIRED_RETAIL_FILES.len());
-        assert!(files.contains(&"Data/pictenu.gob".to_owned()));
-        assert!(files.contains(&"MUSIC/Track12.ogg".to_owned()));
-        assert!(!files.contains(&"Data/confenu.irg".to_owned()));
+        assert!(path.ends_with("Data/pictenu.gob"));
     }
 
     #[test]
@@ -495,10 +436,7 @@ mod tests {
 
         assert_eq!(assets.string(1), Some("direct lookup"));
         assert_eq!(assets.string(20_874), None);
-        assert_eq!(
-            assets.font_bytes(RetailFontFace::BelweBold).unwrap(),
-            b"not a font"
-        );
+        assert_eq!(assets.font_bytes(RetailFontFace::BelweBold), b"not a font");
         assert_eq!(assets.wave_bytes(7000).unwrap(), b"RIFF\0\0\0\0WAVE");
         assert_eq!(
             assets.music_path(6).unwrap(),

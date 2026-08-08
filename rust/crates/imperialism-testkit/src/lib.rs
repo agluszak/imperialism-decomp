@@ -1,5 +1,7 @@
 #![forbid(unsafe_code)]
 
+mod runtime_capture;
+
 use imperialism_core::{
     GameState, RetailLcg,
     differential_trace::{
@@ -7,7 +9,7 @@ use imperialism_core::{
         trace_random_map_terrain,
     },
 };
-pub use imperialism_formats::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
+pub use runtime_capture::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
 use serde::Serialize;
 use std::collections::BTreeSet;
 use std::path::Path;
@@ -38,13 +40,13 @@ pub struct Difference {
 }
 
 pub fn read_game_state(path: impl AsRef<Path>) -> Result<GameState, RuntimeCaptureError> {
-    imperialism_formats::read_runtime_capture(path, "game_state")
+    read_runtime_capture(path, "game_state")
 }
 
 pub fn read_coarse_map_trace(
     path: impl AsRef<Path>,
 ) -> Result<CoarseMapTrace, RuntimeCaptureError> {
-    imperialism_formats::read_runtime_capture(path, "coarse_map_generation")
+    read_runtime_capture(path, "coarse_map_generation")
 }
 
 pub fn generate_and_compare_coarse_trace(
@@ -135,7 +137,6 @@ mod tests {
     fn reads_the_direct_random_map_terrain_capture() {
         let expected = terrain_capture();
         let result = json!({
-            "format_version": 2,
             "name": "terrain",
             "seed": 1,
             "status": "passed",
@@ -152,7 +153,6 @@ mod tests {
     #[test]
     fn terrain_capture_requires_its_named_capture() {
         let result = json!({
-            "format_version": 2,
             "name": "terrain",
             "seed": 1,
             "status": "passed",

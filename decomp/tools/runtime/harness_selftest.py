@@ -9,7 +9,7 @@ import subprocess
 import time
 
 from tools.runtime.catalog import RuntimeTestSpec, apply_expected_failure
-from tools.runtime.protocol import FORMAT_VERSION, read_json_file, validate_result
+from tools.runtime.protocol import read_json_file, validate_result
 
 
 def _windows_path(path: Path) -> str:
@@ -48,7 +48,6 @@ def run_harness_selftest(
     raw = read_json_file(native_result_path)
     if raw is None:
         result = {
-            "format_version": FORMAT_VERSION,
             "name": spec.name,
             "seed": seed,
             "status": "failed",
@@ -63,7 +62,6 @@ def run_harness_selftest(
             validate_result(raw, spec.name, seed)
         except ValueError as error:
             result = {
-                "format_version": FORMAT_VERSION,
                 "name": spec.name,
                 "seed": seed,
                 "status": "failed",

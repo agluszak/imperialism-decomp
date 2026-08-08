@@ -215,15 +215,4 @@ mod tests {
         };
         assert_ne!(startup, other);
     }
-
-    #[test]
-    fn old_provenance_shape_is_not_accepted() {
-        let mut catalog = serde_json::from_str::<serde_json::Value>(GENERATED_CATALOG).unwrap();
-        catalog["sources"] = serde_json::json!({});
-        assert!(serde_json::from_value::<UiCatalog>(catalog).is_err());
-
-        let mut catalog = serde_json::from_str::<serde_json::Value>(GENERATED_CATALOG).unwrap();
-        catalog["views"][0]["nodes"][0]["legacy_type"] = serde_json::json!("view");
-        assert!(serde_json::from_value::<UiCatalog>(catalog).is_err());
-    }
 }
