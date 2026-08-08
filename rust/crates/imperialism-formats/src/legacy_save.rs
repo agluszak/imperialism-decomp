@@ -3,15 +3,15 @@ use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
     CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel, Difficulty,
     DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
-    LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationId, MajorNationState,
+    LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationState,
     MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable,
-    MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCapacityTable,
-    NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
+    MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT,
+    NationCapacityTable, NationCommonState, NationId, NationPendingWork, NationTable, Nations,
     NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
-    ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip,
-    ShipState, TaskForceState, TileDevelopment, TileId, TileOwnerTag, TileState,
-    TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState, TradePolicyScore,
-    TurnState, WorldState,
+    ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg, RngState,
+    STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileDevelopment, TileId,
+    TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
+    TradeMarketState, TradePolicyScore, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -708,9 +708,9 @@ impl LegacyCityState {
                 strength: self.population.strength,
                 extra: self.population.extra,
                 phase_value: self.population.phase_value,
-                baseline_labor: Some(LaborPool::from(self.population.baseline_labor)),
-                production_labor: Some(LaborPool::from(self.population.production_labor)),
-                pending_labor_delta: Some(LaborPool::from(self.population.pending_labor_delta)),
+                baseline_labor: LaborPool::from(self.population.baseline_labor),
+                production_labor: LaborPool::from(self.population.production_labor),
+                pending_labor_delta: LaborPool::from(self.population.pending_labor_delta),
                 predicted_need_by_resource: ResourceTable::from_array(
                     self.population.predicted_need_by_resource,
                 ),
@@ -1246,29 +1246,8 @@ impl LegacySaveV62 {
             ));
         }
 
-        let mut nations = NationTable::default();
-        for slot in 0..NATION_COUNT {
-            let id = NationId::new(slot as u8);
-            if slot < 7 {
-                let nation = self
-                    .major_nations
-                    .iter()
-                    .find(|nation| nation.great_power().country.nation_slot == slot as i16);
-                nations[id] = match nation {
-                    Some(nation) => Some(major_nation_state(nation.great_power())?),
-                    None => None,
-                };
-            } else {
-                let nation = self
-                    .minor_nations
-                    .iter()
-                    .find(|nation| nation.country.nation_slot == slot as i16);
-                nations[id] =
-                    nation.map(|nation| country_state(&nation.country, NationData::Minor));
-            }
-        }
-
-        let mut cities = MajorNationTable::default();
+        let mut majors = MajorNationTable::default();
+        let mut minors = MinorNationTable::default();
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
@@ -1283,7 +1262,7 @@ impl LegacySaveV62 {
                 continue;
             };
             let great_power = nation.great_power();
-            cities[major_id] = great_power.city.as_ref().map(|city| {
+            let city = great_power.city.as_ref().map(|city| {
                 let home_town = great_power
                     .post_city
                     .towns
@@ -1292,6 +1271,11 @@ impl LegacySaveV62 {
                         i32::from(town.tile_index)
                     });
                 city.city_state(optional_tile_id(home_town))
+            });
+            majors[major_id] = Some(MajorNation {
+                common: country_common(&great_power.country),
+                state: major_nation_rule_state(great_power)?,
+                city,
             });
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
             civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id)?);
@@ -1306,11 +1290,15 @@ impl LegacySaveV62 {
             }
         }
         for slot in 7..NATION_COUNT {
+            let minor_id = MinorNationId::new(slot as u8);
             if let Some(nation) = self
                 .minor_nations
                 .iter()
                 .find(|nation| nation.country.nation_slot == slot as i16)
             {
+                minors[minor_id] = Some(MinorNation {
+                    common: country_common(&nation.country),
+                });
                 military_units.extend(
                     nation
                         .country
@@ -1359,13 +1347,12 @@ impl LegacySaveV62 {
             persistent_unit_id_counter,
             world: self.map.world_state()?,
             rng: RngState {
-                crt_rand: context.crt_rand_state,
-                map_generation: context.map_generation_lcg,
-                zone_status: context.zone_status_lcg,
+                crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
+                map_generation: RetailLcg::from_state(context.map_generation_lcg),
+                zone_status: RetailLcg::from_state(context.zone_status_lcg),
             },
             market: self.market.clone(),
-            nations,
-            cities,
+            nations: Nations { majors, minors },
             military_units,
             civilian_units,
             ships: Vec::<ShipState>::new(),
@@ -1379,65 +1366,62 @@ impl LegacySaveV62 {
     }
 }
 
-fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, LegacySaveError> {
+fn major_nation_rule_state(
+    nation: &LegacyGreatPowerState,
+) -> Result<MajorNationState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
-    Ok(country_state(
-        &nation.country,
-        NationData::Major(MajorNationState {
-            diplomacy_eligible: prefix.diplomacy_eligible != 0,
-            capacities: NationCapacityTable::from_array(prefix.capacities),
-            grant_total_cost: prefix.grant_total_cost,
-            unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
-            diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
-                prefix.diplomacy_policy_by_nation,
-                nation.country.nation_slot,
-            )?,
-            diplomacy_grants_by_nation: diplomacy_grants_from_retail_entries(
-                prefix.diplomacy_grant_by_nation,
-                nation.country.nation_slot,
-            )?,
-            need_current_by_type: ResourceTable::from_array(prefix.need_current_by_type),
-            need_target_by_type: ResourceTable::from_array(prefix.need_target_by_type),
-            relation_delta_current: ResourceTable::from_array(prefix.relation_delta_current),
-            purchased_items_by_resource: ResourceTable::from_array(
-                prefix.purchased_items_by_resource,
-            ),
-            item_potentials: ResourceTable::from_array(prefix.item_potentials),
-            unfilled_trade_turns_by_resource: ResourceTable::from_array(
-                prefix.unfilled_trade_turns_by_resource,
-            ),
-            transported_items_by_resource: ResourceTable::from_array(
-                prefix.transported_items_by_resource,
-            ),
-            remembered_trade_offers_by_resource: ResourceTable::from_array(
-                prefix.remembered_trade_offers_by_resource,
-            ),
-            aid_allocation_by_minor_nation: MinorNationTable::from_array(
-                prefix
-                    .aid_allocation_by_minor_nation
-                    .map(ResourceTable::from_array),
-            ),
-            budget_pool_base: prefix.budget_pool_base,
-            budget_pool_delta: prefix.budget_pool_delta,
-            special_resource_trade_balance: post.special_resource_trade_balance,
-            candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
-            // scenarioInitFlag is constructed as zero and is not part of the save stream.
-            scenario_initialized: false,
-            turn_finished: post.turn_finished_flag != 0,
-            pending_action_status: PendingActionTable::from_array(prefix.pending_action_status),
-            pending_action_payload_by_action: PendingActionTable::from_array(
-                prefix.pending_action_payload_by_action,
-            ),
-            diplomacy_budget_base: post.diplomacy_budget_base,
-            escalation_counter: i16::from(post.escalation_counter),
-            pending_commitment_cost: post.pending_commitment_cost,
-            pressure_counter: i16::from(post.pressure_counter),
-            aid_allocation_total: post.aid_allocation_total,
-            colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
-            military_expenses: post.military_expenses,
-        }),
-    ))
+    Ok(MajorNationState {
+        diplomacy_eligible: prefix.diplomacy_eligible != 0,
+        capacities: NationCapacityTable::from_array(prefix.capacities),
+        grant_total_cost: prefix.grant_total_cost,
+        unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
+        diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
+            prefix.diplomacy_policy_by_nation,
+            nation.country.nation_slot,
+        )?,
+        diplomacy_grants_by_nation: diplomacy_grants_from_retail_entries(
+            prefix.diplomacy_grant_by_nation,
+            nation.country.nation_slot,
+        )?,
+        need_current_by_type: ResourceTable::from_array(prefix.need_current_by_type),
+        need_target_by_type: ResourceTable::from_array(prefix.need_target_by_type),
+        relation_delta_current: ResourceTable::from_array(prefix.relation_delta_current),
+        purchased_items_by_resource: ResourceTable::from_array(prefix.purchased_items_by_resource),
+        item_potentials: ResourceTable::from_array(prefix.item_potentials),
+        unfilled_trade_turns_by_resource: ResourceTable::from_array(
+            prefix.unfilled_trade_turns_by_resource,
+        ),
+        transported_items_by_resource: ResourceTable::from_array(
+            prefix.transported_items_by_resource,
+        ),
+        remembered_trade_offers_by_resource: ResourceTable::from_array(
+            prefix.remembered_trade_offers_by_resource,
+        ),
+        aid_allocation_by_minor_nation: MinorNationTable::from_array(
+            prefix
+                .aid_allocation_by_minor_nation
+                .map(ResourceTable::from_array),
+        ),
+        budget_pool_base: prefix.budget_pool_base,
+        budget_pool_delta: prefix.budget_pool_delta,
+        special_resource_trade_balance: post.special_resource_trade_balance,
+        candidate_nation_flags: NationTable::from_array(post.candidate_nation_flags),
+        // scenarioInitFlag is constructed as zero and is not part of the save stream.
+        scenario_initialized: false,
+        turn_finished: post.turn_finished_flag != 0,
+        pending_action_status: PendingActionTable::from_array(prefix.pending_action_status),
+        pending_action_payload_by_action: PendingActionTable::from_array(
+            prefix.pending_action_payload_by_action,
+        ),
+        diplomacy_budget_base: post.diplomacy_budget_base,
+        escalation_counter: i16::from(post.escalation_counter),
+        pending_commitment_cost: post.pending_commitment_cost,
+        pressure_counter: i16::from(post.pressure_counter),
+        aid_allocation_total: post.aid_allocation_total,
+        colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
+        military_expenses: post.military_expenses,
+    })
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -1498,19 +1482,15 @@ fn diplomacy_policies_from_retail_entries(
     Ok(policies)
 }
 
-fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
-    NationState {
-        common: NationCommonState {
-            owner_nation: country.nation_slot,
-            treasury: country.treasury,
-            home_tile: optional_tile_id(country.home_tile),
-            trade_policy_by_nation: NationTable::from_array(
-                country
-                    .need_level_by_nation
-                    .map(|score| TradePolicyScore::new(i32::from(score))),
-            ),
-        },
-        data,
+fn country_common(country: &LegacyCountryBase) -> NationCommonState {
+    NationCommonState {
+        treasury: country.treasury,
+        home_tile: optional_tile_id(country.home_tile),
+        trade_policy_by_nation: NationTable::from_array(
+            country
+                .need_level_by_nation
+                .map(|score| TradePolicyScore::new(i32::from(score))),
+        ),
     }
 }
 
@@ -2975,16 +2955,18 @@ mod tests {
         assert!(!game.turn.in_linear_phase());
         game.reset_turn_flags().unwrap();
         assert!(
-            game.nations.as_slice()[..6]
+            game.nations
+                .majors
                 .iter()
-                .all(|nation| { nation.as_ref().unwrap().major().unwrap().turn_finished })
+                .take(6)
+                .all(|nation| { nation.as_ref().unwrap().state.turn_finished })
         );
         assert!(
-            !game.nations[NationId::new(6)]
-                .as_ref()
+            !game
+                .nations
+                .major(MajorNationId::new(6))
                 .unwrap()
-                .major()
-                .unwrap()
+                .state
                 .turn_finished
         );
         game.turn.advance_season();

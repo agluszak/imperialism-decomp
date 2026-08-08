@@ -741,8 +741,10 @@ mod tests {
         assert_eq!(session.0.turn.selected_nation, NationId::new(6));
         assert_eq!(session.0.turn.phase_code, 2);
         assert_eq!(
-            session.0.nations[NationId::new(6)]
-                .as_ref()
+            session
+                .0
+                .nations
+                .major(MajorNationId::new(6))
                 .unwrap()
                 .common
                 .home_tile,

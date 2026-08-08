@@ -7,7 +7,7 @@ use serde::de::DeserializeOwned;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::{first_serialized_difference, read_runtime_capture};
+use crate::{RuntimeResult, first_serialized_difference};
 
 /// Run `scenario` under the native harness, apply `apply` to the captured
 /// `before`/`case` pair, and require the resulting state to match `after`.
@@ -26,11 +26,16 @@ where
     T: DeserializeOwned,
     F: FnOnce(&mut GameState, T) -> Result<()>,
 {
-    let mut actual: GameState = read_runtime_capture(result, "before")
+    let runtime = RuntimeResult::read(result)
+        .with_context(|| format!("reading runtime result from {}", result.display()))?;
+    let mut actual: GameState = runtime
+        .capture("before")
         .with_context(|| format!("reading before from {}", result.display()))?;
-    let case: T = read_runtime_capture(result, "case")
+    let case: T = runtime
+        .capture("case")
         .with_context(|| format!("reading case from {}", result.display()))?;
-    let expected: GameState = read_runtime_capture(result, "after")
+    let expected: GameState = runtime
+        .capture("after")
         .with_context(|| format!("reading after from {}", result.display()))?;
 
     apply(&mut actual, case)?;
@@ -92,8 +97,8 @@ mod tests {
     use super::*;
     use imperialism_core::{
         CivilianUnitId, DiplomacyGrant, DiplomacyGrantFlags, MajorNationId, MilitaryUnitKind,
-        MinorNationId, NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind,
-        ResourceTable, SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
+        MinorNationId, NationId, ProductionProgress, RecruitKind, ResourceCost, ResourceKind,
+        SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
     };
     use serde::Deserialize;
     use std::path::PathBuf;
@@ -187,11 +192,10 @@ mod tests {
                 cash_per_unit: 0,
                 workforce: Some(SkillBand::High),
             },
-            quantity,
-            tracking_by_resource: ResourceTable::default(),
-            reserved_workforce: 0,
-            limiting_constraint: ProductionConstraint::Resources,
-            accumulated_value: 0,
+            progress: ProductionProgress {
+                quantity,
+                ..ProductionProgress::default()
+            },
         }
     }
 

@@ -24,6 +24,8 @@ mod resources;
 mod rng;
 mod state;
 mod tables;
+#[cfg(test)]
+pub(crate) mod test_support;
 mod trade;
 mod turn_flow;
 mod units;
@@ -51,8 +53,8 @@ pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
     CapacityProductionOrder, CapacityTarget, ExpansionProductionOrder, ExpansionTarget,
     FoodProductionOrder, ItemInputs, ItemProductionOrder, PopulationGrowthOrder,
-    PowerPlantProductionOrder, ProductionConstraint, ProductionError, ResourceCost, TrainingLevel,
-    TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
+    PowerPlantProductionOrder, ProductionConstraint, ProductionError, ProductionProgress,
+    ResourceCost, TrainingLevel, TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
 };
 pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMap, CoarseMapGrid,
@@ -85,11 +87,11 @@ pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, DevelopmentLevel,
     DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameEvent, GameState, LandSale,
-    MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData,
-    NationPendingWork, NationState, NavyMissionState, PendingWorkState, PopulationState, RngState,
-    SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget,
-    TileDevelopment, TileState, TileTransportLinks, TradePolicyScore, TurnStartEventState,
-    TurnState, TurnSummary, WarTransition, WorldState,
+    MajorNation, MajorNationState, MilitaryUnitState, MinorNation, MissionData, MissionState,
+    NationCommonState, NationPendingWork, Nations, NavyMissionState, PendingWorkState,
+    PopulationState, RngState, SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState,
+    TaskForceTarget, TileDevelopment, TileState, TileTransportLinks, TradePolicyScore,
+    TurnStartEventState, TurnState, TurnSummary, WarTransition, WorldState,
 };
 pub use tables::{
     IndustryActionSlot, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,

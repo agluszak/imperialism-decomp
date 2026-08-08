@@ -124,45 +124,10 @@ impl CityState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{IndustryActionSlot, LaborPool, PopulationState};
+    use crate::{IndustryActionSlot, RetailCrtRng, RetailLcg};
 
     fn city() -> CityState {
-        CityState {
-            power_plant_upgrade_queued: false,
-            food_substitution_count: 0,
-            starvation_population_loss: 0,
-            serialized_state: 0,
-            phase_counter: 0,
-            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: IndustryActionTable::default(),
-            rolling_item_production_score: 0,
-            low_production: false,
-            low_stock: false,
-            reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
-            power_available: 0,
-            stock_by_type: crate::ResourceTable::default(),
-            production_orders: crate::ProductionTable::default(),
-            production_accum: crate::ProductionTable::default(),
-            production_flags: crate::ProductionTable::default(),
-            production_current: crate::ProductionTable::default(),
-            production_progress: crate::ProductionTable::default(),
-            population_growth_penalty_ticks: 0,
-            unmet_resource_retries: crate::ResourceTable::default(),
-            consumed_production_input_by_type: crate::ResourceTable::default(),
-            population: PopulationState {
-                count: 7,
-                count_float_bits: 7.0_f32.to_bits(),
-                strength: 12,
-                extra: 0,
-                phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: crate::ResourceTable::default(),
-            },
-        }
+        crate::test_support::city()
     }
 
     #[test]
@@ -184,9 +149,9 @@ mod tests {
         state.order_count_by_type[IndustryActionSlot::Slot3] = 100;
         let mut output = IndustryActionTable::default();
         let mut rng = RngState {
-            crt_rand: 1,
-            map_generation: 2,
-            zone_status: 3,
+            crt_rand: RetailCrtRng::from_state(1),
+            map_generation: RetailLcg::from_state(2),
+            zone_status: RetailLcg::from_state(3),
         };
 
         assert_eq!(
@@ -197,9 +162,9 @@ mod tests {
         assert_eq!(output[IndustryActionSlot::Slot3], 0);
         assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 0);
         assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot3], 100);
-        assert_eq!(rng.crt_rand, 415_139_642);
-        assert_eq!(rng.map_generation, 2);
-        assert_eq!(rng.zone_status, 3);
+        assert_eq!(rng.crt_rand, RetailCrtRng::from_state(415_139_642));
+        assert_eq!(rng.map_generation, RetailLcg::from_state(2));
+        assert_eq!(rng.zone_status, RetailLcg::from_state(3));
     }
 
     #[test]
@@ -208,15 +173,15 @@ mod tests {
         state.order_count_by_type[IndustryActionSlot::Slot1] = 1;
         let mut output = IndustryActionTable::default();
         let mut rng = RngState {
-            crt_rand: 1,
-            map_generation: 2,
-            zone_status: 3,
+            crt_rand: RetailCrtRng::from_state(1),
+            map_generation: RetailLcg::from_state(2),
+            zone_status: RetailLcg::from_state(3),
         };
         assert_eq!(
             state.allocate_random_resource_counts(0, &mut output, &mut rng),
             0
         );
         assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 1);
-        assert_eq!(rng.crt_rand, 1);
+        assert_eq!(rng.crt_rand, RetailCrtRng::from_state(1));
     }
 }

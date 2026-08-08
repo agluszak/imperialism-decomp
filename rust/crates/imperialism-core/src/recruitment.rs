@@ -61,7 +61,7 @@ impl GameState {
         nation: NationId,
         order: &mut UnitProductionOrder,
     ) -> Result<StepOutcome, RecruitmentError> {
-        let pending_delta = order.quantity;
+        let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
             return Ok(StepOutcome::default());
         }
@@ -70,16 +70,18 @@ impl GameState {
         };
         let city_index =
             MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
-        let city = self.cities[city_index]
-            .as_ref()
+        let city = self
+            .nations
+            .city(city_index)
             .ok_or(RecruitmentError::MissingCity(nation))?;
         let home_tile = city
             .home_town_tile
             .filter(|tile| usize::from(tile.get()) < self.world.tiles.len())
             .ok_or(RecruitmentError::InvalidHomeTile)?;
 
-        let metric = &mut self.cities[city_index]
-            .as_mut()
+        let metric = &mut self
+            .nations
+            .city_mut(city_index)
             .expect("city presence was checked")
             .civilian_recruit_count_by_kind[unit_kind];
         *metric += pending_delta;
@@ -110,9 +112,7 @@ impl GameState {
                 };
                 let insert_at = self
                     .civilian_units
-                    .iter()
-                    .position(|existing| existing.nation.get() > nation.get())
-                    .unwrap_or(self.civilian_units.len());
+                    .partition_point(|existing| existing.nation.get() <= nation.get());
                 self.civilian_units.insert(insert_at, unit);
                 events.push(GameEvent::CivilianUnitRecruited {
                     id,
@@ -128,10 +128,11 @@ impl GameState {
             recruit_kind: RecruitKind::Civilian(unit_kind),
             requested: pending_delta,
         });
-        order.quantity = 0;
+        order.progress.quantity = 0;
         if unit_kind == CivilianUnitKind::Miner {
-            let city = self.cities[city_index]
-                .as_mut()
+            let city = self
+                .nations
+                .city_mut(city_index)
                 .expect("city presence was checked");
             city.serialized_state += 1;
         }
@@ -143,7 +144,7 @@ impl GameState {
         nation: NationId,
         order: &mut UnitProductionOrder,
     ) -> Result<StepOutcome, RecruitmentError> {
-        let pending_delta = order.quantity;
+        let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
             return Ok(StepOutcome::default());
         }
@@ -152,14 +153,14 @@ impl GameState {
         };
         let nation_index =
             MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
-        let city = self.cities[nation_index]
+        let major_nation = self.nations.majors[nation_index]
+            .as_ref()
+            .ok_or(RecruitmentError::MissingNation(nation))?;
+        let city = major_nation
+            .city
             .as_ref()
             .ok_or(RecruitmentError::MissingCity(nation))?;
-        let major = self.nations[nation]
-            .as_ref()
-            .ok_or(RecruitmentError::MissingNation(nation))?
-            .major()
-            .ok_or(RecruitmentError::NotMajorNation(nation))?;
+        let major = &major_nation.state;
         let (home_province, experienced) = if pending_delta > 0 {
             let home_tile = city
                 .home_town_tile
@@ -204,9 +205,7 @@ impl GameState {
                 };
                 let insert_at = self
                     .military_units
-                    .iter()
-                    .position(|existing| existing.nation.get() > nation.get())
-                    .unwrap_or(self.military_units.len());
+                    .partition_point(|existing| existing.nation.get() <= nation.get());
                 self.military_units.insert(insert_at, unit);
                 events.push(GameEvent::MilitaryUnitRecruited {
                     id,
@@ -216,11 +215,10 @@ impl GameState {
                     experience,
                 });
 
-                let pending_status = self.nations[nation]
+                let pending_status = self.nations.majors[nation_index]
                     .as_ref()
                     .expect("nation presence was checked")
-                    .major()
-                    .expect("major-nation presence was checked")
+                    .state
                     .pending_action_status[PendingActionKind::ArmyGrowthReward];
                 if pending_status != 0x32 {
                     let current_level = if pending_status == 0 {
@@ -232,11 +230,10 @@ impl GameState {
                     if let Some(payload) =
                         pending_military_action_payload(military_power, current_level)
                     {
-                        let major = self.nations[nation]
+                        let major = &mut self.nations.majors[nation_index]
                             .as_mut()
                             .expect("nation presence was checked")
-                            .major_mut()
-                            .expect("major-nation presence was checked");
+                            .state;
                         major.pending_action_status[PendingActionKind::ArmyGrowthReward] = 0x32;
                         major.pending_action_payload_by_action
                             [PendingActionKind::ArmyGrowthReward] = payload;
@@ -265,10 +262,11 @@ impl GameState {
                 flags: pending_delta,
             },
         );
-        order.quantity = 0;
+        order.progress.quantity = 0;
         if unit_kind == MilitaryUnitKind::Minutemen {
-            let city = self.cities[nation_index]
-                .as_mut()
+            let city = self
+                .nations
+                .city_mut(nation_index)
                 .expect("city presence was checked");
             city.serialized_state += 1;
         }
@@ -317,8 +315,6 @@ pub enum RecruitmentError {
     MissingCity(NationId),
     #[error("nation {} has no nation state", .0.get())]
     MissingNation(NationId),
-    #[error("nation {} has no major-nation state", .0.get())]
-    NotMajorNation(NationId),
     #[error("city has no valid recruit origin tile")]
     InvalidHomeTile,
     #[error("city's recruit origin has no province")]
@@ -333,9 +329,9 @@ pub enum RecruitmentError {
 mod tests {
     use super::*;
     use crate::{
-        CityState, Difficulty, LaborPool, MajorNationState, MilitaryUnitState, NationCommonState,
-        NationData, NationState, PopulationState, ProductionConstraint, RecruitKind, ResourceCost,
-        ResourceKind, RngState, SkillBand, TileState, TurnState, UnitCostProfile,
+        CityState, LaborPool, MilitaryUnitState, PopulationState, ProductionProgress, RecruitKind,
+        ResourceCost, ResourceKind, RetailCrtRng, RetailLcg, RngState, SkillBand, TileState,
+        UnitCostProfile,
     };
 
     fn tile(owner_nation: Option<crate::TileOwnerTag>) -> TileState {
@@ -379,123 +375,37 @@ mod tests {
 
     fn city(home_town_tile: Option<TileId>) -> CityState {
         CityState {
-            power_plant_upgrade_queued: false,
-            food_substitution_count: 0,
-            starvation_population_loss: 0,
-            serialized_state: 0,
-            phase_counter: 0,
-            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: crate::IndustryActionTable::default(),
-            rolling_item_production_score: 0,
-            low_production: false,
-            low_stock: false,
-            reserved_by_type: crate::ResourceTable::default(),
             home_town_tile,
-            power_available: 0,
-            stock_by_type: crate::ResourceTable::default(),
-            production_orders: crate::ProductionTable::default(),
-            production_accum: crate::ProductionTable::default(),
-            production_flags: crate::ProductionTable::default(),
-            production_current: crate::ProductionTable::default(),
-            production_progress: crate::ProductionTable::default(),
-            population_growth_penalty_ticks: 0,
-            unmet_resource_retries: crate::ResourceTable::default(),
-            consumed_production_input_by_type: crate::ResourceTable::default(),
             population: PopulationState {
                 count: 7,
                 count_float_bits: 7.0_f32.to_bits(),
                 strength: 7,
                 extra: 0,
                 phase_value: 0,
-                baseline_labor: Some(LaborPool::new(7, 0, 0)),
-                production_labor: Some(LaborPool::new(7, 0, 0)),
-                pending_labor_delta: Some(LaborPool::default()),
+                baseline_labor: LaborPool::new(7, 0, 0),
+                production_labor: LaborPool::new(7, 0, 0),
+                pending_labor_delta: LaborPool::default(),
                 predicted_need_by_resource: crate::ResourceTable::default(),
             },
+            ..crate::test_support::city()
         }
     }
 
     fn game(home_town_tile: TileId) -> GameState {
-        let nation = NationId::new(0);
-        let major_nation = MajorNationId::new(0);
-        let mut cities = crate::MajorNationTable::default();
-        cities[major_nation] = Some(city(Some(home_town_tile)));
-        let mut nations = crate::NationTable::default();
-        nations[nation] = Some(NationState {
-            common: NationCommonState {
-                owner_nation: 0,
-                treasury: 0,
-                home_tile: Some(home_town_tile),
-                trade_policy_by_nation: crate::NationTable::default(),
-            },
-            data: NationData::Major(MajorNationState {
-                diplomacy_eligible: true,
-                capacities: crate::NationCapacityTable::default(),
-                grant_total_cost: 0,
-                unfilled_trade_offer_count: 0,
-                diplomacy_policy_by_nation: crate::NationTable::default(),
-                diplomacy_grants_by_nation: crate::NationTable::default(),
-                need_current_by_type: crate::ResourceTable::default(),
-                need_target_by_type: crate::ResourceTable::default(),
-                relation_delta_current: crate::ResourceTable::default(),
-                purchased_items_by_resource: crate::ResourceTable::default(),
-                item_potentials: crate::ResourceTable::default(),
-                unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-                transported_items_by_resource: crate::ResourceTable::default(),
-                remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-                aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-                budget_pool_base: 0,
-                budget_pool_delta: 0,
-                special_resource_trade_balance: 0,
-                candidate_nation_flags: crate::NationTable::default(),
-                scenario_initialized: false,
-                turn_finished: false,
-                pending_action_status: crate::PendingActionTable::default(),
-                pending_action_payload_by_action: crate::PendingActionTable::default(),
-                diplomacy_budget_base: 0,
-                escalation_counter: 0,
-                pending_commitment_cost: 0,
-                pressure_counter: 0,
-                aid_allocation_total: 0,
-                colony_boycott_flags: crate::NationTable::default(),
-                military_expenses: 0,
-            }),
-        });
-        GameState {
-            turn: TurnState {
-                scenario_map_index_plus_one: 0,
-                economic_turn: 1,
-                phase_code: 5,
-                difficulty: Difficulty::Easy,
-                active_nation: NationId::new(0),
-                selected_nation: NationId::new(0),
-            },
-            persistent_unit_id_counter: 40,
-            world: world(),
-            rng: RngState {
-                crt_rand: 1,
-                map_generation: 0,
-                zone_status: 0,
-            },
-            market: crate::TradeMarketState::default(),
-            nations,
-            cities,
-            military_units: Vec::new(),
-            civilian_units: Vec::new(),
-            ships: Vec::new(),
-            task_forces: Vec::new(),
-            missions: Vec::new(),
-            pending: crate::PendingWorkState {
-                nations: crate::MajorNationTable::from_fn(|_nation| crate::NationPendingWork {
-                    turn_events: Vec::new(),
-                    proposals: Vec::new(),
-                    turn_summary: Vec::new(),
-                    turn_start_events: Vec::new(),
-                }),
-                war_transitions: Vec::new(),
-            },
-        }
+        let mut nation = crate::test_support::major_nation();
+        nation.common.treasury = 0;
+        nation.common.home_tile = Some(home_town_tile);
+        nation.city = Some(city(Some(home_town_tile)));
+        let mut state = crate::test_support::game_state();
+        state.persistent_unit_id_counter = 40;
+        state.world = world();
+        state.rng = RngState {
+            crt_rand: RetailCrtRng::from_state(1),
+            map_generation: RetailLcg::from_state(0),
+            zone_status: RetailLcg::from_state(0),
+        };
+        state.nations.majors[MajorNationId::new(0)] = Some(nation);
+        state
     }
 
     fn order(unit_kind: CivilianUnitKind, quantity: i16) -> UnitProductionOrder {
@@ -510,11 +420,10 @@ mod tests {
                 cash_per_unit: 0,
                 workforce: Some(SkillBand::Low),
             },
-            quantity,
-            tracking_by_resource: crate::ResourceTable::default(),
-            reserved_workforce: 0,
-            limiting_constraint: ProductionConstraint::Resources,
-            accumulated_value: 0,
+            progress: ProductionProgress {
+                quantity,
+                ..ProductionProgress::default()
+            },
         }
     }
 
@@ -530,11 +439,10 @@ mod tests {
                 cash_per_unit: 0,
                 workforce: Some(SkillBand::Low),
             },
-            quantity,
-            tracking_by_resource: crate::ResourceTable::default(),
-            reserved_workforce: 0,
-            limiting_constraint: ProductionConstraint::Resources,
-            accumulated_value: 0,
+            progress: ProductionProgress {
+                quantity,
+                ..ProductionProgress::default()
+            },
         }
     }
 
@@ -635,13 +543,14 @@ mod tests {
         assert_eq!(state.civilian_units[1].id, CivilianUnitId::new(41));
         assert_eq!(state.persistent_unit_id_counter, 41);
         assert_eq!(
-            state.cities[MajorNationId::new(0)]
-                .as_ref()
+            state
+                .nations
+                .city(MajorNationId::new(0))
                 .unwrap()
                 .civilian_recruit_count_by_kind[CivilianUnitKind::Forester],
             2
         );
-        assert_eq!(production.quantity, 0);
+        assert_eq!(production.progress.quantity, 0);
         assert_eq!(
             outcome.events,
             vec![
@@ -674,20 +583,22 @@ mod tests {
 
         assert!(state.civilian_units.is_empty());
         assert_eq!(
-            state.cities[MajorNationId::new(0)]
-                .as_ref()
+            state
+                .nations
+                .city(MajorNationId::new(0))
                 .unwrap()
                 .civilian_recruit_count_by_kind[CivilianUnitKind::Miner],
             -2
         );
         assert_eq!(
-            state.cities[MajorNationId::new(0)]
-                .as_ref()
+            state
+                .nations
+                .city(MajorNationId::new(0))
                 .unwrap()
                 .serialized_state,
             1
         );
-        assert_eq!(production.quantity, 0);
+        assert_eq!(production.progress.quantity, 0);
         assert_eq!(
             outcome.events,
             vec![GameEvent::RecruitmentAnnounced {
@@ -703,17 +614,17 @@ mod tests {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
         state.world.tiles[usize::from(home_tile.get())].province = Some(crate::ProvinceId::new(17));
-        state.nations[NationId::new(0)]
-            .as_mut()
+        state
+            .nations
+            .major_mut(MajorNationId::new(0))
             .unwrap()
-            .major_mut()
-            .unwrap()
+            .state
             .pending_action_status[PendingActionKind::ArmyGrowthReward] = 0x32;
-        state.nations[NationId::new(0)]
-            .as_mut()
+        state
+            .nations
+            .major_mut(MajorNationId::new(0))
             .unwrap()
-            .major_mut()
-            .unwrap()
+            .state
             .pending_action_status[PendingActionKind::ConqueredCapitalArmoryUpgrade] = 0x33;
         let mut production = specialist_order(MilitaryUnitKind::Sappers, 1);
 
@@ -743,7 +654,7 @@ mod tests {
             }]
         );
         assert_eq!(state.persistent_unit_id_counter, 41);
-        assert_eq!(production.quantity, 0);
+        assert_eq!(production.progress.quantity, 0);
         assert_eq!(
             state.pending.nations[MajorNationId::new(0)].turn_summary,
             vec![TurnSummary {
@@ -790,11 +701,7 @@ mod tests {
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
         assert_eq!(state.military_units[14].id, MilitaryUnitId::new(55));
         assert_eq!(state.military_units[15].id, MilitaryUnitId::new(56));
-        let major = state.nations[NationId::new(0)]
-            .as_ref()
-            .unwrap()
-            .major()
-            .unwrap();
+        let major = &state.nations.major(MajorNationId::new(0)).unwrap().state;
         assert_eq!(
             major.pending_action_status[PendingActionKind::ArmyGrowthReward],
             0x32
@@ -852,8 +759,9 @@ mod tests {
 
         assert!(state.military_units.is_empty());
         assert_eq!(
-            state.cities[MajorNationId::new(0)]
-                .as_ref()
+            state
+                .nations
+                .city(MajorNationId::new(0))
                 .unwrap()
                 .serialized_state,
             1
@@ -867,7 +775,7 @@ mod tests {
                 flags: -2,
             }]
         );
-        assert_eq!(production.quantity, 0);
+        assert_eq!(production.progress.quantity, 0);
         assert_eq!(
             outcome.events,
             vec![GameEvent::RecruitmentAnnounced {

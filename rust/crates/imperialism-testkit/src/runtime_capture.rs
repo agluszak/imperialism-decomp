@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use serde::de::DeserializeOwned;
 use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::Read;
@@ -18,56 +19,38 @@ pub enum RuntimeCaptureError {
     MissingCapture(String),
 }
 
-#[derive(Deserialize)]
-struct RuntimeResult {
+/// Parsed native runtime result.json: outer seed plus named capture payloads.
+#[derive(Debug, Deserialize)]
+pub struct RuntimeResult {
+    #[serde(default)]
+    pub seed: u32,
     captures: BTreeMap<String, serde_json::Value>,
 }
 
-#[derive(Deserialize)]
-struct RuntimeSeed {
-    seed: u32,
-}
+impl RuntimeResult {
+    pub fn read(path: &Path) -> Result<Self, RuntimeCaptureError> {
+        let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
+        Self::from_reader(file)
+    }
 
-pub fn read_runtime_capture<T: serde::de::DeserializeOwned>(
-    path: impl AsRef<Path>,
-    name: &str,
-) -> Result<T, RuntimeCaptureError> {
-    let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
-    decode_runtime_capture(file, name)
-}
-
-pub fn read_runtime_seed(path: impl AsRef<Path>) -> Result<u32, RuntimeCaptureError> {
-    let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
-    decode_runtime_seed(file)
-}
-
-pub fn decode_runtime_capture<T: serde::de::DeserializeOwned>(
-    reader: impl Read,
-    name: &str,
-) -> Result<T, RuntimeCaptureError> {
-    let result: RuntimeResult =
-        serde_json::from_reader(reader).map_err(|source| RuntimeCaptureError::Json {
+    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+        let capture = self
+            .captures
+            .get(name)
+            .cloned()
+            .ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
+        serde_json::from_value(capture).map_err(|source| RuntimeCaptureError::Json {
             name: name.to_owned(),
             source,
-        })?;
-    let capture = result
-        .captures
-        .get(name)
-        .cloned()
-        .ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
-    serde_json::from_value(capture).map_err(|source| RuntimeCaptureError::Json {
-        name: name.to_owned(),
-        source,
-    })
-}
+        })
+    }
 
-fn decode_runtime_seed(reader: impl Read) -> Result<u32, RuntimeCaptureError> {
-    let result: RuntimeSeed =
+    pub(crate) fn from_reader(reader: impl Read) -> Result<Self, RuntimeCaptureError> {
         serde_json::from_reader(reader).map_err(|source| RuntimeCaptureError::Json {
-            name: "runtime seed".to_owned(),
+            name: "runtime result".to_owned(),
             source,
-        })?;
-    Ok(result.seed)
+        })
+    }
 }
 
 #[cfg(test)]
@@ -82,8 +65,9 @@ mod tests {
     #[test]
     fn reads_named_captures() {
         let input = br#"{"captures":{"probe":{"value":7}}}"#;
+        let result = RuntimeResult::from_reader(&input[..]).unwrap();
         assert_eq!(
-            decode_runtime_capture::<Probe>(&input[..], "probe").unwrap(),
+            result.capture::<Probe>("probe").unwrap(),
             Probe { value: 7 }
         );
     }
@@ -92,13 +76,15 @@ mod tests {
     fn reads_the_outer_seed() {
         let input =
             br#"{"name":"probe","seed":123,"status":"passed","captures":{"probe":{"value":7}}}"#;
-        assert_eq!(decode_runtime_seed(&input[..]).unwrap(), 123);
+        let result = RuntimeResult::from_reader(&input[..]).unwrap();
+        assert_eq!(result.seed, 123);
     }
 
     #[test]
     fn reports_decode_errors_with_capture_name() {
         let input = br#"{"captures":{"probe":{"value":"wrong"}}}"#;
-        let error = decode_runtime_capture::<Probe>(&input[..], "probe").unwrap_err();
+        let result = RuntimeResult::from_reader(&input[..]).unwrap();
+        let error = result.capture::<Probe>("probe").unwrap_err();
         assert!(error.to_string().contains("probe"));
         assert!(matches!(error, RuntimeCaptureError::Json { .. }));
     }
