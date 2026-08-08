@@ -107,7 +107,8 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         province: u16::try_from(tile.province_index).ok().map(ProvinceId::new),
         development: Default::default(),
         edge_resources: [None, None],
-        rail_flags: 0,
+        transport_links: Default::default(),
+        pending_rail_links: Default::default(),
         // Map tiles default to "no action" (-1) after generation.
         action_state: -1,
         active_flags: 0,

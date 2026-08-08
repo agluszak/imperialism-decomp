@@ -31,8 +31,10 @@ fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
     let bytes = fs::read(path).with_context(|| format!("reading {}", path.display()))?;
     let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
     let Some(values) = game_state else {
-        return serde_json::to_writer(std::io::stdout(), &save.world_state())
-            .context("encoding world state");
+        let world = save
+            .world_state()
+            .context("projecting semantic world state")?;
+        return serde_json::to_writer(std::io::stdout(), &world).context("encoding world state");
     };
     if values.len() != 4 {
         bail!("--game-state requires exactly four runtime values");

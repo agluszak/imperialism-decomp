@@ -88,8 +88,8 @@ pub use state::{
     MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData,
     NationPendingWork, NationState, NavyMissionState, PendingWorkState, PopulationState, RngState,
     SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget,
-    TileDevelopment, TileState, TradePolicyScore, TurnStartEventState, TurnState, TurnSummary,
-    WarTransition, WorldState,
+    TileDevelopment, TileState, TileTransportLinks, TradePolicyScore, TurnStartEventState,
+    TurnState, TurnSummary, WarTransition, WorldState,
 };
 pub use tables::{
     IndustryActionSlot, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,

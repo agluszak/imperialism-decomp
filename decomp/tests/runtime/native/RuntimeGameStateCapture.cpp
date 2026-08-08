@@ -147,6 +147,26 @@ JSON_Value* CaptureTileDevelopment(const TTerrainStateRecord& tile) {
   return object.Release();
 }
 
+const char* const kStrategicHexDirectionNames[kStrategicHexDirectionCount] = {
+    "NORTH_EAST", "EAST", "SOUTH_EAST", "SOUTH_WEST", "WEST", "NORTH_WEST"};
+
+void SetDirectionalLinks(JsonObject& object, const char* name, unsigned char flags) {
+  char text[64];
+  text[0] = '\0';
+  ASSERT((flags & ~0x3f) == 0);
+
+  for (int direction = 0; direction < kStrategicHexDirectionCount; ++direction) {
+    if ((flags & (1 << direction)) == 0) {
+      continue;
+    }
+    if (text[0] != '\0') {
+      strcat(text, " | ");
+    }
+    strcat(text, kStrategicHexDirectionNames[direction]);
+  }
+  object.Set(name, text);
+}
+
 const char* MilitaryUnitKindName(int value) {
   ASSERT(value >= 0 && value < kMilitaryUnitKindCount);
   return kMilitaryUnitKindNames[value];
@@ -393,7 +413,9 @@ JSON_Value* CaptureWorld() {
       edgeResources.Add(static_cast<int>(tile.resourceTypeByEdge[1]));
     }
     tileObject.Set("edge_resources", edgeResources.Release());
-    tileObject.Set("rail_flags", static_cast<unsigned int>(tile.railFlags17));
+    SetDirectionalLinks(tileObject, "transport_links",
+                        static_cast<unsigned char>(tile.adjacencyBits06));
+    SetDirectionalLinks(tileObject, "pending_rail_links", tile.railFlags17);
     tileObject.Set("action_state", static_cast<int>(tile.tileActionState16));
     tileObject.Set("active_flags", static_cast<unsigned int>(tile.activeFlags1c));
     tileObject.Set("region_marker", static_cast<int>(tile.regionSubtypeTag05));
