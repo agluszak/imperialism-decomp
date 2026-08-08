@@ -9,5 +9,6 @@ pub use runtime::{
     UiViewSpawnFailed, UiViewSpawned, UiWidgetFlags, ViewInstanceId, WidgetTag,
 };
 pub use startup::{
-    StartupScreenInstances, StartupUiPlugin, main_menu_view_id, random_setup_view_id,
+    Difficulty, RandomGameSetup, StartupScreenInstances, StartupUiPlugin, main_menu_view_id,
+    random_setup_view_id,
 };

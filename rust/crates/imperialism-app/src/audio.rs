@@ -7,7 +7,6 @@
 //! playback policy is encoded here without equivalent source evidence.
 
 use crate::launcher::RetailAssetPackResource;
-use crate::session::GameLoopSet;
 use bevy::asset::Assets;
 use bevy::audio::{AudioPlayer, AudioSource, PlaybackSettings};
 use bevy::ecs::system::SystemParam;
@@ -178,7 +177,7 @@ impl Plugin for RetailAudioPlugin {
             .add_message::<AudioCue>()
             .add_message::<AudioCueQueued>()
             .add_message::<AudioCueFailed>()
-            .add_systems(Update, play_audio_cues.in_set(GameLoopSet::Animate));
+            .add_systems(Update, play_audio_cues);
     }
 }
 
@@ -312,7 +311,6 @@ fn play_audio_cues(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{GameSession, SessionPlugin};
     use imperialism_formats::{
         ImportedRetailAssets, RetailAssetPackManifest, RetailResourceAsset, RetailStandaloneAsset,
     };
@@ -382,9 +380,7 @@ mod tests {
 
     fn audio_app(pack: RetailAssetPackResource) -> App {
         let mut app = App::new();
-        app.insert_resource(pack)
-            .insert_resource(GameSession::pre_game())
-            .add_plugins((SessionPlugin, RetailAudioPlugin));
+        app.insert_resource(pack).add_plugins(RetailAudioPlugin);
         app
     }
 
@@ -452,20 +448,15 @@ mod tests {
     }
 
     #[test]
-    fn missing_cue_reports_a_typed_error_without_mutating_game_session() {
+    fn missing_cue_reports_a_typed_error_without_spawning_a_playback_entity() {
         let (pack, root) = pack(false, false);
         let mut app = audio_app(pack);
-        let before_revision = app.world().resource::<GameSession>().revision();
-        let before_log = app.world().resource::<GameSession>().command_log().to_vec();
         app.world_mut()
             .write_message(AudioCue::sound_effect(RETAIL_UI_CLICK_WAVE))
             .unwrap();
 
         app.update();
 
-        let session = app.world().resource::<GameSession>();
-        assert_eq!(session.revision(), before_revision);
-        assert_eq!(session.command_log(), before_log);
         assert_eq!(app.world().resource::<Messages<AudioCueFailed>>().len(), 1);
         let world = app.world_mut();
         let mut playbacks = world.query_filtered::<Entity, With<RetailAudioPlayback>>();

@@ -1,6 +1,6 @@
 use crate::audio::RetailAudioPlugin;
 use crate::flow::{AppState, ScreenFlowPlugin};
-use crate::session::{GameSession, SessionPlugin};
+use crate::session::SessionPlugin;
 use crate::ui::{StartupUiPlugin, UiCatalogResource, UiRuntimePlugin};
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
@@ -155,8 +155,7 @@ pub fn configure_main_menu_app(
     prepared: PreparedMainMenu,
 ) -> Result<(), UiCatalogError> {
     let catalog = UiCatalogResource::new(prepared.ui_catalog)?;
-    app.insert_resource(GameSession::pre_game())
-        .insert_resource(catalog)
+    app.insert_resource(catalog)
         .insert_resource(RetailAssetPackResource(prepared.retail_assets))
         .add_plugins((
             SessionPlugin,
@@ -274,7 +273,10 @@ mod tests {
             app.world().resource::<State<AppState>>().get(),
             &AppState::MainMenu
         );
-        assert!(app.world().resource::<GameSession>().is_pre_game());
+        assert!(
+            !app.world()
+                .contains_resource::<crate::session::GameSession>()
+        );
         assert!(app.world().contains_resource::<UiCatalogResource>());
         assert!(app.world().contains_resource::<RetailAssetPackResource>());
     }

@@ -1,32 +1,13 @@
-use crate::{
-    GameCommand, GameState, RandomGameSetupModel, RandomGameSetupState,
-    RandomGameSetupValidationError, RestoredRandomGameSetupInputs, RuleError, StepOutcome,
-};
+use crate::{GameCommand, GameState, RuleError, StepOutcome};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Simulation {
     state: GameState,
-    random_game_setup: Option<RandomGameSetupState>,
 }
 
 impl Simulation {
     pub const fn new(state: GameState) -> Self {
-        Self {
-            state,
-            random_game_setup: None,
-        }
-    }
-
-    /// Restores a complete oracle/test boundary without consuming CRT RNG.
-    /// Normal gameplay must use `GameCommand::BeginRandomGameSetup` instead.
-    pub fn with_restored_random_game_setup(
-        state: GameState,
-        setup: RestoredRandomGameSetupInputs,
-    ) -> Result<Self, RandomGameSetupValidationError> {
-        Ok(Self {
-            state,
-            random_game_setup: Some(RandomGameSetupState::try_from_restored_inputs(setup)?),
-        })
+        Self { state }
     }
 
     pub const fn state(&self) -> &GameState {
@@ -37,91 +18,15 @@ impl Simulation {
         self.state
     }
 
-    pub fn into_parts(self) -> (GameState, Option<RandomGameSetupState>) {
-        (self.state, self.random_game_setup)
+    pub fn apply(&mut self, command: GameCommand) -> Result<StepOutcome, RuleError> {
+        self.state.apply_command(command)
     }
-
-    pub fn random_game_setup_model(&self) -> Option<RandomGameSetupModel> {
-        self.random_game_setup
-            .as_ref()
-            .map(RandomGameSetupState::query)
-    }
-
-    pub fn apply(&mut self, command: GameCommand) -> Result<StepOutcome, CommandError> {
-        match command {
-            command @ GameCommand::PlaceTradeBid { .. }
-            | command @ GameCommand::PurchaseItem { .. } => self
-                .state
-                .apply_command(command)
-                .map_err(CommandError::Trade),
-            GameCommand::BeginRandomGameSetup { setup } => {
-                RandomGameSetupState::validate_begin_inputs(&setup)
-                    .map_err(CommandError::RandomGameSetup)?;
-                let selected_nation_slot = (self.state.rng.next_crt_rand() % 7) as i16;
-                self.random_game_setup = Some(RandomGameSetupState::from_validated_begin_inputs(
-                    setup,
-                    selected_nation_slot,
-                ));
-                Ok(StepOutcome::default())
-            }
-            GameCommand::SetRandomGamePlanet {
-                planet_seed,
-                retail_topology,
-            } => {
-                self.random_game_setup_mut()?
-                    .set_planet(planet_seed, retail_topology);
-                Ok(StepOutcome::default())
-            }
-            GameCommand::SelectRandomGameNation { nation_slot } => {
-                self.random_game_setup_mut()?
-                    .set_selected_nation_slot(nation_slot)
-                    .map_err(CommandError::RandomGameSetup)?;
-                Ok(StepOutcome::default())
-            }
-            GameCommand::SetRandomGameCountryName { country_name } => {
-                self.random_game_setup_mut()?.set_country_name(country_name);
-                Ok(StepOutcome::default())
-            }
-            GameCommand::SetRandomGameDifficulty { difficulty } => {
-                self.random_game_setup_mut()?
-                    .set_difficulty(difficulty)
-                    .map_err(CommandError::RandomGameSetup)?;
-                Ok(StepOutcome::default())
-            }
-            GameCommand::SetRandomGameNameMode {
-                use_localized_name_tables,
-            } => {
-                self.random_game_setup_mut()?
-                    .set_use_localized_name_tables(use_localized_name_tables);
-                Ok(StepOutcome::default())
-            }
-        }
-    }
-
-    fn random_game_setup_mut(&mut self) -> Result<&mut RandomGameSetupState, CommandError> {
-        self.random_game_setup
-            .as_mut()
-            .ok_or(CommandError::RandomGameSetupNotInitialized)
-    }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum CommandError {
-    #[error(transparent)]
-    Trade(#[from] RuleError),
-    #[error(transparent)]
-    RandomGameSetup(#[from] RandomGameSetupValidationError),
-    #[error("random-game setup has not been initialized")]
-    RandomGameSetupNotInitialized,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        BeginRandomGameSetupInputs, NationId, PendingWorkState, ResourceKind, RetailTopologyByte,
-        RngState, TurnState, WorldState,
-    };
+    use crate::{NationId, PendingWorkState, ResourceKind, RngState, TurnState, WorldState};
 
     fn state() -> GameState {
         GameState {
@@ -166,29 +71,8 @@ mod tests {
         }
     }
 
-    fn restored_setup() -> RestoredRandomGameSetupInputs {
-        RestoredRandomGameSetupInputs {
-            planet_seed: "earth".to_owned(),
-            retail_topology: RetailTopologyByte::from_retail_byte(0),
-            selected_nation_slot: 2,
-            country_name: "Republic".to_owned(),
-            difficulty: 1,
-            use_localized_name_tables: true,
-        }
-    }
-
-    fn begin_setup() -> BeginRandomGameSetupInputs {
-        BeginRandomGameSetupInputs {
-            planet_seed: "earth".to_owned(),
-            retail_topology: RetailTopologyByte::from_retail_byte(0),
-            country_name: "Republic".to_owned(),
-            difficulty: 1,
-            use_localized_name_tables: true,
-        }
-    }
-
     #[test]
-    fn command_log_entries_have_a_stable_serialized_shape() {
+    fn active_game_commands_have_a_stable_serialized_shape() {
         let command = GameCommand::PurchaseItem {
             nation: NationId::new(6),
             resource: ResourceKind::Fabric,
@@ -204,128 +88,19 @@ mod tests {
     }
 
     #[test]
-    fn setup_command_log_entries_have_a_stable_serialized_shape() {
-        let command = GameCommand::BeginRandomGameSetup {
-            setup: begin_setup(),
+    fn delegates_active_game_commands_to_game_state() {
+        let command = GameCommand::PlaceTradeBid {
+            nation: NationId::new(6),
+            resource: ResourceKind::Fabric,
+            amount: 3,
         };
-        let json = serde_json::to_string(&command).unwrap();
-        assert_eq!(
-            json,
-            r#"{"type":"begin_random_game_setup","setup":{"planet_seed":"earth","retail_topology":0,"country_name":"Republic","difficulty":1,"use_localized_name_tables":true}}"#
-        );
-        assert_eq!(serde_json::from_str::<GameCommand>(&json).unwrap(), command);
-    }
-
-    #[test]
-    fn setup_commands_update_the_authoritative_draft() {
         let mut simulation = Simulation::new(state());
-        simulation
-            .apply(GameCommand::BeginRandomGameSetup {
-                setup: begin_setup(),
-            })
-            .unwrap();
-        simulation
-            .apply(GameCommand::SetRandomGamePlanet {
-                planet_seed: "mars".to_owned(),
-                retail_topology: RetailTopologyByte::from_retail_byte(1),
-            })
-            .unwrap();
-        simulation
-            .apply(GameCommand::SelectRandomGameNation { nation_slot: 6 })
-            .unwrap();
-        simulation
-            .apply(GameCommand::SetRandomGameCountryName {
-                country_name: "Union".to_owned(),
-            })
-            .unwrap();
-        simulation
-            .apply(GameCommand::SetRandomGameDifficulty { difficulty: 4 })
-            .unwrap();
-        simulation
-            .apply(GameCommand::SetRandomGameNameMode {
-                use_localized_name_tables: false,
-            })
-            .unwrap();
+        let mut expected = simulation.state().clone();
 
         assert_eq!(
-            simulation.random_game_setup_model(),
-            Some(RandomGameSetupModel {
-                planet_seed: "mars".to_owned(),
-                retail_topology_byte: 1,
-                wraps_horizontally: false,
-                selected_nation_slot: 6,
-                country_name: "Union".to_owned(),
-                difficulty: 4,
-                use_localized_name_tables: false,
-            })
+            simulation.apply(command.clone()),
+            expected.apply_command(command)
         );
-    }
-
-    #[test]
-    fn begin_setup_consumes_exactly_one_seed_one_crt_draw() {
-        let mut simulation = Simulation::new(state());
-        simulation
-            .apply(GameCommand::BeginRandomGameSetup {
-                setup: begin_setup(),
-            })
-            .unwrap();
-
-        assert_eq!(simulation.state().rng.crt_rand, 2_745_024);
-        assert_eq!(simulation.state().rng.map_generation, 0);
-        assert_eq!(simulation.state().rng.zone_status, 0);
-        assert_eq!(
-            simulation
-                .random_game_setup_model()
-                .unwrap()
-                .selected_nation_slot,
-            6
-        );
-    }
-
-    #[test]
-    fn invalid_setup_commands_leave_the_draft_unchanged() {
-        let mut simulation =
-            Simulation::with_restored_random_game_setup(state(), restored_setup()).unwrap();
-        let before = simulation.clone();
-        assert_eq!(
-            simulation.apply(GameCommand::SelectRandomGameNation { nation_slot: -1 }),
-            Err(CommandError::RandomGameSetup(
-                RandomGameSetupValidationError::InvalidNationSlot { actual: -1 }
-            ))
-        );
-        assert_eq!(simulation, before);
-
-        assert_eq!(
-            simulation.apply(GameCommand::SetRandomGameDifficulty { difficulty: 5 }),
-            Err(CommandError::RandomGameSetup(
-                RandomGameSetupValidationError::InvalidDifficulty { actual: 5 }
-            ))
-        );
-        assert_eq!(simulation, before);
-
-        let mut invalid_begin = begin_setup();
-        invalid_begin.difficulty = 5;
-        assert_eq!(
-            simulation.apply(GameCommand::BeginRandomGameSetup {
-                setup: invalid_begin,
-            }),
-            Err(CommandError::RandomGameSetup(
-                RandomGameSetupValidationError::InvalidDifficulty { actual: 5 }
-            ))
-        );
-        assert_eq!(simulation, before);
-    }
-
-    #[test]
-    fn setup_mutation_requires_explicit_initialization() {
-        let mut simulation = Simulation::new(state());
-        let before = simulation.clone();
-        assert_eq!(
-            simulation.apply(GameCommand::SetRandomGameCountryName {
-                country_name: "Union".to_owned(),
-            }),
-            Err(CommandError::RandomGameSetupNotInitialized)
-        );
-        assert_eq!(simulation, before);
+        assert_eq!(simulation.state(), &expected);
     }
 }

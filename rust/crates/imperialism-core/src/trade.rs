@@ -13,8 +13,6 @@ pub enum RuleError {
     MissingCity { nation: NationId },
     #[error("city slot {} belongs to nation {}", .nation.get(), .actual.get())]
     CityNationMismatch { nation: NationId, actual: NationId },
-    #[error("random-game setup commands require Simulation::apply")]
-    SetupCommandRequiresSimulation,
 }
 
 impl GameState {
@@ -53,7 +51,6 @@ impl GameState {
                     }],
                 })
             }
-            _ => Err(RuleError::SetupCommandRequiresSimulation),
         }
     }
 
