@@ -8,14 +8,15 @@ use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabIndex;
+use bevy::log::error;
 use bevy::prelude::*;
 use bevy::text::{EditableText, TextEditChange};
-use bevy::ui::Checked;
+use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
 use imperialism_core::{
     COUNTRY_NAME_MAX_CHARS, Difficulty, GameState, MajorNationId,
     RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, RetailTopologyByte,
-    create_random_game, enter_strategic_map_without_capital_selection,
+    STRATEGIC_TILE_COUNT, create_random_game, enter_strategic_map_without_capital_selection,
     generate_english_random_setup_name, generate_random_setup_preview_with_clock_seed,
     requires_capital_site_selection,
 };
@@ -114,6 +115,13 @@ struct PlanetSeedField;
 #[derive(Component)]
 struct PlanetSeedAccept;
 
+/// Marks the Okay/Accept control so its availability can track whether a
+/// generated preview exists. Accepting random setup without a preview is an
+/// application invariant failure (see `accept_random_setup`), so Okay must stay
+/// disabled whenever `RandomSetupPreview::preview` is `None`.
+#[derive(Component)]
+struct AcceptButton;
+
 pub(crate) struct RandomSetupPlugin;
 
 pub(crate) fn register_random_setup_logic(app: &mut App) {
@@ -126,6 +134,7 @@ pub(crate) fn register_random_setup_logic(app: &mut App) {
                 sync_difficulty_checked,
                 sync_localized_names_checked,
                 sync_country_name_from_setup,
+                sync_accept_button_availability,
             )
                 .run_if(in_state(AppState::RandomSetup)),
         )
@@ -188,12 +197,13 @@ fn enter_random_setup(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     setup: Res<RandomGameSetup>,
+    preview: Res<RandomSetupPreview>,
 ) {
     let Some(view) = catalog.view(&random_setup_view_id()) else {
         return;
     };
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
+    bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup, &preview);
     random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
@@ -206,6 +216,7 @@ fn bind_random_setup_controls(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
     setup: &RandomGameSetup,
+    preview: &RandomSetupPreview,
 ) {
     for (tag, difficulty) in [
         ("dif0", Difficulty::Introductory),
@@ -250,13 +261,42 @@ fn bind_random_setup_controls(
     }
 
     for (tag, action) in [
-        ("okay", RandomSetupAction::Accept),
         ("cncl", RandomSetupAction::Cancel),
         ("glob", RandomSetupAction::RegeneratePlanet),
         ("key ", RandomSetupAction::OpenPlanetSeed),
     ] {
         if let Ok(entity) = spawned.require_unique(catalog, tag) {
             commands.entity(entity).insert(action);
+        }
+    }
+
+    if let Ok(okay) = spawned.require_unique(catalog, "okay") {
+        let mut entity_commands = commands.entity(okay);
+        entity_commands.insert((RandomSetupAction::Accept, AcceptButton));
+        if preview.preview.is_none() {
+            entity_commands.insert(InteractionDisabled);
+        } else {
+            entity_commands.remove::<InteractionDisabled>();
+        }
+    }
+}
+
+/// Keeps Okay disabled whenever no generated preview exists. `accept_random_setup`
+/// relies on this to make missing-preview activation unreachable in normal use.
+fn sync_accept_button_availability(
+    preview: Res<RandomSetupPreview>,
+    mut commands: Commands,
+    buttons: Query<(Entity, Has<InteractionDisabled>), With<AcceptButton>>,
+) {
+    if !preview.is_changed() {
+        return;
+    }
+    let should_disable = preview.preview.is_none();
+    for (entity, disabled) in &buttons {
+        if should_disable && !disabled {
+            commands.entity(entity).insert(InteractionDisabled);
+        } else if !should_disable && disabled {
+            commands.entity(entity).remove::<InteractionDisabled>();
         }
     }
 }
@@ -417,6 +457,11 @@ fn on_country_name_edited(
     }
 }
 
+/// Invariant: `sync_accept_button_availability` keeps Okay [`InteractionDisabled`]
+/// whenever `preview.preview` is `None`, so normal UI activation cannot reach this
+/// function without a generated preview. Treat either gap as an invariant failure
+/// (loud error, no state transition) rather than a silent no-op: reaching them means
+/// the disabled-Okay invariant was itself violated, which is an application bug.
 fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
@@ -424,8 +469,18 @@ fn accept_random_setup(
     next_state: &mut NextState<AppState>,
 ) {
     let Some(generated) = preview.preview.as_ref() else {
+        error!(
+            "random setup Accept activated without a generated preview; Okay should have been disabled"
+        );
         return;
     };
+    if generated.map.tiles.len() != STRATEGIC_TILE_COUNT {
+        error!(
+            "random setup preview has {} tiles, expected {STRATEGIC_TILE_COUNT}; refusing to create the game",
+            generated.map.tiles.len()
+        );
+        return;
+    }
     let mut session = create_random_game(generated, setup.nation, setup.difficulty);
     if requires_capital_site_selection(setup.difficulty) {
         commands.insert_resource(GameSession(session));
@@ -605,13 +660,14 @@ mod tests {
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
         setup: Res<RandomGameSetup>,
+        preview: Res<RandomSetupPreview>,
     ) {
         let view_id = random_setup_view_id();
         let Some(view) = catalog.view(&view_id) else {
             return;
         };
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
+        bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup, &preview);
         random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
         commands
             .entity(spawned.root)
@@ -750,6 +806,80 @@ mod tests {
                 .home_tile,
             None
         );
+    }
+
+    #[test]
+    fn okay_is_disabled_before_a_preview_exists_and_enabled_once_generated() {
+        let mut app = app();
+        assert!(
+            app.world()
+                .resource::<RandomSetupPreview>()
+                .preview
+                .is_none()
+        );
+        enter_random_setup_screen(&mut app);
+        // Entering random setup generates a preview synchronously, so Okay must
+        // already be enabled by the time the screen is visible.
+        assert!(
+            app.world()
+                .resource::<RandomSetupPreview>()
+                .preview
+                .is_some()
+        );
+        let okay = action_entity(&mut app, RandomSetupAction::Accept);
+        assert!(app.world().get::<InteractionDisabled>(okay).is_none());
+    }
+
+    #[test]
+    fn okay_is_disabled_again_if_the_preview_is_ever_cleared() {
+        let mut app = app();
+        enter_random_setup_screen(&mut app);
+        let okay = action_entity(&mut app, RandomSetupAction::Accept);
+        app.world_mut().resource_mut::<RandomSetupPreview>().preview = None;
+        app.update();
+        assert!(app.world().get::<InteractionDisabled>(okay).is_some());
+    }
+
+    #[test]
+    fn accept_without_a_preview_does_not_transition_or_create_a_session() {
+        let mut app = app();
+        enter_random_setup_screen(&mut app);
+        app.world_mut().resource_mut::<RandomSetupPreview>().preview = None;
+        app.update();
+        let accept = action_entity(&mut app, RandomSetupAction::Accept);
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::RandomSetup
+        );
+        assert!(app.world().get_resource::<GameSession>().is_none());
+    }
+
+    #[test]
+    fn accept_refuses_a_preview_with_an_unexpected_tile_count() {
+        let mut app = app();
+        enter_random_setup_screen(&mut app);
+        {
+            let mut preview = app.world_mut().resource_mut::<RandomSetupPreview>();
+            let mut generated = preview.preview.clone().expect("preview generated on entry");
+            generated.map.tiles.truncate(1);
+            preview.preview = Some(generated);
+        }
+        let accept = action_entity(&mut app, RandomSetupAction::Accept);
+        app.world_mut()
+            .commands()
+            .trigger(Activate { entity: accept });
+        app.world_mut().flush();
+        app.update();
+        assert_eq!(
+            app.world().resource::<State<AppState>>().get(),
+            &AppState::RandomSetup
+        );
+        assert!(app.world().get_resource::<GameSession>().is_none());
     }
 
     #[test]

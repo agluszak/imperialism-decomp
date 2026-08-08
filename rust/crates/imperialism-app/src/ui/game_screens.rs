@@ -354,7 +354,7 @@ mod tests {
 
     #[test]
     fn strategic_map_flag_view_disables_end_turn_and_query() {
-        let mut app = app_at(AppState::StrategicMap);
+        let app = app_at(AppState::StrategicMap);
         let catalog = app.world().resource::<UiCatalogResource>();
         let spawned = app.world().resource::<TestFlagSpawned>().0.clone();
         for tag in ["end ", "quer"] {
