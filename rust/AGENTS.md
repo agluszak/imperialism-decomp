@@ -27,6 +27,10 @@ the decomp uses them.
   represent absence with `Option`. Prefer plain `bool` fields until multiple independent flags share
   one value; only then consider `bitflags`. Do not expose masks, sentinel integers, or raw retail
   storage entries as domain APIs.
+- Normalize one-based indexes, sentinels, and packed encodings once while reading the retail
+  format. Do not duplicate a raw value in a widened DTO field and narrow it later; do not add a
+  fallible conversion when the source type and branch already prove the destination range. Make
+  semantic ID constructors infallible unless retail evidence establishes a real domain bound.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.

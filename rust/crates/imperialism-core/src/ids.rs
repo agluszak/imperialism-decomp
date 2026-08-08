@@ -107,10 +107,6 @@ impl MajorNationId {
     pub const fn nation(self) -> NationId {
         NationId::new(self.0)
     }
-
-    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
-        (0..Self::COUNT).map(Self::new)
-    }
 }
 
 impl<'de> Deserialize<'de> for MajorNationId {
@@ -156,10 +152,6 @@ impl MinorNationId {
     pub(crate) const fn table_index(self) -> usize {
         (self.0 - Self::FIRST) as usize
     }
-
-    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
-        (Self::FIRST..NationId::COUNT).map(Self::new)
-    }
 }
 
 impl<'de> Deserialize<'de> for MinorNationId {
@@ -178,12 +170,135 @@ impl<'de> Deserialize<'de> for MinorNationId {
     }
 }
 
-id_type!(TileId, u16);
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct TileId(u16);
+
+impl TileId {
+    pub const COUNT: u16 = 6_480;
+
+    pub const fn new(value: u16) -> Self {
+        assert!(value < Self::COUNT, "strategic tile ID is out of range");
+        Self(value)
+    }
+
+    pub const fn try_new(value: u16) -> Option<Self> {
+        if value < Self::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn get(self) -> u16 {
+        self.0
+    }
+
+    pub(crate) const fn from_index_unchecked(value: u16) -> Self {
+        Self(value)
+    }
+}
+
+impl<'de> Deserialize<'de> for TileId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = u16::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!("strategic tile ID {value} is out of range"))
+        })
+    }
+}
 // A strategic-tile ownership context. Values above the nation range identify
 // non-nation map contexts, so this deliberately is not a NationId.
 id_type!(TileOwnerTag, u8);
-id_type!(ProvinceId, u16);
-id_type!(MilitaryUnitId, i32);
-id_type!(CivilianUnitId, i32);
+impl TileOwnerTag {
+    pub const fn from_nation(nation: NationId) -> Self {
+        Self(nation.get())
+    }
+
+    pub const fn nation(self) -> Option<NationId> {
+        NationId::try_new(self.0)
+    }
+
+    pub const fn is_claimed_nation(self) -> bool {
+        self.0 < NationId::COUNT
+    }
+}
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct ProvinceId(u16);
+
+impl ProvinceId {
+    pub const COUNT: u16 = 0x180;
+
+    pub const fn new(value: u16) -> Self {
+        assert!(value < Self::COUNT, "province ID is out of range");
+        Self(value)
+    }
+
+    pub const fn try_new(value: u16) -> Option<Self> {
+        if value < Self::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn get(self) -> u16 {
+        self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for ProvinceId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = u16::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!("province ID {value} is out of range"))
+        })
+    }
+}
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct MilitaryUnitId(i32);
+
+impl MilitaryUnitId {
+    /// Rehydrates the persistent identity retained by a serialized game state.
+    pub const fn from_serialized(value: i32) -> Self {
+        Self(value)
+    }
+
+    pub(crate) const fn new(value: i32) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> i32 {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct CivilianUnitId(i32);
+
+impl CivilianUnitId {
+    /// Rehydrates the persistent identity retained by a serialized game state.
+    pub const fn from_serialized(value: i32) -> Self {
+        Self(value)
+    }
+
+    pub(crate) const fn new(value: i32) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> i32 {
+        self.0
+    }
+}
+
 id_type!(ShipId, u32);
 id_type!(TaskForceId, u32);

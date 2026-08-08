@@ -89,11 +89,3 @@ impl MilitaryUnitKind {
         ARMS_BY_MILITARY_UNIT[self]
     }
 }
-
-/// A production order can create exactly one civilian or military unit kind.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", content = "unit_kind", rename_all = "snake_case")]
-pub enum RecruitKind {
-    Civilian(CivilianUnitKind),
-    Military(MilitaryUnitKind),
-}

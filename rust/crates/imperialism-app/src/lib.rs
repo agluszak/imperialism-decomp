@@ -53,7 +53,12 @@ pub fn run(retail_assets: RetailAssets) {
                 ..default()
             }),
     );
-    app.insert_resource(ui::UiCatalogResource::new(ui_catalog))
+    let ui_catalog = ui::UiCatalogResource::new(ui_catalog)
+        .expect("compiled UI catalog must be structurally valid");
+    ui_catalog
+        .validate_application_bindings()
+        .expect("compiled UI catalog must contain every application binding");
+    app.insert_resource(ui_catalog)
         .insert_resource(RetailAssetsResource::new(retail_assets))
         .init_state::<AppState>()
         .add_plugins((

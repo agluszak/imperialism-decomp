@@ -84,12 +84,6 @@ impl SkillBand {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum PopulationError {
-    #[error("population has invalid strike phase {phase}")]
-    InvalidStrikePhase { phase: i16 },
-}
-
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
 pub struct FoodOutcome {
     pub substitution_count: i16,
@@ -100,7 +94,7 @@ impl CityState {
     /// Mirrors `TPopulationMgr::Eat` and records the two city summary fields
     /// updated by the original routine.
     pub fn consume_population_food(&mut self) -> FoodOutcome {
-        let outcome = self.population.consume_food(&mut self.stock_by_type);
+        let outcome = self.population.consume_food(&mut self.stockpile);
         self.food_substitution_count = outcome.substitution_count;
         self.starvation_population_loss = outcome.starvation_count;
         outcome
@@ -121,55 +115,40 @@ impl CityState {
         nation_need_targets: &ResourceTable<i16>,
     ) -> FoodOutcome {
         self.population
-            .forecast_food(nation_need_targets, self.stock_by_type[ResourceKind::Food])
+            .forecast_food(nation_need_targets, self.stockpile[ResourceKind::Food])
     }
 
     /// Mirrors `TPopulationMgr::Strike` and returns whether any of the three
     /// rotated resources was short.
-    pub fn apply_population_strike(&mut self) -> Result<bool, PopulationError> {
+    pub fn apply_population_strike(&mut self) -> bool {
         let baseline = self.population.baseline_labor;
         let skilled = i32::from(baseline.medium) + i32::from(baseline.high);
         let mut cycles = (skilled / 10) as i16;
         let mut consumption = [0_i16; 4];
 
         while cycles != 0 {
-            let phase = usize::try_from(self.population.phase_value).map_err(|_| {
-                PopulationError::InvalidStrikePhase {
-                    phase: self.population.phase_value,
-                }
-            })?;
-            let amount = consumption
-                .get_mut(phase)
-                .ok_or(PopulationError::InvalidStrikePhase {
-                    phase: self.population.phase_value,
-                })?;
+            let amount = &mut consumption[self.population.strike_phase.index()];
             *amount += 1;
-            self.population.phase_value = if self.population.phase_value == 3 {
-                0
-            } else {
-                self.population.phase_value + 1
-            };
+            self.population.strike_phase = self.population.strike_phase.next();
             cycles -= 1;
         }
 
         let mut shortage = false;
         for (resource, amount) in STRIKE_RESOURCES.into_iter().zip(consumption) {
-            if self.stock_by_type[resource] < amount {
-                self.stock_by_type[resource] = 0;
-                verify_stocks(&mut self.stock_by_type);
+            if self.stockpile[resource] < amount {
+                self.stockpile.set_nonnegative(resource, 0);
                 shortage = true;
             } else {
-                self.stock_by_type[resource] -= amount;
-                verify_stocks(&mut self.stock_by_type);
+                self.stockpile.debit_clamped(resource, amount);
             }
         }
-        Ok(shortage)
+        shortage
     }
 }
 
 impl PopulationState {
     pub fn count_float(&self) -> f32 {
-        f32::from_bits(self.count_float_bits)
+        self.accumulator.get()
     }
 
     /// Mirrors the one-argument `TPopulationMgr::SetPopulation` overload. The
@@ -179,9 +158,9 @@ impl PopulationState {
         self.production_labor.low = count;
         self.strength = count;
         self.count = count;
-        self.count_float_bits = f32::from(count).to_bits();
+        self.accumulator = crate::PopulationAccumulator::from_count(count);
         self.pending_labor_delta = LaborPool::default();
-        self.phase_value = 0;
+        self.strike_phase = crate::StrikePhase::default();
     }
 
     /// Mirrors the three-argument `TPopulationMgr::SetPopulation` overload.
@@ -191,9 +170,9 @@ impl PopulationState {
         self.production_labor = labor;
         self.strength = labor.strength();
         self.count = medium + high + low;
-        self.count_float_bits = f32::from(self.count).to_bits();
+        self.accumulator = crate::PopulationAccumulator::from_count(self.count);
         self.pending_labor_delta = LaborPool::default();
-        self.phase_value = 0;
+        self.strike_phase = crate::StrikePhase::default();
     }
 
     /// Mirrors the retail growth table and its signed penalty constants. The
@@ -271,7 +250,7 @@ impl PopulationState {
 
         let removed = amount - remaining;
         self.count -= removed;
-        self.count_float_bits = (self.count_float() - f32::from(removed)).to_bits();
+        self.accumulator.remove(removed);
     }
 
     pub fn make_unavailable(&mut self, band: SkillBand, amount: i16) {
@@ -293,7 +272,7 @@ impl PopulationState {
         self.strength += count * 4;
     }
 
-    fn consume_food(&mut self, stocks: &mut ResourceTable<i16>) -> FoodOutcome {
+    fn consume_food(&mut self, stocks: &mut crate::Stockpile) -> FoodOutcome {
         let pending = self.pending_labor_delta;
         let production = &mut self.production_labor;
         production.low += pending.low;
@@ -305,15 +284,13 @@ impl PopulationState {
         let mut substituted = 0;
 
         if unmet != 0 {
-            let canned = &mut stocks[ResourceKind::Food];
-            if unmet < *canned {
-                *canned -= unmet;
-                verify_stocks(stocks);
+            let canned = stocks.amount(ResourceKind::Food);
+            if unmet < canned {
+                stocks.debit_clamped(ResourceKind::Food, unmet);
                 unmet = 0;
             } else {
-                unmet -= *canned;
-                *canned = 0;
-                verify_stocks(stocks);
+                unmet -= canned;
+                stocks.set_nonnegative(ResourceKind::Food, 0);
             }
 
             if unmet != 0 {
@@ -330,7 +307,7 @@ impl PopulationState {
             self.baseline_labor
                 .transfer_low_skill_first(&mut lost, unmet);
             self.count -= unmet;
-            self.count_float_bits = (self.count_float() - f32::from(unmet)).to_bits();
+            self.accumulator.remove(unmet);
             unmet.max(0)
         } else {
             0
@@ -390,7 +367,7 @@ struct FoodRemainders {
 }
 
 impl FoodRemainders {
-    fn from_city_stocks(stocks: &ResourceTable<i16>) -> Self {
+    fn from_city_stocks(stocks: &crate::Stockpile) -> Self {
         Self {
             grain: stocks[ResourceKind::Grain],
             fruit: stocks[ResourceKind::Fruit],
@@ -421,17 +398,13 @@ impl FoodRemainders {
         }
     }
 
-    fn write_back(self, stocks: &mut ResourceTable<i16>) {
-        stocks[ResourceKind::Grain] = self.grain;
-        verify_stocks(stocks);
-        stocks[ResourceKind::Fruit] = self.fruit;
-        verify_stocks(stocks);
+    fn write_back(self, stocks: &mut crate::Stockpile) {
+        stocks.set_nonnegative(ResourceKind::Grain, self.grain);
+        stocks.set_nonnegative(ResourceKind::Fruit, self.fruit);
 
         if self.animal == 0 {
-            stocks[ResourceKind::Livestock] = 0;
-            verify_stocks(stocks);
-            stocks[ResourceKind::Fish] = 0;
-            verify_stocks(stocks);
+            stocks.set_nonnegative(ResourceKind::Livestock, 0);
+            stocks.set_nonnegative(ResourceKind::Fish, 0);
             return;
         }
 
@@ -454,18 +427,8 @@ impl FoodRemainders {
             fish -= shift;
             livestock += shift;
         }
-        stocks[ResourceKind::Livestock] = livestock;
-        verify_stocks(stocks);
-        stocks[ResourceKind::Fish] = fish;
-        verify_stocks(stocks);
-    }
-}
-
-fn verify_stocks(stocks: &mut ResourceTable<i16>) {
-    for (_, stock) in stocks {
-        if *stock < 0 {
-            *stock = 0;
-        }
+        stocks.set_nonnegative(ResourceKind::Livestock, livestock);
+        stocks.set_nonnegative(ResourceKind::Fish, fish);
     }
 }
 
@@ -506,10 +469,10 @@ mod tests {
     fn population() -> PopulationState {
         PopulationState {
             count: 7,
-            count_float_bits: 7.0_f32.to_bits(),
+            accumulator: crate::PopulationAccumulator::from_bits(7.0_f32.to_bits()),
             strength: 12,
             extra: 5,
-            phase_value: 3,
+            strike_phase: crate::StrikePhase::Arms,
             baseline_labor: LaborPool::new(4, 2, 1),
             production_labor: LaborPool::new(4, 2, 1),
             pending_labor_delta: LaborPool::new(1, -1, 2),
@@ -520,7 +483,7 @@ mod tests {
     fn city() -> CityState {
         let mut population = population();
         population.extra = 5;
-        population.phase_value = 0;
+        population.strike_phase = crate::StrikePhase::default();
         population.pending_labor_delta = LaborPool::default();
         CityState {
             population,
@@ -536,11 +499,11 @@ mod tests {
         fish: i16,
         livestock: i16,
     ) {
-        city.stock_by_type[ResourceKind::Food] = canned;
-        city.stock_by_type[ResourceKind::Grain] = grain;
-        city.stock_by_type[ResourceKind::Fruit] = fruit;
-        city.stock_by_type[ResourceKind::Fish] = fish;
-        city.stock_by_type[ResourceKind::Livestock] = livestock;
+        city.stockpile[ResourceKind::Food] = canned;
+        city.stockpile[ResourceKind::Grain] = grain;
+        city.stockpile[ResourceKind::Fruit] = fruit;
+        city.stockpile[ResourceKind::Fish] = fish;
+        city.stockpile[ResourceKind::Livestock] = livestock;
     }
 
     #[test]
@@ -566,7 +529,7 @@ mod tests {
         assert_eq!(state.strength, 20);
         assert_eq!(state.count, 9);
         assert_eq!(state.count_float(), f32::from(state.count));
-        assert_eq!(state.phase_value, 0);
+        assert_eq!(state.strike_phase, crate::StrikePhase::default());
     }
 
     #[test]
@@ -624,11 +587,11 @@ mod tests {
         let mut state = city();
         stock_food(&mut state, 2, 4, 2, 1, 0);
         assert_eq!(state.consume_population_food(), FoodOutcome::default());
-        assert_eq!(state.stock_by_type[ResourceKind::Food], 2);
-        assert_eq!(state.stock_by_type[ResourceKind::Grain], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Fruit], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Fish], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Livestock], 0);
+        assert_eq!(state.stockpile[ResourceKind::Food], 2);
+        assert_eq!(state.stockpile[ResourceKind::Grain], 0);
+        assert_eq!(state.stockpile[ResourceKind::Fruit], 0);
+        assert_eq!(state.stockpile[ResourceKind::Fish], 0);
+        assert_eq!(state.stockpile[ResourceKind::Livestock], 0);
         assert_eq!(state.population.count, 7);
     }
 
@@ -637,7 +600,7 @@ mod tests {
         let mut state = city();
         stock_food(&mut state, 2, 3, 2, 1, 0);
         assert_eq!(state.consume_population_food(), FoodOutcome::default());
-        assert_eq!(state.stock_by_type[ResourceKind::Food], 1);
+        assert_eq!(state.stockpile[ResourceKind::Food], 1);
         assert_eq!(
             state.population.production_labor,
             state.population.baseline_labor
@@ -720,14 +683,14 @@ mod tests {
     fn strike_rotates_skilled_consumption_and_reports_shortage() {
         let mut state = city();
         state.population.baseline_labor = LaborPool::new(0, 20, 0);
-        state.population.phase_value = 2;
-        state.stock_by_type[ResourceKind::Hardware] = 1;
-        state.stock_by_type[ResourceKind::Clothing] = 1;
-        state.stock_by_type[ResourceKind::Furniture] = 0;
-        assert!(state.apply_population_strike().unwrap());
-        assert_eq!(state.population.phase_value, 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Hardware], 1);
-        assert_eq!(state.stock_by_type[ResourceKind::Clothing], 1);
-        assert_eq!(state.stock_by_type[ResourceKind::Furniture], 0);
+        state.population.strike_phase = crate::StrikePhase::Hardware;
+        state.stockpile[ResourceKind::Hardware] = 1;
+        state.stockpile[ResourceKind::Clothing] = 1;
+        state.stockpile[ResourceKind::Furniture] = 0;
+        assert!(state.apply_population_strike());
+        assert_eq!(state.population.strike_phase, crate::StrikePhase::default());
+        assert_eq!(state.stockpile[ResourceKind::Hardware], 1);
+        assert_eq!(state.stockpile[ResourceKind::Clothing], 1);
+        assert_eq!(state.stockpile[ResourceKind::Furniture], 0);
     }
 }

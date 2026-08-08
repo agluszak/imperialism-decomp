@@ -1,26 +1,18 @@
-use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind, ResourceTable};
+use crate::{CityState, GreatPowerState, ProductionSlot, ResourceKind, ResourceTable};
 
 impl CityState {
     /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from
     /// the C++ method remains a presentation concern.
-    pub fn verify_stocks(&mut self) {
-        for (_, stock) in &mut self.stock_by_type {
-            if *stock < 0 {
-                *stock = 0;
-            }
-        }
-    }
-
     /// Mirrors the pointer-taking `TCity::AddTransportedItems` overload.
     pub fn add_transported_items(&mut self, amounts: &ResourceTable<i16>) {
         for (resource, amount) in amounts {
-            self.stock_by_type[resource] += *amount;
+            self.stockpile.credit(resource, *amount);
         }
         self.clear_precious_metal_stock();
     }
 
     /// Mirrors the no-argument `TCity::AddTransportedItems` overload.
-    pub fn add_nation_target_items(&mut self, nation: &MajorNationState) {
+    pub fn add_nation_target_items(&mut self, nation: &GreatPowerState) {
         self.add_transported_items(&nation.need_target_by_type)
     }
 
@@ -28,7 +20,7 @@ impl CityState {
     /// limits and the target/reservation update.
     pub(crate) fn direct_transport(
         &mut self,
-        nation: &mut MajorNationState,
+        nation: &mut GreatPowerState,
         resource: ResourceKind,
         requested: i16,
     ) -> i16 {
@@ -42,22 +34,20 @@ impl CityState {
             amount = available_capacity;
         }
 
-        self.stock_by_type[resource] += amount;
+        self.stockpile.credit(resource, amount);
         nation.update_need_target(resource, nation.need_target_by_type[resource] + amount);
         amount
     }
 
     /// Mirrors `TGreatPower::IncreaseRollingStock` against the owning city's
     /// lumber and steel stockpile.
-    pub(crate) fn increase_rolling_stock(&mut self, nation: &mut MajorNationState) -> bool {
-        if self.stock_by_type[ResourceKind::Lumber] == 0
-            || self.stock_by_type[ResourceKind::Steel] == 0
-        {
+    pub(crate) fn increase_rolling_stock(&mut self, nation: &mut GreatPowerState) -> bool {
+        if self.stockpile[ResourceKind::Lumber] == 0 || self.stockpile[ResourceKind::Steel] == 0 {
             return false;
         }
 
-        self.add_to_stock_and_verify(ResourceKind::Lumber, -1);
-        self.add_to_stock_and_verify(ResourceKind::Steel, -1);
+        self.adjust_stock(ResourceKind::Lumber, -1);
+        self.adjust_stock(ResourceKind::Steel, -1);
         let capacity = nation.transport_capacity_mut();
         *capacity += 1;
         true
@@ -65,15 +55,13 @@ impl CityState {
 
     /// Mirrors `TGreatPower::IncreaseMerchantMarine` against the owning
     /// city's lumber and fabric stockpile.
-    pub(crate) fn increase_merchant_marine(&mut self, nation: &mut MajorNationState) -> bool {
-        if self.stock_by_type[ResourceKind::Lumber] <= 2
-            || self.stock_by_type[ResourceKind::Fabric] == 0
-        {
+    pub(crate) fn increase_merchant_marine(&mut self, nation: &mut GreatPowerState) -> bool {
+        if self.stockpile[ResourceKind::Lumber] <= 2 || self.stockpile[ResourceKind::Fabric] == 0 {
             return false;
         }
 
-        self.add_to_stock_and_verify(ResourceKind::Lumber, -3);
-        self.add_to_stock_and_verify(ResourceKind::Fabric, -1);
+        self.adjust_stock(ResourceKind::Lumber, -3);
+        self.adjust_stock(ResourceKind::Fabric, -1);
         let capacity = nation.merchant_capacity_mut();
         *capacity += 1;
         true
@@ -108,33 +96,27 @@ impl CityState {
     /// boundary that will call this method.
     pub fn refresh_local_summary_flags(&mut self) {
         self.low_stock = self.population.strength >= 2;
-        let mut shortage_count = if self.production_accum[ProductionSlot::LUMBER_MILL] > 0 {
+        let mut shortage_count = if self.production_accum[ProductionSlot::LumberMill] > 0 {
             2_i16
         } else {
             3_i16
         };
-        if self.production_accum[ProductionSlot::STEEL_MILL] > 0 {
+        if self.production_accum[ProductionSlot::SteelMill] > 0 {
             shortage_count -= 1;
         }
-        if self.production_accum[ProductionSlot::TEXTILE_MILL] > 0 {
+        if self.production_accum[ProductionSlot::TextileMill] > 0 {
             shortage_count -= 1;
         }
         self.low_production = shortage_count < 2;
     }
 
     fn clear_precious_metal_stock(&mut self) {
-        self.stock_by_type[ResourceKind::Gold] = 0;
-        self.stock_by_type[ResourceKind::Gems] = 0;
+        self.stockpile.set_nonnegative(ResourceKind::Gold, 0);
+        self.stockpile.set_nonnegative(ResourceKind::Gems, 0);
     }
 
-    pub(crate) fn add_to_stock_and_verify(&mut self, resource: ResourceKind, delta: i16) {
-        let stock = &mut self.stock_by_type[resource];
-        *stock += delta;
-        for (_, stock) in &mut self.stock_by_type {
-            if *stock < 0 {
-                *stock = 0;
-            }
-        }
+    pub(crate) fn adjust_stock(&mut self, resource: ResourceKind, delta: i16) {
+        self.stockpile.credit(resource, delta);
     }
 }
 
@@ -143,16 +125,16 @@ mod tests {
     use super::*;
 
     fn slot(value: u8) -> ProductionSlot {
-        ProductionSlot::new(value).unwrap()
+        ProductionSlot::from_index(value).unwrap()
     }
 
     fn city() -> CityState {
         crate::test_support::city()
     }
 
-    fn nation() -> MajorNationState {
-        MajorNationState {
-            diplomacy_eligible: true,
+    fn nation() -> GreatPowerState {
+        GreatPowerState {
+            controller: crate::MajorNationController::Human,
             capacities: crate::NationCapacities::from_array([0, 0, 15, 11]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -173,8 +155,7 @@ mod tests {
             candidate_nation_flags: crate::NationTable::default(),
             scenario_initialized: false,
             turn_finished: false,
-            pending_action_status: crate::PendingActionTable::default(),
-            pending_action_payload_by_action: crate::PendingActionTable::default(),
+            pending_actions: crate::PendingActionTable::default(),
             diplomacy_budget_base: 0,
             escalation_counter: 0,
             pending_commitment_cost: 0,
@@ -188,20 +169,19 @@ mod tests {
     #[test]
     fn clamps_negative_stocks() {
         let mut state = city();
-        state.stock_by_type = ResourceTable::from_fn(|_| -1);
-        state.verify_stocks();
-        assert!(state.stock_by_type.iter().all(|(_, stock)| *stock == 0));
+        state.stockpile = crate::Stockpile::from_table(ResourceTable::from_fn(|_| -1));
+        assert!(state.stockpile.iter().all(|(_, stock)| *stock == 0));
     }
 
     #[test]
     fn transported_items_cover_all_resources_then_clear_precious_metals() {
         let mut state = city();
-        state.stock_by_type = ResourceTable::from_fn(|_| 1);
+        state.stockpile = crate::Stockpile::from_table(ResourceTable::from_fn(|_| 1));
         state.add_transported_items(&ResourceTable::from_fn(|_| 2));
-        assert_eq!(state.stock_by_type[ResourceKind::Cotton], 3);
-        assert_eq!(state.stock_by_type[ResourceKind::Livestock], 3);
-        assert_eq!(state.stock_by_type[ResourceKind::Gems], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Gold], 0);
+        assert_eq!(state.stockpile[ResourceKind::Cotton], 3);
+        assert_eq!(state.stockpile[ResourceKind::Livestock], 3);
+        assert_eq!(state.stockpile[ResourceKind::Gems], 0);
+        assert_eq!(state.stockpile[ResourceKind::Gold], 0);
     }
 
     #[test]
@@ -213,7 +193,7 @@ mod tests {
         owner.need_target_by_type[resource] = 4;
 
         assert_eq!(state.direct_transport(&mut owner, resource, 5), 4);
-        assert_eq!(state.stock_by_type[resource], 4);
+        assert_eq!(state.stockpile[resource], 4);
         assert_eq!(owner.need_target_by_type[resource], 8);
         assert_eq!(owner.capacities.reserved_transport, 15);
     }
@@ -224,22 +204,22 @@ mod tests {
         let mut owner = nation();
         owner.need_target_by_type = ResourceTable::from_fn(|_| 2);
         state.add_nation_target_items(&owner);
-        assert_eq!(state.stock_by_type[ResourceKind::Cotton], 2);
-        assert_eq!(state.stock_by_type[ResourceKind::Livestock], 2);
-        assert_eq!(state.stock_by_type[ResourceKind::Gems], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Gold], 0);
+        assert_eq!(state.stockpile[ResourceKind::Cotton], 2);
+        assert_eq!(state.stockpile[ResourceKind::Livestock], 2);
+        assert_eq!(state.stockpile[ResourceKind::Gems], 0);
+        assert_eq!(state.stockpile[ResourceKind::Gold], 0);
     }
 
     #[test]
     fn rolling_stock_consumes_lumber_and_steel() {
         let mut state = city();
         let mut owner = nation();
-        state.stock_by_type[ResourceKind::Lumber] = 2;
-        state.stock_by_type[ResourceKind::Steel] = 1;
+        state.stockpile[ResourceKind::Lumber] = 2;
+        state.stockpile[ResourceKind::Steel] = 1;
 
         assert!(state.increase_rolling_stock(&mut owner));
-        assert_eq!(state.stock_by_type[ResourceKind::Lumber], 1);
-        assert_eq!(state.stock_by_type[ResourceKind::Steel], 0);
+        assert_eq!(state.stockpile[ResourceKind::Lumber], 1);
+        assert_eq!(state.stockpile[ResourceKind::Steel], 0);
         assert_eq!(owner.capacities.transport, 16);
         assert!(!state.increase_rolling_stock(&mut owner));
         assert_eq!(owner.capacities.transport, 16);
@@ -249,14 +229,14 @@ mod tests {
     fn merchant_marine_requires_three_lumber_and_one_fabric() {
         let mut state = city();
         let mut owner = nation();
-        state.stock_by_type[ResourceKind::Lumber] = 2;
-        state.stock_by_type[ResourceKind::Fabric] = 1;
+        state.stockpile[ResourceKind::Lumber] = 2;
+        state.stockpile[ResourceKind::Fabric] = 1;
         assert!(!state.increase_merchant_marine(&mut owner));
 
-        state.stock_by_type[ResourceKind::Lumber] = 3;
+        state.stockpile[ResourceKind::Lumber] = 3;
         assert!(state.increase_merchant_marine(&mut owner));
-        assert_eq!(state.stock_by_type[ResourceKind::Lumber], 0);
-        assert_eq!(state.stock_by_type[ResourceKind::Fabric], 0);
+        assert_eq!(state.stockpile[ResourceKind::Lumber], 0);
+        assert_eq!(state.stockpile[ResourceKind::Fabric], 0);
         assert_eq!(owner.capacities.trade_offer, 1);
     }
 

@@ -6,35 +6,20 @@ pub const STRATEGIC_MAP_HEIGHT: u16 = 60;
 pub const STRATEGIC_TILE_COUNT: usize =
     STRATEGIC_MAP_WIDTH as usize * STRATEGIC_MAP_HEIGHT as usize;
 
-/// The byte stored by the retail map model for its horizontal-edge behavior.
-///
-/// Despite the recovered C++ field name, zero enables horizontal wrapping and
-/// every nonzero value rejects coordinates beyond the left and right edges.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct RetailTopologyByte(u8);
+#[serde(rename_all = "snake_case")]
+pub enum MapTopology {
+    Wrapping,
+    Bounded,
+}
 
-impl RetailTopologyByte {
-    pub const fn from_retail_byte(value: u8) -> Self {
-        Self(value)
-    }
-
-    pub const fn retail_byte(self) -> u8 {
-        self.0
-    }
-
+impl MapTopology {
     pub const fn wraps_horizontally(self) -> bool {
-        self.0 == 0
-    }
-
-    /// Produces the canonical byte written by the setup UI for the requested
-    /// semantic topology. Reading still preserves arbitrary nonzero bytes.
-    pub const fn from_wraps_horizontally(wraps_horizontally: bool) -> Self {
-        Self(if wraps_horizontally { 0 } else { 1 })
+        matches!(self, Self::Wrapping)
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[repr(u8)]
 pub enum HexDirection {
     NorthEast = 0,
@@ -69,35 +54,34 @@ impl HexDirection {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct MapGeometry {
-    wraps_horizontally: bool,
+    topology: MapTopology,
 }
 
 impl MapGeometry {
-    pub const fn new(wraps_horizontally: bool) -> Self {
-        Self { wraps_horizontally }
+    pub const fn new(topology: MapTopology) -> Self {
+        Self { topology }
     }
 
     pub const fn wraps_horizontally(self) -> bool {
-        self.wraps_horizontally
+        self.topology.wraps_horizontally()
     }
 
     pub fn tile(self, row: u16, column: u16) -> Option<TileId> {
         if row >= STRATEGIC_MAP_HEIGHT || column >= STRATEGIC_MAP_WIDTH {
             return None;
         }
-        Some(TileId::new(row * STRATEGIC_MAP_WIDTH + column))
+        Some(TileId::from_index_unchecked(
+            row * STRATEGIC_MAP_WIDTH + column,
+        ))
     }
 
-    pub fn row_column(self, tile: TileId) -> Option<(u16, u16)> {
+    pub const fn row_column(self, tile: TileId) -> (u16, u16) {
         let index = tile.get();
-        if usize::from(index) >= STRATEGIC_TILE_COUNT {
-            return None;
-        }
-        Some((index / STRATEGIC_MAP_WIDTH, index % STRATEGIC_MAP_WIDTH))
+        (index / STRATEGIC_MAP_WIDTH, index % STRATEGIC_MAP_WIDTH)
     }
 
     pub fn neighbor(self, tile: TileId, direction: HexDirection) -> Option<TileId> {
-        let (row, column) = self.row_column(tile)?;
+        let (row, column) = self.row_column(tile);
         let odd_row = row & 1 != 0;
         let (row_delta, column_delta) = match direction {
             HexDirection::NorthEast => (-1, i16::from(odd_row)),
@@ -112,7 +96,7 @@ impl MapGeometry {
             return None;
         }
         let mut next_column = i32::from(column) + i32::from(column_delta);
-        if self.wraps_horizontally {
+        if self.topology.wraps_horizontally() {
             next_column = next_column.rem_euclid(i32::from(STRATEGIC_MAP_WIDTH));
         } else if !(0..i32::from(STRATEGIC_MAP_WIDTH)).contains(&next_column) {
             return None;
@@ -136,34 +120,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn preserves_the_retail_topology_byte_encoding() {
-        let wrapping = RetailTopologyByte::from_retail_byte(0);
-        let bounded = RetailTopologyByte::from_retail_byte(7);
-        assert!(wrapping.wraps_horizontally());
-        assert!(!bounded.wraps_horizontally());
-        assert_eq!(bounded.retail_byte(), 7);
-        assert_eq!(
-            RetailTopologyByte::from_wraps_horizontally(true).retail_byte(),
-            0
-        );
-        assert_eq!(
-            RetailTopologyByte::from_wraps_horizontally(false).retail_byte(),
-            1
-        );
-    }
-
-    #[test]
     fn round_trips_retail_tile_coordinates() {
-        let geometry = MapGeometry::new(true);
+        let geometry = MapGeometry::new(MapTopology::Wrapping);
         let last = geometry.tile(59, 107).unwrap();
         assert_eq!(last.get(), 6479);
-        assert_eq!(geometry.row_column(last), Some((59, 107)));
-        assert_eq!(geometry.row_column(TileId::new(6480)), None);
+        assert_eq!(geometry.row_column(last), (59, 107));
     }
 
     #[test]
     fn uses_the_retail_odd_row_neighbor_layout() {
-        let geometry = MapGeometry::new(true);
+        let geometry = MapGeometry::new(MapTopology::Wrapping);
         let even = geometry.tile(2, 10).unwrap();
         let odd = geometry.tile(3, 10).unwrap();
         assert_eq!(
@@ -186,8 +152,8 @@ mod tests {
 
     #[test]
     fn applies_the_retail_horizontal_and_vertical_edge_rules() {
-        let wrapping = MapGeometry::new(true);
-        let bounded = MapGeometry::new(false);
+        let wrapping = MapGeometry::new(MapTopology::Wrapping);
+        let bounded = MapGeometry::new(MapTopology::Bounded);
         let left = wrapping.tile(2, 0).unwrap();
         assert_eq!(
             wrapping.neighbor(left, HexDirection::West),

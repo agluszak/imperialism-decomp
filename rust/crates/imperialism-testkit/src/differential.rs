@@ -96,9 +96,9 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 mod tests {
     use super::*;
     use imperialism_core::{
-        CivilianUnitId, DiplomacyGrant, MajorNationId, MilitaryUnitKind, MinorNationId, NationId,
-        ProductionProgress, RecruitKind, ResourceCost, ResourceKind, SkillBand, TradePolicyScore,
-        UnitCostProfile, UnitProductionOrder,
+        CivilianUnitId, DiplomacyGrant, MajorNationId, MilitaryRecruitOrder, MilitaryUnitKind,
+        MinorNationId, NationId, ProductionProgress, ResourceCost, ResourceKind, SkillBand,
+        TradePolicyScore,
     };
     use serde::Deserialize;
     use std::path::PathBuf;
@@ -110,7 +110,7 @@ mod tests {
 
     #[derive(Debug, Deserialize)]
     struct SpecialistRecruitmentCase {
-        nation: NationId,
+        nation: MajorNationId,
         unit_kind: MilitaryUnitKind,
         quantity: i16,
     }
@@ -180,18 +180,13 @@ mod tests {
         policy: TradePolicyScore,
     }
 
-    fn specialist_order(unit_kind: MilitaryUnitKind, quantity: i16) -> UnitProductionOrder {
-        UnitProductionOrder {
-            profile: UnitCostProfile {
-                recruit_kind: RecruitKind::Military(unit_kind),
-                primary: ResourceCost {
-                    resource: ResourceKind::Arms,
-                    per_unit: 0,
-                },
-                secondary: None,
-                cash_per_unit: 0,
-                workforce: Some(SkillBand::High),
-            },
+    fn military_order(unit_kind: MilitaryUnitKind, quantity: i16) -> MilitaryRecruitOrder {
+        MilitaryRecruitOrder {
+            unit_kind,
+            primary: ResourceCost::new(ResourceKind::Arms, 1),
+            secondary: None,
+            cash_per_unit: 0,
+            workforce: Some(SkillBand::High),
             progress: ProductionProgress {
                 quantity,
                 ..ProductionProgress::default()
@@ -207,12 +202,12 @@ mod tests {
 
     #[test]
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn specialist_recruitment() {
+    fn military_recruitment() {
         differential(
-            "specialist_recruitment",
+            "military_recruitment",
             |state, case: SpecialistRecruitmentCase| {
-                let mut order = specialist_order(case.unit_kind, case.quantity);
-                state.produce_specialist_recruits(case.nation, &mut order)?;
+                let mut order = military_order(case.unit_kind, case.quantity);
+                state.produce_military_recruits(case.nation, &mut order)?;
                 Ok(())
             },
         )
@@ -231,7 +226,7 @@ mod tests {
                         purchase.resource,
                         purchase.amount,
                         purchase.price,
-                    )?;
+                    );
                 }
                 Ok(())
             },
@@ -243,10 +238,10 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn purchased_items_phase() {
         differential("purchased_items_phase", |state, case: NationCase| {
-            state.remember_trade_bids(case.nation)?;
-            state.purchase_item(case.nation, ResourceKind::Fabric, 3, 7)?;
-            state.purchase_item(case.nation, ResourceKind::Food, -30, 1)?;
-            state.commit_purchased_items(case.nation)?;
+            state.remember_trade_bids(case.nation);
+            state.purchase_item(case.nation, ResourceKind::Fabric, 3, 7);
+            state.purchase_item(case.nation, ResourceKind::Food, -30, 1);
+            state.commit_purchased_items(case.nation);
             Ok(())
         })
         .unwrap();
@@ -256,7 +251,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn created_items_phase() {
         differential("created_items_phase", |state, case: NationCase| {
-            state.add_created_items(case.nation)?;
+            state.add_created_items(case.nation);
             Ok(())
         })
         .unwrap();
@@ -266,7 +261,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn transported_items_phase() {
         differential("transported_items_phase", |state, case: NationCase| {
-            state.settle_transported_items(case.nation)?;
+            state.settle_transported_items(case.nation);
             Ok(())
         })
         .unwrap();
@@ -285,7 +280,7 @@ mod tests {
                         amount: case.amount,
                         recurring: false,
                     }),
-                )?;
+                );
                 anyhow::ensure!(accepted, "Rust rejected the diplomacy grant");
                 Ok(())
             },
@@ -299,7 +294,7 @@ mod tests {
         differential(
             "diplomacy_reset_preserves_recurring_grants",
             |state, case: NationCase| {
-                state.reset_diplomacy_commitments(case.nation)?;
+                state.reset_diplomacy_commitments(case.nation);
                 Ok(())
             },
         )
@@ -310,7 +305,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn aid_allocation() {
         differential("aid_allocation", |state, case: AidAllocationCase| {
-            state.add_aid_allocation(case.nation, case.minor_nation, case.resource, case.amount)?;
+            state.add_aid_allocation(case.nation, case.minor_nation, case.resource, case.amount);
             Ok(())
         })
         .unwrap();
@@ -320,7 +315,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn direct_transport() {
         differential("direct_transport", |state, case: DirectTransportCase| {
-            state.direct_transport(case.nation, case.resource, case.requested)?;
+            state.direct_transport(case.nation, case.resource, case.requested);
             Ok(())
         })
         .unwrap();
@@ -331,7 +326,7 @@ mod tests {
     fn rolling_stock() {
         differential("rolling_stock", |state, case: NationCase| {
             anyhow::ensure!(
-                state.increase_rolling_stock(case.nation)?,
+                state.increase_rolling_stock(case.nation),
                 "Rust could not increase rolling stock"
             );
             Ok(())
@@ -344,7 +339,7 @@ mod tests {
     fn merchant_marine() {
         differential("merchant_marine", |state, case: NationCase| {
             anyhow::ensure!(
-                state.increase_merchant_marine(case.nation)?,
+                state.increase_merchant_marine(case.nation),
                 "Rust could not increase merchant marine"
             );
             Ok(())
@@ -358,7 +353,7 @@ mod tests {
         differential(
             "power_plant_upgrade",
             |state, case: PowerPlantUpgradeCase| {
-                state.set_power_plant_upgrade(case.nation, case.enabled)?;
+                state.set_power_plant_upgrade(case.nation, case.enabled);
                 Ok(())
             },
         )
@@ -369,7 +364,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn trade_policy_step() {
         differential("trade_policy_step", |state, case: TradePolicyStepCase| {
-            state.decrement_trade_policy_score(case.source, case.target)?;
+            state.decrement_trade_policy_score(case.source, case.target);
             Ok(())
         })
         .unwrap();
@@ -379,7 +374,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn trade_policy_set() {
         differential("trade_policy_set", |state, case: TradePolicySetCase| {
-            state.set_trade_policy(case.nation, case.target, case.policy)?;
+            state.set_trade_policy(case.nation, case.target, case.policy);
             Ok(())
         })
         .unwrap();
@@ -389,7 +384,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn trade_capacity_refresh() {
         differential("trade_capacity_refresh", |state, case: NationCase| {
-            state.refresh_merchant_capacity(case.nation)?;
+            state.refresh_merchant_capacity(case.nation);
             Ok(())
         })
         .unwrap();
@@ -399,7 +394,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn recall_trade_bids() {
         differential("recall_trade_bids", |state, case: NationCase| {
-            state.recall_trade_bids(case.nation)?;
+            state.recall_trade_bids(case.nation);
             Ok(())
         })
         .unwrap();
@@ -409,7 +404,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn transport_need_allocation() {
         differential("transport_need_allocation", |state, case: NationCase| {
-            state.allocate_transport_needs(case.nation)?;
+            state.allocate_transport_needs(case.nation);
             Ok(())
         })
         .unwrap();
@@ -439,7 +434,7 @@ mod tests {
     #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
     fn military_maintenance() {
         differential("military_maintenance", |state, case: NationCase| {
-            state.pay_for_military(case.nation)?;
+            state.pay_for_military(case.nation);
             Ok(())
         })
         .unwrap();
@@ -451,8 +446,8 @@ mod tests {
         differential(
             "completed_resource_development",
             |state, case: ResourceDevelopmentCase| {
-                state.advance_resource_development(case.extractive_worker)?;
-                state.advance_resource_development(case.surface_worker)?;
+                state.advance_civilian_work(case.extractive_worker)?;
+                state.advance_civilian_work(case.surface_worker)?;
                 Ok(())
             },
         )
@@ -465,7 +460,7 @@ mod tests {
         differential(
             "completed_rail_section",
             |state, case: RailConstructionCase| {
-                state.advance_rail_construction(case.civilian)?;
+                state.advance_civilian_work(case.civilian)?;
                 Ok(())
             },
         )

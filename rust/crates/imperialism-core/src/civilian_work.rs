@@ -1,59 +1,132 @@
-use crate::{CivilianUnitId, CivilianUnitKind, GameState, MajorNationTable, MapGeometry, TileId};
+use crate::{CivilianUnitId, CivilianUnitKind, GameState, HexDirection, MajorNationTable, TileId};
 
 /// A recovered civilian work-order kind.
 #[derive(Clone, Debug, serde::Deserialize, Eq, PartialEq, serde::Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum CivilianWorkOrder {
     Idle,
-    Redeploy,
+    Redeploy {
+        destination: TileId,
+        turns: TurnsRemaining,
+    },
     Sleep,
-    LayRail,
-    BuildDepot,
-    BuildPort,
-    Prospect,
-    DevelopResource,
-    BuildFort,
-    PurchaseLand,
+    LayRail {
+        segment: RailSegment,
+        turns: TurnsRemaining,
+    },
+    BuildDepot {
+        turns: TurnsRemaining,
+    },
+    BuildPort {
+        turns: TurnsRemaining,
+    },
+    Prospect {
+        turns: TurnsRemaining,
+    },
+    DevelopResource {
+        turns: TurnsRemaining,
+    },
+    BuildFort {
+        turns: TurnsRemaining,
+    },
+    PurchaseLand {
+        turns: TurnsRemaining,
+    },
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize)]
+#[serde(transparent)]
+pub struct TurnsRemaining(i16);
+
+impl<'de> serde::Deserialize<'de> for TurnsRemaining {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = <i16 as serde::Deserialize>::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
+            serde::de::Error::custom("civilian work orders require a positive turn count")
+        })
+    }
+}
+impl TurnsRemaining {
+    pub const fn try_new(value: i16) -> Option<Self> {
+        if value > 0 { Some(Self(value)) } else { None }
+    }
+    pub const fn get(self) -> i16 {
+        self.0
+    }
+    fn advance(&mut self) -> bool {
+        self.0 -= 1;
+        self.0 == 0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, serde::Serialize)]
+pub struct RailSegment {
+    origin: TileId,
+    destination: TileId,
+    direction: HexDirection,
+}
+
+impl<'de> serde::Deserialize<'de> for RailSegment {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(serde::Deserialize)]
+        struct SerializedRailSegment {
+            origin: TileId,
+            destination: TileId,
+            direction: HexDirection,
+        }
+
+        let segment = SerializedRailSegment::deserialize(deserializer)?;
+        let valid = [crate::MapTopology::Wrapping, crate::MapTopology::Bounded]
+            .into_iter()
+            .filter_map(|topology| Self::between(topology, segment.origin, segment.destination))
+            .any(|valid| valid.direction == segment.direction);
+        valid
+            .then_some(Self {
+                origin: segment.origin,
+                destination: segment.destination,
+                direction: segment.direction,
+            })
+            .ok_or_else(|| serde::de::Error::custom("rail segment is not an adjacent direction"))
+    }
+}
+impl RailSegment {
+    pub fn between(
+        topology: crate::MapTopology,
+        origin: TileId,
+        destination: TileId,
+    ) -> Option<Self> {
+        let direction = crate::MapGeometry::new(topology).direction_to(origin, destination)?;
+        Some(Self {
+            origin,
+            destination,
+            direction,
+        })
+    }
+    pub const fn origin(self) -> TileId {
+        self.origin
+    }
+    pub const fn destination(self) -> TileId {
+        self.destination
+    }
+    pub const fn direction(self) -> HexDirection {
+        self.direction
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum CivilianWorkError {
     #[error("civilian unit {} is not present", .id.get())]
     MissingCivilian { id: CivilianUnitId },
-    #[error("civilian unit {} is not developing a resource", .id.get())]
-    NotDevelopingResource { id: CivilianUnitId },
-    #[error("civilian unit {} is not laying rail", .id.get())]
-    NotLayingRail { id: CivilianUnitId },
-    #[error("civilian unit {} has no map tile", .id.get())]
-    MissingTile { id: CivilianUnitId },
-    #[error("civilian unit {} has no rail source tile", .id.get())]
-    MissingRailSource { id: CivilianUnitId },
-    #[error(
-        "civilian unit {} references tile {}, outside the world",
-        .id.get(),
-        .tile.get()
-    )]
-    InvalidTile { id: CivilianUnitId, tile: TileId },
-    #[error(
-        "civilian unit {} cannot lay rail from tile {} to non-adjacent tile {}",
-        .id.get(),
-        .origin.get(),
-        .destination.get()
-    )]
-    NonAdjacentRailTiles {
-        id: CivilianUnitId,
-        origin: TileId,
-        destination: TileId,
-    },
 }
 
 impl GameState {
-    /// Advances one retail `DevelopResource` order by one turn.
-    ///
-    /// This is the `TCivUnit::ContinueOrders` final-tick transition for
-    /// resource development only. Depot and port completion require map state
-    /// that is not represented here and are intentionally separate operations.
-    pub fn advance_resource_development(
+    pub fn advance_civilian_work(
         &mut self,
         civilian: CivilianUnitId,
     ) -> Result<(), CivilianWorkError> {
@@ -62,35 +135,34 @@ impl GameState {
             .iter()
             .position(|unit| unit.id == civilian)
             .ok_or(CivilianWorkError::MissingCivilian { id: civilian })?;
-
-        let (tile, uses_extractive_development) = {
-            let unit = &self.civilian_units[index];
-            if !matches!(unit.order, CivilianWorkOrder::DevelopResource) {
-                return Err(CivilianWorkError::NotDevelopingResource { id: civilian });
-            }
-            (
-                unit.tile
-                    .ok_or(CivilianWorkError::MissingTile { id: civilian })?,
-                matches!(
-                    unit.unit_type,
-                    CivilianUnitKind::Miner | CivilianUnitKind::Driller
-                ),
-            )
-        };
-        let tile_index = usize::from(tile.get());
-        if tile_index >= self.world.tiles.len() {
-            return Err(CivilianWorkError::InvalidTile { id: civilian, tile });
+        match self.civilian_units[index].order {
+            CivilianWorkOrder::DevelopResource { .. } => self.advance_resource_development(index),
+            CivilianWorkOrder::LayRail { .. } => self.advance_rail_construction(index),
+            _ => {}
         }
+        Ok(())
+    }
 
+    fn advance_resource_development(&mut self, index: usize) {
         let unit = &mut self.civilian_units[index];
-        unit.remaining_turns -= 1;
-        let completes = unit.remaining_turns < 1;
+        let CivilianWorkOrder::DevelopResource { turns } = &mut unit.order else {
+            unreachable!()
+        };
+        let tile = unit
+            .location
+            .tile()
+            .expect("development orders are normalized with an on-map location");
+        let uses_extractive_development = matches!(
+            unit.unit_type,
+            CivilianUnitKind::Miner | CivilianUnitKind::Driller
+        );
+        let completes = turns.advance();
 
         if !completes {
-            return Ok(());
+            return;
         }
 
-        let tile_state = &mut self.world.tiles[tile_index];
+        let tile_state = &mut self.world[tile];
         if uses_extractive_development {
             tile_state.development.extractive.advance();
             tile_state.development.resource_visible_to_majors = MajorNationTable::from_fn(|_| true);
@@ -98,7 +170,6 @@ impl GameState {
             tile_state.development.surface.advance();
         }
         self.civilian_units[index].order = CivilianWorkOrder::Idle;
-        Ok(())
     }
 
     /// Advances one retail `LayRail` order by one turn.
@@ -106,52 +177,40 @@ impl GameState {
     /// A completed rail section becomes a pair of permanent directional
     /// transport links. The pending rail links are placed when the order is
     /// issued and therefore remain unchanged here.
-    pub fn advance_rail_construction(
-        &mut self,
-        civilian: CivilianUnitId,
-    ) -> Result<(), CivilianWorkError> {
-        let index = self
-            .civilian_units
-            .iter()
-            .position(|unit| unit.id == civilian)
-            .ok_or(CivilianWorkError::MissingCivilian { id: civilian })?;
-
-        let (remaining_turns, source, destination) = {
-            let unit = &self.civilian_units[index];
-            if !matches!(unit.order, CivilianWorkOrder::LayRail) {
-                return Err(CivilianWorkError::NotLayingRail { id: civilian });
-            }
-            (unit.remaining_turns, unit.order_target, unit.tile)
+    fn advance_rail_construction(&mut self, index: usize) {
+        let unit = &mut self.civilian_units[index];
+        let CivilianWorkOrder::LayRail { segment, turns } = &mut unit.order else {
+            unreachable!()
         };
-
-        if remaining_turns > 1 {
-            self.civilian_units[index].remaining_turns -= 1;
-            return Ok(());
+        let segment = *segment;
+        if !turns.advance() {
+            return;
         }
-
-        let source = source.ok_or(CivilianWorkError::MissingRailSource { id: civilian })?;
-        let destination = destination.ok_or(CivilianWorkError::MissingTile { id: civilian })?;
-        for tile in [source, destination] {
-            if usize::from(tile.get()) >= self.world.tiles.len() {
-                return Err(CivilianWorkError::InvalidTile { id: civilian, tile });
-            }
-        }
-        let direction = MapGeometry::new(self.world.wraps_horizontally)
-            .direction_to(source, destination)
-            .ok_or(CivilianWorkError::NonAdjacentRailTiles {
-                id: civilian,
-                origin: source,
-                destination,
-            })?;
-
-        self.civilian_units[index].remaining_turns -= 1;
-        self.world.tiles[usize::from(source.get())]
+        let source = segment.origin();
+        let destination = segment.destination();
+        let direction = segment.direction();
+        self.world[source]
             .transport_links
             .insert_direction(direction);
-        self.world.tiles[usize::from(destination.get())]
+        self.world[destination]
             .transport_links
             .insert_direction(direction.opposite());
         self.civilian_units[index].order = CivilianWorkOrder::Idle;
-        Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::MapTopology;
+
+    #[test]
+    fn rail_segment_deserialization_requires_its_stored_direction() {
+        let segment =
+            RailSegment::between(MapTopology::Wrapping, TileId::new(0), TileId::new(1)).unwrap();
+        let mut serialized = serde_json::to_value(segment).unwrap();
+        serialized["direction"] = serde_json::json!("West");
+
+        assert!(serde_json::from_value::<RailSegment>(serialized).is_err());
     }
 }

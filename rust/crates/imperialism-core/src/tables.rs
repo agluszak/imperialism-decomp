@@ -7,50 +7,32 @@ pub const NATION_COUNT: usize = NationId::COUNT as usize;
 pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
 pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
 
-pub const INDUSTRY_ACTION_SLOT_COUNT: usize = 14;
-
-/// Fixed 14-slot industry-action counts. Slot names are not yet recovered.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct IndustryActionTable<T>([T; INDUSTRY_ACTION_SLOT_COUNT]);
-
-impl<T> IndustryActionTable<T> {
-    pub const fn from_array(values: [T; INDUSTRY_ACTION_SLOT_COUNT]) -> Self {
-        Self(values)
-    }
-
-    pub fn as_slice(&self) -> &[T] {
-        &self.0
-    }
-
-    pub fn iter(&self) -> impl ExactSizeIterator<Item = (usize, &T)> {
-        self.0.iter().enumerate()
-    }
-
-    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = (usize, &mut T)> {
-        self.0.iter_mut().enumerate()
-    }
+/// The fourteen entries in the retail shipyard descriptor table.
+///
+/// Their order is the zero-based index into the retail ship-name string group
+/// `0x2716`; the first entry deliberately denotes no ship.
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ShipType {
+    NoShip,
+    Trader,
+    Indiaman,
+    Frigate,
+    ShipOfTheLine,
+    Paddlewheeler,
+    Clipper,
+    Raider,
+    Ironclad,
+    AdvancedIronclad,
+    Freighter,
+    ArmoredCruiser,
+    Dreadnought,
+    Battlecruiser,
 }
 
-impl<T: Default> Default for IndustryActionTable<T> {
-    fn default() -> Self {
-        Self(std::array::from_fn(|_| T::default()))
-    }
-}
-
-impl<T> Index<usize> for IndustryActionTable<T> {
-    type Output = T;
-
-    fn index(&self, slot: usize) -> &Self::Output {
-        &self.0[slot]
-    }
-}
-
-impl<T> IndexMut<usize> for IndustryActionTable<T> {
-    fn index_mut(&mut self, slot: usize) -> &mut Self::Output {
-        &mut self.0[slot]
-    }
-}
+pub type ShipTypeTable<T> = EnumMap<ShipType, T>;
 
 /// Fixed capacities maintained for every major nation.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -103,9 +85,8 @@ impl<T> NationTable<T> {
     }
 
     pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
-        let mut ids = NationId::all();
-        Self(std::array::from_fn(|_| {
-            function(ids.next().expect("nation ID count matches table length"))
+        Self(std::array::from_fn(|index| {
+            function(NationId::new(index as u8))
         }))
     }
 
@@ -163,12 +144,8 @@ impl<T> MajorNationTable<T> {
     }
 
     pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
-        let mut ids = MajorNationId::all();
-        Self(std::array::from_fn(|_| {
-            function(
-                ids.next()
-                    .expect("major-nation ID count matches table length"),
-            )
+        Self(std::array::from_fn(|index| {
+            function(MajorNationId::new(index as u8))
         }))
     }
 
@@ -222,12 +199,8 @@ impl<T> MinorNationTable<T> {
     }
 
     pub fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
-        let mut ids = MinorNationId::all();
-        Self(std::array::from_fn(|_| {
-            function(
-                ids.next()
-                    .expect("minor-nation ID count matches table length"),
-            )
+        Self(std::array::from_fn(|index| {
+            function(MinorNationId::new(MinorNationId::FIRST + index as u8))
         }))
     }
 
@@ -289,7 +262,6 @@ pub enum PendingActionKind {
     CouncilLeadMonument,
     ConquestMonumentArmory,
 }
-
 pub const PENDING_ACTION_COUNT: usize = PendingActionKind::LENGTH;
 pub type PendingActionTable<T> = EnumMap<PendingActionKind, T>;
 
@@ -345,9 +317,8 @@ mod tests {
         assert_eq!(nations[NationId::new(6)], 7);
 
         let mut production = ProductionTable::default();
-        let slot = ProductionSlot::new(3).unwrap();
-        production[slot] = 11_i16;
-        assert_eq!(production[slot], 11);
+        production[ProductionSlot::Metalworks] = 11_i16;
+        assert_eq!(production[ProductionSlot::Metalworks], 11);
 
         let mut pending = PendingActionTable::default();
         pending[PendingActionKind::UniversityExpansion] = 3_i16;
@@ -360,9 +331,24 @@ mod tests {
         let mut major_nations = MajorNationTable::from_fn(|nation| nation.get());
         major_nations[MajorNationId::new(6)] = 9;
         assert_eq!(major_nations[MajorNationId::new(6)], 9);
+    }
 
-        let mut actions = IndustryActionTable::default();
-        actions[1] = 4_i16;
-        assert_eq!(actions[1], 4);
+    #[test]
+    fn ship_type_table_uses_the_retail_shipyard_order() {
+        let indexes = ShipTypeTable::from_array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+        assert_eq!(indexes[ShipType::NoShip], 0);
+        assert_eq!(indexes[ShipType::Trader], 1);
+        assert_eq!(indexes[ShipType::Indiaman], 2);
+        assert_eq!(indexes[ShipType::Frigate], 3);
+        assert_eq!(indexes[ShipType::ShipOfTheLine], 4);
+        assert_eq!(indexes[ShipType::Paddlewheeler], 5);
+        assert_eq!(indexes[ShipType::Clipper], 6);
+        assert_eq!(indexes[ShipType::Raider], 7);
+        assert_eq!(indexes[ShipType::Ironclad], 8);
+        assert_eq!(indexes[ShipType::AdvancedIronclad], 9);
+        assert_eq!(indexes[ShipType::Freighter], 10);
+        assert_eq!(indexes[ShipType::ArmoredCruiser], 11);
+        assert_eq!(indexes[ShipType::Dreadnought], 12);
+        assert_eq!(indexes[ShipType::Battlecruiser], 13);
     }
 }

@@ -40,9 +40,9 @@ fn enter_main_menu(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
 ) {
-    let Some(view) = catalog.view(&main_menu_view_id()) else {
-        return;
-    };
+    let view = catalog
+        .view(&main_menu_view_id())
+        .expect("validated main-menu catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_main_menu_actions(&mut commands, &catalog, &spawned);
     commands
@@ -55,22 +55,22 @@ pub(crate) fn bind_main_menu_actions(
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
 ) {
-    let Some(view) = catalog.view(&spawned.view_id) else {
-        return;
-    };
+    let view = catalog
+        .view(&spawned.view_id)
+        .expect("spawned view comes from the validated catalog");
     for node in &view.nodes {
         if node.behavior != UiBehavior::Activate {
             continue;
         }
         let entity = spawned.nodes[&node.id];
-        match node.tag.as_str() {
-            "rand" => {
+        match node.tag {
+            tag if tag == imperialism_formats::fourcc!("rand") => {
                 commands
                     .entity(entity)
                     .insert(MainMenuAction::RandomGame)
                     .remove::<InteractionDisabled>();
             }
-            "quit" => {
+            tag if tag == imperialism_formats::fourcc!("quit") => {
                 commands
                     .entity(entity)
                     .insert(MainMenuAction::Quit)
@@ -118,7 +118,7 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
             .add_message::<AppExit>()
-            .insert_resource(UiCatalogResource::new(catalog))
+            .insert_resource(UiCatalogResource::new(catalog).unwrap())
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()
             .add_plugins(UiCatalogPlugin);
@@ -155,17 +155,17 @@ mod tests {
             }
             let entity = spawned.nodes[&node.id];
             by_tag.insert(
-                node.tag.as_str().to_owned(),
+                node.tag.as_bytes(),
                 (
                     world.get::<InteractionDisabled>(entity).is_some(),
                     world.get::<MainMenuAction>(entity).copied(),
                 ),
             );
         }
-        assert_eq!(by_tag["rand"], (false, Some(MainMenuAction::RandomGame)));
-        assert_eq!(by_tag["quit"], (false, Some(MainMenuAction::Quit)));
+        assert_eq!(by_tag[b"rand"], (false, Some(MainMenuAction::RandomGame)));
+        assert_eq!(by_tag[b"quit"], (false, Some(MainMenuAction::Quit)));
         for tag in ["load", "mult", "high", "scen", "pref"] {
-            assert_eq!(by_tag[tag], (true, None));
+            assert_eq!(by_tag[tag.as_bytes()], (true, None));
         }
     }
 

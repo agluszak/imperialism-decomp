@@ -22,32 +22,33 @@ pub struct CoarseMapGrid {
 }
 
 impl CoarseMapGrid {
-    pub const fn cells(&self) -> &[[i8; COARSE_MAP_WIDTH]; COARSE_MAP_HEIGHT] {
-        &self.cells
-    }
-
-    pub fn flattened(&self) -> impl Iterator<Item = i8> + '_ {
+    pub(crate) fn flattened(&self) -> impl Iterator<Item = i8> + '_ {
         self.cells.iter().flatten().copied()
     }
 
+    #[cfg(any(test, feature = "differential-trace"))]
     pub fn fnv1a_hash(&self) -> u32 {
-        self.flattened().fold(0x811c_9dc5, |hash, value| {
-            (hash ^ u32::from(value as u8)).wrapping_mul(0x0100_0193)
-        })
+        self.cells
+            .iter()
+            .flatten()
+            .copied()
+            .fold(0x811c_9dc5, |hash, value| {
+                (hash ^ u32::from(value as u8)).wrapping_mul(0x0100_0193)
+            })
     }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ExpandedMapSeedTile {
-    pub terrain_kind: i8,
-    pub owner_nation: i8,
-    pub province_index: i16,
+pub(crate) struct ExpandedMapSeedTile {
+    pub(crate) terrain_kind: i8,
+    pub(crate) owner_nation: i8,
+    pub(crate) province_index: i16,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ExpandedProvinceSeed {
-    pub owner_nation: i8,
-    pub region_class: i8,
+pub(crate) struct ExpandedProvinceSeed {
+    pub(crate) owner_nation: i8,
+    pub(crate) region_class: i8,
 }
 
 /// The accepted coarse map and the region class assigned to each nation class.
@@ -140,8 +141,8 @@ pub struct CoarseMapTrace {
     pub city_region_next_id: i32,
     pub city_region_ids: [i32; RANDOM_MAP_CLASS_COUNT],
     pub group_members: [[i32; 3]; 7],
-    pub expanded_tiles: Vec<ExpandedMapSeedTile>,
-    pub expanded_provinces: Vec<ExpandedProvinceSeed>,
+    expanded_tiles: Vec<ExpandedMapSeedTile>,
+    expanded_provinces: Vec<ExpandedProvinceSeed>,
 }
 
 #[cfg(feature = "differential-trace")]
@@ -171,6 +172,14 @@ impl CoarseMapTrace {
             grid: self.accepted_grid.clone(),
             region_classes: self.city_region_ids.map(|id| id as i8),
         }
+    }
+
+    pub fn expanded_tile_count(&self) -> usize {
+        self.expanded_tiles.len()
+    }
+
+    pub fn expanded_province_count(&self) -> usize {
+        self.expanded_provinces.len()
     }
 }
 
@@ -695,7 +704,7 @@ mod tests {
         assert_eq!(trace.accepted_map_lcg, 259_883_818);
         assert_eq!(trace.accepted_grid.fnv1a_hash(), 0x5c1e_ab12);
         assert_eq!(trace.city_region_next_id, 5);
-        assert_eq!(trace.expanded_provinces.len(), 120);
+        assert_eq!(trace.expanded_province_count(), 120);
     }
 
     #[cfg(feature = "differential-trace")]
@@ -736,7 +745,7 @@ mod tests {
         assert_eq!(trace.accepted_map_lcg, 3_712_210_293);
         assert_eq!(trace.accepted_grid.fnv1a_hash(), 0xd2a6_ff22);
         assert_eq!(trace.city_region_next_id, 5);
-        assert_eq!(trace.expanded_provinces.len(), 120);
+        assert_eq!(trace.expanded_province_count(), 120);
     }
 
     #[test]

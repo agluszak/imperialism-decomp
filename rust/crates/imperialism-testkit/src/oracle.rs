@@ -2,19 +2,19 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    Difficulty, GameState, MajorNationId, RetailCrtRng, RetailLcg, RetailTopologyByte,
-    create_random_game, differential_trace::RandomMapTerrainCapture,
-    generate_english_random_setup_name, generate_random_map, generate_random_setup_preview,
+    Difficulty, GameState, MajorNationId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, TileId,
+    create_random_game, generate_english_random_setup_name, generate_random_map,
+    generate_random_setup_preview,
 };
 use std::path::Path;
 
 use crate::{
-    RandomGameSetupCapture, RuntimeResult, assert_game_state_eq,
-    first_serialized_difference, generate_and_compare_coarse_trace,
+    RandomGameSetupCapture, RandomMapTerrainCapture, RetailTopologyByte, RuntimeResult,
+    assert_game_state_eq, first_serialized_difference, generate_and_compare_coarse_trace,
     generate_and_compare_terrain_capture,
 };
 
-const DEFAULT_TOPOLOGY: RetailTopologyByte = RetailTopologyByte::from_wraps_horizontally(true);
+const DEFAULT_TOPOLOGY: RetailTopologyByte = RetailTopologyByte::from_retail_byte(0);
 
 pub fn check_coarse(result: &Path) -> Result<()> {
     let runtime = RuntimeResult::read(result)
@@ -51,8 +51,8 @@ pub fn check_coarse(result: &Path) -> Result<()> {
         trace.attempts.len(),
         attempts,
         trace.accepted_grid.fnv1a_hash(),
-        trace.expanded_tiles.len(),
-        trace.expanded_provinces.len(),
+        trace.expanded_tile_count(),
+        trace.expanded_province_count(),
     );
     Ok(())
 }
@@ -92,13 +92,14 @@ pub fn check_random_setup(result: &Path) -> Result<()> {
     let setup: RandomGameSetupCapture = runtime
         .capture("random_game_setup")
         .with_context(|| format!("could not read {}", result.display()))?;
-    let preview = generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology)
-        .with_context(|| {
-            format!(
-                "could not replay the explicit setup seed {:?}",
-                setup.planet_seed
-            )
-        })?;
+    let preview =
+        generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
+            .with_context(|| {
+                format!(
+                    "could not replay the explicit setup seed {:?}",
+                    setup.planet_seed
+                )
+            })?;
     let terrain: RandomMapTerrainCapture = runtime
         .capture("random_map_terrain")
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -137,7 +138,8 @@ pub fn check_random_setup(result: &Path) -> Result<()> {
             trace.final_map_lcg
         );
     }
-    if preview.map.seed_candidate_tiles != accepted.seed_candidate_tiles {
+    let seed_candidate_tiles = captured_seed_candidate_tiles(&accepted.seed_candidate_tiles)?;
+    if preview.map.seed_candidate_tiles() != &seed_candidate_tiles {
         bail!("random-game setup preview seed candidates differ from terrain capture");
     }
 
@@ -149,11 +151,28 @@ pub fn check_random_setup(result: &Path) -> Result<()> {
         setup.country_name,
         setup.difficulty,
         setup.localized_names,
-        preview.map.tiles.len(),
-        preview.map.provinces.len(),
+        preview.map.tiles().len(),
+        preview.map.provinces().len(),
         preview.final_map_lcg,
     );
     Ok(())
+}
+
+fn captured_seed_candidate_tiles(
+    raw_candidates: &[i32; RANDOM_MAP_CLASS_COUNT],
+) -> Result<[TileId; RANDOM_MAP_CLASS_COUNT]> {
+    let mut candidates = [TileId::new(0); RANDOM_MAP_CLASS_COUNT];
+    for (index, &raw_candidate) in raw_candidates.iter().enumerate() {
+        candidates[index] = u16::try_from(raw_candidate)
+            .ok()
+            .and_then(TileId::try_new)
+            .with_context(|| {
+                format!(
+                    "accepted terrain capture seed candidate {index} is not a strategic tile: {raw_candidate}"
+                )
+            })?;
+    }
+    Ok(candidates)
 }
 
 pub fn check_random_setup_initial(result: &Path) -> Result<()> {
@@ -184,8 +203,11 @@ pub fn check_random_setup_initial(result: &Path) -> Result<()> {
         );
     }
 
-    let preview = generate_random_setup_preview(expected.planet_seed.as_bytes(), expected.topology)
-        .context("could not replay the generated initial setup seed")?;
+    let preview = generate_random_setup_preview(
+        expected.planet_seed.as_bytes(),
+        expected.topology.topology(),
+    )
+    .context("could not replay the generated initial setup seed")?;
     let trace = generate_and_compare_terrain_capture(&terrain).map_err(|difference| {
         anyhow::anyhow!(
             "terrain oracle mismatch at {}: C++={:?}, Rust={:?}",
@@ -197,7 +219,7 @@ pub fn check_random_setup_initial(result: &Path) -> Result<()> {
     let mut terrain_rng = RetailLcg::from_state(terrain.generation.initial_map_lcg);
     let terrain_map = generate_random_map(
         terrain.scenario_tag.as_bytes(),
-        terrain.retail_topology,
+        terrain.retail_topology.topology(),
         &mut terrain_rng,
     );
     if preview.map != terrain_map {
@@ -227,8 +249,8 @@ pub fn check_random_setup_initial(result: &Path) -> Result<()> {
         setup.country_name,
         setup.difficulty,
         setup.localized_names,
-        preview.map.tiles.len(),
-        preview.map.provinces.len(),
+        preview.map.tiles().len(),
+        preview.map.provinces().len(),
         preview.final_map_lcg,
     );
     Ok(())
@@ -251,13 +273,14 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
         );
     }
 
-    let preview = generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology)
-        .with_context(|| {
-            format!(
-                "could not replay the explicit setup seed {:?}",
-                setup.planet_seed
-            )
-        })?;
+    let preview =
+        generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
+            .with_context(|| {
+                format!(
+                    "could not replay the explicit setup seed {:?}",
+                    setup.planet_seed
+                )
+            })?;
     let actual = create_random_game(&preview, setup.nation, setup.difficulty, runtime.seed);
     let expected: GameState = runtime
         .capture("game_state")
@@ -271,7 +294,7 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.difficulty,
-        actual.world.tiles.len(),
+        actual.world.len(),
         actual.military_units.len(),
         actual.missions.len(),
         actual.rng.map_generation.state(),
@@ -288,16 +311,9 @@ pub fn check_snapshot(result: &Path, comparison: Option<&Path>) -> Result<()> {
         .with_context(|| format!("reading game state {}", result.display()))?;
     println!(
         "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions",
-        state.world.tiles.len(),
-        state.nations.majors.iter().flatten().count()
-            + state.nations.minors.iter().flatten().count(),
-        state
-            .nations
-            .majors
-            .iter()
-            .flatten()
-            .filter(|major| major.city.is_some())
-            .count(),
+        state.world.len(),
+        state.nations.major_count() + state.nations.minor_count(),
+        state.nations.major_count(),
         state.military_units.len(),
         state.civilian_units.len(),
         state.ships.len(),
@@ -423,9 +439,10 @@ mod tests {
     fn seed_one_initial_preview_reaches_the_native_final_state() {
         let setup = initial_defaults(1);
         let preview =
-            generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology).unwrap();
-        assert_eq!(preview.map.tiles.len(), 6_480);
-        assert_eq!(preview.map.provinces.len(), 120);
+            generate_random_setup_preview(setup.planet_seed.as_bytes(), setup.topology.topology())
+                .unwrap();
+        assert_eq!(preview.map.tiles().len(), 6_480);
+        assert_eq!(preview.map.provinces().len(), 120);
         assert_eq!(preview.final_map_lcg, 0x8c98_13e1);
     }
 }

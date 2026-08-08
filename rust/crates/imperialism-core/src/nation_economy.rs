@@ -1,4 +1,4 @@
-use crate::{CityState, MajorNationState, ResourceKind, all_resources};
+use crate::{CityState, GreatPowerState, ResourceKind, all_resources};
 
 const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
     ResourceKind::Grain,
@@ -13,7 +13,7 @@ const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
     ResourceKind::Horses,
 ];
 
-impl MajorNationState {
+impl GreatPowerState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
     pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
         let available = treasury + self.diplomacy_budget_base / 100;
@@ -110,7 +110,7 @@ impl MajorNationState {
     pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let amount = self.transported_items_by_resource[resource];
-            city.add_to_stock_and_verify(resource, amount);
+            city.adjust_stock(resource, amount);
             self.transported_items_by_resource[resource] = 0;
         }
     }
@@ -118,7 +118,7 @@ impl MajorNationState {
     pub fn settle_purchased_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let purchased = self.purchased_items_by_resource[resource];
-            city.add_to_stock_and_verify(resource, purchased);
+            city.adjust_stock(resource, purchased);
             if self.remembered_trade_offers_by_resource[resource] == -1 && purchased == 0 {
                 self.unfilled_trade_turns_by_resource[resource] += 1;
             } else {
@@ -145,9 +145,9 @@ mod tests {
         crate::test_support::city()
     }
 
-    fn nation() -> MajorNationState {
-        MajorNationState {
-            diplomacy_eligible: true,
+    fn nation() -> GreatPowerState {
+        GreatPowerState {
+            controller: crate::MajorNationController::Human,
             capacities: crate::NationCapacities::from_array([0, 0, 15, 11]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -168,8 +168,7 @@ mod tests {
             candidate_nation_flags: crate::NationTable::default(),
             scenario_initialized: false,
             turn_finished: false,
-            pending_action_status: crate::PendingActionTable::default(),
-            pending_action_payload_by_action: crate::PendingActionTable::default(),
+            pending_actions: crate::PendingActionTable::default(),
             diplomacy_budget_base: 0,
             escalation_counter: 0,
             pending_commitment_cost: 0,
@@ -277,13 +276,13 @@ mod tests {
     fn settles_and_clears_all_transported_items() {
         let mut state = nation();
         let mut owner_city = city();
-        owner_city.stock_by_type[ResourceKind::Lumber] = 2;
+        owner_city.stockpile[ResourceKind::Lumber] = 2;
         state.transported_items_by_resource[ResourceKind::Lumber] = 3;
         state.transported_items_by_resource[ResourceKind::Gold] = 4;
 
         state.settle_transported_items(&mut owner_city);
-        assert_eq!(owner_city.stock_by_type[ResourceKind::Lumber], 5);
-        assert_eq!(owner_city.stock_by_type[ResourceKind::Gold], 4);
+        assert_eq!(owner_city.stockpile[ResourceKind::Lumber], 5);
+        assert_eq!(owner_city.stockpile[ResourceKind::Gold], 4);
         assert!(
             state
                 .transported_items_by_resource
@@ -310,7 +309,7 @@ mod tests {
         assert_eq!(state.unfilled_trade_turns_by_resource[cotton], 4);
         assert_eq!(state.unfilled_trade_turns_by_resource[wool], 0);
         assert_eq!(state.unfilled_trade_turns_by_resource[timber], 0);
-        assert_eq!(owner_city.stock_by_type[wool], 2);
+        assert_eq!(owner_city.stockpile[wool], 2);
         assert!(
             state
                 .purchased_items_by_resource
