@@ -373,6 +373,9 @@ JSON_Value* CaptureWorld() {
     json_object_set_number(tileObject, "action_state", static_cast<int>(tile.tileActionState16));
     json_object_set_number(tileObject, "active_flags",
                            static_cast<unsigned int>(tile.activeFlags1c));
+    json_object_set_number(tileObject, "region_marker", static_cast<int>(tile.regionSubtypeTag05));
+    json_object_set_number(tileObject, "river_sprite_code",
+                           static_cast<unsigned int>(tile.riverSpriteCode));
     json_array_append_value(tiles, tileValue);
   }
   json_object_set_value(object, "tiles", tilesValue);

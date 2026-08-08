@@ -10,6 +10,8 @@ pub enum RuleError {
     MissingNation { nation: NationId },
     #[error("nation {} is not a major nation", .nation.get())]
     NotMajorNation { nation: NationId },
+    #[error("nation {} cannot run the player trade phase", .nation.get())]
+    PlayerTradePhaseUnavailable { nation: NationId },
     #[error("nation {} has no city state", .nation.get())]
     MissingCity { nation: NationId },
 }
@@ -193,6 +195,25 @@ impl GameState {
         }
         major.aid_allocation_by_minor_nation = Default::default();
         Ok(())
+    }
+
+    /// Resets the retail player trade phase.
+    ///
+    /// Nations outside this mode use a different retail virtual implementation
+    /// and remain unsupported until that behavior has a semantic state model.
+    pub fn reset_player_trade_phase(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        if !self.major_nation_parts_mut(nation)?.1.diplomacy_eligible {
+            return Err(RuleError::PlayerTradePhaseUnavailable {
+                nation: nation.nation(),
+            });
+        }
+
+        self.refresh_merchant_capacity(nation)?;
+        let (_, major) = self.major_nation_parts_mut(nation)?;
+        major.unfilled_trade_offer_count = 0;
+        major.budget_pool_base = 0;
+        major.budget_pool_delta = 0;
+        self.recall_trade_bids(nation)
     }
 
     /// Credits a minor nation's resource-specific aid allocation.

@@ -106,6 +106,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    ResetPlayerTradePhase {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     AddAidAllocation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -298,6 +302,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .recall_trade_bids(nation)
                 .context("Rust trade-bid recall failed")?;
+        }
+        Operation::ResetPlayerTradePhase { nation } => {
+            state
+                .reset_player_trade_phase(nation)
+                .context("Rust player trade-phase reset failed")?;
         }
         Operation::AddAidAllocation {
             nation,
