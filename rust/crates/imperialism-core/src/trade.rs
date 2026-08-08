@@ -138,6 +138,19 @@ impl GameState {
         Ok(city.increase_rolling_stock(major))
     }
 
+    /// Spends three lumber and one fabric to add one merchant-capacity unit.
+    ///
+    /// A major nation without a city has no stockpile, so retail leaves it
+    /// unchanged and reports that no merchant marine was built.
+    pub fn increase_merchant_marine(&mut self, nation: MajorNationId) -> Result<bool, RuleError> {
+        if self.cities[nation].is_none() {
+            self.major_nation_parts_mut(nation)?;
+            return Ok(false);
+        }
+        let (_, major, city) = self.major_nation_city_parts_mut(nation)?;
+        Ok(city.increase_merchant_marine(major))
+    }
+
     /// Allocates the next transport capacity across the retail city-policy
     /// priority list.
     pub fn allocate_transport_needs(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
@@ -149,15 +162,15 @@ impl GameState {
 
     /// Replaces a major nation's merchant capacity with its city's current
     /// industry allocation score.
-    pub fn refresh_trade_capacity(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+    pub fn refresh_merchant_capacity(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
         let capacity = self.cities[nation]
             .as_ref()
             .ok_or(RuleError::MissingCity {
                 nation: nation.nation(),
             })?
-            .trade_capacity();
+            .merchant_capacity();
         let (_, major) = self.major_nation_parts_mut(nation)?;
-        major.capacities[NationCapacity::TradeOffer] = capacity;
+        major.capacities[NationCapacity::MerchantCapacity] = capacity;
         major.capacities[NationCapacity::AvailableMerchant] = capacity;
         Ok(())
     }
@@ -743,7 +756,7 @@ mod tests {
     }
 
     #[test]
-    fn refresh_trade_capacity_uses_city_industry_weights() {
+    fn refreshes_merchant_capacity_from_city_industry_weights() {
         let nation = MajorNationId::new(6);
         let mut game = state(true);
         let city = game.cities[nation].as_mut().unwrap();
@@ -751,14 +764,14 @@ mod tests {
         city.order_count_by_type[IndustryActionSlot::Slot5] = 1;
         city.order_count_by_type[IndustryActionSlot::Slot10] = 1;
 
-        game.refresh_trade_capacity(nation).unwrap();
+        game.refresh_merchant_capacity(nation).unwrap();
 
         let major = game.nations[nation.nation()]
             .as_ref()
             .unwrap()
             .major()
             .unwrap();
-        assert_eq!(major.capacities[NationCapacity::TradeOffer], 28);
+        assert_eq!(major.capacities[NationCapacity::MerchantCapacity], 28);
         assert_eq!(major.capacities[NationCapacity::AvailableMerchant], 28);
     }
 

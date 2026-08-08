@@ -98,7 +98,7 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
-    RefreshTradeCapacity {
+    RefreshMerchantCapacity {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
@@ -116,6 +116,10 @@ enum Operation {
         amount: i32,
     },
     IncreaseRollingStock {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
+    IncreaseMerchantMarine {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
@@ -277,10 +281,10 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
                 .allocate_transport_needs(nation)
                 .context("Rust transport-need allocation failed")?;
         }
-        Operation::RefreshTradeCapacity { nation } => {
+        Operation::RefreshMerchantCapacity { nation } => {
             state
-                .refresh_trade_capacity(nation)
-                .context("Rust trade-capacity refresh failed")?;
+                .refresh_merchant_capacity(nation)
+                .context("Rust merchant-capacity refresh failed")?;
         }
         Operation::RecallTradeBids { nation } => {
             state
@@ -303,6 +307,14 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
                 .context("Rust rolling-stock increase failed")?
             {
                 bail!("Rust could not increase rolling stock");
+            }
+        }
+        Operation::IncreaseMerchantMarine { nation } => {
+            if !state
+                .increase_merchant_marine(nation)
+                .context("Rust merchant-marine increase failed")?
+            {
+                bail!("Rust could not increase merchant marine");
             }
         }
         Operation::DecrementTradePolicyScore { source, target } => {
