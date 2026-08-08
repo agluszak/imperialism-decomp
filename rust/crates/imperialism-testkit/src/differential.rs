@@ -406,4 +406,14 @@ mod tests {
         })
         .unwrap();
     }
+
+    #[test]
+    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+    fn trade_market_price() {
+        differential("trade_market_price", |state, (): ()| {
+            state.recalculate_trade_prices();
+            Ok(())
+        })
+        .unwrap();
+    }
 }

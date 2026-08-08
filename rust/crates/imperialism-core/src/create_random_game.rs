@@ -3,7 +3,7 @@ use crate::{
     MajorNationState, MajorNationTable, NationCapacityTable, NationCommonState, NationData,
     NationId, NationPendingWork, NationState, NationTable, PendingWorkState, PopulationState,
     ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState, TileId, TileOwnerTag,
-    TileState, TurnState, WorldState,
+    TileState, TradeMarketState, TurnState, WorldState,
 };
 use enum_map::EnumMap;
 
@@ -77,6 +77,7 @@ pub fn create_random_game(
             map_generation: preview.final_map_lcg,
             zone_status: 0,
         },
+        market: TradeMarketState::default(),
         nations: bootstrap_nations(human_nation, difficulty),
         cities: bootstrap_cities(human_nation, difficulty),
         military_units: Vec::new(),

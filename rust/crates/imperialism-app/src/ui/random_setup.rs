@@ -69,7 +69,7 @@ impl Default for RandomGameSetup {
 }
 
 /// Authoritative game state produced when Random Setup Accept/Okay succeeds.
-#[derive(Resource, Clone, Debug, Eq, PartialEq)]
+#[derive(Resource, Clone, Debug, PartialEq)]
 pub(crate) struct GameSession(pub GameState);
 
 /// The generated map data owned by the setup screen.

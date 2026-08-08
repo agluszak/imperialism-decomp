@@ -3,16 +3,17 @@ use crate::{
     LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable,
     MinorNationTable, NationCapacityTable, NationId, NationTable, PendingActionTable,
     ProductionTable, ProvinceId, RecruitKind, ResourceTable, ShipId, TaskForceId, TileId,
-    TileOwnerTag,
+    TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub turn: TurnState,
     pub persistent_unit_id_counter: i32,
     pub world: WorldState,
     pub rng: RngState,
+    pub market: TradeMarketState,
     pub nations: NationTable<Option<NationState>>,
     pub cities: MajorNationTable<Option<CityState>>,
     pub military_units: Vec<MilitaryUnitState>,
