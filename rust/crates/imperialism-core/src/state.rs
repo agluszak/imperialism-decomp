@@ -19,6 +19,10 @@ impl AidAllocationTable {
     pub fn as_slice(&self) -> &[i32] {
         &self.0
     }
+
+    pub(crate) fn clear(&mut self) {
+        self.0.fill(0);
+    }
 }
 
 impl Default for AidAllocationTable {

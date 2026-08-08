@@ -85,6 +85,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    RecallTradeBids {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     SetDiplomacyGrant {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -222,6 +226,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .refresh_trade_capacity(nation)
                 .context("Rust trade-capacity refresh failed")?;
+        }
+        Operation::RecallTradeBids { nation } => {
+            state
+                .recall_trade_bids(nation)
+                .context("Rust trade-bid recall failed")?;
         }
         Operation::SetDiplomacyGrant {
             nation,
