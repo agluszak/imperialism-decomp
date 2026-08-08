@@ -396,4 +396,14 @@ mod tests {
         })
         .unwrap();
     }
+
+    #[test]
+    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+    fn player_trade_phase_reset() {
+        differential("player_trade_phase_reset", |state, case: NationCase| {
+            state.reset_player_trade_phase(case.nation)?;
+            Ok(())
+        })
+        .unwrap();
+    }
 }

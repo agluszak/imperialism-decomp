@@ -334,14 +334,9 @@ JSON_Value* CaptureWorld() {
     tileObject.Set("action_state", static_cast<int>(tile.tileActionState16));
     tileObject.Set("active_flags",
                            static_cast<unsigned int>(tile.activeFlags1c));
-<<<<<<< HEAD
-    json_object_set_number(tileObject, "region_marker", static_cast<int>(tile.regionSubtypeTag05));
-    json_object_set_number(tileObject, "river_sprite_code",
-                           static_cast<unsigned int>(tile.riverSpriteCode));
-    json_array_append_value(tiles, tileValue);
-=======
+    tileObject.Set("region_marker", static_cast<int>(tile.regionSubtypeTag05));
+    tileObject.Set("river_sprite_code", static_cast<unsigned int>(tile.riverSpriteCode));
     tiles.Add(tileObject.Release());
->>>>>>> 68588e7a0 (Simplify differential harness to before/after GameState captures)
   }
   object.Set("tiles", tiles.Release());
   return object.Release();
