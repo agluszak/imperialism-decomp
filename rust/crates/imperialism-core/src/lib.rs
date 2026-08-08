@@ -41,8 +41,8 @@ pub use civilian_work::{CivilianWorkError, CivilianWorkOrder};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
-    ArmyId, CityId, CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, MissionId,
-    NationId, NavyId, ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
+    CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, ProvinceId, ShipId,
+    TaskForceId, TileId, TileOwnerTag,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, RetailTopologyByte, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -51,10 +51,8 @@ pub use map_geometry::{
 pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
-    CapacityProductionOrder, CapacityTarget, ExpansionProductionOrder, ExpansionTarget,
-    FoodProductionOrder, ItemInputs, ItemProductionOrder, PopulationGrowthOrder,
-    PowerPlantProductionOrder, ProductionConstraint, ProductionError, ProductionProgress,
-    ResourceCost, TrainingLevel, TrainingProductionOrder, UnitCostProfile, UnitProductionOrder,
+    ProductionConstraint, ProductionError, ProductionProgress, ResourceCost, UnitCostProfile,
+    UnitProductionOrder,
 };
 pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMap, CoarseMapGrid,
@@ -86,17 +84,17 @@ pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, DevelopmentLevel,
-    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameEvent, GameState, LandSale,
-    MajorNation, MajorNationState, MilitaryUnitState, MinorNation, MissionData, MissionState,
-    NationCommonState, NationPendingWork, Nations, NavyMissionState, PendingWorkState,
-    PopulationState, RngState, SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState,
-    TaskForceTarget, TileDevelopment, TileState, TileTransportLinks, TradePolicyScore,
-    TurnStartEventState, TurnState, TurnSummary, WarTransition, WorldState,
+    DiplomacyGrant, DiplomacyPolicy, GameState, LandSale, MajorNation, MajorNationState,
+    MilitaryUnitState, MinorNation, MissionData, MissionState, NationCommonState,
+    NationPendingWork, Nations, NavyMissionState, PendingWorkState, PopulationState, RngState,
+    SelectedShip, ShipState, TaggedValue, TaskForceState, TaskForceTarget, TileDevelopment,
+    TileState, TileTransportLinks, TradePolicyScore, TurnStartEventState, TurnState, TurnSummary,
+    WarTransition, WorldState,
 };
 pub use tables::{
-    IndustryActionSlot, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,
-    MajorNationTable, MinorNationTable, NATION_COUNT, NationCapacity, NationCapacityTable,
-    NationTable, PENDING_ACTION_COUNT, PendingActionKind, PendingActionTable, ProductionTable,
+    INDUSTRY_ACTION_SLOT_COUNT, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,
+    MajorNationTable, MinorNationTable, NATION_COUNT, NationCapacities, NationTable,
+    PENDING_ACTION_COUNT, PendingActionKind, PendingActionTable, ProductionTable,
 };
 pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;

@@ -1,8 +1,7 @@
 use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameEvent, GameState,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState,
     MajorNationId, MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, NationId,
-    PendingActionKind, RecruitKind, StepOutcome, TileId, TurnSummary, UnitProductionOrder,
-    WorldState,
+    PendingActionKind, RecruitKind, TileId, TurnSummary, UnitProductionOrder, WorldState,
 };
 
 impl WorldState {
@@ -60,10 +59,10 @@ impl GameState {
         &mut self,
         nation: NationId,
         order: &mut UnitProductionOrder,
-    ) -> Result<StepOutcome, RecruitmentError> {
+    ) -> Result<(), RecruitmentError> {
         let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
-            return Ok(StepOutcome::default());
+            return Ok(());
         }
         let RecruitKind::Civilian(unit_kind) = order.profile.recruit_kind else {
             return Err(RecruitmentError::SpecialistOrder);
@@ -86,7 +85,6 @@ impl GameState {
             .civilian_recruit_count_by_kind[unit_kind];
         *metric += pending_delta;
 
-        let mut events = Vec::new();
         if pending_delta > 0 {
             for _ in 0..pending_delta {
                 let Some(tile) = self.world.find_reachable_recruit_spawn_tile(
@@ -114,20 +112,9 @@ impl GameState {
                     .civilian_units
                     .partition_point(|existing| existing.nation.get() <= nation.get());
                 self.civilian_units.insert(insert_at, unit);
-                events.push(GameEvent::CivilianUnitRecruited {
-                    id,
-                    nation,
-                    unit_type: unit_kind,
-                    tile,
-                });
             }
         }
 
-        events.push(GameEvent::RecruitmentAnnounced {
-            nation,
-            recruit_kind: RecruitKind::Civilian(unit_kind),
-            requested: pending_delta,
-        });
         order.progress.quantity = 0;
         if unit_kind == CivilianUnitKind::Miner {
             let city = self
@@ -136,17 +123,17 @@ impl GameState {
                 .expect("city presence was checked");
             city.serialized_state += 1;
         }
-        Ok(StepOutcome { events })
+        Ok(())
     }
 
     pub fn produce_specialist_recruits(
         &mut self,
         nation: NationId,
         order: &mut UnitProductionOrder,
-    ) -> Result<StepOutcome, RecruitmentError> {
+    ) -> Result<(), RecruitmentError> {
         let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
-            return Ok(StepOutcome::default());
+            return Ok(());
         }
         let RecruitKind::Military(unit_kind) = order.profile.recruit_kind else {
             return Err(RecruitmentError::CivilianOrder);
@@ -179,7 +166,6 @@ impl GameState {
             (0, false)
         };
 
-        let mut events = Vec::new();
         if pending_delta > 0 {
             for _ in 0..pending_delta {
                 self.persistent_unit_id_counter += 1;
@@ -207,13 +193,6 @@ impl GameState {
                     .military_units
                     .partition_point(|existing| existing.nation.get() <= nation.get());
                 self.military_units.insert(insert_at, unit);
-                events.push(GameEvent::MilitaryUnitRecruited {
-                    id,
-                    nation,
-                    unit_type: unit_kind,
-                    province: home_province,
-                    experience,
-                });
 
                 let pending_status = self.nations.majors[nation_index]
                     .as_ref()
@@ -237,21 +216,11 @@ impl GameState {
                         major.pending_action_status[PendingActionKind::ArmyGrowthReward] = 0x32;
                         major.pending_action_payload_by_action
                             [PendingActionKind::ArmyGrowthReward] = payload;
-                        events.push(GameEvent::NationPendingActionQueued {
-                            nation,
-                            action: crate::PendingActionKind::ArmyGrowthReward,
-                            payload,
-                        });
                     }
                 }
             }
         }
 
-        events.push(GameEvent::RecruitmentAnnounced {
-            nation,
-            recruit_kind: RecruitKind::Military(unit_kind),
-            requested: pending_delta,
-        });
         insert_turn_summary(
             &mut self.rng,
             &mut self.pending.nations[nation_index].turn_summary,
@@ -270,7 +239,7 @@ impl GameState {
                 .expect("city presence was checked");
             city.serialized_state += 1;
         }
-        Ok(StepOutcome { events })
+        Ok(())
     }
 }
 
@@ -534,7 +503,7 @@ mod tests {
         state.civilian_units.push(civilian(40, 0, start));
         let mut production = order(CivilianUnitKind::Forester, 2);
 
-        let outcome = state
+        state
             .produce_civilian_recruits(NationId::new(0), &mut production)
             .unwrap();
 
@@ -551,22 +520,6 @@ mod tests {
             2
         );
         assert_eq!(production.progress.quantity, 0);
-        assert_eq!(
-            outcome.events,
-            vec![
-                GameEvent::CivilianUnitRecruited {
-                    id: CivilianUnitId::new(41),
-                    nation: NationId::new(0),
-                    unit_type: CivilianUnitKind::Forester,
-                    tile: first_neighbor,
-                },
-                GameEvent::RecruitmentAnnounced {
-                    nation: NationId::new(0),
-                    recruit_kind: RecruitKind::Civilian(CivilianUnitKind::Forester),
-                    requested: 2,
-                },
-            ]
-        );
     }
 
     #[test]
@@ -577,7 +530,7 @@ mod tests {
             Some(crate::TileOwnerTag::new(0));
         let mut production = order(CivilianUnitKind::Miner, -2);
 
-        let outcome = state
+        state
             .produce_civilian_recruits(NationId::new(0), &mut production)
             .unwrap();
 
@@ -599,14 +552,6 @@ mod tests {
             1
         );
         assert_eq!(production.progress.quantity, 0);
-        assert_eq!(
-            outcome.events,
-            vec![GameEvent::RecruitmentAnnounced {
-                nation: NationId::new(0),
-                recruit_kind: RecruitKind::Civilian(CivilianUnitKind::Miner),
-                requested: -2,
-            }]
-        );
     }
 
     #[test]
@@ -628,7 +573,7 @@ mod tests {
             .pending_action_status[PendingActionKind::ConqueredCapitalArmoryUpgrade] = 0x33;
         let mut production = specialist_order(MilitaryUnitKind::Sappers, 1);
 
-        let outcome = state
+        state
             .produce_specialist_recruits(NationId::new(0), &mut production)
             .unwrap();
 
@@ -664,23 +609,6 @@ mod tests {
                 flags: 1,
             }]
         );
-        assert_eq!(
-            outcome.events,
-            vec![
-                GameEvent::MilitaryUnitRecruited {
-                    id: MilitaryUnitId::new(41),
-                    nation: NationId::new(0),
-                    unit_type: MilitaryUnitKind::Sappers,
-                    province: 17,
-                    experience: 100,
-                },
-                GameEvent::RecruitmentAnnounced {
-                    nation: NationId::new(0),
-                    recruit_kind: RecruitKind::Military(MilitaryUnitKind::Sappers),
-                    requested: 1,
-                },
-            ]
-        );
     }
 
     #[test]
@@ -694,7 +622,7 @@ mod tests {
         state.persistent_unit_id_counter = 54;
         let mut production = specialist_order(MilitaryUnitKind::Skirmishers, 2);
 
-        let outcome = state
+        state
             .produce_specialist_recruits(NationId::new(0), &mut production)
             .unwrap();
 
@@ -708,14 +636,6 @@ mod tests {
         );
         assert_eq!(
             major.pending_action_payload_by_action[PendingActionKind::ArmyGrowthReward],
-            1
-        );
-        assert_eq!(
-            outcome
-                .events
-                .iter()
-                .filter(|event| matches!(event, GameEvent::NationPendingActionQueued { .. }))
-                .count(),
             1
         );
     }
@@ -753,7 +673,7 @@ mod tests {
         let mut state = game(home_tile);
         let mut production = specialist_order(MilitaryUnitKind::Minutemen, -2);
 
-        let outcome = state
+        state
             .produce_specialist_recruits(NationId::new(0), &mut production)
             .unwrap();
 
@@ -776,13 +696,5 @@ mod tests {
             }]
         );
         assert_eq!(production.progress.quantity, 0);
-        assert_eq!(
-            outcome.events,
-            vec![GameEvent::RecruitmentAnnounced {
-                nation: NationId::new(0),
-                recruit_kind: RecruitKind::Military(MilitaryUnitKind::Minutemen),
-                requested: -2,
-            }]
-        );
     }
 }

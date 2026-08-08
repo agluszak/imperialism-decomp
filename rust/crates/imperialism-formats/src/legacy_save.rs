@@ -2,16 +2,16 @@ use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
     CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel, Difficulty,
-    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
-    LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId,
-    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
-    NATION_COUNT, NationCapacityTable, NationCommonState, NationId, NationPendingWork, NationTable,
-    Nations, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
-    PopulationState, ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg, RngState,
-    STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileDevelopment, TileId,
-    TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
-    TradeMarketState, TradePolicyScore, TurnState, WorldState,
+    DiplomacyGrant, DiplomacyPolicy, GameState, IndustryActionTable, LaborPool, MAJOR_NATION_COUNT,
+    MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationState, MajorNationTable,
+    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, MinorNation,
+    MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCapacities,
+    NationCommonState, NationId, NationPendingWork, NationTable, Nations, NavyMissionState,
+    PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState, ProductionTable,
+    ProvinceId, ResourceTable, RetailCrtRng, RetailLcg, RngState, STRATEGIC_TILE_COUNT,
+    SelectedShip, ShipState, TaskForceState, TileDevelopment, TileId, TileOwnerTag, TileState,
+    TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState, TradePolicyScore,
+    TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -1373,7 +1373,7 @@ fn major_nation_rule_state(
     let post = &nation.post_city;
     Ok(MajorNationState {
         diplomacy_eligible: prefix.diplomacy_eligible != 0,
-        capacities: NationCapacityTable::from_array(prefix.capacities),
+        capacities: NationCapacities::from_array(prefix.capacities),
         grant_total_cost: prefix.grant_total_cost,
         unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
         diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
@@ -1440,14 +1440,9 @@ fn diplomacy_grants_from_retail_entries(
                     entry,
                 });
             }
-            let flags = if entry & 0x4000 != 0 {
-                DiplomacyGrantFlags::RECURRING
-            } else {
-                DiplomacyGrantFlags::empty()
-            };
             Some(DiplomacyGrant {
                 amount: i32::from(entry & 0x3fff),
-                flags,
+                recurring: entry & 0x4000 != 0,
             })
         };
     }
@@ -2971,10 +2966,6 @@ mod tests {
         );
         game.turn.advance_season();
         assert_eq!(game.turn.economic_turn, 2);
-        assert_eq!(
-            game.request_next_phase().events,
-            vec![imperialism_core::GameEvent::PhaseAdvanceRequested]
-        );
     }
 
     #[test]

@@ -1,10 +1,9 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
-    HexDirection, IndustryActionSlot, IndustryActionTable, LaborPool, MajorNationTable,
-    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacityTable,
-    NationId, NationTable, PendingActionTable, ProductionTable, ProvinceId, RecruitKind,
-    ResourceTable, RetailCrtRng, RetailLcg, ShipId, TaskForceId, TileId, TileOwnerTag,
-    TradeMarketState,
+    HexDirection, IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId,
+    MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable,
+    PendingActionTable, ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg,
+    ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
@@ -246,14 +245,6 @@ impl Default for TradePolicyScore {
     }
 }
 
-bitflags::bitflags! {
-    #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-    #[serde(transparent)]
-    pub struct DiplomacyGrantFlags: u8 {
-        const RECURRING = 0b0000_0001;
-    }
-}
-
 /// A current diplomatic grant to one nation.
 ///
 /// `None` in the owning table means no grant. A present zero-valued grant is
@@ -261,7 +252,7 @@ bitflags::bitflags! {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct DiplomacyGrant {
     pub amount: i32,
-    pub flags: DiplomacyGrantFlags,
+    pub recurring: bool,
 }
 
 /// A proposed diplomatic relationship with one nation.
@@ -284,7 +275,7 @@ pub enum DiplomacyPolicy {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNationState {
     pub diplomacy_eligible: bool,
-    pub capacities: NationCapacityTable<i16>,
+    pub capacities: NationCapacities,
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
     pub diplomacy_policy_by_nation: NationTable<Option<DiplomacyPolicy>>,
@@ -322,7 +313,7 @@ impl MajorNationState {
     pub fn for_random_start(human: bool) -> Self {
         Self {
             diplomacy_eligible: human,
-            capacities: NationCapacityTable::from_array([0, 0, 0x0f, 0]),
+            capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: NationTable::default(),
@@ -496,7 +487,7 @@ pub struct CivilianUnitState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipState {
-    pub ship_type: IndustryActionSlot,
+    pub ship_type: i16,
     pub location: i16,
     pub task_force: Option<TaskForceId>,
     pub aggression: i32,
@@ -635,54 +626,4 @@ pub struct TurnStartEventState {
 pub struct LandSale {
     pub province: i16,
     pub nation: NationId,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum GameEvent {
-    PhaseAdvanceRequested,
-    CivilianUnitRecruited {
-        id: CivilianUnitId,
-        nation: NationId,
-        unit_type: CivilianUnitKind,
-        tile: TileId,
-    },
-    MilitaryUnitRecruited {
-        id: MilitaryUnitId,
-        nation: NationId,
-        unit_type: MilitaryUnitKind,
-        province: i16,
-        experience: i16,
-    },
-    NationPendingActionQueued {
-        nation: NationId,
-        action: crate::PendingActionKind,
-        payload: i16,
-    },
-    TradeBidPlaced {
-        nation: NationId,
-        resource: crate::ResourceKind,
-        amount: i16,
-    },
-    TradeBidsRemembered {
-        nation: NationId,
-    },
-    TradeSettled {
-        nation: NationId,
-        resource: crate::ResourceKind,
-        amount: i16,
-        price: i16,
-    },
-    PurchasedItemsCommitted {
-        nation: NationId,
-    },
-    RecruitmentAnnounced {
-        nation: NationId,
-        recruit_kind: RecruitKind,
-        requested: i16,
-    },
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct StepOutcome {
-    pub events: Vec<GameEvent>,
 }

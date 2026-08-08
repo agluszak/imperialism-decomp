@@ -1,3 +1,9 @@
+//! Deterministic production-order rules.
+//!
+//! Several private order types are currently exercised only by unit tests; lib
+//! callers land with later phase ports.
+#![allow(dead_code)]
+
 use crate::{
     CityState, MajorNationState, PendingActionKind, ProductionSlot, ResourceKind, ResourceTable,
     SkillBand,
@@ -33,14 +39,14 @@ impl Default for ProductionProgress {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum ItemInputs {
+enum ItemInputs {
     Double(ResourceKind),
     Both(ResourceKind, ResourceKind),
     Either(ResourceKind, ResourceKind),
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum CapacityTarget {
+enum CapacityTarget {
     Production(ProductionSlot),
     Transport,
     RegionalPopulation,
@@ -67,7 +73,7 @@ impl CapacityTarget {
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum ExpansionTarget {
+enum ExpansionTarget {
     Production(ProductionSlot),
     RegionalPopulation,
 }
@@ -90,42 +96,42 @@ impl ExpansionTarget {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ItemProductionOrder {
-    pub output: ResourceKind,
-    pub progress: ProductionProgress,
-    pub requested_quantity: i16,
-    pub inputs: ItemInputs,
-    pub production_slot: ProductionSlot,
+struct ItemProductionOrder {
+    output: ResourceKind,
+    progress: ProductionProgress,
+    requested_quantity: i16,
+    inputs: ItemInputs,
+    production_slot: ProductionSlot,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct CapacityProductionOrder {
-    pub target: CapacityTarget,
-    pub progress: ProductionProgress,
-    pub requested_quantity: i16,
-    pub primary_input: ResourceKind,
-    pub secondary_input: ResourceKind,
-    pub production_slot: ProductionSlot,
+struct CapacityProductionOrder {
+    target: CapacityTarget,
+    progress: ProductionProgress,
+    requested_quantity: i16,
+    primary_input: ResourceKind,
+    secondary_input: ResourceKind,
+    production_slot: ProductionSlot,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ExpansionProductionOrder {
-    pub target: ExpansionTarget,
-    pub progress: ProductionProgress,
-    pub requested_quantity: i16,
-    pub primary_input: ResourceKind,
-    pub secondary_input: ResourceKind,
-    pub production_slot: ProductionSlot,
+struct ExpansionProductionOrder {
+    target: ExpansionTarget,
+    progress: ProductionProgress,
+    requested_quantity: i16,
+    primary_input: ResourceKind,
+    secondary_input: ResourceKind,
+    production_slot: ProductionSlot,
 }
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
-pub struct PowerPlantProductionOrder {
-    pub progress: ProductionProgress,
-    pub desired_quantity: i16,
+struct PowerPlantProductionOrder {
+    progress: ProductionProgress,
+    desired_quantity: i16,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum TrainingLevel {
+enum TrainingLevel {
     Medium,
     High,
 }
@@ -140,9 +146,9 @@ impl TrainingLevel {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct TrainingProductionOrder {
-    pub level: TrainingLevel,
-    pub progress: ProductionProgress,
+struct TrainingProductionOrder {
+    level: TrainingLevel,
+    progress: ProductionProgress,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -185,15 +191,15 @@ impl TrainingProductionOrder {
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct FoodProductionOrder {
-    pub quantity: i16,
-    pub reserved_workforce: i16,
+struct FoodProductionOrder {
+    quantity: i16,
+    reserved_workforce: i16,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub struct PopulationGrowthOrder {
-    pub quantity: i16,
-    pub limiting_constraint: ProductionConstraint,
+struct PopulationGrowthOrder {
+    quantity: i16,
+    limiting_constraint: ProductionConstraint,
 }
 
 impl Default for PopulationGrowthOrder {
@@ -962,7 +968,7 @@ fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, p
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, NationCapacity, PopulationState};
+    use crate::{LaborPool, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
@@ -1010,7 +1016,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::default(),
+            capacities: crate::NationCapacities::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
@@ -1436,10 +1442,10 @@ mod tests {
         production.progress.reserved_workforce = 6;
         production.progress.tracking_by_resource[ResourceKind::Lumber] = 3;
         production.progress.tracking_by_resource[ResourceKind::Steel] = 3;
-        owner.capacities[NationCapacity::Transport] = 4;
+        owner.capacities.transport = 4;
 
         production.produce(&mut state, &mut owner, 0);
-        assert_eq!(owner.capacities[NationCapacity::Transport], 7);
+        assert_eq!(owner.capacities.transport, 7);
         assert_eq!(state.production_orders, crate::ProductionTable::default());
         assert_eq!(production.progress.quantity, 0);
         assert_eq!(production.progress.reserved_workforce, 0);

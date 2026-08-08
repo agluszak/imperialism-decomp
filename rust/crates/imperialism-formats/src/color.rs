@@ -29,30 +29,6 @@ impl Rgb {
     }
 }
 
-/// Index into an 8-bit retail DIB palette (`0..=255`).
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct PaletteIndex(u8);
-
-impl PaletteIndex {
-    pub const fn new(index: u8) -> Self {
-        Self(index)
-    }
-
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub const fn as_usize(self) -> usize {
-        self.0 as usize
-    }
-}
-
-impl From<PaletteIndex> for usize {
-    fn from(value: PaletteIndex) -> Self {
-        value.as_usize()
-    }
-}
-
 /// The 256-entry RGB palette carried by the retail default indexed DIB.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct DibPalette([Rgb; 256]);
@@ -77,30 +53,16 @@ impl Default for DibPalette {
     }
 }
 
-impl Index<PaletteIndex> for DibPalette {
+impl Index<u8> for DibPalette {
     type Output = Rgb;
 
-    fn index(&self, index: PaletteIndex) -> &Self::Output {
-        &self.0[index.as_usize()]
+    fn index(&self, index: u8) -> &Self::Output {
+        &self.0[usize::from(index)]
     }
 }
 
-impl IndexMut<PaletteIndex> for DibPalette {
-    fn index_mut(&mut self, index: PaletteIndex) -> &mut Self::Output {
-        &mut self.0[index.as_usize()]
-    }
-}
-
-impl Index<usize> for DibPalette {
-    type Output = Rgb;
-
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.0[index]
-    }
-}
-
-impl IndexMut<usize> for DibPalette {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        &mut self.0[index]
+impl IndexMut<u8> for DibPalette {
+    fn index_mut(&mut self, index: u8) -> &mut Self::Output {
+        &mut self.0[usize::from(index)]
     }
 }

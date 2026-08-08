@@ -5,8 +5,9 @@ repository rules in `../AGENTS.md` plus this guide.
 
 ## Architecture
 
-- `imperialism-core` owns authoritative deterministic game state, rules, typed IDs, and ordered
-  domain events. It must not depend on Bevy.
+- `imperialism-core` owns authoritative deterministic game state, rules, and typed IDs. It must not
+  depend on Bevy. Direct domain operations return concrete outputs needed by current callers; emit
+  domain events only when an existing consumer or oracle comparison requires them.
 - `imperialism-formats` owns retail-file parsing, import, normalization, and retail-format ugliness.
 - `imperialism-app` owns Bevy presentation, input, audio, and lifecycle. ECS is a disposable
   projection, not the gameplay database.
@@ -23,8 +24,9 @@ the decomp uses them.
 - Treat recovered C++ widths, signedness, sentinels, and packed fields as format evidence, not as
   default Rust domain types. Choose core types from the game rule they represent.
 - Decode retail packing and sentinel values at format and oracle boundaries. In `imperialism-core`,
-  represent absence with `Option` and independent flags with `bitflags`; do not expose masks,
-  sentinel integers, or raw retail storage entries as domain APIs.
+  represent absence with `Option`. Prefer plain `bool` fields until multiple independent flags share
+  one value; only then consider `bitflags`. Do not expose masks, sentinel integers, or raw retail
+  storage entries as domain APIs.
 - Use ordinary arithmetic for domain rules. Only use wrapping or fixed-width overflow when retail
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.
@@ -35,9 +37,10 @@ the decomp uses them.
 - Do not reach for Ghidra or `reccmp` merely because the repository contains them. Binary-level
   investigation is a deliberate cross-implementation/reverse-engineering task, not part of normal
   Rust or Bevy development.
-- Put deterministic behavior in `imperialism-core` as direct operations that may return domain
-  events. Keep Bevy input and presentation outside the game model.
-- Compare complete post-state and ordered events, not only the symptom or a selected field.
+- Put deterministic behavior in `imperialism-core` as direct operations that return the concrete
+  output current callers need. Keep Bevy input and presentation outside the game model.
+- Compare complete post-state (and ordered events when a consumer/oracle requires them), not only the
+  symptom or a selected field.
 - Add the smallest focused Rust test that proves the primary behavior. Do not accumulate edge-case
   or representation-detail tests without a concrete regression they prevent. Add or extend a
   differential oracle when the change asserts retail semantics.

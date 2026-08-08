@@ -124,7 +124,7 @@ impl CityState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{IndustryActionSlot, RetailCrtRng, RetailLcg};
+    use crate::{RetailCrtRng, RetailLcg};
 
     fn city() -> CityState {
         crate::test_support::city()
@@ -136,8 +136,8 @@ mod tests {
         assert_eq!(state.average_descriptor_weight_times_ten(), 0);
         assert_eq!(state.average_allocation_weight_times_ten(), 1);
 
-        state.order_count_by_type[IndustryActionSlot::Slot1] = 1;
-        state.order_count_by_type[IndustryActionSlot::Slot2] = 2;
+        state.order_count_by_type[1] = 1;
+        state.order_count_by_type[2] = 2;
         assert_eq!(state.average_descriptor_weight_times_ten(), 10);
         assert_eq!(state.average_allocation_weight_times_ten(), 33);
     }
@@ -145,8 +145,8 @@ mod tests {
     #[test]
     fn allocation_skips_blocked_rows_and_consumes_the_exact_crt_stream() {
         let mut state = city();
-        state.order_count_by_type[IndustryActionSlot::Slot1] = 3;
-        state.order_count_by_type[IndustryActionSlot::Slot3] = 100;
+        state.order_count_by_type[1] = 3;
+        state.order_count_by_type[3] = 100;
         let mut output = IndustryActionTable::default();
         let mut rng = RngState {
             crt_rand: RetailCrtRng::from_state(1),
@@ -158,10 +158,10 @@ mod tests {
             state.allocate_random_resource_counts(5, &mut output, &mut rng),
             5
         );
-        assert_eq!(output[IndustryActionSlot::Slot1], 3);
-        assert_eq!(output[IndustryActionSlot::Slot3], 0);
-        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 0);
-        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot3], 100);
+        assert_eq!(output[1], 3);
+        assert_eq!(output[3], 0);
+        assert_eq!(state.order_count_by_type[1], 0);
+        assert_eq!(state.order_count_by_type[3], 100);
         assert_eq!(rng.crt_rand, RetailCrtRng::from_state(415_139_642));
         assert_eq!(rng.map_generation, RetailLcg::from_state(2));
         assert_eq!(rng.zone_status, RetailLcg::from_state(3));
@@ -170,7 +170,7 @@ mod tests {
     #[test]
     fn zero_budget_leaves_counts_and_rng_untouched() {
         let mut state = city();
-        state.order_count_by_type[IndustryActionSlot::Slot1] = 1;
+        state.order_count_by_type[1] = 1;
         let mut output = IndustryActionTable::default();
         let mut rng = RngState {
             crt_rand: RetailCrtRng::from_state(1),
@@ -181,7 +181,7 @@ mod tests {
             state.allocate_random_resource_counts(0, &mut output, &mut rng),
             0
         );
-        assert_eq!(state.order_count_by_type[IndustryActionSlot::Slot1], 1);
+        assert_eq!(state.order_count_by_type[1], 1);
         assert_eq!(rng.crt_rand, RetailCrtRng::from_state(1));
     }
 }
