@@ -16,6 +16,7 @@ from tools.runtime.catalog import (
     record_missing_oracles,
     tests_in_suite,
 )
+from tools.runtime.generate_native_registry import render_registry
 from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.protocol import validate_result
 
@@ -124,6 +125,7 @@ class RuntimeProtocolTests(unittest.TestCase):
             "game_state": {"new_rust_field": ["owned", {"semantic": True}]},
             "coarse_map_generation": {"unmodeled": "payload"},
             "random_map_terrain": {"unmodeled": "payload"},
+            "random_game_setup": {"unmodeled": "payload"},
             "map_state": {"unmodeled": "payload"},
             "serialization_roundtrip": {"unmodeled": "payload"},
             "ui_tree": {
@@ -133,6 +135,9 @@ class RuntimeProtocolTests(unittest.TestCase):
             },
         }
         validate_result(self.result(captures=captures), "boot_managers", 1)
+
+    def test_native_registry_knows_the_random_setup_capture(self) -> None:
+        self.assertIn("kRuntimeCaptureRandomGameSetup", render_registry())
 
     def test_missing_required_keys_are_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "missing"):

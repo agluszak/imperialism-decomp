@@ -343,6 +343,377 @@
       "root": 4
     },
     {
+      "event": 954,
+      "id": {
+        "resource_file": "Linger.rsrc",
+        "resource_id": 954
+      },
+      "nodes": [
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 4,
+          "input_gate": true,
+          "interactive": false,
+          "kind": "window",
+          "parent": null,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": null,
+            "control_state": null,
+            "frame_style": null,
+            "max_chars": null,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": null,
+            "window": {
+              "captioned_frame": 0,
+              "color": {
+                "background": 538976288,
+                "behavior_flag": 1,
+                "foreground": 538976288,
+                "triplet_flag": 1
+              },
+              "flags": 8,
+              "resource_6c": 0,
+              "resource_6e": 1,
+              "resource_6f": 1,
+              "resource_71": 1,
+              "style_type": 2,
+              "topmost": 0
+            }
+          },
+          "rect": {
+            "height": 177,
+            "width": 252,
+            "x": 160,
+            "y": 138
+          },
+          "state": true,
+          "tag": "WIND"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 128,
+          "input_gate": true,
+          "interactive": false,
+          "kind": "picture",
+          "parent": 4,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 10,
+            "max_chars": null,
+            "number": null,
+            "picture_id": 4535,
+            "style": null,
+            "text": null,
+            "window": null
+          },
+          "rect": {
+            "height": 177,
+            "width": 252,
+            "x": 0,
+            "y": 0
+          },
+          "state": false,
+          "tag": "DLOG"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": false,
+          "id": 224,
+          "input_gate": true,
+          "interactive": false,
+          "kind": "radio_or_cluster_control",
+          "parent": 128,
+          "properties": {
+            "cluster_value": 538976288,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 5,
+            "max_chars": null,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": null,
+            "window": null
+          },
+          "rect": {
+            "height": 20,
+            "width": 175,
+            "x": 39,
+            "y": 110
+          },
+          "state": false,
+          "tag": "1or2"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 339,
+          "input_gate": true,
+          "interactive": true,
+          "kind": "radio_or_cluster_control",
+          "parent": 224,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 13,
+            "max_chars": null,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": {
+              "alignment": 1,
+              "face_flags": 0,
+              "font_family": 0,
+              "point_size": 0,
+              "resource_id": 1300,
+              "resource_index": 65535,
+              "style_ref": 0,
+              "value": ""
+            },
+            "window": null
+          },
+          "rect": {
+            "height": 16,
+            "width": 85,
+            "x": 2,
+            "y": 2
+          },
+          "state": true,
+          "tag": "one1"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 451,
+          "input_gate": true,
+          "interactive": true,
+          "kind": "radio_or_cluster_control",
+          "parent": 224,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 13,
+            "max_chars": null,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": {
+              "alignment": 1,
+              "face_flags": 0,
+              "font_family": 0,
+              "point_size": 0,
+              "resource_id": 1300,
+              "resource_index": 65535,
+              "style_ref": 0,
+              "value": ""
+            },
+            "window": null
+          },
+          "rect": {
+            "height": 16,
+            "width": 85,
+            "x": 88,
+            "y": 2
+          },
+          "state": true,
+          "tag": "two2"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 563,
+          "input_gate": true,
+          "interactive": false,
+          "kind": "static_text",
+          "parent": 128,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 13,
+            "max_chars": null,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": {
+              "alignment": 0,
+              "face_flags": 1,
+              "font_family": 3,
+              "point_size": 12,
+              "resource_id": 1300,
+              "resource_index": 3,
+              "style_ref": 0,
+              "value": "Pick a planet"
+            },
+            "window": null
+          },
+          "rect": {
+            "height": 55,
+            "width": 182,
+            "x": 37,
+            "y": 22
+          },
+          "state": false,
+          "tag": "inst"
+        },
+        {
+          "child_hit_test": false,
+          "control_value": 538976288,
+          "enabled": true,
+          "id": 665,
+          "input_gate": true,
+          "interactive": true,
+          "kind": "edit_control",
+          "parent": 128,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              3,
+              3,
+              3
+            ],
+            "control_state": null,
+            "frame_style": 6,
+            "max_chars": 32,
+            "number": null,
+            "picture_id": null,
+            "style": null,
+            "text": {
+              "alignment": 0,
+              "face_flags": 0,
+              "font_family": 0,
+              "point_size": 0,
+              "resource_id": 0,
+              "resource_index": -1,
+              "style_ref": 0,
+              "value": ""
+            },
+            "window": null
+          },
+          "rect": {
+            "height": 23,
+            "width": 175,
+            "x": 40,
+            "y": 79
+          },
+          "state": true,
+          "tag": "plan"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": true,
+          "id": 830,
+          "input_gate": true,
+          "interactive": true,
+          "kind": "picture_button",
+          "parent": 128,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 34,
+            "max_chars": null,
+            "number": null,
+            "picture_id": 9410,
+            "style": null,
+            "text": null,
+            "window": null
+          },
+          "rect": {
+            "height": 24,
+            "width": 61,
+            "x": 158,
+            "y": 138
+          },
+          "state": true,
+          "tag": "okay"
+        },
+        {
+          "child_hit_test": true,
+          "control_value": 0,
+          "enabled": false,
+          "id": 946,
+          "input_gate": true,
+          "interactive": true,
+          "kind": "picture_button",
+          "parent": 128,
+          "properties": {
+            "cluster_value": null,
+            "content_insets": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "control_state": null,
+            "frame_style": 34,
+            "max_chars": null,
+            "number": null,
+            "picture_id": 9412,
+            "style": null,
+            "text": null,
+            "window": null
+          },
+          "rect": {
+            "height": 24,
+            "width": 61,
+            "x": 33,
+            "y": 138
+          },
+          "state": false,
+          "tag": "canc"
+        }
+      ],
+      "root": 4
+    },
+    {
       "event": 2013,
       "id": {
         "resource_file": "MapView.rsrc",
@@ -3960,7 +4331,7 @@
           "enabled": true,
           "id": 500,
           "input_gate": true,
-          "interactive": false,
+          "interactive": true,
           "kind": "custom_canvas",
           "parent": 402,
           "properties": {
@@ -4793,7 +5164,7 @@
           "enabled": true,
           "id": 2792,
           "input_gate": true,
-          "interactive": false,
+          "interactive": true,
           "kind": "picture",
           "parent": 72,
           "properties": {

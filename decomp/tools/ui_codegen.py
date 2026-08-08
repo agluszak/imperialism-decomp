@@ -98,6 +98,7 @@ class UiResourceKey:
 
 
 RUST_LAUNCH_VIEW_KEYS = (
+    UiResourceKey("Linger.rsrc", 954),
     UiResourceKey("Startup.rsrc", 1500),
     UiResourceKey("Startup.rsrc", 1501),
     UiResourceKey("Startup.rsrc", 952),
@@ -1080,7 +1081,7 @@ def _rust_widget_kind(node: UiSemanticNode) -> str:
     return "specialized"
 
 
-def _rust_widget_interactive(node: UiSemanticNode) -> bool:
+def _rust_widget_interactive(key: UiResourceKey, node: UiSemanticNode) -> bool:
     """Return the launch UI interaction semantic without exposing C++ classes.
 
     The generator is the one place where the recovered type and class evidence is
@@ -1095,6 +1096,12 @@ def _rust_widget_interactive(node: UiSemanticNode) -> bool:
         or (node.type_code == "pict" and "button" in node.class_name.casefold())
         or kind in ("toggle", "checkbox")
         or (node.type_code == "stat" and "radio" in node.class_name.casefold())
+        # TSetupRandomMapPicture::DoEvent handles this otherwise passive
+        # TNoHilitePicture as the random-map regeneration action.
+        or (key == UiResourceKey("Startup.rsrc", 1501) and node.tag == "glob")
+        # TMapPreviewView::DoMouseCommand resolves the clicked preview palette
+        # to a nation and dispatches the pick event to its owner.
+        or node.class_name == "TMapPreviewView"
     )
 
 
@@ -1215,7 +1222,7 @@ def build_rust_ui_catalog(
                     "rect": {"x": x, "y": y, "width": width, "height": height},
                     "state": bool(node.state),
                     "enabled": bool(node.enabled),
-                    "interactive": _rust_widget_interactive(node),
+                    "interactive": _rust_widget_interactive(key, node),
                     "input_gate": bool(node.input_gate),
                     "child_hit_test": bool(node.child_hit_test),
                     "control_value": node.control_value,

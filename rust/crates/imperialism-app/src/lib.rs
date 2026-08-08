@@ -63,6 +63,11 @@ pub fn run(retail_assets: RetailAssets) {
             )
                 .chain(),
         )
-        .add_plugins((ui::UiRuntimePlugin, ui::StartupUiPlugin))
-        .run();
+        .add_plugins((
+            ui::UiRuntimePlugin,
+            ui::StartupUiPlugin,
+            ui::MapPreviewPlugin,
+        ));
+    app.world_mut().spawn(Camera2d);
+    app.run();
 }

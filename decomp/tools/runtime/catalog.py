@@ -100,6 +100,14 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "random_game_normal_start",
+        "NormalRandomGameStartTest",
+        ("pr", "full"),
+        "self_consistency",
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "random_game_introductory_exits_newspaper",
         "IntroductoryRandomGameTest",
         ("pr", "full"),
@@ -114,7 +122,11 @@ TESTS = (
         ("pr", "full", "map_generation"),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("coarse_map_generation", "random_map_terrain"),
+        native_snapshots=(
+            "coarse_map_generation",
+            "random_map_terrain",
+            "random_game_setup",
+        ),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -123,7 +135,7 @@ TESTS = (
         ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("random_map_terrain",),
+        native_snapshots=("random_map_terrain", "random_game_setup"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(

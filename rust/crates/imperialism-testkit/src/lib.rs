@@ -3,14 +3,16 @@
 mod runtime_capture;
 
 use imperialism_core::{
-    GameState, RetailLcg,
+    GameState, MajorNationId, RetailLcg, RetailTopologyByte,
     differential_trace::{
         CoarseMapTrace, RandomMapTerrainCapture, RandomMapTerrainTrace, trace_coarse_random_map,
         trace_random_map_terrain,
     },
 };
-pub use runtime_capture::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
-use serde::Serialize;
+pub use runtime_capture::{
+    RuntimeCaptureError, decode_runtime_capture, read_runtime_capture, read_runtime_seed,
+};
+use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use std::path::Path;
 
@@ -39,6 +41,21 @@ pub struct Difference {
     pub reimplementation: Option<serde_json::Value>,
 }
 
+/// The initial or explicitly regenerated controls and preview seed from the
+/// random-game setup screen, before the flow edits its scripted country or
+/// difficulty controls.
+///
+/// The native runtime emits this directly as its `random_game_setup` capture.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq)]
+pub struct RandomGameSetupCapture {
+    pub planet_seed: String,
+    pub topology: RetailTopologyByte,
+    pub nation: MajorNationId,
+    pub country_name: String,
+    pub difficulty: u8,
+    pub localized_names: bool,
+}
+
 pub fn read_game_state(path: impl AsRef<Path>) -> Result<GameState, RuntimeCaptureError> {
     read_runtime_capture(path, "game_state")
 }
@@ -47,6 +64,12 @@ pub fn read_coarse_map_trace(
     path: impl AsRef<Path>,
 ) -> Result<CoarseMapTrace, RuntimeCaptureError> {
     read_runtime_capture(path, "coarse_map_generation")
+}
+
+pub fn read_random_game_setup(
+    path: impl AsRef<Path>,
+) -> Result<RandomGameSetupCapture, RuntimeCaptureError> {
+    read_runtime_capture(path, "random_game_setup")
 }
 
 pub fn generate_and_compare_coarse_trace(
@@ -117,7 +140,7 @@ fn difference_at(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::RetailTopologyByte;
+    use imperialism_core::generate_random_setup_preview;
     use serde_json::json;
 
     fn terrain_capture() -> RandomMapTerrainCapture {
@@ -130,6 +153,17 @@ mod tests {
             scenario_tag,
             retail_topology,
             generation,
+        }
+    }
+
+    fn random_game_setup_capture() -> RandomGameSetupCapture {
+        RandomGameSetupCapture {
+            planet_seed: "ordinary".to_owned(),
+            topology: RetailTopologyByte::from_retail_byte(0),
+            nation: MajorNationId::new(6),
+            country_name: "Purtast".to_owned(),
+            difficulty: 0,
+            localized_names: true,
         }
     }
 
@@ -165,6 +199,41 @@ mod tests {
             ),
             Err(RuntimeCaptureError::MissingCapture(name)) if name == "random_map_terrain"
         ));
+    }
+
+    #[test]
+    fn reads_the_direct_random_game_setup_capture() {
+        let expected = random_game_setup_capture();
+        let result = json!({
+            "name": "random_map_generation",
+            "seed": 1,
+            "status": "passed",
+            "captures": {"random_game_setup": {
+                "planet_seed": expected.planet_seed,
+                "topology": expected.topology.retail_byte(),
+                "nation": expected.nation.get(),
+                "country_name": expected.country_name,
+                "difficulty": expected.difficulty,
+                "localized_names": expected.localized_names,
+            }},
+        });
+        let actual = decode_runtime_capture::<RandomGameSetupCapture>(
+            serde_json::to_vec(&result).unwrap().as_slice(),
+            "random_game_setup",
+        )
+        .unwrap();
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn random_game_setup_capture_replays_its_explicit_preview_seed() {
+        let capture = random_game_setup_capture();
+        let preview =
+            generate_random_setup_preview(capture.planet_seed.as_bytes(), capture.topology)
+                .unwrap();
+        assert_eq!(preview.map.tiles.len(), 6_480);
+        assert_eq!(preview.map.provinces.len(), 120);
+        assert_eq!(preview.final_map_lcg, 0x46a4_5026);
     }
 
     #[test]

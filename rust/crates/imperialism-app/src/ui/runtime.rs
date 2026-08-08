@@ -290,6 +290,11 @@ fn spawn_node(
                     Text::new(binding.value.clone().unwrap_or_default()),
                     font,
                     layout,
+                    // BindUiResourceTextAndStyle writes `styleRef.value` into
+                    // TControl::textStyle78.textColor.  The generated launch
+                    // catalog's style refs are all the retail zero COLORREF,
+                    // i.e. black; Bevy's implicit text color is white.
+                    TextColor(Color::BLACK),
                 ));
                 if underline {
                     entity.insert(Underline);

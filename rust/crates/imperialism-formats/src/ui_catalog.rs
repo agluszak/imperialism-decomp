@@ -164,6 +164,7 @@ mod tests {
     fn generated_catalog_contains_the_launch_slice() {
         let catalog = generated_catalog();
         let expected = [
+            ("Linger.rsrc", 954),
             ("Startup.rsrc", 1500),
             ("Startup.rsrc", 1501),
             ("Startup.rsrc", 952),
@@ -199,8 +200,39 @@ mod tests {
             .iter()
             .find(|node| node.tag.0 == "dift")
             .unwrap();
+        let globe = random_setup
+            .nodes
+            .iter()
+            .find(|node| node.tag.0 == "glob")
+            .unwrap();
         assert!(difficulty.interactive);
         assert!(!heading.interactive);
+        assert!(globe.interactive);
+    }
+
+    #[test]
+    fn generated_catalog_contains_the_retail_planet_seed_dialog() {
+        let catalog = generated_catalog();
+        let dialog = catalog
+            .views
+            .iter()
+            .find(|view| view.id.resource_file == "Linger.rsrc" && view.id.resource_id == 954)
+            .unwrap();
+        let nodes = dialog
+            .nodes
+            .iter()
+            .map(|node| (node.tag.0.as_str(), node))
+            .collect::<std::collections::HashMap<_, _>>();
+
+        assert_eq!(dialog.event, 0x03ba);
+        assert_eq!(nodes["plan"].kind, WidgetKind::EditControl);
+        assert!(nodes["plan"].interactive);
+        assert_eq!(nodes["plan"].properties.max_chars, Some(32));
+        assert!(!nodes["1or2"].state);
+        assert!(!nodes["1or2"].enabled);
+        assert!(nodes["okay"].interactive);
+        assert!(!nodes["canc"].state);
+        assert!(!nodes["canc"].enabled);
     }
 
     #[test]

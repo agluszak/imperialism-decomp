@@ -27,6 +27,11 @@ struct RuntimeResult {
 }
 
 #[derive(Deserialize)]
+struct RuntimeSeed {
+    seed: u32,
+}
+
+#[derive(Deserialize)]
 #[serde(rename_all = "snake_case")]
 enum RuntimeStatus {
     Passed,
@@ -40,6 +45,11 @@ pub fn read_runtime_capture<T: serde::de::DeserializeOwned>(
 ) -> Result<T, RuntimeCaptureError> {
     let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
     decode_runtime_capture(file, name)
+}
+
+pub fn read_runtime_seed(path: impl AsRef<Path>) -> Result<u32, RuntimeCaptureError> {
+    let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
+    decode_runtime_seed(file)
 }
 
 pub fn decode_runtime_capture<T: serde::de::DeserializeOwned>(
@@ -63,6 +73,15 @@ pub fn decode_runtime_capture<T: serde::de::DeserializeOwned>(
     })
 }
 
+fn decode_runtime_seed(reader: impl Read) -> Result<u32, RuntimeCaptureError> {
+    let result: RuntimeSeed =
+        serde_json::from_reader(reader).map_err(|source| RuntimeCaptureError::Json {
+            name: "runtime seed".to_owned(),
+            source,
+        })?;
+    Ok(result.seed)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -80,6 +99,13 @@ mod tests {
             decode_runtime_capture::<Probe>(&input[..], "probe").unwrap(),
             Probe { value: 7 }
         );
+    }
+
+    #[test]
+    fn reads_the_outer_seed() {
+        let input =
+            br#"{"name":"probe","seed":123,"status":"passed","captures":{"probe":{"value":7}}}"#;
+        assert_eq!(decode_runtime_seed(&input[..]).unwrap(), 123);
     }
 
     #[test]
