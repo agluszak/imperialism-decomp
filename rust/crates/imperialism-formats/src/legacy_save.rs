@@ -1,10 +1,10 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
-    AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, Difficulty,
-    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
-    LaborPool, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
-    MilitaryUnitState, MilitaryUnitTable, MissionData, MissionState, NATION_COUNT,
+    ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
+    CivilianUnitState, CivilianUnitTable, Difficulty, DiplomacyGrant, DiplomacyGrantFlags,
+    DiplomacyPolicy, GameState, IndustryActionTable, LaborPool, MINOR_NATION_COUNT, MajorNationId,
+    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
+    MilitaryUnitTable, MinorNationTable, MissionData, MissionState, NATION_COUNT,
     NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
     NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
     PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
@@ -252,7 +252,7 @@ pub(crate) struct LegacyGreatPowerPrefix {
     pub remembered_trade_offers_by_resource: [i16; RESOURCE_KIND_COUNT],
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
-    pub aid_allocation_matrix: [i32; AID_ALLOCATION_COUNT],
+    pub aid_allocation_by_minor_nation: [[i32; RESOURCE_KIND_COUNT]; MINOR_NATION_COUNT],
     pub pending_action_status: [i8; PENDING_ACTION_COUNT],
     pub pending_action_payload_by_action: [i16; PENDING_ACTION_COUNT],
     pub relationship_lists: Vec<LegacyFixedRecordList>,
@@ -1178,7 +1178,11 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, Leg
             remembered_trade_offers_by_resource: ResourceTable::from_array(
                 prefix.remembered_trade_offers_by_resource,
             ),
-            aid_allocation_matrix: AidAllocationTable::from_array(prefix.aid_allocation_matrix),
+            aid_allocation_by_minor_nation: MinorNationTable::from_array(
+                prefix
+                    .aid_allocation_by_minor_nation
+                    .map(ResourceTable::from_array),
+            ),
             budget_pool_base: prefix.budget_pool_base,
             budget_pool_delta: prefix.budget_pool_delta,
             special_resource_trade_balance: post.special_resource_trade_balance,
@@ -1733,9 +1737,11 @@ fn read_great_power_prefix(
     let remembered_trade_offers_by_resource = read_be_short_array(stream)?;
     let budget_pool_base = stream.read_le_i32()?;
     let budget_pool_delta = stream.read_le_i32()?;
-    let mut aid_allocation_matrix = [0; AID_ALLOCATION_COUNT];
-    for value in &mut aid_allocation_matrix {
-        *value = stream.read_be_i32()?;
+    let mut aid_allocation_by_minor_nation = [[0; RESOURCE_KIND_COUNT]; MINOR_NATION_COUNT];
+    for resource_values in &mut aid_allocation_by_minor_nation {
+        for value in resource_values {
+            *value = stream.read_be_i32()?;
+        }
     }
     let mut pending_action_status = [0; PENDING_ACTION_COUNT];
     for value in &mut pending_action_status {
@@ -1767,7 +1773,7 @@ fn read_great_power_prefix(
         remembered_trade_offers_by_resource,
         budget_pool_base,
         budget_pool_delta,
-        aid_allocation_matrix,
+        aid_allocation_by_minor_nation,
         pending_action_status,
         pending_action_payload_by_action,
         relationship_lists,

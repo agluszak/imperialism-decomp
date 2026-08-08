@@ -1,7 +1,7 @@
 use crate::{
     CityState, DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, MajorNationId,
-    MajorNationState, NationCapacity, NationCommonState, NationId, ResourceKind, StepOutcome,
-    all_resources,
+    MajorNationState, MinorNationId, NationCapacity, NationCommonState, NationId, ResourceKind,
+    StepOutcome, all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -178,7 +178,22 @@ impl GameState {
             }
             major.item_potentials[resource] = bid.min(stock_by_type[resource]);
         }
-        major.aid_allocation_matrix.clear();
+        major.aid_allocation_by_minor_nation = Default::default();
+        Ok(())
+    }
+
+    /// Credits a minor nation's resource-specific aid allocation.
+    pub fn add_aid_allocation(
+        &mut self,
+        nation: MajorNationId,
+        minor_nation: MinorNationId,
+        resource: ResourceKind,
+        amount: i32,
+    ) -> Result<(), RuleError> {
+        let (common, major) = self.major_nation_parts_mut(nation)?;
+        common.treasury += amount;
+        major.aid_allocation_by_minor_nation[minor_nation][resource] += amount;
+        major.aid_allocation_total += amount;
         Ok(())
     }
 
@@ -318,8 +333,8 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        AID_ALLOCATION_COUNT, AidAllocationTable, CityState, Difficulty, DiplomacyGrantFlags,
-        DiplomacyPolicy, IndustryActionSlot, LaborPool, NationData, NationState, PendingWorkState,
+        CityState, Difficulty, DiplomacyGrantFlags, DiplomacyPolicy, IndustryActionSlot, LaborPool,
+        MinorNationId, MinorNationTable, NationData, NationState, PendingWorkState,
         PopulationState, RngState, TradePolicyScore, TurnState, WorldState,
     };
 
@@ -339,7 +354,7 @@ mod tests {
             unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
             transported_items_by_resource: crate::ResourceTable::default(),
             remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_matrix: crate::AidAllocationTable::default(),
+            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
             budget_pool_base: 200,
             budget_pool_delta: 100,
             special_resource_trade_balance: 30,
@@ -765,7 +780,9 @@ mod tests {
         major.remembered_trade_offers_by_resource[ResourceKind::Cotton] = 7;
         major.remembered_trade_offers_by_resource[ResourceKind::Wool] = -1;
         major.remembered_trade_offers_by_resource[ResourceKind::Timber] = 2;
-        major.aid_allocation_matrix = AidAllocationTable::from_array([8; AID_ALLOCATION_COUNT]);
+        major.aid_allocation_by_minor_nation[MinorNationId::new(7)][ResourceKind::Cotton] = 8;
+        major.aid_allocation_by_minor_nation[MinorNationId::new(14)][ResourceKind::Steel] = 8;
+        major.aid_allocation_by_minor_nation[MinorNationId::new(22)][ResourceKind::Gold] = 8;
 
         game.recall_trade_bids(nation).unwrap();
 
@@ -778,12 +795,9 @@ mod tests {
         assert_eq!(major.item_potentials[ResourceKind::Cotton], 3);
         assert_eq!(major.item_potentials[ResourceKind::Wool], -1);
         assert_eq!(major.item_potentials[ResourceKind::Timber], 2);
-        assert!(
-            major
-                .aid_allocation_matrix
-                .as_slice()
-                .iter()
-                .all(|value| *value == 0)
+        assert_eq!(
+            major.aid_allocation_by_minor_nation,
+            MinorNationTable::default()
         );
     }
 

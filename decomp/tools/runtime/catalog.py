@@ -311,6 +311,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "aid_allocation",
+        "AidAllocationTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "rolling_stock",
         "RollingStockTest",
         ("full",),

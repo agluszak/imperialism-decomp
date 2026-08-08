@@ -87,6 +87,11 @@ const char* const kIndustryActionSlotNames[kIndustryActionSlotCount] = {
     "slot0", "slot1", "slot2", "slot3",  "slot4",  "slot5",  "slot6",
     "slot7", "slot8", "slot9", "slot10", "slot11", "slot12", "slot13"};
 
+const char* const kResourceNames[kResourceKindCount] = {
+    "cotton", "wool",   "timber", "coal",  "iron",      "horses",   "oil",       "food",
+    "fabric", "lumber", "paper",  "steel", "fuel",      "clothing", "furniture", "hardware",
+    "arms",   "grain",  "fruit",  "fish",  "livestock", "gems",     "gold"};
+
 const char* DifficultyName(int value) {
   ASSERT(value >= 0 && value < 5);
   return kDifficultyNames[value];
@@ -228,15 +233,6 @@ JSON_Value* CaptureDiplomacyPolicies(const short* values, int count) {
   return value;
 }
 
-JSON_Value* CaptureIntArray(const int* values, int count) {
-  JSON_Array* array = 0;
-  JSON_Value* value = NewArray(array);
-  for (int index = 0; index < count; ++index) {
-    json_array_append_number(array, values[index]);
-  }
-  return value;
-}
-
 JSON_Value* CaptureUnsignedByteArray(const unsigned char* values, int count) {
   JSON_Array* array = 0;
   JSON_Value* value = NewArray(array);
@@ -253,14 +249,30 @@ unsigned int FloatBits(float value) {
 }
 
 JSON_Value* CaptureResourceTable(const short* values) {
-  static const char* const kResourceNames[kResourceKindCount] = {
-      "cotton", "wool",   "timber", "coal",  "iron",      "horses",   "oil",       "food",
-      "fabric", "lumber", "paper",  "steel", "fuel",      "clothing", "furniture", "hardware",
-      "arms",   "grain",  "fruit",  "fish",  "livestock", "gems",     "gold"};
   JSON_Object* table = 0;
   JSON_Value* value = NewObject(table);
   for (int index = 0; index < kResourceKindCount; ++index) {
     json_object_set_number(table, kResourceNames[index], static_cast<int>(values[index]));
+  }
+  return value;
+}
+
+JSON_Value* CaptureResourceTable(const int* values) {
+  JSON_Object* table = 0;
+  JSON_Value* value = NewObject(table);
+  for (int index = 0; index < kResourceKindCount; ++index) {
+    json_object_set_number(table, kResourceNames[index], values[index]);
+  }
+  return value;
+}
+
+JSON_Value* CaptureAidAllocationByMinorNation(const int* values) {
+  JSON_Array* rows = 0;
+  JSON_Value* value = NewArray(rows);
+  for (int minorNationSlot = kMinorNationFirstSlot; minorNationSlot < kNationSlotCount;
+       ++minorNationSlot) {
+    const int row = minorNationSlot - kMinorNationFirstSlot;
+    json_array_append_value(rows, CaptureResourceTable(values + row * kResourceKindCount));
   }
   return value;
 }
@@ -396,8 +408,8 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
                         CaptureResourceTable(nation->transportedItemsByResource));
   json_object_set_value(object, "remembered_trade_offers_by_resource",
                         CaptureResourceTable(nation->rememberedTradeOffersByResource));
-  json_object_set_value(object, "aid_allocation_matrix",
-                        CaptureIntArray(nation->aidAllocationMatrix, 0x170));
+  json_object_set_value(object, "aid_allocation_by_minor_nation",
+                        CaptureAidAllocationByMinorNation(nation->aidAllocationMatrix));
   json_object_set_number(object, "budget_pool_base", nation->budgetPoolBase);
   json_object_set_number(object, "budget_pool_delta", nation->budgetPoolDelta);
   json_object_set_number(object, "special_resource_trade_balance", nation->field910);

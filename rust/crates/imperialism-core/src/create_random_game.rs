@@ -1,9 +1,9 @@
 use crate::{
-    AidAllocationTable, CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool,
-    MajorNationId, MajorNationState, MajorNationTable, NationCapacityTable, NationCommonState,
-    NationData, NationId, NationPendingWork, NationState, NationTable, PendingWorkState,
-    PopulationState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState,
-    TileId, TileOwnerTag, TileState, TurnState, WorldState,
+    CityState, Difficulty, GameState, GeneratedTerrainTile, LaborPool, MajorNationId,
+    MajorNationState, MajorNationTable, NationCapacityTable, NationCommonState, NationData,
+    NationId, NationPendingWork, NationState, NationTable, PendingWorkState, PopulationState,
+    ProductionTable, ProvinceId, RandomSetupPreview, ResourceTable, RngState, TileId, TileOwnerTag,
+    TileState, TurnState, WorldState,
 };
 use enum_map::EnumMap;
 
@@ -160,7 +160,7 @@ fn major_nation_state(nation: MajorNationId, difficulty: Difficulty, human: bool
             unfilled_trade_turns_by_resource: ResourceTable::default(),
             transported_items_by_resource: ResourceTable::default(),
             remembered_trade_offers_by_resource: ResourceTable::default(),
-            aid_allocation_matrix: AidAllocationTable::default(),
+            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
             special_resource_trade_balance: 0,

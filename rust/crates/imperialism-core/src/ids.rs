@@ -121,6 +121,55 @@ impl<'de> Deserialize<'de> for MajorNationId {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct MinorNationId(u8);
+
+impl MinorNationId {
+    pub(crate) const FIRST: u8 = MajorNationId::COUNT;
+    pub const COUNT: u8 = NationId::COUNT - Self::FIRST;
+
+    pub const fn new(value: u8) -> Self {
+        assert!(
+            value >= Self::FIRST && value < NationId::COUNT,
+            "minor-nation ID is out of range"
+        );
+        Self(value)
+    }
+
+    pub const fn try_new(value: u8) -> Option<Self> {
+        if value >= Self::FIRST && value < NationId::COUNT {
+            Some(Self(value))
+        } else {
+            None
+        }
+    }
+
+    pub const fn nation(self) -> NationId {
+        NationId::new(self.0)
+    }
+
+    pub(crate) const fn table_index(self) -> usize {
+        (self.0 - Self::FIRST) as usize
+    }
+}
+
+impl<'de> Deserialize<'de> for MinorNationId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = u8::deserialize(deserializer)?;
+        Self::try_new(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!(
+                "minor-nation ID {value} is out of range {}..={}",
+                Self::FIRST,
+                NationId::COUNT - 1
+            ))
+        })
+    }
+}
+
 id_type!(TileId, u16);
 // A strategic-tile ownership context. Values above the nation range identify
 // non-nation map contexts, so this deliberately is not a NationId.
