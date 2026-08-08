@@ -1,15 +1,16 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
-    CivilianUnitState, CivilianUnitTable, Difficulty, DiplomacyGrant, DiplomacyGrantFlags,
-    DiplomacyPolicy, GameState, IndustryActionTable, LaborPool, MINOR_NATION_COUNT, MajorNationId,
-    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, MinorNationTable, MissionData, MissionState, NATION_COUNT,
-    NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
-    NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
-    PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
-    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TradeCommodityTable,
-    TradeMarketRow, TradeMarketState, TradePolicyScore, TurnState, WorldState,
+    CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel, Difficulty,
+    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
+    LaborPool, MINOR_NATION_COUNT, MajorNationId, MajorNationState, MajorNationTable,
+    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, MinorNationTable,
+    MissionData, MissionState, NATION_COUNT, NationCapacityTable, NationCommonState, NationData,
+    NationId, NationPendingWork, NationState, NationTable, NavyMissionState, PENDING_ACTION_COUNT,
+    PendingActionTable, PendingWorkState, PopulationState, ProductionTable, ProvinceId,
+    ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState,
+    TileDevelopment, TileId, TileOwnerTag, TileState, TradeCommodityTable, TradeMarketRow,
+    TradeMarketState, TradePolicyScore, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -422,9 +423,9 @@ impl LegacyGreatPowerPostCity {
                     id: CivilianUnitId::new(unit.persistent_id),
                     nation,
                     unit_type,
-                    tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
-                    order: unit.order,
-                    order_target: unit.order_target,
+                    tile: optional_tile_id(i32::from(unit.tile_index)),
+                    order: civilian_work_order(unit.order)?,
+                    order_target: optional_tile_id(i32::from(unit.order_target)),
                     owner_nation: nation_id_from_retail_i16(unit.owner_nation)?,
                     roster_id: unit.roster_id,
                     registered: unit.registered != 0,
@@ -710,6 +711,7 @@ pub(crate) struct LegacyTerrainTile {
     pub former_owner_nation: i8,
     pub city_or_province_index: i16,
     pub development_classes: i8,
+    pub pending_development_visibility: u8,
     pub edge_resources: [i8; 2],
     pub rail_flags: u8,
     pub action_state: i8,
@@ -723,7 +725,13 @@ impl LegacyTerrainTile {
             owner_nation: optional_tile_owner_tag(self.owner_nation),
             former_owner_nation: optional_tile_owner_tag(self.former_owner_nation),
             province: optional_province_id(self.city_or_province_index),
-            development_classes: self.development_classes,
+            development: TileDevelopment {
+                surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
+                extractive: DevelopmentLevel::new((self.development_classes as u8) >> 4),
+                resource_visible_to_majors: MajorNationTable::from_fn(|nation| {
+                    self.pending_development_visibility & (1 << nation.get()) != 0
+                }),
+            },
             edge_resources: self
                 .edge_resources
                 .map(|resource| (resource >= 0).then_some(resource)),
@@ -746,6 +754,27 @@ fn optional_province_id(value: i16) -> Option<ProvinceId> {
 
 fn optional_tile_id(value: i32) -> Option<TileId> {
     u16::try_from(value).ok().map(TileId::new)
+}
+
+fn civilian_work_order(value: i32) -> Result<CivilianWorkOrder, LegacySaveError> {
+    let order = match value {
+        0 => CivilianWorkOrder::Idle,
+        1 => CivilianWorkOrder::Redeploy,
+        2 => CivilianWorkOrder::Sleep,
+        5 => CivilianWorkOrder::LayRail,
+        6 => CivilianWorkOrder::BuildDepot,
+        7 => CivilianWorkOrder::BuildPort,
+        8 => CivilianWorkOrder::Prospect,
+        10 => CivilianWorkOrder::DevelopResource,
+        12 => CivilianWorkOrder::BuildFort,
+        13 => CivilianWorkOrder::PurchaseLand,
+        _ => {
+            return Err(LegacySaveError::StateProjection(format!(
+                "unrecovered civilian work order {value}"
+            )));
+        }
+    };
+    Ok(order)
 }
 
 fn required_state<T>(value: Option<T>, name: &str) -> Result<T, LegacySaveError> {
@@ -2294,6 +2323,7 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
         former_owner_nation: bytes[3] as i8,
         owner_nation: bytes[4] as i8,
         development_classes: bytes[0x0c] as i8,
+        pending_development_visibility: bytes[0x0d],
         edge_resources: [bytes[0x11] as i8, bytes[0x12] as i8],
         city_or_province_index: i16::from_le_bytes(bytes[0x14..0x16].try_into().unwrap()),
         action_state: bytes[0x16] as i8,

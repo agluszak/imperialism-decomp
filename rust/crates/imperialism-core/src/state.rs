@@ -1,9 +1,9 @@
 use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, IndustryActionSlot,
-    IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
-    MilitaryUnitTable, MinorNationTable, NationCapacityTable, NationId, NationTable,
-    PendingActionTable, ProductionTable, ProvinceId, RecruitKind, ResourceTable, ShipId,
-    TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
+    IndustryActionSlot, IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId,
+    MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacityTable, NationId,
+    NationTable, PendingActionTable, ProductionTable, ProvinceId, RecruitKind, ResourceTable,
+    ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
@@ -46,7 +46,7 @@ pub struct TileState {
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
     pub province: Option<ProvinceId>,
-    pub development_classes: i8,
+    pub development: TileDevelopment,
     pub edge_resources: [Option<i8>; 2],
     pub rail_flags: u8,
     pub action_state: i16,
@@ -55,6 +55,55 @@ pub struct TileState {
     pub region_marker: i8,
     /// `TTerrainStateRecord::riverSpriteCode`. Zero means no river.
     pub river_sprite_code: u8,
+}
+
+/// One independently-progressed resource-development channel on a map tile.
+///
+/// Retail stores both channels in one byte, but game rules operate on them as
+/// separate levels.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct DevelopmentLevel(u8);
+
+impl DevelopmentLevel {
+    pub const ZERO: Self = Self(0);
+
+    pub const fn new(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+
+    pub(crate) fn advance(&mut self) {
+        self.0 += 1;
+    }
+}
+
+impl Default for DevelopmentLevel {
+    fn default() -> Self {
+        Self::ZERO
+    }
+}
+
+/// The two resource-development channels and their discovery visibility.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TileDevelopment {
+    pub surface: DevelopmentLevel,
+    pub extractive: DevelopmentLevel,
+    /// Major nations that can see the tile's resource information.
+    pub resource_visible_to_majors: MajorNationTable<bool>,
+}
+
+impl Default for TileDevelopment {
+    fn default() -> Self {
+        Self {
+            surface: DevelopmentLevel::ZERO,
+            extractive: DevelopmentLevel::ZERO,
+            resource_visible_to_majors: MajorNationTable::default(),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -279,8 +328,8 @@ pub struct CivilianUnitState {
     pub nation: NationId,
     pub unit_type: CivilianUnitKind,
     pub tile: Option<TileId>,
-    pub order: i32,
-    pub order_target: i16,
+    pub order: CivilianWorkOrder,
+    pub order_target: Option<TileId>,
     pub owner_nation: NationId,
     pub roster_id: i16,
     pub registered: bool,

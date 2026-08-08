@@ -105,7 +105,7 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
         // Retail stamps former owners from the generation owners before Accept.
         former_owner_nation: owner,
         province: u16::try_from(tile.province_index).ok().map(ProvinceId::new),
-        development_classes: 0,
+        development: Default::default(),
         edge_resources: [None, None],
         rail_flags: 0,
         // Map tiles default to "no action" (-1) after generation.

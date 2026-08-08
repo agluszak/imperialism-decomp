@@ -8,6 +8,7 @@
 enum UnitOrder {
   kUnitOrderIdle = 0,
   kUnitOrderRedeploy = 1,
+  kUnitOrderSleep = 2,
   kUnitOrderLayRail = 5,
   kUnitOrderBuildDepot = 6,
   kUnitOrderBuildPort = 7,

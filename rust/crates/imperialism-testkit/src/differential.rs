@@ -38,6 +38,9 @@ where
 }
 
 pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<()> {
+    if expected == actual {
+        return Ok(());
+    }
     match first_serialized_difference(expected, actual).context("comparing game states")? {
         None => Ok(()),
         Some(difference) => bail!(
@@ -88,9 +91,9 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 mod tests {
     use super::*;
     use imperialism_core::{
-        DiplomacyGrant, DiplomacyGrantFlags, MajorNationId, MilitaryUnitKind, MinorNationId,
-        NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable,
-        SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
+        CivilianUnitId, DiplomacyGrant, DiplomacyGrantFlags, MajorNationId, MilitaryUnitKind,
+        MinorNationId, NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind,
+        ResourceTable, SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
     };
     use serde::Deserialize;
     use std::path::PathBuf;
@@ -140,6 +143,12 @@ mod tests {
         nation: MajorNationId,
         resource: ResourceKind,
         requested: i16,
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct ResourceDevelopmentCase {
+        extractive_worker: CivilianUnitId,
+        surface_worker: CivilianUnitId,
     }
 
     #[derive(Debug, Deserialize)]
@@ -424,6 +433,20 @@ mod tests {
             state.pay_for_military(case.nation)?;
             Ok(())
         })
+        .unwrap();
+    }
+
+    #[test]
+    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+    fn completed_resource_development() {
+        differential(
+            "completed_resource_development",
+            |state, case: ResourceDevelopmentCase| {
+                state.advance_resource_development(case.extractive_worker)?;
+                state.advance_resource_development(case.surface_worker)?;
+                Ok(())
+            },
+        )
         .unwrap();
     }
 }

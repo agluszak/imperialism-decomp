@@ -1,6 +1,6 @@
 use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot};
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, de};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = NationId::COUNT as usize;
@@ -44,9 +44,30 @@ pub enum NationCapacity {
 
 pub type NationCapacityTable<T> = EnumMap<NationCapacity, T>;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct NationTable<T>([T; NATION_COUNT]);
+
+impl<'de, T> Deserialize<'de> for NationTable<T>
+where
+    T: Deserialize<'de>,
+{
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        // Serde's generated fixed-array visitor keeps every decoded nation on
+        // the call stack. NationState is intentionally substantial, so decode
+        // the same JSON sequence into its natural heap-backed staging form.
+        let values: [T; NATION_COUNT] =
+            Vec::<T>::deserialize(deserializer)?
+                .try_into()
+                .map_err(|values: Vec<T>| {
+                    de::Error::invalid_length(values.len(), &"a 23-entry nation table")
+                })?;
+        Ok(Self(values))
+    }
+}
 
 impl<T> NationTable<T> {
     pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
@@ -96,7 +117,7 @@ impl<T> IndexMut<NationId> for NationTable<T> {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct MajorNationTable<T>([T; MAJOR_NATION_COUNT]);
 
