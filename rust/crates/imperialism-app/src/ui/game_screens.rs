@@ -281,8 +281,11 @@ mod tests {
             let Some(flag_view) = catalog.view(&flag_view_id).cloned() else {
                 return;
             };
-            let flag_spawned =
-                spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, &flag_view);
+            let flag_spawned = spawn_view_nodes(
+                &mut commands,
+                catalog.catalog().logical_resolution,
+                &flag_view,
+            );
             disable_control(&mut commands, &catalog, &flag_spawned, "end ");
             disable_control(&mut commands, &catalog, &flag_spawned, "quer");
             commands.insert_resource(TestFlagSpawned(flag_spawned.clone()));
@@ -380,7 +383,7 @@ mod tests {
             AppState::Transport,
             AppState::Diplomacy,
         ] {
-            let mut app = app_at(state);
+            let app = app_at(state);
             let catalog = app.world().resource::<UiCatalogResource>();
             let spawned = app.world().resource::<TestSpawned>().0.clone();
             let end_turn = spawned
