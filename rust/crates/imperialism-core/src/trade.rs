@@ -1,7 +1,7 @@
 use crate::{
     CityState, DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, MajorNationId,
     MajorNationState, MinorNationId, NationCapacity, NationCommonState, NationId, ResourceKind,
-    StepOutcome, all_resources,
+    StepOutcome, TradePolicyScore, all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -266,6 +266,24 @@ impl GameState {
         let (common, _) = self.major_nation_parts_mut(nation)?;
         let next = common.trade_policy_by_nation[target].decrement_step(common.treasury);
         common.trade_policy_by_nation[target] = next;
+        Ok(())
+    }
+
+    /// Sets one bilateral trade policy and clears its grant for a boycott.
+    pub fn set_trade_policy(
+        &mut self,
+        nation: MajorNationId,
+        target: NationId,
+        policy: TradePolicyScore,
+    ) -> Result<(), RuleError> {
+        let (common, _) = self.major_nation_parts_mut(nation)?;
+        if target != nation.nation() {
+            common.trade_policy_by_nation[target] = policy;
+        }
+
+        if policy == TradePolicyScore::BOYCOTT {
+            self.set_diplomacy_grant(nation, target, None)?;
+        }
         Ok(())
     }
 

@@ -5,7 +5,7 @@ use clap::{ArgAction, ArgGroup, Parser, Subcommand};
 use imperialism_core::{
     DiplomacyGrant, DiplomacyGrantFlags, GameState, MajorNationId, MilitaryUnitKind, MinorNationId,
     NationId, ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable,
-    SkillBand, UnitCostProfile, UnitProductionOrder,
+    SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use imperialism_testkit::{first_serialized_difference, read_game_state, read_runtime_capture};
@@ -128,6 +128,14 @@ enum Operation {
         source: MajorNationId,
         #[arg(value_parser = parse_nation)]
         target: NationId,
+    },
+    SetTradePolicy {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+        #[arg(value_parser = parse_nation)]
+        target: NationId,
+        #[arg(value_parser = parse_trade_policy_score)]
+        policy: TradePolicyScore,
     },
     SetDiplomacyGrant {
         #[arg(value_parser = parse_major_nation)]
@@ -322,6 +330,15 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
                 .decrement_trade_policy_score(source, target)
                 .context("Rust trade-policy update failed")?;
         }
+        Operation::SetTradePolicy {
+            nation,
+            target,
+            policy,
+        } => {
+            state
+                .set_trade_policy(nation, target, policy)
+                .context("Rust trade-policy change failed")?;
+        }
         Operation::SetDiplomacyGrant {
             nation,
             target,
@@ -364,6 +381,13 @@ fn parse_minor_nation(value: &str) -> Result<MinorNationId, String> {
         .parse()
         .map_err(|_| format!("{value:?} is not a minor-nation ID"))?;
     MinorNationId::try_new(index).ok_or_else(|| format!("minor-nation ID {index} is out of range"))
+}
+
+fn parse_trade_policy_score(value: &str) -> Result<TradePolicyScore, String> {
+    value
+        .parse()
+        .map(TradePolicyScore::new)
+        .map_err(|_| format!("{value:?} is not a trade-policy score"))
 }
 
 fn parse_resource_kind(value: &str) -> Result<ResourceKind, String> {
