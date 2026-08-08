@@ -1,4 +1,6 @@
-use crate::{CityState, MajorNationState, PendingActionKind};
+use crate::{
+    CityState, GameState, MajorNationId, MajorNationState, PendingActionKind, RuleError,
+};
 
 const PRODUCTION_SLOT_COUNT: usize = 16;
 
@@ -7,6 +9,10 @@ pub struct ProductionSlot(u8);
 
 impl ProductionSlot {
     pub const COUNT: usize = PRODUCTION_SLOT_COUNT;
+    /// Even-ladder capacity centers used by local summary and building-type rules.
+    pub const EVEN_CAPACITY_0: Self = Self(0);
+    pub const EVEN_CAPACITY_2: Self = Self(2);
+    pub const EVEN_CAPACITY_4: Self = Self(4);
     pub const TRANSPORT: Self = Self(14);
     pub const REGIONAL_POPULATION: Self = Self(15);
 
@@ -186,6 +192,20 @@ impl CityState {
     }
 }
 
+impl GameState {
+    /// Queues or cancels the city's power-plant upgrade and applies its
+    /// corresponding treasury charge or refund.
+    pub fn set_power_plant_upgrade(
+        &mut self,
+        nation: MajorNationId,
+        enabled: bool,
+    ) -> Result<(), RuleError> {
+        let (common, _, city) = self.major_city_parts_mut(nation)?;
+        city.set_power_plant_upgrade(&mut common.treasury, enabled);
+        Ok(())
+    }
+}
+
 fn region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
     let divisor = if owner.pending_action_status
         [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
@@ -202,7 +222,7 @@ fn region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
+    use crate::{LaborPool, NationCapacities, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
@@ -239,9 +259,9 @@ mod tests {
                 strength: 12,
                 extra: 0,
                 phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
+                baseline_labor: LaborPool::new(4, 2, 1),
+                production_labor: LaborPool::new(4, 2, 1),
+                pending_labor_delta: LaborPool::default(),
                 predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
@@ -250,7 +270,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::default(),
+            capacities: NationCapacities::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),

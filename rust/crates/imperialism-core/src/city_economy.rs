@@ -1,6 +1,4 @@
-use crate::{
-    CityState, MajorNationState, NationCapacity, ProductionSlot, ResourceKind, ResourceTable,
-};
+use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind, ResourceTable};
 
 impl CityState {
     /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from
@@ -39,8 +37,8 @@ impl CityState {
         if surplus < amount {
             amount = surplus;
         }
-        let available_capacity = nation.capacities[NationCapacity::Transport]
-            - nation.capacities[NationCapacity::ReservedTransport];
+        let available_capacity =
+            nation.capacities.transport - nation.capacities.reserved_transport;
         if available_capacity < amount {
             amount = available_capacity;
         }
@@ -111,15 +109,15 @@ impl CityState {
     /// boundary that will call this method.
     pub fn refresh_local_summary_flags(&mut self) {
         self.low_stock = self.population.strength >= 2;
-        let mut shortage_count = if self.production_accum[ProductionSlot::new(4).unwrap()] > 0 {
+        let mut shortage_count = if self.production_accum[ProductionSlot::EVEN_CAPACITY_4] > 0 {
             2_i16
         } else {
             3_i16
         };
-        if self.production_accum[ProductionSlot::new(2).unwrap()] > 0 {
+        if self.production_accum[ProductionSlot::EVEN_CAPACITY_2] > 0 {
             shortage_count -= 1;
         }
-        if self.production_accum[ProductionSlot::new(0).unwrap()] > 0 {
+        if self.production_accum[ProductionSlot::EVEN_CAPACITY_0] > 0 {
             shortage_count -= 1;
         }
         self.low_production = shortage_count < 2;
@@ -144,84 +142,20 @@ impl CityState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
+    use crate::test_support;
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
     }
 
     fn city() -> CityState {
-        CityState {
-            power_plant_upgrade_queued: false,
-            food_substitution_count: 0,
-            starvation_population_loss: 0,
-            serialized_state: 0,
-            phase_counter: 0,
-            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: crate::IndustryActionTable::default(),
-            rolling_item_production_score: 0,
-            low_production: false,
-            low_stock: false,
-            reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
-            power_available: 0,
-            stock_by_type: crate::ResourceTable::default(),
-            production_orders: crate::ProductionTable::default(),
-            production_accum: crate::ProductionTable::default(),
-            production_flags: crate::ProductionTable::default(),
-            production_current: crate::ProductionTable::default(),
-            production_progress: crate::ProductionTable::default(),
-            population_growth_penalty_ticks: 0,
-            unmet_resource_retries: crate::ResourceTable::default(),
-            consumed_production_input_by_type: crate::ResourceTable::default(),
-            population: PopulationState {
-                count: 7,
-                count_float_bits: 7.0_f32.to_bits(),
-                strength: 12,
-                extra: 0,
-                phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: crate::ResourceTable::default(),
-            },
-        }
+        test_support::city()
     }
 
     fn nation() -> MajorNationState {
-        MajorNationState {
-            diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::from_array([0, 0, 15, 11]),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_action_status: crate::PendingActionTable::default(),
-            pending_action_payload_by_action: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        let mut state = test_support::major_nation_state();
+        state.capacities = crate::NationCapacities::from_array([0, 0, 15, 11]);
+        state
     }
 
     #[test]
@@ -254,7 +188,7 @@ mod tests {
         assert_eq!(state.direct_transport(&mut owner, resource, 5), 4);
         assert_eq!(state.stock_by_type[resource], 4);
         assert_eq!(owner.need_target_by_type[resource], 8);
-        assert_eq!(owner.capacities[NationCapacity::ReservedTransport], 15);
+        assert_eq!(owner.capacities.reserved_transport, 15);
     }
 
     #[test]
@@ -279,9 +213,9 @@ mod tests {
         assert!(state.increase_rolling_stock(&mut owner));
         assert_eq!(state.stock_by_type[ResourceKind::Lumber], 1);
         assert_eq!(state.stock_by_type[ResourceKind::Steel], 0);
-        assert_eq!(owner.capacities[NationCapacity::Transport], 16);
+        assert_eq!(owner.capacities.transport, 16);
         assert!(!state.increase_rolling_stock(&mut owner));
-        assert_eq!(owner.capacities[NationCapacity::Transport], 16);
+        assert_eq!(owner.capacities.transport, 16);
     }
 
     #[test]
@@ -296,7 +230,7 @@ mod tests {
         assert!(state.increase_merchant_marine(&mut owner));
         assert_eq!(state.stock_by_type[ResourceKind::Lumber], 0);
         assert_eq!(state.stock_by_type[ResourceKind::Fabric], 0);
-        assert_eq!(owner.capacities[NationCapacity::MerchantCapacity], 1);
+        assert_eq!(owner.capacities.trade_offer, 1);
     }
 
     #[test]

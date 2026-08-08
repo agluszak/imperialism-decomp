@@ -1,4 +1,4 @@
-use crate::{CityState, MajorNationState, NationCapacity, ResourceKind, all_resources};
+use crate::{CityState, MajorNationState, ResourceKind, all_resources};
 
 const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
     ResourceKind::Grain,
@@ -20,14 +20,6 @@ impl MajorNationState {
         if available <= 0 { 0 } else { available }
     }
 
-    pub fn set_need_current(&mut self, resource: ResourceKind, value: i16) {
-        self.need_current_by_type[resource] = value;
-    }
-
-    pub fn need_target(&self, resource: ResourceKind) -> i16 {
-        self.need_target_by_type[resource]
-    }
-
     pub fn need_target_equals_current(&self, resource: ResourceKind) -> bool {
         self.need_target_by_type[resource] == self.need_current_by_type[resource]
     }
@@ -35,7 +27,7 @@ impl MajorNationState {
     pub fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
         let target = &mut self.need_target_by_type[resource];
         let delta = value - *target;
-        self.capacities[NationCapacity::ReservedTransport] += delta;
+        self.capacities.reserved_transport += delta;
         *target = value;
     }
 
@@ -51,13 +43,12 @@ impl MajorNationState {
             .need_current_by_type
             .iter()
             .fold(0_i32, |total, (_, value)| total + i32::from(*value));
-        current_total > i32::from(self.capacities[NationCapacity::Transport])
+        current_total > i32::from(self.capacities.transport)
     }
 
     pub(crate) fn allocate_transport_needs(&mut self) {
         for resource in TRANSPORT_NEED_PRIORITY {
-            let headroom = self.capacities[NationCapacity::Transport]
-                - self.capacities[NationCapacity::ReservedTransport];
+            let headroom = self.capacities.transport - self.capacities.reserved_transport;
             if headroom == 0 {
                 break;
             }
@@ -70,16 +61,8 @@ impl MajorNationState {
         *amount += delta;
     }
 
-    pub fn available_merchant_capacity(&self) -> i16 {
-        self.capacities[NationCapacity::AvailableMerchant]
-    }
-
-    pub fn deliver_item(&mut self, amount: i16) {
-        self.capacities[NationCapacity::AvailableMerchant] -= amount;
-    }
-
-    pub fn consume_merchant_capacity_for_purchase(&mut self, amount: i16) {
-        self.capacities[NationCapacity::AvailableMerchant] -= amount;
+    pub fn consume_merchant_capacity(&mut self, amount: i16) {
+        self.capacities.available_merchant -= amount;
     }
 
     pub fn amount_unsold(&self, resource: ResourceKind) -> i16 {
@@ -103,13 +86,8 @@ impl MajorNationState {
         true
     }
 
-    pub fn trade_offer(&self, resource: ResourceKind) -> i16 {
-        self.item_potentials[resource]
-    }
-
     pub fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
-        self.item_potentials[resource] =
-            value.min(self.capacities[NationCapacity::MerchantCapacity]);
+        self.item_potentials[resource] = value.min(self.capacities.trade_offer);
     }
 
     pub fn remember_trade_bids(&mut self) {
@@ -117,12 +95,8 @@ impl MajorNationState {
             .clone_from(&self.item_potentials);
     }
 
-    pub fn clear_trade_offer(&mut self, resource: ResourceKind) {
-        self.item_potentials[resource] = 0;
-    }
-
     pub fn is_still_buying(&self, resource: ResourceKind) -> bool {
-        self.available_merchant_capacity() > 0 && self.item_potentials[resource] < 0
+        self.capacities.available_merchant > 0 && self.item_potentials[resource] < 0
     }
 
     pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
@@ -147,18 +121,18 @@ impl MajorNationState {
     }
 
     pub(crate) fn merchant_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities[NationCapacity::MerchantCapacity]
+        &mut self.capacities.trade_offer
     }
 
     pub(crate) fn transport_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities[NationCapacity::Transport]
+        &mut self.capacities.transport
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
+    use crate::{LaborPool, NationCapacities, PopulationState};
 
     fn city() -> CityState {
         CityState {
@@ -191,9 +165,9 @@ mod tests {
                 strength: 12,
                 extra: 0,
                 phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
+                baseline_labor: LaborPool::new(4, 2, 1),
+                production_labor: LaborPool::new(4, 2, 1),
+                pending_labor_delta: LaborPool::default(),
                 predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
@@ -202,7 +176,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::from_array([0, 0, 15, 11]),
+            capacities: NationCapacities::from_array([0, 0, 15, 11]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
@@ -247,15 +221,15 @@ mod tests {
     fn updates_current_target_and_reserved_capacity() {
         let mut state = nation();
         let resource = ResourceKind::Steel;
-        state.set_need_current(resource, 10);
+        state.need_current_by_type[resource] = 10;
         assert_eq!(state.need_current_by_type[resource], 10);
         assert!(!state.need_target_equals_current(resource));
 
         state.update_need_target(resource, 7);
-        assert_eq!(state.need_target(resource), 7);
-        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 18);
+        assert_eq!(state.need_target_by_type[resource], 7);
+        assert_eq!(state.capacities.reserved_transport, 18);
         state.update_need_target(resource, 3);
-        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 14);
+        assert_eq!(state.capacities.reserved_transport, 14);
     }
 
     #[test]
@@ -265,11 +239,11 @@ mod tests {
         state.need_current_by_type[resource] = 2;
         state.need_target_by_type[resource] = 1;
         state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target(resource), 2);
-        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
+        assert_eq!(state.need_target_by_type[resource], 2);
+        assert_eq!(state.capacities.reserved_transport, 12);
         state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target(resource), 2);
-        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
+        assert_eq!(state.need_target_by_type[resource], 2);
+        assert_eq!(state.capacities.reserved_transport, 12);
     }
 
     #[test]
@@ -285,20 +259,20 @@ mod tests {
     #[test]
     fn trade_offer_leaves_preserve_capacity() {
         let mut state = nation();
-        state.capacities[NationCapacity::AvailableMerchant] = 5;
-        state.capacities[NationCapacity::MerchantCapacity] = 3;
-        state.deliver_item(2);
-        state.consume_merchant_capacity_for_purchase(1);
-        assert_eq!(state.available_merchant_capacity(), 2);
+        state.capacities.available_merchant = 5;
+        state.capacities.trade_offer = 3;
+        state.consume_merchant_capacity(2);
+        state.consume_merchant_capacity(1);
+        assert_eq!(state.capacities.available_merchant, 2);
 
         let resource = ResourceKind::Coal;
         state.set_item_potential(resource, 7);
-        assert_eq!(state.trade_offer(resource), 3);
+        assert_eq!(state.item_potentials[resource], 3);
         state.set_item_potential(resource, -1);
         assert!(state.is_still_buying(resource));
         state.purchased_items_by_resource[resource] = 4;
         assert_eq!(state.amount_unsold(resource), 3);
-        state.clear_trade_offer(resource);
+        state.item_potentials[resource] = 0;
         assert!(!state.is_still_buying(resource));
     }
 
@@ -376,8 +350,8 @@ mod tests {
     #[test]
     fn allocates_transport_needs_in_retail_priority_order() {
         let mut state = nation();
-        state.capacities[NationCapacity::Transport] = 8;
-        state.capacities[NationCapacity::ReservedTransport] = 2;
+        state.capacities.transport = 8;
+        state.capacities.reserved_transport = 2;
         state.need_current_by_type[ResourceKind::Grain] = 4;
         state.need_current_by_type[ResourceKind::Fruit] = 3;
         state.need_current_by_type[ResourceKind::Livestock] = 6;
@@ -387,6 +361,6 @@ mod tests {
         assert_eq!(state.need_target_by_type[ResourceKind::Grain], 4);
         assert_eq!(state.need_target_by_type[ResourceKind::Fruit], 2);
         assert_eq!(state.need_target_by_type[ResourceKind::Livestock], 0);
-        assert_eq!(state.capacities[NationCapacity::ReservedTransport], 8);
+        assert_eq!(state.capacities.reserved_transport, 8);
     }
 }

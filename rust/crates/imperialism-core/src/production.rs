@@ -67,7 +67,7 @@ impl ExpansionTarget {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ItemProductionOrder {
+struct ItemProductionOrder {
     pub output: ResourceKind,
     pub quantity: i16,
     pub tracking_by_resource: ResourceTable<i16>,
@@ -80,7 +80,7 @@ pub struct ItemProductionOrder {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct CapacityProductionOrder {
+struct CapacityProductionOrder {
     pub target: CapacityTarget,
     pub quantity: i16,
     pub tracking_by_resource: ResourceTable<i16>,
@@ -94,7 +94,7 @@ pub struct CapacityProductionOrder {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct ExpansionProductionOrder {
+struct ExpansionProductionOrder {
     pub target: ExpansionTarget,
     pub quantity: i16,
     pub tracking_by_resource: ResourceTable<i16>,
@@ -108,7 +108,7 @@ pub struct ExpansionProductionOrder {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct PowerPlantProductionOrder {
+struct PowerPlantProductionOrder {
     pub quantity: i16,
     pub tracking_by_resource: ResourceTable<i16>,
     pub reserved_workforce: i16,
@@ -133,7 +133,7 @@ impl TrainingLevel {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub struct TrainingProductionOrder {
+struct TrainingProductionOrder {
     pub level: TrainingLevel,
     pub quantity: i16,
     pub tracking_by_resource: ResourceTable<i16>,
@@ -207,7 +207,7 @@ impl Default for PowerPlantProductionOrder {
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
-pub struct FoodProductionOrder {
+struct FoodProductionOrder {
     pub quantity: i16,
     pub reserved_workforce: i16,
 }
@@ -261,31 +261,14 @@ impl PopulationGrowthOrder {
         city: &mut CityState,
         owner: &MajorNationState,
         owned_region_count: i32,
-    ) -> Result<(), ProductionError> {
-        if city.population.baseline_labor.is_none() {
-            return Err(ProductionError::MissingLaborPool("baseline"));
-        }
-        if city.population.production_labor.is_none() {
-            return Err(ProductionError::MissingLaborPool("production"));
-        }
-        let baseline = city
-            .population
-            .baseline_labor
-            .as_mut()
-            .expect("baseline labor was validated");
-        baseline.low += self.quantity;
-        let production = city
-            .population
-            .production_labor
-            .as_mut()
-            .expect("production labor was validated");
-        production.low += self.quantity;
+    ) {
+        city.population.baseline_labor.low += self.quantity;
+        city.population.production_labor.low += self.quantity;
         city.population.count += self.quantity;
 
         city.production_accum[ProductionSlot::REGIONAL_POPULATION] =
             retail_region_capacity(owner, owned_region_count);
         self.quantity = 0;
-        Ok(())
     }
 }
 
@@ -577,8 +560,6 @@ impl PowerPlantProductionOrder {
         true
     }
 
-    pub const fn produce(&self) {}
-
     pub fn restock(&mut self, city: &mut CityState) -> bool {
         let max_order = self.max_order(city);
         let saved_desired_quantity = self.desired_quantity;
@@ -594,17 +575,8 @@ impl PowerPlantProductionOrder {
 }
 
 impl TrainingProductionOrder {
-    pub fn max_order(
-        &mut self,
-        city: &CityState,
-        owner: &MajorNationState,
-        treasury: i32,
-    ) -> Result<i16, ProductionError> {
-        let production = city
-            .population
-            .production_labor
-            .as_ref()
-            .ok_or(ProductionError::MissingLaborPool("production"))?;
+    pub fn max_order(&mut self, city: &CityState, owner: &MajorNationState, treasury: i32) -> i16 {
+        let production = &city.population.production_labor;
         let (paper_per_unit, cash_per_unit, workforce_limit) = match self.level {
             TrainingLevel::Medium => (1_i16, 100_i32, production.low.min(city.population.strength)),
             TrainingLevel::High => (
@@ -637,7 +609,7 @@ impl TrainingProductionOrder {
         if i32::from(self.quantity) + i32::from(limit) > 99 {
             limit = 99 - self.quantity;
         }
-        Ok(self.quantity + limit)
+        self.quantity + limit
     }
 
     pub fn set_quantity(
@@ -648,7 +620,7 @@ impl TrainingProductionOrder {
         quantity: i16,
     ) -> Result<bool, ProductionError> {
         let delta = quantity - self.quantity;
-        if quantity > self.max_order(city, owner, *treasury)? || quantity < 0 {
+        if quantity > self.max_order(city, owner, *treasury) || quantity < 0 {
             return Ok(false);
         }
         self.quantity = quantity;
@@ -664,19 +636,11 @@ impl TrainingProductionOrder {
         Ok(true)
     }
 
-    pub fn produce(
-        &mut self,
-        city: &mut CityState,
-        owner: &mut MajorNationState,
-    ) -> Result<(), ProductionError> {
+    pub fn produce(&mut self, city: &mut CityState, owner: &mut MajorNationState) {
         if self.quantity == 0 {
-            return Ok(());
+            return;
         }
-        let baseline = city
-            .population
-            .baseline_labor
-            .as_mut()
-            .ok_or(ProductionError::MissingLaborPool("baseline"))?;
+        let baseline = &mut city.population.baseline_labor;
 
         match self.level {
             TrainingLevel::Medium => {
@@ -708,10 +672,7 @@ impl TrainingProductionOrder {
             }
         }
         self.quantity = 0;
-        Ok(())
     }
-
-    pub const fn restock(&self) {}
 }
 
 impl UnitProductionOrder {
@@ -727,14 +688,7 @@ impl UnitProductionOrder {
         }
 
         let workforce_limit = if let Some(band) = self.profile.workforce {
-            if city.population.baseline_labor.is_none() {
-                return Err(ProductionError::MissingLaborPool("baseline"));
-            }
-            let production = city
-                .population
-                .production_labor
-                .as_ref()
-                .ok_or(ProductionError::MissingLaborPool("production"))?;
+            let production = &city.population.production_labor;
             let (available, divisor) = match band {
                 SkillBand::Low => (production.low, 1),
                 SkillBand::Medium => (production.medium, 2),
@@ -961,8 +915,6 @@ impl ItemProductionOrder {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum ProductionError {
-    #[error("city has no {0} labor pool")]
-    MissingLaborPool(&'static str),
     #[error("unit resource cost for {resource:?} is zero")]
     ZeroUnitResourceCost { resource: ResourceKind },
     #[error(transparent)]
@@ -1005,7 +957,7 @@ fn set_pending_action(owner: &mut MajorNationState, action: PendingActionKind, p
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, NationCapacity, PopulationState};
+    use crate::{LaborPool, NationCapacities, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
@@ -1042,9 +994,9 @@ mod tests {
                 strength: 10,
                 extra: 0,
                 phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
+                baseline_labor: LaborPool::new(4, 2, 1),
+                production_labor: LaborPool::new(4, 2, 1),
+                pending_labor_delta: LaborPool::default(),
                 predicted_need_by_resource: crate::ResourceTable::default(),
             },
         }
@@ -1053,7 +1005,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::default(),
+            capacities: NationCapacities::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
@@ -1374,9 +1326,9 @@ mod tests {
             b'3' as i8;
         let float_count = state.population.count_float_bits;
 
-        production.produce(&mut state, &owner, 12).unwrap();
-        assert_eq!(state.population.baseline_labor.unwrap().low, 6);
-        assert_eq!(state.population.production_labor.unwrap().low, 6);
+        production.produce(&mut state, &owner, 12);
+        assert_eq!(state.population.baseline_labor.low, 6);
+        assert_eq!(state.population.production_labor.low, 6);
         assert_eq!(state.population.count, 9);
         assert_eq!(state.population.count_float_bits, float_count);
         assert_eq!(state.production_accum[slot(15)], 4);
@@ -1435,10 +1387,10 @@ mod tests {
         production.reserved_workforce = 6;
         production.tracking_by_resource[ResourceKind::Lumber] = 3;
         production.tracking_by_resource[ResourceKind::Steel] = 3;
-        owner.capacities[NationCapacity::Transport] = 4;
+        owner.capacities.transport = 4;
 
         production.produce(&mut state, &mut owner, 0);
-        assert_eq!(owner.capacities[NationCapacity::Transport], 7);
+        assert_eq!(owner.capacities.transport, 7);
         assert_eq!(state.production_orders, crate::ProductionTable::default());
         assert_eq!(production.quantity, 0);
         assert_eq!(production.reserved_workforce, 0);
@@ -1616,41 +1568,28 @@ mod tests {
     }
 
     #[test]
-    fn power_plant_production_is_a_retail_no_op() {
-        let production = PowerPlantProductionOrder {
-            quantity: 12,
-            desired_quantity: 18,
-            accumulated_value: 7,
-            ..PowerPlantProductionOrder::default()
-        };
-        let expected = production.clone();
-        production.produce();
-        assert_eq!(production, expected);
-    }
-
-    #[test]
     fn training_limits_record_workforce_treasury_resources_and_the_global_cap() {
         let mut state = city();
         let mut owner = nation();
         let mut medium = TrainingProductionOrder::new(TrainingLevel::Medium);
         state.stock_by_type[ResourceKind::Paper] = 10;
-        assert_eq!(medium.max_order(&state, &owner, 10_000).unwrap(), 4);
+        assert_eq!(medium.max_order(&state, &owner, 10_000), 4);
         assert_eq!(medium.limiting_constraint, ProductionConstraint::Workforce);
 
-        assert_eq!(medium.max_order(&state, &owner, 150).unwrap(), 1);
+        assert_eq!(medium.max_order(&state, &owner, 150), 1);
         assert_eq!(medium.limiting_constraint, ProductionConstraint::Treasury);
 
         state.stock_by_type[ResourceKind::Paper] = 0;
-        assert_eq!(medium.max_order(&state, &owner, 10_000).unwrap(), 0);
+        assert_eq!(medium.max_order(&state, &owner, 10_000), 0);
         assert_eq!(medium.limiting_constraint, ProductionConstraint::Resources);
 
         owner.diplomacy_eligible = false;
         state.stock_by_type[ResourceKind::Paper] = 100;
         medium.quantity = 98;
-        assert_eq!(medium.max_order(&state, &owner, -50_000).unwrap(), 99);
+        assert_eq!(medium.max_order(&state, &owner, -50_000), 99);
 
         let mut high = TrainingProductionOrder::new(TrainingLevel::High);
-        assert_eq!(high.max_order(&state, &owner, 0).unwrap(), 2);
+        assert_eq!(high.max_order(&state, &owner, 0), 2);
         assert_eq!(high.limiting_constraint, ProductionConstraint::Workforce);
     }
 
@@ -1669,7 +1608,7 @@ mod tests {
         );
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 8);
         assert_eq!(treasury, 800);
-        assert_eq!(state.population.production_labor.unwrap().low, 2);
+        assert_eq!(state.population.production_labor.low, 2);
         assert_eq!(state.population.strength, 8);
 
         assert!(
@@ -1679,7 +1618,7 @@ mod tests {
         );
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 9);
         assert_eq!(treasury, 900);
-        assert_eq!(state.population.production_labor.unwrap().low, 3);
+        assert_eq!(state.population.production_labor.low, 3);
         assert_eq!(state.population.strength, 9);
     }
 
@@ -1698,7 +1637,7 @@ mod tests {
         );
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 2);
         assert_eq!(treasury, 1_000);
-        assert_eq!(state.population.production_labor.unwrap().medium, 0);
+        assert_eq!(state.population.production_labor.medium, 0);
         assert_eq!(state.population.strength, 6);
     }
 
@@ -1709,19 +1648,19 @@ mod tests {
         let mut medium = TrainingProductionOrder::new(TrainingLevel::Medium);
         medium.quantity = 2;
 
-        medium.produce(&mut state, &mut owner).unwrap();
-        assert_eq!(state.population.baseline_labor.unwrap().low, 2);
-        assert_eq!(state.population.baseline_labor.unwrap().medium, 4);
+        medium.produce(&mut state, &mut owner);
+        assert_eq!(state.population.baseline_labor.low, 2);
+        assert_eq!(state.population.baseline_labor.medium, 4);
         assert_eq!(medium.quantity, 0);
 
         owner.pending_action_status[PendingActionKind::UniversityExpansion] = b'3' as i8;
         owner.pending_action_payload_by_action = crate::PendingActionTable::default();
-        state.population.baseline_labor.as_mut().unwrap().high = 29;
+        state.population.baseline_labor.high = 29;
         let mut high = TrainingProductionOrder::new(TrainingLevel::High);
         high.quantity = 1;
-        high.produce(&mut state, &mut owner).unwrap();
-        assert_eq!(state.population.baseline_labor.unwrap().medium, 3);
-        assert_eq!(state.population.baseline_labor.unwrap().high, 30);
+        high.produce(&mut state, &mut owner);
+        assert_eq!(state.population.baseline_labor.medium, 3);
+        assert_eq!(state.population.baseline_labor.high, 30);
         assert_eq!(
             owner.pending_action_status[PendingActionKind::UniversityExpansion],
             b'2' as i8
@@ -1738,11 +1677,11 @@ mod tests {
         let mut state = city();
         let mut owner = nation();
         owner.pending_action_payload_by_action = crate::PendingActionTable::default();
-        state.population.baseline_labor.as_mut().unwrap().high = 29;
+        state.population.baseline_labor.high = 29;
         let mut production = TrainingProductionOrder::new(TrainingLevel::High);
         production.quantity = 1;
 
-        production.produce(&mut state, &mut owner).unwrap();
+        production.produce(&mut state, &mut owner);
         assert_eq!(
             owner.pending_action_status[PendingActionKind::UniversityExpansion],
             b'2' as i8
@@ -1751,20 +1690,6 @@ mod tests {
             owner.pending_action_payload_by_action[PendingActionKind::UniversityExpansion],
             2
         );
-    }
-
-    #[test]
-    fn zero_training_order_does_not_require_population_state() {
-        let mut state = city();
-        let mut owner = nation();
-        state.population.baseline_labor = None;
-        let mut production = TrainingProductionOrder::new(TrainingLevel::High);
-        let expected_state = state.clone();
-        let expected_owner = owner.clone();
-
-        production.produce(&mut state, &mut owner).unwrap();
-        assert_eq!(state, expected_state);
-        assert_eq!(owner, expected_owner);
     }
 
     fn unit_profile(workforce: Option<SkillBand>) -> UnitCostProfile {
@@ -1856,8 +1781,8 @@ mod tests {
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 6);
         assert_eq!(state.stock_by_type[ResourceKind::Steel], 8);
         assert_eq!(treasury, 800);
-        assert_eq!(state.population.baseline_labor.unwrap().low, 2);
-        assert_eq!(state.population.production_labor.unwrap().low, 2);
+        assert_eq!(state.population.baseline_labor.low, 2);
+        assert_eq!(state.population.production_labor.low, 2);
         assert_eq!(state.population.count, 5);
         assert_eq!(state.population.count_float(), 5.0);
         assert_eq!(state.population.strength, 8);
@@ -1870,8 +1795,8 @@ mod tests {
         assert_eq!(state.stock_by_type[ResourceKind::Paper], 8);
         assert_eq!(state.stock_by_type[ResourceKind::Steel], 9);
         assert_eq!(treasury, 900);
-        assert_eq!(state.population.baseline_labor.unwrap().low, 3);
-        assert_eq!(state.population.production_labor.unwrap().low, 3);
+        assert_eq!(state.population.baseline_labor.low, 3);
+        assert_eq!(state.population.production_labor.low, 3);
         assert_eq!(state.population.count, 6);
         assert_eq!(state.population.count_float(), 6.0);
         assert_eq!(state.population.strength, 9);
