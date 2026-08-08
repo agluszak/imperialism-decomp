@@ -111,15 +111,15 @@ impl CityState {
     /// boundary that will call this method.
     pub fn refresh_local_summary_flags(&mut self) {
         self.low_stock = self.population.strength >= 2;
-        let mut shortage_count = if self.production_accum[ProductionSlot::new(4).unwrap()] > 0 {
+        let mut shortage_count = if self.production_accum[ProductionSlot::LUMBER_MILL] > 0 {
             2_i16
         } else {
             3_i16
         };
-        if self.production_accum[ProductionSlot::new(2).unwrap()] > 0 {
+        if self.production_accum[ProductionSlot::STEEL_MILL] > 0 {
             shortage_count -= 1;
         }
-        if self.production_accum[ProductionSlot::new(0).unwrap()] > 0 {
+        if self.production_accum[ProductionSlot::TEXTILE_MILL] > 0 {
             shortage_count -= 1;
         }
         self.low_production = shortage_count < 2;
@@ -144,49 +144,13 @@ impl CityState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
 
     fn slot(value: u8) -> ProductionSlot {
         ProductionSlot::new(value).unwrap()
     }
 
     fn city() -> CityState {
-        CityState {
-            power_plant_upgrade_queued: false,
-            food_substitution_count: 0,
-            starvation_population_loss: 0,
-            serialized_state: 0,
-            phase_counter: 0,
-            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: crate::IndustryActionTable::default(),
-            rolling_item_production_score: 0,
-            low_production: false,
-            low_stock: false,
-            reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
-            power_available: 0,
-            stock_by_type: crate::ResourceTable::default(),
-            production_orders: crate::ProductionTable::default(),
-            production_accum: crate::ProductionTable::default(),
-            production_flags: crate::ProductionTable::default(),
-            production_current: crate::ProductionTable::default(),
-            production_progress: crate::ProductionTable::default(),
-            population_growth_penalty_ticks: 0,
-            unmet_resource_retries: crate::ResourceTable::default(),
-            consumed_production_input_by_type: crate::ResourceTable::default(),
-            population: PopulationState {
-                count: 7,
-                count_float_bits: 7.0_f32.to_bits(),
-                strength: 12,
-                extra: 0,
-                phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: crate::ResourceTable::default(),
-            },
-        }
+        crate::test_support::city()
     }
 
     fn nation() -> MajorNationState {

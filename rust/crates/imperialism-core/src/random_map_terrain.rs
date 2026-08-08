@@ -655,7 +655,7 @@ fn seed_mountain_range(
     direction: i32,
     rng: &mut RetailLcg,
 ) -> i32 {
-    if !(0..=TILE_COUNT as i32).contains(&tile_index) {
+    if !(0..TILE_COUNT as i32).contains(&tile_index) {
         return 0;
     }
     let tile = usize::try_from(tile_index).expect("retail mountain tile index became negative");

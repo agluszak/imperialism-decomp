@@ -40,23 +40,15 @@ enum CitySiteAction {
 }
 
 #[derive(Component)]
-struct CitySiteMap {
-    palette_indices: Vec<imperialism_formats::PaletteIndex>,
-}
+struct CitySiteMap;
 
 #[derive(Component)]
 struct NewCityDialogRoot;
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum NewCityAction {
-    Accept,
+    Accept(TileId),
     Cancel,
-}
-
-/// Pending town tile filled by a validated map click before `ShowNewCityDialog`.
-#[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
-struct PendingCapitalSite {
-    tile: TileId,
 }
 
 pub(crate) struct CitySitePlugin;
@@ -99,9 +91,7 @@ fn bind_city_site_controls(
     }
     // Retail opens the New City dialog from a validated map click, not from `send`.
     if let Ok(entity) = spawned.require_unique(catalog, MAP_TAG) {
-        commands.entity(entity).insert(CitySiteMap {
-            palette_indices: Vec::new(),
-        });
+        commands.entity(entity).insert(CitySiteMap);
     }
 }
 
@@ -110,22 +100,31 @@ fn render_city_site_map(
     session: Res<GameSession>,
     retail_assets: Res<RetailAssetsResource>,
     mut images: ResMut<Assets<Image>>,
-    mut maps: Query<(Entity, &mut CitySiteMap, Option<&mut ImageNode>)>,
+    mut maps: Query<(Entity, Option<&mut ImageNode>), Added<CitySiteMap>>,
 ) {
-    let selected = MajorNationId::from_nation(session.0.turn.active_nation)
-        .unwrap_or_else(|| MajorNationId::new(0));
-    let owners: Vec<i8> = session
-        .0
-        .world
-        .tiles
-        .iter()
-        .map(|tile| {
-            tile.owner_nation
+    if maps.is_empty() {
+        return;
+    }
+    let Some(selected) = MajorNationId::from_nation(session.0.turn.active_nation) else {
+        warn!(
+            "city-site map render skipped: active nation {:?} is not a major nation",
+            session.0.turn.active_nation
+        );
+        return;
+    };
+    let palette_indices = compose_owner_preview_indices(
+        |tile| {
+            session
+                .0
+                .world
+                .tiles
+                .get(usize::from(tile.get()))
+                .and_then(|tile| tile.owner_nation)
                 .map(|owner| i8::try_from(owner.get()).unwrap_or(-1))
                 .unwrap_or(-1)
-        })
-        .collect();
-    let palette_indices = compose_owner_preview_indices(&owners, selected);
+        },
+        selected,
+    );
     let palette = match retail_assets.assets().default_dib_palette() {
         Ok(palette) => palette,
         Err(error) => {
@@ -134,8 +133,7 @@ fn render_city_site_map(
         }
     };
     let image = preview_image_from_indices(&palette_indices, &palette);
-    for (entity, mut map, image_node) in &mut maps {
-        map.palette_indices = palette_indices.clone();
+    for (entity, image_node) in &mut maps {
         if let Some(mut image_node) = image_node {
             if let Some(mut existing) = images.get_mut(&image_node.image) {
                 *existing = image.clone();
@@ -192,16 +190,15 @@ fn on_city_site_map_click(
     if validate_capital_site_selection(&session.0, tile).is_err() {
         return;
     }
-    ui.commands.insert_resource(PendingCapitalSite { tile });
-    open_new_city_dialog(&mut ui);
+    open_new_city_dialog(&mut ui, tile);
 }
 
-fn open_new_city_dialog(ui: &mut UiSpawner) {
+fn open_new_city_dialog(ui: &mut UiSpawner, tile: TileId) {
     let Some(spawned) = ui.spawn_modal(new_city_dialog_view_id()) else {
         return;
     };
     ui.commands.entity(spawned.root).insert(NewCityDialogRoot);
-    let _ = ui.attach(&spawned, "okay", NewCityAction::Accept);
+    let _ = ui.attach(&spawned, "okay", NewCityAction::Accept(tile));
     let _ = ui.attach(&spawned, "cncl", NewCityAction::Cancel);
 }
 
@@ -209,7 +206,6 @@ fn on_new_city_activate(
     activate: On<Activate>,
     actions: Query<&NewCityAction>,
     dialogs: Query<Entity, With<NewCityDialogRoot>>,
-    pending: Option<Res<PendingCapitalSite>>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
@@ -218,24 +214,19 @@ fn on_new_city_activate(
         return;
     };
     match *action {
-        NewCityAction::Accept => {
-            let Some(pending) = pending.as_deref().copied() else {
-                return;
-            };
-            if confirm_capital_site(&mut session.0, pending.tile).is_err() {
+        NewCityAction::Accept(tile) => {
+            if confirm_capital_site(&mut session.0, tile).is_err() {
                 return;
             }
             for root in &dialogs {
                 commands.entity(root).despawn();
             }
-            commands.remove_resource::<PendingCapitalSite>();
             next_state.set(AppState::StrategicMap);
         }
         NewCityAction::Cancel => {
             for root in &dialogs {
                 commands.entity(root).despawn();
             }
-            commands.remove_resource::<PendingCapitalSite>();
         }
     }
 }

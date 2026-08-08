@@ -75,8 +75,9 @@ impl<T> NationTable<T> {
     }
 
     pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(NationId::new(index as u8))
+        let mut ids = NationId::all();
+        Self(std::array::from_fn(|_| {
+            function(ids.next().expect("nation ID count matches table length"))
         }))
     }
 
@@ -94,6 +95,13 @@ impl<T> NationTable<T> {
 
     pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
+    }
+
+    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (NationId, &T)> {
+        self.0
+            .iter()
+            .enumerate()
+            .map(|(index, value)| (NationId::new(index as u8), value))
     }
 }
 
@@ -127,8 +135,12 @@ impl<T> MajorNationTable<T> {
     }
 
     pub fn from_fn(mut function: impl FnMut(MajorNationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(MajorNationId::new(index as u8))
+        let mut ids = MajorNationId::all();
+        Self(std::array::from_fn(|_| {
+            function(
+                ids.next()
+                    .expect("major-nation ID count matches table length"),
+            )
         }))
     }
 
@@ -142,6 +154,13 @@ impl<T> MajorNationTable<T> {
 
     pub fn as_slice(&self) -> &[T] {
         &self.0
+    }
+
+    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (MajorNationId, &T)> {
+        self.0
+            .iter()
+            .enumerate()
+            .map(|(index, value)| (MajorNationId::new(index as u8), value))
     }
 }
 
@@ -172,6 +191,33 @@ pub struct MinorNationTable<T>([T; MINOR_NATION_COUNT]);
 impl<T> MinorNationTable<T> {
     pub const fn from_array(values: [T; MINOR_NATION_COUNT]) -> Self {
         Self(values)
+    }
+
+    pub fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
+        let mut ids = MinorNationId::all();
+        Self(std::array::from_fn(|_| {
+            function(
+                ids.next()
+                    .expect("minor-nation ID count matches table length"),
+            )
+        }))
+    }
+
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+        self.0.iter()
+    }
+
+    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+        self.0.iter_mut()
+    }
+
+    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (MinorNationId, &T)> {
+        self.0.iter().enumerate().map(|(index, value)| {
+            (
+                MinorNationId::new(MinorNationId::FIRST + index as u8),
+                value,
+            )
+        })
     }
 }
 

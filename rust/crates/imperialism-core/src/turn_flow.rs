@@ -1,7 +1,5 @@
 use crate::{GameEvent, GameState, MajorNationId, StepOutcome, TurnState};
 
-const MAJOR_NATION_COUNT: usize = 7;
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
 pub enum TurnFlowError {
     #[error("major nation slot {slot} is not active")]
@@ -32,32 +30,24 @@ impl GameState {
     /// Mirrors `TSimMgr::AllHumansFinished`. The C++ routine assumes all seven
     /// major slots exist; Rust reports that violated phase invariant explicitly.
     pub fn all_humans_finished(&self) -> Result<bool, TurnFlowError> {
-        all_major_flags_finished((0..MAJOR_NATION_COUNT).map(|slot| {
-            self.nations[MajorNationId::new(slot as u8).nation()]
+        all_major_flags_finished(MajorNationId::all().map(|id| {
+            self.nations.majors[id]
                 .as_ref()
-                .and_then(|nation| nation.major())
-                .map(|major| major.turn_finished)
+                .map(|nation| nation.state.turn_finished)
         }))
     }
 
     /// Mirrors `TSimMgr::ResetTurnFlags`: only diplomacy-eligible major nations
     /// have their completion flag cleared.
     pub fn reset_turn_flags(&mut self) -> Result<(), TurnFlowError> {
-        for slot in 0..MAJOR_NATION_COUNT {
-            let present = self.nations[MajorNationId::new(slot as u8).nation()]
-                .as_ref()
-                .and_then(|nation| nation.major())
-                .is_some();
-            if !present {
-                return Err(TurnFlowError::MissingMajorNation { slot });
-            }
-        }
-        for nation in self.nations.iter_mut().take(MAJOR_NATION_COUNT) {
+        for (slot, nation) in self.nations.majors.iter_mut().enumerate() {
             let major = nation
                 .as_mut()
-                .and_then(|nation| nation.major_mut())
-                .expect("major-nation presence was checked above");
-            reset_finished_flag(major.diplomacy_eligible, &mut major.turn_finished);
+                .ok_or(TurnFlowError::MissingMajorNation { slot })?;
+            reset_finished_flag(
+                major.state.diplomacy_eligible,
+                &mut major.state.turn_finished,
+            );
         }
         Ok(())
     }
@@ -85,7 +75,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{Difficulty, NationId};
+    use crate::{Difficulty, MAJOR_NATION_COUNT, NationId};
 
     #[test]
     fn advances_the_season_and_classifies_linear_phases() {

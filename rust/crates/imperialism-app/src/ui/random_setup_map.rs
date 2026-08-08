@@ -94,8 +94,12 @@ pub(crate) fn attach_random_setup_meanings(
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
     mut pictures: UiAssetResources,
+    added_coats: Query<(), Added<RandomSetupCoat>>,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
+    if !setup.is_changed() && added_coats.is_empty() {
+        return;
+    }
     for (mut coat, mut image_node) in &mut coats {
         if coat.nation == Some(setup.nation) {
             continue;
@@ -121,8 +125,13 @@ fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
     mut pictures: UiAssetResources,
+    added_flags: Query<(), Added<RandomSetupFlag>>,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
+    mut atlas_transparency_applied: Local<bool>,
 ) {
+    if !setup.is_changed() && added_flags.is_empty() {
+        return;
+    }
     let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
@@ -130,8 +139,17 @@ fn sync_random_setup_flag(
             return;
         }
     };
-    // Magenta→alpha is idempotent on the shared cached image.
-    let _ = pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency);
+    if !*atlas_transparency_applied {
+        match pictures.with_picture_image_mut(FLAG_ATLAS_PICTURE, apply_flag_atlas_transparency) {
+            Ok(()) => *atlas_transparency_applied = true,
+            Err(error) => {
+                warn!(
+                    "could not apply transparency to retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}"
+                );
+                return;
+            }
+        }
+    }
 
     for (entity, mut flag, image_node) in &mut flags {
         if flag.nation == Some(setup.nation) {
@@ -236,7 +254,7 @@ fn on_map_preview_click(
 }
 
 pub(crate) fn compose_owner_preview_indices(
-    owners: &[i8],
+    owner_at: impl Fn(TileId) -> i8,
     selected_nation: MajorNationId,
 ) -> Vec<PaletteIndex> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
@@ -254,8 +272,8 @@ pub(crate) fn compose_owner_preview_indices(
         let py = 3 * usize::from(row);
         let neighbor_tags = geometry
             .neighbors(tile_id)
-            .map(|neighbor| owner_tag(owners, neighbor));
-        let self_tag = owner_tag(owners, Some(tile_id));
+            .map(|neighbor| owner_tag(&owner_at, neighbor));
+        let self_tag = owner_tag(&owner_at, Some(tile_id));
 
         let tag = if self_tag == neighbor_tags[5] {
             self_tag
@@ -322,13 +340,19 @@ fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
 ) -> Vec<PaletteIndex> {
-    let owners: Vec<i8> = tiles.iter().map(|tile| tile.owner_nation).collect();
-    compose_owner_preview_indices(&owners, selected_nation)
+    compose_owner_preview_indices(
+        |tile| {
+            tiles
+                .get(usize::from(tile.get()))
+                .map(|tile| tile.owner_nation)
+                .unwrap_or(-1)
+        },
+        selected_nation,
+    )
 }
 
-fn owner_tag(owners: &[i8], tile: Option<TileId>) -> i8 {
-    tile.and_then(|tile| owners.get(usize::from(tile.get())).copied())
-        .unwrap_or(-1)
+fn owner_tag(owner_at: &impl Fn(TileId) -> i8, tile: Option<TileId>) -> i8 {
+    tile.map(owner_at).unwrap_or(-1)
 }
 
 fn preview_palette(owner_tag: i8) -> PaletteIndex {

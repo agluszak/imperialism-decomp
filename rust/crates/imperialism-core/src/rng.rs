@@ -11,7 +11,8 @@ const RETAIL_MAP_LCG_ADDEND: u32 = 1;
 /// Retail seeds this independently from the map-generation LCG. In
 /// particular, the random-game setup screen chooses its initial major nation
 /// with one `rand() % 7` draw from this stream.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
 pub struct RetailCrtRng(u32);
 
 impl RetailCrtRng {
@@ -91,32 +92,23 @@ impl RngState {
     /// Mirrors VC5 libcmt's `srand`: the supplied value becomes the complete
     /// thread-local CRT random state without an eager transition.
     pub fn seed_crt(&mut self, seed: u32) {
-        self.crt_rand = seed;
+        self.crt_rand = RetailCrtRng::from_state(seed);
     }
 
     /// Mirrors the `rand.obj` shipped with VC5 libcmt. The object updates a
     /// 32-bit LCG state and returns bits 16..30 of the new state.
     pub fn next_crt_rand(&mut self) -> i32 {
-        let mut rng = RetailCrtRng::from_state(self.crt_rand);
-        let result = rng.next_rand();
-        self.crt_rand = rng.state();
-        result
+        self.crt_rand.next_rand()
     }
 
     /// Consumes one draw from only the authoritative map-generation stream.
     pub fn next_map_generation_sample_15(&mut self) -> u32 {
-        let mut rng = RetailLcg::from_state(self.map_generation);
-        let sample = rng.next_sample_15();
-        self.map_generation = rng.state();
-        sample
+        self.map_generation.next_sample_15()
     }
 
     /// Consumes one draw from only the authoritative zone-status stream.
     pub fn next_zone_status_sample_15(&mut self) -> u32 {
-        let mut rng = RetailLcg::from_state(self.zone_status);
-        let sample = rng.next_sample_15();
-        self.zone_status = rng.state();
-        sample
+        self.zone_status.next_sample_15()
     }
 }
 
@@ -126,9 +118,9 @@ mod tests {
 
     fn state(crt_rand: u32) -> RngState {
         RngState {
-            crt_rand,
-            map_generation: 0x1122_3344,
-            zone_status: 0x5566_7788,
+            crt_rand: RetailCrtRng::from_state(crt_rand),
+            map_generation: RetailLcg::from_state(0x1122_3344),
+            zone_status: RetailLcg::from_state(0x5566_7788),
         }
     }
 
@@ -141,9 +133,9 @@ mod tests {
             actual,
             vec![41, 18_467, 6_334, 26_500, 19_169, 15_724, 11_478, 29_358]
         );
-        assert_eq!(rng.crt_rand, 1_924_036_713);
-        assert_eq!(rng.map_generation, 0x1122_3344);
-        assert_eq!(rng.zone_status, 0x5566_7788);
+        assert_eq!(rng.crt_rand, RetailCrtRng::from_state(1_924_036_713));
+        assert_eq!(rng.map_generation, RetailLcg::from_state(0x1122_3344));
+        assert_eq!(rng.zone_status, RetailLcg::from_state(0x5566_7788));
     }
 
     #[test]
@@ -159,7 +151,7 @@ mod tests {
     fn wraps_the_full_unsigned_state_before_extracting_the_result() {
         let mut rng = state(u32::MAX);
         assert_eq!(rng.next_crt_rand(), 35);
-        assert_eq!(rng.crt_rand, 2_316_998);
+        assert_eq!(rng.crt_rand, RetailCrtRng::from_state(2_316_998));
     }
 
     #[test]
@@ -182,7 +174,7 @@ mod tests {
 
         assert_eq!(rng.next_zone_status_sample_15(), 18_210);
         assert_eq!(rng.crt_rand, original_crt);
-        assert_eq!(rng.map_generation, 0x419b_5515);
+        assert_eq!(rng.map_generation, RetailLcg::from_state(0x419b_5515));
     }
 
     #[test]

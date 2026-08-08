@@ -107,6 +107,10 @@ impl MajorNationId {
     pub const fn nation(self) -> NationId {
         NationId::new(self.0)
     }
+
+    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
+        (0..Self::COUNT).map(Self::new)
+    }
 }
 
 impl<'de> Deserialize<'de> for MajorNationId {
@@ -151,6 +155,10 @@ impl MinorNationId {
 
     pub(crate) const fn table_index(self) -> usize {
         (self.0 - Self::FIRST) as usize
+    }
+
+    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
+        (Self::FIRST..NationId::COUNT).map(Self::new)
     }
 }
 

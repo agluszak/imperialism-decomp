@@ -157,8 +157,9 @@ pub fn enter_strategic_map_without_capital_selection(
 ) -> Result<(), CitySiteError> {
     let nation = state.turn.active_nation;
     let major = MajorNationId::from_nation(nation).ok_or(CitySiteError::MissingNation)?;
-    let home = state.cities[major]
-        .as_ref()
+    let home = state
+        .nations
+        .city(major)
         .and_then(|city| city.home_town_tile)
         .ok_or(CitySiteError::MissingCity)?;
     bind_home_city_tile(state, home)?;
@@ -169,11 +170,13 @@ pub fn enter_strategic_map_without_capital_selection(
 fn bind_home_city_tile(state: &mut GameState, tile: TileId) -> Result<(), CitySiteError> {
     let nation = state.turn.active_nation;
     let major = MajorNationId::from_nation(nation).ok_or(CitySiteError::MissingNation)?;
-    let nation_state = state.nations[nation]
-        .as_mut()
+    let nation_state = state
+        .nations
+        .major_mut(major)
         .ok_or(CitySiteError::MissingNation)?;
     nation_state.common.home_tile = Some(tile);
-    let city = state.cities[major]
+    let city = nation_state
+        .city
         .as_mut()
         .ok_or(CitySiteError::MissingCity)?;
     city.home_town_tile = Some(tile);
@@ -255,7 +258,7 @@ fn river_crosses_nation_boundary_to_sea(
 mod tests {
     use super::*;
     use crate::{
-        Difficulty, MajorNationId, NationId, RetailTopologyByte, create_random_game,
+        Difficulty, MajorNationId, RetailTopologyByte, create_random_game,
         generate_random_setup_preview_with_clock_seed,
     };
 
@@ -281,8 +284,9 @@ mod tests {
         let mut state = normal_start();
         assert_eq!(state.turn.phase_code, 2);
         assert_eq!(
-            state.nations[NationId::new(6)]
-                .as_ref()
+            state
+                .nations
+                .major(MajorNationId::new(6))
                 .unwrap()
                 .common
                 .home_tile,
@@ -328,16 +332,18 @@ mod tests {
             PLACE_CITY_ACTIVE_FLAGS
         );
         assert_eq!(
-            state.nations[NationId::new(6)]
-                .as_ref()
+            state
+                .nations
+                .major(MajorNationId::new(6))
                 .unwrap()
                 .common
                 .home_tile,
             Some(tile)
         );
         assert_eq!(
-            state.cities[MajorNationId::new(6)]
-                .as_ref()
+            state
+                .nations
+                .city(MajorNationId::new(6))
                 .unwrap()
                 .home_town_tile,
             Some(tile)
@@ -355,8 +361,9 @@ mod tests {
         enter_strategic_map_without_capital_selection(&mut state).unwrap();
         assert_eq!(state.turn.phase_code, 5);
         assert_eq!(
-            state.nations[NationId::new(6)]
-                .as_ref()
+            state
+                .nations
+                .major(MajorNationId::new(6))
                 .unwrap()
                 .common
                 .home_tile,

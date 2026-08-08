@@ -393,7 +393,7 @@ fn invalid_resource_shape(path: &Path, detail: &str) -> RetailAssetError {
 mod tests {
     use super::*;
     use std::collections::BTreeMap;
-    use std::time::{SystemTime, UNIX_EPOCH};
+    use tempfile::TempDir;
 
     const PE_OFFSET: usize = 0x80;
     const OPTIONAL_OFFSET: usize = PE_OFFSET + 24;
@@ -441,8 +441,8 @@ mod tests {
 
     #[test]
     fn open_reports_the_first_missing_archive() {
-        let root = temporary_root("missing");
-        let error = RetailAssets::open(&root).unwrap_err();
+        let root = temporary_root();
+        let error = RetailAssets::open(root.path()).unwrap_err();
         let RetailAssetError::Io { path, .. } = error else {
             panic!("expected io error for missing archive, got {error:?}");
         };
@@ -452,7 +452,7 @@ mod tests {
     #[test]
     fn opens_runtime_files_without_eager_content_validation() {
         let root = synthetic_retail_install();
-        let assets = RetailAssets::open(&root).unwrap();
+        let assets = RetailAssets::open(root.path()).unwrap();
 
         assert_eq!(assets.string(1), Some("direct lookup"));
         assert_eq!(assets.string(20_874), None);
@@ -460,7 +460,7 @@ mod tests {
         assert_eq!(assets.wave_bytes(7000).unwrap(), b"RIFF\0\0\0\0WAVE");
         assert_eq!(
             assets.music_path(6).unwrap(),
-            root.join("MUSIC/Track06.ogg")
+            root.path().join("MUSIC/Track06.ogg")
         );
 
         let bitmap = assets.picture(4500, 0).unwrap();
@@ -469,28 +469,24 @@ mod tests {
             assets.default_dib_palette().unwrap()[0x16],
             crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
-
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
     fn resource_lookup_uses_the_index_built_at_open() {
         let root = synthetic_retail_install();
-        let mut assets = RetailAssets::open(&root).unwrap();
+        let mut assets = RetailAssets::open(root.path()).unwrap();
 
         assets.pictures[0].bytes[..2].copy_from_slice(b"NO");
 
         let bitmap = assets.picture(4500, 0).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
-
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
     fn wave_payload_validation_happens_at_lookup() {
         let root = synthetic_retail_install();
         write_retail_file(
-            &root,
+            root.path(),
             "Data/wave.gob",
             &synthetic_pe(vec![TestResource::new(
                 TestName::text("WAVE"),
@@ -499,26 +495,22 @@ mod tests {
             )]),
         );
 
-        let assets = RetailAssets::open(&root).unwrap();
+        let assets = RetailAssets::open(root.path()).unwrap();
         assert!(matches!(
             assets.wave_bytes(7000),
             Err(RetailAssetError::Incompatible(_))
         ));
-
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
     fn rejects_world_variants_outside_retail_range() {
         let root = synthetic_retail_install();
-        let assets = RetailAssets::open(&root).unwrap();
+        let assets = RetailAssets::open(root.path()).unwrap();
 
         assert!(matches!(
             assets.picture(4500, 4),
             Err(RetailAssetError::InvalidWorldVariant(4))
         ));
-
-        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -538,19 +530,12 @@ mod tests {
         assert!(assets.wave_bytes(7000).unwrap().starts_with(b"RIFF"));
     }
 
-    fn temporary_root(name: &str) -> PathBuf {
-        let nonce = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .unwrap()
-            .as_nanos();
-        std::env::temp_dir().join(format!(
-            "imperialism-formats-{name}-{}-{nonce}",
-            std::process::id()
-        ))
+    fn temporary_root() -> TempDir {
+        tempfile::tempdir().unwrap()
     }
 
-    fn synthetic_retail_install() -> PathBuf {
-        let root = temporary_root("retail-assets");
+    fn synthetic_retail_install() -> TempDir {
+        let root = temporary_root();
         for (index, relative) in PICTURE_ARCHIVE_PATHS.iter().enumerate() {
             let mut resources = Vec::new();
             if index == 0 {
@@ -577,7 +562,7 @@ mod tests {
                     one_pixel_dib(0x33),
                 ));
             }
-            write_retail_file(&root, relative, &synthetic_pe(resources));
+            write_retail_file(root.path(), relative, &synthetic_pe(resources));
         }
 
         let string_resources = vec![TestResource::new(
@@ -585,9 +570,13 @@ mod tests {
             TestName::id(1),
             string_block(&[(1, "direct lookup")]),
         )];
-        write_retail_file(&root, "Data/STR#ENU.GOB", &synthetic_pe(string_resources));
         write_retail_file(
-            &root,
+            root.path(),
+            "Data/STR#ENU.GOB",
+            &synthetic_pe(string_resources),
+        );
+        write_retail_file(
+            root.path(),
             "Data/wave.gob",
             &synthetic_pe(vec![TestResource::new(
                 TestName::text("WAVE"),
@@ -597,10 +586,14 @@ mod tests {
         );
 
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
-            write_retail_file(&root, relative, b"not a font");
+            write_retail_file(root.path(), relative, b"not a font");
         }
         for track in 2..=12 {
-            write_retail_file(&root, &format!("MUSIC/Track{track:02}.ogg"), b"not an ogg");
+            write_retail_file(
+                root.path(),
+                &format!("MUSIC/Track{track:02}.ogg"),
+                b"not an ogg",
+            );
         }
         root
     }

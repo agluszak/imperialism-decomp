@@ -3,7 +3,8 @@ use crate::{
     HexDirection, IndustryActionSlot, IndustryActionTable, LaborPool, MajorNationTable,
     MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacityTable,
     NationId, NationTable, PendingActionTable, ProductionTable, ProvinceId, RecruitKind,
-    ResourceTable, ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    ResourceTable, RetailCrtRng, RetailLcg, ShipId, TaskForceId, TileId, TileOwnerTag,
+    TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
@@ -14,14 +15,73 @@ pub struct GameState {
     pub world: WorldState,
     pub rng: RngState,
     pub market: TradeMarketState,
-    pub nations: NationTable<Option<NationState>>,
-    pub cities: MajorNationTable<Option<CityState>>,
+    pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
     pub civilian_units: Vec<CivilianUnitState>,
     pub ships: Vec<ShipState>,
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
     pub pending: PendingWorkState,
+}
+
+/// Every nation slot, split into the two retail populations that carry
+/// different state. A present major always has both common and major-nation
+/// state and may hold a city; a present minor carries only common state.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct Nations {
+    pub majors: MajorNationTable<Option<MajorNation>>,
+    pub minors: MinorNationTable<Option<MinorNation>>,
+}
+
+impl Nations {
+    pub fn major(&self, nation: crate::MajorNationId) -> Option<&MajorNation> {
+        self.majors[nation].as_ref()
+    }
+
+    pub fn major_mut(&mut self, nation: crate::MajorNationId) -> Option<&mut MajorNation> {
+        self.majors[nation].as_mut()
+    }
+
+    pub fn city(&self, nation: crate::MajorNationId) -> Option<&CityState> {
+        self.majors[nation]
+            .as_ref()
+            .and_then(|major| major.city.as_ref())
+    }
+
+    pub fn city_mut(&mut self, nation: crate::MajorNationId) -> Option<&mut CityState> {
+        self.majors[nation]
+            .as_mut()
+            .and_then(|major| major.city.as_mut())
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MajorNation {
+    pub common: NationCommonState,
+    pub state: MajorNationState,
+    pub city: Option<CityState>,
+}
+
+impl MajorNation {
+    /// Builds a random-game start major nation from the resolved starting
+    /// `treasury`, whether the slot is the `human` player, and its scenario
+    /// `city`. Homes are unset until capital selection places them.
+    pub fn for_random_start(treasury: i32, human: bool, city: CityState) -> Self {
+        Self {
+            common: NationCommonState {
+                treasury,
+                home_tile: None,
+                trade_policy_by_nation: NationTable::default(),
+            },
+            state: MajorNationState::for_random_start(human),
+            city: Some(city),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorNation {
+    pub common: NationCommonState,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -141,20 +201,13 @@ impl Default for TileDevelopment {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RngState {
-    pub crt_rand: u32,
-    pub map_generation: u32,
-    pub zone_status: u32,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct NationState {
-    pub common: NationCommonState,
-    pub data: NationData,
+    pub crt_rand: RetailCrtRng,
+    pub map_generation: RetailLcg,
+    pub zone_status: RetailLcg,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
-    pub owner_nation: i16,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
@@ -190,36 +243,6 @@ impl TradePolicyScore {
 impl Default for TradePolicyScore {
     fn default() -> Self {
         Self::NEUTRAL
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub enum NationData {
-    Major(MajorNationState),
-    Minor,
-}
-
-impl NationState {
-    pub const fn major(&self) -> Option<&MajorNationState> {
-        match &self.data {
-            NationData::Major(major) => Some(major),
-            NationData::Minor => None,
-        }
-    }
-
-    pub const fn major_mut(&mut self) -> Option<&mut MajorNationState> {
-        match &mut self.data {
-            NationData::Major(major) => Some(major),
-            NationData::Minor => None,
-        }
-    }
-
-    pub fn major_parts_mut(&mut self) -> Option<(&mut NationCommonState, &mut MajorNationState)> {
-        match &mut self.data {
-            NationData::Major(major) => Some((&mut self.common, major)),
-            NationData::Minor => None,
-        }
     }
 }
 
@@ -292,6 +315,46 @@ pub struct MajorNationState {
     pub military_expenses: i32,
 }
 
+impl MajorNationState {
+    /// The post-`IGreatPower`/`IAutoGreatPower` construction state a major nation
+    /// carries at the random-game start boundary. Only the human is diplomacy
+    /// eligible before capital selection.
+    pub fn for_random_start(human: bool) -> Self {
+        Self {
+            diplomacy_eligible: human,
+            capacities: NationCapacityTable::from_array([0, 0, 0x0f, 0]),
+            grant_total_cost: 0,
+            unfilled_trade_offer_count: 0,
+            diplomacy_policy_by_nation: NationTable::default(),
+            diplomacy_grants_by_nation: NationTable::default(),
+            need_current_by_type: ResourceTable::default(),
+            need_target_by_type: ResourceTable::default(),
+            relation_delta_current: ResourceTable::default(),
+            purchased_items_by_resource: ResourceTable::default(),
+            item_potentials: ResourceTable::default(),
+            unfilled_trade_turns_by_resource: ResourceTable::default(),
+            transported_items_by_resource: ResourceTable::default(),
+            remembered_trade_offers_by_resource: ResourceTable::default(),
+            aid_allocation_by_minor_nation: MinorNationTable::default(),
+            budget_pool_base: 0,
+            budget_pool_delta: 0,
+            special_resource_trade_balance: 0,
+            candidate_nation_flags: NationTable::default(),
+            scenario_initialized: false,
+            turn_finished: true,
+            pending_action_status: PendingActionTable::default(),
+            pending_action_payload_by_action: PendingActionTable::default(),
+            diplomacy_budget_base: 20_000,
+            escalation_counter: 0,
+            pending_commitment_cost: 0,
+            pressure_counter: 0,
+            aid_allocation_total: 0,
+            colony_boycott_flags: NationTable::default(),
+            military_expenses: 0,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
     pub power_plant_upgrade_queued: bool,
@@ -322,6 +385,48 @@ pub struct CityState {
     pub population: PopulationState,
 }
 
+impl CityState {
+    /// Builds the scenario start city. `stock_by_type` and `production` come from
+    /// the difficulty presets, `labor` is the `SetPopulation` triple, and only
+    /// the human capital gets the Frog City marker at tile 0.
+    pub fn for_random_start(
+        stock_by_type: ResourceTable<i16>,
+        production: ProductionTable<i16>,
+        labor: LaborPool,
+        human: bool,
+    ) -> Self {
+        Self {
+            power_plant_upgrade_queued: false,
+            food_substitution_count: 0,
+            starvation_population_loss: 0,
+            serialized_state: 0,
+            phase_counter: 0,
+            military_recruit_count_by_kind: MilitaryUnitTable::default(),
+            civilian_recruit_count_by_kind: CivilianUnitTable::default(),
+            order_count_by_type: IndustryActionTable::default(),
+            rolling_item_production_score: 0,
+            low_production: false,
+            low_stock: false,
+            reserved_by_type: ResourceTable::default(),
+            // Human Frog City marker sits at tile 0 without PlaceCity. AI
+            // capitals are placed later once tile post-passes and frog-city
+            // scoring land.
+            home_town_tile: human.then(|| TileId::new(0)),
+            power_available: 0,
+            stock_by_type,
+            production_orders: production.clone(),
+            production_accum: production,
+            production_flags: ProductionTable::default(),
+            production_current: ProductionTable::default(),
+            production_progress: ProductionTable::default(),
+            population_growth_penalty_ticks: 0,
+            unmet_resource_retries: ResourceTable::default(),
+            consumed_production_input_by_type: ResourceTable::default(),
+            population: PopulationState::from_labor(labor),
+        }
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PopulationState {
     pub count: i16,
@@ -329,10 +434,30 @@ pub struct PopulationState {
     pub strength: i16,
     pub extra: i16,
     pub phase_value: i16,
-    pub baseline_labor: Option<LaborPool>,
-    pub production_labor: Option<LaborPool>,
-    pub pending_labor_delta: Option<LaborPool>,
+    pub baseline_labor: LaborPool,
+    pub production_labor: LaborPool,
+    pub pending_labor_delta: LaborPool,
     pub predicted_need_by_resource: ResourceTable<i16>,
+}
+
+impl PopulationState {
+    /// Builds a fresh population whose baseline and production bands both equal
+    /// `labor`, with no pending reassignment. Mirrors the retail
+    /// `SetPopulation`-time state used when a city first appears.
+    pub fn from_labor(labor: LaborPool) -> Self {
+        let count = labor.low + labor.medium + labor.high;
+        Self {
+            count,
+            count_float_bits: f32::from(count).to_bits(),
+            strength: labor.strength(),
+            extra: 0,
+            phase_value: 0,
+            baseline_labor: labor,
+            production_labor: labor,
+            pending_labor_delta: LaborPool::default(),
+            predicted_need_by_resource: ResourceTable::default(),
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

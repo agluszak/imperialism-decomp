@@ -20,14 +20,6 @@ impl MajorNationState {
         if available <= 0 { 0 } else { available }
     }
 
-    pub fn set_need_current(&mut self, resource: ResourceKind, value: i16) {
-        self.need_current_by_type[resource] = value;
-    }
-
-    pub fn need_target(&self, resource: ResourceKind) -> i16 {
-        self.need_target_by_type[resource]
-    }
-
     pub fn need_target_equals_current(&self, resource: ResourceKind) -> bool {
         self.need_target_by_type[resource] == self.need_current_by_type[resource]
     }
@@ -70,10 +62,6 @@ impl MajorNationState {
         *amount += delta;
     }
 
-    pub fn available_merchant_capacity(&self) -> i16 {
-        self.capacities[NationCapacity::AvailableMerchant]
-    }
-
     pub fn deliver_item(&mut self, amount: i16) {
         self.capacities[NationCapacity::AvailableMerchant] -= amount;
     }
@@ -103,10 +91,6 @@ impl MajorNationState {
         true
     }
 
-    pub fn trade_offer(&self, resource: ResourceKind) -> i16 {
-        self.item_potentials[resource]
-    }
-
     pub fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
         self.item_potentials[resource] =
             value.min(self.capacities[NationCapacity::MerchantCapacity]);
@@ -122,7 +106,7 @@ impl MajorNationState {
     }
 
     pub fn is_still_buying(&self, resource: ResourceKind) -> bool {
-        self.available_merchant_capacity() > 0 && self.item_potentials[resource] < 0
+        self.capacities[NationCapacity::AvailableMerchant] > 0 && self.item_potentials[resource] < 0
     }
 
     pub(crate) fn settle_transported_items(&mut self, city: &mut CityState) {
@@ -158,45 +142,9 @@ impl MajorNationState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{LaborPool, PopulationState};
 
     fn city() -> CityState {
-        CityState {
-            power_plant_upgrade_queued: false,
-            food_substitution_count: 0,
-            starvation_population_loss: 0,
-            serialized_state: 0,
-            phase_counter: 0,
-            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
-            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: crate::IndustryActionTable::default(),
-            rolling_item_production_score: 0,
-            low_production: false,
-            low_stock: false,
-            reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
-            power_available: 0,
-            stock_by_type: crate::ResourceTable::default(),
-            production_orders: crate::ProductionTable::default(),
-            production_accum: crate::ProductionTable::default(),
-            production_flags: crate::ProductionTable::default(),
-            production_current: crate::ProductionTable::default(),
-            production_progress: crate::ProductionTable::default(),
-            population_growth_penalty_ticks: 0,
-            unmet_resource_retries: crate::ResourceTable::default(),
-            consumed_production_input_by_type: crate::ResourceTable::default(),
-            population: PopulationState {
-                count: 7,
-                count_float_bits: 7.0_f32.to_bits(),
-                strength: 12,
-                extra: 0,
-                phase_value: 0,
-                baseline_labor: Some(LaborPool::new(4, 2, 1)),
-                production_labor: Some(LaborPool::new(4, 2, 1)),
-                pending_labor_delta: Some(LaborPool::default()),
-                predicted_need_by_resource: crate::ResourceTable::default(),
-            },
-        }
+        crate::test_support::city()
     }
 
     fn nation() -> MajorNationState {
@@ -247,12 +195,12 @@ mod tests {
     fn updates_current_target_and_reserved_capacity() {
         let mut state = nation();
         let resource = ResourceKind::Steel;
-        state.set_need_current(resource, 10);
+        state.need_current_by_type[resource] = 10;
         assert_eq!(state.need_current_by_type[resource], 10);
         assert!(!state.need_target_equals_current(resource));
 
         state.update_need_target(resource, 7);
-        assert_eq!(state.need_target(resource), 7);
+        assert_eq!(state.need_target_by_type[resource], 7);
         assert_eq!(state.capacities[NationCapacity::ReservedTransport], 18);
         state.update_need_target(resource, 3);
         assert_eq!(state.capacities[NationCapacity::ReservedTransport], 14);
@@ -265,10 +213,10 @@ mod tests {
         state.need_current_by_type[resource] = 2;
         state.need_target_by_type[resource] = 1;
         state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target(resource), 2);
+        assert_eq!(state.need_target_by_type[resource], 2);
         assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
         state.increment_need_target_toward_current(resource);
-        assert_eq!(state.need_target(resource), 2);
+        assert_eq!(state.need_target_by_type[resource], 2);
         assert_eq!(state.capacities[NationCapacity::ReservedTransport], 12);
     }
 
@@ -289,11 +237,11 @@ mod tests {
         state.capacities[NationCapacity::MerchantCapacity] = 3;
         state.deliver_item(2);
         state.consume_merchant_capacity_for_purchase(1);
-        assert_eq!(state.available_merchant_capacity(), 2);
+        assert_eq!(state.capacities[NationCapacity::AvailableMerchant], 2);
 
         let resource = ResourceKind::Coal;
         state.set_item_potential(resource, 7);
-        assert_eq!(state.trade_offer(resource), 3);
+        assert_eq!(state.item_potentials[resource], 3);
         state.set_item_potential(resource, -1);
         assert!(state.is_still_buying(resource));
         state.purchased_items_by_resource[resource] = 4;
