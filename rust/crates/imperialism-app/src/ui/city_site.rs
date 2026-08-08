@@ -11,9 +11,9 @@ use bevy::prelude::*;
 use bevy::ui::RelativeCursorPosition;
 use bevy::ui_widgets::Activate;
 use imperialism_core::{
-    MajorNationId, TileId, confirm_capital_site, validate_capital_site_selection,
+    CapitalSite, MajorNationId, confirm_capital_site, validate_capital_site_selection,
 };
-use imperialism_formats::{FourCc, ScopedViewId, fourcc};
+use imperialism_formats::{FourCc, OKAY, ScopedViewId, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const CITY_SITE_RESOURCE_ID: i16 = 952;
@@ -27,7 +27,7 @@ pub(crate) fn city_site_view_id() -> ScopedViewId {
     }
 }
 
-fn new_city_dialog_view_id() -> ScopedViewId {
+pub(crate) fn new_city_dialog_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: NEW_CITY_RESOURCE_ID,
@@ -43,11 +43,11 @@ enum CitySiteAction {
 struct CitySiteMap;
 
 #[derive(Component)]
-struct NewCityDialogRoot;
+struct NewCityDialogRoot(CapitalSite);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum NewCityAction {
-    Accept(TileId),
+    Accept,
     Cancel,
 }
 
@@ -71,28 +71,26 @@ fn enter_city_site(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
 ) {
-    let Some(view) = catalog.view(&city_site_view_id()) else {
-        return;
-    };
+    let view = catalog
+        .view(&city_site_view_id())
+        .expect("validated city-site catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_city_site_controls(&mut commands, &catalog, &spawned);
+    bind_city_site_controls(&mut commands, &spawned);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::CitySite));
 }
 
-fn bind_city_site_controls(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &crate::ui::catalog::SpawnedView,
-) {
-    if let Ok(entity) = spawned.require_unique(catalog, fourcc!("canc")) {
-        commands.entity(entity).insert(CitySiteAction::Cancel);
-    }
+fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {
+    let cancel = spawned
+        .tag(fourcc!("canc"))
+        .expect("validated city-site cancel binding");
+    commands.entity(cancel).insert(CitySiteAction::Cancel);
     // Retail opens the New City dialog from a validated map click, not from `send`.
-    if let Ok(entity) = spawned.require_unique(catalog, MAP_TAG) {
-        commands.entity(entity).insert(CitySiteMap);
-    }
+    let map = spawned
+        .tag(MAP_TAG)
+        .expect("validated city-site map binding");
+    commands.entity(map).insert(CitySiteMap);
 }
 
 fn render_city_site_map(
@@ -112,19 +110,8 @@ fn render_city_site_map(
         );
         return;
     };
-    let palette_indices = compose_owner_preview_indices(
-        |tile| {
-            session
-                .0
-                .world
-                .tiles
-                .get(usize::from(tile.get()))
-                .and_then(|tile| tile.owner_nation)
-                .map(|owner| i8::try_from(owner.get()).unwrap_or(-1))
-                .unwrap_or(-1)
-        },
-        selected,
-    );
+    let palette_indices =
+        compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selected);
     let palette = match retail_assets.assets().default_dib_palette() {
         Ok(palette) => palette,
         Err(error) => {
@@ -187,25 +174,32 @@ fn on_city_site_map_click(
     let Some(tile) = tile_at_preview_position(normalized) else {
         return;
     };
-    if validate_capital_site_selection(&session.0, tile).is_err() {
-        return;
-    }
-    open_new_city_dialog(&mut ui, tile);
-}
-
-fn open_new_city_dialog(ui: &mut UiSpawner, tile: TileId) {
-    let Some(spawned) = ui.spawn_modal(new_city_dialog_view_id()) else {
+    let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
         return;
     };
-    ui.commands.entity(spawned.root).insert(NewCityDialogRoot);
-    let _ = ui.attach(&spawned, fourcc!("okay"), NewCityAction::Accept(tile));
-    let _ = ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel);
+    let Ok(site) = validate_capital_site_selection(&session.0, nation, tile) else {
+        return;
+    };
+    open_new_city_dialog(&mut ui, site);
+}
+
+fn open_new_city_dialog(ui: &mut UiSpawner, site: CapitalSite) {
+    let spawned = ui
+        .spawn_modal(new_city_dialog_view_id())
+        .expect("validated new-city dialog view");
+    ui.commands
+        .entity(spawned.root)
+        .insert(NewCityDialogRoot(site));
+    ui.attach(&spawned, OKAY, NewCityAction::Accept)
+        .expect("validated new-city accept binding");
+    ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel)
+        .expect("validated new-city cancel binding");
 }
 
 fn on_new_city_activate(
     activate: On<Activate>,
     actions: Query<&NewCityAction>,
-    dialogs: Query<Entity, With<NewCityDialogRoot>>,
+    dialogs: Query<(Entity, &NewCityDialogRoot)>,
     mut session: ResMut<GameSession>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
@@ -214,17 +208,18 @@ fn on_new_city_activate(
         return;
     };
     match *action {
-        NewCityAction::Accept(tile) => {
-            if confirm_capital_site(&mut session.0, tile).is_err() {
+        NewCityAction::Accept => {
+            let Ok((_, dialog)) = dialogs.single() else {
                 return;
-            }
-            for root in &dialogs {
+            };
+            confirm_capital_site(&mut session.0, dialog.0);
+            for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
             next_state.set(AppState::StrategicMap);
         }
         NewCityAction::Cancel => {
-            for root in &dialogs {
+            for (root, _) in &dialogs {
                 commands.entity(root).despawn();
             }
         }

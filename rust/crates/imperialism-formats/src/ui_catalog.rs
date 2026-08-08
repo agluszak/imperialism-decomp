@@ -13,9 +13,23 @@ pub struct ScopedViewId {
 #[serde(transparent)]
 pub struct UiNodeId(pub u32);
 
-/// Retail four-character tag. JSON stays a 4-byte string; Rust uses a Copy byte array.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct PictureId(i16);
+impl PictureId {
+    pub const fn new(value: i16) -> Self {
+        Self(value)
+    }
+    pub const fn get(self) -> i16 {
+        self.0
+    }
+}
+
 #[derive(Clone, Copy, Eq, Hash, PartialEq)]
 pub struct FourCc([u8; 4]);
+
+pub const OKAY: FourCc = FourCc(*b"okay");
+pub const TRADE: FourCc = FourCc(*b"trad");
 
 impl FourCc {
     pub const fn new(value: &str) -> Self {
@@ -25,6 +39,14 @@ impl FourCc {
         );
         let bytes = value.as_bytes();
         Self([bytes[0], bytes[1], bytes[2], bytes[3]])
+    }
+
+    pub const fn from_bytes(value: [u8; 4]) -> Self {
+        Self(value)
+    }
+
+    pub const fn as_bytes(self) -> [u8; 4] {
+        self.0
     }
 
     pub fn as_str(&self) -> &str {
@@ -224,7 +246,7 @@ pub struct UiWindowProperties {
 pub struct WidgetProperties {
     pub frame_style: Option<i32>,
     pub content_insets: Option<[i32; 4]>,
-    pub picture_id: Option<i32>,
+    pub picture_id: Option<PictureId>,
     pub control_state: Option<i32>,
     pub style: Option<UiStyle>,
     pub text: Option<UiTextBinding>,

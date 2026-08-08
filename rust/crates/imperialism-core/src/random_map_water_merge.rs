@@ -6,7 +6,7 @@
 //! - `BuildOverlaySpanRecordsFromQuadBorderLinks` (0x0052cae0)
 //! - `MergeSmallCityRegionsAndCompactIds` (0x0052d750)
 
-use crate::random_map_terrain::GeneratedTerrainTile;
+use crate::random_map_terrain::GeneratedTerrainTileScratch;
 use crate::{HexDirection, MapGeometry, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, TileId};
 
 const WATER: i8 = 5;
@@ -51,9 +51,9 @@ impl Seapoint {
         if row_delta < 0 {
             row_delta = -row_delta;
         }
-        let mut col_delta =
-            ((self.coord % OVERLAY_WIDTH - other.coord % OVERLAY_WIDTH) + OVERLAY_WIDTH)
-                % OVERLAY_WIDTH;
+        let mut col_delta = ((self.coord % OVERLAY_WIDTH - other.coord % OVERLAY_WIDTH)
+            + OVERLAY_WIDTH)
+            % OVERLAY_WIDTH;
         if col_delta > 0x6c {
             col_delta = 0xd7 - col_delta;
         }
@@ -94,14 +94,13 @@ impl SeaSegment {
 ///
 /// Returns the post-merge city-region count (`cityRegionCount2a4`).
 pub(crate) fn merge_small_water_regions(
-    tiles: &mut [GeneratedTerrainTile],
-    wraps_horizontally: bool,
+    tiles: &mut [GeneratedTerrainTileScratch],
+    geometry: MapGeometry,
 ) -> i32 {
     let mut region_count = city_region_count(tiles);
     if region_count <= 0 {
         return 0;
     }
-    let geometry = MapGeometry::new(wraps_horizontally);
     let quads = build_city_region_border_overlay_segments(tiles, geometry);
     let mut links = build_overlay_span_records_from_quad_border_links(&quads);
 
@@ -237,7 +236,7 @@ pub(crate) fn merge_small_water_regions(
     }
 }
 
-fn city_region_count(tiles: &[GeneratedTerrainTile]) -> i32 {
+fn city_region_count(tiles: &[GeneratedTerrainTileScratch]) -> i32 {
     let mut max = -1_i32;
     for tile in tiles {
         max = max.max(water_region_id(tile));
@@ -245,18 +244,18 @@ fn city_region_count(tiles: &[GeneratedTerrainTile]) -> i32 {
     max + 1
 }
 
-fn water_region_id(tile: &GeneratedTerrainTile) -> i32 {
+fn water_region_id(tile: &GeneratedTerrainTileScratch) -> i32 {
     if tile.terrain_kind != WATER {
         return -1;
     }
     i32::from(tile.owner_nation as u8) - SEA_OWNER_BIAS
 }
 
-fn set_water_region_id(tile: &mut GeneratedTerrainTile, region: i32) {
+fn set_water_region_id(tile: &mut GeneratedTerrainTileScratch, region: i32) {
     tile.owner_nation = (region + SEA_OWNER_BIAS) as i8;
 }
 
-fn region_at_tile(tiles: &[GeneratedTerrainTile], tile_index: i32) -> i32 {
+fn region_at_tile(tiles: &[GeneratedTerrainTileScratch], tile_index: i32) -> i32 {
     if tile_index < 0 {
         return -1;
     }
@@ -328,7 +327,7 @@ fn emit_overlay_segment_from_tile_edge_sorted(
 
 /// `TMapMaker::BuildCityRegionBorderOverlaySegments`.
 fn build_city_region_border_overlay_segments(
-    tiles: &[GeneratedTerrainTile],
+    tiles: &[GeneratedTerrainTileScratch],
     geometry: MapGeometry,
 ) -> Vec<Seapoint> {
     let mut quads = Vec::new();
@@ -485,10 +484,8 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
                         if col_delta > 0x6c {
                             col_delta = 0xd7 - col_delta;
                         }
-                        let candidate_dist = f64::from(
-                            col_delta * col_delta * row_delta * row_delta,
-                        )
-                        .sqrt() as f32;
+                        let candidate_dist =
+                            f64::from(col_delta * col_delta * row_delta * row_delta).sqrt() as f32;
                         if quads[best_primary as usize].wrapped_delta_metric(quads[i])
                             <= f64::from(candidate_dist)
                         {
@@ -499,8 +496,7 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
                     best_primary = j as u32;
                 } else if best_primary == u32::MAX {
                     if best_secondary != u32::MAX {
-                        let candidate_dist =
-                            quads[j].wrapped_delta_metric(quads[i]) as f32;
+                        let candidate_dist = quads[j].wrapped_delta_metric(quads[i]) as f32;
                         if quads[best_secondary as usize].wrapped_delta_metric(quads[i])
                             <= f64::from(candidate_dist)
                         {
@@ -542,20 +538,22 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
 mod tests {
     use super::*;
 
-    fn water_tile(region: i32) -> GeneratedTerrainTile {
-        GeneratedTerrainTile {
+    fn water_tile(region: i32) -> GeneratedTerrainTileScratch {
+        GeneratedTerrainTileScratch {
             terrain_kind: WATER,
             river_sprite_code: 0,
+            river_flow_direction: None,
             owner_nation: (region + SEA_OWNER_BIAS) as i8,
             gate_flag: -1,
             province_index: -1,
         }
     }
 
-    fn land_tile(owner: i8) -> GeneratedTerrainTile {
-        GeneratedTerrainTile {
+    fn land_tile(owner: i8) -> GeneratedTerrainTileScratch {
+        GeneratedTerrainTileScratch {
             terrain_kind: 0,
             river_sprite_code: 0,
+            river_flow_direction: None,
             owner_nation: owner,
             gate_flag: -1,
             province_index: 0,
@@ -577,7 +575,8 @@ mod tests {
 
         let before = city_region_count(&tiles);
         assert_eq!(before, 2);
-        let after = merge_small_water_regions(&mut tiles, true);
+        let after =
+            merge_small_water_regions(&mut tiles, MapGeometry::new(crate::MapTopology::Wrapping));
         assert_eq!(after, 1);
         assert_eq!(water_region_id(&tiles[10 * width + 40]), 0);
         assert_eq!(water_region_id(&tiles[10 * width + 20]), 0);

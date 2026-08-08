@@ -9,12 +9,12 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
 use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::{
-    FourCc, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
-    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog,
+    FourCc, OKAY, PictureId, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
+    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, TRADE, UiBehavior, UiCatalog,
     UiNode as CatalogNode, UiNodeId, UiTextBinding, UiView as CatalogView, UiViewIndex,
     resolve_retail_text_style,
 };
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Resource)]
 pub(crate) struct UiCatalogResource {
@@ -24,7 +24,8 @@ pub(crate) struct UiCatalogResource {
 }
 
 impl UiCatalogResource {
-    pub(crate) fn new(catalog: UiCatalog) -> Self {
+    pub(crate) fn new(catalog: UiCatalog) -> Result<Self, String> {
+        validate_catalog_structure(&catalog)?;
         let by_id = catalog
             .views
             .iter()
@@ -32,11 +33,11 @@ impl UiCatalogResource {
             .map(|(index, view)| (view.id.clone(), index))
             .collect();
         let indexes = catalog.views.iter().map(UiViewIndex::build).collect();
-        Self {
+        Ok(Self {
             catalog,
             by_id,
             indexes,
-        }
+        })
     }
 
     pub(crate) const fn catalog(&self) -> &UiCatalog {
@@ -52,6 +53,236 @@ impl UiCatalogResource {
     pub(crate) fn index(&self, view_id: &ScopedViewId) -> Option<&UiViewIndex> {
         self.by_id.get(view_id).map(|&index| &self.indexes[index])
     }
+
+    pub(crate) fn validate_application_bindings(&self) -> Result<(), String> {
+        use crate::ui::{city_site, game_screens, main_menu, random_setup};
+        let requirements: [(ScopedViewId, &[FourCc]); 10] = [
+            (
+                main_menu::main_menu_view_id(),
+                &[
+                    imperialism_formats::fourcc!("rand"),
+                    imperialism_formats::fourcc!("quit"),
+                ],
+            ),
+            (
+                random_setup::random_setup_view_id(),
+                &[
+                    OKAY,
+                    imperialism_formats::fourcc!("cncl"),
+                    imperialism_formats::fourcc!("glob"),
+                    imperialism_formats::fourcc!("key "),
+                    imperialism_formats::fourcc!("dif0"),
+                    imperialism_formats::fourcc!("dif1"),
+                    imperialism_formats::fourcc!("dif2"),
+                    imperialism_formats::fourcc!("dif3"),
+                    imperialism_formats::fourcc!("dif4"),
+                    imperialism_formats::fourcc!("hist"),
+                    imperialism_formats::fourcc!("rand"),
+                    imperialism_formats::fourcc!("coun"),
+                    imperialism_formats::fourcc!("map "),
+                    imperialism_formats::fourcc!("coat"),
+                    imperialism_formats::fourcc!("flag"),
+                ],
+            ),
+            (
+                random_setup::planet_seed_dialog_view_id(),
+                &[imperialism_formats::fourcc!("plan"), OKAY],
+            ),
+            (
+                city_site::city_site_view_id(),
+                &[
+                    imperialism_formats::fourcc!("canc"),
+                    imperialism_formats::fourcc!("DLOG"),
+                ],
+            ),
+            (
+                city_site::new_city_dialog_view_id(),
+                &[OKAY, imperialism_formats::fourcc!("cncl")],
+            ),
+            (
+                game_screens::strategic_map_view_id(),
+                &[
+                    TRADE,
+                    imperialism_formats::fourcc!("tran"),
+                    imperialism_formats::fourcc!("city"),
+                    imperialism_formats::fourcc!("dipl"),
+                ],
+            ),
+            (
+                game_screens::trade_view_id(),
+                &[imperialism_formats::fourcc!("end ")],
+            ),
+            (
+                game_screens::city_view_id(),
+                &[imperialism_formats::fourcc!("end ")],
+            ),
+            (
+                game_screens::transport_view_id(),
+                &[imperialism_formats::fourcc!("end ")],
+            ),
+            (
+                game_screens::diplomacy_view_id(),
+                &[imperialism_formats::fourcc!("end ")],
+            ),
+        ];
+        for (view_id, tags) in requirements {
+            let index = self.index(&view_id).ok_or_else(|| {
+                format!(
+                    "required UI view {}:{} is missing",
+                    view_id.resource_file, view_id.resource_id
+                )
+            })?;
+            for &tag in tags {
+                match index.tagged(tag) {
+                    [] => {
+                        return Err(format!(
+                            "required UI binding {}:{} tag {:?} is missing",
+                            view_id.resource_file, view_id.resource_id, tag
+                        ));
+                    }
+                    [_] => {}
+                    matches => {
+                        return Err(format!(
+                            "required UI binding {}:{} tag {:?} is ambiguous ({})",
+                            view_id.resource_file,
+                            view_id.resource_id,
+                            tag,
+                            matches.len()
+                        ));
+                    }
+                }
+            }
+        }
+        for view_id in [
+            game_screens::strategic_map_view_id(),
+            game_screens::trade_view_id(),
+            game_screens::city_view_id(),
+            game_screens::transport_view_id(),
+            game_screens::diplomacy_view_id(),
+        ] {
+            for tag in [
+                TRADE,
+                imperialism_formats::fourcc!("tran"),
+                imperialism_formats::fourcc!("city"),
+                imperialism_formats::fourcc!("dipl"),
+            ] {
+                self.validate_control_under(&view_id, tag, game_screens::TOOLBAR_PARENT_TAGS)?;
+            }
+        }
+        for view_id in [
+            game_screens::trade_view_id(),
+            game_screens::city_view_id(),
+            game_screens::transport_view_id(),
+            game_screens::diplomacy_view_id(),
+        ] {
+            self.validate_control_under(
+                &view_id,
+                imperialism_formats::fourcc!("end "),
+                game_screens::LEAVE_PARENT_TAGS,
+            )?;
+        }
+        Ok(())
+    }
+
+    fn validate_control_under(
+        &self,
+        view_id: &ScopedViewId,
+        tag: FourCc,
+        parent_tags: &[FourCc],
+    ) -> Result<(), String> {
+        let view = self.view(view_id).ok_or_else(|| {
+            format!(
+                "required UI view {}:{} is missing",
+                view_id.resource_file, view_id.resource_id
+            )
+        })?;
+        let index = self.index(view_id).expect("catalog view has an index");
+        let matches = index
+            .tagged(tag)
+            .iter()
+            .copied()
+            .filter(|candidate| {
+                let mut parent = index.node(view, *candidate).and_then(|node| node.parent);
+                while let Some(parent_id) = parent {
+                    let node = index
+                        .node(view, parent_id)
+                        .expect("catalog structure validated parent IDs");
+                    if parent_tags.contains(&node.tag) {
+                        return true;
+                    }
+                    parent = node.parent;
+                }
+                false
+            })
+            .count();
+        match matches {
+            1 => Ok(()),
+            0 => Err(format!(
+                "required UI binding {}:{} tag {:?} is missing under {:?}",
+                view_id.resource_file, view_id.resource_id, tag, parent_tags
+            )),
+            count => Err(format!(
+                "required UI binding {}:{} tag {:?} is ambiguous under {:?} ({count})",
+                view_id.resource_file, view_id.resource_id, tag, parent_tags
+            )),
+        }
+    }
+}
+
+fn validate_catalog_structure(catalog: &UiCatalog) -> Result<(), String> {
+    let mut view_ids = HashSet::with_capacity(catalog.views.len());
+    for view in &catalog.views {
+        if !view_ids.insert(view.id.clone()) {
+            return Err(format!(
+                "duplicate UI view {}:{}",
+                view.id.resource_file, view.id.resource_id
+            ));
+        }
+
+        let mut nodes = HashMap::with_capacity(view.nodes.len());
+        for node in &view.nodes {
+            if nodes.insert(node.id, node).is_some() {
+                return Err(format!(
+                    "UI view {}:{} has duplicate node {:?}",
+                    view.id.resource_file, view.id.resource_id, node.id
+                ));
+            }
+        }
+        let root = nodes.get(&view.root).ok_or_else(|| {
+            format!(
+                "UI view {}:{} is missing root node {:?}",
+                view.id.resource_file, view.id.resource_id, view.root
+            )
+        })?;
+        if root.parent.is_some() {
+            return Err(format!(
+                "UI view {}:{} root node {:?} has a parent",
+                view.id.resource_file, view.id.resource_id, view.root
+            ));
+        }
+        for node in &view.nodes {
+            if let Some(parent) = node.parent
+                && !nodes.contains_key(&parent)
+            {
+                return Err(format!(
+                    "UI view {}:{} node {:?} references missing parent {:?}",
+                    view.id.resource_file, view.id.resource_id, node.id, parent
+                ));
+            }
+            let mut ancestors = HashSet::new();
+            let mut parent = node.parent;
+            while let Some(id) = parent {
+                if !ancestors.insert(id) {
+                    return Err(format!(
+                        "UI view {}:{} has a parent cycle at node {:?}",
+                        view.id.resource_file, view.id.resource_id, node.id
+                    ));
+                }
+                parent = nodes[&id].parent;
+            }
+        }
+    }
+    Ok(())
 }
 
 #[derive(Debug, Clone)]
@@ -59,6 +290,7 @@ pub(crate) struct SpawnedView {
     pub root: Entity,
     pub view_id: ScopedViewId,
     pub nodes: HashMap<UiNodeId, Entity>,
+    pub tags: HashMap<FourCc, Entity>,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -78,6 +310,10 @@ pub(crate) enum UiBindError {
 }
 
 impl SpawnedView {
+    pub(crate) fn tag(&self, tag: imperialism_formats::FourCc) -> Option<Entity> {
+        self.tags.get(&tag).copied()
+    }
+    #[cfg(test)]
     pub(crate) fn require_unique(
         &self,
         catalog: &UiCatalogResource,
@@ -91,13 +327,13 @@ impl SpawnedView {
             .ok_or_else(|| missing_view(&self.view_id))?;
         match index.tagged(tag) {
             [] => Err(UiBindError::MissingTag(
-                tag.to_string(),
+                tag.as_str().to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
-            [id] => Ok(self.nodes[id]),
+            [_id] => Ok(self.tags[&tag]),
             matches => Err(UiBindError::AmbiguousTag(
-                tag.to_string(),
+                tag.as_str().to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
                 matches.len(),
@@ -120,7 +356,7 @@ impl SpawnedView {
         let ancestors = index.tagged(ancestor_tag);
         if ancestors.is_empty() {
             return Err(UiBindError::MissingTag(
-                ancestor_tag.to_string(),
+                ancestor_tag.as_str().to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             ));
@@ -141,15 +377,15 @@ impl SpawnedView {
         }
         match matches.as_slice() {
             [] => Err(UiBindError::MissingUnder(
-                tag.to_string(),
-                ancestor_tag.to_string(),
+                tag.as_str().to_string(),
+                ancestor_tag.as_str().to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
             [id] => Ok(self.nodes[id]),
             _ => Err(UiBindError::AmbiguousUnder(
-                tag.to_string(),
-                ancestor_tag.to_string(),
+                tag.as_str().to_string(),
+                ancestor_tag.as_str().to_string(),
                 view.id.resource_file.clone(),
                 view.id.resource_id,
             )),
@@ -206,7 +442,7 @@ impl SpawnedView {
                 [id] if step + 1 == path.len() => return Ok(self.nodes[id]),
                 many if step + 1 == path.len() => {
                     return Err(UiBindError::AmbiguousTag(
-                        tag.to_string(),
+                        tag.as_str().to_owned(),
                         view.id.resource_file.clone(),
                         view.id.resource_id,
                         many.len(),
@@ -242,8 +478,6 @@ enum UiTextBindingError {
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum UiPictureBindingError {
-    #[error("catalog picture ID {0} does not fit the retail 16-bit resource ID")]
-    InvalidPictureId(i32),
     #[error(transparent)]
     RetailAssets(#[from] RetailAssetError),
     #[error("could not decode retail picture {picture_id}: {source}")]
@@ -255,7 +489,7 @@ pub(crate) enum UiPictureBindingError {
 }
 
 #[derive(Resource, Default)]
-struct RetailPictureHandles(HashMap<(i16, u8), Handle<Image>>);
+struct RetailPictureHandles(HashMap<(PictureId, u8), Handle<Image>>);
 
 #[derive(Resource, Default)]
 struct RetailFontHandles(HashMap<RetailFontFace, Handle<Font>>);
@@ -274,7 +508,7 @@ pub(crate) struct UiAssetResources<'w> {
 impl UiAssetResources<'_> {
     pub(crate) fn picture(
         &mut self,
-        picture_id: i16,
+        picture_id: PictureId,
     ) -> Result<Handle<Image>, UiPictureBindingError> {
         load_retail_picture(
             picture_id,
@@ -287,7 +521,7 @@ impl UiAssetResources<'_> {
 
     pub(crate) fn with_picture_image_mut<R>(
         &mut self,
-        picture_id: i16,
+        picture_id: PictureId,
         f: impl FnOnce(&mut Image) -> R,
     ) -> Result<R, UiPictureBindingError> {
         let handle = self.picture(picture_id)?;
@@ -306,9 +540,9 @@ pub(crate) struct ModalDialog;
 /// Immutable resting picture ID plus the retail press/check swap rule.
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 struct CatalogPictureVisual {
-    base_id: i16,
+    base_id: PictureId,
     rule: PictureVisual,
-    shown_id: i16,
+    shown_id: PictureId,
 }
 
 /// Initializes retail picture/font caches and picture-state presentation.
@@ -335,10 +569,6 @@ pub(crate) struct UiSpawner<'w, 's> {
 }
 
 impl UiSpawner<'_, '_> {
-    pub(crate) fn catalog(&self) -> &UiCatalogResource {
-        &self.catalog
-    }
-
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> Option<SpawnedView> {
         let view = self.catalog.view(&view_id)?;
         Some(spawn_view(
@@ -366,7 +596,13 @@ impl UiSpawner<'_, '_> {
         tag: FourCc,
         component: C,
     ) -> Result<Entity, UiBindError> {
-        let entity = spawned.require_unique(&self.catalog, tag)?;
+        let entity = spawned.tag(tag).ok_or_else(|| {
+            UiBindError::MissingTag(
+                tag.as_str().to_owned(),
+                spawned.view_id.resource_file.clone(),
+                spawned.view_id.resource_id,
+            )
+        })?;
         self.commands
             .entity(entity)
             .insert(component)
@@ -411,9 +647,11 @@ pub(crate) fn spawn_view_nodes(
         .id();
 
     let mut nodes = HashMap::with_capacity(view.nodes.len());
+    let mut tags = HashMap::with_capacity(view.nodes.len());
     for node in &view.nodes {
         let entity = spawn_node(commands, node);
         nodes.insert(node.id, entity);
+        tags.entry(node.tag).or_insert(entity);
     }
     for node in &view.nodes {
         let entity = nodes[&node.id];
@@ -424,6 +662,7 @@ pub(crate) fn spawn_view_nodes(
         root,
         view_id: view.id.clone(),
         nodes,
+        tags,
     }
 }
 
@@ -552,21 +791,18 @@ fn bind_view_assets(
             }
         }
         if let Some(picture_id) = node.properties.picture_id {
-            match i16::try_from(picture_id)
-                .map_err(|_| UiPictureBindingError::InvalidPictureId(picture_id))
-                .and_then(|base_id| {
-                    let active = picture_visual_active(node);
-                    let shown_id = node.picture_visual.active_picture_id(base_id, active);
-                    pictures
-                        .picture(shown_id)
-                        .map(|handle| (base_id, shown_id, handle))
-                }) {
-                Ok((base_id, shown_id, handle)) => {
+            let active = picture_visual_active(node);
+            let shown_id = PictureId::new(
+                node.picture_visual
+                    .active_picture_id(picture_id.get(), active),
+            );
+            match pictures.picture(shown_id) {
+                Ok(handle) => {
                     let mut entity = commands.entity(entity);
                     entity.insert(ImageNode::new(handle));
                     if node.picture_visual != PictureVisual::Static {
                         entity.insert(CatalogPictureVisual {
-                            base_id,
+                            base_id: picture_id,
                             rule: node.picture_visual,
                             shown_id,
                         });
@@ -574,8 +810,11 @@ fn bind_view_assets(
                 }
                 Err(error) => {
                     warn!(
-                        "could not bind retail picture {picture_id} for UI view {}:{} node {}: {error}",
-                        view.id.resource_file, view.id.resource_id, node.id.0
+                        "could not bind retail picture {} for UI view {}:{} node {}: {error}",
+                        picture_id.get(),
+                        view.id.resource_file,
+                        view.id.resource_id,
+                        node.id.0
                     );
                 }
             }
@@ -605,7 +844,8 @@ fn sync_catalog_picture_visuals(
 ) {
     for (mut visual, mut image, pressed, checked) in &mut nodes {
         let active = pressed || checked;
-        let picture_id = visual.rule.active_picture_id(visual.base_id, active);
+        let picture_id =
+            PictureId::new(visual.rule.active_picture_id(visual.base_id.get(), active));
         if picture_id == visual.shown_id {
             continue;
         }
@@ -631,7 +871,8 @@ fn sync_catalog_picture_visuals(
             }
             Err(error) => {
                 warn!(
-                    "could not update retail picture {picture_id} for pressed/checked state: {error}"
+                    "could not update retail picture {} for pressed/checked state: {error}",
+                    picture_id.get()
                 );
             }
         }
@@ -690,7 +931,7 @@ fn load_retail_text(
 }
 
 fn load_retail_picture(
-    picture_id: i16,
+    picture_id: PictureId,
     retail_assets: &RetailAssetsResource,
     world_variant: u8,
     images: &mut Assets<Image>,
@@ -700,7 +941,9 @@ fn load_retail_picture(
     let handle = match picture_handles.0.get(&key) {
         Some(handle) => handle.clone(),
         None => {
-            let bytes = retail_assets.assets().picture(picture_id, world_variant)?;
+            let bytes = retail_assets
+                .assets()
+                .picture(picture_id.get(), world_variant)?;
             let image = Image::from_buffer(
                 &bytes,
                 ImageType::Format(ImageFormat::Bmp),
@@ -709,7 +952,10 @@ fn load_retail_picture(
                 ImageSampler::nearest(),
                 RenderAssetUsages::default(),
             )
-            .map_err(|source| UiPictureBindingError::BmpDecode { picture_id, source })?;
+            .map_err(|source| UiPictureBindingError::BmpDecode {
+                picture_id: picture_id.get(),
+                source,
+            })?;
             let handle = images.add(image);
             picture_handles.0.insert(key, handle.clone());
             handle
@@ -735,9 +981,51 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .init_resource::<Assets<Image>>()
             .init_resource::<Assets<Font>>()
-            .insert_resource(UiCatalogResource::new(catalog()))
+            .insert_resource(UiCatalogResource::new(catalog()).unwrap())
             .add_plugins(UiCatalogPlugin);
         app
+    }
+
+    #[test]
+    fn embedded_catalog_contains_all_application_bindings() {
+        UiCatalogResource::new(catalog())
+            .unwrap()
+            .validate_application_bindings()
+            .unwrap();
+    }
+
+    #[test]
+    fn catalog_rejects_duplicate_node_ids_before_spawning() {
+        let mut catalog = catalog();
+        let view = &mut catalog.views[0];
+        view.nodes.push(view.nodes[0].clone());
+
+        assert!(UiCatalogResource::new(catalog).is_err());
+    }
+
+    #[test]
+    fn required_application_tags_must_be_unambiguous() {
+        let mut catalog = catalog();
+        let view = catalog
+            .views
+            .iter_mut()
+            .find(|view| view.id == crate::ui::main_menu::main_menu_view_id())
+            .unwrap();
+        let mut duplicate = view
+            .nodes
+            .iter()
+            .find(|node| node.tag == imperialism_formats::fourcc!("rand"))
+            .unwrap()
+            .clone();
+        duplicate.id = UiNodeId(view.nodes.iter().map(|node| node.id.0).max().unwrap() + 1);
+        view.nodes.push(duplicate);
+
+        assert!(
+            UiCatalogResource::new(catalog)
+                .unwrap()
+                .validate_application_bindings()
+                .is_err()
+        );
     }
 
     fn catalog_view<'a>(catalog: &'a UiCatalog, id: &ScopedViewId) -> &'a CatalogView {
@@ -966,8 +1254,8 @@ mod tests {
     #[test]
     fn sync_swaps_picture_when_pressed() {
         let mut app = app();
-        let base_id = 4512i16;
-        let active_id = 4513i16;
+        let base_id = PictureId::new(4512);
+        let active_id = PictureId::new(4513);
         let base_handle = app
             .world_mut()
             .resource_mut::<Assets<Image>>()

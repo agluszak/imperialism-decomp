@@ -1,37 +1,60 @@
-use crate::{CityState, MajorNationState, PendingActionKind};
+use crate::{CityState, GreatPowerState, PendingActionKind};
 
 const PRODUCTION_SLOT_COUNT: usize = 16;
 
+/// A fixed building position on the city production screen.
+///
+/// Values with an `Unidentified` name have a stable retail slot but no
+/// recovered building name yet.
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct ProductionSlot(u8);
+#[repr(u8)]
+pub enum ProductionSlot {
+    TextileMill,
+    ClothingFactory,
+    SteelMill,
+    Metalworks,
+    LumberMill,
+    FurnitureFactory,
+    OilRefinery,
+    Unidentified7,
+    Armory,
+    Unidentified9,
+    University,
+    PowerPlant,
+    Unidentified12,
+    Unidentified13,
+    Transport,
+    RegionalPopulation,
+}
 
 impl ProductionSlot {
     pub const COUNT: usize = PRODUCTION_SLOT_COUNT;
-    /// Textile Mill — recovered city-screen building slot 0.
-    pub const TEXTILE_MILL: Self = Self(0);
-    /// Steel Mill — recovered city-screen building slot 2.
-    pub const STEEL_MILL: Self = Self(2);
-    /// Metalworks — recovered city-screen building slot 3.
-    pub const METALWORKS: Self = Self(3);
-    /// Lumber Mill — recovered city-screen building slot 4.
-    pub const LUMBER_MILL: Self = Self(4);
-    pub const TRANSPORT: Self = Self(14);
-    pub const REGIONAL_POPULATION: Self = Self(15);
 
-    pub const fn new(value: u8) -> Option<Self> {
-        if (value as usize) < Self::COUNT {
-            Some(Self(value))
-        } else {
-            None
+    #[cfg(test)]
+    pub(crate) const fn from_index(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::TextileMill),
+            1 => Some(Self::ClothingFactory),
+            2 => Some(Self::SteelMill),
+            3 => Some(Self::Metalworks),
+            4 => Some(Self::LumberMill),
+            5 => Some(Self::FurnitureFactory),
+            6 => Some(Self::OilRefinery),
+            7 => Some(Self::Unidentified7),
+            8 => Some(Self::Armory),
+            9 => Some(Self::Unidentified9),
+            10 => Some(Self::University),
+            11 => Some(Self::PowerPlant),
+            12 => Some(Self::Unidentified12),
+            13 => Some(Self::Unidentified13),
+            14 => Some(Self::Transport),
+            15 => Some(Self::RegionalPopulation),
+            _ => None,
         }
     }
 
-    pub const fn get(self) -> u8 {
-        self.0
-    }
-
-    pub const fn index(self) -> usize {
-        self.0 as usize
+    pub(crate) const fn index(self) -> usize {
+        self as usize
     }
 }
 
@@ -58,29 +81,43 @@ impl CityState {
     }
 
     pub const fn is_capacity_center(slot: ProductionSlot) -> bool {
-        matches!(slot.index(), 0..=6 | 11)
+        matches!(
+            slot,
+            ProductionSlot::TextileMill
+                | ProductionSlot::ClothingFactory
+                | ProductionSlot::SteelMill
+                | ProductionSlot::Metalworks
+                | ProductionSlot::LumberMill
+                | ProductionSlot::FurnitureFactory
+                | ProductionSlot::OilRefinery
+                | ProductionSlot::PowerPlant
+        )
     }
 
     pub fn max_building_capacity(
         &self,
         slot: ProductionSlot,
-        owner: &MajorNationState,
+        owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> i16 {
-        let index = slot.index();
-        if slot == ProductionSlot::REGIONAL_POPULATION {
+        if slot == ProductionSlot::RegionalPopulation {
             return region_capacity(owner, owned_region_count);
         }
 
         let capacity = self.production_orders[slot];
-        match index {
-            0 | 2 | 4 | 6 => match capacity {
+        match slot {
+            ProductionSlot::TextileMill
+            | ProductionSlot::SteelMill
+            | ProductionSlot::LumberMill
+            | ProductionSlot::OilRefinery => match capacity {
                 0 => 2,
                 2 => 4,
                 4 => 8,
                 _ => capacity + 8,
             },
-            1 | 3 | 5 => match capacity {
+            ProductionSlot::ClothingFactory
+            | ProductionSlot::Metalworks
+            | ProductionSlot::FurnitureFactory => match capacity {
                 0 => 1,
                 1 => 2,
                 2 => 4,
@@ -93,11 +130,16 @@ impl CityState {
     pub fn next_building_level(
         &self,
         slot: ProductionSlot,
-        owner: &MajorNationState,
+        owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> u8 {
         let capacity = self.max_building_capacity(slot, owner, owned_region_count);
-        if matches!(slot.index(), 1 | 3 | 5) {
+        if matches!(
+            slot,
+            ProductionSlot::ClothingFactory
+                | ProductionSlot::Metalworks
+                | ProductionSlot::FurnitureFactory
+        ) {
             if capacity < 4 {
                 1
             } else if capacity < 8 {
@@ -117,10 +159,10 @@ impl CityState {
     pub fn building_type(
         &self,
         slot: ProductionSlot,
-        owner: &MajorNationState,
+        owner: &GreatPowerState,
         owned_region_count: i32,
     ) -> i16 {
-        if slot == ProductionSlot::REGIONAL_POPULATION {
+        if slot == ProductionSlot::RegionalPopulation {
             region_capacity(owner, owned_region_count)
         } else {
             self.production_orders[slot]
@@ -130,14 +172,16 @@ impl CityState {
     pub fn next_building_type(
         &self,
         slot: ProductionSlot,
-        owner: &MajorNationState,
+        owner: &GreatPowerState,
         owned_region_count: i32,
         active_nation_has_technology_15: bool,
     ) -> i16 {
         let building_type = self.building_type(slot, owner, owned_region_count);
-        let status = &owner.pending_action_status;
-        match slot.index() {
-            0 | 2 | 4 => {
+        let status = &owner.pending_actions;
+        match slot {
+            ProductionSlot::TextileMill
+            | ProductionSlot::SteelMill
+            | ProductionSlot::LumberMill => {
                 if building_type == 0 {
                     0
                 } else if building_type < 16 {
@@ -146,7 +190,9 @@ impl CityState {
                     i16::from(building_type >= 32) + 2
                 }
             }
-            1 | 3 | 5 => {
+            ProductionSlot::ClothingFactory
+            | ProductionSlot::Metalworks
+            | ProductionSlot::FurnitureFactory => {
                 if building_type == 0 {
                     0
                 } else if building_type < 8 {
@@ -155,28 +201,46 @@ impl CityState {
                     i16::from(building_type >= 16) + 2
                 }
             }
-            6 | 11 => i16::from(building_type != 0),
-            7 => i16::from(active_nation_has_technology_15) + 1,
-            8 => {
-                if status[PendingActionKind::ConquestMonumentArmory] == b'3' as i8 {
+            ProductionSlot::OilRefinery | ProductionSlot::PowerPlant => {
+                i16::from(building_type != 0)
+            }
+            ProductionSlot::Unidentified7 => i16::from(active_nation_has_technology_15) + 1,
+            ProductionSlot::Armory => {
+                if status[PendingActionKind::ConquestMonumentArmory].status()
+                    == crate::PendingActionStatus::Level3
+                {
                     3
                 } else {
                     i16::from(
-                        status[PendingActionKind::ConqueredCapitalArmoryUpgrade] == b'3' as i8,
+                        status[PendingActionKind::ConqueredCapitalArmoryUpgrade].status()
+                            == crate::PendingActionStatus::Level3,
                     ) + 1
                 }
             }
-            10 => {
-                if status[PendingActionKind::UniversityExpansion] < b'3' as i8 {
+            ProductionSlot::University => {
+                if status[PendingActionKind::UniversityExpansion].status()
+                    < crate::PendingActionStatus::Level3
+                {
                     1
                 } else {
-                    i16::from(status[PendingActionKind::UniversityExpansion] != b'3' as i8) + 2
+                    i16::from(
+                        status[PendingActionKind::UniversityExpansion].status()
+                            != crate::PendingActionStatus::Level3,
+                    ) + 2
                 }
             }
-            14 => i16::from(status[PendingActionKind::RailyardExpansion] >= b'3' as i8) + 1,
-            15 => {
+            ProductionSlot::Transport => {
                 i16::from(
-                    status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] >= b'3' as i8,
+                    status[PendingActionKind::RailyardExpansion]
+                        .status()
+                        .has_reached(crate::PendingActionStatus::Level3),
+                ) + 1
+            }
+            ProductionSlot::RegionalPopulation => {
+                i16::from(
+                    status[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
+                        .status()
+                        .has_reached(crate::PendingActionStatus::Level3),
                 ) + 1
             }
             _ => 0,
@@ -194,10 +258,10 @@ impl CityState {
     }
 }
 
-fn region_capacity(owner: &MajorNationState, owned_region_count: i32) -> i16 {
-    let divisor = if owner.pending_action_status
-        [PendingActionKind::AnnexedGreatPowerCapitalExpansion]
-        >= b'3' as i8
+fn region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
+    let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
+        .status()
+        .has_reached(crate::PendingActionStatus::Level3)
     {
         3
     } else {
@@ -212,16 +276,16 @@ mod tests {
     use super::*;
 
     fn slot(value: u8) -> ProductionSlot {
-        ProductionSlot::new(value).unwrap()
+        ProductionSlot::from_index(value).unwrap()
     }
 
     fn city() -> CityState {
         crate::test_support::city()
     }
 
-    fn nation() -> MajorNationState {
-        MajorNationState {
-            diplomacy_eligible: true,
+    fn nation() -> GreatPowerState {
+        GreatPowerState {
+            controller: crate::MajorNationController::Human,
             capacities: crate::NationCapacities::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -242,8 +306,7 @@ mod tests {
             candidate_nation_flags: crate::NationTable::default(),
             scenario_initialized: false,
             turn_finished: false,
-            pending_action_status: crate::PendingActionTable::default(),
-            pending_action_payload_by_action: crate::PendingActionTable::default(),
+            pending_actions: crate::PendingActionTable::default(),
             diplomacy_budget_base: 0,
             escalation_counter: 0,
             pending_commitment_cost: 0,
@@ -256,9 +319,15 @@ mod tests {
 
     #[test]
     fn validates_the_retail_production_slot_range() {
-        assert_eq!(ProductionSlot::new(0).unwrap().get(), 0);
-        assert_eq!(ProductionSlot::new(15).unwrap().get(), 15);
-        assert_eq!(ProductionSlot::new(16), None);
+        assert_eq!(
+            ProductionSlot::from_index(0),
+            Some(ProductionSlot::TextileMill)
+        );
+        assert_eq!(
+            ProductionSlot::from_index(15),
+            Some(ProductionSlot::RegionalPopulation)
+        );
+        assert_eq!(ProductionSlot::from_index(16), None);
     }
 
     #[test]
@@ -302,11 +371,11 @@ mod tests {
     fn derives_region_capacity_from_the_retail_status_threshold() {
         let state = city();
         let mut owner = nation();
-        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            b'2' as i8;
+        owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Queued);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 3);
-        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            b'3' as i8;
+        owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 4);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 2), 1);
     }
@@ -337,11 +406,14 @@ mod tests {
         assert_eq!(state.next_building_type(slot(6), &owner, 0, false), 1);
         assert_eq!(state.next_building_type(slot(7), &owner, 0, true), 2);
 
-        owner.pending_action_status[PendingActionKind::ConquestMonumentArmory] = b'3' as i8;
-        owner.pending_action_status[PendingActionKind::UniversityExpansion] = b'4' as i8;
-        owner.pending_action_status[PendingActionKind::RailyardExpansion] = b'3' as i8;
-        owner.pending_action_status[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            b'3' as i8;
+        owner.pending_actions[PendingActionKind::ConquestMonumentArmory] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+        owner.pending_actions[PendingActionKind::UniversityExpansion] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Level4);
+        owner.pending_actions[PendingActionKind::RailyardExpansion] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+        owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
+            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
         assert_eq!(state.next_building_type(slot(8), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(10), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(14), &owner, 0, false), 2);

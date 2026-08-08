@@ -1,12 +1,13 @@
 use crate::{
     ArmyMissionState, CityState, DevelopmentLevel, Difficulty, GameState, GeneratedMap,
     GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId, MajorNationTable,
-    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MinorNation, MinorNationId,
-    MinorNationTable, MissionData, MissionState, NationCommonState, NationId, NationPendingWork,
-    NationTable, Nations, NavyMissionState, PendingWorkState, ProductionTable, ProvinceId,
-    RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RngState,
-    STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag, TileState, TradeMarketState,
-    TurnState, WorldState, is_valid_secondary_nation_home_tile_candidate, place_city,
+    MapGeometry, MapTopology, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
+    MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
+    NationCommonState, NationId, NationPendingWork, NationTable, Nations, NavyMissionState,
+    PendingWorkState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable,
+    RetailCrtRng, RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
+    TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
+    TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
     supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
@@ -50,15 +51,6 @@ const CITY_STOCK_PRESET_BY_DIFFICULTY: EnumMap<Difficulty, ResourceTable<i16>> =
 const SCENARIO_FORCED_PRODUCTION: ProductionTable<i16> =
     ProductionTable::from_array([0, 0, 0, 0, 0, 0, 0, 999, 999, 999, 999, 0, 0, 999, 999, 0]);
 
-const WATER: i8 = 5;
-const PLAINS: i8 = 0;
-const FOREST: i8 = 1;
-const HILLS: i8 = 2;
-const MOUNTAIN: i8 = 3;
-const SWAMP: i8 = 4;
-const DESERT: i8 = 6;
-const FARMLAND: i8 = 7;
-
 /// Builds the Normal start-boundary [`GameState`] from the retained preview.
 ///
 /// Retail Accept does not regenerate the map. It commits setup options and rebuilds
@@ -77,13 +69,9 @@ pub fn create_random_game(
     runtime_seed: u32,
 ) -> GameState {
     let mut map_lcg = RetailLcg::from_state(preview.final_map_lcg);
-    let wraps = preview.topology.wraps_horizontally();
-    let mut post = apply_tile_post_passes(&preview.map, wraps, &mut map_lcg);
+    let mut post = apply_tile_post_passes(&preview.map, preview.topology, &mut map_lcg);
     let mut nations = bootstrap_nations(human_nation, difficulty);
-    let mut world = WorldState {
-        wraps_horizontally: wraps,
-        tiles: post.tiles,
-    };
+    let mut world = StrategicMap::from_generated_tiles(preview.topology, post.tiles);
     // Runtime-test / Accept entry: map build ends in `srand(runtime_seed)`, then setup
     // `DoPostCreate` draws one `rand() % 7` for the initial nation when the slot was -1.
     let mut crt_rand = RetailCrtRng::from_state(runtime_seed);
@@ -91,7 +79,7 @@ pub fn create_random_game(
 
     // Sea-zone ordinals are `owner_tag - 0x17` after water-region assign (and, in retail,
     // after border/merge/compact). Port zones continue that ordinal space.
-    let mut port_zones = PortZoneTable::new(sea_zone_count(&world.tiles));
+    let mut port_zones = PortZoneTable::new(sea_zone_count(&world));
     let mut mission_queues: MajorNationTable<Vec<MissionState>> =
         MajorNationTable::from_fn(|_| Vec::new());
 
@@ -108,7 +96,7 @@ pub fn create_random_game(
     );
 
     let mut military_units = Vec::new();
-    let mut persistent_unit_id_counter = 0i32;
+    let mut unit_ids = UnitIdAllocator::default();
     // `RebuildSecondaryNationStateForSlot` for minors 7..22.
     bootstrap_minors(
         &mut world,
@@ -117,7 +105,7 @@ pub fn create_random_game(
         &mut nations,
         &mut crt_rand,
         &mut military_units,
-        &mut persistent_unit_id_counter,
+        &mut unit_ids,
         difficulty,
         &mut port_zones,
     );
@@ -126,14 +114,14 @@ pub fn create_random_game(
 
     GameState {
         turn: TurnState {
-            scenario_map_index_plus_one: 0,
+            scenario_map: None,
             economic_turn: 0,
-            phase_code: 2,
+            phase: crate::PhaseCode::CAPITAL_SELECTION,
             difficulty,
             active_nation: human_nation.nation(),
             selected_nation: human_nation.nation(),
         },
-        persistent_unit_id_counter,
+        unit_ids,
         world,
         rng: RngState {
             crt_rand,
@@ -162,25 +150,34 @@ pub fn create_random_game(
 }
 
 struct TilePostPassState {
-    tiles: Vec<TileState>,
+    tiles: Box<[TileState]>,
     gate_flags: Vec<i8>,
-    province_capitals: Vec<Option<usize>>,
+    province_capitals: Vec<Option<TileId>>,
 }
-
-/// Province-capital marker written by `RebuildTileOwnerNeighborCachesAndFallbackAssignments`.
-const PROVINCE_CAPITAL_ACTIVE_FLAGS: u16 = 0x22;
 
 /// Preview-time tile post-passes from `TMapMgr::BuildOrLoadGlobalMapStateForSession`:
 /// icon-variant/edge-resource stamping, former-owner snapshot, province fallback capitals,
 /// and `GuaranteeResources`.
 fn apply_tile_post_passes(
     map: &GeneratedMap,
-    wraps_horizontally: bool,
+    topology: MapTopology,
     map_lcg: &mut RetailLcg,
 ) -> TilePostPassState {
-    let geometry = MapGeometry::new(wraps_horizontally);
-    let mut tiles: Vec<TileState> = map.tiles.iter().copied().map(tile_from_generated).collect();
-    let mut gate_flags: Vec<i8> = map.tiles.iter().map(|tile| tile.gate_flag).collect();
+    let geometry = MapGeometry::new(topology);
+    let mut tiles: Vec<TileState> = map
+        .tiles()
+        .iter()
+        .copied()
+        .map(tile_from_generated)
+        .collect();
+    let mut gate_flags: Vec<i8> = map
+        .tiles()
+        .iter()
+        .map(|tile| {
+            tile.gate
+                .map_or(-1, crate::random_map_terrain::GenerationGate::code)
+        })
+        .collect();
 
     for index in 0..tiles.len() {
         update_strategic_map_tile_icon_variant_state(
@@ -188,19 +185,19 @@ fn apply_tile_post_passes(
             &mut gate_flags,
             geometry,
             index,
-            map.tiles[index].owner_nation,
+            map.tiles()[index].owner,
             map_lcg,
         );
     }
 
     // Retail runs this between icon variants and GuaranteeResources; it advances the map
-    // LCG once per occupied province and stamps capital `active_flags`.
+    // LCG once per occupied province and records its fallback capital.
     let province_capitals =
         assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
 
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
     TilePostPassState {
-        tiles,
+        tiles: tiles.into_boxed_slice(),
         gate_flags,
         province_capitals,
     }
@@ -214,7 +211,7 @@ fn assign_province_fallback_capitals(
     gate_flags: &mut [i8],
     geometry: MapGeometry,
     map_lcg: &mut RetailLcg,
-) -> Vec<Option<usize>> {
+) -> Vec<Option<TileId>> {
     let province_count = tiles
         .iter()
         .filter_map(|tile| {
@@ -226,7 +223,7 @@ fn assign_province_fallback_capitals(
     let mut linked_by_province: Vec<Vec<usize>> = vec![Vec::new(); province_count];
     let mut province_capitals = vec![None; province_count];
     for (index, tile) in tiles.iter().enumerate() {
-        if tile.terrain_kind == WATER {
+        if tile.terrain == TerrainKind::Water {
             continue;
         }
         let Some(province) = tile.province else {
@@ -267,7 +264,12 @@ fn assign_province_fallback_capitals(
             let flat: Vec<usize> = interior
                 .iter()
                 .copied()
-                .filter(|&index| matches!(tiles[index].terrain_kind, PLAINS | FARMLAND))
+                .filter(|&index| {
+                    matches!(
+                        tiles[index].terrain,
+                        TerrainKind::Plains | TerrainKind::Farmland
+                    )
+                })
                 .collect();
             if !flat.is_empty() {
                 let sample = map_lcg.next_sample_15() as usize;
@@ -279,8 +281,8 @@ fn assign_province_fallback_capitals(
         };
 
         initialize_tile_neighbor_connection_mask_if_needed(tiles, gate_flags, chosen);
-        tiles[chosen].active_flags = PROVINCE_CAPITAL_ACTIVE_FLAGS;
-        province_capitals[province_index] = Some(chosen);
+        tiles[chosen].flags = TileFlags::PROVINCE_ANCHOR_STATE;
+        province_capitals[province_index] = Some(TileId::new(chosen as u16));
     }
     province_capitals
 }
@@ -296,13 +298,10 @@ fn initialize_tile_neighbor_connection_mask_if_needed(
     if gate_flags[index] == 1 {
         return;
     }
-    tiles[index].terrain_kind = PLAINS;
-    tiles[index].edge_resources = [Some(0x11), None];
+    tiles[index].terrain = TerrainKind::Plains;
+    tiles[index].edge_resources = [Some(ResourceKind::Grain), None];
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
-
-/// `TMapMgr::PlaceCity` active flags after Accept AI / human capital confirmation.
-const PLACE_CITY_ACTIVE_FLAGS: u16 = 0x37;
 
 /// `g_abUniversityRequirementLevelById` — yield lookup by resource and development/tech index.
 const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
@@ -342,14 +341,11 @@ const GATE_FLAG_QUALIFIES: [u8; 24] = [
     0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
 ];
 
-const RESOURCE_GRAIN: i8 = 17;
-const RESOURCE_FRUIT: i8 = 18;
-
 /// AI home placement from `CreateFrogCityAtHomeRegionAndAttach` for setup mode 2 majors.
 fn place_ai_frog_cities(
-    world: &mut WorldState,
+    world: &mut StrategicMap,
     gate_flags: &mut [i8],
-    province_capitals: &mut [Option<usize>],
+    province_capitals: &mut [Option<TileId>],
     nations: &mut Nations,
     human_nation: MajorNationId,
     port_zones: &mut PortZoneTable,
@@ -365,13 +361,10 @@ fn place_ai_frog_cities(
             continue;
         };
         place_ai_capital(world, gate_flags, province_capitals, home, nation);
-        ensure_port_zone_for_tile(world, port_zones, usize::from(home.get()));
-        if let Some(major) = nations.major_mut(nation) {
-            major.common.home_tile = Some(home);
-            if let Some(city) = major.city.as_mut() {
-                city.home_town_tile = Some(home);
-            }
-        }
+        ensure_port_zone_for_tile(world, port_zones, home);
+        let major = nations.major_mut(nation);
+        major.common.home_tile = Some(home);
+        major.city.home_town_tile = Some(home);
         // `QueueMapActionMissionsForPortZoneCandidates` runs only for setup-mode-2 AI.
         mission_queues[nation] = queue_map_action_missions_for_port_zone_candidates(
             world,
@@ -382,9 +375,6 @@ fn place_ai_frog_cities(
         );
     }
 }
-
-/// Minor capital marker from `TMapMgr::ResetTileToBaseTransportFlag` (`1 | 0x20`).
-const MINOR_HOME_ACTIVE_FLAGS: u16 = 0x21;
 
 const LAND_UNIT_TYPE_NAMES: [&str; 8] = [
     "Minutemen",
@@ -400,17 +390,17 @@ const LAND_UNIT_TYPE_NAMES: [&str; 8] = [
 /// `RebuildSecondaryNationStateForSlot` for minors: home pick, militia, trailing Regulars.
 #[allow(clippy::too_many_arguments)]
 fn bootstrap_minors(
-    world: &mut WorldState,
+    world: &mut StrategicMap,
     gate_flags: &mut [i8],
-    province_capitals: &mut [Option<usize>],
+    province_capitals: &mut [Option<TileId>],
     nations: &mut Nations,
     crt: &mut RetailCrtRng,
     military_units: &mut Vec<MilitaryUnitState>,
-    persistent_unit_id_counter: &mut i32,
+    unit_ids: &mut UnitIdAllocator,
     difficulty: Difficulty,
     port_zones: &mut PortZoneTable,
 ) {
-    for minor_id in MinorNationId::all() {
+    for minor_id in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
         let owner = TileOwnerTag::new(minor_id.nation().get());
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
@@ -419,7 +409,7 @@ fn bootstrap_minors(
         // Retail calls `EnsurePortZoneForTile` after the minor home stamp.
         ensure_port_zone_for_tile(world, port_zones, home);
         if let Some(minor) = nations.minors[minor_id].as_mut() {
-            minor.common.home_tile = Some(TileId::new(home as u16));
+            minor.common.home_tile = Some(home);
         }
 
         let mut name_ordinals = [1i16; MilitaryUnitKind::LENGTH];
@@ -432,19 +422,16 @@ fn bootstrap_minors(
             &owned,
             difficulty,
             military_units,
-            persistent_unit_id_counter,
+            unit_ids,
             &mut name_ordinals,
             &mut next_roster_id,
         );
         // RebuildSecondaryNationStateForSlot trailing pair after InitialMilitia.
-        let home_province = world.tiles[home]
-            .province
-            .map(|province| i16::try_from(province.get()).expect("province fits i16"))
-            .unwrap_or(-1);
+        let home_province = world[home].province;
         for _ in 0..2 {
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 minor_id.nation(),
                 MilitaryUnitKind::Regulars,
                 home_province,
@@ -461,22 +448,22 @@ fn bootstrap_minors(
 }
 
 fn select_minor_home_tile(
-    world: &WorldState,
+    world: &StrategicMap,
     owner: TileOwnerTag,
     crt: &mut RetailCrtRng,
-) -> Option<usize> {
+) -> Option<TileId> {
     let mut selected = None;
     let mut candidates = Vec::new();
-    for (index, tile) in world.tiles.iter().enumerate() {
+    for (index, tile) in world.iter().enumerate() {
         if tile.owner_nation != Some(owner) {
             continue;
         }
-        if (tile.active_flags & 1) != 0 {
-            selected = Some(index);
+        if tile.flags.has_base_transport() {
+            selected = Some(TileId::new(index as u16));
         }
         let tile_id = TileId::new(index as u16);
-        if is_valid_secondary_nation_home_tile_candidate(world, tile_id).unwrap_or(false) {
-            candidates.push(index);
+        if is_valid_secondary_nation_home_tile_candidate(world, tile_id) {
+            candidates.push(tile_id);
         }
     }
     if selected.is_some() {
@@ -492,28 +479,28 @@ fn select_minor_home_tile(
 
 /// `TMapMgr::ResetTileToBaseTransportFlag` (0x00518990).
 fn reset_tile_to_base_transport_flag(
-    world: &mut WorldState,
+    world: &mut StrategicMap,
     gate_flags: &mut [i8],
-    province_capitals: &mut [Option<usize>],
-    tile: usize,
+    province_capitals: &mut [Option<TileId>],
+    tile: TileId,
 ) {
     set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, tile);
-    world.tiles[tile].active_flags = MINOR_HOME_ACTIVE_FLAGS;
-    initialize_tile_neighbor_connection_mask_if_needed(&mut world.tiles, gate_flags, tile);
+    world[tile].flags = TileFlags::MINOR_HOME_STATE;
+    initialize_world_tile_neighbor_connection_mask_if_needed(world, gate_flags, tile);
 }
 
 fn owned_province_ids(
-    world: &WorldState,
-    province_capitals: &[Option<usize>],
+    world: &StrategicMap,
+    province_capitals: &[Option<TileId>],
     owner: TileOwnerTag,
-) -> Vec<u16> {
+) -> Vec<ProvinceId> {
     let mut owned = Vec::new();
     for (province_index, capital) in province_capitals.iter().enumerate() {
         let Some(capital) = *capital else {
             continue;
         };
-        if world.tiles[capital].owner_nation == Some(owner) {
-            owned.push(province_index as u16);
+        if world[capital].owner_nation == Some(owner) {
+            owned.push(ProvinceId::new(province_index as u16));
         }
     }
     owned
@@ -522,13 +509,13 @@ fn owned_province_ids(
 /// `TCountry::InitialMilitia` for random-map minors at the pre-capital boundary.
 #[allow(clippy::too_many_arguments)]
 fn spawn_initial_militia_for_minor(
-    world: &mut WorldState,
-    province_capitals: &[Option<usize>],
+    world: &mut StrategicMap,
+    province_capitals: &[Option<TileId>],
     minor_id: MinorNationId,
-    owned_provinces: &[u16],
+    owned_provinces: &[ProvinceId],
     difficulty: Difficulty,
     military_units: &mut Vec<MilitaryUnitState>,
-    persistent_unit_id_counter: &mut i32,
+    unit_ids: &mut UnitIdAllocator,
     name_ordinals: &mut [i16],
     next_roster_id: &mut i16,
 ) {
@@ -536,68 +523,67 @@ fn spawn_initial_militia_for_minor(
     let set_garrison_orders = matches!(difficulty, Difficulty::Introductory | Difficulty::Easy);
     for &province in owned_provinces {
         let capital = province_capitals
-            .get(usize::from(province))
+            .get(usize::from(province.get()))
             .copied()
             .flatten();
-        let capital_flags = capital
-            .map(|index| world.tiles[index].active_flags)
-            .unwrap_or(0);
-        if (capital_flags & 1) != 0 {
+        if let Some(capital) = capital
+            && world[capital].flags.has_base_transport()
+        {
             let order = if set_garrison_orders { 2 } else { 0 };
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Regulars,
-                province as i16,
+                Some(province),
                 order,
             );
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Regulars,
-                province as i16,
+                Some(province),
                 order,
             );
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Artillery,
-                province as i16,
+                Some(province),
                 order,
             );
-            if let Some(capital) = capital {
-                world.tiles[capital].active_flags |= 8;
-            }
+            world[capital]
+                .flags
+                .insert(TileFlags::PROVINCE_CAPITAL_FORTIFICATION);
         }
         // `AddMilitia` ×3 (minors always spawn type 0 / Minutemen with order 2).
         for _ in 0..3 {
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Minutemen,
-                province as i16,
+                Some(province),
                 2,
             );
         }
         if matches!(difficulty, Difficulty::Hard | Difficulty::NighOnImpossible) {
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Minutemen,
-                province as i16,
+                Some(province),
                 2,
             );
             push_military_unit(
                 military_units,
-                persistent_unit_id_counter,
+                unit_ids,
                 nation,
                 MilitaryUnitKind::Artillery,
-                province as i16,
+                Some(province),
                 0,
             );
         }
@@ -607,31 +593,38 @@ fn spawn_initial_militia_for_minor(
 
 fn push_military_unit(
     military_units: &mut Vec<MilitaryUnitState>,
-    persistent_unit_id_counter: &mut i32,
+    unit_ids: &mut UnitIdAllocator,
     nation: NationId,
     unit_type: MilitaryUnitKind,
-    stationed_province: i16,
+    stationed_province: Option<ProvinceId>,
     order: i32,
 ) {
-    *persistent_unit_id_counter += 1;
-    military_units.push(MilitaryUnitState {
-        id: MilitaryUnitId::new(*persistent_unit_id_counter),
+    let targets = [stationed_province; 3];
+    let order = if order == 0 {
+        MilitaryOrder::idle(targets, targets)
+    } else {
+        MilitaryOrder::retail(
+            MilitaryOrderCode::from_retail(order),
+            None,
+            targets,
+            targets,
+        )
+    };
+    military_units.push(MilitaryUnitState::new(
+        unit_ids.next_military(),
         nation,
         unit_type,
         stationed_province,
         order,
-        order_target: -1,
-        owner_nation: nation,
-        roster_id: 0,
-        registered: true,
-        order_target_tiles: [stationed_province; 3],
-        order_target_mirrors: [stationed_province; 3],
-        name: String::new(),
-        strength: 500,
-        era: unit_type.spawn_era(),
-        experience: 0,
-        battle_flags: 0,
-    });
+        nation,
+        0,
+        true,
+        String::new(),
+        500,
+        unit_type.spawn_era(),
+        0,
+        0,
+    ));
 }
 
 /// `TCountry::NameUnits` for non-general land units (English STR# 0x2717 / 0x275f).
@@ -674,7 +667,7 @@ fn english_ordinal(value: i16) -> String {
 
 /// `TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore` (0x004c11c0).
 fn select_best_secondary_home_tile(
-    world: &WorldState,
+    world: &StrategicMap,
     gate_flags: &[i8],
     nation: MajorNationId,
 ) -> Option<TileId> {
@@ -683,19 +676,19 @@ fn select_best_secondary_home_tile(
     let mut best_tile: Option<TileId> = None;
     for index in 0..STRATEGIC_TILE_COUNT {
         let tile = TileId::new(index as u16);
-        let state = &world.tiles[index];
+        let state = &world[tile];
         if state.owner_nation != Some(owner) {
             continue;
         }
-        if !is_valid_secondary_nation_home_tile_candidate(world, tile).unwrap_or(false) {
+        if !is_valid_secondary_nation_home_tile_candidate(world, tile) {
             continue;
         }
-        if !supports_city_site_terrain(state.terrain_kind) {
+        if !supports_city_site_terrain(state.terrain) {
             continue;
         }
         let yields = calculate_city_resources(world, gate_flags, tile, nation);
         let mut score = frog_city_score(&yields);
-        if (state.active_flags & 1) != 0 {
+        if state.flags.has_base_transport() {
             score = 32_000;
         }
         if (best_score as i16) < (score as i16) {
@@ -733,12 +726,12 @@ fn frog_city_score(yields: &[i16; ResourceKind::LENGTH]) -> i32 {
 
 /// `TTown::CalculateCityResources` (0x005b73e0) for an enabled Frog City marker.
 fn calculate_city_resources(
-    world: &WorldState,
+    world: &StrategicMap,
     gate_flags: &[i8],
     home: TileId,
     nation: MajorNationId,
 ) -> [i16; ResourceKind::LENGTH] {
-    let geometry = MapGeometry::new(world.wraps_horizontally);
+    let geometry = world.geometry();
     let owner = TileOwnerTag::new(nation.get());
     let mut yields = [0i16; ResourceKind::LENGTH];
     // Directions 0..5 are hex neighbors; 6 is the home tile itself (`TownNeighborTile`).
@@ -749,26 +742,27 @@ fn calculate_city_resources(
         .flatten()
     {
         let index = usize::from(tile.get());
-        let state = &world.tiles[index];
-        if state.owner_nation != Some(owner) && state.terrain_kind != WATER {
+        let state = &world[tile];
+        if state.owner_nation != Some(owner) && state.terrain != TerrainKind::Water {
             continue;
         }
-        for resource in 0..ResourceKind::LENGTH {
+        for resource in crate::all_resources() {
+            let resource_index = resource as usize;
             let mut amount = i16::from(resource_capability_level_by_type(
                 state,
                 gate_flags[index],
-                resource as u8,
+                resource,
             ));
             if amount != 0 {
                 let gate = gate_flags[index];
                 if (0..24).contains(&gate) && RESOURCE_USES_HIGH_NIBBLE[gate as usize] != 0 {
                     let capability = starting_tech_capability(resource);
-                    amount = i16::from(UNIVERSITY_REQUIREMENT_LEVEL[resource][capability]);
+                    amount = i16::from(UNIVERSITY_REQUIREMENT_LEVEL[resource_index][capability]);
                 }
             }
-            yields[resource] = yields[resource].saturating_add(amount);
+            yields[resource_index] = yields[resource_index].saturating_add(amount);
         }
-        if state.river_sprite_code != 0 {
+        if state.river.is_some() {
             yields[ResourceKind::Fish as usize] =
                 yields[ResourceKind::Fish as usize].saturating_add(1);
         }
@@ -776,9 +770,13 @@ fn calculate_city_resources(
     yields
 }
 
-fn resource_capability_level_by_type(tile: &TileState, _gate_flag: i8, resource: u8) -> u8 {
+fn resource_capability_level_by_type(
+    tile: &TileState,
+    _gate_flag: i8,
+    resource: ResourceKind,
+) -> u8 {
     for edge in 0..2 {
-        if tile.edge_resources[edge] == Some(resource as i8) {
+        if tile.edge_resources[edge] == Some(resource) {
             return resource_capability_level(tile, edge);
         }
     }
@@ -790,9 +788,6 @@ fn resource_capability_level(tile: &TileState, edge: usize) -> u8 {
         return 0;
     };
     let resource = resource as usize;
-    if resource >= UNIVERSITY_REQUIREMENT_LEVEL.len() {
-        return 0;
-    }
     let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
     let index = if RESOURCE_USES_HIGH_NIBBLE[resource] != 0 {
         packed >> 4
@@ -802,56 +797,63 @@ fn resource_capability_level(tile: &TileState, edge: usize) -> u8 {
     UNIVERSITY_REQUIREMENT_LEVEL[resource][usize::from(index.min(3))]
 }
 
-fn starting_tech_capability(resource: usize) -> usize {
+fn starting_tech_capability(resource: ResourceKind) -> usize {
     match resource {
-        0x12 | 0x11 | 0x15 | 4 | 3 | 0x16 => 1,
+        ResourceKind::Fruit
+        | ResourceKind::Grain
+        | ResourceKind::Gems
+        | ResourceKind::Iron
+        | ResourceKind::Coal
+        | ResourceKind::Gold => 1,
         _ => 0,
     }
 }
 
 /// Accept-time AI `PlaceCity`: province capital rewrite, flags, flood-fill, farmland nibble.
 fn place_ai_capital(
-    world: &mut WorldState,
+    world: &mut StrategicMap,
     gate_flags: &mut [i8],
-    province_capitals: &mut [Option<usize>],
+    province_capitals: &mut [Option<TileId>],
     tile: TileId,
     nation: MajorNationId,
 ) {
     let index = usize::from(tile.get());
-    set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, index);
+    set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, tile);
     let owner = TileOwnerTag::new(nation.get());
-    let _ = place_city(world, tile, owner);
-    debug_assert_eq!(world.tiles[index].active_flags, PLACE_CITY_ACTIVE_FLAGS);
+    place_city(world, tile, owner);
 
-    let origin_marker = world.tiles[index].region_marker;
+    let origin_marker = world[tile].region;
     for neighbor in place_city_harvest_tiles(index).into_iter().flatten() {
-        if world.tiles[neighbor].region_marker != origin_marker {
+        let neighbor = TileId::new(neighbor as u16);
+        if world[neighbor].region != origin_marker {
             continue;
         }
-        let gate = gate_flags[neighbor];
+        let neighbor_index = usize::from(neighbor.get());
+        let gate = gate_flags[neighbor_index];
         let qualifies = (0..24).contains(&gate) && GATE_FLAG_QUALIFIES[gate as usize] != 0;
         if !qualifies {
             continue;
         }
-        let eligible = world.tiles[neighbor]
+        let eligible = world[neighbor]
             .edge_resources
             .iter()
-            .any(|edge| matches!(edge, Some(RESOURCE_GRAIN) | Some(RESOURCE_FRUIT)));
+            .any(|edge| matches!(edge, Some(ResourceKind::Grain) | Some(ResourceKind::Fruit)));
         if eligible {
-            world.tiles[neighbor].development.surface = DevelopmentLevel::new(1);
+            world[neighbor].development.surface = DevelopmentLevel::new(1);
         }
     }
-    gate_flags[index] = resolve_region_tile_subtype_code(&world.tiles, gate_flags, index);
+    gate_flags[index] =
+        resolve_region_tile_subtype_code_for_state(&world[tile], gate_flags[index], index);
 }
 
 /// `TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags` (0x00515f80) tile mutations.
 fn set_region_tile_subtype_and_refresh_neighbor_flags(
-    world: &mut WorldState,
+    world: &mut StrategicMap,
     gate_flags: &mut [i8],
-    province_capitals: &mut [Option<usize>],
-    new_tile: usize,
+    province_capitals: &mut [Option<TileId>],
+    new_tile: TileId,
 ) {
-    let Some(province) = world.tiles[new_tile].province else {
+    let Some(province) = world[new_tile].province else {
         return;
     };
     let province_index = usize::from(province.get());
@@ -859,19 +861,45 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
         return;
     }
     if let Some(old_tile) = province_capitals[province_index] {
-        world.tiles[old_tile].active_flags = 0;
-        world.tiles[old_tile].edge_resources[0] = Some(0x11);
-        gate_flags[old_tile] = resolve_region_tile_subtype_code(&world.tiles, gate_flags, old_tile);
+        let old_index = usize::from(old_tile.get());
+        world[old_tile].flags = TileFlags::empty();
+        world[old_tile].edge_resources[0] = Some(ResourceKind::Grain);
+        gate_flags[old_index] = resolve_region_tile_subtype_code_for_state(
+            &world[old_tile],
+            gate_flags[old_index],
+            old_index,
+        );
     }
-    world.tiles[new_tile].active_flags = PROVINCE_CAPITAL_ACTIVE_FLAGS;
+    let new_index = usize::from(new_tile.get());
+    world[new_tile].flags = TileFlags::PROVINCE_ANCHOR_STATE;
     province_capitals[province_index] = Some(new_tile);
-    gate_flags[new_tile] = resolve_region_tile_subtype_code(&world.tiles, gate_flags, new_tile);
+    gate_flags[new_index] = resolve_region_tile_subtype_code_for_state(
+        &world[new_tile],
+        gate_flags[new_index],
+        new_index,
+    );
 
-    for (index, tile) in world.tiles.iter_mut().enumerate() {
-        if index != new_tile && tile.province == Some(province) && (tile.active_flags & 0x20) != 0 {
-            tile.active_flags &= !0x20;
+    for index in 0..world.len() {
+        let tile_id = TileId::new(index as u16);
+        if tile_id != new_tile && world[tile_id].province == Some(province) {
+            world[tile_id].flags.clear_city_marker();
         }
     }
+}
+
+fn initialize_world_tile_neighbor_connection_mask_if_needed(
+    world: &mut StrategicMap,
+    gate_flags: &mut [i8],
+    tile: TileId,
+) {
+    let index = usize::from(tile.get());
+    if gate_flags[index] == 1 {
+        return;
+    }
+    world[tile].terrain = TerrainKind::Plains;
+    world[tile].edge_resources = [Some(ResourceKind::Grain), None];
+    gate_flags[index] =
+        resolve_region_tile_subtype_code_for_state(&world[tile], gate_flags[index], index);
 }
 
 /// Harvest ring from `TMapMgr::PlaceCity` (directions 0..5 via hex-area deltas, 6 = self).
@@ -913,8 +941,8 @@ struct PortZoneTable {
 #[derive(Clone, Copy, Debug)]
 struct PortZone {
     ordinal: i16,
-    port_tile: usize,
-    sea_tile: usize,
+    port_tile: TileId,
+    sea_tile: TileId,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
     primary_neighbor: Option<i16>,
     former_owner: u8,
@@ -928,23 +956,21 @@ impl PortZoneTable {
         }
     }
 
-    fn find_port_by_tile(&self, tile: usize) -> Option<&PortZone> {
+    fn find_port_by_tile(&self, tile: TileId) -> Option<&PortZone> {
         self.ports
             .iter()
             .find(|port| port.port_tile == tile || port.sea_tile == tile)
     }
 
     fn find_first_port_for_nation(&self, nation: u8) -> Option<&PortZone> {
-        self.ports
-            .iter()
-            .find(|port| port.former_owner == nation)
+        self.ports.iter().find(|port| port.former_owner == nation)
     }
 }
 
-fn sea_zone_count(tiles: &[TileState]) -> i16 {
+fn sea_zone_count(world: &StrategicMap) -> i16 {
     let mut max_ordinal = -1_i16;
-    for tile in tiles {
-        if tile.terrain_kind != WATER {
+    for tile in world.iter() {
+        if tile.terrain != TerrainKind::Water {
             continue;
         }
         let Some(owner) = tile.owner_nation else {
@@ -959,37 +985,33 @@ fn sea_zone_count(tiles: &[TileState]) -> i16 {
 }
 
 /// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
-fn ensure_port_zone_for_tile(world: &mut WorldState, ports: &mut PortZoneTable, tile_index: usize) {
-    if tile_index >= world.tiles.len() {
+fn ensure_port_zone_for_tile(world: &mut StrategicMap, ports: &mut PortZoneTable, tile: TileId) {
+    if !world[tile].flags.has_base_transport() {
         return;
     }
-    if (world.tiles[tile_index].active_flags & 1) == 0 {
+    if ports.find_port_by_tile(tile).is_some() {
         return;
     }
-    if ports.find_port_by_tile(tile_index).is_some() {
-        return;
-    }
-    let Some(nation_seed) = world.tiles[tile_index].owner_nation.map(|owner| owner.get()) else {
+    let Some(nation_seed) = world[tile].owner_nation.map(|owner| owner.get()) else {
         return;
     };
-    let former_owner = world.tiles[tile_index]
+    let former_owner = world[tile]
         .former_owner_nation
         .map(|owner| owner.get())
         .unwrap_or(nation_seed);
 
-    let geometry = MapGeometry::new(world.wraps_horizontally);
-    let Some(best_sea) = select_port_sea_tile(world, geometry, tile_index, nation_seed) else {
+    let geometry = world.geometry();
+    let Some(best_sea) = select_port_sea_tile(world, geometry, tile, nation_seed) else {
         return;
     };
 
-    let primary_neighbor = if world.tiles[best_sea].action_state == ACTION_STATE_ANCHOR
-        || world.tiles[best_sea].action_state == 14
+    let primary_neighbor = if world[best_sea]
+        .action
+        .is_some_and(|action| matches!(action.retail(), ACTION_STATE_ANCHOR | 14))
     {
-        ports
-            .find_port_by_tile(best_sea)
-            .map(|port| port.ordinal)
+        ports.find_port_by_tile(best_sea).map(|port| port.ordinal)
     } else {
-        world.tiles[best_sea]
+        world[best_sea]
             .owner_nation
             .map(|owner| owner.get())
             .filter(|&tag| tag >= SEA_OWNER_BIAS)
@@ -1002,66 +1024,67 @@ fn ensure_port_zone_for_tile(world: &mut WorldState, ports: &mut PortZoneTable, 
         0,
         PortZone {
             ordinal,
-            port_tile: tile_index,
+            port_tile: tile,
             sea_tile: best_sea,
             primary_neighbor,
             former_owner,
         },
     );
-    world.tiles[best_sea].action_state = ACTION_STATE_ANCHOR;
+    world[best_sea].action = TileAction::try_from_retail(ACTION_STATE_ANCHOR);
 }
 
 fn select_port_sea_tile(
-    world: &WorldState,
+    world: &StrategicMap,
     geometry: MapGeometry,
-    tile_index: usize,
+    tile: TileId,
     nation_seed: u8,
-) -> Option<usize> {
-    let tile_id = TileId::new(tile_index as u16);
+) -> Option<TileId> {
+    let tile_index = usize::from(tile.get());
     for offset in 0..6 {
         let direction = HexDirection::ALL[(tile_index + offset) % 6];
-        let Some(candidate) = geometry.neighbor(tile_id, direction) else {
+        let Some(candidate) = geometry.neighbor(tile, direction) else {
             continue;
         };
-        let candidate_index = usize::from(candidate.get());
-        if world.tiles[candidate_index].terrain_kind != WATER {
+        if world[candidate].terrain != TerrainKind::Water {
             continue;
         }
-        let all_neighbors_qualify = geometry
-            .neighbors(candidate)
-            .into_iter()
-            .flatten()
-            .all(|neighbor| {
-                let neighbor_owner = world.tiles[usize::from(neighbor.get())].owner_nation;
-                !matches!(
-                    neighbor_owner,
-                    Some(owner) if owner.get() < SEA_OWNER_BIAS && owner.get() != nation_seed
-                )
-            });
+        let all_neighbors_qualify =
+            geometry
+                .neighbors(candidate)
+                .into_iter()
+                .flatten()
+                .all(|neighbor| {
+                    let neighbor_owner = world[neighbor].owner_nation;
+                    !matches!(
+                        neighbor_owner,
+                        Some(owner) if owner.get() < SEA_OWNER_BIAS && owner.get() != nation_seed
+                    )
+                });
         if all_neighbors_qualify {
-            return Some(candidate_index);
+            return Some(candidate);
         }
     }
     // Fallback: any adjacent water tile (skips the full river-flow tracer).
     geometry
-        .neighbors(tile_id)
+        .neighbors(tile)
         .into_iter()
         .flatten()
-        .map(|neighbor| usize::from(neighbor.get()))
-        .find(|&index| world.tiles[index].terrain_kind == WATER)
+        .find(|&neighbor| world[neighbor].terrain == TerrainKind::Water)
 }
 
 /// Province adjacency lists used by the defend-province availability gate.
-fn build_province_adjacency(world: &WorldState) -> Vec<Vec<u16>> {
+fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<ProvinceId>> {
     let province_count = world
-        .tiles
         .iter()
-        .filter_map(|tile| tile.province.map(|province| usize::from(province.get()) + 1))
+        .filter_map(|tile| {
+            tile.province
+                .map(|province| usize::from(province.get()) + 1)
+        })
         .max()
         .unwrap_or(0);
     let mut adjacency = vec![Vec::new(); province_count];
-    let geometry = MapGeometry::new(world.wraps_horizontally);
-    for (index, tile) in world.tiles.iter().enumerate() {
+    let geometry = world.geometry();
+    for (index, tile) in world.iter().enumerate() {
         let Some(province) = tile.province else {
             continue;
         };
@@ -1071,15 +1094,14 @@ fn build_province_adjacency(world: &WorldState) -> Vec<Vec<u16>> {
             .into_iter()
             .flatten()
         {
-            let Some(neighbor_province) = world.tiles[usize::from(neighbor.get())].province else {
+            let Some(neighbor_province) = world[neighbor].province else {
                 continue;
             };
             if neighbor_province == province {
                 continue;
             }
-            let neighbor_index = neighbor_province.get();
-            if !adjacency[province_index].contains(&neighbor_index) {
-                adjacency[province_index].push(neighbor_index);
+            if !adjacency[province_index].contains(&neighbor_province) {
+                adjacency[province_index].push(neighbor_province);
             }
         }
     }
@@ -1092,19 +1114,26 @@ fn build_province_adjacency(world: &WorldState) -> Vec<Vec<u16>> {
 /// adjacent province". The second-degree retail quirk (owned province with a neighbor that
 /// itself has neighbors) is preserved.
 fn province_mission_available(
-    province: u16,
+    province: ProvinceId,
     nation: TileOwnerTag,
-    world: &WorldState,
-    province_capitals: &[Option<usize>],
-    adjacency: &[Vec<u16>],
+    world: &StrategicMap,
+    province_capitals: &[Option<TileId>],
+    adjacency: &[Vec<ProvinceId>],
 ) -> bool {
-    let province_usize = usize::from(province);
-    let neighbors = adjacency.get(province_usize).map(Vec::as_slice).unwrap_or(&[]);
+    let province_usize = usize::from(province.get());
+    let neighbors = adjacency
+        .get(province_usize)
+        .map(Vec::as_slice)
+        .unwrap_or(&[]);
     for &adjacent in neighbors {
-        let Some(capital) = province_capitals.get(usize::from(adjacent)).copied().flatten() else {
+        let Some(capital) = province_capitals
+            .get(usize::from(adjacent.get()))
+            .copied()
+            .flatten()
+        else {
             continue;
         };
-        if world.tiles[capital].owner_nation == Some(nation) {
+        if world[capital].owner_nation == Some(nation) {
             return true;
         }
     }
@@ -1113,7 +1142,7 @@ fn province_mission_available(
     if !neighbors.is_empty() {
         for &adjacent in neighbors {
             if adjacency
-                .get(usize::from(adjacent))
+                .get(usize::from(adjacent.get()))
                 .is_some_and(|list| !list.is_empty())
             {
                 return true;
@@ -1125,9 +1154,9 @@ fn province_mission_available(
 
 /// `TAutoGreatPower::QueueMapActionMissionsForPortZoneCandidates`.
 fn queue_map_action_missions_for_port_zone_candidates(
-    world: &WorldState,
-    province_capitals: &[Option<usize>],
-    adjacency: &[Vec<u16>],
+    world: &StrategicMap,
+    province_capitals: &[Option<TileId>],
+    adjacency: &[Vec<ProvinceId>],
     ports: &PortZoneTable,
     nation: MajorNationId,
 ) -> Vec<MissionState> {
@@ -1144,7 +1173,7 @@ fn queue_map_action_missions_for_port_zone_candidates(
             nation,
             queue_index,
             MissionData::DefendProvince(ArmyMissionState {
-                present_location: province as i16,
+                present_location: province.get() as i16,
                 required_equipage_bits: [0; 5],
                 units: Vec::new(),
             }),
@@ -1216,29 +1245,29 @@ fn mission_state(
 
 fn flatten_mission_queues(queues: &MajorNationTable<Vec<MissionState>>) -> Vec<MissionState> {
     let mut missions = Vec::new();
-    for nation in MajorNationId::all() {
+    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
         missions.extend(queues[nation].iter().cloned());
     }
     missions
 }
 
 fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
-    let owner = u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new);
+    let owner = tile.owner;
     TileState {
-        terrain_kind: tile.terrain_kind,
+        terrain: tile.terrain,
         owner_nation: owner,
         // Retail stamps former owners from the generation owners before Accept.
         former_owner_nation: owner,
-        province: u16::try_from(tile.province_index).ok().map(ProvinceId::new),
+        province: tile.province,
         development: Default::default(),
         edge_resources: [None, None],
         transport_links: Default::default(),
         pending_rail_links: Default::default(),
         // Map tiles default to "no action" (-1) after generation.
-        action_state: -1,
-        active_flags: 0,
-        region_marker: -1,
-        river_sprite_code: tile.river_sprite_code,
+        action: None,
+        flags: TileFlags::empty(),
+        region: None,
+        river: tile.river,
     }
 }
 
@@ -1248,117 +1277,138 @@ fn update_strategic_map_tile_icon_variant_state(
     gate_flags: &mut [i8],
     geometry: MapGeometry,
     index: usize,
-    owner_nation_tag: i8,
+    owner: Option<TileOwnerTag>,
     map_lcg: &mut RetailLcg,
 ) {
-    let terrain = tiles[index].terrain_kind;
+    let terrain = tiles[index].terrain;
+    let major_owner = owner
+        .and_then(TileOwnerTag::nation)
+        .and_then(MajorNationId::from_nation)
+        .is_some();
     match terrain {
-        WATER => {
+        TerrainKind::Water => {
             let tile_id = TileId::new(index as u16);
             let found_land = geometry
                 .neighbors(tile_id)
                 .into_iter()
                 .flatten()
-                .any(|neighbor| tiles[usize::from(neighbor.get())].terrain_kind != WATER);
+                .any(|neighbor| tiles[usize::from(neighbor.get())].terrain != TerrainKind::Water);
             if found_land {
-                tiles[index].edge_resources[0] = Some(0x13);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Fish);
             }
         }
-        PLAINS => {
+        TerrainKind::Plains => {
             let roll = map_lcg.next_sample_15();
             if roll % 100 < 10 {
-                tiles[index].edge_resources[0] = Some(0);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Cotton);
             } else {
                 let roll = map_lcg.next_sample_15();
-                if roll % 100 < 5 && owner_nation_tag < 7 {
-                    tiles[index].edge_resources[0] = Some(5);
+                if roll % 100 < 5 && major_owner {
+                    tiles[index].edge_resources[0] = Some(ResourceKind::Horses);
                 } else {
                     let roll = map_lcg.next_sample_15();
-                    tiles[index].edge_resources[0] =
-                        Some(if roll % 100 < 0x24 { 0x14 } else { 0x11 });
+                    tiles[index].edge_resources[0] = Some(if roll % 100 < 0x24 {
+                        ResourceKind::Livestock
+                    } else {
+                        ResourceKind::Grain
+                    });
                 }
             }
         }
-        FARMLAND => {
+        TerrainKind::Farmland => {
             let roll = map_lcg.next_sample_15();
-            tiles[index].edge_resources[0] = Some(if roll % 100 < 0x37 { 0x11 } else { 0x12 });
+            tiles[index].edge_resources[0] = Some(if roll % 100 < 0x37 {
+                ResourceKind::Grain
+            } else {
+                ResourceKind::Fruit
+            });
         }
-        FOREST => {
-            tiles[index].edge_resources[0] = Some(2);
+        TerrainKind::Forest => {
+            tiles[index].edge_resources[0] = Some(ResourceKind::Timber);
         }
-        SWAMP | DESERT => {
+        TerrainKind::Swamp | TerrainKind::Desert => {
             let roll = map_lcg.next_sample_15();
             if roll % 100 < 0xf {
-                tiles[index].edge_resources[0] = Some(6);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Oil);
             }
         }
-        HILLS => {
+        TerrainKind::Hills => {
             let roll = map_lcg.next_sample_15();
             if roll % 100 < 0xc {
-                tiles[index].edge_resources[0] = Some(1);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Wool);
             } else {
                 let roll = map_lcg.next_sample_15();
                 if roll % 100 < 0x14 {
                     let roll = map_lcg.next_sample_15();
-                    tiles[index].edge_resources[0] = Some(if roll % 100 < 0x32 { 3 } else { 4 });
+                    tiles[index].edge_resources[0] = Some(if roll % 100 < 0x32 {
+                        ResourceKind::Coal
+                    } else {
+                        ResourceKind::Iron
+                    });
                 }
             }
         }
-        MOUNTAIN => {
+        TerrainKind::Mountain => {
             let mut edge_index = 0usize;
             let roll = map_lcg.next_sample_15();
             if roll % 100 < 0x14 {
                 let roll = map_lcg.next_sample_15();
-                tiles[index].edge_resources[0] = Some(if roll % 100 < 0x32 { 3 } else { 4 });
+                tiles[index].edge_resources[0] = Some(if roll % 100 < 0x32 {
+                    ResourceKind::Coal
+                } else {
+                    ResourceKind::Iron
+                });
                 edge_index = 1;
             }
-            if owner_nation_tag < 7 {
+            if major_owner {
                 let roll = map_lcg.next_sample_15();
                 if roll % 100 < 0xf {
-                    tiles[index].edge_resources[edge_index] = Some(0x16);
+                    tiles[index].edge_resources[edge_index] = Some(ResourceKind::Gold);
                 }
             } else {
                 let roll = map_lcg.next_sample_15();
                 if roll % 100 < 0xa {
-                    tiles[index].edge_resources[edge_index] = Some(0x15);
+                    tiles[index].edge_resources[edge_index] = Some(ResourceKind::Gems);
                 } else {
                     let roll = map_lcg.next_sample_15();
                     if roll % 100 < 0xf {
-                        tiles[index].edge_resources[edge_index] = Some(0x16);
+                        tiles[index].edge_resources[edge_index] = Some(ResourceKind::Gold);
                     }
                 }
             }
         }
-        _ => {}
     }
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
 
 /// `TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex` (0x00514210).
 fn resolve_region_tile_subtype_code(tiles: &[TileState], gate_flags: &[i8], index: usize) -> i8 {
-    let tile = &tiles[index];
+    resolve_region_tile_subtype_code_for_state(&tiles[index], gate_flags[index], index)
+}
+
+fn resolve_region_tile_subtype_code_for_state(tile: &TileState, gate_flag: i8, index: usize) -> i8 {
     let edge0 = tile.edge_resources[0];
-    match tile.terrain_kind {
-        PLAINS => match edge0 {
-            Some(0) => 2,
-            Some(5) => 4,
-            Some(0x14) => 3,
-            _ if (tile.active_flags & 2) != 0 => 0xe,
+    match tile.terrain {
+        TerrainKind::Plains => match edge0 {
+            Some(ResourceKind::Cotton) => 2,
+            Some(ResourceKind::Horses) => 4,
+            Some(ResourceKind::Livestock) => 3,
+            _ if tile.flags.contains(TileFlags::RECRUITMENT_RESERVED) => 0xe,
             _ => 1,
         },
-        FOREST => {
-            if gate_flags[index] == -1 {
+        TerrainKind::Forest => {
+            if gate_flag == -1 {
                 0xd
             } else {
-                gate_flags[index]
+                gate_flag
             }
         }
-        HILLS => i8::from(edge0 != Some(1)) + 7,
-        MOUNTAIN => 9,
-        SWAMP => 0xa,
-        DESERT => {
-            if gate_flags[index] != -1 {
-                gate_flags[index]
+        TerrainKind::Hills => i8::from(edge0 != Some(ResourceKind::Wool)) + 7,
+        TerrainKind::Mountain => 9,
+        TerrainKind::Swamp => 0xa,
+        TerrainKind::Desert => {
+            if gate_flag != -1 {
+                gate_flag
             } else {
                 let row = index / usize::from(STRATEGIC_MAP_WIDTH);
                 if !(0xf..=0x2d).contains(&row) {
@@ -1368,8 +1418,8 @@ fn resolve_region_tile_subtype_code(tiles: &[TileState], gate_flags: &[i8], inde
                 }
             }
         }
-        FARMLAND => i8::from(edge0 != Some(0x11)) + 5,
-        _ => 0,
+        TerrainKind::Farmland => i8::from(edge0 != Some(ResourceKind::Grain)) + 5,
+        TerrainKind::Water => 0,
     }
 }
 
@@ -1392,16 +1442,13 @@ fn guarantee_resources(tiles: &mut [TileState], gate_flags: &mut [i8], map_lcg: 
         for &index in &linked {
             for edge in 0..2 {
                 if let Some(resource) = tiles[index].edge_resources[edge] {
-                    let slot = usize::try_from(resource).unwrap_or(0);
-                    if slot < resource_tally.len() {
-                        resource_tally[slot] += 1;
-                    }
+                    resource_tally[resource as usize] += 1;
                 }
             }
         }
 
         if resource_tally[3] == 0 {
-            place_guaranteed_resource(tiles, gate_flags, &linked, map_lcg, 3);
+            place_guaranteed_resource(tiles, gate_flags, &linked, map_lcg, ResourceKind::Coal);
         }
         if resource_tally[4] == 0 {
             let mut target_index: isize = -1;
@@ -1421,7 +1468,7 @@ fn guarantee_resources(tiles: &mut [TileState], gate_flags: &mut [i8], map_lcg: 
 
             if found {
                 let index = linked[target_index as usize];
-                tiles[index].edge_resources[0] = Some(4);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
                 if gate_flag == 9 {
                     tiles[index].edge_resources[1] = None;
                     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
@@ -1444,7 +1491,7 @@ fn guarantee_resources(tiles: &mut [TileState], gate_flags: &mut [i8], map_lcg: 
                 }
                 let index = linked[picked];
                 gate_flags[index] = 8;
-                tiles[index].edge_resources[0] = Some(4);
+                tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
                 target_index = picked as isize;
             }
             let index = linked[target_index as usize];
@@ -1459,7 +1506,7 @@ fn place_guaranteed_resource(
     gate_flags: &mut [i8],
     linked: &[usize],
     map_lcg: &mut RetailLcg,
-    resource: i8,
+    resource: ResourceKind,
 ) {
     let mut target_index: isize = -1;
     let mut found = false;
@@ -1503,12 +1550,10 @@ fn place_guaranteed_resource(
 }
 
 fn bootstrap_nations(human_nation: MajorNationId, difficulty: Difficulty) -> Nations {
-    Nations {
-        majors: MajorNationTable::from_fn(|nation| {
-            Some(major_nation(difficulty, nation == human_nation))
-        }),
-        minors: MinorNationTable::from_fn(|_nation| Some(minor_nation())),
-    }
+    Nations::new(
+        MajorNationTable::from_fn(|nation| major_nation(difficulty, nation == human_nation)),
+        MinorNationTable::from_fn(|_nation| Some(minor_nation())),
+    )
 }
 
 fn major_nation(difficulty: Difficulty, human: bool) -> MajorNation {
@@ -1556,99 +1601,172 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
 mod tests {
     use super::*;
     use crate::{
-        Difficulty, NationId, ResourceKind, RetailTopologyByte, TileId,
+        Difficulty, MapTopology, NationId, ResourceKind, TileId,
         generate_random_setup_preview_with_clock_seed,
     };
 
     #[test]
-    fn creates_a_normal_start_boundary_from_the_retained_preview() {
-        let preview = generate_random_setup_preview_with_clock_seed(
-            b"Woopnist",
-            RetailTopologyByte::from_wraps_horizontally(true),
-            1,
+    fn fallback_capital_stamps_the_province_anchor_state() {
+        let tile = TileId::new(0);
+        let mut tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        tiles[usize::from(tile.get())].province = Some(ProvinceId::new(0));
+        let mut gate_flags = vec![1; STRATEGIC_TILE_COUNT];
+        let capitals = assign_province_fallback_capitals(
+            &mut tiles,
+            &mut gate_flags,
+            MapGeometry::new(MapTopology::Bounded),
+            &mut RetailLcg::from_state(1),
         );
+
+        assert_eq!(capitals, vec![Some(tile)]);
+        assert_eq!(
+            tiles[usize::from(tile.get())].flags,
+            TileFlags::PROVINCE_ANCHOR_STATE
+        );
+    }
+
+    #[test]
+    fn reanchoring_resets_the_old_tile_and_only_clears_sibling_city_markers() {
+        let province = ProvinceId::new(0);
+        let old_tile = TileId::new(0);
+        let new_tile = TileId::new(1);
+        let sibling = TileId::new(2);
+        let mut world = StrategicMap::new(
+            MapTopology::Bounded,
+            vec![TileState::default(); STRATEGIC_TILE_COUNT],
+        )
+        .unwrap();
+        for tile in [old_tile, new_tile, sibling] {
+            world[tile].province = Some(province);
+        }
+        world[old_tile].flags = TileFlags::PLACED_CITY_STATE;
+        let sibling_flags =
+            TileFlags::PLACED_CITY_STATE | TileFlags::PROVINCE_CAPITAL_FORTIFICATION;
+        world[sibling].flags = sibling_flags;
+        let mut gate_flags = vec![1; STRATEGIC_TILE_COUNT];
+        let mut capitals = vec![Some(old_tile)];
+
+        set_region_tile_subtype_and_refresh_neighbor_flags(
+            &mut world,
+            &mut gate_flags,
+            &mut capitals,
+            new_tile,
+        );
+
+        assert_eq!(world[old_tile].flags, TileFlags::empty());
+        assert_eq!(world[new_tile].flags, TileFlags::PROVINCE_ANCHOR_STATE);
+        assert_eq!(capitals, vec![Some(new_tile)]);
+        let mut expected_sibling_flags = sibling_flags;
+        expected_sibling_flags.clear_city_marker();
+        assert_eq!(world[sibling].flags, expected_sibling_flags);
+    }
+
+    #[test]
+    fn minor_home_garrison_preserves_the_base_state_and_marks_the_capital() {
+        let province = ProvinceId::new(0);
+        let tile = TileId::new(0);
+        let mut world = StrategicMap::new(
+            MapTopology::Bounded,
+            vec![TileState::default(); STRATEGIC_TILE_COUNT],
+        )
+        .unwrap();
+        world[tile].province = Some(province);
+        let mut gate_flags = vec![1; STRATEGIC_TILE_COUNT];
+        let mut capitals = vec![None];
+
+        reset_tile_to_base_transport_flag(&mut world, &mut gate_flags, &mut capitals, tile);
+        assert_eq!(world[tile].flags, TileFlags::MINOR_HOME_STATE);
+
+        let mut units = Vec::new();
+        let mut unit_ids = UnitIdAllocator::default();
+        let mut name_ordinals = [1; MilitaryUnitKind::LENGTH];
+        let mut next_roster_id = 1;
+        spawn_initial_militia_for_minor(
+            &mut world,
+            &capitals,
+            MinorNationId::new(MinorNationId::FIRST),
+            &[province],
+            Difficulty::Normal,
+            &mut units,
+            &mut unit_ids,
+            &mut name_ordinals,
+            &mut next_roster_id,
+        );
+
+        assert_eq!(
+            units.len(),
+            6,
+            "three garrison units and three militia units"
+        );
+        assert_eq!(
+            world[tile].flags,
+            TileFlags::MINOR_HOME_STATE | TileFlags::PROVINCE_CAPITAL_FORTIFICATION
+        );
+    }
+
+    #[test]
+    fn creates_a_normal_start_boundary_from_the_retained_preview() {
+        let preview =
+            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1);
 
-        assert_eq!(state.turn.phase_code, 2);
+        assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(state.turn.difficulty, Difficulty::Normal);
         assert_eq!(state.turn.selected_nation, NationId::new(6));
         assert_ne!(
             state.rng.map_generation,
             RetailLcg::from_state(preview.final_map_lcg)
         );
-        assert_eq!(state.world.tiles.len(), crate::STRATEGIC_TILE_COUNT);
+        assert_eq!(state.world.len(), crate::STRATEGIC_TILE_COUNT);
         assert_eq!(
-            state.world.tiles[0].terrain_kind,
-            preview.map.tiles[0].terrain_kind
+            state.world[TileId::new(0)].terrain,
+            preview.map.tile(TileId::new(0)).terrain
         );
         assert_eq!(
-            state.world.tiles[0].former_owner_nation,
-            state.world.tiles[0].owner_nation
+            state.world[TileId::new(0)].former_owner_nation,
+            state.world[TileId::new(0)].owner_nation
         );
         assert!(
             state
                 .world
-                .tiles
                 .iter()
                 .any(|tile| tile.edge_resources[0].is_some()),
             "post-passes must stamp some edge resources"
         );
         assert!(
-            state
-                .world
-                .tiles
-                .iter()
-                .any(|tile| tile.active_flags == PROVINCE_CAPITAL_ACTIVE_FLAGS),
-            "untouched provinces keep fallback capital active_flags=0x22"
-        );
-        assert!(
-            state
-                .world
-                .tiles
-                .iter()
-                .any(|tile| tile.active_flags == PLACE_CITY_ACTIVE_FLAGS),
-            "AI PlaceCity must stamp active_flags=0x37"
+            state.world.iter().any(|tile| tile.flags.is_city()),
+            "AI PlaceCity must mark a city tile"
         );
 
-        let human = state.nations.major(MajorNationId::new(6)).unwrap();
+        let human = state.nations.major(MajorNationId::new(6));
         assert_eq!(human.common.treasury, 10_000);
         assert_eq!(human.common.home_tile, None);
-        assert!(human.state.diplomacy_eligible);
+        assert!(human.economy.controller.is_human());
 
-        let ai = state.nations.major(MajorNationId::new(0)).unwrap();
+        let ai = state.nations.major(MajorNationId::new(0));
         assert_eq!(ai.common.treasury, 10_000);
-        assert!(!ai.state.diplomacy_eligible);
+        assert!(!ai.economy.controller.is_human());
         assert!(ai.common.home_tile.is_some(), "AI majors place a capital");
         assert_eq!(
-            state
-                .nations
-                .city(MajorNationId::new(0))
-                .unwrap()
-                .home_town_tile,
+            state.nations.city(MajorNationId::new(0)).home_town_tile,
             ai.common.home_tile
         );
         let ai_home = ai.common.home_tile.unwrap();
-        assert_eq!(
-            state.world.tiles[usize::from(ai_home.get())].active_flags,
-            PLACE_CITY_ACTIVE_FLAGS
+        assert!(
+            state.world[ai_home].flags.is_city(),
+            "AI PlaceCity marks the selected capital as a city"
         );
         assert!(
-            state.world.tiles[usize::from(ai_home.get())].region_marker >= 1,
+            state.world[ai_home].region.is_some(),
             "retail region markers start at 1"
         );
         assert_eq!(state.rng.zone_status, RetailLcg::from_state(1));
 
-        assert_eq!(
-            state.nations.majors.iter().flatten().count(),
-            crate::MAJOR_NATION_COUNT
-        );
-        assert_eq!(
-            state.nations.minors.iter().flatten().count(),
-            crate::MINOR_NATION_COUNT
-        );
-        let human_city = state.nations.city(MajorNationId::new(6)).unwrap();
+        assert_eq!(state.nations.major_count(), crate::MAJOR_NATION_COUNT);
+        assert_eq!(state.nations.minor_count(), crate::MINOR_NATION_COUNT);
+        let human_city = state.nations.city(MajorNationId::new(6));
         assert_eq!(human_city.home_town_tile, Some(TileId::new(0)));
-        assert_eq!(human_city.stock_by_type[ResourceKind::Food], 20);
+        assert_eq!(human_city.stockpile[ResourceKind::Food], 20);
 
         let placed_minors = state
             .nations
@@ -1658,12 +1776,14 @@ mod tests {
             .filter(|minor| minor.common.home_tile.is_some())
             .count();
         assert!(placed_minors > 0, "minors receive home tiles");
-        assert!(
-            state.world.tiles.iter().any(
-                |tile| (tile.active_flags & MINOR_HOME_ACTIVE_FLAGS) == MINOR_HOME_ACTIVE_FLAGS
-            ),
-            "minor homes stamp active_flags with bit0|0x20"
-        );
+        assert!(state.nations.minors.iter().flatten().all(|minor| {
+            minor.common.home_tile.is_none_or(|home| {
+                let flags = state.world[home].flags;
+                flags.is_city()
+                    && flags.has_base_transport()
+                    && flags.contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
+            })
+        }));
         assert!(
             !state.military_units.is_empty(),
             "minor InitialMilitia produces military units"
@@ -1672,7 +1792,7 @@ mod tests {
             state
                 .military_units
                 .iter()
-                .all(|unit| unit.nation.get() >= MinorNationId::FIRST),
+                .all(|unit| unit.nation().get() >= MinorNationId::FIRST),
             "pre-capital military units are minor-owned only"
         );
         assert!(
@@ -1699,18 +1819,18 @@ mod tests {
             "each AI queue ends with ScatteredShips at 0.001f"
         );
         assert!(
-            state.missions.iter().any(|mission| {
-                matches!(mission.data, MissionData::DefendProvince(_))
-            }),
+            state
+                .missions
+                .iter()
+                .any(|mission| { matches!(mission.data, MissionData::DefendProvince(_)) }),
             "AI queues include DefendProvince for owned regions"
         );
         assert!(
-            state
-                .world
-                .tiles
-                .iter()
-                .any(|tile| tile.action_state == ACTION_STATE_ANCHOR),
-            "EnsurePortZone stamps Anchor action_state on linked sea tiles"
+            state.world.iter().any(|tile| {
+                tile.action
+                    .is_some_and(|action| action.retail() == ACTION_STATE_ANCHOR)
+            }),
+            "EnsurePortZone stamps Anchor on linked sea tiles"
         );
         assert!(
             state
@@ -1720,7 +1840,7 @@ mod tests {
             "human Normal+ majors do not receive Accept mission queues"
         );
         assert_eq!(
-            state.persistent_unit_id_counter,
+            state.unit_ids.current(),
             state.military_units.len() as i32,
             "field_64 tracks each spawned TUnit"
         );
@@ -1728,14 +1848,16 @@ mod tests {
         assert!(state.civilian_units.is_empty());
         assert!(state.ships.is_empty());
         assert!(state.task_forces.is_empty());
-        assert!(state
-            .pending
-            .nations
-            .iter()
-            .all(|work| work.turn_events.is_empty()
-                && work.proposals.is_empty()
-                && work.turn_summary.is_empty()
-                && work.turn_start_events.is_empty()));
+        assert!(
+            state
+                .pending
+                .nations
+                .iter()
+                .all(|work| work.turn_events.is_empty()
+                    && work.proposals.is_empty()
+                    && work.turn_summary.is_empty()
+                    && work.turn_start_events.is_empty())
+        );
         assert!(state.pending.war_transitions.is_empty());
     }
 }

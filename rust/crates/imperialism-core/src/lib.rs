@@ -34,11 +34,12 @@ mod units;
 pub use calendar::TurnCalendar;
 pub use city_buildings::{BuildingWindowState, ProductionSlot};
 pub use city_site::{
-    CitySiteError, confirm_capital_site, enter_strategic_map_without_capital_selection,
-    is_valid_secondary_nation_home_tile_candidate, place_city, requires_capital_site_selection,
-    supports_city_site_terrain, validate_capital_site_selection,
+    CapitalSite, CitySiteError, confirm_capital_site,
+    enter_strategic_map_without_capital_selection, is_valid_secondary_nation_home_tile_candidate,
+    place_city, requires_capital_site_selection, supports_city_site_terrain,
+    validate_capital_site_selection,
 };
-pub use civilian_work::{CivilianWorkError, CivilianWorkOrder};
+pub use civilian_work::{CivilianWorkError, CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
@@ -46,22 +47,21 @@ pub use ids::{
     TaskForceId, TileId, TileOwnerTag,
 };
 pub use map_geometry::{
-    HexDirection, MapGeometry, RetailTopologyByte, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
+    HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
     STRATEGIC_TILE_COUNT,
 };
 pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
-pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
+pub use population::{FoodOutcome, LaborPool, SkillBand};
 pub use production::{
-    ProductionConstraint, ProductionError, ProductionProgress, ResourceCost, UnitCostProfile,
-    UnitProductionOrder,
+    CivilianRecruitOrder, MilitaryRecruitOrder, ProductionConstraint, ProductionProgress,
+    ResourceCost,
 };
 pub use random_map::{
-    COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, CoarseMap, CoarseMapGrid,
-    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT,
-    generate_coarse_random_map,
+    COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, EXPANDED_MAP_HEIGHT,
+    EXPANDED_MAP_WIDTH, RANDOM_MAP_CLASS_COUNT,
 };
 pub use random_map_terrain::{
-    GeneratedMap, GeneratedTerrainTile, RandomMapTuning, RandomSetupPreview,
+    GeneratedMap, GeneratedProvince, GeneratedTerrainTile, RandomMapTuning, RandomSetupPreview,
     RandomSetupPreviewError, generate_random_map, generate_random_setup_preview,
     generate_random_setup_preview_with_clock_seed,
 };
@@ -73,32 +73,32 @@ pub use random_setup_name::{COUNTRY_NAME_MAX_CHARS, generate_english_random_setu
 #[cfg(feature = "differential-trace")]
 pub mod differential_trace {
     pub use crate::random_map::{
-        CoarseMapAttempt, CoarseMapTrace, ExpandedMapSeedTile, trace_coarse_random_map,
+        CoarseMap, CoarseMapAttempt, CoarseMapGrid, CoarseMapTrace, trace_coarse_random_map,
     };
     pub use crate::random_map_terrain::{
-        RandomMapTerrainAttemptTrace, RandomMapTerrainCapture, RandomMapTerrainStageTrace,
-        RandomMapTerrainTrace, trace_random_map_terrain,
+        RandomMapTerrainAttemptTrace, RandomMapTerrainStageTrace, RandomMapTerrainTrace,
+        trace_random_map_terrain,
     };
 }
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
-    ArmyMissionState, AttackMissionState, CityState, CivilianUnitState, DevelopmentLevel,
-    DiplomacyGrant, DiplomacyPolicy, GameState, LandSale, MajorNation, MajorNationState,
-    MilitaryUnitState, MinorNation, MissionData, MissionState, NationCommonState,
-    NationPendingWork, Nations, NavyMissionState, PendingWorkState, PopulationState, RngState,
-    SelectedShip, ShipState, TaggedValue, TaskForceState, TaskForceTarget, TileDevelopment,
-    TileState, TileTransportLinks, TradePolicyScore, TurnStartEventState, TurnState, TurnSummary,
-    WarTransition, WorldState,
+    ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitState,
+    DevelopmentLevel, DiplomacyGrant, DiplomacyPolicy, GameState, GreatPowerState, LandSale,
+    MajorNation, MajorNationController, MilitaryOrder, MilitaryOrderCode, MilitaryUnitState,
+    MinorNation, MissionData, MissionState, NationCommonState, NationPendingWork, Nations,
+    NavyMissionState, PendingActionState, PendingActionStatus, PendingWorkState, PhaseCode,
+    PopulationAccumulator, PopulationState, RegionId, RiverSegment, RngState, ScenarioMapId,
+    SeaZoneId, SelectedShip, ShipState, Stockpile, StrategicMap, StrategicMapSizeError,
+    StrikePhase, TaggedValue, TaskForceState, TaskForceTarget, TerrainKind, TileAction,
+    TileDevelopment, TileFlags, TileState, TileTransportLinks, TradePolicyScore, TurnStartEvent,
+    TurnState, TurnSummary, UnitIdAllocator, WarTransition,
 };
 pub use tables::{
-    INDUSTRY_ACTION_SLOT_COUNT, IndustryActionTable, MAJOR_NATION_COUNT, MINOR_NATION_COUNT,
-    MajorNationTable, MinorNationTable, NATION_COUNT, NationCapacities, NationTable,
-    PENDING_ACTION_COUNT, PendingActionKind, PendingActionTable, ProductionTable,
+    MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
+    NationCapacities, NationTable, PENDING_ACTION_COUNT, PendingActionKind, PendingActionTable,
+    ProductionTable, ShipType, ShipTypeTable,
 };
 pub use trade::RuleError;
-pub use turn_flow::TurnFlowError;
-pub use units::{
-    CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable, RecruitKind,
-};
+pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

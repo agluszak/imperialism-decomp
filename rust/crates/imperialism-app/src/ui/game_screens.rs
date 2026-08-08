@@ -3,9 +3,12 @@ use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, spawn
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{FourCc, ScopedViewId, fourcc};
+use imperialism_formats::{FourCc, ScopedViewId, TRADE, fourcc};
 
-const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
+pub(crate) const TOOLBAR_PARENT_TAGS: &[FourCc] = &[fourcc!("tool"), fourcc!("topB")];
+/// Retail leave/end controls hang under `tool` or the diplomacy `too3` strip.
+pub(crate) const LEAVE_PARENT_TAGS: &[FourCc] =
+    &[fourcc!("tool"), fourcc!("too2"), fourcc!("too3")];
 
 pub(crate) fn strategic_map_view_id() -> ScopedViewId {
     ScopedViewId {
@@ -101,14 +104,11 @@ fn enter_game_screen(
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(view) = catalog.view(&view_id).cloned() else {
-        return;
-    };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), &view, &mut assets);
-    if !bind_game_screen_nav(&mut commands, &catalog, &spawned) {
-        commands.entity(spawned.root).despawn();
-        return;
-    }
+    let view = catalog
+        .view(&view_id)
+        .expect("validated game-screen catalog view");
+    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
+    bind_game_screen_nav(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
@@ -126,14 +126,14 @@ fn spawn_flag_view_chrome(
     current: AppState,
 ) {
     let view_id = flag_view_id();
-    let Some(view) = catalog.view(&view_id).cloned() else {
-        return;
-    };
-    let spawned = spawn_view(commands, catalog.catalog(), &view, assets);
+    let view = catalog
+        .view(&view_id)
+        .expect("validated flag-view catalog view");
+    let spawned = spawn_view(commands, catalog.catalog(), view, assets);
     // `end ` is End Turn and `quer` is the help/query hotspot; neither is
     // implemented yet, so keep both inert rather than leave unbound no-ops.
-    disable_control(commands, catalog, &spawned, fourcc!("end "));
-    disable_control(commands, catalog, &spawned, fourcc!("quer"));
+    disable_control(commands, &spawned, fourcc!("end "));
+    disable_control(commands, &spawned, fourcc!("quer"));
     commands
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
@@ -143,25 +143,15 @@ fn bind_game_screen_nav(
     commands: &mut Commands,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
-) -> bool {
-    let Some(trade) = control_under_parents(catalog, spawned, fourcc!("trad"), TOOLBAR_PARENT_TAGS)
-    else {
-        return false;
-    };
-    let Some(transport) =
-        control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
-    else {
-        return false;
-    };
-    let Some(city) = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
-    else {
-        return false;
-    };
-    let Some(diplomacy) =
-        control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
-    else {
-        return false;
-    };
+) {
+    let trade = control_under_parents(catalog, spawned, TRADE, TOOLBAR_PARENT_TAGS)
+        .expect("validated game-screen trade binding");
+    let transport = control_under_parents(catalog, spawned, fourcc!("tran"), TOOLBAR_PARENT_TAGS)
+        .expect("validated game-screen transport binding");
+    let city = control_under_parents(catalog, spawned, fourcc!("city"), TOOLBAR_PARENT_TAGS)
+        .expect("validated game-screen city binding");
+    let diplomacy = control_under_parents(catalog, spawned, fourcc!("dipl"), TOOLBAR_PARENT_TAGS)
+        .expect("validated game-screen diplomacy binding");
     for (entity, action) in [
         (trade, GameScreenNavAction::Trade),
         (transport, GameScreenNavAction::Transport),
@@ -173,19 +163,13 @@ fn bind_game_screen_nav(
     // Retail's `end ` hotspot (`kControlTagEnd`) always dispatches End Turn on every
     // screen that hosts it; it is never a leave-to-map control. End Turn is not
     // implemented yet, so keep it disabled rather than bind a fake leave-to-map action.
-    disable_control(commands, catalog, spawned, fourcc!("end "));
-    true
+    disable_control(commands, spawned, fourcc!("end "));
 }
 
 /// Marks a catalog-tagged control [`InteractionDisabled`] because its retail behavior
 /// is not implemented yet.
-fn disable_control(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
-    tag: FourCc,
-) {
-    if let Ok(entity) = spawned.require_unique(catalog, tag) {
+fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
+    if let Some(entity) = spawned.tag(tag) {
         commands.entity(entity).insert(InteractionDisabled);
     }
 }
@@ -267,14 +251,11 @@ mod tests {
         let Some(view_id) = view_id_for_state(current) else {
             return;
         };
-        let Some(view) = catalog.view(&view_id).cloned() else {
-            return;
-        };
-        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, &view);
-        assert!(
-            bind_game_screen_nav(&mut commands, &catalog, &spawned),
-            "toolbar nav controls"
-        );
+        let view = catalog
+            .view(&view_id)
+            .expect("validated game-screen catalog view");
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        bind_game_screen_nav(&mut commands, &catalog, &spawned);
         commands.insert_resource(TestSpawned(spawned.clone()));
         commands
             .entity(spawned.root)
@@ -282,16 +263,16 @@ mod tests {
 
         if current == AppState::StrategicMap {
             let flag_view_id = flag_view_id();
-            let Some(flag_view) = catalog.view(&flag_view_id).cloned() else {
-                return;
-            };
+            let flag_view = catalog
+                .view(&flag_view_id)
+                .expect("validated flag-view catalog view");
             let flag_spawned = spawn_view_nodes(
                 &mut commands,
                 catalog.catalog().logical_resolution,
-                &flag_view,
+                flag_view,
             );
-            disable_control(&mut commands, &catalog, &flag_spawned, fourcc!("end "));
-            disable_control(&mut commands, &catalog, &flag_spawned, fourcc!("quer"));
+            disable_control(&mut commands, &flag_spawned, fourcc!("end "));
+            disable_control(&mut commands, &flag_spawned, fourcc!("quer"));
             commands.insert_resource(TestFlagSpawned(flag_spawned.clone()));
             commands
                 .entity(flag_spawned.root)
@@ -302,7 +283,7 @@ mod tests {
     fn app_at(state: AppState) -> App {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog()))
+            .insert_resource(UiCatalogResource::new(catalog()).unwrap())
             .add_plugins(bevy::state::app::StatesPlugin)
             .add_plugins(UiCatalogPlugin)
             .init_state::<AppState>();

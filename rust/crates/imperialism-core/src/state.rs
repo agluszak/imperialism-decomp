@@ -1,17 +1,19 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
-    HexDirection, IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId,
-    MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable,
+    HexDirection, LaborPool, MajorNationTable, MapTopology, MilitaryUnitId, MilitaryUnitKind,
+    MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable,
     PendingActionTable, ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg,
-    ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    STRATEGIC_TILE_COUNT, ShipId, ShipType, ShipTypeTable, TaskForceId, TileId, TileOwnerTag,
+    TradeMarketState,
 };
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
+use std::ops::{Index, IndexMut};
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct GameState {
     pub turn: TurnState,
-    pub persistent_unit_id_counter: i32,
-    pub world: WorldState,
+    pub unit_ids: UnitIdAllocator,
+    pub world: StrategicMap,
     pub rng: RngState,
     pub market: TradeMarketState,
     pub nations: Nations,
@@ -23,45 +25,92 @@ pub struct GameState {
     pub pending: PendingWorkState,
 }
 
-/// Every nation slot, split into the two retail populations that carry
-/// different state. A present major always has both common and major-nation
-/// state and may hold a city; a present minor carries only common state.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct UnitIdAllocator(i32);
+impl UnitIdAllocator {
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn current(self) -> i32 {
+        self.0
+    }
+    pub fn next_civilian(&mut self) -> CivilianUnitId {
+        self.0 += 1;
+        CivilianUnitId::new(self.0)
+    }
+    pub fn next_military(&mut self) -> MilitaryUnitId {
+        self.0 += 1;
+        MilitaryUnitId::new(self.0)
+    }
+}
+
+/// Every nation slot, split into the two populations that carry different
+/// domain state. Every major slot is a complete major nation; minor slots may
+/// still be absent until their save projection is normalized separately.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
-    pub majors: MajorNationTable<Option<MajorNation>>,
-    pub minors: MinorNationTable<Option<MinorNation>>,
+    pub(crate) majors: MajorNationTable<MajorNation>,
+    pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
 impl Nations {
-    pub fn major(&self, nation: crate::MajorNationId) -> Option<&MajorNation> {
-        self.majors[nation].as_ref()
+    pub const fn new(
+        majors: MajorNationTable<MajorNation>,
+        minors: MinorNationTable<Option<MinorNation>>,
+    ) -> Self {
+        Self { majors, minors }
     }
 
-    pub fn major_mut(&mut self, nation: crate::MajorNationId) -> Option<&mut MajorNation> {
-        self.majors[nation].as_mut()
+    pub fn major(&self, nation: crate::MajorNationId) -> &MajorNation {
+        &self.majors[nation]
     }
 
-    pub fn city(&self, nation: crate::MajorNationId) -> Option<&CityState> {
-        self.majors[nation]
-            .as_ref()
-            .and_then(|major| major.city.as_ref())
+    pub fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
+        &mut self.majors[nation]
     }
 
-    pub fn city_mut(&mut self, nation: crate::MajorNationId) -> Option<&mut CityState> {
-        self.majors[nation]
-            .as_mut()
-            .and_then(|major| major.city.as_mut())
+    pub fn city(&self, nation: crate::MajorNationId) -> &CityState {
+        &self.majors[nation].city
+    }
+
+    pub fn city_mut(&mut self, nation: crate::MajorNationId) -> &mut CityState {
+        &mut self.majors[nation].city
+    }
+
+    pub fn major_count(&self) -> usize {
+        self.majors.iter().count()
+    }
+
+    pub fn majors(&self) -> impl ExactSizeIterator<Item = &MajorNation> {
+        self.majors.iter()
+    }
+
+    pub fn minor_count(&self) -> usize {
+        self.minors.iter().flatten().count()
     }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNation {
-    pub common: NationCommonState,
-    pub state: MajorNationState,
-    pub city: Option<CityState>,
+    pub(crate) common: NationCommonState,
+    pub(crate) economy: GreatPowerState,
+    pub(crate) city: CityState,
 }
 
 impl MajorNation {
+    pub const fn from_parts(
+        common: NationCommonState,
+        economy: GreatPowerState,
+        city: CityState,
+    ) -> Self {
+        Self {
+            common,
+            economy,
+            city,
+        }
+    }
+
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
     /// `city`. Homes are unset until capital selection places them.
@@ -72,9 +121,21 @@ impl MajorNation {
                 home_tile: None,
                 trade_policy_by_nation: NationTable::default(),
             },
-            state: MajorNationState::for_random_start(human),
-            city: Some(city),
+            economy: GreatPowerState::for_random_start(human),
+            city,
         }
+    }
+
+    pub const fn common(&self) -> &NationCommonState {
+        &self.common
+    }
+
+    pub const fn economy(&self) -> &GreatPowerState {
+        &self.economy
+    }
+
+    pub const fn city(&self) -> &CityState {
+        &self.city
     }
 }
 
@@ -85,38 +146,291 @@ pub struct MinorNation {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TurnState {
-    pub scenario_map_index_plus_one: i32,
+    pub scenario_map: Option<ScenarioMapId>,
     pub economic_turn: i32,
-    pub phase_code: i32,
+    pub phase: PhaseCode,
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct WorldState {
-    pub wraps_horizontally: bool,
-    pub tiles: Vec<TileState>,
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct ScenarioMapId(u16);
+impl ScenarioMapId {
+    pub const fn new(index: u16) -> Self {
+        Self(index)
+    }
+
+    pub const fn index(self) -> u16 {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct PhaseCode(i32);
+impl PhaseCode {
+    pub const CAPITAL_SELECTION: Self = Self(2);
+    pub const PRE_MAP: Self = Self(3);
+    pub const HOME_PLACEMENT: Self = Self(4);
+    pub const STRATEGIC_MAP: Self = Self(5);
+    pub const TURN: Self = Self(6);
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn retail(self) -> i32 {
+        self.0
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+pub struct StrategicMap {
+    topology: MapTopology,
+    tiles: Box<[TileState]>,
+}
+
+impl<'de> Deserialize<'de> for StrategicMap {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedStrategicMap {
+            topology: MapTopology,
+            tiles: Box<[TileState]>,
+        }
+
+        let map = SerializedStrategicMap::deserialize(deserializer)?;
+        Self::new(map.topology, map.tiles).map_err(serde::de::Error::custom)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
+#[error("strategic map has {actual} tiles; expected {STRATEGIC_TILE_COUNT}")]
+pub struct StrategicMapSizeError {
+    pub actual: usize,
+}
+
+impl StrategicMap {
+    pub fn new(
+        topology: MapTopology,
+        tiles: impl Into<Box<[TileState]>>,
+    ) -> Result<Self, StrategicMapSizeError> {
+        let tiles = tiles.into();
+        if tiles.len() != STRATEGIC_TILE_COUNT {
+            return Err(StrategicMapSizeError {
+                actual: tiles.len(),
+            });
+        }
+        Ok(Self { topology, tiles })
+    }
+
+    /// Accepts tiles derived one-for-one from an already validated generated map.
+    pub(crate) fn from_generated_tiles(topology: MapTopology, tiles: Box<[TileState]>) -> Self {
+        debug_assert_eq!(tiles.len(), STRATEGIC_TILE_COUNT);
+        Self { topology, tiles }
+    }
+
+    pub const fn geometry(&self) -> crate::MapGeometry {
+        crate::MapGeometry::new(self.topology)
+    }
+
+    pub const fn topology(&self) -> MapTopology {
+        self.topology
+    }
+
+    pub const fn len(&self) -> usize {
+        STRATEGIC_TILE_COUNT
+    }
+
+    pub const fn is_empty(&self) -> bool {
+        false
+    }
+
+    pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
+        self.tiles.iter()
+    }
+}
+
+impl Index<TileId> for StrategicMap {
+    type Output = TileState;
+
+    fn index(&self, index: TileId) -> &Self::Output {
+        &self.tiles[usize::from(index.get())]
+    }
+}
+
+impl IndexMut<TileId> for StrategicMap {
+    fn index_mut(&mut self, index: TileId) -> &mut Self::Output {
+        &mut self.tiles[usize::from(index.get())]
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TileState {
-    pub terrain_kind: i8,
+    pub terrain: TerrainKind,
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
     pub province: Option<ProvinceId>,
     pub development: TileDevelopment,
-    pub edge_resources: [Option<i8>; 2],
+    pub edge_resources: [Option<crate::ResourceKind>; 2],
     /// Completed directional transport links from this tile.
     pub transport_links: TileTransportLinks,
     /// Directional rail sections that have been ordered but not yet completed.
     pub pending_rail_links: TileTransportLinks,
-    pub action_state: i16,
-    pub active_flags: u16,
-    /// `TTerrainStateRecord::regionSubtypeTag05`. Unassigned is `-1`.
-    pub region_marker: i8,
-    /// `TTerrainStateRecord::riverSpriteCode`. Zero means no river.
-    pub river_sprite_code: u8,
+    pub action: Option<TileAction>,
+    pub flags: TileFlags,
+    pub region: Option<RegionId>,
+    pub river: Option<RiverSegment>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[repr(u8)]
+#[serde(rename_all = "snake_case")]
+pub enum TerrainKind {
+    Plains,
+    Forest,
+    Hills,
+    Mountain,
+    Swamp,
+    Water,
+    Desert,
+    Farmland,
+}
+
+impl TerrainKind {
+    pub const fn from_retail(value: i8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Plains),
+            1 => Some(Self::Forest),
+            2 => Some(Self::Hills),
+            3 => Some(Self::Mountain),
+            4 => Some(Self::Swamp),
+            5 => Some(Self::Water),
+            6 => Some(Self::Desert),
+            7 => Some(Self::Farmland),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i8 {
+        self as i8
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct TileAction(i16);
+
+impl<'de> Deserialize<'de> for TileAction {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = i16::deserialize(deserializer)?;
+        Self::try_from_retail(value)
+            .ok_or_else(|| serde::de::Error::custom("tile action -1 is represented by None"))
+    }
+}
+
+impl TileAction {
+    pub const fn try_from_retail(value: i16) -> Option<Self> {
+        if value == -1 { None } else { Some(Self(value)) }
+    }
+
+    pub const fn retail(self) -> i16 {
+        self.0
+    }
+}
+
+bitflags::bitflags! {
+    #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+    #[serde(transparent)]
+    pub struct TileFlags: u16 {
+        /// Set by `ResetTileToBaseTransportFlag`; consumers use this as the base-transport test.
+        const BASE_TRANSPORT = 1 << 0;
+        const RECRUITMENT_RESERVED = 1 << 1;
+        /// Set by `SetProvinceCapitalTileFlagBit08`, which also advances the province fort level.
+        const PROVINCE_CAPITAL_FORTIFICATION = 1 << 3;
+        /// The city marker bit tested independently by map and unit consumers.
+        const CITY_MARKER = 1 << 5;
+
+        /// Complete state written for a fallback or re-anchored province capital.
+        const PROVINCE_ANCHOR_STATE = 0x22;
+        /// Complete state written for a minor nation's home tile.
+        const MINOR_HOME_STATE = 0x21;
+        /// Complete state written by `PlaceCity`.
+        const PLACED_CITY_STATE = 0x37;
+    }
+}
+
+impl TileFlags {
+    pub fn has_base_transport(self) -> bool {
+        self.contains(Self::BASE_TRANSPORT)
+    }
+
+    pub fn is_city(self) -> bool {
+        self.contains(Self::CITY_MARKER)
+    }
+
+    pub fn clear_city_marker(&mut self) {
+        self.remove(Self::CITY_MARKER);
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RegionId(u8);
+
+impl RegionId {
+    pub const fn new(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RiverSegment {
+    sprite: u8,
+    flow: Option<HexDirection>,
+}
+
+impl RiverSegment {
+    pub(crate) const fn new(sprite: u8, flow: Option<HexDirection>) -> Self {
+        Self { sprite, flow }
+    }
+
+    #[cfg(test)]
+    pub(crate) const fn sprite(self) -> u8 {
+        self.sprite
+    }
+
+    pub const fn flow_direction(self) -> Option<HexDirection> {
+        self.flow
+    }
+}
+
+impl Default for TileState {
+    fn default() -> Self {
+        Self {
+            terrain: TerrainKind::Plains,
+            owner_nation: None,
+            former_owner_nation: None,
+            province: None,
+            development: TileDevelopment::default(),
+            edge_resources: [None; 2],
+            transport_links: TileTransportLinks::default(),
+            pending_rail_links: TileTransportLinks::default(),
+            action: None,
+            flags: TileFlags::empty(),
+            region: None,
+            river: None,
+        }
+    }
 }
 
 bitflags::bitflags! {
@@ -273,8 +587,8 @@ pub enum DiplomacyPolicy {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct MajorNationState {
-    pub diplomacy_eligible: bool,
+pub struct GreatPowerState {
+    pub controller: MajorNationController,
     pub capacities: NationCapacities,
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
@@ -295,8 +609,7 @@ pub struct MajorNationState {
     pub candidate_nation_flags: NationTable<u8>,
     pub scenario_initialized: bool,
     pub turn_finished: bool,
-    pub pending_action_status: PendingActionTable<i8>,
-    pub pending_action_payload_by_action: PendingActionTable<i16>,
+    pub pending_actions: PendingActionTable<PendingActionState>,
     pub diplomacy_budget_base: i32,
     pub escalation_counter: i16,
     pub pending_commitment_cost: i32,
@@ -306,13 +619,17 @@ pub struct MajorNationState {
     pub military_expenses: i32,
 }
 
-impl MajorNationState {
+impl GreatPowerState {
     /// The post-`IGreatPower`/`IAutoGreatPower` construction state a major nation
     /// carries at the random-game start boundary. Only the human is diplomacy
     /// eligible before capital selection.
     pub fn for_random_start(human: bool) -> Self {
         Self {
-            diplomacy_eligible: human,
+            controller: if human {
+                MajorNationController::Human
+            } else {
+                MajorNationController::Computer
+            },
             capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -333,8 +650,7 @@ impl MajorNationState {
             candidate_nation_flags: NationTable::default(),
             scenario_initialized: false,
             turn_finished: true,
-            pending_action_status: PendingActionTable::default(),
-            pending_action_payload_by_action: PendingActionTable::default(),
+            pending_actions: PendingActionTable::default(),
             diplomacy_budget_base: 20_000,
             escalation_counter: 0,
             pending_commitment_cost: 0,
@@ -343,6 +659,101 @@ impl MajorNationState {
             colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
         }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub enum MajorNationController {
+    Human,
+    Computer,
+}
+impl MajorNationController {
+    pub const fn is_human(self) -> bool {
+        matches!(self, Self::Human)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+pub struct PendingActionState {
+    status: PendingActionStatus,
+    payload: Option<i16>,
+}
+
+impl<'de> Deserialize<'de> for PendingActionState {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedPendingActionState {
+            status: PendingActionStatus,
+            payload: Option<i16>,
+        }
+
+        let state = SerializedPendingActionState::deserialize(deserializer)?;
+        if state.status == PendingActionStatus::None && state.payload.is_some() {
+            return Err(serde::de::Error::custom(
+                "an inactive pending action cannot have a payload",
+            ));
+        }
+        Ok(Self {
+            status: state.status,
+            payload: state.payload,
+        })
+    }
+}
+
+impl PendingActionState {
+    pub const fn new(status: PendingActionStatus, payload: Option<i16>) -> Self {
+        assert!(
+            !matches!(status, PendingActionStatus::None) || payload.is_none(),
+            "an inactive pending action cannot have a payload"
+        );
+        Self { status, payload }
+    }
+    pub const fn status_only(status: PendingActionStatus) -> Self {
+        Self::new(status, None)
+    }
+    pub const fn queued(payload: i16) -> Self {
+        Self::new(PendingActionStatus::Queued, Some(payload))
+    }
+    pub const fn is_pending(self) -> bool {
+        !matches!(self.status, PendingActionStatus::None)
+    }
+    pub fn has_reached(self, status: PendingActionStatus) -> bool {
+        self.status.has_reached(status)
+    }
+    pub const fn status(self) -> PendingActionStatus {
+        self.status
+    }
+    pub const fn payload(self) -> Option<i16> {
+        self.payload
+    }
+    pub fn queue(&mut self, payload: i16) {
+        self.status = PendingActionStatus::Queued;
+        self.payload = Some(payload);
+    }
+    pub const fn level(self) -> Option<i16> {
+        match self.status {
+            PendingActionStatus::Queued => None,
+            PendingActionStatus::None | PendingActionStatus::Level3 => Some(0),
+            PendingActionStatus::Level4 => Some(1),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PendingActionStatus {
+    #[default]
+    None,
+    Queued,
+    Level3,
+    Level4,
+}
+impl PendingActionStatus {
+    pub fn has_reached(self, other: Self) -> bool {
+        self >= other
     }
 }
 
@@ -357,14 +768,14 @@ pub struct CityState {
     pub military_recruit_count_by_kind: MilitaryUnitTable<i16>,
     /// Cumulative civilian recruit deltas by [`CivilianUnitKind`].
     pub civilian_recruit_count_by_kind: CivilianUnitTable<i16>,
-    pub order_count_by_type: IndustryActionTable<i16>,
+    pub ship_order_count_by_type: ShipTypeTable<i16>,
     pub rolling_item_production_score: i32,
     pub low_production: bool,
     pub low_stock: bool,
     pub reserved_by_type: ResourceTable<i16>,
     pub home_town_tile: Option<TileId>,
     pub power_available: i16,
-    pub stock_by_type: ResourceTable<i16>,
+    pub stockpile: Stockpile,
     pub production_orders: ProductionTable<i16>,
     pub production_accum: ProductionTable<i16>,
     pub production_flags: ProductionTable<u8>,
@@ -377,11 +788,11 @@ pub struct CityState {
 }
 
 impl CityState {
-    /// Builds the scenario start city. `stock_by_type` and `production` come from
+    /// Builds the scenario start city. `stockpile` and `production` come from
     /// the difficulty presets, `labor` is the `SetPopulation` triple, and only
     /// the human capital gets the Frog City marker at tile 0.
     pub fn for_random_start(
-        stock_by_type: ResourceTable<i16>,
+        stockpile: ResourceTable<i16>,
         production: ProductionTable<i16>,
         labor: LaborPool,
         human: bool,
@@ -394,17 +805,17 @@ impl CityState {
             phase_counter: 0,
             military_recruit_count_by_kind: MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: CivilianUnitTable::default(),
-            order_count_by_type: IndustryActionTable::default(),
+            ship_order_count_by_type: ShipTypeTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: ResourceTable::default(),
+            home_town_tile: human.then(|| TileId::new(0)),
             // Human Frog City marker sits at tile 0 without PlaceCity. AI
             // capitals are placed later once tile post-passes and frog-city
             // scoring land.
-            home_town_tile: human.then(|| TileId::new(0)),
             power_available: 0,
-            stock_by_type,
+            stockpile: Stockpile::from_table(stockpile),
             production_orders: production.clone(),
             production_accum: production,
             production_flags: ProductionTable::default(),
@@ -418,76 +829,468 @@ impl CityState {
     }
 }
 
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct Stockpile(ResourceTable<i16>);
+
+impl<'de> Deserialize<'de> for Stockpile {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        Ok(Self::from_table(ResourceTable::deserialize(deserializer)?))
+    }
+}
+
+impl Stockpile {
+    pub fn from_table(mut amounts: ResourceTable<i16>) -> Self {
+        amounts
+            .values_mut()
+            .for_each(|amount| *amount = (*amount).max(0));
+        Self(amounts)
+    }
+    pub fn amount(&self, resource: crate::ResourceKind) -> i16 {
+        self.0[resource]
+    }
+    pub fn credit(&mut self, resource: crate::ResourceKind, amount: i16) {
+        self.0[resource] = self.0[resource].saturating_add(amount).max(0);
+    }
+    pub fn debit_clamped(&mut self, resource: crate::ResourceKind, amount: i16) {
+        self.0[resource] = self.0[resource].saturating_sub(amount).max(0);
+    }
+    pub fn set_nonnegative(&mut self, resource: crate::ResourceKind, amount: i16) {
+        self.0[resource] = amount.max(0);
+    }
+    pub fn as_table(&self) -> &ResourceTable<i16> {
+        &self.0
+    }
+    pub fn iter(&self) -> impl Iterator<Item = (crate::ResourceKind, &i16)> {
+        self.0.iter()
+    }
+}
+
+impl std::ops::Index<crate::ResourceKind> for Stockpile {
+    type Output = i16;
+    fn index(&self, resource: crate::ResourceKind) -> &Self::Output {
+        &self.0[resource]
+    }
+}
+
+#[cfg(test)]
+impl std::ops::IndexMut<crate::ResourceKind> for Stockpile {
+    fn index_mut(&mut self, resource: crate::ResourceKind) -> &mut Self::Output {
+        &mut self.0[resource]
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PopulationState {
-    pub count: i16,
-    pub count_float_bits: u32,
-    pub strength: i16,
-    pub extra: i16,
-    pub phase_value: i16,
-    pub baseline_labor: LaborPool,
-    pub production_labor: LaborPool,
-    pub pending_labor_delta: LaborPool,
-    pub predicted_need_by_resource: ResourceTable<i16>,
+    pub(crate) count: i16,
+    pub(crate) accumulator: PopulationAccumulator,
+    pub(crate) strength: i16,
+    pub(crate) extra: i16,
+    pub(crate) strike_phase: StrikePhase,
+    pub(crate) baseline_labor: LaborPool,
+    pub(crate) production_labor: LaborPool,
+    pub(crate) pending_labor_delta: LaborPool,
+    pub(crate) predicted_need_by_resource: ResourceTable<i16>,
 }
 
 impl PopulationState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        count: i16,
+        accumulator: PopulationAccumulator,
+        strength: i16,
+        extra: i16,
+        strike_phase: StrikePhase,
+        baseline_labor: LaborPool,
+        production_labor: LaborPool,
+        pending_labor_delta: LaborPool,
+        predicted_need_by_resource: ResourceTable<i16>,
+    ) -> Self {
+        Self {
+            count,
+            accumulator,
+            strength,
+            extra,
+            strike_phase,
+            baseline_labor,
+            production_labor,
+            pending_labor_delta,
+            predicted_need_by_resource,
+        }
+    }
+
     /// Builds a fresh population whose baseline and production bands both equal
     /// `labor`, with no pending reassignment. Mirrors the retail
     /// `SetPopulation`-time state used when a city first appears.
     pub fn from_labor(labor: LaborPool) -> Self {
         let count = labor.low + labor.medium + labor.high;
-        Self {
+        Self::new(
             count,
-            count_float_bits: f32::from(count).to_bits(),
-            strength: labor.strength(),
-            extra: 0,
-            phase_value: 0,
-            baseline_labor: labor,
-            production_labor: labor,
-            pending_labor_delta: LaborPool::default(),
-            predicted_need_by_resource: ResourceTable::default(),
+            PopulationAccumulator::from_count(count),
+            labor.strength(),
+            0,
+            StrikePhase::default(),
+            labor,
+            labor,
+            LaborPool::default(),
+            ResourceTable::default(),
+        )
+    }
+
+    pub const fn count(&self) -> i16 {
+        self.count
+    }
+
+    pub const fn accumulator(&self) -> PopulationAccumulator {
+        self.accumulator
+    }
+
+    pub const fn strength(&self) -> i16 {
+        self.strength
+    }
+
+    pub const fn baseline_labor(&self) -> LaborPool {
+        self.baseline_labor
+    }
+}
+
+/// A finite semantic population total.
+///
+/// The retail save stores its IEEE-754 bits, but core state exposes the value
+/// itself. The retained bits preserve exact arithmetic between rule steps.
+#[derive(Clone, Copy, Debug, Default, Eq, PartialEq)]
+pub struct PopulationAccumulator(u32);
+
+impl PopulationAccumulator {
+    pub fn new(value: f32) -> Option<Self> {
+        value.is_finite().then_some(Self(value.to_bits()))
+    }
+
+    #[cfg(test)]
+    pub(crate) fn from_bits(bits: u32) -> Self {
+        Self::new(f32::from_bits(bits)).expect("population accumulator stays finite")
+    }
+
+    pub fn from_count(count: i16) -> Self {
+        Self(f32::from(count).to_bits())
+    }
+
+    pub fn get(self) -> f32 {
+        f32::from_bits(self.0)
+    }
+    pub fn add(&mut self, amount: f32) {
+        let total = self.get() + amount;
+        assert!(
+            total.is_finite(),
+            "population accumulator must remain finite"
+        );
+        self.0 = total.to_bits();
+    }
+    pub fn remove(&mut self, amount: i16) {
+        self.0 = (self.get() - f32::from(amount)).to_bits();
+    }
+}
+
+impl Serialize for PopulationAccumulator {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        self.get().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for PopulationAccumulator {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let value = f32::deserialize(deserializer)?;
+        Self::new(value)
+            .ok_or_else(|| serde::de::Error::custom("population accumulator must be finite"))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[repr(u8)]
+pub enum StrikePhase {
+    #[default]
+    Clothing,
+    Furniture,
+    Hardware,
+    Arms,
+}
+
+impl StrikePhase {
+    pub const fn from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::Clothing),
+            1 => Some(Self::Furniture),
+            2 => Some(Self::Hardware),
+            3 => Some(Self::Arms),
+            _ => None,
+        }
+    }
+    pub const fn retail(self) -> i16 {
+        self as i16
+    }
+    pub const fn index(self) -> usize {
+        self as usize
+    }
+    pub const fn next(self) -> Self {
+        match self {
+            Self::Clothing => Self::Furniture,
+            Self::Furniture => Self::Hardware,
+            Self::Hardware => Self::Arms,
+            Self::Arms => Self::Clothing,
         }
     }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MilitaryUnitState {
-    pub id: MilitaryUnitId,
-    pub nation: NationId,
-    pub unit_type: MilitaryUnitKind,
-    pub stationed_province: i16,
-    pub order: i32,
-    pub order_target: i16,
-    pub owner_nation: NationId,
-    pub roster_id: i16,
-    pub registered: bool,
-    pub order_target_tiles: [i16; 3],
-    pub order_target_mirrors: [i16; 3],
-    pub name: String,
-    pub strength: i16,
-    pub era: i16,
-    pub experience: i16,
-    pub battle_flags: i16,
+    pub(crate) id: MilitaryUnitId,
+    pub(crate) nation: NationId,
+    pub(crate) unit_type: MilitaryUnitKind,
+    pub(crate) stationed_province: Option<ProvinceId>,
+    pub(crate) order: MilitaryOrder,
+    pub(crate) owner_nation: NationId,
+    pub(crate) roster_id: i16,
+    pub(crate) registered: bool,
+    pub(crate) name: String,
+    pub(crate) strength: i16,
+    pub(crate) era: i16,
+    pub(crate) experience: i16,
+    pub(crate) battle_flags: i16,
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+impl MilitaryUnitState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        id: MilitaryUnitId,
+        nation: NationId,
+        unit_type: MilitaryUnitKind,
+        stationed_province: Option<ProvinceId>,
+        order: MilitaryOrder,
+        owner_nation: NationId,
+        roster_id: i16,
+        registered: bool,
+        name: String,
+        strength: i16,
+        era: i16,
+        experience: i16,
+        battle_flags: i16,
+    ) -> Self {
+        Self {
+            id,
+            nation,
+            unit_type,
+            stationed_province,
+            order,
+            owner_nation,
+            roster_id,
+            registered,
+            name,
+            strength,
+            era,
+            experience,
+            battle_flags,
+        }
+    }
+
+    pub const fn id(&self) -> MilitaryUnitId {
+        self.id
+    }
+
+    pub const fn nation(&self) -> NationId {
+        self.nation
+    }
+
+    pub const fn unit_type(&self) -> MilitaryUnitKind {
+        self.unit_type
+    }
+
+    pub const fn order(&self) -> &MilitaryOrder {
+        &self.order
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum MilitaryOrder {
+    Idle {
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    },
+    Retail {
+        code: MilitaryOrderCode,
+        target: Option<ProvinceId>,
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    },
+}
+
+impl MilitaryOrder {
+    pub const fn idle(
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    ) -> Self {
+        Self::Idle {
+            targets,
+            target_mirrors,
+        }
+    }
+
+    pub const fn retail(
+        code: MilitaryOrderCode,
+        target: Option<ProvinceId>,
+        targets: [Option<ProvinceId>; 3],
+        target_mirrors: [Option<ProvinceId>; 3],
+    ) -> Self {
+        Self::Retail {
+            code,
+            target,
+            targets,
+            target_mirrors,
+        }
+    }
+
+    pub const fn targets(&self) -> &[Option<ProvinceId>; 3] {
+        match self {
+            Self::Idle { targets, .. } | Self::Retail { targets, .. } => targets,
+        }
+    }
+
+    pub const fn target_mirrors(&self) -> &[Option<ProvinceId>; 3] {
+        match self {
+            Self::Idle { target_mirrors, .. } | Self::Retail { target_mirrors, .. } => {
+                target_mirrors
+            }
+        }
+    }
+}
+
+/// An unrecovered retail military order discriminator retained only inside an
+/// otherwise data-carrying order.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct MilitaryOrderCode(i32);
+impl MilitaryOrderCode {
+    pub const fn from_retail(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn retail(self) -> i32 {
+        self.0
+    }
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
 pub struct CivilianUnitState {
-    pub id: CivilianUnitId,
-    pub nation: NationId,
-    pub unit_type: CivilianUnitKind,
-    pub tile: Option<TileId>,
-    pub order: CivilianWorkOrder,
-    pub order_target: Option<TileId>,
-    pub owner_nation: NationId,
-    pub roster_id: i16,
-    pub registered: bool,
-    pub remaining_turns: i16,
+    pub(crate) id: CivilianUnitId,
+    pub(crate) nation: NationId,
+    pub(crate) unit_type: CivilianUnitKind,
+    pub(crate) location: CivilianLocation,
+    pub(crate) order: CivilianWorkOrder,
+    pub(crate) owner_nation: NationId,
+    pub(crate) roster_id: i16,
+    pub(crate) registered: bool,
+}
+
+impl<'de> Deserialize<'de> for CivilianUnitState {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedCivilianUnit {
+            id: CivilianUnitId,
+            nation: NationId,
+            unit_type: CivilianUnitKind,
+            location: CivilianLocation,
+            order: CivilianWorkOrder,
+            owner_nation: NationId,
+            roster_id: i16,
+            registered: bool,
+        }
+
+        let unit = SerializedCivilianUnit::deserialize(deserializer)?;
+        Self::new(
+            unit.id,
+            unit.nation,
+            unit.unit_type,
+            unit.location,
+            unit.order,
+            unit.owner_nation,
+            unit.roster_id,
+            unit.registered,
+        )
+        .ok_or_else(|| serde::de::Error::custom("civilian order is inconsistent with location"))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub enum CivilianLocation {
+    OnMap(TileId),
+    OffMap,
+}
+impl CivilianLocation {
+    pub const fn tile(self) -> Option<TileId> {
+        match self {
+            Self::OnMap(tile) => Some(tile),
+            Self::OffMap => None,
+        }
+    }
+}
+
+impl CivilianUnitState {
+    #[allow(clippy::too_many_arguments)]
+    pub fn new(
+        id: CivilianUnitId,
+        nation: NationId,
+        unit_type: CivilianUnitKind,
+        location: CivilianLocation,
+        order: CivilianWorkOrder,
+        owner_nation: NationId,
+        roster_id: i16,
+        registered: bool,
+    ) -> Option<Self> {
+        let valid_location = match order {
+            CivilianWorkOrder::Idle
+            | CivilianWorkOrder::Sleep
+            | CivilianWorkOrder::Redeploy { .. } => true,
+            CivilianWorkOrder::LayRail { segment, .. } => {
+                location.tile() == Some(segment.destination())
+            }
+            _ => location.tile().is_some(),
+        };
+        valid_location.then_some(Self {
+            id,
+            nation,
+            unit_type,
+            location,
+            order,
+            owner_nation,
+            roster_id,
+            registered,
+        })
+    }
+    pub const fn id(&self) -> CivilianUnitId {
+        self.id
+    }
+    pub const fn nation(&self) -> NationId {
+        self.nation
+    }
+    pub const fn location(&self) -> CivilianLocation {
+        self.location
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ShipState {
-    pub ship_type: i16,
+    pub ship_type: ShipType,
     pub location: i16,
     pub task_force: Option<TaskForceId>,
     pub aggression: i32,
@@ -502,8 +1305,20 @@ pub struct ShipState {
 #[serde(tag = "kind", content = "target", rename_all = "snake_case")]
 pub enum TaskForceTarget {
     None,
-    Zone(i32),
-    Province(i32),
+    Zone(SeaZoneId),
+    Province(ProvinceId),
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct SeaZoneId(i32);
+impl SeaZoneId {
+    pub const fn new(value: i32) -> Self {
+        Self(value)
+    }
+    pub const fn get(self) -> i32 {
+        self.0
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -598,7 +1413,7 @@ pub struct NationPendingWork {
     pub turn_events: Vec<TaggedValue>,
     pub proposals: Vec<TaggedValue>,
     pub turn_summary: Vec<TurnSummary>,
-    pub turn_start_events: Vec<TurnStartEventState>,
+    pub turn_start_events: Vec<TurnStartEvent>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -608,22 +1423,111 @@ pub struct TaggedValue {
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TurnSummary {
-    pub turn_tick: i32,
-    pub order_kind: i16,
-    pub payload: i16,
-    pub flags: i16,
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnSummary {
+    MilitaryRecruit {
+        turn_tick: i32,
+        unit_type: MilitaryUnitKind,
+        count: i16,
+    },
+}
+impl TurnSummary {
+    pub const fn order_key(self) -> i16 {
+        match self {
+            Self::MilitaryRecruit { .. } => 3,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TurnStartEventState {
-    pub class: String,
-    pub tag: i32,
-    pub land_sale: Option<LandSale>,
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnStartEvent {
+    LandSale { tag: i32, sale: LandSale },
+    Tagged { class: String, tag: i32 },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct LandSale {
-    pub province: i16,
+    pub province: ProvinceId,
     pub nation: NationId,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        PendingActionState, PendingActionStatus, PopulationAccumulator, Stockpile, TileAction,
+        TileFlags,
+    };
+    use crate::{ResourceKind, ResourceTable};
+
+    #[test]
+    fn population_accumulator_exposes_a_finite_semantic_value() {
+        let accumulator = PopulationAccumulator::new(7.5).unwrap();
+
+        assert_eq!(accumulator.get(), 7.5);
+        assert_eq!(serde_json::to_string(&accumulator).unwrap(), "7.5");
+        assert!(PopulationAccumulator::new(f32::NAN).is_none());
+        assert!(PopulationAccumulator::new(f32::INFINITY).is_none());
+    }
+
+    #[test]
+    #[should_panic(expected = "population accumulator must remain finite")]
+    fn population_accumulator_rejects_nonfinite_additions() {
+        let mut accumulator = PopulationAccumulator::from_count(1);
+        accumulator.add(f32::INFINITY);
+    }
+
+    #[test]
+    fn stockpile_deserialization_normalizes_each_resource_once() {
+        let serialized = serde_json::to_string(&ResourceTable::from_array([-1; 23])).unwrap();
+        let stockpile: Stockpile = serde_json::from_str(&serialized).unwrap();
+
+        assert_eq!(stockpile.amount(ResourceKind::Paper), 0);
+        assert!(stockpile.iter().all(|(_, amount)| *amount >= 0));
+    }
+
+    #[test]
+    fn pending_action_deserialization_rejects_a_payload_without_an_action() {
+        let state = r#"{"status":"none","payload":1}"#;
+
+        assert!(serde_json::from_str::<PendingActionState>(state).is_err());
+    }
+
+    #[test]
+    fn pending_action_level_is_derived_from_status_not_payload() {
+        assert_eq!(
+            PendingActionState::status_only(PendingActionStatus::None).level(),
+            Some(0)
+        );
+        assert_eq!(
+            PendingActionState::new(PendingActionStatus::Queued, Some(6)).level(),
+            None
+        );
+        assert_eq!(
+            PendingActionState::new(PendingActionStatus::Level3, Some(6)).level(),
+            Some(0)
+        );
+        assert_eq!(
+            PendingActionState::new(PendingActionStatus::Level4, Some(6)).level(),
+            Some(1)
+        );
+    }
+
+    #[test]
+    fn tile_action_deserialization_does_not_restore_the_no_action_sentinel() {
+        assert!(serde_json::from_str::<TileAction>("-1").is_err());
+    }
+
+    #[test]
+    fn tile_flags_keep_city_marker_and_complete_state_writes_separate() {
+        assert!(TileFlags::PROVINCE_ANCHOR_STATE.is_city());
+        assert!(TileFlags::MINOR_HOME_STATE.is_city());
+        assert!(TileFlags::PLACED_CITY_STATE.is_city());
+        assert!(!TileFlags::PROVINCE_ANCHOR_STATE.has_base_transport());
+        assert!(TileFlags::MINOR_HOME_STATE.has_base_transport());
+
+        let mut sibling = TileFlags::PLACED_CITY_STATE | TileFlags::PROVINCE_CAPITAL_FORTIFICATION;
+        sibling.clear_city_marker();
+        assert_eq!(sibling.bits(), 0x1f);
+    }
 }

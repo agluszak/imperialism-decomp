@@ -1,4 +1,4 @@
-use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource};
+use super::catalog::{SpawnedView, UiAssetResources};
 use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
@@ -9,14 +9,16 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{MajorNationId, MapGeometry, STRATEGIC_TILE_COUNT, TileId};
-use imperialism_formats::{DibPalette, FourCc, Rgb, fourcc};
+use imperialism_core::{
+    MajorNationId, MapGeometry, MapTopology, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag,
+};
+use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
 const MAP_TAG: FourCc = fourcc!("map ");
 const COAT_TAG: FourCc = fourcc!("coat");
 const FLAG_TAG: FourCc = fourcc!("flag");
 const FIRST_MAJOR_NATION_COAT_PICTURE: i16 = 0x11c6;
-const FLAG_ATLAS_PICTURE: i16 = 8699;
+const FLAG_ATLAS_PICTURE: PictureId = PictureId::new(8699);
 const FLAG_WIDTH: usize = 32;
 const FLAG_HEIGHT: usize = 24;
 const TRANSPARENT_FLAG_RGB: Rgb = Rgb::new(0xff, 0, 0xff);
@@ -64,24 +66,23 @@ impl Plugin for MapPreviewPlugin {
 }
 
 /// Attach map/coat/flag screen meanings once when random-setup is created.
-pub(crate) fn attach_random_setup_meanings(
-    commands: &mut Commands,
-    catalog: &UiCatalogResource,
-    spawned: &SpawnedView,
-) {
+pub(crate) fn attach_random_setup_meanings(commands: &mut Commands, spawned: &SpawnedView) {
     debug_assert_eq!(spawned.view_id, random_setup_view_id());
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
-    if let Ok(entity) = spawned.require_unique(catalog, MAP_TAG) {
-        commands
-            .entity(entity)
-            .insert(RandomSetupMapPreview::default());
-    }
-    if let Ok(entity) = spawned.require_unique(catalog, COAT_TAG) {
-        commands.entity(entity).insert(RandomSetupCoat::default());
-    }
-    if let Ok(entity) = spawned.require_unique(catalog, FLAG_TAG) {
-        commands.entity(entity).insert(RandomSetupFlag::default());
-    }
+    let map = spawned
+        .tag(MAP_TAG)
+        .expect("validated random-setup map binding");
+    commands
+        .entity(map)
+        .insert(RandomSetupMapPreview::default());
+    let coat = spawned
+        .tag(COAT_TAG)
+        .expect("validated random-setup coat binding");
+    commands.entity(coat).insert(RandomSetupCoat::default());
+    let flag = spawned
+        .tag(FLAG_TAG)
+        .expect("validated random-setup flag binding");
+    commands.entity(flag).insert(RandomSetupFlag::default());
 }
 
 fn sync_random_setup_coat(
@@ -101,7 +102,10 @@ fn sync_random_setup_coat(
         let handle = match pictures.picture(picture_id) {
             Ok(handle) => handle,
             Err(error) => {
-                warn!("could not load retail setup coat picture {picture_id}: {error}");
+                warn!(
+                    "could not load retail setup coat picture {:?}: {error}",
+                    picture_id
+                );
                 continue;
             }
         };
@@ -110,8 +114,8 @@ fn sync_random_setup_coat(
     }
 }
 
-fn coat_picture_id(nation: MajorNationId) -> i16 {
-    FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get())
+fn coat_picture_id(nation: MajorNationId) -> PictureId {
+    PictureId::new(FIRST_MAJOR_NATION_COAT_PICTURE + i16::from(nation.get()))
 }
 
 fn sync_random_setup_flag(
@@ -128,7 +132,10 @@ fn sync_random_setup_flag(
     let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {
         Ok(handle) => handle,
         Err(error) => {
-            warn!("could not load retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}");
+            warn!(
+                "could not load retail setup flag atlas {:?}: {error}",
+                FLAG_ATLAS_PICTURE
+            );
             return;
         }
     };
@@ -137,7 +144,8 @@ fn sync_random_setup_flag(
             Ok(()) => *atlas_transparency_applied = true,
             Err(error) => {
                 warn!(
-                    "could not apply transparency to retail setup flag atlas {FLAG_ATLAS_PICTURE}: {error}"
+                    "could not apply transparency to retail setup flag atlas {:?}: {error}",
+                    FLAG_ATLAS_PICTURE
                 );
                 return;
             }
@@ -192,15 +200,9 @@ fn render_map_preview(
         }
         map_preview.rendered = true;
 
-        let Some(generated) = generated_preview.preview.as_ref() else {
-            map_preview.palette_indices.clear();
-            if image_node.is_some() {
-                commands.entity(entity).remove::<ImageNode>();
-            }
-            continue;
-        };
+        let generated = &generated_preview.0;
 
-        map_preview.palette_indices = compose_preview_indices(&generated.map.tiles, setup.nation);
+        map_preview.palette_indices = compose_preview_indices(generated.map.tiles(), setup.nation);
         let palette = match retail_assets.assets().default_dib_palette() {
             Ok(palette) => palette,
             Err(error) => {
@@ -247,19 +249,17 @@ fn on_map_preview_click(
 }
 
 pub(crate) fn compose_owner_preview_indices(
-    owner_at: impl Fn(TileId) -> i8,
+    owner_at: impl Fn(TileId) -> Option<TileOwnerTag>,
     selected_nation: MajorNationId,
 ) -> Vec<u8> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
     // TMapPreviewView always requests bounded neighbors, even if the selected
     // setup topology wraps horizontally.
-    let geometry = MapGeometry::new(false);
+    let geometry = MapGeometry::new(MapTopology::Bounded);
 
     for tile_index in 0..STRATEGIC_TILE_COUNT {
         let tile_id = TileId::new(tile_index as u16);
-        let (row, column) = geometry
-            .row_column(tile_id)
-            .expect("the strategic tile loop stays in the retail map bounds");
+        let (row, column) = geometry.row_column(tile_id);
         let odd_row = row & 1 != 0;
         let px = 3 * usize::from(column) + usize::from(odd_row);
         let py = 3 * usize::from(row);
@@ -277,7 +277,7 @@ pub(crate) fn compose_owner_preview_indices(
         {
             neighbor_tags[5]
         } else {
-            -2
+            PreviewOwner::Border
         };
         write_preview_pixel(&mut pixels, py, px, preview_palette(tag));
 
@@ -285,7 +285,7 @@ pub(crate) fn compose_owner_preview_indices(
             let tag = if self_tag == neighbor_tags[5] {
                 self_tag
             } else {
-                -2
+                PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, py, px + 1, preview_palette(tag));
             let tag = if self_tag == neighbor_tags[0]
@@ -293,20 +293,20 @@ pub(crate) fn compose_owner_preview_indices(
             {
                 self_tag
             } else {
-                -2
+                PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, py, px + 2, preview_palette(tag));
         } else {
             let tag = if self_tag == neighbor_tags[0] || self_tag == neighbor_tags[5] {
                 self_tag
             } else {
-                -2
+                PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, py, px + 1, preview_palette(tag));
             let tag = if self_tag == neighbor_tags[0] {
                 self_tag
             } else {
-                -2
+                PreviewOwner::Border
             };
             write_preview_pixel(&mut pixels, py, px + 2, preview_palette(tag));
         }
@@ -314,7 +314,7 @@ pub(crate) fn compose_owner_preview_indices(
         let tag = if self_tag == neighbor_tags[4] {
             self_tag
         } else {
-            -2
+            PreviewOwner::Border
         };
         write_preview_pixel(&mut pixels, py + 1, px, preview_palette(tag));
         write_preview_pixel(&mut pixels, py + 2, px, preview_palette(tag));
@@ -333,50 +333,37 @@ fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
 ) -> Vec<u8> {
-    compose_owner_preview_indices(
-        |tile| {
-            tiles
-                .get(usize::from(tile.get()))
-                .map(|tile| tile.owner_nation)
-                .unwrap_or(-1)
+    compose_owner_preview_indices(|tile| tiles[usize::from(tile.get())].owner, selected_nation)
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum PreviewOwner {
+    Border,
+    Unowned,
+    Tagged(TileOwnerTag),
+}
+
+fn owner_tag(
+    owner_at: &impl Fn(TileId) -> Option<TileOwnerTag>,
+    tile: Option<TileId>,
+) -> PreviewOwner {
+    match tile {
+        Some(tile) => owner_at(tile).map_or(PreviewOwner::Unowned, PreviewOwner::Tagged),
+        None => PreviewOwner::Unowned,
+    }
+}
+
+fn preview_palette(owner: PreviewOwner) -> u8 {
+    match owner {
+        PreviewOwner::Border => 0,
+        PreviewOwner::Unowned => OFF_MAP_PALETTE,
+        PreviewOwner::Tagged(tag) => match tag.nation() {
+            Some(nation) => match MajorNationId::from_nation(nation) {
+                Some(major) => major_nation_palette(major),
+                None => 0x0b,
+            },
+            None => OFF_MAP_PALETTE,
         },
-        selected_nation,
-    )
-}
-
-fn owner_tag(owner_at: &impl Fn(TileId) -> i8, tile: Option<TileId>) -> i8 {
-    tile.map(owner_at).unwrap_or(-1)
-}
-
-fn preview_palette(owner_tag: i8) -> u8 {
-    let owner_tag = if (7..0x17).contains(&owner_tag) {
-        0x0b
-    } else if owner_tag >= 0x17 {
-        -1
-    } else {
-        owner_tag
-    };
-    match owner_tag {
-        -2 => 0,
-        -1 => OFF_MAP_PALETTE,
-        0..=6 => MAJOR_NATION_PALETTES[owner_tag as usize],
-        7 => 0x0a,
-        8 => 0x0b,
-        9 => 0x0d,
-        10 => 0x29,
-        11 => 0xde,
-        12 => 0xdf,
-        13 => 0xfa,
-        14 => 0x2c,
-        15 => 0x31,
-        16 => 0x33,
-        17 => 0x41,
-        18 => 0x48,
-        19 => 0xd0,
-        20 => 0xcd,
-        21 => 0xce,
-        22 => 0xcf,
-        _ => 0xff,
     }
 }
 
@@ -436,7 +423,7 @@ pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<Tile
         return None;
     }
     let column = (adjusted as u16) / 3;
-    MapGeometry::new(false).tile(row, column)
+    MapGeometry::new(MapTopology::Bounded).tile(row, column)
 }
 
 fn nation_at_preview_position(
@@ -500,16 +487,16 @@ fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH};
+    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, TerrainKind, TileOwnerTag};
 
-    fn tiles(owner: i8) -> Vec<GeneratedTerrainTile> {
+    fn tiles(owner: Option<TileOwnerTag>) -> Vec<GeneratedTerrainTile> {
         vec![
             GeneratedTerrainTile {
-                terrain_kind: 0,
-                river_sprite_code: 0,
-                owner_nation: owner,
-                gate_flag: -1,
-                province_index: -1,
+                terrain: TerrainKind::Plains,
+                river: None,
+                owner,
+                gate: None,
+                province: None,
             };
             STRATEGIC_TILE_COUNT
         ]
@@ -517,7 +504,8 @@ mod tests {
 
     #[test]
     fn renders_major_nation_palette_indices() {
-        let pixels = compose_preview_indices(&tiles(0), MajorNationId::new(1));
+        let pixels =
+            compose_preview_indices(&tiles(Some(TileOwnerTag::new(0))), MajorNationId::new(1));
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
         assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
@@ -537,8 +525,8 @@ mod tests {
 
     #[test]
     fn retains_the_native_odd_row_stride_spill() {
-        let mut map = tiles(-1);
-        map[STRATEGIC_MAP_WIDTH as usize + 107].owner_nation = 0;
+        let mut map = tiles(None);
+        map[STRATEGIC_MAP_WIDTH as usize + 107].owner = Some(TileOwnerTag::new(0));
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
@@ -594,8 +582,14 @@ mod tests {
 
     #[test]
     fn selected_nation_uses_the_retail_coat_picture_range() {
-        assert_eq!(coat_picture_id(MajorNationId::new(0)), 0x11c6);
-        assert_eq!(coat_picture_id(MajorNationId::new(6)), 0x11cc);
+        assert_eq!(
+            coat_picture_id(MajorNationId::new(0)),
+            PictureId::new(0x11c6)
+        );
+        assert_eq!(
+            coat_picture_id(MajorNationId::new(6)),
+            PictureId::new(0x11cc)
+        );
     }
 
     #[test]

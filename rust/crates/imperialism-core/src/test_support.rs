@@ -5,12 +5,11 @@
 //! full struct literals.
 
 use crate::{
-    CityState, CivilianUnitTable, Difficulty, GameState, IndustryActionTable, LaborPool,
-    MajorNation, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitTable,
-    MinorNationTable, NationCapacities, NationCommonState, NationId, NationPendingWork,
-    NationTable, Nations, PendingActionTable, PendingWorkState, PopulationState, ProductionTable,
-    ResourceTable, RetailCrtRng, RetailLcg, RngState, TileId, TradeMarketState, TurnState,
-    WorldState,
+    CityState, CivilianUnitTable, Difficulty, GameState, GreatPowerState, LaborPool, MajorNation,
+    MajorNationTable, MilitaryUnitTable, MinorNationTable, NationCapacities, NationCommonState,
+    NationId, NationPendingWork, NationTable, Nations, PendingActionTable, PendingWorkState,
+    PopulationState, ProductionTable, ResourceTable, RetailCrtRng, RetailLcg, RngState,
+    ShipTypeTable, StrategicMap, TileId, TradeMarketState, TurnState,
 };
 
 /// A minimal city with a small three-band population and no stock.
@@ -23,14 +22,14 @@ pub(crate) fn city() -> CityState {
         phase_counter: 0,
         military_recruit_count_by_kind: MilitaryUnitTable::default(),
         civilian_recruit_count_by_kind: CivilianUnitTable::default(),
-        order_count_by_type: IndustryActionTable::default(),
+        ship_order_count_by_type: ShipTypeTable::default(),
         rolling_item_production_score: 0,
         low_production: false,
         low_stock: false,
         reserved_by_type: ResourceTable::default(),
         home_town_tile: Some(TileId::new(1)),
         power_available: 0,
-        stock_by_type: ResourceTable::default(),
+        stockpile: crate::Stockpile::default(),
         production_orders: ProductionTable::default(),
         production_accum: ProductionTable::default(),
         production_flags: ProductionTable::default(),
@@ -41,10 +40,10 @@ pub(crate) fn city() -> CityState {
         consumed_production_input_by_type: ResourceTable::default(),
         population: PopulationState {
             count: 7,
-            count_float_bits: 7.0_f32.to_bits(),
+            accumulator: crate::PopulationAccumulator::from_bits(7.0_f32.to_bits()),
             strength: 12,
             extra: 0,
-            phase_value: 0,
+            strike_phase: crate::StrikePhase::default(),
             baseline_labor: LaborPool::new(4, 2, 1),
             production_labor: LaborPool::new(4, 2, 1),
             pending_labor_delta: LaborPool::default(),
@@ -54,9 +53,9 @@ pub(crate) fn city() -> CityState {
 }
 
 /// A neutral major-nation rule state with default tables and capacities.
-pub(crate) fn major_nation_state() -> MajorNationState {
-    MajorNationState {
-        diplomacy_eligible: true,
+pub(crate) fn great_power_state() -> GreatPowerState {
+    GreatPowerState {
+        controller: crate::MajorNationController::Human,
         capacities: NationCapacities::default(),
         grant_total_cost: 0,
         unfilled_trade_offer_count: 0,
@@ -77,8 +76,7 @@ pub(crate) fn major_nation_state() -> MajorNationState {
         candidate_nation_flags: NationTable::default(),
         scenario_initialized: false,
         turn_finished: false,
-        pending_action_status: PendingActionTable::default(),
-        pending_action_payload_by_action: PendingActionTable::default(),
+        pending_actions: PendingActionTable::default(),
         diplomacy_budget_base: 0,
         escalation_counter: 0,
         pending_commitment_cost: 0,
@@ -97,29 +95,28 @@ pub(crate) fn major_nation() -> MajorNation {
             home_tile: Some(TileId::new(0)),
             trade_policy_by_nation: NationTable::default(),
         },
-        state: major_nation_state(),
-        city: Some(city()),
+        economy: great_power_state(),
+        city: city(),
     }
 }
 
-/// A game state with a single present major nation (slot 0) and empty world.
+/// A game state with seven valid major nations and an empty world.
 pub(crate) fn game_state() -> GameState {
-    let mut majors = MajorNationTable::default();
-    majors[MajorNationId::new(0)] = Some(major_nation());
     GameState {
         turn: TurnState {
-            scenario_map_index_plus_one: 0,
+            scenario_map: None,
             economic_turn: 1,
-            phase_code: 5,
+            phase: crate::PhaseCode::STRATEGIC_MAP,
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
             selected_nation: NationId::new(0),
         },
-        persistent_unit_id_counter: 0,
-        world: WorldState {
-            wraps_horizontally: false,
-            tiles: Vec::new(),
-        },
+        unit_ids: crate::UnitIdAllocator::default(),
+        world: StrategicMap::new(
+            crate::MapTopology::Bounded,
+            vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
+        )
+        .unwrap(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),
             map_generation: RetailLcg::from_state(1),
@@ -127,7 +124,7 @@ pub(crate) fn game_state() -> GameState {
         },
         market: TradeMarketState::default(),
         nations: Nations {
-            majors,
+            majors: MajorNationTable::from_fn(|_nation| major_nation()),
             minors: MinorNationTable::default(),
         },
         military_units: Vec::new(),

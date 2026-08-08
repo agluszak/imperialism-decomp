@@ -8,19 +8,17 @@ use bevy::input::ButtonState;
 use bevy::input::keyboard::KeyboardInput;
 use bevy::input_focus::AutoFocus;
 use bevy::input_focus::tab_navigation::TabIndex;
-use bevy::log::error;
 use bevy::prelude::*;
 use bevy::text::{EditableText, TextEditChange};
 use bevy::ui::{Checked, InteractionDisabled};
 use bevy::ui_widgets::{Activate, SelectAllOnFocus, ValueChange};
 use imperialism_core::{
-    COUNTRY_NAME_MAX_CHARS, Difficulty, GameState, MajorNationId,
-    RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, RetailTopologyByte,
-    STRATEGIC_TILE_COUNT, create_random_game, enter_strategic_map_without_capital_selection,
-    generate_english_random_setup_name, generate_random_setup_preview_with_clock_seed,
-    requires_capital_site_selection,
+    COUNTRY_NAME_MAX_CHARS, Difficulty, GameState, MajorNationId, MapTopology,
+    RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, create_random_game,
+    enter_strategic_map_without_capital_selection, generate_english_random_setup_name,
+    generate_random_setup_preview_with_clock_seed, requires_capital_site_selection,
 };
-use imperialism_formats::{ScopedViewId, fourcc};
+use imperialism_formats::{OKAY, ScopedViewId, fourcc};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
@@ -36,7 +34,7 @@ pub(crate) fn random_setup_view_id() -> ScopedViewId {
     }
 }
 
-fn planet_seed_dialog_view_id() -> ScopedViewId {
+pub(crate) fn planet_seed_dialog_view_id() -> ScopedViewId {
     ScopedViewId {
         resource_file: PLANET_SEED_RESOURCE_FILE.to_owned(),
         resource_id: PLANET_SEED_RESOURCE_ID,
@@ -47,22 +45,28 @@ fn planet_seed_dialog_view_id() -> ScopedViewId {
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
     pub(crate) planet_seed: String,
-    pub(crate) topology: RetailTopologyByte,
+    pub(crate) topology: MapTopology,
     pub(crate) nation: MajorNationId,
     pub(crate) country_name: String,
     pub(crate) difficulty: Difficulty,
-    pub(crate) localized_names: bool,
+    pub(crate) name_mode: NationNameMode,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum NationNameMode {
+    Historical,
+    Random,
 }
 
 impl Default for RandomGameSetup {
     fn default() -> Self {
         Self {
             planet_seed: String::new(),
-            topology: RetailTopologyByte::from_wraps_horizontally(true),
+            topology: MapTopology::Wrapping,
             nation: MajorNationId::new(0),
             country_name: String::new(),
             difficulty: Difficulty::Introductory,
-            localized_names: false,
+            name_mode: NationNameMode::Random,
         }
     }
 }
@@ -72,9 +76,19 @@ impl Default for RandomGameSetup {
 pub(crate) struct GameSession(pub GameState);
 
 /// The generated map data owned by the setup screen.
-#[derive(Resource, Clone, Debug, Default, Eq, PartialEq)]
-pub(crate) struct RandomSetupPreview {
-    pub(crate) preview: Option<GeneratedRandomSetupPreview>,
+#[derive(Resource, Clone, Debug, Eq, PartialEq)]
+pub(crate) struct RandomSetupPreview(pub(crate) GeneratedRandomSetupPreview);
+
+impl FromWorld for RandomSetupPreview {
+    fn from_world(world: &mut World) -> Self {
+        let clock = world.resource::<RandomSetupClockSeed>().0;
+        let setup = world.resource::<RandomGameSetup>();
+        Self(generate_random_setup_preview_with_clock_seed(
+            setup.planet_seed.as_bytes(),
+            setup.topology,
+            clock,
+        ))
+    }
 }
 
 #[derive(Resource, Clone, Copy, Debug, Eq, PartialEq)]
@@ -101,7 +115,7 @@ enum RandomSetupAction {
 struct DifficultyChoice(Difficulty);
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
-struct LocalizedNamesChoice(bool);
+struct LocalizedNamesChoice(NationNameMode);
 
 #[derive(Component)]
 struct CountryNameField;
@@ -115,26 +129,18 @@ struct PlanetSeedField;
 #[derive(Component)]
 struct PlanetSeedAccept;
 
-/// Marks the Okay/Accept control so its availability can track whether a
-/// generated preview exists. Accepting random setup without a preview is an
-/// application invariant failure (see `accept_random_setup`), so Okay must stay
-/// disabled whenever `RandomSetupPreview::preview` is `None`.
-#[derive(Component)]
-struct AcceptButton;
-
 pub(crate) struct RandomSetupPlugin;
 
 pub(crate) fn register_random_setup_logic(app: &mut App) {
     app.init_resource::<RandomGameSetup>()
-        .init_resource::<RandomSetupPreview>()
         .init_resource::<RandomSetupClockSeed>()
+        .init_resource::<RandomSetupPreview>()
         .add_systems(
             Update,
             (
                 sync_difficulty_checked,
                 sync_localized_names_checked,
                 sync_country_name_from_setup,
-                sync_accept_button_availability,
             )
                 .run_if(in_state(AppState::RandomSetup)),
         )
@@ -172,7 +178,7 @@ fn initialize_random_setup(
     let mut name_rng = RetailLcg::from_state(clock_seed.0);
     let planet_seed = generate_english_random_setup_name(&mut name_rng);
     let country_name = generate_english_random_setup_name(&mut name_rng);
-    let topology = RetailTopologyByte::from_wraps_horizontally(true);
+    let topology = MapTopology::Wrapping;
 
     *setup = RandomGameSetup {
         planet_seed,
@@ -180,7 +186,7 @@ fn initialize_random_setup(
         nation,
         country_name,
         difficulty: Difficulty::Introductory,
-        localized_names: true,
+        name_mode: NationNameMode::Historical,
     };
     update_random_setup_preview(
         &mut preview,
@@ -197,14 +203,13 @@ fn enter_random_setup(
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
     setup: Res<RandomGameSetup>,
-    preview: Res<RandomSetupPreview>,
 ) {
-    let Some(view) = catalog.view(&random_setup_view_id()) else {
-        return;
-    };
+    let view = catalog
+        .view(&random_setup_view_id())
+        .expect("validated random-setup catalog view");
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
-    bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup, &preview);
-    random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
+    bind_random_setup_controls(&mut commands, &spawned, &setup);
+    random_setup_map::attach_random_setup_meanings(&mut commands, &spawned);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::RandomSetup));
@@ -213,10 +218,8 @@ fn enter_random_setup(
 /// Attach screen meanings only; Bevy widget semantics come from catalog behaviors.
 fn bind_random_setup_controls(
     commands: &mut Commands,
-    catalog: &UiCatalogResource,
     spawned: &SpawnedView,
     setup: &RandomGameSetup,
-    preview: &RandomSetupPreview,
 ) {
     for (tag, difficulty) in [
         (fourcc!("dif0"), Difficulty::Introductory),
@@ -225,79 +228,66 @@ fn bind_random_setup_controls(
         (fourcc!("dif3"), Difficulty::Hard),
         (fourcc!("dif4"), Difficulty::NighOnImpossible),
     ] {
-        if let Ok(entity) = spawned.require_unique(catalog, tag) {
-            let mut entity_commands = commands.entity(entity);
-            entity_commands.insert(DifficultyChoice(difficulty));
-            if setup.difficulty == difficulty {
-                entity_commands.insert(Checked);
-            } else {
-                entity_commands.remove::<Checked>();
-            }
+        let entity = spawned
+            .tag(tag)
+            .expect("validated random-setup difficulty binding");
+        let mut entity_commands = commands.entity(entity);
+        entity_commands.insert(DifficultyChoice(difficulty));
+        if setup.difficulty == difficulty {
+            entity_commands.insert(Checked);
+        } else {
+            entity_commands.remove::<Checked>();
         }
     }
 
-    for (tag, localized) in [(fourcc!("hist"), true), (fourcc!("rand"), false)] {
-        if let Ok(entity) = spawned.require_unique(catalog, tag) {
-            let mut entity_commands = commands.entity(entity);
-            entity_commands.insert(LocalizedNamesChoice(localized));
-            if setup.localized_names == localized {
-                entity_commands.insert(Checked);
-            } else {
-                entity_commands.remove::<Checked>();
-            }
+    for (tag, localized) in [
+        (fourcc!("hist"), NationNameMode::Historical),
+        (fourcc!("rand"), NationNameMode::Random),
+    ] {
+        let entity = spawned
+            .tag(tag)
+            .expect("validated random-setup nation-name binding");
+        let mut entity_commands = commands.entity(entity);
+        entity_commands.insert(LocalizedNamesChoice(localized));
+        if setup.name_mode == localized {
+            entity_commands.insert(Checked);
+        } else {
+            entity_commands.remove::<Checked>();
         }
     }
 
-    if let Ok(country) = spawned.require_unique(catalog, fourcc!("coun")) {
-        commands.entity(country).insert((
-            CountryNameField,
-            SelectAllOnFocus,
-            EditableText {
-                max_characters: Some(COUNTRY_NAME_MAX_CHARS),
-                allow_newlines: false,
-                ..EditableText::new(setup.country_name.clone())
-            },
-        ));
-    }
+    let country = spawned
+        .tag(fourcc!("coun"))
+        .expect("validated random-setup country-name binding");
+    commands.entity(country).insert((
+        CountryNameField,
+        SelectAllOnFocus,
+        EditableText {
+            max_characters: Some(COUNTRY_NAME_MAX_CHARS),
+            allow_newlines: false,
+            ..EditableText::new(setup.country_name.clone())
+        },
+    ));
+
+    let okay = spawned
+        .tag(OKAY)
+        .expect("validated random-setup accept binding");
+    // Initialization and preview generation run before this screen is spawned;
+    // bind the enabled Accept action only at that ready boundary.
+    commands
+        .entity(okay)
+        .insert(RandomSetupAction::Accept)
+        .remove::<InteractionDisabled>();
 
     for (tag, action) in [
         (fourcc!("cncl"), RandomSetupAction::Cancel),
         (fourcc!("glob"), RandomSetupAction::RegeneratePlanet),
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
-        if let Ok(entity) = spawned.require_unique(catalog, tag) {
-            commands.entity(entity).insert(action);
-        }
-    }
-
-    if let Ok(okay) = spawned.require_unique(catalog, fourcc!("okay")) {
-        let mut entity_commands = commands.entity(okay);
-        entity_commands.insert((RandomSetupAction::Accept, AcceptButton));
-        if preview.preview.is_none() {
-            entity_commands.insert(InteractionDisabled);
-        } else {
-            entity_commands.remove::<InteractionDisabled>();
-        }
-    }
-}
-
-/// Keeps Okay disabled whenever no generated preview exists. `accept_random_setup`
-/// relies on this to make missing-preview activation unreachable in normal use.
-fn sync_accept_button_availability(
-    preview: Res<RandomSetupPreview>,
-    mut commands: Commands,
-    buttons: Query<(Entity, Has<InteractionDisabled>), With<AcceptButton>>,
-) {
-    if !preview.is_changed() {
-        return;
-    }
-    let should_disable = preview.preview.is_none();
-    for (entity, disabled) in &buttons {
-        if should_disable && !disabled {
-            commands.entity(entity).insert(InteractionDisabled);
-        } else if !should_disable && disabled {
-            commands.entity(entity).remove::<InteractionDisabled>();
-        }
+        let entity = spawned
+            .tag(tag)
+            .expect("validated random-setup action binding");
+        commands.entity(entity).insert(action);
     }
 }
 
@@ -328,7 +318,7 @@ fn sync_localized_names_checked(
         return;
     }
     for (entity, choice, checked) in &radios {
-        let should_check = choice.0 == setup.localized_names;
+        let should_check = choice.0 == setup.name_mode;
         if should_check && !checked {
             commands.entity(entity).insert(Checked);
         } else if !should_check && checked {
@@ -437,7 +427,7 @@ fn on_localized_names_selected(
     let Ok(choice) = choices.get(change.source) else {
         return;
     };
-    setup.localized_names = choice.0;
+    setup.name_mode = choice.0;
 }
 
 fn on_country_name_edited(
@@ -457,53 +447,23 @@ fn on_country_name_edited(
     }
 }
 
-/// Authoritative options Accept commits into [`create_random_game`].
-///
 /// Country display name and localized-names policy are deliberately omitted: retail
 /// stores them on `TCountry` / `TSimMgr` fields outside the semantic `GameState`
 /// capture. Keep editing them in the setup UI only until those fields exist in
 /// authoritative state — do not silently feed them into game construction.
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-struct RandomGameAcceptOptions {
-    nation: MajorNationId,
-    difficulty: Difficulty,
-}
-
-/// Invariant: `sync_accept_button_availability` keeps Okay [`InteractionDisabled`]
-/// whenever `preview.preview` is `None`, so normal UI activation cannot reach this
-/// function without a generated preview. Treat either gap as an invariant failure
-/// (loud error, no state transition) rather than a silent no-op: reaching them means
-/// the disabled-Okay invariant was itself violated, which is an application bug.
 fn accept_random_setup(
     setup: &RandomGameSetup,
     preview: &RandomSetupPreview,
     commands: &mut Commands,
     next_state: &mut NextState<AppState>,
 ) {
-    let Some(generated) = preview.preview.as_ref() else {
-        error!(
-            "random setup Accept activated without a generated preview; Okay should have been disabled"
-        );
-        return;
-    };
-    if generated.map.tiles.len() != STRATEGIC_TILE_COUNT {
-        error!(
-            "random setup preview has {} tiles, expected {STRATEGIC_TILE_COUNT}; refusing to create the game",
-            generated.map.tiles.len()
-        );
-        return;
-    }
-    let options = RandomGameAcceptOptions {
-        nation: setup.nation,
-        difficulty: setup.difficulty,
-    };
     // Live play still uses a fixed Accept CRT seed until wall-clock CRT wiring lands.
-    let mut session = create_random_game(generated, options.nation, options.difficulty, 1);
-    if requires_capital_site_selection(options.difficulty) {
+    let mut session = create_random_game(&preview.0, setup.nation, setup.difficulty, 1);
+    if requires_capital_site_selection(setup.difficulty) {
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        let _ = enter_strategic_map_without_capital_selection(&mut session);
+        let _ = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::StrategicMap);
     }
@@ -527,17 +487,16 @@ fn regenerate_random_setup_planet(
 }
 
 fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
-    let Some(spawned) = ui.spawn_modal(planet_seed_dialog_view_id()) else {
-        return;
-    };
+    let spawned = ui
+        .spawn_modal(planet_seed_dialog_view_id())
+        .expect("validated planet-seed dialog view");
     ui.commands
         .entity(spawned.root)
         .insert(PlanetSeedDialogRoot);
 
-    let Ok(plan) = spawned.require_unique(ui.catalog(), fourcc!("plan")) else {
-        ui.commands.entity(spawned.root).despawn();
-        return;
-    };
+    let plan = spawned
+        .tag(fourcc!("plan"))
+        .expect("validated planet-seed text binding");
     ui.commands.entity(plan).insert((
         PlanetSeedField,
         SelectAllOnFocus,
@@ -550,11 +509,12 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
         },
     ));
 
-    if let Ok(okay) = spawned.require_unique(ui.catalog(), fourcc!("okay")) {
-        ui.commands
-            .entity(okay)
-            .insert((PlanetSeedAccept, TabIndex(1)));
-    }
+    let okay = spawned
+        .tag(OKAY)
+        .expect("validated planet-seed accept binding");
+    ui.commands
+        .entity(okay)
+        .insert((PlanetSeedAccept, TabIndex(1)));
     // Retail cancel control stays disabled; Escape does not dismiss.
 }
 
@@ -622,7 +582,7 @@ fn update_random_setup_preview(
     preview: &mut RandomSetupPreview,
     generated: GeneratedRandomSetupPreview,
 ) {
-    preview.preview = Some(generated);
+    preview.0 = generated;
 }
 
 #[cfg(test)]
@@ -643,7 +603,7 @@ mod tests {
         let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(UiCatalogResource::new(catalog))
+            .insert_resource(UiCatalogResource::new(catalog).unwrap())
             .insert_resource(RandomSetupClockSeed(1))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()
@@ -677,15 +637,14 @@ mod tests {
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
         setup: Res<RandomGameSetup>,
-        preview: Res<RandomSetupPreview>,
     ) {
         let view_id = random_setup_view_id();
         let Some(view) = catalog.view(&view_id) else {
             return;
         };
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
-        bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup, &preview);
-        random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
+        bind_random_setup_controls(&mut commands, &spawned, &setup);
+        random_setup_map::attach_random_setup_meanings(&mut commands, &spawned);
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::RandomSetup));
@@ -780,7 +739,7 @@ mod tests {
             .world_mut()
             .query_filtered::<(Entity, &LocalizedNamesChoice), ()>()
             .iter(app.world())
-            .find(|(_, choice)| choice.0)
+            .find(|(_, choice)| choice.0 == NationNameMode::Historical)
             .map(|(entity, _)| entity)
             .unwrap();
         app.world_mut().commands().trigger(ValueChange {
@@ -802,101 +761,41 @@ mod tests {
             app.world().resource::<RandomGameSetup>(),
             &RandomGameSetup {
                 planet_seed: "Woopnist".to_owned(),
-                topology: RetailTopologyByte::from_wraps_horizontally(true),
+                topology: MapTopology::Wrapping,
                 nation: MajorNationId::new(6),
                 country_name: "Purtast".to_owned(),
                 difficulty: Difficulty::Hard,
-                localized_names: true,
+                name_mode: NationNameMode::Historical,
             }
         );
         let session = app.world().resource::<GameSession>();
         assert_eq!(session.0.turn.difficulty, Difficulty::Hard);
         assert_eq!(session.0.turn.selected_nation, NationId::new(6));
-        assert_eq!(session.0.turn.phase_code, 2);
+        assert_eq!(
+            session.0.turn.phase,
+            imperialism_core::PhaseCode::CAPITAL_SELECTION
+        );
         assert_eq!(
             session
                 .0
                 .nations
                 .major(MajorNationId::new(6))
-                .unwrap()
-                .common
+                .common()
                 .home_tile,
             None
         );
     }
 
     #[test]
-    fn okay_is_disabled_before_a_preview_exists_and_enabled_once_generated() {
+    fn preview_is_concrete_and_okay_is_enabled_when_the_screen_spawns() {
         let mut app = app();
-        assert!(
-            app.world()
-                .resource::<RandomSetupPreview>()
-                .preview
-                .is_none()
-        );
         enter_random_setup_screen(&mut app);
-        // Entering random setup generates a preview synchronously, so Okay must
-        // already be enabled by the time the screen is visible.
-        assert!(
-            app.world()
-                .resource::<RandomSetupPreview>()
-                .preview
-                .is_some()
+        assert_eq!(
+            app.world().resource::<RandomSetupPreview>().0,
+            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1)
         );
         let okay = action_entity(&mut app, RandomSetupAction::Accept);
         assert!(app.world().get::<InteractionDisabled>(okay).is_none());
-    }
-
-    #[test]
-    fn okay_is_disabled_again_if_the_preview_is_ever_cleared() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        let okay = action_entity(&mut app, RandomSetupAction::Accept);
-        app.world_mut().resource_mut::<RandomSetupPreview>().preview = None;
-        app.update();
-        assert!(app.world().get::<InteractionDisabled>(okay).is_some());
-    }
-
-    #[test]
-    fn accept_without_a_preview_does_not_transition_or_create_a_session() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        app.world_mut().resource_mut::<RandomSetupPreview>().preview = None;
-        app.update();
-        let accept = action_entity(&mut app, RandomSetupAction::Accept);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::RandomSetup
-        );
-        assert!(app.world().get_resource::<GameSession>().is_none());
-    }
-
-    #[test]
-    fn accept_refuses_a_preview_with_an_unexpected_tile_count() {
-        let mut app = app();
-        enter_random_setup_screen(&mut app);
-        {
-            let mut preview = app.world_mut().resource_mut::<RandomSetupPreview>();
-            let mut generated = preview.preview.clone().expect("preview generated on entry");
-            generated.map.tiles.truncate(1);
-            preview.preview = Some(generated);
-        }
-        let accept = action_entity(&mut app, RandomSetupAction::Accept);
-        app.world_mut()
-            .commands()
-            .trigger(Activate { entity: accept });
-        app.world_mut().flush();
-        app.update();
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::RandomSetup
-        );
-        assert!(app.world().get_resource::<GameSession>().is_none());
     }
 
     #[test]
@@ -907,20 +806,16 @@ mod tests {
             app.world().resource::<RandomGameSetup>(),
             &RandomGameSetup {
                 planet_seed: "Woopnist".to_owned(),
-                topology: RetailTopologyByte::from_wraps_horizontally(true),
+                topology: MapTopology::Wrapping,
                 nation: MajorNationId::new(6),
                 country_name: "Purtast".to_owned(),
                 difficulty: Difficulty::Introductory,
-                localized_names: true,
+                name_mode: NationNameMode::Historical,
             }
         );
         assert_eq!(
-            app.world().resource::<RandomSetupPreview>().preview,
-            Some(generate_random_setup_preview_with_clock_seed(
-                b"Woopnist",
-                RetailTopologyByte::from_wraps_horizontally(true),
-                1,
-            ))
+            app.world().resource::<RandomSetupPreview>().0,
+            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1,)
         );
     }
 
@@ -934,7 +829,7 @@ mod tests {
             setup.nation = MajorNationId::new(2);
             setup.country_name = "Custom Name".to_owned();
             setup.difficulty = Difficulty::NighOnImpossible;
-            setup.localized_names = false;
+            setup.name_mode = NationNameMode::Random;
         }
         let globe = action_entity(&mut app, RandomSetupAction::RegeneratePlanet);
         app.world_mut()
@@ -946,11 +841,11 @@ mod tests {
             app.world().resource::<RandomGameSetup>(),
             &RandomGameSetup {
                 planet_seed: "Woopnist".to_owned(),
-                topology: RetailTopologyByte::from_wraps_horizontally(true),
+                topology: MapTopology::Wrapping,
                 nation: MajorNationId::new(2),
                 country_name: "Custom Name".to_owned(),
                 difficulty: Difficulty::NighOnImpossible,
-                localized_names: false,
+                name_mode: NationNameMode::Random,
             }
         );
     }
@@ -1016,12 +911,6 @@ mod tests {
         assert_eq!(
             app.world().resource::<RandomGameSetup>().planet_seed,
             "ordinary"
-        );
-        assert!(
-            app.world()
-                .resource::<RandomSetupPreview>()
-                .preview
-                .is_some()
         );
         assert!(
             app.world_mut()

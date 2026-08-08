@@ -6,10 +6,9 @@ mod runtime_capture;
 
 pub use differential::{assert_game_state_eq, differential, differential_from_result};
 use imperialism_core::{
-    Difficulty, MajorNationId, RetailLcg, RetailTopologyByte,
+    Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential_trace::{
-        CoarseMapTrace, RandomMapTerrainCapture, RandomMapTerrainTrace, trace_coarse_random_map,
-        trace_random_map_terrain,
+        CoarseMapTrace, RandomMapTerrainTrace, trace_coarse_random_map, trace_random_map_terrain,
     },
 };
 pub use oracle::{
@@ -20,13 +19,42 @@ pub use runtime_capture::{RuntimeCaptureError, RuntimeResult};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RetailTopologyByte(u8);
+
+impl RetailTopologyByte {
+    pub const fn from_retail_byte(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn retail_byte(self) -> u8 {
+        self.0
+    }
+
+    pub const fn topology(self) -> MapTopology {
+        if self.0 == 0 {
+            MapTopology::Wrapping
+        } else {
+            MapTopology::Bounded
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RandomMapTerrainCapture {
+    pub scenario_tag: String,
+    pub retail_topology: RetailTopologyByte,
+    pub generation: RandomMapTerrainTrace,
+}
+
 pub fn generate_and_compare_terrain_capture(
     capture: &RandomMapTerrainCapture,
 ) -> Result<RandomMapTerrainTrace, Difference> {
     let mut rng = RetailLcg::from_state(capture.generation.initial_map_lcg);
     let actual = trace_random_map_terrain(
         capture.scenario_tag.as_bytes(),
-        capture.retail_topology,
+        capture.retail_topology.topology(),
         &mut rng,
     );
     if let Some(difference) = first_serialized_difference(&capture.generation, &actual)
@@ -135,8 +163,11 @@ mod tests {
         let scenario_tag = "ordinary".to_owned();
         let retail_topology = RetailTopologyByte::from_retail_byte(0);
         let mut rng = RetailLcg::from_state(3_122_877_655);
-        let generation =
-            trace_random_map_terrain(scenario_tag.as_bytes(), retail_topology, &mut rng);
+        let generation = trace_random_map_terrain(
+            scenario_tag.as_bytes(),
+            retail_topology.topology(),
+            &mut rng,
+        );
         RandomMapTerrainCapture {
             scenario_tag,
             retail_topology,
@@ -209,11 +240,13 @@ mod tests {
     #[test]
     fn random_game_setup_capture_replays_its_explicit_preview_seed() {
         let capture = random_game_setup_capture();
-        let preview =
-            generate_random_setup_preview(capture.planet_seed.as_bytes(), capture.topology)
-                .unwrap();
-        assert_eq!(preview.map.tiles.len(), 6_480);
-        assert_eq!(preview.map.provinces.len(), 120);
+        let preview = generate_random_setup_preview(
+            capture.planet_seed.as_bytes(),
+            capture.topology.topology(),
+        )
+        .unwrap();
+        assert_eq!(preview.map.tiles().len(), 6_480);
+        assert_eq!(preview.map.provinces().len(), 120);
         assert_eq!(preview.final_map_lcg, 0x46a4_5026);
     }
 
