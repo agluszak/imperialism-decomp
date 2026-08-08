@@ -1,7 +1,7 @@
 #![forbid(unsafe_code)]
 
 use anyhow::{Context, Result, bail};
-use clap::{ArgGroup, Parser, Subcommand};
+use clap::{ArgAction, ArgGroup, Parser, Subcommand};
 use imperialism_core::{
     DiplomacyGrant, DiplomacyGrantFlags, GameState, MajorNationId, MilitaryUnitKind, NationId,
     ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable, SkillBand,
@@ -76,6 +76,12 @@ enum Operation {
     AddCreatedItems {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
+    },
+    SetPowerPlantUpgrade {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+        #[arg(action = ArgAction::Set)]
+        enabled: bool,
     },
     AllocateTransportNeeds {
         #[arg(value_parser = parse_major_nation)]
@@ -216,6 +222,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .add_created_items(nation)
                 .context("Rust created-item settlement failed")?;
+        }
+        Operation::SetPowerPlantUpgrade { nation, enabled } => {
+            state
+                .set_power_plant_upgrade(nation, enabled)
+                .context("Rust power-plant upgrade change failed")?;
         }
         Operation::AllocateTransportNeeds { nation } => {
             state

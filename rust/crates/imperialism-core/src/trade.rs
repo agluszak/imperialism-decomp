@@ -1,6 +1,7 @@
 use crate::{
-    DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, MajorNationId, MajorNationState,
-    NationCapacity, NationCommonState, NationId, ResourceKind, StepOutcome, all_resources,
+    CityState, DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, MajorNationId,
+    MajorNationState, NationCapacity, NationCommonState, NationId, ResourceKind, StepOutcome,
+    all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -64,20 +65,7 @@ impl GameState {
         &mut self,
         nation: MajorNationId,
     ) -> Result<StepOutcome, RuleError> {
-        self.major_nation_parts_mut(nation)?;
-        if self.cities[nation].is_none() {
-            return Err(RuleError::MissingCity {
-                nation: nation.nation(),
-            });
-        }
-
-        let major = self.nations[nation.nation()]
-            .as_mut()
-            .and_then(|state| state.major_mut())
-            .expect("major-nation presence was checked before committing purchases");
-        let city = self.cities[nation]
-            .as_mut()
-            .expect("city presence was checked before committing purchases");
+        let (_, major, city) = self.major_nation_city_parts_mut(nation)?;
         major.settle_purchased_items(city);
         Ok(StepOutcome {
             events: vec![GameEvent::PurchasedItemsCommitted {
@@ -90,21 +78,7 @@ impl GameState {
     /// boundary. Commodity targets remain available for the rest of the phase;
     /// only the city's settled stock changes here.
     pub fn add_created_items(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
-        self.major_nation_parts_mut(nation)?;
-        if self.cities[nation].is_none() {
-            return Err(RuleError::MissingCity {
-                nation: nation.nation(),
-            });
-        }
-
-        let (nations, cities) = (&mut self.nations, &mut self.cities);
-        let (common, major) = nations[nation.nation()]
-            .as_mut()
-            .and_then(|state| state.major_parts_mut())
-            .expect("major-nation presence was checked before settling created items");
-        let city = cities[nation]
-            .as_mut()
-            .expect("city presence was checked before settling created items");
+        let (common, major, city) = self.major_nation_city_parts_mut(nation)?;
 
         common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gems]) * 500;
         city.stock_by_type[ResourceKind::Gems] = 0;
@@ -117,6 +91,18 @@ impl GameState {
         for resource in all_resources() {
             city.add_to_stock_and_verify(resource, major.need_target_by_type[resource]);
         }
+        Ok(())
+    }
+
+    /// Queues or cancels the city's power-plant upgrade and applies its
+    /// corresponding treasury charge or refund.
+    pub fn set_power_plant_upgrade(
+        &mut self,
+        nation: MajorNationId,
+        enabled: bool,
+    ) -> Result<(), RuleError> {
+        let (common, _, city) = self.major_nation_city_parts_mut(nation)?;
+        city.set_power_plant_upgrade(&mut common.treasury, enabled);
         Ok(())
     }
 
@@ -223,6 +209,32 @@ impl GameState {
         state.major_parts_mut().ok_or(RuleError::NotMajorNation {
             nation: nation.nation(),
         })
+    }
+
+    fn major_nation_city_parts_mut(
+        &mut self,
+        nation: MajorNationId,
+    ) -> Result<
+        (
+            &mut NationCommonState,
+            &mut MajorNationState,
+            &mut CityState,
+        ),
+        RuleError,
+    > {
+        let (nations, cities) = (&mut self.nations, &mut self.cities);
+        let state = nations[nation.nation()]
+            .as_mut()
+            .ok_or(RuleError::MissingNation {
+                nation: nation.nation(),
+            })?;
+        let (common, major) = state.major_parts_mut().ok_or(RuleError::NotMajorNation {
+            nation: nation.nation(),
+        })?;
+        let city = cities[nation].as_mut().ok_or(RuleError::MissingCity {
+            nation: nation.nation(),
+        })?;
+        Ok((common, major, city))
     }
 }
 
