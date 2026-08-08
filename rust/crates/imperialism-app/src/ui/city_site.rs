@@ -1,6 +1,6 @@
 use crate::AppState;
 use crate::RetailAssetsResource;
-use crate::ui::catalog::{UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
+use crate::ui::catalog::{ModalDialog, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
 use crate::ui::random_setup::GameSession;
 use crate::ui::random_setup_map::{
     compose_owner_preview_indices, preview_image_from_indices, tile_at_preview_position,
@@ -153,7 +153,7 @@ fn render_city_site_map(
 fn on_city_site_activate(
     activate: On<Activate>,
     actions: Query<&CitySiteAction>,
-    dialog_open: Query<(), With<NewCityDialogRoot>>,
+    dialog_open: Query<(), With<ModalDialog>>,
     mut next_state: ResMut<NextState<AppState>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
@@ -169,7 +169,7 @@ fn on_city_site_activate(
 
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
-    dialog_open: Query<(), With<NewCityDialogRoot>>,
+    dialog_open: Query<(), With<ModalDialog>>,
     session: Res<GameSession>,
     maps: Query<(&RelativeCursorPosition, &CitySiteMap)>,
     mut ui: UiSpawner,

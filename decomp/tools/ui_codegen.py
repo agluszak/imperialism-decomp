@@ -97,21 +97,6 @@ class UiResourceKey:
         return f"{self.resource_file}:{self.view_id}"
 
 
-# Historical launch slice retained for focused regression expectations.
-RUST_LAUNCH_VIEW_KEYS = (
-    UiResourceKey("Linger.rsrc", 954),
-    UiResourceKey("Startup.rsrc", 1500),
-    UiResourceKey("Startup.rsrc", 1501),
-    UiResourceKey("Startup.rsrc", 952),
-    UiResourceKey("Startup.rsrc", 953),
-    UiResourceKey("FlagView.rsrc", 8451),
-    UiResourceKey("MapView.rsrc", 2013),
-    UiResourceKey("Trade.rsrc", 2009),
-    UiResourceKey("Citymain.rsrc", 2011),
-    UiResourceKey("Transport.rsrc", 2014),
-    UiResourceKey("Diplo.rsrc", 2008),
-)
-
 # Resource-backed or windows-only factory cases that cannot yet be emitted into the
 # Rust catalog. Keys are UiResourceKey.text() or windows_view names.
 RUST_CATALOG_EXCLUSIONS: dict[str, str] = {
@@ -1132,11 +1117,6 @@ def _rust_widget_behavior(key: UiResourceKey, node: UiSemanticNode) -> str:
         return "activate"
     return "passive"
 
-
-def _rust_widget_interactive(key: UiResourceKey, node: UiSemanticNode) -> bool:
-    """Compatibility helper: true when behavior is not passive."""
-
-    return _rust_widget_behavior(key, node) != "passive"
 
 
 def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:

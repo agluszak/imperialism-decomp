@@ -11,7 +11,7 @@ use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::{
     RetailAssetError, RetailFontFace, RetailTextAlignment, RetailTextStyleError,
     RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog, UiNode as CatalogNode, UiNodeId,
-    UiTextBinding, UiView as CatalogView, UiViewIndex, WidgetKind, resolve_retail_text_style,
+    UiTextBinding, UiView as CatalogView, UiViewIndex, resolve_retail_text_style,
 };
 use std::collections::HashMap;
 
@@ -216,15 +216,6 @@ impl SpawnedView {
             view.id.resource_id,
         ))
     }
-
-    /// First-match tag lookup kept for transitional callers; prefer [`Self::require_unique`].
-    #[allow(dead_code)]
-    pub(crate) fn tagged(&self, view: &CatalogView, tag: &str) -> Option<Entity> {
-        view.nodes
-            .iter()
-            .find(|node| node.tag.0 == tag)
-            .map(|node| self.nodes[&node.id])
-    }
 }
 
 fn missing_view(view_id: &ScopedViewId) -> UiBindError {
@@ -274,9 +265,6 @@ pub(crate) struct UiAssetResources<'w> {
     fonts: ResMut<'w, Assets<Font>>,
     font_handles: ResMut<'w, RetailFontHandles>,
 }
-
-/// Compatibility alias while screen modules migrate.
-pub(crate) type UiPictureResources<'w> = UiAssetResources<'w>;
 
 impl UiAssetResources<'_> {
     pub(crate) fn picture(
@@ -346,14 +334,13 @@ impl UiSpawner<'_, '_> {
 
     pub(crate) fn spawn_modal(&mut self, view_id: ScopedViewId) -> Option<SpawnedView> {
         let spawned = self.spawn(view_id)?;
-        self.commands
-            .entity(spawned.root)
-            .insert((ModalDialog, ZIndex(10), Pickable::default()));
+        self.commands.entity(spawned.root).insert((
+            ModalDialog,
+            TabGroup::modal(),
+            ZIndex(10),
+            Pickable::default(),
+        ));
         Some(spawned)
-    }
-
-    pub(crate) fn with_tab_group(&mut self, root: Entity) {
-        self.commands.entity(root).insert(TabGroup::modal());
     }
 
     pub(crate) fn attach<C: Component>(
@@ -507,8 +494,7 @@ fn bind_view_assets(
                 &mut pictures.font_handles,
             ) {
                 Ok((font, layout, underline)) => {
-                    if node.behavior == UiBehavior::TextEdit || node.kind == WidgetKind::EditControl
-                    {
+                    if node.behavior == UiBehavior::TextEdit {
                         let initial = binding.value.clone().unwrap_or_default();
                         let mut editable = EditableText::new(initial);
                         editable.allow_newlines = false;

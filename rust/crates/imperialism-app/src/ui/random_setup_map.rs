@@ -1,4 +1,4 @@
-use super::catalog::{SpawnedView, UiCatalogResource, UiPictureResources};
+use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource};
 use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
@@ -70,8 +70,8 @@ impl Plugin for MapPreviewPlugin {
     }
 }
 
-/// Attach map/coat/flag components once when the random-setup screen is created.
-pub(crate) fn attach_random_setup_widgets(
+/// Attach map/coat/flag screen meanings once when random-setup is created.
+pub(crate) fn attach_random_setup_meanings(
     commands: &mut Commands,
     catalog: &UiCatalogResource,
     spawned: &SpawnedView,
@@ -93,7 +93,7 @@ pub(crate) fn attach_random_setup_widgets(
 
 fn sync_random_setup_coat(
     setup: Res<RandomGameSetup>,
-    mut pictures: UiPictureResources,
+    mut pictures: UiAssetResources,
     mut coats: Query<(&mut RandomSetupCoat, &mut ImageNode)>,
 ) {
     for (mut coat, mut image_node) in &mut coats {
@@ -120,7 +120,7 @@ fn coat_picture_id(nation: MajorNationId) -> i16 {
 fn sync_random_setup_flag(
     mut commands: Commands,
     setup: Res<RandomGameSetup>,
-    mut pictures: UiPictureResources,
+    mut pictures: UiAssetResources,
     mut flags: Query<(Entity, &mut RandomSetupFlag, Option<&mut ImageNode>)>,
 ) {
     let handle = match pictures.picture(FLAG_ATLAS_PICTURE) {

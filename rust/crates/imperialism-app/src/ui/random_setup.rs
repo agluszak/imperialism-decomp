@@ -1,5 +1,7 @@
 use crate::AppState;
-use crate::ui::catalog::{SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view};
+use crate::ui::catalog::{
+    ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
+};
 use crate::ui::random_setup_map;
 use bevy::ecs::system::SystemParam;
 use bevy::input::ButtonState;
@@ -192,7 +194,7 @@ fn enter_random_setup(
     };
     let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut assets);
     bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
-    random_setup_map::attach_random_setup_widgets(&mut commands, &catalog, &spawned);
+    random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
     commands
         .entity(spawned.root)
         .insert(DespawnOnExit(AppState::RandomSetup));
@@ -316,7 +318,7 @@ fn sync_country_name_from_setup(
 #[derive(SystemParam)]
 struct RandomSetupActivation<'w, 's> {
     actions: Query<'w, 's, &'static RandomSetupAction>,
-    dialog_open: Query<'w, 's, (), With<PlanetSeedDialogRoot>>,
+    dialog_open: Query<'w, 's, (), With<ModalDialog>>,
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
@@ -357,7 +359,7 @@ fn on_random_setup_activate(activate: On<Activate>, mut random_setup: RandomSetu
 fn on_open_planet_seed(
     activate: On<Activate>,
     actions: Query<&RandomSetupAction>,
-    dialog_open: Query<(), With<PlanetSeedDialogRoot>>,
+    dialog_open: Query<(), With<ModalDialog>>,
     mut ui: UiSpawner,
     setup: Res<RandomGameSetup>,
 ) {
@@ -456,7 +458,6 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
     let Some(spawned) = ui.spawn_modal(planet_seed_dialog_view_id()) else {
         return;
     };
-    ui.with_tab_group(spawned.root);
     ui.commands
         .entity(spawned.root)
         .insert(PlanetSeedDialogRoot);
@@ -611,7 +612,7 @@ mod tests {
         };
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         bind_random_setup_controls(&mut commands, &catalog, &spawned, &setup);
-        random_setup_map::attach_random_setup_widgets(&mut commands, &catalog, &spawned);
+        random_setup_map::attach_random_setup_meanings(&mut commands, &catalog, &spawned);
         commands
             .entity(spawned.root)
             .insert(DespawnOnExit(AppState::RandomSetup));
@@ -633,6 +634,7 @@ mod tests {
         let spawned = spawn_view_nodes(&mut commands, logical_resolution, &view);
         commands.entity(spawned.root).insert((
             PlanetSeedDialogRoot,
+            ModalDialog,
             TabGroup::modal(),
             ZIndex(10),
             Pickable::default(),
