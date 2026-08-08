@@ -481,6 +481,7 @@ mod tests {
                 map_generation: 0,
                 zone_status: 0,
             },
+            market: crate::TradeMarketState::default(),
             nations,
             cities,
             military_units: Vec::new(),

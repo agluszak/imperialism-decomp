@@ -18,6 +18,7 @@ public:
 
   void Set(const char* name, int value);
   void Set(const char* name, unsigned int value);
+  void Set(const char* name, double value);
   void Set(const char* name, bool value);
   void Set(const char* name, const char* value);
   void SetNull(const char* name);

@@ -10,6 +10,7 @@ mod create_random_game;
 mod difficulty;
 mod ids;
 mod map_geometry;
+mod market;
 mod nation_economy;
 mod population;
 mod production;
@@ -42,6 +43,7 @@ pub use map_geometry::{
     HexDirection, MapGeometry, RetailTopologyByte, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
     STRATEGIC_TILE_COUNT,
 };
+pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
 pub use population::{FoodOutcome, LaborPool, PopulationError, SkillBand};
 pub use production::{
     CapacityProductionOrder, CapacityTarget, ExpansionProductionOrder, ExpansionTarget,

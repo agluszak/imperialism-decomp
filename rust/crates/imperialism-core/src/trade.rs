@@ -17,6 +17,11 @@ pub enum RuleError {
 }
 
 impl GameState {
+    /// Recalculates the world's seventeen market commodity prices in retail order.
+    pub fn recalculate_trade_prices(&mut self) {
+        self.market.recalculate_prices();
+    }
+
     pub fn place_trade_bid(
         &mut self,
         nation: MajorNationId,
@@ -463,6 +468,7 @@ mod tests {
                 map_generation: 1,
                 zone_status: 1,
             },
+            market: crate::TradeMarketState::default(),
             nations,
             cities,
             military_units: vec![],

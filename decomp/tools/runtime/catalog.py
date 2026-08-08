@@ -388,6 +388,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "trade_market_price",
+        "TradeMarketPriceTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "trade_policy_step",
         "TradePolicyStepTest",
         ("full",),

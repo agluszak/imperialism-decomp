@@ -8,8 +8,8 @@ use imperialism_core::{
     NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
     NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
     PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
-    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TradePolicyScore,
-    TurnState, WorldState,
+    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TradeCommodityTable,
+    TradeMarketRow, TradeMarketState, TradePolicyScore, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -20,7 +20,6 @@ const RESOURCE_KIND_COUNT: usize = 23;
 const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
 const CITY_ORDER_SLOT_COUNT: usize = 61;
 const TRADE_CATEGORY_COUNT: usize = 17;
-const TRADE_CATEGORY_SERIALIZED_SIZE: usize = 158;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
 const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
@@ -75,11 +74,12 @@ pub(crate) struct LegacySimulationPrefix {
     pub nation_names: Vec<String>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct LegacySaveV62 {
     header: LegacySaveHeader,
     simulation: LegacySimulationPrefix,
     animator_idle_frequency: i32,
+    market: TradeMarketState,
     map: LegacyMapState,
     ocean: LegacyOceanState,
     navy: LegacyNavyState,
@@ -933,7 +933,7 @@ impl LegacySaveV62 {
             nation_names,
         };
         let animator_idle_frequency = stream.read_le_i32()?;
-        skip_trade_manager(&mut stream)?;
+        let market = read_trade_market(&mut stream)?;
         stream.skip(DIPLOMACY_SERIALIZED_SIZE_V62)?;
         stream.skip(TECH_SERIALIZED_SIZE_V62)?;
         let map = read_map(&mut stream)?;
@@ -983,6 +983,7 @@ impl LegacySaveV62 {
             header,
             simulation,
             animator_idle_frequency,
+            market,
             map,
             ocean,
             navy,
@@ -1131,6 +1132,7 @@ impl LegacySaveV62 {
                 map_generation: context.map_generation_lcg,
                 zone_status: context.zone_status_lcg,
             },
+            market: self.market.clone(),
             nations,
             cities,
             military_units,
@@ -1498,14 +1500,43 @@ fn parse_help_manager_at(
     Ok((help, offset + stream.position()))
 }
 
-fn skip_trade_manager(stream: &mut LegacyStream<'_>) -> Result<(), StreamError> {
-    stream.skip(TRADE_CATEGORY_COUNT * TRADE_CATEGORY_SERIALIZED_SIZE)?;
+fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, StreamError> {
+    let rows: [TradeMarketRow; TRADE_CATEGORY_COUNT] = (0..TRADE_CATEGORY_COUNT)
+        .map(|_| read_trade_market_row(stream))
+        .collect::<Result<Vec<_>, _>>()?
+        .try_into()
+        .expect("one market row per trade commodity");
     for _ in 0..TRADE_CATEGORY_COUNT {
         let record_size = usize::from(stream.read_le_u16()?);
         let record_count = stream.read_le_u32()? as usize;
         stream.skip(record_size.saturating_mul(record_count))?;
     }
-    Ok(())
+    Ok(TradeMarketState {
+        rows: TradeCommodityTable::from_array(rows),
+    })
+}
+
+fn read_trade_market_row(stream: &mut LegacyStream<'_>) -> Result<TradeMarketRow, StreamError> {
+    let previous_price = i32::from(stream.read_le_i16()?);
+    let price = i32::from(stream.read_le_i16()?);
+    let request_count = i32::from(stream.read_le_i16()?);
+    let offer_count = i32::from(stream.read_le_i16()?);
+    let adjusted_offer_count = f64::from_le_bytes(stream.read_bytes(8)?.try_into().unwrap());
+    let amount_offered = i32::from(stream.read_le_i16()?);
+    let base_price = i32::from(stream.read_le_i16()?);
+    // The three per-nation offer-history cells are not represented by the price slice.
+    for _ in 0..3 {
+        stream.skip(RESOURCE_KIND_COUNT * std::mem::size_of::<i16>())?;
+    }
+    Ok(TradeMarketRow {
+        previous_price,
+        price,
+        base_price,
+        request_count,
+        offer_count,
+        amount_offered,
+        adjusted_offer_count,
+    })
 }
 
 fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError> {
@@ -2388,6 +2419,22 @@ mod tests {
         assert_eq!(save.simulation.nation_names[6], " Testland");
         assert_eq!(save.simulation.nation_names[22], "Sindel");
         assert_eq!(save.animator_idle_frequency, 2);
+        assert_eq!(
+            save.market.rows[imperialism_core::TradeCommodity::Cotton],
+            TradeMarketRow {
+                previous_price: 100,
+                price: 100,
+                base_price: 100,
+                request_count: 0,
+                offer_count: 0,
+                amount_offered: 0,
+                adjusted_offer_count: 0.0,
+            }
+        );
+        assert_eq!(
+            save.market.rows[imperialism_core::TradeCommodity::Arms].base_price,
+            900
+        );
         assert_eq!(save.map.tiles.len(), 6480);
         assert_eq!(save.map.provinces.len(), 384);
         assert_eq!(save.map.no_horizontal_wrap, 0);
@@ -2597,6 +2644,7 @@ mod tests {
                 selected_nation: NationId::new(6),
             })
             .unwrap();
+        assert_eq!(game.market, save.market);
         let expected_civilian_count = save
             .major_nations
             .iter()

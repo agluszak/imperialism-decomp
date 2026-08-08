@@ -57,6 +57,13 @@ void JsonObject::Set(const char* name, unsigned int value) {
   }
 }
 
+void JsonObject::Set(const char* name, double value) {
+  EnsureLive();
+  if (name == 0 || json_object_set_number(object_, name, value) != JSONSuccess) {
+    FailJson("json_object_set_number(double)");
+  }
+}
+
 void JsonObject::Set(const char* name, bool value) {
   EnsureLive();
   if (name == 0 || json_object_set_boolean(object_, name, value ? 1 : 0) != JSONSuccess) {
