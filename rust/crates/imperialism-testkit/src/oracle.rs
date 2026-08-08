@@ -272,13 +272,15 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
     )?;
 
     println!(
-        "random-game start boundary matched allowlisted blocks: seed={:?} topology={} nation={} difficulty={:?} tiles={} map_lcg={:#x}",
+        "random-game start boundary matched allowlisted blocks: seed={:?} topology={} nation={} difficulty={:?} tiles={} map_lcg={:#x} crt={:#x} zone={:#x}",
         setup.planet_seed,
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.difficulty,
         actual.world.tiles.len(),
         actual.rng.map_generation.state(),
+        actual.rng.crt_rand.state(),
+        actual.rng.zone_status.state(),
     );
     Ok(())
 }
