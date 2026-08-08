@@ -144,8 +144,8 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, LaborPool, NationData, NationState, PendingWorkState, PopulationState, RngState,
-        TurnState, WorldState,
+        CityState, Difficulty, LaborPool, NationData, NationState, PendingWorkState,
+        PopulationState, RngState, TurnState, WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -208,9 +208,9 @@ mod tests {
                 scenario_map_index_plus_one: 0,
                 economic_turn: 1,
                 phase_code: 5,
-                difficulty: 1,
-                active_nation: 6,
-                selected_nation: 6,
+                difficulty: Difficulty::Easy,
+                active_nation: NationId::new(6),
+                selected_nation: NationId::new(6),
             },
             persistent_unit_id_counter: 0,
             world: WorldState {
@@ -249,8 +249,8 @@ mod tests {
             starvation_population_loss: 0,
             serialized_state: 0,
             phase_counter: 0,
-            metrics_0e: [0; 30],
-            metrics_4a: [0; 9],
+            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
+            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
             order_count_by_type: [0; 14],
             rolling_item_production_score: 0,
             low_production: false,

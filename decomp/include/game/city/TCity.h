@@ -7,6 +7,8 @@
 #include "game/app/TObject.h"
 #include "game/city/TPopulationMgr.h"
 #include "game/city/TProductionOrder.h"
+#include "game/civilian_domain_types.h"
+#include "game/military_domain_types.h"
 #include "game/resource_domain_types.h"
 #include "game/city/TTown.h"
 
@@ -119,10 +121,12 @@ public:
   short starvationPopulationLoss08; // +0x08 — population lost during the last Eat pass
   short serializedState0a;
   short cityPhaseCounter0c;
-  // +0x0e..+0x4a and +0x4a..+0x5c — city metric blocks snapshotted wholesale by the
-  // turn-event-0x2c composite packet (0x54ce80); interior meaning still unmapped.
-  short cityMetricsBlock0E[0x1e];
-  short cityMetricsBlock4A[9];
+  // +0x0e..+0x4a — cumulative military recruit deltas by MilitaryUnitKind
+  // (TUnitOrder specialist path does not bump these in retail; the array is still
+  // saved/synced). +0x4a..+0x5c — cumulative civilian recruit deltas by
+  // CivilianUnitKind (TUnitOrder::Produce increments the matching entry).
+  short militaryRecruitCountByKind[kMilitaryUnitKindCount];
+  short civilianRecruitCountByKind[kCivilianUnitKindCount];
   // +0x5c..+0x78 — per-order/resource-type counters (one short per type 0..13):
   // the pending-action FSM (0x004dab20) bumps the active zone's entry and entry 6
   // (navy secondary orders); 0x004dd140 weights all 14 entries by the resource

@@ -10,8 +10,9 @@ use bevy::input::keyboard::{KeyCode, KeyboardInput};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use imperialism_core::{
-    MajorNationId, RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg,
-    RetailTopologyByte, generate_english_random_setup_name,
+    Difficulty, GameState, MajorNationId, RandomGameDraft,
+    RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, RetailTopologyByte,
+    create_random_game, generate_english_random_setup_name,
     generate_random_setup_preview_with_clock_seed,
 };
 use imperialism_formats::ScopedViewId;
@@ -50,15 +51,13 @@ fn planet_seed_dialog_view_id() -> ScopedViewId {
 ///
 /// This is deliberately not simulation state: pressing Start will later pass
 /// this complete draft to the one game-creation operation.
-///
-/// `difficulty` is the opaque retail control value `0..=4`; labels are unknown.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
     pub(crate) planet_seed: String,
     pub(crate) topology: RetailTopologyByte,
     pub(crate) nation: MajorNationId,
     pub(crate) country_name: String,
-    pub(crate) difficulty: u8,
+    pub(crate) difficulty: Difficulty,
     pub(crate) localized_names: bool,
 }
 
@@ -72,11 +71,17 @@ impl Default for RandomGameSetup {
             topology: RetailTopologyByte::from_wraps_horizontally(true),
             nation: MajorNationId::new(0),
             country_name: String::new(),
-            difficulty: 0,
+            difficulty: Difficulty::Introductory,
             localized_names: false,
         }
     }
 }
+
+/// Authoritative game state produced when Random Setup Accept/Okay succeeds.
+///
+/// Headless for now: no strategic-map UI consumes this yet.
+#[derive(Resource, Clone, Debug, Eq, PartialEq)]
+pub(crate) struct GameSession(pub GameState);
 
 /// The generated map data owned by the setup screen.
 #[derive(Resource, Clone, Debug, Default, Eq, PartialEq)]
@@ -116,7 +121,7 @@ struct PlanetSeedDialog {
 }
 
 #[derive(SystemParam)]
-struct RandomSetupInteraction<'w> {
+struct RandomSetupInteraction<'w, 's> {
     clock_seed: Res<'w, RandomSetupClockSeed>,
     setup: ResMut<'w, RandomGameSetup>,
     preview: ResMut<'w, RandomSetupPreview>,
@@ -124,6 +129,7 @@ struct RandomSetupInteraction<'w> {
     dialog: ResMut<'w, PlanetSeedDialog>,
     spawn: MessageWriter<'w, SpawnUiView>,
     despawn: MessageWriter<'w, DespawnUiView>,
+    commands: Commands<'w, 's>,
 }
 
 #[derive(SystemParam)]
@@ -227,7 +233,7 @@ fn initialize_random_setup(
         topology,
         nation,
         country_name,
-        difficulty: 0,
+        difficulty: Difficulty::Introductory,
         localized_names: true,
     };
     update_random_setup_preview(
@@ -355,6 +361,12 @@ fn translate_startup_intents(
             if !random_setup.dialog.active {
                 if tag.0 == "cncl" {
                     next_state.set(AppState::MainMenu);
+                } else if tag.0 == "okay" {
+                    accept_random_setup(
+                        &random_setup.setup,
+                        &random_setup.preview,
+                        &mut random_setup.commands,
+                    );
                 } else {
                     apply_random_setup_intent(
                         random_setup.clock_seed.0,
@@ -393,11 +405,11 @@ fn apply_random_setup_intent(
     tag: &str,
 ) {
     match tag {
-        "dif0" => setup.difficulty = 0,
-        "dif1" => setup.difficulty = 1,
-        "dif2" => setup.difficulty = 2,
-        "dif3" => setup.difficulty = 3,
-        "dif4" => setup.difficulty = 4,
+        "dif0" => setup.difficulty = Difficulty::Introductory,
+        "dif1" => setup.difficulty = Difficulty::Easy,
+        "dif2" => setup.difficulty = Difficulty::Normal,
+        "dif3" => setup.difficulty = Difficulty::Hard,
+        "dif4" => setup.difficulty = Difficulty::NighOnImpossible,
         "hist" => setup.localized_names = true,
         "rand" => setup.localized_names = false,
         "glob" => regenerate_random_setup_planet(clock_seed, setup, preview),
@@ -405,6 +417,27 @@ fn apply_random_setup_intent(
         "key " => open_planet_seed_dialog(setup, edit_focus, dialog, spawn),
         _ => {}
     }
+}
+
+fn accept_random_setup(
+    setup: &RandomGameSetup,
+    preview: &RandomSetupPreview,
+    commands: &mut Commands,
+) {
+    let Some(generated) = preview.preview.as_ref() else {
+        return;
+    };
+    let draft = RandomGameDraft {
+        topology: setup.topology,
+        nation: setup.nation,
+        country_name: setup.country_name.clone(),
+        difficulty: setup.difficulty,
+        localized_names: setup.localized_names,
+    };
+    let Ok(state) = create_random_game(&draft, generated) else {
+        return;
+    };
+    commands.insert_resource(GameSession(state));
 }
 
 fn regenerate_random_setup_planet(
@@ -609,6 +642,7 @@ mod tests {
     use crate::ui::{PresentedViewId, UiCatalogResource, UiRuntimePlugin, UiViewRoot};
     use bevy::ecs::message::{MessageCursor, Messages};
     use bevy::input::keyboard::Key;
+    use imperialism_core::NationId;
     use imperialism_formats::{FourCc, UiCatalog};
     use std::collections::HashMap;
 
@@ -830,10 +864,14 @@ mod tests {
                 topology: RetailTopologyByte::from_wraps_horizontally(true),
                 nation: MajorNationId::new(6),
                 country_name: "Purtast".to_owned(),
-                difficulty: 3,
+                difficulty: Difficulty::Hard,
                 localized_names: true,
             }
         );
+        let session = app.world().resource::<GameSession>();
+        assert_eq!(session.0.turn.difficulty, Difficulty::Hard);
+        assert_eq!(session.0.turn.selected_nation, NationId::new(6));
+        assert_eq!(session.0.turn.phase_code, 2);
     }
 
     #[test]
@@ -849,7 +887,7 @@ mod tests {
                 topology: RetailTopologyByte::from_wraps_horizontally(true),
                 nation: MajorNationId::new(6),
                 country_name: "Purtast".to_owned(),
-                difficulty: 0,
+                difficulty: Difficulty::Introductory,
                 localized_names: true,
             }
         );
@@ -880,7 +918,7 @@ mod tests {
             setup.planet_seed = "manual planet".to_owned();
             setup.nation = MajorNationId::new(2);
             setup.country_name = "Custom Name".to_owned();
-            setup.difficulty = 4;
+            setup.difficulty = Difficulty::NighOnImpossible;
             setup.localized_names = false;
         }
 
@@ -902,7 +940,7 @@ mod tests {
                 topology: RetailTopologyByte::from_wraps_horizontally(true),
                 nation: MajorNationId::new(2),
                 country_name: "Custom Name".to_owned(),
-                difficulty: 4,
+                difficulty: Difficulty::NighOnImpossible,
                 localized_names: false,
             }
         );

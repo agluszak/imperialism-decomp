@@ -1,9 +1,10 @@
 #![forbid(unsafe_code)]
 
 mod runtime_capture;
+mod start_boundary;
 
 use imperialism_core::{
-    GameState, MajorNationId, RetailLcg, RetailTopologyByte,
+    Difficulty, GameState, MajorNationId, RetailLcg, RetailTopologyByte,
     differential_trace::{
         CoarseMapTrace, RandomMapTerrainCapture, RandomMapTerrainTrace, trace_coarse_random_map,
         trace_random_map_terrain,
@@ -13,6 +14,10 @@ pub use runtime_capture::{
     RuntimeCaptureError, decode_runtime_capture, read_runtime_capture, read_runtime_seed,
 };
 use serde::{Deserialize, Serialize};
+pub use start_boundary::{
+    RandomGameStartBoundarySubset, compare_random_game_start_boundary,
+    project_random_game_start_boundary,
+};
 use std::collections::BTreeSet;
 use std::path::Path;
 
@@ -52,7 +57,7 @@ pub struct RandomGameSetupCapture {
     pub topology: RetailTopologyByte,
     pub nation: MajorNationId,
     pub country_name: String,
-    pub difficulty: u8,
+    pub difficulty: Difficulty,
     pub localized_names: bool,
 }
 
@@ -162,7 +167,7 @@ mod tests {
             topology: RetailTopologyByte::from_retail_byte(0),
             nation: MajorNationId::new(6),
             country_name: "Purtast".to_owned(),
-            difficulty: 0,
+            difficulty: Difficulty::Introductory,
             localized_names: true,
         }
     }
@@ -213,7 +218,7 @@ mod tests {
                 "topology": expected.topology.retail_byte(),
                 "nation": expected.nation.get(),
                 "country_name": expected.country_name,
-                "difficulty": expected.difficulty,
+                "difficulty": expected.difficulty.retail_byte(),
                 "localized_names": expected.localized_names,
             }},
         });

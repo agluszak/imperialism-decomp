@@ -5,7 +5,9 @@
 
 #include "game/city/TCity.h"
 #include "game/city/TPopulationMgr.h"
+#include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
+#include "game/military_domain_types.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/nation_globals.h"
@@ -364,8 +366,10 @@ JSON_Value* CaptureCity(int slot) {
                          static_cast<int>(city->starvationPopulationLoss08));
   json_object_set_number(object, "serialized_state", static_cast<int>(city->serializedState0a));
   json_object_set_number(object, "phase_counter", static_cast<int>(city->cityPhaseCounter0c));
-  json_object_set_value(object, "metrics_0e", CaptureShortArray(city->cityMetricsBlock0E, 0x1e));
-  json_object_set_value(object, "metrics_4a", CaptureShortArray(city->cityMetricsBlock4A, 9));
+  json_object_set_value(object, "military_recruit_count_by_kind",
+                        CaptureShortArray(city->militaryRecruitCountByKind, kMilitaryUnitKindCount));
+  json_object_set_value(object, "civilian_recruit_count_by_kind",
+                        CaptureShortArray(city->civilianRecruitCountByKind, kCivilianUnitKindCount));
   json_object_set_value(object, "order_count_by_type",
                         CaptureShortArray(city->orderCountByType5c, kIndustryActionSlotCount));
   json_object_set_number(object, "rolling_item_production_score",
