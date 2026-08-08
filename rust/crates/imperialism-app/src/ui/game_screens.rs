@@ -1,7 +1,5 @@
 use crate::AppState;
-use crate::ui::catalog::{
-    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
-};
+use crate::ui::catalog::{SpawnedView, UiCatalogResource, spawn_view};
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::{Activate, Button as UiButton};
@@ -87,34 +85,32 @@ impl Plugin for GameScreensPlugin {
 #[derive(Component, Clone, Debug, Eq, PartialEq)]
 struct GameScreenRoot(ScopedViewId);
 
-fn enter_game_screen(
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
-    state: Res<State<AppState>>,
-) {
-    let current = *state.get();
+fn enter_game_screen(world: &mut World) {
+    let current = *world.resource::<State<AppState>>().get();
     let Some(view_id) = view_id_for_state(current) else {
         return;
     };
-    let Some(view) = find_view(catalog.catalog(), &view_id) else {
+    let Some(view) = world
+        .resource::<UiCatalogResource>()
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == view_id)
+        .cloned()
+    else {
         return;
     };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
-    if !bind_game_screen_nav(&mut commands, view, &spawned) {
-        commands.entity(spawned.root).despawn();
+    let spawned = spawn_view(world, &view);
+    if !bind_game_screen_nav(world, &view, &spawned) {
+        world.entity_mut(spawned.root).despawn();
         return;
     }
-    commands
-        .entity(spawned.root)
+    world
+        .entity_mut(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
 }
 
-fn bind_game_screen_nav(
-    commands: &mut Commands,
-    view: &CatalogView,
-    spawned: &SpawnedView,
-) -> bool {
+fn bind_game_screen_nav(world: &mut World, view: &CatalogView, spawned: &SpawnedView) -> bool {
     let Some(trade) = control_under_parents(view, spawned, "trad", TOOLBAR_PARENT_TAGS) else {
         return false;
     };
@@ -133,14 +129,14 @@ fn bind_game_screen_nav(
         (city, GameScreenNavAction::City),
         (diplomacy, GameScreenNavAction::Diplomacy),
     ] {
-        commands
-            .entity(entity)
+        world
+            .entity_mut(entity)
             .insert((UiButton, action))
             .remove::<InteractionDisabled>();
     }
     if let Some(leave) = control_under_parents(view, spawned, "end ", LEAVE_PARENT_TAGS) {
-        commands
-            .entity(leave)
+        world
+            .entity_mut(leave)
             .insert((UiButton, GameScreenNavAction::LeaveToMap))
             .remove::<InteractionDisabled>();
     }
@@ -222,30 +218,30 @@ mod tests {
     #[derive(Resource)]
     struct TestSpawned(SpawnedView);
 
-    fn enter_game_screen_structure_only(
-        mut commands: Commands,
-        catalog: Res<UiCatalogResource>,
-        state: Res<State<AppState>>,
-    ) {
-        let current = *state.get();
+    fn enter_game_screen_structure_only(world: &mut World) {
+        let current = *world.resource::<State<AppState>>().get();
         let Some(view_id) = view_id_for_state(current) else {
             return;
         };
-        let catalog = catalog.catalog();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == view_id)
-            .unwrap();
-        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
+        let (logical_resolution, view) = {
+            let catalog = world.resource::<UiCatalogResource>().catalog();
+            let view = catalog
+                .views
+                .iter()
+                .find(|view| view.id == view_id)
+                .cloned()
+                .unwrap();
+            (catalog.logical_resolution, view)
+        };
+        let spawned = spawn_view_nodes(world, logical_resolution, &view);
         assert!(
-            bind_game_screen_nav(&mut commands, view, &spawned),
+            bind_game_screen_nav(world, &view, &spawned),
             "toolbar nav controls"
         );
-        commands.insert_resource(TestSpawned(spawned.clone()));
-        commands
-            .entity(spawned.root)
+        world
+            .entity_mut(spawned.root)
             .insert((GameScreenRoot(view_id), DespawnOnExit(current)));
+        world.insert_resource(TestSpawned(spawned));
     }
 
     fn app_at(state: AppState) -> App {

@@ -1,7 +1,5 @@
 use crate::AppState;
-use crate::ui::catalog::{
-    SpawnedView, UiCatalogResource, UiPictureResources, find_view, spawn_view,
-};
+use crate::ui::catalog::{SpawnedView, UiCatalogResource, spawn_view};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
@@ -37,26 +35,26 @@ pub(crate) fn register_main_menu_logic(app: &mut App) {
     app.add_observer(on_main_menu_activate);
 }
 
-fn enter_main_menu(
-    mut commands: Commands,
-    catalog: Res<UiCatalogResource>,
-    mut pictures: UiPictureResources,
-) {
-    let Some(view) = find_view(catalog.catalog(), &main_menu_view_id()) else {
+fn enter_main_menu(world: &mut World) {
+    let view_id = main_menu_view_id();
+    let Some(view) = world
+        .resource::<UiCatalogResource>()
+        .catalog()
+        .views
+        .iter()
+        .find(|view| view.id == view_id)
+        .cloned()
+    else {
         return;
     };
-    let spawned = spawn_view(&mut commands, catalog.catalog(), view, &mut pictures);
-    bind_main_menu_actions(&mut commands, view, &spawned);
-    commands
-        .entity(spawned.root)
+    let spawned = spawn_view(world, &view);
+    bind_main_menu_actions(world, &view, &spawned);
+    world
+        .entity_mut(spawned.root)
         .insert(DespawnOnExit(AppState::MainMenu));
 }
 
-pub(crate) fn bind_main_menu_actions(
-    commands: &mut Commands,
-    view: &CatalogView,
-    spawned: &SpawnedView,
-) {
+pub(crate) fn bind_main_menu_actions(world: &mut World, view: &CatalogView, spawned: &SpawnedView) {
     for node in &view.nodes {
         if !node.interactive {
             continue;
@@ -64,21 +62,21 @@ pub(crate) fn bind_main_menu_actions(
         let entity = spawned.nodes[&node.id];
         match node.tag.0.as_str() {
             "rand" => {
-                commands
-                    .entity(entity)
+                world
+                    .entity_mut(entity)
                     .insert((UiButton, MainMenuAction::RandomGame))
                     .remove::<InteractionDisabled>();
             }
             "quit" => {
-                commands
-                    .entity(entity)
+                world
+                    .entity_mut(entity)
                     .insert((UiButton, MainMenuAction::Quit))
                     .remove::<InteractionDisabled>();
             }
             _ => {
                 // Retain visible but disabled Specialized menu choices.
-                commands
-                    .entity(entity)
+                world
+                    .entity_mut(entity)
                     .insert((UiButton, InteractionDisabled));
             }
         }
@@ -129,20 +127,24 @@ mod tests {
         app
     }
 
-    fn enter_main_menu_structure_only(mut commands: Commands, catalog: Res<UiCatalogResource>) {
+    fn enter_main_menu_structure_only(world: &mut World) {
         let view_id = main_menu_view_id();
-        let catalog = catalog.catalog();
-        let view = catalog
-            .views
-            .iter()
-            .find(|view| view.id == view_id)
-            .unwrap();
-        let spawned = spawn_view_nodes(&mut commands, catalog.logical_resolution, view);
-        bind_main_menu_actions(&mut commands, view, &spawned);
-        commands.insert_resource(TestSpawned(spawned.clone()));
-        commands
-            .entity(spawned.root)
+        let (logical_resolution, view) = {
+            let catalog = world.resource::<UiCatalogResource>().catalog();
+            let view = catalog
+                .views
+                .iter()
+                .find(|view| view.id == view_id)
+                .cloned()
+                .unwrap();
+            (catalog.logical_resolution, view)
+        };
+        let spawned = spawn_view_nodes(world, logical_resolution, &view);
+        bind_main_menu_actions(world, &view, &spawned);
+        world
+            .entity_mut(spawned.root)
             .insert(DespawnOnExit(AppState::MainMenu));
+        world.insert_resource(TestSpawned(spawned));
     }
 
     #[test]

@@ -72,22 +72,22 @@ impl Plugin for MapPreviewPlugin {
 
 /// Attach map/coat/flag components once when the random-setup screen is created.
 pub(crate) fn attach_random_setup_widgets(
-    commands: &mut Commands,
+    world: &mut World,
     view: &CatalogView,
     spawned: &SpawnedView,
 ) {
     debug_assert_eq!(view.id, random_setup_view_id());
     if let Some(entity) = spawned.tagged(view, MAP_TAG) {
-        commands.entity(entity).insert((
+        world.entity_mut(entity).insert((
             RandomSetupMapPreview::default(),
             RelativeCursorPosition::default(),
         ));
     }
     if let Some(entity) = spawned.tagged(view, COAT_TAG) {
-        commands.entity(entity).insert(RandomSetupCoat::default());
+        world.entity_mut(entity).insert(RandomSetupCoat::default());
     }
     if let Some(entity) = spawned.tagged(view, FLAG_TAG) {
-        commands.entity(entity).insert(RandomSetupFlag::default());
+        world.entity_mut(entity).insert(RandomSetupFlag::default());
     }
 }
 

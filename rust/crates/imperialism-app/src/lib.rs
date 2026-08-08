@@ -64,7 +64,11 @@ pub fn run(retail_assets: RetailAssets) {
             ui::MapPreviewPlugin,
             ui::CitySitePlugin,
             ui::GameScreensPlugin,
-        ));
-    app.world_mut().spawn(Camera2d);
+        ))
+        .add_systems(Startup, startup_scene.spawn());
     app.run();
+}
+
+fn startup_scene() -> impl SceneList {
+    bsn_list![Camera2d]
 }
