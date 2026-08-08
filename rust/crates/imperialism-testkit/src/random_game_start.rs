@@ -11,12 +11,16 @@ use serde::{Deserialize, Serialize};
 
 /// Currently compared blocks of the capital-selection-ready boundary.
 ///
-/// Starts with turn state plus human nation/city bootstrap. Tile post-passes,
-/// AI capitals, militia, RNG, and pending-work join as each retail operation lands.
+/// Includes turn state, human nation/city bootstrap, and the map-generation LCG after
+/// preview post-passes (icon variants → province capitals → GuaranteeResources). Tile
+/// bodies, AI capitals, militia, CRT/zone RNG, and pending-work join as each retail
+/// operation lands.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameStartBoundarySubset {
     pub turn: TurnState,
     pub human_nation: MajorNation,
+    /// `RngState.map_generation` after Accept-time post-passes.
+    pub map_generation: RetailLcg,
 }
 
 impl RandomGameStartBoundarySubset {
@@ -30,6 +34,7 @@ impl RandomGameStartBoundarySubset {
                 .major(major)
                 .cloned()
                 .expect("human nation slot is occupied"),
+            map_generation: state.rng.map_generation,
         }
     }
 
@@ -48,7 +53,7 @@ impl RandomGameStartBoundarySubset {
             },
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(0),
-                map_generation: RetailLcg::from_state(0),
+                map_generation: self.map_generation,
                 zone_status: RetailLcg::from_state(0),
             },
             market: Default::default(),
