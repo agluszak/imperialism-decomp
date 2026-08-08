@@ -52,7 +52,7 @@ impl CityState {
 
     /// Mirrors `TGreatPower::IncreaseRollingStock` against the owning city's
     /// lumber and steel stockpile.
-    pub fn increase_rolling_stock(&mut self, nation: &mut MajorNationState) -> bool {
+    pub(crate) fn increase_rolling_stock(&mut self, nation: &mut MajorNationState) -> bool {
         if self.stock_by_type[ResourceKind::Lumber] == 0
             || self.stock_by_type[ResourceKind::Steel] == 0
         {

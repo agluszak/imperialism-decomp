@@ -125,6 +125,19 @@ impl GameState {
         Ok(city.direct_transport(major, resource, requested))
     }
 
+    /// Spends one lumber and one steel to add one transport-capacity unit.
+    ///
+    /// A major nation without a city has no stockpile, so retail leaves it
+    /// unchanged and reports that no rolling stock was built.
+    pub fn increase_rolling_stock(&mut self, nation: MajorNationId) -> Result<bool, RuleError> {
+        if self.cities[nation].is_none() {
+            self.major_nation_parts_mut(nation)?;
+            return Ok(false);
+        }
+        let (_, major, city) = self.major_nation_city_parts_mut(nation)?;
+        Ok(city.increase_rolling_stock(major))
+    }
+
     /// Allocates the next transport capacity across the retail city-policy
     /// priority list.
     pub fn allocate_transport_needs(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
