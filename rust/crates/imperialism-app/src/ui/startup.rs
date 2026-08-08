@@ -7,10 +7,9 @@ use bevy::input::keyboard::KeyboardInput;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use imperialism_core::{
-    Difficulty, GameState, MajorNationId, RandomGameDraft,
-    RandomSetupPreview as GeneratedRandomSetupPreview, RetailCrtRng, RetailLcg, RetailTopologyByte,
-    create_random_game, generate_english_random_setup_name,
-    generate_random_setup_preview_with_clock_seed,
+    Difficulty, GameState, MajorNationId, RandomSetupPreview as GeneratedRandomSetupPreview,
+    RetailCrtRng, RetailLcg, RetailTopologyByte, create_random_game,
+    generate_english_random_setup_name, generate_random_setup_preview_with_clock_seed,
 };
 use imperialism_formats::{ScopedViewId, UiView as CatalogView};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -422,17 +421,11 @@ fn accept_random_setup(
     let Some(generated) = preview.preview.as_ref() else {
         return;
     };
-    let draft = RandomGameDraft {
-        topology: setup.topology,
-        nation: setup.nation,
-        country_name: setup.country_name.clone(),
-        difficulty: setup.difficulty,
-        localized_names: setup.localized_names,
-    };
-    let Ok(state) = create_random_game(&draft, generated) else {
-        return;
-    };
-    commands.insert_resource(GameSession(state));
+    commands.insert_resource(GameSession(create_random_game(
+        generated,
+        setup.nation,
+        setup.difficulty,
+    )));
 }
 
 fn regenerate_random_setup_planet(

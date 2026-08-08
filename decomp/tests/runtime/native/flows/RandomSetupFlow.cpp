@@ -12,7 +12,6 @@
 #include "game/ui_core/TEditText.h"
 #include "game/ui_core/TView.h"
 #include "game/ui_core/TViewMgr.h"
-#include "game/ui_core/TViewMgr.h"
 #include "game/ui_screens/TRadioTextCluster.h"
 #include "game/ui_screens/TSetupRandomMapPicture.h"
 #include "game/ui_tags_common.h"
@@ -20,6 +19,13 @@
 #include "parson.h"
 
 namespace {
+
+const char* DifficultyName(int value) {
+  static const char* const kNames[5] = {"introductory", "easy", "normal", "hard",
+                                        "nigh_on_impossible"};
+  ASSERT(value >= 0 && value < 5);
+  return kNames[value];
+}
 
 void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
   if (!run.RequestsCapture(kRuntimeCaptureRandomGameSetup) || run.HasCapture("random_game_setup")) {
@@ -63,7 +69,7 @@ void CaptureRandomGameSetup(RuntimeRun& run, TSetupRandomMapPicture* setup) {
   json_object_set_number(object, "topology", static_cast<unsigned int>(setup->wrapHorizontally98));
   json_object_set_number(object, "nation", static_cast<int>(setup->selectedNationSlot9A));
   json_object_set_string(object, "country_name", static_cast<LPCSTR>(countryName));
-  json_object_set_number(object, "difficulty", selectedDifficulty->controlValue3c);
+  json_object_set_string(object, "difficulty", DifficultyName(selectedDifficulty->controlValue3c));
   json_object_set_boolean(object, "localized_names", names->selectedTag88 != kControlTagRand);
   run.SetCapture("random_game_setup", value);
 }

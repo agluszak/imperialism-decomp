@@ -70,15 +70,15 @@ impl CityState {
                 0 => 2,
                 2 => 4,
                 4 => 8,
-                _ => capacity.wrapping_add(8),
+                _ => capacity + 8,
             },
             1 | 3 | 5 => match capacity {
                 0 => 1,
                 1 => 2,
                 2 => 4,
-                _ => capacity.wrapping_add(4),
+                _ => capacity + 4,
             },
-            _ => capacity.wrapping_add(1),
+            _ => capacity + 1,
         }
     }
 
@@ -177,10 +177,10 @@ impl CityState {
 
     pub fn set_power_plant_upgrade(&mut self, treasury: &mut i32, enabled: bool) {
         if enabled && !self.power_plant_upgrade_queued {
-            *treasury = treasury.wrapping_sub(5_000);
+            *treasury -= 5_000;
             self.power_plant_upgrade_queued = true;
         } else if !enabled && self.power_plant_upgrade_queued {
-            *treasury = treasury.wrapping_add(5_000);
+            *treasury += 5_000;
             self.power_plant_upgrade_queued = false;
         }
     }
@@ -217,12 +217,12 @@ mod tests {
             phase_counter: 0,
             military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
             civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
-            order_count_by_type: [0; 14],
+            order_count_by_type: crate::IndustryActionTable::default(),
             rolling_item_production_score: 0,
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: 1,
+            home_town_tile: Some(crate::TileId::new(1)),
             power_available: 0,
             stock_by_type: crate::ResourceTable::default(),
             production_orders: crate::ProductionTable::default(),
@@ -250,7 +250,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: [0; 4],
+            capacities: crate::NationCapacityTable::default(),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),

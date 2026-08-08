@@ -1,7 +1,8 @@
 use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, LaborPool, MajorNationTable,
-    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable, NationId, NationTable, PendingActionTable,
-    ProductionTable, ResourceTable, ShipId, TaskForceId, TileId,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, IndustryActionTable,
+    LaborPool, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable,
+    NationCapacityTable, NationId, NationTable, PendingActionTable, ProductionTable, ProvinceId,
+    RecruitKind, ResourceTable, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 use serde::{Deserialize, Serialize};
 
@@ -68,7 +69,7 @@ pub struct GameState {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TurnState {
     pub scenario_map_index_plus_one: i32,
-    pub economic_turn: i16,
+    pub economic_turn: i32,
     pub phase_code: i32,
     pub difficulty: Difficulty,
     pub active_nation: NationId,
@@ -84,9 +85,9 @@ pub struct WorldState {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TileState {
     pub terrain_kind: i8,
-    pub owner_nation: Option<i8>,
-    pub former_owner_nation: Option<i8>,
-    pub province: Option<i16>,
+    pub owner_nation: Option<TileOwnerTag>,
+    pub former_owner_nation: Option<TileOwnerTag>,
+    pub province: Option<ProvinceId>,
     pub development_classes: i8,
     pub edge_resources: [Option<i8>; 2],
     pub rail_flags: u8,
@@ -109,10 +110,9 @@ pub struct NationState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
-    pub encoded_nation_slot: i16,
     pub owner_nation: i16,
     pub treasury: i32,
-    pub home_tile: i32,
+    pub home_tile: Option<TileId>,
     pub need_level_by_nation: NationTable<i16>,
 }
 
@@ -167,7 +167,7 @@ pub struct DiplomacyGrant {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNationState {
     pub diplomacy_eligible: bool,
-    pub capacities: [i16; 4],
+    pub capacities: NationCapacityTable<i16>,
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
     pub diplomacy_policy_by_nation: NationTable<i16>,
@@ -209,12 +209,12 @@ pub struct CityState {
     pub military_recruit_count_by_kind: MilitaryUnitTable<i16>,
     /// Cumulative civilian recruit deltas by [`CivilianUnitKind`].
     pub civilian_recruit_count_by_kind: CivilianUnitTable<i16>,
-    pub order_count_by_type: [i16; 14],
+    pub order_count_by_type: IndustryActionTable<i16>,
     pub rolling_item_production_score: i32,
     pub low_production: bool,
     pub low_stock: bool,
     pub reserved_by_type: ResourceTable<i16>,
-    pub home_town_tile: i16,
+    pub home_town_tile: Option<TileId>,
     pub power_available: i16,
     pub stock_by_type: ResourceTable<i16>,
     pub production_orders: ProductionTable<i16>,
@@ -245,7 +245,6 @@ pub struct PopulationState {
 pub struct MilitaryUnitState {
     pub id: MilitaryUnitId,
     pub nation: NationId,
-    pub roster_index: u32,
     pub unit_type: MilitaryUnitKind,
     pub stationed_province: i16,
     pub order: i32,
@@ -266,7 +265,6 @@ pub struct MilitaryUnitState {
 pub struct CivilianUnitState {
     pub id: CivilianUnitId,
     pub nation: NationId,
-    pub roster_index: u32,
     pub unit_type: CivilianUnitKind,
     pub tile: Option<TileId>,
     pub order: i32,
@@ -375,7 +373,6 @@ pub struct MissionState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
-    pub turn_flow_status_flags: u32,
     pub nations: MajorNationTable<NationPendingWork>,
     pub war_transitions: Vec<WarTransition>,
 }
@@ -390,7 +387,7 @@ pub struct WarTransition {
 pub struct NationPendingWork {
     pub turn_events: Vec<TaggedValue>,
     pub proposals: Vec<TaggedValue>,
-    pub turn_summary: Vec<[i16; 4]>,
+    pub turn_summary: Vec<TurnSummary>,
     pub turn_start_events: Vec<TurnStartEventState>,
 }
 
@@ -398,6 +395,14 @@ pub struct NationPendingWork {
 pub struct TaggedValue {
     pub tag: i16,
     pub value: i16,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TurnSummary {
+    pub turn_tick: i32,
+    pub order_kind: i16,
+    pub payload: i16,
+    pub flags: i16,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -411,22 +416,6 @@ pub struct TurnStartEventState {
 pub struct LandSale {
     pub province: i16,
     pub nation: NationId,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum GameCommand {
-    PlaceTradeBid {
-        nation: NationId,
-        resource: crate::ResourceKind,
-        amount: i16,
-    },
-    PurchaseItem {
-        nation: NationId,
-        resource: crate::ResourceKind,
-        amount: i16,
-        price: i16,
-    },
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -447,7 +436,7 @@ pub enum GameEvent {
     },
     NationPendingActionQueued {
         nation: NationId,
-        action: u8,
+        action: crate::PendingActionKind,
         payload: i16,
     },
     TradeBidPlaced {
@@ -469,8 +458,7 @@ pub enum GameEvent {
     },
     RecruitmentAnnounced {
         nation: NationId,
-        specialist: bool,
-        unit_type: i16,
+        recruit_kind: RecruitKind,
         requested: i16,
     },
 }

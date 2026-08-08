@@ -26,13 +26,11 @@ mod units;
 
 pub use calendar::TurnCalendar;
 pub use city_buildings::{BuildingWindowState, ProductionSlot};
-pub use city_economy::CityEconomyError;
-pub use city_industry::{CityIndustryError, IndustryActionSlot};
-pub use create_random_game::{CreateRandomGameError, RandomGameDraft, create_random_game};
+pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
     ArmyId, CityId, CivilianUnitId, MajorNationId, MilitaryUnitId, MissionId, NationId, NavyId,
-    ProvinceId, ShipId, TaskForceId, TileId,
+    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, RetailTopologyByte, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -75,16 +73,19 @@ pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitState, DiplomacyGrant, DiplomacyGrantFlags, GameCommand, GameEvent, GameState,
-    LandSale, MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState,
-    NationData, NationPendingWork, NationState, NavyMissionState, PendingWorkState,
-    PopulationState, RngState, SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState,
-    TaskForceTarget, TileState, TurnStartEventState, TurnState, WarTransition, WorldState,
+    CivilianUnitState, DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, LandSale,
+    MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData,
+    NationPendingWork, NationState, NavyMissionState, PendingWorkState, PopulationState, RngState,
+    SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget, TileState,
+    TurnStartEventState, TurnState, TurnSummary, WarTransition, WorldState,
 };
 pub use tables::{
-    MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT, NationTable, PENDING_ACTION_COUNT,
-    PendingActionKind, PendingActionTable, ProductionTable,
+    IndustryActionSlot, IndustryActionTable, MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT,
+    NationCapacity, NationCapacityTable, NationTable, PENDING_ACTION_COUNT, PendingActionKind,
+    PendingActionTable, ProductionTable,
 };
 pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;
-pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};
+pub use units::{
+    CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable, RecruitKind,
+};

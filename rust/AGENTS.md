@@ -5,8 +5,8 @@ repository rules in `../AGENTS.md` plus this guide.
 
 ## Architecture
 
-- `imperialism-core` owns authoritative deterministic game state, rules, typed IDs, commands, and
-  ordered domain events. It must not depend on Bevy.
+- `imperialism-core` owns authoritative deterministic game state, rules, typed IDs, and ordered
+  domain events. It must not depend on Bevy.
 - `imperialism-formats` owns retail-file parsing, import, normalization, and retail-format ugliness.
 - `imperialism-app` owns Bevy presentation, input, audio, and lifecycle. ECS is a disposable
   projection, not the gameplay database.
@@ -35,8 +35,8 @@ the decomp uses them.
 - Do not reach for Ghidra or `reccmp` merely because the repository contains them. Binary-level
   investigation is a deliberate cross-implementation/reverse-engineering task, not part of normal
   Rust or Bevy development.
-- Put deterministic behavior in `imperialism-core`, then expose it through serializable commands and
-  events. Bevy systems submit commands and project results.
+- Put deterministic behavior in `imperialism-core` as direct operations that may return domain
+  events. Keep Bevy input and presentation outside the game model.
 - Compare complete post-state and ordered events, not only the symptom or a selected field.
 - Add the smallest focused Rust test that proves the primary behavior. Do not accumulate edge-case
   or representation-detail tests without a concrete regression they prevent. Add or extend a

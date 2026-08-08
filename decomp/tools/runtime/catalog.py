@@ -100,14 +100,6 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "random_game_normal_start",
-        "NormalRandomGameStartTest",
-        ("pr", "full"),
-        "self_consistency",
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
         "random_game_introductory_exits_newspaper",
         "IntroductoryRandomGameTest",
         ("pr", "full"),

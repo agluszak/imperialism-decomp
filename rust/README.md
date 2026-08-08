@@ -3,16 +3,15 @@
 This directory is an independent Cargo workspace and a first-class sibling of the C++
 reconstruction in `../decomp/`. Run Rust commands from this directory.
 
-- `imperialism-core` owns deterministic game state and the command/event boundary. It has no
-  Bevy dependency.
+- `imperialism-core` owns deterministic game state, direct rule operations, and domain events.
+  It has no Bevy dependency.
 - `imperialism-formats` parses retail files and accesses retail assets directly.
 - `imperialism-app` is the only Bevy-dependent crate and owns presentation and lifecycle.
-- `imperialism-testkit` reads and verifies canonical snapshots and runs the process-isolated
-  differential checks.
+- `imperialism-testkit` reads named semantic captures and runs process-isolated differential
+  checks.
 
-The only contracts shared with the C++ implementation are canonical snapshots and the serializable
-command/event protocol. Retail fixtures live in `../fixtures/retail/`. The Rust game state does
-not depend on C++ layouts or Bevy ECS entities.
+The C++ harness emits narrow named semantic captures. Retail fixtures live in
+`../fixtures/retail/`. The Rust game state does not depend on C++ layouts or Bevy ECS entities.
 
 ```sh
 cargo test --workspace

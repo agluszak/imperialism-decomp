@@ -1,23 +1,14 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, Difficulty, GameState,
-    LaborPool, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
-    MilitaryUnitState, MilitaryUnitTable, MissionData, MissionState, NATION_COUNT,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, Difficulty,
+    DiplomacyGrant, DiplomacyGrantFlags, GameState, IndustryActionTable, LaborPool, MajorNationId,
+    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
+    MilitaryUnitTable, MissionData, MissionState, NATION_COUNT, NationCapacityTable,
     NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
     NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
-    ProductionTable, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState,
-    TaskForceState, TileId, TileState, TurnState, WorldState,
-};
-use imperialism_core::{
-    AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitId, CivilianUnitState, DiplomacyGrant, DiplomacyGrantFlags, GameState, LaborPool,
-    MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitState,
-    MissionData, MissionState, NATION_COUNT, NationCommonState, NationData, NationId,
-    NationPendingWork, NationState, NationTable, NavyMissionState, PENDING_ACTION_COUNT,
-    PendingActionTable, PendingWorkState, PopulationState, ProductionTable, ResourceTable,
-    RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId, TileState,
-    TurnState, WorldState,
+    ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip,
+    ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -70,7 +61,6 @@ pub(crate) struct LegacySimulationPrefix {
     pub previous_mode: i16,
     pub nation_count: i32,
     pub minor_nation_count: i32,
-    pub turn_flow_status_flags: u32,
     pub difficulty: u8,
     pub game_setup: LegacyGameSetup,
     pub scenario_map_index_plus_one: i32,
@@ -210,19 +200,19 @@ impl LegacyCountryBase {
     ) -> Result<Vec<MilitaryUnitState>, LegacySaveError> {
         self.military_units
             .iter()
-            .enumerate()
-            .map(|(roster_index, unit)| {
-                let unit_type =
-                    MilitaryUnitKind::from_retail_index(unit.unit_type).ok_or_else(|| {
+            .map(|unit| {
+                let unit_type = u8::try_from(unit.unit_type)
+                    .ok()
+                    .and_then(MilitaryUnitKind::from_index)
+                    .ok_or_else(|| {
                         LegacySaveError::StateProjection(format!(
-                            "military unit type {} is outside the retail range 0..=29",
+                            "invalid military unit type {}",
                             unit.unit_type
                         ))
                     })?;
                 Ok(MilitaryUnitState {
                     id: MilitaryUnitId::new(unit.persistent_id),
                     nation,
-                    roster_index: roster_index as u32,
                     unit_type,
                     stationed_province: unit.stationed_province,
                     order: unit.order,
@@ -417,19 +407,19 @@ impl LegacyGreatPowerPostCity {
     ) -> Result<Vec<CivilianUnitState>, LegacySaveError> {
         self.civilian_units
             .iter()
-            .enumerate()
-            .map(|(roster_index, unit)| {
-                let unit_type =
-                    CivilianUnitKind::from_retail_index(unit.unit_type).ok_or_else(|| {
+            .map(|unit| {
+                let unit_type = u8::try_from(unit.unit_type)
+                    .ok()
+                    .and_then(CivilianUnitKind::from_index)
+                    .ok_or_else(|| {
                         LegacySaveError::StateProjection(format!(
-                            "civilian unit type {} is outside the retail range 0..=8",
+                            "invalid civilian unit type {}",
                             unit.unit_type
                         ))
                     })?;
                 Ok(CivilianUnitState {
                     id: CivilianUnitId::new(unit.persistent_id),
                     nation,
-                    roster_index: roster_index as u32,
                     unit_type,
                     tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
                     order: unit.order,
@@ -663,7 +653,7 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
 }
 
 impl LegacyCityState {
-    fn city_state(&self, home_town_tile: i16) -> CityState {
+    fn city_state(&self, home_town_tile: Option<TileId>) -> CityState {
         CityState {
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
@@ -676,7 +666,7 @@ impl LegacyCityState {
             civilian_recruit_count_by_kind: CivilianUnitTable::from_array(
                 self.civilian_recruit_count_by_kind,
             ),
-            order_count_by_type: self.order_count_by_type,
+            order_count_by_type: IndustryActionTable::from_array(self.order_count_by_type),
             rolling_item_production_score: self.rolling_item_production_score,
             low_production: self.low_production != 0,
             low_stock: self.low_stock != 0,
@@ -729,10 +719,9 @@ impl LegacyTerrainTile {
     fn tile_state(self) -> TileState {
         TileState {
             terrain_kind: self.terrain_kind,
-            owner_nation: (self.owner_nation >= 0).then_some(self.owner_nation),
-            former_owner_nation: (self.former_owner_nation >= 0)
-                .then_some(self.former_owner_nation),
-            province: (self.city_or_province_index >= 0).then_some(self.city_or_province_index),
+            owner_nation: optional_tile_owner_tag(self.owner_nation),
+            former_owner_nation: optional_tile_owner_tag(self.former_owner_nation),
+            province: optional_province_id(self.city_or_province_index),
             development_classes: self.development_classes,
             edge_resources: self
                 .edge_resources
@@ -742,6 +731,18 @@ impl LegacyTerrainTile {
             active_flags: self.active_flags,
         }
     }
+}
+
+fn optional_tile_owner_tag(value: i8) -> Option<TileOwnerTag> {
+    u8::try_from(value).ok().map(TileOwnerTag::new)
+}
+
+fn optional_province_id(value: i16) -> Option<ProvinceId> {
+    u16::try_from(value).ok().map(ProvinceId::new)
+}
+
+fn optional_tile_id(value: i32) -> Option<TileId> {
+    u16::try_from(value).ok().map(TileId::new)
 }
 
 fn required_state<T>(value: Option<T>, name: &str) -> Result<T, LegacySaveError> {
@@ -879,7 +880,7 @@ impl LegacySaveV62 {
         stream.skip(1)?;
         let nation_count = stream.read_le_i32()?;
         let minor_nation_count = stream.read_le_i32()?;
-        let turn_flow_status_flags = stream.read_le_u32()?;
+        stream.read_le_u32()?;
         let difficulty = stream.read_u8()?;
         let game_setup = read_game_setup(&mut stream)?;
         let scenario_map_index_plus_one = i32::from(game_setup.scenario_map_index_plus_one);
@@ -908,7 +909,6 @@ impl LegacySaveV62 {
             previous_mode,
             nation_count,
             minor_nation_count,
-            turn_flow_status_flags,
             difficulty,
             game_setup,
             scenario_map_index_plus_one,
@@ -1045,8 +1045,10 @@ impl LegacySaveV62 {
                     .post_city
                     .towns
                     .first()
-                    .map_or(great_power.country.home_tile as i16, |town| town.tile_index);
-                city.city_state(home_town)
+                    .map_or(great_power.country.home_tile, |town| {
+                        i32::from(town.tile_index)
+                    });
+                city.city_state(optional_tile_id(home_town))
             });
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
             civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id)?);
@@ -1093,25 +1095,21 @@ impl LegacySaveV62 {
         // The retail load path restores this counter before deserializing units.
         // Every TUnit constructor increments it once, even though ReadFrom then
         // replaces the unit's generated ID with the persisted ID.
-        let loaded_unit_count = military_units.len().wrapping_add(civilian_units.len());
-        let persistent_unit_id_counter = self
-            .simulation
-            .persistent_unit_id_counter
-            .wrapping_add(loaded_unit_count as i32);
+        let loaded_unit_count = military_units.len() + civilian_units.len();
+        let persistent_unit_id_counter = self.simulation.persistent_unit_id_counter
+            + i32::try_from(loaded_unit_count).expect("loaded unit count fits the game counter");
 
         Ok(GameState {
             turn: TurnState {
                 scenario_map_index_plus_one: self.simulation.scenario_map_index_plus_one,
-                economic_turn: self.simulation.economic_turn,
+                economic_turn: i32::from(self.simulation.economic_turn),
                 phase_code: i32::from(self.simulation.turn_state_code),
-                difficulty: Difficulty::from_retail_byte(self.simulation.difficulty).ok_or_else(
-                    || {
-                        LegacySaveError::StateProjection(format!(
-                            "difficulty {} is outside the retail range 0..=4",
-                            self.simulation.difficulty
-                        ))
-                    },
-                )?,
+                difficulty: Difficulty::try_from(self.simulation.difficulty).map_err(|_| {
+                    LegacySaveError::StateProjection(format!(
+                        "invalid difficulty {}",
+                        self.simulation.difficulty
+                    ))
+                })?,
                 active_nation: nation_id_from_retail_i16(self.simulation.active_nation)?,
                 selected_nation: context.selected_nation,
             },
@@ -1130,7 +1128,6 @@ impl LegacySaveV62 {
             task_forces: Vec::<TaskForceState>::new(),
             missions,
             pending: PendingWorkState {
-                turn_flow_status_flags: self.simulation.turn_flow_status_flags,
                 nations: pending_nations,
                 war_transitions: Vec::new(),
             },
@@ -1145,7 +1142,7 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, Leg
         &nation.country,
         NationData::Major(MajorNationState {
             diplomacy_eligible: prefix.diplomacy_eligible != 0,
-            capacities: prefix.capacities,
+            capacities: NationCapacityTable::from_array(prefix.capacities),
             grant_total_cost: prefix.grant_total_cost,
             unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
             diplomacy_policy_by_nation: NationTable::from_array(prefix.diplomacy_policy_by_nation),
@@ -1225,10 +1222,9 @@ fn diplomacy_grants_from_retail_entries(
 fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
     NationState {
         common: NationCommonState {
-            encoded_nation_slot: country.encoded_nation_slot,
             owner_nation: country.nation_slot,
             treasury: country.treasury,
-            home_tile: country.home_tile,
+            home_tile: optional_tile_id(country.home_tile),
             need_level_by_nation: NationTable::from_array(country.need_level_by_nation),
         },
         data,
@@ -2260,12 +2256,15 @@ fn read_game_setup(stream: &mut LegacyStream<'_>) -> Result<LegacyGameSetup, Str
 }
 
 fn nation_id_from_retail_i16(value: i16) -> Result<NationId, LegacySaveError> {
-    NationId::from_retail_slot(i64::from(value)).ok_or_else(|| {
-        LegacySaveError::StateProjection(format!(
-            "nation slot {value} is outside the retail range 0..={}",
-            NATION_COUNT - 1
-        ))
-    })
+    u8::try_from(value)
+        .ok()
+        .and_then(NationId::try_new)
+        .ok_or_else(|| {
+            LegacySaveError::StateProjection(format!(
+                "nation slot {value} is outside the retail range 0..={}",
+                NATION_COUNT - 1
+            ))
+        })
 }
 
 fn read_short_array<const N: usize>(
@@ -2330,7 +2329,6 @@ mod tests {
         assert_eq!(save.simulation.turn_state_code, 5);
         assert_eq!(save.simulation.nation_count, 7);
         assert_eq!(save.simulation.minor_nation_count, 16);
-        assert_eq!(save.simulation.turn_flow_status_flags, 0x40);
         assert_eq!(save.simulation.starting_year, 1914);
         assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).year(), 1914);
         assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).quarter(), 1);
@@ -2347,6 +2345,7 @@ mod tests {
         assert_eq!(world.tiles.len(), 6480);
         assert!(world.wraps_horizontally);
         assert_eq!(world.tiles[0].terrain_kind, 5);
+        assert_eq!(world.tiles[0].owner_nation, Some(TileOwnerTag::new(82)));
         assert!(!save.ocean.zones.is_empty());
         assert!(save.navy.ships.is_empty());
         assert!(save.navy.task_forces.is_empty());
@@ -2370,11 +2369,9 @@ mod tests {
         assert_eq!(country.military_units[0].strength, 500);
         let unit_states = country.military_unit_states(NationId::new(0)).unwrap();
         assert_eq!(unit_states.len(), 27);
-        assert_eq!(unit_states[0].roster_index, 0);
         assert_eq!(unit_states[0].id.get(), 275);
         assert_eq!(unit_states[0].unit_type, MilitaryUnitKind::Minutemen);
         assert_eq!(unit_states[0].order_target_tiles, [79; 3]);
-        assert_eq!(unit_states[26].roster_index, 26);
         assert_eq!(unit_states[26].id.get(), 301);
         assert_eq!(suffix_offset, 0x4e2a3);
 
@@ -2420,8 +2417,8 @@ mod tests {
         );
         assert_eq!(city_suffix_offset, 0x4fbf6);
 
-        let city_state = city.city_state(3_494);
-        assert_eq!(city_state.home_town_tile, 3_494);
+        let city_state = city.city_state(Some(TileId::new(3_494)));
+        assert_eq!(city_state.home_town_tile, Some(TileId::new(3_494)));
         assert_eq!(city_state.population.count_float_bits, 1_088_421_888);
 
         let (post_city, auto_offset) =
@@ -2557,7 +2554,6 @@ mod tests {
         assert!(expected_civilian_count > 0);
         assert_eq!(game.civilian_units.len(), expected_civilian_count);
         assert_eq!(game.civilian_units[0].nation, NationId::new(0));
-        assert_eq!(game.civilian_units[0].roster_index, 0);
         assert_eq!(
             game.civilian_units[0].id.get(),
             save.major_nations[0].great_power().post_city.civilian_units[0].persistent_id
@@ -2581,8 +2577,6 @@ mod tests {
                 .unwrap()
                 .turn_finished
         );
-        game.set_turn_flow_flags(0x40);
-        assert!(game.has_turn_flow_flags(0x40));
         game.turn.advance_season();
         assert_eq!(game.turn.economic_turn, 2);
         assert_eq!(
