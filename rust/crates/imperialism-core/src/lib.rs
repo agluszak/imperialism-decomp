@@ -18,6 +18,7 @@ mod population;
 mod production;
 mod random_map;
 mod random_map_terrain;
+mod random_map_water_merge;
 mod random_setup_name;
 mod recruitment;
 mod resources;

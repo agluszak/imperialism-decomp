@@ -373,6 +373,10 @@ fn generate_random_map_impl(
         let after_water_regions = attempts
             .as_ref()
             .map(|_| summarize_stage(&tiles, rng.state()));
+        // `AssignOrCompactCityRegionIdsAndRebuildBorders(0)` tail: border quads → span
+        // links → MergeSmallCityRegionsAndCompactIds. No LCG draws.
+        let _city_region_count =
+            crate::random_map_water_merge::merge_small_water_regions(&mut tiles, geometry.wraps_horizontally());
         apply_scenario_keyword_override(&mut tiles, scenario_tag, rng);
         #[cfg(feature = "differential-trace")]
         let after_keyword = attempts
@@ -974,7 +978,7 @@ fn rotate_map_columns(tiles: &mut [GeneratedTerrainTile]) -> usize {
 }
 
 /// Runs the water-region seed and flood subpass that retail places between map rotation and
-/// keyword overrides. The later border/span/merge work remains a separate generation slice, but
+/// keyword overrides. Border/span/merge follows immediately in [`generate_random_map_impl`];
 /// this subpass must live here because it owns both the water owner codes and the intervening LCG
 /// draws observed by every keyword and final seed-candidate validation.
 fn generate_water_region_ids(
@@ -1472,7 +1476,8 @@ mod tests {
                 1_698, 2_838, 2_013, 3_775, 4_732, 2_836, 2_680, 3_813, 3_833, 4_060, 4_608,
             ]
         );
-        assert_eq!(final_tile_hash(&generated.tiles), 0xbcd9_91d8);
+        // Includes post-merge water owner tags from AssignOrCompactCityRegionIdsAndRebuildBorders.
+        assert_eq!(final_tile_hash(&generated.tiles), 0xdf9d_e868);
         assert_eq!(rng.state(), 0x46a4_5026);
     }
 
