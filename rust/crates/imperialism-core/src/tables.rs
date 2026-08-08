@@ -37,7 +37,7 @@ pub type IndustryActionTable<T> = EnumMap<IndustryActionSlot, T>;
 #[serde(rename_all = "snake_case")]
 pub enum NationCapacity {
     AvailableMerchant,
-    TradeOffer,
+    MerchantCapacity,
     Transport,
     ReservedTransport,
 }

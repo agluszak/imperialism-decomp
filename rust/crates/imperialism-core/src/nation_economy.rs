@@ -108,7 +108,8 @@ impl MajorNationState {
     }
 
     pub fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
-        self.item_potentials[resource] = value.min(self.capacities[NationCapacity::TradeOffer]);
+        self.item_potentials[resource] =
+            value.min(self.capacities[NationCapacity::MerchantCapacity]);
     }
 
     pub fn remember_trade_bids(&mut self) {
@@ -145,8 +146,8 @@ impl MajorNationState {
         }
     }
 
-    pub(crate) fn trade_offer_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities[NationCapacity::TradeOffer]
+    pub(crate) fn merchant_capacity_mut(&mut self) -> &mut i16 {
+        &mut self.capacities[NationCapacity::MerchantCapacity]
     }
 
     pub(crate) fn transport_capacity_mut(&mut self) -> &mut i16 {
@@ -285,7 +286,7 @@ mod tests {
     fn trade_offer_leaves_preserve_capacity() {
         let mut state = nation();
         state.capacities[NationCapacity::AvailableMerchant] = 5;
-        state.capacities[NationCapacity::TradeOffer] = 3;
+        state.capacities[NationCapacity::MerchantCapacity] = 3;
         state.deliver_item(2);
         state.consume_merchant_capacity_for_purchase(1);
         assert_eq!(state.available_merchant_capacity(), 2);

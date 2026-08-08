@@ -168,7 +168,7 @@ JSON_Value* CaptureNationCapacities(const TGreatPower* nation) {
   JSON_Value* value = NewObject(object);
   json_object_set_number(object, "available_merchant",
                          static_cast<int>(nation->availableMerchantCapacity));
-  json_object_set_number(object, "trade_offer", static_cast<int>(nation->merchantCapacity));
+  json_object_set_number(object, "merchant_capacity", static_cast<int>(nation->merchantCapacity));
   json_object_set_number(object, "transport", static_cast<int>(nation->transportCapacity));
   json_object_set_number(object, "reserved_transport",
                          static_cast<int>(nation->reservedTransportCapacity));

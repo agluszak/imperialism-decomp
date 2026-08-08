@@ -68,7 +68,7 @@ impl CityState {
 
     /// Mirrors `TGreatPower::IncreaseMerchantMarine` against the owning
     /// city's lumber and fabric stockpile.
-    pub fn increase_merchant_marine(&mut self, nation: &mut MajorNationState) -> bool {
+    pub(crate) fn increase_merchant_marine(&mut self, nation: &mut MajorNationState) -> bool {
         if self.stock_by_type[ResourceKind::Lumber] <= 2
             || self.stock_by_type[ResourceKind::Fabric] == 0
         {
@@ -77,7 +77,7 @@ impl CityState {
 
         self.add_to_stock_and_verify(ResourceKind::Lumber, -3);
         self.add_to_stock_and_verify(ResourceKind::Fabric, -1);
-        let capacity = nation.trade_offer_capacity_mut();
+        let capacity = nation.merchant_capacity_mut();
         *capacity += 1;
         true
     }
@@ -296,7 +296,7 @@ mod tests {
         assert!(state.increase_merchant_marine(&mut owner));
         assert_eq!(state.stock_by_type[ResourceKind::Lumber], 0);
         assert_eq!(state.stock_by_type[ResourceKind::Fabric], 0);
-        assert_eq!(owner.capacities[NationCapacity::TradeOffer], 1);
+        assert_eq!(owner.capacities[NationCapacity::MerchantCapacity], 1);
     }
 
     #[test]
