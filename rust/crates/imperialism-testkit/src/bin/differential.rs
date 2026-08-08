@@ -73,6 +73,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    SettleTransportedItems {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     AddCreatedItems {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -217,6 +221,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .commit_purchased_items(nation)
                 .context("Rust purchased-item commit failed")?;
+        }
+        Operation::SettleTransportedItems { nation } => {
+            state
+                .settle_transported_items(nation)
+                .context("Rust transported-item settlement failed")?;
         }
         Operation::AddCreatedItems { nation } => {
             state

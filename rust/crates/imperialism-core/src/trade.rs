@@ -74,6 +74,13 @@ impl GameState {
         })
     }
 
+    /// Settles the nation's transported-item ledger into city stock.
+    pub fn settle_transported_items(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        let (_, major, city) = self.major_nation_city_parts_mut(nation)?;
+        major.settle_transported_items(city);
+        Ok(())
+    }
+
     /// Mirrors `TGreatPower::AddCreatedItems` at the city-and-transport phase
     /// boundary. Commodity targets remain available for the rest of the phase;
     /// only the city's settled stock changes here.
