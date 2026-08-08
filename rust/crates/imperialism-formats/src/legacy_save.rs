@@ -9,8 +9,8 @@ use imperialism_core::{
     NationId, NationPendingWork, NationState, NationTable, NavyMissionState, PENDING_ACTION_COUNT,
     PendingActionTable, PendingWorkState, PopulationState, ProductionTable, ProvinceId,
     ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState,
-    TileDevelopment, TileId, TileOwnerTag, TileState, TradeCommodityTable, TradeMarketRow,
-    TradeMarketState, TradePolicyScore, TurnState, WorldState,
+    TileDevelopment, TileId, TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable,
+    TradeMarketRow, TradeMarketState, TradePolicyScore, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -709,6 +709,7 @@ pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
     pub owner_nation: i8,
     pub former_owner_nation: i8,
+    pub adjacency_bits: u8,
     pub city_or_province_index: i16,
     pub development_classes: i8,
     pub pending_development_visibility: u8,
@@ -719,8 +720,8 @@ pub(crate) struct LegacyTerrainTile {
 }
 
 impl LegacyTerrainTile {
-    fn tile_state(self) -> TileState {
-        TileState {
+    fn tile_state(self, tile: usize) -> Result<TileState, LegacySaveError> {
+        Ok(TileState {
             terrain_kind: self.terrain_kind,
             owner_nation: optional_tile_owner_tag(self.owner_nation),
             former_owner_nation: optional_tile_owner_tag(self.former_owner_nation),
@@ -735,13 +736,34 @@ impl LegacyTerrainTile {
             edge_resources: self
                 .edge_resources
                 .map(|resource| (resource >= 0).then_some(resource)),
-            rail_flags: self.rail_flags,
+            transport_links: decode_tile_transport_links(
+                tile,
+                "transport_links",
+                self.adjacency_bits,
+            )?,
+            pending_rail_links: decode_tile_transport_links(
+                tile,
+                "pending_rail_links",
+                self.rail_flags,
+            )?,
             action_state: i16::from(self.action_state),
             active_flags: self.active_flags,
             region_marker: -1,
             river_sprite_code: 0,
-        }
+        })
     }
+}
+
+fn decode_tile_transport_links(
+    tile: usize,
+    field: &'static str,
+    bits: u8,
+) -> Result<TileTransportLinks, LegacySaveError> {
+    TileTransportLinks::from_bits(bits).ok_or(LegacySaveError::UnsupportedTileTransportLinkBits {
+        tile,
+        field,
+        bits: bits & !TileTransportLinks::all().bits(),
+    })
 }
 
 fn optional_tile_owner_tag(value: i8) -> Option<TileOwnerTag> {
@@ -808,16 +830,17 @@ pub(crate) struct LegacyMapState {
 }
 
 impl LegacyMapState {
-    fn world_state(&self) -> WorldState {
-        WorldState {
+    fn world_state(&self) -> Result<WorldState, LegacySaveError> {
+        Ok(WorldState {
             wraps_horizontally: self.no_horizontal_wrap == 0,
             tiles: self
                 .tiles
                 .iter()
                 .copied()
-                .map(LegacyTerrainTile::tile_state)
-                .collect(),
-        }
+                .enumerate()
+                .map(|(tile, terrain)| terrain.tile_state(tile))
+                .collect::<Result<_, _>>()?,
+        })
     }
 }
 
@@ -864,6 +887,12 @@ pub enum LegacySaveError {
         nation: i16,
         target: usize,
         entry: i16,
+    },
+    #[error("tile {tile} has unsupported {field} bits {bits:#04x}")]
+    UnsupportedTileTransportLinkBits {
+        tile: usize,
+        field: &'static str,
+        bits: u8,
     },
     #[error("{0}")]
     StateProjection(String),
@@ -1026,7 +1055,7 @@ impl LegacySaveV62 {
     }
 
     /// Projects the decoded strategic map into the semantic world state.
-    pub fn world_state(&self) -> WorldState {
+    pub fn world_state(&self) -> Result<WorldState, LegacySaveError> {
         self.map.world_state()
     }
 
@@ -1155,7 +1184,7 @@ impl LegacySaveV62 {
                 selected_nation: context.selected_nation,
             },
             persistent_unit_id_counter,
-            world: self.map.world_state(),
+            world: self.map.world_state()?,
             rng: RngState {
                 crt_rand: context.crt_rand_state,
                 map_generation: context.map_generation_lcg,
@@ -2322,6 +2351,7 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
         terrain_kind: bytes[0] as i8,
         former_owner_nation: bytes[3] as i8,
         owner_nation: bytes[4] as i8,
+        adjacency_bits: bytes[6],
         development_classes: bytes[0x0c] as i8,
         pending_development_visibility: bytes[0x0d],
         edge_resources: [bytes[0x11] as i8, bytes[0x12] as i8],
@@ -2470,7 +2500,7 @@ mod tests {
         assert_eq!(save.map.no_horizontal_wrap, 0);
         assert_eq!(save.map.tiles[0].terrain_kind, 5);
         assert_eq!(save.map.tiles[0].owner_nation, 82);
-        let world = save.world_state();
+        let world = save.world_state().unwrap();
         assert_eq!(world.tiles.len(), 6480);
         assert!(world.wraps_horizontally);
         assert_eq!(world.tiles[0].terrain_kind, 5);
@@ -2742,5 +2772,19 @@ mod tests {
                 remaining: 0,
             })
         ));
+    }
+
+    #[test]
+    fn rejects_unsupported_tile_transport_link_bits() {
+        for (field, bits) in [("transport_links", 0x40), ("pending_rail_links", 0x80)] {
+            assert!(matches!(
+                decode_tile_transport_links(7, field, bits),
+                Err(LegacySaveError::UnsupportedTileTransportLinkBits {
+                    tile: 7,
+                    field: actual_field,
+                    bits: actual_bits,
+                }) if actual_field == field && actual_bits == bits
+            ));
+        }
     }
 }

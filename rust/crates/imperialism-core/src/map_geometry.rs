@@ -54,6 +54,17 @@ impl HexDirection {
         Self::West,
         Self::NorthWest,
     ];
+
+    pub(crate) const fn opposite(self) -> Self {
+        match self {
+            Self::NorthEast => Self::SouthWest,
+            Self::East => Self::West,
+            Self::SouthEast => Self::NorthWest,
+            Self::SouthWest => Self::NorthEast,
+            Self::West => Self::East,
+            Self::NorthWest => Self::SouthEast,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -107,6 +118,12 @@ impl MapGeometry {
             return None;
         }
         self.tile(next_row as u16, next_column as u16)
+    }
+
+    pub(crate) fn direction_to(self, source: TileId, destination: TileId) -> Option<HexDirection> {
+        HexDirection::ALL
+            .into_iter()
+            .find(|&direction| self.neighbor(source, direction) == Some(destination))
     }
 
     pub fn neighbors(self, tile: TileId) -> [Option<TileId>; 6] {

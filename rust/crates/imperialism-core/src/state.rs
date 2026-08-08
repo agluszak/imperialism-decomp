@@ -1,9 +1,9 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
-    IndustryActionSlot, IndustryActionTable, LaborPool, MajorNationTable, MilitaryUnitId,
-    MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacityTable, NationId,
-    NationTable, PendingActionTable, ProductionTable, ProvinceId, RecruitKind, ResourceTable,
-    ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    HexDirection, IndustryActionSlot, IndustryActionTable, LaborPool, MajorNationTable,
+    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable, MinorNationTable, NationCapacityTable,
+    NationId, NationTable, PendingActionTable, ProductionTable, ProvinceId, RecruitKind,
+    ResourceTable, ShipId, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Serialize};
 
@@ -48,13 +48,46 @@ pub struct TileState {
     pub province: Option<ProvinceId>,
     pub development: TileDevelopment,
     pub edge_resources: [Option<i8>; 2],
-    pub rail_flags: u8,
+    /// Completed directional transport links from this tile.
+    pub transport_links: TileTransportLinks,
+    /// Directional rail sections that have been ordered but not yet completed.
+    pub pending_rail_links: TileTransportLinks,
     pub action_state: i16,
     pub active_flags: u16,
     /// `TTerrainStateRecord::regionSubtypeTag05`. Unassigned is `-1`.
     pub region_marker: i8,
     /// `TTerrainStateRecord::riverSpriteCode`. Zero means no river.
     pub river_sprite_code: u8,
+}
+
+bitflags::bitflags! {
+    /// The six directional links that may leave a strategic-map tile.
+    #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+    pub struct TileTransportLinks: u8 {
+        const NORTH_EAST = 1 << 0;
+        const EAST = 1 << 1;
+        const SOUTH_EAST = 1 << 2;
+        const SOUTH_WEST = 1 << 3;
+        const WEST = 1 << 4;
+        const NORTH_WEST = 1 << 5;
+    }
+}
+
+impl TileTransportLinks {
+    pub(crate) const fn for_direction(direction: HexDirection) -> Self {
+        match direction {
+            HexDirection::NorthEast => Self::NORTH_EAST,
+            HexDirection::East => Self::EAST,
+            HexDirection::SouthEast => Self::SOUTH_EAST,
+            HexDirection::SouthWest => Self::SOUTH_WEST,
+            HexDirection::West => Self::WEST,
+            HexDirection::NorthWest => Self::NORTH_WEST,
+        }
+    }
+
+    pub(crate) fn insert_direction(&mut self, direction: HexDirection) {
+        self.insert(Self::for_direction(direction));
+    }
 }
 
 /// One independently-progressed resource-development channel on a map tile.

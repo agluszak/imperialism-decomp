@@ -152,6 +152,11 @@ mod tests {
     }
 
     #[derive(Debug, Deserialize)]
+    struct RailConstructionCase {
+        civilian: CivilianUnitId,
+    }
+
+    #[derive(Debug, Deserialize)]
     struct PowerPlantUpgradeCase {
         nation: MajorNationId,
         enabled: bool,
@@ -444,6 +449,19 @@ mod tests {
             |state, case: ResourceDevelopmentCase| {
                 state.advance_resource_development(case.extractive_worker)?;
                 state.advance_resource_development(case.surface_worker)?;
+                Ok(())
+            },
+        )
+        .unwrap();
+    }
+
+    #[test]
+    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+    fn completed_rail_section() {
+        differential(
+            "completed_rail_section",
+            |state, case: RailConstructionCase| {
+                state.advance_rail_construction(case.civilian)?;
                 Ok(())
             },
         )
