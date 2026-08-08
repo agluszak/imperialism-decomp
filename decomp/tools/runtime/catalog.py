@@ -300,6 +300,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "trade_capacity_refresh",
+        "TradeCapacityRefreshTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "diplomacy_screen_operates",
         "DiplomacyScreenTest",
         ("full",),

@@ -1,28 +1,38 @@
 #![forbid(unsafe_code)]
 
 use anyhow::{Context, Result, bail};
-use clap::{Parser, Subcommand};
+use clap::{ArgGroup, Parser, Subcommand};
 use imperialism_core::{
     DiplomacyGrant, DiplomacyGrantFlags, GameState, MajorNationId, MilitaryUnitKind, NationId,
     ProductionConstraint, RecruitKind, ResourceCost, ResourceKind, ResourceTable, SkillBand,
     UnitCostProfile, UnitProductionOrder,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
-use imperialism_testkit::{first_serialized_difference, read_game_state};
+use imperialism_testkit::{first_serialized_difference, read_game_state, read_runtime_capture};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
 #[derive(Debug, Parser)]
-#[command(about = "Compare one semantic core operation with a native game-state capture")]
+#[command(
+    about = "Compare one semantic core operation with a native game-state capture",
+    group(ArgGroup::new("state_source")
+        .args(["runtime_result", "legacy_save", "input_capture"])
+        .required(true)
+        .multiple(false))
+)]
 struct Options {
     fixture: String,
 
-    #[arg(value_name = "RUNTIME_RESULT", required_unless_present = "legacy_save")]
+    #[arg(value_name = "RUNTIME_RESULT")]
     runtime_result: Option<PathBuf>,
 
-    #[arg(long, value_name = "SAVE", conflicts_with = "runtime_result")]
+    #[arg(long, value_name = "SAVE")]
     legacy_save: Option<PathBuf>,
+
+    /// Named GameState capture from the native result, used as the Rust pre-state.
+    #[arg(long, value_name = "CAPTURE")]
+    input_capture: Option<String>,
 
     #[arg(long, default_value_t = 1)]
     seed: u32,
@@ -71,6 +81,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    RefreshTradeCapacity {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     SetDiplomacyGrant {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
@@ -111,11 +125,15 @@ fn run(options: Options) -> Result<()> {
             cpp_result_path.display()
         )
     })?;
-    let mut rust_state = match (options.runtime_result, options.legacy_save) {
-        (Some(path), None) => read_game_state(&path)
+    let mut rust_state = match (
+        options.runtime_result.as_ref(),
+        options.legacy_save.as_ref(),
+        options.input_capture.as_deref(),
+    ) {
+        (Some(path), None, None) => read_game_state(path)
             .with_context(|| format!("reading Rust game state {}", path.display()))?,
-        (None, Some(path)) => {
-            let bytes = fs::read(&path)
+        (None, Some(path), None) => {
+            let bytes = fs::read(path)
                 .with_context(|| format!("reading retail save {}", path.display()))?;
             let save = LegacySaveV62::parse(&bytes).context("decoding retail save")?;
             save.game_state(LegacyGameStateContext {
@@ -126,6 +144,8 @@ fn run(options: Options) -> Result<()> {
             })
             .context("projecting retail save")?
         }
+        (None, None, Some(capture)) => read_runtime_capture(&cpp_result_path, capture)
+            .with_context(|| format!("reading native {capture} capture"))?,
         _ => unreachable!("Clap enforces exactly one Rust-state source"),
     };
 
@@ -197,6 +217,11 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .allocate_transport_needs(nation)
                 .context("Rust transport-need allocation failed")?;
+        }
+        Operation::RefreshTradeCapacity { nation } => {
+            state
+                .refresh_trade_capacity(nation)
+                .context("Rust trade-capacity refresh failed")?;
         }
         Operation::SetDiplomacyGrant {
             nation,
