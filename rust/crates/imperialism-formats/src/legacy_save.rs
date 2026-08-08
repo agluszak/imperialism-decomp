@@ -1,8 +1,9 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitId, CivilianUnitState, GameState, LaborPool, MajorNationId, MajorNationState,
-    MajorNationTable, MilitaryUnitId, MilitaryUnitState, MissionData, MissionState, NATION_COUNT,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, Difficulty, GameState,
+    LaborPool, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
+    MilitaryUnitState, MilitaryUnitTable, MissionData, MissionState, NATION_COUNT,
     NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
     NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
     ProductionTable, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState,
@@ -97,7 +98,7 @@ pub struct LegacyGameStateContext {
     pub crt_rand_state: u32,
     pub map_generation_lcg: u32,
     pub zone_status_lcg: u32,
-    pub selected_nation: i32,
+    pub selected_nation: NationId,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -193,28 +194,40 @@ pub(crate) struct LegacyCountryBase {
 }
 
 impl LegacyCountryBase {
-    fn military_unit_states(&self, nation: NationId) -> Vec<MilitaryUnitState> {
+    fn military_unit_states(
+        &self,
+        nation: NationId,
+    ) -> Result<Vec<MilitaryUnitState>, LegacySaveError> {
         self.military_units
             .iter()
             .enumerate()
-            .map(|(roster_index, unit)| MilitaryUnitState {
-                id: MilitaryUnitId::new(unit.persistent_id),
-                nation,
-                roster_index: roster_index as u32,
-                unit_type: unit.unit_type,
-                stationed_province: unit.stationed_province,
-                order: unit.order,
-                order_target: unit.order_target,
-                owner_nation: unit.owner_nation,
-                roster_id: unit.roster_id,
-                registered: unit.registered != 0,
-                order_target_tiles: unit.order_target_tiles,
-                order_target_mirrors: unit.order_target_mirrors,
-                name: unit.name.clone(),
-                strength: unit.strength,
-                era: unit.era,
-                experience: unit.experience,
-                battle_flags: unit.battle_flags,
+            .map(|(roster_index, unit)| {
+                let unit_type =
+                    MilitaryUnitKind::from_retail_index(unit.unit_type).ok_or_else(|| {
+                        LegacySaveError::StateProjection(format!(
+                            "military unit type {} is outside the retail range 0..=29",
+                            unit.unit_type
+                        ))
+                    })?;
+                Ok(MilitaryUnitState {
+                    id: MilitaryUnitId::new(unit.persistent_id),
+                    nation,
+                    roster_index: roster_index as u32,
+                    unit_type,
+                    stationed_province: unit.stationed_province,
+                    order: unit.order,
+                    order_target: unit.order_target,
+                    owner_nation: unit.owner_nation,
+                    roster_id: unit.roster_id,
+                    registered: unit.registered != 0,
+                    order_target_tiles: unit.order_target_tiles,
+                    order_target_mirrors: unit.order_target_mirrors,
+                    name: unit.name.clone(),
+                    strength: unit.strength,
+                    era: unit.era,
+                    experience: unit.experience,
+                    battle_flags: unit.battle_flags,
+                })
             })
             .collect()
     }
@@ -281,8 +294,8 @@ pub(crate) struct LegacyCityState {
     pub serialized_state: i16,
     pub phase_counter: i16,
     pub power_available: i16,
-    pub metrics_0e: [i16; 30],
-    pub metrics_4a: [i16; 9],
+    pub military_recruit_count_by_kind: [i16; 30],
+    pub civilian_recruit_count_by_kind: [i16; 9],
     pub order_count_by_type: [i16; 14],
     pub stock_by_type: [i16; RESOURCE_KIND_COUNT],
     pub production_orders: [i16; CITY_PRODUCTION_SLOT_COUNT],
@@ -388,22 +401,34 @@ pub(crate) struct LegacyGreatPowerPostCity {
 }
 
 impl LegacyGreatPowerPostCity {
-    fn civilian_unit_states(&self, nation: NationId) -> Vec<CivilianUnitState> {
+    fn civilian_unit_states(
+        &self,
+        nation: NationId,
+    ) -> Result<Vec<CivilianUnitState>, LegacySaveError> {
         self.civilian_units
             .iter()
             .enumerate()
-            .map(|(roster_index, unit)| CivilianUnitState {
-                id: CivilianUnitId::new(unit.persistent_id),
-                nation,
-                roster_index: roster_index as u32,
-                unit_type: unit.unit_type,
-                tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
-                order: unit.order,
-                order_target: unit.order_target,
-                owner_nation: unit.owner_nation,
-                roster_id: unit.roster_id,
-                registered: unit.registered != 0,
-                remaining_turns: unit.remaining_turns,
+            .map(|(roster_index, unit)| {
+                let unit_type =
+                    CivilianUnitKind::from_retail_index(unit.unit_type).ok_or_else(|| {
+                        LegacySaveError::StateProjection(format!(
+                            "civilian unit type {} is outside the retail range 0..=8",
+                            unit.unit_type
+                        ))
+                    })?;
+                Ok(CivilianUnitState {
+                    id: CivilianUnitId::new(unit.persistent_id),
+                    nation,
+                    roster_index: roster_index as u32,
+                    unit_type,
+                    tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
+                    order: unit.order,
+                    order_target: unit.order_target,
+                    owner_nation: unit.owner_nation,
+                    roster_id: unit.roster_id,
+                    registered: unit.registered != 0,
+                    remaining_turns: unit.remaining_turns,
+                })
             })
             .collect()
     }
@@ -635,8 +660,12 @@ impl LegacyCityState {
             starvation_population_loss: self.starvation_population_loss,
             serialized_state: self.serialized_state,
             phase_counter: self.phase_counter,
-            metrics_0e: self.metrics_0e,
-            metrics_4a: self.metrics_4a,
+            military_recruit_count_by_kind: MilitaryUnitTable::from_array(
+                self.military_recruit_count_by_kind,
+            ),
+            civilian_recruit_count_by_kind: CivilianUnitTable::from_array(
+                self.civilian_recruit_count_by_kind,
+            ),
             order_count_by_type: self.order_count_by_type,
             rolling_item_production_score: self.rolling_item_production_score,
             low_production: self.low_production != 0,
@@ -998,8 +1027,8 @@ impl LegacySaveV62 {
                     .map_or(great_power.country.home_tile as i16, |town| town.tile_index);
                 city.city_state(home_town)
             });
-            military_units.extend(great_power.country.military_unit_states(nation_id));
-            civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id));
+            military_units.extend(great_power.country.military_unit_states(nation_id)?);
+            civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id)?);
             if let LegacyMajorNationState::Auto(auto) = nation {
                 for (queue_index, mission) in auto.missions.iter().enumerate() {
                     missions.push(mission.mission_state(
@@ -1019,7 +1048,7 @@ impl LegacySaveV62 {
                 military_units.extend(
                     nation
                         .country
-                        .military_unit_states(NationId::new(slot as u8)),
+                        .military_unit_states(NationId::new(slot as u8))?,
                 );
             }
         }
@@ -1054,8 +1083,15 @@ impl LegacySaveV62 {
                 scenario_map_index_plus_one: self.simulation.scenario_map_index_plus_one,
                 economic_turn: self.simulation.economic_turn,
                 phase_code: i32::from(self.simulation.turn_state_code),
-                difficulty: i32::from(self.simulation.difficulty),
-                active_nation: i32::from(self.simulation.active_nation),
+                difficulty: Difficulty::from_retail_byte(self.simulation.difficulty).ok_or_else(
+                    || {
+                        LegacySaveError::StateProjection(format!(
+                            "difficulty {} is outside the retail range 0..=4",
+                            self.simulation.difficulty
+                        ))
+                    },
+                )?,
+                active_nation: nation_id_from_retail_i16(self.simulation.active_nation)?,
                 selected_nation: context.selected_nation,
             },
             persistent_unit_id_counter,
@@ -1775,8 +1811,8 @@ fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamErr
     let serialized_state = stream.read_le_i16()?;
     let phase_counter = stream.read_le_i16()?;
     let power_available = stream.read_le_i16()?;
-    let metrics_0e = read_be_short_array(stream)?;
-    let metrics_4a = read_be_short_array(stream)?;
+    let military_recruit_count_by_kind = read_be_short_array(stream)?;
+    let civilian_recruit_count_by_kind = read_be_short_array(stream)?;
     let order_count_by_type = read_be_short_array(stream)?;
     let stock_by_type = read_be_short_array(stream)?;
     let production_orders = read_be_short_array(stream)?;
@@ -1820,8 +1856,8 @@ fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamErr
         serialized_state,
         phase_counter,
         power_available,
-        metrics_0e,
-        metrics_4a,
+        military_recruit_count_by_kind,
+        civilian_recruit_count_by_kind,
         order_count_by_type,
         stock_by_type,
         production_orders,
@@ -2169,6 +2205,15 @@ fn read_game_setup(stream: &mut LegacyStream<'_>) -> Result<LegacyGameSetup, Str
     })
 }
 
+fn nation_id_from_retail_i16(value: i16) -> Result<NationId, LegacySaveError> {
+    NationId::from_retail_slot(i64::from(value)).ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "nation slot {value} is outside the retail range 0..={}",
+            NATION_COUNT - 1
+        ))
+    })
+}
+
 fn read_short_array<const N: usize>(
     stream: &mut LegacyStream<'_>,
 ) -> Result<[i16; N], StreamError> {
@@ -2269,10 +2314,11 @@ mod tests {
         assert_eq!(country.military_units[0].persistent_id, 0x113);
         assert_eq!(country.military_units[0].stationed_province, 79);
         assert_eq!(country.military_units[0].strength, 500);
-        let unit_states = country.military_unit_states(NationId::new(0));
+        let unit_states = country.military_unit_states(NationId::new(0)).unwrap();
         assert_eq!(unit_states.len(), 27);
         assert_eq!(unit_states[0].roster_index, 0);
         assert_eq!(unit_states[0].id.get(), 275);
+        assert_eq!(unit_states[0].unit_type, MilitaryUnitKind::Minutemen);
         assert_eq!(unit_states[0].order_target_tiles, [79; 3]);
         assert_eq!(unit_states[26].roster_index, 26);
         assert_eq!(unit_states[26].id.get(), 301);
@@ -2445,7 +2491,7 @@ mod tests {
                 crt_rand_state: 1,
                 map_generation_lcg: 0,
                 zone_status_lcg: 3_916_827_792,
-                selected_nation: 6,
+                selected_nation: NationId::new(6),
             })
             .unwrap();
         let expected_civilian_count = save

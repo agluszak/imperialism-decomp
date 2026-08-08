@@ -1,6 +1,7 @@
 use crate::{
-    CivilianUnitId, LaborPool, MajorNationTable, MilitaryUnitId, NationId, NationTable,
-    PendingActionTable, ProductionTable, ResourceTable, ShipId, TaskForceId, TileId,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, Difficulty, LaborPool, MajorNationTable,
+    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitTable, NationId, NationTable, PendingActionTable,
+    ProductionTable, ResourceTable, ShipId, TaskForceId, TileId,
 };
 use serde::{Deserialize, Serialize};
 
@@ -69,9 +70,9 @@ pub struct TurnState {
     pub scenario_map_index_plus_one: i32,
     pub economic_turn: i16,
     pub phase_code: i32,
-    pub difficulty: i32,
-    pub active_nation: i32,
-    pub selected_nation: i32,
+    pub difficulty: Difficulty,
+    pub active_nation: NationId,
+    pub selected_nation: NationId,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -186,8 +187,10 @@ pub struct CityState {
     pub starvation_population_loss: i16,
     pub serialized_state: i16,
     pub phase_counter: i16,
-    pub metrics_0e: [i16; 30],
-    pub metrics_4a: [i16; 9],
+    /// Cumulative military recruit deltas by [`MilitaryUnitKind`].
+    pub military_recruit_count_by_kind: MilitaryUnitTable<i16>,
+    /// Cumulative civilian recruit deltas by [`CivilianUnitKind`].
+    pub civilian_recruit_count_by_kind: CivilianUnitTable<i16>,
     pub order_count_by_type: [i16; 14],
     pub rolling_item_production_score: i32,
     pub low_production: bool,
@@ -225,7 +228,7 @@ pub struct MilitaryUnitState {
     pub id: MilitaryUnitId,
     pub nation: NationId,
     pub roster_index: u32,
-    pub unit_type: i16,
+    pub unit_type: MilitaryUnitKind,
     pub stationed_province: i16,
     pub order: i32,
     pub order_target: i16,
@@ -246,7 +249,7 @@ pub struct CivilianUnitState {
     pub id: CivilianUnitId,
     pub nation: NationId,
     pub roster_index: u32,
-    pub unit_type: i16,
+    pub unit_type: CivilianUnitKind,
     pub tile: Option<TileId>,
     pub order: i32,
     pub order_target: i16,
@@ -414,13 +417,13 @@ pub enum GameEvent {
     CivilianUnitRecruited {
         id: CivilianUnitId,
         nation: NationId,
-        unit_type: i16,
+        unit_type: CivilianUnitKind,
         tile: TileId,
     },
     MilitaryUnitRecruited {
         id: MilitaryUnitId,
         nation: NationId,
-        unit_type: i16,
+        unit_type: MilitaryUnitKind,
         province: i16,
         experience: i16,
     },

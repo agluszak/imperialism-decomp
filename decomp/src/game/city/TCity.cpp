@@ -213,8 +213,8 @@ void TCity::ICity(TGreatPower* ownerNation) {
   eventQueue274->recordSize14 = 4;
 
   cityPhaseCounter0c = 0;
-  memset(cityMetricsBlock0E, 0, sizeof(cityMetricsBlock0E));
-  memset(cityMetricsBlock4A, 0, sizeof(cityMetricsBlock4A));
+  memset(militaryRecruitCountByKind, 0, sizeof(militaryRecruitCountByKind));
+  memset(civilianRecruitCountByKind, 0, sizeof(civilianRecruitCountByKind));
   memset(orderCountByType5c, 0, sizeof(orderCountByType5c));
   rollingItemProductionScore78 = 0;
 }
@@ -238,10 +238,10 @@ void TCity::ReadFrom(TStream* stream) {
   stream->ReadBytes(&serializedState0a, 2);
   stream->ReadBytes(&cityPhaseCounter0c, 2);
   stream->ReadBytes(&powerAvailableB4, 2);
-  stream->ReadBytes(cityMetricsBlock0E, sizeof(cityMetricsBlock0E));
-  SwapShortArrayBytes(cityMetricsBlock0E, 0x1e);
-  stream->ReadBytes(cityMetricsBlock4A, sizeof(cityMetricsBlock4A));
-  SwapShortArrayBytes(cityMetricsBlock4A, 9);
+  stream->ReadBytes(militaryRecruitCountByKind, sizeof(militaryRecruitCountByKind));
+  SwapShortArrayBytes(militaryRecruitCountByKind, kMilitaryUnitKindCount);
+  stream->ReadBytes(civilianRecruitCountByKind, sizeof(civilianRecruitCountByKind));
+  SwapShortArrayBytes(civilianRecruitCountByKind, kCivilianUnitKindCount);
   stream->ReadBytes(orderCountByType5c, sizeof(orderCountByType5c));
   SwapShortArrayBytes(orderCountByType5c, 0x0e);
   stream->ReadBytes(&cityStockCottonB6, sizeof(short) * 0x17);
@@ -319,8 +319,8 @@ void TCity::WriteTo(TStream* stream) {
   stream->WriteBytes(&serializedState0a, 2);
   stream->WriteBytes(&cityPhaseCounter0c, 2);
   stream->WriteBytes(&powerAvailableB4, 2);
-  WriteShortArrayElems(stream, cityMetricsBlock0E, 0x1e);
-  WriteShortArrayElems(stream, cityMetricsBlock4A, 9);
+  WriteShortArrayElems(stream, militaryRecruitCountByKind, kMilitaryUnitKindCount);
+  WriteShortArrayElems(stream, civilianRecruitCountByKind, kCivilianUnitKindCount);
   WriteShortArrayElems(stream, orderCountByType5c, 0x0e);
   WriteShortArrayElems(stream, &cityStockCottonB6, 0x17);
   WriteShortArrayElems(stream, productionOrderTable1dc, 0x10);

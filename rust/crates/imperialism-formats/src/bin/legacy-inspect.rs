@@ -2,6 +2,7 @@
 
 use anyhow::{Context, bail};
 use clap::Parser;
+use imperialism_core::NationId;
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -41,7 +42,8 @@ fn inspect(path: &Path, game_state: Option<&[u32]>) -> anyhow::Result<()> {
             crt_rand_state: values[0],
             map_generation_lcg: values[1],
             zone_status_lcg: values[2],
-            selected_nation: values[3] as i32,
+            selected_nation: NationId::from_retail_slot(i64::from(values[3]))
+                .context("selected nation is outside the nation range")?,
         })
         .context("projecting semantic game state")?;
     serde_json::to_writer(std::io::stdout(), &game).context("encoding semantic game state")?;

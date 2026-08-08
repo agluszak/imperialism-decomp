@@ -6,6 +6,8 @@
 #include "game/ui_tags_screens.h"
 #include "game/ui_tags_widgets.h"
 #include "game/resource_domain_types.h"
+#include "game/civilian_domain_types.h"
+#include "game/military_domain_types.h"
 #include "game/net/TMultiplayerMgr.h"
 #include "game/ui_core/TWindow.h"
 #include "game/net/TMadnessButton.h"
@@ -36,8 +38,8 @@ struct TurnEvent2CPacket : NetMessage {
   int field910;                                     // +0x20
   int aidAllocationTotal;                           // +0x24
   unsigned char pad28[6];                           // +0x28
-  short cityMetricsBlock0E[0x1e];                   // +0x2e
-  short cityMetricsBlock4A[9];                      // +0x6a
+  short militaryRecruitCountByKind[kMilitaryUnitKindCount]; // +0x2e
+  short civilianRecruitCountByKind[kCivilianUnitKindCount]; // +0x6a
   short orderCountByType[kIndustryActionSlotCount]; // +0x7c
   int cityRollingItemProductionScore;               // +0x98
   short cityFieldB4;                                // +0x9c
@@ -1132,11 +1134,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     } else {
       city2C = g_apNationStates[nationSlot2C]->city;
     }
-    for (int metric0E = 0; metric0E < 0x1e; ++metric0E) {
-      city2C->cityMetricsBlock0E[metric0E] = composite->cityMetricsBlock0E[metric0E];
+    for (int kind = 0; kind < kMilitaryUnitKindCount; ++kind) {
+      city2C->militaryRecruitCountByKind[kind] = composite->militaryRecruitCountByKind[kind];
     }
-    for (int metric4A = 0; metric4A < 9; ++metric4A) {
-      city2C->cityMetricsBlock4A[metric4A] = composite->cityMetricsBlock4A[metric4A];
+    for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
+      city2C->civilianRecruitCountByKind[kind] = composite->civilianRecruitCountByKind[kind];
     }
     for (int industryActionSlot2C = 0; industryActionSlot2C < kIndustryActionSlotCount;
          ++industryActionSlot2C) {
@@ -2837,11 +2839,11 @@ void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
     city = nation->city;
   }
   if (city != 0) {
-    for (int i = 0; i < 0x1e; ++i) {
-      packet.cityMetricsBlock0E[i] = city->cityMetricsBlock0E[i];
+    for (int i = 0; i < kMilitaryUnitKindCount; ++i) {
+      packet.militaryRecruitCountByKind[i] = city->militaryRecruitCountByKind[i];
     }
-    for (int j = 0; j < 9; ++j) {
-      packet.cityMetricsBlock4A[j] = city->cityMetricsBlock4A[j];
+    for (int j = 0; j < kCivilianUnitKindCount; ++j) {
+      packet.civilianRecruitCountByKind[j] = city->civilianRecruitCountByKind[j];
     }
     for (int industryActionSlot = 0; industryActionSlot < kIndustryActionSlotCount;
          ++industryActionSlot) {

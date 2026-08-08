@@ -186,8 +186,8 @@ void TUnitOrder::Produce() {
   short ownerNationSlot = ownerNation->nationSlot;
 
   if (specialist == 0) {
-    cityContext->cityMetricsBlock4A[entryId] =
-        static_cast<short>(cityContext->cityMetricsBlock4A[entryId] + pendingDelta);
+    cityContext->civilianRecruitCountByKind[entryId] =
+        static_cast<short>(cityContext->civilianRecruitCountByKind[entryId] + pendingDelta);
     const short recruitSearchOrigin = cityContext->HomeTownTileId();
     const bool allowActiveFlag2 = entryId == 4;
     for (short i = 0; i < pendingDelta; ++i) {

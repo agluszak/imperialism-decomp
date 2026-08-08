@@ -99,6 +99,7 @@ fn reset_finished_flag(eligible: bool, finished: &mut bool) {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::{Difficulty, NationId};
 
     #[test]
     fn advances_the_retail_short_and_classifies_linear_phases() {
@@ -106,9 +107,9 @@ mod tests {
             scenario_map_index_plus_one: 0,
             economic_turn: i16::MAX,
             phase_code: 4,
-            difficulty: 1,
-            active_nation: 6,
-            selected_nation: 6,
+            difficulty: Difficulty::Easy,
+            active_nation: NationId::new(6),
+            selected_nation: NationId::new(6),
         };
         turn.advance_season();
         assert_eq!(turn.economic_turn, i16::MIN);

@@ -1,12 +1,12 @@
 use crate::{
-    CivilianUnitId, CivilianUnitState, GameEvent, GameState, MajorNationId, MapGeometry,
-    MilitaryUnitId, MilitaryUnitState, NationId, PendingActionKind, StepOutcome, TileId,
-    UnitProductionOrder, WorldState,
+    CivilianUnitId, CivilianUnitKind, CivilianUnitState, GameEvent, GameState, MajorNationId,
+    MapGeometry, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, NationId,
+    PendingActionKind, StepOutcome, TileId, UnitProductionOrder, WorldState,
 };
 
-const MILITARY_POWER_BY_UNIT_TYPE: [i16; 30] = [
+const MILITARY_POWER_BY_UNIT_TYPE: MilitaryUnitTable<i16> = MilitaryUnitTable::from_array([
     0, 1, 1, 1, 1, 1, 2, 2, 0, 2, 2, 2, 2, 2, 4, 4, 0, 4, 4, 4, 4, 10, 6, 8, 2, 2, 3, 0, 0, 0,
-];
+]);
 
 impl WorldState {
     pub fn find_reachable_recruit_spawn_tile(
@@ -50,18 +50,12 @@ impl WorldState {
 }
 
 impl GameState {
-    pub fn selected_military_power_score(&self, nation: NationId) -> Result<i32, RecruitmentError> {
+    pub fn selected_military_power_score(&self, nation: NationId) -> i32 {
         self.military_units
             .iter()
             .filter(|unit| unit.nation == nation)
-            .try_fold(0_i32, |power, unit| {
-                let unit_type = usize::try_from(unit.unit_type)
-                    .map_err(|_| RecruitmentError::InvalidMilitaryUnitType(unit.unit_type))?;
-                let contribution = MILITARY_POWER_BY_UNIT_TYPE
-                    .get(unit_type)
-                    .copied()
-                    .ok_or(RecruitmentError::InvalidMilitaryUnitType(unit.unit_type))?;
-                Ok(power.wrapping_add(i32::from(contribution)))
+            .fold(0_i32, |power, unit| {
+                power.wrapping_add(i32::from(MILITARY_POWER_BY_UNIT_TYPE[unit.unit_type]))
             })
     }
 
@@ -78,8 +72,8 @@ impl GameState {
             return Err(RecruitmentError::SpecialistOrder);
         }
 
-        let entry_index = usize::try_from(order.profile.entry_id)
-            .map_err(|_| RecruitmentError::InvalidEntryId(order.profile.entry_id))?;
+        let unit_kind = CivilianUnitKind::from_retail_index(order.profile.entry_id)
+            .ok_or(RecruitmentError::InvalidEntryId(order.profile.entry_id))?;
         let city_index =
             MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
         let city = self
@@ -87,9 +81,6 @@ impl GameState {
             .get(city_index)
             .and_then(Option::as_ref)
             .ok_or(RecruitmentError::MissingCity(nation))?;
-        if entry_index >= city.metrics_4a.len() {
-            return Err(RecruitmentError::InvalidEntryId(order.profile.entry_id));
-        }
         let home_tile = u16::try_from(city.home_town_tile)
             .ok()
             .filter(|tile| usize::from(*tile) < self.world.tiles.len())
@@ -99,7 +90,7 @@ impl GameState {
         let metric = &mut self.cities[city_index]
             .as_mut()
             .expect("city presence was checked")
-            .metrics_4a[entry_index];
+            .civilian_recruit_count_by_kind[unit_kind];
         *metric = metric.wrapping_add(pending_delta);
 
         let mut events = Vec::new();
@@ -108,7 +99,7 @@ impl GameState {
                 let Some(tile) = self.world.find_reachable_recruit_spawn_tile(
                     &self.civilian_units,
                     home_tile,
-                    order.profile.entry_id == 4,
+                    unit_kind == CivilianUnitKind::Engineer,
                 ) else {
                     continue;
                 };
@@ -123,7 +114,7 @@ impl GameState {
                     id,
                     nation,
                     roster_index,
-                    unit_type: order.profile.entry_id,
+                    unit_type: unit_kind,
                     tile: Some(tile),
                     order: 0,
                     order_target: -1,
@@ -141,7 +132,7 @@ impl GameState {
                 events.push(GameEvent::CivilianUnitRecruited {
                     id,
                     nation,
-                    unit_type: order.profile.entry_id,
+                    unit_type: unit_kind,
                     tile,
                 });
             }
@@ -150,11 +141,11 @@ impl GameState {
         events.push(GameEvent::RecruitmentAnnounced {
             nation,
             specialist: false,
-            unit_type: order.profile.entry_id,
+            unit_type: unit_kind.retail_index(),
             requested: pending_delta,
         });
         order.quantity = 0;
-        if order.profile.entry_id == 0 {
+        if unit_kind == CivilianUnitKind::Miner {
             let city = self.cities[city_index]
                 .as_mut()
                 .expect("city presence was checked");
@@ -176,13 +167,9 @@ impl GameState {
             return Err(RecruitmentError::CivilianOrder);
         }
 
-        let unit_type = usize::try_from(order.profile.entry_id)
-            .map_err(|_| RecruitmentError::InvalidMilitaryUnitType(order.profile.entry_id))?;
-        if unit_type >= MILITARY_POWER_BY_UNIT_TYPE.len() {
-            return Err(RecruitmentError::InvalidMilitaryUnitType(
-                order.profile.entry_id,
-            ));
-        }
+        let unit_kind = MilitaryUnitKind::from_retail_index(order.profile.entry_id).ok_or(
+            RecruitmentError::InvalidMilitaryUnitType(order.profile.entry_id),
+        )?;
         let nation_index =
             MajorNationId::from_nation(nation).ok_or(RecruitmentError::MissingCity(nation))?;
         let city = self
@@ -208,7 +195,6 @@ impl GameState {
                 .ok_or(RecruitmentError::InvalidHomeProvince(-1))?;
             let action_6 =
                 major.pending_action_status[PendingActionKind::ConqueredCapitalArmoryUpgrade];
-            self.selected_military_power_score(nation)?;
             (province, action_6 >= 0x33)
         } else {
             (0, false)
@@ -229,7 +215,7 @@ impl GameState {
                     id,
                     nation,
                     roster_index,
-                    unit_type: order.profile.entry_id,
+                    unit_type: unit_kind,
                     stationed_province: home_province,
                     order: 0,
                     order_target: -1,
@@ -240,7 +226,7 @@ impl GameState {
                     order_target_mirrors: [home_province; 3],
                     name: String::new(),
                     strength: 500,
-                    era: order.profile.entry_id / 8,
+                    era: unit_kind.spawn_era(),
                     experience,
                     battle_flags: 0,
                 };
@@ -253,12 +239,11 @@ impl GameState {
                 events.push(GameEvent::MilitaryUnitRecruited {
                     id,
                     nation,
-                    unit_type: order.profile.entry_id,
+                    unit_type: unit_kind,
                     province: home_province,
                     experience,
                 });
 
-                self.selected_military_power_score(nation)?;
                 let pending_status = self.nations[nation]
                     .as_ref()
                     .expect("nation presence was checked")
@@ -271,7 +256,7 @@ impl GameState {
                     } else {
                         i32::from(pending_status) - 0x33
                     };
-                    let military_power = self.selected_military_power_score(nation)?;
+                    let military_power = self.selected_military_power_score(nation);
                     if let Some(payload) =
                         pending_military_action_payload(military_power, current_level)
                     {
@@ -296,7 +281,7 @@ impl GameState {
         events.push(GameEvent::RecruitmentAnnounced {
             nation,
             specialist: true,
-            unit_type: order.profile.entry_id,
+            unit_type: unit_kind.retail_index(),
             requested: pending_delta,
         });
         insert_turn_summary(
@@ -305,12 +290,12 @@ impl GameState {
             [
                 self.turn.economic_turn,
                 3,
-                order.profile.entry_id,
+                unit_kind.retail_index(),
                 pending_delta,
             ],
         );
         order.quantity = 0;
-        if order.profile.entry_id == 0 {
+        if unit_kind == MilitaryUnitKind::Minutemen {
             let city = self.cities[nation_index]
                 .as_mut()
                 .expect("city presence was checked");
@@ -377,9 +362,9 @@ pub enum RecruitmentError {
 mod tests {
     use super::*;
     use crate::{
-        CityState, LaborPool, MajorNationState, MilitaryUnitState, NationCommonState, NationData,
-        NationState, PopulationState, ProductionConstraint, ResourceCost, ResourceKind, RngState,
-        SkillBand, TileState, TurnState, UnitCostProfile,
+        CityState, Difficulty, LaborPool, MajorNationState, MilitaryUnitState, NationCommonState,
+        NationData, NationState, PopulationState, ProductionConstraint, ResourceCost, ResourceKind,
+        RngState, SkillBand, TileState, TurnState, UnitCostProfile,
     };
 
     fn tile(owner_nation: i64) -> TileState {
@@ -402,7 +387,7 @@ mod tests {
             id: CivilianUnitId::new(id),
             nation: NationId::new(nation),
             roster_index: 0,
-            unit_type: 0,
+            unit_type: CivilianUnitKind::Miner,
             tile: Some(tile),
             order: 0,
             order_target: -1,
@@ -427,8 +412,8 @@ mod tests {
             starvation_population_loss: 0,
             serialized_state: 0,
             phase_counter: 0,
-            metrics_0e: [0; 30],
-            metrics_4a: [0; 9],
+            military_recruit_count_by_kind: crate::MilitaryUnitTable::default(),
+            civilian_recruit_count_by_kind: crate::CivilianUnitTable::default(),
             order_count_by_type: [0; 14],
             rolling_item_production_score: 0,
             low_production: false,
@@ -511,9 +496,9 @@ mod tests {
                 scenario_map_index_plus_one: 0,
                 economic_turn: 1,
                 phase_code: 5,
-                difficulty: 1,
-                active_nation: 0,
-                selected_nation: 0,
+                difficulty: Difficulty::Easy,
+                active_nation: NationId::new(0),
+                selected_nation: NationId::new(0),
             },
             persistent_unit_id_counter: 40,
             world: world(),
@@ -569,7 +554,12 @@ mod tests {
         order
     }
 
-    fn military_unit(id: i32, nation: u8, unit_type: i16, province: i16) -> MilitaryUnitState {
+    fn military_unit(
+        id: i32,
+        nation: u8,
+        unit_type: MilitaryUnitKind,
+        province: i16,
+    ) -> MilitaryUnitState {
         MilitaryUnitState {
             id: MilitaryUnitId::new(id),
             nation: NationId::new(nation),
@@ -585,7 +575,7 @@ mod tests {
             order_target_mirrors: [province; 3],
             name: String::new(),
             strength: 500,
-            era: unit_type / 8,
+            era: unit_type.spawn_era(),
             experience: 0,
             battle_flags: 0,
         }
@@ -662,7 +652,7 @@ mod tests {
             state.cities[MajorNationId::new(0)]
                 .as_ref()
                 .unwrap()
-                .metrics_4a[3],
+                .civilian_recruit_count_by_kind[CivilianUnitKind::Forester],
             2
         );
         assert_eq!(production.quantity, 0);
@@ -672,7 +662,7 @@ mod tests {
                 GameEvent::CivilianUnitRecruited {
                     id: CivilianUnitId::new(41),
                     nation: NationId::new(0),
-                    unit_type: 3,
+                    unit_type: CivilianUnitKind::Forester,
                     tile: first_neighbor,
                 },
                 GameEvent::RecruitmentAnnounced {
@@ -701,7 +691,7 @@ mod tests {
             state.cities[MajorNationId::new(0)]
                 .as_ref()
                 .unwrap()
-                .metrics_4a[0],
+                .civilian_recruit_count_by_kind[CivilianUnitKind::Miner],
             -2
         );
         assert_eq!(
@@ -752,7 +742,7 @@ mod tests {
                 id: MilitaryUnitId::new(41),
                 nation: NationId::new(0),
                 roster_index: 0,
-                unit_type: 24,
+                unit_type: MilitaryUnitKind::Sappers,
                 stationed_province: 17,
                 order: 0,
                 order_target: -1,
@@ -780,7 +770,7 @@ mod tests {
                 GameEvent::MilitaryUnitRecruited {
                     id: MilitaryUnitId::new(41),
                     nation: NationId::new(0),
-                    unit_type: 24,
+                    unit_type: MilitaryUnitKind::Sappers,
                     province: 17,
                     experience: 100,
                 },
@@ -800,7 +790,7 @@ mod tests {
         let mut state = game(home_tile);
         state.world.tiles[usize::from(home_tile.get())].province = Some(17);
         state.military_units = (0..14)
-            .map(|index| military_unit(41 + index, 0, 1, 17))
+            .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
             .collect();
         state.persistent_unit_id_counter = 54;
         let mut production = specialist_order(1, 2);
@@ -809,10 +799,7 @@ mod tests {
             .produce_specialist_recruits(NationId::new(0), &mut production)
             .unwrap();
 
-        assert_eq!(
-            state.selected_military_power_score(NationId::new(0)),
-            Ok(16)
-        );
+        assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
         assert_eq!(state.military_units[14].id, MilitaryUnitId::new(55));
         assert_eq!(state.military_units[14].roster_index, 14);
         assert_eq!(state.military_units[15].id, MilitaryUnitId::new(56));

@@ -3,7 +3,7 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use imperialism_core::{
-    MajorNationId, RetailCrtRng, RetailLcg, RetailTopologyByte,
+    Difficulty, MajorNationId, RetailCrtRng, RetailLcg, RetailTopologyByte,
     differential_trace::RandomMapTerrainCapture, generate_english_random_setup_name,
     generate_random_map, generate_random_setup_preview,
 };
@@ -92,7 +92,7 @@ fn check_initial_setup(result: &Path) -> Result<()> {
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.country_name,
-        setup.difficulty,
+        setup.difficulty.retail_byte(),
         setup.localized_names,
         preview.map.tiles.len(),
         preview.map.provinces.len(),
@@ -114,7 +114,7 @@ fn initial_defaults(clock_seed: u32) -> RandomGameSetupCapture {
         topology: DEFAULT_TOPOLOGY,
         nation,
         country_name,
-        difficulty: 0,
+        difficulty: Difficulty::Introductory,
         localized_names: true,
     }
 }
@@ -154,8 +154,8 @@ fn validate_setup(
     if actual.difficulty != expected.difficulty {
         bail!(
             "initial difficulty {} differs from retail default {}",
-            actual.difficulty,
-            expected.difficulty
+            actual.difficulty.retail_byte(),
+            expected.difficulty.retail_byte()
         );
     }
     if actual.localized_names != expected.localized_names {
@@ -181,7 +181,7 @@ mod tests {
                 topology: RetailTopologyByte::from_retail_byte(0),
                 nation: MajorNationId::new(6),
                 country_name: "Purtast".to_owned(),
-                difficulty: 0,
+                difficulty: Difficulty::Introductory,
                 localized_names: true,
             }
         );

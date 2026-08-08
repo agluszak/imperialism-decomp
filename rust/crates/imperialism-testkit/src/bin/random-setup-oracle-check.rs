@@ -76,7 +76,7 @@ fn main() -> Result<()> {
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.country_name,
-        setup.difficulty,
+        setup.difficulty.retail_byte(),
         setup.localized_names,
         preview.map.tiles.len(),
         preview.map.provinces.len(),

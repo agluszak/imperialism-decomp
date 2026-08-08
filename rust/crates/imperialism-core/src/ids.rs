@@ -20,7 +20,41 @@ macro_rules! id_type {
     };
 }
 
-id_type!(NationId, u8);
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct NationId(u8);
+
+impl NationId {
+    pub const COUNT: u8 = 23;
+
+    pub const fn new(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+
+    pub fn from_retail_slot(value: i64) -> Option<Self> {
+        let slot = u8::try_from(value).ok()?;
+        (slot < Self::COUNT).then_some(Self(slot))
+    }
+}
+
+impl<'de> Deserialize<'de> for NationId {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let value = i64::deserialize(deserializer)?;
+        Self::from_retail_slot(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!(
+                "nation ID {value} is outside the retail range 0..={}",
+                Self::COUNT - 1
+            ))
+        })
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
@@ -42,6 +76,10 @@ impl MajorNationId {
         }
     }
 
+    pub fn from_retail_slot(value: i64) -> Option<Self> {
+        NationId::from_retail_slot(value).and_then(Self::from_nation)
+    }
+
     pub const fn get(self) -> u8 {
         self.0
     }
@@ -56,16 +94,13 @@ impl<'de> Deserialize<'de> for MajorNationId {
     where
         D: serde::Deserializer<'de>,
     {
-        let value = u8::deserialize(deserializer)?;
-        if value < Self::COUNT {
-            Ok(Self(value))
-        } else {
-            Err(serde::de::Error::custom(format_args!(
-                "major-nation ID {value} is out of range"
-            )))
-        }
+        let value = i64::deserialize(deserializer)?;
+        Self::from_retail_slot(value).ok_or_else(|| {
+            serde::de::Error::custom(format_args!("major-nation ID {value} is out of range"))
+        })
     }
 }
+
 id_type!(TileId, u16);
 id_type!(ProvinceId, u16);
 id_type!(CityId, u16);

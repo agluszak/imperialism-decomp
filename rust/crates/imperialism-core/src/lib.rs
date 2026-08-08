@@ -5,6 +5,8 @@ mod calendar;
 mod city_buildings;
 mod city_economy;
 mod city_industry;
+mod create_random_game;
+mod difficulty;
 mod ids;
 mod map_geometry;
 mod nation_economy;
@@ -20,11 +22,14 @@ mod state;
 mod tables;
 mod trade;
 mod turn_flow;
+mod units;
 
 pub use calendar::TurnCalendar;
 pub use city_buildings::{BuildingWindowState, ProductionSlot};
 pub use city_economy::CityEconomyError;
 pub use city_industry::{CityIndustryError, IndustryActionSlot};
+pub use create_random_game::{CreateRandomGameError, RandomGameDraft, create_random_game};
+pub use difficulty::Difficulty;
 pub use ids::{
     ArmyId, CityId, CivilianUnitId, MajorNationId, MilitaryUnitId, MissionId, NationId, NavyId,
     ProvinceId, ShipId, TaskForceId, TileId,
@@ -82,3 +87,4 @@ pub use tables::{
 };
 pub use trade::RuleError;
 pub use turn_flow::TurnFlowError;
+pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};
