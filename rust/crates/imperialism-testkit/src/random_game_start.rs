@@ -12,27 +12,32 @@ use serde::{Deserialize, Serialize};
 
 /// Currently compared blocks of the capital-selection-ready boundary.
 ///
-/// Includes turn state, all nations, military units (minor militia), and the map/CRT RNG
-/// streams after Accept bootstrap. Tile bodies, zone RNG, and pending-work join next.
+/// Includes turn, world tiles, all nations, military units, and the three RNG streams
+/// after Accept bootstrap. Pending-work / empty unit lists join when those bootstrap
+/// paths land; then delete this allowlist for full `GameState` equality.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameStartBoundarySubset {
     pub turn: TurnState,
+    pub world: WorldState,
     pub majors: MajorNationTable<Option<MajorNation>>,
     pub minors: MinorNationTable<Option<MinorNation>>,
     pub military_units: Vec<MilitaryUnitState>,
     pub map_generation: RetailLcg,
     pub crt_rand: RetailCrtRng,
+    pub zone_status: RetailLcg,
 }
 
 impl RandomGameStartBoundarySubset {
     pub fn from_game_state(state: &GameState) -> Self {
         Self {
             turn: state.turn,
+            world: state.world.clone(),
             majors: state.nations.majors.clone(),
             minors: state.nations.minors.clone(),
             military_units: state.military_units.clone(),
             map_generation: state.rng.map_generation,
             crt_rand: state.rng.crt_rand,
+            zone_status: state.rng.zone_status,
         }
     }
 
@@ -41,14 +46,11 @@ impl RandomGameStartBoundarySubset {
         GameState {
             turn: self.turn,
             persistent_unit_id_counter: 0,
-            world: WorldState {
-                wraps_horizontally: false,
-                tiles: Vec::new(),
-            },
+            world: self.world,
             rng: RngState {
                 crt_rand: self.crt_rand,
                 map_generation: self.map_generation,
-                zone_status: RetailLcg::from_state(0),
+                zone_status: self.zone_status,
             },
             market: Default::default(),
             nations: Nations {

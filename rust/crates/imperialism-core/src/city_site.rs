@@ -200,13 +200,14 @@ fn flood_fill_region_marker(world: &mut WorldState, tile: TileId, owner_nation: 
 }
 
 fn next_region_marker(world: &WorldState) -> i8 {
+    // Retail `g_nNextRegionMarkerId` starts at 1, not 0.
     let max = world
         .tiles
         .iter()
         .map(|tile| tile.region_marker)
         .filter(|&marker| marker >= 0)
         .max()
-        .unwrap_or(-1);
+        .unwrap_or(0);
     max.saturating_add(1)
 }
 
@@ -330,6 +331,10 @@ mod tests {
         assert_eq!(
             state.world.tiles[usize::from(tile.get())].active_flags,
             PLACE_CITY_ACTIVE_FLAGS
+        );
+        assert!(
+            state.world.tiles[usize::from(tile.get())].region_marker >= 1,
+            "PlaceCity region markers follow g_nNextRegionMarkerId starting at 1"
         );
         assert_eq!(
             state

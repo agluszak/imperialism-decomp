@@ -119,9 +119,9 @@ pub fn create_random_game(
         rng: RngState {
             crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),
-            // Zone stream is reseeded from the clock/runtime seed after map build; Accept
-            // then advances it in GenerateProvinceNames (not ported here yet).
-            zone_status: RetailLcg::from_state(0),
+            // `GenerateProvinceNames` hashes the scenario tag then reseeds zone status from
+            // `ClockDerivedPrngSeed()` (= runtime seed under the test harness).
+            zone_status: RetailLcg::from_state(runtime_seed),
         },
         market: TradeMarketState::default(),
         nations,
@@ -1276,6 +1276,11 @@ mod tests {
             state.world.tiles[usize::from(ai_home.get())].active_flags,
             PLACE_CITY_ACTIVE_FLAGS
         );
+        assert!(
+            state.world.tiles[usize::from(ai_home.get())].region_marker >= 1,
+            "retail region markers start at 1"
+        );
+        assert_eq!(state.rng.zone_status, RetailLcg::from_state(1));
 
         assert_eq!(
             state.nations.majors.iter().flatten().count(),
