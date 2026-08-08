@@ -6,9 +6,9 @@ an analysis workspace and downstream projection; nothing flows back
 automatically). It derives everything from the two canonical inputs:
 
   1. **The source model** (tools.source_model — the single scanner/parser):
-     marker claims with names parsed from the C++ declarations, reviewed
-     library identities as LIBRARY claims, `// VTABLE:` classes, and
-     `// GLOBAL:` names.
+     marker claims with names parsed from the C++ declarations, library
+     identity markers (`// LIBRARY:` / identity `// SYNTHETIC:`), `// VTABLE:`
+     classes, and `// GLOBAL:` names.
   2. **The raw inventory** (config/original_entities.csv): fallback advisory
      names ONLY for claimed addresses whose source spelling could not be
      parsed. Unclaimed addresses are never touched — source has no opinion on
@@ -84,8 +84,8 @@ def main() -> int:
     vtables = model.vtables
     extents = load_verified_vtable_extents(REPO_ROOT / "config" / "verified_vtable_extents.csv")
     embedded_labels = embedded_label_entries()
-    # Claimed entities only: source spelling when parsed, reviewed name for
-    # reviewed claims, inventory advisory ONLY as fallback for claimed
+    # Claimed entities only: source spelling when parsed, identity-marker
+    # name for LIBRARY/SYNTHETIC overlays, inventory advisory ONLY as fallback
     # addresses whose spelling could not be parsed. Unclaimed addresses are
     # never pushed — the DB's own analysis stands.
     inventory = {}

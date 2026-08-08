@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the reviewed library-identity layer.
-
-Covers the loader (tools.mfc.reviewed_identities), the generation-time overlay
-(tools.generate_symbols), and the exact-consistency gate
-(tools.workflow.check_library_identity), including the rand regression pin.
-"""
+"""Tests for library-identity markers and their symbols overlay."""
 
 from __future__ import annotations
 
@@ -13,146 +8,145 @@ import unittest
 from pathlib import Path
 
 from tools.generate_symbols import generate
-from tools.mfc.reviewed_identities import load_reviewed_identities
-from tools.workflow.check_library_identity import check_override, prototype_declares_name
-
-RAND_ROW = (
-    "0x005e83f0|rand|_rand|int __cdecl rand(void)|libcmt|rand.obj|evidence_here"
+from tools.source_model import build_model
+from tools.workflow.check_library_identity import (
+    IdentityCheck,
+    check_override,
+    prototype_declares_name,
 )
-HEADER = "address|name|symbol|prototype|library_family|object_member|evidence"
 
 
 def _write(path: Path, text: str) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     return path
 
 
-class LoadOverridesTests(unittest.TestCase):
-    def _overrides(self, body: str) -> Path:
-        tmp = Path(tempfile.mkdtemp())
-        return _write(tmp / "ov.csv", f"{HEADER}\n{body}\n")
-
-    def test_parses_rand(self) -> None:
-        overrides = load_reviewed_identities(self._overrides(RAND_ROW))
-        self.assertEqual(len(overrides), 1)
-        ov = overrides[0]
-        self.assertEqual(ov.address, 0x005E83F0)
-        self.assertEqual(ov.name, "rand")
-        self.assertEqual(ov.symbol, "_rand")
-        self.assertEqual(ov.prototype, "int __cdecl rand(void)")
-        self.assertEqual(ov.object_member, "rand.obj")
-
-    def test_duplicate_address_rejected(self) -> None:
-        with self.assertRaises(SystemExit):
-            load_reviewed_identities(self._overrides(f"{RAND_ROW}\n{RAND_ROW}"))
-
-    def test_symbol_only_row_accepted(self) -> None:
-        # Migrated annotation rows (bead 8mo.11) may carry only a symbol (or only
-        # evidence); the raw-inventory spelling stays authoritative for the rest.
-        ok = "0x005e83f0||_rand||libcmt|rand.obj|e"
-        self.assertEqual(load_reviewed_identities(self._overrides(ok))[0].symbol, "_rand")
-
-    def test_anonymous_evidence_free_row_rejected(self) -> None:
-        bad = "0x005e83f0||||libcmt|rand.obj|"
-        with self.assertRaises(SystemExit):
-            load_reviewed_identities(self._overrides(bad))
+class StructuredMarkerTests(unittest.TestCase):
+    def test_parses_name_symbol_prototype(self) -> None:
+        repo = Path(tempfile.mkdtemp())
+        _write(
+            repo / "src" / "lib.cpp",
+            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// name: rand\n"
+            "// symbol: _rand\n"
+            "// prototype: int __cdecl rand(void)\n",
+        )
+        (repo / "include").mkdir(exist_ok=True)
+        claim = build_model(repo).functions[0x5E83F0]
+        self.assertEqual(claim.kind, "LIBRARY")
+        self.assertEqual(claim.name, "rand")
+        self.assertEqual(claim.symbol, "_rand")
+        self.assertEqual(claim.prototype, "int __cdecl rand(void)")
 
 
 class ApplySymbolsTests(unittest.TestCase):
-    def setUp(self) -> None:
-        self.tmp = Path(tempfile.mkdtemp())
-        self.overrides = load_reviewed_identities(
-            _write(self.tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n")
+    def _repo(self, inventory_body: str, marker: str) -> Path:
+        repo = Path(tempfile.mkdtemp()) / "repo"
+        (repo / "config").mkdir(parents=True)
+        (repo / "include").mkdir()
+        _write(
+            repo / "config" / "original_entities.csv",
+            "address|name|symbol|size|type|prototype|provenance\n" + inventory_body,
         )
-
-    def _symbols(self, body: str) -> Path:
-        return _write(
-            self.tmp / "symbols.csv",
-            "address|name|symbol|size|type|prototype|provenance\n" + body,
-        )
-
-    def _repo(self, inventory_body: str) -> Path:
-        """A minimal repo tree: inventory + reviewed file + empty src/include."""
-        repo = self.tmp / "repo"
-        (repo / "config").mkdir(parents=True, exist_ok=True)
-        (repo / "src").mkdir(exist_ok=True)
-        (repo / "include").mkdir(exist_ok=True)
-        _write(repo / "config" / "original_entities.csv",
-               "address|name|symbol|size|type|prototype|provenance\n" + inventory_body)
-        _write(repo / "config" / "reviewed_library_identities.csv",
-               f"{HEADER}\n{RAND_ROW}\n")
+        _write(repo / "src" / "lib.cpp", marker)
         return repo
 
     def test_overlay_rewrites_invented_name(self) -> None:
         repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
-            "undefined GenerateThreadLocalRandom15()|\n"
+            "undefined GenerateThreadLocalRandom15()|\n",
+            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// name: rand\n"
+            "// symbol: _rand\n"
+            "// prototype: int __cdecl rand(void)\n",
         )
-        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
-                       repo / "gen")
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
         row = _row(out, 0x5E83F0)
         self.assertEqual(row["name"], "rand")
         self.assertEqual(row["symbol"], "_rand")
         self.assertEqual(row["prototype"], "int __cdecl rand(void)")
-        # The committed inventory itself is untouched (raw; never merged).
         inv_row = _row(repo / "config" / "original_entities.csv", 0x5E83F0)
         self.assertEqual(inv_row["name"], "GenerateThreadLocalRandom15")
 
     def test_overlay_adds_missing_row(self) -> None:
-        repo = self._repo("400000|other||4|function|undefined other()|\n")
-        out = generate(repo, "IMPERIALISM", "config/original_entities.csv",
-                       repo / "gen")
+        repo = self._repo(
+            "400000|other||4|function|undefined other()|\n",
+            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// name: rand\n"
+            "// symbol: _rand\n"
+            "// prototype: int __cdecl rand(void)\n",
+        )
+        out = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
         row = _row(out, 0x5E83F0)
         self.assertIsNotNone(row)
-        self.assertEqual(row["provenance"], "reviewed_library_identity")
+        self.assertEqual(row["provenance"], "library_identity_marker")
 
     def test_overlay_is_idempotent(self) -> None:
         repo = self._repo(
             "5e83f0|GenerateThreadLocalRandom15||45|function|"
-            "undefined GenerateThreadLocalRandom15()|\n"
+            "undefined GenerateThreadLocalRandom15()|\n",
+            "// LIBRARY: IMPERIALISM 0x005e83f0\n"
+            "// name: rand\n"
+            "// symbol: _rand\n"
+            "// prototype: int __cdecl rand(void)\n",
         )
-        out1 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
-                        repo / "gen")
+        out1 = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
         first = out1.read_text(encoding="utf-8")
-        out2 = generate(repo, "IMPERIALISM", "config/original_entities.csv",
-                        repo / "gen")
+        out2 = generate(repo, "IMPERIALISM", "config/original_entities.csv", repo / "gen")
         self.assertEqual(first, out2.read_text(encoding="utf-8"))
-
 
 
 class GateTests(unittest.TestCase):
     def setUp(self) -> None:
-        tmp = Path(tempfile.mkdtemp())
-        self.ov = load_reviewed_identities(_write(tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n"))[0]
+        self.ov = IdentityCheck(
+            address=0x5E83F0,
+            name="rand",
+            symbol="_rand",
+            prototype="int __cdecl rand(void)",
+            kind="LIBRARY",
+        )
 
     def test_prototype_declares_name(self) -> None:
         self.assertTrue(prototype_declares_name("int __cdecl rand(void)", "rand"))
         self.assertFalse(prototype_declares_name("int __cdecl foo(void)", "rand"))
-        # operator/dtor names are accepted structurally.
-        self.assertTrue(prototype_declares_name("void operator delete(void*)", "CObject::operator delete"))
+        self.assertTrue(
+            prototype_declares_name("void operator delete(void*)", "CObject::operator delete")
+        )
 
     def test_passes_when_applied(self) -> None:
-        symbols = {0x5E83F0: {
-            "name": "rand", "symbol": "_rand",
-            "prototype": "int __cdecl rand(void)", "type": "function",
-        }}
-        ownership = {0x5E83F0: "library"}
-        self.assertEqual(check_override(self.ov, symbols, ownership), [])
+        symbols = {
+            0x5E83F0: {
+                "name": "rand",
+                "symbol": "_rand",
+                "prototype": "int __cdecl rand(void)",
+                "type": "function",
+            }
+        }
+        self.assertEqual(check_override(self.ov, symbols, {0x5E83F0: "library"}), [])
 
     def test_fails_on_name_drift(self) -> None:
-        symbols = {0x5E83F0: {
-            "name": "GenerateThreadLocalRandom15", "symbol": "",
-            "prototype": "undefined GenerateThreadLocalRandom15()", "type": "function",
-        }}
+        symbols = {
+            0x5E83F0: {
+                "name": "GenerateThreadLocalRandom15",
+                "symbol": "",
+                "prototype": "undefined GenerateThreadLocalRandom15()",
+                "type": "function",
+            }
+        }
         problems = check_override(self.ov, symbols, {0x5E83F0: "library"})
         self.assertTrue(any("name=" in p for p in problems))
         self.assertTrue(any("symbol=" in p for p in problems))
 
     def test_fails_when_not_library_owned(self) -> None:
-        symbols = {0x5E83F0: {
-            "name": "rand", "symbol": "_rand",
-            "prototype": "int __cdecl rand(void)", "type": "function",
-        }}
+        symbols = {
+            0x5E83F0: {
+                "name": "rand",
+                "symbol": "_rand",
+                "prototype": "int __cdecl rand(void)",
+                "type": "function",
+            }
+        }
         problems = check_override(self.ov, symbols, {0x5E83F0: "autogen"})
         self.assertTrue(any("ownership=" in p for p in problems))
 

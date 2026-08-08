@@ -4,9 +4,9 @@
     just library-identify 0x005e83f0
 
 Aggregates every maintained identity signal for an address — current curated
-symbols.csv row, ownership, reviewed override, and the relocation-masked object
-match — into a single verdict. Run this before naming any function in the MSVC/MFC
-library range, or any CRT-shaped callee elsewhere.
+symbols.csv row, ownership, source LIBRARY/SYNTHETIC identity marker, and the
+relocation-masked object match — into a single verdict. Run this before naming
+any function in the MSVC/MFC library range, or any CRT-shaped callee elsewhere.
 """
 
 from __future__ import annotations
@@ -18,10 +18,10 @@ from pathlib import Path
 from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.reviewed_identities import load_reviewed_identities
+from tools.generate_symbols import identity_overlay_claims
+from tools.source_model import build_model
 
 DEFAULT_SYMBOLS = "config/original_entities.csv"
-DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
 DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 
 # Dense MFC/CRT library region recovered from the retail executable.
@@ -32,7 +32,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("address", help="Function address, e.g. 0x005e83f0")
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
     return parser.parse_args()
 
@@ -58,9 +57,8 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    from tools.source_model import build_model
-
-    claim = build_model(repo_root).functions.get(address)
+    model = build_model(repo_root)
+    claim = model.functions.get(address)
     ownership_row = (
         {
             "ownership": "library" if claim.kind == "LIBRARY" else (
@@ -71,12 +69,7 @@ def main() -> int:
         if claim else None
     )
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)
-
-    overrides = {
-        identity.address: identity
-        for identity in load_reviewed_identities(resolve_repo_path(repo_root, args.overrides))
-    }
-    override = overrides.get(address)
+    identity = identity_overlay_claims(model).get(address)
 
     name = (symbols_row or {}).get("name", "") or "<none>"
     symbol = (symbols_row or {}).get("symbol", "") or "<missing>"
@@ -103,16 +96,16 @@ def main() -> int:
         print("Object matcher:      not available "
               "(build-msvc500/evidence/library/msvc500_library_oracle.csv not built yet)")
 
-    if override is not None:
+    if identity is not None:
         print()
-        print(f"Reviewed override:   {override.name}  symbol={override.symbol}")
-        print(f"  prototype:         {override.prototype}")
-        print(f"  library/member:    {override.library_family}/{override.object_member or '?'}")
-        print(f"  evidence:          {override.evidence}")
+        print(f"Identity marker:     {identity.kind} in {identity.file}")
+        print(f"  name:              {identity.name or '<none>'}")
+        print(f"  symbol:            {identity.symbol or '<none>'}")
+        print(f"  prototype:         {identity.prototype or '<none>'}")
 
     print()
-    if override is not None:
-        verdict = "confirmed library function (reviewed override)"
+    if identity is not None and identity.kind == "LIBRARY":
+        verdict = "confirmed library function (source LIBRARY marker)"
     elif oracle_row is not None and (oracle_row.get("match_kind") or "").startswith("unique"):
         verdict = f"confirmed library function (unique object match: {oracle_row.get('symbol')})"
     elif ownership == "library":
@@ -120,13 +113,14 @@ def main() -> int:
     elif in_dense:
         verdict = (
             "UNOWNED inside the dense library range — do NOT behaviourally name. "
-            "Add a reviewed override or run the object matcher."
+            "Add a // LIBRARY: marker in src/game/core/library_identities.cpp "
+            "or run the object matcher."
         )
     else:
         verdict = (
             "not identified as library. If the body is CRT/MFC-shaped (LCG, ctype, "
             "string/mem helper, MFC macro), do NOT invent a game name — add a "
-            "reviewed override to config/reviewed_library_identities.csv."
+            "// LIBRARY: marker in src/game/core/library_identities.cpp."
         )
     print(f"Verdict:             {verdict}")
     return 0
