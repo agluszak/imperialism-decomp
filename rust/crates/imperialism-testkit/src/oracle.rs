@@ -9,7 +9,7 @@ use imperialism_core::{
 use std::path::Path;
 
 use crate::{
-    RandomGameSetupCapture, RandomGameStartBoundarySubset, RuntimeResult, assert_game_state_eq,
+    RandomGameSetupCapture, RuntimeResult, assert_game_state_eq,
     first_serialized_difference, generate_and_compare_coarse_trace,
     generate_and_compare_terrain_capture,
 };
@@ -234,8 +234,7 @@ pub fn check_random_setup_initial(result: &Path) -> Result<()> {
     Ok(())
 }
 
-/// Compare `create_random_game` against a native pre-capital `game_state` capture
-/// using the allowlisted [`RandomGameStartBoundarySubset`].
+/// Compare `create_random_game` against a native pre-capital `game_state` capture.
 pub fn check_random_game_start(result: &Path) -> Result<()> {
     let runtime = RuntimeResult::read(result)
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -264,20 +263,17 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
         .capture("game_state")
         .with_context(|| format!("could not read {}", result.display()))?;
 
-    let expected_subset = RandomGameStartBoundarySubset::from_game_state(&expected);
-    let actual_subset = RandomGameStartBoundarySubset::from_game_state(&actual);
-    assert_game_state_eq(
-        &expected_subset.into_comparable(),
-        &actual_subset.into_comparable(),
-    )?;
+    assert_game_state_eq(&expected, &actual)?;
 
     println!(
-        "random-game start boundary matched allowlisted blocks: seed={:?} topology={} nation={} difficulty={:?} tiles={} map_lcg={:#x} crt={:#x} zone={:#x}",
+        "random-game start boundary matched: seed={:?} topology={} nation={} difficulty={:?} tiles={} units={} missions={} map_lcg={:#x} crt={:#x} zone={:#x}",
         setup.planet_seed,
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.difficulty,
         actual.world.tiles.len(),
+        actual.military_units.len(),
+        actual.missions.len(),
         actual.rng.map_generation.state(),
         actual.rng.crt_rand.state(),
         actual.rng.zone_status.state(),

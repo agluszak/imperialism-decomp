@@ -2,7 +2,6 @@
 
 mod differential;
 mod oracle;
-mod random_game_start;
 mod runtime_capture;
 
 pub use differential::{assert_game_state_eq, differential, differential_from_result};
@@ -17,7 +16,6 @@ pub use oracle::{
     check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
     check_snapshot, check_terrain,
 };
-pub use random_game_start::RandomGameStartBoundarySubset;
 pub use runtime_capture::{RuntimeCaptureError, RuntimeResult};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
