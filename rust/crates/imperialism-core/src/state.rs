@@ -146,6 +146,24 @@ impl NationState {
     }
 }
 
+bitflags::bitflags! {
+    #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+    #[serde(transparent)]
+    pub struct DiplomacyGrantFlags: u8 {
+        const RECURRING = 0b0000_0001;
+    }
+}
+
+/// A current diplomatic grant to one nation.
+///
+/// `None` in the owning table means no grant. A present zero-valued grant is
+/// retained because it still participates in retail diplomacy processing.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyGrant {
+    pub amount: i32,
+    pub flags: DiplomacyGrantFlags,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MajorNationState {
     pub diplomacy_eligible: bool,
@@ -153,7 +171,7 @@ pub struct MajorNationState {
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
     pub diplomacy_policy_by_nation: NationTable<i16>,
-    pub diplomacy_grant_by_nation: NationTable<i16>,
+    pub diplomacy_grants_by_nation: NationTable<Option<DiplomacyGrant>>,
     pub need_current_by_type: ResourceTable<i16>,
     pub need_target_by_type: ResourceTable<i16>,
     pub relation_delta_current: ResourceTable<i16>,

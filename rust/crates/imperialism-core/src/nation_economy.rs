@@ -7,7 +7,7 @@ const RESERVED_TRANSPORT_CAPACITY_INDEX: usize = 3;
 impl MajorNationState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
     pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
-        let available = treasury.wrapping_add(self.diplomacy_budget_base / 100);
+        let available = treasury + self.diplomacy_budget_base / 100;
         if available <= 0 { 0 } else { available }
     }
 
@@ -189,7 +189,7 @@ mod tests {
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),

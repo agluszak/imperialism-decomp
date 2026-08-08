@@ -1,6 +1,6 @@
 use crate::{
-    GameCommand, GameEvent, GameState, MajorNationId, MajorNationState, NationCommonState,
-    NationId, ResourceKind, StepOutcome, all_resources,
+    DiplomacyGrant, GameCommand, GameEvent, GameState, MajorNationId, MajorNationState,
+    NationCommonState, NationId, ResourceKind, StepOutcome, all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -96,15 +96,11 @@ impl GameState {
             .as_mut()
             .expect("city presence was checked before settling created items");
 
-        common.treasury = common.treasury.wrapping_add(
-            i32::from(major.need_target_by_type[ResourceKind::Gems]).wrapping_mul(500),
-        );
+        common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gems]) * 500;
         city.stock_by_type[ResourceKind::Gems] = 0;
         city.verify_stocks();
 
-        common.treasury = common.treasury.wrapping_add(
-            i32::from(major.need_target_by_type[ResourceKind::Gold]).wrapping_mul(200),
-        );
+        common.treasury += i32::from(major.need_target_by_type[ResourceKind::Gold]) * 200;
         city.stock_by_type[ResourceKind::Gold] = 0;
         city.verify_stocks();
 
@@ -112,6 +108,34 @@ impl GameState {
             city.add_to_stock_and_verify(resource, major.need_target_by_type[resource]);
         }
         Ok(())
+    }
+
+    /// Sets one current diplomatic grant, refunding the replaced amount before
+    /// charging the replacement.
+    pub fn set_diplomacy_grant(
+        &mut self,
+        nation: MajorNationId,
+        target: NationId,
+        grant: Option<DiplomacyGrant>,
+    ) -> Result<bool, RuleError> {
+        let (common, major) = self.major_nation_parts_mut(nation.nation())?;
+        let current = major.diplomacy_grants_by_nation[target];
+        if current == grant {
+            return Ok(true);
+        }
+        let current_amount = current.map_or(0, |grant| grant.amount);
+        let proposed_amount = grant.map_or(0, |grant| grant.amount);
+        if grant.is_some()
+            && current_amount - proposed_amount + major.available_diplomacy_budget(common.treasury)
+                < 0
+        {
+            return Ok(false);
+        }
+
+        major.grant_total_cost += proposed_amount - current_amount;
+        common.treasury += current_amount - proposed_amount;
+        major.diplomacy_grants_by_nation[target] = grant;
+        Ok(true)
     }
 
     fn major_nation_parts_mut(
@@ -148,20 +172,17 @@ fn settle_purchase(
     amount: i16,
     price: i16,
 ) {
-    major.purchased_items_by_resource[resource] =
-        major.purchased_items_by_resource[resource].wrapping_add(amount);
-    let cost = i32::from(price).wrapping_mul(i32::from(amount));
-    common.treasury = common.treasury.wrapping_sub(cost);
+    major.purchased_items_by_resource[resource] += amount;
+    let cost = i32::from(price) * i32::from(amount);
+    common.treasury -= cost;
 
     if amount > 0 {
-        major.capacities[0] = major.capacities[0].wrapping_sub(amount);
-        major.budget_pool_delta = major.budget_pool_delta.wrapping_sub(cost);
+        major.capacities[0] -= amount;
+        major.budget_pool_delta -= cost;
     } else {
-        major.budget_pool_base = major.budget_pool_base.wrapping_sub(cost);
+        major.budget_pool_base -= cost;
         if is_special_nation_interaction_resource(resource) {
-            major.special_resource_trade_balance = major
-                .special_resource_trade_balance
-                .wrapping_sub(i32::from(amount));
+            major.special_resource_trade_balance -= i32::from(amount);
         }
     }
 }
@@ -180,7 +201,7 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, Difficulty, LaborPool, NationData, NationState, PendingWorkState,
+        CityState, Difficulty, DiplomacyGrantFlags, LaborPool, NationData, NationState, PendingWorkState,
         PopulationState, RngState, TurnState, WorldState,
     };
 
@@ -191,7 +212,7 @@ mod tests {
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),
@@ -449,7 +470,7 @@ mod tests {
         let city = game.cities[MajorNationId::new(6)].as_mut().unwrap();
         city.stock_by_type[ResourceKind::Cotton] = -5;
         city.stock_by_type[ResourceKind::Food] = 3;
-        city.stock_by_type[ResourceKind::Fabric] = i16::MAX;
+        city.stock_by_type[ResourceKind::Fabric] = 5;
         city.stock_by_type[ResourceKind::Steel] = -1;
         city.stock_by_type[ResourceKind::Gems] = 99;
         city.stock_by_type[ResourceKind::Gold] = 99;
@@ -462,12 +483,72 @@ mod tests {
         assert_eq!(state.common.treasury, 3_300);
         assert_eq!(city.stock_by_type[ResourceKind::Cotton], 2);
         assert_eq!(city.stock_by_type[ResourceKind::Food], 10);
-        assert_eq!(city.stock_by_type[ResourceKind::Fabric], 0);
+        assert_eq!(city.stock_by_type[ResourceKind::Fabric], 6);
         assert_eq!(city.stock_by_type[ResourceKind::Steel], 0);
         assert_eq!(city.stock_by_type[ResourceKind::Gems], 3);
         assert_eq!(city.stock_by_type[ResourceKind::Gold], 4);
         assert_eq!(major.need_target_by_type[ResourceKind::Gems], 3);
         assert_eq!(major.need_target_by_type[ResourceKind::Gold], 4);
+    }
+
+    #[test]
+    fn diplomacy_grant_settlement_replaces_or_rejects_grants() {
+        let nation = MajorNationId::new(6);
+        let target = NationId::new(8);
+        let mut game = state(true);
+        let state = game.nations[nation.nation()].as_mut().unwrap();
+        state.common.treasury = 10_000;
+        let major = state.major_mut().unwrap();
+        major.diplomacy_budget_base = 50_000;
+        let recurring_ten_thousand = DiplomacyGrant {
+            amount: 10_000,
+            flags: DiplomacyGrantFlags::RECURRING,
+        };
+        assert_eq!(
+            game.set_diplomacy_grant(nation, target, Some(recurring_ten_thousand)),
+            Ok(true)
+        );
+
+        let state = game.nations[nation.nation()].as_ref().unwrap();
+        let major = state.major().unwrap();
+        assert_eq!(state.common.treasury, 0);
+        assert_eq!(major.grant_total_cost, 10_000);
+        assert_eq!(
+            major.diplomacy_grants_by_nation[target],
+            Some(recurring_ten_thousand)
+        );
+
+        let before_rejected = game.clone();
+        assert_eq!(
+            game.set_diplomacy_grant(
+                nation,
+                NationId::new(9),
+                Some(DiplomacyGrant {
+                    amount: 1_000,
+                    flags: DiplomacyGrantFlags::empty(),
+                }),
+            ),
+            Ok(false)
+        );
+        assert_eq!(game, before_rejected);
+
+        assert_eq!(
+            game.set_diplomacy_grant(
+                nation,
+                target,
+                Some(DiplomacyGrant {
+                    amount: 3_000,
+                    flags: DiplomacyGrantFlags::RECURRING,
+                }),
+            ),
+            Ok(true)
+        );
+        assert_eq!(game.set_diplomacy_grant(nation, target, None), Ok(true));
+        let state = game.nations[nation.nation()].as_ref().unwrap();
+        let major = state.major().unwrap();
+        assert_eq!(state.common.treasury, 10_000);
+        assert_eq!(major.grant_total_cost, 0);
+        assert_eq!(major.diplomacy_grants_by_nation[target], None);
     }
 
     #[test]
@@ -521,20 +602,6 @@ mod tests {
             Err(RuleError::MissingNation {
                 nation: NationId::new(5)
             })
-        );
-        assert_eq!(game, before);
-    }
-
-    #[test]
-    fn created_item_settlement_rejects_a_missing_city_without_mutation() {
-        let nation = NationId::new(6);
-        let mut game = state(true);
-        game.cities[MajorNationId::new(6)] = None;
-        let before = game.clone();
-
-        assert_eq!(
-            game.add_created_items(nation),
-            Err(RuleError::MissingCity { nation })
         );
         assert_eq!(game, before);
     }

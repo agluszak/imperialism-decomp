@@ -9,6 +9,16 @@ use imperialism_core::{
     ProductionTable, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState,
     TaskForceState, TileId, TileState, TurnState, WorldState,
 };
+use imperialism_core::{
+    AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
+    CivilianUnitId, CivilianUnitState, DiplomacyGrant, DiplomacyGrantFlags, GameState, LaborPool,
+    MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitState,
+    MissionData, MissionState, NATION_COUNT, NationCommonState, NationData, NationId,
+    NationPendingWork, NationState, NationTable, NavyMissionState, PENDING_ACTION_COUNT,
+    PendingActionTable, PendingWorkState, PopulationState, ProductionTable, ResourceTable,
+    RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId, TileState,
+    TurnState, WorldState,
+};
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
 const CURRENT_RETAIL_VERSION: u32 = 0x3e;
@@ -806,6 +816,14 @@ pub enum LegacySaveError {
     },
     #[error("invalid MFC object at {offset:#x}: {detail}")]
     InvalidMfcObject { offset: usize, detail: String },
+    #[error(
+        "nation {nation} has unsupported retail diplomacy-grant flags for target {target}: {entry:#06x}"
+    )]
+    UnsupportedDiplomacyGrantFlags {
+        nation: i16,
+        target: usize,
+        entry: i16,
+    },
     #[error("{0}")]
     StateProjection(String),
 }
@@ -993,7 +1011,10 @@ impl LegacySaveV62 {
                     .major_nations
                     .iter()
                     .find(|nation| nation.great_power().country.nation_slot == slot as i16);
-                nations[id] = nation.map(|nation| major_nation_state(nation.great_power()));
+                nations[id] = match nation {
+                    Some(nation) => Some(major_nation_state(nation.great_power())?),
+                    None => None,
+                };
             } else {
                 let nation = self
                     .minor_nations
@@ -1117,10 +1138,10 @@ impl LegacySaveV62 {
     }
 }
 
-fn major_nation_state(nation: &LegacyGreatPowerState) -> NationState {
+fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
-    country_state(
+    Ok(country_state(
         &nation.country,
         NationData::Major(MajorNationState {
             diplomacy_eligible: prefix.diplomacy_eligible != 0,
@@ -1128,7 +1149,10 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> NationState {
             grant_total_cost: prefix.grant_total_cost,
             unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
             diplomacy_policy_by_nation: NationTable::from_array(prefix.diplomacy_policy_by_nation),
-            diplomacy_grant_by_nation: NationTable::from_array(prefix.diplomacy_grant_by_nation),
+            diplomacy_grants_by_nation: diplomacy_grants_from_retail_entries(
+                prefix.diplomacy_grant_by_nation,
+                nation.country.nation_slot,
+            )?,
             need_current_by_type: ResourceTable::from_array(prefix.need_current_by_type),
             need_target_by_type: ResourceTable::from_array(prefix.need_target_by_type),
             relation_delta_current: ResourceTable::from_array(prefix.relation_delta_current),
@@ -1165,7 +1189,37 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> NationState {
             colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
             military_expenses: post.military_expenses,
         }),
-    )
+    ))
+}
+
+fn diplomacy_grants_from_retail_entries(
+    entries: [i16; NATION_COUNT],
+    nation: i16,
+) -> Result<NationTable<Option<DiplomacyGrant>>, LegacySaveError> {
+    let mut grants = NationTable::default();
+    for (target, entry) in entries.into_iter().enumerate() {
+        grants[NationId::new(target as u8)] = if entry == -1 {
+            None
+        } else {
+            if entry < 0 {
+                return Err(LegacySaveError::UnsupportedDiplomacyGrantFlags {
+                    nation,
+                    target,
+                    entry,
+                });
+            }
+            let flags = if entry & 0x4000 != 0 {
+                DiplomacyGrantFlags::RECURRING
+            } else {
+                DiplomacyGrantFlags::empty()
+            };
+            Some(DiplomacyGrant {
+                amount: i32::from(entry & 0x3fff),
+                flags,
+            })
+        };
+    }
+    Ok(grants)
 }
 
 fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {

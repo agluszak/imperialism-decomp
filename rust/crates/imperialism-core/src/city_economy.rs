@@ -150,10 +150,10 @@ impl CityState {
             3_i16
         };
         if self.production_accum[ProductionSlot::new(2).unwrap()] > 0 {
-            shortage_count = shortage_count.wrapping_sub(1);
+            shortage_count -= 1;
         }
         if self.production_accum[ProductionSlot::new(0).unwrap()] > 0 {
-            shortage_count = shortage_count.wrapping_sub(1);
+            shortage_count -= 1;
         }
         self.low_production = shortage_count < 2;
     }
@@ -165,7 +165,7 @@ impl CityState {
 
     pub(crate) fn add_to_stock_and_verify(&mut self, resource: ResourceKind, delta: i16) {
         let stock = &mut self.stock_by_type[resource];
-        *stock = stock.wrapping_add(delta);
+        *stock += delta;
         for (_, stock) in &mut self.stock_by_type {
             if *stock < 0 {
                 *stock = 0;
@@ -229,7 +229,7 @@ mod tests {
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),

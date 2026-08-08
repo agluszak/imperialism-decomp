@@ -92,6 +92,26 @@ JSON_Value* CaptureShortArray(const short* values, int count) {
   return value;
 }
 
+JSON_Value* CaptureDiplomacyGrants(const short* values, int count) {
+  JSON_Array* grants = 0;
+  JSON_Value* value = NewArray(grants);
+  for (int index = 0; index < count; ++index) {
+    short entry = values[index];
+    if (entry == -1) {
+      json_array_append_null(grants);
+      continue;
+    }
+
+    ASSERT(entry >= 0);
+    JSON_Object* grant = 0;
+    JSON_Value* grantValue = NewObject(grant);
+    json_object_set_number(grant, "amount", static_cast<int>(entry & 0x3fff));
+    json_object_set_string(grant, "flags", (entry & 0x4000) != 0 ? "RECURRING" : "");
+    json_array_append_value(grants, grantValue);
+  }
+  return value;
+}
+
 JSON_Value* CaptureIntArray(const int* values, int count) {
   JSON_Array* array = 0;
   JSON_Value* value = NewArray(array);
@@ -250,8 +270,8 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
                          static_cast<int>(nation->unfilledTradeOfferCount));
   json_object_set_value(object, "diplomacy_policy_by_nation",
                         CaptureShortArray(nation->diplomacyPolicyByNation, kNationSlotCount));
-  json_object_set_value(object, "diplomacy_grant_by_nation",
-                        CaptureShortArray(nation->diplomacyGrantByNation, kNationSlotCount));
+  json_object_set_value(object, "diplomacy_grants_by_nation",
+                        CaptureDiplomacyGrants(nation->diplomacyGrantByNation, kNationSlotCount));
   json_object_set_value(object, "need_current_by_type",
                         CaptureResourceTable(nation->needCurrentByType));
   json_object_set_value(object, "need_target_by_type",

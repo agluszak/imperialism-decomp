@@ -1070,7 +1070,7 @@ mod tests {
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grant_by_nation: crate::NationTable::default(),
+            diplomacy_grants_by_nation: crate::NationTable::default(),
             need_current_by_type: crate::ResourceTable::default(),
             need_target_by_type: crate::ResourceTable::default(),
             relation_delta_current: crate::ResourceTable::default(),

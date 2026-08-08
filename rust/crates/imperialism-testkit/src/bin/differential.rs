@@ -2,8 +2,9 @@
 
 use anyhow::{Context, anyhow, bail};
 use imperialism_core::{
-    GameCommand, NationId, ProductionConstraint, ResourceCost, ResourceKind, ResourceTable,
-    SkillBand, UnitCostProfile, UnitProductionOrder,
+    DiplomacyGrant, DiplomacyGrantFlags, GameCommand, MajorNationId, NationId,
+    ProductionConstraint, ResourceCost, ResourceKind, ResourceTable, SkillBand, UnitCostProfile,
+    UnitProductionOrder,
 };
 use imperialism_formats::{LegacyGameStateContext, LegacySaveV62};
 use imperialism_testkit::{first_serialized_difference, read_game_state};
@@ -136,6 +137,31 @@ fn run() -> anyhow::Result<()> {
                         .add_created_items(NationId::new(nation))
                         .context("Rust created-item settlement failed")?;
                 }
+                DifferentialStep::SetDiplomacyGrant {
+                    nation,
+                    target,
+                    amount,
+                } => {
+                    rust_state
+                        .set_diplomacy_grant(
+                            MajorNationId::new(nation),
+                            NationId::new(target),
+                            Some(DiplomacyGrant {
+                                amount,
+                                flags: DiplomacyGrantFlags::empty(),
+                            }),
+                        )
+                        .context("Rust diplomacy grant update failed")?;
+                }
+                DifferentialStep::ClearDiplomacyGrant { nation, target } => {
+                    rust_state
+                        .set_diplomacy_grant(
+                            MajorNationId::new(nation),
+                            NationId::new(target),
+                            None,
+                        )
+                        .context("Rust diplomacy grant clear failed")?;
+                }
             }
         }
         if let Some(difference) = first_serialized_difference(&cpp_state, &rust_state)
@@ -177,7 +203,7 @@ enum RustSource {
 fn required_argument(program: &OsString, value: Option<OsString>) -> Result<OsString, String> {
     value.ok_or_else(|| {
         format!(
-            "usage: {} FIXTURE RUNTIME_RESULT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [COMMAND]...\ncommands: --specialist-recruit NATION UNIT_TYPE QUANTITY | --place-trade-bid NATION RESOURCE AMOUNT | --remember-trade-bids NATION | --purchase-item NATION RESOURCE AMOUNT PRICE | --commit-purchased-items NATION | --add-created-items NATION",
+            "usage: {} FIXTURE RUNTIME_RESULT.json [--seed N]\n       {} FIXTURE --legacy-save SAVE.imp [--seed N] [COMMAND]...\ncommands: --specialist-recruit NATION UNIT_TYPE QUANTITY | --place-trade-bid NATION RESOURCE AMOUNT | --remember-trade-bids NATION | --purchase-item NATION RESOURCE AMOUNT PRICE | --commit-purchased-items NATION | --add-created-items NATION | --set-diplomacy-grant NATION TARGET AMOUNT | --clear-diplomacy-grant NATION TARGET",
             Path::new(program).display(),
             Path::new(program).display()
         )
@@ -216,6 +242,15 @@ enum DifferentialStep {
     },
     AddCreatedItems {
         nation: u8,
+    },
+    SetDiplomacyGrant {
+        nation: u8,
+        target: u8,
+        amount: i32,
+    },
+    ClearDiplomacyGrant {
+        nation: u8,
+        target: u8,
     },
 }
 
@@ -266,6 +301,17 @@ fn parse_options(arguments: Vec<OsString>) -> Result<DifferentialOptions, String
         } else if flag == "--add-created-items" {
             options.steps.push(DifferentialStep::AddCreatedItems {
                 nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+            });
+        } else if flag == "--set-diplomacy-grant" {
+            options.steps.push(DifferentialStep::SetDiplomacyGrant {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+                target: parse_number(arguments.next(), "target", "an unsigned 8-bit integer")?,
+                amount: parse_number(arguments.next(), "amount", "a signed 32-bit integer")?,
+            });
+        } else if flag == "--clear-diplomacy-grant" {
+            options.steps.push(DifferentialStep::ClearDiplomacyGrant {
+                nation: parse_number(arguments.next(), "nation", "an unsigned 8-bit integer")?,
+                target: parse_number(arguments.next(), "target", "an unsigned 8-bit integer")?,
             });
         } else {
             return Err(format!(
@@ -456,12 +502,33 @@ mod tests {
     }
 
     #[test]
-    fn parses_the_created_items_phase_step() {
+    fn parses_created_items_and_diplomacy_grant_steps() {
         assert_eq!(
-            parse_options(vec!["--add-created-items".into(), "6".into()]),
+            parse_options(vec![
+                "--add-created-items".into(),
+                "6".into(),
+                "--set-diplomacy-grant".into(),
+                "6".into(),
+                "0".into(),
+                "10000".into(),
+                "--clear-diplomacy-grant".into(),
+                "6".into(),
+                "0".into(),
+            ]),
             Ok(DifferentialOptions {
                 seed: 1,
-                steps: vec![DifferentialStep::AddCreatedItems { nation: 6 }],
+                steps: vec![
+                    DifferentialStep::AddCreatedItems { nation: 6 },
+                    DifferentialStep::SetDiplomacyGrant {
+                        nation: 6,
+                        target: 0,
+                        amount: 10_000,
+                    },
+                    DifferentialStep::ClearDiplomacyGrant {
+                        nation: 6,
+                        target: 0,
+                    },
+                ],
             })
         );
     }

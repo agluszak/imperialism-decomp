@@ -2602,6 +2602,7 @@ dependencies = [
 name = "imperialism-core"
 version = "0.1.0"
 dependencies = [
+ "bitflags 2.13.1",
  "enum-map",
  "serde",
  "serde_json",

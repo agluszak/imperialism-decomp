@@ -75,11 +75,11 @@ pub use resources::{ResourceKind, ResourceTable, all_resources};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
-    CivilianUnitState, GameCommand, GameEvent, GameState, LandSale, MajorNationState,
-    MilitaryUnitState, MissionData, MissionState, NationCommonState, NationData, NationPendingWork,
-    NationState, NavyMissionState, PendingWorkState, PopulationState, RngState, SelectedShip,
-    ShipState, StepOutcome, TaggedValue, TaskForceState, TaskForceTarget, TileState,
-    TurnStartEventState, TurnState, WarTransition, WorldState,
+    CivilianUnitState, DiplomacyGrant, DiplomacyGrantFlags, GameCommand, GameEvent, GameState,
+    LandSale, MajorNationState, MilitaryUnitState, MissionData, MissionState, NationCommonState,
+    NationData, NationPendingWork, NationState, NavyMissionState, PendingWorkState,
+    PopulationState, RngState, SelectedShip, ShipState, StepOutcome, TaggedValue, TaskForceState,
+    TaskForceTarget, TileState, TurnStartEventState, TurnState, WarTransition, WorldState,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MajorNationTable, NATION_COUNT, NationTable, PENDING_ACTION_COUNT,
