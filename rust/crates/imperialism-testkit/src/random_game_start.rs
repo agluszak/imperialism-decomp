@@ -4,46 +4,35 @@
 //! Delete it once complete `GameState` equality holds for several seeds.
 
 use imperialism_core::{
-    GameState, MajorNation, MajorNationId, MajorNationTable, MinorNationTable, NationPendingWork,
-    Nations, PendingWorkState, RetailCrtRng, RetailLcg, RngState, TurnState, WorldState,
+    GameState, MajorNation, MajorNationTable, MinorNationTable, NationPendingWork, Nations,
+    PendingWorkState, RetailCrtRng, RetailLcg, RngState, TurnState, WorldState,
 };
 use serde::{Deserialize, Serialize};
 
 /// Currently compared blocks of the capital-selection-ready boundary.
 ///
-/// Includes turn state, human nation/city bootstrap, and the map-generation LCG after
-/// preview post-passes (icon variants → province capitals → GuaranteeResources). Tile
-/// bodies, AI capitals, militia, CRT/zone RNG, and pending-work join as each retail
-/// operation lands.
+/// Includes turn state, all major-nation slots (human Frog City + AI homes), and the
+/// map-generation LCG after preview post-passes. Tile bodies, minors/militia, CRT/zone
+/// RNG, and pending-work join as each retail operation lands.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct RandomGameStartBoundarySubset {
     pub turn: TurnState,
-    pub human_nation: MajorNation,
+    pub majors: MajorNationTable<Option<MajorNation>>,
     /// `RngState.map_generation` after Accept-time post-passes.
     pub map_generation: RetailLcg,
 }
 
 impl RandomGameStartBoundarySubset {
     pub fn from_game_state(state: &GameState) -> Self {
-        let human = state.turn.selected_nation;
-        let major = MajorNationId::from_nation(human).expect("selected nation is a major");
         Self {
             turn: state.turn,
-            human_nation: state
-                .nations
-                .major(major)
-                .cloned()
-                .expect("human nation slot is occupied"),
+            majors: state.nations.majors.clone(),
             map_generation: state.rng.map_generation,
         }
     }
 
     /// Project into a `GameState`-shaped value so [`crate::assert_game_state_eq`] can diff it.
     pub fn into_comparable(self) -> GameState {
-        let human = self.turn.selected_nation;
-        let major = MajorNationId::from_nation(human).expect("selected nation is a major");
-        let mut majors = MajorNationTable::from_fn(|_| None);
-        majors[major] = Some(self.human_nation);
         GameState {
             turn: self.turn,
             persistent_unit_id_counter: 0,
@@ -58,7 +47,7 @@ impl RandomGameStartBoundarySubset {
             },
             market: Default::default(),
             nations: Nations {
-                majors,
+                majors: self.majors,
                 minors: MinorNationTable::from_fn(|_| None),
             },
             military_units: Vec::new(),
