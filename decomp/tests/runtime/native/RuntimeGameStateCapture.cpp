@@ -7,6 +7,7 @@
 #include "game/city/TPopulationMgr.h"
 #include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
+#include "game/diplomacy_domain_types.h"
 #include "game/military_domain_types.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
@@ -189,6 +190,44 @@ JSON_Value* CaptureDiplomacyGrants(const short* values, int count) {
   return value;
 }
 
+const char* DiplomacyPolicyName(short policy) {
+  switch (policy) {
+  case kDiplomacyProposalJoinEmpire:
+    return "join_empire";
+  case kDiplomacyProposalAlliance:
+    return "alliance";
+  case kDiplomacyProposalNonAggressionPact:
+    return "non_aggression_pact";
+  case kDiplomacyProposalPeaceTreaty:
+    return "peace_treaty";
+  case kDiplomacyProposalDeclareWar:
+    return "declare_war";
+  case kDiplomacyProposalJoinEmpireWithWarEntanglements:
+    return "join_empire_with_war_entanglements";
+  case kDiplomacyProposalBuildConsulate:
+    return "build_consulate";
+  case kDiplomacyProposalBuildEmbassy:
+    return "build_embassy";
+  default:
+    ASSERT(FALSE);
+    return "unsupported";
+  }
+}
+
+JSON_Value* CaptureDiplomacyPolicies(const short* values, int count) {
+  JSON_Array* policies = 0;
+  JSON_Value* value = NewArray(policies);
+  for (int index = 0; index < count; ++index) {
+    const short policy = values[index];
+    if (policy == -1) {
+      json_array_append_null(policies);
+    } else {
+      json_array_append_string(policies, DiplomacyPolicyName(policy));
+    }
+  }
+  return value;
+}
+
 JSON_Value* CaptureIntArray(const int* values, int count) {
   JSON_Array* array = 0;
   JSON_Value* value = NewArray(array);
@@ -337,8 +376,9 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   json_object_set_number(object, "grant_total_cost", nation->grantTotalCost);
   json_object_set_number(object, "unfilled_trade_offer_count",
                          static_cast<int>(nation->unfilledTradeOfferCount));
-  json_object_set_value(object, "diplomacy_policy_by_nation",
-                        CaptureShortArray(nation->diplomacyPolicyByNation, kNationSlotCount));
+  json_object_set_value(
+      object, "diplomacy_policy_by_nation",
+      CaptureDiplomacyPolicies(nation->diplomacyPolicyByNation, kNationSlotCount));
   json_object_set_value(object, "diplomacy_grants_by_nation",
                         CaptureDiplomacyGrants(nation->diplomacyGrantByNation, kNationSlotCount));
   json_object_set_value(object, "need_current_by_type",

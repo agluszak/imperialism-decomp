@@ -43,6 +43,10 @@ impl NationId {
     pub const fn get(self) -> u8 {
         self.0
     }
+
+    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
+        (0..Self::COUNT).map(Self::new)
+    }
 }
 
 impl TryFrom<u8> for NationId {

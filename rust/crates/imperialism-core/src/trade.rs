@@ -1,6 +1,6 @@
 use crate::{
-    DiplomacyGrant, GameEvent, GameState, MajorNationId, MajorNationState, NationCapacity,
-    NationCommonState, NationId, ResourceKind, StepOutcome, all_resources,
+    DiplomacyGrant, DiplomacyGrantFlags, GameEvent, GameState, MajorNationId, MajorNationState,
+    NationCapacity, NationCommonState, NationId, ResourceKind, StepOutcome, all_resources,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -157,6 +157,25 @@ impl GameState {
         Ok(true)
     }
 
+    /// Clears current diplomacy policies and one-time grants, then posts each
+    /// recurring grant through the ordinary treasury path.
+    pub fn reset_diplomacy_commitments(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
+        for target in NationId::all() {
+            let recurring_grant = {
+                let (_, major) = self.major_nation_parts_mut(nation)?;
+                major.diplomacy_policy_by_nation[target] = None;
+                let grant = major.diplomacy_grants_by_nation[target];
+                major.diplomacy_grants_by_nation[target] = None;
+                grant.filter(|grant| grant.flags.contains(DiplomacyGrantFlags::RECURRING))
+            };
+
+            if let Some(grant) = recurring_grant {
+                let _ = self.set_diplomacy_grant(nation, target, Some(grant))?;
+            }
+        }
+        Ok(())
+    }
+
     fn major_nation_parts_mut(
         &mut self,
         nation: MajorNationId,
@@ -208,8 +227,8 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 mod tests {
     use super::*;
     use crate::{
-        CityState, Difficulty, DiplomacyGrantFlags, LaborPool, NationData, NationState,
-        PendingWorkState, PopulationState, RngState, TurnState, WorldState,
+        CityState, Difficulty, DiplomacyGrantFlags, DiplomacyPolicy, LaborPool, NationData,
+        NationState, PendingWorkState, PopulationState, RngState, TurnState, WorldState,
     };
 
     fn major() -> MajorNationState {
@@ -542,6 +561,47 @@ mod tests {
         assert_eq!(state.common.treasury, 10_000);
         assert_eq!(major.grant_total_cost, 0);
         assert_eq!(major.diplomacy_grants_by_nation[target], None);
+    }
+
+    #[test]
+    fn reset_diplomacy_commitments_reposts_only_recurring_grants() {
+        let nation = MajorNationId::new(6);
+        let policy_target = NationId::new(0);
+        let one_time_target = NationId::new(1);
+        let recurring_target = NationId::new(2);
+        let recurring_grant = DiplomacyGrant {
+            amount: 3_000,
+            flags: DiplomacyGrantFlags::RECURRING,
+        };
+        let mut game = state(true);
+        let state = game.nations[nation.nation()].as_mut().unwrap();
+        state.common.treasury = 10_000;
+        state.major_mut().unwrap().diplomacy_policy_by_nation[policy_target] =
+            Some(DiplomacyPolicy::BuildConsulate);
+        game.set_diplomacy_grant(
+            nation,
+            one_time_target,
+            Some(DiplomacyGrant {
+                amount: 1_000,
+                flags: DiplomacyGrantFlags::empty(),
+            }),
+        )
+        .unwrap();
+        game.set_diplomacy_grant(nation, recurring_target, Some(recurring_grant))
+            .unwrap();
+
+        game.reset_diplomacy_commitments(nation).unwrap();
+
+        let state = game.nations[nation.nation()].as_ref().unwrap();
+        let major = state.major().unwrap();
+        assert_eq!(major.diplomacy_policy_by_nation[policy_target], None);
+        assert_eq!(major.diplomacy_grants_by_nation[one_time_target], None);
+        assert_eq!(
+            major.diplomacy_grants_by_nation[recurring_target],
+            Some(recurring_grant)
+        );
+        assert_eq!(state.common.treasury, 3_000);
+        assert_eq!(major.grant_total_cost, 7_000);
     }
 
     #[test]

@@ -2,13 +2,14 @@ use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     AID_ALLOCATION_COUNT, AidAllocationTable, ArmyMissionState, AttackMissionState, CityState,
     CivilianUnitId, CivilianUnitKind, CivilianUnitState, CivilianUnitTable, Difficulty,
-    DiplomacyGrant, DiplomacyGrantFlags, GameState, IndustryActionTable, LaborPool, MajorNationId,
-    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, MissionData, MissionState, NATION_COUNT, NationCapacityTable,
-    NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
-    NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
-    ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip,
-    ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TurnState, WorldState,
+    DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
+    LaborPool, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
+    MilitaryUnitState, MilitaryUnitTable, MissionData, MissionState, NATION_COUNT,
+    NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
+    NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
+    PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
+    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TurnState,
+    WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -825,6 +826,14 @@ pub enum LegacySaveError {
         target: usize,
         entry: i16,
     },
+    #[error(
+        "nation {nation} has unsupported retail diplomacy policy for target {target}: {entry:#06x}"
+    )]
+    UnsupportedDiplomacyPolicy {
+        nation: i16,
+        target: usize,
+        entry: i16,
+    },
     #[error("{0}")]
     StateProjection(String),
 }
@@ -1145,7 +1154,10 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, Leg
             capacities: NationCapacityTable::from_array(prefix.capacities),
             grant_total_cost: prefix.grant_total_cost,
             unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
-            diplomacy_policy_by_nation: NationTable::from_array(prefix.diplomacy_policy_by_nation),
+            diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
+                prefix.diplomacy_policy_by_nation,
+                nation.country.nation_slot,
+            )?,
             diplomacy_grants_by_nation: diplomacy_grants_from_retail_entries(
                 prefix.diplomacy_grant_by_nation,
                 nation.country.nation_slot,
@@ -1217,6 +1229,34 @@ fn diplomacy_grants_from_retail_entries(
         };
     }
     Ok(grants)
+}
+
+fn diplomacy_policies_from_retail_entries(
+    entries: [i16; NATION_COUNT],
+    nation: i16,
+) -> Result<NationTable<Option<DiplomacyPolicy>>, LegacySaveError> {
+    let mut policies = NationTable::default();
+    for (target, entry) in entries.into_iter().enumerate() {
+        policies[NationId::new(target as u8)] = match entry {
+            -1 => None,
+            0x12d => Some(DiplomacyPolicy::JoinEmpire),
+            0x12e => Some(DiplomacyPolicy::Alliance),
+            0x12f => Some(DiplomacyPolicy::NonAggressionPact),
+            0x130 => Some(DiplomacyPolicy::PeaceTreaty),
+            0x131 => Some(DiplomacyPolicy::DeclareWar),
+            0x132 => Some(DiplomacyPolicy::JoinEmpireWithWarEntanglements),
+            0x133 => Some(DiplomacyPolicy::BuildConsulate),
+            0x134 => Some(DiplomacyPolicy::BuildEmbassy),
+            _ => {
+                return Err(LegacySaveError::UnsupportedDiplomacyPolicy {
+                    nation,
+                    target,
+                    entry,
+                });
+            }
+        };
+    }
+    Ok(policies)
 }
 
 fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
