@@ -1,32 +1,14 @@
 #!/usr/bin/env python3
 """Read-only pyghidra extractor: per-slot vtable ABI evidence as JSON.
 
-The evidence half of the vtable ABI audit (`just vtable-abi-audit`). For each
-class vtable it walks the slots, resolves ILT thunks to real bodies, and
-records *binary ground truth* about every slot target:
-
-  callee side  — RET kind/immediate (callee-cleaned stack bytes), whether ECX
-                 is read as `this` before being overwritten, best-effort
-                 max stack-argument byte read, size, Ghidra name/cc/prototype
-                 (the latter three are advisory hypotheses, never ground truth);
-  caller side  — direct call sites (including sites that call through an ILT
-                 thunk): explicit PUSH count in the arg-setup region, what set
-                 ECX last, caller stack cleanup after the call (ADD ESP / POP
-                 ECX idioms), and how the return register is consumed
-                 (AL / AX / EAX / ST0 / none).
-
-Raw listing instructions are the ground truth; Ghidra's decompiler-recovered
-signatures are recorded as advisory only. The original binary is immutable, so
-this evidence never changes once extracted — the committed snapshot
-(config/vtable_abi_evidence.json) lets the pure-python audit + gate
-(tools.workflow.vtable_abi_audit) run without Ghidra.
+For each class vtable it walks the slots, resolves ILT thunks to real bodies, and
+records binary ground truth about every slot target (RET kind/immediate, ECX use,
+caller pushes/cleanup). Prefer writing under build/ for one-off investigation;
+continuous verification uses `just vtable`.
 
 Usage (via the query daemon or one-shot):
   uv run python -m tools.ghidra.query vtable-abi-evidence Class=0xVTABLE[:COUNT] ...
   uv run python -m tools.ghidra.query vtable-abi-evidence --from-source [--out FILE]
-
---from-source discovers every `// VTABLE: IMPERIALISM 0xADDR` annotation in
-include/ + src/ and audits all of them (slow: whole-repo extraction).
 """
 
 from __future__ import annotations

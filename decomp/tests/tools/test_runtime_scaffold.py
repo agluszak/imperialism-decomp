@@ -20,8 +20,8 @@ from tools.runtime import scaffold
 from tools.runtime.scaffold import BASES
 
 
-# Identifiers the runtime-script-debt gate hard-bans inside a scenario body. A skeleton that
-# emitted one would hand every new test a gate failure on its first commit.
+# Identifiers that must not appear in a scenario body. A skeleton that emitted
+# one would hand every new test a control-tree mechanic instead of a linear script.
 BANNED_IN_SCENARIOS = (
     "g_ModalViewStack",
     "ResolveControlByTag",
@@ -136,7 +136,7 @@ class ScaffoldBaseTests(unittest.TestCase):
                 source = self.source_for(f"M{name.title().replace('-', '')}Test")
                 self.assertIn('#include "screens/StrategicMapScreen.h"', source)
 
-    def test_no_skeleton_trips_the_script_debt_gate(self) -> None:
+    def test_no_skeleton_emits_banned_control_tree_mechanics(self) -> None:
         for name, spec in sorted(BASES.items()):
             with self.subTest(base=name):
                 extra = ["--fixture", "beginning_of_game.imp"] if spec.requires_fixture else []

@@ -20,8 +20,7 @@ Git LFS. Generated Ghidra projects, databases, inventories, and logs are not ven
 remain untracked.
 
 Large binaries are handled separately from the extension bans. Sizeable *text* files are
-normal here -- config/vtable_abi_evidence.json is several MB -- so the size rule only
-fires on files that are actually binary, are not
+normal here, so the size rule only fires on files that are actually binary, are not
 LFS-tracked, and live outside vendor/. That combination is currently empty too.
 
 usage: check-repo-hygiene [--max-binary-bytes N]

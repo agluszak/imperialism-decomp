@@ -33,7 +33,6 @@ refresh-inventory *args: _require-ghidra-install
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
     {{args}}
   just prune-ilt-thunks
-  just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
   @echo "refresh-inventory done. Run 'just export-project' before committing."

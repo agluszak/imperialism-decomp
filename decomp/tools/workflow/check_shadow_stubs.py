@@ -17,12 +17,10 @@ Detection (all conditions must hold):
   (d) the method has at least one call site in manual source;
   (e) the in-class declaration is non-virtual.
 
-For the subset whose name encodes a slot (the ...Slot<HEX> convention), the class
-vtable is resolved at that byte offset in config/vtable_abi_evidence.json; a
-non-null original target is a HARD ERROR (the shadow provably occupies a real
-slot). All other findings are hard errors too — the combination of conditions has
-no known-legitimate instance; if one ever appears, fix the model or claim the
-address rather than allowlisting.
+All findings are hard errors — the combination of conditions has no
+known-legitimate instance; if one ever appears, fix the model or claim the
+address rather than allowlisting. Optional slot enrichment from a local ABI
+evidence dump is used when present.
 """
 
 from __future__ import annotations

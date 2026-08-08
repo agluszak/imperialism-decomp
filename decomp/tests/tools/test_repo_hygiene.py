@@ -67,9 +67,8 @@ class RepoHygieneTest(unittest.TestCase):
         self.assertIn("runtime-results/session.log", offenders)
 
     def test_large_text_evidence_is_allowed(self) -> None:
-        # The vtable ABI evidence is multi-MB JSON. Size alone must not condemn a
-        # file, or the gate would fail on the tree it ships with.
-        self._track("config/vtable_abi_evidence.json", b"[" + b" " * (2 << 20) + b"]")
+        # Size alone must not condemn a tracked text evidence file.
+        self._track("config/large_evidence.json", b"[" + b" " * (2 << 20) + b"]")
         self.assertEqual(self._offenders(), {})
 
     def test_large_binary_outside_vendor_is_rejected(self) -> None:

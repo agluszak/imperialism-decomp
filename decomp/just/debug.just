@@ -39,24 +39,8 @@ run-original *args:
   cd "$game_dir"
   exec wine "$ORIGINAL_BINARY" "$@"
 
-# The bring-up smoke ladder: launch the recomp under winedbg's gdb proxy, plant
-# tracepoint breakpoints on the startup milestones (dispatch -> view realize ->
-# CMcWindow ctor -> OnDraw -> blit), report which fired plus a non-black-pixel
-# measurement of the frame. Exit 1 if an expected milestone regressed. This
-# distinguishes the three black-screen causes (silent crash / tree never
-# attached / blit stub) that plain screenshots cannot.
-[doc('Milestone smoke ladder: which startup stages fire + non-black pixel check')]
-[group('debug')]
-smoke *args:
-  uv run python tools/runtime/smoke.py run {{args}}
-
-# Differential startup oracle: run the SAME milestone ladder against the retail
-# binary and the recomp in isolated Wine prefixes; the original's reached set is
-# the expectation and any milestone it reaches that the recomp misses fails.
-[doc('Differential startup oracle: original vs recomp milestone ladder')]
-[group('debug')]
-smoke-diff *args:
-  uv run python tools/runtime/smoke.py diff {{args}}
+# The bring-up smoke ladder was retired once boot_managers and the PR runtime suite
+# covered startup. Use runtime-test / runtime-test-suite for semantic coverage.
 
 # Run the recomp through its native semantic driver and observe the retail binary
 # through the narrow GDB tape, then compare their normalized semantic checkpoint.
@@ -97,7 +81,7 @@ diff-turn-event2-codec *args:
 [doc('Scripted gdb session on the recomp via the winedbg gdb proxy')]
 [group('debug')]
 gdb-script *args:
-  uv run python tools/runtime/smoke.py gdb {{args}}
+  uv run python -m tools.runtime.gdb_script {{args}}
 
 # Run the recomp under winedbg from the retail install directory. By default breaks
 # on MessageBoxA, continues, prints a backtrace, and quits — useful for tracing

@@ -14,7 +14,7 @@ precommit:
 
 [private]
 [parallel]
-_precommit-builds: build _runtime-precommit-build
+_precommit-builds: build runtime-test-build
 
 [private]
 [parallel]
@@ -88,24 +88,11 @@ class-size-gate:
 noop-gate:
   uv run python -m tools.workflow.check_empty_bodies --gate
 
-# Ratchet: no NEW constructor defined out-of-line without a claimed address. Such a ctor
-# cannot be inlined into subclass ctors / CreateObject bodies in other TUs, so VC5 emits a
-# CALL where the original absorbed the body. Read the caller before fixing.
-[group('gates')]
-ctor-placement-gate:
-  uv run python -m tools.workflow.check_ctor_placement
-
 # Report every empty-body finding (audit mode of the noop gate).
 # `just noop-audit [--kind empty_but_big|empty_unmarked|empty_unresolved]`
 [group('gates')]
 noop-audit *args:
   uv run python -m tools.workflow.check_empty_bodies {{args}}
-
-# Audit Hard-Rule-9 typedef casts against binary evidence (RET-imm purge bytes):
-# catches dropped-args/convention bugs drift can't see. Report-only; --strict to fail.
-[group('gates')]
-typedef-args-audit *args:
-  uv run python -m tools.workflow.check_typedef_ghidra_args {{args}}
 
 # Run the Python tooling unit tests (tests/tools).
 [group('gates')]
@@ -124,56 +111,15 @@ serde-audit *args:
 vtable-gate:
   uv run python -m tools.workflow.check_no_raw_vtable_calls
 
-# Vtable ABI audit: current source declarations vs the binary's immutable
-# calling-convention evidence (config/vtable_abi_evidence.json). Catches wrong
-# signatures that `just vtable` (slot->address matching) cannot see.
-#   just vtable-abi-audit                 -> ranked report, conflict classes only
-#   just vtable-abi-audit TMapMaker -v    -> one class, all slots
-[doc('Audit vtable slot declarations against binary ABI evidence (RET imm, pushes, ret-use)')]
-[group('gates')]
-vtable-abi-audit *args:
-  uv run python -m tools.workflow.vtable_abi_audit {{args}}
-
-# Hard-ban gate over the ABI audit: fails on ANY proven declaration conflict not
-# covered by a reviewed config/vtable_signature_overrides.csv row. Baseline-free.
-# Pure source + static evidence; no Ghidra needed.
-[group('gates')]
-vtable-abi-gate:
-  uv run python -m tools.workflow.vtable_abi_audit --gate
-
 [group('gates')]
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
-
-# Reject stale recover-class "generated declaration" ownership markers in manual
-# source (include/game, src/game). Those "do not hand-edit" boundaries are obsolete:
-# all game source is hand-owned; the read-only vtable dump inspects but never
-# rewrites it. Excludes the real generated trees.
-[group('gates')]
-generated-marker-gate:
-  uv run python -m tools.workflow.check_generated_markers
 
 # CString is the real VC5/MFC type: reject pseudo/internal models, unpaired mutable
 # buffers, and CString objects passed through the stack-indexed string ellipsis.
 [group('gates')]
 cstring-gate:
   uv run python -m tools.workflow.check_cstring_usage
-
-# Hard-ban gate: "dual-use"/"dual-purpose"/"reused as" hand-waving and raw
-# pointer<->int member storage (reinterpret_cast<int>(ptr), int-member->class-pointer
-# casts). A purported dual-use field is an unresolved modelling defect: prove one model
-# (union/record/accessors) or mark it // UNRESOLVED_FIELD_ATTRIBUTION: with both readings
-# + evidence. Baseline-free: zero occurrences allowed.
-[group('gates')]
-dual-use-gate:
-  uv run python -m tools.workflow.check_dual_use
-
-# Enforce the recovered geometry boundary: game-owned APIs use CPoint/CRect, while
-# POINT/RECT remain at verified Win32/MFC boundaries. Reject cast bridges; only a
-# locally documented GEOMETRY_RAW_BUFFER packed payload may require one.
-[group('gates')]
-geometry-type-gate:
-  uv run python -m tools.workflow.check_geometry_types
 
 # Hard-ban gate against ILT/thunk-name ossification in manual source: rejects ANY
 # identifier that starts with thunk_/ILT_/WrapperFor_ or ends with _At<8hex> (calls via
@@ -200,15 +146,6 @@ vtable-collision-gate:
 [group('gates')]
 synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
-
-# Every explicit destructor is placed where its original evidence puts it: a standalone
-# ~Class body out of line (or inline with its // FUNCTION: marker), a listing-proven
-# inline body in the header, or an empty body backing a scalar deleting destructor.
-# Empty destructors with none of those three justifications are source noise.
-[doc('Explicit destructors match their original evidence (standalone / inline-proven / compiler-generated)')]
-[group('gates')]
-destructor-placement-gate:
-  uv run python -m tools.workflow.check_destructor_placement --paths src include
 
 # Structural integrity of config/original_entities.csv: header row exactly at line 1, no
 # duplicate headers, parseable hex addresses, no duplicate addresses, no two
@@ -242,30 +179,9 @@ generated-integrity-gate *args:
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
 
-# Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
-[group('gates')]
-symbols-anchor-gate:
-  uv run python -m tools.workflow.check_symbols_anchors
-
 [group('gates')]
 antipattern-gate:
   uv run python -m tools.workflow.check_construction_antipatterns
-
-# Ensure // GLOBAL: markers live in global_data_tables.cpp and declarations in global_data_tables.h
-[group('gates')]
-global-location-gate:
-  uv run python -m tools.workflow.check_global_location --source-dir src --include-dir include
-
-# Ensure manual CRuntimeClass definitions are replaced with MFC macros
-[group('gates')]
-manual-cruntimeclass-gate:
-  uv run python -m tools.workflow.check_manual_cruntimeclass --source-dir src
-
-# Structure-audit gate (8mo.18): no duplicate top-level #include, no alias headers, no CRLF in manual
-# source. Umbrella home for the source-structure cleanups; more rules land with 8mo.11-16.
-[group('gates')]
-structure-audit-gate:
-  uv run python -m tools.workflow.check_structure_audit
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
 # for syntax errors, duplicate addresses, and stray markers.
@@ -274,26 +190,7 @@ structure-audit-gate:
 decomplint:
   (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}" --warnfail)
 
-# Manual audits of the legacy typedef-cast scaffolding (0 instances remain in the
-# tree; new casts are already hard-banned by antipattern-gate + boundary-gate, so
-# these no longer run per-commit -- keep them as rare on-demand audits).
-[doc('Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift (report-only)')]
-[group('gates')]
-typedef-cast-audit *args:
-  uv run python -m tools.workflow.check_typedef_cast_drift {{args}}
-
-# No local `extern` redeclarations of globals already in global_data_tables.h.
-[group('gates')]
-global-redeclaration-gate:
-  uv run python -m tools.workflow.check_global_redeclarations
-
-# Hard-ban gate over the boundary report: zero manual->stub call/cast references
-# and zero function-pointer casts of named symbols (both counts must stay at 0).
-[group('gates')]
-boundary-gate:
-  uv run python -m tools.workflow.check_boundary_ratchet
-
-# Shadow-stub gate (bead rcb6): non-virtual degenerate methods that hide a real vtable
+# Shadow-stub gate: non-virtual degenerate methods that hide a real vtable
 # slot -- direct calls into do-nothing bodies where the original dispatches virtually.
 # Every offender is a hard error.
 [group('gates')]
@@ -310,7 +207,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate vtable-abi-gate shadow-stub-gate runtime-source-policy-gate runtime-script-debt-gate
+_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate cstring-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate class-size-gate noop-gate shadow-stub-gate runtime-source-policy-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or

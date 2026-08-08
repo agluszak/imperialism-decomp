@@ -107,7 +107,7 @@ namespace {{
 //   * never put an RT_ macro inside try/catch.
 //
 // Useful next steps:
-//   just runtime-dev {test_name}          build only what changed, then run
+//   just runtime-test {test_name}         rebuild, then run
 //   just runtime-tree {test_name} --paths read the real tag hierarchy off a failed run
 class {case_class} : public {base_class} {{
 protected:
@@ -243,9 +243,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         print("catalog already mentions this test; left tools/runtime/catalog.py alone")
 
-    # Adding a .cpp changes the source set, so the next build needs a configure -- runtime-dev
-    # detects that itself, but say so rather than letting it look like an unexplained slow build.
-    print(f"next: just runtime-dev {args.name}   (a new file forces one CMake configure)")
+    # Adding a .cpp changes the source set, so the next build needs a configure.
+    print(f"next: just runtime-test {args.name}   (a new file forces one CMake configure)")
     return 0
 
 

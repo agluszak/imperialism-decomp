@@ -51,7 +51,7 @@ ghidra-daemon-status:
 #   just ghidra                          (lists all sub-commands)
 # Sub-commands: listing, decompile, xrefs, func-sig, field-xrefs, string-oracle,
 # read-data, jumptable, function-slice, linear-disasm, raw-disasm, search,
-# original-modules, portprep, vtable-dump, vtable-abi-evidence.
+# original-modules, portprep, vtable-dump.
 [doc('Read-only Ghidra query dispatcher: just ghidra <cmd> <args> (no cmd lists them)')]
 [group('ghidra-inspect')]
 ghidra *args: _require-ghidra-install
@@ -68,39 +68,19 @@ class-vtable-dump *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_slots {{args}}
 
 [private]
-[doc('Print one scoped Mac View resource from committed UI IR (FILE:ID)')]
 [group('ghidra-inspect')]
 ui-resource-show resource:
   uv run python -m tools.ui_codegen --view "{{resource}}"
 
 [private]
-[doc('Explain generated lines and evidence for FUNCTION EVENT [NODE-OFFSET-OR-TAG]')]
 [group('ghidra-inspect')]
 ui-codegen-explain *args:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --explain {{args}}
 
 [private]
-[doc('Summarize per-case and per-node source-map coverage for one UI factory')]
 [group('ghidra-inspect')]
 ui-codegen-triage function:
   uv run python -m tools.ui_codegen --gen-dir "{{build_dir}}/generated/ui" --triage-map "{{function}}"
-
-# Extract the immutable per-slot ABI evidence snapshot the vtable ABI audit
-# consumes. Default: every `// VTABLE:`-annotated class in the tree, written to
-# config/vtable_abi_evidence.json (slow; one-time — the binary never changes).
-#   just vtable-abi-extract                       -> full refresh
-#   just vtable-abi-extract TMapMaker=0x6598f8    -> one class, to stdout
-[private]
-[doc('Extract per-slot vtable ABI evidence (RET imm, ECX use, caller pushes/cleanup/ret-use)')]
-[group('ghidra-inspect')]
-vtable-abi-extract *args: _require-ghidra-install
-  #!/usr/bin/env bash
-  set -euo pipefail
-  if [ -z "{{args}}" ]; then
-    uv run python -m tools.ghidra.query vtable-abi-evidence --from-source --out config/vtable_abi_evidence.json
-  else
-    uv run python -m tools.ghidra.query vtable-abi-evidence {{args}}
-  fi
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/original_entities.csv __cdecl rows).

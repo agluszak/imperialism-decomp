@@ -79,8 +79,7 @@ protected:
 private:
   // The phase-machine surface. Private with friendship rather than protected, so a scenario
   // that reaches for it fails to compile instead of failing a regex. The script layer and the
-  // navigation flows are the legitimate callers; `just runtime-script-debt-gate` still bans the
-  // names, but the type system is what enforces it now.
+  // navigation flows are the legitimate callers; the type system enforces the boundary.
   //
   // `description` is plain text naming what the scenario is waiting for; it is published in the
   // heartbeat and the result file, so a stalled run says what it expected.

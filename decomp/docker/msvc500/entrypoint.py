@@ -93,7 +93,7 @@ def main() -> int:
     # dominates the edit-compile-run loop for a one-file change. It is only safe when the
     # build tree is already configured and the file set has not changed: CMake's
     # CONFIGURE_DEPENDS globs are re-evaluated by a configure, not by a build, so a new or
-    # deleted source needs the full path. `just runtime-dev` decides that and only sets
+    # deleted source needs the full path. Callers decide that and only set
     # this when the source set is unchanged.
     build_only = os.getenv("BUILD_ONLY") == "1"
 
