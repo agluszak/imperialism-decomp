@@ -7,7 +7,7 @@
 use crate::{
     CityState, CivilianUnitTable, Difficulty, GameState, IndustryActionTable, LaborPool,
     MajorNation, MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitTable,
-    MinorNationTable, NationCapacityTable, NationCommonState, NationId, NationPendingWork,
+    MinorNationTable, NationCapacities, NationCommonState, NationId, NationPendingWork,
     NationTable, Nations, PendingActionTable, PendingWorkState, PopulationState, ProductionTable,
     ResourceTable, RetailCrtRng, RetailLcg, RngState, TileId, TradeMarketState, TurnState,
     WorldState,
@@ -57,7 +57,7 @@ pub(crate) fn city() -> CityState {
 pub(crate) fn major_nation_state() -> MajorNationState {
     MajorNationState {
         diplomacy_eligible: true,
-        capacities: NationCapacityTable::default(),
+        capacities: NationCapacities::default(),
         grant_total_cost: 0,
         unfilled_trade_offer_count: 0,
         diplomacy_policy_by_nation: NationTable::default(),

@@ -1,6 +1,4 @@
-use crate::{
-    CityState, MajorNationState, NationCapacity, ProductionSlot, ResourceKind, ResourceTable,
-};
+use crate::{CityState, MajorNationState, ProductionSlot, ResourceKind, ResourceTable};
 
 impl CityState {
     /// Mirrors the state effect of `TCity::VerifyStocks`; UI invalidation from
@@ -39,8 +37,7 @@ impl CityState {
         if surplus < amount {
             amount = surplus;
         }
-        let available_capacity = nation.capacities[NationCapacity::Transport]
-            - nation.capacities[NationCapacity::ReservedTransport];
+        let available_capacity = nation.capacities.transport - nation.capacities.reserved_transport;
         if available_capacity < amount {
             amount = available_capacity;
         }
@@ -156,7 +153,7 @@ mod tests {
     fn nation() -> MajorNationState {
         MajorNationState {
             diplomacy_eligible: true,
-            capacities: crate::NationCapacityTable::from_array([0, 0, 15, 11]),
+            capacities: crate::NationCapacities::from_array([0, 0, 15, 11]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
             diplomacy_policy_by_nation: crate::NationTable::default(),
@@ -218,7 +215,7 @@ mod tests {
         assert_eq!(state.direct_transport(&mut owner, resource, 5), 4);
         assert_eq!(state.stock_by_type[resource], 4);
         assert_eq!(owner.need_target_by_type[resource], 8);
-        assert_eq!(owner.capacities[NationCapacity::ReservedTransport], 15);
+        assert_eq!(owner.capacities.reserved_transport, 15);
     }
 
     #[test]
@@ -243,9 +240,9 @@ mod tests {
         assert!(state.increase_rolling_stock(&mut owner));
         assert_eq!(state.stock_by_type[ResourceKind::Lumber], 1);
         assert_eq!(state.stock_by_type[ResourceKind::Steel], 0);
-        assert_eq!(owner.capacities[NationCapacity::Transport], 16);
+        assert_eq!(owner.capacities.transport, 16);
         assert!(!state.increase_rolling_stock(&mut owner));
-        assert_eq!(owner.capacities[NationCapacity::Transport], 16);
+        assert_eq!(owner.capacities.transport, 16);
     }
 
     #[test]
@@ -260,7 +257,7 @@ mod tests {
         assert!(state.increase_merchant_marine(&mut owner));
         assert_eq!(state.stock_by_type[ResourceKind::Lumber], 0);
         assert_eq!(state.stock_by_type[ResourceKind::Fabric], 0);
-        assert_eq!(owner.capacities[NationCapacity::MerchantCapacity], 1);
+        assert_eq!(owner.capacities.trade_offer, 1);
     }
 
     #[test]

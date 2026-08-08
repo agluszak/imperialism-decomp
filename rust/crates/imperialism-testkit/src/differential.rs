@@ -96,9 +96,9 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 mod tests {
     use super::*;
     use imperialism_core::{
-        CivilianUnitId, DiplomacyGrant, DiplomacyGrantFlags, MajorNationId, MilitaryUnitKind,
-        MinorNationId, NationId, ProductionProgress, RecruitKind, ResourceCost, ResourceKind,
-        SkillBand, TradePolicyScore, UnitCostProfile, UnitProductionOrder,
+        CivilianUnitId, DiplomacyGrant, MajorNationId, MilitaryUnitKind, MinorNationId, NationId,
+        ProductionProgress, RecruitKind, ResourceCost, ResourceKind, SkillBand, TradePolicyScore,
+        UnitCostProfile, UnitProductionOrder,
     };
     use serde::Deserialize;
     use std::path::PathBuf;
@@ -283,7 +283,7 @@ mod tests {
                     case.target,
                     Some(DiplomacyGrant {
                         amount: case.amount,
-                        flags: DiplomacyGrantFlags::empty(),
+                        recurring: false,
                     }),
                 )?;
                 anyhow::ensure!(accepted, "Rust rejected the diplomacy grant");

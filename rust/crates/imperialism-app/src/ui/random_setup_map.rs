@@ -10,7 +10,7 @@ use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
 use imperialism_core::{MajorNationId, MapGeometry, STRATEGIC_TILE_COUNT, TileId};
-use imperialism_formats::{DibPalette, PaletteIndex, Rgb};
+use imperialism_formats::{DibPalette, Rgb};
 
 const MAP_TAG: &str = "map ";
 const COAT_TAG: &str = "coat";
@@ -23,22 +23,15 @@ const TRANSPARENT_FLAG_RGB: Rgb = Rgb::new(0xff, 0, 0xff);
 const PREVIEW_WIDTH: usize = 324;
 const PREVIEW_HEIGHT: usize = 180;
 const PREVIEW_PIXEL_COUNT: usize = PREVIEW_WIDTH * PREVIEW_HEIGHT;
-const OFF_MAP_PALETTE: PaletteIndex = PaletteIndex::new(0x10);
-const SELECTED_EDGE_PALETTE: PaletteIndex = PaletteIndex::new(0x13);
-const MAJOR_NATION_PALETTES: [PaletteIndex; MajorNationId::COUNT as usize] = [
-    PaletteIndex::new(0x16),
-    PaletteIndex::new(0x2a),
-    PaletteIndex::new(0x22),
-    PaletteIndex::new(0x1c),
-    PaletteIndex::new(0x2b),
-    PaletteIndex::new(0x1e),
-    PaletteIndex::new(0x2e),
-];
+const OFF_MAP_PALETTE: u8 = 0x10;
+const SELECTED_EDGE_PALETTE: u8 = 0x13;
+const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
+    [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
 struct RandomSetupMapPreview {
-    palette_indices: Vec<PaletteIndex>,
+    palette_indices: Vec<u8>,
     rendered: bool,
 }
 
@@ -256,7 +249,7 @@ fn on_map_preview_click(
 pub(crate) fn compose_owner_preview_indices(
     owner_at: impl Fn(TileId) -> i8,
     selected_nation: MajorNationId,
-) -> Vec<PaletteIndex> {
+) -> Vec<u8> {
     let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
     // TMapPreviewView always requests bounded neighbors, even if the selected
     // setup topology wraps horizontally.
@@ -339,7 +332,7 @@ pub(crate) fn compose_owner_preview_indices(
 fn compose_preview_indices(
     tiles: &[imperialism_core::GeneratedTerrainTile],
     selected_nation: MajorNationId,
-) -> Vec<PaletteIndex> {
+) -> Vec<u8> {
     compose_owner_preview_indices(
         |tile| {
             tiles
@@ -355,7 +348,7 @@ fn owner_tag(owner_at: &impl Fn(TileId) -> i8, tile: Option<TileId>) -> i8 {
     tile.map(owner_at).unwrap_or(-1)
 }
 
-fn preview_palette(owner_tag: i8) -> PaletteIndex {
+fn preview_palette(owner_tag: i8) -> u8 {
     let owner_tag = if (7..0x17).contains(&owner_tag) {
         0x0b
     } else if owner_tag >= 0x17 {
@@ -364,35 +357,30 @@ fn preview_palette(owner_tag: i8) -> PaletteIndex {
         owner_tag
     };
     match owner_tag {
-        -2 => PaletteIndex::new(0),
+        -2 => 0,
         -1 => OFF_MAP_PALETTE,
         0..=6 => MAJOR_NATION_PALETTES[owner_tag as usize],
-        7 => PaletteIndex::new(0x0a),
-        8 => PaletteIndex::new(0x0b),
-        9 => PaletteIndex::new(0x0d),
-        10 => PaletteIndex::new(0x29),
-        11 => PaletteIndex::new(0xde),
-        12 => PaletteIndex::new(0xdf),
-        13 => PaletteIndex::new(0xfa),
-        14 => PaletteIndex::new(0x2c),
-        15 => PaletteIndex::new(0x31),
-        16 => PaletteIndex::new(0x33),
-        17 => PaletteIndex::new(0x41),
-        18 => PaletteIndex::new(0x48),
-        19 => PaletteIndex::new(0xd0),
-        20 => PaletteIndex::new(0xcd),
-        21 => PaletteIndex::new(0xce),
-        22 => PaletteIndex::new(0xcf),
-        _ => PaletteIndex::new(0xff),
+        7 => 0x0a,
+        8 => 0x0b,
+        9 => 0x0d,
+        10 => 0x29,
+        11 => 0xde,
+        12 => 0xdf,
+        13 => 0xfa,
+        14 => 0x2c,
+        15 => 0x31,
+        16 => 0x33,
+        17 => 0x41,
+        18 => 0x48,
+        19 => 0xd0,
+        20 => 0xcd,
+        21 => 0xce,
+        22 => 0xcf,
+        _ => 0xff,
     }
 }
 
-fn write_preview_pixel(
-    pixels: &mut [PaletteIndex],
-    row: usize,
-    column: usize,
-    palette: PaletteIndex,
-) {
+fn write_preview_pixel(pixels: &mut [u8], row: usize, column: usize, palette: u8) {
     // The native 324-byte row stride lets the final odd-row hex write x=324,
     // which becomes x=0 on the next visible row. Keep that linear behavior;
     // only the one write past the allocated final row is not visible here.
@@ -401,7 +389,7 @@ fn write_preview_pixel(
     }
 }
 
-fn enhance_preview_selection(pixels: &mut [PaletteIndex], selected_nation: MajorNationId) {
+fn enhance_preview_selection(pixels: &mut [u8], selected_nation: MajorNationId) {
     let selected_palette = major_nation_palette(selected_nation);
     for row in 1..PREVIEW_HEIGHT - 1 {
         for column in 1..PREVIEW_WIDTH - 1 {
@@ -416,17 +404,17 @@ fn enhance_preview_selection(pixels: &mut [PaletteIndex], selected_nation: Major
             {
                 SELECTED_EDGE_PALETTE
             } else {
-                PaletteIndex::new(0)
+                0
             };
         }
     }
 }
 
-fn is_selection_maskable(palette: PaletteIndex) -> bool {
-    palette == SELECTED_EDGE_PALETTE || matches!(palette.get(), 0 | 2 | 0x0f | 6 | 0x20 | 5 | 0xca)
+fn is_selection_maskable(palette: u8) -> bool {
+    palette == SELECTED_EDGE_PALETTE || matches!(palette, 0 | 2 | 0x0f | 6 | 0x20 | 5 | 0xca)
 }
 
-fn major_nation_palette(nation: MajorNationId) -> PaletteIndex {
+fn major_nation_palette(nation: MajorNationId) -> u8 {
     MAJOR_NATION_PALETTES[usize::from(nation.get())]
 }
 
@@ -452,7 +440,7 @@ pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<Tile
 }
 
 fn nation_at_preview_position(
-    palette_indices: &[PaletteIndex],
+    palette_indices: &[u8],
     normalized_position: Vec2,
 ) -> Option<MajorNationId> {
     let column = ((normalized_position.x + 0.5) * PREVIEW_WIDTH as f32).floor();
@@ -469,21 +457,18 @@ fn nation_at_preview_position(
         .and_then(nation_for_palette)
 }
 
-fn nation_for_palette(palette: PaletteIndex) -> Option<MajorNationId> {
+fn nation_for_palette(palette: u8) -> Option<MajorNationId> {
     MAJOR_NATION_PALETTES
         .iter()
         .position(|candidate| *candidate == palette)
         .map(|nation| MajorNationId::new(nation as u8))
 }
 
-pub(crate) fn preview_image_from_indices(
-    palette_indices: &[PaletteIndex],
-    palette: &DibPalette,
-) -> Image {
+pub(crate) fn preview_image_from_indices(palette_indices: &[u8], palette: &DibPalette) -> Image {
     preview_image(palette_indices, palette)
 }
 
-fn preview_image(palette_indices: &[PaletteIndex], palette: &DibPalette) -> Image {
+fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
     let mut rgba = Vec::with_capacity(PREVIEW_PIXEL_COUNT * 4);
     for &palette_index in palette_indices {
         // TMapPreviewView uses the QuickDraw transparent blit mode with
@@ -535,14 +520,14 @@ mod tests {
         let pixels = compose_preview_indices(&tiles(0), MajorNationId::new(1));
 
         assert_eq!(pixels.len(), PREVIEW_PIXEL_COUNT);
-        assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], PaletteIndex::new(0x16));
+        assert_eq!(pixels[90 * PREVIEW_WIDTH + 90], 0x16);
     }
 
     #[test]
     fn selection_enhancement_uses_the_retail_white_palette_index() {
         let mut pixels = vec![OFF_MAP_PALETTE; PREVIEW_PIXEL_COUNT];
         let index = 90 * PREVIEW_WIDTH + 90;
-        pixels[index] = PaletteIndex::new(0);
+        pixels[index] = 0;
         pixels[index + 1] = major_nation_palette(MajorNationId::new(4));
 
         enhance_preview_selection(&mut pixels, MajorNationId::new(4));
@@ -557,7 +542,7 @@ mod tests {
 
         let pixels = compose_preview_indices(&map, MajorNationId::new(1));
 
-        assert_eq!(pixels[5 * PREVIEW_WIDTH], PaletteIndex::new(0x16));
+        assert_eq!(pixels[5 * PREVIEW_WIDTH], 0x16);
     }
 
     #[test]
@@ -589,13 +574,8 @@ mod tests {
         palette[0] = Rgb::new(0, 0, 0);
         palette[SELECTED_EDGE_PALETTE] = Rgb::new(0xff, 0xff, 0xff);
         palette[0x16] = Rgb::new(0x57, 0x8b, 0xa6);
-        let mut indices = vec![PaletteIndex::new(0x16); PREVIEW_PIXEL_COUNT];
-        indices[..4].copy_from_slice(&[
-            OFF_MAP_PALETTE,
-            PaletteIndex::new(0),
-            SELECTED_EDGE_PALETTE,
-            PaletteIndex::new(0x16),
-        ]);
+        let mut indices = vec![0x16; PREVIEW_PIXEL_COUNT];
+        indices[..4].copy_from_slice(&[OFF_MAP_PALETTE, 0, SELECTED_EDGE_PALETTE, 0x16]);
         let image = preview_image(&indices, &palette);
 
         assert_eq!(image.texture_descriptor.size.width, PREVIEW_WIDTH as u32);
