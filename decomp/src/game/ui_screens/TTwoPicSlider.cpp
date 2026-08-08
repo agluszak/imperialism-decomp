@@ -167,7 +167,7 @@ void TTwoPicSlider::TrackMouse(TrackPhase phase, CPoint& startPoint, CPoint& pre
     if (slider->splitPosition != nextSplit) {
       slider->splitPosition = nextSplit;
 
-      ScopedMapQuickDrawContextGuard quickDrawContext(slider);
+      ScopedMapQuickDrawContext quickDrawContext(slider);
       slider->PrepareForDrawing();
 
       RECT sliderRect;

@@ -14,10 +14,9 @@ from tools.runtime import wine
 
 
 class WinePrefixTemplateTests(unittest.TestCase):
-    def test_identity_changes_with_schema_or_seeded_registry(self) -> None:
+    def test_identity_changes_with_current_template_inputs(self) -> None:
         baseline = wine.template_identity("wine-10.0")
-        with patch.object(wine, "PREFIX_TEMPLATE_SCHEMA", wine.PREFIX_TEMPLATE_SCHEMA + 1):
-            self.assertNotEqual(wine.template_identity("wine-10.0"), baseline)
+        self.assertNotEqual(wine.template_identity("wine-10.1"), baseline)
         with patch.object(
             wine,
             "SEEDED_REGISTRY_VALUES",
@@ -25,7 +24,9 @@ class WinePrefixTemplateTests(unittest.TestCase):
         ):
             self.assertNotEqual(wine.template_identity("wine-10.0"), baseline)
 
-    def test_publication_uses_versioned_destination_without_deleting_live_template(self) -> None:
+    def test_publication_uses_content_addressed_destination_without_deleting_live_template(
+        self,
+    ) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             old_template = root / "wineprefix-template-old"
@@ -54,7 +55,13 @@ class WinePrefixTemplateTests(unittest.TestCase):
             stamp = json.loads(
                 (template / ".imperialism-template").read_text(encoding="utf-8")
             )
-            self.assertEqual(stamp["schema"], wine.PREFIX_TEMPLATE_SCHEMA)
+            self.assertEqual(
+                stamp,
+                {
+                    "identity": wine.template_identity("wine-10.0"),
+                    "wine": "wine-10.0",
+                },
+            )
             self.assertTrue((template / "system.reg").is_file())
 
 
@@ -98,6 +105,15 @@ class GameSandboxTests(unittest.TestCase):
                     root / "attempt-1", runtime_executable, fixture
                 )
                 cached_asset = next((root / "build").glob("game-assets-*/Data/asset.gob"))
+                asset_stamp = json.loads(
+                    (cached_asset.parents[1] / wine.GAME_ASSET_STAMP_NAME).read_text(
+                        encoding="utf-8"
+                    )
+                )
+                self.assertEqual(
+                    set(asset_stamp), {"source", "manifest_sha256", "file_count"}
+                )
+                self.assertEqual(asset_stamp["manifest_sha256"], identity1)
                 # Assets are shared with the immutable template rather than duplicated
                 # per attempt: copying them cost ~237MB a run. Cross-attempt isolation
                 # now comes from the template being read-only, not from duplication --

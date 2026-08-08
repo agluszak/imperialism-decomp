@@ -22,8 +22,8 @@ from typing import Any
 from tools.common.reccmp_report import run_report
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import names_by_address, ownership_by_address
+from tools.common.pe import PeImage
 from tools.reccmp.compare_batch import addrs_from_file
-from tools.reccmp.global_xref_oracle import PeImage
 from tools.workflow.prune_ilt_thunks import original_exe_from_user_yml
 
 REASON_LABELS = {

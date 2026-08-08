@@ -1,188 +1,66 @@
 # Imperialism C++ reconstruction
 
-Behaviorally and ABI-faithful reconstruction of the Windows PC game Imperialism (1997). This is a
-first-class subproject beside the independent Rust implementation in `../rust/`; run all commands in
-this document from `decomp/`.
+`decomp/` is the behaviorally and ABI-faithful C++ reconstruction of the Windows retail game
+Imperialism (1997). It is a sibling of the independent Rust implementation in `../rust/`. Run the
+commands below from this directory.
 
-## Scope
-
-- Keep reverse-engineering outputs reproducible in git.
-- Rebuild with old MSVC toolchain in Docker/Wine.
-- Track matching progress with `reccmp`.
-
-## Legal
-
-This repo does not include original binaries or copyrighted game assets.
-Use your own legally obtained copy.
-
-Local-only layout (gitignored):
-
-- `orig/Imperialism.exe`
-- `assets/`
+The retail executable is the compatibility target. This project rebuilds with the MSVC 5.0 toolchain,
+uses Ghidra for binary evidence, and uses reccmp to compare the result. It does not contain a retail
+binary or copyrighted game assets; use your own legally obtained copy.
 
 ## Prerequisites
 
-Install these yourself before following the Environment steps below — nothing in
-this repo installs them for you:
+- `git` and `git-lfs` for the vendored Ghidra archive.
+- `just` for project commands and `uv` for Python tools.
+- Docker for the MSVC500 build, Wine plus GDB/MI for the native runtime suite, and Ghidra 12.1.2.
+- `bd` (Beads) for task tracking.
 
-- `git` + [`git-lfs`](https://git-lfs.com/) — the vendored Ghidra archive
-  (`vendor/ghidra/exports/*.gzf`) ships via LFS.
-- [`just`](https://github.com/casey/just) — every workflow in this repo is a
-  `just` target; see `just --list` (grouped, with mutating targets flagged).
-- [`uv`](https://docs.astral.sh/uv/) — all Python tooling runs through it
-  (`uv run ...`); never invoke a bare `python`.
-- `docker` — the MSVC500 build/lint toolchain runs in a container (see
-  `docker/msvc500/`); nothing proprietary to fetch, `just docker-build` pulls
-  the portable [archaic-msvc/msvc500](https://github.com/archaic-msvc/msvc500)
-  toolchain and the DirectX 5 SDK automatically.
-- `wine` (host-side, separate from the Wine installed *inside* the Docker
-  image) — only needed to run/debug the recompiled `.exe` (`just run`,
-  `just debug`); not required for build/gates/compare. Runtime-test failures capture
-  screenshots internally as optional diagnostic artifacts.
-- `gdb` with MI3 support and Wine's `winedbg` — required by the default native
-  runtime-test path. `gdb` runs with `-nx --interpreter=mi3`; `winedbg --gdb`
-  provides the isolated remote target. Direct Wine remains available only as a
-  debugger-sensitivity control.
-- [Ghidra `12.1.2 PUBLIC`](https://ghidra-sre.org/) — external install; the
-  project database itself is vendored (see `GHIDRA_INSTALL_DIR` below).
-- [`bd` (Beads)](https://github.com/steveyegge/beads) — repository-wide issue tracking described in
-  `../AGENTS.md`; install with
-  `curl -sSL https://raw.githubusercontent.com/steveyegge/beads/main/scripts/install.sh | bash`.
-
-Your own legally obtained `Imperialism.exe` (see Legal above) is the only asset
-you're expected to source yourself; everything else above is a normal tool
-install.
-
-## Toolchain Pins
-
-- Ghidra: `12.1.2 PUBLIC` (see `ghidra.toml`)
-- pyghidra: `3.1.0` (see `pyproject.toml`)
-- reccmp: pinned to fork commit (see `pyproject.toml`)
-
-## Primary Workflow (`just`)
-
-Porting and fixing work goes through the stateful task commands — they run the
-correct process (claim checks, investigation, verification) so you don't have to
-reconstruct it:
+## First setup
 
 ```sh
-just agent-start port 0xADDR   # investigate + claim the target, write the task receipt
-just advice 0xADDR             # the most relevant active rules for this target
-                               # (`just advice --diff` selects by the working diff)
-just agent-check               # verify the diff: regen, format, build, compare, triage, gates, tests, stats
-just agent-finish              # render the receipt into a PR-ready summary
-just agent-release             # free the claim refs once the work lands
+cp .env.example .env             # set GHIDRA_INSTALL_DIR and ORIGINAL_BINARY
+git lfs pull
+just vendor-msvc500-headers
+just restore-project
+just docker-build
+just bootstrap-reccmp
+bd prime
+just build
 ```
 
-The underlying measurement and verification targets, usable on their own:
+`ORIGINAL_BINARY` must point at your legally obtained `Imperialism.exe`. The optional
+`MACOS_IMPERIALISM_DUMP` is only for regenerating vendored Mac evidence. A new worktree needs its own
+`.env` and `reccmp-user.yml`, but can reuse the Docker image and the local Ghidra installation.
+
+## Daily recovery loop
 
 ```sh
-just tooling-check
-just build && just detect && just stats   # rebuild + measure
-just compare 0x004E73F0                    # targeted verbose compare (asm diff)
-just triage 0x004E73F0                     # structured semantic result — read this before a raw diff
-just vtable TCity                          # vtable layout vs original
-just precommit                             # every required build, gate, test, integrity, and runtime check
-```
-
-The full guidance lives in `AGENTS.md` (the scoped contract; `CLAUDE.md` is a symlink to it) and six
-workflow skills under `.agents/skills/` (also exposed to Claude through `.claude/skills/`):
-
-- `decompile-function` routes function work to focused calling-convention, EH, string, FP, codegen,
-  data-modeling, MFC, and large-body references.
-- `recover-class` covers layout, inheritance, construction, and vtable recovery.
-- `ghidra`, `verify`, `runtime`, and `sync-evidence` cover their respective workflows.
-
-## Environment
-
-First-time / fresh clone, with the [Prerequisites](#prerequisites) above already
-installed:
-
-```sh
-cp .env.example .env && edit it     # set GHIDRA_INSTALL_DIR + ORIGINAL_BINARY
-git lfs pull                        # fetch vendor/ghidra/exports/*.gzf
-just restore-project                # recreate the live Ghidra project from the archive
-just docker-build                   # build the imperialism-msvc500 image (one-time)
-just bootstrap-reccmp               # generate reccmp-user.yml (gitignored, no template committed)
-bd prime                            # load the repository-level Beads context
-just install-reccmp-merge-driver    # auto-regenerate conflicting progress baselines after merges/rebases
-just tooling-check                  # verify the tooling surface
-just build && just detect && just stats   # first build + reccmp pairing; stats should show no baseline drift
-```
-
-`just precommit` is the single required verification entrypoint. It includes the
-asset-backed native PR suite, so verify the host debugger surface first:
-
-```sh
-command -v wine wineserver winedbg gdb xwininfo xprop
-gdb --quiet --nx --interpreter=mi3 --batch -ex 'show version'
+bd update <issue> --claim
+just ghidra portprep 0xADDR
+# inspect retail evidence and edit ordinary VC5-compatible C++
+just build
+just triage 0xADDR
 just precommit
 ```
 
-Use `just runtime-test NAME --no-gdb` only as a control when determining whether
-a failure is debugger-sensitive. It does not replace the default GDB/MI result
-and failure-capture path.
+Use `just compare 0xADDR` only when the structured triage result needs a raw diff. `just vtable`,
+`just datacmp`, `just stackcmp`, and `just serde-audit` are focused diagnostics. `just precommit` is
+the required full verification: build, source gates, tooling tests, generated-input integrity, and the
+asset-backed runtime suite.
 
-Hosted verification workflows are intentionally absent. Verification runs locally
-through `just precommit` so the legally obtained retail binary and derived fixtures
-remain on the developer's machine. `PRECOMMIT_BASE_REF` can override the default
-`origin/main` merge base used by the generated-artifact integrity check.
+The scoped rules are in `AGENTS.md`. The six focused skills under `.agents/skills/` cover function
+recovery, class recovery, Ghidra, verification, runtime behavior, and source/evidence synchronization.
 
-`.env` (gitignored) only needs the two machine-specific paths:
+## Layout
 
-- `GHIDRA_INSTALL_DIR=.../ghidra_12.1.2_PUBLIC` — your Ghidra install.
-- `ORIGINAL_BINARY=.../Imperialism.exe` — your own legally obtained copy (for the
-  reccmp original side / `just bootstrap-reccmp`).
+- `src/`, `include/` — manually owned C++ source.
+- `config/` — current inventory and recovery evidence.
+- `tools/ghidra/`, `tools/runtime/` — active retail evidence and runtime tools; generation and direct
+  comparison helpers live alongside them.
+- `just/` — project commands; use `just --list` to discover them.
+- `vendor/` — Ghidra archive, MSVC500 inputs, and recovered Mac evidence.
+- `build-msvc500/` and `build-runtime-tests/` — generated local output, never hand-edit.
 
-`.env.example` documents two further optional knobs: `MACOS_IMPERIALISM_DUMP`
-(only to *regenerate* the vendored Mac CodeWarrior evidence) and
-`GHIDRA_PROJECT_DIR` (only for a worktree living under a dot-directory, which
-Ghidra refuses to open).
-
-The Ghidra project itself is vendored at `vendor/ghidra` and is wired into the `just`
-targets — you do **not** set `GHIDRA_PROJECT_DIR`/`GHIDRA_PROJECT_NAME`. After making
-Ghidra-side changes, refresh the committed archive with `just export-project` and
-commit it. Build knobs (`BUILD_DIR`, `DOCKER_IMAGE`, `CMAKE_FLAGS`, `TARGET`) have sane
-defaults and can be overridden via env if needed.
-
-Adding a new git worktree (not a fresh clone) shares the git tree but none of the
-gitignored machine state above — see `docs/workflows.md` §0 for that shorter path
-(copy `.env`/`reccmp-user.yml` from an existing checkout instead of regenerating them;
-Docker images are machine-global, so `docker-build` isn't needed again).
-
-## Repo Layout
-
-Everything under `src/` and `include/` is **manually owned source** — there are no
-tool-owned source trees. Generated build inputs live in the build directory.
-
-- `src/game/`, `include/game/` — hand-written gameplay code and headers, split into
-  subsystem folders per `docs/reference/subsystem_assignment.csv`
-- `config/` — curated CSV/YAML state: the entity inventory, ownership and name
-  overrides, recovered globals, gate allowlists, agent rules, and the reccmp
-  progress baselines under `config/baselines/`
-- `tools/` — Python tooling (`ghidra`, `workflow`, `reccmp`, `analysis`, `binary`,
-  `mfc`, `runtime`, shared helpers)
-- `just/` — the justfile modules behind `just --list` (`build`, `compare`, `gates`,
-  `agent`, `sync`, `ghidra`, …)
-- `tests/` — tooling unit tests (`just test`)
-- `vendor/` — vendored inputs: the Ghidra `.gzf` archive (via LFS), MSVC500 libraries,
-  Mac CodeWarrior evidence, and DirectX headers
-- `build-msvc500/generated/` — **generated**, not in git: the linkable stubs and
-  source index, rebuilt by `just generate` / `just build`. The old
-  `src/autogen/`, `src/ghidra_autogen/` and `include/ghidra_autogen/` trees are
-  gone; `just build` hard-errors if a stale copy reappears.
-- `build-msvc500/evidence/` — generated Ghidra reference exports
-- Git commit messages are the durable change log; `docs/workflows.md` has the
-  command playbooks, `docs/toolchain.md` the toolchain forensics, and
-  `docs/reference/` the layout and game-domain references
-
-## Policy
-
-- Follow `AGENTS.md` and load the relevant workflow under `.agents/skills/`.
-- Use `just` targets for standard operations; don't run raw `docker` or
-  `uv run reccmp-*` when a target exists.
-- Keep `// FUNCTION: IMPERIALISM 0x...` marker immediately above the declaration.
-- Only files carrying an `AUTO-GENERATED by tools/…` banner are tool output — do
-  not hand-edit those, or anything under `build-msvc500/generated/`.
-- Run `just precommit` before committing, and commit the refreshed
-  `config/baselines/` stats baseline alongside source changes that move it.
+For deliberate Ghidra database changes, use the matching mutation command, inspect it, then export the
+project through the sync workflow. Source markers remain the ownership authority; `just build`
+regenerates the derived build inputs from them.

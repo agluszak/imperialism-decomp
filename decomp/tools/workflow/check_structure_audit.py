@@ -166,11 +166,11 @@ CLAIM_CLASS_RE = re.compile(r"\b(\w+)::")
 
 def ownership_offenders(repo_root: Path) -> list[str]:
     """Rule (5): cross-file class-method claims not covered by the allowlist."""
-    from tools.source_model import scan_marker_claims
+    from tools.source_model import build_model
 
     allow = load_tu_layout_allowlist(repo_root)
     offenders = []
-    for claim in scan_marker_claims(repo_root, "IMPERIALISM"):
+    for claim in build_model(repo_root, "IMPERIALISM").functions.values():
         if claim.kind != "FUNCTION" or not claim.file.startswith("src/game/"):
             continue
         m = CLAIM_CLASS_RE.search(claim.prototype or "")

@@ -1,35 +1,5 @@
-# Fold-aware equivalence metadata (bd 5jjn) in three classes, keyed by the
-# classification column. An alias row is comparison metadata -- never a reason
-# to invent a source class, duplicate an instantiation, or re-model a member.
-# Every row is re-verified by `just template-alias-check`.
-#
-# per_tu_duplicate (class duplicate_emission; decompile-function mfc-collections reference,
-# MFC-TWIN-030): VC5 emits one copy of an MFC-template instantiation's
-# out-of-line members per referencing TU; the copies differ only by relocations
-# (call targets to twin helper copies, EH refs, data addresses). Verified:
-#   - both addresses are sized functions in config/symbols.csv;
-#   - curated names agree (same instantiation, not merely same shape);
-#   - normalized instruction structure identical modulo relocations, with
-#     paired call targets recursively equivalent (tools.binary.body_hash).
-# Discover candidates with `just mfc-collection-audit <Class|0xCTOR>`.
-#
-# folded_symbol_group (decompile-function ctors-dtors-eh reference, 2026-07-23): incremental LINK 5.0
-# folded/aliased symbols -- the original address holds only a stale 5-byte jmp
-# island whose chain (through ILT hops) lands on one shared final body owned by
-# another symbol (e.g. many leaf-view dtors end at TView's 0x48a9d0). The
-# island IS the folded symbol's canonical location; curated names within a
-# group intentionally differ. Verified:
-#   - alias bytes are a bare `jmp rel32` (+ nop/int3 padding when sized);
-#   - the fold chain resolves exactly to the canonical address;
-#   - the canonical is a sized function in config/symbols.csv.
-# Discover candidates with `just stale-jmp-islands [--emit]`.
-#
-# library_callee_alias: compiler wrappers that directly call a linked library
-# body with the same decorated ABI identity. The wrapper remains a distinct
-# report entity; this row canonicalizes only call operands. Verified:
-#   - both addresses are sized functions;
-#   - the wrapper has a direct call resolving to the canonical body;
-#   - the row carries the canonical decorated library identity.
+# Comparison aliases for known duplicate, folded, and library bodies.
+# They affect comparison only; never use them to invent a source model.
 #
 # original_address|canonical_address|decorated_name|classification
 0x0049eb00|0x006057a7|??0CString@@QAE@ABV0@@Z|library_callee_alias

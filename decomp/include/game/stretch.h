@@ -151,9 +151,8 @@ public:
     return count;
   }
 
-  // Public because a caller compiled under `#pragma inline_depth(0)` (see the
-  // decompile-function big-functions reference) cannot use the accessors above without emitting a call the
-  // original does not have. The accessors stay the normal way to read these.
+  // Public because a caller compiled under `#pragma inline_depth(0)` cannot use
+  // the accessors above without emitting a call the original does not have.
 public:
   T* data;      // +0x04
   int capacity; // +0x08

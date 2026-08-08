@@ -25,9 +25,8 @@ After --apply, run `just export-project` so the vendored .gzf carries the
 result (`just ghidra-apply-source-full` chains build -> apply -> export).
 
 Class datatypes/inheritance/signatures come from the recomp PDB via the
-`just import-ghidra` step of `ghidra-apply-source-full` (reccmp's PDB importer);
-the audit at the end reports class namespaces whose datatype name still diverges
-from source (repair tool: `just ghidra-rename-class`).
+`just import-ghidra` step of `ghidra-apply-source-full` (reccmp's PDB importer).
+The audit at the end reports any remaining class-datatype drift from source.
 """
 
 from __future__ import annotations
@@ -364,7 +363,7 @@ def main() -> int:
                 print(f"    - {cls2} ({cnt} function(s))")
         if drift:
             print(f"audit: {len(drift)} class(es) with a Vtbl datatype but no class "
-                  f"datatype under the source name (repair: just ghidra-rename-class):")
+                  f"datatype under the source name:")
             for c in drift[:10]:
                 print(f"    - {c}")
 

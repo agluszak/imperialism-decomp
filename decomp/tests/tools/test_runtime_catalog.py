@@ -137,13 +137,11 @@ class RuntimeCatalogTests(unittest.TestCase):
         self.assertIsNone(find_test("not_a_runtime_test"))
 
     def test_catalog_fixtures_have_valid_retail_provenance_sidecars(self) -> None:
-        fixture_root = REPO_ROOT.parent / "interop/fixtures"
+        fixture_root = REPO_ROOT.parent / "fixtures" / "retail"
         for test in TESTS:
             if test.fixture is None:
                 continue
-            metadata = validate_fixture_metadata(
-                fixture_root / test.fixture.filename, test.name
-            )
+            metadata = validate_fixture_metadata(fixture_root / test.fixture.filename)
             self.assertEqual(metadata["source_kind"], test.fixture.evidence_kind)
 
     def test_required_oracle_cannot_be_silently_skipped(self) -> None:

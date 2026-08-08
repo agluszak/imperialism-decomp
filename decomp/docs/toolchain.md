@@ -131,9 +131,8 @@ Interpretation:
   fix for the duplicate original-side CList instantiations.
 - Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
   real `CList<...>` source model and treat leftover duplicate original template bodies
-  as a reccmp pairing/classification problem. Verified per-TU duplicates are recorded in
-  `config/template_aliases.csv` (validated by `just template-alias-check`; discover
-  candidates with `just mfc-collection-audit <Class|0xCTOR>`).
+  as a reccmp pairing/classification problem. The current alias rows in
+  `config/template_aliases.csv` are consumed directly by stub generation.
 
 ### ICF matrix (2026-07-23) — /OPT:NOREF,/OPT:NOICF pinned as the matching baseline
 
@@ -145,8 +144,7 @@ Interpretation:
   call chains resolve through islands into just 10 shared bodies (most leaf views end
   at `TView::~TView` 0x48a9d0). The islands encode the original developers' relink
   history, so **no clean link — ours or theirs — can reproduce those addresses**;
-  per-function pairing with named island claims is the attainable maximum (see the
-  decompile-function ctors-dtors-eh reference note of the same date).
+  per-function pairing with named island claims is the attainable maximum.
 - Four isolated configs, `/Oy /Ob1 /OPT:NOREF` constant (scratch harness: per-config
   `build-icf-X` dir, `just build_dir=X cmake_flags=... _build-msvc500-unlocked`):
 
@@ -207,51 +205,6 @@ Toolchains from github.com/archaic-msvc (`msvc500`, `msvc500sp1`, `msvc500sp2`,
   load folding) — SP1 merely emits the byte order the proof already declared
   equivalent. Verdict: zero genuine SP1-only matches; the hypothesis is dead.
 
-## Experiment: template-emission compiler matrix
-
-Harness: `just template-emission-matrix` (tools/workflow/template_emission_matrix.py
-compiling `experiments/template_emission/{owner,user}.cpp` in the msvc500 container,
-host-side COFF COMDAT inventory per TU). Probe: two owners embedding
-`CList<void*, void*>` and `CList<ProbeRecord, ProbeRecord&>` between scalar fields,
-mirroring the CIncludeView/TApplication shapes.
-
-Results (VC5 RTM 11.00.7022, MFC 4.21, `/O2 /Oy /GX`; 2026-07 run):
-
-- **`/Ob0`**: every collection call goes out-of-line — owner.obj emits 16 CList
-  COMDATs (adds ctor, `AddTail`, `NewNode`, `RemoveAll`), user.obj emits 12
-  (`AddTail`, `FreeNode`, `IsEmpty`, `NewNode`, `RemoveAll`, `RemoveTail`). This is
-  the only mode producing direct calls to out-of-line template COMDATs at call sites.
-- **`/Ob1` == `/Ob2`** (identical inventories): owner.obj emits exactly the
-  per-instantiation VIRTUAL set — vtable `??_7`, `~CList` `??1`, scalar deleting
-  dtor `??_G`, `Serialize` (×2 instantiations = 8) — and user.obj emits ZERO CList
-  COMDATs: `AddTail`/`RemoveTail`/`IsEmpty`, including the nested `NewNode`/CPlex
-  allocation, inline fully in a simple TU.
-- **Same-TU users, explicit vs implicit mem-init, empty vs non-empty owner dtor:
-  no change** to the emission inventory. Source-model choices at the owner cannot
-  reduce or reshape the duplicate emission.
-- **Non-inline `AddTail` wrapper**: adds only the wrapper's own COMDATs; the CList
-  bodies stay inlined inside it.
-
-Conclusions:
-
-1. Any TU that constructs or destroys an embedded `CList` emits the full 4-body
-   virtual set for that instantiation. The original's per-TU duplicate
-   `??_G`/`??1`/`Serialize`/vtable copies are the unavoidable product of multiple
-   original TUs owning objects of the same instantiation — exactly the twin families
-   recorded in `config/template_aliases.csv`. Alias metadata (not source contortion)
-   is confirmed as the correct fix.
-2. Original TUs showing direct out-of-line `AddTail`/`RemoveTail` calls were compiled
-   with inlining rejected in that context (`/Ob1` permits but does not force); in a
-   simple TU the same calls inline completely. This matches the earlier wrapper
-   experiments on the giant UI builders: neither wrapper form reproduces a rejected
-   inline exactly, so treat those as site-local call-shape mismatches.
-3. Still open (needs alternate toolchain binaries, not vendored): the VS97
-   service-pack compiler/linker axis. When such binaries are available, add cells
-   with a different image tag to `tools/workflow/template_emission_matrix.py`.
-   `#pragma auto_inline(off)` remains probe-only: it affects functions defined
-   inside the pragma region, so wrapping an owner ctor does not stop template bodies
-   defined in `afxtempl.h` from inlining — not a production fix.
-
 ### Uncalled out-of-line copies of fully-inlined constructors
 
 Some original constructors exist twice: inlined into every user *and* as a
@@ -291,7 +244,7 @@ definition so the address stays owned, and expect it to stay unpaired.
 ## Python/Ghidra Environment Notes
 
 - The repo syncs with `uv` using `pyghidra==3.1.0` and `jpype1==1.5.2` (see `pyproject.toml`). The stale `java-stubs-converted-strings` dependency conflicted with that `jpype1` pin and was removed.
-- The Ghidra program is vendored in-repo at `vendor/ghidra/` (portable `.gzf` archive via Git LFS; live `.rep` regenerated by `just restore-project`). There is no longer any dependency on an external `imperialism_knowledge` checkout; `just class-discovery` runs fully in-repo via `tools/workflow/impk_compat.py`.
+- The Ghidra program is vendored in-repo at `vendor/ghidra/` (portable `.gzf` archive via Git LFS; live `.rep` regenerated by `just restore-project`).
 - `just ghidra listing 0xADDR [0xADDR ...]` prints read-only listing-level instructions from the vendored Ghidra project. Use it when decompiler signatures disagree with `reccmp` calling convention evidence.
 
 ## Experiment Log Template

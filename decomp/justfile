@@ -9,7 +9,6 @@ docker_image := "imperialism-msvc500"
 lint_build_dir := "build-clang"
 runtime_lint_build_dir := "build-clang-runtime"
 lint_warning_test_build_dir := "build-clang-warning-test"
-class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
 # Exported so every recipe (and the pyghidra tools) use the vendored project authoritatively.
@@ -27,8 +26,6 @@ export GHIDRA_PROJECT_NAME := "imperialism-decomp"
 macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
 macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_directory() / "vendor/macos_codewarrior")
 
-# Transitional aliases for renamed targets (see docs/workflows.md).
-
 default:
   @just --list
 
@@ -37,14 +34,6 @@ default:
 _require-ghidra-install:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
 
-# baseline-update group — targets that REWRITE committed baselines/configs.
-# Extracted into a module to start the justfile-modularization (8mo.19); just's
-# `import` shares scope, so the surface (`just --list`) is unchanged.
-import 'just/baseline-update.just'
-
-# Per-group recipe modules (8mo.19). `import` shares a flat namespace, so
-# cross-module dependencies, variables, and `just --list` output are unchanged.
-import 'just/agent.just'
 import 'just/sync.just'
 import 'just/build.just'
 import 'just/debug.just'
@@ -54,8 +43,4 @@ import 'just/ghidra.just'
 import 'just/gates.just'
 import 'just/rewrite.just'
 import 'just/recovery.just'
-import 'just/analysis.just'
 import 'just/setup.just'
-# Compare callee-cleaned stack bytes across all paired original/recompiled functions.
-ret-cleanup-audit *args:
-    uv run python -m tools.workflow.ret_cleanup_audit {{args}}

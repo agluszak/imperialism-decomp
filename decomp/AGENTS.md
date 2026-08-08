@@ -10,20 +10,20 @@ test-only bypass, or incomplete fixture.
 
 ## Required workflow
 
-Run commands from `decomp/`. Function work uses the stateful entrypoints:
+Run commands from `decomp/`. Claim the Bead, then use the smallest direct workflow that proves the
+current change:
 
 ```sh
-just agent-start port 0xADDR
-just advice 0xADDR
-just agent-check
-just agent-finish
-just agent-release
+bd update <issue> --claim
+just ghidra portprep 0xADDR
+# edit
+just triage 0xADDR
+just precommit
 ```
 
-`agent-start` verifies the base and claims the address, collects Ghidra/listing/compare evidence, and
-writes a receipt. `agent-check` regenerates owned build inputs and verifies every touched address.
-`agent-finish` refuses a stale or unchecked tree. Use `docs/workflows.md` and `just --list` when the
-correct workflow is unclear.
+For a file with several owned functions, use `just triage --file src/game/...`. Use
+`docs/workflows.md` and `just --list` when the correct direct command is unclear. Beads owns
+claiming and handoff; Git owns branch identity and commit history.
 
 Before porting or diagnosing a function, load every applicable scoped skill:
 
@@ -50,8 +50,8 @@ Skills are repeatable procedures. This file owns standing invariants.
   identifies an actionable divergence; `inconclusive` is not evidence that source is wrong.
 - Do not contort correct typed source around raw score wobble, unsupported control flow, alignment
   failure, or register scheduling. Investigate metadata/pairing and preserve the source model.
-- No body is too complex to port. Size, strings, EH, and floating-point density call for the relevant
-  workflow references, not a stub, TODO, or approximation.
+- No body is too complex to port. Size, strings, EH, and floating-point density call for focused
+  evidence, not a stub, TODO, or approximation.
 
 ## Source ownership and markers
 
@@ -114,17 +114,14 @@ Use `just` targets rather than raw Docker or raw reccmp commands when a target e
 - `just build` regenerates inputs and builds with MSVC 5.0.
 - `just triage 0xADDR` or `just triage --file ...` is the first comparison interface.
 - `just vtable Class`, `just datacmp`, `just stackcmp`, and `just serde-audit` cover specialized
-  evidence. Run `serde-audit` for serializer changes before interpreting scores.
+  evidence. Run `serde-audit` for serializer changes before interpreting comparison results.
 - `just format-check <touched paths>` checks manually edited source.
 - `just gates` enforces source policy. Baseline-free bans are source defects and cannot be blessed.
-- `just precommit` runs build, gates, tooling tests, and stats.
-- Review stats against `config/baselines/reccmp_progress_baseline.json`, then run
-  `just stats-baseline-update` only for an accepted verified tree and commit the refreshed baseline.
+- `just precommit` runs the build, gates, tooling tests, and the runtime PR suite.
 
-Policy-baseline update targets require explicit human approval and `ALLOW_POLICY_BASELINE_UPDATE=1`.
-Never set it merely to clear a red gate. If correct architecture exposes a build/gate/vtable problem,
-fix ownership, layout, declarations, or source forward. If that cannot be done without architectural
-regression, stop and report the exact blocker.
+If correct architecture exposes a build/gate/vtable problem, fix ownership, layout, declarations, or
+source forward. If that cannot be done without architectural regression, stop and report the exact
+blocker.
 
 ## Environment and derived evidence
 
@@ -134,19 +131,18 @@ regression, stop and report the exact blocker.
   fresh subproject checkout.
 - Generated source indexes/stubs and Ghidra exports live under build directories. Do not add generated
   declaration blocks to manual headers.
-- Keep `reccmp-project.yml` ignore-list rewrites opt-in (`just generate-ignores` or the explicit
-  refresh mode only).
+- Keep `reccmp-project.yml` changes deliberate and evidence-backed. Do not add ignore entries to
+  hide a mismatch.
 
 ## Completion
 
 Before committing C++ or tooling changes:
 
 1. Run `just precommit`.
-2. Review meaningful stats deltas and structured triage for touched addresses.
-3. Refresh the stats baseline when required.
-4. Close or update the Beads you touched and create Beads for remaining work.
-5. Stage only this task and write a commit message covering changes, verification, score deltas, and
-   residual risks.
+2. Review structured triage for touched addresses.
+3. Close or update the Beads you touched and create Beads for remaining work.
+4. Stage only this task and write a commit message covering changes, verification, and residual
+   risks.
 
 Do not create worklogs, porting queues, or checked-in agent plans. Durable active work belongs in
 Beads; execution history belongs in commits.

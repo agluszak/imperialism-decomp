@@ -1,55 +1,19 @@
-# reccmp Workflow
+# reccmp helpers
 
-`reccmp` is installed from the pinned fork in `pyproject.toml` and executed with `uv run`.
+The pinned reccmp fork is the comparison engine. This directory contains only the small
+Imperialism-specific glue needed for batch comparison, structured triage, CRT startup evidence, and
+address translation.
 
-Primary workflow uses `just` wrappers:
+Use project commands rather than treating a generated progress report as a second source of truth:
 
-1. `just detect`
-2. `just compare 0xADDR` (or `just compare`)
-3. `just stats` (compare against the committed progress baseline)
-4. `just stats-baseline-update` (update the committed progress baseline after accepting changes)
-5. `just session-loop` (read-only ranking; pass `--refresh-ignore` to also rewrite ignore lists)
-
-`just compare 0xA 0xB` and `just triage 0xA 0xB` pass those addresses into
-reccmp before comparison. They parse the PDB once and do not build a full-corpus
-report. Targeted runs load only conservatively resolved PDB object modules and reuse
-validated parsed-analysis state in `build-msvc500/.reccmp-cache`; comparison and proof
-results are always recomputed. `just addr` uses the same targeted path in both address
-spaces.
-
-`just stats-baseline-update` writes two reviewable snapshots:
-
-- `config/baselines/reccmp_progress_baseline.json` — aggregate counts and ratios.
-- `config/baselines/reccmp_progress_baseline.functions.csv` — only the per-function
-  address, effective score, and name needed by regression checks and candidate tools.
-
-The full structured `build-msvc500/reccmp_report.json` is disposable live evidence
-for triage; it is not committed as a baseline. Full progress reports are reused only
-when `reccmp_report.inputs.json` proves identical hashes for both binaries, the PDB,
-reccmp configuration and version lock, generated data sources, and every configured
-source-root file, and also proves that the roadmap/report outputs are untampered.
-This lets the immediately following `stats-baseline-update` reuse accepted live
-evidence without making stale reports authoritative.
-
-Progress reports deliberately include functions listed under
-`report.ignore_functions`. That setting only suppresses library/framework noise in
-interactive reccmp output; changing a presentation filter must not change
-exact-function counts or average similarity. Progress metrics also exclude vtables and
-stubs. The address-pairing percentage includes generated placeholder addresses so it
-describes symbol coverage; implementation coverage and similarity use only paired,
-non-stub functions. `just gates` fails if any such function becomes unpaired or loses
-similarity beyond the committed per-function epsilon.
-
-Bootstrap project metadata once:
-
-```bash
-uv run reccmp-project create --originals /absolute/path/to/Imperialism.exe --scm
+```sh
+just build
+just triage 0xADDR
+just compare 0xADDR       # optional raw diff
+just vtable ClassName
+just datacmp
 ```
 
-Direct CLI (if needed):
-
-```bash
-uv run reccmp-project --help
-uv run reccmp-reccmp --help
-uv run reccmp-ghidra-import --help
-```
+`exact` and `effective` are completed comparison results. Only `mismatch` is source-recovery evidence;
+`inconclusive` means inspect pairing, metadata, or retail evidence. There is no committed score ledger or
+baseline to update.

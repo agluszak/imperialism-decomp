@@ -9,8 +9,7 @@ Rule 4: each address may own at most one `// FUNCTION` marker across the whole t
         original object modeled twice (reccmp silently drops one and the recomp emits
         duplicate .data bytes -- see imperialism-decomp-j59o).
 
-This is a check-only gate; it never edits files. Marker *reformatting* is handled
-separately by `tools.workflow.normalize_reccmp_markers`.
+This is a check-only gate; it never edits files.
 """
 
 from __future__ import annotations

@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.source_model import find_duplicate_claims, scan_marker_claims
+from tools.source_model import build_model
 
 
 def _repo(tree: dict[str, str]) -> Path:
@@ -24,7 +24,7 @@ def _repo(tree: dict[str, str]) -> Path:
     return root
 
 
-class TestScanMarkerClaims(unittest.TestCase):
+class TestSourceModelClaims(unittest.TestCase):
     def test_all_marker_kinds_claim(self):
         root = _repo({
             "src/game/A.cpp": (
@@ -37,8 +37,8 @@ class TestScanMarkerClaims(unittest.TestCase):
                 "// STUB: IMPERIALISM 0x00405000\n"
             ),
         })
-        claims = scan_marker_claims(root, "IMPERIALISM")
-        got = {(c.address, c.kind) for c in claims}
+        model = build_model(root, "IMPERIALISM")
+        got = {(c.address, c.kind) for c in model.functions.values()}
         self.assertEqual(got, {
             (0x401000, "FUNCTION"),
             (0x402000, "LIBRARY"),
@@ -52,24 +52,23 @@ class TestScanMarkerClaims(unittest.TestCase):
             "src/game/A.cpp": "// FUNCTION: IMPERIALISM 0x00401000\nvoid A() {}\n",
             "src/ghidra_autogen/B.cpp": "// FUNCTION: IMPERIALISM 0x00409000\n",
         })
-        claims = scan_marker_claims(root, "IMPERIALISM")
-        self.assertEqual({c.address for c in claims}, {0x401000})
+        model = build_model(root, "IMPERIALISM")
+        self.assertEqual(set(model.functions), {0x401000})
 
     def test_other_targets_ignored(self):
         root = _repo({
             "src/game/A.cpp": "// FUNCTION: OTHERGAME 0x00401000\nvoid A() {}\n",
         })
-        self.assertEqual(scan_marker_claims(root, "IMPERIALISM"), [])
+        self.assertEqual(build_model(root, "IMPERIALISM").functions, {})
 
     def test_duplicate_claims_detected(self):
         root = _repo({
             "src/game/A.cpp": "// FUNCTION: IMPERIALISM 0x00401000\nvoid A() {}\n",
             "src/game/B.cpp": "// FUNCTION: IMPERIALISM 0x00401000\nvoid B() {}\n",
         })
-        claims = scan_marker_claims(root, "IMPERIALISM")
-        dupes = find_duplicate_claims(claims)
-        self.assertEqual(set(dupes), {0x401000})
-        self.assertEqual(len(dupes[0x401000]), 2)
+        model = build_model(root, "IMPERIALISM")
+        self.assertEqual(set(model.duplicates), {0x401000})
+        self.assertEqual(len(model.duplicates[0x401000]), 2)
 
     def test_no_duplicates_for_distinct_addresses(self):
         root = _repo({
@@ -78,8 +77,7 @@ class TestScanMarkerClaims(unittest.TestCase):
                 "// FUNCTION: IMPERIALISM 0x00401010\nvoid B() {}\n"
             ),
         })
-        claims = scan_marker_claims(root, "IMPERIALISM")
-        self.assertEqual(find_duplicate_claims(claims), {})
+        self.assertEqual(build_model(root, "IMPERIALISM").duplicates, {})
 
 
 if __name__ == "__main__":
@@ -89,7 +87,6 @@ if __name__ == "__main__":
 class TestDeclarationParsing(unittest.TestCase):
     def _model(self, tree):
         root = _repo(tree)
-        from tools.source_model import build_model
         return build_model(root, "IMPERIALISM")
 
     def test_qualified_name_and_prototype(self):

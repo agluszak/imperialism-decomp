@@ -23,11 +23,11 @@ per-session refresh stays just `uv sync`.
   — it refuses to overwrite the committed `reccmp-project.yml`; hand-write/keep
   `reccmp-user.yml` instead (workflows §0). These three files are gitignored and persist
   in the snapshot.
-- **reccmp needs host-side `wine`** (installed): the compare/stats/roadmap tools run
+- **reccmp needs host-side `wine`** (installed): comparison and roadmap tools run
   `cvdump.exe` via `wine`/`winepath` to parse the recompiled PDB. Prefix long compare
   runs with `WINEDEBUG=-all` to silence Wine chatter.
-- **What works:** the whole loop — `just tooling-check`, `just test`, `just build`,
-  `just detect`, `just resource-check`, `just compare 0xADDR` / `--file`, `just stats`,
+- **What works:** the whole loop — `just test`, `just build`, `just detect`,
+  `just resource-check`, `just compare 0xADDR` / `--file`, `just triage 0xADDR`,
   `just vtable`, `just datacmp`, `just gates`, `just precommit`, and the source-only gates.
   (`just compare`/`--file` exits non-zero when any listed function is below 100% — that
   is a score signal, not a setup failure.)

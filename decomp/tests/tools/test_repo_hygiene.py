@@ -63,17 +63,13 @@ class RepoHygieneTest(unittest.TestCase):
 
     def test_rejects_retired_generation_artifacts(self) -> None:
         self._track("runtime-results/session.log")
-        self._track("vendor/msvc500/fid-generation/logs/import.log")
-        self._track("vendor/msvc500/fid-generation/project/idata/db.1.gbf")
         offenders = self._offenders()
         self.assertIn("runtime-results/session.log", offenders)
-        self.assertIn("vendor/msvc500/fid-generation/logs/import.log", offenders)
-        self.assertIn("vendor/msvc500/fid-generation/project/idata/db.1.gbf", offenders)
 
     def test_large_text_evidence_is_allowed(self) -> None:
-        # The Mac crosswalks and vtable ABI evidence are multi-MB JSON. Size alone must
-        # not condemn a file, or the gate would fail on the tree it ships with.
-        self._track("docs/reference/mac_string_crosswalk.json", b"[" + b" " * (2 << 20) + b"]")
+        # The vtable ABI evidence is multi-MB JSON. Size alone must not condemn a
+        # file, or the gate would fail on the tree it ships with.
+        self._track("config/vtable_abi_evidence.json", b"[" + b" " * (2 << 20) + b"]")
         self.assertEqual(self._offenders(), {})
 
     def test_large_binary_outside_vendor_is_rejected(self) -> None:

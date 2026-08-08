@@ -31,8 +31,6 @@ const unsigned int kAddrLocalizationTable = 0x006A20F8;
 const unsigned int kAddrGlobalMapState = 0x006A43D4;
 const unsigned int kAddrCivilianLegendSelectionCountsBySlot = 0x006A4490;
 
-typedef TCivDescription CivDescriptionState;
-
 struct CivilianClassCacheContext {
   void* vftable;
   unsigned char pad_04_to_83[0x80];

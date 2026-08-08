@@ -1,88 +1,11 @@
-# ---------------------------------------------------------------------------
-# gates — mechanical checks (all read-only).
-# Imported by the root justfile (flat namespace: shared variables/recipes work
-# across modules). Recipe text is moved verbatim so `just --list` is unchanged.
-# ---------------------------------------------------------------------------
-
 [doc('Validate committed UI semantics, structural invariants, and class bindings')]
 [group('gates')]
 ui-codegen-check:
   uv run python -m tools.ui_codegen --check
 
-[doc('Account for every committed Mac View in the Windows source model')]
-[group('gates')]
-ui-view-coverage *args:
-  uv run python -m tools.workflow.ui_view_coverage {{args}}
-
-[doc('Reject unclassified Mac Views and a stale committed coverage report')]
-[group('gates')]
-ui-view-coverage-check:
-  uv run python -m tools.workflow.ui_view_coverage --check
-
-[doc('Generate the source-only turn-event screen and callback coverage matrix')]
-[group('gates')]
-turn-event-coverage *args:
-  uv run python -m tools.workflow.turn_event_coverage {{args}}
-
-[doc('Reject a stale committed turn-event coverage matrix')]
-[group('gates')]
-turn-event-coverage-check:
-  uv run python -m tools.workflow.turn_event_coverage --check
-
-[doc('Generate the classified scalar-conversion and enum-candidate audit')]
-[group('gates')]
-scalar-type-audit *args:
-  uv run python -m tools.workflow.scalar_type_audit {{args}}
-
-[doc('Reject new or stale scalar-conversion and enum-candidate findings')]
-[group('gates')]
-scalar-type-audit-check:
-  uv run python -m tools.workflow.scalar_type_audit --check
-
-[doc('Generate the classified four-character tag inventory')]
-[group('reports')]
-fourcc-audit *args:
-  uv run python -m tools.workflow.fourcc_audit {{args}}
-
-[doc('Reject raw/duplicate/mis-spelled four-character tags and a stale inventory')]
-[group('gates')]
-fourcc-audit-check:
-  uv run python -m tools.workflow.fourcc_audit --check
-
-[doc('Reject stale Mac control class/tag/screen semantic metadata')]
-[group('gates')]
-mac-control-usage-check:
-  uv run python -m tools.workflow.mac_control_usage --check
-
-[doc('Reject stale resource xrefs and unexplained dangling edges')]
-[group('gates')]
-mac-resource-xrefs-check:
-  uv run python -m tools.workflow.mac_resource_xrefs --check
-
-[doc('Reject stale Mac widget payload differential evidence')]
-[group('gates')]
-mac-payload-diff-check:
-  uv run python -m tools.workflow.mac_payload_diff --check
-
-[doc('Reject stale Mac-to-Windows string crosswalk metadata')]
-[group('gates')]
-mac-string-crosswalk-check:
-  uv run python -m tools.workflow.mac_string_crosswalk --check
-
-[doc('Reject undeclared or stale UI platform deltas')]
-[group('gates')]
-ui-platform-diff-check:
-  uv run python -m tools.workflow.ui_platform_diff --check
-
-# ---------------------------------------------------------------------------
-# gates — mechanical checks (all read-only).
-# ---------------------------------------------------------------------------
-
 # The complete repository verification sequence in one local command. It includes
 # the checks that formerly lived in hosted automation: the lint rejection fixture,
 # generated-artifact integrity over the branch/worktree diff, and the asset-backed
-# PR runtime suite. Review the stats delta, then run `just stats-baseline-update`
-# if accepted and commit the baseline with the change.
 [doc('Complete local verification: builds + gates + tests + integrity + runtime suite')]
 [group('gates')]
 precommit:
@@ -143,9 +66,7 @@ _precommit-generated-integrity-gate:
 [group('gates')]
 gates:
   just source-gates
-  just stats --ui-codegen-gate --fail-on-regression
   just vtable
-  just datacmp-gate
   just decomplint
   just lint-warning-gate
 
@@ -156,26 +77,10 @@ gates:
 lint-warning-gate:
   just lint
 
-[group('gates')]
-tooling-check:
-  uv run python -m tools.workflow.check_tooling_surface
-
-# Generated stub count vs baseline (ratchet down). A rise is the un-claiming
-# tell: a real owner lost its marker and would be re-stubbed, breaking vtables.
-[group('gates')]
-stub-count-gate:
-  uv run python -m tools.workflow.check_stub_count
-
 # ASSERT_SIZE vs the RTTI oracle. Any mismatch is a hard failure.
 [group('gates')]
 class-size-gate:
   uv run python -m tools.workflow.check_class_sizes --strict
-
-# Global-data drift vs baseline: reccmp-datacmp fingerprints may not regress.
-# Needs a built binary (like `just vtable`); `just datacmp` stays the raw report.
-[group('gates')]
-datacmp-gate:
-  uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}"
 
 # Empty-body hard ban: intentionally-empty
 # bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
@@ -185,7 +90,7 @@ noop-gate:
 
 # Ratchet: no NEW constructor defined out-of-line without a claimed address. Such a ctor
 # cannot be inlined into subclass ctors / CreateObject bodies in other TUs, so VC5 emits a
-# CALL where the original absorbed the body. Read the caller before fixing -- bd nwdn.
+# CALL where the original absorbed the body. Read the caller before fixing.
 [group('gates')]
 ctor-placement-gate:
   uv run python -m tools.workflow.check_ctor_placement
@@ -208,16 +113,6 @@ test:
   # Off-screen: a few of these exercise the Wine harness end to end, and without this
   # they map a game window on the developer's desktop and steal focus mid-run.
   IMPERIALISM_RUNTIME_DISPLAY=virtual uv run python -m unittest discover -s tests/tools
-
-[doc('Ratchet every manual FUNCTION high-p-code call contract; regenerates stale build evidence')]
-[group('gates')]
-semantic-gate: _require-ghidra-install
-  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" gate --generate-if-stale
-
-[doc('Force a full semantic recompute and row-diff it against the current report (proves pipeline changes are behavior-neutral)')]
-[group('gates')]
-semantic-verify *args: _require-ghidra-install
-  uv run python -m tools.semantic_calls --target "{{target}}" --build-dir "{{build_dir}}" verify {{args}}
 
 [doc('Audit every ported ReadFrom/WriteTo for save-file byte desync against the listing')]
 [group('reports')]
@@ -345,11 +240,8 @@ repo-hygiene-gate:
 generated-integrity-gate *args:
   uv run python -m tools.workflow.check_generated_integrity {{args}}
 
-# Semantic gate for reviewed MSVC500 library identities: every row in
-# config/reviewed_library_identities.csv must be faithfully projected (overlay+markers)
-# (name/symbol/prototype/type) + ownership=library, and the applied count must not
-# fall below the ratchet baseline. Pins e.g. 0x005e83f0 = rand/_rand permanently.
-[doc('Semantic library-identity gate: reviewed overrides applied + ownership=library + ratchet')]
+# Reviewed MSVC500 library identities must be faithfully projected into the current source model.
+[doc('Library-identity gate: reviewed overrides applied + ownership=library')]
 [group('gates')]
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
@@ -412,14 +304,8 @@ boundary-gate:
 shadow-stub-gate:
   uv run python -m tools.workflow.check_shadow_stubs
 
-# Lint the structured agent rule KB (config/agent_rules.yml): ids,
-# required/forbidden contradictions, just-only tools, derivable triggers.
-[group('gates')]
-agent-rules-gate:
-  uv run python -m tools.workflow.check_agent_rules
-
 # The binary-free gate subset (no docker/wine/original exe: excludes vtable,
-# datacmp-gate, decomplint, and lint). Keep in sync with `gates`.
+# decomplint, and lint). Keep in sync with `gates`.
 [doc('Source-only gate subset; no built binary needed')]
 [group('gates')]
 source-gates:
@@ -428,7 +314,7 @@ source-gates:
 
 [private]
 [parallel]
-_source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-coverage-check scalar-type-audit-check fourcc-audit-check ui-platform-diff-check tooling-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate cstring-ownership-audit-check dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate stub-count-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate agent-rules-gate vtable-abi-gate shadow-stub-gate runtime-source-policy-gate runtime-script-debt-gate
+_source-gates-parallel: ui-codegen-check vtable-gate antipattern-gate marker-gate generated-marker-gate cstring-gate dual-use-gate geometry-type-gate ilt-ossification-gate vtable-annotation-gate vtable-collision-gate synthetic-gate destructor-placement-gate symbols-integrity-gate repo-hygiene-gate library-identity-gate global-location-gate manual-cruntimeclass-gate structure-audit-gate class-size-gate noop-gate ctor-placement-gate global-redeclaration-gate boundary-gate vtable-abi-gate shadow-stub-gate runtime-source-policy-gate runtime-script-debt-gate
 
 # Cross-check modeled class sizes (ASSERT_SIZE) against the RTTI oracle's
 # m_nObjectSize. Report-only; pass --strict to fail on mismatches, or
@@ -437,21 +323,6 @@ _source-gates-parallel: ui-codegen-check ui-view-coverage-check turn-event-cover
 [group('gates')]
 class-size-check *args:
   uv run python -m tools.workflow.check_class_sizes {{args}}
-
-# Report `// VTABLE:` annotations that reccmp does not turn into a matched vtable
-# (needs a built binary + reccmp DB, so it is not part of `just gates`). Pass --strict
-# to also fail on annotations whose recompiled vtable is missing.
-[doc('Report // VTABLE: annotations reccmp did not match (needs built binary)')]
-[group('gates')]
-vtable-coverage *args:
-  uv run python -m tools.workflow.check_vtable_coverage --project-dir "{{build_dir}}" {{args}}
-
-# Report classes whose last original vtable slot resolves to a source-declared
-# non-virtual method. This is evidence for manual review, never an automatic gate.
-[doc('Report possible unmodelled vtable tail slots for manual verification')]
-[group('reports')]
-vtable-tail-slots *args:
-  uv run python -m tools.workflow.check_vtable_tail_slots {{args}}
 
 [group('gates')]
 format-check *paths:

@@ -52,8 +52,8 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
 // static so first use constructs it once; the whole block is forwarded as a typed event
 // into the active TView tree. Layout/type shared with TGameWindow::DoKeyEvent (which reads
 // commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
-// game/TUiEvent.h (TKeyCommandEvent).
-static __inline void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
+// game/TUiEvent.h (TToolboxEvent).
+static __inline void PopulateKeyCommandBlock(TToolboxEvent& block, UINT nChar, UINT nRepCnt,
                                              UINT nFlags) {
   block.commandCode = (nChar == VK_F1) ? 0x68 : static_cast<short>(nChar);
   block.keyFlags = static_cast<short>(nFlags & 0xf);
@@ -790,7 +790,7 @@ LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
 // TGameWindow::DoKeyEvent, e.g. to stop (skip) a playing movie.
 // FUNCTION: IMPERIALISM 0x00484260
 void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
-  static TKeyCommandEvent s_keyCommand;
+  static TToolboxEvent s_keyCommand;
 
   CWnd* target = GetModalStackTopHostView();
   if (target == 0) {

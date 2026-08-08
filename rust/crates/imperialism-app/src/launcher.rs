@@ -1,94 +1,27 @@
 use crate::audio::RetailAudioPlugin;
-use crate::flow::{AppState, ScreenFlowPlugin};
 use crate::session::{GameSession, SessionPlugin};
 use crate::ui::{StartupUiPlugin, UiCatalogResource, UiRuntimePlugin};
 use bevy::prelude::*;
 use bevy::window::WindowPlugin;
+use clap::Parser;
 use imperialism_formats::{
     ImportedRetailAssets, RetailAssetImportError, RetailAssetPackManifest, UiCatalog,
     UiCatalogError, default_retail_cache_dir, import_english_gog_assets,
 };
-use std::ffi::OsString;
 use std::path::{Path, PathBuf};
 
 const COMPILED_UI_CATALOG: &str = include_str!("../../imperialism-formats/assets/ui_catalog.json");
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, Parser, PartialEq)]
+#[command(
+    name = "imperialism-app",
+    about = "Launch Imperialism from an English GOG installation."
+)]
 pub struct MainMenuConfig {
+    #[arg(long)]
     pub retail_dir: PathBuf,
+    #[arg(long)]
     pub cache_dir: Option<PathBuf>,
-}
-
-impl MainMenuConfig {
-    pub fn usage() -> &'static str {
-        concat!(
-            "usage: imperialism-app --retail-dir PATH [--cache-dir PATH]\n",
-            "\n",
-            "Normal launch requires an English GOG Windows installation. The retail path is\n",
-            "validated before Bevy creates a window and is never persisted. Derived assets are\n",
-            "stored in a content-addressed cache.",
-        )
-    }
-
-    pub fn parse(
-        arguments: impl IntoIterator<Item = OsString>,
-    ) -> Result<Option<Self>, ExecutableConfigError> {
-        let arguments = arguments.into_iter().collect::<Vec<_>>();
-        if arguments
-            .iter()
-            .any(|argument| argument == "--help" || argument == "-h")
-        {
-            return Ok(None);
-        }
-
-        let mut retail_dir = None;
-        let mut cache_dir = None;
-        let mut arguments = arguments.into_iter();
-        while let Some(argument) = arguments.next() {
-            match argument.to_str() {
-                Some("--retail-dir") => {
-                    if retail_dir.is_some() {
-                        return Err(ExecutableConfigError::DuplicateOption("--retail-dir"));
-                    }
-                    retail_dir =
-                        Some(PathBuf::from(arguments.next().ok_or(
-                            ExecutableConfigError::MissingOptionValue("--retail-dir"),
-                        )?));
-                }
-                Some("--cache-dir") => {
-                    if cache_dir.is_some() {
-                        return Err(ExecutableConfigError::DuplicateOption("--cache-dir"));
-                    }
-                    cache_dir =
-                        Some(PathBuf::from(arguments.next().ok_or(
-                            ExecutableConfigError::MissingOptionValue("--cache-dir"),
-                        )?));
-                }
-                Some(value) if value.starts_with('-') => {
-                    return Err(ExecutableConfigError::UnknownOption(argument));
-                }
-                _ => return Err(ExecutableConfigError::UnexpectedArgument(argument)),
-            }
-        }
-        Ok(Some(Self {
-            retail_dir: retail_dir.ok_or(ExecutableConfigError::MissingRetailDirectory)?,
-            cache_dir,
-        }))
-    }
-}
-
-#[derive(Debug, Eq, PartialEq, thiserror::Error)]
-pub enum ExecutableConfigError {
-    #[error("normal launch requires --retail-dir PATH")]
-    MissingRetailDirectory,
-    #[error("{0} requires a path")]
-    MissingOptionValue(&'static str),
-    #[error("{0} may be supplied only once")]
-    DuplicateOption(&'static str),
-    #[error("unknown option {0:?}")]
-    UnknownOption(OsString),
-    #[error("unexpected argument {0:?}")]
-    UnexpectedArgument(OsString),
 }
 
 #[derive(Debug)]
@@ -160,12 +93,10 @@ pub fn configure_main_menu_app(
         .insert_resource(RetailAssetPackResource(prepared.retail_assets))
         .add_plugins((
             SessionPlugin,
-            ScreenFlowPlugin,
             UiRuntimePlugin,
             StartupUiPlugin,
             RetailAudioPlugin,
-        ))
-        .add_systems(Startup, enter_main_menu);
+        ));
     Ok(())
 }
 
@@ -193,13 +124,10 @@ pub fn run_main_menu(prepared: PreparedMainMenu) -> Result<(), UiCatalogError> {
     Ok(())
 }
 
-fn enter_main_menu(mut next_state: ResMut<NextState<AppState>>) {
-    next_state.set(AppState::MainMenu);
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use clap::error::ErrorKind;
 
     fn compiled_catalog() -> UiCatalog {
         serde_json::from_str(COMPILED_UI_CATALOG).unwrap()
@@ -228,22 +156,25 @@ mod tests {
     #[test]
     fn normal_launch_requires_an_explicit_retail_directory() {
         assert_eq!(
-            MainMenuConfig::parse(Vec::<OsString>::new()).unwrap_err(),
-            ExecutableConfigError::MissingRetailDirectory
+            MainMenuConfig::try_parse_from(["imperialism-app"])
+                .unwrap_err()
+                .kind(),
+            ErrorKind::MissingRequiredArgument
         );
-        let config = MainMenuConfig::parse([
-            OsString::from("--retail-dir"),
-            OsString::from("gog"),
-            OsString::from("--cache-dir"),
-            OsString::from("cache"),
+        let config = MainMenuConfig::try_parse_from([
+            "imperialism-app",
+            "--retail-dir",
+            "gog",
+            "--cache-dir",
+            "cache",
         ])
         .unwrap();
         assert_eq!(
             config,
-            Some(MainMenuConfig {
+            MainMenuConfig {
                 retail_dir: PathBuf::from("gog"),
                 cache_dir: Some(PathBuf::from("cache")),
-            })
+            }
         );
     }
 
@@ -265,14 +196,15 @@ mod tests {
     #[test]
     fn headless_wiring_enters_main_menu_with_required_resources() {
         let mut app = App::new();
-        app.add_plugins(bevy::state::app::StatesPlugin);
         configure_main_menu_app(&mut app, prepared()).unwrap();
         app.update();
         app.update();
 
-        assert_eq!(
-            app.world().resource::<State<AppState>>().get(),
-            &AppState::MainMenu
+        assert!(
+            app.world()
+                .resource::<crate::ui::StartupScreenInstances>()
+                .main_menu()
+                .is_some()
         );
         assert!(app.world().resource::<GameSession>().is_pre_game());
         assert!(app.world().contains_resource::<UiCatalogResource>());

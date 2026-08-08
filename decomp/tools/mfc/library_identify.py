@@ -58,11 +58,16 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    from tools.source_model import ownership_kind, ownership_view
+    from tools.source_model import build_model
 
-    claim = ownership_view(repo_root).get(address)
+    claim = build_model(repo_root).functions.get(address)
     ownership_row = (
-        {"ownership": ownership_kind(claim.kind, claim.origin), "target_cpp": claim.file}
+        {
+            "ownership": "library" if claim.kind == "LIBRARY" else (
+                "generated" if claim.origin == "generated" else "manual"
+            ),
+            "target_cpp": claim.file,
+        }
         if claim else None
     )
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)

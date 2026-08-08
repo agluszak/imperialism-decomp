@@ -3,7 +3,7 @@
 #
 # One-time / from-scratch provisioning of a remote or sandbox host: system
 # packages, just/uv/docker/bd, JDK 21, Ghidra 12.1.2 PUBLIC, the original game
-# binary, decomp-local config, and a first build + reccmp stats run.
+# binary, decomp-local config, and a first build.
 #
 # Assumes: repo already cloned and this is run from the decomp project root. Works either
 # as root or as a normal user with passwordless sudo (Cursor Cloud runs as the
@@ -58,13 +58,13 @@ $SUDO apt-get install -y --no-install-recommends \
   jq
 
 # Wine is needed both by reccmp (it runs the Windows `cvdump.exe` to parse the
-# recompiled PDB during compare/stats/roadmap) and by `just run`/`debug`/
+# recompiled PDB during comparison/roadmap) and by `just run`/`debug`/
 # `screenshot`. 32-bit support is required for the 32-bit cvdump/game binaries.
 $SUDO dpkg --add-architecture i386 || true
 $SUDO apt-get update || true
 $SUDO apt-get install -y --no-install-recommends wine wine32 wine64 \
   || $SUDO apt-get install -y --no-install-recommends wine \
-  || echo "WARN: wine install failed; reccmp compare/stats and run/debug/screenshot won't work" >&2
+  || echo "WARN: wine install failed; reccmp comparison and run/debug/screenshot won't work" >&2
 
 $SUDO git lfs install --system
 
@@ -247,16 +247,9 @@ log "bd prime"
 (cd "$GIT_ROOT" && bd prime >/dev/null) \
   || echo "WARN: bd prime failed; issue tracking unavailable" >&2
 
-log "install-reccmp-merge-driver"
-just install-reccmp-merge-driver
-
-log "tooling-check"
-just tooling-check
-
-log "first build + stats"
+log "first build"
 run_just_docker build
 just detect
-WINEDEBUG=-all just stats || true
 
 log "done"
 echo "Environment ready."

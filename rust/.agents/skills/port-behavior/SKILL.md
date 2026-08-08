@@ -24,5 +24,6 @@ Run from `rust/` and obey `AGENTS.md`.
 7. Run format, clippy, and workspace tests. If the oracle changed, also run the required decomp
    verification from `../decomp/`.
 
-Treat a matching symptom with divergent state/events as a failure. Version interoperability changes
-explicitly and document them in `../interop/` only when both implementations consume the contract.
+Treat a matching symptom with divergent state/events as a failure. Update the one current contract
+and every producer, consumer, fixture, and test together; do not retain old forms for hypothetical
+users.

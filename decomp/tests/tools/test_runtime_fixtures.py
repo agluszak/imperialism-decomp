@@ -17,12 +17,12 @@ class RuntimeFixtureMetadataTests(unittest.TestCase):
         fixture = root / "sample.imp"
         fixture.write_bytes(b"retail save")
         metadata = {
-            "schema": 1,
             "file": fixture.name,
+            "format": "imperialism-save",
             "sha256": hashlib.sha256(fixture.read_bytes()).hexdigest(),
             "size": fixture.stat().st_size,
             "format_version": 62,
-            "scenario": "load_saved_game",
+            "source_kind": "retail_fixture_oracle",
             "creation_instructions": "Create with the retail executable.",
         }
         fixture.with_suffix(".imp.json").write_text(
@@ -30,10 +30,10 @@ class RuntimeFixtureMetadataTests(unittest.TestCase):
         )
         return fixture
 
-    def test_valid_sidecar_binds_hash_version_scenario_and_instructions(self) -> None:
+    def test_valid_sidecar_binds_integrity_and_retail_provenance(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = self._fixture(Path(temporary))
-            metadata = validate_fixture_metadata(fixture, "load_saved_game")
+            metadata = validate_fixture_metadata(fixture)
         self.assertEqual(metadata["format_version"], 62)
 
     def test_changed_fixture_is_rejected(self) -> None:
@@ -41,23 +41,17 @@ class RuntimeFixtureMetadataTests(unittest.TestCase):
             fixture = self._fixture(Path(temporary))
             fixture.write_bytes(b"changed")
             with self.assertRaisesRegex(ValueError, "sha256"):
-                validate_fixture_metadata(fixture, "load_saved_game")
+                validate_fixture_metadata(fixture)
 
-    def test_wrong_scenario_is_rejected(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            fixture = self._fixture(Path(temporary))
-            with self.assertRaisesRegex(ValueError, "scenario"):
-                validate_fixture_metadata(fixture, "other_scenario")
-
-    def test_explicitly_authorized_consumer_scenario_is_accepted(self) -> None:
+    def test_missing_provenance_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             fixture = self._fixture(Path(temporary))
             sidecar = fixture.with_suffix(".imp.json")
             metadata = json.loads(sidecar.read_text(encoding="utf-8"))
-            metadata["scenarios"] = ["load_saved_game", "specialist_recruitment"]
+            del metadata["creation_instructions"]
             sidecar.write_text(json.dumps(metadata), encoding="utf-8")
-            validated = validate_fixture_metadata(fixture, "specialist_recruitment")
-        self.assertEqual(validated["scenario"], "load_saved_game")
+            with self.assertRaisesRegex(ValueError, "creation_instructions"):
+                validate_fixture_metadata(fixture)
 
 
 if __name__ == "__main__":

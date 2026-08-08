@@ -346,7 +346,7 @@ void TCouncilView::NextTick() {
   }
 
   {
-    ScopedMapQuickDrawContextGuard quickDraw(this);
+    ScopedMapQuickDrawContext quickDraw(this);
     PrepareForDrawing();
     DrawVoteNuggets();
     RECT rect = {0, 0, frameWidth34, 300};
