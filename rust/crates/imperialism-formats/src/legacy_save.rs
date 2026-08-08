@@ -3,14 +3,15 @@ use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
     CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel, Difficulty,
     DiplomacyGrant, DiplomacyGrantFlags, DiplomacyPolicy, GameState, IndustryActionTable,
-    LaborPool, MINOR_NATION_COUNT, MajorNationId, MajorNationState, MajorNationTable,
-    MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, MinorNationTable,
-    MissionData, MissionState, NATION_COUNT, NationCapacityTable, NationCommonState, NationData,
-    NationId, NationPendingWork, NationState, NationTable, NavyMissionState, PENDING_ACTION_COUNT,
-    PendingActionTable, PendingWorkState, PopulationState, ProductionTable, ProvinceId,
-    ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState,
-    TileDevelopment, TileId, TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable,
-    TradeMarketRow, TradeMarketState, TradePolicyScore, TurnState, WorldState,
+    LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationId, MajorNationState,
+    MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable,
+    MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCapacityTable,
+    NationCommonState, NationData, NationId, NationPendingWork, NationState, NationTable,
+    NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState, PopulationState,
+    ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT, SelectedShip,
+    ShipState, TaskForceState, TileDevelopment, TileId, TileOwnerTag, TileState,
+    TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState, TradePolicyScore,
+    TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -26,6 +27,20 @@ const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
 const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
 const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
+/// Format-specific ceilings for externally supplied collection lengths.
+const MAX_MISSIONS: usize = 1_024;
+const MAX_OCEAN_ZONES: usize = 4_096;
+const MAX_OCEAN_ROUTES: usize = 4_096;
+const MAX_SHIPS: usize = 1_024;
+const MAX_ADMIRALS: usize = 1_024;
+const MAX_TASK_FORCES: usize = 1_024;
+const MAX_TASK_FORCE_CHILDREN: usize = 256;
+const MAX_MILITARY_UNITS: usize = 4_096;
+const MAX_OWNED_REGIONS: usize = PROVINCE_COUNT;
+const MAX_CITY_TASKS: usize = 1_024;
+const MAX_ARMY_REPORTS: usize = 1_024;
+const MAX_TRADE_HISTORY_RECORDS: usize = 65_536;
+const MAX_LONGINT_LIST: usize = 65_536;
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct LegacySaveHeader {
@@ -896,16 +911,102 @@ pub enum LegacySaveError {
     },
     #[error("{0}")]
     StateProjection(String),
+    #[error("{context}: count {value} exceeds maximum {maximum}")]
+    InvalidCount {
+        context: &'static str,
+        value: i32,
+        maximum: usize,
+    },
+    #[error("{context}: declared count {declared} does not match availability flags ({available})")]
+    CountAvailabilityMismatch {
+        context: &'static str,
+        declared: usize,
+        available: usize,
+    },
+    #[error("{context}: nation slot {slot} is outside the expected range")]
+    InvalidNationSlot { context: &'static str, slot: i16 },
+    #[error(
+        "legacy save ends at offset {end_offset:#x} but input length is {length:#x}; trailing bytes are not represented"
+    )]
+    TrailingData { end_offset: usize, length: usize },
+    #[error("MFC Unicode CString marker at offset {offset:#x} is not supported")]
+    UnsupportedUnicodeString { offset: usize },
 }
 
 impl From<StreamError> for LegacySaveError {
     fn from(error: StreamError) -> Self {
-        Self::Truncated {
-            offset: error.offset,
-            requested: error.requested,
-            remaining: error.remaining,
+        match error {
+            StreamError::Truncated {
+                offset,
+                requested,
+                remaining,
+            } => Self::Truncated {
+                offset,
+                requested,
+                remaining,
+            },
+            StreamError::UnsupportedUnicodeString { offset } => {
+                Self::UnsupportedUnicodeString { offset }
+            }
+            StreamError::InvalidCount {
+                context,
+                value,
+                maximum,
+            } => Self::InvalidCount {
+                context,
+                value: i32::try_from(value).unwrap_or(i32::MAX),
+                maximum,
+            },
         }
     }
+}
+
+fn bounded_count(
+    value: i32,
+    maximum: usize,
+    context: &'static str,
+) -> Result<usize, LegacySaveError> {
+    let Ok(count) = usize::try_from(value) else {
+        return Err(LegacySaveError::InvalidCount {
+            context,
+            value,
+            maximum,
+        });
+    };
+    if count > maximum {
+        return Err(LegacySaveError::InvalidCount {
+            context,
+            value,
+            maximum,
+        });
+    }
+    Ok(count)
+}
+
+fn bounded_usize(
+    value: usize,
+    maximum: usize,
+    context: &'static str,
+) -> Result<usize, LegacySaveError> {
+    if value > maximum {
+        return Err(LegacySaveError::InvalidCount {
+            context,
+            value: i32::try_from(value).unwrap_or(i32::MAX),
+            maximum,
+        });
+    }
+    Ok(value)
+}
+
+fn validate_nation_slot(
+    slot: i16,
+    expected: std::ops::Range<i16>,
+    context: &'static str,
+) -> Result<(), LegacySaveError> {
+    if !expected.contains(&slot) {
+        return Err(LegacySaveError::InvalidNationSlot { context, slot });
+    }
+    Ok(())
 }
 
 impl LegacySaveV62 {
@@ -947,14 +1048,47 @@ impl LegacySaveV62 {
         let previous_turn_state_code = stream.read_le_i16()?;
         let previous_mode = stream.read_le_i16()?;
         stream.skip(1)?;
-        let nation_count = stream.read_le_i32()?;
-        let minor_nation_count = stream.read_le_i32()?;
+        let nation_count_raw = stream.read_le_i32()?;
+        let minor_nation_count_raw = stream.read_le_i32()?;
+        let nation_count = bounded_count(
+            nation_count_raw,
+            MAJOR_NATION_COUNT,
+            "simulation major nation_count",
+        )?;
+        let minor_nation_count = bounded_count(
+            minor_nation_count_raw,
+            MINOR_NATION_COUNT,
+            "simulation minor_nation_count",
+        )?;
         stream.read_le_u32()?;
         let difficulty = stream.read_u8()?;
         let game_setup = read_game_setup(&mut stream)?;
         let scenario_map_index_plus_one = i32::from(game_setup.scenario_map_index_plus_one);
         let persistent_unit_id_counter = stream.read_le_i32()?;
-        let nation_availability = stream.read_bytes(NATION_COUNT)?.try_into().unwrap();
+        let nation_availability: [u8; NATION_COUNT] =
+            stream.read_bytes(NATION_COUNT)?.try_into().unwrap();
+        let available_majors = nation_availability[..MAJOR_NATION_COUNT]
+            .iter()
+            .filter(|&&flag| flag != 0)
+            .count();
+        let available_minors = nation_availability[MAJOR_NATION_COUNT..]
+            .iter()
+            .filter(|&&flag| flag != 0)
+            .count();
+        if nation_count != available_majors {
+            return Err(LegacySaveError::CountAvailabilityMismatch {
+                context: "simulation major nation_count",
+                declared: nation_count,
+                available: available_majors,
+            });
+        }
+        if minor_nation_count != available_minors {
+            return Err(LegacySaveError::CountAvailabilityMismatch {
+                context: "simulation minor_nation_count",
+                declared: minor_nation_count,
+                available: available_minors,
+            });
+        }
         let saved_multiplayer_role = stream.read_le_i32()?;
         if saved_multiplayer_role != 0 {
             return Err(LegacySaveError::UnsupportedMultiplayerRole(
@@ -976,8 +1110,8 @@ impl LegacySaveV62 {
             mode,
             previous_turn_state_code,
             previous_mode,
-            nation_count,
-            minor_nation_count,
+            nation_count: nation_count_raw,
+            minor_nation_count: minor_nation_count_raw,
             difficulty,
             game_setup,
             scenario_map_index_plus_one,
@@ -1002,8 +1136,8 @@ impl LegacySaveV62 {
 
         let mut archive = LegacyMfcArchiveState::default();
         let mut nation_offset = remaining_manager_chain_offset;
-        let mut major_nations = Vec::with_capacity(simulation.nation_count as usize);
-        for nation in 0..7 {
+        let mut major_nations = Vec::with_capacity(nation_count);
+        for nation in 0..MAJOR_NATION_COUNT {
             if simulation.nation_availability[nation] == 0 {
                 continue;
             }
@@ -1015,28 +1149,67 @@ impl LegacySaveV62 {
                     foreign_policy_id,
                     &mut archive,
                 )?;
+                validate_nation_slot(
+                    major.great_power.country.nation_slot,
+                    0..MAJOR_NATION_COUNT as i16,
+                    "major nation record",
+                )?;
+                if major.great_power.country.nation_slot as usize != nation {
+                    return Err(LegacySaveError::InvalidNationSlot {
+                        context: "major nation record slot does not match availability walk",
+                        slot: major.great_power.country.nation_slot,
+                    });
+                }
                 major_nations.push(LegacyMajorNationState::Auto(Box::new(major)));
                 nation_offset = next_offset;
             } else {
                 let (major, next_offset) =
                     parse_great_power_record_at(bytes, nation_offset, foreign_policy_id)?;
+                validate_nation_slot(
+                    major.country.nation_slot,
+                    0..MAJOR_NATION_COUNT as i16,
+                    "major nation record",
+                )?;
+                if major.country.nation_slot as usize != nation {
+                    return Err(LegacySaveError::InvalidNationSlot {
+                        context: "major nation record slot does not match availability walk",
+                        slot: major.country.nation_slot,
+                    });
+                }
                 major_nations.push(LegacyMajorNationState::Other(Box::new(major)));
                 nation_offset = next_offset;
             }
         }
 
-        let mut minor_nations = Vec::with_capacity(simulation.minor_nation_count as usize);
-        for nation in 7..NATION_COUNT {
+        let mut minor_nations = Vec::with_capacity(minor_nation_count);
+        for nation in MAJOR_NATION_COUNT..NATION_COUNT {
             if simulation.nation_availability[nation] == 0 {
                 continue;
             }
             let (minor, next_offset) = parse_minor_record_at(bytes, nation_offset)?;
+            validate_nation_slot(
+                minor.country.nation_slot,
+                MAJOR_NATION_COUNT as i16..NATION_COUNT as i16,
+                "minor nation record",
+            )?;
+            if minor.country.nation_slot as usize != nation {
+                return Err(LegacySaveError::InvalidNationSlot {
+                    context: "minor nation record slot does not match availability walk",
+                    slot: minor.country.nation_slot,
+                });
+            }
             minor_nations.push(minor);
             nation_offset = next_offset;
         }
 
         // TViewMgr, TMacViewMgr, and TNewsMgr persist no fields beyond TObject.
         let (help, end_offset) = parse_help_manager_at(bytes, nation_offset)?;
+        if end_offset != bytes.len() {
+            return Err(LegacySaveError::TrailingData {
+                end_offset,
+                length: bytes.len(),
+            });
+        }
         Ok(Self {
             header,
             simulation,
@@ -1350,7 +1523,7 @@ fn parse_country_base_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyCountryBase, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1369,7 +1542,7 @@ fn parse_great_power_prefix_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyGreatPowerPrefix, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1381,7 +1554,7 @@ fn parse_great_power_prefix_at(
 
 /// Decodes the complete current-format `TCity` payload at an already-located city.
 fn parse_city_at(bytes: &[u8], offset: usize) -> Result<(LegacyCityState, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1399,7 +1572,7 @@ fn parse_great_power_ministers_at(
     presence_mask: u8,
     foreign_policy_id: i16,
 ) -> Result<(LegacyGreatPowerMinisters, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1413,7 +1586,7 @@ fn parse_great_power_post_city_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyGreatPowerPostCity, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1427,7 +1600,7 @@ fn parse_auto_great_power_prefix_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyAutoGreatPowerPrefix, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1447,13 +1620,14 @@ fn parse_missions_at(
     count: u32,
     archive: &mut LegacyMfcArchiveState,
 ) -> Result<(Vec<LegacyMission>, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
     })?;
     let mut stream = LegacyStream::new(remaining);
-    let mut missions = Vec::with_capacity(count as usize);
+    let count = bounded_usize(count as usize, MAX_MISSIONS, "AI mission queue")?;
+    let mut missions = Vec::with_capacity(count);
     for _ in 0..count {
         missions.push(read_mfc_mission(&mut stream, offset, archive)?);
     }
@@ -1521,7 +1695,7 @@ fn parse_minor_record_at(
     offset: usize,
 ) -> Result<(LegacyMinorState, usize), LegacySaveError> {
     let (country, suffix_offset) = parse_country_base_at(bytes, offset)?;
-    let remaining = bytes.get(suffix_offset..).ok_or(StreamError {
+    let remaining = bytes.get(suffix_offset..).ok_or(StreamError::Truncated {
         offset: suffix_offset,
         requested: 1,
         remaining: 0,
@@ -1544,7 +1718,7 @@ fn parse_help_manager_at(
     bytes: &[u8],
     offset: usize,
 ) -> Result<(LegacyHelpState, usize), LegacySaveError> {
-    let remaining = bytes.get(offset..).ok_or(StreamError {
+    let remaining = bytes.get(offset..).ok_or(StreamError::Truncated {
         offset,
         requested: 1,
         remaining: 0,
@@ -1558,7 +1732,7 @@ fn parse_help_manager_at(
     Ok((help, offset + stream.position()))
 }
 
-fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, StreamError> {
+fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, LegacySaveError> {
     let rows: [TradeMarketRow; TRADE_CATEGORY_COUNT] = (0..TRADE_CATEGORY_COUNT)
         .map(|_| read_trade_market_row(stream))
         .collect::<Result<Vec<_>, _>>()?
@@ -1566,8 +1740,20 @@ fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, 
         .expect("one market row per trade commodity");
     for _ in 0..TRADE_CATEGORY_COUNT {
         let record_size = usize::from(stream.read_le_u16()?);
-        let record_count = stream.read_le_u32()? as usize;
-        stream.skip(record_size.saturating_mul(record_count))?;
+        let record_count = bounded_usize(
+            stream.read_le_u32()? as usize,
+            MAX_TRADE_HISTORY_RECORDS,
+            "trade history",
+        )?;
+        let byte_len =
+            record_size
+                .checked_mul(record_count)
+                .ok_or(LegacySaveError::InvalidCount {
+                    context: "trade history byte length",
+                    value: i32::MAX,
+                    maximum: MAX_TRADE_HISTORY_RECORDS,
+                })?;
+        stream.skip(byte_len)?;
     }
     Ok(TradeMarketState {
         rows: TradeCommodityTable::from_array(rows),
@@ -1624,16 +1810,28 @@ fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError
     })
 }
 
-fn read_ocean(stream: &mut LegacyStream<'_>) -> Result<LegacyOceanState, StreamError> {
-    let zone_count = usize::from(stream.read_le_u16()?);
+fn read_ocean(stream: &mut LegacyStream<'_>) -> Result<LegacyOceanState, LegacySaveError> {
+    let zone_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_OCEAN_ZONES,
+        "ocean zones",
+    )?;
     let zones = (0..zone_count)
         .map(|_| read_zone(stream, false))
         .collect::<Result<Vec<_>, _>>()?;
-    let port_zone_count = usize::from(stream.read_le_u16()?);
+    let port_zone_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_OCEAN_ZONES,
+        "ocean port zones",
+    )?;
     let port_zones = (0..port_zone_count)
         .map(|_| read_zone(stream, true))
         .collect::<Result<Vec<_>, _>>()?;
-    let route_count = usize::from(stream.read_le_u16()?);
+    let route_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_OCEAN_ROUTES,
+        "ocean routes",
+    )?;
     let route_segments = (0..route_count)
         .map(|_| {
             Ok([
@@ -1670,17 +1868,25 @@ fn read_zone(stream: &mut LegacyStream<'_>, port: bool) -> Result<LegacyZone, St
     })
 }
 
-fn read_navy(stream: &mut LegacyStream<'_>) -> Result<LegacyNavyState, StreamError> {
-    let ship_count = usize::from(stream.read_le_u16()?);
+fn read_navy(stream: &mut LegacyStream<'_>) -> Result<LegacyNavyState, LegacySaveError> {
+    let ship_count = bounded_usize(usize::from(stream.read_le_u16()?), MAX_SHIPS, "navy ships")?;
     let mut ships = (0..ship_count)
         .map(|_| read_ship(stream))
         .collect::<Result<Vec<_>, _>>()?;
     ships.reverse();
-    let admiral_count = usize::from(stream.read_le_u16()?);
+    let admiral_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_ADMIRALS,
+        "navy admirals",
+    )?;
     let admirals = (0..admiral_count)
         .map(|_| read_admiral(stream))
         .collect::<Result<Vec<_>, _>>()?;
-    let task_force_count = usize::from(stream.read_le_u16()?);
+    let task_force_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_TASK_FORCES,
+        "navy task forces",
+    )?;
     let task_forces = (0..task_force_count)
         .map(|_| read_task_force(stream))
         .collect::<Result<Vec<_>, _>>()?;
@@ -1713,7 +1919,7 @@ fn read_admiral(stream: &mut LegacyStream<'_>) -> Result<LegacyAdmiral, StreamEr
     })
 }
 
-fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, StreamError> {
+fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, LegacySaveError> {
     let aggression = stream.read_le_i32()?;
     let order = stream.read_le_i32()?;
     let target_ordinal = stream.read_le_i16()?;
@@ -1721,7 +1927,11 @@ fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, Str
     let nation = stream.read_le_i16()?;
     stream.skip(1)?;
     let ingot_tile = stream.read_le_i16()?;
-    let child_count = usize::from(stream.read_le_u16()?);
+    let child_count = bounded_usize(
+        usize::from(stream.read_le_u16()?),
+        MAX_TASK_FORCE_CHILDREN,
+        "task force ships",
+    )?;
     let ships = (0..child_count)
         .map(|_| Ok([stream.read_le_i16()?, stream.read_le_i16()?]))
         .collect::<Result<Vec<_>, StreamError>>()?;
@@ -1736,20 +1946,32 @@ fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, Str
     })
 }
 
-fn skip_army_reports(stream: &mut LegacyStream<'_>) -> Result<u16, StreamError> {
+fn skip_army_reports(stream: &mut LegacyStream<'_>) -> Result<u16, LegacySaveError> {
     let report_count = stream.read_le_u16()?;
+    bounded_usize(usize::from(report_count), MAX_ARMY_REPORTS, "army reports")?;
     for _ in 0..report_count {
         stream.skip(8)?;
         for _ in 0..2 {
             stream.skip(1 + 0x20 + 0xff)?;
-            let child_count = usize::from(stream.read_le_u16()?);
-            stream.skip(child_count.saturating_mul(42))?;
+            let child_count = bounded_usize(
+                usize::from(stream.read_le_u16()?),
+                MAX_MILITARY_UNITS,
+                "army report children",
+            )?;
+            let byte_len = child_count
+                .checked_mul(42)
+                .ok_or(LegacySaveError::InvalidCount {
+                    context: "army report children byte length",
+                    value: i32::MAX,
+                    maximum: MAX_MILITARY_UNITS,
+                })?;
+            stream.skip(byte_len)?;
         }
     }
     Ok(report_count)
 }
 
-fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase, StreamError> {
+fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase, LegacySaveError> {
     let identity = lossy_text(&stream.read_mfc_string()?);
     let alternate_identity = lossy_text(&stream.read_mfc_string()?);
     let nation_slot = stream.read_le_i16()?;
@@ -1762,13 +1984,21 @@ fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase,
     let need_level_by_nation = read_be_short_array(stream)?;
 
     // TSortedList::ReadFrom is a retail no-op; the count follows immediately.
-    let military_unit_count = stream.read_le_u32()? as usize;
+    let military_unit_count = bounded_usize(
+        stream.read_le_u32()? as usize,
+        MAX_MILITARY_UNITS,
+        "country military units",
+    )?;
     let military_units = (0..military_unit_count)
         .map(|_| read_military_unit(stream))
         .collect::<Result<Vec<_>, _>>()?;
 
     // TLongintList::NoOpReadFrom is likewise a no-op.
-    let owned_region_count = stream.read_le_u32()? as usize;
+    let owned_region_count = bounded_usize(
+        stream.read_le_u32()? as usize,
+        MAX_OWNED_REGIONS,
+        "country owned regions",
+    )?;
     let owned_regions = (0..owned_region_count)
         .map(|_| stream.read_le_i32())
         .collect::<Result<Vec<_>, _>>()?;
@@ -1984,6 +2214,13 @@ fn read_defense_minister(
 
 fn read_longint_list(stream: &mut LegacyStream<'_>) -> Result<Vec<i32>, StreamError> {
     let count = stream.read_le_u32()? as usize;
+    if count > MAX_LONGINT_LIST {
+        return Err(StreamError::InvalidCount {
+            context: "longint list",
+            value: count as i64,
+            maximum: MAX_LONGINT_LIST,
+        });
+    }
     (0..count)
         .map(|_| stream.read_le_i32())
         .collect::<Result<Vec<_>, _>>()
@@ -2025,6 +2262,13 @@ fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamErr
 
     // TTaskList's inherited TSortedList stream hook is a no-op.
     let task_count = stream.read_le_u32()? as usize;
+    if task_count > MAX_CITY_TASKS {
+        return Err(StreamError::InvalidCount {
+            context: "city tasks",
+            value: task_count as i64,
+            maximum: MAX_CITY_TASKS,
+        });
+    }
     let tasks = (0..task_count)
         .map(|_| {
             let kind = stream.read_u8()?;
@@ -2298,7 +2542,7 @@ fn read_army_mission(stream: &mut LegacyStream<'_>) -> Result<LegacyArmyMission,
     let required_equipage_bits = read_be_u32_array(stream)?;
     let count = stream.read_le_i16()?;
     if count < 0 {
-        return Err(StreamError {
+        return Err(StreamError::Truncated {
             offset: stream.position() - 2,
             requested: count.unsigned_abs() as usize,
             remaining: 0,
@@ -2448,6 +2692,12 @@ fn fixed_text(bytes: &[u8]) -> String {
     lossy_text(&bytes[..length])
 }
 
+/// Decodes save-string bytes.
+///
+/// Retail ANSI `CString` payloads use a Windows code page selected by the build's
+/// localization; `language_code` is retained on the simulation prefix for that mapping.
+/// Until localized retail fixtures establish the per-language code pages, bytes are
+/// decoded as UTF-8 with lossy replacement so English fixtures keep loading.
 fn lossy_text(bytes: &[u8]) -> String {
     String::from_utf8_lossy(bytes).into_owned()
 }

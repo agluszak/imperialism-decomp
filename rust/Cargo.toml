@@ -28,9 +28,7 @@ bevy = { version = "=0.19.0", default-features = false, features = [
     "bevy_ui_widgets",
     "picking",
     "2d_bevy_render",
-    "audio",
     "bmp",
-    "wav",
 ] }
 clap = { version = "4", features = ["derive"] }
 enum-map = { version = "2.7", features = ["serde"] }
