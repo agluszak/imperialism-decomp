@@ -106,6 +106,10 @@ enum Operation {
         #[arg(value_parser = parse_major_nation)]
         nation: MajorNationId,
     },
+    IncreaseRollingStock {
+        #[arg(value_parser = parse_major_nation)]
+        nation: MajorNationId,
+    },
     DecrementTradePolicyScore {
         #[arg(value_parser = parse_major_nation)]
         source: MajorNationId,
@@ -273,6 +277,14 @@ fn apply_operation(state: &mut GameState, operation: Operation) -> Result<()> {
             state
                 .recall_trade_bids(nation)
                 .context("Rust trade-bid recall failed")?;
+        }
+        Operation::IncreaseRollingStock { nation } => {
+            if !state
+                .increase_rolling_stock(nation)
+                .context("Rust rolling-stock increase failed")?
+            {
+                bail!("Rust could not increase rolling stock");
+            }
         }
         Operation::DecrementTradePolicyScore { source, target } => {
             state
