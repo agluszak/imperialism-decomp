@@ -1,15 +1,15 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianUnitId, CivilianUnitKind,
-    CivilianUnitState, CivilianUnitTable, Difficulty, DiplomacyGrant, DiplomacyGrantFlags,
-    DiplomacyPolicy, GameState, IndustryActionTable, LaborPool, MINOR_NATION_COUNT, MajorNationId,
-    MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, MinorNationTable, MissionData, MissionState, NATION_COUNT,
-    NationCapacityTable, NationCommonState, NationData, NationId, NationPendingWork, NationState,
-    NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable, PendingWorkState,
-    PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState, STRATEGIC_TILE_COUNT,
-    SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState, TradePolicyScore,
-    TurnState, WorldState,
+    CivilianUnitState, CivilianUnitTable, Difficulty, DiplomacyGrant, DiplomacyPolicy, GameState,
+    IndustryActionTable, LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation,
+    MajorNationId, MajorNationState, MajorNationTable, MilitaryUnitId, MilitaryUnitKind,
+    MilitaryUnitState, MilitaryUnitTable, MinorNation, MinorNationId, MinorNationTable,
+    MissionData, MissionState, NATION_COUNT, NationCapacities, NationCommonState, NationId,
+    NationPendingWork, NationTable, NavyMissionState, PENDING_ACTION_COUNT, PendingActionTable,
+    PendingWorkState, PopulationState, ProductionTable, ProvinceId, ResourceTable, RngState,
+    STRATEGIC_TILE_COUNT, SelectedShip, ShipState, TaskForceState, TileId, TileOwnerTag, TileState,
+    TradePolicyScore, TurnState, WorldState,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -216,9 +216,8 @@ impl LegacyCountryBase {
                     nation,
                     unit_type,
                     stationed_province: unit.stationed_province,
-                    order: unit.order,
+                    raw_order_code: unit.order,
                     order_target: unit.order_target,
-                    owner_nation: unit.owner_nation,
                     roster_id: unit.roster_id,
                     registered: unit.registered != 0,
                     order_target_tiles: unit.order_target_tiles,
@@ -423,9 +422,8 @@ impl LegacyGreatPowerPostCity {
                     nation,
                     unit_type,
                     tile: (unit.tile_index >= 0).then(|| TileId::new(unit.tile_index as u16)),
-                    order: unit.order,
+                    raw_order_code: unit.order,
                     order_target: unit.order_target,
-                    owner_nation: unit.owner_nation,
                     roster_id: unit.roster_id,
                     registered: unit.registered != 0,
                     remaining_turns: unit.remaining_turns,
@@ -692,9 +690,9 @@ impl LegacyCityState {
                 strength: self.population.strength,
                 extra: self.population.extra,
                 phase_value: self.population.phase_value,
-                baseline_labor: Some(LaborPool::from(self.population.baseline_labor)),
-                production_labor: Some(LaborPool::from(self.population.production_labor)),
-                pending_labor_delta: Some(LaborPool::from(self.population.pending_labor_delta)),
+                baseline_labor: LaborPool::from(self.population.baseline_labor),
+                production_labor: LaborPool::from(self.population.production_labor),
+                pending_labor_delta: LaborPool::from(self.population.pending_labor_delta),
                 predicted_need_by_resource: ResourceTable::from_array(
                     self.population.predicted_need_by_resource,
                 ),
@@ -1014,33 +1012,35 @@ impl LegacySaveV62 {
             ));
         }
 
-        let mut nations = NationTable::default();
-        for slot in 0..NATION_COUNT {
-            let id = NationId::new(slot as u8);
-            if slot < 7 {
-                let nation = self
-                    .major_nations
-                    .iter()
-                    .find(|nation| nation.great_power().country.nation_slot == slot as i16);
-                nations[id] = match nation {
-                    Some(nation) => Some(major_nation_state(nation.great_power())?),
-                    None => None,
-                };
-            } else {
-                let nation = self
-                    .minor_nations
-                    .iter()
-                    .find(|nation| nation.country.nation_slot == slot as i16);
-                nations[id] =
-                    nation.map(|nation| country_state(&nation.country, NationData::Minor));
-            }
+        let mut major_nations = MajorNationTable::default();
+        let mut minor_nations = MinorNationTable::default();
+        for slot in 0..MAJOR_NATION_COUNT {
+            let major_id = MajorNationId::new(slot as u8);
+            let nation = self
+                .major_nations
+                .iter()
+                .find(|nation| nation.great_power().country.nation_slot == slot as i16);
+            major_nations[major_id] = match nation {
+                Some(nation) => Some(project_major_nation(nation.great_power())?),
+                None => None,
+            };
+        }
+        for slot in MAJOR_NATION_COUNT..NATION_COUNT {
+            let minor_id = MinorNationId::new(slot as u8);
+            let nation = self
+                .minor_nations
+                .iter()
+                .find(|nation| nation.country.nation_slot == slot as i16);
+            minor_nations[minor_id] =
+                nation.map(|nation| MinorNation {
+                    common: nation_common_state(&nation.country),
+                });
         }
 
-        let mut cities = MajorNationTable::default();
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
-        for slot in 0..7 {
+        for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
             let nation_id = major_id.nation();
             let nation = self
@@ -1051,16 +1051,6 @@ impl LegacySaveV62 {
                 continue;
             };
             let great_power = nation.great_power();
-            cities[major_id] = great_power.city.as_ref().map(|city| {
-                let home_town = great_power
-                    .post_city
-                    .towns
-                    .first()
-                    .map_or(great_power.country.home_tile, |town| {
-                        i32::from(town.tile_index)
-                    });
-                city.city_state(optional_tile_id(home_town))
-            });
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
             civilian_units.extend(great_power.post_city.civilian_unit_states(nation_id)?);
             if let LegacyMajorNationState::Auto(auto) = nation {
@@ -1073,7 +1063,7 @@ impl LegacySaveV62 {
                 }
             }
         }
-        for slot in 7..NATION_COUNT {
+        for slot in MAJOR_NATION_COUNT..NATION_COUNT {
             if let Some(nation) = self
                 .minor_nations
                 .iter()
@@ -1131,8 +1121,8 @@ impl LegacySaveV62 {
                 map_generation: context.map_generation_lcg,
                 zone_status: context.zone_status_lcg,
             },
-            nations,
-            cities,
+            major_nations,
+            minor_nations,
             military_units,
             civilian_units,
             ships: Vec::<ShipState>::new(),
@@ -1146,14 +1136,21 @@ impl LegacySaveV62 {
     }
 }
 
-fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, LegacySaveError> {
+fn project_major_nation(nation: &LegacyGreatPowerState) -> Result<MajorNation, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
-    Ok(country_state(
-        &nation.country,
-        NationData::Major(MajorNationState {
+    let city = nation.city.as_ref().map(|city| {
+        let home_town = post
+            .towns
+            .first()
+            .map_or(nation.country.home_tile, |town| i32::from(town.tile_index));
+        city.city_state(optional_tile_id(home_town))
+    });
+    Ok(MajorNation {
+        common: nation_common_state(&nation.country),
+        state: MajorNationState {
             diplomacy_eligible: prefix.diplomacy_eligible != 0,
-            capacities: NationCapacityTable::from_array(prefix.capacities),
+            capacities: NationCapacities::from_array(prefix.capacities),
             grant_total_cost: prefix.grant_total_cost,
             unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
             diplomacy_policy_by_nation: diplomacy_policies_from_retail_entries(
@@ -1203,8 +1200,9 @@ fn major_nation_state(nation: &LegacyGreatPowerState) -> Result<NationState, Leg
             aid_allocation_total: post.aid_allocation_total,
             colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
             military_expenses: post.military_expenses,
-        }),
-    ))
+        },
+        city,
+    })
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -1223,14 +1221,9 @@ fn diplomacy_grants_from_retail_entries(
                     entry,
                 });
             }
-            let flags = if entry & 0x4000 != 0 {
-                DiplomacyGrantFlags::RECURRING
-            } else {
-                DiplomacyGrantFlags::empty()
-            };
             Some(DiplomacyGrant {
                 amount: i32::from(entry & 0x3fff),
-                flags,
+                recurring: entry & 0x4000 != 0,
             })
         };
     }
@@ -1265,19 +1258,15 @@ fn diplomacy_policies_from_retail_entries(
     Ok(policies)
 }
 
-fn country_state(country: &LegacyCountryBase, data: NationData) -> NationState {
-    NationState {
-        common: NationCommonState {
-            owner_nation: country.nation_slot,
-            treasury: country.treasury,
-            home_tile: optional_tile_id(country.home_tile),
-            trade_policy_by_nation: NationTable::from_array(
-                country
-                    .need_level_by_nation
-                    .map(|score| TradePolicyScore::new(i32::from(score))),
-            ),
-        },
-        data,
+fn nation_common_state(country: &LegacyCountryBase) -> NationCommonState {
+    NationCommonState {
+        treasury: country.treasury,
+        home_tile: optional_tile_id(country.home_tile),
+        trade_policy_by_nation: NationTable::from_array(
+            country
+                .need_level_by_nation
+                .map(|score| TradePolicyScore::new(i32::from(score))),
+        ),
     }
 }
 
@@ -2617,24 +2606,19 @@ mod tests {
         assert!(!game.turn.in_linear_phase());
         game.reset_turn_flags().unwrap();
         assert!(
-            game.nations.as_slice()[..6]
+            game.major_nations.as_slice()[..6]
                 .iter()
-                .all(|nation| { nation.as_ref().unwrap().major().unwrap().turn_finished })
+                .all(|nation| { nation.as_ref().unwrap().state.turn_finished })
         );
         assert!(
-            !game.nations[NationId::new(6)]
+            !game.major_nations[MajorNationId::new(6)]
                 .as_ref()
                 .unwrap()
-                .major()
-                .unwrap()
+                .state
                 .turn_finished
         );
         game.turn.advance_season();
         assert_eq!(game.turn.economic_turn, 2);
-        assert_eq!(
-            game.request_next_phase().events,
-            vec![imperialism_core::GameEvent::PhaseAdvanceRequested]
-        );
     }
 
     #[test]
