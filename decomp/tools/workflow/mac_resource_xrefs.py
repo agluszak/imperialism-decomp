@@ -20,7 +20,6 @@ from tools.ui_codegen import IR_PATH, load_recipes, load_ui_views
 from tools.workflow.mac_control_usage import build_index as build_control_index
 
 
-FORMAT_VERSION = 1
 GRAPH_PATH = "docs/reference/mac_resource_xrefs.json"
 RESOURCE_DIR = "vendor/macos_codewarrior/evidence/resources"
 PICTURES_PATH = f"{RESOURCE_DIR}/pictures.csv"
@@ -412,7 +411,6 @@ def build_graph(repo_root: Path) -> dict:
         if node["kind"] == "mac_class" and not node["windows_header"]
     )
     return {
-        "format_version": FORMAT_VERSION,
         "policy": (
             "Resource identities are file scoped. Mac evidence is semantic only and does "
             "not establish Windows addresses, ABI, vtables, calling conventions, or inheritance."

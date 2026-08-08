@@ -398,7 +398,6 @@ def compare_observations(
 ) -> dict[str, object]:
     difference = first_difference(retail, recomp)
     return {
-        "format_version": 1,
         "evidence_kind": "retail_differential",
         "status": "matched" if difference is None else "diverged",
         "builder_fixture_count": len(BUILDER_FIXTURES),

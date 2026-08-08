@@ -162,15 +162,12 @@ class AgentStartOrchestrationTests(unittest.TestCase):
         os.environ["GHIDRA_INSTALL_DIR"] = str(tmp)
         self._saved_root = agent_task.REPO_ROOT
         self._saved_tasks_dir = agent_task.TASKS_DIR
-        self._saved_legacy = agent_task.LEGACY_TASK_JSON
         agent_task.REPO_ROOT = self.work
         agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
-        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
 
     def tearDown(self):
         agent_task.REPO_ROOT = self._saved_root
         agent_task.TASKS_DIR = self._saved_tasks_dir
-        agent_task.LEGACY_TASK_JSON = self._saved_legacy
         os.environ.clear()
         os.environ.update(self._saved_env)
         shutil.rmtree(self._tmp, ignore_errors=True)
@@ -282,10 +279,8 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
         os.environ.pop("PRECOMMIT_BASE_REF", None)
         self._saved_root = agent_task.REPO_ROOT
         self._saved_tasks_dir = agent_task.TASKS_DIR
-        self._saved_legacy = agent_task.LEGACY_TASK_JSON
         agent_task.REPO_ROOT = self.work
         agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
-        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
         # One committed change so cmd_check has a diff to verify. No `// FUNCTION:`
         # marker: score extraction would then need a real reccmp report, which is not
         # what these tests are about.
@@ -296,7 +291,6 @@ class AgentCheckGeneratedIntegrityTests(unittest.TestCase):
     def tearDown(self):
         agent_task.REPO_ROOT = self._saved_root
         agent_task.TASKS_DIR = self._saved_tasks_dir
-        agent_task.LEGACY_TASK_JSON = self._saved_legacy
         os.environ.clear()
         os.environ.update(self._saved_env)
         shutil.rmtree(self._tmp, ignore_errors=True)
@@ -409,15 +403,12 @@ class AgentFinishVerificationTests(unittest.TestCase):
         self.origin, self.work = _init_repos(tmp)
         self._saved_root = agent_task.REPO_ROOT
         self._saved_tasks_dir = agent_task.TASKS_DIR
-        self._saved_legacy = agent_task.LEGACY_TASK_JSON
         agent_task.REPO_ROOT = self.work
         agent_task.TASKS_DIR = self.work / "build-msvc500" / "agent-tasks"
-        agent_task.LEGACY_TASK_JSON = self.work / "build-msvc500" / "agent-task.json"
 
     def tearDown(self):
         agent_task.REPO_ROOT = self._saved_root
         agent_task.TASKS_DIR = self._saved_tasks_dir
-        agent_task.LEGACY_TASK_JSON = self._saved_legacy
         shutil.rmtree(self._tmp, ignore_errors=True)
 
     def _green_receipt(self) -> dict:

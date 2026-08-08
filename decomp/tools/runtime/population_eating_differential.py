@@ -521,7 +521,6 @@ def compare_observations(retail: BinaryObservation, recomp: BinaryObservation, r
 
     status = "matched" if first_divergence is None and first_predictor_failure is None else "diverged"
     return {
-        "format_version": 1,
         "evidence_kind": "retail_differential",
         "targets": [
             {"original_address": f"0x{RETAIL_EAT:08x}", "name": "TPopulationMgr::Eat"},

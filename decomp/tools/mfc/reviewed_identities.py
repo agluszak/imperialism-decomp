@@ -35,10 +35,6 @@ class ReviewedIdentity:
     kind: str = "LIBRARY"  # LIBRARY | SYNTHETIC (annotation kind projected to reccmp)
 
 
-# Back-compat alias for the retired applier's class name.
-LibraryOverride = ReviewedIdentity
-
-
 def load_reviewed_identities(path: Path) -> list[ReviewedIdentity]:
     if not path.is_file():
         raise FileNotFoundError(path)
@@ -80,7 +76,3 @@ def load_reviewed_identities(path: Path) -> list[ReviewedIdentity]:
             kind=(row.get("kind") or "LIBRARY").strip().upper() or "LIBRARY",
         ))
     return out
-
-
-# Back-compat alias for the retired applier's function name.
-load_overrides = load_reviewed_identities

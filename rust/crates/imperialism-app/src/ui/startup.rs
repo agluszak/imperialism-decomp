@@ -187,14 +187,13 @@ mod tests {
     use crate::flow::ScreenFlowPlugin;
     use crate::ui::{UiCatalogResource, UiRuntimePlugin, UiViewRoot};
     use bevy::ecs::message::{MessageCursor, Messages};
-    use imperialism_formats::{FourCc, UiCatalogV1};
+    use imperialism_formats::{FourCc, UiCatalog};
     use std::collections::HashMap;
 
-    const CATALOG_JSON: &str =
-        include_str!("../../../imperialism-formats/assets/ui_catalog_v1.json");
+    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
     fn app() -> App {
-        let catalog = serde_json::from_str::<UiCatalogV1>(CATALOG_JSON).unwrap();
+        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
         let mut app = App::new();
         app.insert_resource(UiCatalogResource::new(catalog).unwrap())
             .add_message::<SubmitCommand>()

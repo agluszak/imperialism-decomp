@@ -1,4 +1,3 @@
-format_version: 1
 
 # Source-observed boot/new-random-game route.  The generated report validates
 # that each stage has a factory or an intentional internal dispatch path.

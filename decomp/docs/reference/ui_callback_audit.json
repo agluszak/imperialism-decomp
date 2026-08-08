@@ -1,5 +1,4 @@
 {
-  "format_version": 1,
   "generator": "tools/ghidra/data_function_pointers.py",
   "inputs": {
     "binary": "vendor/ghidra/Imperialism",

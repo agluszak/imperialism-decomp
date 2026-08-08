@@ -28031,7 +28031,6 @@
       }
     }
   },
-  "format_version": 1,
   "method": {
     "alignment": "same effective class, type code, segment, and byte length",
     "confidence": {

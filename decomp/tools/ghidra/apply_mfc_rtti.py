@@ -496,8 +496,7 @@ def run(program, args) -> dict:
         # slot-walk-and-rename logic, a second tool independently authoring the
         # same function names with no conflict detection between them. Run the
         # dedicated tool (before or after this one; neither depends on the
-        # other's output) rather than reintroducing a duplicate here. See
-        # docs/reference/apply-mfc-rtti-ownership.md.
+        # other's output) rather than reintroducing a duplicate here.
 
     if args.apply:
         remove_stale_runtime_class_duplicate()

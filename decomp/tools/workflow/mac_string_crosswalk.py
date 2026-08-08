@@ -22,7 +22,6 @@ from tools.common.file_scan import iter_files
 from tools.common.repo import repo_root_from_file
 
 
-FORMAT_VERSION = 1
 MAC_STRINGS_PATH = "vendor/macos_codewarrior/evidence/resources/strings.csv"
 MAC_TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 MAC_SUMMARY_PATH = "vendor/macos_codewarrior/evidence/resources/summary.json"
@@ -308,7 +307,6 @@ def build_crosswalk(repo_root: Path) -> dict:
         for row in embedded_rows
     ]
     return {
-        "format_version": FORMAT_VERSION,
         "policy": (
             "Mac strings are a file-scoped semantic oracle only. Ranked text and resource-ID "
             "matches do not establish Windows ABI, addresses, calling conventions, or ownership."

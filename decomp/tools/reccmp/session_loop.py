@@ -41,11 +41,6 @@ def parse_args() -> argparse.Namespace:
         help="Also regenerate + apply reccmp-project.yml ignore lists (mutates the config).",
     )
     parser.add_argument(
-        "--no-refresh-ignore",
-        action="store_true",
-        help=argparse.SUPPRESS,  # Deprecated: read-only is now the default.
-    )
-    parser.add_argument(
         "--run-reccmp",
         action="store_true",
         help="Run reccmp before stats (default: parse existing files only).",

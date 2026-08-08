@@ -33,8 +33,7 @@ validation, and score deltas).
   Active map-order icon-state tracing is in Beads issue `imperialism-decomp-1uj.38`.
 - `cursor-code-usage-sites.md`, `cursor-resource-mapping.md`, `cursor-semantics-exe.md`
   — game cursor types, resource mapping, control semantics.
-- `gob-stringtable-workflow.md`, `tabsenu-gob-findings.md` — GOB resource/string-table
-  structure and extraction notes.
+- `gob-stringtable-workflow.md` — GOB resource/string-table structure and extraction.
 - `strenu-strings.tsv` (+ `strenu-index-sample.txt`) — extracted UI/localization string
   table (`id`, `block`, `index`, `text`); the fastest text→resource-ID lookup.
 - `manual_text.txt` — extracted game manual; baseline gameplay/mechanics reference.

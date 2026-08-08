@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Options {
-    /// Native runtime result.json containing GeneratedWorldV1 terrain-generation evidence.
+    /// Native runtime result.json containing generated-world terrain evidence.
     result: PathBuf,
 }
 

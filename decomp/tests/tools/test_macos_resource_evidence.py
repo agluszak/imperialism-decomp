@@ -223,7 +223,6 @@ class MacosResourceEvidenceTests(unittest.TestCase):
 
         ui_ir = oracle.build_ui_ir(resources, widgets)
 
-        self.assertEqual(ui_ir["format_version"], oracle.EVIDENCE_VERSION)
         view = ui_ir["views"][0]
         self.assertEqual((view["resource_file"], view["view_id"]), ("Startup.rsrc", 1500))
         root, child = view["nodes"][:2]

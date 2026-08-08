@@ -1,4 +1,4 @@
-"""Versioned parsing and validation for the native runtime JSON protocol."""
+"""Parsing and validation for the native runtime JSON protocol."""
 
 from __future__ import annotations
 
@@ -10,9 +10,6 @@ from typing import Any
 from tools.runtime.catalog import EVIDENCE_KINDS
 
 
-FORMAT_VERSION = 1
-GAME_SNAPSHOT_SCHEMA = "imperialism.game_snapshot.v1"
-GENERATED_WORLD_SCHEMA = "imperialism.generated_world.v1"
 GENERATED_WORLD_TILE_FIELDS = (
     "terrain_kind",
     "sprite_variant",
@@ -75,8 +72,6 @@ def read_json_file(path: Path) -> dict[str, Any] | None:
 
 
 def validate_result(result: dict[str, Any], expected_name: str, expected_seed: int) -> None:
-    if result.get("format_version") != FORMAT_VERSION:
-        raise ValueError(f"unsupported runtime result format_version {result.get('format_version')!r}")
     if result.get("name") != expected_name:
         raise ValueError(f"driver ran {result.get('name')!r}, requested {expected_name!r}")
     if result.get("seed") != expected_seed:
@@ -97,13 +92,9 @@ def validate_result(result: dict[str, Any], expected_name: str, expected_seed: i
 def validate_generated_world(snapshot: object) -> None:
     if not isinstance(snapshot, dict):
         raise ValueError("generated_world must be an object")
-    schema = snapshot.get("schema")
-    if schema != GENERATED_WORLD_SCHEMA:
-        raise ValueError(f"unsupported generated_world schema {schema!r}")
     _require_exact_keys(
         snapshot,
         {
-            "schema",
             "tile_fields",
             "border_link_fields",
             "map",
@@ -122,9 +113,9 @@ def validate_generated_world(snapshot: object) -> None:
         "generated_world",
     )
     if snapshot["tile_fields"] != list(GENERATED_WORLD_TILE_FIELDS):
-        raise ValueError("generated_world tile_fields do not match the v1 schema")
+        raise ValueError("generated_world tile_fields do not match the contract")
     if snapshot["border_link_fields"] != list(GENERATED_WORLD_BORDER_LINK_FIELDS):
-        raise ValueError("generated_world border_link_fields do not match the v1 schema")
+        raise ValueError("generated_world border_link_fields do not match the contract")
 
     map_state = snapshot["map"]
     if not isinstance(map_state, dict):
@@ -357,7 +348,7 @@ def _validate_coarse_generation(value: object) -> None:
     _require_integer(value["city_region_next_id"], "coarse_generation city_region_next_id")
     _require_integer(value["expanded_province_count"], "coarse_generation province count")
     if value["expanded_tile_fields"] != ["terrain_kind", "owner_nation", "province_index"]:
-        raise ValueError("coarse_generation expanded_tile_fields do not match the v1 schema")
+        raise ValueError("coarse_generation expanded_tile_fields do not match the contract")
     tiles = value["expanded_tiles"]
     if not isinstance(tiles, list) or len(tiles) != 108 * 60:
         raise ValueError("coarse_generation expanded_tiles must contain 6480 rows")
@@ -463,8 +454,6 @@ def _validate_terrain_generation(value: object) -> None:
 def validate_game_snapshot(snapshot: object) -> None:
     if not isinstance(snapshot, dict):
         raise ValueError("game_snapshot must be an object")
-    if snapshot.get("schema") != GAME_SNAPSHOT_SCHEMA:
-        raise ValueError(f"unsupported game_snapshot schema {snapshot.get('schema')!r}")
     if snapshot.get("sections") != list(GAME_SNAPSHOT_SECTIONS):
         raise ValueError(f"invalid game_snapshot sections {snapshot.get('sections')!r}")
     hashes = snapshot.get("hashes")
@@ -644,7 +633,7 @@ def _require_integer_rows(rows: list[object], width: int, context: str) -> None:
 
 def _require_exact_keys(container: dict[str, Any], keys: set[str], context: str) -> None:
     if set(container) != keys:
-        raise ValueError(f"{context} fields do not match the v1 schema")
+        raise ValueError(f"{context} fields do not match the contract")
 
 
 def _is_integer(value: object) -> bool:

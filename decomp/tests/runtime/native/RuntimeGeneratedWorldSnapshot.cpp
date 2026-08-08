@@ -275,8 +275,7 @@ bool BuildRuntimeGeneratedWorldSnapshot(const RuntimeRun& run, CString& snapshot
     return false;
   }
   snapshotJson.Format(
-      "{\"schema\":\"imperialism.generated_world.v1\","
-      "\"tile_fields\":[\"terrain_kind\",\"sprite_variant\",\"river_sprite_code\","
+      "{\"tile_fields\":[\"terrain_kind\",\"sprite_variant\",\"river_sprite_code\","
       "\"former_owner_nation\",\"owner_nation\",\"region_subtype\",\"adjacency_bits\","
       "\"owner_border_mask\",\"city_border_mask\",\"water_adjacency_mask\","
       "\"adjacency_mask_a\",\"adjacency_mask_b\",\"development_class_nibbles\","

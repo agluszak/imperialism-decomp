@@ -30,7 +30,6 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 
 DEFAULT_SOURCE = os.environ.get("MACOS_IMPERIALISM_DUMP", "")
-EVIDENCE_VERSION = 4
 UI_TYPES = {
     b"view",
     b"pict",
@@ -1090,7 +1089,6 @@ def build_ui_ir(resources: Sequence[ResourceEntry], widgets: Sequence[WidgetReco
             }
         )
     return {
-        "format_version": EVIDENCE_VERSION,
         "resource_set_sha256": _resource_set_sha256(resources),
         "views": views,
     }
@@ -1564,7 +1562,6 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
             text_row["style_run_count"] = style_scrap["run_count"]
         decoded_texts.append(text_row)
     text_resource_evidence = {
-        "format_version": EVIDENCE_VERSION,
         "resource_set_sha256": _resource_set_sha256(resources),
         "policy": (
             "Mac text/style resources are a semantic oracle only; they do not establish "
@@ -1605,7 +1602,6 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
     )
 
     summary: dict[str, object] = {
-        "format_version": EVIDENCE_VERSION,
         "resource_set_sha256": _resource_set_sha256(resources),
         "resource_files": sorted({resource.resource_file for resource in resources}),
         "resource_type_counts": dict(
@@ -1653,8 +1649,6 @@ def write_outputs(output_dir: Path, resources: Sequence[ResourceEntry]) -> dict[
 
 def validate_text_resource_evidence(evidence: dict, summary: dict) -> list[str]:
     errors: list[str] = []
-    if evidence.get("format_version") != EVIDENCE_VERSION:
-        errors.append("text_resources.json format version does not match the resource oracle")
     if evidence.get("resource_set_sha256") != summary.get("resource_set_sha256"):
         errors.append("text_resources.json resource-set hash does not match summary.json")
     expected_counts = {
@@ -1743,11 +1737,6 @@ def check_outputs(output_dir: Path) -> int:
         return 1
     summary = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
     errors: list[str] = []
-    if summary.get("format_version") != EVIDENCE_VERSION:
-        errors.append(
-            f"unsupported format_version: {summary.get('format_version')!r} "
-            f"(expected {EVIDENCE_VERSION})"
-        )
     minimums = {
         "views": 120,
         "widgets": 2000,
@@ -1768,8 +1757,6 @@ def check_outputs(output_dir: Path) -> int:
         errors.append("Startup.rsrc View 1500 Windows-builder cross-check is not marked match")
 
     ui_ir = json.loads((output_dir / "ui_views.json").read_text(encoding="utf-8"))
-    if ui_ir.get("format_version") != EVIDENCE_VERSION:
-        errors.append("ui_views.json format version does not match the resource oracle")
     if ui_ir.get("resource_set_sha256") != summary.get("resource_set_sha256"):
         errors.append("ui_views.json resource-set hash does not match summary.json")
     if len(ui_ir.get("views", [])) != summary.get("views"):

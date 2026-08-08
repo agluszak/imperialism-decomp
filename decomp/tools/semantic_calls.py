@@ -43,11 +43,8 @@ from tools.binary.pe import load_decorated_symbols
 from tools.mfc.reviewed_identities import ReviewedIdentity, load_reviewed_identities
 from tools.source_model import Claim, build_model
 
-SCHEMA_VERSION = 3
 # The ratchet file has its own schema: the report format may evolve without
 # rewriting the baseline (a bumped number there reads as growth to baseline_guard).
-BASELINE_SCHEMA_VERSION = 3
-PREP_SCHEMA_VERSION = 2
 DEFAULT_TIMEOUT_SECONDS = 30
 MAX_EXPRESSION_NODES = 4096
 PROJECT_NAME = "recompiled-semantic"
@@ -441,7 +438,6 @@ def cache_inputs(
     ]
     version, release = ghidra_env.expected_versions()
     return {
-        "schema": PREP_SCHEMA_VERSION,
         "files": _fingerprint_files(paths),
         "ghidra": {"version": version, "release": release},
         "pyghidra": importlib.metadata.version("pyghidra"),
@@ -466,7 +462,6 @@ def report_inputs(
         Path(__file__),
     ]
     return {
-        "schema": SCHEMA_VERSION,
         "prep_fingerprint": prep_fingerprint,
         "files": _fingerprint_files(paths),
         "claims": _claims_payload(claims),
@@ -495,8 +490,6 @@ def row_context_inputs(repo_root: Path, target: RecCmpTarget) -> dict[str, Any]:
     ]
     version, release = ghidra_env.expected_versions()
     return {
-        "schema": SCHEMA_VERSION,
-        "prep_schema": PREP_SCHEMA_VERSION,
         "files": _fingerprint_files(paths),
         "ghidra": {"version": version, "release": release},
         "pyghidra": importlib.metadata.version("pyghidra"),
@@ -2630,8 +2623,7 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
     ):
         previous = json.loads(previous_output.read_text(encoding="utf-8"))
         if (
-            previous.get("schema") == SCHEMA_VERSION
-            and previous.get("scope") in {"all", "targeted"}
+            previous.get("scope") in {"all", "targeted"}
             and previous.get("row_context") == context_fp
         ):
             previous_rows = {
@@ -2735,7 +2727,6 @@ def run_compare(args: argparse.Namespace) -> tuple[dict[str, Any], Path]:
         for claim in selected
     ]
     report = {
-        "schema": SCHEMA_VERSION,
         "fingerprint": fingerprint(inputs),
         "inputs": inputs,
         "row_context": context_fp,
@@ -2968,7 +2959,6 @@ def update_baseline(report: dict[str, Any], path: Path) -> None:
         if previous.get("mode") == "hard" and debt:
             raise RuntimeError("hard semantic gate cannot be downgraded")
     baseline = {
-        "schema": BASELINE_SCHEMA_VERSION,
         "mode": "hard" if not debt else "ratchet",
         "required": required,
         "debt": debt,

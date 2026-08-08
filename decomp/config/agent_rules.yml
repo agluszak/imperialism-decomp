@@ -6,7 +6,7 @@
 #
 # Schema per rule:
 #   id:         stable identifier, <AREA>-<NAME>-<NNN>; never renumber or reuse
-#   status:     active | superseded (superseded rules must name a successor)
+#   status:     active
 #   title:      one-line claim
 #   triggers:   tags the advice engine matches (see tools/workflow/advice.py TAGS)
 #   required:   what to do (imperative, short)
@@ -17,8 +17,8 @@
 #   examples:   addresses proving the rule (optional)
 #
 # Linted by `just agent-rules-gate` (tools/workflow/check_agent_rules.py):
-# duplicate ids, dangling supersedes/successor refs, active-superseded conflicts,
-# required/forbidden contradictions, non-just tool commands.
+# duplicate ids, inactive rules, required/forbidden contradictions, and non-just
+# tool commands.
 
 rules:
   - id: ABI-THIS-001

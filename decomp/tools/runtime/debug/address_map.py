@@ -9,9 +9,6 @@ from pathlib import Path
 from tools.common.reccmp_report import run_report
 
 
-FORMAT_VERSION = 1
-
-
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as source:
@@ -41,10 +38,7 @@ def matching_addresses(
     cached: dict = {}
     try:
         candidate = json.loads(cache_path.read_text(encoding="utf-8"))
-        if (
-            candidate.get("format_version") == FORMAT_VERSION
-            and candidate.get("binary_sha256") == binary_hash
-        ):
+        if candidate.get("binary_sha256") == binary_hash:
             cached = candidate
     except (OSError, ValueError):
         pass
@@ -82,7 +76,6 @@ def matching_addresses(
         cache_path.write_text(
             json.dumps(
                 {
-                    "format_version": FORMAT_VERSION,
                     "binary_sha256": binary_hash,
                     "functions": functions,
                 },

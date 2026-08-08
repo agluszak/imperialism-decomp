@@ -46,7 +46,6 @@ def run_harness_selftest(
     result = read_json_file(result_path)
     if result is None:
         result = {
-            "format_version": 1,
             "name": spec.name,
             "seed": seed,
             "status": "failed",
@@ -60,7 +59,6 @@ def run_harness_selftest(
             validate_result(result, spec.name, seed)
         except ValueError as error:
             result = {
-                "format_version": 1,
                 "name": spec.name,
                 "seed": seed,
                 "status": "failed",

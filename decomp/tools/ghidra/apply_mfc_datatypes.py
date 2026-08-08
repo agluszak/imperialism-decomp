@@ -210,8 +210,7 @@ MFC_MODELS: dict[str, ClassSpec] = {
         ),
     ),
     # The following 8 were driven by weak_pointer_type_inventory.py's
-    # canonical_mfc_type_exists bucket (docs/reference/apply-mfc-rtti-ownership.md-
-    # adjacent follow-up work) — each layout measured from the vendored MFC 4.2
+    # canonical_mfc_type_exists bucket — each layout measured from the vendored MFC 4.2
     # header, not guessed. CPrintInfo and CTypeLibCache remain unmodeled: neither
     # has a real definition anywhere in the vendored header subset (only a
     # forward declaration), so staying opaque is honest, not a defect;

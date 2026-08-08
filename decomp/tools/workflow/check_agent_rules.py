@@ -4,7 +4,7 @@
 Rejects:
   - duplicate rule ids, or ids not matching <AREA>-<NAME>-<NNN>;
   - out-of-order numeric suffixes within the file (append-only discipline);
-  - superseded rules without a `superseded_by` pointing at an existing ACTIVE rule;
+  - rules that are not active;
   - a rule both requiring and forbidding the same action token;
   - `tools:` entries that are not `just ...` commands (raw module runs re-teach the
     wrong habit — Hard Rule 2), or that name a `just` target which does not exist;
@@ -76,17 +76,14 @@ def lint_rules(
 ) -> list[str]:
     """Return a list of human-readable lint failures for the given rules.
 
-    Pure (no filesystem/IO) so every validation branch — including the
-    superseded/superseded_by path that the real KB has never exercised — is unit
-    testable. `main()` supplies `known_skills`/`known_tags` from the repo.
+    Pure (no filesystem/IO) so validation is unit testable. `main()` supplies
+    `known_skills`/`known_tags` from the repository.
     """
     known_targets = just_targets()
     failures: list[str] = []
 
     seen: dict[str, int] = {}
     last_num = 0
-    active_ids = {r.get("id") for r in rules if r.get("status") == "active"}
-
     for idx, rule in enumerate(rules):
         rid = rule.get("id", f"<rule #{idx}>")
         m = ID_RE.match(rid)
@@ -103,14 +100,8 @@ def lint_rules(
         last_num = max(last_num, num)
 
         status = rule.get("status")
-        if status not in ("active", "superseded"):
-            failures.append(f"{rid}: status must be active|superseded, got {status!r}")
-        if status == "superseded":
-            succ = rule.get("superseded_by")
-            if not succ:
-                failures.append(f"{rid}: superseded without superseded_by")
-            elif succ not in active_ids:
-                failures.append(f"{rid}: superseded_by {succ!r} is not an active rule")
+        if status != "active":
+            failures.append(f"{rid}: status must be active, got {status!r}")
 
         required = set(rule.get("required") or [])
         forbidden = set(rule.get("forbidden") or [])
@@ -142,12 +133,11 @@ def lint_rules(
         if skill and skill not in known_skills:
             failures.append(f"{rid}: skill {skill!r} does not exist under .agents/skills/")
 
-        if status == "active":
-            for tag in rule.get("triggers") or []:
-                if tag not in known_tags:
-                    failures.append(f"{rid}: trigger {tag!r} is not derivable by "
-                                    "tools/workflow/advice.py (it would never fire) — "
-                                    "add a derivation or fix the tag")
+        for tag in rule.get("triggers") or []:
+            if tag not in known_tags:
+                failures.append(f"{rid}: trigger {tag!r} is not derivable by "
+                                "tools/workflow/advice.py (it would never fire) — "
+                                "add a derivation or fix the tag")
 
     return failures
 

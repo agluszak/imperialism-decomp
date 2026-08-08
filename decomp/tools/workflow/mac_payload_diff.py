@@ -18,7 +18,6 @@ from tools.ui_codegen import IR_PATH, load_ui_views
 from tools.workflow.mac_control_usage import TYPE_FAMILY_CLASSES, build_index
 
 
-FORMAT_VERSION = 1
 REPORT_PATH = "docs/reference/mac_payload_diff.json"
 SEGMENTS = (
     "common_flags",
@@ -364,7 +363,6 @@ def build_report(repo_root: Path) -> dict:
         for delta in segment_entry["type_family_shape_deltas"]
     )
     return {
-        "format_version": FORMAT_VERSION,
         "source": {
             "path": IR_PATH,
             "resource_set_sha256": ir_data.get("resource_set_sha256", ""),

@@ -106,7 +106,6 @@ def virtual_declarations(repo_root: Path) -> dict[str, set[str]]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--roots", nargs="+", default=["src/game", "include/game"])
-    parser.add_argument("--write-baseline", action="store_true")
     args = parser.parse_args()
     repo_root = repo_root_from_file(__file__)
 
@@ -198,49 +197,13 @@ def main() -> int:
                        f"{rel}:{line}: {cls}::{name} — non-virtual degenerate body with "
                        f"live call sites on a vtable-carrying class{slot_note}"))
 
-    # Baseline: the known-offender set is tracked (not blessed) — each row cites the
-    # bead that will fix it. New offenders (a key not in the baseline) always fail.
-    baseline_path = repo_root / "config" / "baselines" / "shadow_stub_baseline.csv"
-    baselined: dict[str, str] = {}
-    if baseline_path.is_file():
-        for row in baseline_path.read_text().splitlines():
-            row = row.strip()
-            if not row or row.startswith("#"):
-                continue
-            key, _, bead = row.partition("|")
-            baselined[key.strip()] = bead.strip()
-
-    if args.write_baseline:
-        lines = ["# key|bead — shadow-stub known offenders (tools.workflow.check_shadow_stubs).",
-                 "# Each is a real defect awaiting the cited bead; NEW offenders are a hard error.",
-                 "# Do not add rows by hand to silence a finding — fix the shadow or claim the slot."]
-        for key, _ in sorted(errors):
-            lines.append(f"{key}|{baselined.get(key, 'imperialism-decomp-12k2')}")
-        baseline_path.write_text("\n".join(lines) + "\n")
-        print(f"Wrote shadow-stub baseline: {len(errors)} offender(s).")
+    if not errors:
+        print(f"Shadow-stub gate passed ({len(candidates)} degenerate candidates, "
+              "none with live call sites).")
         return 0
-
-    new_offenders = [msg for key, msg in errors if key not in baselined]
-    fixed = [key for key in baselined if key not in {k for k, _ in errors}]
-
-    if not new_offenders and not fixed:
-        if errors:
-            print(f"Shadow-stub gate passed ({len(errors)} baselined offender(s) tracked to "
-                  "their beads; no new ones).")
-        else:
-            print(f"Shadow-stub gate passed ({len(candidates)} degenerate candidates, "
-                  "none with live call sites).")
-        return 0
-    if fixed:
-        print("Shadow-stub gate: these baselined offenders are gone — remove them from "
-              "config/baselines/shadow_stub_baseline.csv (ratchet down):")
-        for key in sorted(fixed):
-            print(f"  - {key}")
-    if new_offenders:
-        print("Shadow-stub gate FAILED (new silently-dead call path — hard ban):")
-        for msg in sorted(new_offenders):
-            print(f"  - {msg}")
-        return 1
+    print("Shadow-stub gate FAILED (silently-dead call path — hard ban):")
+    for _, msg in sorted(errors):
+        print(f"  - {msg}")
     return 1
 
 

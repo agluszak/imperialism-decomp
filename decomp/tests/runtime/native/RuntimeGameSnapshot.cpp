@@ -736,8 +736,7 @@ bool BuildRuntimeGameSnapshot(const RuntimeRun& run, CString& snapshotJson) {
   CString stateHash(RuntimeHashText(state));
 
   snapshotJson.Format(
-      "{\"schema\":\"imperialism.game_snapshot.v1\","
-      "\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\","
+      "{\"sections\":[\"metadata\",\"rng\",\"world\",\"nations\",\"economy\","
       "\"military\",\"missions\",\"pending\"],"
       "\"hashes\":{\"metadata\":\"%s\",\"rng\":\"%s\",\"world\":\"%s\","
       "\"nations\":\"%s\",\"economy\":\"%s\",\"military\":\"%s\","

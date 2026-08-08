@@ -199,8 +199,7 @@ void TestParsonDom() {
   JSON_Array* values = json_value_get_array(valuesValue);
   bool built = rootValue != 0 && capturesValue != 0 && valuesValue != 0;
   if (built) {
-    built = json_object_set_number(root, "format_version", 2) == JSONSuccess &&
-            json_array_append_number(values, 7) == JSONSuccess &&
+    built = json_array_append_number(values, 7) == JSONSuccess &&
             json_array_append_boolean(values, 1) == JSONSuccess &&
             json_object_set_value(captures, "probe", valuesValue) == JSONSuccess &&
             json_object_set_value(root, "captures", capturesValue) == JSONSuccess;
@@ -208,8 +207,7 @@ void TestParsonDom() {
   char* serialized = built ? json_serialize_to_string(rootValue) : 0;
   Expect("json.parson_dom",
          serialized != 0 &&
-             strcmp(serialized, "{\"format_version\":2,\"captures\":{\"probe\":[7,true]}}") ==
-                 0,
+             strcmp(serialized, "{\"captures\":{\"probe\":[7,true]}}") == 0,
          "Parson did not construct and serialize the nested runtime-result shape");
   if (serialized != 0) {
     json_free_serialized_string(serialized);
@@ -243,7 +241,7 @@ int main(int argc, char** argv) {
   const char* failure = g_results.HasFailures() ? g_results.FirstFailure() : "";
   const char* assertion = g_results.HasFailures() ? g_results.FirstAssertionId() : "";
   wsprintfA(json,
-            "{\n  \"format_version\": 1,\n  \"name\": \"%s\",\n  \"seed\": %u,\n"
+            "{\n  \"name\": \"%s\",\n  \"seed\": %u,\n"
             "  \"status\": \"%s\",\n  \"phase\": \"finished\",\n"
             "  \"last_action\": \"native_harness_self_test\",\n"
             "  \"evidence_kind\": \"internal_invariant\",\n"

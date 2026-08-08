@@ -75,9 +75,9 @@ class MacResourceXrefTests(unittest.TestCase):
     def test_source_resolve_call_is_joined_to_known_control_tag(self) -> None:
         self.assertIn(
             {
-                "from": "windows_function:0x004acb60",
+                "from": "windows_function:0x0056bcc0",
                 "relation": "resolves_control_tag",
-                "to": "control_tag:0x696e666f",
+                "to": "control_tag:0x706c6174",
                 "status": "resolved",
             },
             self.graph["edges"],

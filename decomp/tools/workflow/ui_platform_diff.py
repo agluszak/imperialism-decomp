@@ -25,17 +25,15 @@ from tools.ui_codegen import (
 )
 
 
-FORMAT_VERSION = 1
 DELTA_CONFIG_PATH = "config/ui_platform_deltas.yml"
 REPORT_PATH = "docs/reference/ui_platform_diff.json"
 
 
 def _load_delta_config(repo_root: Path) -> dict:
     data = yaml.safe_load((repo_root / DELTA_CONFIG_PATH).read_text(encoding="utf-8"))
-    if not isinstance(data, dict) or data.get("format_version") != FORMAT_VERSION:
-        raise ValueError(f"{DELTA_CONFIG_PATH}: expected format_version {FORMAT_VERSION}")
+    if not isinstance(data, dict):
+        raise ValueError(f"{DELTA_CONFIG_PATH}: expected a mapping")
     allowed = {
-        "format_version",
         "class_substitutions",
         "functional_parity_cases",
         "node_property_patches",
@@ -283,7 +281,6 @@ def build_report(repo_root: Path) -> tuple[dict, list[str]]:
                 errors.append(f"{DELTA_CONFIG_PATH}: mapped alias {alias} was not reported")
 
     report = {
-        "format_version": FORMAT_VERSION,
         "policy": (
             "Mac resources own functional UI semantics for mapped cases. Windows binary evidence "
             "is required only for declared platform deltas and Windows-only trees; this report "

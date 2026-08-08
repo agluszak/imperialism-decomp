@@ -22,7 +22,6 @@ from tools.common.symbols import names_by_address
 from tools.ui_codegen import IR_PATH, UiResourceKey, load_recipes, load_ui_views
 
 
-FORMAT_VERSION = 1
 INDEX_PATH = "docs/reference/mac_control_usage.json"
 TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resources.json"
 
@@ -407,7 +406,6 @@ def build_index(repo_root: Path) -> dict:
         }
 
     return {
-        "format_version": FORMAT_VERSION,
         "source": {
             "path": IR_PATH,
             "resource_set_sha256": ir_data.get("resource_set_sha256", ""),

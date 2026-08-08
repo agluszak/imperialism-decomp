@@ -45,13 +45,9 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-# One receipt directory per branch (imperialism-decomp-j201). Concurrent agents share a
-# checkout, so a single build-msvc500/agent-task.json let one task overwrite another's
-# state and let agent-finish describe a tree nobody checked. The branch is the task
-# identity here: it is what claims, PRs and the integration base are all keyed by, and it
-# needs no pointer file to resolve.
+# One receipt directory per branch. The branch is the task identity used by claims,
+# pull requests, and the integration base.
 TASKS_DIR = REPO_ROOT / "build-msvc500" / "agent-tasks"
-LEGACY_TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
 
 # Claims registry: one lightweight commit ref per claimed address on the shared
 # remote. `refs/agent-claims/0x00XXXXXX` points at a parentless empty-tree commit
@@ -180,11 +176,6 @@ def _load_task(branch: str | None = None) -> dict:
     path = _receipt_path(branch)
     if path.is_file():
         return json.loads(path.read_text(encoding="utf-8"))
-    # One-time migration path: a receipt written by the pre-j201 single-file layout.
-    if LEGACY_TASK_JSON.is_file():
-        legacy = json.loads(LEGACY_TASK_JSON.read_text(encoding="utf-8"))
-        if legacy.get("branch") in (None, branch or _git("rev-parse", "--abbrev-ref", "HEAD")):
-            return legacy
     return {}
 
 

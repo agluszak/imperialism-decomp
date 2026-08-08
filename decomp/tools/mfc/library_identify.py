@@ -18,7 +18,7 @@ from pathlib import Path
 from tools.common.hexutil import parse_hex_address
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.reviewed_identities import load_overrides
+from tools.mfc.reviewed_identities import load_reviewed_identities
 
 DEFAULT_SYMBOLS = "config/original_entities.csv"
 DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
@@ -67,7 +67,10 @@ def main() -> int:
     )
     oracle_row = _row_for_address(resolve_repo_path(repo_root, args.oracle), address)
 
-    overrides = {o.address: o for o in load_overrides(resolve_repo_path(repo_root, args.overrides))}
+    overrides = {
+        identity.address: identity
+        for identity in load_reviewed_identities(resolve_repo_path(repo_root, args.overrides))
+    }
     override = overrides.get(address)
 
     name = (symbols_row or {}).get("name", "") or "<none>"

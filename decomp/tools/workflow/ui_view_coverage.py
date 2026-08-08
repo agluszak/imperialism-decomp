@@ -23,7 +23,6 @@ from tools.ui_codegen import UiResourceKey, load_recipes, load_ui_views
 CLASSIFICATION_PATH = "config/ui_view_coverage.yml"
 MANIFEST_PATH = "config/ui_factory_codegen.yml"
 REPORT_PATH = "docs/reference/ui_view_coverage.md"
-FORMAT_VERSION = 1
 ALLOWED_STATUSES = frozenset(
     (
         "windows_runtime_gap",
@@ -65,11 +64,6 @@ def _mapping(value: object, context: str) -> dict:
 def load_classifications(repo_root: Path) -> dict[UiResourceKey, CoverageClassification]:
     path = repo_root / CLASSIFICATION_PATH
     data = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if data.get("format_version") != FORMAT_VERSION:
-        raise ValueError(
-            f"{CLASSIFICATION_PATH}: unsupported format_version "
-            f"{data.get('format_version')!r}"
-        )
     rows = _mapping(data.get("resources"), f"{CLASSIFICATION_PATH}: resources")
     classifications: dict[UiResourceKey, CoverageClassification] = {}
     for raw_key, raw_value in rows.items():

@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 from tools.generate_symbols import generate
-from tools.mfc.reviewed_identities import load_overrides
+from tools.mfc.reviewed_identities import load_reviewed_identities
 from tools.workflow.check_library_identity import check_override, prototype_declares_name
 
 RAND_ROW = (
@@ -33,7 +33,7 @@ class LoadOverridesTests(unittest.TestCase):
         return _write(tmp / "ov.csv", f"{HEADER}\n{body}\n")
 
     def test_parses_rand(self) -> None:
-        overrides = load_overrides(self._overrides(RAND_ROW))
+        overrides = load_reviewed_identities(self._overrides(RAND_ROW))
         self.assertEqual(len(overrides), 1)
         ov = overrides[0]
         self.assertEqual(ov.address, 0x005E83F0)
@@ -44,24 +44,24 @@ class LoadOverridesTests(unittest.TestCase):
 
     def test_duplicate_address_rejected(self) -> None:
         with self.assertRaises(SystemExit):
-            load_overrides(self._overrides(f"{RAND_ROW}\n{RAND_ROW}"))
+            load_reviewed_identities(self._overrides(f"{RAND_ROW}\n{RAND_ROW}"))
 
     def test_symbol_only_row_accepted(self) -> None:
         # Migrated annotation rows (bead 8mo.11) may carry only a symbol (or only
         # evidence); the raw-inventory spelling stays authoritative for the rest.
         ok = "0x005e83f0||_rand||libcmt|rand.obj|e"
-        self.assertEqual(load_overrides(self._overrides(ok))[0].symbol, "_rand")
+        self.assertEqual(load_reviewed_identities(self._overrides(ok))[0].symbol, "_rand")
 
     def test_anonymous_evidence_free_row_rejected(self) -> None:
         bad = "0x005e83f0||||libcmt|rand.obj|"
         with self.assertRaises(SystemExit):
-            load_overrides(self._overrides(bad))
+            load_reviewed_identities(self._overrides(bad))
 
 
 class ApplySymbolsTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tmp = Path(tempfile.mkdtemp())
-        self.overrides = load_overrides(
+        self.overrides = load_reviewed_identities(
             _write(self.tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n")
         )
 
@@ -123,7 +123,7 @@ class ApplySymbolsTests(unittest.TestCase):
 class GateTests(unittest.TestCase):
     def setUp(self) -> None:
         tmp = Path(tempfile.mkdtemp())
-        self.ov = load_overrides(_write(tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n"))[0]
+        self.ov = load_reviewed_identities(_write(tmp / "ov.csv", f"{HEADER}\n{RAND_ROW}\n"))[0]
 
     def test_prototype_declares_name(self) -> None:
         self.assertTrue(prototype_declares_name("int __cdecl rand(void)", "rand"))

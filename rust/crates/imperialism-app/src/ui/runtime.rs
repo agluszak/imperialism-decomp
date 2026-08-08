@@ -8,7 +8,7 @@ use bevy::ui::{FocusPolicy, InteractionDisabled};
 use imperialism_formats::{
     FourCc, PictureLibrary, ResolvedRetailTextStyle, ResourceIdentifier, RetailFontDecodeError,
     RetailFontFace, RetailFontMetrics, RetailTextAlignment, RetailTextStyleError,
-    RetailTextStylePreset, ScopedViewId, UiCatalogError, UiCatalogV1, UiNode as CatalogNode,
+    RetailTextStylePreset, ScopedViewId, UiCatalog, UiCatalogError, UiNode as CatalogNode,
     UiNodeId, UiTextBinding, UiView as CatalogView, WidgetKind, decode_retail_font_metrics,
     resolve_retail_text_style,
 };
@@ -17,15 +17,15 @@ use std::fs;
 use std::path::PathBuf;
 
 #[derive(Resource)]
-pub struct UiCatalogResource(UiCatalogV1);
+pub struct UiCatalogResource(UiCatalog);
 
 impl UiCatalogResource {
-    pub fn new(catalog: UiCatalogV1) -> Result<Self, UiCatalogError> {
+    pub fn new(catalog: UiCatalog) -> Result<Self, UiCatalogError> {
         catalog.validate()?;
         Ok(Self(catalog))
     }
 
-    pub const fn catalog(&self) -> &UiCatalogV1 {
+    pub const fn catalog(&self) -> &UiCatalog {
         &self.0
     }
 }
@@ -623,17 +623,16 @@ mod tests {
     use super::*;
     use bevy::ecs::message::Messages;
     use imperialism_formats::{
-        CachedRetailObject, ImportedRetailAssets, RETAIL_ASSET_PACK_SCHEMA,
-        RetailAssetPackManifestV1, RetailResourceAsset, import_english_gog_assets,
+        CachedRetailObject, ImportedRetailAssets, RetailAssetPackManifest, RetailResourceAsset,
+        import_english_gog_assets,
     };
     use std::collections::{HashMap, HashSet};
     use std::fs;
     use std::sync::atomic::{AtomicU64, Ordering};
 
-    const CATALOG_JSON: &str =
-        include_str!("../../../imperialism-formats/assets/ui_catalog_v1.json");
+    const CATALOG_JSON: &str = include_str!("../../../imperialism-formats/assets/ui_catalog.json");
 
-    fn catalog() -> UiCatalogV1 {
+    fn catalog() -> UiCatalog {
         serde_json::from_str(CATALOG_JSON).unwrap()
     }
 
@@ -666,9 +665,8 @@ mod tests {
             Self {
                 imported: ImportedRetailAssets {
                     cache_root: root.clone(),
-                    pack_dir: root.join("packs/v1/test"),
-                    manifest: RetailAssetPackManifestV1 {
-                        schema: RETAIL_ASSET_PACK_SCHEMA.to_owned(),
+                    pack_dir: root.join("packs/test"),
+                    manifest: RetailAssetPackManifest {
                         cache_key: "0".repeat(64),
                         logical_resolution: [640, 480],
                         bitmap_lookup_is_name_then_numeric: true,

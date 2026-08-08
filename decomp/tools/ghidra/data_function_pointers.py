@@ -37,7 +37,6 @@ REPORT_PATH = "docs/reference/ui_callback_audit.json"
 MESSAGE_MAP_PATH = "docs/reference/message_map_audit.csv"
 RTTI_PATH = "config/rtti_class_oracle.csv"
 PROGRESS_PATH = "config/baselines/reccmp_progress_baseline.functions.csv"
-FORMAT_VERSION = 1
 MAX_VTABLE_SLOTS = 512
 DATA_LO = 0x00630000
 DATA_HI = 0x006B0000
@@ -486,7 +485,6 @@ def build_report(program, repo_root: Path) -> dict:
         hit["classification"] for row in rows for hit in row["hits"]
     )
     report = {
-        "format_version": FORMAT_VERSION,
         "generator": "tools/ghidra/data_function_pointers.py",
         "inputs": {
             "binary": "vendor/ghidra/Imperialism",

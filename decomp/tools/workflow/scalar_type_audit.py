@@ -18,7 +18,6 @@ from tools.common.file_scan import is_excluded_scan_path
 from tools.common.repo import repo_root_from_file
 
 
-FORMAT_VERSION = 1
 CONFIG_PATH = "config/scalar_type_audit.yml"
 BASELINE_PATH = "config/baselines/scalar_type_audit.json"
 REPORT_PATH = "docs/reference/scalar-type-audit.md"
@@ -99,8 +98,6 @@ class Finding:
 
 def _load_config(repo_root: Path) -> dict:
     config = yaml.safe_load((repo_root / CONFIG_PATH).read_text(encoding="utf-8"))
-    if config.get("format_version") != FORMAT_VERSION:
-        raise ValueError(f"{CONFIG_PATH}: unsupported format_version")
     categories = config.get("categories", {})
     for category in (
         "nested_integral_cast",
@@ -243,7 +240,6 @@ def collect_findings(repo_root: Path, config: dict) -> list[Finding]:
 
 def _baseline_payload(findings: list[Finding]) -> dict:
     return {
-        "format_version": FORMAT_VERSION,
         "fingerprints": sorted(finding.fingerprint for finding in findings),
     }
 

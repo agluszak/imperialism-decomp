@@ -106,8 +106,8 @@ def load_scenario(name: str) -> Scenario:
     if not path.is_file():
         raise SystemExit(f"unknown differential scenario {name!r}: missing {path}")
     parsed = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(parsed, dict) or parsed.get("format_version") != 2:
-        raise SystemExit(f"unsupported differential scenario format in {path}")
+    if not isinstance(parsed, dict):
+        raise SystemExit(f"invalid differential scenario in {path}")
     fixture_name = parsed.get("start", {}).get("fixture")
     fixture_root = Path(os.environ.get("IMPERIALISM_SAVE_FIXTURES", FIXTURE_DIR))
     fixture = fixture_root / fixture_name
@@ -304,7 +304,6 @@ def run_binary(
     )
     records: list[dict] = []
     metadata = {
-        "format_version": 2,
         "scenario": scenario.name,
         "binary_kind": kind,
         "binary": file_identity(executable),
@@ -539,7 +538,6 @@ def run_scenario(scenario: Scenario, timeout: float | None = None) -> int:
     validate_checkpoint(recomp_observation)
     divergence = first_checkpoint_difference(retail_observation, recomp_observation)
     result = {
-        "format_version": 2,
         "scenario": scenario.name,
         "evidence_kind": "retail_differential",
         "status": "matched" if divergence is None else "diverged",

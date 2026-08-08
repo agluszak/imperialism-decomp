@@ -37,7 +37,7 @@ from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.reviewed_identities import LibraryOverride, load_overrides
+from tools.mfc.reviewed_identities import ReviewedIdentity, load_reviewed_identities
 
 DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
 DEFAULT_SYMBOLS = "build-msvc500/generated/symbols.csv"
@@ -153,7 +153,7 @@ def check_oracle_gamecode_conflicts(
 
 
 def check_override(
-    ov: LibraryOverride, symbols: dict[int, dict[str, str]], ownership: dict[int, str]
+    ov: ReviewedIdentity, symbols: dict[int, dict[str, str]], ownership: dict[int, str]
 ) -> list[str]:
     problems: list[str] = []
     tag = f"0x{ov.address:08x} ({ov.name})"
@@ -203,7 +203,7 @@ def main() -> int:
     overrides_path = resolve_repo_path(repo_root, args.overrides)
     symbols_path = resolve_repo_path(repo_root, args.symbols)
 
-    overrides = load_overrides(overrides_path)
+    overrides = load_reviewed_identities(overrides_path)
     applied_count = len(overrides)
 
     symbols = index_symbols(symbols_path)

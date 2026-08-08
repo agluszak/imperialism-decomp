@@ -372,7 +372,6 @@ def compare_observations(
         if difference is not None and first_divergence is None:
             first_divergence = {"fixture": fixture.name, **difference}
     return {
-        "format_version": 1,
         "evidence_kind": "retail_differential",
         "target": {
             "original_address": f"0x{RETAIL_TARGET:08x}",

@@ -248,7 +248,6 @@ class RuntimeSuiteTests(unittest.TestCase):
                 label = "primary" if len(calls) == 1 else run_dir.name
                 (run_dir / "gdb.log").write_text(label, encoding="utf-8")
                 result = {
-                    "format_version": 1,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": "failed",
@@ -301,7 +300,6 @@ class RuntimeSuiteTests(unittest.TestCase):
                 calls.append(run_dir)
                 status = "failed" if len(calls) == 1 else "passed"
                 native = {
-                    "format_version": 1,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": status,
@@ -344,7 +342,6 @@ class RuntimeSuiteTests(unittest.TestCase):
             def fake_execute(config: RunConfig) -> HostResult:
                 run_dir = config.run_dir
                 native = {
-                    "format_version": 1,
                     "name": "random_game_easy_skips_capital",
                     "seed": 1,
                     "status": "passed",

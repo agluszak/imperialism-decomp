@@ -2,12 +2,11 @@
 
 //! Compatibility boundary for retail saves, scenarios, maps, resources, and asset imports.
 //!
-//! Format implementations will decode into versioned legacy DTOs before converting into
+//! Retail format implementations decode into explicit retail DTOs before converting into
 //! `imperialism-core` state. This crate intentionally contains no live game rules or Bevy types.
 
 mod legacy_save;
 mod legacy_stream;
-mod normalized_assets;
 mod retail_assets;
 mod retail_fonts;
 mod retail_pe;
@@ -30,14 +29,10 @@ pub use legacy_save::{
     parse_minor_record_at, parse_missions_at,
 };
 pub use legacy_stream::{LegacyStream, StreamError};
-pub use normalized_assets::{
-    ASSET_PACK_SCHEMA, AssetManifestError, NormalizedAssetManifestV1, Rgba8,
-    StrategicMapAssetManifest, read_normalized_asset_manifest,
-};
 pub use retail_assets::{
-    CachedRetailObject, ImportedRetailAssets, PictureLibrary, RETAIL_ASSET_PACK_SCHEMA,
-    RetailAssetImportError, RetailAssetPackManifestV1, RetailResourceAsset, RetailSourceDigest,
-    RetailStandaloneAsset, RetailStringAsset, default_retail_cache_dir, import_english_gog_assets,
+    CachedRetailObject, ImportedRetailAssets, PictureLibrary, RetailAssetImportError,
+    RetailAssetPackManifest, RetailResourceAsset, RetailSourceDigest, RetailStandaloneAsset,
+    RetailStringAsset, default_retail_cache_dir, import_english_gog_assets,
     parse_retail_import_args,
 };
 pub use retail_fonts::{
@@ -50,13 +45,9 @@ pub use retail_pe::{
     DecodedStringResource, PeResourceEntry, PeResourceError, PeResourceFile, ResourceIdentifier,
     bitmap_resource_to_bmp, decode_string_table_block,
 };
-pub use runtime_capture::{
-    RUNTIME_RESULT_FORMAT_VERSION, RuntimeCaptureError, decode_runtime_capture,
-    read_runtime_capture,
-};
+pub use runtime_capture::{RuntimeCaptureError, decode_runtime_capture, read_runtime_capture};
 pub use ui_catalog::{
-    EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UI_CATALOG_SCHEMA, UiCatalogError,
-    UiCatalogSource, UiCatalogSources, UiCatalogV1, UiNode, UiNodeId, UiNumberRange, UiStyle,
-    UiTextBinding, UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,
-    read_ui_catalog,
+    EvidenceConfidence, FourCc, LogicalRect, ScopedViewId, UiCatalog, UiCatalogError,
+    UiCatalogSource, UiCatalogSources, UiNode, UiNodeId, UiNumberRange, UiStyle, UiTextBinding,
+    UiView, UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties, read_ui_catalog,
 };

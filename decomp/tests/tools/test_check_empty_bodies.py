@@ -12,7 +12,6 @@ from tree_sitter import Language, Parser
 from tools.workflow.check_empty_bodies import (
     AUDIT_KINDS,
     VIOLATION_KINDS,
-    baseline_file_is_initialized,
     counts_per_file,
     derived_store_offsets,
     is_empty_body,
@@ -60,25 +59,6 @@ class TestTrivialReturnParse(unittest.TestCase):
         self.assertFalse(is_trivial_return_body(node))
 
 
-class TestEmptyBaseline(unittest.TestCase):
-    def test_header_only_baseline_is_initialized_zero_floor(self):
-        import tempfile
-
-        with tempfile.TemporaryDirectory() as d:
-            path = Path(d) / "baseline.csv"
-            path.write_text("file|empty_but_big|empty_unmarked|empty_unresolved|noop_contradicted\n")
-            self.assertTrue(baseline_file_is_initialized(path))
-
-    def test_missing_or_empty_baseline_is_not_initialized(self):
-        import tempfile
-
-        with tempfile.TemporaryDirectory() as d:
-            path = Path(d) / "baseline.csv"
-            self.assertFalse(baseline_file_is_initialized(path))
-            path.write_text("")
-            self.assertFalse(baseline_file_is_initialized(path))
-
-
 class TestTrivialReturnClassification(unittest.TestCase):
     SOURCE = (
         "// FUNCTION: IMPERIALISM 0x00500000\n"
@@ -110,7 +90,7 @@ class TestTrivialReturnClassification(unittest.TestCase):
             findings = _scan(Path(d), source, {"TFoo::Compute": (0x500000, 400)})
         self.assertEqual(findings, [])
 
-    def test_promoted_kind_is_counted_by_the_ratchet(self):
+    def test_promoted_kind_is_counted_by_the_gate(self):
         """bd rziq: trivial_return_but_big is a gated violation, not audit-only."""
         import tempfile
 
@@ -124,8 +104,7 @@ class TestTrivialReturnClassification(unittest.TestCase):
         self.assertNotIn("trivial_return_but_big", AUDIT_KINDS)
         self.assertTrue(set(AUDIT_KINDS).isdisjoint(VIOLATION_KINDS))
 
-    def test_audit_only_kind_still_excluded_from_ratchet(self):
-        """ctor_missing_derived_init stays outside the baseline until it is triaged."""
+    def test_audit_only_kind_stays_outside_the_gate(self):
         import tempfile
 
         finding = {"kind": "ctor_missing_derived_init", "file": "src/game/TFoo.cpp"}

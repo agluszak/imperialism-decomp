@@ -27,7 +27,6 @@ from tools.ui_codegen import UiResourceKey, load_recipes, load_ui_views
 from tools.workflow.ui_view_coverage import build_coverage_rows
 
 
-FORMAT_VERSION = 1
 CONFIG_PATH = "config/turn_event_coverage.yml"
 REPORT_PATH = "docs/reference/turn-event-coverage.md"
 CALLBACK_PATH = "docs/reference/ui_callback_audit.json"
@@ -75,8 +74,6 @@ def _load_config(
     repo_root: Path,
 ) -> tuple[dict[int, dict], dict[int, str], dict[int, str], dict[int, dict]]:
     data = yaml.safe_load((repo_root / CONFIG_PATH).read_text(encoding="utf-8"))
-    if data.get("format_version") != FORMAT_VERSION:
-        raise ValueError(f"{CONFIG_PATH}: unsupported format_version")
     boot = {int(key): dict(value) for key, value in data.get("boot_path", {}).items()}
     names = {int(key): str(value) for key, value in data.get("screen_names", {}).items()}
     gaps = {int(key): str(value) for key, value in data.get("gap_owners", {}).items()}
@@ -410,8 +407,6 @@ def build_rows(repo_root: Path) -> tuple[list[dict], list[dict], dict]:
     ]
 
     callback_report = json.loads((repo_root / CALLBACK_PATH).read_text(encoding="utf-8"))
-    if callback_report.get("format_version") != 1:
-        raise ValueError(f"{CALLBACK_PATH}: unsupported format_version")
     return rows, mac_complement, callback_report
 
 

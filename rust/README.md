@@ -5,12 +5,12 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 
 - `imperialism-core` owns deterministic game state and the command/event boundary. It has no
   Bevy dependency.
-- `imperialism-formats` is the compatibility boundary for retail files and normalized assets.
+- `imperialism-formats` parses retail files and imports retail assets.
 - `imperialism-app` is the only Bevy-dependent crate and owns presentation and lifecycle.
-- `imperialism-testkit` reads and verifies canonical snapshots and will host the process-isolated
-  differential runner.
+- `imperialism-testkit` reads and verifies canonical snapshots and runs the process-isolated
+  differential checks.
 
-The only contracts shared with the C++ implementation are versioned canonical snapshots and the
+The only contracts shared with the C++ implementation are canonical snapshots and the
 serializable command/event protocol documented in `../interop/`. The Rust game state does not
 depend on C++ layouts or Bevy ECS entities.
 
@@ -40,27 +40,6 @@ cargo run -p imperialism-app -- --retail-dir /path/to/Imperialism
 ```
 
 Use `--cache-dir PATH` to override the platform cache directory.
-
-## Strategic-map snapshot viewer
-
-The Bevy app reads a persisted canonical snapshot and a normalized local asset manifest. It does
-not start or link the C++ game. To make a development asset pack from the non-copyrighted example
-palette and persist a snapshot directly from the retail save fixture:
-
-```sh
-cp -r assets.example imported-assets
-cargo run -p imperialism-formats --bin legacy-inspect -- \
-  ../interop/fixtures/beginning_of_game.imp --canonical 1 1 1 1 0 \
-  > beginning-of-game.snapshot.json
-cargo run -p imperialism-app -- viewer beginning-of-game.snapshot.json
-```
-
-The app renders through a fixed logical canvas with nearest-neighbour scaling and
-letterboxing. Cursor hit-testing uses the retail odd-row hex geometry and updates the window title
-with the typed tile's terrain, owner, and region. `Simulation` stays in `imperialism-core`; the
-single-writer Bevy `GameSession` submits serializable commands, records accepted commands, and
-publishes ordered domain events. Bevy ECS contains only disposable projections carrying
-`TileRef`, `NationRef`, `CityRef`, `MilitaryUnitRef`, or `ShipRef`.
 
 ## Recovered UI catalog
 

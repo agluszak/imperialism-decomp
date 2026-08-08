@@ -1,5 +1,4 @@
 {
-  "format_version": 4,
   "policy": "Mac text/style resources are a semantic oracle only; they do not establish Windows addresses, ABI, font substitution, or object layout.",
   "resource_set_sha256": "1eae77e9f5180dc16800ad2d9f3773969b4225fb7398bfa08a89c9cf358d4ad6",
   "style_scraps": [

@@ -126,7 +126,6 @@ bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* 
   }
   CString json;
   json.Format("{\n"
-              "  \"format_version\": 1,\n"
               "  \"name\": \"%s\",\n"
               "  \"evidence_kind\": \"%s\",\n"
               "  \"status\": \"%s\",\n"

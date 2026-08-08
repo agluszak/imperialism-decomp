@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Unit tests for the agent-rules KB linter (tools.workflow.check_agent_rules).
-
-Focus: the superseded/superseded_by validation path, which the real
-config/agent_rules.yml has never exercised (all 30+ rules are active). These
-tests keep that branch honest so a future first-superseded rule is validated.
-"""
+"""Unit tests for the agent-rules KB linter."""
 
 from __future__ import annotations
 
@@ -24,41 +19,9 @@ class SupersedeValidationTest(unittest.TestCase):
     def test_active_baseline_passes(self):
         self.assertEqual(_lint([{"id": "AAA-B-001", "status": "active"}]), [])
 
-    def test_superseded_pointing_at_active_passes(self):
-        rules = [
-            {"id": "AAA-B-001", "status": "active"},
-            {"id": "AAA-B-002", "status": "superseded", "superseded_by": "AAA-B-001"},
-        ]
-        self.assertEqual(_lint(rules), [])
-
-    def test_superseded_without_pointer_fails(self):
-        rules = [
-            {"id": "AAA-B-001", "status": "active"},
-            {"id": "AAA-B-002", "status": "superseded"},
-        ]
-        failures = _lint(rules)
-        self.assertTrue(any("superseded without superseded_by" in f for f in failures), failures)
-
-    def test_superseded_by_unknown_id_fails(self):
-        rules = [
-            {"id": "AAA-B-001", "status": "active"},
-            {"id": "AAA-B-002", "status": "superseded", "superseded_by": "AAA-B-099"},
-        ]
-        failures = _lint(rules)
-        self.assertTrue(any("is not an active rule" in f for f in failures), failures)
-
-    def test_superseded_by_another_superseded_rule_fails(self):
-        # A superseded rule may not point at a rule that is itself superseded.
-        rules = [
-            {"id": "AAA-B-001", "status": "superseded", "superseded_by": "AAA-B-002"},
-            {"id": "AAA-B-002", "status": "superseded", "superseded_by": "AAA-B-001"},
-        ]
-        failures = _lint(rules)
-        self.assertEqual(sum("is not an active rule" in f for f in failures), 2, failures)
-
     def test_bad_status_fails(self):
         failures = _lint([{"id": "AAA-B-001", "status": "retired"}])
-        self.assertTrue(any("status must be active|superseded" in f for f in failures), failures)
+        self.assertTrue(any("status must be active" in f for f in failures), failures)
 
 
 class OtherValidationsTest(unittest.TestCase):

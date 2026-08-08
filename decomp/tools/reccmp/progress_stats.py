@@ -41,7 +41,6 @@ from tools.common.template_aliases import (
 from tools.stubgen import ILT_THUNK_RANGE, compute_stub_rows
 
 FUNCTION_ROW_TYPE = "function"
-REPORT_CACHE_VERSION = 2
 REPORT_CACHE_FILE = "reccmp_report.inputs.json"
 GLOBAL_ROW_TYPES = ("data", "label", "string", "float", "widechar", "vtable")
 AUX_NON_FUNCTION_ROW_TYPES = ("import", "import_thunk")
@@ -889,8 +888,7 @@ def report_cache_is_current(
     except (OSError, json.JSONDecodeError):
         return False
     if (
-        cache.get("format_version") != REPORT_CACHE_VERSION
-        or cache.get("target") != target_id
+        cache.get("target") != target_id
         or cache.get("inputs") != inputs
     ):
         return False
@@ -908,7 +906,6 @@ def write_report_cache(
     write_json_atomic(
         cache_path,
         {
-            "format_version": REPORT_CACHE_VERSION,
             "target": target_id,
             "inputs": inputs,
             "outputs": {name: _file_sha256(path) for name, path in outputs.items()},

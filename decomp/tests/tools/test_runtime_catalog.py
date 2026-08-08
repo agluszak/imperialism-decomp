@@ -170,7 +170,6 @@ class RuntimeProtocolTests(unittest.TestCase):
     @staticmethod
     def game_snapshot() -> dict:
         return {
-            "schema": "imperialism.game_snapshot.v1",
             "sections": [
                 "metadata",
                 "rng",
@@ -259,7 +258,6 @@ class RuntimeProtocolTests(unittest.TestCase):
             record["index"] = index
             provinces.append(record)
         return {
-            "schema": "imperialism.generated_world.v1",
             "tile_fields": list(GENERATED_WORLD_TILE_FIELDS),
             "border_link_fields": list(GENERATED_WORLD_BORDER_LINK_FIELDS),
             "map": {
@@ -387,23 +385,15 @@ class RuntimeProtocolTests(unittest.TestCase):
 
     def test_valid_result(self) -> None:
         validate_result(
-            {"format_version": 1, "name": "boot_managers", "seed": 1, "status": "passed"},
+            {"name": "boot_managers", "seed": 1, "status": "passed"},
             "boot_managers",
             1,
         )
 
-    def test_wrong_version_is_rejected(self) -> None:
-        with self.assertRaisesRegex(ValueError, "format_version"):
-            validate_result(
-                {"format_version": 2, "name": "boot_managers", "seed": 1, "status": "passed"},
-                "boot_managers",
-                1,
-            )
-
     def test_wrong_name_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "requested"):
             validate_result(
-                {"format_version": 1, "name": "other", "seed": 1, "status": "passed"},
+                {"name": "other", "seed": 1, "status": "passed"},
                 "boot_managers",
                 1,
             )
@@ -470,12 +460,11 @@ class RuntimeProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "seven city records"):
             validate_game_snapshot(snapshot)
 
-    def test_generated_world_v1_is_validated(self) -> None:
+    def test_generated_world_is_validated(self) -> None:
         validate_generated_world(self.generated_world_snapshot())
 
     def test_result_validates_generated_world(self) -> None:
         result = {
-            "format_version": 1,
             "name": "generated_world_snapshot",
             "seed": 1,
             "status": "passed",

@@ -32,10 +32,8 @@ TEXT_RESOURCES_PATH = "vendor/macos_codewarrior/evidence/resources/text_resource
 WINDOWS_VIEW_PATH = "config/ui_factory_windows_views.yml"
 WINDOWS_DELTA_PATH = "config/ui_platform_deltas.yml"
 RUST_UI_CATALOG_PATH = (
-    "../rust/crates/imperialism-formats/assets/ui_catalog_v1.json"
+    "../rust/crates/imperialism-formats/assets/ui_catalog.json"
 )
-FORMAT_VERSION = 1
-RUST_UI_CATALOG_SCHEMA = "imperialism.ui_catalog.v1"
 
 DEFAULT_CLASSES = {
     "view": "TView",
@@ -301,10 +299,6 @@ def _fourcc(value: object, context: str) -> str:
 
 def load_recipes(repo_root: Path) -> list[UiFactoryRecipe]:
     data = yaml.safe_load((repo_root / MANIFEST_PATH).read_text(encoding="utf-8"))
-    if data.get("format_version") != FORMAT_VERSION:
-        raise ValueError(
-            f"{MANIFEST_PATH}: unsupported format_version {data.get('format_version')!r}"
-        )
     recipes: list[UiFactoryRecipe] = []
     addresses: set[int] = set()
     names: set[str] = set()
@@ -713,12 +707,7 @@ def _parse_windows_family(family: dict, context: str) -> UiSemanticFamily:
 
 def load_windows_views(repo_root: Path) -> dict[str, UiSemanticView]:
     data = yaml.safe_load((repo_root / WINDOWS_VIEW_PATH).read_text(encoding="utf-8"))
-    if data.get("format_version") != FORMAT_VERSION:
-        raise ValueError(
-            f"{WINDOWS_VIEW_PATH}: unsupported format_version "
-            f"{data.get('format_version')!r}"
-        )
-    unexpected = sorted(set(data) - {"format_version", "views"})
+    unexpected = sorted(set(data) - {"views"})
     if unexpected:
         raise ValueError(
             f"{WINDOWS_VIEW_PATH}: forbidden top-level fields {', '.join(unexpected)}"
@@ -1241,7 +1230,6 @@ def build_rust_ui_catalog(
             }
         )
     return {
-        "schema": RUST_UI_CATALOG_SCHEMA,
         "logical_resolution": [640, 480],
         "sources": {
             "mac_view_ir": _catalog_source(repo_root, IR_PATH),
@@ -1728,13 +1716,12 @@ def write_generated(
         )
         source_maps[f"0x{recipe.address:08x}"] = source_map
     source_map_text = json.dumps(
-        {"format_version": FORMAT_VERSION, "functions": source_maps},
+        {"functions": source_maps},
         indent=2,
         sort_keys=True,
     ) + "\n"
     _write_if_changed(output_dir / "_source_map.json", source_map_text)
     manifest = {
-        "format_version": FORMAT_VERSION,
         "manifest_sha256": _sha256(repo_root / MANIFEST_PATH),
         "ui_ir_sha256": _sha256(repo_root / IR_PATH),
         "strings_sha256": _sha256(repo_root / STRINGS_PATH),

@@ -97,7 +97,6 @@ def record_failure(result: JsonObject, summary: str) -> None:
 def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult:
     if raw is None:
         validated: JsonObject = {
-            "format_version": 1,
             "name": config.name,
             "seed": config.seed,
             "status": "failed",
@@ -109,7 +108,6 @@ def _validated_native(config: RunConfig, raw: JsonObject | None) -> NativeResult
             validate_result(validated, config.name, config.seed)
         except ValueError as error:
             validated = {
-                "format_version": 1,
                 "name": config.name,
                 "seed": config.seed,
                 "status": "failed",
@@ -297,7 +295,6 @@ class RuntimeRunner:
         fixture = self.fixture_dir / fixture_name
         if not fixture.is_file():
             result: JsonObject = {
-                "format_version": 1,
                 "name": request.name,
                 "status": "failed" if request.require_fixtures else "skipped",
                 "failure": (
@@ -312,7 +309,6 @@ class RuntimeRunner:
             metadata = self.dependencies.fixture_validator(fixture, request.name)
         except ValueError as error:
             result = {
-                "format_version": 1,
                 "name": request.name,
                 "status": "failed",
                 "failure": str(error),

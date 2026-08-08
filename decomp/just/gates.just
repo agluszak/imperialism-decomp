@@ -166,11 +166,10 @@ tooling-check:
 stub-count-gate:
   uv run python -m tools.workflow.check_stub_count
 
-# ASSERT_SIZE vs the RTTI oracle, strict; known mismatches must be allowlisted
-# in config/class_size_allowlist.txt with a tracking bead.
+# ASSERT_SIZE vs the RTTI oracle. Any mismatch is a hard failure.
 [group('gates')]
 class-size-gate:
-  uv run python -m tools.workflow.check_class_sizes --strict --allowlist config/class_size_allowlist.txt
+  uv run python -m tools.workflow.check_class_sizes --strict
 
 # Global-data drift vs baseline: reccmp-datacmp fingerprints may not regress.
 # Needs a built binary (like `just vtable`); `just datacmp` stays the raw report.
@@ -178,11 +177,11 @@ class-size-gate:
 datacmp-gate:
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}"
 
-# Empty-body ratchet: silent `{}` placeholders may not grow; intentionally-empty
+# Empty-body hard ban: intentionally-empty
 # bodies need a // FUNCTION marker or a `// NOOP: verified empty in original 0xADDR`.
 [group('gates')]
 noop-gate:
-  uv run python -m tools.workflow.check_empty_bodies --baseline config/baselines/empty_body_baseline.csv
+  uv run python -m tools.workflow.check_empty_bodies --gate
 
 # Ratchet: no NEW constructor defined out-of-line without a claimed address. Such a ctor
 # cannot be inlined into subclass ctors / CreateObject bodies in other TUs, so VC5 emits a
@@ -408,14 +407,12 @@ boundary-gate:
 
 # Shadow-stub gate (bead rcb6): non-virtual degenerate methods that hide a real vtable
 # slot -- direct calls into do-nothing bodies where the original dispatches virtually.
-# Ratchets against config/baselines/shadow_stub_baseline.csv (known offenders tracked to
-# their beads); any NEW offender is a hard error. Refresh with `--write-baseline` only
-# when a tracked offender is genuinely fixed.
+# Every offender is a hard error.
 [group('gates')]
 shadow-stub-gate:
   uv run python -m tools.workflow.check_shadow_stubs
 
-# Lint the structured agent rule KB (config/agent_rules.yml): ids, supersedes,
+# Lint the structured agent rule KB (config/agent_rules.yml): ids,
 # required/forbidden contradictions, just-only tools, derivable triggers.
 [group('gates')]
 agent-rules-gate:

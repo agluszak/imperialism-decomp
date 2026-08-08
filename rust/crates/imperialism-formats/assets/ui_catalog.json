@@ -3,11 +3,10 @@
     640,
     480
   ],
-  "schema": "imperialism.ui_catalog.v1",
   "sources": {
     "factory_manifest": {
       "path": "config/ui_factory_codegen.yml",
-      "sha256": "72d4a8316343bc4f58f9f1127427b5179e8e4de49660caadb014b75397bdd596"
+      "sha256": "ebded1987d4d33a6f7098305633556e8db6e58f20296b74a14061c71c4ef6b72"
     },
     "mac_strings": {
       "path": "vendor/macos_codewarrior/evidence/resources/strings.csv",
@@ -15,15 +14,15 @@
     },
     "mac_text_resources": {
       "path": "vendor/macos_codewarrior/evidence/resources/text_resources.json",
-      "sha256": "f20e42991f232f2a86992e078976645697f2431ffe4b0cf5bceb33a4216081dd"
+      "sha256": "ba6ee37518234d301da6df780b9772ee00b871f03fd99db0487dd1d6403ca270"
     },
     "mac_view_ir": {
       "path": "vendor/macos_codewarrior/evidence/resources/ui_views.json",
-      "sha256": "643bd578bc20e03a404992c86dfae92fd764e358765f224eb90fe3f200e8491e"
+      "sha256": "c306319909266c0f05a2a296e7703d4027f230c3a0d18292d1b8fd2894b3b5d0"
     },
     "windows_deltas": {
       "path": "config/ui_platform_deltas.yml",
-      "sha256": "154b86bde08fc3a417a50ce796f9b9397aced7d3e601c1cc38853095d6bd25b6"
+      "sha256": "bf6164d393ac09428ba7b03e07e871c545a8ff8dbd1f7db2e27e3e3c862593b6"
     }
   },
   "views": [

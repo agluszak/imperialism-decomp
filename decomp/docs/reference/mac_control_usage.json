@@ -41,7 +41,9 @@
       "original_modules": [
         {
           "functions": [
-            "0x004cf350"
+            "0x004cee20",
+            "0x004cf350",
+            "0x004cfbd0"
           ],
           "module": "UCityViews.cpp",
           "status": "confirmed"
@@ -68,7 +70,15 @@
       "nodes": [
         "MapView.rsrc:3100@0x0080"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x00591620"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -207,7 +217,15 @@
       "nodes": [
         "Diplo.rsrc:1351@0x008c"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004ad7a0"
+          ],
+          "module": "UBattleReportViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -310,6 +328,7 @@
       "original_modules": [
         {
           "functions": [
+            "0x004c9eb0",
             "0x004ca8f0"
           ],
           "module": "UCityViews.cpp",
@@ -340,6 +359,7 @@
       "original_modules": [
         {
           "functions": [
+            "0x004ce5a0",
             "0x004cebb0"
           ],
           "module": "UCityViews.cpp",
@@ -2324,7 +2344,15 @@
       "nodes": [
         "MapView.rsrc:7200@0x026f"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004d0810"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TWindow": 1
       },
@@ -2844,7 +2872,15 @@
         "Citydlog.rsrc:9205@0x0386",
         "Citydlog.rsrc:9206@0x0386"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x00588f60"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TIndustryView": 9
       },
@@ -5984,7 +6020,15 @@
       "nodes": [
         "FlagView.rsrc:8500@0x0048"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005bea00"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TView": 1
       },
@@ -7103,7 +7147,15 @@
         "Citydlog.rsrc:9214@0x0386",
         "Citydlog.rsrc:9215@0x03ec"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x00589d10"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TIndustryView": 4,
         "TTradeSchoolView": 2
@@ -7287,7 +7339,16 @@
       "nodes": [
         "Shipyard.rsrc:9207@0x026f"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004c8d70",
+            "0x004c9a60"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TFloatWindow": 1
       },
@@ -9742,7 +9803,15 @@
         "Transport.rsrc:2014@0x03c8",
         "Transport.rsrc:3901@0x00a8"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x004bb7a0"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TBattleReportView": 1,
         "TBook": 3,
@@ -10217,7 +10286,15 @@
         "Transport.rsrc:2014@0x1ad2",
         "Transport.rsrc:2014@0x1c1f"
       ],
-      "original_modules": [],
+      "original_modules": [
+        {
+          "functions": [
+            "0x005921c0"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "confirmed"
+        }
+      ],
       "parent_classes": {
         "TPicture": 19
       },
@@ -11060,6 +11137,42 @@
             "Citydlog.rsrc:9221"
           ],
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster",
+            "TRailCluster"
+          ],
+          "events": [
+            "0x23f0",
+            "0x23f1",
+            "0x23f2",
+            "0x23f3",
+            "0x23f4",
+            "0x23f5",
+            "0x23f6",
+            "0x23f9",
+            "0x23fb",
+            "0x23fc",
+            "0x23fe",
+            "0x23ff"
+          ],
+          "module": "USmallViews.cpp",
+          "resources": [
+            "Citydlog.rsrc:9200",
+            "Citydlog.rsrc:9201",
+            "Citydlog.rsrc:9202",
+            "Citydlog.rsrc:9203",
+            "Citydlog.rsrc:9204",
+            "Citydlog.rsrc:9205",
+            "Citydlog.rsrc:9206",
+            "Citydlog.rsrc:9209",
+            "Citydlog.rsrc:9211",
+            "Citydlog.rsrc:9212",
+            "Citydlog.rsrc:9214",
+            "Citydlog.rsrc:9215"
+          ],
+          "status": "candidate"
         }
       ]
     },
@@ -11068,7 +11181,8 @@
       "original_modules": [
         {
           "classes": [
-            "TCityProductionView"
+            "TCityProductionView",
+            "TToolBarCluster"
           ],
           "events": [
             "0x07db"
@@ -11084,6 +11198,36 @@
     "0x004295a0": {
       "name": "BuildTurnEventDialogResourcesForEvent547Or7D8",
       "original_modules": [
+        {
+          "classes": [
+            "TBattleReportView"
+          ],
+          "events": [
+            "0x0547"
+          ],
+          "module": "UBattleReportViews.cpp",
+          "resources": [
+            "Diplo.rsrc:1351"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x0547",
+            "0x07d8",
+            "0x07e0"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Diplo.rsrc:1351",
+            "Diplo.rsrc:2008",
+            "Diplo.rsrc:2016"
+          ],
+          "status": "candidate"
+        },
         {
           "classes": [
             "TOffersPanelView"
@@ -11104,13 +11248,33 @@
       "original_modules": [
         {
           "classes": [
-            "TDealBookPicture"
+            "TToolBarCluster"
           ],
           "events": [
+            "0x2103",
+            "0x2134",
+            "0x2260"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "FlagView.rsrc:8451",
+            "FlagView.rsrc:8500",
+            "FlagView.rsrc:8800"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TDealBookPicture",
+            "TOfferDeskPicture"
+          ],
+          "events": [
+            "0x2134",
             "0x2260"
           ],
           "module": "UTradeViews.cpp",
           "resources": [
+            "FlagView.rsrc:8500",
             "FlagView.rsrc:8800"
           ],
           "status": "candidate"
@@ -11120,6 +11284,21 @@
     "0x004357b0": {
       "name": "BuildTurnEventDialogUiByCode",
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x1036",
+            "0x10cc"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Linger.rsrc:4150",
+            "Linger.rsrc:4300"
+          ],
+          "status": "candidate"
+        },
         {
           "classes": [
             "TDlgWindow"
@@ -11138,6 +11317,32 @@
     "0x0043dbc0": {
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x07dd"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "MapView.rsrc:2013"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TEngineerDialog"
+          ],
+          "events": [
+            "0x1c20"
+          ],
+          "module": "UCityViews.cpp",
+          "resources": [
+            "MapView.rsrc:7200"
+          ],
+          "status": "candidate"
+        },
         {
           "classes": [
             "TMapDialog"
@@ -11166,17 +11371,20 @@
         },
         {
           "classes": [
+            "TArmyInfoView",
             "TCivToolbar",
             "TCombatReportView"
           ],
           "events": [
             "0x0546",
-            "0x07dd"
+            "0x07dd",
+            "0x0c1c"
           ],
           "module": "USmallViews.cpp",
           "resources": [
             "MapView.rsrc:1350",
-            "MapView.rsrc:2013"
+            "MapView.rsrc:2013",
+            "MapView.rsrc:3100"
           ],
           "status": "candidate"
         },
@@ -11205,11 +11413,38 @@
     },
     "0x0044fbc0": {
       "name": "BuildUiResourceTreeByTemplateIdAndBindScreenContext",
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TShipyardView"
+          ],
+          "events": [
+            "0x23f7"
+          ],
+          "module": "UCityViews.cpp",
+          "resources": [
+            "Shipyard.rsrc:9207"
+          ],
+          "status": "candidate"
+        }
+      ]
     },
     "0x004538a0": {
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x03b8"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Startup.rsrc:952"
+          ],
+          "status": "candidate"
+        },
         {
           "classes": [
             "TPlaceCityDialog"
@@ -11241,13 +11476,11 @@
             "TMapUberPicture"
           ],
           "events": [
-            "0x03b8",
-            "0x03c0"
+            "0x03b8"
           ],
           "module": "USuperMap.cpp",
           "resources": [
-            "Startup.rsrc:952",
-            "Startup.rsrc:960"
+            "Startup.rsrc:952"
           ],
           "status": "candidate"
         }
@@ -11273,15 +11506,58 @@
     },
     "0x0045d520": {
       "name": "BuildTurnEventDialogResourcesForEvent898",
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x0898"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Tech.rsrc:2200"
+          ],
+          "status": "candidate"
+        }
+      ]
     },
     "0x0045e0b0": {
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x08fc"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "TechStore.rsrc:2300"
+          ],
+          "status": "candidate"
+        }
+      ]
     },
     "0x004601b0": {
       "name": "InitializeTradeScreenBitmapControls",
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x07d9",
+            "0x07da"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Trade.rsrc:2009",
+            "Trade.rsrc:2010"
+          ],
+          "status": "candidate"
+        },
         {
           "classes": [
             "TTradeScreenPicture"
@@ -11301,14 +11577,40 @@
     },
     "0x0046fd10": {
       "name": "BuildTurnEventDialogResourcesForEvent7DE",
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "events": [
+            "0x07de"
+          ],
+          "module": "UCityDialogs.cpp",
+          "resources": [
+            "Transport.rsrc:2014"
+          ],
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TTransportPicture"
+          ],
+          "events": [
+            "0x07de"
+          ],
+          "module": "USmallViews.cpp",
+          "resources": [
+            "Transport.rsrc:2014"
+          ],
+          "status": "candidate"
+        }
+      ]
     },
     "0x004749a0": {
       "name": "BuildUniversityDialogShell",
       "original_modules": []
     }
   },
-  "format_version": 1,
   "nodes": [
     {
       "child_hit_test": 1,
@@ -175223,6 +175525,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175251,6 +175560,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175281,6 +175597,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175317,6 +175640,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175352,6 +175682,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175381,6 +175718,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175409,6 +175753,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TIndustryCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175451,6 +175802,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TRailCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175475,6 +175833,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TRailCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175504,6 +175869,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TRailCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175564,6 +175936,13 @@
           ],
           "module": "UCityViews.cpp",
           "status": "candidate"
+        },
+        {
+          "classes": [
+            "TRailCluster"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
         }
       ]
     },
@@ -175592,6 +175971,13 @@
             "TIndustryView"
           ],
           "module": "UCityViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TRailCluster"
+          ],
+          "module": "USmallViews.cpp",
           "status": "candidate"
         }
       ]
@@ -175681,7 +176067,8 @@
       "original_modules": [
         {
           "classes": [
-            "TCityProductionView"
+            "TCityProductionView",
+            "TToolBarCluster"
           ],
           "module": "UCityDialogs.cpp",
           "status": "candidate"
@@ -175711,7 +176098,22 @@
         "Diplo.rsrc:1351@0x070d",
         "Diplo.rsrc:1351@0x077e"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TBattleReportView"
+          ],
+          "module": "UBattleReportViews.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Diplo.rsrc:1352": {
       "name": "Detail Battle Report",
@@ -175806,6 +176208,13 @@
       "original_modules": [
         {
           "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
             "TOffersPanelView"
           ],
           "module": "UDiplomacyViews.cpp",
@@ -175844,7 +176253,15 @@
         "Diplo.rsrc:2016@0x0a06",
         "Diplo.rsrc:2016@0x0aa4"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Diplo.rsrc:2017": {
       "name": "Council Nomination",
@@ -175878,7 +176295,15 @@
         "FlagView.rsrc:8450@0x0509",
         "FlagView.rsrc:8450@0x0577"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "FlagView.rsrc:8451": {
       "name": "New newspaper",
@@ -175894,7 +176319,15 @@
         "FlagView.rsrc:8451@0x02da",
         "FlagView.rsrc:8451@0x0340"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "FlagView.rsrc:8500": {
       "name": "Offer Sheet Screen",
@@ -175937,7 +176370,22 @@
         "FlagView.rsrc:8500@0x0e8f",
         "FlagView.rsrc:8500@0x0efd"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TOfferDeskPicture"
+          ],
+          "module": "UTradeViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "FlagView.rsrc:8800": {
       "name": "Deal Book",
@@ -175966,6 +176414,13 @@
         "FlagView.rsrc:8800@0x07d2"
       ],
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
         {
           "classes": [
             "TDealBookPicture"
@@ -177492,7 +177947,15 @@
         "Linger.rsrc:4150@0x0926",
         "Linger.rsrc:4150@0x0994"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Linger.rsrc:4175": {
       "name": "Credits",
@@ -177527,7 +177990,15 @@
         "Linger.rsrc:4300@0x0693",
         "Linger.rsrc:4300@0x0704"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Linger.rsrc:4600": {
       "name": "Opening Cinematic",
@@ -177847,6 +178318,13 @@
       "original_modules": [
         {
           "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
             "TMapDialog"
           ],
           "module": "UMapDlog.cpp",
@@ -177898,7 +178376,15 @@
         "MapView.rsrc:3100@0x036d",
         "MapView.rsrc:3100@0x03d3"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TArmyInfoView"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "MapView.rsrc:3500": {
       "name": "Garrison",
@@ -177934,7 +178420,15 @@
         "MapView.rsrc:7200@0x026f",
         "MapView.rsrc:7200@0x02c2"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TEngineerDialog"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "MapView.rsrc:9460": {
       "name": "Army Maker",
@@ -178467,7 +178961,15 @@
         "Shipyard.rsrc:9207@0x167e",
         "Shipyard.rsrc:9207@0x16e4"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TShipyardView"
+          ],
+          "module": "UCityViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Startup.rsrc:1500": {
       "name": "kGameSetupMainView",
@@ -178688,6 +179190,13 @@
       "original_modules": [
         {
           "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
             "TMapUberPicture"
           ],
           "module": "USuperMap.cpp",
@@ -178764,6 +179273,13 @@
         "Startup.rsrc:960@0x1006"
       ],
       "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
         {
           "classes": [
             "TMapUberPicture"
@@ -178874,7 +179390,15 @@
         "Tech.rsrc:2200@0x030d",
         "Tech.rsrc:2200@0x03ab"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "TechStore.rsrc:2300": {
       "name": "Tech Store",
@@ -178901,7 +179425,15 @@
         "TechStore.rsrc:2300@0x07e8",
         "TechStore.rsrc:2300@0x085d"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "TechStore.rsrc:2370": {
       "name": "history",
@@ -179093,6 +179625,13 @@
       "original_modules": [
         {
           "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
             "TTradeScreenPicture"
           ],
           "module": "UTradeViews.cpp",
@@ -179277,6 +179816,13 @@
       "original_modules": [
         {
           "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
             "TTradeScreenPicture"
           ],
           "module": "UTradeViews.cpp",
@@ -179360,7 +179906,22 @@
         "Transport.rsrc:2014@0x1de1",
         "Transport.rsrc:2014@0x1e56"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        },
+        {
+          "classes": [
+            "TTransportPicture"
+          ],
+          "module": "USmallViews.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Transport.rsrc:3901": {
       "name": "kShowUnitHistoryView",
@@ -179395,7 +179956,15 @@
         "Transport.rsrc:3901@0x0ad3",
         "Transport.rsrc:3901@0x0b39"
       ],
-      "original_modules": []
+      "original_modules": [
+        {
+          "classes": [
+            "TToolBarCluster"
+          ],
+          "module": "UCityDialogs.cpp",
+          "status": "candidate"
+        }
+      ]
     },
     "Univ.rsrc:9210": {
       "name": "University",
@@ -179470,31 +180039,12 @@
   },
   "source_modules": {
     "functions": {
-      "0x0049d620": {
-        "modules": [
-          {
-            "evidence": [
-              {
-                "definition_source": "src/game/ui_invalidation_guard.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
-                "symbol": "kUSmallViewsCppPath"
-              }
-            ],
-            "module": "USmallViews.cpp",
-            "status": "confirmed"
-          }
-        ],
-        "name": "TemporarilyClearAndRestoreUiInvalidationFlag",
-        "owner_class": null,
-        "recovered_source": "src/game/ui_invalidation_guard.cpp"
-      },
       "0x0049e6a0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
                 "symbol": "g_szUAmbitSourcePath"
@@ -179506,14 +180056,14 @@
         ],
         "name": "TAmbitFileBasedDocument::DoRead",
         "owner_class": "TAmbitFileBasedDocument",
-        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+        "recovered_source": "src/game/gfx/TAmbitFileBasedDocument.cpp"
       },
       "0x0049eb30": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
                 "symbol": "g_szUAmbitSourcePath"
@@ -179525,14 +180075,14 @@
         ],
         "name": "TAmbitFileBasedDocument::DoWrite",
         "owner_class": "TAmbitFileBasedDocument",
-        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+        "recovered_source": "src/game/gfx/TAmbitFileBasedDocument.cpp"
       },
       "0x0049ee70": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UAmbit.cpp",
                 "symbol": "g_szUAmbitSourcePath"
@@ -179544,14 +180094,14 @@
         ],
         "name": "TAmbitFileBasedDocument::SaveDocument",
         "owner_class": "TAmbitFileBasedDocument",
-        "recovered_source": "src/game/TAmbitFileBasedDocument.cpp"
+        "recovered_source": "src/game/gfx/TAmbitFileBasedDocument.cpp"
       },
       "0x004a1f80": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
                 "symbol": "s_SourcePathUArmyMgr_0069573C"
@@ -179563,14 +180113,14 @@
         ],
         "name": "TArmyMgr::FormStacks",
         "owner_class": "TArmyMgr",
-        "recovered_source": "src/game/TArmyMgr.cpp"
+        "recovered_source": "src/game/military/TArmyMgr.cpp"
       },
       "0x004a2500": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
                 "symbol": "s_SourcePathUArmyMgr_0069573C"
@@ -179582,14 +180132,14 @@
         ],
         "name": "TArmyMgr::ClearPendingStacksAndFinalizeMilitaryUnits",
         "owner_class": "TArmyMgr",
-        "recovered_source": "src/game/TArmyMgr.cpp"
+        "recovered_source": "src/game/military/TArmyMgr.cpp"
       },
       "0x004a3200": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
                 "symbol": "s_SourcePathUArmyMgr_0069573C"
@@ -179601,14 +180151,33 @@
         ],
         "name": "TArmyMgr::TryCreateTacticalBattleViewForTileArmies",
         "owner_class": "TArmyMgr",
-        "recovered_source": "src/game/TArmyMgr.cpp"
+        "recovered_source": "src/game/military/TArmyMgr.cpp"
+      },
+      "0x004a6680": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyMgr::ShowSpyReport",
+        "owner_class": "TArmyMgr",
+        "recovered_source": "src/game/military/TArmyMgr.cpp"
       },
       "0x004a77b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
                 "symbol": "s_SourcePathUArmyMgr_0069573C"
@@ -179620,14 +180189,33 @@
         ],
         "name": "TArmyStack::ReadFrom",
         "owner_class": "TArmyStack",
-        "recovered_source": "src/game/TArmyStack.cpp"
+        "recovered_source": "src/game/military/TArmyStack.cpp"
+      },
+      "0x004a7a40": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
+                "symbol": "s_SourcePathUArmyMgr_0069573C"
+              }
+            ],
+            "module": "UArmyMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "InitializeLinkedListCursorContainerAndIterate_004a7a40",
+        "owner_class": null,
+        "recovered_source": "src/game/military/TArmyStack.cpp"
       },
       "0x004a7b20": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyMgr.cpp",
                 "symbol": "s_SourcePathUArmyMgr_0069573C"
@@ -179639,14 +180227,14 @@
         ],
         "name": "TArmyStack::AddUnitToChainHead",
         "owner_class": "TArmyStack",
-        "recovered_source": "src/game/TArmyStack.cpp"
+        "recovered_source": "src/game/military/TArmyStack.cpp"
       },
       "0x004a9ca0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UArmyViews.cpp",
                 "symbol": "s_SourcePathUArmyViews_00695858"
@@ -179658,14 +180246,31 @@
         ],
         "name": "HandleCrossUArmyViewsNameCommand",
         "owner_class": null,
-        "recovered_source": "src/game/TArmyUnitView.cpp"
+        "recovered_source": "src/game/military/TArmyUnitView.cpp"
+      },
+      "0x004ad7a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UBattleReportViews.cpp"
+              }
+            ],
+            "module": "UBattleReportViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TBattleReportView::DoEvent",
+        "owner_class": "TBattleReportView",
+        "recovered_source": "src/game/military_ui/TBattleReportView.cpp"
       },
       "0x004b4580": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TCity.cpp",
+                "definition_source": "src/game/city/TCity.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCity.cpp",
                 "symbol": "kUCityCppPath"
@@ -179677,14 +180282,33 @@
         ],
         "name": "TCity::MakeTown",
         "owner_class": "TCity",
-        "recovered_source": "src/game/TCity.cpp"
+        "recovered_source": "src/game/city/TCity.cpp"
+      },
+      "0x004bb7a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
+                "symbol": "s_SourcePathUCityDialogs_006962E8"
+              }
+            ],
+            "module": "UCityDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TToolBarCluster::InitializeCityProductionDialog",
+        "owner_class": "TToolBarCluster",
+        "recovered_source": "src/game/city_ui/TCityProductionView.cpp"
       },
       "0x004bc0b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179696,14 +180320,14 @@
         ],
         "name": "TCityProductionView::UpdateUnits",
         "owner_class": "TCityProductionView",
-        "recovered_source": "src/game/TCityProductionView.cpp"
+        "recovered_source": "src/game/city_ui/TCityProductionView.cpp"
       },
       "0x004bcaf0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179715,14 +180339,14 @@
         ],
         "name": "TCityProductionView::UpdateFields",
         "owner_class": "TCityProductionView",
-        "recovered_source": "src/game/TCityProductionView.cpp"
+        "recovered_source": "src/game/city_ui/TCityProductionView.cpp"
       },
       "0x004bd040": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179734,14 +180358,14 @@
         ],
         "name": "TRailheadDialog::StuffValues",
         "owner_class": "TRailheadDialog",
-        "recovered_source": "src/game/TRailheadDialog.cpp"
+        "recovered_source": "src/game/city_ui/TRailheadDialog.cpp"
       },
       "0x004bd260": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179753,14 +180377,14 @@
         ],
         "name": "TRailheadDialog::DoClosingAction",
         "owner_class": "TRailheadDialog",
-        "recovered_source": "src/game/TRailheadDialog.cpp"
+        "recovered_source": "src/game/city_ui/TRailheadDialog.cpp"
       },
       "0x004bd3e0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179772,14 +180396,14 @@
         ],
         "name": "TTransportView::StuffValues",
         "owner_class": "TTransportView",
-        "recovered_source": "src/game/TTransportView.cpp"
+        "recovered_source": "src/game/city_ui/TTransportView.cpp"
       },
       "0x004bd690": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179791,14 +180415,14 @@
         ],
         "name": "TTransportView::Close",
         "owner_class": "TTransportView",
-        "recovered_source": "src/game/TTransportView.cpp"
+        "recovered_source": "src/game/city_ui/TTransportView.cpp"
       },
       "0x004bd880": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179810,14 +180434,14 @@
         ],
         "name": "TNewTownView::StuffValues",
         "owner_class": "TNewTownView",
-        "recovered_source": "src/game/TNewTownView.cpp"
+        "recovered_source": "src/game/city_ui/TNewTownView.cpp"
       },
       "0x004bdc10": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityDialogs.cpp",
                 "symbol": "s_SourcePathUCityDialogs_006962E8"
@@ -179829,14 +180453,14 @@
         ],
         "name": "TNewTownView::Close",
         "owner_class": "TNewTownView",
-        "recovered_source": "src/game/TNewTownView.cpp"
+        "recovered_source": "src/game/city_ui/TNewTownView.cpp"
       },
       "0x004be8d0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCityMinister.cpp",
                 "symbol": "s_SourcePathUCityMinister_006964B0"
@@ -179848,17 +180472,94 @@
         ],
         "name": "InitializeCityInteriorMinister",
         "owner_class": null,
-        "recovered_source": "src/game/TCityInteriorMinister.cpp"
+        "recovered_source": "src/game/city_ui/TCityInteriorMinister.cpp"
+      },
+      "0x004c8d70": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TShipyardView::SetShip",
+        "owner_class": "TShipyardView",
+        "recovered_source": "src/game/city_ui/TShipyardView.cpp"
+      },
+      "0x004c9a60": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TShipyardView::SetStats",
+        "owner_class": "TShipyardView",
+        "recovered_source": "src/game/city_ui/TShipyardView.cpp"
+      },
+      "0x004c9eb0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TBuildingConstructionView::StuffValues",
+        "owner_class": "TBuildingConstructionView",
+        "recovered_source": "src/game/city_ui/TBuildingConstructionView.cpp"
       },
       "0x004ca8f0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179867,17 +180568,15 @@
         ],
         "name": "TBuildingConstructionView::DoClosingAction",
         "owner_class": "TBuildingConstructionView",
-        "recovered_source": "src/game/TBuildingConstructionView.cpp"
+        "recovered_source": "src/game/city_ui/TBuildingConstructionView.cpp"
       },
       "0x004cc550": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179886,7 +180585,24 @@
         ],
         "name": "TPurchaseCluster::SetCityViewValueControlAmount",
         "owner_class": "TPurchaseCluster",
-        "recovered_source": "src/game/TPurchaseCluster.cpp"
+        "recovered_source": "src/game/city_ui/TPurchaseCluster.cpp"
+      },
+      "0x004cc640": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TPurchaseCluster::UpdateCityViewValueControl",
+        "owner_class": "TPurchaseCluster",
+        "recovered_source": "src/game/city_ui/TPurchaseCluster.cpp"
       },
       "0x004ccf30": {
         "modules": [
@@ -179903,17 +180619,19 @@
         ],
         "name": "TIndustryView::DoEvent",
         "owner_class": "TIndustryView",
-        "recovered_source": "src/game/TIndustryView.cpp"
+        "recovered_source": "src/game/city_ui/TIndustryView.cpp"
       },
       "0x004cd8d0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179922,17 +180640,15 @@
         ],
         "name": "TTradeSchoolView::DoStartup",
         "owner_class": "TTradeSchoolView",
-        "recovered_source": "src/game/TTradeSchoolView.cpp"
+        "recovered_source": "src/game/city_ui/TTradeSchoolView.cpp"
       },
       "0x004ce070": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179941,17 +180657,52 @@
         ],
         "name": "TTradeSchoolView::UpdateFields",
         "owner_class": "TTradeSchoolView",
-        "recovered_source": "src/game/TTradeSchoolView.cpp"
+        "recovered_source": "src/game/city_ui/TTradeSchoolView.cpp"
+      },
+      "0x004ce5a0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TBuildingExpansionView::StuffValues",
+        "owner_class": "TBuildingExpansionView",
+        "recovered_source": "src/game/city_ui/TBuildingExpansionView.cpp"
       },
       "0x004cebb0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179960,17 +180711,44 @@
         ],
         "name": "TBuildingExpansionView::DoClosingAction",
         "owner_class": "TBuildingExpansionView",
-        "recovered_source": "src/game/TBuildingExpansionView.cpp"
+        "recovered_source": "src/game/city_ui/TBuildingExpansionView.cpp"
+      },
+      "0x004cee20": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmoryView::DoStartup",
+        "owner_class": "TArmoryView",
+        "recovered_source": "src/game/city_ui/TArmoryView.cpp"
       },
       "0x004cf350": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179979,17 +180757,69 @@
         ],
         "name": "TArmoryView::DoEvent",
         "owner_class": "TArmoryView",
-        "recovered_source": "src/game/TArmoryView.cpp"
+        "recovered_source": "src/game/city_ui/TArmoryView.cpp"
+      },
+      "0x004cfbd0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmoryView::RefreshCityViewProductionDetails",
+        "owner_class": "TArmoryView",
+        "recovered_source": "src/game/city_ui/TArmoryView.cpp"
+      },
+      "0x004d0810": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              }
+            ],
+            "module": "UCityViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TEngineerDialog::BuildCityViewProductionControls",
+        "owner_class": "TEngineerDialog",
+        "recovered_source": "src/game/city_ui/TEngineerDialog.cpp"
       },
       "0x004d1880": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UCityViews.cpp",
-                "symbol": "s_SourcePathUCityViews_00696650"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UCityViews.cpp"
               }
             ],
             "module": "UCityViews.cpp",
@@ -179998,14 +180828,14 @@
         ],
         "name": "TPlaceCityDialog::StuffValues",
         "owner_class": "TPlaceCityDialog",
-        "recovered_source": "src/game/TPlaceCityDialog.cpp"
+        "recovered_source": "src/game/city_ui/TPlaceCityDialog.cpp"
       },
-      "0x004d6310": {
+      "0x004d5a90": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
                 "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
@@ -180015,16 +180845,16 @@
             "status": "confirmed"
           }
         ],
-        "name": "DiplomacyMaskBufferRun::IsMaskPixelSet",
-        "owner_class": "DiplomacyMaskBufferRun",
-        "recovered_source": "src/game/TDiplomacyMapView.cpp"
+        "name": "IltTarget_004d5a90",
+        "owner_class": null,
+        "recovered_source": "src/game/diplomacy_ui/TDiplomacyMapView.cpp"
       },
       "0x004db7d0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UCountry.cpp",
                 "symbol": "g_szUCountrySourcePath_00696728"
@@ -180036,7 +180866,7 @@
         ],
         "name": "TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask",
         "owner_class": "TGreatPower",
-        "recovered_source": "src/game/TGreatPower.cpp"
+        "recovered_source": "src/game/nation/TGreatPower.cpp"
       },
       "0x004e8540": {
         "modules": [
@@ -180053,14 +180883,14 @@
         ],
         "name": "TAutoGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
         "owner_class": "TAutoGreatPower",
-        "recovered_source": "src/game/TAutoGreatPower.cpp"
+        "recovered_source": "src/game/nation/TAutoGreatPower.cpp"
       },
       "0x004ec540": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
                 "symbol": "s_SourcePathUDefenseMinister_00696860"
@@ -180070,16 +180900,16 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDefenseMinister::MinisterSlot14",
+        "name": "TDefenseMinister::DoPeacetimeDeployment",
         "owner_class": "TDefenseMinister",
-        "recovered_source": "src/game/TDefenseMinister.cpp"
+        "recovered_source": "src/game/military_ui/TDefenseMinister.cpp"
       },
       "0x004ecbb0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
                 "symbol": "s_SourcePathUDefenseMinister_00696860"
@@ -180091,14 +180921,14 @@
         ],
         "name": "TDefenseMinister::BuildTileRingPriorityMapForNationTileList",
         "owner_class": "TDefenseMinister",
-        "recovered_source": "src/game/TDefenseMinister.cpp"
+        "recovered_source": "src/game/military_ui/TDefenseMinister.cpp"
       },
       "0x004ed050": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDefenseMinister.cpp",
                 "symbol": "s_SourcePathUDefenseMinister_00696860"
@@ -180110,14 +180940,14 @@
         ],
         "name": "TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer",
         "owner_class": "TDefenseMinister",
-        "recovered_source": "src/game/TDefenseMinister.cpp"
+        "recovered_source": "src/game/military_ui/TDefenseMinister.cpp"
       },
       "0x004f2d10": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
                 "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
@@ -180129,14 +180959,14 @@
         ],
         "name": "TMinisterView::HandleMouseUp",
         "owner_class": "TMinisterView",
-        "recovered_source": "src/game/TMinisterView.cpp"
+        "recovered_source": "src/game/diplomacy_ui/TMinisterView.cpp"
       },
       "0x004f9a60": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UDiplomacyViews.cpp",
                 "symbol": "s_SourcePathUDiplomacyViews_00696AE0"
@@ -180148,17 +180978,15 @@
         ],
         "name": "TOffersPanelView::PoseWarOffer",
         "owner_class": "TOffersPanelView",
-        "recovered_source": "src/game/TOffersPanelView.cpp"
+        "recovered_source": "src/game/diplomacy_ui/TOffersPanelView.cpp"
       },
       "0x004fe840": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
@@ -180167,17 +180995,15 @@
         ],
         "name": "TDisplayMgr::InitializeWindowAndMBarSize",
         "owner_class": "TDisplayMgr",
-        "recovered_source": "src/game/TDisplayMgr.cpp"
+        "recovered_source": "src/game/gfx/TDisplayMgr.cpp"
       },
       "0x004fec20": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
@@ -180186,17 +181012,15 @@
         ],
         "name": "TDisplayMgr::CloseBooks",
         "owner_class": "TDisplayMgr",
-        "recovered_source": "src/game/TDisplayMgr.cpp"
+        "recovered_source": "src/game/gfx/TDisplayMgr.cpp"
       },
       "0x004fec50": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
@@ -180205,17 +181029,19 @@
         ],
         "name": "TDisplayMgr::DismissTouchyFloaters",
         "owner_class": "TDisplayMgr",
-        "recovered_source": "src/game/TDisplayMgr.cpp"
+        "recovered_source": "src/game/gfx/TDisplayMgr.cpp"
       },
       "0x004fed70": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
+              },
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
@@ -180224,17 +181050,15 @@
         ],
         "name": "TDisplayMgr::SetBitDepth",
         "owner_class": "TDisplayMgr",
-        "recovered_source": "src/game/TDisplayMgr.cpp"
+        "recovered_source": "src/game/gfx/TDisplayMgr.cpp"
       },
       "0x004fedc0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TDisplayMgr.cpp",
-                "kind": "source_path_global_reference",
-                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp",
-                "symbol": "kSourceFileUDisplayMgr"
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UDisplayMgr.cpp"
               }
             ],
             "module": "UDisplayMgr.cpp",
@@ -180243,7 +181067,7 @@
         ],
         "name": "TDisplayMgr::UpdateTheGWorld",
         "owner_class": "TDisplayMgr",
-        "recovered_source": "src/game/TDisplayMgr.cpp"
+        "recovered_source": "src/game/gfx/TDisplayMgr.cpp"
       },
       "0x004ff1c0": {
         "modules": [
@@ -180260,14 +181084,14 @@
         ],
         "name": "TColorFill::Draw",
         "owner_class": "TColorFill",
-        "recovered_source": "src/game/TColorFill.cpp"
+        "recovered_source": "src/game/gfx/TColorFill.cpp"
       },
       "0x005003a0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UGameWindow.cpp",
                 "symbol": "g_szUGameWindowSourcePath_00696bc0"
@@ -180277,16 +181101,16 @@
             "status": "confirmed"
           }
         ],
-        "name": "TDlgWindow::AssertMcAppUILine2358",
+        "name": "TDlgWindow::Activate",
         "owner_class": "TDlgWindow",
-        "recovered_source": "src/game/TDlgWindow.cpp"
+        "recovered_source": "src/game/gfx/TDlgWindow.cpp"
       },
       "0x00503420": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
                 "symbol": "s_SourcePathUHelpMgr_00696C58"
@@ -180298,14 +181122,14 @@
         ],
         "name": "ActivatePendingEventAndRefreshView",
         "owner_class": null,
-        "recovered_source": "src/game/THelpMgr.cpp"
+        "recovered_source": "src/game/ui_core/THelpMgr.cpp"
       },
       "0x00503ac0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UHelpMgr.cpp",
                 "symbol": "s_SourcePathUHelpMgr_00696C58"
@@ -180317,7 +181141,7 @@
         ],
         "name": "EnsureMapActionContextViewAndBuildDefaultTileMenu",
         "owner_class": null,
-        "recovered_source": "src/game/THelpMgr.cpp"
+        "recovered_source": "src/game/ui_core/THelpMgr.cpp"
       },
       "0x00506b00": {
         "modules": [
@@ -180362,7 +181186,7 @@
         ],
         "name": "TOrderView::PopulateDialogControlsFromSelectedProductionEntry",
         "owner_class": "TOrderView",
-        "recovered_source": "src/game/TOrderView.cpp"
+        "recovered_source": "src/game/ui_core/TOrderView.cpp"
       },
       "0x00506f90": {
         "modules": [
@@ -180399,7 +181223,7 @@
         ],
         "name": "TOrderView::RefreshOrderViewSupplyAndUseControlValues",
         "owner_class": "TOrderView",
-        "recovered_source": "src/game/TOrderView.cpp"
+        "recovered_source": "src/game/ui_core/TOrderView.cpp"
       },
       "0x00507240": {
         "modules": [
@@ -180416,7 +181240,7 @@
         ],
         "name": "TOrderView::DoEvent",
         "owner_class": "TOrderView",
-        "recovered_source": "src/game/TOrderView.cpp"
+        "recovered_source": "src/game/ui_core/TOrderView.cpp"
       },
       "0x0050be30": {
         "modules": [
@@ -180433,14 +181257,14 @@
         ],
         "name": "TMacViewMgr::MakeBookDialog",
         "owner_class": "TMacViewMgr",
-        "recovered_source": "src/game/TMacViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TMacViewMgr.cpp"
       },
       "0x0050d360": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
                 "symbol": "s_SourcePathUMacViewMgr_00696D68"
@@ -180452,14 +181276,33 @@
         ],
         "name": "TMacViewMgr::OpenBuildingWindow",
         "owner_class": "TMacViewMgr",
-        "recovered_source": "src/game/TMacViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TMacViewMgr.cpp"
+      },
+      "0x0050d470": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
+                "symbol": "s_SourcePathUMacViewMgr_00696D68"
+              }
+            ],
+            "module": "UMacViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMacViewMgr::ShowGoldDialogForTurnEventContext",
+        "owner_class": "TMacViewMgr",
+        "recovered_source": "src/game/ui_core/TMacViewMgr.cpp"
       },
       "0x0050d5b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMacViewMgr.cpp",
                 "symbol": "s_SourcePathUMacViewMgr_00696D68"
@@ -180471,7 +181314,7 @@
         ],
         "name": "TMacViewMgr::OpenConstructionWindow",
         "owner_class": "TMacViewMgr",
-        "recovered_source": "src/game/TMacViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TMacViewMgr.cpp"
       },
       "0x0050e8b0": {
         "modules": [
@@ -180490,9 +181333,43 @@
             "status": "confirmed"
           }
         ],
-        "name": "TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0",
+        "name": "TMapMgr::AllocateAndResetTerrainAndCityScoreTables",
         "owner_class": "TMapMgr",
-        "recovered_source": "src/game/TMapMgr.cpp"
+        "recovered_source": "src/game/map/TMapMgr.cpp"
+      },
+      "0x0050f0e0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapMgr::ReadInRGBMap",
+        "owner_class": "TMapMgr",
+        "recovered_source": "src/game/map/TMapMgr.cpp"
+      },
+      "0x0050f3c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UMap.cpp"
+              }
+            ],
+            "module": "UMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMapMgr::VerifyMapDataAndWriteReport",
+        "owner_class": "TMapMgr",
+        "recovered_source": "src/game/map/TMapMgr.cpp"
       },
       "0x00512930": {
         "modules": [
@@ -180509,7 +181386,7 @@
         ],
         "name": "BuildHexAreaTileIndexList",
         "owner_class": null,
-        "recovered_source": "src/game/TMapMgr.cpp"
+        "recovered_source": "src/game/map/TMapMgr.cpp"
       },
       "0x005145b0": {
         "modules": [
@@ -180526,7 +181403,7 @@
         ],
         "name": "TMapMgr::QueueDepotConstructionOrder",
         "owner_class": "TMapMgr",
-        "recovered_source": "src/game/TMapMgr.cpp"
+        "recovered_source": "src/game/map/TMapMgr.cpp"
       },
       "0x005147d0": {
         "modules": [
@@ -180543,14 +181420,14 @@
         ],
         "name": "TMapMgr::QueuePortConstructionOrder",
         "owner_class": "TMapMgr",
-        "recovered_source": "src/game/TMapMgr.cpp"
+        "recovered_source": "src/game/map/TMapMgr.cpp"
       },
       "0x0051b1c0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMapDlog.cpp",
                 "symbol": "s_SourcePathUMapDlog_006973D0"
@@ -180562,14 +181439,14 @@
         ],
         "name": "TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection",
         "owner_class": "TMapDialog",
-        "recovered_source": "src/game/TMapDialog.cpp"
+        "recovered_source": "src/game/map_ui/TMapDialog.cpp"
       },
       "0x0051bb90": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMapDlog.cpp",
                 "symbol": "s_SourcePathUMapDlog_006973D0"
@@ -180581,7 +181458,7 @@
         ],
         "name": "TTownNameDialog::DoPostCreate",
         "owner_class": "TTownNameDialog",
-        "recovered_source": "src/game/TTownNameDialog.cpp"
+        "recovered_source": "src/game/map_ui/TTownNameDialog.cpp"
       },
       "0x00529960": {
         "modules": [
@@ -180596,16 +181473,16 @@
             "status": "confirmed"
           }
         ],
-        "name": "RotateMapColumnsByPeakCityTileDensity",
-        "owner_class": null,
-        "recovered_source": "src/game/TMapMaker_RotateMapColumns.cpp"
+        "name": "TMapMaker::RotateMapColumnsByPeakWaterTileDensity",
+        "owner_class": "TMapMaker",
+        "recovered_source": "src/game/map_generation/TMapMaker_RotateMapColumns.cpp"
       },
       "0x0052b9b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TMapMaker_RebuildRoute.cpp",
+                "definition_source": "src/game/map_generation/TMapMaker_RebuildRoute.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMapper.cpp",
                 "symbol": "kUMapperPath"
@@ -180615,9 +181492,9 @@
             "status": "confirmed"
           }
         ],
-        "name": "AssignCityRegionIdsFromOverlayScanlineIntersections",
-        "owner_class": null,
-        "recovered_source": "src/game/TMapMaker_AssignRegionsScanline.cpp"
+        "name": "TMapMaker::AssignWaterRegionIdsFromOverlayScanlineIntersections",
+        "owner_class": "TMapMaker",
+        "recovered_source": "src/game/map_generation/TMapMaker_AssignRegionsScanline.cpp"
       },
       "0x0052d750": {
         "modules": [
@@ -180638,14 +181515,14 @@
         ],
         "name": "MergeSmallCityRegionsAndCompactIds",
         "owner_class": null,
-        "recovered_source": "src/game/TMapMaker_MergeSmallCityRegions.cpp"
+        "recovered_source": "src/game/map_generation/TMapMaker_MergeSmallCityRegions.cpp"
       },
       "0x0052e350": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/TMapMaker_RebuildRoute.cpp",
+                "definition_source": "src/game/map_generation/TMapMaker_RebuildRoute.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMapper.cpp",
                 "symbol": "kUMapperPath"
@@ -180657,7 +181534,7 @@
         ],
         "name": "RebuildUMapperRouteRecordsAndActiveMapRects",
         "owner_class": null,
-        "recovered_source": "src/game/TMapMaker_RebuildRoute.cpp"
+        "recovered_source": "src/game/map_generation/TMapMaker_RebuildRoute.cpp"
       },
       "0x0053c0a0": {
         "modules": [
@@ -180674,14 +181551,14 @@
         ],
         "name": "TMission::ConstructTArmyMissionWithNodeKey",
         "owner_class": "TMission",
-        "recovered_source": "src/game/TArmyMission.cpp"
+        "recovered_source": "src/game/military/TArmyMission.cpp"
       },
       "0x00545940": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp",
                 "symbol": "s_SourcePathUMultiplayerMgr_00698040"
@@ -180693,7 +181570,26 @@
         ],
         "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
         "owner_class": "TMultiplayerMgr",
-        "recovered_source": "src/game/TMultiplayerMgr.cpp"
+        "recovered_source": "src/game/net/TMultiplayerMgr.cpp"
+      },
+      "0x0054b1b0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp",
+                "symbol": "s_SourcePathUMultiplayerMgr_00698040"
+              }
+            ],
+            "module": "UMultiplayerMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "RefreshPoseMessageDialogNationSelectionControls",
+        "owner_class": null,
+        "recovered_source": "src/game/net/TMultiplayerMgr.cpp"
       },
       "0x0054f8e0": {
         "modules": [
@@ -180710,7 +181606,7 @@
         ],
         "name": "CreateNavyPrimaryOrderNodeAndAssignDisplayName",
         "owner_class": null,
-        "recovered_source": "src/game/tship_navy_order_node.cpp"
+        "recovered_source": "src/game/navy/tship_navy_order_node.cpp"
       },
       "0x005503a0": {
         "modules": [
@@ -180727,14 +181623,14 @@
         ],
         "name": "TShip::DemandExclusiveTaskForce",
         "owner_class": "TShip",
-        "recovered_source": "src/game/TShip.cpp"
+        "recovered_source": "src/game/navy/TShip.cpp"
       },
       "0x00552650": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UNavy.cpp",
                 "symbol": "s_SourcePathUNavy_006983C8"
@@ -180746,14 +181642,14 @@
         ],
         "name": "TMapOrderChildLinkNode::CreateLinkedOrderNode",
         "owner_class": "TMapOrderChildLinkNode",
-        "recovered_source": "src/game/TTaskForce.cpp"
+        "recovered_source": "src/game/navy/TMapOrderChildLinkNode.cpp"
       },
       "0x00553bc0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UNavy.cpp",
                 "symbol": "s_SourcePathUNavy_006983C8"
@@ -180765,15 +181661,17 @@
         ],
         "name": "TTaskForce::Add",
         "owner_class": "TTaskForce",
-        "recovered_source": "src/game/TTaskForce.cpp"
+        "recovered_source": "src/game/navy/TTaskForce.cpp"
       },
       "0x00556100": {
         "modules": [
           {
             "evidence": [
               {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\UNavy.cpp"
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UNavy.cpp",
+                "symbol": "s_SourcePathUNavy_006983C8"
               }
             ],
             "module": "UNavy.cpp",
@@ -180782,14 +181680,14 @@
         ],
         "name": "TTaskForce::CarryOutOrders",
         "owner_class": "TTaskForce",
-        "recovered_source": "src/game/TTaskForce.cpp"
+        "recovered_source": "src/game/navy/TTaskForce.cpp"
       },
       "0x00556ad0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UNavy.cpp",
                 "symbol": "s_SourcePathUNavy_006983C8"
@@ -180801,7 +181699,7 @@
         ],
         "name": "TNavyMgr::ReadFromFilterously",
         "owner_class": "TNavyMgr",
-        "recovered_source": "src/game/TNavyMgr.cpp"
+        "recovered_source": "src/game/navy/TNavyMgr.cpp"
       },
       "0x005573f0": {
         "modules": [
@@ -180818,14 +181716,14 @@
         ],
         "name": "TAdmiral::CreateForTerrainType",
         "owner_class": "TAdmiral",
-        "recovered_source": "src/game/TAdmiral.cpp"
+        "recovered_source": "src/game/navy/TAdmiral.cpp"
       },
       "0x0055ba30": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UNewspaper.cpp",
                 "symbol": "s_SourcePathUNewspaper_00698470"
@@ -180837,14 +181735,14 @@
         ],
         "name": "TNewsMgr::LoadNewsTable",
         "owner_class": "TNewsMgr",
-        "recovered_source": "src/game/TNewsMgr.cpp"
+        "recovered_source": "src/game/ui_screens/TNewsMgr.cpp"
       },
       "0x005635e0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UOcean.cpp",
                 "symbol": "s_SourcePathUOcean_006984CC"
@@ -180856,14 +181754,14 @@
         ],
         "name": "TOcean::EnsurePortZoneForTile",
         "owner_class": "TOcean",
-        "recovered_source": "src/game/TOcean.cpp"
+        "recovered_source": "src/game/navy/TOcean.cpp"
       },
       "0x00564dc0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UOceanViews.cpp",
                 "symbol": "s_SourcePathUOceanViews_00698650"
@@ -180875,14 +181773,14 @@
         ],
         "name": "TNavyRoster::StuffValues",
         "owner_class": "TNavyRoster",
-        "recovered_source": "src/game/TNavyRoster.cpp"
+        "recovered_source": "src/game/navy_ui/TNavyRoster.cpp"
       },
       "0x00565a40": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UOceanViews.cpp",
                 "symbol": "s_SourcePathUOceanViews_00698650"
@@ -180894,14 +181792,14 @@
         ],
         "name": "RunEngineerOrderNameEditDialogAndApply",
         "owner_class": null,
-        "recovered_source": "src/game/TShipView.cpp"
+        "recovered_source": "src/game/navy_ui/TShipView.cpp"
       },
       "0x005769c0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USetupScreens.cpp",
                 "symbol": "g_szSetupScreensSourcePath_00698AB8"
@@ -180913,15 +181811,36 @@
         ],
         "name": "TNetSelectPicture::DoEvent",
         "owner_class": "TNetSelectPicture",
-        "recovered_source": "src/game/TNetSelectPicture.cpp"
+        "recovered_source": "src/game/ui_screens/TNetSelectPicture.cpp"
+      },
+      "0x00584160": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TDipDlgCluster::IsTradeControlAtMinimum",
+        "owner_class": "TDipDlgCluster",
+        "recovered_source": "src/game/ui_screens/TDipDlgCluster.cpp"
       },
       "0x00584320": {
         "modules": [
           {
             "evidence": [
               {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
               }
             ],
             "module": "USmallViews.cpp",
@@ -180930,23 +181849,55 @@
         ],
         "name": "TTradePolicyCluster::DoEvent",
         "owner_class": "TTradePolicyCluster",
-        "recovered_source": "src/game/TTradePolicyCluster.cpp"
+        "recovered_source": "src/game/ui_widgets/TTradePolicyCluster.cpp"
+      },
+      "0x00588f60": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TIndustryCluster::RefreshBarFromSelectedMetric",
+        "owner_class": "TIndustryCluster",
+        "recovered_source": "src/game/ui_widgets/TIndustryCluster.cpp"
+      },
+      "0x00589d10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TRailCluster::UpdateMax",
+        "owner_class": "TRailCluster",
+        "recovered_source": "src/game/ui_widgets/TRailCluster.cpp"
       },
       "0x0058c950": {
         "modules": [
           {
             "evidence": [
               {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
               }
             ],
             "module": "USmallViews.cpp",
@@ -180955,35 +181906,17 @@
         ],
         "name": "TCombatReportView::StuffValues",
         "owner_class": "TCombatReportView",
-        "recovered_source": "src/game/TCombatReportView.cpp"
+        "recovered_source": "src/game/ui_widgets/TCombatReportView.cpp"
       },
       "0x0058d950": {
         "modules": [
           {
             "evidence": [
               {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
               }
             ],
             "module": "USmallViews.cpp",
@@ -180992,31 +181925,17 @@
         ],
         "name": "TCombatReportView::DoEvent",
         "owner_class": "TCombatReportView",
-        "recovered_source": "src/game/TCombatReportView.cpp"
+        "recovered_source": "src/game/ui_widgets/TCombatReportView.cpp"
       },
       "0x0058ec50": {
         "modules": [
           {
             "evidence": [
               {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
-              },
-              {
-                "kind": "inline_source_path_literal",
-                "path": "D:\\Ambit\\Cross\\USmallViews.cpp"
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
               }
             ],
             "module": "USmallViews.cpp",
@@ -181025,14 +181944,52 @@
         ],
         "name": "TCivToolbar::RefreshCivilianStackButtonsForTile",
         "owner_class": "TCivToolbar",
-        "recovered_source": "src/game/TCivToolbar.cpp"
+        "recovered_source": "src/game/ui_widgets/TCivToolbar.cpp"
+      },
+      "0x00591620": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TArmyInfoView::StuffValues",
+        "owner_class": "TArmyInfoView",
+        "recovered_source": "src/game/ui_widgets/TArmyInfoView.cpp"
+      },
+      "0x005921c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\USmallViews.cpp",
+                "symbol": "s_SourcePathUSmallViews_006992F0"
+              }
+            ],
+            "module": "USmallViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TTransportPicture::Refresh",
+        "owner_class": "TTransportPicture",
+        "recovered_source": "src/game/ui_widgets/TTransportPicture.cpp"
       },
       "0x00597f80": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181044,14 +182001,31 @@
         ],
         "name": "TMapUberPicture::InspectTaskForceDialog",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
+      },
+      "0x00598a50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\USuperMap.cpp"
+              }
+            ],
+            "module": "USuperMap.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "PromptAndQueueMilitaryProvincePurgeOrders",
+        "owner_class": null,
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x00598e10": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181063,14 +182037,14 @@
         ],
         "name": "TMapUberPicture::RunNavyPrimaryOrderCreationDialogAndApplyResults",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x00599090": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181082,14 +182056,14 @@
         ],
         "name": "TMapUberPicture::NavalIntelligenceDialog",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x00599cf0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181101,14 +182075,14 @@
         ],
         "name": "TMapUberPicture::DisplayMiniMap",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x00599fd0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181120,14 +182094,14 @@
         ],
         "name": "TMapUberPicture::RemoveMiniMap",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x0059a180": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\USuperMap.cpp",
                 "symbol": "s_SourcePathUSuperMap_0069943C"
@@ -181139,14 +182113,14 @@
         ],
         "name": "TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag",
         "owner_class": "TMapUberPicture",
-        "recovered_source": "src/game/TMapUberPicture.cpp"
+        "recovered_source": "src/game/map/TMapUberPicture.cpp"
       },
       "0x0059b830": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTacPlayer.cpp",
                 "symbol": "s_SourcePathUTacPlayer_00699D84"
@@ -181158,14 +182132,14 @@
         ],
         "name": "TArmyPlayer::StartBattle",
         "owner_class": "TArmyPlayer",
-        "recovered_source": "src/game/TArmyPlayer.cpp"
+        "recovered_source": "src/game/tactical/TArmyPlayer.cpp"
       },
       "0x005a9d90": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTacViews.cpp",
                 "symbol": "s_SourcePathUTacViews_00699FF4"
@@ -181177,14 +182151,14 @@
         ],
         "name": "TTacArmyView::InitializeBattlefieldView",
         "owner_class": "TTacArmyView",
-        "recovered_source": "src/game/TTacArmyView.cpp"
+        "recovered_source": "src/game/tactical_ui/TTacArmyView.cpp"
       },
       "0x005b2aa0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181196,14 +182170,14 @@
         ],
         "name": "TMinorTradeBidsDialog::StuffValues",
         "owner_class": "TMinorTradeBidsDialog",
-        "recovered_source": "src/game/TMinorTradeBidsDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TMinorTradeBidsDialog.cpp"
       },
       "0x005b2da0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181215,14 +182189,33 @@
         ],
         "name": "TRelationshipDialog::Close",
         "owner_class": "TRelationshipDialog",
-        "recovered_source": "src/game/TRelationshipDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TRelationshipDialog.cpp"
+      },
+      "0x005b2f10": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TRelationshipDialog::StuffValues",
+        "owner_class": "TRelationshipDialog",
+        "recovered_source": "src/game/ui_widgets/TRelationshipDialog.cpp"
       },
       "0x005b3400": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181234,14 +182227,33 @@
         ],
         "name": "TMinorRelationshipDialog::Close",
         "owner_class": "TMinorRelationshipDialog",
-        "recovered_source": "src/game/TMinorRelationshipDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TMinorRelationshipDialog.cpp"
+      },
+      "0x005b3570": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
+                "symbol": "s_SourcePathUTestDialogs_0069A7F8"
+              }
+            ],
+            "module": "UTestDialogs.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TMinorRelationshipDialog::StuffValues",
+        "owner_class": "TMinorRelationshipDialog",
+        "recovered_source": "src/game/ui_widgets/TMinorRelationshipDialog.cpp"
       },
       "0x005b3be0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181253,14 +182265,14 @@
         ],
         "name": "TGPTreatyDialog::StuffValues",
         "owner_class": "TGPTreatyDialog",
-        "recovered_source": "src/game/TGPTreatyDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TGPTreatyDialog.cpp"
       },
       "0x005b4090": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181272,14 +182284,14 @@
         ],
         "name": "TMinorTreatyDialog::StuffValues",
         "owner_class": "TMinorTreatyDialog",
-        "recovered_source": "src/game/TMinorTreatyDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TMinorTreatyDialog.cpp"
       },
       "0x005b46c0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTestDialogs.cpp",
                 "symbol": "s_SourcePathUTestDialogs_0069A7F8"
@@ -181291,14 +182303,14 @@
         ],
         "name": "TAutomatedPlayDialog::Close",
         "owner_class": "TAutomatedPlayDialog",
-        "recovered_source": "src/game/TAutomatedPlayDialog.cpp"
+        "recovered_source": "src/game/ui_widgets/TAutomatedPlayDialog.cpp"
       },
       "0x005ba7a0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
                 "symbol": "s_SourcePathUTradeViews_0069AA94"
@@ -181310,14 +182322,14 @@
         ],
         "name": "TTradeScreenPicture::Draw",
         "owner_class": "TTradeScreenPicture",
-        "recovered_source": "src/game/TTradeScreenPicture.cpp"
+        "recovered_source": "src/game/ui_widgets/TTradeScreenPicture.cpp"
       },
       "0x005bac50": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
                 "symbol": "s_SourcePathUTradeViews_0069AA94"
@@ -181329,14 +182341,14 @@
         ],
         "name": "TDealBookPicture::Startup",
         "owner_class": "TDealBookPicture",
-        "recovered_source": "src/game/TDealBookPicture.cpp"
+        "recovered_source": "src/game/trade_ui/TDealBookPicture.cpp"
       },
       "0x005baf70": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
                 "symbol": "s_SourcePathUTradeViews_0069AA94"
@@ -181348,14 +182360,14 @@
         ],
         "name": "TDealBookPicture::ShowPage",
         "owner_class": "TDealBookPicture",
-        "recovered_source": "src/game/TDealBookPicture.cpp"
+        "recovered_source": "src/game/trade_ui/TDealBookPicture.cpp"
       },
       "0x005bc0d0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
                 "symbol": "s_SourcePathUTradeViews_0069AA94"
@@ -181367,14 +182379,33 @@
         ],
         "name": "TDealBookPicture::SwitchPages",
         "owner_class": "TDealBookPicture",
-        "recovered_source": "src/game/TDealBookPicture.cpp"
+        "recovered_source": "src/game/trade_ui/TDealBookPicture.cpp"
+      },
+      "0x005bea00": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
+                "symbol": "s_SourcePathUTradeViews_0069AA94"
+              }
+            ],
+            "module": "UTradeViews.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TOfferDeskPicture::PoseOfferSheet",
+        "owner_class": "TOfferDeskPicture",
+        "recovered_source": "src/game/trade_ui/TOfferDeskPicture.cpp"
       },
       "0x005c04f0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UTradeViews.cpp",
                 "symbol": "s_SourcePathUTradeViews_0069AA94"
@@ -181386,7 +182417,7 @@
         ],
         "name": "TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt",
         "owner_class": "TNextTradeCommand",
-        "recovered_source": "src/game/TOfferDeskPicture.cpp"
+        "recovered_source": "src/game/trade_ui/TOfferDeskPicture.cpp"
       },
       "0x005c2530": {
         "modules": [
@@ -181403,14 +182434,14 @@
         ],
         "name": "TUnit::RegisterUnitOrderWithOwnerManager",
         "owner_class": "TUnit",
-        "recovered_source": "src/game/TUnit.cpp"
+        "recovered_source": "src/game/military/TUnit.cpp"
       },
       "0x005d57b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181422,14 +182453,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d5d30": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181441,14 +182472,14 @@
         ],
         "name": "TViewMgr::RunNationInfoModalAndReturnNonCancel",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d6cd0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181460,14 +182491,14 @@
         ],
         "name": "HandleTurnEventDialogFactorySlot70",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d6d70": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181479,14 +182510,14 @@
         ],
         "name": "HandleTurnEventDialogFactorySlot74",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d6e50": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181498,14 +182529,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventDialogFactorySlot78",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d6f10": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181517,14 +182548,14 @@
         ],
         "name": "HandleTurnEventDialogFactorySlot7C",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d6fd0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181536,14 +182567,14 @@
         ],
         "name": "HandleTurnEventDialogFactorySlot80",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005d71b0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181553,16 +182584,16 @@
             "status": "confirmed"
           }
         ],
-        "name": "TViewMgr::DispatchNationActionToMainControl",
+        "name": "TViewMgr::ShowOfferSheet",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
-      "0x005db3b0": {
+      "0x005d8dd0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181572,16 +182603,71 @@
             "status": "confirmed"
           }
         ],
-        "name": "TViewMgr::HandleTurnEventDialogFactorySlotF4",
+        "name": "RefreshTradeAndIndustryOverviewScreen",
+        "owner_class": null,
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
+      },
+      "0x005da360": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
+      },
+      "0x005db620": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
+                "symbol": "s_SourcePathUViewMgr_0069B6BC"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::HandleTurnStateExitAndPostFollowupEventCode",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
+      },
+      "0x005dbe50": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.cpp"
+              }
+            ],
+            "module": "UViewMgr.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "BuildTurnStateStyledTextAndDispatchMainRoutine",
+        "owner_class": null,
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dc430": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181593,14 +182679,14 @@
         ],
         "name": "HandleTurnEventDialogFactorySlotB8",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
       },
       "0x005dc560": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.cpp",
                 "symbol": "s_SourcePathUViewMgr_0069B6BC"
@@ -181612,14 +182698,14 @@
         ],
         "name": "DispatchUiRuntimeMessage102CAndRefreshActiveView",
         "owner_class": null,
-        "recovered_source": "src/game/TToolBarCluster.cpp"
+        "recovered_source": "src/game/ui_widgets/TToolBarCluster.cpp"
       },
       "0x005dcdf0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181631,14 +182717,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventDialogFactorySlotB4",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dcf20": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181650,14 +182736,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventDialogFactorySlotD8",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd0a0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181669,14 +182755,14 @@
         ],
         "name": "TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd180": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181688,14 +182774,14 @@
         ],
         "name": "TViewMgr::HandleGlobalMapNationContextSelection",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd220": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181707,14 +182793,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventDialogFactorySlotE4",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd340": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181726,14 +182812,14 @@
         ],
         "name": "TViewMgr::MakeNavyRosterDialog",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd450": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181745,14 +182831,14 @@
         ],
         "name": "TViewMgr::ShowNavyRosterDialogAndApplySelection",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd770": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181764,14 +182850,14 @@
         ],
         "name": "TViewMgr::HandleTurnEventDialogFactorySlotE8",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dd900": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181783,14 +182869,14 @@
         ],
         "name": "TLineData::HandleTurnEventDialogFactorySlotEC",
         "owner_class": "TLineData",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005dda30": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181802,14 +182888,14 @@
         ],
         "name": "TViewMgr::ShowArmyRosterDialogAndActivateProvinceSelection",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005ddd20": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181821,14 +182907,14 @@
         ],
         "name": "TViewMgr::ShowCivilianLedgerDialogAndSelectUnit",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005de010": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181840,14 +182926,14 @@
         ],
         "name": "TViewMgr::MakePlanetSeedDialog",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       },
       "0x005de4f0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181857,16 +182943,71 @@
             "status": "confirmed"
           }
         ],
-        "name": "ShowCivilianReportDialogAndReturnConfirm",
+        "name": "TViewMgr::ShowCivilianReportDialogAndReturnConfirm",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
+      },
+      "0x005de5d0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "RefreshCurrentUiViewAndActivePanelState",
         "owner_class": null,
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
+      },
+      "0x005de6c0": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "kind": "inline_source_path_literal",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "TViewMgr::MakeCheaterDialog",
+        "owner_class": "TViewMgr",
+        "recovered_source": "src/game/ui_core/TViewMgr.cpp"
+      },
+      "0x005de830": {
+        "modules": [
+          {
+            "evidence": [
+              {
+                "definition_source": "src/game/core/global_data_tables.cpp",
+                "kind": "source_path_global_reference",
+                "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
+                "symbol": "s_SourcePathUViewMgrMore_0069B740"
+              }
+            ],
+            "module": "UViewMgr.more.cpp",
+            "status": "confirmed"
+          }
+        ],
+        "name": "IltTarget_005de830",
+        "owner_class": null,
+        "recovered_source": "src/game/ImperialismApp.cpp"
       },
       "0x005de8f0": {
         "modules": [
           {
             "evidence": [
               {
-                "definition_source": "src/game/global_data_tables.cpp",
+                "definition_source": "src/game/core/global_data_tables.cpp",
                 "kind": "source_path_global_reference",
                 "path": "D:\\Ambit\\Cross\\UViewMgr.more.cpp",
                 "symbol": "s_SourcePathUViewMgrMore_0069B740"
@@ -181878,7 +183019,7 @@
         ],
         "name": "TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView",
         "owner_class": "TViewMgr",
-        "recovered_source": "src/game/TViewMgr.cpp"
+        "recovered_source": "src/game/ui_core/TViewMgr_dialog_dispatch.cpp"
       }
     },
     "modules": {
@@ -181901,7 +183042,9 @@
           "0x004a1f80",
           "0x004a2500",
           "0x004a3200",
+          "0x004a6680",
           "0x004a77b0",
+          "0x004a7a40",
           "0x004a7b20"
         ]
       },
@@ -181909,6 +183052,14 @@
         "classes": [],
         "functions": [
           "0x004a9ca0"
+        ]
+      },
+      "UBattleReportViews.cpp": {
+        "classes": [
+          "TBattleReportView"
+        ],
+        "functions": [
+          "0x004ad7a0"
         ]
       },
       "UCity.cpp": {
@@ -181924,9 +183075,11 @@
           "TCityProductionView",
           "TNewTownView",
           "TRailheadDialog",
+          "TToolBarCluster",
           "TTransportView"
         ],
         "functions": [
+          "0x004bb7a0",
           "0x004bc0b0",
           "0x004bcaf0",
           "0x004bd040",
@@ -181948,19 +183101,29 @@
           "TArmoryView",
           "TBuildingConstructionView",
           "TBuildingExpansionView",
+          "TEngineerDialog",
           "TIndustryView",
           "TPlaceCityDialog",
           "TPurchaseCluster",
+          "TShipyardView",
           "TTradeSchoolView"
         ],
         "functions": [
+          "0x004c8d70",
+          "0x004c9a60",
+          "0x004c9eb0",
           "0x004ca8f0",
           "0x004cc550",
+          "0x004cc640",
           "0x004ccf30",
           "0x004cd8d0",
           "0x004ce070",
+          "0x004ce5a0",
           "0x004cebb0",
+          "0x004cee20",
           "0x004cf350",
+          "0x004cfbd0",
+          "0x004d0810",
           "0x004d1880"
         ]
       },
@@ -181992,12 +183155,11 @@
       },
       "UDiplomacyViews.cpp": {
         "classes": [
-          "DiplomacyMaskBufferRun",
           "TMinisterView",
           "TOffersPanelView"
         ],
         "functions": [
-          "0x004d6310",
+          "0x004d5a90",
           "0x004f2d10",
           "0x004f9a60"
         ]
@@ -182048,6 +183210,7 @@
         "functions": [
           "0x0050be30",
           "0x0050d360",
+          "0x0050d470",
           "0x0050d5b0"
         ]
       },
@@ -182057,6 +183220,8 @@
         ],
         "functions": [
           "0x0050e8b0",
+          "0x0050f0e0",
+          "0x0050f3c0",
           "0x00512930",
           "0x005145b0",
           "0x005147d0"
@@ -182073,7 +183238,9 @@
         ]
       },
       "UMapper.cpp": {
-        "classes": [],
+        "classes": [
+          "TMapMaker"
+        ],
         "functions": [
           "0x00529960",
           "0x0052b9b0",
@@ -182094,7 +183261,8 @@
           "TMultiplayerMgr"
         ],
         "functions": [
-          "0x00545940"
+          "0x00545940",
+          "0x0054b1b0"
         ]
       },
       "UNavy.cpp": {
@@ -182150,16 +183318,25 @@
       },
       "USmallViews.cpp": {
         "classes": [
+          "TArmyInfoView",
           "TCivToolbar",
           "TCombatReportView",
-          "TTradePolicyCluster"
+          "TDipDlgCluster",
+          "TIndustryCluster",
+          "TRailCluster",
+          "TTradePolicyCluster",
+          "TTransportPicture"
         ],
         "functions": [
-          "0x0049d620",
+          "0x00584160",
           "0x00584320",
+          "0x00588f60",
+          "0x00589d10",
           "0x0058c950",
           "0x0058d950",
-          "0x0058ec50"
+          "0x0058ec50",
+          "0x00591620",
+          "0x005921c0"
         ]
       },
       "USuperMap.cpp": {
@@ -182168,6 +183345,7 @@
         ],
         "functions": [
           "0x00597f80",
+          "0x00598a50",
           "0x00598e10",
           "0x00599090",
           "0x00599cf0",
@@ -182203,7 +183381,9 @@
         "functions": [
           "0x005b2aa0",
           "0x005b2da0",
+          "0x005b2f10",
           "0x005b3400",
+          "0x005b3570",
           "0x005b3be0",
           "0x005b4090",
           "0x005b46c0"
@@ -182213,6 +183393,7 @@
         "classes": [
           "TDealBookPicture",
           "TNextTradeCommand",
+          "TOfferDeskPicture",
           "TTradeScreenPicture"
         ],
         "functions": [
@@ -182220,6 +183401,7 @@
           "0x005bac50",
           "0x005baf70",
           "0x005bc0d0",
+          "0x005bea00",
           "0x005c04f0"
         ]
       },
@@ -182244,7 +183426,10 @@
           "0x005d6f10",
           "0x005d6fd0",
           "0x005d71b0",
-          "0x005db3b0",
+          "0x005d8dd0",
+          "0x005da360",
+          "0x005db620",
+          "0x005dbe50",
           "0x005dc430",
           "0x005dc560"
         ]
@@ -182268,6 +183453,9 @@
           "0x005ddd20",
           "0x005de010",
           "0x005de4f0",
+          "0x005de5d0",
+          "0x005de6c0",
+          "0x005de830",
           "0x005de8f0"
         ]
       }
@@ -182277,14 +183465,14 @@
   "summary": {
     "ambiguous_tags": 153,
     "classes": 162,
-    "classes_with_source_module_evidence": 18,
+    "classes_with_source_module_evidence": 27,
     "declared_classes": 152,
-    "factories_with_source_module_candidates": 10,
-    "functions_with_source_module_evidence": 124,
+    "factories_with_source_module_candidates": 14,
+    "functions_with_source_module_evidence": 154,
     "nodes": 3263,
     "screens": 121,
-    "screens_with_source_module_candidates": 29,
-    "source_modules": 35,
+    "screens_with_source_module_candidates": 43,
+    "source_modules": 36,
     "tags": 813
   },
   "tags": {

@@ -18,7 +18,7 @@ class RuntimeDeterminismTests(unittest.TestCase):
             "elapsed_ms": 42,
             "host": {"artifact_path": "/tmp/one"},
             "map_state": {"wrap": 3},
-            "generated_world": {"schema": "imperialism.generated_world.v1", "tiles": [[1]]},
+            "generated_world": {"tiles": [[1]]},
             "state": {"turn": 4},
             "actions": [{"action": "done", "t_ms": 30}],
         }

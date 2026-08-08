@@ -1,4 +1,3 @@
-format_version: 1
 
 # Post-create text-style changes made by the recovered Windows controllers.
 # These patch semantic catalog properties only; resource geometry and hierarchy

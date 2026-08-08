@@ -24,10 +24,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RULES_YML = REPO_ROOT / "config" / "agent_rules.yml"
-# Receipts are per-branch since imperialism-decomp-j201; the flat file is the legacy
-# fallback so a checkout mid-migration still yields advice.
 TASKS_DIR = REPO_ROOT / "build-msvc500" / "agent-tasks"
-LEGACY_TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
 
 
 def _receipt_path() -> Path:
@@ -39,8 +36,7 @@ def _receipt_path() -> Path:
         cwd=REPO_ROOT, capture_output=True, text=True, check=False,
     ).stdout.strip()
     task_id = re.sub(r"[^A-Za-z0-9._-]+", "-", branch).strip("-") or "detached"
-    per_branch = TASKS_DIR / task_id / "receipt.json"
-    return per_branch if per_branch.is_file() else LEGACY_TASK_JSON
+    return TASKS_DIR / task_id / "receipt.json"
 
 MAX_RULES = 10
 

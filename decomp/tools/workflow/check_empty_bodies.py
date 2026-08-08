@@ -22,9 +22,7 @@ symbols.csv name match, and classifies:
   NOOP-CONTRADICTED  a `// NOOP:` annotation whose address is NOT tiny — the
                      annotation lies; port the body
 
-Audit mode prints every finding. Gate mode (`--baseline`) ratchets per-file
-counts exactly like the construction anti-pattern gate: new files with
-findings fail, per-class count increases fail, NOOP-CONTRADICTED always fails.
+Audit mode prints every finding. Gate mode (`--gate`) rejects every violation.
 """
 
 from __future__ import annotations
@@ -36,7 +34,6 @@ from pathlib import Path
 import tree_sitter_cpp
 from tree_sitter import Language, Parser
 
-from tools.common.ratchet import compare, read_baseline, write_baseline
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 from tools.common.symbols import functions_by_name
 
@@ -54,8 +51,7 @@ SLOT_COMMENT_RE = re.compile(r"//\s*0x[0-9a-fA-F]{1,3}\s+0x(?P<addr>[0-9a-fA-F]{
 # trivial_return_but_big was promoted out of AUDIT_KINDS (bd rziq) once its last 19
 # findings were recovered from the listings: a bare `return <literal>;` in front of a real
 # retail body is the same silent-no-op failure mode as empty_but_big, just spelled
-# deceptively, so it must not be reintroducible. The baseline carries no rows for it --
-# the floor is zero, and a new finding trips the new-file path of the shared compare.
+# deceptively, so it must not be reintroducible.
 VIOLATION_KINDS = (
     "empty_but_big",
     "empty_unmarked",
@@ -65,9 +61,7 @@ VIOLATION_KINDS = (
 )
 
 # Audit-only kinds (bd kwee): reported by the audit and `--kind`, but excluded from
-# the ratchet baseline so introducing the detector does not require a policy-baseline
-# update. Promote a kind into VIOLATION_KINDS together with a human-approved
-# `just noop-gate-update` once its findings are triaged.
+# the hard gate. Promote a kind into VIOLATION_KINDS once its findings are triaged.
 #
 #   ctor_missing_derived_init an empty, init-list-free ctor whose original stores to
 #                             offsets beyond the base-class size — the derived fields
@@ -452,21 +446,14 @@ def counts_per_file(findings: list[dict], repo_root: Path) -> dict[str, dict[str
     return out
 
 
-def baseline_file_is_initialized(path: Path) -> bool:
-    """A header-only baseline is a valid zero floor; a missing/empty file is not."""
-    return path.is_file() and path.stat().st_size > 0
-
-
 def main() -> int:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--roots", nargs="+", default=["src/game", "include/game"])
     parser.add_argument("--max-noop-size", type=int, default=16,
                         help="Largest original size (bytes) accepted as a real no-op")
-    parser.add_argument("--baseline", default="",
-                        help="Gate mode: compare per-file counts against this CSV")
-    parser.add_argument("--write-baseline", default="",
-                        help="Write current per-file counts to this CSV and exit")
+    parser.add_argument("--gate", action="store_true",
+                        help="Fail if any violation is present")
     parser.add_argument("--kind", choices=VIOLATION_KINDS + AUDIT_KINDS, default="",
                         help="Audit mode: only print this violation kind")
     args = parser.parse_args()
@@ -474,42 +461,11 @@ def main() -> int:
     findings = collect_findings(repo_root, args.roots, args.max_noop_size)
     current = counts_per_file(findings, repo_root)
 
-    if args.write_baseline:
-        write_baseline(
-            resolve_repo_path(repo_root, args.write_baseline),
-            current,
-            VIOLATION_KINDS,
-            include_total=False,
-            lineterminator="\n",
-        )
-        print(f"Wrote baseline: {args.write_baseline} ({len(current)} files)")
-        return 0
-
-    if args.baseline:
-        baseline_path = resolve_repo_path(repo_root, args.baseline)
-        baseline = read_baseline(baseline_path, VIOLATION_KINDS)
-        if not baseline and not baseline_file_is_initialized(baseline_path):
-            print(f"Baseline missing: {args.baseline}")
-            print("Run `just noop-gate-update` once, then re-run the gate.")
-            return 1
-        # A NOOP annotation whose original is not tiny is always a failure,
-        # independent of the ratchet -- flag those first, then run the shared
-        # new-file / per-key-increase compare for the remaining kinds.
-        violations: list[str] = [
-            f"{file_key}: {counts['noop_contradicted']} NOOP "
-            "annotation(s) contradicted by original size"
+    if args.gate:
+        violations = [
+            f"{file_key}: {', '.join(f'{count} {kind}' for kind, count in counts.items() if count)}"
             for file_key, counts in sorted(current.items())
-            if counts["noop_contradicted"]
         ]
-        violations += compare(
-            current,
-            baseline,
-            VIOLATION_KINDS,
-            new_file_message=lambda file_key, counts: (
-                f"{file_key}: new empty-body finding(s) "
-                f"[{', '.join(k for k in VIOLATION_KINDS if counts[k])}]"
-            ),
-        )
         if violations:
             print("Empty-body (NOOP) gate failed:")
             for item in violations:
@@ -518,8 +474,7 @@ def main() -> int:
                   "delete the phantom method. Audit: `just noop-audit`.")
             return 1
         total = sum(sum(v.values()) for v in current.values())
-        print(f"Empty-body gate passed. Baseline-tracked files: {len(current)} "
-              f"(total findings: {total})")
+        print(f"Empty-body gate passed (total findings: {total}).")
         return 0
 
     # Audit mode.

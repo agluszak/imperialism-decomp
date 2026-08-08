@@ -24,8 +24,7 @@ Details in docs/toolchain.md and the decompile-function ctors-dtors-eh reference
 
 WHAT THIS GATE CHECKS (both directions)
 ---------------------------------------
-1. out-of-line in a .cpp with NO marker -> should be in-class. Ratcheted against
-   ``config/baselines/ctor_placement_baseline.txt``; that list is a backlog to shrink.
+1. out-of-line in a .cpp with NO marker -> should be in-class.
 2. in-class in a header WITH a marker -> a deliberate exception to the decision, and must
    be justified in ``config/ctor_placement_exceptions.csv`` with what it bought and cost.
 
@@ -42,7 +41,6 @@ import re
 import sys
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
-BASELINE = REPO / "config" / "baselines" / "ctor_placement_baseline.txt"
 EXCEPTIONS = REPO / "config" / "ctor_placement_exceptions.csv"
 
 # ClassName::ClassName( ... ) at column 0 -- an out-of-line definition.
@@ -109,19 +107,8 @@ def scan(root: pathlib.Path) -> list[str]:
     return findings
 
 
-def load_baseline() -> set[str]:
-    if not BASELINE.exists():
-        return set()
-    return {
-        l.strip()
-        for l in BASELINE.read_text().splitlines()
-        if l.strip() and not l.startswith("#")
-    }
-
-
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--write-baseline", action="store_true")
     ap.add_argument("--paths", nargs="*", default=["src/game"])
     args = ap.parse_args()
 
@@ -129,18 +116,6 @@ def main() -> int:
     for p in args.paths:
         found += scan(REPO / p)
     found_set = set(found)
-
-    if args.write_baseline:
-        BASELINE.parent.mkdir(parents=True, exist_ok=True)
-        BASELINE.write_text(
-            "# Unmarked out-of-line constructors (see tools/workflow/check_ctor_placement.py,\n"
-            "# bd nwdn). Each line is a class whose ctor has no claimed address yet still\n"
-            "# lives in a .cpp. Shrink this list; do not grow it.\n"
-            + "\n".join(sorted(found_set))
-            + "\n"
-        )
-        print(f"ctor-placement baseline written: {len(found_set)} entries")
-        return 0
 
     # Direction 2: an in-class definition that still owns an address breaks the decision
     # unless it is a justified exception.
@@ -162,13 +137,9 @@ def main() -> int:
         )
         return 1
 
-    baseline = load_baseline()
-    new = sorted(found_set - baseline)
-    fixed = sorted(baseline - found_set)
-
-    if new:
-        print("Constructor-placement gate failed: new unmarked out-of-line constructor(s):")
-        for n in new:
+    if found_set:
+        print("Constructor-placement gate failed: unmarked out-of-line constructor(s):")
+        for n in sorted(found_set):
             print(f"  - {n}")
         print(
             "\nAn unmarked ctor has no claimed address. Read the caller (CreateObject /\n"
@@ -179,16 +150,9 @@ def main() -> int:
         )
         return 1
 
-    if fixed:
-        print(f"ctor-placement: {len(fixed)} entry/entries resolved; refresh with")
-        print("  just ctor-placement-gate-update")
-        for f in fixed:
-            print(f"  - {f}")
-        return 1
-
     print(
-        f"Constructor-placement gate passed "
-        f"({len(found_set)} baselined, 0 new; {len(exceptions)} justified in-class exception(s))."
+        "Constructor-placement gate passed "
+        f"(0 violations; {len(exceptions)} justified in-class exception(s))."
     )
     return 0
 
