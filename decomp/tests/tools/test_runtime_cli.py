@@ -16,6 +16,7 @@ import xml.etree.ElementTree as ET
 
 from tools.runtime.catalog import RuntimeTestSpec
 from tools.runtime.cli import _suite_command, _suite_execution_order, run_one, run_suite
+from tools.runtime.harness_selftest import run_harness_selftest
 from tools.runtime.models import HostResult, RunConfig
 from tools.runtime.runner import RunnerDependencies
 from tools.runtime.runtime_tests import run_test
@@ -95,6 +96,56 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertEqual(run_one(args), 0)
         harness.assert_called_once()
         game.assert_not_called()
+
+    def test_harness_preserves_the_raw_native_envelope(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            build_dir = root / "build"
+            build_dir.mkdir()
+            (build_dir / "ImperialismRuntimeSelfTest.exe").write_text(
+                "placeholder", encoding="utf-8"
+            )
+            result_dir = root / "results"
+            spec = RuntimeTestSpec(
+                "harness_contract",
+                "RuntimeHarnessSelfTest",
+                ("pr",),
+                "internal_invariant",
+                execution="harness",
+            )
+
+            def fake_run(*_args: object, **_kwargs: object) -> SimpleNamespace:
+                native = {
+                    "format_version": 2,
+                    "name": spec.name,
+                    "seed": 7,
+                    "status": "passed",
+                    "captures": {},
+                }
+                (result_dir / f"{spec.name}.native-result.json").write_text(
+                    json.dumps(native), encoding="utf-8"
+                )
+                return SimpleNamespace(returncode=0, stderr="")
+
+            with patch(
+                "tools.runtime.harness_selftest.subprocess.run", side_effect=fake_run
+            ):
+                self.assertEqual(run_harness_selftest(spec, 7, build_dir, result_dir), 0)
+
+            native = json.loads(
+                (result_dir / f"{spec.name}.native-result.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            canonical = json.loads(
+                (result_dir / f"{spec.name}.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                set(native),
+                {"format_version", "name", "seed", "status", "captures"},
+            )
+            self.assertIn("host", canonical)
+            self.assertIn("summary", canonical)
 
     def test_host_only_cases_run_before_the_shared_wine_prefix_starts(self) -> None:
         first_game = RuntimeTestSpec(
@@ -184,7 +235,6 @@ class RuntimeSuiteTests(unittest.TestCase):
                         "action": "wait_for_managers",
                         "artifact_path": "/tmp/runtime-bundle",
                         "primary_failure": "primary crashed",
-                        "assertion_id": "managers.initialized",
                         "diagnostic_outcomes": [
                             {
                                 "kind": "diagnostic_gdb",
@@ -212,7 +262,6 @@ class RuntimeSuiteTests(unittest.TestCase):
             self.assertIn("phase=waiting_for_managers", failure.get("message", ""))
             self.assertIn("classification=crash", failure.get("message", ""))
             self.assertIn("action=wait_for_managers", failure.get("message", ""))
-            self.assertIn("assertion=managers.initialized", failure.get("message", ""))
             self.assertIn("artifacts=/tmp/runtime-bundle", failure.get("message", ""))
             self.assertIn("diagnostic_gdb=passed/none", failure.get("message", ""))
 
@@ -235,6 +284,9 @@ class RuntimeSuiteTests(unittest.TestCase):
             )
             self.assertEqual(returncode, 1)
             self.assertEqual(result["status"], "failed")
+            self.assertEqual(result["format_version"], 2)
+            self.assertEqual(result["seed"], 1)
+            self.assertEqual(result["captures"], {})
 
     def test_seh_rerun_uses_an_isolated_artifact_directory(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -248,10 +300,11 @@ class RuntimeSuiteTests(unittest.TestCase):
                 label = "primary" if len(calls) == 1 else run_dir.name
                 (run_dir / "gdb.log").write_text(label, encoding="utf-8")
                 result = {
+                    "format_version": 2,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": "failed",
-                    "failure": "synthetic failure",
+                    "captures": {},
                 }
                 (run_dir / "result.json").write_text(
                     json.dumps(result), encoding="utf-8"
@@ -300,12 +353,12 @@ class RuntimeSuiteTests(unittest.TestCase):
                 calls.append(run_dir)
                 status = "failed" if len(calls) == 1 else "passed"
                 native = {
+                    "format_version": 2,
                     "name": "boot_managers",
                     "seed": 1,
                     "status": status,
+                    "captures": {},
                 }
-                if status == "failed":
-                    native["failure"] = "bare Wine failure"
                 (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
                 return self._host(run_dir)
 
@@ -328,12 +381,19 @@ class RuntimeSuiteTests(unittest.TestCase):
                 (root / "runtime-results/boot_managers.json").read_text(encoding="utf-8")
             )
             self.assertEqual(result["status"], "failed")
-            self.assertEqual(result["failure"], "bare Wine failure")
+            self.assertEqual(result["failure"], "native runtime reported failure")
             self.assertEqual(result["classification"], "debugger_sensitive_non_reproduction")
             self.assertEqual([attempt["authoritative"] for attempt in result["attempts"]], [True, False])
             self.assertEqual(result["attempts"][1]["status"], "passed")
             self.assertTrue((calls[0] / "native-result.json").is_file())
             self.assertTrue((calls[1] / "native-result.json").is_file())
+            primary_native = json.loads(
+                (calls[0] / "native-result.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                set(primary_native),
+                {"format_version", "name", "seed", "status", "captures"},
+            )
 
     def test_oracle_errors_and_mismatches_coexist_with_native_result(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -342,11 +402,18 @@ class RuntimeSuiteTests(unittest.TestCase):
             def fake_execute(config: RunConfig) -> HostResult:
                 run_dir = config.run_dir
                 native = {
+                    "format_version": 2,
                     "name": "random_game_easy_skips_capital",
                     "seed": 1,
                     "status": "passed",
-                    "ui_snapshots": [{"event": 1}],
-                    "map_state": {"wrap": 0},
+                    "captures": {
+                        "ui_tree": {
+                            "snapshots": [{"event": 1}],
+                            "current": None,
+                            "capital_confirmation": None,
+                        },
+                        "map_state": {"wrap": 0},
+                    },
                 }
                 (run_dir / "result.json").write_text(json.dumps(native), encoding="utf-8")
                 return self._host(run_dir)

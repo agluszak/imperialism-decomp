@@ -133,7 +133,6 @@ pub struct RandomMapTerrainAttempt {
     pub rotation_column: usize,
     pub seed_candidate_tiles: [i32; RANDOM_MAP_CLASS_COUNT],
     pub accepted: bool,
-    pub tiles: Vec<GeneratedTerrainTile>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -150,6 +149,13 @@ pub struct RandomMapTerrainGeneration {
     pub initial_map_lcg: u32,
     pub attempts: Vec<RandomMapTerrainAttempt>,
     pub final_map_lcg: u32,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct RandomMapTerrainCapture {
+    pub scenario_tag: String,
+    pub retail_topology: RetailTopologyByte,
+    pub generation: RandomMapTerrainGeneration,
 }
 
 pub fn generate_random_map_terrain(
@@ -206,7 +212,6 @@ pub fn generate_random_map_terrain(
             rotation_column,
             seed_candidate_tiles,
             accepted,
-            tiles,
         });
         if accepted {
             break;

@@ -122,7 +122,9 @@ def compare_ui_snapshot(report: dict, snapshot: dict) -> dict:
 
 
 def evaluate_ui_oracle(result: dict) -> dict | None:
-    snapshots = result.get("ui_snapshots", [])
+    captures = result.get("captures")
+    ui_tree = captures.get("ui_tree") if isinstance(captures, dict) else None
+    snapshots = ui_tree.get("snapshots", []) if isinstance(ui_tree, dict) else []
     if not snapshots:
         return None
     report, errors = build_report(REPO_ROOT)

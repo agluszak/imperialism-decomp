@@ -46,17 +46,19 @@ class CheckpointSchemaTests(unittest.TestCase):
         native = normalize_native_combined_map(
             {
                 "status": "passed",
-                "state": {
-                    "turn_event": 0x07DD,
-                    "root_class": "TMapUberPicture",
-                    "active_nation": 6,
-                    "economic_turn": 1,
-                    "global_map": True,
-                    "city_present": True,
-                    "production_orders": list(range(16)),
-                    "production_flags": [slot % 2 for slot in range(16)],
+                "captures": {
+                    "map_state": {
+                        "turn_event": 0x07DD,
+                        "root_class": "TMapUberPicture",
+                        "active_nation": 6,
+                        "economic_turn": 1,
+                        "global_map": True,
+                        "city_present": True,
+                        "production_orders": list(range(16)),
+                        "production_flags": [slot % 2 for slot in range(16)],
+                        "wrap": 0,
+                    }
                 },
-                "map_state": {"wrap": 0},
             }
         )
         validate_checkpoint(retail)

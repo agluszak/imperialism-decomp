@@ -1,12 +1,11 @@
 #include "RuntimeScenario.h"
 
-#include "RuntimeGameSnapshot.h"
+#include "RuntimeGameStateCapture.h"
 
 #include "RuntimeContext.h"
 #include "RuntimeExceptionCapture.h"
 #include "RuntimeHarness.h"
 #include "RuntimeHeartbeat.h"
-#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeResultWriter.h"
 #include "RuntimeRegistry.h"
@@ -45,14 +44,6 @@ void RequestGameClose(HWND mainWindow) {
   }
 }
 
-void FourCcText(unsigned int tag, char text[5]) {
-  text[0] = static_cast<char>(tag >> 24);
-  text[1] = static_cast<char>(tag >> 16);
-  text[2] = static_cast<char>(tag >> 8);
-  text[3] = static_cast<char>(tag);
-  text[4] = 0;
-}
-
 } // namespace
 
 RuntimeScenario::RuntimeScenario()
@@ -69,7 +60,7 @@ void RuntimeScenario::Start(RuntimeContext& context) {
   RuntimeExceptionCapture::Install(*run, *this);
 
   if (RequiresFixture() && !run->HasFixturePath()) {
-    Finish("failed", "\"IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game\"");
+    FailScenario("IMPERIALISM_RUNTIME_TEST_FIXTURE is not set for load_saved_game");
     return;
   }
   run->EnterPhase("waiting_for_managers", "wait_for_managers");
@@ -88,7 +79,7 @@ void RuntimeScenario::Observe(RuntimeContext&, unsigned int observationKinds) {
   char forcedFailure[2];
   if (GetEnvironmentVariableA("IMPERIALISM_RUNTIME_TEST_FORCE_FAILURE", forcedFailure,
                               sizeof(forcedFailure)) != 0) {
-    FailScenario("\"forced runtime debugger failure\"");
+    FailScenario("forced runtime debugger failure");
     return;
   }
   if (run->SpinRequestedForCurrentPhase()) {
@@ -116,13 +107,13 @@ void RuntimeScenario::AdvanceDriver(unsigned int observationKinds) {
   } else if (driverState == kRunningScenario) {
     AdvanceScenario();
   } else if (activeFlow == 0) {
-    FailScenario("\"runtime scenario has no active navigation flow\"");
+    FailScenario("runtime scenario has no active navigation flow");
   } else {
     RuntimeFlowStatus status = activeFlow->Advance(*this);
     if (status == kRuntimeFlowCheckpoint) {
       OnFlowCheckpoint(activeFlow->Checkpoint());
     } else if (status == kRuntimeFlowComplete && !run->IsFinished()) {
-      FailScenario("\"navigation flow completed without handing control to the scenario\"");
+      FailScenario("navigation flow completed without handing control to the scenario");
     }
   }
   advancing = false;
@@ -153,12 +144,12 @@ void RuntimeScenario::Pulse(RuntimeContext&) {
 }
 
 void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* root) {
-  if (run->CapturesSnapshot(kRuntimeSnapshotUi)) {
+  if (run->RequestsCapture(kRuntimeCaptureUiTree)) {
     if (eventCode == 0x5dd) {
-      run->RandomSetupUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+      run->SetRandomSetupUiSnapshot(CaptureRuntimeUiSnapshot(eventCode, root));
     } else if (eventCode == 0x3b8 || (DifficultyLevel() <= 1 && eventCode == 0x7dd)) {
-      if (run->StrategicMapUiSnapshot().IsEmpty()) {
-        run->StrategicMapUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+      if (!run->HasStrategicMapUiSnapshot()) {
+        run->SetStrategicMapUiSnapshot(CaptureRuntimeUiSnapshot(eventCode, root));
       }
     }
   }
@@ -166,19 +157,13 @@ void RuntimeScenario::ObserveBuiltUiTree(RuntimeContext&, int eventCode, TView* 
 }
 
 void RuntimeScenario::ObserveTurnEvent(RuntimeContext&, int eventCode) {
-  if (RecordsGameFlow()) {
-    CString event;
-    event.Format("%s\"0x%04x\"", run->ActivatedEventSequence().GetLength() == 1 ? "" : ", ",
-                 static_cast<unsigned short>(eventCode));
-    run->ActivatedEventSequence() += event;
-  }
   if (RecordsGameFlow() && g_pSimMgr != 0 && g_pSimMgr->multiplayerSessionRole == 0 &&
       eventCode == 0x5e4) {
-    FailScenario("\"single-player game entered multiplayer synchronization event 0x5e4\"");
+    FailScenario("single-player game entered multiplayer synchronization event 0x5e4");
     return;
   }
   if (DifficultyLevel() <= 1 && eventCode == 0x3b8) {
-    FailScenario("\"difficulty that skips capital selection entered event 0x3b8\"");
+    FailScenario("difficulty that skips capital selection entered event 0x3b8");
     return;
   }
   if (driverState == kRunningFlow && activeFlow != 0) {
@@ -231,7 +216,7 @@ RuntimeFlow* RuntimeScenario::NavigationFlow() {
 void RuntimeScenario::OnManagersReady() {
   activeFlow = NavigationFlow();
   if (activeFlow == 0) {
-    FailScenario("\"scenario did not provide a navigation flow\"");
+    FailScenario("scenario did not provide a navigation flow");
     return;
   }
   driverState = kRunningFlow;
@@ -250,7 +235,7 @@ void RuntimeScenario::OnFlowCheckpoint(RuntimeFlowCheckpoint checkpoint) {
   } else if (checkpoint == kRuntimeCombinedMapReady || checkpoint == kRuntimeLoadedMapReady) {
     OnCombinedMapReady();
   } else {
-    FailScenario("\"navigation flow reported an unknown checkpoint\"");
+    FailScenario("navigation flow reported an unknown checkpoint");
   }
 }
 
@@ -263,7 +248,7 @@ void RuntimeScenario::OnCombinedMapReady() {
 }
 
 void RuntimeScenario::AdvanceScenario() {
-  FailScenario("\"scenario entered an unimplemented owned phase\"");
+  FailScenario("scenario entered an unimplemented owned phase");
 }
 
 void RuntimeScenario::ObserveScenarioUiTree(int eventCode, TView* root) {
@@ -274,15 +259,15 @@ void RuntimeScenario::ObserveScenarioUiTree(int eventCode, TView* root) {
   }
 }
 
-void RuntimeScenario::Finish(const char* status, const char* failure) {
+void RuntimeScenario::Finish(const char* status) {
   run->Finish();
   if (RecordsGameFlow() && lstrcmpA(status, "passed") == 0) {
     CaptureRuntimeMapState(*run);
   }
   if (lstrcmpA(status, "passed") == 0) {
-    CaptureRuntimeGameSnapshot(*run);
+    CaptureRuntimeGameState(*run);
   }
-  if (!WriteRuntimeResult(*run, *this, status, failure)) {
+  if (!WriteRuntimeResult(*run, status)) {
     OutputDebugStringA("Imperialism runtime test could not write its result file.\n");
   }
   if (!run->HoldRequested()) {
@@ -291,28 +276,24 @@ void RuntimeScenario::Finish(const char* status, const char* failure) {
 }
 
 void RuntimeScenario::Pass() {
-  Finish("passed", "null");
+  Finish("passed");
 }
 
 void RuntimeScenario::FailScenario(const char* failure) {
   run->RecordAssertion(run->PhaseName(), failure, true);
   RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, failure, 0);
-  Finish("failed", failure);
+  Finish("failed");
 }
 
 void RuntimeScenario::FailScenarioText(const char* failure) {
-  CString failureJson;
-  RuntimeJson::AppendString(failureJson, failure != 0 ? failure : "");
-  FailScenario(static_cast<LPCSTR>(failureJson));
+  FailScenario(failure != 0 ? failure : "");
 }
 
 void RuntimeScenario::FailScenarioTextAs(const char* assertionId, const char* failure) {
-  CString failureJson;
-  RuntimeJson::AppendString(failureJson, failure != 0 ? failure : "");
-  run->RecordAssertion(assertionId, static_cast<LPCSTR>(failureJson), true);
-  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure,
-                                static_cast<LPCSTR>(failureJson), 0);
-  Finish("failed", static_cast<LPCSTR>(failureJson));
+  const char* message = failure != 0 ? failure : "";
+  run->RecordAssertion(assertionId, message, true);
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, message, 0);
+  Finish("failed");
 }
 
 bool RuntimeScenario::Require(const char* assertionId, bool condition, const char* failure) {
@@ -321,7 +302,7 @@ bool RuntimeScenario::Require(const char* assertionId, bool condition, const cha
   }
   run->RecordAssertion(assertionId, failure, true);
   RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, failure, 0);
-  Finish("failed", failure);
+  Finish("failed");
   return false;
 }
 
@@ -336,9 +317,8 @@ bool RuntimeScenario::FinishChecks() {
   if (!run->HasAssertionFailures()) {
     return false;
   }
-  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, run->FirstFailureJson(),
-                                0);
-  Finish("failed", run->FirstFailureJson());
+  RuntimeExceptionCapture::Trap(*run, *this, kRuntimeDebugSemanticFailure, run->FirstFailure(), 0);
+  Finish("failed");
   return true;
 }
 
@@ -374,14 +354,8 @@ void RuntimeScenario::EnterFlowPhase(const char* phaseName, const char* action) 
   run->EnterPhase(phaseName, action);
 }
 
-void RuntimeScenario::RecordSerializationRoundtripReport(const CString& reportJson) {
-  run->SerializationRoundtripJson() = reportJson;
-}
-
-void RuntimeScenario::RecordHandledModal(const char* label) {
-  CString entry;
-  entry.Format("\"%s\"", label);
-  RuntimeJson::AppendArrayItem(run->HandledModals(), entry);
+void RuntimeScenario::RecordSerializationRoundtripReport(JSON_Value* report) {
+  run->SetCapture("serialization_roundtrip", report);
 }
 
 TView* RuntimeScenario::CurrentMainView() const {
@@ -420,13 +394,10 @@ bool RuntimeScenario::AdvanceNewspaperIfNeeded() {
   }
   CString failure;
   if (!RuntimeUiDriver::Activate(mainView, endSelector, &failure)) {
-    CString failureJson;
-    RuntimeJson::AppendString(failureJson, failure);
-    FailScenario(failureJson);
+    FailScenario(static_cast<LPCSTR>(failure));
     return true;
   }
   run->SetNewspaperAdvanced(true);
-  run->RecordAction("activate_newspaper_end");
   ContinueAfterAction();
   return true;
 }
@@ -435,21 +406,12 @@ void RuntimeScenario::ResetNewspaperAdvance() {
   run->SetNewspaperAdvanced(false);
 }
 
-void RuntimeScenario::RecordUnexpectedModalView(TView* modal) {
-  char tag[5];
-  FourCcText(static_cast<unsigned int>(modal->controlTag), tag);
-  CString entry;
-  entry.Format("{\"class\": \"%s\", \"tag\": \"%s\", \"phase\": \"%s\", \"t_ms\": %lu}",
-               RuntimeClassName(modal), tag, run->PhaseName(), run->ElapsedMs());
-  RuntimeJson::AppendArrayItem(run->UnexpectedModals(), entry);
-}
-
 bool RuntimeScenario::HasScenarioUiSnapshot() const {
-  return !run->ScenarioUiSnapshot().IsEmpty();
+  return run->HasScenarioUiSnapshot();
 }
 
 void RuntimeScenario::CaptureScenarioUiSnapshot(int eventCode, TView* root) {
-  run->ScenarioUiSnapshot() = CaptureRuntimeUiSnapshot(eventCode, root);
+  run->SetScenarioUiSnapshot(CaptureRuntimeUiSnapshot(eventCode, root));
 }
 
 void RuntimeScenario::CaptureCurrentScreenSnapshot() {

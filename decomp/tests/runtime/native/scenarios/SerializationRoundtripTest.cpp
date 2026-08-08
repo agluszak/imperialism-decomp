@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "parson.h"
 
 #include "game/app/TAnimator.h"
 #include "game/city_ui/TCountry.h"
@@ -83,6 +84,13 @@ struct RoundtripTarget {
 // emptiness -- an empty collection round-trips trivially and would prove nothing. The whole
 // check is synchronous, so the script has no waits: it is linear because it always was.
 class SerializationRoundtripTestCase : public EasyMapScriptScenario {
+public:
+  SerializationRoundtripTestCase() : reportValue(0), report(0), checked(0), failed(0) {}
+
+  ~SerializationRoundtripTestCase() override {
+    json_value_free(reportValue);
+  }
+
 protected:
   void Script() override {
     RT_BEGIN();
@@ -103,7 +111,8 @@ private:
     return text;
   }
 
-  CString report;
+  JSON_Value* reportValue;
+  JSON_Array* report;
   int checked;
   int failed;
 
@@ -138,7 +147,9 @@ private:
 
     checked = 0;
     failed = 0;
-    report = "[";
+    json_value_free(reportValue);
+    reportValue = json_value_init_array();
+    report = reportValue != 0 ? json_value_get_array(reportValue) : 0;
 
     // Pin the save-format version for the duration. Outside a load g_nSaveFormatVersion
     // is -1, and every version-gated reader then takes its oldest-format branch while the
@@ -166,8 +177,9 @@ private:
     }
 
     g_nSaveFormatVersion = savedFormatVersion;
-    report += "\n  ]";
-    RecordSerializationRoundtripReport(report);
+    RecordSerializationRoundtripReport(reportValue);
+    reportValue = 0;
+    report = 0;
   }
 
   void CheckOne(const char* name, TObject* object, bool readBackIsSafe,
@@ -278,18 +290,28 @@ private:
 
   void Record(const char* name, const char* status, int measured, int written, int consumed,
               const char* detail) {
-    CString entry;
-    CString detailJson("null");
+    JSON_Value* value = json_value_init_object();
+    JSON_Object* entry = value != 0 ? json_value_get_object(value) : 0;
+    if (entry == 0 || json_object_set_string(entry, "class", name) != JSONSuccess ||
+        json_object_set_string(entry, "status", status) != JSONSuccess ||
+        json_object_set_number(entry, "measured", measured) != JSONSuccess ||
+        json_object_set_number(entry, "written", written) != JSONSuccess ||
+        json_object_set_number(entry, "consumed", consumed) != JSONSuccess) {
+      json_value_free(value);
+      return;
+    }
     if (detail != 0) {
-      detailJson.Format("\"%s\"", detail);
+      if (json_object_set_string(entry, "detail", detail) != JSONSuccess) {
+        json_value_free(value);
+        return;
+      }
+    } else if (json_object_set_null(entry, "detail") != JSONSuccess) {
+      json_value_free(value);
+      return;
     }
-    entry.Format("\n    {\"class\": \"%s\", \"status\": \"%s\", \"measured\": %d, "
-                 "\"written\": %d, \"consumed\": %d, \"detail\": %s}",
-                 name, status, measured, written, consumed, static_cast<LPCSTR>(detailJson));
-    if (report.GetLength() > 1) {
-      report += ",";
+    if (report == 0 || json_array_append_value(report, value) != JSONSuccess) {
+      json_value_free(value);
     }
-    report += entry;
   }
 };
 

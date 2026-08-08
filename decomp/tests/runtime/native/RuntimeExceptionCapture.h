@@ -14,6 +14,6 @@ namespace RuntimeExceptionCapture {
 
 void Install(RuntimeRun& run, RuntimeScenario& scenario);
 void Trap(RuntimeRun& run, RuntimeScenario& scenario, RuntimeDebugReason reason,
-          const char* failureJson, _EXCEPTION_POINTERS* exception);
+          const char* failure, _EXCEPTION_POINTERS* exception);
 
 } // namespace RuntimeExceptionCapture

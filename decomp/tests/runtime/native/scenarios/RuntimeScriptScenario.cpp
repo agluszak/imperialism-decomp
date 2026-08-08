@@ -200,8 +200,8 @@ void RuntimeScriptScenario::FailRequirementKindOf(const char* expression, const 
 void RuntimeScriptScenario::RecordCheckFailure(const char* expression, const char* file, int line) {
   ++checkFailures;
   // Recorded, not terminal: the point of RT_CHECK is to report several problems from one run.
-  RunState().RecordAssertion(RuntimeAssertionText::PhaseSlug(expression),
-                             static_cast<LPCSTR>(RuntimeAssertionText::RequirementJson(
-                                 RunState(), expression, file, line)),
-                             false);
+  RunState().RecordAssertion(
+      RuntimeAssertionText::PhaseSlug(expression),
+      static_cast<LPCSTR>(RuntimeAssertionText::Requirement(RunState(), expression, file, line)),
+      false);
 }

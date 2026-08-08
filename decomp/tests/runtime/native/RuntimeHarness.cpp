@@ -6,7 +6,6 @@
 #include "RuntimeTestCase.h"
 #include "RuntimeTurnEventQueue.h"
 #include "RuntimeUiDriver.h"
-#include "RuntimeJson.h"
 // Generated from tools/runtime/catalog.py; supplies UnknownRuntimeTest for an unrecognised
 // IMPERIALISM_RUNTIME_TEST name.
 #include "RuntimeScenarioFactories.inc"
@@ -27,9 +26,7 @@ bool RuntimeHarness::HandleMessage(MSG* message) {
   EnsureSelected();
   CString failure;
   if (!RuntimeUiDriver::HandlePostedAction(&failure)) {
-    CString failureJson;
-    RuntimeJson::AppendString(failureJson, failure);
-    g_testCase->FailHarness(g_context, failureJson);
+    g_testCase->FailHarness(g_context, failure);
   }
   return true;
 }
@@ -42,7 +39,7 @@ void RuntimeHarness::EnsureSelected() {
   const RuntimeTestDescriptor* descriptor = RuntimeRegistry::Find(g_context.TestName());
   g_testCase = descriptor != 0 ? descriptor->testCase : UnknownRuntimeTest();
   if (descriptor != 0) {
-    g_run.SetDescriptor(descriptor->snapshotFlags, descriptor->evidenceKind);
+    g_run.SetDescriptor(descriptor->captureFlags);
     g_run.SetScenarioPolicy(descriptor->recordsGameFlow, descriptor->uiSnapshotEvents,
                             descriptor->uiSnapshotEventCount);
   }
@@ -73,8 +70,8 @@ void RuntimeHarness::Observe(unsigned int observationKinds) {
 void RuntimeHarness::ObserveActivatedTurnEvent(int eventCode) {
   EnsureSelected();
   if (!g_pendingTurnEvents.Push(eventCode)) {
-    g_testCase->FailHarness(
-        g_context, "\"runtime harness turn-event queue overflowed before idle observation\"");
+    g_testCase->FailHarness(g_context,
+                            "runtime harness turn-event queue overflowed before idle observation");
   }
 }
 

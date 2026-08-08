@@ -927,7 +927,6 @@ private:
       return armed;
     }
     mapDialog->HandleMapClickByInteractionMode(engineerTile, 0);
-    RecordHandledModal("engineer_construction_options");
     return RuntimeActionResult::Success();
   }
 

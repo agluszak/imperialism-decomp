@@ -50,8 +50,9 @@ pub use random_map::{
     ExpandedMapSeedTile, ExpandedProvinceSeed, RANDOM_MAP_CLASS_COUNT, generate_coarse_random_map,
 };
 pub use random_map_terrain::{
-    GeneratedTerrainTile, RandomMapTerrainAttempt, RandomMapTerrainGeneration,
-    RandomMapTerrainStage, RandomMapTuning, generate_random_map_terrain,
+    GeneratedTerrainTile, RandomMapTerrainAttempt, RandomMapTerrainCapture,
+    RandomMapTerrainGeneration, RandomMapTerrainStage, RandomMapTuning,
+    generate_random_map_terrain,
 };
 pub use recruitment::RecruitmentError;
 pub use resources::{ResourceKind, ResourceTable, all_resources};

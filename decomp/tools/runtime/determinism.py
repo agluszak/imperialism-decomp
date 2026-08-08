@@ -41,7 +41,10 @@ def normalized_observation(result: dict) -> dict:
 
 
 def _section(result: dict, keys: tuple[str, ...]) -> dict:
-    return {key: result.get(key) for key in keys if key in result}
+    captures = result.get("captures")
+    if not isinstance(captures, dict):
+        return {}
+    return {key: captures[key] for key in keys if key in captures}
 
 
 def classify_leaks(
@@ -69,7 +72,7 @@ def classify_leaks(
             findings.append(
                 {"kind": "rng_leakage", "comparison": comparison_kind, "test": name}
             )
-        save_keys = ("serialization_roundtrip", "save_checkpoints", "map_state")
+        save_keys = ("serialization_roundtrip", "map_state")
         if _section(left, save_keys) != _section(right, save_keys):
             findings.append(
                 {"kind": "save_leakage", "comparison": comparison_kind, "test": name}

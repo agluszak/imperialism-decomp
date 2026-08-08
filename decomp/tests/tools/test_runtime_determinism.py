@@ -12,23 +12,22 @@ class RuntimeDeterminismTests(unittest.TestCase):
     @staticmethod
     def _result() -> dict:
         return {
+            "format_version": 2,
             "name": "sample",
             "seed": 1,
             "status": "passed",
-            "elapsed_ms": 42,
-            "host": {"artifact_path": "/tmp/one"},
-            "map_state": {"wrap": 3},
-            "generated_world": {"tiles": [[1]]},
-            "state": {"turn": 4},
-            "actions": [{"action": "done", "t_ms": 30}],
+            "host": {"artifact_path": "/tmp/one", "duration_seconds": 42},
+            "captures": {
+                "map_state": {"wrap": 3},
+                "coarse_map_generation": {"tiles": [[1]]},
+                "game_state": {"turn": 4},
+            },
         }
 
     def test_normalization_removes_host_timing_and_artifact_noise(self) -> None:
         left = self._result()
         right = self._result()
-        right["elapsed_ms"] = 99
-        right["host"] = {"artifact_path": "/tmp/two"}
-        right["actions"][0]["t_ms"] = 90
+        right["host"] = {"artifact_path": "/tmp/two", "duration_seconds": 99}
         self.assertEqual(normalized_observation(left), normalized_observation(right))
 
     def test_leak_classification_names_each_boundary(self) -> None:
@@ -47,7 +46,7 @@ class RuntimeDeterminismTests(unittest.TestCase):
         )
 
         save = self._result()
-        save["map_state"] = {"wrap": 4}
+        save["captures"]["map_state"] = {"wrap": 4}
         save_kinds = {
             item["kind"]
             for item in classify_leaks(baseline, {"sample": save}, "same_order")
@@ -56,7 +55,7 @@ class RuntimeDeterminismTests(unittest.TestCase):
         self.assertIn("observation_leakage", save_kinds)
 
         changed = self._result()
-        changed["state"] = {"turn": 5}
+        changed["captures"]["game_state"] = {"turn": 5}
         self.assertIn(
             "order_leakage",
             {
@@ -74,10 +73,10 @@ class RuntimeDeterminismTests(unittest.TestCase):
             },
         )
 
-    def test_generated_world_is_part_of_the_byte_stable_observation(self) -> None:
+    def test_semantic_captures_are_part_of_the_byte_stable_observation(self) -> None:
         left = self._result()
         right = self._result()
-        right["generated_world"]["tiles"][0][0] = 2
+        right["captures"]["coarse_map_generation"]["tiles"][0][0] = 2
         self.assertNotEqual(normalized_observation(left), normalized_observation(right))
 
 

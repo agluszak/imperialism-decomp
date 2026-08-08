@@ -10,8 +10,8 @@
 //
 // Scenarios used to hand-write both halves of every failure: the prose, and a wsprintfA
 // call formatting the actual values into a fixed char buffer (27 such formats across the
-// suite, with buffers hand-sized from 96 to 256 bytes). Worse, the prose had to be
-// pre-escaped as a JSON fragment because that is what FailScenario consumes, so every
+// suite, with buffers hand-sized from 96 to 256 bytes). The prose also used to be
+// pre-escaped as a JSON fragment because that is what FailScenario consumed, so every
 // call site carried "\"...\"" quoting.
 //
 // These builders replace both. The caller supplies the stringised expression and the two
@@ -28,7 +28,8 @@
 //   current view: TMapUberPicture
 //   modal depth: 0
 //
-// The result is plain text for RuntimeScenario::FailScenarioText, which escapes it once.
+// The result is plain text for RuntimeScenario::FailScenarioText; the result writer encodes it
+// once when it publishes the JSON document.
 // MSVC500 has no variadic templates and no variadic macros, so value formatting is a
 // fixed overload set; add an overload rather than reaching for a template.
 
@@ -47,10 +48,6 @@ CString RequirementValues(const RuntimeRun& run, const char* expression, const c
 
 // Free-form failure text with the same context block appended.
 CString Failure(const RuntimeRun& run, const char* text, const char* file, int line);
-
-// A requirement rendered as a JSON string, for RecordAssertion's pre-escaped-fragment
-// contract. Only RT_CHECK needs this; fatal failures go through FailScenarioText.
-CString RequirementJson(const RuntimeRun& run, const char* expression, const char* file, int line);
 
 // A short snake_case identifier derived from free text, for the host-visible phase name and
 // the assertion id (both fixed char buffers: 64 and 96 bytes). "open trade" -> "open_trade".

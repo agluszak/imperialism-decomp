@@ -1,8 +1,7 @@
 #include "RandomSetupFlow.h"
 
-#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
-#include "RuntimeGeneratedWorldSnapshot.h"
+#include "RuntimeMapGenerationCapture.h"
 #include "RuntimeRun.h"
 #include "scenarios/RuntimeScenario.h"
 #include "screens/RandomSetupScreen.h"
@@ -34,9 +33,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
     if (planetSeed != 0) {
       RuntimeActionResult regenerated = RandomSetup().RegeneratePlanet(planetSeed);
       if (!regenerated.Succeeded()) {
-        CString failureJson;
-        RuntimeJson::AppendString(failureJson, regenerated.FailureMessage());
-        scenario.FailScenario(failureJson);
+        scenario.FailScenario(regenerated.FailureMessage());
         return kRuntimeFlowRunning;
       }
       phase = kCapturingRegeneratedPlanet;
@@ -44,14 +41,14 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
       scenario.ContinueAfterAction();
       return kRuntimeFlowRunning;
     }
-    CaptureRuntimeGeneratedWorldSnapshot(scenario.RunState());
+    CaptureRuntimeMapGeneration(scenario.RunState());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();
     return kRuntimeFlowRunning;
   }
   if (phase == kCapturingRegeneratedPlanet) {
-    CaptureRuntimeGeneratedWorldSnapshot(scenario.RunState());
+    CaptureRuntimeMapGeneration(scenario.RunState());
     phase = kSettingCountryName;
     scenario.EnterFlowPhase("setting_country_name", "wait_for_event_0x05dd");
     scenario.ContinueAfterAction();
@@ -60,9 +57,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kSettingCountryName) {
     RuntimeActionResult named = RandomSetup().SetCountryName("Testland");
     if (!named.Succeeded()) {
-      CString failureJson;
-      RuntimeJson::AppendString(failureJson, named.FailureMessage());
-      scenario.FailScenario(failureJson);
+      scenario.FailScenario(named.FailureMessage());
       return kRuntimeFlowRunning;
     }
     phase = kSelectingDifficulty;
@@ -73,9 +68,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kSelectingDifficulty) {
     RuntimeActionResult selected = RandomSetup().SelectDifficulty(scenario.DifficultyLevel());
     if (!selected.Succeeded()) {
-      CString failureJson;
-      RuntimeJson::AppendString(failureJson, selected.FailureMessage());
-      scenario.FailScenario(failureJson);
+      scenario.FailScenario(selected.FailureMessage());
       return kRuntimeFlowRunning;
     }
     phase = kActivatingOkay;
@@ -86,9 +79,7 @@ RuntimeFlowStatus RandomSetupFlow::Advance(RuntimeScenario& scenario) {
   if (phase == kActivatingOkay) {
     RuntimeActionResult accepted = RandomSetup().Accept();
     if (!accepted.Succeeded()) {
-      CString failureJson;
-      RuntimeJson::AppendString(failureJson, accepted.FailureMessage());
-      scenario.FailScenario(failureJson);
+      scenario.FailScenario(accepted.FailureMessage());
       return kRuntimeFlowRunning;
     }
     checkpoint = kRuntimeRandomSetupAccepted;

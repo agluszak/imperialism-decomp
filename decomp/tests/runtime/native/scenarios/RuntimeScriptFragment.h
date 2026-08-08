@@ -11,8 +11,6 @@
 #include "RuntimeScriptStatus.h"
 #include "screens/RuntimeActionResult.h"
 
-class TView;
-
 // A reusable piece of a linear script.
 //
 // Some sequences belong to several tests: ending a turn walks the Deal Book, the newspaper,
@@ -59,8 +57,6 @@ protected:
   // concrete fragment cannot reach RuntimeScenario's protected members through Host() even
   // though this class can -- these exist so it does not have to.
   void ContinueFragmentAfterAction();
-  void RecordHandledModalForFragment(const char* label);
-  void RecordUnexpectedModalForFragment(TView* modal);
   bool AdvanceNewspaperForFragment();
   void ResetNewspaperAdvanceForFragment();
 

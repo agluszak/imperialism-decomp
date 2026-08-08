@@ -1,6 +1,7 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
 #include "RuntimeTestFactory.h"
+#include "parson.h"
 
 #include "probes/UnitChainProbe.h"
 
@@ -89,6 +90,13 @@ public:
 // `failure`, which Replay sets, because the steps that can fail are nested helpers rather than
 // script statements.
 class SaveStreamCheckpointTestCase : public EasyMapScriptScenario {
+public:
+  SaveStreamCheckpointTestCase() : reportValue(0), report(0) {}
+
+  ~SaveStreamCheckpointTestCase() override {
+    json_value_free(reportValue);
+  }
+
 protected:
   void Script() override {
     RT_BEGIN();
@@ -101,14 +109,15 @@ protected:
   }
 
 private:
-  CString report;
+  JSON_Value* reportValue;
+  JSON_Array* report;
   CString failure;
-  int entries;
 
   void Replay() {
-    report = "[";
+    json_value_free(reportValue);
+    reportValue = json_value_init_array();
+    report = reportValue != 0 ? json_value_get_array(reportValue) : 0;
     failure.Empty();
-    entries = 0;
 
     // Enter the replay from the state a real load is entered from. A load reached from the menu has
     // no units linked into the map; this replay runs on top of a played game, and
@@ -127,14 +136,16 @@ private:
     // bytes being replayed are this build's own and their provenance is beyond doubt.
     CString path("save/rt_save_stream_checkpoints.imp");
     if (g_pAssetMgr->SaveMainDocumentToPathAndMarkSaved(path) == 0) {
-      FailScenario("\"the document refused to save through the real save path\"");
+      FinishReport();
+      FailScenario("the document refused to save through the real save path");
       return;
     }
 
     CFile file;
     CFileException error;
     if (!file.Open(path, CFile::modeRead | CFile::shareDenyWrite, &error)) {
-      FailScenario("\"could not reopen the just-written save for checkpoint replay\"");
+      FinishReport();
+      FailScenario("could not reopen the just-written save for checkpoint replay");
       return;
     }
     const int fileLength = static_cast<int>(file.GetLength());
@@ -154,7 +165,8 @@ private:
     stream.ReadBytes(label, 0x20);
     if (fileMagic != kControlTagAMBI) {
       g_nSaveFormatVersion = -1;
-      FailScenario("\"save fixture does not start with the AMBI magic\"");
+      FinishReport();
+      FailScenario("save fixture does not start with the AMBI magic");
       return;
     }
     unsigned char discarded[0x1950];
@@ -215,8 +227,7 @@ private:
     // consumed the file exactly, one more byte cannot be read.
     unsigned char probe = 0;
     const UINT leftover = archive.Read(&probe, 1);
-    report += "\n  ]";
-    RecordSerializationRoundtripReport(report);
+    FinishReport();
     g_nSaveFormatVersion = -1;
 
     if (leftover != 0) {
@@ -231,8 +242,7 @@ private:
   bool ReadOne(CountingFileStream& stream, const char* name, TObject* object) {
     if (object == 0) {
       failure.Format("%s is null before its ReadFrom; the chain cannot be replayed", name);
-      report += "\n  ]";
-      RecordSerializationRoundtripReport(report);
+      FinishReport();
       g_nSaveFormatVersion = -1;
       return false;
     }
@@ -244,16 +254,25 @@ private:
   }
 
   void Record(const char* name, int before, int after, int objectReads) {
-    CString entry;
-    entry.Format("\n    {\"span\": \"%s\", \"from\": %d, \"to\": %d, \"bytes\": %d, "
-                 "\"object_reads\": %d, \"exact\": %s}",
-                 name, before, after, after - before, objectReads,
-                 objectReads == 0 ? "true" : "false");
-    if (entries != 0) {
-      report += ",";
+    JSON_Value* value = json_value_init_object();
+    JSON_Object* entry = value != 0 ? json_value_get_object(value) : 0;
+    if (entry == 0 || json_object_set_string(entry, "span", name) != JSONSuccess ||
+        json_object_set_number(entry, "from", before) != JSONSuccess ||
+        json_object_set_number(entry, "to", after) != JSONSuccess ||
+        json_object_set_number(entry, "bytes", after - before) != JSONSuccess ||
+        json_object_set_number(entry, "object_reads", objectReads) != JSONSuccess ||
+        json_object_set_boolean(entry, "exact", objectReads == 0) != JSONSuccess || report == 0 ||
+        json_array_append_value(report, value) != JSONSuccess) {
+      json_value_free(value);
     }
-    report += entry;
-    ++entries;
+  }
+
+  void FinishReport() {
+    if (reportValue != 0) {
+      RecordSerializationRoundtripReport(reportValue);
+      reportValue = 0;
+      report = 0;
+    }
   }
 };
 

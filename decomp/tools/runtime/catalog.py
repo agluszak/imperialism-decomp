@@ -34,18 +34,15 @@ class RuntimeFixtureSpec:
 class ExpectedFailureSpec:
     """Structured signature of a known failure, never a blanket expected-fail bit."""
 
-    assertion_ids: tuple[str, ...] = ()
     phases: tuple[str, ...] = ()
     classifications: tuple[str, ...] = ()
 
     def matches(self, result: dict) -> bool:
         summary = result.get("summary", {})
-        assertion_id = result.get("assertion_id") or summary.get("assertion_id")
-        phase = result.get("phase") or summary.get("phase")
+        phase = summary.get("phase")
         classification = result.get("classification") or summary.get("classification")
         return (
-            (not self.assertion_ids or assertion_id in self.assertion_ids)
-            and (not self.phases or phase in self.phases)
+            (not self.phases or phase in self.phases)
             and (not self.classifications or classification in self.classifications)
         )
 
@@ -59,6 +56,7 @@ class RuntimeTestSpec:
     execution: Literal["game", "harness"] = "game"
     fixture: RuntimeFixtureSpec | None = None
     required_oracles: tuple[str, ...] = ("ui",)
+    # Named semantic captures requested from the native runtime result.
     native_snapshots: tuple[str, ...] = ()
     # Harness policy that used to be a virtual override in every scenario class. The catalog
     # already owns suites, evidence and oracles; a test's *shape* belongs beside them, not in
@@ -98,7 +96,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map", "game"),
+        native_snapshots=("ui_tree", "map_state", "game_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -107,61 +105,61 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui_tree", "map_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_snapshot",
-        "GeneratedWorldSnapshotTest",
-        ("pr", "full", "generated_world"),
+        "random_map_generation",
+        "RandomMapGenerationCaptureTest",
+        ("pr", "full", "map_generation"),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("coarse_map_generation", "random_map_terrain"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_ordinary_terrain",
-        "OrdinaryTerrainGeneratedWorldTest",
-        ("generated_world",),
+        "random_map_terrain_ordinary",
+        "OrdinaryTerrainRandomMapGenerationTest",
+        ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("random_map_terrain",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_tuned_terrain",
-        "TunedTerrainGeneratedWorldTest",
-        ("generated_world",),
+        "random_map_terrain_tuned",
+        "TunedTerrainRandomMapGenerationTest",
+        ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("random_map_terrain",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_dune_terrain",
-        "DuneTerrainGeneratedWorldTest",
-        ("generated_world",),
+        "random_map_terrain_dune",
+        "DuneTerrainRandomMapGenerationTest",
+        ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("random_map_terrain",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_mirkwood_terrain",
-        "MirkwoodTerrainGeneratedWorldTest",
-        ("generated_world",),
+        "random_map_terrain_mirkwood",
+        "MirkwoodTerrainRandomMapGenerationTest",
+        ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("random_map_terrain",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
-        "generated_world_eclectia_terrain",
-        "EclectiaTerrainGeneratedWorldTest",
-        ("generated_world",),
+        "random_map_terrain_eclectia",
+        "EclectiaTerrainRandomMapGenerationTest",
+        ("map_generation",),
         "self_consistency",
         required_oracles=(),
-        native_snapshots=("generated_world",),
+        native_snapshots=("random_map_terrain",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -170,7 +168,7 @@ TESTS = (
         ("full",),
         "self_consistency",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui_tree", "map_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -179,7 +177,7 @@ TESTS = (
         ("pr", "full"),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map", "game"),
+        native_snapshots=("ui_tree", "map_state", "game_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -188,7 +186,7 @@ TESTS = (
         ("full",),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map", "game"),
+        native_snapshots=("ui_tree", "map_state", "game_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -197,7 +195,7 @@ TESTS = (
         ("full",),
         "mac_resource_oracle",
         required_oracles=("ui",),
-        native_snapshots=("ui",),
+        native_snapshots=("ui_tree",),
         record_game_flow=True,
         ui_snapshot_events=("kTurnEventCityProduction",),
     ),
@@ -207,7 +205,7 @@ TESTS = (
         ("full",),
         "mac_resource_oracle",
         required_oracles=("ui",),
-        native_snapshots=("ui",),
+        native_snapshots=("ui_tree",),
         record_game_flow=True,
         ui_snapshot_events=("kTurnEventTransport",),
     ),
@@ -217,7 +215,7 @@ TESTS = (
         ("pr", "full"),
         "internal_invariant",
         required_oracles=("map",),
-        native_snapshots=("map",),
+        native_snapshots=("map_state",),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -229,7 +227,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=(),
-        native_snapshots=("game",),
+        native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
         "major_trade_settlement",
@@ -240,7 +238,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=(),
-        native_snapshots=("game",),
+        native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
         "purchased_items_phase",
@@ -251,7 +249,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=(),
-        native_snapshots=("game",),
+        native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
         "diplomacy_screen_operates",
@@ -259,7 +257,7 @@ TESTS = (
         ("full",),
         "mac_resource_oracle",
         required_oracles=("ui",),
-        native_snapshots=("ui",),
+        native_snapshots=("ui_tree",),
         record_game_flow=True,
         ui_snapshot_events=("kTurnEventDiplomacyMap",),
     ),
@@ -269,7 +267,7 @@ TESTS = (
         ("full",),
         "mac_resource_oracle",
         required_oracles=("ui",),
-        native_snapshots=("ui",),
+        native_snapshots=("ui_tree",),
         record_game_flow=True,
         ui_snapshot_events=("kTurnEventTradeOverview",),
     ),
@@ -287,7 +285,7 @@ TESTS = (
         ("full",),
         "internal_invariant",
         required_oracles=("ui", "map"),
-        native_snapshots=("ui", "map"),
+        native_snapshots=("ui_tree", "map_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -310,7 +308,7 @@ TESTS = (
         ("pr", "full"),
         "self_consistency",
         required_oracles=("map",),
-        native_snapshots=("map", "game"),
+        native_snapshots=("map_state", "game_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -329,7 +327,7 @@ TESTS = (
             "beginning_of_game.imp", "retail_fixture_oracle"
         ),
         required_oracles=("map",),
-        native_snapshots=("map", "game"),
+        native_snapshots=("map_state", "game_state"),
         record_game_flow=True,
     ),
     RuntimeTestSpec(
@@ -398,7 +396,6 @@ def apply_expected_failure(test: RuntimeTestSpec, result: dict) -> None:
         return
     result["expectation_outcome"] = "different_failure"
     expected_summary = {
-        "assertion_ids": list(expected.assertion_ids),
         "phases": list(expected.phases),
         "classifications": list(expected.classifications),
     }

@@ -61,9 +61,9 @@ endif()
 # definition below is absent from the byte-matching build.
 if(IMPERIALISM_RUNTIME_TESTS)
     enable_language(C)
-    add_library(ImperialismRuntimeJson STATIC
+    add_library(ImperialismParson STATIC
         tests/runtime/third_party/parson/parson.c)
-    target_include_directories(ImperialismRuntimeJson PUBLIC
+    target_include_directories(ImperialismParson PUBLIC
         tests/runtime/third_party/parson)
 
   file(GLOB_RECURSE IMPERIALISM_RUNTIME_TEST_SOURCES CONFIGURE_DEPENDS
@@ -95,8 +95,8 @@ if(IMPERIALISM_RUNTIME_TESTS)
     target_include_directories(ImperialismRuntimeSelfTest PRIVATE
         tests/runtime/third_party/parson)
     if(NOT IMPERIALISM_LINT_COMPILE_ONLY)
-        target_link_libraries(Imperialism PRIVATE ImperialismRuntimeJson)
-        target_link_libraries(ImperialismRuntimeSelfTest PRIVATE ImperialismRuntimeJson)
+        target_link_libraries(Imperialism PRIVATE ImperialismParson)
+        target_link_libraries(ImperialismRuntimeSelfTest PRIVATE ImperialismParson)
     endif()
 endif()
 
@@ -293,7 +293,7 @@ else()
 
         if(IMPERIALISM_RUNTIME_TESTS)
             set_property(
-                TARGET ImperialismRuntimeJson
+                TARGET ImperialismParson
                 PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
             )
             set_property(

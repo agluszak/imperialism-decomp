@@ -1,197 +1,139 @@
 #include "RuntimeResultWriter.h"
 
-#include "RuntimeJson.h"
 #include "RuntimeObservations.h"
 #include "RuntimeRegistry.h"
 #include "RuntimeRun.h"
-#include "scenarios/RuntimeScenario.h"
 
-#include "game/core/global_data_tables.h"
-#include "game/city/TCity.h"
-#include "game/nation/TGreatPower.h"
-#include "game/ui_screens/TSimMgr.h"
-#include "game/ui_core/TView.h"
-#include "game/ui_core/TViewMgr.h"
+#include <string.h>
 
-bool WriteRuntimeResult(RuntimeRun& run, RuntimeScenario& scenario, const char* status,
-                        const char* failureJson) {
-  TView* mainView = RuntimeMainView();
-  TGreatPower* activeNation = 0;
-  TCity* activeCity = 0;
-  if (g_pSimMgr != 0 && g_pSimMgr->activeNationSlot >= 0 && g_pSimMgr->activeNationSlot < 7) {
-    activeNation = g_apNationStates[g_pSimMgr->activeNationSlot];
-    if (activeNation != 0) {
-      activeCity = activeNation->city;
+namespace {
+
+JSON_Value* CopyValue(JSON_Value* value) {
+  return value != 0 ? json_value_deep_copy(value) : json_value_init_null();
+}
+
+bool SetOwnedValue(JSON_Object* object, const char* name, JSON_Value*& value) {
+  if (object == 0 || value == 0 || json_object_set_value(object, name, value) != JSONSuccess) {
+    return false;
+  }
+  value = 0;
+  return true;
+}
+
+void AppendSnapshot(JSON_Array* snapshots, JSON_Value* snapshot) {
+  JSON_Value* copy = CopyValue(snapshot);
+  if (copy != 0 && json_array_append_value(snapshots, copy) != JSONSuccess) {
+    json_value_free(copy);
+  }
+}
+
+JSON_Value* BuildUiTreeCapture(RuntimeRun& run, bool includeCurrentTree) {
+  JSON_Value* value = json_value_init_object();
+  JSON_Object* uiTree = value != 0 ? json_value_get_object(value) : 0;
+  JSON_Value* snapshotsValue = json_value_init_array();
+  JSON_Array* snapshots = snapshotsValue != 0 ? json_value_get_array(snapshotsValue) : 0;
+  if (uiTree == 0 || snapshots == 0) {
+    json_value_free(snapshotsValue);
+    json_value_free(value);
+    return 0;
+  }
+  if (run.RandomSetupUiSnapshot() != 0) {
+    AppendSnapshot(snapshots, run.RandomSetupUiSnapshot());
+  }
+  if (run.StrategicMapUiSnapshot() != 0) {
+    AppendSnapshot(snapshots, run.StrategicMapUiSnapshot());
+  }
+  if (run.ScenarioUiSnapshot() != 0) {
+    AppendSnapshot(snapshots, run.ScenarioUiSnapshot());
+  }
+  JSON_Value* current = includeCurrentTree ? CaptureRuntimeCurrentUiTree() : json_value_init_null();
+  JSON_Value* capital = CopyValue(run.CapitalConfirmationUiSnapshot());
+  if (current == 0 || capital == 0 || !SetOwnedValue(uiTree, "snapshots", snapshotsValue) ||
+      !SetOwnedValue(uiTree, "current", current) ||
+      !SetOwnedValue(uiTree, "capital_confirmation", capital)) {
+    json_value_free(snapshotsValue);
+    json_value_free(current);
+    json_value_free(capital);
+    json_value_free(value);
+    return 0;
+  }
+  return value;
+}
+
+bool WriteJsonValueAtomically(const char* path, JSON_Value* value) {
+  char* text = value != 0 ? json_serialize_to_string_pretty(value) : 0;
+  if (text == 0) {
+    return false;
+  }
+  bool written = WriteRuntimeBytesAtomically(path, text, static_cast<unsigned long>(strlen(text)));
+  json_free_serialized_string(text);
+  return written;
+}
+
+void RecordMissingCapture(RuntimeRun& run, const char* assertionId, const char* failure,
+                          const char*& status) {
+  status = "failed";
+  run.RecordAssertion(assertionId, failure, true);
+}
+
+} // namespace
+
+bool WriteRuntimeResult(RuntimeRun& run, const char* status) {
+  const char* resultStatus = status != 0 ? status : "failed";
+
+  if (run.RequestsCapture(kRuntimeCaptureUiTree) &&
+      (!run.HasRandomSetupUiSnapshot() || !run.HasStrategicMapUiSnapshot())) {
+    RecordMissingCapture(run, "result.random_ui_snapshot.present",
+                         "generated UI factory snapshot is missing", resultStatus);
+  }
+  if (run.CapturesAnyUiTree() && !run.HasScenarioUiSnapshot()) {
+    RecordMissingCapture(run, "result.scenario_ui_snapshot.present",
+                         "scenario UI snapshot is missing", resultStatus);
+  }
+  if (run.RequestsCapture(kRuntimeCaptureMapState) && !run.HasCapture("map_state")) {
+    RecordMissingCapture(run, "result.map_state.present", "map-state capture is missing",
+                         resultStatus);
+  }
+  if (run.RequestsCapture(kRuntimeCaptureGameState) && !run.HasCapture("game_state")) {
+    RecordMissingCapture(run, "result.game_state.present", "game-state capture is missing",
+                         resultStatus);
+  }
+  if (run.RequestsCapture(kRuntimeCaptureCoarseMapGeneration) &&
+      !run.HasCapture("coarse_map_generation")) {
+    RecordMissingCapture(run, "result.coarse_map_generation.present",
+                         "coarse-map-generation capture is missing", resultStatus);
+  }
+  if (run.RequestsCapture(kRuntimeCaptureRandomMapTerrain) &&
+      !run.HasCapture("random_map_terrain")) {
+    RecordMissingCapture(run, "result.random_map_terrain.present",
+                         "random-map-terrain capture is missing", resultStatus);
+  }
+
+  bool needsUiTree = run.RequestsCapture(kRuntimeCaptureUiTree) || run.CapturesAnyUiTree() ||
+                     lstrcmpA(resultStatus, "passed") != 0 || run.HoldRequested();
+  if (needsUiTree) {
+    JSON_Value* uiTree =
+        BuildUiTreeCapture(run, lstrcmpA(resultStatus, "passed") != 0 || run.HoldRequested());
+    if (uiTree != 0) {
+      run.SetCapture("ui_tree", uiTree);
     }
   }
-  CString productionOrders("[");
-  CString productionFlags("[");
-  for (int slot = 0; slot < 0x10; ++slot) {
-    CString value;
-    value.Format("%s%d", slot == 0 ? "" : ", ",
-                 activeCity != 0 ? activeCity->productionOrderTable1dc[slot] : -1);
-    productionOrders += value;
-    value.Format("%s%d", slot == 0 ? "" : ", ",
-                 activeCity != 0 ? activeCity->productionFlags21c[slot] : -1);
-    productionFlags += value;
+
+  JSON_Value* rootValue = json_value_init_object();
+  JSON_Object* root = rootValue != 0 ? json_value_get_object(rootValue) : 0;
+  JSON_Value* captures =
+      CopyValue(run.Captures() != 0 ? json_object_get_wrapping_value(run.Captures()) : 0);
+  if (root == 0 || captures == 0 ||
+      json_object_set_number(root, "format_version", 2) != JSONSuccess ||
+      json_object_set_string(root, "name", run.TestName()) != JSONSuccess ||
+      json_object_set_number(root, "seed", run.Seed()) != JSONSuccess ||
+      json_object_set_string(root, "status", resultStatus) != JSONSuccess ||
+      !SetOwnedValue(root, "captures", captures)) {
+    json_value_free(captures);
+    json_value_free(rootValue);
+    return false;
   }
-  productionOrders += ']';
-  productionFlags += ']';
-  // A scenario that fails while still waiting is the common case; publishing the armed
-  // wait is what turns "stalled in phase X" into "waiting for Y, written at Z".
-  CString awaitState(RuntimeAwaitStateJson(run.AwaitState()));
-  // Only on a non-pass (or a deliberate hold): a passing run's tree is noise, but a failed
-  // selector is precisely when an author needs the real tag hierarchy rather than a guess
-  // read off a UI builder. `just runtime-tree` prints this.
-  CString currentUiTree("null");
-  if (lstrcmpA(status, "passed") != 0 || run.HoldRequested()) {
-    currentUiTree = CaptureRuntimeCurrentUiTree();
-  }
-  CString eventSequence(run.ActivatedEventSequence());
-  eventSequence += ']';
-  CString handledModals(run.HandledModals());
-  handledModals += ']';
-  CString unexpectedModals(run.UnexpectedModals());
-  unexpectedModals += ']';
-  CString faults(run.Faults());
-  faults += ']';
-  CString actionLog(run.ActionLog());
-  actionLog += ']';
-  if (run.CapturesSnapshot(kRuntimeSnapshotUi) &&
-      (run.RandomSetupUiSnapshot().IsEmpty() || run.StrategicMapUiSnapshot().IsEmpty())) {
-    status = "failed";
-    failureJson = "\"generated UI factory snapshot is missing\"";
-    run.RecordAssertion("result.random_ui_snapshot.present", failureJson, true);
-  }
-  // The catalog declares which events are captured, so the run is the thing to ask.
-  if (run.CapturesAnyUiTree() && run.ScenarioUiSnapshot().IsEmpty()) {
-    status = "failed";
-    failureJson = "\"scenario UI snapshot is missing\"";
-    run.RecordAssertion("result.scenario_ui_snapshot.present", failureJson, true);
-  }
-  if (run.CapturesSnapshot(kRuntimeSnapshotGeneratedWorld) &&
-      run.GeneratedWorldSnapshotJson().IsEmpty()) {
-    status = "failed";
-    failureJson = "\"generated-world snapshot is missing on random setup\"";
-    run.RecordAssertion("result.generated_world.present", failureJson, true);
-  }
-  CString uiSnapshots("[");
-  if (run.CapturesSnapshot(kRuntimeSnapshotUi)) {
-    if (!run.RandomSetupUiSnapshot().IsEmpty()) {
-      uiSnapshots += "\n";
-      uiSnapshots += run.RandomSetupUiSnapshot();
-    }
-    if (!run.StrategicMapUiSnapshot().IsEmpty()) {
-      if (!run.RandomSetupUiSnapshot().IsEmpty()) {
-        uiSnapshots += ",";
-      }
-      uiSnapshots += "\n";
-      uiSnapshots += run.StrategicMapUiSnapshot();
-    }
-    if (!run.ScenarioUiSnapshot().IsEmpty()) {
-      if (!run.RandomSetupUiSnapshot().IsEmpty() || !run.StrategicMapUiSnapshot().IsEmpty()) {
-        uiSnapshots += ",";
-      }
-      uiSnapshots += "\n";
-      uiSnapshots += run.ScenarioUiSnapshot();
-    }
-    uiSnapshots += "\n  ";
-  }
-  uiSnapshots += "]";
-  CString capitalConfirmationSnapshot("null");
-  if (!run.CapitalConfirmationUiSnapshot().IsEmpty()) {
-    capitalConfirmationSnapshot = run.CapitalConfirmationUiSnapshot();
-  }
-  CString mapState("null");
-  if (!run.MapStateJson().IsEmpty()) {
-    mapState = run.MapStateJson();
-  }
-  CString gameSnapshot("null");
-  if (!run.GameSnapshotJson().IsEmpty()) {
-    gameSnapshot = run.GameSnapshotJson();
-  }
-  CString generatedWorld("null");
-  if (!run.GeneratedWorldSnapshotJson().IsEmpty()) {
-    generatedWorld = run.GeneratedWorldSnapshotJson();
-  }
-  CString roundtrip("null");
-  if (!run.SerializationRoundtripJson().IsEmpty()) {
-    roundtrip = run.SerializationRoundtripJson();
-  }
-  CString assertions = run.AssertionFailuresJson();
-  CString assertionId("null");
-  if (run.FirstAssertionId()[0] != 0) {
-    assertionId.Empty();
-    RuntimeJson::AppendString(assertionId, run.FirstAssertionId());
-  }
-  CString json;
-  json.Format("{\n"
-              "  \"name\": \"%s\",\n"
-              "  \"evidence_kind\": \"%s\",\n"
-              "  \"status\": \"%s\",\n"
-              "  \"seed\": %u,\n"
-              "  \"idle_ticks\": %lu,\n"
-              "  \"elapsed_ms\": %lu,\n"
-              "  \"phase\": \"%s\",\n"
-              "  \"last_action\": \"%s\",\n"
-              "  \"await\": %s,\n"
-              "  \"current_ui_tree\": %s,\n"
-              "  \"event_sequence\": %s,\n"
-              "  \"actions\": %s,\n"
-              "  \"ui_snapshots\": %s,\n"
-              "  \"capital_confirmation_snapshot\": %s,\n"
-              "  \"map_state\": %s,\n"
-              "  \"game_snapshot\": %s,\n"
-              "  \"generated_world\": %s,\n"
-              "  \"serialization_roundtrip\": %s,\n"
-              "  \"assertion_id\": %s,\n"
-              "  \"assertions\": %s,\n"
-              "  \"state\": {\n"
-              "    \"turn_event\": %d,\n"
-              "    \"root_class\": \"%s\",\n"
-              "    \"active_nation\": %d,\n"
-              "    \"selected_nation\": %d,\n"
-              "    \"economic_turn\": %d,\n"
-              "    \"city_present\": %s,\n"
-              "    \"production_orders\": %s,\n"
-              "    \"production_flags\": %s,\n"
-              "    \"difficulty\": %d,\n"
-              "    \"multiplayer_role\": %d,\n"
-              "    \"turn_state\": %d,\n"
-              "    \"mode\": %d,\n"
-              "    \"global_map\": %s,\n"
-              "    \"display_manager\": %s,\n"
-              "    \"global_ui_root\": %s,\n"
-              "    \"simulation_manager\": %s,\n"
-              "    \"ui_runtime_context\": %s,\n"
-              "    \"ui_view_manager\": %s\n"
-              "  },\n"
-              "  \"runtime\": {\n"
-              "    \"faults\": %s,\n"
-              "    \"handled_modals\": %s,\n"
-              "    \"unexpected_modals\": %s\n"
-              "  },\n"
-              "  \"failure\": %s\n"
-              "}\n",
-              run.TestName(), run.EvidenceKind(), status, run.Seed(), run.IdleTicks(),
-              run.ElapsedMs(), run.PhaseName(), run.LastAction(), static_cast<LPCSTR>(awaitState),
-              static_cast<LPCSTR>(currentUiTree), static_cast<LPCSTR>(eventSequence),
-              static_cast<LPCSTR>(actionLog), static_cast<LPCSTR>(uiSnapshots),
-              static_cast<LPCSTR>(capitalConfirmationSnapshot), static_cast<LPCSTR>(mapState),
-              static_cast<LPCSTR>(gameSnapshot), static_cast<LPCSTR>(generatedWorld),
-              static_cast<LPCSTR>(roundtrip), static_cast<LPCSTR>(assertionId),
-              static_cast<LPCSTR>(assertions),
-              g_pViewMgr != 0 ? g_pViewMgr->currentTurnEventCode : -1, RuntimeClassName(mainView),
-              g_pSimMgr != 0 ? g_pSimMgr->activeNationSlot : -1, run.SelectedNationSlot(),
-              g_pSimMgr != 0 ? g_pSimMgr->economicTurn : -1, activeCity != 0 ? "true" : "false",
-              static_cast<LPCSTR>(productionOrders), static_cast<LPCSTR>(productionFlags),
-              g_pSimMgr != 0 ? g_pSimMgr->difficultyLevel : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->multiplayerSessionRole : -1,
-              g_pSimMgr != 0 ? g_pSimMgr->turnStateCode : -1, g_pSimMgr != 0 ? g_pSimMgr->mode : -1,
-              g_pGlobalMapState != 0 ? "true" : "false", g_pDisplayMgr != 0 ? "true" : "false",
-              g_pAmbitApplication != 0 ? "true" : "false", g_pSimMgr != 0 ? "true" : "false",
-              g_pViewMgr != 0 ? "true" : "false", g_pAssetMgr != 0 ? "true" : "false",
-              static_cast<LPCSTR>(faults), static_cast<LPCSTR>(handledModals),
-              static_cast<LPCSTR>(unexpectedModals), failureJson);
-  return RuntimeJson::WriteFileAtomically(run.ResultPath(), json);
+  bool written = WriteJsonValueAtomically(run.ResultPath(), rootValue);
+  json_value_free(rootValue);
+  return written;
 }
