@@ -2,8 +2,8 @@
 
 use clap::{Parser, Subcommand};
 use imperialism_testkit::{
-    check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
-    check_snapshot, check_terrain,
+    EvidenceKind, check_coarse, check_random_game_start, check_random_setup,
+    check_random_setup_initial, check_snapshot, check_terrain,
 };
 use std::path::PathBuf;
 
@@ -23,26 +23,44 @@ enum Command {
     Coarse {
         /// Native runtime result.json.
         result: PathBuf,
+        /// Seed passed to random_map_generation.
+        #[arg(long)]
+        seed: u32,
     },
     /// Validate a random_map_terrain capture.
     Terrain {
         /// Native runtime result.json.
         result: PathBuf,
+        /// Runtime catalog scenario that produced the capture.
+        #[arg(long)]
+        scenario: String,
+        /// Seed passed to the scenario.
+        #[arg(long)]
+        seed: u32,
     },
     /// Validate random_game_setup plus terrain captures for an explicit preview seed.
     RandomSetup {
         /// Native runtime result.json.
         result: PathBuf,
+        /// Seed passed to random_map_generation.
+        #[arg(long)]
+        seed: u32,
     },
     /// Validate initial random-game setup defaults against the clock seed.
     RandomSetupInitial {
         /// Native runtime result.json.
         result: PathBuf,
+        /// Seed passed to random_map_generation.
+        #[arg(long)]
+        seed: u32,
     },
     /// Validate create_random_game against a Normal+ pre-capital game_state capture.
     RandomGameStart {
         /// Native runtime result.json containing random_game_setup and game_state.
         result: PathBuf,
+        /// Seed passed to random_game_normal_start.
+        #[arg(long)]
+        seed: u32,
     },
     /// Summarize a game_state capture, optionally comparing two results.
     Snapshot {
@@ -50,17 +68,36 @@ enum Command {
         result: PathBuf,
         /// Optional second result.json to compare semantically.
         comparison: Option<PathBuf>,
+        /// Runtime catalog scenario expected in both results.
+        #[arg(long)]
+        scenario: String,
+        /// Seed expected in both results.
+        #[arg(long)]
+        seed: u32,
+        /// Evidence classification expected in both results.
+        #[arg(long)]
+        evidence: EvidenceKind,
     },
 }
 
 fn main() -> anyhow::Result<()> {
     match Cli::parse().command {
-        Command::Coarse { result } => check_coarse(&result),
-        Command::Terrain { result } => check_terrain(&result),
-        Command::RandomSetup { result } => check_random_setup(&result),
-        Command::RandomSetupInitial { result } => check_random_setup_initial(&result),
-        Command::RandomGameStart { result } => check_random_game_start(&result),
-        Command::Snapshot { result, comparison } => check_snapshot(&result, comparison.as_deref()),
+        Command::Coarse { result, seed } => check_coarse(&result, seed),
+        Command::Terrain {
+            result,
+            scenario,
+            seed,
+        } => check_terrain(&result, &scenario, seed),
+        Command::RandomSetup { result, seed } => check_random_setup(&result, seed),
+        Command::RandomSetupInitial { result, seed } => check_random_setup_initial(&result, seed),
+        Command::RandomGameStart { result, seed } => check_random_game_start(&result, seed),
+        Command::Snapshot {
+            result,
+            comparison,
+            scenario,
+            seed,
+            evidence,
+        } => check_snapshot(&result, comparison.as_deref(), &scenario, seed, evidence),
     }
 }
 
@@ -70,13 +107,32 @@ mod tests {
 
     #[test]
     fn parses_snapshot_with_optional_comparison() {
-        let cli =
-            Cli::try_parse_from(["imperialism-oracle", "snapshot", "left.json", "right.json"])
-                .unwrap();
+        let cli = Cli::try_parse_from([
+            "imperialism-oracle",
+            "snapshot",
+            "left.json",
+            "right.json",
+            "--scenario",
+            "load_saved_game",
+            "--seed",
+            "7",
+            "--evidence",
+            "retail_fixture_oracle",
+        ])
+        .unwrap();
         match cli.command {
-            Command::Snapshot { result, comparison } => {
+            Command::Snapshot {
+                result,
+                comparison,
+                scenario,
+                seed,
+                evidence,
+            } => {
                 assert_eq!(result, PathBuf::from("left.json"));
                 assert_eq!(comparison, Some(PathBuf::from("right.json")));
+                assert_eq!(scenario, "load_saved_game");
+                assert_eq!(seed, 7);
+                assert_eq!(evidence, EvidenceKind::RetailFixtureOracle);
             }
             other => panic!("unexpected command: {other:?}"),
         }
@@ -84,12 +140,18 @@ mod tests {
 
     #[test]
     fn parses_kebab_case_subcommands() {
-        let cli =
-            Cli::try_parse_from(["imperialism-oracle", "random-setup-initial", "result.json"])
-                .unwrap();
+        let cli = Cli::try_parse_from([
+            "imperialism-oracle",
+            "random-setup-initial",
+            "result.json",
+            "--seed",
+            "1",
+        ])
+        .unwrap();
         match cli.command {
-            Command::RandomSetupInitial { result } => {
+            Command::RandomSetupInitial { result, seed } => {
                 assert_eq!(result, PathBuf::from("result.json"));
+                assert_eq!(seed, 1);
             }
             other => panic!("unexpected command: {other:?}"),
         }
@@ -97,11 +159,45 @@ mod tests {
 
     #[test]
     fn parses_random_game_start() {
-        let cli = Cli::try_parse_from(["imperialism-oracle", "random-game-start", "result.json"])
-            .unwrap();
+        let cli = Cli::try_parse_from([
+            "imperialism-oracle",
+            "random-game-start",
+            "result.json",
+            "--seed",
+            "9",
+        ])
+        .unwrap();
         match cli.command {
-            Command::RandomGameStart { result } => {
+            Command::RandomGameStart { result, seed } => {
                 assert_eq!(result, PathBuf::from("result.json"));
+                assert_eq!(seed, 9);
+            }
+            other => panic!("unexpected command: {other:?}"),
+        }
+    }
+
+    #[test]
+    fn terrain_requires_explicit_scenario_and_seed() {
+        assert!(Cli::try_parse_from(["imperialism-oracle", "terrain", "result.json"]).is_err());
+        let cli = Cli::try_parse_from([
+            "imperialism-oracle",
+            "terrain",
+            "result.json",
+            "--scenario",
+            "random_map_terrain_dune",
+            "--seed",
+            "3",
+        ])
+        .unwrap();
+        match cli.command {
+            Command::Terrain {
+                result,
+                scenario,
+                seed,
+            } => {
+                assert_eq!(result, PathBuf::from("result.json"));
+                assert_eq!(scenario, "random_map_terrain_dune");
+                assert_eq!(seed, 3);
             }
             other => panic!("unexpected command: {other:?}"),
         }

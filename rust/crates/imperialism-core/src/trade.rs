@@ -3,12 +3,6 @@ use crate::{
     NationCommonState, NationId, ResourceKind, TradePolicyScore, all_resources,
 };
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum RuleError {
-    #[error("nation {} cannot run the player trade phase", .nation.get())]
-    PlayerTradePhaseUnavailable { nation: NationId },
-}
-
 impl GameState {
     /// Recalculates the world's seventeen market commodity prices in retail order.
     pub fn recalculate_trade_prices(&mut self) {
@@ -159,14 +153,13 @@ impl GameState {
 
     /// Resets the retail player trade phase.
     ///
-    /// Nations outside this mode use a different retail virtual implementation
-    /// and remain unsupported until that behavior has a semantic state model.
-    pub fn reset_player_trade_phase(&mut self, nation: MajorNationId) -> Result<(), RuleError> {
-        if !self.nations.majors[nation].economy.controller.is_human() {
-            return Err(RuleError::PlayerTradePhaseUnavailable {
-                nation: nation.nation(),
-            });
-        }
+    /// Nations outside this mode use a different retail virtual implementation.
+    /// Calling the player implementation for one is an internal phase-dispatch bug.
+    pub fn reset_player_trade_phase(&mut self, nation: MajorNationId) {
+        assert!(
+            self.nations.majors[nation].economy.controller.is_human(),
+            "player trade phase requires a human-controlled major nation"
+        );
 
         self.refresh_merchant_capacity(nation);
         let major = &mut self.nations.majors[nation].economy;
@@ -174,7 +167,6 @@ impl GameState {
         major.budget_pool_base = 0;
         major.budget_pool_delta = 0;
         self.recall_trade_bids(nation);
-        Ok(())
     }
 
     /// Credits a minor nation's resource-specific aid allocation.
@@ -355,6 +347,7 @@ mod tests {
             economy: major(),
             city: city(),
         });
+        let mut diplomacy_rng = RetailCrtRng::from_state(1);
         GameState {
             turn: TurnState {
                 scenario_map: None,
@@ -376,14 +369,21 @@ mod tests {
                 zone_status: RetailLcg::from_state(1),
             },
             market: crate::TradeMarketState::default(),
+            diplomacy: crate::DiplomacyState::for_random_start(
+                crate::MajorNationId::new(6),
+                Difficulty::Normal,
+                &mut diplomacy_rng,
+            ),
             nations: Nations {
                 majors,
                 minors: MinorNationTable::default(),
             },
             military_units: vec![],
             civilian_units: vec![],
+            ships: vec![],
+            task_forces: vec![],
             missions: vec![],
-            turn_summaries: crate::MajorNationTable::default(),
+            pending: crate::PendingWorkState::default(),
         }
     }
 
@@ -403,6 +403,16 @@ mod tests {
             },
             ..crate::test_support::city()
         }
+    }
+
+    #[test]
+    #[should_panic(expected = "player trade phase requires a human-controlled major nation")]
+    fn player_trade_phase_requires_a_human_controller() {
+        let nation = MajorNationId::new(6);
+        let mut game = state();
+        game.nations.majors[nation].economy.controller = crate::MajorNationController::Computer;
+
+        game.reset_player_trade_phase(nation);
     }
 
     #[test]

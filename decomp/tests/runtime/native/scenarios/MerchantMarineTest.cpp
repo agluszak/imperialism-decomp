@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -46,8 +47,9 @@ private:
     caseCapture.Set("nation", static_cast<int>(nationSlot));
     RunState().SetCapture("case", caseCapture.Release());
 
-    if (nation->IncreaseMerchantMarine() == 0) {
-      return RuntimeActionResult::Failure("retail merchant marine could not be increased");
+    const bool increased = nation->IncreaseMerchantMarine() != 0;
+    if (!CaptureBooleanOpResult(RunState(), increased)) {
+      return RuntimeActionResult::Failure("the merchant-marine result capture is unavailable");
     }
 
     if (!CaptureGameState(RunState(), "after")) {

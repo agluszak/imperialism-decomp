@@ -2,7 +2,7 @@
 use crate::random_map::trace_coarse_random_map;
 use crate::random_map::{CoarseMap, generate_coarse_random_map};
 use crate::{
-    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, HexDirection, MapGeometry, MapTopology, ProvinceId,
+    EXPANDED_MAP_HEIGHT, EXPANDED_MAP_WIDTH, MapGeometry, MapTopology, ProvinceId,
     RANDOM_MAP_CLASS_COUNT, RetailLcg, RiverSegment, TerrainKind, TileId, TileOwnerTag,
     hash_retail_scenario_tag,
 };
@@ -119,7 +119,6 @@ impl RandomMapTuning {
 pub(crate) struct GeneratedTerrainTileScratch {
     pub terrain_kind: i8,
     pub river_sprite_code: u8,
-    pub river_flow_direction: Option<HexDirection>,
     pub owner_nation: i8,
     pub gate_flag: i8,
     pub province_index: i16,
@@ -423,7 +422,6 @@ fn generate_random_map_impl(
             .map(|tile| GeneratedTerrainTileScratch {
                 terrain_kind: tile.terrain_kind,
                 river_sprite_code: 0,
-                river_flow_direction: None,
                 owner_nation: tile.owner_nation,
                 gate_flag: -1,
                 province_index: tile.province_index,
@@ -985,7 +983,6 @@ fn grow_river(
             return false;
         }
         tiles[tile].river_sprite_code = outgoing_direction as u8 + 0x10;
-        tiles[tile].river_flow_direction = Some(HexDirection::ALL[outgoing_direction]);
         return true;
     }
     let mut opposite = outgoing_direction;
@@ -1018,7 +1015,6 @@ fn grow_river(
     } else {
         RIVER_CONNECTION[next_direction][opposite]
     };
-    tiles[tile].river_flow_direction = Some(HexDirection::ALL[next_direction]);
     true
 }
 
@@ -1026,8 +1022,7 @@ fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerra
     GeneratedTerrainTile {
         terrain: TerrainKind::from_retail(tile.terrain_kind)
             .expect("accepted generator terrain is semantic"),
-        river: (tile.river_sprite_code != 0)
-            .then(|| RiverSegment::new(tile.river_sprite_code, tile.river_flow_direction)),
+        river: RiverSegment::from_connection_code(tile.river_sprite_code),
         owner: u8::try_from(tile.owner_nation).ok().map(TileOwnerTag::new),
         gate: (tile.gate_flag != -1).then_some(GenerationGate(tile.gate_flag)),
         province: u16::try_from(tile.province_index)
@@ -1430,7 +1425,7 @@ mod tests {
                 .to_le_bytes();
             [
                 tile.terrain.retail() as u8,
-                tile.river.map_or(0, RiverSegment::sprite),
+                tile.river.map_or(0, RiverSegment::connection_code),
                 tile.owner.map_or(-1, |owner| owner.get() as i8) as u8,
                 tile.gate.map_or(-1, GenerationGate::get) as u8,
                 province[0],
@@ -1505,7 +1500,6 @@ mod tests {
             GeneratedTerrainTileScratch {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
-                river_flow_direction: None,
                 owner_nation: 0,
                 gate_flag: -1,
                 province_index: 0,
@@ -1513,7 +1507,6 @@ mod tests {
             GeneratedTerrainTileScratch {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
-                river_flow_direction: None,
                 owner_nation: 1,
                 gate_flag: -1,
                 province_index: 1,
@@ -1521,7 +1514,6 @@ mod tests {
             GeneratedTerrainTileScratch {
                 terrain_kind: PLAINS,
                 river_sprite_code: 0,
-                river_flow_direction: None,
                 owner_nation: 6,
                 gate_flag: -1,
                 province_index: 2,
@@ -1529,7 +1521,6 @@ mod tests {
             GeneratedTerrainTileScratch {
                 terrain_kind: WATER,
                 river_sprite_code: 0,
-                river_flow_direction: None,
                 owner_nation: 23,
                 gate_flag: -1,
                 province_index: -1,

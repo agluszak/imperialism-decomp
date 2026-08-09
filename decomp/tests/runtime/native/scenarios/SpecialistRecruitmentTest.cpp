@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/city/TUnitOrder.h"
@@ -49,6 +50,9 @@ private:
     order.IUnitOrder(nation->city, 24, -1, 0, -1, 0, 0, kHighSkillWorkforceMode, 1);
     order.quantity = 1;
     order.Produce();
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    }
 
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

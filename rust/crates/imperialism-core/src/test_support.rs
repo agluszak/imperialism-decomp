@@ -102,6 +102,7 @@ pub(crate) fn major_nation() -> MajorNation {
 
 /// A game state with seven valid major nations and an empty world.
 pub(crate) fn game_state() -> GameState {
+    let mut diplomacy_rng = RetailCrtRng::from_state(1);
     GameState {
         turn: TurnState {
             scenario_map: None,
@@ -123,13 +124,20 @@ pub(crate) fn game_state() -> GameState {
             zone_status: RetailLcg::from_state(1),
         },
         market: TradeMarketState::default(),
+        diplomacy: crate::DiplomacyState::for_random_start(
+            crate::MajorNationId::new(0),
+            Difficulty::Normal,
+            &mut diplomacy_rng,
+        ),
         nations: Nations {
             majors: MajorNationTable::from_fn(|_nation| major_nation()),
             minors: MinorNationTable::default(),
         },
         military_units: Vec::new(),
         civilian_units: Vec::new(),
+        ships: Vec::new(),
+        task_forces: Vec::new(),
         missions: Vec::new(),
-        turn_summaries: MajorNationTable::default(),
+        pending: crate::PendingWorkState::default(),
     }
 }

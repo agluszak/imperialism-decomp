@@ -3,17 +3,27 @@
 This directory is an independent Cargo workspace and a first-class sibling of the C++
 reconstruction in `../decomp/`. Run Rust commands from this directory.
 
-- `imperialism-core` owns deterministic game state, direct rule operations, and domain events.
-  It has no Bevy dependency.
+- `imperialism-core` owns deterministic game state and direct typed rule operations. It has no Bevy
+  dependency and exposes non-state effects only when a current consumer requires them; there is no
+  universal command bus.
 - `imperialism-formats` parses retail files and accesses retail assets directly.
 - `imperialism-app` is the only Bevy-dependent crate and owns presentation and lifecycle.
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
-Native semantic scenarios capture `before`, `case`, `after`, and `result` JSON; the testkit validates the published runtime envelope strictly and compares operation outcomes as well as complete GameState. Ordinary Rust tests call
-`differential(scenario, |state, case| { ... })`, apply the Rust operation, and compare complete
-states with `first_serialized_difference`. Retail fixtures live in `../fixtures/retail/`. The Rust
-game state does not depend on C++ layouts or Bevy ECS entities.
+Native semantic scenarios capture `before`, `case`, `after`, and `result` JSON. The testkit strictly
+validates the published scenario name, seed, status, evidence kind, required captures, and unknown
+fields, then compares operation outcomes as well as complete `GameState`. Each Rust scenario keeps
+its name, case type, result type, and direct apply function together, then calls
+`differential(SCENARIO, apply_scenario)`. Retail fixtures live in `../fixtures/retail/`. The Rust game
+state does not depend on C++ layouts or Bevy ECS entities.
+
+Evidence classifications are retained: `retail_fixture_oracle` means Rust agrees with the current C++
+reconstruction from a retail-derived fixture; it is not direct original-executable equivalence.
+`retail_differential` is the classification for behavior checked against the original executable.
+
+Core APIs distinguish malformed external input (`Result`), legal gameplay rejection (a typed outcome
+or narrow domain error), and broken internal invariants (structure, assertion, or `expect`).
 
 ```sh
 cargo test --workspace

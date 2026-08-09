@@ -5,9 +5,12 @@ repository rules in `../AGENTS.md` plus this guide.
 
 ## Architecture
 
+Keep these four crates. Do not split the core into subsystem microcrates, move authoritative state
+into ECS, or introduce a second snapshot-domain model.
+
 - `imperialism-core` owns authoritative deterministic game state, rules, and typed IDs. It must not
   depend on Bevy. Direct domain operations return concrete outputs needed by current callers; emit
-  domain events only when an existing consumer or oracle comparison requires them.
+  non-state effects only when an existing consumer or oracle comparison requires them.
 - `imperialism-formats` owns retail-file parsing, import, normalization, and retail-format ugliness.
 - `imperialism-app` owns Bevy presentation, input, audio, and lifecycle. ECS is a disposable
   projection, not the gameplay database.
@@ -18,6 +21,19 @@ repository rules in `../AGENTS.md` plus this guide.
 Keep retail compatibility concessions at format, import, or oracle boundaries. Do not leak raw offsets,
 weak identifiers, binary-layout constraints, or C++-shaped APIs into the domain model merely because
 the decomp uses them.
+
+## Domain operations and failures
+
+- Prefer direct typed methods on `GameState`. Do not introduce a universal `GameCommand`, command
+  bus, event-sourcing layer, or event for every private helper.
+- Return operation-specific results when callers need them. Keep effects only for ordered
+  observables absent from authoritative state, such as notifications, sounds, modal prompts, or
+  acknowledgement requests. Do not emit effects that merely restate state mutations.
+- Keep app flow `input → one core operation → state/results/effects → UI projection`. Turn sequencing
+  belongs in core through `advance_turn_step` / `advance_until_blocked`, not in a Bevy schedule.
+- External decode or malformed payload errors return `Result`. Legal gameplay rejection returns a
+  typed outcome or narrow domain error the UI can use. Broken internal invariants are prevented by
+  structure where practical and otherwise assert or `expect`; do not thread them through rule APIs.
 
 ## Domain types and arithmetic
 
@@ -38,11 +54,29 @@ the decomp uses them.
 ## Differential fidelity
 
 - Preserve capture collection order and semantic IDs. Differential scenarios compare complete
-  `before`/`case`/`after` state and the semantic operation result; do not normalize order.
+  `before`/`case`/`after` state, the semantic operation result, and any required ordered non-state
+  effects; do not normalize order.
 - Validate published runtime result envelopes strictly: name, seed, status, evidence kind, required
   captures, and unknown capture fields.
-- Advance turns only through `advance_turn_step`. Phase 6 is an unported stop, not completed
-  diplomacy progression.
+- Preserve the native scenario's evidence kind. `retail_fixture_oracle` proves agreement with the
+  reconstructed C++ executable from a retail-derived fixture; only `retail_differential` certifies
+  that behavior against the original executable.
+- Advance turns only through `advance_turn_step`. Unported alert, acknowledgement, and phase work
+  stops at the current phase; do not mutate to the next phase before its authoritative work and
+  effects exist.
+
+## Collection order and identities
+
+- Nation, major-nation, minor-nation, resource, production, and map tables are fixed-position
+  semantic collections. Preserve their indexes exactly.
+- Compare `GameState` vectors in captured order; do not sort or normalize them in the comparator.
+  Recruitment currently preserves contiguous per-nation unit blocks.
+- `MilitaryUnitId` and `CivilianUnitId` come from retail save `persistent_id` values, and loaded army
+  mission references resolve to those persistent military IDs.
+- `ShipId` and `TaskForceId` are snapshot-local positions in preserved primary-list and queue order;
+  preserve those orders and rewrite every reference together. Legacy projection of non-empty retail
+  navy relationships remains unsupported until the save's references can be resolved independently.
+  `PhaseCode` remains an open numeric domain; type codes only as rules prove them.
 
 ## Behavioral work
 
@@ -52,8 +86,8 @@ the decomp uses them.
   Rust or Bevy development.
 - Put deterministic behavior in `imperialism-core` as direct operations that return the concrete
   output current callers need. Keep Bevy input and presentation outside the game model.
-- Compare complete post-state (and ordered events when a consumer/oracle requires them), not only the
-  symptom or a selected field.
+- Compare complete post-state, operation results, and required ordered non-state effects, not only
+  the symptom or a selected field.
 - Add the smallest focused Rust test that proves the primary behavior. Do not accumulate edge-case
   or representation-detail tests without a concrete regression they prevent. Add or extend a
   differential oracle when the change asserts retail semantics.

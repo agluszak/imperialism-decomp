@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/civilian_domain_types.h"
 #include "game/globals/shared_globals.h"
@@ -84,6 +85,9 @@ private:
 
     extractiveWorker->ContinueOrders();
     surfaceWorker->ContinueOrders();
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    }
 
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

@@ -39,12 +39,12 @@ pub use city_site::{
     place_city, requires_capital_site_selection, supports_city_site_terrain,
     validate_capital_site_selection,
 };
-pub use civilian_work::{CivilianWorkError, CivilianWorkOrder, RailSegment, TurnsRemaining};
+pub use civilian_work::{CivilianWorkOrder, RailSegment, TurnsRemaining};
 pub use create_random_game::create_random_game;
 pub use difficulty::Difficulty;
 pub use ids::{
     CivilianUnitId, MajorNationId, MilitaryUnitId, MinorNationId, NationId, OceanZoneId,
-    ProvinceId, TileId, TileOwnerTag,
+    ProvinceId, ShipId, TaskForceId, TileId, TileOwnerTag,
 };
 pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
@@ -80,24 +80,26 @@ pub mod differential_trace {
         trace_random_map_terrain,
     };
 }
-pub use recruitment::RecruitmentError;
 pub(crate) use resources::all_resources;
 pub use resources::{ResourceKind, ResourceTable};
 pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitState,
-    DevelopmentLevel, DiplomacyGrant, DiplomacyPolicy, GameState, GreatPowerState, MajorNation,
+    DevelopmentLevel, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
+    DiplomaticMissionLevel, DiplomaticRelationship, GameState, GreatPowerState, MajorNation,
     MajorNationController, MilitaryOrder, MilitaryOrderCode, MilitaryUnitState, MinorNation,
-    MissionData, MissionState, NationCommonState, Nations, NavyMissionState, PendingActionState,
-    PendingActionStatus, PhaseCode, PopulationAccumulator, PopulationState, RegionId, RiverSegment,
-    RngState, ScenarioMapId, Stockpile, StrategicMap, StrategicMapSizeError, StrikePhase,
-    TerrainKind, TileAction, TileDevelopment, TileFlags, TileState, TileTransportLinks,
-    TradePolicyScore, TurnState, TurnSummary, UnitIdAllocator,
+    MissionData, MissionState, NationCommonState, NationPendingWork, Nations, NavyMissionState,
+    PendingActionState, PendingActionStatus, PendingWorkState, PhaseCode, PopulationAccumulator,
+    PopulationState, RegionId, RiverSegment, RngState, ScenarioMapId, SelectedShip, ShipState,
+    Stockpile, StrategicMap, StrategicMapSizeError, StrikePhase, TaggedValue, TaskForceState,
+    TaskForceTarget, TerrainKind, TileAction, TileDevelopment, TileFlags, TileState,
+    TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator,
+    WarTransition,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
-    NationCapacities, NationTable, PENDING_ACTION_COUNT, PendingActionKind, PendingActionTable,
-    ProductionTable, ShipType, ShipTypeTable,
+    NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
+    PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
-pub use trade::RuleError;
+pub use turn_flow::{AdvanceTurnOutcome, TurnBlock};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

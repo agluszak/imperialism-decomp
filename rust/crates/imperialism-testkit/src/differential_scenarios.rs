@@ -1,58 +1,431 @@
-//! Centralized semantic differential scenario contracts.
-
-use imperialism_core::{GameState, MajorNationId, NationId, ResourceKind};
-use serde::{Deserialize, Serialize};
+//! Rust halves of the process-isolated semantic differential scenarios.
+//!
+//! Each scenario keeps its native name, decoded case, semantic result, and
+//! direct Rust operation together. The native runtime remains responsible for
+//! constructing the case and observing the C++ result.
 
 use crate::{EvidenceKind, RuntimeResultExpectations};
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "status", rename_all = "snake_case")]
-pub enum DiffOpResult { Accepted, Rejected { reason: DiffRejectReason } }
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum DiffRejectReason { NotMajorNation }
+const DIFFERENTIAL_CAPTURES: &[&str] = &["before", "case", "after", "result"];
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ScenarioMeta {
     pub name: &'static str,
+    pub seed: u32,
     pub evidence_kind: EvidenceKind,
-    pub required_captures: &'static [&'static str],
 }
+
 impl ScenarioMeta {
     pub const fn expectations(self) -> RuntimeResultExpectations<'static> {
-        RuntimeResultExpectations { name: self.name, seed: Some(1), evidence_kind: self.evidence_kind, required_captures: self.required_captures }
+        RuntimeResultExpectations {
+            name: self.name,
+            seed: self.seed,
+            evidence_kind: self.evidence_kind,
+            required_captures: DIFFERENTIAL_CAPTURES,
+        }
     }
 }
 
-pub const MAJOR_TRADE_SETTLEMENT: ScenarioMeta = ScenarioMeta { name: "major_trade_settlement", evidence_kind: EvidenceKind::RetailFixtureOracle, required_captures: &["before", "case", "after", "result"] };
-pub const MAJOR_TRADE_NOT_MAJOR: ScenarioMeta = ScenarioMeta { name: "major_trade_not_major", evidence_kind: EvidenceKind::RetailFixtureOracle, required_captures: &["before", "case", "after", "result"] };
-pub const EASY_TURN_FROM_SAVE: ScenarioMeta = ScenarioMeta { name: "easy_turn_from_save", evidence_kind: EvidenceKind::RetailFixtureOracle, required_captures: &["before", "case", "after", "result"] };
+#[cfg(test)]
+mod scenarios {
+    use super::ScenarioMeta;
+    use crate::EvidenceKind;
+    use imperialism_core::{
+        CivilianUnitId, DiplomacyGrant, GameState, MajorNationId, MilitaryUnitKind, MinorNationId,
+        NationId, ResourceKind, TradePolicyScore,
+    };
+    use serde::Deserialize;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TradeSettlement { pub resource: ResourceKind, pub amount: i16, pub price: i16 }
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TradeCase { pub nation: NationId, pub settlements: Vec<TradeSettlement> }
+    const fn retail_fixture(name: &'static str) -> ScenarioMeta {
+        ScenarioMeta {
+            name,
+            seed: 1,
+            evidence_kind: EvidenceKind::RetailFixtureOracle,
+        }
+    }
 
-pub fn apply_trade_case(state: &mut GameState, case: &TradeCase) -> DiffOpResult {
-    let Some(nation) = MajorNationId::from_nation(case.nation) else { return DiffOpResult::Rejected { reason: DiffRejectReason::NotMajorNation }; };
-    for settlement in &case.settlements { state.purchase_item(nation, settlement.resource, settlement.amount, settlement.price); }
-    DiffOpResult::Accepted
-}
+    #[derive(Debug, Deserialize)]
+    struct NationCase {
+        nation: MajorNationId,
+    }
 
+    #[derive(Debug, Deserialize)]
+    struct TradeSettlement {
+        resource: ResourceKind,
+        amount: i16,
+        price: i16,
+    }
 
-/// Compare the semantic `before`/`case`/`after`/`result` envelope for a trade scenario.
-pub fn compare_trade_from_result(path: &std::path::Path, meta: ScenarioMeta) -> anyhow::Result<()> {
-    let runtime = crate::read_runtime_result(path, meta.expectations())?;
-    let mut actual: GameState = runtime.capture("before")?;
-    let case: TradeCase = runtime.capture("case")?;
-    let expected: GameState = runtime.capture("after")?;
-    let expected_result: DiffOpResult = runtime.capture("result")?;
-    let actual_result = apply_trade_case(&mut actual, &case);
-    anyhow::ensure!(actual_result == expected_result, "operation result differs: native {expected_result:?}, Rust {actual_result:?}");
-    crate::assert_game_state_eq(&expected, &actual)
-}
+    #[derive(Debug, Deserialize)]
+    struct MajorTradeSettlementCase {
+        nation: MajorNationId,
+        settlements: Vec<TradeSettlement>,
+    }
 
-pub fn scenario_meta(name: &str) -> Option<ScenarioMeta> {
-    [MAJOR_TRADE_SETTLEMENT, MAJOR_TRADE_NOT_MAJOR, EASY_TURN_FROM_SAVE].into_iter().find(|meta| meta.name == name)
+    const MAJOR_TRADE_SETTLEMENT: ScenarioMeta = retail_fixture("major_trade_settlement");
+
+    fn apply_major_trade_settlement(state: &mut GameState, case: MajorTradeSettlementCase) {
+        for settlement in case.settlements {
+            state.purchase_item(
+                case.nation,
+                settlement.resource,
+                settlement.amount,
+                settlement.price,
+            );
+        }
+    }
+
+    const PURCHASED_ITEMS_PHASE: ScenarioMeta = retail_fixture("purchased_items_phase");
+
+    #[derive(Debug, Deserialize)]
+    struct PurchasedItemsPhaseCase {
+        nation: MajorNationId,
+        purchases: Vec<TradeSettlement>,
+    }
+
+    fn apply_purchased_items_phase(state: &mut GameState, case: PurchasedItemsPhaseCase) {
+        state.remember_trade_bids(case.nation);
+        for purchase in case.purchases {
+            state.purchase_item(
+                case.nation,
+                purchase.resource,
+                purchase.amount,
+                purchase.price,
+            );
+        }
+        state.commit_purchased_items(case.nation);
+    }
+
+    const CREATED_ITEMS_PHASE: ScenarioMeta = retail_fixture("created_items_phase");
+
+    fn apply_created_items_phase(state: &mut GameState, case: NationCase) {
+        state.add_created_items(case.nation);
+    }
+
+    const FIRST_TURN_ALERT_PHASE: ScenarioMeta = retail_fixture("first_turn_alert_phase");
+
+    fn apply_first_turn_alert_phase(state: &mut GameState, (): ()) {
+        let _ = state.advance_turn_step();
+    }
+
+    const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
+
+    fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
+        state.settle_transported_items(case.nation);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct DiplomacyGrantCase {
+        nation: MajorNationId,
+        target: NationId,
+        amount: i32,
+    }
+
+    const DIPLOMACY_GRANT_ENTRY: ScenarioMeta =
+        retail_fixture("diplomacy_grant_entry_updates_treasury");
+
+    fn apply_diplomacy_grant_entry(state: &mut GameState, case: DiplomacyGrantCase) -> bool {
+        state.set_diplomacy_grant(
+            case.nation,
+            case.target,
+            Some(DiplomacyGrant {
+                amount: case.amount,
+                recurring: false,
+            }),
+        )
+    }
+
+    const DIPLOMACY_RESET: ScenarioMeta =
+        retail_fixture("diplomacy_reset_preserves_recurring_grants");
+
+    fn apply_diplomacy_reset(state: &mut GameState, case: NationCase) {
+        state.reset_diplomacy_commitments(case.nation);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct AidAllocationCase {
+        nation: MajorNationId,
+        minor_nation: MinorNationId,
+        resource: ResourceKind,
+        amount: i32,
+    }
+
+    const AID_ALLOCATION: ScenarioMeta = retail_fixture("aid_allocation");
+
+    fn apply_aid_allocation(state: &mut GameState, case: AidAllocationCase) {
+        state.add_aid_allocation(case.nation, case.minor_nation, case.resource, case.amount);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct DirectTransportCase {
+        nation: MajorNationId,
+        resource: ResourceKind,
+        requested: i16,
+    }
+
+    const DIRECT_TRANSPORT: ScenarioMeta = retail_fixture("direct_transport");
+
+    fn apply_direct_transport(state: &mut GameState, case: DirectTransportCase) -> i16 {
+        state.direct_transport(case.nation, case.resource, case.requested)
+    }
+
+    const ROLLING_STOCK_SUCCESS: ScenarioMeta = retail_fixture("rolling_stock");
+    const ROLLING_STOCK_INSUFFICIENT: ScenarioMeta = ScenarioMeta {
+        name: "rolling_stock_insufficient_resources",
+        seed: 1,
+        evidence_kind: EvidenceKind::RetailFixtureOracle,
+    };
+    const ROLLING_STOCK_CORPUS: &[ScenarioMeta] =
+        &[ROLLING_STOCK_SUCCESS, ROLLING_STOCK_INSUFFICIENT];
+
+    fn apply_rolling_stock(state: &mut GameState, case: NationCase) -> bool {
+        state.increase_rolling_stock(case.nation)
+    }
+
+    const MERCHANT_MARINE: ScenarioMeta = retail_fixture("merchant_marine");
+
+    fn apply_merchant_marine(state: &mut GameState, case: NationCase) -> bool {
+        state.increase_merchant_marine(case.nation)
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct PowerPlantUpgradeCase {
+        nation: MajorNationId,
+        enabled: bool,
+    }
+
+    const POWER_PLANT_UPGRADE: ScenarioMeta = retail_fixture("power_plant_upgrade");
+
+    fn apply_power_plant_upgrade(state: &mut GameState, case: PowerPlantUpgradeCase) {
+        state.set_power_plant_upgrade(case.nation, case.enabled);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct TradePolicyStepCase {
+        source: MajorNationId,
+        target: NationId,
+    }
+
+    const TRADE_POLICY_STEP: ScenarioMeta = retail_fixture("trade_policy_step");
+
+    fn apply_trade_policy_step(state: &mut GameState, case: TradePolicyStepCase) {
+        state.decrement_trade_policy_score(case.source, case.target);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct TradePolicySetCase {
+        nation: MajorNationId,
+        target: NationId,
+        policy: TradePolicyScore,
+    }
+
+    const TRADE_POLICY_SET: ScenarioMeta = retail_fixture("trade_policy_set");
+
+    fn apply_trade_policy_set(state: &mut GameState, case: TradePolicySetCase) {
+        state.set_trade_policy(case.nation, case.target, case.policy);
+    }
+
+    const TRADE_CAPACITY_REFRESH: ScenarioMeta = retail_fixture("trade_capacity_refresh");
+
+    fn apply_trade_capacity_refresh(state: &mut GameState, case: NationCase) {
+        state.refresh_merchant_capacity(case.nation);
+    }
+
+    const RECALL_TRADE_BIDS: ScenarioMeta = retail_fixture("recall_trade_bids");
+
+    fn apply_recall_trade_bids(state: &mut GameState, case: NationCase) {
+        state.recall_trade_bids(case.nation);
+    }
+
+    const TRANSPORT_NEED_ALLOCATION: ScenarioMeta = retail_fixture("transport_need_allocation");
+
+    fn apply_transport_need_allocation(state: &mut GameState, case: NationCase) {
+        state.allocate_transport_needs(case.nation);
+    }
+
+    const PLAYER_TRADE_PHASE_RESET: ScenarioMeta = retail_fixture("player_trade_phase_reset");
+
+    fn apply_player_trade_phase_reset(state: &mut GameState, case: NationCase) {
+        state.reset_player_trade_phase(case.nation);
+    }
+
+    const TRADE_MARKET_PRICE: ScenarioMeta = retail_fixture("trade_market_price");
+
+    fn apply_trade_market_price(state: &mut GameState, (): ()) {
+        state.recalculate_trade_prices();
+    }
+
+    const MILITARY_MAINTENANCE: ScenarioMeta = retail_fixture("military_maintenance");
+
+    fn apply_military_maintenance(state: &mut GameState, case: NationCase) {
+        state.pay_for_military(case.nation);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct ResourceDevelopmentCase {
+        extractive_worker: CivilianUnitId,
+        surface_worker: CivilianUnitId,
+    }
+
+    const COMPLETED_RESOURCE_DEVELOPMENT: ScenarioMeta =
+        retail_fixture("completed_resource_development");
+
+    fn apply_completed_resource_development(state: &mut GameState, case: ResourceDevelopmentCase) {
+        state.advance_civilian_work(case.extractive_worker);
+        state.advance_civilian_work(case.surface_worker);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct RailConstructionCase {
+        civilian: CivilianUnitId,
+    }
+
+    const COMPLETED_RAIL_SECTION: ScenarioMeta = retail_fixture("completed_rail_section");
+
+    fn apply_completed_rail_section(state: &mut GameState, case: RailConstructionCase) {
+        state.advance_civilian_work(case.civilian);
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct SpecialistRecruitmentCase {
+        nation: MajorNationId,
+        unit_kind: MilitaryUnitKind,
+        quantity: i16,
+    }
+
+    const SPECIALIST_RECRUITMENT: ScenarioMeta = retail_fixture("specialist_recruitment");
+
+    fn apply_specialist_recruitment(state: &mut GameState, case: SpecialistRecruitmentCase) {
+        state.produce_military_recruits(case.nation, case.unit_kind, case.quantity);
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use crate::differential;
+
+        macro_rules! differential_test {
+            ($test:ident, $scenario:expr, $apply:expr) => {
+                #[test]
+                #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+                fn $test() {
+                    differential($scenario, $apply).unwrap();
+                }
+            };
+        }
+
+        differential_test!(
+            major_trade_settlement,
+            MAJOR_TRADE_SETTLEMENT,
+            apply_major_trade_settlement
+        );
+        differential_test!(
+            purchased_items_phase,
+            PURCHASED_ITEMS_PHASE,
+            apply_purchased_items_phase
+        );
+        differential_test!(
+            created_items_phase,
+            CREATED_ITEMS_PHASE,
+            apply_created_items_phase
+        );
+        differential_test!(
+            first_turn_alert_phase,
+            FIRST_TURN_ALERT_PHASE,
+            apply_first_turn_alert_phase
+        );
+        differential_test!(
+            transported_items_phase,
+            TRANSPORTED_ITEMS_PHASE,
+            apply_transported_items_phase
+        );
+        differential_test!(
+            diplomacy_grant_entry,
+            DIPLOMACY_GRANT_ENTRY,
+            apply_diplomacy_grant_entry
+        );
+        differential_test!(diplomacy_reset, DIPLOMACY_RESET, apply_diplomacy_reset);
+        differential_test!(aid_allocation, AID_ALLOCATION, apply_aid_allocation);
+        differential_test!(direct_transport, DIRECT_TRANSPORT, apply_direct_transport);
+        differential_test!(merchant_marine, MERCHANT_MARINE, apply_merchant_marine);
+        differential_test!(
+            power_plant_upgrade,
+            POWER_PLANT_UPGRADE,
+            apply_power_plant_upgrade
+        );
+        differential_test!(
+            trade_policy_step,
+            TRADE_POLICY_STEP,
+            apply_trade_policy_step
+        );
+        differential_test!(trade_policy_set, TRADE_POLICY_SET, apply_trade_policy_set);
+        differential_test!(
+            trade_capacity_refresh,
+            TRADE_CAPACITY_REFRESH,
+            apply_trade_capacity_refresh
+        );
+        differential_test!(
+            recall_trade_bids,
+            RECALL_TRADE_BIDS,
+            apply_recall_trade_bids
+        );
+        differential_test!(
+            transport_need_allocation,
+            TRANSPORT_NEED_ALLOCATION,
+            apply_transport_need_allocation
+        );
+        differential_test!(
+            player_trade_phase_reset,
+            PLAYER_TRADE_PHASE_RESET,
+            apply_player_trade_phase_reset
+        );
+        differential_test!(
+            trade_market_price,
+            TRADE_MARKET_PRICE,
+            apply_trade_market_price
+        );
+        differential_test!(
+            military_maintenance,
+            MILITARY_MAINTENANCE,
+            apply_military_maintenance
+        );
+        differential_test!(
+            completed_resource_development,
+            COMPLETED_RESOURCE_DEVELOPMENT,
+            apply_completed_resource_development
+        );
+        differential_test!(
+            completed_rail_section,
+            COMPLETED_RAIL_SECTION,
+            apply_completed_rail_section
+        );
+        differential_test!(
+            specialist_recruitment,
+            SPECIALIST_RECRUITMENT,
+            apply_specialist_recruitment
+        );
+
+        #[test]
+        #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+        fn rolling_stock_corpus() {
+            for scenario in ROLLING_STOCK_CORPUS {
+                differential(*scenario, apply_rolling_stock).unwrap();
+            }
+        }
+
+        #[test]
+        fn rolling_stock_corpus_names_deliberate_success_and_rejection_cases() {
+            assert_eq!(ROLLING_STOCK_CORPUS.len(), 2);
+            assert_eq!(ROLLING_STOCK_CORPUS[0].name, "rolling_stock");
+            assert_eq!(
+                ROLLING_STOCK_CORPUS[1].name,
+                "rolling_stock_insufficient_resources"
+            );
+            assert!(
+                ROLLING_STOCK_CORPUS
+                    .iter()
+                    .all(|scenario| scenario.evidence_kind == EvidenceKind::RetailFixtureOracle)
+            );
+        }
+    }
 }

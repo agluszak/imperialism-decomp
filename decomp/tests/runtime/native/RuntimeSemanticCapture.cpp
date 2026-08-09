@@ -1,37 +1,18 @@
 #include "RuntimeSemanticCapture.h"
 
-#include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
 
-bool CaptureNamedGameState(RuntimeRun& run, const char* name) {
-  JSON_Value* state = 0;
-  if (name == 0 || !BuildRuntimeGameState(run, &state)) {
-    json_value_free(state);
-    return false;
-  }
-  run.SetCapture(name, state);
-  return true;
+bool CaptureVoidOpResult(RuntimeRun& run) {
+  run.SetCapture("result", json_value_init_null());
+  return run.HasCapture("result");
 }
 
-JSON_Value* BuildAcceptedOpResult() {
-  JSON_Value* value = json_value_init_object();
-  JSON_Object* object = value != 0 ? json_value_get_object(value) : 0;
-  if (object == 0 || json_object_set_string(object, "status", "accepted") != JSONSuccess) {
-    json_value_free(value);
-    return 0;
-  }
-  return value;
+bool CaptureBooleanOpResult(RuntimeRun& run, bool result) {
+  run.SetCapture("result", json_value_init_boolean(result ? 1 : 0));
+  return run.HasCapture("result");
 }
 
-JSON_Value* BuildRejectedNotMajorOpResult(int nationSlot) {
-  JSON_Value* value = json_value_init_object();
-  JSON_Object* object = value != 0 ? json_value_get_object(value) : 0;
-  if (object == 0 ||
-      json_object_set_string(object, "status", "rejected") != JSONSuccess ||
-      json_object_set_string(object, "reason", "not_major_nation") != JSONSuccess ||
-      json_object_set_number(object, "nation", nationSlot) != JSONSuccess) {
-    json_value_free(value);
-    return 0;
-  }
-  return value;
+bool CaptureIntegerOpResult(RuntimeRun& run, int result) {
+  run.SetCapture("result", json_value_init_number(result));
+  return run.HasCapture("result");
 }

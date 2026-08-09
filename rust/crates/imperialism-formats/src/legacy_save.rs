@@ -2,17 +2,19 @@ use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitId,
     CivilianUnitKind, CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel,
-    Difficulty, DiplomacyGrant, DiplomacyPolicy, GameState, GreatPowerState, LaborPool,
+    Difficulty, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
+    DiplomaticMissionLevel, DiplomaticRelationship, GameState, GreatPowerState, LaborPool,
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationTable,
     MapTopology, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable,
     MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT,
     NationCapacities, NationCommonState, NationId, NationTable, Nations, NavyMissionState,
     OceanZoneId, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus, PendingActionTable,
-    PopulationAccumulator, PopulationState, ProductionTable, ProvinceId, RailSegment, ResourceKind,
-    ResourceTable, RetailCrtRng, RetailLcg, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable,
-    Stockpile, StrategicMap, StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags,
-    TileId, TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
-    TradeMarketState, TradePolicyScore, TurnState, TurnsRemaining,
+    PendingWorkState, PopulationAccumulator, PopulationState, ProductionTable, ProvinceId,
+    ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg,
+    RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile, StrategicMap,
+    StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId, TileOwnerTag,
+    TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState,
+    TradePolicyScore, TurnState, TurnsRemaining,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -96,6 +98,7 @@ pub struct LegacySaveV62 {
     simulation: LegacySimulationPrefix,
     animator_idle_frequency: i32,
     market: TradeMarketState,
+    diplomacy: DiplomacyState,
     map: LegacyMapState,
     ocean: LegacyOceanState,
     navy: LegacyNavyState,
@@ -700,8 +703,12 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> Result<NavyMissionState, L
     Ok(NavyMissionState {
         target_zone: optional_ocean_zone_id(mission.target_zone)?,
         resolved_port_zone: optional_ocean_zone_id(mission.resolved_port_zone)?,
+        // TNavyMission::ReadFrom rebuilds these runtime-only links as null.
+        selected_ship: None,
+        task_force: None,
         state: mission.state,
         required_equipage_bits: mission.required_equipage_bits,
+        ships: Vec::new(),
     })
 }
 
@@ -780,8 +787,10 @@ impl LegacyCityState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
+    pub river_sprite: u8,
     pub owner_nation: i8,
     pub former_owner_nation: i8,
+    pub region: i8,
     pub adjacency_bits: u8,
     pub city_or_province_index: i16,
     pub development_classes: i8,
@@ -827,10 +836,58 @@ impl LegacyTerrainTile {
             )?,
             action: TileAction::try_from_retail(i16::from(self.action_state)),
             flags: TileFlags::from_bits_retain(self.active_flags),
-            region: None,
-            river: None,
+            region: optional_region_id(self.region)?,
+            river: river_segment_from_retail_sprite(self.river_sprite, tile)?,
         })
     }
+}
+
+fn river_segment_from_retail_sprite(
+    mut sprite: u8,
+    tile: usize,
+) -> Result<Option<RiverSegment>, LegacySaveError> {
+    const FLOW_CONNECTIONS: [u8; 16] = [1, 2, 3, 3, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 8, 9];
+
+    if sprite == 0 {
+        return Ok(None);
+    }
+    if (0x1b..=0x2a).contains(&sprite) {
+        sprite -= 0x10;
+    }
+    let connection_code = if (0x0b..=0x1a).contains(&sprite) {
+        FLOW_CONNECTIONS[usize::from(sprite - 0x0b)]
+    } else {
+        match sprite {
+            0x2b => 0x0a,
+            0x2c | 0x2d => 0x0b,
+            0x2e => 0x0c,
+            0x2f => 0x0d,
+            0x30 | 0x31 => 0x0e,
+            0x32 => 0x0f,
+            0x33 => 0x13,
+            0x34 | 0x35 => 0x14,
+            0x36 => 0x15,
+            0x37 => 0x10,
+            0x38 | 0x39 => 0x11,
+            0x3a => 0x12,
+            _ => {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "tile {tile} has invalid river sprite {sprite:#04x}"
+                )));
+            }
+        }
+    };
+    Ok(RiverSegment::from_connection_code(connection_code))
+}
+
+fn optional_region_id(value: i8) -> Result<Option<RegionId>, LegacySaveError> {
+    if value == -1 {
+        return Ok(None);
+    }
+    u8::try_from(value)
+        .map(RegionId::new)
+        .map(Some)
+        .map_err(|_| LegacySaveError::StateProjection(format!("region ID {value} is invalid")))
 }
 
 fn optional_resource_kind(value: i8, tile: usize) -> Result<Option<ResourceKind>, LegacySaveError> {
@@ -1118,6 +1175,12 @@ pub enum LegacySaveError {
     },
     #[error("{context}: nation slot {slot} is outside the expected range")]
     InvalidNationSlot { context: &'static str, slot: i16 },
+    #[error("{context} entry {index} has invalid retail value {value}")]
+    InvalidDiplomacyValue {
+        context: &'static str,
+        index: usize,
+        value: i16,
+    },
     #[error(
         "legacy save ends at offset {end_offset:#x} but input length is {length:#x}; trailing bytes are not represented"
     )]
@@ -1318,7 +1381,12 @@ impl LegacySaveV62 {
         };
         let animator_idle_frequency = stream.read_le_i32()?;
         let market = read_trade_market(&mut stream)?;
-        stream.skip(DIPLOMACY_SERIALIZED_SIZE_V62)?;
+        let diplomacy_start = stream.position();
+        let diplomacy = read_diplomacy_state(&mut stream)?;
+        debug_assert_eq!(
+            stream.position() - diplomacy_start,
+            DIPLOMACY_SERIALIZED_SIZE_V62
+        );
         stream.skip(TECH_SERIALIZED_SIZE_V62)?;
         let map = read_map(&mut stream)?;
         let ocean = read_ocean(&mut stream)?;
@@ -1407,6 +1475,7 @@ impl LegacySaveV62 {
             simulation,
             animator_idle_frequency,
             market,
+            diplomacy,
             map,
             ocean,
             navy,
@@ -1514,6 +1583,13 @@ impl LegacySaveV62 {
             {
                 minors[minor_id] = Some(MinorNation {
                     common: country_common(&nation.country)?,
+                    consortium_members: nation
+                        .diplomacy_save_fields
+                        .map(minor_nation_id_from_retail_i16)
+                        .into_iter()
+                        .collect::<Result<Vec<_>, _>>()?
+                        .try_into()
+                        .expect("four persisted consortium members"),
                 });
                 military_units.extend(
                     nation
@@ -1577,11 +1653,14 @@ impl LegacySaveV62 {
                 zone_status: RetailLcg::from_state(context.zone_status_lcg),
             },
             market: self.market.clone(),
+            diplomacy: self.diplomacy.clone(),
             nations: Nations::new(majors, minors),
             military_units,
             civilian_units,
+            ships: Vec::new(),
+            task_forces: Vec::new(),
             missions,
-            turn_summaries: MajorNationTable::default(),
+            pending: PendingWorkState::default(),
         })
     }
 }
@@ -1658,11 +1737,10 @@ fn great_power_state(nation: &LegacyGreatPowerState) -> Result<GreatPowerState, 
 
 fn validate_pending_action(status: i8, payload: i16) -> Result<(), LegacySaveError> {
     match status {
-        0 if payload <= 0 => Ok(()),
-        0 => Err(LegacySaveError::StateProjection(format!(
-            "inactive pending action has payload {payload}"
+        0 | 0x32..=0x34 if payload >= -1 => Ok(()),
+        0 | 0x32..=0x34 => Err(LegacySaveError::StateProjection(format!(
+            "pending-action payload {payload} is below the -1 sentinel"
         ))),
-        0x32..=0x34 => Ok(()),
         _ => Err(LegacySaveError::StateProjection(format!(
             "unsupported pending-action status {status}"
         ))),
@@ -1677,7 +1755,7 @@ fn normalized_pending_action(status: i8, payload: i16) -> PendingActionState {
         0x34 => PendingActionStatus::Level4,
         _ => unreachable!("pending action was validated before normalization"),
     };
-    PendingActionState::new(status, (payload > 0).then_some(payload))
+    PendingActionState::new(status, (payload != -1).then_some(payload))
 }
 
 fn diplomacy_grants_from_retail_entries(
@@ -1961,6 +2039,152 @@ fn parse_help_manager_at(
         help_index_ready: stream.read_le_i16()?,
     };
     Ok((help, offset + stream.position()))
+}
+
+fn read_diplomacy_state(stream: &mut LegacyStream<'_>) -> Result<DiplomacyState, LegacySaveError> {
+    const NATION_PAIR_COUNT: usize = NATION_COUNT * NATION_COUNT;
+
+    let start = stream.position();
+    let standings = nation_pair_table(read_be_short_array::<NATION_PAIR_COUNT>(stream)?);
+    let relationships = read_be_short_array::<NATION_PAIR_COUNT>(stream)?
+        .into_iter()
+        .enumerate()
+        .map(|(index, value)| {
+            DiplomaticRelationship::try_from_retail(value).ok_or(
+                LegacySaveError::InvalidDiplomacyValue {
+                    context: "diplomacy relationships",
+                    index,
+                    value,
+                },
+            )
+        })
+        .collect::<Result<Vec<_>, _>>()?
+        .try_into()
+        .expect("one relationship per nation pair");
+    let relationships = nation_pair_table(relationships);
+    let relationship_turns = read_be_short_array::<NATION_PAIR_COUNT>(stream)?
+        .into_iter()
+        .enumerate()
+        .map(|(index, value)| match value {
+            -1 => Ok(None),
+            0..=i16::MAX => Ok(Some(value)),
+            _ => Err(LegacySaveError::InvalidDiplomacyValue {
+                context: "diplomacy relationship turns",
+                index,
+                value,
+            }),
+        })
+        .collect::<Result<Vec<_>, _>>()?
+        .try_into()
+        .expect("one turn stamp per nation pair");
+    let relationship_turns = nation_pair_table(relationship_turns);
+
+    let influence_thresholds =
+        ProvinceTable::from_array(read_be_short_array::<PROVINCE_COUNT>(stream)?);
+    let influence_sides = (0..PROVINCE_COUNT)
+        .map(|index| {
+            let value = i16::from(stream.read_i8()?);
+            optional_major_nation(value, "diplomacy influence sides", index)
+        })
+        .collect::<Result<Vec<_>, LegacySaveError>>()?
+        .try_into()
+        .expect("one influence side per province");
+    let influence_sides = ProvinceTable::from_array(influence_sides);
+    let last_diplomatic_effort_turn = stream.read_le_i16()?;
+
+    let mission_levels = read_be_short_array::<NATION_PAIR_COUNT>(stream)?
+        .into_iter()
+        .enumerate()
+        .map(|(index, value)| {
+            DiplomaticMissionLevel::try_from_retail(value).ok_or(
+                LegacySaveError::InvalidDiplomacyValue {
+                    context: "diplomacy mission levels",
+                    index,
+                    value,
+                },
+            )
+        })
+        .collect::<Result<Vec<_>, _>>()?
+        .try_into()
+        .expect("one mission level per nation pair");
+    let mission_levels = nation_pair_table(mission_levels);
+
+    let chairman = optional_major_nation(stream.read_be_i16()?, "diplomatic congress chairman", 0)?;
+    let counterpart =
+        optional_major_nation(stream.read_be_i16()?, "diplomatic congress counterpart", 0)?;
+    let congress = DiplomaticCongressState {
+        chairman,
+        counterpart,
+        chairman_support: stream.read_be_i16()?,
+        counterpart_support: stream.read_be_i16()?,
+        neutral_support: stream.read_be_i16()?,
+    };
+
+    let special_relation_sources =
+        read_optional_major_nation_table(stream, "diplomacy special-relation sources")?;
+    let special_relation_targets =
+        read_optional_major_nation_table(stream, "diplomacy special-relation targets")?;
+
+    assert_eq!(
+        stream.position() - start,
+        DIPLOMACY_SERIALIZED_SIZE_V62,
+        "recovered v62 diplomacy payload layout must remain exact"
+    );
+    Ok(DiplomacyState {
+        standings,
+        relationships,
+        relationship_turns,
+        influence_thresholds,
+        influence_sides,
+        last_diplomatic_effort_turn,
+        mission_levels,
+        congress,
+        special_relation_sources,
+        special_relation_targets,
+        // The retail constructor restores both values before ReadFrom consumes the payload.
+        last_processed_nation: None,
+        proposal_mode_raw: 0,
+    })
+}
+
+fn nation_pair_table<T: Copy>(
+    values: [T; NATION_COUNT * NATION_COUNT],
+) -> NationTable<NationTable<T>> {
+    NationTable::from_array(std::array::from_fn(|source| {
+        NationTable::from_array(std::array::from_fn(|target| {
+            values[source * NATION_COUNT + target]
+        }))
+    }))
+}
+
+fn optional_major_nation(
+    value: i16,
+    context: &'static str,
+    index: usize,
+) -> Result<Option<MajorNationId>, LegacySaveError> {
+    if value == -1 {
+        return Ok(None);
+    }
+    if (0..MAJOR_NATION_COUNT as i16).contains(&value) {
+        return Ok(Some(MajorNationId::new(value as u8)));
+    }
+    Err(LegacySaveError::InvalidDiplomacyValue {
+        context,
+        index,
+        value,
+    })
+}
+
+fn read_optional_major_nation_table(
+    stream: &mut LegacyStream<'_>,
+    context: &'static str,
+) -> Result<MinorNationTable<Option<MajorNationId>>, LegacySaveError> {
+    let values = (0..MINOR_NATION_COUNT)
+        .map(|index| optional_major_nation(stream.read_be_i16()?, context, index))
+        .collect::<Result<Vec<_>, LegacySaveError>>()?
+        .try_into()
+        .expect("one special-relation value per minor nation");
+    Ok(MinorNationTable::from_array(values))
 }
 
 fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, LegacySaveError> {
@@ -2808,8 +3032,10 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
     let bytes = stream.read_bytes(TERRAIN_TILE_SERIALIZED_SIZE)?;
     Ok(LegacyTerrainTile {
         terrain_kind: bytes[0] as i8,
+        river_sprite: bytes[2],
         former_owner_nation: bytes[3] as i8,
         owner_nation: bytes[4] as i8,
+        region: bytes[5] as i8,
         adjacency_bits: bytes[6],
         development_classes: bytes[0x0c] as i8,
         pending_development_visibility: bytes[0x0d],
@@ -2869,6 +3095,17 @@ fn nation_id_from_retail_i16(value: i16) -> Result<NationId, LegacySaveError> {
                 NATION_COUNT - 1
             ))
         })
+}
+
+fn minor_nation_id_from_retail_i16(value: i16) -> Result<MinorNationId, LegacySaveError> {
+    let nation = nation_id_from_retail_i16(value)?;
+    if nation.get() < MAJOR_NATION_COUNT as u8 {
+        return Err(LegacySaveError::InvalidNationSlot {
+            context: "minor consortium member",
+            slot: value,
+        });
+    }
+    Ok(MinorNationId::new(nation.get()))
 }
 
 fn read_short_array<const N: usize>(
@@ -2935,11 +3172,155 @@ mod tests {
         }
     }
 
+    const NATION_PAIR_BYTES: usize = NATION_COUNT * NATION_COUNT * 2;
+    const RELATIONSHIP_OFFSET: usize = NATION_PAIR_BYTES;
+    const TURN_STAMP_OFFSET: usize = RELATIONSHIP_OFFSET + NATION_PAIR_BYTES;
+    const INFLUENCE_THRESHOLD_OFFSET: usize = TURN_STAMP_OFFSET + NATION_PAIR_BYTES;
+    const INFLUENCE_SIDE_OFFSET: usize = INFLUENCE_THRESHOLD_OFFSET + PROVINCE_COUNT * 2;
+    const MISSION_LEVEL_OFFSET: usize = INFLUENCE_SIDE_OFFSET + PROVINCE_COUNT + 2;
+    const CONGRESS_OFFSET: usize = MISSION_LEVEL_OFFSET + NATION_PAIR_BYTES;
+
+    fn push_be_i16(bytes: &mut Vec<u8>, value: i16) {
+        bytes.extend_from_slice(&value.to_be_bytes());
+    }
+
+    fn valid_diplomacy_payload() -> Vec<u8> {
+        let mut bytes = Vec::with_capacity(DIPLOMACY_SERIALIZED_SIZE_V62);
+        for index in 0..NATION_COUNT * NATION_COUNT {
+            push_be_i16(&mut bytes, if index == 0 { 0x1234 } else { 90 });
+        }
+        for _ in 0..NATION_COUNT * NATION_COUNT {
+            push_be_i16(&mut bytes, DiplomaticRelationship::Peace.retail());
+        }
+        for index in 0..NATION_COUNT * NATION_COUNT {
+            push_be_i16(&mut bytes, if index == 0 { 7 } else { -1 });
+        }
+        for index in 0..PROVINCE_COUNT {
+            push_be_i16(&mut bytes, if index == 0 { 0x2345 } else { 0 });
+        }
+        bytes.extend(std::iter::once(6).chain(std::iter::repeat_n(0xff, PROVINCE_COUNT - 1)));
+        bytes.extend_from_slice(&0x3456_i16.to_le_bytes());
+        for index in 0..NATION_COUNT * NATION_COUNT {
+            push_be_i16(
+                &mut bytes,
+                if index == 1 {
+                    DiplomaticMissionLevel::Embassy.retail()
+                } else {
+                    DiplomaticMissionLevel::None.retail()
+                },
+            );
+        }
+        push_be_i16(&mut bytes, 6);
+        push_be_i16(&mut bytes, -1);
+        push_be_i16(&mut bytes, 1);
+        push_be_i16(&mut bytes, 2);
+        push_be_i16(&mut bytes, 3);
+        for index in 0..MINOR_NATION_COUNT {
+            push_be_i16(&mut bytes, if index == 0 { 5 } else { -1 });
+        }
+        for _ in 0..MINOR_NATION_COUNT {
+            push_be_i16(&mut bytes, -1);
+        }
+        assert_eq!(bytes.len(), DIPLOMACY_SERIALIZED_SIZE_V62);
+        bytes
+    }
+
+    #[test]
+    fn reads_the_exact_v62_diplomacy_payload_and_endianness() {
+        let bytes = valid_diplomacy_payload();
+        let mut stream = LegacyStream::new(&bytes);
+        let diplomacy = read_diplomacy_state(&mut stream).unwrap();
+
+        assert_eq!(stream.position(), DIPLOMACY_SERIALIZED_SIZE_V62);
+        assert_eq!(
+            diplomacy.standings[NationId::new(0)][NationId::new(0)],
+            0x1234
+        );
+        assert_eq!(
+            diplomacy.relationship_turns[NationId::new(0)][NationId::new(0)],
+            Some(7)
+        );
+        assert_eq!(diplomacy.influence_thresholds[ProvinceId::new(0)], 0x2345);
+        assert_eq!(
+            diplomacy.influence_sides[ProvinceId::new(0)],
+            Some(MajorNationId::new(6))
+        );
+        assert_eq!(diplomacy.last_diplomatic_effort_turn, 0x3456);
+        assert_eq!(
+            diplomacy.mission_levels[NationId::new(0)][NationId::new(1)],
+            DiplomaticMissionLevel::Embassy
+        );
+        assert_eq!(diplomacy.congress.chairman, Some(MajorNationId::new(6)));
+        assert_eq!(diplomacy.congress.counterpart, None);
+        assert_eq!(diplomacy.congress.neutral_support, 3);
+        assert_eq!(
+            diplomacy.special_relation_sources[MinorNationId::new(7)],
+            Some(MajorNationId::new(5))
+        );
+        assert_eq!(diplomacy.last_processed_nation, None);
+        assert_eq!(diplomacy.proposal_mode_raw, 0);
+    }
+
+    #[test]
+    fn rejects_malformed_closed_diplomacy_domains_and_sentinels() {
+        for (offset, replacement) in [
+            (RELATIONSHIP_OFFSET, 1_i16.to_be_bytes()),
+            (TURN_STAMP_OFFSET, (-2_i16).to_be_bytes()),
+            (MISSION_LEVEL_OFFSET, 3_i16.to_be_bytes()),
+            (CONGRESS_OFFSET, 7_i16.to_be_bytes()),
+        ] {
+            let mut bytes = valid_diplomacy_payload();
+            bytes[offset..offset + 2].copy_from_slice(&replacement);
+            assert!(matches!(
+                read_diplomacy_state(&mut LegacyStream::new(&bytes)),
+                Err(LegacySaveError::InvalidDiplomacyValue { .. })
+            ));
+        }
+
+        let mut bytes = valid_diplomacy_payload();
+        bytes[INFLUENCE_SIDE_OFFSET] = 7;
+        assert!(matches!(
+            read_diplomacy_state(&mut LegacyStream::new(&bytes)),
+            Err(LegacySaveError::InvalidDiplomacyValue { .. })
+        ));
+    }
+
     fn first_great_power_mut(save: &mut LegacySaveV62) -> &mut LegacyGreatPowerState {
         match &mut save.major_nations[0] {
             LegacyMajorNationState::Auto(nation) => &mut nation.great_power,
             LegacyMajorNationState::Other(nation) => nation,
         }
+    }
+
+    #[test]
+    fn retail_river_sprites_project_to_canonical_connection_codes() {
+        for (sprite, connection_code) in [
+            (0x0b, 1),
+            (0x0d, 3),
+            (0x0e, 3),
+            (0x1a, 9),
+            (0x1b, 1),
+            (0x2a, 9),
+            (0x2b, 0x0a),
+            (0x2c, 0x0b),
+            (0x2d, 0x0b),
+            (0x32, 0x0f),
+            (0x33, 0x13),
+            (0x37, 0x10),
+            (0x38, 0x11),
+            (0x39, 0x11),
+            (0x3a, 0x12),
+        ] {
+            assert_eq!(
+                river_segment_from_retail_sprite(sprite, 7)
+                    .unwrap()
+                    .unwrap()
+                    .connection_code(),
+                connection_code
+            );
+        }
+        assert_eq!(river_segment_from_retail_sprite(0, 7).unwrap(), None);
+        assert!(river_segment_from_retail_sprite(1, 7).is_err());
     }
 
     #[test]
@@ -3014,6 +3395,24 @@ mod tests {
             save.market.rows[imperialism_core::TradeCommodity::Arms].base_price,
             900
         );
+        assert_eq!(
+            save.diplomacy.standings[NationId::new(0)][NationId::new(0)],
+            0x100
+        );
+        assert_eq!(
+            save.diplomacy.relationships[NationId::new(0)][NationId::new(1)],
+            DiplomaticRelationship::Peace
+        );
+        assert_eq!(
+            save.diplomacy.relationship_turns[NationId::new(0)][NationId::new(1)],
+            None
+        );
+        assert_eq!(
+            save.diplomacy.mission_levels[NationId::new(0)][NationId::new(1)],
+            DiplomaticMissionLevel::Embassy
+        );
+        assert_eq!(save.diplomacy.congress.chairman, None);
+        assert_eq!(save.minor_nations[0].diplomacy_save_fields, [7, 8, 9, 10]);
         assert_eq!(save.map.tiles.len(), 6480);
         assert_eq!(save.map.provinces.len(), 384);
         assert_eq!(save.map.no_horizontal_wrap, 0);
@@ -3247,6 +3646,14 @@ mod tests {
         );
         assert_eq!(game.missions.len(), 66);
         assert_eq!(game.unit_ids.current(), 950);
+        assert_eq!(
+            game.nations
+                .minor(MinorNationId::new(7))
+                .unwrap()
+                .consortium_members
+                .map(MinorNationId::get),
+            [7, 8, 9, 10]
+        );
         assert_eq!(game.civilian_units.len(), expected_civilian_count);
         assert!(game.all_humans_finished());
         assert!(!game.turn.in_linear_phase());
@@ -3320,16 +3727,53 @@ mod tests {
     }
 
     #[test]
-    fn semantic_projection_rejects_contradictory_pending_action_pair() {
+    fn semantic_projection_preserves_inactive_pending_action_payload() {
         let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         let prefix = &mut first_great_power_mut(&mut save).prefix;
         prefix.pending_action_status[0] = 0;
-        prefix.pending_action_payload_by_action[0] = 1;
+        prefix.pending_action_payload_by_action[0] = 0;
+
+        let state = save.game_state(game_context()).unwrap();
+        assert_eq!(
+            state
+                .nations
+                .majors()
+                .next()
+                .unwrap()
+                .economy()
+                .pending_actions[imperialism_core::PendingActionKind::NavyGrowthReward]
+                .payload(),
+            Some(0)
+        );
+    }
+
+    #[test]
+    fn semantic_projection_rejects_pending_action_payload_below_sentinel() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let prefix = &mut first_great_power_mut(&mut save).prefix;
+        prefix.pending_action_payload_by_action[0] = -2;
 
         assert!(matches!(
             save.game_state(game_context()),
             Err(LegacySaveError::StateProjection(message))
-                if message == "inactive pending action has payload 1"
+                if message == "pending-action payload -2 is below the -1 sentinel"
+        ));
+    }
+
+    #[test]
+    fn semantic_projection_rejects_invalid_diplomacy_grant_flags() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save)
+            .prefix
+            .diplomacy_grant_by_nation[0] = -2;
+
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::UnsupportedDiplomacyGrantFlags {
+                nation: 0,
+                target: 0,
+                entry: -2,
+            })
         ));
     }
 

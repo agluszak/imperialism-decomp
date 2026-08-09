@@ -1,9 +1,10 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
-    HexDirection, LaborPool, MajorNationTable, MapTopology, MilitaryUnitId, MilitaryUnitKind,
-    MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable, OceanZoneId,
-    PendingActionTable, ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg,
-    STRATEGIC_TILE_COUNT, ShipTypeTable, TileId, TileOwnerTag, TradeMarketState,
+    HexDirection, LaborPool, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
+    MilitaryUnitKind, MilitaryUnitTable, MinorNationId, MinorNationTable, NationCapacities,
+    NationId, NationTable, OceanZoneId, PendingActionTable, ProductionTable, ProvinceId,
+    ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT, ShipId, ShipType,
+    ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -15,11 +16,14 @@ pub struct GameState {
     pub world: StrategicMap,
     pub rng: RngState,
     pub market: TradeMarketState,
+    pub diplomacy: DiplomacyState,
     pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
     pub civilian_units: Vec<CivilianUnitState>,
+    pub ships: Vec<ShipState>,
+    pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
-    pub turn_summaries: MajorNationTable<Vec<TurnSummary>>,
+    pub pending: PendingWorkState,
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -79,6 +83,10 @@ impl Nations {
         self.majors.iter()
     }
 
+    pub fn minor(&self, nation: MinorNationId) -> Option<&MinorNation> {
+        self.minors[nation].as_ref()
+    }
+
     pub fn minor_count(&self) -> usize {
         self.minors.iter().flatten().count()
     }
@@ -131,6 +139,7 @@ impl MajorNation {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MinorNation {
     pub common: NationCommonState,
+    pub consortium_members: [MinorNationId; 4],
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -374,24 +383,56 @@ impl RegionId {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
 pub struct RiverSegment {
-    sprite: u8,
-    flow: Option<HexDirection>,
+    connection_code: u8,
+}
+
+impl<'de> Deserialize<'de> for RiverSegment {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedRiverSegment {
+            connection_code: u8,
+        }
+
+        let segment = SerializedRiverSegment::deserialize(deserializer)?;
+        if !(1..=0x15).contains(&segment.connection_code) {
+            return Err(serde::de::Error::custom(
+                "river connection code must be between 1 and 0x15",
+            ));
+        }
+        Ok(Self {
+            connection_code: segment.connection_code,
+        })
+    }
 }
 
 impl RiverSegment {
-    pub(crate) const fn new(sprite: u8, flow: Option<HexDirection>) -> Self {
-        Self { sprite, flow }
+    /// Constructs the canonical river-connection code produced by retail map
+    /// generation. Zero is the no-river sentinel; 1 through 0x15 are the
+    /// interior, source, and water-mouth connection forms.
+    pub const fn from_connection_code(connection_code: u8) -> Option<Self> {
+        if connection_code == 0 {
+            None
+        } else {
+            assert!(connection_code <= 0x15, "invalid river connection code");
+            Some(Self { connection_code })
+        }
     }
 
-    #[cfg(test)]
-    pub(crate) const fn sprite(self) -> u8 {
-        self.sprite
+    pub const fn connection_code(self) -> u8 {
+        self.connection_code
     }
 
-    pub const fn flow_direction(self) -> Option<HexDirection> {
-        self.flow
+    pub(crate) const fn flow_type(self) -> Option<usize> {
+        if self.connection_code >= 1 && self.connection_code <= 9 {
+            Some((self.connection_code - 1) as usize)
+        } else {
+            None
+        }
     }
 }
 
@@ -498,6 +539,220 @@ pub struct RngState {
     pub crt_rand: RetailCrtRng,
     pub map_generation: RetailLcg,
     pub zone_status: RetailLcg,
+}
+
+/// The authoritative bilateral relationship stored by retail diplomacy state.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DiplomaticRelationship {
+    Alliance,
+    NonAggressionPact,
+    Peace,
+    JoinedEmpire,
+    War,
+}
+
+impl DiplomaticRelationship {
+    pub const fn try_from_retail(value: i16) -> Option<Self> {
+        match value {
+            2 => Some(Self::Alliance),
+            3 => Some(Self::NonAggressionPact),
+            4 => Some(Self::Peace),
+            5 => Some(Self::JoinedEmpire),
+            6 => Some(Self::War),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i16 {
+        match self {
+            Self::Alliance => 2,
+            Self::NonAggressionPact => 3,
+            Self::Peace => 4,
+            Self::JoinedEmpire => 5,
+            Self::War => 6,
+        }
+    }
+}
+
+/// The bilateral diplomatic mission level stored by retail diplomacy state.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DiplomaticMissionLevel {
+    None,
+    TradeConsulate,
+    Embassy,
+}
+
+impl DiplomaticMissionLevel {
+    pub const fn try_from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::None),
+            1 => Some(Self::TradeConsulate),
+            2 => Some(Self::Embassy),
+            _ => None,
+        }
+    }
+
+    pub const fn retail(self) -> i16 {
+        match self {
+            Self::None => 0,
+            Self::TradeConsulate => 1,
+            Self::Embassy => 2,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomaticCongressState {
+    pub chairman: Option<MajorNationId>,
+    pub counterpart: Option<MajorNationId>,
+    pub chairman_support: i16,
+    pub counterpart_support: i16,
+    pub neutral_support: i16,
+}
+
+/// Persistent `TDiplomacyMgr` state plus its two constructor-restored runtime values.
+///
+/// Retail deliberately does not persist the pending-policy tier matrix, relation baseline copy,
+/// or comparative-power rows. At the beginning-save/phase-6 boundary, the tier and power rows are
+/// rebuilt before their later consumers, while the baseline belongs to multiplayer delta sync.
+/// They must be represented when a modeled checkpoint can stop between those writes and reads;
+/// the v62 payload alone cannot reconstruct them.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyState {
+    pub standings: NationTable<NationTable<i16>>,
+    pub relationships: NationTable<NationTable<DiplomaticRelationship>>,
+    pub relationship_turns: NationTable<NationTable<Option<i16>>>,
+    pub influence_thresholds: ProvinceTable<i16>,
+    pub influence_sides: ProvinceTable<Option<MajorNationId>>,
+    pub last_diplomatic_effort_turn: i16,
+    pub mission_levels: NationTable<NationTable<DiplomaticMissionLevel>>,
+    pub congress: DiplomaticCongressState,
+    pub special_relation_sources: MinorNationTable<Option<MajorNationId>>,
+    pub special_relation_targets: MinorNationTable<Option<MajorNationId>>,
+    pub last_processed_nation: Option<MajorNationId>,
+    /// UI action-validation discriminator. Its meanings are recovered, but core rules do not
+    /// interpret it yet, so the retail numeric domain remains visible.
+    pub proposal_mode_raw: i16,
+}
+
+impl DiplomacyState {
+    /// `InitializeTDiplomacyTurnStateManagerDefaults` followed by
+    /// `RebuildCivilianOrderCompatibilityMatrices` for a complete random-game nation table.
+    pub(crate) fn for_random_start(
+        human_nation: MajorNationId,
+        difficulty: Difficulty,
+        rng: &mut RetailCrtRng,
+    ) -> Self {
+        let human_slot = human_nation.get();
+        let mut standings = NationTable::from_array(std::array::from_fn(|source| {
+            NationTable::from_array(std::array::from_fn(|target| {
+                let source = source as u8;
+                let target = target as u8;
+                if source == target {
+                    0xff
+                } else if source >= MinorNationId::FIRST && target >= MinorNationId::FIRST {
+                    if (source - MinorNationId::FIRST) / 4 == (target - MinorNationId::FIRST) / 4 {
+                        0x96
+                    } else {
+                        0x6e
+                    }
+                } else if source < MajorNationId::COUNT
+                    && source != human_slot
+                    && difficulty > Difficulty::Normal
+                {
+                    if difficulty == Difficulty::NighOnImpossible {
+                        0x69
+                    } else {
+                        0x64
+                    }
+                } else {
+                    0x5a
+                }
+            }))
+        }));
+        let mut mission_levels = NationTable::from_array(std::array::from_fn(|source| {
+            NationTable::from_array(std::array::from_fn(|target| {
+                if source < MajorNationId::COUNT as usize
+                    && target < MajorNationId::COUNT as usize
+                    && source != target
+                {
+                    DiplomaticMissionLevel::Embassy
+                } else {
+                    DiplomaticMissionLevel::None
+                }
+            }))
+        }));
+
+        if difficulty == Difficulty::Introductory {
+            let first_minor = (rng.next_rand() as u8 % 4) * 4 + MinorNationId::FIRST;
+            for target in first_minor..first_minor + 4 {
+                let target = NationId::new(target);
+                let human = human_nation.nation();
+                mission_levels[human][target] = DiplomaticMissionLevel::TradeConsulate;
+                mission_levels[target][human] = DiplomaticMissionLevel::TradeConsulate;
+                standings[human][target] = 0x6e;
+                standings[target][human] = 0x6e;
+            }
+        }
+
+        if difficulty > Difficulty::Normal {
+            for source in 0..MajorNationId::COUNT {
+                if source == human_slot {
+                    continue;
+                }
+                let target = NationId::new(
+                    rng.next_rand() as u8 % MinorNationId::COUNT + MinorNationId::FIRST,
+                );
+                let source = NationId::new(source);
+                mission_levels[source][target] = DiplomaticMissionLevel::TradeConsulate;
+                mission_levels[target][source] = DiplomaticMissionLevel::TradeConsulate;
+                standings[source][target] = 0x6e;
+                standings[target][source] = 0x6e;
+            }
+        }
+
+        if difficulty == Difficulty::NighOnImpossible {
+            for source in 0..MajorNationId::COUNT {
+                if source == human_slot {
+                    continue;
+                }
+                for target in 0..MajorNationId::COUNT {
+                    if target == human_slot {
+                        continue;
+                    }
+                    let source = NationId::new(source);
+                    let target = NationId::new(target);
+                    standings[source][target] = 0x6e;
+                    standings[target][source] = 0x6e;
+                }
+            }
+        }
+
+        Self {
+            standings,
+            relationships: NationTable::from_array(std::array::from_fn(|_| {
+                NationTable::from_array([DiplomaticRelationship::Peace; crate::NATION_COUNT])
+            })),
+            relationship_turns: NationTable::default(),
+            influence_thresholds: ProvinceTable::default(),
+            influence_sides: ProvinceTable::default(),
+            last_diplomatic_effort_turn: 0,
+            mission_levels,
+            congress: DiplomaticCongressState {
+                chairman: None,
+                counterpart: None,
+                chairman_support: 0,
+                counterpart_support: 0,
+                neutral_support: 0,
+            },
+            special_relation_sources: MinorNationTable::default(),
+            special_relation_targets: MinorNationTable::default(),
+            last_processed_nation: None,
+            proposal_mode_raw: 0,
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -654,42 +909,14 @@ impl MajorNationController {
     }
 }
 
-#[derive(Clone, Copy, Debug, Default, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingActionState {
     status: PendingActionStatus,
     payload: Option<i16>,
 }
 
-impl<'de> Deserialize<'de> for PendingActionState {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        #[derive(Deserialize)]
-        struct SerializedPendingActionState {
-            status: PendingActionStatus,
-            payload: Option<i16>,
-        }
-
-        let state = SerializedPendingActionState::deserialize(deserializer)?;
-        if state.status == PendingActionStatus::None && state.payload.is_some() {
-            return Err(serde::de::Error::custom(
-                "an inactive pending action cannot have a payload",
-            ));
-        }
-        Ok(Self {
-            status: state.status,
-            payload: state.payload,
-        })
-    }
-}
-
 impl PendingActionState {
     pub const fn new(status: PendingActionStatus, payload: Option<i16>) -> Self {
-        assert!(
-            !matches!(status, PendingActionStatus::None) || payload.is_none(),
-            "an inactive pending action cannot have a payload"
-        );
         Self { status, payload }
     }
     pub(crate) const fn status(self) -> PendingActionStatus {
@@ -1245,6 +1472,48 @@ impl CivilianUnitState {
     }
 }
 
+/// A ship in primary-list order. Ship and task-force references are snapshot-local
+/// ordinals because retail does not persist a stable identity for either collection.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ShipState {
+    pub ship_type: ShipType,
+    pub location: OceanZoneId,
+    pub task_force: Option<TaskForceId>,
+    pub aggression: i32,
+    pub nation: NationId,
+    pub name: String,
+    pub strength: i16,
+    pub experience: i16,
+    pub selection: i32,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", content = "target", rename_all = "snake_case")]
+pub enum TaskForceTarget {
+    None,
+    Zone(OceanZoneId),
+    Province(ProvinceId),
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TaskForceState {
+    pub aggression: i32,
+    pub order: i32,
+    pub target: TaskForceTarget,
+    pub location: OceanZoneId,
+    pub nation: NationId,
+    pub ship_counts: [i16; 4],
+    pub ingot_tile: i16,
+    pub flagship: Option<ShipId>,
+    pub ships: Vec<SelectedShip>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct SelectedShip {
+    pub ship: ShipId,
+    pub selected: bool,
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ArmyMissionState {
     /// Exact IEEE-754 bits retained for deterministic mission scoring.
@@ -1256,12 +1525,15 @@ pub struct ArmyMissionState {
 pub struct NavyMissionState {
     pub target_zone: Option<OceanZoneId>,
     pub resolved_port_zone: Option<OceanZoneId>,
+    pub selected_ship: Option<ShipId>,
+    pub task_force: Option<TaskForceId>,
     /// Retail target-selection state. Values 0, 1, and 2 select between the
     /// resolved port and target zone; the save field remains open until more
     /// lifecycle behavior is implemented.
     pub state: i32,
     /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 4],
+    pub ships: Vec<SelectedShip>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1307,6 +1579,32 @@ pub struct MissionState {
     pub marker: u8,
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct PendingWorkState {
+    pub nations: MajorNationTable<NationPendingWork>,
+    pub war_transitions: Vec<WarTransition>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct WarTransition {
+    pub first: NationId,
+    pub second: NationId,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NationPendingWork {
+    pub turn_events: Vec<TaggedValue>,
+    pub proposals: Vec<TaggedValue>,
+    pub turn_summary: Vec<TurnSummary>,
+    pub turn_start_events: Vec<TurnStartEvent>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TaggedValue {
+    pub tag: i16,
+    pub value: i16,
+}
+
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnSummary {
@@ -1315,22 +1613,111 @@ pub enum TurnSummary {
         unit_type: MilitaryUnitKind,
         count: i16,
     },
+    /// A recovered queue record whose presentation meaning has not yet been
+    /// interpreted by a Rust rule.
+    Retail {
+        turn_tick: i32,
+        order_kind: i16,
+        payload: i16,
+        flags: i16,
+    },
 }
 impl TurnSummary {
     pub(crate) const fn order_key(self) -> i16 {
         match self {
             Self::MilitaryRecruit { .. } => 3,
+            Self::Retail { order_kind, .. } => order_kind,
         }
     }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum TurnStartEvent {
+    LandSale { tag: i32, sale: LandSale },
+    Tagged { class: String, tag: i32 },
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct LandSale {
+    pub tile: TileId,
+    pub nation: NationId,
 }
 
 #[cfg(test)]
 mod tests {
     use super::{
-        PendingActionState, PendingActionStatus, PopulationAccumulator, Stockpile, TileAction,
-        TileFlags,
+        DiplomacyState, DiplomaticMissionLevel, PendingActionState, PendingActionStatus,
+        PopulationAccumulator, RiverSegment, Stockpile, TileAction, TileFlags, TurnStartEvent,
     };
-    use crate::{ResourceKind, ResourceTable};
+    use crate::{Difficulty, MajorNationId, NationId, ResourceKind, ResourceTable, RetailCrtRng};
+
+    #[test]
+    fn random_start_diplomacy_preserves_retail_matrix_order_and_consortiums() {
+        let mut rng = RetailCrtRng::from_state(1);
+        let state =
+            DiplomacyState::for_random_start(MajorNationId::new(6), Difficulty::Normal, &mut rng);
+
+        assert_eq!(state.standings[NationId::new(0)][NationId::new(0)], 0xff);
+        assert_eq!(state.standings[NationId::new(0)][NationId::new(1)], 0x5a);
+        assert_eq!(state.standings[NationId::new(7)][NationId::new(10)], 0x96);
+        assert_eq!(state.standings[NationId::new(7)][NationId::new(11)], 0x6e);
+        assert_eq!(
+            state.mission_levels[NationId::new(0)][NationId::new(1)],
+            DiplomaticMissionLevel::Embassy
+        );
+        assert_eq!(
+            state.mission_levels[NationId::new(0)][NationId::new(7)],
+            DiplomaticMissionLevel::None
+        );
+        assert_eq!(rng.state(), 1, "Normal initialization consumes no CRT draw");
+    }
+
+    #[test]
+    fn introductory_and_hard_diplomacy_consume_only_the_recovered_consulate_draws() {
+        let mut introductory_rng = RetailCrtRng::from_state(1);
+        let introductory = DiplomacyState::for_random_start(
+            MajorNationId::new(6),
+            Difficulty::Introductory,
+            &mut introductory_rng,
+        );
+        assert_eq!(introductory_rng.state(), 2_745_024);
+        for target in 11..15 {
+            assert_eq!(
+                introductory.mission_levels[NationId::new(6)][NationId::new(target)],
+                DiplomaticMissionLevel::TradeConsulate
+            );
+        }
+
+        let mut hard_rng = RetailCrtRng::from_state(1);
+        let hard = DiplomacyState::for_random_start(
+            MajorNationId::new(6),
+            Difficulty::Hard,
+            &mut hard_rng,
+        );
+        let mut expected_rng = RetailCrtRng::from_state(1);
+        for _ in 0..MajorNationId::COUNT - 1 {
+            expected_rng.next_rand();
+        }
+        assert_eq!(hard_rng, expected_rng);
+        assert_eq!(
+            hard.mission_levels[NationId::new(0)][NationId::new(16)],
+            DiplomaticMissionLevel::TradeConsulate
+        );
+    }
+
+    #[test]
+    fn nigh_on_impossible_overwrites_ai_diagonal_standings_like_retail() {
+        let mut rng = RetailCrtRng::from_state(1);
+        let state = DiplomacyState::for_random_start(
+            MajorNationId::new(6),
+            Difficulty::NighOnImpossible,
+            &mut rng,
+        );
+
+        assert_eq!(state.standings[NationId::new(0)][NationId::new(0)], 0x6e);
+        assert_eq!(state.standings[NationId::new(6)][NationId::new(6)], 0xff);
+    }
 
     #[test]
     fn population_accumulator_exposes_a_finite_semantic_value() {
@@ -1352,10 +1739,12 @@ mod tests {
     }
 
     #[test]
-    fn pending_action_deserialization_rejects_a_payload_without_an_action() {
-        let state = r#"{"status":"none","payload":1}"#;
+    fn pending_action_deserialization_preserves_payload_independently_of_status() {
+        let state: PendingActionState =
+            serde_json::from_str(r#"{"status":"none","payload":0}"#).unwrap();
 
-        assert!(serde_json::from_str::<PendingActionState>(state).is_err());
+        assert_eq!(state.status(), PendingActionStatus::None);
+        assert_eq!(state.payload(), Some(0));
     }
 
     #[test]
@@ -1384,6 +1773,25 @@ mod tests {
     }
 
     #[test]
+    fn land_sale_event_uses_a_strategic_tile_id() {
+        let event: TurnStartEvent =
+            serde_json::from_str(r#"{"kind":"land_sale","tag":4,"sale":{"tile":500,"nation":0}}"#)
+                .unwrap();
+
+        assert!(matches!(
+            event,
+            TurnStartEvent::LandSale { sale, .. } if sale.tile.get() == 500
+        ));
+    }
+
+    #[test]
+    fn ship_location_is_a_required_zone_id() {
+        let ship = r#"{"ship_type":"frigate","location":-1,"task_force":null,"aggression":0,"nation":0,"name":"","strength":1,"experience":0,"selection":0}"#;
+
+        assert!(serde_json::from_str::<super::ShipState>(ship).is_err());
+    }
+
+    #[test]
     fn tile_flags_keep_city_marker_and_complete_state_writes_separate() {
         assert!(TileFlags::PROVINCE_ANCHOR_STATE.is_city());
         assert!(TileFlags::MINOR_HOME_STATE.is_city());
@@ -1395,18 +1803,31 @@ mod tests {
         sibling.clear_city_marker();
         assert_eq!(sibling.bits(), 0x1f);
     }
-}
 
-/// Ordered non-state effects: notifications, prompts, acknowledgement, or turn progression.
-///
-/// Do not emit variants that merely restate authoritative `GameState` mutations. Callers that
-/// need operation results should use operation-specific return types instead.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum GameEvent {
-    RecruitmentAnnounced {
-        nation: NationId,
-        specialist: bool,
-        unit_type: i16,
-        requested: i16,
-    },
+    #[test]
+    fn river_connection_codes_index_only_two_ended_flows() {
+        assert_eq!(
+            RiverSegment::from_connection_code(1).unwrap().flow_type(),
+            Some(0)
+        );
+        assert_eq!(
+            RiverSegment::from_connection_code(9).unwrap().flow_type(),
+            Some(8)
+        );
+        assert_eq!(
+            RiverSegment::from_connection_code(0x0a)
+                .unwrap()
+                .flow_type(),
+            None
+        );
+        assert_eq!(
+            RiverSegment::from_connection_code(0x15)
+                .unwrap()
+                .flow_type(),
+            None
+        );
+        assert_eq!(RiverSegment::from_connection_code(0), None);
+        assert!(serde_json::from_str::<RiverSegment>(r#"{"connection_code":0}"#).is_err());
+        assert!(serde_json::from_str::<RiverSegment>(r#"{"connection_code":22}"#).is_err());
+    }
 }

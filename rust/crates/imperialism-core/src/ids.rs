@@ -121,6 +121,10 @@ impl MinorNationId {
         NationId::new(self.0)
     }
 
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+
     pub(crate) const fn table_index(self) -> usize {
         (self.0 - Self::FIRST) as usize
     }
@@ -290,6 +294,28 @@ pub struct OceanZoneId(u16);
 
 impl OceanZoneId {
     pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+}
+
+/// Snapshot-local position in the authoritative ship-list order.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct ShipId(u32);
+
+impl ShipId {
+    pub const fn new(value: u32) -> Self {
+        Self(value)
+    }
+}
+
+/// Snapshot-local position in the authoritative task-force queue order.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct TaskForceId(u32);
+
+impl TaskForceId {
+    pub const fn new(value: u32) -> Self {
         Self(value)
     }
 }

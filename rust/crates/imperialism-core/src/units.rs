@@ -142,6 +142,4 @@ impl MilitaryUnitKind {
     pub(crate) fn arms_required(self) -> i32 {
         ARMS_BY_MILITARY_UNIT[self]
     }
-
-
 }

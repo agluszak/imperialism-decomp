@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/trade_ui_globals.h"
 #include "game/resource_domain_types.h"
@@ -120,6 +121,9 @@ private:
     RunState().SetCapture("case", JsonNullValue());
 
     tradeManager->CalculateNewWorldPrices();
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    }
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");
     }

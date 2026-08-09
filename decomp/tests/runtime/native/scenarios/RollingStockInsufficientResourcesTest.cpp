@@ -14,33 +14,31 @@
 
 namespace {
 
-// Rebuild the active nation's trade capacity from a deliberately small city-order state.
-class TradeCapacityRefreshTestCase : public LoadedMapScriptScenario {
+// Observe the reconstructed rolling-stock rejection from a retail-derived save
+// when the city has no lumber.
+class RollingStockInsufficientResourcesTestCase : public LoadedMapScriptScenario {
 protected:
   void Script() override {
     RT_BEGIN();
 
-    RT_DO("refresh trade capacity from city industry", RefreshTradeCapacity());
+    RT_DO("attempt rolling stock without enough resources", IncreaseRollingStock());
     RT_PASS();
 
     RT_END();
   }
 
 private:
-  RuntimeActionResult RefreshTradeCapacity() {
+  RuntimeActionResult IncreaseRollingStock() {
     const short nationSlot = g_pSimMgr->GetActiveNationId();
     TGreatPower* nation = g_apNationStates[nationSlot];
     if (nation == 0 || nation->city == 0) {
-      return RuntimeActionResult::Failure("the loaded player has no city-and-trade state");
+      return RuntimeActionResult::Failure("the loaded player has no city-and-transport state");
     }
 
     TCity* city = nation->city;
-    for (int slot = 0; slot < kIndustryActionSlotCount; ++slot) {
-      city->orderCountByType5c[slot] = 0;
-    }
-    city->orderCountByType5c[1] = 2;
-    city->orderCountByType5c[5] = 1;
-    city->orderCountByType5c[10] = 1;
+    city->CityStockByType(kResourceLumber) = 0;
+    city->CityStockByType(kResourceSteel) = 1;
+    nation->transportCapacity = 15;
 
     if (!CaptureGameState(RunState(), "before")) {
       return RuntimeActionResult::Failure("the before game-state capture is unavailable");
@@ -50,9 +48,9 @@ private:
     caseCapture.Set("nation", static_cast<int>(nationSlot));
     RunState().SetCapture("case", caseCapture.Release());
 
-    nation->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
-    if (!CaptureVoidOpResult(RunState())) {
-      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    const bool increased = nation->IncreaseRollingStock() != 0;
+    if (!CaptureBooleanOpResult(RunState(), increased)) {
+      return RuntimeActionResult::Failure("the rolling-stock result capture is unavailable");
     }
 
     if (!CaptureGameState(RunState(), "after")) {
@@ -64,4 +62,5 @@ private:
 
 } // namespace
 
-RUNTIME_TEST_FACTORY(TradeCapacityRefreshTestCase, TradeCapacityRefreshTest)
+RUNTIME_TEST_FACTORY(RollingStockInsufficientResourcesTestCase,
+                     RollingStockInsufficientResourcesTest)

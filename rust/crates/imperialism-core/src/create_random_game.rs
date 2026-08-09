@@ -1,13 +1,13 @@
 use crate::{
-    ArmyMissionState, CityState, DevelopmentLevel, Difficulty, GameState, GeneratedMap,
-    GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId, MajorNationTable,
-    MapGeometry, MapTopology, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
+    ArmyMissionState, CityState, DevelopmentLevel, Difficulty, DiplomacyState, GameState,
+    GeneratedMap, GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId,
+    MajorNationTable, MapGeometry, MapTopology, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
     MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
     NationCommonState, NationId, NationTable, Nations, NavyMissionState, OceanZoneId,
     ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
-    RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap, TerrainKind,
-    TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState, TurnState,
-    UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
+    RetailLcg, RiverSegment, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
+    TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
+    TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
     supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
@@ -109,6 +109,7 @@ pub fn create_random_game(
         difficulty,
         &mut port_zones,
     );
+    let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     let missions = flatten_mission_queues(&mut mission_queues);
 
@@ -131,11 +132,14 @@ pub fn create_random_game(
             zone_status: RetailLcg::from_state(runtime_seed),
         },
         market: TradeMarketState::default(),
+        diplomacy,
         nations,
         military_units,
         civilian_units: Vec::new(),
+        ships: Vec::new(),
+        task_forces: Vec::new(),
         missions,
-        turn_summaries: MajorNationTable::default(),
+        pending: crate::PendingWorkState::default(),
     }
 }
 
@@ -147,7 +151,7 @@ struct TilePostPassState {
 
 /// Preview-time tile post-passes from `TMapMgr::BuildOrLoadGlobalMapStateForSession`:
 /// icon-variant/edge-resource stamping, former-owner snapshot, province fallback capitals,
-/// and `GuaranteeResources`.
+/// `GuaranteeResources`, and the final picture-assignment RNG pass.
 fn apply_tile_post_passes(
     map: &GeneratedMap,
     topology: MapTopology,
@@ -185,6 +189,7 @@ fn apply_tile_post_passes(
         assign_province_fallback_capitals(&mut tiles, &mut gate_flags, geometry, map_lcg);
 
     guarantee_resources(&mut tiles, &mut gate_flags, map_lcg);
+    consume_fresh_map_picture_assignment_rng(&tiles, geometry, map_lcg);
     TilePostPassState {
         tiles: tiles.into_boxed_slice(),
         gate_flags,
@@ -1163,8 +1168,11 @@ fn empty_navy_mission(
     NavyMissionState {
         target_zone,
         resolved_port_zone,
+        selected_ship: None,
+        task_force: None,
         state: 0,
         required_equipage_bits: [0; 4],
+        ships: Vec::new(),
     }
 }
 
@@ -1458,10 +1466,231 @@ fn place_guaranteed_resource(
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
 
+/// Fresh-map `TMapMgr::AssignPictToTile` pass after `GuaranteeResources`.
+///
+/// Retail stores the mountain/coast/open-water variants and resolved river sprites in its
+/// presentation-shaped terrain records. Those values are not authoritative game state, but the
+/// pass consumes the shared map LCG. Keep the temporary presentation values just long enough to
+/// preserve later tiles' branch decisions and retain canonical river connection codes on
+/// [`TileState`].
+fn consume_fresh_map_picture_assignment_rng(
+    tiles: &[TileState],
+    geometry: MapGeometry,
+    map_lcg: &mut RetailLcg,
+) {
+    let mut sprite_variants = vec![0u8; tiles.len()];
+    let mut river_sprite_codes: Vec<u8> = tiles
+        .iter()
+        .map(|tile| tile.river.map_or(0, RiverSegment::connection_code))
+        .collect();
+
+    for index in 0..tiles.len() {
+        assign_picture_to_tile_for_rng(
+            tiles,
+            geometry,
+            index,
+            &mut sprite_variants,
+            &mut river_sprite_codes,
+            map_lcg,
+        );
+    }
+}
+
+fn assign_picture_to_tile_for_rng(
+    tiles: &[TileState],
+    geometry: MapGeometry,
+    index: usize,
+    sprite_variants: &mut [u8],
+    river_sprite_codes: &mut [u8],
+    map_lcg: &mut RetailLcg,
+) {
+    if tiles[index].terrain != TerrainKind::Water {
+        if tiles[index].terrain == TerrainKind::Mountain && map_lcg.next_sample_15() & 1 != 0 {
+            sprite_variants[index] = 1;
+        }
+
+        if river_sprite_codes[index] != 0 {
+            river_sprite_codes[index] =
+                resolve_picture_river_sprite(tiles, index, river_sprite_codes, map_lcg);
+            if (0x1b..0x2b).contains(&river_sprite_codes[index]) {
+                river_sprite_codes[index] -= 0x10;
+            }
+        }
+        return;
+    }
+
+    let tile = TileId::new(index as u16);
+    let neighbors = geometry.neighbors(tile);
+    let mut has_land_neighbor = false;
+    for (direction, neighbor) in HexDirection::ALL.into_iter().zip(neighbors) {
+        if neighbor.is_some_and(|neighbor| {
+            tiles[usize::from(neighbor.get())].terrain != TerrainKind::Water
+        }) {
+            has_land_neighbor = true;
+            if map_lcg.next_sample_15() & 1 != 0 {
+                sprite_variants[index] |= 1 << direction as u8;
+            }
+        }
+    }
+
+    if has_land_neighbor {
+        if river_sprite_codes[index] != 0 {
+            river_sprite_codes[index] =
+                resolve_picture_river_sprite(tiles, index, river_sprite_codes, map_lcg);
+        }
+        return;
+    }
+
+    let west = neighbors[HexDirection::West as usize].map(|tile| usize::from(tile.get()));
+    let Some(west) = west else {
+        return;
+    };
+    if sprite_variants[west] != 0 {
+        return;
+    }
+
+    let north_west =
+        neighbors[HexDirection::NorthWest as usize].map(|tile| usize::from(tile.get()));
+    let north_east =
+        neighbors[HexDirection::NorthEast as usize].map(|tile| usize::from(tile.get()));
+    let north_west_variant = north_west.map_or(0, |neighbor| sprite_variants[neighbor]);
+    let north_east_variant = north_east.map_or(0, |neighbor| sprite_variants[neighbor]);
+
+    if north_west_variant == 0 && north_east_variant == 0 {
+        if map_lcg.next_sample_15() % 100 <= 3 {
+            sprite_variants[index] = (map_lcg.next_sample_15() & 3) as u8 + 1;
+        }
+        return;
+    }
+
+    if map_lcg.next_sample_15() % 100 > 7 {
+        return;
+    }
+    if north_west_variant != 0 {
+        sprite_variants[index] = if north_west_variant < 4 {
+            north_west_variant + 1
+        } else {
+            1
+        };
+    } else {
+        sprite_variants[index] = if north_east_variant < 4 {
+            north_east_variant + 1
+        } else {
+            1
+        };
+    }
+}
+
+fn resolve_picture_river_sprite(
+    tiles: &[TileState],
+    index: usize,
+    river_sprite_codes: &[u8],
+    map_lcg: &mut RetailLcg,
+) -> u8 {
+    let code = river_sprite_codes[index];
+    let last_column =
+        index % usize::from(STRATEGIC_MAP_WIDTH) == usize::from(STRATEGIC_MAP_WIDTH) - 1;
+    let west_code = || {
+        river_sprite_codes[index
+            .checked_sub(1)
+            .expect("fresh-map river does not cross the raw west boundary")]
+    };
+    let north_run_code = || {
+        river_sprite_codes[index
+            .checked_sub(usize::from(STRATEGIC_MAP_WIDTH) - 1)
+            .expect("fresh-map river north-run lookup is in bounds")]
+    };
+    let random_bit = |rng: &mut RetailLcg| (rng.next_sample_15() & 1) as u8;
+
+    if tiles[index].terrain == TerrainKind::Water {
+        return match code {
+            0x10 => 0x37,
+            0x11 if variant_set_a(west_code()) => 0x38,
+            0x11 if !variant_set_b(west_code()) => 0x38 + random_bit(map_lcg),
+            0x11 => 0x39,
+            0x12 => 0x3a,
+            0x13 => 0x33,
+            0x14 if !last_column => 0x35 - random_bit(map_lcg),
+            0x14 if variant_set_c(north_run_code()) => 0x34,
+            0x14 if variant_set_d(north_run_code()) => 0x35,
+            0x14 => 0x34 + random_bit(map_lcg),
+            0x15 => 0x36,
+            _ => 0,
+        };
+    }
+
+    match code {
+        1 => 0x0b,
+        2 => 0x0c,
+        3 if variant_set_a(west_code()) => 0x0d,
+        3 if !variant_set_b(west_code()) => 0x0d + random_bit(map_lcg),
+        3 => 0x0e,
+        4 if !last_column => 0x10 - random_bit(map_lcg),
+        4 if variant_set_c(north_run_code()) => 0x0f,
+        4 if variant_set_d(north_run_code()) => 0x10,
+        4 => 0x0f + random_bit(map_lcg),
+        5 if variant_set_a(west_code()) && !last_column => 0x12 - random_bit(map_lcg),
+        5 if variant_set_a(west_code()) && variant_set_c(north_run_code()) => 0x11,
+        5 if variant_set_a(west_code()) => 0x12,
+        5 if !last_column => 0x14 - random_bit(map_lcg),
+        5 if variant_set_c(north_run_code()) => 0x13,
+        5 => 0x14,
+        6 if !last_column => 0x16 - random_bit(map_lcg),
+        6 if variant_set_c(north_run_code()) => 0x15,
+        6 if variant_set_d(north_run_code()) => 0x16,
+        6 => 0x15 + random_bit(map_lcg),
+        7 if variant_set_a(west_code()) => 0x17,
+        7 if !variant_set_b(west_code()) => 0x17 + random_bit(map_lcg),
+        7 => 0x18,
+        8 => 0x19,
+        9 => 0x1a,
+        0x0a => 0x2b,
+        0x0b if !last_column => 0x2d - random_bit(map_lcg),
+        0x0b if variant_set_c(north_run_code()) => 0x2c,
+        0x0b if variant_set_d(north_run_code()) => 0x2d,
+        0x0b => 0x2c + random_bit(map_lcg),
+        0x0c => 0x2e,
+        0x0d => 0x2f,
+        0x0e if variant_set_a(west_code()) => 0x30,
+        0x0e if !variant_set_b(west_code()) => 0x30 + random_bit(map_lcg),
+        0x0e => 0x31,
+        0x0f => 0x32,
+        _ => 0,
+    }
+}
+
+const fn variant_set_a(code: u8) -> bool {
+    matches!(
+        code,
+        0x0f | 0x1f | 0x11 | 0x21 | 0x13 | 0x23 | 0x15 | 0x25 | 0x2c | 0x34
+    )
+}
+
+const fn variant_set_b(code: u8) -> bool {
+    matches!(
+        code,
+        0x10 | 0x20 | 0x12 | 0x22 | 0x14 | 0x24 | 0x16 | 0x26 | 0x2d | 0x35
+    )
+}
+
+const fn variant_set_c(code: u8) -> bool {
+    matches!(
+        code,
+        0x0d | 0x1d | 0x11 | 0x21 | 0x12 | 0x22 | 0x17 | 0x27 | 0x30 | 0x38
+    )
+}
+
+const fn variant_set_d(code: u8) -> bool {
+    matches!(
+        code,
+        0x0e | 0x1e | 0x13 | 0x23 | 0x14 | 0x24 | 0x18 | 0x28 | 0x31 | 0x39
+    )
+}
+
 fn bootstrap_nations(human_nation: MajorNationId, difficulty: Difficulty) -> Nations {
     Nations::new(
         MajorNationTable::from_fn(|nation| major_nation(difficulty, nation == human_nation)),
-        MinorNationTable::from_fn(|_nation| Some(minor_nation())),
+        MinorNationTable::from_fn(|nation| Some(minor_nation(nation))),
     )
 }
 
@@ -1481,13 +1710,17 @@ fn major_nation(difficulty: Difficulty, human: bool) -> MajorNation {
     MajorNation::for_random_start(treasury, human, scenario_city(preset_difficulty, human))
 }
 
-fn minor_nation() -> MinorNation {
+fn minor_nation(nation: MinorNationId) -> MinorNation {
+    let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState {
             treasury: 5_000,
             home_tile: None,
             trade_policy_by_nation: NationTable::default(),
         },
+        consortium_members: std::array::from_fn(|offset| {
+            MinorNationId::new(first_member + offset as u8)
+        }),
     }
 }
 
@@ -1513,6 +1746,104 @@ mod tests {
         Difficulty, MapTopology, NationId, ResourceKind, TileId,
         generate_random_setup_preview_with_clock_seed,
     };
+
+    #[test]
+    fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewriting_rivers() {
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let mut tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        tiles[0].terrain = TerrainKind::Mountain;
+        let first_river = geometry.tile(10, 10).unwrap();
+        let second_river = geometry.neighbor(first_river, HexDirection::East).unwrap();
+        tiles[usize::from(first_river.get())].river = RiverSegment::from_connection_code(4);
+        tiles[usize::from(second_river.get())].river = RiverSegment::from_connection_code(3);
+        let original_rivers: Vec<_> = tiles.iter().map(|tile| tile.river).collect();
+
+        let mut rng = RetailLcg::from_state(1);
+        consume_fresh_map_picture_assignment_rng(&tiles, geometry, &mut rng);
+
+        let mut expected_rng = RetailLcg::from_state(1);
+        expected_rng.advance(); // mountain variant
+        expected_rng.advance(); // first river resolves to a set-A or set-B west continuation
+        assert_eq!(rng, expected_rng);
+        assert_eq!(
+            tiles.iter().map(|tile| tile.river).collect::<Vec<_>>(),
+            original_rivers
+        );
+    }
+
+    #[test]
+    fn picture_assignment_draws_in_direction_order_for_each_land_edge_on_water() {
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let target = geometry.tile(10, 10).unwrap();
+        let mut tiles = vec![TileState::default(); STRATEGIC_TILE_COUNT];
+        for tile in &mut tiles {
+            tile.terrain = TerrainKind::Water;
+        }
+        for direction in [HexDirection::NorthEast, HexDirection::SouthWest] {
+            let neighbor = geometry.neighbor(target, direction).unwrap();
+            tiles[usize::from(neighbor.get())].terrain = TerrainKind::Plains;
+        }
+        let mut sprite_variants = vec![0; STRATEGIC_TILE_COUNT];
+        let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
+        let mut rng = RetailLcg::from_state(3);
+
+        assign_picture_to_tile_for_rng(
+            &tiles,
+            geometry,
+            usize::from(target.get()),
+            &mut sprite_variants,
+            &mut river_sprite_codes,
+            &mut rng,
+        );
+
+        assert_eq!(rng.state(), 0x7ed3_5321);
+        assert_eq!(
+            sprite_variants[usize::from(target.get())],
+            1 << HexDirection::SouthWest as u8
+        );
+    }
+
+    #[test]
+    fn open_water_variant_draws_depend_on_already_processed_northern_tiles() {
+        let geometry = MapGeometry::new(MapTopology::Bounded);
+        let target = geometry.tile(10, 10).unwrap();
+        let north_west = geometry.neighbor(target, HexDirection::NorthWest).unwrap();
+        let tiles = vec![
+            TileState {
+                terrain: TerrainKind::Water,
+                ..TileState::default()
+            };
+            STRATEGIC_TILE_COUNT
+        ];
+        let mut river_sprite_codes = vec![0; STRATEGIC_TILE_COUNT];
+
+        let mut propagated_variants = vec![0; STRATEGIC_TILE_COUNT];
+        propagated_variants[usize::from(north_west.get())] = 4;
+        let mut propagation_rng = RetailLcg::from_state(5);
+        assign_picture_to_tile_for_rng(
+            &tiles,
+            geometry,
+            usize::from(target.get()),
+            &mut propagated_variants,
+            &mut river_sprite_codes,
+            &mut propagation_rng,
+        );
+        assert_eq!(propagation_rng.state(), 0x06c3_870a);
+        assert_eq!(propagated_variants[usize::from(target.get())], 1);
+
+        let mut isolated_variants = vec![0; STRATEGIC_TILE_COUNT];
+        let mut isolated_rng = RetailLcg::from_state(50);
+        assign_picture_to_tile_for_rng(
+            &tiles,
+            geometry,
+            usize::from(target.get()),
+            &mut isolated_variants,
+            &mut river_sprite_codes,
+            &mut isolated_rng,
+        );
+        assert_eq!(isolated_rng.state(), 0xd73b_4ad8);
+        assert_eq!(isolated_variants[usize::from(target.get())], 1);
+    }
 
     #[test]
     fn fallback_capital_stamps_the_province_anchor_state() {
@@ -1755,6 +2086,12 @@ mod tests {
         );
         assert_eq!(state.market, TradeMarketState::default());
         assert!(state.civilian_units.is_empty());
-        assert!(state.turn_summaries.iter().all(Vec::is_empty));
+        assert!(
+            state
+                .pending
+                .nations
+                .iter()
+                .all(|work| work.turn_summary.is_empty())
+        );
     }
 }

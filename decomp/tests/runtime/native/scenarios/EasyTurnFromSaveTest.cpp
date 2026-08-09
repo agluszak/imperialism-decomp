@@ -1,5 +1,6 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
+#include "RuntimeGameStateCapture.h"
 #include "RuntimeSemanticCapture.h"
 #include "RuntimeTestFactory.h"
 #include "RuntimeRun.h"
@@ -16,8 +17,7 @@ namespace {
 JSON_Value* BuildEasyTurnCaseJson() {
   JSON_Value* value = json_value_init_object();
   JSON_Object* object = value != 0 ? json_value_get_object(value) : 0;
-  if (object == 0 ||
-      json_object_set_boolean(object, "reject_offers", 1) != JSONSuccess ||
+  if (object == 0 || json_object_set_boolean(object, "reject_offers", 1) != JSONSuccess ||
       json_object_set_boolean(object, "expect_exactly_one_turn", 1) != JSONSuccess) {
     json_value_free(value);
     return 0;
@@ -48,7 +48,7 @@ protected:
 
 private:
   RuntimeActionResult CaptureBefore() {
-    if (!CaptureNamedGameState(RunState(), "before")) {
+    if (!CaptureGameState(RunState(), "before")) {
       return RuntimeActionResult::Failure("could not capture before game_state");
     }
 
@@ -61,14 +61,11 @@ private:
   }
 
   RuntimeActionResult CaptureAfter() {
-    JSON_Value* resultValue = BuildAcceptedOpResult();
-    if (resultValue == 0) {
-      return RuntimeActionResult::Failure("could not build accepted result JSON");
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("could not capture the void operation result");
     }
-    RunState().SetCapture("result", resultValue);
 
-    if (!CaptureNamedGameState(RunState(), "after") ||
-        !CaptureNamedGameState(RunState(), "game_state")) {
+    if (!CaptureGameState(RunState(), "after") || !CaptureGameState(RunState(), "game_state")) {
       return RuntimeActionResult::Failure("could not capture after game_state");
     }
     return RuntimeActionResult::Success();

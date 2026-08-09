@@ -71,39 +71,12 @@ pub enum RuntimeCaptureError {
     MissingCapture(String),
 }
 
-
-/// Backwards-compatible permissive reader for the standalone replay commands.
-/// Semantic differential scenarios must use [`read_runtime_result`] instead.
-#[derive(Debug, Deserialize)]
-pub struct RuntimeResult {
-    #[serde(default)]
-    pub seed: u32,
-    captures: BTreeMap<String, serde_json::Value>,
-}
-
-impl RuntimeResult {
-    pub fn read(path: &Path) -> Result<Self, RuntimeCaptureError> {
-        let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
-        serde_json::from_reader(file).map_err(RuntimeCaptureError::Json)
-    }
-
-    pub(crate) fn from_reader(reader: impl Read) -> Result<Self, RuntimeCaptureError> {
-        serde_json::from_reader(reader).map_err(RuntimeCaptureError::Json)
-    }
-
-    pub fn capture<T: serde::de::DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
-        let capture = self.captures.get(name).cloned().ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
-        serde_json::from_value(capture).map_err(|source| RuntimeCaptureError::CaptureJson { name: name.to_owned(), source })
-    }
-}
-
 /// Expectations for a published Python runtime result (`result.json`), not the
 /// pre-enrichment `native-result.json`.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct RuntimeResultExpectations<'a> {
     pub name: &'a str,
-    /// When `Some`, the result seed must match. When `None`, any seed is accepted.
-    pub seed: Option<u32>,
+    pub seed: u32,
     pub evidence_kind: EvidenceKind,
     pub required_captures: &'a [&'a str],
 }
@@ -189,12 +162,10 @@ fn validate_runtime_result(
             raw.name, expectations.name
         )));
     }
-    if let Some(expected_seed) = expectations.seed
-        && raw.seed != expected_seed
-    {
+    if raw.seed != expectations.seed {
         return Err(RuntimeCaptureError::Invalid(format!(
             "runtime result seed {}, expected {}",
-            raw.seed, expected_seed
+            raw.seed, expectations.seed
         )));
     }
     if raw.status != "passed" {
@@ -231,6 +202,10 @@ fn validate_runtime_result(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use imperialism_core::{
+        Difficulty, GameState, MajorNationId, MapTopology, create_random_game,
+        generate_random_setup_preview_with_clock_seed,
+    };
     use serde_json::json;
 
     #[derive(Debug, Deserialize, Eq, PartialEq)]
@@ -253,7 +228,7 @@ mod tests {
     fn expectations() -> RuntimeResultExpectations<'static> {
         RuntimeResultExpectations {
             name: "probe",
-            seed: Some(1),
+            seed: 1,
             evidence_kind: EvidenceKind::RetailFixtureOracle,
             required_captures: &["probe"],
         }
@@ -299,7 +274,7 @@ mod tests {
             decode_runtime_result(
                 &bytes[..],
                 RuntimeResultExpectations {
-                    seed: Some(9),
+                    seed: 9,
                     ..expectations()
                 },
             )
@@ -355,20 +330,6 @@ mod tests {
     }
 
     #[test]
-    fn accepts_any_seed_when_unspecified() {
-        let bytes = serde_json::to_vec(&passed_result()).unwrap();
-        let result = decode_runtime_result(
-            &bytes[..],
-            RuntimeResultExpectations {
-                seed: None,
-                ..expectations()
-            },
-        )
-        .unwrap();
-        assert_eq!(result.seed, 1);
-    }
-
-    #[test]
     fn reports_capture_decode_errors_with_capture_name() {
         let input = json!({
             "name": "probe",
@@ -406,6 +367,36 @@ mod tests {
             error,
             RuntimeCaptureError::UnknownCaptureFields { ref name, ref fields }
                 if name == "probe" && fields.contains("extra_oracle_field")
+        ));
+    }
+
+    #[test]
+    fn rejects_an_unknown_nested_game_state_field() {
+        let preview =
+            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
+        let mut capture = serde_json::to_value(state).unwrap();
+        capture["turn"]["oracle_extra"] = json!(true);
+        capture["diplomacy"]["oracle_extra"] = json!(true);
+        let input = json!({
+            "name": "probe",
+            "seed": 1,
+            "status": "passed",
+            "evidence_kind": "retail_fixture_oracle",
+            "captures": {"probe": capture},
+        });
+        let result = decode_runtime_result(
+            serde_json::to_vec(&input).unwrap().as_slice(),
+            expectations(),
+        )
+        .unwrap();
+
+        let error = result.capture::<GameState>("probe").unwrap_err();
+        assert!(matches!(
+            error,
+            RuntimeCaptureError::UnknownCaptureFields { fields, .. }
+                if fields.contains("turn.oracle_extra")
+                    && fields.contains("diplomacy.oracle_extra")
         ));
     }
 
