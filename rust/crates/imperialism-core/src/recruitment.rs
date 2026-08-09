@@ -61,16 +61,16 @@ impl GameState {
         nation: MajorNationId,
         unit_kind: CivilianUnitKind,
         pending_delta: i16,
-    ) -> Result<(), RecruitmentError> {
+    ) {
         let nation_id = nation.nation();
         if pending_delta == 0 {
-            return Ok(());
+            return;
         }
         let home_tile = self
             .nations
             .city(nation)
             .home_town_tile
-            .ok_or(RecruitmentError::MissingHomeTile)?;
+            .expect("civilian recruit production requires a home town tile");
 
         let metric = &mut self.nations.city_mut(nation).civilian_recruit_count_by_kind[unit_kind];
         *metric += pending_delta;
@@ -106,7 +106,6 @@ impl GameState {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
         }
-        Ok(())
     }
 
     pub fn produce_military_recruits(
@@ -114,10 +113,10 @@ impl GameState {
         nation: MajorNationId,
         unit_kind: MilitaryUnitKind,
         pending_delta: i16,
-    ) -> Result<(), RecruitmentError> {
+    ) {
         let nation_id = nation.nation();
         if pending_delta == 0 {
-            return Ok(());
+            return;
         }
         let major_nation = &self.nations.majors[nation];
         let city = &major_nation.city;
@@ -125,10 +124,10 @@ impl GameState {
         let military_start = if pending_delta > 0 {
             let home_tile = city
                 .home_town_tile
-                .ok_or(RecruitmentError::MissingHomeProvince)?;
+                .expect("military recruit production requires a home town tile");
             let province = self.world[home_tile]
                 .province
-                .ok_or(RecruitmentError::MissingHomeProvince)?;
+                .expect("military recruit production requires the home town's province");
             let action_6 =
                 major.pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade].status();
             Some((
@@ -182,7 +181,7 @@ impl GameState {
 
         insert_turn_summary(
             &mut self.rng,
-            &mut self.turn_summaries[nation],
+            &mut self.pending.nations[nation].turn_summary,
             TurnSummary::MilitaryRecruit {
                 turn_tick: self.turn.economic_turn,
                 unit_type: unit_kind,
@@ -193,7 +192,6 @@ impl GameState {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
         }
-        Ok(())
     }
 }
 
@@ -230,14 +228,6 @@ fn pending_military_action_payload(military_power: i32, current_level: i32) -> O
     } else {
         None
     }
-}
-
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum RecruitmentError {
-    #[error("city has no recruit origin tile")]
-    MissingHomeTile,
-    #[error("city's recruit origin has no province")]
-    MissingHomeProvince,
 }
 
 #[cfg(test)]
@@ -350,6 +340,28 @@ mod tests {
     }
 
     #[test]
+    #[should_panic(expected = "civilian recruit production requires a home town tile")]
+    fn civilian_recruit_production_requires_a_home_town() {
+        let home = TileId::new(200);
+        let mut state = game(home);
+        state.nations.majors[MajorNationId::new(0)]
+            .city
+            .home_town_tile = None;
+
+        state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 1);
+    }
+
+    #[test]
+    #[should_panic(expected = "military recruit production requires the home town's province")]
+    fn military_recruit_production_requires_a_home_province() {
+        let home = TileId::new(200);
+        let mut state = game(home);
+        state.world[home].province = None;
+
+        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1);
+    }
+
+    #[test]
     fn follows_retail_depth_first_neighbor_order() {
         let mut state = world();
         let geometry = MapGeometry::new(MapTopology::Wrapping);
@@ -406,9 +418,7 @@ mod tests {
         state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
         state.world[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
         state.civilian_units.push(civilian(40, 0, start));
-        state
-            .produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2)
-            .unwrap();
+        state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2);
 
         assert_eq!(state.civilian_units.len(), 2);
         assert_eq!(
@@ -431,9 +441,7 @@ mod tests {
         let start = TileId::new(200);
         let mut state = game(start);
         state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        state
-            .produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2)
-            .unwrap();
+        state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2);
 
         assert!(state.civilian_units.is_empty());
         assert_eq!(
@@ -466,9 +474,7 @@ mod tests {
             .economy
             .pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade] =
             crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
-        state
-            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1)
-            .unwrap();
+        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1);
 
         assert_eq!(
             state.military_units,
@@ -493,7 +499,7 @@ mod tests {
         );
         assert_eq!(state.unit_ids.current(), 41);
         assert_eq!(
-            state.turn_summaries[MajorNationId::new(0)],
+            state.pending.nations[MajorNationId::new(0)].turn_summary,
             vec![TurnSummary::MilitaryRecruit {
                 turn_tick: 1,
                 unit_type: MilitaryUnitKind::Sappers,
@@ -518,9 +524,7 @@ mod tests {
             .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
             .collect();
         state.unit_ids = crate::UnitIdAllocator::from_retail(54);
-        state
-            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 2)
-            .unwrap();
+        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 2);
 
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
         assert_eq!(state.military_units[14].id, MilitaryUnitId::new(55));
@@ -551,9 +555,7 @@ mod tests {
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::Level3, Some(6));
-        state
-            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1)
-            .unwrap();
+        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1);
 
         let pending = state
             .nations
@@ -595,9 +597,7 @@ mod tests {
     fn negative_military_quantity_runs_only_the_retail_tail() {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
-        state
-            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Minutemen, -2)
-            .unwrap();
+        state.produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Minutemen, -2);
 
         assert!(state.military_units.is_empty());
         assert_eq!(
@@ -605,7 +605,7 @@ mod tests {
             1
         );
         assert_eq!(
-            state.turn_summaries[MajorNationId::new(0)],
+            state.pending.nations[MajorNationId::new(0)].turn_summary,
             vec![TurnSummary::MilitaryRecruit {
                 turn_tick: 1,
                 unit_type: MilitaryUnitKind::Minutemen,

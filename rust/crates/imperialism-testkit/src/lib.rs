@@ -5,7 +5,10 @@ pub mod differential_scenarios;
 mod oracle;
 mod runtime_capture;
 
-pub use differential::{assert_game_state_eq, differential, differential_from_result};
+pub use differential::{
+    assert_game_state_eq, differential, differential_from_result, run_native_scenario,
+};
+pub use differential_scenarios::ScenarioMeta;
 use imperialism_core::{
     Difficulty, MajorNationId, MapTopology, RetailLcg,
     differential_trace::{
@@ -16,7 +19,10 @@ pub use oracle::{
     check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
     check_snapshot, check_terrain,
 };
-pub use runtime_capture::{decode_runtime_result, read_runtime_result, EvidenceKind, RuntimeCaptureError, RuntimeResult, RuntimeResultExpectations, ValidatedRuntimeResult};
+pub use runtime_capture::{
+    EvidenceKind, RuntimeCaptureError, RuntimeResultExpectations, ValidatedRuntimeResult,
+    decode_runtime_result, read_runtime_result,
+};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -187,54 +193,75 @@ mod tests {
         }
     }
 
+    fn self_consistency_expectations(
+        required_captures: &'static [&'static str],
+    ) -> RuntimeResultExpectations<'static> {
+        RuntimeResultExpectations {
+            name: "random_map_generation",
+            seed: 1,
+            evidence_kind: EvidenceKind::SelfConsistency,
+            required_captures,
+        }
+    }
+
     #[test]
-    fn reads_the_direct_random_map_terrain_capture() {
+    fn reads_the_published_random_map_terrain_capture() {
         let expected = terrain_capture();
         let bytes = serde_json::to_vec(&json!({
-            "name": "terrain",
+            "name": "random_map_generation",
             "seed": 1,
             "status": "passed",
+            "evidence_kind": "self_consistency",
             "captures": {"random_map_terrain": expected},
         }))
         .unwrap();
-        let actual: RandomMapTerrainCapture = RuntimeResult::from_reader(bytes.as_slice())
-            .unwrap()
-            .capture("random_map_terrain")
-            .unwrap();
+        let actual: RandomMapTerrainCapture = decode_runtime_result(
+            bytes.as_slice(),
+            self_consistency_expectations(&["random_map_terrain"]),
+        )
+        .unwrap()
+        .capture("random_map_terrain")
+        .unwrap();
         assert_eq!(actual, expected);
     }
 
     #[test]
     fn terrain_capture_requires_its_named_capture() {
         let bytes = serde_json::to_vec(&json!({
-            "name": "terrain",
+            "name": "random_map_generation",
             "seed": 1,
             "status": "passed",
+            "evidence_kind": "self_consistency",
             "captures": {"other_capture": {}},
         }))
         .unwrap();
         assert!(matches!(
-            RuntimeResult::from_reader(bytes.as_slice())
-                .unwrap()
-                .capture::<RandomMapTerrainCapture>("random_map_terrain"),
+            decode_runtime_result(
+                bytes.as_slice(),
+                self_consistency_expectations(&["random_map_terrain"]),
+            ),
             Err(RuntimeCaptureError::MissingCapture(name)) if name == "random_map_terrain"
         ));
     }
 
     #[test]
-    fn reads_the_direct_random_game_setup_capture() {
+    fn reads_the_published_random_game_setup_capture() {
         let expected = random_game_setup_capture();
         let bytes = serde_json::to_vec(&json!({
             "name": "random_map_generation",
             "seed": 1,
             "status": "passed",
+            "evidence_kind": "self_consistency",
             "captures": {"random_game_setup": expected},
         }))
         .unwrap();
-        let actual: RandomGameSetupCapture = RuntimeResult::from_reader(bytes.as_slice())
-            .unwrap()
-            .capture("random_game_setup")
-            .unwrap();
+        let actual: RandomGameSetupCapture = decode_runtime_result(
+            bytes.as_slice(),
+            self_consistency_expectations(&["random_game_setup"]),
+        )
+        .unwrap()
+        .capture("random_game_setup")
+        .unwrap();
         assert_eq!(actual, expected);
     }
 

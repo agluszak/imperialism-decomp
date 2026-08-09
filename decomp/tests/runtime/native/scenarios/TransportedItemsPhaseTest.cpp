@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -54,6 +55,9 @@ private:
     RunState().SetCapture("case", caseCapture.Release());
 
     nation->AddTransportedItems();
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    }
 
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

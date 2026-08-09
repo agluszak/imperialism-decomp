@@ -16,7 +16,7 @@ from tools.runtime.catalog import (
     record_missing_oracles,
     tests_in_suite,
 )
-from tools.runtime.generate_native_registry import render_registry
+from tools.runtime.generate_native_registry import render_factories, render_registry
 from tools.runtime.fixtures import validate_fixture_metadata
 from tools.runtime.protocol import validate_published_result, validate_result
 
@@ -32,6 +32,32 @@ class RuntimeCatalogTests(unittest.TestCase):
     def test_native_factories_are_unique(self) -> None:
         factories = [test.native_factory for test in TESTS]
         self.assertEqual(len(factories), len(set(factories)))
+
+    def test_rolling_stock_corpus_has_success_and_insufficient_resources(self) -> None:
+        success = find_test("rolling_stock")
+        insufficient = find_test("rolling_stock_insufficient_resources")
+        self.assertIsNotNone(success)
+        self.assertIsNotNone(insufficient)
+        assert success is not None
+        assert insufficient is not None
+        self.assertEqual(success.fixture, insufficient.fixture)
+        self.assertEqual(success.evidence_kind, insufficient.evidence_kind)
+        self.assertEqual(success.native_snapshots, insufficient.native_snapshots)
+        self.assertIn("RollingStockInsufficientResourcesTest()", render_factories())
+        self.assertIn('"rolling_stock_insufficient_resources"', render_registry())
+
+    def test_first_turn_alert_phase_is_a_retail_fixture_differential(self) -> None:
+        phase = find_test("first_turn_alert_phase")
+        loaded_turn = find_test("easy_turn_from_save")
+        self.assertIsNotNone(phase)
+        self.assertIsNotNone(loaded_turn)
+        assert phase is not None
+        assert loaded_turn is not None
+        self.assertEqual(phase.fixture, loaded_turn.fixture)
+        self.assertEqual(phase.evidence_kind, "retail_fixture_oracle")
+        self.assertEqual(phase.native_snapshots, ("game_state",))
+        self.assertIn("FirstTurnAlertPhaseTest()", render_factories())
+        self.assertIn('"first_turn_alert_phase"', render_registry())
 
     def test_pr_suite_is_nonempty_and_part_of_full(self) -> None:
         pr_names = {test.name for test in tests_in_suite("pr")}

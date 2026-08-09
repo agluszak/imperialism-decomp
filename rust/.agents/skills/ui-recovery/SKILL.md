@@ -14,8 +14,9 @@ Run Rust work from `rust/` and generator work from `../decomp/`.
 3. Run the decomp UI generator check and regenerate the Rust catalog through its explicit sibling
    output path.
 4. Keep catalog decoding/normalization in `imperialism-formats`. Build Bevy presentation and input
-   projections in `imperialism-app`; invoke direct domain operations rather than mutating
-   authoritative state in ECS.
+   projections in `imperialism-app`; invoke one direct typed core operation rather than mutating
+   authoritative state in ECS. Do not invent a universal `GameCommand` layer for UI wiring. Project
+   returned state, results, and required non-state effects.
 5. Preserve the fixed logical canvas, retail hierarchy and coordinates, deterministic tag/event
    mapping, resource-file-scoped IDs, and nearest-neighbor presentation rules.
 6. Add focused generator/catalog tests and Bevy behavior tests. Use a runtime/differential check when

@@ -98,8 +98,10 @@ void JsonObject::Set(const char* name, JSON_Value* value) {
 }
 
 void JsonObject::SetOptional(const char* name, int value) {
-  if (value < 0) {
+  if (value == -1) {
     SetNull(name);
+  } else if (value < -1) {
+    FailJson("optional semantic value is below the -1 sentinel");
   } else {
     Set(name, value);
   }

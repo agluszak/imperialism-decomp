@@ -118,22 +118,13 @@ impl RailSegment {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
-pub enum CivilianWorkError {
-    #[error("civilian unit {} is not present", .id.get())]
-    MissingCivilian { id: CivilianUnitId },
-}
-
 impl GameState {
-    pub fn advance_civilian_work(
-        &mut self,
-        civilian: CivilianUnitId,
-    ) -> Result<(), CivilianWorkError> {
+    pub fn advance_civilian_work(&mut self, civilian: CivilianUnitId) {
         let index = self
             .civilian_units
             .iter()
             .position(|unit| unit.id == civilian)
-            .ok_or(CivilianWorkError::MissingCivilian { id: civilian })?;
+            .expect("scheduled civilian work references a present unit");
         match &mut self.civilian_units[index].order {
             CivilianWorkOrder::DevelopResource { turns } => {
                 if turns.advance() {
@@ -148,7 +139,6 @@ impl GameState {
             }
             _ => {}
         }
-        Ok(())
     }
 
     fn complete_resource_development(&mut self, index: usize) {

@@ -9,11 +9,9 @@
 
 class RuntimeRun;
 
-// Captures the semantic GameState object under `name` (before/after/game_state).
-bool CaptureNamedGameState(RuntimeRun& run, const char* name);
-
-// Operation outcome JSON shared with imperialism-testkit DiffOpResult.
-JSON_Value* BuildAcceptedOpResult();
-JSON_Value* BuildRejectedNotMajorOpResult(int nationSlot);
+// Capture an operation's native semantic return under `result`.
+bool CaptureVoidOpResult(RuntimeRun& run);
+bool CaptureBooleanOpResult(RuntimeRun& run, bool result);
+bool CaptureIntegerOpResult(RuntimeRun& run, int result);
 
 #endif

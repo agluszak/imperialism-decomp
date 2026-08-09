@@ -56,7 +56,7 @@ bool CapturePersistentGameState(const RuntimeRun& run, CString& persistentState)
   }
   JSON_Object* state = json_value_get_object(value);
   if (state == 0 || json_object_remove(state, "turn") != JSONSuccess ||
-      json_object_remove(state, "persistent_unit_id_counter") != JSONSuccess ||
+      json_object_remove(state, "unit_ids") != JSONSuccess ||
       json_object_remove(state, "rng") != JSONSuccess) {
     json_value_free(value);
     return false;

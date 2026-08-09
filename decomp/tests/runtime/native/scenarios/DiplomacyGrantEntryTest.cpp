@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/nation/TGreatPower.h"
@@ -43,8 +44,10 @@ private:
     caseCapture.Set("amount", static_cast<int>(grantAmount));
     RunState().SetCapture("case", caseCapture.Release());
 
-    if (!nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount)) {
-      return RuntimeActionResult::Failure("retail rejected the diplomacy grant");
+    const bool accepted =
+        nation->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNationSlot, grantAmount);
+    if (!CaptureBooleanOpResult(RunState(), accepted)) {
+      return RuntimeActionResult::Failure("the diplomacy grant result capture is unavailable");
     }
 
     if (!CaptureGameState(RunState(), "after")) {

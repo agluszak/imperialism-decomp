@@ -9,16 +9,24 @@ use imperialism_core::{
 use std::path::Path;
 
 use crate::{
-    RandomGameSetupCapture, RandomMapTerrainCapture, RetailTopologyByte, RuntimeResult,
-    assert_game_state_eq, first_serialized_difference, generate_and_compare_coarse_trace,
-    generate_and_compare_terrain_capture,
+    EvidenceKind, RandomGameSetupCapture, RandomMapTerrainCapture, RetailTopologyByte,
+    RuntimeResultExpectations, ValidatedRuntimeResult, assert_game_state_eq,
+    first_serialized_difference, generate_and_compare_coarse_trace,
+    generate_and_compare_terrain_capture, read_runtime_result,
 };
 
 const DEFAULT_TOPOLOGY: RetailTopologyByte = RetailTopologyByte::from_retail_byte(0);
+const RANDOM_MAP_GENERATION: &str = "random_map_generation";
+const RANDOM_GAME_NORMAL_START: &str = "random_game_normal_start";
 
-pub fn check_coarse(result: &Path) -> Result<()> {
-    let runtime = RuntimeResult::read(result)
-        .with_context(|| format!("could not read {}", result.display()))?;
+pub fn check_coarse(result: &Path, seed: u32) -> Result<()> {
+    let runtime = read_result(
+        result,
+        RANDOM_MAP_GENERATION,
+        seed,
+        EvidenceKind::SelfConsistency,
+        &["coarse_map_generation"],
+    )?;
     let oracle = runtime
         .capture("coarse_map_generation")
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -57,9 +65,14 @@ pub fn check_coarse(result: &Path) -> Result<()> {
     Ok(())
 }
 
-pub fn check_terrain(result: &Path) -> Result<()> {
-    let runtime = RuntimeResult::read(result)
-        .with_context(|| format!("could not read {}", result.display()))?;
+pub fn check_terrain(result: &Path, scenario: &str, seed: u32) -> Result<()> {
+    let runtime = read_result(
+        result,
+        scenario,
+        seed,
+        EvidenceKind::SelfConsistency,
+        &["random_map_terrain"],
+    )?;
     let capture: RandomMapTerrainCapture = runtime
         .capture("random_map_terrain")
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -86,9 +99,14 @@ pub fn check_terrain(result: &Path) -> Result<()> {
     Ok(())
 }
 
-pub fn check_random_setup(result: &Path) -> Result<()> {
-    let runtime = RuntimeResult::read(result)
-        .with_context(|| format!("could not read {}", result.display()))?;
+pub fn check_random_setup(result: &Path, seed: u32) -> Result<()> {
+    let runtime = read_result(
+        result,
+        RANDOM_MAP_GENERATION,
+        seed,
+        EvidenceKind::SelfConsistency,
+        &["random_game_setup", "random_map_terrain"],
+    )?;
     let setup: RandomGameSetupCapture = runtime
         .capture("random_game_setup")
         .with_context(|| format!("could not read {}", result.display()))?;
@@ -175,9 +193,14 @@ fn captured_seed_candidate_tiles(
     Ok(candidates)
 }
 
-pub fn check_random_setup_initial(result: &Path) -> Result<()> {
-    let runtime = RuntimeResult::read(result)
-        .with_context(|| format!("could not read {}", result.display()))?;
+pub fn check_random_setup_initial(result: &Path, seed: u32) -> Result<()> {
+    let runtime = read_result(
+        result,
+        RANDOM_MAP_GENERATION,
+        seed,
+        EvidenceKind::SelfConsistency,
+        &["random_game_setup", "random_map_terrain"],
+    )?;
     let clock_seed = runtime.seed;
     let setup: RandomGameSetupCapture = runtime
         .capture("random_game_setup")
@@ -257,19 +280,35 @@ pub fn check_random_setup_initial(result: &Path) -> Result<()> {
 }
 
 /// Compare `create_random_game` against a native pre-capital `game_state` capture.
-pub fn check_random_game_start(result: &Path) -> Result<()> {
-    let runtime = RuntimeResult::read(result)
-        .with_context(|| format!("could not read {}", result.display()))?;
+pub fn check_random_game_start(result: &Path, seed: u32) -> Result<()> {
+    let runtime = read_result(
+        result,
+        RANDOM_GAME_NORMAL_START,
+        seed,
+        EvidenceKind::SelfConsistency,
+        &["random_game_setup", "game_state"],
+    )?;
     let setup: RandomGameSetupCapture = runtime
         .capture("random_game_setup")
         .with_context(|| format!("could not read {}", result.display()))?;
-    if setup.difficulty != Difficulty::Normal
-        && setup.difficulty != Difficulty::Hard
-        && setup.difficulty != Difficulty::NighOnImpossible
+    let expected: GameState = runtime
+        .capture("game_state")
+        .with_context(|| format!("could not read {}", result.display()))?;
+    let difficulty = expected.turn.difficulty;
+    if difficulty != Difficulty::Normal
+        && difficulty != Difficulty::Hard
+        && difficulty != Difficulty::NighOnImpossible
     {
         bail!(
-            "random_game_normal_start oracle expects a Normal+ setup, got {:?}",
-            setup.difficulty
+            "random_game_normal_start oracle expects a Normal+ game state, got {:?}",
+            difficulty
+        );
+    }
+    if expected.turn.selected_nation != setup.nation.nation() {
+        bail!(
+            "random-game setup nation {} differs from game-state selected nation {}",
+            setup.nation.get(),
+            expected.turn.selected_nation.get()
         );
     }
 
@@ -281,10 +320,9 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
                     setup.planet_seed
                 )
             })?;
-    let actual = create_random_game(&preview, setup.nation, setup.difficulty, runtime.seed);
-    let expected: GameState = runtime
-        .capture("game_state")
-        .with_context(|| format!("could not read {}", result.display()))?;
+    // RandomSetupFlow captures the stable generated preview before it selects the scenario's
+    // requested difficulty. The constructed game state is the authoritative accepted setting.
+    let actual = create_random_game(&preview, setup.nation, difficulty, runtime.seed);
 
     assert_game_state_eq(&expected, &actual)?;
 
@@ -293,7 +331,7 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
         setup.planet_seed,
         setup.topology.retail_byte(),
         setup.nation.get(),
-        setup.difficulty,
+        difficulty,
         STRATEGIC_TILE_COUNT,
         actual.military_units.len(),
         actual.missions.len(),
@@ -304,9 +342,14 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
     Ok(())
 }
 
-pub fn check_snapshot(result: &Path, comparison: Option<&Path>) -> Result<()> {
-    let state: GameState = RuntimeResult::read(result)
-        .with_context(|| format!("reading game state {}", result.display()))?
+pub fn check_snapshot(
+    result: &Path,
+    comparison: Option<&Path>,
+    scenario: &str,
+    seed: u32,
+    evidence_kind: EvidenceKind,
+) -> Result<()> {
+    let state: GameState = read_result(result, scenario, seed, evidence_kind, &["game_state"])?
         .capture("game_state")
         .with_context(|| format!("reading game state {}", result.display()))?;
     println!(
@@ -319,20 +362,20 @@ pub fn check_snapshot(result: &Path, comparison: Option<&Path>) -> Result<()> {
         state.missions.len()
     );
     if let Some(comparison_path) = comparison {
-        let comparison: GameState = RuntimeResult::read(comparison_path)
-            .with_context(|| {
-                format!(
-                    "reading comparison game state {}",
-                    comparison_path.display()
-                )
-            })?
-            .capture("game_state")
-            .with_context(|| {
-                format!(
-                    "reading comparison game state {}",
-                    comparison_path.display()
-                )
-            })?;
+        let comparison: GameState = read_result(
+            comparison_path,
+            scenario,
+            seed,
+            evidence_kind,
+            &["game_state"],
+        )?
+        .capture("game_state")
+        .with_context(|| {
+            format!(
+                "reading comparison game state {}",
+                comparison_path.display()
+            )
+        })?;
         if let Some(difference) = first_serialized_difference(&state, &comparison)
             .context("could not compare game states")?
         {
@@ -346,6 +389,30 @@ pub fn check_snapshot(result: &Path, comparison: Option<&Path>) -> Result<()> {
         println!("semantic game states are identical");
     }
     Ok(())
+}
+
+fn read_result(
+    result: &Path,
+    name: &str,
+    seed: u32,
+    evidence_kind: EvidenceKind,
+    required_captures: &[&str],
+) -> Result<ValidatedRuntimeResult> {
+    read_runtime_result(
+        result,
+        RuntimeResultExpectations {
+            name,
+            seed,
+            evidence_kind,
+            required_captures,
+        },
+    )
+    .with_context(|| {
+        format!(
+            "could not read published runtime result {}",
+            result.display()
+        )
+    })
 }
 
 fn initial_defaults(clock_seed: u32) -> RandomGameSetupCapture {

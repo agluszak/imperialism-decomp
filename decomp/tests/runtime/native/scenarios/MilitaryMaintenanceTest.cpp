@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/globals/shared_globals.h"
 #include "game/military/TMilitaryUnit.h"
@@ -34,7 +35,7 @@ private:
     const NationSlot foreignNationSlot = nationSlot == 0 ? 1 : 0;
     TGreatPower* foreignNation = g_apNationStates[foreignNationSlot];
     if (nation == 0 || foreignNation == 0 || nation->militaryUnitList44 == 0 ||
-        foreignNation->militaryUnitList44 == 0) {
+        foreignNation->militaryUnitList44 == 0 || g_pMapActionContextListHead == 0) {
       return RuntimeActionResult::Failure("the loaded game has no major-nation military state");
     }
 
@@ -56,13 +57,15 @@ private:
     foreignArmor->IMilitaryUnit(EncodeMilitaryUnitKind(kMilitaryUnitArmor), -1, foreignNationSlot);
 
     TShip* ownedSlot3 = new TShip();
-    ownedSlot3->IShip(3, 0, nationSlot, "maintenance-owned-slot3");
+    ownedSlot3->IShip(3, g_pMapActionContextListHead, nationSlot, "maintenance-owned-slot3");
     TShip* ownedSlot9 = new TShip();
-    ownedSlot9->IShip(9, 0, nationSlot, "maintenance-owned-slot9");
+    ownedSlot9->IShip(9, g_pMapActionContextListHead, nationSlot, "maintenance-owned-slot9");
     TShip* ownedSlot12 = new TShip();
-    ownedSlot12->IShip(12, 0, nationSlot, "maintenance-owned-slot12");
+    ownedSlot12->IShip(12, g_pMapActionContextListHead, nationSlot,
+                       "maintenance-owned-slot12");
     TShip* foreignSlot12 = new TShip();
-    foreignSlot12->IShip(12, 0, foreignNationSlot, "maintenance-foreign-slot12");
+    foreignSlot12->IShip(12, g_pMapActionContextListHead, foreignNationSlot,
+                         "maintenance-foreign-slot12");
 
     nation->treasuryValue10 = 10000;
     nation->militaryExpenses960 = 0;
@@ -75,6 +78,9 @@ private:
     RunState().SetCapture("case", caseCapture.Release());
 
     nation->PayForMilitary();
+    if (!CaptureVoidOpResult(RunState())) {
+      return RuntimeActionResult::Failure("the void operation result capture is unavailable");
+    }
 
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

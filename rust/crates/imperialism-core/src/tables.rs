@@ -1,11 +1,12 @@
-use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot};
+use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot, ProvinceId};
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = NationId::COUNT as usize;
 pub const MAJOR_NATION_COUNT: usize = MajorNationId::COUNT as usize;
 pub const MINOR_NATION_COUNT: usize = MinorNationId::COUNT as usize;
+pub const PROVINCE_COUNT: usize = ProvinceId::COUNT as usize;
 
 /// The fourteen entries in the retail shipyard descriptor table.
 ///
@@ -168,6 +169,59 @@ impl<T> IndexMut<MinorNationId> for MinorNationTable<T> {
     }
 }
 
+/// Fixed values stored in retail province-table order.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct ProvinceTable<T>(Box<[T; PROVINCE_COUNT]>);
+
+impl<T> ProvinceTable<T> {
+    pub fn from_array(values: [T; PROVINCE_COUNT]) -> Self {
+        Self(Box::new(values))
+    }
+}
+
+impl<T: Default> Default for ProvinceTable<T> {
+    fn default() -> Self {
+        Self::from_array(std::array::from_fn(|_| T::default()))
+    }
+}
+
+impl<T> Index<ProvinceId> for ProvinceTable<T> {
+    type Output = T;
+
+    fn index(&self, province: ProvinceId) -> &Self::Output {
+        &self.0[usize::from(province.get())]
+    }
+}
+
+impl<T> IndexMut<ProvinceId> for ProvinceTable<T> {
+    fn index_mut(&mut self, province: ProvinceId) -> &mut Self::Output {
+        &mut self.0[usize::from(province.get())]
+    }
+}
+
+impl<T: Serialize> Serialize for ProvinceTable<T> {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.collect_seq(self.0.iter())
+    }
+}
+
+impl<'de, T: Deserialize<'de>> Deserialize<'de> for ProvinceTable<T> {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let values = Vec::<T>::deserialize(deserializer)?;
+        let actual = values.len();
+        let values: [T; PROVINCE_COUNT] = values.try_into().map_err(|_| {
+            serde::de::Error::invalid_length(actual, &"exactly 384 province entries")
+        })?;
+        Ok(Self::from_array(values))
+    }
+}
+
 /// Zero-based entries in the retail reward-prompt string group `0x273a`.
 #[derive(
     Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
@@ -255,6 +309,17 @@ mod tests {
 
         assert!(serde_json::from_str::<NationTable<u8>>(&too_short).is_err());
         assert!(serde_json::from_str::<NationTable<u8>>(&too_long).is_err());
+    }
+
+    #[test]
+    fn province_table_deserialization_requires_exact_retail_length() {
+        let too_short = serde_json::to_string(&vec![0_u8; PROVINCE_COUNT - 1]).unwrap();
+        let exact = serde_json::to_string(&vec![0_u8; PROVINCE_COUNT]).unwrap();
+        let too_long = serde_json::to_string(&vec![0_u8; PROVINCE_COUNT + 1]).unwrap();
+
+        assert!(serde_json::from_str::<ProvinceTable<u8>>(&too_short).is_err());
+        assert!(serde_json::from_str::<ProvinceTable<u8>>(&exact).is_ok());
+        assert!(serde_json::from_str::<ProvinceTable<u8>>(&too_long).is_err());
     }
 
     #[test]

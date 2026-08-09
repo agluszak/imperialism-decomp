@@ -513,7 +513,6 @@ mod tests {
         GeneratedTerrainTileScratch {
             terrain_kind: WATER,
             river_sprite_code: 0,
-            river_flow_direction: None,
             owner_nation: (region + SEA_OWNER_BIAS) as i8,
             gate_flag: -1,
             province_index: -1,
@@ -524,7 +523,6 @@ mod tests {
         GeneratedTerrainTileScratch {
             terrain_kind: 0,
             river_sprite_code: 0,
-            river_flow_direction: None,
             owner_nation: owner,
             gate_flag: -1,
             province_index: 0,

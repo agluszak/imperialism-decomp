@@ -1,5 +1,6 @@
 #include "RuntimeScriptBases.h"
 #include "RuntimeScriptMacros.h"
+#include "RuntimeGameStateCapture.h"
 #include "RuntimeTestFactory.h"
 #include "screens/StrategicMapScreen.h"
 
@@ -25,6 +26,9 @@ protected:
   void Script() override {
     RT_BEGIN();
 
+    // Publish the semantic state immediately after the loaded-map fixture reaches
+    // its stable script boundary, before any viewport/UI operation below.
+    RT_REQUIRE(CaptureGameState(RunState(), "game_state"));
     RT_REQUIRE(g_pSimMgr->economicTurn >= 0);
 
     // The map view can exist a tick before its children do, so these wait rather than failing

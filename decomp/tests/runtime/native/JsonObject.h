@@ -24,7 +24,7 @@ public:
   void SetNull(const char* name);
   // Takes ownership of value.
   void Set(const char* name, JSON_Value* value);
-  // Writes null when value < 0; otherwise writes the number.
+  // Writes null for the exact -1 sentinel and rejects lower values.
   void SetOptional(const char* name, int value);
 
   // Transfers ownership of the underlying JSON value. The wrapper becomes empty.

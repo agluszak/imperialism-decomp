@@ -1,44 +1,56 @@
-//! Process-isolated differential helper: run a native scenario, apply the Rust
-//! operation to the captured `before` state, and compare against `after`.
+//! Process-isolated semantic differential helper.
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::GameState;
 use serde::de::DeserializeOwned;
+use std::fmt::Debug;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::{RuntimeResult, first_serialized_difference};
+use crate::{ScenarioMeta, first_serialized_difference, read_runtime_result};
 
-/// Run `scenario` under the native harness, apply `apply` to the captured
-/// `before`/`case` pair, and require the resulting state to match `after`.
-pub fn differential<T, F>(scenario: &str, apply: F) -> Result<()>
+/// Run one native scenario, apply the matching Rust operation to its captured
+/// `before` state, and compare both the semantic result and complete post-state.
+pub fn differential<C, R, F>(scenario: ScenarioMeta, apply: F) -> Result<()>
 where
-    T: DeserializeOwned,
-    F: FnOnce(&mut GameState, T) -> Result<()>,
+    C: DeserializeOwned,
+    R: Debug + DeserializeOwned + PartialEq,
+    F: FnOnce(&mut GameState, C) -> R,
 {
-    let result = run_native_scenario(scenario)?;
-    differential_from_result(&result, apply)
+    let result = run_native_scenario(scenario.name, scenario.seed)?;
+    differential_from_result(&result, scenario, apply)
 }
 
-/// Same comparison as [`differential`], but against an already-written native result.
-pub fn differential_from_result<T, F>(result: &Path, apply: F) -> Result<()>
+/// Compare against an already-published Python runtime `result.json`.
+pub fn differential_from_result<C, R, F>(
+    result: &Path,
+    scenario: ScenarioMeta,
+    apply: F,
+) -> Result<()>
 where
-    T: DeserializeOwned,
-    F: FnOnce(&mut GameState, T) -> Result<()>,
+    C: DeserializeOwned,
+    R: Debug + DeserializeOwned + PartialEq,
+    F: FnOnce(&mut GameState, C) -> R,
 {
-    let runtime = RuntimeResult::read(result)
+    let runtime = read_runtime_result(result, scenario.expectations())
         .with_context(|| format!("reading runtime result from {}", result.display()))?;
     let mut actual: GameState = runtime
         .capture("before")
         .with_context(|| format!("reading before from {}", result.display()))?;
-    let case: T = runtime
+    let case: C = runtime
         .capture("case")
         .with_context(|| format!("reading case from {}", result.display()))?;
     let expected: GameState = runtime
         .capture("after")
         .with_context(|| format!("reading after from {}", result.display()))?;
+    let expected_result: R = runtime
+        .capture("result")
+        .with_context(|| format!("reading result from {}", result.display()))?;
 
-    apply(&mut actual, case)?;
+    let actual_result = apply(&mut actual, case);
+    if actual_result != expected_result {
+        bail!("operation result differs: C++ {expected_result:?}, Rust {actual_result:?}");
+    }
     assert_game_state_eq(&expected, &actual)
 }
 
@@ -57,23 +69,25 @@ pub fn assert_game_state_eq(expected: &GameState, actual: &GameState) -> Result<
     }
 }
 
-fn run_native_scenario(scenario: &str) -> Result<PathBuf> {
+/// Run one native runtime scenario through the repository-owned runner and
+/// return its published result artifact path.
+pub fn run_native_scenario(name: &str, seed: u32) -> Result<PathBuf> {
     let repository = repository_root()?;
     let output = Command::new("just")
         .current_dir(repository.join("decomp"))
         .arg("runtime-run")
-        .arg(scenario)
+        .arg(name)
         .arg("--seed")
-        .arg("1")
+        .arg(seed.to_string())
         .output()
         .context("launching the native runtime scenario")?;
     let stderr = String::from_utf8_lossy(&output.stderr);
     if !output.status.success() {
-        bail!("native scenario {scenario} failed:\n{}", stderr.trim());
+        bail!("native scenario {} failed:\n{}", name, stderr.trim());
     }
     let artifact_dir =
         artifact_path(&stderr).context("native scenario did not report its artifact directory")?;
-    Ok(artifact_dir.join("native-result.json"))
+    Ok(artifact_dir.join("result.json"))
 }
 
 fn repository_root() -> Result<&'static Path> {
@@ -95,339 +109,10 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::{
-        CivilianUnitId, DiplomacyGrant, MajorNationId, MinorNationId, NationId, ResourceKind,
-        TradePolicyScore,
-    };
-    use serde::Deserialize;
-    use std::path::PathBuf;
-
-    #[derive(Debug, Deserialize)]
-    struct NationCase {
-        nation: MajorNationId,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct Purchase {
-        resource: ResourceKind,
-        amount: i16,
-        price: i16,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct MajorTradeSettlementCase {
-        nation: MajorNationId,
-        purchases: Vec<Purchase>,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct DiplomacyGrantCase {
-        nation: MajorNationId,
-        target: NationId,
-        amount: i32,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct AidAllocationCase {
-        nation: MajorNationId,
-        minor_nation: MinorNationId,
-        resource: ResourceKind,
-        amount: i32,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct DirectTransportCase {
-        nation: MajorNationId,
-        resource: ResourceKind,
-        requested: i16,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct ResourceDevelopmentCase {
-        extractive_worker: CivilianUnitId,
-        surface_worker: CivilianUnitId,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct RailConstructionCase {
-        civilian: CivilianUnitId,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct PowerPlantUpgradeCase {
-        nation: MajorNationId,
-        enabled: bool,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct TradePolicyStepCase {
-        source: MajorNationId,
-        target: NationId,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct TradePolicySetCase {
-        nation: MajorNationId,
-        target: NationId,
-        policy: TradePolicyScore,
-    }
 
     #[test]
     fn artifact_path_reads_the_trailing_artifacts_field() {
         let stderr = "progress\nstatus=passed artifacts=/tmp/run-1\n";
         assert_eq!(artifact_path(stderr), Some(PathBuf::from("/tmp/run-1")));
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn major_trade_settlement() {
-        differential(
-            "major_trade_settlement",
-            |state, case: MajorTradeSettlementCase| {
-                for purchase in case.purchases {
-                    state.purchase_item(
-                        case.nation,
-                        purchase.resource,
-                        purchase.amount,
-                        purchase.price,
-                    );
-                }
-                Ok(())
-            },
-        )
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn purchased_items_phase() {
-        differential("purchased_items_phase", |state, case: NationCase| {
-            state.remember_trade_bids(case.nation);
-            state.purchase_item(case.nation, ResourceKind::Fabric, 3, 7);
-            state.purchase_item(case.nation, ResourceKind::Food, -30, 1);
-            state.commit_purchased_items(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn created_items_phase() {
-        differential("created_items_phase", |state, case: NationCase| {
-            state.add_created_items(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn transported_items_phase() {
-        differential("transported_items_phase", |state, case: NationCase| {
-            state.settle_transported_items(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn diplomacy_grant_entry() {
-        differential(
-            "diplomacy_grant_entry_updates_treasury",
-            |state, case: DiplomacyGrantCase| {
-                let accepted = state.set_diplomacy_grant(
-                    case.nation,
-                    case.target,
-                    Some(DiplomacyGrant {
-                        amount: case.amount,
-                        recurring: false,
-                    }),
-                );
-                anyhow::ensure!(accepted, "Rust rejected the diplomacy grant");
-                Ok(())
-            },
-        )
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn diplomacy_reset() {
-        differential(
-            "diplomacy_reset_preserves_recurring_grants",
-            |state, case: NationCase| {
-                state.reset_diplomacy_commitments(case.nation);
-                Ok(())
-            },
-        )
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn aid_allocation() {
-        differential("aid_allocation", |state, case: AidAllocationCase| {
-            state.add_aid_allocation(case.nation, case.minor_nation, case.resource, case.amount);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn direct_transport() {
-        differential("direct_transport", |state, case: DirectTransportCase| {
-            state.direct_transport(case.nation, case.resource, case.requested);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn rolling_stock() {
-        differential("rolling_stock", |state, case: NationCase| {
-            anyhow::ensure!(
-                state.increase_rolling_stock(case.nation),
-                "Rust could not increase rolling stock"
-            );
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn merchant_marine() {
-        differential("merchant_marine", |state, case: NationCase| {
-            anyhow::ensure!(
-                state.increase_merchant_marine(case.nation),
-                "Rust could not increase merchant marine"
-            );
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn power_plant_upgrade() {
-        differential(
-            "power_plant_upgrade",
-            |state, case: PowerPlantUpgradeCase| {
-                state.set_power_plant_upgrade(case.nation, case.enabled);
-                Ok(())
-            },
-        )
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn trade_policy_step() {
-        differential("trade_policy_step", |state, case: TradePolicyStepCase| {
-            state.decrement_trade_policy_score(case.source, case.target);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn trade_policy_set() {
-        differential("trade_policy_set", |state, case: TradePolicySetCase| {
-            state.set_trade_policy(case.nation, case.target, case.policy);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn trade_capacity_refresh() {
-        differential("trade_capacity_refresh", |state, case: NationCase| {
-            state.refresh_merchant_capacity(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn recall_trade_bids() {
-        differential("recall_trade_bids", |state, case: NationCase| {
-            state.recall_trade_bids(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn transport_need_allocation() {
-        differential("transport_need_allocation", |state, case: NationCase| {
-            state.allocate_transport_needs(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn player_trade_phase_reset() {
-        differential("player_trade_phase_reset", |state, case: NationCase| {
-            state.reset_player_trade_phase(case.nation)?;
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn trade_market_price() {
-        differential("trade_market_price", |state, (): ()| {
-            state.recalculate_trade_prices();
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn military_maintenance() {
-        differential("military_maintenance", |state, case: NationCase| {
-            state.pay_for_military(case.nation);
-            Ok(())
-        })
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn completed_resource_development() {
-        differential(
-            "completed_resource_development",
-            |state, case: ResourceDevelopmentCase| {
-                state.advance_civilian_work(case.extractive_worker)?;
-                state.advance_civilian_work(case.surface_worker)?;
-                Ok(())
-            },
-        )
-        .unwrap();
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn completed_rail_section() {
-        differential(
-            "completed_rail_section",
-            |state, case: RailConstructionCase| {
-                state.advance_civilian_work(case.civilian)?;
-                Ok(())
-            },
-        )
-        .unwrap();
     }
 }

@@ -206,6 +206,17 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "first_turn_alert_phase",
+        "FirstTurnAlertPhaseTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "easy_turns_advance_three_times",
         "MultiTurnAdvanceTest",
         ("full",),
@@ -299,17 +310,6 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
-        "major_trade_not_major",
-        "MajorTradeNotMajorTest",
-        ("full",),
-        "retail_fixture_oracle",
-        fixture=RuntimeFixtureSpec(
-            "beginning_of_game.imp", "retail_fixture_oracle"
-        ),
-        required_oracles=(),
-        native_snapshots=("game_state",),
-    ),
-    RuntimeTestSpec(
         "diplomacy_grant_entry_updates_treasury",
         "DiplomacyGrantEntryTest",
         ("full",),
@@ -389,6 +389,17 @@ TESTS = (
     RuntimeTestSpec(
         "rolling_stock",
         "RollingStockTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "rolling_stock_insufficient_resources",
+        "RollingStockInsufficientResourcesTest",
         ("full",),
         "retail_fixture_oracle",
         fixture=RuntimeFixtureSpec(

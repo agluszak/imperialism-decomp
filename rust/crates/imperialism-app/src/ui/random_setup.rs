@@ -431,8 +431,7 @@ fn accept_random_setup(
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        enter_strategic_map_without_capital_selection(&mut session, setup.nation)
-            .expect("generated Introductory/Easy game has a valid home town tile");
+        enter_strategic_map_without_capital_selection(&mut session, setup.nation);
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::StrategicMap);
     }

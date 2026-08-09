@@ -4,6 +4,7 @@
 #include "JsonObject.h"
 #include "RuntimeGameStateCapture.h"
 #include "RuntimeRun.h"
+#include "RuntimeSemanticCapture.h"
 
 #include "game/city/TCity.h"
 #include "game/globals/shared_globals.h"
@@ -57,7 +58,10 @@ private:
     caseCapture.Set("requested", 9);
     RunState().SetCapture("case", caseCapture.Release());
 
-    city->DirectTransport(kResourceSteel, 9);
+    const short transported = city->DirectTransport(kResourceSteel, 9);
+    if (!CaptureIntegerOpResult(RunState(), transported)) {
+      return RuntimeActionResult::Failure("the transported amount result capture is unavailable");
+    }
 
     if (!CaptureGameState(RunState(), "after")) {
       return RuntimeActionResult::Failure("the after game-state capture is unavailable");

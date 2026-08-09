@@ -54,6 +54,10 @@ public:
   short GetDiplomacyRandomThreshold124() const {
     return diplomacyRandomThreshold124;
   }
+  NationSlot GetConsortiumMember(int index) const {
+    ASSERT(index >= 0 && index < 4);
+    return diplomacySaveFields134[index];
+  }
 
   virtual void DeportCiviliansIn(int provinceId,
                                  unsigned char includeAllPolicyTargets); // slot 0x32 0x4e6150
@@ -83,13 +87,13 @@ private:
   short diplomacyPolicyPredicateCode12e;
   short diplomacyPolicyGate130;
   short diplomacyPolicyGate132;
-  // Serialized as a unit by ReadFrom/WriteTo (byte-order swapped via
-  // SwapAdjacentBytesInShortArray on load); diplomacySaveExt13c is only present when
-  // g_nSaveFormatVersion > 0x39 (a later save-format addition). Same 0x17-short size as
-  // the sibling grantAmountsByResource/recurringGrantByResource tables, but the indexed
-  // dimension (nation vs. resource) is not yet confirmed.
+  // The four persisted consortium nation slots consumed by IsInConsortiumWith.
   short diplomacySaveFields134[4]; // 0x134
 public:
+  // Serialized as a unit by ReadFrom/WriteTo (byte-order swapped via
+  // SwapAdjacentBytesInShortArray on load) when g_nSaveFormatVersion > 0x39. This has the
+  // same 0x17-short size as the sibling grantAmountsByResource/recurringGrantByResource
+  // tables, but its indexed meaning is not yet confirmed.
   short diplomacySaveExt13c[0x17]; // 0x13c
 private:
   short recurringGrantByResource[kResourceKindCount];

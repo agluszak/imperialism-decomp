@@ -2678,6 +2678,7 @@ dependencies = [
  "anyhow",
  "clap",
  "imperialism-core",
+ "imperialism-testkit",
  "pelite",
  "serde",
  "serde_json",
