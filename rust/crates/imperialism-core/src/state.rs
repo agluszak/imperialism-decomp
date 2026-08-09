@@ -1737,16 +1737,22 @@ pub struct WarTransition {
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationPendingWork {
-    pub turn_events: Vec<TaggedValue>,
-    pub proposals: Vec<TaggedValue>,
+    pub turn_events: Vec<DiplomacyNotice>,
+    pub proposals: Vec<DiplomacyProposal>,
     pub turn_summary: Vec<TurnSummary>,
     pub turn_start_events: Vec<TurnStartEvent>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TaggedValue {
-    pub tag: i16,
-    pub value: i16,
+pub struct DiplomacyNotice {
+    pub source: NationId,
+    pub code: i16,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyProposal {
+    pub source: NationId,
+    pub policy: DiplomacyPolicy,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]

@@ -99,6 +99,20 @@ pub use state::{
     TileState, TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState, TurnSummary,
     UnitIdAllocator, WarTransition,
 };
+pub use state::{
+    ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitState,
+    DevelopmentLevel, DiplomacyGrant, DiplomacyNotice, DiplomacyPolicy, DiplomacyProposal,
+    DiplomacyState, DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
+    ForeignMinisterPersonality, GameState, GreatPowerState, InterNationNewsKind, MajorNation,
+    MajorNationController, MilitaryOrder, MilitaryOrderCode, MilitaryUnitState, MinorNation,
+    MissionData, MissionState, NationCommonState, NationPendingWork, Nations, NavyMissionState,
+    NewspaperNotice, PendingActionState, PendingActionStatus, PendingNewspaperEvent,
+    PendingWorkState, PhaseCode, PopulationAccumulator, PopulationState, RegionId, RiverSegment,
+    RngState, ScenarioMapId, SelectedShip, ShipState, Stockpile, StrategicMap,
+    StrategicMapSizeError, StrikePhase, TaskForceState, TaskForceTarget, TechnologyState,
+    TerrainKind, TileAction, TileDevelopment, TileFlags, TileState, TileTransportLinks,
+    TradePolicyScore, TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator, WarTransition,
+};
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,

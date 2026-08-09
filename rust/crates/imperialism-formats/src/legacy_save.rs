@@ -1533,6 +1533,7 @@ impl LegacySaveV62 {
         let mut military_units = Vec::new();
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
+        let mut pending = PendingWorkState::default();
         let mut majors = Vec::with_capacity(MAJOR_NATION_COUNT);
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
@@ -1588,6 +1589,21 @@ impl LegacySaveV62 {
                     )?);
                 }
             }
+            let lists = &great_power.prefix.relationship_lists;
+            pending.nations[major_id].turn_events =
+                diplomacy_notices(&lists[0], great_power.country.nation_slot)?;
+            pending.nations[major_id].proposals =
+                diplomacy_proposals(&lists[1], great_power.country.nation_slot)?;
+            if let Some((list_index, _)) = lists
+                .iter()
+                .enumerate()
+                .skip(2)
+                .find(|(_, list)| !list.records.is_empty())
+            {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "relationship list {list_index} projection is not implemented for nation {slot}"
+                )));
+            }
         }
         let majors = MajorNationTable::from_array(majors.try_into().map_err(
             |majors: Vec<MajorNation>| {
@@ -1622,19 +1638,6 @@ impl LegacySaveV62 {
             }
         }
 
-        for nation in &self.major_nations {
-            let slot = nation.great_power().country.nation_slot;
-            let lists = &nation.great_power().prefix.relationship_lists;
-            if let Some((list_index, _)) = lists
-                .iter()
-                .enumerate()
-                .find(|(_, list)| !list.records.is_empty())
-            {
-                return Err(LegacySaveError::StateProjection(format!(
-                    "relationship list {list_index} projection is not implemented for nation {slot}"
-                )));
-            }
-        }
         // The retail load path restores this counter before deserializing units.
         // Every TUnit constructor increments it once, even though ReadFrom then
         // replaces the unit's generated ID with the persisted ID.
@@ -1684,9 +1687,71 @@ impl LegacySaveV62 {
             ships: Vec::new(),
             task_forces: Vec::new(),
             missions,
-            pending: PendingWorkState::default(),
+            pending,
         })
     }
+}
+
+fn diplomacy_notices(
+    list: &LegacyFixedRecordList,
+    owner: i16,
+) -> Result<Vec<DiplomacyNotice>, LegacySaveError> {
+    let records = relationship_records(list, owner, "turn-event queue")?;
+    Ok(records
+        .into_iter()
+        .map(|(code, source)| DiplomacyNotice { source, code })
+        .collect())
+}
+
+fn diplomacy_proposals(
+    list: &LegacyFixedRecordList,
+    owner: i16,
+) -> Result<Vec<DiplomacyProposal>, LegacySaveError> {
+    let records = relationship_records(list, owner, "proposal queue")?;
+    records
+        .into_iter()
+        .map(|(entry, source)| {
+            Ok(DiplomacyProposal {
+                source,
+                policy: diplomacy_policy_from_retail(entry, owner, usize::from(source.get()))?,
+            })
+        })
+        .collect()
+}
+
+fn relationship_records(
+    list: &LegacyFixedRecordList,
+    owner: i16,
+    queue: &'static str,
+) -> Result<Vec<(i16, NationId)>, LegacySaveError> {
+    if list.record_size != 4 {
+        return Err(LegacySaveError::StateProjection(format!(
+            "nation {owner} {queue} has record size {}; expected 4",
+            list.record_size
+        )));
+    }
+    let mut records = list
+        .records
+        .iter()
+        .map(|record| {
+            let value = i16::from_le_bytes(record[0..2].try_into().unwrap());
+            let source =
+                nation_id_from_retail_i16(i16::from_le_bytes(record[2..4].try_into().unwrap()))?;
+            Ok((value, source))
+        })
+        .collect::<Result<Vec<_>, LegacySaveError>>()?;
+    records.sort_by_key(|(_, source)| *source);
+    if let Some((_, source)) = records
+        .windows(2)
+        .find(|pair| pair[0].1 == pair[1].1)
+        .map(|pair| pair[0])
+    {
+        return Err(LegacySaveError::StateProjection(format!(
+            "nation {owner} {queue} contains multiple records from source {}; retail load order depends on unavailable pre-load CRT state",
+            source.get()
+        )));
+    }
+    Ok(records)
 }
 
 fn foreign_minister_personality(
@@ -1856,24 +1921,32 @@ fn diplomacy_policies_from_retail_entries(
     for (target, entry) in entries.into_iter().enumerate() {
         policies[NationId::new(target as u8)] = match entry {
             -1 => None,
-            0x12d => Some(DiplomacyPolicy::JoinEmpire),
-            0x12e => Some(DiplomacyPolicy::Alliance),
-            0x12f => Some(DiplomacyPolicy::NonAggressionPact),
-            0x130 => Some(DiplomacyPolicy::PeaceTreaty),
-            0x131 => Some(DiplomacyPolicy::DeclareWar),
-            0x132 => Some(DiplomacyPolicy::JoinEmpireWithWarEntanglements),
-            0x133 => Some(DiplomacyPolicy::BuildConsulate),
-            0x134 => Some(DiplomacyPolicy::BuildEmbassy),
-            _ => {
-                return Err(LegacySaveError::UnsupportedDiplomacyPolicy {
-                    nation,
-                    target,
-                    entry,
-                });
-            }
+            _ => Some(diplomacy_policy_from_retail(entry, nation, target)?),
         };
     }
     Ok(policies)
+}
+
+fn diplomacy_policy_from_retail(
+    entry: i16,
+    nation: i16,
+    target: usize,
+) -> Result<DiplomacyPolicy, LegacySaveError> {
+    match entry {
+        0x12d => Ok(DiplomacyPolicy::JoinEmpire),
+        0x12e => Ok(DiplomacyPolicy::Alliance),
+        0x12f => Ok(DiplomacyPolicy::NonAggressionPact),
+        0x130 => Ok(DiplomacyPolicy::PeaceTreaty),
+        0x131 => Ok(DiplomacyPolicy::DeclareWar),
+        0x132 => Ok(DiplomacyPolicy::JoinEmpireWithWarEntanglements),
+        0x133 => Ok(DiplomacyPolicy::BuildConsulate),
+        0x134 => Ok(DiplomacyPolicy::BuildEmbassy),
+        _ => Err(LegacySaveError::UnsupportedDiplomacyPolicy {
+            nation,
+            target,
+            entry,
+        }),
+    }
 }
 
 fn country_status_from_retail(value: i16) -> Result<CountryStatus, LegacySaveError> {
@@ -3595,6 +3668,95 @@ mod tests {
             LegacyMajorNationState::Auto(nation) => &mut nation.great_power,
             LegacyMajorNationState::Other(nation) => nation,
         }
+    }
+
+    fn relationship_record(value: i16, source: i16) -> Vec<u8> {
+        [value.to_le_bytes(), source.to_le_bytes()].concat()
+    }
+
+    #[test]
+    fn projects_typed_relationship_queues_in_retail_source_order_without_rng_draws() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let lists = &mut first_great_power_mut(&mut save).prefix.relationship_lists;
+        lists[0].records = vec![relationship_record(-7, 2), relationship_record(9, 0)];
+        lists[1].records = vec![relationship_record(0x134, 5), relationship_record(0x12d, 1)];
+        let mut context = game_context();
+        context.crt_rand_state = 0x1234_5678;
+
+        let state = save.game_state(context).unwrap();
+        let pending = &state.pending.nations[MajorNationId::new(0)];
+        assert_eq!(
+            pending.turn_events,
+            vec![
+                DiplomacyNotice {
+                    source: NationId::new(0),
+                    code: 9,
+                },
+                DiplomacyNotice {
+                    source: NationId::new(2),
+                    code: -7,
+                },
+            ]
+        );
+        assert_eq!(
+            pending.proposals,
+            vec![
+                DiplomacyProposal {
+                    source: NationId::new(1),
+                    policy: DiplomacyPolicy::JoinEmpire,
+                },
+                DiplomacyProposal {
+                    source: NationId::new(5),
+                    policy: DiplomacyPolicy::BuildEmbassy,
+                },
+            ]
+        );
+        assert_eq!(state.rng.crt_rand.state(), 0x1234_5678);
+    }
+
+    #[test]
+    fn rejects_relationship_queues_that_need_unavailable_load_time_rng() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save).prefix.relationship_lists[0].records =
+            vec![relationship_record(1, 2), relationship_record(2, 2)];
+
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "nation 0 turn-event queue contains multiple records from source 2; retail load order depends on unavailable pre-load CRT state"
+        ));
+    }
+
+    #[test]
+    fn validates_relationship_record_shape_source_and_policy() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save).prefix.relationship_lists[0].record_size = 2;
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "nation 0 turn-event queue has record size 2; expected 4"
+        ));
+
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save).prefix.relationship_lists[0].records =
+            vec![relationship_record(1, 23)];
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "nation slot 23 is outside the retail range 0..=22"
+        ));
+
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        first_great_power_mut(&mut save).prefix.relationship_lists[1].records =
+            vec![relationship_record(0x12c, 1)];
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::UnsupportedDiplomacyPolicy {
+                nation: 0,
+                target: 1,
+                entry: 0x12c,
+            })
+        ));
     }
 
     #[test]
