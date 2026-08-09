@@ -194,6 +194,18 @@ TESTS = (
         record_game_flow=True,
     ),
     RuntimeTestSpec(
+        "easy_turn_from_save",
+        "EasyTurnFromSaveTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+        record_game_flow=True,
+    ),
+    RuntimeTestSpec(
         "easy_turns_advance_three_times",
         "MultiTurnAdvanceTest",
         ("full",),
@@ -278,6 +290,17 @@ TESTS = (
     RuntimeTestSpec(
         "major_trade_settlement",
         "MajorTradeSettlementTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
+        "major_trade_not_major",
+        "MajorTradeNotMajorTest",
         ("full",),
         "retail_fixture_oracle",
         fixture=RuntimeFixtureSpec(

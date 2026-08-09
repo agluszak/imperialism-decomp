@@ -30,7 +30,7 @@ from tools.runtime.models import (
 )
 from tools.runtime.oracles.map import evaluate_map_oracle
 from tools.runtime.oracles.ui import evaluate_ui_oracle
-from tools.runtime.protocol import read_json_file, validate_result
+from tools.runtime.protocol import read_json_file, validate_published_result, validate_result
 from tools.runtime.session import execute_run
 
 
@@ -278,6 +278,7 @@ class RuntimeRunner:
             "primary_failure": result.get("failure"),
             "diagnostic_outcomes": [],
         }
+        validate_published_result(result, str(result["name"]), int(result["seed"]))
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
         (self.result_dir / f"{result['name']}.json").write_text(
             serialized, encoding="utf-8"
@@ -413,6 +414,7 @@ class RuntimeRunner:
                 "expectation_outcome"
             )
             result["summary"]["primary_failure"] = result.get("failure")
+        validate_published_result(result, request.name, request.seed)
         serialized = json.dumps(result, indent=2, sort_keys=True) + "\n"
         (run_dir / "result.json").write_text(serialized, encoding="utf-8")
         (self.result_dir / f"{request.name}.json").write_text(

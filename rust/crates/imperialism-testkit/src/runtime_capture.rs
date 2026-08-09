@@ -1,25 +1,79 @@
 use serde::Deserialize;
-use serde::de::DeserializeOwned;
 use std::collections::BTreeMap;
+use std::fmt;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
+use std::str::FromStr;
+
+/// Runtime catalog evidence classification. Same strings as
+/// `decomp/tools/runtime/catalog.py` `EvidenceKind`.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq)]
+#[serde(rename_all = "snake_case")]
+pub enum EvidenceKind {
+    SelfConsistency,
+    InternalInvariant,
+    MacResourceOracle,
+    RetailFixtureOracle,
+    RetailDifferential,
+}
+
+impl EvidenceKind {
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::SelfConsistency => "self_consistency",
+            Self::InternalInvariant => "internal_invariant",
+            Self::MacResourceOracle => "mac_resource_oracle",
+            Self::RetailFixtureOracle => "retail_fixture_oracle",
+            Self::RetailDifferential => "retail_differential",
+        }
+    }
+}
+
+impl fmt::Display for EvidenceKind {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.as_str())
+    }
+}
+
+impl FromStr for EvidenceKind {
+    type Err = String;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value {
+            "self_consistency" => Ok(Self::SelfConsistency),
+            "internal_invariant" => Ok(Self::InternalInvariant),
+            "mac_resource_oracle" => Ok(Self::MacResourceOracle),
+            "retail_fixture_oracle" => Ok(Self::RetailFixtureOracle),
+            "retail_differential" => Ok(Self::RetailDifferential),
+            other => Err(format!("unknown evidence kind {other:?}")),
+        }
+    }
+}
 
 #[derive(Debug, thiserror::Error)]
 pub enum RuntimeCaptureError {
     #[error("could not read runtime result: {0}")]
     Io(#[source] std::io::Error),
-    #[error("could not decode runtime result for {name}: {source}")]
-    Json {
+    #[error("could not decode runtime result: {0}")]
+    Json(#[source] serde_json::Error),
+    #[error("could not decode capture {name}: {source}")]
+    CaptureJson {
         name: String,
         #[source]
         source: serde_json::Error,
     },
+    #[error("capture {name} contains unknown field(s): {fields}")]
+    UnknownCaptureFields { name: String, fields: String },
+    #[error("{0}")]
+    Invalid(String),
     #[error("runtime result contains no {0} capture")]
     MissingCapture(String),
 }
 
-/// Parsed native runtime result.json: outer seed plus named capture payloads.
+
+/// Backwards-compatible permissive reader for the standalone replay commands.
+/// Semantic differential scenarios must use [`read_runtime_result`] instead.
 #[derive(Debug, Deserialize)]
 pub struct RuntimeResult {
     #[serde(default)]
@@ -30,42 +84,188 @@ pub struct RuntimeResult {
 impl RuntimeResult {
     pub fn read(path: &Path) -> Result<Self, RuntimeCaptureError> {
         let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
-        Self::from_reader(file)
+        serde_json::from_reader(file).map_err(RuntimeCaptureError::Json)
     }
 
-    pub fn capture<T: DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+    pub(crate) fn from_reader(reader: impl Read) -> Result<Self, RuntimeCaptureError> {
+        serde_json::from_reader(reader).map_err(RuntimeCaptureError::Json)
+    }
+
+    pub fn capture<T: serde::de::DeserializeOwned>(&self, name: &str) -> Result<T, RuntimeCaptureError> {
+        let capture = self.captures.get(name).cloned().ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
+        serde_json::from_value(capture).map_err(|source| RuntimeCaptureError::CaptureJson { name: name.to_owned(), source })
+    }
+}
+
+/// Expectations for a published Python runtime result (`result.json`), not the
+/// pre-enrichment `native-result.json`.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct RuntimeResultExpectations<'a> {
+    pub name: &'a str,
+    /// When `Some`, the result seed must match. When `None`, any seed is accepted.
+    pub seed: Option<u32>,
+    pub evidence_kind: EvidenceKind,
+    pub required_captures: &'a [&'a str],
+}
+
+/// Published runtime result after name/seed/status/evidence/capture checks.
+#[derive(Clone, Debug)]
+pub struct ValidatedRuntimeResult {
+    pub name: String,
+    pub seed: u32,
+    pub evidence_kind: EvidenceKind,
+    captures: BTreeMap<String, serde_json::Value>,
+}
+
+impl ValidatedRuntimeResult {
+    pub fn capture<T: serde::de::DeserializeOwned>(
+        &self,
+        name: &str,
+    ) -> Result<T, RuntimeCaptureError> {
         let capture = self
             .captures
             .get(name)
             .cloned()
             .ok_or_else(|| RuntimeCaptureError::MissingCapture(name.to_owned()))?;
-        serde_json::from_value(capture).map_err(|source| RuntimeCaptureError::Json {
-            name: name.to_owned(),
-            source,
-        })
+        deserialize_capture(name, capture)
     }
+}
 
-    pub(crate) fn from_reader(reader: impl Read) -> Result<Self, RuntimeCaptureError> {
-        serde_json::from_reader(reader).map_err(|source| RuntimeCaptureError::Json {
-            name: "runtime result".to_owned(),
-            source,
-        })
+fn deserialize_capture<T: serde::de::DeserializeOwned>(
+    name: &str,
+    capture: serde_json::Value,
+) -> Result<T, RuntimeCaptureError> {
+    let mut unknown = Vec::new();
+    let value: T = serde_ignored::deserialize(capture, |path| {
+        unknown.push(path.to_string());
+    })
+    .map_err(|source| RuntimeCaptureError::CaptureJson {
+        name: name.to_owned(),
+        source,
+    })?;
+    if !unknown.is_empty() {
+        unknown.sort();
+        return Err(RuntimeCaptureError::UnknownCaptureFields {
+            name: name.to_owned(),
+            fields: unknown.join(", "),
+        });
     }
+    Ok(value)
+}
+
+#[derive(Deserialize)]
+struct RawRuntimeResult {
+    name: String,
+    seed: u32,
+    status: String,
+    evidence_kind: Option<EvidenceKind>,
+    captures: BTreeMap<String, serde_json::Value>,
+}
+
+pub fn read_runtime_result(
+    path: impl AsRef<Path>,
+    expectations: RuntimeResultExpectations<'_>,
+) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
+    let file = File::open(path).map_err(RuntimeCaptureError::Io)?;
+    decode_runtime_result(file, expectations)
+}
+
+pub fn decode_runtime_result(
+    reader: impl Read,
+    expectations: RuntimeResultExpectations<'_>,
+) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
+    let raw: RawRuntimeResult =
+        serde_json::from_reader(reader).map_err(RuntimeCaptureError::Json)?;
+    validate_runtime_result(raw, expectations)
+}
+
+fn validate_runtime_result(
+    raw: RawRuntimeResult,
+    expectations: RuntimeResultExpectations<'_>,
+) -> Result<ValidatedRuntimeResult, RuntimeCaptureError> {
+    if raw.name != expectations.name {
+        return Err(RuntimeCaptureError::Invalid(format!(
+            "runtime result name {:?}, expected {:?}",
+            raw.name, expectations.name
+        )));
+    }
+    if let Some(expected_seed) = expectations.seed
+        && raw.seed != expected_seed
+    {
+        return Err(RuntimeCaptureError::Invalid(format!(
+            "runtime result seed {}, expected {}",
+            raw.seed, expected_seed
+        )));
+    }
+    if raw.status != "passed" {
+        return Err(RuntimeCaptureError::Invalid(format!(
+            "runtime result status {:?}, expected \"passed\"",
+            raw.status
+        )));
+    }
+    let evidence_kind = raw.evidence_kind.ok_or_else(|| {
+        RuntimeCaptureError::Invalid(
+            "runtime result is missing evidence_kind (native-result.json is not accepted; use the published result.json)"
+                .to_owned(),
+        )
+    })?;
+    if evidence_kind != expectations.evidence_kind {
+        return Err(RuntimeCaptureError::Invalid(format!(
+            "runtime result evidence_kind {evidence_kind}, expected {}",
+            expectations.evidence_kind
+        )));
+    }
+    for name in expectations.required_captures {
+        if !raw.captures.contains_key(*name) {
+            return Err(RuntimeCaptureError::MissingCapture((*name).to_owned()));
+        }
+    }
+    Ok(ValidatedRuntimeResult {
+        name: raw.name,
+        seed: raw.seed,
+        evidence_kind,
+        captures: raw.captures,
+    })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
 
     #[derive(Debug, Deserialize, Eq, PartialEq)]
     struct Probe {
         value: i32,
     }
 
+    fn passed_result() -> serde_json::Value {
+        json!({
+            "name": "probe",
+            "seed": 1,
+            "status": "passed",
+            "evidence_kind": "retail_fixture_oracle",
+            "captures": {"probe": {"value": 7}, "before": {}, "case": {}, "after": {}},
+            "host": {"ignored": true},
+            "summary": {"ignored": true},
+        })
+    }
+
+    fn expectations() -> RuntimeResultExpectations<'static> {
+        RuntimeResultExpectations {
+            name: "probe",
+            seed: Some(1),
+            evidence_kind: EvidenceKind::RetailFixtureOracle,
+            required_captures: &["probe"],
+        }
+    }
+
     #[test]
-    fn reads_named_captures() {
-        let input = br#"{"captures":{"probe":{"value":7}}}"#;
-        let result = RuntimeResult::from_reader(&input[..]).unwrap();
+    fn accepts_a_published_result_and_keeps_evidence() {
+        let bytes = serde_json::to_vec(&passed_result()).unwrap();
+        let result = decode_runtime_result(&bytes[..], expectations()).unwrap();
+        assert_eq!(result.name, "probe");
+        assert_eq!(result.seed, 1);
+        assert_eq!(result.evidence_kind, EvidenceKind::RetailFixtureOracle);
         assert_eq!(
             result.capture::<Probe>("probe").unwrap(),
             Probe { value: 7 }
@@ -73,19 +273,148 @@ mod tests {
     }
 
     #[test]
-    fn reads_the_outer_seed() {
+    fn rejects_native_result_without_evidence_kind() {
         let input =
-            br#"{"name":"probe","seed":123,"status":"passed","captures":{"probe":{"value":7}}}"#;
-        let result = RuntimeResult::from_reader(&input[..]).unwrap();
-        assert_eq!(result.seed, 123);
+            br#"{"name":"probe","seed":1,"status":"passed","captures":{"probe":{"value":7}}}"#;
+        let error = decode_runtime_result(&input[..], expectations()).unwrap_err();
+        assert!(error.to_string().contains("evidence_kind"));
     }
 
     #[test]
-    fn reports_decode_errors_with_capture_name() {
-        let input = br#"{"captures":{"probe":{"value":"wrong"}}}"#;
-        let result = RuntimeResult::from_reader(&input[..]).unwrap();
+    fn rejects_wrong_name_seed_status_and_evidence() {
+        let bytes = serde_json::to_vec(&passed_result()).unwrap();
+        assert!(
+            decode_runtime_result(
+                &bytes[..],
+                RuntimeResultExpectations {
+                    name: "other",
+                    ..expectations()
+                },
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("name")
+        );
+        assert!(
+            decode_runtime_result(
+                &bytes[..],
+                RuntimeResultExpectations {
+                    seed: Some(9),
+                    ..expectations()
+                },
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("seed")
+        );
+        let failed = json!({
+            "name": "probe",
+            "seed": 1,
+            "status": "failed",
+            "evidence_kind": "retail_fixture_oracle",
+            "captures": {"probe": {"value": 7}},
+        });
+        assert!(
+            decode_runtime_result(
+                serde_json::to_vec(&failed).unwrap().as_slice(),
+                expectations(),
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("status")
+        );
+        assert!(
+            decode_runtime_result(
+                &bytes[..],
+                RuntimeResultExpectations {
+                    evidence_kind: EvidenceKind::SelfConsistency,
+                    ..expectations()
+                },
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("evidence_kind")
+        );
+    }
+
+    #[test]
+    fn rejects_missing_required_captures() {
+        let bytes = serde_json::to_vec(&passed_result()).unwrap();
+        let error = decode_runtime_result(
+            &bytes[..],
+            RuntimeResultExpectations {
+                required_captures: &["before", "case", "after", "missing"],
+                ..expectations()
+            },
+        )
+        .unwrap_err();
+        assert!(matches!(
+            error,
+            RuntimeCaptureError::MissingCapture(name) if name == "missing"
+        ));
+    }
+
+    #[test]
+    fn accepts_any_seed_when_unspecified() {
+        let bytes = serde_json::to_vec(&passed_result()).unwrap();
+        let result = decode_runtime_result(
+            &bytes[..],
+            RuntimeResultExpectations {
+                seed: None,
+                ..expectations()
+            },
+        )
+        .unwrap();
+        assert_eq!(result.seed, 1);
+    }
+
+    #[test]
+    fn reports_capture_decode_errors_with_capture_name() {
+        let input = json!({
+            "name": "probe",
+            "seed": 1,
+            "status": "passed",
+            "evidence_kind": "retail_fixture_oracle",
+            "captures": {"probe": {"value": "wrong"}},
+        });
+        let result = decode_runtime_result(
+            serde_json::to_vec(&input).unwrap().as_slice(),
+            expectations(),
+        )
+        .unwrap();
         let error = result.capture::<Probe>("probe").unwrap_err();
         assert!(error.to_string().contains("probe"));
-        assert!(matches!(error, RuntimeCaptureError::Json { .. }));
+        assert!(matches!(error, RuntimeCaptureError::CaptureJson { .. }));
+    }
+
+    #[test]
+    fn rejects_unknown_capture_fields() {
+        let input = json!({
+            "name": "probe",
+            "seed": 1,
+            "status": "passed",
+            "evidence_kind": "retail_fixture_oracle",
+            "captures": {"probe": {"value": 7, "extra_oracle_field": true}},
+        });
+        let result = decode_runtime_result(
+            serde_json::to_vec(&input).unwrap().as_slice(),
+            expectations(),
+        )
+        .unwrap();
+        let error = result.capture::<Probe>("probe").unwrap_err();
+        assert!(matches!(
+            error,
+            RuntimeCaptureError::UnknownCaptureFields { ref name, ref fields }
+                if name == "probe" && fields.contains("extra_oracle_field")
+        ));
+    }
+
+    #[test]
+    fn parses_evidence_kind_strings() {
+        assert_eq!(
+            "retail_differential".parse::<EvidenceKind>().unwrap(),
+            EvidenceKind::RetailDifferential
+        );
+        assert!("nope".parse::<EvidenceKind>().is_err());
     }
 }

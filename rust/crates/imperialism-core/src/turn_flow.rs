@@ -13,6 +13,76 @@ impl TurnState {
     }
 }
 
+
+/// Why turn progression stopped and requires UI or a future phase port.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum TurnBlock {
+    PlayerOrders,
+    Unimplemented { phase: i32 },
+}
+
+/// Result of advancing the recovered global turn state machine once.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum AdvanceTurnOutcome {
+    Continues { from: i32, to: i32 },
+    Blocked { phase: i32, block: TurnBlock },
+}
+
+impl GameState {
+    /// Advance one recoverable turn phase without pretending unported phases completed.
+    pub fn advance_turn_step(&mut self) -> AdvanceTurnOutcome {
+        let from = self.turn.phase.retail();
+        match from {
+            4 => {
+                self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
+                AdvanceTurnOutcome::Blocked { phase: 5, block: TurnBlock::PlayerOrders }
+            }
+            5 => {
+                self.turn.phase = crate::PhaseCode::TURN;
+                AdvanceTurnOutcome::Blocked { phase: 6, block: TurnBlock::Unimplemented { phase: 6 } }
+            }
+            0x10 => {
+                self.turn.phase = crate::PhaseCode::from_retail(0x11);
+                self.turn.advance_season();
+                AdvanceTurnOutcome::Continues { from, to: 0x11 }
+            }
+            0x12 => {
+                self.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
+                AdvanceTurnOutcome::Blocked { phase: 5, block: TurnBlock::PlayerOrders }
+            }
+            phase => AdvanceTurnOutcome::Blocked { phase, block: TurnBlock::Unimplemented { phase } },
+        }
+    }
+
+    pub fn advance_until_blocked(&mut self) -> AdvanceTurnOutcome {
+        loop {
+            match self.advance_turn_step() {
+                AdvanceTurnOutcome::Continues { .. } => continue,
+                blocked => return blocked,
+            }
+        }
+    }
+
+    pub fn finish_player_orders(&mut self) -> AdvanceTurnOutcome {
+        if self.turn.phase == crate::PhaseCode::STRATEGIC_MAP {
+            self.advance_until_blocked()
+        } else {
+            let phase = self.turn.phase.retail();
+            AdvanceTurnOutcome::Blocked { phase, block: TurnBlock::Unimplemented { phase } }
+        }
+    }
+
+    pub fn resume_after_offer_sheet(&mut self) -> AdvanceTurnOutcome { self.resume_after_phase(9) }
+    pub fn resume_after_deal_book(&mut self) -> AdvanceTurnOutcome { self.resume_after_phase(0xe) }
+    pub fn resume_after_newspaper(&mut self) -> AdvanceTurnOutcome { self.resume_after_phase(0x12) }
+
+    fn resume_after_phase(&mut self, expected: i32) -> AdvanceTurnOutcome {
+        let phase = self.turn.phase.retail();
+        if phase == expected { self.advance_until_blocked() }
+        else { AdvanceTurnOutcome::Blocked { phase, block: TurnBlock::Unimplemented { phase } } }
+    }
+}
+
 impl GameState {
     /// Mirrors `TSimMgr::AllHumansFinished` across all seven major nations.
     pub fn all_humans_finished(&self) -> bool {
