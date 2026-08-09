@@ -73,6 +73,14 @@ diff-turn-event2-codec *args:
   just runtime-test-build
   uv run python -m tools.runtime.turn_event2_codec_differential {{args}}
 
+# Insert two distinguishable phase-6 newspaper records through the real API in
+# both binaries and capture their semantic traversal order without pointer data.
+[doc('Observe pending newspaper-event insertion order in retail and the recomp')]
+[group('debug')]
+diff-pending-news-order *args:
+  just runtime-test-build
+  uv run python -m tools.runtime.pending_news_order_differential {{args}}
+
 # Scripted gdb session against the recomp (winedbg --gdb proxy; real gdb front
 # end: conditional breakpoints, set var, inferior calls, raw memory reads).
 # gdb sees no PDB symbols — use recomp VAs from `just addr 0xORIG`.
