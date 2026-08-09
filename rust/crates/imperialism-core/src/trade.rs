@@ -1,7 +1,4 @@
-use crate::{
-    DiplomacyGrant, GameState, GreatPowerState, MajorNation, MajorNationId, MinorNationId,
-    NationCommonState, NationId, ResourceKind, TradePolicyScore, all_resources,
-};
+use crate::*;
 
 impl GameState {
     /// Recalculates the world's seventeen market commodity prices in retail order.
@@ -297,15 +294,11 @@ const fn is_special_nation_interaction_resource(resource: ResourceKind) -> bool 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        CityState, Difficulty, DiplomacyPolicy, LaborPool, MajorNation, MinorNationId,
-        MinorNationTable, Nations, PopulationState, RetailCrtRng, RetailLcg, RngState, ShipType,
-        StrategicMap, TradePolicyScore, TurnState,
-    };
 
     fn major() -> GreatPowerState {
         GreatPowerState {
             controller: crate::MajorNationController::Human,
+            ai_zone_targets: None,
             foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
             foreign_minister_skill_index: 0,
             development_grant_by_nation: crate::NationTable::default(),
@@ -371,6 +364,7 @@ mod tests {
             )
             .unwrap(),
             provinces: crate::ProvinceTable::default(),
+            port_zone_owners: Vec::new(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),
                 map_generation: RetailLcg::from_state(1),

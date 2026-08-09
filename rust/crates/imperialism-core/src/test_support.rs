@@ -4,13 +4,7 @@
 //! so individual tests override only the fields they exercise instead of pasting
 //! full struct literals.
 
-use crate::{
-    CityState, CivilianUnitTable, Difficulty, GameState, GreatPowerState, LaborPool, MajorNation,
-    MajorNationTable, MilitaryUnitTable, MinorNationTable, NationCapacities, NationCommonState,
-    NationId, NationTable, Nations, PendingActionTable, PopulationState, ProductionTable,
-    ResourceTable, RetailCrtRng, RetailLcg, RngState, ShipTypeTable, StrategicMap, TileId,
-    TradeMarketState, TurnState,
-};
+use crate::*;
 
 /// A minimal city with a small three-band population and no stock.
 pub(crate) fn city() -> CityState {
@@ -56,6 +50,7 @@ pub(crate) fn city() -> CityState {
 pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
         controller: crate::MajorNationController::Human,
+        ai_zone_targets: None,
         foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
         foreign_minister_skill_index: 0,
         development_grant_by_nation: NationTable::default(),
@@ -126,6 +121,7 @@ pub(crate) fn game_state() -> GameState {
         )
         .unwrap(),
         provinces: crate::ProvinceTable::default(),
+        port_zone_owners: Vec::new(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),
             map_generation: RetailLcg::from_state(1),

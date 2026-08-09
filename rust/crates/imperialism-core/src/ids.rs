@@ -296,6 +296,10 @@ impl OceanZoneId {
     pub const fn new(value: u16) -> Self {
         Self(value)
     }
+
+    pub const fn get(self) -> u16 {
+        self.0
+    }
 }
 
 /// Snapshot-local position in the authoritative ship-list order.

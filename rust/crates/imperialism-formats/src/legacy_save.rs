@@ -20,6 +20,7 @@ const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
 const MAX_MISSIONS: usize = 1_024;
 const MAX_OCEAN_ZONES: usize = 4_096;
 const MAX_OCEAN_ROUTES: usize = 4_096;
+const AI_ZONE_TARGET_CAPACITY: usize = 0x70;
 const MAX_SHIPS: usize = 1_024;
 const MAX_ADMIRALS: usize = 1_024;
 const MAX_TASK_FORCES: usize = 1_024;
@@ -1534,6 +1535,8 @@ impl LegacySaveV62 {
         let mut civilian_units = Vec::new();
         let mut missions = Vec::new();
         let mut pending = PendingWorkState::default();
+        let live_ocean_context_count = validate_ocean_contexts(&self.ocean)?;
+        let port_zone_owners = port_zone_owners(&self.ocean, &self.map)?;
         let mut majors = Vec::with_capacity(MAJOR_NATION_COUNT);
         for slot in 0..MAJOR_NATION_COUNT {
             let major_id = MajorNationId::new(slot as u8);
@@ -1569,9 +1572,17 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             )?;
+            let ai_zone_targets = match nation {
+                LegacyMajorNationState::Auto(auto) => Some(ai_zone_targets(
+                    &auto.auto_prefix.port_zone_state_flags,
+                    live_ocean_context_count,
+                    slot,
+                )?),
+                LegacyMajorNationState::Other(_) => None,
+            };
             majors.push(MajorNation::from_parts(
                 country_common(&great_power.country)?,
-                great_power_state(great_power, foreign_minister_personality)?,
+                great_power_state(great_power, foreign_minister_personality, ai_zone_targets)?,
                 city,
             ));
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
@@ -1673,6 +1684,7 @@ impl LegacySaveV62 {
             unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             world: self.map.world_state()?,
             provinces: self.map.province_states()?,
+            port_zone_owners,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
                 map_generation: RetailLcg::from_state(context.map_generation_lcg),
@@ -1754,6 +1766,96 @@ fn relationship_records(
     Ok(records)
 }
 
+fn validate_ocean_contexts(ocean: &LegacyOceanState) -> Result<usize, LegacySaveError> {
+    let live_count = ocean.zones.len() + ocean.port_zones.len();
+    if live_count > AI_ZONE_TARGET_CAPACITY {
+        return Err(LegacySaveError::StateProjection(format!(
+            "ocean has {live_count} live contexts; AI state supports at most {AI_ZONE_TARGET_CAPACITY}"
+        )));
+    }
+    let mut seen = vec![false; live_count];
+    for context in ocean.zones.iter().chain(&ocean.port_zones) {
+        let ordinal = usize::try_from(context.context_ordinal).map_err(|_| {
+            LegacySaveError::StateProjection(format!(
+                "ocean context ordinal {} is negative",
+                context.context_ordinal
+            ))
+        })?;
+        if ordinal >= live_count {
+            return Err(LegacySaveError::StateProjection(format!(
+                "ocean context ordinal {ordinal} is outside the live range 0..{live_count}"
+            )));
+        }
+        if std::mem::replace(&mut seen[ordinal], true) {
+            return Err(LegacySaveError::StateProjection(format!(
+                "ocean context ordinal {ordinal} is duplicated"
+            )));
+        }
+    }
+    Ok(live_count)
+}
+
+fn ai_zone_targets(
+    flags: &[u8; AI_ZONE_TARGET_CAPACITY],
+    live_count: usize,
+    nation: usize,
+) -> Result<Vec<AiZoneTargetState>, LegacySaveError> {
+    let targets = flags[..live_count]
+        .iter()
+        .enumerate()
+        .map(|(ordinal, value)| match value {
+            0 => Ok(AiZoneTargetState::Unmarked),
+            1 => Ok(AiZoneTargetState::Candidate),
+            2 => Ok(AiZoneTargetState::MissionQueued),
+            value => Err(LegacySaveError::StateProjection(format!(
+                "AI nation {nation} ocean context {ordinal} has invalid target state {value}"
+            ))),
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    if let Some((offset, value)) = flags[live_count..]
+        .iter()
+        .copied()
+        .enumerate()
+        .find(|(_, value)| *value != 0)
+    {
+        let ordinal = live_count + offset;
+        return Err(LegacySaveError::StateProjection(format!(
+            "AI nation {nation} unused ocean context {ordinal} has nonzero target state {value}"
+        )));
+    }
+    Ok(targets)
+}
+
+fn port_zone_owners(
+    ocean: &LegacyOceanState,
+    map: &LegacyMapState,
+) -> Result<Vec<PortZoneOwner>, LegacySaveError> {
+    ocean
+        .port_zones
+        .iter()
+        .rev()
+        .map(|context| {
+            let port_tile = required_state(
+                optional_tile_id(i32::from(required_state(
+                    context.port_tile_index,
+                    "port-zone tile index",
+                )?))?,
+                "port-zone tile",
+            )?;
+            let former_owner = nation_id_from_retail_i16(i16::from(
+                map.tiles[usize::from(port_tile.get())].former_owner_nation,
+            ))?;
+            Ok(PortZoneOwner {
+                zone: required_state(
+                    optional_ocean_zone_id(context.context_ordinal)?,
+                    "port-zone context ordinal",
+                )?,
+                former_owner,
+            })
+        })
+        .collect()
+}
+
 fn foreign_minister_personality(
     nation: &LegacyMajorNationState,
     setup_policy_id: i16,
@@ -1777,6 +1879,7 @@ fn foreign_minister_personality(
 fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
+    ai_zone_targets: Option<Vec<AiZoneTargetState>>,
 ) -> Result<GreatPowerState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1805,6 +1908,7 @@ fn great_power_state(
         } else {
             MajorNationController::Computer
         },
+        ai_zone_targets,
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
         development_grant_by_nation: NationTable::from_array(
@@ -3757,6 +3861,136 @@ mod tests {
                 entry: 0x12c,
             })
         ));
+    }
+
+    #[test]
+    fn projects_exact_fixture_ai_zone_targets_and_newest_port_owners() {
+        let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        assert_eq!(save.ocean.zones.len(), 60);
+        assert_eq!(save.ocean.port_zones.len(), 23);
+        let state = save.game_state(game_context()).unwrap();
+        let expected_mission_queued = [[22, 66], [42, 65], [26, 64], [21, 63], [8, 62], [11, 61]];
+        for (slot, expected) in expected_mission_queued.into_iter().enumerate() {
+            let targets = state
+                .nations
+                .major(MajorNationId::new(slot as u8))
+                .economy()
+                .ai_zone_targets
+                .as_ref()
+                .unwrap();
+            assert_eq!(targets.len(), 83);
+            let mut expected_targets = vec![AiZoneTargetState::Unmarked; 83];
+            for ordinal in expected {
+                expected_targets[ordinal] = AiZoneTargetState::MissionQueued;
+            }
+            assert_eq!(targets, &expected_targets);
+        }
+        assert!(
+            state
+                .nations
+                .major(MajorNationId::new(6))
+                .economy()
+                .ai_zone_targets
+                .is_none()
+        );
+        assert_eq!(state.port_zone_owners.len(), 23);
+        for (owner, saved) in state
+            .port_zone_owners
+            .iter()
+            .zip(save.ocean.port_zones.iter().rev())
+        {
+            assert_eq!(owner.zone.get(), saved.context_ordinal as u16);
+            let tile = saved.port_tile_index.unwrap() as usize;
+            assert_eq!(
+                owner.former_owner.get(),
+                save.map.tiles[tile].former_owner_nation as u8
+            );
+        }
+    }
+
+    #[test]
+    fn validates_ai_zone_domain_status_and_unused_tail() {
+        let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        assert_eq!(validate_ocean_contexts(&save.ocean).unwrap(), 83);
+
+        let mut ocean = save.ocean.clone();
+        ocean.zones[0].context_ordinal = -1;
+        assert!(matches!(
+            validate_ocean_contexts(&ocean),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "ocean context ordinal -1 is negative"
+        ));
+
+        let mut ocean = save.ocean.clone();
+        ocean.zones[1].context_ordinal = ocean.zones[0].context_ordinal;
+        assert!(matches!(
+            validate_ocean_contexts(&ocean),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "ocean context ordinal 0 is duplicated"
+        ));
+
+        let mut ocean = save.ocean.clone();
+        ocean.zones[0].context_ordinal = 83;
+        assert!(matches!(
+            validate_ocean_contexts(&ocean),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "ocean context ordinal 83 is outside the live range 0..83"
+        ));
+
+        let mut ocean = save.ocean.clone();
+        ocean
+            .zones
+            .extend(std::iter::repeat_n(ocean.zones[0].clone(), 30));
+        assert!(matches!(
+            validate_ocean_contexts(&ocean),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "ocean has 113 live contexts; AI state supports at most 112"
+        ));
+
+        let mut flags = [0; AI_ZONE_TARGET_CAPACITY];
+        flags[0] = 3;
+        assert!(matches!(
+            ai_zone_targets(&flags, 83, 0),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "AI nation 0 ocean context 0 has invalid target state 3"
+        ));
+        flags[0] = 0;
+        flags[83] = 1;
+        assert!(matches!(
+            ai_zone_targets(&flags, 83, 0),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "AI nation 0 unused ocean context 83 has nonzero target state 1"
+        ));
+    }
+
+    #[test]
+    fn port_owner_projection_uses_port_tile_former_owner_and_newest_order() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let newest = save.ocean.port_zones.len() - 1;
+        let next_newest = newest - 1;
+        let newest_zone = save.ocean.port_zones[newest].context_ordinal;
+        let next_newest_zone = save.ocean.port_zones[next_newest].context_ordinal;
+        let newest_tile = save.ocean.port_zones[newest].port_tile_index.unwrap() as usize;
+        let next_newest_tile = save.ocean.port_zones[next_newest].port_tile_index.unwrap() as usize;
+        save.ocean.port_zones[newest].seed_nation_id = 6;
+        save.ocean.port_zones[next_newest].seed_nation_id = 5;
+        save.map.tiles[newest_tile].former_owner_nation = 0;
+        save.map.tiles[next_newest_tile].former_owner_nation = 0;
+
+        let owners = port_zone_owners(&save.ocean, &save.map).unwrap();
+        assert_eq!(
+            &owners[..2],
+            &[
+                PortZoneOwner {
+                    zone: OceanZoneId::new(newest_zone as u16),
+                    former_owner: NationId::new(0),
+                },
+                PortZoneOwner {
+                    zone: OceanZoneId::new(next_newest_zone as u16),
+                    former_owner: NationId::new(0),
+                },
+            ]
+        );
     }
 
     #[test]
