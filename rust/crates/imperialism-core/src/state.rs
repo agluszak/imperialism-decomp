@@ -1,11 +1,4 @@
-use crate::{
-    CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
-    HexDirection, LaborPool, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
-    MilitaryUnitKind, MilitaryUnitTable, MinorNationId, MinorNationTable, NationCapacities,
-    NationId, NationTable, OceanZoneId, PendingActionTable, ProductionTable, ProvinceId,
-    ProvinceState, ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT,
-    ShipId, ShipType, ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
-};
+use crate::*;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
 
@@ -15,6 +8,7 @@ pub struct GameState {
     pub unit_ids: UnitIdAllocator,
     pub world: StrategicMap,
     pub provinces: ProvinceTable<ProvinceState>,
+    pub port_zone_owners: Vec<PortZoneOwner>,
     pub rng: RngState,
     pub market: TradeMarketState,
     pub technology: TechnologyState,
@@ -26,6 +20,16 @@ pub struct GameState {
     pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
     pub pending: PendingWorkState,
+}
+
+/// A port zone and the nation that owned its port tile before scenario setup.
+///
+/// The owning [`GameState`] vector preserves retail's newest-to-oldest port
+/// chain order.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct PortZoneOwner {
+    pub zone: OceanZoneId,
+    pub former_owner: NationId,
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -884,6 +888,7 @@ pub enum DiplomacyPolicy {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
+    pub ai_zone_targets: Option<Vec<AiZoneTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
     pub foreign_minister_skill_index: i16,
     pub development_grant_by_nation: NationTable<i16>,
@@ -926,11 +931,16 @@ impl GreatPowerState {
         human: bool,
         foreign_minister_personality: ForeignMinisterPersonality,
     ) -> Self {
+        let controller = if human {
+            MajorNationController::Human
+        } else {
+            MajorNationController::Computer
+        };
         Self {
-            controller: if human {
-                MajorNationController::Human
-            } else {
-                MajorNationController::Computer
+            controller,
+            ai_zone_targets: match controller {
+                MajorNationController::Human => None,
+                MajorNationController::Computer => Some(Vec::new()),
             },
             foreign_minister_personality,
             foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
@@ -966,6 +976,16 @@ impl GreatPowerState {
             military_expenses: 0,
         }
     }
+}
+
+/// An AI major's current use of one live sea or port-zone context.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AiZoneTargetState {
+    #[default]
+    Unmarked,
+    Candidate,
+    MissionQueued,
 }
 
 /// The exact foreign-minister behavior selected for a major nation.
@@ -1737,16 +1757,22 @@ pub struct WarTransition {
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationPendingWork {
-    pub turn_events: Vec<TaggedValue>,
-    pub proposals: Vec<TaggedValue>,
+    pub turn_events: Vec<DiplomacyNotice>,
+    pub proposals: Vec<DiplomacyProposal>,
     pub turn_summary: Vec<TurnSummary>,
     pub turn_start_events: Vec<TurnStartEvent>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TaggedValue {
-    pub tag: i16,
-    pub value: i16,
+pub struct DiplomacyNotice {
+    pub source: NationId,
+    pub code: i16,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct DiplomacyProposal {
+    pub source: NationId,
+    pub policy: DiplomacyPolicy,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]

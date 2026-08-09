@@ -101,6 +101,15 @@ pub fn create_random_game(
     );
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
+    initialize_ai_zone_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
+    let port_zone_owners = port_zones
+        .ports
+        .iter()
+        .map(|port| PortZoneOwner {
+            zone: port.ordinal,
+            former_owner: port.former_owner,
+        })
+        .collect();
     let missions = flatten_mission_queues(&mut mission_queues);
     let provinces = build_province_state(&preview.map, &world, &mut nations);
     let mut pending = PendingWorkState::default();
@@ -126,6 +135,7 @@ pub fn create_random_game(
         unit_ids,
         world,
         provinces,
+        port_zone_owners,
         rng: RngState {
             crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),
@@ -917,7 +927,7 @@ struct PortZone {
     sea_tile: TileId,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
     primary_neighbor: Option<OceanZoneId>,
-    former_owner: u8,
+    former_owner: NationId,
 }
 
 impl PortZoneTable {
@@ -934,7 +944,7 @@ impl PortZoneTable {
             .find(|port| port.port_tile == tile || port.sea_tile == tile)
     }
 
-    fn find_first_port_for_nation(&self, nation: u8) -> Option<&PortZone> {
+    fn find_first_port_for_nation(&self, nation: NationId) -> Option<&PortZone> {
         self.ports.iter().find(|port| port.former_owner == nation)
     }
 }
@@ -959,13 +969,14 @@ fn ensure_port_zone_for_tile(world: &mut StrategicMap, ports: &mut PortZoneTable
     if ports.find_port_by_tile(tile).is_some() {
         return;
     }
-    let Some(nation_seed) = world[tile].owner_nation.map(|owner| owner.get()) else {
+    let Some(owner) = world[tile].owner_nation.and_then(TileOwnerTag::nation) else {
         return;
     };
+    let nation_seed = owner.get();
     let former_owner = world[tile]
         .former_owner_nation
-        .map(|owner| owner.get())
-        .unwrap_or(nation_seed);
+        .and_then(TileOwnerTag::nation)
+        .unwrap_or(owner);
 
     let geometry = world.geometry();
     let Some(best_sea) = select_port_sea_tile(world, geometry, tile, nation_seed) else {
@@ -1170,7 +1181,7 @@ fn queue_map_action_missions_for_port_zone_candidates(
         ));
     }
 
-    let Some(port) = ports.find_first_port_for_nation(nation.get()) else {
+    let Some(port) = ports.find_first_port_for_nation(nation.nation()) else {
         return missions;
     };
     let Some(sea_or_neighbor) = port.primary_neighbor else {
@@ -1194,6 +1205,29 @@ fn queue_map_action_missions_for_port_zone_candidates(
         SCATTERED_SHIPS_IMPORTANCE_BITS,
     ));
     missions
+}
+
+fn initialize_ai_zone_targets(
+    nations: &mut Nations,
+    mission_queues: &MajorNationTable<Vec<MissionState>>,
+    live_zone_count: u16,
+) {
+    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+        let economy = &mut nations.major_mut(nation).economy;
+        let Some(targets) = economy.ai_zone_targets.as_mut() else {
+            continue;
+        };
+        targets.resize(usize::from(live_zone_count), AiZoneTargetState::Unmarked);
+        for mission in &mission_queues[nation] {
+            let target = match &mission.data {
+                MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => navy.target_zone,
+                _ => None,
+            };
+            if let Some(target) = target {
+                targets[usize::from(target.get())] = AiZoneTargetState::MissionQueued;
+            }
+        }
+    }
 }
 
 fn empty_navy_mission(
@@ -2070,6 +2104,73 @@ mod tests {
             world[tile].flags,
             TileFlags::MINOR_HOME_STATE | TileFlags::PROVINCE_CAPITAL_FORTIFICATION
         );
+    }
+
+    #[test]
+    fn normal_random_start_marks_only_queued_ai_navy_zone_targets() {
+        let human_nation = MajorNationId::new(6);
+        let preview =
+            generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
+        let state = create_random_game(&preview, human_nation, Difficulty::Normal, 1);
+        let live_zone_count =
+            usize::from(sea_zone_count(&state.world)) + state.port_zone_owners.len();
+
+        assert!(
+            state
+                .port_zone_owners
+                .windows(2)
+                .all(|pair| pair[0].zone.get() > pair[1].zone.get()),
+            "port owners preserve the newest-to-oldest port chain"
+        );
+
+        for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+            let economy = &state.nations.majors[nation].economy;
+            if nation == human_nation {
+                assert_eq!(economy.ai_zone_targets, None);
+                continue;
+            }
+
+            let mut expected = vec![AiZoneTargetState::Unmarked; live_zone_count];
+            let mut queued_navy_target_count = 0;
+            for mission in state
+                .missions
+                .iter()
+                .filter(|mission| mission.nation == nation.nation())
+            {
+                let target = match &mission.data {
+                    MissionData::ControlSeaZone(navy) => navy.target_zone,
+                    MissionData::Escort(navy) => {
+                        let port = state
+                            .port_zone_owners
+                            .iter()
+                            .find(|port| port.former_owner == nation.nation())
+                            .expect("an Escort mission resolves the nation's first port");
+                        assert_eq!(navy.target_zone, Some(port.zone));
+                        assert_eq!(navy.resolved_port_zone, Some(port.zone));
+                        navy.target_zone
+                    }
+                    _ => None,
+                };
+                if let Some(target) = target {
+                    expected[usize::from(target.get())] = AiZoneTargetState::MissionQueued;
+                    queued_navy_target_count += 1;
+                }
+            }
+
+            let actual = economy
+                .ai_zone_targets
+                .as_ref()
+                .expect("computer majors own AI zone-target state");
+            assert_eq!(actual, &expected);
+            assert_eq!(
+                actual
+                    .iter()
+                    .filter(|&&target| target == AiZoneTargetState::MissionQueued)
+                    .count(),
+                queued_navy_target_count
+            );
+            assert!(!actual.contains(&AiZoneTargetState::Candidate));
+        }
     }
 
     #[test]
