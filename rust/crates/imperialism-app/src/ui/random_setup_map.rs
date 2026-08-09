@@ -1,4 +1,4 @@
-use super::catalog::{SpawnedView, UiAssetResources};
+use super::catalog::{SpawnedView, UiAssetResources, UiCatalogResource};
 use super::random_setup::{RandomGameSetup, RandomSetupPreview, random_setup_view_id};
 use crate::RetailAssetsResource;
 use bevy::asset::RenderAssetUsages;
@@ -27,6 +27,10 @@ const OFF_MAP_PALETTE: u8 = 0x10;
 const SELECTED_EDGE_PALETTE: u8 = 0x13;
 const MAJOR_NATION_PALETTES: [u8; MajorNationId::COUNT as usize] =
     [0x16, 0x2a, 0x22, 0x1c, 0x2b, 0x1e, 0x2e];
+
+pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
+    catalog.require_unique_bindings(&random_setup_view_id(), &[MAP_TAG, COAT_TAG, FLAG_TAG])
+}
 
 /// The retail 8-bit map surface retained for both display and click sampling.
 #[derive(Component, Default)]
@@ -68,17 +72,17 @@ pub(crate) fn attach_random_setup_meanings(commands: &mut Commands, spawned: &Sp
     debug_assert_eq!(spawned.view_id, random_setup_view_id());
     // PointerCanvas behavior already adds RelativeCursorPosition for the map.
     let map = spawned
-        .tag(MAP_TAG)
+        .require_unique(MAP_TAG)
         .expect("validated random-setup map binding");
     commands
         .entity(map)
         .insert(RandomSetupMapPreview::default());
     let coat = spawned
-        .tag(COAT_TAG)
+        .require_unique(COAT_TAG)
         .expect("validated random-setup coat binding");
     commands.entity(coat).insert(RandomSetupCoat::default());
     let flag = spawned
-        .tag(FLAG_TAG)
+        .require_unique(FLAG_TAG)
         .expect("validated random-setup flag binding");
     commands.entity(flag).insert(RandomSetupFlag::default());
 }

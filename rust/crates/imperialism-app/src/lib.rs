@@ -55,8 +55,7 @@ pub fn run(retail_assets: RetailAssets) {
     );
     let ui_catalog = ui::UiCatalogResource::new(ui_catalog)
         .expect("compiled UI catalog must be structurally valid");
-    ui_catalog
-        .validate_application_bindings()
+    ui::validate_application_bindings(&ui_catalog)
         .expect("compiled UI catalog must contain every application binding");
     app.insert_resource(ui_catalog)
         .insert_resource(RetailAssetsResource::new(retail_assets))
@@ -68,7 +67,7 @@ pub fn run(retail_assets: RetailAssets) {
             ui::RandomSetupPlugin,
             ui::MapPreviewPlugin,
             ui::CitySitePlugin,
-            ui::GameScreensPlugin,
+            ui::GameShellPlugin,
         ));
     app.world_mut().spawn(Camera2d);
     app.run();

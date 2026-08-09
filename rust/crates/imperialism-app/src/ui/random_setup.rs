@@ -41,6 +41,27 @@ pub(crate) fn planet_seed_dialog_view_id() -> ScopedViewId {
     }
 }
 
+pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
+    catalog.require_unique_bindings(
+        &random_setup_view_id(),
+        &[
+            OKAY,
+            fourcc!("cncl"),
+            fourcc!("glob"),
+            fourcc!("key "),
+            fourcc!("dif0"),
+            fourcc!("dif1"),
+            fourcc!("dif2"),
+            fourcc!("dif3"),
+            fourcc!("dif4"),
+            fourcc!("hist"),
+            fourcc!("rand"),
+            fourcc!("coun"),
+        ],
+    )?;
+    catalog.require_unique_bindings(&planet_seed_dialog_view_id(), &[fourcc!("plan"), OKAY])
+}
+
 /// Presentation-owned values edited by the random-game setup screen.
 #[derive(Resource, Clone, Debug, Eq, PartialEq)]
 pub(crate) struct RandomGameSetup {
@@ -197,7 +218,7 @@ fn bind_random_setup_controls(
         (fourcc!("dif4"), Difficulty::NighOnImpossible),
     ] {
         let entity = spawned
-            .tag(tag)
+            .require_unique(tag)
             .expect("validated random-setup difficulty binding");
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert(DifficultyChoice(difficulty));
@@ -213,7 +234,7 @@ fn bind_random_setup_controls(
         (fourcc!("rand"), NationNameMode::Random),
     ] {
         let entity = spawned
-            .tag(tag)
+            .require_unique(tag)
             .expect("validated random-setup nation-name binding");
         let mut entity_commands = commands.entity(entity);
         entity_commands.insert(LocalizedNamesChoice(localized));
@@ -225,7 +246,7 @@ fn bind_random_setup_controls(
     }
 
     let country = spawned
-        .tag(fourcc!("coun"))
+        .require_unique(fourcc!("coun"))
         .expect("validated random-setup country-name binding");
     commands.entity(country).insert((
         CountryNameField,
@@ -238,7 +259,7 @@ fn bind_random_setup_controls(
     ));
 
     let okay = spawned
-        .tag(OKAY)
+        .require_unique(OKAY)
         .expect("validated random-setup accept binding");
     // Initialization and preview generation run before this screen is spawned;
     // bind the enabled Accept action only at that ready boundary.
@@ -253,7 +274,7 @@ fn bind_random_setup_controls(
         (fourcc!("key "), RandomSetupAction::OpenPlanetSeed),
     ] {
         let entity = spawned
-            .tag(tag)
+            .require_unique(tag)
             .expect("validated random-setup action binding");
         commands.entity(entity).insert(action);
     }
@@ -461,7 +482,7 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
         .insert(PlanetSeedDialogRoot);
 
     let plan = spawned
-        .tag(fourcc!("plan"))
+        .require_unique(fourcc!("plan"))
         .expect("validated planet-seed text binding");
     ui.commands.entity(plan).insert((
         PlanetSeedField,
@@ -476,7 +497,7 @@ fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
     ));
 
     let okay = spawned
-        .tag(OKAY)
+        .require_unique(OKAY)
         .expect("validated planet-seed accept binding");
     ui.commands
         .entity(okay)
@@ -637,9 +658,8 @@ mod tests {
             Pickable::default(),
         ));
         world.flush();
-        let catalog = world.resource::<UiCatalogResource>();
-        let plan = spawned.require_unique(catalog, fourcc!("plan")).unwrap();
-        let okay = spawned.require_unique(catalog, fourcc!("okay")).unwrap();
+        let plan = spawned.require_unique(fourcc!("plan")).unwrap();
+        let okay = spawned.require_unique(fourcc!("okay")).unwrap();
         let mut commands = world.commands();
         commands.entity(plan).insert((
             PlanetSeedField,
