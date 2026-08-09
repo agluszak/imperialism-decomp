@@ -49,6 +49,7 @@
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TNewsMgr.h"
+#include "game/ui_screens/TPortZone.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 
@@ -712,6 +713,94 @@ JSON_Value* CaptureAidAllocationByMinorNation(const int* values) {
   return rows.Release();
 }
 
+int ValidateLiveZoneContextCount() {
+  unsigned char seen[0x70];
+  memset(seen, 0, sizeof(seen));
+  int liveCount = 0;
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    if (liveCount >= static_cast<int>(sizeof(seen))) {
+      FailSemanticCapture("live map-action context count exceeds the AI state capacity");
+    }
+    const int ordinal = static_cast<int>(zone->contextOrdinal14);
+    if (ordinal < 0 || ordinal >= static_cast<int>(sizeof(seen))) {
+      FailSemanticCapture("live map-action context ordinal is outside the AI state capacity");
+    }
+    if (seen[ordinal] != 0) {
+      FailSemanticCapture("live map-action context ordinal is duplicated");
+    }
+    seen[ordinal] = 1;
+    ++liveCount;
+  }
+  for (int ordinal = 0; ordinal < liveCount; ++ordinal) {
+    if (seen[ordinal] == 0) {
+      FailSemanticCapture("live map-action context ordinals are not contiguous");
+    }
+  }
+  return liveCount;
+}
+
+JSON_Value* CaptureAiZoneTargets(TGreatPower* nation) {
+  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+    return JsonNullValue();
+  }
+
+  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
+  const int liveCount = ValidateLiveZoneContextCount();
+  JsonArray targets;
+  int ordinal;
+  for (ordinal = 0; ordinal < liveCount; ++ordinal) {
+    switch (automaticNation->portZoneStateFlags[ordinal]) {
+    case 0:
+      targets.Add("unmarked");
+      break;
+    case 1:
+      targets.Add("candidate");
+      break;
+    case 2:
+      targets.Add("mission_queued");
+      break;
+    default:
+      FailSemanticCapture("live AI zone target has an invalid state");
+    }
+  }
+  for (ordinal = liveCount; ordinal < static_cast<int>(sizeof(automaticNation->portZoneStateFlags));
+       ++ordinal) {
+    if (automaticNation->portZoneStateFlags[ordinal] != 0) {
+      FailSemanticCapture("unused AI zone target has a nonzero state");
+    }
+  }
+  return targets.Release();
+}
+
+JSON_Value* CapturePortZoneOwners() {
+  const int liveCount = ValidateLiveZoneContextCount();
+  JsonArray owners;
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    if (zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      continue;
+    }
+    TPortZone* port = static_cast<TPortZone*>(zone);
+    const int ordinal = static_cast<int>(port->contextOrdinal14);
+    if (ordinal < 0 || ordinal >= liveCount) {
+      FailSemanticCapture("port-zone ordinal is outside the live context range");
+    }
+    const int tile = static_cast<int>(port->portTileIndex48);
+    if (tile < 0 || tile >= 0x1950) {
+      FailSemanticCapture("port-zone tile is outside the strategic map");
+    }
+    const int formerOwner =
+        static_cast<int>(g_pGlobalMapState->terrainStateTable[tile].formerOwnerNationTag03);
+    if (formerOwner < 0 || formerOwner >= kNationSlotCount) {
+      FailSemanticCapture("port-zone former owner is outside the nation range");
+    }
+    JsonObject owner;
+    owner.Set("zone", ordinal);
+    owner.Set("former_owner", formerOwner);
+    owners.Add(owner.Release());
+  }
+  return owners.Release();
+}
+
 const char* PendingActionStatusName(signed char status) {
   switch (status) {
   case 0:
@@ -908,6 +997,7 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   }
   JsonObject object;
   object.Set("controller", nation->diplomacyEligibilityA0 != 0 ? "Human" : "Computer");
+  object.Set("ai_zone_targets", CaptureAiZoneTargets(nation));
   object.Set("foreign_minister_personality",
              ForeignMinisterPersonalityName(nation->foreignMinister));
   object.Set("foreign_minister_skill_index",
@@ -1732,6 +1822,7 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("unit_ids", g_pSimMgr->field_64);
   object.Set("world", CaptureWorld());
   object.Set("provinces", CaptureProvinces());
+  object.Set("port_zone_owners", CapturePortZoneOwners());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
   object.Set("technology", CaptureTechnology());
