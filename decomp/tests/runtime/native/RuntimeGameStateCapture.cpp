@@ -48,6 +48,7 @@
 #include "game/navy/TTaskForce.h"
 #include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
+#include "game/ui_screens/TNewsMgr.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
 
@@ -113,6 +114,75 @@ const char* const kResourceNames[kResourceKindCount] = {
     "cotton", "wool",   "timber", "coal",  "iron",      "horses",   "oil",       "food",
     "fabric", "lumber", "paper",  "steel", "fuel",      "clothing", "furniture", "hardware",
     "arms",   "grain",  "fruit",  "fish",  "livestock", "gems",     "gold"};
+
+const char* InterNationNewsKindName(InterNationEventKind eventKind) {
+  switch (eventKind) {
+  case kInterNationEventWarDeclaredBySubject:
+    return "war_declared_by_subject";
+  case kInterNationEventWarDeclaredAgainstSubject:
+    return "war_declared_against_subject";
+  case kInterNationEventPeaceTreatyAccepted:
+    return "peace_treaty_accepted";
+  case kInterNationEventJoinEmpireAccepted:
+    return "join_empire_accepted";
+  case kInterNationEventAllianceAccepted:
+    return "alliance_accepted";
+  case kInterNationEventNonAggressionPactAccepted:
+    return "non_aggression_pact_accepted";
+  case kInterNationEventPeaceTreatyRejected:
+    return "peace_treaty_rejected";
+  case kInterNationEventJoinEmpireRejected:
+    return "join_empire_rejected";
+  case kInterNationEventAllianceRejected:
+    return "alliance_rejected";
+  case kInterNationEventNonAggressionPactRejected:
+    return "non_aggression_pact_rejected";
+  case kInterNationEventTradeConsulateEstablished:
+    return "trade_consulate_established";
+  case kInterNationEventEmbassyEstablished:
+    return "embassy_established";
+  case kInterNationEventMinorEmpireAffiliationChanged:
+    return "minor_empire_affiliation_changed";
+  case kInterNationEventMinorTerritoryRelationshipAffected:
+    return "minor_territory_relationship_affected";
+  case kInterNationEventPeaceRelationshipPropagated:
+    return "peace_relationship_propagated";
+  case kInterNationEventWarWithIndependentMinor:
+    return "war_with_independent_minor";
+  case kInterNationEventAllianceRelationshipEstablished:
+    return "alliance_relationship_established";
+  case kInterNationEventNationJoinedEmpire:
+    return "nation_joined_empire";
+  case kInterNationEventNationJoinedWar:
+    return "nation_joined_war";
+  case kInterNationEventNationTransferred:
+    return "nation_transferred";
+  default:
+    FailSemanticCapture("shared newspaper queue contains an unknown inter-nation event kind");
+    return "";
+  }
+}
+
+int RequiredNewspaperMajorNation(int nation) {
+  if (nation < 0 || nation >= kMajorNationCount) {
+    FailSemanticCapture("shared newspaper event subject is outside the major-nation range");
+  }
+  return nation;
+}
+
+JSON_Value* CaptureNewspaperNationMask(int source) {
+  const unsigned int validBits = (1u << kNationSlotCount) - 1u;
+  const unsigned int sourceBits = static_cast<unsigned int>(source);
+  if ((sourceBits & ~validBits) != 0) {
+    FailSemanticCapture("shared newspaper event mask contains bits outside the nation table");
+  }
+
+  JsonArray nations;
+  for (int nation = 0; nation < kNationSlotCount; ++nation) {
+    nations.Add((sourceBits & (1u << nation)) != 0);
+  }
+  return nations.Release();
+}
 
 const char* DifficultyName(int value) {
   if (value < 0 || value >= 5) {
@@ -1525,6 +1595,59 @@ JSON_Value* CaptureNationPendingWork(TGreatPower* nation) {
   return object.Release();
 }
 
+JSON_Value* CapturePendingNewspaperEvents() {
+  if (g_pNewsMgr == 0 || g_pNewsMgr->sharedEventRecordQueue == 0) {
+    FailSemanticCapture("shared newspaper event queue is unavailable");
+  }
+  TPtrList* queue = g_pNewsMgr->sharedEventRecordQueue;
+  if (queue->recordSize14 != sizeof(InterNationNewsRecord)) {
+    FailSemanticCapture("shared newspaper event queue has the wrong record size");
+  }
+
+  const int count = queue->GetSize();
+  if (count < 0) {
+    FailSemanticCapture("shared newspaper event queue has a negative size");
+  }
+  JsonArray events;
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    InterNationNewsRecord* record =
+        static_cast<InterNationNewsRecord*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (record == 0) {
+      FailSemanticCapture("shared newspaper event queue contains a null record");
+    }
+
+    JsonObject event;
+    if (record->eventKind == kInterNationEventShortage) {
+      const int resource = record->payload.relatedNation;
+      if (resource < 0 || resource >= kResourceKindCount) {
+        FailSemanticCapture("shared newspaper shortage has an invalid resource");
+      }
+      event.Set("kind", "shortage");
+      event.Set("subject", RequiredNewspaperMajorNation(record->payload.subjectNationOrAll));
+      event.Set("affected_nations",
+                CaptureNewspaperNationMask(record->payload.nationMaskOrStoryCode));
+      event.Set("resource", kResourceNames[resource]);
+    } else if (record->eventKind == kInterNationEventMiscellaneous) {
+      const int audience = record->payload.subjectNationOrAll;
+      event.Set("kind", "miscellaneous");
+      if (audience == 999) {
+        event.SetNull("audience");
+      } else {
+        event.Set("audience", RequiredNewspaperMajorNation(audience));
+      }
+      event.Set("story_code", record->payload.nationMaskOrStoryCode);
+    } else {
+      event.Set("kind", "inter_nation");
+      event.Set("event", InterNationNewsKindName(record->eventKind));
+      event.Set("subject", RequiredNewspaperMajorNation(record->payload.subjectNationOrAll));
+      event.Set("related_nations",
+                CaptureNewspaperNationMask(record->payload.nationMaskOrStoryCode));
+    }
+    events.Add(event.Release());
+  }
+  return events.Release();
+}
+
 JSON_Value* CapturePending() {
   JsonObject object;
   JsonArray nations;
@@ -1544,6 +1667,7 @@ JSON_Value* CapturePending() {
     transitions.Add(transition.Release());
   }
   object.Set("nations", nations.Release());
+  object.Set("newspaper_events", CapturePendingNewspaperEvents());
   object.Set("war_transitions", transitions.Release());
   return object.Release();
 }
@@ -1553,7 +1677,7 @@ JSON_Value* CapturePending() {
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
       g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||
-      g_pDiplomacyTurnStateManager == 0 || g_pTechMgr == 0) {
+      g_pDiplomacyTurnStateManager == 0 || g_pTechMgr == 0 || g_pNewsMgr == 0) {
     return false;
   }
 
