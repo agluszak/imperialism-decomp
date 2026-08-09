@@ -30,6 +30,33 @@ has no external users to preserve compatibility for and no reason to design for 
 When choosing between a direct special-purpose implementation and a more flexible design for imagined
 future requirements, choose the direct implementation.
 
+## Port primary behavior first
+
+The purpose of this repository is to recover and run Imperialism, not to maximize test count or build
+support infrastructure. Spend feature work on production code that extends an executable gameplay,
+format, or UI path.
+
+- Port the retail operation and connect it to its real caller before expanding adjacent helpers.
+- Keep rules in production code. Do not leave faithful implementations reachable only from tests.
+- Test the smallest meaningful behavior boundary, preferably through the existing retail differential
+  and complete semantic state comparison. A focused success case and a materially different edge or
+  reversal are usually enough.
+- Do not add Rust unit tests for obvious constructors, getters, constant tables, serde spelling, simple
+  matches, or private plumbing unless they protect a demonstrated bug or ambiguous retail behavior.
+- Do not build test frameworks, generators, fixtures, adapters, or diagnostic commands merely to make
+  testing more convenient. Extend existing tooling only when the current vertical slice cannot be
+  verified without it.
+- Do not delay primary logic to pursue exhaustive test matrices, coverage targets, warning cleanup, or
+  speculative malformed-input cases. Validate risks in proportion to their retail relevance.
+- In internal Rust crates, use wildcard imports where they keep rule code direct. If a Clippy lint
+  consistently demands boilerplate or a less faithful shape without finding a concrete defect, allow
+  it at the narrowest useful scope instead of churning the implementation.
+- A passing helper test does not make disconnected code complete. Completion means the recovered logic
+  is authoritative state and is invoked by the intended production path.
+
+When time or scope forces a choice, implement more of the real retail path and keep only the tests
+needed to prove that path.
+
 ## Compatibility
 
 The only compatibility target is retail Imperialism. Repository-owned APIs and formats may be broken

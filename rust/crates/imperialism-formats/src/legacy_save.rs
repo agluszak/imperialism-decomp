@@ -7,7 +7,6 @@ const SAVE_LABEL_LENGTH: usize = 0x20;
 const ACTIVE_NATION_NAME_LENGTH: usize = 0x20;
 const RESOURCE_KIND_COUNT: usize = 23;
 const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
-const CITY_ORDER_SLOT_COUNT: usize = 61;
 const TRADE_CATEGORY_COUNT: usize = 17;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
@@ -325,8 +324,7 @@ pub(crate) struct LegacyCityState {
     pub consumed_production_input_by_type: [i16; RESOURCE_KIND_COUNT],
     pub rolling_item_production_score: i32,
     pub population: LegacyPopulationState,
-    /// Serialized payloads for the 47 constructed entries in the 61-slot table.
-    pub production_order_payloads: Vec<(u8, Vec<u8>)>,
+    pub orders: CityOrders,
     pub tasks: Vec<LegacyCityTask>,
     pub transport_requests: LegacyFixedRecordList,
 }
@@ -727,6 +725,7 @@ impl LegacyCityState {
                 })?;
 
         Ok(CityState {
+            orders: Box::new(self.orders.clone()),
             power_plant_upgrade_queued: self.power_plant_upgrade_queued != 0,
             food_substitution_count: self.food_substitution_count,
             starvation_population_loss: self.starvation_population_loss,
@@ -1170,6 +1169,8 @@ pub enum LegacySaveError {
     },
     #[error("{0}")]
     StateProjection(String),
+    #[error("city order {order}: {detail}")]
+    InvalidCityOrder { order: &'static str, detail: String },
     #[error("{context}: invalid count {value}; maximum is {maximum}")]
     InvalidCount {
         context: &'static str,
@@ -3045,7 +3046,7 @@ fn read_longint_list(stream: &mut LegacyStream<'_>) -> Result<Vec<i32>, StreamEr
         .collect::<Result<Vec<_>, _>>()
 }
 
-fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamError> {
+fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, LegacySaveError> {
     let power_plant_upgrade_queued = stream.read_u8()?;
     let low_production = stream.read_u8()?;
     let low_stock = stream.read_u8()?;
@@ -3071,18 +3072,12 @@ fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamErr
     let consumed_production_input_by_type = read_be_short_array(stream)?;
     let rolling_item_production_score = stream.read_le_i32()?;
     let population = read_population(stream)?;
-
-    let mut production_order_payloads = Vec::new();
-    for slot in 0..CITY_ORDER_SLOT_COUNT {
-        if let Some(length) = city_order_payload_size(slot) {
-            production_order_payloads.push((slot as u8, stream.read_bytes(length)?.to_vec()));
-        }
-    }
+    let orders = read_city_orders(stream)?;
 
     // TTaskList's inherited TSortedList stream hook is a no-op.
     let task_count = stream.read_le_u32()? as usize;
     if task_count > MAX_CITY_TASKS {
-        return Err(StreamError::InvalidCount {
+        return Err(LegacySaveError::InvalidCount {
             context: "city tasks",
             value: task_count as i64,
             maximum: MAX_CITY_TASKS,
@@ -3123,10 +3118,525 @@ fn read_city(stream: &mut LegacyStream<'_>) -> Result<LegacyCityState, StreamErr
         consumed_production_input_by_type,
         rolling_item_production_score,
         population,
-        production_order_payloads,
+        orders,
         tasks,
         transport_requests,
     })
+}
+
+struct LegacyRequestedCityOrder {
+    product: i16,
+    state: RequestedCityOrderState,
+    primary_input: i16,
+    secondary_input: i16,
+    production_slot: i16,
+}
+
+struct LegacyRecruitOrder {
+    product: i16,
+    progress: ProductionProgress,
+    primary_input: i16,
+    secondary_input: i16,
+    primary_per_unit: i16,
+    secondary_per_unit: i16,
+    cash_per_unit: i16,
+    workforce: i16,
+    specialist: u8,
+}
+
+fn read_city_orders(stream: &mut LegacyStream<'_>) -> Result<CityOrders, LegacySaveError> {
+    // TCity owns a fixed but untagged 61-pointer registry. Only these 47 entries
+    // are constructed, so their concrete type is established by ICity's slot map.
+    let food_processing = read_plain_city_order(stream, "slot 7 food processing", 7)?;
+
+    let mut items = ResourceTable::default();
+    for output in [
+        ResourceKind::Fabric,
+        ResourceKind::Lumber,
+        ResourceKind::Paper,
+        ResourceKind::Steel,
+        ResourceKind::Fuel,
+        ResourceKind::Clothing,
+        ResourceKind::Furniture,
+        ResourceKind::Hardware,
+        ResourceKind::Arms,
+    ] {
+        items[output] = Some(read_item_order(stream, output)?);
+    }
+
+    let training = TrainingOrderTable::from_array([
+        read_plain_city_order(stream, "slot 23 medium training", 1)?,
+        read_plain_city_order(stream, "slot 24 high training", 2)?,
+    ]);
+
+    let military_recruitment = MilitaryRecruitOrderTable::from_array([
+        read_military_recruit_order(
+            stream,
+            "slot 25 light infantry",
+            MilitaryRecruitmentCategory::LightInfantry,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 26 regular infantry",
+            MilitaryRecruitmentCategory::RegularInfantry,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 27 heavy infantry",
+            MilitaryRecruitmentCategory::HeavyInfantry,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 28 light cavalry",
+            MilitaryRecruitmentCategory::LightCavalry,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 29 heavy cavalry",
+            MilitaryRecruitmentCategory::HeavyCavalry,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 30 light artillery",
+            MilitaryRecruitmentCategory::LightArtillery,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 31 heavy artillery",
+            MilitaryRecruitmentCategory::HeavyArtillery,
+        )?,
+        read_military_recruit_order(
+            stream,
+            "slot 32 combat engineers",
+            MilitaryRecruitmentCategory::CombatEngineers,
+        )?,
+    ]);
+
+    let civilian_recruitment = CivilianUnitTable::from_array([
+        read_civilian_recruit_order(stream, CivilianUnitKind::Miner)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Prospector)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Farmer)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Forester)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Engineer)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Rancher)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Fisherman)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Developer)?,
+        read_civilian_recruit_order(stream, CivilianUnitKind::Driller)?,
+    ]);
+
+    let ships = ShipOrderTable::from_array([
+        read_ship_order(
+            stream,
+            "slot 43 early merchant primary",
+            ShipOrderSlot::MerchantEarlyPrimary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 44 early merchant secondary",
+            ShipOrderSlot::MerchantEarlySecondary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 45 advanced merchant primary",
+            ShipOrderSlot::MerchantAdvancedPrimary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 46 advanced merchant secondary",
+            ShipOrderSlot::MerchantAdvancedSecondary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 47 early warship primary",
+            ShipOrderSlot::WarshipEarlyPrimary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 48 early warship secondary",
+            ShipOrderSlot::WarshipEarlySecondary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 49 advanced warship primary",
+            ShipOrderSlot::WarshipAdvancedPrimary,
+        )?,
+        read_ship_order(
+            stream,
+            "slot 50 advanced warship secondary",
+            ShipOrderSlot::WarshipAdvancedSecondary,
+        )?,
+    ]);
+
+    let transport_capacity = read_transport_capacity_order(stream)?;
+    let power_plant = read_power_plant_order(stream)?;
+
+    let mut expansions = ProductionTable::default();
+    for target in [
+        ProductionSlot::TextileMill,
+        ProductionSlot::ClothingFactory,
+        ProductionSlot::SteelMill,
+        ProductionSlot::Metalworks,
+        ProductionSlot::LumberMill,
+        ProductionSlot::FurnitureFactory,
+        ProductionSlot::OilRefinery,
+    ] {
+        expansions[target] = Some(read_expansion_order(stream, target)?);
+    }
+
+    let population_growth = read_plain_city_order(stream, "slot 60 population growth", 1)?;
+
+    Ok(CityOrders {
+        items,
+        civilian_recruitment,
+        military_recruitment,
+        ships,
+        training,
+        expansions,
+        food_processing,
+        power_plant,
+        transport_capacity,
+        population_growth,
+    })
+}
+
+fn read_order_progress(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+) -> Result<(i16, ProductionProgress), LegacySaveError> {
+    let _constructor_product = stream.read_le_i16()?;
+    let quantity = stream.read_le_i16()?;
+    let limiting_constraint = match stream.read_le_i16()? {
+        0 => ProductionConstraint::Resources,
+        1 => ProductionConstraint::Workforce,
+        2 => ProductionConstraint::Capacity,
+        3 => ProductionConstraint::Treasury,
+        value => {
+            return Err(invalid_city_order(
+                order,
+                format!("limiting constraint {value} is outside 0..=3"),
+            ));
+        }
+    };
+    // TProductionOrder::ReadFrom overwrites the constructor product with this
+    // second serialized word. The first word is not authoritative live state.
+    let product = stream.read_le_i16()?;
+    let tracking_by_resource = ResourceTable::from_array(read_short_array(stream)?);
+    let accumulated_value = stream.read_le_i32()?;
+    Ok((
+        product,
+        ProductionProgress {
+            quantity,
+            tracking_by_resource,
+            // TProductionOrder::ReadFrom does not persist or reconstruct this field.
+            reserved_workforce: 0,
+            limiting_constraint,
+            accumulated_value,
+        },
+    ))
+}
+
+fn read_plain_city_order(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+    expected_product: i16,
+) -> Result<ProductionProgress, LegacySaveError> {
+    let (product, progress) = read_order_progress(stream, order)?;
+    require_city_order_value(order, "product", product, expected_product)?;
+    Ok(progress)
+}
+
+fn read_requested_city_order(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+) -> Result<LegacyRequestedCityOrder, LegacySaveError> {
+    let (product, progress) = read_order_progress(stream, order)?;
+    let requested_quantity = stream.read_le_i16()?;
+    Ok(LegacyRequestedCityOrder {
+        product,
+        state: RequestedCityOrderState {
+            progress,
+            requested_quantity,
+        },
+        primary_input: stream.read_le_i16()?,
+        secondary_input: stream.read_le_i16()?,
+        production_slot: stream.read_le_i16()?,
+    })
+}
+
+fn read_item_order(
+    stream: &mut LegacyStream<'_>,
+    output: ResourceKind,
+) -> Result<RequestedCityOrderState, LegacySaveError> {
+    let order = "slots 8..=16 item production";
+    let raw = read_requested_city_order(stream, order)?;
+    let spec = item_order_spec(output).expect("the fixed item-order list contains only products");
+    let (primary_input, secondary_input) = match spec.inputs {
+        ItemInputs::Double(primary) => (primary as i16, -1),
+        ItemInputs::Both(primary, secondary) | ItemInputs::Either(primary, secondary) => {
+            (primary as i16, secondary as i16)
+        }
+    };
+    require_city_order_value(order, "product", raw.product, output as i16)?;
+    require_city_order_value(order, "primary input", raw.primary_input, primary_input)?;
+    require_city_order_value(
+        order,
+        "secondary input",
+        raw.secondary_input,
+        secondary_input,
+    )?;
+    require_city_order_value(
+        order,
+        "production slot",
+        raw.production_slot,
+        spec.production_slot as i16,
+    )?;
+    Ok(raw.state)
+}
+
+fn read_transport_capacity_order(
+    stream: &mut LegacyStream<'_>,
+) -> Result<RequestedCityOrderState, LegacySaveError> {
+    let order = "slot 51 transport capacity";
+    let raw = read_requested_city_order(stream, order)?;
+    let spec = transport_capacity_order_spec();
+    require_city_order_value(
+        order,
+        "product",
+        raw.product,
+        ProductionSlot::Transport as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "primary input",
+        raw.primary_input,
+        spec.primary as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "secondary input",
+        raw.secondary_input,
+        spec.secondary as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "production slot",
+        raw.production_slot,
+        spec.production_slot as i16,
+    )?;
+    Ok(raw.state)
+}
+
+fn read_expansion_order(
+    stream: &mut LegacyStream<'_>,
+    target: ProductionSlot,
+) -> Result<RequestedCityOrderState, LegacySaveError> {
+    let order = "slots 53..=59 industry expansion";
+    let raw = read_requested_city_order(stream, order)?;
+    let spec =
+        expansion_order_spec(target).expect("the fixed expansion list contains only targets");
+    require_city_order_value(order, "product", raw.product, target as i16)?;
+    require_city_order_value(
+        order,
+        "primary input",
+        raw.primary_input,
+        spec.primary as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "secondary input",
+        raw.secondary_input,
+        spec.secondary as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "production slot",
+        raw.production_slot,
+        spec.production_slot as i16,
+    )?;
+    Ok(raw.state)
+}
+
+fn read_recruit_order(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+) -> Result<LegacyRecruitOrder, LegacySaveError> {
+    let (product, progress) = read_order_progress(stream, order)?;
+    let raw = LegacyRecruitOrder {
+        product,
+        progress,
+        primary_input: stream.read_le_i16()?,
+        secondary_input: stream.read_le_i16()?,
+        primary_per_unit: stream.read_le_i16()?,
+        secondary_per_unit: stream.read_le_i16()?,
+        cash_per_unit: stream.read_le_i16()?,
+        workforce: stream.read_le_i16()?,
+        specialist: stream.read_u8()?,
+    };
+    Ok(raw)
+}
+
+fn read_military_recruit_order(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+    category: MilitaryRecruitmentCategory,
+) -> Result<MilitaryRecruitOrderState, LegacySaveError> {
+    let raw = read_recruit_order(stream, order)?;
+    require_city_order_value(order, "specialist flag", i16::from(raw.specialist), 1)?;
+    let unit_kind = u8::try_from(raw.product)
+        .ok()
+        .and_then(MilitaryUnitKind::from_index)
+        .ok_or_else(|| {
+            invalid_city_order(order, format!("invalid military unit type {}", raw.product))
+        })?;
+    if military_recruitment_category(unit_kind) != Some(category) {
+        return Err(invalid_city_order(
+            order,
+            format!("{unit_kind:?} does not belong to the {category:?} armory category"),
+        ));
+    }
+    let spec = military_recruitment_spec(unit_kind).ok_or_else(|| {
+        invalid_city_order(
+            order,
+            format!("{unit_kind:?} has no retail recruitment recipe"),
+        )
+    })?;
+    validate_recruit_order_spec(order, &raw, spec)?;
+    Ok(MilitaryRecruitOrderState {
+        unit_kind,
+        progress: raw.progress,
+    })
+}
+
+fn read_civilian_recruit_order(
+    stream: &mut LegacyStream<'_>,
+    kind: CivilianUnitKind,
+) -> Result<ProductionProgress, LegacySaveError> {
+    let order = "slots 34..=42 civilian recruitment";
+    let raw = read_recruit_order(stream, order)?;
+    require_city_order_value(order, "product", raw.product, kind as i16)?;
+    require_city_order_value(order, "specialist flag", i16::from(raw.specialist), 0)?;
+    let spec = civilian_recruitment_spec(kind);
+    validate_recruit_order_spec(order, &raw, spec)?;
+    Ok(raw.progress)
+}
+
+fn read_ship_order(
+    stream: &mut LegacyStream<'_>,
+    order: &'static str,
+    slot: ShipOrderSlot,
+) -> Result<ShipOrderState, LegacySaveError> {
+    let (product, progress) = read_order_progress(stream, order)?;
+    let ship_type = ship_type_from_retail(order, product)?;
+    if !ship_type_is_valid_for_order_slot(slot, ship_type) {
+        return Err(invalid_city_order(
+            order,
+            format!("{ship_type:?} is not valid for {slot:?}"),
+        ));
+    }
+    Ok(ShipOrderState {
+        ship_type,
+        progress,
+    })
+}
+
+fn read_power_plant_order(
+    stream: &mut LegacyStream<'_>,
+) -> Result<PowerPlantOrderState, LegacySaveError> {
+    let order = "slot 52 power plant";
+    let (product, progress) = read_order_progress(stream, order)?;
+    require_city_order_value(order, "product", product, 0)?;
+    let desired_quantity = stream.read_le_i16()?;
+    Ok(PowerPlantOrderState {
+        progress,
+        desired_quantity,
+    })
+}
+
+fn validate_recruit_order_spec(
+    order: &'static str,
+    raw: &LegacyRecruitOrder,
+    spec: RecruitmentOrderSpec,
+) -> Result<(), LegacySaveError> {
+    let (secondary_input, secondary_per_unit) = match spec.secondary {
+        Some(cost) => (cost.resource as i16, cost.per_unit()),
+        None => (-1, 0),
+    };
+    require_city_order_value(
+        order,
+        "primary input",
+        raw.primary_input,
+        spec.primary.resource as i16,
+    )?;
+    require_city_order_value(
+        order,
+        "primary per-unit cost",
+        raw.primary_per_unit,
+        spec.primary.per_unit(),
+    )?;
+    require_city_order_value(
+        order,
+        "secondary input",
+        raw.secondary_input,
+        secondary_input,
+    )?;
+    require_city_order_value(
+        order,
+        "secondary per-unit cost",
+        raw.secondary_per_unit,
+        secondary_per_unit,
+    )?;
+    require_city_order_value(order, "cash cost", raw.cash_per_unit, spec.cash_per_unit)?;
+    require_city_order_value(
+        order,
+        "workforce mode",
+        raw.workforce,
+        spec.workforce as i16,
+    )
+}
+
+fn ship_type_from_retail(order: &'static str, value: i16) -> Result<ShipType, LegacySaveError> {
+    let ship_type = match value {
+        0 => ShipType::NoShip,
+        1 => ShipType::Trader,
+        2 => ShipType::Indiaman,
+        3 => ShipType::Frigate,
+        4 => ShipType::ShipOfTheLine,
+        5 => ShipType::Paddlewheeler,
+        6 => ShipType::Clipper,
+        7 => ShipType::Raider,
+        8 => ShipType::Ironclad,
+        9 => ShipType::AdvancedIronclad,
+        10 => ShipType::Freighter,
+        11 => ShipType::ArmoredCruiser,
+        12 => ShipType::Dreadnought,
+        13 => ShipType::Battlecruiser,
+        _ => {
+            return Err(invalid_city_order(
+                order,
+                format!("ship type {value} is outside 0..=13"),
+            ));
+        }
+    };
+    Ok(ship_type)
+}
+
+fn require_city_order_value(
+    order: &'static str,
+    field: &'static str,
+    actual: i16,
+    expected: i16,
+) -> Result<(), LegacySaveError> {
+    if actual != expected {
+        return Err(invalid_city_order(
+            order,
+            format!("{field} is {actual}; expected {expected}"),
+        ));
+    }
+    Ok(())
+}
+
+fn invalid_city_order(order: &'static str, detail: String) -> LegacySaveError {
+    LegacySaveError::InvalidCityOrder { order, detail }
 }
 
 fn read_population(stream: &mut LegacyStream<'_>) -> Result<LegacyPopulationState, StreamError> {
@@ -3142,16 +3652,6 @@ fn read_population(stream: &mut LegacyStream<'_>) -> Result<LegacyPopulationStat
         production_labor: read_short_array(stream)?,
         pending_labor_delta: read_short_array(stream)?,
     })
-}
-
-const fn city_order_payload_size(slot: usize) -> Option<usize> {
-    match slot {
-        7 | 23 | 24 | 43..=50 | 60 => Some(58),
-        8..=16 | 51 | 53..=59 => Some(66),
-        25..=32 | 34..=42 => Some(71),
-        52 => Some(60),
-        _ => None,
-    }
 }
 
 fn read_great_power_post_city(
@@ -3569,6 +4069,62 @@ mod tests {
 
     fn push_be_i16(bytes: &mut Vec<u8>, value: i16) {
         bytes.extend_from_slice(&value.to_be_bytes());
+    }
+
+    fn nonzero_steel_order_payload() -> Vec<u8> {
+        let mut bytes = Vec::with_capacity(66);
+        // Retail overwrites this first constructor product with the second
+        // product word, so keep them deliberately different.
+        for value in [99_i16, 3, 2, 11] {
+            bytes.extend_from_slice(&value.to_le_bytes());
+        }
+        for resource in 0..RESOURCE_KIND_COUNT {
+            let tracked = if resource == ResourceKind::Coal as usize
+                || resource == ResourceKind::Iron as usize
+            {
+                3_i16
+            } else {
+                0_i16
+            };
+            bytes.extend_from_slice(&tracked.to_le_bytes());
+        }
+        bytes.extend_from_slice(&27_i32.to_le_bytes());
+        for value in [5_i16, 4, 3, 2] {
+            bytes.extend_from_slice(&value.to_le_bytes());
+        }
+        bytes
+    }
+
+    #[test]
+    fn decodes_nonzero_item_order_field_sequence() {
+        let bytes = nonzero_steel_order_payload();
+        let mut stream = LegacyStream::new(&bytes);
+
+        let state = read_item_order(&mut stream, ResourceKind::Steel).unwrap();
+
+        assert_eq!(stream.position(), 66);
+        assert_eq!(state.progress.quantity, 3);
+        assert_eq!(
+            state.progress.limiting_constraint,
+            ProductionConstraint::Capacity
+        );
+        assert_eq!(state.progress.tracking_by_resource[ResourceKind::Coal], 3);
+        assert_eq!(state.progress.tracking_by_resource[ResourceKind::Iron], 3);
+        assert_eq!(state.progress.reserved_workforce, 0);
+        assert_eq!(state.progress.accumulated_value, 27);
+        assert_eq!(state.requested_quantity, 5);
+    }
+
+    #[test]
+    fn rejects_item_order_with_the_wrong_static_production_slot() {
+        let mut bytes = nonzero_steel_order_payload();
+        bytes[64..66].copy_from_slice(&3_i16.to_le_bytes());
+        let mut stream = LegacyStream::new(&bytes);
+
+        assert!(matches!(
+            read_item_order(&mut stream, ResourceKind::Steel),
+            Err(LegacySaveError::InvalidCityOrder { .. })
+        ));
     }
 
     fn valid_diplomacy_payload() -> Vec<u8> {
@@ -4383,7 +4939,7 @@ mod tests {
         assert_eq!(city_offset, 0x4edd0);
 
         let (city, city_suffix_offset) = parse_city_at(RETAIL_FIXTURE, city_offset).unwrap();
-        assert_eq!(city.production_order_payloads.len(), 47);
+        assert_eq!(city.orders, CityOrders::default());
         assert!(city.tasks.is_empty());
         assert_eq!(city.transport_requests.record_size, 4);
         assert!(city.transport_requests.records.is_empty());
@@ -4399,6 +4955,7 @@ mod tests {
 
         let city_state = city.city_state(Some(TileId::new(3_494))).unwrap();
         assert_eq!(city_state.home_town_tile, Some(TileId::new(3_494)));
+        assert_eq!(*city_state.orders, CityOrders::default());
         assert_eq!(
             city_state.population.accumulator().get().to_bits(),
             1_088_421_888

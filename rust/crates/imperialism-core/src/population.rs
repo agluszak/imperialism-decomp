@@ -1,4 +1,4 @@
-use crate::{CityState, PopulationState, ResourceKind, ResourceTable};
+use crate::*;
 use serde::{Deserialize, Serialize};
 
 const STRIKE_RESOURCES: [ResourceKind; 3] = [
@@ -70,8 +70,9 @@ impl From<LaborPool> for [i16; 3] {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[repr(i16)]
+#[serde(rename_all = "snake_case")]
 pub enum SkillBand {
     Low = 1,
     Medium = 2,

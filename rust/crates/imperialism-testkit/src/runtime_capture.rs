@@ -375,7 +375,7 @@ mod tests {
         let preview =
             generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Easy, 1);
-        let mut capture = serde_json::to_value(state).unwrap();
+        let mut capture = serde_json::to_value(&state).unwrap();
         capture["turn"]["oracle_extra"] = json!(true);
         capture["diplomacy"]["oracle_extra"] = json!(true);
         capture["provinces"][0]["oracle_extra"] = json!(true);

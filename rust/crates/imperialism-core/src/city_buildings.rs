@@ -1,11 +1,13 @@
-use crate::{CityState, GreatPowerState, PendingActionKind};
+use crate::*;
+use serde::{Deserialize, Serialize};
 
 /// A fixed building position on the city production screen.
 ///
 /// Values with an `Unidentified` name have a stable retail slot but no
 /// recovered building name yet.
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[repr(u8)]
+#[serde(rename_all = "snake_case")]
 pub enum ProductionSlot {
     TextileMill,
     ClothingFactory,
