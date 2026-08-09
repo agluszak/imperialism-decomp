@@ -9,9 +9,7 @@ use bevy::picking::events::{Click, Pointer};
 use bevy::prelude::*;
 use bevy::render::render_resource::{Extent3d, TextureDimension, TextureFormat};
 use bevy::ui::RelativeCursorPosition;
-use imperialism_core::{
-    MajorNationId, MapGeometry, MapTopology, STRATEGIC_TILE_COUNT, TileId, TileOwnerTag,
-};
+use imperialism_core::{MajorNationId, MapGeometry, MapTopology, TileId, TileOwnerTag};
 use imperialism_formats::{DibPalette, FourCc, PictureId, Rgb, fourcc};
 
 const MAP_TAG: FourCc = fourcc!("map ");
@@ -203,15 +201,8 @@ fn render_map_preview(
         let generated = &generated_preview.0;
 
         map_preview.palette_indices = compose_preview_indices(generated.map.tiles(), setup.nation);
-        let palette = match retail_assets.assets().default_dib_palette() {
-            Ok(palette) => palette,
-            Err(error) => {
-                warn!("could not load the retail random-map preview palette: {error}");
-                commands.entity(entity).remove::<ImageNode>();
-                continue;
-            }
-        };
-        let image = preview_image(&map_preview.palette_indices, &palette);
+        let palette = retail_assets.assets().default_dib_palette();
+        let image = preview_image(&map_preview.palette_indices, palette);
         if let Some(mut image_node) = image_node {
             if let Some(mut existing) = images.get_mut(&image_node.image) {
                 *existing = image;
@@ -257,8 +248,8 @@ pub(crate) fn compose_owner_preview_indices(
     // setup topology wraps horizontally.
     let geometry = MapGeometry::new(MapTopology::Bounded);
 
-    for tile_index in 0..STRATEGIC_TILE_COUNT {
-        let tile_id = TileId::new(tile_index as u16);
+    for tile_index in 0..TileId::COUNT {
+        let tile_id = TileId::new(tile_index);
         let (row, column) = geometry.row_column(tile_id);
         let odd_row = row & 1 != 0;
         let px = 3 * usize::from(column) + usize::from(odd_row);
@@ -413,16 +404,9 @@ pub(crate) fn tile_at_preview_position(normalized_position: Vec2) -> Option<Tile
     {
         return None;
     }
-    let row = (row_px as u16) / 3;
-    if row >= 60 {
-        return None;
-    }
-    let odd_row = row & 1 != 0;
-    let adjusted = column_px as i32 - i32::from(odd_row);
-    if adjusted < 0 {
-        return None;
-    }
-    let column = (adjusted as u16) / 3;
+    let row = row_px as u16 / 3;
+    let adjusted = (column_px as u16).checked_sub(u16::from(row & 1 != 0))?;
+    let column = adjusted / 3;
     MapGeometry::new(MapTopology::Bounded).tile(row, column)
 }
 
@@ -487,7 +471,9 @@ fn preview_image(palette_indices: &[u8], palette: &DibPalette) -> Image {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use imperialism_core::{GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, TerrainKind, TileOwnerTag};
+    use imperialism_core::{
+        GeneratedTerrainTile, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, TerrainKind, TileOwnerTag,
+    };
 
     fn tiles(owner: Option<TileOwnerTag>) -> Vec<GeneratedTerrainTile> {
         vec![

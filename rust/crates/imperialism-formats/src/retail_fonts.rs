@@ -1,11 +1,8 @@
-use serde::{Deserialize, Serialize};
-
 const BOOK_ANTIQUA_HEIGHTS: [i32; 25] = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 14, 14, 15, 16, 17, 20, 20, 20, 20, 20, 20, 25, 25, 25, 25, 30,
 ];
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum RetailFontFace {
     BelweBold,
     BookAntiquaRegular,
@@ -22,8 +19,7 @@ impl RetailFontFace {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum RetailTextAlignment {
     Left,
     Center,
@@ -38,12 +34,9 @@ pub struct RetailTextStylePreset {
     pub alignment: i32,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ResolvedRetailTextStyle {
     pub face: RetailFontFace,
-    pub requested_font_family: i32,
-    pub effective_font_family: i32,
-    pub point_size: i32,
     pub logical_pixel_height: i32,
     pub alignment: RetailTextAlignment,
     pub italic: bool,
@@ -73,11 +66,6 @@ pub fn resolve_retail_text_style(
     } else {
         0
     };
-    let point_size = if preset.point_size == 0 {
-        12
-    } else {
-        preset.point_size
-    };
     let logical_pixel_height = retail_logical_font_height(preset.font_family, preset.point_size)?;
     let face = match effective_family {
         1 => RetailFontFace::BelweBold,
@@ -98,9 +86,6 @@ pub fn resolve_retail_text_style(
     };
     Ok(ResolvedRetailTextStyle {
         face,
-        requested_font_family: preset.font_family,
-        effective_font_family: effective_family,
-        point_size,
         logical_pixel_height,
         alignment,
         italic: preset.face_flags & 2 != 0,

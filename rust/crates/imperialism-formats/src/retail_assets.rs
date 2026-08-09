@@ -1,8 +1,6 @@
-use crate::RetailFontFace;
 use crate::color::DibPalette;
-use crate::retail_resources::{
-    bitmap_palette_rgb, bitmap_resource_to_bmp, decode_string_table_block,
-};
+use crate::retail_resources::{bitmap_palette_rgb, bitmap_resource_to_bmp};
+use crate::{PictureId, RetailFontFace};
 use pelite::pe32::{Pe, PeFile};
 use pelite::resources::{FindError, Name};
 use std::collections::BTreeMap;
@@ -13,13 +11,10 @@ use std::path::{Path, PathBuf};
 
 const ENGLISH_LANGUAGE: u32 = 1033;
 
-const PICTURE_ARCHIVE_PATHS: [&str; 7] = [
+const PICTURE_ARCHIVE_PATHS: [&str; 4] = [
     "Data/pictenu.gob",
     "Data/pictpaid.gob",
     "Data/pictwv0.gob",
-    "Data/pictwv1.gob",
-    "Data/pictwv2.gob",
-    "Data/pictwv3.gob",
     "Data/pictuniv.gob",
 ];
 
@@ -29,11 +24,9 @@ const PICTURE_ARCHIVE_PATHS: [&str; 7] = [
 /// It deliberately retains no borrowed PE views.
 #[derive(Debug)]
 pub struct RetailAssets {
-    root: PathBuf,
-    pictures: [ResourceArchive; 7],
-    wave: ResourceArchive,
-    strings: BTreeMap<u32, String>,
+    pictures: [ResourceArchive; 4],
     fonts: RetailFonts,
+    default_dib_palette: DibPalette,
 }
 
 impl RetailAssets {
@@ -45,114 +38,57 @@ impl RetailAssets {
             ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[1])?,
             ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[2])?,
             ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[3])?,
-            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[4])?,
-            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[5])?,
-            ResourceArchive::read(&root, PICTURE_ARCHIVE_PATHS[6])?,
         ];
-        let wave = ResourceArchive::read(&root, "Data/wave.gob")?;
-        let strings = ResourceArchive::read(&root, "Data/STR#ENU.GOB")?.english_strings()?;
+        let default_dib_palette = {
+            let archive = &pictures[0];
+            let dib = archive
+                .find(
+                    ResourceName::Id(2),
+                    ResourceName::Text("950.BMP".to_owned()),
+                )
+                .ok_or(RetailAssetError::DefaultDibPaletteNotFound)?;
+            bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))?
+        };
         let fonts = RetailFonts::read(&root)?;
 
         Ok(Self {
-            root,
             pictures,
-            wave,
-            strings,
             fonts,
+            default_dib_palette,
         })
     }
 
     /// Resolves a retail picture using name-before-numeric and library-slot precedence.
     ///
     /// The returned bytes are a BMP file assembled from the retail DIB resource.
-    pub fn picture(&self, picture_id: i16, world_variant: u8) -> Result<Vec<u8>, RetailAssetError> {
-        let archives = self.active_picture_archives(world_variant)?;
+    pub fn picture(&self, picture_id: PictureId) -> Result<Vec<u8>, RetailAssetError> {
         let named = format!("{picture_id}.BMP");
         let names = [
             ResourceName::Text(named),
-            ResourceName::Id(u32::from(picture_id as u16)),
+            ResourceName::Id(u32::from(picture_id.get() as u16)),
         ];
         for name in &names {
-            for archive in archives {
+            for archive in &self.pictures {
                 if let Some(dib) = archive.find(ResourceName::Id(2), name.clone()) {
                     return bitmap_resource_to_bmp(dib)
                         .map_err(|error| resource_error(&archive.path, error));
                 }
             }
         }
-        Err(RetailAssetError::PictureNotFound {
-            picture_id,
-            world_variant,
-        })
+        Err(RetailAssetError::PictureNotFound(picture_id))
     }
 
     /// Returns the RGB palette carried by the retail default DIB, `950.BMP`.
     ///
     /// The native UI builds its indexed preview surfaces with this named bitmap
     /// from the localized picture library before it draws the random-map preview.
-    pub fn default_dib_palette(&self) -> Result<DibPalette, RetailAssetError> {
-        let archive = &self.pictures[0];
-        let dib = archive
-            .find(
-                ResourceName::Id(2),
-                ResourceName::Text("950.BMP".to_owned()),
-            )
-            .ok_or(RetailAssetError::DefaultDibPaletteNotFound)?;
-        bitmap_palette_rgb(dib).map_err(|error| resource_error(&archive.path, error))
-    }
-
-    /// Looks up a decoded English retail string.
-    pub fn string(&self, id: u32) -> Option<&str> {
-        self.strings.get(&id).map(String::as_str)
+    pub fn default_dib_palette(&self) -> &DibPalette {
+        &self.default_dib_palette
     }
 
     /// Returns the font bytes consumed by the UI.
     pub fn font_bytes(&self, face: RetailFontFace) -> &[u8] {
         self.fonts.bytes(face)
-    }
-
-    /// Returns a complete RIFF/WAVE payload from `Data/wave.gob`.
-    pub fn wave_bytes(&self, id: u16) -> Result<&[u8], RetailAssetError> {
-        let bytes = self
-            .wave
-            .find(
-                ResourceName::Text("WAVE".to_owned()),
-                ResourceName::Id(u32::from(id)),
-            )
-            .ok_or(RetailAssetError::WaveNotFound(id))?;
-        validate_wave_payload("Data/wave.gob", bytes)?;
-        Ok(bytes)
-    }
-
-    /// Resolves a music file without copying it into an importer cache.
-    pub fn music_path(&self, track: u8) -> Result<PathBuf, RetailAssetError> {
-        if !(2..=12).contains(&track) {
-            return Err(RetailAssetError::InvalidMusicTrack(track));
-        }
-        let path = self.root.join(format!("MUSIC/Track{track:02}.ogg"));
-        if !path.is_file() {
-            return Err(RetailAssetError::Io {
-                path: path.clone(),
-                source: std::io::Error::new(std::io::ErrorKind::NotFound, "music track not found"),
-            });
-        }
-        Ok(path)
-    }
-
-    fn active_picture_archives(
-        &self,
-        world_variant: u8,
-    ) -> Result<[&ResourceArchive; 4], RetailAssetError> {
-        let world = match world_variant {
-            0..=3 => 2 + usize::from(world_variant),
-            _ => return Err(RetailAssetError::InvalidWorldVariant(world_variant)),
-        };
-        Ok([
-            &self.pictures[0],
-            &self.pictures[1],
-            &self.pictures[world],
-            &self.pictures[6],
-        ])
     }
 }
 
@@ -211,30 +147,6 @@ impl ResourceArchive {
         self.english_resources
             .get(&key)
             .map(|range| &self.bytes[range.clone()])
-    }
-
-    fn english_strings(&self) -> Result<BTreeMap<u32, String>, RetailAssetError> {
-        let mut strings = BTreeMap::new();
-        for (key, range) in &self.english_resources {
-            if key.resource_type != ResourceName::Id(6) {
-                continue;
-            }
-            let ResourceName::Id(block) = &key.name else {
-                return Err(RetailAssetError::Incompatible(format!(
-                    "{} has named STRING block",
-                    self.path.display()
-                )));
-            };
-            let bytes = &self.bytes[range.clone()];
-            let decoded = decode_string_table_block(*block, bytes)
-                .map_err(|error| resource_error(&self.path, error))?;
-            for string in decoded {
-                if !string.text.is_empty() {
-                    strings.insert(string.id, string.text);
-                }
-            }
-        }
-        Ok(strings)
     }
 }
 
@@ -340,28 +252,10 @@ pub enum RetailAssetError {
     },
     #[error("{}: invalid PE/resource data: {detail}", path.display())]
     Resource { path: PathBuf, detail: String },
-    #[error("incompatible English GOG retail assets: {0}")]
-    Incompatible(String),
-    #[error("no English picture {picture_id} is available for world variant {world_variant}")]
-    PictureNotFound { picture_id: i16, world_variant: u8 },
+    #[error("no English picture {0} is available")]
+    PictureNotFound(PictureId),
     #[error("Data/pictenu.gob has no English BITMAP resource 950.BMP")]
     DefaultDibPaletteNotFound,
-    #[error("Data/wave.gob has no English WAVE resource {0}")]
-    WaveNotFound(u16),
-    #[error("world variant {0} is outside the retail range 0..=3")]
-    InvalidWorldVariant(u8),
-    #[error("retail music track {0} is outside the supported range 2..=12")]
-    InvalidMusicTrack(u8),
-}
-
-fn validate_wave_payload(relative: &str, bytes: &[u8]) -> Result<(), RetailAssetError> {
-    if bytes.len() >= 12 && &bytes[..4] == b"RIFF" && &bytes[8..12] == b"WAVE" {
-        Ok(())
-    } else {
-        Err(RetailAssetError::Incompatible(format!(
-            "{relative} WAVE resource is not a complete RIFF/WAVE file"
-        )))
-    }
 }
 
 fn read_font(root: &Path, relative: &str) -> Result<Vec<u8>, RetailAssetError> {
@@ -450,23 +344,26 @@ mod tests {
     }
 
     #[test]
-    fn opens_runtime_files_without_eager_content_validation() {
+    fn opens_only_current_runtime_files() {
         let root = synthetic_retail_install();
+        for unused in [
+            "Data/pictwv1.gob",
+            "Data/pictwv2.gob",
+            "Data/pictwv3.gob",
+            "Data/STR#ENU.GOB",
+            "Data/wave.gob",
+            "MUSIC/Track06.ogg",
+        ] {
+            assert!(!root.path().join(unused).exists());
+        }
         let assets = RetailAssets::open(root.path()).unwrap();
 
-        assert_eq!(assets.string(1), Some("direct lookup"));
-        assert_eq!(assets.string(20_874), None);
         assert_eq!(assets.font_bytes(RetailFontFace::BelweBold), b"not a font");
-        assert_eq!(assets.wave_bytes(7000).unwrap(), b"RIFF\0\0\0\0WAVE");
-        assert_eq!(
-            assets.music_path(6).unwrap(),
-            root.path().join("MUSIC/Track06.ogg")
-        );
 
-        let bitmap = assets.picture(4500, 0).unwrap();
+        let bitmap = assets.picture(PictureId::new(4500)).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
         assert_eq!(
-            assets.default_dib_palette().unwrap()[0x16],
+            assets.default_dib_palette()[0x16],
             crate::Rgb::new(0x57, 0x8b, 0xa6)
         );
     }
@@ -478,39 +375,8 @@ mod tests {
 
         assets.pictures[0].bytes[..2].copy_from_slice(b"NO");
 
-        let bitmap = assets.picture(4500, 0).unwrap();
+        let bitmap = assets.picture(PictureId::new(4500)).unwrap();
         assert_eq!(bitmap[bitmap.len() - 4], 0x22);
-    }
-
-    #[test]
-    fn wave_payload_validation_happens_at_lookup() {
-        let root = synthetic_retail_install();
-        write_retail_file(
-            root.path(),
-            "Data/wave.gob",
-            &synthetic_pe(vec![TestResource::new(
-                TestName::text("WAVE"),
-                TestName::id(7000),
-                b"not a wave".to_vec(),
-            )]),
-        );
-
-        let assets = RetailAssets::open(root.path()).unwrap();
-        assert!(matches!(
-            assets.wave_bytes(7000),
-            Err(RetailAssetError::Incompatible(_))
-        ));
-    }
-
-    #[test]
-    fn rejects_world_variants_outside_retail_range() {
-        let root = synthetic_retail_install();
-        let assets = RetailAssets::open(root.path()).unwrap();
-
-        assert!(matches!(
-            assets.picture(4500, 4),
-            Err(RetailAssetError::InvalidWorldVariant(4))
-        ));
     }
 
     #[test]
@@ -522,12 +388,15 @@ mod tests {
         );
         let assets = RetailAssets::open(&root).unwrap();
 
-        assert_eq!(assets.string(20_874), Some("Introductory"));
-        assert!(assets.picture(4500, 0).unwrap().starts_with(b"BM"));
-        let palette = assets.default_dib_palette().unwrap();
+        assert!(
+            assets
+                .picture(PictureId::new(4500))
+                .unwrap()
+                .starts_with(b"BM")
+        );
+        let palette = assets.default_dib_palette();
         assert_eq!(palette[0x13], crate::Rgb::new(0xff, 0xff, 0xff));
         assert_eq!(palette[0x16], crate::Rgb::new(0x57, 0x8b, 0xa6));
-        assert!(assets.wave_bytes(7000).unwrap().starts_with(b"RIFF"));
     }
 
     fn temporary_root() -> TempDir {
@@ -555,7 +424,7 @@ mod tests {
                     default_palette_dib(),
                 ));
             }
-            if index == 6 {
+            if index == 3 {
                 resources.push(TestResource::new(
                     TestName::id(2),
                     TestName::text("4500.BMP"),
@@ -565,35 +434,8 @@ mod tests {
             write_retail_file(root.path(), relative, &synthetic_pe(resources));
         }
 
-        let string_resources = vec![TestResource::new(
-            TestName::id(6),
-            TestName::id(1),
-            string_block(&[(1, "direct lookup")]),
-        )];
-        write_retail_file(
-            root.path(),
-            "Data/STR#ENU.GOB",
-            &synthetic_pe(string_resources),
-        );
-        write_retail_file(
-            root.path(),
-            "Data/wave.gob",
-            &synthetic_pe(vec![TestResource::new(
-                TestName::text("WAVE"),
-                TestName::id(7000),
-                b"RIFF\0\0\0\0WAVE".to_vec(),
-            )]),
-        );
-
         for relative in ["Data/Antqua.ttf", "Data/Antquab.ttf", "Data/WeBeBd__.ttf"] {
             write_retail_file(root.path(), relative, b"not a font");
-        }
-        for track in 2..=12 {
-            write_retail_file(
-                root.path(),
-                &format!("MUSIC/Track{track:02}.ogg"),
-                b"not an ogg",
-            );
         }
         root
     }
@@ -645,22 +487,6 @@ mod tests {
         }
         dib.extend_from_slice(&[0, 0, 0, 0]);
         dib
-    }
-
-    fn string_block(entries: &[(u8, &str)]) -> Vec<u8> {
-        let mut block = Vec::new();
-        for index in 0..16u8 {
-            let text = entries
-                .iter()
-                .find_map(|(entry_index, text)| (*entry_index == index).then_some(*text))
-                .unwrap_or("");
-            let encoded = text.encode_utf16().collect::<Vec<_>>();
-            block.extend_from_slice(&(encoded.len() as u16).to_le_bytes());
-            for unit in encoded {
-                block.extend_from_slice(&unit.to_le_bytes());
-            }
-        }
-        block
     }
 
     fn synthetic_pe(resources: Vec<TestResource>) -> Vec<u8> {

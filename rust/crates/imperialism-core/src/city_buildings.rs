@@ -1,7 +1,5 @@
 use crate::{CityState, GreatPowerState, PendingActionKind};
 
-const PRODUCTION_SLOT_COUNT: usize = 16;
-
 /// A fixed building position on the city production screen.
 ///
 /// Values with an `Unidentified` name have a stable retail slot but no
@@ -28,7 +26,7 @@ pub enum ProductionSlot {
 }
 
 impl ProductionSlot {
-    pub const COUNT: usize = PRODUCTION_SLOT_COUNT;
+    pub const COUNT: usize = 16;
 
     #[cfg(test)]
     pub(crate) const fn from_index(value: u8) -> Option<Self> {
@@ -247,7 +245,7 @@ impl CityState {
         }
     }
 
-    pub fn set_power_plant_upgrade(&mut self, treasury: &mut i32, enabled: bool) {
+    pub(crate) fn set_power_plant_upgrade(&mut self, treasury: &mut i32, enabled: bool) {
         if enabled && !self.power_plant_upgrade_queued {
             *treasury -= 5_000;
             self.power_plant_upgrade_queued = true;
@@ -284,37 +282,7 @@ mod tests {
     }
 
     fn nation() -> GreatPowerState {
-        GreatPowerState {
-            controller: crate::MajorNationController::Human,
-            capacities: crate::NationCapacities::default(),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_actions: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        crate::test_support::great_power_state()
     }
 
     #[test]
@@ -372,10 +340,10 @@ mod tests {
         let state = city();
         let mut owner = nation();
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Queued);
+            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 3);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 12), 4);
         assert_eq!(state.max_building_capacity(slot(15), &owner, 2), 1);
     }
@@ -407,13 +375,13 @@ mod tests {
         assert_eq!(state.next_building_type(slot(7), &owner, 0, true), 2);
 
         owner.pending_actions[PendingActionKind::ConquestMonumentArmory] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         owner.pending_actions[PendingActionKind::UniversityExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level4);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level4, None);
         owner.pending_actions[PendingActionKind::RailyardExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         assert_eq!(state.next_building_type(slot(8), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(10), &owner, 0, false), 3);
         assert_eq!(state.next_building_type(slot(14), &owner, 0, false), 2);

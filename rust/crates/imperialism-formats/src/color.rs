@@ -5,9 +5,9 @@ use std::ops::{Index, IndexMut};
 /// 8-bit RGB triplet in display order (red, green, blue).
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq)]
 pub struct Rgb {
-    pub r: u8,
-    pub g: u8,
-    pub b: u8,
+    r: u8,
+    g: u8,
+    b: u8,
 }
 
 impl Rgb {
@@ -16,7 +16,7 @@ impl Rgb {
     }
 
     /// Builds RGB from a Windows `RGBQUAD` / `RGBTRIPLE` BGR byte order.
-    pub const fn from_bgr(b: u8, g: u8, r: u8) -> Self {
+    pub(crate) const fn from_bgr(b: u8, g: u8, r: u8) -> Self {
         Self { r, g, b }
     }
 
@@ -34,16 +34,8 @@ impl Rgb {
 pub struct DibPalette([Rgb; 256]);
 
 impl DibPalette {
-    pub const fn new(colors: [Rgb; 256]) -> Self {
+    pub(crate) const fn new(colors: [Rgb; 256]) -> Self {
         Self(colors)
-    }
-
-    pub const fn colors(&self) -> &[Rgb; 256] {
-        &self.0
-    }
-
-    pub fn colors_mut(&mut self) -> &mut [Rgb; 256] {
-        &mut self.0
     }
 }
 

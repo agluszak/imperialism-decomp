@@ -19,7 +19,7 @@ impl LaborPool {
         Self { low, medium, high }
     }
 
-    pub fn strength(self) -> i16 {
+    pub(crate) const fn strength(self) -> i16 {
         self.low + (self.medium + self.high * 2) * 2
     }
 
@@ -59,8 +59,8 @@ impl LaborPool {
 }
 
 impl From<[i16; 3]> for LaborPool {
-    fn from(value: [i16; 3]) -> Self {
-        Self::new(value[0], value[1], value[2])
+    fn from([low, medium, high]: [i16; 3]) -> Self {
+        Self::new(low, medium, high)
     }
 }
 
@@ -284,7 +284,7 @@ impl PopulationState {
         let mut substituted = 0;
 
         if unmet != 0 {
-            let canned = stocks.amount(ResourceKind::Food);
+            let canned = stocks[ResourceKind::Food];
             if unmet < canned {
                 stocks.debit_clamped(ResourceKind::Food, unmet);
                 unmet = 0;

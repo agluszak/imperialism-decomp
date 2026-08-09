@@ -29,10 +29,8 @@ struct SeaSegment {
     y0: i16,
     x1: i16,
     y1: i16,
-    coord0: i32,
-    coord1: i32,
-    region_a: i16,
-    region_b: i16,
+    region_a: u8,
+    region_b: u8,
 }
 
 impl Seapoint {
@@ -67,23 +65,17 @@ impl SeaSegment {
         let mut y0 = (p0.coord / OVERLAY_WIDTH) as i16;
         let mut x1 = (p1.coord % OVERLAY_WIDTH) as i16;
         let mut y1 = (p1.coord / OVERLAY_WIDTH) as i16;
-        let mut coord0 = p0.coord;
-        let mut coord1 = p1.coord;
-        let region_a = p0.lo as i16;
-        let region_b = p0.hi as i16;
+        let region_a = p0.lo as u8;
+        let region_b = p0.hi as u8;
         if y1 < y0 || (y0 == y1 && x1 < x0) {
             std::mem::swap(&mut x0, &mut x1);
             std::mem::swap(&mut y0, &mut y1);
-            coord0 = i32::from(x0) + i32::from(y0) * OVERLAY_WIDTH;
-            coord1 = i32::from(x1) + i32::from(y1) * OVERLAY_WIDTH;
         }
         Self {
             x0,
             y0,
             x1,
             y1,
-            coord0,
-            coord1,
             region_a,
             region_b,
         }
@@ -102,7 +94,7 @@ pub(crate) fn merge_small_water_regions(
         return 0;
     }
     let quads = build_city_region_border_overlay_segments(tiles, geometry);
-    let mut links = build_overlay_span_records_from_quad_border_links(&quads);
+    let mut links = build_overlay_span_records_from_quad_border_links(quads);
 
     let mut tile_counts = vec![0_i32; region_count as usize];
     let mut merged_flags = vec![0_u8; region_count as usize];
@@ -119,96 +111,81 @@ pub(crate) fn merge_small_water_regions(
         if region < 0 {
             return region_count;
         }
-        let region_byte = i32::from(region as u8);
+        let region_byte = region as u8;
 
         if tile_counts[region as usize] > 0 && tile_counts[region as usize] < MERGE_SIZE_THRESHOLD {
-            let mut merge_target = -1_i32;
+            let mut merge_target = None;
             let mut best_score = -1_i32;
-            let mut best_link = u32::MAX;
+            let mut best_link = None;
 
             for (li, link) in links.iter().enumerate() {
-                let other = if i32::from(link.region_a) == region_byte {
-                    i32::from(link.region_b)
-                } else if i32::from(link.region_b) != region_byte {
-                    0xfffe
-                } else {
-                    i32::from(link.region_a)
-                };
-                if (other as i16) < 0 {
+                let Some(link) = link else {
                     continue;
-                }
-                let other_usize = other as usize;
+                };
+                let other = if link.region_a == region_byte {
+                    usize::from(link.region_b)
+                } else if link.region_b == region_byte {
+                    usize::from(link.region_a)
+                } else {
+                    continue;
+                };
                 let mut bias = 0_i32;
-                if tile_counts[other_usize] + tile_counts[region as usize] >= MERGE_SIZE_THRESHOLD {
+                if tile_counts[other] + tile_counts[region as usize] >= MERGE_SIZE_THRESHOLD {
                     bias = 0x2710;
                 }
-                if merged_flags[other_usize] == 0 {
+                if merged_flags[other] == 0 {
                     bias += 0x1388;
                 }
                 let width = i32::from(link.x1) - i32::from(link.x0);
                 let height = i32::from(link.y1) - i32::from(link.y0);
                 let area_sq = width * width * height * height;
                 // MSVC `_ftol` truncates toward zero; same for positive values via `as i32`.
-                let score = (f64::from(area_sq).sqrt() * f64::from(tile_counts[other_usize])
+                let score = (f64::from(area_sq).sqrt() * f64::from(tile_counts[other])
                     + f64::from(bias)) as i32;
                 if best_score < score {
                     best_score = score;
-                    merge_target = other;
-                    best_link = li as u32;
+                    merge_target = Some(other);
+                    best_link = Some(li);
                 }
             }
 
-            let mut unresolved = false;
-            if merge_target == -1 {
-                if tile_counts[region as usize] < TINY_REGION_FALLBACK {
-                    'tiles: for (tile_idx, tile) in tiles.iter().enumerate() {
-                        if water_region_id(tile) != region {
+            if merge_target.is_none() && tile_counts[region as usize] < TINY_REGION_FALLBACK {
+                'tiles: for (tile_idx, tile) in tiles.iter().enumerate() {
+                    if water_region_id(tile) != region {
+                        continue;
+                    }
+                    let tile_id = TileId::new(tile_idx as u16);
+                    for direction in HexDirection::ALL {
+                        let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
                             continue;
-                        }
-                        let tile_id = TileId::new(tile_idx as u16);
-                        for direction in HexDirection::ALL {
-                            let Some(neighbor) = geometry.neighbor(tile_id, direction) else {
-                                continue;
-                            };
-                            let neighbor_region =
-                                water_region_id(&tiles[usize::from(neighbor.get())]);
-                            if neighbor_region >= 0 && neighbor_region != region {
-                                merge_target = neighbor_region;
-                                break 'tiles;
-                            }
+                        };
+                        let neighbor_region = water_region_id(&tiles[usize::from(neighbor.get())]);
+                        if neighbor_region >= 0 && neighbor_region != region {
+                            merge_target = Some(neighbor_region as usize);
+                            break 'tiles;
                         }
                     }
                 }
-                unresolved = merge_target == -1;
             }
 
-            if !unresolved && merge_target >= 0 {
-                let merge_target_usize = merge_target as usize;
-                tile_counts[merge_target_usize] += tile_counts[region as usize];
+            if let Some(merge_target) = merge_target {
+                tile_counts[merge_target] += tile_counts[region as usize];
                 tile_counts[region as usize] = 0;
-                merged_flags[merge_target_usize] = 1;
+                merged_flags[merge_target] = 1;
                 for tile in tiles.iter_mut() {
                     if water_region_id(tile) == region {
-                        set_water_region_id(tile, merge_target);
+                        set_water_region_id(tile, merge_target as i32);
                     }
                 }
-                if (best_link as i32) >= 0 {
-                    let consumed = &mut links[best_link as usize];
-                    consumed.x0 = 0;
-                    consumed.y0 = 0;
-                    consumed.x1 = 0;
-                    consumed.y1 = 0;
-                    consumed.region_a = -1;
-                    consumed.region_b = -1;
-                    consumed.coord0 = -1;
-                    consumed.coord1 = -1;
+                if let Some(best_link) = best_link {
+                    links[best_link] = None;
                 }
-                for link in &mut links {
+                for link in links.iter_mut().flatten() {
                     if i32::from(link.region_a) == region {
-                        link.region_a = merge_target as i16;
+                        link.region_a = merge_target as u8;
                     }
                     if i32::from(link.region_b) == region {
-                        link.region_b = merge_target as i16;
+                        link.region_b = merge_target as u8;
                     }
                 }
             }
@@ -221,15 +198,15 @@ pub(crate) fn merge_small_water_regions(
             merged_flags[region as usize] = merged_flags[region_count as usize];
             for tile in tiles.iter_mut() {
                 if water_region_id(tile) == region_count {
-                    set_water_region_id(tile, region_byte);
+                    set_water_region_id(tile, i32::from(region_byte));
                 }
             }
-            for link in &mut links {
+            for link in links.iter_mut().flatten() {
                 if i32::from(link.region_a) == region_count {
-                    link.region_a = region_byte as i16;
+                    link.region_a = region_byte;
                 }
                 if i32::from(link.region_b) == region_count {
-                    link.region_b = region_byte as i16;
+                    link.region_b = region_byte;
                 }
             }
         }
@@ -448,8 +425,9 @@ fn build_city_region_border_overlay_segments(
 }
 
 /// `TMapMaker::BuildOverlaySpanRecordsFromQuadBorderLinks`.
-fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> Vec<SeaSegment> {
-    let mut quads = quads_in.to_vec();
+fn build_overlay_span_records_from_quad_border_links(
+    mut quads: Vec<Seapoint>,
+) -> Vec<Option<SeaSegment>> {
     let mut segments = Vec::new();
     if quads.is_empty() {
         return segments;
@@ -461,8 +439,8 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
             continue;
         }
         let mut j = i + 1;
-        let mut best_primary = u32::MAX;
-        let mut best_secondary = u32::MAX;
+        let mut best_primary: Option<usize> = None;
+        let mut best_secondary: Option<usize> = None;
         while j < quads.len() {
             let a = quads[i];
             let b = quads[j];
@@ -471,7 +449,7 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
                 let dir_delta = ((b.side - a.side) + 6) % 6;
                 let is_primary = (2..=4).contains(&dir_delta);
                 if is_primary {
-                    if best_primary != u32::MAX {
+                    if let Some(best_primary) = best_primary {
                         let pa = quads[i];
                         let pb = quads[j];
                         let mut row_delta = pa.coord / OVERLAY_WIDTH - pb.coord / OVERLAY_WIDTH;
@@ -486,48 +464,41 @@ fn build_overlay_span_records_from_quad_border_links(quads_in: &[Seapoint]) -> V
                         }
                         let candidate_dist =
                             f64::from(col_delta * col_delta * row_delta * row_delta).sqrt() as f32;
-                        if quads[best_primary as usize].wrapped_delta_metric(quads[i])
+                        if quads[best_primary].wrapped_delta_metric(quads[i])
                             <= f64::from(candidate_dist)
                         {
                             j += 1;
                             continue;
                         }
                     }
-                    best_primary = j as u32;
-                } else if best_primary == u32::MAX {
-                    if best_secondary != u32::MAX {
+                    best_primary = Some(j);
+                } else if best_primary.is_none() {
+                    if let Some(best_secondary) = best_secondary {
                         let candidate_dist = quads[j].wrapped_delta_metric(quads[i]) as f32;
-                        if quads[best_secondary as usize].wrapped_delta_metric(quads[i])
+                        if quads[best_secondary].wrapped_delta_metric(quads[i])
                             <= f64::from(candidate_dist)
                         {
                             j += 1;
                             continue;
                         }
                     }
-                    best_secondary = j as u32;
+                    best_secondary = Some(j);
                 }
             }
             j += 1;
         }
-        if best_primary == u32::MAX {
-            best_primary = best_secondary;
-        }
-        if best_primary == u32::MAX {
-            quads[i].coord = -1;
-            quads[i].hi = -1;
-            quads[i].lo = -1;
-        } else {
-            segments.push(SeaSegment::init_from_points(
-                quads[best_primary as usize],
+        if let Some(best_primary) = best_primary.or(best_secondary) {
+            segments.push(Some(SeaSegment::init_from_points(
+                quads[best_primary],
                 quads[i],
-            ));
-            quads[i].coord = -1;
-            quads[i].hi = -1;
-            quads[i].lo = -1;
-            quads[best_primary as usize].coord = -1;
-            quads[best_primary as usize].hi = -1;
-            quads[best_primary as usize].lo = -1;
+            )));
+            quads[best_primary].coord = -1;
+            quads[best_primary].hi = -1;
+            quads[best_primary].lo = -1;
         }
+        quads[i].coord = -1;
+        quads[i].hi = -1;
+        quads[i].lo = -1;
         // When the current point was valid, retail leaves `i` unchanged; the next loop sees
         // coord==-1 and advances. Same effect as incrementing here after invalidation.
     }

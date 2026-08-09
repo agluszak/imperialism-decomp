@@ -104,7 +104,7 @@ fn on_main_menu_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
+    use crate::ui::catalog::spawn_view_nodes;
     use bevy::ecs::message::Messages;
     use imperialism_formats::UiCatalog;
 
@@ -120,8 +120,7 @@ mod tests {
             .add_message::<AppExit>()
             .insert_resource(UiCatalogResource::new(catalog).unwrap())
             .add_plugins(bevy::state::app::StatesPlugin)
-            .init_state::<AppState>()
-            .add_plugins(UiCatalogPlugin);
+            .init_state::<AppState>();
         register_main_menu_logic(&mut app);
         app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu_structure_only);
         app.update();

@@ -10,7 +10,7 @@ pub(crate) enum StreamError {
     },
     #[error("MFC Unicode CString marker at offset {offset:#x} is not supported")]
     UnsupportedUnicodeString { offset: usize },
-    #[error("{context}: count {value} exceeds maximum {maximum}")]
+    #[error("{context}: invalid count {value}; maximum is {maximum}")]
     InvalidCount {
         context: &'static str,
         value: i64,
@@ -33,7 +33,7 @@ impl<'a> LegacyStream<'a> {
     }
 
     pub(crate) fn read_bytes(&mut self, length: usize) -> Result<&'a [u8], StreamError> {
-        let remaining = self.bytes.len().saturating_sub(self.position);
+        let remaining = self.bytes.len() - self.position;
         if length > remaining {
             return Err(StreamError::Truncated {
                 offset: self.position,

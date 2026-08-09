@@ -1,10 +1,9 @@
 use crate::{
     CivilianUnitId, CivilianUnitKind, CivilianUnitTable, CivilianWorkOrder, Difficulty,
     HexDirection, LaborPool, MajorNationTable, MapTopology, MilitaryUnitId, MilitaryUnitKind,
-    MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable,
+    MilitaryUnitTable, MinorNationTable, NationCapacities, NationId, NationTable, OceanZoneId,
     PendingActionTable, ProductionTable, ProvinceId, ResourceTable, RetailCrtRng, RetailLcg,
-    STRATEGIC_TILE_COUNT, ShipId, ShipType, ShipTypeTable, TaskForceId, TileId, TileOwnerTag,
-    TradeMarketState,
+    STRATEGIC_TILE_COUNT, ShipTypeTable, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -19,10 +18,8 @@ pub struct GameState {
     pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
     pub civilian_units: Vec<CivilianUnitState>,
-    pub ships: Vec<ShipState>,
-    pub task_forces: Vec<TaskForceState>,
     pub missions: Vec<MissionState>,
-    pub pending: PendingWorkState,
+    pub turn_summaries: MajorNationTable<Vec<TurnSummary>>,
 }
 
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -35,11 +32,11 @@ impl UnitIdAllocator {
     pub const fn current(self) -> i32 {
         self.0
     }
-    pub fn next_civilian(&mut self) -> CivilianUnitId {
+    pub(crate) fn next_civilian(&mut self) -> CivilianUnitId {
         self.0 += 1;
         CivilianUnitId::new(self.0)
     }
-    pub fn next_military(&mut self) -> MilitaryUnitId {
+    pub(crate) fn next_military(&mut self) -> MilitaryUnitId {
         self.0 += 1;
         MilitaryUnitId::new(self.0)
     }
@@ -66,20 +63,16 @@ impl Nations {
         &self.majors[nation]
     }
 
-    pub fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
+    pub(crate) fn major_mut(&mut self, nation: crate::MajorNationId) -> &mut MajorNation {
         &mut self.majors[nation]
     }
 
-    pub fn city(&self, nation: crate::MajorNationId) -> &CityState {
+    pub(crate) fn city(&self, nation: crate::MajorNationId) -> &CityState {
         &self.majors[nation].city
     }
 
-    pub fn city_mut(&mut self, nation: crate::MajorNationId) -> &mut CityState {
+    pub(crate) fn city_mut(&mut self, nation: crate::MajorNationId) -> &mut CityState {
         &mut self.majors[nation].city
-    }
-
-    pub fn major_count(&self) -> usize {
-        self.majors.iter().count()
     }
 
     pub fn majors(&self) -> impl ExactSizeIterator<Item = &MajorNation> {
@@ -114,7 +107,7 @@ impl MajorNation {
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
     /// `city`. Homes are unset until capital selection places them.
-    pub fn for_random_start(treasury: i32, human: bool, city: CityState) -> Self {
+    pub(crate) fn for_random_start(treasury: i32, human: bool, city: CityState) -> Self {
         Self {
             common: NationCommonState {
                 treasury,
@@ -132,10 +125,6 @@ impl MajorNation {
 
     pub const fn economy(&self) -> &GreatPowerState {
         &self.economy
-    }
-
-    pub const fn city(&self) -> &CityState {
-        &self.city
     }
 }
 
@@ -238,14 +227,6 @@ impl StrategicMap {
 
     pub const fn topology(&self) -> MapTopology {
         self.topology
-    }
-
-    pub const fn len(&self) -> usize {
-        STRATEGIC_TILE_COUNT
-    }
-
-    pub const fn is_empty(&self) -> bool {
-        false
     }
 
     pub fn iter(&self) -> impl ExactSizeIterator<Item = &TileState> {
@@ -366,7 +347,7 @@ bitflags::bitflags! {
 }
 
 impl TileFlags {
-    pub fn has_base_transport(self) -> bool {
+    pub(crate) fn has_base_transport(self) -> bool {
         self.contains(Self::BASE_TRANSPORT)
     }
 
@@ -374,7 +355,7 @@ impl TileFlags {
         self.contains(Self::CITY_MARKER)
     }
 
-    pub fn clear_city_marker(&mut self) {
+    pub(crate) fn clear_city_marker(&mut self) {
         self.remove(Self::CITY_MARKER);
     }
 }
@@ -623,7 +604,7 @@ impl GreatPowerState {
     /// The post-`IGreatPower`/`IAutoGreatPower` construction state a major nation
     /// carries at the random-game start boundary. Only the human is diplomacy
     /// eligible before capital selection.
-    pub fn for_random_start(human: bool) -> Self {
+    pub(crate) fn for_random_start(human: bool) -> Self {
         Self {
             controller: if human {
                 MajorNationController::Human
@@ -668,7 +649,7 @@ pub enum MajorNationController {
     Computer,
 }
 impl MajorNationController {
-    pub const fn is_human(self) -> bool {
+    pub(crate) const fn is_human(self) -> bool {
         matches!(self, Self::Human)
     }
 }
@@ -711,29 +692,17 @@ impl PendingActionState {
         );
         Self { status, payload }
     }
-    pub const fn status_only(status: PendingActionStatus) -> Self {
-        Self::new(status, None)
-    }
-    pub const fn queued(payload: i16) -> Self {
-        Self::new(PendingActionStatus::Queued, Some(payload))
-    }
-    pub const fn is_pending(self) -> bool {
-        !matches!(self.status, PendingActionStatus::None)
-    }
-    pub fn has_reached(self, status: PendingActionStatus) -> bool {
-        self.status.has_reached(status)
-    }
-    pub const fn status(self) -> PendingActionStatus {
+    pub(crate) const fn status(self) -> PendingActionStatus {
         self.status
     }
     pub const fn payload(self) -> Option<i16> {
         self.payload
     }
-    pub fn queue(&mut self, payload: i16) {
+    pub(crate) fn queue(&mut self, payload: i16) {
         self.status = PendingActionStatus::Queued;
         self.payload = Some(payload);
     }
-    pub const fn level(self) -> Option<i16> {
+    pub(crate) const fn level(self) -> Option<i16> {
         match self.status {
             PendingActionStatus::Queued => None,
             PendingActionStatus::None | PendingActionStatus::Level3 => Some(0),
@@ -752,7 +721,7 @@ pub enum PendingActionStatus {
     Level4,
 }
 impl PendingActionStatus {
-    pub fn has_reached(self, other: Self) -> bool {
+    pub(crate) fn has_reached(self, other: Self) -> bool {
         self >= other
     }
 }
@@ -799,7 +768,7 @@ impl CityState {
     /// Builds the scenario start city. `stockpile` and `production` come from
     /// the difficulty presets, `labor` is the `SetPopulation` triple, and only
     /// the human capital gets the Frog City marker at tile 0.
-    pub fn for_random_start(
+    pub(crate) fn for_random_start(
         stockpile: ResourceTable<i16>,
         production: ProductionTable<i16>,
         labor: LaborPool,
@@ -857,23 +826,14 @@ impl Stockpile {
             .for_each(|amount| *amount = (*amount).max(0));
         Self(amounts)
     }
-    pub fn amount(&self, resource: crate::ResourceKind) -> i16 {
-        self.0[resource]
-    }
-    pub fn credit(&mut self, resource: crate::ResourceKind, amount: i16) {
+    pub(crate) fn credit(&mut self, resource: crate::ResourceKind, amount: i16) {
         self.0[resource] = self.0[resource].saturating_add(amount).max(0);
     }
-    pub fn debit_clamped(&mut self, resource: crate::ResourceKind, amount: i16) {
+    pub(crate) fn debit_clamped(&mut self, resource: crate::ResourceKind, amount: i16) {
         self.0[resource] = self.0[resource].saturating_sub(amount).max(0);
     }
-    pub fn set_nonnegative(&mut self, resource: crate::ResourceKind, amount: i16) {
+    pub(crate) fn set_nonnegative(&mut self, resource: crate::ResourceKind, amount: i16) {
         self.0[resource] = amount.max(0);
-    }
-    pub fn as_table(&self) -> &ResourceTable<i16> {
-        &self.0
-    }
-    pub fn iter(&self) -> impl Iterator<Item = (crate::ResourceKind, &i16)> {
-        self.0.iter()
     }
 }
 
@@ -933,7 +893,7 @@ impl PopulationState {
     /// Builds a fresh population whose baseline and production bands both equal
     /// `labor`, with no pending reassignment. Mirrors the retail
     /// `SetPopulation`-time state used when a city first appears.
-    pub fn from_labor(labor: LaborPool) -> Self {
+    pub(crate) fn from_labor(labor: LaborPool) -> Self {
         let count = labor.low + labor.medium + labor.high;
         Self::new(
             count,
@@ -982,22 +942,14 @@ impl PopulationAccumulator {
         Self::new(f32::from_bits(bits)).expect("population accumulator stays finite")
     }
 
-    pub fn from_count(count: i16) -> Self {
+    pub(crate) fn from_count(count: i16) -> Self {
         Self(f32::from(count).to_bits())
     }
 
     pub fn get(self) -> f32 {
         f32::from_bits(self.0)
     }
-    pub fn add(&mut self, amount: f32) {
-        let total = self.get() + amount;
-        assert!(
-            total.is_finite(),
-            "population accumulator must remain finite"
-        );
-        self.0 = total.to_bits();
-    }
-    pub fn remove(&mut self, amount: i16) {
+    pub(crate) fn remove(&mut self, amount: i16) {
         self.0 = (self.get() - f32::from(amount)).to_bits();
     }
 }
@@ -1045,10 +997,10 @@ impl StrikePhase {
     pub const fn retail(self) -> i16 {
         self as i16
     }
-    pub const fn index(self) -> usize {
+    pub(crate) const fn index(self) -> usize {
         self as usize
     }
-    pub const fn next(self) -> Self {
+    pub(crate) const fn next(self) -> Self {
         match self {
             Self::Clothing => Self::Furniture,
             Self::Furniture => Self::Hardware,
@@ -1190,9 +1142,6 @@ impl MilitaryOrderCode {
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }
-    pub const fn retail(self) -> i32 {
-        self.0
-    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Serialize)]
@@ -1245,7 +1194,7 @@ pub enum CivilianLocation {
     OffMap,
 }
 impl CivilianLocation {
-    pub const fn tile(self) -> Option<TileId> {
+    pub(crate) const fn tile(self) -> Option<TileId> {
         match self {
             Self::OnMap(tile) => Some(tile),
             Self::OffMap => None,
@@ -1297,80 +1246,30 @@ impl CivilianUnitState {
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct ShipState {
-    pub ship_type: ShipType,
-    pub location: i16,
-    pub task_force: Option<TaskForceId>,
-    pub aggression: i32,
-    pub nation: NationId,
-    pub name: String,
-    pub strength: i16,
-    pub experience: i16,
-    pub selection: i32,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", content = "target", rename_all = "snake_case")]
-pub enum TaskForceTarget {
-    None,
-    Zone(SeaZoneId),
-    Province(ProvinceId),
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(transparent)]
-pub struct SeaZoneId(i32);
-impl SeaZoneId {
-    pub const fn new(value: i32) -> Self {
-        Self(value)
-    }
-    pub const fn get(self) -> i32 {
-        self.0
-    }
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TaskForceState {
-    pub aggression: i32,
-    pub order: i32,
-    pub target: TaskForceTarget,
-    pub location: i16,
-    pub nation: i16,
-    pub ship_counts: [i16; 4],
-    pub ingot_tile: i16,
-    pub flagship: Option<ShipId>,
-    pub ships: Vec<SelectedShip>,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct SelectedShip {
-    pub ship: ShipId,
-    pub selected: bool,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct ArmyMissionState {
-    pub present_location: i16,
+    /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 5],
     pub units: Vec<MilitaryUnitId>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NavyMissionState {
-    pub target_zone: i16,
-    pub resolved_port_zone: i16,
-    pub selected_ship: Option<ShipId>,
-    pub task_force: Option<TaskForceId>,
+    pub target_zone: Option<OceanZoneId>,
+    pub resolved_port_zone: Option<OceanZoneId>,
+    /// Retail target-selection state. Values 0, 1, and 2 select between the
+    /// resolved port and target zone; the save field remains open until more
+    /// lifecycle behavior is implemented.
     pub state: i32,
+    /// Exact IEEE-754 bits retained for deterministic mission scoring.
     pub required_equipage_bits: [u32; 4],
-    pub ships: Vec<SelectedShip>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AttackMissionState {
     pub army: ArmyMissionState,
-    pub target_province: i16,
-    pub amassing_province: i16,
+    pub present_province: Option<ProvinceId>,
+    pub target_province: ProvinceId,
+    pub amassing_province: Option<ProvinceId>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1381,13 +1280,16 @@ pub enum MissionData {
         attack: AttackMissionState,
         beachhead: Option<NavyMissionState>,
     },
-    DefendProvince(ArmyMissionState),
+    DefendProvince {
+        province: ProvinceId,
+        army: ArmyMissionState,
+    },
     ControlSeaZone(NavyMissionState),
     Escort(NavyMissionState),
     ScatteredShips(NavyMissionState),
     BlockadePort {
         navy: NavyMissionState,
-        port_zone: i16,
+        port_zone: OceanZoneId,
     },
     Beachhead(NavyMissionState),
 }
@@ -1395,39 +1297,14 @@ pub enum MissionData {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MissionState {
     pub nation: NationId,
-    pub queue_index: u32,
     pub data: MissionData,
-    pub source_nation: i16,
-    pub path_marker: i16,
+    pub path_nation: Option<NationId>,
+    /// Open retail lifecycle code; currently produced as 2 and preserved from saves.
     pub state: u8,
+    /// Exact IEEE-754 importance-score bits.
     pub importance_bits: u32,
+    /// Open retail mission-status byte; bit zero is consumed by current retail AI logic.
     pub marker: u8,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct PendingWorkState {
-    pub nations: MajorNationTable<NationPendingWork>,
-    pub war_transitions: Vec<WarTransition>,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct WarTransition {
-    pub first: NationId,
-    pub second: NationId,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct NationPendingWork {
-    pub turn_events: Vec<TaggedValue>,
-    pub proposals: Vec<TaggedValue>,
-    pub turn_summary: Vec<TurnSummary>,
-    pub turn_start_events: Vec<TurnStartEvent>,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct TaggedValue {
-    pub tag: i16,
-    pub value: i16,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1440,24 +1317,11 @@ pub enum TurnSummary {
     },
 }
 impl TurnSummary {
-    pub const fn order_key(self) -> i16 {
+    pub(crate) const fn order_key(self) -> i16 {
         match self {
             Self::MilitaryRecruit { .. } => 3,
         }
     }
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub enum TurnStartEvent {
-    LandSale { tag: i32, sale: LandSale },
-    Tagged { class: String, tag: i32 },
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct LandSale {
-    pub province: ProvinceId,
-    pub nation: NationId,
 }
 
 #[cfg(test)]
@@ -1479,19 +1343,12 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "population accumulator must remain finite")]
-    fn population_accumulator_rejects_nonfinite_additions() {
-        let mut accumulator = PopulationAccumulator::from_count(1);
-        accumulator.add(f32::INFINITY);
-    }
-
-    #[test]
     fn stockpile_deserialization_normalizes_each_resource_once() {
         let serialized = serde_json::to_string(&ResourceTable::from_array([-1; 23])).unwrap();
         let stockpile: Stockpile = serde_json::from_str(&serialized).unwrap();
 
-        assert_eq!(stockpile.amount(ResourceKind::Paper), 0);
-        assert!(stockpile.iter().all(|(_, amount)| *amount >= 0));
+        assert_eq!(stockpile[ResourceKind::Paper], 0);
+        assert!(crate::all_resources().all(|resource| stockpile[resource] >= 0));
     }
 
     #[test]
@@ -1504,7 +1361,7 @@ mod tests {
     #[test]
     fn pending_action_level_is_derived_from_status_not_payload() {
         assert_eq!(
-            PendingActionState::status_only(PendingActionStatus::None).level(),
+            PendingActionState::new(PendingActionStatus::None, None).level(),
             Some(0)
         );
         assert_eq!(

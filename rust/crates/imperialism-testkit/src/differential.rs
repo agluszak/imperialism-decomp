@@ -96,8 +96,7 @@ fn artifact_path(stderr: &str) -> Option<PathBuf> {
 mod tests {
     use super::*;
     use imperialism_core::{
-        CivilianUnitId, DiplomacyGrant, MajorNationId, MilitaryRecruitOrder, MilitaryUnitKind,
-        MinorNationId, NationId, ProductionProgress, ResourceCost, ResourceKind, SkillBand,
+        CivilianUnitId, DiplomacyGrant, MajorNationId, MinorNationId, NationId, ResourceKind,
         TradePolicyScore,
     };
     use serde::Deserialize;
@@ -106,13 +105,6 @@ mod tests {
     #[derive(Debug, Deserialize)]
     struct NationCase {
         nation: MajorNationId,
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct SpecialistRecruitmentCase {
-        nation: MajorNationId,
-        unit_kind: MilitaryUnitKind,
-        quantity: i16,
     }
 
     #[derive(Debug, Deserialize)]
@@ -180,38 +172,10 @@ mod tests {
         policy: TradePolicyScore,
     }
 
-    fn military_order(unit_kind: MilitaryUnitKind, quantity: i16) -> MilitaryRecruitOrder {
-        MilitaryRecruitOrder {
-            unit_kind,
-            primary: ResourceCost::new(ResourceKind::Arms, 1),
-            secondary: None,
-            cash_per_unit: 0,
-            workforce: Some(SkillBand::High),
-            progress: ProductionProgress {
-                quantity,
-                ..ProductionProgress::default()
-            },
-        }
-    }
-
     #[test]
     fn artifact_path_reads_the_trailing_artifacts_field() {
         let stderr = "progress\nstatus=passed artifacts=/tmp/run-1\n";
         assert_eq!(artifact_path(stderr), Some(PathBuf::from("/tmp/run-1")));
-    }
-
-    #[test]
-    #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
-    fn military_recruitment() {
-        differential(
-            "military_recruitment",
-            |state, case: SpecialistRecruitmentCase| {
-                let mut order = military_order(case.unit_kind, case.quantity);
-                state.produce_military_recruits(case.nation, &mut order)?;
-                Ok(())
-            },
-        )
-        .unwrap();
     }
 
     #[test]

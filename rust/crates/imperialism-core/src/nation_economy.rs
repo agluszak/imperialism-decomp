@@ -15,19 +15,17 @@ const TRANSPORT_NEED_PRIORITY: [ResourceKind; 10] = [
 
 impl GreatPowerState {
     /// Mirrors the inline `TGreatPower::ComputeAvailableDiplomacyBudget` clamp.
-    pub fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
-        let available = treasury + self.diplomacy_budget_base / 100;
-        if available <= 0 { 0 } else { available }
+    pub(crate) fn available_diplomacy_budget(&self, treasury: i32) -> i32 {
+        (treasury + self.diplomacy_budget_base / 100).max(0)
     }
 
     pub fn need_target_equals_current(&self, resource: ResourceKind) -> bool {
         self.need_target_by_type[resource] == self.need_current_by_type[resource]
     }
 
-    pub fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
+    pub(crate) fn update_need_target(&mut self, resource: ResourceKind, value: i16) {
         let target = &mut self.need_target_by_type[resource];
-        let delta = value - *target;
-        self.capacities.reserved_transport += delta;
+        self.capacities.reserved_transport += value - *target;
         *target = value;
     }
 
@@ -90,11 +88,11 @@ impl GreatPowerState {
         true
     }
 
-    pub fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
+    pub(crate) fn set_item_potential(&mut self, resource: ResourceKind, value: i16) {
         self.item_potentials[resource] = value.min(self.capacities.trade_offer);
     }
 
-    pub fn remember_trade_bids(&mut self) {
+    pub(crate) fn remember_trade_bids(&mut self) {
         self.remembered_trade_offers_by_resource
             .clone_from(&self.item_potentials);
     }
@@ -115,7 +113,7 @@ impl GreatPowerState {
         }
     }
 
-    pub fn settle_purchased_items(&mut self, city: &mut CityState) {
+    pub(crate) fn settle_purchased_items(&mut self, city: &mut CityState) {
         for resource in all_resources() {
             let purchased = self.purchased_items_by_resource[resource];
             city.adjust_stock(resource, purchased);
@@ -126,14 +124,6 @@ impl GreatPowerState {
             }
             self.purchased_items_by_resource[resource] = 0;
         }
-    }
-
-    pub(crate) fn merchant_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities.trade_offer
-    }
-
-    pub(crate) fn transport_capacity_mut(&mut self) -> &mut i16 {
-        &mut self.capacities.transport
     }
 }
 
@@ -146,37 +136,9 @@ mod tests {
     }
 
     fn nation() -> GreatPowerState {
-        GreatPowerState {
-            controller: crate::MajorNationController::Human,
-            capacities: crate::NationCapacities::from_array([0, 0, 15, 11]),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_actions: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        let mut nation = crate::test_support::great_power_state();
+        nation.capacities = crate::NationCapacities::from_array([0, 0, 15, 11]);
+        nation
     }
 
     #[test]

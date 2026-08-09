@@ -6,13 +6,12 @@ use imperialism_core::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationTable,
     MapTopology, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable,
     MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT,
-    NationCapacities, NationCommonState, NationId, NationPendingWork, NationTable, Nations,
-    NavyMissionState, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus,
-    PendingActionTable, PendingWorkState, PopulationAccumulator, PopulationState, ProductionTable,
-    ProvinceId, RailSegment, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RngState,
-    STRATEGIC_TILE_COUNT, SelectedShip, ShipState, ShipTypeTable, Stockpile, StrategicMap,
-    StrikePhase, TaskForceState, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId,
-    TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
+    NationCapacities, NationCommonState, NationId, NationTable, Nations, NavyMissionState,
+    OceanZoneId, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus, PendingActionTable,
+    PopulationAccumulator, PopulationState, ProductionTable, ProvinceId, RailSegment, ResourceKind,
+    ResourceTable, RetailCrtRng, RetailLcg, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable,
+    Stockpile, StrategicMap, StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags,
+    TileId, TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
     TradeMarketState, TradePolicyScore, TurnState, TurnsRemaining,
 };
 
@@ -584,7 +583,7 @@ impl LegacyMission {
     fn mission_state(
         &self,
         nation: NationId,
-        queue_index: u32,
+        queue_index: usize,
         military_units: &[LegacyMilitaryUnit],
     ) -> Result<MissionState, LegacySaveError> {
         let army = if let Some(army) = &self.army {
@@ -601,30 +600,43 @@ impl LegacyMission {
                     })?;
                 units.push(MilitaryUnitId::from_serialized(unit.persistent_id));
             }
-            Some(ArmyMissionState {
-                present_location: army.present_location,
-                required_equipage_bits: army.required_equipage_bits,
-                units,
-            })
+            Some((
+                optional_province_id(army.present_location)?,
+                ArmyMissionState {
+                    required_equipage_bits: army.required_equipage_bits,
+                    units,
+                },
+            ))
         } else {
             None
         };
-        let navy = self.navy.as_ref().map(navy_mission_state);
-        let beachhead = self.beachhead.as_ref().map(navy_mission_state);
-        let attack = self
-            .target_province
-            .zip(self.amassing_province)
-            .zip(army.clone())
-            .map(
-                |((target_province, amassing_province), army)| AttackMissionState {
+        let navy = self.navy.as_ref().map(navy_mission_state).transpose()?;
+        let beachhead = self
+            .beachhead
+            .as_ref()
+            .map(navy_mission_state)
+            .transpose()?;
+        let attack = match (self.target_province, self.amassing_province, army.clone()) {
+            (Some(target_province), Some(amassing_province), Some((present_province, army))) => {
+                Some(AttackMissionState {
                     army,
-                    target_province,
-                    amassing_province,
-                },
-            );
+                    present_province,
+                    target_province: required_state(
+                        optional_province_id(target_province)?,
+                        "attack target province",
+                    )?,
+                    amassing_province: optional_province_id(amassing_province)?,
+                })
+            }
+            _ => None,
+        };
         let data = match self.class.as_str() {
             "TDefendProvinceMission" => {
-                MissionData::DefendProvince(required_state(army, "defend-province army mission")?)
+                let (province, army) = required_state(army, "defend-province army mission")?;
+                MissionData::DefendProvince {
+                    province: required_state(province, "defend-province mission province")?,
+                    army,
+                }
             }
             "TAttackProvinceMission" => MissionData::AttackProvince(required_state(
                 attack,
@@ -641,10 +653,16 @@ impl LegacyMission {
             "TScatteredShipsMission" => {
                 MissionData::ScatteredShips(required_state(navy, "scattered-ships navy mission")?)
             }
-            "TBlockadePortMission" => MissionData::BlockadePort {
-                navy: required_state(navy, "blockade-port navy mission")?,
-                port_zone: required_state(self.blockade_port_zone, "blockade port zone")?,
-            },
+            "TBlockadePortMission" => {
+                let port_zone = required_state(self.blockade_port_zone, "blockade port zone")?;
+                MissionData::BlockadePort {
+                    navy: required_state(navy, "blockade-port navy mission")?,
+                    port_zone: required_state(
+                        optional_ocean_zone_id(port_zone)?,
+                        "blockade port zone",
+                    )?,
+                }
+            }
             "TBeachheadMission" => {
                 MissionData::Beachhead(required_state(navy, "beachhead navy mission")?)
             }
@@ -654,12 +672,18 @@ impl LegacyMission {
                 )));
             }
         };
+        let source_nation = nation_id_from_retail_i16(self.source_nation)?;
+        if source_nation != nation {
+            return Err(LegacySaveError::StateProjection(format!(
+                "mission queue {queue_index} belongs to nation {} but stores source nation {}",
+                nation.get(),
+                source_nation.get()
+            )));
+        }
         Ok(MissionState {
             nation,
-            queue_index,
             data,
-            source_nation: self.source_nation,
-            path_marker: self.path_marker,
+            path_nation: optional_nation_id(self.path_marker)?,
             state: self.state,
             importance_bits: self.importance_bits,
             marker: self.marker,
@@ -667,24 +691,18 @@ impl LegacyMission {
     }
 }
 
-fn navy_mission_state(mission: &LegacyNavyMission) -> NavyMissionState {
-    NavyMissionState {
-        target_zone: mission.target_zone,
-        resolved_port_zone: mission.resolved_port_zone,
-        // These two fields are deliberately rebuilt as null by TNavyMission::ReadFrom.
-        selected_ship: None,
-        task_force: None,
+fn navy_mission_state(mission: &LegacyNavyMission) -> Result<NavyMissionState, LegacySaveError> {
+    if let Some(ordinal) = mission.ship_ordinals.first() {
+        return Err(LegacySaveError::StateProjection(format!(
+            "semantic projection of navy mission ship ordinal {ordinal} is not implemented"
+        )));
+    }
+    Ok(NavyMissionState {
+        target_zone: optional_ocean_zone_id(mission.target_zone)?,
+        resolved_port_zone: optional_ocean_zone_id(mission.resolved_port_zone)?,
         state: mission.state,
         required_equipage_bits: mission.required_equipage_bits,
-        ships: mission
-            .ship_ordinals
-            .iter()
-            .map(|ordinal| SelectedShip {
-                ship: imperialism_core::ShipId::new(*ordinal as u32),
-                selected: false,
-            })
-            .collect(),
-    }
+    })
 }
 
 impl LegacyCityState {
@@ -871,6 +889,27 @@ fn optional_province_array(values: [i16; 3]) -> Result<[Option<ProvinceId>; 3], 
         optional_province_id(values[1])?,
         optional_province_id(values[2])?,
     ])
+}
+
+fn optional_ocean_zone_id(value: i16) -> Result<Option<OceanZoneId>, LegacySaveError> {
+    if value == -1 {
+        return Ok(None);
+    }
+    u16::try_from(value)
+        .map(OceanZoneId::new)
+        .map(Some)
+        .map_err(|_| {
+            LegacySaveError::StateProjection(format!(
+                "ocean-zone ordinal {value} is negative and not the absent sentinel"
+            ))
+        })
+}
+
+fn optional_nation_id(value: i16) -> Result<Option<NationId>, LegacySaveError> {
+    if value == -1 {
+        return Ok(None);
+    }
+    nation_id_from_retail_i16(value).map(Some)
 }
 
 fn optional_tile_id(value: i32) -> Result<Option<TileId>, LegacySaveError> {
@@ -1065,10 +1104,10 @@ pub enum LegacySaveError {
     },
     #[error("{0}")]
     StateProjection(String),
-    #[error("{context}: count {value} exceeds maximum {maximum}")]
+    #[error("{context}: invalid count {value}; maximum is {maximum}")]
     InvalidCount {
         context: &'static str,
-        value: i32,
+        value: i64,
         maximum: usize,
     },
     #[error("{context}: declared count {declared} does not match availability flags ({available})")]
@@ -1108,7 +1147,7 @@ impl From<StreamError> for LegacySaveError {
                 maximum,
             } => Self::InvalidCount {
                 context,
-                value: i32::try_from(value).unwrap_or(i32::MAX),
+                value,
                 maximum,
             },
         }
@@ -1123,33 +1162,34 @@ fn bounded_count(
     let Ok(count) = usize::try_from(value) else {
         return Err(LegacySaveError::InvalidCount {
             context,
-            value,
+            value: i64::from(value),
             maximum,
         });
     };
     if count > maximum {
         return Err(LegacySaveError::InvalidCount {
             context,
-            value,
+            value: i64::from(value),
             maximum,
         });
     }
     Ok(count)
 }
 
-fn bounded_usize(
-    value: usize,
+fn bounded_u32(
+    value: u32,
     maximum: usize,
     context: &'static str,
 ) -> Result<usize, LegacySaveError> {
-    if value > maximum {
+    let count = value as usize;
+    if count > maximum {
         return Err(LegacySaveError::InvalidCount {
             context,
-            value: i32::try_from(value).unwrap_or(i32::MAX),
+            value: i64::from(value),
             maximum,
         });
     }
-    Ok(value)
+    Ok(count)
 }
 
 fn validate_nation_slot(
@@ -1451,7 +1491,7 @@ impl LegacySaveV62 {
                 for (queue_index, mission) in auto.missions.iter().enumerate() {
                     missions.push(mission.mission_state(
                         nation_id,
-                        queue_index as u32,
+                        queue_index,
                         &great_power.country.military_units,
                     )?);
                 }
@@ -1496,13 +1536,6 @@ impl LegacySaveV62 {
                 )));
             }
         }
-        let pending_nations = MajorNationTable::from_fn(|_nation| NationPendingWork {
-            turn_events: Vec::new(),
-            proposals: Vec::new(),
-            turn_summary: Vec::new(),
-            turn_start_events: Vec::new(),
-        });
-
         // The retail load path restores this counter before deserializing units.
         // Every TUnit constructor increments it once, even though ReadFrom then
         // replaces the unit's generated ID with the persisted ID.
@@ -1547,13 +1580,8 @@ impl LegacySaveV62 {
             nations: Nations::new(majors, minors),
             military_units,
             civilian_units,
-            ships: Vec::<ShipState>::new(),
-            task_forces: Vec::<TaskForceState>::new(),
             missions,
-            pending: PendingWorkState {
-                nations: pending_nations,
-                war_transitions: Vec::new(),
-            },
+            turn_summaries: MajorNationTable::default(),
         })
     }
 }
@@ -1829,7 +1857,7 @@ fn parse_missions_at(
         remaining: 0,
     })?;
     let mut stream = LegacyStream::new(remaining);
-    let count = bounded_usize(count as usize, MAX_MISSIONS, "AI mission queue")?;
+    let count = bounded_u32(count, MAX_MISSIONS, "AI mission queue")?;
     let mut missions = Vec::with_capacity(count);
     for _ in 0..count {
         missions.push(read_mfc_mission(&mut stream, offset, archive)?);
@@ -1943,19 +1971,12 @@ fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, 
         .expect("one market row per trade commodity");
     for _ in 0..TRADE_CATEGORY_COUNT {
         let record_size = usize::from(stream.read_le_u16()?);
-        let record_count = bounded_usize(
-            stream.read_le_u32()? as usize,
+        let record_count = bounded_u32(
+            stream.read_le_u32()?,
             MAX_TRADE_HISTORY_RECORDS,
             "trade history",
         )?;
-        let byte_len =
-            record_size
-                .checked_mul(record_count)
-                .ok_or(LegacySaveError::InvalidCount {
-                    context: "trade history byte length",
-                    value: i32::MAX,
-                    maximum: MAX_TRADE_HISTORY_RECORDS,
-                })?;
+        let byte_len = record_size * record_count;
         stream.skip(byte_len)?;
     }
     Ok(TradeMarketState {
@@ -2014,24 +2035,24 @@ fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError
 }
 
 fn read_ocean(stream: &mut LegacyStream<'_>) -> Result<LegacyOceanState, LegacySaveError> {
-    let zone_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let zone_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_OCEAN_ZONES,
         "ocean zones",
     )?;
     let zones = (0..zone_count)
         .map(|_| read_zone(stream, false))
         .collect::<Result<Vec<_>, _>>()?;
-    let port_zone_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let port_zone_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_OCEAN_ZONES,
         "ocean port zones",
     )?;
     let port_zones = (0..port_zone_count)
         .map(|_| read_zone(stream, true))
         .collect::<Result<Vec<_>, _>>()?;
-    let route_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let route_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_OCEAN_ROUTES,
         "ocean routes",
     )?;
@@ -2072,21 +2093,21 @@ fn read_zone(stream: &mut LegacyStream<'_>, port: bool) -> Result<LegacyZone, St
 }
 
 fn read_navy(stream: &mut LegacyStream<'_>) -> Result<LegacyNavyState, LegacySaveError> {
-    let ship_count = bounded_usize(usize::from(stream.read_le_u16()?), MAX_SHIPS, "navy ships")?;
+    let ship_count = bounded_u32(u32::from(stream.read_le_u16()?), MAX_SHIPS, "navy ships")?;
     let mut ships = (0..ship_count)
         .map(|_| read_ship(stream))
         .collect::<Result<Vec<_>, _>>()?;
     ships.reverse();
-    let admiral_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let admiral_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_ADMIRALS,
         "navy admirals",
     )?;
     let admirals = (0..admiral_count)
         .map(|_| read_admiral(stream))
         .collect::<Result<Vec<_>, _>>()?;
-    let task_force_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let task_force_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_TASK_FORCES,
         "navy task forces",
     )?;
@@ -2130,8 +2151,8 @@ fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, Leg
     let nation = stream.read_le_i16()?;
     stream.skip(1)?;
     let ingot_tile = stream.read_le_i16()?;
-    let child_count = bounded_usize(
-        usize::from(stream.read_le_u16()?),
+    let child_count = bounded_u32(
+        u32::from(stream.read_le_u16()?),
         MAX_TASK_FORCE_CHILDREN,
         "task force ships",
     )?;
@@ -2151,23 +2172,17 @@ fn read_task_force(stream: &mut LegacyStream<'_>) -> Result<LegacyTaskForce, Leg
 
 fn skip_army_reports(stream: &mut LegacyStream<'_>) -> Result<u16, LegacySaveError> {
     let report_count = stream.read_le_u16()?;
-    bounded_usize(usize::from(report_count), MAX_ARMY_REPORTS, "army reports")?;
+    bounded_u32(u32::from(report_count), MAX_ARMY_REPORTS, "army reports")?;
     for _ in 0..report_count {
         stream.skip(8)?;
         for _ in 0..2 {
             stream.skip(1 + 0x20 + 0xff)?;
-            let child_count = bounded_usize(
-                usize::from(stream.read_le_u16()?),
+            let child_count = bounded_u32(
+                u32::from(stream.read_le_u16()?),
                 MAX_MILITARY_UNITS,
                 "army report children",
             )?;
-            let byte_len = child_count
-                .checked_mul(42)
-                .ok_or(LegacySaveError::InvalidCount {
-                    context: "army report children byte length",
-                    value: i32::MAX,
-                    maximum: MAX_MILITARY_UNITS,
-                })?;
+            let byte_len = child_count * 42;
             stream.skip(byte_len)?;
         }
     }
@@ -2187,8 +2202,8 @@ fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase,
     let need_level_by_nation = read_be_short_array(stream)?;
 
     // TSortedList::ReadFrom is a retail no-op; the count follows immediately.
-    let military_unit_count = bounded_usize(
-        stream.read_le_u32()? as usize,
+    let military_unit_count = bounded_u32(
+        stream.read_le_u32()?,
         MAX_MILITARY_UNITS,
         "country military units",
     )?;
@@ -2197,8 +2212,8 @@ fn read_country_base(stream: &mut LegacyStream<'_>) -> Result<LegacyCountryBase,
         .collect::<Result<Vec<_>, _>>()?;
 
     // TLongintList::NoOpReadFrom is likewise a no-op.
-    let owned_region_count = bounded_usize(
-        stream.read_le_u32()? as usize,
+    let owned_region_count = bounded_u32(
+        stream.read_le_u32()?,
         MAX_OWNED_REGIONS,
         "country owned regions",
     )?;
@@ -2740,17 +2755,14 @@ fn read_mission_payload(
     Ok(mission)
 }
 
-fn read_army_mission(stream: &mut LegacyStream<'_>) -> Result<LegacyArmyMission, StreamError> {
+fn read_army_mission(stream: &mut LegacyStream<'_>) -> Result<LegacyArmyMission, LegacySaveError> {
     let present_location = stream.read_le_i16()?;
     let required_equipage_bits = read_be_u32_array(stream)?;
-    let count = stream.read_le_i16()?;
-    if count < 0 {
-        return Err(StreamError::Truncated {
-            offset: stream.position() - 2,
-            requested: count.unsigned_abs() as usize,
-            remaining: 0,
-        });
-    }
+    let count = bounded_count(
+        i32::from(stream.read_le_i16()?),
+        MAX_MILITARY_UNITS,
+        "army mission units",
+    )?;
     let unit_ordinals = (0..count)
         .map(|_| stream.read_le_i16())
         .collect::<Result<Vec<_>, _>>()?;
@@ -2948,6 +2960,25 @@ mod tests {
     }
 
     #[test]
+    fn rejects_negative_army_mission_unit_counts_as_invalid_counts() {
+        let mut bytes = [0_u8; 2 + 5 * 4 + 2];
+        bytes[22..].copy_from_slice(&(-1_i16).to_le_bytes());
+
+        let error = read_army_mission(&mut LegacyStream::new(&bytes)).unwrap_err();
+        let LegacySaveError::InvalidCount {
+            context,
+            value,
+            maximum,
+        } = error
+        else {
+            panic!("expected invalid count, got {error:?}");
+        };
+        assert_eq!(context, "army mission units");
+        assert_eq!(value, -1);
+        assert_eq!(maximum, MAX_MILITARY_UNITS);
+    }
+
+    #[test]
     fn parses_the_retail_beginning_of_game_prefix() {
         let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         assert_eq!(save.header.format_version, 62);
@@ -2989,7 +3020,6 @@ mod tests {
         assert_eq!(save.map.tiles[0].terrain_kind, 5);
         assert_eq!(save.map.tiles[0].owner_nation, 82);
         let world = save.world_state().unwrap();
-        assert_eq!(world.len(), 6480);
         assert_eq!(world.topology(), MapTopology::Wrapping);
         assert_eq!(world[TileId::new(0)].terrain, TerrainKind::Water);
         assert_eq!(
@@ -3119,27 +3149,25 @@ mod tests {
             .enumerate()
             .map(|(queue_index, mission)| {
                 mission
-                    .mission_state(
-                        NationId::new(0),
-                        queue_index as u32,
-                        &country.military_units,
-                    )
+                    .mission_state(NationId::new(0), queue_index, &country.military_units)
                     .unwrap()
             })
             .collect::<Vec<_>>();
-        let MissionData::DefendProvince(army) = &mission_states[0].data else {
+        let MissionData::DefendProvince { province, army } = &mission_states[0].data else {
             panic!("first mission is not defend province");
         };
+        assert_eq!(*province, ProvinceId::new(79));
         assert!(army.units.is_empty());
         let MissionData::ControlSeaZone(navy) = &mission_states[8].data else {
             panic!("ninth mission is not control sea zone");
         };
-        assert_eq!(navy.selected_ship, None);
+        assert_eq!(navy.target_zone, Some(OceanZoneId::new(22)));
+        assert_eq!(mission_states[0].path_nation, None);
         assert_eq!(mission_states[10].importance_bits, 981_668_463);
 
         let mut archive = LegacyMfcArchiveState::default();
         let mut nation_offset = save.remaining_manager_chain_offset;
-        let mut global_mission_index = 0_u32;
+        let mut global_mission_index = 0;
         for nation in 0..6 {
             let (major, next_offset) = parse_auto_great_power_record_at(
                 RETAIL_FIXTURE,
@@ -3154,7 +3182,7 @@ mod tests {
                 let state = mission
                     .mission_state(
                         NationId::new(nation as u8),
-                        queue_index as u32,
+                        queue_index,
                         &major.great_power.country.military_units,
                     )
                     .unwrap();
@@ -3306,6 +3334,21 @@ mod tests {
     }
 
     #[test]
+    fn semantic_projection_rejects_invalid_mission_province_ids() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let LegacyMajorNationState::Auto(nation) = &mut save.major_nations[0] else {
+            panic!("first fixture nation is computer-controlled");
+        };
+        nation.missions[0].army.as_mut().unwrap().present_location = -2;
+
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "province ID -2 is out of range"
+        ));
+    }
+
+    #[test]
     fn semantic_projection_rejects_unimplemented_serialized_payloads() {
         let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         save.navy.admirals.push(LegacyAdmiral {
@@ -3318,6 +3361,22 @@ mod tests {
             save.game_state(game_context()),
             Err(LegacySaveError::StateProjection(message))
                 if message == "semantic projection of non-empty retail navy relationships is not implemented"
+        ));
+
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let LegacyMajorNationState::Auto(nation) = &mut save.major_nations[0] else {
+            panic!("first fixture nation is computer-controlled");
+        };
+        nation.missions[8]
+            .navy
+            .as_mut()
+            .unwrap()
+            .ship_ordinals
+            .push(0);
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "semantic projection of navy mission ship ordinal 0 is not implemented"
         ));
 
         let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();

@@ -163,15 +163,18 @@ fn bind_game_screen_nav(
     // Retail's `end ` hotspot (`kControlTagEnd`) always dispatches End Turn on every
     // screen that hosts it; it is never a leave-to-map control. End Turn is not
     // implemented yet, so keep it disabled rather than bind a fake leave-to-map action.
-    disable_control(commands, spawned, fourcc!("end "));
+    if spawned.view_id != strategic_map_view_id() {
+        disable_control(commands, spawned, fourcc!("end "));
+    }
 }
 
 /// Marks a catalog-tagged control [`InteractionDisabled`] because its retail behavior
 /// is not implemented yet.
 fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
-    if let Some(entity) = spawned.tag(tag) {
-        commands.entity(entity).insert(InteractionDisabled);
-    }
+    let entity = spawned
+        .tag(tag)
+        .expect("validated disabled control binding");
+    commands.entity(entity).insert(InteractionDisabled);
 }
 
 /// Resolve an activate control under one of the given ancestor tags.
@@ -212,7 +215,7 @@ fn on_game_screen_activate(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
+    use crate::ui::catalog::spawn_view_nodes;
     use bevy::ui_widgets::Button as UiButton;
     use imperialism_formats::{UiBehavior, UiCatalog, fourcc};
     use std::collections::HashSet;
@@ -285,7 +288,6 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .insert_resource(UiCatalogResource::new(catalog()).unwrap())
             .add_plugins(bevy::state::app::StatesPlugin)
-            .add_plugins(UiCatalogPlugin)
             .init_state::<AppState>();
         register_structure_screens(&mut app);
         app.world_mut()
