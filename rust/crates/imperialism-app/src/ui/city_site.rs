@@ -112,14 +112,8 @@ fn render_city_site_map(
     };
     let palette_indices =
         compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selected);
-    let palette = match retail_assets.assets().default_dib_palette() {
-        Ok(palette) => palette,
-        Err(error) => {
-            warn!("could not load the retail city-site map palette: {error}");
-            return;
-        }
-    };
-    let image = preview_image_from_indices(&palette_indices, &palette);
+    let palette = retail_assets.assets().default_dib_palette();
+    let image = preview_image_from_indices(&palette_indices, palette);
     for (entity, image_node) in &mut maps {
         if let Some(mut image_node) = image_node {
             if let Some(mut existing) = images.get_mut(&image_node.image) {
@@ -184,16 +178,12 @@ fn on_city_site_map_click(
 }
 
 fn open_new_city_dialog(ui: &mut UiSpawner, site: CapitalSite) {
-    let spawned = ui
-        .spawn_modal(new_city_dialog_view_id())
-        .expect("validated new-city dialog view");
+    let spawned = ui.spawn_modal(new_city_dialog_view_id());
     ui.commands
         .entity(spawned.root)
         .insert(NewCityDialogRoot(site));
-    ui.attach(&spawned, OKAY, NewCityAction::Accept)
-        .expect("validated new-city accept binding");
-    ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel)
-        .expect("validated new-city cancel binding");
+    ui.attach(&spawned, OKAY, NewCityAction::Accept);
+    ui.attach(&spawned, fourcc!("cncl"), NewCityAction::Cancel);
 }
 
 fn on_new_city_activate(

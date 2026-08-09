@@ -3,11 +3,11 @@ use crate::{
     GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId, MajorNationTable,
     MapGeometry, MapTopology, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
     MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
-    NationCommonState, NationId, NationPendingWork, NationTable, Nations, NavyMissionState,
-    PendingWorkState, ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable,
-    RetailCrtRng, RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
-    TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
-    TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
+    NationCommonState, NationId, NationTable, Nations, NavyMissionState, OceanZoneId,
+    ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
+    RetailLcg, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap, TerrainKind,
+    TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState, TurnState,
+    UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
     supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
@@ -110,7 +110,7 @@ pub fn create_random_game(
         &mut port_zones,
     );
 
-    let missions = flatten_mission_queues(&mission_queues);
+    let missions = flatten_mission_queues(&mut mission_queues);
 
     GameState {
         turn: TurnState {
@@ -134,18 +134,8 @@ pub fn create_random_game(
         nations,
         military_units,
         civilian_units: Vec::new(),
-        ships: Vec::new(),
-        task_forces: Vec::new(),
         missions,
-        pending: PendingWorkState {
-            nations: MajorNationTable::from_fn(|_nation| NationPendingWork {
-                turn_events: Vec::new(),
-                proposals: Vec::new(),
-                turn_summary: Vec::new(),
-                turn_start_events: Vec::new(),
-            }),
-            war_transitions: Vec::new(),
-        },
+        turn_summaries: MajorNationTable::default(),
     }
 }
 
@@ -185,7 +175,6 @@ fn apply_tile_post_passes(
             &mut gate_flags,
             geometry,
             index,
-            map.tiles()[index].owner,
             map_lcg,
         );
     }
@@ -401,7 +390,7 @@ fn bootstrap_minors(
     port_zones: &mut PortZoneTable,
 ) {
     for minor_id in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
-        let owner = TileOwnerTag::new(minor_id.nation().get());
+        let owner = TileOwnerTag::from_nation(minor_id.nation());
         let Some(home) = select_minor_home_tile(world, owner, crt) else {
             continue;
         };
@@ -522,10 +511,7 @@ fn spawn_initial_militia_for_minor(
     let nation = minor_id.nation();
     let set_garrison_orders = matches!(difficulty, Difficulty::Introductory | Difficulty::Easy);
     for &province in owned_provinces {
-        let capital = province_capitals
-            .get(usize::from(province.get()))
-            .copied()
-            .flatten();
+        let capital = province_capitals[usize::from(province.get())];
         if let Some(capital) = capital
             && world[capital].flags.has_base_transport()
         {
@@ -641,12 +627,12 @@ fn name_units_for_nation(
         if unit.roster_id != 0 {
             continue;
         }
-        let kind = unit.unit_type.index() as usize;
-        if kind >= MilitaryUnitKind::GeneralEra1 as usize {
+        if unit.unit_type >= MilitaryUnitKind::GeneralEra1 {
             continue;
         }
+        let kind = unit.unit_type as usize;
         let ordinal = name_ordinals[kind];
-        let type_name = LAND_UNIT_TYPE_NAMES.get(kind).copied().unwrap_or("Unit");
+        let type_name = LAND_UNIT_TYPE_NAMES[kind];
         unit.name = format!("{} {}", english_ordinal(ordinal), type_name);
         unit.roster_id = *next_roster_id;
         *next_roster_id += 1;
@@ -671,7 +657,7 @@ fn select_best_secondary_home_tile(
     gate_flags: &[i8],
     nation: MajorNationId,
 ) -> Option<TileId> {
-    let owner = TileOwnerTag::new(nation.get());
+    let owner = TileOwnerTag::from_nation(nation.nation());
     let mut best_score: i32 = -1;
     let mut best_tile: Option<TileId> = None;
     for index in 0..STRATEGIC_TILE_COUNT {
@@ -699,23 +685,22 @@ fn select_best_secondary_home_tile(
     best_tile
 }
 
-fn frog_city_score(yields: &[i16; ResourceKind::LENGTH]) -> i32 {
-    let grain = yields[ResourceKind::Grain as usize];
-    let fruit = yields[ResourceKind::Fruit as usize];
+fn frog_city_score(yields: &ResourceTable<i16>) -> i32 {
+    let grain = yields[ResourceKind::Grain];
+    let fruit = yields[ResourceKind::Fruit];
     let clamped_grain = grain.clamp(0, 6);
     let clamped_fruit = fruit.clamp(0, 2);
     let grain_surplus = (grain - 6).clamp(0, 3);
     let fruit_surplus = (fruit * 2 - 4).clamp(0, 4);
     let food_bonus =
-        ((yields[ResourceKind::Fish as usize] + yields[ResourceKind::Livestock as usize]) * 2)
-            .clamp(0, 4);
-    let raw_material = (yields[ResourceKind::Timber as usize] * 2).clamp(0, 12);
-    let soft = i32::from(yields[ResourceKind::Cotton as usize])
-        + i32::from(yields[ResourceKind::Wool as usize])
-        + i32::from(yields[ResourceKind::Gold as usize]);
+        ((yields[ResourceKind::Fish] + yields[ResourceKind::Livestock]) * 2).clamp(0, 4);
+    let raw_material = (yields[ResourceKind::Timber] * 2).clamp(0, 12);
+    let soft = i32::from(yields[ResourceKind::Cotton])
+        + i32::from(yields[ResourceKind::Wool])
+        + i32::from(yields[ResourceKind::Gold]);
     soft * 3
-        + i32::from(yields[ResourceKind::Coal as usize])
-        + i32::from(yields[ResourceKind::Iron as usize])
+        + i32::from(yields[ResourceKind::Coal])
+        + i32::from(yields[ResourceKind::Iron])
         + i32::from(raw_material)
         + i32::from(clamped_grain) * 1000
         + i32::from(clamped_fruit) * 1000
@@ -730,10 +715,10 @@ fn calculate_city_resources(
     gate_flags: &[i8],
     home: TileId,
     nation: MajorNationId,
-) -> [i16; ResourceKind::LENGTH] {
+) -> ResourceTable<i16> {
     let geometry = world.geometry();
-    let owner = TileOwnerTag::new(nation.get());
-    let mut yields = [0i16; ResourceKind::LENGTH];
+    let owner = TileOwnerTag::from_nation(nation.nation());
+    let mut yields = ResourceTable::default();
     // Directions 0..5 are hex neighbors; 6 is the home tile itself (`TownNeighborTile`).
     for tile in geometry
         .neighbors(home)
@@ -748,11 +733,7 @@ fn calculate_city_resources(
         }
         for resource in crate::all_resources() {
             let resource_index = resource as usize;
-            let mut amount = i16::from(resource_capability_level_by_type(
-                state,
-                gate_flags[index],
-                resource,
-            ));
+            let mut amount = i16::from(resource_capability_level(state, resource));
             if amount != 0 {
                 let gate = gate_flags[index];
                 if (0..24).contains(&gate) && RESOURCE_USES_HIGH_NIBBLE[gate as usize] != 0 {
@@ -760,33 +741,19 @@ fn calculate_city_resources(
                     amount = i16::from(UNIVERSITY_REQUIREMENT_LEVEL[resource_index][capability]);
                 }
             }
-            yields[resource_index] = yields[resource_index].saturating_add(amount);
+            yields[resource] += amount;
         }
         if state.river.is_some() {
-            yields[ResourceKind::Fish as usize] =
-                yields[ResourceKind::Fish as usize].saturating_add(1);
+            yields[ResourceKind::Fish] += 1;
         }
     }
     yields
 }
 
-fn resource_capability_level_by_type(
-    tile: &TileState,
-    _gate_flag: i8,
-    resource: ResourceKind,
-) -> u8 {
-    for edge in 0..2 {
-        if tile.edge_resources[edge] == Some(resource) {
-            return resource_capability_level(tile, edge);
-        }
-    }
-    0
-}
-
-fn resource_capability_level(tile: &TileState, edge: usize) -> u8 {
-    let Some(resource) = tile.edge_resources[edge] else {
+fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> u8 {
+    if !tile.edge_resources.contains(&Some(resource)) {
         return 0;
-    };
+    }
     let resource = resource as usize;
     let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
     let index = if RESOURCE_USES_HIGH_NIBBLE[resource] != 0 {
@@ -819,7 +786,7 @@ fn place_ai_capital(
 ) {
     let index = usize::from(tile.get());
     set_region_tile_subtype_and_refresh_neighbor_flags(world, gate_flags, province_capitals, tile);
-    let owner = TileOwnerTag::new(nation.get());
+    let owner = TileOwnerTag::from_nation(nation.nation());
     place_city(world, tile, owner);
 
     let origin_marker = world[tile].region;
@@ -857,9 +824,6 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
         return;
     };
     let province_index = usize::from(province.get());
-    if province_index >= province_capitals.len() {
-        return;
-    }
     if let Some(old_tile) = province_capitals[province_index] {
         let old_index = usize::from(old_tile.get());
         world[old_tile].flags = TileFlags::empty();
@@ -879,7 +843,7 @@ fn set_region_tile_subtype_and_refresh_neighbor_flags(
         new_index,
     );
 
-    for index in 0..world.len() {
+    for index in 0..STRATEGIC_TILE_COUNT {
         let tile_id = TileId::new(index as u16);
         if tile_id != new_tile && world[tile_id].province == Some(province) {
             world[tile_id].flags.clear_city_marker();
@@ -934,24 +898,24 @@ fn place_city_harvest_tiles(tile_index: usize) -> [Option<usize>; 7] {
 /// creation order. `ports` is newest-first so `FindFirstPortZone*` walks match retail's
 /// `g_pMapActionContextListHead`/`prev18` chain.
 struct PortZoneTable {
-    next_ordinal: i16,
+    next_ordinal: u16,
     ports: Vec<PortZone>,
 }
 
 #[derive(Clone, Copy, Debug)]
 struct PortZone {
-    ordinal: i16,
+    ordinal: OceanZoneId,
     port_tile: TileId,
     sea_tile: TileId,
     /// `primaryNeighbors[0]` ordinal (sea zone or another port).
-    primary_neighbor: Option<i16>,
+    primary_neighbor: Option<OceanZoneId>,
     former_owner: u8,
 }
 
 impl PortZoneTable {
-    fn new(sea_zone_count: i16) -> Self {
+    fn new(sea_zone_count: u16) -> Self {
         Self {
-            next_ordinal: sea_zone_count.max(0),
+            next_ordinal: sea_zone_count,
             ports: Vec::new(),
         }
     }
@@ -967,21 +931,16 @@ impl PortZoneTable {
     }
 }
 
-fn sea_zone_count(world: &StrategicMap) -> i16 {
-    let mut max_ordinal = -1_i16;
-    for tile in world.iter() {
-        if tile.terrain != TerrainKind::Water {
-            continue;
-        }
-        let Some(owner) = tile.owner_nation else {
-            continue;
-        };
-        let tag = i16::from(owner.get());
-        if tag >= i16::from(SEA_OWNER_BIAS) {
-            max_ordinal = max_ordinal.max(tag - i16::from(SEA_OWNER_BIAS));
-        }
-    }
-    max_ordinal + 1
+fn sea_zone_count(world: &StrategicMap) -> u16 {
+    world
+        .iter()
+        .filter(|tile| tile.terrain == TerrainKind::Water)
+        .filter_map(|tile| tile.owner_nation)
+        .map(TileOwnerTag::get)
+        .filter(|&tag| tag >= SEA_OWNER_BIAS)
+        .map(|tag| u16::from(tag - SEA_OWNER_BIAS) + 1)
+        .max()
+        .unwrap_or(0)
 }
 
 /// `TOcean::EnsurePortZoneForTile` side effects needed for Accept missions / tile action state.
@@ -1015,11 +974,11 @@ fn ensure_port_zone_for_tile(world: &mut StrategicMap, ports: &mut PortZoneTable
             .owner_nation
             .map(|owner| owner.get())
             .filter(|&tag| tag >= SEA_OWNER_BIAS)
-            .map(|tag| i16::from(tag - SEA_OWNER_BIAS))
+            .map(|tag| OceanZoneId::new(u16::from(tag - SEA_OWNER_BIAS)))
     };
 
-    let ordinal = ports.next_ordinal;
-    ports.next_ordinal = ports.next_ordinal.saturating_add(1);
+    let ordinal = OceanZoneId::new(ports.next_ordinal);
+    ports.next_ordinal += 1;
     ports.ports.insert(
         0,
         PortZone {
@@ -1121,16 +1080,9 @@ fn province_mission_available(
     adjacency: &[Vec<ProvinceId>],
 ) -> bool {
     let province_usize = usize::from(province.get());
-    let neighbors = adjacency
-        .get(province_usize)
-        .map(Vec::as_slice)
-        .unwrap_or(&[]);
+    let neighbors = &adjacency[province_usize];
     for &adjacent in neighbors {
-        let Some(capital) = province_capitals
-            .get(usize::from(adjacent.get()))
-            .copied()
-            .flatten()
-        else {
+        let Some(capital) = province_capitals[usize::from(adjacent.get())] else {
             continue;
         };
         if world[capital].owner_nation == Some(nation) {
@@ -1141,10 +1093,7 @@ fn province_mission_available(
     // itself has neighbors, treat as available.
     if !neighbors.is_empty() {
         for &adjacent in neighbors {
-            if adjacency
-                .get(usize::from(adjacent.get()))
-                .is_some_and(|list| !list.is_empty())
-            {
+            if !adjacency[usize::from(adjacent.get())].is_empty() {
                 return true;
             }
         }
@@ -1160,10 +1109,9 @@ fn queue_map_action_missions_for_port_zone_candidates(
     ports: &PortZoneTable,
     nation: MajorNationId,
 ) -> Vec<MissionState> {
-    let owner = TileOwnerTag::new(nation.get());
+    let owner = TileOwnerTag::from_nation(nation.nation());
     let owned = owned_province_ids(world, province_capitals, owner);
     let mut missions = Vec::new();
-    let mut queue_index = 0u32;
 
     for &province in &owned {
         if !province_mission_available(province, owner, world, province_capitals, adjacency) {
@@ -1171,15 +1119,15 @@ fn queue_map_action_missions_for_port_zone_candidates(
         }
         missions.push(mission_state(
             nation,
-            queue_index,
-            MissionData::DefendProvince(ArmyMissionState {
-                present_location: province.get() as i16,
-                required_equipage_bits: [0; 5],
-                units: Vec::new(),
-            }),
+            MissionData::DefendProvince {
+                province,
+                army: ArmyMissionState {
+                    required_equipage_bits: [0; 5],
+                    units: Vec::new(),
+                },
+            },
             0,
         ));
-        queue_index += 1;
     }
 
     let Some(port) = ports.find_first_port_for_nation(nation.get()) else {
@@ -1192,61 +1140,49 @@ fn queue_map_action_missions_for_port_zone_candidates(
     // Factory: zone != nation's first port → ControlSeaZone; port itself → Escort.
     missions.push(mission_state(
         nation,
-        queue_index,
-        MissionData::ControlSeaZone(empty_navy_mission(sea_or_neighbor, -1)),
+        MissionData::ControlSeaZone(empty_navy_mission(Some(sea_or_neighbor), None)),
         0,
     ));
-    queue_index += 1;
     missions.push(mission_state(
         nation,
-        queue_index,
-        MissionData::Escort(empty_navy_mission(port.ordinal, port.ordinal)),
+        MissionData::Escort(empty_navy_mission(Some(port.ordinal), Some(port.ordinal))),
         0,
     ));
-    queue_index += 1;
     missions.push(mission_state(
         nation,
-        queue_index,
-        MissionData::ScatteredShips(empty_navy_mission(-1, -1)),
+        MissionData::ScatteredShips(empty_navy_mission(None, None)),
         SCATTERED_SHIPS_IMPORTANCE_BITS,
     ));
     missions
 }
 
-fn empty_navy_mission(target_zone: i16, resolved_port_zone: i16) -> NavyMissionState {
+fn empty_navy_mission(
+    target_zone: Option<OceanZoneId>,
+    resolved_port_zone: Option<OceanZoneId>,
+) -> NavyMissionState {
     NavyMissionState {
         target_zone,
         resolved_port_zone,
-        selected_ship: None,
-        task_force: None,
         state: 0,
         required_equipage_bits: [0; 4],
-        ships: Vec::new(),
     }
 }
 
-fn mission_state(
-    nation: MajorNationId,
-    queue_index: u32,
-    data: MissionData,
-    importance_bits: u32,
-) -> MissionState {
+fn mission_state(nation: MajorNationId, data: MissionData, importance_bits: u32) -> MissionState {
     MissionState {
         nation: nation.nation(),
-        queue_index,
         data,
-        source_nation: i16::from(nation.get()),
-        path_marker: -1,
+        path_nation: None,
         state: 2,
         importance_bits,
         marker: 0,
     }
 }
 
-fn flatten_mission_queues(queues: &MajorNationTable<Vec<MissionState>>) -> Vec<MissionState> {
+fn flatten_mission_queues(queues: &mut MajorNationTable<Vec<MissionState>>) -> Vec<MissionState> {
     let mut missions = Vec::new();
     for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
-        missions.extend(queues[nation].iter().cloned());
+        missions.append(&mut queues[nation]);
     }
     missions
 }
@@ -1277,11 +1213,11 @@ fn update_strategic_map_tile_icon_variant_state(
     gate_flags: &mut [i8],
     geometry: MapGeometry,
     index: usize,
-    owner: Option<TileOwnerTag>,
     map_lcg: &mut RetailLcg,
 ) {
     let terrain = tiles[index].terrain;
-    let major_owner = owner
+    let major_owner = tiles[index]
+        .owner_nation
         .and_then(TileOwnerTag::nation)
         .and_then(MajorNationId::from_nation)
         .is_some();
@@ -1425,57 +1361,43 @@ fn resolve_region_tile_subtype_code_for_state(tile: &TileState, gate_flag: i8, i
 
 /// `TMapMgr::GuaranteeResources` (0x00511a70).
 fn guarantee_resources(tiles: &mut [TileState], gate_flags: &mut [i8], map_lcg: &mut RetailLcg) {
-    for nation_tag in 0i8..=6 {
+    for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
+        let owner = TileOwnerTag::from_nation(nation.nation());
         let linked: Vec<usize> = tiles
             .iter()
             .enumerate()
-            .filter_map(|(index, tile)| {
-                let owner = tile.owner_nation?;
-                (owner.get() == nation_tag as u8).then_some(index)
-            })
+            .filter_map(|(index, tile)| (tile.owner_nation == Some(owner)).then_some(index))
             .collect();
         if linked.is_empty() {
             continue;
         }
 
-        let mut resource_tally = [0i16; 24];
+        let mut resource_tally: ResourceTable<i16> = ResourceTable::default();
         for &index in &linked {
             for edge in 0..2 {
                 if let Some(resource) = tiles[index].edge_resources[edge] {
-                    resource_tally[resource as usize] += 1;
+                    resource_tally[resource] += 1;
                 }
             }
         }
 
-        if resource_tally[3] == 0 {
+        if resource_tally[ResourceKind::Coal] == 0 {
             place_guaranteed_resource(tiles, gate_flags, &linked, map_lcg, ResourceKind::Coal);
         }
-        if resource_tally[4] == 0 {
-            let mut target_index: isize = -1;
-            let mut found = false;
-            let mut gate_flag;
-            loop {
-                target_index += 1;
-                let index = linked[target_index as usize];
-                gate_flag = gate_flags[index];
-                if (gate_flag == 9 || gate_flag == 8) && tiles[index].edge_resources[0].is_none() {
-                    found = true;
-                }
-                if (target_index as usize) >= linked.len() - 1 || found {
-                    break;
-                }
-            }
-
-            if found {
-                let index = linked[target_index as usize];
+        if resource_tally[ResourceKind::Iron] == 0 {
+            let index = if let Some(index) = linked.iter().copied().find(|&index| {
+                matches!(gate_flags[index], 8 | 9) && tiles[index].edge_resources[0].is_none()
+            }) {
                 tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
-                if gate_flag == 9 {
+                if gate_flags[index] == 9 {
                     tiles[index].edge_resources[1] = None;
                     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
                     continue;
                 }
+                index
             } else {
                 let mut picked;
+                let mut gate_flag;
                 loop {
                     loop {
                         let sample = map_lcg.next_sample_15();
@@ -1492,9 +1414,8 @@ fn guarantee_resources(tiles: &mut [TileState], gate_flags: &mut [i8], map_lcg: 
                 let index = linked[picked];
                 gate_flags[index] = 8;
                 tiles[index].edge_resources[0] = Some(ResourceKind::Iron);
-                target_index = picked as isize;
-            }
-            let index = linked[target_index as usize];
+                index
+            };
             tiles[index].edge_resources[1] = None;
             gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
         }
@@ -1508,22 +1429,11 @@ fn place_guaranteed_resource(
     map_lcg: &mut RetailLcg,
     resource: ResourceKind,
 ) {
-    let mut target_index: isize = -1;
-    let mut found = false;
-    loop {
-        target_index += 1;
-        let index = linked[target_index as usize];
-        let gate_flag = gate_flags[index];
-        if (gate_flag == 9 || gate_flag == 8) && tiles[index].edge_resources[0].is_none() {
-            found = true;
-        }
-        if (target_index as usize) >= linked.len() - 1 || found {
-            break;
-        }
-    }
-
-    if found {
-        tiles[linked[target_index as usize]].edge_resources[0] = Some(resource);
+    let index = if let Some(index) = linked.iter().copied().find(|&index| {
+        matches!(gate_flags[index], 8 | 9) && tiles[index].edge_resources[0].is_none()
+    }) {
+        tiles[index].edge_resources[0] = Some(resource);
+        index
     } else {
         let mut picked;
         loop {
@@ -1542,9 +1452,8 @@ fn place_guaranteed_resource(
         let index = linked[picked];
         gate_flags[index] = 8;
         tiles[index].edge_resources[0] = Some(resource);
-        target_index = picked as isize;
-    }
-    let index = linked[target_index as usize];
+        index
+    };
     tiles[index].edge_resources[1] = None;
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
@@ -1717,7 +1626,6 @@ mod tests {
             state.rng.map_generation,
             RetailLcg::from_state(preview.final_map_lcg)
         );
-        assert_eq!(state.world.len(), crate::STRATEGIC_TILE_COUNT);
         assert_eq!(
             state.world[TileId::new(0)].terrain,
             preview.map.tile(TileId::new(0)).terrain
@@ -1738,17 +1646,19 @@ mod tests {
             "AI PlaceCity must mark a city tile"
         );
 
-        let human = state.nations.major(MajorNationId::new(6));
+        let human = &state.nations.majors[MajorNationId::new(6)];
         assert_eq!(human.common.treasury, 10_000);
         assert_eq!(human.common.home_tile, None);
         assert!(human.economy.controller.is_human());
 
-        let ai = state.nations.major(MajorNationId::new(0));
+        let ai = &state.nations.majors[MajorNationId::new(0)];
         assert_eq!(ai.common.treasury, 10_000);
         assert!(!ai.economy.controller.is_human());
         assert!(ai.common.home_tile.is_some(), "AI majors place a capital");
         assert_eq!(
-            state.nations.city(MajorNationId::new(0)).home_town_tile,
+            state.nations.majors[MajorNationId::new(0)]
+                .city
+                .home_town_tile,
             ai.common.home_tile
         );
         let ai_home = ai.common.home_tile.unwrap();
@@ -1762,9 +1672,8 @@ mod tests {
         );
         assert_eq!(state.rng.zone_status, RetailLcg::from_state(1));
 
-        assert_eq!(state.nations.major_count(), crate::MAJOR_NATION_COUNT);
         assert_eq!(state.nations.minor_count(), crate::MINOR_NATION_COUNT);
-        let human_city = state.nations.city(MajorNationId::new(6));
+        let human_city = &state.nations.majors[MajorNationId::new(6)].city;
         assert_eq!(human_city.home_town_tile, Some(TileId::new(0)));
         assert_eq!(human_city.stockpile[ResourceKind::Food], 20);
 
@@ -1822,7 +1731,7 @@ mod tests {
             state
                 .missions
                 .iter()
-                .any(|mission| { matches!(mission.data, MissionData::DefendProvince(_)) }),
+                .any(|mission| matches!(mission.data, MissionData::DefendProvince { .. })),
             "AI queues include DefendProvince for owned regions"
         );
         assert!(
@@ -1846,18 +1755,6 @@ mod tests {
         );
         assert_eq!(state.market, TradeMarketState::default());
         assert!(state.civilian_units.is_empty());
-        assert!(state.ships.is_empty());
-        assert!(state.task_forces.is_empty());
-        assert!(
-            state
-                .pending
-                .nations
-                .iter()
-                .all(|work| work.turn_events.is_empty()
-                    && work.proposals.is_empty()
-                    && work.turn_summary.is_empty()
-                    && work.turn_start_events.is_empty())
-        );
-        assert!(state.pending.war_transitions.is_empty());
+        assert!(state.turn_summaries.iter().all(Vec::is_empty));
     }
 }

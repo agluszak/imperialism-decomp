@@ -681,12 +681,12 @@ fn place_terrain_features(
     while mountains > 0 {
         let retry_budget = (rng.next_sample_15() % 12) as i32 + 3;
         let tile = loop {
-            let candidate = (rng.next_sample_15() % TILE_COUNT as u32) as i32;
-            if tiles[candidate as usize].terrain_kind == PLAINS {
+            let candidate = (rng.next_sample_15() % TILE_COUNT as u32) as usize;
+            if tiles[candidate].terrain_kind == PLAINS {
                 break candidate;
             }
         };
-        let direction = (rng.next_sample_15() % 6) as i32;
+        let direction = (rng.next_sample_15() % 6) as usize;
         mountains -= seed_mountain_range(tiles, geometry, tile, retry_budget, direction, rng);
     }
 
@@ -719,7 +719,7 @@ fn place_terrain_features(
     let mut forest = original_forest_quota;
     let mut urgent = false;
     while forest > 0 {
-        let tile = (rng.next_sample_15() % TILE_COUNT as u32) as i32;
+        let tile = (rng.next_sample_15() % TILE_COUNT as u32) as usize;
         forest -= place_forest(tiles, geometry, tile, 7, urgent, rng);
         if forest < original_forest_quota * 2 / 3 {
             urgent = true;
@@ -755,15 +755,11 @@ fn place_terrain_features(
 fn seed_mountain_range(
     tiles: &mut [GeneratedTerrainTileScratch],
     geometry: MapGeometry,
-    tile_index: i32,
+    tile: usize,
     retry_budget: i32,
-    direction: i32,
+    direction: usize,
     rng: &mut RetailLcg,
 ) -> i32 {
-    if !(0..TILE_COUNT as i32).contains(&tile_index) {
-        return 0;
-    }
-    let tile = usize::try_from(tile_index).expect("retail mountain tile index became negative");
     if tiles[tile].terrain_kind != PLAINS
         || (0..6).any(|dir| {
             full_neighbor(geometry, tile, dir)
@@ -794,19 +790,12 @@ fn seed_mountain_range(
             direction + 1
         };
     }
-    let next_tile = full_neighbor(geometry, tile, next_direction as usize);
+    let next_tile = full_neighbor(geometry, tile, next_direction);
     let mut placed = 1;
     if retry_budget != 1
         && let Some(next_tile) = next_tile
     {
-        placed += seed_mountain_range(
-            tiles,
-            geometry,
-            next_tile as i32,
-            retry_budget - 1,
-            direction,
-            rng,
-        );
+        placed += seed_mountain_range(tiles, geometry, next_tile, retry_budget - 1, direction, rng);
     }
     placed
 }
@@ -909,12 +898,11 @@ fn desert_ring(
 fn place_forest(
     tiles: &mut [GeneratedTerrainTileScratch],
     geometry: MapGeometry,
-    tile_index: i32,
+    tile: usize,
     retry_budget: i32,
     urgent: bool,
     rng: &mut RetailLcg,
 ) -> i32 {
-    let tile = usize::try_from(tile_index).expect("retail forest tile index became negative");
     if tiles[tile].terrain_kind != PLAINS
         || (0..6).any(|direction| {
             full_neighbor(geometry, tile, direction)
@@ -930,7 +918,7 @@ fn place_forest(
         let neighbor = full_neighbor(geometry, tile, direction)
             .expect("retail forest spread selected an invalid neighbor");
         if rng.next_sample_15() % 100 < 70 && remaining != 0 {
-            remaining -= place_forest(tiles, geometry, neighbor as i32, 1, urgent, rng);
+            remaining -= place_forest(tiles, geometry, neighbor, 1, urgent, rng);
         }
     }
     retry_budget - remaining
@@ -997,7 +985,7 @@ fn grow_river(
             return false;
         }
         tiles[tile].river_sprite_code = outgoing_direction as u8 + 0x10;
-        tiles[tile].river_flow_direction = direction_from_index(outgoing_direction);
+        tiles[tile].river_flow_direction = Some(HexDirection::ALL[outgoing_direction]);
         return true;
     }
     let mut opposite = outgoing_direction;
@@ -1030,20 +1018,8 @@ fn grow_river(
     } else {
         RIVER_CONNECTION[next_direction][opposite]
     };
-    tiles[tile].river_flow_direction = direction_from_index(next_direction);
+    tiles[tile].river_flow_direction = Some(HexDirection::ALL[next_direction]);
     true
-}
-
-fn direction_from_index(direction: usize) -> Option<HexDirection> {
-    match direction {
-        0 => Some(HexDirection::NorthEast),
-        1 => Some(HexDirection::East),
-        2 => Some(HexDirection::SouthEast),
-        3 => Some(HexDirection::SouthWest),
-        4 => Some(HexDirection::West),
-        5 => Some(HexDirection::NorthWest),
-        _ => None,
-    }
 }
 
 fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerrainTile {
@@ -1061,50 +1037,54 @@ fn normalize_generated_tile(tile: GeneratedTerrainTileScratch) -> GeneratedTerra
 }
 
 fn rotate_map_columns(tiles: &mut [GeneratedTerrainTileScratch]) -> usize {
-    let counts = (0..EXPANDED_MAP_WIDTH)
-        .map(|column| {
-            (0..EXPANDED_MAP_HEIGHT)
-                .filter(|row| tiles[row * EXPANDED_MAP_WIDTH + column].terrain_kind == WATER)
-                .count()
-        })
-        .collect::<Vec<_>>();
-    let mut window = [counts[105], counts[106], counts[107]];
+    let counts: [usize; EXPANDED_MAP_WIDTH] = std::array::from_fn(|column| {
+        (0..EXPANDED_MAP_HEIGHT)
+            .filter(|row| tiles[row * EXPANDED_MAP_WIDTH + column].terrain_kind == WATER)
+            .count()
+    });
+    let mut window = [
+        counts[EXPANDED_MAP_WIDTH - 3],
+        counts[EXPANDED_MAP_WIDTH - 2],
+        counts[EXPANDED_MAP_WIDTH - 1],
+    ];
     let mut total = window.iter().sum::<usize>();
     let mut position = 0;
-    let mut best_density = -1_i32;
+    let mut best_density = 0;
     let mut best_column = 0;
     for (column, count) in counts.iter().copied().enumerate() {
         total += count;
-        if best_density < total as i32 {
+        if best_density < total {
             best_column = column;
-            best_density = total as i32;
+            best_density = total;
         }
         total -= window[position];
         window[position] = count;
         position = (position + 1) % 3;
     }
     if counts[best_column] == 0 {
-        let mut left = (best_column + 107) % 108;
-        let mut right = (best_column + 1) % 108;
+        let mut left = (best_column + EXPANDED_MAP_WIDTH - 1) % EXPANDED_MAP_WIDTH;
+        let mut right = (best_column + 1) % EXPANDED_MAP_WIDTH;
         while counts[left] == 0 {
-            left = (left + 107) % 108;
+            left = (left + EXPANDED_MAP_WIDTH - 1) % EXPANDED_MAP_WIDTH;
         }
         while counts[right] == 0 {
-            right = (right + 1) % 108;
+            right = (right + 1) % EXPANDED_MAP_WIDTH;
         }
-        left = (left + 1) % 108;
-        right = (right + 107) % 108;
+        left = (left + 1) % EXPANDED_MAP_WIDTH;
+        right = (right + EXPANDED_MAP_WIDTH - 1) % EXPANDED_MAP_WIDTH;
         best_column = if right < left {
-            ((left + 108 + right) / 2) % 108
+            ((left + EXPANDED_MAP_WIDTH + right) / 2) % EXPANDED_MAP_WIDTH
         } else {
             (right + left) / 2
         };
     }
     let source = tiles.to_vec();
     for destination_column in 0..EXPANDED_MAP_WIDTH {
-        let source_column = (best_column + 107 + destination_column) % 108;
+        let source_column =
+            (best_column + EXPANDED_MAP_WIDTH - 1 + destination_column) % EXPANDED_MAP_WIDTH;
         for row in 0..EXPANDED_MAP_HEIGHT {
-            tiles[row * 108 + destination_column] = source[row * 108 + source_column];
+            tiles[row * EXPANDED_MAP_WIDTH + destination_column] =
+                source[row * EXPANDED_MAP_WIDTH + source_column];
         }
     }
     best_column
@@ -1166,8 +1146,10 @@ fn generate_water_region_ids(
                         } else {
                             None
                         };
-                        if tile.is_some_and(|tile| labels[tile] == -1) {
-                            labels[tile.unwrap()] = region_count;
+                        if let Some(tile) = tile
+                            && labels[tile] == -1
+                        {
+                            labels[tile] = region_count;
                             region_count += 1;
                             break;
                         }
@@ -1231,17 +1213,12 @@ fn generate_water_region_ids(
     }
 }
 
-fn step_water_seed(
-    row: &mut i32,
-    column: &mut i32,
-    direction: i32,
-    wraps_horizontally: bool,
-) -> bool {
+fn step_water_seed(row: &mut i32, column: &mut i32, direction: i32, wraps_horizontally: bool) {
     if direction == 4 || (direction > 2 && *row & 1 == 0) {
         *column -= 1;
         if *column < 0 {
             if !wraps_horizontally {
-                return false;
+                return;
             }
             *column = 107;
         }
@@ -1249,23 +1226,16 @@ fn step_water_seed(
         *column += 1;
         if *column > 107 {
             if !wraps_horizontally {
-                return false;
+                return;
             }
             *column = 0;
         }
     }
     if direction == 5 || direction == 0 {
         *row -= 1;
-        if *row < 0 {
-            return false;
-        }
     } else if direction == 3 || direction == 2 {
         *row += 1;
-        if *row > 59 {
-            return false;
-        }
     }
-    true
 }
 
 fn apply_scenario_keyword_override(

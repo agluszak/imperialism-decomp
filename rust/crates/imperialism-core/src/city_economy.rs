@@ -48,8 +48,7 @@ impl CityState {
 
         self.adjust_stock(ResourceKind::Lumber, -1);
         self.adjust_stock(ResourceKind::Steel, -1);
-        let capacity = nation.transport_capacity_mut();
-        *capacity += 1;
+        nation.capacities.transport += 1;
         true
     }
 
@@ -62,8 +61,7 @@ impl CityState {
 
         self.adjust_stock(ResourceKind::Lumber, -3);
         self.adjust_stock(ResourceKind::Fabric, -1);
-        let capacity = nation.merchant_capacity_mut();
-        *capacity += 1;
+        nation.capacities.trade_offer += 1;
         true
     }
 
@@ -133,44 +131,16 @@ mod tests {
     }
 
     fn nation() -> GreatPowerState {
-        GreatPowerState {
-            controller: crate::MajorNationController::Human,
-            capacities: crate::NationCapacities::from_array([0, 0, 15, 11]),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_actions: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        let mut nation = crate::test_support::great_power_state();
+        nation.capacities = crate::NationCapacities::from_array([0, 0, 15, 11]);
+        nation
     }
 
     #[test]
     fn clamps_negative_stocks() {
         let mut state = city();
         state.stockpile = crate::Stockpile::from_table(ResourceTable::from_fn(|_| -1));
-        assert!(state.stockpile.iter().all(|(_, stock)| *stock == 0));
+        assert!(crate::all_resources().all(|resource| state.stockpile[resource] == 0));
     }
 
     #[test]
@@ -264,7 +234,7 @@ mod tests {
         assert!(state.low_production);
 
         state.population.strength = 2;
-        state.production_accum.fill(0);
+        state.production_accum = crate::ProductionTable::default();
         state.refresh_local_summary_flags();
         assert!(state.low_stock);
         assert!(!state.low_production);

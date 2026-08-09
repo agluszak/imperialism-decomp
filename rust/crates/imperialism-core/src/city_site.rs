@@ -175,7 +175,7 @@ fn next_region_marker(world: &StrategicMap) -> RegionId {
         .map(RegionId::get)
         .max()
         .unwrap_or(0);
-    RegionId::new(max.saturating_add(1))
+    RegionId::new(max + 1)
 }
 
 /// Simplified retail river-flow boundary check: walk `river_sprite_code` until water or a
@@ -236,7 +236,7 @@ mod tests {
         let mut state = normal_start();
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(
-            state.nations.major(MajorNationId::new(6)).common.home_tile,
+            state.nations.majors[MajorNationId::new(6)].common.home_tile,
             None
         );
 
@@ -277,7 +277,7 @@ mod tests {
         assert_eq!(state.world[tile].flags, TileFlags::PLACED_CITY_STATE);
         assert!(state.world[tile].flags.is_city());
         assert_eq!(
-            state.nations.major(MajorNationId::new(6)).common.home_tile,
+            state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(tile)
         );
         assert!(
@@ -285,7 +285,9 @@ mod tests {
             "PlaceCity flood-fills a region"
         );
         assert_eq!(
-            state.nations.city(MajorNationId::new(6)).home_town_tile,
+            state.nations.majors[MajorNationId::new(6)]
+                .city
+                .home_town_tile,
             Some(tile)
         );
     }
@@ -298,7 +300,7 @@ mod tests {
         enter_strategic_map_without_capital_selection(&mut state, MajorNationId::new(6)).unwrap();
         assert_eq!(state.turn.phase, crate::PhaseCode::STRATEGIC_MAP);
         assert_eq!(
-            state.nations.major(MajorNationId::new(6)).common.home_tile,
+            state.nations.majors[MajorNationId::new(6)].common.home_tile,
             Some(TileId::new(0))
         );
     }

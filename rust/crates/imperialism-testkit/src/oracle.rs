@@ -2,9 +2,9 @@
 
 use anyhow::{Context, Result, bail};
 use imperialism_core::{
-    Difficulty, GameState, MajorNationId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng, RetailLcg, TileId,
-    create_random_game, generate_english_random_setup_name, generate_random_map,
-    generate_random_setup_preview,
+    Difficulty, GameState, MAJOR_NATION_COUNT, MajorNationId, RANDOM_MAP_CLASS_COUNT, RetailCrtRng,
+    RetailLcg, STRATEGIC_TILE_COUNT, TileId, create_random_game,
+    generate_english_random_setup_name, generate_random_map, generate_random_setup_preview,
 };
 use std::path::Path;
 
@@ -294,7 +294,7 @@ pub fn check_random_game_start(result: &Path) -> Result<()> {
         setup.topology.retail_byte(),
         setup.nation.get(),
         setup.difficulty,
-        actual.world.len(),
+        STRATEGIC_TILE_COUNT,
         actual.military_units.len(),
         actual.missions.len(),
         actual.rng.map_generation.state(),
@@ -310,13 +310,12 @@ pub fn check_snapshot(result: &Path, comparison: Option<&Path>) -> Result<()> {
         .capture("game_state")
         .with_context(|| format!("reading game state {}", result.display()))?;
     println!(
-        "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} ships, {} missions",
-        state.world.len(),
-        state.nations.major_count() + state.nations.minor_count(),
-        state.nations.major_count(),
+        "{} tiles, {} nations, {} cities, {} military units, {} civilian units, {} missions",
+        STRATEGIC_TILE_COUNT,
+        MAJOR_NATION_COUNT + state.nations.minor_count(),
+        MAJOR_NATION_COUNT,
         state.military_units.len(),
         state.civilian_units.len(),
-        state.ships.len(),
         state.missions.len()
     );
     if let Some(comparison_path) = comparison {

@@ -197,7 +197,6 @@ struct GeneratorScratch {
     group_members: [[i32; 3]; 7],
     city_region_next_id: i32,
     city_region_ids: [i32; RANDOM_MAP_CLASS_COUNT],
-    last_minor_seed_candidate: i32,
     draw_count: u32,
 }
 
@@ -207,7 +206,6 @@ impl GeneratorScratch {
         self.group_members = [[-1; 3]; 7];
         self.city_region_next_id = -1;
         self.city_region_ids = [-1; RANDOM_MAP_CLASS_COUNT];
-        self.last_minor_seed_candidate = -1;
         self.draw_count = 0;
     }
 
@@ -315,11 +313,7 @@ impl GeneratorScratch {
             for direction in 0..6 {
                 if !excluded[direction] {
                     let neighbor = adjacent_cell(last_cell, direction);
-                    let mut weight = if direction as i32 != retry_budget {
-                        10
-                    } else {
-                        2
-                    };
+                    let mut weight = 10;
                     for neighbor_direction in 0..6 {
                         let neighbor_of_neighbor = adjacent_cell(neighbor, neighbor_direction);
                         if neighbor_of_neighbor != -1
@@ -544,7 +538,6 @@ fn generate_coarse_random_map_impl(
         group_members: [[-1; 3]; 7],
         city_region_next_id: -1,
         city_region_ids: [-1; RANDOM_MAP_CLASS_COUNT],
-        last_minor_seed_candidate: -1,
         draw_count: 0,
     };
     loop {

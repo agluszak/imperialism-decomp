@@ -307,8 +307,8 @@ mod tests {
     use super::*;
     use crate::{
         CityState, Difficulty, DiplomacyPolicy, LaborPool, MajorNation, MinorNationId,
-        MinorNationTable, Nations, PendingWorkState, PopulationState, RetailCrtRng, RetailLcg,
-        RngState, ShipType, StrategicMap, TradePolicyScore, TurnState,
+        MinorNationTable, Nations, PopulationState, RetailCrtRng, RetailLcg, RngState, ShipType,
+        StrategicMap, TradePolicyScore, TurnState,
     };
 
     fn major() -> GreatPowerState {
@@ -382,18 +382,8 @@ mod tests {
             },
             military_units: vec![],
             civilian_units: vec![],
-            ships: vec![],
-            task_forces: vec![],
             missions: vec![],
-            pending: PendingWorkState {
-                nations: crate::MajorNationTable::from_fn(|_nation| crate::NationPendingWork {
-                    turn_events: vec![],
-                    proposals: vec![],
-                    turn_summary: vec![],
-                    turn_start_events: vec![],
-                }),
-                war_transitions: vec![],
-            },
+            turn_summaries: crate::MajorNationTable::default(),
         }
     }
 
@@ -471,7 +461,7 @@ mod tests {
             major.unfilled_trade_turns_by_resource[ResourceKind::Clothing],
             1
         );
-        let city = game.nations.city(MajorNationId::new(6));
+        let city = &game.nations.majors[MajorNationId::new(6)].city;
         assert_eq!(city.stockpile[ResourceKind::Fabric], 3);
         assert_eq!(city.stockpile[ResourceKind::Food], 0);
     }
@@ -499,7 +489,7 @@ mod tests {
 
         let state = &game.nations.majors[nation];
         let major = &state.economy;
-        let city = game.nations.city(MajorNationId::new(6));
+        let city = &game.nations.majors[MajorNationId::new(6)].city;
         assert_eq!(state.common.treasury, 3_300);
         assert_eq!(city.stockpile[ResourceKind::Cotton], 2);
         assert_eq!(city.stockpile[ResourceKind::Food], 10);

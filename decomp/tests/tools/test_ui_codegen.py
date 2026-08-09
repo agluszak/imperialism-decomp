@@ -129,52 +129,76 @@ class UiCodegenTests(unittest.TestCase):
         }
         newspaper = by_id[("FlagView.rsrc", 8451)]
         toolbar = next(node for node in newspaper["nodes"] if node["tag"] == "tbr2")
-        self.assertEqual(toolbar["kind"], "radio_or_cluster_control")
         self.assertEqual(toolbar["behavior"], "radio_group")
 
         strategic_map = by_id[("MapView.rsrc", 2013)]
         nodes_by_tag = {node["tag"]: node for node in strategic_map["nodes"]}
-        self.assertFalse(nodes_by_tag["Flag"]["enabled"])
-        self.assertFalse(nodes_by_tag["quer"]["enabled"])
+        self.assertTrue(nodes_by_tag["Flag"]["disabled"])
+        self.assertTrue(nodes_by_tag["quer"]["disabled"])
         self.assertEqual(nodes_by_tag["Flag"]["behavior"], "activate")
         self.assertEqual(nodes_by_tag["quer"]["behavior"], "activate")
         self.assertEqual(nodes_by_tag["agr0"]["behavior"], "radio_button")
 
         random_setup = by_id[("Startup.rsrc", 1501)]
         setup_by_tag = {node["tag"]: node for node in random_setup["nodes"]}
-        self.assertEqual(setup_by_tag["map "]["kind"], "custom_canvas")
         self.assertEqual(setup_by_tag["map "]["behavior"], "pointer_canvas")
-        self.assertEqual(setup_by_tag["glob"]["kind"], "picture")
         self.assertEqual(setup_by_tag["glob"]["behavior"], "activate")
-        self.assertEqual(setup_by_tag["glob"]["picture_visual"], "static")
+        self.assertNotIn("picture_visual", setup_by_tag["glob"])
         self.assertEqual(setup_by_tag["okay"]["picture_visual"], "up_down")
         self.assertEqual(setup_by_tag["diff"]["behavior"], "radio_group")
         for tag in ("dif0", "dif1", "dif2", "dif3", "dif4", "hist", "rand"):
-            text = setup_by_tag[tag]["properties"]["text"]
+            text = setup_by_tag[tag]["text"]
             self.assertEqual(
                 (text["font_family"], text["face_flags"], text["point_size"], text["alignment"]),
                 (1, 0, 12, 1),
             )
             self.assertEqual(setup_by_tag[tag]["behavior"], "radio_button")
-            self.assertEqual(setup_by_tag[tag]["picture_visual"], "static")
+            self.assertNotIn("picture_visual", setup_by_tag[tag])
         for tag in ("tcou", "dift", "tnam"):
-            text = setup_by_tag[tag]["properties"]["text"]
+            text = setup_by_tag[tag]["text"]
             self.assertEqual((text["font_family"], text["point_size"]), (1, 14))
 
         planet_dialog = by_id[("Linger.rsrc", 954)]
-        self.assertEqual(planet_dialog["event"], 0x03BA)
         planet_by_tag = {node["tag"]: node for node in planet_dialog["nodes"]}
-        self.assertEqual(planet_by_tag["plan"]["kind"], "edit_control")
         self.assertEqual(planet_by_tag["plan"]["behavior"], "text_edit")
-        self.assertEqual(planet_by_tag["plan"]["properties"]["max_chars"], 32)
-        self.assertFalse(planet_by_tag["1or2"]["state"])
-        self.assertFalse(planet_by_tag["1or2"]["enabled"])
+        self.assertEqual(planet_by_tag["plan"]["text"]["max_chars"], 32)
+        self.assertTrue(planet_by_tag["1or2"]["disabled"])
         self.assertEqual(planet_by_tag["okay"]["behavior"], "activate")
         self.assertEqual(planet_by_tag["okay"]["picture_visual"], "up_down")
-        self.assertFalse(planet_by_tag["canc"]["state"])
-        self.assertFalse(planet_by_tag["canc"]["enabled"])
+        self.assertTrue(planet_by_tag["canc"]["disabled"])
+        for view in catalog["views"]:
+            for node in view["nodes"]:
+                if "text" in node:
+                    self.assertEqual(
+                        set(node["text"]),
+                        {
+                            "value",
+                            "font_family",
+                            "face_flags",
+                            "point_size",
+                            "alignment",
+                        }
+                        | ({"max_chars"} if "max_chars" in node["text"] else set()),
+                    )
 
         forbidden_keys = {
+            "event",
+            "root",
+            "kind",
+            "state",
+            "enabled",
+            "input_gate",
+            "child_hit_test",
+            "control_value",
+            "properties",
+            "frame_style",
+            "control_state",
+            "style",
+            "number",
+            "cluster_value",
+            "window",
+            "resource_index",
+            "style_ref",
             "sources",
             "source",
             "legacy_type",

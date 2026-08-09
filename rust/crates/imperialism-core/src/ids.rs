@@ -1,25 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-macro_rules! id_type {
-    ($name:ident, $value:ty) => {
-        #[derive(
-            Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
-        )]
-        #[serde(transparent)]
-        pub struct $name($value);
-
-        impl $name {
-            pub const fn new(value: $value) -> Self {
-                Self(value)
-            }
-
-            pub const fn get(self) -> $value {
-                self.0
-            }
-        }
-    };
-}
-
 #[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(transparent)]
 pub struct NationId(u8);
@@ -46,14 +26,6 @@ impl NationId {
 
     pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
         (0..Self::COUNT).map(Self::new)
-    }
-}
-
-impl TryFrom<u8> for NationId {
-    type Error = ();
-
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
-        Self::try_new(value).ok_or(())
     }
 }
 
@@ -84,7 +56,7 @@ impl MajorNationId {
         Self(value)
     }
 
-    pub const fn try_new(value: u8) -> Option<Self> {
+    const fn try_new(value: u8) -> Option<Self> {
         if value < Self::COUNT {
             Some(Self(value))
         } else {
@@ -137,7 +109,7 @@ impl MinorNationId {
         Self(value)
     }
 
-    pub const fn try_new(value: u8) -> Option<Self> {
+    const fn try_new(value: u8) -> Option<Self> {
         if value >= Self::FIRST && value < NationId::COUNT {
             Some(Self(value))
         } else {
@@ -212,8 +184,19 @@ impl<'de> Deserialize<'de> for TileId {
 }
 // A strategic-tile ownership context. Values above the nation range identify
 // non-nation map contexts, so this deliberately is not a NationId.
-id_type!(TileOwnerTag, u8);
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct TileOwnerTag(u8);
+
 impl TileOwnerTag {
+    pub const fn new(value: u8) -> Self {
+        Self(value)
+    }
+
+    pub const fn get(self) -> u8 {
+        self.0
+    }
+
     pub const fn from_nation(nation: NationId) -> Self {
         Self(nation.get())
     }
@@ -300,5 +283,13 @@ impl CivilianUnitId {
     }
 }
 
-id_type!(ShipId, u32);
-id_type!(TaskForceId, u32);
+/// Zero-based ordinal in the retail ocean manager's shared sea/port-zone table.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(transparent)]
+pub struct OceanZoneId(u16);
+
+impl OceanZoneId {
+    pub const fn new(value: u16) -> Self {
+        Self(value)
+    }
+}

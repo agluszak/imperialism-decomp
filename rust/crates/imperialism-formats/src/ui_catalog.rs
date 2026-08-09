@@ -20,8 +20,14 @@ impl PictureId {
     pub const fn new(value: i16) -> Self {
         Self(value)
     }
-    pub const fn get(self) -> i16 {
+    pub(crate) const fn get(self) -> i16 {
         self.0
+    }
+}
+
+impl fmt::Display for PictureId {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.0.fmt(formatter)
     }
 }
 
@@ -39,10 +45,6 @@ impl FourCc {
         );
         let bytes = value.as_bytes();
         Self([bytes[0], bytes[1], bytes[2], bytes[3]])
-    }
-
-    pub const fn from_bytes(value: [u8; 4]) -> Self {
-        Self(value)
     }
 
     pub const fn as_bytes(self) -> [u8; 4] {
@@ -63,12 +65,6 @@ impl fmt::Debug for FourCc {
 impl fmt::Display for FourCc {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(self.as_str())
-    }
-}
-
-impl AsRef<str> for FourCc {
-    fn as_ref(&self) -> &str {
-        self.as_str()
     }
 }
 
@@ -105,26 +101,7 @@ macro_rules! fourcc {
     }};
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub enum WidgetKind {
-    Container,
-    Window,
-    FloatingWindow,
-    Picture,
-    PictureButton,
-    Toggle,
-    Checkbox,
-    StaticText,
-    NumericValue,
-    EditControl,
-    ListOrScrollingPane,
-    RadioOrClusterControl,
-    CustomCanvas,
-    Specialized,
-}
-
-/// Interaction semantics independent from [`WidgetKind`] visual representation.
+/// Interaction semantics needed by the Rust UI runtime.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum UiBehavior {
@@ -160,21 +137,21 @@ pub enum PictureVisual {
 }
 
 impl PictureVisual {
-    pub fn active_picture_id(self, base: i16, active: bool) -> i16 {
+    pub fn active_picture_id(self, base: PictureId, active: bool) -> PictureId {
         match self {
             Self::Static => base,
             Self::UpDown => {
                 if active {
-                    base.saturating_add(1)
+                    PictureId::new(base.get() + 1)
                 } else {
                     base
                 }
             }
             Self::CzechBox => {
                 if active {
-                    base | 1
+                    PictureId::new(base.get() | 1)
                 } else {
-                    base & !1
+                    PictureId::new(base.get() & !1)
                 }
             }
         }
@@ -192,108 +169,43 @@ pub struct LogicalRect {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
-pub struct UiStyle {
-    pub word: i32,
-    pub packed_color: i64,
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
 pub struct UiTextBinding {
-    pub resource_id: i32,
-    pub resource_index: i32,
-    pub value: Option<String>,
+    pub value: String,
     pub font_family: i32,
     pub face_flags: i32,
     pub point_size: i32,
-    pub style_ref: i32,
     pub alignment: i32,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct UiNumberRange {
-    pub value: i32,
-    pub minimum: i32,
-    pub maximum: i32,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct UiWindowColor {
-    pub behavior_flag: i32,
-    pub triplet_flag: i32,
-    pub foreground: i64,
-    pub background: i64,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct UiWindowProperties {
-    pub flags: i32,
-    pub style_type: i32,
-    pub topmost: i32,
-    pub resource_6f: i32,
-    pub resource_6e: i32,
-    pub captioned_frame: i32,
-    pub resource_6c: i32,
-    pub resource_71: i32,
-    pub color: Option<UiWindowColor>,
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(deny_unknown_fields)]
-pub struct WidgetProperties {
-    pub frame_style: Option<i32>,
-    pub content_insets: Option<[i32; 4]>,
-    pub picture_id: Option<PictureId>,
-    pub control_state: Option<i32>,
-    pub style: Option<UiStyle>,
-    pub text: Option<UiTextBinding>,
-    pub max_chars: Option<i32>,
-    pub number: Option<UiNumberRange>,
-    pub cluster_value: Option<i64>,
-    pub window: Option<UiWindowProperties>,
-}
-
-impl WidgetProperties {
-    /// Non-negative edit limit from the catalog. Negative retail values are rejected.
-    pub fn max_characters(&self) -> Option<u32> {
-        self.max_chars.and_then(|value| u32::try_from(value).ok())
-    }
+    pub max_chars: Option<usize>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct UiNode {
     pub id: UiNodeId,
+    #[serde(default)]
     pub parent: Option<UiNodeId>,
     pub tag: FourCc,
-    pub kind: WidgetKind,
+    #[serde(default)]
     pub behavior: UiBehavior,
     #[serde(default)]
     pub picture_visual: PictureVisual,
     pub rect: LogicalRect,
-    pub state: bool,
-    pub enabled: bool,
-    pub input_gate: bool,
-    pub child_hit_test: bool,
-    pub control_value: i32,
-    pub properties: WidgetProperties,
-}
-
-impl UiNode {
-    pub const fn interaction_disabled(&self) -> bool {
-        !self.enabled || !self.input_gate
-    }
+    #[serde(default)]
+    pub checked: bool,
+    #[serde(default)]
+    pub disabled: bool,
+    #[serde(default)]
+    pub content_insets: [i32; 4],
+    #[serde(default)]
+    pub picture_id: Option<PictureId>,
+    #[serde(default)]
+    pub text: Option<UiTextBinding>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct UiView {
     pub id: ScopedViewId,
-    pub event: i32,
-    pub root: UiNodeId,
     pub nodes: Vec<UiNode>,
 }
 
@@ -302,32 +214,21 @@ pub struct UiView {
 pub struct UiViewIndex {
     by_id: HashMap<UiNodeId, usize>,
     by_tag: HashMap<FourCc, Vec<UiNodeId>>,
-    children: HashMap<Option<UiNodeId>, Vec<UiNodeId>>,
 }
 
 impl UiViewIndex {
     pub fn build(view: &UiView) -> Self {
         let mut by_id = HashMap::with_capacity(view.nodes.len());
         let mut by_tag: HashMap<FourCc, Vec<UiNodeId>> = HashMap::new();
-        let mut children: HashMap<Option<UiNodeId>, Vec<UiNodeId>> = HashMap::new();
         for (index, node) in view.nodes.iter().enumerate() {
             by_id.insert(node.id, index);
             by_tag.entry(node.tag).or_default().push(node.id);
-            children.entry(node.parent).or_default().push(node.id);
         }
-        Self {
-            by_id,
-            by_tag,
-            children,
-        }
+        Self { by_id, by_tag }
     }
 
     pub fn node<'a>(&self, view: &'a UiView, id: UiNodeId) -> Option<&'a UiNode> {
         self.by_id.get(&id).map(|&index| &view.nodes[index])
-    }
-
-    pub fn children_of(&self, parent: Option<UiNodeId>) -> &[UiNodeId] {
-        self.children.get(&parent).map_or(&[], Vec::as_slice)
     }
 
     pub fn tagged(&self, tag: FourCc) -> &[UiNodeId] {
@@ -340,12 +241,6 @@ impl UiViewIndex {
 pub struct UiCatalog {
     pub logical_resolution: [u32; 2],
     pub views: Vec<UiView>,
-}
-
-impl UiCatalog {
-    pub fn view(&self, id: &ScopedViewId) -> Option<&UiView> {
-        self.views.iter().find(|view| &view.id == id)
-    }
 }
 
 #[cfg(test)]
@@ -429,7 +324,6 @@ mod tests {
         assert_eq!(heading.behavior, UiBehavior::Passive);
         assert_eq!(globe.behavior, UiBehavior::Activate);
         assert_eq!(group.behavior, UiBehavior::RadioGroup);
-        assert_eq!(globe.kind, WidgetKind::Picture);
         assert_eq!(globe.picture_visual, PictureVisual::Static);
         let okay = random_setup
             .nodes
@@ -453,31 +347,25 @@ mod tests {
             .map(|node| (node.tag, node))
             .collect::<std::collections::HashMap<_, _>>();
 
-        assert_eq!(dialog.event, 0x03ba);
-        assert_eq!(nodes[&fourcc!("plan")].kind, WidgetKind::EditControl);
         assert_eq!(nodes[&fourcc!("plan")].behavior, UiBehavior::TextEdit);
-        assert_eq!(nodes[&fourcc!("plan")].properties.max_chars, Some(32));
         assert_eq!(
-            nodes[&fourcc!("plan")].properties.max_characters(),
+            nodes[&fourcc!("plan")].text.as_ref().unwrap().max_chars,
             Some(32)
         );
-        assert_eq!(
-            WidgetProperties {
-                max_chars: Some(-1),
-                ..Default::default()
-            }
-            .max_characters(),
-            None
-        );
-        assert!(!nodes[&fourcc!("1or2")].state);
-        assert!(!nodes[&fourcc!("1or2")].enabled);
+        assert!(nodes[&fourcc!("1or2")].disabled);
         assert_eq!(nodes[&fourcc!("okay")].behavior, UiBehavior::Activate);
         assert_eq!(
             nodes[&fourcc!("okay")].picture_visual,
             PictureVisual::UpDown
         );
-        assert!(!nodes[&fourcc!("canc")].state);
-        assert!(!nodes[&fourcc!("canc")].enabled);
+        assert!(nodes[&fourcc!("canc")].disabled);
+    }
+
+    #[test]
+    fn removed_generator_provenance_is_rejected_at_the_runtime_boundary() {
+        let mut value = serde_json::from_str::<serde_json::Value>(GENERATED_CATALOG).unwrap();
+        value["views"][0]["event"] = serde_json::Value::from(0x1234);
+        assert!(serde_json::from_value::<UiCatalog>(value).is_err());
     }
 
     #[test]
@@ -504,10 +392,25 @@ mod tests {
 
     #[test]
     fn picture_visual_selects_retail_active_ids() {
-        assert_eq!(PictureVisual::UpDown.active_picture_id(4512, false), 4512);
-        assert_eq!(PictureVisual::UpDown.active_picture_id(4512, true), 4513);
-        assert_eq!(PictureVisual::CzechBox.active_picture_id(100, false), 100);
-        assert_eq!(PictureVisual::CzechBox.active_picture_id(100, true), 101);
-        assert_eq!(PictureVisual::CzechBox.active_picture_id(101, false), 100);
+        assert_eq!(
+            PictureVisual::UpDown.active_picture_id(PictureId::new(4512), false),
+            PictureId::new(4512)
+        );
+        assert_eq!(
+            PictureVisual::UpDown.active_picture_id(PictureId::new(4512), true),
+            PictureId::new(4513)
+        );
+        assert_eq!(
+            PictureVisual::CzechBox.active_picture_id(PictureId::new(100), false),
+            PictureId::new(100)
+        );
+        assert_eq!(
+            PictureVisual::CzechBox.active_picture_id(PictureId::new(100), true),
+            PictureId::new(101)
+        );
+        assert_eq!(
+            PictureVisual::CzechBox.active_picture_id(PictureId::new(101), false),
+            PictureId::new(100)
+        );
     }
 }

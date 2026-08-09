@@ -42,7 +42,7 @@ impl ResourceKind {
     }
 }
 
-pub fn all_resources() -> impl ExactSizeIterator<Item = ResourceKind> {
+pub(crate) fn all_resources() -> impl ExactSizeIterator<Item = ResourceKind> {
     (0..ResourceKind::LENGTH).map(ResourceKind::from_usize)
 }
 

@@ -7,9 +7,9 @@
 use crate::{
     CityState, CivilianUnitTable, Difficulty, GameState, GreatPowerState, LaborPool, MajorNation,
     MajorNationTable, MilitaryUnitTable, MinorNationTable, NationCapacities, NationCommonState,
-    NationId, NationPendingWork, NationTable, Nations, PendingActionTable, PendingWorkState,
-    PopulationState, ProductionTable, ResourceTable, RetailCrtRng, RetailLcg, RngState,
-    ShipTypeTable, StrategicMap, TileId, TradeMarketState, TurnState,
+    NationId, NationTable, Nations, PendingActionTable, PopulationState, ProductionTable,
+    ResourceTable, RetailCrtRng, RetailLcg, RngState, ShipTypeTable, StrategicMap, TileId,
+    TradeMarketState, TurnState,
 };
 
 /// A minimal city with a small three-band population and no stock.
@@ -129,17 +129,7 @@ pub(crate) fn game_state() -> GameState {
         },
         military_units: Vec::new(),
         civilian_units: Vec::new(),
-        ships: Vec::new(),
-        task_forces: Vec::new(),
         missions: Vec::new(),
-        pending: PendingWorkState {
-            nations: MajorNationTable::from_fn(|_nation| NationPendingWork {
-                turn_events: Vec::new(),
-                proposals: Vec::new(),
-                turn_summary: Vec::new(),
-                turn_start_events: Vec::new(),
-            }),
-            war_transitions: Vec::new(),
-        },
+        turn_summaries: MajorNationTable::default(),
     }
 }

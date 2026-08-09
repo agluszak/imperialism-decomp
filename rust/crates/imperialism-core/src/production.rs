@@ -404,8 +404,7 @@ impl CapacityProductionOrder {
 
         match self.target {
             CapacityTarget::Transport => {
-                let capacity = owner.transport_capacity_mut();
-                *capacity += self.progress.quantity;
+                owner.capacities.transport += self.progress.quantity;
             }
             CapacityTarget::Production(slot) => {
                 let base = city.production_orders[slot];
@@ -593,10 +592,12 @@ impl TrainingProductionOrder {
         let cash_limit = if !owner.controller.is_human() {
             workforce_limit
         } else {
-            let available = treasury + owner.diplomacy_budget_base / 100;
-            let available = if available <= 0 { 0 } else { available };
-            let limit = (available / cash_per_unit) as i16;
-            if limit < 0 { 0 } else { limit }
+            let affordable = (treasury + owner.diplomacy_budget_base / 100).max(0) / cash_per_unit;
+            if affordable < i32::from(workforce_limit) {
+                affordable as i16
+            } else {
+                workforce_limit
+            }
         };
         let paper_limit = city.stockpile[ResourceKind::Paper] / paper_per_unit;
 
@@ -710,13 +711,6 @@ fn max_recruit_order(
     } else {
         primary_limit
     };
-    let cash_limit = if cash_per_unit != 0 && owner.controller.is_human() {
-        let limit = (owner.available_diplomacy_budget(treasury) / i32::from(cash_per_unit)) as i16;
-        if limit < 0 { 0 } else { limit }
-    } else {
-        primary_limit
-    };
-
     progress.limiting_constraint = ProductionConstraint::Workforce;
     let mut limit = workforce_limit;
     if primary_limit < limit {
@@ -727,9 +721,13 @@ fn max_recruit_order(
         progress.limiting_constraint = ProductionConstraint::Resources;
         limit = secondary_limit;
     }
-    if cash_limit < limit {
-        progress.limiting_constraint = ProductionConstraint::Treasury;
-        limit = cash_limit;
+    if cash_per_unit != 0 && owner.controller.is_human() {
+        let affordable =
+            (owner.available_diplomacy_budget(treasury) / i32::from(cash_per_unit)).max(0);
+        if affordable < i32::from(limit) {
+            progress.limiting_constraint = ProductionConstraint::Treasury;
+            limit = affordable as i16;
+        }
     }
     progress.quantity + limit
 }
@@ -1104,37 +1102,7 @@ mod tests {
     }
 
     fn nation() -> GreatPowerState {
-        GreatPowerState {
-            controller: crate::MajorNationController::Human,
-            capacities: crate::NationCapacities::default(),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 0,
-            budget_pool_delta: 0,
-            special_resource_trade_balance: 0,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_actions: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        crate::test_support::great_power_state()
     }
 
     fn order(inputs: ItemInputs) -> ItemProductionOrder {
@@ -1462,7 +1430,7 @@ mod tests {
             limiting_constraint: ProductionConstraint::Resources,
         };
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         let float_count = state.population.accumulator;
 
         production.produce(&mut state, &owner, 12);
@@ -1547,7 +1515,7 @@ mod tests {
         let mut production = capacity_order(CapacityTarget::RegionalPopulation);
         production.progress.quantity = 2;
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         state.production_orders[slot(15)] = 1;
         state.production_accum[slot(15)] = 3;
 
@@ -1615,7 +1583,7 @@ mod tests {
         let mut production = expansion_order(ExpansionTarget::RegionalPopulation);
         production.progress.quantity = 1;
         owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Queued);
+            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
         state.production_orders[slot(15)] = 8;
         state.production_accum[slot(15)] = 10;
 
@@ -1748,6 +1716,7 @@ mod tests {
             medium.progress.limiting_constraint,
             ProductionConstraint::Workforce
         );
+        assert_eq!(medium.max_order(&state, &owner, i32::MAX), 4);
 
         assert_eq!(medium.max_order(&state, &owner, 150), 1);
         assert_eq!(
@@ -1824,7 +1793,7 @@ mod tests {
         assert_eq!(medium.progress.quantity, 0);
 
         owner.pending_actions[PendingActionKind::UniversityExpansion] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         state.population.baseline_labor.high = 29;
         let mut high = TrainingProductionOrder::new(TrainingLevel::High);
         high.progress.quantity = 1;
@@ -1919,6 +1888,7 @@ mod tests {
         let mut production = unit_order(None);
         state.stockpile[ResourceKind::Paper] = 4;
         state.stockpile[ResourceKind::Steel] = 10;
+        assert_eq!(production.max_order(&state, &owner, i32::MAX), 2);
         assert_eq!(production.max_order(&state, &owner, 10_000), 2);
         assert_eq!(
             production.progress.limiting_constraint,

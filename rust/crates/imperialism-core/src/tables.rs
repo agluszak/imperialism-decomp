@@ -1,6 +1,6 @@
 use crate::{MajorNationId, MinorNationId, NationId, ProductionSlot};
 use enum_map::{Enum, EnumMap};
-use serde::{Deserialize, Deserializer, Serialize, de};
+use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut};
 
 pub const NATION_COUNT: usize = NationId::COUNT as usize;
@@ -54,63 +54,13 @@ impl NationCapacities {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(transparent)]
 pub struct NationTable<T>([T; NATION_COUNT]);
-
-impl<'de, T> Deserialize<'de> for NationTable<T>
-where
-    T: Deserialize<'de>,
-{
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: Deserializer<'de>,
-    {
-        // Serde's generated fixed-array visitor keeps every decoded nation on
-        // the call stack. NationState is intentionally substantial, so decode
-        // the same JSON sequence into its natural heap-backed staging form.
-        let values: [T; NATION_COUNT] =
-            Vec::<T>::deserialize(deserializer)?
-                .try_into()
-                .map_err(|values: Vec<T>| {
-                    de::Error::invalid_length(values.len(), &"a 23-entry nation table")
-                })?;
-        Ok(Self(values))
-    }
-}
 
 impl<T> NationTable<T> {
     pub const fn from_array(values: [T; NATION_COUNT]) -> Self {
         Self(values)
-    }
-
-    pub fn from_fn(mut function: impl FnMut(NationId) -> T) -> Self {
-        Self(std::array::from_fn(|index| {
-            function(NationId::new(index as u8))
-        }))
-    }
-
-    pub fn as_slice(&self) -> &[T] {
-        &self.0
-    }
-
-    pub fn as_mut_slice(&mut self) -> &mut [T] {
-        &mut self.0
-    }
-
-    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
-        self.0.iter()
-    }
-
-    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
-        self.0.iter_mut()
-    }
-
-    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (NationId, &T)> {
-        self.0
-            .iter()
-            .enumerate()
-            .map(|(index, value)| (NationId::new(index as u8), value))
     }
 }
 
@@ -149,23 +99,12 @@ impl<T> MajorNationTable<T> {
         }))
     }
 
-    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+    pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
     }
 
-    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
+    pub(crate) fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
         self.0.iter_mut()
-    }
-
-    pub fn as_slice(&self) -> &[T] {
-        &self.0
-    }
-
-    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (MajorNationId, &T)> {
-        self.0
-            .iter()
-            .enumerate()
-            .map(|(index, value)| (MajorNationId::new(index as u8), value))
     }
 }
 
@@ -198,27 +137,14 @@ impl<T> MinorNationTable<T> {
         Self(values)
     }
 
-    pub fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
+    pub(crate) fn from_fn(mut function: impl FnMut(MinorNationId) -> T) -> Self {
         Self(std::array::from_fn(|index| {
             function(MinorNationId::new(MinorNationId::FIRST + index as u8))
         }))
     }
 
-    pub fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
+    pub(crate) fn iter(&self) -> impl ExactSizeIterator<Item = &T> {
         self.0.iter()
-    }
-
-    pub fn iter_mut(&mut self) -> impl ExactSizeIterator<Item = &mut T> {
-        self.0.iter_mut()
-    }
-
-    pub fn iter_enumerated(&self) -> impl ExactSizeIterator<Item = (MinorNationId, &T)> {
-        self.0.iter().enumerate().map(|(index, value)| {
-            (
-                MinorNationId::new(MinorNationId::FIRST + index as u8),
-                value,
-            )
-        })
     }
 }
 
@@ -273,17 +199,6 @@ impl<T> ProductionTable<T> {
     pub const fn from_array(values: [T; ProductionSlot::COUNT]) -> Self {
         Self(values)
     }
-
-    pub fn as_slice(&self) -> &[T] {
-        &self.0
-    }
-
-    pub fn fill(&mut self, value: T)
-    where
-        T: Clone,
-    {
-        self.0.fill(value);
-    }
 }
 
 impl<T: Default> Default for ProductionTable<T> {
@@ -331,6 +246,15 @@ mod tests {
         let mut major_nations = MajorNationTable::from_fn(|nation| nation.get());
         major_nations[MajorNationId::new(6)] = 9;
         assert_eq!(major_nations[MajorNationId::new(6)], 9);
+    }
+
+    #[test]
+    fn nation_table_deserialization_requires_exact_length() {
+        let too_short = serde_json::to_string(&vec![0_u8; NATION_COUNT - 1]).unwrap();
+        let too_long = serde_json::to_string(&vec![0_u8; NATION_COUNT + 1]).unwrap();
+
+        assert!(serde_json::from_str::<NationTable<u8>>(&too_short).is_err());
+        assert!(serde_json::from_str::<NationTable<u8>>(&too_long).is_err());
     }
 
     #[test]

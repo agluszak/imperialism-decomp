@@ -58,15 +58,20 @@ pub(crate) enum NationNameMode {
     Random,
 }
 
-impl Default for RandomGameSetup {
-    fn default() -> Self {
+impl FromWorld for RandomGameSetup {
+    fn from_world(world: &mut World) -> Self {
+        let clock_seed = world.resource::<RandomSetupClockSeed>().0;
+        let mut crt_rng = RetailCrtRng::from_state(clock_seed);
+        let nation =
+            MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
+        let mut name_rng = RetailLcg::from_state(clock_seed);
         Self {
-            planet_seed: String::new(),
+            planet_seed: generate_english_random_setup_name(&mut name_rng),
             topology: MapTopology::Wrapping,
-            nation: MajorNationId::new(0),
-            country_name: String::new(),
+            nation,
+            country_name: generate_english_random_setup_name(&mut name_rng),
             difficulty: Difficulty::Introductory,
-            name_mode: NationNameMode::Random,
+            name_mode: NationNameMode::Historical,
         }
     }
 }
@@ -132,8 +137,8 @@ struct PlanetSeedAccept;
 pub(crate) struct RandomSetupPlugin;
 
 pub(crate) fn register_random_setup_logic(app: &mut App) {
-    app.init_resource::<RandomGameSetup>()
-        .init_resource::<RandomSetupClockSeed>()
+    app.init_resource::<RandomSetupClockSeed>()
+        .init_resource::<RandomGameSetup>()
         .init_resource::<RandomSetupPreview>()
         .add_systems(
             Update,
@@ -157,45 +162,8 @@ impl Plugin for RandomSetupPlugin {
         register_random_setup_logic(app);
         // Asset-backed dialog open stays off the headless structure-only test path.
         app.add_observer(on_open_planet_seed);
-        app.add_systems(
-            OnEnter(AppState::RandomSetup),
-            (initialize_random_setup, enter_random_setup).chain(),
-        );
+        app.add_systems(OnEnter(AppState::RandomSetup), enter_random_setup);
     }
-}
-
-fn initialize_random_setup(
-    clock_seed: Res<RandomSetupClockSeed>,
-    mut setup: ResMut<RandomGameSetup>,
-    mut preview: ResMut<RandomSetupPreview>,
-) {
-    if !setup.planet_seed.is_empty() {
-        return;
-    }
-
-    let mut crt_rng = RetailCrtRng::from_state(clock_seed.0);
-    let nation = MajorNationId::new((crt_rng.next_rand() % i32::from(MajorNationId::COUNT)) as u8);
-    let mut name_rng = RetailLcg::from_state(clock_seed.0);
-    let planet_seed = generate_english_random_setup_name(&mut name_rng);
-    let country_name = generate_english_random_setup_name(&mut name_rng);
-    let topology = MapTopology::Wrapping;
-
-    *setup = RandomGameSetup {
-        planet_seed,
-        topology,
-        nation,
-        country_name,
-        difficulty: Difficulty::Introductory,
-        name_mode: NationNameMode::Historical,
-    };
-    update_random_setup_preview(
-        &mut preview,
-        generate_random_setup_preview_with_clock_seed(
-            setup.planet_seed.as_bytes(),
-            setup.topology,
-            clock_seed.0,
-        ),
-    );
 }
 
 fn enter_random_setup(
@@ -463,7 +431,8 @@ fn accept_random_setup(
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::CitySite);
     } else {
-        let _ = enter_strategic_map_without_capital_selection(&mut session, setup.nation);
+        enter_strategic_map_without_capital_selection(&mut session, setup.nation)
+            .expect("generated Introductory/Easy game has a valid home town tile");
         commands.insert_resource(GameSession(session));
         next_state.set(AppState::StrategicMap);
     }
@@ -487,9 +456,7 @@ fn regenerate_random_setup_planet(
 }
 
 fn open_planet_seed_dialog(ui: &mut UiSpawner, setup: &RandomGameSetup) {
-    let spawned = ui
-        .spawn_modal(planet_seed_dialog_view_id())
-        .expect("validated planet-seed dialog view");
+    let spawned = ui.spawn_modal(planet_seed_dialog_view_id());
     ui.commands
         .entity(spawned.root)
         .insert(PlanetSeedDialogRoot);
@@ -588,7 +555,7 @@ fn update_random_setup_preview(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ui::catalog::{UiCatalogPlugin, spawn_view_nodes};
+    use crate::ui::catalog::spawn_view_nodes;
     use crate::ui::main_menu::{
         MainMenuAction, bind_main_menu_actions, main_menu_view_id, register_main_menu_logic,
     };
@@ -607,7 +574,6 @@ mod tests {
             .insert_resource(RandomSetupClockSeed(1))
             .add_plugins(bevy::state::app::StatesPlugin)
             .init_state::<AppState>()
-            .add_plugins(UiCatalogPlugin)
             .add_plugins(ButtonPlugin)
             .add_plugins(bevy::ui_widgets::RadioGroupPlugin);
         register_main_menu_logic(&mut app);
@@ -615,7 +581,7 @@ mod tests {
         app.add_systems(OnEnter(AppState::MainMenu), enter_main_menu_structure_only)
             .add_systems(
                 OnEnter(AppState::RandomSetup),
-                (initialize_random_setup, enter_random_setup_structure_only).chain(),
+                enter_random_setup_structure_only,
             );
         app.update();
         app

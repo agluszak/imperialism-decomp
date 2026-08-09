@@ -22,6 +22,5 @@ pub use retail_fonts::{
 };
 pub use ui_catalog::{
     FourCc, LogicalRect, OKAY, PictureId, PictureVisual, ScopedViewId, TRADE, UiBehavior,
-    UiCatalog, UiNode, UiNodeId, UiNumberRange, UiStyle, UiTextBinding, UiView, UiViewIndex,
-    UiWindowColor, UiWindowProperties, WidgetKind, WidgetProperties,
+    UiCatalog, UiNode, UiNodeId, UiTextBinding, UiView, UiViewIndex,
 };

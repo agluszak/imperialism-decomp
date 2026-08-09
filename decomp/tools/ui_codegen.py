@@ -1154,64 +1154,29 @@ def _rust_picture_visual(node: UiSemanticNode) -> str:
     return "static"
 
 
-def _rust_catalog_family(family: UiSemanticFamily) -> dict[str, object]:
-    style = (
-        {"word": family.style.word, "packed_color": family.style.packed_color}
-        if family.style is not None
-        else None
-    )
-    text = None
+def _rust_catalog_runtime_fields(family: UiSemanticFamily) -> dict[str, object]:
+    fields: dict[str, object] = {}
+    if family.content_insets is not None and any(family.content_insets):
+        fields["content_insets"] = family.content_insets
+    if family.picture_id is not None:
+        fields["picture_id"] = family.picture_id
     if family.text is not None:
-        text = {
-            "resource_id": family.text.resource_id,
-            "resource_index": family.text.resource_index,
-            "value": family.text.value,
+        text: dict[str, object] = {
+            "value": family.text.value or "",
             "font_family": family.text.mode,
             "face_flags": family.text.flags,
             "point_size": family.text.point_size,
-            "style_ref": family.text.style_ref,
             "alignment": family.text.theme,
         }
-    number = None
-    if family.number is not None:
-        number = {
-            "value": family.number.value,
-            "minimum": family.number.minimum,
-            "maximum": family.number.maximum,
-        }
-    window = None
-    if family.window is not None:
-        color = None
-        if family.window.color is not None:
-            color = {
-                "behavior_flag": family.window.color.behavior_flag,
-                "triplet_flag": family.window.color.triplet_flag,
-                "foreground": family.window.color.foreground,
-                "background": family.window.color.background,
-            }
-        window = {
-            "flags": family.window.flags,
-            "style_type": family.window.style_type,
-            "topmost": family.window.topmost,
-            "resource_6f": family.window.resource_6f,
-            "resource_6e": family.window.resource_6e,
-            "captioned_frame": family.window.captioned_frame,
-            "resource_6c": family.window.resource_6c,
-            "resource_71": family.window.resource_71,
-            "color": color,
-        }
-    return {
-        "frame_style": family.frame_style,
-        "content_insets": family.content_insets,
-        "picture_id": family.picture_id,
-        "control_state": family.control_state,
-        "style": style,
-        "text": text,
-        "max_chars": family.max_chars,
-        "number": number,
-        "cluster_value": family.cluster_value,
-        "window": window,
-    }
+        max_chars = (
+            family.max_chars
+            if family.max_chars is None or family.max_chars >= 0
+            else None
+        )
+        if max_chars is not None:
+            text["max_chars"] = max_chars
+        fields["text"] = text
+    return fields
 
 
 def _catalog_case_for_resource(
@@ -1246,7 +1211,7 @@ def resource_backed_catalog_keys(
 
 def _emit_catalog_view_nodes(
     key: UiResourceKey, semantic_view: UiSemanticView
-) -> tuple[list[dict[str, object]], int]:
+) -> list[dict[str, object]]:
     roots = [node for node in semantic_view.nodes if node.parent_id is None]
     if len(roots) != 1:
         raise ValueError(f"{key.text()}: expected one semantic root")
@@ -1254,26 +1219,26 @@ def _emit_catalog_view_nodes(
     for node in semantic_view.nodes:
         offset = int(node.node_id, 16)
         x, y, width, height = node.geometry
-        nodes.append(
-            {
-                "id": offset,
-                "parent": (
-                    int(node.parent_id, 16) if node.parent_id is not None else None
-                ),
-                "tag": node.tag,
-                "kind": _rust_widget_kind(node),
-                "behavior": _rust_widget_behavior(key, node),
-                "picture_visual": _rust_picture_visual(node),
-                "rect": {"x": x, "y": y, "width": width, "height": height},
-                "state": bool(node.state),
-                "enabled": bool(node.enabled),
-                "input_gate": bool(node.input_gate),
-                "child_hit_test": bool(node.child_hit_test),
-                "control_value": node.control_value,
-                "properties": _rust_catalog_family(node.family),
-            }
-        )
-    return nodes, int(roots[0].node_id, 16)
+        behavior = _rust_widget_behavior(key, node)
+        picture_visual = _rust_picture_visual(node)
+        emitted: dict[str, object] = {
+            "id": offset,
+            "tag": node.tag,
+            "rect": {"x": x, "y": y, "width": width, "height": height},
+        }
+        if node.parent_id is not None:
+            emitted["parent"] = int(node.parent_id, 16)
+        if behavior != "passive":
+            emitted["behavior"] = behavior
+        if picture_visual != "static":
+            emitted["picture_visual"] = picture_visual
+        if bool(node.state) and behavior in ("checkbox", "toggle", "radio_button"):
+            emitted["checked"] = True
+        if behavior != "passive" and (not node.enabled or not node.input_gate):
+            emitted["disabled"] = True
+        emitted.update(_rust_catalog_runtime_fields(node.family))
+        nodes.append(emitted)
+    return nodes
 
 
 def build_rust_ui_catalog(
@@ -1295,15 +1260,13 @@ def build_rust_ui_catalog(
         semantic_view = apply_windows_text_property_patches(
             key, semantic_view, text_property_patches
         )
-        nodes, root = _emit_catalog_view_nodes(key, semantic_view)
+        nodes = _emit_catalog_view_nodes(key, semantic_view)
         catalog_views.append(
             {
                 "id": {
                     "resource_file": key.resource_file,
                     "resource_id": key.view_id,
                 },
-                "event": case.event,
-                "root": root,
                 "nodes": nodes,
             }
         )

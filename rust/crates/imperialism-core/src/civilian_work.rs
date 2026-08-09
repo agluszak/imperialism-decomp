@@ -53,9 +53,6 @@ impl TurnsRemaining {
     pub const fn try_new(value: i16) -> Option<Self> {
         if value > 0 { Some(Self(value)) } else { None }
     }
-    pub const fn get(self) -> i16 {
-        self.0
-    }
     fn advance(&mut self) -> bool {
         self.0 -= 1;
         self.0 == 0
@@ -82,10 +79,12 @@ impl<'de> serde::Deserialize<'de> for RailSegment {
         }
 
         let segment = SerializedRailSegment::deserialize(deserializer)?;
-        let valid = [crate::MapTopology::Wrapping, crate::MapTopology::Bounded]
-            .into_iter()
-            .filter_map(|topology| Self::between(topology, segment.origin, segment.destination))
-            .any(|valid| valid.direction == segment.direction);
+        let valid = Self::between(
+            crate::MapTopology::Wrapping,
+            segment.origin,
+            segment.destination,
+        )
+        .is_some_and(|valid| valid.direction == segment.direction);
         valid
             .then_some(Self {
                 origin: segment.origin,
@@ -135,19 +134,25 @@ impl GameState {
             .iter()
             .position(|unit| unit.id == civilian)
             .ok_or(CivilianWorkError::MissingCivilian { id: civilian })?;
-        match self.civilian_units[index].order {
-            CivilianWorkOrder::DevelopResource { .. } => self.advance_resource_development(index),
-            CivilianWorkOrder::LayRail { .. } => self.advance_rail_construction(index),
+        match &mut self.civilian_units[index].order {
+            CivilianWorkOrder::DevelopResource { turns } => {
+                if turns.advance() {
+                    self.complete_resource_development(index);
+                }
+            }
+            CivilianWorkOrder::LayRail { segment, turns } => {
+                let segment = *segment;
+                if turns.advance() {
+                    self.complete_rail_construction(index, segment);
+                }
+            }
             _ => {}
         }
         Ok(())
     }
 
-    fn advance_resource_development(&mut self, index: usize) {
-        let unit = &mut self.civilian_units[index];
-        let CivilianWorkOrder::DevelopResource { turns } = &mut unit.order else {
-            unreachable!()
-        };
+    fn complete_resource_development(&mut self, index: usize) {
+        let unit = &self.civilian_units[index];
         let tile = unit
             .location
             .tile()
@@ -156,11 +161,6 @@ impl GameState {
             unit.unit_type,
             CivilianUnitKind::Miner | CivilianUnitKind::Driller
         );
-        let completes = turns.advance();
-
-        if !completes {
-            return;
-        }
 
         let tile_state = &mut self.world[tile];
         if uses_extractive_development {
@@ -172,20 +172,12 @@ impl GameState {
         self.civilian_units[index].order = CivilianWorkOrder::Idle;
     }
 
-    /// Advances one retail `LayRail` order by one turn.
+    /// Completes one retail `LayRail` order.
     ///
     /// A completed rail section becomes a pair of permanent directional
     /// transport links. The pending rail links are placed when the order is
     /// issued and therefore remain unchanged here.
-    fn advance_rail_construction(&mut self, index: usize) {
-        let unit = &mut self.civilian_units[index];
-        let CivilianWorkOrder::LayRail { segment, turns } = &mut unit.order else {
-            unreachable!()
-        };
-        let segment = *segment;
-        if !turns.advance() {
-            return;
-        }
+    fn complete_rail_construction(&mut self, index: usize, segment: RailSegment) {
         let source = segment.origin();
         let destination = segment.destination();
         let direction = segment.direction();
@@ -212,5 +204,22 @@ mod tests {
         serialized["direction"] = serde_json::json!("West");
 
         assert!(serde_json::from_value::<RailSegment>(serialized).is_err());
+    }
+
+    #[test]
+    fn rail_segment_deserialization_accepts_bounded_and_wrapping_neighbors() {
+        let bounded =
+            RailSegment::between(MapTopology::Bounded, TileId::new(0), TileId::new(1)).unwrap();
+        let wrapping =
+            RailSegment::between(MapTopology::Wrapping, TileId::new(0), TileId::new(107)).unwrap();
+
+        assert_eq!(
+            serde_json::from_value::<RailSegment>(serde_json::to_value(bounded).unwrap()).unwrap(),
+            bounded
+        );
+        assert_eq!(
+            serde_json::from_value::<RailSegment>(serde_json::to_value(wrapping).unwrap()).unwrap(),
+            wrapping
+        );
     }
 }

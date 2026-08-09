@@ -23,7 +23,8 @@ pub type CivilianUnitTable<T> = EnumMap<CivilianUnitKind, T>;
 
 impl CivilianUnitKind {
     pub fn from_index(index: u8) -> Option<Self> {
-        (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
+        let index = usize::from(index);
+        (index < Self::LENGTH).then(|| Self::from_usize(index))
     }
 }
 
@@ -74,15 +75,12 @@ const ARMS_BY_MILITARY_UNIT: MilitaryUnitTable<i32> = MilitaryUnitTable::from_ar
 
 impl MilitaryUnitKind {
     pub fn from_index(index: u8) -> Option<Self> {
-        (usize::from(index) < Self::LENGTH).then(|| Self::from_usize(usize::from(index)))
+        let index = usize::from(index);
+        (index < Self::LENGTH).then(|| Self::from_usize(index))
     }
 
-    pub const fn index(self) -> u8 {
-        self as u8
-    }
-
-    pub fn spawn_era(self) -> i16 {
-        (self.index() / 8) as i16
+    pub(crate) fn spawn_era(self) -> i16 {
+        (self as i16) / 8
     }
 
     pub(crate) fn arms_required(self) -> i32 {

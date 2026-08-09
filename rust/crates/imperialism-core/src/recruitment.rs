@@ -1,10 +1,10 @@
-use crate::{
-    CivilianRecruitOrder, CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState,
-    MajorNationId, MilitaryRecruitOrder, MilitaryUnitKind, MilitaryUnitState, NationId,
-    PendingActionKind, StrategicMap, TileFlags, TileId, TileOwnerTag, TurnSummary,
-};
 #[cfg(test)]
 use crate::{CivilianUnitId, MilitaryUnitId};
+use crate::{
+    CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState, MajorNationId,
+    MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, STRATEGIC_TILE_COUNT,
+    StrategicMap, TileFlags, TileId, TileOwnerTag, TurnSummary,
+};
 
 impl StrategicMap {
     pub fn find_reachable_recruit_spawn_tile(
@@ -15,7 +15,7 @@ impl StrategicMap {
     ) -> Option<TileId> {
         let owner = self[start].owner_nation;
         let geometry = self.geometry();
-        let mut visited = vec![false; self.len()];
+        let mut visited = vec![false; STRATEGIC_TILE_COUNT];
         let mut pending = vec![start];
 
         while let Some(tile_id) = pending.pop() {
@@ -59,14 +59,13 @@ impl GameState {
     pub fn produce_civilian_recruits(
         &mut self,
         nation: MajorNationId,
-        order: &mut CivilianRecruitOrder,
+        unit_kind: CivilianUnitKind,
+        pending_delta: i16,
     ) -> Result<(), RecruitmentError> {
         let nation_id = nation.nation();
-        let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
             return Ok(());
         }
-        let unit_kind = order.unit_kind;
         let home_tile = self
             .nations
             .city(nation)
@@ -103,7 +102,6 @@ impl GameState {
             }
         }
 
-        order.progress.quantity = 0;
         if unit_kind == CivilianUnitKind::Miner {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
@@ -114,14 +112,13 @@ impl GameState {
     pub fn produce_military_recruits(
         &mut self,
         nation: MajorNationId,
-        order: &mut MilitaryRecruitOrder,
+        unit_kind: MilitaryUnitKind,
+        pending_delta: i16,
     ) -> Result<(), RecruitmentError> {
         let nation_id = nation.nation();
-        let pending_delta = order.progress.quantity;
         if pending_delta == 0 {
             return Ok(());
         }
-        let unit_kind = order.unit_kind;
         let major_nation = &self.nations.majors[nation];
         let city = &major_nation.city;
         let major = &major_nation.economy;
@@ -185,14 +182,13 @@ impl GameState {
 
         insert_turn_summary(
             &mut self.rng,
-            &mut self.pending.nations[nation].turn_summary,
+            &mut self.turn_summaries[nation],
             TurnSummary::MilitaryRecruit {
                 turn_tick: self.turn.economic_turn,
                 unit_type: unit_kind,
                 count: pending_delta,
             },
         );
-        order.progress.quantity = 0;
         if unit_kind == MilitaryUnitKind::Minutemen {
             let city = self.nations.city_mut(nation);
             city.serialized_state += 1;
@@ -249,8 +245,7 @@ mod tests {
     use super::*;
     use crate::{
         CityState, LaborPool, MapGeometry, MapTopology, MilitaryUnitState, PopulationState,
-        ProductionProgress, ResourceCost, ResourceKind, RetailCrtRng, RetailLcg, RngState,
-        SkillBand, TileState,
+        RetailCrtRng, RetailLcg, RngState, TileState,
     };
 
     fn tile(owner_nation: Option<crate::TileOwnerTag>) -> TileState {
@@ -320,34 +315,6 @@ mod tests {
         };
         state.nations.majors[MajorNationId::new(0)] = nation;
         state
-    }
-
-    fn order(unit_kind: CivilianUnitKind, quantity: i16) -> CivilianRecruitOrder {
-        CivilianRecruitOrder {
-            unit_kind,
-            primary: ResourceCost::new(ResourceKind::Paper, 1),
-            secondary: None,
-            cash_per_unit: 0,
-            workforce: Some(SkillBand::Low),
-            progress: ProductionProgress {
-                quantity,
-                ..ProductionProgress::default()
-            },
-        }
-    }
-
-    fn military_order(unit_kind: MilitaryUnitKind, quantity: i16) -> MilitaryRecruitOrder {
-        MilitaryRecruitOrder {
-            unit_kind,
-            primary: ResourceCost::new(ResourceKind::Paper, 1),
-            secondary: None,
-            cash_per_unit: 0,
-            workforce: Some(SkillBand::Low),
-            progress: ProductionProgress {
-                quantity,
-                ..ProductionProgress::default()
-            },
-        }
     }
 
     fn military_unit(
@@ -439,10 +406,8 @@ mod tests {
         state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
         state.world[first_neighbor].owner_nation = Some(crate::TileOwnerTag::new(0));
         state.civilian_units.push(civilian(40, 0, start));
-        let mut production = order(CivilianUnitKind::Forester, 2);
-
         state
-            .produce_civilian_recruits(MajorNationId::new(0), &mut production)
+            .produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 2)
             .unwrap();
 
         assert_eq!(state.civilian_units.len(), 2);
@@ -459,7 +424,6 @@ mod tests {
                 .civilian_recruit_count_by_kind[CivilianUnitKind::Forester],
             2
         );
-        assert_eq!(production.progress.quantity, 0);
     }
 
     #[test]
@@ -467,10 +431,8 @@ mod tests {
         let start = TileId::new(200);
         let mut state = game(start);
         state.world[start].owner_nation = Some(crate::TileOwnerTag::new(0));
-        let mut production = order(CivilianUnitKind::Miner, -2);
-
         state
-            .produce_civilian_recruits(MajorNationId::new(0), &mut production)
+            .produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Miner, -2)
             .unwrap();
 
         assert!(state.civilian_units.is_empty());
@@ -485,7 +447,6 @@ mod tests {
             state.nations.city(MajorNationId::new(0)).serialized_state,
             1
         );
-        assert_eq!(production.progress.quantity, 0);
     }
 
     #[test]
@@ -498,17 +459,15 @@ mod tests {
             .major_mut(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Queued);
+            crate::PendingActionState::new(crate::PendingActionStatus::Queued, None);
         state
             .nations
             .major_mut(MajorNationId::new(0))
             .economy
             .pending_actions[PendingActionKind::ConqueredCapitalArmoryUpgrade] =
-            crate::PendingActionState::status_only(crate::PendingActionStatus::Level3);
-        let mut production = military_order(MilitaryUnitKind::Sappers, 1);
-
+            crate::PendingActionState::new(crate::PendingActionStatus::Level3, None);
         state
-            .produce_military_recruits(MajorNationId::new(0), &mut production)
+            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Sappers, 1)
             .unwrap();
 
         assert_eq!(
@@ -533,9 +492,8 @@ mod tests {
             }]
         );
         assert_eq!(state.unit_ids.current(), 41);
-        assert_eq!(production.progress.quantity, 0);
         assert_eq!(
-            state.pending.nations[MajorNationId::new(0)].turn_summary,
+            state.turn_summaries[MajorNationId::new(0)],
             vec![TurnSummary::MilitaryRecruit {
                 turn_tick: 1,
                 unit_type: MilitaryUnitKind::Sappers,
@@ -560,10 +518,8 @@ mod tests {
             .map(|index| military_unit(41 + index, 0, MilitaryUnitKind::Skirmishers, 17))
             .collect();
         state.unit_ids = crate::UnitIdAllocator::from_retail(54);
-        let mut production = military_order(MilitaryUnitKind::Skirmishers, 2);
-
         state
-            .produce_military_recruits(MajorNationId::new(0), &mut production)
+            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 2)
             .unwrap();
 
         assert_eq!(state.selected_military_power_score(NationId::new(0)), 16);
@@ -595,10 +551,8 @@ mod tests {
             .economy
             .pending_actions[PendingActionKind::ArmyGrowthReward] =
             crate::PendingActionState::new(crate::PendingActionStatus::Level3, Some(6));
-        let mut production = military_order(MilitaryUnitKind::Skirmishers, 1);
-
         state
-            .produce_military_recruits(MajorNationId::new(0), &mut production)
+            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Skirmishers, 1)
             .unwrap();
 
         let pending = state
@@ -641,10 +595,8 @@ mod tests {
     fn negative_military_quantity_runs_only_the_retail_tail() {
         let home_tile = TileId::new(200);
         let mut state = game(home_tile);
-        let mut production = military_order(MilitaryUnitKind::Minutemen, -2);
-
         state
-            .produce_military_recruits(MajorNationId::new(0), &mut production)
+            .produce_military_recruits(MajorNationId::new(0), MilitaryUnitKind::Minutemen, -2)
             .unwrap();
 
         assert!(state.military_units.is_empty());
@@ -653,13 +605,12 @@ mod tests {
             1
         );
         assert_eq!(
-            state.pending.nations[MajorNationId::new(0)].turn_summary,
+            state.turn_summaries[MajorNationId::new(0)],
             vec![TurnSummary::MilitaryRecruit {
                 turn_tick: 1,
                 unit_type: MilitaryUnitKind::Minutemen,
                 count: -2,
             }]
         );
-        assert_eq!(production.progress.quantity, 0);
     }
 }

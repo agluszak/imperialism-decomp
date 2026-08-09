@@ -13,51 +13,6 @@ pub(super) enum RetailResourceDecodeError {
     Unsupported(String),
 }
 
-#[derive(Debug, Eq, PartialEq)]
-pub(super) struct DecodedStringResource {
-    pub(super) id: u32,
-    pub(super) text: String,
-}
-
-pub(super) fn decode_string_table_block(
-    block: u32,
-    bytes: &[u8],
-) -> Result<Vec<DecodedStringResource>, RetailResourceDecodeError> {
-    if block == 0 {
-        return Err(invalid("STRING block id is zero"));
-    }
-
-    let mut strings = Vec::with_capacity(16);
-    let mut offset = 0usize;
-    for index in 0..16u32 {
-        let length = usize::from(read_u16(bytes, offset, "STRING entry length")?);
-        offset = checked_add(offset, 2, "STRING entry length")?;
-        let byte_length = length
-            .checked_mul(2)
-            .ok_or_else(|| invalid("STRING entry byte length overflow"))?;
-        let end = checked_add(offset, byte_length, "STRING entry text")?;
-        let encoded = bytes
-            .get(offset..end)
-            .ok_or_else(|| invalid("truncated STRING entry text"))?;
-        let code_units = encoded
-            .chunks_exact(2)
-            .map(|pair| u16::from_le_bytes([pair[0], pair[1]]))
-            .collect::<Vec<_>>();
-        let text = String::from_utf16(&code_units)
-            .map_err(|_| invalid("STRING entry contains invalid UTF-16"))?;
-        let id = (block - 1)
-            .checked_mul(16)
-            .and_then(|base| base.checked_add(index))
-            .ok_or_else(|| invalid("STRING id overflow"))?;
-        strings.push(DecodedStringResource { id, text });
-        offset = end;
-    }
-    if offset != bytes.len() {
-        return Err(invalid("trailing bytes after 16 STRING entries"));
-    }
-    Ok(strings)
-}
-
 pub(super) fn bitmap_resource_to_bmp(dib: &[u8]) -> Result<Vec<u8>, RetailResourceDecodeError> {
     let header_size = usize::try_from(read_u32(dib, 0, "DIB header size")?)
         .map_err(|_| invalid("DIB header size does not fit usize"))?;
@@ -199,24 +154,6 @@ fn invalid(message: impl Into<String>) -> RetailResourceDecodeError {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn decodes_runtime_string_ids_without_the_historical_plus_sixteen_error() {
-        let mut block = Vec::new();
-        for index in 0..16u16 {
-            let value = if index == 10 { "Introductory" } else { "" };
-            let encoded = value.encode_utf16().collect::<Vec<_>>();
-            block.extend_from_slice(&(encoded.len() as u16).to_le_bytes());
-            for unit in encoded {
-                block.extend_from_slice(&unit.to_le_bytes());
-            }
-        }
-
-        let strings = decode_string_table_block(1305, &block).unwrap();
-
-        assert_eq!(strings[10].id, 20_874);
-        assert_eq!(strings[10].text, "Introductory");
-    }
 
     #[test]
     fn wraps_an_indexed_dib_without_changing_its_payload() {
