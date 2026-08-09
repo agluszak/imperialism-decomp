@@ -3,8 +3,8 @@ use crate::{
     HexDirection, LaborPool, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
     MilitaryUnitKind, MilitaryUnitTable, MinorNationId, MinorNationTable, NationCapacities,
     NationId, NationTable, OceanZoneId, PendingActionTable, ProductionTable, ProvinceId,
-    ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT, ShipId, ShipType,
-    ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    ProvinceState, ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT,
+    ShipId, ShipType, ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -14,6 +14,7 @@ pub struct GameState {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub world: StrategicMap,
+    pub provinces: ProvinceTable<ProvinceState>,
     pub rng: RngState,
     pub market: TradeMarketState,
     pub diplomacy: DiplomacyState,
@@ -90,6 +91,26 @@ impl Nations {
     pub fn minor_count(&self) -> usize {
         self.minors.iter().flatten().count()
     }
+
+    pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
+        if let Some(nation) = MajorNationId::from_nation(nation) {
+            Some(&self.majors[nation].common)
+        } else {
+            self.minors[MinorNationId::new(nation.get())]
+                .as_ref()
+                .map(|nation| &nation.common)
+        }
+    }
+
+    pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
+        if let Some(nation) = MajorNationId::from_nation(nation) {
+            Some(&mut self.majors[nation].common)
+        } else {
+            self.minors[MinorNationId::new(nation.get())]
+                .as_mut()
+                .map(|nation| &mut nation.common)
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -115,14 +136,21 @@ impl MajorNation {
     /// Builds a random-game start major nation from the resolved starting
     /// `treasury`, whether the slot is the `human` player, and its scenario
     /// `city`. Homes are unset until capital selection places them.
-    pub(crate) fn for_random_start(treasury: i32, human: bool, city: CityState) -> Self {
+    pub(crate) fn for_random_start(
+        treasury: i32,
+        human: bool,
+        foreign_minister_personality: ForeignMinisterPersonality,
+        city: CityState,
+    ) -> Self {
         Self {
             common: NationCommonState {
+                status: crate::CountryStatus::Independent,
+                owned_regions: Vec::new(),
                 treasury,
                 home_tile: None,
                 trade_policy_by_nation: NationTable::default(),
             },
-            economy: GreatPowerState::for_random_start(human),
+            economy: GreatPowerState::for_random_start(human, foreign_minister_personality),
             city,
         }
     }
@@ -757,6 +785,8 @@ impl DiplomacyState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
+    pub status: crate::CountryStatus,
+    pub owned_regions: Vec<ProvinceId>,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,
@@ -825,6 +855,10 @@ pub enum DiplomacyPolicy {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
+    pub foreign_minister_personality: ForeignMinisterPersonality,
+    pub foreign_minister_skill_index: i16,
+    pub development_grant_by_nation: NationTable<i16>,
+    pub defense_minister_skill_index: i16,
     pub capacities: NationCapacities,
     pub grant_total_cost: i32,
     pub unfilled_trade_offer_count: i16,
@@ -859,13 +893,20 @@ impl GreatPowerState {
     /// The post-`IGreatPower`/`IAutoGreatPower` construction state a major nation
     /// carries at the random-game start boundary. Only the human is diplomacy
     /// eligible before capital selection.
-    pub(crate) fn for_random_start(human: bool) -> Self {
+    pub(crate) fn for_random_start(
+        human: bool,
+        foreign_minister_personality: ForeignMinisterPersonality,
+    ) -> Self {
         Self {
             controller: if human {
                 MajorNationController::Human
             } else {
                 MajorNationController::Computer
             },
+            foreign_minister_personality,
+            foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
+            development_grant_by_nation: NationTable::default(),
+            defense_minister_skill_index: 0,
             capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -894,6 +935,35 @@ impl GreatPowerState {
             aid_allocation_total: 0,
             colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
+        }
+    }
+}
+
+/// The exact foreign-minister behavior selected for a major nation.
+///
+/// Retail constructs the base minister for human and proxy nations. AI nations
+/// receive one of the six personality implementations selected by map setup.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ForeignMinisterPersonality {
+    Base,
+    Arms,
+    Trader,
+    Textile,
+    Diplomat,
+    Bill,
+    Ted,
+}
+
+impl ForeignMinisterPersonality {
+    const fn initial_skill_index(self) -> i16 {
+        match self {
+            Self::Base | Self::Arms => 0,
+            Self::Trader => 1,
+            Self::Textile => 2,
+            Self::Diplomat => 3,
+            Self::Bill => 4,
+            Self::Ted => 5,
         }
     }
 }

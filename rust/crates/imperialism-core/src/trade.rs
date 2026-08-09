@@ -306,6 +306,10 @@ mod tests {
     fn major() -> GreatPowerState {
         GreatPowerState {
             controller: crate::MajorNationController::Human,
+            foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
+            foreign_minister_skill_index: 0,
+            development_grant_by_nation: crate::NationTable::default(),
+            defense_minister_skill_index: 0,
             capacities: crate::NationCapacities::from_array([10, 4, 0, 0]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,
@@ -340,6 +344,8 @@ mod tests {
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|_nation| MajorNation {
             common: NationCommonState {
+                status: crate::CountryStatus::Independent,
+                owned_regions: Vec::new(),
                 treasury: 1_000,
                 home_tile: Some(crate::TileId::new(0)),
                 trade_policy_by_nation: crate::NationTable::default(),
@@ -363,6 +369,7 @@ mod tests {
                 vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
             )
             .unwrap(),
+            provinces: crate::ProvinceTable::default(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),
                 map_generation: RetailLcg::from_state(1),

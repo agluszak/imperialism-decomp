@@ -25,6 +25,7 @@ mod resources;
 mod rng;
 mod state;
 mod tables;
+mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
@@ -86,20 +87,21 @@ pub use rng::{RetailCrtRng, RetailLcg, hash_retail_scenario_tag};
 pub use state::{
     ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitState,
     DevelopmentLevel, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
-    DiplomaticMissionLevel, DiplomaticRelationship, GameState, GreatPowerState, MajorNation,
-    MajorNationController, MilitaryOrder, MilitaryOrderCode, MilitaryUnitState, MinorNation,
-    MissionData, MissionState, NationCommonState, NationPendingWork, Nations, NavyMissionState,
-    PendingActionState, PendingActionStatus, PendingWorkState, PhaseCode, PopulationAccumulator,
-    PopulationState, RegionId, RiverSegment, RngState, ScenarioMapId, SelectedShip, ShipState,
-    Stockpile, StrategicMap, StrategicMapSizeError, StrikePhase, TaggedValue, TaskForceState,
-    TaskForceTarget, TerrainKind, TileAction, TileDevelopment, TileFlags, TileState,
-    TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator,
-    WarTransition,
+    DiplomaticMissionLevel, DiplomaticRelationship, ForeignMinisterPersonality, GameState,
+    GreatPowerState, MajorNation, MajorNationController, MilitaryOrder, MilitaryOrderCode,
+    MilitaryUnitState, MinorNation, MissionData, MissionState, NationCommonState,
+    NationPendingWork, Nations, NavyMissionState, PendingActionState, PendingActionStatus,
+    PendingWorkState, PhaseCode, PopulationAccumulator, PopulationState, RegionId, RiverSegment,
+    RngState, ScenarioMapId, SelectedShip, ShipState, Stockpile, StrategicMap,
+    StrategicMapSizeError, StrikePhase, TaggedValue, TaskForceState, TaskForceTarget, TerrainKind,
+    TileAction, TileDevelopment, TileFlags, TileState, TileTransportLinks, TradePolicyScore,
+    TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator, WarTransition,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
     NationCapacities, NationTable, PENDING_ACTION_COUNT, PROVINCE_COUNT, PendingActionKind,
     PendingActionTable, ProductionTable, ProvinceTable, ShipType, ShipTypeTable,
 };
+pub use territory::{CountryStatus, ProvinceState, ProvinceStateError};
 pub use turn_flow::{AdvanceTurnOutcome, TurnBlock};
 pub use units::{CivilianUnitKind, CivilianUnitTable, MilitaryUnitKind, MilitaryUnitTable};

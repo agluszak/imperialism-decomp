@@ -1,10 +1,11 @@
 use crate::{
-    ArmyMissionState, CityState, DevelopmentLevel, Difficulty, DiplomacyState, GameState,
-    GeneratedMap, GeneratedTerrainTile, HexDirection, LaborPool, MajorNation, MajorNationId,
-    MajorNationTable, MapGeometry, MapTopology, MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind,
-    MilitaryUnitState, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
-    NationCommonState, NationId, NationTable, Nations, NavyMissionState, OceanZoneId,
-    ProductionTable, ProvinceId, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
+    ArmyMissionState, CityState, CountryStatus, DevelopmentLevel, Difficulty, DiplomacyState,
+    ForeignMinisterPersonality, GameState, GeneratedMap, GeneratedTerrainTile, HexDirection,
+    LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MapTopology,
+    MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MinorNation,
+    MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCommonState,
+    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, ProductionTable, ProvinceId,
+    ProvinceState, ProvinceTable, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
     RetailLcg, RiverSegment, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
     TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
     TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
@@ -70,7 +71,8 @@ pub fn create_random_game(
 ) -> GameState {
     let mut map_lcg = RetailLcg::from_state(preview.final_map_lcg);
     let mut post = apply_tile_post_passes(&preview.map, preview.topology, &mut map_lcg);
-    let mut nations = bootstrap_nations(human_nation, difficulty);
+    let foreign_ministers = choose_foreign_ministers(&preview.map, human_nation);
+    let mut nations = bootstrap_nations(human_nation, difficulty, foreign_ministers);
     let mut world = StrategicMap::from_generated_tiles(preview.topology, post.tiles);
     // Runtime-test / Accept entry: map build ends in `srand(runtime_seed)`, then setup
     // `DoPostCreate` draws one `rand() % 7` for the initial nation when the slot was -1.
@@ -112,6 +114,7 @@ pub fn create_random_game(
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     let missions = flatten_mission_queues(&mut mission_queues);
+    let provinces = build_province_state(&preview.map, &world, &mut nations);
 
     GameState {
         turn: TurnState {
@@ -124,6 +127,7 @@ pub fn create_random_game(
         },
         unit_ids,
         world,
+        provinces,
         rng: RngState {
             crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),
@@ -1072,6 +1076,38 @@ fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<ProvinceId>> {
     adjacency
 }
 
+/// Materializes the fixed province table and each country's ordered region list.
+/// Generated province IDs are already compact and are visited in ascending retail
+/// table order, matching the append order used by map setup.
+fn build_province_state(
+    map: &GeneratedMap,
+    world: &StrategicMap,
+    nations: &mut Nations,
+) -> ProvinceTable<ProvinceState> {
+    let adjacency = build_province_adjacency(world);
+    let mut provinces = ProvinceTable::default();
+    for (index, generated) in map.provinces().iter().enumerate() {
+        let province = ProvinceId::new(index as u16);
+        let owner = generated
+            .owner
+            .nation()
+            .expect("accepted generated provinces have nation owners");
+        provinces[province] = ProvinceState::new(
+            Some(owner),
+            Some(owner),
+            adjacency[index].clone(),
+            Some(generated.terrain.retail() as u8),
+        )
+        .expect("generated province state fits the retail province record");
+        nations
+            .common_mut(owner)
+            .expect("accepted generated province owner is present")
+            .owned_regions
+            .push(province);
+    }
+    provinces
+}
+
 /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext` for Accept-time owned provinces.
 ///
 /// Without the sea-zone secondary-neighbor graph, coastal isolation falls back to "has any
@@ -1687,14 +1723,28 @@ const fn variant_set_d(code: u8) -> bool {
     )
 }
 
-fn bootstrap_nations(human_nation: MajorNationId, difficulty: Difficulty) -> Nations {
+fn bootstrap_nations(
+    human_nation: MajorNationId,
+    difficulty: Difficulty,
+    foreign_ministers: MajorNationTable<ForeignMinisterPersonality>,
+) -> Nations {
     Nations::new(
-        MajorNationTable::from_fn(|nation| major_nation(difficulty, nation == human_nation)),
+        MajorNationTable::from_fn(|nation| {
+            major_nation(
+                difficulty,
+                nation == human_nation,
+                foreign_ministers[nation],
+            )
+        }),
         MinorNationTable::from_fn(|nation| Some(minor_nation(nation))),
     )
 }
 
-fn major_nation(difficulty: Difficulty, human: bool) -> MajorNation {
+fn major_nation(
+    difficulty: Difficulty,
+    human: bool,
+    foreign_minister: ForeignMinisterPersonality,
+) -> MajorNation {
     let treasury = if human {
         STARTING_TREASURY_BY_DIFFICULTY[difficulty]
     } else {
@@ -1707,13 +1757,96 @@ fn major_nation(difficulty: Difficulty, human: bool) -> MajorNation {
     } else {
         Difficulty::Normal
     };
-    MajorNation::for_random_start(treasury, human, scenario_city(preset_difficulty, human))
+    MajorNation::for_random_start(
+        treasury,
+        human,
+        foreign_minister,
+        scenario_city(preset_difficulty, human),
+    )
+}
+
+/// `TMapMgr::ChooseNationSetupProfilesForOpenSlots` followed by the foreign-minister
+/// column of `g_aDefaultNationSetupPolicyProfiles`.
+fn choose_foreign_ministers(
+    map: &GeneratedMap,
+    human_nation: MajorNationId,
+) -> MajorNationTable<ForeignMinisterPersonality> {
+    const PROFILE_ORDER: [usize; 7] = [1, 5, 4, 6, 2, 3, 3];
+    const PREFERRED_ISOLATION_BY_PROFILE: [[u8; 3]; 7] = [
+        [0, 1, 2],
+        [2, 1, 0],
+        [0, 1, 2],
+        [0, 1, 2],
+        [1, 2, 0],
+        [1, 2, 0],
+        [0, 1, 2],
+    ];
+    const FOREIGN_MINISTER_BY_PROFILE: [ForeignMinisterPersonality; 7] = [
+        ForeignMinisterPersonality::Diplomat,
+        ForeignMinisterPersonality::Ted,
+        ForeignMinisterPersonality::Bill,
+        ForeignMinisterPersonality::Diplomat,
+        ForeignMinisterPersonality::Textile,
+        ForeignMinisterPersonality::Trader,
+        ForeignMinisterPersonality::Bill,
+    ];
+
+    let mut region_class_by_nation = [None; NATION_COUNT];
+    for province in map.provinces() {
+        region_class_by_nation[usize::from(province.owner.get())] = Some(province.terrain);
+    }
+
+    let major_count = usize::from(MajorNationId::COUNT);
+    let isolation_by_major = MajorNationTable::from_fn(|nation| {
+        let class = region_class_by_nation[usize::from(nation.get())]
+            .expect("accepted random maps assign a region class to every major nation");
+        if (0..major_count).any(|other| {
+            other != usize::from(nation.get()) && region_class_by_nation[other] == Some(class)
+        }) {
+            0
+        } else if (major_count..NATION_COUNT)
+            .any(|other| region_class_by_nation[other] == Some(class))
+        {
+            1
+        } else {
+            2
+        }
+    });
+
+    let mut profile_by_major = MajorNationTable::from_fn(|_| None);
+    for &profile in PROFILE_ORDER.iter().take(major_count - 1) {
+        let nation = PREFERRED_ISOLATION_BY_PROFILE[profile]
+            .iter()
+            .find_map(|&isolation| {
+                (0..major_count).find_map(|slot| {
+                    let nation = MajorNationId::new(slot as u8);
+                    (nation != human_nation
+                        && profile_by_major[nation].is_none()
+                        && isolation_by_major[nation] == isolation)
+                        .then_some(nation)
+                })
+            })
+            .expect("each generated-map AI profile has an eligible open nation slot");
+        profile_by_major[nation] = Some(profile);
+    }
+
+    MajorNationTable::from_fn(|nation| {
+        if nation == human_nation {
+            ForeignMinisterPersonality::Base
+        } else {
+            let profile =
+                profile_by_major[nation].expect("every AI nation receives a setup profile");
+            FOREIGN_MINISTER_BY_PROFILE[profile]
+        }
+    })
 }
 
 fn minor_nation(nation: MinorNationId) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState {
+            status: CountryStatus::Independent,
+            owned_regions: Vec::new(),
             treasury: 5_000,
             home_tile: None,
             trade_policy_by_nation: NationTable::default(),
@@ -1949,6 +2082,74 @@ mod tests {
         let preview =
             generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
         let state = create_random_game(&preview, MajorNationId::new(6), Difficulty::Normal, 1);
+
+        assert_eq!(
+            state
+                .nations
+                .majors
+                .iter()
+                .map(|nation| nation.economy.foreign_minister_personality)
+                .collect::<Vec<_>>(),
+            [
+                ForeignMinisterPersonality::Trader,
+                ForeignMinisterPersonality::Bill,
+                ForeignMinisterPersonality::Bill,
+                ForeignMinisterPersonality::Diplomat,
+                ForeignMinisterPersonality::Textile,
+                ForeignMinisterPersonality::Ted,
+                ForeignMinisterPersonality::Base,
+            ]
+        );
+        assert_eq!(
+            state
+                .nations
+                .majors
+                .iter()
+                .map(|nation| nation.economy.foreign_minister_skill_index)
+                .collect::<Vec<_>>(),
+            [1, 4, 4, 3, 2, 5, 0]
+        );
+        assert!(state.nations.majors.iter().all(|nation| {
+            nation.economy.development_grant_by_nation == NationTable::default()
+                && nation.economy.defense_minister_skill_index == 0
+        }));
+
+        let expected_adjacency = build_province_adjacency(&state.world);
+        for (index, generated) in preview.map.provinces().iter().enumerate() {
+            let province = ProvinceId::new(index as u16);
+            let owner = generated.owner.nation().unwrap();
+            assert_eq!(state.provinces[province].owner(), Some(owner));
+            assert_eq!(state.provinces[province].former_owner(), Some(owner));
+            assert_eq!(
+                state.provinces[province].adjacency(),
+                expected_adjacency[index]
+            );
+            assert_eq!(
+                state.provinces[province].region_class(),
+                Some(generated.terrain.retail() as u8)
+            );
+        }
+        for index in preview.map.provinces().len()..crate::PROVINCE_COUNT {
+            assert_eq!(
+                state.provinces[ProvinceId::new(index as u16)],
+                ProvinceState::default()
+            );
+        }
+        for nation in NationId::all() {
+            let expected = preview
+                .map
+                .provinces()
+                .iter()
+                .enumerate()
+                .filter_map(|(index, province)| {
+                    (province.owner.nation() == Some(nation))
+                        .then_some(ProvinceId::new(index as u16))
+                })
+                .collect::<Vec<_>>();
+            let common = state.nations.common(nation).unwrap();
+            assert_eq!(common.status, CountryStatus::Independent);
+            assert_eq!(common.owned_regions, expected);
+        }
 
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(state.turn.difficulty, Difficulty::Normal);
