@@ -54,10 +54,7 @@ pub use map_geometry::{
 };
 pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
 pub use population::{FoodOutcome, LaborPool, SkillBand};
-pub use production::{
-    CivilianRecruitOrder, MilitaryRecruitOrder, ProductionConstraint, ProductionProgress,
-    ResourceCost,
-};
+pub use production::*;
 pub use random_map::{
     COARSE_MAP_CELL_COUNT, COARSE_MAP_HEIGHT, COARSE_MAP_WIDTH, EXPANDED_MAP_HEIGHT,
     EXPANDED_MAP_WIDTH, RANDOM_MAP_CLASS_COUNT,

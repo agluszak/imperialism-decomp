@@ -1074,6 +1074,9 @@ impl PendingActionStatus {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
+    /// Boxed to keep the dense fixed order tables out of already-large
+    /// full-state stack frames.
+    pub orders: Box<CityOrders>,
     pub power_plant_upgrade_queued: bool,
     pub food_substitution_count: i16,
     pub starvation_population_loss: i16,
@@ -1121,6 +1124,7 @@ impl CityState {
         human: bool,
     ) -> Self {
         Self {
+            orders: Box::default(),
             power_plant_upgrade_queued: false,
             food_substitution_count: 0,
             starvation_population_loss: 0,

@@ -30,10 +30,7 @@ impl ScenarioMeta {
 mod scenarios {
     use super::ScenarioMeta;
     use crate::EvidenceKind;
-    use imperialism_core::{
-        CivilianUnitId, DiplomacyGrant, GameState, MajorNationId, MilitaryUnitKind, MinorNationId,
-        NationId, ResourceKind, TradePolicyScore,
-    };
+    use imperialism_core::*;
     use serde::Deserialize;
 
     const fn retail_fixture(name: &'static str) -> ScenarioMeta {
@@ -186,6 +183,20 @@ mod scenarios {
 
     fn apply_merchant_marine(state: &mut GameState, case: NationCase) -> bool {
         state.increase_merchant_marine(case.nation)
+    }
+
+    #[derive(Debug, Deserialize)]
+    struct CityItemOrderCase {
+        nation: MajorNationId,
+        output: ResourceKind,
+        quantity: i16,
+    }
+
+    const CITY_ITEM_ORDER_INCREASE: ScenarioMeta = retail_fixture("city_item_order_increase");
+    const CITY_ITEM_ORDER_DECREASE: ScenarioMeta = retail_fixture("city_item_order_decrease");
+
+    fn apply_city_item_order(state: &mut GameState, case: CityItemOrderCase) -> bool {
+        state.set_city_order_quantity(case.nation, CityOrderId::Item(case.output), case.quantity)
     }
 
     #[derive(Debug, Deserialize)]
@@ -348,6 +359,16 @@ mod scenarios {
         differential_test!(aid_allocation, AID_ALLOCATION, apply_aid_allocation);
         differential_test!(direct_transport, DIRECT_TRANSPORT, apply_direct_transport);
         differential_test!(merchant_marine, MERCHANT_MARINE, apply_merchant_marine);
+        differential_test!(
+            city_item_order_increase,
+            CITY_ITEM_ORDER_INCREASE,
+            apply_city_item_order
+        );
+        differential_test!(
+            city_item_order_decrease,
+            CITY_ITEM_ORDER_DECREASE,
+            apply_city_item_order
+        );
         differential_test!(
             power_plant_upgrade,
             POWER_PLANT_UPGRADE,

@@ -6,14 +6,26 @@
 #include "RuntimeRun.h"
 
 #include "game/city/TCity.h"
+#include "game/city/TCapacityOrder.h"
+#include "game/city/TExpansionOrder.h"
+#include "game/city/TFoodProcessingOrder.h"
+#include "game/city/TItemOrder.h"
+#include "game/city/TOrItemOrder.h"
+#include "game/city/TPopGrowthOrder.h"
 #include "game/city/TPopulationMgr.h"
+#include "game/city/TPowerPlantOrder.h"
+#include "game/city/TShipOrder.h"
+#include "game/city/TTrainingOrder.h"
+#include "game/city/TUnitOrder.h"
 #include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
 #include "game/diplomacy_domain_types.h"
 #include "game/military_domain_types.h"
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
+#include "game/globals/military_globals.h"
 #include "game/globals/nation_globals.h"
+#include "game/globals/tactical_globals.h"
 #include "game/globals/tactical_ui_globals.h"
 #include "game/globals/trade_ui_globals.h"
 #include "game/map/TBeachheadMission.h"
@@ -1167,6 +1179,294 @@ JSON_Value* CapturePopulation(const TPopulationMgr* population) {
   return object.Release();
 }
 
+const char* ProductionConstraintName(short value) {
+  switch (value) {
+  case kProductionOrderLimitResources:
+    return "resources";
+  case kProductionOrderLimitWorkforce:
+    return "workforce";
+  case kProductionOrderLimitCapacity:
+    return "capacity";
+  case kProductionOrderLimitTreasury:
+    return "treasury";
+  default:
+    FailSemanticCapture("city order has an unknown limiting constraint");
+    return "";
+  }
+}
+
+void RequireExactOrder(TProductionOrder* order, TCity* city, CRuntimeClass* expectedClass,
+                       const char* missingDetail, const char* classDetail) {
+  if (order == 0) {
+    FailSemanticCapture(missingDetail);
+  }
+  if (order->GetRuntimeClass() != expectedClass) {
+    FailSemanticCapture(classDetail);
+  }
+  if (order->ownerCity != city) {
+    FailSemanticCapture("city order points at the wrong owning city");
+  }
+  if (city->productionSummary1d8 == 0 || order->productionSummary != city->productionSummary1d8) {
+    FailSemanticCapture("city order points at the wrong production summary");
+  }
+  ProductionConstraintName(order->limitingConstraint);
+}
+
+JSON_Value* CaptureProductionProgress(const TProductionOrder* order) {
+  JsonObject progress;
+  progress.Set("quantity", static_cast<int>(order->quantity));
+  progress.Set("tracking_by_resource", CaptureResourceTable(order->trackingSlots));
+  progress.Set("reserved_workforce", static_cast<int>(order->reservedWorkforce));
+  progress.Set("limiting_constraint", ProductionConstraintName(order->limitingConstraint));
+  progress.Set("accumulated_value", order->accumulatedValue);
+  return progress.Release();
+}
+
+JSON_Value* CaptureRequestedOrder(const TItemOrder* order) {
+  JsonObject state;
+  state.Set("progress", CaptureProductionProgress(order));
+  state.Set("requested_quantity", static_cast<int>(order->requestedQuantity4c));
+  return state.Release();
+}
+
+JSON_Value* CaptureItemOrders(TCity* city) {
+  static const short kPrimaryInput[9] = {kResourceWool,   kResourceTimber, kResourceTimber,
+                                         kResourceIron,   kResourceOil,    kResourceFabric,
+                                         kResourceLumber, kResourceSteel,  kResourceSteel};
+  static const short kSecondaryInput[9] = {
+      kResourceCotton, -1, -1, kResourceCoal, -1, -1, -1, -1, -1};
+  static const short kProductionSlot[9] = {0, 4, 4, 2, 6, 1, 5, 3, 3};
+
+  JsonObject items;
+  for (int resource = 0; resource < kResourceKindCount; ++resource) {
+    if (resource < kResourceFabric || resource > kResourceArms) {
+      items.SetNull(kResourceNames[resource]);
+      continue;
+    }
+
+    TProductionOrder* base = city->orderSlotsE4[resource];
+    CRuntimeClass* expectedClass =
+        resource == kResourceFabric ? RUNTIME_CLASS(TOrItemOrder) : RUNTIME_CLASS(TItemOrder);
+    RequireExactOrder(base, city, expectedClass, "city item-order slot is unexpectedly empty",
+                      "city item-order slot has the wrong runtime class");
+    TItemOrder* order = static_cast<TItemOrder*>(base);
+    const int specIndex = resource - kResourceFabric;
+    if (order->resourceTypeIndex != resource ||
+        order->primaryInputResourceId != kPrimaryInput[specIndex] ||
+        order->secondaryInputResourceId != kSecondaryInput[specIndex] ||
+        order->productionSlot != kProductionSlot[specIndex]) {
+      FailSemanticCapture("city item order does not match its fixed retail specification");
+    }
+    items.Set(kResourceNames[resource], CaptureRequestedOrder(order));
+  }
+  return items.Release();
+}
+
+JSON_Value* CaptureCivilianRecruitmentOrders(TCity* city) {
+  static const short kCashCost[kCivilianUnitKindCount] = {1500, 500,  1000, 1000, 2000,
+                                                          1000, 1000, 2000, 5000};
+  JsonObject orders;
+  for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
+    TUnitOrder* order = city->buildOrderSlots148[9 + kind];
+    RequireExactOrder(order, city, RUNTIME_CLASS(TUnitOrder),
+                      "city civilian-recruitment slot is unexpectedly empty",
+                      "city civilian-recruitment slot has the wrong runtime class");
+    if (order->resourceTypeIndex != kind || order->primaryInputResourceId != kResourcePaper ||
+        order->primaryInputPerUnit != 2 || order->secondaryInputResourceId != -1 ||
+        order->secondaryInputPerUnit != 0 || order->cashCostPerUnit != kCashCost[kind] ||
+        order->workforceMode != kHighSkillWorkforceMode || order->specialistMode != 0) {
+      FailSemanticCapture(
+          "city civilian-recruitment order does not match its fixed retail specification");
+    }
+    orders.Set(kCivilianUnitKindNames[kind], CaptureProductionProgress(order));
+  }
+  return orders.Release();
+}
+
+JSON_Value* CaptureMilitaryRecruitmentOrders(TCity* city) {
+  static const char* const kCategoryNames[8] = {
+      "light_infantry", "regular_infantry", "heavy_infantry",  "light_cavalry",
+      "heavy_cavalry",  "light_artillery",  "heavy_artillery", "combat_engineers"};
+  JsonObject orders;
+  for (int category = 0; category < 8; ++category) {
+    TUnitOrder* order = city->buildOrderSlots148[category];
+    RequireExactOrder(order, city, RUNTIME_CLASS(TUnitOrder),
+                      "city military-recruitment slot is unexpectedly empty",
+                      "city military-recruitment slot has the wrong runtime class");
+    if (order->specialistMode != 1 || order->resourceTypeIndex < 0 ||
+        order->resourceTypeIndex >= kMilitaryUnitKindCount ||
+        g_awTacticalUnitCategoryCodeBySlot[order->resourceTypeIndex] != category + 1) {
+      FailSemanticCapture("city military-recruitment order has an invalid category or recipe");
+    }
+    const short* spec = g_aUnitOrderCostProfileByAbilityId[order->resourceTypeIndex];
+    if (spec[0] != order->resourceTypeIndex || spec[1] != order->primaryInputResourceId ||
+        spec[2] != order->primaryInputPerUnit || spec[3] != order->secondaryInputResourceId ||
+        spec[4] != order->secondaryInputPerUnit || spec[5] != order->cashCostPerUnit ||
+        spec[6] != order->workforceMode) {
+      FailSemanticCapture("city military-recruitment recipe differs from its current unit type");
+    }
+
+    JsonObject state;
+    state.Set("unit_kind", MilitaryUnitKindName(order->resourceTypeIndex));
+    state.Set("progress", CaptureProductionProgress(order));
+    orders.Set(kCategoryNames[category], state.Release());
+  }
+  return orders.Release();
+}
+
+bool ShipTypeIsValidForOrderSlot(int slot, short shipType) {
+  switch (slot) {
+  case 0:
+    return shipType == 0 || shipType == 1 || shipType == 5;
+  case 1:
+    return shipType == 0 || shipType == 2 || shipType == 6;
+  case 2:
+    return shipType == 0 || shipType == 5 || shipType == 10;
+  case 3:
+    return shipType == 0 || shipType == 6;
+  case 4:
+    return shipType == 0 || shipType == 3 || shipType == 7 || shipType == 11;
+  case 5:
+    return shipType == 0 || shipType == 4 || shipType == 8 || shipType == 9;
+  case 6:
+    return shipType == 0 || shipType == 7 || shipType == 11 || shipType == 13;
+  case 7:
+    return shipType == 0 || shipType == 8 || shipType == 9 || shipType == 12;
+  default:
+    return false;
+  }
+}
+
+JSON_Value* CaptureShipOrders(TCity* city) {
+  static const char* const kSlotNames[8] = {
+      "merchant_early_primary",      "merchant_early_secondary",  "merchant_advanced_primary",
+      "merchant_advanced_secondary", "warship_early_primary",     "warship_early_secondary",
+      "warship_advanced_primary",    "warship_advanced_secondary"};
+  JsonObject orders;
+  for (int slot = 0; slot < 8; ++slot) {
+    TShipOrder* order = city->shipOrderSlots190[slot];
+    RequireExactOrder(order, city, RUNTIME_CLASS(TShipOrder),
+                      "city ship-order slot is unexpectedly empty",
+                      "city ship-order slot has the wrong runtime class");
+    const short shipType = order->resourceTypeIndex;
+    if (shipType < 0 || shipType >= kIndustryActionSlotCount ||
+        !ShipTypeIsValidForOrderSlot(slot, shipType)) {
+      FailSemanticCapture("city ship order has an invalid current type for its persistent slot");
+    }
+    JsonObject state;
+    state.Set("ship_type", ShipTypeName(shipType));
+    state.Set("progress", CaptureProductionProgress(order));
+    orders.Set(kSlotNames[slot], state.Release());
+  }
+  return orders.Release();
+}
+
+JSON_Value* CaptureTrainingOrders(TCity* city) {
+  static const char* const kLevelNames[2] = {"medium", "high"};
+  JsonObject orders;
+  for (int level = 0; level < 2; ++level) {
+    TProductionOrder* order = city->orderSlotsE4[0x17 + level];
+    RequireExactOrder(order, city, RUNTIME_CLASS(TTrainingOrder),
+                      "city training-order slot is unexpectedly empty",
+                      "city training-order slot has the wrong runtime class");
+    if (order->resourceTypeIndex != level + 1) {
+      FailSemanticCapture("city training order has the wrong fixed skill-band identity");
+    }
+    orders.Set(kLevelNames[level], CaptureProductionProgress(order));
+  }
+  return orders.Release();
+}
+
+JSON_Value* CaptureExpansionOrders(TCity* city) {
+  JsonArray orders;
+  for (int productionSlot = 0; productionSlot < 0x10; ++productionSlot) {
+    if (productionSlot >= 7) {
+      orders.AddNull();
+      continue;
+    }
+    TProductionOrder* base = city->trailingOrderSlots1b0[2 + productionSlot];
+    RequireExactOrder(base, city, RUNTIME_CLASS(TExpansionOrder),
+                      "city expansion-order slot is unexpectedly empty",
+                      "city expansion-order slot has the wrong runtime class");
+    TExpansionOrder* order = static_cast<TExpansionOrder*>(base);
+    if (order->resourceTypeIndex != productionSlot ||
+        order->primaryInputResourceId != kResourceLumber ||
+        order->secondaryInputResourceId != kResourceSteel || order->productionSlot != 0x0e) {
+      FailSemanticCapture("city expansion order does not match its fixed retail specification");
+    }
+    orders.Add(CaptureRequestedOrder(order));
+  }
+  return orders.Release();
+}
+
+JSON_Value* CaptureCityOrders(TCity* city) {
+  for (int prefixSlot = 0; prefixSlot < 7; ++prefixSlot) {
+    if (city->orderSlotsE4[prefixSlot] != 0) {
+      FailSemanticCapture("city fixed null item-prefix slot contains an order");
+    }
+  }
+  for (int gapSlot = 0x11; gapSlot <= 0x16; ++gapSlot) {
+    if (city->orderSlotsE4[gapSlot] != 0) {
+      FailSemanticCapture("city fixed null item-gap slot contains an order");
+    }
+  }
+  if (city->buildOrderSlots148[8] != 0) {
+    FailSemanticCapture("city fixed null recruitment slot contains an order");
+  }
+
+  JsonObject orders;
+  orders.Set("items", CaptureItemOrders(city));
+  orders.Set("civilian_recruitment", CaptureCivilianRecruitmentOrders(city));
+  orders.Set("military_recruitment", CaptureMilitaryRecruitmentOrders(city));
+  orders.Set("ships", CaptureShipOrders(city));
+  orders.Set("training", CaptureTrainingOrders(city));
+  orders.Set("expansions", CaptureExpansionOrders(city));
+
+  TProductionOrder* food = city->orderSlotsE4[kResourceFood];
+  RequireExactOrder(food, city, RUNTIME_CLASS(TFoodProcessingOrder),
+                    "city food-processing slot is unexpectedly empty",
+                    "city food-processing slot has the wrong runtime class");
+  if (food->resourceTypeIndex != kResourceFood) {
+    FailSemanticCapture("city food-processing order has the wrong fixed identity");
+  }
+  orders.Set("food_processing", CaptureProductionProgress(food));
+
+  TProductionOrder* powerBase = city->trailingOrderSlots1b0[1];
+  RequireExactOrder(powerBase, city, RUNTIME_CLASS(TPowerPlantOrder),
+                    "city power-plant slot is unexpectedly empty",
+                    "city power-plant slot has the wrong runtime class");
+  TPowerPlantOrder* power = static_cast<TPowerPlantOrder*>(powerBase);
+  if (power->resourceTypeIndex != 0) {
+    FailSemanticCapture("city power-plant order has the wrong fixed identity");
+  }
+  JsonObject powerState;
+  powerState.Set("progress", CaptureProductionProgress(power));
+  powerState.Set("desired_quantity", static_cast<int>(power->field4c));
+  orders.Set("power_plant", powerState.Release());
+
+  TProductionOrder* capacityBase = city->trailingOrderSlots1b0[0];
+  RequireExactOrder(capacityBase, city, RUNTIME_CLASS(TCapacityOrder),
+                    "city transport-capacity slot is unexpectedly empty",
+                    "city transport-capacity slot has the wrong runtime class");
+  TCapacityOrder* capacity = static_cast<TCapacityOrder*>(capacityBase);
+  if (capacity->resourceTypeIndex != 0x0e || capacity->primaryInputResourceId != kResourceLumber ||
+      capacity->secondaryInputResourceId != kResourceSteel || capacity->productionSlot != 0x0e) {
+    FailSemanticCapture(
+        "city transport-capacity order does not match its fixed retail specification");
+  }
+  orders.Set("transport_capacity", CaptureRequestedOrder(capacity));
+
+  TProductionOrder* population = city->trailingOrderSlots1b0[9];
+  RequireExactOrder(population, city, RUNTIME_CLASS(TPopGrowthOrder),
+                    "city population-growth slot is unexpectedly empty",
+                    "city population-growth slot has the wrong runtime class");
+  if (population->resourceTypeIndex != 1) {
+    FailSemanticCapture("city population-growth order has the wrong fixed identity");
+  }
+  orders.Set("population_growth", CaptureProductionProgress(population));
+  return orders.Release();
+}
+
 JSON_Value* CaptureCity(int slot) {
   TGreatPower* nation = g_apNationStates[slot];
   TCity* city = nation != 0 ? nation->city : 0;
@@ -1174,6 +1474,7 @@ JSON_Value* CaptureCity(int slot) {
     return JsonNullValue();
   }
   JsonObject object;
+  object.Set("orders", CaptureCityOrders(city));
   object.Set("power_plant_upgrade_queued", city->powerPlantUpgradeQueuedFlag04 != 0 ? true : false);
   object.Set("food_substitution_count", static_cast<int>(city->foodSubstitutionCount06));
   object.Set("starvation_population_loss", static_cast<int>(city->starvationPopulationLoss08));
