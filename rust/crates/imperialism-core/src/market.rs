@@ -1,3 +1,4 @@
+use crate::*;
 use enum_map::{Enum, EnumMap, enum_map};
 use serde::{Deserialize, Serialize};
 
@@ -31,7 +32,7 @@ pub enum TradeCommodity {
 
 pub type TradeCommodityTable<T> = EnumMap<TradeCommodity, T>;
 
-#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TradeMarketRow {
     pub previous_price: i32,
     pub price: i32,
@@ -40,6 +41,7 @@ pub struct TradeMarketRow {
     pub offer_count: i32,
     pub amount_offered: i32,
     pub adjusted_offer_count: f64,
+    pub maximum_offer_by_nation: NationTable<i16>,
 }
 
 impl TradeMarketRow {
@@ -52,6 +54,7 @@ impl TradeMarketRow {
             offer_count: 0,
             amount_offered: 0,
             adjusted_offer_count: 0.0,
+            maximum_offer_by_nation: NationTable::from_array([0; NATION_COUNT]),
         }
     }
 }
@@ -88,6 +91,15 @@ impl Default for TradeMarketState {
 }
 
 impl TradeMarketState {
+    /// The `SetEmpirePolicies` eligibility test for a minor trade partner.
+    pub fn has_maximum_offer_from_minor(
+        &self,
+        commodity: TradeCommodity,
+        nation: MinorNationId,
+    ) -> bool {
+        self.rows[commodity].maximum_offer_by_nation[nation.nation()] != 0
+    }
+
     pub(crate) fn recalculate_prices(&mut self) {
         for commodity in all_trade_commodities() {
             let previous = self.rows[commodity].price;
@@ -122,7 +134,7 @@ impl TradeMarketState {
                     + self.rows[TradeCommodity::Steel].price * 3)
                     / 2
             }
-            _ => market_price(self.rows[commodity]),
+            _ => market_price(&self.rows[commodity]),
         };
         price.min(32_000)
     }
@@ -132,7 +144,7 @@ fn all_trade_commodities() -> impl ExactSizeIterator<Item = TradeCommodity> {
     (0..TradeCommodity::LENGTH).map(TradeCommodity::from_usize)
 }
 
-fn market_price(row: TradeMarketRow) -> i32 {
+fn market_price(row: &TradeMarketRow) -> i32 {
     let difference = f64::from(row.request_count) - row.adjusted_offer_count;
     let linear = truncate_price(f64::from(row.price) + difference);
     let proportional = truncate_price((1.0 + difference * 0.01) * f64::from(row.price));
@@ -146,4 +158,20 @@ fn market_price(row: TradeMarketRow) -> i32 {
 
 fn truncate_price(value: f64) -> i32 {
     value.trunc() as i32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn empire_policy_offer_eligibility_follows_the_persisted_maximum() {
+        let commodity = TradeCommodity::Cotton;
+        let nation = MinorNationId::new(22);
+        let mut market = TradeMarketState::default();
+
+        assert!(!market.has_maximum_offer_from_minor(commodity, nation));
+        market.rows[commodity].maximum_offer_by_nation[nation.nation()] = 1;
+        assert!(market.has_maximum_offer_from_minor(commodity, nation));
+    }
 }

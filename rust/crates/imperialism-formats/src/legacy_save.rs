@@ -1,22 +1,5 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
-use imperialism_core::{
-    ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitId,
-    CivilianUnitKind, CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, CountryStatus,
-    DevelopmentLevel, Difficulty, DiplomacyGrant, DiplomacyPolicy, DiplomacyState,
-    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
-    ForeignMinisterPersonality, GameState, GreatPowerState, LaborPool, MAJOR_NATION_COUNT,
-    MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
-    MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, MinorNation, MinorNationId,
-    MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCapacities, NationCommonState,
-    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, PENDING_ACTION_COUNT,
-    PendingActionState, PendingActionStatus, PendingActionTable, PendingWorkState,
-    PopulationAccumulator, PopulationState, ProductionTable, ProvinceId, ProvinceState,
-    ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg,
-    RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile, StrategicMap,
-    StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId, TileOwnerTag,
-    TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState,
-    TradePolicyScore, TurnState, TurnsRemaining,
-};
+use imperialism_core::*;
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
 const CURRENT_RETAIL_VERSION: u32 = 0x3e;
@@ -28,6 +11,8 @@ const CITY_ORDER_SLOT_COUNT: usize = 61;
 const TRADE_CATEGORY_COUNT: usize = 17;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
+const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
+const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
 const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
 const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
@@ -67,7 +52,7 @@ pub(crate) struct LegacyGameSetup {
     pub foreign_minister_policy_ids: [i16; 7],
     pub defense_minister_policy_ids: [i16; 7],
     pub reload_political_map_state: u8,
-    pub scenario_map: Option<imperialism_core::ScenarioMapId>,
+    pub scenario_map: Option<ScenarioMapId>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -88,7 +73,7 @@ pub(crate) struct LegacySimulationPrefix {
     pub saved_multiplayer_role: i32,
     pub preference_slot_10: i16,
     pub selected_asset_set: i16,
-    pub starting_year: i16,
+    pub diplomacy_year_term_raw: i16,
     pub phase_state_by_decade: [u8; 12],
     pub nation_names: Vec<String>,
 }
@@ -100,6 +85,7 @@ pub struct LegacySaveV62 {
     animator_idle_frequency: i32,
     market: TradeMarketState,
     diplomacy: DiplomacyState,
+    technology: TechnologyState,
     map: LegacyMapState,
     ocean: LegacyOceanState,
     navy: LegacyNavyState,
@@ -235,10 +221,10 @@ impl LegacyCountryBase {
                 let target_mirrors = optional_province_array(unit.order_target_mirrors)?;
                 let target = optional_province_id(unit.order_target)?;
                 let order = if unit.order == 0 && target.is_none() {
-                    imperialism_core::MilitaryOrder::idle(targets, target_mirrors)
+                    MilitaryOrder::idle(targets, target_mirrors)
                 } else {
-                    imperialism_core::MilitaryOrder::retail(
-                        imperialism_core::MilitaryOrderCode::from_retail(unit.order),
+                    MilitaryOrder::retail(
+                        MilitaryOrderCode::from_retail(unit.order),
                         target,
                         targets,
                         target_mirrors,
@@ -1203,6 +1189,16 @@ pub enum LegacySaveError {
         index: usize,
         value: i16,
     },
+    #[error("{context} has invalid retail boolean value {value}")]
+    InvalidBoolean { context: &'static str, value: u8 },
+    #[error(
+        "trade commodity {commodity} maximum offer for minor nation slot {nation} is negative: {value}"
+    )]
+    NegativeTradeOfferMaximum {
+        commodity: usize,
+        nation: usize,
+        value: i16,
+    },
     #[error(
         "legacy save ends at offset {end_offset:#x} but input length is {length:#x}; trailing bytes are not represented"
     )]
@@ -1375,7 +1371,7 @@ impl LegacySaveV62 {
         }
         let preference_slot_10 = stream.read_le_i16()?;
         let selected_asset_set = stream.read_le_i16()?;
-        let starting_year = stream.read_le_i16()?;
+        let diplomacy_year_term_raw = stream.read_le_i16()?;
         let phase_state_by_decade = stream.read_bytes(12)?.try_into().unwrap();
         let nation_names = (0..NATION_COUNT)
             .map(|_| stream.read_mfc_string().map(|bytes| lossy_text(&bytes)))
@@ -1397,7 +1393,7 @@ impl LegacySaveV62 {
             saved_multiplayer_role,
             preference_slot_10,
             selected_asset_set,
-            starting_year,
+            diplomacy_year_term_raw,
             phase_state_by_decade,
             nation_names,
         };
@@ -1409,7 +1405,7 @@ impl LegacySaveV62 {
             stream.position() - diplomacy_start,
             DIPLOMACY_SERIALIZED_SIZE_V62
         );
-        stream.skip(TECH_SERIALIZED_SIZE_V62)?;
+        let technology = read_technology_state(&mut stream)?;
         let map = read_map(&mut stream)?;
         let ocean = read_ocean(&mut stream)?;
         let navy = read_navy(&mut stream)?;
@@ -1498,6 +1494,7 @@ impl LegacySaveV62 {
             animator_idle_frequency,
             market,
             diplomacy,
+            technology,
             map,
             ocean,
             navy,
@@ -1659,9 +1656,8 @@ impl LegacySaveV62 {
             turn: TurnState {
                 scenario_map: self.simulation.game_setup.scenario_map,
                 economic_turn: i32::from(self.simulation.economic_turn),
-                phase: imperialism_core::PhaseCode::from_retail(i32::from(
-                    self.simulation.turn_state_code,
-                )),
+                diplomacy_year_term_raw: self.simulation.diplomacy_year_term_raw,
+                phase: PhaseCode::from_retail(i32::from(self.simulation.turn_state_code)),
                 difficulty: Difficulty::try_from(self.simulation.difficulty).map_err(|_| {
                     LegacySaveError::StateProjection(format!(
                         "invalid difficulty {}",
@@ -1671,7 +1667,7 @@ impl LegacySaveV62 {
                 active_nation: nation_id_from_retail_i16(self.simulation.active_nation)?,
                 selected_nation: context.selected_nation,
             },
-            unit_ids: imperialism_core::UnitIdAllocator::from_retail(persistent_unit_id_counter),
+            unit_ids: UnitIdAllocator::from_retail(persistent_unit_id_counter),
             world: self.map.world_state()?,
             provinces: self.map.province_states()?,
             rng: RngState {
@@ -1680,6 +1676,7 @@ impl LegacySaveV62 {
                 zone_status: RetailLcg::from_state(context.zone_status_lcg),
             },
             market: self.market.clone(),
+            technology: self.technology,
             diplomacy: self.diplomacy.clone(),
             nations: Nations::new(majors, minors),
             military_units,
@@ -1739,9 +1736,9 @@ fn great_power_state(
     }
     Ok(GreatPowerState {
         controller: if prefix.diplomacy_eligible != 0 {
-            imperialism_core::MajorNationController::Human
+            MajorNationController::Human
         } else {
-            imperialism_core::MajorNationController::Computer
+            MajorNationController::Computer
         },
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
@@ -2353,11 +2350,11 @@ fn read_optional_major_nation_table(
 }
 
 fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, LegacySaveError> {
-    let rows: [TradeMarketRow; TRADE_CATEGORY_COUNT] = (0..TRADE_CATEGORY_COUNT)
-        .map(|_| read_trade_market_row(stream))
-        .collect::<Result<Vec<_>, _>>()?
-        .try_into()
-        .expect("one market row per trade commodity");
+    let rows = (0..TRADE_CATEGORY_COUNT)
+        .map(|commodity| read_trade_market_row(stream, commodity))
+        .collect::<Result<Vec<_>, _>>()?;
+    let rows: [TradeMarketRow; TRADE_CATEGORY_COUNT] =
+        rows.try_into().expect("one market row per trade commodity");
     for _ in 0..TRADE_CATEGORY_COUNT {
         let record_size = usize::from(stream.read_le_u16()?);
         let record_count = bounded_u32(
@@ -2373,7 +2370,10 @@ fn read_trade_market(stream: &mut LegacyStream<'_>) -> Result<TradeMarketState, 
     })
 }
 
-fn read_trade_market_row(stream: &mut LegacyStream<'_>) -> Result<TradeMarketRow, StreamError> {
+fn read_trade_market_row(
+    stream: &mut LegacyStream<'_>,
+    commodity: usize,
+) -> Result<TradeMarketRow, LegacySaveError> {
     let previous_price = i32::from(stream.read_le_i16()?);
     let price = i32::from(stream.read_le_i16()?);
     let request_count = i32::from(stream.read_le_i16()?);
@@ -2381,9 +2381,19 @@ fn read_trade_market_row(stream: &mut LegacyStream<'_>) -> Result<TradeMarketRow
     let adjusted_offer_count = f64::from_le_bytes(stream.read_bytes(8)?.try_into().unwrap());
     let amount_offered = i32::from(stream.read_le_i16()?);
     let base_price = i32::from(stream.read_le_i16()?);
-    // The three per-nation offer-history cells are not represented by the price slice.
-    for _ in 0..3 {
-        stream.skip(RESOURCE_KIND_COUNT * std::mem::size_of::<i16>())?;
+    // The first two per-nation sub-rows are transient current and accumulated offers.
+    stream.skip(2 * NATION_COUNT * std::mem::size_of::<i16>())?;
+    let mut maximum_offer_by_nation = [0; NATION_COUNT];
+    for (nation, maximum) in maximum_offer_by_nation.iter_mut().enumerate() {
+        let value = stream.read_be_i16()?;
+        if value < 0 {
+            return Err(LegacySaveError::NegativeTradeOfferMaximum {
+                commodity,
+                nation,
+                value,
+            });
+        }
+        *maximum = value;
     }
     Ok(TradeMarketRow {
         previous_price,
@@ -2393,7 +2403,32 @@ fn read_trade_market_row(stream: &mut LegacyStream<'_>) -> Result<TradeMarketRow
         offer_count,
         amount_offered,
         adjusted_offer_count,
+        maximum_offer_by_nation: NationTable::from_array(maximum_offer_by_nation),
     })
+}
+
+fn read_technology_state(
+    stream: &mut LegacyStream<'_>,
+) -> Result<TechnologyState, LegacySaveError> {
+    let bytes = stream.read_bytes(TECH_SERIALIZED_SIZE_V62)?;
+    Ok(TechnologyState {
+        advanced_iron_working: retail_boolean(
+            bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62],
+            "technology advanced iron working",
+        )?,
+        marine_engineering: retail_boolean(
+            bytes[TECH_MARINE_ENGINEERING_OFFSET_V62],
+            "technology marine engineering",
+        )?,
+    })
+}
+
+fn retail_boolean(value: u8, context: &'static str) -> Result<bool, LegacySaveError> {
+    match value {
+        0 => Ok(false),
+        1 => Ok(true),
+        value => Err(LegacySaveError::InvalidBoolean { context, value }),
+    }
 }
 
 fn read_map(stream: &mut LegacyStream<'_>) -> Result<LegacyMapState, StreamError> {
@@ -3242,8 +3277,8 @@ fn read_game_setup(stream: &mut LegacyStream<'_>) -> Result<LegacyGameSetup, Str
     let reload_political_map_state = stream.read_u8()?;
     stream.skip(1)?;
     let raw_scenario_map = stream.read_le_i16()?;
-    let scenario_map = (raw_scenario_map > 0)
-        .then(|| imperialism_core::ScenarioMapId::new((raw_scenario_map - 1) as u16));
+    let scenario_map =
+        (raw_scenario_map > 0).then(|| ScenarioMapId::new((raw_scenario_map - 1) as u16));
     Ok(LegacyGameSetup {
         multiplayer_game_active,
         nation_control_modes,
@@ -3332,6 +3367,11 @@ mod tests {
 
     const RETAIL_FIXTURE: &[u8] =
         include_bytes!("../../../../fixtures/retail/beginning_of_game.imp");
+    const DIPLOMACY_YEAR_TERM_ABSOLUTE_OFFSET_V62: usize = 0x1a1f;
+    const MARKET_ABSOLUTE_OFFSET_V62: usize = 0x1ac1;
+    const MARKET_ROW_SERIALIZED_SIZE_V62: usize = 0x9e;
+    const MARKET_MAXIMUM_OFFER_OFFSET_V62: usize = 0x70;
+    const TECH_ABSOLUTE_OFFSET_V62: usize = 0x3af9;
 
     fn game_context() -> LegacyGameStateContext {
         LegacyGameStateContext {
@@ -3393,6 +3433,101 @@ mod tests {
         }
         assert_eq!(bytes.len(), DIPLOMACY_SERIALIZED_SIZE_V62);
         bytes
+    }
+
+    #[test]
+    fn reads_phase_six_inputs_from_their_exact_v62_offsets() {
+        let mut bytes = RETAIL_FIXTURE.to_vec();
+        bytes[DIPLOMACY_YEAR_TERM_ABSOLUTE_OFFSET_V62..DIPLOMACY_YEAR_TERM_ABSOLUTE_OFFSET_V62 + 2]
+            .copy_from_slice(&(-1234_i16).to_le_bytes());
+        let category = 6;
+        let nation_slot = 22;
+        let maximum_offset = MARKET_ABSOLUTE_OFFSET_V62
+            + category * MARKET_ROW_SERIALIZED_SIZE_V62
+            + MARKET_MAXIMUM_OFFER_OFFSET_V62
+            + nation_slot * std::mem::size_of::<i16>();
+        assert_eq!(maximum_offset, 0x1f11);
+        bytes[maximum_offset..maximum_offset + 2].copy_from_slice(&321_i16.to_be_bytes());
+        bytes[TECH_ABSOLUTE_OFFSET_V62 + TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
+        bytes[TECH_ABSOLUTE_OFFSET_V62 + TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
+        assert_eq!(
+            TECH_ABSOLUTE_OFFSET_V62 + TECH_ADVANCED_IRON_WORKING_OFFSET_V62,
+            0x3c9e
+        );
+        assert_eq!(
+            TECH_ABSOLUTE_OFFSET_V62 + TECH_MARINE_ENGINEERING_OFFSET_V62,
+            0x3ca1
+        );
+
+        let save = LegacySaveV62::parse(&bytes).unwrap();
+        let state = save.game_state(game_context()).unwrap();
+        assert_eq!(state.turn.diplomacy_year_term_raw, -1234);
+        assert!(state.technology.advanced_iron_working);
+        assert!(state.technology.marine_engineering);
+        assert_eq!(
+            state.market.rows[TradeCommodity::Oil].maximum_offer_by_nation[NationId::new(22)],
+            321
+        );
+    }
+
+    #[test]
+    fn technology_decoder_requires_boolean_resource_type_flags() {
+        let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
+        bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
+        bytes[TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
+        let mut stream = LegacyStream::new(&bytes);
+        assert_eq!(
+            read_technology_state(&mut stream).unwrap(),
+            TechnologyState {
+                advanced_iron_working: true,
+                marine_engineering: true,
+            }
+        );
+        assert_eq!(stream.position(), TECH_SERIALIZED_SIZE_V62);
+
+        for (offset, value) in [
+            (TECH_ADVANCED_IRON_WORKING_OFFSET_V62, 2),
+            (TECH_MARINE_ENGINEERING_OFFSET_V62, u8::MAX),
+        ] {
+            let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
+            bytes[offset] = value;
+            assert!(matches!(
+                read_technology_state(&mut LegacyStream::new(&bytes)),
+                Err(LegacySaveError::InvalidBoolean {
+                    value: invalid,
+                    ..
+                }) if invalid == value
+            ));
+        }
+    }
+
+    #[test]
+    fn trade_maximum_decoder_keeps_all_nation_slots_and_rejects_negatives() {
+        let mut bytes = [0_u8; MARKET_ROW_SERIALIZED_SIZE_V62];
+        let nation_zero_offset = MARKET_MAXIMUM_OFFER_OFFSET_V62;
+        let nation_twenty_two_offset = MARKET_MAXIMUM_OFFER_OFFSET_V62 + 22 * 2;
+        assert_eq!(nation_zero_offset, 0x70);
+        assert_eq!(nation_twenty_two_offset, 0x9c);
+        bytes[nation_zero_offset..nation_zero_offset + 2].copy_from_slice(&17_i16.to_be_bytes());
+        bytes[nation_twenty_two_offset..nation_twenty_two_offset + 2]
+            .copy_from_slice(&222_i16.to_be_bytes());
+
+        let mut stream = LegacyStream::new(&bytes);
+        let row = read_trade_market_row(&mut stream, 6).unwrap();
+        assert_eq!(stream.position(), MARKET_ROW_SERIALIZED_SIZE_V62);
+        assert_eq!(row.maximum_offer_by_nation[NationId::new(0)], 17);
+        assert_eq!(row.maximum_offer_by_nation[NationId::new(22)], 222);
+
+        bytes[nation_twenty_two_offset..nation_twenty_two_offset + 2]
+            .copy_from_slice(&(-1_i16).to_be_bytes());
+        assert!(matches!(
+            read_trade_market_row(&mut LegacyStream::new(&bytes), 6),
+            Err(LegacySaveError::NegativeTradeOfferMaximum {
+                commodity: 6,
+                nation: 22,
+                value: -1,
+            })
+        ));
     }
 
     #[test]
@@ -3661,10 +3796,7 @@ mod tests {
 
         bytes[SCENARIO_MAP_OFFSET..].copy_from_slice(&1_i16.to_le_bytes());
         let setup = read_game_setup(&mut LegacyStream::new(&bytes)).unwrap();
-        assert_eq!(
-            setup.scenario_map,
-            Some(imperialism_core::ScenarioMapId::new(0))
-        );
+        assert_eq!(setup.scenario_map, Some(ScenarioMapId::new(0)));
 
         bytes[SCENARIO_MAP_OFFSET..].copy_from_slice(&(-1_i16).to_le_bytes());
         let setup = read_game_setup(&mut LegacyStream::new(&bytes)).unwrap();
@@ -3703,15 +3835,13 @@ mod tests {
         assert_eq!(save.simulation.turn_state_code, 5);
         assert_eq!(save.simulation.nation_count, 7);
         assert_eq!(save.simulation.minor_nation_count, 16);
-        assert_eq!(save.simulation.starting_year, 1914);
-        assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).year(), 1914);
-        assert_eq!(imperialism_core::TurnCalendar::new(1914, 1).quarter(), 1);
+        assert_eq!(save.simulation.diplomacy_year_term_raw, 1914);
         assert_eq!(save.simulation.nation_names[0], "Zimm");
         assert_eq!(save.simulation.nation_names[6], " Testland");
         assert_eq!(save.simulation.nation_names[22], "Sindel");
         assert_eq!(save.animator_idle_frequency, 2);
         assert_eq!(
-            save.market.rows[imperialism_core::TradeCommodity::Cotton],
+            save.market.rows[TradeCommodity::Cotton],
             TradeMarketRow {
                 previous_price: 100,
                 price: 100,
@@ -3720,12 +3850,11 @@ mod tests {
                 offer_count: 0,
                 amount_offered: 0,
                 adjusted_offer_count: 0.0,
+                maximum_offer_by_nation: NationTable::default(),
             }
         );
-        assert_eq!(
-            save.market.rows[imperialism_core::TradeCommodity::Arms].base_price,
-            900
-        );
+        assert_eq!(save.market.rows[TradeCommodity::Arms].base_price, 900);
+        assert_eq!(save.technology, TechnologyState::default());
         assert_eq!(
             save.diplomacy.standings[NationId::new(0)][NationId::new(0)],
             0x100
@@ -4072,7 +4201,7 @@ mod tests {
                 .next()
                 .unwrap()
                 .economy()
-                .pending_actions[imperialism_core::PendingActionKind::NavyGrowthReward]
+                .pending_actions[PendingActionKind::NavyGrowthReward]
                 .payload(),
             Some(0)
         );
