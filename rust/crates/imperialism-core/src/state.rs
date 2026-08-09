@@ -765,8 +765,16 @@ pub struct CityState {
     pub serialized_state: i16,
     pub phase_counter: i16,
     /// Cumulative military recruit deltas by [`MilitaryUnitKind`].
+    #[serde(
+        serialize_with = "crate::units::serialize_military_unit_table",
+        deserialize_with = "crate::units::deserialize_military_unit_table"
+    )]
     pub military_recruit_count_by_kind: MilitaryUnitTable<i16>,
     /// Cumulative civilian recruit deltas by [`CivilianUnitKind`].
+    #[serde(
+        serialize_with = "crate::units::serialize_civilian_unit_table",
+        deserialize_with = "crate::units::deserialize_civilian_unit_table"
+    )]
     pub civilian_recruit_count_by_kind: CivilianUnitTable<i16>,
     pub ship_order_count_by_type: ShipTypeTable<i16>,
     pub rolling_item_production_score: i32,
@@ -1530,4 +1538,18 @@ mod tests {
         sibling.clear_city_marker();
         assert_eq!(sibling.bits(), 0x1f);
     }
+}
+
+/// Ordered non-state effects: notifications, prompts, acknowledgement, or turn progression.
+///
+/// Do not emit variants that merely restate authoritative `GameState` mutations. Callers that
+/// need operation results should use operation-specific return types instead.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub enum GameEvent {
+    RecruitmentAnnounced {
+        nation: NationId,
+        specialist: bool,
+        unit_type: i16,
+        requested: i16,
+    },
 }

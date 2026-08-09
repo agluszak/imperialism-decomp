@@ -10,7 +10,7 @@ reconstruction in `../decomp/`. Run Rust commands from this directory.
 - `imperialism-testkit` reads named semantic captures and runs process-isolated differential
   checks.
 
-Native scenarios capture `before`, `case`, and `after` GameState JSON. Ordinary Rust tests call
+Native semantic scenarios capture `before`, `case`, `after`, and `result` JSON; the testkit validates the published runtime envelope strictly and compares operation outcomes as well as complete GameState. Ordinary Rust tests call
 `differential(scenario, |state, case| { ... })`, apply the Rust operation, and compare complete
 states with `first_serialized_difference`. Retail fixtures live in `../fixtures/retail/`. The Rust
 game state does not depend on C++ layouts or Bevy ECS entities.

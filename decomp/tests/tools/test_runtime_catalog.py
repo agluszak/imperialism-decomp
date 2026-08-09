@@ -18,7 +18,7 @@ from tools.runtime.catalog import (
 )
 from tools.runtime.generate_native_registry import render_registry
 from tools.runtime.fixtures import validate_fixture_metadata
-from tools.runtime.protocol import validate_result
+from tools.runtime.protocol import validate_published_result, validate_result
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -100,6 +100,24 @@ class RuntimeProtocolTests(unittest.TestCase):
 
     def test_valid_result_is_accepted(self) -> None:
         validate_result(self.result(), "boot_managers", 1)
+
+    def test_published_result_requires_catalog_evidence_kind(self) -> None:
+        with self.assertRaisesRegex(ValueError, "evidence_kind"):
+            validate_published_result(self.result(), "boot_managers", 1)
+        validate_published_result(
+            self.result(evidence_kind="internal_invariant"), "boot_managers", 1
+        )
+        with self.assertRaisesRegex(ValueError, "evidence_kind"):
+            validate_published_result(
+                self.result(evidence_kind="not_a_real_kind"), "boot_managers", 1
+            )
+
+    def test_published_result_allows_expected_failure_status(self) -> None:
+        validate_published_result(
+            self.result(status="expected_failure", evidence_kind="internal_invariant"),
+            "boot_managers",
+            1,
+        )
 
     def test_extra_top_level_fields_are_allowed(self) -> None:
         validate_result(

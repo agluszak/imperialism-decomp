@@ -1,6 +1,7 @@
 #![forbid(unsafe_code)]
 
 mod differential;
+pub mod differential_scenarios;
 mod oracle;
 mod runtime_capture;
 
@@ -15,7 +16,7 @@ pub use oracle::{
     check_coarse, check_random_game_start, check_random_setup, check_random_setup_initial,
     check_snapshot, check_terrain,
 };
-pub use runtime_capture::{RuntimeCaptureError, RuntimeResult};
+pub use runtime_capture::{decode_runtime_result, read_runtime_result, EvidenceKind, RuntimeCaptureError, RuntimeResult, RuntimeResultExpectations, ValidatedRuntimeResult};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 

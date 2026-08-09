@@ -35,6 +35,15 @@ the decomp uses them.
   behavior demonstrably depends on that overflow as an observable rule; document that evidence at
   the narrow boundary where it matters.
 
+## Differential fidelity
+
+- Preserve capture collection order and semantic IDs. Differential scenarios compare complete
+  `before`/`case`/`after` state and the semantic operation result; do not normalize order.
+- Validate published runtime result envelopes strictly: name, seed, status, evidence kind, required
+  captures, and unknown capture fields.
+- Advance turns only through `advance_turn_step`. Phase 6 is an unported stop, not completed
+  diplomacy progression.
+
 ## Behavioral work
 
 - Prefer recovered C++ source and the existing process oracle when retail semantics matter.
