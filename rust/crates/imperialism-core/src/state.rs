@@ -178,7 +178,7 @@ pub struct TurnState {
     /// Raw persisted `TSimMgr` term consumed by diplomacy scaling.
     ///
     /// This is not the 1815-based display calendar.
-    pub diplomacy_year_term_raw: i32,
+    pub diplomacy_year_term_raw: i16,
     pub phase: PhaseCode,
     pub difficulty: Difficulty,
     pub active_nation: NationId,

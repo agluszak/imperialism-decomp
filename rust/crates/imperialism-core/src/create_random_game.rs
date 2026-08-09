@@ -1,16 +1,4 @@
-use crate::{
-    ArmyMissionState, CityState, CountryStatus, DevelopmentLevel, Difficulty, DiplomacyState,
-    ForeignMinisterPersonality, GameState, GeneratedMap, GeneratedTerrainTile, HexDirection,
-    LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MapTopology,
-    MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MinorNation,
-    MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCommonState,
-    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, PendingNewspaperEvent,
-    PendingWorkState, ProductionTable, ProvinceId, ProvinceState, ProvinceTable,
-    RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RiverSegment,
-    RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap, TerrainKind, TileAction,
-    TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState, TurnState, UnitIdAllocator,
-    is_valid_secondary_nation_home_tile_candidate, place_city, supports_city_site_terrain,
-};
+use crate::*;
 use enum_map::{Enum, EnumMap};
 
 /// `g_fScatteredShipsMissionDefaultScore` (0.001f) as IEEE-754 bits.
@@ -1886,10 +1874,6 @@ fn scenario_city(difficulty: Difficulty, human: bool) -> CityState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{
-        Difficulty, MapTopology, NationId, ResourceKind, TileId,
-        generate_random_setup_preview_with_clock_seed,
-    };
 
     #[test]
     fn picture_assignment_consumes_ordered_mountain_and_river_draws_without_rewriting_rivers() {

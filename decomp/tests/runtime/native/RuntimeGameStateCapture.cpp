@@ -592,7 +592,6 @@ JSON_Value* CaptureResourceTable(const int* values) {
 JSON_Value* CaptureMarket() {
   JsonObject market;
   JsonObject rows;
-  JsonObject maximumOfferByMinor;
   for (int resource = kResourceCotton; resource < kResourceManufacturedEnd; ++resource) {
     const TTradeMgr::NationMetricCategoryRow& row = g_pTradeMgr->categoryRows[resource];
     JsonObject rowObject;
@@ -603,24 +602,21 @@ JSON_Value* CaptureMarket() {
     rowObject.Set("offer_count", static_cast<int>(row.numOffers));
     rowObject.Set("amount_offered", static_cast<int>(row.amountOffered));
     rowObject.Set("adjusted_offer_count", row.adjustedNumOffers);
-    rows.Set(kResourceNames[resource], rowObject.Release());
-
     JsonArray maximumOfferRow;
     const short* maximumByNation = &row.tradeOfferCells[46];
-    for (int minorNationSlot = kMinorNationFirstSlot; minorNationSlot < kNationSlotCount;
-         ++minorNationSlot) {
+    for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
       // Slot 22 is the final serialized short even though it crosses the declared cell array
       // into the following row/padding in the retail runtime layout.
-      const short value = maximumByNation[minorNationSlot];
+      const short value = maximumByNation[nationSlot];
       if (value < 0) {
         FailSemanticCapture("trade maximum offer is negative");
       }
       maximumOfferRow.Add(static_cast<int>(value));
     }
-    maximumOfferByMinor.Set(kResourceNames[resource], maximumOfferRow.Release());
+    rowObject.Set("maximum_offer_by_nation", maximumOfferRow.Release());
+    rows.Set(kResourceNames[resource], rowObject.Release());
   }
   market.Set("rows", rows.Release());
-  market.Set("maximum_offer_by_minor", maximumOfferByMinor.Release());
   return market.Release();
 }
 
