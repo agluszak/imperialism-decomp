@@ -1681,7 +1681,52 @@ pub struct MissionState {
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct PendingWorkState {
     pub nations: MajorNationTable<NationPendingWork>,
+    pub newspaper_events: Vec<PendingNewspaperEvent>,
     pub war_transitions: Vec<WarTransition>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum InterNationNewsKind {
+    WarDeclaredBySubject,
+    WarDeclaredAgainstSubject,
+    PeaceTreatyAccepted,
+    JoinEmpireAccepted,
+    AllianceAccepted,
+    NonAggressionPactAccepted,
+    PeaceTreatyRejected,
+    JoinEmpireRejected,
+    AllianceRejected,
+    NonAggressionPactRejected,
+    TradeConsulateEstablished,
+    EmbassyEstablished,
+    MinorEmpireAffiliationChanged,
+    MinorTerritoryRelationshipAffected,
+    PeaceRelationshipPropagated,
+    WarWithIndependentMinor,
+    AllianceRelationshipEstablished,
+    NationJoinedEmpire,
+    NationJoinedWar,
+    NationTransferred,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum PendingNewspaperEvent {
+    InterNation {
+        event: InterNationNewsKind,
+        subject: MajorNationId,
+        related_nations: NationTable<bool>,
+    },
+    Shortage {
+        subject: MajorNationId,
+        affected_nations: NationTable<bool>,
+        resource: crate::ResourceKind,
+    },
+    Miscellaneous {
+        audience: Option<MajorNationId>,
+        story_code: i16,
+    },
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1694,8 +1739,14 @@ pub struct WarTransition {
 pub struct NationPendingWork {
     pub turn_events: Vec<TaggedValue>,
     pub proposals: Vec<TaggedValue>,
+    pub newspaper_notices: Vec<NewspaperNotice>,
     pub turn_summary: Vec<TurnSummary>,
     pub turn_start_events: Vec<TurnStartEvent>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct NewspaperNotice {
+    pub counterpart: NationId,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]

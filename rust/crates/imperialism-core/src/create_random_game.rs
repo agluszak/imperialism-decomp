@@ -4,12 +4,12 @@ use crate::{
     LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MapTopology,
     MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MinorNation,
     MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCommonState,
-    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, ProductionTable, ProvinceId,
-    ProvinceState, ProvinceTable, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
-    RetailLcg, RiverSegment, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
-    TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
-    TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
-    supports_city_site_terrain,
+    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, PendingNewspaperEvent,
+    PendingWorkState, ProductionTable, ProvinceId, ProvinceState, ProvinceTable,
+    RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RiverSegment,
+    RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap, TerrainKind, TileAction,
+    TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState, TurnState, UnitIdAllocator,
+    is_valid_secondary_nation_home_tile_candidate, place_city, supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
 
@@ -115,6 +115,15 @@ pub fn create_random_game(
 
     let missions = flatten_mission_queues(&mut mission_queues);
     let provinces = build_province_state(&preview.map, &world, &mut nations);
+    let mut pending = PendingWorkState::default();
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+        audience: None,
+        story_code: 1,
+    });
+    pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
+        audience: None,
+        story_code: 2,
+    });
 
     GameState {
         turn: TurnState {
@@ -145,7 +154,7 @@ pub fn create_random_game(
         ships: Vec::new(),
         task_forces: Vec::new(),
         missions,
-        pending: crate::PendingWorkState::default(),
+        pending,
     }
 }
 
@@ -2295,6 +2304,19 @@ mod tests {
                 .nations
                 .iter()
                 .all(|work| work.turn_summary.is_empty())
+        );
+        assert_eq!(
+            state.pending.newspaper_events,
+            [
+                PendingNewspaperEvent::Miscellaneous {
+                    audience: None,
+                    story_code: 2,
+                },
+                PendingNewspaperEvent::Miscellaneous {
+                    audience: None,
+                    story_code: 1,
+                },
+            ]
         );
     }
 }

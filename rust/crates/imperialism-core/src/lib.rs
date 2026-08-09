@@ -14,6 +14,7 @@ mod map_geometry;
 mod market;
 mod military;
 mod nation_economy;
+mod news;
 mod population;
 mod production;
 mod random_map;
@@ -97,6 +98,20 @@ pub use state::{
     TechnologyState, TerrainKind, TileAction, TileDevelopment, TileFlags, TileState,
     TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator,
     WarTransition,
+};
+pub use state::{
+    ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitState,
+    DevelopmentLevel, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
+    DiplomaticMissionLevel, DiplomaticRelationship, ForeignMinisterPersonality, GameState,
+    GreatPowerState, InterNationNewsKind, MajorNation, MajorNationController, MilitaryOrder,
+    MilitaryOrderCode, MilitaryUnitState, MinorNation, MissionData, MissionState,
+    NationCommonState, NationPendingWork, Nations, NavyMissionState, NewspaperNotice,
+    PendingActionState, PendingActionStatus, PendingNewspaperEvent, PendingWorkState, PhaseCode,
+    PopulationAccumulator, PopulationState, RegionId, RiverSegment, RngState, ScenarioMapId,
+    SelectedShip, ShipState, Stockpile, StrategicMap, StrategicMapSizeError, StrikePhase,
+    TaggedValue, TaskForceState, TaskForceTarget, TerrainKind, TileAction, TileDevelopment,
+    TileFlags, TileState, TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState,
+    TurnSummary, UnitIdAllocator, WarTransition,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,
