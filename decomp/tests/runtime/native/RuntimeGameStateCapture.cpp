@@ -1515,25 +1515,62 @@ JSON_Value* CaptureMissions() {
   return missions.Release();
 }
 
-JSON_Value* CaptureTaggedValues(TSortedByRelationshipList* queue) {
-  JsonArray values;
+JSON_Value* CaptureDiplomacyNotices(TSortedByRelationshipList* queue) {
+  JsonArray notices;
+  if (queue != 0 && queue->recordSize14 != 4) {
+    FailSemanticCapture("diplomacy notice queue record size is not four bytes");
+  }
   const int count = queue != 0 ? queue->GetSize() : 0;
   for (int ordinal = 1; ordinal <= count; ++ordinal) {
     short* record = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (record == 0) {
+      FailSemanticCapture("diplomacy notice queue contains a null record");
+    }
+    if (record[1] < 0 || record[1] >= kNationSlotCount) {
+      FailSemanticCapture("diplomacy notice source is outside the nation range");
+    }
     JsonObject object;
-    object.Set("tag", static_cast<int>(record[0]));
-    object.Set("value", static_cast<int>(record[1]));
-    values.Add(object.Release());
+    object.Set("source", static_cast<int>(record[1]));
+    object.Set("code", static_cast<int>(record[0]));
+    notices.Add(object.Release());
   }
-  return values.Release();
+  return notices.Release();
+}
+
+JSON_Value* CaptureDiplomacyProposals(TSortedByRelationshipList* queue) {
+  JsonArray proposals;
+  if (queue != 0 && queue->recordSize14 != 4) {
+    FailSemanticCapture("diplomacy proposal queue record size is not four bytes");
+  }
+  const int count = queue != 0 ? queue->GetSize() : 0;
+  for (int ordinal = 1; ordinal <= count; ++ordinal) {
+    short* record = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (record == 0) {
+      FailSemanticCapture("diplomacy proposal queue contains a null record");
+    }
+    if (record[1] < 0 || record[1] >= kNationSlotCount) {
+      FailSemanticCapture("diplomacy proposal source is outside the nation range");
+    }
+    JsonObject object;
+    object.Set("source", static_cast<int>(record[1]));
+    object.Set("policy", DiplomacyPolicyName(record[0]));
+    proposals.Add(object.Release());
+  }
+  return proposals.Release();
 }
 
 JSON_Value* CaptureTurnSummary(TSortedByRelationshipList* queue) {
   JsonArray summaries;
+  if (queue != 0 && queue->recordSize14 != sizeof(TurnOrderDispatchPacket)) {
+    FailSemanticCapture("turn-summary queue record size is not eight bytes");
+  }
   const int count = queue != 0 ? queue->GetSize() : 0;
   for (int ordinal = 1; ordinal <= count; ++ordinal) {
     TurnOrderDispatchPacket* packet =
         static_cast<TurnOrderDispatchPacket*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (packet == 0) {
+      FailSemanticCapture("turn-summary queue contains a null record");
+    }
     JsonObject object;
     if (packet->orderKind == 3 && packet->payload >= 0 &&
         packet->payload < kMilitaryUnitKindCount) {
@@ -1587,8 +1624,8 @@ JSON_Value* CaptureTurnStartEvents(TSortedList* queue) {
 
 JSON_Value* CaptureNationPendingWork(TGreatPower* nation) {
   JsonObject object;
-  object.Set("turn_events", CaptureTaggedValues(nation != 0 ? nation->turnEventQueue : 0));
-  object.Set("proposals", CaptureTaggedValues(nation != 0 ? nation->proposalQueue : 0));
+  object.Set("turn_events", CaptureDiplomacyNotices(nation != 0 ? nation->turnEventQueue : 0));
+  object.Set("proposals", CaptureDiplomacyProposals(nation != 0 ? nation->proposalQueue : 0));
   object.Set("turn_summary", CaptureTurnSummary(nation != 0 ? nation->turnSummaryQueue : 0));
   object.Set("turn_start_events",
              CaptureTurnStartEvents(nation != 0 ? nation->missionNodeQueue : 0));
@@ -1658,9 +1695,18 @@ JSON_Value* CapturePending() {
   TSortedPtrList* queue = g_pDiplomacyTurnStateManager != 0
                               ? g_pDiplomacyTurnStateManager->pendingWarTransitionQueue
                               : 0;
+  if (queue != 0 && queue->recordSize14 != 4) {
+    FailSemanticCapture("war-transition queue record size is not four bytes");
+  }
   const int count = queue != 0 ? queue->GetSize() : 0;
   for (int ordinal = 1; ordinal <= count; ++ordinal) {
     short* pair = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(ordinal));
+    if (pair == 0) {
+      FailSemanticCapture("war-transition queue contains a null record");
+    }
+    if (pair[0] < 0 || pair[0] >= kNationSlotCount || pair[1] < 0 || pair[1] >= kNationSlotCount) {
+      FailSemanticCapture("war-transition nation is outside the nation range");
+    }
     JsonObject transition;
     transition.Set("first", static_cast<int>(pair[0]));
     transition.Set("second", static_cast<int>(pair[1]));
