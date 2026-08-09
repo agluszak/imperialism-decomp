@@ -3,8 +3,8 @@ use crate::{
     HexDirection, LaborPool, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
     MilitaryUnitKind, MilitaryUnitTable, MinorNationId, MinorNationTable, NationCapacities,
     NationId, NationTable, OceanZoneId, PendingActionTable, ProductionTable, ProvinceId,
-    ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT, ShipId, ShipType,
-    ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
+    ProvinceState, ProvinceTable, ResourceTable, RetailCrtRng, RetailLcg, STRATEGIC_TILE_COUNT,
+    ShipId, ShipType, ShipTypeTable, TaskForceId, TileId, TileOwnerTag, TradeMarketState,
 };
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::ops::{Index, IndexMut};
@@ -14,6 +14,7 @@ pub struct GameState {
     pub turn: TurnState,
     pub unit_ids: UnitIdAllocator,
     pub world: StrategicMap,
+    pub provinces: ProvinceTable<ProvinceState>,
     pub rng: RngState,
     pub market: TradeMarketState,
     pub diplomacy: DiplomacyState,
@@ -90,6 +91,26 @@ impl Nations {
     pub fn minor_count(&self) -> usize {
         self.minors.iter().flatten().count()
     }
+
+    pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
+        if let Some(nation) = MajorNationId::from_nation(nation) {
+            Some(&self.majors[nation].common)
+        } else {
+            self.minors[MinorNationId::new(nation.get())]
+                .as_ref()
+                .map(|nation| &nation.common)
+        }
+    }
+
+    pub(crate) fn common_mut(&mut self, nation: NationId) -> Option<&mut NationCommonState> {
+        if let Some(nation) = MajorNationId::from_nation(nation) {
+            Some(&mut self.majors[nation].common)
+        } else {
+            self.minors[MinorNationId::new(nation.get())]
+                .as_mut()
+                .map(|nation| &mut nation.common)
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -123,6 +144,8 @@ impl MajorNation {
     ) -> Self {
         Self {
             common: NationCommonState {
+                status: crate::CountryStatus::Independent,
+                owned_regions: Vec::new(),
                 treasury,
                 home_tile: None,
                 trade_policy_by_nation: NationTable::default(),
@@ -762,6 +785,8 @@ impl DiplomacyState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
+    pub status: crate::CountryStatus,
+    pub owned_regions: Vec<ProvinceId>,
     pub treasury: i32,
     pub home_tile: Option<TileId>,
     pub trade_policy_by_nation: NationTable<TradePolicyScore>,

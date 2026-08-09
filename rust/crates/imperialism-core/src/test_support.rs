@@ -95,6 +95,8 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
         common: NationCommonState {
+            status: crate::CountryStatus::Independent,
+            owned_regions: Vec::new(),
             treasury: 1_000,
             home_tile: Some(TileId::new(0)),
             trade_policy_by_nation: NationTable::default(),
@@ -122,6 +124,7 @@ pub(crate) fn game_state() -> GameState {
             vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
         )
         .unwrap(),
+        provinces: crate::ProvinceTable::default(),
         rng: RngState {
             crt_rand: RetailCrtRng::from_state(1),
             map_generation: RetailLcg::from_state(1),

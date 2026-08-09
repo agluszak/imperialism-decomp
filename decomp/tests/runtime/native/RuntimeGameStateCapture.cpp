@@ -738,6 +738,43 @@ JSON_Value* CaptureWorld() {
   return object.Release();
 }
 
+JSON_Value* CaptureProvinces() {
+  JsonArray provinces;
+  for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+    const Province& province = g_pGlobalMapState->cityScoreTable[provinceIndex];
+    if (province.ownerNationCode00 < -1 || province.ownerNationCode00 >= kNationSlotCount) {
+      FailSemanticCapture("province owner is outside the semantic nation range");
+    }
+    if (province.formerOwnerNationCode01 < -1 ||
+        province.formerOwnerNationCode01 >= kNationSlotCount) {
+      FailSemanticCapture("province former owner is outside the semantic nation range");
+    }
+    const int adjacencyCount = static_cast<int>(province.adjacentRegionCount08);
+    if (adjacencyCount < 0 || adjacencyCount > 12) {
+      FailSemanticCapture("province adjacency count is outside the retail record range");
+    }
+    if (province.regionClassA3 < -1 || province.regionClassA3 >= 24) {
+      FailSemanticCapture("province region class is outside the semantic range");
+    }
+
+    JsonObject object;
+    JsonArray adjacency;
+    object.SetOptional("owner", static_cast<int>(province.ownerNationCode00));
+    object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode01));
+    for (int neighborIndex = 0; neighborIndex < adjacencyCount; ++neighborIndex) {
+      const int adjacentProvince = static_cast<int>(province.adjacentRegionIds0A[neighborIndex]);
+      if (adjacentProvince < 0 || adjacentProvince >= 0x180) {
+        FailSemanticCapture("active province adjacency ID is outside the province table");
+      }
+      adjacency.Add(adjacentProvince);
+    }
+    object.Set("adjacency", adjacency.Release());
+    object.SetOptional("region_class", static_cast<int>(province.regionClassA3));
+    provinces.Add(object.Release());
+  }
+  return provinces.Release();
+}
+
 const char* ForeignMinisterPersonalityName(TForeignMinister* minister) {
   if (minister == 0) {
     FailSemanticCapture("major nation has no foreign minister");
@@ -825,7 +862,40 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
 
 JSON_Value* CaptureNationCommon(TCountry* country) {
   ASSERT(country != 0);
+  if (country->nationSlot < 0 || country->nationSlot >= kNationSlotCount) {
+    FailSemanticCapture("country nation slot is outside the semantic range");
+  }
+  if (country->ownedRegionList == 0) {
+    FailSemanticCapture("country has no owned-region list");
+  }
   JsonObject common;
+  JsonObject status;
+  if (country->encodedNationSlot == -1) {
+    status.Set("kind", "independent");
+  } else if (country->encodedNationSlot >= 100 && country->encodedNationSlot <= 122) {
+    status.Set("kind", "protectorate_of");
+    status.Set("nation", static_cast<int>(country->encodedNationSlot - 100));
+  } else if (country->encodedNationSlot >= 200 && country->encodedNationSlot <= 222) {
+    status.Set("kind", "colony_of");
+    status.Set("nation", static_cast<int>(country->encodedNationSlot - 200));
+  } else {
+    FailSemanticCapture("country encoded nation status is outside the semantic ranges");
+  }
+  common.Set("status", status.Release());
+
+  JsonArray ownedRegions;
+  const int ownedRegionCount = country->ownedRegionList->GetSize();
+  if (ownedRegionCount < 0 || ownedRegionCount > 0x180) {
+    FailSemanticCapture("country owned-region count is outside the province-table range");
+  }
+  for (int ordinal = 1; ordinal <= ownedRegionCount; ++ordinal) {
+    const long province = country->ownedRegionList->At(ordinal);
+    if (province < 0 || province >= 0x180) {
+      FailSemanticCapture("country owned-region ID is outside the province table");
+    }
+    ownedRegions.Add(static_cast<int>(province));
+  }
+  common.Set("owned_regions", ownedRegions.Release());
   common.Set("treasury", country->treasuryValue10);
   common.SetOptional("home_tile", country->homeTileIndex);
   common.Set("trade_policy_by_nation",
@@ -841,8 +911,8 @@ JSON_Value* CaptureMajorNationAggregate(int slot) {
   if (country == 0 || nation == 0 || nation->city == 0) {
     FailSemanticCapture("major-nation aggregate is incomplete");
   }
-  if (country->DecodeOwnerNationSlot() != slot) {
-    FailSemanticCapture("dependent major-nation ownership is not represented yet");
+  if (country->nationSlot != slot) {
+    FailSemanticCapture("major-nation aggregate is stored in the wrong nation slot");
   }
 
   JsonObject object;
@@ -865,8 +935,8 @@ JSON_Value* CaptureNations() {
       minors.AddNull();
       continue;
     }
-    if (country->DecodeOwnerNationSlot() != minorSlot) {
-      FailSemanticCapture("dependent minor-nation ownership is not represented yet");
+    if (country->nationSlot != minorSlot) {
+      FailSemanticCapture("minor-nation aggregate is stored in the wrong nation slot");
     }
     TMinor* minorCountry = static_cast<TMinor*>(country);
     JsonObject minor;
@@ -1455,7 +1525,8 @@ JSON_Value* CapturePending() {
 
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
-      g_pSimMgr == 0 || g_pTradeMgr == 0 || g_pDiplomacyTurnStateManager == 0) {
+      g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||
+      g_pDiplomacyTurnStateManager == 0) {
     return false;
   }
 
@@ -1463,6 +1534,7 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("turn", CaptureTurn(run));
   object.Set("unit_ids", g_pSimMgr->field_64);
   object.Set("world", CaptureWorld());
+  object.Set("provinces", CaptureProvinces());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
   object.Set("diplomacy", CaptureDiplomacy());

@@ -344,6 +344,8 @@ mod tests {
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|_nation| MajorNation {
             common: NationCommonState {
+                status: crate::CountryStatus::Independent,
+                owned_regions: Vec::new(),
                 treasury: 1_000,
                 home_tile: Some(crate::TileId::new(0)),
                 trade_policy_by_nation: crate::NationTable::default(),
@@ -367,6 +369,7 @@ mod tests {
                 vec![crate::TileState::default(); crate::STRATEGIC_TILE_COUNT],
             )
             .unwrap(),
+            provinces: crate::ProvinceTable::default(),
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(1),
                 map_generation: RetailLcg::from_state(1),

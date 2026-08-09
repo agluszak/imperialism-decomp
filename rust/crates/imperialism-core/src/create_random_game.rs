@@ -1,14 +1,15 @@
 use crate::{
-    ArmyMissionState, CityState, DevelopmentLevel, Difficulty, DiplomacyState,
+    ArmyMissionState, CityState, CountryStatus, DevelopmentLevel, Difficulty, DiplomacyState,
     ForeignMinisterPersonality, GameState, GeneratedMap, GeneratedTerrainTile, HexDirection,
     LaborPool, MajorNation, MajorNationId, MajorNationTable, MapGeometry, MapTopology,
     MilitaryOrder, MilitaryOrderCode, MilitaryUnitKind, MilitaryUnitState, MinorNation,
     MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCommonState,
     NationId, NationTable, Nations, NavyMissionState, OceanZoneId, ProductionTable, ProvinceId,
-    RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg, RiverSegment,
-    RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap, TerrainKind, TileAction,
-    TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState, TurnState, UnitIdAllocator,
-    is_valid_secondary_nation_home_tile_candidate, place_city, supports_city_site_terrain,
+    ProvinceState, ProvinceTable, RandomSetupPreview, ResourceKind, ResourceTable, RetailCrtRng,
+    RetailLcg, RiverSegment, RngState, STRATEGIC_MAP_WIDTH, STRATEGIC_TILE_COUNT, StrategicMap,
+    TerrainKind, TileAction, TileFlags, TileId, TileOwnerTag, TileState, TradeMarketState,
+    TurnState, UnitIdAllocator, is_valid_secondary_nation_home_tile_candidate, place_city,
+    supports_city_site_terrain,
 };
 use enum_map::{Enum, EnumMap};
 
@@ -113,6 +114,7 @@ pub fn create_random_game(
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     let missions = flatten_mission_queues(&mut mission_queues);
+    let provinces = build_province_state(&preview.map, &world, &mut nations);
 
     GameState {
         turn: TurnState {
@@ -125,6 +127,7 @@ pub fn create_random_game(
         },
         unit_ids,
         world,
+        provinces,
         rng: RngState {
             crt_rand,
             map_generation: RetailLcg::from_state(map_lcg.state()),
@@ -1073,6 +1076,38 @@ fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<ProvinceId>> {
     adjacency
 }
 
+/// Materializes the fixed province table and each country's ordered region list.
+/// Generated province IDs are already compact and are visited in ascending retail
+/// table order, matching the append order used by map setup.
+fn build_province_state(
+    map: &GeneratedMap,
+    world: &StrategicMap,
+    nations: &mut Nations,
+) -> ProvinceTable<ProvinceState> {
+    let adjacency = build_province_adjacency(world);
+    let mut provinces = ProvinceTable::default();
+    for (index, generated) in map.provinces().iter().enumerate() {
+        let province = ProvinceId::new(index as u16);
+        let owner = generated
+            .owner
+            .nation()
+            .expect("accepted generated provinces have nation owners");
+        provinces[province] = ProvinceState::new(
+            Some(owner),
+            Some(owner),
+            adjacency[index].clone(),
+            Some(generated.terrain.retail() as u8),
+        )
+        .expect("generated province state fits the retail province record");
+        nations
+            .common_mut(owner)
+            .expect("accepted generated province owner is present")
+            .owned_regions
+            .push(province);
+    }
+    provinces
+}
+
 /// `IsNodeTypeLinkUnavailableAndNoActiveMapActionContext` for Accept-time owned provinces.
 ///
 /// Without the sea-zone secondary-neighbor graph, coastal isolation falls back to "has any
@@ -1810,6 +1845,8 @@ fn minor_nation(nation: MinorNationId) -> MinorNation {
     let first_member = MinorNationId::FIRST + (nation.get() - MinorNationId::FIRST) / 4 * 4;
     MinorNation {
         common: NationCommonState {
+            status: CountryStatus::Independent,
+            owned_regions: Vec::new(),
             treasury: 5_000,
             home_tile: None,
             trade_policy_by_nation: NationTable::default(),
@@ -2076,6 +2113,43 @@ mod tests {
             nation.economy.development_grant_by_nation == NationTable::default()
                 && nation.economy.defense_minister_skill_index == 0
         }));
+
+        let expected_adjacency = build_province_adjacency(&state.world);
+        for (index, generated) in preview.map.provinces().iter().enumerate() {
+            let province = ProvinceId::new(index as u16);
+            let owner = generated.owner.nation().unwrap();
+            assert_eq!(state.provinces[province].owner(), Some(owner));
+            assert_eq!(state.provinces[province].former_owner(), Some(owner));
+            assert_eq!(
+                state.provinces[province].adjacency(),
+                expected_adjacency[index]
+            );
+            assert_eq!(
+                state.provinces[province].region_class(),
+                Some(generated.terrain.retail() as u8)
+            );
+        }
+        for index in preview.map.provinces().len()..crate::PROVINCE_COUNT {
+            assert_eq!(
+                state.provinces[ProvinceId::new(index as u16)],
+                ProvinceState::default()
+            );
+        }
+        for nation in NationId::all() {
+            let expected = preview
+                .map
+                .provinces()
+                .iter()
+                .enumerate()
+                .filter_map(|(index, province)| {
+                    (province.owner.nation() == Some(nation))
+                        .then_some(ProvinceId::new(index as u16))
+                })
+                .collect::<Vec<_>>();
+            let common = state.nations.common(nation).unwrap();
+            assert_eq!(common.status, CountryStatus::Independent);
+            assert_eq!(common.owned_regions, expected);
+        }
 
         assert_eq!(state.turn.phase, crate::PhaseCode::CAPITAL_SELECTION);
         assert_eq!(state.turn.difficulty, Difficulty::Normal);

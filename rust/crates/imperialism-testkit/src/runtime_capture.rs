@@ -378,6 +378,7 @@ mod tests {
         let mut capture = serde_json::to_value(state).unwrap();
         capture["turn"]["oracle_extra"] = json!(true);
         capture["diplomacy"]["oracle_extra"] = json!(true);
+        capture["provinces"][0]["oracle_extra"] = json!(true);
         let input = json!({
             "name": "probe",
             "seed": 1,
@@ -397,6 +398,7 @@ mod tests {
             RuntimeCaptureError::UnknownCaptureFields { fields, .. }
                 if fields.contains("turn.oracle_extra")
                     && fields.contains("diplomacy.oracle_extra")
+                    && fields.contains("provinces.0.oracle_extra")
         ));
     }
 

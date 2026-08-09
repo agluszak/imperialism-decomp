@@ -1,20 +1,21 @@
 use crate::legacy_stream::{LegacyStream, StreamError};
 use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitId,
-    CivilianUnitKind, CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel,
-    Difficulty, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
-    DiplomaticMissionLevel, DiplomaticRelationship, ForeignMinisterPersonality, GameState,
-    GreatPowerState, LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId,
-    MajorNationTable, MapTopology, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
-    MilitaryUnitTable, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
-    NATION_COUNT, NationCapacities, NationCommonState, NationId, NationTable, Nations,
-    NavyMissionState, OceanZoneId, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus,
-    PendingActionTable, PendingWorkState, PopulationAccumulator, PopulationState, ProductionTable,
-    ProvinceId, ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng,
-    RetailLcg, RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile,
-    StrategicMap, StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId,
-    TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
-    TradeMarketState, TradePolicyScore, TurnState, TurnsRemaining,
+    CivilianUnitKind, CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, CountryStatus,
+    DevelopmentLevel, Difficulty, DiplomacyGrant, DiplomacyPolicy, DiplomacyState,
+    DiplomaticCongressState, DiplomaticMissionLevel, DiplomaticRelationship,
+    ForeignMinisterPersonality, GameState, GreatPowerState, LaborPool, MAJOR_NATION_COUNT,
+    MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationTable, MapTopology, MilitaryUnitId,
+    MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable, MinorNation, MinorNationId,
+    MinorNationTable, MissionData, MissionState, NATION_COUNT, NationCapacities, NationCommonState,
+    NationId, NationTable, Nations, NavyMissionState, OceanZoneId, PENDING_ACTION_COUNT,
+    PendingActionState, PendingActionStatus, PendingActionTable, PendingWorkState,
+    PopulationAccumulator, PopulationState, ProductionTable, ProvinceId, ProvinceState,
+    ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg,
+    RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile, StrategicMap,
+    StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId, TileOwnerTag,
+    TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState,
+    TradePolicyScore, TurnState, TurnsRemaining,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -1068,6 +1069,8 @@ pub(crate) struct LegacyProvince {
     pub fort_level: i8,
     pub city_tile: i16,
     pub last_turn_tick: i16,
+    pub adjacent_region_count: i8,
+    pub adjacent_region_ids: [i16; 12],
     pub region_class: i8,
     pub name: String,
 }
@@ -1106,6 +1109,25 @@ impl LegacyMapState {
                 .collect::<Result<Vec<_>, _>>()?,
         )
         .map_err(|error| LegacySaveError::StateProjection(error.to_string()))
+    }
+
+    fn province_states(&self) -> Result<ProvinceTable<ProvinceState>, LegacySaveError> {
+        if self.provinces.len() != PROVINCE_COUNT {
+            return Err(LegacySaveError::StateProjection(format!(
+                "province table has {} records; expected {PROVINCE_COUNT}",
+                self.provinces.len()
+            )));
+        }
+        let provinces = self
+            .provinces
+            .iter()
+            .enumerate()
+            .map(|(index, province)| province_state(index, province))
+            .collect::<Result<Vec<_>, _>>()?;
+        let provinces: [ProvinceState; PROVINCE_COUNT] = provinces
+            .try_into()
+            .expect("province table length was checked before projection");
+        Ok(ProvinceTable::from_array(provinces))
     }
 }
 
@@ -1651,6 +1673,7 @@ impl LegacySaveV62 {
             },
             unit_ids: imperialism_core::UnitIdAllocator::from_retail(persistent_unit_id_counter),
             world: self.map.world_state()?,
+            provinces: self.map.province_states()?,
             rng: RngState {
                 crt_rand: RetailCrtRng::from_state(context.crt_rand_state),
                 map_generation: RetailLcg::from_state(context.map_generation_lcg),
@@ -1856,8 +1879,105 @@ fn diplomacy_policies_from_retail_entries(
     Ok(policies)
 }
 
+fn country_status_from_retail(value: i16) -> Result<CountryStatus, LegacySaveError> {
+    match value {
+        -1 => Ok(CountryStatus::Independent),
+        100..=122 => Ok(CountryStatus::ProtectorateOf(NationId::new(
+            (value - 100) as u8,
+        ))),
+        200..=222 => Ok(CountryStatus::ColonyOf(NationId::new((value - 200) as u8))),
+        _ => Err(LegacySaveError::StateProjection(format!(
+            "invalid encoded nation status {value}"
+        ))),
+    }
+}
+
+fn owned_region_id_from_retail(value: i32) -> Result<ProvinceId, LegacySaveError> {
+    u16::try_from(value)
+        .ok()
+        .and_then(ProvinceId::try_new)
+        .ok_or_else(|| {
+            LegacySaveError::StateProjection(format!(
+                "owned-region province ID {value} is out of range"
+            ))
+        })
+}
+
+fn province_state(
+    index: usize,
+    province: &LegacyProvince,
+) -> Result<ProvinceState, LegacySaveError> {
+    let count = usize::try_from(province.adjacent_region_count).map_err(|_| {
+        LegacySaveError::StateProjection(format!(
+            "province {index} has negative adjacency count {}",
+            province.adjacent_region_count
+        ))
+    })?;
+    if count > province.adjacent_region_ids.len() {
+        return Err(LegacySaveError::StateProjection(format!(
+            "province {index} has adjacency count {count}; maximum is {}",
+            province.adjacent_region_ids.len()
+        )));
+    }
+    let adjacency = province.adjacent_region_ids[..count]
+        .iter()
+        .copied()
+        .map(|value| {
+            u16::try_from(value)
+                .ok()
+                .and_then(ProvinceId::try_new)
+                .ok_or_else(|| {
+                    LegacySaveError::StateProjection(format!(
+                        "province {index} adjacency ID {value} is out of range"
+                    ))
+                })
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+
+    let optional_owner = |value: i8, field: &str| {
+        if value == -1 {
+            return Ok(None);
+        }
+        u8::try_from(value)
+            .ok()
+            .and_then(NationId::try_new)
+            .map(Some)
+            .ok_or_else(|| {
+                LegacySaveError::StateProjection(format!(
+                    "province {index} {field} nation ID {value} is out of range"
+                ))
+            })
+    };
+    let region_class = match province.region_class {
+        -1 => None,
+        0..=23 => Some(province.region_class as u8),
+        value => {
+            return Err(LegacySaveError::StateProjection(format!(
+                "province {index} region class {value} is out of range"
+            )));
+        }
+    };
+
+    ProvinceState::new(
+        optional_owner(province.owner_nation, "owner")?,
+        optional_owner(province.former_owner_nation, "former-owner")?,
+        adjacency,
+        region_class,
+    )
+    .map_err(|error| {
+        LegacySaveError::StateProjection(format!("province {index} is invalid: {error}"))
+    })
+}
+
 fn country_common(country: &LegacyCountryBase) -> Result<NationCommonState, LegacySaveError> {
     Ok(NationCommonState {
+        status: country_status_from_retail(country.encoded_nation_slot)?,
+        owned_regions: country
+            .owned_regions
+            .iter()
+            .copied()
+            .map(owned_region_id_from_retail)
+            .collect::<Result<Vec<_>, _>>()?,
         treasury: country.treasury,
         home_tile: optional_tile_id(country.home_tile)?,
         trade_policy_by_nation: NationTable::from_array(
@@ -3102,6 +3222,11 @@ fn read_province(stream: &mut LegacyStream<'_>) -> Result<LegacyProvince, Stream
         fort_level: bytes[3] as i8,
         city_tile: i16::from_le_bytes(bytes[4..6].try_into().unwrap()),
         last_turn_tick: i16::from_le_bytes(bytes[6..8].try_into().unwrap()),
+        adjacent_region_count: bytes[8] as i8,
+        adjacent_region_ids: std::array::from_fn(|index| {
+            let offset = 0x0a + index * 2;
+            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+        }),
         region_class: bytes[0xa3] as i8,
         name,
     })
@@ -3382,6 +3507,120 @@ mod tests {
             ForeignMinisterPersonality::Base,
             "the human constructs the base minister even though setup policy 3 names Diplomat"
         );
+    }
+
+    #[test]
+    fn retail_projection_preserves_country_and_province_semantics() {
+        let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let state = save.game_state(game_context()).unwrap();
+
+        let nation_zero = state.nations.major(MajorNationId::new(0)).common();
+        assert_eq!(nation_zero.status, CountryStatus::Independent);
+        assert_eq!(
+            nation_zero.owned_regions,
+            [79, 80, 89, 90, 91, 100, 101, 111]
+                .map(ProvinceId::new)
+                .to_vec()
+        );
+
+        let province_zero = &state.provinces[ProvinceId::new(0)];
+        assert_eq!(province_zero.owner(), Some(NationId::new(12)));
+        assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
+        assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
+        assert_eq!(province_zero.region_class(), Some(0));
+
+        let province_seventy_nine = &state.provinces[ProvinceId::new(79)];
+        assert_eq!(province_seventy_nine.owner(), Some(NationId::new(0)));
+        assert_eq!(
+            province_seventy_nine.adjacency(),
+            [71, 72, 80, 78, 89, 90].map(ProvinceId::new)
+        );
+        assert_eq!(province_seventy_nine.region_class(), Some(4));
+
+        for province in 120..PROVINCE_COUNT {
+            assert_eq!(
+                state.provinces[ProvinceId::new(province as u16)],
+                ProvinceState::default()
+            );
+        }
+
+        assert!(
+            state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(19))
+        );
+        assert!(
+            !state.do_nation_territories_share_region_class(NationId::new(0), NationId::new(1))
+        );
+        assert!(state.are_nations_border_linked(NationId::new(0), NationId::new(19)));
+        assert!(!state.are_nations_border_linked(NationId::new(0), NationId::new(1)));
+    }
+
+    #[test]
+    fn country_status_projection_accepts_only_retail_encodings() {
+        for (encoded, expected) in [
+            (-1, CountryStatus::Independent),
+            (100, CountryStatus::ProtectorateOf(NationId::new(0))),
+            (122, CountryStatus::ProtectorateOf(NationId::new(22))),
+            (200, CountryStatus::ColonyOf(NationId::new(0))),
+            (222, CountryStatus::ColonyOf(NationId::new(22))),
+        ] {
+            assert_eq!(country_status_from_retail(encoded).unwrap(), expected);
+        }
+        for encoded in [-2, 0, 99, 123, 199, 223] {
+            assert!(country_status_from_retail(encoded).is_err());
+        }
+    }
+
+    #[test]
+    fn semantic_projection_rejects_malformed_territory_inputs() {
+        for count in [-1, 13] {
+            let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+            let mut province = save.map.provinces[0].clone();
+            province.adjacent_region_count = count;
+            assert!(province_state(0, &province).is_err());
+        }
+        for adjacent in [-1, 384] {
+            let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+            let mut province = save.map.provinces[0].clone();
+            province.adjacent_region_count = 1;
+            province.adjacent_region_ids[0] = adjacent;
+            assert!(province_state(0, &province).is_err());
+        }
+
+        let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let mut province = save.map.provinces[0].clone();
+        province.owner_nation = 23;
+        assert!(province_state(0, &province).is_err());
+        province.owner_nation = 0;
+        province.former_owner_nation = 23;
+        assert!(province_state(0, &province).is_err());
+        province.former_owner_nation = 0;
+        province.region_class = 24;
+        assert!(province_state(0, &province).is_err());
+
+        for owned_region in [-1, 384] {
+            let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+            first_great_power_mut(&mut save).country.owned_regions[0] = owned_region;
+            assert!(save.game_state(game_context()).is_err());
+        }
+        for encoded_status in [-2, 0, 99, 123, 199, 223] {
+            let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+            first_great_power_mut(&mut save).country.encoded_nation_slot = encoded_status;
+            assert!(save.game_state(game_context()).is_err());
+        }
+
+        let mut too_short = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        too_short.map.provinces.pop();
+        assert!(too_short.game_state(game_context()).is_err());
+        let mut too_long = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        too_long
+            .map
+            .provinces
+            .push(too_long.map.provinces[0].clone());
+        assert!(too_long.game_state(game_context()).is_err());
+
+        let mut stale_tail = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        stale_tail.map.provinces[120].adjacent_region_ids[0] = 384;
+        assert!(stale_tail.game_state(game_context()).is_ok());
     }
 
     #[test]
