@@ -138,6 +138,7 @@ mod tests {
         let mut turn = TurnState {
             scenario_map: None,
             economic_turn: 2,
+            diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::HOME_PLACEMENT,
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(6),

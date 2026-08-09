@@ -358,6 +358,7 @@ mod tests {
             turn: TurnState {
                 scenario_map: None,
                 economic_turn: 1,
+                diplomacy_year_term_raw: 1914,
                 phase: crate::PhaseCode::STRATEGIC_MAP,
                 difficulty: Difficulty::Easy,
                 active_nation: NationId::new(6),
@@ -376,6 +377,7 @@ mod tests {
                 zone_status: RetailLcg::from_state(1),
             },
             market: crate::TradeMarketState::default(),
+            technology: crate::TechnologyState::default(),
             diplomacy: crate::DiplomacyState::for_random_start(
                 crate::MajorNationId::new(6),
                 Difficulty::Normal,

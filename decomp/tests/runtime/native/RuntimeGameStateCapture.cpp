@@ -14,6 +14,7 @@
 #include "game/globals/game_session_globals.h"
 #include "game/globals/map_globals.h"
 #include "game/globals/nation_globals.h"
+#include "game/globals/tactical_ui_globals.h"
 #include "game/globals/trade_ui_globals.h"
 #include "game/map/TBeachheadMission.h"
 #include "game/map/TBlockadePortMission.h"
@@ -45,6 +46,7 @@
 #include "game/navy/TNavyMgr.h"
 #include "game/navy/TShip.h"
 #include "game/navy/TTaskForce.h"
+#include "game/tactical_ui/TTechMgr.h"
 #include "game/ui_core/CIterator.h"
 #include "game/ui_screens/TSimMgr.h"
 #include "game/ui_widgets/TTradeMgr.h"
@@ -590,6 +592,7 @@ JSON_Value* CaptureResourceTable(const int* values) {
 JSON_Value* CaptureMarket() {
   JsonObject market;
   JsonObject rows;
+  JsonObject maximumOfferByMinor;
   for (int resource = kResourceCotton; resource < kResourceManufacturedEnd; ++resource) {
     const TTradeMgr::NationMetricCategoryRow& row = g_pTradeMgr->categoryRows[resource];
     JsonObject rowObject;
@@ -601,9 +604,36 @@ JSON_Value* CaptureMarket() {
     rowObject.Set("amount_offered", static_cast<int>(row.amountOffered));
     rowObject.Set("adjusted_offer_count", row.adjustedNumOffers);
     rows.Set(kResourceNames[resource], rowObject.Release());
+
+    JsonArray maximumOfferRow;
+    const short* maximumByNation = &row.tradeOfferCells[46];
+    for (int minorNationSlot = kMinorNationFirstSlot; minorNationSlot < kNationSlotCount;
+         ++minorNationSlot) {
+      // Slot 22 is the final serialized short even though it crosses the declared cell array
+      // into the following row/padding in the retail runtime layout.
+      const short value = maximumByNation[minorNationSlot];
+      if (value < 0) {
+        FailSemanticCapture("trade maximum offer is negative");
+      }
+      maximumOfferRow.Add(static_cast<int>(value));
+    }
+    maximumOfferByMinor.Set(kResourceNames[resource], maximumOfferRow.Release());
   }
   market.Set("rows", rows.Release());
+  market.Set("maximum_offer_by_minor", maximumOfferByMinor.Release());
   return market.Release();
+}
+
+JSON_Value* CaptureTechnology() {
+  const unsigned char advancedIronWorking = g_pTechMgr->resourceTypeEnabled19d[8];
+  const unsigned char marineEngineering = g_pTechMgr->resourceTypeEnabled19d[0xb];
+  if (advancedIronWorking > 1 || marineEngineering > 1) {
+    FailSemanticCapture("technology resource-type flag is not boolean");
+  }
+  JsonObject technology;
+  technology.Set("advanced_iron_working", advancedIronWorking != 0);
+  technology.Set("marine_engineering", marineEngineering != 0);
+  return technology.Release();
 }
 
 JSON_Value* CaptureAidAllocationByMinorNation(const int* values) {
@@ -681,6 +711,7 @@ JSON_Value* CaptureTurn(const RuntimeRun& run) {
     object.SetNull("scenario_map");
   }
   object.Set("economic_turn", g_pSimMgr->economicTurn);
+  object.Set("diplomacy_year_term_raw", static_cast<int>(g_pSimMgr->field6c));
   object.Set("phase", g_pSimMgr->turnStateCode);
   object.Set("difficulty", DifficultyName(g_pSimMgr->difficultyLevel));
   object.Set("active_nation", g_pSimMgr->activeNationSlot);
@@ -1526,7 +1557,7 @@ JSON_Value* CapturePending() {
 bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   if (state == 0 || g_pGlobalMapState == 0 || g_pGlobalMapState->terrainStateTable == 0 ||
       g_pGlobalMapState->cityScoreTable == 0 || g_pSimMgr == 0 || g_pTradeMgr == 0 ||
-      g_pDiplomacyTurnStateManager == 0) {
+      g_pDiplomacyTurnStateManager == 0 || g_pTechMgr == 0) {
     return false;
   }
 
@@ -1537,6 +1568,7 @@ bool BuildRuntimeGameState(const RuntimeRun& run, JSON_Value** state) {
   object.Set("provinces", CaptureProvinces());
   object.Set("rng", CaptureRng());
   object.Set("market", CaptureMarket());
+  object.Set("technology", CaptureTechnology());
   object.Set("diplomacy", CaptureDiplomacy());
   object.Set("nations", CaptureNations());
   object.Set("military_units", CaptureMilitaryUnits());

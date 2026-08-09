@@ -120,6 +120,7 @@ pub fn create_random_game(
         turn: TurnState {
             scenario_map: None,
             economic_turn: 0,
+            diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::CAPITAL_SELECTION,
             difficulty,
             active_nation: human_nation.nation(),
@@ -136,6 +137,7 @@ pub fn create_random_game(
             zone_status: RetailLcg::from_state(runtime_seed),
         },
         market: TradeMarketState::default(),
+        technology: crate::TechnologyState::default(),
         diplomacy,
         nations,
         military_units,

@@ -17,6 +17,7 @@ pub struct GameState {
     pub provinces: ProvinceTable<ProvinceState>,
     pub rng: RngState,
     pub market: TradeMarketState,
+    pub technology: TechnologyState,
     pub diplomacy: DiplomacyState,
     pub nations: Nations,
     pub military_units: Vec<MilitaryUnitState>,
@@ -174,10 +175,38 @@ pub struct MinorNation {
 pub struct TurnState {
     pub scenario_map: Option<ScenarioMapId>,
     pub economic_turn: i32,
+    /// Raw persisted `TSimMgr` term consumed by diplomacy scaling.
+    ///
+    /// This is not the 1815-based display calendar.
+    pub diplomacy_year_term_raw: i32,
     pub phase: PhaseCode,
     pub difficulty: Difficulty,
     pub active_nation: NationId,
     pub selected_nation: NationId,
+}
+
+/// Global technology flags that currently affect authoritative simulation rules.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TechnologyState {
+    pub advanced_iron_working: bool,
+    pub marine_engineering: bool,
+}
+
+impl TechnologyState {
+    /// Selects the production-capacity term used by retail's naval-force score.
+    pub const fn naval_production_capacity(
+        self,
+        lumber_mill_capacity: i32,
+        steel_mill_capacity: i32,
+    ) -> i32 {
+        if self.marine_engineering {
+            steel_mill_capacity
+        } else if self.advanced_iron_working {
+            (lumber_mill_capacity + steel_mill_capacity) / 2
+        } else {
+            lumber_mill_capacity
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -1718,9 +1747,26 @@ pub struct LandSale {
 mod tests {
     use super::{
         DiplomacyState, DiplomaticMissionLevel, PendingActionState, PendingActionStatus,
-        PopulationAccumulator, RiverSegment, Stockpile, TileAction, TileFlags, TurnStartEvent,
+        PopulationAccumulator, RiverSegment, Stockpile, TechnologyState, TileAction, TileFlags,
+        TurnStartEvent,
     };
     use crate::{Difficulty, MajorNationId, NationId, ResourceKind, ResourceTable, RetailCrtRng};
+
+    #[test]
+    fn naval_production_capacity_follows_the_technology_priority_order() {
+        for (advanced_iron_working, marine_engineering, expected) in [
+            (false, false, 7),
+            (true, false, 5),
+            (false, true, 4),
+            (true, true, 4),
+        ] {
+            let technology = TechnologyState {
+                advanced_iron_working,
+                marine_engineering,
+            };
+            assert_eq!(technology.naval_production_capacity(7, 4), expected);
+        }
+    }
 
     #[test]
     fn random_start_diplomacy_preserves_retail_matrix_order_and_consortiums() {

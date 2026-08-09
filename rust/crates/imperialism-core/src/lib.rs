@@ -93,9 +93,10 @@ pub use state::{
     NationPendingWork, Nations, NavyMissionState, PendingActionState, PendingActionStatus,
     PendingWorkState, PhaseCode, PopulationAccumulator, PopulationState, RegionId, RiverSegment,
     RngState, ScenarioMapId, SelectedShip, ShipState, Stockpile, StrategicMap,
-    StrategicMapSizeError, StrikePhase, TaggedValue, TaskForceState, TaskForceTarget, TerrainKind,
-    TileAction, TileDevelopment, TileFlags, TileState, TileTransportLinks, TradePolicyScore,
-    TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator, WarTransition,
+    StrategicMapSizeError, StrikePhase, TaggedValue, TaskForceState, TaskForceTarget,
+    TechnologyState, TerrainKind, TileAction, TileDevelopment, TileFlags, TileState,
+    TileTransportLinks, TradePolicyScore, TurnStartEvent, TurnState, TurnSummary, UnitIdAllocator,
+    WarTransition,
 };
 pub use tables::{
     MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNationTable, MinorNationTable, NATION_COUNT,

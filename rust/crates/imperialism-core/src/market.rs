@@ -1,3 +1,4 @@
+use crate::{MinorNationId, MinorNationTable};
 use enum_map::{Enum, EnumMap, enum_map};
 use serde::{Deserialize, Serialize};
 
@@ -59,6 +60,7 @@ impl TradeMarketRow {
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TradeMarketState {
     pub rows: TradeCommodityTable<TradeMarketRow>,
+    pub maximum_offer_by_minor: TradeCommodityTable<MinorNationTable<i32>>,
 }
 
 impl Default for TradeMarketState {
@@ -83,11 +85,21 @@ impl Default for TradeMarketState {
                 | TradeCommodity::Hardware
                 | TradeCommodity::Arms => TradeMarketRow::at_base_price(900),
             },
+            maximum_offer_by_minor: TradeCommodityTable::default(),
         }
     }
 }
 
 impl TradeMarketState {
+    /// The `SetEmpirePolicies` eligibility test for a minor trade partner.
+    pub fn has_maximum_offer_from_minor(
+        &self,
+        commodity: TradeCommodity,
+        nation: MinorNationId,
+    ) -> bool {
+        self.maximum_offer_by_minor[commodity][nation] != 0
+    }
+
     pub(crate) fn recalculate_prices(&mut self) {
         for commodity in all_trade_commodities() {
             let previous = self.rows[commodity].price;
@@ -146,4 +158,20 @@ fn market_price(row: TradeMarketRow) -> i32 {
 
 fn truncate_price(value: f64) -> i32 {
     value.trunc() as i32
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn empire_policy_offer_eligibility_follows_the_persisted_maximum() {
+        let commodity = TradeCommodity::Cotton;
+        let nation = MinorNationId::new(22);
+        let mut market = TradeMarketState::default();
+
+        assert!(!market.has_maximum_offer_from_minor(commodity, nation));
+        market.maximum_offer_by_minor[commodity][nation] = 1;
+        assert!(market.has_maximum_offer_from_minor(commodity, nation));
+    }
 }

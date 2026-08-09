@@ -113,6 +113,7 @@ pub(crate) fn game_state() -> GameState {
         turn: TurnState {
             scenario_map: None,
             economic_turn: 1,
+            diplomacy_year_term_raw: 1914,
             phase: crate::PhaseCode::STRATEGIC_MAP,
             difficulty: Difficulty::Easy,
             active_nation: NationId::new(0),
@@ -131,6 +132,7 @@ pub(crate) fn game_state() -> GameState {
             zone_status: RetailLcg::from_state(1),
         },
         market: TradeMarketState::default(),
+        technology: crate::TechnologyState::default(),
         diplomacy: crate::DiplomacyState::for_random_start(
             crate::MajorNationId::new(0),
             Difficulty::Normal,
