@@ -34,6 +34,11 @@ pub(crate) fn new_city_dialog_view_id() -> ScopedViewId {
     }
 }
 
+pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
+    catalog.require_unique_bindings(&city_site_view_id(), &[fourcc!("canc"), MAP_TAG])?;
+    catalog.require_unique_bindings(&new_city_dialog_view_id(), &[OKAY, fourcc!("cncl")])
+}
+
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]
 enum CitySiteAction {
     Cancel,
@@ -83,12 +88,12 @@ fn enter_city_site(
 
 fn bind_city_site_controls(commands: &mut Commands, spawned: &crate::ui::catalog::SpawnedView) {
     let cancel = spawned
-        .tag(fourcc!("canc"))
+        .require_unique(fourcc!("canc"))
         .expect("validated city-site cancel binding");
     commands.entity(cancel).insert(CitySiteAction::Cancel);
     // Retail opens the New City dialog from a validated map click, not from `send`.
     let map = spawned
-        .tag(MAP_TAG)
+        .require_unique(MAP_TAG)
         .expect("validated city-site map binding");
     commands.entity(map).insert(CitySiteMap);
 }

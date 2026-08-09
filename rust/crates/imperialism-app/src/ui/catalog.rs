@@ -9,8 +9,8 @@ use bevy::text::{EditableText, EditableTextFilter, TextCursorStyle};
 use bevy::ui::{Checked, InteractionDisabled, Pressed, RelativeCursorPosition};
 use bevy::ui_widgets::{Button as UiButton, Checkbox, RadioButton, RadioGroup};
 use imperialism_formats::{
-    FourCc, OKAY, PictureId, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
-    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, TRADE, UiBehavior, UiCatalog,
+    FourCc, PictureId, PictureVisual, RetailAssetError, RetailFontFace, RetailTextAlignment,
+    RetailTextStyleError, RetailTextStylePreset, ScopedViewId, UiBehavior, UiCatalog,
     UiNode as CatalogNode, UiNodeId, UiTextBinding, UiView as CatalogView, UiViewIndex,
     resolve_retail_text_style,
 };
@@ -54,144 +54,41 @@ impl UiCatalogResource {
         self.by_id.get(view_id).map(|&index| &self.indexes[index])
     }
 
-    pub(crate) fn validate_application_bindings(&self) -> Result<(), String> {
-        use crate::ui::{city_site, game_screens, main_menu, random_setup};
-        let requirements: [(ScopedViewId, &[FourCc]); 11] = [
-            (
-                main_menu::main_menu_view_id(),
-                &[
-                    imperialism_formats::fourcc!("rand"),
-                    imperialism_formats::fourcc!("quit"),
-                ],
-            ),
-            (
-                random_setup::random_setup_view_id(),
-                &[
-                    OKAY,
-                    imperialism_formats::fourcc!("cncl"),
-                    imperialism_formats::fourcc!("glob"),
-                    imperialism_formats::fourcc!("key "),
-                    imperialism_formats::fourcc!("dif0"),
-                    imperialism_formats::fourcc!("dif1"),
-                    imperialism_formats::fourcc!("dif2"),
-                    imperialism_formats::fourcc!("dif3"),
-                    imperialism_formats::fourcc!("dif4"),
-                    imperialism_formats::fourcc!("hist"),
-                    imperialism_formats::fourcc!("rand"),
-                    imperialism_formats::fourcc!("coun"),
-                    imperialism_formats::fourcc!("map "),
-                    imperialism_formats::fourcc!("coat"),
-                    imperialism_formats::fourcc!("flag"),
-                ],
-            ),
-            (
-                random_setup::planet_seed_dialog_view_id(),
-                &[imperialism_formats::fourcc!("plan"), OKAY],
-            ),
-            (
-                city_site::city_site_view_id(),
-                &[
-                    imperialism_formats::fourcc!("canc"),
-                    imperialism_formats::fourcc!("DLOG"),
-                ],
-            ),
-            (
-                city_site::new_city_dialog_view_id(),
-                &[OKAY, imperialism_formats::fourcc!("cncl")],
-            ),
-            (
-                game_screens::strategic_map_view_id(),
-                &[
-                    TRADE,
-                    imperialism_formats::fourcc!("tran"),
-                    imperialism_formats::fourcc!("city"),
-                    imperialism_formats::fourcc!("dipl"),
-                ],
-            ),
-            (
-                game_screens::flag_view_id(),
-                &[
-                    imperialism_formats::fourcc!("end "),
-                    imperialism_formats::fourcc!("quer"),
-                ],
-            ),
-            (
-                game_screens::trade_view_id(),
-                &[imperialism_formats::fourcc!("end ")],
-            ),
-            (
-                game_screens::city_view_id(),
-                &[imperialism_formats::fourcc!("end ")],
-            ),
-            (
-                game_screens::transport_view_id(),
-                &[imperialism_formats::fourcc!("end ")],
-            ),
-            (
-                game_screens::diplomacy_view_id(),
-                &[imperialism_formats::fourcc!("end ")],
-            ),
-        ];
-        for (view_id, tags) in requirements {
-            let index = self.index(&view_id).ok_or_else(|| {
-                format!(
-                    "required UI view {}:{} is missing",
-                    view_id.resource_file, view_id.resource_id
-                )
-            })?;
-            for &tag in tags {
-                match index.tagged(tag) {
-                    [] => {
-                        return Err(format!(
-                            "required UI binding {}:{} tag {:?} is missing",
-                            view_id.resource_file, view_id.resource_id, tag
-                        ));
-                    }
-                    [_] => {}
-                    matches => {
-                        return Err(format!(
-                            "required UI binding {}:{} tag {:?} is ambiguous ({})",
-                            view_id.resource_file,
-                            view_id.resource_id,
-                            tag,
-                            matches.len()
-                        ));
-                    }
+    pub(crate) fn require_unique_bindings(
+        &self,
+        view_id: &ScopedViewId,
+        tags: &[FourCc],
+    ) -> Result<(), String> {
+        let index = self.index(view_id).ok_or_else(|| {
+            format!(
+                "required UI view {}:{} is missing",
+                view_id.resource_file, view_id.resource_id
+            )
+        })?;
+        for &tag in tags {
+            match index.tagged(tag) {
+                [] => {
+                    return Err(format!(
+                        "required UI binding {}:{} tag {:?} is missing",
+                        view_id.resource_file, view_id.resource_id, tag
+                    ));
+                }
+                [_] => {}
+                matches => {
+                    return Err(format!(
+                        "required UI binding {}:{} tag {:?} is ambiguous ({})",
+                        view_id.resource_file,
+                        view_id.resource_id,
+                        tag,
+                        matches.len()
+                    ));
                 }
             }
-        }
-        for view_id in [
-            game_screens::strategic_map_view_id(),
-            game_screens::trade_view_id(),
-            game_screens::city_view_id(),
-            game_screens::transport_view_id(),
-            game_screens::diplomacy_view_id(),
-        ] {
-            for tag in [
-                TRADE,
-                imperialism_formats::fourcc!("tran"),
-                imperialism_formats::fourcc!("city"),
-                imperialism_formats::fourcc!("dipl"),
-            ] {
-                self.validate_control_under(&view_id, tag, game_screens::TOOLBAR_PARENT_TAGS)?;
-            }
-        }
-        for view_id in [
-            game_screens::trade_view_id(),
-            game_screens::city_view_id(),
-            game_screens::transport_view_id(),
-            game_screens::diplomacy_view_id(),
-        ] {
-            self.validate_control_under(
-                &view_id,
-                imperialism_formats::fourcc!("end "),
-                game_screens::LEAVE_PARENT_TAGS,
-            )?;
         }
         Ok(())
     }
 
-    fn validate_control_under(
+    pub(crate) fn require_control_under(
         &self,
         view_id: &ScopedViewId,
         tag: FourCc,
@@ -296,7 +193,7 @@ pub(crate) struct SpawnedView {
     pub root: Entity,
     pub view_id: ScopedViewId,
     pub nodes: HashMap<UiNodeId, Entity>,
-    pub tags: HashMap<FourCc, Entity>,
+    tags: HashMap<FourCc, Vec<Entity>>,
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -305,7 +202,6 @@ pub(crate) enum UiBindError {
     MissingView(String, i16),
     #[error("tag {0:?} not found in view {1}:{2}")]
     MissingTag(String, String, i16),
-    #[cfg(test)]
     #[error("tag {0:?} is ambiguous in view {1}:{2} ({3} matches)")]
     AmbiguousTag(String, String, i16, usize),
     #[error("tag {0:?} not found under ancestor {1:?} in view {2}:{3}")]
@@ -315,32 +211,19 @@ pub(crate) enum UiBindError {
 }
 
 impl SpawnedView {
-    pub(crate) fn tag(&self, tag: imperialism_formats::FourCc) -> Option<Entity> {
-        self.tags.get(&tag).copied()
-    }
-    #[cfg(test)]
-    pub(crate) fn require_unique(
-        &self,
-        catalog: &UiCatalogResource,
-        tag: FourCc,
-    ) -> Result<Entity, UiBindError> {
-        let view = catalog
-            .view(&self.view_id)
-            .ok_or_else(|| missing_view(&self.view_id))?;
-        let index = catalog
-            .index(&self.view_id)
-            .ok_or_else(|| missing_view(&self.view_id))?;
-        match index.tagged(tag) {
+    pub(crate) fn require_unique(&self, tag: FourCc) -> Result<Entity, UiBindError> {
+        let matches = self.tags.get(&tag).map(Vec::as_slice).unwrap_or(&[]);
+        match matches {
             [] => Err(UiBindError::MissingTag(
                 tag.as_str().to_string(),
-                view.id.resource_file.clone(),
-                view.id.resource_id,
+                self.view_id.resource_file.clone(),
+                self.view_id.resource_id,
             )),
-            [_id] => Ok(self.tags[&tag]),
+            [entity] => Ok(*entity),
             matches => Err(UiBindError::AmbiguousTag(
                 tag.as_str().to_string(),
-                view.id.resource_file.clone(),
-                view.id.resource_id,
+                self.view_id.resource_file.clone(),
+                self.view_id.resource_id,
                 matches.len(),
             )),
         }
@@ -526,7 +409,9 @@ impl UiSpawner<'_, '_> {
         tag: FourCc,
         component: C,
     ) {
-        let entity = spawned.tag(tag).expect("validated UI catalog binding");
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated UI catalog binding");
         self.commands
             .entity(entity)
             .insert(component)
@@ -570,11 +455,11 @@ pub(crate) fn spawn_view_nodes(
         .id();
 
     let mut nodes = HashMap::with_capacity(view.nodes.len());
-    let mut tags = HashMap::with_capacity(view.nodes.len());
+    let mut tags: HashMap<FourCc, Vec<Entity>> = HashMap::with_capacity(view.nodes.len());
     for node in &view.nodes {
         let entity = spawn_node(commands, node);
         nodes.insert(node.id, entity);
-        tags.entry(node.tag).or_insert(entity);
+        tags.entry(node.tag).or_default().push(entity);
     }
     for node in &view.nodes {
         let entity = nodes[&node.id];
@@ -883,45 +768,12 @@ mod tests {
     }
 
     #[test]
-    fn embedded_catalog_contains_all_application_bindings() {
-        UiCatalogResource::new(catalog())
-            .unwrap()
-            .validate_application_bindings()
-            .unwrap();
-    }
-
-    #[test]
     fn catalog_rejects_duplicate_node_ids_before_spawning() {
         let mut catalog = catalog();
         let view = &mut catalog.views[0];
         view.nodes.push(view.nodes[0].clone());
 
         assert!(UiCatalogResource::new(catalog).is_err());
-    }
-
-    #[test]
-    fn required_application_tags_must_be_unambiguous() {
-        let mut catalog = catalog();
-        let view = catalog
-            .views
-            .iter_mut()
-            .find(|view| view.id == crate::ui::main_menu::main_menu_view_id())
-            .unwrap();
-        let mut duplicate = view
-            .nodes
-            .iter()
-            .find(|node| node.tag == imperialism_formats::fourcc!("rand"))
-            .unwrap()
-            .clone();
-        duplicate.id = UiNodeId(view.nodes.iter().map(|node| node.id.0).max().unwrap() + 1);
-        view.nodes.push(duplicate);
-
-        assert!(
-            UiCatalogResource::new(catalog)
-                .unwrap()
-                .validate_application_bindings()
-                .is_err()
-        );
     }
 
     #[test]
@@ -1083,20 +935,18 @@ mod tests {
         };
         let setup_view = spawn_structure(&mut app, &setup);
         let menu_view = spawn_structure(&mut app, &menu);
-        let catalog = app.world().resource::<UiCatalogResource>();
-
-        let okay = setup_view.require_unique(catalog, fourcc!("okay")).unwrap();
+        let okay = setup_view.require_unique(fourcc!("okay")).unwrap();
         assert!(app.world().get::<UiButton>(okay).is_some());
-        let globe = setup_view.require_unique(catalog, fourcc!("glob")).unwrap();
+        let globe = setup_view.require_unique(fourcc!("glob")).unwrap();
         assert!(app.world().get::<UiButton>(globe).is_some());
-        let dif0 = setup_view.require_unique(catalog, fourcc!("dif0")).unwrap();
+        let dif0 = setup_view.require_unique(fourcc!("dif0")).unwrap();
         assert!(app.world().get::<RadioButton>(dif0).is_some());
-        let diff = setup_view.require_unique(catalog, fourcc!("diff")).unwrap();
+        let diff = setup_view.require_unique(fourcc!("diff")).unwrap();
         assert!(app.world().get::<RadioGroup>(diff).is_some());
-        let map = setup_view.require_unique(catalog, fourcc!("map ")).unwrap();
+        let map = setup_view.require_unique(fourcc!("map ")).unwrap();
         assert!(app.world().get::<RelativeCursorPosition>(map).is_some());
 
-        let rand = menu_view.require_unique(catalog, fourcc!("rand")).unwrap();
+        let rand = menu_view.require_unique(fourcc!("rand")).unwrap();
         assert!(app.world().get::<UiButton>(rand).is_some());
     }
 
@@ -1113,7 +963,7 @@ mod tests {
             .require_under(catalog, fourcc!("topB"), fourcc!("trad"))
             .unwrap();
         assert!(
-            spawned.require_unique(catalog, fourcc!("trad")).is_err(),
+            spawned.require_unique(fourcc!("trad")).is_err(),
             "trad is ambiguous without an ancestor"
         );
         let leave = spawned

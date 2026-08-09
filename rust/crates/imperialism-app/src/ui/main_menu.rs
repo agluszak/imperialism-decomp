@@ -4,7 +4,7 @@ use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::InteractionDisabled;
 use bevy::ui_widgets::Activate;
-use imperialism_formats::{ScopedViewId, UiBehavior};
+use imperialism_formats::{ScopedViewId, UiBehavior, fourcc};
 
 const STARTUP_RESOURCE_FILE: &str = "Startup.rsrc";
 const MAIN_MENU_RESOURCE_ID: i16 = 1500;
@@ -14,6 +14,10 @@ pub(crate) fn main_menu_view_id() -> ScopedViewId {
         resource_file: STARTUP_RESOURCE_FILE.to_owned(),
         resource_id: MAIN_MENU_RESOURCE_ID,
     }
+}
+
+pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
+    catalog.require_unique_bindings(&main_menu_view_id(), &[fourcc!("rand"), fourcc!("quit")])
 }
 
 #[derive(Component, Clone, Copy, Debug, Eq, PartialEq)]

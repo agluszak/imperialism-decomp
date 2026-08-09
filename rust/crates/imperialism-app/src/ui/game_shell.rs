@@ -55,6 +55,42 @@ pub(crate) fn diplomacy_view_id() -> ScopedViewId {
     }
 }
 
+pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Result<(), String> {
+    catalog.require_unique_bindings(
+        &strategic_map_view_id(),
+        &[TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")],
+    )?;
+    catalog.require_unique_bindings(&flag_view_id(), &[fourcc!("end "), fourcc!("quer")])?;
+    for view_id in [
+        trade_view_id(),
+        city_view_id(),
+        transport_view_id(),
+        diplomacy_view_id(),
+    ] {
+        catalog.require_unique_bindings(&view_id, &[fourcc!("end ")])?;
+    }
+    for view_id in [
+        strategic_map_view_id(),
+        trade_view_id(),
+        city_view_id(),
+        transport_view_id(),
+        diplomacy_view_id(),
+    ] {
+        for tag in [TRADE, fourcc!("tran"), fourcc!("city"), fourcc!("dipl")] {
+            catalog.require_control_under(&view_id, tag, TOOLBAR_PARENT_TAGS)?;
+        }
+    }
+    for view_id in [
+        trade_view_id(),
+        city_view_id(),
+        transport_view_id(),
+        diplomacy_view_id(),
+    ] {
+        catalog.require_control_under(&view_id, fourcc!("end "), LEAVE_PARENT_TAGS)?;
+    }
+    Ok(())
+}
+
 fn view_id_for_state(state: AppState) -> Option<ScopedViewId> {
     match state {
         AppState::StrategicMap => Some(strategic_map_view_id()),
@@ -74,9 +110,9 @@ enum GameScreenNavAction {
     Diplomacy,
 }
 
-pub(crate) struct GameScreensPlugin;
+pub(crate) struct GameShellPlugin;
 
-impl Plugin for GameScreensPlugin {
+impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate);
         for state in [
@@ -172,7 +208,7 @@ fn bind_game_screen_nav(
 /// is not implemented yet.
 fn disable_control(commands: &mut Commands, spawned: &SpawnedView, tag: FourCc) {
     let entity = spawned
-        .tag(tag)
+        .require_unique(tag)
         .expect("validated disabled control binding");
     commands.entity(entity).insert(InteractionDisabled);
 }
@@ -345,11 +381,10 @@ mod tests {
     #[test]
     fn strategic_map_flag_view_disables_end_turn_and_query() {
         let app = app_at(AppState::StrategicMap);
-        let catalog = app.world().resource::<UiCatalogResource>();
         let spawned = app.world().resource::<TestFlagSpawned>().0.clone();
         for tag in [fourcc!("end "), fourcc!("quer")] {
             let entity = spawned
-                .require_unique(catalog, tag)
+                .require_unique(tag)
                 .unwrap_or_else(|error| panic!("flag view missing {tag}: {error}"));
             assert!(
                 app.world().get::<InteractionDisabled>(entity).is_some(),
@@ -371,10 +406,9 @@ mod tests {
             AppState::Diplomacy,
         ] {
             let app = app_at(state);
-            let catalog = app.world().resource::<UiCatalogResource>();
             let spawned = app.world().resource::<TestSpawned>().0.clone();
             let end_turn = spawned
-                .require_unique(catalog, fourcc!("end "))
+                .require_unique(fourcc!("end "))
                 .unwrap_or_else(|error| panic!("{state:?} missing end turn control: {error}"));
             assert!(
                 app.world().get::<InteractionDisabled>(end_turn).is_some(),
@@ -461,7 +495,7 @@ mod tests {
     }
 
     #[test]
-    fn catalog_game_screens_expose_expected_roots() {
+    fn catalog_game_shell_exposes_expected_roots() {
         let catalog = catalog();
         for (view_id, min_nodes) in [
             (strategic_map_view_id(), 70usize),
