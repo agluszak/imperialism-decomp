@@ -56,6 +56,10 @@ pub(crate) fn city() -> CityState {
 pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
         controller: crate::MajorNationController::Human,
+        foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
+        foreign_minister_skill_index: 0,
+        development_grant_by_nation: NationTable::default(),
+        defense_minister_skill_index: 0,
         capacities: NationCapacities::default(),
         grant_total_cost: 0,
         unfilled_trade_offer_count: 0,

@@ -3,18 +3,18 @@ use imperialism_core::{
     ArmyMissionState, AttackMissionState, CityState, CivilianLocation, CivilianUnitId,
     CivilianUnitKind, CivilianUnitState, CivilianUnitTable, CivilianWorkOrder, DevelopmentLevel,
     Difficulty, DiplomacyGrant, DiplomacyPolicy, DiplomacyState, DiplomaticCongressState,
-    DiplomaticMissionLevel, DiplomaticRelationship, GameState, GreatPowerState, LaborPool,
-    MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId, MajorNationTable,
-    MapTopology, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState, MilitaryUnitTable,
-    MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState, NATION_COUNT,
-    NationCapacities, NationCommonState, NationId, NationTable, Nations, NavyMissionState,
-    OceanZoneId, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus, PendingActionTable,
-    PendingWorkState, PopulationAccumulator, PopulationState, ProductionTable, ProvinceId,
-    ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng, RetailLcg,
-    RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile, StrategicMap,
-    StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId, TileOwnerTag,
-    TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow, TradeMarketState,
-    TradePolicyScore, TurnState, TurnsRemaining,
+    DiplomaticMissionLevel, DiplomaticRelationship, ForeignMinisterPersonality, GameState,
+    GreatPowerState, LaborPool, MAJOR_NATION_COUNT, MINOR_NATION_COUNT, MajorNation, MajorNationId,
+    MajorNationTable, MapTopology, MilitaryUnitId, MilitaryUnitKind, MilitaryUnitState,
+    MilitaryUnitTable, MinorNation, MinorNationId, MinorNationTable, MissionData, MissionState,
+    NATION_COUNT, NationCapacities, NationCommonState, NationId, NationTable, Nations,
+    NavyMissionState, OceanZoneId, PENDING_ACTION_COUNT, PendingActionState, PendingActionStatus,
+    PendingActionTable, PendingWorkState, PopulationAccumulator, PopulationState, ProductionTable,
+    ProvinceId, ProvinceTable, RailSegment, RegionId, ResourceKind, ResourceTable, RetailCrtRng,
+    RetailLcg, RiverSegment, RngState, STRATEGIC_TILE_COUNT, ShipTypeTable, Stockpile,
+    StrategicMap, StrikePhase, TerrainKind, TileAction, TileDevelopment, TileFlags, TileId,
+    TileOwnerTag, TileState, TileTransportLinks, TradeCommodityTable, TradeMarketRow,
+    TradeMarketState, TradePolicyScore, TurnState, TurnsRemaining,
 };
 
 const SAVE_MAGIC: [u8; 4] = *b"IBMA";
@@ -1545,9 +1545,13 @@ impl LegacySaveV62 {
                     });
                 city.city_state(optional_tile_id(home_town)?)?
             };
+            let foreign_minister_personality = foreign_minister_personality(
+                nation,
+                self.simulation.game_setup.foreign_minister_policy_ids[slot],
+            )?;
             majors.push(MajorNation::from_parts(
                 country_common(&great_power.country)?,
-                great_power_state(great_power)?,
+                great_power_state(great_power, foreign_minister_personality)?,
                 city,
             ));
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
@@ -1665,9 +1669,44 @@ impl LegacySaveV62 {
     }
 }
 
-fn great_power_state(nation: &LegacyGreatPowerState) -> Result<GreatPowerState, LegacySaveError> {
+fn foreign_minister_personality(
+    nation: &LegacyMajorNationState,
+    setup_policy_id: i16,
+) -> Result<ForeignMinisterPersonality, LegacySaveError> {
+    if !matches!(nation, LegacyMajorNationState::Auto(_)) {
+        return Ok(ForeignMinisterPersonality::Base);
+    }
+    match setup_policy_id {
+        0 => Ok(ForeignMinisterPersonality::Arms),
+        1 => Ok(ForeignMinisterPersonality::Trader),
+        2 => Ok(ForeignMinisterPersonality::Textile),
+        3 => Ok(ForeignMinisterPersonality::Diplomat),
+        4 => Ok(ForeignMinisterPersonality::Bill),
+        5 => Ok(ForeignMinisterPersonality::Ted),
+        _ => Err(LegacySaveError::StateProjection(format!(
+            "unsupported AI foreign-minister setup policy {setup_policy_id}"
+        ))),
+    }
+}
+
+fn great_power_state(
+    nation: &LegacyGreatPowerState,
+    foreign_minister_personality: ForeignMinisterPersonality,
+) -> Result<GreatPowerState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
+    let foreign_minister = nation.ministers.foreign.as_ref().ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "major nation slot {} has no foreign minister",
+            nation.country.nation_slot
+        ))
+    })?;
+    let defense_minister = nation.ministers.defense.as_ref().ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "major nation slot {} has no defense minister",
+            nation.country.nation_slot
+        ))
+    })?;
     for (&status, &payload) in prefix
         .pending_action_status
         .iter()
@@ -1681,6 +1720,12 @@ fn great_power_state(nation: &LegacyGreatPowerState) -> Result<GreatPowerState, 
         } else {
             imperialism_core::MajorNationController::Computer
         },
+        foreign_minister_personality,
+        foreign_minister_skill_index: foreign_minister.skill_index,
+        development_grant_by_nation: NationTable::from_array(
+            foreign_minister.development_grant_by_nation,
+        ),
+        defense_minister_skill_index: defense_minister.skill_index,
         capacities: NationCapacities::from_array(prefix.capacities),
         grant_total_cost: prefix.grant_total_cost,
         unfilled_trade_offer_count: prefix.unfilled_trade_offer_count,
@@ -3290,6 +3335,53 @@ mod tests {
             LegacyMajorNationState::Auto(nation) => &mut nation.great_power,
             LegacyMajorNationState::Other(nation) => nation,
         }
+    }
+
+    #[test]
+    fn retail_projection_preserves_minister_identity_and_direct_state() {
+        let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let state = save.game_state(game_context()).unwrap();
+        assert_eq!(
+            save.simulation.game_setup.foreign_minister_policy_ids,
+            [1, 4, 2, 4, 3, 5, 3]
+        );
+        assert_eq!(
+            state
+                .nations
+                .majors()
+                .map(|nation| nation.economy().foreign_minister_personality)
+                .collect::<Vec<_>>(),
+            [
+                ForeignMinisterPersonality::Trader,
+                ForeignMinisterPersonality::Bill,
+                ForeignMinisterPersonality::Textile,
+                ForeignMinisterPersonality::Bill,
+                ForeignMinisterPersonality::Diplomat,
+                ForeignMinisterPersonality::Ted,
+                ForeignMinisterPersonality::Base,
+            ]
+        );
+        assert_eq!(
+            state
+                .nations
+                .majors()
+                .map(|nation| nation.economy().foreign_minister_skill_index)
+                .collect::<Vec<_>>(),
+            [0, 4, 0, 4, 0, 5, 0]
+        );
+        assert!(state.nations.majors().all(|nation| {
+            nation.economy().development_grant_by_nation == NationTable::<i16>::default()
+                && nation.economy().defense_minister_skill_index == 0
+        }));
+        assert_eq!(
+            state
+                .nations
+                .major(MajorNationId::new(6))
+                .economy()
+                .foreign_minister_personality,
+            ForeignMinisterPersonality::Base,
+            "the human constructs the base minister even though setup policy 3 names Diplomat"
+        );
     }
 
     #[test]

@@ -306,6 +306,10 @@ mod tests {
     fn major() -> GreatPowerState {
         GreatPowerState {
             controller: crate::MajorNationController::Human,
+            foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
+            foreign_minister_skill_index: 0,
+            development_grant_by_nation: crate::NationTable::default(),
+            defense_minister_skill_index: 0,
             capacities: crate::NationCapacities::from_array([10, 4, 0, 0]),
             grant_total_cost: 0,
             unfilled_trade_offer_count: 0,

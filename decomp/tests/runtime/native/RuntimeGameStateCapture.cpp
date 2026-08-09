@@ -31,9 +31,12 @@
 #include "game/military/TDefendProvinceMission.h"
 #include "game/military/TInvadeMission.h"
 #include "game/military/TMilitaryUnit.h"
+#include "game/military_ui/TDefenseMinister.h"
 #include "game/military_ui/TDiplomacyMgr.h"
 #include "game/military_ui/TSortedByRelationshipList.h"
 #include "game/nation/TAutoGreatPower.h"
+#include "game/nation/TForeignMinister.h"
+#include "game/nation/TForeignMinisterPersonalities.h"
 #include "game/nation/TGreatPower.h"
 #include "game/nation/TGreatPower_internal.h"
 #include "game/nation/TLandSaleEvent.h"
@@ -735,9 +738,51 @@ JSON_Value* CaptureWorld() {
   return object.Release();
 }
 
+const char* ForeignMinisterPersonalityName(TForeignMinister* minister) {
+  if (minister == 0) {
+    FailSemanticCapture("major nation has no foreign minister");
+  }
+  CRuntimeClass* runtimeClass = minister->GetRuntimeClass();
+  if (runtimeClass == RUNTIME_CLASS(TForeignMinister)) {
+    return "base";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TArmsForeignMinister)) {
+    return "arms";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TTraderForeignMinister)) {
+    return "trader";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TTextileForeignMinister)) {
+    return "textile";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TDiplomatForeignMinister)) {
+    return "diplomat";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TBillForeignMinister)) {
+    return "bill";
+  }
+  if (runtimeClass == RUNTIME_CLASS(TTedForeignMinister)) {
+    return "ted";
+  }
+  FailSemanticCapture("major nation has an unknown foreign-minister runtime class");
+  return "base";
+}
+
 JSON_Value* CaptureMajorNation(TGreatPower* nation) {
+  if (nation->defenseMinister == 0) {
+    FailSemanticCapture("major nation has no defense minister");
+  }
   JsonObject object;
   object.Set("controller", nation->diplomacyEligibilityA0 != 0 ? "Human" : "Computer");
+  object.Set("foreign_minister_personality",
+             ForeignMinisterPersonalityName(nation->foreignMinister));
+  object.Set("foreign_minister_skill_index",
+             static_cast<int>(nation->foreignMinister->skillIndexC));
+  object.Set(
+      "development_grant_by_nation",
+      CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
+  object.Set("defense_minister_skill_index",
+             static_cast<int>(nation->defenseMinister->skillIndexC));
   object.Set("capacities", CaptureNationCapacities(nation));
   object.Set("grant_total_cost", nation->grantTotalCost);
   object.Set("unfilled_trade_offer_count", static_cast<int>(nation->unfilledTradeOfferCount));
