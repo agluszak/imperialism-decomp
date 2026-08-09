@@ -1755,11 +1755,11 @@ fn relationship_records(
     records.sort_by_key(|(_, source)| *source);
     if let Some((_, source)) = records
         .windows(2)
-        .find(|pair| pair[0].1 == pair[1].1)
+        .find(|pair| pair[0].1 == pair[1].1 && pair[0].0 != pair[1].0)
         .map(|pair| pair[0])
     {
         return Err(LegacySaveError::StateProjection(format!(
-            "nation {owner} {queue} contains multiple records from source {}; retail load order depends on unavailable pre-load CRT state",
+            "nation {owner} {queue} contains distinguishable records from source {}; retail load order depends on unavailable pre-load CRT state",
             source.get()
         )));
     }
@@ -3827,8 +3827,48 @@ mod tests {
         assert!(matches!(
             save.game_state(game_context()),
             Err(LegacySaveError::StateProjection(message))
-                if message == "nation 0 turn-event queue contains multiple records from source 2; retail load order depends on unavailable pre-load CRT state"
+                if message == "nation 0 turn-event queue contains distinguishable records from source 2; retail load order depends on unavailable pre-load CRT state"
         ));
+    }
+
+    #[test]
+    fn accepts_identical_equal_source_relationship_records_without_rng_draws() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let lists = &mut first_great_power_mut(&mut save).prefix.relationship_lists;
+        lists[0].records = vec![relationship_record(-7, 2), relationship_record(-7, 2)];
+        lists[1].records = vec![relationship_record(0x12d, 1), relationship_record(0x12d, 1)];
+        let mut context = game_context();
+        context.crt_rand_state = 0x1234_5678;
+
+        let state = save.game_state(context).unwrap();
+        let pending = &state.pending.nations[MajorNationId::new(0)];
+        assert_eq!(
+            pending.turn_events,
+            vec![
+                DiplomacyNotice {
+                    source: NationId::new(2),
+                    code: -7,
+                },
+                DiplomacyNotice {
+                    source: NationId::new(2),
+                    code: -7,
+                },
+            ]
+        );
+        assert_eq!(
+            pending.proposals,
+            vec![
+                DiplomacyProposal {
+                    source: NationId::new(1),
+                    policy: DiplomacyPolicy::JoinEmpire,
+                },
+                DiplomacyProposal {
+                    source: NationId::new(1),
+                    policy: DiplomacyPolicy::JoinEmpire,
+                },
+            ]
+        );
+        assert_eq!(state.rng.crt_rand.state(), 0x1234_5678);
     }
 
     #[test]
