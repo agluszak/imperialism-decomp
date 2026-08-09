@@ -1725,7 +1725,7 @@ pub enum PendingNewspaperEvent {
     },
     Miscellaneous {
         audience: Option<MajorNationId>,
-        story_code: i16,
+        story_code: i32,
     },
 }
 
@@ -1739,14 +1739,8 @@ pub struct WarTransition {
 pub struct NationPendingWork {
     pub turn_events: Vec<TaggedValue>,
     pub proposals: Vec<TaggedValue>,
-    pub newspaper_notices: Vec<NewspaperNotice>,
     pub turn_summary: Vec<TurnSummary>,
     pub turn_start_events: Vec<TurnStartEvent>,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct NewspaperNotice {
-    pub counterpart: NationId,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
