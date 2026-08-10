@@ -1722,7 +1722,7 @@ impl LegacySaveV62 {
                 )
             })?;
 
-        Ok(GameState {
+        let state = GameState {
             turn: TurnState {
                 scenario_map: self.simulation.game_setup.scenario_map,
                 economic_turn: i32::from(self.simulation.economic_turn),
@@ -1756,7 +1756,11 @@ impl LegacySaveV62 {
             task_forces: Vec::new(),
             missions,
             pending,
-        })
+        };
+        state.validate_territory_index().map_err(|error| {
+            LegacySaveError::StateProjection(format!("invalid territory index: {error}"))
+        })?;
+        Ok(state)
     }
 }
 
@@ -2511,23 +2515,23 @@ fn province_state(
 }
 
 fn country_common(country: &LegacyCountryBase) -> Result<NationCommonState, LegacySaveError> {
-    Ok(NationCommonState {
-        display_name: normalize_nation_display_name(&country.alternate_identity),
-        status: country_status_from_retail(country.encoded_nation_slot)?,
-        owned_regions: country
+    Ok(NationCommonState::from_parts(
+        normalize_nation_display_name(&country.alternate_identity),
+        country_status_from_retail(country.encoded_nation_slot)?,
+        country
             .owned_regions
             .iter()
             .copied()
             .map(owned_region_id_from_retail)
             .collect::<Result<Vec<_>, _>>()?,
-        treasury: country.treasury,
-        home_tile: optional_tile_id(country.home_tile)?,
-        trade_policy_by_nation: NationTable::from_array(
+        country.treasury,
+        optional_tile_id(country.home_tile)?,
+        NationTable::from_array(
             country
                 .need_level_by_nation
                 .map(|score| TradePolicyScore::new(i32::from(score))),
         ),
-    })
+    ))
 }
 
 /// Decodes the common `TCountry` prefix at an already-located nation record.
@@ -5226,9 +5230,9 @@ mod tests {
         let state = save.game_state(game_context()).unwrap();
 
         let nation_zero = state.nations.major(MajorNationId::new(0)).common();
-        assert_eq!(nation_zero.status, CountryStatus::Independent);
+        assert_eq!(nation_zero.status(), CountryStatus::Independent);
         assert_eq!(
-            nation_zero.owned_regions,
+            nation_zero.owned_regions(),
             [79, 80, 89, 90, 91, 100, 101, 111]
                 .map(ProvinceId::new)
                 .to_vec()
@@ -5332,6 +5336,16 @@ mod tests {
             first_great_power_mut(&mut save).country.encoded_nation_slot = encoded_status;
             assert!(save.game_state(game_context()).is_err());
         }
+
+        let mut mismatched_index = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        mismatched_index.map.provinces[79].owner_nation = 1;
+        let error = mismatched_index.game_state(game_context()).unwrap_err();
+        assert!(matches!(
+            error,
+            LegacySaveError::StateProjection(detail)
+                if detail.contains("invalid territory index")
+                    && detail.contains("province ProvinceId(79)")
+        ));
 
         let mut too_short = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         too_short.map.provinces.pop();

@@ -402,7 +402,7 @@ fn city_building_level(
     Some(major.city().next_building_type(
         slot,
         major.economy(),
-        major.common().owned_regions.len() as i32,
+        major.common().owned_region_count() as i32,
         state.technology.city_capabilities_by_nation[nation].advanced_iron_working,
     ))
 }
@@ -1486,7 +1486,7 @@ fn on_city_canvas_click(
             && major.city().building_type(
                 building.slot,
                 major.economy(),
-                major.common().owned_regions.len() as i32,
+                major.common().owned_region_count() as i32,
             ) == 0
     };
     if unbuilt_capacity_center {
@@ -2922,7 +2922,7 @@ fn open_city_construction_dialog(
             let (next_capacity, needed, original_quantity) = {
                 let major = session.0.nations.major(nation);
                 let city = major.city();
-                let owned_regions = major.common().owned_regions.len() as i32;
+                let owned_regions = major.common().owned_region_count() as i32;
                 let current = city.building_type(slot, major.economy(), owned_regions);
                 let next_capacity =
                     city.max_building_capacity(slot, major.economy(), owned_regions);
@@ -3204,7 +3204,7 @@ fn on_city_expansion_open(
     let (next_capacity, needed, next_level) = {
         let major = session.0.nations.major(open.nation);
         let city = major.city();
-        let owned_regions = major.common().owned_regions.len() as i32;
+        let owned_regions = major.common().owned_region_count() as i32;
         let current = city.building_type(open.slot, major.economy(), owned_regions);
         let next_capacity = city.max_building_capacity(open.slot, major.economy(), owned_regions);
         (
@@ -3280,7 +3280,7 @@ fn on_city_building_change_choice(
             let needed = {
                 let major = session.0.nations.major(choice.nation);
                 let city = major.city();
-                let owned_regions = major.common().owned_regions.len() as i32;
+                let owned_regions = major.common().owned_region_count() as i32;
                 city.max_building_capacity(choice.slot, major.economy(), owned_regions)
                     - city.building_type(choice.slot, major.economy(), owned_regions)
             };
@@ -3822,9 +3822,9 @@ fn sync_city_values(
             CityValue::RegionalCapacity => city.building_type(
                 ProductionSlot::RegionalPopulation,
                 major.economy(),
-                major.common().owned_regions.len() as i32,
+                major.common().owned_region_count() as i32,
             ),
-            CityValue::OwnedRegionCount => major.common().owned_regions.len() as i16,
+            CityValue::OwnedRegionCount => major.common().owned_region_count() as i16,
             CityValue::ArmoryUnitKind => {
                 let Some(order) = armory_order else {
                     continue;

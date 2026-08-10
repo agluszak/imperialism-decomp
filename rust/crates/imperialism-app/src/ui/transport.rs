@@ -726,7 +726,7 @@ fn transport_need_limit(major: &MajorNation, allocation: TransportAllocation) ->
         city.building_type(
             slot,
             major.economy(),
-            major.common().owned_regions.len() as i32,
+            major.common().owned_region_count() as i32,
         )
     };
     let deficit = if allocation == TransportAllocation::COTTON_AND_WOOL {

@@ -250,7 +250,7 @@ impl GameState {
             || NationId::all().any(|nation| {
                 !matches!(
                     self.nations.common(nation),
-                    Some(common) if common.status == CountryStatus::Independent
+                    Some(common) if common.status() == CountryStatus::Independent
                 ) || NationId::all().any(|target| {
                     self.diplomacy.relationships[nation][target] != DiplomaticRelationship::Peace
                 })
@@ -703,7 +703,7 @@ impl GameState {
             .get();
         let mut best = None;
         let mut best_score = -1.0_f32;
-        for &province_id in &major.common.owned_regions {
+        for &province_id in major.common.owned_regions() {
             let province = &self.provinces[province_id];
             if province.owner() != Some(nation.nation()) || province.fort_level() >= fort_cap {
                 continue;

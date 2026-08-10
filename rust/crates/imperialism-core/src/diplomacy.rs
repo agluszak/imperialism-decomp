@@ -69,7 +69,7 @@ impl GameState {
             .nations
             .common(target)
             .expect("player diplomacy target must be present");
-        if target_state.status != CountryStatus::Independent {
+        if target_state.status() != CountryStatus::Independent {
             return PlayerDiplomacyOrderResult::Rejected(
                 PlayerDiplomacyRejection::TargetIsNotIndependent,
             );
@@ -108,7 +108,7 @@ impl GameState {
             .nations
             .common(target)
             .expect("player diplomacy target must be present");
-        if target_state.status != CountryStatus::Independent {
+        if target_state.status() != CountryStatus::Independent {
             return PlayerDiplomacyOrderResult::Rejected(
                 PlayerDiplomacyRejection::TargetIsNotIndependent,
             );
@@ -171,7 +171,7 @@ impl GameState {
                 true
             } else if score == best_score {
                 if self.nations.minors[minor].as_ref().is_some_and(|nation| {
-                    nation.common.status == CountryStatus::ColonyOf(major.nation())
+                    nation.common.status() == CountryStatus::ColonyOf(major.nation())
                 }) {
                     true
                 } else {
@@ -198,7 +198,7 @@ impl GameState {
 
     fn major_is_event_eligible(&self, nation: MajorNationId) -> bool {
         !matches!(
-            self.nations.majors[nation].common.status,
+            self.nations.majors[nation].common.status(),
             CountryStatus::ProtectorateOf(_)
         )
     }
@@ -251,7 +251,7 @@ impl GameState {
             || (MinorNationId::FIRST..NationId::COUNT).any(|slot| {
                 !matches!(
                     self.nations.common(NationId::new(slot)),
-                    Some(common) if common.status == CountryStatus::Independent
+                    Some(common) if common.status() == CountryStatus::Independent
                 )
             })
         {

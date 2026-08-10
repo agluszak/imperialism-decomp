@@ -841,7 +841,7 @@ fn trade_advisory_needed(major: &MajorNation, kind: TradeAdvisoryKind) -> bool {
     let city = major.city();
     let economy = major.economy();
     let building = |slot| {
-        i32::from(city.building_type(slot, economy, major.common().owned_regions.len() as i32))
+        i32::from(city.building_type(slot, economy, major.common().owned_region_count() as i32))
     };
     let stock_and_target = |resource| {
         i32::from(city.stockpile[resource]) + i32::from(economy.need_target_by_type[resource])
