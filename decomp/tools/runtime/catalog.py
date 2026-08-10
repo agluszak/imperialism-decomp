@@ -228,6 +228,17 @@ TESTS = (
         native_snapshots=("game_state",),
     ),
     RuntimeTestSpec(
+        "first_turn_trade_phase",
+        "FirstTurnTradePhaseTest",
+        ("full",),
+        "retail_fixture_oracle",
+        fixture=RuntimeFixtureSpec(
+            "beginning_of_game.imp", "retail_fixture_oracle"
+        ),
+        required_oracles=(),
+        native_snapshots=("game_state",),
+    ),
+    RuntimeTestSpec(
         "easy_turns_advance_three_times",
         "MultiTurnAdvanceTest",
         ("full",),

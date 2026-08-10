@@ -27,6 +27,7 @@ pub enum TurnBlock {
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum TurnEffect {
     ShowDiplomacyMap { nation: crate::MajorNationId },
+    ShowOfferSheet { nation: crate::MajorNationId },
 }
 
 /// Result of advancing the recovered global turn state machine once.
@@ -79,6 +80,17 @@ impl GameState {
                     from,
                     to: crate::PhaseCode::TRADE,
                     effects,
+                }
+            }
+            crate::PhaseCode::TRADE if self.supports_first_turn_trade_phase() => {
+                let nation = crate::MajorNationId::from_nation(self.turn.active_nation)
+                    .expect("the supported trade phase has an active major nation");
+                self.run_trade_phase();
+                self.turn.phase = crate::PhaseCode::OFFER_SHEET;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::OFFER_SHEET,
+                    effects: vec![TurnEffect::ShowOfferSheet { nation }],
                 }
             }
             crate::PhaseCode::SEASON_ADVANCE => {

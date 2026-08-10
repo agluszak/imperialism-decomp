@@ -31,6 +31,7 @@ mod territory;
 #[cfg(test)]
 pub(crate) mod test_support;
 mod trade;
+mod trade_phase;
 mod turn_flow;
 mod units;
 
@@ -53,7 +54,10 @@ pub use map_geometry::{
     HexDirection, MapGeometry, MapTopology, STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH,
     STRATEGIC_TILE_COUNT,
 };
-pub use market::{TradeCommodity, TradeCommodityTable, TradeMarketRow, TradeMarketState};
+pub use market::{
+    DealBookEntryKind, ProcessedTradeCommodity, ProcessedTradeCommodityTable, TradeCommodity,
+    TradeCommodityTable, TradeDealBookEntry, TradeMarketRow, TradeMarketState,
+};
 pub use population::{FoodOutcome, LaborPool, SkillBand};
 pub use production::*;
 pub use random_map::{

@@ -92,6 +92,9 @@ pub fn create_random_game(
 
     let mut military_units = Vec::new();
     let mut unit_ids = UnitIdAllocator::default();
+    // `TMinor::IMinor` snapshots these map resource counts before choosing and
+    // resetting each minor's home tile.
+    initialize_minor_trade_state(&world, &post.gate_flags, &mut nations);
     // `RebuildSecondaryNationStateForSlot` for minors 7..22.
     bootstrap_minors(
         &mut world,
@@ -104,6 +107,10 @@ pub fn create_random_game(
         difficulty,
         &mut port_zones,
     );
+    for (index, &subtype) in post.gate_flags.iter().enumerate() {
+        world[TileId::new(index as u16)].region_tile_subtype =
+            RegionTileSubtype::from_retail(subtype);
+    }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
     initialize_ai_zone_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
@@ -1273,9 +1280,12 @@ fn tile_from_generated(tile: GeneratedTerrainTile) -> TileState {
     let owner = tile.owner;
     TileState {
         terrain: tile.terrain,
+        // The final subtype is folded in after all map and capital post-passes.
+        region_tile_subtype: RegionTileSubtype::default(),
         owner_nation: owner,
         // Retail stamps former owners from the generation owners before Accept.
         former_owner_nation: owner,
+        secondary_owner_nation: None,
         province: tile.province,
         development: Default::default(),
         edge_resources: [None, None],
@@ -1892,6 +1902,70 @@ fn minor_nation(nation: MinorNationId) -> MinorNation {
         consortium_members: std::array::from_fn(|offset| {
             MinorNationId::new(first_member + offset as u8)
         }),
+        trade: MinorTradeState {
+            thresholds: MINOR_TRADE_THRESHOLDS[nation.table_index()],
+            ..MinorTradeState::default()
+        },
+    }
+}
+
+const MINOR_TRADE_THRESHOLDS: [MinorTradeThresholds; MINOR_NATION_COUNT] = [
+    minor_trade_thresholds(0x44c, 0x23a, 0xc3, 0x5a, 0x69, 0x8a, 0x90),
+    minor_trade_thresholds(0x47e, 0x249, 0xaf, 0x52, 0x75, 0x72, 0x84),
+    minor_trade_thresholds(0x4b0, 0x258, 0x9b, 0x4a, 0x81, 0x7e, 0x78),
+    minor_trade_thresholds(0x4e2, 0x267, 0x87, 0x42, 0x8d, 0x90, 0x6f),
+    minor_trade_thresholds(0x514, 0x276, 0xbe, 0x58, 0x6c, 0x8d, 0x93),
+    minor_trade_thresholds(0x546, 0x285, 0xaa, 0x50, 0x78, 0x69, 0x87),
+    minor_trade_thresholds(0x578, 0x294, 0x96, 0x48, 0x84, 0x7b, 0x75),
+    minor_trade_thresholds(0x5aa, 0x2a3, 0x82, 0x40, 0x90, 0x81, 0x72),
+    minor_trade_thresholds(0x5dc, 0x2b2, 0xb9, 0x56, 0x6f, 0x93, 0x96),
+    minor_trade_thresholds(0x60e, 0x2c1, 0xa5, 0x4e, 0x7b, 0x6c, 0x8a),
+    minor_trade_thresholds(0x640, 0x2d0, 0x91, 0x46, 0x87, 0x78, 0x7e),
+    minor_trade_thresholds(0x672, 0x2df, 0x7d, 0x3e, 0x93, 0x84, 0x69),
+    minor_trade_thresholds(0x6a4, 0x2ee, 0xb4, 0x54, 0x72, 0x96, 0x8d),
+    minor_trade_thresholds(0x6d6, 0x2fd, 0xa0, 0x4c, 0x7e, 0x6f, 0x81),
+    minor_trade_thresholds(0x708, 0x302, 0x8c, 0x44, 0x8a, 0x7b, 0x75),
+    minor_trade_thresholds(0x73a, 0x311, 0x78, 0x3c, 0x96, 0x87, 0x6c),
+];
+
+const fn minor_trade_thresholds(
+    primary_manufactured_price: i16,
+    secondary_manufactured_price: i16,
+    general_offer_price: i16,
+    random_offer_price: i16,
+    coal_offer_price: i16,
+    iron_offer_price: i16,
+    oil_offer_price: i16,
+) -> MinorTradeThresholds {
+    MinorTradeThresholds {
+        primary_manufactured_price,
+        secondary_manufactured_price,
+        general_offer_price,
+        random_offer_price,
+        coal_offer_price,
+        iron_offer_price,
+        oil_offer_price,
+    }
+}
+
+fn initialize_minor_trade_state(world: &StrategicMap, tile_subtypes: &[i8], nations: &mut Nations) {
+    for nation in (MinorNationId::FIRST..NationId::COUNT).map(MinorNationId::new) {
+        let Some(minor) = nations.minors[nation].as_mut() else {
+            continue;
+        };
+        let owner = TileOwnerTag::from_nation(nation.nation());
+        let mut counts = ResourceTable::default();
+        for (index, tile) in world.iter().enumerate() {
+            if tile.owner_nation != Some(owner) || tile_subtypes[index] == 0xf {
+                continue;
+            }
+            for resource in tile.edge_resources.into_iter().flatten() {
+                counts[resource] += 1;
+            }
+        }
+        minor.trade.current_supply = counts;
+        minor.trade.current_supply[ResourceKind::Food] = 5;
+        minor.trade.independent_resource_counts = counts;
     }
 }
 

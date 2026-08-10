@@ -17,6 +17,7 @@
 #include "game/city/TShipOrder.h"
 #include "game/city/TTrainingOrder.h"
 #include "game/city/TUnitOrder.h"
+#include "game/city_ui/TCityInteriorMinister.h"
 #include "game/civilian_domain_types.h"
 #include "game/debug/TLaborPool.h"
 #include "game/diplomacy_domain_types.h"
@@ -671,6 +672,44 @@ JSON_Value* CaptureResourceTable(const int* values) {
   return table.Release();
 }
 
+JSON_Value* CaptureTradeCommodityTable(const short* values) {
+  JsonObject table;
+  for (int index = 0; index < kResourceManufacturedEnd; ++index) {
+    table.Set(kResourceNames[index], static_cast<int>(values[index]));
+  }
+  return table.Release();
+}
+
+JSON_Value* CaptureProcessedTradeCommodityTable(const short* values) {
+  JsonObject table;
+  for (int index = 0; index < 6; ++index) {
+    table.Set(kResourceNames[kResourceFood + index], static_cast<int>(values[index]));
+  }
+  return table.Release();
+}
+
+JSON_Value* RuntimeJsonString(const char* value);
+
+JSON_Value* CaptureOptionalTradeCommodity(short resourceKind) {
+  if (resourceKind == -10) {
+    return JsonNullValue();
+  }
+  if (resourceKind < kResourceCotton || resourceKind >= kResourceManufacturedEnd) {
+    FailSemanticCapture("trade commodity is outside the semantic range");
+  }
+  return RuntimeJsonString(kResourceNames[resourceKind]);
+}
+
+JSON_Value* CaptureOptionalManufacturedTradeCommodity(short resourceKind) {
+  if (resourceKind == -10) {
+    return JsonNullValue();
+  }
+  if (resourceKind < kResourceClothing || resourceKind >= kResourceManufacturedEnd) {
+    FailSemanticCapture("manufactured trade request is outside the semantic range");
+  }
+  return RuntimeJsonString(kResourceNames[resourceKind]);
+}
+
 JSON_Value* CaptureMarket() {
   JsonObject market;
   JsonObject rows;
@@ -709,8 +748,18 @@ JSON_Value* CaptureTechnology() {
     FailSemanticCapture("technology resource-type flag is not boolean");
   }
   JsonObject technology;
+  JsonArray advancedTradeResourceByNation;
+  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
+    const unsigned char status = g_pTechMgr->orderCapRows277[nationSlot]
+                                     .techStatusByTechId[TTechMgr::kProductionOrderTechId];
+    if (status > 2) {
+      FailSemanticCapture("major-nation advanced-trade technology status is invalid");
+    }
+    advancedTradeResourceByNation.Add(status == 2);
+  }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
+  technology.Set("advanced_trade_resource_by_nation", advancedTradeResourceByNation.Release());
   return technology.Release();
 }
 
@@ -921,6 +970,13 @@ JSON_Value* CaptureWorld() {
     tileObject.Set("flags", CaptureTileFlags(tile.activeFlags1c, tileFlags));
     ASSERT(tile.regionSubtypeTag05 >= -1);
     tileObject.SetOptional("region", static_cast<int>(tile.regionSubtypeTag05));
+    tileObject.Set("region_tile_subtype", static_cast<int>(tile.gateFlag));
+    if (tile.secondaryOwnerNationTag18 < -1 ||
+        tile.secondaryOwnerNationTag18 >= kMajorNationCount) {
+      FailSemanticCapture("tile secondary owner is outside the major-nation range");
+    }
+    tileObject.SetOptional("secondary_owner_nation",
+                           static_cast<int>(tile.secondaryOwnerNationTag18));
     const unsigned char riverConnection = RiverConnectionCode(tile.riverSpriteCode);
     if (riverConnection == 0) {
       tileObject.SetNull("river");
@@ -1002,6 +1058,95 @@ const char* ForeignMinisterPersonalityName(TForeignMinister* minister) {
   return "base";
 }
 
+JSON_Value* CaptureDealBook(TGreatPower* nation) {
+  JsonObject dealBook;
+  for (short commodity = kResourceCotton; commodity < kResourceManufacturedEnd; ++commodity) {
+    JsonArray entries;
+    const short entryCount = nation->GetTrackedSlotEntryCountLow(commodity);
+    if (entryCount < 0) {
+      FailSemanticCapture("deal-book entry count is negative");
+    }
+    for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      short kind;
+      short amount;
+      short targetNation;
+      int unitPrice;
+      nation->ReadTrackedSlotEntryFields(commodity, ordinal, &kind, &amount, &targetNation,
+                                         &unitPrice);
+      if (kind != kTrackedSlotOfferEntry && kind != kTrackedSlotAcceptEntry) {
+        FailSemanticCapture("deal-book entry kind is invalid");
+      }
+      if (targetNation < 0 || targetNation >= kNationSlotCount) {
+        FailSemanticCapture("deal-book nation is outside the semantic range");
+      }
+      JsonObject entry;
+      entry.Set("kind", kind == kTrackedSlotOfferEntry ? "offer" : "accept");
+      entry.Set("nation", static_cast<int>(targetNation));
+      entry.Set("amount", static_cast<int>(amount));
+      entry.Set("unit_price", unitPrice);
+      entries.Add(entry.Release());
+    }
+    dealBook.Set(kResourceNames[commodity], entries.Release());
+  }
+  return dealBook.Release();
+}
+
+JSON_Value* CaptureForeignTradeState(const TForeignMinister* minister) {
+  JsonObject state;
+  if (minister->interiorBidResource10 == -10) {
+    state.SetNull("interior_bid");
+  } else {
+    if (minister->interiorBidResource10 < kResourceCotton ||
+        minister->interiorBidResource10 >= kResourceManufacturedEnd) {
+      FailSemanticCapture("foreign-minister interior bid commodity is invalid");
+    }
+    JsonObject bid;
+    bid.Set("commodity", kResourceNames[minister->interiorBidResource10]);
+    bid.Set("amount", static_cast<int>(minister->interiorBidAmount12));
+    state.Set("interior_bid", bid.Release());
+  }
+  state.Set("phase_counter", static_cast<int>(minister->diplomacyPhaseCounter18));
+  state.Set("refresh_interval", static_cast<int>(minister->tradeBidRefreshInterval1a));
+  if (minister->interiorOrderKind1c < 1 || minister->interiorOrderKind1c > 2) {
+    FailSemanticCapture("foreign-minister requested ship is outside the recovered range");
+  }
+  state.Set("requested_ship", ShipTypeName(minister->interiorOrderKind1c));
+  state.Set("purchase_priority",
+            CaptureTradeCommodityTable(minister->purchasePriorityByResource1e));
+  JsonArray preferredResources;
+  for (int index = 0; index < 4; ++index) {
+    preferredResources.Add(
+        CaptureOptionalTradeCommodity(minister->preferredResourceSlots40[index]));
+  }
+  state.Set("preferred_resources", preferredResources.Release());
+  return state.Release();
+}
+
+JSON_Value* CapturePendingShip(TGreatPower* nation) {
+  if (nation->interiorMinister == 0) {
+    FailSemanticCapture("major nation has no interior minister");
+  }
+  const short pendingShip = nation->interiorMinister->pendingShipType32;
+  if (pendingShip == 0) {
+    return JsonNullValue();
+  }
+  if (pendingShip < 1 || pendingShip > 2) {
+    FailSemanticCapture("interior-minister pending ship is outside the recovered range");
+  }
+  return RuntimeJsonString(ShipTypeName(pendingShip));
+}
+
+JSON_Value* CaptureAiTradeState(TGreatPower* nation) {
+  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+    return JsonNullValue();
+  }
+  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
+  JsonObject state;
+  state.Set("temporary_processed_stock",
+            CaptureProcessedTradeCommodityTable(automaticNation->actionMetricByQuarter));
+  return state.Release();
+}
+
 JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   if (nation->defenseMinister == 0) {
     FailSemanticCapture("major nation has no defense minister");
@@ -1013,6 +1158,10 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
              ForeignMinisterPersonalityName(nation->foreignMinister));
   object.Set("foreign_minister_skill_index",
              static_cast<int>(nation->foreignMinister->skillIndexC));
+  object.Set("deal_book", CaptureDealBook(nation));
+  object.Set("foreign_trade", CaptureForeignTradeState(nation->foreignMinister));
+  object.Set("pending_ship", CapturePendingShip(nation));
+  object.Set("ai_trade", CaptureAiTradeState(nation));
   object.Set(
       "development_grant_by_nation",
       CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
@@ -1148,6 +1297,46 @@ JSON_Value* CaptureNations() {
       consortiumMembers.Add(member);
     }
     minor.Set("consortium_members", consortiumMembers.Release());
+    JsonObject trade;
+    short currentSupply[kResourceKindCount];
+    short offers[kResourceKindCount];
+    short grantDeltas[kResourceKindCount];
+    short independentResourceCounts[kResourceKindCount];
+    for (short resource = 0; resource < kResourceKindCount; ++resource) {
+      currentSupply[resource] = minorCountry->GetCurrentTradeSupply(resource);
+      offers[resource] = minorCountry->GetTradeOffer(resource);
+      grantDeltas[resource] = minorCountry->GetTradeGrantDelta(resource);
+      independentResourceCounts[resource] = minorCountry->GetIndependentResourceCount(resource);
+    }
+    trade.Set("current_supply", CaptureResourceTable(currentSupply));
+    trade.Set("offers", CaptureResourceTable(offers));
+    trade.Set("grant_deltas", CaptureResourceTable(grantDeltas));
+    JsonObject thresholds;
+    thresholds.Set("primary_manufactured_price",
+                   static_cast<int>(minorCountry->GetPrimaryManufacturedPriceThreshold()));
+    thresholds.Set("secondary_manufactured_price",
+                   static_cast<int>(minorCountry->GetSecondaryManufacturedPriceThreshold()));
+    thresholds.Set("general_offer_price",
+                   static_cast<int>(minorCountry->GetGeneralOfferPriceThreshold()));
+    thresholds.Set("random_offer_price",
+                   static_cast<int>(minorCountry->GetRandomOfferPriceThreshold()));
+    thresholds.Set("coal_offer_price",
+                   static_cast<int>(minorCountry->GetCoalOfferPriceThreshold()));
+    thresholds.Set("iron_offer_price",
+                   static_cast<int>(minorCountry->GetIronOfferPriceThreshold()));
+    thresholds.Set("oil_offer_price", static_cast<int>(minorCountry->GetOilOfferPriceThreshold()));
+    trade.Set("thresholds", thresholds.Release());
+    trade.Set("primary_manufactured_request", CaptureOptionalManufacturedTradeCommodity(
+                                                  minorCountry->GetPrimaryManufacturedRequest()));
+    trade.Set(
+        "secondary_manufactured_request",
+        CaptureOptionalManufacturedTradeCommodity(minorCountry->GetSecondaryManufacturedRequest()));
+    trade.Set("primary_request_fulfilled",
+              static_cast<int>(minorCountry->GetPrimaryManufacturedRequestFulfilledAmount()));
+    trade.Set("secondary_request_fulfilled",
+              static_cast<int>(minorCountry->GetSecondaryManufacturedRequestFulfilledAmount()));
+    trade.Set("independent_resource_counts", CaptureResourceTable(independentResourceCounts));
+    minor.Set("trade", trade.Release());
     minors.Add(minor.Release());
   }
   nations.Set("majors", majors.Release());

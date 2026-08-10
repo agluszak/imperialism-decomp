@@ -245,6 +245,7 @@ mod tests {
                     .clone()
             },
             consortium_members: [minor; 4],
+            trade: Default::default(),
         });
     }
 

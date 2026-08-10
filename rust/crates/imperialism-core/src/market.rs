@@ -30,7 +30,64 @@ pub enum TradeCommodity {
     Arms,
 }
 
+impl TradeCommodity {
+    pub const fn from_retail(value: i16) -> Option<Self> {
+        match value {
+            0 => Some(Self::Cotton),
+            1 => Some(Self::Wool),
+            2 => Some(Self::Timber),
+            3 => Some(Self::Coal),
+            4 => Some(Self::Iron),
+            5 => Some(Self::Horses),
+            6 => Some(Self::Oil),
+            7 => Some(Self::Food),
+            8 => Some(Self::Fabric),
+            9 => Some(Self::Lumber),
+            10 => Some(Self::Paper),
+            11 => Some(Self::Steel),
+            12 => Some(Self::Fuel),
+            13 => Some(Self::Clothing),
+            14 => Some(Self::Furniture),
+            15 => Some(Self::Hardware),
+            16 => Some(Self::Arms),
+            _ => None,
+        }
+    }
+}
+
 pub type TradeCommodityTable<T> = EnumMap<TradeCommodity, T>;
+
+/// The six processed-resource slots retained by automated trade planning.
+#[derive(
+    Clone, Copy, Debug, Deserialize, Enum, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ProcessedTradeCommodity {
+    Food,
+    Fabric,
+    Lumber,
+    Paper,
+    Steel,
+    Fuel,
+}
+
+pub type ProcessedTradeCommodityTable<T> = EnumMap<ProcessedTradeCommodity, T>;
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DealBookEntryKind {
+    Offer,
+    Accept,
+}
+
+/// One ordered line retained for a major nation's retail deal book.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TradeDealBookEntry {
+    pub kind: DealBookEntryKind,
+    pub nation: NationId,
+    pub amount: i16,
+    pub unit_price: i32,
+}
 
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TradeMarketRow {
