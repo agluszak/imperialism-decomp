@@ -28,8 +28,7 @@ pub enum ProductionSlot {
 impl ProductionSlot {
     pub const COUNT: usize = 16;
 
-    #[cfg(test)]
-    pub(crate) const fn from_index(value: u8) -> Option<Self> {
+    pub const fn from_index(value: u8) -> Option<Self> {
         match value {
             0 => Some(Self::TextileMill),
             1 => Some(Self::ClothingFactory),
