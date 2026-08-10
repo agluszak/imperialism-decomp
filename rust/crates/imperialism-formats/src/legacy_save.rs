@@ -12,6 +12,9 @@ const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
 const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
 const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
+const TECH_ORDER_CAP_ROWS_OFFSET_V62: usize = 0x262;
+const TECH_ORDER_CAP_ROW_SIZE: usize = 0x1d;
+const TECH_ADVANCED_TRADE_RESOURCE_ID: usize = 0x13;
 const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
 const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
@@ -774,9 +777,11 @@ impl LegacyCityState {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) struct LegacyTerrainTile {
     pub terrain_kind: i8,
+    pub region_tile_subtype: i8,
     pub river_sprite: u8,
     pub owner_nation: i8,
     pub former_owner_nation: i8,
+    pub secondary_owner_nation: i8,
     pub region: i8,
     pub adjacency_bits: u8,
     pub city_or_province_index: i16,
@@ -797,8 +802,10 @@ impl LegacyTerrainTile {
                     self.terrain_kind
                 ))
             })?,
+            region_tile_subtype: RegionTileSubtype::from_retail(self.region_tile_subtype),
             owner_nation: optional_tile_owner_tag(self.owner_nation)?,
             former_owner_nation: optional_tile_owner_tag(self.former_owner_nation)?,
+            secondary_owner_nation: optional_major_nation_id(self.secondary_owner_nation, tile)?,
             province: optional_province_id(self.city_or_province_index)?,
             development: TileDevelopment {
                 surface: DevelopmentLevel::new((self.development_classes as u8) & 0x0f),
@@ -912,6 +919,26 @@ fn optional_tile_owner_tag(value: i8) -> Result<Option<TileOwnerTag>, LegacySave
         .map(TileOwnerTag::new)
         .map(Some)
         .map_err(|_| LegacySaveError::StateProjection(format!("tile owner tag {value} is invalid")))
+}
+
+fn optional_major_nation_id(
+    value: i8,
+    tile: usize,
+) -> Result<Option<MajorNationId>, LegacySaveError> {
+    if value == -1 {
+        return Ok(None);
+    }
+    let raw = value;
+    u8::try_from(value)
+        .ok()
+        .filter(|value| *value < MajorNationId::COUNT)
+        .map(MajorNationId::new)
+        .map(Some)
+        .ok_or_else(|| {
+            LegacySaveError::StateProjection(format!(
+                "tile {tile} has invalid secondary major-nation owner {raw}"
+            ))
+        })
 }
 
 fn optional_province_id(value: i16) -> Result<Option<ProvinceId>, LegacySaveError> {
@@ -1573,17 +1600,29 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             )?;
-            let ai_zone_targets = match nation {
-                LegacyMajorNationState::Auto(auto) => Some(ai_zone_targets(
-                    &auto.auto_prefix.port_zone_state_flags,
-                    live_ocean_context_count,
-                    slot,
-                )?),
-                LegacyMajorNationState::Other(_) => None,
+            let (ai_zone_targets, ai_trade) = match nation {
+                LegacyMajorNationState::Auto(auto) => (
+                    Some(ai_zone_targets(
+                        &auto.auto_prefix.port_zone_state_flags,
+                        live_ocean_context_count,
+                        slot,
+                    )?),
+                    Some(AiTradeState {
+                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
+                            auto.auto_prefix.action_metric_by_quarter,
+                        ),
+                    }),
+                ),
+                LegacyMajorNationState::Other(_) => (None, None),
             };
             majors.push(MajorNation::from_parts(
                 country_common(&great_power.country)?,
-                great_power_state(great_power, foreign_minister_personality, ai_zone_targets)?,
+                great_power_state(
+                    great_power,
+                    foreign_minister_personality,
+                    ai_zone_targets,
+                    ai_trade,
+                )?,
                 city,
             ));
             military_units.extend(great_power.country.military_unit_states(nation_id)?);
@@ -1606,16 +1645,6 @@ impl LegacySaveV62 {
                 diplomacy_notices(&lists[0], great_power.country.nation_slot)?;
             pending.nations[major_id].proposals =
                 diplomacy_proposals(&lists[1], great_power.country.nation_slot)?;
-            if let Some((list_index, _)) = lists
-                .iter()
-                .enumerate()
-                .skip(2)
-                .find(|(_, list)| !list.records.is_empty())
-            {
-                return Err(LegacySaveError::StateProjection(format!(
-                    "relationship list {list_index} projection is not implemented for nation {slot}"
-                )));
-            }
         }
         let majors = MajorNationTable::from_array(majors.try_into().map_err(
             |majors: Vec<MajorNation>| {
@@ -1641,6 +1670,7 @@ impl LegacySaveV62 {
                         .collect::<Result<Vec<_>, _>>()?
                         .try_into()
                         .expect("four persisted consortium members"),
+                    trade: minor_trade_state(nation)?,
                 });
                 military_units.extend(
                     nation
@@ -1767,6 +1797,94 @@ fn relationship_records(
     Ok(records)
 }
 
+fn deal_book_state(
+    lists: &[LegacyFixedRecordList],
+    owner: i16,
+) -> Result<TradeCommodityTable<Vec<TradeDealBookEntry>>, LegacySaveError> {
+    let deal_lists = lists.get(2..).ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "nation {owner} has {} relationship lists; expected 19",
+            lists.len()
+        ))
+    })?;
+    if deal_lists.len() != TRADE_CATEGORY_COUNT {
+        return Err(LegacySaveError::StateProjection(format!(
+            "nation {owner} has {} deal-book lists; expected {TRADE_CATEGORY_COUNT}",
+            deal_lists.len()
+        )));
+    }
+
+    let mut deal_book = TradeCommodityTable::default();
+    for (commodity_index, list) in deal_lists.iter().enumerate() {
+        let commodity = TradeCommodity::from_retail(commodity_index as i16)
+            .expect("the deal-book list count equals the trade-commodity count");
+        deal_book[commodity] = deal_book_entries(list, owner, commodity)?;
+    }
+    Ok(deal_book)
+}
+
+fn deal_book_entries(
+    list: &LegacyFixedRecordList,
+    owner: i16,
+    commodity: TradeCommodity,
+) -> Result<Vec<TradeDealBookEntry>, LegacySaveError> {
+    if list.record_size != 12 {
+        return Err(LegacySaveError::StateProjection(format!(
+            "nation {owner} {commodity:?} deal book has record size {}; expected 12",
+            list.record_size
+        )));
+    }
+    let mut entries = list
+        .records
+        .iter()
+        .map(|record| {
+            let kind = match i16::from_le_bytes(record[0..2].try_into().unwrap()) {
+                0 => DealBookEntryKind::Accept,
+                1 => DealBookEntryKind::Offer,
+                value => {
+                    return Err(LegacySaveError::StateProjection(format!(
+                        "nation {owner} {commodity:?} deal-book entry kind {value} is invalid"
+                    )));
+                }
+            };
+            let nation_raw = i16::from_le_bytes(record[2..4].try_into().unwrap());
+            let nation = nation_id_from_retail_i16(nation_raw)?;
+            let amount = i16::from_le_bytes(record[4..6].try_into().unwrap());
+            let eligibility = i16::from_le_bytes(record[6..8].try_into().unwrap());
+            let expected_eligibility = match kind {
+                DealBookEntryKind::Offer => 1,
+                DealBookEntryKind::Accept
+                    if nation.get() >= MajorNationId::COUNT =>
+                {
+                    1
+                }
+                DealBookEntryKind::Accept => 0,
+            };
+            if eligibility != expected_eligibility {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "nation {owner} {commodity:?} deal-book entry for nation {nation_raw} has eligibility {eligibility}; expected {expected_eligibility}"
+                )));
+            }
+            Ok(TradeDealBookEntry {
+                kind,
+                nation,
+                amount,
+                unit_price: i32::from_le_bytes(record[8..12].try_into().unwrap()),
+            })
+        })
+        .collect::<Result<Vec<_>, LegacySaveError>>()?;
+    entries.sort_by_key(|entry| entry.nation);
+    if let Some(entry) = entries.windows(2).find_map(|pair| {
+        (pair[0].nation == pair[1].nation && pair[0] != pair[1]).then_some(pair[0])
+    }) {
+        return Err(LegacySaveError::StateProjection(format!(
+            "nation {owner} {commodity:?} deal book contains distinguishable records for nation {}; retail load order depends on unavailable pre-load CRT state",
+            entry.nation.get()
+        )));
+    }
+    Ok(entries)
+}
+
 fn validate_ocean_contexts(ocean: &LegacyOceanState) -> Result<usize, LegacySaveError> {
     let live_count = ocean.zones.len() + ocean.port_zones.len();
     if live_count > AI_ZONE_TARGET_CAPACITY {
@@ -1877,10 +1995,135 @@ fn foreign_minister_personality(
     }
 }
 
+fn trade_commodity_from_retail(
+    value: i16,
+    context: impl std::fmt::Display,
+) -> Result<TradeCommodity, LegacySaveError> {
+    TradeCommodity::from_retail(value).ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "{context} trade commodity {value} is out of range"
+        ))
+    })
+}
+
+fn optional_trade_commodity_from_retail(
+    value: i16,
+    context: impl std::fmt::Display,
+) -> Result<Option<TradeCommodity>, LegacySaveError> {
+    if value == -10 {
+        return Ok(None);
+    }
+    trade_commodity_from_retail(value, context).map(Some)
+}
+
+fn optional_manufactured_trade_commodity_from_retail(
+    value: i16,
+    context: impl std::fmt::Display,
+) -> Result<Option<TradeCommodity>, LegacySaveError> {
+    let commodity = optional_trade_commodity_from_retail(value, context)?;
+    if matches!(
+        commodity,
+        None | Some(
+            TradeCommodity::Clothing
+                | TradeCommodity::Furniture
+                | TradeCommodity::Hardware
+                | TradeCommodity::Arms
+        )
+    ) {
+        Ok(commodity)
+    } else {
+        Err(LegacySaveError::StateProjection(format!(
+            "manufactured trade request {value} is outside the recovered range"
+        )))
+    }
+}
+
+fn foreign_trade_state(
+    minister: &LegacyForeignMinisterState,
+    nation: i16,
+) -> Result<ForeignTradeState, LegacySaveError> {
+    let interior_bid = optional_trade_commodity_from_retail(
+        minister.scalar_fields[0],
+        format_args!("major nation {nation} interior-bid"),
+    )?
+    .map(|commodity| ForeignTradeBid {
+        commodity,
+        amount: minister.scalar_fields[1],
+    });
+    let requested_ship = match minister.scalar_fields[6] {
+        1 => ShipType::Trader,
+        2 => ShipType::Indiaman,
+        value => {
+            return Err(LegacySaveError::StateProjection(format!(
+                "major nation {nation} foreign-minister ship order kind {value} is outside the recovered range"
+            )));
+        }
+    };
+    let mut preferred_resources = [None; 4];
+    for (index, value) in minister.preferred_resource_slots.into_iter().enumerate() {
+        preferred_resources[index] = optional_trade_commodity_from_retail(
+            value,
+            format_args!("major nation {nation} preferred-resource slot {index}"),
+        )?;
+    }
+    Ok(ForeignTradeState {
+        interior_bid,
+        phase_counter: minister.scalar_fields[4],
+        refresh_interval: minister.scalar_fields[5],
+        requested_ship,
+        purchase_priority: TradeCommodityTable::from_array(minister.purchase_priority_by_resource),
+        preferred_resources,
+    })
+}
+
+fn pending_ship(
+    minister: &LegacyInteriorMinisterState,
+    nation: i16,
+) -> Result<Option<ShipType>, LegacySaveError> {
+    match minister.order_scalars[1] {
+        0 => Ok(None),
+        1 => Ok(Some(ShipType::Trader)),
+        2 => Ok(Some(ShipType::Indiaman)),
+        value => Err(LegacySaveError::StateProjection(format!(
+            "major nation {nation} pending ship type {value} is outside the recovered range"
+        ))),
+    }
+}
+
+fn minor_trade_state(nation: &LegacyMinorState) -> Result<MinorTradeState, LegacySaveError> {
+    let slot = nation.country.nation_slot;
+    Ok(MinorTradeState {
+        current_supply: ResourceTable::from_array(nation.need_current_by_type),
+        offers: ResourceTable::from_array(nation.trade_offers_by_resource),
+        grant_deltas: ResourceTable::from_array(nation.grant_amounts_by_resource),
+        thresholds: MinorTradeThresholds {
+            primary_manufactured_price: nation.diplomacy_thresholds[0],
+            secondary_manufactured_price: nation.diplomacy_thresholds[1],
+            general_offer_price: nation.diplomacy_thresholds[2],
+            random_offer_price: nation.diplomacy_thresholds[3],
+            coal_offer_price: nation.diplomacy_thresholds[4],
+            iron_offer_price: nation.diplomacy_thresholds[5],
+            oil_offer_price: nation.diplomacy_thresholds[6],
+        },
+        primary_manufactured_request: optional_manufactured_trade_commodity_from_retail(
+            nation.diplomacy_policy_fields[0],
+            format_args!("minor nation {slot} primary request"),
+        )?,
+        secondary_manufactured_request: optional_manufactured_trade_commodity_from_retail(
+            nation.diplomacy_policy_fields[1],
+            format_args!("minor nation {slot} secondary request"),
+        )?,
+        primary_request_fulfilled: nation.diplomacy_policy_fields[2],
+        secondary_request_fulfilled: nation.diplomacy_policy_fields[3],
+        independent_resource_counts: ResourceTable::from_array(nation.diplomacy_save_extension),
+    })
+}
+
 fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
     ai_zone_targets: Option<Vec<AiZoneTargetState>>,
+    ai_trade: Option<AiTradeState>,
 ) -> Result<GreatPowerState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -1893,6 +2136,12 @@ fn great_power_state(
     let defense_minister = nation.ministers.defense.as_ref().ok_or_else(|| {
         LegacySaveError::StateProjection(format!(
             "major nation slot {} has no defense minister",
+            nation.country.nation_slot
+        ))
+    })?;
+    let interior_minister = nation.ministers.interior.as_ref().ok_or_else(|| {
+        LegacySaveError::StateProjection(format!(
+            "major nation slot {} has no interior minister",
             nation.country.nation_slot
         ))
     })?;
@@ -1912,6 +2161,7 @@ fn great_power_state(
         ai_zone_targets,
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
+        foreign_trade: foreign_trade_state(foreign_minister, nation.country.nation_slot)?,
         development_grant_by_nation: NationTable::from_array(
             foreign_minister.development_grant_by_nation,
         ),
@@ -1941,6 +2191,9 @@ fn great_power_state(
         remembered_trade_offers_by_resource: ResourceTable::from_array(
             prefix.remembered_trade_offers_by_resource,
         ),
+        deal_book: deal_book_state(&prefix.relationship_lists, nation.country.nation_slot)?,
+        pending_ship: pending_ship(interior_minister, nation.country.nation_slot)?,
+        ai_trade,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -2589,6 +2842,21 @@ fn read_technology_state(
     stream: &mut LegacyStream<'_>,
 ) -> Result<TechnologyState, LegacySaveError> {
     let bytes = stream.read_bytes(TECH_SERIALIZED_SIZE_V62)?;
+    let mut advanced_trade_resource_by_nation = [false; MAJOR_NATION_COUNT];
+    for (nation, advanced) in advanced_trade_resource_by_nation.iter_mut().enumerate() {
+        let offset = TECH_ORDER_CAP_ROWS_OFFSET_V62
+            + nation * TECH_ORDER_CAP_ROW_SIZE
+            + TECH_ADVANCED_TRADE_RESOURCE_ID;
+        *advanced = match bytes[offset] {
+            0 | 1 => false,
+            2 => true,
+            value => {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "major nation {nation} advanced-trade technology status {value} is invalid"
+                )));
+            }
+        };
+    }
     Ok(TechnologyState {
         advanced_iron_working: retail_boolean(
             bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62],
@@ -2598,6 +2866,9 @@ fn read_technology_state(
             bytes[TECH_MARINE_ENGINEERING_OFFSET_V62],
             "technology marine engineering",
         )?,
+        advanced_trade_resource_by_nation: MajorNationTable::from_array(
+            advanced_trade_resource_by_nation,
+        ),
     })
 }
 
@@ -3909,9 +4180,11 @@ fn read_terrain_tile(stream: &mut LegacyStream<'_>) -> Result<LegacyTerrainTile,
     let bytes = stream.read_bytes(TERRAIN_TILE_SERIALIZED_SIZE)?;
     Ok(LegacyTerrainTile {
         terrain_kind: bytes[0] as i8,
+        region_tile_subtype: bytes[0x13] as i8,
         river_sprite: bytes[2],
         former_owner_nation: bytes[3] as i8,
         owner_nation: bytes[4] as i8,
+        secondary_owner_nation: bytes[0x18] as i8,
         region: bytes[5] as i8,
         adjacency_bits: bytes[6],
         development_classes: bytes[0x0c] as i8,
@@ -4208,12 +4481,18 @@ mod tests {
         let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
         bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
         bytes[TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
+        bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62
+            + 3 * TECH_ORDER_CAP_ROW_SIZE
+            + TECH_ADVANCED_TRADE_RESOURCE_ID] = 2;
         let mut stream = LegacyStream::new(&bytes);
         assert_eq!(
             read_technology_state(&mut stream).unwrap(),
             TechnologyState {
                 advanced_iron_working: true,
                 marine_engineering: true,
+                advanced_trade_resource_by_nation: MajorNationTable::from_array([
+                    false, false, false, true, false, false, false,
+                ]),
             }
         );
         assert_eq!(stream.position(), TECH_SERIALIZED_SIZE_V62);
@@ -4232,6 +4511,14 @@ mod tests {
                 }) if invalid == value
             ));
         }
+
+        let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
+        bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + TECH_ADVANCED_TRADE_RESOURCE_ID] = 3;
+        assert!(matches!(
+            read_technology_state(&mut LegacyStream::new(&bytes)),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "major nation 0 advanced-trade technology status 3 is invalid"
+        ));
     }
 
     #[test]
@@ -5277,16 +5564,6 @@ mod tests {
         ));
 
         let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
-        let lists = &mut first_great_power_mut(&mut save).prefix.relationship_lists;
-        let record_size = lists[2].record_size;
-        lists[2].records.push(vec![0; usize::from(record_size)]);
-        assert!(matches!(
-            save.game_state(game_context()),
-            Err(LegacySaveError::StateProjection(message))
-                if message == "relationship list 2 projection is not implemented for nation 0"
-        ));
-
-        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         let city = first_great_power_mut(&mut save).city.as_mut().unwrap();
         city.tasks.push(LegacyCityTask {
             kind: 1,
@@ -5319,6 +5596,45 @@ mod tests {
             Err(LegacySaveError::StateProjection(message))
                 if message == "major nation slot 0 has 2 towns; semantic projection supports one city"
         ));
+    }
+
+    #[test]
+    fn deal_book_projection_reconstructs_retail_sorted_load_order() {
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let list = &mut first_great_power_mut(&mut save).prefix.relationship_lists[2];
+        let record = |kind: i16, nation: i16, amount: i16, eligibility: i16, price: i32| {
+            let mut bytes = Vec::with_capacity(12);
+            bytes.extend_from_slice(&kind.to_le_bytes());
+            bytes.extend_from_slice(&nation.to_le_bytes());
+            bytes.extend_from_slice(&amount.to_le_bytes());
+            bytes.extend_from_slice(&eligibility.to_le_bytes());
+            bytes.extend_from_slice(&price.to_le_bytes());
+            bytes
+        };
+        list.records = vec![record(1, 8, 11, 1, 123), record(0, 0, 22, 0, 456)];
+
+        let state = save.game_state(game_context()).unwrap();
+        assert_eq!(
+            state
+                .nations
+                .major(MajorNationId::new(0))
+                .economy()
+                .deal_book[TradeCommodity::Cotton],
+            vec![
+                TradeDealBookEntry {
+                    kind: DealBookEntryKind::Accept,
+                    nation: NationId::new(0),
+                    amount: 22,
+                    unit_price: 456,
+                },
+                TradeDealBookEntry {
+                    kind: DealBookEntryKind::Offer,
+                    nation: NationId::new(8),
+                    amount: 11,
+                    unit_price: 123,
+                },
+            ]
+        );
     }
 
     #[test]

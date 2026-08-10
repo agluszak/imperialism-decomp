@@ -177,6 +177,31 @@ impl MajorNation {
 pub struct MinorNation {
     pub common: NationCommonState,
     pub consortium_members: [MinorNationId; 4],
+    pub trade: MinorTradeState,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeThresholds {
+    pub primary_manufactured_price: i16,
+    pub secondary_manufactured_price: i16,
+    pub general_offer_price: i16,
+    pub random_offer_price: i16,
+    pub coal_offer_price: i16,
+    pub iron_offer_price: i16,
+    pub oil_offer_price: i16,
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MinorTradeState {
+    pub current_supply: ResourceTable<i16>,
+    pub offers: ResourceTable<i16>,
+    pub grant_deltas: ResourceTable<i16>,
+    pub thresholds: MinorTradeThresholds,
+    pub primary_manufactured_request: Option<TradeCommodity>,
+    pub secondary_manufactured_request: Option<TradeCommodity>,
+    pub primary_request_fulfilled: i16,
+    pub secondary_request_fulfilled: i16,
+    pub independent_resource_counts: ResourceTable<i16>,
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -198,6 +223,7 @@ pub struct TurnState {
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
+    pub advanced_trade_resource_by_nation: MajorNationTable<bool>,
 }
 
 impl TechnologyState {
@@ -331,8 +357,10 @@ impl IndexMut<TileId> for StrategicMap {
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TileState {
     pub terrain: TerrainKind,
+    pub region_tile_subtype: RegionTileSubtype,
     pub owner_nation: Option<TileOwnerTag>,
     pub former_owner_nation: Option<TileOwnerTag>,
+    pub secondary_owner_nation: Option<MajorNationId>,
     pub province: Option<ProvinceId>,
     pub development: TileDevelopment,
     pub edge_resources: [Option<crate::ResourceKind>; 2],
@@ -344,6 +372,21 @@ pub struct TileState {
     pub flags: TileFlags,
     pub region: Option<RegionId>,
     pub river: Option<RiverSegment>,
+}
+
+/// Retail's open numeric tile-profile domain (`TTerrainStateRecord::gateFlag`).
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct RegionTileSubtype(i8);
+
+impl RegionTileSubtype {
+    pub const fn from_retail(value: i8) -> Self {
+        Self(value)
+    }
+
+    pub const fn retail(self) -> i8 {
+        self.0
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
@@ -511,8 +554,10 @@ impl Default for TileState {
     fn default() -> Self {
         Self {
             terrain: TerrainKind::Plains,
+            region_tile_subtype: RegionTileSubtype::default(),
             owner_nation: None,
             former_owner_nation: None,
+            secondary_owner_nation: None,
             province: None,
             development: TileDevelopment::default(),
             edge_resources: [None; 2],
@@ -851,6 +896,10 @@ impl TradePolicyScore {
         Self(score)
     }
 
+    pub(crate) const fn retail(self) -> i32 {
+        self.0
+    }
+
     pub(crate) const fn decrement_step(self, treasury: i32) -> Self {
         match self.0 {
             100 => Self(95),
@@ -878,6 +927,51 @@ pub struct DiplomacyGrant {
     pub recurring: bool,
 }
 
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeBid {
+    pub commodity: TradeCommodity,
+    pub amount: i16,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct ForeignTradeState {
+    pub interior_bid: Option<ForeignTradeBid>,
+    pub phase_counter: i16,
+    pub refresh_interval: i16,
+    pub requested_ship: ShipType,
+    pub purchase_priority: TradeCommodityTable<i16>,
+    pub preferred_resources: [Option<TradeCommodity>; 4],
+}
+
+impl ForeignTradeState {
+    pub(crate) fn for_random_start(personality: ForeignMinisterPersonality) -> Self {
+        let refresh_interval = match personality {
+            ForeignMinisterPersonality::Arms
+            | ForeignMinisterPersonality::Bill
+            | ForeignMinisterPersonality::Ted => 4,
+            _ => 5,
+        };
+        let requested_ship = match personality {
+            ForeignMinisterPersonality::Arms | ForeignMinisterPersonality::Bill => ShipType::Trader,
+            _ => ShipType::Indiaman,
+        };
+        Self {
+            interior_bid: None,
+            phase_counter: 0,
+            refresh_interval,
+            requested_ship,
+            purchase_priority: TradeCommodityTable::default(),
+            preferred_resources: [None; 4],
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiTradeState {
+    /// Temporary stock synthesized for resources food through fuel during AI bidding.
+    pub temporary_processed_stock: ProcessedTradeCommodityTable<i16>,
+}
+
 /// A proposed diplomatic relationship with one nation.
 ///
 /// The retail save stores these as numeric proposal codes. The core keeps the
@@ -901,6 +995,7 @@ pub struct GreatPowerState {
     pub ai_zone_targets: Option<Vec<AiZoneTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
     pub foreign_minister_skill_index: i16,
+    pub foreign_trade: ForeignTradeState,
     pub development_grant_by_nation: NationTable<i16>,
     pub defense_minister_skill_index: i16,
     pub capacities: NationCapacities,
@@ -916,6 +1011,9 @@ pub struct GreatPowerState {
     pub unfilled_trade_turns_by_resource: ResourceTable<i16>,
     pub transported_items_by_resource: ResourceTable<i16>,
     pub remembered_trade_offers_by_resource: ResourceTable<i16>,
+    pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
+    pub pending_ship: Option<ShipType>,
+    pub ai_trade: Option<AiTradeState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
@@ -954,6 +1052,7 @@ impl GreatPowerState {
             },
             foreign_minister_personality,
             foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
+            foreign_trade: ForeignTradeState::for_random_start(foreign_minister_personality),
             development_grant_by_nation: NationTable::default(),
             defense_minister_skill_index: 0,
             capacities: NationCapacities::from_array([0, 0, 0x0f, 0]),
@@ -969,6 +1068,9 @@ impl GreatPowerState {
             unfilled_trade_turns_by_resource: ResourceTable::default(),
             transported_items_by_resource: ResourceTable::default(),
             remembered_trade_offers_by_resource: ResourceTable::default(),
+            deal_book: TradeCommodityTable::default(),
+            pending_ship: None,
+            ai_trade: (!human).then(AiTradeState::default),
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
@@ -1856,6 +1958,7 @@ mod tests {
             let technology = TechnologyState {
                 advanced_iron_working,
                 marine_engineering,
+                advanced_trade_resource_by_nation: Default::default(),
             };
             assert_eq!(technology.naval_production_capacity(7, 4), expected);
         }

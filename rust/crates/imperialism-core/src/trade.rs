@@ -414,42 +414,12 @@ mod tests {
     use super::*;
 
     fn major() -> GreatPowerState {
-        GreatPowerState {
-            controller: crate::MajorNationController::Human,
-            ai_zone_targets: None,
-            foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
-            foreign_minister_skill_index: 0,
-            development_grant_by_nation: crate::NationTable::default(),
-            defense_minister_skill_index: 0,
-            capacities: crate::NationCapacities::from_array([10, 4, 0, 0]),
-            grant_total_cost: 0,
-            unfilled_trade_offer_count: 0,
-            diplomacy_policy_by_nation: crate::NationTable::default(),
-            diplomacy_grants_by_nation: crate::NationTable::default(),
-            need_current_by_type: crate::ResourceTable::default(),
-            need_target_by_type: crate::ResourceTable::default(),
-            relation_delta_current: crate::ResourceTable::default(),
-            purchased_items_by_resource: crate::ResourceTable::default(),
-            item_potentials: crate::ResourceTable::default(),
-            unfilled_trade_turns_by_resource: crate::ResourceTable::default(),
-            transported_items_by_resource: crate::ResourceTable::default(),
-            remembered_trade_offers_by_resource: crate::ResourceTable::default(),
-            aid_allocation_by_minor_nation: crate::MinorNationTable::default(),
-            budget_pool_base: 200,
-            budget_pool_delta: 100,
-            special_resource_trade_balance: 30,
-            candidate_nation_flags: crate::NationTable::default(),
-            scenario_initialized: false,
-            turn_finished: false,
-            pending_actions: crate::PendingActionTable::default(),
-            diplomacy_budget_base: 0,
-            escalation_counter: 0,
-            pending_commitment_cost: 0,
-            pressure_counter: 0,
-            aid_allocation_total: 0,
-            colony_boycott_flags: crate::NationTable::default(),
-            military_expenses: 0,
-        }
+        let mut major = crate::test_support::great_power_state();
+        major.capacities = crate::NationCapacities::from_array([10, 4, 0, 0]);
+        major.budget_pool_base = 200;
+        major.budget_pool_delta = 100;
+        major.special_resource_trade_balance = 30;
+        major
     }
 
     fn state() -> GameState {
