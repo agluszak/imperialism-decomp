@@ -264,13 +264,119 @@ pub struct CityOrders {
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
+pub enum ManufacturedItem {
+    Fabric,
+    Lumber,
+    Paper,
+    Steel,
+    Fuel,
+    Clothing,
+    Furniture,
+    Hardware,
+    Arms,
+}
+
+impl ManufacturedItem {
+    pub const ALL: [Self; 9] = [
+        Self::Fabric,
+        Self::Lumber,
+        Self::Paper,
+        Self::Steel,
+        Self::Fuel,
+        Self::Clothing,
+        Self::Furniture,
+        Self::Hardware,
+        Self::Arms,
+    ];
+
+    pub const fn resource(self) -> ResourceKind {
+        match self {
+            Self::Fabric => ResourceKind::Fabric,
+            Self::Lumber => ResourceKind::Lumber,
+            Self::Paper => ResourceKind::Paper,
+            Self::Steel => ResourceKind::Steel,
+            Self::Fuel => ResourceKind::Fuel,
+            Self::Clothing => ResourceKind::Clothing,
+            Self::Furniture => ResourceKind::Furniture,
+            Self::Hardware => ResourceKind::Hardware,
+            Self::Arms => ResourceKind::Arms,
+        }
+    }
+
+    pub const fn try_from_resource(kind: ResourceKind) -> Option<Self> {
+        match kind {
+            ResourceKind::Fabric => Some(Self::Fabric),
+            ResourceKind::Lumber => Some(Self::Lumber),
+            ResourceKind::Paper => Some(Self::Paper),
+            ResourceKind::Steel => Some(Self::Steel),
+            ResourceKind::Fuel => Some(Self::Fuel),
+            ResourceKind::Clothing => Some(Self::Clothing),
+            ResourceKind::Furniture => Some(Self::Furniture),
+            ResourceKind::Hardware => Some(Self::Hardware),
+            ResourceKind::Arms => Some(Self::Arms),
+            _ => None,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ExpandableFacility {
+    TextileMill,
+    ClothingFactory,
+    SteelMill,
+    Metalworks,
+    LumberMill,
+    FurnitureFactory,
+    OilRefinery,
+}
+
+impl ExpandableFacility {
+    pub const ALL: [Self; 7] = [
+        Self::TextileMill,
+        Self::ClothingFactory,
+        Self::SteelMill,
+        Self::Metalworks,
+        Self::LumberMill,
+        Self::FurnitureFactory,
+        Self::OilRefinery,
+    ];
+
+    pub const fn slot(self) -> ProductionSlot {
+        match self {
+            Self::TextileMill => ProductionSlot::TextileMill,
+            Self::ClothingFactory => ProductionSlot::ClothingFactory,
+            Self::SteelMill => ProductionSlot::SteelMill,
+            Self::Metalworks => ProductionSlot::Metalworks,
+            Self::LumberMill => ProductionSlot::LumberMill,
+            Self::FurnitureFactory => ProductionSlot::FurnitureFactory,
+            Self::OilRefinery => ProductionSlot::OilRefinery,
+        }
+    }
+
+    pub const fn try_from_slot(slot: ProductionSlot) -> Option<Self> {
+        match slot {
+            ProductionSlot::TextileMill => Some(Self::TextileMill),
+            ProductionSlot::ClothingFactory => Some(Self::ClothingFactory),
+            ProductionSlot::SteelMill => Some(Self::SteelMill),
+            ProductionSlot::Metalworks => Some(Self::Metalworks),
+            ProductionSlot::LumberMill => Some(Self::LumberMill),
+            ProductionSlot::FurnitureFactory => Some(Self::FurnitureFactory),
+            ProductionSlot::OilRefinery => Some(Self::OilRefinery),
+            _ => None,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
 pub enum CityOrderId {
-    Item(ResourceKind),
+    Item(ManufacturedItem),
     CivilianRecruit(CivilianUnitKind),
     MilitaryRecruit(MilitaryRecruitmentCategory),
     Ship(ShipOrderSlot),
     Training(TrainingLevel),
-    Expansion(ProductionSlot),
+    Expansion(ExpandableFacility),
     FoodProcessing,
     PowerPlant,
     TransportCapacity,
@@ -328,64 +434,54 @@ pub const fn transport_capacity_order_spec() -> MaterialOrderSpec {
     }
 }
 
-pub const fn expansion_order_spec(target: ProductionSlot) -> Option<MaterialOrderSpec> {
-    match target {
-        ProductionSlot::TextileMill
-        | ProductionSlot::ClothingFactory
-        | ProductionSlot::SteelMill
-        | ProductionSlot::Metalworks
-        | ProductionSlot::LumberMill
-        | ProductionSlot::FurnitureFactory
-        | ProductionSlot::OilRefinery => Some(MaterialOrderSpec {
-            primary: ResourceKind::Lumber,
-            secondary: ResourceKind::Steel,
-            production_slot: ProductionSlot::Transport,
-        }),
-        _ => None,
+pub const fn expansion_order_spec(_target: ExpandableFacility) -> MaterialOrderSpec {
+    MaterialOrderSpec {
+        primary: ResourceKind::Lumber,
+        secondary: ResourceKind::Steel,
+        production_slot: ProductionSlot::Transport,
     }
 }
 
-pub const fn item_order_spec(output: ResourceKind) -> Option<ItemOrderSpec> {
+pub const fn item_order_spec(output: ManufacturedItem) -> ItemOrderSpec {
     let (inputs, production_slot) = match output {
-        ResourceKind::Fabric => (
+        ManufacturedItem::Fabric => (
             ItemInputs::Either(ResourceKind::Wool, ResourceKind::Cotton),
             ProductionSlot::TextileMill,
         ),
-        ResourceKind::Lumber => (
+        ManufacturedItem::Lumber => (
             ItemInputs::Double(ResourceKind::Timber),
             ProductionSlot::LumberMill,
         ),
-        ResourceKind::Paper => (
+        ManufacturedItem::Paper => (
             ItemInputs::Double(ResourceKind::Timber),
             ProductionSlot::LumberMill,
         ),
-        ResourceKind::Steel => (
+        ManufacturedItem::Steel => (
             ItemInputs::Both(ResourceKind::Iron, ResourceKind::Coal),
             ProductionSlot::SteelMill,
         ),
-        ResourceKind::Fuel => (
+        ManufacturedItem::Fuel => (
             ItemInputs::Double(ResourceKind::Oil),
             ProductionSlot::OilRefinery,
         ),
-        ResourceKind::Clothing => (
+        ManufacturedItem::Clothing => (
             ItemInputs::Double(ResourceKind::Fabric),
             ProductionSlot::ClothingFactory,
         ),
-        ResourceKind::Furniture => (
+        ManufacturedItem::Furniture => (
             ItemInputs::Double(ResourceKind::Lumber),
             ProductionSlot::FurnitureFactory,
         ),
-        ResourceKind::Hardware | ResourceKind::Arms => (
+        ManufacturedItem::Hardware | ManufacturedItem::Arms => (
             ItemInputs::Double(ResourceKind::Steel),
             ProductionSlot::Metalworks,
         ),
-        _ => return None,
     };
-    Some(ItemOrderSpec {
-        output,
+    ItemOrderSpec {
+        output: output.resource(),
         inputs,
         production_slot,
-    })
+    }
 }
 
 pub const fn civilian_recruitment_spec(kind: CivilianUnitKind) -> RecruitmentOrderSpec {
@@ -575,18 +671,8 @@ fn military_order(unit_kind: MilitaryUnitKind) -> MilitaryRecruitOrderState {
 impl Default for CityOrders {
     fn default() -> Self {
         let mut items = ResourceTable::default();
-        for output in [
-            ResourceKind::Fabric,
-            ResourceKind::Lumber,
-            ResourceKind::Paper,
-            ResourceKind::Steel,
-            ResourceKind::Fuel,
-            ResourceKind::Clothing,
-            ResourceKind::Furniture,
-            ResourceKind::Hardware,
-            ResourceKind::Arms,
-        ] {
-            items[output] = Some(RequestedCityOrderState::default());
+        for output in ManufacturedItem::ALL {
+            items[output.resource()] = Some(RequestedCityOrderState::default());
         }
 
         let military_recruitment = MilitaryRecruitOrderTable::from_array([
@@ -612,16 +698,8 @@ impl Default for CityOrders {
         ]);
 
         let mut expansions = ProductionTable::default();
-        for slot in [
-            ProductionSlot::TextileMill,
-            ProductionSlot::ClothingFactory,
-            ProductionSlot::SteelMill,
-            ProductionSlot::Metalworks,
-            ProductionSlot::LumberMill,
-            ProductionSlot::FurnitureFactory,
-            ProductionSlot::OilRefinery,
-        ] {
-            expansions[slot] = Some(RequestedCityOrderState::default());
+        for facility in ExpandableFacility::ALL {
+            expansions[facility.slot()] = Some(RequestedCityOrderState::default());
         }
 
         Self {
@@ -1518,8 +1596,8 @@ impl GameState {
         self.with_city_orders(nation, |orders, city, owner, treasury| {
             let (progress, requested_quantity, maximum) = match order {
                 CityOrderId::Item(output) => {
-                    let spec = item_order_spec(output).expect("item order has a retail recipe");
-                    let state = orders.items[output]
+                    let spec = item_order_spec(output);
+                    let state = orders.items[output.resource()]
                         .as_mut()
                         .expect("item order exists for every retail item recipe");
                     let maximum = item_max_order(state, city, spec);
@@ -1566,10 +1644,9 @@ impl GameState {
                     let maximum = training_max_order(level, progress, city, owner, *treasury);
                     (&*progress, progress.quantity, maximum)
                 }
-                CityOrderId::Expansion(slot) => {
-                    let spec = expansion_order_spec(slot)
-                        .expect("expansion order has a retail material recipe");
-                    let state = orders.expansions[slot]
+                CityOrderId::Expansion(facility) => {
+                    let spec = expansion_order_spec(facility);
+                    let state = orders.expansions[facility.slot()]
                         .as_mut()
                         .expect("expansion order exists for every expandable production slot");
                     let maximum = expansion_max_order(state, city, spec.primary, spec.secondary);
@@ -1623,8 +1700,8 @@ impl GameState {
         // refresh the remembered limiting constraint.
         match order {
             CityOrderId::Item(output) => {
-                let spec = item_order_spec(output).expect("item order has a retail recipe");
-                let mut state = city.orders.items[output]
+                let spec = item_order_spec(output);
+                let mut state = city.orders.items[output.resource()]
                     .clone()
                     .expect("item order exists for every retail item recipe");
                 let maximum = item_max_order(&mut state, city, spec);
@@ -1632,7 +1709,7 @@ impl GameState {
                     quantity: state.progress.quantity,
                     requested_quantity: state.requested_quantity,
                     maximum,
-                    limiting_constraint: city.orders.items[output]
+                    limiting_constraint: city.orders.items[output.resource()]
                         .as_ref()
                         .expect("item order exists for every retail item recipe")
                         .progress
@@ -1702,14 +1779,13 @@ impl GameState {
                     limiting_constraint: original.limiting_constraint,
                 }
             }
-            CityOrderId::Expansion(slot) => {
-                let spec = expansion_order_spec(slot)
-                    .expect("expansion order has a retail material recipe");
-                let state = city.orders.expansions[slot]
+            CityOrderId::Expansion(facility) => {
+                let spec = expansion_order_spec(facility);
+                let state = city.orders.expansions[facility.slot()]
                     .clone()
                     .expect("expansion order exists for every expandable production slot");
                 let maximum = expansion_max_order(&state, city, spec.primary, spec.secondary);
-                let original = city.orders.expansions[slot]
+                let original = city.orders.expansions[facility.slot()]
                     .as_ref()
                     .expect("expansion order exists for every expandable production slot");
                 CityOrderStatus {
@@ -1782,8 +1858,8 @@ impl GameState {
     ) -> CityOrderChange {
         let applied = self.with_city_orders(nation, |orders, city, owner, treasury| match order {
             CityOrderId::Item(output) => {
-                let spec = item_order_spec(output).expect("item order has a retail recipe");
-                let state = orders.items[output]
+                let spec = item_order_spec(output);
+                let state = orders.items[output.resource()]
                     .as_mut()
                     .expect("item order exists for every retail item recipe");
                 set_item_quantity(state, city, spec, quantity)
@@ -1827,10 +1903,9 @@ impl GameState {
                 treasury,
                 quantity,
             ),
-            CityOrderId::Expansion(slot) => {
-                let spec = expansion_order_spec(slot)
-                    .expect("expansion order has a retail material recipe");
-                let state = orders.expansions[slot]
+            CityOrderId::Expansion(facility) => {
+                let spec = expansion_order_spec(facility);
+                let state = orders.expansions[facility.slot()]
                     .as_mut()
                     .expect("expansion order exists for every expandable production slot");
                 set_expansion_quantity(state, city, spec.primary, spec.secondary, quantity)
@@ -1875,7 +1950,7 @@ impl GameState {
             let city = self.nations.city(nation);
             match order {
                 CityOrderId::Item(output) => {
-                    city.orders.items[output]
+                    city.orders.items[output.resource()]
                         .as_ref()
                         .expect("item order has a retail recipe")
                         .progress
@@ -1889,8 +1964,8 @@ impl GameState {
                 }
                 CityOrderId::Ship(track) => city.orders.ships[track].progress.quantity,
                 CityOrderId::Training(level) => city.orders.training[level].quantity,
-                CityOrderId::Expansion(slot) => {
-                    city.orders.expansions[slot]
+                CityOrderId::Expansion(facility) => {
+                    city.orders.expansions[facility.slot()]
                         .as_ref()
                         .expect("expansion order exists for every expandable production slot")
                         .progress
@@ -1909,17 +1984,7 @@ impl GameState {
     /// production cycle. This is retail `TCity::EndCityPhase`; unit objects are
     /// committed after the city borrow is released.
     pub(crate) fn end_city_phase(&mut self, nation: MajorNationId) {
-        const ITEM_OUTPUTS: [ResourceKind; 9] = [
-            ResourceKind::Fabric,
-            ResourceKind::Lumber,
-            ResourceKind::Paper,
-            ResourceKind::Steel,
-            ResourceKind::Fuel,
-            ResourceKind::Clothing,
-            ResourceKind::Furniture,
-            ResourceKind::Hardware,
-            ResourceKind::Arms,
-        ];
+        const ITEM_OUTPUTS: [ManufacturedItem; 9] = ManufacturedItem::ALL;
         const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
             CivilianUnitKind::Miner,
             CivilianUnitKind::Prospector,
@@ -1931,15 +1996,7 @@ impl GameState {
             CivilianUnitKind::Developer,
             CivilianUnitKind::Driller,
         ];
-        const EXPANSION_SLOTS: [ProductionSlot; 7] = [
-            ProductionSlot::TextileMill,
-            ProductionSlot::ClothingFactory,
-            ProductionSlot::SteelMill,
-            ProductionSlot::Metalworks,
-            ProductionSlot::LumberMill,
-            ProductionSlot::FurnitureFactory,
-            ProductionSlot::OilRefinery,
-        ];
+        const EXPANSION_SLOTS: [ExpandableFacility; 7] = ExpandableFacility::ALL;
 
         let owned_region_count =
             self.nations
@@ -1965,13 +2022,13 @@ impl GameState {
             city.rolling_item_production_score = 0;
             produce_food_processing(&mut orders.food_processing, city);
             for output in ITEM_OUTPUTS {
-                let state = orders.items[output]
+                let state = orders.items[output.resource()]
                     .as_mut()
                     .expect("item order exists for every retail recipe");
                 produce_item(
                     state,
                     city,
-                    item_order_spec(output).expect("item order has a retail recipe"),
+                    item_order_spec(output),
                 );
             }
             produce_training(
@@ -2006,16 +2063,15 @@ impl GameState {
                 owned_region_count,
             );
             produce_power_plant(&orders.power_plant);
-            for slot in EXPANSION_SLOTS {
-                let spec = expansion_order_spec(slot)
-                    .expect("expansion order has a retail material recipe");
+            for facility in EXPANSION_SLOTS {
+                let spec = expansion_order_spec(facility);
                 produce_expansion(
-                    orders.expansions[slot]
+                    orders.expansions[facility.slot()]
                         .as_mut()
                         .expect("expansion order exists for every expandable slot"),
                     city,
                     economy,
-                    ExpansionTarget::Production(slot),
+                    ExpansionTarget::Production(facility.slot()),
                     spec.primary,
                     spec.secondary,
                     owned_region_count,
@@ -2044,13 +2100,13 @@ impl GameState {
             city.start_production_phase();
             restock_power_plant(&mut orders.power_plant, city);
             for output in ITEM_OUTPUTS {
-                let state = orders.items[output]
+                let state = orders.items[output.resource()]
                     .as_mut()
                     .expect("item order exists for every retail recipe");
                 restock_item(
                     state,
                     city,
-                    item_order_spec(output).expect("item order has a retail recipe"),
+                    item_order_spec(output),
                 );
             }
             city.production_accum[ProductionSlot::RegionalPopulation] =
@@ -2203,7 +2259,7 @@ mod tests {
     fn max_order_records_capacity_workforce_and_resource_constraints() {
         let mut state = city();
         let mut production = item_state();
-        let lumber = item_order_spec(ResourceKind::Lumber).unwrap();
+        let lumber = item_order_spec(ManufacturedItem::Lumber);
         state.production_accum[ProductionSlot::LumberMill] = 4;
         state.stockpile[ResourceKind::Timber] = 20;
         assert_eq!(item_max_order(&mut production, &state, lumber), 4);
@@ -2228,7 +2284,7 @@ mod tests {
         );
 
         let mut two_input = item_state();
-        let steel = item_order_spec(ResourceKind::Steel).unwrap();
+        let steel = item_order_spec(ManufacturedItem::Steel);
         state.production_accum[ProductionSlot::SteelMill] = 20;
         state.stockpile[ResourceKind::Iron] = 9;
         state.stockpile[ResourceKind::Coal] = 3;
@@ -2250,7 +2306,7 @@ mod tests {
             city.stockpile[ResourceKind::Coal] = 1;
         }
 
-        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), 1).applied());
+        assert!(game.adjust_city_order(nation, CityOrderId::Item(ManufacturedItem::Steel), 1).applied());
         let city = game.nations.city(nation);
         let steel = city.orders.items[ResourceKind::Steel].as_ref().unwrap();
         assert_eq!(steel.progress.quantity, 1);
@@ -2263,7 +2319,7 @@ mod tests {
         assert_eq!(city.population.strength, 10);
         assert_eq!(city.production_accum[ProductionSlot::SteelMill], 0);
 
-        assert!(game.adjust_city_order(nation, CityOrderId::Item(ResourceKind::Steel), -1).applied());
+        assert!(game.adjust_city_order(nation, CityOrderId::Item(ManufacturedItem::Steel), -1).applied());
         let city = game.nations.city(nation);
         let steel = city.orders.items[ResourceKind::Steel].as_ref().unwrap();
         assert_eq!(steel.progress.quantity, 0);
@@ -2281,7 +2337,7 @@ mod tests {
     fn rejected_quantity_keeps_reservations_unchanged() {
         let mut state = city();
         let mut production = item_state();
-        let lumber = item_order_spec(ResourceKind::Lumber).unwrap();
+        let lumber = item_order_spec(ManufacturedItem::Lumber);
         state.production_accum[ProductionSlot::LumberMill] = 1;
         state.stockpile[ResourceKind::Timber] = 20;
         assert!(!set_item_quantity(&mut production, &mut state, lumber, 2));
@@ -2299,7 +2355,7 @@ mod tests {
     fn produce_restores_capacity_creates_output_and_clears_reservations() {
         let mut state = city();
         let mut production = item_state();
-        let steel = item_order_spec(ResourceKind::Steel).unwrap();
+        let steel = item_order_spec(ManufacturedItem::Steel);
         state.production_accum[ProductionSlot::SteelMill] = 10;
         state.stockpile[ResourceKind::Iron] = 5;
         state.stockpile[ResourceKind::Coal] = 4;
@@ -2325,7 +2381,7 @@ mod tests {
     fn resource_limited_restock_preserves_the_requested_quantity() {
         let mut state = city();
         let mut production = item_state();
-        let lumber = item_order_spec(ResourceKind::Lumber).unwrap();
+        let lumber = item_order_spec(ManufacturedItem::Lumber);
         production.progress.quantity = 5;
         production.requested_quantity = 5;
         state.population.strength = 20;
@@ -2348,7 +2404,7 @@ mod tests {
     fn either_inputs_shift_shortfalls_and_reverse_the_tracked_split() {
         let mut state = city();
         let mut production = item_state();
-        let fabric = item_order_spec(ResourceKind::Fabric).unwrap();
+        let fabric = item_order_spec(ManufacturedItem::Fabric);
         state.population.strength = 20;
         state.production_accum[ProductionSlot::TextileMill] = 10;
         state.stockpile[ResourceKind::Wool] = 1;
@@ -2394,7 +2450,7 @@ mod tests {
     fn either_inputs_shift_a_secondary_shortfall_to_the_primary_input() {
         let mut state = city();
         let mut production = item_state();
-        let fabric = item_order_spec(ResourceKind::Fabric).unwrap();
+        let fabric = item_order_spec(ManufacturedItem::Fabric);
         state.population.strength = 20;
         state.production_accum[ProductionSlot::TextileMill] = 10;
         state.stockpile[ResourceKind::Wool] = 10;

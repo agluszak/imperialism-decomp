@@ -36,43 +36,43 @@ fn expansion_dialog_view_id() -> ScopedViewId {
 }
 
 const TEXTILE_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::Item(ResourceKind::Fabric),
+    order: CityOrderId::Item(ManufacturedItem::Fabric),
     tag: fourcc!("fabr"),
 }];
 const CLOTHING_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::Item(ResourceKind::Clothing),
+    order: CityOrderId::Item(ManufacturedItem::Clothing),
     tag: fourcc!("clot"),
 }];
 const STEEL_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::Item(ResourceKind::Steel),
+    order: CityOrderId::Item(ManufacturedItem::Steel),
     tag: fourcc!("stee"),
 }];
 const METALWORKS_ORDERS: [CityOrderBinding; 2] = [
     CityOrderBinding {
-        order: CityOrderId::Item(ResourceKind::Hardware),
+        order: CityOrderId::Item(ManufacturedItem::Hardware),
         tag: fourcc!("hard"),
     },
     CityOrderBinding {
-        order: CityOrderId::Item(ResourceKind::Arms),
+        order: CityOrderId::Item(ManufacturedItem::Arms),
         tag: fourcc!("arma"),
     },
 ];
 const LUMBER_ORDERS: [CityOrderBinding; 2] = [
     CityOrderBinding {
-        order: CityOrderId::Item(ResourceKind::Lumber),
+        order: CityOrderId::Item(ManufacturedItem::Lumber),
         tag: fourcc!("lumb"),
     },
     CityOrderBinding {
-        order: CityOrderId::Item(ResourceKind::Paper),
+        order: CityOrderId::Item(ManufacturedItem::Paper),
         tag: fourcc!("pape"),
     },
 ];
 const FURNITURE_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::Item(ResourceKind::Furniture),
+    order: CityOrderId::Item(ManufacturedItem::Furniture),
     tag: fourcc!("furn"),
 }];
 const OIL_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
-    order: CityOrderId::Item(ResourceKind::Fuel),
+    order: CityOrderId::Item(ManufacturedItem::Fuel),
     tag: fourcc!("fuel"),
 }];
 const TRAINING_ORDERS: [CityOrderBinding; 2] = [
@@ -3462,7 +3462,10 @@ fn open_city_construction_dialog(
                     .quantity;
                 (next_capacity, next_capacity - current, original_quantity)
             };
-            let order = CityOrderId::Expansion(slot);
+            let order = CityOrderId::Expansion(
+                ExpandableFacility::try_from_slot(slot)
+                    .expect("ordinary capacity center is expandable"),
+            );
             let can_reserve = session.0.set_city_order_quantity(nation, order, needed).applied();
             assert!(
                 session
@@ -3746,7 +3749,10 @@ fn on_city_expansion_open(
             city.next_building_level(open.slot, major.economy(), owned_regions),
         )
     };
-    let order = CityOrderId::Expansion(open.slot);
+    let order = CityOrderId::Expansion(
+        ExpandableFacility::try_from_slot(open.slot)
+            .expect("ordinary industry is expandable"),
+    );
     let original_quantity = session
         .0
         .nations()
@@ -3813,7 +3819,10 @@ fn on_city_building_change_choice(
             session.0.set_power_plant_upgrade(choice.nation, true);
         }
     } else {
-        let order = CityOrderId::Expansion(choice.slot);
+        let order = CityOrderId::Expansion(
+            ExpandableFacility::try_from_slot(choice.slot)
+                .expect("ordinary industry is expandable"),
+        );
         if choice.accept {
             let needed = {
                 let major = session.0.nations().major(choice.nation);
@@ -3926,7 +3935,7 @@ fn on_city_amount_bar_click(
     let capacity = city.production_orders[bar.slot];
     let previous = match bar.order {
         CityOrderId::Item(output) => {
-            city.orders.items[output]
+            city.orders.items[output.resource()]
                 .as_ref()
                 .expect("industry amount bar has a retail item order")
                 .progress
@@ -5045,7 +5054,7 @@ mod tests {
             .unwrap();
         app.update();
         assert_eq!(
-            order_quantity(&mut app, CityOrderId::Item(ResourceKind::Clothing)),
+            order_quantity(&mut app, CityOrderId::Item(ManufacturedItem::Clothing)),
             0
         );
         assert_eq!(
@@ -5066,7 +5075,7 @@ mod tests {
         );
         activate(&mut app, first.increase);
         assert_eq!(
-            order_quantity(&mut app, CityOrderId::Item(ResourceKind::Clothing)),
+            order_quantity(&mut app, CityOrderId::Item(ManufacturedItem::Clothing)),
             1
         );
         assert_eq!(app.world().get::<Text>(first.quantity).unwrap().0, "1");
@@ -5093,7 +5102,7 @@ mod tests {
 
         activate(&mut app, reopened.decrease);
         assert_eq!(
-            order_quantity(&mut app, CityOrderId::Item(ResourceKind::Clothing)),
+            order_quantity(&mut app, CityOrderId::Item(ManufacturedItem::Clothing)),
             0
         );
         assert_eq!(app.world().get::<Text>(reopened.quantity).unwrap().0, "0");

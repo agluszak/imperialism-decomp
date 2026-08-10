@@ -74,7 +74,7 @@ struct DirectTransportCase {
 #[derive(Deserialize)]
 struct CityItemOrderCase {
     nation: MajorNationId,
-    output: ResourceKind,
+    output: ManufacturedItem,
     quantity: i16,
 }
 

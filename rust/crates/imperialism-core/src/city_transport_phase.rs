@@ -2,17 +2,7 @@
 
 use crate::*;
 
-const ITEM_OUTPUTS: [ResourceKind; 9] = [
-    ResourceKind::Fabric,
-    ResourceKind::Lumber,
-    ResourceKind::Paper,
-    ResourceKind::Steel,
-    ResourceKind::Fuel,
-    ResourceKind::Clothing,
-    ResourceKind::Furniture,
-    ResourceKind::Hardware,
-    ResourceKind::Arms,
-];
+const ITEM_OUTPUTS: [ManufacturedItem; 9] = ManufacturedItem::ALL;
 
 const CIVILIAN_KINDS: [CivilianUnitKind; 9] = [
     CivilianUnitKind::Miner,
@@ -48,15 +38,7 @@ const SHIP_SLOTS: [ShipOrderSlot; 8] = [
     ShipOrderSlot::WarshipAdvancedSecondary,
 ];
 
-const EXPANSION_SLOTS: [ProductionSlot; 7] = [
-    ProductionSlot::TextileMill,
-    ProductionSlot::ClothingFactory,
-    ProductionSlot::SteelMill,
-    ProductionSlot::Metalworks,
-    ProductionSlot::LumberMill,
-    ProductionSlot::FurnitureFactory,
-    ProductionSlot::OilRefinery,
-];
+const EXPANSION_SLOTS: [ExpandableFacility; 7] = ExpandableFacility::ALL;
 
 impl GameState {
     pub(crate) fn supports_first_turn_city_transport_phase(&self) -> bool {
@@ -105,7 +87,7 @@ impl GameState {
                 && (should_be_human
                     || EXPANSION_SLOTS
                         .into_iter()
-                        .all(|slot| city.production_orders[slot] == 0))
+                        .all(|facility| city.production_orders[facility.slot()] == 0))
                 && !self.technology.city_capabilities_by_nation[nation].oil_drilling
                 && economy.pending_actions == PendingActionTable::default()
                 && economy.transported_items_by_resource == ResourceTable::default()
@@ -308,8 +290,8 @@ impl GameState {
         }
         self.set_city_order_quantity(nation, CityOrderId::TransportCapacity, 0);
         self.set_city_order_quantity(nation, CityOrderId::PowerPlant, 0);
-        for slot in EXPANSION_SLOTS {
-            self.set_city_order_quantity(nation, CityOrderId::Expansion(slot), 0);
+        for facility in EXPANSION_SLOTS {
+            self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), 0);
         }
         self.set_city_order_quantity(nation, CityOrderId::PopulationGrowth, 0);
     }
@@ -443,8 +425,8 @@ impl GameState {
                     .economy
                     .interior_civilian
                     .production_deficit_by_slot;
-                let candidate_score = deficits[EXPANSION_SLOTS[priority[candidate]]];
-                let best_score = deficits[EXPANSION_SLOTS[priority[best]]];
+                let candidate_score = deficits[EXPANSION_SLOTS[priority[candidate]].slot()];
+                let best_score = deficits[EXPANSION_SLOTS[priority[best]].slot()];
                 if candidate_score > best_score
                     || (candidate_score == best_score && self.rng.next_crt_rand() & 1 != 0)
                 {
@@ -454,11 +436,11 @@ impl GameState {
             priority.swap(destination, best);
         }
 
-        let best_slot = EXPANSION_SLOTS[priority[0]];
+        let best_facility = EXPANSION_SLOTS[priority[0]];
         if self.nations.majors[nation]
             .economy
             .interior_civilian
-            .production_deficit_by_slot[best_slot]
+            .production_deficit_by_slot[best_facility.slot()]
             == 0
             && self.turn.economic_turn & 1 != 0
         {
@@ -469,36 +451,36 @@ impl GameState {
                 .economy
                 .interior_civilian
                 .city_order_demand
-                .expansions[selected] = 1;
+                .expansions[selected.slot()] = 1;
         }
 
-        for slot in EXPANSION_SLOTS {
+        for facility in EXPANSION_SLOTS {
             let requested = self.nations.majors[nation]
                 .economy
                 .interior_civilian
                 .city_order_demand
-                .expansions[slot];
+                .expansions[facility.slot()];
             if requested == 0 {
                 continue;
             }
-            let spec = expansion_order_spec(slot).expect("retail expansion recipe");
+            let spec = expansion_order_spec(facility);
             self.request_first_turn_ai_resource(nation, spec.primary, requested, 7);
             self.request_first_turn_ai_resource(nation, spec.secondary, requested, 7);
             let maximum = self
-                .refresh_city_order(nation, CityOrderId::Expansion(slot))
+                .refresh_city_order(nation, CityOrderId::Expansion(facility))
                 .maximum;
             let accepted = requested.min(maximum);
             assert!(
-                self.set_city_order_quantity(nation, CityOrderId::Expansion(slot), accepted)
+                self.set_city_order_quantity(nation, CityOrderId::Expansion(facility), accepted)
                     .applied()
             );
             let interior = self.nations.majors[nation]
                 .economy
                 .interior_civilian
                 .as_mut();
-            interior.city_order_demand.expansions[slot] -= accepted;
-            if interior.city_order_demand.expansions[slot] < 2 {
-                interior.production_deficit_by_slot[slot] = 0;
+            interior.city_order_demand.expansions[facility.slot()] -= accepted;
+            if interior.city_order_demand.expansions[facility.slot()] < 2 {
+                interior.production_deficit_by_slot[facility.slot()] = 0;
             }
         }
     }
@@ -523,25 +505,25 @@ impl GameState {
 
     fn issue_first_turn_ai_item_orders(&mut self, nation: MajorNationId) {
         for output in [
-            ResourceKind::Clothing,
-            ResourceKind::Furniture,
-            ResourceKind::Arms,
-            ResourceKind::Hardware,
+            ManufacturedItem::Clothing,
+            ManufacturedItem::Furniture,
+            ManufacturedItem::Arms,
+            ManufacturedItem::Hardware,
         ] {
             self.issue_first_turn_ai_item_order(nation, output);
         }
         self.issue_first_turn_ai_food_order(nation);
-        self.issue_first_turn_ai_item_order(nation, ResourceKind::Paper);
+        self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Paper);
         if self.nations.city(nation).stockpile[ResourceKind::Lumber]
             < self.nations.city(nation).stockpile[ResourceKind::Steel]
         {
-            self.issue_first_turn_ai_item_order(nation, ResourceKind::Lumber);
-            self.issue_first_turn_ai_item_order(nation, ResourceKind::Steel);
+            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Lumber);
+            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Steel);
         } else {
-            self.issue_first_turn_ai_item_order(nation, ResourceKind::Steel);
-            self.issue_first_turn_ai_item_order(nation, ResourceKind::Lumber);
+            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Steel);
+            self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Lumber);
         }
-        self.issue_first_turn_ai_item_order(nation, ResourceKind::Fabric);
+        self.issue_first_turn_ai_item_order(nation, ManufacturedItem::Fabric);
     }
 
     fn issue_first_turn_ai_food_order(&mut self, nation: MajorNationId) {
@@ -564,19 +546,20 @@ impl GameState {
         *metric = (*metric - accepted).max(0);
     }
 
-    fn issue_first_turn_ai_item_order(&mut self, nation: MajorNationId, output: ResourceKind) {
+    fn issue_first_turn_ai_item_order(&mut self, nation: MajorNationId, output: ManufacturedItem) {
+        let resource = output.resource();
         let mut requested = self.nations.majors[nation]
             .economy
             .interior_civilian
-            .resource_order_metrics[output];
-        let spec = item_order_spec(output).expect("retail item recipe");
+            .resource_order_metrics[resource];
+        let spec = item_order_spec(output);
         let production_limit =
             self.nations.city(nation).production_orders[spec.production_slot] * 2 + 2;
         requested = requested.min(production_limit);
         self.nations.majors[nation]
             .economy
             .interior_civilian
-            .resource_order_metrics[output] = requested;
+            .resource_order_metrics[resource] = requested;
 
         match spec.inputs {
             ItemInputs::Double(primary) => {
@@ -617,7 +600,7 @@ impl GameState {
         let metric = &mut self.nations.majors[nation]
             .economy
             .interior_civilian
-            .resource_order_metrics[output];
+            .resource_order_metrics[resource];
         *metric = (*metric - accepted).max(0);
     }
 
@@ -644,12 +627,10 @@ impl GameState {
     fn rebuild_first_turn_ai_allocation_average(&mut self, nation: MajorNationId) {
         let mut allocation = ProductionTable::<i16>::default();
         for output in ITEM_OUTPUTS {
-            let order = self.nations.city(nation).orders.items[output]
+            let order = self.nations.city(nation).orders.items[output.resource()]
                 .as_ref()
                 .expect("retail item order");
-            let slot = item_order_spec(output)
-                .expect("retail item recipe")
-                .production_slot;
+            let slot = item_order_spec(output).production_slot;
             allocation[slot] += order.progress.quantity;
         }
         let total = (0..ProductionSlot::COUNT)
@@ -737,8 +718,8 @@ impl GameState {
 
 fn city_orders_are_idle(orders: &CityOrders) -> bool {
     orders.food_processing.quantity == 0
-        && ITEM_OUTPUTS.into_iter().all(|resource| {
-            orders.items[resource]
+        && ITEM_OUTPUTS.into_iter().all(|item| {
+            orders.items[item.resource()]
                 .as_ref()
                 .is_some_and(|order| order.progress.quantity == 0)
         })
@@ -756,8 +737,8 @@ fn city_orders_are_idle(orders: &CityOrders) -> bool {
             .all(|slot| orders.ships[slot].progress.quantity == 0)
         && orders.transport_capacity.progress.quantity == 0
         && orders.power_plant.progress.quantity == 0
-        && EXPANSION_SLOTS.into_iter().all(|slot| {
-            orders.expansions[slot]
+        && EXPANSION_SLOTS.into_iter().all(|facility| {
+            orders.expansions[facility.slot()]
                 .as_ref()
                 .is_some_and(|order| order.progress.quantity == 0)
         })

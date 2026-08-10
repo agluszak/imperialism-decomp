@@ -3741,18 +3741,8 @@ fn read_city_orders(stream: &mut LegacyStream<'_>) -> Result<CityOrders, LegacyS
     let food_processing = read_plain_city_order(stream, "slot 7 food processing", 7)?;
 
     let mut items = ResourceTable::default();
-    for output in [
-        ResourceKind::Fabric,
-        ResourceKind::Lumber,
-        ResourceKind::Paper,
-        ResourceKind::Steel,
-        ResourceKind::Fuel,
-        ResourceKind::Clothing,
-        ResourceKind::Furniture,
-        ResourceKind::Hardware,
-        ResourceKind::Arms,
-    ] {
-        items[output] = Some(read_item_order(stream, output)?);
+    for output in ManufacturedItem::ALL {
+        items[output.resource()] = Some(read_item_order(stream, output)?);
     }
 
     let training = TrainingOrderTable::from_array([
@@ -3862,16 +3852,8 @@ fn read_city_orders(stream: &mut LegacyStream<'_>) -> Result<CityOrders, LegacyS
     let power_plant = read_power_plant_order(stream)?;
 
     let mut expansions = ProductionTable::default();
-    for target in [
-        ProductionSlot::TextileMill,
-        ProductionSlot::ClothingFactory,
-        ProductionSlot::SteelMill,
-        ProductionSlot::Metalworks,
-        ProductionSlot::LumberMill,
-        ProductionSlot::FurnitureFactory,
-        ProductionSlot::OilRefinery,
-    ] {
-        expansions[target] = Some(read_expansion_order(stream, target)?);
+    for target in ExpandableFacility::ALL {
+        expansions[target.slot()] = Some(read_expansion_order(stream, target)?);
     }
 
     let population_growth = read_plain_city_order(stream, "slot 60 population growth", 1)?;
@@ -3956,18 +3938,18 @@ fn read_requested_city_order(
 
 fn read_item_order(
     stream: &mut LegacyStream<'_>,
-    output: ResourceKind,
+    output: ManufacturedItem,
 ) -> Result<RequestedCityOrderState, LegacySaveError> {
     let order = "slots 8..=16 item production";
     let raw = read_requested_city_order(stream, order)?;
-    let spec = item_order_spec(output).expect("the fixed item-order list contains only products");
+    let spec = item_order_spec(output);
     let (primary_input, secondary_input) = match spec.inputs {
         ItemInputs::Double(primary) => (primary as i16, -1),
         ItemInputs::Both(primary, secondary) | ItemInputs::Either(primary, secondary) => {
             (primary as i16, secondary as i16)
         }
     };
-    require_city_order_value(order, "product", raw.product, output as i16)?;
+    require_city_order_value(order, "product", raw.product, output.resource() as i16)?;
     require_city_order_value(order, "primary input", raw.primary_input, primary_input)?;
     require_city_order_value(
         order,
@@ -4019,13 +4001,12 @@ fn read_transport_capacity_order(
 
 fn read_expansion_order(
     stream: &mut LegacyStream<'_>,
-    target: ProductionSlot,
+    target: ExpandableFacility,
 ) -> Result<RequestedCityOrderState, LegacySaveError> {
     let order = "slots 53..=59 industry expansion";
     let raw = read_requested_city_order(stream, order)?;
-    let spec =
-        expansion_order_spec(target).expect("the fixed expansion list contains only targets");
-    require_city_order_value(order, "product", raw.product, target as i16)?;
+    let spec = expansion_order_spec(target);
+    require_city_order_value(order, "product", raw.product, target.slot() as i16)?;
     require_city_order_value(
         order,
         "primary input",
@@ -4716,7 +4697,7 @@ mod tests {
         let bytes = nonzero_steel_order_payload();
         let mut stream = LegacyStream::new(&bytes);
 
-        let state = read_item_order(&mut stream, ResourceKind::Steel).unwrap();
+        let state = read_item_order(&mut stream, ManufacturedItem::Steel).unwrap();
 
         assert_eq!(stream.position(), 66);
         assert_eq!(state.progress.quantity, 3);
@@ -4738,7 +4719,7 @@ mod tests {
         let mut stream = LegacyStream::new(&bytes);
 
         assert!(matches!(
-            read_item_order(&mut stream, ResourceKind::Steel),
+            read_item_order(&mut stream, ManufacturedItem::Steel),
             Err(LegacySaveError::InvalidCityOrder { .. })
         ));
     }
