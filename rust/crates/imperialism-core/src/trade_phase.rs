@@ -127,7 +127,7 @@ impl GameState {
             let nation = MajorNationId::new(slot);
             let economy = &self.nations.majors[nation].economy;
             if economy.controller.is_human() != (nation == active)
-                || self.technology.advanced_trade_resource_by_nation[nation]
+                || self.technology.city_capabilities_by_nation[nation].oil_drilling
                 || economy.foreign_trade.interior_bid.is_some()
                 || (!economy.controller.is_human() && economy.ai_trade.is_none())
                 || all_trade_commodities()

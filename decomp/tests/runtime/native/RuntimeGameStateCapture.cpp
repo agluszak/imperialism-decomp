@@ -742,24 +742,61 @@ JSON_Value* CaptureMarket() {
 }
 
 JSON_Value* CaptureTechnology() {
+  const int kAdvancedIronWorkingTechId = 0x0f;
+  const int kOilDrillingTechId = TTechMgr::kProductionOrderTechId;
   const unsigned char advancedIronWorking = g_pTechMgr->resourceTypeEnabled19d[8];
   const unsigned char marineEngineering = g_pTechMgr->resourceTypeEnabled19d[0xb];
+  const unsigned char oilDrillingAvailable = g_pTechMgr->perTechUnlockFlag180[kOilDrillingTechId];
   if (advancedIronWorking > 1 || marineEngineering > 1) {
     FailSemanticCapture("technology resource-type flag is not boolean");
   }
+  if (oilDrillingAvailable > 1) {
+    FailSemanticCapture("global oil-drilling availability is not boolean");
+  }
   JsonObject technology;
-  JsonArray advancedTradeResourceByNation;
+  JsonArray cityCapabilitiesByNation;
   for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    const unsigned char status = g_pTechMgr->orderCapRows277[nationSlot]
-                                     .techStatusByTechId[TTechMgr::kProductionOrderTechId];
-    if (status > 2) {
-      FailSemanticCapture("major-nation advanced-trade technology status is invalid");
+    const TTechMgr::OrderCapRow& technologyStatus = g_pTechMgr->orderCapRows277[nationSlot];
+    const unsigned char advancedIronWorkingStatus =
+        technologyStatus.techStatusByTechId[kAdvancedIronWorkingTechId];
+    const unsigned char oilDrillingStatus = technologyStatus.techStatusByTechId[kOilDrillingTechId];
+    if (advancedIronWorkingStatus > 2 || oilDrillingStatus > 2) {
+      FailSemanticCapture("major-nation city technology status is invalid");
     }
-    advancedTradeResourceByNation.Add(status == 2);
+
+    JsonObject cityCapabilities;
+    cityCapabilities.Set("advanced_iron_working", advancedIronWorkingStatus == 2);
+    cityCapabilities.Set("oil_drilling", oilDrillingStatus == 2);
+
+    JsonObject university;
+    JsonObject available;
+    const TTechMgr::UniversityRecruitmentAvailabilityRow& recruitmentAvailability =
+        g_pTechMgr->universityRecruitmentAvailabilityByNation467[nationSlot];
+    for (int civilianKind = 0; civilianKind < kCivilianUnitKindCount; ++civilianKind) {
+      const unsigned char value = recruitmentAvailability.availableByCategory[civilianKind];
+      if (value > 1) {
+        FailSemanticCapture("major-nation university availability is not boolean");
+      }
+      available.Set(kCivilianUnitKindNames[civilianKind], value != 0);
+    }
+
+    JsonObject requirementLevels;
+    for (int resource = 0; resource < kResourceKindCount; ++resource) {
+      const short level = g_pTechMgr->capabilityValueByNationAndResource[nationSlot][resource];
+      if (level < 0 || level > 3) {
+        FailSemanticCapture("major-nation university requirement level is outside 0..3");
+      }
+      requirementLevels.Set(kResourceNames[resource], static_cast<int>(level));
+    }
+    university.Set("available", available.Release());
+    university.Set("requirement_levels", requirementLevels.Release());
+    cityCapabilities.Set("university", university.Release());
+    cityCapabilitiesByNation.Add(cityCapabilities.Release());
   }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
   technology.Set("marine_engineering", marineEngineering != 0);
-  technology.Set("advanced_trade_resource_by_nation", advancedTradeResourceByNation.Release());
+  technology.Set("oil_drilling_available", oilDrillingAvailable != 0);
+  technology.Set("city_capabilities_by_nation", cityCapabilitiesByNation.Release());
   return technology.Release();
 }
 

@@ -66,6 +66,7 @@ pub fn create_random_game(
     let mut post = apply_tile_post_passes(&preview.map, preview.topology, &mut map_lcg);
     let foreign_ministers = choose_foreign_ministers(&preview.map, human_nation);
     let mut nations = bootstrap_nations(human_nation, difficulty, foreign_ministers);
+    let technology = TechnologyState::default();
     let mut world = StrategicMap::from_generated_tiles(preview.topology, post.tiles);
     // Runtime-test / Accept entry: map build ends in `srand(runtime_seed)`, then setup
     // `DoPostCreate` draws one `rand() % 7` for the initial nation when the slot was -1.
@@ -86,6 +87,7 @@ pub fn create_random_game(
         &mut post.province_capitals,
         &mut nations,
         human_nation,
+        &technology,
         &mut port_zones,
         &mut mission_queues,
     );
@@ -156,7 +158,7 @@ pub fn create_random_game(
             zone_status: RetailLcg::from_state(runtime_seed),
         },
         market: TradeMarketState::default(),
-        technology: crate::TechnologyState::default(),
+        technology,
         diplomacy,
         nations,
         military_units,
@@ -361,12 +363,14 @@ const GATE_FLAG_QUALIFIES: [u8; 24] = [
 ];
 
 /// AI home placement from `CreateFrogCityAtHomeRegionAndAttach` for setup mode 2 majors.
+#[allow(clippy::too_many_arguments)]
 fn place_ai_frog_cities(
     world: &mut StrategicMap,
     gate_flags: &mut [i8],
     province_capitals: &mut [Option<TileId>],
     nations: &mut Nations,
     human_nation: MajorNationId,
+    technology: &TechnologyState,
     port_zones: &mut PortZoneTable,
     mission_queues: &mut MajorNationTable<Vec<MissionState>>,
 ) {
@@ -376,7 +380,12 @@ fn place_ai_frog_cities(
         if nation == human_nation {
             continue;
         }
-        let Some(home) = select_best_secondary_home_tile(world, gate_flags, nation) else {
+        let Some(home) = select_best_secondary_home_tile(
+            world,
+            gate_flags,
+            nation,
+            &technology.city_capabilities_by_nation[nation].university,
+        ) else {
             continue;
         };
         place_ai_capital(world, gate_flags, province_capitals, home, nation);
@@ -686,6 +695,7 @@ fn select_best_secondary_home_tile(
     world: &StrategicMap,
     gate_flags: &[i8],
     nation: MajorNationId,
+    university: &UniversityTechnologyState,
 ) -> Option<TileId> {
     let owner = TileOwnerTag::from_nation(nation.nation());
     let mut best_score: i32 = -1;
@@ -702,7 +712,7 @@ fn select_best_secondary_home_tile(
         if !supports_city_site_terrain(state.terrain) {
             continue;
         }
-        let yields = calculate_city_resources(world, gate_flags, tile, nation);
+        let yields = calculate_city_resources(world, gate_flags, tile, nation, university);
         let mut score = frog_city_score(&yields);
         if state.flags.has_base_transport() {
             score = 32_000;
@@ -745,6 +755,7 @@ fn calculate_city_resources(
     gate_flags: &[i8],
     home: TileId,
     nation: MajorNationId,
+    university: &UniversityTechnologyState,
 ) -> ResourceTable<i16> {
     let geometry = world.geometry();
     let owner = TileOwnerTag::from_nation(nation.nation());
@@ -767,7 +778,7 @@ fn calculate_city_resources(
             if amount != 0 {
                 let gate = gate_flags[index];
                 if (0..24).contains(&gate) && RESOURCE_USES_HIGH_NIBBLE[gate as usize] != 0 {
-                    let capability = starting_tech_capability(resource);
+                    let capability = usize::from(university.requirement_levels[resource]);
                     amount = i16::from(UNIVERSITY_REQUIREMENT_LEVEL[resource_index][capability]);
                 }
             }
@@ -792,18 +803,6 @@ fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> u8 {
         packed & 0x0f
     };
     UNIVERSITY_REQUIREMENT_LEVEL[resource][usize::from(index.min(3))]
-}
-
-fn starting_tech_capability(resource: ResourceKind) -> usize {
-    match resource {
-        ResourceKind::Fruit
-        | ResourceKind::Grain
-        | ResourceKind::Gems
-        | ResourceKind::Iron
-        | ResourceKind::Coal
-        | ResourceKind::Gold => 1,
-        _ => 0,
-    }
 }
 
 /// Accept-time AI `PlaceCity`: province capital rewrite, flags, flood-fill, farmland nibble.

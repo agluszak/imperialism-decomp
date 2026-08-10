@@ -10,11 +10,17 @@ const CITY_PRODUCTION_SLOT_COUNT: usize = 16;
 const TRADE_CATEGORY_COUNT: usize = 17;
 const DIPLOMACY_SERIALIZED_SIZE_V62: usize = 5_460;
 const TECH_SERIALIZED_SIZE_V62: usize = 1_914;
+const TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62: usize = 0x180;
 const TECH_ADVANCED_IRON_WORKING_OFFSET_V62: usize = 0x1a5;
 const TECH_MARINE_ENGINEERING_OFFSET_V62: usize = 0x1a8;
 const TECH_ORDER_CAP_ROWS_OFFSET_V62: usize = 0x262;
 const TECH_ORDER_CAP_ROW_SIZE: usize = 0x1d;
-const TECH_ADVANCED_TRADE_RESOURCE_ID: usize = 0x13;
+const TECH_ADVANCED_IRON_WORKING_ID: usize = 0x0f;
+const TECH_OIL_DRILLING_ID: usize = 0x13;
+const TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62: usize = 0x461;
+const TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE: usize = 9;
+const TECH_FINAL_REQUIREMENT_LEVELS_OFFSET_V62: usize = 0x636;
+const TECH_REQUIREMENT_LEVELS_ROW_SIZE: usize = RESOURCE_KIND_COUNT * std::mem::size_of::<i16>();
 const TERRAIN_TILE_SERIALIZED_SIZE: usize = 0x24;
 const PROVINCE_COUNT: usize = 0x180;
 const PROVINCE_FIXED_SERIALIZED_SIZE: usize = 0xa4;
@@ -2842,19 +2848,50 @@ fn read_technology_state(
     stream: &mut LegacyStream<'_>,
 ) -> Result<TechnologyState, LegacySaveError> {
     let bytes = stream.read_bytes(TECH_SERIALIZED_SIZE_V62)?;
-    let mut advanced_trade_resource_by_nation = [false; MAJOR_NATION_COUNT];
-    for (nation, advanced) in advanced_trade_resource_by_nation.iter_mut().enumerate() {
-        let offset = TECH_ORDER_CAP_ROWS_OFFSET_V62
-            + nation * TECH_ORDER_CAP_ROW_SIZE
-            + TECH_ADVANCED_TRADE_RESOURCE_ID;
-        *advanced = match bytes[offset] {
-            0 | 1 => false,
-            2 => true,
-            value => {
+    let researched = |nation: usize, technology: usize| {
+        let offset = TECH_ORDER_CAP_ROWS_OFFSET_V62 + nation * TECH_ORDER_CAP_ROW_SIZE + technology;
+        match bytes[offset] {
+            0 | 1 => Ok(false),
+            2 => Ok(true),
+            value => Err(LegacySaveError::StateProjection(format!(
+                "major nation {nation} technology {technology} status {value} is invalid"
+            ))),
+        }
+    };
+    let mut city_capabilities_by_nation =
+        std::array::from_fn(|_| CityTechnologyCapabilities::default());
+    for (nation, capabilities) in city_capabilities_by_nation.iter_mut().enumerate() {
+        capabilities.advanced_iron_working = researched(nation, TECH_ADVANCED_IRON_WORKING_ID)?;
+        capabilities.oil_drilling = researched(nation, TECH_OIL_DRILLING_ID)?;
+
+        let mut available = [false; TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE];
+        for (category, value) in available.iter_mut().enumerate() {
+            let offset = TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62
+                + nation * TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE
+                + category;
+            *value = retail_boolean(bytes[offset], "university recruitment availability")?;
+        }
+
+        let mut requirement_levels = [0; RESOURCE_KIND_COUNT];
+        for (resource, value) in requirement_levels.iter_mut().enumerate() {
+            let offset = TECH_FINAL_REQUIREMENT_LEVELS_OFFSET_V62
+                + nation * TECH_REQUIREMENT_LEVELS_ROW_SIZE
+                + resource * std::mem::size_of::<i16>();
+            let raw = i16::from_be_bytes([bytes[offset], bytes[offset + 1]]);
+            *value = u8::try_from(raw).map_err(|_| {
+                LegacySaveError::StateProjection(format!(
+                    "major nation {nation} university requirement level {raw} for resource {resource} is invalid"
+                ))
+            })?;
+            if *value > 3 {
                 return Err(LegacySaveError::StateProjection(format!(
-                    "major nation {nation} advanced-trade technology status {value} is invalid"
+                    "major nation {nation} university requirement level {raw} for resource {resource} is invalid"
                 )));
             }
+        }
+        capabilities.university = UniversityTechnologyState {
+            available: CivilianUnitTable::from_array(available),
+            requirement_levels: ResourceTable::from_array(requirement_levels),
         };
     }
     Ok(TechnologyState {
@@ -2866,9 +2903,11 @@ fn read_technology_state(
             bytes[TECH_MARINE_ENGINEERING_OFFSET_V62],
             "technology marine engineering",
         )?,
-        advanced_trade_resource_by_nation: MajorNationTable::from_array(
-            advanced_trade_resource_by_nation,
-        ),
+        oil_drilling_available: retail_boolean(
+            bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID],
+            "technology oil drilling availability",
+        )?,
+        city_capabilities_by_nation: MajorNationTable::from_array(city_capabilities_by_nation),
     })
 }
 
@@ -4481,25 +4520,49 @@ mod tests {
         let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
         bytes[TECH_ADVANCED_IRON_WORKING_OFFSET_V62] = 1;
         bytes[TECH_MARINE_ENGINEERING_OFFSET_V62] = 1;
+        bytes[TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 1;
         bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62
-            + 3 * TECH_ORDER_CAP_ROW_SIZE
-            + TECH_ADVANCED_TRADE_RESOURCE_ID] = 2;
+            + 2 * TECH_ORDER_CAP_ROW_SIZE
+            + TECH_ADVANCED_IRON_WORKING_ID] = 2;
+        bytes
+            [TECH_ORDER_CAP_ROWS_OFFSET_V62 + 3 * TECH_ORDER_CAP_ROW_SIZE + TECH_OIL_DRILLING_ID] =
+            2;
+        bytes[TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62
+            + TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE
+            + CivilianUnitKind::Driller as usize] = 1;
+        let requirement_offset = TECH_FINAL_REQUIREMENT_LEVELS_OFFSET_V62
+            + TECH_REQUIREMENT_LEVELS_ROW_SIZE
+            + ResourceKind::Oil as usize * std::mem::size_of::<i16>();
+        bytes[requirement_offset..requirement_offset + 2].copy_from_slice(&3_i16.to_be_bytes());
         let mut stream = LegacyStream::new(&bytes);
+        let technology = read_technology_state(&mut stream).unwrap();
+        assert!(technology.advanced_iron_working);
+        assert!(technology.marine_engineering);
+        assert!(technology.oil_drilling_available);
+        assert!(
+            technology.city_capabilities_by_nation[MajorNationId::new(2)].advanced_iron_working
+        );
+        assert!(technology.city_capabilities_by_nation[MajorNationId::new(3)].oil_drilling);
+        assert!(
+            technology.city_capabilities_by_nation[MajorNationId::new(1)]
+                .university
+                .available[CivilianUnitKind::Driller]
+        );
         assert_eq!(
-            read_technology_state(&mut stream).unwrap(),
-            TechnologyState {
-                advanced_iron_working: true,
-                marine_engineering: true,
-                advanced_trade_resource_by_nation: MajorNationTable::from_array([
-                    false, false, false, true, false, false, false,
-                ]),
-            }
+            technology.city_capabilities_by_nation[MajorNationId::new(1)]
+                .university
+                .requirement_levels[ResourceKind::Oil],
+            3
         );
         assert_eq!(stream.position(), TECH_SERIALIZED_SIZE_V62);
 
         for (offset, value) in [
             (TECH_ADVANCED_IRON_WORKING_OFFSET_V62, 2),
             (TECH_MARINE_ENGINEERING_OFFSET_V62, u8::MAX),
+            (
+                TECH_GLOBAL_UNLOCK_FLAGS_OFFSET_V62 + TECH_OIL_DRILLING_ID,
+                2,
+            ),
         ] {
             let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
             bytes[offset] = value;
@@ -4513,11 +4576,27 @@ mod tests {
         }
 
         let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
-        bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + TECH_ADVANCED_TRADE_RESOURCE_ID] = 3;
+        bytes[TECH_ORDER_CAP_ROWS_OFFSET_V62 + TECH_OIL_DRILLING_ID] = 3;
         assert!(matches!(
             read_technology_state(&mut LegacyStream::new(&bytes)),
             Err(LegacySaveError::StateProjection(message))
-                if message == "major nation 0 advanced-trade technology status 3 is invalid"
+                if message == "major nation 0 technology 19 status 3 is invalid"
+        ));
+
+        let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
+        bytes[TECH_UNIVERSITY_AVAILABILITY_OFFSET_V62] = 2;
+        assert!(matches!(
+            read_technology_state(&mut LegacyStream::new(&bytes)),
+            Err(LegacySaveError::InvalidBoolean { value: 2, .. })
+        ));
+
+        let mut bytes = [0_u8; TECH_SERIALIZED_SIZE_V62];
+        bytes[TECH_FINAL_REQUIREMENT_LEVELS_OFFSET_V62..][..2]
+            .copy_from_slice(&4_i16.to_be_bytes());
+        assert!(matches!(
+            read_technology_state(&mut LegacyStream::new(&bytes)),
+            Err(LegacySaveError::StateProjection(message))
+                if message.contains("university requirement level 4")
         ));
     }
 

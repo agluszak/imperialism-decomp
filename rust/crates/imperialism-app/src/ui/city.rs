@@ -253,17 +253,12 @@ fn city_building_level(
     nation: MajorNationId,
     slot: ProductionSlot,
 ) -> Option<i16> {
-    if slot == ProductionSlot::Shipyard {
-        // Retail uses the active nation's per-tech status row for this level.
-        // That row is not yet represented by GameState.
-        return None;
-    }
     let major = state.nations.major(nation);
     Some(major.city().next_building_type(
         slot,
         major.economy(),
         major.common().owned_regions.len() as i32,
-        false,
+        state.technology.city_capabilities_by_nation[nation].advanced_iron_working,
     ))
 }
 
