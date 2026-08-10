@@ -114,7 +114,7 @@ pub fn create_random_game(
     }
     let diplomacy = DiplomacyState::for_random_start(human_nation, difficulty, &mut crt_rand);
 
-    initialize_ai_zone_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
+    initialize_ai_targets(&mut nations, &mission_queues, port_zones.next_ordinal);
     let port_zone_owners = port_zones
         .ports
         .iter()
@@ -1124,11 +1124,13 @@ fn build_province_state(
         provinces[province] = ProvinceState::new(
             Some(owner),
             Some(owner),
+            0,
             adjacency[index].clone(),
             Some(generated.terrain.retail() as u8),
             fort_level,
             province_capitals[index],
             ResourceTable::default(),
+            MajorNationTable::default(),
             0,
         )
         .expect("generated province state fits the retail province record");
@@ -1230,24 +1232,31 @@ fn queue_map_action_missions_for_port_zone_candidates(
     missions
 }
 
-fn initialize_ai_zone_targets(
+fn initialize_ai_targets(
     nations: &mut Nations,
     mission_queues: &MajorNationTable<Vec<MissionState>>,
     live_zone_count: u16,
 ) {
     for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
         let economy = &mut nations.major_mut(nation).economy;
-        let Some(targets) = economy.ai_zone_targets.as_mut() else {
+        let Some(zone_targets) = economy.ai_zone_targets.as_mut() else {
             continue;
         };
-        targets.resize(usize::from(live_zone_count), AiZoneTargetState::Unmarked);
+        zone_targets.resize(usize::from(live_zone_count), AiTargetState::Unmarked);
         for mission in &mission_queues[nation] {
             let target = match &mission.data {
                 MissionData::ControlSeaZone(navy) | MissionData::Escort(navy) => navy.target_zone,
                 _ => None,
             };
             if let Some(target) = target {
-                targets[usize::from(target.get())] = AiZoneTargetState::MissionQueued;
+                zone_targets[usize::from(target.get())] = AiTargetState::MissionQueued;
+            }
+            if let MissionData::DefendProvince { province, .. } = &mission.data {
+                economy
+                    .ai_province_targets
+                    .as_mut()
+                    .expect("AI nation has province target state")[*province] =
+                    AiTargetState::MissionQueued;
             }
         }
     }
@@ -2203,7 +2212,7 @@ mod tests {
     }
 
     #[test]
-    fn normal_random_start_marks_only_queued_ai_navy_zone_targets() {
+    fn normal_random_start_marks_only_queued_ai_map_targets() {
         let human_nation = MajorNationId::new(6);
         let preview =
             generate_random_setup_preview_with_clock_seed(b"Woopnist", MapTopology::Wrapping, 1);
@@ -2221,12 +2230,15 @@ mod tests {
 
         for nation in (0..MajorNationId::COUNT).map(MajorNationId::new) {
             let economy = &state.nations.majors[nation].economy;
+            assert_eq!(economy.army_movement_budget, 15);
             if nation == human_nation {
                 assert_eq!(economy.ai_zone_targets, None);
+                assert_eq!(economy.ai_province_targets, None);
                 continue;
             }
 
-            let mut expected = vec![AiZoneTargetState::Unmarked; live_zone_count];
+            let mut expected = vec![AiTargetState::Unmarked; live_zone_count];
+            let mut expected_provinces = ProvinceTable::default();
             let mut queued_navy_target_count = 0;
             for mission in state
                 .missions
@@ -2234,6 +2246,10 @@ mod tests {
                 .filter(|mission| mission.nation == nation.nation())
             {
                 let target = match &mission.data {
+                    MissionData::DefendProvince { province, .. } => {
+                        expected_provinces[*province] = AiTargetState::MissionQueued;
+                        None
+                    }
                     MissionData::ControlSeaZone(navy) => navy.target_zone,
                     MissionData::Escort(navy) => {
                         let port = state
@@ -2248,7 +2264,7 @@ mod tests {
                     _ => None,
                 };
                 if let Some(target) = target {
-                    expected[usize::from(target.get())] = AiZoneTargetState::MissionQueued;
+                    expected[usize::from(target.get())] = AiTargetState::MissionQueued;
                     queued_navy_target_count += 1;
                 }
             }
@@ -2259,13 +2275,24 @@ mod tests {
                 .expect("computer majors own AI zone-target state");
             assert_eq!(actual, &expected);
             assert_eq!(
+                economy.ai_province_targets.as_ref(),
+                Some(&expected_provinces)
+            );
+            assert_eq!(
                 actual
                     .iter()
-                    .filter(|&&target| target == AiZoneTargetState::MissionQueued)
+                    .filter(|&&target| target == AiTargetState::MissionQueued)
                     .count(),
                 queued_navy_target_count
             );
-            assert!(!actual.contains(&AiZoneTargetState::Candidate));
+            assert!(!actual.contains(&AiTargetState::Candidate));
+        }
+        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+            assert_eq!(state.provinces[province].development_stage(), 0);
+            assert_eq!(
+                state.provinces[province].explored_by_majors(),
+                &MajorNationTable::default()
+            );
         }
     }
 

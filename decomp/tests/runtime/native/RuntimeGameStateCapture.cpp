@@ -884,6 +884,31 @@ JSON_Value* CaptureAiZoneTargets(TGreatPower* nation) {
   return targets.Release();
 }
 
+JSON_Value* CaptureAiProvinceTargets(TGreatPower* nation) {
+  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
+    return JsonNullValue();
+  }
+
+  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
+  JsonArray targets;
+  for (int province = 0; province < 0x180; ++province) {
+    switch (automaticNation->mapNodeStateFlags[province]) {
+    case 0:
+      targets.Add("unmarked");
+      break;
+    case 1:
+      targets.Add("candidate");
+      break;
+    case 2:
+      targets.Add("mission_queued");
+      break;
+    default:
+      FailSemanticCapture("AI province target has an invalid state");
+    }
+  }
+  return targets.Release();
+}
+
 JSON_Value* CapturePortZoneOwners() {
   const int liveCount = ValidateLiveZoneContextCount();
   JsonArray owners;
@@ -1064,6 +1089,9 @@ JSON_Value* CaptureProvinces() {
     if (province.fortLevel03 < 0 || province.fortLevel03 > 3) {
       FailSemanticCapture("province fort level is outside the semantic range");
     }
+    if ((province.exploredByNationMaskA1 & 0x80) != 0) {
+      FailSemanticCapture("province exploration mask has an unsupported upper bit set");
+    }
     if (province.cityTileIndex04 < -1 || province.cityTileIndex04 >= 0x1950) {
       FailSemanticCapture("province city tile is outside the strategic map");
     }
@@ -1072,6 +1100,7 @@ JSON_Value* CaptureProvinces() {
     JsonArray adjacency;
     object.SetOptional("owner", static_cast<int>(province.ownerNationCode00));
     object.SetOptional("former_owner", static_cast<int>(province.formerOwnerNationCode01));
+    object.Set("development_stage", static_cast<int>(province.developmentStage));
     for (int neighborIndex = 0; neighborIndex < adjacencyCount; ++neighborIndex) {
       const int adjacentProvince = static_cast<int>(province.adjacentRegionIds0A[neighborIndex]);
       if (adjacentProvince < 0 || adjacentProvince >= 0x180) {
@@ -1090,6 +1119,11 @@ JSON_Value* CaptureProvinces() {
           province.resourceDevelopmentCounts82[resource - kResourceFood];
     }
     object.Set("resource_development_by_type", CaptureResourceTable(resourceDevelopmentByType));
+    JsonArray exploredByMajors;
+    for (int nation = 0; nation < kMajorNationCount; ++nation) {
+      exploredByMajors.Add((province.exploredByNationMaskA1 & (1 << nation)) != 0);
+    }
+    object.Set("explored_by_majors", exploredByMajors.Release());
     object.Set("city_score", province.cityScoreValue);
     provinces.Add(object.Release());
   }
@@ -1260,6 +1294,7 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   JsonObject object;
   object.Set("controller", nation->diplomacyEligibilityA0 != 0 ? "Human" : "Computer");
   object.Set("ai_zone_targets", CaptureAiZoneTargets(nation));
+  object.Set("ai_province_targets", CaptureAiProvinceTargets(nation));
   object.Set("foreign_minister_personality",
              ForeignMinisterPersonalityName(nation->foreignMinister));
   object.Set("foreign_minister_skill_index",
@@ -1308,6 +1343,7 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("escalation_counter", static_cast<int>(nation->escalationCounter));
   object.Set("pending_commitment_cost", nation->pendingCommitmentCost);
   object.Set("pressure_counter", static_cast<int>(nation->pressureCounter));
+  object.Set("army_movement_budget", nation->field900);
   object.Set("aid_allocation_total", nation->aidAllocationTotal);
   object.Set("colony_boycott_flags",
              CaptureUnsignedByteArray(nation->colonyBoycottFlags, kNationSlotCount));

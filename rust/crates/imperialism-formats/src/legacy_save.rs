@@ -417,7 +417,7 @@ pub(crate) struct LegacyGreatPowerPostCity {
     pub escalation_counter: i8,
     pub pending_commitment_cost: i32,
     pub pressure_counter: i8,
-    pub opaque_counter: i32,
+    pub army_movement_budget: i32,
     pub turn_finished_flag: u8,
     pub special_resource_trade_balance: i32,
     pub aid_allocation_total: i32,
@@ -1092,6 +1092,7 @@ pub(crate) struct LegacyProvince {
     pub adjacent_region_ids: [i16; 12],
     pub resource_development_by_type: [i16; 10],
     pub city_score: i32,
+    pub explored_by_nation_mask: u8,
     pub region_class: i8,
     pub name: String,
 }
@@ -1616,28 +1617,34 @@ impl LegacySaveV62 {
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             )?;
-            let (ai_zone_targets, ai_trade, ai_development_pressure) = match nation {
-                LegacyMajorNationState::Auto(auto) => (
-                    Some(ai_zone_targets(
-                        &auto.auto_prefix.port_zone_state_flags,
-                        live_ocean_context_count,
-                        slot,
-                    )?),
-                    Some(AiTradeState {
-                        temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
-                            auto.auto_prefix.action_metric_by_quarter,
-                        ),
-                    }),
-                    Some(AiDevelopmentPressureState::default()),
-                ),
-                LegacyMajorNationState::Other(_) => (None, None, None),
-            };
+            let (ai_zone_targets, ai_province_targets, ai_trade, ai_development_pressure) =
+                match nation {
+                    LegacyMajorNationState::Auto(auto) => (
+                        Some(ai_zone_targets(
+                            &auto.auto_prefix.port_zone_state_flags,
+                            live_ocean_context_count,
+                            slot,
+                        )?),
+                        Some(ai_province_targets(
+                            &auto.auto_prefix.map_node_state_flags,
+                            slot,
+                        )?),
+                        Some(AiTradeState {
+                            temporary_processed_stock: ProcessedTradeCommodityTable::from_array(
+                                auto.auto_prefix.action_metric_by_quarter,
+                            ),
+                        }),
+                        Some(AiDevelopmentPressureState::default()),
+                    ),
+                    LegacyMajorNationState::Other(_) => (None, None, None, None),
+                };
             majors.push(MajorNation::from_parts(
                 country_common(&great_power.country)?,
                 great_power_state(
                     great_power,
                     foreign_minister_personality,
                     ai_zone_targets,
+                    ai_province_targets,
                     ai_trade,
                     ai_development_pressure,
                 )?,
@@ -1936,14 +1943,14 @@ fn ai_zone_targets(
     flags: &[u8; AI_ZONE_TARGET_CAPACITY],
     live_count: usize,
     nation: usize,
-) -> Result<Vec<AiZoneTargetState>, LegacySaveError> {
+) -> Result<Vec<AiTargetState>, LegacySaveError> {
     let targets = flags[..live_count]
         .iter()
         .enumerate()
         .map(|(ordinal, value)| match value {
-            0 => Ok(AiZoneTargetState::Unmarked),
-            1 => Ok(AiZoneTargetState::Candidate),
-            2 => Ok(AiZoneTargetState::MissionQueued),
+            0 => Ok(AiTargetState::Unmarked),
+            1 => Ok(AiTargetState::Candidate),
+            2 => Ok(AiTargetState::MissionQueued),
             value => Err(LegacySaveError::StateProjection(format!(
                 "AI nation {nation} ocean context {ordinal} has invalid target state {value}"
             ))),
@@ -1959,6 +1966,27 @@ fn ai_zone_targets(
         return Err(LegacySaveError::StateProjection(format!(
             "AI nation {nation} unused ocean context {ordinal} has nonzero target state {value}"
         )));
+    }
+    Ok(targets)
+}
+
+fn ai_province_targets(
+    flags: &[u8; PROVINCE_COUNT],
+    nation: usize,
+) -> Result<ProvinceTable<AiTargetState>, LegacySaveError> {
+    let mut targets = ProvinceTable::default();
+    for (index, &value) in flags.iter().enumerate() {
+        let province = ProvinceId::new(index as u16);
+        targets[province] = match value {
+            0 => AiTargetState::Unmarked,
+            1 => AiTargetState::Candidate,
+            2 => AiTargetState::MissionQueued,
+            value => {
+                return Err(LegacySaveError::StateProjection(format!(
+                    "AI nation {nation} province {index} has invalid target state {value}"
+                )));
+            }
+        };
     }
     Ok(targets)
 }
@@ -2140,7 +2168,8 @@ fn minor_trade_state(nation: &LegacyMinorState) -> Result<MinorTradeState, Legac
 fn great_power_state(
     nation: &LegacyGreatPowerState,
     foreign_minister_personality: ForeignMinisterPersonality,
-    ai_zone_targets: Option<Vec<AiZoneTargetState>>,
+    ai_zone_targets: Option<Vec<AiTargetState>>,
+    ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     ai_trade: Option<AiTradeState>,
     ai_development_pressure: Option<AiDevelopmentPressureState>,
 ) -> Result<GreatPowerState, LegacySaveError> {
@@ -2178,6 +2207,7 @@ fn great_power_state(
             MajorNationController::Computer
         },
         ai_zone_targets,
+        ai_province_targets,
         foreign_minister_personality,
         foreign_minister_skill_index: foreign_minister.skill_index,
         foreign_trade: foreign_trade_state(foreign_minister, nation.country.nation_slot)?,
@@ -2241,6 +2271,7 @@ fn great_power_state(
         escalation_counter: i16::from(post.escalation_counter),
         pending_commitment_cost: post.pending_commitment_cost,
         pressure_counter: i16::from(post.pressure_counter),
+        army_movement_budget: post.army_movement_budget,
         aid_allocation_total: post.aid_allocation_total,
         colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         military_expenses: post.military_expenses,
@@ -2453,15 +2484,25 @@ fn province_state(
             .expect("province resource-development table spans food through arms");
         resource_development_by_type[resource] = amount;
     }
+    if province.explored_by_nation_mask & 0x80 != 0 {
+        return Err(LegacySaveError::StateProjection(format!(
+            "province {index} exploration mask has unsupported upper bit set"
+        )));
+    }
+    let explored_by_majors = MajorNationTable::from_fn(|nation| {
+        province.explored_by_nation_mask & (1 << nation.get()) != 0
+    });
 
     ProvinceState::new(
         optional_owner(province.owner_nation, "owner")?,
         optional_owner(province.former_owner_nation, "former-owner")?,
+        province.development_stage,
         adjacency,
         region_class,
         province.fort_level,
         optional_tile_id(i32::from(province.city_tile))?,
         resource_development_by_type,
+        explored_by_majors,
         province.city_score,
     )
     .map_err(|error| {
@@ -4066,7 +4107,7 @@ fn read_great_power_post_city(
     let escalation_counter = stream.read_i8()?;
     let pending_commitment_cost = stream.read_le_i32()?;
     let pressure_counter = stream.read_i8()?;
-    let opaque_counter = stream.read_le_i32()?;
+    let army_movement_budget = stream.read_le_i32()?;
     let turn_finished_flag = stream.read_u8()?;
 
     let object_count_offset = absolute_offset + stream.position();
@@ -4091,7 +4132,7 @@ fn read_great_power_post_city(
         escalation_counter,
         pending_commitment_cost,
         pressure_counter,
-        opaque_counter,
+        army_movement_budget,
         turn_finished_flag,
         special_resource_trade_balance,
         aid_allocation_total,
@@ -4341,6 +4382,7 @@ fn read_province(stream: &mut LegacyStream<'_>) -> Result<LegacyProvince, Stream
             i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
         }),
         city_score: i32::from_le_bytes(bytes[0x9c..0xa0].try_into().unwrap()),
+        explored_by_nation_mask: bytes[0xa1],
         region_class: bytes[0xa3] as i8,
         name,
     })
@@ -4936,35 +4978,57 @@ mod tests {
     }
 
     #[test]
-    fn projects_exact_fixture_ai_zone_targets_and_newest_port_owners() {
+    fn projects_exact_fixture_phase_ten_inputs_and_newest_port_owners() {
         let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         assert_eq!(save.ocean.zones.len(), 60);
         assert_eq!(save.ocean.port_zones.len(), 23);
         let state = save.game_state(game_context()).unwrap();
         let expected_mission_queued = [[22, 66], [42, 65], [26, 64], [21, 63], [8, 62], [11, 61]];
-        for (slot, expected) in expected_mission_queued.into_iter().enumerate() {
-            let targets = state
-                .nations
-                .major(MajorNationId::new(slot as u8))
-                .economy()
-                .ai_zone_targets
-                .as_ref()
-                .unwrap();
+        let expected_provinces = [
+            [79, 80, 89, 90, 91, 100, 101, 111],
+            [32, 43, 44, 45, 55, 56, 57, 58],
+            [42, 53, 54, 66, 67, 68, 74, 75],
+            [1, 2, 9, 10, 18, 19, 28, 29],
+            [26, 27, 38, 39, 40, 41, 51, 52],
+            [85, 86, 87, 97, 98, 107, 108, 109],
+        ];
+        for (slot, (expected_zones, expected_provinces)) in expected_mission_queued
+            .into_iter()
+            .zip(expected_provinces)
+            .enumerate()
+        {
+            let major = state.nations.major(MajorNationId::new(slot as u8));
+            let targets = major.economy().ai_zone_targets.as_ref().unwrap();
             assert_eq!(targets.len(), 83);
-            let mut expected_targets = vec![AiZoneTargetState::Unmarked; 83];
-            for ordinal in expected {
-                expected_targets[ordinal] = AiZoneTargetState::MissionQueued;
+            let mut expected_targets = vec![AiTargetState::Unmarked; 83];
+            for ordinal in expected_zones {
+                expected_targets[ordinal] = AiTargetState::MissionQueued;
             }
             assert_eq!(targets, &expected_targets);
+
+            let province_targets = major.economy().ai_province_targets.as_ref().unwrap();
+            for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+                let expected = if expected_provinces.contains(&province.get()) {
+                    AiTargetState::MissionQueued
+                } else {
+                    AiTargetState::Unmarked
+                };
+                assert_eq!(province_targets[province], expected);
+            }
+            assert_eq!(major.economy().army_movement_budget, 15);
         }
-        assert!(
-            state
-                .nations
-                .major(MajorNationId::new(6))
-                .economy()
-                .ai_zone_targets
-                .is_none()
-        );
+        let human = state.nations.major(MajorNationId::new(6)).economy();
+        assert!(human.ai_zone_targets.is_none());
+        assert!(human.ai_province_targets.is_none());
+        assert_eq!(human.army_movement_budget, 15);
+        for province in (0..ProvinceId::COUNT).map(ProvinceId::new) {
+            assert_eq!(state.provinces[province].development_stage(), 0);
+            assert!(
+                (0..MajorNationId::COUNT)
+                    .map(MajorNationId::new)
+                    .all(|nation| !state.provinces[province].explored_by_majors()[nation])
+            );
+        }
         assert_eq!(state.port_zone_owners.len(), 23);
         for (owner, saved) in state
             .port_zone_owners
@@ -4981,7 +5045,7 @@ mod tests {
     }
 
     #[test]
-    fn validates_ai_zone_domain_status_and_unused_tail() {
+    fn validates_phase_ten_map_target_domains() {
         let save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
         assert_eq!(validate_ocean_contexts(&save.ocean).unwrap(), 83);
 
@@ -5032,6 +5096,25 @@ mod tests {
             ai_zone_targets(&flags, 83, 0),
             Err(LegacySaveError::StateProjection(message))
                 if message == "AI nation 0 unused ocean context 83 has nonzero target state 1"
+        ));
+
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        let LegacyMajorNationState::Auto(nation) = &mut save.major_nations[0] else {
+            unreachable!()
+        };
+        nation.auto_prefix.map_node_state_flags[0] = 3;
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "AI nation 0 province 0 has invalid target state 3"
+        ));
+
+        let mut save = LegacySaveV62::parse(RETAIL_FIXTURE).unwrap();
+        save.map.provinces[0].explored_by_nation_mask = 0x80;
+        assert!(matches!(
+            save.game_state(game_context()),
+            Err(LegacySaveError::StateProjection(message))
+                if message == "province 0 exploration mask has unsupported upper bit set"
         ));
     }
 

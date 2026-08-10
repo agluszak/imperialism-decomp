@@ -52,6 +52,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
     GreatPowerState {
         controller: crate::MajorNationController::Human,
         ai_zone_targets: None,
+        ai_province_targets: None,
         foreign_minister_personality: crate::ForeignMinisterPersonality::Base,
         foreign_minister_skill_index: 0,
         foreign_trade: crate::ForeignTradeState::for_random_start(
@@ -89,6 +90,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
         escalation_counter: 0,
         pending_commitment_cost: 0,
         pressure_counter: 0,
+        army_movement_budget: 0,
         aid_allocation_total: 0,
         colony_boycott_flags: NationTable::default(),
         military_expenses: 0,
@@ -144,10 +146,10 @@ pub(crate) fn game_state() -> GameState {
             Difficulty::Normal,
             &mut diplomacy_rng,
         ),
-        nations: Nations {
-            majors: MajorNationTable::from_fn(|_nation| major_nation()),
-            minors: MinorNationTable::default(),
-        },
+        nations: Nations::new(
+            MajorNationTable::from_fn(|_nation| major_nation()),
+            MinorNationTable::default(),
+        ),
         military_units: Vec::new(),
         civilian_units: Vec::new(),
         ships: Vec::new(),

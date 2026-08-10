@@ -57,16 +57,19 @@ impl UnitIdAllocator {
 /// still be absent until their save projection is normalized separately.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
-    pub(crate) majors: MajorNationTable<MajorNation>,
+    pub(crate) majors: Box<MajorNationTable<MajorNation>>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
 impl Nations {
-    pub const fn new(
+    pub fn new(
         majors: MajorNationTable<MajorNation>,
         minors: MinorNationTable<Option<MinorNation>>,
     ) -> Self {
-        Self { majors, minors }
+        Self {
+            majors: Box::new(majors),
+            minors,
+        }
     }
 
     pub fn major(&self, nation: crate::MajorNationId) -> &MajorNation {
@@ -420,6 +423,7 @@ impl PhaseCode {
     pub const SEASON_ADVANCE: Self = Self(0x10);
     pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
     pub const NEWSPAPER: Self = Self(0x12);
+    pub const COMBAT_MOVES: Self = Self(0x14);
     pub const fn from_retail(value: i32) -> Self {
         Self(value)
     }
@@ -1142,7 +1146,8 @@ pub enum DiplomacyPolicy {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct GreatPowerState {
     pub controller: MajorNationController,
-    pub ai_zone_targets: Option<Vec<AiZoneTargetState>>,
+    pub ai_zone_targets: Option<Vec<AiTargetState>>,
+    pub ai_province_targets: Option<ProvinceTable<AiTargetState>>,
     pub foreign_minister_personality: ForeignMinisterPersonality,
     pub foreign_minister_skill_index: i16,
     pub foreign_trade: ForeignTradeState,
@@ -1178,6 +1183,7 @@ pub struct GreatPowerState {
     pub escalation_counter: i16,
     pub pending_commitment_cost: i32,
     pub pressure_counter: i16,
+    pub army_movement_budget: i32,
     pub aid_allocation_total: i32,
     pub colony_boycott_flags: NationTable<u8>,
     pub military_expenses: i32,
@@ -1201,6 +1207,10 @@ impl GreatPowerState {
             ai_zone_targets: match controller {
                 MajorNationController::Human => None,
                 MajorNationController::Computer => Some(Vec::new()),
+            },
+            ai_province_targets: match controller {
+                MajorNationController::Human => None,
+                MajorNationController::Computer => Some(ProvinceTable::default()),
             },
             foreign_minister_personality,
             foreign_minister_skill_index: foreign_minister_personality.initial_skill_index(),
@@ -1239,6 +1249,7 @@ impl GreatPowerState {
             escalation_counter: 0,
             pending_commitment_cost: 0,
             pressure_counter: 0,
+            army_movement_budget: 0x0f,
             aid_allocation_total: 0,
             colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
@@ -1297,10 +1308,10 @@ impl AiDevelopmentPressureState {
     }
 }
 
-/// An AI major's current use of one live sea or port-zone context.
+/// An AI major's current use of one province or live sea/port-zone target.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "snake_case")]
-pub enum AiZoneTargetState {
+pub enum AiTargetState {
     #[default]
     Unmarked,
     Candidate,
