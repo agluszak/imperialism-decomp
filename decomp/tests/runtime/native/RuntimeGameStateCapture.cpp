@@ -1300,6 +1300,58 @@ JSON_Value* CapturePendingDevelopmentActions(TCityInteriorMinister* minister) {
   return actions.Release();
 }
 
+JSON_Value* CaptureAiCityOrderDemand(TCityInteriorMinister* minister) {
+  static const char* const kTrainingNames[2] = {"medium", "high"};
+  static const char* const kMilitaryCategoryNames[8] = {
+      "light_infantry", "regular_infantry", "heavy_infantry",  "light_cavalry",
+      "heavy_cavalry",  "light_artillery",  "heavy_artillery", "demolitionist"};
+  static const char* const kShipSlotNames[8] = {
+      "merchant_early_primary",      "merchant_early_secondary",  "merchant_advanced_primary",
+      "merchant_advanced_secondary", "warship_early_primary",     "warship_early_secondary",
+      "warship_advanced_primary",    "warship_advanced_secondary"};
+
+  if (minister->orderMetricTable40[33] != 0 || minister->orderMetricTable40[52] != 0) {
+    FailSemanticCapture("interior minister has demand in a fixed null city-order slot");
+  }
+
+  JsonObject demand;
+  JsonObject training;
+  for (int level = 0; level < 2; ++level) {
+    training.Set(kTrainingNames[level], static_cast<int>(minister->orderMetricTable40[23 + level]));
+  }
+  demand.Set("training", training.Release());
+
+  JsonObject military;
+  for (int category = 0; category < 8; ++category) {
+    military.Set(kMilitaryCategoryNames[category],
+                 static_cast<int>(minister->orderMetricTable40[25 + category]));
+  }
+  demand.Set("military_recruitment", military.Release());
+
+  JsonObject civilian;
+  for (int kind = 0; kind < kCivilianUnitKindCount; ++kind) {
+    civilian.Set(kCivilianUnitKindNames[kind],
+                 static_cast<int>(minister->orderMetricTable40[34 + kind]));
+  }
+  demand.Set("civilian_recruitment", civilian.Release());
+
+  JsonObject ships;
+  for (int slot = 0; slot < 8; ++slot) {
+    ships.Set(kShipSlotNames[slot], static_cast<int>(minister->orderMetricTable40[43 + slot]));
+  }
+  demand.Set("ships", ships.Release());
+  demand.Set("transport_capacity", static_cast<int>(minister->orderMetricTable40[51]));
+
+  JsonArray expansions;
+  for (int expansionSlot = 0; expansionSlot < 0x10; ++expansionSlot) {
+    expansions.Add(
+        expansionSlot < 7 ? static_cast<int>(minister->orderMetricTable40[53 + expansionSlot]) : 0);
+  }
+  demand.Set("expansions", expansions.Release());
+  demand.Set("population_growth", static_cast<int>(minister->orderMetricTable40[60]));
+  return demand.Release();
+}
+
 JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   if (nation->interiorMinister == 0) {
     FailSemanticCapture("major nation has no interior minister");
@@ -1320,6 +1372,11 @@ JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
   }
   state.SetOptional("railhead_target", static_cast<int>(minister->field3c));
   state.Set("resource_order_metrics", CaptureResourceTable(minister->orderMetricTable40));
+  state.Set("city_order_demand", CaptureAiCityOrderDemand(minister));
+  state.Set("deferred_labor_shortfall", static_cast<int>(minister->deferredLaborShortfallDA));
+  state.Set("production_deficit_by_slot", CaptureShortArray(minister->orderShortTableDC, 0x10));
+  state.Set("temporarily_reserved_ship_arms",
+            static_cast<int>(minister->temporarilyReservedShipArms186));
   state.Set("railhead_priority_by_resource", CaptureResourceTable(minister->orderTypeTableFC));
   state.Set("exterior_need_by_resource", CaptureResourceTable(minister->orderTypeTable12A));
   state.Set("historical_need_by_resource", CaptureResourceTable(minister->orderTypeTable158));

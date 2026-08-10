@@ -483,6 +483,7 @@ impl PhaseCode {
     pub const DIPLOMACY: Self = Self(6);
     pub const TRADE: Self = Self(7);
     pub const CITY_AND_TRANSPORT: Self = Self(8);
+    pub const GREAT_POWER_PRESSURE: Self = Self(0x0b);
     pub const OFFER_SHEET: Self = Self(9);
     pub const MILITARY: Self = Self(10);
     pub const DIPLOMACY_OFFER: Self = Self(0x0d);
@@ -1364,12 +1365,54 @@ pub struct InteriorCivilianState {
     pub(crate) pending_recruitment: Option<CivilianUnitKind>,
     pub(crate) railhead_target: Option<TileId>,
     pub(crate) resource_order_metrics: ResourceTable<i16>,
+    pub(crate) city_order_demand: AiCityOrderDemand,
+    pub(crate) deferred_labor_shortfall: i16,
+    pub(crate) production_deficit_by_slot: ProductionTable<i16>,
+    pub(crate) temporarily_reserved_ship_arms: i16,
     pub(crate) railhead_priority_by_resource: ResourceTable<i16>,
     pub(crate) exterior_need_by_resource: ResourceTable<i16>,
     pub(crate) historical_need_by_resource: ResourceTable<i16>,
     pub(crate) civilian_order_demand_by_resource: ResourceTable<i16>,
     pub(crate) average_development_order_allocation: i32,
     pub(crate) pending_development_actions: Vec<PendingDevelopmentAction>,
+}
+
+/// Persistent production quantities requested by an automated interior minister.
+///
+/// These are planning inputs for the authoritative [`CityOrders`], not a second
+/// set of city orders. Retail keeps them after an order has been partially
+/// accepted so the next city pass can retry the remaining request.
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiCityOrderDemand {
+    pub(crate) training: TrainingOrderTable<i16>,
+    pub(crate) military_recruitment: MilitaryRecruitOrderTable<i16>,
+    pub(crate) civilian_recruitment: CivilianUnitTable<i16>,
+    pub(crate) ships: ShipOrderTable<i16>,
+    pub(crate) transport_capacity: i16,
+    pub(crate) expansions: ProductionTable<i16>,
+    pub(crate) population_growth: i16,
+}
+
+impl AiCityOrderDemand {
+    pub fn from_parts(
+        training: TrainingOrderTable<i16>,
+        military_recruitment: MilitaryRecruitOrderTable<i16>,
+        civilian_recruitment: CivilianUnitTable<i16>,
+        ships: ShipOrderTable<i16>,
+        transport_capacity: i16,
+        expansions: ProductionTable<i16>,
+        population_growth: i16,
+    ) -> Self {
+        Self {
+            training,
+            military_recruitment,
+            civilian_recruitment,
+            ships,
+            transport_capacity,
+            expansions,
+            population_growth,
+        }
+    }
 }
 
 /// One ordered city-development request retained by an AI interior minister.
@@ -1386,6 +1429,10 @@ impl InteriorCivilianState {
         pending_recruitment: Option<CivilianUnitKind>,
         railhead_target: Option<TileId>,
         resource_order_metrics: ResourceTable<i16>,
+        city_order_demand: AiCityOrderDemand,
+        deferred_labor_shortfall: i16,
+        production_deficit_by_slot: ProductionTable<i16>,
+        temporarily_reserved_ship_arms: i16,
         railhead_priority_by_resource: ResourceTable<i16>,
         exterior_need_by_resource: ResourceTable<i16>,
         historical_need_by_resource: ResourceTable<i16>,
@@ -1397,6 +1444,10 @@ impl InteriorCivilianState {
             pending_recruitment,
             railhead_target,
             resource_order_metrics,
+            city_order_demand,
+            deferred_labor_shortfall,
+            production_deficit_by_slot,
+            temporarily_reserved_ship_arms,
             railhead_priority_by_resource,
             exterior_need_by_resource,
             historical_need_by_resource,

@@ -181,6 +181,16 @@ mod scenarios {
         state.advance_turn_step()
     }
 
+    const FIRST_TURN_CITY_TRANSPORT_PHASE: ScenarioMeta =
+        retail_fixture("first_turn_city_transport_phase");
+
+    fn apply_first_turn_city_transport_phase(
+        state: &mut GameState,
+        (): (),
+    ) -> imperialism_core::AdvanceTurnOutcome {
+        state.advance_turn_step()
+    }
+
     const TRANSPORTED_ITEMS_PHASE: ScenarioMeta = retail_fixture("transported_items_phase");
 
     fn apply_transported_items_phase(state: &mut GameState, case: NationCase) {
@@ -473,6 +483,11 @@ mod scenarios {
             first_turn_elimination_phase,
             FIRST_TURN_ELIMINATION_PHASE,
             apply_first_turn_elimination_phase
+        );
+        differential_test!(
+            first_turn_city_transport_phase,
+            FIRST_TURN_CITY_TRANSPORT_PHASE,
+            apply_first_turn_city_transport_phase
         );
         differential_test!(
             transported_items_phase,
