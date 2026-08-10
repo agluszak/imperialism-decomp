@@ -281,6 +281,19 @@ mod scenarios {
         state.allocate_transport_needs(case.nation);
     }
 
+    const NATION_RESOURCE_YIELD_REBUILD: ScenarioMeta =
+        retail_fixture("nation_resource_yield_rebuild");
+    const AI_NATION_RESOURCE_YIELD_REBUILD_CLAMPS_TARGETS: ScenarioMeta =
+        retail_fixture("ai_nation_resource_yield_rebuild_clamps_targets");
+    const NATION_RESOURCE_YIELD_REBUILD_CORPUS: &[ScenarioMeta] = &[
+        NATION_RESOURCE_YIELD_REBUILD,
+        AI_NATION_RESOURCE_YIELD_REBUILD_CLAMPS_TARGETS,
+    ];
+
+    fn apply_nation_resource_yield_rebuild(state: &mut GameState, case: NationCase) {
+        state.rebuild_nation_resource_yields(case.nation);
+    }
+
     const PLAYER_TRADE_PHASE_RESET: ScenarioMeta = retail_fixture("player_trade_phase_reset");
 
     fn apply_player_trade_phase_reset(state: &mut GameState, case: NationCase) {
@@ -437,6 +450,13 @@ mod scenarios {
             TRANSPORT_NEED_ALLOCATION,
             apply_transport_need_allocation
         );
+        #[test]
+        #[ignore = "requires the native C++ runtime oracle (just runtime-run)"]
+        fn nation_resource_yield_rebuild_corpus() {
+            for scenario in NATION_RESOURCE_YIELD_REBUILD_CORPUS {
+                differential(*scenario, apply_nation_resource_yield_rebuild).unwrap();
+            }
+        }
         differential_test!(
             player_trade_phase_reset,
             PLAYER_TRADE_PHASE_RESET,

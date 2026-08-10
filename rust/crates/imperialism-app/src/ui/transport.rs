@@ -244,7 +244,7 @@ fn enter_transport_screen(
     mut commands: Commands,
     catalog: Res<UiCatalogResource>,
     mut assets: UiAssetResources,
-    session: Option<Res<GameSession>>,
+    session: Option<ResMut<GameSession>>,
 ) {
     let view_id = transport_view_id();
     let view = catalog
@@ -256,7 +256,7 @@ fn enter_transport_screen(
         .entity(spawned.root)
         .insert((GameScreenRoot(view_id), DespawnOnExit(AppState::Transport)));
 
-    let Some(session) = session else {
+    let Some(mut session) = session else {
         warn!("transport screen opened without an authoritative game session");
         return;
     };
@@ -264,6 +264,7 @@ fn enter_transport_screen(
         warn!("transport screen active nation is not a major nation");
         return;
     };
+    session.0.rebuild_nation_resource_yields(nation);
     let (font, layout, _) = assets
         .text_style(RetailTextStylePreset {
             font_family: 3,
@@ -795,11 +796,12 @@ mod tests {
     fn spawn_transport(
         mut commands: Commands,
         catalog: Res<UiCatalogResource>,
-        session: Res<GameSession>,
+        mut session: ResMut<GameSession>,
     ) -> TestTransport {
         let view = catalog.view(&transport_view_id()).unwrap();
         let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
         let nation = MajorNationId::from_nation(session.0.turn.active_nation).unwrap();
+        session.0.rebuild_nation_resource_yields(nation);
         bind_transport_screen(
             &mut commands,
             &catalog,
