@@ -218,12 +218,70 @@ pub struct TurnState {
     pub selected_nation: NationId,
 }
 
-/// Global technology flags that currently affect authoritative simulation rules.
+/// Per-nation University capability state used by city production and recruitment.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+pub struct UniversityTechnologyState {
+    pub available: CivilianUnitTable<bool>,
+    /// Highest unlocked requirement column (0..=3) for each resource.
+    pub requirement_levels: ResourceTable<u8>,
+}
+
+impl<'de> Deserialize<'de> for UniversityTechnologyState {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        struct SerializedUniversityTechnologyState {
+            available: CivilianUnitTable<bool>,
+            requirement_levels: ResourceTable<u8>,
+        }
+
+        let serialized = SerializedUniversityTechnologyState::deserialize(deserializer)?;
+        if serialized
+            .requirement_levels
+            .values()
+            .any(|level| *level > 3)
+        {
+            return Err(serde::de::Error::custom(
+                "university requirement levels must be in 0..=3",
+            ));
+        }
+        Ok(Self {
+            available: serialized.available,
+            requirement_levels: serialized.requirement_levels,
+        })
+    }
+}
+
+impl Default for UniversityTechnologyState {
+    fn default() -> Self {
+        Self {
+            available: CivilianUnitTable::from_array([
+                true, true, true, false, true, false, false, true, false,
+            ]),
+            requirement_levels: ResourceTable::from_array([
+                0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1,
+            ]),
+        }
+    }
+}
+
+/// The technology capabilities consumed by one major nation's city rules.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CityTechnologyCapabilities {
+    pub advanced_iron_working: bool,
+    pub oil_drilling: bool,
+    pub university: UniversityTechnologyState,
+}
+
+/// Global technology milestones and the city capabilities of every major nation.
 #[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct TechnologyState {
     pub advanced_iron_working: bool,
     pub marine_engineering: bool,
-    pub advanced_trade_resource_by_nation: MajorNationTable<bool>,
+    pub oil_drilling_available: bool,
+    pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
 }
 
 impl TechnologyState {
@@ -1958,7 +2016,7 @@ mod tests {
             let technology = TechnologyState {
                 advanced_iron_working,
                 marine_engineering,
-                advanced_trade_resource_by_nation: Default::default(),
+                ..Default::default()
             };
             assert_eq!(technology.naval_production_capacity(7, 4), expected);
         }
