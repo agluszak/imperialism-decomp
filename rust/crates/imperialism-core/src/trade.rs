@@ -580,10 +580,7 @@ mod tests {
                 Difficulty::Normal,
                 &mut diplomacy_rng,
             ),
-            nations: Nations {
-                majors,
-                minors: MinorNationTable::default(),
-            },
+            nations: Nations::new(majors, MinorNationTable::default()),
             military_units: vec![],
             civilian_units: vec![],
             ships: vec![],

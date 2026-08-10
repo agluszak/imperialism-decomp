@@ -57,16 +57,19 @@ impl UnitIdAllocator {
 /// still be absent until their save projection is normalized separately.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Nations {
-    pub(crate) majors: MajorNationTable<MajorNation>,
+    pub(crate) majors: Box<MajorNationTable<MajorNation>>,
     pub(crate) minors: MinorNationTable<Option<MinorNation>>,
 }
 
 impl Nations {
-    pub const fn new(
+    pub fn new(
         majors: MajorNationTable<MajorNation>,
         minors: MinorNationTable<Option<MinorNation>>,
     ) -> Self {
-        Self { majors, minors }
+        Self {
+            majors: Box::new(majors),
+            minors,
+        }
     }
 
     pub fn major(&self, nation: crate::MajorNationId) -> &MajorNation {

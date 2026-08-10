@@ -146,10 +146,10 @@ pub(crate) fn game_state() -> GameState {
             Difficulty::Normal,
             &mut diplomacy_rng,
         ),
-        nations: Nations {
-            majors: MajorNationTable::from_fn(|_nation| major_nation()),
-            minors: MinorNationTable::default(),
-        },
+        nations: Nations::new(
+            MajorNationTable::from_fn(|_nation| major_nation()),
+            MinorNationTable::default(),
+        ),
         military_units: Vec::new(),
         civilian_units: Vec::new(),
         ships: Vec::new(),
