@@ -1,4 +1,6 @@
-use crate::{GameState, MinorNationId, NationId, ProvinceId, ResourceTable, TileId};
+use crate::{
+    GameState, MajorNationTable, MinorNationId, NationId, ProvinceId, ResourceTable, TileId,
+};
 use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
@@ -29,11 +31,13 @@ impl CountryStatus {
 pub struct ProvinceState {
     owner: Option<NationId>,
     former_owner: Option<NationId>,
+    development_stage: i8,
     adjacency: Vec<ProvinceId>,
     region_class: Option<u8>,
     fort_level: i8,
     city_tile: Option<TileId>,
     resource_development_by_type: Box<ResourceTable<i16>>,
+    explored_by_majors: MajorNationTable<bool>,
     city_score: i32,
 }
 
@@ -42,11 +46,13 @@ impl ProvinceState {
     pub fn new(
         owner: Option<NationId>,
         former_owner: Option<NationId>,
+        development_stage: i8,
         adjacency: Vec<ProvinceId>,
         region_class: Option<u8>,
         fort_level: i8,
         city_tile: Option<TileId>,
         resource_development_by_type: ResourceTable<i16>,
+        explored_by_majors: MajorNationTable<bool>,
         city_score: i32,
     ) -> Result<Self, ProvinceStateError> {
         if adjacency.len() > MAX_ADJACENT_PROVINCES {
@@ -67,11 +73,13 @@ impl ProvinceState {
         Ok(Self {
             owner,
             former_owner,
+            development_stage,
             adjacency,
             region_class,
             fort_level,
             city_tile,
             resource_development_by_type: Box::new(resource_development_by_type),
+            explored_by_majors,
             city_score,
         })
     }
@@ -82,6 +90,10 @@ impl ProvinceState {
 
     pub const fn former_owner(&self) -> Option<NationId> {
         self.former_owner
+    }
+
+    pub const fn development_stage(&self) -> i8 {
+        self.development_stage
     }
 
     pub fn adjacency(&self) -> &[ProvinceId] {
@@ -104,8 +116,20 @@ impl ProvinceState {
         &self.resource_development_by_type
     }
 
+    pub const fn explored_by_majors(&self) -> &MajorNationTable<bool> {
+        &self.explored_by_majors
+    }
+
+    pub(crate) fn clear_explored_by_majors(&mut self) {
+        self.explored_by_majors = MajorNationTable::default();
+    }
+
     pub const fn city_score(&self) -> i32 {
         self.city_score
+    }
+
+    pub(crate) fn set_city_score(&mut self, value: i32) {
+        self.city_score = value;
     }
 }
 
@@ -120,6 +144,7 @@ impl<'de> Deserialize<'de> for ProvinceState {
             owner: Option<NationId>,
             #[serde(deserialize_with = "deserialize_required_option")]
             former_owner: Option<NationId>,
+            development_stage: i8,
             adjacency: Vec<ProvinceId>,
             #[serde(deserialize_with = "deserialize_required_option")]
             region_class: Option<u8>,
@@ -127,6 +152,7 @@ impl<'de> Deserialize<'de> for ProvinceState {
             #[serde(deserialize_with = "deserialize_required_option")]
             city_tile: Option<TileId>,
             resource_development_by_type: ResourceTable<i16>,
+            explored_by_majors: MajorNationTable<bool>,
             city_score: i32,
         }
 
@@ -134,11 +160,13 @@ impl<'de> Deserialize<'de> for ProvinceState {
         Self::new(
             province.owner,
             province.former_owner,
+            province.development_stage,
             province.adjacency,
             province.region_class,
             province.fort_level,
             province.city_tile,
             province.resource_development_by_type,
+            province.explored_by_majors,
             province.city_score,
         )
         .map_err(serde::de::Error::custom)
@@ -271,11 +299,13 @@ mod tests {
         state.provinces[ProvinceId::new(province)] = ProvinceState::new(
             owner.map(NationId::new),
             owner.map(NationId::new),
+            0,
             adjacency.iter().copied().map(ProvinceId::new).collect(),
             region_class,
             0,
             None,
             ResourceTable::default(),
+            MajorNationTable::default(),
             0,
         )
         .unwrap();
