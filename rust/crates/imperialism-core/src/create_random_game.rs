@@ -328,34 +328,6 @@ fn initialize_tile_neighbor_connection_mask_if_needed(
     gate_flags[index] = resolve_region_tile_subtype_code(tiles, gate_flags, index);
 }
 
-/// `g_abUniversityRequirementLevelById` — yield lookup by resource and development/tech index.
-const UNIVERSITY_REQUIREMENT_LEVEL: [[u8; 4]; 24] = [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [0, 2, 4, 6],
-    [0, 2, 4, 6],
-    [1, 1, 1, 1],
-    [0, 2, 4, 6],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [0, 1, 2, 3],
-    [0, 1, 2, 3],
-    [0, 0, 0, 0],
-];
-
 /// `g_abResourceTypeUsesHighNibbleFlag` — nonzero means extractive nibble / tech override.
 const RESOURCE_USES_HIGH_NIBBLE: [u8; 24] = [
     0, 0, 0, 1, 1, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0,
@@ -777,13 +749,12 @@ fn calculate_city_resources(
             continue;
         }
         for resource in crate::all_resources() {
-            let resource_index = resource as usize;
-            let mut amount = i16::from(resource_capability_level(state, resource));
+            let mut amount = resource_capability_level(state, resource);
             if amount != 0 {
                 let gate = gate_flags[index];
                 if (0..24).contains(&gate) && RESOURCE_USES_HIGH_NIBBLE[gate as usize] != 0 {
-                    let capability = usize::from(university.requirement_levels[resource]);
-                    amount = i16::from(UNIVERSITY_REQUIREMENT_LEVEL[resource_index][capability]);
+                    let capability = university.requirement_levels[resource];
+                    amount = resource_development_yield(resource, capability);
                 }
             }
             yields[resource] += amount;
@@ -795,18 +766,18 @@ fn calculate_city_resources(
     yields
 }
 
-fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> u8 {
+fn resource_capability_level(tile: &TileState, resource: ResourceKind) -> i16 {
     if !tile.edge_resources.contains(&Some(resource)) {
         return 0;
     }
-    let resource = resource as usize;
+    let resource_index = resource as usize;
     let packed = (tile.development.extractive.get() << 4) | tile.development.surface.get();
-    let index = if RESOURCE_USES_HIGH_NIBBLE[resource] != 0 {
+    let index = if RESOURCE_USES_HIGH_NIBBLE[resource_index] != 0 {
         packed >> 4
     } else {
         packed & 0x0f
     };
-    UNIVERSITY_REQUIREMENT_LEVEL[resource][usize::from(index.min(3))]
+    resource_development_yield(resource, index.min(3))
 }
 
 /// Accept-time AI `PlaceCity`: province capital rewrite, flags, flood-fill, farmland nibble.

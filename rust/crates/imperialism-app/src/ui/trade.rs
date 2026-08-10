@@ -629,12 +629,15 @@ fn on_trade_activate(
     cards: Query<(&TradeCard, Has<InteractionDisabled>)>,
     steps: Query<(&TradeStep, Has<InteractionDisabled>)>,
     screens: Query<&TradeScreen>,
-    mut session: ResMut<GameSession>,
+    mut session: Option<ResMut<GameSession>>,
 ) {
     if let Ok((card, disabled)) = cards.get(activate.entity) {
         if disabled || !screens.iter().any(|screen| screen.nation == card.nation) {
             return;
         }
+        let Some(session) = session.as_mut() else {
+            return;
+        };
         let current = session.0.player_trade_order(card.nation, card.commodity);
         let order = match (card.kind, current) {
             (TradeCardKind::Bid, PlayerTradeOrder::Buy)
@@ -653,6 +656,9 @@ fn on_trade_activate(
     if disabled || !screens.iter().any(|screen| screen.nation == step.nation) {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     if matches!(
         session.0.player_trade_order(step.nation, step.commodity),
         PlayerTradeOrder::Sell(_)
@@ -671,7 +677,7 @@ fn on_trade_amount_bar_click(
         Has<InteractionDisabled>,
     )>,
     screens: Query<&TradeScreen>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
 ) {
     let Ok((bar, cursor, disabled)) = bars.get(click.entity) else {
         return;
@@ -680,6 +686,9 @@ fn on_trade_amount_bar_click(
         return;
     }
     let Some(normalized) = cursor.normalized.filter(|_| cursor.cursor_over()) else {
+        return;
+    };
+    let Some(mut session) = session else {
         return;
     };
     if !matches!(

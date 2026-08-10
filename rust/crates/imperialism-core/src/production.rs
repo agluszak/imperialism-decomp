@@ -179,6 +179,28 @@ pub struct ShipOrderState {
     pub progress: ProductionProgress,
 }
 
+/// Retail's descriptor-derived Shipyard values, including its separate hull table.
+pub const fn ship_display_stats(ship_type: ShipType) -> [i16; 6] {
+    const STATS: [[i16; 6]; 14] = [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 25, 0, 2],
+        [0, 0, 5, 40, 0, 4],
+        [3, 5, 10, 35, 4, 0],
+        [6, 6, 20, 65, 3, 0],
+        [0, 0, 5, 35, 0, 8],
+        [0, 0, 0, 25, 0, 4],
+        [3, 7, 20, 30, 7, 0],
+        [5, 8, 55, 50, 5, 0],
+        [10, 10, 60, 70, 6, 0],
+        [0, 0, 25, 45, 0, 16],
+        [6, 9, 50, 40, 8, 0],
+        [20, 13, 70, 115, 7, 0],
+        [18, 13, 55, 90, 9, 0],
+    ];
+
+    STATS[ship_type as usize]
+}
+
 pub const fn ship_type_is_valid_for_order_slot(slot: ShipOrderSlot, ship_type: ShipType) -> bool {
     match slot {
         ShipOrderSlot::MerchantEarlyPrimary => matches!(
@@ -364,6 +386,67 @@ pub const fn civilian_recruitment_spec(kind: CivilianUnitKind) -> RecruitmentOrd
         cash_per_unit,
         workforce: SkillBand::High,
     }
+}
+
+/// `g_anUniversityRequirementIdByRecruitRow`, retained as semantic resource kinds.
+pub const CIVILIAN_RESOURCE_SPECIALTIES: CivilianUnitTable<[Option<ResourceKind>; 4]> =
+    EnumMap::from_array([
+        [
+            Some(ResourceKind::Coal),
+            Some(ResourceKind::Iron),
+            Some(ResourceKind::Gems),
+            Some(ResourceKind::Gold),
+        ],
+        [None; 4],
+        [
+            Some(ResourceKind::Cotton),
+            Some(ResourceKind::Grain),
+            Some(ResourceKind::Fruit),
+            None,
+        ],
+        [Some(ResourceKind::Timber), None, None, None],
+        [None; 4],
+        [
+            Some(ResourceKind::Wool),
+            Some(ResourceKind::Livestock),
+            None,
+            None,
+        ],
+        [Some(ResourceKind::Fish), None, None, None],
+        [None; 4],
+        [Some(ResourceKind::Oil), None, None, None],
+    ]);
+
+/// `g_abUniversityRequirementLevelById` over the semantic resource domain.
+pub const fn resource_development_yield(resource: ResourceKind, level: u8) -> i16 {
+    const YIELDS: [[i16; 4]; ResourceKind::LENGTH] = [
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [0, 2, 4, 6],
+        [0, 2, 4, 6],
+        [1, 1, 1, 1],
+        [0, 2, 4, 6],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [1, 2, 3, 4],
+        [0, 1, 2, 3],
+        [0, 1, 2, 3],
+    ];
+
+    assert!(level <= 3, "resource development level must be in 0..=3");
+    YIELDS[resource as usize][level as usize]
 }
 
 pub const fn military_recruitment_category(
@@ -1341,7 +1424,7 @@ fn reserve_primary_and_secondary(
     }
 }
 
-fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
+pub fn ship_order_costs(ship_type: ShipType) -> ResourceTable<i16> {
     const LUMBER: [i16; 14] = [0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0];
     const FABRIC: [i16; 14] = [0, 2, 3, 2, 3, 0, 2, 0, 0, 0, 0, 0, 0, 0];
     const ARMS: [i16; 14] = [0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18];

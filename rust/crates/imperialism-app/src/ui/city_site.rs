@@ -152,7 +152,7 @@ fn on_city_site_activate(
 fn on_city_site_map_click(
     click: On<Pointer<Click>>,
     dialog_open: Query<(), With<ModalDialog>>,
-    session: Res<GameSession>,
+    session: Option<Res<GameSession>>,
     maps: Query<(&RelativeCursorPosition, &CitySiteMap)>,
     mut ui: UiSpawner,
 ) {
@@ -169,6 +169,9 @@ fn on_city_site_map_click(
         return;
     };
     let Some(tile) = tile_at_preview_position(normalized) else {
+        return;
+    };
+    let Some(session) = session else {
         return;
     };
     let Some(nation) = MajorNationId::from_nation(session.0.turn.active_nation) else {
@@ -193,7 +196,7 @@ fn on_new_city_activate(
     activate: On<Activate>,
     actions: Query<&NewCityAction>,
     dialogs: Query<(Entity, &NewCityDialogRoot)>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
     mut next_state: ResMut<NextState<AppState>>,
     mut commands: Commands,
 ) {
@@ -202,6 +205,9 @@ fn on_new_city_activate(
     };
     match *action {
         NewCityAction::Accept => {
+            let Some(mut session) = session else {
+                return;
+            };
             let Ok((_, dialog)) = dialogs.single() else {
                 return;
             };

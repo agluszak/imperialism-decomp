@@ -511,7 +511,7 @@ fn on_transport_adjust(
     activate: On<Activate>,
     actions: Query<&TransportAdjust>,
     screens: Query<&TransportScreen>,
-    mut session: ResMut<GameSession>,
+    session: Option<ResMut<GameSession>>,
 ) {
     let Ok(action) = actions.get(activate.entity) else {
         return;
@@ -519,6 +519,9 @@ fn on_transport_adjust(
     if !screens.iter().any(|screen| screen.nation == action.nation) {
         return;
     }
+    let Some(mut session) = session else {
+        return;
+    };
     session
         .0
         .step_transport_allocation(action.nation, action.allocation, action.delta);
