@@ -1,7 +1,5 @@
-use super::catalog::{
-    ModalDialog, SpawnedView, UiAssetResources, UiCatalogResource, UiSpawner, spawn_view,
-};
-use super::game_shell::{GameScreenRoot, bind_game_screen_nav, city_view_id, disable_control};
+use super::catalog::*;
+use super::game_shell::*;
 use super::random_setup::GameSession;
 use crate::AppState;
 use bevy::log::warn;
@@ -11,12 +9,20 @@ use bevy::ui::{Checked, InteractionDisabled, RelativeCursorPosition};
 use bevy::ui_widgets::{Activate, ValueChange};
 use imperialism_core::*;
 use imperialism_formats::*;
+use std::time::Duration;
 
 const CITY_WIDTH: f32 = 640.0;
 const CITY_HEIGHT: f32 = 480.0;
 const INDUSTRY_BAR_WIDTH: i16 = 150;
 const INDUSTRY_BAR_X: f32 = 62.0;
 const INDUSTRY_BAR_Y: f32 = 8.0;
+
+fn expansion_dialog_view_id() -> ScopedViewId {
+    ScopedViewId {
+        resource_file: "Citydlog.rsrc".to_owned(),
+        resource_id: 9221,
+    }
+}
 
 const TEXTILE_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
     order: CityOrderId::Item(ResourceKind::Fabric),
@@ -474,6 +480,19 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             catalog.require_control_under(armory, tag, &[binding.tag])?;
         }
     }
+    catalog.require_unique_bindings(
+        &expansion_dialog_view_id(),
+        &[
+            fourcc!("WIND"),
+            fourcc!("DLOG"),
+            fourcc!("okay"),
+            fourcc!("cncl"),
+            fourcc!("name"),
+            fourcc!("capT"),
+            fourcc!("cost"),
+            fourcc!("warn"),
+        ],
+    )?;
     Ok(())
 }
 
@@ -586,6 +605,22 @@ struct CityScreenRoot;
 struct CityScreenNeedsSync;
 
 #[derive(Component, Clone, Copy)]
+struct CityBuildingPicture {
+    nation: MajorNationId,
+    slot: ProductionSlot,
+}
+
+#[derive(Component)]
+struct CityBuildingActionAnimation {
+    nation: MajorNationId,
+    slot: ProductionSlot,
+    frame_count: u8,
+    frame_size: [i32; 2],
+    frame: u8,
+    timer: Timer,
+}
+
+#[derive(Component, Clone, Copy)]
 struct CityBuildingDialog {
     nation: MajorNationId,
     slot: ProductionSlot,
@@ -593,6 +628,24 @@ struct CityBuildingDialog {
 
 #[derive(Component)]
 struct CityDialogNeedsSync;
+
+#[derive(Component, Clone, Copy)]
+struct CityExpansionOpen {
+    dialog: Entity,
+    nation: MajorNationId,
+    slot: ProductionSlot,
+}
+
+#[derive(Component, Clone, Copy)]
+struct CityExpansionDialog;
+
+#[derive(Component, Clone, Copy)]
+struct CityExpansionChoice {
+    dialog: Entity,
+    nation: MajorNationId,
+    slot: ProductionSlot,
+    accept: bool,
+}
 
 #[derive(Component, Clone, Copy)]
 struct CityOrderAdjust {
@@ -672,10 +725,21 @@ pub(crate) struct CityPlugin;
 impl Plugin for CityPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(AppState::City), enter_city_screen)
-            .add_systems(Update, sync_city_values.run_if(in_state(AppState::City)))
+            .add_systems(
+                Update,
+                animate_city_building_actions.run_if(in_state(AppState::City)),
+            )
+            .add_systems(
+                Update,
+                (sync_city_building_pictures, sync_city_values)
+                    .chain()
+                    .run_if(in_state(AppState::City)),
+            )
             .add_observer(on_city_canvas_click)
             .add_observer(on_armory_row_selected)
             .add_observer(on_city_amount_bar_click)
+            .add_observer(on_city_expansion_open)
+            .add_observer(on_city_expansion_choice)
             .add_observer(on_city_order_adjust);
     }
 }
@@ -714,6 +778,7 @@ fn enter_city_screen(
         &mut commands,
         &spawned,
         &view.city_buildings,
+        &view.city_building_actions,
         &session.0,
         nation,
         &mut assets,
@@ -791,6 +856,7 @@ fn spawn_city_buildings(
     commands: &mut Commands,
     spawned: &SpawnedView,
     visuals: &[CityBuildingVisual],
+    actions: &[CityBuildingActionVisual],
     state: &GameState,
     nation: MajorNationId,
     assets: &mut UiAssetResources,
@@ -819,6 +885,8 @@ fn spawn_city_buildings(
                 continue;
             }
         };
+        let mut image = ImageNode::default();
+        let mut visibility = Visibility::Hidden;
         if let Some(picture) = city_building_picture(city, visual.slot, level) {
             match assets.indexed_picture(picture) {
                 Ok(indexed_picture) => {
@@ -829,21 +897,8 @@ fn spawn_city_buildings(
                     } else {
                         match assets.picture(picture) {
                             Ok(handle) => {
-                                commands.spawn((
-                                    Node {
-                                        position_type: PositionType::Absolute,
-                                        left: Val::Px(visual.origin[0] as f32),
-                                        top: Val::Px(visual.origin[1] as f32),
-                                        width: Val::Px(mask.width as f32),
-                                        height: Val::Px(mask.height as f32),
-                                        ..default()
-                                    },
-                                    ImageNode::new(handle),
-                                    ZIndex(visual.draw_order as i32),
-                                    Pickable::IGNORE,
-                                    ChildOf(main),
-                                    Name::new(format!("city-building:{:?}", visual.slot)),
-                                ));
+                                image.image = handle;
+                                visibility = Visibility::Visible;
                             }
                             Err(error) => {
                                 warn!("could not load city building picture {picture}: {error}");
@@ -856,6 +911,26 @@ fn spawn_city_buildings(
                 }
             }
         }
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(visual.origin[0] as f32),
+                top: Val::Px(visual.origin[1] as f32),
+                width: Val::Px(mask.width as f32),
+                height: Val::Px(mask.height as f32),
+                ..default()
+            },
+            image,
+            visibility,
+            CityBuildingPicture {
+                nation,
+                slot: visual.slot,
+            },
+            ZIndex(visual.draw_order as i32),
+            Pickable::IGNORE,
+            ChildOf(main),
+            Name::new(format!("city-building:{:?}", visual.slot)),
+        ));
         buildings.push(CityBuildingHitRegion {
             origin: IVec2::from_array(visual.origin),
             draw_order: visual.draw_order,
@@ -868,6 +943,202 @@ fn spawn_city_buildings(
     commands
         .entity(main)
         .insert((CityCanvas { buildings }, RelativeCursorPosition::default()));
+    spawn_city_building_actions(commands, main, actions, state, nation, assets);
+}
+
+fn apply_city_action_transparency(
+    image: &mut Image,
+    indexed: &IndexedPicture,
+    frame_size: [i32; 2],
+    frame_count: u8,
+    occlusions: &[[i32; 4]],
+) {
+    let width = image.width() as usize;
+    let height = image.height() as usize;
+    let Some(pixels) = image.data.as_mut() else {
+        return;
+    };
+    if width == 0
+        || height == 0
+        || indexed.width as usize != width
+        || indexed.height as usize != height
+        || pixels.len() != width * height * 4
+        || indexed.pixels.len() != width * height
+    {
+        return;
+    }
+    for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
+        if palette_index == 0x10 {
+            pixel[3] = 0;
+        }
+    }
+    let frame_width = frame_size[0] as usize;
+    for &[left, top, right, bottom] in occlusions {
+        for frame in 0..usize::from(frame_count) {
+            for y in top as usize..bottom as usize {
+                for x in left as usize..right as usize {
+                    let alpha = ((y * width + frame * frame_width + x) * 4) + 3;
+                    pixels[alpha] = 0;
+                }
+            }
+        }
+    }
+}
+
+fn city_building_action_enabled(city: &CityState, slot: ProductionSlot) -> bool {
+    if slot == ProductionSlot::PowerPlant {
+        !city.power_plant_upgrade_queued && city.orders.power_plant.progress.quantity > 0
+    } else {
+        assert!(
+            is_ordinary_industry(slot),
+            "generated city action belongs to a supported retail building"
+        );
+        !city_is_expanding(city, slot) && city.production_accum[slot] < city.production_orders[slot]
+    }
+}
+
+fn spawn_city_building_actions(
+    commands: &mut Commands,
+    main: Entity,
+    actions: &[CityBuildingActionVisual],
+    state: &GameState,
+    nation: MajorNationId,
+    assets: &mut UiAssetResources,
+) {
+    let active_actions: Vec<_> = actions
+        .iter()
+        .filter(|action| {
+            city_building_level(state, nation, action.slot) == Some(i16::from(action.level))
+        })
+        .collect();
+    for (draw_order, action) in active_actions.iter().enumerate() {
+        let indexed = match assets.indexed_picture(action.picture_id) {
+            Ok(indexed) => indexed,
+            Err(error) => {
+                warn!(
+                    "could not decode city action strip {}: {error}",
+                    action.picture_id
+                );
+                continue;
+            }
+        };
+        let strip_width = u32::try_from(action.frame_size[0] * i32::from(action.frame_count))
+            .expect("generated city action strip has a positive width");
+        let frame_height = u32::try_from(action.frame_size[1])
+            .expect("generated city action strip has a positive height");
+        if indexed.width < strip_width || indexed.height < frame_height {
+            warn!(
+                "city action strip {} is smaller than its recovered frame table",
+                action.picture_id
+            );
+            continue;
+        }
+        let mut occlusions = Vec::new();
+        let action_right = action.origin[0] + action.frame_size[0];
+        let action_bottom = action.origin[1] + action.frame_size[1];
+        for later in &active_actions[draw_order + 1..] {
+            let left = action.origin[0].max(later.origin[0]);
+            let top = action.origin[1].max(later.origin[1]);
+            let right = action_right.min(later.origin[0] + later.frame_size[0]);
+            let bottom = action_bottom.min(later.origin[1] + later.frame_size[1]);
+            if left < right && top < bottom {
+                occlusions.push([
+                    left - action.origin[0],
+                    top - action.origin[1],
+                    right - action.origin[0],
+                    bottom - action.origin[1],
+                ]);
+            }
+        }
+        let handle = match assets.transformed_picture(action.picture_id, |image| {
+            apply_city_action_transparency(
+                image,
+                &indexed,
+                action.frame_size,
+                action.frame_count,
+                &occlusions,
+            );
+        }) {
+            Ok(handle) => handle,
+            Err(error) => {
+                warn!(
+                    "could not prepare city action strip {}: {error}",
+                    action.picture_id
+                );
+                continue;
+            }
+        };
+        let frame_width = action.frame_size[0] as f32;
+        let frame_height = action.frame_size[1] as f32;
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(action.origin[0] as f32),
+                top: Val::Px(action.origin[1] as f32),
+                width: Val::Px(frame_width),
+                height: Val::Px(frame_height),
+                ..default()
+            },
+            ImageNode {
+                image: handle,
+                rect: Some(Rect::new(0.0, 0.0, frame_width, frame_height)),
+                ..default()
+            },
+            CityBuildingActionAnimation {
+                nation,
+                slot: action.slot,
+                frame_count: action.frame_count,
+                frame_size: action.frame_size,
+                frame: 0,
+                timer: Timer::new(
+                    Duration::from_millis(if action.slot == ProductionSlot::PowerPlant {
+                        160
+                    } else {
+                        224
+                    }),
+                    TimerMode::Repeating,
+                ),
+            },
+            Visibility::Hidden,
+            ZIndex(16 + draw_order as i32),
+            Pickable::IGNORE,
+            ChildOf(main),
+            Name::new(format!("city-action:{}", action.picture_id)),
+        ));
+    }
+}
+
+fn animate_city_building_actions(
+    time: Res<Time>,
+    session: Res<GameSession>,
+    mut actions: Query<(
+        &mut CityBuildingActionAnimation,
+        &mut ImageNode,
+        &mut Visibility,
+    )>,
+) {
+    for (mut action, mut image, mut visibility) in &mut actions {
+        action.timer.tick(time.delta());
+        let advanced = action.timer.times_finished_this_tick();
+        if advanced > 0 {
+            let frame_count = u32::from(action.frame_count);
+            let shown_frame = (u32::from(action.frame) + advanced - 1) % frame_count;
+            action.frame = ((shown_frame + 1) % frame_count) as u8;
+            let left = shown_frame as f32 * action.frame_size[0] as f32;
+            image.rect = Some(Rect::new(
+                left,
+                0.0,
+                left + action.frame_size[0] as f32,
+                action.frame_size[1] as f32,
+            ));
+            let city = session.0.nations.major(action.nation).city();
+            *visibility = if city_building_action_enabled(city, action.slot) {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            };
+        }
+    }
 }
 
 fn on_city_canvas_click(
@@ -1166,7 +1437,11 @@ fn bind_industry_dialog(
     let expansion = spawned
         .require_unique(fourcc!("expa"))
         .expect("validated industry expansion binding");
-    commands.entity(expansion).insert(InteractionDisabled);
+    commands.entity(expansion).insert(CityExpansionOpen {
+        dialog: root,
+        nation,
+        slot: page.slot,
+    });
     let expansion_indicator = spawned
         .require_unique(fourcc!("flag"))
         .expect("validated industry expansion binding");
@@ -1502,14 +1777,259 @@ fn bind_population_dialog(
     }
 }
 
-fn on_city_amount_bar_click(
-    mut click: On<Pointer<Click>>,
-    bars: Query<(&RelativeCursorPosition, &CityIndustryAmountBar)>,
+#[allow(clippy::too_many_arguments)]
+fn bind_expansion_dialog(
+    ui: &mut UiSpawner,
+    spawned: &SpawnedView,
+    nation: MajorNationId,
+    slot: ProductionSlot,
+    building_name: &'static str,
+    next_capacity: i16,
+    next_level: u8,
+    can_reserve: bool,
+) {
+    let root = spawned.root;
+    ui.commands
+        .entity(root)
+        .insert((CityExpansionDialog, DespawnOnExit(AppState::City)));
+
+    let picture = PictureId::new(9250 + i16::from(slot as u8) * 5 + i16::from(next_level));
+    match ui.picture(picture) {
+        Ok(handle) => {
+            let dialog = spawned
+                .require_unique(fourcc!("DLOG"))
+                .expect("validated expansion-dialog picture binding");
+            ui.commands.entity(dialog).insert(ImageNode::new(handle));
+        }
+        Err(error) => warn!("could not load expansion-dialog picture {picture}: {error}"),
+    }
+
+    for (tag, text) in [
+        (fourcc!("name"), building_name.to_owned()),
+        (fourcc!("capT"), format!("Capacity: {next_capacity}")),
+        (fourcc!("cost"), "Cost to Build".to_owned()),
+    ] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated expansion-dialog text binding");
+        ui.commands.entity(entity).insert(Text::new(text));
+    }
+
+    let warning = spawned
+        .require_unique(fourcc!("warn"))
+        .expect("validated expansion warning binding");
+    let warning_color = ui.palette_color(0xcb);
+    ui.commands.entity(warning).insert((
+        Text::new("Insufficient Materials"),
+        TextColor(warning_color),
+        if can_reserve {
+            Visibility::Hidden
+        } else {
+            Visibility::Visible
+        },
+    ));
+
+    let okay = spawned
+        .require_unique(fourcc!("okay"))
+        .expect("validated expansion OK binding");
+    let mut okay_commands = ui.commands.entity(okay);
+    okay_commands.insert(CityExpansionChoice {
+        dialog: root,
+        nation,
+        slot,
+        accept: true,
+    });
+    if !can_reserve {
+        okay_commands.insert((InteractionDisabled, Visibility::Hidden));
+    }
+
+    let cancel = spawned
+        .require_unique(fourcc!("cncl"))
+        .expect("validated expansion cancel binding");
+    ui.commands.entity(cancel).insert(CityExpansionChoice {
+        dialog: root,
+        nation,
+        slot,
+        accept: false,
+    });
+}
+
+fn on_city_expansion_open(
+    activate: On<Activate>,
+    openers: Query<&CityExpansionOpen>,
+    dialogs: Query<Entity, With<CityBuildingDialog>>,
+    screen_roots: Query<Entity, With<CityScreenRoot>>,
+    modals: Query<(), With<ModalDialog>>,
+    mut session: ResMut<GameSession>,
+    mut ui: UiSpawner,
+) {
+    let Ok(open) = openers.get(activate.entity) else {
+        return;
+    };
+    if dialogs.get(open.dialog).is_err() || !modals.is_empty() {
+        return;
+    }
+    let page = industry_page(open.slot).expect("expansion hotspot belongs to an ordinary industry");
+    let (next_capacity, needed, next_level) = {
+        let major = session.0.nations.major(open.nation);
+        let city = major.city();
+        let owned_regions = major.common().owned_regions.len() as i32;
+        let current = city.building_type(open.slot, major.economy(), owned_regions);
+        let next_capacity = city.max_building_capacity(open.slot, major.economy(), owned_regions);
+        (
+            next_capacity,
+            next_capacity - current,
+            city.next_building_level(open.slot, major.economy(), owned_regions),
+        )
+    };
+    let order = CityOrderId::Expansion(open.slot);
+    let original_quantity = session
+        .0
+        .nations
+        .major(open.nation)
+        .city()
+        .orders
+        .expansions[open.slot]
+        .as_ref()
+        .expect("ordinary industry has an expansion order")
+        .progress
+        .quantity;
+    let can_reserve = session
+        .0
+        .set_city_order_quantity(open.nation, order, needed);
+    assert!(
+        session
+            .0
+            .set_city_order_quantity(open.nation, order, original_quantity),
+        "retail expansion probe must restore its original quantity"
+    );
+    let spawned = ui.spawn_modal(expansion_dialog_view_id());
+    bind_expansion_dialog(
+        &mut ui,
+        &spawned,
+        open.nation,
+        open.slot,
+        page.name,
+        next_capacity,
+        next_level,
+        can_reserve,
+    );
+    for dialog in &dialogs {
+        ui.commands.entity(dialog).insert(CityDialogNeedsSync);
+    }
+    for root in &screen_roots {
+        ui.commands.entity(root).insert(CityScreenNeedsSync);
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn on_city_expansion_choice(
+    activate: On<Activate>,
+    choices: Query<&CityExpansionChoice>,
+    expansion_dialogs: Query<(), With<CityExpansionDialog>>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
+    let Ok(choice) = choices.get(activate.entity) else {
+        return;
+    };
+    if expansion_dialogs.get(choice.dialog).is_err() {
+        return;
+    }
+    let order = CityOrderId::Expansion(choice.slot);
+    if choice.accept {
+        let needed = {
+            let major = session.0.nations.major(choice.nation);
+            let city = major.city();
+            let owned_regions = major.common().owned_regions.len() as i32;
+            city.max_building_capacity(choice.slot, major.economy(), owned_regions)
+                - city.building_type(choice.slot, major.economy(), owned_regions)
+        };
+        let _ = session
+            .0
+            .set_city_order_quantity(choice.nation, order, needed);
+    } else {
+        let quantity = session
+            .0
+            .nations
+            .major(choice.nation)
+            .city()
+            .orders
+            .expansions[choice.slot]
+            .as_ref()
+            .expect("ordinary industry has an expansion order")
+            .progress
+            .quantity;
+        if quantity > 0 {
+            let _ = session.0.set_city_order_quantity(choice.nation, order, 0);
+        }
+    }
+
+    commands.entity(choice.dialog).despawn();
+    for dialog in &dialogs {
+        commands.entity(dialog).insert(CityDialogNeedsSync);
+    }
+    for root in &screen_roots {
+        commands.entity(root).insert(CityScreenNeedsSync);
+    }
+}
+
+fn sync_city_building_pictures(
+    screens: Query<(), With<CityScreenNeedsSync>>,
+    session: Res<GameSession>,
+    mut assets: UiAssetResources,
+    mut buildings: Query<(&CityBuildingPicture, &mut ImageNode, &mut Visibility)>,
+) {
+    if screens.is_empty() {
+        return;
+    }
+    for (building, mut image, mut visibility) in &mut buildings {
+        let Some(level) = city_building_level(&session.0, building.nation, building.slot) else {
+            *visibility = Visibility::Hidden;
+            continue;
+        };
+        let city = session.0.nations.major(building.nation).city();
+        let Some(picture) = city_building_picture(city, building.slot, level) else {
+            *visibility = Visibility::Hidden;
+            continue;
+        };
+        let indexed = match assets.indexed_picture(picture) {
+            Ok(indexed) => indexed,
+            Err(error) => {
+                warn!("could not decode indexed city building picture {picture}: {error}");
+                continue;
+            }
+        };
+        if let Err(error) = assets.with_picture_image_mut(picture, |picture_image| {
+            apply_city_picture_transparency(picture_image, &indexed);
+        }) {
+            warn!("could not decode city building picture {picture}: {error}");
+            continue;
+        }
+        match assets.picture(picture) {
+            Ok(handle) => {
+                image.image = handle;
+                *visibility = Visibility::Visible;
+            }
+            Err(error) => warn!("could not load city building picture {picture}: {error}"),
+        }
+    }
+}
+
+fn on_city_amount_bar_click(
+    mut click: On<Pointer<Click>>,
+    bars: Query<(&RelativeCursorPosition, &CityIndustryAmountBar)>,
+    modals: Query<(), With<ModalDialog>>,
+    dialogs: Query<Entity, With<CityBuildingDialog>>,
+    screen_roots: Query<Entity, With<CityScreenRoot>>,
+    mut session: ResMut<GameSession>,
+    mut commands: Commands,
+) {
+    if !modals.is_empty() {
+        return;
+    }
     let Ok((cursor, bar)) = bars.get(click.entity) else {
         return;
     };
@@ -1564,9 +2084,13 @@ fn on_city_amount_bar_click(
 fn on_armory_row_selected(
     change: On<ValueChange<bool>>,
     rows: Query<(Entity, &ArmoryRowChoice, Has<Checked>)>,
+    modals: Query<(), With<ModalDialog>>,
     mut selections: Query<&mut ArmorySelection>,
     mut commands: Commands,
 ) {
+    if !modals.is_empty() {
+        return;
+    }
     if !change.value {
         return;
     }
@@ -1595,6 +2119,7 @@ fn on_armory_row_selected(
 fn on_city_order_adjust(
     activate: On<Activate>,
     actions: Query<&CityOrderAdjust>,
+    modals: Query<(), With<ModalDialog>>,
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     mut armory_selections: Query<&mut ArmorySelection>,
     armory_rows: Query<(Entity, &ArmoryRowChoice, Has<Checked>)>,
@@ -1602,6 +2127,9 @@ fn on_city_order_adjust(
     mut session: ResMut<GameSession>,
     mut commands: Commands,
 ) {
+    if !modals.is_empty() {
+        return;
+    }
     let Ok(action) = actions.get(activate.entity) else {
         return;
     };
