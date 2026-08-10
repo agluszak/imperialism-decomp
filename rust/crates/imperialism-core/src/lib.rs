@@ -6,6 +6,7 @@ mod city_buildings;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod civilian_phase;
 mod civilian_work;
 mod create_random_game;
 mod difficulty;

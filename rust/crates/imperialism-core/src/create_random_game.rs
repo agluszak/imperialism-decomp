@@ -125,7 +125,8 @@ pub fn create_random_game(
         })
         .collect();
     let missions = flatten_mission_queues(&mut mission_queues);
-    let provinces = build_province_state(&preview.map, &world, &mut nations);
+    let provinces =
+        build_province_state(&preview.map, &world, &post.province_capitals, &mut nations);
     let mut pending = PendingWorkState::default();
     pending.queue_newspaper_event(PendingNewspaperEvent::Miscellaneous {
         audience: None,
@@ -392,7 +393,7 @@ fn place_ai_frog_cities(
         ensure_port_zone_for_tile(world, port_zones, home);
         let major = nations.major_mut(nation);
         major.common.home_tile = Some(home);
-        major.city.home_town_tile = Some(home);
+        major.city.home_town = Some(TownState::for_frog_city(home));
         // `QueueMapActionMissionsForPortZoneCandidates` runs only for setup-mode-2 AI.
         mission_queues[nation] = queue_map_action_missions_for_port_zone_candidates(
             world,
@@ -1103,6 +1104,7 @@ fn build_province_adjacency(world: &StrategicMap) -> Vec<Vec<ProvinceId>> {
 fn build_province_state(
     map: &GeneratedMap,
     world: &StrategicMap,
+    province_capitals: &[Option<TileId>],
     nations: &mut Nations,
 ) -> ProvinceTable<ProvinceState> {
     let adjacency = build_province_adjacency(world);
@@ -1113,11 +1115,22 @@ fn build_province_state(
             .owner
             .nation()
             .expect("accepted generated provinces have nation owners");
+        let fort_level = province_capitals[index]
+            .is_some_and(|capital| {
+                world[capital]
+                    .flags
+                    .contains(TileFlags::PROVINCE_CAPITAL_FORTIFICATION)
+            })
+            .into();
         provinces[province] = ProvinceState::new(
             Some(owner),
             Some(owner),
             adjacency[index].clone(),
             Some(generated.terrain.retail() as u8),
+            fort_level,
+            province_capitals[index],
+            ResourceTable::default(),
+            0,
         )
         .expect("generated province state fits the retail province record");
         nations
@@ -2369,7 +2382,8 @@ mod tests {
         assert_eq!(
             state.nations.majors[MajorNationId::new(0)]
                 .city
-                .home_town_tile,
+                .home_town
+                .map(TownState::tile),
             ai.common.home_tile
         );
         let ai_home = ai.common.home_tile.unwrap();
@@ -2385,7 +2399,10 @@ mod tests {
 
         assert_eq!(state.nations.minor_count(), crate::MINOR_NATION_COUNT);
         let human_city = &state.nations.majors[MajorNationId::new(6)].city;
-        assert_eq!(human_city.home_town_tile, Some(TileId::new(0)));
+        assert_eq!(
+            human_city.home_town.map(TownState::tile),
+            Some(TileId::new(0))
+        );
         assert_eq!(human_city.stockpile[ResourceKind::Food], 20);
 
         let placed_minors = state

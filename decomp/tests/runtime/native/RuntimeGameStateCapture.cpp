@@ -6,6 +6,7 @@
 #include "RuntimeRun.h"
 
 #include "game/city/TCity.h"
+#include "game/city/TTown.h"
 #include "game/city/TCapacityOrder.h"
 #include "game/city/TExpansionOrder.h"
 #include "game/city/TFoodProcessingOrder.h"
@@ -763,6 +764,12 @@ JSON_Value* CaptureTechnology() {
     if (advancedIronWorkingStatus > 2 || oilDrillingStatus > 2) {
       FailSemanticCapture("major-nation city technology status is invalid");
     }
+    const int civilianTechIds[6] = {5, 6, 11, 12, 22, 23};
+    for (int index = 0; index < 6; ++index) {
+      if (technologyStatus.techStatusByTechId[civilianTechIds[index]] > 2) {
+        FailSemanticCapture("major-nation civilian technology status is invalid");
+      }
+    }
 
     JsonObject cityCapabilities;
     cityCapabilities.Set("advanced_iron_working", advancedIronWorkingStatus == 2);
@@ -791,6 +798,14 @@ JSON_Value* CaptureTechnology() {
     university.Set("available", available.Release());
     university.Set("requirement_levels", requirementLevels.Release());
     cityCapabilities.Set("university", university.Release());
+    JsonObject primaryTerrain;
+    primaryTerrain.Set("hills", technologyStatus.techStatusByTechId[12] == 2);
+    primaryTerrain.Set("mountain", technologyStatus.techStatusByTechId[23] == 2);
+    primaryTerrain.Set("swamp", technologyStatus.techStatusByTechId[6] == 2);
+    cityCapabilities.Set("primary_civilian_distance_terrain", primaryTerrain.Release());
+    cityCapabilities.Set("secondary_civilian_hills", technologyStatus.techStatusByTechId[11] == 2);
+    cityCapabilities.Set("secondary_civilian_swamp", technologyStatus.techStatusByTechId[5] == 2);
+    cityCapabilities.Set("fort_level_cap", g_pTechMgr->GetNationFortLevelCap(nationSlot));
     cityCapabilitiesByNation.Add(cityCapabilities.Release());
   }
   technology.Set("advanced_iron_working", advancedIronWorking != 0);
@@ -1046,6 +1061,12 @@ JSON_Value* CaptureProvinces() {
     if (province.regionClassA3 < -1 || province.regionClassA3 >= 24) {
       FailSemanticCapture("province region class is outside the semantic range");
     }
+    if (province.fortLevel03 < 0 || province.fortLevel03 > 3) {
+      FailSemanticCapture("province fort level is outside the semantic range");
+    }
+    if (province.cityTileIndex04 < -1 || province.cityTileIndex04 >= 0x1950) {
+      FailSemanticCapture("province city tile is outside the strategic map");
+    }
 
     JsonObject object;
     JsonArray adjacency;
@@ -1060,6 +1081,16 @@ JSON_Value* CaptureProvinces() {
     }
     object.Set("adjacency", adjacency.Release());
     object.SetOptional("region_class", static_cast<int>(province.regionClassA3));
+    object.Set("fort_level", static_cast<int>(province.fortLevel03));
+    object.SetOptional("city_tile", static_cast<int>(province.cityTileIndex04));
+    short resourceDevelopmentByType[kResourceKindCount];
+    memset(resourceDevelopmentByType, 0, sizeof(resourceDevelopmentByType));
+    for (int resource = kResourceFood; resource < kResourceManufacturedEnd; ++resource) {
+      resourceDevelopmentByType[resource] =
+          province.resourceDevelopmentCounts82[resource - kResourceFood];
+    }
+    object.Set("resource_development_by_type", CaptureResourceTable(resourceDevelopmentByType));
+    object.Set("city_score", province.cityScoreValue);
     provinces.Add(object.Release());
   }
   return provinces.Release();
@@ -1173,6 +1204,31 @@ JSON_Value* CapturePendingShip(TGreatPower* nation) {
   return RuntimeJsonString(ShipTypeName(pendingShip));
 }
 
+JSON_Value* CaptureInteriorCivilianState(TGreatPower* nation) {
+  if (nation->interiorMinister == 0) {
+    FailSemanticCapture("major nation has no interior minister");
+  }
+  TCityInteriorMinister* minister = nation->interiorMinister;
+  JsonObject state;
+  const short pendingRecruitment = minister->pendingRecruitmentCommandIndex36;
+  if (pendingRecruitment == -1) {
+    state.SetNull("pending_recruitment");
+  } else {
+    state.Set("pending_recruitment", CivilianUnitKindName(pendingRecruitment));
+  }
+  if (minister->field3c < -1 || minister->field3c >= 0x1950) {
+    FailSemanticCapture("interior-minister railhead target is outside the strategic map");
+  }
+  state.SetOptional("railhead_target", static_cast<int>(minister->field3c));
+  state.Set("resource_order_metrics", CaptureResourceTable(minister->orderMetricTable40));
+  state.Set("railhead_priority_by_resource", CaptureResourceTable(minister->orderTypeTableFC));
+  state.Set("exterior_need_by_resource", CaptureResourceTable(minister->orderTypeTable12A));
+  state.Set("historical_need_by_resource", CaptureResourceTable(minister->orderTypeTable158));
+  state.Set("civilian_order_demand_by_resource",
+            CaptureResourceTable(minister->civilianOrderDemandByResourceType194));
+  return state.Release();
+}
+
 JSON_Value* CaptureAiTradeState(TGreatPower* nation) {
   if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0) {
     return JsonNullValue();
@@ -1181,6 +1237,19 @@ JSON_Value* CaptureAiTradeState(TGreatPower* nation) {
   JsonObject state;
   state.Set("temporary_processed_stock",
             CaptureProcessedTradeCommodityTable(automaticNation->actionMetricByQuarter));
+  return state.Release();
+}
+
+JSON_Value* CaptureAiDevelopmentPressure(TGreatPower* nation) {
+  if (nation->IsKindOf(RUNTIME_CLASS(TAutoGreatPower)) == 0 || g_pSimMgr->economicTurn <= 0) {
+    return JsonNullValue();
+  }
+  TAutoGreatPower* automaticNation = static_cast<TAutoGreatPower*>(nation);
+  JsonObject state;
+  state.Set("expansion_pressure_per_compatible_region_bits",
+            FloatBits(automaticNation->expansionPressurePerCompatibleRegionB64));
+  state.Set("average_unit_divergence_per_owned_region_bits",
+            FloatBits(automaticNation->averageUnitDivergencePerOwnedRegionB68));
   return state.Release();
 }
 
@@ -1198,7 +1267,9 @@ JSON_Value* CaptureMajorNation(TGreatPower* nation) {
   object.Set("deal_book", CaptureDealBook(nation));
   object.Set("foreign_trade", CaptureForeignTradeState(nation->foreignMinister));
   object.Set("pending_ship", CapturePendingShip(nation));
+  object.Set("interior_civilian", CaptureInteriorCivilianState(nation));
   object.Set("ai_trade", CaptureAiTradeState(nation));
+  object.Set("ai_development_pressure", CaptureAiDevelopmentPressure(nation));
   object.Set(
       "development_grant_by_nation",
       CaptureShortArray(nation->foreignMinister->developmentGrantByNation50, kNationSlotCount));
@@ -1706,10 +1777,42 @@ JSON_Value* CaptureCity(int slot) {
   object.Set("low_production", city->lowProductionFlag7c != 0 ? true : false);
   object.Set("low_stock", city->lowStockFlag7d != 0 ? true : false);
   object.Set("reserved_by_type", CaptureResourceTable(city->reservedByType7e));
+  if (nation->townMarkerList == 0) {
+    FailSemanticCapture("major nation has no town marker list");
+  }
+  const int townCount = nation->townMarkerList->GetCount();
+  if (townCount > 1) {
+    FailSemanticCapture("semantic capture supports at most one major-nation town");
+  }
   if (city->homeTownMarkerB0 == 0) {
-    object.SetNull("home_town_tile");
+    if (townCount != 0) {
+      FailSemanticCapture("major nation town is not bound as the city home town");
+    }
+    object.SetNull("home_town");
   } else {
-    object.Set("home_town_tile", static_cast<int>(city->homeTownMarkerB0->tileIndex));
+    if (townCount != 1 || nation->townMarkerList->GetEntryByOrdinal(1) != city->homeTownMarkerB0) {
+      FailSemanticCapture("city home town does not match the supported town-list entry");
+    }
+    TTown* town = city->homeTownMarkerB0;
+    if (town->tileIndex < 0 || town->tileIndex >= 0x1950) {
+      FailSemanticCapture("city home town tile is outside the strategic map");
+    }
+    if (town->enabledFlag < 0 || town->enabledFlag > 1) {
+      FailSemanticCapture("city home town enabled flag is not boolean");
+    }
+    unsigned char transportLinked = 0;
+    unsigned char active = 0;
+    memcpy(&transportLinked, &town->transportLinked, 1);
+    memcpy(&active, &town->activeFlag, 1);
+    if (transportLinked > 1 || active > 1) {
+      FailSemanticCapture("city home town state flag is not boolean");
+    }
+    JsonObject homeTown;
+    homeTown.Set("tile", static_cast<int>(town->tileIndex));
+    homeTown.Set("transport_linked", transportLinked != 0);
+    homeTown.Set("enabled", town->enabledFlag != 0);
+    homeTown.Set("active", active != 0);
+    object.Set("home_town", homeTown.Release());
   }
   object.Set("power_available", static_cast<int>(city->powerAvailableB4));
   object.Set("stockpile", CaptureResourceTable(&city->cityStockCottonB6));

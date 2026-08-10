@@ -1,4 +1,4 @@
-use crate::{GameState, MinorNationId, NationId, ProvinceId};
+use crate::{GameState, MinorNationId, NationId, ProvinceId, ResourceTable, TileId};
 use serde::{Deserialize, Serialize};
 
 const REGION_CLASS_COUNT: usize = 24;
@@ -31,14 +31,23 @@ pub struct ProvinceState {
     former_owner: Option<NationId>,
     adjacency: Vec<ProvinceId>,
     region_class: Option<u8>,
+    fort_level: i8,
+    city_tile: Option<TileId>,
+    resource_development_by_type: Box<ResourceTable<i16>>,
+    city_score: i32,
 }
 
 impl ProvinceState {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         owner: Option<NationId>,
         former_owner: Option<NationId>,
         adjacency: Vec<ProvinceId>,
         region_class: Option<u8>,
+        fort_level: i8,
+        city_tile: Option<TileId>,
+        resource_development_by_type: ResourceTable<i16>,
+        city_score: i32,
     ) -> Result<Self, ProvinceStateError> {
         if adjacency.len() > MAX_ADJACENT_PROVINCES {
             return Err(ProvinceStateError::TooManyAdjacentProvinces {
@@ -52,11 +61,18 @@ impl ProvinceState {
                 value: region_class,
             });
         }
+        if !(0..=3).contains(&fort_level) {
+            return Err(ProvinceStateError::InvalidFortLevel { value: fort_level });
+        }
         Ok(Self {
             owner,
             former_owner,
             adjacency,
             region_class,
+            fort_level,
+            city_tile,
+            resource_development_by_type: Box::new(resource_development_by_type),
+            city_score,
         })
     }
 
@@ -75,6 +91,22 @@ impl ProvinceState {
     pub const fn region_class(&self) -> Option<u8> {
         self.region_class
     }
+
+    pub const fn fort_level(&self) -> i8 {
+        self.fort_level
+    }
+
+    pub const fn city_tile(&self) -> Option<TileId> {
+        self.city_tile
+    }
+
+    pub const fn resource_development_by_type(&self) -> &ResourceTable<i16> {
+        &self.resource_development_by_type
+    }
+
+    pub const fn city_score(&self) -> i32 {
+        self.city_score
+    }
 }
 
 impl<'de> Deserialize<'de> for ProvinceState {
@@ -91,6 +123,11 @@ impl<'de> Deserialize<'de> for ProvinceState {
             adjacency: Vec<ProvinceId>,
             #[serde(deserialize_with = "deserialize_required_option")]
             region_class: Option<u8>,
+            fort_level: i8,
+            #[serde(deserialize_with = "deserialize_required_option")]
+            city_tile: Option<TileId>,
+            resource_development_by_type: ResourceTable<i16>,
+            city_score: i32,
         }
 
         let province = SerializedProvinceState::deserialize(deserializer)?;
@@ -99,6 +136,10 @@ impl<'de> Deserialize<'de> for ProvinceState {
             province.former_owner,
             province.adjacency,
             province.region_class,
+            province.fort_level,
+            province.city_tile,
+            province.resource_development_by_type,
+            province.city_score,
         )
         .map_err(serde::de::Error::custom)
     }
@@ -118,6 +159,8 @@ pub enum ProvinceStateError {
     TooManyAdjacentProvinces { actual: usize },
     #[error("province region class {value} is outside 0..={}", REGION_CLASS_COUNT - 1)]
     InvalidRegionClass { value: u8 },
+    #[error("province fort level {value} is outside 0..=3")]
+    InvalidFortLevel { value: i8 },
 }
 
 impl GameState {
@@ -230,6 +273,10 @@ mod tests {
             owner.map(NationId::new),
             adjacency.iter().copied().map(ProvinceId::new).collect(),
             region_class,
+            0,
+            None,
+            ResourceTable::default(),
+            0,
         )
         .unwrap();
     }
@@ -269,6 +316,10 @@ mod tests {
             "former_owner": null,
             "adjacency": thirteen_neighbors,
             "region_class": null,
+            "fort_level": 0,
+            "city_tile": null,
+            "resource_development_by_type": ResourceTable::<i16>::default(),
+            "city_score": 0,
         });
         assert!(serde_json::from_value::<ProvinceState>(value).is_err());
 
@@ -277,6 +328,10 @@ mod tests {
             "former_owner": null,
             "adjacency": [],
             "region_class": 24,
+            "fort_level": 0,
+            "city_tile": null,
+            "resource_development_by_type": ResourceTable::<i16>::default(),
+            "city_score": 0,
         });
         assert!(serde_json::from_value::<ProvinceState>(value).is_err());
 

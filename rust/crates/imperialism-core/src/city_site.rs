@@ -3,7 +3,7 @@
 use crate::{
     Difficulty, GameState, HexDirection, MajorNationId, MapGeometry, NationId, RegionId,
     STRATEGIC_MAP_HEIGHT, STRATEGIC_MAP_WIDTH, StrategicMap, TerrainKind, TileFlags, TileId,
-    TileOwnerTag,
+    TileOwnerTag, TownState,
 };
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, thiserror::Error)]
@@ -163,7 +163,8 @@ pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nati
     let home = state
         .nations
         .city(nation)
-        .home_town_tile
+        .home_town
+        .map(TownState::tile)
         .expect("generated Introductory/Easy game has a home town tile");
     bind_home_city_tile(state, nation, home);
     state.turn.phase = crate::PhaseCode::STRATEGIC_MAP;
@@ -172,7 +173,7 @@ pub fn enter_strategic_map_without_capital_selection(state: &mut GameState, nati
 fn bind_home_city_tile(state: &mut GameState, nation: MajorNationId, tile: TileId) {
     let nation_state = state.nations.major_mut(nation);
     nation_state.common.home_tile = Some(tile);
-    nation_state.city.home_town_tile = Some(tile);
+    nation_state.city.home_town = Some(TownState::for_frog_city(tile));
 }
 
 fn flood_fill_region_marker(world: &mut StrategicMap, tile: TileId, owner_nation: TileOwnerTag) {
@@ -337,7 +338,8 @@ mod tests {
         assert_eq!(
             state.nations.majors[MajorNationId::new(6)]
                 .city
-                .home_town_tile,
+                .home_town
+                .map(TownState::tile),
             Some(tile)
         );
     }

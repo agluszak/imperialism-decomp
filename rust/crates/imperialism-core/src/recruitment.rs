@@ -3,7 +3,7 @@ use crate::{CivilianUnitId, MilitaryUnitId};
 use crate::{
     CivilianUnitKind, CivilianUnitState, CivilianWorkOrder, GameState, MajorNationId,
     MilitaryUnitKind, MilitaryUnitState, NationId, PendingActionKind, STRATEGIC_TILE_COUNT,
-    StrategicMap, TileFlags, TileId, TileOwnerTag, TurnSummary,
+    StrategicMap, TileFlags, TileId, TileOwnerTag, TownState, TurnSummary,
 };
 
 impl StrategicMap {
@@ -69,7 +69,8 @@ impl GameState {
         let home_tile = self
             .nations
             .city(nation)
-            .home_town_tile
+            .home_town
+            .map(TownState::tile)
             .expect("civilian recruit production requires a home town tile");
 
         let metric = &mut self.nations.city_mut(nation).civilian_recruit_count_by_kind[unit_kind];
@@ -123,7 +124,8 @@ impl GameState {
         let major = &major_nation.economy;
         let military_start = if pending_delta > 0 {
             let home_tile = city
-                .home_town_tile
+                .home_town
+                .map(TownState::tile)
                 .expect("military recruit production requires a home town tile");
             let province = self.world[home_tile]
                 .province
@@ -276,7 +278,7 @@ mod tests {
 
     fn city(home_town_tile: Option<TileId>) -> CityState {
         CityState {
-            home_town_tile,
+            home_town: home_town_tile.map(TownState::for_frog_city),
             population: PopulationState {
                 count: 7,
                 accumulator: crate::PopulationAccumulator::from_bits(7.0_f32.to_bits()),
@@ -346,9 +348,7 @@ mod tests {
     fn civilian_recruit_production_requires_a_home_town() {
         let home = TileId::new(200);
         let mut state = game(home);
-        state.nations.majors[MajorNationId::new(0)]
-            .city
-            .home_town_tile = None;
+        state.nations.majors[MajorNationId::new(0)].city.home_town = None;
 
         state.produce_civilian_recruits(MajorNationId::new(0), CivilianUnitKind::Forester, 1);
     }

@@ -267,12 +267,40 @@ impl Default for UniversityTechnologyState {
     }
 }
 
-/// The technology capabilities consumed by one major nation's city rules.
-#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+/// The technology capabilities consumed by one major nation's city and civilian-order rules.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityTechnologyCapabilities {
     pub advanced_iron_working: bool,
     pub oil_drilling: bool,
     pub university: UniversityTechnologyState,
+    pub primary_civilian_distance_terrain: CivilianTerrainAccess,
+    pub secondary_civilian_hills: bool,
+    pub secondary_civilian_swamp: bool,
+    pub fort_level_cap: FortLevelCap,
+}
+
+impl Default for CityTechnologyCapabilities {
+    fn default() -> Self {
+        Self {
+            advanced_iron_working: false,
+            oil_drilling: false,
+            university: UniversityTechnologyState::default(),
+            primary_civilian_distance_terrain: CivilianTerrainAccess::default(),
+            secondary_civilian_hills: false,
+            secondary_civilian_swamp: false,
+            fort_level_cap: FortLevelCap::ONE,
+        }
+    }
+}
+
+impl CityTechnologyCapabilities {
+    pub(crate) const fn secondary_civilian_distance_terrain(self) -> CivilianTerrainAccess {
+        CivilianTerrainAccess {
+            hills: self.secondary_civilian_hills,
+            mountain: self.oil_drilling,
+            swamp: self.secondary_civilian_swamp,
+        }
+    }
 }
 
 /// Global technology milestones and the city capabilities of every major nation.
@@ -282,6 +310,49 @@ pub struct TechnologyState {
     pub marine_engineering: bool,
     pub oil_drilling_available: bool,
     pub city_capabilities_by_nation: MajorNationTable<CityTechnologyCapabilities>,
+}
+
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct CivilianTerrainAccess {
+    pub hills: bool,
+    pub mountain: bool,
+    pub swamp: bool,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub struct FortLevelCap(i8);
+
+impl FortLevelCap {
+    pub const ONE: Self = Self(1);
+    pub const TWO: Self = Self(2);
+    pub const THREE: Self = Self(3);
+
+    pub const fn get(self) -> i8 {
+        self.0
+    }
+}
+
+impl<'de> Deserialize<'de> for FortLevelCap {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        match i8::deserialize(deserializer)? {
+            1 => Ok(Self::ONE),
+            2 => Ok(Self::TWO),
+            3 => Ok(Self::THREE),
+            value => Err(serde::de::Error::custom(format!(
+                "fort level cap {value} is outside 1..=3"
+            ))),
+        }
+    }
+}
+
+impl Default for FortLevelCap {
+    fn default() -> Self {
+        Self::ONE
+    }
 }
 
 impl TechnologyState {
@@ -325,6 +396,7 @@ impl PhaseCode {
     pub const DIPLOMACY: Self = Self(6);
     pub const TRADE: Self = Self(7);
     pub const OFFER_SHEET: Self = Self(9);
+    pub const MILITARY: Self = Self(10);
     pub const DEAL_BOOK: Self = Self(0xe);
     pub const SEASON_ADVANCE: Self = Self(0x10);
     pub const TECHNOLOGY_ADVANCES: Self = Self(0x11);
@@ -1071,7 +1143,9 @@ pub struct GreatPowerState {
     pub remembered_trade_offers_by_resource: ResourceTable<i16>,
     pub deal_book: TradeCommodityTable<Vec<TradeDealBookEntry>>,
     pub pending_ship: Option<ShipType>,
+    pub interior_civilian: Box<InteriorCivilianState>,
     pub ai_trade: Option<AiTradeState>,
+    pub ai_development_pressure: Option<AiDevelopmentPressureState>,
     pub aid_allocation_by_minor_nation: MinorNationTable<ResourceTable<i32>>,
     pub budget_pool_base: i32,
     pub budget_pool_delta: i32,
@@ -1128,7 +1202,11 @@ impl GreatPowerState {
             remembered_trade_offers_by_resource: ResourceTable::default(),
             deal_book: TradeCommodityTable::default(),
             pending_ship: None,
+            interior_civilian: Box::default(),
             ai_trade: (!human).then(AiTradeState::default),
+            // These TAutoGreatPower fields are not initialized at the pre-capital
+            // random-game boundary. They become authoritative during turn setup.
+            ai_development_pressure: None,
             aid_allocation_by_minor_nation: MinorNationTable::default(),
             budget_pool_base: 0,
             budget_pool_delta: 0,
@@ -1145,6 +1223,57 @@ impl GreatPowerState {
             colony_boycott_flags: NationTable::default(),
             military_expenses: 0,
         }
+    }
+}
+
+/// Persistent inputs and pending work owned by retail's city interior minister.
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct InteriorCivilianState {
+    pub(crate) pending_recruitment: Option<CivilianUnitKind>,
+    pub(crate) railhead_target: Option<TileId>,
+    pub(crate) resource_order_metrics: ResourceTable<i16>,
+    pub(crate) railhead_priority_by_resource: ResourceTable<i16>,
+    pub(crate) exterior_need_by_resource: ResourceTable<i16>,
+    pub(crate) historical_need_by_resource: ResourceTable<i16>,
+    pub(crate) civilian_order_demand_by_resource: ResourceTable<i16>,
+}
+
+impl InteriorCivilianState {
+    pub fn from_parts(
+        pending_recruitment: Option<CivilianUnitKind>,
+        railhead_target: Option<TileId>,
+        resource_order_metrics: ResourceTable<i16>,
+        railhead_priority_by_resource: ResourceTable<i16>,
+        exterior_need_by_resource: ResourceTable<i16>,
+        historical_need_by_resource: ResourceTable<i16>,
+        civilian_order_demand_by_resource: ResourceTable<i16>,
+    ) -> Self {
+        Self {
+            pending_recruitment,
+            railhead_target,
+            resource_order_metrics,
+            railhead_priority_by_resource,
+            exterior_need_by_resource,
+            historical_need_by_resource,
+            civilian_order_demand_by_resource,
+        }
+    }
+}
+
+/// Runtime-derived inputs used by an AI major when selecting a fort province.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct AiDevelopmentPressureState {
+    pub(crate) expansion_pressure_per_compatible_region_bits: u32,
+    pub(crate) average_unit_divergence_per_owned_region_bits: u32,
+}
+
+impl AiDevelopmentPressureState {
+    pub(crate) fn expansion_pressure_per_compatible_region(self) -> f32 {
+        f32::from_bits(self.expansion_pressure_per_compatible_region_bits)
+    }
+
+    pub(crate) fn average_unit_divergence_per_owned_region(self) -> f32 {
+        f32::from_bits(self.average_unit_divergence_per_owned_region_bits)
     }
 }
 
@@ -1242,6 +1371,34 @@ impl PendingActionStatus {
     }
 }
 
+/// The one city town retained by the currently supported legacy-save projection.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct TownState {
+    pub(crate) tile: TileId,
+    pub(crate) transport_linked: bool,
+    pub(crate) enabled: bool,
+    pub(crate) active: bool,
+}
+
+impl TownState {
+    pub const fn new(tile: TileId, transport_linked: bool, enabled: bool, active: bool) -> Self {
+        Self {
+            tile,
+            transport_linked,
+            enabled,
+            active,
+        }
+    }
+
+    pub(crate) const fn for_frog_city(tile: TileId) -> Self {
+        Self::new(tile, false, true, true)
+    }
+
+    pub const fn tile(self) -> TileId {
+        self.tile
+    }
+}
+
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct CityState {
     /// Boxed to keep the dense fixed order tables out of already-large
@@ -1269,7 +1426,7 @@ pub struct CityState {
     pub low_production: bool,
     pub low_stock: bool,
     pub reserved_by_type: ResourceTable<i16>,
-    pub home_town_tile: Option<TileId>,
+    pub home_town: Option<TownState>,
     pub power_available: i16,
     pub stockpile: Stockpile,
     pub production_orders: ProductionTable<i16>,
@@ -1307,7 +1464,7 @@ impl CityState {
             low_production: false,
             low_stock: false,
             reserved_by_type: ResourceTable::default(),
-            home_town_tile: human.then(|| TileId::new(0)),
+            home_town: human.then(|| TownState::for_frog_city(TileId::new(0))),
             // Human Frog City marker sits at tile 0 without PlaceCity. AI
             // capitals are placed later once tile post-passes and frog-city
             // scoring land.

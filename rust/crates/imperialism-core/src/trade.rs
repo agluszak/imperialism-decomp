@@ -594,7 +594,7 @@ mod tests {
 
     fn city() -> CityState {
         CityState {
-            home_town_tile: Some(crate::TileId::new(0)),
+            home_town: Some(crate::TownState::for_frog_city(crate::TileId::new(0))),
             population: PopulationState {
                 count: 0,
                 accumulator: crate::PopulationAccumulator::from_bits(0),

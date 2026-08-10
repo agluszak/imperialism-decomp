@@ -1683,7 +1683,7 @@ mod tests {
             low_production: false,
             low_stock: false,
             reserved_by_type: crate::ResourceTable::default(),
-            home_town_tile: Some(crate::TileId::new(1)),
+            home_town: Some(crate::TownState::for_frog_city(crate::TileId::new(1))),
             power_available: 0,
             stockpile: crate::Stockpile::default(),
             production_orders: crate::ProductionTable::default(),
