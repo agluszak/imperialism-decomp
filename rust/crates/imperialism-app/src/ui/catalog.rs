@@ -318,6 +318,12 @@ pub(crate) struct UiAssetResources<'w> {
 }
 
 impl UiAssetResources<'_> {
+    pub(crate) fn palette_color(&self, index: u8) -> Color {
+        let [red, green, blue] =
+            self.retail_assets.assets().default_dib_palette()[index].to_array();
+        Color::srgb_u8(red, green, blue)
+    }
+
     pub(crate) fn picture(
         &mut self,
         picture_id: PictureId,

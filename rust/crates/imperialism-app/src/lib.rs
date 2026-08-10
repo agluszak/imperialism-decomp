@@ -69,6 +69,7 @@ pub fn run(retail_assets: RetailAssets) {
             ui::CitySitePlugin,
             ui::GameShellPlugin,
             ui::CityPlugin,
+            ui::TransportPlugin,
         ));
     app.world_mut().spawn(Camera2d);
     app.run();

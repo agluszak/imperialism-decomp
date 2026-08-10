@@ -115,12 +115,7 @@ pub(crate) struct GameShellPlugin;
 impl Plugin for GameShellPlugin {
     fn build(&self, app: &mut App) {
         app.add_observer(on_game_screen_activate);
-        for state in [
-            AppState::StrategicMap,
-            AppState::Trade,
-            AppState::Transport,
-            AppState::Diplomacy,
-        ] {
+        for state in [AppState::StrategicMap, AppState::Trade, AppState::Diplomacy] {
             app.add_systems(OnEnter(state), enter_game_screen);
         }
     }
