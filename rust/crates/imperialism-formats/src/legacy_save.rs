@@ -2311,6 +2311,38 @@ fn interior_civilian_state(
             .try_into()
             .expect("resource metric prefix has the fixed resource-table length"),
     );
+    if minister.order_metrics[33] != 0 || minister.order_metrics[52] != 0 {
+        return Err(LegacySaveError::StateProjection(format!(
+            "major nation {nation} has demand in a fixed null city-order slot"
+        )));
+    }
+    let mut expansion_demand = [0_i16; ProductionSlot::COUNT];
+    expansion_demand[..7].copy_from_slice(&minister.order_metrics[53..60]);
+    let city_order_demand = AiCityOrderDemand::from_parts(
+        TrainingOrderTable::from_array(
+            minister.order_metrics[23..25]
+                .try_into()
+                .expect("training demand has two fixed slots"),
+        ),
+        MilitaryRecruitOrderTable::from_array(
+            minister.order_metrics[25..33]
+                .try_into()
+                .expect("military recruitment demand has eight fixed slots"),
+        ),
+        CivilianUnitTable::from_array(
+            minister.order_metrics[34..43]
+                .try_into()
+                .expect("civilian recruitment demand has nine fixed slots"),
+        ),
+        ShipOrderTable::from_array(
+            minister.order_metrics[43..51]
+                .try_into()
+                .expect("ship demand has eight fixed slots"),
+        ),
+        minister.order_metrics[51],
+        ProductionTable::from_array(expansion_demand),
+        minister.order_metrics[60],
+    );
     let pending_development_actions = minister.integer_lists[2]
         .iter()
         .map(|&value| {
@@ -2332,6 +2364,10 @@ fn interior_civilian_state(
         pending_recruitment,
         optional_tile_id(i32::from(minister.order_scalars[6]))?,
         resource_order_metrics,
+        city_order_demand,
+        minister.deferred_labor_shortfall,
+        ProductionTable::from_array(minister.order_short_table),
+        minister.temporarily_reserved_ship_arms,
         ResourceTable::from_array(minister.order_type_tables[0]),
         ResourceTable::from_array(minister.order_type_tables[1]),
         ResourceTable::from_array(minister.order_type_tables[2]),
@@ -5252,10 +5288,37 @@ mod tests {
                 .collect::<Vec<_>>(),
             [0, 4, 0, 4, 0, 5, 0]
         );
-        assert!(state.nations.majors().all(|nation| {
+        assert!(state.nations.majors().enumerate().all(|(index, nation)| {
+            let mut expansion_demand = [0_i16; ProductionSlot::COUNT];
+            if index < 6 {
+                expansion_demand[..7].copy_from_slice(&[2, 1, 2, 0, 2, 0, 0]);
+            }
+            let expected_interior = InteriorCivilianState::from_parts(
+                None,
+                None,
+                ResourceTable::default(),
+                AiCityOrderDemand::from_parts(
+                    TrainingOrderTable::default(),
+                    MilitaryRecruitOrderTable::default(),
+                    CivilianUnitTable::default(),
+                    ShipOrderTable::default(),
+                    0,
+                    ProductionTable::from_array(expansion_demand),
+                    0,
+                ),
+                0,
+                ProductionTable::default(),
+                0,
+                ResourceTable::default(),
+                ResourceTable::default(),
+                ResourceTable::default(),
+                ResourceTable::default(),
+                0,
+                Vec::new(),
+            );
             nation.economy().development_grant_by_nation == NationTable::<i16>::default()
                 && nation.economy().defense_minister_skill_index == 0
-                && *nation.economy().interior_civilian == InteriorCivilianState::default()
+                && *nation.economy().interior_civilian == expected_interior
         }));
         assert!(state.nations.majors().take(6).all(|nation| {
             nation.economy().ai_development_pressure == Some(AiDevelopmentPressureState::default())

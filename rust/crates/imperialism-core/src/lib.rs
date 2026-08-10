@@ -6,6 +6,7 @@ mod city_buildings;
 mod city_economy;
 mod city_industry;
 mod city_site;
+mod city_transport_phase;
 mod civilian_phase;
 mod civilian_work;
 mod combat_movement_phase;

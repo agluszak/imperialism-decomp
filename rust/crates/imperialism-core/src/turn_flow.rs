@@ -149,6 +149,17 @@ impl GameState {
                     effects: Vec::new(),
                 }
             }
+            crate::PhaseCode::CITY_AND_TRANSPORT
+                if self.supports_first_turn_city_transport_phase() =>
+            {
+                self.run_first_turn_city_transport_phase();
+                self.turn.phase = crate::PhaseCode::GREAT_POWER_PRESSURE;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::GREAT_POWER_PRESSURE,
+                    effects: Vec::new(),
+                }
+            }
             crate::PhaseCode::SEASON_ADVANCE => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
                 self.turn.advance_season();
