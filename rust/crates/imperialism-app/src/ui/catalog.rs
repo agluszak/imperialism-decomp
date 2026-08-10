@@ -445,6 +445,21 @@ impl UiSpawner<'_, '_> {
         self.assets.picture(picture_id)
     }
 
+    pub(crate) fn indexed_picture(
+        &self,
+        picture_id: PictureId,
+    ) -> Result<IndexedPicture, RetailAssetError> {
+        self.assets.indexed_picture(picture_id)
+    }
+
+    pub(crate) fn transformed_picture(
+        &mut self,
+        picture_id: PictureId,
+        transform: impl FnOnce(&mut Image),
+    ) -> Result<Handle<Image>, UiPictureBindingError> {
+        self.assets.transformed_picture(picture_id, transform)
+    }
+
     pub(crate) fn palette_color(&self, index: u8) -> Color {
         self.assets.palette_color(index)
     }

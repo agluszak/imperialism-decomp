@@ -6,33 +6,6 @@ const TRANSPORT_NODE_FLAG: u16 = 0x10;
 const DEPOT_SOURCE_FLAG: u16 = 0x04;
 const FORT_BUILD_COST: [i32; 3] = [5_000, 7_500, 10_000];
 
-/// `g_abUniversityRequirementLevelById`, restricted to the semantic resource domain.
-const UNIVERSITY_REQUIREMENT_LEVEL: [[i16; 4]; 23] = [
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [0, 2, 4, 6],
-    [0, 2, 4, 6],
-    [1, 1, 1, 1],
-    [0, 2, 4, 6],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [1, 2, 3, 4],
-    [0, 1, 2, 3],
-    [0, 1, 2, 3],
-];
-
 #[derive(Clone, Copy, Debug)]
 enum PlannedCivilianAssignment {
     LayRail {
@@ -127,10 +100,8 @@ impl GameState {
                 } else {
                     tile.development.surface.get()
                 };
-                let contribution = UNIVERSITY_REQUIREMENT_LEVEL[resource as usize]
-                    .get(usize::from(development))
-                    .expect("resource development level must be in 0..=3");
-                current[resource] = current[resource].wrapping_add(*contribution);
+                let contribution = resource_development_yield(resource, development);
+                current[resource] = current[resource].wrapping_add(contribution);
             }
 
             if tile.river.is_some() && level == 2 {
@@ -600,8 +571,7 @@ impl GameState {
                 if extraction && level == 0 {
                     level = 1;
                 }
-                let value =
-                    *UNIVERSITY_REQUIREMENT_LEVEL[resource as usize].get(usize::from(level))?;
+                let value = resource_development_yield(resource, level);
                 yields[resource] = yields[resource].wrapping_add(value);
             }
 

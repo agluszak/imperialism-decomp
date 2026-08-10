@@ -149,6 +149,23 @@ const SHIP_ORDERS: [CityOrderBinding; 8] = [
         tag: fourcc!("clu7"),
     },
 ];
+const SHIPYARD_MATERIALS: [ResourceKind; 6] = [
+    ResourceKind::Fabric,
+    ResourceKind::Lumber,
+    ResourceKind::Arms,
+    ResourceKind::Steel,
+    ResourceKind::Coal,
+    ResourceKind::Fuel,
+];
+const SHIPYARD_OVERLAY_LEFT: [f32; 8] = [4.0, 4.0, 3.0, 2.0, 4.0, 4.0, 3.0, 2.0];
+const SHIPYARD_STAT_ORIGINS: [(f32, f32); 6] = [
+    (28.0, 86.0),
+    (28.0, 102.0),
+    (28.0, 118.0),
+    (120.0, 86.0),
+    (120.0, 102.0),
+    (120.0, 118.0),
+];
 const FOOD_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
     order: CityOrderId::FoodProcessing,
     tag: fourcc!("food"),
@@ -249,21 +266,45 @@ struct CityOrderBinding {
 struct UniversityRowText {
     unit_name: String,
     description: String,
+    preview: Handle<Image>,
 }
 
 struct UniversityDialogData {
     available: CivilianUnitTable<bool>,
     rows: [UniversityRowText; UNIVERSITY_ORDERS.len()],
+    resource_icons: Handle<Image>,
+    tier_labels: [String; 3],
+    title_font: TextFont,
+    unit_font: TextFont,
+    detail_font: TextFont,
+    normal_color: Color,
+    warning_color: Color,
+}
+
+struct ShipyardMaterialData {
+    resource: ResourceKind,
+    required: i16,
+    picture: Handle<Image>,
 }
 
 struct ShipyardRowData {
+    ship_type: ShipType,
     ship_name: String,
     description: String,
     picture: Handle<Image>,
+    materials: Vec<ShipyardMaterialData>,
+    stats: [i16; 6],
 }
 
 struct ShipyardDialogData {
     rows: [Option<ShipyardRowData>; SHIP_ORDERS.len()],
+    queue_icons: Handle<Image>,
+    stat_labels: [String; 6],
+    title_font: TextFont,
+    name_font: TextFont,
+    detail_font: TextFont,
+    normal_color: Color,
+    warning_color: Color,
 }
 
 #[derive(Clone, Copy)]
@@ -641,6 +682,8 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             fourcc!("snam"),
             fourcc!("desc"),
             fourcc!("spic"),
+            fourcc!("fix0"),
+            fourcc!("fix1"),
         ],
     )?;
     for binding in &SHIP_ORDERS {
@@ -928,6 +971,46 @@ struct UniversityRowChoice {
     kind: CivilianUnitKind,
     unit_name: String,
     description: String,
+    preview: Handle<Image>,
+}
+
+#[derive(Component, Clone, Copy)]
+struct UniversityPreview {
+    dialog: Entity,
+}
+
+#[derive(Component, Clone, Copy)]
+struct UniversityRequirementIcon {
+    dialog: Entity,
+    row: usize,
+}
+
+#[derive(Component, Clone, Copy)]
+struct UniversityRequirementValue {
+    dialog: Entity,
+    row: usize,
+    level: u8,
+}
+
+#[derive(Component, Clone, Copy)]
+struct UniversityTierLabel {
+    dialog: Entity,
+    level: u8,
+}
+
+#[derive(Clone, Copy)]
+enum UniversityWarningKind {
+    Paper,
+    Workforce,
+    Treasury,
+}
+
+#[derive(Component, Clone, Copy)]
+struct UniversityWarningValue {
+    dialog: Entity,
+    kind: UniversityWarningKind,
+    normal_color: Color,
+    warning_color: Color,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -942,11 +1025,34 @@ struct ShipyardRowChoice {
     ship_name: String,
     description: String,
     picture: Handle<Image>,
+    materials: Vec<ShipyardMaterialData>,
+    stats: [i16; 6],
 }
 
 #[derive(Component, Clone, Copy)]
 struct ShipyardDetailPicture {
     dialog: Entity,
+}
+
+#[derive(Component, Clone, Copy)]
+struct ShipyardMaterialPicture {
+    dialog: Entity,
+    index: usize,
+}
+
+#[derive(Component, Clone, Copy)]
+struct ShipyardMaterialAmount {
+    dialog: Entity,
+    index: usize,
+    available: bool,
+    normal_color: Color,
+    warning_color: Color,
+}
+
+#[derive(Component, Clone, Copy)]
+struct ShipyardStatValue {
+    dialog: Entity,
+    index: usize,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -1244,17 +1350,11 @@ fn spawn_city_buildings(
     spawn_city_building_actions(commands, main, actions, state, nation, assets);
 }
 
-fn apply_city_action_transparency(
-    image: &mut Image,
-    indexed: &IndexedPicture,
-    frame_size: [i32; 2],
-    frame_count: u8,
-    occlusions: &[[i32; 4]],
-) {
+fn apply_palette_index_transparency(image: &mut Image, indexed: &IndexedPicture) -> bool {
     let width = image.width() as usize;
     let height = image.height() as usize;
     let Some(pixels) = image.data.as_mut() else {
-        return;
+        return false;
     };
     if width == 0
         || height == 0
@@ -1263,13 +1363,30 @@ fn apply_city_action_transparency(
         || pixels.len() != width * height * 4
         || indexed.pixels.len() != width * height
     {
-        return;
+        return false;
     }
     for (pixel, &palette_index) in pixels.chunks_exact_mut(4).zip(&indexed.pixels) {
         if palette_index == 0x10 {
             pixel[3] = 0;
         }
     }
+    true
+}
+
+fn apply_city_action_transparency(
+    image: &mut Image,
+    indexed: &IndexedPicture,
+    frame_size: [i32; 2],
+    frame_count: u8,
+    occlusions: &[[i32; 4]],
+) {
+    if !apply_palette_index_transparency(image, indexed) {
+        return;
+    }
+    let width = image.width() as usize;
+    let Some(pixels) = image.data.as_mut() else {
+        return;
+    };
     let frame_width = frame_size[0] as usize;
     for &[left, top, right, bottom] in occlusions {
         for frame in 0..usize::from(frame_count) {
@@ -1540,6 +1657,33 @@ fn city_string(ui: &UiSpawner, group: i16, zero_based_index: i16) -> String {
         .expect("validated English retail City string")
 }
 
+fn transparent_picture(ui: &mut UiSpawner, picture_id: PictureId) -> Handle<Image> {
+    let indexed = ui
+        .indexed_picture(picture_id)
+        .expect("retail City detail picture must have indexed pixels");
+    ui.transformed_picture(picture_id, |image| {
+        assert!(
+            apply_palette_index_transparency(image, &indexed),
+            "retail City detail picture dimensions must match its decoded image"
+        );
+    })
+    .expect("retail City detail picture must load")
+}
+
+const fn university_preview_picture(kind: CivilianUnitKind) -> i16 {
+    match kind {
+        CivilianUnitKind::Miner => 402,
+        CivilianUnitKind::Prospector => 403,
+        CivilianUnitKind::Farmer => 401,
+        CivilianUnitKind::Forester => 406,
+        CivilianUnitKind::Engineer => 400,
+        CivilianUnitKind::Rancher => 407,
+        CivilianUnitKind::Fisherman => 405,
+        CivilianUnitKind::Developer => 404,
+        CivilianUnitKind::Driller => 408,
+    }
+}
+
 fn format_retail_value(template: &str, value: &str) -> String {
     if template.contains("[1: number]") {
         template.replace("[1: number]", value)
@@ -1593,26 +1737,92 @@ fn open_city_dialog(
         ui.string(0x271c, 0x20)
             .expect("validated English retail Armory title")
     });
-    let university_data = (slot == ProductionSlot::University).then(|| UniversityDialogData {
-        available: state.technology.city_capabilities_by_nation[nation]
-            .university
-            .available,
-        rows: UNIVERSITY_ORDERS.map(|binding| {
-            let CityOrderId::CivilianRecruit(kind) = binding.order else {
-                unreachable!("University binding has a civilian recruitment order");
-            };
-            UniversityRowText {
-                unit_name: ui
-                    .string(0x2718, i16::from(kind as u8) + 1)
-                    .expect("validated English retail civilian name"),
-                description: ui
-                    .string(0x2751, i16::from(kind as u8))
-                    .expect("validated English retail civilian description"),
-            }
-        }),
+    let university_data = (slot == ProductionSlot::University).then(|| {
+        let (detail_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 10,
+                alignment: -2,
+            })
+            .expect("retail University detail text style");
+        let (title_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 24,
+                alignment: 1,
+            })
+            .expect("retail University title fallback text style");
+        let (unit_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 12,
+                alignment: 1,
+            })
+            .expect("retail University unit-name fallback text style");
+        UniversityDialogData {
+            available: state.technology.city_capabilities_by_nation[nation]
+                .university
+                .available,
+            rows: UNIVERSITY_ORDERS.map(|binding| {
+                let CityOrderId::CivilianRecruit(kind) = binding.order else {
+                    unreachable!("University binding has a civilian recruitment order");
+                };
+                UniversityRowText {
+                    unit_name: ui
+                        .string(0x2718, i16::from(kind as u8) + 1)
+                        .expect("validated English retail civilian name"),
+                    description: ui
+                        .string(0x2751, i16::from(kind as u8))
+                        .expect("validated English retail civilian description"),
+                    preview: transparent_picture(
+                        ui,
+                        PictureId::new(university_preview_picture(kind)),
+                    ),
+                }
+            }),
+            resource_icons: transparent_picture(ui, PictureId::new(750)),
+            tier_labels: std::array::from_fn(|level| {
+                ui.string(0x2723, 0x0e + level as i16)
+                    .expect("validated English retail University tier label")
+            }),
+            title_font,
+            unit_font,
+            detail_font,
+            normal_color: ui.palette_color(0xd2),
+            warning_color: ui.palette_color(0xcb),
+        }
     });
     let shipyard_data = (slot == ProductionSlot::Shipyard).then(|| {
         let city = state.nations.major(nation).city();
+        let material_pictures = SHIPYARD_MATERIALS
+            .map(|resource| transparent_picture(ui, PictureId::new(700 + resource as i16)));
+        let (detail_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 3,
+                face_flags: 0,
+                point_size: 10,
+                alignment: -2,
+            })
+            .expect("retail Shipyard detail text style");
+        let (title_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 24,
+                alignment: 1,
+            })
+            .expect("retail Shipyard title text style");
+        let (name_font, _, _) = ui
+            .text_style(RetailTextStylePreset {
+                font_family: 1,
+                face_flags: 0,
+                point_size: 12,
+                alignment: 1,
+            })
+            .expect("retail Shipyard name text style");
         ShipyardDialogData {
             rows: SHIP_ORDERS.map(|binding| {
                 let CityOrderId::Ship(slot) = binding.order else {
@@ -1622,7 +1832,9 @@ fn open_city_dialog(
                 if ship_type == ShipType::NoShip {
                     return None;
                 }
+                let costs = ship_order_costs(ship_type);
                 Some(ShipyardRowData {
+                    ship_type,
                     ship_name: ui
                         .string(0x2716, ship_type as i16 + 1)
                         .expect("validated English retail ship name"),
@@ -1632,8 +1844,28 @@ fn open_city_dialog(
                     picture: ui
                         .picture(PictureId::new(9834 + ship_type as i16))
                         .expect("validated retail Shipyard detail picture"),
+                    materials: SHIPYARD_MATERIALS
+                        .iter()
+                        .zip(&material_pictures)
+                        .filter_map(|(&resource, picture)| {
+                            let required = costs[resource];
+                            (required != 0).then(|| ShipyardMaterialData {
+                                resource,
+                                required,
+                                picture: picture.clone(),
+                            })
+                        })
+                        .collect(),
+                    stats: ship_display_stats(ship_type),
                 })
             }),
+            queue_icons: transparent_picture(ui, PictureId::new(9807)),
+            stat_labels: std::array::from_fn(|index| city_string(ui, 0x2736, 0x10 + index as i16)),
+            title_font,
+            name_font,
+            detail_font,
+            normal_color: ui.palette_color(0xd2),
+            warning_color: ui.palette_color(0xcb),
         }
     });
     let spawned = ui.spawn(view_id);
@@ -2327,6 +2559,17 @@ fn bind_university_dialog(
     nation: MajorNationId,
     data: UniversityDialogData,
 ) {
+    let UniversityDialogData {
+        available,
+        rows,
+        resource_icons,
+        tier_labels,
+        title_font,
+        unit_font,
+        detail_font,
+        normal_color,
+        warning_color,
+    } = data;
     let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::University);
     commands.entity(root).insert(UniversitySelection {
         kind: CivilianUnitKind::Miner,
@@ -2343,7 +2586,8 @@ fn bind_university_dialog(
         fourcc!("numb"),
         1,
     );
-    for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(data.rows) {
+    let initial_preview = rows[0].preview.clone();
+    for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(rows) {
         let CityOrderId::CivilianRecruit(kind) = binding.order else {
             unreachable!("University binding has a civilian recruitment order");
         };
@@ -2362,8 +2606,8 @@ fn bind_university_dialog(
         let quantity = spawned
             .require_under(catalog, binding.tag, fourcc!("numb"))
             .expect("validated University quantity binding");
-        let available = data.available[kind];
-        let visibility = if available {
+        let row_available = available[kind];
+        let visibility = if row_available {
             Visibility::Visible
         } else {
             Visibility::Hidden
@@ -2376,6 +2620,7 @@ fn bind_university_dialog(
                     kind,
                     unit_name: row_text.unit_name,
                     description: row_text.description,
+                    preview: row_text.preview,
                 },
                 visibility,
             ));
@@ -2384,7 +2629,7 @@ fn bind_university_dialog(
             } else {
                 button_commands.remove::<Checked>();
             }
-            if available {
+            if row_available {
                 button_commands.remove::<InteractionDisabled>();
             } else {
                 button_commands.insert(InteractionDisabled);
@@ -2392,7 +2637,7 @@ fn bind_university_dialog(
         }
         commands.entity(row).insert(visibility);
         for control in [minus, plus] {
-            if available {
+            if row_available {
                 commands.entity(control).remove::<InteractionDisabled>();
             } else {
                 commands.entity(control).insert(InteractionDisabled);
@@ -2400,38 +2645,176 @@ fn bind_university_dialog(
         }
         commands.entity(quantity).insert((
             InteractionDisabled,
+            detail_font.clone(),
+            TextColor(normal_color),
             CityValueBinding {
                 dialog: Some(root),
                 value: CityValue::UniversityOrderQuantity(kind),
             },
         ));
     }
-    for tag in [fourcc!("fix2"), fourcc!("fix3"), fourcc!("fix4")] {
+    let dlog = spawned
+        .require_unique(fourcc!("DLOG"))
+        .expect("validated University drawing surface");
+    commands.spawn((
+        Node {
+            position_type: PositionType::Absolute,
+            left: Val::Px(124.0),
+            top: Val::Px(92.0),
+            width: Val::Px(64.0),
+            height: Val::Px(64.0),
+            ..default()
+        },
+        ImageNode::new(initial_preview),
+        UniversityPreview { dialog: root },
+        Pickable::IGNORE,
+        ZIndex(1),
+        ChildOf(dlog),
+        Name::new("university-civilian-preview"),
+    ));
+    for row in 0..4 {
+        commands.spawn((
+            Node {
+                position_type: PositionType::Absolute,
+                left: Val::Px(25.0),
+                top: Val::Px(274.0 + row as f32 * 25.0),
+                width: Val::Px(20.0),
+                height: Val::Px(28.0),
+                ..default()
+            },
+            ImageNode {
+                image: resource_icons.clone(),
+                rect: Some(Rect::new(0.0, 0.0, 20.0, 24.0)),
+                ..default()
+            },
+            UniversityRequirementIcon { dialog: root, row },
+            Visibility::Hidden,
+            Pickable::IGNORE,
+            ZIndex(1),
+            ChildOf(dlog),
+            Name::new(format!("university-requirement-icon-{row}")),
+        ));
+        for level in 1..=3_u8 {
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(79.0 + f32::from(level - 1) * 40.0),
+                    top: Val::Px(279.0 + row as f32 * 25.0),
+                    width: Val::Px(24.0),
+                    height: Val::Px(16.0),
+                    ..default()
+                },
+                Text::new(""),
+                detail_font.clone(),
+                TextLayout::justify(Justify::Left),
+                TextColor(normal_color),
+                UniversityRequirementValue {
+                    dialog: root,
+                    row,
+                    level,
+                },
+                Visibility::Hidden,
+                Pickable::IGNORE,
+                ZIndex(1),
+                ChildOf(dlog),
+                Name::new(format!("university-requirement-{row}-{level}")),
+            ));
+        }
+    }
+    for (index, tag) in [fourcc!("fix2"), fourcc!("fix3"), fourcc!("fix4")]
+        .into_iter()
+        .enumerate()
+    {
         let entity = spawned
             .require_unique(tag)
             .expect("validated University requirement-label binding");
-        commands.entity(entity).insert(Visibility::Hidden);
+        commands.entity(entity).insert((
+            Text::new(tier_labels[index].clone()),
+            detail_font.clone(),
+            TextLayout::justify(Justify::Center),
+            TextColor(normal_color),
+            UniversityTierLabel {
+                dialog: root,
+                level: index as u8 + 1,
+            },
+            Visibility::Hidden,
+        ));
     }
-    for (tag, value) in [
-        (fourcc!("unit"), CityValue::UniversityUnitName),
-        (fourcc!("desc"), CityValue::UniversityDescription),
-        (fourcc!("cexp"), CityValue::UniversityWorkforceCost),
-        (fourcc!("cpap"), CityValue::UniversityPaperCost),
-        (fourcc!("cash"), CityValue::UniversityCashCost),
-        (fourcc!("aexp"), CityValue::UniversityWorkforceAvailable),
-        (fourcc!("apap"), CityValue::UniversityPaperAvailable),
-        (fourcc!("trea"), CityValue::Treasury),
+    for (tag, value, font) in [
+        (fourcc!("unit"), CityValue::UniversityUnitName, unit_font),
+        (
+            fourcc!("desc"),
+            CityValue::UniversityDescription,
+            detail_font.clone(),
+        ),
+        (
+            fourcc!("cexp"),
+            CityValue::UniversityWorkforceCost,
+            detail_font.clone(),
+        ),
+        (
+            fourcc!("cpap"),
+            CityValue::UniversityPaperCost,
+            detail_font.clone(),
+        ),
+        (
+            fourcc!("cash"),
+            CityValue::UniversityCashCost,
+            detail_font.clone(),
+        ),
+        (
+            fourcc!("aexp"),
+            CityValue::UniversityWorkforceAvailable,
+            detail_font.clone(),
+        ),
+        (
+            fourcc!("apap"),
+            CityValue::UniversityPaperAvailable,
+            detail_font.clone(),
+        ),
+        (fourcc!("trea"), CityValue::Treasury, detail_font.clone()),
     ] {
         let entity = spawned
             .require_unique(tag)
             .expect("validated University detail binding");
-        commands.entity(entity).insert((
+        let mut entity_commands = commands.entity(entity);
+        entity_commands.insert((
             Text::new(""),
+            font,
+            TextColor(normal_color),
             CityValueBinding {
                 dialog: Some(root),
                 value,
             },
         ));
+        let warning_kind = match tag {
+            tag if tag == fourcc!("apap") => Some(UniversityWarningKind::Paper),
+            tag if tag == fourcc!("aexp") => Some(UniversityWarningKind::Workforce),
+            tag if tag == fourcc!("trea") => Some(UniversityWarningKind::Treasury),
+            _ => None,
+        };
+        if let Some(kind) = warning_kind {
+            entity_commands.insert(UniversityWarningValue {
+                dialog: root,
+                kind,
+                normal_color,
+                warning_color,
+            });
+        }
+    }
+    let title = spawned
+        .require_unique(fourcc!("titl"))
+        .expect("validated University title binding");
+    commands
+        .entity(title)
+        .insert((title_font, TextColor(normal_color)));
+    for tag in [fourcc!("fix0"), fourcc!("fix1")] {
+        let fixed = spawned
+            .require_unique(tag)
+            .expect("validated University fixed-label binding");
+        commands
+            .entity(fixed)
+            .insert((detail_font.clone(), TextColor(normal_color)));
     }
 }
 
@@ -2442,8 +2825,18 @@ fn bind_shipyard_dialog(
     nation: MajorNationId,
     data: ShipyardDialogData,
 ) {
+    let ShipyardDialogData {
+        rows,
+        queue_icons,
+        stat_labels,
+        title_font,
+        name_font,
+        detail_font,
+        normal_color,
+        warning_color,
+    } = data;
     assert!(
-        data.rows[0].is_some(),
+        rows[0].is_some(),
         "retail Shipyard row zero always has a current ship"
     );
     let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::Shipyard);
@@ -2462,7 +2855,7 @@ fn bind_shipyard_dialog(
         fourcc!("numb"),
         1,
     );
-    for (binding, row_data) in SHIP_ORDERS.iter().zip(data.rows) {
+    for (index, (binding, row_data)) in SHIP_ORDERS.iter().zip(rows).enumerate() {
         let CityOrderId::Ship(slot) = binding.order else {
             unreachable!("Shipyard binding has a ship order");
         };
@@ -2486,26 +2879,45 @@ fn bind_shipyard_dialog(
         } else {
             Visibility::Hidden
         };
-        {
-            let mut button_commands = commands.entity(button);
-            button_commands.insert(visibility);
-            if slot == ShipOrderSlot::MerchantEarlyPrimary {
-                button_commands.insert(Checked);
-            } else {
-                button_commands.remove::<Checked>();
-            }
-            if let Some(row_data) = row_data {
-                button_commands.insert(ShipyardRowChoice {
-                    dialog: root,
-                    slot,
-                    ship_name: row_data.ship_name,
-                    description: row_data.description,
-                    picture: row_data.picture,
-                });
-                button_commands.remove::<InteractionDisabled>();
-            } else {
-                button_commands.insert(InteractionDisabled);
-            }
+        commands.entity(button).insert(visibility);
+        if slot == ShipOrderSlot::MerchantEarlyPrimary {
+            commands.entity(button).insert(Checked);
+        } else {
+            commands.entity(button).remove::<Checked>();
+        }
+        if let Some(row_data) = row_data {
+            let source_left = f32::from(row_data.ship_type as u8 - 1) * 80.0;
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(SHIPYARD_OVERLAY_LEFT[index]),
+                    top: Val::Px(12.0),
+                    width: Val::Px(80.0),
+                    height: Val::Px(45.0),
+                    ..default()
+                },
+                ImageNode {
+                    image: queue_icons.clone(),
+                    rect: Some(Rect::new(source_left, 0.0, source_left + 80.0, 45.0)),
+                    ..default()
+                },
+                Pickable::IGNORE,
+                ZIndex(1),
+                ChildOf(button),
+                Name::new(format!("shipyard-queue-icon-{index}")),
+            ));
+            commands.entity(button).insert(ShipyardRowChoice {
+                dialog: root,
+                slot,
+                ship_name: row_data.ship_name,
+                description: row_data.description,
+                picture: row_data.picture,
+                materials: row_data.materials,
+                stats: row_data.stats,
+            });
+            commands.entity(button).remove::<InteractionDisabled>();
+        } else {
+            commands.entity(button).insert(InteractionDisabled);
         }
         commands.entity(row).insert(visibility);
         for control in [minus, plus] {
@@ -2517,26 +2929,48 @@ fn bind_shipyard_dialog(
         }
         commands.entity(quantity).insert((
             InteractionDisabled,
+            detail_font.clone(),
+            TextColor(normal_color),
             CityValueBinding {
                 dialog: Some(root),
                 value: CityValue::ShipyardOrderQuantity(slot),
             },
         ));
     }
-    for (tag, value) in [
-        (fourcc!("snam"), CityValue::ShipyardName),
-        (fourcc!("desc"), CityValue::ShipyardDescription),
+    for (tag, value, font) in [
+        (fourcc!("snam"), CityValue::ShipyardName, name_font),
+        (
+            fourcc!("desc"),
+            CityValue::ShipyardDescription,
+            detail_font.clone(),
+        ),
     ] {
         let entity = spawned
             .require_unique(tag)
             .expect("validated Shipyard detail binding");
         commands.entity(entity).insert((
             Text::new(""),
+            font,
+            TextColor(normal_color),
             CityValueBinding {
                 dialog: Some(root),
                 value,
             },
         ));
+    }
+    let title = spawned
+        .require_unique(fourcc!("titl"))
+        .expect("validated Shipyard title binding");
+    commands
+        .entity(title)
+        .insert((title_font, TextColor(normal_color)));
+    for tag in [fourcc!("fix0"), fourcc!("fix1")] {
+        let fixed = spawned
+            .require_unique(tag)
+            .expect("validated Shipyard fixed-label binding");
+        commands
+            .entity(fixed)
+            .insert((detail_font.clone(), TextColor(normal_color)));
     }
     let picture = spawned
         .require_unique(fourcc!("spic"))
@@ -2544,6 +2978,98 @@ fn bind_shipyard_dialog(
     commands
         .entity(picture)
         .insert(ShipyardDetailPicture { dialog: root });
+
+    let dlog = spawned
+        .require_unique(fourcc!("DLOG"))
+        .expect("validated Shipyard drawing surface");
+    for index in 0..4 {
+        let left = 26.0 + index as f32 * 40.0;
+        for top in [152.0, 204.0] {
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(left),
+                    top: Val::Px(top),
+                    width: Val::Px(32.0),
+                    height: Val::Px(24.0),
+                    ..default()
+                },
+                ImageNode::default(),
+                ShipyardMaterialPicture {
+                    dialog: root,
+                    index,
+                },
+                Visibility::Hidden,
+                Pickable::IGNORE,
+                ZIndex(1),
+                ChildOf(dlog),
+                Name::new(format!("shipyard-material-icon-{index}-{top}")),
+            ));
+        }
+        for (available, top) in [(false, 168.0), (true, 220.0)] {
+            commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(58.0 + index as f32 * 40.0),
+                    top: Val::Px(top),
+                    width: Val::Px(24.0),
+                    height: Val::Px(16.0),
+                    ..default()
+                },
+                Text::new(""),
+                detail_font.clone(),
+                TextLayout::justify(Justify::Left),
+                TextColor(normal_color),
+                ShipyardMaterialAmount {
+                    dialog: root,
+                    index,
+                    available,
+                    normal_color,
+                    warning_color,
+                },
+                Visibility::Hidden,
+                Pickable::IGNORE,
+                ZIndex(1),
+                ChildOf(dlog),
+                Name::new(format!("shipyard-material-value-{index}-{available}")),
+            ));
+        }
+    }
+    for (index, ((left, baseline), label)) in SHIPYARD_STAT_ORIGINS
+        .into_iter()
+        .zip(stat_labels)
+        .enumerate()
+    {
+        for (value, text, x, width) in [
+            (false, label, left, 60.0),
+            (true, String::new(), left + 60.0, 28.0),
+        ] {
+            let mut entity = commands.spawn((
+                Node {
+                    position_type: PositionType::Absolute,
+                    left: Val::Px(x),
+                    top: Val::Px(baseline - 10.0),
+                    width: Val::Px(width),
+                    height: Val::Px(14.0),
+                    ..default()
+                },
+                Text::new(text),
+                detail_font.clone(),
+                TextLayout::justify(Justify::Left),
+                TextColor(normal_color),
+                Pickable::IGNORE,
+                ZIndex(1),
+                ChildOf(dlog),
+                Name::new(format!("shipyard-stat-{index}-{value}")),
+            ));
+            if value {
+                entity.insert(ShipyardStatValue {
+                    dialog: root,
+                    index,
+                });
+            }
+        }
+    }
 }
 
 fn bind_warehouse_dialog(
@@ -3615,7 +4141,7 @@ fn on_city_order_adjust(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn sync_city_values(
     mut commands: Commands,
     mut session: ResMut<GameSession>,
@@ -3632,6 +4158,8 @@ fn sync_city_values(
         (
             &CityValueBinding,
             Option<&RetailNumberTemplate>,
+            Option<&UniversityWarningValue>,
+            Option<&mut TextColor>,
             &mut Text,
             &mut Visibility,
         ),
@@ -3640,7 +4168,49 @@ fn sync_city_values(
     amount_bars: Query<&CityIndustryAmountBar>,
     mut amount_nodes: Query<&mut Node>,
     mut indicators: Query<(&CityExpansionIndicator, &mut Visibility), Without<CityValueBinding>>,
-    mut shipyard_pictures: Query<(&ShipyardDetailPicture, &mut ImageNode)>,
+    mut detail_images: Query<
+        (
+            Option<&UniversityPreview>,
+            Option<&UniversityRequirementIcon>,
+            Option<&ShipyardDetailPicture>,
+            Option<&ShipyardMaterialPicture>,
+            &mut ImageNode,
+            &mut Visibility,
+        ),
+        (
+            Without<Text>,
+            Without<CityValueBinding>,
+            Without<CityExpansionIndicator>,
+            Or<(
+                With<UniversityPreview>,
+                With<UniversityRequirementIcon>,
+                With<ShipyardDetailPicture>,
+                With<ShipyardMaterialPicture>,
+            )>,
+        ),
+    >,
+    mut detail_texts: Query<
+        (
+            Option<&UniversityRequirementValue>,
+            Option<&UniversityTierLabel>,
+            Option<&ShipyardMaterialAmount>,
+            Option<&ShipyardStatValue>,
+            &mut Text,
+            &mut TextColor,
+            &mut Visibility,
+        ),
+        (
+            Without<ImageNode>,
+            Without<CityValueBinding>,
+            Without<CityExpansionIndicator>,
+            Or<(
+                With<UniversityRequirementValue>,
+                With<UniversityTierLabel>,
+                With<ShipyardMaterialAmount>,
+                With<ShipyardStatValue>,
+            )>,
+        ),
+    >,
 ) {
     if screens.is_empty() && dialogs.is_empty() {
         return;
@@ -3672,7 +4242,9 @@ fn sync_city_values(
         ));
     }
 
-    for (binding, number_template, mut text, mut visibility) in &mut values {
+    for (binding, number_template, university_warning, mut text_color, mut text, mut visibility) in
+        &mut values
+    {
         let (nation, order_views, armory_selection): (
             MajorNationId,
             &[(CityOrderId, CityOrderView)],
@@ -3715,6 +4287,34 @@ fn sync_city_values(
         });
         let university_spec =
             university_selection.map(|selection| civilian_recruitment_spec(selection.kind));
+        if let (Some(warning), Some(color)) = (university_warning, text_color.as_deref_mut()) {
+            let Some(selection) = university_selection else {
+                continue;
+            };
+            assert_eq!(
+                binding.dialog,
+                Some(warning.dialog),
+                "University warning belongs to its dialog"
+            );
+            let spec = civilian_recruitment_spec(selection.kind);
+            let insufficient = match warning.kind {
+                UniversityWarningKind::Paper => {
+                    city.stockpile[spec.primary.resource] < spec.primary.per_unit()
+                }
+                UniversityWarningKind::Workforce => {
+                    let production = city.population.production_labor();
+                    production.high.min(labor_available / 4) < 1
+                }
+                UniversityWarningKind::Treasury => {
+                    major.common().treasury < i32::from(spec.cash_per_unit)
+                }
+            };
+            color.0 = if insufficient {
+                warning.warning_color
+            } else {
+                warning.normal_color
+            };
+        }
         let shipyard_selection = binding
             .dialog
             .and_then(|root| shipyard_selections.get(root).ok());
@@ -3951,17 +4551,176 @@ fn sync_city_values(
             value.to_string()
         };
     }
-    for (binding, mut image) in &mut shipyard_pictures {
-        let Ok(selection) = shipyard_selections.get(binding.dialog) else {
-            continue;
-        };
-        let Some(row) = shipyard_rows
-            .iter()
-            .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
-        else {
-            continue;
-        };
-        image.image.clone_from(&row.picture);
+    for (
+        university_preview,
+        university_requirement,
+        shipyard_detail,
+        shipyard_material,
+        mut image,
+        mut visibility,
+    ) in &mut detail_images
+    {
+        if let Some(binding) = university_preview {
+            let Ok(selection) = university_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some(row) = university_rows
+                .iter()
+                .find(|row| row.dialog == binding.dialog && row.kind == selection.kind)
+            else {
+                continue;
+            };
+            image.image.clone_from(&row.preview);
+            *visibility = Visibility::Visible;
+        } else if let Some(binding) = university_requirement {
+            let Ok(selection) = university_selections.get(binding.dialog) else {
+                continue;
+            };
+            let resource = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind][binding.row];
+            if let Some(resource) = resource {
+                let source_left = f32::from(resource as u8) * 20.0;
+                image.rect = Some(Rect::new(source_left, 0.0, source_left + 20.0, 24.0));
+                *visibility = Visibility::Visible;
+            } else {
+                *visibility = Visibility::Hidden;
+            }
+        } else if let Some(binding) = shipyard_detail {
+            let Ok(selection) = shipyard_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some(row) = shipyard_rows
+                .iter()
+                .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
+            else {
+                continue;
+            };
+            image.image.clone_from(&row.picture);
+            *visibility = Visibility::Visible;
+        } else if let Some(binding) = shipyard_material {
+            let Ok(selection) = shipyard_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some(row) = shipyard_rows
+                .iter()
+                .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
+            else {
+                continue;
+            };
+            if let Some(material) = row.materials.get(binding.index) {
+                image.image.clone_from(&material.picture);
+                *visibility = Visibility::Visible;
+            } else {
+                *visibility = Visibility::Hidden;
+            }
+        }
+    }
+    for (
+        university_requirement,
+        university_tier,
+        shipyard_material,
+        shipyard_stat,
+        mut text,
+        mut text_color,
+        mut visibility,
+    ) in &mut detail_texts
+    {
+        if let Some(binding) = university_requirement {
+            let Ok(selection) = university_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some((_, nation, _, _)) = dialog_states
+                .iter()
+                .find(|(root, _, _, _)| *root == binding.dialog)
+            else {
+                continue;
+            };
+            let specialties = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind];
+            let levels = &session.0.technology.city_capabilities_by_nation[*nation]
+                .university
+                .requirement_levels;
+            let running_max = specialties[..=binding.row]
+                .iter()
+                .flatten()
+                .map(|resource| levels[*resource])
+                .max()
+                .unwrap_or(0);
+            if let Some(resource) = specialties[binding.row]
+                && binding.level <= running_max
+            {
+                text.0 = resource_development_yield(resource, binding.level).to_string();
+                *visibility = Visibility::Visible;
+            } else {
+                *visibility = Visibility::Hidden;
+            }
+        } else if let Some(binding) = university_tier {
+            let Ok(selection) = university_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some((_, nation, _, _)) = dialog_states
+                .iter()
+                .find(|(root, _, _, _)| *root == binding.dialog)
+            else {
+                continue;
+            };
+            let levels = &session.0.technology.city_capabilities_by_nation[*nation]
+                .university
+                .requirement_levels;
+            let maximum = CIVILIAN_RESOURCE_SPECIALTIES[selection.kind]
+                .iter()
+                .flatten()
+                .map(|resource| levels[*resource])
+                .max()
+                .unwrap_or(0);
+            *visibility = if binding.level <= maximum {
+                Visibility::Visible
+            } else {
+                Visibility::Hidden
+            };
+        } else if let Some(binding) = shipyard_material {
+            let Ok(selection) = shipyard_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some(row) = shipyard_rows
+                .iter()
+                .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
+            else {
+                continue;
+            };
+            let Some(material) = row.materials.get(binding.index) else {
+                *visibility = Visibility::Hidden;
+                continue;
+            };
+            let Some((_, nation, _, _)) = dialog_states
+                .iter()
+                .find(|(root, _, _, _)| *root == binding.dialog)
+            else {
+                continue;
+            };
+            let stock = session.0.nations.major(*nation).city().stockpile[material.resource];
+            text.0 = if binding.available {
+                stock.to_string()
+            } else {
+                material.required.to_string()
+            };
+            text_color.0 = if binding.available && stock < material.required {
+                binding.warning_color
+            } else {
+                binding.normal_color
+            };
+            *visibility = Visibility::Visible;
+        } else if let Some(binding) = shipyard_stat {
+            let Ok(selection) = shipyard_selections.get(binding.dialog) else {
+                continue;
+            };
+            let Some(row) = shipyard_rows
+                .iter()
+                .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
+            else {
+                continue;
+            };
+            text.0 = row.stats[binding.index].to_string();
+            *visibility = Visibility::Visible;
+        }
     }
     for bar in &amount_bars {
         let Some((_, nation, order_views, _)) = dialog_states
@@ -4197,8 +4956,16 @@ mod tests {
                     UniversityRowText {
                         unit_name: format!("{kind:?}"),
                         description: format!("{kind:?} description"),
+                        preview: Handle::default(),
                     }
                 }),
+                resource_icons: Handle::default(),
+                tier_labels: std::array::from_fn(|level| format!("Level {}", level + 1)),
+                title_font: TextFont::default(),
+                unit_font: TextFont::default(),
+                detail_font: TextFont::default(),
+                normal_color: Color::WHITE,
+                warning_color: Color::BLACK,
             },
         );
         TestUniversityDialog {
