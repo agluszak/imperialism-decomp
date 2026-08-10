@@ -1,5 +1,54 @@
 use crate::*;
 
+/// One row in retail's transport-allocation ledger.
+///
+/// Cotton and wool share a row, as do fish and livestock. The remaining
+/// visible rows each address one resource directly.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct TransportAllocation {
+    primary: ResourceKind,
+    secondary: Option<ResourceKind>,
+}
+
+impl TransportAllocation {
+    pub const COTTON_AND_WOOL: Self = Self::pair(ResourceKind::Cotton, ResourceKind::Wool);
+    pub const TIMBER: Self = Self::single(ResourceKind::Timber);
+    pub const COAL: Self = Self::single(ResourceKind::Coal);
+    pub const IRON: Self = Self::single(ResourceKind::Iron);
+    pub const HORSES: Self = Self::single(ResourceKind::Horses);
+    pub const OIL: Self = Self::single(ResourceKind::Oil);
+    pub const FABRIC: Self = Self::single(ResourceKind::Fabric);
+    pub const LUMBER: Self = Self::single(ResourceKind::Lumber);
+    pub const STEEL: Self = Self::single(ResourceKind::Steel);
+    pub const FUEL: Self = Self::single(ResourceKind::Fuel);
+    pub const CLOTHING: Self = Self::single(ResourceKind::Clothing);
+    pub const FURNITURE: Self = Self::single(ResourceKind::Furniture);
+    pub const HARDWARE: Self = Self::single(ResourceKind::Hardware);
+    pub const GRAIN: Self = Self::single(ResourceKind::Grain);
+    pub const FRUIT: Self = Self::single(ResourceKind::Fruit);
+    pub const FISH_AND_LIVESTOCK: Self = Self::pair(ResourceKind::Fish, ResourceKind::Livestock);
+    pub const GEMS: Self = Self::single(ResourceKind::Gems);
+    pub const GOLD: Self = Self::single(ResourceKind::Gold);
+
+    const fn single(resource: ResourceKind) -> Self {
+        Self {
+            primary: resource,
+            secondary: None,
+        }
+    }
+
+    const fn pair(primary: ResourceKind, secondary: ResourceKind) -> Self {
+        Self {
+            primary,
+            secondary: Some(secondary),
+        }
+    }
+
+    pub const fn resources(self) -> (ResourceKind, Option<ResourceKind>) {
+        (self.primary, self.secondary)
+    }
+}
+
 impl GameState {
     /// Recalculates the world's seventeen market commodity prices in retail order.
     pub fn recalculate_trade_prices(&mut self) {
@@ -87,6 +136,56 @@ impl GameState {
             ..
         } = &mut self.nations.majors[nation];
         city.direct_transport(major, resource, requested)
+    }
+
+    /// Steps one retail transport-ledger row down or up by one unit.
+    ///
+    /// This changes the allocation that will be delivered during city and
+    /// transport resolution. It deliberately does not credit city stock now.
+    pub fn step_transport_allocation(
+        &mut self,
+        nation: MajorNationId,
+        allocation: TransportAllocation,
+        delta: i16,
+    ) -> bool {
+        assert!(
+            delta == -1 || delta == 1,
+            "transport ledger steps are one unit"
+        );
+
+        let cotton_first = self.market.rows[TradeCommodity::Cotton].price
+            > self.market.rows[TradeCommodity::Wool].price;
+        let major = &mut self.nations.majors[nation].economy;
+        let current = transport_allocation_total(&major.need_current_by_type, allocation);
+        let target = transport_allocation_total(&major.need_target_by_type, allocation);
+        if current == 0
+            || (delta > 0
+                && (target >= current
+                    || major.capacities.reserved_transport == major.capacities.transport))
+            || (delta < 0 && target <= 0)
+        {
+            return false;
+        }
+
+        let new_target = target + delta;
+        if allocation == TransportAllocation::COTTON_AND_WOOL {
+            let (primary, secondary) = if cotton_first {
+                (ResourceKind::Cotton, ResourceKind::Wool)
+            } else {
+                (ResourceKind::Wool, ResourceKind::Cotton)
+            };
+            split_transport_allocation(major, primary, secondary, new_target);
+        } else if allocation == TransportAllocation::FISH_AND_LIVESTOCK {
+            split_transport_allocation(
+                major,
+                ResourceKind::Fish,
+                ResourceKind::Livestock,
+                new_target,
+            );
+        } else {
+            major.update_need_target(allocation.primary, new_target);
+        }
+        true
     }
 
     /// Spends one lumber and one steel to add one transport-capacity unit.
@@ -257,6 +356,25 @@ impl GameState {
             self.set_diplomacy_grant(nation, target, None);
         }
     }
+}
+
+fn transport_allocation_total(
+    amounts: &ResourceTable<i16>,
+    allocation: TransportAllocation,
+) -> i16 {
+    let (primary, secondary) = allocation.resources();
+    amounts[primary] + secondary.map_or(0, |resource| amounts[resource])
+}
+
+fn split_transport_allocation(
+    major: &mut GreatPowerState,
+    primary: ResourceKind,
+    secondary: ResourceKind,
+    total: i16,
+) {
+    let primary_target = major.need_current_by_type[primary].min(total);
+    major.update_need_target(primary, primary_target);
+    major.update_need_target(secondary, total - primary_target);
 }
 
 fn settle_purchase(
@@ -431,6 +549,58 @@ mod tests {
         assert_eq!(major.budget_pool_delta, 79);
         assert_eq!(major.budget_pool_base, 200);
         assert_eq!(major.special_resource_trade_balance, 30);
+    }
+
+    #[test]
+    fn transport_ledger_steps_grouped_rows_without_settling_city_stock() {
+        let nation = MajorNationId::new(6);
+        let mut game = state();
+        let city_before = game.nations.majors[nation].city.stockpile;
+        let major = &mut game.nations.majors[nation].economy;
+        major.capacities.transport = 10;
+        major.need_current_by_type[ResourceKind::Cotton] = 2;
+        major.need_current_by_type[ResourceKind::Wool] = 2;
+        major.need_current_by_type[ResourceKind::Fish] = 1;
+        major.need_current_by_type[ResourceKind::Livestock] = 2;
+
+        // Equal prices prioritize wool in the recovered ledger.
+        assert!(game.step_transport_allocation(nation, TransportAllocation::COTTON_AND_WOOL, 1));
+        let major = &game.nations.majors[nation].economy;
+        assert_eq!(major.need_target_by_type[ResourceKind::Cotton], 0);
+        assert_eq!(major.need_target_by_type[ResourceKind::Wool], 1);
+
+        game.market.rows[TradeCommodity::Cotton].price += 1;
+        assert!(game.step_transport_allocation(nation, TransportAllocation::COTTON_AND_WOOL, 1));
+        let major = &game.nations.majors[nation].economy;
+        assert_eq!(major.need_target_by_type[ResourceKind::Cotton], 2);
+        assert_eq!(major.need_target_by_type[ResourceKind::Wool], 0);
+
+        assert!(game.step_transport_allocation(nation, TransportAllocation::FISH_AND_LIVESTOCK, 1));
+        assert!(game.step_transport_allocation(nation, TransportAllocation::FISH_AND_LIVESTOCK, 1));
+        assert!(game.step_transport_allocation(
+            nation,
+            TransportAllocation::FISH_AND_LIVESTOCK,
+            -1
+        ));
+        let major = &game.nations.majors[nation].economy;
+        assert_eq!(major.need_target_by_type[ResourceKind::Fish], 1);
+        assert_eq!(major.need_target_by_type[ResourceKind::Livestock], 0);
+        assert_eq!(major.capacities.reserved_transport, 3);
+        assert_eq!(game.nations.majors[nation].city.stockpile, city_before);
+
+        let major = &mut game.nations.majors[nation].economy;
+        major.need_current_by_type[ResourceKind::Hardware] = 2;
+        major.capacities.transport = 3;
+        major.capacities.reserved_transport = 3;
+        assert!(!game.step_transport_allocation(nation, TransportAllocation::HARDWARE, 1));
+        game.nations.majors[nation]
+            .economy
+            .capacities
+            .reserved_transport = 4;
+        assert!(game.step_transport_allocation(nation, TransportAllocation::HARDWARE, 1));
+        let major = &game.nations.majors[nation].economy;
+        assert_eq!(major.need_target_by_type[ResourceKind::Hardware], 1);
+        assert_eq!(major.capacities.reserved_transport, 5);
     }
 
     #[test]
