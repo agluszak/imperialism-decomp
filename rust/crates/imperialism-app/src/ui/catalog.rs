@@ -324,6 +324,10 @@ impl UiAssetResources<'_> {
         Color::srgb_u8(red, green, blue)
     }
 
+    pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
+        self.retail_assets.assets().string(group, direct_index)
+    }
+
     pub(crate) fn picture(
         &mut self,
         picture_id: PictureId,
@@ -428,6 +432,10 @@ impl UiSpawner<'_, '_> {
 
     pub(crate) fn palette_color(&self, index: u8) -> Color {
         self.assets.palette_color(index)
+    }
+
+    pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
+        self.assets.string(group, direct_index)
     }
 
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {

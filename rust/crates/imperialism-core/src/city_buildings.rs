@@ -256,6 +256,20 @@ impl CityState {
     }
 }
 
+impl GameState {
+    /// Records the retail building-window presence and client origin for one city.
+    pub fn set_city_building_window_state(
+        &mut self,
+        nation: MajorNationId,
+        slot: ProductionSlot,
+        state: BuildingWindowState,
+    ) {
+        self.nations
+            .city_mut(nation)
+            .set_building_window_state(slot, state);
+    }
+}
+
 fn region_capacity(owner: &GreatPowerState, owned_region_count: i32) -> i16 {
     let divisor = if owner.pending_actions[PendingActionKind::AnnexedGreatPowerCapitalExpansion]
         .status()
