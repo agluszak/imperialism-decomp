@@ -708,7 +708,7 @@ fn navy_mission_state(mission: &LegacyNavyMission) -> Result<NavyMissionState, L
 }
 
 impl LegacyCityState {
-    fn city_state(&self, home_town_tile: Option<TileId>) -> Result<CityState, LegacySaveError> {
+    fn city_state(&self, home_town: Option<TownState>) -> Result<CityState, LegacySaveError> {
         if !self.tasks.is_empty() {
             return Err(LegacySaveError::StateProjection(
                 "semantic projection of city tasks is not implemented".into(),
@@ -751,7 +751,7 @@ impl LegacyCityState {
             low_production: self.low_production != 0,
             low_stock: self.low_stock != 0,
             reserved_by_type: ResourceTable::from_array(self.reserved_by_type),
-            home_town_tile,
+            home_town,
             power_available: self.power_available,
             stockpile: Stockpile::from_table(ResourceTable::from_array(self.stockpile)),
             production_orders: ProductionTable::from_array(self.production_orders),
@@ -1090,6 +1090,8 @@ pub(crate) struct LegacyProvince {
     pub last_turn_tick: i16,
     pub adjacent_region_count: i8,
     pub adjacent_region_ids: [i16; 12],
+    pub resource_development_by_type: [i16; 10],
+    pub city_score: i32,
     pub region_class: i8,
     pub name: String,
 }
@@ -1592,21 +1594,29 @@ impl LegacySaveV62 {
                     great_power.post_city.towns.len()
                 )));
             }
-            let city = {
-                let home_town = great_power
-                    .post_city
-                    .towns
-                    .first()
-                    .map_or(great_power.country.home_tile, |town| {
-                        i32::from(town.tile_index)
-                    });
-                city.city_state(optional_tile_id(home_town)?)?
-            };
+            let home_town = great_power
+                .post_city
+                .towns
+                .first()
+                .map(|town| {
+                    Ok::<TownState, LegacySaveError>(TownState::new(
+                        optional_tile_id(i32::from(town.tile_index))?.ok_or_else(|| {
+                            LegacySaveError::StateProjection(format!(
+                                "major nation slot {slot} town has no tile"
+                            ))
+                        })?,
+                        retail_boolean(town.transport_linked, "town transport-linked flag")?,
+                        retail_boolean(town.enabled, "town enabled flag")?,
+                        retail_boolean(town.active, "town active flag")?,
+                    ))
+                })
+                .transpose()?;
+            let city = city.city_state(home_town)?;
             let foreign_minister_personality = foreign_minister_personality(
                 nation,
                 self.simulation.game_setup.foreign_minister_policy_ids[slot],
             )?;
-            let (ai_zone_targets, ai_trade) = match nation {
+            let (ai_zone_targets, ai_trade, ai_development_pressure) = match nation {
                 LegacyMajorNationState::Auto(auto) => (
                     Some(ai_zone_targets(
                         &auto.auto_prefix.port_zone_state_flags,
@@ -1618,8 +1628,9 @@ impl LegacySaveV62 {
                             auto.auto_prefix.action_metric_by_quarter,
                         ),
                     }),
+                    Some(AiDevelopmentPressureState::default()),
                 ),
-                LegacyMajorNationState::Other(_) => (None, None),
+                LegacyMajorNationState::Other(_) => (None, None, None),
             };
             majors.push(MajorNation::from_parts(
                 country_common(&great_power.country)?,
@@ -1628,6 +1639,7 @@ impl LegacySaveV62 {
                     foreign_minister_personality,
                     ai_zone_targets,
                     ai_trade,
+                    ai_development_pressure,
                 )?,
                 city,
             ));
@@ -2130,6 +2142,7 @@ fn great_power_state(
     foreign_minister_personality: ForeignMinisterPersonality,
     ai_zone_targets: Option<Vec<AiZoneTargetState>>,
     ai_trade: Option<AiTradeState>,
+    ai_development_pressure: Option<AiDevelopmentPressureState>,
 ) -> Result<GreatPowerState, LegacySaveError> {
     let prefix = &nation.prefix;
     let post = &nation.post_city;
@@ -2199,7 +2212,12 @@ fn great_power_state(
         ),
         deal_book: deal_book_state(&prefix.relationship_lists, nation.country.nation_slot)?,
         pending_ship: pending_ship(interior_minister, nation.country.nation_slot)?,
+        interior_civilian: Box::new(interior_civilian_state(
+            interior_minister,
+            nation.country.nation_slot,
+        )?),
         ai_trade,
+        ai_development_pressure,
         aid_allocation_by_minor_nation: MinorNationTable::from_array(
             prefix
                 .aid_allocation_by_minor_nation
@@ -2227,6 +2245,39 @@ fn great_power_state(
         colony_boycott_flags: NationTable::from_array(post.colony_boycott_flags),
         military_expenses: post.military_expenses,
     })
+}
+
+fn interior_civilian_state(
+    minister: &LegacyInteriorMinisterState,
+    nation: i16,
+) -> Result<InteriorCivilianState, LegacySaveError> {
+    let pending_recruitment = match minister.order_scalars[3] {
+        -1 => None,
+        value => Some(
+            u8::try_from(value)
+                .ok()
+                .and_then(CivilianUnitKind::from_index)
+                .ok_or_else(|| {
+                    LegacySaveError::StateProjection(format!(
+                        "major nation {nation} pending civilian recruitment kind {value} is out of range"
+                    ))
+                })?,
+        ),
+    };
+    let resource_order_metrics = ResourceTable::from_array(
+        minister.order_metrics[..RESOURCE_KIND_COUNT]
+            .try_into()
+            .expect("resource metric prefix has the fixed resource-table length"),
+    );
+    Ok(InteriorCivilianState::from_parts(
+        pending_recruitment,
+        optional_tile_id(i32::from(minister.order_scalars[6]))?,
+        resource_order_metrics,
+        ResourceTable::from_array(minister.order_type_tables[0]),
+        ResourceTable::from_array(minister.order_type_tables[1]),
+        ResourceTable::from_array(minister.order_type_tables[2]),
+        ResourceTable::from_array(minister.civilian_order_demand_by_resource),
+    ))
 }
 
 fn validate_pending_action(status: i8, payload: i16) -> Result<(), LegacySaveError> {
@@ -2391,12 +2442,27 @@ fn province_state(
             )));
         }
     };
+    let mut resource_development_by_type = ResourceTable::default();
+    for (offset, amount) in province
+        .resource_development_by_type
+        .iter()
+        .copied()
+        .enumerate()
+    {
+        let resource = ResourceKind::from_index((ResourceKind::Food as usize + offset) as u8)
+            .expect("province resource-development table spans food through arms");
+        resource_development_by_type[resource] = amount;
+    }
 
     ProvinceState::new(
         optional_owner(province.owner_nation, "owner")?,
         optional_owner(province.former_owner_nation, "former-owner")?,
         adjacency,
         region_class,
+        province.fort_level,
+        optional_tile_id(i32::from(province.city_tile))?,
+        resource_development_by_type,
+        province.city_score,
     )
     .map_err(|error| {
         LegacySaveError::StateProjection(format!("province {index} is invalid: {error}"))
@@ -2848,21 +2914,39 @@ fn read_technology_state(
     stream: &mut LegacyStream<'_>,
 ) -> Result<TechnologyState, LegacySaveError> {
     let bytes = stream.read_bytes(TECH_SERIALIZED_SIZE_V62)?;
-    let researched = |nation: usize, technology: usize| {
+    let status = |nation: usize, technology: usize| {
         let offset = TECH_ORDER_CAP_ROWS_OFFSET_V62 + nation * TECH_ORDER_CAP_ROW_SIZE + technology;
-        match bytes[offset] {
-            0 | 1 => Ok(false),
-            2 => Ok(true),
-            value => Err(LegacySaveError::StateProjection(format!(
+        let value = bytes[offset];
+        if value <= 2 {
+            Ok(value)
+        } else {
+            Err(LegacySaveError::StateProjection(format!(
                 "major nation {nation} technology {technology} status {value} is invalid"
-            ))),
+            )))
         }
+    };
+    let researched = |nation: usize, technology: usize| {
+        Ok::<bool, LegacySaveError>(status(nation, technology)? == 2)
     };
     let mut city_capabilities_by_nation =
         std::array::from_fn(|_| CityTechnologyCapabilities::default());
     for (nation, capabilities) in city_capabilities_by_nation.iter_mut().enumerate() {
         capabilities.advanced_iron_working = researched(nation, TECH_ADVANCED_IRON_WORKING_ID)?;
         capabilities.oil_drilling = researched(nation, TECH_OIL_DRILLING_ID)?;
+        capabilities.primary_civilian_distance_terrain = CivilianTerrainAccess {
+            hills: researched(nation, 12)?,
+            mountain: researched(nation, 23)?,
+            swamp: researched(nation, 6)?,
+        };
+        capabilities.secondary_civilian_hills = researched(nation, 11)?;
+        capabilities.secondary_civilian_swamp = researched(nation, 5)?;
+        capabilities.fort_level_cap = if status(nation, 22)? != 0 {
+            FortLevelCap::THREE
+        } else if status(nation, 11)? != 0 {
+            FortLevelCap::TWO
+        } else {
+            FortLevelCap::ONE
+        };
 
         let mut available = [false; TECH_UNIVERSITY_AVAILABILITY_ROW_SIZE];
         for (category, value) in available.iter_mut().enumerate() {
@@ -4251,6 +4335,11 @@ fn read_province(stream: &mut LegacyStream<'_>) -> Result<LegacyProvince, Stream
             let offset = 0x0a + index * 2;
             i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
         }),
+        resource_development_by_type: std::array::from_fn(|index| {
+            let offset = 0x82 + index * 2;
+            i16::from_le_bytes(bytes[offset..offset + 2].try_into().unwrap())
+        }),
+        city_score: i32::from_le_bytes(bytes[0x9c..0xa0].try_into().unwrap()),
         region_class: bytes[0xa3] as i8,
         name,
     })
@@ -4553,6 +4642,12 @@ mod tests {
                 .university
                 .requirement_levels[ResourceKind::Oil],
             3
+        );
+        assert_eq!(
+            technology.city_capabilities_by_nation[MajorNationId::new(3)]
+                .fort_level_cap
+                .get(),
+            1
         );
         assert_eq!(stream.position(), TECH_SERIALIZED_SIZE_V62);
 
@@ -4990,7 +5085,32 @@ mod tests {
         assert!(state.nations.majors().all(|nation| {
             nation.economy().development_grant_by_nation == NationTable::<i16>::default()
                 && nation.economy().defense_minister_skill_index == 0
+                && *nation.economy().interior_civilian == InteriorCivilianState::default()
         }));
+        assert!(state.nations.majors().take(6).all(|nation| {
+            nation.economy().ai_development_pressure == Some(AiDevelopmentPressureState::default())
+        }));
+        assert_eq!(
+            state
+                .nations
+                .major(MajorNationId::new(6))
+                .economy()
+                .ai_development_pressure,
+            None
+        );
+        assert_eq!(
+            state
+                .nations
+                .majors()
+                .map(|nation| nation.city().home_town)
+                .collect::<Vec<_>>(),
+            [3_494, 2_992, 2_862, 1_563, 1_420, 4_555, 1_685].map(|tile| Some(TownState::new(
+                TileId::new(tile),
+                true,
+                true,
+                true
+            )))
+        );
         assert_eq!(
             state
                 .nations
@@ -5021,6 +5141,13 @@ mod tests {
         assert_eq!(province_zero.former_owner(), Some(NationId::new(12)));
         assert_eq!(province_zero.adjacency(), [8, 1, 17].map(ProvinceId::new));
         assert_eq!(province_zero.region_class(), Some(0));
+        assert_eq!(province_zero.fort_level(), 0);
+        assert_eq!(province_zero.city_tile(), Some(TileId::new(695)));
+        assert_eq!(
+            province_zero.resource_development_by_type(),
+            &ResourceTable::default()
+        );
+        assert_eq!(province_zero.city_score(), 0);
 
         let province_seventy_nine = &state.provinces[ProvinceId::new(79)];
         assert_eq!(province_seventy_nine.owner(), Some(NationId::new(0)));
@@ -5029,6 +5156,13 @@ mod tests {
             [71, 72, 80, 78, 89, 90].map(ProvinceId::new)
         );
         assert_eq!(province_seventy_nine.region_class(), Some(4));
+        assert_eq!(province_seventy_nine.fort_level(), 0);
+        assert_eq!(province_seventy_nine.city_tile(), Some(TileId::new(3_706)));
+        assert_eq!(
+            province_seventy_nine.resource_development_by_type(),
+            &ResourceTable::default()
+        );
+        assert_eq!(province_seventy_nine.city_score(), 0);
 
         for province in 120..PROVINCE_COUNT {
             assert_eq!(
@@ -5319,8 +5453,13 @@ mod tests {
         );
         assert_eq!(city_suffix_offset, 0x4fbf6);
 
-        let city_state = city.city_state(Some(TileId::new(3_494))).unwrap();
-        assert_eq!(city_state.home_town_tile, Some(TileId::new(3_494)));
+        let city_state = city
+            .city_state(Some(TownState::new(TileId::new(3_494), true, true, true)))
+            .unwrap();
+        assert_eq!(
+            city_state.home_town.map(TownState::tile),
+            Some(TileId::new(3_494))
+        );
         assert_eq!(*city_state.orders, CityOrders::default());
         assert_eq!(
             city_state.population.accumulator().get().to_bits(),

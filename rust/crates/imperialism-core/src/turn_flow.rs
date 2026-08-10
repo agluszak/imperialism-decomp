@@ -93,6 +93,15 @@ impl GameState {
                     effects: vec![TurnEffect::ShowOfferSheet { nation }],
                 }
             }
+            crate::PhaseCode::OFFER_SHEET if self.supports_first_turn_civilian_phase() => {
+                self.run_civilian_phase();
+                self.turn.phase = crate::PhaseCode::MILITARY;
+                AdvanceTurnOutcome::Continues {
+                    from,
+                    to: crate::PhaseCode::MILITARY,
+                    effects: Vec::new(),
+                }
+            }
             crate::PhaseCode::SEASON_ADVANCE => {
                 self.turn.phase = crate::PhaseCode::TECHNOLOGY_ADVANCES;
                 self.turn.advance_season();
