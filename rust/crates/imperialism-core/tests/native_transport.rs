@@ -28,24 +28,18 @@ fn direct_transport() {
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn transport_need_allocation() {
-    compare_native(
-        "transport_need_allocation",
-        |state, case: NationCase| {
-            state.allocate_transport_needs(case.nation);
-        },
-    )
+    compare_native("transport_need_allocation", |state, case: NationCase| {
+        state.allocate_transport_needs(case.nation);
+    })
     .unwrap();
 }
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn transported_items_phase() {
-    compare_native(
-        "transported_items_phase",
-        |state, case: NationCase| {
-            state.settle_transported_items(case.nation);
-        },
-    )
+    compare_native("transported_items_phase", |state, case: NationCase| {
+        state.settle_transported_items(case.nation);
+    })
     .unwrap();
 }
 

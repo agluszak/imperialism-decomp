@@ -7,7 +7,9 @@ use std::fmt::Debug;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-use crate::{EvidenceKind, RuntimeResultExpectations, first_serialized_difference, read_runtime_result};
+use crate::{
+    EvidenceKind, RuntimeResultExpectations, first_serialized_difference, read_runtime_result,
+};
 
 const NATIVE_ORACLE: &str = "native_transition_oracle";
 const NATIVE_CASE_ENV: &str = "IMPERIALISM_NATIVE_CASE";

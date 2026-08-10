@@ -25,26 +25,32 @@ struct NationCase {
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn city_item_order_increase() {
-    compare_native("city_item_order_increase", |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(
-            case.nation,
-            CityOrderId::Item(case.output),
-            case.quantity,
-        )
-    })
+    compare_native(
+        "city_item_order_increase",
+        |state, case: CityItemOrderCase| {
+            state.set_city_order_quantity(
+                case.nation,
+                CityOrderId::Item(case.output),
+                case.quantity,
+            )
+        },
+    )
     .unwrap();
 }
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn city_item_order_decrease() {
-    compare_native("city_item_order_decrease", |state, case: CityItemOrderCase| {
-        state.set_city_order_quantity(
-            case.nation,
-            CityOrderId::Item(case.output),
-            case.quantity,
-        )
-    })
+    compare_native(
+        "city_item_order_decrease",
+        |state, case: CityItemOrderCase| {
+            state.set_city_order_quantity(
+                case.nation,
+                CityOrderId::Item(case.output),
+                case.quantity,
+            )
+        },
+    )
     .unwrap();
 }
 

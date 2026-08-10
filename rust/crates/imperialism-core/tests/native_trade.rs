@@ -93,24 +93,18 @@ fn recall_trade_bids() {
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn player_trade_phase_reset() {
-    compare_native(
-        "player_trade_phase_reset",
-        |state, case: NationCase| {
-            state.reset_player_trade_phase(case.nation);
-        },
-    )
+    compare_native("player_trade_phase_reset", |state, case: NationCase| {
+        state.reset_player_trade_phase(case.nation);
+    })
     .unwrap();
 }
 
 #[test]
 #[ignore = "requires the native C++ oracle"]
 fn trade_capacity_refresh() {
-    compare_native(
-        "trade_capacity_refresh",
-        |state, case: NationCase| {
-            state.refresh_merchant_capacity(case.nation);
-        },
-    )
+    compare_native("trade_capacity_refresh", |state, case: NationCase| {
+        state.refresh_merchant_capacity(case.nation);
+    })
     .unwrap();
 }
 
