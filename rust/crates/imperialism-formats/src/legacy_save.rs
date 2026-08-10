@@ -2471,6 +2471,7 @@ fn province_state(
 
 fn country_common(country: &LegacyCountryBase) -> Result<NationCommonState, LegacySaveError> {
     Ok(NationCommonState {
+        display_name: normalize_nation_display_name(&country.alternate_identity),
         status: country_status_from_retail(country.encoded_nation_slot)?,
         owned_regions: country
             .owned_regions
@@ -4439,6 +4440,20 @@ fn lossy_text(bytes: &[u8]) -> String {
     String::from_utf8_lossy(bytes).into_owned()
 }
 
+/// Mirrors the live, language-table-loaded `NormalizeRuntimeCredentialNameToken`
+/// pass used by the Diplomacy map on `TCountry::identitySharedString1`.
+fn normalize_nation_display_name(raw: &str) -> String {
+    let mut characters = raw.chars();
+    let Some(first) = characters.next() else {
+        return String::new();
+    };
+    if first == '(' || first.is_ascii_uppercase() {
+        raw.to_owned()
+    } else {
+        characters.as_str().to_owned()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -5560,6 +5575,7 @@ mod tests {
         .unwrap();
         assert_eq!(player_major.country.nation_slot, 6);
         assert_eq!(player_major.country.identity, " Testland");
+        assert_eq!(player_major.country.alternate_identity, " Testland");
         assert!(minor_nations_offset > nation_offset);
 
         let mut minor_offset = minor_nations_offset;
@@ -5589,6 +5605,12 @@ mod tests {
             })
             .unwrap();
         assert_eq!(game.market, save.market);
+        assert_eq!(game.nations.display_name(NationId::new(0)), Some("Zimm"));
+        assert_eq!(
+            game.nations.display_name(NationId::new(6)),
+            Some("Testland")
+        );
+        assert_eq!(game.nations.display_name(NationId::new(22)), Some("Sindel"));
         let expected_civilian_count = save
             .major_nations
             .iter()

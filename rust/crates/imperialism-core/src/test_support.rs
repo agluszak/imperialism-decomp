@@ -99,6 +99,7 @@ pub(crate) fn great_power_state() -> GreatPowerState {
 pub(crate) fn major_nation() -> MajorNation {
     MajorNation {
         common: NationCommonState {
+            display_name: String::new(),
             status: crate::CountryStatus::Independent,
             owned_regions: Vec::new(),
             treasury: 1_000,

@@ -539,6 +539,7 @@ mod tests {
     fn state() -> GameState {
         let majors = crate::MajorNationTable::from_fn(|_nation| MajorNation {
             common: NationCommonState {
+                display_name: String::new(),
                 status: crate::CountryStatus::Independent,
                 owned_regions: Vec::new(),
                 treasury: 1_000,

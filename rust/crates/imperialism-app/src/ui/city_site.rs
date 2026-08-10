@@ -114,7 +114,7 @@ fn render_city_site_map(
         return;
     };
     let palette_indices =
-        compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selected);
+        compose_owner_preview_indices(|tile| session.0.world[tile].owner_nation, selected.nation());
     let palette = retail_assets.assets().default_dib_palette();
     let image = preview_image_from_indices(&palette_indices, palette);
     for (entity, image_node) in &mut maps {

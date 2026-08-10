@@ -1,6 +1,7 @@
 mod catalog;
 mod city;
 mod city_site;
+mod diplomacy;
 mod game_shell;
 mod main_menu;
 mod random_setup;
@@ -11,6 +12,7 @@ mod transport;
 pub(crate) use catalog::{UiCatalogPlugin, UiCatalogResource};
 pub(crate) use city::CityPlugin;
 pub(crate) use city_site::CitySitePlugin;
+pub(crate) use diplomacy::DiplomacyPlugin;
 pub(crate) use game_shell::GameShellPlugin;
 pub(crate) use main_menu::MainMenuPlugin;
 pub(crate) use random_setup::RandomSetupPlugin;
@@ -26,6 +28,7 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
     city::validate_application_bindings(catalog)?;
     transport::validate_application_bindings(catalog)?;
     trade::validate_application_bindings(catalog)?;
+    diplomacy::validate_application_bindings(catalog)?;
     game_shell::validate_application_bindings(catalog)
 }
 

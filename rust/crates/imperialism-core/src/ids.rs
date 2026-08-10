@@ -24,7 +24,7 @@ impl NationId {
         self.0
     }
 
-    pub(crate) fn all() -> impl ExactSizeIterator<Item = Self> {
+    pub fn all() -> impl ExactSizeIterator<Item = Self> {
         (0..Self::COUNT).map(Self::new)
     }
 }

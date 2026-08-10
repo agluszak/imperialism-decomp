@@ -97,6 +97,24 @@ impl Nations {
         self.minors.iter().flatten().count()
     }
 
+    /// Returns the normalized display name used by retail nation-facing UI.
+    pub fn display_name(&self, nation: NationId) -> Option<&str> {
+        self.common(nation)
+            .map(|common| common.display_name.as_str())
+    }
+
+    pub fn country_status(&self, nation: NationId) -> Option<crate::CountryStatus> {
+        self.common(nation).map(|common| common.status)
+    }
+
+    pub fn owned_region_count(&self, nation: NationId) -> Option<usize> {
+        self.common(nation).map(|common| common.owned_regions.len())
+    }
+
+    pub fn home_tile(&self, nation: NationId) -> Option<TileId> {
+        self.common(nation).and_then(|common| common.home_tile)
+    }
+
     pub(crate) fn common(&self, nation: NationId) -> Option<&NationCommonState> {
         if let Some(nation) = MajorNationId::from_nation(nation) {
             Some(&self.majors[nation].common)
@@ -149,6 +167,7 @@ impl MajorNation {
     ) -> Self {
         Self {
             common: NationCommonState {
+                display_name: String::new(),
                 status: crate::CountryStatus::Independent,
                 owned_regions: Vec::new(),
                 treasury,
@@ -1003,6 +1022,7 @@ impl DiplomacyState {
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct NationCommonState {
+    pub display_name: String,
     pub status: crate::CountryStatus,
     pub owned_regions: Vec<ProvinceId>,
     pub treasury: i32,

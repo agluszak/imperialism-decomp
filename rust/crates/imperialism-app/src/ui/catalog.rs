@@ -318,6 +318,21 @@ pub(crate) struct UiAssetResources<'w> {
 }
 
 impl UiAssetResources<'_> {
+    pub(crate) fn default_dib_palette(&self) -> &DibPalette {
+        self.retail_assets.assets().default_dib_palette()
+    }
+
+    pub(crate) fn add_image(&mut self, image: Image) -> Handle<Image> {
+        self.images.add(image)
+    }
+
+    pub(crate) fn replace_image(&mut self, handle: &Handle<Image>, image: Image) {
+        *self
+            .images
+            .get_mut(handle)
+            .expect("application-owned image handle remains loaded") = image;
+    }
+
     pub(crate) fn palette_color(&self, index: u8) -> Color {
         let [red, green, blue] =
             self.retail_assets.assets().default_dib_palette()[index].to_array();
@@ -436,6 +451,12 @@ impl UiSpawner<'_, '_> {
 
     pub(crate) fn string(&self, group: i16, direct_index: i16) -> Result<String, RetailAssetError> {
         self.assets.string(group, direct_index)
+    }
+    pub(crate) fn text_style(
+        &mut self,
+        preset: RetailTextStylePreset,
+    ) -> Result<(TextFont, TextLayout, bool), UiTextBindingError> {
+        self.assets.text_style(preset)
     }
 
     pub(crate) fn spawn(&mut self, view_id: ScopedViewId) -> SpawnedView {

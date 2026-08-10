@@ -1324,6 +1324,9 @@ JSON_Value* CaptureNationCommon(TCountry* country) {
     FailSemanticCapture("country has no owned-region list");
   }
   JsonObject common;
+  CString displayName;
+  country->LoadNationDisplayNameSharedRefFromField8(&displayName);
+  common.Set("display_name", static_cast<const char*>(displayName));
   JsonObject status;
   if (country->encodedNationSlot == -1) {
     status.Set("kind", "independent");

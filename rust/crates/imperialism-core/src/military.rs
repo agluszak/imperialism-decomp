@@ -6,11 +6,9 @@ const NAVY_ARMS_BY_SHIP_TYPE: ShipTypeTable<i32> =
     ShipTypeTable::from_array([0, 0, 0, 2, 5, 0, 0, 3, 6, 15, 0, 8, 24, 18]);
 
 impl GameState {
-    /// Charges one major nation for its current army and navy.
-    pub fn pay_for_military(&mut self, nation: MajorNationId) {
+    pub(crate) fn military_power_score(&self, nation: MajorNationId) -> i32 {
         let nation_id = nation.nation();
-        let arms = self
-            .military_units
+        self.military_units
             .iter()
             .filter(|unit| unit.nation == nation_id)
             .map(|unit| unit.unit_type.arms_required())
@@ -20,7 +18,13 @@ impl GameState {
                 .iter()
                 .filter(|ship| ship.nation == nation_id)
                 .map(|ship| NAVY_ARMS_BY_SHIP_TYPE[ship.ship_type])
-                .sum::<i32>();
+                .sum::<i32>()
+            + 4
+    }
+
+    /// Charges one major nation for its current army and navy.
+    pub fn pay_for_military(&mut self, nation: MajorNationId) {
+        let arms = self.military_power_score(nation) - 4;
         let charge = arms * MILITARY_MAINTENANCE_MULTIPLIER;
 
         let MajorNation {
