@@ -78,6 +78,70 @@ const TRAINING_ORDERS: [CityOrderBinding; 2] = [
         tag: fourcc!("prof"),
     },
 ];
+const UNIVERSITY_ORDERS: [CityOrderBinding; 7] = [
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Miner),
+        tag: fourcc!("clu0"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Prospector),
+        tag: fourcc!("clu1"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Farmer),
+        tag: fourcc!("clu2"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Forester),
+        tag: fourcc!("clu3"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Engineer),
+        tag: fourcc!("clu4"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Rancher),
+        tag: fourcc!("clu5"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::CivilianRecruit(CivilianUnitKind::Driller),
+        tag: fourcc!("clu8"),
+    },
+];
+const SHIP_ORDERS: [CityOrderBinding; 8] = [
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlyPrimary),
+        tag: fourcc!("clu0"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::MerchantEarlySecondary),
+        tag: fourcc!("clu1"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::MerchantAdvancedPrimary),
+        tag: fourcc!("clu2"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::MerchantAdvancedSecondary),
+        tag: fourcc!("clu3"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::WarshipEarlyPrimary),
+        tag: fourcc!("clu4"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::WarshipEarlySecondary),
+        tag: fourcc!("clu5"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::WarshipAdvancedPrimary),
+        tag: fourcc!("clu6"),
+    },
+    CityOrderBinding {
+        order: CityOrderId::Ship(ShipOrderSlot::WarshipAdvancedSecondary),
+        tag: fourcc!("clu7"),
+    },
+];
 const FOOD_ORDERS: [CityOrderBinding; 1] = [CityOrderBinding {
     order: CityOrderId::FoodProcessing,
     tag: fourcc!("food"),
@@ -153,6 +217,26 @@ struct CityOrderBinding {
     tag: FourCc,
 }
 
+struct UniversityRowText {
+    unit_name: String,
+    description: String,
+}
+
+struct UniversityDialogData {
+    available: CivilianUnitTable<bool>,
+    rows: [UniversityRowText; UNIVERSITY_ORDERS.len()],
+}
+
+struct ShipyardRowData {
+    ship_name: String,
+    description: String,
+    picture: Handle<Image>,
+}
+
+struct ShipyardDialogData {
+    rows: [Option<ShipyardRowData>; SHIP_ORDERS.len()],
+}
+
 #[derive(Clone, Copy)]
 struct IndustryPage {
     slot: ProductionSlot,
@@ -207,6 +291,10 @@ fn dialog_orders(slot: ProductionSlot) -> &'static [CityOrderBinding] {
         page.orders
     } else if slot == ProductionSlot::TradeSchool {
         &TRAINING_ORDERS
+    } else if slot == ProductionSlot::University {
+        &UNIVERSITY_ORDERS
+    } else if slot == ProductionSlot::Shipyard {
+        &SHIP_ORDERS
     } else if slot == ProductionSlot::FoodProcessing {
         &FOOD_ORDERS
     } else if slot == ProductionSlot::PowerPlant {
@@ -232,6 +320,34 @@ const fn armory_button_tag(category: MilitaryRecruitmentCategory) -> FourCc {
         MilitaryRecruitmentCategory::LightArtillery => fourcc!("civ5"),
         MilitaryRecruitmentCategory::HeavyArtillery => fourcc!("civ6"),
         MilitaryRecruitmentCategory::Demolitionist => fourcc!("civ7"),
+    }
+}
+
+const fn university_button_tag(kind: CivilianUnitKind) -> FourCc {
+    match kind {
+        CivilianUnitKind::Miner => fourcc!("civ0"),
+        CivilianUnitKind::Prospector => fourcc!("civ1"),
+        CivilianUnitKind::Farmer => fourcc!("civ2"),
+        CivilianUnitKind::Forester => fourcc!("civ3"),
+        CivilianUnitKind::Engineer => fourcc!("civ4"),
+        CivilianUnitKind::Rancher => fourcc!("civ5"),
+        CivilianUnitKind::Driller => fourcc!("civ8"),
+        CivilianUnitKind::Fisherman | CivilianUnitKind::Developer => {
+            panic!("retail University skips civilian rows 6 and 7")
+        }
+    }
+}
+
+const fn shipyard_button_tag(slot: ShipOrderSlot) -> FourCc {
+    match slot {
+        ShipOrderSlot::MerchantEarlyPrimary => fourcc!("but0"),
+        ShipOrderSlot::MerchantEarlySecondary => fourcc!("but1"),
+        ShipOrderSlot::MerchantAdvancedPrimary => fourcc!("but2"),
+        ShipOrderSlot::MerchantAdvancedSecondary => fourcc!("but3"),
+        ShipOrderSlot::WarshipEarlyPrimary => fourcc!("but4"),
+        ShipOrderSlot::WarshipEarlySecondary => fourcc!("but5"),
+        ShipOrderSlot::WarshipAdvancedPrimary => fourcc!("but6"),
+        ShipOrderSlot::WarshipAdvancedSecondary => fourcc!("but7"),
     }
 }
 
@@ -471,6 +587,60 @@ pub(crate) fn validate_application_bindings(catalog: &UiCatalogResource) -> Resu
             catalog.require_control_under(armory, tag, &[binding.tag])?;
         }
     }
+    let shipyard = dialog(ProductionSlot::Shipyard)?;
+    catalog.require_unique_bindings(
+        shipyard,
+        &[
+            fourcc!("WIND"),
+            fourcc!("DLOG"),
+            fourcc!("sele"),
+            fourcc!("titl"),
+            fourcc!("snam"),
+            fourcc!("desc"),
+            fourcc!("spic"),
+        ],
+    )?;
+    for binding in &SHIP_ORDERS {
+        let CityOrderId::Ship(slot) = binding.order else {
+            unreachable!("Shipyard binding has a ship order");
+        };
+        catalog.require_unique_bindings(shipyard, &[shipyard_button_tag(slot)])?;
+        for tag in [fourcc!("minu"), fourcc!("plus"), fourcc!("numb")] {
+            catalog.require_control_under(shipyard, tag, &[binding.tag])?;
+        }
+    }
+    let university = dialog(ProductionSlot::University)?;
+    catalog.require_unique_bindings(
+        university,
+        &[
+            fourcc!("WIND"),
+            fourcc!("DLOG"),
+            fourcc!("sele"),
+            fourcc!("titl"),
+            fourcc!("unit"),
+            fourcc!("desc"),
+            fourcc!("fix0"),
+            fourcc!("fix1"),
+            fourcc!("fix2"),
+            fourcc!("fix3"),
+            fourcc!("fix4"),
+            fourcc!("cexp"),
+            fourcc!("cpap"),
+            fourcc!("cash"),
+            fourcc!("aexp"),
+            fourcc!("apap"),
+            fourcc!("trea"),
+        ],
+    )?;
+    for binding in &UNIVERSITY_ORDERS {
+        let CityOrderId::CivilianRecruit(kind) = binding.order else {
+            unreachable!("University binding has a civilian recruitment order");
+        };
+        catalog.require_unique_bindings(university, &[university_button_tag(kind)])?;
+        for tag in [fourcc!("minu"), fourcc!("plus"), fourcc!("numb")] {
+            catalog.require_control_under(university, tag, &[binding.tag])?;
+        }
+    }
     catalog.require_unique_bindings(
         &expansion_dialog_view_id(),
         &[
@@ -688,6 +858,38 @@ struct ArmoryRowChoice {
 }
 
 #[derive(Component, Clone, Copy)]
+struct UniversitySelection {
+    kind: CivilianUnitKind,
+}
+
+#[derive(Component)]
+struct UniversityRowChoice {
+    dialog: Entity,
+    kind: CivilianUnitKind,
+    unit_name: String,
+    description: String,
+}
+
+#[derive(Component, Clone, Copy)]
+struct ShipyardSelection {
+    slot: ShipOrderSlot,
+}
+
+#[derive(Component)]
+struct ShipyardRowChoice {
+    dialog: Entity,
+    slot: ShipOrderSlot,
+    ship_name: String,
+    description: String,
+    picture: Handle<Image>,
+}
+
+#[derive(Component, Clone, Copy)]
+struct ShipyardDetailPicture {
+    dialog: Entity,
+}
+
+#[derive(Component, Clone, Copy)]
 enum CityValue {
     LaborLow,
     LaborMedium,
@@ -698,6 +900,8 @@ enum CityValue {
     PredictedNeed(ResourceKind),
     OrderQuantity(CityOrderId),
     ArmoryOrderQuantity(MilitaryRecruitmentCategory),
+    UniversityOrderQuantity(CivilianUnitKind),
+    ShipyardOrderQuantity(ShipOrderSlot),
     LaborIndicator,
     StockIndicator(ResourceKind, i16),
     AvailableStockIndicator(ResourceKind, i16),
@@ -716,6 +920,15 @@ enum CityValue {
     ArmoryPrimaryAvailable,
     ArmorySecondaryAvailable,
     ArmoryTreasuryAvailable,
+    UniversityUnitName,
+    UniversityDescription,
+    UniversityWorkforceCost,
+    UniversityPaperCost,
+    UniversityCashCost,
+    UniversityWorkforceAvailable,
+    UniversityPaperAvailable,
+    ShipyardName,
+    ShipyardDescription,
 }
 
 #[derive(Component, Clone, Copy)]
@@ -758,6 +971,8 @@ impl Plugin for CityPlugin {
             .add_observer(on_city_dialog_close)
             .add_observer(on_city_canvas_click)
             .add_observer(on_armory_row_selected)
+            .add_observer(on_university_row_selected)
+            .add_observer(on_shipyard_row_selected)
             .add_observer(on_city_amount_bar_click)
             .add_observer(on_city_expansion_open)
             .add_observer(on_city_expansion_choice)
@@ -1216,6 +1431,7 @@ fn on_city_canvas_click(
     open_city_dialog(
         &mut ui,
         &catalog,
+        &session.0,
         nation,
         building.slot,
         building.dialog.clone(),
@@ -1230,6 +1446,8 @@ fn supports_city_dialog(slot: ProductionSlot) -> bool {
             slot,
             ProductionSlot::TradeSchool
                 | ProductionSlot::Armory
+                | ProductionSlot::University
+                | ProductionSlot::Shipyard
                 | ProductionSlot::FoodProcessing
                 | ProductionSlot::PowerPlant
                 | ProductionSlot::Transport
@@ -1253,9 +1471,28 @@ fn format_retail_number(template: &str, value: i16) -> String {
     }
 }
 
+fn format_currency(value: i32) -> String {
+    let negative = value < 0;
+    let digits = i64::from(value).abs().to_string();
+    let mut grouped = String::with_capacity(digits.len() + digits.len() / 3);
+    for (index, digit) in digits.chars().enumerate() {
+        if index != 0 && (digits.len() - index).is_multiple_of(3) {
+            grouped.push(',');
+        }
+        grouped.push(digit);
+    }
+    if negative {
+        format!("-${grouped}")
+    } else {
+        format!("${grouped}")
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
 fn open_city_dialog(
     ui: &mut UiSpawner,
     catalog: &UiCatalogResource,
+    state: &GameState,
     nation: MajorNationId,
     slot: ProductionSlot,
     view_id: ScopedViewId,
@@ -1272,6 +1509,49 @@ fn open_city_dialog(
     let armory_title = (slot == ProductionSlot::Armory).then(|| {
         ui.string(0x271c, 0x20)
             .expect("validated English retail Armory title")
+    });
+    let university_data = (slot == ProductionSlot::University).then(|| UniversityDialogData {
+        available: state.technology.city_capabilities_by_nation[nation]
+            .university
+            .available,
+        rows: UNIVERSITY_ORDERS.map(|binding| {
+            let CityOrderId::CivilianRecruit(kind) = binding.order else {
+                unreachable!("University binding has a civilian recruitment order");
+            };
+            UniversityRowText {
+                unit_name: ui
+                    .string(0x2718, i16::from(kind as u8) + 1)
+                    .expect("validated English retail civilian name"),
+                description: ui
+                    .string(0x2751, i16::from(kind as u8))
+                    .expect("validated English retail civilian description"),
+            }
+        }),
+    });
+    let shipyard_data = (slot == ProductionSlot::Shipyard).then(|| {
+        let city = state.nations.major(nation).city();
+        ShipyardDialogData {
+            rows: SHIP_ORDERS.map(|binding| {
+                let CityOrderId::Ship(slot) = binding.order else {
+                    unreachable!("Shipyard binding has a ship order");
+                };
+                let ship_type = city.orders.ships[slot].ship_type;
+                if ship_type == ShipType::NoShip {
+                    return None;
+                }
+                Some(ShipyardRowData {
+                    ship_name: ui
+                        .string(0x2716, ship_type as i16 + 1)
+                        .expect("validated English retail ship name"),
+                    description: ui
+                        .string(0x2752, ship_type as i16)
+                        .expect("validated English retail ship description"),
+                    picture: ui
+                        .picture(PictureId::new(9834 + ship_type as i16))
+                        .expect("validated retail Shipyard detail picture"),
+                })
+            }),
+        }
     });
     let spawned = ui.spawn(view_id);
     if let Some(page) = industry_page(slot) {
@@ -1296,6 +1576,20 @@ fn open_city_dialog(
                 &spawned,
                 nation,
                 armory_title.expect("Armory branch has its retail title"),
+            ),
+            ProductionSlot::University => bind_university_dialog(
+                &mut ui.commands,
+                catalog,
+                &spawned,
+                nation,
+                university_data.expect("University branch has retail text and technology"),
+            ),
+            ProductionSlot::Shipyard => bind_shipyard_dialog(
+                &mut ui.commands,
+                catalog,
+                &spawned,
+                nation,
+                shipyard_data.expect("Shipyard branch has retail ship data"),
             ),
             ProductionSlot::FoodProcessing => {
                 bind_food_dialog(&mut ui.commands, catalog, &spawned, nation, building_name)
@@ -1450,6 +1744,7 @@ fn restore_city_dialogs(
         open_city_dialog(
             &mut ui,
             &catalog,
+            &session.0,
             nation,
             building.slot,
             building.dialog,
@@ -1933,6 +2228,232 @@ fn bind_armory_dialog(
             },
         ));
     }
+}
+
+fn bind_university_dialog(
+    commands: &mut Commands,
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+    nation: MajorNationId,
+    data: UniversityDialogData,
+) {
+    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::University);
+    commands.entity(root).insert(UniversitySelection {
+        kind: CivilianUnitKind::Miner,
+    });
+    bind_city_order_controls(
+        commands,
+        catalog,
+        spawned,
+        root,
+        nation,
+        &UNIVERSITY_ORDERS,
+        fourcc!("minu"),
+        fourcc!("plus"),
+        fourcc!("numb"),
+        1,
+    );
+    for (binding, row_text) in UNIVERSITY_ORDERS.iter().zip(data.rows) {
+        let CityOrderId::CivilianRecruit(kind) = binding.order else {
+            unreachable!("University binding has a civilian recruitment order");
+        };
+        let button = spawned
+            .require_unique(university_button_tag(kind))
+            .expect("validated University row button binding");
+        let row = spawned
+            .require_unique(binding.tag)
+            .expect("validated University quantity-row binding");
+        let minus = spawned
+            .require_under(catalog, binding.tag, fourcc!("minu"))
+            .expect("validated University decrease binding");
+        let plus = spawned
+            .require_under(catalog, binding.tag, fourcc!("plus"))
+            .expect("validated University increase binding");
+        let quantity = spawned
+            .require_under(catalog, binding.tag, fourcc!("numb"))
+            .expect("validated University quantity binding");
+        let available = data.available[kind];
+        let visibility = if available {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+        {
+            let mut button_commands = commands.entity(button);
+            button_commands.insert((
+                UniversityRowChoice {
+                    dialog: root,
+                    kind,
+                    unit_name: row_text.unit_name,
+                    description: row_text.description,
+                },
+                visibility,
+            ));
+            if kind == CivilianUnitKind::Miner {
+                button_commands.insert(Checked);
+            } else {
+                button_commands.remove::<Checked>();
+            }
+            if available {
+                button_commands.remove::<InteractionDisabled>();
+            } else {
+                button_commands.insert(InteractionDisabled);
+            }
+        }
+        commands.entity(row).insert(visibility);
+        for control in [minus, plus] {
+            if available {
+                commands.entity(control).remove::<InteractionDisabled>();
+            } else {
+                commands.entity(control).insert(InteractionDisabled);
+            }
+        }
+        commands.entity(quantity).insert((
+            InteractionDisabled,
+            CityValueBinding {
+                dialog: Some(root),
+                value: CityValue::UniversityOrderQuantity(kind),
+            },
+        ));
+    }
+    for tag in [fourcc!("fix2"), fourcc!("fix3"), fourcc!("fix4")] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated University requirement-label binding");
+        commands.entity(entity).insert(Visibility::Hidden);
+    }
+    for (tag, value) in [
+        (fourcc!("unit"), CityValue::UniversityUnitName),
+        (fourcc!("desc"), CityValue::UniversityDescription),
+        (fourcc!("cexp"), CityValue::UniversityWorkforceCost),
+        (fourcc!("cpap"), CityValue::UniversityPaperCost),
+        (fourcc!("cash"), CityValue::UniversityCashCost),
+        (fourcc!("aexp"), CityValue::UniversityWorkforceAvailable),
+        (fourcc!("apap"), CityValue::UniversityPaperAvailable),
+        (fourcc!("trea"), CityValue::Treasury),
+    ] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated University detail binding");
+        commands.entity(entity).insert((
+            Text::new(""),
+            CityValueBinding {
+                dialog: Some(root),
+                value,
+            },
+        ));
+    }
+}
+
+fn bind_shipyard_dialog(
+    commands: &mut Commands,
+    catalog: &UiCatalogResource,
+    spawned: &SpawnedView,
+    nation: MajorNationId,
+    data: ShipyardDialogData,
+) {
+    assert!(
+        data.rows[0].is_some(),
+        "retail Shipyard row zero always has a current ship"
+    );
+    let root = bind_city_dialog_root(commands, spawned, nation, ProductionSlot::Shipyard);
+    commands.entity(root).insert(ShipyardSelection {
+        slot: ShipOrderSlot::MerchantEarlyPrimary,
+    });
+    bind_city_order_controls(
+        commands,
+        catalog,
+        spawned,
+        root,
+        nation,
+        &SHIP_ORDERS,
+        fourcc!("minu"),
+        fourcc!("plus"),
+        fourcc!("numb"),
+        1,
+    );
+    for (binding, row_data) in SHIP_ORDERS.iter().zip(data.rows) {
+        let CityOrderId::Ship(slot) = binding.order else {
+            unreachable!("Shipyard binding has a ship order");
+        };
+        let button = spawned
+            .require_unique(shipyard_button_tag(slot))
+            .expect("validated Shipyard row button binding");
+        let row = spawned
+            .require_unique(binding.tag)
+            .expect("validated Shipyard quantity-row binding");
+        let minus = spawned
+            .require_under(catalog, binding.tag, fourcc!("minu"))
+            .expect("validated Shipyard decrease binding");
+        let plus = spawned
+            .require_under(catalog, binding.tag, fourcc!("plus"))
+            .expect("validated Shipyard increase binding");
+        let quantity = spawned
+            .require_under(catalog, binding.tag, fourcc!("numb"))
+            .expect("validated Shipyard quantity binding");
+        let visibility = if row_data.is_some() {
+            Visibility::Visible
+        } else {
+            Visibility::Hidden
+        };
+        {
+            let mut button_commands = commands.entity(button);
+            button_commands.insert(visibility);
+            if slot == ShipOrderSlot::MerchantEarlyPrimary {
+                button_commands.insert(Checked);
+            } else {
+                button_commands.remove::<Checked>();
+            }
+            if let Some(row_data) = row_data {
+                button_commands.insert(ShipyardRowChoice {
+                    dialog: root,
+                    slot,
+                    ship_name: row_data.ship_name,
+                    description: row_data.description,
+                    picture: row_data.picture,
+                });
+                button_commands.remove::<InteractionDisabled>();
+            } else {
+                button_commands.insert(InteractionDisabled);
+            }
+        }
+        commands.entity(row).insert(visibility);
+        for control in [minus, plus] {
+            if visibility == Visibility::Visible {
+                commands.entity(control).remove::<InteractionDisabled>();
+            } else {
+                commands.entity(control).insert(InteractionDisabled);
+            }
+        }
+        commands.entity(quantity).insert((
+            InteractionDisabled,
+            CityValueBinding {
+                dialog: Some(root),
+                value: CityValue::ShipyardOrderQuantity(slot),
+            },
+        ));
+    }
+    for (tag, value) in [
+        (fourcc!("snam"), CityValue::ShipyardName),
+        (fourcc!("desc"), CityValue::ShipyardDescription),
+    ] {
+        let entity = spawned
+            .require_unique(tag)
+            .expect("validated Shipyard detail binding");
+        commands.entity(entity).insert((
+            Text::new(""),
+            CityValueBinding {
+                dialog: Some(root),
+                value,
+            },
+        ));
+    }
+    let picture = spawned
+        .require_unique(fourcc!("spic"))
+        .expect("validated Shipyard detail-picture binding");
+    commands
+        .entity(picture)
+        .insert(ShipyardDetailPicture { dialog: root });
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -2491,6 +3012,94 @@ fn on_armory_row_selected(
     commands.entity(row.dialog).insert(CityDialogNeedsSync);
 }
 
+fn select_university_row(
+    dialog: Entity,
+    kind: CivilianUnitKind,
+    selections: &mut Query<&mut UniversitySelection>,
+    rows: &Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
+    commands: &mut Commands,
+) {
+    let Ok(mut selection) = selections.get_mut(dialog) else {
+        return;
+    };
+    selection.kind = kind;
+    for (entity, candidate, checked) in rows.iter() {
+        if candidate.dialog != dialog {
+            continue;
+        }
+        let should_check = candidate.kind == kind;
+        if should_check && !checked {
+            commands.entity(entity).insert(Checked);
+        } else if !should_check && checked {
+            commands.entity(entity).remove::<Checked>();
+        }
+    }
+    commands.entity(dialog).insert(CityDialogNeedsSync);
+}
+
+fn on_university_row_selected(
+    change: On<ValueChange<bool>>,
+    rows: Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
+    modals: Query<(), With<ModalDialog>>,
+    mut selections: Query<&mut UniversitySelection>,
+    mut commands: Commands,
+) {
+    if !modals.is_empty() || !change.value {
+        return;
+    }
+    let Ok((_, row, _)) = rows.get(change.source) else {
+        return;
+    };
+    select_university_row(row.dialog, row.kind, &mut selections, &rows, &mut commands);
+}
+
+fn select_shipyard_row(
+    dialog: Entity,
+    slot: ShipOrderSlot,
+    selections: &mut Query<&mut ShipyardSelection>,
+    rows: &Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
+    commands: &mut Commands,
+) {
+    if !rows
+        .iter()
+        .any(|(_, row, _)| row.dialog == dialog && row.slot == slot)
+    {
+        return;
+    }
+    let Ok(mut selection) = selections.get_mut(dialog) else {
+        return;
+    };
+    selection.slot = slot;
+    for (entity, candidate, checked) in rows.iter() {
+        if candidate.dialog != dialog {
+            continue;
+        }
+        let should_check = candidate.slot == slot;
+        if should_check && !checked {
+            commands.entity(entity).insert(Checked);
+        } else if !should_check && checked {
+            commands.entity(entity).remove::<Checked>();
+        }
+    }
+    commands.entity(dialog).insert(CityDialogNeedsSync);
+}
+
+fn on_shipyard_row_selected(
+    change: On<ValueChange<bool>>,
+    rows: Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
+    modals: Query<(), With<ModalDialog>>,
+    mut selections: Query<&mut ShipyardSelection>,
+    mut commands: Commands,
+) {
+    if !modals.is_empty() || !change.value {
+        return;
+    }
+    let Ok((_, row, _)) = rows.get(change.source) else {
+        return;
+    };
+    select_shipyard_row(row.dialog, row.slot, &mut selections, &rows, &mut commands);
+}
+
 #[allow(clippy::too_many_arguments)]
 fn on_city_order_adjust(
     activate: On<Activate>,
@@ -2499,6 +3108,10 @@ fn on_city_order_adjust(
     dialogs: Query<Entity, With<CityBuildingDialog>>,
     mut armory_selections: Query<&mut ArmorySelection>,
     armory_rows: Query<(Entity, &ArmoryRowChoice, Has<Checked>)>,
+    mut university_selections: Query<&mut UniversitySelection>,
+    university_rows: Query<(Entity, &UniversityRowChoice, Has<Checked>)>,
+    mut shipyard_selections: Query<&mut ShipyardSelection>,
+    shipyard_rows: Query<(Entity, &ShipyardRowChoice, Has<Checked>)>,
     screen_roots: Query<Entity, With<CityScreenRoot>>,
     mut session: ResMut<GameSession>,
     mut commands: Commands,
@@ -2529,6 +3142,24 @@ fn on_city_order_adjust(
             }
         }
     }
+    if let CityOrderId::CivilianRecruit(kind) = action.order {
+        select_university_row(
+            action.dialog,
+            kind,
+            &mut university_selections,
+            &university_rows,
+            &mut commands,
+        );
+    }
+    if let CityOrderId::Ship(slot) = action.order {
+        select_shipyard_row(
+            action.dialog,
+            slot,
+            &mut shipyard_selections,
+            &shipyard_rows,
+            &mut commands,
+        );
+    }
     if !session
         .0
         .adjust_city_order(action.nation, action.order, action.delta)
@@ -2552,6 +3183,10 @@ fn sync_city_values(
         (Entity, &CityBuildingDialog, Option<&ArmorySelection>),
         With<CityDialogNeedsSync>,
     >,
+    university_selections: Query<&UniversitySelection>,
+    university_rows: Query<&UniversityRowChoice>,
+    shipyard_selections: Query<&ShipyardSelection>,
+    shipyard_rows: Query<&ShipyardRowChoice>,
     mut values: Query<
         (
             &CityValueBinding,
@@ -2564,6 +3199,7 @@ fn sync_city_values(
     amount_bars: Query<&CityIndustryAmountBar>,
     mut amount_nodes: Query<&mut Node>,
     mut indicators: Query<(&CityExpansionIndicator, &mut Visibility), Without<CityValueBinding>>,
+    mut shipyard_pictures: Query<(&ShipyardDetailPicture, &mut ImageNode)>,
 ) {
     if screens.is_empty() && dialogs.is_empty() {
         return;
@@ -2575,7 +3211,10 @@ fn sync_city_values(
         let mut order_views = Vec::new();
         let bindings = dialog_orders(dialog.slot);
         assert!(!bindings.is_empty(), "open city dialog has order bindings");
-        if dialog.slot != ProductionSlot::Armory {
+        if !matches!(
+            dialog.slot,
+            ProductionSlot::Armory | ProductionSlot::University | ProductionSlot::Shipyard
+        ) {
             for binding in bindings {
                 let view = session.0.refresh_city_order(dialog.nation, binding.order);
                 order_views.push((binding.order, view));
@@ -2621,6 +3260,26 @@ fn sync_city_values(
             military_recruitment_spec(order.unit_kind)
                 .expect("armory row has a recruitable retail unit recipe")
         });
+        let university_selection = binding
+            .dialog
+            .and_then(|root| university_selections.get(root).ok());
+        let university_row = binding.dialog.and_then(|root| {
+            let selection = university_selection?;
+            university_rows
+                .iter()
+                .find(|row| row.dialog == root && row.kind == selection.kind)
+        });
+        let university_spec =
+            university_selection.map(|selection| civilian_recruitment_spec(selection.kind));
+        let shipyard_selection = binding
+            .dialog
+            .and_then(|root| shipyard_selections.get(root).ok());
+        let shipyard_row = binding.dialog.and_then(|root| {
+            let selection = shipyard_selection?;
+            shipyard_rows
+                .iter()
+                .find(|row| row.dialog == root && row.slot == selection.slot)
+        });
         let value = match binding.value {
             CityValue::LaborLow => labor.low,
             CityValue::LaborMedium => labor.medium,
@@ -2629,7 +3288,7 @@ fn sync_city_values(
             CityValue::PowerAvailable => city.power_available,
             CityValue::PredictedNeed(resource) => city.population.predicted_need(resource),
             CityValue::Treasury => {
-                text.0 = format!("${}", major.common().treasury);
+                text.0 = format_currency(major.common().treasury);
                 continue;
             }
             CityValue::OrderQuantity(order) => {
@@ -2644,6 +3303,10 @@ fn sync_city_values(
             CityValue::ArmoryOrderQuantity(category) => {
                 city.orders.military_recruitment[category].progress.quantity
             }
+            CityValue::UniversityOrderQuantity(kind) => {
+                city.orders.civilian_recruitment[kind].quantity
+            }
+            CityValue::ShipyardOrderQuantity(slot) => city.orders.ships[slot].progress.quantity,
             CityValue::LaborIndicator => {
                 text.0 = "X".to_owned();
                 *visibility = if labor_available >= 2 {
@@ -2744,7 +3407,7 @@ fn sync_city_values(
                 let Some(spec) = armory_spec else {
                     continue;
                 };
-                text.0 = format!("${}", spec.cash_per_unit);
+                text.0 = format_currency(i32::from(spec.cash_per_unit));
                 continue;
             }
             CityValue::ArmoryWorkforceAvailable => {
@@ -2778,7 +3441,59 @@ fn sync_city_values(
                 city.stockpile[secondary.resource]
             }
             CityValue::ArmoryTreasuryAvailable => {
-                text.0 = format!("${}", major.common().treasury);
+                text.0 = format_currency(major.common().treasury);
+                continue;
+            }
+            CityValue::UniversityUnitName => {
+                let Some(row) = university_row else {
+                    continue;
+                };
+                text.0.clone_from(&row.unit_name);
+                continue;
+            }
+            CityValue::UniversityDescription => {
+                let Some(row) = university_row else {
+                    continue;
+                };
+                text.0.clone_from(&row.description);
+                continue;
+            }
+            CityValue::UniversityWorkforceCost => 1,
+            CityValue::UniversityPaperCost => {
+                let Some(spec) = university_spec else {
+                    continue;
+                };
+                spec.primary.per_unit()
+            }
+            CityValue::UniversityCashCost => {
+                let Some(spec) = university_spec else {
+                    continue;
+                };
+                text.0 = format_currency(i32::from(spec.cash_per_unit));
+                continue;
+            }
+            CityValue::UniversityWorkforceAvailable => {
+                let production = city.population.production_labor();
+                production.high.min(labor_available / 4)
+            }
+            CityValue::UniversityPaperAvailable => {
+                let Some(spec) = university_spec else {
+                    continue;
+                };
+                city.stockpile[spec.primary.resource]
+            }
+            CityValue::ShipyardName => {
+                let Some(row) = shipyard_row else {
+                    continue;
+                };
+                text.0.clone_from(&row.ship_name);
+                continue;
+            }
+            CityValue::ShipyardDescription => {
+                let Some(row) = shipyard_row else {
+                    continue;
+                };
+                text.0.clone_from(&row.description);
                 continue;
             }
         };
@@ -2787,6 +3502,18 @@ fn sync_city_values(
         } else {
             value.to_string()
         };
+    }
+    for (binding, mut image) in &mut shipyard_pictures {
+        let Ok(selection) = shipyard_selections.get(binding.dialog) else {
+            continue;
+        };
+        let Some(row) = shipyard_rows
+            .iter()
+            .find(|row| row.dialog == binding.dialog && row.slot == selection.slot)
+        else {
+            continue;
+        };
+        image.image.clone_from(&row.picture);
     }
     for bar in &amount_bars {
         let Some((_, nation, order_views, _)) = dialog_states
@@ -2873,6 +3600,21 @@ mod tests {
         high_decrease: Entity,
         high_increase: Entity,
         high_quantity: Entity,
+    }
+
+    #[derive(Clone, Copy)]
+    struct TestUniversityDialog {
+        root: Entity,
+        miner_button: Entity,
+        forester_button: Entity,
+        forester_increase: Entity,
+        forester_decrease: Entity,
+        forester_quantity: Entity,
+        engineer_button: Entity,
+        engineer_increase: Entity,
+        engineer_quantity: Entity,
+        driller_button: Entity,
+        driller_increase: Entity,
     }
 
     fn fixture_session() -> GameSession {
@@ -2972,6 +3714,68 @@ mod tests {
                 .unwrap(),
             high_quantity: spawned
                 .require_under(&catalog, fourcc!("prof"), fourcc!("move"))
+                .unwrap(),
+        }
+    }
+
+    fn spawn_university_dialog(
+        mut commands: Commands,
+        catalog: Res<UiCatalogResource>,
+        session: Res<GameSession>,
+    ) -> TestUniversityDialog {
+        let city = catalog.view(&city_view_id()).unwrap();
+        let view_id = city
+            .city_buildings
+            .iter()
+            .find(|building| building.slot == ProductionSlot::University)
+            .unwrap()
+            .dialog
+            .clone();
+        let view = catalog.view(&view_id).unwrap();
+        let spawned = spawn_view_nodes(&mut commands, catalog.catalog().logical_resolution, view);
+        let technology =
+            session.0.technology.city_capabilities_by_nation[MajorNationId::new(6)].university;
+        bind_university_dialog(
+            &mut commands,
+            &catalog,
+            &spawned,
+            MajorNationId::new(6),
+            UniversityDialogData {
+                available: technology.available,
+                rows: UNIVERSITY_ORDERS.map(|binding| {
+                    let CityOrderId::CivilianRecruit(kind) = binding.order else {
+                        unreachable!("University binding has a civilian recruitment order");
+                    };
+                    UniversityRowText {
+                        unit_name: format!("{kind:?}"),
+                        description: format!("{kind:?} description"),
+                    }
+                }),
+            },
+        );
+        TestUniversityDialog {
+            root: spawned.root,
+            miner_button: spawned.require_unique(fourcc!("civ0")).unwrap(),
+            forester_button: spawned.require_unique(fourcc!("civ3")).unwrap(),
+            forester_increase: spawned
+                .require_under(&catalog, fourcc!("clu3"), fourcc!("plus"))
+                .unwrap(),
+            forester_decrease: spawned
+                .require_under(&catalog, fourcc!("clu3"), fourcc!("minu"))
+                .unwrap(),
+            forester_quantity: spawned
+                .require_under(&catalog, fourcc!("clu3"), fourcc!("numb"))
+                .unwrap(),
+            engineer_button: spawned.require_unique(fourcc!("civ4")).unwrap(),
+            engineer_increase: spawned
+                .require_under(&catalog, fourcc!("clu4"), fourcc!("plus"))
+                .unwrap(),
+            engineer_quantity: spawned
+                .require_under(&catalog, fourcc!("clu4"), fourcc!("numb"))
+                .unwrap(),
+            driller_button: spawned.require_unique(fourcc!("civ8")).unwrap(),
+            driller_increase: spawned
+                .require_under(&catalog, fourcc!("clu8"), fourcc!("plus"))
                 .unwrap(),
         }
     }
@@ -3152,5 +3956,106 @@ mod tests {
             assert_eq!(city.population.production_labor(), LaborPool::new(4, 2, 1));
             assert_eq!(city.population.strength(), 12);
         }
+    }
+
+    #[test]
+    fn university_availability_and_orders_round_trip_through_generated_rows() {
+        let catalog = serde_json::from_str::<UiCatalog>(CATALOG_JSON).unwrap();
+        let nation = MajorNationId::new(6);
+        let mut session = fixture_session();
+        let university = &mut session.0.technology.city_capabilities_by_nation[nation].university;
+        university.available[CivilianUnitKind::Forester] = true;
+        university.available[CivilianUnitKind::Engineer] = true;
+        university.available[CivilianUnitKind::Driller] = false;
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .insert_resource(UiCatalogResource::new(catalog).unwrap())
+            .insert_resource(session)
+            .add_observer(on_city_order_adjust)
+            .add_observer(on_university_row_selected)
+            .add_systems(Update, sync_city_values);
+
+        let first = app
+            .world_mut()
+            .run_system_once(spawn_university_dialog)
+            .unwrap();
+        app.update();
+        assert_eq!(
+            *app.world()
+                .get::<Visibility>(first.forester_button)
+                .unwrap(),
+            Visibility::Visible
+        );
+        assert!(
+            app.world()
+                .get::<InteractionDisabled>(first.forester_increase)
+                .is_none()
+        );
+        assert_eq!(
+            *app.world().get::<Visibility>(first.driller_button).unwrap(),
+            Visibility::Hidden
+        );
+        assert!(
+            app.world()
+                .get::<InteractionDisabled>(first.driller_increase)
+                .is_some()
+        );
+        assert!(app.world().get::<Checked>(first.miner_button).is_some());
+
+        activate(&mut app, first.forester_increase);
+        assert_eq!(
+            app.world()
+                .get::<UniversitySelection>(first.root)
+                .unwrap()
+                .kind,
+            CivilianUnitKind::Forester
+        );
+        assert!(app.world().get::<Checked>(first.forester_button).is_some());
+        assert_eq!(
+            app.world().get::<Text>(first.forester_quantity).unwrap().0,
+            "1"
+        );
+        assert_eq!(
+            app.world()
+                .resource::<GameSession>()
+                .0
+                .nations
+                .major(nation)
+                .city()
+                .orders
+                .civilian_recruitment[CivilianUnitKind::Forester]
+                .quantity,
+            1
+        );
+
+        activate(&mut app, first.engineer_increase);
+        assert_eq!(
+            app.world()
+                .get::<UniversitySelection>(first.root)
+                .unwrap()
+                .kind,
+            CivilianUnitKind::Engineer,
+            "a rejected adjustment still selects its University row"
+        );
+        assert!(app.world().get::<Checked>(first.engineer_button).is_some());
+        assert!(app.world().get::<Checked>(first.forester_button).is_none());
+        assert_eq!(
+            app.world().get::<Text>(first.engineer_quantity).unwrap().0,
+            "0"
+        );
+
+        activate(&mut app, first.forester_decrease);
+        assert_eq!(
+            app.world()
+                .get::<UniversitySelection>(first.root)
+                .unwrap()
+                .kind,
+            CivilianUnitKind::Forester
+        );
+        assert_eq!(
+            app.world().get::<Text>(first.forester_quantity).unwrap().0,
+            "0"
+        );
     }
 }
